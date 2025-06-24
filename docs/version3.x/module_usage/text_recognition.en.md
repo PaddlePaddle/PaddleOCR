@@ -2,12 +2,11 @@
 comments: true
 ---
 
-
 # Text Recognition Module Tutorial
 
 ## 1. Overview
 
-The text recognition module is the core component of an OCR (Optical Character Recognition) system, responsible for extracting text information from text regions within images. The performance of this module directly impacts the accuracy and efficiency of the entire OCR system. Typically, the text recognition module takes the bounding boxes of text regions output by the text detection module as input and then converts the text in the images into editable and searchable electronic text through complex image processing and deep learning algorithms. The accuracy of the text recognition results is crucial for subsequent applications such as information extraction and data mining.
+The text recognition module is the core part of the OCR (Optical Character Recognition) system, responsible for extracting text information from text regions in images. The performance of this module directly affects the accuracy and efficiency of the entire OCR system. The text recognition module usually receives the bounding boxes of text regions output by the text detection module as input, and then converts the text in the images into editable and searchable electronic text through complex image processing and deep learning algorithms. The accuracy of text recognition results is crucial for subsequent applications such as information extraction and data mining.
 
 ## 2. List of Supported Models
 
@@ -28,7 +27,7 @@ PP-OCRv5_server_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model
 <td>8.46 / 2.36</td>
 <td>31.21 / 31.21</td>
 <td>81 M</td>
-<td rowspan="2">PP-OCRv5_rec is a next-generation text recognition model. It aims to efficiently and accurately support the recognition of four major languages—Simplified Chinese, Traditional Chinese, English, and Japanese—as well as complex text scenarios such as handwriting, vertical text, pinyin, and rare characters using a single model. While maintaining recognition performance, it balances inference speed and model robustness, providing efficient and accurate technical support for document understanding in various scenarios.</td>
+<td rowspan="2">PP-OCRv5_rec is a new generation text recognition model. It is designed to efficiently and accurately support the recognition of Simplified Chinese, Traditional Chinese, English, Japanese, as well as complex text scenarios such as handwriting, vertical text, pinyin, and rare characters with a single model. While maintaining recognition performance, it also balances inference speed and model robustness, providing efficient and accurate technical support for document understanding in various scenarios.</td>
 </tr>
 <tr>
 <td>PP-OCRv5_mobile_rec</td>
@@ -52,16 +51,16 @@ PP-OCRv4_server_rec_doc_infer.tar">Inference Model</a>/<a href="https://paddle-m
 <tr>
 <td>PP-OCRv4_mobile_rec</td>
 <td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_mobile_rec_pretrained.pdparams">Pretrained Model</a></td>
-<td>83.28</td>
+<td>78.74</td>
 <td>5.26 / 1.12</td>
 <td>17.48 / 3.61</td>
 <td>10.5 M</td>
 <td>A lightweight recognition model of PP-OCRv4 with high inference efficiency, suitable for deployment on various hardware devices, including edge devices.</td>
 </tr>
 <tr>
-<td>PP-OCRv4_server_rec </td>
+<td>PP-OCRv4_server_rec</td>
 <td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_server_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_rec_pretrained.pdparams">Pretrained Model</a></td>
-<td>85.19 </td>
+<td>85.19</td>
 <td>8.75 / 2.49</td>
 <td>36.93 / 36.93</td>
 <td>173 M</td>
@@ -79,19 +78,19 @@ en_PP-OCRv4_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-mo
 </tr>
 </table>
 
-> ❗ The above section lists the **6 core models** that are primarily supported by the text recognition module. In total, the module supports **20 comprehensive models**, including multiple multilingual text recognition models. Below is the complete list of models:
+> ❗ The above lists the <b>4 core models</b> mainly supported by the text recognition module. The module supports a total of <b>20 full models</b>, including multiple multilingual text recognition models. The complete model list is as follows:
 
-<details><summary> 👉Details of the Model List</summary>
+<details><summary> 👉Model List Details</summary>
 
 * <b>PP-OCRv5 Multi-Scenario Models</b>
 
 <table>
 <tr>
 <th>Model</th><th>Model Download Links</th>
-<th>Avg Accuracy for Chinese Recognition (%)</th>
-<th>Avg Accuracy for English Recognition (%)</th>
-<th>Avg Accuracy for Traditional Chinese Recognition (%)</th>
-<th>Avg Accuracy for Japanese Recognition (%)</th>
+<th>Chinese Recognition Avg Accuracy(%)</th>
+<th>English Recognition Avg Accuracy(%)</th>
+<th>Traditional Chinese Recognition Avg Accuracy(%)</th>
+<th>Japanese Recognition Avg Accuracy(%)</th>
 <th>GPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
 <th>CPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
 <th>Model Storage Size (M)</th>
@@ -108,7 +107,7 @@ PP-OCRv5_server_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model
 <td>8.46 / 2.36</td>
 <td>31.21 / 31.21</td>
 <td>81 M</td>
-<td rowspan="2">PP-OCRv5_rec is a next-generation text recognition model. It aims to efficiently and accurately support the recognition of four major languages—Simplified Chinese, Traditional Chinese, English, and Japanese—as well as complex text scenarios such as handwriting, vertical text, pinyin, and rare characters using a single model. While maintaining recognition performance, it balances inference speed and model robustness, providing efficient and accurate technical support for document understanding in various scenarios.</td>
+<td rowspan="2">PP-OCRv5_rec is a new generation text recognition model. It is designed to efficiently and accurately support the recognition of Simplified Chinese, Traditional Chinese, English, Japanese, as well as complex text scenarios such as handwriting, vertical text, pinyin, and rare characters with a single model. While maintaining recognition performance, it also balances inference speed and model robustness, providing efficient and accurate technical support for document understanding in various scenarios.</td>
 </tr>
 <tr>
 <td>PP-OCRv5_mobile_rec</td>
@@ -128,7 +127,7 @@ PP-OCRv5_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model
 <table>
 <tr>
 <th>Model</th><th>Model Download Links</th>
-<th>Avg Accuracy (%)</th>
+<th>Recognition Avg Accuracy(%)</th>
 <th>GPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
 <th>CPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
 <th>Model Storage Size (M)</th>
@@ -147,16 +146,16 @@ PP-OCRv4_server_rec_doc_infer.tar">Inference Model</a>/<a href="https://paddle-m
 <tr>
 <td>PP-OCRv4_mobile_rec</td>
 <td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_mobile_rec_pretrained.pdparams">Pretrained Model</a></td>
-<td>83.28</td>
+<td>78.74</td>
 <td>5.26 / 1.12</td>
 <td>17.48 / 3.61</td>
 <td>10.5 M</td>
 <td>A lightweight recognition model of PP-OCRv4 with high inference efficiency, suitable for deployment on various hardware devices, including edge devices.</td>
 </tr>
 <tr>
-<td>PP-OCRv4_server_rec </td>
+<td>PP-OCRv4_server_rec</td>
 <td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_server_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_rec_pretrained.pdparams">Pretrained Model</a></td>
-<td>85.19 </td>
+<td>85.19</td>
 <td>8.75 / 2.49</td>
 <td>36.93 / 36.93</td>
 <td>173 M</td>
@@ -166,7 +165,7 @@ PP-OCRv4_server_rec_doc_infer.tar">Inference Model</a>/<a href="https://paddle-m
 <td>PP-OCRv3_mobile_rec</td>
 <td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
 PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv3_mobile_rec_pretrained.pdparams">Pretrained Model</a></td>
-<td>75.43</td>
+<td>72.96</td>
 <td>3.89 / 1.16</td>
 <td>8.72 / 3.56</td>
 <td>10.3 M</td>
@@ -177,7 +176,7 @@ PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model
 <table>
 <tr>
 <th>Model</th><th>Model Download Links</th>
-<th>Avg Accuracy (%)</th>
+<th>Recognition Avg Accuracy(%)</th>
 <th>GPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
 <th>CPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
 <th>Model Storage Size (M)</th>
@@ -190,16 +189,14 @@ PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model
 <td>10.38 / 8.31</td>
 <td>66.52 / 30.83</td>
 <td>80.5 M</td>
-<td rowspan="1">
-SVTRv2 is a server-side text recognition model developed by the OpenOCR team of the Vision and Learning Lab (FVL) at Fudan University. It won the first prize in the PaddleOCR Algorithm Model Challenge - Task 1: OCR End-to-End Recognition Task, with a 6% improvement in end-to-end recognition accuracy on Leaderboard A compared to PP-OCRv4.
-</td>
+<td rowspan="1">SVTRv2 is a server-side text recognition model developed by the OpenOCR team of the Vision and Learning Lab (FVL) at Fudan University. It won the first prize in the PaddleOCR Algorithm Model Challenge - Task 1: OCR End-to-End Recognition Task, with a 6% improvement in end-to-end recognition accuracy on Leaderboard A compared to PP-OCRv4.</td>
 </tr>
 </table>
 
 <table>
 <tr>
 <th>Model</th><th>Model Download Links</th>
-<th>Avg Accuracy (%)</th>
+<th>Recognition Avg Accuracy(%)</th>
 <th>GPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
 <th>CPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
 <th>Model Storage Size (M)</th>
@@ -211,8 +208,8 @@ SVTRv2 is a server-side text recognition model developed by the OpenOCR team of 
 <td>65.07</td>
 <td>6.29 / 1.57</td>
 <td>20.64 / 5.40</td>
-<td>48.8 M</td>
-<td rowspan="1">    RepSVTR is a mobile-side text recognition model based on SVTRv2. It won the first prize in the PaddleOCR Algorithm Model Challenge - Task 1: OCR End-to-End Recognition Task, with a 2.5% improvement in end-to-end recognition accuracy on Leaderboard B compared to PP-OCRv4, while maintaining similar inference speed.</td>
+<td>22.1 M</td>
+<td rowspan="1">RepSVTR is a mobile-side text recognition model based on SVTRv2. It won the first prize in the PaddleOCR Algorithm Model Challenge - Task 1: OCR End-to-End Recognition Task, with a 2.5% improvement in end-to-end recognition accuracy on Leaderboard B compared to PP-OCRv4, while maintaining similar inference speed.</td>
 </tr>
 </table>
 
@@ -220,7 +217,7 @@ SVTRv2 is a server-side text recognition model developed by the OpenOCR team of 
 <table>
 <tr>
 <th>Model</th><th>Model Download Links</th>
-<th>Avg Accuracy (%)</th>
+<th>Recognition Avg Accuracy(%)</th>
 <th>GPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
 <th>CPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
 <th>Model Storage Size (M)</th>
@@ -248,12 +245,11 @@ en_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-mo
 </tr>
 </table>
 
-
 * <b>Multilingual Recognition Models</b>
 <table>
 <tr>
 <th>Model</th><th>Model Download Links</th>
-<th>Avg Accuracy (%)</th>
+<th>Recognition Avg Accuracy(%)</th>
 <th>GPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
 <th>CPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
 <th>Model Storage Size (M)</th>
@@ -361,7 +357,6 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
 </tr>
 </table>
 
-
 <strong>Test Environment Description:</strong>
 
   <ul>
@@ -370,19 +365,19 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
               <li><strong>Test Dataset:</strong>
                  <ul>
                     <li>
-                    Chinese Recognition Models: A self-built Chinese dataset by PaddleOCR, covering various scenarios such as street views, online images, documents, and handwriting, with 11,000 images for text recognition.
+                    Chinese Recognition Models: A self-built Chinese dataset by PaddleOCR, covering street views, online images, documents, handwriting, with 11,000 images for text recognition.
                     </li>
                     <li>
-                      ch_SVTRv2_rec: The evaluation set of Leaderboard A in the <a href="https://aistudio.baidu.com/competition/detail/1131/0/introduction">PaddleOCR Algorithm Model Challenge - Task 1: OCR End-to-End Recognition Task</a>.
+                      ch_SVTRv2_rec: <a href="https://aistudio.baidu.com/competition/detail/1131/0/introduction">PaddleOCR Algorithm Model Challenge - Task 1: OCR End-to-End Recognition Task</a> Leaderboard A evaluation set.
                     </li>
                     <li>
-                      ch_RepSVTR_rec: The evaluation set of Leaderboard B in the <a href="https://aistudio.baidu.com/competition/detail/1131/0/introduction">PaddleOCR Algorithm Model Challenge - Task 1: OCR End-to-End Recognition Task</a>.
+                      ch_RepSVTR_rec: <a href="https://aistudio.baidu.com/competition/detail/1131/0/introduction">PaddleOCR Algorithm Model Challenge - Task 1: OCR End-to-End Recognition Task</a> Leaderboard B evaluation set.
                     </li>
                     <li>
-                      English Recognition Models: A self-built English dataset by PaddleX.
+                      English Recognition Models: A self-built English dataset by PaddleOCR.
                     </li>
                     <li>
-                      Multilingual Recognition Models: A self-built multilingual dataset by PaddleX.
+                      Multilingual Recognition Models: A self-built multilingual dataset by PaddleOCR.
                     </li>
                  </ul>
               </li>
@@ -390,7 +385,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
                   <ul>
                       <li>GPU: NVIDIA Tesla T4</li>
                       <li>CPU: Intel Xeon Gold 6271C @ 2.60GHz</li>
-                      <li>Other Environment: Ubuntu 20.04 / cuDNN 8.6 / TensorRT 8.5.2.2</li>
+                      <li>Other Environment: Ubuntu 20.04 / cuDNN 8.9 / TensorRT 8.6.1.6 / CUDA 11.8</li>
                   </ul>
               </li>
           </ul>
@@ -425,17 +420,17 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
 
 </details>
 
-## III. Quick Start
+## 3. Quick Start
 
-> ❗ Before starting, please install the wheel package of PaddleOCR. For detailed instructions, refer to the [Installation Guide](../installation.en.md).
+> ❗ Before starting, please install the PaddleOCR wheel package. For details, please refer to the [Installation Guide](../installation.en.md).
 
-You can quickly experience the functionality with a single command:
+You can quickly experience it with one command:
 
 ```bash
 paddleocr text_recognition -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_rec_001.png
 ```
 
-<b>Note: </b>The official models would be download from HuggingFace by default. If can't access to HuggingFace, please set the environment variable `PADDLE_PDX_MODEL_SOURCE="BOS"` to change the model source to BOS. In the future, more model sources will be supported.
+<b>Note:</b> The official PaddleOCR models are downloaded from HuggingFace by default. If you cannot access HuggingFace, you can change the model source to BOS by setting the environment variable `PADDLE_PDX_MODEL_SOURCE="BOS"`. More mainstream model sources will be supported in the future.
 
 You can also integrate the model inference of the text recognition module into your project. Before running the following code, please download the [sample image](https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_rec_001.png) to your local machine.
 
@@ -449,25 +444,24 @@ for res in output:
     res.save_to_json(save_path="./output/res.json")
 ```
 
-After running, the obtained result is as follows:
+After running, the result is as follows:
 ```bash
 {'res': {'input_path': 'general_ocr_rec_001.png', 'page_index': None, 'rec_text': '绿洲仕格维花园公寓', 'rec_score': 0.9823867082595825}}
 ```
 
-The meanings of the parameters in the running result are as follows:
-- `input_path`: Indicates the path to the input image containing the text line to be predicted.
-- `page_index`: If the input is a PDF file, it indicates which page of the PDF the current text line is from; otherwise, it is `None`.
-- `rec_text`: Indicates the predicted text of the text line image.
-- `rec_score`: Indicates the confidence score of the predicted text for the text line image.
-
+The meanings of the parameters in the result are as follows:
+- `input_path`: The path of the input text line image to be predicted
+- `page_index`: If the input is a PDF file, it indicates which page of the PDF the current text line is from; otherwise, it is `None`
+- `rec_text`: The predicted text of the text line image
+- `rec_score`: The confidence score of the predicted text for the text line image
 
 The visualized image is as follows:
 
 <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/modules/text_recog/general_ocr_rec_001.png"/>
 
-The descriptions of relevant methods and parameters are as follows:
+Descriptions of related methods and parameters are as follows:
 
-* Instantiate a text recognition model using `TextRecognition` (taking `PP-OCRv5_server_rec` as an example here). The specific descriptions are as follows:
+* Instantiate the text recognition model using `TextRecognition` (using `PP-OCRv5_server_rec` as an example), as follows:
 <table>
 <thead>
 <tr>
@@ -480,60 +474,56 @@ The descriptions of relevant methods and parameters are as follows:
 <tbody>
 <tr>
 <td><code>model_name</code></td>
-<td>Name of the model</td>
-<td><code>str</code></td>
+<td>If set to <code>None</code>, <code>PP-OCRv5_server_rec</code> is used.</td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>model_dir</code></td>
-<td>Model storage path</td>
-<td><code>str</code></td>
+<td>Model storage path.</td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>Device(s) to use for inference.<br/>
-<b>Examples:</b> <code>cpu</code>, <code>gpu</code>, <code>npu</code>, <code>gpu:0</code>, <code>gpu:0,1</code>.<br/>
-If multiple devices are specified, inference will be performed in parallel. Note that parallel inference is not always supported.<br/>
-By default, GPU 0 will be used if available; otherwise, the CPU will be used.
+<td>Device for inference.<br/>
+<b>Examples:</b> <code>"cpu"</code>, <code>"gpu"</code>, <code>"npu"</code>, <code>"gpu:0"</code>, <code>"gpu:0,1"</code>.<br/>
+If multiple devices are specified, inference will be performed in parallel.<br/>
+By default, GPU 0 is used; if unavailable, CPU is used.
 </td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>enable_hpi</code></td>
-<td>Whether to use the high performance inference.</td>
+<td>Whether to enable high performance inference.</td>
 <td><code>bool</code></td>
 <td><code>False</code></td>
 </tr>
 <tr>
 <td><code>use_tensorrt</code></td>
-<td>Whether to use the Paddle Inference TensorRT subgraph engine.</br>
-For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6), and it is recommended to install TensorRT 8.6.1.6.</br>
-For Paddle with CUDA version 12.6, the compatible TensorRT version is 10.x (x>=5), and it is recommended to install TensorRT 10.5.0.18.
+<td>Whether to enable the TensorRT subgraph engine of Paddle Inference.<br/>
+For Paddle with CUDA 11.8, the compatible TensorRT version is 8.x (x>=6), recommended 8.6.1.6.<br/>
+For Paddle with CUDA 12.6, the compatible TensorRT version is 10.x (x>=5), recommended 10.5.0.18.
 </td>
 <td><code>bool</code></td>
 <td><code>False</code></td>
 </tr>
 <tr>
 <td><code>precision</code></td>
-<td>Precision for TensorRT when using the Paddle Inference TensorRT subgraph engine.<br/><b>Options:</b> <code>fp32</code>, <code>fp16</code>, etc.</td>
+<td>Precision for TensorRT when using the Paddle Inference TensorRT subgraph engine.<br/><b>Options:</b> <code>fp32</code>, <code>fp16</code>.</td>
 <td><code>str</code></td>
-<td><code>fp32</code></td>
+<td><code>"fp32"</code></td>
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
-<td>
-Whether to enable MKL-DNN acceleration for inference. If MKL-DNN is unavailable or the model does not support it, acceleration will not be used even if this flag is set.
-</td>
+<td>Whether to enable MKL-DNN acceleration for inference. If MKL-DNN is unavailable or the model does not support it, acceleration will not be used even if this flag is set.</td>
 <td><code>bool</code></td>
 <td><code>True</code></td>
 </tr>
 <tr>
 <td><code>mkldnn_cache_capacity</code></td>
-<td>
-MKL-DNN cache capacity.
-</td>
+<td>MKL-DNN cache capacity.</td>
 <td><code>int</code></td>
 <td><code>10</code></td>
 </tr>
@@ -545,16 +535,14 @@ MKL-DNN cache capacity.
 </tr>
 <tr>
 <td><code>input_shape</code></td>
-<td>Input image size for the model in the format <code>(C, H, W)</code>. If set to <code>None</code>, the model's default size will be used.</td>
-<td><code>tuple</code> / <code>None</code></td>
+<td>Input image size for the model in the format <code>(C, H, W)</code>.</td>
+<td><code>tuple|None</code></td>
 <td><code>None</code></td>
 </tr>
 </tbody>
 </table>
 
-* Among them, `model_name` must be specified. After specifying `model_name`, the default model parameters built into PaddleX are used. On this basis, when `model_dir` is specified, the user-defined model is used.
-
-* Call the `predict()` method of the text recognition model for inference prediction. This method returns a list of results. In addition, this module also provides the `predict_iter()` method. The two methods are completely consistent in terms of parameter acceptance and result return. The difference is that `predict_iter()` returns a `generator`, which can process and obtain prediction results step by step. It is suitable for scenarios where large datasets need to be processed or memory savings are desired. You can choose either of these two methods according to your actual needs. The parameters of the `predict()` method include `input` and `batch_size`, with specific descriptions as follows:
+* Call the `predict()` method of the text recognition model for inference. This method returns a list of results. In addition, this module also provides the `predict_iter()` method. The two methods are completely consistent in terms of parameter acceptance and result return. The difference is that `predict_iter()` returns a `generator`, which can process and obtain prediction results step by step. It is suitable for scenarios where large datasets need to be processed or memory savings are desired. You can choose either of these two methods according to your actual needs. The parameters of the `predict()` method include `input` and `batch_size`, with specific descriptions as follows:
 
 <table>
 <thead>
@@ -562,30 +550,25 @@ MKL-DNN cache capacity.
 <th>Parameter</th>
 <th>Description</th>
 <th>Type</th>
-<th>Options</th>
-<th>Default Value</th>
+<th>Default</th>
 </tr>
 </thead>
 <tr>
 <td><code>input</code></td>
-<td>Data to be predicted, supporting multiple input types</td>
-<td><code>Python Var</code>/<code>str</code>/<code>list</code></td>
-<td>
+<td>Data to be predicted, supporting multiple input types, required.
 <ul>
-<li><b>Python variable</b>, such as image data represented by <code>numpy.ndarray</code></li>
-<li><b>File path</b>, such as the local path of an image file: <code>/root/data/img.jpg</code></li>
-<li><b>URL link</b>, such as the network URL of an image file: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_rec_001.png">Example</a></li>
-<li><b>Local directory</b>, which should contain the data files to be predicted, such as the local path: <code>/root/data/</code></li>
-<li><b>List</b>, the elements of which should be data of the above types, such as <code>[numpy.ndarray, numpy.ndarray]</code>, <code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>, <code>["/root/data1", "/root/data2"]</code></li>
+<li><b>Python Var</b>: Image data represented by <code>numpy.ndarray</code></li>
+<li><b>str</b>: Local path of image file or PDF file: <code>/root/data/img.jpg</code>; <b>URL link</b>: Network URL of image file or PDF file: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_rec_001.png">Example</a>; <b>Local directory</b>: The directory should contain the images to be predicted, such as <code>/root/data/</code> (currently, prediction of PDF files in the directory is not supported, PDF files need to be specified to a specific file path)</li>
+<li><b>list</b>: The elements of the list should be data of the above types, such as <code>[numpy.ndarray, numpy.ndarray]</code>, <code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>, <code>["/root/data1", "/root/data2"]</code></li>
 </ul>
 </td>
-<td>None</td>
+<td><code>Python Var|str|list</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>batch_size</code></td>
-<td>Batch size,  positive integer.</td>
+<td>Batch size, can be set to any positive integer.</td>
 <td><code>int</code></td>
-<td>Any integer</td>
 <td>1</td>
 </tr>
 </table>
@@ -600,7 +583,7 @@ MKL-DNN cache capacity.
 <th>Parameter</th>
 <th>Type</th>
 <th>Description</th>
-<th>Default Value</th>
+<th>Default</th>
 </tr>
 </thead>
 <tr>
@@ -670,9 +653,11 @@ MKL-DNN cache capacity.
 <td rowspan="1"><code>img</code></td>
 <td rowspan="1">Obtain the visualized image in <code>dict</code> format</td>
 </tr>
-</table>## V. Secondary Development
+</table>
 
-If the performance of the above models does not meet your requirements in your specific scenario, you can follow the steps below for secondary development. Here, we use the training of `PP-OCRv5_server_rec` as an example; for other models, simply replace the corresponding configuration files. First, you need to prepare a dataset for text recognition. You can refer to the format of the [Text Recognition Demo Dataset](https://paddle-model-ecology.bj.bcebos.com/paddlex/data/ocr_rec_dataset_examples.tar) for preparation. Once prepared, you can proceed with model training and exporting as described below. After exporting, the model can be quickly integrated into the aforementioned API. This example uses the Text Recognition Demo Dataset. Before training the model, ensure that you have installed the dependencies required by PaddleOCR as per the [Installation Guide](../installation.md).
+## 4. Secondary Development
+
+If the above models do not perform well in your scenario, you can try the following steps for secondary development. Here, we take training `PP-OCRv5_server_rec` as an example. For other models, just replace the corresponding configuration file. First, you need to prepare a dataset for text recognition. You can refer to the format of the [Text Recognition Demo Data](https://paddle-model-ecology.bj.bcebos.com/paddlex/data/ocr_rec_dataset_examples.tar) for preparation. After preparation, you can train and export the model as follows. After export, the model can be quickly integrated into the above API. This example uses the Text Recognition Demo Data. Before training the model, please make sure you have installed the dependencies required by PaddleOCR as described in the [Installation Guide](../installation.md).
 
 ### 4.1 Dataset and Pre-trained Model Preparation
 
@@ -703,22 +688,22 @@ python3 tools/train.py -c configs/rec/PP-OCRv5/PP-OCRv5_server_rec.yml \
    -o Global.pretrained_model=./PP-OCRv5_server_rec_pretrained.pdparams
 
 # Multi-GPU training, specify GPU IDs via the --gpus parameter
-python3 -m paddle.distributed.launch --gpus '0,1,2,3' tools/train.py -c configs/rec/PP-OCRv5/PP-OCRv5_server_rec.yml \
+python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs/rec/PP-OCRv5/PP-OCRv5_server_rec.yml \
         -o Global.pretrained_model=./PP-OCRv5_server_rec_pretrained.pdparams
 ```
 
 ### 4.3 Model Evaluation
 
-You can evaluate the weights of a trained model, such as `output/xxx/xxx.pdparams`, using the following command:
+You can evaluate the trained weights, such as `output/xxx/xxx.pdparams`, using the following command:
 
 ```bash
-# Note: Set the path of pretrained_model to a local path. If using a model you trained and saved yourself, ensure to modify the path and filename to {path/to/weights}/{model_name}.
-# Evaluation on the demo test set
+# Note: Set the path of pretrained_model to a local path. If you use a model you trained and saved yourself, please modify the path and file name to {path/to/weights}/{model_name}.
+# Demo test set evaluation
 python3 tools/eval.py -c configs/rec/PP-OCRv5/PP-OCRv5_server_rec.yml -o \
 Global.pretrained_model=output/xxx/xxx.pdparams
 ```
 
-### 4.4 Model Exporting
+### 4.4 Model Export
 
 ```bash
 python3 tools/export_model.py -c configs/rec/PP-OCRv5/PP-OCRv5_server_rec.yml -o \
@@ -726,14 +711,13 @@ Global.pretrained_model=output/xxx/xxx.pdparams \
 Global.save_inference_dir="./PP-OCRv5_server_rec_infer/"
 ```
 
-After exporting the model, the static graph model will be stored in `./PP-OCRv5_server_rec_infer/` in the current directory. Under this directory, you will see the following files:
+After exporting the model, the static graph model will be stored in `./PP-OCRv5_server_rec_infer/` in the current directory. In this directory, you will see the following files:
 ```
 ./PP-OCRv5_server_rec_infer/
 ├── inference.json
 ├── inference.pdiparams
 ├── inference.yml
 ```
-
 At this point, the secondary development is complete. This static graph model can be directly integrated into the PaddleOCR API.
 
-## V. FAQ
+## 5. FAQ

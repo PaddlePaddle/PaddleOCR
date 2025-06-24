@@ -50,7 +50,7 @@ PaddleOCR 内置了多条产线，每条产线都包含了若干模块，每个�
 </tr>
 <tr>
 <td>PP-OCRv4_mobile_det</td>
-<td>77.35</td>
+<td>63.8</td>
 <td>9.87 / 4.17</td>
 <td>56.60 / 20.79</td>
 <td>4.7</td>
@@ -94,7 +94,7 @@ PaddleOCR 内置了多条产线，每条产线都包含了若干模块，每个�
 <tbody>
 <tr>
 <td>PP-OCRv4_mobile_seal_det</td>
-<td>96.47</td>
+<td>96.36</td>
 <td>9.70 / 3.56</td>
 <td>50.38 / 19.64</td>
 <td>4.7M</td>
@@ -102,7 +102,7 @@ PaddleOCR 内置了多条产线，每条产线都包含了若干模块，每个�
 <td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_mobile_seal_det_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_mobile_seal_det_pretrained.pdparams">训练模型</a></td></tr>
 <tr>
 <td>PP-OCRv4_server_seal_det</td>
-<td>98.21</td>
+<td>98.40</td>
 <td>124.64 / 91.57</td>
 <td>545.68 / 439.86</td>
 <td>109</td>
@@ -145,7 +145,7 @@ PaddleOCR 内置了多条产线，每条产线都包含了若干模块，每个�
 </tr>
 <tr>
 <td>PP-OCRv4_server_rec_doc</td>
-<td>81.53</td>
+<td>86.58</td>
 <td>8.69 / 2.78</td>
 <td>37.93 / 37.93</td>
 <td>182 M</td>
@@ -163,8 +163,8 @@ PP-OCRv4_server_rec_doc_infer.tar">推理模型</a>/<a href="">训练模型</a><
 <td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_mobile_rec_pretrained.pdparams">训练模型</a></td>
 </tr>
 <tr>
-<td>PP-OCRv4_server_rec </td>
-<td>80.61 </td>
+<td>PP-OCRv4_server_rec</td>
+<td>85.19</td>
 <td>8.75 / 2.49</td>
 <td>36.93 / 36.93</td>
 <td>173 M</td>

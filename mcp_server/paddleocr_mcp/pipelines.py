@@ -577,7 +577,7 @@ class OCRHandler(SimpleInferencePipelineHandler):
         scores = result["rec_scores"]
         boxes = result["rec_boxes"]
 
-        clean_texts, confidences, instances = [], [], []
+        clean_texts, confidences, text_lines = [], [], []
 
         for i, text in enumerate(texts):
             if text and text.strip():
@@ -589,19 +589,19 @@ class OCRHandler(SimpleInferencePipelineHandler):
                     "confidence": round(conf, 3),
                     "bbox": boxes[i].tolist(),
                 }
-                instances.append(instance)
+                text_lines.append(instance)
 
         return {
             "text": "\n".join(clean_texts),
             "confidence": sum(confidences) / len(confidences) if confidences else 0,
-            "instances": instances,
+            "text_lines": text_lines,
         }
 
     async def _parse_service_result(self, service_result: Dict, ctx: Context) -> Dict:
         result_data = service_result.get("result", service_result)
         ocr_results = result_data.get("ocrResults")
 
-        all_texts, all_confidences, instances = [], [], []
+        all_texts, all_confidences, text_lines = [], [], []
 
         for ocr_result in ocr_results:
             pruned = ocr_result["prunedResult"]
@@ -620,21 +620,21 @@ class OCRHandler(SimpleInferencePipelineHandler):
                         "confidence": round(conf, 3),
                         "bbox": boxes[i],
                     }
-                    instances.append(instance)
+                    text_lines.append(instance)
 
         return {
             "text": "\n".join(all_texts),
             "confidence": (
                 sum(all_confidences) / len(all_confidences) if all_confidences else 0
             ),
-            "instances": instances,
+            "text_lines": text_lines,
         }
 
     async def _log_completion_stats(self, result: Dict, ctx: Context) -> None:
         text_length = len(result["text"])
-        instance_count = len(result["instances"])
+        text_line_count = len(result["text_lines"])
         await ctx.info(
-            f"OCR completed: {text_length} characters, {instance_count} text instances"
+            f"OCR completed: {text_length} characters, {text_line_count} text lines"
         )
 
     async def _format_output(
@@ -655,11 +655,11 @@ class OCRHandler(SimpleInferencePipelineHandler):
             return json.dumps(result, ensure_ascii=False, indent=2)
         else:
             confidence = result["confidence"]
-            instance_count = len(result["instances"])
+            text_line_count = len(result["text_lines"])
 
             output = result["text"]
             if confidence > 0:
-                output += f"\n\n📊 Confidence: {(confidence * 100):.1f}% | {instance_count} text instances"
+                output += f"\n\n📊 Confidence: {(confidence * 100):.1f}% | {text_line_count} text lines"
 
             return output
 

@@ -267,7 +267,7 @@ comments: true
                   <ul>
                       <li>GPU：NVIDIA Tesla T4</li>
                       <li>CPU：Intel Xeon Gold 6271C @ 2.60GHz</li>
-                      <li>其他环境：Ubuntu 20.04 / cuDNN 8.6 / TensorRT 8.5.2.2</li>
+                      <li>其他环境：Ubuntu 20.04 / cuDNN 8.9 / TensorRT 8.6.1.6 / CUDA 11.8</li>
                   </ul>
               </li>
           </ul>
@@ -362,24 +362,24 @@ for res in output:
 <tbody>
 <tr>
 <td><code>model_name</code></td>
-<td>模型名称</td>
-<td><code>str</code></td>
-<td><code>PP-DocLayout-L</code></td>
+<td>模型名称。如果设置为<code>None</code>，则使用<code>PP-DocLayout-L</code></td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>model_dir</code></td>
-<td>模型存储路径</td>
-<td><code>str</code></td>
+<td>模型存储路径。</td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>device</code></td>
 <td>用于推理的设备。<br/>
-<b>例如：</b><code>cpu</code>、<code>gpu</code>、<code>npu</code>、<code>gpu:0</code>、<code>gpu:0,1</code>。<br/>
+<b>例如：</b><code>"cpu"</code>、<code>"gpu"</code>、<code>"npu"</code>、<code>"gpu:0"</code>、<code>"gpu:0,1"</code>。<br/>
 如指定多个设备，将进行并行推理。<br/>
 默认情况下，优先使用 GPU 0；若不可用则使用 CPU。
 </td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
@@ -390,8 +390,8 @@ for res in output:
 </tr>
 <tr>
 <td><code>use_tensorrt</code></td>
-<td>是否启用 Paddle Inference 的 TensorRT 子图引擎。</br>
-对于 CUDA 11.8 版本的飞桨，兼容的 TensorRT 版本为 8.x（x>=6），建议安装 TensorRT 8.6.1.6。</br>
+<td>是否启用 Paddle Inference 的 TensorRT 子图引擎。如果模型不支持通过 TensorRT 加速，即使设置了此标志，也不会使用加速。<br/>
+对于 CUDA 11.8 版本的飞桨，兼容的 TensorRT 版本为 8.x（x>=6），建议安装 TensorRT 8.6.1.6。<br/>
 对于 CUDA 12.6 版本的飞桨，兼容的 TensorRT 版本为 10.x（x>=5），建议安装 TensorRT 10.5.0.18。
 </td>
 <td><code>bool</code></td>
@@ -399,9 +399,9 @@ for res in output:
 </tr>
 <tr>
 <td><code>precision</code></td>
-<td>当使用 Paddle Inference 的 TensorRT 子图引擎时设置的计算精度。<br/><b>可选项：</b><code>fp32</code>、<code>fp16</code> 等。</td>
+<td>当使用 Paddle Inference 的 TensorRT 子图引擎时设置的计算精度。<br/><b>可选项：</b><code>"fp32"</code>、<code>"fp16"</code>。</td>
 <td><code>str</code></td>
-<td><code>fp32</code></td>
+<td><code>"fp32"</code></td>
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
@@ -427,64 +427,63 @@ MKL-DNN 缓存容量。
 </tr>
 <tr>
 <td><code>img_size</code></td>
-<td>输入图像大小；如果不指定，PP-DocLayout_plus-L模型将默认使用800x800<br/><b>可选示例:</b>
+<td>输入图像大小。
 <ul>
-<li><b>int</b>:如 640 , 表示将输入图像resize到640x640大小</li>
-<li><b>list</b>: 如 [640, 512] , 表示将输入图像resize到宽为640，高为512大小</li>
-<li><b>None</b>:不指定，PP-DocLayout_plus-L模型将默认使用800x800</li>
+<li><b>int</b>：如<code>640</code>，表示将输入图像resize到640x640大小。</li>
+<li><b>list</b>：如<code>[640, 512]</code>，表示将输入图像resize到宽为640、高为512。</li>
 </ul>
 </td>
-<td><code>int/list/None</code></td>
-<td>None</td>
+<td><code>int|list|None</code></td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>threshold</code></td>
-<td>用于过滤掉低置信度预测结果的阈值；如果不指定，将默认使用PaddleOCR官方模型配置<br/><b>可选示例:</b>
+<td>用于过滤掉低置信度预测结果的阈值。
 <ul>
-<li><b>float</b>:如 0.2， 表示过滤掉所有阈值小于0.2的目标框</li>
-<li><b>dict</b>:字典的key为int类型，代表cls_id，val为float类型阈值。如 {0: 0.45, 2: 0.48, 7: 0.4}，表示对cls_id为0的类别应用阈值0.45、cls_id为1的类别应用阈值0.48、cls_id为7的类别应用阈值0.4</li>
-<li><b>None</b>:不指定，将默认使用PaddleOCR官方模型配置</li>
+<li><b>float</b>：如<code>0.2</code>，表示过滤掉所有阈值小于0.2的目标框。</li>
+<li><b>dict</b>：字典的键为<code>int</code>类型，代表类别ID；值为<code>float</code>类型阈值。如<code>{0: 0.45, 2: 0.48, 7: 0.4}</code>，表示对ID为0的类别应用阈值0.45、ID为1的类别应用阈值0.48、ID为7的类别应用阈值0.4。</li>
+<li><b>None</b>：使用模型默认的配置。</li>
 </ul>
 </td>
-<td><code>float/dict/None</code></td>
-<td>None</td>
+<td><code>float|dict|None</code></td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>layout_nms</code></td>
-<td>是否使用NMS后处理，过滤重叠框；如果不指定，将默认使用PaddleOCR官方模型配置	<br/><b>可选示例:</b>
+<td>是否使用NMS后处理，过滤重叠框。
 <ul>
-<li><b>bool</b>True/False , 表示使用/不使用NMS进行检测框的后处理过滤重叠框</li>
-<li><b>None</b>不指定，将默认使用PaddleOCR官方模型配置</li>
+<li><b>bool</b>表示使用/不使用NMS进行检测框的后处理过滤重叠框。</li>
+<li><b>None</b>使用模型默认的配置。</li>
 </ul>
 </td>
-<td><code>bool/None</code></td>
+<td><code>bool|None</code></td>
 <td>None</td>
 </tr>
 <tr>
 <td><code>layout_unclip_ratio</code></td>
-<td>检测框的边长缩放倍数；如果不指定，将默认使用PaddleOCR官方模型配置	<br/><b>可选示例:</b>
+<td>检测框的边长缩放倍数。</b>
 <ul>
-<li><b>float</b>:大于0的浮点数，如 1.1 , 表示将模型输出的检测框中心不变，宽和高都扩张1.1倍</li>
-<li><b>list</b>:如 [1.2, 1.5] , 表示将模型输出的检测框中心不变，宽度扩张1.2倍，高度扩张1.5倍</li>
-<li><b>dict</b>:字典的key为int类型，代表cls_id, value为tuple类型，如{0: (1.1, 2.0)}, 表示将模型输出的第0类别检测框中心不变，宽度扩张1.1倍，高度扩张2.0倍</li>
-<li><b>None</b>:,不指定，将默认使用PaddleOCR官方模型配置</li>
+<li><b>float</b>：大于0的浮点数，如<code>1.1</code>，表示将模型输出的检测框中心不变，宽和高都扩张1.1倍。</li>
+<li><b>list</b>：如<code>[1.2, 1.5]</code>，表示将模型输出的检测框中心不变，宽度扩张1.2倍，高度扩张1.5倍。</li>
+<li><b>dict</b>：字典的键为<code>int</code>类型，代表类别ID；值为<code>tuple</code>类型，如<code>{0: (1.1, 2.0)}</code>，表示将模型输出的第0类别检测框中心不变，宽度扩张1.1倍，高度扩张2.0倍。</li>
+<li><b>None</b>：使用模型默认的配置。</li>
 </ul>
 </td>
-<td><code>float/list/dict/None</code></td>
+<td><code>float|list|dict|None</code></td>
 <td>None</td>
 </tr>
 <tr>
 <td><code>layout_merge_bboxes_mode</code></td>
-<td>模型输出的检测框的合并处理模式；如果不指定，将默认使用PaddleOCR官方模型配置<br/><b>可选示例:</b>
+<td>模型输出的检测框的合并处理模式。
 <ul>
-<li><b>large</b>: 设置为large时，表示在模型输出的检测框中，对于互相重叠包含的检测框，只保留外部最大的框，删除重叠的内部框。</li>
-<li><b>small</b>: 设置为small，表示在模型输出的检测框中，对于互相重叠包含的检测框，只保留内部被包含的小框，删除重叠的外部框。</li>
-<li><b>union</b>: 不进行框的过滤处理，内外框都保留</li>
-<li><b>dict</b>: 字典的key为int类型，代表cls_id, value为str类型, 如{0: "large", 2: "small"}, 表示对第0类别检测框使用large模式，对第2类别检测框使用small模式/li>
-<li><b>None</b>: 不指定，将默认使用PaddleOCR官方模型配置</li>
+<li><b>"large"</b>：设置为<code>"large"</code>，表示在模型输出的检测框中，对于互相重叠包含的检测框，只保留外部最大的框，删除重叠的内部框。</li>
+<li><b>"small"</b>：设置为<code>"small"</code>，表示在模型输出的检测框中，对于互相重叠包含的检测框，只保留内部被包含的小框，删除重叠的外部框。</li>
+<li><b>"union"</b>：不进行框的过滤处理，内外框都保留。</li>
+<li><b>dict</b>：字典的键为<code>int</code>类型，代表类别ID；值为<code>str</code>类型, 如<code>{0: "large", 2: "small"}</code>, 表示对第0类别检测框使用<code>large</code>模式，对第2类别检测框使用<code>small</code>。</li>
+<li><b>None</b>：使用模型默认的配置。</li>
 </ul>
 </td>
-<td><code>string/dict/None</code></td>
+<td><code>str|dict|None</code></td>
 <td>None</td>
 </tr>
 </tbody>
@@ -507,7 +506,7 @@ MKL-DNN 缓存容量。
 <ul>
 <li><b>Python Var</b>：如 <code>numpy.ndarray</code> 表示的图像数据</li>
 <li><b>str</b>：如图像文件或者PDF文件的本地路径：<code>/root/data/img.jpg</code>；<b>如URL链接</b>，如图像文件或PDF文件的网络URL：<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/img_rot180_demo.jpg">示例</a>；<b>如本地目录</b>，该目录下需包含待预测图像，如本地路径：<code>/root/data/</code>(当前不支持目录中包含PDF文件的预测，PDF文件需要指定到具体文件路径)</li>
-<li><b>List</b>：列表元素需为上述类型数据，如<code>[numpy.ndarray, numpy.ndarray]</code>，<code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>，<code>["/root/data1", "/root/data2"]</code></li>
+<li><b>list</b>：列表元素需为上述类型数据，如<code>[numpy.ndarray, numpy.ndarray]</code>，<code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>，<code>["/root/data1", "/root/data2"]</code></li>
 </ul>
 </td>
 <td><code>Python Var|str|list</code></td>
@@ -521,60 +520,31 @@ MKL-DNN 缓存容量。
 </tr>
 <tr>
 <td><code>threshold</code></td>
-<td>用于过滤掉低置信度预测结果的阈值；<br/><b>可选示例:</b>
-<ul>
-<li><b>float</b>:如 0.2， 表示过滤掉所有阈值小于0.2的目标框</li>
-<li><b>dict</b>:字典的key为int类型，代表cls_id，val为float类型阈值。如 {0: 0.45, 2: 0.48, 7: 0.4}，表示对cls_id为0的类别应用阈值0.45、cls_id为1的类别应用阈值0.48、cls_id为7的类别应用阈值0.4</li>
-<li><b>None</b>: 不指定，将默认使用模型实例化指定的 threshold 参数，如果实例化也没有指定，则默认使用PaddleOCR官方模型配置</li>
-</ul>
-</td>
-<td><code>float/dict/None</code></td>
+<td>参数含义与实例化参数基本相同。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td><code>float|dict|None</code></td>
 <td>None</td>
 </tr>
 <tr>
 <td><code>layout_nms</code></td>
-<td>是否使用NMS后处理，过滤重叠框；<br/><b>可选示例:</b>
-<ul>
-<li><b>bool</b>True/False , 表示使用/不使用NMS进行检测框的后处理过滤重叠框</li>
-<li><b>None</b>不指定，将默认使用模型实例化指定的 layout_nms 参数，如果实例化也没有指定，则默认使用PaddleOCR官方模型配置</li>
-</ul>
-</td>
-<td><code>bool/None</code></td>
+<td>参数含义与实例化参数基本相同。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</b>
+<td><code>bool|None</code></td>
 <td>None</td>
 </tr>
 <tr>
 <td><code>layout_unclip_ratio</code></td>
-<td>检测框的边长缩放倍数。<br/><b>可选示例:</b>
-<ul>
-<li><b>float</b>:大于0的浮点数，如 1.1 , 表示将模型输出的检测框中心不变，宽和高都扩张1.1倍</li>
-<li><b>list</b>:如 [1.2, 1.5] , 表示将模型输出的检测框中心不变，宽度扩张1.2倍，高度扩</li>
-<li><b>dict</b>:字典的key为int类型，代表cls_id, value为tuple类型，如{0: (1.1, 2.0)}, 表示将模型输出的第0类别检测框中心不变，宽度扩张1.1倍，高度扩张2.0倍</li>
-<li><b>None</b>:不指定，将默认使用模型实例化指定的 layout_unclip_ratio 参数，如果实例化也没有指定，则默认使用PaddleOCR官方模型配置</li>
-</ul>
-</td>
-<td><code>float/list/dict/None</code></td>
+<td>参数含义与实例化参数基本相同。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。
+<td><code>float|list|dict|None</code></td>
 <td>None</td>
 </tr>
 <tr>
 <td><code>layout_merge_bboxes_mode</code></td>
-<td>模型输出的检测框的合并处理模式；<br/><b>可选示例:</b>
-<ul>
-<li><b>large</b>: 设置为large时，表示在模型输出的检测框中，对于互相重叠包含的检测框，只保留外部最大的框，删除重叠的内部框。</li>
-<li><b>small</b>: 设置为small，表示在模型输出的检测框中，对于互相重叠包含的检测框，只保留内部被包含的小框，删除重叠的外部框。</li>
-<li><b>union</b>: 不进行框的过滤处理，内外框都保留</li>
-<li><b>dict</b>: 字典的key为int类型，代表cls_id, value为str类型, 如{0: "large", 2: "small"}, 表示对第0类别检测框使用large模式，对第2类别检测框使用small模式/li>
-<li><b>None</b>: 不指定，将默认使用模型实例化指定的 layout_merge_bboxes_mode 参数，如果模型实例化也没有指定，则默认使用PaddleOCR官方模型配置</li>
-</ul>
+<td>参数含义与实例化参数基本相同。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。
 </td>
-<td><code>string/dict/None</code></td>
+<td><code>str|dict|None</code></td>
 <td>None</td>
 </tr>
 </tbody>
 </table>
-
-<p><sup>①</sup> 当调用 <code>predict()</code> 时该参数为 <code>None</code> 时，将继承模型实例化 (<code>__init__</code>) 时对应参数的值；若实例化时也未显式指定，则使用框架默认：<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<code>threshold=0.5</code>，<code>layout_nms=False</code>，<code>layout_unclip_ratio=1.0</code>，<code>layout_merge_bboxes_mode="union"</code>。</p>
-
 
 * 对预测结果进行处理，每个样本的预测结果均为对应的Result对象，且支持打印、保存为图片、保存为`json`文件的操作:
 
