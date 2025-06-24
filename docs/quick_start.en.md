@@ -20,6 +20,8 @@ Installation for GPU: Since GPU installation requires specific CUDA versions, th
 python -m pip install paddlepaddle-gpu==3.0.0 -i https://www.paddlepaddle.org.cn/packages/stable/cu118/
 ```
 
+**Please note that PaddleOCR depends on PaddlePaddle version `3.0` or above.**
+
 #### 2. Install `paddleocr`
 
 ```bash
