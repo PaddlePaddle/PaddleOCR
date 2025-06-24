@@ -44,7 +44,7 @@ In addition to providing an outstanding model library, PaddleOCR 3.0 also offers
 
 ## 📣 Recent updates
 
-#### 🔥🔥**2025.06.19: Release of PaddleOCR 3.0.2, includes:**Add commentMore actions
+#### 🔥🔥 **2025.06.19: Release of PaddleOCR 3.0.2**, includes:
 
 - **New Features:**
 
