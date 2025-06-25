@@ -55,6 +55,8 @@ In this pipeline, you can choose the model to use based on the benchmark data be
 
 Before using the document understanding pipeline locally, ensure that you have completed the installation of the wheel package according to the [installation tutorial](../installation.en.md). After installation, you can experience it locally using the command line or Python integration.
 
+Please note: If you encounter issues such as the program becoming unresponsive, unexpected program termination, running out of memory resources, or extremely slow inference during execution, please try adjusting the configuration according to the documentation, such as disabling unnecessary features or using lighter-weight models.
+
 ### 2.1 Command Line Experience
 
 Experience the doc_understanding pipeline with just one command line:

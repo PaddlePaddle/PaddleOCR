@@ -21,7 +21,6 @@
 import abc
 import asyncio
 import base64
-import contextlib
 import io
 import json
 import re
@@ -120,17 +119,7 @@ class _EngineWrapper:
                 break
             func, args, kwargs, fut = item
             try:
-                # FIXME: PaddleX currently writes to stdout erroneously when
-                # downloading files, which conflicts with the MCP server’s use
-                # of stdout. As a temporary workaround, we use
-                # `redirect_stdout`, but since this redirection is global, it
-                # should not be used inside a worker thread—it may
-                # unintentionally interfere with the MCP server’s normal stdout
-                # behavior. Although we haven’t observed any issues in testing
-                # so far, this workaround should be removed once the PaddleX bug
-                # is fixed.
-                with contextlib.redirect_stdout(io.StringIO()):
-                    result = func(*args, **kwargs)
+                result = func(*args, **kwargs)
                 self._loop.call_soon_threadsafe(fut.set_result, result)
             except Exception as e:
                 self._loop.call_soon_threadsafe(fut.set_exception, e)
