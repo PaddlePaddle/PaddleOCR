@@ -3,7 +3,7 @@
 [![PaddleOCR](https://img.shields.io/badge/OCR-PaddleOCR-orange)](https://github.com/PaddlePaddle/PaddleOCR)
 [![FastMCP](https://img.shields.io/badge/Built%20with-FastMCP%20v2-blue)](https://gofastmcp.com)
 
-本项目提供一个轻量级的 [Model Context Protocol（MCP）](https://modelcontextprotocol.io/introduction) 服务器，旨在将 PaddleOCR 的强大能力集成到兼容的 MCP Host 中。
+本项目提供一个轻量级的 [Model Context Protocol（MCP）](https://modelcontextprotocol.io/introduction) 服务器，旨在将 PaddleOCR 的能力集成到各种 MCP host 中。
 
 ### 主要功能
 
@@ -12,7 +12,7 @@
     - **PP-StructureV3**：从图像或 PDF 文件中识别和提取文本块、标题、段落、图片、表格以及其他版面元素，将输入转换为 Markdown 文档。
 - **支持运行在如下工作模式**
     - **本地 Python 库**：在本机直接运行 PaddleOCR 产线。
-    - **星河社区服务**：调用飞桨星河社区提供的云端服务。
+    - **星河社区服务**：调用飞桨星河社区提供的云服务。
     - **自托管服务**：调用用户自行部署的 PaddleOCR 服务。
 
 ### 目录
@@ -20,7 +20,7 @@
 - [1. 安装](#1-安装)
 - [2. 快速开始](#2-快速开始)
 - [3. 配置说明](#3-配置说明)
-  - [3.1. MCP Host 配置](#31-mcp-host-配置)
+  - [3.1. MCP host 配置](#31-mcp-host-配置)
   - [3.2. 工作模式详解](#32-工作模式详解)
     - [模式一：托管在星河社区的服务](#模式一托管在星河社区的服务-aistudio)
     - [模式二：本地 Python 库](#模式二本地-python-库-local)
@@ -62,7 +62,7 @@ ImportError: failed to find libmagic.  Check your installation
 
 ## 2. 快速开始
 
-本节将以 **Claude for Desktop** 作为 MCP Host，并以 **星河社区服务** 工作模式为例，引导您完成快速配置。此模式无需在本地安装复杂的依赖，推荐新用户使用。请参考 [3. 配置说明](#3-配置说明) 了解其他工作模式的操作流程以及更多配置项。
+本节将以 **Claude for Desktop** 作为 MCP host，并以 **星河社区服务** 工作模式为例，引导您完成快速配置。此模式无需在本地安装复杂的依赖，推荐新用户使用。请参考 [3. 配置说明](#3-配置说明) 了解其他工作模式的操作流程以及更多配置项。
 
 1. **准备星河社区服务**
 
@@ -86,15 +86,15 @@ ImportError: failed to find libmagic.  Check your installation
     - 请勿泄漏您的 **访问令牌**。
     - 如果 `paddleocr_mcp` 无法在系统 `PATH` 中找到，请将 `command` 设置为可执行文件的绝对路径。
 
-4. **重启 MCP Host**
+4. **重启 MCP host**
 
     重启 Claude for Desktop。新的 `paddleocr-ocr` 工具现在应该可以在应用中使用了。
 
 ## 3. 配置说明
 
-### 3.1. MCP Host 配置
+### 3.1. MCP host 配置
 
-在 Host 的配置文件中（如 `claude_desktop_config.json`），您需要定义工具服务器的启动方式。关键字段如下：
+在 host 的配置文件中（如 `claude_desktop_config.json`），您需要定义工具服务器的启动方式。关键字段如下：
 
 - `command`：`paddleocr_mcp`（如果可执行文件可在 `PATH` 中找到）或绝对路径。
 - `args`：可配置命令行参数，如 `["--verbose"]`。详见 [4. 参数参考](#4-参数参考)。

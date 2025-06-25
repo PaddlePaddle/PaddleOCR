@@ -3,7 +3,7 @@
 [![PaddleOCR](https://img.shields.io/badge/OCR-PaddleOCR-orange)](https://github.com/PaddlePaddle/PaddleOCR)
 [![FastMCP](https://img.shields.io/badge/Built%20with-FastMCP%20v2-blue)](https://gofastmcp.com)
 
-This project provides a lightweight [Model Context Protocol (MCP)](https://modelcontextprotocol.io/introduction) server designed to integrate the powerful capabilities of PaddleOCR into a compatible MCP Host.
+This project provides a lightweight [Model Context Protocol (MCP)](https://modelcontextprotocol.io/introduction) server designed to integrate PaddleOCR capabilities into various MCP hosts.
 
 ### Key Features
 
@@ -12,7 +12,7 @@ This project provides a lightweight [Model Context Protocol (MCP)](https://model
     - **PP-StructureV3**: Recognizes and extracts text blocks, titles, paragraphs, images, tables, and other layout elements from an image or PDF file, converting the input into a Markdown document.
 - **Supports the following working modes**:
     - **Local**: Runs the PaddleOCR pipeline directly on your machine using the installed Python library.
-    - **AI Studio**: Calls cloud services provided by the Paddle AI Studio community.
+    - **AI Studio**: Calls cloud services provided by the PaddlePaddle AI Studio community.
     - **Self-hosted**: Calls a PaddleOCR service that you deploy yourself (serving).
 
 ### Table of Contents
@@ -62,7 +62,7 @@ In addition, some [working modes](#32-working-modes-explained) may require extra
 
 ## 2. Quick Start
 
-This section guides you through a quick setup using **Claude for Desktop** as the MCP Host and the **Local Python Library** mode. Please refer to [3. Configuration](#3-configuration) for other working modes and more configuration options.
+This section guides you through a quick setup using **Claude for Desktop** as the MCP host and the **Local Python Library** mode. Please refer to [3. Configuration](#3-configuration) for other working modes and more configuration options.
 
 1. **Prepare the Local Python Library PaddleOCR**
 
@@ -90,7 +90,7 @@ This section guides you through a quick setup using **Claude for Desktop** as th
 
 ### 3.1. MCP Host Configuration
 
-In the Host's configuration file (e.g., `claude_desktop_config.json`), you need to define how to start the tool server. Key fields are:
+In the host's configuration file (e.g., `claude_desktop_config.json`), you need to define how to start the tool server. Key fields are:
 
 - `command`: `paddleocr_mcp` (if the executable is in your `PATH`) or an absolute path.
 - `args`: Configurable command-line arguments, e.g., `["--verbose"]`. See [4. Parameter Reference](#4-parameter-reference).
@@ -101,12 +101,12 @@ In the Host's configuration file (e.g., `claude_desktop_config.json`), you need 
 You can configure the MCP server to run in different modes based on your needs.
 
 #### Mode 1: AI Studio Service (`aistudio`)
-This mode calls services from the [Paddle AI Studio community](https://aistudio.baidu.com/pipeline/mine).
+This mode calls services from the [PaddlePaddle AI Studio community](https://aistudio.baidu.com/pipeline/mine).
 
 - **Use Case**: Ideal for quickly trying out features, validating solutions, and for no-code development scenarios.
 - **Procedure**:
 
-  1. Visit the [Paddle AI Studio community](https://aistudio.baidu.com/pipeline/mine) and log in. **Please note that AI Studio currently requires users to bind a mainland China phone number.** If you do not meet this requirement, please consider using an alternative working mode.
+  1. Visit the [PaddlePaddle AI Studio community](https://aistudio.baidu.com/pipeline/mine) and log in. **Please note that AI Studio currently requires users to bind a mainland China phone number.** If you do not meet this requirement, please consider using an alternative working mode.
   2. In the "PaddleX Pipeline" section under "More" on the left, navigate to [Create Pipeline] - [OCR] - [General OCR] - [Deploy Directly] - [Text Recognition Module, select PP-OCRv5_server_rec] - [Start Deployment].
   3. Once deployed, obtain your **Service Base URL** (e.g., `https://xxxxxx.aistudio-hub.baidu.com`).
   4. Get your **Access Token** from [this page](https://aistudio.baidu.com/index/accessToken).
