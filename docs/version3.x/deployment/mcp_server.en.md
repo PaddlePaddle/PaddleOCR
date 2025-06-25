@@ -12,7 +12,7 @@ This project provides a lightweight [Model Context Protocol (MCP)](https://model
     - **PP-StructureV3**: Recognizes and extracts text blocks, titles, paragraphs, images, tables, and other layout elements from an image or PDF file, converting the input into a Markdown document.
 - **Supports the following working modes**:
     - **Local**: Runs the PaddleOCR pipeline directly on your machine using the installed Python library.
-    - **AI Studio**: Calls cloud services provided by the Paddle AI Studio community.
+    - **AI Studio**: Calls cloud services provided by the PaddlePaddle AI Studio community.
     - **Self-hosted**: Calls a PaddleOCR service that you deploy yourself (serving).
 
 ### Table of Contents
@@ -101,12 +101,12 @@ In the host's configuration file (e.g., `claude_desktop_config.json`), you need 
 You can configure the MCP server to run in different modes based on your needs.
 
 #### Mode 1: AI Studio Service (`aistudio`)
-This mode calls services from the [Paddle AI Studio community](https://aistudio.baidu.com/pipeline/mine).
+This mode calls services from the [PaddlePaddle AI Studio community](https://aistudio.baidu.com/pipeline/mine).
 
 - **Use Case**: Ideal for quickly trying out features, validating solutions, and for no-code development scenarios.
 - **Procedure**:
 
-  1. Visit the [Paddle AI Studio community](https://aistudio.baidu.com/pipeline/mine) and log in. **Please note that AI Studio currently requires users to bind a mainland China phone number.** If you do not meet this requirement, please consider using an alternative working mode.
+  1. Visit the [PaddlePaddle AI Studio community](https://aistudio.baidu.com/pipeline/mine) and log in. **Please note that AI Studio currently requires users to bind a mainland China phone number.** If you do not meet this requirement, please consider using an alternative working mode.
   2. In the "PaddleX Pipeline" section under "More" on the left, navigate to [Create Pipeline] - [OCR] - [General OCR] - [Deploy Directly] - [Text Recognition Module, select PP-OCRv5_server_rec] - [Start Deployment].
   3. Once deployed, obtain your **Service Base URL** (e.g., `https://xxxxxx.aistudio-hub.baidu.com`).
   4. Get your **Access Token** from [this page](https://aistudio.baidu.com/index/accessToken).
