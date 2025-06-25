@@ -4,7 +4,7 @@ comments: true
 # PP-ChatOCRv4-doc Pipeline Usage Tutorial
 
 ## 1. Introduction to PP-ChatOCRv4-doc Pipeline
-PP-ChatOCRv4-doc is a unique document and image intelligent analysis solution from PaddlePaddle, combining LLM, MLLM, and OCR technologies to address complex document information extraction challenges such as layout analysis, rare characters, multi-page PDFs, tables, and seal recognition. Integrated with ERNIE Bot, it fuses massive data and knowledge, achieving high accuracy and wide applicability. This pipeline also provides flexible service deployment options, supporting deployment on various hardware. Furthermore, it offers custom development capabilities, allowing you to train and fine-tune models on your own datasets, with seamless integration of trained models.
+PP-ChatOCRv4-doc is a unique document and image intelligent analysis solution from PaddlePaddle, combining LLM, MLLM, and OCR technologies to address complex document information extraction challenges such as layout analysis, rare characters, multi-page PDFs, tables, and seal text recognition. Integrated with ERNIE Bot, it fuses massive data and knowledge, achieving high accuracy and wide applicability. This pipeline also provides flexible service deployment options, supporting deployment on various hardware. Furthermore, it offers custom development capabilities, allowing you to train and fine-tune models on your own datasets, with seamless integration of trained models.
 
 <img src="https://github.com/user-attachments/assets/0870cdec-1909-4247-9004-d9efb4ab9635">
 
@@ -1011,7 +1011,7 @@ The name of the document orientation classification model. If not set, the defau
 </tr>
 <tr>
 <td><code>use_seal_recognition</code></td>
-<td>Whether to load and use the seal recognition sub-pipeline. If not set, the parameter's value initialized during pipeline setup will be used, defaulting to <code>True</code>.</td>
+<td>Whether to load and use the seal text recognition sub-pipeline. If not set, the parameter's value initialized during pipeline setup will be used, defaulting to <code>True</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
@@ -1460,7 +1460,7 @@ The relevant parameter descriptions are as follows:
 </tr>
 <tr>
 <td><code>use_seal_recognition</code></td>
-<td>Whether to load and use the seal recognition sub-pipeline. If set to<code>None</code>, the value initialized by the pipeline for this parameter will be used by default (initialized to <code>True</code>).</td>
+<td>Whether to load and use the seal text recognition sub-pipeline. If set to<code>None</code>, the value initialized by the pipeline for this parameter will be used by default (initialized to <code>True</code>).</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -1790,7 +1790,7 @@ MKL-DNN cache capacity.
 </tr>
 <tr>
 <td><code>use_seal_recognition</code></td>
-<td>Whether to use the seal recognition sub-pipeline during inference.</td>
+<td>Whether to use the seal text recognition sub-pipeline during inference.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -2000,7 +2000,7 @@ for res in visual_predict_res:
     - `page_index`: `(Union[int, None])` If the input is a PDF file, it indicates the current page number of the PDF; otherwise, it is `None`.
     - `model_settings`: `(Dict[str, bool])` Model parameters required to configure the pipeline.
         - `use_doc_preprocessor`: `(bool)` Controls whether to enable the document preprocessor sub-pipeline.
-        - `use_seal_recognition`: `(bool)` Controls whether to enable the seal recognition sub-pipeline.
+        - `use_seal_recognition`: `(bool)` Controls whether to enable the seal text recognition sub-pipeline.
         - `use_table_recognition`: `(bool)` Controls whether to enable the table recognition sub-pipeline.
         - `use_formula_recognition`: `(bool)` Controls whether to enable the formula recognition sub-pipeline.
     - `parsing_res_list`: `(List[Dict])` List of parsing results, where each element is a dictionary. The list order is the reading order after parsing.
@@ -2029,15 +2029,15 @@ for res in visual_predict_res:
         - `rec_formula`: `(str)` Formula recognition result.
         - `rec_polys`: `(numpy.ndarray)` Formula detection box, shape (4, 2), dtype int16.
         - `formula_region_id`: `(int)` Region number where the formula is located.
-    - `seal_res_list`: `(List[Dict[str, Union[numpy.ndarray, List[float], str]]])` List of seal recognition results, each element is a dictionary.
+    - `seal_res_list`: `(List[Dict[str, Union[numpy.ndarray, List[float], str]]])` List of seal text recognition results, each element is a dictionary.
         - `input_path`: `(str)` Input path of the seal image.
-        - `model_settings`: `(Dict)` Model configuration parameters for the seal recognition sub-pipeline.
+        - `model_settings`: `(Dict)` Model configuration parameters for the seal text recognition sub-pipeline.
         - `dt_polys`: `(List[numpy.ndarray])` List of seal detection boxes, format same as `dt_polys`.
         - `text_det_params`: `(Dict[str, Dict[str, int, float]])` Configuration parameters for the seal detection module, specific parameter meanings are the same as above.
         - `text_type`: `(str)` Type of seal detection, currently fixed to "seal".
-        - `text_rec_score_thresh`: `(float)` Filtering threshold for seal recognition results.
-        - `rec_texts`: `(List[str])` List of seal recognition results, containing only text with confidence exceeding `text_rec_score_thresh`.
-        - `rec_scores`: `(List[float])` List of seal recognition confidence scores, filtered by `text_rec_score_thresh`.
+        - `text_rec_score_thresh`: `(float)` Filtering threshold for seal text recognition results.
+        - `rec_texts`: `(List[str])` List of seal text recognition results, containing only text with confidence exceeding `text_rec_score_thresh`.
+        - `rec_scores`: `(List[float])` List of seal text recognition confidence scores, filtered by `text_rec_score_thresh`.
         - `rec_polys`: `(List[numpy.ndarray])` List of seal detection boxes filtered by confidence, format same as `dt_polys`.
         - `rec_boxes`: `(numpy.ndarray)` Array of rectangular bounding boxes for detections, shape (n, 4), dtype int16. Each row represents a rectangle.
     - `table_res_list`: `(List[Dict[str, Union[numpy.ndarray, List[float], str]]])` List of table recognition results, each element is a dictionary.

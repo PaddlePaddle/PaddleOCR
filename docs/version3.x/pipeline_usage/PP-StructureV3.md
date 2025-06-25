@@ -14,7 +14,7 @@ comments: true
 - [通用OCR子产线](./OCR.md)
 - [文档图像预处理子产线](./doc_preprocessor.md) （可选）
 - [表格识别子产线](./table_recognition_v2.md) （可选）
-- [印章识别子产线](./seal_recognition.md) （可选）
+- [印章文本识别子产线](./seal_recognition.md) （可选）
 - [公式识别子产线](./formula_recognition.md) （可选）
 
 在本产线中，您可以根据下方的基准测试数据选择使用的模型。
@@ -1464,7 +1464,7 @@ paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --device gpu
 </tr>
 <tr>
 <td><code>use_seal_recognition</code></td>
-<td>是否加载并使用印章识别子产线。如果不设置，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用印章文本识别子产线。如果不设置，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
@@ -2086,7 +2086,7 @@ for item in markdown_images:
 </tr>
 <tr>
 <td><code>use_seal_recognition</code></td>
-<td>是否加载并使用印章识别子产线。如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用印章文本识别子产线。如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -2226,7 +2226,7 @@ MKL-DNN 缓存容量。
 </tr>
 <tr>
 <td><code>use_seal_recognition</code></td>
-<td>是否在推理时使用印章识别子产线。</td>
+<td>是否在推理时使用印章文本识别子产线。</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -2492,7 +2492,7 @@ MKL-DNN 缓存容量。
     - `model_settings`: `(Dict[str, bool])` 配置产线所需的模型参数
 
         - `use_doc_preprocessor`: `(bool)` 控制是否启用文档预处理子产线
-        - `use_seal_recognition`: `(bool)` 控制是否启用印章识别子产线
+        - `use_seal_recognition`: `(bool)` 控制是否启用印章文本识别子产线
         - `use_table_recognition`: `(bool)` 控制是否启用表格识别子产线
         - `use_formula_recognition`: `(bool)` 控制是否启用公式识别子产线
 
@@ -2544,16 +2544,16 @@ MKL-DNN 缓存容量。
         - `rec_polys`: `(numpy.ndarray)` 公式检测框，shape为(4, 2)，dtype为int16
         - `formula_region_id`: `(int)` 公式所在的区域编号
 
-    - `seal_res_list`: `(List[Dict[str, Union[numpy.ndarray, List[float], str]]])` 印章识别结果列表，每个元素为一个dict
+    - `seal_res_list`: `(List[Dict[str, Union[numpy.ndarray, List[float], str]]])` 印章文本识别结果列表，每个元素为一个dict
         - `input_path`: `(str)` 印章图像的输入路径
         - `page_index`: `None`，此处的输入为`numpy.ndarray`，所以值为`None`
-        - `model_settings`: `(Dict)` 印章识别子产线的模型配置参数
+        - `model_settings`: `(Dict)` 印章文本识别子产线的模型配置参数
         - `dt_polys`: `(List[numpy.ndarray])` 印章检测框列表，格式同`dt_polys`
         - `text_det_params`: `(Dict[str, Dict[str, int, float]])` 印章检测模块的配置参数, 具体参数含义同上
         - `text_type`: `(str)` 印章检测的类型，当前固定为"seal"
-        - `text_rec_score_thresh`: `(float)` 印章识别结果的过滤阈值
-        - `rec_texts`: `(List[str])` 印章识别结果列表，仅包含置信度超过`text_rec_score_thresh`的文本
-        - `rec_scores`: `(List[float])` 印章识别的置信度列表，已按`text_rec_score_thresh`过滤
+        - `text_rec_score_thresh`: `(float)` 印章文本识别结果的过滤阈值
+        - `rec_texts`: `(List[str])` 印章文本识别结果列表，仅包含置信度超过`text_rec_score_thresh`的文本
+        - `rec_scores`: `(List[float])` 印章文本识别的置信度列表，已按`text_rec_score_thresh`过滤
         - `rec_polys`: `(List[numpy.ndarray])` 经过置信度过滤的印章检测框列表，格式同`dt_polys`
         - `rec_boxes`: `(numpy.ndarray)` 检测框的矩形边界框数组，shape为(n, 4)，dtype为int16。每一行表示一个矩形
 

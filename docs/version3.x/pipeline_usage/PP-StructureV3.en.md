@@ -14,7 +14,7 @@ Layout analysis is a technique used to extract structured information from docum
 - [General OCR Subline](./OCR.en.md)
 - [Document Image Preprocessing Subline](./doc_preprocessor.en.md) （Optional）
 - [Table Recognition Subline ](./table_recognition_v2.en.md) （Optional）
-- [Seal Recognition Subline](./seal_recognition.en.md) （Optional）
+- [Seal Text Recognition Subline](./seal_recognition.en.md) （Optional）
 - [Formula Recognition Subline](./formula_recognition.en.md) （Optional）
 
 In this pipeline, you can choose the model to use based on the benchmark data below.
@@ -1376,7 +1376,7 @@ any float > <code>0</code>. If not set, the default is <code>0.6</code>.
 </tr>
 <tr>
 <td><code>use_seal_recognition</code></td>
-<td>Whether to load and use seal recognition subpipeline. If not set, the default is <code>True</code>.</td>
+<td>Whether to load and use seal text recognition subpipeline. If not set, the default is <code>True</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
@@ -2007,7 +2007,7 @@ The above Python script performs the following steps:
 </tr>
 <tr>
 <td><code>use_seal_recognition</code></td>
-<td>Whether to enable seal recognition subpipeline. If not set, the default is <code>True</code>.</td>
+<td>Whether to enable seal text recognition subpipeline. If not set, the default is <code>True</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
@@ -2146,7 +2146,7 @@ MKL-DNN cache capacity.
 </tr>
 <tr>
 <td><code>use_seal_recognition</code></td>
-<td>Whether to use the seal recognition sub-pipeline during inference.</td>
+<td>Whether to use the seal text recognition sub-pipeline during inference.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -2436,7 +2436,7 @@ MKL-DNN cache capacity.
     - `model_settings`: `(Dict[str, bool])` Model parameters configured for the pipeline
 
         - `use_doc_preprocessor`: `(bool)` Whether to enable document preprocessor sub-pipeline
-        - `use_seal_recognition`: `(bool)` Whether to enable seal recognition sub-pipeline
+        - `use_seal_recognition`: `(bool)` Whether to enable seal text recognition sub-pipeline
         - `use_table_recognition`: `(bool)` Whether to enable table recognition sub-pipeline
         - `use_formula_recognition`: `(bool)` Whether to enable formula recognition sub-pipeline
 
@@ -2489,10 +2489,10 @@ MKL-DNN cache capacity.
         - `rec_polys`: `(numpy.ndarray)` Bounding box for the formula, shape (4, 2), dtype int16
         - `formula_region_id`: `(int)` Region ID of the formula
 
-    - `seal_res_list`: `(List[Dict[str, Union[numpy.ndarray, List[float], str]]])` List of seal recognition results
+    - `seal_res_list`: `(List[Dict[str, Union[numpy.ndarray, List[float], str]]])` List of seal text recognition results
         - `input_path`: `(str)` Input path for the seal image
         - `page_index`: `None` since input is `numpy.ndarray`
-        - `model_settings`: `(Dict)` Model configuration for seal recognition
+        - `model_settings`: `(Dict)` Model configuration for seal text recognition
         - `dt_polys`: `(List[numpy.ndarray])` Seal detection boxes, same format as `dt_polys`
         - `text_det_params`: `(Dict[str, Dict[str, int, float]])` Detection parameters, same as above
         - `text_type`: `(str)` Detection type, currently fixed as "seal"
