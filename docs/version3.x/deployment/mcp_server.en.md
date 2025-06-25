@@ -3,7 +3,7 @@
 [![PaddleOCR](https://img.shields.io/badge/OCR-PaddleOCR-orange)](https://github.com/PaddlePaddle/PaddleOCR)
 [![FastMCP](https://img.shields.io/badge/Built%20with-FastMCP%20v2-blue)](https://gofastmcp.com)
 
-This project provides a lightweight [Model Context Protocol (MCP)](https://modelcontextprotocol.io/introduction) server designed to integrate PaddleOCR capabilities into various MCP hosts.
+This project provides a lightweight [Model Context Protocol (MCP)](https://modelcontextprotocol.io/introduction) server designed to integrate PaddleOCR capabilities into various LLM applications.
 
 ### Key Features
 
@@ -90,7 +90,7 @@ This section guides you through a quick setup using **Claude for Desktop** as th
 
 ### 3.1. MCP Host Configuration
 
-In the host's configuration file (e.g., `claude_desktop_config.json`), you need to define how to start the tool server. Key fields are:
+In the host's configuration file (e.g., `claude_desktop_config.json`), you need to define how to start the MCP server. Key fields are:
 
 - `command`: `paddleocr_mcp` (if the executable is in your `PATH`) or an absolute path.
 - `args`: Configurable command-line arguments, e.g., `["--verbose"]`. See [4. Parameter Reference](#4-parameter-reference).
