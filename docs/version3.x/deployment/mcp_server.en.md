@@ -197,9 +197,34 @@ Below are complete Claude for Desktop configuration examples for different worki
 **Note**:
 
 - `PADDLEOCR_MCP_PIPELINE_CONFIG` is optional. If not set, the default pipeline configuration is used. To adjust settings, such as changing models, refer to the [PaddleOCR and PaddleX documentation](../paddleocr_and_paddlex.en.md), export a pipeline configuration file, and set `PADDLEOCR_MCP_PIPELINE_CONFIG` to its absolute path.
-- **CPU Inference Performance Tip**:
-  - **OCR Pipeline**: If you are running in a CPU environment, it is recommended to switch to the `mobile` series models for better performance. You can change the detection and recognition models in your pipeline configuration file to `text_detection_model_name="PP-OCRv5_mobile_det"` and `text_recognition_model_name="PP-OCRv5_mobile_rec"` respectively.
-  - **PP-StructureV3 Pipeline**: Due to its model complexity, using this pipeline in an environment without a GPU is not recommended.
+- **CPU Inference Performance Tips:**
+  - **OCR Pipeline:** The default models used are relatively complex. If you want to improve inference speed and reduce memory usage, it is recommended to switch to the `mobile` series models. For example, you can modify the detection and recognition models in the pipeline configuration file to `PP-OCRv5_mobile_det` and `PP-OCRv5_mobile_rec`, respectively.
+  - **PP-StructureV3 Pipeline:** Using the default configuration requires more computational resources. If you want to improve inference speed and reduce memory consumption, please consider the following suggestions:
+    - Disable features you do not need. For example, set `use_formula_recognition` to `False` to disable formula recognition.
+    - Use lightweight models, such as replacing the OCR model with a `mobile` version, or using a lightweight formula recognition model like PP-FormulaNet-S.
+
+    The following example code can be used to obtain a pipeline configuration file, in which most optional features of the PP-StructureV3 pipeline are disabled, while some key models are replaced with lightweight versions.
+
+    ```python
+    from paddleocr import PPStructureV3
+
+    pipeline = PPStructureV3(
+        use_doc_orientation_classify=False, # Disable document image orientation classification
+        use_doc_unwarping=False,            # Disable text image unwarping
+        use_textline_orientation=False,     # Disable text line orientation classification
+        use_formula_recognition=False,      # Disable formula recognition
+        use_seal_recognition=False,         # Disable seal text recognition
+        use_table_recognition=False,        # Disable table recognition
+        use_chart_recognition=False,        # Disable chart parsing
+        # Use lightweight models
+        text_detection_model_name="PP-OCRv5_mobile_det",
+        text_recognition_model_name="PP-OCRv5_mobile_rec",
+        layout_detection_model_name="PP-DocLayout-S",
+    )
+
+    # The configuration file is saved to `PP-StructureV3.yaml`
+    pipeline.export_paddlex_config_to_yaml("PP-StructureV3.yaml")
+    ```
 
 ### 5.3 Self-hosted Service Configuration
 
