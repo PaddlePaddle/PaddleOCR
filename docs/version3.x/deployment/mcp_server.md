@@ -123,7 +123,7 @@ ImportError: failed to find libmagic.  Check your installation
 #### 模式三：自托管服务 (`self_hosted`)
 此模式调用您自行部署的 PaddleOCR 推理服务。
 
-- **适用场景**：具备服务化部署优势及高度灵活性，适用于需要自定义服务配置的场景。
+- **适用场景**：具备服务化部署优势及高度灵活性。适用于需要自定义服务配置的场景，同时也适用于对数据隐私有严格要求的场景。
 - **操作流程**：
 
     1. 参考 [PaddleOCR 安装文档](../installation.md) 安装飞桨框架和 PaddleOCR。

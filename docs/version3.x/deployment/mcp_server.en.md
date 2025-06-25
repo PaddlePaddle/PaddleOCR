@@ -122,7 +122,7 @@ This mode runs the model directly on your local machine and has certain requirem
 #### Mode 3: Self-hosted Service (`self_hosted`)
 This mode calls a PaddleOCR inference service that you have deployed yourself. This corresponds to the **Serving** solutions provided by PaddleX.
 
-- **Use Case**: Offers the advantages of serving and high flexibility, making it well-suited for scenarios requiring custom service configurations.
+- **Use Case**: Offers the advantages of serving and high flexibility. It is well-suited for scenarios requiring custom service configurations, as well as those with strict data privacy requirements.
 - **Procedure**:
 
     1. Refer to the [PaddleOCR Installation Guide](../installation.en.md) to install the PaddlePaddle framework and PaddleOCR.
