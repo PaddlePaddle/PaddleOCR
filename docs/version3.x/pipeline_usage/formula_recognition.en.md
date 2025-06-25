@@ -289,7 +289,7 @@ In this pipeline, you can choose the model you want to use based on the benchmar
 <td>43.50</td>
 <td>1311.84 / 1311.84</td>
 <td>- / 8288.07</td>
-<td>1.53 G</td>
+<td>1530</td>
 <td>UniMERNet is a formula recognition model developed by Shanghai AI Lab. It uses Donut Swin as the encoder and MBartDecoder as the decoder. The model is trained on a dataset of one million samples, including simple formulas, complex formulas, scanned formulas, and handwritten formulas, significantly improving the recognition accuracy of real-world formulas.</td>
 </tr>
 <td>PP-FormulaNet-S</td>
@@ -369,7 +369,7 @@ In this pipeline, you can choose the model you want to use based on the benchmar
                   <ul>
                       <li>GPU: NVIDIA Tesla T4</li>
                       <li>CPU: Intel Xeon Gold 6271C @ 2.60GHz</li>
-                      <li>Other Environments: Ubuntu 20.04 / cuDNN 8.9 / TensorRT 8.6.1.6 / CUDA 11.8</li>
+                      <li>Other Environments: Ubuntu 20.04 / CUDA 11.8 / cuDNN 8.9 / TensorRT 8.6.1.6</li>
                   </ul>
               </li>
           </ul>
