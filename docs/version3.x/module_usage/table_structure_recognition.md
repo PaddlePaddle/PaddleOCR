@@ -16,7 +16,7 @@ comments: true
 <th>精度（%）</th>
 <th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
 <th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>模型存储大小 (M)</th>
+<th>模型存储大小（MB）</th>
 <th>介绍</th>
 </tr>
 <tr>
@@ -44,7 +44,7 @@ comments: true
 <td rowspan="2">69.65</td>
 <td rowspan="2">85.92 / 85.92</td>
 <td rowspan="2">- / 501.66</td>
-<td rowspan="2">351M</td>
+<td rowspan="2">351</td>
 <td rowspan="2">SLANeXt 系列是百度飞桨视觉团队自研的新一代表格结构识别模型。相较于 SLANet 和 SLANet_plus，SLANeXt 专注于对表格结构进行识别，并且对有线表格(wired)和无线表格(wireless)的识别分别训练了专用的权重，对各类型表格的识别能力都得到了明显提高，特别是对有线表格的识别能力得到了大幅提升。</td>
 </tr>
 <tr>

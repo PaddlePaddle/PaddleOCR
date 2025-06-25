@@ -27,7 +27,7 @@ The Table Cell Detection Module is a key component of the table recognition task
 <td rowspan="2">82.7</td>
 <td rowspan="2">33.47 / 27.02</td>
 <td rowspan="2">402.55 / 256.56</td>
-<td rowspan="2">124M</td>
+<td rowspan="2">124</td>
 <td rowspan="2">RT-DETR is a real-time end-to-end object detection model. The Baidu PaddlePaddle Vision team pre-trained on a self-built table cell detection dataset based on the RT-DETR-L as the base model, achieving good performance in detecting both wired and wireless table cells.</td>
 </tr>
 <tr>

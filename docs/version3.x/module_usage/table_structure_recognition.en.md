@@ -44,7 +44,7 @@ Table structure recognition is an important component of table recognition syste
 <td rowspan="2">69.65</td>
 <td rowspan="2">85.92 / 85.92</td>
 <td rowspan="2">- / 501.66</td>
-<td rowspan="2">351M</td>
+<td rowspan="2">351</td>
 <td rowspan="2">The SLANeXt series is a new generation of table structure recognition models independently developed by the Baidu PaddlePaddle Vision Team. Compared to SLANet and SLANet_plus, SLANeXt focuses on table structure recognition, and trains dedicated weights for wired and wireless tables separately. The recognition ability for all types of tables has been significantly improved, especially for wired tables.</td>
 </tr>
 <tr>

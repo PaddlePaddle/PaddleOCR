@@ -85,7 +85,7 @@ In this pipeline, you can select models based on the benchmark test data provide
 <th>Top-1 Accuracy (%)</th>
 <th>GPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
 <th>CPU Inference Time (ms)</th>
-<th>Model Size (M)</th>
+<th>Model Storage Size (MB)</th>
 <th>Description</th>
 </tr>
 </thead>
@@ -288,7 +288,7 @@ PP-OCRv5_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model
 <th>Recognition Avg Accuracy(%)</th>
 <th>GPU Inference Time (ms)<br/>[Standard Mode / High Performance Mode]</th>
 <th>CPU Inference Time (ms)<br/>[Standard Mode / High Performance Mode]</th>
-<th>Model Size (M)</th>
+<th>Model Storage Size (MB)</th>
 <th>Description</th>
 </tr>
 <tr>
@@ -337,7 +337,7 @@ PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model
 <th>Recognition Avg Accuracy(%)</th>
 <th>GPU Inference Time (ms)<br/>[Standard Mode / High Performance Mode]</th>
 <th>CPU Inference Time (ms)<br/>[Standard Mode / High Performance Mode]</th>
-<th>Model Size (M)</th>
+<th>Model Storage Size (MB)</th>
 <th>Description</th>
 </tr>
 <tr>
@@ -359,7 +359,7 @@ SVTRv2 is a server-side text recognition model developed by the OpenOCR team fro
 <th>Recognition Avg Accuracy(%)</th>
 <th>GPU Inference Time (ms)<br/>[Standard Mode / High Performance Mode]</th>
 <th>CPU Inference Time (ms)<br/>[Standard Mode / High Performance Mode]</th>
-<th>Model Size (M)</th>
+<th>Model Storage Size (MB)</th>
 <th>Description</th>
 </tr>
 <tr>
@@ -380,7 +380,7 @@ SVTRv2 is a server-side text recognition model developed by the OpenOCR team fro
 <th>Recognition Avg Accuracy(%)</th>
 <th>GPU Inference Time (ms)<br/>[Standard Mode / High Performance Mode]</th>
 <th>CPU Inference Time (ms)<br/>[Standard Mode / High Performance Mode]</th>
-<th>Model Size (M)</th>
+<th>Model Storage Size (MB)</th>
 <th>Description</th>
 </tr>
 <tr>
@@ -413,7 +413,7 @@ en_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-mo
 <th>Recognition Avg Accuracy(%)</th>
 <th>GPU Inference Time (ms)<br/>[Standard Mode / High Performance Mode]</th>
 <th>CPU Inference Time (ms)<br/>[Standard Mode / High Performance Mode]</th>
-<th>Model Size (M)</th>
+<th>Model Storage Size (MB)</th>
 <th>Description</th>
 </tr>
 <tr>

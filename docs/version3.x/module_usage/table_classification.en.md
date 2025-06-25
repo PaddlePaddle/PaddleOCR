@@ -26,7 +26,7 @@ The Table Classification Module is a key component in computer vision systems, r
 <td>94.2</td>
 <td>2.62 / 0.60</td>
 <td>3.17 / 1.14</td>
-<td>6.6M</td>
+<td>6.6</td>
 </tr>
 </table>
 

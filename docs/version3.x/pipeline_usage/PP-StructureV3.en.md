@@ -28,7 +28,7 @@ In this pipeline, you can choose the model to use based on the benchmark data be
 <th>Top-1 Acc (%)</th>
 <th>GPU Inference Time (ms)<br/>[Standard Mode / High Performance Mode]</th>
 <th>CPU Inference Time (ms)<br/>[Standard Mode / High Performance Mode]</th>
-<th>Model Size (M)</th>
+<th>Model Storage Size (MB)</th>
 <th>Description</th>
 </tr>
 </thead>
@@ -138,7 +138,7 @@ In this pipeline, you can choose the model to use based on the benchmark data be
 <th>mAP(0.5) (%)</th>
 <th>GPU Inference Time (ms)<br/>[Standard Mode / High Performance Mode]</th>
 <th>CPU Inference Time (ms)<br/>[Standard Mode / High Performance Mode]</th>
-<th>Model Size (M)</th>
+<th>Model Storage Size (MB)</th>
 <th>Description</th>
 </tr>
 </thead>
@@ -322,7 +322,7 @@ In this pipeline, you can choose the model to use based on the benchmark data be
 <th>mAP (%)</th>
 <th>GPU Inference Time (ms)<br/>[Standard Mode / High Performance Mode]</th>
 <th>CPU Inference Time (ms)<br/>[Standard Mode / High Performance Mode]</th>
-<th>Model Size (M)</th>
+<th>Model Storage Size (MB)</th>
 <th>Description</th>
 </tr>
 <tr>
@@ -331,7 +331,7 @@ In this pipeline, you can choose the model to use based on the benchmark data be
 <td rowspan="2">69.65</td>
 <td rowspan="2">85.92 / 85.92</td>
 <td rowspan="2">- / 501.66</td>
-<td rowspan="2">351M</td>
+<td rowspan="2">351</td>
 <td rowspan="2">The SLANeXt series is a new generation of table structure recognition models independently developed by the Baidu PaddlePaddle Vision Team. Compared to SLANet and SLANet_plus, SLANeXt focuses on table structure recognition, and trains dedicated weights for wired and wireless tables separately. The recognition ability for all types of tables has been significantly improved, especially for wired tables.</td>
 </tr>
 <tr>
@@ -347,7 +347,7 @@ In this pipeline, you can choose the model to use based on the benchmark data be
 <th>Top1 Acc (%)</th>
 <th>GPU Inference Time (ms)<br/>[Regular Mode / High-Performance Mode]</th>
 <th>CPU Inference Time (ms)<br/>[Regular Mode / High-Performance Mode]</th>
-<th>Model Size (M)</th>
+<th>Model Storage Size (MB)</th>
 </tr>
 <tr>
 <td>PP-LCNet_x1_0_table_cls</td>
@@ -355,7 +355,7 @@ In this pipeline, you can choose the model to use based on the benchmark data be
 <td>94.2</td>
 <td>2.62 / 0.60</td>
 <td>3.17 / 1.14</td>
-<td>6.6M</td>
+<td>6.6</td>
 </tr>
 </table>
 <p><b>Table Cell Detection Module Models:</b></p>
@@ -365,7 +365,7 @@ In this pipeline, you can choose the model to use based on the benchmark data be
 <th>mAP (%)</th>
 <th>GPU Inference Time (ms)<br/>[Regular Mode / High-Performance Mode]</th>
 <th>CPU Inference Time (ms)<br/>[Regular Mode / High-Performance Mode]</th>
-<th>Model Size (M)</th>
+<th>Model Storage Size (MB)</th>
 <th>Description</th>
 </tr>
 <tr>
@@ -374,7 +374,7 @@ In this pipeline, you can choose the model to use based on the benchmark data be
 <td rowspan="2">82.7</td>
 <td rowspan="2">33.47 / 27.02</td>
 <td rowspan="2">402.55 / 256.56</td>
-<td rowspan="2">124M</td>
+<td rowspan="2">124</td>
 <td rowspan="2">RT-DETR is the first real-time end-to-end object detection model. The Baidu PaddlePaddle vision team based RT-DETR-L as the base model, completing pre-training on a self-built table cell detection dataset, achieving good performance in detecting both wired and wireless table cells.</td>
 </tr>
 <tr>
@@ -393,7 +393,7 @@ In this pipeline, you can choose the model to use based on the benchmark data be
 <th>Detection Hmean (%)</th>
 <th>GPU Inference Time (ms)<br/>[Standard Mode / High Performance Mode]</th>
 <th>CPU Inference Time (ms)<br/>[Standard Mode / High Performance Mode]</th>
-<th>Model Size (M)</th>
+<th>Model Storage Size (MB)</th>
 <th>Description</th>
 </tr>
 </thead>
@@ -455,7 +455,7 @@ In this pipeline, you can choose the model to use based on the benchmark data be
 <th>Japanese Avg Accuracy (%)</th>
 <th>GPU Inference Time (ms)<br/>[Standard Mode / High Performance Mode]</th>
 <th>CPU Inference Time (ms)<br/>[Standard Mode / High Performance Mode]</th>
-<th>Model Size (M)</th>
+<th>Model Storage Size (MB)</th>
 <th>Description</th>
 </tr>
 <tr>
@@ -492,7 +492,7 @@ In this pipeline, you can choose the model to use based on the benchmark data be
 <th>Avg Accuracy (%)</th>
 <th>GPU Inference Time (ms)<br/>[Standard Mode / High Performance Mode]</th>
 <th>CPU Inference Time (ms)<br/>[Standard Mode / High Performance Mode]</th>
-<th>Model Size (M)</th>
+<th>Model Storage Size (MB)</th>
 <th>Description</th>
 </tr>
 <tr>
@@ -539,7 +539,7 @@ In this pipeline, you can choose the model to use based on the benchmark data be
 <th>Avg Accuracy (%)</th>
 <th>GPU Inference Time (ms)<br/>[Standard Mode / High Performance Mode]</th>
 <th>CPU Inference Time (ms)<br/>[Standard Mode / High Performance Mode]</th>
-<th>Model Size (M)</th>
+<th>Model Storage Size (MB)</th>
 <th>Description</th>
 </tr>
 <tr>
@@ -559,7 +559,7 @@ In this pipeline, you can choose the model to use based on the benchmark data be
 <th>Avg Accuracy (%)</th>
 <th>GPU Inference Time (ms)<br/>[Standard Mode / High Performance Mode]</th>
 <th>CPU Inference Time (ms)<br/>[Standard Mode / High Performance Mode]</th>
-<th>Model Size (M)</th>
+<th>Model Storage Size (MB)</th>
 <th>Description</th>
 </tr>
 <tr>
@@ -581,7 +581,7 @@ In this pipeline, you can choose the model to use based on the benchmark data be
 <th>Avg Accuracy (%)</th>
 <th>GPU Inference Time (ms)<br/>[Standard Mode / High Performance Mode]</th>
 <th>CPU Inference Time (ms)<br/>[Standard Mode / High Performance Mode]</th>
-<th>Model Size (M)</th>
+<th>Model Storage Size (MB)</th>
 <th>Description</th>
 </tr>
 <tr>
@@ -618,7 +618,7 @@ In this pipeline, you can choose the model to use based on the benchmark data be
 <th>Recognition Avg Accuracy(%)</th>
 <th>GPU Inference Time (ms)<br/>[Normal / High Performance]</th>
 <th>CPU Inference Time (ms)<br/>[Normal / High Performance]</th>
-<th>Model Size (M)</th>
+<th>Model Storage Size (MB)</th>
 <th>Description</th>
 </tr>
 <tr>
@@ -735,7 +735,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
 <th>Top-1 Acc (%)</th>
 <th>GPU Inference Time (ms)<br/>[Normal / High Performance]</th>
 <th>CPU Inference Time (ms)<br/>[Normal / High Performance]</th>
-<th>Model Size (M)</th>
+<th>Model Storage Size (MB)</th>
 <th>Description</th>
 </tr>
 </thead>
@@ -841,7 +841,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
 <th>Detection Hmean (%)</th>
 <th>GPU Inference Time (ms)<br/>[Normal / High Performance]</th>
 <th>CPU Inference Time (ms)<br/>[Normal / High Performance]</th>
-<th>Model Size (M)</th>
+<th>Model Storage Size (MB)</th>
 <th>Description</th>
 </tr>
 </thead>
