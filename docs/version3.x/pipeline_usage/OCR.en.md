@@ -548,6 +548,8 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
 
 Before using the general OCR pipeline locally, ensure you have installed the wheel package by following the [Installation Guide](../installation.en.md). Once installed, you can experience OCR via the command line or Python integration.  
 
+Please note: If you encounter issues such as the program becoming unresponsive, unexpected program termination, running out of memory resources, or extremely slow inference during execution, please try adjusting the configuration according to the documentation, such as disabling unnecessary features or using lighter-weight models.
+
 ### 2.1 Command Line  
 
 Run a single command to quickly test the OCR pipeline.  Before running the code below, please download the [example image](https://paddle-model-ecology.bj.bcebos.com/paddlex/demo_image/pipelines/general_formula_recognition_001.png) locally:  

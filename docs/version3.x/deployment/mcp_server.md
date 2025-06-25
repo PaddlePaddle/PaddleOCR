@@ -197,9 +197,12 @@ ImportError: failed to find libmagic.  Check your installation
 **说明**：
 
 - `PADDLEOCR_MCP_PIPELINE_CONFIG` 为可选项，不设置时使用产线默认配置。如需调整配置，例如更换模型，请参考 [PaddleOCR 文档](../paddleocr_and_paddlex.md) 导出产线配置文件，并将 `PADDLEOCR_MCP_PIPELINE_CONFIG` 设置为配置文件的绝对路径。
-- **CPU 推理性能提示**：
-  - **OCR 产线**：默认使用的模型复杂度较高，如果您希望提升产线推理速度、降低内存消耗，建议更换 `mobile` 系列模型。例如，您可以在产线配置文件中将检测和识别模型分别修改为 `PP-OCRv5_mobile_det` 和 `PP-OCRv5_mobile_rec`。
-  - **PP-StructureV3 产线**：使用默认配置需要消耗较多计算资源，如果您希望提升产线推理速度、降低内存消耗，请参考如下建议调整配置：
+- **推理性能提示**：
+
+  如果使用过程中出现推理耗时过长、内存不足等问题，可考虑参考如下建议调整产线配置：
+
+  - **OCR 产线**：建议更换 `mobile` 系列模型。例如，您可以在产线配置文件中将检测和识别模型分别修改为 `PP-OCRv5_mobile_det` 和 `PP-OCRv5_mobile_rec`。
+  - **PP-StructureV3 产线**：
     
     - 关闭不需要用到的功能，例如设置 `use_formula_recognition` 为 `False` 以禁用公式识别。
     - 使用轻量级的模型，例如将 OCR 模型替换为 `mobile` 版本、换用轻量的公式识别模型 PP-FormulaNet-S 等。

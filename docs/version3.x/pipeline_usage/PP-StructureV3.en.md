@@ -856,6 +856,8 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
 
 Before using the PP-StructureV3 pipeline locally, please make sure you have completed the installation of the wheel package according to the [installation guide](../installation.en.md). After installation, you can use it via command line or Python integration.
 
+Please note: If you encounter issues such as the program becoming unresponsive, unexpected program termination, running out of memory resources, or extremely slow inference during execution, please try adjusting the configuration according to the documentation, such as disabling unnecessary features or using lighter-weight models.
+
 ### 2.1 Command Line Usage
 
 Use a single command to quickly experience the PP-StructureV3 pipeline:

@@ -120,6 +120,8 @@ In this pipeline, you can select the models to use based on the benchmark data p
 
 Before using the General Document Image Preprocessing Pipeline locally, ensure that you have completed the wheel package installation according to the [Installation Guide](../installation.en.md). After installation, you can experience it via the command line or integrate it into Python locally.
 
+Please note: If you encounter issues such as the program becoming unresponsive, unexpected program termination, running out of memory resources, or extremely slow inference during execution, please try adjusting the configuration according to the documentation, such as disabling unnecessary features or using lighter-weight models.
+
 ### 2.1 Command Line Experience
 
 You can quickly experience the `doc_preprocessor` pipeline with a single command:

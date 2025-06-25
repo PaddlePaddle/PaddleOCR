@@ -549,6 +549,8 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://padd
 
 在本地使用通用OCR产线前，请确保您已经按照[安装教程](../installation.md)完成了wheel包安装。安装完成后，可以在本地使用命令行体验或 Python 集成。
 
+**请注意，如果在执行过程中遇到程序失去响应、程序异常退出、内存资源耗尽、推理速度极慢等问题，请尝试参考文档调整配置，例如关闭不需要使用的功能或使用更轻量的模型。**
+
 ### 2.1 命令行方式
 
 一行命令即可快速体验OCR产线效果。运行以下代码前，请您下载[示例图片](https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_002.png)到本地：

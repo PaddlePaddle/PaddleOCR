@@ -486,6 +486,7 @@ The RepSVTR text recognition model is a mobile-oriented text recognition model b
 
 The pre-trained pipelines provided by PaddleOCR allow for quick experience of their effects. You can locally use Python to experience the effects of the PP-ChatOCRv4-doc pipeline.
 
+Please note: If you encounter issues such as the program becoming unresponsive, unexpected program termination, running out of memory resources, or extremely slow inference during execution, please try adjusting the configuration according to the documentation, such as disabling unnecessary features or using lighter-weight models.
 
 Before using the PP-ChatOCRv4-doc pipeline locally, ensure you have completed the installation of the PaddleOCR wheel package according to the [PaddleOCR Local Installation Tutorial](../installation.en.md). If you wish to selectively install dependencies, please refer to the relevant instructions in the installation guide. The dependency group corresponding to this pipeline is `ie`.
 

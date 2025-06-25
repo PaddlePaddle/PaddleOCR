@@ -197,9 +197,13 @@ Below are complete Claude for Desktop configuration examples for different worki
 **Note**:
 
 - `PADDLEOCR_MCP_PIPELINE_CONFIG` is optional. If not set, the default pipeline configuration is used. To adjust settings, such as changing models, refer to the [PaddleOCR and PaddleX documentation](../paddleocr_and_paddlex.en.md), export a pipeline configuration file, and set `PADDLEOCR_MCP_PIPELINE_CONFIG` to its absolute path.
-- **CPU Inference Performance Tips:**
-  - **OCR Pipeline:** The default models used are relatively complex. If you want to improve inference speed and reduce memory usage, it is recommended to switch to the `mobile` series models. For example, you can modify the detection and recognition models in the pipeline configuration file to `PP-OCRv5_mobile_det` and `PP-OCRv5_mobile_rec`, respectively.
-  - **PP-StructureV3 Pipeline:** Using the default configuration requires more computational resources. If you want to improve inference speed and reduce memory consumption, please consider the following suggestions:
+- **Inference Performance Tips:**
+
+  If issues such as excessive inference time or insufficient memory occur during use, you may consider adjusting the pipeline configuration according to the following recommendations:
+
+  - **OCR Pipeline**: It is recommended to switch to the `mobile` series models. For example, you can modify the detection and recognition models in the pipeline configuration file to `PP-OCRv5_mobile_det` and `PP-OCRv5_mobile_rec`, respectively.
+  - **PP-StructureV3 Pipeline**: 
+
     - Disable features you do not need. For example, set `use_formula_recognition` to `False` to disable formula recognition.
     - Use lightweight models, such as replacing the OCR model with a `mobile` version, or using a lightweight formula recognition model like PP-FormulaNet-S.
 
