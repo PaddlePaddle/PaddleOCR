@@ -23,7 +23,7 @@ PaddleOCR 内置了多条产线，每条产线都包含了若干模块，每个�
 <tbody>
 <tr>
 <td>PP-OCRv5_server_det</td>
-<td>-</td>
+<td>83.8</td>
 <td>89.55 / 70.19</td>
 <td>383.15 / 383.15</td>
 <td>101</td>
