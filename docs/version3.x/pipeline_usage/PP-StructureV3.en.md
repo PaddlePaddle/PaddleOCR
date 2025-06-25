@@ -870,7 +870,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
 </details>
 
 <details>
-<summary><b>Chart Parsing Model Module: </b></summary>
+<summary><b>Chart Parsing Module: </b></summary>
 <table>
 <tr>
 <th>Model</th><th>Model Download Link</th>
@@ -1043,19 +1043,19 @@ paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --device gpu
 </tr>
 <tr>
 <td><code>chart_recognition_model_name</code></td>
-<td>Name of the chart recognition model. If not set, the default model will be used.</td>
+<td>Name of the chart parsing model. If not set, the default model will be used.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>chart_recognition_model_dir</code></td>
-<td>Directory path of the chart recognition model. If not set, the official model will be downloaded.</td>
+<td>Directory path of the chart parsing model. If not set, the official model will be downloaded.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>chart_recognition_batch_size</code></td>
-<td>Batch size for the chart recognition model. If not set, the default batch size is <code>1</code>.</td>
+<td>Batch size for the chart parsing model. If not set, the default batch size is <code>1</code>.</td>
 <td><code>int</code></td>
 <td></td>
 </tr>
@@ -1394,7 +1394,7 @@ any float > <code>0</code>. If not set, the default is <code>0.6</code>.
 </tr>
 <tr>
 <td><code>use_chart_recognition</code></td>
-<td>Whether to use the chart recognition sub-pipeline. If not set, the default is <code>True</code>.</td>
+<td>Whether to use the chart parsing module. If not set, the default is <code>True</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
@@ -1634,19 +1634,19 @@ The above Python script performs the following steps:
 </tr>
 <tr>
 <td><code>chart_recognition_model_name</code></td>
-<td>Name of the chart recognition model. If set to <code>None</code>, the pipeline default model is used.</td>
+<td>Name of the chart parsing model. If set to <code>None</code>, the pipeline default model is used.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>chart_recognition_model_dir</code></td>
-<td>Directory path of the chart recognition model. If set to <code>None</code>, the official model will be downloaded.</td>
+<td>Directory path of the chart parsing model. If set to <code>None</code>, the official model will be downloaded.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>chart_recognition_batch_size</code></td>
-<td>Batch size for the chart recognition model. If set to <code>None</code>, the default is <code>1</code>.</td>
+<td>Batch size for the chart parsing model. If set to <code>None</code>, the default is <code>1</code>.</td>
 <td><code>int|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -2025,7 +2025,7 @@ The above Python script performs the following steps:
 </tr>
 <tr>
 <td><code>use_chart_recognition</code></td>
-<td>Whether to use the chart recognition sub-pipeline. If set to <code>None</code>, the default value is <code>True</code>.</td>
+<td>Whether to use the chart parsing module. If set to <code>None</code>, the default value is <code>True</code>.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -2164,7 +2164,7 @@ MKL-DNN cache capacity.
 </tr>
 <tr>
 <td><code>use_chart_recognition</code></td>
-<td>Whether to use the chart recognition sub-pipeline. If set to <code>None</code>, the default value is <code>True</code>.</td>
+<td>Whether to use the chart parsing module. If set to <code>None</code>, the default value is <code>True</code>.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>

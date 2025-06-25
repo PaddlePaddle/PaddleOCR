@@ -1482,7 +1482,7 @@ paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --device gpu
 </tr>
 <tr>
 <td><code>use_chart_recognition</code></td>
-<td>是否使用图表识别子产线。</td>
+<td>是否使用图表解析模块。</td>
 <td><code>bool</code></td>
 <td>False</td>
 </tr>
@@ -2104,7 +2104,7 @@ for item in markdown_images:
 </tr>
 <tr>
 <td><code>use_chart_recognition</code></td>
-<td>是否加载图表识别子产线。如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载图表解析模块。如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -2244,7 +2244,7 @@ MKL-DNN 缓存容量。
 </tr>
 <tr>
 <td><code>use_chart_recognition</code></td>
-<td>是否使用图表识别子产线。</td>
+<td>是否使用图表解析模块。</td>
 <td><code>bool|None</code></td>
 <td><code>False</code></td>
 </tr>
