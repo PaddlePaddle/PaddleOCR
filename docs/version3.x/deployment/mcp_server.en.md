@@ -199,7 +199,27 @@ Below are complete Claude for Desktop configuration examples for different worki
 - `PADDLEOCR_MCP_PIPELINE_CONFIG` is optional. If not set, the default pipeline configuration is used. To adjust settings, such as changing models, refer to the [PaddleOCR and PaddleX documentation](../paddleocr_and_paddlex.en.md), export a pipeline configuration file, and set `PADDLEOCR_MCP_PIPELINE_CONFIG` to its absolute path.
 - **CPU Inference Performance Tip**:
   - **OCR Pipeline**: If you are running in a CPU environment, it is recommended to switch to the `mobile` series models for better performance. You can change the detection and recognition models in your pipeline configuration file to `text_detection_model_name="PP-OCRv5_mobile_det"` and `text_recognition_model_name="PP-OCRv5_mobile_rec"` respectively.
-  - **PP-StructureV3 Pipeline**: Due to its model complexity, using this pipeline in an environment without a GPU is not recommended.
+  - **PP-StructureV3 Pipeline**: Due to its model complexity, please notes:
+    1. Disable unused features. For example, set `use_formula_recognition` to `False` to turn off formula recognition.
+    2. Use lightweight models, such as switching the OCR models to the `mobile` versions and using a lightweight formula recognition model like `PP-FormulaNet-S`.
+    3. The code block below shows a minimal configuration for testing. You can adjust the parameters as needed; for details, see the [parameter documentation](../pipeline_usage/PP-StructureV3.en.md). To apply these settings via a separate file, please refer to the note on `PADDLEOCR_MCP_PIPELINE_CONFIG` above.
+```python
+pipeline = PPStructureV3(
+  use_doc_orientation_classify=False,
+  use_doc_unwarping=False,
+  use_formula_recognition=False,  # disable formula recognition
+  use_seal_recognition=False,     # disable seal recognition
+  # use_table_recognition=False,    # disable table recognition
+  
+  text_detection_model_name="PP-OCRv5_mobile_det",
+  text_recognition_model_name="PP-OCRv5_mobile_rec",
+  layout_detection_model_name="PP-DocLayout-S",
+  
+  device="cpu",
+  enable_mkldnn=False
+)
+```
+
 
 ### 5.3 Self-hosted Service Configuration
 
