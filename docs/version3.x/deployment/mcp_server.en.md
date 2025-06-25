@@ -200,7 +200,7 @@ Below are complete Claude for Desktop configuration examples for different worki
 - **CPU Inference Performance Tips:**
   - **OCR Pipeline:** The default models used are relatively complex. If you want to improve inference speed and reduce memory usage, it is recommended to switch to the `mobile` series models. For example, you can modify the detection and recognition models in the pipeline configuration file to `PP-OCRv5_mobile_det` and `PP-OCRv5_mobile_rec`, respectively.
   - **PP-StructureV3 Pipeline:** Using the default configuration requires more computational resources. If you want to improve inference speed and reduce memory consumption, please consider the following suggestions:
-    - Disable features you do not need, for example, set `use_formula_recognition` to `False` to disable formula recognition.
+    - Disable features you do not need. For example, set `use_formula_recognition` to `False` to disable formula recognition.
     - Use lightweight models, such as replacing the OCR model with a `mobile` version, or using a lightweight formula recognition model like PP-FormulaNet-S.
 
     The following example code can be used to obtain a pipeline configuration file, in which most optional features of the PP-StructureV3 pipeline are disabled, while some key models are replaced with lightweight versions.
