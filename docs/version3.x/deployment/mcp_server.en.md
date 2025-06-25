@@ -203,6 +203,29 @@ Below are complete Claude for Desktop configuration examples for different worki
     - Disable features you do not need, for example, set `use_formula_recognition` to `False` to disable formula recognition.
     - Use lightweight models, such as replacing the OCR model with a `mobile` version, or using a lightweight formula recognition model like PP-FormulaNet-S.
 
+    The following example code can be used to obtain a pipeline configuration file, in which most optional features of the PP-StructureV3 pipeline are disabled, while some key models are replaced with lightweight versions.
+
+    ```python
+    from paddleocr import PPStructureV3
+
+    pipeline = PPStructureV3(
+        use_doc_orientation_classify=False, # Disable document image orientation classification
+        use_doc_unwarping=False,            # Disable text image unwarping
+        use_textline_orientation=False,     # Disable text line orientation classification
+        use_formula_recognition=False,      # Disable formula recognition
+        use_seal_recognition=False,         # Disable seal text recognition
+        use_table_recognition=False,        # Disable table recognition
+        use_chart_recognition=False,        # Disable chart parsing
+        # Use lightweight models
+        text_detection_model_name="PP-OCRv5_mobile_det",
+        text_recognition_model_name="PP-OCRv5_mobile_rec",
+        layout_detection_model_name="PP-DocLayout-S",
+    )
+
+    # The configuration file is saved to `PP-StructureV3.yaml`
+    pipeline.export_paddlex_config_to_yaml("PP-StructureV3.yaml")
+    ```
+
 ### 5.3 Self-hosted Service Configuration
 
 ```json
