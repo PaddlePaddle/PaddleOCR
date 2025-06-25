@@ -1619,7 +1619,7 @@ input_file = "./your_pdf_file.pdf"
 output_path = Path("./output")
 
 pipeline = PPStructureV3()
-output = pipeline.predict("./pp_structure_v3_demo.png")
+output = pipeline.predict(input=input_file)
 
 markdown_list = []
 markdown_images = []
