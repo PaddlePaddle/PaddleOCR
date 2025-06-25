@@ -18,7 +18,7 @@ The Table Cell Detection Module is a key component of the table recognition task
 <th>mAP(%)</th>
 <th>GPU Inference Time (ms)<br/>[Regular Mode / High-Performance Mode]</th>
 <th>CPU Inference Time (ms)<br/>[Regular Mode / High-Performance Mode]</th>
-<th>Model Storage Size (M)</th>
+<th>Model Storage Size (MB)</th>
 <th>Description</th>
 </tr>
 <tr>

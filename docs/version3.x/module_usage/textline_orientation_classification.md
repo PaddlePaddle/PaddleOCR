@@ -19,7 +19,7 @@ comments: true
 <th>Top-1 Acc（%）</th>
 <th>GPU推理耗时（ms）</th>
 <th>CPU推理耗时 (ms)</th>
-<th>模型存储大小（M）</th>
+<th>模型存储大小（MB）</th>
 <th>介绍</th>
 </tr>
 </thead>

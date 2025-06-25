@@ -18,7 +18,7 @@ The Table Classification Module is a key component in computer vision systems, r
 <th>Top1 Acc(%)</th>
 <th>GPU Inference Time (ms)<br/>[Regular Mode / High-Performance Mode]</th>
 <th>CPU Inference Time (ms)<br/>[Regular Mode / High-Performance Mode]</th>
-<th>Model Storage Size (M)</th>
+<th>Model Storage Size (MB)</th>
 </tr>
 <tr>
 <td>PP-LCNet_x1_0_table_cls</td>

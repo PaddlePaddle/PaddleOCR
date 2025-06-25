@@ -32,7 +32,7 @@ In this pipeline, you can choose the model to use based on the benchmark data be
 <th>mAP(0.5) (%)</th>
 <th>GPU Inference Time (ms)<br/>[Regular Mode / High-Performance Mode]</th>
 <th>CPU Inference Time (ms)<br/>[Regular Mode / High-Performance Mode]</th>
-<th>Model Storage Size (M)</th>
+<th>Model Storage Size (MB)</th>
 <th>Description</th>
 </tr>
 </thead>
@@ -58,7 +58,7 @@ In this pipeline, you can choose the model to use based on the benchmark data be
 <th>mAP(0.5) (%)</th>
 <th>GPU Inference Time (ms)<br/>[Regular Mode / High-Performance Mode]</th>
 <th>CPU Inference Time (ms)<br/>[Regular Mode / High-Performance Mode]</th>
-<th>Model Storage Size (M)</th>
+<th>Model Storage Size (MB)</th>
 <th>Description</th>
 </tr>
 </thead>
@@ -105,7 +105,7 @@ In this pipeline, you can choose the model to use based on the benchmark data be
 <th>mAP(0.5) (%)</th>
 <th>GPU Inference Time (ms)<br/>[Regular Mode / High-Performance Mode]</th>
 <th>CPU Inference Time (ms)<br/>[Regular Mode / High-Performance Mode]</th>
-<th>Model Storage Size (M)</th>
+<th>Model Storage Size (MB)</th>
 <th>Description</th>
 </tr>
 </thead>
@@ -147,7 +147,7 @@ In this pipeline, you can choose the model to use based on the benchmark data be
 <th>mAP(0.5) (%)</th>
 <th>GPU Inference Time (ms)<br/>[Regular Mode / High-Performance Mode]</th>
 <th>CPU Inference Time (ms)<br/>[Regular Mode / High-Performance Mode]</th>
-<th>Model Storage Size (M)</th>
+<th>Model Storage Size (MB)</th>
 <th>Description</th>
 </tr>
 </thead>
@@ -193,7 +193,7 @@ In this pipeline, you can choose the model to use based on the benchmark data be
 <th>Top-1 Acc (%)</th>
 <th>GPU Inference Time (ms)<br/>[Regular Mode / High-Performance Mode]</th>
 <th>CPU Inference Time (ms)<br/>[Regular Mode / High-Performance Mode]</th>
-<th>Model Storage Size (M)</th>
+<th>Model Storage Size (MB)</th>
 <th>Description</th>
 </tr>
 </thead>
@@ -220,7 +220,7 @@ In this pipeline, you can choose the model to use based on the benchmark data be
 <th>CER</th>
 <th>GPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
 <th>CPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
-<th>Model Storage Size (M)</th>
+<th>Model Storage Size (MB)</th>
 <th>Description</th>
 </tr>
 </thead>
@@ -247,7 +247,7 @@ In this pipeline, you can choose the model to use based on the benchmark data be
 <th>Detection Hmean (%)</th>
 <th>GPU Inference Time (ms)<br/>[Regular Mode / High-Performance Mode]</th>
 <th>CPU Inference Time (ms)<br/>[Regular Mode / High-Performance Mode]</th>
-<th>Model Storage Size (M)</th>
+<th>Model Storage Size (MB)</th>
 <th>Description</th>
 </tr>
 </thead>
@@ -282,7 +282,7 @@ In this pipeline, you can choose the model to use based on the benchmark data be
 <th>Recognition Avg Accuracy(%)</th>
 <th>GPU Inference Time (ms)<br/>[Regular Mode / High-Performance Mode]</th>
 <th>CPU Inference Time (ms)<br/>[Regular Mode / High-Performance Mode]</th>
-<th>Model Storage Size (M)</th>
+<th>Model Storage Size (MB)</th>
 <th>Description</th>
 </tr>
 <tr>
@@ -359,7 +359,7 @@ en_PP-OCRv4_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-mo
 <th>Japanese Recognition Avg Accuracy(%)</th>
 <th>GPU Inference Time (ms)<br/>[Regular Mode / High-Performance Mode]</th>
 <th>CPU Inference Time (ms)<br/>[Regular Mode / High-Performance Mode]</th>
-<th>Model Storage Size (M)</th>
+<th>Model Storage Size (MB)</th>
 <th>Description</th>
 </tr>
 <tr>
@@ -396,7 +396,7 @@ PP-OCRv5_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model
 <th>Recognition Avg Accuracy(%)</th>
 <th>GPU Inference Time (ms)<br/>[Regular Mode / High-Performance Mode]</th>
 <th>CPU Inference Time (ms)<br/>[Regular Mode / High-Performance Mode]</th>
-<th>Model Storage Size (M)</th>
+<th>Model Storage Size (MB)</th>
 <th>Description</th>
 </tr>
 <tr>
@@ -445,7 +445,7 @@ PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model
 <th>Recognition Avg Accuracy(%)</th>
 <th>GPU Inference Time (ms)<br/>[Regular Mode / High-Performance Mode]</th>
 <th>CPU Inference Time (ms)<br/>[Regular Mode / High-Performance Mode]</th>
-<th>Model Storage Size (M)</th>
+<th>Model Storage Size (MB)</th>
 <th>Description</th>
 </tr>
 <tr>
@@ -467,7 +467,7 @@ SVTRv2 is a server-side text recognition model developed by the OpenOCR team fro
 <th>Recognition Avg Accuracy(%)</th>
 <th>GPU Inference Time (ms)<br/>[Regular Mode / High-Performance Mode]</th>
 <th>CPU Inference Time (ms)<br/>[Regular Mode / High-Performance Mode]</th>
-<th>Model Storage Size (M)</th>
+<th>Model Storage Size (MB)</th>
 <th>Description</th>
 </tr>
 <tr>
@@ -488,7 +488,7 @@ SVTRv2 is a server-side text recognition model developed by the OpenOCR team fro
 <th>Recognition Avg Accuracy(%)</th>
 <th>GPU Inference Time (ms)<br/>[Regular Mode / High-Performance Mode]</th>
 <th>CPU Inference Time (ms)<br/>[Regular Mode / High-Performance Mode]</th>
-<th>Model Storage Size (M)</th>
+<th>Model Storage Size (MB)</th>
 <th>Description</th>
 </tr>
 <tr>
@@ -520,7 +520,7 @@ en_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-mo
 <th>Recognition Avg Accuracy(%)</th>
 <th>GPU Inference Time (ms)<br/>[Regular Mode / High-Performance Mode]</th>
 <th>CPU Inference Time (ms)<br/>[Regular Mode / High-Performance Mode]</th>
-<th>Model Storage Size (M)</th>
+<th>Model Storage Size (MB)</th>
 <th>Description</th>
 </tr>
 <tr>
