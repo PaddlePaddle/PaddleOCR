@@ -28,7 +28,7 @@ comments: true
 <td>0.179</td>
 <td>19.05 / 19.05</td>
 <td>- / 869.82</td>
-<td>30.3 M</td>
+<td>30.3</td>
 <td>高精度文本图像矫正模型</td>
 </tr>
 </tbody>

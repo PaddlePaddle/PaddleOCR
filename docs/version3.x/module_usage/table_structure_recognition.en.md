@@ -25,7 +25,7 @@ Table structure recognition is an important component of table recognition syste
 <td>59.52</td>
 <td>23.96 / 21.75</td>
 <td>- / 43.12</td>
-<td>6.9 M</td>
+<td>6.9</td>
 <td rowspan="1">SLANet is a table structure recognition model independently developed by Baidu PaddlePaddle Vision Team. By adopting a CPU-friendly lightweight backbone network PP-LCNet, high-low level feature fusion module CSP-PAN, and SLA Head, a feature decoding module aligning structure and position information, this model greatly improves the accuracy and inference speed of table structure recognition.</td>
 </tr>
 <tr>
@@ -34,7 +34,7 @@ Table structure recognition is an important component of table recognition syste
 <td>63.69</td>
 <td>23.43 / 22.16</td>
 <td>- / 41.80</td>
-<td>6.9 M</td>
+<td>6.9</td>
 <td rowspan="1">SLANet_plus is an enhanced version of the table structure recognition model SLANet independently developed by the Baidu PaddlePaddle Vision Team. Compared to SLANet, SLANet_plus has greatly improved the recognition ability for wireless and complex tables, and reduced the model's sensitivity to table positioning accuracy. Even if the table positioning is offset, it can still be accurately recognized.
 </td>
 </tr>

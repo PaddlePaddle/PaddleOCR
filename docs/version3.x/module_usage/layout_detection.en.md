@@ -28,7 +28,7 @@ The core task of structure analysis is to parse and segment the content of input
 <td>83.2</td>
 <td>53.03 / 17.23</td>
 <td>634.62 / 378.32</td>
-<td>126.01 M</td>
+<td>126.01</td>
 <td>A higher-precision layout area localization model trained on a self-built dataset containing Chinese and English papers, PPT, multi-layout magazines, contracts, books, exams, ancient books and research reports using RT-DETR-L</td>
 </tr>
 <tr>
@@ -55,7 +55,7 @@ The core task of structure analysis is to parse and segment the content of input
 <td>95.9</td>
 <td>34.60 / 28.54</td>
 <td>506.43 / 256.83</td>
-<td>123.92 M</td>
+<td>123.92</td>
 <td>A layout block localization model trained on a self-built dataset containing Chinese and English papers, PPT, multi-layout magazines, contracts, books, exams, ancient books and research reports using RT-DETR-L</td>
 </tr>
 <tr>
@@ -82,7 +82,7 @@ The core task of structure analysis is to parse and segment the content of input
 <td>90.4</td>
 <td>33.59 / 33.59</td>
 <td>503.01 / 251.08</td>
-<td>123.76 M</td>
+<td>123.76</td>
 <td>A high-precision layout area localization model trained on a self-built dataset containing Chinese and English papers, magazines, contracts, books, exams, and research reports using RT-DETR-L.</td>
 </tr>
 <tr>
@@ -129,7 +129,7 @@ The core task of structure analysis is to parse and segment the content of input
 <td>97.5</td>
 <td>9.57 / 6.63</td>
 <td>27.66 / 16.75</td>
-<td>7.4 M</td>
+<td>7.4</td>
 <td>A high-efficiency layout area localization model trained on a self-built dataset using PicoDet-1x, capable of detecting table regions.</td>
 </tr>
 </tbody></table>

@@ -28,7 +28,7 @@ The seal text detection module typically outputs multi-point bounding boxes arou
 <td>98.40</td>
 <td>124.64 / 91.57</td>
 <td>545.68 / 439.86</td>
-<td>109 M</td>
+<td>109</td>
 <td>The server-side seal text detection model of PP-OCRv4 boasts higher accuracy and is suitable for deployment on better-equipped servers.</td>
 </tr>
 <tr>
@@ -37,7 +37,7 @@ The seal text detection module typically outputs multi-point bounding boxes arou
 <td>96.36</td>
 <td>9.70 / 3.56</td>
 <td>50.38 / 19.64</td>
-<td>4.6 M</td>
+<td>4.6</td>
 <td>The mobile-side seal text detection model of PP-OCRv4, on the other hand, offers greater efficiency and is suitable for deployment on end devices.</td>
 </tr>
 </tbody>

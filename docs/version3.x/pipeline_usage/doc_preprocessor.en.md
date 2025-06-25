@@ -64,7 +64,7 @@ In this pipeline, you can select the models to use based on the benchmark data p
 <td>0.179</td>
 <td>19.05 / 19.05</td>
 <td>- / 869.82</td>
-<td>30.3 M</td>
+<td>30.3</td>
 <td>A high-precision text image unwarping model.</td>
 </tr>
 </tbody>
