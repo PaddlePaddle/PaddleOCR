@@ -198,28 +198,10 @@ ImportError: failed to find libmagic.  Check your installation
 
 - `PADDLEOCR_MCP_PIPELINE_CONFIG` 为可选项，不设置时使用产线默认配置。如需调整配置，例如更换模型，请参考 [PaddleOCR 文档](../paddleocr_and_paddlex.md) 导出产线配置文件，并将 `PADDLEOCR_MCP_PIPELINE_CONFIG` 设置为配置文件的绝对路径。
 - **CPU 推理性能提示**：
-  - **OCR 产线**：若您在 CPU 环境下运行，为获得更佳性能，建议更换为 `mobile` 系列模型。您可以在产线配置文件中将检测和识别模型分别修改为 `text_detection_model_name="PP-OCRv5_mobile_det"` 和 `text_recognition_model_name="PP-OCRv5_mobile_rec"`。
-  - **PP-StructureV3 产线**：由于模型复杂度较高, 有如下几点需注意：
-    1. 关闭不需要用到的功能，例如设置 `use_formula_recognition` 为 `False` 则代表禁用公式识别。
-    2. 使用轻量级的模型，例如将 OCR 模型替换为 mobile 版本、换用轻量的公式识别模型 PP-FormulaNet-S 等。
-    3. 如下是可用于测试的最小配置示例，可根据需求调整参数，具体请参考文档中的[参数说明](../pipeline_usage/PP-StructureV3.md). 使用产线配置文件请参考上述第一点。
-```python
-pipeline = PPStructureV3(
-  use_doc_orientation_classify=False,
-  use_doc_unwarping=False,
-  use_formula_recognition=False,  # 禁用公式识别
-  use_seal_recognition=False,     # 禁用印章识别
-  # use_table_recognition=False,    # 禁用表格识别
-  
-  text_detection_model_name="PP-OCRv5_mobile_det",
-  text_recognition_model_name="PP-OCRv5_mobile_rec",
-  layout_detection_model_name="PP-DocLayout-S",
-  
-  device="cpu",
-  enable_mkldnn=False
-)
-```
-
+  - **OCR 产线**：默认使用的模型复杂度较高，如果您希望提升产线推理速度、降低内存消耗，建议更换 `mobile` 系列模型。例如，您可以在产线配置文件中将检测和识别模型分别修改为 `PP-OCRv5_mobile_det` 和 `PP-OCRv5_mobile_rec`。
+  - **PP-StructureV3 产线**：使用默认配置需要消耗较多计算资源，如果您希望提升产线推理速度、降低内存消耗，请参考如下建议调整配置：
+    - 关闭不需要用到的功能，例如设置 `use_formula_recognition` 为 `False` 以禁用公式识别。
+    - 使用轻量级的模型，例如将 OCR 模型替换为 `mobile` 版本、换用轻量的公式识别模型 PP-FormulaNet-S 等。
 
 ### 5.3 自托管服务配置
 
