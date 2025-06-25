@@ -590,7 +590,7 @@ japan_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle
 <td>45.69</td>
 <td>3.86 / 1.01</td>
 <td>8.62 / 2.92</td>
-<td>9.8 M </td>
+<td>9.8</td>
 <td>An ultra-lightweight Japanese text recognition model trained based on PP-OCRv3, supporting Japanese and digits recognition</td>
 </tr>
 <tr>
@@ -600,7 +600,7 @@ chinese_cht_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://
 <td>82.06</td>
 <td>3.90 / 1.16</td>
 <td>9.24 / 3.18</td>
-<td>10.8 M </td>
+<td>10.8</td>
 <td>An ultra-lightweight Traditional Chinese text recognition model trained based on PP-OCRv3, supporting Traditional Chinese and digits recognition</td>
 </tr>
 <tr>
@@ -610,7 +610,7 @@ te_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-mo
 <td>95.88</td>
 <td>3.59 / 0.81</td>
 <td>8.28 / 6.21</td>
-<td>8.7 M </td>
+<td>8.7</td>
 <td>An ultra-lightweight Telugu text recognition model trained based on PP-OCRv3, supporting Telugu and digits recognition</td>
 </tr>
 <tr>
@@ -620,7 +620,7 @@ ka_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-mo
 <td>96.96</td>
 <td>3.49 / 0.89</td>
 <td>8.63 / 2.77</td>
-<td>17.4 M </td>
+<td>17.4</td>
 <td>An ultra-lightweight Kannada text recognition model trained based on PP-OCRv3, supporting Kannada and digits recognition</td>
 </tr>
 <tr>
@@ -630,7 +630,7 @@ ta_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-mo
 <td>76.83</td>
 <td>3.49 / 0.86</td>
 <td>8.35 / 3.41</td>
-<td>8.7 M </td>
+<td>8.7</td>
 <td>An ultra-lightweight Tamil text recognition model trained based on PP-OCRv3, supporting Tamil and digits recognition</td>
 </tr>
 <tr>
@@ -660,7 +660,7 @@ cyrillic_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://pad
 <td>94.28</td>
 <td>3.56 / 0.79</td>
 <td>8.22 / 2.76</td>
-<td>8.7 M  </td>
+<td>8.7</td>
 <td>An ultra-lightweight Cyrillic script recognition model trained based on PP-OCRv3, supporting Cyrillic script and digits recognition</td>
 </tr>
 <tr>
@@ -709,7 +709,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
 <th>ExpRate (%)</th>
 <th>GPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
 <th>CPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
-<th>Model Size</th>
+<th>Model Storage Size (MB)</th>
 </tr>
 </thead>
 <tbody>
@@ -784,7 +784,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
                   <ul>
                       <li>GPU: NVIDIA Tesla T4</li>
                       <li>CPU: Intel Xeon Gold 6271C @ 2.60GHz</li>
-                      <li>Other Environments: Ubuntu 20.04 / cuDNN 8.9 / TensorRT 8.6.1.6 / CUDA 11.8</li>
+                      <li>Other Environments: Ubuntu 20.04 / CUDA 11.8 / cuDNN 8.9 / TensorRT 8.6.1.6</li>
                   </ul>
               </li>
           </ul>

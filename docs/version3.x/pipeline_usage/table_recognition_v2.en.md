@@ -403,7 +403,7 @@ en_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-mo
 <td>70.69</td>
 <td>3.56 / 0.78</td>
 <td>8.44 / 5.78</td>
-<td>17.3 M </td>
+<td>17.3</td>
 <td>This ultra-lightweight English recognition model is trained based on the PP-OCRv3 recognition model, supporting English and digit recognition.</td>
 </tr>
 </table>
@@ -435,7 +435,7 @@ japan_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle
 <td>45.69</td>
 <td>3.86 / 1.01</td>
 <td>8.62 / 2.92</td>
-<td>9.8 M </td>
+<td>9.8</td>
 <td>This ultra-lightweight Japanese recognition model is trained based on the PP-OCRv3 recognition model, supporting Japanese and digit recognition.</td>
 </tr>
 <tr>
@@ -445,7 +445,7 @@ chinese_cht_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://
 <td>82.06</td>
 <td>3.90 / 1.16</td>
 <td>9.24 / 3.18</td>
-<td>10.8 M </td>
+<td>10.8</td>
 <td>This ultra-lightweight Traditional Chinese recognition model is trained based on the PP-OCRv3 recognition model, supporting Traditional Chinese and digit recognition.</td>
 </tr>
 <tr>
@@ -465,7 +465,7 @@ ka_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-mo
 <td>96.96</td>
 <td>3.49 / 0.89</td>
 <td>8.63 / 2.77</td>
-<td>17.4 M </td>
+<td>17.4</td>
 <td>This ultra-lightweight Kannada recognition model is trained based on the PP-OCRv3 recognition model, supporting Kannada and digit recognition.</td>
 </tr>
 <tr>
@@ -475,7 +475,7 @@ ta_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-mo
 <td>76.83</td>
 <td>3.49 / 0.86</td>
 <td>8.35 / 3.41</td>
-<td>8.7 M </td>
+<td>8.7</td>
 <td>This ultra-lightweight Tamil recognition model is trained based on the PP-OCRv3 recognition model, supporting Tamil and digit recognition.</td>
 </tr>
 <tr>
@@ -505,7 +505,7 @@ cyrillic_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://pad
 <td>94.28</td>
 <td>3.56 / 0.79</td>
 <td>8.22 / 2.76</td>
-<td>8.7 M  </td>
+<td>8.7</td>
 <td>This ultra-lightweight Slavic alphabet recognition model is trained based on the PP-OCRv3 recognition model, supporting Slavic letters and digit recognition.</td>
 </tr>
 <tr>
@@ -799,7 +799,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
                   <ul>
                       <li>GPU: NVIDIA Tesla T4</li>
                       <li>CPU: Intel Xeon Gold 6271C @ 2.60GHz</li>
-                      <li>Other Environment: Ubuntu 20.04 / cuDNN 8.9 / TensorRT 8.6.1.6 / CUDA 11.8</li>
+                      <li>Other Environment: Ubuntu 20.04 / CUDA 11.8 / cuDNN 8.9 / TensorRT 8.6.1.6</li>
                   </ul>
               </li>
           </ul>
