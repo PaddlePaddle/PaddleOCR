@@ -122,7 +122,7 @@ def add_common_cli_opts(parser, *, default_enable_hpi, allow_multiple_devices):
         "--use_tensorrt",
         type=str2bool,
         default=DEFAULT_USE_TENSORRT,
-        help="Whether to use the Paddle Inference TensorRT subgraph engine.",
+        help="Whether to use the Paddle Inference TensorRT subgraph engine. If the model does not support TensorRT acceleration, even if this flag is set, acceleration will not be used.",
     )
     parser.add_argument(
         "--precision",

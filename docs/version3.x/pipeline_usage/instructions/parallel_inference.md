@@ -192,7 +192,6 @@ if __name__ == "__main__":
 ```bash
 # 确定 `--pipeline` 参数需查看其产线 **脚本方式** 导入类名称
 # 此处为通用版面解析 v3 产线，对应PPStructureV3
-# 其余产线例如印章文本产线对应SealRecognition，文档理解产线对应DocUnderstanding
 # 处理 `input_images` 目录中所有文件
 # 使用 GPU 0、1、2、3，每块 GPU 上 1 个产线实例，每个实例一次处理 1 个输入文件
 python infer_mp.py \

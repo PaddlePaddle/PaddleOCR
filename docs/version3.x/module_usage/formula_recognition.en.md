@@ -17,63 +17,71 @@ The formula recognition module is a key component of an OCR (Optical Character R
 <th>Zh-BLEU(%)</th>
 <th>GPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
 <th>CPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
-<th>Model Storage Size (M)</th>
+<th>Model Storage Size (MB)</th>
 <th>Introduction</th>
 </tr>
-<td>UniMERNet</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/UniMERNet_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/UniMERNet_pretrained.pdparams">Training Model</a></td>
+<tr>
+<td>UniMERNet</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/UniMERNet_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/UniMERNet_pretrained.pdparams">Training Model</a></td>
 <td>85.91</td>
 <td>43.50</td>
-<td>2266.96/-</td>
-<td>-/-</td>
-<td>1.53 G</td>
+<td>1311.84 / 1311.84</td>
+<td>- / 8288.07</td>
+<td>1530</td>
 <td>UniMERNet is a formula recognition model developed by Shanghai AI Lab. It uses Donut Swin as the encoder and MBartDecoder as the decoder. The model is trained on a dataset of one million samples, including simple formulas, complex formulas, scanned formulas, and handwritten formulas, significantly improving the recognition accuracy of real-world formulas.</td>
-<tr>
-<td>PP-FormulaNet-S</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet-S_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet-S_pretrained.pdparams">Training Model</a></td>
+</tr>
+<td>PP-FormulaNet-S</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet-S_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet-S_pretrained.pdparams">Training Model</a></td>
 <td>87.00</td>
 <td>45.71</td>
-<td>202.25/-</td>
-<td>-/-</td>
-<td>224 M</td>
+<td>182.25 / 182.25</td>
+<td>- / 254.39</td>
+<td>224</td>
 <td rowspan="2">PP-FormulaNet is an advanced formula recognition model developed by the Baidu PaddlePaddle Vision Team. The PP-FormulaNet-S version uses PP-HGNetV2-B4 as its backbone network. Through parallel masking and model distillation techniques, it significantly improves inference speed while maintaining high recognition accuracy, making it suitable for applications requiring fast inference. The PP-FormulaNet-L version, on the other hand, uses Vary_VIT_B as its backbone network and is trained on a large-scale formula dataset, showing significant improvements in recognizing complex formulas compared to PP-FormulaNet-S.</td>
 </tr>
-<td>PP-FormulaNet-L</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet-L_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet-L_pretrained.pdparams">Training Model</a></td>
+<td>PP-FormulaNet-L</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet-L_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet-L_pretrained.pdparams">Training Model</a></td>
 <td>90.36</td>
 <td>45.78</td>
-<td>1976.52/-</td>
-<td>-/-</td>
-<td>695 M</td>
-<tr>
-<td>PP-FormulaNet_plus-S</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet_plus-S_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet_plus-S_pretrained.pdparams">Training Model</a></td>
+<td>1482.03 / 1482.03</td>
+<td>- / 3131.54</td>
+<td>695</td>
+</tr>
+<td>PP-FormulaNet_plus-S</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet_plus-S_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet_plus-S_pretrained.pdparams">Training Model</a></td>
 <td>88.71</td>
 <td>53.32</td>
-<td>191.69/-</td>
-<td>-/-</td>
-<td>248 M</td>
+<td>179.20 / 179.20</td>
+<td>- / 260.99</td>
+<td>248</td>
 <td rowspan="3">PP-FormulaNet_plus is an enhanced version of the formula recognition model developed by the Baidu PaddlePaddle Vision Team, building upon the original PP-FormulaNet. Compared to the original version, PP-FormulaNet_plus utilizes a more diverse formula dataset during training, including sources such as Chinese dissertations, professional books, textbooks, exam papers, and mathematics journals. This expansion significantly improves the model’s recognition capabilities. Among the models, PP-FormulaNet_plus-M and PP-FormulaNet_plus-L have added support for Chinese formulas and increased the maximum number of predicted tokens for formulas from 1,024 to 2,560, greatly enhancing the recognition performance for complex formulas. Meanwhile, the PP-FormulaNet_plus-S model focuses on improving the recognition of English formulas. With these improvements, the PP-FormulaNet_plus series models perform exceptionally well in handling complex and diverse formula recognition tasks. </td>
 </tr>
 <tr>
-<td>PP-FormulaNet_plus-M</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet_plus-M_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet_plus-M_pretrained.pdparams">Training Model</a></td>
+<td>PP-FormulaNet_plus-M</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet_plus-M_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet_plus-M_pretrained.pdparams">Training Model</a></td>
 <td>91.45</td>
 <td>89.76</td>
-<td>1301.56/-</td>
-<td>-/-</td>
-<td>592 M</td>
+<td>1040.27 / 1040.27</td>
+<td>- / 1615.80</td>
+<td>592</td>
 </tr>
 <tr>
-<td>PP-FormulaNet_plus-L</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet_plus-L_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet_plus-L_pretrained.pdparams">Training Model</a></td>
+<td>PP-FormulaNet_plus-L</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet_plus-L_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet_plus-L_pretrained.pdparams">Training Model</a></td>
 <td>92.22</td>
 <td>90.64</td>
-<td>1745.25/-</td>
-<td>-/-</td>
-<td>698 M</td>
+<td>1476.07 / 1476.07</td>
+<td>- / 3125.58</td>
+<td>698</td>
 </tr>
 <tr>
-<td>LaTeX_OCR_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/LaTeX_OCR_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/LaTeX_OCR_rec_pretrained.pdparams">Training Model</a></td>
+<td>LaTeX_OCR_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/LaTeX_OCR_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/LaTeX_OCR_rec_pretrained.pdparams">Training Model</a></td>
 <td>74.55</td>
 <td>39.96</td>
-<td>1244.61/-</td>
-<td>-/-</td>
-<td>99 M</td>
+<td>1088.89 / 1088.89</td>
+<td>- / -</td>
+<td>99</td>
 <td>LaTeX-OCR is a formula recognition algorithm based on an autoregressive large model. It uses Hybrid ViT as the backbone network and a transformer as the decoder, significantly improving the accuracy of formula recognition.</td>
 </tr>
 </table>
@@ -86,7 +94,7 @@ The formula recognition module is a key component of an OCR (Optical Character R
                     <ul>
                         <li>GPU: NVIDIA Tesla T4</li>
                         <li>CPU: Intel Xeon Gold 6271C @ 2.60GHz</li>
-                        <li>Other Environment: Ubuntu 20.04 / cuDNN 8.6 / TensorRT 8.5.2.2</li>
+                        <li>Other Environment: Ubuntu 20.04 / CUDA 11.8 / cuDNN 8.9 / TensorRT 8.6.1.6</li>
                     </ul>
                 </li>
             </ul>
@@ -176,36 +184,36 @@ Related methods and parameter descriptions are as follows:
 <tbody>
 <tr>
 <td><code>model_name</code></td>
-<td>Name of the model</td>
-<td><code>str</code></td>
-<td><code>PP-FormulaNet_plus-M</code></td>
+<td>Model name. If set to <code>None</code>, <code>PP-FormulaNet_plus-M</code> will be used.</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>model_dir</code></td>
-<td>Model storage path</td>
-<td><code>str</code></td>
+<td>Model storage path.</td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>Device(s) to use for inference.<br/>
-<b>Examples:</b> <code>cpu</code>, <code>gpu</code>, <code>npu</code>, <code>gpu:0</code>, <code>gpu:0,1</code>.<br/>
-If multiple devices are specified, inference will be performed in parallel. Note that parallel inference is not always supported.<br/>
-By default, GPU 0 will be used if available; otherwise, the CPU will be used.
+<td>Device for inference.<br/>
+<b>For example:</b><code>"cpu"</code>, <code>"gpu"</code>, <code>"npu"</code>, <code>"gpu:0"</code>, <code>"gpu:0,1"</code>.<br/>
+If multiple devices are specified, parallel inference will be performed.<br/>
+By default, GPU 0 is used if available; otherwise, CPU is used.
 </td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>enable_hpi</code></td>
-<td>Whether to use the high performance inference.</td>
+<td>Whether to enable high-performance inference.</td>
 <td><code>bool</code></td>
 <td><code>False</code></td>
 </tr>
 <tr>
 <td><code>use_tensorrt</code></td>
-<td>Whether to use the Paddle Inference TensorRT subgraph engine.</br>
-For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6), and it is recommended to install TensorRT 8.6.1.6.</br>
+<td>Whether to use the Paddle Inference TensorRT subgraph engine. If the model does not support acceleration through TensorRT, setting this flag will not enable acceleration.<br/>
+For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6), and it is recommended to install TensorRT 8.6.1.6.<br/>
 For Paddle with CUDA version 12.6, the compatible TensorRT version is 10.x (x>=5), and it is recommended to install TensorRT 10.5.0.18.
 </td>
 <td><code>bool</code></td>
@@ -213,9 +221,9 @@ For Paddle with CUDA version 12.6, the compatible TensorRT version is 10.x (x>=5
 </tr>
 <tr>
 <td><code>precision</code></td>
-<td>Precision for TensorRT when using the Paddle Inference TensorRT subgraph engine.<br/><b>Options:</b> <code>fp32</code>, <code>fp16</code>, etc.</td>
+<td>Computation precision when using the TensorRT subgraph engine in Paddle Inference.<br/><b>Options:</b><code>"fp32"</code>, <code>"fp16"</code>.</td>
 <td><code>str</code></td>
-<td><code>fp32</code></td>
+<td><code>"fp32"</code></td>
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
@@ -242,12 +250,10 @@ MKL-DNN cache capacity.
 </tbody>
 </table>
 
-
-* Among these, `model_name` must be specified. When `model_name` is provided, the built-in model parameters from PaddleX are used by default. If `model_dir` is also specified, it will use the user-defined model instead.
-
 * Call the `predict()` method of the formula recognition model to perform inference, which returns a result list.  
 Additionally, this module provides the `predict_iter()` method. Both accept the same parameters and return the same result format.  
 The difference is that `predict_iter()` returns a `generator`, which can process and retrieve results step-by-step, suitable for large datasets or memory-efficient scenarios.  
+
 You can choose either method based on your actual needs. The `predict()` method takes parameters `input` and `batch_size`, described as follows:
 
 <table>
@@ -268,7 +274,7 @@ You can choose either method based on your actual needs. The `predict()` method 
   - Local image or PDF file path: <code>/root/data/img.jpg</code>;
   - <b>URL</b> of image or PDF file: e.g., <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/img_rot180_demo.jpg">example</a>;
   - <b>Local directory</b>: directory containing images for prediction, e.g., <code>/root/data/</code> (Note: directories containing PDF files are not supported; PDFs must be specified by exact file path)</li>
-<li><b>List</b>: Elements must be of the above types, e.g., <code>[numpy.ndarray, numpy.ndarray]</code>, <code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>, <code>["/root/data1", "/root/data2"]</code></li>
+<li><b>list</b>: Elements must be of the above types, e.g., <code>[numpy.ndarray, numpy.ndarray]</code>, <code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>, <code>["/root/data1", "/root/data2"]</code></li>
 </ul>
 </td>
 <td><code>Python Var|str|list</code></td>

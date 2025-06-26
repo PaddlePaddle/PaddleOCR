@@ -30,16 +30,17 @@ comments: true
 <th>Top-1 Acc（%）</th>
 <th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
 <th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>模型存储大小（M)</th>
+<th>模型存储大小（MB）</th>
 <th>介绍</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>PP-LCNet_x1_0_doc_ori</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-LCNet_x1_0_doc_ori_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-LCNet_x1_0_doc_ori_pretrained.pdparams">训练模型</a></td>
+<td>PP-LCNet_x1_0_doc_ori</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-LCNet_x1_0_doc_ori_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-LCNet_x1_0_doc_ori_pretrained.pdparams">训练模型</a></td>
 <td>99.06</td>
-<td>2.31 / 0.43</td>
-<td>3.37 / 1.27</td>
+<td>2.62 / 0.59</td>
+<td>3.24 / 1.19</td>
 <td>7</td>
 <td>基于PP-LCNet_x1_0的文档图像分类模型，含有四个类别，即0度，90度，180度，270度</td>
 </tr>
@@ -54,15 +55,20 @@ comments: true
 <tr>
 <th>模型</th><th>模型下载链接</th>
 <th>CER </th>
-<th>模型存储大小（M)</th>
+<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
+<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
+<th>模型存储大小（MB）</th>
 <th>介绍</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>UVDoc</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/UVDoc_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/UVDoc_pretrained.pdparams">训练模型</a></td>
+<td>UVDoc</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/UVDoc_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/UVDoc_pretrained.pdparams">训练模型</a></td>
 <td>0.179</td>
-<td>30.3 M</td>
+<td>19.05 / 19.05</td>
+<td>- / 869.82</td>
+<td>30.3</td>
 <td>高精度文本图像矫正模型</td>
 </tr>
 </tbody>
@@ -80,17 +86,18 @@ comments: true
 <th>mAP(0.5)（%）</th>
 <th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
 <th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>模型存储大小（M）</th>
+<th>模型存储大小（MB）</th>
 <th>介绍</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>PP-DocLayout_plus-L</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayout_plus-L_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocLayout_plus-L_pretrained.pdparams">训练模型</a></td>
+<td>PP-DocLayout_plus-L</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayout_plus-L_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocLayout_plus-L_pretrained.pdparams">训练模型</a></td>
 <td>83.2</td>
-<td>34.6244 / 10.3945</td>
-<td>510.57 / - </td>
-<td>126.01 M</td>
+<td>53.03 / 17.23</td>
+<td>634.62 / 378.32</td>
+<td>126.01</td>
 <td>基于RT-DETR-L在包含中英文论文、多栏杂志、报纸、PPT、合同、书本、试卷、研报、古籍、日文文档、竖版文字文档等场景的自建数据集训练的更高精度版面区域定位模型</td>
 </tr>
 <tr>
@@ -105,32 +112,35 @@ comments: true
 <th>mAP(0.5)（%）</th>
 <th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
 <th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>模型存储大小（M）</th>
+<th>模型存储大小（MB）</th>
 <th>介绍</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>PP-DocLayout-L</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayout-L_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocLayout-L_pretrained.pdparams">训练模型</a></td>
+<td>PP-DocLayout-L</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayout-L_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocLayout-L_pretrained.pdparams">训练模型</a></td>
 <td>90.4</td>
-<td>34.6244 / 10.3945</td>
-<td>510.57 / -</td>
-<td>123.76 M</td>
+<td>33.59 / 33.59</td>
+<td>503.01 / 251.08</td>
+<td>123.76</td>
 <td>基于RT-DETR-L在包含中英文论文、杂志、合同、书本、试卷和研报等场景的自建数据集训练的高精度版面区域定位模型</td>
 </tr>
 <tr>
-<td>PP-DocLayout-M</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayout-M_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocLayout-M_pretrained.pdparams">训练模型</a></td>
+<td>PP-DocLayout-M</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayout-M_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocLayout-M_pretrained.pdparams">训练模型</a></td>
 <td>75.2</td>
-<td>13.3259 / 4.8685</td>
-<td>44.0680 / 44.0680</td>
+<td>13.03 / 4.72</td>
+<td>43.39 / 24.44</td>
 <td>22.578</td>
 <td>基于PicoDet-L在包含中英文论文、杂志、合同、书本、试卷和研报等场景的自建数据集训练的精度效率平衡的版面区域定位模型</td>
 </tr>
 <tr>
-<td>PP-DocLayout-S</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayout-S_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocLayout-S_pretrained.pdparams">训练模型</a></td>
+<td>PP-DocLayout-S</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayout-S_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocLayout-S_pretrained.pdparams">训练模型</a></td>
 <td>70.9</td>
-<td>8.3008 / 2.3794</td>
-<td>10.0623 / 9.9296</td>
+<td>11.54 / 3.86</td>
+<td>18.53 / 6.29</td>
 <td>4.834</td>
 <td>基于PicoDet-S在中英文论文、杂志、合同、书本、试卷和研报等场景上自建数据集训练的高效率版面区域定位模型</td>
 </tr>
@@ -149,32 +159,35 @@ comments: true
 <th>mAP(0.5)（%）</th>
 <th>GPU推理耗时（ms）</th>
 <th>CPU推理耗时 (ms)</th>
-<th>模型存储大小（M）</th>
+<th>模型存储大小（MB）</th>
 <th>介绍</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>PicoDet-S_layout_17cls</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PicoDet-S_layout_17cls_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PicoDet-S_layout_17cls_pretrained.pdparams">训练模型</a></td>
+<td>PicoDet-S_layout_17cls</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PicoDet-S_layout_17cls_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PicoDet-S_layout_17cls_pretrained.pdparams">训练模型</a></td>
 <td>87.4</td>
-<td>13.6</td>
-<td>46.2</td>
+<td>8.80 / 3.62</td>
+<td>17.51 / 6.35</td>
 <td>4.8</td>
 <td>基于PicoDet-S轻量模型在中英文论文、杂志和研报等场景上自建数据集训练的高效率版面区域定位模型</td>
 </tr>
 <tr>
-<td>PicoDet-L_layout_17cls</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PicoDet-L_layout_17cls_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PicoDet-L_layout_17cls_pretrained.pdparams">训练模型</a></td>
+<td>PicoDet-L_layout_17cls</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PicoDet-L_layout_17cls_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PicoDet-L_layout_17cls_pretrained.pdparams">训练模型</a></td>
 <td>89.0</td>
-<td>17.2</td>
-<td>160.2</td>
+<td>12.60 / 10.27</td>
+<td>43.70 / 24.42</td>
 <td>22.6</td>
 <td>基于PicoDet-L在中英文论文、杂志和研报等场景上自建数据集训练的效率精度均衡版面区域定位模型</td>
 </tr>
 <tr>
-<td>RT-DETR-H_layout_17cls</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/RT-DETR-H_layout_17cls_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/RT-DETR-H_layout_17cls_pretrained.pdparams">训练模型</a></td>
+<td>RT-DETR-H_layout_17cls</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/RT-DETR-H_layout_17cls_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/RT-DETR-H_layout_17cls_pretrained.pdparams">训练模型</a></td>
 <td>98.3</td>
-<td>115.1</td>
-<td>3827.2</td>
+<td>115.29 / 101.18</td>
+<td>964.75 / 964.75</td>
 <td>470.2</td>
 <td>基于RT-DETR-H在中英文论文、杂志和研报等场景上自建数据集训练的高精度版面区域定位模型</td>
 </tr>
@@ -190,32 +203,35 @@ comments: true
 <th>mAP(0.5)（%）</th>
 <th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
 <th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>模型存储大小（M）</th>
+<th>模型存储大小（MB）</th>
 <th>介绍</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>PP-DocLayout-L</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayout-L_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocLayout-L_pretrained.pdparams">训练模型</a></td>
+<td>PP-DocLayout-L</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayout-L_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocLayout-L_pretrained.pdparams">训练模型</a></td>
 <td>90.4</td>
-<td>34.6244 / 10.3945</td>
-<td>510.57 / -</td>
-<td>123.76 M</td>
+<td>33.59 / 33.59</td>
+<td>503.01 / 251.08</td>
+<td>123.76</td>
 <td>基于RT-DETR-L在包含中英文论文、杂志、合同、书本、试卷和研报等场景的自建数据集训练的高精度版面区域定位模型</td>
 </tr>
 <tr>
-<td>PP-DocLayout-M</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayout-M_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocLayout-M_pretrained.pdparams">训练模型</a></td>
+<td>PP-DocLayout-M</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayout-M_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocLayout-M_pretrained.pdparams">训练模型</a></td>
 <td>75.2</td>
-<td>13.3259 / 4.8685</td>
-<td>44.0680 / 44.0680</td>
+<td>13.03 / 4.72</td>
+<td>43.39 / 24.44</td>
 <td>22.578</td>
 <td>基于PicoDet-L在包含中英文论文、杂志、合同、书本、试卷和研报等场景的自建数据集训练的精度效率平衡的版面区域定位模型</td>
 </tr>
 <tr>
-<td>PP-DocLayout-S</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayout-S_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocLayout-S_pretrained.pdparams">训练模型</a></td>
+<td>PP-DocLayout-S</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayout-S_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocLayout-S_pretrained.pdparams">训练模型</a></td>
 <td>70.9</td>
-<td>8.3008 / 2.3794</td>
-<td>10.0623 / 9.9296</td>
+<td>11.54 / 3.86</td>
+<td>18.53 / 6.29</td>
 <td>4.834</td>
 <td>基于PicoDet-S在中英文论文、杂志、合同、书本、试卷和研报等场景上自建数据集训练的高效率版面区域定位模型</td>
 </tr>
@@ -230,17 +246,18 @@ comments: true
 <th>mAP(0.5)（%）</th>
 <th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
 <th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>模型存储大小（M）</th>
+<th>模型存储大小（MB）</th>
 <th>介绍</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>PP-DocLayout_plus-L</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayout_plus-L_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocLayout_plus-L_pretrained.pdparams">训练模型</a></td>
+<td>PP-DocLayout_plus-L</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayout_plus-L_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocLayout_plus-L_pretrained.pdparams">训练模型</a></td>
 <td>83.2</td>
-<td>34.6244 / 10.3945</td>
-<td>510.57 / - </td>
-<td>126.01 M</td>
+<td>53.03 / 17.23</td>
+<td>634.62 / 378.32</td>
+<td>126.01</td>
 <td>基于RT-DETR-L在包含中英文论文、多栏杂志、报纸、PPT、合同、书本、试卷、研报、古籍、日文文档、竖版文字文档等场景的自建数据集训练的更高精度版面区域定位模型</td>
 </tr>
 <tr>
@@ -259,66 +276,74 @@ comments: true
 <th>Zh-BLEU(%)</th>
 <th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
 <th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>模型存储大小 (M)</th>
+<th>模型存储大小（MB）</th>
 <th>介绍</th>
 </tr>
-<td>UniMERNet</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/UniMERNet_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/UniMERNet_pretrained.pdparams">训练模型</a></td>
+<tr>
+<td>UniMERNet</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/UniMERNet_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/UniMERNet_pretrained.pdparams">训练模型</a></td>
 <td>85.91</td>
 <td>43.50</td>
-<td>2266.96/-</td>
-<td>-/-</td>
-<td>1.53 G</td>
+<td>1311.84 / 1311.84</td>
+<td>- / 8288.07</td>
+<td>1530</td>
 <td>UniMERNet是由上海AI Lab研发的一款公式识别模型。该模型采用Donut Swin作为编码器，MBartDecoder作为解码器，并通过在包含简单公式、复杂公式、扫描捕捉公式和手写公式在内的一百万数据集上进行训练，大幅提升了模型对真实场景公式的识别准确率</td>
-<tr>
-<td>PP-FormulaNet-S</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet-S_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet-S_pretrained.pdparams">训练模型</a></td>
+</tr>
+<td>PP-FormulaNet-S</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet-S_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet-S_pretrained.pdparams">训练模型</a></td>
 <td>87.00</td>
 <td>45.71</td>
-<td>202.25/-</td>
-<td>-/-</td>
-<td>224 M</td>
+<td>182.25 / 182.25</td>
+<td>- / 254.39</td>
+<td>224</td>
 <td rowspan="2">PP-FormulaNet 是由百度飞桨视觉团队开发的一款先进的公式识别模型，支持5万个常见LateX源码词汇的识别。PP-FormulaNet-S 版本采用了 PP-HGNetV2-B4 作为其骨干网络，通过并行掩码和模型蒸馏等技术，大幅提升了模型的推理速度，同时保持了较高的识别精度，适用于简单印刷公式、跨行简单印刷公式等场景。而 PP-FormulaNet-L 版本则基于 Vary_VIT_B 作为骨干网络，并在大规模公式数据集上进行了深入训练，在复杂公式的识别方面，相较于PP-FormulaNet-S表现出显著的提升，适用于简单印刷公式、复杂印刷公式、手写公式等场景。 </td>
 
 </tr>
-<td>PP-FormulaNet-L</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet-L_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet-L_pretrained.pdparams">训练模型</a></td>
+<td>PP-FormulaNet-L</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet-L_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet-L_pretrained.pdparams">训练模型</a></td>
 <td>90.36</td>
 <td>45.78</td>
-<td>1976.52/-</td>
-<td>-/-</td>
-<td>695 M</td>
-<tr>
-<td>PP-FormulaNet_plus-S</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet_plus-S_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet_plus-S_pretrained.pdparams">训练模型</a></td>
+<td>1482.03 / 1482.03</td>
+<td>- / 3131.54</td>
+<td>695</td>
+</tr>
+<td>PP-FormulaNet_plus-S</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet_plus-S_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet_plus-S_pretrained.pdparams">训练模型</a></td>
 <td>88.71</td>
 <td>53.32</td>
-<td>191.69/-</td>
-<td>-/-</td>
-<td>248 M</td>
+<td>179.20 / 179.20</td>
+<td>- / 260.99</td>
+<td>248</td>
 <td rowspan="3">PP-FormulaNet_plus 是百度飞桨视觉团队在 PP-FormulaNet 的基础上开发的增强版公式识别模型。与原版相比，PP-FormulaNet_plus 在训练中使用了更为丰富的公式数据集，包括中文学位论文、专业书籍、教材试卷以及数学期刊等多种来源。这一扩展显著提升了模型的识别能力。
 
 其中，PP-FormulaNet_plus-M 和 PP-FormulaNet_plus-L 模型新增了对中文公式的支持，并将公式的最大预测 token 数从 1024 扩大至 2560，大幅提升了对复杂公式的识别性能。同时，PP-FormulaNet_plus-S 模型则专注于增强英文公式的识别能力。通过这些改进，PP-FormulaNet_plus 系列模型在处理复杂多样的公式识别任务时表现更加出色。 </td>
 </tr>
 <tr>
-<td>PP-FormulaNet_plus-M</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet_plus-M_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet_plus-M_pretrained.pdparams">训练模型</a></td>
+<td>PP-FormulaNet_plus-M</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet_plus-M_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet_plus-M_pretrained.pdparams">训练模型</a></td>
 <td>91.45</td>
 <td>89.76</td>
-<td>1301.56/-</td>
-<td>-/-</td>
-<td>592 M</td>
+<td>1040.27 / 1040.27</td>
+<td>- / 1615.80</td>
+<td>592</td>
 </tr>
 <tr>
-<td>PP-FormulaNet_plus-L</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet_plus-L_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet_plus-L_pretrained.pdparams">训练模型</a></td>
+<td>PP-FormulaNet_plus-L</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet_plus-L_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet_plus-L_pretrained.pdparams">训练模型</a></td>
 <td>92.22</td>
 <td>90.64</td>
-<td>1745.25/-</td>
-<td>-/-</td>
-<td>698 M</td>
+<td>1476.07 / 1476.07</td>
+<td>- / 3125.58</td>
+<td>698</td>
 </tr>
 <tr>
-<td>LaTeX_OCR_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/LaTeX_OCR_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/LaTeX_OCR_rec_pretrained.pdparams">训练模型</a></td>
+<td>LaTeX_OCR_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/LaTeX_OCR_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/LaTeX_OCR_rec_pretrained.pdparams">训练模型</a></td>
 <td>74.55</td>
 <td>39.96</td>
-<td>1244.61/-</td>
-<td>-/-</td>
-<td>99 M</td>
+<td>1088.89 / 1088.89</td>
+<td>- / -</td>
+<td>99</td>
 <td>LaTeX-OCR是一种基于自回归大模型的公式识别算法，通过采用 Hybrid ViT 作为骨干网络，transformer作为解码器，显著提升了公式识别的准确性。</td>
 </tr>
 </table>
@@ -344,7 +369,7 @@ comments: true
                   <ul>
                       <li>GPU：NVIDIA Tesla T4</li>
                       <li>CPU：Intel Xeon Gold 6271C @ 2.60GHz</li>
-                      <li>其他环境：Ubuntu 20.04 / cuDNN 8.6 / TensorRT 8.5.2.2</li>
+                      <li>其他环境：Ubuntu 20.04 / CUDA 11.8 / cuDNN 8.9 / TensorRT 8.6.1.6</li>
                   </ul>
               </li>
           </ul>
@@ -384,6 +409,8 @@ comments: true
 ## 2. 快速开始
 
 在本地使用公式识别产线前，请确保您已经按照[安装教程](../installation.md)完成了wheel包安装。安装完成后，可以在本地使用命令行体验或 Python 集成。
+
+**请注意，如果在执行过程中遇到程序失去响应、程序异常退出、内存资源耗尽、推理速度极慢等问题，请尝试参考文档调整配置，例如关闭不需要使用的功能或使用更轻量的模型。**
 
 ### 2.1 命令行方式体验
 
@@ -441,7 +468,7 @@ paddleocr formula_recognition_pipeline -i ./general_formula_recognition_001.png 
 </tr>
 <tr>
 <td><code>doc_orientation_classify_batch_size</code></td>
-<td>文档方向分类模型的批处理大小。如果不设置，将默认设置批处理大小为<code>1</code>。</td>
+<td>文档方向分类模型的batch size。如果不设置，将默认设置batch size为<code>1</code>。</td>
 <td><code>int</code></td>
 <td></td>
 </tr>
@@ -459,7 +486,7 @@ paddleocr formula_recognition_pipeline -i ./general_formula_recognition_001.png 
 </tr>
 <tr>
 <td><code>doc_unwarping_batch_size</code></td>
-<td>文本图像矫正模型的批处理大小。如果不设置，将默认设置批处理大小为<code>1</code>。</td>
+<td>文本图像矫正模型的batch size。如果不设置，将默认设置batch size为<code>1</code>。</td>
 <td><code>int</code></td>
 <td></td>
 </tr>
@@ -524,7 +551,7 @@ paddleocr formula_recognition_pipeline -i ./general_formula_recognition_001.png 
 </tr>
 <tr>
 <td><code>layout_detection_batch_size</code></td>
-<td>版面区域检测模型的批处理大小。如果不设置，将默认设置批处理大小为<code>1</code>。</td>
+<td>版面区域检测模型的batch size。如果不设置，将默认设置batch size为<code>1</code>。</td>
 <td><code>int</code></td>
 <td></td>
 </tr>
@@ -547,7 +574,7 @@ paddleocr formula_recognition_pipeline -i ./general_formula_recognition_001.png 
 </tr>
 <tr>
 <td><code>formula_recognition_batch_size</code></td>
-<td>公式识别模型的批处理大小。如果不设置，将默认设置批处理大小为<code>1</code>。</td>
+<td>公式识别模型的batch size。如果不设置，将默认设置batch size为<code>1</code>。</td>
 <td><code>int</code></td>
 <td></td>
 </tr>
@@ -575,8 +602,8 @@ paddleocr formula_recognition_pipeline -i ./general_formula_recognition_001.png 
 </tr>
 <tr>
 <td><code>use_tensorrt</code></td>
-<td>是否启用 Paddle Inference 的 TensorRT 子图引擎。</br>
-对于 CUDA 11.8 版本的飞桨，兼容的 TensorRT 版本为 8.x（x>=6），建议安装 TensorRT 8.6.1.6。</br>
+<td>是否启用 Paddle Inference 的 TensorRT 子图引擎。如果模型不支持通过 TensorRT 加速，即使设置了此标志，也不会使用加速。<br/>
+对于 CUDA 11.8 版本的飞桨，兼容的 TensorRT 版本为 8.x（x>=6），建议安装 TensorRT 8.6.1.6。<br/>
 对于 CUDA 12.6 版本的飞桨，兼容的 TensorRT 版本为 10.x（x>=5），建议安装 TensorRT 10.5.0.18。
 </td>
 <td><code>bool</code></td>
@@ -676,61 +703,61 @@ for res in output:
 <tr>
 <td><code>doc_orientation_classify_model_name</code></td>
 <td>文档方向分类模型的名称。如果设置为<code>None</code>，将会使用产线默认模型。</td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>doc_orientation_classify_model_dir</code></td>
 <td>文档方向分类模型的目录路径。如果设置为<code>None</code>，将会下载官方模型。</td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>doc_orientation_classify_batch_size</code></td>
-<td>文档方向分类模型的批处理大小。如果设置为<code>None</code>，将默认设置批处理大小为<code>1</code>。</td>
-<td><code>int</code></td>
+<td>文档方向分类模型的batch size。如果设置为<code>None</code>，将默认设置batch size为<code>1</code>。</td>
+<td><code>int|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>doc_unwarping_model_name</code></td>
 <td>文本图像矫正模型的名称。如果设置为<code>None</code>，将会使用产线默认模型。</td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>doc_unwarping_model_dir</code></td>
 <td>文本图像矫正模型的目录路径。如果设置为<code>None</code>，将会下载官方模型。</td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>doc_unwarping_batch_size</code></td>
-<td>文本图像矫正模型的批处理大小。如果设置为<code>None</code>，将默认设置批处理大小为<code>1</code>。</td>
-<td><code>int</code></td>
+<td>文本图像矫正模型的batch size。如果设置为<code>None</code>，将默认设置batch size为<code>1</code>。</td>
+<td><code>int|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
 <td>是否加载并使用文档方向分类模块。如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
-<td><code>bool</code></td>
+<td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
 <td>是否加载并使用文本图像矫正模块。如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
-<td><code>bool</code></td>
+<td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>layout_detection_model_name</code></td>
 <td>版面区域检测模型的名称。如果设置为<code>None</code>，将会使用产线默认模型。</td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>layout_detection_model_dir</code></td>
 <td>版面区域检测模型的目录路径。如果设置为<code>None</code>，将会下载官方模型。</td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
@@ -741,13 +768,13 @@ for res in output:
 <li><b>dict</b>：dict的key为<b>int</b>类型，代表<code>cls_id</code>，val为<b>float</b>类型阈值。如 <code>{0: 0.45，2: 0.48，7: 0.4}</code>，表示对cls_id为0的类别应用阈值0.45、cls_id为2的类别应用阈值0.48、cls_id为7的类别应用阈值0.4；</li>
 <li><b>None</b>：不指定，将使用默认值：0.5。</li>
 </td>
-<td><code>float|dict</code></td>
+<td><code>float|dict|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>layout_nms</code></td>
 <td>版面检测是否使用后处理NMS。如果不设置，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
-<td><code>bool</code></td>
+<td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
@@ -760,7 +787,7 @@ for res in output:
 <li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为 <code>1.0</code>。</li>
 </ul>
 </td>
-<td><code>float|Tuple[float,float]|dict</code></td>
+<td><code>float|Tuple[float,float]|dict|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
@@ -772,37 +799,37 @@ for res in output:
 <li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为 <code>large</code>。</li>
 </ul>
 </td>
-<td><code>str|dict</code></td>
+<td><code>str|dict|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>layout_detection_batch_size</code></td>
-<td>版面区域检测模型的批处理大小。如果设置为<code>None</code>，将默认设置批处理大小为<code>1</code>。</td>
-<td><code>int</code></td>
+<td>版面区域检测模型的batch size。如果设置为<code>None</code>，将默认设置batch size为<code>1</code>。</td>
+<td><code>int|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_layout_detection</code></td>
 <td>是否加载并使用版面区域检测模块。如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
-<td><code>bool</code></td>
+<td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>formula_recognition_model_name</code></td>
 <td>公式识别模型的名称。如果设置为<code>None</code>，将会使用产线默认模型。</td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>formula_recognition_model_dir</code></td>
 <td>公式识别模型的目录路径。如果设置为<code>None</code>，将会下载官方模型。</td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>formula_recognition_batch_size</code></td>
-<td>公式识别模型的批处理大小。如果设置为<code>None</code>，将默认设置批处理大小为<code>1</code>。</td>
-<td><code>int</code></td>
+<td>公式识别模型的batch size。如果设置为<code>None</code>，将默认设置batch size为<code>1</code>。</td>
+<td><code>int|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
@@ -818,7 +845,7 @@ for res in output:
 <li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化时，会优先使用本地的 GPU 0号设备，如果没有，则使用 CPU 设备。</li>
 </ul>
 </td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
@@ -829,8 +856,8 @@ for res in output:
 </tr>
 <tr>
 <td><code>use_tensorrt</code></td>
-<td>是否启用 Paddle Inference 的 TensorRT 子图引擎。</br>
-对于 CUDA 11.8 版本的飞桨，兼容的 TensorRT 版本为 8.x（x>=6），建议安装 TensorRT 8.6.1.6。</br>
+<td>是否启用 Paddle Inference 的 TensorRT 子图引擎。如果模型不支持通过 TensorRT 加速，即使设置了此标志，也不会使用加速。<br/>
+对于 CUDA 11.8 版本的飞桨，兼容的 TensorRT 版本为 8.x（x>=6），建议安装 TensorRT 8.6.1.6。<br/>
 对于 CUDA 12.6 版本的飞桨，兼容的 TensorRT 版本为 10.x（x>=5），建议安装 TensorRT 10.5.0.18。
 </td>
 <td><code>bool</code></td>
@@ -866,7 +893,7 @@ MKL-DNN 缓存容量。
 <tr>
 <td><code>paddlex_config</code></td>
 <td>PaddleX产线配置文件路径。</td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 </tbody>
@@ -893,7 +920,7 @@ MKL-DNN 缓存容量。
 <ul>
 <li><b>Python Var</b>：如 <code>numpy.ndarray</code> 表示的图像数据；</li>
 <li><b>str</b>：如图像文件或者PDF文件的本地路径：<code>/root/data/img.jpg</code>；<b>如URL链接</b>，如图像文件或PDF文件的网络URL：<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/demo_image/pipelines/general_formula_recognition_001.png">示例</a>；<b>如本地目录</b>，该目录下需包含待预测图像，如本地路径：<code>/root/data/</code>(当前不支持目录中包含PDF文件的预测，PDF文件需要指定到具体文件路径)；</li>
-<li><b>List</b>：列表元素需为上述类型数据，如<code>[numpy.ndarray, numpy.ndarray]</code>，<code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>，<code>["/root/data1", "/root/data2"]。</code></li>
+<li><b>list</b>：列表元素需为上述类型数据，如<code>[numpy.ndarray, numpy.ndarray]</code>，<code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>，<code>["/root/data1", "/root/data2"]。</code></li>
 </ul>
 </td>
 <td><code>Python Var|str|list</code></td>
@@ -902,42 +929,42 @@ MKL-DNN 缓存容量。
 <tr>
 <td><code>use_layout_detection</code></td>
 <td>是否在推理时使用文档区域检测模块。</td>
-<td><code>bool</code></td>
+<td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
 <td>是否在推理时使用文档方向分类模块。</td>
-<td><code>bool</code></td>
+<td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
 <td>是否在推理时使用文本图像矫正模块。</td>
-<td><code>bool</code></td>
+<td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>layout_threshold</code></td>
-<td>与实例化时的参数相同。</td>
-<td><code>float|dict</code></td>
+<td>参数含义与实例化参数基本相同。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td><code>float|dict|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>layout_nms</code></td>
-<td>与实例化时的参数相同。</td>
-<td><code>bool</code></td>
+<td>参数含义与实例化参数基本相同。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>layout_unclip_ratio</code></td>
-<td>与实例化时的参数相同。</td>
-<td><code>float|Tuple[float,float]|dict</code></td>
+<td>参数含义与实例化参数基本相同。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td><code>float|Tuple[float,float]|dict|None</code></td>
 <td><code>None</code></td>
 <tr>
 <td><code>layout_merge_bboxes_mode</code></td>
-<td>与实例化时的参数相同。</td>
-<td><code>str|dict</code></td>
+<td>参数含义与实例化参数基本相同。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td><code>str|dict|None</code></td>
 <td><code>None</code></td>
 </tr>
 </tr></tr></tbody>

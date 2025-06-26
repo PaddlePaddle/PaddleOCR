@@ -31,16 +31,17 @@ OCR（光学字符识别，Optical Character Recognition）是一种将图像中
 <th>Top-1 Acc（%）</th>
 <th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
 <th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>模型存储大小（M)</th>
+<th>模型存储大小（MB）</th>
 <th>介绍</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>PP-LCNet_x1_0_doc_ori</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-LCNet_x1_0_doc_ori_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-LCNet_x1_0_doc_ori_pretrained.pdparams">训练模型</a></td>
+<td>PP-LCNet_x1_0_doc_ori</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-LCNet_x1_0_doc_ori_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-LCNet_x1_0_doc_ori_pretrained.pdparams">训练模型</a></td>
 <td>99.06</td>
-<td>2.31 / 0.43</td>
-<td>3.37 / 1.27</td>
+<td>2.62 / 0.59</td>
+<td>3.24 / 1.19</td>
 <td>7</td>
 <td>基于PP-LCNet_x1_0的文档图像分类模型，含有四个类别，即0度，90度，180度，270度</td>
 </tr>
@@ -55,15 +56,20 @@ OCR（光学字符识别，Optical Character Recognition）是一种将图像中
 <tr>
 <th>模型</th><th>模型下载链接</th>
 <th>CER </th>
-<th>模型存储大小（M)</th>
+<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
+<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
+<th>模型存储大小（MB）</th>
 <th>介绍</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>UVDoc</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/UVDoc_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/UVDoc_pretrained.pdparams">训练模型</a></td>
+<td>UVDoc</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/UVDoc_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/UVDoc_pretrained.pdparams">训练模型</a></td>
 <td>0.179</td>
-<td>30.3 M</td>
+<td>19.05 / 19.05</td>
+<td>- / 869.82</td>
+<td>30.3</td>
 <td>高精度文本图像矫正模型</td>
 </tr>
 </tbody>
@@ -80,24 +86,26 @@ OCR（光学字符识别，Optical Character Recognition）是一种将图像中
 <th>Top-1 Acc（%）</th>
 <th>GPU推理耗时（ms）</th>
 <th>CPU推理耗时 (ms)</th>
-<th>模型存储大小（M）</th>
+<th>模型存储大小（MB）</th>
 <th>介绍</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>PP-LCNet_x0_25_textline_ori</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-LCNet_x0_25_textline_ori_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-LCNet_x0_25_textline_ori_pretrained.pdparams">训练模型</a></td>
+<td>PP-LCNet_x0_25_textline_ori</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-LCNet_x0_25_textline_ori_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-LCNet_x0_25_textline_ori_pretrained.pdparams">训练模型</a></td>
 <td>98.85</td>
-<td>-</td>
-<td>-</td>
+<td>2.16 / 0.41</td>
+<td>2.37 / 0.73</td>
 <td>0.96</td>
 <td>基于PP-LCNet_x0_25的文本行分类模型，含有两个类别，即0度，180度</td>
 </tr>
 <tr>
-<td>PP-LCNet_x1_0_textline_ori</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-LCNet_x1_0_textline_ori_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-LCNet_x1_0_textline_ori_pretrained.pdparams">训练模型</a></td>
+<td>PP-LCNet_x1_0_textline_ori</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-LCNet_x1_0_textline_ori_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-LCNet_x1_0_textline_ori_pretrained.pdparams">训练模型</a></td>
 <td>99.42</td>
-<td>-</td>
-<td>-</td>
+<td>- / -</td>
+<td>2.98 / 2.98</td>
 <td>6.5</td>
 <td>基于PP-LCNet_x1_0的文本行分类模型，含有两个类别，即0度，180度</td>
 </tr>
@@ -114,40 +122,44 @@ OCR（光学字符识别，Optical Character Recognition）是一种将图像中
 <th>检测Hmean（%）</th>
 <th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
 <th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>模型存储大小（M)</th>
+<th>模型存储大小（MB）</th>
 <th>介绍</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>PP-OCRv5_server_det</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv5_server_det_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_server_det_pretrained.pdparams">训练模型</a></td>
+<td>PP-OCRv5_server_det</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv5_server_det_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_server_det_pretrained.pdparams">训练模型</a></td>
 <td>83.8</td>
 <td>89.55 / 70.19</td>
-<td>371.65 / 371.65</td>
+<td>383.15 / 383.15</td>
 <td>84.3</td>
 <td>PP-OCRv5 的服务端文本检测模型，精度更高，适合在性能较好的服务器上部署</td>
 </tr>
 <tr>
-<td>PP-OCRv5_mobile_det</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv5_mobile_det_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_mobile_det_pretrained.pdparams">训练模型</a></td>
+<td>PP-OCRv5_mobile_det</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv5_mobile_det_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_mobile_det_pretrained.pdparams">训练模型</a></td>
 <td>79.0</td>
-<td>8.79 / 3.13</td>
-<td>51.00 / 28.58</td>
+<td>10.67 / 6.36</td>
+<td>57.77 / 28.15</td>
 <td>4.7</td>
 <td>PP-OCRv5 的移动端文本检测模型，效率更高，适合在端侧设备部署</td>
 </tr>
 <tr>
-<td>PP-OCRv4_server_det</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_server_det_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_det_pretrained.pdparams">训练模型</a></td>
+<td>PP-OCRv4_server_det</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_server_det_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_det_pretrained.pdparams">训练模型</a></td>
 <td>69.2</td>
-<td>83.34 / 80.91</td>
-<td>442.58 / 442.58</td>
+<td>127.82 / 98.87</td>
+<td>585.95 / 489.77</td>
 <td>109</td>
 <td>PP-OCRv4 的服务端文本检测模型，精度更高，适合在性能较好的服务器上部署</td>
 </tr>
 <tr>
-<td>PP-OCRv4_mobile_det</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_mobile_det_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_mobile_det_pretrained.pdparams">训练模型</a></td>
+<td>PP-OCRv4_mobile_det</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_mobile_det_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_mobile_det_pretrained.pdparams">训练模型</a></td>
 <td>63.8</td>
-<td>8.79 / 3.13</td>
-<td>51.00 / 28.58</td>
+<td>9.87 / 4.17</td>
+<td>56.60 / 20.79</td>
 <td>4.7</td>
 <td>PP-OCRv4 的移动端文本检测模型，效率更高，适合在端侧设备部署</td>
 </tr>
@@ -163,58 +175,64 @@ OCR（光学字符识别，Optical Character Recognition）是一种将图像中
 <th>识别 Avg Accuracy(%)</th>
 <th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
 <th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>模型存储大小（M）</th>
+<th>模型存储大小（MB）</th>
 <th>介绍</th>
 </tr>
 <tr>
-<td>PP-OCRv5_server_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+<td>PP-OCRv5_server_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
 PP-OCRv5_server_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_server_rec_pretrained.pdparams">训练模型</a></td>
 <td>86.38</td>
-<td> 8.45/2.36 </td>
-<td> 122.69/122.69 </td>
-<td>81 M</td>
+<td>8.46 / 2.36</td>
+<td>31.21 / 31.21</td>
+<td>81</td>
 <td rowspan="2">PP-OCRv5_rec 是新一代文本识别模型。该模型致力于以单一模型高效、精准地支持简体中文、繁体中文、英文、日文四种主要语言，以及手写、竖版、拼音、生僻字等复杂文本场景的识别。在保持识别效果的同时，兼顾推理速度和模型鲁棒性，为各种场景下的文档理解提供高效、精准的技术支撑。</td>
 </tr>
 <tr>
-<td>PP-OCRv5_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+<td>PP-OCRv5_mobile_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
 PP-OCRv5_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_mobile_rec_pretrained.pdparams">训练模型</a></td>
 <td>81.29</td>
-<td> 1.46/5.43 </td>
-<td> 5.32/91.79 </td>
-<td>16 M</td>
+<td>5.43 / 1.46</td>
+<td>21.20 / 5.32</td>
+<td>16</td>
 </tr>
 <tr>
-<td>PP-OCRv4_server_rec_doc</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+<td>PP-OCRv4_server_rec_doc</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
 PP-OCRv4_server_rec_doc_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_rec_doc_pretrained.pdparams">训练模型</a></td>
-<td>81.53</td>
-<td>6.65 / 2.38</td>
-<td>32.92 / 32.92</td>
-<td>74.7 M</td>
+<td>86.58</td>
+<td>8.69 / 2.78</td>
+<td>37.93 / 37.93</td>
+<td>182</td>
 <td>PP-OCRv4_server_rec_doc是在PP-OCRv4_server_rec的基础上，在更多中文文档数据和PP-OCR训练数据的混合数据训练而成，增加了部分繁体字、日文、特殊字符的识别能力，可支持识别的字符为1.5万+，除文档相关的文字识别能力提升外，也同时提升了通用文字的识别能力</td>
 </tr>
 <tr>
-<td>PP-OCRv4_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_mobile_rec_pretrained.pdparams">训练模型</a></td>
+<td>PP-OCRv4_mobile_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_mobile_rec_pretrained.pdparams">训练模型</a></td>
 <td>78.74</td>
-<td>4.82 / 1.20</td>
-<td>16.74 / 4.64</td>
-<td>10.6 M</td>
+<td>5.26 / 1.12</td>
+<td>17.48 / 3.61</td>
+<td>10.5</td>
 <td>PP-OCRv4的轻量级识别模型，推理效率高，可以部署在包含端侧设备的多种硬件设备中</td>
 </tr>
 <tr>
-<td>PP-OCRv4_server_rec </td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_server_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_rec_pretrained.pdparams">训练模型</a></td>
-<td>80.61 </td>
-<td>6.58 / 2.43</td>
-<td>33.17 / 33.17</td>
-<td>71.2 M</td>
+<td>PP-OCRv4_server_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_server_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_rec_pretrained.pdparams">训练模型</a></td>
+<td>85.19</td>
+<td>8.75 / 2.49</td>
+<td>36.93 / 36.93</td>
+<td>173</td>
 <td>PP-OCRv4的服务器端模型，推理精度高，可以部署在多种不同的服务器上</td>
 </tr>
 <tr>
-<td>en_PP-OCRv4_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+<td>en_PP-OCRv4_mobile_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
 en_PP-OCRv4_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/en_PP-OCRv4_mobile_rec_pretrained.pdparams">训练模型</a></td>
 <td>70.39</td>
-<td>4.81 / 0.75</td>
-<td>16.10 / 5.31</td>
-<td>6.8 M</td>
+<td>4.81 / 1.23</td>
+<td>17.20 / 4.18</td>
+<td>7.5</td>
 <td>基于PP-OCRv4识别模型训练得到的超轻量英文识别模型，支持英文、数字识别</td>
 </tr>
 </table>
@@ -234,31 +252,33 @@ en_PP-OCRv4_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model
 <th>日文识别 Avg Accuracy(%)</th>
 <th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
 <th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>模型存储大小（M）</th>
+<th>模型存储大小（MB）</th>
 <th>介绍</th>
 </tr>
 <tr>
-<td>PP-OCRv5_server_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+<td>PP-OCRv5_server_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
 PP-OCRv5_server_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_server_rec_pretrained.pdparams">训练模型</a></td>
 <td>86.38</td>
 <td>64.70</td>
 <td>93.29</td>
 <td>60.35</td>
-<td> 1.46/5.43 </td>
-<td> 5.32/91.79 </td>
-<td>81 M</td>
+<td>8.46 / 2.36</td>
+<td>31.21 / 31.21</td>
+<td>81</td>
 <td rowspan="2">PP-OCRv5_rec 是新一代文本识别模型。该模型致力于以单一模型高效、精准地支持简体中文、繁体中文、英文、日文四种主要语言，以及手写、竖版、拼音、生僻字等复杂文本场景的识别。在保持识别效果的同时，兼顾推理速度和模型鲁棒性，为各种场景下的文档理解提供高效、精准的技术支撑。</td>
 </tr>
 <tr>
-<td>PP-OCRv5_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+<td>PP-OCRv5_mobile_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
 PP-OCRv5_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_mobile_rec_pretrained.pdparams">训练模型</a></td>
 <td>81.29</td>
 <td>66.00</td>
 <td>83.55</td>
 <td>54.65</td>
-<td> 1.46/5.43 </td>
-<td> 5.32/91.79 </td>
-<td>16 M</td>
+<td>5.43 / 1.46</td>
+<td>21.20 / 5.32</td>
+<td>16</td>
 </tr>
 </table>
 
@@ -269,41 +289,45 @@ PP-OCRv5_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ec
 <th>识别 Avg Accuracy(%)</th>
 <th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
 <th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>模型存储大小（M）</th>
+<th>模型存储大小（MB）</th>
 <th>介绍</th>
 </tr>
 <tr>
-<td>PP-OCRv4_server_rec_doc</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+<td>PP-OCRv4_server_rec_doc</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
 PP-OCRv4_server_rec_doc_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_rec_doc_pretrained.pdparams">训练模型</a></td>
-<td>81.53</td>
-<td>6.65 / 2.38</td>
-<td>32.92 / 32.92</td>
-<td>74.7 M</td>
+<td>86.58</td>
+<td>8.69 / 2.78</td>
+<td>37.93 / 37.93</td>
+<td>182</td>
 <td>PP-OCRv4_server_rec_doc是在PP-OCRv4_server_rec的基础上，在更多中文文档数据和PP-OCR训练数据的混合数据训练而成，增加了部分繁体字、日文、特殊字符的识别能力，可支持识别的字符为1.5万+，除文档相关的文字识别能力提升外，也同时提升了通用文字的识别能力</td>
 </tr>
 <tr>
-<td>PP-OCRv4_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_mobile_rec_pretrained.pdparams">训练模型</a></td>
+<td>PP-OCRv4_mobile_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_mobile_rec_pretrained.pdparams">训练模型</a></td>
 <td>78.74</td>
-<td>4.82 / 1.20</td>
-<td>16.74 / 4.64</td>
-<td>10.6 M</td>
+<td>5.26 / 1.12</td>
+<td>17.48 / 3.61</td>
+<td>10.5</td>
 <td>PP-OCRv4的轻量级识别模型，推理效率高，可以部署在包含端侧设备的多种硬件设备中</td>
 </tr>
 <tr>
-<td>PP-OCRv4_server_rec </td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_server_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_rec_pretrained.pdparams">训练模型</a></td>
-<td>80.61 </td>
-<td>6.58 / 2.43</td>
-<td>33.17 / 33.17</td>
-<td>71.2 M</td>
+<td>PP-OCRv4_server_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_server_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_rec_pretrained.pdparams">训练模型</a></td>
+<td>85.19</td>
+<td>8.75 / 2.49</td>
+<td>36.93 / 36.93</td>
+<td>173</td>
 <td>PP-OCRv4的服务器端模型，推理精度高，可以部署在多种不同的服务器上</td>
 </tr>
 <tr>
-<td>PP-OCRv3_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+<td>PP-OCRv3_mobile_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
 PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv3_mobile_rec_pretrained.pdparams">训练模型</a></td>
 <td>72.96</td>
-<td>5.87 / 1.19</td>
-<td>9.07 / 4.28</td>
-<td>9.2 M</td>
+<td>3.89 / 1.16</td>
+<td>8.72 / 3.56</td>
+<td>10.3</td>
 <td>PP-OCRv3的轻量级识别模型，推理效率高，可以部署在包含端侧设备的多种硬件设备中</td>
 </tr>
 </table>
@@ -314,15 +338,16 @@ PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ec
 <th>识别 Avg Accuracy(%)</th>
 <th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
 <th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>模型存储大小（M）</th>
+<th>模型存储大小（MB）</th>
 <th>介绍</th>
 </tr>
 <tr>
-<td>ch_SVTRv2_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/ch_SVTRv2_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/ch_SVTRv2_rec_pretrained.pdparams">训练模型</a></td>
+<td>ch_SVTRv2_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/ch_SVTRv2_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/ch_SVTRv2_rec_pretrained.pdparams">训练模型</a></td>
 <td>68.81</td>
-<td>8.08 / 2.74</td>
-<td>50.17 / 42.50</td>
-<td>73.9 M</td>
+<td>10.38 / 8.31</td>
+<td>66.52 / 30.83</td>
+<td>80.5</td>
 <td rowspan="1">
 SVTRv2 是一种由复旦大学视觉与学习实验室（FVL）的OpenOCR团队研发的服务端文本识别模型，其在PaddleOCR算法模型挑战赛 - 赛题一：OCR端到端识别任务中荣获一等奖，A榜端到端识别精度相比PP-OCRv4提升6%。
 </td>
@@ -335,15 +360,16 @@ SVTRv2 是一种由复旦大学视觉与学习实验室（FVL）的OpenOCR团队
 <th>识别 Avg Accuracy(%)</th>
 <th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
 <th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>模型存储大小（M）</th>
+<th>模型存储大小（MB）</th>
 <th>介绍</th>
 </tr>
 <tr>
-<td>ch_RepSVTR_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/ch_RepSVTR_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/ch_RepSVTR_rec_pretrained.pdparams">训练模型</a></td>
+<td>ch_RepSVTR_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/ch_RepSVTR_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/ch_RepSVTR_rec_pretrained.pdparams">训练模型</a></td>
 <td>65.07</td>
-<td>5.93 / 1.62</td>
-<td>20.73 / 7.32</td>
-<td>22.1 M</td>
+<td>6.29 / 1.57</td>
+<td>20.64 / 5.40</td>
+<td>48.8</td>
 <td rowspan="1">    RepSVTR 文本识别模型是一种基于SVTRv2 的移动端文本识别模型，其在PaddleOCR算法模型挑战赛 - 赛题一：OCR端到端识别任务中荣获一等奖，B榜端到端识别精度相比PP-OCRv4提升2.5%，推理速度持平。</td>
 </tr>
 </table>
@@ -355,25 +381,27 @@ SVTRv2 是一种由复旦大学视觉与学习实验室（FVL）的OpenOCR团队
 <th>识别 Avg Accuracy(%)</th>
 <th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
 <th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>模型存储大小（M）</th>
+<th>模型存储大小（MB）</th>
 <th>介绍</th>
 </tr>
 <tr>
-<td>en_PP-OCRv4_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+<td>en_PP-OCRv4_mobile_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
 en_PP-OCRv4_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/en_PP-OCRv4_mobile_rec_pretrained.pdparams">训练模型</a></td>
 <td> 70.39</td>
-<td>4.81 / 0.75</td>
-<td>16.10 / 5.31</td>
-<td>6.8 M</td>
+<td>4.81 / 1.23</td>
+<td>17.20 / 4.18</td>
+<td>7.5</td>
 <td>基于PP-OCRv4识别模型训练得到的超轻量英文识别模型，支持英文、数字识别</td>
 </tr>
 <tr>
-<td>en_PP-OCRv3_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+<td>en_PP-OCRv3_mobile_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
 en_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/en_PP-OCRv3_mobile_rec_pretrained.pdparams">训练模型</a></td>
 <td>70.69</td>
-<td>5.44 / 0.75</td>
-<td>8.65 / 5.57</td>
-<td>7.8 M </td>
+<td>3.56 / 0.78</td>
+<td>8.44 / 5.78</td>
+<td>17.3</td>
 <td>基于PP-OCRv3识别模型训练得到的超轻量英文识别模型，支持英文、数字识别</td>
 </tr>
 </table>
@@ -386,97 +414,107 @@ en_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model
 <th>识别 Avg Accuracy(%)</th>
 <th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
 <th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>模型存储大小（M）</th>
+<th>模型存储大小（MB）</th>
 <th>介绍</th>
 </tr>
 <tr>
-<td>korean_PP-OCRv3_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+<td>korean_PP-OCRv3_mobile_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
 korean_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/korean_PP-OCRv3_mobile_rec_pretrained.pdparams">训练模型</a></td>
 <td>60.21</td>
-<td>5.40 / 0.97</td>
-<td>9.11 / 4.05</td>
-<td>8.6 M</td>
+<td>3.73 / 0.98</td>
+<td>8.76 / 2.91</td>
+<td>9.6</td>
 <td>基于PP-OCRv3识别模型训练得到的超轻量韩文识别模型，支持韩文、数字识别</td>
 </tr>
 <tr>
-<td>japan_PP-OCRv3_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+<td>japan_PP-OCRv3_mobile_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
 japan_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/japan_PP-OCRv3_mobile_rec_pretrained.pdparams">训练模型</a></td>
 <td>45.69</td>
-<td>5.70 / 1.02</td>
-<td>8.48 / 4.07</td>
-<td>8.8 M </td>
+<td>3.86 / 1.01</td>
+<td>8.62 / 2.92</td>
+<td>9.8</td>
 <td>基于PP-OCRv3识别模型训练得到的超轻量日文识别模型，支持日文、数字识别</td>
 </tr>
 <tr>
-<td>chinese_cht_PP-OCRv3_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+<td>chinese_cht_PP-OCRv3_mobile_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
 chinese_cht_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/chinese_cht_PP-OCRv3_mobile_rec_pretrained.pdparams">训练模型</a></td>
 <td>82.06</td>
-<td>5.90 / 1.28</td>
-<td>9.28 / 4.34</td>
-<td>9.7 M </td>
+<td>3.90 / 1.16</td>
+<td>9.24 / 3.18</td>
+<td>10.8</td>
 <td>基于PP-OCRv3识别模型训练得到的超轻量繁体中文识别模型，支持繁体中文、数字识别</td>
 </tr>
 <tr>
-<td>te_PP-OCRv3_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+<td>te_PP-OCRv3_mobile_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
 te_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/te_PP-OCRv3_mobile_rec_pretrained.pdparams">训练模型</a></td>
 <td>95.88</td>
-<td>5.42 / 0.82</td>
-<td>8.10 / 6.91</td>
-<td>7.8 M </td>
+<td>3.59 / 0.81</td>
+<td>8.28 / 6.21</td>
+<td>8.7</td>
 <td>基于PP-OCRv3识别模型训练得到的超轻量泰卢固文识别模型，支持泰卢固文、数字识别</td>
 </tr>
 <tr>
-<td>ka_PP-OCRv3_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+<td>ka_PP-OCRv3_mobile_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
 ka_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/ka_PP-OCRv3_mobile_rec_pretrained.pdparams">训练模型</a></td>
 <td>96.96</td>
-<td>5.25 / 0.79</td>
-<td>9.09 / 3.86</td>
-<td>8.0 M </td>
+<td>3.49 / 0.89</td>
+<td>8.63 / 2.77</td>
+<td>17.4</td>
 <td>基于PP-OCRv3识别模型训练得到的超轻量卡纳达文识别模型，支持卡纳达文、数字识别</td>
 </tr>
 <tr>
-<td>ta_PP-OCRv3_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+<td>ta_PP-OCRv3_mobile_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
 ta_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/ta_PP-OCRv3_mobile_rec_pretrained.pdparams">训练模型</a></td>
 <td>76.83</td>
-<td>5.23 / 0.75</td>
-<td>10.13 / 4.30</td>
-<td>8.0 M </td>
+<td>3.49 / 0.86</td>
+<td>8.35 / 3.41</td>
+<td>8.7</td>
 <td>基于PP-OCRv3识别模型训练得到的超轻量泰米尔文识别模型，支持泰米尔文、数字识别</td>
 </tr>
 <tr>
-<td>latin_PP-OCRv3_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+<td>latin_PP-OCRv3_mobile_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
 latin_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/latin_PP-OCRv3_mobile_rec_pretrained.pdparams">训练模型</a></td>
 <td>76.93</td>
-<td>5.20 / 0.79</td>
-<td>8.83 / 7.15</td>
-<td>7.8 M</td>
+<td>3.53 / 0.78</td>
+<td>8.50 / 6.83</td>
+<td>8.7</td>
 <td>基于PP-OCRv3识别模型训练得到的超轻量拉丁文识别模型，支持拉丁文、数字识别</td>
 </tr>
 <tr>
-<td>arabic_PP-OCRv3_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+<td>arabic_PP-OCRv3_mobile_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
 arabic_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/arabic_PP-OCRv3_mobile_rec_pretrained.pdparams">训练模型</a></td>
 <td>73.55</td>
-<td>5.35 / 0.79</td>
-<td>8.80 / 4.56</td>
-<td>7.8 M</td>
+<td>3.60 / 0.83</td>
+<td>8.44 / 4.69</td>
+<td>17.3</td>
 <td>基于PP-OCRv3识别模型训练得到的超轻量阿拉伯字母识别模型，支持阿拉伯字母、数字识别</td>
 </tr>
 <tr>
-<td>cyrillic_PP-OCRv3_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+<td>cyrillic_PP-OCRv3_mobile_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
 cyrillic_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/cyrillic_PP-OCRv3_mobile_rec_pretrained.pdparams">训练模型</a></td>
 <td>94.28</td>
-<td>5.23 / 0.76</td>
-<td>8.89 / 3.88</td>
-<td>7.9 M  </td>
+<td>3.56 / 0.79</td>
+<td>8.22 / 2.76</td>
+<td>8.7</td>
 <td>基于PP-OCRv3识别模型训练得到的超轻量斯拉夫字母识别模型，支持斯拉夫字母、数字识别</td>
 </tr>
 <tr>
-<td>devanagari_PP-OCRv3_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+<td>devanagari_PP-OCRv3_mobile_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
 devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/devanagari_PP-OCRv3_mobile_rec_pretrained.pdparams">训练模型</a></td>
 <td>96.44</td>
-<td>5.22 / 0.79</td>
-<td>8.56 / 4.06</td>
-<td>7.9 M</td>
+<td>3.60 / 0.78</td>
+<td>6.95 / 2.87</td>
+<td>8.7</td>
 <td>基于PP-OCRv3识别模型训练得到的超轻量梵文字母识别模型，支持梵文字母、数字识别</td>
 </tr>
 </table>
@@ -507,7 +545,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://padd
                   <ul>
                       <li>GPU：NVIDIA Tesla T4</li>
                       <li>CPU：Intel Xeon Gold 6271C @ 2.60GHz</li>
-                      <li>其他环境：Ubuntu 20.04 / cuDNN 8.6 / TensorRT 8.5.2.2</li>
+                      <li>其他环境：Ubuntu 20.04 / CUDA 11.8 / cuDNN 8.9 / TensorRT 8.6.1.6</li>
                   </ul>
               </li>
           </ul>
@@ -548,6 +586,8 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://padd
 ## 2. 快速开始
 
 在本地使用通用OCR产线前，请确保您已经按照[安装教程](../installation.md)完成了wheel包安装。安装完成后，可以在本地使用命令行体验或 Python 集成。
+
+**请注意，如果在执行过程中遇到程序失去响应、程序异常退出、内存资源耗尽、推理速度极慢等问题，请尝试参考文档调整配置，例如关闭不需要使用的功能或使用更轻量的模型。**
 
 ### 2.1 命令行方式
 
@@ -640,7 +680,7 @@ paddleocr ocr -i ./general_ocr_002.png --ocr_version PP-OCRv4
 </tr>
 <tr>
 <td><code>textline_orientation_batch_size</code></td>
-<td>文本行方向模型的批处理大小。如果不设置，将默认设置批处理大小为<code>1</code>。</td>
+<td>文本行方向模型的batch size。如果不设置，将默认设置batch size为<code>1</code>。</td>
 <td><code>int</code></td>
 <td></td>
 </tr>
@@ -658,7 +698,7 @@ paddleocr ocr -i ./general_ocr_002.png --ocr_version PP-OCRv4
 </tr>
 <tr>
 <td><code>text_recognition_batch_size</code></td>
-<td>文本识别模型的批处理大小。如果不设置，将默认设置批处理大小为<code>1</code>。</td>
+<td>文本识别模型的batch size。如果不设置，将默认设置batch size为<code>1</code>。</td>
 <td><code>int</code></td>
 <td></td>
 </tr>
@@ -852,8 +892,8 @@ paddleocr ocr -i ./general_ocr_002.png --ocr_version PP-OCRv4
 </tr>
 <tr>
 <td><code>use_tensorrt</code></td>
-<td>是否启用 Paddle Inference 的 TensorRT 子图引擎。</br>
-对于 CUDA 11.8 版本的飞桨，兼容的 TensorRT 版本为 8.x（x>=6），建议安装 TensorRT 8.6.1.6。</br>
+<td>是否启用 Paddle Inference 的 TensorRT 子图引擎。如果模型不支持通过 TensorRT 加速，即使设置了此标志，也不会使用加速。<br/>
+对于 CUDA 11.8 版本的飞桨，兼容的 TensorRT 版本为 8.x（x>=6），建议安装 TensorRT 8.6.1.6。<br/>
 对于 CUDA 12.6 版本的飞桨，兼容的 TensorRT 版本为 10.x（x>=5），建议安装 TensorRT 10.5.0.18。
 </td>
 <td><code>bool</code></td>
@@ -972,91 +1012,91 @@ for res in result:
 <tr>
 <td><code>doc_orientation_classify_model_name</code></td>
 <td>文档方向分类模型的名称。如果设置为<code>None</code>，将会使用产线默认模型。</td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>doc_orientation_classify_model_dir</code></td>
 <td>文档方向分类模型的目录路径。如果设置为<code>None</code>，将会下载官方模型。</td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>doc_unwarping_model_name</code></td>
 <td>文本图像矫正模型的名称。如果设置为<code>None</code>，将会使用产线默认模型。</td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>doc_unwarping_model_dir</code></td>
 <td>文本图像矫正模型的目录路径。如果设置为<code>None</code>，将会下载官方模型。</td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>text_detection_model_name</code></td>
 <td>文本检测模型的名称。如果设置为<code>None</code>，将会使用产线默认模型。</td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>text_detection_model_dir</code></td>
 <td>文本检测模型的目录路径。如果设置为<code>None</code>，将会下载官方模型。</td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>textline_orientation_model_name</code></td>
 <td>文本行方向模型的名称。如果设置为<code>None</code>，将会使用产线默认模型。</td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>textline_orientation_model_dir</code></td>
 <td>文本行方向模型的目录路径。如果设置为<code>None</code>，将会下载官方模型。</td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>textline_orientation_batch_size</code></td>
-<td>文本行方向模型的批处理大小。如果设置为<code>None</code>，将默认设置批处理大小为<code>1</code>。</td>
-<td><code>int</code></td>
+<td>文本行方向模型的batch size。如果设置为<code>None</code>，将默认设置batch size为<code>1</code>。</td>
+<td><code>int|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>text_recognition_model_name</code></td>
 <td>文本识别模型的名称。如果设置为<code>None</code>，将会使用产线默认模型。</td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>text_recognition_model_dir</code></td>
 <td>文本识别模型的目录路径。如果设置为<code>None</code>，将会下载官方模型。</td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>text_recognition_batch_size</code></td>
-<td>文本识别模型的批处理大小。如果设置为<code>None</code>，将默认设置批处理大小为<code>1</code>。</td>
-<td><code>int</code></td>
+<td>文本识别模型的batch size。如果设置为<code>None</code>，将默认设置batch size为<code>1</code>。</td>
+<td><code>int|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
 <td>是否加载并使用文档方向分类模块。如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
-<td><code>bool</code></td>
+<td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
 <td>是否加载并使用文本图像矫正模块。如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
-<td><code>bool</code></td>
+<td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_textline_orientation</code></td>
 <td>是否加载并使用文本行方向模块。如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
-<td><code>bool</code></td>
+<td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
@@ -1067,7 +1107,7 @@ for res in result:
 <li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为 <code>64</code>。</li>
 </ur>
 </td>
-<td><code>int</code></td>
+<td><code>int|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
@@ -1078,7 +1118,7 @@ for res in result:
 <li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为 <code>min</code>。</li>
 </ur>
 </td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
@@ -1088,7 +1128,7 @@ for res in result:
 <li><b>float</b>：大于<code>0</code>的任意浮点数；
 <li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值 <code>0.3</code>。</li>
 </td>
-<td><code>float</code></td>
+<td><code>float|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
@@ -1098,7 +1138,7 @@ for res in result:
 <li><b>float</b>：大于<code>0</code>的任意浮点数；
 <li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值 <code>0.6</code>。
 </td>
-<td><code>float</code></td>
+<td><code>float|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
@@ -1109,13 +1149,13 @@ for res in result:
 <li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值 <code>2.0</code>。
 </ur>
 </td>
-<td><code>float</code></td>
+<td><code>float|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>text_det_input_shape</code></td>
 <td>文本检测的输入形状。</td>
-<td><code>tuple</code></td>
+<td><code>tuple|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
@@ -1126,13 +1166,13 @@ for res in result:
 <li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值 <code>0.0</code>，即不设阈值。
 </ur>
 </td>
-<td><code>float</code></td>
+<td><code>float|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>text_rec_input_shape</code></td>
 <td>文本识别的输入形状。</td>
-<td><code>tuple</code></td>
+<td><code>tuple|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
@@ -1140,7 +1180,7 @@ for res in result:
 <td>使用指定语言的 OCR 模型。
 附录中的表格中列举了全部支持的语言。
 </td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
@@ -1153,7 +1193,7 @@ for res in result:
 </ul>
 注意不是每个<code>ocr_version</code>都支持所有的<code>lang</code>，请查看附录中的对应关系表。
 </td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
@@ -1169,7 +1209,7 @@ for res in result:
 <li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化时，会优先使用本地的 GPU 0号设备，如果没有，则使用 CPU 设备。
 </ur>
 </td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
@@ -1180,8 +1220,8 @@ for res in result:
 </tr>
 <tr>
 <td><code>use_tensorrt</code></td>
-<td>是否启用 Paddle Inference 的 TensorRT 子图引擎。</br>
-对于 CUDA 11.8 版本的飞桨，兼容的 TensorRT 版本为 8.x（x>=6），建议安装 TensorRT 8.6.1.6。</br>
+<td>是否启用 Paddle Inference 的 TensorRT 子图引擎。如果模型不支持通过 TensorRT 加速，即使设置了此标志，也不会使用加速。<br/>
+对于 CUDA 11.8 版本的飞桨，兼容的 TensorRT 版本为 8.x（x>=6），建议安装 TensorRT 8.6.1.6。<br/>
 对于 CUDA 12.6 版本的飞桨，兼容的 TensorRT 版本为 10.x（x>=5），建议安装 TensorRT 10.5.0.18。
 </td>
 <td><code>bool</code></td>
@@ -1216,7 +1256,7 @@ MKL-DNN 缓存容量。
 <tr>
 <td><code>paddlex_config</code></td>
 <td>PaddleX产线配置文件路径。</td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 </tbody>
@@ -1240,7 +1280,7 @@ MKL-DNN 缓存容量。
 <ul>
 <li><b>Python Var</b>：如 <code>numpy.ndarray</code> 表示的图像数据；</li>
 <li><b>str</b>：如图像文件或者PDF文件的本地路径：<code>/root/data/img.jpg</code>；<b>如URL链接</b>，如图像文件或PDF文件的网络URL：<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_002.png">示例</a>；<b>如本地目录</b>，该目录下需包含待预测图像，如本地路径：<code>/root/data/</code>(当前不支持目录中包含PDF文件的预测，PDF文件需要指定到具体文件路径)；</li>
-<li><b>List</b>：列表元素需为上述类型数据，如<code>[numpy.ndarray, numpy.ndarray]</code>，<code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>，<code>["/root/data1", "/root/data2"]。</code></li>
+<li><b>list</b>：列表元素需为上述类型数据，如<code>[numpy.ndarray, numpy.ndarray]</code>，<code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>，<code>["/root/data1", "/root/data2"]。</code></li>
 </ul>
 </td>
 <td><code>Python Var|str|list</code></td>
@@ -1249,48 +1289,48 @@ MKL-DNN 缓存容量。
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
 <td>是否在推理时使用文档方向分类模块。</td>
-<td><code>bool</code></td>
+<td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
 <td>是否在推理时使用文本图像矫正模块。</td>
-<td><code>bool</code></td>
+<td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <td><code>use_textline_orientation</code></td>
 <td>是否在推理时使用文本行方向分类模块。</td>
-<td><code>bool</code></td>
+<td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <td><code>text_det_limit_side_len</code></td>
-<td>与实例化时的参数相同。</td>
-<td><code>int</code></td>
+<td>参数含义与实例化参数基本相同。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td><code>int|None</code></td>
 <td><code>None</code></td>
 </tr>
 <td><code>text_det_limit_type</code></td>
-<td>与实例化时的参数相同。</td>
-<td><code>str</code></td>
+<td>参数含义与实例化参数基本相同。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <td><code>text_det_thresh</code></td>
-<td>与实例化时的参数相同。</td>
-<td><code>float</code></td>
+<td>参数含义与实例化参数基本相同。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td><code>float|None</code></td>
 <td><code>None</code></td>
 </tr>
 <td><code>text_det_box_thresh</code></td>
-<td>与实例化时的参数相同。</td>
-<td><code>float</code></td>
+<td>参数含义与实例化参数基本相同。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td><code>float|None</code></td>
 <td><code>None</code></td>
 </tr>
 <td><code>text_det_unclip_ratio</code></td>
-<td>与实例化时的参数相同。</td>
-<td><code>float</code></td>
+<td>参数含义与实例化参数基本相同。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td><code>float|None</code></td>
 <td><code>None</code></td>
 </tr>
 <td><code>text_rec_score_thresh</code></td>
-<td>与实例化时的参数相同。</td>
-<td><code>float</code></td>
+<td>参数含义与实例化参数基本相同。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td><code>float|None</code></td>
 <td><code>None</code></td>
 </table>
 </details>

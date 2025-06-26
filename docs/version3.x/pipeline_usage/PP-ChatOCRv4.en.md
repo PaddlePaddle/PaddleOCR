@@ -4,7 +4,7 @@ comments: true
 # PP-ChatOCRv4-doc Pipeline Usage Tutorial
 
 ## 1. Introduction to PP-ChatOCRv4-doc Pipeline
-PP-ChatOCRv4-doc is a unique document and image intelligent analysis solution from PaddlePaddle, combining LLM, MLLM, and OCR technologies to address complex document information extraction challenges such as layout analysis, rare characters, multi-page PDFs, tables, and seal recognition. Integrated with ERNIE Bot, it fuses massive data and knowledge, achieving high accuracy and wide applicability. This pipeline also provides flexible service deployment options, supporting deployment on various hardware. Furthermore, it offers custom development capabilities, allowing you to train and fine-tune models on your own datasets, with seamless integration of trained models.
+PP-ChatOCRv4-doc is a unique document and image intelligent analysis solution from PaddlePaddle, combining LLM, MLLM, and OCR technologies to address complex document information extraction challenges such as layout analysis, rare characters, multi-page PDFs, tables, and seal text recognition. Integrated with ERNIE Bot, it fuses massive data and knowledge, achieving high accuracy and wide applicability. This pipeline also provides flexible service deployment options, supporting deployment on various hardware. Furthermore, it offers custom development capabilities, allowing you to train and fine-tune models on your own datasets, with seamless integration of trained models.
 
 <img src="https://github.com/user-attachments/assets/0870cdec-1909-4247-9004-d9efb4ab9635">
 
@@ -13,6 +13,54 @@ The Document Scene Information Extraction v4 pipeline includes modules for **Lay
 <b>If you prioritize model accuracy, choose a model with higher accuracy. If you prioritize inference speed, select a model with faster inference. If you prioritize model storage size, choose a model with a smaller storage size.</b> Benchmarks for some models are as follows:
 
 <details><summary> 👉Model List Details</summary>
+<p><b>Document Image Orientation Classification Module (Optional):</b></p>
+<table>
+<thead>
+<tr>
+<th>Model</th><th>Model Download Link</th>
+<th>Top-1 Acc (%)</th>
+<th>GPU Inference Time (ms)<br/>[Standard Mode / High-Performance Mode]</th>
+<th>CPU Inference Time (ms)<br/>[Standard Mode / High-Performance Mode]</th>
+<th>Model Size (MB)</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PP-LCNet_x1_0_doc_ori</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-LCNet_x1_0_doc_ori_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-LCNet_x1_0_doc_ori_pretrained.pdparams">Training Model</a></td>
+<td>99.06</td>
+<td>2.62 / 0.59</td>
+<td>3.24 / 1.19</td>
+<td>7</td>
+<td>Document image classification model based on PP-LCNet_x1_0, with four categories: 0°, 90°, 180°, and 270°.</td>
+</tr>
+</tbody>
+</table>
+<p><b>Text Image Unwarp Module (Optional):</b></p>
+<table>
+<thead>
+<tr>
+<th>Model</th><th>Model Download Link</th>
+<th>CER</th>
+<th>GPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
+<th>CPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
+<th>Model Storage Size (MB)</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>UVDoc</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/UVDoc_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/UVDoc_pretrained.pdparams">Training Model</a></td>
+<td>0.179</td>
+<td>19.05 / 19.05</td>
+<td>- / 869.82</td>
+<td>30.3</td>
+<td>High-precision Text Image Unwarping model.</td>
+</tr>
+</tbody>
+</table>
 <p><b>Table Structure Recognition Module Models</b>:</p>
 <table>
 <tr>
@@ -20,23 +68,25 @@ The Document Scene Information Extraction v4 pipeline includes modules for **Lay
 <th>Accuracy (%)</th>
 <th>GPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
 <th>CPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
-<th>Model Size (M)</th>
+<th>Model Storage Size (MB)</th>
 <th>Description</th>
 </tr>
 <tr>
-<td>SLANet</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/SLANet_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/SLANet_pretrained.pdparams">Training Model</a></td>
+<td>SLANet</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/SLANet_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/SLANet_pretrained.pdparams">Training Model</a></td>
 <td>59.52</td>
-<td>103.08 / 103.08</td>
-<td>197.99 / 197.99</td>
-<td>6.9 M</td>
+<td>23.96 / 21.75</td>
+<td>- / 43.12</td>
+<td>6.9</td>
 <td>SLANet is a table structure recognition model developed by Baidu PaddleX Team. The model significantly improves the accuracy and inference speed of table structure recognition by adopting a CPU-friendly lightweight backbone network PP-LCNet, a high-low-level feature fusion module CSP-PAN, and a feature decoding module SLA Head that aligns structural and positional information.</td>
 </tr>
 <tr>
-<td>SLANet_plus</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/SLANet_plus_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/SLANet_plus_pretrained.pdparams">Training Model</a></td>
+<td>SLANet_plus</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/SLANet_plus_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/SLANet_plus_pretrained.pdparams">Training Model</a></td>
 <td>63.69</td>
-<td>140.29 / 140.29</td>
-<td>195.39 / 195.39</td>
-<td>6.9 M</td>
+<td>23.43 / 22.16</td>
+<td>- / 41.80</td>
+<td>6.9</td>
 <td>SLANet_plus is an enhanced version of SLANet, the table structure recognition model developed by Baidu PaddleX Team. Compared to SLANet, SLANet_plus significantly improves the recognition ability for wireless and complex tables and reduces the model's sensitivity to the accuracy of table positioning, enabling more accurate recognition even with offset table positioning.</td>
 </tr>
 </table>
@@ -49,32 +99,35 @@ The Document Scene Information Extraction v4 pipeline includes modules for **Lay
 <th>mAP(0.5) (%)</th>
 <th>GPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
 <th>CPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
-<th>Model Storage Size (M)</th>
+<th>Model Storage Size (MB)</th>
 <th>Introduction</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>PP-DocLayout-L</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayout-L_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocLayout-L_pretrained.pdparams">Training Model</a></td>
+<td>PP-DocLayout-L</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayout-L_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocLayout-L_pretrained.pdparams">Training Model</a></td>
 <td>90.4</td>
-<td>34.6244 / 10.3945</td>
-<td>510.57 / -</td>
-<td>123.76 M</td>
+<td>33.59 / 33.59</td>
+<td>503.01 / 251.08</td>
+<td>123.76</td>
 <td>A high-precision layout area localization model trained on a self-built dataset containing Chinese and English papers, magazines, contracts, books, exams, and research reports using RT-DETR-L.</td>
 </tr>
 <tr>
-<td>PP-DocLayout-M</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayout-M_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocLayout-M_pretrained.pdparams">Training Model</a></td>
+<td>PP-DocLayout-M</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayout-M_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocLayout-M_pretrained.pdparams">Training Model</a></td>
 <td>75.2</td>
-<td>13.3259 / 4.8685</td>
-<td>44.0680 / 44.0680</td>
+<td>13.03 / 4.72</td>
+<td>43.39 / 24.44</td>
 <td>22.578</td>
 <td>A layout area localization model with balanced precision and efficiency, trained on a self-built dataset containing Chinese and English papers, magazines, contracts, books, exams, and research reports using PicoDet-L.</td>
 </tr>
 <tr>
-<td>PP-DocLayout-S</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayout-S_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocLayout-S_pretrained.pdparams">Training Model</a></td>
+<td>PP-DocLayout-S</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayout-S_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocLayout-S_pretrained.pdparams">Training Model</a></td>
 <td>70.9</td>
-<td>8.3008 / 2.3794</td>
-<td>10.0623 / 9.9296</td>
+<td>11.54 / 3.86</td>
+<td>18.53 / 6.29</td>
 <td>4.834</td>
 <td>A high-efficiency layout area localization model trained on a self-built dataset containing Chinese and English papers, magazines, contracts, books, exams, and research reports using PicoDet-S.</td>
 </tr>
@@ -92,17 +145,18 @@ The Document Scene Information Extraction v4 pipeline includes modules for **Lay
 <th>mAP(0.5) (%)</th>
 <th>GPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
 <th>CPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
-<th>Model Storage Size (M)</th>
+<th>Model Storage Size (MB)</th>
 <th>Introduction</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>PicoDet_layout_1x_table</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PicoDet_layout_1x_table_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PicoDet_layout_1x_table_pretrained.pdparams">Training Model</a></td>
+<td>PicoDet_layout_1x_table</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PicoDet_layout_1x_table_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PicoDet_layout_1x_table_pretrained.pdparams">Training Model</a></td>
 <td>97.5</td>
-<td>8.02 / 3.09</td>
-<td>23.70 / 20.41</td>
-<td>7.4 M</td>
+<td>9.57 / 6.63</td>
+<td>27.66 / 16.75</td>
+<td>7.4</td>
 <td>A high-efficiency layout area localization model trained on a self-built dataset using PicoDet-1x, capable of detecting table regions.</td>
 </tr>
 </tbody></table>
@@ -116,32 +170,35 @@ The Document Scene Information Extraction v4 pipeline includes modules for **Lay
 <th>mAP(0.5) (%)</th>
 <th>GPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
 <th>CPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
-<th>Model Storage Size (M)</th>
+<th>Model Storage Size (MB)</th>
 <th>Introduction</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>PicoDet-S_layout_3cls</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PicoDet-S_layout_3cls_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PicoDet-S_layout_3cls_pretrained.pdparams">Training Model</a></td>
+<td>PicoDet-S_layout_3cls</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PicoDet-S_layout_3cls_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PicoDet-S_layout_3cls_pretrained.pdparams">Training Model</a></td>
 <td>88.2</td>
-<td>8.99 / 2.22</td>
-<td>16.11 / 8.73</td>
+<td>8.43 / 3.44</td>
+<td>17.60 / 6.51</td>
 <td>4.8</td>
 <td>A high-efficiency layout area localization model trained on a self-built dataset of Chinese and English papers, magazines, and research reports using PicoDet-S.</td>
 </tr>
 <tr>
-<td>PicoDet-L_layout_3cls</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PicoDet-L_layout_3cls_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PicoDet-L_layout_3cls_pretrained.pdparams">Training Model</a></td>
+<td>PicoDet-L_layout_3cls</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PicoDet-L_layout_3cls_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PicoDet-L_layout_3cls_pretrained.pdparams">Training Model</a></td>
 <td>89.0</td>
-<td>13.05 / 4.50</td>
-<td>41.30 / 41.30</td>
+<td>12.80 / 9.57</td>
+<td>45.04 / 23.86</td>
 <td>22.6</td>
 <td>A balanced efficiency and precision layout area localization model trained on a self-built dataset of Chinese and English papers, magazines, and research reports using PicoDet-L.</td>
 </tr>
 <tr>
-<td>RT-DETR-H_layout_3cls</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/RT-DETR-H_layout_3cls_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/RT-DETR-H_layout_3cls_pretrained.pdparams">Training Model</a></td>
+<td>RT-DETR-H_layout_3cls</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/RT-DETR-H_layout_3cls_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/RT-DETR-H_layout_3cls_pretrained.pdparams">Training Model</a></td>
 <td>95.8</td>
-<td>114.93 / 27.71</td>
-<td>947.56 / 947.56</td>
+<td>114.80 / 25.65</td>
+<td>924.38 / 924.38</td>
 <td>470.1</td>
 <td>A high-precision layout area localization model trained on a self-built dataset of Chinese and English papers, magazines, and research reports using RT-DETR-H.</td>
 </tr>
@@ -156,16 +213,17 @@ The Document Scene Information Extraction v4 pipeline includes modules for **Lay
 <th>mAP(0.5) (%)</th>
 <th>GPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
 <th>CPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
-<th>Model Storage Size (M)</th>
+<th>Model Storage Size (MB)</th>
 <th>Introduction</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>PicoDet_layout_1x</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PicoDet_layout_1x_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PicoDet_layout_1x_pretrained.pdparams">Training Model</a></td>
+<td>PicoDet_layout_1x</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PicoDet_layout_1x_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PicoDet_layout_1x_pretrained.pdparams">Training Model</a></td>
 <td>97.8</td>
-<td>9.03 / 3.10</td>
-<td>25.82 / 20.70</td>
+<td>9.62 / 6.75</td>
+<td>26.96 / 12.77</td>
 <td>7.4</td>
 <td>A high-efficiency English document layout area localization model trained on the PubLayNet dataset using PicoDet-1x.</td>
 </tr>
@@ -180,32 +238,35 @@ The Document Scene Information Extraction v4 pipeline includes modules for **Lay
 <th>mAP(0.5) (%)</th>
 <th>GPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
 <th>CPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
-<th>Model Storage Size (M)</th>
+<th>Model Storage Size (MB)</th>
 <th>Introduction</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>PicoDet-S_layout_17cls</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PicoDet-S_layout_17cls_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PicoDet-S_layout_17cls_pretrained.pdparams">Training Model</a></td>
+<td>PicoDet-S_layout_17cls</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PicoDet-S_layout_17cls_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PicoDet-S_layout_17cls_pretrained.pdparams">Training Model</a></td>
 <td>87.4</td>
-<td>9.11 / 2.12</td>
-<td>15.42 / 9.12</td>
+<td>8.80 / 3.62</td>
+<td>17.51 / 6.35</td>
 <td>4.8</td>
 <td>A high-efficiency layout area localization model trained on a self-built dataset of Chinese and English papers, magazines, and research reports using PicoDet-S.</td>
 </tr>
 <tr>
-<td>PicoDet-L_layout_17cls</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PicoDet-L_layout_17cls_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PicoDet-L_layout_17cls_pretrained.pdparams">Training Model</a></td>
+<td>PicoDet-L_layout_17cls</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PicoDet-L_layout_17cls_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PicoDet-L_layout_17cls_pretrained.pdparams">Training Model</a></td>
 <td>89.0</td>
-<td>13.50 / 4.69</td>
-<td>43.32 / 43.32</td>
+<td>12.60 / 10.27</td>
+<td>43.70 / 24.42</td>
 <td>22.6</td>
 <td>A balanced efficiency and precision layout area localization model trained on a self-built dataset of Chinese and English papers, magazines, and research reports using PicoDet-L.</td>
 </tr>
 <tr>
-<td>RT-DETR-H_layout_17cls</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/RT-DETR-H_layout_17cls_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/RT-DETR-H_layout_17cls_pretrained.pdparams">Training Model</a></td>
+<td>RT-DETR-H_layout_17cls</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/RT-DETR-H_layout_17cls_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/RT-DETR-H_layout_17cls_pretrained.pdparams">Training Model</a></td>
 <td>98.3</td>
-<td>115.29 / 104.09</td>
-<td>995.27 / 995.27</td>
+<td>115.29 / 101.18</td>
+<td>964.75 / 964.75</td>
 <td>470.2</td>
 <td>A high-precision layout area localization model trained on a self-built dataset of Chinese and English papers, magazines, and research reports using RT-DETR-H.</td>
 </tr>
@@ -220,40 +281,44 @@ The Document Scene Information Extraction v4 pipeline includes modules for **Lay
 <th>Detection Hmean (%)</th>
 <th>GPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
 <th>CPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
-<th>Model Size (M)</th>
+<th>Model Storage Size (MB)</th>
 <th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>PP-OCRv5_server_det</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv5_server_det_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_server_det_pretrained.pdparams">Training Model</a></td>
+<td>PP-OCRv5_server_det</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv5_server_det_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_server_det_pretrained.pdparams">Training Model</a></td>
 <td>83.8</td>
 <td>89.55 / 70.19</td>
-<td>371.65 / 371.65</td>
+<td>383.15 / 383.15</td>
 <td>84.3</td>
 <td>PP-OCRv5 server-side text detection model with higher accuracy, suitable for deployment on high-performance servers</td>
 </tr>
 <tr>
-<td>PP-OCRv5_mobile_det</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv5_mobile_det_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_mobile_det_pretrained.pdparams">Training Model</a></td>
+<td>PP-OCRv5_mobile_det</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv5_mobile_det_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_mobile_det_pretrained.pdparams">Training Model</a></td>
 <td>79.0</td>
-<td>8.79 / 3.13</td>
-<td>51.00 / 28.58</td>
+<td>10.67 / 6.36</td>
+<td>57.77 / 28.15</td>
 <td>4.7</td>
 <td>PP-OCRv5 mobile-side text detection model with higher efficiency, suitable for deployment on edge devices</td>
 </tr>
 <tr>
-<td>PP-OCRv4_server_det</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_server_det_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_det_pretrained.pdparams">Training Model</a></td>
+<td>PP-OCRv4_server_det</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_server_det_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_det_pretrained.pdparams">Training Model</a></td>
 <td>69.2</td>
-<td>83.34 / 80.91</td>
-<td>442.58 / 442.58</td>
+<td>127.82 / 98.87</td>
+<td>585.95 / 489.77</td>
 <td>109</td>
 <td>PP-OCRv4 server-side text detection model with higher accuracy, suitable for deployment on high-performance servers</td>
 </tr>
 <tr>
-<td>PP-OCRv4_mobile_det</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_mobile_det_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_mobile_det_pretrained.pdparams">Training Model</a></td>
+<td>PP-OCRv4_mobile_det</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_mobile_det_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_mobile_det_pretrained.pdparams">Training Model</a></td>
 <td>63.8</td>
-<td>8.79 / 3.13</td>
-<td>51.00 / 28.58</td>
+<td>9.87 / 4.17</td>
+<td>56.60 / 20.79</td>
 <td>4.7</td>
 <td>PP-OCRv4 mobile-side text detection model with higher efficiency, suitable for deployment on edge devices</td>
 </tr>
@@ -267,59 +332,153 @@ The Document Scene Information Extraction v4 pipeline includes modules for **Lay
 <th>Recognition Avg Accuracy(%)</th>
 <th>GPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
 <th>CPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
-<th>Model Storage Size (M)</th>
+<th>Model Storage Size (MB)</th>
 <th>Introduction</th>
 </tr>
 <tr>
-<td>PP-OCRv5_server_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+<td>PP-OCRv5_server_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
 PP-OCRv5_server_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_server_rec_pretrained.pdparams">Pretrained Model</a></td>
 <td>86.38</td>
-<td> 8.45/2.36 </td>
-<td> 122.69/122.69 </td>
-<td>81 M</td>
+<td>8.46 / 2.36</td>
+<td>31.21 / 31.21</td>
+<td>81</td>
 <td rowspan="2">PP-OCRv5_rec is a next-generation text recognition model. It aims to efficiently and accurately support the recognition of four major languages—Simplified Chinese, Traditional Chinese, English, and Japanese—as well as complex text scenarios such as handwriting, vertical text, pinyin, and rare characters using a single model. While maintaining recognition performance, it balances inference speed and model robustness, providing efficient and accurate technical support for document understanding in various scenarios.</td>
 </tr>
 <tr>
-<td>PP-OCRv5_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+<td>PP-OCRv5_mobile_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
 PP-OCRv5_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_mobile_rec_pretrained.pdparams">Pretrained Model</a></td>
 <td>81.29</td>
-<td> 1.46/5.43 </td>
-<td> 5.32/91.79 </td>
-<td>16 M</td>
+<td>5.43 / 1.46</td>
+<td>21.20 / 5.32</td>
+<td>16</td>
 </tr>
 <tr>
-<td>PP-OCRv4_server_rec_doc</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+<td>PP-OCRv4_server_rec_doc</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
 PP-OCRv4_server_rec_doc_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_rec_doc_pretrained.pdparams">Pretrained Model</a></td>
 <td>86.58</td>
-<td>6.65 / 2.38</td>
-<td>32.92 / 32.92</td>
-<td>91 M</td>
+<td>8.69 / 2.78</td>
+<td>37.93 / 37.93</td>
+<td>182</td>
 <td>PP-OCRv4_server_rec_doc is trained on a mixed dataset of more Chinese document data and PP-OCR training data, building upon PP-OCRv4_server_rec. It enhances the recognition capabilities for some Traditional Chinese characters, Japanese characters, and special symbols, supporting over 15,000 characters. In addition to improving document-related text recognition, it also enhances general text recognition capabilities.</td>
 </tr>
 <tr>
-<td>PP-OCRv4_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_mobile_rec_pretrained.pdparams">Pretrained Model</a></td>
-<td>83.28</td>
-<td>4.82 / 1.20</td>
-<td>16.74 / 4.64</td>
-<td>11 M</td>
+<td>PP-OCRv4_mobile_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_mobile_rec_pretrained.pdparams">Pretrained Model</a></td>
+<td>78.74</td>
+<td>5.26 / 1.12</td>
+<td>17.48 / 3.61</td>
+<td>10.5</td>
 <td>A lightweight recognition model of PP-OCRv4 with high inference efficiency, suitable for deployment on various hardware devices, including edge devices.</td>
 </tr>
 <tr>
-<td>PP-OCRv4_server_rec </td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_server_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_rec_pretrained.pdparams">Pretrained Model</a></td>
-<td>85.19 </td>
-<td>6.58 / 2.43</td>
-<td>33.17 / 33.17</td>
-<td>87 M</td>
+<td>PP-OCRv4_server_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_server_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_rec_pretrained.pdparams">Pretrained Model</a></td>
+<td>85.19</td>
+<td>8.75 / 2.49</td>
+<td>36.93 / 36.93</td>
+<td>173</td>
 <td>The server-side model of PP-OCRv4, offering high inference accuracy and deployable on various servers.</td>
 </tr>
 <tr>
-<td>en_PP-OCRv4_mobile_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+<td>en_PP-OCRv4_mobile_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
 en_PP-OCRv4_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/en_PP-OCRv4_mobile_rec_pretrained.pdparams">Pretrained Model</a></td>
 <td>70.39</td>
-<td>4.81 / 0.75</td>
-<td>16.10 / 5.31</td>
-<td>7.3 M</td>
+<td>4.81 / 1.23</td>
+<td>17.20 / 4.18</td>
+<td>7.5</td>
 <td>An ultra-lightweight English recognition model trained based on the PP-OCRv4 recognition model, supporting English and numeric character recognition.</td>
+</tr>
+</table>
+* <b>PP-OCRv5 Multi-Scenario Models</b>
+
+<table>
+<tr>
+<th>Model</th><th>Download Link</th>
+<th>Chinese Avg Accuracy (%)</th>
+<th>English Avg Accuracy (%)</th>
+<th>Traditional Chinese Avg Accuracy (%)</th>
+<th>Japanese Avg Accuracy (%)</th>
+<th>GPU Inference Time (ms)<br/>[Standard Mode / High Performance Mode]</th>
+<th>CPU Inference Time (ms)<br/>[Standard Mode / High Performance Mode]</th>
+<th>Model Storage Size (MB)</th>
+<th>Description</th>
+</tr>
+<tr>
+<td>PP-OCRv5_server_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv5_server_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_server_rec_pretrained.pdparams">Pretrained Model</a></td>
+<td>86.38</td>
+<td>64.70</td>
+<td>93.29</td>
+<td>60.35</td>
+<td>8.46 / 2.36</td>
+<td>31.21 / 31.21</td>
+<td>81</td>
+<td>PP-OCRv5_server_rec is a new-generation text recognition model. It efficiently and accurately supports four major languages: Simplified Chinese, Traditional Chinese, English, and Japanese, as well as handwriting, vertical text, pinyin, and rare characters, offering robust and efficient support for document understanding.</td>
+</tr>
+<tr>
+<td>PP-OCRv5_mobile_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv5_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_mobile_rec_pretrained.pdparams">Pretrained Model</a></td>
+<td>81.29</td>
+<td>66.00</td>
+<td>83.55</td>
+<td>54.65</td>
+<td>5.43 / 1.46</td>
+<td>21.20 / 5.32</td>
+<td>136</td>
+<td>PP-OCRv5_mobile_rec is a new-generation text recognition model. It efficiently and accurately supports four major languages: Simplified Chinese, Traditional Chinese, English, and Japanese, as well as handwriting, vertical text, pinyin, and rare characters, offering robust and efficient support for document understanding.</td>
+</tr>
+</table>
+
+* <b>Chinese Recognition Models</b>
+
+<table>
+<tr>
+<th>Model</th><th>Download Link</th>
+<th>Avg Accuracy (%)</th>
+<th>GPU Inference Time (ms)<br/>[Standard Mode / High Performance Mode]</th>
+<th>CPU Inference Time (ms)<br/>[Standard Mode / High Performance Mode]</th>
+<th>Model Storage Size (MB)</th>
+<th>Description</th>
+</tr>
+<tr>
+<td>PP-OCRv4_server_rec_doc</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_server_rec_doc_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_rec_doc_pretrained.pdparams">Pretrained Model</a></td>
+<td>86.58</td>
+<td>8.69 / 2.78</td>
+<td>37.93 / 37.93</td>
+<td>182</td>
+<td>Based on PP-OCRv4_server_rec, trained on additional Chinese documents and PP-OCR mixed data. It supports over 15,000 characters including Traditional Chinese, Japanese, and special symbols, enhancing both document-specific and general text recognition accuracy.</td>
+</tr>
+<tr>
+<td>PP-OCRv4_mobile_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_mobile_rec_pretrained.pdparams">Pretrained Model</a></td>
+<td>78.74</td>
+<td>5.26 / 1.12</td>
+<td>17.48 / 3.61</td>
+<td>10.5</td>
+<td>Lightweight model of PP-OCRv4 with high inference efficiency, suitable for deployment on various edge devices.</td>
+</tr>
+<tr>
+<td>PP-OCRv4_server_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_server_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_rec_pretrained.pdparams">Pretrained Model</a></td>
+<td>85.19</td>
+<td>8.75 / 2.49</td>
+<td>36.93 / 36.93</td>
+<td>173</td>
+<td>Server-side model of PP-OCRv4 with high recognition accuracy, suitable for deployment on various servers.</td>
+</tr>
+<tr>
+<td>PP-OCRv3_mobile_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv3_mobile_rec_pretrained.pdparams">Pretrained Model</a></td>
+<td>72.96</td>
+<td>3.89 / 1.16</td>
+<td>8.72 / 3.56</td>
+<td>10.3</td>
+<td>Lightweight model of PP-OCRv3 with high inference efficiency, suitable for deployment on various edge devices.</td>
 </tr>
 </table>
 
@@ -329,15 +488,16 @@ en_PP-OCRv4_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-mo
 <th>Recognition Avg Accuracy (%)</th>
 <th>GPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
 <th>CPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
-<th>Model Size (M)</th>
+<th>Model Storage Size (MB)</th>
 <th>Description</th>
 </tr>
 <tr>
-<td>ch_SVTRv2_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/ch_SVTRv2_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/ch_SVTRv2_rec_pretrained.pdparams">Training Model</a></td>
+<td>ch_SVTRv2_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/ch_SVTRv2_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/ch_SVTRv2_rec_pretrained.pdparams">Training Model</a></td>
 <td>68.81</td>
-<td>8.08 / 8.08</td>
-<td>50.17 / 42.50</td>
-<td>73.9 M</td>
+<td>10.38 / 8.31</td>
+<td>66.52 / 30.83</td>
+<td>80.5</td>
 <td rowspan="1">
 SVTRv2 is a server-side text recognition model developed by the OpenOCR team at the Vision and Learning Lab (FVL) of Fudan University. It won the first prize in the OCR End-to-End Recognition Task of the PaddleOCR Algorithm Model Challenge, with a 6% improvement in end-to-end recognition accuracy compared to PP-OCRv4 on the A-list.
 </td>
@@ -350,19 +510,193 @@ SVTRv2 is a server-side text recognition model developed by the OpenOCR team at 
 <th>Recognition Avg Accuracy (%)</th>
 <th>GPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
 <th>CPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
-<th>Model Size (M)</th>
+<th>Model Storage Size (MB)</th>
 <th>Description</th>
 </tr>
 <tr>
-<td>ch_RepSVTR_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/ch_RepSVTR_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/ch_RepSVTR_rec_pretrained.pdparams">Training Model</a></td>
+<td>ch_RepSVTR_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/ch_RepSVTR_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/ch_RepSVTR_rec_pretrained.pdparams">Training Model</a></td>
 <td>65.07</td>
-<td>5.93 / 5.93</td>
-<td>20.73 / 7.32</td>
-<td>22.1 M</td>
+<td>6.29 / 1.57</td>
+<td>20.64 / 5.40</td>
+<td>48.8</td>
 <td rowspan="1">
 The RepSVTR text recognition model is a mobile-oriented text recognition model based on SVTRv2. It won the first prize in the OCR End-to-End Recognition Task of the PaddleOCR Algorithm Model Challenge, with a 2.5% improvement in end-to-end recognition accuracy compared to PP-OCRv4 on the B-list, while maintaining similar inference speed.
 </td>
 </tr>
+</table>
+* <b>English Recognition Models</b>
+
+<table>
+<tr>
+<th>Model</th><th>Download Link</th>
+<th>Avg Accuracy (%)</th>
+<th>GPU Inference Time (ms)<br/>[Standard Mode / High Performance Mode]</th>
+<th>CPU Inference Time (ms)<br/>[Standard Mode / High Performance Mode]</th>
+<th>Model Storage Size (MB)</th>
+<th>Description</th>
+</tr>
+<tr>
+<td>en_PP-OCRv4_mobile_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/en_PP-OCRv4_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/en_PP-OCRv4_mobile_rec_pretrained.pdparams">Pretrained Model</a></td>
+<td>70.39</td>
+<td>4.81 / 1.23</td>
+<td>17.20 / 4.18</td>
+<td>7.5</td>
+<td>Ultra-lightweight English recognition model trained on PP-OCRv4, supporting English and number recognition.</td>
+</tr>
+<tr>
+<td>en_PP-OCRv3_mobile_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/en_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/en_PP-OCRv3_mobile_rec_pretrained.pdparams">Pretrained Model</a></td>
+<td>70.69</td>
+<td>3.56 / 0.78</td>
+<td>8.44 / 5.78</td>
+<td>17.3</td>
+<td>Ultra-lightweight English recognition model trained on PP-OCRv3, supporting English and number recognition.</td>
+</tr>
+</table>
+
+
+
+
+
+
+
+
+* <b>Multilingual Recognition Models</b>
+<table>
+<tr>
+<th>Model</th><th>Model Download Link</th>
+<th>Recognition Avg Accuracy(%)</th>
+<th>GPU Inference Time (ms)<br/>[Normal / High Performance]</th>
+<th>CPU Inference Time (ms)<br/>[Normal / High Performance]</th>
+<th>Model Storage Size (MB)</th>
+<th>Description</th>
+</tr>
+<tr>
+<td>korean_PP-OCRv3_mobile_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+korean_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/korean_PP-OCRv3_mobile_rec_pretrained.pdparams">Pretrained Model</a></td>
+<td>60.21</td>
+<td>3.73 / 0.98</td>
+<td>8.76 / 2.91</td>
+<td>9.6</td>
+<td>An ultra-lightweight Korean text recognition model trained based on PP-OCRv3, supporting Korean and digits recognition</td>
+</tr>
+<tr>
+<td>japan_PP-OCRv3_mobile_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+japan_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/japan_PP-OCRv3_mobile_rec_pretrained.pdparams">Pretrained Model</a></td>
+<td>45.69</td>
+<td>3.86 / 1.01</td>
+<td>8.62 / 2.92</td>
+<td>9.8</td>
+<td>An ultra-lightweight Japanese text recognition model trained based on PP-OCRv3, supporting Japanese and digits recognition</td>
+</tr>
+<tr>
+<td>chinese_cht_PP-OCRv3_mobile_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+chinese_cht_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/chinese_cht_PP-OCRv3_mobile_rec_pretrained.pdparams">Pretrained Model</a></td>
+<td>82.06</td>
+<td>3.90 / 1.16</td>
+<td>9.24 / 3.18</td>
+<td>10.8</td>
+<td>An ultra-lightweight Traditional Chinese text recognition model trained based on PP-OCRv3, supporting Traditional Chinese and digits recognition</td>
+</tr>
+<tr>
+<td>te_PP-OCRv3_mobile_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+te_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/te_PP-OCRv3_mobile_rec_pretrained.pdparams">Pretrained Model</a></td>
+<td>95.88</td>
+<td>3.59 / 0.81</td>
+<td>8.28 / 6.21</td>
+<td>8.7</td>
+<td>An ultra-lightweight Telugu text recognition model trained based on PP-OCRv3, supporting Telugu and digits recognition</td>
+</tr>
+<tr>
+<td>ka_PP-OCRv3_mobile_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+ka_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/ka_PP-OCRv3_mobile_rec_pretrained.pdparams">Pretrained Model</a></td>
+<td>96.96</td>
+<td>3.49 / 0.89</td>
+<td>8.63 / 2.77</td>
+<td>17.4</td>
+<td>An ultra-lightweight Kannada text recognition model trained based on PP-OCRv3, supporting Kannada and digits recognition</td>
+</tr>
+<tr>
+<td>ta_PP-OCRv3_mobile_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+ta_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/ta_PP-OCRv3_mobile_rec_pretrained.pdparams">Pretrained Model</a></td>
+<td>76.83</td>
+<td>3.49 / 0.86</td>
+<td>8.35 / 3.41</td>
+<td>8.7</td>
+<td>An ultra-lightweight Tamil text recognition model trained based on PP-OCRv3, supporting Tamil and digits recognition</td>
+</tr>
+<tr>
+<td>latin_PP-OCRv3_mobile_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+latin_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/latin_PP-OCRv3_mobile_rec_pretrained.pdparams">Pretrained Model</a></td>
+<td>76.93</td>
+<td>3.53 / 0.78</td>
+<td>8.50 / 6.83</td>
+<td>8.7</td>
+<td>An ultra-lightweight Latin text recognition model trained based on PP-OCRv3, supporting Latin and digits recognition</td>
+</tr>
+<tr>
+<td>arabic_PP-OCRv3_mobile_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+arabic_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/arabic_PP-OCRv3_mobile_rec_pretrained.pdparams">Pretrained Model</a></td>
+<td>73.55</td>
+<td>3.60 / 0.83</td>
+<td>8.44 / 4.69</td>
+<td>17.3</td>
+<td>An ultra-lightweight Arabic script recognition model trained based on PP-OCRv3, supporting Arabic script and digits recognition</td>
+</tr>
+<tr>
+<td>cyrillic_PP-OCRv3_mobile_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+cyrillic_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/cyrillic_PP-OCRv3_mobile_rec_pretrained.pdparams">Pretrained Model</a></td>
+<td>94.28</td>
+<td>3.56 / 0.79</td>
+<td>8.22 / 2.76</td>
+<td>8.7</td>
+<td>An ultra-lightweight Cyrillic script recognition model trained based on PP-OCRv3, supporting Cyrillic script and digits recognition</td>
+</tr>
+<tr>
+<td>devanagari_PP-OCRv3_mobile_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/devanagari_PP-OCRv3_mobile_rec_pretrained.pdparams">Pretrained Model</a></td>
+<td>96.44</td>
+<td>3.60 / 0.78</td>
+<td>6.95 / 2.87</td>
+<td>8.7</td>
+<td>An ultra-lightweight Devanagari script recognition model trained based on PP-OCRv3, supporting Devanagari script and digits recognition</td>
+</tr>
+</table>
+<p><b>Text Line Orientation Classification Module (Optional):</b></p>
+<table>
+<thead>
+<tr>
+<th>Model</th><th>Model Download Link</th>
+<th>Top-1 Accuracy (%)</th>
+<th>GPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
+<th>CPU Inference Time (ms)</th>
+<th>Model Storage Size (MB)</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PP-LCNet_x0_25_textline_ori</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-LCNet_x0_25_textline_ori_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-LCNet_x0_25_textline_ori_pretrained.pdparams">Training Model</a></td>
+<td>98.85</td>
+<td>2.16 / 0.41</td>
+<td>2.37 / 0.73</td>
+<td>0.96</td>
+<td>Text line classification model based on PP-LCNet_x0_25, with two classes: 0 degrees and 180 degrees</td>
+</tr>
+</tbody>
 </table>
 
 <p><b>Formula Recognition Module Models</b>:</p>
@@ -375,18 +709,19 @@ The RepSVTR text recognition model is a mobile-oriented text recognition model b
 <th>ExpRate (%)</th>
 <th>GPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
 <th>CPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
-<th>Model Size</th>
+<th>Model Storage Size (MB)</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>LaTeX_OCR_rec</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/LaTeX_OCR_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/LaTeX_OCR_rec_pretrained.pdparams">Training Model</a></td>
+<td>LaTeX_OCR_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/LaTeX_OCR_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/LaTeX_OCR_rec_pretrained.pdparams">Training Model</a></td>
 <td>0.8821</td>
 <td>0.0823</td>
 <td>40.01</td>
-<td>2047.13 / 2047.13</td>
-<td>10582.73 / 10582.73</td>
-<td>89.7 M</td>
+<td>1088.89 / 1088.89</td>
+<td>- / -</td>
+<td>99</td>
 </tr>
 </tbody>
 </table>
@@ -399,25 +734,27 @@ The RepSVTR text recognition model is a mobile-oriented text recognition model b
 <th>Detection Hmean (%)</th>
 <th>GPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
 <th>CPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
-<th>Model Size (M)</th>
+<th>Model Storage Size (MB)</th>
 <th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>PP-OCRv4_server_seal_det</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_server_seal_det_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_seal_det_pretrained.pdparams">Training Model</a></td>
-<td>98.21</td>
-<td>74.75 / 67.72</td>
-<td>382.55 / 382.55</td>
+<td>PP-OCRv4_server_seal_det</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_server_seal_det_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_seal_det_pretrained.pdparams">Training Model</a></td>
+<td>98.40</td>
+<td>124.64 / 91.57</td>
+<td>545.68 / 439.86</td>
 <td>109</td>
 <td>PP-OCRv4's server-side seal text detection model, featuring higher accuracy, suitable for deployment on better-equipped servers</td>
 </tr>
 <tr>
-<td>PP-OCRv4_mobile_seal_det</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_mobile_seal_det_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_mobile_seal_det_pretrained.pdparams">Training Model</a></td>
-<td>96.47</td>
-<td>7.82 / 3.09</td>
-<td>48.28 / 23.97</td>
-<td>4.6</td>
+<td>PP-OCRv4_mobile_seal_det</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_mobile_seal_det_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_mobile_seal_det_pretrained.pdparams">Training Model</a></td>
+<td>96.36</td>
+<td>9.70 / 3.56</td>
+<td>50.38 / 19.64</td>
+<td>4.7</td>
 <td>PP-OCRv4's mobile seal text detection model, offering higher efficiency, suitable for deployment on edge devices</td>
 </tr>
 </tbody>
@@ -447,7 +784,7 @@ The RepSVTR text recognition model is a mobile-oriented text recognition model b
                   <ul>
                       <li>GPU: NVIDIA Tesla T4</li>
                       <li>CPU: Intel Xeon Gold 6271C @ 2.60GHz</li>
-                      <li>Other Environments: Ubuntu 20.04 / cuDNN 8.6 / TensorRT 8.5.2.2</li>
+                      <li>Other Environments: Ubuntu 20.04 / CUDA 11.8 / cuDNN 8.9 / TensorRT 8.6.1.6</li>
                   </ul>
               </li>
           </ul>
@@ -486,6 +823,7 @@ The RepSVTR text recognition model is a mobile-oriented text recognition model b
 
 The pre-trained pipelines provided by PaddleOCR allow for quick experience of their effects. You can locally use Python to experience the effects of the PP-ChatOCRv4-doc pipeline.
 
+Please note: If you encounter issues such as the program becoming unresponsive, unexpected program termination, running out of memory resources, or extremely slow inference during execution, please try adjusting the configuration according to the documentation, such as disabling unnecessary features or using lighter-weight models.
 
 Before using the PP-ChatOCRv4-doc pipeline locally, ensure you have completed the installation of the PaddleOCR wheel package according to the [PaddleOCR Local Installation Tutorial](../installation.en.md). If you wish to selectively install dependencies, please refer to the relevant instructions in the installation guide. The dependency group corresponding to this pipeline is `ie`.
 
@@ -674,7 +1012,7 @@ The name of the document orientation classification model. If not set, the defau
 </tr>
 <tr>
 <td><code>use_seal_recognition</code></td>
-<td>Whether to load and use the seal recognition sub-pipeline. If not set, the parameter's value initialized during pipeline setup will be used, defaulting to <code>True</code>.</td>
+<td>Whether to load and use the seal text recognition sub-pipeline. If not set, the parameter's value initialized during pipeline setup will be used, defaulting to <code>True</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
@@ -851,8 +1189,8 @@ Any float > <code>0</code></li>
 </tr>
 <tr>
 <td><code>use_tensorrt</code></td>
-<td>Whether to use the Paddle Inference TensorRT subgraph engine.</br>
-For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6), and it is recommended to install TensorRT 8.6.1.6.</br>
+<td>Whether to use the Paddle Inference TensorRT subgraph engine. If the model does not support acceleration through TensorRT, setting this flag will not enable acceleration.<br/>
+For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6), and it is recommended to install TensorRT 8.6.1.6.<br/>
 For Paddle with CUDA version 12.6, the compatible TensorRT version is 10.x (x>=5), and it is recommended to install TensorRT 10.5.0.18.
 </td>
 <td><code>bool</code></td>
@@ -998,139 +1336,139 @@ The relevant parameter descriptions are as follows:
 <tr>
 <td><code>layout_detection_model_name</code></td>
 <td>The name of the model used for layout region detection. If set to<code>None</code>, the pipeline's default model will be used.</td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>layout_detection_model_dir</code></td>
 <td>The directory path of the layout region detection model. If set to<code>None</code>, the official model will be downloaded.</td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>doc_orientation_classify_model_name</code></td>
 <td>The name of the document orientation classification model. If set to<code>None</code>, the pipeline's default model will be used.</td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>doc_orientation_classify_model_dir</code></td>
 <td>The directory path of the document orientation classification model. If set to<code>None</code>, the official model will be downloaded.</td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>doc_unwarping_model_name</code></td>
 <td>The name of the document unwarping model. If set to<code>None</code>, the pipeline's default model will be used.</td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>doc_unwarping_model_dir</code></td>
 <td>The directory path of the document unwarping model. If set to<code>None</code>, the official model will be downloaded.</td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>text_detection_model_name</code></td>
 <td>The name of the text detection model. If set to<code>None</code>, the pipeline's default model will be used.</td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>text_detection_model_dir</code></td>
 <td>The directory path of the text detection model. If set to<code>None</code>, the official model will be downloaded.</td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>text_recognition_model_name</code></td>
 <td>The name of the text recognition model. If set to<code>None</code>, the pipeline's default model will be used.</td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>text_recognition_model_dir</code></td>
 <td>The directory path of the text recognition model. If set to<code>None</code>, the official model will be downloaded.</td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>text_recognition_batch_size</code></td>
 <td>The batch size for the text recognition model. If set to<code>None</code>, the batch size will default to <code>1</code>.</td>
-<td><code>int</code></td>
+<td><code>int|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>table_structure_recognition_model_name</code></td>
 <td>The name of the table structure recognition model. If set to<code>None</code>, the pipeline's default model will be used.</td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>table_structure_recognition_model_dir</code></td>
 <td>The directory path of the table structure recognition model. If set to<code>None</code>, the official model will be downloaded.</td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>seal_text_detection_model_name</code></td>
 <td>The name of the seal text detection model. If set to<code>None</code>, the pipeline's default model will be used.</td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>seal_text_detection_model_dir</code></td>
 <td>The directory path of the seal text detection model. If set to<code>None</code>, the official model will be downloaded.</td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>seal_text_recognition_model_name</code></td>
 <td>The name of the seal text recognition model. If set to<code>None</code>, the pipeline's default model will be used.</td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>seal_text_recognition_model_dir</code></td>
 <td>The directory path of the seal text recognition model. If set to<code>None</code>, the official model will be downloaded.</td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>seal_text_recognition_batch_size</code></td>
 <td>The batch size for the seal text recognition model. If set to<code>None</code>, the batch size will default to <code>1</code>.</td>
-<td><code>int</code></td>
+<td><code>int|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
 <td>Whether to load and use the document orientation classification module. If set to<code>None</code>, the value initialized by the pipeline for this parameter will be used by default (initialized to <code>True</code>).</td>
-<td><code>bool</code></td>
+<td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
 <td>Whether to load and use the document unwarping module. If set to<code>None</code>, the value initialized by the pipeline for this parameter will be used by default (initialized to <code>True</code>).</td>
-<td><code>bool</code></td>
+<td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_textline_orientation</code></td>
 <td>Whether to load and use the text line orientation classification function. If set to<code>None</code>, the value initialized by the pipeline for this parameter will be used by default (initialized to <code>True</code>).</td>
-<td><code>bool</code></td>
+<td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_seal_recognition</code></td>
-<td>Whether to load and use the seal recognition sub-pipeline. If set to<code>None</code>, the value initialized by the pipeline for this parameter will be used by default (initialized to <code>True</code>).</td>
-<td><code>bool</code></td>
+<td>Whether to load and use the seal text recognition sub-pipeline. If set to<code>None</code>, the value initialized by the pipeline for this parameter will be used by default (initialized to <code>True</code>).</td>
+<td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_table_recognition</code></td>
 <td>Whether to load and use the table recognition sub-pipeline. If set to<code>None</code>, the value initialized by the pipeline for this parameter will be used by default (initialized to <code>True</code>).</td>
-<td><code>bool</code></td>
+<td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
@@ -1142,13 +1480,13 @@ The relevant parameter descriptions are as follows:
 <li><b>None</b>: If set to <code>None</code>, uses the pipeline default of <code>0.5</code>.</li>
 </ul>
 </td>
-<td><code>float|dict</code></td>
+<td><code>float|dict|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>layout_nms</code></td>
 <td>Whether to use Non-Maximum Suppression (NMS) as post-processing for layout detection. If set to <code>None</code>, the parameter will default to the value initialized in the pipeline, which is set to <code>True</code> by default.</td>
-<td><code>bool</code></td>
+<td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
@@ -1161,7 +1499,7 @@ The relevant parameter descriptions are as follows:
 <li><b>None</b>: If set to <code>None</code>, uses the pipeline default of <code>1.0</code>.</li>
 </ul>
 </td>
-<td><code>float|Tuple[float,float]|dict</code></td>
+<td><code>float|Tuple[float,float]|dict|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
@@ -1173,7 +1511,7 @@ The relevant parameter descriptions are as follows:
 <li><b>None</b>: If set to <code>None</code>, the value initialized by the pipeline for this parameter will be used by default (initialized to <code>large</code>).</li>
 </ul>
 </td>
-<td><code>str|dict</code></td>
+<td><code>str|dict|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
@@ -1184,7 +1522,7 @@ The relevant parameter descriptions are as follows:
 <li><b>None</b>: If set to <code>None</code>, the value initialized by the pipeline for this parameter will be used by default (initialized to <code>960</code>).</li>
 </ul>
 </td>
-<td><code>int</code></td>
+<td><code>int|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
@@ -1195,7 +1533,7 @@ The relevant parameter descriptions are as follows:
 <li><b>None</b>: If set to <code>None</code>, the value initialized by the pipeline for this parameter will be used by default (initialized to <code>max</code>).</li>
 </ul>
 </td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
@@ -1205,7 +1543,7 @@ The relevant parameter descriptions are as follows:
 <li><b>float</b>: Any float greater than <code>0</code>;</li>
 <li><b>None</b>: If set to <code>None</code>, the value initialized by the pipeline for this parameter (<code>0.3</code>) will be used by default.</li></ul>
 </td>
-<td><code>float</code></td>
+<td><code>float|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
@@ -1215,7 +1553,7 @@ The relevant parameter descriptions are as follows:
 <li><b>float</b>: Any float greater than <code>0</code>;</li>
 <li><b>None</b>: If set to <code>None</code>, the value initialized by the pipeline for this parameter (<code>0.6</code>) will be used by default.</li></ul>
 </td>
-<td><code>float</code></td>
+<td><code>float|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
@@ -1225,7 +1563,7 @@ The relevant parameter descriptions are as follows:
 <li><b>float</b>: Any float greater than <code>0</code>;</li>
 <li><b>None</b>: If set to <code>None</code>, the value initialized by the pipeline for this parameter (<code>2.0</code>) will be used by default.</li></ul>
 </td>
-<td><code>float</code></td>
+<td><code>float|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
@@ -1235,7 +1573,7 @@ The relevant parameter descriptions are as follows:
 <li><b>float</b>: Any float greater than <code>0</code>;</li>
 <li><b>None</b>: If set to <code>None</code>, the value initialized by the pipeline for this parameter (<code>0.0</code>, i.e., no threshold) will be used by default.</li></ul>
 </td>
-<td><code>float</code></td>
+<td><code>float|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
@@ -1246,7 +1584,7 @@ The relevant parameter descriptions are as follows:
 <li><b>None</b>: If set to <code>None</code>, the value initialized by the pipeline for this parameter will be used by default (initialized to <code>736</code>).</li>
 </ul>
 </td>
-<td><code>int</code></td>
+<td><code>int|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
@@ -1257,7 +1595,7 @@ The relevant parameter descriptions are as follows:
 <li><b>None</b>: If set to <code>None</code>, the value initialized by the pipeline for this parameter will be used by default (initialized to <code>min</code>).</li>
 </ul>
 </td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
@@ -1267,7 +1605,7 @@ The relevant parameter descriptions are as follows:
 <li><b>float</b>: Any float greater than <code>0</code>;
     <li><b>None</b>: If set to <code>None</code>, the value initialized by the pipeline for this parameter (<code>0.2</code>) will be used by default.</li></li></ul>
 </td>
-<td><code>float</code></td>
+<td><code>float|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
@@ -1277,7 +1615,7 @@ The relevant parameter descriptions are as follows:
 <li><b>float</b>: Any float greater than <code>0</code>;
     <li><b>None</b>: If set to <code>None</code>, the value initialized by the pipeline for this parameter (<code>0.6</code>) will be used by default.</li></li></ul>
 </td>
-<td><code>float</code></td>
+<td><code>float|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
@@ -1287,7 +1625,7 @@ The relevant parameter descriptions are as follows:
 <li><b>float</b>: Any float greater than <code>0</code>;
     <li><b>None</b>: If set to <code>None</code>, the value initialized by the pipeline for this parameter (<code>0.5</code>) will be used by default.</li></li></ul>
 </td>
-<td><code>float</code></td>
+<td><code>float|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
@@ -1297,7 +1635,7 @@ The relevant parameter descriptions are as follows:
 <li><b>float</b>: Any float greater than <code>0</code>;
     <li><b>None</b>: If set to <code>None</code>, the value initialized by the pipeline for this parameter (<code>0.0</code>, i.e., no threshold) will be used by default.</li></li></ul>
 </td>
-<td><code>float</code></td>
+<td><code>float|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
@@ -1311,7 +1649,7 @@ The relevant parameter descriptions are as follows:
 "api_key": "api_key"  # Please set this to your actual API key
 }</code></pre>
 </td>
-<td><code>dict</code></td>
+<td><code>dict|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
@@ -1325,7 +1663,7 @@ The relevant parameter descriptions are as follows:
 "api_key": "api_key"  # Please set this to your actual API key
 }</code></pre>
 </td>
-<td><code>dict</code></td>
+<td><code>dict|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
@@ -1339,7 +1677,7 @@ The relevant parameter descriptions are as follows:
 "api_key": "api_key"  # Please set this to your actual API key
 }</code></pre>
 </td>
-<td><code>dict</code></td>
+<td><code>dict|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
@@ -1355,7 +1693,7 @@ The relevant parameter descriptions are as follows:
 <li><b>None</b>: If set to <code>None</code>, the pipeline initialized value for this parameter will be used. During initialization, the local GPU device 0 will be preferred; if unavailable, the CPU device will be used.</li>
 </ul>
 </td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
@@ -1366,8 +1704,8 @@ The relevant parameter descriptions are as follows:
 </tr>
 <tr>
 <td><code>use_tensorrt</code></td>
-<td>Whether to use the Paddle Inference TensorRT subgraph engine.</br>
-For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6), and it is recommended to install TensorRT 8.6.1.6.</br>
+<td>Whether to use the Paddle Inference TensorRT subgraph engine. If the model does not support acceleration through TensorRT, setting this flag will not enable acceleration.<br/>
+For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6), and it is recommended to install TensorRT 8.6.1.6.<br/>
 For Paddle with CUDA version 12.6, the compatible TensorRT version is 10.x (x>=5), and it is recommended to install TensorRT 10.5.0.18.
 </td>
 <td><code>bool</code></td>
@@ -1403,7 +1741,7 @@ MKL-DNN cache capacity.
 <tr>
 <td><code>paddlex_config</code></td>
 <td>PaddleX pipeline configuration file path.</td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 </tbody>
@@ -1427,7 +1765,7 @@ MKL-DNN cache capacity.
 <ul>
   <li><b>Python Var</b>: e.g., image data represented by <code>numpy.ndarray</code>;</li>
   <li><b>str</b>: e.g., local path of an image file or PDF file: <code>/root/data/img.jpg</code>; <b>URL link</b>, e.g., network URL of an image file or PDF file: <a href = "https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/vehicle_certificate-1.png">Example</a>; <b>Local directory</b>, which must contain images to be predicted, e.g., local path: <code>/root/data/</code> (Currently, prediction from directories containing PDF files is not supported; PDF files need to be specified by their full path);</li>
-  <li><b>List</b>: List elements must be of the above types, e.g.,<code>[numpy.ndarray, numpy.ndarray]</code>,<code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>,<code>["/root/data1", "/root/data2"]</code>.</li>
+  <li><b>list</b>: List elements must be of the above types, e.g.,<code>[numpy.ndarray, numpy.ndarray]</code>,<code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>,<code>["/root/data1", "/root/data2"]</code>.</li>
 </ul>
 </td>
 <td><code>Python Var|str|list</code></td>
@@ -1436,127 +1774,127 @@ MKL-DNN cache capacity.
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
 <td>Whether to use the document orientation classification module during inference.</td>
-<td><code>bool</code></td>
+<td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
 <td>Whether to use the document image unwarping module during inference.</td>
-<td><code>bool</code></td>
+<td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_textline_orientation</code></td>
 <td>Whether to use the text line orientation classification module during inference.</td>
-<td><code>bool</code></td>
+<td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_seal_recognition</code></td>
-<td>Whether to use the seal recognition sub-pipeline during inference.</td>
-<td><code>bool</code></td>
+<td>Whether to use the seal text recognition sub-pipeline during inference.</td>
+<td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_table_recognition</code></td>
 <td>Whether to use the table recognition sub-pipeline during inference.</td>
-<td><code>bool</code></td>
+<td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>layout_threshold</code></td>
-<td>Same as the parameter during instantiation.</td>
-<td><code>float|dict</code></td>
+<td>Same meaning as the instantiation parameters. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
+<td><code>float|dict|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>layout_nms</code></td>
-<td>Same as the parameter during instantiation.</td>
-<td><code>bool</code></td>
+<td>Same meaning as the instantiation parameters. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
+<td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>layout_unclip_ratio</code></td>
-<td>Same as the parameter during instantiation.</td>
-<td><code>float|Tuple[float,float]|dict</code></td>
+<td>Same meaning as the instantiation parameters. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
+<td><code>float|Tuple[float,float]|dict|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>layout_merge_bboxes_mode</code></td>
-<td>Same as the parameter during instantiation.</td>
-<td><code>str|dict</code></td>
+<td>Same meaning as the instantiation parameters. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
+<td><code>str|dict|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>text_det_limit_side_len</code></td>
-<td>Same as the parameter during instantiation.</td>
-<td><code>int</code></td>
+<td>Same meaning as the instantiation parameters. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
+<td><code>int|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>text_det_limit_type</code></td>
-<td>Same as the parameter during instantiation.</td>
-<td><code>str</code></td>
+<td>Same meaning as the instantiation parameters. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>text_det_thresh</code></td>
-<td>Same as the parameter during instantiation.</td>
-<td><code>float</code></td>
+<td>Same meaning as the instantiation parameters. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
+<td><code>float|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>text_det_box_thresh</code></td>
-<td>Same as the parameter during instantiation.</td>
-<td><code>float</code></td>
+<td>Same meaning as the instantiation parameters. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
+<td><code>float|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>text_det_unclip_ratio</code></td>
-<td>Same as the parameter during instantiation.</td>
-<td><code>float</code></td>
+<td>Same meaning as the instantiation parameters. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
+<td><code>float|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>text_rec_score_thresh</code></td>
-<td>Same as the parameter during instantiation.</td>
-<td><code>float</code></td>
+<td>Same meaning as the instantiation parameters. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
+<td><code>float|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>seal_det_limit_side_len</code></td>
-<td>Same as the parameter during instantiation.</td>
-<td><code>int</code></td>
+<td>Same meaning as the instantiation parameters. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
+<td><code>int|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>seal_det_limit_type</code></td>
-<td>Same as the parameter during instantiation.</td>
-<td><code>str</code></td>
+<td>Same meaning as the instantiation parameters. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>seal_det_thresh</code></td>
-<td>Same as the parameter during instantiation.</td>
-<td><code>float</code></td>
+<td>Same meaning as the instantiation parameters. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
+<td><code>float|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>seal_det_box_thresh</code></td>
-<td>Same as the parameter during instantiation.</td>
-<td><code>float</code></td>
+<td>Same meaning as the instantiation parameters. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
+<td><code>float|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>seal_det_unclip_ratio</code></td>
-<td>Same as the parameter during instantiation.</td>
-<td><code>float</code></td>
+<td>Same meaning as the instantiation parameters. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
+<td><code>float|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>seal_rec_score_thresh</code></td>
-<td>Same as the parameter during instantiation.</td>
-<td><code>float</code></td>
+<td>Same meaning as the instantiation parameters. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
+<td><code>float|None</code></td>
 <td><code>None</code></td>
 </tr>
 </table>
@@ -1663,7 +2001,7 @@ for res in visual_predict_res:
     - `page_index`: `(Union[int, None])` If the input is a PDF file, it indicates the current page number of the PDF; otherwise, it is `None`.
     - `model_settings`: `(Dict[str, bool])` Model parameters required to configure the pipeline.
         - `use_doc_preprocessor`: `(bool)` Controls whether to enable the document preprocessor sub-pipeline.
-        - `use_seal_recognition`: `(bool)` Controls whether to enable the seal recognition sub-pipeline.
+        - `use_seal_recognition`: `(bool)` Controls whether to enable the seal text recognition sub-pipeline.
         - `use_table_recognition`: `(bool)` Controls whether to enable the table recognition sub-pipeline.
         - `use_formula_recognition`: `(bool)` Controls whether to enable the formula recognition sub-pipeline.
     - `parsing_res_list`: `(List[Dict])` List of parsing results, where each element is a dictionary. The list order is the reading order after parsing.
@@ -1692,15 +2030,15 @@ for res in visual_predict_res:
         - `rec_formula`: `(str)` Formula recognition result.
         - `rec_polys`: `(numpy.ndarray)` Formula detection box, shape (4, 2), dtype int16.
         - `formula_region_id`: `(int)` Region number where the formula is located.
-    - `seal_res_list`: `(List[Dict[str, Union[numpy.ndarray, List[float], str]]])` List of seal recognition results, each element is a dictionary.
+    - `seal_res_list`: `(List[Dict[str, Union[numpy.ndarray, List[float], str]]])` List of seal text recognition results, each element is a dictionary.
         - `input_path`: `(str)` Input path of the seal image.
-        - `model_settings`: `(Dict)` Model configuration parameters for the seal recognition sub-pipeline.
+        - `model_settings`: `(Dict)` Model configuration parameters for the seal text recognition sub-pipeline.
         - `dt_polys`: `(List[numpy.ndarray])` List of seal detection boxes, format same as `dt_polys`.
         - `text_det_params`: `(Dict[str, Dict[str, int, float]])` Configuration parameters for the seal detection module, specific parameter meanings are the same as above.
         - `text_type`: `(str)` Type of seal detection, currently fixed to "seal".
-        - `text_rec_score_thresh`: `(float)` Filtering threshold for seal recognition results.
-        - `rec_texts`: `(List[str])` List of seal recognition results, containing only text with confidence exceeding `text_rec_score_thresh`.
-        - `rec_scores`: `(List[float])` List of seal recognition confidence scores, filtered by `text_rec_score_thresh`.
+        - `text_rec_score_thresh`: `(float)` Filtering threshold for seal text recognition results.
+        - `rec_texts`: `(List[str])` List of seal text recognition results, containing only text with confidence exceeding `text_rec_score_thresh`.
+        - `rec_scores`: `(List[float])` List of seal text recognition confidence scores, filtered by `text_rec_score_thresh`.
         - `rec_polys`: `(List[numpy.ndarray])` List of seal detection boxes filtered by confidence, format same as `dt_polys`.
         - `rec_boxes`: `(numpy.ndarray)` Array of rectangular bounding boxes for detections, shape (n, 4), dtype int16. Each row represents a rectangle.
     - `table_res_list`: `(List[Dict[str, Union[numpy.ndarray, List[float], str]]])` List of table recognition results, each element is a dictionary.
@@ -1776,7 +2114,7 @@ The following are the parameters and their descriptions for the `build_vector()`
 </tr>
 <tr>
 <td><code>retriever_config</code></td>
-<td>Configuration parameters for the vector retrieval large model, same as the parameter during instantiation.</td>
+<td>Configuration parameters for the vector retrieval large model, same as the parameter during instantiation. If set to <code>None</code>, uses instantiation parameters; otherwise, this parameter takes precedence.</td>
 <td><code>dict</code></td>
 <td><code>None</code></td>
 </tr>
@@ -1821,7 +2159,7 @@ The following are the parameters and their descriptions for the `mllm_pred()` me
 </tr>
 <tr>
 <td><code>mllm_chat_bot_config</code></td>
-<td>Configuration parameters for the multimodal large model, same as the parameter during instantiation.</td>
+<td>Configuration parameters for the multimodal large model, same as the parameter during instantiation. If set to <code>None</code>, uses instantiation parameters; otherwise, this parameter takes precedence.</td>
 <td><code>dict</code></td>
 <td><code>None</code></td>
 </tr>
@@ -1955,7 +2293,7 @@ The following are the parameters and their descriptions for the `chat()` method:
 </tr>
 <tr>
 <td><code>retriever_config</code></td>
-<td>Configuration parameters for the vector retrieval large model, same as the parameter during instantiation.</td>
+<td>Configuration parameters for the vector retrieval large model, same as the parameter during instantiation. If set to <code>None</code>, uses instantiation parameters; otherwise, this parameter takes precedence.</td>
 <td><code>dict</code></td>
 <td><code>None</code></td>
 </tr>
