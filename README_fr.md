@@ -42,6 +42,10 @@ En plus de fournir une bibliothèque de modèles exceptionnelle, PaddleOCR 3.0 p
 
 ## 📣 Mises à jour récentes
 
+#### **26/06/2025 : Publication de PaddleOCR 3.0.3, incluant :**
+
+- Correction de bug : Résolution du problème où le paramètre `enable_mkldnn` ne fonctionnait pas, rétablissant le comportement par défaut d'utilisation de MKL-DNN pour l'inférence CPU.
+
 #### 🔥🔥**19/06/2025 : Publication de PaddleOCR 3.0.2, incluant :**
 
 - **Nouvelles fonctionnalités :**
