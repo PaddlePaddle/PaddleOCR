@@ -2131,13 +2131,13 @@ MKL-DNN cache capacity.
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
 <td>Whether to use document orientation classification during inference.</td>
-<td><code>bool</code></td>
+<td><code>bool|None</code></td>
 <td><code>False</code></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
 <td>Whether to use document image unwarping during inference.</td>
-<td><code>bool</code></td>
+<td><code>bool|None</code></td>
 <td><code>False</code></td>
 </tr>
 <tr>
