@@ -1396,7 +1396,7 @@ any float > <code>0</code>. If not set, the default is <code>0.6</code>.
 </tr>
 <tr>
 <td><code>use_chart_recognition</code></td>
-<td>Whether to use the chart parsing module. If not set, the default is <code>True</code>.</td>
+<td>Whether to use the chart parsing module.</td>
 <td><code>bool</code></td>
 <td>False</td>
 </tr>
@@ -2167,7 +2167,7 @@ MKL-DNN cache capacity.
 <tr>
 <td><code>use_chart_recognition</code></td>
 <td>Whether to use the chart parsing module. If set to <code>None</code>, the default value is <code>True</code>.</td>
-<td><code>bool</code></td>
+<td><code>bool|None</code></td>
 <td><code>False</code></td>
 </tr>
 <tr>

@@ -2211,13 +2211,13 @@ MKL-DNN 缓存容量。
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
 <td>是否在推理时使用文档方向分类模块。</td>
-<td><code>bool</code></td>
+<td><code>bool|None</code></td>
 <td><code>False</code></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
 <td>是否在推理时使用文本图像矫正模块。</td>
-<td><code>bool</code></td>
+<td><code>bool|None</code></td>
 <td><code>False</code></td>
 </tr>
 <tr>
@@ -2247,7 +2247,7 @@ MKL-DNN 缓存容量。
 <tr>
 <td><code>use_chart_recognition</code></td>
 <td>是否使用图表解析模块。</td>
-<td><code>bool</code></td>
+<td><code>bool|None</code></td>
 <td><code>False</code></td>
 </tr>
 <tr>
