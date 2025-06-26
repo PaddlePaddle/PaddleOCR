@@ -89,6 +89,7 @@ def prepare_common_init_args(model_name, common_args):
     elif device_type == "cpu":
         enable_mkldnn = common_args["enable_mkldnn"]
         if enable_mkldnn:
+            pp_option.run_mode = "mkldnn"
             pp_option.mkldnn_cache_capacity = common_args["mkldnn_cache_capacity"]
         else:
             pp_option.run_mode = "paddle"
