@@ -2027,7 +2027,7 @@ The above Python script performs the following steps:
 </tr>
 <tr>
 <td><code>use_chart_recognition</code></td>
-<td>Whether to use the chart parsing module. If set to <code>None</code>, the default value is <code>True</code>.</td>
+<td>Whether to load and use the chart parsing module. If set to <code>None</code>, the default value is <code>True</code>.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
