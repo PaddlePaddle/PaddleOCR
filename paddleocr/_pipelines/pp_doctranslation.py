@@ -13,16 +13,15 @@
 # limitations under the License.
 
 from .._utils.cli import (
-    add_simple_inference_args,
     get_subcommand_args,
-    perform_simple_inference,
     str2bool,
 )
+from .._utils.logging import logger
 from .base import PaddleXPipelineWrapper, PipelineCLISubcommandExecutor
 from .utils import create_config_from_structure
 
 
-class PPStructureV3(PaddleXPipelineWrapper):
+class PPDocTranslation(PaddleXPipelineWrapper):
     def __init__(
         self,
         layout_detection_model_name=None,
@@ -88,6 +87,7 @@ class PPStructureV3(PaddleXPipelineWrapper):
         use_formula_recognition=None,
         use_chart_recognition=None,
         use_region_detection=None,
+        chat_bot_config=None,
         **kwargs,
     ):
         params = locals().copy()
@@ -99,9 +99,9 @@ class PPStructureV3(PaddleXPipelineWrapper):
 
     @property
     def _paddlex_pipeline_name(self):
-        return "PP-StructureV3"
+        return "PP-DocTranslation"
 
-    def predict_iter(
+    def visual_predict_iter(
         self,
         input,
         *,
@@ -137,7 +137,7 @@ class PPStructureV3(PaddleXPipelineWrapper):
         use_e2e_wireless_table_rec_model=True,
         **kwargs,
     ):
-        return self.paddlex_pipeline.predict(
+        return self.paddlex_pipeline.visual_predict(
             input,
             use_doc_orientation_classify=use_doc_orientation_classify,
             use_doc_unwarping=use_doc_unwarping,
@@ -172,7 +172,7 @@ class PPStructureV3(PaddleXPipelineWrapper):
             **kwargs,
         )
 
-    def predict(
+    def visual_predict(
         self,
         input,
         *,
@@ -209,7 +209,7 @@ class PPStructureV3(PaddleXPipelineWrapper):
         **kwargs,
     ):
         return list(
-            self.predict_iter(
+            self.visual_predict_iter(
                 input,
                 use_doc_orientation_classify=use_doc_orientation_classify,
                 use_doc_unwarping=use_doc_unwarping,
@@ -245,240 +245,333 @@ class PPStructureV3(PaddleXPipelineWrapper):
             )
         )
 
+    def translate_iter(
+        self,
+        ori_md_info_list,
+        *,
+        target_language="zh",
+        chunk_size=5000,
+        task_description=None,
+        output_format=None,
+        rules_str=None,
+        few_shot_demo_text_content=None,
+        few_shot_demo_key_value_list=None,
+        chat_bot_config=None,
+        **kwargs,
+    ):
+        return self.paddlex_pipeline.translate(
+            ori_md_info_list,
+            target_language=target_language,
+            chunk_size=chunk_size,
+            task_description=task_description,
+            output_format=output_format,
+            rules_str=rules_str,
+            few_shot_demo_text_content=few_shot_demo_text_content,
+            few_shot_demo_key_value_list=few_shot_demo_key_value_list,
+            chat_bot_config=chat_bot_config,
+            **kwargs,
+        )
+
+    def translate(
+        self,
+        ori_md_info_list,
+        *,
+        target_language="zh",
+        chunk_size=5000,
+        task_description=None,
+        output_format=None,
+        rules_str=None,
+        few_shot_demo_text_content=None,
+        few_shot_demo_key_value_list=None,
+        chat_bot_config=None,
+        **kwargs,
+    ):
+        return list(
+            self.translate_iter(
+                ori_md_info_list,
+                target_language=target_language,
+                chunk_size=chunk_size,
+                task_description=task_description,
+                output_format=output_format,
+                rules_str=rules_str,
+                few_shot_demo_text_content=few_shot_demo_text_content,
+                few_shot_demo_key_value_list=few_shot_demo_key_value_list,
+                chat_bot_config=chat_bot_config,
+                **kwargs,
+            )
+        )
+
+    def load_from_markdown(self, input):
+        return self.paddlex_pipeline.load_from_markdown(input)
+
     def concatenate_markdown_pages(self, markdown_list):
         return self.paddlex_pipeline.concatenate_markdown_pages(markdown_list)
 
     @classmethod
     def get_cli_subcommand_executor(cls):
-        return PPStructureV3CLISubcommandExecutor()
+        return PPDocTranslationCLISubcommandExecutor()
 
     def _get_paddlex_config_overrides(self):
+        # HACK: We should consider reducing duplication.
         STRUCTURE = {
-            "SubPipelines.DocPreprocessor.use_doc_orientation_classify": self._params[
+            "SubPipelines.LayoutParser.SubPipelines.DocPreprocessor.use_doc_orientation_classify": self._params[
                 "use_doc_orientation_classify"
             ],
-            "SubPipelines.DocPreprocessor.use_doc_unwarping": self._params[
+            "SubPipelines.LayoutParser.SubPipelines.DocPreprocessor.use_doc_unwarping": self._params[
                 "use_doc_unwarping"
             ],
-            "SubPipelines.GeneralOCR.use_textline_orientation": self._params[
+            "SubPipelines.LayoutParser.SubPipelines.GeneralOCR.use_textline_orientation": self._params[
                 "use_textline_orientation"
             ],
-            "use_seal_recognition": self._params["use_seal_recognition"],
-            "use_table_recognition": self._params["use_table_recognition"],
-            "use_formula_recognition": self._params["use_formula_recognition"],
-            "use_chart_recognition": self._params["use_chart_recognition"],
-            "use_region_detection": self._params["use_region_detection"],
-            "SubModules.LayoutDetection.model_name": self._params[
+            "SubPipelines.LayoutParser.use_seal_recognition": self._params[
+                "use_seal_recognition"
+            ],
+            "SubPipelines.LayoutParser.use_table_recognition": self._params[
+                "use_table_recognition"
+            ],
+            "SubPipelines.LayoutParser.use_formula_recognition": self._params[
+                "use_formula_recognition"
+            ],
+            "SubPipelines.LayoutParser.use_chart_recognition": self._params[
+                "use_chart_recognition"
+            ],
+            "SubPipelines.LayoutParser.use_region_detection": self._params[
+                "use_region_detection"
+            ],
+            "SubPipelines.LayoutParser.SubModules.LayoutDetection.model_name": self._params[
                 "layout_detection_model_name"
             ],
-            "SubModules.LayoutDetection.model_dir": self._params[
+            "SubPipelines.LayoutParser.SubModules.LayoutDetection.model_dir": self._params[
                 "layout_detection_model_dir"
             ],
-            "SubModules.LayoutDetection.threshold": self._params["layout_threshold"],
-            "SubModules.LayoutDetection.layout_nms": self._params["layout_nms"],
-            "SubModules.LayoutDetection.layout_unclip_ratio": self._params[
+            "SubPipelines.LayoutParser.SubModules.LayoutDetection.threshold": self._params[
+                "layout_threshold"
+            ],
+            "SubPipelines.LayoutParser.SubModules.LayoutDetection.layout_nms": self._params[
+                "layout_nms"
+            ],
+            "SubPipelines.LayoutParser.SubModules.LayoutDetection.layout_unclip_ratio": self._params[
                 "layout_unclip_ratio"
             ],
-            "SubModules.LayoutDetection.layout_merge_bboxes_mode": self._params[
+            "SubPipelines.LayoutParser.SubModules.LayoutDetection.layout_merge_bboxes_mode": self._params[
                 "layout_merge_bboxes_mode"
             ],
-            "SubModules.ChartRecognition.model_name": self._params[
+            "SubPipelines.LayoutParser.SubModules.ChartRecognition.model_name": self._params[
                 "chart_recognition_model_name"
             ],
-            "SubModules.ChartRecognition.model_dir": self._params[
+            "SubPipelines.LayoutParser.SubModules.ChartRecognition.model_dir": self._params[
                 "chart_recognition_model_dir"
             ],
-            "SubModules.ChartRecognition.batch_size": self._params[
+            "SubPipelines.LayoutParser.SubModules.ChartRecognition.batch_size": self._params[
                 "chart_recognition_batch_size"
             ],
-            "SubModules.RegionDetection.model_name": self._params[
+            "SubPipelines.LayoutParser.SubModules.RegionDetection.model_name": self._params[
                 "region_detection_model_name"
             ],
-            "SubModules.RegionDetection.model_dir": self._params[
+            "SubPipelines.LayoutParser.SubModules.RegionDetection.model_dir": self._params[
                 "region_detection_model_dir"
             ],
-            "SubPipelines.DocPreprocessor.SubModules.DocOrientationClassify.model_name": self._params[
+            "SubPipelines.LayoutParser.SubPipelines.DocPreprocessor.SubModules.DocOrientationClassify.model_name": self._params[
                 "doc_orientation_classify_model_name"
             ],
-            "SubPipelines.DocPreprocessor.SubModules.DocOrientationClassify.model_dir": self._params[
+            "SubPipelines.LayoutParser.SubPipelines.DocPreprocessor.SubModules.DocOrientationClassify.model_dir": self._params[
                 "doc_orientation_classify_model_dir"
             ],
-            "SubPipelines.DocPreprocessor.SubModules.DocUnwarping.model_name": self._params[
+            "SubPipelines.LayoutParser.SubPipelines.DocPreprocessor.SubModules.DocUnwarping.model_name": self._params[
                 "doc_unwarping_model_name"
             ],
-            "SubPipelines.DocPreprocessor.SubModules.DocUnwarping.model_dir": self._params[
+            "SubPipelines.LayoutParser.SubPipelines.DocPreprocessor.SubModules.DocUnwarping.model_dir": self._params[
                 "doc_unwarping_model_dir"
             ],
-            "SubPipelines.GeneralOCR.SubModules.TextDetection.model_name": self._params[
+            "SubPipelines.LayoutParser.SubPipelines.GeneralOCR.SubModules.TextDetection.model_name": self._params[
                 "text_detection_model_name"
             ],
-            "SubPipelines.GeneralOCR.SubModules.TextDetection.model_dir": self._params[
+            "SubPipelines.LayoutParser.SubPipelines.GeneralOCR.SubModules.TextDetection.model_dir": self._params[
                 "text_detection_model_dir"
             ],
-            "SubPipelines.GeneralOCR.SubModules.TextDetection.limit_side_len": self._params[
+            "SubPipelines.LayoutParser.SubPipelines.GeneralOCR.SubModules.TextDetection.limit_side_len": self._params[
                 "text_det_limit_side_len"
             ],
-            "SubPipelines.GeneralOCR.SubModules.TextDetection.limit_type": self._params[
+            "SubPipelines.LayoutParser.SubPipelines.GeneralOCR.SubModules.TextDetection.limit_type": self._params[
                 "text_det_limit_type"
             ],
-            "SubPipelines.GeneralOCR.SubModules.TextDetection.thresh": self._params[
+            "SubPipelines.LayoutParser.SubPipelines.GeneralOCR.SubModules.TextDetection.thresh": self._params[
                 "text_det_thresh"
             ],
-            "SubPipelines.GeneralOCR.SubModules.TextDetection.box_thresh": self._params[
+            "SubPipelines.LayoutParser.SubPipelines.GeneralOCR.SubModules.TextDetection.box_thresh": self._params[
                 "text_det_box_thresh"
             ],
-            "SubPipelines.GeneralOCR.SubModules.TextDetection.unclip_ratio": self._params[
+            "SubPipelines.LayoutParser.SubPipelines.GeneralOCR.SubModules.TextDetection.unclip_ratio": self._params[
                 "text_det_unclip_ratio"
             ],
-            "SubPipelines.GeneralOCR.SubModules.TextLineOrientation.model_name": self._params[
+            "SubPipelines.LayoutParser.SubPipelines.GeneralOCR.SubModules.TextLineOrientation.model_name": self._params[
                 "textline_orientation_model_name"
             ],
-            "SubPipelines.GeneralOCR.SubModules.TextLineOrientation.model_dir": self._params[
+            "SubPipelines.LayoutParser.SubPipelines.GeneralOCR.SubModules.TextLineOrientation.model_dir": self._params[
                 "textline_orientation_model_dir"
             ],
-            "SubPipelines.GeneralOCR.SubModules.TextLineOrientation.batch_size": self._params[
+            "SubPipelines.LayoutParser.SubPipelines.GeneralOCR.SubModules.TextLineOrientation.batch_size": self._params[
                 "textline_orientation_batch_size"
             ],
-            "SubPipelines.GeneralOCR.SubModules.TextRecognition.model_name": self._params[
+            "SubPipelines.LayoutParser.SubPipelines.GeneralOCR.SubModules.TextRecognition.model_name": self._params[
                 "text_recognition_model_name"
             ],
-            "SubPipelines.GeneralOCR.SubModules.TextRecognition.model_dir": self._params[
+            "SubPipelines.LayoutParser.SubPipelines.GeneralOCR.SubModules.TextRecognition.model_dir": self._params[
                 "text_recognition_model_dir"
             ],
-            "SubPipelines.GeneralOCR.SubModules.TextRecognition.batch_size": self._params[
+            "SubPipelines.LayoutParser.SubPipelines.GeneralOCR.SubModules.TextRecognition.batch_size": self._params[
                 "text_recognition_batch_size"
             ],
-            "SubPipelines.GeneralOCR.SubModules.TextRecognition.score_thresh": self._params[
+            "SubPipelines.LayoutParser.SubPipelines.GeneralOCR.SubModules.TextRecognition.score_thresh": self._params[
                 "text_rec_score_thresh"
             ],
-            "SubPipelines.TableRecognition.SubModules.TableClassification.model_name": self._params[
+            "SubPipelines.LayoutParser.SubPipelines.TableRecognition.SubModules.TableClassification.model_name": self._params[
                 "table_classification_model_name"
             ],
-            "SubPipelines.TableRecognition.SubModules.TableClassification.model_dir": self._params[
+            "SubPipelines.LayoutParser.SubPipelines.TableRecognition.SubModules.TableClassification.model_dir": self._params[
                 "table_classification_model_dir"
             ],
-            "SubPipelines.TableRecognition.SubModules.WiredTableStructureRecognition.model_name": self._params[
+            "SubPipelines.LayoutParser.SubPipelines.TableRecognition.SubModules.WiredTableStructureRecognition.model_name": self._params[
                 "wired_table_structure_recognition_model_name"
             ],
-            "SubPipelines.TableRecognition.SubModules.WiredTableStructureRecognition.model_dir": self._params[
+            "SubPipelines.LayoutParser.SubPipelines.TableRecognition.SubModules.WiredTableStructureRecognition.model_dir": self._params[
                 "wired_table_structure_recognition_model_dir"
             ],
-            "SubPipelines.TableRecognition.SubModules.WirelessTableStructureRecognition.model_name": self._params[
+            "SubPipelines.LayoutParser.SubPipelines.TableRecognition.SubModules.WirelessTableStructureRecognition.model_name": self._params[
                 "wireless_table_structure_recognition_model_name"
             ],
-            "SubPipelines.TableRecognition.SubModules.WirelessTableStructureRecognition.model_dir": self._params[
+            "SubPipelines.LayoutParser.SubPipelines.TableRecognition.SubModules.WirelessTableStructureRecognition.model_dir": self._params[
                 "wireless_table_structure_recognition_model_dir"
             ],
-            "SubPipelines.TableRecognition.SubModules.WiredTableCellsDetection.model_name": self._params[
+            "SubPipelines.LayoutParser.SubPipelines.TableRecognition.SubModules.WiredTableCellsDetection.model_name": self._params[
                 "wired_table_cells_detection_model_name"
             ],
-            "SubPipelines.TableRecognition.SubModules.WiredTableCellsDetection.model_dir": self._params[
+            "SubPipelines.LayoutParser.SubPipelines.TableRecognition.SubModules.WiredTableCellsDetection.model_dir": self._params[
                 "wired_table_cells_detection_model_dir"
             ],
-            "SubPipelines.TableRecognition.SubModules.WirelessTableCellsDetection.model_name": self._params[
+            "SubPipelines.LayoutParser.SubPipelines.TableRecognition.SubModules.WirelessTableCellsDetection.model_name": self._params[
                 "wireless_table_cells_detection_model_name"
             ],
-            "SubPipelines.TableRecognition.SubModules.WirelessTableCellsDetection.model_dir": self._params[
+            "SubPipelines.LayoutParser.SubPipelines.TableRecognition.SubModules.WirelessTableCellsDetection.model_dir": self._params[
                 "wireless_table_cells_detection_model_dir"
             ],
-            "SubPipelines.TableRecognition.SubModules.TableOrientationClassify.model_name": self._params[
+            "SubPipelines.LayoutParser.SubPipelines.TableRecognition.SubModules.TableOrientationClassify.model_name": self._params[
                 "table_orientation_classify_model_name"
             ],
-            "SubPipelines.TableRecognition.SubModules.TableOrientationClassify.model_dir": self._params[
+            "SubPipelines.LayoutParser.SubPipelines.TableRecognition.SubModules.TableOrientationClassify.model_dir": self._params[
                 "table_orientation_classify_model_dir"
             ],
-            "SubPipelines.TableRecognition.SubPipelines.GeneralOCR.SubModules.TextDetection.model_name": self._params[
+            "SubPipelines.LayoutParser.SubPipelines.TableRecognition.SubPipelines.GeneralOCR.SubModules.TextDetection.model_name": self._params[
                 "text_detection_model_name"
             ],
-            "SubPipelines.TableRecognition.SubPipelines.GeneralOCR.SubModules.TextDetection.model_dir": self._params[
+            "SubPipelines.LayoutParser.SubPipelines.TableRecognition.SubPipelines.GeneralOCR.SubModules.TextDetection.model_dir": self._params[
                 "text_detection_model_dir"
             ],
-            "SubPipelines.TableRecognition.SubPipelines.GeneralOCR.SubModules.TextDetection.limit_side_len": self._params[
+            "SubPipelines.LayoutParser.SubPipelines.TableRecognition.SubPipelines.GeneralOCR.SubModules.TextDetection.limit_side_len": self._params[
                 "text_det_limit_side_len"
             ],
-            "SubPipelines.TableRecognition.SubPipelines.GeneralOCR.SubModules.TextDetection.limit_type": self._params[
+            "SubPipelines.LayoutParser.SubPipelines.TableRecognition.SubPipelines.GeneralOCR.SubModules.TextDetection.limit_type": self._params[
                 "text_det_limit_type"
             ],
-            "SubPipelines.TableRecognition.SubPipelines.GeneralOCR.SubModules.TextDetection.thresh": self._params[
+            "SubPipelines.LayoutParser.SubPipelines.TableRecognition.SubPipelines.GeneralOCR.SubModules.TextDetection.thresh": self._params[
                 "text_det_thresh"
             ],
-            "SubPipelines.TableRecognition.SubPipelines.GeneralOCR.SubModules.TextDetection.box_thresh": self._params[
+            "SubPipelines.LayoutParser.SubPipelines.TableRecognition.SubPipelines.GeneralOCR.SubModules.TextDetection.box_thresh": self._params[
                 "text_det_box_thresh"
             ],
-            "SubPipelines.TableRecognition.SubPipelines.GeneralOCR.SubModules.TextDetection.unclip_ratio": self._params[
+            "SubPipelines.LayoutParser.SubPipelines.TableRecognition.SubPipelines.GeneralOCR.SubModules.TextDetection.unclip_ratio": self._params[
                 "text_det_unclip_ratio"
             ],
-            "SubPipelines.TableRecognition.SubPipelines.GeneralOCR.SubModules.TextLineOrientation.model_name": self._params[
+            "SubPipelines.LayoutParser.SubPipelines.TableRecognition.SubPipelines.GeneralOCR.SubModules.TextLineOrientation.model_name": self._params[
                 "textline_orientation_model_name"
             ],
-            "SubPipelines.TableRecognition.SubPipelines.GeneralOCR.SubModules.TextLineOrientation.model_dir": self._params[
+            "SubPipelines.LayoutParser.SubPipelines.TableRecognition.SubPipelines.GeneralOCR.SubModules.TextLineOrientation.model_dir": self._params[
                 "textline_orientation_model_dir"
             ],
-            "SubPipelines.TableRecognition.SubPipelines.GeneralOCR.SubModules.TextLineOrientation.batch_size": self._params[
+            "SubPipelines.LayoutParser.SubPipelines.TableRecognition.SubPipelines.GeneralOCR.SubModules.TextLineOrientation.batch_size": self._params[
                 "textline_orientation_batch_size"
             ],
-            "SubPipelines.TableRecognition.SubPipelines.GeneralOCR.SubModules.TextRecognition.model_name": self._params[
+            "SubPipelines.LayoutParser.SubPipelines.TableRecognition.SubPipelines.GeneralOCR.SubModules.TextRecognition.model_name": self._params[
                 "text_recognition_model_name"
             ],
-            "SubPipelines.TableRecognition.SubPipelines.GeneralOCR.SubModules.TextRecognition.model_dir": self._params[
+            "SubPipelines.LayoutParser.SubPipelines.TableRecognition.SubPipelines.GeneralOCR.SubModules.TextRecognition.model_dir": self._params[
                 "text_recognition_model_dir"
             ],
-            "SubPipelines.TableRecognition.SubPipelines.GeneralOCR.SubModules.TextRecognition.batch_size": self._params[
+            "SubPipelines.LayoutParser.SubPipelines.TableRecognition.SubPipelines.GeneralOCR.SubModules.TextRecognition.batch_size": self._params[
                 "text_recognition_batch_size"
             ],
-            "SubPipelines.TableRecognition.SubPipelines.GeneralOCR.SubModules.TextRecognition.score_thresh": self._params[
+            "SubPipelines.LayoutParser.SubPipelines.TableRecognition.SubPipelines.GeneralOCR.SubModules.TextRecognition.score_thresh": self._params[
                 "text_rec_score_thresh"
             ],
-            "SubPipelines.SealRecognition.SubPipelines.SealOCR.SubModules.TextDetection.model_name": self._params[
+            "SubPipelines.LayoutParser.SubPipelines.SealRecognition.SubPipelines.SealOCR.SubModules.TextDetection.model_name": self._params[
                 "seal_text_detection_model_name"
             ],
-            "SubPipelines.SealRecognition.SubPipelines.SealOCR.SubModules.TextDetection.model_dir": self._params[
+            "SubPipelines.LayoutParser.SubPipelines.SealRecognition.SubPipelines.SealOCR.SubModules.TextDetection.model_dir": self._params[
                 "seal_text_detection_model_dir"
             ],
-            "SubPipelines.SealRecognition.SubPipelines.SealOCR.SubModules.TextDetection.limit_side_len": self._params[
+            "SubPipelines.LayoutParser.SubPipelines.SealRecognition.SubPipelines.SealOCR.SubModules.TextDetection.limit_side_len": self._params[
                 "text_det_limit_side_len"
             ],
-            "SubPipelines.SealRecognition.SubPipelines.SealOCR.SubModules.TextDetection.limit_type": self._params[
+            "SubPipelines.LayoutParser.SubPipelines.SealRecognition.SubPipelines.SealOCR.SubModules.TextDetection.limit_type": self._params[
                 "seal_det_limit_type"
             ],
-            "SubPipelines.SealRecognition.SubPipelines.SealOCR.SubModules.TextDetection.thresh": self._params[
+            "SubPipelines.LayoutParser.SubPipelines.SealRecognition.SubPipelines.SealOCR.SubModules.TextDetection.thresh": self._params[
                 "seal_det_thresh"
             ],
-            "SubPipelines.SealRecognition.SubPipelines.SealOCR.SubModules.TextDetection.box_thresh": self._params[
+            "SubPipelines.LayoutParser.SubPipelines.SealRecognition.SubPipelines.SealOCR.SubModules.TextDetection.box_thresh": self._params[
                 "seal_det_box_thresh"
             ],
-            "SubPipelines.SealRecognition.SubPipelines.SealOCR.SubModules.TextDetection.unclip_ratio": self._params[
+            "SubPipelines.LayoutParser.SubPipelines.SealRecognition.SubPipelines.SealOCR.SubModules.TextDetection.unclip_ratio": self._params[
                 "seal_det_unclip_ratio"
             ],
-            "SubPipelines.SealRecognition.SubPipelines.SealOCR.SubModules.TextRecognition.model_name": self._params[
+            "SubPipelines.LayoutParser.SubPipelines.SealRecognition.SubPipelines.SealOCR.SubModules.TextRecognition.model_name": self._params[
                 "seal_text_recognition_model_name"
             ],
-            "SubPipelines.SealRecognition.SubPipelines.SealOCR.SubModules.TextRecognition.model_dir": self._params[
+            "SubPipelines.LayoutParser.SubPipelines.SealRecognition.SubPipelines.SealOCR.SubModules.TextRecognition.model_dir": self._params[
                 "seal_text_recognition_model_dir"
             ],
-            "SubPipelines.SealRecognition.SubPipelines.SealOCR.SubModules.TextRecognition.batch_size": self._params[
+            "SubPipelines.LayoutParser.SubPipelines.SealRecognition.SubPipelines.SealOCR.SubModules.TextRecognition.batch_size": self._params[
                 "seal_text_recognition_batch_size"
             ],
-            "SubPipelines.FormulaRecognition.SubModules.FormulaRecognition.model_name": self._params[
+            "SubPipelines.LayoutParser.SubPipelines.FormulaRecognition.SubModules.FormulaRecognition.model_name": self._params[
                 "formula_recognition_model_name"
             ],
-            "SubPipelines.FormulaRecognition.SubModules.FormulaRecognition.model_dir": self._params[
+            "SubPipelines.LayoutParser.SubPipelines.FormulaRecognition.SubModules.FormulaRecognition.model_dir": self._params[
                 "formula_recognition_model_dir"
             ],
-            "SubPipelines.FormulaRecognition.SubModules.FormulaRecognition.batch_size": self._params[
+            "SubPipelines.LayoutParser.SubPipelines.FormulaRecognition.SubModules.FormulaRecognition.batch_size": self._params[
                 "formula_recognition_batch_size"
             ],
+            "SubModules.LLM_Chat": self._params["chat_bot_config"],
         }
         return create_config_from_structure(STRUCTURE)
 
 
-class PPStructureV3CLISubcommandExecutor(PipelineCLISubcommandExecutor):
+class PPDocTranslationCLISubcommandExecutor(PipelineCLISubcommandExecutor):
     @property
     def subparser_name(self):
-        return "pp_structurev3"
+        return "pp_doctranslation"
 
     def _update_subparser(self, subparser):
-        add_simple_inference_args(subparser)
+        subparser.add_argument(
+            "-i",
+            "--input",
+            type=str,
+            required=True,
+            help="Input path or URL.",
+        )
+        subparser.add_argument(
+            "--save_path",
+            type=str,
+            help="Path to the output directory.",
+        )
+
+        subparser.add_argument(
+            "--target_language",
+            type=str,
+            default="zh",
+            help="Target language.",
+        )
 
         subparser.add_argument(
             "--layout_detection_model_name",
@@ -797,14 +890,47 @@ class PPStructureV3CLISubcommandExecutor(PipelineCLISubcommandExecutor):
             help="Whether to use region detection.",
         )
 
+        # FIXME: Passing API key through CLI is not secure; consider using
+        # environment variables.
+        subparser.add_argument(
+            "--qianfan_api_key",
+            type=str,
+            help="Configuration for the embedding model.",
+        )
+
     def execute_with_args(self, args):
         params = get_subcommand_args(args)
-        perform_simple_inference(
-            PPStructureV3,
-            params,
-            predict_param_names={
-                "use_doc_orientation_classify",
-                "use_doc_unwarping",
-                "use_chart_recognition",
-            },
+        input = params.pop("input")
+        target_language = params.pop("target_language")
+        save_path = params.pop("save_path")
+        qianfan_api_key = params.pop("qianfan_api_key")
+        if qianfan_api_key is not None:
+            params["chat_bot_config"] = {
+                "module_name": "chat_bot",
+                "model_name": "ernie-3.5-8k",
+                "base_url": "https://qianfan.baidubce.com/v2",
+                "api_type": "openai",
+                "api_key": qianfan_api_key,
+            }
+
+        chatocr = PPDocTranslation(**params)
+
+        logger.info("Start analyzing images")
+        result_visual = chatocr.visual_predict_iter(input)
+
+        ori_md_info_list = []
+        for res in result_visual:
+            ori_md_info_list.append(res["layout_parsing_result"].markdown)
+            if save_path:
+                res["layout_parsing_result"].save_all(save_path)
+
+        logger.info("Start translation")
+        result_translate = chatocr.translate_iter(
+            ori_md_info_list,
+            target_language=target_language,
         )
+
+        for res in result_translate:
+            res.print()
+            if save_path:
+                res.save_to_markdown(save_path)

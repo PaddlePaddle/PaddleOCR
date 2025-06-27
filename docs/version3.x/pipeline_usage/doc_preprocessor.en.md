@@ -196,13 +196,13 @@ For example, the local path of an image file or PDF file: <code>/root/data/img.j
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
-<td>Whether to load and use  the document orientation classification module. If not set, the parameter value initialized by the pipeline will be used by default, initialized as <code>True</code>.</td>
+<td>Whether to load and use  the document orientation classification module. If not set, the parameter value initialized by the pipeline will be used, which defaults to <code>True</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
-<td>Whether to load and use  the text image unwarping module. If not set, the parameter value initialized by the pipeline will be used by default, initialized as <code>True</code>.</td>
+<td>Whether to load and use  the text image unwarping module. If not set, the parameter value initialized by the pipeline will be used, which defaults to <code>True</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
@@ -342,13 +342,13 @@ In the above Python script, the following steps are executed:
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
-<td>Whether to load and use the document orientation classification module. If set to <code>None</code>, the parameter value initialized by the pipeline will be used by default, initialized as <code>True</code>.</td>
+<td>Whether to load and use the document orientation classification module. If set to <code>None</code>, the parameter value initialized by the pipeline will be used, which defaults to <code>True</code>.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
-<td>Whether to load and use the text image unwarping module. If set to <code>None</code>, the parameter value initialized by the pipeline will be used by default, initialized as <code>True</code>.</td>
+<td>Whether to load and use the text image unwarping module. If set to <code>None</code>, the parameter value initialized by the pipeline will be used, which defaults to <code>True</code>.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -680,6 +680,18 @@ Below are the API references for basic service-oriented deployment and examples 
 <td>No</td>
 </tr>
 <tr>
+<td><code>useDocOrientationClassify</code></td>
+<td><code>boolean</code> | <code>null</code></td>
+<td>Please refer to the description of the <code>use_doc_orientation_classify</code> parameter in the <code>predict</code> method of the pipeline object.</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>useDocUnwarping</code></td>
+<td><code>boolean</code> | <code>null</code></td>
+<td>Please refer to the description of the <code>use_doc_unwarping</code> parameter in the <code>predict</code> method of the pipeline object.</td>
+<td>No</td>
+</tr>
+<tr>
 <td><code>visualize</code></td>
 <td><code>boolean</code> | <code>null</code></td>
 <td>
@@ -697,18 +709,6 @@ For example, adding the following setting to the pipeline config file:<br/>
 will disable image return by default. This behavior can be overridden by explicitly setting the <code>visualize</code> parameter in the request.<br/>
 If neither the request body nor the configuration file is set (If <code>visualize</code> is set to <code>null</code> in the request and  not defined in the configuration file), the image is returned by default.
 </td>
-<td>No</td>
-</tr>
-<tr>
-<td><code>useDocOrientationClassify</code></td>
-<td><code>boolean</code> | <code>null</code></td>
-<td>Please refer to the description of the <code>use_doc_orientation_classify</code> parameter in the <code>predict</code> method of the pipeline object.</td>
-<td>No</td>
-</tr>
-<tr>
-<td><code>useDocUnwarping</code></td>
-<td><code>boolean</code> | <code>null</code></td>
-<td>Please refer to the description of the <code>use_doc_unwarping</code> parameter in the <code>predict</code> method of the pipeline object.</td>
 <td>No</td>
 </tr>
 </tbody>

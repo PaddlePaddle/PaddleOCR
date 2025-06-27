@@ -997,7 +997,7 @@ Local path to image files or PDF files: <code>/root/data/img.jpg</code>; <b>as U
 <tr>
 <td><code>text_det_limit_side_len</code></td>
 <td>Image side length limit for text detection.
-Any integer greater than <code>0</code>. If not set, the default value initialized by the pipeline will be used, initialized to <code>960</code>.
+Any integer greater than <code>0</code>. If not set, the value initialized by the pipeline will be used, which defaults to <code>960</code>.
 </td>
 <td><code>int</code></td>
 <td></td>
@@ -1005,7 +1005,7 @@ Any integer greater than <code>0</code>. If not set, the default value initializ
 <tr>
 <td><code>text_det_limit_type</code></td>
 <td>Type of the image side length limit for text detection.
-Supports <code>min</code> and <code>max</code>. <code>min</code> ensures that the shortest side of the image is not less than <code>det_limit_side_len</code>, while <code>max</code> ensures that the longest side of the image is not greater than <code>limit_side_len</code>. If not set, the default value initialized by the pipeline will be used, initialized to <code>max</code>.
+Supports <code>min</code> and <code>max</code>. <code>min</code> ensures that the shortest side of the image is not less than <code>det_limit_side_len</code>, while <code>max</code> ensures that the longest side of the image is not greater than <code>limit_side_len</code>. If not set, the value initialized by the pipeline will be used, which defaults to <code>max</code>.
 </td>
 <td><code>str</code></td>
 <td></td>
@@ -1013,7 +1013,7 @@ Supports <code>min</code> and <code>max</code>. <code>min</code> ensures that th
 <tr>
 <td><code>text_det_thresh</code></td>
 <td>Detection pixel threshold. In the output probability map, only pixels with a score greater than this threshold will be considered text pixels.
-Any floating-point number greater than <code>0</code>. If not set, the default value initialized by the pipeline will be used, which is <code>0.3</code>.
+Any floating-point number greater than <code>0</code>. If not set, the value initialized by the pipeline will be used, which defaults to <code>0.3</code>.
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -1021,7 +1021,7 @@ Any floating-point number greater than <code>0</code>. If not set, the default v
 <tr>
 <td><code>text_det_box_thresh</code></td>
 <td>Detection box threshold. When the average score of all pixels within the detection result box is greater than this threshold, the result is considered a text area.
-Any floating-point number greater than <code>0</code>. If not set, the default value initialized by the pipeline will be used, which is <code>0.6</code>.
+Any floating-point number greater than <code>0</code>. If not set, the value initialized by the pipeline will be used, which defaults to <code>0.6</code>.
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -1029,7 +1029,7 @@ Any floating-point number greater than <code>0</code>. If not set, the default v
 <tr>
 <td><code>text_det_unclip_ratio</code></td>
 <td>Text detection expansion coefficient. This method expands the text area; the larger this value, the larger the expanded area.
-Any floating-point number greater than <code>0</code>. If not set, the default value initialized by the pipeline will be used, which is <code>2.0</code>.
+Any floating-point number greater than <code>0</code>. If not set, the value initialized by the pipeline will be used, which defaults to <code>2.0</code>.
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -1055,32 +1055,32 @@ Any floating-point number greater than <code>0</code>. If not set, the default v
 <tr>
 <td><code>text_rec_score_thresh</code></td>
 <td>Text recognition threshold. Text results with a score greater than this threshold will be retained.
-Any floating-point number greater than <code>0</code>. If not set, the default value initialized by the pipeline will be used, which is <code>0.0</code>. That is, no threshold is set.
+Any floating-point number greater than <code>0</code>. If not set, the value initialized by the pipeline will be used, which defaults to <code>0.0</code>. That is, no threshold is set.
 </td>
 <td><code>float</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
-<td>Whether to load and use the document orientation classification module. If not set, the default value initialized by the pipeline will be used, initialized to <code>True</code>.</td>
+<td>Whether to load and use the document orientation classification module. If not set, the value initialized by the pipeline will be used, which defaults to <code>True</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
-<td>Whether to load and use the text image unwarping module. If not set, the default value initialized by the pipeline will be used, initialized to <code>True</code>.</td>
+<td>Whether to load and use the text image unwarping module. If not set, the value initialized by the pipeline will be used, which defaults to <code>True</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_layout_detection</code></td>
-<td>Whether to load and use the layout detection module. If not set, the default value initialized by the pipeline will be used, initialized to <code>True</code>.</td>
+<td>Whether to load and use the layout detection module. If not set, the value initialized by the pipeline will be used, which defaults to <code>True</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_ocr_model</code></td>
-<td>Whether to load and use the OCR module. If not set, the default value initialized by the pipeline will be used, initialized to <code>True</code>.</td>
+<td>Whether to load and use the OCR module. If not set, the value initialized by the pipeline will be used, which defaults to <code>True</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
@@ -1342,7 +1342,7 @@ In the above Python script, the following steps are performed:
 <td>Image side length limit for text detection.
 <ul>
 <li><b>int</b>: Any integer greater than <code>0</code>;</li>
-<li><b>None</b>: If set to <code>None</code>, the default value initialized by the pipeline will be used, initialized to <code>960</code>.</li>
+<li><b>None</b>: If set to <code>None</code>, the value initialized by the pipeline will be used, which defaults to <code>960</code>.</li>
 </ul>
 </td>
 <td><code>int|None</code></td>
@@ -1353,7 +1353,7 @@ In the above Python script, the following steps are performed:
 <td>Type of the image side length limit for text detection.
 <ul>
 <li><b>str</b>: Supports <code>min</code> and <code>max</code>. <code>min</code> ensures that the shortest side of the image is not less than <code>det_limit_side_len</code>, while <code>max</code> ensures that the longest side of the image is not greater than <code>limit_side_len</code>;</li>
-<li><b>None</b>: If set to <code>None</code>, the default value initialized by the pipeline will be used, initialized to <code>max</code>.</li>
+<li><b>None</b>: If set to <code>None</code>, the value initialized by the pipeline will be used, which defaults to <code>max</code>.</li>
 </ul>
 </td>
 <td><code>str|None</code></td>
@@ -1364,7 +1364,7 @@ In the above Python script, the following steps are performed:
 <td>Detection pixel threshold. In the output probability map, only pixels with a score greater than this threshold will be considered text pixels.
 <ul>
 <li><b>float</b>: Any floating-point number greater than <code>0</code>;</li>
-<li><b>None</b>: If set to <code>None</code>, the default value initialized by the pipeline will be used, which is <code>0.3</code>.</li>
+<li><b>None</b>: If set to <code>None</code>, the value initialized by the pipeline will be used, which defaults to <code>0.3</code>.</li>
 </ul>
 </td>
 <td><code>float|None</code></td>
@@ -1375,7 +1375,7 @@ In the above Python script, the following steps are performed:
 <td>Detection box threshold. When the average score of all pixels within the detection result box is greater than this threshold, the result is considered a text area.
 <ul>
 <li><b>float</b>: Any floating-point number greater than <code>0</code>;</li>
-<li><b>None</b>: If set to <code>None</code>, the default value initialized by the pipeline will be used, which is <code>0.6</code>.</li>
+<li><b>None</b>: If set to <code>None</code>, the value initialized by the pipeline will be used, which defaults to <code>0.6</code>.</li>
 </ul>
 </td>
 <td><code>float|None</code></td>
@@ -1386,7 +1386,7 @@ In the above Python script, the following steps are performed:
 <td>Text detection expansion coefficient. This method expands the text area; the larger this value, the larger the expanded area.
 <ul>
 <li><b>float</b>: Any floating-point number greater than <code>0</code>;</li>
-<li><b>None</b>: If set to <code>None</code>, the default value initialized by the pipeline will be used, which is <code>2.0</code>.</li>
+<li><b>None</b>: If set to <code>None</code>, the value initialized by the pipeline will be used, which defaults to <code>2.0</code>.</li>
 </ul>
 </td>
 <td><code>float|None</code></td>
@@ -1415,7 +1415,7 @@ In the above Python script, the following steps are performed:
 <td>Text recognition threshold. Text results with a score greater than this threshold will be retained.
 <ul>
 <li><b>float</b>: Any floating-point number greater than <code>0</code>;</li>
-<li><b>None</b>: If set to <code>None</code>, the default value initialized by the pipeline will be used, which is <code>0.0</code>. That is, no threshold is set.
+<li><b>None</b>: If set to <code>None</code>, the value initialized by the pipeline will be used, which defaults to <code>0.0</code>. That is, no threshold is set.
 </ur>
 </td>
 <td><code>float|None</code></td>
@@ -1423,25 +1423,25 @@ In the above Python script, the following steps are performed:
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
-<td>Whether to load and use the document orientation classification module. If set to <code>None</code>, the default value initialized by the pipeline will be used, initialized to <code>True</code>.</td>
+<td>Whether to load and use the document orientation classification module. If set to <code>None</code>, the value initialized by the pipeline will be used, which defaults to <code>True</code>.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
-<td>Whether to load and use the text image unwarping module. If set to <code>None</code>, the default value initialized by the pipeline will be used, initialized to <code>True</code>.</td>
+<td>Whether to load and use the text image unwarping module. If set to <code>None</code>, the value initialized by the pipeline will be used, which defaults to <code>True</code>.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_layout_detection</code></td>
-<td>Whether to load and use the layout detection module. If set to <code>None</code>, the default value initialized by the pipeline will be used, initialized to <code>True</code>.</td>
+<td>Whether to load and use the layout detection module. If set to <code>None</code>, the value initialized by the pipeline will be used, which defaults to <code>True</code>.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_ocr_model</code></td>
-<td>Whether to load and use the OCR module. If set to <code>None</code>, the default value initialized by the pipeline will be used, initialized to <code>True</code>.</td>
+<td>Whether to load and use the OCR module. If set to <code>None</code>, the value initialized by the pipeline will be used, which defaults to <code>True</code>.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -1911,26 +1911,6 @@ Below is the API reference for basic service-oriented deployment and examples of
 <td>No</td>
 </tr>
 <tr>
-<td><code>visualize</code></td>
-<td><code>boolean</code> | <code>null</code></td>
-<td>
-Whether to return the final visualization image and intermediate images during the processing.<br/>
-<ul style="margin: 0 0 0 1em; padding-left: 0em;">
-<li>If <code>true</code> is provided: return images.</li>
-<li>If <code>false</code> is provided: do not return any images.</li>
-<li>If this parameter is omitted from the request body, or if <code>null</code> is explicitly passed, the behavior will follow the value of <code>Serving.visualize</code> in the pipeline configuration.</li>
-</ul>
-<br/>
-For example, adding the following setting to the pipeline config file:<br/>
-<pre><code>Serving:
-  visualize: False
-</code></pre>
-will disable image return by default. This behavior can be overridden by explicitly setting the <code>visualize</code> parameter in the request.<br/>
-If neither the request body nor the configuration file is set (If <code>visualize</code> is set to <code>null</code> in the request and  not defined in the configuration file), the image is returned by default.
-</td>
-<td>No</td>
-</tr>
-<tr>
 <td><code>useDocOrientationClassify</code></td>
 <td><code>boolean</code> | <code>null</code></td>
 <td>Please refer to the <code>use_doc_orientation_classify</code> parameter description in the <code>predict</code> method of the model object.</td>
@@ -2006,6 +1986,26 @@ If neither the request body nor the configuration file is set (If <code>visualiz
 <td><code>useE2eWirelessTableRecModel</code></td>
 <td><code>boolean</code></td>
 <td>Please refer to the <code>use_e2e_wireless_table_rec_model</code> parameter description in the <code>predict</code> method of the model object.</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>visualize</code></td>
+<td><code>boolean</code> | <code>null</code></td>
+<td>
+Whether to return the final visualization image and intermediate images during the processing.<br/>
+<ul style="margin: 0 0 0 1em; padding-left: 0em;">
+<li>If <code>true</code> is provided: return images.</li>
+<li>If <code>false</code> is provided: do not return any images.</li>
+<li>If this parameter is omitted from the request body, or if <code>null</code> is explicitly passed, the behavior will follow the value of <code>Serving.visualize</code> in the pipeline configuration.</li>
+</ul>
+<br/>
+For example, adding the following setting to the pipeline config file:<br/>
+<pre><code>Serving:
+  visualize: False
+</code></pre>
+will disable image return by default. This behavior can be overridden by explicitly setting the <code>visualize</code> parameter in the request.<br/>
+If neither the request body nor the configuration file is set (If <code>visualize</code> is set to <code>null</code> in the request and  not defined in the configuration file), the image is returned by default.
+</td>
 <td>No</td>
 </tr>
 </tbody>
@@ -2681,7 +2681,7 @@ The pipeline configuration file includes not only the parameters supported by Pa
 
 3. Loading the pipeline configuration file in CLI
 
-After completing the configuration file modifications, specify the path to the modified pipeline configuration file using the --paddlex_config parameter in the command line. PaddleOCR will read its contents as the pipeline configuration. For example:
+After completing the configuration file modifications, specify the path to the modified pipeline configuration file using the `--paddlex_config` parameter in the command line. PaddleOCR will read its contents as the pipeline configuration. For example:
 
 ```bash
 paddleocr table_recognition_v2_pipeline --paddlex_config PaddleOCR.yaml ...
@@ -2689,7 +2689,7 @@ paddleocr table_recognition_v2_pipeline --paddlex_config PaddleOCR.yaml ...
 
 4. Loading the pipeline configuration file in Python API
 
-When initializing the pipeline object, you can pass the PaddleX pipeline configuration file path or configuration dictionary through the paddlex_config parameter. PaddleOCR will read its contents as the pipeline configuration. For example:
+When initializing the pipeline object, you can pass the PaddleX pipeline configuration file path or configuration dictionary through the `paddlex_config` parameter. PaddleOCR will read its contents as the pipeline configuration. For example:
 
 ```python
 from paddleocr import TableRecognitionPipelineV2

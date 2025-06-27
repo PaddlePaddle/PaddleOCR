@@ -492,13 +492,13 @@ paddleocr formula_recognition_pipeline -i ./general_formula_recognition_001.png 
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
-<td>是否加载并使用文档方向分类模块。如果不设置，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用文档方向分类模块。如果不设置，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
-<td>是否加载并使用文本图像矫正模块。如果不设置，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用文本图像矫正模块。如果不设置，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
@@ -525,7 +525,7 @@ paddleocr formula_recognition_pipeline -i ./general_formula_recognition_001.png 
 </tr>
 <tr>
 <td><code>layout_nms</code></td>
-<td>版面检测是否使用后处理NMS。如果不设置，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>版面检测是否使用后处理NMS。如果不设置，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
@@ -556,7 +556,7 @@ paddleocr formula_recognition_pipeline -i ./general_formula_recognition_001.png 
 <td></td>
 </tr>
 <td><code>use_layout_detection</code></td>
-<td>是否加载并使用版面区域检测模块。如果不设置，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用版面区域检测模块。如果不设置，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
@@ -738,13 +738,13 @@ for res in output:
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
-<td>是否加载并使用文档方向分类模块。如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用文档方向分类模块。如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
-<td>是否加载并使用文本图像矫正模块。如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用文本图像矫正模块。如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -773,7 +773,7 @@ for res in output:
 </tr>
 <tr>
 <td><code>layout_nms</code></td>
-<td>版面检测是否使用后处理NMS。如果不设置，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>版面检测是否使用后处理NMS。如果不设置，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -784,7 +784,7 @@ for res in output:
 <li><b>float</b>：任意大于 <code>0</code>  浮点数；</li>
 <li><b>Tuple[float,float]</b>：在横纵两个方向各自的扩张系数；</li>
 <li><b>dict</b>，dict的key为<b>int</b>类型，代表<code>cls_id</code>，value为<b>tuple</b>类型，如<code>{0: (1.1，2.0)}</code>，表示将模型输出的第0类别检测框中心不变，宽度扩张1.1倍，高度扩张2.0倍</li>
-<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为 <code>1.0</code>。</li>
+<li><b>None</b>：如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为 <code>1.0</code>。</li>
 </ul>
 </td>
 <td><code>float|Tuple[float,float]|dict|None</code></td>
@@ -796,7 +796,7 @@ for res in output:
 <ul>
 <li><b>str</b>：<code>large</code>，<code>small</code>，<code>union</code>，分别表示重叠框过滤时选择保留大框，小框还是同时保留；</li>
 <li><b>dict</b>： dict的key为<b>int</b>类型，代表<code>cls_id</code>，value为<b>str</b>类型，如<code>{0: "large", 2: "small"}</code>，表示对第0类别检测框使用large模式，对第2类别检测框使用small模式；</li>
-<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为 <code>large</code>。</li>
+<li><b>None</b>：如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为 <code>large</code>。</li>
 </ul>
 </td>
 <td><code>str|dict|None</code></td>
@@ -810,7 +810,7 @@ for res in output:
 </tr>
 <tr>
 <td><code>use_layout_detection</code></td>
-<td>是否加载并使用版面区域检测模块。如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用版面区域检测模块。如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -1205,23 +1205,6 @@ MKL-DNN 缓存容量。
 <td>否</td>
 </tr>
 <tr>
-<td><code>visualize</code></td>
-<td><code>boolean</code> | <code>null</code></td>
-<td>是否返回可视化结果图以及处理过程中的中间图像等。
-<ul style="margin: 0 0 0 1em; padding-left: 0em;">
-<li>传入 <code>true</code>：返回图像。</li>
-<li>传入 <code>false</code>：不返回图像。</li>
-<li>若请求体中未提供该参数或传入 <code>null</code>：遵循产线配置文件<code>Serving.visualize</code> 的设置。</li>
-</ul>
-<br/>例如，在产线配置文件中添加如下字段：<br/>
-<pre><code>Serving:
-  visualize: False
-</code></pre>
-将默认不返回图像，通过请求体中的<code>visualize</code>参数可以覆盖默认行为。如果请求体和配置文件中均未设置（或请求体传入<code>null</code>、配置文件中未设置），则默认返回图像。
-</td>
-<td>否</td>
-</tr>
-<tr>
 <td><code>useDocOrientationClassify</code></td>
 <td><code>boolean</code> | <code>null</code></td>
 <td>请参阅产线对象中 <code>predict</code> 方法的 <code>use_doc_orientation_classify</code> 参数相关说明。</td>
@@ -1261,6 +1244,23 @@ MKL-DNN 缓存容量。
 <td><code>layoutMergeBboxesMode</code></td>
 <td><code>string</code> | <code>null</code></td>
 <td>请参阅产线对象中<code>predict</code>方法的 <code>layout_merge_bboxes_mode</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>visualize</code></td>
+<td><code>boolean</code> | <code>null</code></td>
+<td>是否返回可视化结果图以及处理过程中的中间图像等。
+<ul style="margin: 0 0 0 1em; padding-left: 0em;">
+<li>传入 <code>true</code>：返回图像。</li>
+<li>传入 <code>false</code>：不返回图像。</li>
+<li>若请求体中未提供该参数或传入 <code>null</code>：遵循产线配置文件<code>Serving.visualize</code> 的设置。</li>
+</ul>
+<br/>例如，在产线配置文件中添加如下字段：<br/>
+<pre><code>Serving:
+  visualize: False
+</code></pre>
+将默认不返回图像，通过请求体中的<code>visualize</code>参数可以覆盖默认行为。如果请求体和配置文件中均未设置（或请求体传入<code>null</code>、配置文件中未设置），则默认返回图像。
+</td>
 <td>否</td>
 </tr>
 </tbody>
@@ -1888,7 +1888,7 @@ use_layout_detection: true
 
 3.在 CLI 中加载产线配置文件
 
-在修改完成配置文件后，通过命令行的 --paddlex_config 参数指定修改后的产线配置文件的路径，PaddleOCR 会读取其中的内容作为产线配置。示例如下：
+在修改完成配置文件后，通过命令行的 `--paddlex_config` 参数指定修改后的产线配置文件的路径，PaddleOCR 会读取其中的内容作为产线配置。示例如下：
 
 ```bash
 paddleocr formula_recognition_pipeline -i ./general_formula_recognition_001.png --paddlex_config FormulaRecognitionPipeline.yaml 
@@ -1896,7 +1896,7 @@ paddleocr formula_recognition_pipeline -i ./general_formula_recognition_001.png 
 
 4.在 Python API 中加载产线配置文件
 
-初始化产线对象时，可通过 paddlex_config 参数传入 PaddleX 产线配置文件路径或配置dict，PaddleOCR 会读取其中的内容作为产线配置。示例如下：
+初始化产线对象时，可通过 `paddlex_config` 参数传入 PaddleX 产线配置文件路径或配置dict，PaddleOCR 会读取其中的内容作为产线配置。示例如下：
 
 ```python
 from paddleocr import  FormulaRecognitionPipeline

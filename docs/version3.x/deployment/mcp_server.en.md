@@ -167,7 +167,7 @@ See [2.1 Quick Start](#21-quick-start).
 1. Install `paddleocr-mcp`.
 2. Set up AI Studio community service.
     - Visit [PaddlePaddle AI Studio Community](https://aistudio.baidu.com/pipeline/mine) and log in. **Note: A China mainland phone number is required to use this service.** If unavailable, consider other modes.
-    - In the left panel under "More Content" → "PaddleX Pipelines", [Create Pipeline] - [OCR] - [General OCR] - [Deploy Directly] - [Start Deployment].
+    - Under "PaddleX Pipeline" in the "More" section on the left, click in sequence: [Create Pipeline] - [OCR] - [General OCR] - [Deploy Directly] - [Start Deployment].
     - After deployment, obtain your **service base URL** (e.g., `https://xxxxxx.aistudio-hub.baidu.com`).
     - Get your **access token** from [this page](https://aistudio.baidu.com/index/accessToken).
 3. Refer to the configuration example below to modify the contents of the `claude_desktop_config.json` file.
