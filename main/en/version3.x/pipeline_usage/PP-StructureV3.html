@@ -4624,9 +4624,9 @@ any float > <code>0</code>. If not set, the default is <code>0.6</code>.
 </tr>
 <tr>
 <td><code>use_chart_recognition</code></td>
-<td>Whether to use the chart parsing module. If not set, the default is <code>True</code>.</td>
+<td>Whether to use the chart parsing module.</td>
 <td><code>bool</code></td>
-<td></td>
+<td>False</td>
 </tr>
 <tr>
 <td><code>use_region_detection</code></td>
@@ -5350,13 +5350,13 @@ MKL-DNN cache capacity.
 <td><code>use_doc_orientation_classify</code></td>
 <td>Whether to use document orientation classification during inference.</td>
 <td><code>bool|None</code></td>
-<td><code>None</code></td>
+<td><code>False</code></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
 <td>Whether to use document image unwarping during inference.</td>
 <td><code>bool|None</code></td>
-<td><code>None</code></td>
+<td><code>False</code></td>
 </tr>
 <tr>
 <td><code>use_textline_orientation</code></td>
@@ -5386,7 +5386,7 @@ MKL-DNN cache capacity.
 <td><code>use_chart_recognition</code></td>
 <td>Whether to use the chart parsing module. If set to <code>None</code>, the default value is <code>True</code>.</td>
 <td><code>bool|None</code></td>
-<td><code>None</code></td>
+<td><code>False</code></td>
 </tr>
 <tr>
 <td><code>use_region_detection</code></td>
@@ -5492,62 +5492,38 @@ MKL-DNN cache capacity.
 </tr>
 <tr>
 <td><code>use_wired_table_cells_trans_to_html</code></td>
-<td>Whether to enable direct conversion of wired table cell detection results to HTML. Default is False. If enabled, HTML will be constructed directly based on the geometric relationship of wired table cell detection results.
-<ul>
-<li><b>bool</b>: <code>True</code> or <code>False</code>;</li>
-<li><b>None</b>: If set to <code>None</code>, it will default to the initialized parameter value, initialized as <code>False</code>;</li>
-</ul></td>
-<td><code>bool|None</code></td>
+<td>Whether to enable direct conversion of wired table cell detection results to HTML. Default is False. If enabled, HTML will be constructed directly based on the geometric relationship of wired table cell detection results.</td>
+<td><code>bool</code></td>
 <td><code>False</code></td>
 </tr>
 <tr>
 <td><code>use_wireless_table_cells_trans_to_html</code></td>
-<td>Whether to enable direct conversion of wireless table cell detection results to HTML. Default is False. If enabled, HTML will be constructed directly based on the geometric relationship of wireless table cell detection results.
-<ul>
-<li><b>bool</b>: <code>True</code> or <code>False</code>;</li>
-<li><b>None</b>: If set to <code>None</code>, it will default to the initialized parameter value, initialized as <code>False</code>;</li>
-</ul></td>
-<td><code>bool|None</code></td>
+<td>Whether to enable direct conversion of wireless table cell detection results to HTML. Default is False. If enabled, HTML will be constructed directly based on the geometric relationship of wireless table cell detection results.</td>
+<td><code>bool</code></td>
 <td><code>False</code></td>
 </tr>
 <tr>
 <td><code>use_table_orientation_classify</code></td>
-<td>Whether to enable table orientation classification. When enabled, it can correct the orientation and correctly complete table recognition if the table in the image is rotated by 90/180/270 degrees.
-<ul>
-<li><b>bool</b>: <code>True</code> or <code>False</code>;</li>
-<li><b>None</b>: If set to <code>None</code>, it will default to the initialized parameter value, initialized as <code>True</code>;</li>
-</ul></td>
-<td><code>bool|None</code></td>
+<td>Whether to enable table orientation classification. When enabled, it can correct the orientation and correctly complete table recognition if the table in the image is rotated by 90/180/270 degrees.</td>
+<td><code>bool</code></td>
 <td><code>True</code></td>
 </tr>
 <tr>
 <td><code>use_ocr_results_with_table_cells</code></td>
-<td>Whether to enable OCR within cell segmentation. When enabled, OCR detection results will be segmented and re-recognized based on cell prediction results to avoid text loss.
-<ul>
-<li><b>bool</b>: <code>True</code> or <code>False</code>;</li>
-<li><b>None</b>: If set to <code>None</code>, it will default to the initialized parameter value, initialized as <code>True</code>;</li>
-</ul></td>
-<td><code>bool|None</code></td>
+<td>Whether to enable OCR within cell segmentation. When enabled, OCR detection results will be segmented and re-recognized based on cell prediction results to avoid text loss.</td>
+<td><code>bool</code></td>
 <td><code>True</code></td>
 </tr>
 <tr>
 <td><code>use_e2e_wired_table_rec_model</code></td>
-<td>Whether to enable end-to-end wired table recognition mode. If enabled, the cell detection model will not be used, and only the table structure recognition model will be used.
-<ul>
-<li><b>bool</b>: <code>True</code> or <code>False</code>;</li>
-<li><b>None</b>: If set to <code>None</code>, it will default to the initialized parameter value, initialized as <code>False</code>;</li>
-</ul></td>
-<td><code>bool|None</code></td>
+<td>Whether to enable end-to-end wired table recognition mode. If enabled, the cell detection model will not be used, and only the table structure recognition model will be used.</td>
+<td><code>bool</code></td>
 <td><code>False</code></td>
 </tr>
 <tr>
 <td><code>use_e2e_wireless_table_rec_model</code></td>
-<td>Whether to enable end-to-end wireless table recognition mode. If enabled, the cell detection model will not be used, and only the table structure recognition model will be used.
-<ul>
-<li><b>bool</b>: <code>True</code> or <code>False</code>;</li>
-<li><b>None</b>: If set to <code>None</code>, it will default to the initialized parameter value, initialized as <code>False</code>;</li>
-</ul></td>
-<td><code>bool|None</code></td>
+<td>Whether to enable end-to-end wireless table recognition mode. If enabled, the cell detection model will not be used, and only the table structure recognition model will be used.</td>
+<td><code>bool</code></td>
 <td><code>True</code></td>
 </tr>
 </table>
@@ -6764,7 +6740,7 @@ When initializing the pipeline object, you can pass the PaddleX pipeline configu
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="June 26, 2025 12:32:46 UTC">June 26, 2025</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="June 27, 2025 03:37:36 UTC">June 27, 2025</span>
   </span>
 
     
@@ -6774,7 +6750,7 @@ When initializing the pipeline object, you can pass the PaddleX pipeline configu
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="June 26, 2025 12:32:46 UTC">June 26, 2025</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="June 27, 2025 03:37:36 UTC">June 27, 2025</span>
   </span>
 
     
