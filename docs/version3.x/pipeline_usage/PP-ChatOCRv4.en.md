@@ -8,12 +8,23 @@ PP-ChatOCRv4-doc is a unique document and image intelligent analysis solution fr
 
 <img src="https://github.com/user-attachments/assets/0870cdec-1909-4247-9004-d9efb4ab9635">
 
-The Document Scene Information Extraction v4 pipeline includes modules for **Layout Region Detection**, **Table Structure Recognition**, **Table Classification**, **Table Cell Localization**, **Text Detection**, **Text Recognition**, **Seal Text Detection**, **Text Image Rectification**, and **Document Image Orientation Classification**. 
+The PP-ChatOCRv4 pipeline includes the following 9 modules. Each module can be trained and inferred independently and includes multiple models. For more details, please click on the respective module to view the documentation.
 
-<b>If you prioritize model accuracy, choose a model with higher accuracy. If you prioritize inference speed, select a model with faster inference. If you prioritize model storage size, choose a model with a smaller storage size.</b> Benchmarks for some models are as follows:
+- [Document Image Orientation Classification Module](../module_usage/doc_img_orientation_classification.en.md) (Optional)
+- [Text Image Unwarping Module](../module_usage/text_image_unwarping.en.md) (Optional)
+- [Layout Detection Module](../module_usage/layout_detection.en.md)
+- [Table Structure Recognition Module](../module_usage/table_structure_recognition.en.md) (Optional)
+- [Text Detection Module](../module_usage/text_detection.en.md)
+- [Text Recognition Module](../module_usage/text_recognition.en.md)
+- [Text Line Orientation Classification Module](../module_usage/textline_orientation_classification.en.md)(Optional)
+- [Formula Recognition Module](../module_usage/formula_recognition.en.md) (Optional)
+- [Seal Text Detection Module](../module_usage/seal_text_detection.en.md) (Optional)
 
-<details><summary> 👉Model List Details</summary>
-<p><b>Document Image Orientation Classification Module (Optional):</b></p>
+
+In this pipeline, you can choose the model to use based on the benchmark data below.
+
+<details>
+<summary><b>Document Image Orientation Classification Module (Optional):</b></summary>
 <table>
 <thead>
 <tr>
@@ -37,7 +48,10 @@ The Document Scene Information Extraction v4 pipeline includes modules for **Lay
 </tr>
 </tbody>
 </table>
-<p><b>Text Image Unwarp Module (Optional):</b></p>
+</details>
+
+<details>
+<summary><b>Text Image Unwarp Module (Optional):</b></summary>
 <table>
 <thead>
 <tr>
@@ -61,37 +75,12 @@ The Document Scene Information Extraction v4 pipeline includes modules for **Lay
 </tr>
 </tbody>
 </table>
-<p><b>Table Structure Recognition Module Models</b>:</p>
-<table>
-<tr>
-<th>Model</th><th>Model Download Link</th>
-<th>Accuracy (%)</th>
-<th>GPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
-<th>CPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
-<th>Model Storage Size (MB)</th>
-<th>Description</th>
-</tr>
-<tr>
-<td>SLANet</td>
-<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/SLANet_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/SLANet_pretrained.pdparams">Training Model</a></td>
-<td>59.52</td>
-<td>23.96 / 21.75</td>
-<td>- / 43.12</td>
-<td>6.9</td>
-<td>SLANet is a table structure recognition model developed by Baidu PaddleX Team. The model significantly improves the accuracy and inference speed of table structure recognition by adopting a CPU-friendly lightweight backbone network PP-LCNet, a high-low-level feature fusion module CSP-PAN, and a feature decoding module SLA Head that aligns structural and positional information.</td>
-</tr>
-<tr>
-<td>SLANet_plus</td>
-<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/SLANet_plus_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/SLANet_plus_pretrained.pdparams">Training Model</a></td>
-<td>63.69</td>
-<td>23.43 / 22.16</td>
-<td>- / 41.80</td>
-<td>6.9</td>
-<td>SLANet_plus is an enhanced version of SLANet, the table structure recognition model developed by Baidu PaddleX Team. Compared to SLANet, SLANet_plus significantly improves the recognition ability for wireless and complex tables and reduces the model's sensitivity to the accuracy of table positioning, enabling more accurate recognition even with offset table positioning.</td>
-</tr>
-</table>
+</details>
 
-<p><b>Layout Detection Module Models</b>:</p>
+
+<details>
+<summary><b>Layout Detection Module Model:</b></summary>
+* <b>The layout detection model includes 20 common categories: document title, paragraph title, text, page number, abstract, table, references, footnotes, header, footer, algorithm, formula, formula number, image, table, seal, figure_table title, chart, and sidebar text and lists of references</b>
 <table>
 <thead>
 <tr>
@@ -105,8 +94,62 @@ The Document Scene Information Extraction v4 pipeline includes modules for **Lay
 </thead>
 <tbody>
 <tr>
+<td>PP-DocLayout_plus-L</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayout_plus-L_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocLayout_plus-L_pretrained.pdparams">Training Model</a></td>
+<td>83.2</td>
+<td>53.03 / 17.23</td>
+<td>634.62 / 378.32</td>
+<td>126.01</td>
+<td>A higher-precision layout area localization model trained on a self-built dataset containing Chinese and English papers, PPT, multi-layout magazines, contracts, books, exams, ancient books and research reports using RT-DETR-L</td>
+</tr>
+<tr>
+</tbody>
+</table>
+
+
+* <b>The layout detection model includes 1 category: Block:</b>
+<table>
+<thead>
+<tr>
+<th>Model</th><th>Model Download Link</th>
+<th>mAP(0.5) (%)</th>
+<th>GPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
+<th>CPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
+<th>Model Storage Size (MB)</th>
+<th>Introduction</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PP-DocBlockLayout</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocBlockLayout_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocBlockLayout_pretrained.pdparams">Training Model</a></td>
+<td>95.9</td>
+<td>34.60 / 28.54</td>
+<td>506.43 / 256.83</td>
+<td>123.92</td>
+<td>A layout block localization model trained on a self-built dataset containing Chinese and English papers, PPT, multi-layout magazines, contracts, books, exams, ancient books and research reports using RT-DETR-L</td>
+</tr>
+<tr>
+</tbody>
+</table>
+
+
+* <b>The layout detection model includes 23 common categories: document title, paragraph title, text, page number, abstract, table of contents, references, footnotes, header, footer, algorithm, formula, formula number, image, figure caption, table, table caption, seal, figure title, figure, header image, footer image, and sidebar text</b>
+<table>
+<thead>
+<tr>
+<th>Model</th><th>Download Link</th>
+<th>mAP(0.5) (%)</th>
+<th>GPU Inference Time (ms)<br/>[Standard Mode / High Performance Mode]</th>
+<th>CPU Inference Time (ms)<br/>[Standard Mode / High Performance Mode]</th>
+<th>Model Storage Size (MB)</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
 <td>PP-DocLayout-L</td>
-<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayout-L_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocLayout-L_pretrained.pdparams">Training Model</a></td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayout-L_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocLayout-L_pretrained.pdparams">Pretrained Model</a></td>
 <td>90.4</td>
 <td>33.59 / 33.59</td>
 <td>503.01 / 251.08</td>
@@ -115,7 +158,7 @@ The Document Scene Information Extraction v4 pipeline includes modules for **Lay
 </tr>
 <tr>
 <td>PP-DocLayout-M</td>
-<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayout-M_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocLayout-M_pretrained.pdparams">Training Model</a></td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayout-M_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocLayout-M_pretrained.pdparams">Pretrained Model</a></td>
 <td>75.2</td>
 <td>13.03 / 4.72</td>
 <td>43.39 / 24.44</td>
@@ -124,7 +167,7 @@ The Document Scene Information Extraction v4 pipeline includes modules for **Lay
 </tr>
 <tr>
 <td>PP-DocLayout-S</td>
-<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayout-S_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocLayout-S_pretrained.pdparams">Training Model</a></td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayout-S_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocLayout-S_pretrained.pdparams">Pretrained Model</a></td>
 <td>70.9</td>
 <td>11.54 / 3.86</td>
 <td>18.53 / 6.29</td>
@@ -133,9 +176,10 @@ The Document Scene Information Extraction v4 pipeline includes modules for **Lay
 </tr>
 </tbody>
 </table>
-<b>Note: The evaluation dataset for the above precision metrics is a self-built layout area detection dataset by PaddleOCR, containing 500 common document-type images of Chinese and English papers, magazines, contracts, books, exams, and research reports. GPU inference time is based on an NVIDIA Tesla T4 machine with FP32 precision. CPU inference speed is based on an Intel(R) Xeon(R) Gold 5117 CPU @ 2.00GHz with 8 threads and FP32 precision.</b>
 
-> ❗ The above list includes the <b>3 core models</b> that are key supported by the text recognition module. The module actually supports a total of <b>11 full models</b>, including several predefined models with different categories. The complete model list is as follows:
+> ❗ The above list includes the <b>4 core models</b> that are key supported by the text recognition module. The module actually supports a total of <b>12 full models</b>, including several predefined models with different categories. The complete model list is as follows:
+
+<details><summary> 👉 Details of Model List</summary>
 
 * <b>Table Layout Detection Model</b>
 <table>
@@ -160,7 +204,6 @@ The Document Scene Information Extraction v4 pipeline includes modules for **Lay
 <td>A high-efficiency layout area localization model trained on a self-built dataset using PicoDet-1x, capable of detecting table regions.</td>
 </tr>
 </tbody></table>
-<b>Note: The evaluation dataset for the above precision metrics is a self-built layout table area detection dataset by PaddleOCR, containing 7835 Chinese and English document images with tables. GPU inference time is based on an NVIDIA Tesla T4 machine with FP32 precision. CPU inference speed is based on an Intel(R) Xeon(R) Gold 5117 CPU @ 2.00GHz with 8 threads and FP32 precision.</b>
 
 * <b>3-Class Layout Detection Model, including Table, Image, and Stamp</b>
 <table>
@@ -193,6 +236,10 @@ The Document Scene Information Extraction v4 pipeline includes modules for **Lay
 <td>22.6</td>
 <td>A balanced efficiency and precision layout area localization model trained on a self-built dataset of Chinese and English papers, magazines, and research reports using PicoDet-L.</td>
 </tr>
+</table>
+
+<p><b>Table Classification Module Models:</b></p>
+<table>
 <tr>
 <td>RT-DETR-H_layout_3cls</td>
 <td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/RT-DETR-H_layout_3cls_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/RT-DETR-H_layout_3cls_pretrained.pdparams">Training Model</a></td>
@@ -203,7 +250,6 @@ The Document Scene Information Extraction v4 pipeline includes modules for **Lay
 <td>A high-precision layout area localization model trained on a self-built dataset of Chinese and English papers, magazines, and research reports using RT-DETR-H.</td>
 </tr>
 </tbody></table>
-<b>Note: The evaluation dataset for the above precision metrics is a self-built layout area detection dataset by PaddleOCR, containing 1154 common document images of Chinese and English papers, magazines, and research reports. GPU inference time is based on an NVIDIA Tesla T4 machine with FP32 precision. CPU inference speed is based on an Intel(R) Xeon(R) Gold 5117 CPU @ 2.00GHz with 8 threads and FP32 precision.</b>
 
 * <b>5-Class English Document Area Detection Model, including Text, Title, Table, Image, and List</b>
 <table>
@@ -228,7 +274,6 @@ The Document Scene Information Extraction v4 pipeline includes modules for **Lay
 <td>A high-efficiency English document layout area localization model trained on the PubLayNet dataset using PicoDet-1x.</td>
 </tr>
 </tbody></table>
-<b>Note: The evaluation dataset for the above precision metrics is the [PubLayNet](https://developer.ibm.com/exchanges/data/all/publaynet/) dataset, containing 11245 English document images. GPU inference time is based on an NVIDIA Tesla T4 machine with FP32 precision. CPU inference speed is based on an Intel(R) Xeon(R) Gold 5117 CPU @ 2.00GHz with 8 threads and FP32 precision.</b>
 
 * <b>17-Class Area Detection Model, including 17 common layout categories: Paragraph Title, Image, Text, Number, Abstract, Content, Figure Caption, Formula, Table, Table Caption, References, Document Title, Footnote, Header, Algorithm, Footer, and Stamp</b>
 <table>
@@ -270,10 +315,44 @@ The Document Scene Information Extraction v4 pipeline includes modules for **Lay
 <td>470.2</td>
 <td>A high-precision layout area localization model trained on a self-built dataset of Chinese and English papers, magazines, and research reports using RT-DETR-H.</td>
 </tr>
-</tbody>
 </table>
+</details>
+</details>
 
-<p><b>Text Detection Module Models</b>:</p>
+<details>
+<summary><b>Table Structure Recognition Module Models (Optional):</b></summary>
+<table>
+<tr>
+<th>Model</th><th>Model Download Link</th>
+<th>Accuracy (%)</th>
+<th>GPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
+<th>CPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
+<th>Model Storage Size (MB)</th>
+<th>Description</th>
+</tr>
+<tr>
+<td>SLANet</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/SLANet_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/SLANet_pretrained.pdparams">Training Model</a></td>
+<td>59.52</td>
+<td>23.96 / 21.75</td>
+<td>- / 43.12</td>
+<td>6.9</td>
+<td>SLANet is a table structure recognition model developed by Baidu PaddleX Team. The model significantly improves the accuracy and inference speed of table structure recognition by adopting a CPU-friendly lightweight backbone network PP-LCNet, a high-low-level feature fusion module CSP-PAN, and a feature decoding module SLA Head that aligns structural and positional information.</td>
+</tr>
+<tr>
+<td>SLANet_plus</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/SLANet_plus_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/SLANet_plus_pretrained.pdparams">Training Model</a></td>
+<td>63.69</td>
+<td>23.43 / 22.16</td>
+<td>- / 41.80</td>
+<td>6.9</td>
+<td>SLANet_plus is an enhanced version of SLANet, the table structure recognition model developed by Baidu PaddleX Team. Compared to SLANet, SLANet_plus significantly improves the recognition ability for wireless and complex tables and reduces the model's sensitivity to the accuracy of table positioning, enabling more accurate recognition even with offset table positioning.</td>
+</tr>
+</table>
+</details>
+
+<details>
+<summary><b>Text Detection Module Models</b></summary>
 <table>
 <thead>
 <tr>
@@ -324,8 +403,10 @@ The Document Scene Information Extraction v4 pipeline includes modules for **Lay
 </tr>
 </tbody>
 </table>
+</details>
 
-<p><b>Text Recognition Module Models</b>:</p>
+<details>
+<summary><b>Text Recognition Module Models</b></summary>
 <table>
 <tr>
 <th>Model</th><th>Model Download Links</th>
@@ -556,13 +637,6 @@ The RepSVTR text recognition model is a mobile-oriented text recognition model b
 </tr>
 </table>
 
-
-
-
-
-
-
-
 * <b>Multilingual Recognition Models</b>
 <table>
 <tr>
@@ -674,7 +748,10 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
 <td>An ultra-lightweight Devanagari script recognition model trained based on PP-OCRv3, supporting Devanagari script and digits recognition</td>
 </tr>
 </table>
-<p><b>Text Line Orientation Classification Module (Optional):</b></p>
+</details>
+
+<details>
+<summary><b>Text Line Orientation Classification Module (Optional):</b></summary>
 <table>
 <thead>
 <tr>
@@ -698,35 +775,90 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
 </tr>
 </tbody>
 </table>
+</details>
 
-<p><b>Formula Recognition Module Models</b>:</p>
+<details>
+<summary><b>Formula Recognition Module Models  (Optional):</b></summary>
+
 <table>
-<thead>
 <tr>
-<th>Model Name</th><th>Model Download Link</th>
-<th>BLEU Score</th>
-<th>Normed Edit Distance</th>
-<th>ExpRate (%)</th>
+<th>Model</th><th>Model Download Link</th>
+<th>En-BLEU(%)</th>
+<th>Zh-BLEU(%)</th>
 <th>GPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
 <th>CPU Inference Time (ms)<br/>[Normal Mode / High-Performance Mode]</th>
 <th>Model Storage Size (MB)</th>
+<th>Introduction</th>
 </tr>
-</thead>
-<tbody>
+<tr>
+<td>UniMERNet</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/UniMERNet_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/UniMERNet_pretrained.pdparams">Training Model</a></td>
+<td>85.91</td>
+<td>43.50</td>
+<td>1311.84 / 1311.84</td>
+<td>- / 8288.07</td>
+<td>1530</td>
+<td>UniMERNet is a formula recognition model developed by Shanghai AI Lab. It uses Donut Swin as the encoder and MBartDecoder as the decoder. The model is trained on a dataset of one million samples, including simple formulas, complex formulas, scanned formulas, and handwritten formulas, significantly improving the recognition accuracy of real-world formulas.</td>
+</tr>
+<td>PP-FormulaNet-S</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet-S_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet-S_pretrained.pdparams">Training Model</a></td>
+<td>87.00</td>
+<td>45.71</td>
+<td>182.25 / 182.25</td>
+<td>- / 254.39</td>
+<td>224</td>
+<td rowspan="2">PP-FormulaNet is an advanced formula recognition model developed by the Baidu PaddlePaddle Vision Team. The PP-FormulaNet-S version uses PP-HGNetV2-B4 as its backbone network. Through parallel masking and model distillation techniques, it significantly improves inference speed while maintaining high recognition accuracy, making it suitable for applications requiring fast inference. The PP-FormulaNet-L version, on the other hand, uses Vary_VIT_B as its backbone network and is trained on a large-scale formula dataset, showing significant improvements in recognizing complex formulas compared to PP-FormulaNet-S.</td>
+</tr>
+<td>PP-FormulaNet-L</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet-L_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet-L_pretrained.pdparams">Training Model</a></td>
+<td>90.36</td>
+<td>45.78</td>
+<td>1482.03 / 1482.03</td>
+<td>- / 3131.54</td>
+<td>695</td>
+</tr>
+<td>PP-FormulaNet_plus-S</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet_plus-S_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet_plus-S_pretrained.pdparams">Training Model</a></td>
+<td>88.71</td>
+<td>53.32</td>
+<td>179.20 / 179.20</td>
+<td>- / 260.99</td>
+<td>248</td>
+<td rowspan="3">PP-FormulaNet_plus is an enhanced version of the formula recognition model developed by the Baidu PaddlePaddle Vision Team, building upon the original PP-FormulaNet. Compared to the original version, PP-FormulaNet_plus utilizes a more diverse formula dataset during training, including sources such as Chinese dissertations, professional books, textbooks, exam papers, and mathematics journals. This expansion significantly improves the model’s recognition capabilities. Among the models, PP-FormulaNet_plus-M and PP-FormulaNet_plus-L have added support for Chinese formulas and increased the maximum number of predicted tokens for formulas from 1,024 to 2,560, greatly enhancing the recognition performance for complex formulas. Meanwhile, the PP-FormulaNet_plus-S model focuses on improving the recognition of English formulas. With these improvements, the PP-FormulaNet_plus series models perform exceptionally well in handling complex and diverse formula recognition tasks. </td>
+</tr>
+<tr>
+<td>PP-FormulaNet_plus-M</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet_plus-M_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet_plus-M_pretrained.pdparams">Training Model</a></td>
+<td>91.45</td>
+<td>89.76</td>
+<td>1040.27 / 1040.27</td>
+<td>- / 1615.80</td>
+<td>592</td>
+</tr>
+<tr>
+<td>PP-FormulaNet_plus-L</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet_plus-L_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet_plus-L_pretrained.pdparams">Training Model</a></td>
+<td>92.22</td>
+<td>90.64</td>
+<td>1476.07 / 1476.07</td>
+<td>- / 3125.58</td>
+<td>698</td>
+</tr>
 <tr>
 <td>LaTeX_OCR_rec</td>
 <td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/LaTeX_OCR_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/LaTeX_OCR_rec_pretrained.pdparams">Training Model</a></td>
-<td>0.8821</td>
-<td>0.0823</td>
-<td>40.01</td>
+<td>74.55</td>
+<td>39.96</td>
 <td>1088.89 / 1088.89</td>
 <td>- / -</td>
 <td>99</td>
+<td>LaTeX-OCR is a formula recognition algorithm based on an autoregressive large model. It uses Hybrid ViT as the backbone network and a transformer as the decoder, significantly improving the accuracy of formula recognition.</td>
 </tr>
-</tbody>
 </table>
+</details>
 
-<p><b>Seal Text Detection Module Models</b>:</p>
+<details>
+<summary><b>Seal Text Detection Module Models (Optional):</b></summary>
 <table>
 <thead>
 <tr>
@@ -759,8 +891,10 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
 </tr>
 </tbody>
 </table>
+</details>
 
-<strong>Test Environment Description:</strong>
+<details>
+<summary> <b>Test Environment Description:</b></summary>
 
   <ul>
       <li><b>Performance Test Environment</b>
@@ -818,6 +952,9 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
 </table>
 
 </details>
+
+<br />
+<b>If you prioritize model accuracy, choose a model with higher accuracy. If you prioritize inference speed, select a model with faster inference. If you prioritize model storage size, choose a model with a smaller storage size.</b>
 
 ## 2. Quick Start
 
