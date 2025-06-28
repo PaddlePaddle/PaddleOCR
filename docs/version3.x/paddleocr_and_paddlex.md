@@ -40,7 +40,7 @@ PaddleOCR、PaddleX 和飞桨框架的版本存在如下对应关系：
 | 印章文本识别 | `seal_recognition` |
 | 文档图像预处理 | `doc_preprocessor` |
 | 文档理解 | `doc_understanding` |
-| 通用文档翻译 | `PP-DocTranslation` |
+| PP-DocTranslation | `PP-DocTranslation` |
 
 ## 3. 使用 PaddleX 产线配置文件
 
