@@ -340,6 +340,7 @@ class PaddleOCR(PaddleXPipelineWrapper):
             "german",
         ]
         ARABIC_LANGS = ["ar", "fa", "ug", "ur"]
+        ESLAV_LANGS = ["ru", "be", "uk"]
         CYRILLIC_LANGS = [
             "ru",
             "rs_cyrillic",
@@ -388,7 +389,12 @@ class PaddleOCR(PaddleXPipelineWrapper):
             lang = "ch"
 
         if ppocr_version is None:
-            if lang in ("ch", "chinese_cht", "en", "japan"):
+            if (
+                lang
+                in ["ch", "chinese_cht", "en", "japan", "korean"]
+                + LATIN_LANGS
+                + ESLAV_LANGS
+            ):
                 ppocr_version = "PP-OCRv5"
             elif lang in (
                 LATIN_LANGS
@@ -403,10 +409,20 @@ class PaddleOCR(PaddleXPipelineWrapper):
                 return None, None
 
         if ppocr_version == "PP-OCRv5":
+            rec_lang, rec_model_name = None, None
             if lang in ("ch", "chinese_cht", "en", "japan"):
-                return "PP-OCRv5_server_det", "PP-OCRv5_server_rec"
-            else:
-                return None, None
+                rec_model_name = "PP-OCRv5_server_rec"
+            elif lang in LATIN_LANGS:
+                rec_lang = "latin"
+            elif lang in ESLAV_LANGS:
+                rec_lang = "eslav"
+            elif lang == "korean":
+                rec_lang = "korean"
+
+            if rec_lang is not None:
+                rec_model_name = f"{rec_lang}_PP-OCRv5_mobile_rec"
+            return "PP-OCRv5_server_det", rec_model_name
+
         elif ppocr_version == "PP-OCRv4":
             if lang == "ch":
                 return "PP-OCRv4_mobile_det", "PP-OCRv4_mobile_rec"
