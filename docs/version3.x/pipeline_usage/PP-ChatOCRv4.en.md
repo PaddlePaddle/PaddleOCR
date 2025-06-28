@@ -1133,19 +1133,19 @@ The name of the document orientation classification model. If not set, the defau
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
-<td>Whether to load and use the document orientation classification module. If not set, the parameter value initialized by the pipeline will be used by default, initialized as <code>True</code>.</td>
+<td>Whether to load and use the document orientation classification module. If not set, the parameter value initialized by the pipeline will be used, which defaults to <code>True</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
-<td>Whether to load and use the text image unwarping module. If not set, the parameter value initialized by the pipeline will be used by default, initialized as <code>True</code>.</td>
+<td>Whether to load and use the text image unwarping module. If not set, the parameter value initialized by the pipeline will be used, which defaults to <code>True</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_textline_orientation</code></td>
-<td>Whether to load and use the text line orientation classification module. If not set, the parameter value initialized by the pipeline will be used by default, initialized as <code>True</code>.</td>
+<td>Whether to load and use the text line orientation classification module. If not set, the parameter value initialized by the pipeline will be used, which defaults to <code>True</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
@@ -1171,7 +1171,7 @@ The name of the document orientation classification model. If not set, the defau
 <tr>
 <td><code>layout_nms</code></td>
 <td>
-Whether to use Non-Maximum Suppression (NMS) as post-processing for layout detection. If not set, the parameter will default to the value initialized in the pipeline, which is set to <code>True</code> by default.
+Whether to use Non-Maximum Suppression (NMS) as post-processing for layout detection. If not set, the parameter will be set to the value initialized in the pipeline, which defaults to <code>True</code> by default.
 </td>
 <td><code>bool</code></td>
 <td></td>
@@ -1458,7 +1458,7 @@ After running, the output is as follows:
 
 The prediction process, API description, and output description for PP-ChatOCRv4 are as follows:
 
-<details><summary>(1) Call the <code>PPChatOCRv4Doc</code> method to instantiate the PP-ChatOCRv4 pipeline object.</summary>
+<details><summary>(1) Call <code>PPChatOCRv4Doc</code> to instantiate the PP-ChatOCRv4 pipeline object.</summary>
 
 The relevant parameter descriptions are as follows:
 
@@ -1582,31 +1582,31 @@ The relevant parameter descriptions are as follows:
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
-<td>Whether to load and use the document orientation classification module. If set to<code>None</code>, the value initialized by the pipeline for this parameter will be used by default (initialized to <code>True</code>).</td>
+<td>Whether to load and use the document orientation classification module. If set to<code>None</code>, the value initialized by the pipeline for this parameter will be used (defaults to <code>True</code>).</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
-<td>Whether to load and use the document unwarping module. If set to<code>None</code>, the value initialized by the pipeline for this parameter will be used by default (initialized to <code>True</code>).</td>
+<td>Whether to load and use the document unwarping module. If set to<code>None</code>, the value initialized by the pipeline for this parameter will be used (defaults to <code>True</code>).</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_textline_orientation</code></td>
-<td>Whether to load and use the text line orientation classification function. If set to<code>None</code>, the value initialized by the pipeline for this parameter will be used by default (initialized to <code>True</code>).</td>
+<td>Whether to load and use the text line orientation classification function. If set to<code>None</code>, the value initialized by the pipeline for this parameter will be used (defaults to <code>True</code>).</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_seal_recognition</code></td>
-<td>Whether to load and use the seal text recognition sub-pipeline. If set to<code>None</code>, the value initialized by the pipeline for this parameter will be used by default (initialized to <code>True</code>).</td>
+<td>Whether to load and use the seal text recognition sub-pipeline. If set to<code>None</code>, the value initialized by the pipeline for this parameter will be used (defaults to <code>True</code>).</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_table_recognition</code></td>
-<td>Whether to load and use the table recognition sub-pipeline. If set to<code>None</code>, the value initialized by the pipeline for this parameter will be used by default (initialized to <code>True</code>).</td>
+<td>Whether to load and use the table recognition sub-pipeline. If set to<code>None</code>, the value initialized by the pipeline for this parameter will be used (defaults to <code>True</code>).</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -1624,7 +1624,7 @@ The relevant parameter descriptions are as follows:
 </tr>
 <tr>
 <td><code>layout_nms</code></td>
-<td>Whether to use Non-Maximum Suppression (NMS) as post-processing for layout detection. If set to <code>None</code>, the parameter will default to the value initialized in the pipeline, which is set to <code>True</code> by default.</td>
+<td>Whether to use Non-Maximum Suppression (NMS) as post-processing for layout detection. If set to <code>None</code>, the parameter will be set to the value initialized in the pipeline, which is set to <code>True</code> by default.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -1647,7 +1647,7 @@ The relevant parameter descriptions are as follows:
 <ul>
 <li><b>str</b>: <code>large</code>,<code>small</code>, <code>union</code>, representing whether to keep the large box, small box, or both when filtering overlapping boxes;</li>
 <li><b>dict</b>, where the key is of <b>int</b> type, representing <code>cls_id</code>, and the value is of <b>str</b> type, e.g.,<code>{0: "large", 2: "small"}</code>, meaning use "large" mode for class 0 detection boxes and "small" mode for class 2 detection boxes;</li>
-<li><b>None</b>: If set to <code>None</code>, the value initialized by the pipeline for this parameter will be used by default (initialized to <code>large</code>).</li>
+<li><b>None</b>: If set to <code>None</code>, the value initialized by the pipeline for this parameter will be used (defaults to <code>large</code>).</li>
 </ul>
 </td>
 <td><code>str|dict|None</code></td>
@@ -1658,7 +1658,7 @@ The relevant parameter descriptions are as follows:
 <td>Image side length limitation for text detection.
 <ul>
 <li><b>int</b>: Any integer greater than <code>0</code>;</li>
-<li><b>None</b>: If set to <code>None</code>, the value initialized by the pipeline for this parameter will be used by default (initialized to <code>960</code>).</li>
+<li><b>None</b>: If set to <code>None</code>, the value initialized by the pipeline for this parameter will be used (defaults to <code>960</code>).</li>
 </ul>
 </td>
 <td><code>int|None</code></td>
@@ -1669,7 +1669,7 @@ The relevant parameter descriptions are as follows:
 <td>Type of side length limit for text detection.
 <ul>
 <li><b>str</b>: Supports <code>min</code> and <code>max</code>. <code>min</code> ensures the shortest side of the image is not less than <code>det_limit_side_len</code>. <code>max</code> ensures the longest side of the image is not greater than <code>limit_side_len</code>;</li>
-<li><b>None</b>: If set to <code>None</code>, the value initialized by the pipeline for this parameter will be used by default (initialized to <code>max</code>).</li>
+<li><b>None</b>: If set to <code>None</code>, the value initialized by the pipeline for this parameter will be used (defaults to <code>max</code>).</li>
 </ul>
 </td>
 <td><code>str|None</code></td>
@@ -1680,7 +1680,7 @@ The relevant parameter descriptions are as follows:
 <td>Detection pixel threshold. In the output probability map, pixels with scores greater than this threshold are considered text pixels.
 <ul>
 <li><b>float</b>: Any float greater than <code>0</code>;</li>
-<li><b>None</b>: If set to <code>None</code>, the value initialized by the pipeline for this parameter (<code>0.3</code>) will be used by default.</li></ul>
+<li><b>None</b>: If set to <code>None</code>, the value initialized by the pipeline for this parameter (defaults to <code>0.3</code>) will be used.</li></ul>
 </td>
 <td><code>float|None</code></td>
 <td><code>None</code></td>
@@ -1690,7 +1690,7 @@ The relevant parameter descriptions are as follows:
 <td>Detection box threshold. If the average score of all pixels within a detection result's bounding box is greater than this threshold, the result is considered a text region.
 <ul>
 <li><b>float</b>: Any float greater than <code>0</code>;</li>
-<li><b>None</b>: If set to <code>None</code>, the value initialized by the pipeline for this parameter (<code>0.6</code>) will be used by default.</li></ul>
+<li><b>None</b>: If set to <code>None</code>, the value initialized by the pipeline for this parameter (defaults to <code>0.6</code>) will be used.</li></ul>
 </td>
 <td><code>float|None</code></td>
 <td><code>None</code></td>
@@ -1700,7 +1700,7 @@ The relevant parameter descriptions are as follows:
 <td>Text detection expansion factor. This method is used to expand text regions; the larger the value, the larger the expanded area.
 <ul>
 <li><b>float</b>: Any float greater than <code>0</code>;</li>
-<li><b>None</b>: If set to <code>None</code>, the value initialized by the pipeline for this parameter (<code>2.0</code>) will be used by default.</li></ul>
+<li><b>None</b>: If set to <code>None</code>, the value initialized by the pipeline for this parameter (defaults to <code>2.0</code>) will be used.</li></ul>
 </td>
 <td><code>float|None</code></td>
 <td><code>None</code></td>
@@ -1710,7 +1710,7 @@ The relevant parameter descriptions are as follows:
 <td>Text recognition threshold. Text results with scores greater than this threshold will be kept.
 <ul>
 <li><b>float</b>: Any float greater than <code>0</code>;</li>
-<li><b>None</b>: If set to <code>None</code>, the value initialized by the pipeline for this parameter (<code>0.0</code>, i.e., no threshold) will be used by default.</li></ul>
+<li><b>None</b>: If set to <code>None</code>, the value initialized by the pipeline for this parameter (defaults to <code>0.0</code>, i.e., no threshold) will be used.</li></ul>
 </td>
 <td><code>float|None</code></td>
 <td><code>None</code></td>
@@ -1720,7 +1720,7 @@ The relevant parameter descriptions are as follows:
 <td>Image side length limit for seal text detection.
 <ul>
 <li><b>int</b>: Any integer greater than <code>0</code>;</li>
-<li><b>None</b>: If set to <code>None</code>, the value initialized by the pipeline for this parameter will be used by default (initialized to <code>736</code>).</li>
+<li><b>None</b>: If set to <code>None</code>, the value initialized by the pipeline for this parameter will be used (defaults to <code>736</code>).</li>
 </ul>
 </td>
 <td><code>int|None</code></td>
@@ -1731,7 +1731,7 @@ The relevant parameter descriptions are as follows:
 <td>Type of image side length limit for seal text detection.
 <ul>
 <li><b>str</b>: Supports <code>min</code> and <code>max</code>. <code>min</code> ensures the shortest side of the image is not less than <code>det_limit_side_len</code>. <code>max</code> ensures the longest side of the image is not greater than <code>limit_side_len</code>;</li>
-<li><b>None</b>: If set to <code>None</code>, the value initialized by the pipeline for this parameter will be used by default (initialized to <code>min</code>).</li>
+<li><b>None</b>: If set to <code>None</code>, the value initialized by the pipeline for this parameter will be used (defaults to <code>min</code>).</li>
 </ul>
 </td>
 <td><code>str|None</code></td>
@@ -1742,7 +1742,7 @@ The relevant parameter descriptions are as follows:
 <td>Detection pixel threshold. In the output probability map, pixels with scores greater than this threshold are considered text pixels.
 <ul>
 <li><b>float</b>: Any float greater than <code>0</code>;
-    <li><b>None</b>: If set to <code>None</code>, the value initialized by the pipeline for this parameter (<code>0.2</code>) will be used by default.</li></li></ul>
+    <li><b>None</b>: If set to <code>None</code>, the value initialized by the pipeline for this parameter (defaults to <code>0.2</code>) will be used.</li></li></ul>
 </td>
 <td><code>float|None</code></td>
 <td><code>None</code></td>
@@ -1752,7 +1752,7 @@ The relevant parameter descriptions are as follows:
 <td>Detection box threshold. If the average score of all pixels within a detection result's bounding box is greater than this threshold, the result is considered a text region.
 <ul>
 <li><b>float</b>: Any float greater than <code>0</code>;
-    <li><b>None</b>: If set to <code>None</code>, the value initialized by the pipeline for this parameter (<code>0.6</code>) will be used by default.</li></li></ul>
+    <li><b>None</b>: If set to <code>None</code>, the value initialized by the pipeline for this parameter (defaults to <code>0.6</code>) will be used.</li></li></ul>
 </td>
 <td><code>float|None</code></td>
 <td><code>None</code></td>
@@ -1762,7 +1762,7 @@ The relevant parameter descriptions are as follows:
 <td>Seal text detection expansion factor. This method is used to expand text regions; the larger the value, the larger the expanded area.
 <ul>
 <li><b>float</b>: Any float greater than <code>0</code>;
-    <li><b>None</b>: If set to <code>None</code>, the value initialized by the pipeline for this parameter (<code>0.5</code>) will be used by default.</li></li></ul>
+    <li><b>None</b>: If set to <code>None</code>, the value initialized by the pipeline for this parameter (defaults to <code>0.5</code>) will be used.</li></li></ul>
 </td>
 <td><code>float|None</code></td>
 <td><code>None</code></td>
@@ -1772,7 +1772,7 @@ The relevant parameter descriptions are as follows:
 <td>Seal text recognition threshold. Text results with scores greater than this threshold will be kept.
 <ul>
 <li><b>float</b>: Any float greater than <code>0</code>;
-    <li><b>None</b>: If set to <code>None</code>, the value initialized by the pipeline for this parameter (<code>0.0</code>, i.e., no threshold) will be used by default.</li></li></ul>
+    <li><b>None</b>: If set to <code>None</code>, the value initialized by the pipeline for this parameter (defaults to <code>0.0</code>, i.e., no threshold) will be used.</li></li></ul>
 </td>
 <td><code>float|None</code></td>
 <td><code>None</code></td>
@@ -2563,26 +2563,6 @@ To remove the page limit, please add the following configuration to the pipeline
 <td>No</td>
 </tr>
 <tr>
-<td><code>visualize</code></td>
-<td><code>boolean</code> | <code>null</code></td>
-<td>
-Whether to return the final visualization image and intermediate images during the processing.<br/>
-<ul style="margin: 0 0 0 1em; padding-left: 0em;">
-<li>If <code>true</code> is provided: return images.</li>
-<li>If <code>false</code> is provided: do not return any images.</li>
-<li>If this parameter is omitted from the request body, or if <code>null</code> is explicitly passed, the behavior will follow the value of <code>Serving.visualize</code> in the pipeline configuration.</li>
-</ul>
-<br/>
-For example, adding the following setting to the pipeline config file:<br/>
-<pre><code>Serving:
-  visualize: False
-</code></pre>
-will disable image return by default. This behavior can be overridden by explicitly setting the <code>visualize</code> parameter in the request.<br/>
-If neither the request body nor the configuration file is set (If <code>visualize</code> is set to <code>null</code> in the request and  not defined in the configuration file), the image is returned by default.
-</td>
-<td>No</td>
-</tr>
-<tr>
 <td><code>useDocOrientationClassify</code></td>
 <td><code>boolean</code> | <code>null</code></td>
 <td>Please refer to the description of the <code>use_doc_orientation_classify</code> parameter of the pipeline object's <code>visual_predict</code> method.</td>
@@ -2702,6 +2682,26 @@ If neither the request body nor the configuration file is set (If <code>visualiz
 <td>Please refer to the description of the <code>seal_rec_score_thresh</code> parameter of the pipeline object's <code>visual_predict</code> method.</td>
 <td>No</td>
 </tr>
+<tr>
+<td><code>visualize</code></td>
+<td><code>boolean</code> | <code>null</code></td>
+<td>
+Whether to return the final visualization image and intermediate images during the processing.<br/>
+<ul style="margin: 0 0 0 1em; padding-left: 0em;">
+<li>If <code>true</code> is provided: return images.</li>
+<li>If <code>false</code> is provided: do not return any images.</li>
+<li>If this parameter is omitted from the request body, or if <code>null</code> is explicitly passed, the behavior will follow the value of <code>Serving.visualize</code> in the pipeline configuration.</li>
+</ul>
+<br/>
+For example, adding the following setting to the pipeline config file:<br/>
+<pre><code>Serving:
+  visualize: False
+</code></pre>
+will disable image return by default. This behavior can be overridden by explicitly setting the <code>visualize</code> parameter in the request.<br/>
+If neither the request body nor the configuration file is set (If <code>visualize</code> is set to <code>null</code> in the request and  not defined in the configuration file), the image is returned by default.
+</td>
+<td>No</td>
+</tr>
 </tbody>
 </table>
 <ul>
@@ -2746,7 +2746,7 @@ If neither the request body nor the configuration file is set (If <code>visualiz
 <tr>
 <td><code>prunedResult</code></td>
 <td><code>object</code></td>
-<td>A simplified version of the <code>res</code> field in the JSON representation of the results generated by the pipeline's <code>visual_predict</code> method, with the <code>input_path</code> and the <code>page_index</code> fields removed.</td>
+<td>A simplified version of the <code>res</code> field in the JSON representation of the <code>layout_parsing_result</code> generated by the pipeline object's <code>visual_predict</code> method, with the <code>input_path</code> and <code>page_index</code> fields removed.</td>
 </tr>
 <tr>
 <td><code>outputImages</code></td>
@@ -2786,13 +2786,13 @@ If neither the request body nor the configuration file is set (If <code>visualiz
 </tr>
 <tr>
 <td><code>minCharacters</code></td>
-<td><code>integer</code> | <code>null</code></td>
-<td>Minimum data length to enable the vector database.</td>
+<td><code>integer</code></td>
+<td>Please refer to the description of the <code>min_characters</code> parameter of the pipeline object's <code>build_vector</code> method.</td>
 <td>No</td>
 </tr>
 <tr>
 <td><code>blockSize</code></td>
-<td><code>int</code> | <code>null</code></td>
+<td><code>integer</code></td>
 <td>Please refer to the description of the <code>block_size</code> parameter of the pipeline object's <code>build_vector</code> method.</td>
 <td>No</td>
 </tr>
@@ -2911,7 +2911,7 @@ If neither the request body nor the configuration file is set (If <code>visualiz
 </tr>
 <tr>
 <td><code>useVectorRetrieval</code></td>
-<td><code>boolean</code> | <code>null</code></td>
+<td><code>boolean</code></td>
 <td>Please refer to the description of the <code>use_vector_retrieval</code> parameter of the pipeline object's <code>chat</code> method.</td>
 <td>No</td>
 </tr>
@@ -2924,12 +2924,12 @@ If neither the request body nor the configuration file is set (If <code>visualiz
 <tr>
 <td><code>minCharacters</code></td>
 <td><code>integer</code></td>
-<td>Minimum data length to enable the vector database.</td>
+<td>Please refer to the description of the <code>min_characters</code> parameter of the pipeline object's <code>chat</code> method.</td>
 <td>No</td>
 </tr>
 <tr>
 <td><code>textTaskDescription</code></td>
-<td><code>string</code> | <code>null</code></td>
+<td><code>string</code></td>
 <td>Please refer to the description of the <code>text_task_description</code> parameter of the pipeline object's <code>chat</code> method.</td>
 <td>No</td>
 </tr>
@@ -2995,7 +2995,7 @@ If neither the request body nor the configuration file is set (If <code>visualiz
 </tr>
 <tr>
 <td><code>mllmIntegrationStrategy</code></td>
-<td><code>string</code> | <code>null</code></td>
+<td><code>string</code></td>
 <td>Please refer to the description of the <code>mllm_integration_strategy</code> parameter of the pipeline object's <code>chat</code> method.</td>
 <td>No</td>
 </tr>
@@ -3051,7 +3051,7 @@ import sys
 import requests
 
 
-API_BASE_URL = "http://0.0.0.0:8080"
+API_BASE_URL = "http://127.0.0.1:8080"
 
 image_path = "./demo.jpg"
 keys = ["name"]
@@ -3813,10 +3813,10 @@ If you need to use the fine-tuned model weights, simply modify the production co
 You can call the `export_paddlex_config_to_yaml` method of the pipeline object to export the current pipeline configuration to a YAML file. Here is an example:
 
 ```Python
-from paddleocr import PPChatOCRv4
+from paddleocr import PPChatOCRv4Doc
 
-pipeline = PPChatOCRv4()
-pipeline.export_paddlex_config_to_yaml("PP-ChatOCRv4.yaml")
+pipeline = PPChatOCRv4Doc()
+pipeline.export_paddlex_config_to_yaml("PP-ChatOCRv4-doc.yaml")
 ```
 
 2. Editing Pipeline Configuration Files
@@ -3854,7 +3854,7 @@ The exported PaddleX pipeline configuration file not only includes parameters su
 By specifying the path to the PaddleX pipeline configuration file using the `--paddlex_config` parameter, PaddleOCR will read its contents as the configuration for inference. Here is an example:
 
 ```bash
-paddleocr pp_chatocrv4_doc --paddlex_config PP-ChatOCRv4.yaml ...
+paddleocr pp_chatocrv4_doc --paddlex_config PP-ChatOCRv4-doc.yaml ...
 ```
 
 4. Loading Pipeline Configuration Files in Python API
@@ -3862,7 +3862,7 @@ paddleocr pp_chatocrv4_doc --paddlex_config PP-ChatOCRv4.yaml ...
 When initializing the pipeline object, you can pass the path to the PaddleX pipeline configuration file or a configuration dictionary through the `paddlex_config` parameter, and PaddleOCR will use it as the configuration for inference. Here is an example:
 
 ```python
-from paddleocr import PPChatOCRv4
+from paddleocr import PPChatOCRv4Doc
 
-pipeline = PPChatOCRv4(paddlex_config="PP-ChatOCRv4.yaml")
+pipeline = PPChatOCRv4Doc(paddlex_config="PP-ChatOCRv4-doc.yaml")
 ```

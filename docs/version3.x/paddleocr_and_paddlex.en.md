@@ -26,19 +26,21 @@ The version correspondence between PaddleOCR, PaddleX, and the PaddlePaddle fram
 | `3.0.1` | `3.0.1` | `>= 3.0.0` |
 | `3.0.2` | `3.0.2` | `>= 3.0.0` |
 | `3.0.3` | `>= 3.0.3` | `>= 3.0.0` |
+| `3.1.0` | `>= 3.1.0` | `>= 3.0.0` |
 
 ## 2. Correspondence Between PaddleOCR Pipelines and PaddleX Pipeline Registration Names
 
 | PaddleOCR Pipeline | PaddleX Pipeline Registration Name |
 | --- | --- |
 | General OCR | `OCR` |
-| General Layout Analysis v3 | `PP-StructureV3` |
-| Document Scenario Information Extraction v4 | `PP-ChatOCRv4-doc` |
-| General Table Recognition v2 | `table_recognition_v2` |
+| PP-StructureV3 | `PP-StructureV3` |
+| PP-ChatOCRv4 | `PP-ChatOCRv4-doc` |
+| General Table Recognition V2 | `table_recognition_v2` |
 | Formula Recognition | `formula_recognition` |
 | Seal Text Recognition | `seal_recognition` |
 | Document Image Preprocessing | `doc_preprocessor` |
 | Document Understanding | `doc_understanding` |
+| PP-DocTranslation | `PP-DocTranslation` |
 
 ## 3. Using PaddleX Pipeline Configuration Files
 

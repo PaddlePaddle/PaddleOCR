@@ -823,7 +823,7 @@ The name of the layout detection model. If not set, the default model in pipelin
 <tr>
 <td><code>use_layout_detection</code></td>
 <td>
-Whether to load and use the layout detection module. If not set, the parameter will default to the value initialized in the pipeline, which is <code>True</code>.</td>
+Whether to load and use the layout detection module. If not set, the parameter will be set to the value initialized in the pipeline, which is <code>True</code> by default.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
@@ -836,7 +836,7 @@ Whether to load and use the layout detection module. If not set, the parameter w
 </tr>
 <tr>
 <td><code>layout_nms</code></td>
-<td>Whether to use Non-Maximum Suppression (NMS) as post-processing for layout detection. If not set, the parameter will default to the value initialized in the pipeline, which is set to <code>True</code> by default.</td>
+<td>Whether to use Non-Maximum Suppression (NMS) as post-processing for layout detection. If not set, the parameter will be set to the value initialized in the pipeline, which is set to <code>True</code> by default.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
@@ -1114,7 +1114,7 @@ In the above Python script, the following steps were executed:
 </tr>
 <tr>
 <td><code>use_layout_detection</code></td>
-<td>Whether to load and use the layout detection module. If set to <code>None</code>, the parameter will default to the value initialized in the pipeline, which is <code>True</code>.</td>
+<td>Whether to load and use the layout detection module. If set to <code>None</code>, the parameter will be set to the value initialized in the pipeline, which is <code>True</code> by default.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -1132,7 +1132,7 @@ In the above Python script, the following steps were executed:
 </tr>
 <tr>
 <td><code>layout_nms</code></td>
-<td>Whether to use Non-Maximum Suppression (NMS) as post-processing for layout detection. If set to <code>None</code>, the parameter will default to the value initialized in the pipeline, which is set to <code>True</code> by default.</td>
+<td>Whether to use Non-Maximum Suppression (NMS) as post-processing for layout detection. If set to <code>None</code>, the parameter will be set to the value initialized in the pipeline, which is set to <code>True</code> by default.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -1660,26 +1660,6 @@ To remove the page limit, please add the following configuration to the pipeline
 <td>No</td>
 </tr>
 <tr>
-<td><code>visualize</code></td>
-<td><code>boolean</code> | <code>null</code></td>
-<td>
-Whether to return the final visualization image and intermediate images during the processing.<br/>
-<ul style="margin: 0 0 0 1em; padding-left: 0em;">
-<li>If <code>true</code> is provided: return images.</li>
-<li>If <code>false</code> is provided: do not return any images.</li>
-<li>If this parameter is omitted from the request body, or if <code>null</code> is explicitly passed, the behavior will follow the value of <code>Serving.visualize</code> in the pipeline configuration.</li>
-</ul>
-<br/>
-For example, adding the following setting to the pipeline config file:<br/>
-<pre><code>Serving:
-  visualize: False
-</code></pre>
-will disable image return by default. This behavior can be overridden by explicitly setting the <code>visualize</code> parameter in the request.<br/>
-If neither the request body nor the configuration file is set (If <code>visualize</code> is set to <code>null</code> in the request and  not defined in the configuration file), the image is returned by default.
-</td>
-<td>No</td>
-</tr>
-<tr>
 <td><code>useDocOrientationClassify</code></td>
 <td><code>boolean</code> | <code>null</code></td>
 <td>Please refer to the description of the <code>use_doc_orientation_classify</code> parameter of the pipeline object's <code>predict</code> method.</td>
@@ -1755,6 +1735,26 @@ If neither the request body nor the configuration file is set (If <code>visualiz
 <td><code>sealRecScoreThresh</code></td>
 <td><code>number</code> | <code>null</code></td>
 <td>Please refer to the description of the <code>seal_rec_score_thresh</code> parameter of the pipeline object's <code>predict</code> method.</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>visualize</code></td>
+<td><code>boolean</code> | <code>null</code></td>
+<td>
+Whether to return the final visualization image and intermediate images during the processing.<br/>
+<ul style="margin: 0 0 0 1em; padding-left: 0em;">
+<li>If <code>true</code> is provided: return images.</li>
+<li>If <code>false</code> is provided: do not return any images.</li>
+<li>If this parameter is omitted from the request body, or if <code>null</code> is explicitly passed, the behavior will follow the value of <code>Serving.visualize</code> in the pipeline configuration.</li>
+</ul>
+<br/>
+For example, adding the following setting to the pipeline config file:<br/>
+<pre><code>Serving:
+  visualize: False
+</code></pre>
+will disable image return by default. This behavior can be overridden by explicitly setting the <code>visualize</code> parameter in the request.<br/>
+If neither the request body nor the configuration file is set (If <code>visualize</code> is set to <code>null</code> in the request and  not defined in the configuration file), the image is returned by default.
+</td>
 <td>No</td>
 </tr>
 </tbody>
@@ -2360,7 +2360,7 @@ The pipeline configuration file not only contains the parameters supported by th
 
 3. Load pipeline Configuration File in CLI
 
-After modifying the configuration file, specify the path of the modified pipeline configuration file using the --paddlex_config parameter in the command line. PaddleOCR will read its contents as the pipeline configuration. Example:
+After modifying the configuration file, specify the path of the modified pipeline configuration file using the `--paddlex_config` parameter in the command line. PaddleOCR will read its contents as the pipeline configuration. Example:
 
 ```bash
 paddleocr seal_recognition --paddlex_config SealRecognition.yaml ...
@@ -2368,7 +2368,7 @@ paddleocr seal_recognition --paddlex_config SealRecognition.yaml ...
 
 4. Load pipeline Configuration File in Python API
 
-When initializing the pipeline object, you can pass the PaddleX pipeline configuration file path or configuration dictionary through the paddlex_config parameter. PaddleOCR will read its contents as the pipeline configuration. Example:
+When initializing the pipeline object, you can pass the PaddleX pipeline configuration file path or configuration dictionary through the `paddlex_config` parameter. PaddleOCR will read its contents as the pipeline configuration. Example:
 
 ```python
 from paddleocr import SealRecognition

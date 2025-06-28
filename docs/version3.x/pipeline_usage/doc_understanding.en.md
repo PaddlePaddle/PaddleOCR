@@ -758,7 +758,7 @@ OpenAI interface invocation example
 <pre><code class="language-python">import base64
 from openai import OpenAI
 
-API_BASE_URL = "http://0.0.0.0:8080"
+API_BASE_URL = "http://127.0.0.1:8080"
 
 # Initialize OpenAI client
 client = OpenAI(

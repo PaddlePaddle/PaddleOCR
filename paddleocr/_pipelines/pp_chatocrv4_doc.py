@@ -422,9 +422,9 @@ class PPChatOCRv4DocCLISubcommandExecutor(PipelineCLISubcommandExecutor):
         subparser.add_argument(
             "--save_path",
             type=str,
-            default="output",
             help="Path to the output directory.",
         )
+
         subparser.add_argument(
             "--invoke_mllm",
             type=str2bool,
@@ -693,7 +693,7 @@ class PPChatOCRv4DocCLISubcommandExecutor(PipelineCLISubcommandExecutor):
 
         chatocr = PPChatOCRv4Doc(**params)
 
-        result_visual = chatocr.visual_predict(input)
+        result_visual = chatocr.visual_predict_iter(input)
 
         visual_info_list = []
         for res in result_visual:

@@ -67,7 +67,7 @@ ImportError: failed to find libmagic.  Check your installation
 
 ### 2.1 快速开始
 
-接下来以 **星河社区服务** 工作模式为例，引导您完成快速配置。此模式无需在本地安装复杂的依赖，因此比较适合用于快速体验。
+接下来以 **星河社区服务** 工作模式为例，引导您快速上手。此模式无需在本地安装复杂的依赖，因此比较适合用于快速体验。
 
 1. **安装 `paddleocr-mcp`**
 
@@ -76,7 +76,7 @@ ImportError: failed to find libmagic.  Check your installation
 2. **准备星河社区服务**
 
     - 访问 [飞桨星河社区](https://aistudio.baidu.com/pipeline/mine) 并登录。**请注意，目前星河社区要求用户绑定中国大陆手机号。** 如果您不具备此条件，请考虑使用其他工作模式。
-    - 在左侧"更多内容"下的 "PaddleX 产线" 部分，[创建产线] - [OCR] - [通用 OCR] - [直接部署] - [开始部署]。
+    - 在左侧"更多内容"下的 "PaddleX 产线" 部分，依次点击：【创建产线】 - 【OCR】- 【通用OCR】-【直接部署】-【开始部署】。
     - 部署成功后，获取您的 **服务基础 URL**（示例：`https://xxxxxx.aistudio-hub.baidu.com`）。
     - 在 [此页面](https://aistudio.baidu.com/index/accessToken) 获取您的 **访问令牌**。
 
@@ -109,8 +109,8 @@ ImportError: failed to find libmagic.  Check your installation
 
     **说明**：
 
-    - 将 `<your-server-url>` 替换为您的星河社区服务的 **服务基础 URL**，例如 `https://xxxxx.aistudio-hub.baidu.com`，注意不要带有端点路径（如 `/ocr`）。
-    - 将 `<your-access-token>` 替换为您的 **访问令牌**。
+    - 将 `<your-server-url>` 替换为您的星河社区服务的基础 URL，例如 `https://xxxxx.aistudio-hub.baidu.com`，注意不要带有端点路径（如 `/ocr`）。
+    - 将 `<your-access-token>` 替换为您的访问令牌。
 
     **注意**：
 

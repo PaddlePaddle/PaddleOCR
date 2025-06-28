@@ -734,33 +734,33 @@ paddleocr ocr -i ./general_ocr_002.png --ocr_version PP-OCRv4
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
-<td>是否加载并使用文档方向分类模块。如果不设置，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用文档方向分类模块。如果不设置，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
-<td>是否加载并使用文本图像矫正模块。如果不设置，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用文本图像矫正模块。如果不设置，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_textline_orientation</code></td>
-<td>是否加载并使用文本行方向模块。如果不设置，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用文本行方向模块。如果不设置，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>text_det_limit_side_len</code></td>
 <td>文本检测的图像边长限制。
-大于 <code>0</code> 的任意整数。如果不设置，将默认使用产线初始化的该参数值，初始化为 <code>64</code>。
+大于 <code>0</code> 的任意整数。如果不设置，将使用产线初始化的该参数值，默认初始化为 <code>64</code>。
 </td>
 <td><code>int</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>text_det_limit_type</code></td>
-<td>文本检测的边长度限制类型。支持 <code>min</code> 和 <code>max</code>，<code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>，<code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code>。如果不设置，将默认使用产线初始化的该参数值，初始化为 <code>min</code>。
+<td>文本检测的边长度限制类型。支持 <code>min</code> 和 <code>max</code>，<code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>，<code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code>。如果不设置，将使用产线初始化的该参数值，默认初始化为 <code>min</code>。
 </td>
 <td><code>str</code></td>
 <td></td>
@@ -768,7 +768,7 @@ paddleocr ocr -i ./general_ocr_002.png --ocr_version PP-OCRv4
 <tr>
 <td><code>text_det_thresh</code></td>
 <td>文本检测像素阈值，输出的概率图中，得分大于该阈值的像素点才会被认为是文字像素点。
-大于<code>0</code>的任意浮点数。如果不设置，将默认使用产线初始化的该参数值 <code>0.3</code>。
+大于<code>0</code>的任意浮点数。如果不设置，将使用产线初始化的该参数值（默认为 <code>0.3</code>）。
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -776,14 +776,14 @@ paddleocr ocr -i ./general_ocr_002.png --ocr_version PP-OCRv4
 <tr>
 <td><code>text_det_box_thresh</code></td>
 <td>文本检测框阈值，检测结果边框内，所有像素点的平均得分大于该阈值时，该结果会被认为是文字区域。
-大于 <code>0</code> 的任意浮点数。如果不设置，将默认使用产线初始化的该参数值 <code>0.6</code>。
+大于 <code>0</code> 的任意浮点数。如果不设置，将使用产线初始化的该参数值（默认为 <code>0.6</code>）。
 </td>
 <td><code>float</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>text_det_unclip_ratio</code></td>
-<td>文本检测扩张系数，使用该方法对文字区域进行扩张，该值越大，扩张的面积越大。大于<code>0</code>的任意浮点数。如果不设置，将默认使用产线初始化的该参数值 <code>2.0</code>。
+<td>文本检测扩张系数，使用该方法对文字区域进行扩张，该值越大，扩张的面积越大。大于 <code>0</code> 的任意浮点数。如果不设置，将使用产线初始化的该参数值（默认为 <code>2.0</code>）。
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -797,7 +797,7 @@ paddleocr ocr -i ./general_ocr_002.png --ocr_version PP-OCRv4
 <tr>
 <td><code>text_rec_score_thresh</code></td>
 <td>文本识别阈值，得分大于该阈值的文本结果会被保留。
-大于<code>0</code>的任意浮点数。如果不设置，将默认使用产线初始化的该参数值 <code>0.0</code>。即不设阈值。
+大于<code>0</code>的任意浮点数。如果不设置，将使用产线初始化的该参数值（默认为 <code>0.0</code>，即不设阈值）。
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -1113,19 +1113,19 @@ for res in result:
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
-<td>是否加载并使用文档方向分类模块。如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用文档方向分类模块。如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
-<td>是否加载并使用文本图像矫正模块。如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用文本图像矫正模块。如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_textline_orientation</code></td>
-<td>是否加载并使用文本行方向模块。如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用文本行方向模块。如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -1134,7 +1134,7 @@ for res in result:
 <td>文本检测的图像边长限制。
 <ul>
 <li><b>int</b>：大于 <code>0</code> 的任意整数；</li>
-<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为 <code>64</code>。</li>
+<li><b>None</b>：如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为 <code>64</code>。</li>
 </ur>
 </td>
 <td><code>int|None</code></td>
@@ -1145,7 +1145,7 @@ for res in result:
 <td>文本检测的边长度限制类型。
 <ul>
 <li><b>str</b>：支持 <code>min</code> 和 <code>max</code>，<code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>，<code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code>；</li>
-<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为 <code>min</code>。</li>
+<li><b>None</b>：如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为 <code>min</code>。</li>
 </ur>
 </td>
 <td><code>str|None</code></td>
@@ -1156,7 +1156,7 @@ for res in result:
 <td>文本检测像素阈值，输出的概率图中，得分大于该阈值的像素点才会被认为是文字像素点。
 <ul>
 <li><b>float</b>：大于<code>0</code>的任意浮点数；
-<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值 <code>0.3</code>。</li>
+<li><b>None</b>：如果设置为<code>None</code>，将使用产线初始化的该参数值（默认为<code>0.3</code>）。</li>
 </td>
 <td><code>float|None</code></td>
 <td><code>None</code></td>
@@ -1166,7 +1166,7 @@ for res in result:
 <td>文本检测框阈值，检测结果边框内，所有像素点的平均得分大于该阈值时，该结果会被认为是文字区域。
 <ul>
 <li><b>float</b>：大于<code>0</code>的任意浮点数；
-<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值 <code>0.6</code>。
+<li><b>None</b>：如果设置为<code>None</code>，将使用产线初始化的该参数值（默认为<code>0.6</code>）。
 </td>
 <td><code>float|None</code></td>
 <td><code>None</code></td>
@@ -1176,7 +1176,7 @@ for res in result:
 <td>文本检测扩张系数，使用该方法对文字区域进行扩张，该值越大，扩张的面积越大。
 <ul>
 <li><b>float</b>：大于<code>0</code>的任意浮点数；
-<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值 <code>2.0</code>。
+<li><b>None</b>：如果设置为<code>None</code>，将使用产线初始化的该参数值（默认为<code>2.0</code>）。
 </ur>
 </td>
 <td><code>float|None</code></td>
@@ -1193,7 +1193,7 @@ for res in result:
 <td>文本识别阈值，得分大于该阈值的文本结果会被保留。
 <ul>
 <li><b>float</b>：大于<code>0</code>的任意浮点数；
-<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值 <code>0.0</code>，即不设阈值。
+<li><b>None</b>：如果设置为<code>None</code>，将使用产线初始化的该参数值（默认为<code>0.0</code>，即不设阈值）。
 </ur>
 </td>
 <td><code>float|None</code></td>
@@ -1619,23 +1619,6 @@ MKL-DNN 缓存容量。
 <td>否</td>
 </tr>
 <tr>
-<td><code>visualize</code></td>
-<td><code>boolean</code> | <code>null</code></td>
-<td>是否返回可视化结果图以及处理过程中的中间图像等。
-<ul style="margin: 0 0 0 1em; padding-left: 0em;">
-<li>传入 <code>true</code>：返回图像。</li>
-<li>传入 <code>false</code>：不返回图像。</li>
-<li>若请求体中未提供该参数或传入 <code>null</code>：遵循产线配置文件<code>Serving.visualize</code> 的设置。</li>
-</ul>
-<br/>例如，在产线配置文件中添加如下字段：<br/>
-<pre><code>Serving:
-  visualize: False
-</code></pre>
-将默认不返回图像，通过请求体中的<code>visualize</code>参数可以覆盖默认行为。如果请求体和配置文件中均未设置（或请求体传入<code>null</code>、配置文件中未设置），则默认返回图像。
-</td>
-<td>否</td>
-</tr>
-<tr>
 <td><code>useDocOrientationClassify</code></td>
 <td><code>boolean</code> | <code>null</code></td>
 <td>请参阅产线对象中 <code>predict</code> 方法的 <code>use_doc_orientation_classify</code> 参数相关说明。</td>
@@ -1688,6 +1671,23 @@ MKL-DNN 缓存容量。
 <td><code>textRecScoreThresh</code></td>
 <td><code>number</code> | <code>null</code></td>
 <td>请参阅产线对象中 <code>predict</code> 方法的 <code>text_rec_score_thresh</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>visualize</code></td>
+<td><code>boolean</code> | <code>null</code></td>
+<td>是否返回可视化结果图以及处理过程中的中间图像等。
+<ul style="margin: 0 0 0 1em; padding-left: 0em;">
+<li>传入 <code>true</code>：返回图像。</li>
+<li>传入 <code>false</code>：不返回图像。</li>
+<li>若请求体中未提供该参数或传入 <code>null</code>：遵循产线配置文件<code>Serving.visualize</code> 的设置。</li>
+</ul>
+<br/>例如，在产线配置文件中添加如下字段：<br/>
+<pre><code>Serving:
+  visualize: False
+</code></pre>
+将默认不返回图像，通过请求体中的<code>visualize</code>参数可以覆盖默认行为。如果请求体和配置文件中均未设置（或请求体传入<code>null</code>、配置文件中未设置），则默认返回图像。
+</td>
 <td>否</td>
 </tr>
 </tbody>
@@ -2240,7 +2240,7 @@ pipeline = PaddleOCR(text_detection_model_dir="./your_det_model_path")
 
 1.获取产线配置文件
 
-可调用 PaddleOCR 中 通用OCR 产线对象的 `export_paddlex_config_to_yaml` 方法，将当前产线配置导出为 YAML 文件：
+可调用 PaddleOCR 中 通用 OCR 产线对象的 `export_paddlex_config_to_yaml` 方法，将当前产线配置导出为 YAML 文件：
 
 ```Python
 from paddleocr import PaddleOCR
@@ -2284,7 +2284,7 @@ SubModules:
 
 3.在 CLI 中加载产线配置文件
 
-在修改完成配置文件后，通过命令行的 --paddlex_config 参数指定修改后的产线配置文件的路径，PaddleOCR 会读取其中的内容作为产线配置。示例如下：
+在修改完成配置文件后，通过命令行的 `--paddlex_config` 参数指定修改后的产线配置文件的路径，PaddleOCR 会读取其中的内容作为产线配置。示例如下：
 
 ```bash
 paddleocr ocr --paddlex_config PaddleOCR.yaml ...
@@ -2292,7 +2292,7 @@ paddleocr ocr --paddlex_config PaddleOCR.yaml ...
 
 4.在 Python API 中加载产线配置文件
 
-初始化产线对象时，可通过 paddlex_config 参数传入 PaddleX 产线配置文件路径或配置dict，PaddleOCR 会读取其中的内容作为产线配置。示例如下：
+初始化产线对象时，可通过 `paddlex_config` 参数传入 PaddleX 产线配置文件路径或配置dict，PaddleOCR 会读取其中的内容作为产线配置。示例如下：
 
 ```python
 from paddleocr import PaddleOCR

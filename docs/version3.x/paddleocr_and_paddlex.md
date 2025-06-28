@@ -26,19 +26,21 @@ PaddleOCR、PaddleX 和飞桨框架的版本存在如下对应关系：
 | `3.0.1` | `3.0.1` | `>= 3.0.0` |
 | `3.0.2` | `3.0.2` | `>= 3.0.0` |
 | `3.0.3` | `>= 3.0.3` | `>= 3.0.0` |
+| `3.1.0` | `>= 3.1.0` | `>= 3.0.0` |
 
 ## 2. PaddleOCR 产线与 PaddleX 产线注册名的对应关系
 
 | PaddleOCR 产线 | PaddleX 产线注册名 |
 | --- | --- |
 | 通用 OCR | `OCR` |
-| 通用版面解析 v3 | `PP-StructureV3` |
-| 文档场景信息抽取 v4 | `PP-ChatOCRv4-doc` |
+| PP-StructureV3 | `PP-StructureV3` |
+| PP-ChatOCRv4 | `PP-ChatOCRv4-doc` |
 | 通用表格识别 v2 | `table_recognition_v2` |
 | 公式识别 | `formula_recognition` |
 | 印章文本识别 | `seal_recognition` |
 | 文档图像预处理 | `doc_preprocessor` |
 | 文档理解 | `doc_understanding` |
+| PP-DocTranslation | `PP-DocTranslation` |
 
 ## 3. 使用 PaddleX 产线配置文件
 

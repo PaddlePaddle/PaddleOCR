@@ -901,7 +901,7 @@ paddleocr pp_chatocrv4_doc -i vehicle_certificate-1.png -k 驾驶室准乘人数
 </tr>
 <tr>
 <td><code>invoke_mllm</code></td>
-<td>是否加载并使用多模态大模型。如果不设置，将默认使用产线初始化的该参数值，初始化为<code>False</code>。</td>
+<td>是否加载并使用多模态大模型。如果不设置，将使用产线初始化的该参数值，默认初始化为<code>False</code>。</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
@@ -1015,13 +1015,13 @@ paddleocr pp_chatocrv4_doc -i vehicle_certificate-1.png -k 驾驶室准乘人数
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
-<td>是否加载并使用文档方向分类模块。如果不设置，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用文档方向分类模块。如果不设置，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
-<td>是否加载并使用文本图像矫正模块。如果不设置，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用文本图像矫正模块。如果不设置，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
@@ -1033,33 +1033,33 @@ paddleocr pp_chatocrv4_doc -i vehicle_certificate-1.png -k 驾驶室准乘人数
 </tr>
 <tr>
 <td><code>use_seal_recognition</code></td>
-<td>是否加载并使用印章文本识别子产线。如果不设置，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用印章文本识别子产线。如果不设置，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_table_recognition</code></td>
-<td>是否加载并使用表格识别子产线。如果不设置，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用表格识别子产线。如果不设置，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>layout_threshold</code></td>
 <td>版面模型得分阈值。
-<code>0-1</code> 之间的任意浮点数。如果不设置，将默认使用产线初始化的该参数值，初始化为 <code>0.5</code>。
+<code>0-1</code> 之间的任意浮点数。如果不设置，将使用产线初始化的该参数值，默认初始化为 <code>0.5</code>。
 </td>
 <td><code>float</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>layout_nms</code></td>
-<td>版面检测是否使用后处理NMS。如果不设置，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>版面检测是否使用后处理NMS。如果不设置，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>layout_unclip_ratio</code></td>
-<td>版面区域检测模型检测框的扩张系数。任意大于 <code>0</code>  浮点数。如果不设置，将默认使用产线初始化的该参数值，初始化为 <code>1.0</code>。
+<td>版面区域检测模型检测框的扩张系数。任意大于 <code>0</code>  浮点数。如果不设置，将使用产线初始化的该参数值，默认初始化为 <code>1.0</code>。
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -1071,14 +1071,14 @@ paddleocr pp_chatocrv4_doc -i vehicle_certificate-1.png -k 驾驶室准乘人数
 <li><b>large</b>，设置为large时，表示在模型输出的检测框中，对于互相重叠包含的检测框，只保留外部最大的框，删除重叠的内部框；</li>
 <li><b>small</b>，设置为small，表示在模型输出的检测框中，对于互相重叠包含的检测框，只保留内部被包含的小框，删除重叠的外部框；</li>
 <li><b>union</b>，不进行框的过滤处理，内外框都保留；</li>
-</ul>如果不设置，将默认使用产线初始化的该参数值，初始化为<code>large</code>。
+</ul>如果不设置，将使用产线初始化的该参数值，默认初始化为<code>large</code>。
 </td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>text_det_limit_side_len</code></td>
-<td>文本检测的图像边长限制。大于 <code>0</code> 的任意整数。如果不设置，将默认使用产线初始化的该参数值，初始化为 <code>960</code>。
+<td>文本检测的图像边长限制。大于 <code>0</code> 的任意整数。如果不设置，将使用产线初始化的该参数值，默认初始化为 <code>960</code>。
 </td>
 <td><code>int</code></td>
 <td></td>
@@ -1086,7 +1086,7 @@ paddleocr pp_chatocrv4_doc -i vehicle_certificate-1.png -k 驾驶室准乘人数
 <tr>
 <td><code>text_det_limit_type</code></td>
 <td>文本检测的边长度限制类型。支持 <code>min</code> 和 <code>max</code>，<code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>，<code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code></li>
-</ul>如果不设置，将默认使用产线初始化的该参数值，初始化为 <code>max</code>。
+</ul>如果不设置，将使用产线初始化的该参数值，默认初始化为 <code>max</code>。
 </td>
 <td><code>str</code></td>
 <td></td>
@@ -1122,14 +1122,14 @@ paddleocr pp_chatocrv4_doc -i vehicle_certificate-1.png -k 驾驶室准乘人数
 </tr>
 <tr>
 <td><code>seal_det_limit_side_len</code></td>
-<td>印章文本检测的图像边长限制。大于 <code>0</code> 的任意整数。如果不设置，将默认使用产线初始化的该参数值，初始化为 <code>736</code>。
+<td>印章文本检测的图像边长限制。大于 <code>0</code> 的任意整数。如果不设置，将使用产线初始化的该参数值，默认初始化为 <code>736</code>。
 </td>
 <td><code>int</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>seal_det_limit_type</code></td>
-<td>印章文本检测的图像边长限制类型。支持 <code>min</code> 和 <code>max</code>，<code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>，<code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code>。如果不设置，将默认使用产线初始化的该参数值，初始化为 <code>min</code>。
+<td>印章文本检测的图像边长限制类型。支持 <code>min</code> 和 <code>max</code>，<code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>，<code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code>。如果不设置，将使用产线初始化的该参数值，默认初始化为 <code>min</code>。
 </td>
 <td><code>str</code></td>
 <td></td>
@@ -1151,7 +1151,7 @@ paddleocr pp_chatocrv4_doc -i vehicle_certificate-1.png -k 驾驶室准乘人数
 <tr>
 <td><code>seal_det_unclip_ratio</code></td>
 <td>印章文本检测扩张系数，使用该方法对文字区域进行扩张，该值越大，扩张的面积越大。大于 <code>0</code> 的任意浮点数
-。如果不设置，将默认使用产线初始化的该参数值 <code>0.5</code>。
+。如果不设置，将使用产线初始化的该参数值，默认为 <code>0.5</code>。
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -1159,7 +1159,7 @@ paddleocr pp_chatocrv4_doc -i vehicle_certificate-1.png -k 驾驶室准乘人数
 <tr>
 <td><code>seal_rec_score_thresh</code></td>
 <td>印章文本识别阈值，得分大于该阈值的文本结果会被保留。大于 <code>0</code> 的任意浮点数
-。如果不设置，将默认使用产线初始化的该参数值 <code>0.0</code>。即不设阈值。
+。如果不设置，将使用产线初始化的该参数值，默认为<code>0.0</code>，即不设阈值。
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -1326,7 +1326,7 @@ print(chat_result)
 
 PP-ChatOCRv4 预测的流程、API说明、产出说明如下：
 
-<details><summary>（1）调用 <code>PPChatOCRv4Doc</code> 方法实例化PP-ChatOCRv4产线对象。</summary>
+<details><summary>（1）调用 <code>PPChatOCRv4Doc</code> 实例化PP-ChatOCRv4产线对象。</summary>
 
 相关参数说明如下：
 
@@ -1450,31 +1450,31 @@ PP-ChatOCRv4 预测的流程、API说明、产出说明如下：
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
-<td>是否加载并使用文档方向分类模块。如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用文档方向分类模块。如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
-<td>是否加载并使用文本图像矫正模块。如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用文本图像矫正模块。如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_textline_orientation</code></td>
-<td>是否加载并使用文本行方向分类模块. 如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用文本行方向分类模块. 如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_seal_recognition</code></td>
-<td>是否加载并使用印章文本识别子产线。如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用印章文本识别子产线。如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_table_recognition</code></td>
-<td>是否加载并使用表格识别子产线。如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用表格识别子产线。如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -1484,7 +1484,7 @@ PP-ChatOCRv4 预测的流程、API说明、产出说明如下：
 <ul>
 <li><b>float</b>：<code>0-1</code> 之间的任意浮点数；</li>
 <li><b>dict</b>： <code>{0:0.1}</code> key为类别ID，value为该类别的阈值；</li>
-<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为 <code>0.5</code>。</li>
+<li><b>None</b>：如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为 <code>0.5</code>。</li>
 </ul>
 </td>
 <td><code>float|dict|None</code></td>
@@ -1492,7 +1492,7 @@ PP-ChatOCRv4 预测的流程、API说明、产出说明如下：
 </tr>
 <tr>
 <td><code>layout_nms</code></td>
-<td>版面检测是否使用后处理NMS。如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>版面检测是否使用后处理NMS。如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -1503,7 +1503,7 @@ PP-ChatOCRv4 预测的流程、API说明、产出说明如下：
 <li><b>float</b>：任意大于 <code>0</code>  浮点数；</li>
 <li><b>Tuple[float,float]</b>：在横纵两个方向各自的扩张系数；</li>
 <li><b>dict</b>，dict的key为<b>int</b>类型，代表<code>cls_id</code>，value为<b>tuple</b>类型，如<code>{0: (1.1，2.0)}</code>，表示将模型输出的第0类别检测框中心不变，宽度扩张1.1倍，高度扩张2.0倍</li>
-<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为 <code>1.0</code>。</li>
+<li><b>None</b>：如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为 <code>1.0</code>。</li>
 </ul>
 </td>
 <td><code>float|Tuple[float,float]|dict|None</code></td>
@@ -1515,7 +1515,7 @@ PP-ChatOCRv4 预测的流程、API说明、产出说明如下：
 <ul>
 <li><b>str</b>：<code>large</code>，<code>small</code>，<code>union</code>，分别表示重叠框过滤时选择保留大框，小框还是同时保留；</li>
 <li><b>dict</b>，dict的key为<b>int</b>类型，代表<code>cls_id</code>，value为<b>str</b>类型，如<code>{0: "large"，2: "small"}</code>，表示对第0类别检测框使用large模式，对第2类别检测框使用small模式；</li>
-<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为 <code>large</code>。</li>
+<li><b>None</b>：如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为 <code>large</code>。</li>
 </ul>
 </td>
 <td><code>str|dict|None</code></td>
@@ -1526,7 +1526,7 @@ PP-ChatOCRv4 预测的流程、API说明、产出说明如下：
 <td>文本检测的图像边长限制。
 <ul>
 <li><b>int</b>：大于 <code>0</code> 的任意整数；</li>
-<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为 <code>960</code>。</li>
+<li><b>None</b>：如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为 <code>960</code>。</li>
 </ul>
 </td>
 <td><code>int|None</code></td>
@@ -1537,7 +1537,7 @@ PP-ChatOCRv4 预测的流程、API说明、产出说明如下：
 <td>文本检测的边长度限制类型。
 <ul>
 <li><b>str</b>：支持 <code>min</code> 和 <code>max</code>，<code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>，<code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code>；</li>
-<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为 <code>max</code>。</li>
+<li><b>None</b>：如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为 <code>max</code>。</li>
 </ul>
 </td>
 <td><code>str|None</code></td>
@@ -1548,7 +1548,7 @@ PP-ChatOCRv4 预测的流程、API说明、产出说明如下：
 <td>检测像素阈值，输出的概率图中，得分大于该阈值的像素点才会被认为是文字像素点。
 <ul>
 <li><b>float</b>：大于<code>0</code>的任意浮点数；
-<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值 <code>0.3</code>。</li></li></ul>
+<li><b>None</b>：如果设置为<code>None</code>，将使用产线初始化的该参数值，默认为<code>0.3</code>。</li></li></ul>
 </td>
 <td><code>float|None</code></td>
 <td><code>None</code></td>
@@ -1558,7 +1558,7 @@ PP-ChatOCRv4 预测的流程、API说明、产出说明如下：
 <td>检测框阈值，检测结果边框内，所有像素点的平均得分大于该阈值时，该结果会被认为是文字区域。
 <ul>
 <li><b>float</b>：大于<code>0</code>的任意浮点数；
-<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值 <code>0.6</code>。</li></li></ul>
+<li><b>None</b>：如果设置为<code>None</code>，将使用产线初始化的该参数值，默认为<code>0.6</code>。</li></li></ul>
 </td>
 <td><code>float|None</code></td>
 <td><code>None</code></td>
@@ -1568,7 +1568,7 @@ PP-ChatOCRv4 预测的流程、API说明、产出说明如下：
 <td>文本检测扩张系数，使用该方法对文字区域进行扩张，该值越大，扩张的面积越大。
 <ul>
 <li><b>float</b>：大于<code>0</code>的任意浮点数；
-<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值 <code>2.0</code>；</li></li></ul>
+<li><b>None</b>：如果设置为<code>None</code>，将使用产线初始化的该参数值，默认为<code>2.0</code>。</li></li></ul>
 </td>
 <td><code>float|None</code></td>
 <td><code>None</code></td>
@@ -1578,7 +1578,7 @@ PP-ChatOCRv4 预测的流程、API说明、产出说明如下：
 <td>文本识别阈值，得分大于该阈值的文本结果会被保留。
 <ul>
 <li><b>float</b>：大于<code>0</code>的任意浮点数；
-<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值 <code>0.0</code>，即不设阈值。</li></li></ul>
+<li><b>None</b>：如果设置为<code>None</code>，将使用产线初始化的该参数值，默认为<code>0.0</code>，即不设阈值。</li></li></ul>
 </td>
 <td><code>float|None</code></td>
 <td><code>None</code></td>
@@ -1588,7 +1588,7 @@ PP-ChatOCRv4 预测的流程、API说明、产出说明如下：
 <td>印章文本检测的图像边长限制。
 <ul>
 <li><b>int</b>：大于<code>0</code>的任意整数；</li>
-<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为 <code>736</code>。</li>
+<li><b>None</b>：如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为 <code>736</code>。</li>
 </ul>
 </td>
 <td><code>int|None</code></td>
@@ -1599,7 +1599,7 @@ PP-ChatOCRv4 预测的流程、API说明、产出说明如下：
 <td>印章文本检测的图像边长限制类型。
 <ul>
 <li><b>str</b>：支持 <code>min</code> 和 <code>max</code>，<code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>，<code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code>；</li>
-<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为 <code>min</code>。</li>
+<li><b>None</b>：如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为 <code>min</code>。</li>
 </ul>
 </td>
 <td><code>str|None</code></td>
@@ -1610,7 +1610,7 @@ PP-ChatOCRv4 预测的流程、API说明、产出说明如下：
 <td>检测像素阈值，输出的概率图中，得分大于该阈值的像素点才会被认为是文字像素点。
 <ul>
 <li><b>float</b>：大于<code>0</code>的任意浮点数；
-<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值 <code>0.2</code>。</li></li></ul>
+<li><b>None</b>：如果设置为<code>None</code>，将使用产线初始化的该参数值，默认为<code>0.2</code>。</li></li></ul>
 </td>
 <td><code>float|None</code></td>
 <td><code>None</code></td>
@@ -1620,7 +1620,7 @@ PP-ChatOCRv4 预测的流程、API说明、产出说明如下：
 <td>检测框阈值，检测结果边框内，所有像素点的平均得分大于该阈值时，该结果会被认为是文字区域。
 <ul>
 <li><b>float</b>：大于<code>0</code>的任意浮点数；
-<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值 <code>0.6</code>。</li></li></ul>
+<li><b>None</b>：如果设置为<code>None</code>，将使用产线初始化的该参数值，默认为<code>0.6</code>。</li></li></ul>
 </td>
 <td><code>float|None</code></td>
 <td><code>None</code></td>
@@ -1630,7 +1630,7 @@ PP-ChatOCRv4 预测的流程、API说明、产出说明如下：
 <td>印章文本检测扩张系数，使用该方法对文字区域进行扩张，该值越大，扩张的面积越大。
 <ul>
 <li><b>float</b>：大于<code>0</code>的任意浮点数；
-<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值 <code>0.5</code>。</li></li></ul>
+<li><b>None</b>：如果设置为<code>None</code>，将使用产线初始化的该参数值，默认为<code>0.5</code>。</li></li></ul>
 </td>
 <td><code>float|None</code></td>
 <td><code>None</code></td>
@@ -1640,7 +1640,7 @@ PP-ChatOCRv4 预测的流程、API说明、产出说明如下：
 <td>印章文本识别阈值，得分大于该阈值的文本结果会被保留。
 <ul>
 <li><b>float</b>：大于<code>0</code>的任意浮点数；
-<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值 <code>0.0</code>，即不设阈值。</li></li></ul>
+<li><b>None</b>：如果设置为<code>None</code>，将使用产线初始化的该参数值，默认为<code>0.0</code>，即不设阈值。</li></li></ul>
 </td>
 <td><code>float|None</code></td>
 <td><code>None</code></td>
@@ -2441,23 +2441,6 @@ for res in visual_predict_res:
 <td>否</td>
 </tr>
 <tr>
-<td><code>visualize</code></td>
-<td><code>boolean</code> | <code>null</code></td>
-<td>是否返回可视化结果图以及处理过程中的中间图像等。
-<ul style="margin: 0 0 0 1em; padding-left: 0em;">
-<li>传入 <code>true</code>：返回图像。</li>
-<li>传入 <code>false</code>：不返回图像。</li>
-<li>若请求体中未提供该参数或传入 <code>null</code>：遵循产线配置文件<code>Serving.visualize</code> 的设置。</li>
-</ul>
-<br/>例如，在产线配置文件中添加如下字段：<br/>
-<pre><code>Serving:
-  visualize: False
-</code></pre>
-将默认不返回图像，通过请求体中的<code>visualize</code>参数可以覆盖默认行为。如果请求体和配置文件中均未设置（或请求体传入<code>null</code>、配置文件中未设置），则默认返回图像。
-</td>
-<td>否</td>
-</tr>
-<tr>
 <td><code>useDocOrientationClassify</code></td>
 <td><code>boolean</code> | <code>null</code></td>
 <td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>use_doc_orientation_classify</code> 参数相关说明。</td>
@@ -2577,6 +2560,23 @@ for res in visual_predict_res:
 <td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>seal_rec_score_thresh</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
+<tr>
+<td><code>visualize</code></td>
+<td><code>boolean</code> | <code>null</code></td>
+<td>是否返回可视化结果图以及处理过程中的中间图像等。
+<ul style="margin: 0 0 0 1em; padding-left: 0em;">
+<li>传入 <code>true</code>：返回图像。</li>
+<li>传入 <code>false</code>：不返回图像。</li>
+<li>若请求体中未提供该参数或传入 <code>null</code>：遵循产线配置文件<code>Serving.visualize</code> 的设置。</li>
+</ul>
+<br/>例如，在产线配置文件中添加如下字段：<br/>
+<pre><code>Serving:
+  visualize: False
+</code></pre>
+将默认不返回图像，通过请求体中的<code>visualize</code>参数可以覆盖默认行为。如果请求体和配置文件中均未设置（或请求体传入<code>null</code>、配置文件中未设置），则默认返回图像。
+</td>
+<td>否</td>
+</tr>
 </tbody>
 </table>
 <ul>
@@ -2621,7 +2621,7 @@ for res in visual_predict_res:
 <tr>
 <td><code>prunedResult</code></td>
 <td><code>object</code></td>
-<td>产线对象的 <code>visual_predict</code> 方法生成结果的 JSON 表示中 <code>res</code> 字段的简化版本，其中去除了 <code>input_path</code> 和 <code>page_index</code> 字段。</td>
+<td>产线对象的 <code>visual_predict</code> 方法生成的 <code>layout_parsing_result</code> 的 JSON 表示中 <code>res</code> 字段的简化版本，其中去除了 <code>input_path</code> 和 <code>page_index</code> 字段。</td>
 </tr>
 <tr>
 <td><code>outputImages</code></td>
@@ -2661,13 +2661,13 @@ for res in visual_predict_res:
 </tr>
 <tr>
 <td><code>minCharacters</code></td>
-<td><code>integer</code> | <code>null</code></td>
-<td>启用向量数据库的最小数据长度。</td>
+<td><code>integer</code></td>
+<td>请参阅产线对象中 <code>build_vector</code> 方法的 <code>min_characters</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>blockSize</code></td>
-<td><code>int</code> | <code>null</code></td>
+<td><code>integer</code></td>
 <td>请参阅产线对象中 <code>build_vector</code> 方法的 <code>block_size</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
@@ -2718,7 +2718,7 @@ for res in visual_predict_res:
 <tbody>
 <tr>
 <td><code>image</code></td>
-<td><code>string</code></code></td>
+<td><code>string</code></td>
 <td>服务器可访问的图像文件的URL或图像文件内容的Base64编码结果。</td>
 <td>是</td>
 </tr>
@@ -2787,7 +2787,7 @@ for res in visual_predict_res:
 </tr>
 <tr>
 <td><code>useVectorRetrieval</code></td>
-<td><code>boolean</code> | <code>null</code></td>
+<td><code>boolean</code></td>
 <td>请参阅产线对象中 <code>chat</code> 方法的 <code>use_vector_retrieval</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
@@ -2800,7 +2800,7 @@ for res in visual_predict_res:
 <tr>
 <td><code>minCharacters</code></td>
 <td><code>integer</code></td>
-<td>启用向量数据库的最小数据长度</td>
+<td>请参阅产线对象中 <code>chat</code> 方法的 <code>min_characters</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
@@ -2871,7 +2871,7 @@ for res in visual_predict_res:
 </tr>
 <tr>
 <td><code>mllmIntegrationStrategy</code></td>
-<td><code>string</code> | <code>null</code></td>
+<td><code>string</code></td>
 <td>请参阅产线对象中 <code>chat</code> 方法的 <code>mllm_integration_strategy</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
@@ -2928,7 +2928,7 @@ import sys
 import requests
 
 
-API_BASE_URL = "http://0.0.0.0:8080"
+API_BASE_URL = "http://127.0.0.1:8080"
 
 image_path = "./demo.jpg"
 keys = ["姓名"]
@@ -3689,10 +3689,10 @@ function send_post_raw($url, $data) {
 可调用 PaddleOCR 中 PPChatOCRv4 产线对象的 `export_paddlex_config_to_yaml` 方法，将当前产线配置导出为 YAML 文件：
 
 ```Python
-from paddleocr import PPChatOCRv4
+from paddleocr import PPChatOCRv4Doc
 
-pipeline = PPChatOCRv4()
-pipeline.export_paddlex_config_to_yaml("PP-ChatOCRv4.yaml")
+pipeline = PPChatOCRv4Doc()
+pipeline.export_paddlex_config_to_yaml("PP-ChatOCRv4-doc.yaml")
 ```
 
 2. 修改配置文件
@@ -3725,18 +3725,18 @@ SubModules:
 
 3. 在 CLI 中加载产线配置文件
 
-在修改完成配置文件后，通过命令行的 --paddlex_config 参数指定修改后的产线配置文件的路径，PaddleOCR 会读取其中的内容作为产线配置。示例如下：
+在修改完成配置文件后，通过命令行的 `--paddlex_config` 参数指定修改后的产线配置文件的路径，PaddleOCR 会读取其中的内容作为产线配置。示例如下：
 
 ```bash
-paddleocr pp_chatocrv4_doc --paddlex_config PP-ChatOCRv4.yaml ...
+paddleocr pp_chatocrv4_doc --paddlex_config PP-ChatOCRv4-doc.yaml ...
 ```
 
 4. 在 Python API 中加载产线配置文件
 
-初始化产线对象时，可通过 paddlex_config 参数传入 PaddleX 产线配置文件路径或配置dict，PaddleOCR 会读取其中的内容作为产线配置。示例如下：
+初始化产线对象时，可通过 `paddlex_config` 参数传入 PaddleX 产线配置文件路径或配置dict，PaddleOCR 会读取其中的内容作为产线配置。示例如下：
 
 ```python
-from paddleocr import PPChatOCRv4
+from paddleocr import PPChatOCRv4Doc
 
-pipeline = PPChatOCRv4(paddlex_config="PP-ChatOCRv4.yaml")
+pipeline = PPChatOCRv4Doc(paddlex_config="PP-ChatOCRv4-doc.yaml")
 ```
