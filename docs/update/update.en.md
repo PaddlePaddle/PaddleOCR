@@ -6,7 +6,27 @@ hide:
 ---
 
 ### Recently Update
-#### **🔥🔥 2025.06.19: Release of PaddleOCR v3.0.2, which includes:**
+#### **2025.06.29: Release of PaddleOCR 3.1.0**, includes:
+
+- **Key Models and Pipelines:**
+  - **Added PP-OCRv5 Multilingual Text Recognition Model**, which supports the training and inference process for text recognition models in 37 languages, including French, Spanish, Portuguese, Russian, Korean, etc. **Average accuracy improved by over 30%.** [Details](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/algorithm/PP-OCRv5/PP-OCRv5_multi_languages.html)
+  - Upgraded the **PP-Chart2Table model** in PP-StructureV3, further enhancing the capability of converting charts to tables. On internal custom evaluation sets, the metric (RMS-F1) **increased by 9.36 percentage points (71.24% -> 80.60%).**
+  - Newly launched **document translation pipeline, PP-DocTranslation, based on PP-StructureV3 and ERNIE 4.5 Turbo**, which supports the translation of Markdown format documents, various complex-layout PDF documents, and document images, with the results saved as Markdown format documents. [Details](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/pipeline_usage/PP-DocTranslation.html)
+
+
+- **New MCP server:** [Details](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/mcp_server.html)
+  - **Supports both OCR and PP-StructureV3 pipelines.**
+  - Supports three working modes: local Python library, AIStudio Community Cloud Service, and self-hosted service.
+  - Supports invoking local services via stdio and remote services via Streamable HTTP.
+
+- **Documentation Optimization:** Improved the descriptions in some user guides for a smoother reading experience.
+
+
+#### **2025.06.26: Release of PaddleOCR 3.0.3**, includes:
+
+  - Bug Fix: Resolved the issue where the `enable_mkldnn` parameter was not effective, restoring the default behavior of using MKL-DNN for CPU inference.
+
+#### ** 2025.06.19: Release of PaddleOCR v3.0.2, which includes:**
 
 - **New Features:**
 
@@ -42,7 +62,7 @@ hide:
 
     - Relaxed version restrictions on dependencies like numpy and pandas, restoring support for Python 3.12.
 
-#### **🔥🔥 2025.06.05: Release of PaddleOCR v3.0.1, which includes:**
+#### ** 2025.06.05: Release of PaddleOCR v3.0.1, which includes:**
 
 - **Optimisation of certain models and model configurations:**
     - Updated the default model configuration for PP-OCRv5, changing both detection and recognition from mobile to server models. To improve default performance in most scenarios, the parameter `limit_side_len` in the configuration has been changed from 736 to 64.
@@ -62,7 +82,7 @@ hide:
     - Fixed the issue where the method `PPStructureV3.concatenate_markdown_pages` was missing.
     - Fixed an issue where specifying both `lang` and `model_name` when instantiating `paddleocr.PaddleOCR` resulted in `model_name` being ineffective.
 
-#### **🔥🔥 2025.05.20: PaddleOCR 3.0 Official Release Highlights**
+#### ** 2025.05.20: PaddleOCR 3.0 Official Release Highlights**
 
 - **PP-OCRv5: All-Scene Text Recognition Model**  
   - Supports five text types and complex handwriting in a single model.  
@@ -90,7 +110,7 @@ hide:
 
 - For more details, check out the [Upgrade Notes from 2.x to 3.x](./upgrade_notes.en.md).
 
-#### **🔥🔥2025.3.7 release PaddleOCR v2.10, including**:
+#### **2025.3.7 release PaddleOCR v2.10, including**:
 
   - **12 new self-developed single models:**
     - **[Layout Detection](https://paddlepaddle.github.io/PaddleX/latest/en/module_usage/tutorials/ocr_modules/layout_detection.html)** series with 3 models: PP-DocLayout-L, PP-DocLayout-M, PP-DocLayout-S, supporting prediction of 23 common layout categories. High-quality layout detection for various document types such as papers, reports, exams, books, magazines, contracts, newspapers in both English and Chinese. **mAP@0.5 reaches up to 90.4%, lightweight models can process over 100 pages of document images per second end-to-end.**
@@ -107,7 +127,7 @@ hide:
      - **[Table Recognition v2 Pipeline](https://paddlepaddle.github.io/PaddleX/latest/en/pipeline_usage/tutorials/ocr_pipelines/table_recognition_v2.html)**: **Provides better table recognition capabilities.** By combining table classification module, table cell detection module, table structure recognition module, text detection module, text recognition module, etc., it achieves prediction of various styles of tables. Users can customize and finetune any module to improve the effect of vertical tables.
      - **[PP-ChatOCRv4-doc Pipeline](https://paddlepaddle.github.io/PaddleX/latest/en/pipeline_usage/tutorials/information_extraction_pipelines/document_scene_information_extraction_v4.html)**: Based on PP-ChatOCRv3-doc, **integrating multi-modal large models, optimizing Prompt and multi-model combination post-processing logic. It effectively addresses common complex document information extraction challenges such as layout analysis, rare characters, multi-page PDFs, tables, and seal recognition, achieving 15 percentage points higher accuracy than PP-ChatOCRv3-doc. The large model upgrades local deployment capabilities, providing a standard OpenAI interface, supporting calls to locally deployed large models like DeepSeek-R1.**
 
-#### **🔥 2024.10.18 release PaddleOCR v2.9, including**:
+#### **2024.10.18 release PaddleOCR v2.9, including**:
   * PaddleX, an All-in-One development tool based on PaddleOCR's advanced technology, supports low-code full-process development capabilities in the OCR field:
      * 🎨 [**Rich Model One-Click Call**](https://paddlepaddle.github.io/PaddleOCR/latest/en/paddlex/quick_start.html): Integrates **17 models** related to text image intelligent analysis, general OCR, general layout parsing, table recognition, formula recognition, and seal recognition into 6 pipelines, which can be quickly experienced through a simple **Python API one-click call**. In addition, the same set of APIs also supports a total of **200+ models** in image classification, object detection, image segmentation, and time series forecasting, forming 20+ single-function modules, making it convenient for developers to use **model combinations**.
 

@@ -44,6 +44,20 @@ PaddleOCR 3.0は、優れたモデルライブラリを提供するだけでな�
 
 ## 📣 最近のアップデート
 
+#### **2025.06.29：PaddleOCR 3.1.0 をリリース**、内容は以下の通りです：
+
+- **主なモデルとパイプライン：**
+  - **PP-OCRv5 多言語テキスト認識モデルを追加**、フランス語、スペイン語、ポルトガル語、ロシア語、韓国語など 37 言語に対応。**平均精度が 30%以上向上。** [詳細](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/algorithm/PP-OCRv5/PP-OCRv5_multi_languages.html)
+  - PP-StructureV3 の **PP-Chart2Table モデル**をアップグレードし、グラフから表への変換能力をさらに強化。社内カスタム評価セットでは、指標（RMS-F1）が **9.36 ポイント向上（71.24% → 80.60%）。**
+  - PP-StructureV3 および ERNIE 4.5 Turbo に基づく**ドキュメント翻訳パイプライン PP-DocTranslation**を新たに追加。Markdown 形式ドキュメント、さまざまな複雑レイアウトの PDF ドキュメント、ドキュメント画像の翻訳に対応し、結果を Markdown 形式で保存可能。[詳細](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/pipeline_usage/PP-DocTranslation.html)
+
+- **新しい MCP サーバー：**[Details](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/mcp_server.html)
+  - **OCR と PP-StructureV3 パイプラインの両方をサポートします。**
+  - ローカル Python ライブラリ、AIStudio コミュニティクラウドサービス、セルフホストサービスの3つの動作モードをサポートします。
+  - stdio を介してローカルサービスを呼び出し、Streamable HTTP を介してリモートサービスを呼び出すことができます。
+
+- **ドキュメント最適化：** 一部のユーザーガイドの説明を改善し、よりスムーズな読書体験を提供。
+
 #### 🔥🔥**2025.06.26: PaddleOCR 3.0.3のリリース、以下の内容を含みます：**
 
 - バグ修正：`enable_mkldnn`パラメータが機能しない問題を修正し、CPUがデフォルトでMKL-DNN推論を使用する動作を復元しました。

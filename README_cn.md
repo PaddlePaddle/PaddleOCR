@@ -39,10 +39,25 @@ PaddleOCR 3.0除了提供优秀的模型库外，还提供好学易用的工具�
 
 ## 📣 最新动态
 
+
+🔥🔥2025.06.29: **PaddleOCR 3.1.0** 发布，新增能力如下：
+
+- **重要模型和产线：**
+  - **新增 PP-OCRv5 多语种文本识别模型**，支持法语、西班牙语、葡萄牙语、俄语、韩语等 37 种语言的文字识别模型的训推流程。**平均精度涨幅超30%。**[详情](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/algorithm/PP-OCRv5/PP-OCRv5_multi_languages.html)
+  - 升级 PP-StructureV3 中的 **PP-Chart2Table 模型**，图表转表能力进一步升级，在内部自建测评集合上指标（RMS-F1）**提升 9.36 个百分点（71.24% -> 80.60%）。**
+  - 新增基于 PP-StructureV3 和 ERNIE 4.5 Turbo 的**文档翻译产线 PP-DocTranslation，支持翻译 Markdown 格式文档、各种复杂版式的 PDF 文档和文档图像，结果保存为 Markdown 格式文档。**[详情](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/pipeline_usage/PP-DocTranslation.html)
+
+- **新增MCP server：**[详情](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/deployment/mcp_server.html)
+  - **支持 OCR 和 PP-StructureV3 两种工具；**
+  - 支持本地Python库、星河社区云服务、自托管服务三种工作模式；
+  - 支持通过 stdio 调用本地服务，通过 Streamable HTTP 调用远程服务。
+
+- **文档优化：** 优化了部分使用文档描述，提升阅读体验。
+
 2025.06.26: **PaddleOCR 3.0.3** 发布，包含：
 - Bug修复：修复`enable_mkldnn`参数不生效的问题，恢复CPU默认使用MKL-DNN推理的行为。
 
-🔥🔥2025.06.19: **PaddleOCR 3.0.2** 发布，包含：
+2025.06.19: **PaddleOCR 3.0.2** 发布，包含：
 
 - **功能新增：**
   - 模型默认下载源从`BOS`改为`HuggingFace`，同时也支持用户通过更改环境变量`PADDLE_PDX_MODEL_SOURCE`为`BOS`，将模型下载源设置为百度云对象存储BOS。
@@ -77,7 +92,7 @@ PaddleOCR 3.0除了提供优秀的模型库外，还提供好学易用的工具�
 <details>
     <summary><strong>历史日志</strong></summary>
 
-🔥🔥2025.06.05: **PaddleOCR 3.0.1** 发布，包含：
+2025.06.05: **PaddleOCR 3.0.1** 发布，包含：
 
 - **优化部分模型和模型配置：**
   - 更新 PP-OCRv5默认模型配置，检测和识别均由mobile改为server模型。为了改善大多数的场景默认效果，配置中的参数`limit_side_len`由736改为64
