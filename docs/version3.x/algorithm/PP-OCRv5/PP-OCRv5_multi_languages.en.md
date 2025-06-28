@@ -86,7 +86,7 @@ For more details on the `PaddleOCR` class parameters, refer to the [Python scrip
 
  **Notes:**
  - Korean Dataset: PP-OCRv5's latest dataset containing 5,007 Korean text images.
- - Latin Script Languages Dataset: PP-OCRv5's latest dataset containing 556 French, 1,071 Spanish, 502 German, 545 Italian, and 449 Portuguese text images.
+ - Latin Script Languages Dataset: The latest PP-OCRv5 recognition dataset, containing 3,111 text images in Latin script languages.
  - East Slavic Languages Dataset: PP-OCRv5's latest dataset containing a total of 7,031 Russian, Belarusian, and Ukrainian text images.
 
 ## 4. Supported Languages and Abbreviations

@@ -78,19 +78,19 @@ for res in result:
     res.save_to_img("output")
     res.save_to_json("output")
 ```
-更过关于 `PaddleOCR` 类参数的说明参考通用 OCR 产线的[脚本方式集成](../../pipeline_usage/OCR.md#22-python脚本方式集成)
+更过关于 `PaddleOCR` 类参数的说明参考通用 OCR 产线的[脚本方式集成](../../pipeline_usage/OCR.md#22-python脚本方式集成)。
 
 
 ## 三、指标对比
 
-| 模型 |韩语数据集 精度 (%)|  | 模型 | 拉丁字母语言数据集 精度 (%)|  | 模型| 东斯拉夫语言数据集 精度 |
+| 模型 |韩语数据集 精度 (%)|  | 模型 | 拉丁字母语言数据集 精度 (%)|  | 模型| 东斯拉夫语言数据集 精度 (%) |
 |--|--|--|--|--|--|--|--|
 | korean_PP-OCRv5_mobile_rec  | 88.0  |  | latin_PP-OCRv5_mobile_rec   | 84.7  |  | eslav_PP-OCRv5_mobile_rec   | 85.8  |
 | korean_PP-OCRv3_mobile_rec  | 23.0  |  | latin_PP-OCRv3_mobile_rec   | 37.9  |  | cyrillic_PP-OCRv3_mobile_rec| 50.2  |
 
  **注：**
  - 韩语数据集：PP-OCRv5 最新构建的包含了 5007 张韩语文本图片的识别数据集。
- - 拉丁字母语言数据集：PP-OCRv5 最新构建的包含了 556 张法语、1071 张西班牙语、 502张德语、545 张意大利语和449张葡萄牙语文本图片的识别数据集。
+ - 拉丁字母语言数据集：PP-OCRv5 最新构建的包含了 3111 张拉丁字母语言的文本图片识别数据集。
  - 东斯拉夫语言数据集：PP-OCRv5 最新构建的包含了俄语、 白俄罗斯语和乌克兰语共计 7031 张文本图片的识别数据集。
 
 ## 四、 支持语种及缩写
