@@ -391,7 +391,7 @@ class PaddleOCR(PaddleXPipelineWrapper):
         if ppocr_version is None:
             if (
                 lang
-                in ["ch", "chinese_cht", "en", "japan", "korean", "ja", "ko"]
+                in ["ch", "chinese_cht", "en", "japan", "korean"]
                 + LATIN_LANGS
                 + ESLAV_LANGS
             ):
@@ -410,13 +410,13 @@ class PaddleOCR(PaddleXPipelineWrapper):
 
         if ppocr_version == "PP-OCRv5":
             rec_lang, rec_model_name = None, None
-            if lang in ("ch", "chinese_cht", "en", "japan", "ja"):
+            if lang in ("ch", "chinese_cht", "en", "japan"):
                 rec_model_name = "PP-OCRv5_server_rec"
             elif lang in LATIN_LANGS:
                 rec_lang = "latin"
             elif lang in ESLAV_LANGS:
                 rec_lang = "eslav"
-            elif lang in ("korean", "ko"):
+            elif lang == "korean":
                 rec_lang = "korean"
 
             if rec_lang is not None:
