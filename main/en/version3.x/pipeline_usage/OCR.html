@@ -1858,6 +1858,8 @@ You're not viewing the latest version.
       
         
       
+        
+      
     
     
     
@@ -2022,6 +2024,29 @@ You're not viewing the latest version.
   
   <span class="md-ellipsis">
     General Table Recognition v2 Pipeline
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="PP-DocTranslation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    PP-DocTranslation产线
     
   </span>
   
@@ -4050,26 +4075,26 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
-<td>Whether to load and use the document orientation classification module. If not set, the pipeline's initialized value for this parameter (initialized to <code>True</code>) will be used.</td>
+<td>Whether to load and use the document orientation classification module. If not set, the pipeline's initialized value for this parameter (defaults to <code>True</code>) will be used.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
-<td>Whether to load and use the text image unwarping module. If not set, the pipeline's initialized value for this parameter (initialized to <code>True</code>) will be used.</td>
+<td>Whether to load and use the text image unwarping module. If not set, the pipeline's initialized value for this parameter (defaults to <code>True</code>) will be used.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_textline_orientation</code></td>
-<td>Whether to load and use the text line orientation module. If not set, the pipeline's initialized value for this parameter (initialized to <code>True</code>) will be used.</td>
+<td>Whether to load and use the text line orientation module. If not set, the pipeline's initialized value for this parameter (defaults to <code>True</code>) will be used.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>text_det_limit_side_len</code></td>
 <td>Image side length limitation for text detection.
-Any integer greater than <code>0</code>. If not set, the pipeline's initialized value for this parameter (initialized to <code>64</code>) will be used.
+Any integer greater than <code>0</code>. If not set, the pipeline's initialized value for this parameter (defaults to <code>64</code>) will be used.
 </td>
 <td><code>int</code></td>
 <td></td>
@@ -4077,14 +4102,14 @@ Any integer greater than <code>0</code>. If not set, the pipeline's initialized 
 <tr>
 <td><code>text_det_limit_type</code></td>
 <td>Type of side length limit for text detection.
-Supports <code>min</code> and <code>max</code>. <code>min</code> means ensuring the shortest side of the image is not smaller than <code>det_limit_side_len</code>, and <code>max</code> means ensuring the longest side of the image is not larger than <code>limit_side_len</code>. If not set, the pipeline's initialized value for this parameter (initialized to <code>min</code>) will be used.
+Supports <code>min</code> and <code>max</code>. <code>min</code> means ensuring the shortest side of the image is not smaller than <code>det_limit_side_len</code>, and <code>max</code> means ensuring the longest side of the image is not larger than <code>limit_side_len</code>. If not set, the pipeline's initialized value for this parameter (defaults to <code>min</code>) will be used.
 </td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>text_det_thresh</code></td>
-<td>Pixel threshold for text detection. In the output probability map, pixels with scores higher than this threshold will be considered text pixels.Any floating-point number greater than <code>0</code>. If not set, the pipeline's initialized value for this parameter (<code>0.3</code>) will be used.
+<td>Pixel threshold for text detection. In the output probability map, pixels with scores higher than this threshold will be considered text pixels.Any floating-point number greater than <code>0</code>. If not set, the pipeline's initialized value for this parameter (defaults to <code>0.3</code>) will be used.
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -4092,7 +4117,7 @@ Supports <code>min</code> and <code>max</code>. <code>min</code> means ensuring 
 <tr>
 <td><code>text_det_box_thresh</code></td>
 <td>Text detection box threshold. If the average score of all pixels within the detected result boundary is higher than this threshold, the result will be considered a text region.
-Any floating-point number greater than <code>0</code>. If not set, the pipeline's initialized value for this parameter (<code>0.6</code>) will be used.
+Any floating-point number greater than <code>0</code>. If not set, the pipeline's initialized value for this parameter (defaults to <code>0.6</code>) will be used.
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -4100,7 +4125,7 @@ Any floating-point number greater than <code>0</code>. If not set, the pipeline'
 <tr>
 <td><code>text_det_unclip_ratio</code></td>
 <td>Text detection expansion coefficient. This method is used to expand the text region—the larger the value, the larger the expanded area.
-Any floating-point number greater than <code>0</code>. If not set, the pipeline's initialized value for this parameter (<code>2.0</code>) will be used.
+Any floating-point number greater than <code>0</code>. If not set, the pipeline's initialized value for this parameter (defaults to <code>2.0</code>) will be used.
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -4114,7 +4139,7 @@ Any floating-point number greater than <code>0</code>. If not set, the pipeline'
 <tr>
 <td><code>text_rec_score_thresh</code></td>
 <td>Text recognition threshold. Text results with scores higher than this threshold will be retained.Any floating-point number greater than <code>0</code>
-. If not set, the pipeline's initialized value for this parameter (<code>0.0</code>, i.e., no threshold) will be used.
+. If not set, the pipeline's initialized value for this parameter (defaults to <code>0.0</code>, i.e., no threshold) will be used.
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -4418,19 +4443,19 @@ MKL-DNN cache capacity.
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
-<td>Whether to load and use the document orientation classification module. If set to <code>None</code>, the pipeline's initialized value for this parameter (initialized to <code>True</code>) will be used.</td>
+<td>Whether to load and use the document orientation classification module. If set to <code>None</code>, the pipeline's initialized value for this parameter (defaults to <code>True</code>) will be used.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
-<td>Whether to load and use the text image unwarping module. If set to <code>None</code>, the pipeline's initialized value for this parameter (initialized to <code>True</code>) will be used.</td>
+<td>Whether to load and use the text image unwarping module. If set to <code>None</code>, the pipeline's initialized value for this parameter (defaults to <code>True</code>) will be used.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_textline_orientation</code></td>
-<td>Whether to load and use the text line orientation module. If set to <code>None</code>, the pipeline's initialized value for this parameter (initialized to <code>True</code>) will be used.</td>
+<td>Whether to load and use the text line orientation module. If set to <code>None</code>, the pipeline's initialized value for this parameter (defaults to <code>True</code>) will be used.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -4439,7 +4464,7 @@ MKL-DNN cache capacity.
 <td>Image side length limitation for text detection.
  <ul>
  <li><b>int</b>: Any integer greater than <code>0</code>;</li>
- <li><b>None</b>: If set to <code>None</code>, the pipeline's initialized value for this parameter (initialized to <code>64</code>) will be used.</li>
+ <li><b>None</b>: If set to <code>None</code>, the pipeline's initialized value for this parameter (defaults to <code>64</code>) will be used.</li>
  </ul>
  </td>
 <td><code>int|None</code></td>
@@ -4450,7 +4475,7 @@ MKL-DNN cache capacity.
 <td>Type of side length limit for text detection.
  <ul>
  <li><b>str</b>: Supports <code>min</code> and <code>max</code>, where <code>min</code> means ensuring the shortest side of the image is not smaller than <code>det_limit_side_len</code>, and <code>max</code> means ensuring the longest side of the image is not larger than <code>limit_side_len</code>;</li>
- <li><b>None</b>: If set to <code>None</code>, the pipeline's initialized value for this parameter (initialized to <code>min</code>) will be used.</li>
+ <li><b>None</b>: If set to <code>None</code>, the pipeline's initialized value for this parameter (defaults to <code>min</code>) will be used.</li>
  </ul>
  </td>
 <td><code>str|None</code></td>
@@ -4461,7 +4486,7 @@ MKL-DNN cache capacity.
 <td>Pixel threshold for text detection. Pixels with scores higher than this threshold in the output probability map will be considered text pixels.
  <ul>
  <li><b>float</b>: Any floating-point number greater than <code>0</code>;
-<li><b>None</b>: If set to <code>None</code>, the pipeline's initialized value for this parameter (<code>0.3</code>) will be used.</li></li></ul>
+<li><b>None</b>: If set to <code>None</code>, the pipeline's initialized value for this parameter (defaults to <code>0.3</code>) will be used.</li></li></ul>
  </td>
 <td><code>float|None</code></td>
 <td><code>None</code></td>
@@ -4471,7 +4496,7 @@ MKL-DNN cache capacity.
 <td>Box threshold for text detection. A detection result will be considered a text region if the average score of all pixels within the bounding box is higher than this threshold.
  <ul>
  <li><b>float</b>: Any floating-point number greater than <code>0</code>;
- <li><b>None</b>: If set to <code>None</code>, the pipeline's initialized value for this parameter (<code>0.6</code>) will be used.</li></li></ul>
+ <li><b>None</b>: If set to <code>None</code>, the pipeline's initialized value for this parameter (defaults to <code>0.6</code>) will be used.</li></li></ul>
  </td>
 <td><code>float|None</code></td>
 <td><code>None</code></td>
@@ -4481,7 +4506,7 @@ MKL-DNN cache capacity.
 <td>Dilation coefficient for text detection. This method is used to dilate the text region, and the larger this value, the larger the dilated area.
  <ul>
  <li><b>float</b>: Any floating-point number greater than <code>0</code>;
-<li><b>None</b>: If set to <code>None</code>, the pipeline's initialized value for this parameter (<code>2.0</code>) will be used.</li></li></ul>
+<li><b>None</b>: If set to <code>None</code>, the pipeline's initialized value for this parameter (defaults to <code>2.0</code>) will be used.</li></li></ul>
  </td>
 <td><code>float|None</code></td>
 <td><code>None</code></td>
@@ -4497,7 +4522,7 @@ MKL-DNN cache capacity.
 <td>Recognition score threshold for text. Text results with scores higher than this threshold will be retained.
  <ul>
 <li><b>float</b>: Any floating-point number greater than <code>0</code>;
-    <li><b>None</b>: If set to <code>None</code>, the pipeline's initialized value for this parameter (<code>0.0</code>, i.e., no threshold) will be used.</li></li></ul>
+    <li><b>None</b>: If set to <code>None</code>, the pipeline's initialized value for this parameter (defaults to <code>0.0</code>, i.e., no threshold) will be used.</li></li></ul>
 </td>
 <td><code>float|None</code></td>
 <td><code>None</code></td>
@@ -4915,26 +4940,6 @@ MKL-DNN cache capacity.
 <td>No</td>
 </tr>
 <tr>
-<td><code>visualize</code></td>
-<td><code>boolean</code> | <code>null</code></td>
-<td>
-Whether to return the final visualization image and intermediate images during the processing.<br/>
-<ul style="margin: 0 0 0 1em; padding-left: 0em;">
-<li>If <code>true</code> is provided: return images.</li>
-<li>If <code>false</code> is provided: do not return any images.</li>
-<li>If this parameter is omitted from the request body, or if <code>null</code> is explicitly passed, the behavior will follow the value of <code>Serving.visualize</code> in the pipeline configuration.</li>
-</ul>
-<br/>
-For example, adding the following setting to the pipeline config file:<br/>
-<pre><code>Serving:
-  visualize: False
-</code></pre>
-will disable image return by default. This behavior can be overridden by explicitly setting the <code>visualize</code> parameter in the request.<br/>
-If neither the request body nor the configuration file is set (If <code>visualize</code> is set to <code>null</code> in the request and  not defined in the configuration file), the image is returned by default.
-</td>
-<td>No</td>
-</tr>
-<tr>
 <td><code>useDocOrientationClassify</code></td>
 <td><code>boolean</code> | <code>null</code></td>
 <td>Refer to the <code>use_doc_orientation_classify</code> parameter in the pipeline object's <code>predict</code> method.</td>
@@ -4987,6 +4992,26 @@ If neither the request body nor the configuration file is set (If <code>visualiz
 <td><code>textRecScoreThresh</code></td>
 <td><code>number</code> | <code>null</code></td>
 <td>Refer to the <code>text_rec_score_thresh</code> parameter in the pipeline object's <code>predict</code> method.</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>visualize</code></td>
+<td><code>boolean</code> | <code>null</code></td>
+<td>
+Whether to return the final visualization image and intermediate images during the processing.<br/>
+<ul style="margin: 0 0 0 1em; padding-left: 0em;">
+<li>If <code>true</code> is provided: return images.</li>
+<li>If <code>false</code> is provided: do not return any images.</li>
+<li>If this parameter is omitted from the request body, or if <code>null</code> is explicitly passed, the behavior will follow the value of <code>Serving.visualize</code> in the pipeline configuration.</li>
+</ul>
+<br/>
+For example, adding the following setting to the pipeline config file:<br/>
+<pre><code>Serving:
+  visualize: False
+</code></pre>
+will disable image return by default. This behavior can be overridden by explicitly setting the <code>visualize</code> parameter in the request.<br/>
+If neither the request body nor the configuration file is set (If <code>visualize</code> is set to <code>null</code> in the request and  not defined in the configuration file), the image is returned by default.
+</td>
 <td>No</td>
 </tr>
 </tbody>
@@ -5721,7 +5746,7 @@ foreach ($result as $i => $item) {
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="June 28, 2025 15:12:44 UTC">June 28, 2025</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="June 28, 2025 15:13:32 UTC">June 28, 2025</span>
   </span>
 
     
@@ -5731,7 +5756,7 @@ foreach ($result as $i => $item) {
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="June 28, 2025 15:12:44 UTC">June 28, 2025</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="June 28, 2025 15:13:32 UTC">June 28, 2025</span>
   </span>
 
     

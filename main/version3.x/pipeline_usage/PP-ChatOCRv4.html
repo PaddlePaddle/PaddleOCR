@@ -1825,6 +1825,8 @@ You're not viewing the latest version.
       
         
       
+        
+      
     
     
     
@@ -1989,6 +1991,29 @@ You're not viewing the latest version.
   
   <span class="md-ellipsis">
     通用表格识别v2产线
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="PP-DocTranslation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    PP-DocTranslation产线
     
   </span>
   
@@ -4151,7 +4176,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://padd
 </tr>
 <tr>
 <td><code>invoke_mllm</code></td>
-<td>是否加载并使用多模态大模型。如果不设置，将默认使用产线初始化的该参数值，初始化为<code>False</code>。</td>
+<td>是否加载并使用多模态大模型。如果不设置，将使用产线初始化的该参数值，默认初始化为<code>False</code>。</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
@@ -4265,13 +4290,13 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://padd
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
-<td>是否加载并使用文档方向分类模块。如果不设置，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用文档方向分类模块。如果不设置，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
-<td>是否加载并使用文本图像矫正模块。如果不设置，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用文本图像矫正模块。如果不设置，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
@@ -4283,33 +4308,33 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://padd
 </tr>
 <tr>
 <td><code>use_seal_recognition</code></td>
-<td>是否加载并使用印章文本识别子产线。如果不设置，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用印章文本识别子产线。如果不设置，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_table_recognition</code></td>
-<td>是否加载并使用表格识别子产线。如果不设置，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用表格识别子产线。如果不设置，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>layout_threshold</code></td>
 <td>版面模型得分阈值。
-<code>0-1</code> 之间的任意浮点数。如果不设置，将默认使用产线初始化的该参数值，初始化为 <code>0.5</code>。
+<code>0-1</code> 之间的任意浮点数。如果不设置，将使用产线初始化的该参数值，默认初始化为 <code>0.5</code>。
 </td>
 <td><code>float</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>layout_nms</code></td>
-<td>版面检测是否使用后处理NMS。如果不设置，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>版面检测是否使用后处理NMS。如果不设置，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>layout_unclip_ratio</code></td>
-<td>版面区域检测模型检测框的扩张系数。任意大于 <code>0</code>  浮点数。如果不设置，将默认使用产线初始化的该参数值，初始化为 <code>1.0</code>。
+<td>版面区域检测模型检测框的扩张系数。任意大于 <code>0</code>  浮点数。如果不设置，将使用产线初始化的该参数值，默认初始化为 <code>1.0</code>。
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -4321,14 +4346,14 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://padd
 <li><b>large</b>，设置为large时，表示在模型输出的检测框中，对于互相重叠包含的检测框，只保留外部最大的框，删除重叠的内部框；</li>
 <li><b>small</b>，设置为small，表示在模型输出的检测框中，对于互相重叠包含的检测框，只保留内部被包含的小框，删除重叠的外部框；</li>
 <li><b>union</b>，不进行框的过滤处理，内外框都保留；</li>
-</ul>如果不设置，将默认使用产线初始化的该参数值，初始化为<code>large</code>。
+</ul>如果不设置，将使用产线初始化的该参数值，默认初始化为<code>large</code>。
 </td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>text_det_limit_side_len</code></td>
-<td>文本检测的图像边长限制。大于 <code>0</code> 的任意整数。如果不设置，将默认使用产线初始化的该参数值，初始化为 <code>960</code>。
+<td>文本检测的图像边长限制。大于 <code>0</code> 的任意整数。如果不设置，将使用产线初始化的该参数值，默认初始化为 <code>960</code>。
 </td>
 <td><code>int</code></td>
 <td></td>
@@ -4336,7 +4361,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://padd
 <tr>
 <td><code>text_det_limit_type</code></td>
 <td>文本检测的边长度限制类型。支持 <code>min</code> 和 <code>max</code>，<code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>，<code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code></li>
-</ul>如果不设置，将默认使用产线初始化的该参数值，初始化为 <code>max</code>。
+</ul>如果不设置，将使用产线初始化的该参数值，默认初始化为 <code>max</code>。
 </td>
 <td><code>str</code></td>
 <td></td>
@@ -4372,14 +4397,14 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://padd
 </tr>
 <tr>
 <td><code>seal_det_limit_side_len</code></td>
-<td>印章文本检测的图像边长限制。大于 <code>0</code> 的任意整数。如果不设置，将默认使用产线初始化的该参数值，初始化为 <code>736</code>。
+<td>印章文本检测的图像边长限制。大于 <code>0</code> 的任意整数。如果不设置，将使用产线初始化的该参数值，默认初始化为 <code>736</code>。
 </td>
 <td><code>int</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>seal_det_limit_type</code></td>
-<td>印章文本检测的图像边长限制类型。支持 <code>min</code> 和 <code>max</code>，<code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>，<code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code>。如果不设置，将默认使用产线初始化的该参数值，初始化为 <code>min</code>。
+<td>印章文本检测的图像边长限制类型。支持 <code>min</code> 和 <code>max</code>，<code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>，<code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code>。如果不设置，将使用产线初始化的该参数值，默认初始化为 <code>min</code>。
 </td>
 <td><code>str</code></td>
 <td></td>
@@ -4401,7 +4426,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://padd
 <tr>
 <td><code>seal_det_unclip_ratio</code></td>
 <td>印章文本检测扩张系数，使用该方法对文字区域进行扩张，该值越大，扩张的面积越大。大于 <code>0</code> 的任意浮点数
-。如果不设置，将默认使用产线初始化的该参数值 <code>0.5</code>。
+。如果不设置，将使用产线初始化的该参数值，默认为 <code>0.5</code>。
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -4409,7 +4434,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://padd
 <tr>
 <td><code>seal_rec_score_thresh</code></td>
 <td>印章文本识别阈值，得分大于该阈值的文本结果会被保留。大于 <code>0</code> 的任意浮点数
-。如果不设置，将默认使用产线初始化的该参数值 <code>0.0</code>。即不设阈值。
+。如果不设置，将使用产线初始化的该参数值，默认为<code>0.0</code>，即不设阈值。
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -4563,7 +4588,7 @@ MKL-DNN 缓存容量。
 <div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>{&#39;chat_res&#39;: {&#39;驾驶室准乘人数&#39;: &#39;2&#39;}}
 </span></code></pre></div>
 <p>PP-ChatOCRv4 预测的流程、API说明、产出说明如下：</p>
-<details><summary>（1）调用 <code>PPChatOCRv4Doc</code> 方法实例化PP-ChatOCRv4产线对象。</summary>
+<details><summary>（1）调用 <code>PPChatOCRv4Doc</code> 实例化PP-ChatOCRv4产线对象。</summary>
 
 相关参数说明如下：
 
@@ -4687,31 +4712,31 @@ MKL-DNN 缓存容量。
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
-<td>是否加载并使用文档方向分类模块。如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用文档方向分类模块。如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
-<td>是否加载并使用文本图像矫正模块。如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用文本图像矫正模块。如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_textline_orientation</code></td>
-<td>是否加载并使用文本行方向分类模块. 如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用文本行方向分类模块. 如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_seal_recognition</code></td>
-<td>是否加载并使用印章文本识别子产线。如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用印章文本识别子产线。如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_table_recognition</code></td>
-<td>是否加载并使用表格识别子产线。如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>是否加载并使用表格识别子产线。如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -4721,7 +4746,7 @@ MKL-DNN 缓存容量。
 <ul>
 <li><b>float</b>：<code>0-1</code> 之间的任意浮点数；</li>
 <li><b>dict</b>： <code>{0:0.1}</code> key为类别ID，value为该类别的阈值；</li>
-<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为 <code>0.5</code>。</li>
+<li><b>None</b>：如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为 <code>0.5</code>。</li>
 </ul>
 </td>
 <td><code>float|dict|None</code></td>
@@ -4729,7 +4754,7 @@ MKL-DNN 缓存容量。
 </tr>
 <tr>
 <td><code>layout_nms</code></td>
-<td>版面检测是否使用后处理NMS。如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>
+<td>版面检测是否使用后处理NMS。如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -4740,7 +4765,7 @@ MKL-DNN 缓存容量。
 <li><b>float</b>：任意大于 <code>0</code>  浮点数；</li>
 <li><b>Tuple[float,float]</b>：在横纵两个方向各自的扩张系数；</li>
 <li><b>dict</b>，dict的key为<b>int</b>类型，代表<code>cls_id</code>，value为<b>tuple</b>类型，如<code>{0: (1.1，2.0)}</code>，表示将模型输出的第0类别检测框中心不变，宽度扩张1.1倍，高度扩张2.0倍</li>
-<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为 <code>1.0</code>。</li>
+<li><b>None</b>：如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为 <code>1.0</code>。</li>
 </ul>
 </td>
 <td><code>float|Tuple[float,float]|dict|None</code></td>
@@ -4752,7 +4777,7 @@ MKL-DNN 缓存容量。
 <ul>
 <li><b>str</b>：<code>large</code>，<code>small</code>，<code>union</code>，分别表示重叠框过滤时选择保留大框，小框还是同时保留；</li>
 <li><b>dict</b>，dict的key为<b>int</b>类型，代表<code>cls_id</code>，value为<b>str</b>类型，如<code>{0: "large"，2: "small"}</code>，表示对第0类别检测框使用large模式，对第2类别检测框使用small模式；</li>
-<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为 <code>large</code>。</li>
+<li><b>None</b>：如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为 <code>large</code>。</li>
 </ul>
 </td>
 <td><code>str|dict|None</code></td>
@@ -4763,7 +4788,7 @@ MKL-DNN 缓存容量。
 <td>文本检测的图像边长限制。
 <ul>
 <li><b>int</b>：大于 <code>0</code> 的任意整数；</li>
-<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为 <code>960</code>。</li>
+<li><b>None</b>：如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为 <code>960</code>。</li>
 </ul>
 </td>
 <td><code>int|None</code></td>
@@ -4774,7 +4799,7 @@ MKL-DNN 缓存容量。
 <td>文本检测的边长度限制类型。
 <ul>
 <li><b>str</b>：支持 <code>min</code> 和 <code>max</code>，<code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>，<code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code>；</li>
-<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为 <code>max</code>。</li>
+<li><b>None</b>：如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为 <code>max</code>。</li>
 </ul>
 </td>
 <td><code>str|None</code></td>
@@ -4785,7 +4810,7 @@ MKL-DNN 缓存容量。
 <td>检测像素阈值，输出的概率图中，得分大于该阈值的像素点才会被认为是文字像素点。
 <ul>
 <li><b>float</b>：大于<code>0</code>的任意浮点数；
-<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值 <code>0.3</code>。</li></li></ul>
+<li><b>None</b>：如果设置为<code>None</code>，将使用产线初始化的该参数值，默认为<code>0.3</code>。</li></li></ul>
 </td>
 <td><code>float|None</code></td>
 <td><code>None</code></td>
@@ -4795,7 +4820,7 @@ MKL-DNN 缓存容量。
 <td>检测框阈值，检测结果边框内，所有像素点的平均得分大于该阈值时，该结果会被认为是文字区域。
 <ul>
 <li><b>float</b>：大于<code>0</code>的任意浮点数；
-<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值 <code>0.6</code>。</li></li></ul>
+<li><b>None</b>：如果设置为<code>None</code>，将使用产线初始化的该参数值，默认为<code>0.6</code>。</li></li></ul>
 </td>
 <td><code>float|None</code></td>
 <td><code>None</code></td>
@@ -4805,7 +4830,7 @@ MKL-DNN 缓存容量。
 <td>文本检测扩张系数，使用该方法对文字区域进行扩张，该值越大，扩张的面积越大。
 <ul>
 <li><b>float</b>：大于<code>0</code>的任意浮点数；
-<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值 <code>2.0</code>；</li></li></ul>
+<li><b>None</b>：如果设置为<code>None</code>，将使用产线初始化的该参数值，默认为<code>2.0</code>。</li></li></ul>
 </td>
 <td><code>float|None</code></td>
 <td><code>None</code></td>
@@ -4815,7 +4840,7 @@ MKL-DNN 缓存容量。
 <td>文本识别阈值，得分大于该阈值的文本结果会被保留。
 <ul>
 <li><b>float</b>：大于<code>0</code>的任意浮点数；
-<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值 <code>0.0</code>，即不设阈值。</li></li></ul>
+<li><b>None</b>：如果设置为<code>None</code>，将使用产线初始化的该参数值，默认为<code>0.0</code>，即不设阈值。</li></li></ul>
 </td>
 <td><code>float|None</code></td>
 <td><code>None</code></td>
@@ -4825,7 +4850,7 @@ MKL-DNN 缓存容量。
 <td>印章文本检测的图像边长限制。
 <ul>
 <li><b>int</b>：大于<code>0</code>的任意整数；</li>
-<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为 <code>736</code>。</li>
+<li><b>None</b>：如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为 <code>736</code>。</li>
 </ul>
 </td>
 <td><code>int|None</code></td>
@@ -4836,7 +4861,7 @@ MKL-DNN 缓存容量。
 <td>印章文本检测的图像边长限制类型。
 <ul>
 <li><b>str</b>：支持 <code>min</code> 和 <code>max</code>，<code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>，<code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code>；</li>
-<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化为 <code>min</code>。</li>
+<li><b>None</b>：如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为 <code>min</code>。</li>
 </ul>
 </td>
 <td><code>str|None</code></td>
@@ -4847,7 +4872,7 @@ MKL-DNN 缓存容量。
 <td>检测像素阈值，输出的概率图中，得分大于该阈值的像素点才会被认为是文字像素点。
 <ul>
 <li><b>float</b>：大于<code>0</code>的任意浮点数；
-<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值 <code>0.2</code>。</li></li></ul>
+<li><b>None</b>：如果设置为<code>None</code>，将使用产线初始化的该参数值，默认为<code>0.2</code>。</li></li></ul>
 </td>
 <td><code>float|None</code></td>
 <td><code>None</code></td>
@@ -4857,7 +4882,7 @@ MKL-DNN 缓存容量。
 <td>检测框阈值，检测结果边框内，所有像素点的平均得分大于该阈值时，该结果会被认为是文字区域。
 <ul>
 <li><b>float</b>：大于<code>0</code>的任意浮点数；
-<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值 <code>0.6</code>。</li></li></ul>
+<li><b>None</b>：如果设置为<code>None</code>，将使用产线初始化的该参数值，默认为<code>0.6</code>。</li></li></ul>
 </td>
 <td><code>float|None</code></td>
 <td><code>None</code></td>
@@ -4867,7 +4892,7 @@ MKL-DNN 缓存容量。
 <td>印章文本检测扩张系数，使用该方法对文字区域进行扩张，该值越大，扩张的面积越大。
 <ul>
 <li><b>float</b>：大于<code>0</code>的任意浮点数；
-<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值 <code>0.5</code>。</li></li></ul>
+<li><b>None</b>：如果设置为<code>None</code>，将使用产线初始化的该参数值，默认为<code>0.5</code>。</li></li></ul>
 </td>
 <td><code>float|None</code></td>
 <td><code>None</code></td>
@@ -4877,7 +4902,7 @@ MKL-DNN 缓存容量。
 <td>印章文本识别阈值，得分大于该阈值的文本结果会被保留。
 <ul>
 <li><b>float</b>：大于<code>0</code>的任意浮点数；
-<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值 <code>0.0</code>，即不设阈值。</li></li></ul>
+<li><b>None</b>：如果设置为<code>None</code>，将使用产线初始化的该参数值，默认为<code>0.0</code>，即不设阈值。</li></li></ul>
 </td>
 <td><code>float|None</code></td>
 <td><code>None</code></td>
@@ -5670,23 +5695,6 @@ MKL-DNN 缓存容量。
 <td>否</td>
 </tr>
 <tr>
-<td><code>visualize</code></td>
-<td><code>boolean</code> | <code>null</code></td>
-<td>是否返回可视化结果图以及处理过程中的中间图像等。
-<ul style="margin: 0 0 0 1em; padding-left: 0em;">
-<li>传入 <code>true</code>：返回图像。</li>
-<li>传入 <code>false</code>：不返回图像。</li>
-<li>若请求体中未提供该参数或传入 <code>null</code>：遵循产线配置文件<code>Serving.visualize</code> 的设置。</li>
-</ul>
-<br/>例如，在产线配置文件中添加如下字段：<br/>
-<pre><code>Serving:
-  visualize: False
-</code></pre>
-将默认不返回图像，通过请求体中的<code>visualize</code>参数可以覆盖默认行为。如果请求体和配置文件中均未设置（或请求体传入<code>null</code>、配置文件中未设置），则默认返回图像。
-</td>
-<td>否</td>
-</tr>
-<tr>
 <td><code>useDocOrientationClassify</code></td>
 <td><code>boolean</code> | <code>null</code></td>
 <td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>use_doc_orientation_classify</code> 参数相关说明。</td>
@@ -5806,6 +5814,23 @@ MKL-DNN 缓存容量。
 <td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>seal_rec_score_thresh</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
+<tr>
+<td><code>visualize</code></td>
+<td><code>boolean</code> | <code>null</code></td>
+<td>是否返回可视化结果图以及处理过程中的中间图像等。
+<ul style="margin: 0 0 0 1em; padding-left: 0em;">
+<li>传入 <code>true</code>：返回图像。</li>
+<li>传入 <code>false</code>：不返回图像。</li>
+<li>若请求体中未提供该参数或传入 <code>null</code>：遵循产线配置文件<code>Serving.visualize</code> 的设置。</li>
+</ul>
+<br/>例如，在产线配置文件中添加如下字段：<br/>
+<pre><code>Serving:
+  visualize: False
+</code></pre>
+将默认不返回图像，通过请求体中的<code>visualize</code>参数可以覆盖默认行为。如果请求体和配置文件中均未设置（或请求体传入<code>null</code>、配置文件中未设置），则默认返回图像。
+</td>
+<td>否</td>
+</tr>
 </tbody>
 </table>
 <ul>
@@ -5850,7 +5875,7 @@ MKL-DNN 缓存容量。
 <tr>
 <td><code>prunedResult</code></td>
 <td><code>object</code></td>
-<td>产线对象的 <code>visual_predict</code> 方法生成结果的 JSON 表示中 <code>res</code> 字段的简化版本，其中去除了 <code>input_path</code> 和 <code>page_index</code> 字段。</td>
+<td>产线对象的 <code>visual_predict</code> 方法生成的 <code>layout_parsing_result</code> 的 JSON 表示中 <code>res</code> 字段的简化版本，其中去除了 <code>input_path</code> 和 <code>page_index</code> 字段。</td>
 </tr>
 <tr>
 <td><code>outputImages</code></td>
@@ -5890,13 +5915,13 @@ MKL-DNN 缓存容量。
 </tr>
 <tr>
 <td><code>minCharacters</code></td>
-<td><code>integer</code> | <code>null</code></td>
-<td>启用向量数据库的最小数据长度。</td>
+<td><code>integer</code></td>
+<td>请参阅产线对象中 <code>build_vector</code> 方法的 <code>min_characters</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>blockSize</code></td>
-<td><code>int</code> | <code>null</code></td>
+<td><code>integer</code></td>
 <td>请参阅产线对象中 <code>build_vector</code> 方法的 <code>block_size</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
@@ -5947,7 +5972,7 @@ MKL-DNN 缓存容量。
 <tbody>
 <tr>
 <td><code>image</code></td>
-<td><code>string</code></code></td>
+<td><code>string</code></td>
 <td>服务器可访问的图像文件的URL或图像文件内容的Base64编码结果。</td>
 <td>是</td>
 </tr>
@@ -6016,7 +6041,7 @@ MKL-DNN 缓存容量。
 </tr>
 <tr>
 <td><code>useVectorRetrieval</code></td>
-<td><code>boolean</code> | <code>null</code></td>
+<td><code>boolean</code></td>
 <td>请参阅产线对象中 <code>chat</code> 方法的 <code>use_vector_retrieval</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
@@ -6029,7 +6054,7 @@ MKL-DNN 缓存容量。
 <tr>
 <td><code>minCharacters</code></td>
 <td><code>integer</code></td>
-<td>启用向量数据库的最小数据长度</td>
+<td>请参阅产线对象中 <code>chat</code> 方法的 <code>min_characters</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
@@ -6100,7 +6125,7 @@ MKL-DNN 缓存容量。
 </tr>
 <tr>
 <td><code>mllmIntegrationStrategy</code></td>
-<td><code>string</code> | <code>null</code></td>
+<td><code>string</code></td>
 <td>请参阅产线对象中 <code>chat</code> 方法的 <code>mllm_integration_strategy</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
@@ -6157,7 +6182,7 @@ import sys
 import requests
 
 
-API_BASE_URL = "http://0.0.0.0:8080"
+API_BASE_URL = "http://127.0.0.1:8080"
 
 image_path = "./demo.jpg"
 keys = ["姓名"]
@@ -6911,10 +6936,10 @@ function send_post_raw($url, $data) {
 <li>获取产线配置文件</li>
 </ol>
 <p>可调用 PaddleOCR 中 PPChatOCRv4 产线对象的 <code>export_paddlex_config_to_yaml</code> 方法，将当前产线配置导出为 YAML 文件：</p>
-<div class="language-Python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddleocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">PPChatOCRv4</span>
+<div class="language-Python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddleocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">PPChatOCRv4Doc</span>
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="n">pipeline</span> <span class="o">=</span> <span class="n">PPChatOCRv4</span><span class="p">()</span>
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="n">pipeline</span><span class="o">.</span><span class="n">export_paddlex_config_to_yaml</span><span class="p">(</span><span class="s2">&quot;PP-ChatOCRv4.yaml&quot;</span><span class="p">)</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="n">pipeline</span> <span class="o">=</span> <span class="n">PPChatOCRv4Doc</span><span class="p">()</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="n">pipeline</span><span class="o">.</span><span class="n">export_paddlex_config_to_yaml</span><span class="p">(</span><span class="s2">&quot;PP-ChatOCRv4-doc.yaml&quot;</span><span class="p">)</span>
 </span></code></pre></div>
 <ol>
 <li>修改配置文件</li>
@@ -6944,16 +6969,16 @@ function send_post_raw($url, $data) {
 <ol>
 <li>在 CLI 中加载产线配置文件</li>
 </ol>
-<p>在修改完成配置文件后，通过命令行的 --paddlex_config 参数指定修改后的产线配置文件的路径，PaddleOCR 会读取其中的内容作为产线配置。示例如下：</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>paddleocr<span class="w"> </span>pp_chatocrv4_doc<span class="w"> </span>--paddlex_config<span class="w"> </span>PP-ChatOCRv4.yaml<span class="w"> </span>...
+<p>在修改完成配置文件后，通过命令行的 <code>--paddlex_config</code> 参数指定修改后的产线配置文件的路径，PaddleOCR 会读取其中的内容作为产线配置。示例如下：</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>paddleocr<span class="w"> </span>pp_chatocrv4_doc<span class="w"> </span>--paddlex_config<span class="w"> </span>PP-ChatOCRv4-doc.yaml<span class="w"> </span>...
 </span></code></pre></div>
 <ol>
 <li>在 Python API 中加载产线配置文件</li>
 </ol>
-<p>初始化产线对象时，可通过 paddlex_config 参数传入 PaddleX 产线配置文件路径或配置dict，PaddleOCR 会读取其中的内容作为产线配置。示例如下：</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddleocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">PPChatOCRv4</span>
+<p>初始化产线对象时，可通过 <code>paddlex_config</code> 参数传入 PaddleX 产线配置文件路径或配置dict，PaddleOCR 会读取其中的内容作为产线配置。示例如下：</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddleocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">PPChatOCRv4Doc</span>
 </span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>
-</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="n">pipeline</span> <span class="o">=</span> <span class="n">PPChatOCRv4</span><span class="p">(</span><span class="n">paddlex_config</span><span class="o">=</span><span class="s2">&quot;PP-ChatOCRv4.yaml&quot;</span><span class="p">)</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="n">pipeline</span> <span class="o">=</span> <span class="n">PPChatOCRv4Doc</span><span class="p">(</span><span class="n">paddlex_config</span><span class="o">=</span><span class="s2">&quot;PP-ChatOCRv4-doc.yaml&quot;</span><span class="p">)</span>
 </span></code></pre></div>
 
 
@@ -6977,7 +7002,7 @@ function send_post_raw($url, $data) {
     <span class="md-icon" title="最后更新">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年6月28日 15:12:44 UTC">2025年6月28日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年6月28日 15:13:32 UTC">2025年6月28日</span>
   </span>
 
     
@@ -6987,7 +7012,7 @@ function send_post_raw($url, $data) {
     <span class="md-icon" title="创建日期">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年6月28日 15:12:44 UTC">2025年6月28日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年6月28日 15:13:32 UTC">2025年6月28日</span>
   </span>
 
     

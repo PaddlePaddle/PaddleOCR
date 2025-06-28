@@ -1,0 +1,6460 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Awesome multilingual OCR toolkits based on PaddlePaddle (practical ultra lightweight OCR system, support 80+ languages recognition, provide data annotation and synthesis tools, support training and deployment among server, mobile, embedded and IoT devices)">
+      
+      
+        <meta name="author" content="PaddleOCR PMC">
+      
+      
+        <link rel="canonical" href="https://paddlepaddle.github.io/PaddleOCR/main/version3.x/pipeline_usage/PP-DocTranslation.html">
+      
+      
+        <link rel="prev" href="table_recognition_v2.html">
+      
+      
+        <link rel="next" href="../other_devices_support/multi_devices_use_guide.html">
+      
+      
+      <link rel="icon" href="../../version2.x/static/images/logo.jpg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.14">
+    
+    
+      
+        <title>PP-DocTranslation产线 - PaddleOCR 文档</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.342714a4.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+  
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+  
+  <style>:root{--md-admonition-icon--note:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M1%207.775V2.75C1%201.784%201.784%201%202.75%201h5.025c.464%200%20.91.184%201.238.513l6.25%206.25a1.75%201.75%200%200%201%200%202.474l-5.026%205.026a1.75%201.75%200%200%201-2.474%200l-6.25-6.25A1.75%201.75%200%200%201%201%207.775m1.5%200c0%20.066.026.13.073.177l6.25%206.25a.25.25%200%200%200%20.354%200l5.025-5.025a.25.25%200%200%200%200-.354l-6.25-6.25a.25.25%200%200%200-.177-.073H2.75a.25.25%200%200%200-.25.25ZM6%205a1%201%200%201%201%200%202%201%201%200%200%201%200-2%22/%3E%3C/svg%3E');--md-admonition-icon--abstract:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M2.5%201.75v11.5c0%20.138.112.25.25.25h3.17a.75.75%200%200%201%200%201.5H2.75A1.75%201.75%200%200%201%201%2013.25V1.75C1%20.784%201.784%200%202.75%200h8.5C12.216%200%2013%20.784%2013%201.75v7.736a.75.75%200%200%201-1.5%200V1.75a.25.25%200%200%200-.25-.25h-8.5a.25.25%200%200%200-.25.25m13.274%209.537zl-4.557%204.45a.75.75%200%200%201-1.055-.008l-1.943-1.95a.75.75%200%200%201%201.062-1.058l1.419%201.425%204.026-3.932a.75.75%200%201%201%201.048%201.074M4.75%204h4.5a.75.75%200%200%201%200%201.5h-4.5a.75.75%200%200%201%200-1.5M4%207.75A.75.75%200%200%201%204.75%207h2a.75.75%200%200%201%200%201.5h-2A.75.75%200%200%201%204%207.75%22/%3E%3C/svg%3E');--md-admonition-icon--info:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M0%208a8%208%200%201%201%2016%200A8%208%200%200%201%200%208m8-6.5a6.5%206.5%200%201%200%200%2013%206.5%206.5%200%200%200%200-13M6.5%207.75A.75.75%200%200%201%207.25%207h1a.75.75%200%200%201%20.75.75v2.75h.25a.75.75%200%200%201%200%201.5h-2a.75.75%200%200%201%200-1.5h.25v-2h-.25a.75.75%200%200%201-.75-.75M8%206a1%201%200%201%201%200-2%201%201%200%200%201%200%202%22/%3E%3C/svg%3E');--md-admonition-icon--tip:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M3.499.75a.75.75%200%200%201%201.5%200v.996C5.9%202.903%206.793%203.65%207.662%204.376l.24.202c-.036-.694.055-1.422.426-2.163C9.1.873%2010.794-.045%2012.622.26%2014.408.558%2016%201.94%2016%204.25c0%201.278-.954%202.575-2.44%202.734l.146.508.065.22c.203.701.412%201.455.476%202.226.142%201.707-.4%203.03-1.487%203.898C11.714%2014.671%2010.27%2015%208.75%2015h-6a.75.75%200%200%201%200-1.5h1.376a4.5%204.5%200%200%201-.563-1.191%203.84%203.84%200%200%201-.05-2.063%204.65%204.65%200%200%201-2.025-.293.75.75%200%200%201%20.525-1.406c1.357.507%202.376-.006%202.698-.318l.009-.01a.747.747%200%200%201%201.06%200%20.75.75%200%200%201-.012%201.074c-.912.92-.992%201.835-.768%202.586.221.74.745%201.337%201.196%201.621H8.75c1.343%200%202.398-.296%203.074-.836.635-.507%201.036-1.31.928-2.602-.05-.603-.216-1.224-.422-1.93l-.064-.221c-.12-.407-.246-.84-.353-1.29a2.4%202.4%200%200%201-.507-.441%203.1%203.1%200%200%201-.633-1.248.75.75%200%200%201%201.455-.364c.046.185.144.436.31.627.146.168.353.305.712.305.738%200%201.25-.615%201.25-1.25%200-1.47-.95-2.315-2.123-2.51-1.172-.196-2.227.387-2.706%201.345-.46.92-.27%201.774.019%203.062l.042.19.01.05c.348.443.666.949.94%201.553a.75.75%200%201%201-1.365.62c-.553-1.217-1.32-1.94-2.3-2.768L6.7%205.527c-.814-.68-1.75-1.462-2.692-2.619a3.7%203.7%200%200%200-1.023.88c-.406.495-.663%201.036-.722%201.508.116.122.306.21.591.239.388.038.797-.06%201.032-.19a.75.75%200%200%201%20.728%201.31c-.515.287-1.23.439-1.906.373-.682-.067-1.473-.38-1.879-1.193L.75%205.677V5.5c0-.984.48-1.94%201.077-2.664.46-.559%201.05-1.055%201.673-1.353z%22/%3E%3C/svg%3E');--md-admonition-icon--success:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M13.78%204.22a.75.75%200%200%201%200%201.06l-7.25%207.25a.75.75%200%200%201-1.06%200L2.22%209.28a.75.75%200%200%201%20.018-1.042.75.75%200%200%201%201.042-.018L6%2010.94l6.72-6.72a.75.75%200%200%201%201.06%200%22/%3E%3C/svg%3E');--md-admonition-icon--question:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M0%208a8%208%200%201%201%2016%200A8%208%200%200%201%200%208m8-6.5a6.5%206.5%200%201%200%200%2013%206.5%206.5%200%200%200%200-13M6.92%206.085h.001a.749.749%200%201%201-1.342-.67c.169-.339.436-.701.849-.977C6.845%204.16%207.369%204%208%204a2.76%202.76%200%200%201%201.637.525c.503.377.863.965.863%201.725%200%20.448-.115.83-.329%201.15-.205.307-.47.513-.692.662-.109.072-.22.138-.313.195l-.006.004a6%206%200%200%200-.26.16%201%201%200%200%200-.276.245.75.75%200%200%201-1.248-.832c.184-.264.42-.489.692-.661q.154-.1.313-.195l.007-.004c.1-.061.182-.11.258-.161a1%201%200%200%200%20.277-.245C8.96%206.514%209%206.427%209%206.25a.61.61%200%200%200-.262-.525A1.27%201.27%200%200%200%208%205.5c-.369%200-.595.09-.74.187a1%201%200%200%200-.34.398M9%2011a1%201%200%201%201-2%200%201%201%200%200%201%202%200%22/%3E%3C/svg%3E');--md-admonition-icon--warning:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M6.457%201.047c.659-1.234%202.427-1.234%203.086%200l6.082%2011.378A1.75%201.75%200%200%201%2014.082%2015H1.918a1.75%201.75%200%200%201-1.543-2.575Zm1.763.707a.25.25%200%200%200-.44%200L1.698%2013.132a.25.25%200%200%200%20.22.368h12.164a.25.25%200%200%200%20.22-.368Zm.53%203.996v2.5a.75.75%200%200%201-1.5%200v-2.5a.75.75%200%200%201%201.5%200M9%2011a1%201%200%201%201-2%200%201%201%200%200%201%202%200%22/%3E%3C/svg%3E');--md-admonition-icon--failure:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M2.344%202.343za8%208%200%200%201%2011.314%2011.314A8.002%208.002%200%200%201%20.234%2010.089a8%208%200%200%201%202.11-7.746m1.06%2010.253a6.5%206.5%200%201%200%209.108-9.275%206.5%206.5%200%200%200-9.108%209.275M6.03%204.97%208%206.94l1.97-1.97a.749.749%200%200%201%201.275.326.75.75%200%200%201-.215.734L9.06%208l1.97%201.97a.749.749%200%200%201-.326%201.275.75.75%200%200%201-.734-.215L8%209.06l-1.97%201.97a.749.749%200%200%201-1.275-.326.75.75%200%200%201%20.215-.734L6.94%208%204.97%206.03a.75.75%200%200%201%20.018-1.042.75.75%200%200%201%201.042-.018%22/%3E%3C/svg%3E');--md-admonition-icon--danger:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M9.504.43a1.516%201.516%200%200%201%202.437%201.713L10.415%205.5h2.123c1.57%200%202.346%201.909%201.22%203.004l-7.34%207.142a1.25%201.25%200%200%201-.871.354h-.302a1.25%201.25%200%200%201-1.157-1.723L5.633%2010.5H3.462c-1.57%200-2.346-1.909-1.22-3.004zm1.047%201.074L3.286%208.571A.25.25%200%200%200%203.462%209H6.75a.75.75%200%200%201%20.694%201.034l-1.713%204.188%206.982-6.793A.25.25%200%200%200%2012.538%207H9.25a.75.75%200%200%201-.683-1.06l2.008-4.418.003-.006-.004-.009-.006-.006-.008-.001q-.005%200-.009.004%22/%3E%3C/svg%3E');--md-admonition-icon--bug:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M4.72.22a.75.75%200%200%201%201.06%200l1%20.999a3.5%203.5%200%200%201%202.441%200l.999-1a.748.748%200%200%201%201.265.332.75.75%200%200%201-.205.729l-.775.776c.616.63.995%201.493.995%202.444v.327q0%20.15-.025.292c.408.14.764.392%201.029.722l1.968-.787a.75.75%200%200%201%20.556%201.392L13%207.258V9h2.25a.75.75%200%200%201%200%201.5H13v.5q-.002.615-.141%201.186l2.17.868a.75.75%200%200%201-.557%201.392l-2.184-.873A5%205%200%200%201%208%2016a5%205%200%200%201-4.288-2.427l-2.183.873a.75.75%200%200%201-.558-1.392l2.17-.868A5%205%200%200%201%203%2011v-.5H.75a.75.75%200%200%201%200-1.5H3V7.258L.971%206.446a.75.75%200%200%201%20.558-1.392l1.967.787c.265-.33.62-.583%201.03-.722a1.7%201.7%200%200%201-.026-.292V4.5c0-.951.38-1.814.995-2.444L4.72%201.28a.75.75%200%200%201%200-1.06m.53%206.28a.75.75%200%200%200-.75.75V11a3.5%203.5%200%201%200%207%200V7.25a.75.75%200%200%200-.75-.75ZM6.173%205h3.654A.17.17%200%200%200%2010%204.827V4.5a2%202%200%201%200-4%200v.327c0%20.096.077.173.173.173%22/%3E%3C/svg%3E');--md-admonition-icon--example:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M5%205.782V2.5h-.25a.75.75%200%200%201%200-1.5h6.5a.75.75%200%200%201%200%201.5H11v3.282l3.666%205.76C15.619%2013.04%2014.543%2015%2012.767%2015H3.233c-1.776%200-2.852-1.96-1.899-3.458Zm-2.4%206.565a.75.75%200%200%200%20.633%201.153h9.534a.75.75%200%200%200%20.633-1.153L12.225%2010.5h-8.45ZM9.5%202.5h-3V6c0%20.143-.04.283-.117.403L4.73%209h6.54L9.617%206.403A.75.75%200%200%201%209.5%206Z%22/%3E%3C/svg%3E');--md-admonition-icon--quote:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M1.75%202.5h10.5a.75.75%200%200%201%200%201.5H1.75a.75.75%200%200%201%200-1.5m4%205h8.5a.75.75%200%200%201%200%201.5h-8.5a.75.75%200%200%201%200-1.5m0%205h8.5a.75.75%200%200%201%200%201.5h-8.5a.75.75%200%200%201%200-1.5M2.5%207.75v6a.75.75%200%200%201-1.5%200v-6a.75.75%200%200%201%201.5%200%22/%3E%3C/svg%3E');}</style>
+
+
+
+  
+  
+    
+    
+      
+    
+    
+  
+    
+    
+      
+    
+    
+  
+    
+    
+      
+    
+    
+  
+  
+  <style>:root{.md-tag.md-tag--default-tag{--md-tag-icon:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20448%20512%22%3E%3C%21--%21%20Font%20Awesome%20Free%206.7.2%20by%20%40fontawesome%20-%20https%3A//fontawesome.com%20License%20-%20https%3A//fontawesome.com/license/free%20%28Icons%3A%20CC%20BY%204.0%2C%20Fonts%3A%20SIL%20OFL%201.1%2C%20Code%3A%20MIT%20License%29%20Copyright%202024%20Fonticons%2C%20Inc.--%3E%3Cpath%20d%3D%22M0%2080v149.5c0%2017%206.7%2033.3%2018.7%2045.3l176%20176c25%2025%2065.5%2025%2090.5%200l133.5-133.5c25-25%2025-65.5%200-90.5l-176-176c-12-12-28.3-18.7-45.3-18.7L48%2032C21.5%2032%200%2053.5%200%2080m112%2032a32%2032%200%201%201%200%2064%2032%2032%200%201%201%200-64%22/%3E%3C/svg%3E');}.md-tag.md-tag--hardware-tag{--md-tag-icon:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20512%20512%22%3E%3C%21--%21%20Font%20Awesome%20Free%206.7.2%20by%20%40fontawesome%20-%20https%3A//fontawesome.com%20License%20-%20https%3A//fontawesome.com/license/free%20%28Icons%3A%20CC%20BY%204.0%2C%20Fonts%3A%20SIL%20OFL%201.1%2C%20Code%3A%20MIT%20License%29%20Copyright%202024%20Fonticons%2C%20Inc.--%3E%3Cpath%20d%3D%22M176%2024c0-13.3-10.7-24-24-24s-24%2010.7-24%2024v40c-35.3%200-64%2028.7-64%2064H24c-13.3%200-24%2010.7-24%2024s10.7%2024%2024%2024h40v56H24c-13.3%200-24%2010.7-24%2024s10.7%2024%2024%2024h40v56H24c-13.3%200-24%2010.7-24%2024s10.7%2024%2024%2024h40c0%2035.3%2028.7%2064%2064%2064v40c0%2013.3%2010.7%2024%2024%2024s24-10.7%2024-24v-40h56v40c0%2013.3%2010.7%2024%2024%2024s24-10.7%2024-24v-40h56v40c0%2013.3%2010.7%2024%2024%2024s24-10.7%2024-24v-40c35.3%200%2064-28.7%2064-64h40c13.3%200%2024-10.7%2024-24s-10.7-24-24-24h-40v-56h40c13.3%200%2024-10.7%2024-24s-10.7-24-24-24h-40v-56h40c13.3%200%2024-10.7%2024-24s-10.7-24-24-24h-40c0-35.3-28.7-64-64-64V24c0-13.3-10.7-24-24-24s-24%2010.7-24%2024v40h-56V24c0-13.3-10.7-24-24-24s-24%2010.7-24%2024v40h-56zm-16%20104h192c17.7%200%2032%2014.3%2032%2032v192c0%2017.7-14.3%2032-32%2032H160c-17.7%200-32-14.3-32-32V160c0-17.7%2014.3-32%2032-32m192%2032H160v192h192z%22/%3E%3C/svg%3E');}.md-tag.md-tag--software-tag{--md-tag-icon:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20640%20512%22%3E%3C%21--%21%20Font%20Awesome%20Free%206.7.2%20by%20%40fontawesome%20-%20https%3A//fontawesome.com%20License%20-%20https%3A//fontawesome.com/license/free%20%28Icons%3A%20CC%20BY%204.0%2C%20Fonts%3A%20SIL%20OFL%201.1%2C%20Code%3A%20MIT%20License%29%20Copyright%202024%20Fonticons%2C%20Inc.--%3E%3Cpath%20d%3D%22M64%2096c0-35.3%2028.7-64%2064-64h384c35.3%200%2064%2028.7%2064%2064v256h-64V96H128v256H64zM0%20403.2C0%20392.6%208.6%20384%2019.2%20384h601.6c10.6%200%2019.2%208.6%2019.2%2019.2%200%2042.4-34.4%2076.8-76.8%2076.8H76.8C34.4%20480%200%20445.6%200%20403.2M281%20209l-31%2031%2031%2031c9.4%209.4%209.4%2024.6%200%2033.9s-24.6%209.4-33.9%200l-48-48c-9.4-9.4-9.4-24.6%200-33.9l48-48c9.4-9.4%2024.6-9.4%2033.9%200s9.4%2024.6%200%2033.9zm112-34%2048%2048c9.4%209.4%209.4%2024.6%200%2033.9l-48%2048c-9.4%209.4-24.6%209.4-33.9%200s-9.4-24.6%200-33.9l31-31-31-31c-9.4-9.4-9.4-24.6%200-33.9s24.6-9.4%2033.9%200z%22/%3E%3C/svg%3E');}}</style>
+
+    
+    
+      
+        <script src="https://unpkg.com/iframe-worker/shim"></script>
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="https://unpkg.com/katex@0/dist/katex.min.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#pp-doctranslation" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+          <aside class="md-banner md-banner--warning">
+            <div class="md-banner__inner md-grid md-typeset">
+              
+You're not viewing the latest version.
+<a href="../../..">
+    <strong>Click here to go to latest.</strong>
+</a>
+
+            </div>
+            <script>var el=document.querySelector("[data-md-component=outdated]"),base=new URL("../.."),outdated=__md_get("__outdated",sessionStorage,base);!0===outdated&&el&&(el.hidden=!1)</script>
+          </aside>
+        
+      </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../../index.html" title="PaddleOCR 文档" class="md-header__button md-logo" aria-label="PaddleOCR 文档" data-md-component="logo">
+      
+  <img src="../../version2.x/static/images/logo.jpg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            PaddleOCR 文档
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              PP-DocTranslation产线
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="indigo"  aria-label="Switch to system preference"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to system preference" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="选择当前语言">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="PP-DocTranslation.html" hreflang="zh" class="md-select__link">
+              简体中文
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../../en/version3.x/pipeline_usage/PP-DocTranslation.html" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256l137.3-137.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="分享" aria-label="分享" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/PaddlePaddle/PaddleOCR" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    PaddlePaddle/PaddleOCR
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../index.html" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../quick_start.html" class="md-tabs__link">
+        
+  
+  
+    
+  
+  快速开始
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="OCR.html" class="md-tabs__link">
+          
+  
+  
+    
+  
+  PP-OCRv5
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="PP-StructureV3.html" class="md-tabs__link">
+          
+  
+  
+    
+  
+  PP-StructureV3
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="PP-ChatOCRv4.html" class="md-tabs__link">
+          
+  
+  
+    
+  
+  PP-ChatOCRv4
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../deployment/high_performance_inference.html" class="md-tabs__link">
+          
+  
+  
+    
+  
+  推理部署
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../module_usage/module_overview.html" class="md-tabs__link">
+          
+  
+  
+    
+  
+  模块列表
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="pipeline_overview.html" class="md-tabs__link">
+          
+  
+  
+    
+  
+  产线列表
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../other_devices_support/multi_devices_use_guide.html" class="md-tabs__link">
+          
+  
+  
+    
+  
+  多硬件使用
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../paddleocr_and_paddlex.html" class="md-tabs__link">
+          
+  
+  
+    
+  
+  其他说明
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../paddlex/overview.html" class="md-tabs__link">
+          
+  
+  
+    
+  
+  低代码全流程开发
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../data_anno_synth/overview.html" class="md-tabs__link">
+          
+  
+  
+    
+  
+  数据标注与合成&数据集
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../update/update.html" class="md-tabs__link">
+        
+  
+  
+    
+  
+  近期更新
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../version2.x/legacy/index.html" class="md-tabs__link">
+          
+  
+  
+    
+  
+  version2.x
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../FAQ.html" class="md-tabs__link">
+        
+  
+  
+    
+  
+  FAQ
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../community/community_contribution.html" class="md-tabs__link">
+          
+  
+  
+    
+  
+  社区
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../index.html" title="PaddleOCR 文档" class="md-nav__button md-logo" aria-label="PaddleOCR 文档" data-md-component="logo">
+      
+  <img src="../../version2.x/static/images/logo.jpg" alt="logo">
+
+    </a>
+    PaddleOCR 文档
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/PaddlePaddle/PaddleOCR" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    PaddlePaddle/PaddleOCR
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../quick_start.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    快速开始
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    PP-OCRv5
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            PP-OCRv5
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="OCR.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    使用教程
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../algorithm/PP-OCRv5/PP-OCRv5.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    PP-OCRv5简介
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../algorithm/PP-OCRv5/PP-OCRv5_multi_languages.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    PP-OCRv5多语种文本识别简介
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    PP-StructureV3
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            PP-StructureV3
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="PP-StructureV3.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    使用教程
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../algorithm/PP-StructureV3/PP-StructureV3.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    PP-StructureV3简介
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    PP-ChatOCRv4
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            PP-ChatOCRv4
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="PP-ChatOCRv4.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    使用教程
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../algorithm/PP-ChatOCRv4/PP-ChatOCRv4.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    PP-ChatOCRv4简介
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    推理部署
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            推理部署
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deployment/high_performance_inference.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    高性能推理
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deployment/obtaining_onnx_models.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    获取ONNX模型
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deployment/on_device_deployment.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    端侧部署
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deployment/serving.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    服务化部署
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deployment/python_and_cpp_infer.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    基于Python或C++预测引擎推理
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deployment/mcp_server.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    MCP 服务器
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    模块列表
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            模块列表
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../module_usage/module_overview.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    模块概述
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../module_usage/doc_img_orientation_classification.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    文档图像方向分类模块
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../module_usage/doc_vlm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    文档类视觉语言模型模块
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../module_usage/formula_recognition.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    公式识别模块
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../module_usage/layout_detection.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    版面区域检测模块
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../module_usage/seal_text_detection.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    印章文本检测模块
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../module_usage/table_cells_detection.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    表格单元格检测模块
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../module_usage/table_classification.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    表格分类模块
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../module_usage/table_structure_recognition.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    表格结构识别模块
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../module_usage/text_detection.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    文本检测模块
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../module_usage/text_image_unwarping.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    文本图像矫正模块
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../module_usage/textline_orientation_classification.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    文本行方向分类模块
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../module_usage/text_recognition.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    文本识别模块
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    产线列表
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            产线列表
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="pipeline_overview.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    产线概述
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="formula_recognition.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    公式识别产线
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="doc_preprocessor.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    文档图像预处理产线
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="doc_understanding.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    文档理解产线
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="seal_recognition.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    印章文本识别产线
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="table_recognition_v2.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    通用表格识别v2产线
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    PP-DocTranslation产线
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="PP-DocTranslation.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    PP-DocTranslation产线
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-pp-doctranslation" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. PP-DocTranslation 产线介绍
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. 快速开始
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. 快速开始">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.1 命令行方式体验
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-python" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.2 Python脚本方式集成
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. 开发集成/部署
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. 二次开发
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. 二次开发">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.1 模型微调
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.2 模型应用
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    多硬件使用
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            多硬件使用
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../other_devices_support/multi_devices_use_guide.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    PaddleOCR 多硬件使用指南
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../other_devices_support/paddlepaddle_install_NPU.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    昇腾 NPU 飞桨安装教程
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../other_devices_support/paddlepaddle_install_XPU.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    昆仑 XPU 飞桨安装教程
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    其他说明
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            其他说明
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../paddleocr_and_paddlex.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    PaddleOCR 与 PaddleX
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../update/upgrade_notes.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    PaddleOCR 3.x 升级说明
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../logging.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    配置 PaddleOCR 推理包日志系统
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="instructions/parallel_inference.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    产线并行推理
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    低代码全流程开发
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            低代码全流程开发
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../paddlex/overview.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    概述
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../paddlex/quick_start.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    快速开始
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_12" >
+        
+          
+          <label class="md-nav__link" for="__nav_12" id="__nav_12_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    数据标注与合成&数据集
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12">
+            <span class="md-nav__icon md-icon"></span>
+            数据标注与合成&数据集
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data_anno_synth/overview.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    概述
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data_anno_synth/data_annotation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    其它数据标注工具
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data_anno_synth/data_synthesis.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    其它数据合成工具
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../datasets/datasets.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    通用中英文OCR数据集
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../datasets/handwritten_datasets.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    手写中文OCR数据集
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../datasets/vertical_and_multilingual_datasets.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    垂类多语言OCR数据集
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../datasets/layout_datasets.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    版面分析数据集
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../datasets/table_datasets.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    表格识别数据集
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../datasets/kie_datasets.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    关键信息提取数据集
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../update/update.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    近期更新
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_14" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../version2.x/legacy/index.html" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    version2.x
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_14" id="__nav_14_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_14_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_14">
+            <span class="md-nav__icon md-icon"></span>
+            version2.x
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../version2.x/legacy/model_list_2.x.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    模型列表
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../version2.x/legacy/python_infer.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    基于Python预测引擎推理
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../version2.x/legacy/cpp_infer.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    基于C++预测引擎推理
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../version2.x/legacy/windows_vs2019_build.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Visual Studio 2019 Community CMake 编译指南
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../version2.x/legacy/paddle_server.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    服务化部署
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../version2.x/legacy/android_demo.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Android部署
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../version2.x/legacy/lite.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    端侧部署
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../version2.x/legacy/paddle2onnx.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Paddle2ONNX模型转化与预测
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../version2.x/legacy/paddle_cloud.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    云上飞桨部署工具
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../version2.x/legacy/benchmark.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Benchmark
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../FAQ.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    FAQ
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_16" >
+        
+          
+          <label class="md-nav__link" for="__nav_16" id="__nav_16_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    社区
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_16_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_16">
+            <span class="md-nav__icon md-icon"></span>
+            社区
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../community/community_contribution.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    社区贡献
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../community/code_and_doc.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    附录
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-pp-doctranslation" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. PP-DocTranslation 产线介绍
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. 快速开始
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. 快速开始">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.1 命令行方式体验
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-python" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.2 Python脚本方式集成
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. 开发集成/部署
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. 二次开发
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. 二次开发">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.1 模型微调
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.2 模型应用
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/PaddlePaddle/PaddleOCR/edit/main/docs/version3.x/pipeline_usage/PP-DocTranslation.md" title="编辑此页" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75z"/></svg>
+    </a>
+  
+  
+    
+      
+    
+    <a href="https://github.com/PaddlePaddle/PaddleOCR/raw/main/docs/version3.x/pipeline_usage/PP-DocTranslation.md" title="查看本页的源代码" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0 8a5 5 0 0 1-5-5 5 5 0 0 1 5-5 5 5 0 0 1 5 5 5 5 0 0 1-5 5m0-12.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5"/></svg>
+    </a>
+  
+
+
+<h1 id="pp-doctranslation">PP-DocTranslation 产线使用教程<a class="headerlink" href="#pp-doctranslation" title="Permanent link">&para;</a></h1>
+<h2 id="1-pp-doctranslation">1. PP-DocTranslation 产线介绍<a class="headerlink" href="#1-pp-doctranslation" title="Permanent link">&para;</a></h2>
+<p>PP-DocTranslation 是飞桨提供的文档智能翻译解决方案，融合了先进的通用版面解析技术与大语言模型（LLM）能力，为您提供高效的文档智能翻译服务。该解决方案能够精准识别并提取文档中的各类元素，包括文本块、标题、段落、图片、表格及其他复杂版面结构，并在此基础之上实现高质量的多语种互译。PP-DocTranslation 支持多种主流语言间的相互翻译，尤其擅长处理排版复杂、上下文依赖性强的文档场景，力求输出精准自然、流畅专业的翻译结果。本产线同时提供了灵活的服务化部署方式，支持在多种硬件上使用多种编程语言调用。不仅如此，本产线也提供了二次开发的能力，您可以基于本产线在您自己的数据集上训练调优，训练后的模型也可以无缝集成。</p>
+<p><b>PP-DocTranslation 产线中使用了 PP-StructureV3 子产线，因此具有 PP-StructureV3 产线的所有功能，更多关于 PP-StructureV3 产线的功能介绍和使用细节，可以点击 <a href="PP-StructureV3.html">PP-StructureV3 产线文档</a> 页面查看</b>。</p>
+<p>在本产线中，您可以根据下方的基准测试数据选择使用的模型。</p>
+<details><summary> 👉模型列表详情</summary>
+<p><b>文档图像方向分类模块：</b></p>
+<table>
+<thead>
+<tr>
+<th>模型</th><th>模型下载链接</th>
+<th>Top-1 Acc（%）</th>
+<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
+<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
+<th>模型存储大小（M）</th>
+<th>介绍</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PP-LCNet_x1_0_doc_ori</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-LCNet_x1_0_doc_ori_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-LCNet_x1_0_doc_ori_pretrained.pdparams">训练模型</a></td>
+<td>99.06</td>
+<td>2.62 / 0.59</td>
+<td>3.24 / 1.19</td>
+<td>7</td>
+<td>基于PP-LCNet_x1_0的文档图像分类模型，含有四个类别，即0度，90度，180度，270度</td>
+</tr>
+</tbody>
+</table>
+<p><b>文本图像矫正模块：</b></p>
+<table>
+<thead>
+<tr>
+<th>模型</th><th>模型下载链接</th>
+<th>CER </th>
+<th>模型存储大小（M）</th>
+<th>介绍</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>UVDoc</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/UVDoc_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/UVDoc_pretrained.pdparams">训练模型</a></td>
+<td>0.179</td>
+<td>30.3 M</td>
+<td>高精度文本图像矫正模型</td>
+</tr>
+</tbody>
+</table>
+<p><b>版面区域检测模块模型：</b></p>
+<table>
+<thead>
+<tr>
+<th>模型</th><th>模型下载链接</th>
+<th>mAP(0.5)（%）</th>
+<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
+<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
+<th>模型存储大小（M）</th>
+<th>介绍</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PP-DocLayout_plus-L</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayout_plus-L_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocLayout_plus-L_pretrained.pdparams">训练模型</a></td>
+<td>83.2</td>
+<td>53.03 / 17.23</td>
+<td>634.62 / 378.32</td>
+<td>126.01 M</td>
+<td>基于RT-DETR-L在包含中英文论文、多栏杂志、报纸、PPT、合同、书本、试卷、研报、古籍、日文文档、竖版文字文档等场景的自建数据集训练的更高精度版面区域定位模型</td>
+</tr>
+<td>PP-DocLayout-L</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayout-L_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocLayout-L_pretrained.pdparams">训练模型</a></td>
+<td>90.4</td>
+<td>33.59 / 33.59</td>
+<td>503.01 / 251.08</td>
+<td>123.76 M</td>
+<td>基于RT-DETR-L在包含中英文论文、杂志、合同、书本、试卷和研报等场景的自建数据集训练的高精度版面区域定位模型</td>
+</tr>
+<tr>
+<td>PP-DocLayout-M</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayout-M_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocLayout-M_pretrained.pdparams">训练模型</a></td>
+<td>75.2</td>
+<td>13.03 / 4.72</td>
+<td>43.39 / 24.44</td>
+<td>22.578</td>
+<td>基于PicoDet-L在包含中英文论文、杂志、合同、书本、试卷和研报等场景的自建数据集训练的精度效率平衡的版面区域定位模型</td>
+</tr>
+<tr>
+<td>PP-DocLayout-S</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayout-S_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocLayout-S_pretrained.pdparams">训练模型</a></td>
+<td>70.9</td>
+<td>11.54 / 3.86</td>
+<td>18.53 / 6.29</td>
+<td>4.834</td>
+<td>基于PicoDet-S在中英文论文、杂志、合同、书本、试卷和研报等场景上自建数据集训练的高效率版面区域定位模型</td>
+</tr>
+</tbody>
+</table>
+<p><b>表格结构识别模块：</b></p>
+<table>
+<tr>
+<th>模型</th><th>模型下载链接</th>
+<th>精度（%）</th>
+<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
+<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
+<th>模型存储大小 (M)</th>
+<th>介绍</th>
+</tr>
+<tr>
+<td>SLANeXt_wired</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/SLANeXt_wired_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/SLANeXt_wired_pretrained.pdparams">训练模型</a></td>
+<td rowspan="2">69.65</td>
+<td rowspan="2">85.92 / 85.92</td>
+<td rowspan="2">- / 501.66</td>
+<td rowspan="2">351M</td>
+<td rowspan="2">SLANeXt 系列是百度飞桨视觉团队自研的新一代表格结构识别模型。相较于 SLANet 和 SLANet_plus，SLANeXt 专注于对表格结构进行识别，并且对有线表格(wired)和无线表格(wireless)的识别分别训练了专用的权重，对各类型表格的识别能力都得到了明显提高，特别是对有线表格的识别能力得到了大幅提升。</td>
+</tr>
+<tr>
+<td>SLANeXt_wireless</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/SLANeXt_wireless_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/SLANeXt_wireless_pretrained.pdparams">训练模型</a></td>
+</tr>
+</table>
+
+<p><b>表格分类模块模型：</b></p>
+<table>
+<tr>
+<th>模型</th><th>模型下载链接</th>
+<th>Top1 Acc(%)</th>
+<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
+<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
+<th>模型存储大小 (M)</th>
+</tr>
+<tr>
+<td>PP-LCNet_x1_0_table_cls</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/CLIP_vit_base_patch16_224_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-LCNet_x1_0_table_cls_pretrained.pdparams">训练模型</a></td>
+<td>94.2</td>
+<td>2.62 / 0.60</td>
+<td>3.17 / 1.14</td>
+<td>6.6M</td>
+</tr>
+</table>
+
+<p><b>表格单元格检测模块模型：</b></p>
+<table>
+<tr>
+<th>模型</th><th>模型下载链接</th>
+<th>mAP(%)</th>
+<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
+<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
+<th>模型存储大小 (M)</th>
+<th>介绍</th>
+</tr>
+<tr>
+<td>RT-DETR-L_wired_table_cell_det</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/RT-DETR-L_wired_table_cell_det_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/RT-DETR-L_wired_table_cell_det_pretrained.pdparams">训练模型</a></td>
+<td rowspan="2">82.7</td>
+<td rowspan="2">33.47 / 27.02</td>
+<td rowspan="2">402.55 / 256.56</td>
+<td rowspan="2">124M</td>
+<td rowspan="2">RT-DETR 是第一个实时的端到端目标检测模型。百度飞桨视觉团队基于 RT-DETR-L 作为基础模型，在自建表格单元格检测数据集上完成预训练，实现了对有线表格、无线表格均有较好性能的表格单元格检测。
+</td>
+</tr>
+<tr>
+<td>RT-DETR-L_wireless_table_cell_det</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/RT-DETR-L_wireless_table_cell_det_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/RT-DETR-L_wireless_table_cell_det_pretrained.pdparams">训练模型</a></td>
+</tr>
+</table>
+
+<p><b>文本检测模块：</b></p>
+<table>
+<thead>
+<tr>
+<th>模型</th><th>模型下载链接</th>
+<th>检测Hmean（%）</th>
+<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
+<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
+<th>模型存储大小（M)</th>
+<th>介绍</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PP-OCRv5_server_det</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv5_server_det_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_server_det_pretrained.pdparams">训练模型</a></td>
+<td>83.8</td>
+<td>89.55 / 70.19</td>
+<td>383.15 / 383.15</td>
+<td>84.3</td>
+<td>PP-OCRv5 的服务端文本检测模型，精度更高，适合在性能较好的服务器上部署</td>
+</tr>
+<tr>
+<td>PP-OCRv5_mobile_det</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv5_mobile_det_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_mobile_det_pretrained.pdparams">训练模型</a></td>
+<td>79.0</td>
+<td>10.67 / 6.36</td>
+<td>57.77 / 28.15</td>
+<td>4.7</td>
+<td>PP-OCRv5 的移动端文本检测模型，效率更高，适合在端侧设备部署</td>
+</tr>
+<tr>
+<td>PP-OCRv4_server_det</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_server_det_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_det_pretrained.pdparams">训练模型</a></td>
+<td>69.2</td>
+<td>127.82 / 98.87</td>
+<td>585.95 / 489.77</td>
+<td>109</td>
+<td>PP-OCRv4 的服务端文本检测模型，精度更高，适合在性能较好的服务器上部署</td>
+</tr>
+<tr>
+<td>PP-OCRv4_mobile_det</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_mobile_det_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_mobile_det_pretrained.pdparams">训练模型</a></td>
+<td>63.8</td>
+<td>9.87 / 4.17</td>
+<td>56.60 / 20.79</td>
+<td>4.7</td>
+<td>PP-OCRv4 的移动端文本检测模型，效率更高，适合在端侧设备部署</td>
+</tr>
+<tr>
+<td>PP-OCRv3_mobile_det</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv3_mobile_det_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv3_mobile_det_pretrained.pdparams">训练模型</a></td>
+<td>精度接近 PP-OCRv4_mobile_det</td>
+<td>9.90 / 3.60</td>
+<td>41.93 / 20.76</td>
+<td>2.1</td>
+<td>PP-OCRv3 的移动端文本检测模型，效率更高，适合在端侧设备部署</td>
+</tr>
+<tr>
+<td>PP-OCRv3_server_det</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv3_server_det_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv3_server_det_pretrained.pdparams">训练模型</a></td>
+<td>精度接近 PP-OCRv4_server_det</td>
+<td>119.50 / 75.00</td>
+<td>379.35 / 318.35</td>
+<td>102.1</td>
+<td>PP-OCRv3 的服务端文本检测模型，精度更高，适合在性能较好的服务器上部署</td>
+</tr>
+</tbody>
+</table>
+
+<p><b>文本识别模块模型：</b></p>
+
+* <b>中文识别模型</b>
+<table>
+<tr>
+<th>模型</th><th>模型下载链接</th>
+<th>识别 Avg Accuracy(%)</th>
+<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
+<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
+<th>模型存储大小（M）</th>
+<th>介绍</th>
+</tr>
+<tr>
+<td>PP-OCRv5_server_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+PP-OCRv5_server_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_server_rec_pretrained.pdparams">训练模型</a></td>
+<td>86.38</td>
+<td>8.46 / 2.36</td>
+<td>31.21 / 31.21</td>
+<td>81 M</td>
+<td rowspan="2">PP-OCRv5_rec 是新一代文本识别模型。该模型致力于以单一模型高效、精准地支持简体中文、繁体中文、英文、日文四种主要语言，以及手写、竖版、拼音、生僻字等复杂文本场景的识别。在保持识别效果的同时，兼顾推理速度和模型鲁棒性，为各种场景下的文档理解提供高效、精准的技术支撑。</td>
+</tr>
+<tr>
+<td>PP-OCRv5_mobile_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+PP-OCRv5_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_mobile_rec_pretrained.pdparams">训练模型</a></td>
+<td>81.29</td>
+<td>5.43 / 1.46</td>
+<td>21.20 / 5.32</td>
+<td>16 M</td>
+</tr>
+<tr>
+<td>PP-OCRv4_server_rec_doc</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+PP-OCRv4_server_rec_doc_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_rec_doc_pretrained.pdparams">训练模型</a></td>
+<td>86.58</td>
+<td>8.69 / 2.78</td>
+<td>37.93 / 37.93</td>
+<td>74.7 M</td>
+<td>PP-OCRv4_server_rec_doc是在PP-OCRv4_server_rec的基础上，在更多中文文档数据和PP-OCR训练数据的混合数据训练而成，增加了部分繁体字、日文、特殊字符的识别能力，可支持识别的字符为1.5万+，除文档相关的文字识别能力提升外，也同时提升了通用文字的识别能力</td>
+</tr>
+<tr>
+<td>PP-OCRv4_mobile_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_mobile_rec_pretrained.pdparams">训练模型</a></td>
+<td>78.74</td>
+<td>5.26 / 1.12</td>
+<td>17.48 / 3.61</td>
+<td>10.6 M</td>
+<td>PP-OCRv4的轻量级识别模型，推理效率高，可以部署在包含端侧设备的多种硬件设备中</td>
+</tr>
+<tr>
+<td>PP-OCRv4_server_rec </td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_server_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_rec_pretrained.pdparams">训练模型</a></td>
+<td>80.61 </td>
+<td>8.75 / 2.49</td>
+<td>36.93 / 36.93</td>
+<td>71.2 M</td>
+<td>PP-OCRv4的服务器端模型，推理精度高，可以部署在多种不同的服务器上</td>
+</tr>
+<tr>
+<td>PP-OCRv3_mobile_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv3_mobile_rec_pretrained.pdparams">训练模型</a></td>
+<td>72.96</td>
+<td>3.89 / 1.16</td>
+<td>8.72 / 3.56</td>
+<td>9.2 M</td>
+<td>PP-OCRv3的轻量级识别模型，推理效率高，可以部署在包含端侧设备的多种硬件设备中</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<th>模型</th><th>模型下载链接</th>
+<th>识别 Avg Accuracy(%)</th>
+<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
+<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
+<th>模型存储大小（M）</th>
+<th>介绍</th>
+</tr>
+<tr>
+<td>ch_SVTRv2_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/ch_SVTRv2_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/ch_SVTRv2_rec_pretrained.pdparams">训练模型</a></td>
+<td>68.81</td>
+<td>10.38 / 8.31</td>
+<td>66.52 / 30.83</td>
+<td>73.9 M</td>
+<td rowspan="1">
+SVTRv2 是一种由复旦大学视觉与学习实验室（FVL）的OpenOCR团队研发的服务端文本识别模型，其在PaddleOCR算法模型挑战赛 - 赛题一：OCR端到端识别任务中荣获一等奖，A榜端到端识别精度相比PP-OCRv4提升6%。
+</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<th>模型</th><th>模型下载链接</th>
+<th>识别 Avg Accuracy(%)</th>
+<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
+<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
+<th>模型存储大小（M）</th>
+<th>介绍</th>
+</tr>
+<tr>
+<td>ch_RepSVTR_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/ch_RepSVTR_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/ch_RepSVTR_rec_pretrained.pdparams">训练模型</a></td>
+<td>65.07</td>
+<td>6.29 / 1.57</td>
+<td>20.64 / 5.40</td>
+<td>22.1 M</td>
+<td rowspan="1">    RepSVTR 文本识别模型是一种基于SVTRv2 的移动端文本识别模型，其在PaddleOCR算法模型挑战赛 - 赛题一：OCR端到端识别任务中荣获一等奖，B榜端到端识别精度相比PP-OCRv4提升2.5%，推理速度持平。</td>
+</tr>
+</table>
+
+* <b>英文识别模型</b>
+<table>
+<tr>
+<th>模型</th><th>模型下载链接</th>
+<th>识别 Avg Accuracy(%)</th>
+<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
+<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
+<th>模型存储大小（M）</th>
+<th>介绍</th>
+</tr>
+<tr>
+<td>en_PP-OCRv4_mobile_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+en_PP-OCRv4_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/en_PP-OCRv4_mobile_rec_pretrained.pdparams">训练模型</a></td>
+<td> 70.39</td>
+<td>4.81 / 1.23</td>
+<td>17.20 / 4.18</td>
+<td>6.8 M</td>
+<td>基于PP-OCRv4识别模型训练得到的超轻量英文识别模型，支持英文、数字识别</td>
+</tr>
+<tr>
+<td>en_PP-OCRv3_mobile_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+en_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/en_PP-OCRv3_mobile_rec_pretrained.pdparams">训练模型</a></td>
+<td>70.69</td>
+<td>3.56 / 0.78</td>
+<td>8.44 / 5.78</td>
+<td>7.8 M </td>
+<td>基于PP-OCRv3识别模型训练得到的超轻量英文识别模型，支持英文、数字识别</td>
+</tr>
+</table>
+
+* <b>多语言识别模型</b>
+<table>
+<tr>
+<th>模型</th><th>模型下载链接</th>
+<th>识别 Avg Accuracy(%)</th>
+<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
+<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
+<th>模型存储大小（M）</th>
+<th>介绍</th>
+</tr>
+<tr>
+<td>korean_PP-OCRv3_mobile_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+korean_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/korean_PP-OCRv3_mobile_rec_pretrained.pdparams">训练模型</a></td>
+<td>60.21</td>
+<td>3.73 / 0.98</td>
+<td>8.76 / 2.91</td>
+<td>8.6 M</td>
+<td>基于PP-OCRv3识别模型训练得到的超轻量韩文识别模型，支持韩文、数字识别</td>
+</tr>
+<tr>
+<td>japan_PP-OCRv3_mobile_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+japan_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/japan_PP-OCRv3_mobile_rec_pretrained.pdparams">训练模型</a></td>
+<td>45.69</td>
+<td>3.86 / 1.01</td>
+<td>8.62 / 2.92</td>
+<td>8.8 M </td>
+<td>基于PP-OCRv3识别模型训练得到的超轻量日文识别模型，支持日文、数字识别</td>
+</tr>
+<tr>
+<td>chinese_cht_PP-OCRv3_mobile_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+chinese_cht_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/chinese_cht_PP-OCRv3_mobile_rec_pretrained.pdparams">训练模型</a></td>
+<td>82.06</td>
+<td>3.90 / 1.16</td>
+<td>9.24 / 3.18</td>
+<td>9.7 M </td>
+<td>基于PP-OCRv3识别模型训练得到的超轻量繁体中文识别模型，支持繁体中文、数字识别</td>
+</tr>
+<tr>
+<td>te_PP-OCRv3_mobile_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+te_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/te_PP-OCRv3_mobile_rec_pretrained.pdparams">训练模型</a></td>
+<td>95.88</td>
+<td>3.59 / 0.81</td>
+<td>8.28 / 6.21</td>
+<td>7.8 M </td>
+<td>基于PP-OCRv3识别模型训练得到的超轻量泰卢固文识别模型，支持泰卢固文、数字识别</td>
+</tr>
+<tr>
+<td>ka_PP-OCRv3_mobile_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+ka_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/ka_PP-OCRv3_mobile_rec_pretrained.pdparams">训练模型</a></td>
+<td>96.96</td>
+<td>3.49 / 0.89</td>
+<td>8.63 / 2.77</td>
+<td>8.0 M </td>
+<td>基于PP-OCRv3识别模型训练得到的超轻量卡纳达文识别模型，支持卡纳达文、数字识别</td>
+</tr>
+<tr>
+<td>ta_PP-OCRv3_mobile_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+ta_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/ta_PP-OCRv3_mobile_rec_pretrained.pdparams">训练模型</a></td>
+<td>76.83</td>
+<td>3.49 / 0.86</td>
+<td>8.35 / 3.41</td>
+<td>8.0 M </td>
+<td>基于PP-OCRv3识别模型训练得到的超轻量泰米尔文识别模型，支持泰米尔文、数字识别</td>
+</tr>
+<tr>
+<td>latin_PP-OCRv3_mobile_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+latin_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/latin_PP-OCRv3_mobile_rec_pretrained.pdparams">训练模型</a></td>
+<td>76.93</td>
+<td>3.53 / 0.78</td>
+<td>8.50 / 6.83</td>
+<td>7.8 M</td>
+<td>基于PP-OCRv3识别模型训练得到的超轻量拉丁文识别模型，支持拉丁文、数字识别</td>
+</tr>
+<tr>
+<td>arabic_PP-OCRv3_mobile_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+arabic_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/arabic_PP-OCRv3_mobile_rec_pretrained.pdparams">训练模型</a></td>
+<td>73.55</td>
+<td>3.60 / 0.83</td>
+<td>8.44 / 4.69</td>
+<td>7.8 M</td>
+<td>基于PP-OCRv3识别模型训练得到的超轻量阿拉伯字母识别模型，支持阿拉伯字母、数字识别</td>
+</tr>
+<tr>
+<td>cyrillic_PP-OCRv3_mobile_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+cyrillic_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/cyrillic_PP-OCRv3_mobile_rec_pretrained.pdparams">训练模型</a></td>
+<td>94.28</td>
+<td>3.56 / 0.79</td>
+<td>8.22 / 2.76</td>
+<td>7.9 M  </td>
+<td>基于PP-OCRv3识别模型训练得到的超轻量斯拉夫字母识别模型，支持斯拉夫字母、数字识别</td>
+</tr>
+<tr>
+<td>devanagari_PP-OCRv3_mobile_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/devanagari_PP-OCRv3_mobile_rec_pretrained.pdparams">训练模型</a></td>
+<td>96.44</td>
+<td>3.60 / 0.78</td>
+<td>6.95 / 2.87</td>
+<td>7.9 M</td>
+<td>基于PP-OCRv3识别模型训练得到的超轻量梵文字母识别模型，支持梵文字母、数字识别</td>
+</tr>
+</table>
+
+<p><b>文本行方向分类模块（可选）：</b></p>
+<table>
+<thead>
+<tr>
+<th>模型</th>
+<th>模型下载链接</th>
+<th>Top-1 Acc（%）</th>
+<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
+<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
+<th>模型存储大小（M)</th>
+<th>介绍</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PP-LCNet_x0_25_textline_ori</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-LCNet_x0_25_textline_ori_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-LCNet_x0_25_textline_ori_pretrained.pdparams">训练模型</a></td>
+<td>95.54</td>
+<td>2.16 / 0.41</td>
+<td>2.37 / 0.73</td>
+<td>0.32</td>
+<td>基于PP-LCNet_x0_25的文本行分类模型，含有两个类别，即0度，180度</td>
+</tr>
+</tbody>
+</table>
+
+<p><b>公式识别模块：</b></p>
+<table>
+<tr>
+<th>模型</th><th>模型下载链接</th>
+<th>Avg-BLEU(%)</th>
+<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
+<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
+<th>模型存储大小 (M)</th>
+<th>介绍</th>
+</tr>
+<td>UniMERNet</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/UniMERNet_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/UniMERNet_pretrained.pdparams">训练模型</a></td>
+<td>86.13</td>
+<td>2266.96/-</td>
+<td>-/-</td>
+<td>1.4 G</td>
+<td>UniMERNet是由上海AI Lab研发的一款公式识别模型。该模型采用Donut Swin作为编码器，MBartDecoder作为解码器，并通过在包含简单公式、复杂公式、扫描捕捉公式和手写公式在内的一百万数据集上进行训练，大幅提升了模型对真实场景公式的识别准确率</td>
+<td>PP-FormulaNet-S</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet-S_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet-S_pretrained.pdparams">训练模型</a></td>
+<td>87.12</td>
+<td>1311.84 / 1311.84</td>
+<td>- / 8288.07</td>
+<td>167.9 M</td>
+<td rowspan="2">PP-FormulaNet 是由百度飞桨视觉团队开发的一款先进的公式识别模型，支持5万个常见LateX源码词汇的识别。PP-FormulaNet-S 版本采用了 PP-HGNetV2-B4 作为其骨干网络，通过并行掩码和模型蒸馏等技术，大幅提升了模型的推理速度，同时保持了较高的识别精度，适用于简单印刷公式、跨行简单印刷公式等场景。而 PP-FormulaNet-L 版本则基于 Vary_VIT_B 作为骨干网络，并在大规模公式数据集上进行了深入训练，在复杂公式的识别方面，相较于PP-FormulaNet-S表现出显著的提升，适用于简单印刷公式、复杂印刷公式、手写公式等场景。 </td>
+
+</tr>
+<td>PP-FormulaNet-L</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet-L_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet-L_pretrained.pdparams">训练模型</a></td>
+<td>92.13</td>
+<td>1976.52/-</td>
+<td>-/-</td>
+<td>535.2 M</td>
+<td>LaTeX_OCR_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/LaTeX_OCR_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/LaTeX_OCR_rec_pretrained.pdparams">训练模型</a></td>
+<td>71.63</td>
+<td>1088.89 / 1088.89</td>
+<td>- / -</td>
+<td>89.7 M</td>
+<td>LaTeX-OCR是一种基于自回归大模型的公式识别算法，通过采用 Hybrid ViT 作为骨干网络，transformer作为解码器，显著提升了公式识别的准确性。</td>
+</tr>
+</tbody>
+</table>
+
+<p><b>印章文本检测模块：</b></p>
+<table>
+<thead>
+<tr>
+<th>模型</th><th>模型下载链接</th>
+<th>检测Hmean（%）</th>
+<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
+<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
+<th>模型存储大小（M)</th>
+<th>介绍</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PP-OCRv4_server_seal_det</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_server_seal_det_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_seal_det_pretrained.pdparams">训练模型</a></td>
+<td>98.21</td>
+<td>124.64 / 91.57</td>
+<td>545.68 / 439.86</td>
+<td>109</td>
+<td>PP-OCRv4的服务端印章文本检测模型，精度更高，适合在较好的服务器上部署</td>
+</tr>
+<tr>
+<td>PP-OCRv4_mobile_seal_det</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_mobile_seal_det_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_mobile_seal_det_pretrained.pdparams">训练模型</a></td>
+<td>96.47</td>
+<td>9.70 / 3.56</td>
+<td>50.38 / 19.64</td>
+<td>4.6</td>
+<td>PP-OCRv4的移动端印章文本检测模型，效率更高，适合在端侧部署</td>
+</tr>
+</tbody>
+</table>
+
+<strong>测试环境说明:</strong>
+
+  <ul>
+      <li><b>性能测试环境</b>
+          <ul>
+            <li><strong>测试数据集：
+             </strong>
+                <ul>
+                  <li>文档图像方向分类模型：PaddleX 自建的数据集，覆盖证件和文档等多个场景，包含 1000 张图片。</li>
+                  <li> 文本图像矫正模型：<a href="https://www3.cs.stonybrook.edu/~cvl/docunet.html">DocUNet</a>。</li>
+                  <li>版面区域检测模型：PaddleOCR 自建的版面区域分析数据集，包含中英文论文、杂志和研报等常见的 1w 张文档类型图片。</li>
+                  <li>PP-DocLayout_plus-L：PaddleOCR 自建的版面区域检测数据集，包含中英文论文、杂志、报纸、研报、PPT、试卷、课本等 1300 张文档类型图片。</li>
+                  <li>表格结构识别模型：PaddleX 内部自建英文表格识别数据集。 </li>
+                  <li>文本检测模型：PaddleOCR 自建的中文数据集，覆盖街景、网图、文档、手写多个场景，其中检测包含 500 张图片。</li>
+                  <li> 中文识别模型： PaddleOCR 自建的中文数据集，覆盖街景、网图、文档、手写多个场景，其中文本识别包含 1.1w 张图片。</li>
+                  <li>ch_SVTRv2_rec：<a href="https://aistudio.baidu.com/competition/detail/1131/0/introduction">PaddleOCR算法模型挑战赛 - 赛题一：OCR端到端识别任务</a>A榜评估集。</li>
+                  <li> ch_RepSVTR_rec：<a href="https://aistudio.baidu.com/competition/detail/1131/0/introduction">PaddleOCR算法模型挑战赛 - 赛题一：OCR端到端识别任务</a>B榜评估集。</li>
+                  <li>英文识别模型：PaddleX 自建的英文数据集。</li>
+                  <li> 多语言识别模型：PaddleX 自建的多语种数据集。</li>
+                  <li>文本行方向分类模型：PaddleX 自建的数据集，覆盖证件和文档等多个场景，包含 1000 张图片。</li>
+                  <li> 印章文本检测模型：PaddleX 自建的数据集，包含500张圆形印章图像。</li>
+                </ul>
+             </li>
+              <li><strong>硬件配置：</strong>
+                  <ul>
+                      <li>GPU：NVIDIA Tesla T4</li>
+                      <li>CPU：Intel Xeon Gold 6271C @ 2.60GHz</li>
+                      <li>其他环境：Ubuntu 20.04 / CUDA 11.8 / cuDNN 8.9 / TensorRT 8.6.1.6</li>
+                  </ul>
+              </li>
+          </ul>
+      </li>
+      <li><b>推理模式说明</b></li>
+  </ul>
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>模式</th>
+            <th>GPU配置</th>
+            <th>CPU配置</th>
+            <th>加速技术组合</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>常规模式</td>
+            <td>FP32精度 / 无TRT加速</td>
+            <td>FP32精度 / 8线程</td>
+            <td>PaddleInference</td>
+        </tr>
+        <tr>
+            <td>高性能模式</td>
+            <td>选择先验精度类型和加速策略的最优组合</td>
+            <td>FP32精度 / 8线程</td>
+            <td>选择先验最优后端（Paddle/OpenVINO/TRT等）</td>
+        </tr>
+    </tbody>
+</table>
+
+</details>
+
+<h2 id="2">2. 快速开始<a class="headerlink" href="#2" title="Permanent link">&para;</a></h2>
+<p>在本地使用 PP-DocTranslation 产线前，请确保您已经按照<a href="../installation.html">安装教程</a>完成了wheel包安装。</p>
+<p><strong>请注意，如果在执行过程中遇到程序失去响应、程序异常退出、内存资源耗尽、推理速度极慢等问题，请尝试参考文档调整配置，例如关闭不需要使用的功能或使用更轻量的模型。</strong></p>
+<p>使用前需准备大语言模型的API密钥，支持<a href="https://console.bce.baidu.com/qianfan/ais/console/onlineService">百度云千帆平台</a>或符合OpenAI接口标准的本地大模型服务。</p>
+<h3 id="21">2.1 命令行方式体验<a class="headerlink" href="#21" title="Permanent link">&para;</a></h3>
+<p>可以下载 <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/vehicle_certificate-1.png">测试文件</a>，使用一行命令即可快速体验产线效果：</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>paddleocr<span class="w"> </span>pp_doctranslation<span class="w"> </span>-i<span class="w"> </span>vehicle_certificate-1.png<span class="w"> </span>--target_language<span class="w"> </span>en<span class="w"> </span>--qianfan_api_key<span class="w"> </span>your_api_key
+</span></code></pre></div>
+<details><summary><b>命令行支持更多参数设置，点击展开以查看命令行参数的详细说明</b></summary>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>参数说明</th>
+<th>参数类型</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>input</code></td>
+<td>待预测数据，必填。如图像文件或者PDF文件的本地路径：<code>/root/data/img.jpg</code>；<b>如URL链接</b>，如图像文件或PDF文件的网络URL：<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/vehicle_certificate-1.png">示例</a>；<b>如本地目录</b>，该目录下需包含待预测图像，如本地路径：<code>/root/data/</code>(当前不支持目录中包含PDF文件的预测，PDF文件需要指定到具体文件路径)。
+</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>save_path</code></td>
+<td>指定推理结果文件保存的路径。如果不设置，推理结果将不会保存到本地。</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>target_language</code></td>
+<td>目标语言（ISO 639-1 语言代码）。</td>
+<td><code>str</code></td>
+<td><code>zh</code></td>
+</tr>
+<tr>
+<td><code>layout_detection_model_name</code></td>
+<td>版面区域检测的模型名称。如果不设置，将会使用产线默认模型。</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>layout_detection_model_dir</code></td>
+<td>版面区域检测模型的目录路径。如果不设置，将会下载官方模型。</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>layout_threshold</code></td>
+<td>版面模型得分阈值。<code>0-1</code> 之间的任意浮点数。如果不设置，将使用产线初始化的该参数值，默认初始化为 <code>0.5</code>。
+</td>
+<td><code>float</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>layout_nms</code></td>
+<td>版面检测是否使用后处理NMS。如果不设置，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
+<td><code>bool</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>layout_unclip_ratio</code></td>
+<td>版面区域检测模型检测框的扩张系数。
+任意大于 <code>0</code>  浮点数。如果不设置，将使用产线初始化的该参数值，默认初始化为 <code>1.0</code>。
+</td>
+<td><code>float</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>layout_merge_bboxes_mode</code></td>
+<td>版面检测中模型输出的检测框的合并处理模式。
+<ul>
+<li><b>large</b>，设置为large时，表示在模型输出的检测框中，对于互相重叠包含的检测框，只保留外部最大的框，删除重叠的内部框；</li>
+<li><b>small</b>，设置为small，表示在模型输出的检测框中，对于互相重叠包含的检测框，只保留内部被包含的小框，删除重叠的外部框；</li>
+<li><b>union</b>，不进行框的过滤处理，内外框都保留；</li>
+</ul>如果不设置，将使用产线初始化的该参数值，默认初始化为<code>large</code>。
+</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>chart_recognition_model_name</code></td>
+<td>图表解析的模型名称。如果不设置，将会使用产线默认模型。</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>chart_recognition_model_dir</code></td>
+<td>图表解析模型的目录路径。如果不设置，将会下载官方模型。</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>chart_recognition_batch_size</code></td>
+<td>图表解析模型的batch size。如果不设置，将默认设置batch size为<code>1</code>。</td>
+<td><code>int</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>region_detection_model_name</code></td>
+<td>文档图像版面子模块检测的模型名称。如果不设置，将会使用产线默认模型。</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>region_detection_model_dir</code></td>
+<td>文档图像版面子模块检测模型的目录路径。如果不设置，将会下载官方模型。</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>doc_orientation_classify_model_name</code></td>
+<td>文档方向分类模型的名称。如果不设置，将会使用产线默认模型。</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>doc_orientation_classify_model_dir</code></td>
+<td>文档方向分类模型的目录路径。如果不设置，将会下载官方模型。</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>doc_unwarping_model_name</code></td>
+<td>文本图像矫正模型的名称。如果不设置，将会使用产线默认模型。</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>doc_unwarping_model_dir</code></td>
+<td>文本图像矫正模型的目录路径。如果不设置，将会下载官方模型。</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>text_detection_model_name</code></td>
+<td>文本检测模型的名称。如果不设置，将会使用产线默认模型。</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>text_detection_model_dir</code></td>
+<td>文本检测模型的目录路径。如果不设置，将会下载官方模型。</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>text_det_limit_side_len</code></td>
+<td>文本检测的图像边长限制。
+大于 <code>0</code> 的任意整数。如果不设置，将使用产线初始化的该参数值，默认初始化为 <code>960</code>。
+</td>
+<td><code>int</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>text_det_limit_type</code></td>
+<td>文本检测的图像边长限制类型。支持 <code>min</code> 和 <code>max</code>，<code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>，<code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code>。如果不设置，将使用产线初始化的该参数值，默认初始化为 <code>max</code>。
+</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>text_det_thresh</code></td>
+<td>检测像素阈值，输出的概率图中，得分大于该阈值的像素点才会被认为是文字像素点。
+大于 <code>0</code> 的任意浮点数
+。如果不设置，将默认使用产线初始化的该参数值 <code>0.3</code>。
+</td>
+<td><code>float</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>text_det_box_thresh</code></td>
+<td>检测框阈值，检测结果边框内，所有像素点的平均得分大于该阈值时，该结果会被认为是文字区域。大于 <code>0</code> 的任意浮点数
+。如果不设置，将默认使用产线初始化的该参数值 <code>0.6</code>。
+</td>
+<td><code>float</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>text_det_unclip_ratio</code></td>
+<td>文本检测扩张系数，使用该方法对文字区域进行扩张，该值越大，扩张的面积越大。
+大于 <code>0</code> 的任意浮点数
+。如果不设置，将默认使用产线初始化的该参数值 <code>2.0</code>。
+</td>
+<td><code>float</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>textline_orientation_model_name</code></td>
+<td>文本行方向模型的名称。如果不设置，将会使用产线默认模型。</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>textline_orientation_model_dir</code></td>
+<td>文本行方向模型的目录路径。如果不设置，将会下载官方模型。</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>textline_orientation_batch_size</code></td>
+<td>文本行方向模型的batch size。如果不设置，将默认设置batch size为<code>1</code>。</td>
+<td><code>int</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>text_recognition_model_name</code></td>
+<td>文本识别模型的名称。如果不设置，将会使用产线默认模型。</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>text_recognition_model_dir</code></td>
+<td>文本识别模型的目录路径。如果不设置，将会下载官方模型。</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>text_recognition_batch_size</code></td>
+<td>文本识别模型的batch size。如果不设置，将默认设置batch size为<code>1</code>。</td>
+<td><code>int</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>text_rec_score_thresh</code></td>
+<td>文本识别阈值，得分大于该阈值的文本结果会被保留。
+大于 <code>0</code> 的任意浮点数。如果不设置，将默认使用产线初始化的该参数值 <code>0.0</code>。即不设阈值。
+</td>
+<td><code>float</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>table_classification_model_name</code></td>
+<td>表格分类模型的名称。如果不设置，将会使用产线默认模型。</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>table_classification_model_dir</code></td>
+<td>表格分类模型的目录路径。如果不设置，将会下载官方模型。</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>wired_table_structure_recognition_model_name</code></td>
+<td>有线表格结构识别模型的名称。如果不设置，将会使用产线默认模型。</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>wired_table_structure_recognition_model_dir</code></td>
+<td>有线表格结构识别模型的目录路径。如果不设置，将会下载官方模型。</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>wireless_table_structure_recognition_model_name</code></td>
+<td>无线表格结构识别模型的名称。如果不设置，将会使用产线默认模型。</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>wireless_table_structure_recognition_model_dir</code></td>
+<td>无线表格结构识别模型的目录路径。如果不设置，将会下载官方模型。</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>wired_table_cells_detection_model_name</code></td>
+<td>有线表格单元格检测模型的名称。如果不设置，将会使用产线默认模型。</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>wired_table_cells_detection_model_dir</code></td>
+<td>有线表格单元格检测模型的目录路径。如果不设置，将会下载官方模型。</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>wireless_table_cells_detection_model_name</code></td>
+<td>无线表格单元格检测模型的名称。如果不设置，将会使用产线默认模型。</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>wireless_table_cells_detection_model_dir</code></td>
+<td>无线表格单元格检测模型的目录路径。如果不设置，将会下载官方模型。</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>table_orientation_classify_model_name</code></td>
+<td>表格方向分类模型的名称。如果不设置，将会使用产线默认模型。</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>table_orientation_classify_model_dir</code></td>
+<td>表格方向分类模型的目录路径。如果不设置，将会下载官方模型。</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>seal_text_detection_model_name</code></td>
+<td>印章文本检测模型的名称。如果不设置，将会使用产线默认模型。</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>seal_text_detection_model_dir</code></td>
+<td>印章文本检测模型的目录路径。如果不设置，将会下载官方模型。</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>seal_det_limit_side_len</code></td>
+<td>印章文本检测的图像边长限制。
+大于 <code>0</code> 的任意整数。如果不设置，将使用产线初始化的该参数值，默认初始化为 <code>736</code>。
+</td>
+<td><code>int</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>seal_det_limit_type</code></td>
+<td>印章文本检测的图像边长限制类型。支持 <code>min</code> 和 <code>max</code>，<code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>，<code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code>。如果不设置，将使用产线初始化的该参数值，默认初始化为 <code>min</code>。
+</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>seal_det_thresh</code></td>
+<td>检测像素阈值。输出的概率图中，得分大于该阈值的像素点才会被认为是文字像素点。
+大于 <code>0</code> 的任意浮点数
+。如果不设置，将默认使用产线初始化的该参数值 <code>0.2</code>。
+<td><code>float</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>seal_det_box_thresh</code></td>
+<td>检测框阈值，检测结果边框内，所有像素点的平均得分大于该阈值时，该结果会被认为是文字区域。
+大于 <code>0</code> 的任意浮点数
+。如果不设置，将默认使用产线初始化的该参数值 <code>0.6</code>。
+</td>
+<td><code>float</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>seal_det_unclip_ratio</code></td>
+<td>印章文本检测扩张系数，使用该方法对文字区域进行扩张，该值越大，扩张的面积越大。
+大于 <code>0</code> 的任意浮点数
+。如果不设置，将默认使用产线初始化的该参数值 <code>0.5</code>。
+</td>
+<td><code>float</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>seal_text_recognition_model_name</code></td>
+<td>印章文本识别模型的名称。如果不设置，将会使用产线默认模型。</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>seal_text_recognition_model_dir</code></td>
+<td>印章文本识别模型的目录路径。如果不设置，将会下载官方模型。</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>seal_text_recognition_batch_size</code></td>
+<td>印章文本识别模型的batch size。如果不设置，将默认设置batch size为<code>1</code>。</td>
+<td><code>int</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>seal_rec_score_thresh</code></td>
+<td>文本识别阈值，得分大于该阈值的文本结果会被保留。
+大于 <code>0</code> 的任意浮点数
+。如果不设置，将默认使用产线初始化的该参数值 <code>0.0</code>。即不设阈值。
+</td>
+<td><code>float</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>formula_recognition_model_name</code></td>
+<td>公式识别模型的名称。如果不设置，将会使用产线默认模型。</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>formula_recognition_model_dir</code></td>
+<td>公式识别模型的目录路径。如果不设置，将会下载官方模型。</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>formula_recognition_batch_size</code></td>
+<td>公式识别模型的batch size。如果不设置，将默认设置batch size为<code>1</code>。</td>
+<td><code>int</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>use_doc_orientation_classify</code></td>
+<td>是否使用文档方向分类模块。</td>
+<td><code>bool</code></td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td><code>use_doc_unwarping</code></td>
+<td>是否使用文本图像矫正模块。</td>
+<td><code>bool</code></td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td><code>use_textline_orientation</code></td>
+<td>是否加载并使用文本行方向分类模块。如果不设置，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
+<td><code>bool</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>use_seal_recognition</code></td>
+<td>是否加载并使用印章文本识别子产线。如果不设置，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
+<td><code>bool</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>use_table_recognition</code></td>
+<td>是否加载并使用表格识别子产线。如果不设置，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
+<td><code>bool</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>use_formula_recognition</code></td>
+<td>是否加载并使用公式识别子产线。如果不设置，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
+<td><code>bool</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>use_chart_recognition</code></td>
+<td>是否使用图表解析模块。</td>
+<td><code>bool</code></td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td><code>use_region_detection</code></td>
+<td>是否加载并使用文档区域检测子产线。如果不设置，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
+<td><code>bool</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>device</code></td>
+<td>用于推理的设备。支持指定具体卡号：
+<ul>
+<li><b>CPU</b>：如 <code>cpu</code> 表示使用 CPU 进行推理；</li>
+<li><b>GPU</b>：如 <code>gpu:0</code> 表示使用第 1 块 GPU 进行推理；</li>
+<li><b>NPU</b>：如 <code>npu:0</code> 表示使用第 1 块 NPU 进行推理；</li>
+<li><b>XPU</b>：如 <code>xpu:0</code> 表示使用第 1 块 XPU 进行推理；</li>
+<li><b>MLU</b>：如 <code>mlu:0</code> 表示使用第 1 块 MLU 进行推理；</li>
+<li><b>DCU</b>：如 <code>dcu:0</code> 表示使用第 1 块 DCU 进行推理；</li>
+</ul>如果不设置，将默认使用产线初始化的该参数值，初始化时，会优先使用本地的 GPU 0号设备，如果没有，则使用 CPU 设备。
+</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>enable_hpi</code></td>
+<td>是否启用高性能推理。</td>
+<td><code>bool</code></td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td><code>use_tensorrt</code></td>
+<td>是否启用 Paddle Inference 的 TensorRT 子图引擎。如果模型不支持通过 TensorRT 加速，即使设置了此标志，也不会使用加速。<br/>
+对于 CUDA 11.8 版本的飞桨，兼容的 TensorRT 版本为 8.x（x>=6），建议安装 TensorRT 8.6.1.6。<br/>
+对于 CUDA 12.6 版本的飞桨，兼容的 TensorRT 版本为 10.x（x>=5），建议安装 TensorRT 10.5.0.18。
+</td>
+<td><code>bool</code></td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td><code>precision</code></td>
+<td>计算精度，如 fp32、fp16。</td>
+<td><code>str</code></td>
+<td><code>fp32</code></td>
+</tr>
+<tr>
+<td><code>enable_mkldnn</code></td>
+<td>是否启用 MKL-DNN 加速推理。如果 MKL-DNN 不可用或模型不支持通过 MKL-DNN 加速，即使设置了此标志，也不会使用加速。
+</td>
+<td><code>bool</code></td>
+<td><code>True</code></td>
+</tr>
+<tr>
+<td><code>mkldnn_cache_capacity</code></td>
+<td>
+MKL-DNN 缓存容量。
+</td>
+<td><code>int</code></td>
+<td><code>10</code></td>
+</tr>
+<tr>
+<td><code>cpu_threads</code></td>
+<td>在 CPU 上进行推理时使用的线程数。</td>
+<td><code>int</code></td>
+<td><code>8</code></td>
+</tr>
+<tr>
+<td><code>paddlex_config</code></td>
+<td>PaddleX产线配置文件路径。</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</details>
+<p><br /></p>
+<p>运行结果会被打印到终端上。</p>
+<h3 id="22-python">2.2 Python脚本方式集成<a class="headerlink" href="#22-python" title="Permanent link">&para;</a></h3>
+<p>命令行方式是为了快速体验查看效果，一般来说，在项目中，往往需要通过代码集成，可以下载 <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/vehicle_certificate-1.png">测试文件</a>，使用如下示例代码进行推理：</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddlex</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_pipeline</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="c1"># 创建翻译产线</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">pipeline</span> <span class="o">=</span> <span class="n">create_pipeline</span><span class="p">(</span><span class="n">pipeline</span><span class="o">=</span><span class="s2">&quot;PP-DocTranslation&quot;</span><span class="p">)</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="c1"># 文档路径</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="n">input_path</span> <span class="o">=</span> <span class="s2">&quot;document_sample.pdf&quot;</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="c1"># 输出目录</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="n">output_path</span> <span class="o">=</span> <span class="s2">&quot;./output&quot;</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="c1"># 大模型配置</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="n">chat_bot_config</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>    <span class="s2">&quot;module_name&quot;</span><span class="p">:</span> <span class="s2">&quot;chat_bot&quot;</span><span class="p">,</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>    <span class="s2">&quot;model_name&quot;</span><span class="p">:</span> <span class="s2">&quot;ernie-3.5-8k&quot;</span><span class="p">,</span>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>    <span class="s2">&quot;base_url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://qianfan.baidubce.com/v2&quot;</span><span class="p">,</span>
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>    <span class="s2">&quot;api_type&quot;</span><span class="p">:</span> <span class="s2">&quot;openai&quot;</span><span class="p">,</span>
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>    <span class="s2">&quot;api_key&quot;</span><span class="p">:</span> <span class="s2">&quot;api_key&quot;</span><span class="p">,</span>  <span class="c1"># your api_key</span>
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="p">}</span>
+</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>
+</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="k">if</span> <span class="n">input_path</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.md&quot;</span><span class="p">):</span>
+</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>    <span class="c1"># 读取markdown文档，支持传入目录和以 .md 为后缀的 url 链接</span>
+</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a>    <span class="n">ori_md_info_list</span> <span class="o">=</span> <span class="n">pipeline</span><span class="o">.</span><span class="n">load_from_markdown</span><span class="p">(</span><span class="n">input_path</span><span class="p">)</span>
+</span><span id="__span-1-23"><a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a><span class="k">else</span><span class="p">:</span>
+</span><span id="__span-1-24"><a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a>    <span class="c1"># 使用 PP-StructureV3 对 PDF/图片 文档进行版面解析，获取markdown信息</span>
+</span><span id="__span-1-25"><a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a>    <span class="n">visual_predict_res</span> <span class="o">=</span> <span class="n">pipeline</span><span class="o">.</span><span class="n">visual_predict</span><span class="p">(</span>
+</span><span id="__span-1-26"><a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a>        <span class="n">input_path</span><span class="p">,</span>
+</span><span id="__span-1-27"><a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a>        <span class="n">use_doc_orientation_classify</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+</span><span id="__span-1-28"><a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a>        <span class="n">use_doc_unwarping</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+</span><span id="__span-1-29"><a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a>        <span class="n">use_common_ocr</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-1-30"><a id="__codelineno-1-30" name="__codelineno-1-30" href="#__codelineno-1-30"></a>        <span class="n">use_seal_recognition</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-1-31"><a id="__codelineno-1-31" name="__codelineno-1-31" href="#__codelineno-1-31"></a>        <span class="n">use_table_recognition</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-1-32"><a id="__codelineno-1-32" name="__codelineno-1-32" href="#__codelineno-1-32"></a>    <span class="p">)</span>
+</span><span id="__span-1-33"><a id="__codelineno-1-33" name="__codelineno-1-33" href="#__codelineno-1-33"></a>
+</span><span id="__span-1-34"><a id="__codelineno-1-34" name="__codelineno-1-34" href="#__codelineno-1-34"></a>    <span class="n">ori_md_info_list</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="__span-1-35"><a id="__codelineno-1-35" name="__codelineno-1-35" href="#__codelineno-1-35"></a>    <span class="k">for</span> <span class="n">res</span> <span class="ow">in</span> <span class="n">visual_predict_res</span><span class="p">:</span>
+</span><span id="__span-1-36"><a id="__codelineno-1-36" name="__codelineno-1-36" href="#__codelineno-1-36"></a>        <span class="n">layout_parsing_result</span> <span class="o">=</span> <span class="n">res</span><span class="p">[</span><span class="s2">&quot;layout_parsing_result&quot;</span><span class="p">]</span>
+</span><span id="__span-1-37"><a id="__codelineno-1-37" name="__codelineno-1-37" href="#__codelineno-1-37"></a>        <span class="n">ori_md_info_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">layout_parsing_result</span><span class="o">.</span><span class="n">markdown</span><span class="p">)</span>
+</span><span id="__span-1-38"><a id="__codelineno-1-38" name="__codelineno-1-38" href="#__codelineno-1-38"></a>        <span class="n">layout_parsing_result</span><span class="o">.</span><span class="n">save_to_img</span><span class="p">(</span><span class="n">output_path</span><span class="p">)</span>
+</span><span id="__span-1-39"><a id="__codelineno-1-39" name="__codelineno-1-39" href="#__codelineno-1-39"></a>        <span class="n">layout_parsing_result</span><span class="o">.</span><span class="n">save_to_markdown</span><span class="p">(</span><span class="n">output_path</span><span class="p">)</span>
+</span><span id="__span-1-40"><a id="__codelineno-1-40" name="__codelineno-1-40" href="#__codelineno-1-40"></a>
+</span><span id="__span-1-41"><a id="__codelineno-1-41" name="__codelineno-1-41" href="#__codelineno-1-41"></a>    <span class="c1"># 将多页文档的 markdown 信息拼接成一个 markdown 文件，可将合并后的 markdown 原文保存</span>
+</span><span id="__span-1-42"><a id="__codelineno-1-42" name="__codelineno-1-42" href="#__codelineno-1-42"></a>    <span class="k">if</span> <span class="n">input_path</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.pdf&quot;</span><span class="p">):</span>
+</span><span id="__span-1-43"><a id="__codelineno-1-43" name="__codelineno-1-43" href="#__codelineno-1-43"></a>        <span class="n">ori_md_info</span> <span class="o">=</span> <span class="n">pipeline</span><span class="o">.</span><span class="n">concatenate_markdown_pages</span><span class="p">(</span><span class="n">ori_md_info_list</span><span class="p">)</span>
+</span><span id="__span-1-44"><a id="__codelineno-1-44" name="__codelineno-1-44" href="#__codelineno-1-44"></a>        <span class="n">ori_md_info</span><span class="o">.</span><span class="n">save_to_markdown</span><span class="p">(</span><span class="n">output_path</span><span class="p">)</span>
+</span><span id="__span-1-45"><a id="__codelineno-1-45" name="__codelineno-1-45" href="#__codelineno-1-45"></a>
+</span><span id="__span-1-46"><a id="__codelineno-1-46" name="__codelineno-1-46" href="#__codelineno-1-46"></a><span class="c1"># 执行文档翻译（目标语言：英文）</span>
+</span><span id="__span-1-47"><a id="__codelineno-1-47" name="__codelineno-1-47" href="#__codelineno-1-47"></a><span class="n">tgt_md_info_list</span> <span class="o">=</span> <span class="n">pipeline</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span>
+</span><span id="__span-1-48"><a id="__codelineno-1-48" name="__codelineno-1-48" href="#__codelineno-1-48"></a>    <span class="n">ori_md_info_list</span><span class="o">=</span><span class="n">ori_md_info_list</span><span class="p">,</span>
+</span><span id="__span-1-49"><a id="__codelineno-1-49" name="__codelineno-1-49" href="#__codelineno-1-49"></a>    <span class="n">target_language</span><span class="o">=</span><span class="s2">&quot;en&quot;</span><span class="p">,</span>
+</span><span id="__span-1-50"><a id="__codelineno-1-50" name="__codelineno-1-50" href="#__codelineno-1-50"></a>    <span class="n">chunk_size</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span>
+</span><span id="__span-1-51"><a id="__codelineno-1-51" name="__codelineno-1-51" href="#__codelineno-1-51"></a>    <span class="n">chat_bot_config</span><span class="o">=</span><span class="n">chat_bot_config</span><span class="p">,</span>
+</span><span id="__span-1-52"><a id="__codelineno-1-52" name="__codelineno-1-52" href="#__codelineno-1-52"></a><span class="p">)</span>
+</span><span id="__span-1-53"><a id="__codelineno-1-53" name="__codelineno-1-53" href="#__codelineno-1-53"></a><span class="c1"># 保存翻译结果</span>
+</span><span id="__span-1-54"><a id="__codelineno-1-54" name="__codelineno-1-54" href="#__codelineno-1-54"></a><span class="k">for</span> <span class="n">tgt_md_info</span> <span class="ow">in</span> <span class="n">tgt_md_info_list</span><span class="p">:</span>
+</span><span id="__span-1-55"><a id="__codelineno-1-55" name="__codelineno-1-55" href="#__codelineno-1-55"></a>    <span class="n">tgt_md_info</span><span class="o">.</span><span class="n">save_to_markdown</span><span class="p">(</span><span class="n">output_path</span><span class="p">)</span>
+</span></code></pre></div>
+<p>执行上述代码后，您将得到翻译原文的文档解析结果、翻译原文的 Markdown 文件和翻译后文档的 Markdown 文件，保存在 <code>output</code> 目录中。</p>
+<p>PP-DocTranslation 预测的流程、API 说明、产出说明如下：</p>
+<details><summary>（1）调用 <code>PPDocTranslation</code> 实例化 PP-DocTranslation 产线对象。</summary>
+
+相关参数说明如下：
+
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>参数说明</th>
+<th>参数类型</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>layout_detection_model_name</code></td>
+<td>版面区域检测的模型名称。如果设置为<code>None</code>，将会使用产线默认模型。</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>layout_detection_model_dir</code></td>
+<td>版面区域检测模型的目录路径。如果设置为<code>None</code>，将会下载官方模型。</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>layout_threshold</code></td>
+<td>版面模型得分阈值。
+<ul>
+<li><b>float</b>：<code>0-1</code> 之间的任意浮点数；</li>
+<li><b>dict</b>： <code>{0:0.1}</code> key为类别ID，value为该类别的阈值；</li>
+<li><b>None</b>：如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为 <code>0.5</code>。</li>
+</ul>
+</td>
+<td><code>float|dict|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>layout_nms</code></td>
+<td>版面检测是否使用后处理NMS。如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
+<td><code>bool|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>layout_unclip_ratio</code></td>
+<td>版面区域检测模型检测框的扩张系数。
+<ul>
+<li><b>float</b>：任意大于 <code>0</code>  浮点数；</li>
+<li><b>Tuple[float,float]</b>：在横纵两个方向各自的扩张系数；</li>
+<li><b>dict</b>，dict的key为<b>int</b>类型，代表<code>cls_id</code>, value为<b>tuple</b>类型，如<code>{0: (1.1, 2.0)}</code>，表示将模型输出的第0类别检测框中心不变，宽度扩张1.1倍，高度扩张2.0倍；</li>
+<li><b>None</b>：如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为 <code>1.0</code>。</li>
+</ul>
+</td>
+<td><code>float|Tuple[float,float]|dict|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>layout_merge_bboxes_mode</code></td>
+<td>版面区域检测的重叠框过滤方式。
+<ul>
+<li><b>str</b>：<code>large</code>，<code>small</code>，<code>union</code>，分别表示重叠框过滤时选择保留大框，小框还是同时保留；</li>
+<li><b>dict</b>： dict的key为<b>int</b>类型，代表<code>cls_id</code>，value为<b>str</b>类型，如<code>{0: "large", 2: "small"}</code>，表示对第0类别检测框使用large模式，对第2类别检测框使用small模式；</li>
+<li><b>None</b>：如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为 <code>large</code>。</li>
+</ul>
+</td>
+<td><code>str|dict|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>chart_recognition_model_name</code></td>
+<td>图表解析的模型名称。如果设置为<code>None</code>，将会使用产线默认模型。</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>chart_recognition_model_dir</code></td>
+<td>图表解析模型的目录路径。如果设置为<code>None</code>，将会下载官方模型。</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>chart_recognition_batch_size</code></td>
+<td>图表解析模型的batch size。如果设置为<code>None</code>，将默认设置batch size为<code>1</code>。</td>
+<td><code>int|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>region_detection_model_name</code></td>
+<td>文档图像版面子模块检测的模型名称。如果设置为<code>None</code>，将会使用产线默认模型。</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>region_detection_model_dir</code></td>
+<td>文档图像版面子模块检测模型的目录路径。如果设置为<code>None</code>，将会下载官方模型。</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>doc_orientation_classify_model_name</code></td>
+<td>文档方向分类模型的名称。如果设置为<code>None</code>，将会使用产线默认模型。</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>doc_orientation_classify_model_dir</code></td>
+<td>文档方向分类模型的目录路径。如果设置为<code>None</code>，将会下载官方模型。</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>doc_unwarping_model_name</code></td>
+<td>文本图像矫正模型的名称。如果设置为<code>None</code>，将会使用产线默认模型。</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>doc_unwarping_model_dir</code></td>
+<td>文本图像矫正模型的目录路径。如果设置为<code>None</code>，将会下载官方模型。</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>text_detection_model_name</code></td>
+<td>文本检测模型的名称。如果设置为<code>None</code>，将会使用产线默认模型。</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>text_detection_model_dir</code></td>
+<td>文本检测模型的目录路径。如果设置为<code>None</code>，将会下载官方模型。</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>text_det_limit_side_len</code></td>
+<td>文本检测的图像边长限制。
+<ul>
+<li><b>int</b>：大于 <code>0</code> 的任意整数；</li>
+<li><b>None</b>：如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为 <code>960</code>。</li>
+</ul>
+</td>
+<td><code>int|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>text_det_limit_type</code></td>
+<td>文本检测的图像边长限制类型。
+<ul>
+<li><b>str</b>：支持 <code>min</code> 和 <code>max</code>，<code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>，<code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code>；</li>
+<li><b>None</b>：如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为 <code>max</code>。</li>
+</ul>
+</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>text_det_thresh</code></td>
+<td>检测像素阈值，输出的概率图中，得分大于该阈值的像素点才会被认为是文字像素点。
+<ul>
+<li><b>float</b>：大于<code>0</code>的任意浮点数；
+<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值 <code>0.3</code>。</li></li></ul>
+</td>
+<td><code>float|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>text_det_box_thresh</code></td>
+<td>检测框阈值，检测结果边框内，所有像素点的平均得分大于该阈值时，该结果会被认为是文字区域。
+<ul>
+<li><b>float</b>：大于<code>0</code>的任意浮点数；
+<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值 <code>0.6</code>。</li></li></ul>
+</td>
+<td><code>float|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>text_det_unclip_ratio</code></td>
+<td>文本检测扩张系数，使用该方法对文字区域进行扩张，该值越大，扩张的面积越大。
+<ul>
+<li><b>float</b>：大于<code>0</code>的任意浮点数；
+<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值 <code>2.0</code>。</li></li></ul>
+</td>
+<td><code>float|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>textline_orientation_model_name</code></td>
+<td>文本行方向模型的名称。如果设置为<code>None</code>，将会使用产线默认模型。</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>textline_orientation_model_dir</code></td>
+<td>文本行方向模型的目录路径。如果设置为<code>None</code>，将会下载官方模型。</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>textline_orientation_batch_size</code></td>
+<td>文本行方向模型的batch size。如果设置为<code>None</code>，将默认设置batch size为<code>1</code>。</td>
+<td><code>int|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>text_recognition_model_name</code></td>
+<td>文本识别模型的名称。如果设置为<code>None</code>，将会使用产线默认模型。</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>text_recognition_model_dir</code></td>
+<td>文本识别模型的目录路径。如果设置为<code>None</code>，将会下载官方模型。</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>text_recognition_batch_size</code></td>
+<td>文本识别模型的batch size。如果设置为<code>None</code>，将默认设置batch size为<code>1</code>。</td>
+<td><code>int|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>text_rec_score_thresh</code></td>
+<td>文本识别阈值，得分大于该阈值的文本结果会被保留。
+<ul>
+<li><b>float</b>：大于<code>0</code>的任意浮点数；
+<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值 <code>0.0</code>，即不设阈值。</li></li></ul>
+</td>
+<td><code>float|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>table_classification_model_name</code></td>
+<td>表格分类模型的名称。如果设置为<code>None</code>，将会使用产线默认模型。</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>table_classification_model_dir</code></td>
+<td>表格分类模型的目录路径。如果设置为<code>None</code>，将会下载官方模型。</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>wired_table_structure_recognition_model_name</code></td>
+<td>有线表格结构识别模型的名称。如果设置为<code>None</code>，将会使用产线默认模型。</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>wired_table_structure_recognition_model_dir</code></td>
+<td>有线表格结构识别模型的目录路径。如果设置为<code>None</code>，将会下载官方模型。</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>wireless_table_structure_recognition_model_name</code></td>
+<td>无线表格结构识别模型的名称。如果设置为<code>None</code>，将会使用产线默认模型。</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>wireless_table_structure_recognition_model_dir</code></td>
+<td>无线表格结构识别模型的目录路径。如果设置为<code>None</code>，将会下载官方模型。</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>wired_table_cells_detection_model_name</code></td>
+<td>有线表格单元格检测模型的名称。如果设置为<code>None</code>，将会使用产线默认模型。</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>wired_table_cells_detection_model_dir</code></td>
+<td>有线表格单元格检测模型的目录路径。如果设置为<code>None</code>，将会下载官方模型。</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>wireless_table_cells_detection_model_name</code></td>
+<td>无线表格单元格检测模型的名称。如果设置为<code>None</code>，将会使用产线默认模型。</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>wireless_table_cells_detection_model_dir</code></td>
+<td>无线表格单元格检测模型的目录路径。如果设置为<code>None</code>，将会下载官方模型。</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>table_orientation_classify_model_name</code></td>
+<td>表格方向分类模型的名称。如果设置为<code>None</code>，将会使用产线默认模型。</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>table_orientation_classify_model_dir</code></td>
+<td>表格方向分类模型的目录路径。如果设置为<code>None</code>，将会下载官方模型。</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>seal_text_detection_model_name</code></td>
+<td>印章文本检测模型的名称。如果设置为<code>None</code>，将会使用产线默认模型。</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>seal_text_detection_model_dir</code></td>
+<td>印章文本检测模型的目录路径。如果设置为<code>None</code>，将会下载官方模型。</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>seal_det_limit_side_len</code></td>
+<td>印章文本检测的图像边长限制。
+<ul>
+<li><b>int</b>：大于 <code>0</code> 的任意整数；</li>
+<li><b>None</b>：如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为 <code>736</code>。</li>
+</ul>
+</td>
+<td><code>int|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>seal_det_limit_type</code></td>
+<td>印章文本检测的图像边长限制类型。
+<ul>
+<li><b>str</b>：支持 <code>min</code> 和 <code>max</code>，<code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>，<code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code>；</li>
+<li><b>None</b>：如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为 <code>min</code>。</li>
+</ul>
+</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>seal_det_thresh</code></td>
+<td>检测像素阈值，输出的概率图中，得分大于该阈值的像素点才会被认为是文字像素点。
+<ul>
+<li><b>float</b>：大于 <code>0</code> 的任意浮点数；
+<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值 <code>0.2</code>。</li></li></ul>
+</td>
+<td><code>float|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>seal_det_box_thresh</code></td>
+<td>检测框阈值，检测结果边框内，所有像素点的平均得分大于该阈值时，该结果会被认为是文字区域。
+<ul>
+<li><b>float</b>：大于<code>0</code>的任意浮点数；
+<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值 <code>0.6</code>。</li></li></ul>
+</td>
+<td><code>float|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>seal_det_unclip_ratio</code></td>
+<td>印章文本检测扩张系数，使用该方法对文字区域进行扩张，该值越大，扩张的面积越大。
+<ul>
+<li><b>float</b>：大于<code>0</code>的任意浮点数；
+<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值 <code>0.5</code>。</li></li></ul>
+</td>
+<td><code>float|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>seal_text_recognition_model_name</code></td>
+<td>印章文本识别模型的名称。如果设置为<code>None</code>，将会使用产线默认模型。</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>seal_text_recognition_model_dir</code></td>
+<td>印章文本识别模型的目录路径。如果设置为<code>None</code>，将会下载官方模型。</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>seal_text_recognition_batch_size</code></td>
+<td>印章文本识别模型的batch size。如果设置为<code>None</code>，将默认设置batch size为<code>1</code>。</td>
+<td><code>int|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>seal_rec_score_thresh</code></td>
+<td>印章文本识别阈值，得分大于该阈值的文本结果会被保留。
+<ul>
+<li><b>float</b>：大于<code>0</code>的任意浮点数；
+<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值 <code>0.0</code>，即不设阈值。</li></li></ul>
+</td>
+<td><code>float|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>formula_recognition_model_name</code></td>
+<td>公式识别模型的名称。如果设置为<code>None</code>，将会使用产线默认模型。</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>formula_recognition_model_dir</code></td>
+<td>公式识别模型的目录路径。如果设置为<code>None</code>，将会下载官方模型。</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>formula_recognition_batch_size</code></td>
+<td>公式识别模型的batch size。如果设置为<code>None</code>，将默认设置batch size为<code>1</code>。</td>
+<td><code>int|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>use_doc_orientation_classify</code></td>
+<td>是否加载并使用文档方向分类模块。如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
+<td><code>bool|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>use_doc_unwarping</code></td>
+<td>是否加载并使用文本图像矫正模块。如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
+<td><code>bool|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>use_textline_orientation</code></td>
+<td>是否加载并使用文本行方向分类模块。如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
+<td><code>bool|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>use_seal_recognition</code></td>
+<td>是否加载并使用印章文本识别子产线。如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
+<td><code>bool|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>use_table_recognition</code></td>
+<td>是否加载并使用表格识别子产线。如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
+<td><code>bool|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>use_formula_recognition</code></td>
+<td>是否加载并使用公式识别子产线。如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
+<td><code>bool|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>use_chart_recognition</code></td>
+<td>是否加载并使用图表解析模块。如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
+<td><code>bool|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>use_region_detection</code></td>
+<td>是否加载并使用文档区域检测子产线。如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
+<td><code>bool|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>chat_bot_config</code></td>
+<td>大语言模型配置信息。配置内容为如下dict：
+<pre><code>{
+"module_name": "chat_bot",
+"model_name": "ernie-3.5-8k",
+"base_url": "https://qianfan.baidubce.com/v2",
+"api_type": "openai",
+"api_key": "api_key"  # 请将此设置为实际的API密钥
+}</code></pre>
+</td>
+<td><code>dict|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>device</code></td>
+<td>用于推理的设备。支持指定具体卡号：
+<ul>
+<li><b>CPU</b>：如 <code>cpu</code> 表示使用 CPU 进行推理；</li>
+<li><b>GPU</b>：如 <code>gpu:0</code> 表示使用第 1 块 GPU 进行推理；</li>
+<li><b>NPU</b>：如 <code>npu:0</code> 表示使用第 1 块 NPU 进行推理；</li>
+<li><b>XPU</b>：如 <code>xpu:0</code> 表示使用第 1 块 XPU 进行推理；</li>
+<li><b>MLU</b>：如 <code>mlu:0</code> 表示使用第 1 块 MLU 进行推理；</li>
+<li><b>DCU</b>：如 <code>dcu:0</code> 表示使用第 1 块 DCU 进行推理；</li>
+<li><b>None</b>：如果设置为<code>None</code>，初始化时，会优先使用本地的 GPU 0号设备，如果没有，则使用 CPU 设备。</li>
+</ul>
+</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>enable_hpi</code></td>
+<td>是否启用高性能推理。</td>
+<td><code>bool</code></td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td><code>use_tensorrt</code></td>
+<td>是否启用 Paddle Inference 的 TensorRT 子图引擎。如果模型不支持通过 TensorRT 加速，即使设置了此标志，也不会使用加速。<br/>
+对于 CUDA 11.8 版本的飞桨，兼容的 TensorRT 版本为 8.x（x>=6），建议安装 TensorRT 8.6.1.6。<br/>
+对于 CUDA 12.6 版本的飞桨，兼容的 TensorRT 版本为 10.x（x>=5），建议安装 TensorRT 10.5.0.18。
+</td>
+<td><code>bool</code></td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td><code>precision</code></td>
+<td>计算精度，如 fp32、fp16。</td>
+<td><code>str</code></td>
+<td><code>"fp32"</code></td>
+</tr>
+<tr>
+<td><code>enable_mkldnn</code></td>
+<td>是否启用 MKL-DNN 加速推理。如果 MKL-DNN 不可用或模型不支持通过 MKL-DNN 加速，即使设置了此标志，也不会使用加速。
+</td>
+<td><code>bool</code></td>
+<td><code>True</code></td>
+</tr>
+<tr>
+<td><code>mkldnn_cache_capacity</code></td>
+<td>
+MKL-DNN 缓存容量。
+</td>
+<td><code>int</code></td>
+<td><code>10</code></td>
+</tr>
+<tr>
+<td><code>cpu_threads</code></td>
+<td>在 CPU 上进行推理时使用的线程数。</td>
+<td><code>int</code></td>
+<td><code>8</code></td>
+</tr>
+<tr>
+<td><code>paddlex_config</code></td>
+<td>PaddleX产线配置文件路径。</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
+</tr>
+</tbody>
+</table>
+
+</details>
+
+<details><summary>（2）调用 PP-DocTranslation 产线对象的 <code>visual_predict()</code> 方法获取视觉预测结果，该方法会返回一个结果列表。另外，产线还提供了 <code>visual_predict_iter()</code> 方法。两者在参数接受和结果返回方面是完全一致的，区别在于 <code>visual_predict_iter()</code> 返回的是一个 <code>generator</code>，能够逐步处理和获取预测结果，适合处理大型数据集或希望节省内存的场景。可以根据实际需求选择使用这两种方法中的任意一种。以下是 <code>visual_predict()</code> 方法的参数及其说明：</summary>
+
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>参数说明</th>
+<th>参数类型</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tr>
+<td><code>input</code></td>
+<td>待预测数据，支持多种输入类型，必填。
+<ul>
+  <li><b>Python Var</b>：如 <code>numpy.ndarray</code> 表示的图像数据；</li>
+  <li><b>str</b>：如图像文件或者PDF文件的本地路径：<code>/root/data/img.jpg</code>；<b>如URL链接</b>，如图像文件或PDF文件的网络URL：<a href = "https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/vehicle_certificate-1.png">示例</a>；<b>如本地目录</b>，该目录下需包含待预测图像，如本地路径：<code>/root/data/</code>(当前不支持目录中包含PDF文件的预测，PDF文件需要指定到具体文件路径)；</li>
+  <li><b>list</b>：列表元素需为上述类型数据，如<code>[numpy.ndarray, numpy.ndarray]</code>，<code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>，<code>["/root/data1", "/root/data2"]</code>。</li>
+</ul>
+</td>
+<td><code>Python Var|str|list</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>use_doc_orientation_classify</code></td>
+<td>是否在推理时使用文档方向分类模块。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td><code>bool|None</code></td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td><code>use_doc_unwarping</code></td>
+<td>是否在推理时使用文本图像矫正模块。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td><code>bool|None</code></td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td><code>use_textline_orientation</code></td>
+<td>是否在推理时使用文本行方向分类模块。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td><code>bool|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>use_seal_recognition</code></td>
+<td>是否在推理时使用印章文本识别子产线。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td><code>bool|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>use_table_recognition</code></td>
+<td>是否在推理时使用表格识别子产线。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td><code>bool|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>use_formula_recognition</code></td>
+<td>是否在推理时使用公式识别子产线。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td><code>bool|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>use_chart_recognition</code></td>
+<td>是否使用图表解析模块。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td><code>bool|None</code></td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td><code>use_region_detection</code></td>
+<td>是否使用文档区域检测子产线。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td><code>bool|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>layout_threshold</code></td>
+<td>参数含义与实例化参数基本相同。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td><code>float|dict|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>layout_nms</code></td>
+<td>参数含义与实例化参数基本相同。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td><code>bool|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>layout_unclip_ratio</code></td>
+<td>参数含义与实例化参数基本相同。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td><code>float|Tuple[float,float]|dict|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>layout_merge_bboxes_mode</code></td>
+<td>参数含义与实例化参数基本相同。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td><code>str|dict|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>text_det_limit_side_len</code></td>
+<td>参数含义与实例化参数基本相同。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td><code>int|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>text_det_limit_type</code></td>
+<td>参数含义与实例化参数基本相同。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>text_det_thresh</code></td>
+<td>参数含义与实例化参数基本相同。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td><code>float|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>text_det_box_thresh</code></td>
+<td>参数含义与实例化参数基本相同。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td><code>float|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>text_det_unclip_ratio</code></td>
+<td>参数含义与实例化参数基本相同。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td><code>float|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>text_rec_score_thresh</code></td>
+<td>参数含义与实例化参数基本相同。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td><code>float|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>seal_det_limit_side_len</code></td>
+<td>参数含义与实例化参数基本相同。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td><code>int|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>seal_det_limit_type</code></td>
+<td>参数含义与实例化参数基本相同。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>seal_det_thresh</code></td>
+<td>参数含义与实例化参数基本相同。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td><code>float|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>seal_det_box_thresh</code></td>
+<td>参数含义与实例化参数基本相同。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td><code>float|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>seal_det_unclip_ratio</code></td>
+<td>参数含义与实例化参数基本相同。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td><code>float|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>seal_rec_score_thresh</code></td>
+<td>参数含义与实例化参数基本相同。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td><code>float|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>use_wired_table_cells_trans_to_html</code></td>
+<td>是否启用有线表单元格检测结果直转HTML，启用则直接基于有线表单元格检测结果的几何关系构建HTML。</td>
+<td><code>bool</code></td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td><code>use_wireless_table_cells_trans_to_html</code></td>
+<td>是否启用无线表单元格检测结果直转HTML，启用则直接基于无线表单元格检测结果的几何关系构建HTML。</td>
+<td><code>bool</code></td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td><code>use_table_orientation_classify</code></td>
+<td>是否启用表格使用表格方向分类，启用时当图像中的表格存在90/180/270度旋转时，能够将方向校正并正确完成表格识别。</td>
+<td><code>bool</code></td>
+<td><code>True</code></td>
+</tr>
+<tr>
+<td><code>use_ocr_results_with_table_cells</code></td>
+<td>是否启用单元格切分OCR，启用时会基于单元格预测结果对OCR检测结果进行切分和重识别，避免出现文字缺失情况。</td>
+<td><code>bool</code></td>
+<td><code>True</code></td>
+</tr>
+<tr>
+<td><code>use_e2e_wired_table_rec_model</code></td>
+<td>是否启用有线表端到端表格识别模式，启用则不使用单元格检测模型，只使用表格结构识别模型。</td>
+<td><code>bool</code></td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td><code>use_e2e_wireless_table_rec_model</code></td>
+<td>是否启用无线表端到端表格识别模式，启用则不使用单元格检测模型，只使用表格结构识别模型。</td>
+<td><code>bool</code></td>
+<td><code>True</code></td>
+</tr>
+</table>
+</details>
+
+<details><summary>（3）对视觉预测结果进行处理：每个样本的预测结果均为对应的Result对象，且支持打印、保存为图片、保存为<code>json</code>文件的操作:</summary>
+
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>方法说明</th>
+<th>参数</th>
+<th>参数类型</th>
+<th>参数说明</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tr>
+<td rowspan="3"><code>print()</code></td>
+<td rowspan="3">打印结果到终端</td>
+<td><code>format_json</code></td>
+<td><code>bool</code></td>
+<td>是否对输出内容进行使用 <code>JSON</code> 缩进格式化</td>
+<td><code>True</code></td>
+</tr>
+<tr>
+<td><code>indent</code></td>
+<td><code>int</code></td>
+<td>指定缩进级别，以美化输出的 <code>JSON</code> 数据，使其更具可读性，仅当 <code>format_json</code> 为 <code>True</code> 时有效</td>
+<td>4</td>
+</tr>
+<tr>
+<td><code>ensure_ascii</code></td>
+<td><code>bool</code></td>
+<td>控制是否将非 <code>ASCII</code> 字符转义为 <code>Unicode</code>。设置为 <code>True</code> 时，所有非 <code>ASCII</code> 字符将被转义；<code>False</code> 则保留原始字符，仅当<code>format_json</code>为<code>True</code>时有效</td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td rowspan="3"><code>save_to_json()</code></td>
+<td rowspan="3">将结果保存为json格式的文件</td>
+<td><code>save_path</code></td>
+<td><code>str</code></td>
+<td>保存的文件路径，当为目录时，保存文件命名与输入文件类型命名一致</td>
+<td>无</td>
+</tr>
+<tr>
+<td><code>indent</code></td>
+<td><code>int</code></td>
+<td>指定缩进级别，以美化输出的 <code>JSON</code> 数据，使其更具可读性，仅当 <code>format_json</code> 为 <code>True</code> 时有效</td>
+<td>4</td>
+</tr>
+<tr>
+<td><code>ensure_ascii</code></td>
+<td><code>bool</code></td>
+<td>控制是否将非 <code>ASCII</code> 字符转义为 <code>Unicode</code>。设置为 <code>True</code> 时，所有非 <code>ASCII</code> 字符将被转义；<code>False</code> 则保留原始字符，仅当<code>format_json</code>为<code>True</code>时有效</td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td><code>save_to_img()</code></td>
+<td>将中间各个模块的可视化图像保存在png格式的图像</td>
+<td><code>save_path</code></td>
+<td><code>str</code></td>
+<td>保存的文件路径，支持目录或文件路径</td>
+<td>无</td>
+</tr>
+<tr>
+<td><code>save_to_markdown()</code></td>
+<td>将图像或者PDF文件中的每一页分别保存为markdown格式的文件</td>
+<td><code>save_path</code></td>
+<td><code>str</code></td>
+<td>保存的文件路径，支持目录或文件路径</td>
+<td>无</td>
+</tr>
+<tr>
+<td><code>save_to_html()</code></td>
+<td>将文件中的表格保存为html格式的文件</td>
+<td><code>save_path</code></td>
+<td><code>str</code></td>
+<td>保存的文件路径，支持目录或文件路径</td>
+<td>无</td>
+</tr>
+<tr>
+<td><code>save_to_xlsx()</code></td>
+<td>将文件中的表格保存为xlsx格式的文件</td>
+<td><code>save_path</code></td>
+<td><code>str</code></td>
+<td>保存的文件路径，支持目录或文件路径</td>
+<td>无</td>
+</tr>
+</table>
+
+- 调用`print()` 方法会将结果打印到终端，打印到终端的内容解释如下：
+    - `input_path`: `(str)` 待预测图像或者PDF的输入路径
+
+    - `page_index`: `(Union[int, None])` 如果输入是PDF文件，则表示当前是PDF的第几页，否则为 `None`
+
+    - `model_settings`: `(Dict[str, bool])` 配置产线所需的模型参数
+
+        - `use_doc_preprocessor`: `(bool)` 控制是否启用文档预处理子产线
+        - `use_general_ocr`: `(bool)` 控制是否启用 OCR 子产线
+        - `use_seal_recognition`: `(bool)` 控制是否启用印章识别子产线
+        - `use_table_recognition`: `(bool)` 控制是否启用表格识别子产线
+        - `use_formula_recognition`: `(bool)` 控制是否启用公式识别子产线
+
+    - `doc_preprocessor_res`: `(Dict[str, Union[List[float], str]])` 文档预处理结果字典，仅当`use_doc_preprocessor=True`时存在
+        - `input_path`: `(str)` 文档预处理子产线接受的图像路径，当输入为`numpy.ndarray`时，保存为`None`，此处为`None`
+        - `page_index`: `None`，此处的输入为`numpy.ndarray`，所以值为`None`
+        - `model_settings`: `(Dict[str, bool])` 文档预处理子产线的模型配置参数
+          - `use_doc_orientation_classify`: `(bool)` 控制是否启用文档图像方向分类子模块
+          - `use_doc_unwarping`: `(bool)` 控制是否启用文本图像扭曲矫正子模块
+        - `angle`: `(int)` 文档图像方向分类子模块的预测结果，启用时返回实际角度值
+
+    - `parsing_res_list`: `(List[Dict])` 解析结果的列表，每个元素为一个字典，列表顺序为解析后的阅读顺序。
+        - `block_bbox`: `(np.ndarray)` 版面区域的边界框。
+        - `block_label`: `(str)` 版面区域的标签，例如`text`, `table`等。
+        - `block_content`: `(str)` 内容为版面区域内的内容。
+        - `seg_start_flag`: `(bool)` 标识该版面区域是否是段落的开始。
+        - `seg_end_flag`: `(bool)` 标识该版面区域是否是段落的结束。
+        - `sub_label`: `(str)` 版面区域的子标签，例如`text`的子标签可能为`title_text`。
+        - `sub_index`: `(int)` 版面区域的子索引，用于恢复Markdown。
+        - `index`: `(int)` 版面区域的索引，用于显示版面排序结果。
+
+
+    - `overall_ocr_res`: `(Dict[str, Union[List[str], List[float], numpy.ndarray]])` 全局 OCR 结果的字典
+      - `input_path`: `(Union[str, None])` 图像OCR子产线接受的图像路径，当输入为`numpy.ndarray`时，保存为`None`
+      - `page_index`: `None`，此处的输入为`numpy.ndarray`，所以值为`None`
+      - `model_settings`: `(Dict)` OCR子产线的模型配置参数
+      - `dt_polys`: `(List[numpy.ndarray])` 文本检测的多边形框列表。每个检测框由4个顶点坐标构成的numpy数组表示，数组shape为(4, 2)，数据类型为int16
+      - `dt_scores`: `(List[float])` 文本检测框的置信度列表
+      - `text_det_params`: `(Dict[str, Dict[str, int, float]])` 文本检测模块的配置参数
+        - `limit_side_len`: `(int)` 图像预处理时的边长限制值
+        - `limit_type`: `(str)` 边长限制的处理方式
+        - `thresh`: `(float)` 文本像素分类的置信度阈值
+        - `box_thresh`: `(float)` 文本检测框的置信度阈值
+        - `unclip_ratio`: `(float)` 文本检测框的膨胀系数
+        - `text_type`: `(str)` 文本检测的类型，当前固定为"general"
+
+      - `text_type`: `(str)` 文本检测的类型，当前固定为"general"
+      - `textline_orientation_angles`: `(List[int])` 文本行方向分类的预测结果。启用时返回实际角度值（如[0,0,1]
+      - `text_rec_score_thresh`: `(float)` 文本识别结果的过滤阈值
+      - `rec_texts`: `(List[str])` 文本识别结果列表，仅包含置信度超过`text_rec_score_thresh`的文本
+      - `rec_scores`: `(List[float])` 文本识别的置信度列表，已按`text_rec_score_thresh`过滤
+      - `rec_polys`: `(List[numpy.ndarray])` 经过置信度过滤的文本检测框列表，格式同`dt_polys`
+
+    - `formula_res_list`: `(List[Dict[str, Union[numpy.ndarray, List[float], str]]])` 公式识别结果列表，每个元素为一个字典
+        - `rec_formula`: `(str)` 公式识别结果
+        - `rec_polys`: `(numpy.ndarray)` 公式检测框，shape为(4, 2)，dtype为int16
+        - `formula_region_id`: `(int)` 公式所在的区域编号
+
+    - `seal_res_list`: `(List[Dict[str, Union[numpy.ndarray, List[float], str]]])` 印章识别结果列表，每个元素为一个字典
+        - `input_path`: `(str)` 印章图像的输入路径
+        - `page_index`: `None`，此处的输入为`numpy.ndarray`，所以值为`None`
+        - `model_settings`: `(Dict)` 印章识别子产线的模型配置参数
+        - `dt_polys`: `(List[numpy.ndarray])` 印章检测框列表，格式同`dt_polys`
+        - `text_det_params`: `(Dict[str, Dict[str, int, float]])` 印章检测模块的配置参数, 具体参数含义同上
+        - `text_type`: `(str)` 印章检测的类型，当前固定为"seal"
+        - `text_rec_score_thresh`: `(float)` 印章识别结果的过滤阈值
+        - `rec_texts`: `(List[str])` 印章识别结果列表，仅包含置信度超过`text_rec_score_thresh`的文本
+        - `rec_scores`: `(List[float])` 印章识别的置信度列表，已按`text_rec_score_thresh`过滤
+        - `rec_polys`: `(List[numpy.ndarray])` 经过置信度过滤的印章检测框列表，格式同`dt_polys`
+        - `rec_boxes`: `(numpy.ndarray)` 检测框的矩形边界框数组，shape为(n, 4)，dtype为int16。每一行表示一个矩形
+
+    - `table_res_list`: `(List[Dict[str, Union[numpy.ndarray, List[float], str]]])` 表格识别结果列表，每个元素为一个字典
+        - `cell_box_list`: `(List[numpy.ndarray])` 表格单元格的边界框列表
+        - `pred_html`: `(str)` 表格的HTML格式字符串
+        - `table_ocr_pred`: `(dict)` 表格的OCR识别结果
+            - `rec_polys`: `(List[numpy.ndarray])` 单元格的检测框列表
+            - `rec_texts`: `(List[str])` 单元格的识别结果
+            - `rec_scores`: `(List[float])` 单元格的识别置信度
+            - `rec_boxes`: `(numpy.ndarray)` 检测框的矩形边界框数组，shape为(n, 4)，dtype为int16。每一行表示一个矩形
+
+- 调用`save_to_json()` 方法会将上述内容保存到指定的 `save_path` 中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_res.json`，如果指定为文件，则直接保存到该文件中。由于 json 文件不支持保存numpy数组，因此会将其中的 `numpy.array` 类型转换为列表形式。
+- 调用`save_to_img()` 方法会将可视化结果保存到指定的 `save_path` 中，如果指定为目录，则会将版面区域检测可视化图像、全局OCR可视化图像、版面阅读顺序可视化图像等内容保存，如果指定为文件，则直接保存到该文件中。(产线通常包含较多结果图片，不建议直接指定为具体的文件路径，否则多张图会被覆盖，仅保留最后一张图)
+- 调用`save_to_markdown()` 方法会将转化后的 Markdown 文件保存到指定的 `save_path` 中，保存的文件路径为`save_path/{your_img_basename}.md`，如果输入是 PDF 文件，建议直接指定目录，否责多个 markdown 文件会被覆盖。
+- 调用 `concatenate_markdown_pages()` 方法将 PP-DocTranslation 产线输出的多页Markdown内容`markdown_list`合并为单个完整文档，并返回合并后的Markdown内容。
+</details>
+
+<details><summary>（4）调用 <code>translate()</code> 方法执行文档翻译，该方法会返回翻译的 markdown 原文和译文，是一个markdown对象，可以通过执行 <code>save_to_markdown()</code> 方法将需要的部分保存到本地。以下是 <code>translate()</code> 方法的相关参数说明：</summary>
+
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>参数说明</th>
+<th>参数类型</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ori_md_info_list</code></td>
+<td>原始Markdown格式的数据列表，包含需要翻译的内容。必须为字典组成的列表，每个字典表示一个文档块</td>
+<td><code>List[Dict]</code></td>
+<td>无默认值（必填）</td>
+</tr>
+<tr>
+<td><code>target_language</code></td>
+<td>目标语言（ISO 639-1 语言代码，如 <code>"en"</code>/<code>"ja"</code>/<code>"fr"</code>）。</td>
+<td><code>str</code></td>
+<td><code>"zh"</code></td>
+</tr>
+<tr>
+<td><code>chunk_size</code></td>
+<td>翻译文本分块处理的字符数阈值。</td>
+<td><code>int</code></td>
+<td><code>5000</code></td>
+</tr>
+<tr>
+<td><code>task_description</code></td>
+<td>自定义任务描述提示词。</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>output_format</code></td>
+<td>指定输出格式要求，如“保持原Markdown结构”。</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>rules_str</code></td>
+<td>自定义翻译规则说明。</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>few_shot_demo_text_content</code></td>
+<td>少样本学习的示例文本内容。</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>few_shot_demo_key_value_list</code></td>
+<td>结构化少样本示例数据。键值对格式的示例数据，可传入专业术语对照表。</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>chat_bot_config</code></td>
+<td>大语言模型配置。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td><code>dict|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>llm_request_interval</code></td>
+<td>向大语言模型发送请求的时间间隔，单位为秒。该参数可用于防止过于频繁地调用大语言模型。</td>
+<td><code>float</code></td>
+<td><code>0</code></td>
+</tr>
+</tbody>
+</table>
+
+</details>
+
+<h2 id="3">3. 开发集成/部署<a class="headerlink" href="#3" title="Permanent link">&para;</a></h2>
+<p>如果产线可以达到您对产线推理速度和精度的要求，您可以直接进行开发集成/部署。</p>
+<p>若您需要将产线直接应用在您的Python项目中，可以参考 <a href="#22-python脚本方式集成">2.2 Python脚本方式</a>中的示例代码。</p>
+<p>此外，PaddleOCR 也提供了其他两种部署方式，详细说明如下：</p>
+<p>🚀 高性能推理：在实际生产环境中，许多应用对部署策略的性能指标（尤其是响应速度）有着较严苛的标准，以确保系统的高效运行与用户体验的流畅性。为此，PaddleOCR 提供高性能推理功能，旨在对模型推理及前后处理进行深度性能优化，实现端到端流程的显著提速，详细的高性能推理流程请参考<a href="../deployment/high_performance_inference.html">高性能推理</a>。</p>
+<p>☁️ 服务化部署：服务化部署是实际生产环境中常见的一种部署形式。通过将推理功能封装为服务，客户端可以通过网络请求来访问这些服务，以获取推理结果。详细的产线服务化部署流程请参考<a href="../deployment/serving.html">服务化部署</a>。</p>
+<p>以下是基础服务化部署的API参考与多语言服务调用示例：</p>
+<details><summary>API参考</summary>
+<p>对于服务提供的主要操作：</p>
+<ul>
+<li>HTTP请求方法为POST。</li>
+<li>请求体和响应体均为JSON数据（JSON对象）。</li>
+<li>当请求处理成功时，响应状态码为<code>200</code>，响应体的属性如下：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>类型</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>logId</code></td>
+<td><code>string</code></td>
+<td>请求的UUID。</td>
+</tr>
+<tr>
+<td><code>errorCode</code></td>
+<td><code>integer</code></td>
+<td>错误码。固定为<code>0</code>。</td>
+</tr>
+<tr>
+<td><code>errorMsg</code></td>
+<td><code>string</code></td>
+<td>错误说明。固定为<code>"Success"</code>。</td>
+</tr>
+<tr>
+<td><code>result</code></td>
+<td><code>object</code></td>
+<td>操作结果。</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>当请求处理未成功时，响应体的属性如下：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>类型</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>logId</code></td>
+<td><code>string</code></td>
+<td>请求的UUID。</td>
+</tr>
+<tr>
+<td><code>errorCode</code></td>
+<td><code>integer</code></td>
+<td>错误码。与响应状态码相同。</td>
+</tr>
+<tr>
+<td><code>errorMsg</code></td>
+<td><code>string</code></td>
+<td>错误说明。</td>
+</tr>
+</tbody>
+</table>
+<p>服务提供的主要操作如下：</p>
+<ul>
+<li><b><code>analyzeImages</code></b></li>
+</ul>
+<p>使用计算机视觉模型对图像进行分析，获得OCR、表格识别结果等。</p>
+<p><code>POST /doctrans-visual</code></p>
+<ul>
+<li>请求体的属性如下：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>类型</th>
+<th>含义</th>
+<th>是否必填</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>file</code></td>
+<td><code>string</code></td>
+<td>服务器可访问的图像文件或PDF文件的URL，或上述类型文件内容的Base64编码结果。默认对于超过10页的PDF文件，只有前10页的内容会被处理。<br /> 要解除页数限制，请在产线配置文件中添加以下配置：
+<pre><code>Serving:
+  extra:
+    max_num_input_imgs: null
+</code></pre>
+</td>
+<td>是</td>
+</tr>
+<tr>
+<td><code>fileType</code></td>
+<td><code>integer</code>｜<code>null</code></td>
+<td>文件类型。<code>0</code>表示PDF文件，<code>1</code>表示图像文件。若请求体无此属性，则将根据URL推断文件类型。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>useDocOrientationClassify</code></td>
+<td><code>boolean</code> | <code>null</code></td>
+<td>请参阅产线对象中 <code>predict</code> 方法的 <code>use_doc_orientation_classify</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>useDocUnwarping</code></td>
+<td><code>boolean</code> | <code>null</code></td>
+<td>请参阅产线对象中 <code>predict</code> 方法的 <code>use_doc_unwarping</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>useTextlineOrientation</code></td>
+<td><code>boolean</code> | <code>null</code></td>
+<td>请参阅产线对象中 <code>predict</code> 方法的 <code>use_textline_orientation</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>useSealRecognition</code></td>
+<td><code>boolean</code> | <code>null</code></td>
+<td>请参阅产线对象中 <code>predict</code> 方法的 <code>use_seal_recognition</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>useTableRecognition</code></td>
+<td><code>boolean</code> | <code>null</code></td>
+<td>请参阅产线对象中 <code>predict</code> 方法的 <code>use_table_recognition</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>useFormulaRecognition</code></td>
+<td><code>boolean</code> | <code>null</code></td>
+<td>请参阅产线对象中 <code>predict</code> 方法的 <code>use_formula_recognition</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>useChartRecognition</code></td>
+<td><code>boolean</code> | <code>null</code></td>
+<td>请参阅产线对象中 <code>predict</code> 方法的 <code>use_chart_recognition</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>useRegionDetection</code></td>
+<td><code>boolean</code> | <code>null</code></td>
+<td>请参阅产线对象中 <code>predict</code> 方法的 <code>use_region_detection</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>layoutThreshold</code></td>
+<td><code>number</code> | <code>object</code> | </code><code>null</code></td>
+<td>请参阅产线对象中 <code>predict</code> 方法的 <code>layout_threshold</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>layoutNms</code></td>
+<td><code>boolean</code> | <code>null</code></td>
+<td>请参阅产线对象中 <code>predict</code> 方法的 <code>layout_nms</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>layoutUnclipRatio</code></td>
+<td><code>number</code> | <code>array</code> | <code>object</code> | <code>null</code></td>
+<td>请参阅产线对象中 <code>predict</code> 方法的 <code>layout_unclip_ratio</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>layoutMergeBboxesMode</code></td>
+<td><code>string</code> | <code>object</code> | <code>null</code></td>
+<td>请参阅产线对象中 <code>predict</code> 方法的 <code>layout_merge_bboxes_mode</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>textDetLimitSideLen</code></td>
+<td><code>integer</code> | <code>null</code></td>
+<td>请参阅产线对象中 <code>predict</code> 方法的 <code>text_det_limit_side_len</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>textDetLimitType</code></td>
+<td><code>string</code> | <code>null</code></td>
+<td>请参阅产线对象中 <code>predict</code> 方法的 <code>text_det_limit_type</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>textDetThresh</code></td>
+<td><code>number</code> | <code>null</code></td>
+<td>请参阅产线对象中 <code>predict</code> 方法的 <code>text_det_thresh</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>textDetBoxThresh</code></td>
+<td><code>number</code> | <code>null</code></td>
+<td>请参阅产线对象中 <code>predict</code> 方法的 <code>text_det_box_thresh</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>textDetUnclipRatio</code></td>
+<td><code>number</code> | <code>null</code></td>
+<td>请参阅产线对象中 <code>predict</code> 方法的 <code>text_det_unclip_ratio</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>textRecScoreThresh</code></td>
+<td><code>number</code> | <code>null</code></td>
+<td>请参阅产线对象中 <code>predict</code> 方法的 <code>text_rec_score_thresh</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>sealDetLimitSideLen</code></td>
+<td><code>integer</code> | <code>null</code></td>
+<td>请参阅产线对象中 <code>predict</code> 方法的 <code>seal_det_limit_side_len</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>sealDetLimitType</code></td>
+<td><code>string</code> | <code>null</code></td>
+<td>请参阅产线对象中 <code>predict</code> 方法的 <code>seal_det_limit_type</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>sealDetThresh</code></td>
+<td><code>number</code> | <code>null</code></td>
+<td>请参阅产线对象中 <code>predict</code> 方法的 <code>seal_det_thresh</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>sealDetBoxThresh</code></td>
+<td><code>number</code> | <code>null</code></td>
+<td>请参阅产线对象中 <code>predict</code> 方法的 <code>seal_det_box_thresh</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>sealDetUnclipRatio</code></td>
+<td><code>number</code> | <code>null</code></td>
+<td>请参阅产线对象中 <code>predict</code> 方法的 <code>seal_det_unclip_ratio</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>sealRecScoreThresh</code></td>
+<td><code>number</code> | <code>null</code></td>
+<td>请参阅产线对象中 <code>predict</code> 方法的 <code>seal_rec_score_thresh</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>useWiredTableCellsTransToHtml</code></td>
+<td><code>boolean</code></td>
+<td>请参阅产线对象中 <code>predict</code> 方法的 <code>use_wired_table_cells_trans_to_html</code> 参数相关说明。</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>useWirelessTableCellsTransToHtml</code></td>
+<td><code>boolean</code></td>
+<td>请参阅产线对象中 <code>predict</code> 方法的 <code>use_wireless_table_cells_trans_to_html</code> 参数相关说明。</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>useTableOrientationClassify</code></td>
+<td><code>boolean</code></td>
+<td>请参阅产线对象中 <code>predict</code> 方法的 <code>use_table_orientation_classify</code> 参数相关说明。</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>useOcrResultsWithTableCells</code></td>
+<td><code>boolean</code></td>
+<td>请参阅产线对象中 <code>predict</code> 方法的 <code>use_ocr_results_with_table_cells</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>useE2eWiredTableRecModel</code></td>
+<td><code>boolean</code></td>
+<td>请参阅产线对象中 <code>predict</code> 方法的 <code>use_e2e_wired_table_rec_model</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>useE2eWirelessTableRecModel</code></td>
+<td><code>boolean</code></td>
+<td>请参阅产线对象中 <code>predict</code> 方法的 <code>use_e2e_wireless_table_rec_model</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>visualize</code></td>
+<td><code>boolean</code> | <code>null</code></td>
+<td>是否返回可视化结果图以及处理过程中的中间图像等。
+<ul style="margin: 0 0 0 1em; padding-left: 0em;">
+<li>传入 <code>true</code>：返回图像。</li>
+<li>传入 <code>false</code>：不返回图像。</li>
+<li>若请求体中未提供该参数或传入 <code>null</code>：遵循产线配置文件<code>Serving.visualize</code> 的设置。</li>
+</ul>
+<br/>例如，在产线配置文件中添加如下字段：<br/>
+<pre><code>Serving:
+  visualize: False
+</code></pre>
+将默认不返回图像，通过请求体中的<code>visualize</code>参数可以覆盖默认行为。如果请求体和配置文件中均未设置（或请求体传入<code>null</code>、配置文件中未设置），则默认返回图像。
+</td>
+<td>否</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>请求处理成功时，响应体的<code>result</code>具有如下属性：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>类型</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>layoutParsingResults</code></td>
+<td><code>array</code></td>
+<td>版面解析结果。数组长度为1（对于图像输入）或实际处理的文档页数（对于PDF输入）。对于PDF输入，数组中的每个元素依次表示PDF文件中实际处理的每一页的结果。</td>
+</tr>
+<tr>
+<td><code>dataInfo</code></td>
+<td><code>object</code></td>
+<td>输入数据信息。</td>
+</tr>
+</tbody>
+</table>
+<p><code>layoutParsingResults</code>中的每个元素为一个<code>object</code>，具有如下属性：</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>类型</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>prunedResult</code></td>
+<td><code>object</code></td>
+<td>产线对象的 <code>visual_predict</code> 方法生成的 <code>layout_parsing_result</code> 的 JSON 表示中 <code>res</code> 字段的简化版本，其中去除了 <code>input_path</code> 和 <code>page_index</code> 字段。</td>
+</tr>
+<tr>
+<td><code>markdown</code></td>
+<td><code>object</code></td>
+<td>Markdown结果。</td>
+</tr>
+<tr>
+<td><code>outputImages</code></td>
+<td><code>object</code> | <code>null</code></td>
+<td>参见产线预测结果的 <code>img</code> 属性说明。图像为JPEG格式，使用Base64编码。</td>
+</tr>
+<tr>
+<td><code>inputImage</code></td>
+<td><code>string</code> | <code>null</code></td>
+<td>输入图像。图像为JPEG格式，使用Base64编码。</td>
+</tr>
+</tbody>
+</table>
+<p><code>markdown</code>为一个<code>object</code>，具有如下属性：</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>类型</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>text</code></td>
+<td><code>string</code></td>
+<td>Markdown文本。</td>
+</tr>
+<tr>
+<td><code>images</code></td>
+<td><code>object</code></td>
+<td>Markdown图片相对路径和Base64编码图像的键值对。</td>
+</tr>
+<tr>
+<td><code>isStart</code></td>
+<td><code>boolean</code></td>
+<td>当前页面第一个元素是否为段开始。</td>
+</tr>
+<tr>
+<td><code>isEnd</code></td>
+<td><code>boolean</code></td>
+<td>当前页面最后一个元素是否为段结束。</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><b><code>translate</code></b></li>
+</ul>
+<p>利用大模型翻译文档。</p>
+<p><code>POST /doctrans-translate</code></p>
+<ul>
+<li>请求体的属性如下：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>类型</th>
+<th>含义</th>
+<th>是否必填</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>markdownList</code></td>
+<td><code>array</code></td>
+<td>待翻译的Markdown列表。可从<code>analyzeImages</code>操作的结果中获取。<code>images</code>属性将不会被用到。</td>
+<td>是</td>
+</tr>
+<tr>
+<td><code>targetLanguage</code></td>
+<td><code>string</code></td>
+<td>请参阅产线对象中 <code>translate</code> 方法的 <code>target_language</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>chunkSize</code></td>
+<td><code>integer</code></td>
+<td>请参阅产线对象中 <code>translate</code> 方法的 <code>chunk_size</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>taskDescription</code></td>
+<td><code>string</code> | <code>null</code></td>
+<td>请参阅产线对象中 <code>translate</code> 方法的 <code>task_description</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>outputFormat</code></td>
+<td><code>string</code> | <code>null</code></td>
+<td>请参阅产线对象中 <code>translate</code> 方法的 <code>output_format</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>rulesStr</code></td>
+<td><code>string</code> | <code>null</code></td>
+<td>请参阅产线对象中 <code>translate</code> 方法的 <code>rules_str</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>fewShotDemoTextContent</code></td>
+<td><code>string</code> | <code>null</code></td>
+<td>请参阅产线对象中 <code>translate</code> 方法的 <code>few_shot_demo_text_content</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>fewShotDemoKeyValueList</code></td>
+<td><code>string</code> | <code>null</code></td>
+<td>请参阅产线对象中 <code>translate</code> 方法的 <code>few_shot_demo_key_value_list</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>chatBotConfig</code></td>
+<td><code>object</code> | <code>null</code></td>
+<td>请参阅产线对象中 <code>translate</code> 方法的 <code>chat_bot_config</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>llmRequestInterval</code></td>
+<td><code>number</code> | <code>null</code></td>
+<td>请参阅产线对象中 <code>translate</code> 方法的 <code>llm_request_interval</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>请求处理成功时，响应体的<code>result</code>具有如下属性：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>类型</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>translationResults</code></td>
+<td><code>array</code></td>
+<td>翻译结果。</td>
+</tr>
+</tbody>
+</table>
+<p><code>translationResults</code>中的每个元素为一个<code>object</code>，具有如下属性：</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>类型</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>language</code></td>
+<td><code>string</code></td>
+<td>目标语言。</td>
+</tr>
+<tr>
+<td><code>markdown</code></td>
+<td><code>object</code></td>
+<td>Markdown结果。对象定义与<code>analyzeImages</code>操作返回的<code>markdown</code>一致。</td>
+</tr>
+</tbody>
+</table>
+<li><b>注意：</b></li>
+在请求体中包含大模型调用的API key等敏感参数可能存在安全风险。如无必要，请在配置文件中设置这些参数，在请求时不传递。
+<br/><br/>
+</details>
+<details><summary>多语言调用服务示例</summary>
+<details>
+<summary>Python</summary>
+
+<pre><code class="language-python">import base64
+import pathlib
+import pprint
+import sys
+
+import requests
+
+
+API_BASE_URL = "http://127.0.0.1:8080"
+
+file_path = "./demo.jpg"
+target_language = "en"
+
+with open(file_path, "rb") as file:
+    file_bytes = file.read()
+    file_data = base64.b64encode(file_bytes).decode("ascii")
+
+payload = {
+    "file": file_data,
+    "fileType": 1,
+}
+resp_visual = requests.post(url=f"{API_BASE_URL}/doctrans-visual", json=payload)
+if resp_visual.status_code != 200:
+    print(
+        f"Request to doctrans-visual failed with status code {resp_visual.status_code}."
+    )
+    pprint.pp(resp_visual.json())
+    sys.exit(1)
+result_visual = resp_visual.json()["result"]
+
+markdown_list = []
+for i, res in enumerate(result_visual["layoutParsingResults"]):
+    md_dir = pathlib.Path(f"markdown_{i}")
+    md_dir.mkdir(exist_ok=True)
+    (md_dir / "doc.md").write_text(res["markdown"]["text"])
+    for img_path, img in res["markdown"]["images"].items():
+        img_path = md_dir / img_path
+        img_path.parent.mkdir(parents=True, exist_ok=True)
+        img_path.write_bytes(base64.b64decode(img))
+    print(f"Markdown document to be translated is saved at {md_dir / 'doc.md'}")
+    del res["markdown"]["images"]
+    markdown_list.append(res["markdown"])
+    for img_name, img in res["outputImages"].items():
+        img_path = f"{img_name}_{i}.jpg"
+        with open(img_path, "wb") as f:
+            f.write(base64.b64decode(img))
+        print(f"Output image saved at {img_path}")
+
+payload = {
+    "markdownList": markdown_list,
+    "targetLanguage": target_language,
+}
+resp_translate = requests.post(url=f"{API_BASE_URL}/doctrans-translate", json=payload)
+if resp_translate.status_code != 200:
+    print(
+        f"Request to doctrans-translate failed with status code {resp_translate.status_code}."
+    )
+    pprint.pp(resp_translate.json())
+    sys.exit(1)
+result_translate = resp_translate.json()["result"]
+
+for i, res in enumerate(result_translate["translationResults"]):
+    md_dir = pathlib.Path(f"markdown_{i}")
+    (md_dir / "doc_translated.md").write_text(res["markdown"]["text"])
+    print(f"Translated markdown document saved at {md_dir / 'doc_translated.md'}")
+</code></pre></details>
+</details>
+<p><br/></p>
+<h2 id="4">4. 二次开发<a class="headerlink" href="#4" title="Permanent link">&para;</a></h2>
+<p>如果 PP-DocTranslation 产线提供的默认模型权重在您的场景中，精度或速度不满意，您可以尝试利用<b>您自己拥有的特定领域或应用场景的数据</b>对现有模型进行进一步的<b>微调</b>，以提升在您的场景中的识别效果。</p>
+<h3 id="41">4.1 模型微调<a class="headerlink" href="#41" title="Permanent link">&para;</a></h3>
+<p>由于 PP-DocTranslation 产线包含若干模块，模型产线的效果如果不及预期，可能来自于其中任何一个模块。您可以对提取效果差的 case 进行分析，通过可视化图像，确定是哪个模块存在问题，并参考以下表格中对应的微调教程链接进行模型微调。</p>
+<table>
+<thead>
+<tr>
+<th>情形</th>
+<th>微调模块</th>
+<th>微调参考链接</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>版面区域检测不准，如印章、表格未检出等</td>
+<td>版面区域检测模块</td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/layout_detection.html#_5">链接</a></td>
+</tr>
+<tr>
+<td>表格结构识别不准</td>
+<td>表格结构识别模块</td>
+<td><a href="https://paddlepaddle.github.io/PaddleOCR/main/version3.x/module_usage/table_structure_recognition.html#_5">链接</a></td>
+</tr>
+<tr>
+<td>公式识别不准</td>
+<td>公式识别模块</td>
+<td><a href="https://paddlepaddle.github.io/PaddleOCR/main/version3.x/module_usage/formula_recognition.html#_5">链接</a></td>
+</tr>
+<tr>
+<td>印章文本存在漏检</td>
+<td>印章文本检测模块</td>
+<td><a href="https://paddlepaddle.github.io/PaddleOCR/main/version3.x/module_usage/seal_text_detection.html#_5">链接</a></td>
+</tr>
+<tr>
+<td>文本存在漏检</td>
+<td>文本检测模块</td>
+<td><a href="https://paddlepaddle.github.io/PaddleOCR/main/version3.x/module_usage/text_detection.html#_5">链接</a></td>
+</tr>
+<tr>
+<td>文本内容都不准</td>
+<td>文本识别模块</td>
+<td><a href="https://paddlepaddle.github.io/PaddleOCR/main/version3.x/module_usage/text_recognition.html#_5">链接</a></td>
+</tr>
+<tr>
+<td>垂直或者旋转文本行矫正不准</td>
+<td>文本行方向分类模块</td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/textline_orientation_classification.html#_5">链接</a></td>
+</tr>
+<tr>
+<td>整图旋转矫正不准</td>
+<td>文档图像方向分类模块</td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/doc_img_orientation_classification.html#_5">链接</a></td>
+</tr>
+<tr>
+<td>图像扭曲矫正不准</td>
+<td>文本图像矫正模块</td>
+<td>暂不支持微调</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="42">4.2 模型应用<a class="headerlink" href="#42" title="Permanent link">&para;</a></h3>
+<p>当您使用私有数据集完成微调训练后，可获得本地模型权重文件，然后可以通过自定义产线配置文件的方式，使用微调后的模型权重。</p>
+<ol>
+<li>获取产线配置文件</li>
+</ol>
+<p>可调用 PaddleOCR 中 PP-DocTranslation 产线对象的 <code>export_paddlex_config_to_yaml</code> 方法，将当前产线配置导出为 YAML 文件：</p>
+<div class="language-Python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddleocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">PPDocTranslation</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">pipeline</span> <span class="o">=</span> <span class="n">PPDocTranslation</span><span class="p">()</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="n">pipeline</span><span class="o">.</span><span class="n">export_paddlex_config_to_yaml</span><span class="p">(</span><span class="s2">&quot;PP-DocTranslation.yaml&quot;</span><span class="p">)</span>
+</span></code></pre></div>
+<ol>
+<li>修改配置文件</li>
+</ol>
+<p>在得到默认的产线配置文件后，将微调后模型权重的本地路径替换至产线配置文件中的对应位置即可。例如</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="l l-Scalar l-Scalar-Plain">......</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="l l-Scalar l-Scalar-Plain">SubModules</span><span class="p p-Indicator">:</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">    </span><span class="nt">TextDetection</span><span class="p">:</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">    </span><span class="nt">module_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">text_detection</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">    </span><span class="nt">model_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PP-OCRv5_server_det</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">    </span><span class="nt">model_dir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span><span class="w"> </span><span class="c1"># 替换为微调后的文本检测模型权重路径</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">    </span><span class="nt">limit_side_len</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">960</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">    </span><span class="nt">limit_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">max</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">    </span><span class="nt">thresh</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.3</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">    </span><span class="nt">box_thresh</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.6</span>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">    </span><span class="nt">unclip_ratio</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.5</span>
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="w">    </span><span class="nt">TextRecognition</span><span class="p">:</span>
+</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="w">    </span><span class="nt">module_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">text_recognition</span>
+</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="w">    </span><span class="nt">model_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PP-OCRv5_server_rec</span>
+</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a><span class="w">    </span><span class="nt">model_dir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span><span class="w"> </span><span class="c1"># 替换为微调后的文本检测模型权重路径</span>
+</span><span id="__span-3-17"><a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="w">    </span><span class="nt">batch_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+</span><span id="__span-3-18"><a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a><span class="w">            </span><span class="l l-Scalar l-Scalar-Plain">score_thresh</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
+</span><span id="__span-3-19"><a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a><span class="l l-Scalar l-Scalar-Plain">......</span>
+</span></code></pre></div>
+<p>在产线配置文件中，不仅包含 PaddleOCR CLI 和 Python API 支持的参数，还可进行更多高级配置，具体信息可在 <a href="https://paddlepaddle.github.io/PaddleX/3.0/pipeline_usage/pipeline_develop_guide.html">PaddleX模型产线使用概览</a> 中找到对应的产线使用教程，参考其中的详细说明，根据需求调整各项配置。</p>
+<ol>
+<li>在 CLI 中加载产线配置文件</li>
+</ol>
+<p>在修改完成配置文件后，通过命令行的 <code>--paddlex_config</code> 参数指定修改后的产线配置文件的路径，PaddleOCR 会读取其中的内容作为产线配置。示例如下：</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>paddleocr<span class="w"> </span>pp_doctranslation<span class="w"> </span>--paddlex_config<span class="w"> </span>PP-DocTranslation.yaml<span class="w"> </span>...
+</span></code></pre></div>
+<ol>
+<li>在 Python API 中加载产线配置文件</li>
+</ol>
+<p>初始化产线对象时，可通过 <code>paddlex_config</code> 参数传入 PaddleX 产线配置文件路径或配置dict，PaddleOCR 会读取其中的内容作为产线配置。示例如下：</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddleocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">PPDocTranslation</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="n">pipeline</span> <span class="o">=</span> <span class="n">PPDocTranslation</span><span class="p">(</span><span class="n">paddlex_config</span><span class="o">=</span><span class="s2">&quot;PP-DocTranslation.yaml&quot;</span><span class="p">)</span>
+</span></code></pre></div>
+
+
+
+
+
+
+
+  
+    
+  
+  
+    
+  
+
+
+  <aside class="md-source-file">
+    
+      
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="最后更新">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
+    </span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年6月28日 15:13:32 UTC">2025年6月28日</span>
+  </span>
+
+    
+    
+      
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="创建日期">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
+    </span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年6月28日 15:13:32 UTC">2025年6月28日</span>
+  </span>
+
+    
+    
+    
+  </aside>
+
+
+
+
+
+<h2 id="__comments">评论</h2>
+<!-- Insert generated snippet here -->
+
+<script src="https://giscus.app/client.js" data-repo="PaddlePaddle/PaddleOCR"
+    data-repo-id="MDEwOlJlcG9zaXRvcnkyNjIyOTYxMjI=" data-category="Q&A" data-category-id="DIC_kwDOD6JSOs4COrbO"
+    data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top"
+    data-theme="preferred_color_scheme" data-lang="en" data-loading="lazy" crossorigin="anonymous" async>
+</script>
+
+<!-- Synchronize Giscus theme with palette -->
+<script>
+    var giscus = document.querySelector("script[src*=giscus]")
+
+    // Set palette on initial load
+    var palette = __md_get("__palette")
+    if (palette && typeof palette.color === "object") {
+        var theme = palette.color.scheme === "slate"
+            ? "transparent_dark"
+            : "light"
+
+        // Instruct Giscus to set theme
+        giscus.setAttribute("data-theme", theme)
+    }
+
+    // Register event handlers after documented loaded
+    document.addEventListener("DOMContentLoaded", function () {
+        var ref = document.querySelector("[data-md-component=palette]")
+        ref.addEventListener("change", function () {
+            var palette = __md_get("__palette")
+            if (palette && typeof palette.color === "object") {
+                var theme = palette.color.scheme === "slate"
+                    ? "transparent_dark"
+                    : "light"
+
+                // Instruct Giscus to change theme
+                var frame = document.querySelector(".giscus-frame")
+                frame.contentWindow.postMessage(
+                    { giscus: { setConfig: { theme } } },
+                    "https://giscus.app"
+                )
+            }
+        })
+    })
+</script>
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="页脚" >
+        
+          
+          <a href="table_recognition_v2.html" class="md-footer__link md-footer__link--prev" aria-label="上一页: 通用表格识别v2产线">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256l137.3-137.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                上一页
+              </span>
+              <div class="md-ellipsis">
+                通用表格识别v2产线
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../other_devices_support/multi_devices_use_guide.html" class="md-footer__link md-footer__link--next" aria-label="下一页: PaddleOCR 多硬件使用指南">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                下一页
+              </span>
+              <div class="md-ellipsis">
+                PaddleOCR 多硬件使用指南
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2024 Maintained by PaddleOCR PMC.
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/PaddlePaddle/PaddleOCR" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://pypi.org/project/paddleocr/" target="_blank" rel="noopener" title="pypi.org" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.8 200.5c-7.7-30.9-22.3-54.2-53.4-54.2h-40.1v47.4c0 36.8-31.2 67.8-66.8 67.8H172.7c-29.2 0-53.4 25-53.4 54.3v101.8c0 29 25.2 46 53.4 54.3 33.8 9.9 66.3 11.7 106.8 0 26.9-7.8 53.4-23.5 53.4-54.3v-40.7H226.2v-13.6h160.2c31.1 0 42.6-21.7 53.4-54.2 11.2-33.5 10.7-65.7 0-108.6M286.2 404c11.1 0 20.1 9.1 20.1 20.3 0 11.3-9 20.4-20.1 20.4-11 0-20.1-9.2-20.1-20.4.1-11.3 9.1-20.3 20.1-20.3M167.8 248.1h106.8c29.7 0 53.4-24.5 53.4-54.3V91.9c0-29-24.4-50.7-53.4-55.6-35.8-5.9-74.7-5.6-106.8.1-45.2 8-53.4 24.7-53.4 55.6v40.7h106.9v13.6h-147c-31.1 0-58.3 18.7-66.8 54.2-9.8 40.7-10.2 66.1 0 108.6 7.6 31.6 25.7 54.2 56.8 54.2H101v-48.8c0-35.3 30.5-66.4 66.8-66.4m-6.7-142.6c-11.1 0-20.1-9.1-20.1-20.3.1-11.3 9-20.4 20.1-20.4 11 0 20.1 9.2 20.1 20.4s-9 20.3-20.1 20.3"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["announce.dismiss", "content.tooltips", "content.code.copy", "content.tabs.link", "content.footnote.tooltips", "content.action.edit", "content.action.view", "navigation.expand", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.tracking", "navigation.footer", "navigation.indexes", "search.highlight", "search.share", "search.suggest", "toc.follow"], "search": "../../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": {"provider": "mike"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.13a4f30d.min.js"></script>
+      
+        <script src="../../javascripts/katex.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/katex.min.js"></script>
+      
+        <script src="https://unpkg.com/katex@0/dist/contrib/auto-render.min.js"></script>
+      
+    
+  </body>
+</html>

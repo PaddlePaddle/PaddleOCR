@@ -1825,6 +1825,8 @@ You're not viewing the latest version.
       
         
       
+        
+      
     
     
     
@@ -1989,6 +1991,29 @@ You're not viewing the latest version.
   
   <span class="md-ellipsis">
     General Table Recognition v2 Pipeline
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="PP-DocTranslation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    PP-DocTranslation产线
     
   </span>
   
@@ -3270,7 +3295,7 @@ You're not viewing the latest version.
 <h1 id="pp-structurev3-pipeline-usage-tutorial">PP-StructureV3 Pipeline Usage Tutorial<a class="headerlink" href="#pp-structurev3-pipeline-usage-tutorial" title="Permanent link">&para;</a></h1>
 <h2 id="1-introduction-to-pp-structurev3-pipeline">1. Introduction to PP-StructureV3 Pipeline<a class="headerlink" href="#1-introduction-to-pp-structurev3-pipeline" title="Permanent link">&para;</a></h2>
 <p>Layout analysis is a technique used to extract structured information from document images. It is primarily used to convert complex document layouts into machine-readable data formats. This technology has broad applications in document management, information extraction, and data digitization. Layout analysis combines Optical Character Recognition (OCR), image processing, and machine learning algorithms to identify and extract text blocks, titles, paragraphs, images, tables, and other layout elements from documents. This process generally includes three main steps: layout analysis, element analysis, and data formatting. The final result is structured document data, which enhances the efficiency and accuracy of data processing. <b>PP-StructureV3 improves upon the general layout analysis v1 pipeline by enhancing layout region detection, table recognition, and formula recognition. It also adds capabilities such as multi-column reading order recovery, chart understanding, and result conversion to Markdown files. It performs excellently across various document types and can handle complex document data.</b>  This pipeline also provides flexible service deployment options, supporting invocation using multiple programming languages on various hardware. In addition, it offers secondary development capabilities, allowing you to train and fine-tune models on your own dataset and integrate the trained models seamlessly.</p>
-<p><b>PP-StructureV3</b> includes the following six modules. Each module can be independently trained and inferred, and contains multiple models. Click the corresponding module for more documentation.</p>
+<p><b>The PP-StructureV3 pipeline consists of the following six modules or sub-pipelines. Each module or sub-pipeline can be trained and inferred independently and contains multiple models. For more details, please click the corresponding links to view the documentation.</b></p>
 <ul>
 <li><a href="../module_usage/layout_detection.html">Layout Detection Module</a></li>
 <li><a href="OCR.html">General OCR Subline</a></li>
@@ -4286,7 +4311,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
 </tr>
 <tr>
 <td><code>layout_merge_bboxes_mode</code></td>
-<td>The merging mode for the detection boxes output by the model in layout region detection.
+<td>The merging mode for the detection boxes output by the model in layout detection.
 <ul>
 <li><b>large</b>: When set to "large", only the largest outer bounding box will be retained for overlapping bounding boxes, and the inner overlapping boxes will be removed;</li>
 <li><b>small</b>: When set to "small", only the smallest inner bounding boxes will be retained for overlapping bounding boxes, and the outer overlapping boxes will be removed;</li>
@@ -4615,13 +4640,13 @@ any float > <code>0</code>. If not set, the default is <code>0.6</code>.
 <td><code>use_doc_orientation_classify</code></td>
 <td>Whether to use document orientation classification module.</td>
 <td><code>bool</code></td>
-<td>False</td>
+<td><code>False</code></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
 <td>Whether to use document unwarping module.</td>
 <td><code>bool</code></td>
-<td>False</td>
+<td><code>False</code></td>
 </tr>
 <tr>
 <td><code>use_textline_orientation</code></td>
@@ -4651,7 +4676,7 @@ any float > <code>0</code>. If not set, the default is <code>0.6</code>.
 <td><code>use_chart_recognition</code></td>
 <td>Whether to use the chart parsing module.</td>
 <td><code>bool</code></td>
-<td>False</td>
+<td><code>False</code></td>
 </tr>
 <tr>
 <td><code>use_region_detection</code></td>
@@ -5246,31 +5271,31 @@ MKL-DNN cache capacity.
 </tr>
 <tr>
 <td><code>use_textline_orientation</code></td>
-<td>Whether to use the text line orientation classification. If not set, the default is <code>True</code>.</td>
-<td><code>bool</code></td>
-<td></td>
+<td>Whether to use the text line orientation classification. If set to <code>None</code>, the default value is <code>True</code>.</td>
+<td><code>bool|None</code></td>
+<td>None</td>
 </tr>
 <tr>
 <td><code>use_seal_recognition</code></td>
-<td>Whether to enable seal text recognition subpipeline. If not set, the default is <code>True</code>.</td>
-<td><code>bool</code></td>
-<td></td>
+<td>Whether to enable seal text recognition subpipeline. If set to <code>None</code>, the default value is <code>True</code>.</td>
+<td><code>bool|None</code></td>
+<td>None</td>
 </tr>
 <tr>
 <td><code>use_table_recognition</code></td>
-<td>Whether to enable table recognition subpipeline. If not set, the default is <code>True</code>.</td>
-<td><code>bool</code></td>
-<td></td>
+<td>Whether to enable table recognition subpipeline. If set to <code>None</code>, the default value is <code>True</code>.</td>
+<td><code>bool|None</code></td>
+<td>None</td>
 </tr>
 <tr>
 <td><code>use_formula_recognition</code></td>
-<td>Whether to enable formula recognition subpipeline. If not set, the default is <code>True</code>.</td>
-<td><code>bool</code></td>
-<td></td>
+<td>Whether to enable formula recognition subpipeline. If set to <code>None</code>, the default value is <code>True</code>.</td>
+<td><code>bool|None</code></td>
+<td>None</td>
 </tr>
 <tr>
 <td><code>use_chart_recognition</code></td>
-<td>Whether to use the chart parsing module. If set to <code>None</code>, the default value is <code>True</code>.</td>
+<td>Whether to load and use the chart parsing module. If set to <code>None</code>, the default value is <code>True</code>.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -5373,49 +5398,49 @@ MKL-DNN cache capacity.
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
-<td>Whether to use document orientation classification during inference.</td>
+<td>Whether to use document orientation classification during inference. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
 <td><code>bool|None</code></td>
 <td><code>False</code></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
-<td>Whether to use document image unwarping during inference.</td>
+<td>Whether to use document image unwarping during inference. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
 <td><code>bool|None</code></td>
 <td><code>False</code></td>
 </tr>
 <tr>
 <td><code>use_textline_orientation</code></td>
-<td>Whether to use textline orientation classification during inference.</td>
+<td>Whether to use textline orientation classification during inference. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_seal_recognition</code></td>
-<td>Whether to use the seal text recognition sub-pipeline during inference.</td>
+<td>Whether to use the seal text recognition sub-pipeline during inference. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_table_recognition</code></td>
-<td>Whether to use the table recognition sub-pipeline during inference.</td>
+<td>Whether to use the table recognition sub-pipeline during inference. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_formula_recognition</code></td>
-<td>Whether to use the formula recognition sub-pipeline during inference.</td>
+<td>Whether to use the formula recognition sub-pipeline during inference. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_chart_recognition</code></td>
-<td>Whether to use the chart parsing module. If set to <code>None</code>, the default value is <code>True</code>.</td>
+<td>Whether to use the chart parsing module. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
 <td><code>bool|None</code></td>
 <td><code>False</code></td>
 </tr>
 <tr>
 <td><code>use_region_detection</code></td>
-<td>Whether to use the document region detection pipeline. If set to <code>None</code>, the default value is <code>True</code>.</td>
+<td>Whether to use the document region detection pipeline. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -5517,13 +5542,13 @@ MKL-DNN cache capacity.
 </tr>
 <tr>
 <td><code>use_wired_table_cells_trans_to_html</code></td>
-<td>Whether to enable direct conversion of wired table cell detection results to HTML. Default is False. If enabled, HTML will be constructed directly based on the geometric relationship of wired table cell detection results.</td>
+<td>Whether to enable direct conversion of wired table cell detection results to HTML. If enabled, HTML will be constructed directly based on the geometric relationship of wired table cell detection results.</td>
 <td><code>bool</code></td>
 <td><code>False</code></td>
 </tr>
 <tr>
 <td><code>use_wireless_table_cells_trans_to_html</code></td>
-<td>Whether to enable direct conversion of wireless table cell detection results to HTML. Default is False. If enabled, HTML will be constructed directly based on the geometric relationship of wireless table cell detection results.</td>
+<td>Whether to enable direct conversion of wireless table cell detection results to HTML. If enabled, HTML will be constructed directly based on the geometric relationship of wireless table cell detection results.</td>
 <td><code>bool</code></td>
 <td><code>False</code></td>
 </tr>
@@ -5884,26 +5909,6 @@ Additionally, you can access the prediction results and visual images through th
 <td>No</td>
 </tr>
 <tr>
-<td><code>visualize</code></td>
-<td><code>boolean</code> | <code>null</code></td>
-<td>
-Whether to return the final visualization image and intermediate images during the processing.<br/>
-<ul style="margin: 0 0 0 1em; padding-left: 0em;">
-<li>If <code>true</code> is provided: return images.</li>
-<li>If <code>false</code> is provided: do not return any images.</li>
-<li>If this parameter is omitted from the request body, or if <code>null</code> is explicitly passed, the behavior will follow the value of <code>Serving.visualize</code> in the pipeline configuration.</li>
-</ul>
-<br/>
-For example, adding the following setting to the pipeline config file:<br/>
-<pre><code>Serving:
-  visualize: False
-</code></pre>
-will disable image return by default. This behavior can be overridden by explicitly setting the <code>visualize</code> parameter in the request.<br/>
-If neither the request body nor the configuration file is set (If <code>visualize</code> is set to <code>null</code> in the request and  not defined in the configuration file), the image is returned by default.
-</td>
-<td>No</td>
-</tr>
-<tr>
 <td><code>useDocOrientationClassify</code></td>
 <td><code>boolean</code> | <code>null</code></td>
 <td>Refer to the <code>use_doc_orientation_classify</code> parameter in the pipeline’s <code>predict</code> method.</td>
@@ -6054,6 +6059,26 @@ If neither the request body nor the configuration file is set (If <code>visualiz
 <td>Refer to the <code>use_e2e_wireless_table_rec_model</code> parameter in the pipeline’s <code>predict</code> method.</td>
 <td>No</td>
 </tr>
+<tr>
+<td><code>visualize</code></td>
+<td><code>boolean</code> | <code>null</code></td>
+<td>
+Whether to return the final visualization image and intermediate images during the processing.<br/>
+<ul style="margin: 0 0 0 1em; padding-left: 0em;">
+<li>If <code>true</code> is provided: return images.</li>
+<li>If <code>false</code> is provided: do not return any images.</li>
+<li>If this parameter is omitted from the request body, or if <code>null</code> is explicitly passed, the behavior will follow the value of <code>Serving.visualize</code> in the pipeline configuration.</li>
+</ul>
+<br/>
+For example, adding the following setting to the pipeline config file:<br/>
+<pre><code>Serving:
+  visualize: False
+</code></pre>
+will disable image return by default. This behavior can be overridden by explicitly setting the <code>visualize</code> parameter in the request.<br/>
+If neither the request body nor the configuration file is set (If <code>visualize</code> is set to <code>null</code> in the request and  not defined in the configuration file), the image is returned by default.
+</td>
+<td>No</td>
+</tr>
 </tbody>
 </table>
 <ul>
@@ -6130,7 +6155,7 @@ If neither the request body nor the configuration file is set (If <code>visualiz
 <tr>
 <td><code>images</code></td>
 <td><code>object</code></td>
-<td>Key-value pairs of image relative paths and base64-encoded image content.</td>
+<td>Key-value pairs of image relative paths and Base64-encoded image content.</td>
 </tr>
 <tr>
 <td><code>isStart</code></td>
@@ -6737,7 +6762,7 @@ After obtaining the default pipeline configuration file, replace the correspondi
 </span></code></pre></div>
 <ol>
 <li>Load the pipeline configuration file via Python API
-When initializing the pipeline object, you can pass the PaddleX pipeline configuration file path or a configuration dictionary using the paddlex_config parameter. PaddleOCR will load its content as the pipeline configuration. Example:</li>
+When initializing the pipeline object, you can pass the PaddleX pipeline configuration file path or a configuration dictionary using the <code>paddlex_config</code> parameter. PaddleOCR will load its content as the pipeline configuration. Example:</li>
 </ol>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddleocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">PPStructureV3</span>
 </span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>
@@ -6765,7 +6790,7 @@ When initializing the pipeline object, you can pass the PaddleX pipeline configu
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="June 28, 2025 15:12:44 UTC">June 28, 2025</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="June 28, 2025 15:13:32 UTC">June 28, 2025</span>
   </span>
 
     
@@ -6775,7 +6800,7 @@ When initializing the pipeline object, you can pass the PaddleX pipeline configu
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="June 28, 2025 15:12:44 UTC">June 28, 2025</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="June 28, 2025 15:13:32 UTC">June 28, 2025</span>
   </span>
 
     
