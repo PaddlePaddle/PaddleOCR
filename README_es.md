@@ -42,6 +42,20 @@ Además de proporcionar una excelente biblioteca de modelos, PaddleOCR 3.0 tambi
 
 ## 📣 Últimas actualizaciones
 
+#### **2025.06.29: Lanzamiento de PaddleOCR 3.1.0**, incluye:
+
+- **Modelos y flujos de trabajo clave:**
+  - **Añadido el modelo de reconocimiento de texto multilingüe PP-OCRv5**, que soporta entrenamiento e inferencia para modelos de reconocimiento de texto en 37 idiomas, incluidos francés, español, portugués, ruso, coreano, etc. **Precisión media mejorada en más de un 30%.** [Detalles](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/algorithm/PP-OCRv5/PP-OCRv5_multi_languages.html)
+  - Actualizado el **modelo PP-Chart2Table** en PP-StructureV3, mejorando aún más la conversión de gráficos a tablas. En conjuntos de evaluación personalizados internos, la métrica (RMS-F1) **aumentó 9,36 puntos porcentuales (71,24% -> 80,60%).**
+  - Nuevo **flujo de traducción de documentos, PP-DocTranslation, basado en PP-StructureV3 y ERNIE 4.5 Turbo**, que soporta la traducción de documentos en formato Markdown, diversos PDF de diseño complejo e imágenes de documentos, guardando los resultados en formato Markdown. [Detalles](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/pipeline_usage/PP-DocTranslation.html)
+
+- **Nuevo servidor MCP:** [Details](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/mcp_server.html)
+  - **Admite tanto OCR como los flujos de trabajo de PP-StructureV3.**
+  - Soporta tres modos de trabajo: biblioteca local de Python, servicio en la nube de la comunidad AIStudio y servicio autohospedado.
+  - Permite invocar servicios locales a través de stdio y servicios remotos a través de Streamable HTTP.
+
+- **Optimización de la documentación:** Se han mejorado las descripciones en algunas guías de usuario para una experiencia de lectura más fluida.
+
 #### 🔥🔥**2025.06.26: Lanzamiento de PaddleOCR 3.0.3, incluye:**
 
 - Corrección de error: Se resolvió el problema donde el parámetro `enable_mkldnn` no era efectivo, restaurando el comportamiento predeterminado de usar MKL-DNN para la inferencia en CPU.
