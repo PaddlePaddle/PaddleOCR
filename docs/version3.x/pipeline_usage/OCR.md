@@ -2409,7 +2409,7 @@ pipeline = PaddleOCR(paddlex_config="PaddleOCR.yaml")
   <tbody>
     <tr>
       <td><code>PP-OCRv5</code></td>
-      <td><code>ch</code>, <code>en</code>, <code>fr</code>, <code>de</code>, <code>ja</code>, <code>ko</code>, <code>chinese_cht</code>, <code>af</code>, <code>it</code>, <code>es</code>, <code>bs</code>, <code>pt</code>, <code>cs</code>, <code>cy</code>, <code>da</code>, <code>et</code>, <code>ga</code>, <code>hr</code>, <code>ru</code>, <code>be</code>, <code>uk</code>, <code>hu</code>, <code>rslatin</code>, <code>id</code>, <code>oc</code>, <code>is</code>, <code>lt</code>, <code>lv</code>, <code>mi</code>, <code>ms</code>, <code>mt</code>, <code>nl</code>, <code>no</code>, <code>pl</code>, <code>ro</code>, <code>sk</code>, <code>sl</code>, <code>sq</code>, <code>sv</code>, <code>sw</code>, <code>tl</code>, <code>tr</code>, <code>uz</code>, <code>vi</code>, <code>la</code></td>
+      <td><code>ch</code>, <code>en</code>, <code>fr</code>, <code>de</code>, <code>japan</code>, <code>korean</code>, <code>chinese_cht</code>, <code>af</code>, <code>it</code>, <code>es</code>, <code>bs</code>, <code>pt</code>, <code>cs</code>, <code>cy</code>, <code>da</code>, <code>et</code>, <code>ga</code>, <code>hr</code>, <code>hu</code>, <code>rslatin</code>, <code>id</code>, <code>oc</code>, <code>is</code>, <code>lt</code>, <code>mi</code>, <code>ms</code>, <code>nl</code>, <code>no</code>, <code>pl</code>, <code>sk</code>, <code>sl</code>, <code>sq</code>, <code>sv</code>, <code>sw</code>, <code>tl</code>, <code>tr</code>, <code>uz</code>, <code>la</code>, <code>ru</code>, <code>be</code>, <code>uk</code></td>
     </tr>
     <tr>
       <td><code>PP-OCRv4</code></td>
