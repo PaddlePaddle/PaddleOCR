@@ -1,0 +1,103 @@
+Global:
+  use_gpu: true
+  epoch_num: 30
+  log_smooth_window: 20
+  print_batch_step: 10
+  save_model_dir: ./output/mixtex
+  save_epoch_step: 1
+  eval_batch_step: [0, 1000]
+  cal_metric_during_train: true
+  pretrained_model: null
+  checkpoints: null
+  save_inference_dir: null
+  use_visualdl: false
+  infer_img: doc/imgs/formula_example.png
+  character_dict_path: ./ppocr/utils/dict/formula_vocab.txt
+  max_text_length: 512
+  infer_mode: false
+  use_space_char: true
+  save_res_path: ./output/mixtex/predicts_mixtex.txt
+  distributed: true
+
+Architecture:
+  model_type: rec
+  algorithm: MixTeX
+  Transform:
+  Backbone:
+    name: MixTeXBackbone
+    in_channels: 1
+  Neck:
+    name: None
+  Head:
+    name: MixTeXHead
+    hidden_size: 512
+    out_channels: &out_channels 10000
+
+Loss:
+  name: MixTeXLoss
+  ignore_index: 0
+  label_smoothing: 0.1
+
+Optimizer:
+  name: Adam
+  beta1: 0.9
+  beta2: 0.999
+  clip_norm: 5.0
+  lr:
+    name: Cosine
+    learning_rate: 0.001
+    warmup_epoch: 5
+  regularizer:
+    name: 'L2'
+    factor: 0.00000
+    
+PostProcess:
+  name: MixTeXPostProcess
+
+Metric:
+  name: RecMetric
+  main_indicator: acc
+
+Train:
+  dataset:
+    name: SimpleDataSet
+    data_dir: ./train_data/
+    label_file_list: ["./train_data/train.txt"]
+    transforms:
+      - DecodeImage: # load image
+          img_mode: BGR
+          channel_first: false
+      - MixTeXDataProcess:
+          vocab_path: *character_dict_path
+          img_h: 128
+          img_w: 512
+          max_seq_len: *max_text_length
+      - KeepKeys:
+          keep_keys: ['image', 'target'] # dataloader will return list in this order
+  loader:
+    shuffle: true
+    batch_size_per_card: 32
+    drop_last: true
+    num_workers: 8
+
+Eval:
+  dataset:
+    name: SimpleDataSet
+    data_dir: ./train_data/
+    label_file_list: ["./train_data/val.txt"]
+    transforms:
+      - DecodeImage: # load image
+          img_mode: BGR
+          channel_first: false
+      - MixTeXDataProcess:
+          vocab_path: *character_dict_path
+          img_h: 128
+          img_w: 512
+          max_seq_len: *max_text_length
+      - KeepKeys:
+          keep_keys: ['image', 'target']
+  loader:
+    shuffle: false
+    drop_last: false
+    batch_size_per_card: 16
+    num_workers: 4

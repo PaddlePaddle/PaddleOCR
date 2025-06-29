@@ -1,0 +1,29 @@
++--------------------------------------+
+|                Image                 |
++--------------------------------------+
+                   |
+                   v
++--------------------------------------+
+| MixTeXBackbone (Convolutional CNN)   |
+| - Depthwise separable convolutions   |
+| - Efficient for CPU inference        |
++--------------------------------------+
+                   |
+                   v
++--------------------------------------+
+|      Feature maps (B,C,H,W)          |
++--------------------------------------+
+                   |
+                   v
++--------------------------------------+
+| MixTeXHead (Transformer Decoder)     |
+| - Positional encoding                |
+| - Multi-head attention               |
+| - Feed-forward networks              |
+| - Greedy decoding for inference      |
++--------------------------------------+
+                   |
+                   v
++--------------------------------------+
+|    LaTeX Sequence Prediction         |
++--------------------------------------+
