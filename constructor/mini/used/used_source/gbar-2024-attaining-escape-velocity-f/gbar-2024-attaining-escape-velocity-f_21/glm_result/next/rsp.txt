@@ -1,0 +1,17 @@
+这张图片来自麦肯锡公司（McKinsey & Company）的《2024年全球银行业年度回顾：实现逃逸速度》（Global Banking Annual Review 2024: Attaining escape velocity）报告。图片中展示了一张图表，标题为“经济利润在平均值附近比正态分布更加集中”（Economic profit is much more concentrated around the average compared with a normal distribution）。图表展示了2023年经济利润的分布情况，与正态分布进行了比较。
+
+图表的横轴表示“围绕均值的分布，标准差”（Distribution around mean, standard deviations），范围从-3到3。纵轴表示“集中度，百分比”（Concentration, %），范围从0到90。
+
+图表中有三条曲线：
+1. 粉色虚线代表正态分布（Normal distribution）。
+2. 蓝色实线代表全球银行业（Global banking industry）。
+3. 灰色实线代表其他所有行业（All other industries）。
+
+图表右侧有一个柱状图，显示了在1个标准差范围内的价值份额（Share of value within 1 standard deviation），其中：
+- 正态分布为68%。
+- 全球银行业为91%。
+- 其他所有行业为98%。
+
+图表下方的注释指出，经济利润的分布形状与正态分布相似，但具有更多的集中性。具体来说，对于非银行公司，96%的回报率在1个标准差范围内，而正态分布为68%。对于银行，95%的回报率在1个标准差范围内，而正态分布为68%。此外，银行在2个标准差范围内的回报率为99%，而正态分布为95%。
+
+这张图表和文字说明旨在展示经济利润在银行业和其他行业中的分布情况，以及与正态分布的比较，从而探讨经济利润的集中性和分散性。

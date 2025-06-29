@@ -1,0 +1,35 @@
+这是一张包含中文和英文的图片，图片内容为某文档的尾注部分。图片中的文字内容如下：
+
+标题为“尾注”，下面列出了多个条目，每个条目都标有数字序号。部分条目内容如下：
+
+1. 经济学人智库，“World Industry Outlook: Healthcare and Pharmaceuticals,” 2020年10月
+2. 同上
+3. 同上
+4. 同上
+5. 同上
+6. 同上
+7. 同上
+8. 同上
+9. Worldometer, “世界人口数量”, 查询日期: 2021年1月27日。Worldometer网站上显示的世界人口计数器考虑了两个主要数据来源：联合国和美国人口普查局。
+10. 经济学人智库，“World Industry Outlook”。
+11. 世界卫生组织网站，访问日期：2021年1月27日。
+12. 经济学人智库，“World Industry Outlook”。
+13. Betts, Koranda, and Giuliani, Are consumers already living the future of health?
+14. 同上
+15. 同上
+16. Burrill et al, Implications of the COVID-19 crisis for the health care ecosystem.
+17. 同上
+18. 同上
+19. 同上
+20. 德勤，《数字化转型报告》
+21. Betts, Koranda, and Giuliani, Are consumers already living the future of health?
+22. Judah et al, The future of behavioral health.
+23. 德勤，《数字化转型报告》
+24. 同上
+25. Baca, "No one should be surprised that low-income populations are being hit harder by COVID-19."
+26. Betts, Koranda, and Giuliani, Are consumers already living the future of health?
+27. Judah et al, The future of behavioral health.
+28. 同上
+29. Luÿs, van Bergen, and Engelen, The health(care) future of the Netherlands.
+
+图片右上角有“加速行业变革”字样，右下角有页码“9”。

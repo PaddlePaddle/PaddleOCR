@@ -1,0 +1,22 @@
+这张图片展示了一份关于供应链弹性措施实施情况的报告，由麦肯锡公司（McKinsey & Company）发布。图片中的主要内容如下：
+
+1. **标题**：图片的标题是“Companies are implementing fewer measures to improve supply chain resilience, and recent growth in digital spend is slowing.”（公司正在实施更少的措施来提高供应链弹性，最近在数字支出方面的增长正在放缓。）
+
+2. **图表**：图片中包含一个折线图，显示了不同供应链弹性措施的实施情况，包括：
+   - 投资于供应链数字化（Investments in supply chain digitalization）
+   - 双源采购（Dual sourcing）
+   - 库存缓冲（Inventory buffers）
+   - 区域化（Regionalization）
+   - 近岸（Nearshoring）
+
+3. **数据**：图表显示了从2020年到2024年这些措施的实施情况，以百分比表示。其中，投资于供应链数字化的增长速度最快，每年增长7%，而其他措施的增长速度较慢，每年增长2%。
+
+4. **文字说明**：图片底部有一段文字说明，解释了调查结果：
+   - 调查显示，三分之二的公司正在投资于APS系统，但只有10%的公司完成了部署。
+   - 三分之一的公司承认他们没有为APS系统制定业务案例，15%的公司表示他们的实施没有达到业务目标。
+
+5. **来源**：数据来源于麦肯锡全球供应链领导者调查，调查时间为2024年4月26日至6月10日，样本量为88。
+
+6. **页面底部**：图片底部有“Supply chains still vulnerable”（供应链仍然脆弱）的字样，表明了报告的主题。
+
+总的来说，这张图片反映了公司在供应链弹性方面的投资趋势，以及数字化支出增长放缓的情况。
