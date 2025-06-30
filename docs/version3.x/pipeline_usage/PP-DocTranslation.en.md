@@ -604,13 +604,17 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference model</a>/<a href="https://p
 <li>Seal text detection model: The self-built dataset of PaddleX, which includes 500 images of round seals.</li>
 </ul>
 </li>
-<li><strong>Hardware configuration:</strong>
-<ul>
-<li>GPU: NVIDIA Tesla T4</li>
-<li>CPU: Intel Xeon Gold 6271C @ 2.60GHz</li>
-<li>Other environments: Ubuntu 20.04 / CUDA 11.8 / cuDNN 8.9 / TensorRT 8.6.1.6</li>
-</ul>
-</li>
+               <li><strong>Hardware Configuration:</strong>
+                  <ul>
+                      <li>GPU: NVIDIA Tesla T4</li>
+                      <li>CPU: Intel Xeon Gold 6271C @ 2.60GHz</li>
+                  </ul>
+              </li>
+              <li><strong>Software Environment:</strong>
+                  <ul>
+                      <li>Ubuntu 20.04 / CUDA 11.8 / cuDNN 8.9 / TensorRT 8.6.1.6</li>
+                      <li>paddlepaddle 3.0.0 / paddleocr 3.0.3</li>
+                  </ul>
 </ul>
 </li>
 <li><b>Description of inference modes</b></li>
