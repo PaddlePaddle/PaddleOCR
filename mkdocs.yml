@@ -103,7 +103,7 @@ plugins:
             PP-OCRv5: PP-OCRv5
             使用教程: Usage Tutorial
             PP-OCRv5简介: PP-OCRv5 Introduction
-            PP-OCRv5多语种文本识别简介: PP-OCRv5 Multilingual Text Recognition Introduction
+            PP-OCRv5多语种文字识别: PP-OCRv5 Multilingual Text Recognition
             PP-StructureV3: PP-StructureV3
             PP-StructureV3简介: PP-StructureV3 Introduction
             PP-ChatOCRv4: PP-ChatOCRv4
@@ -268,7 +268,7 @@ nav:
   - PP-OCRv5: 
     - 使用教程: version3.x/pipeline_usage/OCR.md
     - PP-OCRv5简介: version3.x/algorithm/PP-OCRv5/PP-OCRv5.md
-    - PP-OCRv5多语种文本识别简介: version3.x/algorithm/PP-OCRv5/PP-OCRv5_multi_languages.md
+    - PP-OCRv5多语种文字识别: version3.x/algorithm/PP-OCRv5/PP-OCRv5_multi_languages.md
   - PP-StructureV3: 
     - 使用教程: version3.x/pipeline_usage/PP-StructureV3.md
     - PP-StructureV3简介: version3.x/algorithm/PP-StructureV3/PP-StructureV3.md
