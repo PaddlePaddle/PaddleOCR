@@ -25,4 +25,5 @@ def test_predict(text_recognition_predictor, image_path):
         "input_img",
         "rec_text",
         "rec_score",
+        "vis_font",
     }

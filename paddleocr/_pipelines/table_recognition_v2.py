@@ -72,6 +72,7 @@ class TableRecognitionPipelineV2(PaddleXPipelineWrapper):
     def predict_iter(
         self,
         input,
+        *,
         use_doc_orientation_classify=None,
         use_doc_unwarping=None,
         use_layout_detection=None,
@@ -118,6 +119,7 @@ class TableRecognitionPipelineV2(PaddleXPipelineWrapper):
     def predict(
         self,
         input,
+        *,
         use_doc_orientation_classify=None,
         use_doc_unwarping=None,
         use_layout_detection=None,

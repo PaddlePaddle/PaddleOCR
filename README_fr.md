@@ -42,6 +42,20 @@ En plus de fournir une bibliothèque de modèles exceptionnelle, PaddleOCR 3.0 p
 
 ## 📣 Mises à jour récentes
 
+#### **29/06/2025 : Sortie de PaddleOCR 3.1.0**, comprend :
+
+- **Modèles et pipelines principaux :**
+  - **Ajout du modèle de reconnaissance de texte multilingue PP-OCRv5**, prenant en charge l'entraînement et l'inférence pour 37 langues, dont le français, l'espagnol, le portugais, le russe, le coréen, etc. **Précision moyenne améliorée de plus de 30 %.** [Détails](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/algorithm/PP-OCRv5/PP-OCRv5_multi_languages.html)
+  - Mise à niveau du **modèle PP-Chart2Table** dans PP-StructureV3, améliorant davantage la conversion des graphiques en tableaux. Sur des ensembles d'évaluation internes personnalisés, la métrique (RMS-F1) **a augmenté de 9,36 points de pourcentage (71,24 % -> 80,60 %).**
+  - Lancement du **pipeline de traduction de documents, PP-DocTranslation, basé sur PP-StructureV3 et ERNIE 4.5 Turbo**, prenant en charge la traduction des documents au format Markdown, des PDF à mise en page complexe, et des images de documents, avec sauvegarde des résultats au format Markdown. [Détails](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/pipeline_usage/PP-DocTranslation.html)
+
+- **Nouveau serveur MCP :** [Details](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/mcp_server.html)
+  - **Prend en charge les pipelines OCR et PP-StructureV3.**
+  - Prend en charge trois modes de fonctionnement : bibliothèque Python locale, service cloud communautaire AIStudio et service auto-hébergé.
+  - Prend en charge l'appel des services locaux via stdio et des services distants via Streamable HTTP.
+
+- **Optimisation de la documentation :** Amélioration des descriptions dans certains guides utilisateurs pour une expérience de lecture plus fluide.
+
 #### **26/06/2025 : Publication de PaddleOCR 3.0.3, incluant :**
 
 - Correction de bug : Résolution du problème où le paramètre `enable_mkldnn` ne fonctionnait pas, rétablissant le comportement par défaut d'utilisation de MKL-DNN pour l'inférence CPU.

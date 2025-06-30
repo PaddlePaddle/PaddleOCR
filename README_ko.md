@@ -44,6 +44,20 @@ PaddleOCR 3.0은 뛰어난 모델 라이브러리(model library)를 제공할 �
 
 ## 📣 최신 업데이트
 
+#### **2025.06.29: PaddleOCR 3.1.0 출시**, 주요 내용:
+
+- **주요 모델 및 파이프라인:**
+  - **PP-OCRv5 다국어 텍스트 인식 모델 추가**, 프랑스어, 스페인어, 포르투갈어, 러시아어, 한국어 등 37개 언어의 텍스트 인식 모델 학습 및 추론 지원. **평균 정확도 30% 이상 향상.** [자세히 보기](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/algorithm/PP-OCRv5/PP-OCRv5_multi_languages.html)
+  - PP-StructureV3의 **PP-Chart2Table 모델 업그레이드**, 차트에서 표로 변환하는 기능이 더욱 향상됨. 내부 커스텀 평가 세트에서 지표(RMS-F1)가 **9.36%p 상승(71.24% → 80.60%)**.
+  - PP-StructureV3 및 ERNIE 4.5 Turbo 기반 **문서 번역 파이프라인 PP-DocTranslation 신규 출시**, Markdown 형식 문서, 다양한 복잡 레이아웃의 PDF 문서, 문서 이미지를 번역 지원, 결과는 Markdown 형식으로 저장 가능. [자세히 보기](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/pipeline_usage/PP-DocTranslation.html)
+
+- **새로운 MCP 서버:** [Details](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/mcp_server.html)
+  - **OCR 및 PP-StructureV3 파이프라인을 모두 지원합니다.**
+  - 로컬 Python 라이브러리, AIStudio 커뮤니티 클라우드 서비스, 자체 호스팅 서비스의 세 가지 작업 모드를 지원합니다.
+  - stdio를 통해 로컬 서비스를 호출하고, Streamable HTTP를 통해 원격 서비스를 호출할 수 있습니다.
+
+- **문서 최적화:** 일부 사용자 가이드 설명 개선으로 읽기 경험 향상.
+
 #### **2025.06.26: PaddleOCR 3.0.3 릴리스, 포함 내용:**
 
 - 버그 수정: `enable_mkldnn` 매개변수가 작동하지 않는 문제를 해결하고, CPU가 기본적으로 MKL-DNN 추론을 사용하는 동작을 복원했습니다.

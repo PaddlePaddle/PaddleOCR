@@ -44,7 +44,24 @@ In addition to providing an outstanding model library, PaddleOCR 3.0 also offers
 
 ## 📣 Recent updates
 
+
+#### **2025.06.29: Release of PaddleOCR 3.1.0**, includes:
+
+- **Key Models and Pipelines:**
+  - **Added PP-OCRv5 Multilingual Text Recognition Model**, which supports the training and inference process for text recognition models in 37 languages, including French, Spanish, Portuguese, Russian, Korean, etc. **Average accuracy improved by over 30%.** [Details](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/algorithm/PP-OCRv5/PP-OCRv5_multi_languages.html)
+  - Upgraded the **PP-Chart2Table model** in PP-StructureV3, further enhancing the capability of converting charts to tables. On internal custom evaluation sets, the metric (RMS-F1) **increased by 9.36 percentage points (71.24% -> 80.60%).**
+  - Newly launched **document translation pipeline, PP-DocTranslation, based on PP-StructureV3 and ERNIE 4.5 Turbo**, which supports the translation of Markdown format documents, various complex-layout PDF documents, and document images, with the results saved as Markdown format documents. [Details](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/pipeline_usage/PP-DocTranslation.html)
+
+
+- **New MCP server:** [Details](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/mcp_server.html)
+  - **Supports both OCR and PP-StructureV3 pipelines.**
+  - Supports three working modes: local Python library, AIStudio Community Cloud Service, and self-hosted service.
+  - Supports invoking local services via stdio and remote services via Streamable HTTP.
+
+- **Documentation Optimization:** Improved the descriptions in some user guides for a smoother reading experience.
+
 #### **2025.06.26: Release of PaddleOCR 3.0.3**, includes:
+
   - Bug Fix: Resolved the issue where the `enable_mkldnn` parameter was not effective, restoring the default behavior of using MKL-DNN for CPU inference.
 
 #### 🔥🔥 **2025.06.19: Release of PaddleOCR 3.0.2**, includes:
