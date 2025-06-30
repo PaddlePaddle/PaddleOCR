@@ -154,5 +154,5 @@ For more details on the `PaddleOCR` class parameters, please refer to the [Pytho
 | Model | Supported Languages |
 |-|-|
 | korean_PP-OCRv5_mobile_rec | Korean |
-| latin_PP-OCRv5_mobile_rec | English, French, German, Hungarian, Serbian (latin), Indonesian, Occitan, Icelandic, Lithuanian, Maori, Malay, Dutch, Norwegian, Bosnian, Polish, Portuguese, Czech, Slovak, Slovenian, Welsh, Albanian, Danish, Swedish, Estonian, Swahili, Irish, Tagalog, Croatian, Turkish, Uzbek, Latin |
+| latin_PP-OCRv5_mobile_rec | English, French, German, Afrikaans, Italian, Spanish, Bosnian, Portuguese, Czech, Welsh, Danish, Estonian, Irish, Croatian, Uzbek, Hungarian, Serbian (Latin), Indonesian, Occitan, Icelandic, Lithuanian, Maori, Malay, Dutch, Norwegian, Polish, Slovak, Slovenian, Albanian, Swedish, Swahili, Tagalog, Turkish, Latin |
 | eslav_PP-OCRv5_mobile_rec | Russian, Belarusian, Ukrainian |
