@@ -15,6 +15,7 @@
 import abc
 
 from paddlex import create_predictor
+from paddlex.utils.deps import DependencyError
 
 from .._abstract import CLISubcommandExecutor
 from .._common_args import (
@@ -68,9 +69,14 @@ class PaddleXPredictorWrapper(metaclass=abc.ABCMeta):
         kwargs = prepare_common_init_args(self._model_name, self._common_args)
         kwargs = {**self._get_extra_paddlex_predictor_init_args(), **kwargs}
         # Should we check model names?
-        return create_predictor(
-            model_name=self._model_name, model_dir=self._model_dir, **kwargs
-        )
+        try:
+            return create_predictor(
+                model_name=self._model_name, model_dir=self._model_dir, **kwargs
+            )
+        except DependencyError as e:
+            raise RuntimeError(
+                "A dependency error occurred during predictor creation. Please refer to the installation documentation to ensure all required dependencies are installed."
+            ) from e
 
 
 class PredictorCLISubcommandExecutor(CLISubcommandExecutor):
