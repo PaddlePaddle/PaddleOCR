@@ -18,26 +18,29 @@ PaddleOCR fully reuses the capabilities of PaddleX in the inference deployment p
 
 It is important to note that although PaddleOCR uses PaddleX at the underlying level, thanks to PaddleX’s optional dependency installation feature, **installing the PaddleOCR inference package does not include all of PaddleX’s dependencies—only those required for OCR-related tasks are installed**. Therefore, users generally do not need to worry about excessive expansion of dependency size. Tested in May 2025, in an x86-64 + Linux + Python 3.10 environment, the total size of required dependencies increased only from 717 MB to 738 MB.
 
-The version correspondence between PaddleOCR and PaddleX is as follows:
+The version correspondence between PaddleOCR, PaddleX, and the PaddlePaddle framework is as follows:
 
-| PaddleOCR Version | PaddleX Version |
-| --- | --- |
-| `3.0.0` | `3.0.0` |
-| `3.0.1` | `3.0.1` |
-| `3.0.2` | `3.0.2` |
+| PaddleOCR Version | PaddleX Version | PaddlePaddle Version |
+| --- | --- | --- |
+| `3.0.0` | `3.0.0` | `>= 3.0.0` |
+| `3.0.1` | `3.0.1` | `>= 3.0.0` |
+| `3.0.2` | `3.0.2` | `>= 3.0.0` |
+| `3.0.3` | `>= 3.0.3` | `>= 3.0.0` |
+| `3.1.0` | `>= 3.1.0` | `>= 3.0.0` |
 
 ## 2. Correspondence Between PaddleOCR Pipelines and PaddleX Pipeline Registration Names
 
 | PaddleOCR Pipeline | PaddleX Pipeline Registration Name |
 | --- | --- |
 | General OCR | `OCR` |
-| General Layout Analysis v3 | `PP-StructureV3` |
-| Document Scenario Information Extraction v4 | `PP-ChatOCRv4-doc` |
-| General Table Recognition v2 | `table_recognition_v2` |
+| PP-StructureV3 | `PP-StructureV3` |
+| PP-ChatOCRv4 | `PP-ChatOCRv4-doc` |
+| General Table Recognition V2 | `table_recognition_v2` |
 | Formula Recognition | `formula_recognition` |
 | Seal Text Recognition | `seal_recognition` |
 | Document Image Preprocessing | `doc_preprocessor` |
 | Document Understanding | `doc_understanding` |
+| PP-DocTranslation | `PP-DocTranslation` |
 
 ## 3. Using PaddleX Pipeline Configuration Files
 

@@ -11,9 +11,9 @@ Here are the commonly used table recognition datasets, which are being updated c
 
 | dataset | Image download link | PPOCR format annotation download link |
 |---|---|---|
-| PubTabNet |<https://github.com/ibm-aur-nlp/PubTabNet>| jsonl format, which can be loaded directly with [pubtab_dataset.py](../../../ppocr/data/pubtab_dataset.py) |
-| TAL Table Recognition Competition Dataset |<https://ai.100tal.com/dataset>| jsonl format, which can be loaded directly with [pubtab_dataset.py](../../../ppocr/data/pubtab_dataset.py) |
-| WTW Chinese scene table dataset |<https://github.com/wangwen-whu/WTW-Dataset>| Conversion is required to load with [pubtab_dataset.py](../../../ppocr/data/pubtab_dataset.py)|
+| PubTabNet |<https://github.com/ibm-aur-nlp/PubTabNet>| jsonl format, which can be loaded directly with [pubtab_dataset.py](https://github.com/PaddlePaddle/PaddleOCR/blob/main/ppocr/data/pubtab_dataset.py) |
+| TAL Table Recognition Competition Dataset |<https://ai.100tal.com/dataset>| jsonl format, which can be loaded directly with [pubtab_dataset.py](https://github.com/PaddlePaddle/PaddleOCR/blob/main/ppocr/data/pubtab_dataset.py) |
+| WTW Chinese scene table dataset |<https://github.com/wangwen-whu/WTW-Dataset>| Conversion is required to load with [pubtab_dataset.py](https://github.com/PaddlePaddle/PaddleOCR/blob/main/ppocr/data/pubtab_dataset.py)|
 
 ## 1. PubTabNet
 

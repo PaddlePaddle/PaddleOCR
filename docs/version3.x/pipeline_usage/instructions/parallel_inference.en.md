@@ -190,9 +190,8 @@ if __name__ == "__main__":
 ```
 Assuming the script is saved as `infer_mp.py`, here are some example commands for running it:
 ```bash
-# This is for the general layout analysis V3 pipeline, corresponding to `PPStructureV3`
 # For the exact value of the `--pipeline` parameter, please refer to the **script** import name of the pipeline
-# Other pipelines include `SealRecognition` for the seal text pipeline, and `DocUnderstanding` for the document understanding pipeline
+# This is for the general layout analysis V3 pipeline, corresponding to `PPStructureV3`
 # Process all files in the `input_images` directory
 # Use GPUs 0, 1, 2, and 3, with 1 pipeline instance per GPU, and each instance processes 1 input file at a time
 python infer_mp.py \

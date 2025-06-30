@@ -16,23 +16,25 @@ Table structure recognition is an important component of table recognition syste
 <th>Accuracy (%)</th>
 <th>GPU Inference Time (ms)<br/>[Normal Mode / High Performance Mode]</th>
 <th>CPU Inference Time (ms)<br/>[Normal Mode / High Performance Mode]</th>
-<th>Model Storage Size (M)</th>
+<th>Model Storage Size (MB)</th>
 <th>Description</th>
 </tr>
 <tr>
-<td>SLANet</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/SLANet_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/SLANet_pretrained.pdparams">Training Model</a></td>
+<td>SLANet</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/SLANet_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/SLANet_pretrained.pdparams">Training Model</a></td>
 <td>59.52</td>
-<td>103.08 / 103.08</td>
-<td>197.99 / 197.99</td>
-<td>6.9 M</td>
+<td>23.96 / 21.75</td>
+<td>- / 43.12</td>
+<td>6.9</td>
 <td rowspan="1">SLANet is a table structure recognition model independently developed by Baidu PaddlePaddle Vision Team. By adopting a CPU-friendly lightweight backbone network PP-LCNet, high-low level feature fusion module CSP-PAN, and SLA Head, a feature decoding module aligning structure and position information, this model greatly improves the accuracy and inference speed of table structure recognition.</td>
 </tr>
 <tr>
-<td>SLANet_plus</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/SLANet_plus_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/SLANet_plus_pretrained.pdparams">Training Model</a></td>
+<td>SLANet_plus</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/SLANet_plus_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/SLANet_plus_pretrained.pdparams">Training Model</a></td>
 <td>63.69</td>
-<td>140.29 / 140.29</td>
-<td>195.39 / 195.39</td>
-<td>6.9 M</td>
+<td>23.43 / 22.16</td>
+<td>- / 41.80</td>
+<td>6.9</td>
 <td rowspan="1">SLANet_plus is an enhanced version of the table structure recognition model SLANet independently developed by the Baidu PaddlePaddle Vision Team. Compared to SLANet, SLANet_plus has greatly improved the recognition ability for wireless and complex tables, and reduced the model's sensitivity to table positioning accuracy. Even if the table positioning is offset, it can still be accurately recognized.
 </td>
 </tr>
@@ -40,9 +42,9 @@ Table structure recognition is an important component of table recognition syste
 <td>SLANeXt_wired</td>
 <td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/SLANeXt_wired_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/SLANeXt_wired_pretrained.pdparams">Training Model</a></td>
 <td rowspan="2">69.65</td>
-<td rowspan="2">--</td>
-<td rowspan="2">--</td>
-<td rowspan="2">351M</td>
+<td rowspan="2">85.92 / 85.92</td>
+<td rowspan="2">- / 501.66</td>
+<td rowspan="2">351</td>
 <td rowspan="2">The SLANeXt series is a new generation of table structure recognition models independently developed by the Baidu PaddlePaddle Vision Team. Compared to SLANet and SLANet_plus, SLANeXt focuses on table structure recognition, and trains dedicated weights for wired and wireless tables separately. The recognition ability for all types of tables has been significantly improved, especially for wired tables.</td>
 </tr>
 <tr>
@@ -61,7 +63,7 @@ Table structure recognition is an important component of table recognition syste
                   <ul>
                       <li>GPU: NVIDIA Tesla T4</li>
                       <li>CPU: Intel Xeon Gold 6271C @ 2.60GHz</li>
-                      <li>Other Environment: Ubuntu 20.04 / cuDNN 8.6 / TensorRT 8.5.2.2</li>
+                      <li>Other Environment: Ubuntu 20.04 / CUDA 11.8 / cuDNN 8.9 / TensorRT 8.6.1.6</li>
                   </ul>
               </li>
           </ul>
@@ -147,60 +149,54 @@ Descriptions of related methods and parameters are as follows:
 <tbody>
 <tr>
 <td><code>model_name</code></td>
-<td>Name of the model</td>
-<td><code>str</code></td>
+<td>Model name. If set to <code>None</code>, <code>PP-LCNet_x1_0_table_cls</code> will be used.</td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>model_dir</code></td>
-<td>Model storage path</td>
-<td><code>str</code></td>
+<td>Model storage path.</td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>Device(s) to use for inference.<br/>
-<b>Examples:</b> <code>cpu</code>, <code>gpu</code>, <code>npu</code>, <code>gpu:0</code>, <code>gpu:0,1</code>.<br/>
-If multiple devices are specified, inference will be performed in parallel. Note that parallel inference is not always supported.<br/>
-By default, GPU 0 will be used if available; otherwise, the CPU will be used.
-</td>
-<td><code>str</code></td>
+<td>Device for inference.<br/>
+<b>For example:</b> <code>"cpu"</code>, <code>"gpu"</code>, <code>"npu"</code>, <code>"gpu:0"</code>, <code>"gpu:0,1"</code>.<br/>
+If multiple devices are specified, parallel inference will be performed.<br/>
+By default, GPU 0 is used if available; otherwise, CPU is used.</td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>enable_hpi</code></td>
-<td>EWhether to use the high performance inference.</td>
+<td>Whether to enable high-performance inference.</td>
 <td><code>bool</code></td>
 <td><code>False</code></td>
 </tr>
 <tr>
 <td><code>use_tensorrt</code></td>
-<td>Whether to use the Paddle Inference TensorRT subgraph engine.</br>
-For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6), and it is recommended to install TensorRT 8.6.1.6.</br>
-For Paddle with CUDA version 12.6, the compatible TensorRT version is 10.x (x>=5), and it is recommended to install TensorRT 10.5.0.18.
-</td>
+<td>Whether to use the Paddle Inference TensorRT subgraph engine. If the model does not support acceleration through TensorRT, setting this flag will not enable acceleration.<br/>
+For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6), and it is recommended to install TensorRT 8.6.1.6.<br/>
+For Paddle with CUDA version 12.6, the compatible TensorRT version is 10.x (x>=5), and it is recommended to install TensorRT 10.5.0.18.</td>
 <td><code>bool</code></td>
 <td><code>False</code></td>
 </tr>
 <tr>
 <td><code>precision</code></td>
-<td>Precision for TensorRT when using the Paddle Inference TensorRT subgraph engine.<br/><b>Options:</b> <code>fp32</code>, <code>fp16</code>, etc.</td>
+<td>Computation precision when using the Paddle Inference TensorRT subgraph engine.<br/><b>Options:</b> <code>"fp32"</code>, <code>"fp16"</code>.</td>
 <td><code>str</code></td>
-<td><code>fp32</code></td>
+<td><code>"fp32"</code></td>
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
-<td>
-Whether to enable MKL-DNN acceleration for inference. If MKL-DNN is unavailable or the model does not support it, acceleration will not be used even if this flag is set.
-</td>
+<td>Whether to enable MKL-DNN acceleration for inference. If MKL-DNN is unavailable or the model does not support it, acceleration will not be used even if this flag is set.</td>
 <td><code>bool</code></td>
 <td><code>True</code></td>
 </tr>
 <tr>
 <td><code>mkldnn_cache_capacity</code></td>
-<td>
-MKL-DNN cache capacity.
-</td>
+<td>MKL-DNN cache capacity.</td>
 <td><code>int</code></td>
 <td><code>10</code></td>
 </tr>
@@ -213,10 +209,7 @@ MKL-DNN cache capacity.
 </tbody>
 </table>
 
-* Among them, `model_name` must be specified. If `model_dir` is specified, the user's custom model is used.
-
 * Call the `predict()` method of the table structure recognition model for inference prediction, which returns a result list. In addition, this module also provides the `predict_iter()` method. The two are completely consistent in parameter acceptance and result return. The difference is that `predict_iter()` returns a `generator`, which can process and obtain prediction results step by step, suitable for handling large datasets or scenarios where you want to save memory. You can choose to use either method according to your actual needs. The `predict()` method has parameters `input` and `batch_size`, described as follows:
-
 
 <table>
 <thead>
@@ -229,14 +222,12 @@ MKL-DNN cache capacity.
 </thead>
 <tr>
 <td><code>input</code></td>
-<td>Input data to be predicted. Required. Supports multiple input types:
+<td>
+Data to be predicted. Required. Supports multiple input types:
 <ul>
-<li><b>Python Var</b>: e.g., <code>numpy.ndarray</code> representing image data</li>
-<li><b>str</b>: 
-  - Local image or PDF file path: <code>/root/data/img.jpg</code>;
-  - <b>URL</b> of image or PDF file: e.g., <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_doc_preprocessor_002.png">example</a>;
-  - <b>Local directory</b>: directory containing images for prediction, e.g., <code>/root/data/</code> (Note: directories containing PDF files are not supported; PDFs must be specified by exact file path)</li>
-<li><b>List</b>: Elements must be of the above types, e.g., <code>[numpy.ndarray, numpy.ndarray]</code>, <code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>, <code>["/root/data1", "/root/data2"]</code></li>
+  <li><b>Python Var</b>: e.g., <code>numpy.ndarray</code> representing image data</li>
+  <li><b>str</b>: Local path to an image or PDF file, e.g., <code>/root/data/img.jpg</code>; <b>URL</b>: Network URL to an image or PDF file, e.g., <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/img_rot180_demo.jpg">Example</a>; <b>Directory</b>: A local directory containing images for prediction, e.g., <code>/root/data/</code> (Note: PDF files in directories are not supported; to predict a PDF, specify its file path directly)</li>
+  <li><b>list</b>: A list of the above types, e.g., <code>[numpy.ndarray, numpy.ndarray]</code>, <code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>, <code>["/root/data1", "/root/data2"]</code></li>
 </ul>
 </td>
 <td><code>Python Var|str|list</code></td>
@@ -244,7 +235,7 @@ MKL-DNN cache capacity.
 </tr>
 <tr>
 <td><code>batch_size</code></td>
-<td>Batch size, positive integer.</td>
+<td>Batch size, can be set to any positive integer.</td>
 <td><code>int</code></td>
 <td>1</td>
 </tr>

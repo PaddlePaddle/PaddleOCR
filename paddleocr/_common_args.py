@@ -89,6 +89,7 @@ def prepare_common_init_args(model_name, common_args):
     elif device_type == "cpu":
         enable_mkldnn = common_args["enable_mkldnn"]
         if enable_mkldnn:
+            pp_option.run_mode = "mkldnn"
             pp_option.mkldnn_cache_capacity = common_args["mkldnn_cache_capacity"]
         else:
             pp_option.run_mode = "paddle"
@@ -121,7 +122,7 @@ def add_common_cli_opts(parser, *, default_enable_hpi, allow_multiple_devices):
         "--use_tensorrt",
         type=str2bool,
         default=DEFAULT_USE_TENSORRT,
-        help="Whether to use the Paddle Inference TensorRT subgraph engine.",
+        help="Whether to use the Paddle Inference TensorRT subgraph engine. If the model does not support TensorRT acceleration, even if this flag is set, acceleration will not be used.",
     )
     parser.add_argument(
         "--precision",

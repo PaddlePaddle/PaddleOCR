@@ -23,10 +23,11 @@ The Document Image Orientation Classification Module is primarily designed to di
 </thead>
 <tbody>
 <tr>
-<td>PP-LCNet_x1_0_doc_ori</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-LCNet_x1_0_doc_ori_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-LCNet_x1_0_doc_ori_pretrained.pdparams">Pretrained Model</a></td>
+<td>PP-LCNet_x1_0_doc_ori</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-LCNet_x1_0_doc_ori_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-LCNet_x1_0_doc_ori_pretrained.pdparams">Pretrained Model</a></td>
 <td>99.06</td>
-<td>2.31 / 0.43</td>
-<td>3.37 / 1.27</td>
+<td>2.62 / 0.59</td>
+<td>3.24 / 1.19</td>
 <td>7</td>
 <td>A document image classification model based on PP-LCNet_x1_0, with four categories: 0°, 90°, 180°, and 270°.</td>
 </tr>
@@ -43,7 +44,7 @@ The Document Image Orientation Classification Module is primarily designed to di
                 <ul>
                     <li>GPU: NVIDIA Tesla T4</li>
                     <li>CPU: Intel Xeon Gold 6271C @ 2.60GHz</li>
-                    <li>Other Environment: Ubuntu 20.04 / cuDNN 8.6 / TensorRT 8.5.2.2</li>
+                    <li>Other Environment: Ubuntu 20.04 / CUDA 11.8 / cuDNN 8.9 / TensorRT 8.6.1.6</li>
                 </ul>
             </li>
         </ul>
@@ -132,36 +133,36 @@ The explanations of relevant methods and parameters are as follows:
 <tbody>
 <tr>
 <td><code>model_name</code></td>
-<td>Model name</td>
-<td><code>str</code></td>
-<td><code>PP-LCNet_x1_0_doc_ori</code></td>
+<td>Model name. If set to <code>None</code>, <code>PP-LCNet_x1_0_doc_ori</code> will be used.</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>model_dir</code></td>
-<td>Model storage path</td>
-<td><code>str</code></td>
+<td>Model storage path.</td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>Device(s) to use for inference.<br/>
-<b>Examples:</b> <code>cpu</code>, <code>gpu</code>, <code>npu</code>, <code>gpu:0</code>, <code>gpu:0,1</code>.<br/>
-If multiple devices are specified, inference will be performed in parallel. Note that parallel inference is not always supported.<br/>
-By default, GPU 0 will be used if available; otherwise, the CPU will be used.
+<td>Device for inference.<br/>
+<b>For example:</b><code>"cpu"</code>, <code>"gpu"</code>, <code>"npu"</code>, <code>"gpu:0"</code>, <code>"gpu:0,1"</code>.<br/>
+If multiple devices are specified, parallel inference will be performed.<br/>
+By default, GPU 0 is used if available; otherwise, CPU is used.
 </td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>enable_hpi</code></td>
-<td>Whether to use the high performance inference.</td>
+<td>Whether to enable high-performance inference.</td>
 <td><code>bool</code></td>
 <td><code>False</code></td>
 </tr>
 <tr>
 <td><code>use_tensorrt</code></td>
-<td>Whether to use the Paddle Inference TensorRT subgraph engine.</br>
-For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6), and it is recommended to install TensorRT 8.6.1.6.</br>
+<td>Whether to use the Paddle Inference TensorRT subgraph engine. If the model does not support acceleration through TensorRT, setting this flag will not enable acceleration.<br/>
+For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6), and it is recommended to install TensorRT 8.6.1.6.<br/>
 For Paddle with CUDA version 12.6, the compatible TensorRT version is 10.x (x>=5), and it is recommended to install TensorRT 10.5.0.18.
 </td>
 <td><code>bool</code></td>
@@ -169,9 +170,9 @@ For Paddle with CUDA version 12.6, the compatible TensorRT version is 10.x (x>=5
 </tr>
 <tr>
 <td><code>precision</code></td>
-<td>Precision for TensorRT when using the Paddle Inference TensorRT subgraph engine.<br/><b>Options:</b> <code>fp32</code>, <code>fp16</code>, etc.</td>
+<td>Computation precision when using the TensorRT subgraph engine in Paddle Inference.<br/><b>Options:</b><code>"fp32"</code>, <code>"fp16"</code>.</td>
 <td><code>str</code></td>
-<td><code>fp32</code></td>
+<td><code>"fp32"</code></td>
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
@@ -195,18 +196,8 @@ MKL-DNN cache capacity.
 <td><code>int</code></td>
 <td><code>10</code></td>
 </tr>
-<tr>
-<td><code>top_k</code></td>
-<td>The top-k value for prediction results. If not specified, the default value in the official PaddleOCR model configuration is used. If the value is 5, the top 5 categories and their corresponding classification probabilities will be returned.</td>
-<td><code>int</code></td>
-<td><code>None</code></td>
-</tr>
 </tbody>
 </table>
-
-
-
-* Among them, `model_name` must be specified. After specifying `model_name`, the model parameters built into PaddleX are used by default. On this basis, when `model_dir` is specified, the user-defined model is used.
 
 * Call the `predict()` method of the document image orientation classification model for inference prediction. This method will return a list of results. In addition, this module also provides the `predict_iter()` method. The two methods are completely consistent in terms of parameter acceptance and result return. The difference is that `predict_iter()` returns a `generator`, which can process and obtain prediction results step by step, suitable for scenarios where large datasets need to be processed or memory needs to be saved. You can choose either of these two methods according to your actual needs. The parameters of the `predict()` method are `input` and `batch_size`, and the specific explanations are as follows:
 <table>
@@ -227,7 +218,7 @@ MKL-DNN cache capacity.
   - Local image or PDF file path: <code>/root/data/img.jpg</code>;
   - <b>URL</b> of image or PDF file: e.g., <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/img_rot180_demo.jpg">example</a>;
   - <b>Local directory</b>: directory containing images for prediction, e.g., <code>/root/data/</code> (Note: directories containing PDF files are not supported; PDFs must be specified by exact file path)</li>
-<li><b>List</b>: Elements must be of the above types, e.g., <code>[numpy.ndarray, numpy.ndarray]</code>, <code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>, <code>["/root/data1", "/root/data2"]</code></li>
+<li><b>list</b>: Elements must be of the above types, e.g., <code>[numpy.ndarray, numpy.ndarray]</code>, <code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>, <code>["/root/data1", "/root/data2"]</code></li>
 </ul>
 </td>
 <td><code>Python Var|str|list</code></td>
@@ -238,12 +229,6 @@ MKL-DNN cache capacity.
 <td>Batch size, positive integer.</td>
 <td><code>int</code></td>
 <td>1</td>
-</tr>
-<tr>
-<td><code>top_k</code></td>
-<td>The top-k value for prediction results. If not specified, the value provided when the model was instantiated will be used; if it was not specified at instantiation either, the default value in the official PaddleOCR model configuration is used.</td>
-<td><code>int</code></td>
-<td><code>None</code></td>
 </tr>
 </table>
 

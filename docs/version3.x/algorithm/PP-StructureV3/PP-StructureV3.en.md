@@ -340,12 +340,12 @@ In the following PP-StructureV3 configuration, please refer to [PP-OCRv5](../PP-
   </td>
   <td rowspan="2">
    Peak RAM Usage
-    （MB）
+    （GB）
   </td>
   <td rowspan="2">
    Average RAM
   Usage
-    （MB）
+    （GB）
   </td>
   <td rowspan="2">
    Average GPU
@@ -353,12 +353,12 @@ In the following PP-StructureV3 configuration, please refer to [PP-OCRv5](../PP-
   </td>
   <td rowspan="2">
    Peak VRAM Usage
-    （MB）
+    （GB）
   </td>
   <td rowspan="2">
    Average VRAM
   Usage
-    （MB）
+    （GB）
   </td>
  </tr>
  <tr>
@@ -640,12 +640,12 @@ In the following PP-StructureV3 configuration, please refer to [PP-OCRv5](../PP-
   </td>
   <td rowspan="2">
    Peak RAM Usage
-    （MB）
+    （GB）
   </td>
   <td rowspan="2">
    Average RAM
   Usage
-    （MB）
+    （GB）
   </td>
   <td rowspan="2">
    Average GPU
@@ -653,12 +653,12 @@ In the following PP-StructureV3 configuration, please refer to [PP-OCRv5](../PP-
   </td>
   <td rowspan="2">
    Peak VRAM Usage
-    （MB）
+    （GB）
   </td>
   <td rowspan="2">
    Average VRAM
   Usage
-    （MB）
+    （GB）
   </td>
  </tr>
  <tr>
@@ -933,14 +933,14 @@ The serving inference test is based on the NVIDIA A100 + Intel Xeon Platinum 835
    <td>Success Number/Total Number</td> 
   </tr> 
   <tr"> 
-   <td>4 GPUs ✖️ 1实例/卡</td> 
+   <td>4 GPUs ✖️ 1 instance/gpu</td> 
    <td>4</td> 
    <td>1.69</td> 
    <td>2.36</td> 
    <td>100%</td> 
   </tr> 
   <tr"> 
-   <td>4 GPUs ✖️ 4实例/卡</td> 
+   <td>4 GPUs ✖️ 4 instances/gpu</td> 
    <td>16</td> 
    <td>4.05</td> 
    <td>3.87</td> 

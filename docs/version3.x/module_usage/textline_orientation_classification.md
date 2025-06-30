@@ -19,24 +19,26 @@ comments: true
 <th>Top-1 Acc（%）</th>
 <th>GPU推理耗时（ms）</th>
 <th>CPU推理耗时 (ms)</th>
-<th>模型存储大小（M）</th>
+<th>模型存储大小（MB）</th>
 <th>介绍</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>PP-LCNet_x0_25_textline_ori</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-LCNet_x0_25_textline_ori_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-LCNet_x0_25_textline_ori_pretrained.pdparams">训练模型</a></td>
+<td>PP-LCNet_x0_25_textline_ori</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-LCNet_x0_25_textline_ori_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-LCNet_x0_25_textline_ori_pretrained.pdparams">训练模型</a></td>
 <td>98.85</td>
-<td>-</td>
-<td>-</td>
+<td>2.16 / 0.41</td>
+<td>2.37 / 0.73</td>
 <td>0.96</td>
 <td>基于PP-LCNet_x0_25的文本行分类模型，含有两个类别，即0度，180度</td>
 </tr>
 <tr>
-<td>PP-LCNet_x1_0_textline_ori</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-LCNet_x1_0_textline_ori_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-LCNet_x1_0_textline_ori_pretrained.pdparams">训练模型</a></td>
+<td>PP-LCNet_x1_0_textline_ori</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-LCNet_x1_0_textline_ori_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-LCNet_x1_0_textline_ori_pretrained.pdparams">训练模型</a></td>
 <td>99.42</td>
-<td>-</td>
-<td>-</td>
+<td>- / -</td>
+<td>2.98 / 2.98</td>
 <td>6.5</td>
 <td>基于PP-LCNet_x1_0的文本行分类模型，含有两个类别，即0度，180度</td>
 </tr>
@@ -55,7 +57,7 @@ comments: true
                   <ul>
                       <li>GPU：NVIDIA Tesla T4</li>
                       <li>CPU：Intel Xeon Gold 6271C @ 2.60GHz</li>
-                      <li>其他环境：Ubuntu 20.04 / cuDNN 8.6 / TensorRT 8.5.2.2</li>
+                      <li>其他环境：Ubuntu 20.04 / CUDA 11.8 / cuDNN 8.9 / TensorRT 8.6.1.6</li>
                   </ul>
               </li>
           </ul>
@@ -145,24 +147,24 @@ for res in output:
 <tbody>
 <tr>
 <td><code>model_name</code></td>
-<td>模型名称</td>
-<td><code>str</code></td>
+<td>模型名称。如果设置为<code>None</code>，则使用<code>PP-LCNet_x0_25_textline_ori</code>。</td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>model_dir</code></td>
-<td>模型存储路径</td>
-<td><code>str</code></td>
+<td>模型存储路径。</td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>device</code></td>
 <td>用于推理的设备。<br/>
-<b>例如：</b><code>cpu</code>、<code>gpu</code>、<code>npu</code>、<code>gpu:0</code>、<code>gpu:0,1</code>。<br/>
+<b>例如：</b><code>"cpu"</code>、<code>"gpu"</code>、<code>"npu"</code>、<code>"gpu:0"</code>、<code>"gpu:0,1"</code>。<br/>
 如指定多个设备，将进行并行推理。<br/>
 默认情况下，优先使用 GPU 0；若不可用则使用 CPU。
 </td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
@@ -173,8 +175,8 @@ for res in output:
 </tr>
 <tr>
 <td><code>use_tensorrt</code></td>
-<td>是否启用 Paddle Inference 的 TensorRT 子图引擎。</br>
-对于 CUDA 11.8 版本的飞桨，兼容的 TensorRT 版本为 8.x（x>=6），建议安装 TensorRT 8.6.1.6。</br>
+<td>是否启用 Paddle Inference 的 TensorRT 子图引擎。如果模型不支持通过 TensorRT 加速，即使设置了此标志，也不会使用加速。<br/>
+对于 CUDA 11.8 版本的飞桨，兼容的 TensorRT 版本为 8.x（x>=6），建议安装 TensorRT 8.6.1.6。<br/>
 对于 CUDA 12.6 版本的飞桨，兼容的 TensorRT 版本为 10.x（x>=5），建议安装 TensorRT 10.5.0.18。
 </td>
 <td><code>bool</code></td>
@@ -182,9 +184,9 @@ for res in output:
 </tr>
 <tr>
 <td><code>precision</code></td>
-<td>当使用 Paddle Inference 的 TensorRT 子图引擎时设置的计算精度。<br/><b>可选项：</b><code>fp32</code>、<code>fp16</code> 等。</td>
+<td>当使用 Paddle Inference 的 TensorRT 子图引擎时设置的计算精度。<br/><b>可选项：</b><code>"fp32"</code>、<code>"fp16"</code>。</td>
 <td><code>str</code></td>
-<td><code>fp32</code></td>
+<td><code>"fp32"</code></td>
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
@@ -208,18 +210,8 @@ MKL-DNN 缓存容量。
 <td><code>int</code></td>
 <td><code>10</code></td>
 </tr>
-<tr>
-<td><code>top_k</code></td>
-<td>预测结果的前topk值，如果不指定，将默认使用PaddleOCR官方模型配置。若值为5，表示打印（返回）预测结果的前5个类别和对应的分类概率</td>
-<td><code>int</code></td>
-<td><code>None</code></td>
-</tr>
 </tbody>
 </table>
-
-
-
-* 其中，`model_name` 必须指定，指定 `model_name` 后，默认使用 PaddleOCR 内置的模型参数，在此基础上，指定 `model_dir` 时，使用用户自定义的模型。
 
 * 调用文本行方向分类模型的 `predict()` 方法进行推理预测，该方法会返回一个结果列表。另外，本模块还提供了 `predict_iter()` 方法。两者在参数接受和结果返回方面是完全一致的，区别在于 `predict_iter()` 返回的是一个 `generator`，能够逐步处理和获取预测结果，适合处理大型数据集或希望节省内存的场景。可以根据实际需求选择使用这两种方法中的任意一种。`predict()` 方法参数有 `input` 和 `batch_size`，具体说明如下：
 
