@@ -2256,8 +2256,8 @@ MKL-DNN 缓存容量。
 <td><code>None</code></td>
 </tr>
 <tr>
-<td><code>chat_bot_config</code></td>
-<td>大语言模型配置。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td><code>glossary</code></td>
+<td>翻译专业术语对照表。</td>
 <td><code>dict|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -2265,7 +2265,13 @@ MKL-DNN 缓存容量。
 <td><code>llm_request_interval</code></td>
 <td>向大语言模型发送请求的时间间隔，单位为秒。该参数可用于防止过于频繁地调用大语言模型。</td>
 <td><code>float</code></td>
-<td><code>0</code></td>
+<td><code>0.0</code></td>
+</tr>
+<tr>
+<td><code>chat_bot_config</code></td>
+<td>大语言模型配置。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td><code>dict|None</code></td>
+<td><code>None</code></td>
 </tr>
 </tbody>
 </table>
@@ -2743,15 +2749,21 @@ MKL-DNN 缓存容量。
 <td>否</td>
 </tr>
 <tr>
-<td><code>chatBotConfig</code></td>
+<td><code>glossary</code></td>
 <td><code>object</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>translate</code> 方法的 <code>chat_bot_config</code> 参数相关说明。</td>
+<td>请参阅产线对象中 <code>translate</code> 方法的 <code>glossary</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>llmRequestInterval</code></td>
 <td><code>number</code> | <code>null</code></td>
 <td>请参阅产线对象中 <code>translate</code> 方法的 <code>llm_request_interval</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>chatBotConfig</code></td>
+<td><code>object</code> | <code>null</code></td>
+<td>请参阅产线对象中 <code>translate</code> 方法的 <code>chat_bot_config</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 </tbody>
