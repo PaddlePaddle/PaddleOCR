@@ -26,7 +26,7 @@
     
     
       
-        <title>PP-OCRv5多语种文本识别简介 - PaddleOCR 文档</title>
+        <title>PP-OCRv5多语种文字识别 - PaddleOCR 文档</title>
       
     
     
@@ -197,7 +197,7 @@ You're not viewing the latest version.
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              PP-OCRv5多语种文本识别简介
+              PP-OCRv5多语种文字识别
             
           </span>
         </div>
@@ -886,7 +886,7 @@ You're not viewing the latest version.
   
   
   <span class="md-ellipsis">
-    PP-OCRv5多语种文本识别简介
+    PP-OCRv5多语种文字识别
     
   </span>
   
@@ -899,7 +899,7 @@ You're not viewing the latest version.
   
   
   <span class="md-ellipsis">
-    PP-OCRv5多语种文本识别简介
+    PP-OCRv5多语种文字识别
     
   </span>
   
@@ -943,6 +943,15 @@ You're not viewing the latest version.
   <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
       四、 支持语种及缩写
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      五、模型及其支持的语种
     </span>
   </a>
   
@@ -3146,6 +3155,15 @@ You're not viewing the latest version.
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      五、模型及其支持的语种
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -3178,13 +3196,35 @@ You're not viewing the latest version.
   
 
 
-<h1 id="pp-ocrv5">一、PP-OCRv5多语种文本识别介绍<a class="headerlink" href="#pp-ocrv5" title="Permanent link">&para;</a></h1>
-<p>PP-OCRv5 是 PP-OCR 系列的最新一代文字识别解决方案，专注于多场景、多语种的文字识别任务。在文字类型支持方面，默认配置的识别模型可准确识别简体中文、中文拼音、繁体中文、英文和日文这五大主流文字类型。同时，PP-OCRv5还提供了覆盖37种语言的多语种识别能力，包括韩文、西班牙文、法文、葡萄牙文、德文、意大利文、俄罗斯文等（具体支持语种及缩写详见<a href="#四-支持语种及缩写">第四节</a>）。相较于前代 PP-OCRv3 版本，PP-OCRv5 在多语言识别准确率上实现了超过30%的提升。</p>
-<p><img alt="img" src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/pipelines/ocr/japan_2_res.jpg" /></p>
-<p><img alt="img" src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/pipelines/ocr/french_0_res.jpg" /></p>
-<p><img alt="img" src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/pipelines/ocr/german_0_res.png" /></p>
-<p><img alt="img" src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/pipelines/ocr/korean_1_res.jpg" /></p>
-<p><img alt="img" src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/pipelines/ocr/ru_0.jpeg" /></p>
+<h1 id="pp-ocrv5">一、PP-OCRv5多语种文字识别介绍<a class="headerlink" href="#pp-ocrv5" title="Permanent link">&para;</a></h1>
+<p><a href="PP-OCRv5.html">PP-OCRv5</a> 是 PP-OCR 系列的最新一代文字识别解决方案，专注于多场景、多语种的文字识别任务。在文字类型支持方面，默认配置的识别模型可准确识别简体中文、中文拼音、繁体中文、英文和日文这五大主流文字类型。同时，PP-OCRv5还提供了覆盖37种语言的多语种文字识别能力，包括韩文、西班牙文、法文、葡萄牙文、德文、意大利文、俄罗斯文等（具体支持语种及缩写详见<a href="#四-支持语种及缩写">第四节</a>）。相较于前代 PP-OCRv3 版本，PP-OCRv5 在多语言文字识别准确率上实现了超过30%的提升。</p>
+<div align="center">
+  <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/pipelines/ocr/french_0_res.jpg" alt="法文识别结" width="500"/>
+  <br>
+  <b>法文识别结果</b>
+</div>
+
+<p><br></p>
+<div align="center">
+  <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/pipelines/ocr/german_0_res.png" alt="德文识别结" width="500"/>
+  <br>
+  <b>德文识别结果</b>
+</div>
+
+<p><br></p>
+<div align="center">
+  <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/pipelines/ocr/korean_1_res.jpg" alt="韩文识别结果" width="500"/>
+  <br>
+  <b>韩文识别结果</b>
+</div>
+
+<p><br></p>
+<div align="center">
+  <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/pipelines/ocr/ru_0.jpeg" alt="俄文识别结果" width="500"/>
+  <br>
+  <b>俄文识别结果</b>
+</div>
+
 <h2 id="_1">二、快速使用<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
 <p>您可以通过在命令行中使用 <code>--lang</code> 参数，来使用指定语种的文本识别模型进行通用 OCR 产线的推理：</p>
 <p><div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># 通过 `--lang` 参数指定使用法语的识别模型</span>
@@ -3240,34 +3280,61 @@ You're not viewing the latest version.
 <thead>
 <tr>
 <th>模型</th>
+<th>模型下载链接</th>
 <th>韩语数据集 精度 (%)</th>
-<th></th>
-<th>模型</th>
-<th>拉丁字母语言数据集 精度 (%)</th>
-<th></th>
-<th>模型</th>
-<th>东斯拉夫语言数据集 精度 (%)</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>korean_PP-OCRv5_mobile_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/korean_PP-OCRv5_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/korean_PP-OCRv5_mobile_rec_pretrained.pdparams">训练模型</a></td>
 <td>88.0</td>
-<td></td>
-<td>latin_PP-OCRv5_mobile_rec</td>
-<td>84.7</td>
-<td></td>
-<td>eslav_PP-OCRv5_mobile_rec</td>
-<td>85.8</td>
 </tr>
 <tr>
 <td>korean_PP-OCRv3_mobile_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/korean_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/korean_PP-OCRv3_mobile_rec_pretrained.pdparams">训练模型</a></td>
 <td>23.0</td>
-<td></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>模型</th>
+<th>模型下载链接</th>
+<th>拉丁字母语言数据集 精度 (%)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>latin_PP-OCRv5_mobile_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/latin_PP-OCRv5_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/latin_PP-OCRv5_mobile_rec_pretrained.pdparams">训练模型</a></td>
+<td>84.7</td>
+</tr>
+<tr>
 <td>latin_PP-OCRv3_mobile_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/latin_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/latin_PP-OCRv3_mobile_rec_pretrained.pdparams">训练模型</a></td>
 <td>37.9</td>
-<td></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>模型</th>
+<th>模型下载链接</th>
+<th>东斯拉夫语言数据集 精度 (%)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>eslav_PP-OCRv5_mobile_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/eslav_PP-OCRv5_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/eslav_PP-OCRv5_mobile_rec_pretrained.pdparams">训练模型</a></td>
+<td>81.6</td>
+</tr>
+<tr>
 <td>cyrillic_PP-OCRv3_mobile_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/cyrillic_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/cyrillic_PP-OCRv3_mobile_rec_pretrained.pdparams">训练模型</a></td>
 <td>50.2</td>
 </tr>
 </tbody>
@@ -3306,7 +3373,7 @@ You're not viewing the latest version.
 <td></td>
 <td>塞尔维亚文（latin）</td>
 <td>Serbian(latin)</td>
-<td>rslatin</td>
+<td>rs_latin</td>
 </tr>
 <tr>
 <td>法文</td>
@@ -3481,6 +3548,29 @@ You're not viewing the latest version.
 </tr>
 </tbody>
 </table>
+<h2 id="_4">五、模型及其支持的语种<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>模型</th>
+<th>支持语种</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>korean_PP-OCRv5_mobile_rec</td>
+<td>韩文</td>
+</tr>
+<tr>
+<td>latin_PP-OCRv5_mobile_rec</td>
+<td>英文、法文、德文、南非荷兰文、意大利文、西班牙文、波斯尼亚文、葡萄牙文、捷克文、威尔士文、丹麦文、爱沙尼亚文、爱尔兰文、克罗地亚文、乌兹别克文、匈牙利文、塞尔维亚文（latin）、印度尼西亚文、欧西坦文、冰岛文、立陶宛文、毛利文、马来文、荷兰文、挪威文、波兰文、斯洛伐克文、斯洛文尼亚文、阿尔巴尼亚文、瑞典文、西瓦希里文、塔加洛文、土耳其文、拉丁文</td>
+</tr>
+<tr>
+<td>eslav_PP-OCRv5_mobile_rec</td>
+<td>俄罗斯文、白俄罗斯文、乌克兰文</td>
+</tr>
+</tbody>
+</table>
 
 
 
@@ -3503,7 +3593,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="最后更新">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年7月2日 07:39:53 UTC">2025年7月2日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年7月2日 07:58:02 UTC">2025年7月2日</span>
   </span>
 
     
@@ -3513,7 +3603,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="创建日期">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年7月2日 07:39:53 UTC">2025年7月2日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年7月2日 07:58:02 UTC">2025年7月2日</span>
   </span>
 
     

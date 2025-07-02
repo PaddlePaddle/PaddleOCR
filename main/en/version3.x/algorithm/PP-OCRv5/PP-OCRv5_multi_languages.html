@@ -26,7 +26,7 @@
     
     
       
-        <title>PP-OCRv5 Multilingual Text Recognition Introduction - PaddleOCR Documentation</title>
+        <title>PP-OCRv5 Multilingual Text Recognition - PaddleOCR Documentation</title>
       
     
     
@@ -197,7 +197,7 @@ You're not viewing the latest version.
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              PP-OCRv5 Multilingual Text Recognition Introduction
+              PP-OCRv5 Multilingual Text Recognition
             
           </span>
         </div>
@@ -886,7 +886,7 @@ You're not viewing the latest version.
   
   
   <span class="md-ellipsis">
-    PP-OCRv5 Multilingual Text Recognition Introduction
+    PP-OCRv5 Multilingual Text Recognition
     
   </span>
   
@@ -899,7 +899,7 @@ You're not viewing the latest version.
   
   
   <span class="md-ellipsis">
-    PP-OCRv5 Multilingual Text Recognition Introduction
+    PP-OCRv5 Multilingual Text Recognition
     
   </span>
   
@@ -931,9 +931,9 @@ You're not viewing the latest version.
 </li>
       
         <li class="md-nav__item">
-  <a href="#3-benchmark-comparison" class="md-nav__link">
+  <a href="#3-performance-comparison" class="md-nav__link">
     <span class="md-ellipsis">
-      3. Benchmark Comparison
+      3. Performance Comparison
     </span>
   </a>
   
@@ -943,6 +943,15 @@ You're not viewing the latest version.
   <a href="#4-supported-languages-and-abbreviations" class="md-nav__link">
     <span class="md-ellipsis">
       4. Supported Languages and Abbreviations
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-models-and-their-supported-languages" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Models and Their Supported Languages
     </span>
   </a>
   
@@ -3129,9 +3138,9 @@ You're not viewing the latest version.
 </li>
       
         <li class="md-nav__item">
-  <a href="#3-benchmark-comparison" class="md-nav__link">
+  <a href="#3-performance-comparison" class="md-nav__link">
     <span class="md-ellipsis">
-      3. Benchmark Comparison
+      3. Performance Comparison
     </span>
   </a>
   
@@ -3141,6 +3150,15 @@ You're not viewing the latest version.
   <a href="#4-supported-languages-and-abbreviations" class="md-nav__link">
     <span class="md-ellipsis">
       4. Supported Languages and Abbreviations
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-models-and-their-supported-languages" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Models and Their Supported Languages
     </span>
   </a>
   
@@ -3179,14 +3197,36 @@ You're not viewing the latest version.
 
 
 <h1 id="1-introduction-to-pp-ocrv5-multilingual-text-recognition">1. Introduction to PP-OCRv5 Multilingual Text Recognition<a class="headerlink" href="#1-introduction-to-pp-ocrv5-multilingual-text-recognition" title="Permanent link">&para;</a></h1>
-<p>PP-OCRv5 is the latest generation of the PP-OCR series text recognition solutions, focusing on text recognition tasks across multiple scenarios and languages. By default, the recognition model supports accurate recognition of five mainstream text types: Simplified Chinese, Chinese Pinyin, Traditional Chinese, English, and Japanese. In addition, PP-OCRv5 provides multilingual recognition capabilities covering 37 languages, including Korean, Spanish, French, Portuguese, German, Italian, Russian, and more (see <a href="#4-supported-languages-and-abbreviations">Section 4</a> for the full list of supported languages and abbreviations). Compared to the previous PP-OCRv3 version, PP-OCRv5 achieves more than a 30% improvement in recognition accuracy for multilingual tasks.</p>
-<p><img alt="img" src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/pipelines/ocr/japan_2_res.jpg" /></p>
-<p><img alt="img" src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/pipelines/ocr/french_0_res.jpg" /></p>
-<p><img alt="img" src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/pipelines/ocr/german_0_res.png" /></p>
-<p><img alt="img" src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/pipelines/ocr/korean_1_res.jpg" /></p>
-<p><img alt="img" src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/pipelines/ocr/ru_0.jpeg" /></p>
+<p><a href="PP-OCRv5.html">PP-OCRv5</a> is the latest generation text recognition solution in the PP-OCR series, focusing on multi-scenario and multilingual text recognition tasks. In terms of supported text types, the default configuration of the recognition model can accurately identify five major types: Simplified Chinese, Pinyin, Traditional Chinese, English, and Japanese. Additionally, PP-OCRv5 offers multilingual text recognition capabilities covering 37 languages, including Korean, Spanish, French, Portuguese, German, Italian, Russian, and more (for a full list of supported languages and abbreviations, see <a href="#4-supported-languages-and-abbreviations">Section 4</a>). Compared to the previous PP-OCRv3 version, PP-OCRv5 achieves over a 30% improvement in accuracy for multilingual text recognition.</p>
+<div align="center">
+  <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/pipelines/ocr/french_0_res.jpg" alt="French recognition result" width="500"/>
+  <br>
+  <b>French Recognition Result</b>
+</div>
+
+<p><br></p>
+<div align="center">
+  <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/pipelines/ocr/german_0_res.png" alt="German recognition result" width="500"/>
+  <br>
+  <b>German Recognition Result</b>
+</div>
+
+<p><br></p>
+<div align="center">
+  <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/pipelines/ocr/korean_1_res.jpg" alt="Korean recognition result" width="500"/>
+  <br>
+  <b>Korean Recognition Result</b>
+</div>
+
+<p><br></p>
+<div align="center">
+  <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/pipelines/ocr/ru_0.jpeg" alt="Russian recognition result" width="500"/>
+  <br>
+  <b>Russian Recognition Result</b>
+</div>
+
 <h2 id="2-quick-start">2. Quick Start<a class="headerlink" href="#2-quick-start" title="Permanent link">&para;</a></h2>
-<p>You can use the <code>--lang</code> parameter in the command line to specify the text recognition model for your target language when running the general OCR pipeline:</p>
+<p>You can specify the language for text recognition by using the <code>--lang</code> parameter when running the general OCR pipeline in the command line:</p>
 <p><div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Use the `--lang` parameter to specify the French recognition model</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>paddleocr<span class="w"> </span>ocr<span class="w"> </span>-i<span class="w"> </span>https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_french01.png<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span>--lang<span class="w"> </span>fr<span class="w"> </span><span class="se">\</span>
@@ -3196,7 +3236,7 @@ You're not viewing the latest version.
 </span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span>--save_path<span class="w"> </span>./output<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">    </span>--device<span class="w"> </span>gpu:0<span class="w"> </span>
 </span></code></pre></div>
-For explanations of other command line parameters, please refer to the <a href="../../pipeline_usage/OCR.html#21-command-line">command line usage</a> of the general OCR pipeline. After execution, results will be printed to the terminal:</p>
+For explanations of the other command-line parameters, please refer to the <a href="../../pipeline_usage/OCR.html#21-command-line-usage">Command Line Usage</a> section of the general OCR pipeline documentation. After running, the results will be displayed in the terminal:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="o">{</span><span class="s1">&#39;res&#39;</span>:<span class="w"> </span><span class="o">{</span><span class="s1">&#39;input_path&#39;</span>:<span class="w"> </span><span class="s1">&#39;/root/.paddlex/predict_input/general_ocr_french01.png&#39;</span>,<span class="w"> </span><span class="s1">&#39;page_index&#39;</span>:<span class="w"> </span>None,<span class="w"> </span><span class="s1">&#39;model_settings&#39;</span>:<span class="w"> </span><span class="o">{</span><span class="s1">&#39;use_doc_preprocessor&#39;</span>:<span class="w"> </span>True,<span class="w"> </span><span class="s1">&#39;use_textline_orientation&#39;</span>:<span class="w"> </span>False<span class="o">}</span>,<span class="w"> </span><span class="s1">&#39;doc_preprocessor_res&#39;</span>:<span class="w"> </span><span class="o">{</span><span class="s1">&#39;input_path&#39;</span>:<span class="w"> </span>None,<span class="w"> </span><span class="s1">&#39;page_index&#39;</span>:<span class="w"> </span>None,<span class="w"> </span><span class="s1">&#39;model_settings&#39;</span>:<span class="w"> </span><span class="o">{</span><span class="s1">&#39;use_doc_orientation_classify&#39;</span>:<span class="w"> </span>False,<span class="w"> </span><span class="s1">&#39;use_doc_unwarping&#39;</span>:<span class="w"> </span>False<span class="o">}</span>,<span class="w"> </span><span class="s1">&#39;angle&#39;</span>:<span class="w"> </span>-1<span class="o">}</span>,<span class="w"> </span><span class="s1">&#39;dt_polys&#39;</span>:<span class="w"> </span>array<span class="o">([[[</span><span class="m">119</span>,<span class="w">  </span><span class="m">23</span><span class="o">]</span>,
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">        </span>...,
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">        </span><span class="o">[</span><span class="m">118</span>,<span class="w">  </span><span class="m">75</span><span class="o">]]</span>,
@@ -3217,16 +3257,16 @@ For explanations of other command line parameters, please refer to the <a href="
 </span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="w">       </span>...,
 </span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="w">       </span><span class="o">[</span><span class="m">108</span>,<span class="w"> </span>...,<span class="w"> </span><span class="m">562</span><span class="o">]]</span>,<span class="w"> </span><span class="nv">dtype</span><span class="o">=</span>int16<span class="o">)}}</span>
 </span></code></pre></div>
-<p>If you specify <code>save_path</code>, the visualization results will be saved in the <code>save_path</code> directory. An example visualization is shown below:</p>
+<p>If you specify <code>save_path</code>, the visualization results will be saved to the specified path. An example of the visualized result is shown below:</p>
 <p><img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/pipelines/ocr/general_ocr_french01_res.png"/></p>
-<p>You can also use Python code to specify the recognition model for your target language using the <code>lang</code> parameter when initializing the general OCR pipeline:</p>
+<p>You can also use Python code to specify the recognition model for a particular language when initializing the general OCR pipeline via the <code>lang</code> parameter:</p>
 <p><div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddleocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">PaddleOCR</span>
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
 </span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">ocr</span> <span class="o">=</span> <span class="n">PaddleOCR</span><span class="p">(</span>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    <span class="n">lang</span><span class="o">=</span><span class="s2">&quot;fr&quot;</span><span class="p">,</span> <span class="c1"># Specify the French recognition model via the lang parameter</span>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    <span class="n">use_doc_orientation_classify</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="c1"># Disable document orientation classification</span>
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    <span class="n">use_doc_unwarping</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="c1"># Disable text image unwarping</span>
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>    <span class="n">use_textline_orientation</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="c1"># Disable textline orientation classification</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    <span class="n">lang</span><span class="o">=</span><span class="s2">&quot;fr&quot;</span><span class="p">,</span> <span class="c1"># Specify French recognition model with the lang parameter</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    <span class="n">use_doc_orientation_classify</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="c1"># Disable document orientation classification model</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    <span class="n">use_doc_unwarping</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="c1"># Disable text image unwarping model</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>    <span class="n">use_textline_orientation</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="c1"># Disable text line orientation classification model</span>
 </span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="p">)</span>
 </span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="n">result</span> <span class="o">=</span> <span class="n">ocr</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="s2">&quot;https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_french01.png&quot;</span><span class="p">)</span>
 </span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="k">for</span> <span class="n">res</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
@@ -3234,48 +3274,75 @@ For explanations of other command line parameters, please refer to the <a href="
 </span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>    <span class="n">res</span><span class="o">.</span><span class="n">save_to_img</span><span class="p">(</span><span class="s2">&quot;output&quot;</span><span class="p">)</span>
 </span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>    <span class="n">res</span><span class="o">.</span><span class="n">save_to_json</span><span class="p">(</span><span class="s2">&quot;output&quot;</span><span class="p">)</span>
 </span></code></pre></div>
-For more details on the <code>PaddleOCR</code> class parameters, refer to the <a href="../../pipeline_usage/OCR.html#22-python-script-integration">Python script integration</a> of the general OCR pipeline.</p>
-<h2 id="3-benchmark-comparison">3. Benchmark Comparison<a class="headerlink" href="#3-benchmark-comparison" title="Permanent link">&para;</a></h2>
+For more details on the <code>PaddleOCR</code> class parameters, please refer to the <a href="../../pipeline_usage/OCR.html#22-python-scripting-integration">Python Scripting Integration</a> section of the general OCR pipeline documentation.</p>
+<h2 id="3-performance-comparison">3. Performance Comparison<a class="headerlink" href="#3-performance-comparison" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
 <th>Model</th>
+<th>Download Link</th>
 <th>Korean Dataset Accuracy (%)</th>
-<th></th>
-<th>Model</th>
-<th>Latin Script Languages Dataset Accuracy (%)</th>
-<th></th>
-<th>Model</th>
-<th>East Slavic Languages Dataset Accuracy (%)</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>korean_PP-OCRv5_mobile_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/korean_PP-OCRv5_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/korean_PP-OCRv5_mobile_rec_pretrained.pdparams">Pretrained Model</a></td>
 <td>88.0</td>
-<td></td>
-<td>latin_PP-OCRv5_mobile_rec</td>
-<td>84.7</td>
-<td></td>
-<td>eslav_PP-OCRv5_mobile_rec</td>
-<td>85.8</td>
 </tr>
 <tr>
 <td>korean_PP-OCRv3_mobile_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/korean_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/korean_PP-OCRv3_mobile_rec_pretrained.pdparams">Pretrained Model</a></td>
 <td>23.0</td>
-<td></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Download Link</th>
+<th>Latin Script Language Dataset Accuracy (%)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>latin_PP-OCRv5_mobile_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/latin_PP-OCRv5_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/latin_PP-OCRv5_mobile_rec_pretrained.pdparams">Pretrained Model</a></td>
+<td>84.7</td>
+</tr>
+<tr>
 <td>latin_PP-OCRv3_mobile_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/latin_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/latin_PP-OCRv3_mobile_rec_pretrained.pdparams">Pretrained Model</a></td>
 <td>37.9</td>
-<td></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Download Link</th>
+<th>East Slavic Language Dataset Accuracy (%)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>eslav_PP-OCRv5_mobile_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/eslav_PP-OCRv5_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/eslav_PP-OCRv5_mobile_rec_pretrained.pdparams">Pretrained Model</a></td>
+<td>81.6</td>
+</tr>
+<tr>
 <td>cyrillic_PP-OCRv3_mobile_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/cyrillic_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/cyrillic_PP-OCRv3_mobile_rec_pretrained.pdparams">Pretrained Model</a></td>
 <td>50.2</td>
 </tr>
 </tbody>
 </table>
 <p><strong>Notes:</strong>
- - Korean Dataset: PP-OCRv5's latest dataset containing 5,007 Korean text images.
- - Latin Script Languages Dataset: The latest PP-OCRv5 recognition dataset, containing 3,111 text images in Latin script languages.
- - East Slavic Languages Dataset: PP-OCRv5's latest dataset containing a total of 7,031 Russian, Belarusian, and Ukrainian text images.</p>
+ - Korean Dataset: The latest PP-OCRv5 dataset containing 5,007 Korean text images.
+ - Latin Script Language Dataset: The latest PP-OCRv5 dataset containing 3,111 images of Latin script languages.
+ - East Slavic Language Dataset: The latest PP-OCRv5 dataset containing a total of 7,031 text images in Russian, Belarusian, and Ukrainian.</p>
 <h2 id="4-supported-languages-and-abbreviations">4. Supported Languages and Abbreviations<a class="headerlink" href="#4-supported-languages-and-abbreviations" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -3304,9 +3371,9 @@ For more details on the <code>PaddleOCR</code> class parameters, refer to the <a
 <td>English</td>
 <td>en</td>
 <td></td>
-<td>Serbian (Latin)</td>
-<td>Serbian(latin)</td>
-<td>rslatin</td>
+<td>Serbian (latin)</td>
+<td>Serbian (latin)</td>
+<td>rs_latin</td>
 </tr>
 <tr>
 <td>French</td>
@@ -3345,7 +3412,7 @@ For more details on the <code>PaddleOCR</code> class parameters, refer to the <a
 <td>lt</td>
 </tr>
 <tr>
-<td>Chinese Traditional</td>
+<td>Traditional Chinese</td>
 <td>Chinese Traditional</td>
 <td>chinese_cht</td>
 <td></td>
@@ -3472,12 +3539,35 @@ For more details on the <code>PaddleOCR</code> class parameters, refer to the <a
 </tr>
 <tr>
 <td>Ukrainian</td>
-<td>Ukranian</td>
+<td>Ukrainian</td>
 <td>uk</td>
 <td></td>
 <td></td>
 <td></td>
 <td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="5-models-and-their-supported-languages">5. Models and Their Supported Languages<a class="headerlink" href="#5-models-and-their-supported-languages" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Supported Languages</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>korean_PP-OCRv5_mobile_rec</td>
+<td>Korean</td>
+</tr>
+<tr>
+<td>latin_PP-OCRv5_mobile_rec</td>
+<td>English, French, German, Afrikaans, Italian, Spanish, Bosnian, Portuguese, Czech, Welsh, Danish, Estonian, Irish, Croatian, Uzbek, Hungarian, Serbian (Latin), Indonesian, Occitan, Icelandic, Lithuanian, Maori, Malay, Dutch, Norwegian, Polish, Slovak, Slovenian, Albanian, Swedish, Swahili, Tagalog, Turkish, Latin</td>
+</tr>
+<tr>
+<td>eslav_PP-OCRv5_mobile_rec</td>
+<td>Russian, Belarusian, Ukrainian</td>
 </tr>
 </tbody>
 </table>
@@ -3503,7 +3593,7 @@ For more details on the <code>PaddleOCR</code> class parameters, refer to the <a
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="July 2, 2025 07:39:53 UTC">July 2, 2025</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="July 2, 2025 07:58:02 UTC">July 2, 2025</span>
   </span>
 
     
@@ -3513,7 +3603,7 @@ For more details on the <code>PaddleOCR</code> class parameters, refer to the <a
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="July 2, 2025 07:39:53 UTC">July 2, 2025</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="July 2, 2025 07:58:02 UTC">July 2, 2025</span>
   </span>
 
     
