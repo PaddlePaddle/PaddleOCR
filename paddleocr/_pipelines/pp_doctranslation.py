@@ -256,6 +256,8 @@ class PPDocTranslation(PaddleXPipelineWrapper):
         rules_str=None,
         few_shot_demo_text_content=None,
         few_shot_demo_key_value_list=None,
+        glossary=None,
+        llm_request_interval=0.0,
         chat_bot_config=None,
         **kwargs,
     ):
@@ -268,6 +270,8 @@ class PPDocTranslation(PaddleXPipelineWrapper):
             rules_str=rules_str,
             few_shot_demo_text_content=few_shot_demo_text_content,
             few_shot_demo_key_value_list=few_shot_demo_key_value_list,
+            glossary=glossary,
+            llm_request_interval=llm_request_interval,
             chat_bot_config=chat_bot_config,
             **kwargs,
         )
@@ -283,6 +287,8 @@ class PPDocTranslation(PaddleXPipelineWrapper):
         rules_str=None,
         few_shot_demo_text_content=None,
         few_shot_demo_key_value_list=None,
+        glossary=None,
+        llm_request_interval=0.0,
         chat_bot_config=None,
         **kwargs,
     ):
@@ -296,6 +302,8 @@ class PPDocTranslation(PaddleXPipelineWrapper):
                 rules_str=rules_str,
                 few_shot_demo_text_content=few_shot_demo_text_content,
                 few_shot_demo_key_value_list=few_shot_demo_key_value_list,
+                glossary=glossary,
+                llm_request_interval=llm_request_interval,
                 chat_bot_config=chat_bot_config,
                 **kwargs,
             )
