@@ -1209,9 +1209,10 @@ MKL-DNN 缓存容量。
 命令行方式是为了快速体验查看效果，一般来说，在项目中，往往需要通过代码集成，可以下载 [测试文件](https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/vehicle_certificate-1.png)，使用如下示例代码进行推理：
 
 ```python
-from paddlex import create_pipeline
+from paddleocr import PPDocTranslation
+
 # 创建翻译产线
-pipeline = create_pipeline(pipeline="PP-DocTranslation")
+pipeline = PPDocTranslation()
 
 # 文档路径
 input_path = "document_sample.pdf"
