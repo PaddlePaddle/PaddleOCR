@@ -81,6 +81,21 @@ class PPChatOCRv4Doc(PaddleXPipelineWrapper):
     def _paddlex_pipeline_name(self):
         return "PP-ChatOCRv4-doc"
 
+    def save_vector(self, vector_info, save_path, retriever_config=None):
+        return self.paddlex_pipeline.save_vector(
+            vector_info=vector_info,
+            save_path=save_path,
+            retriever_config=retriever_config,
+        )
+
+    def load_vector(self, data_path, retriever_config=None):
+        return self.paddlex_pipeline.load_vector(
+            data_path=data_path, retriever_config=retriever_config
+        )
+
+    def load_visual_info_list(self, data_path):
+        return self.paddlex_pipeline.load_visual_info_list(data_path=data_path)
+
     def visual_predict_iter(
         self,
         input,
