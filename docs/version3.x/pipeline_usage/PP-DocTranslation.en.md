@@ -1144,9 +1144,10 @@ The execution results will be printed to the terminal.
 The command-line method is for quickly experiencing and viewing the results. Generally, in projects, integration via code is often required. You can download the [test file](https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/vehicle_certificate-1.png) and use the following sample code for inference:
 
 ```python
-from paddlex import create_pipeline
+from paddleocr import PPDocTranslation
+
 # Create a translation pipeline
-pipeline = create_pipeline(pipeline="PP-DocTranslation")
+pipeline = PPDocTranslation()
 
 # Document path
 input_path = "document_sample.pdf"
