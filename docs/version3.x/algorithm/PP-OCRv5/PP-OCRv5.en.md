@@ -215,7 +215,7 @@ Unless otherwise specified:
 
 - PP-OCRv4_mobile_det and PP-OCRv4_mobile_rec models are used.
 - Document orientation classification, image correction, and text line orientation classification are not used.
-- `text_det_limit_type` is set to `"min"` and `text_det_limit_side_len` to `732`.
+- `text_det_limit_type` is set to `"min"` and `text_det_limit_side_len` to `736`.
 
 ### 1. Comparison of Inference Performance Between PP-OCRv5 and PP-OCRv4
 
@@ -226,41 +226,24 @@ Unless otherwise specified:
 | v5_server      | Uses PP-OCRv5_server_det and PP-OCRv5_server_rec models. |
 | v4_server      | Uses PP-OCRv4_server_det and PP-OCRv4_server_rec models. |
 
-**GPU, without high-performance inference:**
+**GPU**
 
 | Configuration | Avg. Time per Image (s) | Avg. Characters Predicted per Second | Avg. CPU Utilization (%) | Peak RAM Usage (MB) | Avg. RAM Usage (MB) | Avg. GPU Utilization (%) | Peak VRAM Usage (MB) | Avg. VRAM Usage (MB) |
-| ------------- | ----------------------- | ------------------------------------ | ------------------------ | ------------------- | ------------------- | ------------------------ | -------------------- | -------------------- |
-| v5_mobile    | 0.56                    | 1162                                 | 106.02                   | 1576.43             | 1420.83             | 18.95                    | 4342.00              | 3258.95              |
-| v4_mobile    | 0.27                    | 2246                                 | 111.20                   | 1392.22             | 1318.76             | 28.90                    | 1304.00              | 1166.46              |
-| v5_server    | 0.70                    | 929                                  | 105.31                   | 1634.85             | 1428.55             | 36.21                    | 5402.00              | 4685.13              |
-| v4_server    | 0.44                    | 1418                                 | 106.96                   | 1455.34             | 1346.95             | 58.82                    | 6760.00              | 5817.46              |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| v5_mobile | 0.62 | 1054.23 | 106.35 | 1829.36 | 1521.92 | 17.42 | 4190.00  | 3114.02 |
+| v4_mobile | 0.29 | 2062.53 | 112.21 | 1713.10 | 1456.14 | 26.53  | 1304.00 | 1166.68 |
+| v5_server | 0.74 | 878.84 | 105.68 | 1899.80 | 1569.46 | 34.39 | 5402.00 | 4683.93 |
+| v4_server | 0.47 | 1322.06 | 108.06 | 1773.10 | 1518.94 | 55.25 | 6760.67 | 5788.02 |
 
-**GPU, with high-performance inference:**
 
-| Configuration | Avg. Time per Image (s) | Avg. Characters Predicted per Second | Avg. CPU Utilization (%) | Peak RAM Usage (MB) | Avg. RAM Usage (MB) | Avg. GPU Utilization (%) | Peak VRAM Usage (MB) | Avg. VRAM Usage (MB) |
-| ------------- | ----------------------- | ------------------------------------ | ------------------------ | ------------------- | ------------------- | ------------------------ | -------------------- | -------------------- |
-| v5_mobile    | 0.50                    | 1301                                 | 106.50                   | 1338.12             | 1155.86             | 11.97                    | 4112.00              | 3536.36              |
-| v4_mobile    | 0.21                    | 2887                                 | 114.09                   | 1113.27             | 1054.46             | 15.22                    | 2072.00              | 1840.59              |
-| v5_server    | 0.60                    | 1084                                 | 105.73                   | 1980.73             | 1776.20             | 22.10                    | 12150.00             | 11849.40             |
-| v4_server    | 0.36                    | 1687                                 | 104.15                   | 1186.42             | 1065.67             | 38.12                    | 13058.00             | 12679.00             |
-
-**CPU, without high-performance inference:**
+**CPU**
 
 | Configuration | Avg. Time per Image (s) | Avg. Characters Predicted per Second | Avg. CPU Utilization (%) | Peak RAM Usage (MB) | Avg. RAM Usage (MB) |
 | ------------- | ----------------------- | ------------------------------------ | ------------------------ | ------------------- | ------------------- |
-| v5_mobile    | 1.43                    | 455                                  | 798.93                   | 11695.40            | 6829.09             |
-| v4_mobile    | 1.09                    | 556                                  | 813.16                   | 11996.30            | 6834.25             |
-| v5_server    | 3.79                    | 172                                  | 799.24                   | 50216.00            | 27902.40            |
-| v4_server    | 4.22                    | 148                                  | 803.74                   | 51428.70            | 28593.60            |
-
-**CPU, with high-performance inference:**
-
-| Configuration | Avg. Time per Image (s) | Avg. Characters Predicted per Second | Avg. CPU Utilization (%) | Peak RAM Usage (MB) | Avg. RAM Usage (MB) |
-| ------------- | ----------------------- | ------------------------------------ | ------------------------ | ------------------- | ------------------- |
-| v5_mobile    | 1.14                    | 571                                  | 339.68                   | 3245.17             | 2560.55             |
-| v4_mobile    | 0.68                    | 892                                  | 443.00                   | 3057.38             | 2329.44             |
-| v5_server    | 3.56                    | 183                                  | 797.03                   | 45664.70            | 26905.90            |
-| v4_server    | 4.22                    | 148                                  | 803.74                   | 51428.70            | 28593.60            |
+| v5_mobile | 1.75 | 371.82 | 965.89 | 2219.98 | 1830.97 |
+| v4_mobile | 1.37 | 444.27 | 1007.33 | 2090.53 | 1797.76 |
+| v5_server | 4.34 | 149.98 | 990.24 | 4020.85 | 3137.20 |
+| v4_server | 5.42 | 115.20 | 999.03 | 4018.35 | 3105.29 |
 
 > Note: PP-OCRv5 uses a larger dictionary in the recognition model, which increases inference time and causes slower performance compared to PP-OCRv4.
 
@@ -272,21 +255,21 @@ Unless otherwise specified:
 | with_textline  | Includes text line orientation classification only.                                                       |
 | with_all       | Includes document orientation classification, image correction, and text line orientation classification. |
 
-**GPU, without high-performance inference:**
+**GPU**
 
 | Configuration  | Avg. Time per Image (s) | Avg. Characters Predicted per Second | Avg. CPU Utilization (%) | Peak RAM Usage (MB) | Avg. RAM Usage (MB) | Avg. GPU Utilization (%) | Peak VRAM Usage (MB) | Avg. VRAM Usage (MB) |
 | -------------- | ----------------------- | ------------------------------------ | ------------------------ | ------------------- | ------------------- | ------------------------ | -------------------- | -------------------- |
-| base           | 0.56                    | 1162                                 | 106.02                   | 1576.43             | 1420.83             | 18.95                    | 4342.00              | 3258.95              |
-| with_textline | 0.59                    | 1104                                 | 105.58                   | 1765.64             | 1478.53             | 19.48                    | 4350.00              | 3267.77              |
-| with_all      | 1.02                    | 600                                  | 104.92                   | 1924.23             | 1628.50             | 10.96                    | 2632.00              | 2217.01              |
+| base | 0.62 | 1054.23 | 106.35 | 1829.36 | 1521.92 | 17.42 | 4190.00 | 3114.02 |
+| with_textline | 0.64 | 1012.32 | 106.37 | 1867.69 | 1527.42 | 19.16 | 4198.00 | 3115.05 |
+| with_all | 1.09 | 562.99 | 105.67 | 2381.53 | 1792.48 | 10.77 | 2480.00 | 2065.54 |
 
-**CPU, without high-performance inference:**
+**CPU**
 
 | Configuration  | Avg. Time per Image (s) | Avg. Characters Predicted per Second | Avg. CPU Utilization (%) | Peak RAM Usage (MB) | Avg. RAM Usage (MB) |
 | -------------- | ----------------------- | ------------------------------------ | ------------------------ | ------------------- | ------------------- |
-| base           | 1.43                    | 455                                  | 798.93                   | 11695.40            | 6829.09             |
-| with_textline | 1.50                    | 434                                  | 799.47                   | 12007.20            | 6882.22             |
-| with_all      | 1.93                    | 316                                  | 646.49                   | 11759.60            | 6940.54             |
+| base | 1.75 | 371.82 | 965.89 | 2219.98 | 1830.97 |
+| with_textline | 1.87 | 347.61 | 972.08 | 2232.38 | 1822.13 |
+| with_all | 3.13 | 195.25 | 828.37 | 2751.47 | 2179.70 |
 
 > Note: Auxiliary features such as image unwarping can impact inference accuracy. More features do not necessarily yield better results and may increase resource usage.
 
@@ -303,31 +286,32 @@ Unless otherwise specified:
 | server_max_960  | Uses `max`, `side_len=960`.                                                            |
 | server_max_640  | Uses `max`, `side_len=640`.                                                            |
 
-**GPU, without high-performance inference:**
+**GPU**
 
 | Configuration     | Avg. Time per Image (s) | Avg. Characters Predicted per Second | Avg. CPU Utilization (%) | Peak RAM Usage (MB) | Avg. RAM Usage (MB) | Avg. GPU Utilization (%) | Peak VRAM Usage (MB) | Avg. VRAM Usage (MB) |
 | ----------------- | ----------------------- | ------------------------------------ | ------------------------ | ------------------- | ------------------- | ------------------------ | -------------------- | -------------------- |
-| mobile_min_1280 | 0.61                    | 1071                                 | 109.12                   | 1663.71             | 1439.72             | 19.27                    | 4202.00              | 3550.32              |
-| mobile_min_736  | 0.56                    | 1162                                 | 106.02                   | 1576.43             | 1420.83             | 18.95                    | 4342.00              | 3258.95              |
-| mobile_max_960  | 0.48                    | 1313                                 | 103.49                   | 1587.25             | 1395.48             | 19.37                    | 2642.00              | 2319.03              |
-| mobile_max_640  | 0.42                    | 1436                                 | 103.07                   | 1651.14             | 1422.62             | 18.95                    | 2530.00              | 2149.11              |
-| server_min_1280 | 0.82                    | 795                                  | 107.17                   | 1678.16             | 1428.94             | 40.43                    | 10368.00             | 8320.43              |
-| server_min_736  | 0.70                    | 929                                  | 105.31                   | 1634.85             | 1428.55             | 36.21                    | 5402.00              | 4685.13              |
-| server_max_960  | 0.59                    | 1073                                 | 103.03                   | 1590.19             | 1383.62             | 33.42                    | 2928.00              | 2079.47              |
-| server_max_640  | 0.54                    | 1099                                 | 102.63                   | 1602.09             | 1416.49             | 30.77                    | 3152.00              | 2737.81              |
+| mobile_min_1280 | 0.66 | 985.77 | 109.52 | 1878.74 | 1536.43 | 18.01 | 4050.00 | 3407.33 |
+| mobile_min_736 | 0.62 | 1054.23 | 106.35 | 1829.36 | 1521.92 | 17.42 | 4190.00 | 3114.02 |
+| mobile_max_960 | 0.52 | 1206.68 | 104.01 | 1795.27 | 1484.73 | 18.66 | 2490.00 | 2173.91 |
+| mobile_max_640 | 0.45 | 1353.49 | 103.32 | 1728.91 | 1470.64 | 18.55 | 2378.00 | 1998.62 |
+| server_min_1280 | 0.86 | 759.10 | 107.81 | 1876.31 | 1572.20 | 37.33 | 10368.00 | 8287.41 |
+| server_min_736 | 0.74 | 878.84 | 105.68 | 1899.80 | 1569.46 | 34.39 | 5402.00 | 4683.93 |
+| server_max_960 | 0.64 | 988.85 | 103.61 | 1831.31 | 1544.26 | 30.29 | 2929.33 | 2079.90 |
+| server_max_640 | 0.57 | 1036.90 | 102.89 | 1838.36 | 1532.50 | 28.91 | 3153.33 | 2743.40 |
 
-**CPU, without high-performance inference:**
+
+**CPU**
 
 | Configuration     | Avg. Time per Image (s) | Avg. Characters Predicted per Second | Avg. CPU Utilization (%) | Peak RAM Usage (MB) | Avg. RAM Usage (MB) |
 | ----------------- | ----------------------- | ------------------------------------ | ------------------------ | ------------------- | ------------------- |
-| mobile_min_1280 | 1.64                    | 398                                  | 799.45                   | 12344.10            | 7100.60             |
-| mobile_min_736  | 1.43                    | 455                                  | 798.93                   | 11695.40            | 6829.09             |
-| mobile_max_960  | 1.21                    | 521                                  | 800.13                   | 11099.10            | 6369.49             |
-| mobile_max_640  | 1.01                    | 597                                  | 802.52                   | 9585.48             | 5573.52             |
-| server_min_1280 | 4.48                    | 145                                  | 800.49                   | 50683.10            | 28273.30            |
-| server_min_736  | 3.79                    | 172                                  | 799.24                   | 50216.00            | 27902.40            |
-| server_max_960  | 2.67                    | 237                                  | 797.63                   | 49362.50            | 26075.60            |
-| server_max_640  | 2.36                    | 251                                  | 795.18                   | 45656.10            | 24900.80            |
+| mobile_min_1280 | 2.00 | 326.44 | 976.83 | 2233.16 | 1867.94 |
+| mobile_min_736 | 1.75 | 371.82 | 965.89 | 2219.98 | 1830.97 |
+| mobile_max_960 | 1.49 | 422.62 | 969.11 | 2048.67 | 1677.82 |
+| mobile_max_640 | 1.31 | 459.11 | 978.41 | 2023.25 | 1616.42 |
+| server_min_1280 | 5.57 | 117.08 | 991.34 | 4452.39 | 3286.19 |
+| server_min_736 | 4.34 | 149.98 | 990.24 | 4020.85 | 3137.20 |
+| server_max_960 | 3.39 | 186.59 | 984.67 | 3492.62 | 2977.13 |
+| server_max_640 | 2.95 | 201.00 | 980.59 | 3342.38 | 2935.24 |
 
 # Deployment and Secondary Development
 * **Multiple System Support**: Compatible with mainstream operating systems including Windows, Linux, and Mac.
