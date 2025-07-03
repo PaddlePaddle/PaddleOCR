@@ -96,6 +96,11 @@ class PPChatOCRv4Doc(PaddleXPipelineWrapper):
     def load_visual_info_list(self, data_path):
         return self.paddlex_pipeline.load_visual_info_list(data_path=data_path)
 
+    def save_visual_info_list(self, visual_info, save_path):
+        return self.paddlex_pipeline.save_visual_info_list(
+            visual_info=visual_info, save_path=save_path
+        )
+
     def visual_predict_iter(
         self,
         input,
