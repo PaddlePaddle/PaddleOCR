@@ -18,15 +18,19 @@ This project provides a lightweight [Model Context Protocol (MCP)](https://model
 ## Examples:
 The following showcases creative use cases built with PaddleOCR MCP server combined with other tools:
 
-#### Demo 1: In Claude for Desktop, extract handwritten content from images and save to note-taking software Notion. The PaddleOCR MCP server extracts text, formulas and other information from images while preserving document structure.
+### Demo 1: 
+In Claude for Desktop, extract handwritten content from images and save to note-taking software Notion. The PaddleOCR MCP server extracts text, formulas and other information from images while preserving document structure.
 <div align="center">
   <img width="65%" src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/paddleocr/mcp_demo/note_to_notion.gif" alt="note_to_notion">
   <img width="30%" src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/paddleocr/mcp_demo/note.jpg" alt="note">
 </div>
 
 - Note: In addition to the PaddleOCR MCP server, this demo also uses the [Notion MCP server](https://developers.notion.com/docs/mcp).
-------------
-#### Demo 2: In VSCode, convert handwritten ideas or pseudocode into runnable Python scripts that comply with project coding standards with one click, and upload them to GitHub repositories. The PaddleOCR MCP server extracts high-accuracy handwritten code from images for subsequent processing.
+
+---
+
+### Demo 2: 
+In VSCode, convert handwritten ideas or pseudocode into runnable Python scripts that comply with project coding standards with one click, and upload them to GitHub repositories. The PaddleOCR MCP server extracts explicitly handwritten code from images for subsequent processing.
 
 <div align="center">
   <img width="70%" img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/paddleocr/mcp_demo/code_to_github.gif" alt="code_to_github">
@@ -34,8 +38,10 @@ The following showcases creative use cases built with PaddleOCR MCP server combi
 
 - In addition to the PaddleOCR MCP server, this demo also uses the [filesystem MCP server](https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem).
 
-------------
-#### Demo 3: In Claude for Desktop, convert PDF documents or images containing complex tables, formulas, handwritten text and other content into locally editable files.
+---
+
+### Demo 3: 
+In Claude for Desktop, convert PDF documents or images containing complex tables, formulas, handwritten text and other content into locally editable files.
 
 - Convert complex PDF documents with tables and watermarks to editable doc/Word format:
 <div align="center">
@@ -50,7 +56,8 @@ The following showcases creative use cases built with PaddleOCR MCP server combi
 </div>
 
 - In addition to the PaddleOCR MCP server, this demo also uses the [filesystem MCP server](https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem).
-------------
+
+---
 
 ### Table of Contents
 

@@ -18,15 +18,19 @@
 ## 示例：
 以下展示了使用 PaddleOCR MCP 服务器结合其他工具搭建的创意案例：
 
-#### Demo 1：在 Claude for Desktop 中，提取图像中的手写内容，并存到笔记软件 Notion。PaddleOCR MCP 服务器从图像中提取了文字、公式等信息，并保留了文档的结构。
+### Demo 1：
+在 Claude for Desktop 中，提取图像中的手写内容，并存到笔记软件 Notion。PaddleOCR MCP 服务器从图像中提取了文字、公式等信息，并保留了文档的结构。
 <div align="center">
   <img width="65%" src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/paddleocr/mcp_demo/note_to_notion.gif" alt="note_to_notion">
   <img width="30%" src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/paddleocr/mcp_demo/note.jpg" alt="note">
 </div>
 
 - 注: 除 PaddleOCR MCP 服务器外，此 demo 还使用 [Notion MCP 服务器](https://developers.notion.com/docs/mcp)。
-------------
-#### Demo 2：在 VSCode 中，根据手写思路或伪代码一键转换为可运行并符合项目代码风格规范的 Python 脚本，并将其上传到 GitHub 仓库中。PaddleOCR MCP 服务器从图像中提取高准确率达手写代码供后续步骤使用。
+
+---
+
+### Demo 2：
+在 VSCode 中，根据手写思路或伪代码一键转换为可运行并符合项目代码风格规范的 Python 脚本，并将其上传到 GitHub 仓库中。PaddleOCR MCP 服务器从图像中准确提取手写代码供后续步骤使用。
 
 <div align="center">
   <img width="70%" img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/paddleocr/mcp_demo/code_to_github.gif" alt="code_to_github">
@@ -34,8 +38,10 @@
 
 - 除 PaddleOCR MCP 服务器外，此 demo 还使用 [filesystem MCP 服务器](https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem)。
 
-------------
-#### Demo 3：在 Claude for Desktop 中，将含有复杂表格、公式、手写文字等内容的 PDF 文档或图片转存为本地可编辑文件。
+---
+
+### Demo 3：
+在 Claude for Desktop 中，将含有复杂表格、公式、手写文字等内容的 PDF 文档或图片转存为本地可编辑文件。
 
 - 含表格水印复杂文档PDF 转为 doc/Word 可编辑格式：
 <div align="center">
@@ -51,7 +57,8 @@
 
 
 - 除 PaddleOCR MCP 服务器外，此 demo 还使用 [filesystem MCP 服务器](https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem)。
-------------
+
+---
 
 ### 目录
 
