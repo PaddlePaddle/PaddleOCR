@@ -825,7 +825,7 @@ def preprocess(is_train=False):
         log_file = None
 
     log_ranks = config["Global"].get("log_ranks", "0")
-    logger = get_logger(log_file=log_file, log_ranks=log_ranks)
+    logger = get_logger(name="ppocr_train", log_file=log_file, log_ranks=log_ranks)
 
     # check if set use_gpu=True in paddlepaddle cpu version
     use_gpu = config["Global"].get("use_gpu", False)
