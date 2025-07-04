@@ -30,7 +30,7 @@
 ---
 
 ### Demo 2：
-在 VSCode 中，根据手写思路或伪代码一键转换为可运行并符合项目代码风格规范的 Python 脚本，并将其上传到 GitHub 仓库中。PaddleOCR MCP 服务器从图像中提取高准确率写代码供后续步骤使用。
+在 VSCode 中，根据手写思路或伪代码一键转换为可运行并符合项目代码风格规范的 Python 脚本，并将其上传到 GitHub 仓库中。PaddleOCR MCP 服务器从图像中准确提取手写代码供后续步骤使用。
 
 <div align="center">
   <img width="70%" img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/paddleocr/mcp_demo/code_to_github.gif" alt="code_to_github">
