@@ -1,0 +1,6 @@
+img_path='/home/ubuntu/moe/PaddleOCR_m/constructor/mini/source/15 车联网白皮书（2023年）/15 车联网白皮书（2023年）_27/15 车联网白皮书（2023年）_27/[182, 508, 404, 662]_0.jpg'
+img_path='/home/ubuntu/moe/PaddleOCR_m/constructor/mini/source/15 车联网白皮书（2023年）/15 车联网白皮书（2023年）_42/15 车联网白皮书（2023年）_42/[149, 391, 436, 530]_0.jpg'
+img_path='/home/ubuntu/moe/PaddleOCR_m/constructor/mini/source/15 车联网白皮书（2023年）/15 车联网白皮书（2023年）_30/15 车联网白皮书（2023年）_30/[125, 72, 505, 228]_0.jpg'
+img_path='/home/ubuntu/moe/PaddleOCR_m/constructor/mini/source/15 车联网白皮书（2023年）/15 车联网白皮书（2023年）_36/15 车联网白皮书（2023年）_36/[86, 66, 511, 275]_0.jpg'
+img_path='/home/ubuntu/moe/PaddleOCR_m/constructor/mini/source/15 车联网白皮书（2023年）/15 车联网白皮书（2023年）_47/15 车联网白皮书（2023年）_47/[106, 69, 512, 263]_0.jpg'
+img_path='/home/ubuntu/moe/PaddleOCR_m/constructor/mini/source/15 车联网白皮书（2023年）/15 车联网白皮书（2023年）_41/15 车联网白皮书（2023年）_41/[125, 68, 507, 249]_0.jpg'

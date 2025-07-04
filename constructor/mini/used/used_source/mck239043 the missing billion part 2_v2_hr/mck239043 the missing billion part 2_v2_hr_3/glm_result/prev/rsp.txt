@@ -1,0 +1,30 @@
+这张图片展示了一份关于“Missing Billion Initiative”和McKinsey Health Institute的资料。图片内容主要分为几个部分：
+
+1. **标题部分**：标题为“About the Missing Billion Initiative and the McKinsey Health Institute”，介绍了这个全球性倡议的背景和目标。
+
+2. **正文部分**：
+   - 描述了“Missing Billion Initiative”是一个全球性倡议，致力于改善全球13亿有残疾的人的医疗保健服务。
+   - McKinsey Health Institute (MHI) 是一个非营利组织，专注于健康公平。
+   - Missing Billion 和 MHI 合作，加速包容性医疗保健的发展，并开发使用案例。
+   - 提供了三个步骤的方法，以减少健康不平等，并分析护理路径以指导国家疾病项目设计。
+
+3. **图表部分（Exhibit 1）**：
+   - 标题为“Analyses of patient care pathways can help identify pain points and interventions to reduce inequities and improve outcomes.”
+   - 图表展示了大多数情况下简化的一般患者护理旅程，分为四个阶段：
+     1. **Perceiving a need and deciding to seek healthcare**（感知需求并决定寻求医疗保健）
+     2. **Accessing healthcare services for diagnosis and consultation**（获取医疗保健服务进行诊断和咨询）
+     3. **Undergoing treatment and being monitored**（接受治疗并进行监测）
+     4. **Long-term management and follow-up care**（长期管理和随访护理）
+   - 每个阶段都列出了残疾人通常面临的问题，例如：
+     - 不确定性是否寻求护理
+     - 交通困难
+     - 设施不完善
+     - 医疗人员培训不足
+     - 治疗不全面
+     - 长期护理的困惑
+
+4. **来源**：资料来源为Celeste Dano等人，2022年9月。
+
+5. **版权信息**：图片底部有McKinsey & Company的标识，以及“Advancing inclusive care pathways for people with disabilities”的字样。
+
+整体来看，这张图片详细介绍了“Missing Billion Initiative”和McKinsey Health Institute在改善残疾人医疗保健服务方面的工作和目标，并提供了具体的护理路径分析，以帮助识别和解决存在的问题。
