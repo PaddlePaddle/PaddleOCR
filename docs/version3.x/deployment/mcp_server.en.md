@@ -18,7 +18,7 @@ This project provides a lightweight [Model Context Protocol (MCP)](https://model
 ## Examples:
 The following showcases creative use cases built with PaddleOCR MCP server combined with other tools:
 
-#### Demo 1: 
+### Demo 1: 
 In Claude for Desktop, extract handwritten content from images and save to note-taking software Notion. The PaddleOCR MCP server extracts text, formulas and other information from images while preserving document structure.
 <div align="center">
   <img width="65%" src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/paddleocr/mcp_demo/note_to_notion.gif" alt="note_to_notion">
@@ -29,7 +29,7 @@ In Claude for Desktop, extract handwritten content from images and save to note-
 
 ---
 
-#### Demo 2: 
+### Demo 2: 
 In VSCode, convert handwritten ideas or pseudocode into runnable Python scripts that comply with project coding standards with one click, and upload them to GitHub repositories. The PaddleOCR MCP server extracts high-accuracy handwritten code from images for subsequent processing.
 
 <div align="center">
@@ -40,7 +40,7 @@ In VSCode, convert handwritten ideas or pseudocode into runnable Python scripts 
 
 ---
 
-#### Demo 3: 
+### Demo 3: 
 In Claude for Desktop, convert PDF documents or images containing complex tables, formulas, handwritten text and other content into locally editable files.
 
 - Convert complex PDF documents with tables and watermarks to editable doc/Word format:
