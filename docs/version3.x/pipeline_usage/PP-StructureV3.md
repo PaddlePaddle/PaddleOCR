@@ -1492,7 +1492,7 @@ paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --device gpu
 </tr>
 <tr>
 <td><code>use_chart_recognition</code></td>
-<td>是否加载并使用文档区域检测模块。如果不设置，将使用产线初始化的该参数值，默认初始化为<code>False</code>。</td>
+<td>是否加载并使用图表解析模块。如果不设置，将使用产线初始化的该参数值，默认初始化为<code>False</code>。</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>

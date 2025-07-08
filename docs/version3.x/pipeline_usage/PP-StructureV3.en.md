@@ -1368,7 +1368,7 @@ any float > <code>0</code>. If not set, the default is <code>0.6</code>.
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
-<td>Whether to load and use the document orientation classification module. If not set, the default is <code>False</code>.</td>
+<td>Whether to load and use the document unwarping module. If not set, the default is <code>False</code>.</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
