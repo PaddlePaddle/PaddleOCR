@@ -39,7 +39,7 @@ To install `paddleocr-mcp` using pip:
 
 ```bash
 # Install the wheel
-pip install https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/mcp/paddleocr_mcp/releases/v0.1.0/paddleocr_mcp-0.1.0-py3-none-any.whl
+pip install https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/mcp/paddleocr_mcp/releases/v0.2.0/paddleocr_mcp-0.2.0-py3-none-any.whl
 
 # Or install from source
 # git clone https://github.com/PaddlePaddle/PaddleOCR.git
@@ -52,14 +52,7 @@ To verify successful installation:
 paddleocr_mcp --help
 ```
 
-If the help message is printed, the installation succeeded. This project depends on the `python-magic` library. If you see the following error:
-
-```
-...
-ImportError: failed to find libmagic.  Check your installation
-```
-
-You are likely missing a required native library for python-magic. Please refer to the [official python-magic documentation](https://github.com/ahupp/python-magic?tab=readme-ov-file#installation) for installation instructions.
+If the help message is printed, the installation succeeded.
 
 ## 2. Using with Claude for Desktop
 
@@ -247,7 +240,7 @@ Currently, for both the AI Studio and self-hosted modes, starting the MCP server
           "command": "uvx",
           "args": [
             "--from",
-            "paddleocr-mcp@https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/mcp/paddleocr_mcp/releases/v0.1.0/paddleocr_mcp-0.1.0-py3-none-any.whl",
+            "paddleocr-mcp@https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/mcp/paddleocr_mcp/releases/v0.2.0/paddleocr_mcp-0.2.0-py3-none-any.whl",
             "paddleocr_mcp"
           ],
           "env": {
