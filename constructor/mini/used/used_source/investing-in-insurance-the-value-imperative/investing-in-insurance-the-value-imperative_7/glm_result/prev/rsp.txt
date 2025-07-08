@@ -1,0 +1,26 @@
+这张图片展示了一份关于美国第三方管理市场（TPA）的报告，具体内容如下：
+
+1. **标题**：图片顶部显示了标题“While concentration in the US market for third-party administrators is increasing, this varies by line of business.”（尽管美国第三方管理市场的集中度在增加，但这因业务线而异）。
+
+2. **图表**：图表展示了美国第三方管理市场（TPA）的市场份额，按玩家分类，并显示了2020年和2023年的数据。图表分为两个部分：工人赔偿（Workers' compensation）和财产及责任保险（Property and casualty）。
+
+   - **工人赔偿**：
+     - 2020年：全球大型TPA占41%，国家TPA占19%，英国籍TPA占1%，其他（例如，区域小型TPA）占38%。
+     - 2023年：全球大型TPA占46%，国家TPA占16%，英国籍TPA占4%，其他占34%。
+
+   - **财产及责任保险**：
+     - 2020年：全球大型TPA占58%，国家TPA占8%，英国籍TPA占1%，其他占34%。
+     - 2023年：全球大型TPA占56%，国家TPA占6%，英国籍TPA占2%，其他占36%。
+
+3. **数据来源**：图表底部注明了数据来源，包括Business Insurance和McKinsey的分析，基于S&P Global Market Intelligence。
+
+4. **文本部分**：图片下半部分讨论了保险投资中价值创造的三个关键主题，包括：
+   - **细分市场寻找增长**：在当前利率环境逐渐减弱的背景下，成功退出高倍数将需要企业展示其有机增长的能力。
+   - **技术和人才水平**：为了实现高水平的增长，技术和人才水平将至关重要。
+   - **投资者关注**：投资者更加关注成本协同效应、工作流程和流程、共享技术以及培养企业的文化和人才。
+
+5. **引用**：文本部分引用了Jose Luis Blanco, William Bundy, Matthew Maloney, and Jason Phillips的文章《Bridging private equity's value creation gap》，发表于2024年4月12日。
+
+6. **页码**：图片右下角显示页码为7。
+
+总体来说，这张图片提供了关于美国第三方管理市场集中度及其在不同业务线上的变化情况，并讨论了保险投资中价值创造的关键主题。

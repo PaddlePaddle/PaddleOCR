@@ -1,0 +1,2 @@
+Page: 8, Bounding Box: [10, 118, 115, 205], Text: [{'text': 'McKinsey Insights App', 'confidence': 0.9856114983558655, 'text_region': [[5.0, 102.0], [108.0, 106.0], [107.0, 120.0], [5.0, 116.0]]}]
+Page: 8, Bounding Box: [6, 94, 109, 116], Text: [{'text': 'McKinsey Insights App', 'confidence': 0.9856114983558655, 'text_region': [[5.0, 102.0], [108.0, 106.0], [107.0, 120.0], [5.0, 116.0]]}, {'text': 'Find', 'confidence': 0.999222993850708, 'text_region': [[12.0, 97.0], [25.0, 97.0], [25.0, 104.0], [12.0, 104.0]]}]

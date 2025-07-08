@@ -1,0 +1,9 @@
+这是一篇关于数字心理健康的研究论文的页面截图，标题为“An Empathy-Driven, Conversational Artificial Intelligence Agent (Wo) for Digital Mental Well-Being: Real-World Data Evaluation Mixed-Methods Study”。该论文发表在JMIR Mhealth Uhealth期刊上，DOI为10.2196/12106，PMID为30470676。
+
+页面包含参考文献列表，包括38到45条，涉及各种关于效应大小、回归分析、心理测量、网络解决方案治疗抑郁症的效果等主题的研究。参考文献引用了多个期刊，如Psychol Methods、J Health Soc Behav、J Med Internet Res、Lancet等。
+
+页面底部有关于论文的版权信息，指出该论文最初发表在JMIR Mhealth Uhealth上，并遵循Creative Commons Attribution License 4.0许可，允许在适当引用的情况下自由使用、分发和复制。
+
+此外，页面还包含一些缩写词的解释，例如AI（人工智能）、CBT（认知行为疗法）、CL（共同语言效应大小）、EMA（生态瞬时评估）、ESM（体验取样方法）、ML（机器学习）、NHS（国家医疗服务体系）、PHQ-2（2项患者健康问卷）、PHQ-9（9项患者健康问卷）、RCT（随机对照试验）和WHO（世界卫生组织）。
+
+页面底部还提到了编辑和审稿人的信息，以及论文的接受和发布日期。
