@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "paddleocr_mcp"
-version = "0.1.0"
+version = "0.2.0"
 requires-python = ">=3.10"
 dependencies = [
     "mcp>=1.5.0",
@@ -12,7 +12,7 @@ dependencies = [
     "httpx>=0.24.0",
     "numpy>=1.24.0",
     "pillow>=9.0.0",
-    "python-magic>=0.4.24",
+    "puremagic>=1.30.0",
     "typing-extensions>=4.0.0",
 ]
 
