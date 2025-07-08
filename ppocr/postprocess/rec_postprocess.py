@@ -1218,6 +1218,7 @@ class LaTeXOCRDecode(object):
     """Convert between latex-symbol and symbol-index"""
 
     def __init__(self, rec_char_dict_path, **kwargs):
+        os.environ["TOKENIZERS_PARALLELISM"] = "false"
         from tokenizers import Tokenizer as TokenizerFast
 
         super(LaTeXOCRDecode, self).__init__()
@@ -1285,6 +1286,7 @@ class UniMERNetDecode(object):
         is_infer=False,
         **kwargs,
     ):
+        os.environ["TOKENIZERS_PARALLELISM"] = "false"
         from tokenizers import Tokenizer as TokenizerFast
         from tokenizers import AddedToken
 

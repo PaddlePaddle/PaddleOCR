@@ -1781,6 +1781,7 @@ class LatexOCRLabelEncode(object):
         rec_char_dict_path,
         **kwargs,
     ):
+        os.environ["TOKENIZERS_PARALLELISM"] = "false"
         from tokenizers import Tokenizer as TokenizerFast
 
         self.tokenizer = TokenizerFast.from_file(rec_char_dict_path)
@@ -1934,6 +1935,7 @@ class UniMERNetLabelEncode(object):
         max_seq_len,
         **kwargs,
     ):
+        os.environ["TOKENIZERS_PARALLELISM"] = "false"
         from tokenizers import Tokenizer as TokenizerFast
         from tokenizers import AddedToken
 
