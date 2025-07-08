@@ -86,7 +86,7 @@
 
 ```bash
 # 安装 wheel 包
-pip install https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/mcp/paddleocr_mcp/releases/v0.1.0/paddleocr_mcp-0.1.0-py3-none-any.whl
+pip install https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/mcp/paddleocr_mcp/releases/v0.2.0/paddleocr_mcp-0.2.0-py3-none-any.whl
 
 # 或者，从项目源码安装
 # git clone https://github.com/PaddlePaddle/PaddleOCR.git
@@ -99,14 +99,7 @@ pip install https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/mcp/pa
 paddleocr_mcp --help
 ```
 
-如果执行上述命令后打印出了帮助信息，则说明安装成功。本项目依赖 python-magic 库。如果在执行上述命令时出现如下错误提示：
-
-```
-...
-ImportError: failed to find libmagic.  Check your installation
-```
-
-很可能是因为缺少 python-magic 库所需的底层库。请参考 [python-magic 官方文档](https://github.com/ahupp/python-magic?tab=readme-ov-file#installation) 完成相应依赖库的安装。
+如果执行上述命令后打印出了帮助信息，则说明安装成功。
 
 ## 2. 在 Claude for Desktop 中使用
 
@@ -290,7 +283,7 @@ ImportError: failed to find libmagic.  Check your installation
           "command": "uvx",
           "args": [
             "--from",
-            "paddleocr-mcp@https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/mcp/paddleocr_mcp/releases/v0.1.0/paddleocr_mcp-0.1.0-py3-none-any.whl",
+            "paddleocr-mcp@https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/mcp/paddleocr_mcp/releases/v0.2.0/paddleocr_mcp-0.2.0-py3-none-any.whl",
             "paddleocr_mcp"
           ],
           "env": {
