@@ -539,7 +539,7 @@ By default, GPU 0 is used; if unavailable, CPU is used.
 <td><code>use_tensorrt</code></td>
 <td>Whether to enable the TensorRT subgraph engine of Paddle Inference.<br/>
 For Paddle with CUDA 11.8, the compatible TensorRT version is 8.x (x>=6), recommended 8.6.1.6.<br/>
-For Paddle with CUDA 12.6, the compatible TensorRT version is 10.x (x>=5), recommended 10.5.0.18.
+
 </td>
 <td><code>bool</code></td>
 <td><code>False</code></td>
