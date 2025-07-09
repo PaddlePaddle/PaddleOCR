@@ -72,9 +72,7 @@ def prepare_common_init_args(model_name, common_args):
         "device_id": device_id,
     }
 
-    pp_option = PaddlePredictorOption(
-        model_name, device_type=device_type, device_id=device_id
-    )
+    pp_option = PaddlePredictorOption(device_type=device_type, device_id=device_id)
     if device_type == "gpu":
         if common_args["use_pptrt"]:
             if common_args["pptrt_precision"] == "fp32":
