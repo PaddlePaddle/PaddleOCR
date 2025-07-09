@@ -7,8 +7,8 @@
 [English](./README.md) | 简体中文 | [繁體中文](./README_tcn.md) | [日本語](./README_ja.md) | [한국어](./README_ko.md) | [Français](./README_fr.md) | [Русский](./README_ru.md) | [Español](./README_es.md) | [العربية](./README_ar.md)
 
 <!-- icon -->
-
 [![stars](https://img.shields.io/github/stars/PaddlePaddle/PaddleOCR?color=ccf)](https://github.com/PaddlePaddle/PaddleOCR)
+[![arXiv](https://img.shields.io/badge/arXiv-2409.18839-b31b1b.svg?logo=arXiv)](https://arxiv.org/pdf/2507.05595)
 [![Downloads](https://img.shields.io/pypi/dm/paddleocr)](https://pypi.org/project/PaddleOCR/)
 [![Used by](https://img.shields.io/badge/Used%20by-10k%2B%20repositories-blue)](https://github.com/PaddlePaddle/PaddleOCR/network/dependents)
 
@@ -16,12 +16,7 @@
 ![os](https://img.shields.io/badge/os-linux%2C%20win%2C%20mac-pink.svg)
 ![hardware](https://img.shields.io/badge/hardware-cpu%2C%20gpu%2C%20xpu%2C%20npu-yellow.svg)
 [![License](https://img.shields.io/badge/license-Apache_2.0-green)](./LICENSE)
-
-[![AI Studio](https://img.shields.io/badge/PP_OCRv5-AI_Studio-green)](https://aistudio.baidu.com/community/app/91660/webUI)
-[![AI Studio](https://img.shields.io/badge/PP_StructureV3-AI_Studio-green)](https://aistudio.baidu.com/community/app/518494/webUI)
-[![AI Studio](https://img.shields.io/badge/PP_ChatOCRv4-AI_Studio-green)](https://aistudio.baidu.com/community/app/518493/webUI)
-[![ModelScope](https://img.shields.io/badge/Demo_on_ModelScope-purple?logo=github)](https://www.modelscope.cn/organization/PaddlePaddle)
-[![HuggingFace](https://img.shields.io/badge/Demo_on_HuggingFace-purple.svg?logo=huggingface)](https://huggingface.co/PaddlePaddle)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/PaddlePaddle/PaddleOCR)
 
 
 PaddleOCR is the industry-standard OCR toolkit powering enterprise AI applications and leading open-source projects worldwide.
@@ -31,15 +26,16 @@ PaddleOCR 是AI时代的一个SOTA级、生产级的OCR与智能文档引擎的�
 </div>
 
 # PaddleOCR
-
-> [!TIP]
-> PaddleOCR 现已提供 MCP服务器，支持与 Claude Desktop 等Agent应用集成。详情请参考 [PaddleOCR MCP 服务器](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/deployment/mcp_server.html)。
-
 [![Framework](https://img.shields.io/badge/飞桨框架-3.0-orange)](https://www.paddlepaddle.org.cn/)
 [![Accuracy](https://img.shields.io/badge/识别精度-🏆-green)](#)
 [![Multi-Language](https://img.shields.io/badge/支持语言-37种-brightgreen)](#)
 [![Handwriting](https://img.shields.io/badge/手写体识别-✓-success)](#)
 [![Hardware](https://img.shields.io/badge/国产硬件-昆仑芯｜昇腾-red)](#)
+
+> [!TIP]
+> PaddleOCR 现已提供 MCP服务器，支持与 Claude Desktop 等Agent应用集成。详情请参考 [PaddleOCR MCP 服务器](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/deployment/mcp_server.html)。
+> PaddleOCR 3.0 技术报告现已发布，详情请参考：[PaddleOCR 3.0 Technical Report](https://arxiv.org/pdf/2507.05595 )
+
 
 **PaddleOCR** 将文档和图像转换为**结构化、AI友好的数据**（如JSON和Markdown），**精度达到行业领先水平**——为全球从独立开发者，初创企业和大型企业的AI应用提供强力支撑。凭借**50,000+星标**和**MinerU、RAGFlow、OmniParser**等头部项目的深度集成，PaddleOCR已成为**AI时代**开发者构建智能文档等应用的**首选解决方案**。
 
@@ -48,6 +44,8 @@ PaddleOCR 是AI时代的一个SOTA级、生产级的OCR与智能文档引擎的�
 [![AI Studio](https://img.shields.io/badge/PP_OCRv5-AI_Studio-green)](https://aistudio.baidu.com/community/app/91660/webUI)
 [![AI Studio](https://img.shields.io/badge/PP_StructureV3-AI_Studio-green)](https://aistudio.baidu.com/community/app/518494/webUI)
 [![AI Studio](https://img.shields.io/badge/PP_ChatOCRv4-AI_Studio-green)](https://aistudio.baidu.com/community/app/518493/webUI)
+[![ModelScope](https://img.shields.io/badge/Demo_on_ModelScope-purple?logo=github)](https://www.modelscope.cn/organization/PaddlePaddle)
+[![HuggingFace](https://img.shields.io/badge/Demo_on_HuggingFace-purple.svg?logo=huggingface)](https://huggingface.co/PaddlePaddle)
 
 - **PP-OCRv5 — 全场景文字识别**  
   **单模型支持五种文字类型**（简中、繁中、英文、日文及手写体），**精度提升13个百分点**。解决多语言混合文档的识别难题。
@@ -366,10 +364,13 @@ PaddleOCR 的发展离不开社区贡献！💗衷心感谢所有开发者、合
 ## 🎓 学术引用
 
 ```
-@misc{paddleocr2020,
-title={PaddleOCR, Awesome multilingual OCR toolkits based on PaddlePaddle.},
-author={PaddlePaddle Authors},
-howpublished = {\url{https://github.com/PaddlePaddle/PaddleOCR}},
-year={2020}
+@misc{cui2025paddleocr30technicalreport,
+      title={PaddleOCR 3.0 Technical Report}, 
+      author={Cheng Cui and Ting Sun and Manhui Lin and Tingquan Gao and Yubo Zhang and Jiaxuan Liu and Xueqing Wang and Zelun Zhang and Changda Zhou and Hongen Liu and Yue Zhang and Wenyu Lv and Kui Huang and Yichao Zhang and Jing Zhang and Jun Zhang and Yi Liu and Dianhai Yu and Yanjun Ma},
+      year={2025},
+      eprint={2507.05595},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV},
+      url={https://arxiv.org/abs/2507.05595}, 
 }
 ```
