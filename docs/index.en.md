@@ -24,7 +24,12 @@ Three Major New Features in PaddleOCR 3.0:
 
 In addition to providing an outstanding model library, PaddleOCR 3.0 also offers user-friendly tools covering model training, inference, and service deployment, so developers can rapidly bring AI applications to production.
 
-![PaddleOCR Arch](./images/Arch.png)
+<div align="center">
+  <p>
+    <a href="https://paddlepaddle.github.io/PaddleOCR/latest/index.html" target="_blank">
+      <img width="100%" src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/paddleocr/README/Arch.jpg" alt="PaddleOCR Architecture"></a>
+  </p>
+</div>
 
 You can [Quick Start](./quick_start.en.md) directly, find comprehensive documentation in the [PaddleOCR Docs](https://paddlepaddle.github.io/PaddleOCR/main/index.html), get support via [Github Issus](https://github.com/PaddlePaddle/PaddleOCR/issues), and explore our OCR courses on [OCR courses on AIStudio](https://aistudio.baidu.com/course/introduce/25207).
 

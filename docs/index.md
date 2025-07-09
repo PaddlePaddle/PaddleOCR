@@ -29,7 +29,7 @@ PaddleOCR 3.0除了提供优秀的模型库外，还提供好学易用的工具�
 <div align="center">
   <p>
     <a href="https://paddlepaddle.github.io/PaddleOCR/latest/index.html" target="_blank">
-      <img width="100%" src="./images/Arch_cn.png" alt="PaddleOCR Architecture"></a>
+      <img width="100%" src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/paddleocr/README/Arch_cn.jpg" alt="PaddleOCR Architecture"></a>
   </p>
 </div>
 
