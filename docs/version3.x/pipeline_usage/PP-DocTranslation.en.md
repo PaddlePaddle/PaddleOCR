@@ -1098,7 +1098,7 @@ Any floating-point number greater than <code>0</code>. If not set, the parameter
 </tr>
 <tr>
 <td><code>use_tensorrt</code></td>
-<td>Whether to enable the TensorRT subgraph engine of Paddle Inference. If the model does not support acceleration via TensorRT, acceleration will not be used even if this flag is set.<br/>For PaddlePaddle with CUDA 11.8, the compatible TensorRT version is 8.x (x&amp;gt;=6), and it is recommended to install TensorRT 8.6.1.6.<br/>For PaddlePaddle with CUDA 12.6, the compatible TensorRT version is 10.x (x&amp;gt;=5), and it is recommended to install TensorRT 10.5.0.18.</td>
+<td>Whether to enable the TensorRT subgraph engine of Paddle Inference. If the model does not support acceleration via TensorRT, acceleration will not be used even if this flag is set.<br/>For PaddlePaddle with CUDA 11.8, the compatible TensorRT version is 8.x (x&amp;gt;=6), and it is recommended to install TensorRT 8.6.1.6.<br/></td>
 <td><code>bool</code></td>
 <td><code>False</code></td>
 </tr>
@@ -1678,7 +1678,7 @@ The process, API description, and output description of PP-DocTranslation predic
 </tr>
 <tr>
 <td><code>use_tensorrt</code></td>
-<td>Whether to enable the TensorRT subgraph engine of Paddle Inference. If the model does not support acceleration via TensorRT, acceleration will not be used even if this flag is set.<br/>For PaddlePaddle with CUDA 11.8, the compatible TensorRT version is 8.x (x&amp;gt;=6), and it is recommended to install TensorRT 8.6.1.6.<br/>For PaddlePaddle with CUDA 12.6, the compatible TensorRT version is 10.x (x&amp;gt;=5), and it is recommended to install TensorRT 10.5.0.18.</td>
+<td>Whether to enable the TensorRT subgraph engine of Paddle Inference. If the model does not support acceleration via TensorRT, acceleration will not be used even if this flag is set.<br/>For PaddlePaddle with CUDA 11.8, the compatible TensorRT version is 8.x (x&amp;gt;=6), and it is recommended to install TensorRT 8.6.1.6.<br/></td>
 <td><code>bool</code></td>
 <td><code>False</code></td>
 </tr>
