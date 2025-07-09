@@ -1171,13 +1171,13 @@ paddleocr pp_chatocrv4_doc -i vehicle_certificate-1.png -k 驾驶室准乘人数
 </tr>
 <tr>
 <td><code>qianfan_api_key</code></td>
-<td>千帆平台的api_key</td>
+<td>千帆平台的API key。</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>pp_docbee_base_url</code></td>
-<td>多模态大模型服务的url。</td>
+<td>多模态大模型服务的URL。</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
@@ -3726,7 +3726,7 @@ SubModules:
 ......
 ```
 
-在产线配置文件中，不仅包含 PaddleOCR CLI 和 Python API 支持的参数，还可进行更多高级配置，具体信息可在 [PaddleX模型产线使用概览](https://paddlepaddle.github.io/PaddleX/3.0/pipeline_usage/pipeline_develop_guide.html) 中找到对应的产线使用教程，参考其中的详细说明，根据需求调整各项配置。
+在产线配置文件中，不仅包含 PaddleOCR CLI 和 Python API 支持的参数，还可进行更多高级配置，具体信息可在 [PaddleX模型产线使用概览](https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/pipeline_develop_guide.html) 中找到对应的产线使用教程，参考其中的详细说明，根据需求调整各项配置。
 
 3. 在 CLI 中加载产线配置文件
 

@@ -1306,7 +1306,7 @@ Any float > <code>0</code></li>
 <td></td>
 </tr>
 <td><code>pp_docbee_base_url</code></td>
-<td>Configuration for the multimodal large language model.</td>
+<td>URL for the multimodal large language model service.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
@@ -3851,7 +3851,7 @@ SubModules:
 ......
 ```
 
-The exported PaddleX pipeline configuration file not only includes parameters supported by PaddleOCR's CLI and Python API but also allows for more advanced settings. Please refer to the corresponding pipeline usage tutorials in [PaddleX Pipeline Usage Overview](https://paddlepaddle.github.io/PaddleX/3.0/en/pipeline_usage/pipeline_develop_guide.html) for detailed instructions on adjusting various configurations according to your needs.
+The exported PaddleX pipeline configuration file not only includes parameters supported by PaddleOCR's CLI and Python API but also allows for more advanced settings. Please refer to the corresponding pipeline usage tutorials in [PaddleX Pipeline Usage Overview](https://paddlepaddle.github.io/PaddleX/latest/en/pipeline_usage/pipeline_develop_guide.html) for detailed instructions on adjusting various configurations according to your needs.
 
 
 3. Loading Pipeline Configuration Files in CLI
