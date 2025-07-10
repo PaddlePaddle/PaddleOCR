@@ -103,7 +103,7 @@ In this pipeline, you can choose the model to use based on the benchmark data be
 </table>
 
 
-* <b>The layout detection model includes 1 category: Block:</b>
+* <b>The region detection model includes 1 category: Block:</b>
 <table>
 <thead>
 <tr>
