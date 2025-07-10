@@ -18,17 +18,14 @@ English | [简体中文](./README_cn.md) | [繁體中文](./README_tcn.md) | [�
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/PaddlePaddle/PaddleOCR)
 
 
-PaddleOCR is the industry-standard OCR toolkit powering enterprise AI applications and leading open-source projects worldwide.
-
-
-PaddleOCR is a SOTA-level, production -grade, open-source ecosystem for OCR and intelligent document analysis, delivering state-of-the-art results for the AI era.
+**PaddleOCR is an industry-leading, production-ready OCR and document AI engine, offering end-to-end solutions from text extraction to intelligent document understanding**
 
 </div>
 
 # PaddleOCR
 [![Framework](https://img.shields.io/badge/PaddlePaddle-3.0-orange)](https://www.paddlepaddle.org.cn/en)
 [![Accuracy](https://img.shields.io/badge/Recognition%20Accuracy-🏆-green)](#)
-[![Multi-Language](https://img.shields.io/badge/Languages-37-brightgreen)](#)
+[![Multi-Language](https://img.shields.io/badge/Support_Languages-80+-brightgreen)](#)
 [![Handwriting](https://img.shields.io/badge/Handwriting-✓-success)](#)
 [![Hardware](https://img.shields.io/badge/Domestic%20Hardware-Kunlunxin%20%7C%20Ascend-red)](#)
 

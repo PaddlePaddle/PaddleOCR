@@ -20,16 +20,14 @@
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/PaddlePaddle/PaddleOCR)
 
 
-PaddleOCR is the industry-standard OCR toolkit powering enterprise AI applications and leading open-source projects worldwide.
-
-PaddleOCR 是AI时代的一个SOTA级、生产级的OCR与智能文档引擎的全流程生态化解决方案
+**PaddleOCR 是业界领先、可直接部署的 OCR 与文档智能引擎，提供从文本识别到文档理解的全流程解决方案**
 
 </div>
 
 # PaddleOCR
 [![Framework](https://img.shields.io/badge/飞桨框架-3.0-orange)](https://www.paddlepaddle.org.cn/)
 [![Accuracy](https://img.shields.io/badge/识别精度-🏆-green)](#)
-[![Multi-Language](https://img.shields.io/badge/支持语言-37种-brightgreen)](#)
+[![Multi-Language](https://img.shields.io/badge/支持语言-80+-brightgreen)](#)
 [![Handwriting](https://img.shields.io/badge/手写体识别-✓-success)](#)
 [![Hardware](https://img.shields.io/badge/国产硬件-昆仑芯｜昇腾-red)](#)
 
