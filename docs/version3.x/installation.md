@@ -17,14 +17,32 @@ comments: true
 从 PyPI 安装最新版本 PaddleOCR 推理包：
 
 ```bash
+# 只希望使用基础的 OCR 功能
 python -m pip install paddleocr
+# 希望使用版面解析、信息抽取、多模态模型等全部功能
+# python -m pip install "paddleocr[all]"
 ```
 
 或者从源码安装（默认为开发分支）：
 
 ```bash
-python -m pip install "git+https://github.com/PaddlePaddle/PaddleOCR.git"
+# 只希望使用基础的 OCR 功能
+python -m pip install "paddleocr@git+https://github.com/PaddlePaddle/PaddleOCR.git"
+# 希望使用版面解析、信息抽取、多模态模型等全部功能
+# python -m pip install "paddleocr[all]@git+https://github.com/PaddlePaddle/PaddleOCR.git"
 ```
+
+除了上面演示的 `all` 依赖组以外，PaddleOCR 也支持通过指定其它依赖组，安装部分可选功能。PaddleOCR 提供的所有依赖组如下：
+
+| 依赖组名称 | 对应的功能 |
+| - | - |
+| `doc` | 文档解析 |
+| `ie` | 信息抽取 |
+| `multimodal` | 多模态理解 |
+| `trans` | 文档翻译 |
+| `all` | 完整功能 |
+
+通用 OCR 产线、文档图像预处理产线的功能无需安装额外的依赖组即可使用。除了这两条产线外，每一条产线属于且仅属于一个依赖组。在各产线的使用文档中可以了解产线属于哪一依赖组。对于单功能模块，安装任意包含该模块的产线对应的依赖组后即可使用相关的基础功能。
 
 ## 2.2 安装训练依赖
 
