@@ -691,514 +691,458 @@ paddleocr pp_doctranslation -i vehicle_certificate-1.png --target_language en --
 ```
 
 <details><summary><b>命令行支持更多参数设置，点击展开以查看命令行参数的详细说明</b></summary>
-<table>
-<thead>
-<tr>
-<th>参数</th>
-<th>参数说明</th>
-<th>参数类型</th>
-<th>默认值</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>input</code></td>
-<td>待预测数据，必填。如图像文件或者PDF文件的本地路径：<code>/root/data/img.jpg</code>；<b>如URL链接</b>，如图像文件或PDF文件的网络URL：<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/vehicle_certificate-1.png">示例</a>；<b>如本地目录</b>，该目录下需包含待预测图像，如本地路径：<code>/root/data/</code>(当前不支持目录中包含PDF文件的预测，PDF文件需要指定到具体文件路径)。
-</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>save_path</code></td>
-<td>指定推理结果文件保存的路径。如果不设置，推理结果将不会保存到本地。</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>target_language</code></td>
-<td>目标语言（ISO 639-1 语言代码）。</td>
-<td><code>str</code></td>
-<td><code>zh</code></td>
-</tr>
-<tr>
-<td><code>layout_detection_model_name</code></td>
-<td>版面区域检测的模型名称。如果不设置，将会使用产线默认模型。</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>layout_detection_model_dir</code></td>
-<td>版面区域检测模型的目录路径。如果不设置，将会下载官方模型。</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>layout_threshold</code></td>
-<td>版面模型得分阈值。<code>0-1</code> 之间的任意浮点数。如果不设置，将使用产线初始化的该参数值，默认初始化为 <code>0.5</code>。
-</td>
-<td><code>float</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>layout_nms</code></td>
-<td>版面检测是否使用后处理NMS。如果不设置，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
-<td><code>bool</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>layout_unclip_ratio</code></td>
-<td>版面区域检测模型检测框的扩张系数。
-任意大于 <code>0</code>  浮点数。如果不设置，将使用产线初始化的该参数值，默认初始化为 <code>1.0</code>。
-</td>
-<td><code>float</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>layout_merge_bboxes_mode</code></td>
-<td>版面检测中模型输出的检测框的合并处理模式。
-<ul>
-<li><b>large</b>，设置为large时，表示在模型输出的检测框中，对于互相重叠包含的检测框，只保留外部最大的框，删除重叠的内部框；</li>
-<li><b>small</b>，设置为small，表示在模型输出的检测框中，对于互相重叠包含的检测框，只保留内部被包含的小框，删除重叠的外部框；</li>
-<li><b>union</b>，不进行框的过滤处理，内外框都保留；</li>
-</ul>如果不设置，将使用产线初始化的该参数值，默认初始化为<code>large</code>。
-</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>chart_recognition_model_name</code></td>
-<td>图表解析的模型名称。如果不设置，将会使用产线默认模型。</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>chart_recognition_model_dir</code></td>
-<td>图表解析模型的目录路径。如果不设置，将会下载官方模型。</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>chart_recognition_batch_size</code></td>
-<td>图表解析模型的batch size。如果不设置，将默认设置batch size为<code>1</code>。</td>
-<td><code>int</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>region_detection_model_name</code></td>
-<td>文档图像版面子模块检测的模型名称。如果不设置，将会使用产线默认模型。</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>region_detection_model_dir</code></td>
-<td>文档图像版面子模块检测模型的目录路径。如果不设置，将会下载官方模型。</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>doc_orientation_classify_model_name</code></td>
-<td>文档方向分类模型的名称。如果不设置，将会使用产线默认模型。</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>doc_orientation_classify_model_dir</code></td>
-<td>文档方向分类模型的目录路径。如果不设置，将会下载官方模型。</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>doc_unwarping_model_name</code></td>
-<td>文本图像矫正模型的名称。如果不设置，将会使用产线默认模型。</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>doc_unwarping_model_dir</code></td>
-<td>文本图像矫正模型的目录路径。如果不设置，将会下载官方模型。</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>text_detection_model_name</code></td>
-<td>文本检测模型的名称。如果不设置，将会使用产线默认模型。</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>text_detection_model_dir</code></td>
-<td>文本检测模型的目录路径。如果不设置，将会下载官方模型。</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>text_det_limit_side_len</code></td>
-<td>文本检测的图像边长限制。
-大于 <code>0</code> 的任意整数。如果不设置，将使用产线初始化的该参数值，默认初始化为 <code>960</code>。
-</td>
-<td><code>int</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>text_det_limit_type</code></td>
-<td>文本检测的图像边长限制类型。支持 <code>min</code> 和 <code>max</code>，<code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>，<code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code>。如果不设置，将使用产线初始化的该参数值，默认初始化为 <code>max</code>。
-</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>text_det_thresh</code></td>
-<td>检测像素阈值，输出的概率图中，得分大于该阈值的像素点才会被认为是文字像素点。
-大于 <code>0</code> 的任意浮点数
-。如果不设置，将默认使用产线初始化的该参数值 <code>0.3</code>。
-</td>
-<td><code>float</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>text_det_box_thresh</code></td>
-<td>检测框阈值，检测结果边框内，所有像素点的平均得分大于该阈值时，该结果会被认为是文字区域。大于 <code>0</code> 的任意浮点数
-。如果不设置，将默认使用产线初始化的该参数值 <code>0.6</code>。
-</td>
-<td><code>float</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>text_det_unclip_ratio</code></td>
-<td>文本检测扩张系数，使用该方法对文字区域进行扩张，该值越大，扩张的面积越大。
-大于 <code>0</code> 的任意浮点数
-。如果不设置，将默认使用产线初始化的该参数值 <code>2.0</code>。
-</td>
-<td><code>float</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>textline_orientation_model_name</code></td>
-<td>文本行方向模型的名称。如果不设置，将会使用产线默认模型。</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>textline_orientation_model_dir</code></td>
-<td>文本行方向模型的目录路径。如果不设置，将会下载官方模型。</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>textline_orientation_batch_size</code></td>
-<td>文本行方向模型的batch size。如果不设置，将默认设置batch size为<code>1</code>。</td>
-<td><code>int</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>text_recognition_model_name</code></td>
-<td>文本识别模型的名称。如果不设置，将会使用产线默认模型。</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>text_recognition_model_dir</code></td>
-<td>文本识别模型的目录路径。如果不设置，将会下载官方模型。</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>text_recognition_batch_size</code></td>
-<td>文本识别模型的batch size。如果不设置，将默认设置batch size为<code>1</code>。</td>
-<td><code>int</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>text_rec_score_thresh</code></td>
-<td>文本识别阈值，得分大于该阈值的文本结果会被保留。
-大于 <code>0</code> 的任意浮点数。如果不设置，将默认使用产线初始化的该参数值 <code>0.0</code>。即不设阈值。
-</td>
-<td><code>float</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>table_classification_model_name</code></td>
-<td>表格分类模型的名称。如果不设置，将会使用产线默认模型。</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>table_classification_model_dir</code></td>
-<td>表格分类模型的目录路径。如果不设置，将会下载官方模型。</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>wired_table_structure_recognition_model_name</code></td>
-<td>有线表格结构识别模型的名称。如果不设置，将会使用产线默认模型。</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>wired_table_structure_recognition_model_dir</code></td>
-<td>有线表格结构识别模型的目录路径。如果不设置，将会下载官方模型。</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>wireless_table_structure_recognition_model_name</code></td>
-<td>无线表格结构识别模型的名称。如果不设置，将会使用产线默认模型。</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>wireless_table_structure_recognition_model_dir</code></td>
-<td>无线表格结构识别模型的目录路径。如果不设置，将会下载官方模型。</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>wired_table_cells_detection_model_name</code></td>
-<td>有线表格单元格检测模型的名称。如果不设置，将会使用产线默认模型。</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>wired_table_cells_detection_model_dir</code></td>
-<td>有线表格单元格检测模型的目录路径。如果不设置，将会下载官方模型。</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>wireless_table_cells_detection_model_name</code></td>
-<td>无线表格单元格检测模型的名称。如果不设置，将会使用产线默认模型。</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>wireless_table_cells_detection_model_dir</code></td>
-<td>无线表格单元格检测模型的目录路径。如果不设置，将会下载官方模型。</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>table_orientation_classify_model_name</code></td>
-<td>表格方向分类模型的名称。如果不设置，将会使用产线默认模型。</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>table_orientation_classify_model_dir</code></td>
-<td>表格方向分类模型的目录路径。如果不设置，将会下载官方模型。</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>seal_text_detection_model_name</code></td>
-<td>印章文本检测模型的名称。如果不设置，将会使用产线默认模型。</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>seal_text_detection_model_dir</code></td>
-<td>印章文本检测模型的目录路径。如果不设置，将会下载官方模型。</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>seal_det_limit_side_len</code></td>
-<td>印章文本检测的图像边长限制。
-大于 <code>0</code> 的任意整数。如果不设置，将使用产线初始化的该参数值，默认初始化为 <code>736</code>。
-</td>
-<td><code>int</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>seal_det_limit_type</code></td>
-<td>印章文本检测的图像边长限制类型。支持 <code>min</code> 和 <code>max</code>，<code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>，<code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code>。如果不设置，将使用产线初始化的该参数值，默认初始化为 <code>min</code>。
-</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>seal_det_thresh</code></td>
-<td>检测像素阈值。输出的概率图中，得分大于该阈值的像素点才会被认为是文字像素点。
-大于 <code>0</code> 的任意浮点数
-。如果不设置，将默认使用产线初始化的该参数值 <code>0.2</code>。
-<td><code>float</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>seal_det_box_thresh</code></td>
-<td>检测框阈值，检测结果边框内，所有像素点的平均得分大于该阈值时，该结果会被认为是文字区域。
-大于 <code>0</code> 的任意浮点数
-。如果不设置，将默认使用产线初始化的该参数值 <code>0.6</code>。
-</td>
-<td><code>float</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>seal_det_unclip_ratio</code></td>
-<td>印章文本检测扩张系数，使用该方法对文字区域进行扩张，该值越大，扩张的面积越大。
-大于 <code>0</code> 的任意浮点数
-。如果不设置，将默认使用产线初始化的该参数值 <code>0.5</code>。
-</td>
-<td><code>float</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>seal_text_recognition_model_name</code></td>
-<td>印章文本识别模型的名称。如果不设置，将会使用产线默认模型。</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>seal_text_recognition_model_dir</code></td>
-<td>印章文本识别模型的目录路径。如果不设置，将会下载官方模型。</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>seal_text_recognition_batch_size</code></td>
-<td>印章文本识别模型的batch size。如果不设置，将默认设置batch size为<code>1</code>。</td>
-<td><code>int</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>seal_rec_score_thresh</code></td>
-<td>文本识别阈值，得分大于该阈值的文本结果会被保留。
-大于 <code>0</code> 的任意浮点数
-。如果不设置，将默认使用产线初始化的该参数值 <code>0.0</code>。即不设阈值。
-</td>
-<td><code>float</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>formula_recognition_model_name</code></td>
-<td>公式识别模型的名称。如果不设置，将会使用产线默认模型。</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>formula_recognition_model_dir</code></td>
-<td>公式识别模型的目录路径。如果不设置，将会下载官方模型。</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>formula_recognition_batch_size</code></td>
-<td>公式识别模型的batch size。如果不设置，将默认设置batch size为<code>1</code>。</td>
-<td><code>int</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>use_doc_orientation_classify</code></td>
-<td>是否使用文档方向分类模块。</td>
-<td><code>bool</code></td>
-<td><code>False</code></td>
-</tr>
-<tr>
-<td><code>use_doc_unwarping</code></td>
-<td>是否使用文本图像矫正模块。</td>
-<td><code>bool</code></td>
-<td><code>False</code></td>
-</tr>
-<tr>
-<td><code>use_textline_orientation</code></td>
-<td>是否加载并使用文本行方向分类模块。如果不设置，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
-<td><code>bool</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>use_seal_recognition</code></td>
-<td>是否加载并使用印章文本识别子产线。如果不设置，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
-<td><code>bool</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>use_table_recognition</code></td>
-<td>是否加载并使用表格识别子产线。如果不设置，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
-<td><code>bool</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>use_formula_recognition</code></td>
-<td>是否加载并使用公式识别子产线。如果不设置，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
-<td><code>bool</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>use_chart_recognition</code></td>
-<td>是否使用图表解析模块。</td>
-<td><code>bool</code></td>
-<td><code>False</code></td>
-</tr>
-<tr>
-<td><code>use_region_detection</code></td>
-<td>是否加载并使用文档区域检测子产线。如果不设置，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
-<td><code>bool</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>device</code></td>
-<td>用于推理的设备。支持指定具体卡号：
-<ul>
-<li><b>CPU</b>：如 <code>cpu</code> 表示使用 CPU 进行推理；</li>
-<li><b>GPU</b>：如 <code>gpu:0</code> 表示使用第 1 块 GPU 进行推理；</li>
-<li><b>NPU</b>：如 <code>npu:0</code> 表示使用第 1 块 NPU 进行推理；</li>
-<li><b>XPU</b>：如 <code>xpu:0</code> 表示使用第 1 块 XPU 进行推理；</li>
-<li><b>MLU</b>：如 <code>mlu:0</code> 表示使用第 1 块 MLU 进行推理；</li>
-<li><b>DCU</b>：如 <code>dcu:0</code> 表示使用第 1 块 DCU 进行推理；</li>
-</ul>如果不设置，将默认使用产线初始化的该参数值，初始化时，会优先使用本地的 GPU 0号设备，如果没有，则使用 CPU 设备。
-</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>enable_hpi</code></td>
-<td>是否启用高性能推理。</td>
-<td><code>bool</code></td>
-<td><code>False</code></td>
-</tr>
-<tr>
-<td><code>use_tensorrt</code></td>
-<td>是否启用 Paddle Inference 的 TensorRT 子图引擎。如果模型不支持通过 TensorRT 加速，即使设置了此标志，也不会使用加速。<br/>
-对于 CUDA 11.8 版本的飞桨，兼容的 TensorRT 版本为 8.x（x>=6），建议安装 TensorRT 8.6.1.6。<br/>
-
-</td>
-<td><code>bool</code></td>
-<td><code>False</code></td>
-</tr>
-<tr>
-<td><code>precision</code></td>
-<td>计算精度，如 fp32、fp16。</td>
-<td><code>str</code></td>
-<td><code>fp32</code></td>
-</tr>
-<tr>
-<td><code>enable_mkldnn</code></td>
-<td>是否启用 MKL-DNN 加速推理。如果 MKL-DNN 不可用或模型不支持通过 MKL-DNN 加速，即使设置了此标志，也不会使用加速。
-</td>
-<td><code>bool</code></td>
-<td><code>True</code></td>
-</tr>
-<tr>
-<td><code>mkldnn_cache_capacity</code></td>
-<td>
-MKL-DNN 缓存容量。
-</td>
-<td><code>int</code></td>
-<td><code>10</code></td>
-</tr>
-<tr>
-<td><code>cpu_threads</code></td>
-<td>在 CPU 上进行推理时使用的线程数。</td>
-<td><code>int</code></td>
-<td><code>8</code></td>
-</tr>
-<tr>
-<td><code>paddlex_config</code></td>
-<td>PaddleX产线配置文件路径。</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-</tbody>
+<table border="1">
+  <tr>
+    <td>参数</td>
+    <td>参数说明</td>
+    <td>参数类型</td>
+    <td>默认值</td>
+  </tr>
+  <tr>
+    <td><code>input</code></td>
+    <td>待预测数据，必填。如图像文件或者PDF文件的本地路径：<code>/root/data/img.jpg</code>；<b>如URL链接</b>，如图像文件或PDF文件的网络URL：<a
+  href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/vehicle_certificate-1.png">示例</a>；<b>如本地目录</b>，该目录下需包含待预测图像，如本地路径：<code>/root/data/</code>(当前不支持目录中包含PDF文件的预测，PDF文件需要指定到具体文件路径)。</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>save_path</code></td>
+    <td>指定推理结果文件保存的路径。如果不设置，推理结果将不会保存到本地。</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>target_language</code></td>
+    <td>目标语言（ISO 639-1 语言代码）。</td>
+    <td><code>str</code></td>
+    <td><code>zh</code></td>
+  </tr>
+  <tr>
+    <td><code>layout_detection_model_name</code></td>
+    <td>版面区域检测的模型名称。如果不设置，将会使用产线默认模型。</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>layout_detection_model_dir</code></td>
+    <td>版面区域检测模型的目录路径。如果不设置，将会下载官方模型。</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>layout_threshold</code></td>
+    <td>版面模型得分阈值。<code>0-1</code>  
+  之间的任意浮点数。如果不设置，将使用产线初始化的该参数值，默认初始化为     
+  <code>0.5</code>。</td>
+    <td><code>float</code></td>
+  </tr>
+  <tr>
+    <td><code>layout_nms</code></td>
+    <td>版面检测是否使用后处理NMS。如果不设置，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
+    <td><code>bool</code></td>
+  </tr>
+  <tr>
+    <td><code>layout_unclip_ratio</code></td>
+    <td>版面区域检测模型检测框的扩张系数。       
+  任意大于  
+  <code>0</code>       浮点数。如果不设置，将使用产线初始化的该参数值，默认初始化为 
+  <code>1.0</code>。</td>
+    <td><code>float</code></td>
+  </tr>
+  <tr>
+    <td><code>layout_merge_bboxes_mode</code></td>
+    <td>版面检测中模型输出的检测框的合并处理模式。       
+  <ul>
+   
+  <li><b>large</b>，设置为large时，表示在模型输出的检测框中，对于互相重叠包含的检测框，只保留外部最大的框，删除重叠的内部框；</li>
+    <li><b>small</b>，设置为small，表示在模型输出的检测框中，对于互相重叠包含的检测框，只保留内部被包含的小框，删除重叠的外部框；</li>
+    <li><b>union</b>，不进行框的过滤处理，内外框都保留；</li>
+    </ul>如果不设置，将使用产线初始化的该参数值，默认初始化为<code>large</code>。</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>chart_recognition_model_name</code></td>
+    <td>图表解析的模型名称。如果不设置，将会使用产线默认模型。</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>chart_recognition_model_dir</code></td>
+    <td>图表解析模型的目录路径。如果不设置，将会下载官方模型。</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>chart_recognition_batch_size</code></td>
+    <td>图表解析模型的batch size。如果不设置，将默认设置batch size为<code>1</code>。</td>
+    <td><code>int</code></td>
+  </tr>
+  <tr>
+    <td><code>region_detection_model_name</code></td>
+    <td>文档图像版面子模块检测的模型名称。如果不设置，将会使用产线默认模型。</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>region_detection_model_dir</code></td>
+    <td>文档图像版面子模块检测模型的目录路径。如果不设置，将会下载官方模型。</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>doc_orientation_classify_model_name</code></td>
+    <td>文档方向分类模型的名称。如果不设置，将会使用产线默认模型。</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>doc_orientation_classify_model_dir</code></td>
+    <td>文档方向分类模型的目录路径。如果不设置，将会下载官方模型。</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>doc_unwarping_model_name</code></td>
+    <td>文本图像矫正模型的名称。如果不设置，将会使用产线默认模型。</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>doc_unwarping_model_dir</code></td>
+    <td>文本图像矫正模型的目录路径。如果不设置，将会下载官方模型。</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>text_detection_model_name</code></td>
+    <td>文本检测模型的名称。如果不设置，将会使用产线默认模型。</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>text_detection_model_dir</code></td>
+    <td>文本检测模型的目录路径。如果不设置，将会下载官方模型。</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>text_det_limit_side_len</code></td>
+    <td>文本检测的图像边长限制。        大于
+  <code>0</code>  
+  的任意整数。如果不设置，将使用产线初始化的该参数值，默认初始化为      <code>960</code>。</td>
+    <td><code>int</code></td>
+  </tr>
+  <tr>
+    <td><code>text_det_limit_type</code></td>
+    <td>文本检测的图像边长限制类型。支持 <code>min</code> 和       
+  <code>max</code>，<code>min</code> 
+  表示保证图像最短边不小于       
+  <code>det_limit_side_len</code>，<code>max</code>      表示保证图像最长边不大于  
+  <code>limit_side_len</code>。如果不设置，将使用产线初始化的该参数值，默认初始化为     
+  <code>max</code>。</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>text_det_thresh</code></td>
+    <td>检测像素阈值，输出的概率图中，得分大于该阈值的像素点才会被认为是文字像素点。        大于
+  <code>0</code>  的任意浮点数       
+  。如果不设置，将默认使用产线初始化的该参数值  <code>0.3</code>。</td>
+    <td><code>float</code></td>
+  </tr>
+  <tr>
+    <td><code>text_det_box_thresh</code></td>
+    <td>检测框阈值，检测结果边框内，所有像素点的平均得分大于该阈值时，该结果会被认为是文字区域。大于 
+  <code>0</code>      的任意浮点数       
+  。如果不设置，将默认使用产线初始化的该参数值  <code>0.6</code>。</td>
+    <td><code>float</code></td>
+  </tr>
+  <tr>
+    <td><code>text_det_unclip_ratio</code></td>
+    <td>文本检测扩张系数，使用该方法对文字区域进行扩张，该值越大，扩张的面积越大。        大于
+  <code>0</code>  的任意浮点数       
+  。如果不设置，将默认使用产线初始化的该参数值  <code>2.0</code>。</td>
+    <td><code>float</code></td>
+  </tr>
+  <tr>
+    <td><code>textline_orientation_model_name</code></td>
+    <td>文本行方向模型的名称。如果不设置，将会使用产线默认模型。</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>textline_orientation_model_dir</code></td>
+    <td>文本行方向模型的目录路径。如果不设置，将会下载官方模型。</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>textline_orientation_batch_size</code></td>
+    <td>文本行方向模型的batch size。如果不设置，将默认设置batch size为<code>1</code>。</td>
+    <td><code>int</code></td>
+  </tr>
+  <tr>
+    <td><code>text_recognition_model_name</code></td>
+    <td>文本识别模型的名称。如果不设置，将会使用产线默认模型。</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>text_recognition_model_dir</code></td>
+    <td>文本识别模型的目录路径。如果不设置，将会下载官方模型。</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>text_recognition_batch_size</code></td>
+    <td>文本识别模型的batch size。如果不设置，将默认设置batch size为<code>1</code>。</td>
+    <td><code>int</code></td>
+  </tr>
+  <tr>
+    <td><code>text_rec_score_thresh</code></td>
+    <td>文本识别阈值，得分大于该阈值的文本结果会被保留。        大于
+  <code>0</code>  的任意浮点数。如果不设置，将默认使用产线初始化的该参数值     
+  <code>0.0</code>。即不设阈值。</td>
+    <td><code>float</code></td>
+  </tr>
+  <tr>
+    <td><code>table_classification_model_name</code></td>
+    <td>表格分类模型的名称。如果不设置，将会使用产线默认模型。</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>table_classification_model_dir</code></td>
+    <td>表格分类模型的目录路径。如果不设置，将会下载官方模型。</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>wired_table_structure_recognition_model_name</code></td>
+    <td>有线表格结构识别模型的名称。如果不设置，将会使用产线默认模型。</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>wired_table_structure_recognition_model_dir</code></td>
+    <td>有线表格结构识别模型的目录路径。如果不设置，将会下载官方模型。</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>wireless_table_structure_recognition_model_name</code></td>
+    <td>无线表格结构识别模型的名称。如果不设置，将会使用产线默认模型。</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>wireless_table_structure_recognition_model_dir</code></td>
+    <td>无线表格结构识别模型的目录路径。如果不设置，将会下载官方模型。</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>wired_table_cells_detection_model_name</code></td>
+    <td>有线表格单元格检测模型的名称。如果不设置，将会使用产线默认模型。</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>wired_table_cells_detection_model_dir</code></td>
+    <td>有线表格单元格检测模型的目录路径。如果不设置，将会下载官方模型。</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>wireless_table_cells_detection_model_name</code></td>
+    <td>无线表格单元格检测模型的名称。如果不设置，将会使用产线默认模型。</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>wireless_table_cells_detection_model_dir</code></td>
+    <td>无线表格单元格检测模型的目录路径。如果不设置，将会下载官方模型。</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>table_orientation_classify_model_name</code></td>
+    <td>表格方向分类模型的名称。如果不设置，将会使用产线默认模型。</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>table_orientation_classify_model_dir</code></td>
+    <td>表格方向分类模型的目录路径。如果不设置，将会下载官方模型。</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>seal_text_detection_model_name</code></td>
+    <td>印章文本检测模型的名称。如果不设置，将会使用产线默认模型。</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>seal_text_detection_model_dir</code></td>
+    <td>印章文本检测模型的目录路径。如果不设置，将会下载官方模型。</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>seal_det_limit_side_len</code></td>
+    <td>印章文本检测的图像边长限制。        大于
+  <code>0</code>  
+  的任意整数。如果不设置，将使用产线初始化的该参数值，默认初始化为     
+  <code>736</code>。</td>
+    <td><code>int</code></td>
+  </tr>
+  <tr>
+    <td><code>seal_det_limit_type</code></td>
+    <td>印章文本检测的图像边长限制类型。支持
+  <code>min</code> 和       
+  <code>max</code>，<code>min</code> 
+  表示保证图像最短边不小于       
+  <code>det_limit_side_len</code>，<code>max</code>      表示保证图像最长边不大于  
+  <code>limit_side_len</code>。如果不设置，将使用产线初始化的该参数值，默认初始化为     
+  <code>min</code>。</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>seal_det_thresh</code></td>
+    <td>检测像素阈值。输出的概率图中，得分大于该阈值的像素点才会被认为是文字像素点。大于 <code>0</code> 
+  的任意浮点数。如果不设置，将默认使用产线初始化的该参数值  <code>0.2</code>。</td>
+    <td><code>float</code></td>
+  </tr>
+  <tr>
+    <td><code>seal_det_box_thresh</code></td>
+    <td>检测框阈值，检测结果边框内，所有像素点的平均得分大于该阈值时，该结果会被认为是文字区域。        大于
+  <code>0</code>  的任意浮点数       
+  。如果不设置，将默认使用产线初始化的该参数值  <code>0.6</code>。</td>
+    <td><code>float</code></td>
+  </tr>
+  <tr>
+    <td><code>seal_det_unclip_ratio</code></td>
+    <td>印章文本检测扩张系数，使用该方法对文字区域进行扩张，该值越大，扩张的面积越大。        大于
+  <code>0</code>  的任意浮点数       
+  。如果不设置，将默认使用产线初始化的该参数值  <code>0.5</code>。</td>
+    <td><code>float</code></td>
+  </tr>
+  <tr>
+    <td><code>seal_text_recognition_model_name</code></td>
+    <td>印章文本识别模型的名称。如果不设置，将会使用产线默认模型。</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>seal_text_recognition_model_dir</code></td>
+    <td>印章文本识别模型的目录路径。如果不设置，将会下载官方模型。</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>seal_text_recognition_batch_size</code></td>
+    <td>印章文本识别模型的batch size。如果不设置，将默认设置batch size为<code>1</code>。</td>
+    <td><code>int</code></td>
+  </tr>
+  <tr>
+    <td><code>seal_rec_score_thresh</code></td>
+    <td>文本识别阈值，得分大于该阈值的文本结果会被保留。        大于
+  <code>0</code>  的任意浮点数       
+  。如果不设置，将默认使用产线初始化的该参数值  <code>0.0</code>。即不设阈值。</td>
+    <td><code>float</code></td>
+  </tr>
+  <tr>
+    <td><code>formula_recognition_model_name</code></td>
+    <td>公式识别模型的名称。如果不设置，将会使用产线默认模型。</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>formula_recognition_model_dir</code></td>
+    <td>公式识别模型的目录路径。如果不设置，将会下载官方模型。</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>formula_recognition_batch_size</code></td>
+    <td>公式识别模型的batch size。如果不设置，将默认设置batch size为<code>1</code>。</td>
+    <td><code>int</code></td>
+  </tr>
+  <tr>
+    <td><code>use_doc_orientation_classify</code></td>
+    <td>是否使用文档方向分类模块。如果不设置，将使用产线初始化的该参数值，默认初始化为<code>False</code>。</td>
+    <td><code>bool</code></td>
+    <td><code>False</code></td>
+  </tr>
+  <tr>
+    <td><code>use_doc_unwarping</code></td>
+    <td>是否使用文本图像矫正模块。如果不设置，将使用产线初始化的该参数值，默认初始化为<code>False</code>。</td>
+    <td><code>bool</code></td>
+    <td><code>False</code></td>
+  </tr>
+  <tr>
+    <td><code>use_textline_orientation</code></td>
+    <td>是否加载并使用文本行方向分类模块。如果不设置，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
+    <td><code>bool</code></td>
+    <td><code>True</code></td>
+  </tr>
+  <tr>
+    <td><code>use_seal_recognition</code></td>
+    <td>是否加载并使用印章文本识别子产线。如果不设置，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
+    <td><code>bool</code></td>
+    <td><code>True</code></td>
+  </tr>
+  <tr>
+    <td><code>use_table_recognition</code></td>
+    <td>是否加载并使用表格识别子产线。如果不设置，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
+    <td><code>bool</code></td>
+    <td><code>True</code></td>
+  </tr>
+  <tr>
+    <td><code>use_formula_recognition</code></td>
+    <td>是否加载并使用公式识别子产线。如果不设置，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
+    <td><code>bool</code></td>
+    <td><code>True</code></td>
+  </tr>
+  <tr>
+    <td><code>use_chart_recognition</code></td>
+    <td>是否使用图表解析模块。如果不设置，将使用产线初始化的该参数值，默认初始化为<code>False</code>。</td>
+    <td><code>bool</code></td>
+    <td><code>False</code></td>
+  </tr>
+  <tr>
+    <td><code>use_region_detection</code></td>
+    <td>是否加载并使用文档区域检测子产线。如果不设置，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
+    <td><code>bool</code></td>
+    <td><code>True</code></td>
+  </tr>
+  <tr>
+    <td><code>device</code></td>
+    <td>用于推理的设备。支持指定具体卡号：       
+  <ul>
+    <li><b>CPU</b>：如 <code>cpu</code> 表示使用 
+  CPU      进行推理；</li>
+    <li><b>GPU</b>：如 <code>gpu:0</code>
+  表示使用第  1  块      GPU 进行推理；</li>
+    <li><b>NPU</b>：如 <code>npu:0</code>
+  表示使用第  1  块      NPU 进行推理；</li>
+    <li><b>XPU</b>：如 <code>xpu:0</code> 表示使用第  1  块      XPU 进行推理；</li>
+    <li><b>MLU</b>：如 <code>mlu:0</code> 表示使用第
+  1  块      MLU 进行推理；</li>
+    <li><b>DCU</b>：如 <code>dcu:0</code>
+  表示使用第  1  块      DCU 进行推理；</li>
+    </ul>如果不设置，将默认使用产线初始化的该参数值，初始化时，会优先使用本地的 GPU 0号设备，如果没有，则使用 CPU 设备。</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>enable_hpi</code></td>
+    <td>是否启用高性能推理。</td>
+    <td><code>bool</code></td>
+    <td><code>False</code></td>
+  </tr>
+  <tr>
+    <td><code>use_tensorrt</code></td>
+    <td>是否启用 Paddle Inference 的 TensorRT 子图引擎。如果模型不支持通过 TensorRT  加速，即使设置了此标志，也不会使用加速。<br/>对于
+  CUDA 11.8 版本的飞桨，兼容的 TensorRT 版本为  8.x（x&gt;=6），建议安装 TensorRT
+  8.6.1.6。<br/></td>
+    <td><code>bool</code></td>
+    <td><code>False</code></td>
+  </tr>
+  <tr>
+    <td><code>precision</code></td>
+    <td>计算精度，如 fp32、fp16。</td>
+    <td><code>str</code></td>
+    <td><code>fp32</code></td>
+  </tr>
+  <tr>
+    <td><code>enable_mkldnn</code></td>
+    <td>是否启用 MKL-DNN 加速推理。如果 MKL-DNN 不可用或模型不支持通过 MKL-DNN 加速，即使设置了此标志，也不会使用加速。</td>
+    <td><code>bool</code></td>
+    <td><code>True</code></td>
+  </tr>
+  <tr>
+    <td><code>mkldnn_cache_capacity</code></td>
+    <td>MKL-DNN 缓存容量。</td>
+    <td><code>int</code></td>
+    <td><code>10</code></td>
+  </tr>
+  <tr>
+    <td><code>cpu_threads</code></td>
+    <td>在 CPU 上进行推理时使用的线程数。</td>
+    <td><code>int</code></td>
+    <td><code>8</code></td>
+  </tr>
+  <tr>
+    <td><code>paddlex_config</code></td>
+    <td>PaddleX产线配置文件路径。</td>
+    <td><code>str</code></td>
+  </tr>
 </table>
+
 </details>
 <br />
 
@@ -1275,544 +1219,583 @@ PP-DocTranslation 预测的流程、API 说明、产出说明如下：
 
 相关参数说明如下：
 
-<table>
-<thead>
-<tr>
-<th>参数</th>
-<th>参数说明</th>
-<th>参数类型</th>
-<th>默认值</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>layout_detection_model_name</code></td>
-<td>版面区域检测的模型名称。如果设置为<code>None</code>，将会使用产线默认模型。</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>layout_detection_model_dir</code></td>
-<td>版面区域检测模型的目录路径。如果设置为<code>None</code>，将会下载官方模型。</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>layout_threshold</code></td>
-<td>版面模型得分阈值。
-<ul>
-<li><b>float</b>：<code>0-1</code> 之间的任意浮点数；</li>
-<li><b>dict</b>： <code>{0:0.1}</code> key为类别ID，value为该类别的阈值；</li>
-<li><b>None</b>：如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为 <code>0.5</code>。</li>
-</ul>
-</td>
-<td><code>float|dict|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>layout_nms</code></td>
-<td>版面检测是否使用后处理NMS。如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
-<td><code>bool|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>layout_unclip_ratio</code></td>
-<td>版面区域检测模型检测框的扩张系数。
-<ul>
-<li><b>float</b>：任意大于 <code>0</code>  浮点数；</li>
-<li><b>Tuple[float,float]</b>：在横纵两个方向各自的扩张系数；</li>
-<li><b>dict</b>，dict的key为<b>int</b>类型，代表<code>cls_id</code>, value为<b>tuple</b>类型，如<code>{0: (1.1, 2.0)}</code>，表示将模型输出的第0类别检测框中心不变，宽度扩张1.1倍，高度扩张2.0倍；</li>
-<li><b>None</b>：如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为 <code>1.0</code>。</li>
-</ul>
-</td>
-<td><code>float|Tuple[float,float]|dict|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>layout_merge_bboxes_mode</code></td>
-<td>版面区域检测的重叠框过滤方式。
-<ul>
-<li><b>str</b>：<code>large</code>，<code>small</code>，<code>union</code>，分别表示重叠框过滤时选择保留大框，小框还是同时保留；</li>
-<li><b>dict</b>： dict的key为<b>int</b>类型，代表<code>cls_id</code>，value为<b>str</b>类型，如<code>{0: "large", 2: "small"}</code>，表示对第0类别检测框使用large模式，对第2类别检测框使用small模式；</li>
-<li><b>None</b>：如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为 <code>large</code>。</li>
-</ul>
-</td>
-<td><code>str|dict|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>chart_recognition_model_name</code></td>
-<td>图表解析的模型名称。如果设置为<code>None</code>，将会使用产线默认模型。</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>chart_recognition_model_dir</code></td>
-<td>图表解析模型的目录路径。如果设置为<code>None</code>，将会下载官方模型。</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>chart_recognition_batch_size</code></td>
-<td>图表解析模型的batch size。如果设置为<code>None</code>，将默认设置batch size为<code>1</code>。</td>
-<td><code>int|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>region_detection_model_name</code></td>
-<td>文档图像版面子模块检测的模型名称。如果设置为<code>None</code>，将会使用产线默认模型。</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>region_detection_model_dir</code></td>
-<td>文档图像版面子模块检测模型的目录路径。如果设置为<code>None</code>，将会下载官方模型。</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>doc_orientation_classify_model_name</code></td>
-<td>文档方向分类模型的名称。如果设置为<code>None</code>，将会使用产线默认模型。</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>doc_orientation_classify_model_dir</code></td>
-<td>文档方向分类模型的目录路径。如果设置为<code>None</code>，将会下载官方模型。</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>doc_unwarping_model_name</code></td>
-<td>文本图像矫正模型的名称。如果设置为<code>None</code>，将会使用产线默认模型。</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>doc_unwarping_model_dir</code></td>
-<td>文本图像矫正模型的目录路径。如果设置为<code>None</code>，将会下载官方模型。</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>text_detection_model_name</code></td>
-<td>文本检测模型的名称。如果设置为<code>None</code>，将会使用产线默认模型。</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>text_detection_model_dir</code></td>
-<td>文本检测模型的目录路径。如果设置为<code>None</code>，将会下载官方模型。</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>text_det_limit_side_len</code></td>
-<td>文本检测的图像边长限制。
-<ul>
-<li><b>int</b>：大于 <code>0</code> 的任意整数；</li>
-<li><b>None</b>：如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为 <code>960</code>。</li>
-</ul>
-</td>
-<td><code>int|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>text_det_limit_type</code></td>
-<td>文本检测的图像边长限制类型。
-<ul>
-<li><b>str</b>：支持 <code>min</code> 和 <code>max</code>，<code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>，<code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code>；</li>
-<li><b>None</b>：如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为 <code>max</code>。</li>
-</ul>
-</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>text_det_thresh</code></td>
-<td>检测像素阈值，输出的概率图中，得分大于该阈值的像素点才会被认为是文字像素点。
-<ul>
-<li><b>float</b>：大于<code>0</code>的任意浮点数；
-<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值 <code>0.3</code>。</li></li></ul>
-</td>
-<td><code>float|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>text_det_box_thresh</code></td>
-<td>检测框阈值，检测结果边框内，所有像素点的平均得分大于该阈值时，该结果会被认为是文字区域。
-<ul>
-<li><b>float</b>：大于<code>0</code>的任意浮点数；
-<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值 <code>0.6</code>。</li></li></ul>
-</td>
-<td><code>float|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>text_det_unclip_ratio</code></td>
-<td>文本检测扩张系数，使用该方法对文字区域进行扩张，该值越大，扩张的面积越大。
-<ul>
-<li><b>float</b>：大于<code>0</code>的任意浮点数；
-<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值 <code>2.0</code>。</li></li></ul>
-</td>
-<td><code>float|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>textline_orientation_model_name</code></td>
-<td>文本行方向模型的名称。如果设置为<code>None</code>，将会使用产线默认模型。</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>textline_orientation_model_dir</code></td>
-<td>文本行方向模型的目录路径。如果设置为<code>None</code>，将会下载官方模型。</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>textline_orientation_batch_size</code></td>
-<td>文本行方向模型的batch size。如果设置为<code>None</code>，将默认设置batch size为<code>1</code>。</td>
-<td><code>int|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>text_recognition_model_name</code></td>
-<td>文本识别模型的名称。如果设置为<code>None</code>，将会使用产线默认模型。</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>text_recognition_model_dir</code></td>
-<td>文本识别模型的目录路径。如果设置为<code>None</code>，将会下载官方模型。</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>text_recognition_batch_size</code></td>
-<td>文本识别模型的batch size。如果设置为<code>None</code>，将默认设置batch size为<code>1</code>。</td>
-<td><code>int|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>text_rec_score_thresh</code></td>
-<td>文本识别阈值，得分大于该阈值的文本结果会被保留。
-<ul>
-<li><b>float</b>：大于<code>0</code>的任意浮点数；
-<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值 <code>0.0</code>，即不设阈值。</li></li></ul>
-</td>
-<td><code>float|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>table_classification_model_name</code></td>
-<td>表格分类模型的名称。如果设置为<code>None</code>，将会使用产线默认模型。</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>table_classification_model_dir</code></td>
-<td>表格分类模型的目录路径。如果设置为<code>None</code>，将会下载官方模型。</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>wired_table_structure_recognition_model_name</code></td>
-<td>有线表格结构识别模型的名称。如果设置为<code>None</code>，将会使用产线默认模型。</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>wired_table_structure_recognition_model_dir</code></td>
-<td>有线表格结构识别模型的目录路径。如果设置为<code>None</code>，将会下载官方模型。</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>wireless_table_structure_recognition_model_name</code></td>
-<td>无线表格结构识别模型的名称。如果设置为<code>None</code>，将会使用产线默认模型。</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>wireless_table_structure_recognition_model_dir</code></td>
-<td>无线表格结构识别模型的目录路径。如果设置为<code>None</code>，将会下载官方模型。</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>wired_table_cells_detection_model_name</code></td>
-<td>有线表格单元格检测模型的名称。如果设置为<code>None</code>，将会使用产线默认模型。</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>wired_table_cells_detection_model_dir</code></td>
-<td>有线表格单元格检测模型的目录路径。如果设置为<code>None</code>，将会下载官方模型。</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>wireless_table_cells_detection_model_name</code></td>
-<td>无线表格单元格检测模型的名称。如果设置为<code>None</code>，将会使用产线默认模型。</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>wireless_table_cells_detection_model_dir</code></td>
-<td>无线表格单元格检测模型的目录路径。如果设置为<code>None</code>，将会下载官方模型。</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>table_orientation_classify_model_name</code></td>
-<td>表格方向分类模型的名称。如果设置为<code>None</code>，将会使用产线默认模型。</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>table_orientation_classify_model_dir</code></td>
-<td>表格方向分类模型的目录路径。如果设置为<code>None</code>，将会下载官方模型。</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>seal_text_detection_model_name</code></td>
-<td>印章文本检测模型的名称。如果设置为<code>None</code>，将会使用产线默认模型。</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>seal_text_detection_model_dir</code></td>
-<td>印章文本检测模型的目录路径。如果设置为<code>None</code>，将会下载官方模型。</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>seal_det_limit_side_len</code></td>
-<td>印章文本检测的图像边长限制。
-<ul>
-<li><b>int</b>：大于 <code>0</code> 的任意整数；</li>
-<li><b>None</b>：如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为 <code>736</code>。</li>
-</ul>
-</td>
-<td><code>int|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>seal_det_limit_type</code></td>
-<td>印章文本检测的图像边长限制类型。
-<ul>
-<li><b>str</b>：支持 <code>min</code> 和 <code>max</code>，<code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>，<code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code>；</li>
-<li><b>None</b>：如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为 <code>min</code>。</li>
-</ul>
-</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>seal_det_thresh</code></td>
-<td>检测像素阈值，输出的概率图中，得分大于该阈值的像素点才会被认为是文字像素点。
-<ul>
-<li><b>float</b>：大于 <code>0</code> 的任意浮点数；
-<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值 <code>0.2</code>。</li></li></ul>
-</td>
-<td><code>float|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>seal_det_box_thresh</code></td>
-<td>检测框阈值，检测结果边框内，所有像素点的平均得分大于该阈值时，该结果会被认为是文字区域。
-<ul>
-<li><b>float</b>：大于<code>0</code>的任意浮点数；
-<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值 <code>0.6</code>。</li></li></ul>
-</td>
-<td><code>float|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>seal_det_unclip_ratio</code></td>
-<td>印章文本检测扩张系数，使用该方法对文字区域进行扩张，该值越大，扩张的面积越大。
-<ul>
-<li><b>float</b>：大于<code>0</code>的任意浮点数；
-<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值 <code>0.5</code>。</li></li></ul>
-</td>
-<td><code>float|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>seal_text_recognition_model_name</code></td>
-<td>印章文本识别模型的名称。如果设置为<code>None</code>，将会使用产线默认模型。</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>seal_text_recognition_model_dir</code></td>
-<td>印章文本识别模型的目录路径。如果设置为<code>None</code>，将会下载官方模型。</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>seal_text_recognition_batch_size</code></td>
-<td>印章文本识别模型的batch size。如果设置为<code>None</code>，将默认设置batch size为<code>1</code>。</td>
-<td><code>int|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>seal_rec_score_thresh</code></td>
-<td>印章文本识别阈值，得分大于该阈值的文本结果会被保留。
-<ul>
-<li><b>float</b>：大于<code>0</code>的任意浮点数；
-<li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值 <code>0.0</code>，即不设阈值。</li></li></ul>
-</td>
-<td><code>float|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>formula_recognition_model_name</code></td>
-<td>公式识别模型的名称。如果设置为<code>None</code>，将会使用产线默认模型。</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>formula_recognition_model_dir</code></td>
-<td>公式识别模型的目录路径。如果设置为<code>None</code>，将会下载官方模型。</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>formula_recognition_batch_size</code></td>
-<td>公式识别模型的batch size。如果设置为<code>None</code>，将默认设置batch size为<code>1</code>。</td>
-<td><code>int|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>use_doc_orientation_classify</code></td>
-<td>是否加载并使用文档方向分类模块。如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
-<td><code>bool|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>use_doc_unwarping</code></td>
-<td>是否加载并使用文本图像矫正模块。如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
-<td><code>bool|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>use_textline_orientation</code></td>
-<td>是否加载并使用文本行方向分类模块。如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
-<td><code>bool|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>use_seal_recognition</code></td>
-<td>是否加载并使用印章文本识别子产线。如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
-<td><code>bool|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>use_table_recognition</code></td>
-<td>是否加载并使用表格识别子产线。如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
-<td><code>bool|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>use_formula_recognition</code></td>
-<td>是否加载并使用公式识别子产线。如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
-<td><code>bool|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>use_chart_recognition</code></td>
-<td>是否加载并使用图表解析模块。如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
-<td><code>bool|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>use_region_detection</code></td>
-<td>是否加载并使用文档区域检测子产线。如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
-<td><code>bool|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>chat_bot_config</code></td>
-<td>大语言模型配置信息。配置内容为如下dict：
-<pre><code>{
-"module_name": "chat_bot",
-"model_name": "ernie-3.5-8k",
-"base_url": "https://qianfan.baidubce.com/v2",
-"api_type": "openai",
-"api_key": "api_key"  # 请将此设置为实际的API密钥
-}</code></pre>
-</td>
-<td><code>dict|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>device</code></td>
-<td>用于推理的设备。支持指定具体卡号：
-<ul>
-<li><b>CPU</b>：如 <code>cpu</code> 表示使用 CPU 进行推理；</li>
-<li><b>GPU</b>：如 <code>gpu:0</code> 表示使用第 1 块 GPU 进行推理；</li>
-<li><b>NPU</b>：如 <code>npu:0</code> 表示使用第 1 块 NPU 进行推理；</li>
-<li><b>XPU</b>：如 <code>xpu:0</code> 表示使用第 1 块 XPU 进行推理；</li>
-<li><b>MLU</b>：如 <code>mlu:0</code> 表示使用第 1 块 MLU 进行推理；</li>
-<li><b>DCU</b>：如 <code>dcu:0</code> 表示使用第 1 块 DCU 进行推理；</li>
-<li><b>None</b>：如果设置为<code>None</code>，初始化时，会优先使用本地的 GPU 0号设备，如果没有，则使用 CPU 设备。</li>
-</ul>
-</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>enable_hpi</code></td>
-<td>是否启用高性能推理。</td>
-<td><code>bool</code></td>
-<td><code>False</code></td>
-</tr>
-<tr>
-<td><code>use_tensorrt</code></td>
-<td>是否启用 Paddle Inference 的 TensorRT 子图引擎。如果模型不支持通过 TensorRT 加速，即使设置了此标志，也不会使用加速。<br/>
-对于 CUDA 11.8 版本的飞桨，兼容的 TensorRT 版本为 8.x（x>=6），建议安装 TensorRT 8.6.1.6。<br/>
-
-</td>
-<td><code>bool</code></td>
-<td><code>False</code></td>
-</tr>
-<tr>
-<td><code>precision</code></td>
-<td>计算精度，如 fp32、fp16。</td>
-<td><code>str</code></td>
-<td><code>"fp32"</code></td>
-</tr>
-<tr>
-<td><code>enable_mkldnn</code></td>
-<td>是否启用 MKL-DNN 加速推理。如果 MKL-DNN 不可用或模型不支持通过 MKL-DNN 加速，即使设置了此标志，也不会使用加速。
-</td>
-<td><code>bool</code></td>
-<td><code>True</code></td>
-</tr>
-<tr>
-<td><code>mkldnn_cache_capacity</code></td>
-<td>
-MKL-DNN 缓存容量。
-</td>
-<td><code>int</code></td>
-<td><code>10</code></td>
-</tr>
-<tr>
-<td><code>cpu_threads</code></td>
-<td>在 CPU 上进行推理时使用的线程数。</td>
-<td><code>int</code></td>
-<td><code>8</code></td>
-</tr>
-<tr>
-<td><code>paddlex_config</code></td>
-<td>PaddleX产线配置文件路径。</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-</tbody>
+<table border="1">
+  <tr>
+    <td>参数</td>
+    <td>参数说明</td>
+    <td>参数类型</td>
+    <td>默认值</td>
+  </tr>
+  <tr>
+    <td><code>layout_detection_model_name</code></td>
+    <td>版面区域检测的模型名称。如果设置为<code>None</code>，将会使用产线默认模型。</td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>layout_detection_model_dir</code></td>
+    <td>版面区域检测模型的目录路径。如果设置为<code>None</code>，将会下载官方模型。</td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>layout_threshold</code></td>
+    <td>版面模型得分阈值。
+    <ul>
+    <li><b>float</b>：<code>0-1</code>
+  之间的任意浮点数；</li>
+    <li><b>dict</b>： <code>{0:0.1}</code>
+  key为类别ID，value为该类别的阈值；</li>
+    <li><b>None</b>：如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为
+  <code>0.5</code>。</li>
+    </ul></td>
+    <td><code>float|dict|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>layout_nms</code></td>
+    <td>版面检测是否使用后处理NMS。如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
+    <td><code>bool|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>layout_unclip_ratio</code></td>
+    <td>版面区域检测模型检测框的扩张系数。
+    <ul>
+    <li><b>float</b>：任意大于 <code>0</code>  浮点数；</li>
+   
+  <li><b>Tuple[float,float]</b>：在横纵两个方向各自的扩张系数；</li>
+    <li><b>dict</b>，dict的key为<b>int</b>类型，代表<code>cls_id</code>,
+  value为<b>tuple</b>类型，如<code>{0: (1.1,
+  2.0)}</code>，表示将模型输出的第0类别检测框中心不变，宽度扩张1.1倍，高度扩张2.0倍；</li>
+    <li><b>None</b>：如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为
+  <code>1.0</code>。</li>
+    </ul></td>
+    <td><code>float|Tuple[float,float]|dict|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>layout_merge_bboxes_mode</code></td>
+    <td>版面区域检测的重叠框过滤方式。
+    <ul>
+   
+  <li><b>str</b>：<code>large</code>，<code>small</code>，<code>union</code>，分别表示重叠框过滤时选择保留大框，小框还是同时保留；</li>
+    <li><b>dict</b>： dict的key为<b>int</b>类型，代表<code>cls_id</code>，value为<b>str</b>类型，如<code>{0:
+  "large", 2:
+  "small"}</code>，表示对第0类别检测框使用large模式，对第2类别检测框使用small模式；</li>
+    <li><b>None</b>：如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为
+  <code>large</code>。</li>
+    </ul></td>
+    <td><code>str|dict|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>chart_recognition_model_name</code></td>
+    <td>图表解析的模型名称。如果设置为<code>None</code>，将会使用产线默认模型。</td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>chart_recognition_model_dir</code></td>
+    <td>图表解析模型的目录路径。如果设置为<code>None</code>，将会下载官方模型。</td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>chart_recognition_batch_size</code></td>
+    <td>图表解析模型的batch size。如果设置为<code>None</code>，将默认设置batch
+  size为<code>1</code>。</td>
+    <td><code>int|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>region_detection_model_name</code></td>
+    <td>文档图像版面子模块检测的模型名称。如果设置为<code>None</code>，将会使用产线默认模型。</td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>region_detection_model_dir</code></td>
+    <td>文档图像版面子模块检测模型的目录路径。如果设置为<code>None</code>，将会下载官方模型。</td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>doc_orientation_classify_model_name</code></td>
+    <td>文档方向分类模型的名称。如果设置为<code>None</code>，将会使用产线默认模型。</td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>doc_orientation_classify_model_dir</code></td>
+    <td>文档方向分类模型的目录路径。如果设置为<code>None</code>，将会下载官方模型。</td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>doc_unwarping_model_name</code></td>
+    <td>文本图像矫正模型的名称。如果设置为<code>None</code>，将会使用产线默认模型。</td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>doc_unwarping_model_dir</code></td>
+    <td>文本图像矫正模型的目录路径。如果设置为<code>None</code>，将会下载官方模型。</td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>text_detection_model_name</code></td>
+    <td>文本检测模型的名称。如果设置为<code>None</code>，将会使用产线默认模型。</td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>text_detection_model_dir</code></td>
+    <td>文本检测模型的目录路径。如果设置为<code>None</code>，将会下载官方模型。</td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>text_det_limit_side_len</code></td>
+    <td>文本检测的图像边长限制。
+    <ul>
+    <li><b>int</b>：大于 <code>0</code>
+  的任意整数；</li>
+   
+  <li><b>None</b>：如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为
+  <code>960</code>。</li>
+    </ul></td>
+    <td><code>int|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>text_det_limit_type</code></td>
+    <td>文本检测的图像边长限制类型。
+    <ul>
+    <li><b>str</b>：支持 <code>min</code> 和
+  <code>max</code>，<code>min</code> 表示保证图像最短边不小于
+  <code>det_limit_side_len</code>，<code>max</code> 表示保证图像最长边不大于
+  <code>limit_side_len</code>；</li>
+   
+  <li><b>None</b>：如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为
+  <code>max</code>。</li>
+    </ul></td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>text_det_thresh</code></td>
+    <td>检测像素阈值，输出的概率图中，得分大于该阈值的像素点才会被认为是文字像素点。
+    <ul>
+   
+  <li><b>float</b>：大于<code>0</code>的任意浮点数；
+   
+  <li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值
+  <code>0.3</code>。</li></li></ul></td>
+    <td><code>float|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>text_det_box_thresh</code></td>
+    <td>检测框阈值，检测结果边框内，所有像素点的平均得分大于该阈值时，该结果会被认为是文字区域。
+    <ul>
+   
+  <li><b>float</b>：大于<code>0</code>的任意浮点数；
+   
+  <li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值
+  <code>0.6</code>。</li></li></ul></td>
+    <td><code>float|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>text_det_unclip_ratio</code></td>
+    <td>文本检测扩张系数，使用该方法对文字区域进行扩张，该值越大，扩张的面积越大。
+    <ul>
+   
+  <li><b>float</b>：大于<code>0</code>的任意浮点数；
+   
+  <li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值
+  <code>2.0</code>。</li></li></ul></td>
+    <td><code>float|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>textline_orientation_model_name</code></td>
+    <td>文本行方向模型的名称。如果设置为<code>None</code>，将会使用产线默认模型。</td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>textline_orientation_model_dir</code></td>
+    <td>文本行方向模型的目录路径。如果设置为<code>None</code>，将会下载官方模型。</td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>textline_orientation_batch_size</code></td>
+    <td>文本行方向模型的batch size。如果设置为<code>None</code>，将默认设置batch
+  size为<code>1</code>。</td>
+    <td><code>int|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>text_recognition_model_name</code></td>
+    <td>文本识别模型的名称。如果设置为<code>None</code>，将会使用产线默认模型。</td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>text_recognition_model_dir</code></td>
+    <td>文本识别模型的目录路径。如果设置为<code>None</code>，将会下载官方模型。</td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>text_recognition_batch_size</code></td>
+    <td>文本识别模型的batch size。如果设置为<code>None</code>，将默认设置batch
+  size为<code>1</code>。</td>
+    <td><code>int|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>text_rec_score_thresh</code></td>
+    <td>文本识别阈值，得分大于该阈值的文本结果会被保留。
+    <ul>
+   
+  <li><b>float</b>：大于<code>0</code>的任意浮点数；
+   
+  <li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值
+  <code>0.0</code>，即不设阈值。</li></li></ul></td>
+    <td><code>float|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>table_classification_model_name</code></td>
+    <td>表格分类模型的名称。如果设置为<code>None</code>，将会使用产线默认模型。</td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>table_classification_model_dir</code></td>
+    <td>表格分类模型的目录路径。如果设置为<code>None</code>，将会下载官方模型。</td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>wired_table_structure_recognition_model_name</code></td>
+    <td>有线表格结构识别模型的名称。如果设置为<code>None</code>，将会使用产线默认模型。</td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>wired_table_structure_recognition_model_dir</code></td>
+    <td>有线表格结构识别模型的目录路径。如果设置为<code>None</code>，将会下载官方模型。</td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>wireless_table_structure_recognition_model_name</code></td>
+    <td>无线表格结构识别模型的名称。如果设置为<code>None</code>，将会使用产线默认模型。</td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>wireless_table_structure_recognition_model_dir</code></td>
+    <td>无线表格结构识别模型的目录路径。如果设置为<code>None</code>，将会下载官方模型。</td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>wired_table_cells_detection_model_name</code></td>
+    <td>有线表格单元格检测模型的名称。如果设置为<code>None</code>，将会使用产线默认模型。</td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>wired_table_cells_detection_model_dir</code></td>
+    <td>有线表格单元格检测模型的目录路径。如果设置为<code>None</code>，将会下载官方模型。</td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>wireless_table_cells_detection_model_name</code></td>
+    <td>无线表格单元格检测模型的名称。如果设置为<code>None</code>，将会使用产线默认模型。</td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>wireless_table_cells_detection_model_dir</code></td>
+    <td>无线表格单元格检测模型的目录路径。如果设置为<code>None</code>，将会下载官方模型。</td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>table_orientation_classify_model_name</code></td>
+    <td>表格方向分类模型的名称。如果设置为<code>None</code>，将会使用产线默认模型。</td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>table_orientation_classify_model_dir</code></td>
+    <td>表格方向分类模型的目录路径。如果设置为<code>None</code>，将会下载官方模型。</td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>seal_text_detection_model_name</code></td>
+    <td>印章文本检测模型的名称。如果设置为<code>None</code>，将会使用产线默认模型。</td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>seal_text_detection_model_dir</code></td>
+    <td>印章文本检测模型的目录路径。如果设置为<code>None</code>，将会下载官方模型。</td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>seal_det_limit_side_len</code></td>
+    <td>印章文本检测的图像边长限制。
+    <ul>
+    <li><b>int</b>：大于 <code>0</code>
+  的任意整数；</li>
+   
+  <li><b>None</b>：如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为
+  <code>736</code>。</li>
+    </ul></td>
+    <td><code>int|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>seal_det_limit_type</code></td>
+    <td>印章文本检测的图像边长限制类型。
+    <ul>
+    <li><b>str</b>：支持 <code>min</code> 和
+  <code>max</code>，<code>min</code> 表示保证图像最短边不小于
+  <code>det_limit_side_len</code>，<code>max</code> 表示保证图像最长边不大于
+  <code>limit_side_len</code>；</li>
+   
+  <li><b>None</b>：如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为
+  <code>min</code>。</li>
+    </ul></td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>seal_det_thresh</code></td>
+    <td>检测像素阈值，输出的概率图中，得分大于该阈值的像素点才会被认为是文字像素点。
+    <ul>
+    <li><b>float</b>：大于 <code>0</code>
+  的任意浮点数；
+   
+  <li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值
+  <code>0.2</code>。</li></li></ul></td>
+    <td><code>float|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>seal_det_box_thresh</code></td>
+    <td>检测框阈值，检测结果边框内，所有像素点的平均得分大于该阈值时，该结果会被认为是文字区域。
+    <ul>
+   
+  <li><b>float</b>：大于<code>0</code>的任意浮点数；
+   
+  <li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值
+  <code>0.6</code>。</li></li></ul></td>
+    <td><code>float|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>seal_det_unclip_ratio</code></td>
+    <td>印章文本检测扩张系数，使用该方法对文字区域进行扩张，该值越大，扩张的面积越大。
+    <ul>
+   
+  <li><b>float</b>：大于<code>0</code>的任意浮点数；
+   
+  <li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值
+  <code>0.5</code>。</li></li></ul></td>
+    <td><code>float|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>seal_text_recognition_model_name</code></td>
+    <td>印章文本识别模型的名称。如果设置为<code>None</code>，将会使用产线默认模型。</td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>seal_text_recognition_model_dir</code></td>
+    <td>印章文本识别模型的目录路径。如果设置为<code>None</code>，将会下载官方模型。</td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>seal_text_recognition_batch_size</code></td>
+    <td>印章文本识别模型的batch size。如果设置为<code>None</code>，将默认设置batch size为<code>1</code>。</td>
+    <td><code>int|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>seal_rec_score_thresh</code></td>
+    <td>印章文本识别阈值，得分大于该阈值的文本结果会被保留。
+    <ul>
+   
+  <li><b>float</b>：大于<code>0</code>的任意浮点数；
+   
+  <li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值
+  <code>0.0</code>，即不设阈值。</li></li></ul></td>
+    <td><code>float|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>formula_recognition_model_name</code></td>
+    <td>公式识别模型的名称。如果设置为<code>None</code>，将会使用产线默认模型。</td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>formula_recognition_model_dir</code></td>
+    <td>公式识别模型的目录路径。如果设置为<code>None</code>，将会下载官方模型。</td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>formula_recognition_batch_size</code></td>
+    <td>公式识别模型的batch size。如果设置为<code>None</code>，将默认设置batch size为<code>1</code>。</td>
+    <td><code>int|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>use_doc_orientation_classify</code></td>
+    <td>是否加载并使用文档方向分类模块。如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>False</code>。</td>
+    <td><code>bool|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>use_doc_unwarping</code></td>
+    <td>是否加载并使用文本图像矫正模块。如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>False</code>。</td>
+    <td><code>bool|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>use_textline_orientation</code></td>
+    <td>是否加载并使用文本行方向分类模块。如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
+    <td><code>bool|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>use_seal_recognition</code></td>
+    <td>是否加载并使用印章文本识别子产线。如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
+    <td><code>bool|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>use_table_recognition</code></td>
+    <td>是否加载并使用表格识别子产线。如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
+    <td><code>bool|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>use_formula_recognition</code></td>
+    <td>是否加载并使用公式识别子产线。如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
+    <td><code>bool|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>use_chart_recognition</code></td>
+    <td>是否加载并使用图表解析模块。如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>False</code>。</td>
+    <td><code>bool|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>use_region_detection</code></td>
+    <td>是否加载并使用文档区域检测子产线。如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
+    <td><code>bool|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>chat_bot_config</code></td>
+    <td>大语言模型配置信息。配置内容为如下dict：
+    <pre><code>{
+    "module_name": "chat_bot",
+    "model_name": "ernie-3.5-8k",
+    "base_url": "https://qianfan.baidubce.com/v2",
+    "api_type": "openai",
+    "api_key": "api_key" 
+  # 请将此设置为实际的API密钥
+    }</code></pre></td>
+    <td><code>dict|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>device</code></td>
+    <td>用于推理的设备。支持指定具体卡号：
+    <ul>
+    <li><b>CPU</b>：如 <code>cpu</code> 表示使用 CPU
+  进行推理；</li>
+    <li><b>GPU</b>：如 <code>gpu:0</code> 表示使用第 1 块
+  GPU 进行推理；</li>
+    <li><b>NPU</b>：如 <code>npu:0</code> 表示使用第 1 块
+  NPU 进行推理；</li>
+    <li><b>XPU</b>：如 <code>xpu:0</code> 表示使用第 1 块
+  XPU 进行推理；</li>
+    <li><b>MLU</b>：如 <code>mlu:0</code> 表示使用第 1 块
+  MLU 进行推理；</li>
+    <li><b>DCU</b>：如 <code>dcu:0</code> 表示使用第 1 块
+  DCU 进行推理；</li>
+   
+  <li><b>None</b>：如果设置为<code>None</code>，初始化时，会优先使用本地的
+  GPU 0号设备，如果没有，则使用 CPU 设备。</li>
+    </ul></td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>enable_hpi</code></td>
+    <td>是否启用高性能推理。</td>
+    <td><code>bool</code></td>
+    <td><code>False</code></td>
+  </tr>
+  <tr>
+    <td><code>use_tensorrt</code></td>
+    <td>是否启用 Paddle Inference 的 TensorRT 子图引擎。如果模型不支持通过 TensorRT
+  加速，即使设置了此标志，也不会使用加速。<br/>
+    对于 CUDA 11.8 版本的飞桨，兼容的 TensorRT 版本为 8.x（x&gt;=6），建议安装 TensorRT
+  8.6.1.6。<br/></td>
+    <td><code>bool</code></td>
+    <td><code>False</code></td>
+  </tr>
+  <tr>
+    <td><code>precision</code></td>
+    <td>计算精度，如 fp32、fp16。</td>
+    <td><code>str</code></td>
+    <td><code>"fp32"</code></td>
+  </tr>
+  <tr>
+    <td><code>enable_mkldnn</code></td>
+    <td>是否启用 MKL-DNN 加速推理。如果 MKL-DNN 不可用或模型不支持通过 MKL-DNN 加速，即使设置了此标志，也不会使用加速。</td>
+    <td><code>bool</code></td>
+    <td><code>True</code></td>
+  </tr>
+  <tr>
+    <td><code>mkldnn_cache_capacity</code></td>
+    <td>MKL-DNN 缓存容量。</td>
+    <td><code>int</code></td>
+    <td><code>10</code></td>
+  </tr>
+  <tr>
+    <td><code>cpu_threads</code></td>
+    <td>在 CPU 上进行推理时使用的线程数。</td>
+    <td><code>int</code></td>
+    <td><code>8</code></td>
+  </tr>
+  <tr>
+    <td><code>paddlex_config</code></td>
+    <td>PaddleX产线配置文件路径。</td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
 </table>
 
 </details>
@@ -2369,6 +2352,7 @@ MKL-DNN 缓存容量。
 <ul>
 <li>请求体的属性如下：</li>
 </ul>
+
 <table>
 <thead>
 <tr>
@@ -2621,6 +2605,7 @@ MKL-DNN 缓存容量。
 </table>
 <p><code>layoutParsingResults</code>中的每个元素为一个<code>object</code>，具有如下属性：</p>
 <table>
+
 <thead>
 <tr>
 <th>名称</th>
