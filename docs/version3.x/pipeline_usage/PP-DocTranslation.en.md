@@ -661,479 +661,564 @@ You can download the [test file](https://paddle-model-ecology.bj.bcebos.com/padd
 paddleocr pp_doctranslation -i vehicle_certificate-1.png --target_language en --qianfan_api_key your_api_key
 ```
 
+
+
 <details><summary><b>The command line supports more parameter settings. Click to expand for detailed descriptions of command line parameters.</b></summary>
-<table>
-<thead>
-<tr>
-<th>Parameter</th>
-<th>Description</th>
-<th>Parameter Type</th>
-<th>Default Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>input</code></td>
-<td>Data to be predicted, required. For example, the local path of an image file or PDF file:<code>/root/data/img.jpg</code>;<b>Or a URL link</b>, such as the network URL of an image file or PDF file:<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/vehicle_certificate-1.png">Example</a>;<b>Or a local directory</b>, which should contain the images to be predicted, such as the local path:<code>/root/data/</code>(Currently, prediction for PDF files within a directory is not supported. PDF files need to be specified to a specific file path).</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>save_path</code></td>
-<td>Specify the path where the inference result file will be saved. If not set, the inference result will not be saved locally.</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>target_language</code></td>
-<td>Target language (ISO 639-1 language code).</td>
-<td><code>str</code></td>
-<td><code>zh</code></td>
-</tr>
-<tr>
-<td><code>layout_detection_model_name</code></td>
-<td>The model name for layout area detection. If not set, the default model of the pipeline will be used.</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>layout_detection_model_dir</code></td>
-<td>The directory path of the layout area detection model. If not set, the official model will be downloaded.</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>layout_threshold</code></td>
-<td>The score threshold for the layout model.<code>Any floating-point number between </code>0-1<code>. If not set, the parameter value initialized by the pipeline will be used, which is initialized to </code>0.5</td>
-<td><code> by default.</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>float</code></td>
-<td>Whether to use post-processing NMS for layout detection. If not set, the parameter value initialized by the pipeline will be used, and the default initialization is <code>True</code>.</td>
-<td><code>bool</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>layout_unclip_ratio</code></td>
-<td>The expansion coefficient of the detection box for the layout area detection model. <code>Any floating-point number greater than </code>0<code>. If not set, the parameter value initialized by the pipeline will be used, and the default initialization is </code>1.0</td>
-<td><code>.</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>float</code></td>
-<td>layout_merge_bboxes_mode<ul>
-<li><b>The merging processing mode for the detection boxes output by the model in layout detection.</b>large</li>
-<li><b>, when set to large, it means that among the detection boxes output by the model, for the detection boxes that overlap and contain each other, only the largest outer box is retained, and the overlapping inner boxes are deleted;</b>small</li>
-<li><b>, when set to small, it means that among the detection boxes output by the model, for the detection boxes that overlap and contain each other, only the small inner box that is contained is retained, and the overlapping outer boxes are deleted;</b>union</li>
-</ul>, no filtering processing is performed on the boxes, and both inner and outer boxes are retained;<code>If not set, the parameter value initialized by the pipeline will be used, and the default initialization is </code>large</td>
-<td><code>.</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>str</code></td>
-<td>chart_recognition_model_name</td>
-<td><code>The model name for chart parsing. If not set, the default model of the pipeline will be used.</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>str</code></td>
-<td>chart_recognition_model_dir</td>
-<td><code>The directory path for the chart parsing model. If not set, the official model will be downloaded.</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>str</code></td>
-<td>chart_recognition_batch_size<code>The batch size for the chart parsing model. If not set, the batch size will be set to </code>。</td>
-<td><code>int</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>region_detection_model_name</code></td>
-<td>Name of the model for detecting submodules of document image layout. If not set, the default model in the pipeline will be used.</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>region_detection_model_dir</code></td>
-<td>Directory path of the model for detecting submodules of document image layout. If not set, the official model will be downloaded.</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>doc_orientation_classify_model_name</code></td>
-<td>Name of the model for document orientation classification. If not set, the default model in the pipeline will be used.</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>doc_orientation_classify_model_dir</code></td>
-<td>Directory path of the model for document orientation classification. If not set, the official model will be downloaded.</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>doc_unwarping_model_name</code></td>
-<td>Name of the model for text image unwarping. If not set, the default model in the pipeline will be used.</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>doc_unwarping_model_dir</code></td>
-<td>Directory path of the model for text image unwarping. If not set, the official model will be downloaded.</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>text_detection_model_name</code></td>
-<td>Name of the model for text detection. If not set, the default model in the pipeline will be used.</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>text_detection_model_dir</code></td>
-<td>Directory path of the model for text detection. If not set, the official model will be downloaded.</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>text_det_limit_side_len</code></td>
-<td>Limit on the side length of the image for text detection.
-Any integer greater than <code>0</code>. If not set, the parameter value initialized in the pipeline will be used, and the default initialization value is <code>960</code>。</td>
-<td><code>int</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>text_det_limit_type</code></td>
-<td>Type of image side length limit for text detection. It supports<code>min</code>and<code>max</code>,<code>min</code>means ensuring that the shortest side of the image is not less than<code>det_limit_side_len</code>,<code>max</code>means ensuring that the longest side of the image is not greater than<code>limit_side_len</code>. If not set, the parameter value initialized by the pipeline will be used, and the default initialization is<code>max</code>.</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>text_det_thresh</code></td>
-<td>Detection pixel threshold. Only pixels with scores greater than this threshold in the output probability map will be considered as text pixels.
-Any floating-point number greater than<code>0</code>. If not set, the parameter value initialized by the pipeline will be used by default,<code>0.3</code>.</td>
-<td><code>float</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>text_det_box_thresh</code></td>
-<td>Detection box threshold. When the average score of all pixels within the detection result border is greater than this threshold, the result will be considered as a text area. Any floating-point number greater than<code>0</code>. If not set, the parameter value initialized by the pipeline will be used by default,<code>0.6</code>.</td>
-<td><code>float</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>text_det_unclip_ratio</code></td>
-<td>Text detection expansion coefficient. This method is used to expand the text area. The larger the value, the larger the expanded area.
-Any floating-point number greater than<code>0</code>. If not set, the parameter value initialized by the pipeline will be used by default,<code>2.0</code>.</td>
-<td><code>float</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>textline_orientation_model_name</code></td>
-<td>Name of the text line orientation model. If not set, the default model in the pipeline will be used.</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>textline_orientation_model_dir</code></td>
-<td>Directory path of the text line orientation model. If not set, the official model will be downloaded.</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>textline_orientation_batch_size</code></td>
-<td>Batch size of the text line orientation model. If not set, the batch size will be set to <code>1</code> by default.</td>
-<td><code>int</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>text_recognition_model_name</code></td>
-<td>Name of the text recognition model. If not set, the default model in the pipeline will be used.</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>text_recognition_model_dir</code></td>
-<td>Directory path of the text recognition model. If not set, the official model will be downloaded.</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>text_recognition_batch_size</code></td>
-<td>Batch size of the text recognition model. If not set, the batch size will be set to <code>1</code> by default.</td>
-<td><code>int</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>text_rec_score_thresh</code></td>
-<td>Text recognition threshold. Text results with scores greater than this threshold will be retained. <code>Any floating-point number greater than </code>0<code>. If not set, the parameter value initialized in the pipeline, </code>0.0</td>
-<td><code>, will be used by default. That is, no threshold is set.</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>float</code></td>
-<td>table_classification_model_name</td>
-<td><code>Name of the table classification model. If not set, the default model in the pipeline will be used.</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>table_classification_model_dir</code></td>
-<td>The directory path of the table classification model. If not set, the official model will be downloaded.</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>wired_table_structure_recognition_model_name</code></td>
-<td>The name of the wired table structure recognition model. If not set, the default model in the pipeline will be used.</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>wired_table_structure_recognition_model_dir</code></td>
-<td>The directory path of the wired table structure recognition model. If not set, the official model will be downloaded.</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>wireless_table_structure_recognition_model_name</code></td>
-<td>The name of the wireless table structure recognition model. If not set, the default model in the pipeline will be used.</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>wireless_table_structure_recognition_model_dir</code></td>
-<td>The directory path of the wireless table structure recognition model. If not set, the official model will be downloaded.</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>wired_table_cells_detection_model_name</code></td>
-<td>The name of the wired table cells detection model. If not set, the default model in the pipeline will be used.</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>wired_table_cells_detection_model_dir</code></td>
-<td>The directory path of the wired table cells detection model. If not set, the official model will be downloaded.</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>wireless_table_cells_detection_model_name</code></td>
-<td>The name of the wireless table cells detection model. If not set, the default model in the pipeline will be used.</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>wireless_table_cells_detection_model_dir</code></td>
-<td>Directory path of the wireless table cell detection model. If not set, the official model will be downloaded.</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>table_orientation_classify_model_name</code></td>
-<td>Name of the table orientation classification model. If not set, the default model in the pipeline will be used.</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>table_orientation_classify_model_dir</code></td>
-<td>Directory path of the table orientation classification model. If not set, the official model will be downloaded.</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>seal_text_detection_model_name</code></td>
-<td>Name of the seal text detection model. If not set, the default model in the pipeline will be used.</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>seal_text_detection_model_dir</code></td>
-<td>Directory path of the seal text detection model. If not set, the official model will be downloaded.</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>seal_det_limit_side_len</code></td>
-<td>Limit on the side length of the image for seal text detection. <code>Any integer greater than </code>0<code>. If not set, the parameter value initialized in the pipeline will be used, which is initialized to </code>736</td>
-<td><code> by default.</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>int</code></td>
-<td>seal_det_limit_type<code>Type of the side length limit for seal text detection image. Supports </code>min<code> and </code>max<code>, where </code>min<code> means ensuring that the shortest side of the image is not less than </code>det_limit_side_len<code>, and </code>max<code>limit_side_len</code>. If not set, the parameter value initialized by the pipeline will be used, and the default initialization is <code>min</code>.</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>seal_det_thresh</code></td>
-<td>Detection pixel threshold. Only pixels with scores greater than this threshold in the output probability map will be considered as text pixels.
-Any floating-point number greater than <code>0</code>. If not set, the parameter value initialized by the pipeline will be used by default, which is <code>0.2</code>.<td><code>float</code></td>
-<td></td>
-</td></tr>
-<tr>
-<td><code>seal_det_box_thresh</code></td>
-<td>Detection box threshold. When the average score of all pixels within the bounding box of the detection result is greater than this threshold, the result will be considered as a text region.
-Any floating-point number greater than <code>0</code>. If not set, the parameter value initialized by the pipeline will be used by default, which is <code>0.6</code>.</td>
-<td><code>float</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>seal_det_unclip_ratio</code></td>
-<td>Expansion coefficient for seal text detection. This method is used to expand the text region. The larger the value, the larger the expanded area.
-Any floating-point number greater than <code>0</code>. If not set, the parameter value initialized by the pipeline will be used by default, which is <code>0.5</code>.</td>
-<td><code>float</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>seal_text_recognition_model_name</code></td>
-<td>Name of the seal text recognition model. If not set, the default model of the pipeline will be used.</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>seal_text_recognition_model_dir</code></td>
-<td>Directory path of the seal text recognition model. If not set, the official model will be downloaded.</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>seal_text_recognition_batch_size</code></td>
-<td>The batch size of the seal text recognition model. If not set, the batch size will be set to <code>1</code> by default.</td>
-<td><code>int</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>seal_rec_score_thresh</code></td>
-<td>Text recognition threshold. Text results with scores greater than this threshold will be retained. <code>Any floating-point number greater than </code>0<code>. If not set, the parameter value initialized by the pipeline will be used by default, which is </code>0.0</td>
-<td><code>. That is, no threshold is set.</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>float</code></td>
-<td>formula_recognition_model_name</td>
-<td><code>The name of the formula recognition model. If not set, the default model of the pipeline will be used.</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>str</code></td>
-<td>formula_recognition_model_dir</td>
-<td><code>The directory path of the formula recognition model. If not set, the official model will be downloaded.</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>str</code></td>
-<td>formula_recognition_batch_size<code>The batch size of the formula recognition model. If not set, the batch size will be set to </code>1</td>
-<td><code> by default.</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>int</code></td>
-<td>use_doc_orientation_classify</td>
-<td><code>Whether to use the document orientation classification module.</code></td>
-<td><code>bool</code></td>
-</tr>
-<tr>
-<td><code>False</code></td>
-<td>use_doc_unwarping</td>
-<td><code>Whether to use the text image unwarping module.</code></td>
-<td><code>bool</code></td>
-</tr>
-<tr>
-<td><code>False</code></td>
-<td>use_textline_orientation<code>Whether to load and use the text line orientation classification module. If not set, the parameter value initialized by the pipeline will be used, which is initialized to </code>True</td>
-<td><code> by default.</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>use_seal_recognition</code></td>
-<td>Whether to load and use the seal text recognition sub-pipeline. If not set, the parameter value initialized by the pipeline will be used, and the default initialization is <code>True</code>.</td>
-<td><code>bool</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>use_table_recognition</code></td>
-<td>Whether to load and use the table recognition sub-pipeline. If not set, the parameter value initialized by the pipeline will be used, and the default initialization is <code>True</code>.</td>
-<td><code>bool</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>use_formula_recognition</code></td>
-<td>Whether to load and use the formula recognition sub-pipeline. If not set, the parameter value initialized by the pipeline will be used, and the default initialization is <code>True</code>.</td>
-<td><code>bool</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>use_chart_recognition</code></td>
-<td>Whether to use the chart parsing module.</td>
-<td><code>bool</code></td>
-<td><code>False</code></td>
-</tr>
-<tr>
-<td><code>use_region_detection</code></td>
-<td>Whether to load and use the document region detection sub-pipeline. If not set, the parameter value initialized by the pipeline will be used, and the default initialization is <code>True</code>.</td>
-<td><code>bool</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>device</code></td>
-<td>The device used for inference. It supports specifying a specific card number:<ul>
-<li><b>CPU</b>: For example, <code>cpu</code> means using CPU for inference;</li>
-<li><b>GPU</b>: For example, <code>gpu:0</code> means using the first GPU for inference;</li>
-<li><b>NPU</b>: For example, <code>npu:0</code> means using the first NPU for inference;</li>
-<li><b>XPU</b>: For example, <code>xpu:0</code>Indicates the use of the first XPU for inference;</li>
-<li><b>MLU</b>: e.g.,<code>mlu:0</code>Indicates the use of the first MLU for inference;</li>
-<li><b>DCU</b>: e.g.,<code>dcu:0</code>Indicates the use of the first DCU for inference;</li>
-</ul>If not set, the parameter value initialized by the pipeline will be used by default. During initialization, the local GPU device 0 will be used preferentially. If not available, the CPU device will be used.</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>enable_hpi</code></td>
-<td>Whether to enable high-performance inference.</td>
-<td><code>bool</code></td>
-<td><code>False</code></td>
-</tr>
-<tr>
-<td><code>use_tensorrt</code></td>
-<td>Whether to enable the TensorRT subgraph engine of Paddle Inference. If the model does not support acceleration via TensorRT, acceleration will not be used even if this flag is set.<br/>For PaddlePaddle with CUDA 11.8, the compatible TensorRT version is 8.x (x&amp;gt;=6), and it is recommended to install TensorRT 8.6.1.6.<br/></td>
-<td><code>bool</code></td>
-<td><code>False</code></td>
-</tr>
-<tr>
-<td><code>precision</code></td>
-<td>Computational precision, such as fp32, fp16.</td>
-<td><code>str</code></td>
-<td><code>fp32</code></td>
-</tr>
-<tr>
-<td><code>enable_mkldnn</code></td>
-<td>Whether to enable MKL-DNN accelerated inference. If MKL-DNN is not available or the model does not support acceleration via MKL-DNN, acceleration will not be used even if this flag is set.</td>
-<td><code>bool</code></td>
-<td><code>True</code></td>
-</tr>
-<tr>
-<td><code>mkldnn_cache_capacity</code></td>
-<td>MKL-DNN cache capacity.</td>
-<td><code>int</code></td>
-<td><code>10</code></td>
-</tr>
-<tr>
-<td><code>cpu_threads</code></td>
-<td>Number of threads used for inference on CPU.</td>
-<td><code>int</code></td>
-<td><code>8</code></td>
-</tr>
-<tr>
-<td><code>paddlex_config</code></td>
-<td>Path to the PaddleX pipeline configuration file.</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-</tbody>
+<table border="1">
+  <tr>
+    <td>Parameter</td>
+    <td>Description</td>
+    <td>Parameter Type</td>
+    <td>Default Value</td>
+  </tr>
+  <tr>
+    <td><code>input</code></td>
+    <td>Data to be predicted, required. For example, the local path of an image
+  file or PDF file:<code>/root/data/img.jpg</code>;<b>Or a
+  URL link</b>, such as the network URL of an image file or PDF
+  file:<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/vehicle_certificate-1.png">Example</a>;<b>Or
+  a local directory</b>, which should contain the images to be predicted,
+  such as the local path:<code>/root/data/</code>(Currently,
+  prediction for PDF files within a directory is not supported. PDF files need
+  to be specified to a specific file path).</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>save_path</code></td>
+    <td>Specify the path where the inference result file will be saved. If not
+  set, the inference result will not be saved locally.</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>target_language</code></td>
+    <td>Target language (ISO 639-1 language code).</td>
+    <td><code>str</code></td>
+    <td><code>zh</code></td>
+  </tr>
+  <tr>
+    <td><code>layout_detection_model_name</code></td>
+    <td>The model name for layout area detection. If not set, the default model
+  of the pipeline will be used.</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>layout_detection_model_dir</code></td>
+    <td>The directory path of the layout area detection model. If not set, the
+  official model will be downloaded.</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>layout_threshold</code></td>
+    <td>The score threshold for the
+  layout model. Any floating-point number  between
+  <code>0-1</code>. If not set, the parameter value  initialized by the pipeline will be
+  used, which is initialized to  <code>0.5</code> by
+  default.</td>
+    <td><code>float</code></td>
+  </tr>
+  <tr>
+    <td><code>layout_nms</code></td>
+    <td>Whether to use post-processing NMS for layout detection. If not set,
+  the  parameter value initialized by the
+  pipeline will be used, and the default  initialization is
+  <code>True</code>.</td>
+    <td><code>bool</code></td>
+  </tr>
+  <tr>
+    <td><code>layout_unclip_ratio</code></td>
+    <td>The expansion coefficient of the detection box for the layout area
+  detection model. Any floating-point number greater than  <code>0</code>. If not
+  set, the parameter value initialized by the pipeline will be used, and the
+  default initialization is  <code>1.0</code>.</td>
+    <td><code>.</code></td>
+  </tr>
+  <tr>
+    <td><code>layout_merge_bboxes_mode</code></td>
+    <td>layout_merge_bboxes_mode<ul>
+    <li><b>The merging processing mode for the detection boxes
+  output by the model in layout detection.</b>large</li>
+    <li><b>, when set to large, it means that among the detection
+  boxes output by the model, for the detection boxes that overlap and contain
+  each other, only the largest outer box is retained, and the overlapping inner
+  boxes are deleted;</b>small</li>
+    <li><b>, when set to small, it means that among the detection
+  boxes output by the model, for the detection boxes that overlap and contain
+  each other, only the small inner box that is contained is retained, and the
+  overlapping outer boxes are deleted;</b>union</li>
+    </ul>, no filtering processing is performed on the boxes, and both
+  inner and outer boxes are retained; If not set, the parameter value
+  initialized by the pipeline will be used, and the default initialization
+  is  <code>large</code>.</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>chart_recognition_model_name</code></td>
+    <td>chart_recognition_model_name. The model name for chart parsing. If not
+  set, the default model of the pipeline will be used.</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>chart_recognition_model_dir</code></td>
+    <td>chart_recognition_model_dir. The directory path for the chart parsing
+  model. If not set, the official model will be downloaded.</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>chart_recognition_batch_size</code></td>
+    <td>chart_recognition_batch_size<code>The batch size for the chart
+  parsing model. If not set, the batch size will be set to </code>。</td>
+    <td><code>int</code></td>
+  </tr>
+  <tr>
+    <td><code>region_detection_model_name</code></td>
+    <td>Name of the model for detecting submodules of document image layout. If
+  not set, the default model in the pipeline will be used.</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>region_detection_model_dir</code></td>
+    <td>Directory path of the model for detecting submodules of document image
+  layout. If not set, the official model will be downloaded.</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>doc_orientation_classify_model_name</code></td>
+    <td>Name of the model for document orientation classification. If not set,
+  the default model in the pipeline will be used.</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>doc_orientation_classify_model_dir</code></td>
+    <td>Directory path of the model for document orientation classification. If
+  not set, the official model will be downloaded.</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>doc_unwarping_model_name</code></td>
+    <td>Name of the model for text image unwarping. If not set, the default model
+  in the pipeline will be used.</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>doc_unwarping_model_dir</code></td>
+    <td>Directory path of the model for text image unwarping. If not set, the
+  official model will be downloaded.</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>text_detection_model_name</code></td>
+    <td>Name of the model for text detection. If not set, the default model in
+  the pipeline will be used.</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>text_detection_model_dir</code></td>
+    <td>Directory path of the model for text detection. If not set, the official
+  model will be downloaded.</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>text_det_limit_side_len</code></td>
+    <td>Limit on the side length of the image for text detection. Any integer
+  greater than <code>0</code>. If not set, the parameter value
+  initialized in the pipeline will be used, and the default initialization
+  value is <code>960</code>。</td>
+    <td><code>int</code></td>
+  </tr>
+  <tr>
+    <td><code>text_det_limit_type</code></td>
+    <td>Type of image side length limit for text detection. It
+  supports<code>min</code>and<code>max</code>,<code>min</code>means
+  ensuring that the shortest side of the image is not less
+  than<code>det_limit_side_len</code>,<code>max</code>means
+  ensuring that the longest side of the image is not greater
+  than<code>limit_side_len</code>. If not set, the parameter value
+  initialized by the pipeline will be used, and the default initialization is<code>max</code>.</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>text_det_thresh</code></td>
+    <td>Detection pixel threshold. Only pixels with scores greater than this
+  threshold in the output probability map will be considered as text pixels.
+  Any floating-point number greater than<code>0</code>. If not set,
+  the parameter value initialized by the pipeline will be used by
+  default,<code>0.3</code>.</td>
+    <td><code>float</code></td>
+  </tr>
+  <tr>
+    <td><code>text_det_box_thresh</code></td>
+    <td>Detection box threshold. When the average score of all pixels within the
+  detection result border is greater than this threshold, the result will be
+  considered as a text area. Any floating-point number greater
+  than<code>0</code>. If not set, the parameter value initialized
+  by the pipeline will be used by default,<code>0.6</code>.</td>
+    <td><code>float</code></td>
+  </tr>
+  <tr>
+    <td><code>text_det_unclip_ratio</code></td>
+    <td>Text detection expansion coefficient. This method is used to expand the
+  text area. The larger the value, the larger the expanded area. Any
+  floating-point number greater than<code>0</code>. If not set, the
+  parameter value initialized by the pipeline will be used by
+  default,<code>2.0</code>.</td>
+    <td><code>float</code></td>
+  </tr>
+  <tr>
+    <td><code>textline_orientation_model_name</code></td>
+    <td>Name of the text line orientation model. If not set, the default model in
+  the pipeline will be used.</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>textline_orientation_model_dir</code></td>
+    <td>Directory path of the text line orientation model. If not set, the
+  official model will be downloaded.</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>textline_orientation_batch_size</code></td>
+    <td>Batch size of the text line orientation model. If not set, the batch size
+  will be set to <code>1</code> by default.</td>
+    <td><code>int</code></td>
+  </tr>
+  <tr>
+    <td><code>text_recognition_model_name</code></td>
+    <td>Name of the text recognition model. If not set, the default model in the
+  pipeline will be used.</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>text_recognition_model_dir</code></td>
+    <td>Directory path of the text recognition model. If not set, the official
+  model will be downloaded.</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>text_recognition_batch_size</code></td>
+    <td>Batch size of the text recognition model. If not set, the batch size will
+  be set to <code>1</code> by default.</td>
+    <td><code>int</code></td>
+  </tr>
+  <tr>
+    <td><code>text_rec_score_thresh</code></td>
+    <td>Text recognition threshold. Text results with scores greater than this
+  threshold will be retained. Any floating-point number greater than
+  <code>0</code>. If not set, the parameter value initialized in
+  the pipeline, <code>0.0</code>, will be used by default. That is,
+  no threshold is set.</td>
+    <td><code>float</code></td>
+  </tr>
+  <tr>
+    <td><code>table_classification_model_name</code></td>
+    <td>table_classification_model_name. Name of the table classification model.
+  If not set, the default model in the pipeline will be used.</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>table_classification_model_dir</code></td>
+    <td>The directory path of the table classification model. If not set, the
+  official model will be downloaded.</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>wired_table_structure_recognition_model_name</code></td>
+    <td>The name of the wired table structure recognition model. If not set, the
+  default model in the pipeline will be used.</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>wired_table_structure_recognition_model_dir</code></td>
+    <td>The directory path of the wired table structure recognition model. If not
+  set, the official model will be downloaded.</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>wireless_table_structure_recognition_model_name</code></td>
+    <td>The name of the wireless table structure recognition model. If not set,
+  the default model in the pipeline will be used.</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>wireless_table_structure_recognition_model_dir</code></td>
+    <td>The directory path of the wireless table structure recognition model. If
+  not set, the official model will be downloaded.</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>wired_table_cells_detection_model_name</code></td>
+    <td>The name of the wired table cells detection model. If not set, the
+  default model in the pipeline will be used.</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>wired_table_cells_detection_model_dir</code></td>
+    <td>The directory path of the wired table cells detection model. If not set,
+  the official model will be downloaded.</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>wireless_table_cells_detection_model_name</code></td>
+    <td>The name of the wireless table cells detection model. If not set, the
+  default model in the pipeline will be used.</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>wireless_table_cells_detection_model_dir</code></td>
+    <td>Directory path of the wireless table cell detection model. If not set,
+  the official model will be downloaded.</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>table_orientation_classify_model_name</code></td>
+    <td>Name of the table orientation classification model. If not set, the
+  default model in the pipeline will be used.</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>table_orientation_classify_model_dir</code></td>
+    <td>Directory path of the table orientation classification model. If not set,
+  the official model will be downloaded.</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>seal_text_detection_model_name</code></td>
+    <td>Name of the seal text detection model. If not set, the default model in
+  the pipeline will be used.</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>seal_text_detection_model_dir</code></td>
+    <td>Directory path of the seal text detection model. If not set, the official
+  model will be downloaded.</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>seal_det_limit_side_len</code></td>
+    <td>Limit on the side length of the image for seal text detection. Any
+  integer greater than <code>0</code>. If not set, the parameter
+  value initialized in the pipeline will be used, which is initialized to
+  <code>736</code>,  by default.</td>
+    <td><code>int</code></td>
+  </tr>
+  <tr>
+    <td><code>seal_det_limit_type</code></td>
+    <td>seal_det_limit_type<code>Type of the side length limit for seal
+  text detection image. Supports </code>min<code> and
+  </code>max<code>, where </code>min<code> means
+  ensuring that the shortest side of the image is not less than
+  </code>det_limit_side_len<code>, and
+  </code>max<code>limit_side_len</code>. If not set, the
+  parameter value initialized by the pipeline will be used, and the default
+  initialization is <code>min</code>.</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>seal_det_thresh</code></td>
+    <td>Detection pixel threshold.
+  Only pixels with scores greater than this threshold in the output probability
+  map will be considered as text pixels. Any floating-point number greater than
+  <code>0</code>. If not set, the parameter value initialized by
+  the pipeline will be used by default, which is  <code>0.2</code>.</td>
+    <td><code>float</code></td>
+  </tr>
+  <tr>
+    <td><code>seal_det_box_thresh</code></td>
+    <td>Detection box threshold. When the average score of all pixels within the
+  bounding box of the detection result is greater than this threshold, the
+  result will be considered as a text region. Any floating-point number greater
+  than <code>0</code>. If not set, the parameter value initialized
+  by the pipeline will be used by default, which is
+  <code>0.6</code>.</td>
+    <td><code>float</code></td>
+  </tr>
+  <tr>
+    <td><code>seal_det_unclip_ratio</code></td>
+    <td>Expansion coefficient for seal text detection. This method is used to
+  expand the text region. The larger the value, the larger the expanded area.
+  Any floating-point number greater than <code>0</code>. If not
+  set, the parameter value initialized by the pipeline will be used by default,
+  which is <code>0.5</code>.</td>
+    <td><code>float</code></td>
+  </tr>
+  <tr>
+    <td><code>seal_text_recognition_model_name</code></td>
+    <td>Name of the seal text recognition model. If not set, the default model of
+  the pipeline will be used.</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>seal_text_recognition_model_dir</code></td>
+    <td>Directory path of the seal text recognition model. If not set, the
+  official model will be downloaded.</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>seal_text_recognition_batch_size</code></td>
+    <td>The batch size of the seal text recognition model. If not set, the batch
+  size will be set to <code>1</code> by default.</td>
+    <td><code>int</code></td>
+  </tr>
+  <tr>
+    <td><code>seal_rec_score_thresh</code></td>
+    <td>Text recognition threshold. Text results with scores greater than this
+  threshold will be retained. Any floating-point number greater than
+  <code>0</code>. If not set, the parameter value initialized by
+  the pipeline will be used by default, which is <code>0.0</code>.
+  That is, no threshold is set</td>
+    <td><code>float</code></td>
+  </tr>
+  <tr>
+    <td><code>formula_recognition_model_name</code></td>
+    <td>formula_recognition_model_name. The name of the formula recognition
+  model. If not set, the default model of the pipeline will be used.</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>formula_recognition_model_dir</code></td>
+    <td>formula_recognition_model_dir. The directory path of the formula
+  recognition model. If not set, the official model will be downloaded.</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>formula_recognition_batch_size</code></td>
+    <td>formula_recognition_batch_size. The batch size of the formula recognition
+  model. If not set, the batch size will be set to <code>1</code>
+  by default.</td>
+    <td><code>int</code></td>
+  </tr>
+  <tr>
+    <td><code>use_doc_orientation_classify</code></td>
+    <td>Whether to use the document orientation classification module. If not
+  set, the parameter value initialized by the pipeline will be used, which is
+  initialized to <code>False</code> by default.</td>
+    <td><code>bool</code></td>
+    <td><code>False</code></td>
+  </tr>
+  <tr>
+    <td><code>use_doc_unwarping</code></td>
+    <td>Whether to use the text image unwarping module. If not set, the parameter
+  value initialized by the pipeline will be used, which is initialized to  <code>False</code> by
+  default.</td>
+    <td><code>bool</code></td>
+    <td><code>False</code></td>
+  </tr>
+  <tr>
+    <td><code>use_textline_orientation</code></td>
+    <td>use_textline_orientation. Whether to load and use the text line
+  orientation classification module. If not set, the parameter value
+  initialized by the pipeline will be used, which is initialized to  <code>True</code> by
+  default.</td>
+    <td><code></code></td>
+  </tr>
+  <tr>
+    <td><code>use_seal_recognition</code></td>
+    <td>Whether to load and use the seal text recognition sub-pipeline. If not
+  set, the parameter value initialized by the pipeline will be used, and the
+  default initialization is <code>True</code>.</td>
+    <td><code>bool</code></td>
+  </tr>
+  <tr>
+    <td><code>use_table_recognition</code></td>
+    <td>Whether to load and use the table recognition sub-pipeline. If not set,
+  the parameter value initialized by the pipeline will be used, and the default
+  initialization is <code>True</code>.</td>
+    <td><code>bool</code></td>
+  </tr>
+  <tr>
+    <td><code>use_formula_recognition</code></td>
+    <td>Whether to load and use the formula recognition sub-pipeline. If not set,
+  the parameter value initialized by the pipeline will be used, and the default
+  initialization is <code>True</code>.</td>
+    <td><code>bool</code></td>
+  </tr>
+  <tr>
+    <td><code>use_chart_recognition</code></td>
+    <td>Whether to use the chart parsing module. If not set, the parameter value
+  initialized by the pipeline will be used, and the default initialization
+  is  <code>False</code>.</td>
+    <td><code>bool</code></td>
+    <td><code>False</code></td>
+  </tr>
+  <tr>
+    <td><code>use_region_detection</code></td>
+    <td>Whether to load and use the document region detection sub-pipeline. If
+  not set, the parameter value initialized by the pipeline will be used, and
+  the default initialization is <code>True</code>.</td>
+    <td><code>bool</code></td>
+  </tr>
+  <tr>
+    <td><code>device</code></td>
+    <td>The device used for inference. It supports specifying a specific card
+  number:<ul>
+    <li><b>CPU</b>: For example, <code>cpu</code>
+  means using CPU for inference;</li>
+    <li><b>GPU</b>: For example,  <code>gpu:0</code>
+  means using the first GPU for inference;</li>
+    <li><b>NPU</b>: For example,  <code>npu:0</code>
+  means using the first NPU for inference;</li>
+    <li><b>XPU</b>: For example, 
+  <code>xpu:0</code>Indicates the use of the first XPU for
+  inference;</li>
+    <li><b>MLU</b>:
+  e.g.,<code>mlu:0</code>Indicates the use of the first MLU for
+  inference;</li>
+    <li><b>DCU</b>:
+  e.g.,<code>dcu:0</code>Indicates the use of the first DCU for
+  inference;</li>
+    </ul>If not set, the parameter value initialized by the pipeline will
+  be used by default. During initialization, the local GPU device 0 will be
+  used preferentially. If not available, the CPU device will be used.</td>
+    <td><code>str</code></td>
+  </tr>
+  <tr>
+    <td><code>enable_hpi</code></td>
+    <td>Whether to enable high-performance inference.</td>
+    <td><code>bool</code></td>
+    <td><code>False</code></td>
+  </tr>
+  <tr>
+    <td><code>use_tensorrt</code></td>
+    <td>Whether to enable the TensorRT subgraph engine of Paddle Inference. If
+  the model does not support acceleration via TensorRT, acceleration will not
+  be used even if this flag is set.<br/>For PaddlePaddle with CUDA 11.8,
+  the compatible TensorRT version is 8.x (x&amp;gt;=6), and it is
+  recommended to install TensorRT 8.6.1.6.<br/></td>
+    <td><code>bool</code></td>
+    <td><code>False</code></td>
+  </tr>
+  <tr>
+    <td><code>precision</code></td>
+    <td>Computational precision, such as fp32, fp16.</td>
+    <td><code>str</code></td>
+    <td><code>fp32</code></td>
+  </tr>
+  <tr>
+    <td><code>enable_mkldnn</code></td>
+    <td>Whether to enable MKL-DNN accelerated inference. If MKL-DNN is not
+  available or the model does not support acceleration via MKL-DNN,
+  acceleration will not be used even if this flag is set.</td>
+    <td><code>bool</code></td>
+    <td><code>True</code></td>
+  </tr>
+  <tr>
+    <td><code>mkldnn_cache_capacity</code></td>
+    <td>MKL-DNN cache capacity.</td>
+    <td><code>int</code></td>
+    <td><code>10</code></td>
+  </tr>
+  <tr>
+    <td><code>cpu_threads</code></td>
+    <td>Number of threads used for inference on CPU.</td>
+    <td><code>int</code></td>
+    <td><code>8</code></td>
+  </tr>
+  <tr>
+    <td><code>paddlex_config</code></td>
+    <td>Path to the PaddleX pipeline configuration file.</td>
+    <td><code>str</code></td>
+  </tr>
 </table>
+
 </details>
 <br/>
 
@@ -1206,516 +1291,691 @@ After executing the above code, you will obtain the parsed results of the origin
 
 The process, API description, and output description of PP-DocTranslation prediction are as follows:
 
-<details><summary>(1) Call<code>PPDocTranslation</code>Instantiate a PP-DocTranslation pipeline object.</summary>The descriptions of relevant parameters are as follows:<table>
-<thead>
-<tr>
-<th>Parameter</th>
-<th>Description</th>
-<th>Parameter Type</th>
-<th>Default Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>layout_detection_model_name</code></td>
-<td>The model name for layout area detection. If set to <code>None</code>, the default model of the pipeline will be used.</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>layout_detection_model_dir</code></td>
-<td>The directory path of the layout area detection model. If set to <code>None</code>, the official model will be downloaded.</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>layout_threshold</code></td>
-<td>The score threshold for the layout model.<ul>
-<li><b>float</b>:<code>Any floating-point number between </code>0-1</li>
-<li><b>;</b>dict<code>:</code>{0:0.1}</li>
-<li><b>where the key is the class ID and the value is the threshold for that class;</b>None<code>: If set to </code>None<code>, the parameter value initialized by the pipeline will be used, which is initialized to </code>0.5</li>
-</ul>
-</td>
-<td><code> by default.</code></td>
-<td><code>float|dict|None</code></td>
-</tr>
-<tr>
-<td><code>None</code></td>
-<td>layout_nms<code>Whether to use post-processing NMS for layout detection. If set to </code>None<code>, the parameter value initialized by the pipeline will be used, which is initialized to </code>True</td>
-<td><code> by default.</code></td>
-<td><code>bool|None</code></td>
-</tr>
-<tr>
-<td><code>layout_unclip_ratio</code></td>
-<td>Expansion coefficient of the detection box for the layout area detection model.<ul>
-<li><b>float</b>: any floating-point number greater than <code>0</code>;</li>
-<li><b>Tuple[float,float]</b>: expansion coefficients in the horizontal and vertical directions respectively;</li>
-<li><b>dict</b>, where the key of the dict is of <b>int</b> type, representing <code>cls_id</code>, and the value is of <b>tuple</b> type, such as <code>{0: (1.1, 2.0)}</code>, indicating that the center of the detection box for category 0 output by the model remains unchanged, with the width expanded by 1.1 times and the height expanded by 2.0 times;</li>
-<li><b>None</b>: if set to <code>None</code>, the parameter value initialized by the pipeline will be used, which is initialized to <code>1.0</code> by default.</li>
-</ul>
-</td>
-<td><code>float|Tuple[float,float]|dict|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>layout_merge_bboxes_mode</code></td>
-<td>Filtering method for overlapping boxes in layout area detection.<ul>
-<li><b>str</b>: <code>large</code>, <code>small</code>, <code>union</code>, indicating whether to retain the large box, small box, or both during overlapping box filtering, respectively;</li>
-<li><b>dict</b>: the key of the dict is of <b>int</b> type, representing <code>cls_id</code>, and the value is of <b>str</b> type, such as <code>{0: "large", 2: "small"}</code>, which means using the large mode for detection boxes of category 0 and the small mode for detection boxes of category 2;</li>
-<li><b>None</b>: If set to <code>None</code>, the parameter value initialized by the pipeline will be used, and the default initialization is <code>large</code>.</li>
-</ul>
-</td>
-<td><code>str|dict|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>chart_recognition_model_name</code></td>
-<td>The model name for chart parsing. If set to <code>None</code>, the default model of the pipeline will be used.</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>chart_recognition_model_dir</code></td>
-<td>The directory path of the model for chart parsing. If set to <code>None</code>, the official model will be downloaded.</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>chart_recognition_batch_size</code></td>
-<td>The batch size of the model for chart parsing. If set to <code>None</code>, the batch size will be set to <code>1</code> by default.</td>
-<td><code>int|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>region_detection_model_name</code></td>
-<td>The model name for detecting submodules of document image layout. If set to <code>None</code>, the default model of the pipeline will be used.</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>region_detection_model_dir</code></td>
-<td>The directory path of the model for detecting submodules of document image layout. If set to <code>None</code>, the official model will be downloaded.</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>doc_orientation_classify_model_name</code></td>
-<td>Name of the document orientation classification model. If set to <code>None</code>, the default model in the pipeline will be used.</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>doc_orientation_classify_model_dir</code></td>
-<td>Directory path of the document orientation classification model. If set to <code>None</code>, the official model will be downloaded.</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>doc_unwarping_model_name</code></td>
-<td>Name of the text image unwarping model. If set to <code>None</code>, the default model in the pipeline will be used.</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>doc_unwarping_model_dir</code></td>
-<td>Directory path of the text image unwarping model. If set to <code>None</code>, the official model will be downloaded.</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>text_detection_model_name</code></td>
-<td>Name of the text detection model. If set to <code>None</code>, the default model in the pipeline will be used.</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>text_detection_model_dir</code></td>
-<td>Directory path of the text detection model. If set to <code>None</code>, the official model will be downloaded.</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>text_det_limit_side_len</code></td>
-<td>Limit on the side length of the image for text detection.<ul>
-<li><b>int</b>: greater than<code>0</code>, any integer;</li>
-<li><b>None</b>: if set to<code>None</code>, the parameter value initialized by the pipeline will be used, and the default initialization value is<code>960</code>.</li>
-</ul>
-</td>
-<td><code>int|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>text_det_limit_type</code></td>
-<td>The type of image side length limit for text detection.<ul>
-<li><b>str</b>: supports<code>min</code>and<code>max</code>, where<code>min</code>means ensuring that the shortest side of the image is not less than<code>det_limit_side_len</code>, and<code>max</code>means ensuring that the longest side of the image is not greater than<code>limit_side_len</code>;</li>
-<li><b>None</b>: if set to<code>None</code>, the parameter value initialized by the pipeline will be used, and the default initialization value is<code>max</code>.</li>
-</ul>
-</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>text_det_thresh</code></td>
-<td>Detection pixel threshold. Only pixels with scores greater than this threshold in the output probability map will be considered as text pixels.<ul>
-<li><b>float</b>: any floating-point number greater than<code>0</code>;<li><b>None</b>: if set to<code>None</code>, the parameter value initialized by the pipeline will be used by default,<code>0.3</code>.</li></li></ul>
-</td>
-<td><code>float|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>text_det_box_thresh</code></td>
-<td>Detection box threshold: When the average score of all pixels within the detected bounding box is greater than this threshold, the result is considered a text region.<ul>
-<li><b>float</b>: any floating-point number greater than<code>0</code>;<li><b>None</b>: If set to<code>None</code>, the parameter value initialized by the pipeline, <code>0.6</code>, will be used by default.</li></li></ul>
-</td>
-<td><code>float|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>text_det_unclip_ratio</code></td>
-<td>Text detection expansion coefficient. This method is used to expand the text region. The larger the value, the larger the expanded area.<ul>
-<li><b>float</b>: any floating-point number greater than<code>0</code>;<li><b>None</b>: If set to<code>None</code>, the parameter value initialized by the pipeline, <code>2.0</code>, will be used by default.</li></li></ul>
-</td>
-<td><code>float|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>textline_orientation_model_name</code></td>
-<td>Name of the text line orientation model. If set to<code>None</code>, the default model of the pipeline will be used.</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>textline_orientation_model_dir</code></td>
-<td>Directory path of the text line orientation model. If set to<code>None</code>, the official model will be downloaded.</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>textline_orientation_batch_size</code></td>
-<td>Batch size of the text line orientation model. If set to<code>None</code>Set the default batch size to <code>1</code>.</td>
-<td><code>int|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>text_recognition_model_name</code></td>
-<td>The name of the text recognition model. If set to <code>None</code>, the default model in the pipeline will be used.</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>text_recognition_model_dir</code></td>
-<td>The directory path of the text recognition model. If set to <code>None</code>, the official model will be downloaded.</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>text_recognition_batch_size</code></td>
-<td>The batch size of the text recognition model. If set to <code>None</code>, the default batch size will be set to <code>1</code>.</td>
-<td><code>int|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>text_rec_score_thresh</code></td>
-<td>The threshold for text recognition. Text results with scores higher than this threshold will be retained.<ul>
-<li><b>float</b>: Any floating-point number greater than <code>0</code>;<li><b>None</b>: If set to <code>None</code>, the parameter value initialized by the pipeline, <code>0.0</code>, will be used by default, meaning no threshold will be set.</li></li></ul>
-</td>
-<td><code>float|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>table_classification_model_name</code></td>
-<td>The name of the table classification model. If set to <code>None</code>, the default model in the pipeline will be used.</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>table_classification_model_dir</code></td>
-<td>The directory path of the table classification model. If set to <code>None</code>, the official model will be downloaded.</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>wired_table_structure_recognition_model_name</code></td>
-<td>The name of the wired table structure recognition model. If set to <code>None</code>, the default model in the pipeline will be used.</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>wired_table_structure_recognition_model_dir</code></td>
-<td>The directory path of the wired table structure recognition model. If set to <code>None</code>, the official model will be downloaded.</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>wireless_table_structure_recognition_model_name</code></td>
-<td>The name of the wireless table structure recognition model. If set to <code>None</code>, the default model in the pipeline will be used.</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>wireless_table_structure_recognition_model_dir</code></td>
-<td>The directory path of the wireless table structure recognition model. If set to <code>None</code>, the official model will be downloaded.</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>wired_table_cells_detection_model_name</code></td>
-<td>The name of the wired table cell detection model. If set to <code>None</code>, the default model in the pipeline will be used.</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>wired_table_cells_detection_model_dir</code></td>
-<td>The directory path of the wired table cell detection model. If set to <code>None</code>, the official model will be downloaded.</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>wireless_table_cells_detection_model_name</code></td>
-<td>The name of the wireless table cell detection model. If set to <code>None</code>, the default model in the pipeline will be used.</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>wireless_table_cells_detection_model_dir</code></td>
-<td>The directory path of the wireless table cell detection model. If set to <code>None</code>, the official model will be downloaded.</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>table_orientation_classify_model_name</code></td>
-<td>The name of the table orientation classification model. If set to <code>None</code>, the default model in the pipeline will be used.</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>table_orientation_classify_model_dir</code></td>
-<td>The directory path of the table orientation classification model. If set to <code>None</code>, the official model will be downloaded.</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>seal_text_detection_model_name</code></td>
-<td>The name of the seal text detection model. If set to <code>None</code>, the default model in the pipeline will be used.</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>seal_text_detection_model_dir</code></td>
-<td>The directory path of the seal text detection model. If set to <code>None</code>, the official model will be downloaded.</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>seal_det_limit_side_len</code></td>
-<td>The image side length limit for seal text detection.<ul>
-<li><b>int</b>: any integer greater than <code>0</code>;</li>
-<li><b>None</b>: If set to <code>None</code>, the parameter value initialized by the pipeline will be used, and the default initialization value is <code>736</code>.</li>
-</ul>
-</td>
-<td><code>int|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>seal_det_limit_type</code></td>
-<td>The image side length limit type for seal text detection.<ul>
-<li><b>str</b>: supports <code>min</code> and <code>max</code>, where <code>min</code> indicates that the shortest side of the image is guaranteed to be no less than <code>det_limit_side_len</code>, and <code>max</code> indicates that the longest side of the image is guaranteed to be no greater than <code>limit_side_len</code>;</li>
-<li><b>None</b>: If set to <code>None</code>, the parameter value initialized by the pipeline will be used, and the default initialization value is <code>min</code>.</li>
-</ul>
-</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>seal_det_thresh</code></td>
-<td>The detection pixel threshold. Only pixels with scores greater than this threshold in the output probability map will be considered as text pixels.<ul>
-<li><b>float</b>: any floating-point number greater than <code>0</code>;<li><b>None</b>: if set to <code>None</code>, the parameter value initialized by the pipeline will be used by default, which is <code>0.2</code>.</li></li></ul>
-</td>
-<td><code>float|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>seal_det_box_thresh</code></td>
-<td>Detection box threshold. When the average score of all pixels within the detected bounding box is greater than this threshold, the result is considered a text region.<ul>
-<li><b>float</b>: any floating-point number greater than <code>0</code>;<li><b>None</b>: if set to <code>None</code>, the parameter value initialized by the pipeline will be used by default, which is <code>0.6</code>.</li></li></ul>
-</td>
-<td><code>float|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>seal_det_unclip_ratio</code></td>
-<td>Expansion coefficient for seal text detection. This method is used to expand the text region. The larger the value, the larger the expanded area.<ul>
-<li><b>float</b>: any floating-point number greater than <code>0</code>;<li><b>None</b>: if set to <code>None</code>, the parameter value initialized by the pipeline will be used by default, which is <code>0.5</code>.</li></li></ul>
-</td>
-<td><code>float|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>seal_text_recognition_model_name</code></td>
-<td>Name of the seal text recognition model. If set to <code>None</code>, the default model of the pipeline will be used.</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>seal_text_recognition_model_dir</code></td>
-<td>Directory path of the seal text recognition model. If set to <code>None</code>, the official model will be downloaded.</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>seal_text_recognition_batch_size</code></td>
-<td>Batch size of the seal text recognition model. If set to <code>None</code>, the batch size will be set to <code>1</code> by default.</td>
-<td><code>int|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>seal_rec_score_thresh</code></td>
-<td>Threshold for seal text recognition. Text results with scores higher than this threshold will be retained.<ul>
-<li><b>float</b>: any floating-point number greater than <code>0</code>;<li><b>None</b>: if set to <code>None</code>, the parameter value initialized by the pipeline, <code>0.0</code>, will be used by default, meaning no threshold is set.</li></li></ul>
-</td>
-<td><code>float|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>formula_recognition_model_name</code></td>
-<td>Name of the formula recognition model. If set to <code>None</code>, the default model of the pipeline will be used.</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>formula_recognition_model_dir</code></td>
-<td>Directory path of the formula recognition model. If set to <code>None</code>, the official model will be downloaded.</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>formula_recognition_batch_size</code></td>
-<td>The batch size of the formula recognition model. If set to <code>None</code>, the batch size will be set to <code>1</code> by default.</td>
-<td><code>int|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>use_doc_orientation_classify</code></td>
-<td>Whether to load and use the document orientation classification module. If set to <code>None</code>, the parameter value initialized by the pipeline will be used, and the default initialization is <code>True</code>.</td>
-<td><code>bool|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>use_doc_unwarping</code></td>
-<td>Whether to load and use the text image unwarping module. If set to <code>None</code>, the parameter value initialized by the pipeline will be used, and the default initialization is <code>True</code>.</td>
-<td><code>bool|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>use_textline_orientation</code></td>
-<td>Whether to load and use the text line orientation classification module. If set to <code>None</code>, the parameter value initialized by the pipeline will be used, and the default initialization is <code>True</code>.</td>
-<td><code>bool|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>use_seal_recognition</code></td>
-<td>Whether to load and use the sub-pipeline for seal text recognition. If set to <code>None</code>, the parameter value initialized by the pipeline will be used, and the default initialization is <code>True</code>.</td>
-<td><code>bool|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>use_table_recognition</code></td>
-<td>Whether to load and use the sub-pipeline for table recognition. If set to <code>None</code>The parameter value initialized by the pipeline will be used, and the default initialization is <code>True</code>.</td>
-<td><code>bool|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>use_formula_recognition</code></td>
-<td>Whether to load and use the sub-pipeline for formula recognition. If set to <code>None</code>, the parameter value initialized by the pipeline will be used, and the default initialization is <code>True</code>.</td>
-<td><code>bool|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>use_chart_recognition</code></td>
-<td>Whether to load and use the chart parsing module. If set to <code>None</code>, the parameter value initialized by the pipeline will be used, and the default initialization is <code>True</code>.</td>
-<td><code>bool|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>use_region_detection</code></td>
-<td>Whether to load and use the sub-pipeline for document region detection. If set to <code>None</code>, the parameter value initialized by the pipeline will be used, and the default initialization is <code>True</code>.</td>
-<td><code>bool|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>chat_bot_config</code></td>
-<td>Configuration information for the large language model. The configuration content is the following dict:<pre><code>{
-"module_name": "chat_bot",
-"model_name": "ernie-3.5-8k",
-"base_url": "https://qianfan.baidubce.com/v2",
-"api_type": "openai",
-"api_key": "api_key"  # Please set this to the actual API key
-}</code></pre>
-</td>
-<td><code>dict|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>device</code></td>
-<td>Device for inference. Support specifying a specific card number:<ul>
-<li><b>CPU</b>: e.g.,<code>cpu</code>means using CPU for inference;</li>
-<li><b>GPU</b>: e.g.,<code>gpu:0</code>means using the 1st GPU for inference;</li>
-<li><b>NPU</b>: e.g.,<code>npu:0</code>means using the 1st NPU for inference;</li>
-<li><b>XPU</b>: e.g.,<code>xpu:0</code>means using the 1st XPU for inference;</li>
-<li><b>MLU</b>: e.g.,<code>mlu:0</code>means using the 1st MLU for inference;</li>
-<li><b>DCU</b>: e.g.,<code>dcu:0</code>means using the 1st DCU for inference;</li>
-<li><b>None</b>: If set to<code>None</code>, during initialization, the local GPU device 0 will be used preferentially. If not available, the CPU device will be used.</li>
-</ul>
-</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-<tr>
-<td><code>enable_hpi</code></td>
-<td>Whether to enable high-performance inference.</td>
-<td><code>bool</code></td>
-<td><code>False</code></td>
-</tr>
-<tr>
-<td><code>use_tensorrt</code></td>
-<td>Whether to enable the TensorRT subgraph engine of Paddle Inference. If the model does not support acceleration via TensorRT, acceleration will not be used even if this flag is set.<br/>For PaddlePaddle with CUDA 11.8, the compatible TensorRT version is 8.x (x&amp;gt;=6), and it is recommended to install TensorRT 8.6.1.6.<br/></td>
-<td><code>bool</code></td>
-<td><code>False</code></td>
-</tr>
-<tr>
-<td><code>precision</code></td>
-<td>Computational precision, such as fp32, fp16.</td>
-<td><code>str</code></td>
-<td><code>"fp32"</code></td>
-</tr>
-<tr>
-<td><code>enable_mkldnn</code></td>
-<td>Whether to enable MKL-DNN for accelerated inference. If MKL-DNN is not available or the model does not support acceleration via MKL-DNN, acceleration will not be used even if this flag is set.</td>
-<td><code>bool</code></td>
-<td><code>True</code></td>
-</tr>
-<tr>
-<td><code>mkldnn_cache_capacity</code></td>
-<td>MKL-DNN cache capacity.</td>
-<td><code>int</code></td>
-<td><code>10</code></td>
-</tr>
-<tr>
-<td><code>cpu_threads</code></td>
-<td>The number of threads used for inference on the CPU.</td>
-<td><code>int</code></td>
-<td><code>8</code></td>
-</tr>
-<tr>
-<td><code>paddlex_config</code></td>
-<td>Path to the PaddleX pipeline configuration file.</td>
-<td><code>str|None</code></td>
-<td><code>None</code></td>
-</tr>
-</tbody>
+<details><summary>(1) Call<code>PPDocTranslation</code>Instantiate a PP-DocTranslation pipeline object.</summary>The descriptions of relevant parameters are as follows:
+<table border="1">
+  <tr>
+    <td>Parameter</td>
+    <td>Description</td>
+    <td>Parameter Type</td>
+    <td>Default Value</td>
+  </tr>
+  <tr>
+    <td><code>layout_detection_model_name</code></td>
+    <td>The model name for layout area detection. If set to
+  <code>None</code>, the default model of the pipeline will be
+  used.</td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>layout_detection_model_dir</code></td>
+    <td>The directory path of the layout area detection model. If set to
+  <code>None</code>, the official model will be downloaded.</td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>layout_threshold</code></td>
+    <td>The score threshold for the layout model.<ul>
+    <li><b>float</b>:<code>Any floating-point number
+  between </code>0-1</li>
+   
+  <li><b>;</b>dict<code>:</code>{0:0.1}</li>
+    <li><b>where the key is the class ID and the value is the
+  threshold for that class;</b>None<code>: If set to
+  </code>None<code>, the parameter value initialized by the
+  pipeline will be used, which is initialized to
+  </code>0.5</li>
+    </ul></td>
+    <td><code>float|dict|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>layout_nms</code></td>
+    <td>Whether to use post-processing NMS for layout detection. If set to
+  <code>None</code>, the parameter value initialized by the
+  pipeline will be used, which is initialized to <code>True</code>.</td>
+    <td><code>bool|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>layout_unclip_ratio</code></td>
+    <td>Expansion coefficient of the detection box for the layout area detection
+  model.<ul>
+    <li><b>float</b>: any floating-point number greater than
+  <code>0</code>;</li>
+    <li><b>Tuple[float,float]</b>: expansion coefficients in
+  the horizontal and vertical directions respectively;</li>
+    <li><b>dict</b>, where the key of the dict is of
+  <b>int</b> type, representing <code>cls_id</code>, and
+  the value is of <b>tuple</b> type, such as <code>{0: (1.1,
+  2.0)}</code>, indicating that the center of the detection box for
+  category 0 output by the model remains unchanged, with the width expanded by
+  1.1 times and the height expanded by 2.0 times;</li>
+    <li><b>None</b>: if set to <code>None</code>,
+  the parameter value initialized by the pipeline will be used, which is
+  initialized to <code>1.0</code> by default.</li>
+    </ul></td>
+    <td><code>float|Tuple[float,float]|dict|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>layout_merge_bboxes_mode</code></td>
+    <td>Filtering method for overlapping boxes in layout area
+  detection.<ul>
+    <li><b>str</b>: <code>large</code>,
+  <code>small</code>, <code>union</code>, indicating
+  whether to retain the large box, small box, or both during overlapping box
+  filtering, respectively;</li>
+    <li><b>dict</b>: the key of the dict is of
+  <b>int</b> type, representing <code>cls_id</code>,
+  and the value is of <b>str</b> type, such as <code>{0:
+  "large", 2: "small"}</code>, which means using the
+  large mode for detection boxes of category 0 and the small mode for detection
+  boxes of category 2;</li>
+    <li><b>None</b>: If set to <code>None</code>,
+  the parameter value initialized by the pipeline will be used, and the default
+  initialization is <code>large</code>.</li>
+    </ul></td>
+    <td><code>str|dict|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>chart_recognition_model_name</code></td>
+    <td>The model name for chart parsing. If set to
+  <code>None</code>, the default model of the pipeline will be
+  used.</td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>chart_recognition_model_dir</code></td>
+    <td>The directory path of the model for chart parsing. If set to
+  <code>None</code>, the official model will be downloaded.</td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>chart_recognition_batch_size</code></td>
+    <td>The batch size of the model for chart parsing. If set to
+  <code>None</code>, the batch size will be set to
+  <code>1</code> by default.</td>
+    <td><code>int|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>region_detection_model_name</code></td>
+    <td>The model name for detecting submodules of document image layout. If set
+  to <code>None</code>, the default model of the pipeline will be
+  used.</td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>region_detection_model_dir</code></td>
+    <td>The directory path of the model for detecting submodules of document
+  image layout. If set to <code>None</code>, the official model
+  will be downloaded.</td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>doc_orientation_classify_model_name</code></td>
+    <td>Name of the document orientation classification model. If set to
+  <code>None</code>, the default model in the pipeline will be
+  used.</td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>doc_orientation_classify_model_dir</code></td>
+    <td>Directory path of the document orientation classification model. If set
+  to <code>None</code>, the official model will be downloaded.</td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>doc_unwarping_model_name</code></td>
+    <td>Name of the text image unwarping model. If set to
+  <code>None</code>, the default model in the pipeline will be
+  used.</td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>doc_unwarping_model_dir</code></td>
+    <td>Directory path of the text image unwarping model. If set to
+  <code>None</code>, the official model will be downloaded.</td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>text_detection_model_name</code></td>
+    <td>Name of the text detection model. If set to
+  <code>None</code>, the default model in the pipeline will be
+  used.</td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>text_detection_model_dir</code></td>
+    <td>Directory path of the text detection model. If set to
+  <code>None</code>, the official model will be downloaded.</td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>text_det_limit_side_len</code></td>
+    <td>Limit on the side length of the image for text detection.<ul>
+    <li><b>int</b>: greater than<code>0</code>,
+  any integer;</li>
+    <li><b>None</b>: if set to<code>None</code>,
+  the parameter value initialized by the pipeline will be used, and the default
+  initialization value is<code>960</code>.</li>
+    </ul></td>
+    <td><code>int|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>text_det_limit_type</code></td>
+    <td>The type of image side length limit for text detection.<ul>
+    <li><b>str</b>:
+  supports<code>min</code>and<code>max</code>,
+  where<code>min</code>means ensuring that the shortest side of the
+  image is not less than<code>det_limit_side_len</code>,
+  and<code>max</code>means ensuring that the longest side of the
+  image is not greater
+  than<code>limit_side_len</code>;</li>
+    <li><b>None</b>: if set to<code>None</code>,
+  the parameter value initialized by the pipeline will be used, and the default
+  initialization value is<code>max</code>.</li>
+    </ul></td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>text_det_thresh</code></td>
+    <td>Detection pixel threshold. Only pixels with scores greater than this
+  threshold in the output probability map will be considered as text
+  pixels.<ul>
+    <li><b>float</b>: any floating-point number greater
+  than<code>0</code>;<li><b>None</b>: if set
+  to<code>None</code>, the parameter value initialized by the
+  pipeline will be used by
+  default,<code>0.3</code>.</li></li></ul></td>
+    <td><code>float|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>text_det_box_thresh</code></td>
+    <td>Detection box threshold: When the average score of all pixels within the
+  detected bounding box is greater than this threshold, the result is
+  considered a text region.<ul>
+    <li><b>float</b>: any floating-point number greater than<code>0</code>;<li><b>None</b>:
+  If set to<code>None</code>, the parameter value initialized by
+  the pipeline, <code>0.6</code>, will be used by
+  default.</li></li></ul></td>
+    <td><code>float|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>text_det_unclip_ratio</code></td>
+    <td>Text detection expansion coefficient. This method is used to expand the
+  text region. The larger the value, the larger the expanded
+  area.<ul>
+    <li><b>float</b>: any floating-point number greater
+  than<code>0</code>;<li><b>None</b>: If set
+  to<code>None</code>, the parameter value initialized by the
+  pipeline, <code>2.0</code>, will be used by
+  default.</li></li></ul></td>
+    <td><code>float|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>textline_orientation_model_name</code></td>
+    <td>Name of the text line orientation model. If set
+  to<code>None</code>, the default model of the pipeline will be
+  used.</td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>textline_orientation_model_dir</code></td>
+    <td>Directory path of the text line orientation model. If set
+  to<code>None</code>, the official model will be downloaded.</td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>textline_orientation_batch_size</code></td>
+    <td>Batch size of the text line orientation model. If set
+  to<code>None</code>Set the default batch size to
+  <code>1</code>.</td>
+    <td><code>int|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>text_recognition_model_name</code></td>
+    <td>The name of the text recognition model. If set to
+  <code>None</code>, the default model in the pipeline will be
+  used.</td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>text_recognition_model_dir</code></td>
+    <td>The directory path of the text recognition model. If set to
+  <code>None</code>, the official model will be downloaded.</td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>text_recognition_batch_size</code></td>
+    <td>The batch size of the text recognition model. If set to
+  <code>None</code>, the default batch size will be set to
+  <code>1</code>.</td>
+    <td><code>int|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>text_rec_score_thresh</code></td>
+    <td>The threshold for text recognition. Text results with scores higher than
+  this threshold will be retained.<ul>
+    <li><b>float</b>: Any floating-point number greater than
+  <code>0</code>;<li><b>None</b>: If set to
+  <code>None</code>, the parameter value initialized by the
+  pipeline, <code>0.0</code>, will be used by default, meaning no
+  threshold will be set.</li></li></ul></td>
+    <td><code>float|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>table_classification_model_name</code></td>
+    <td>The name of the table classification model. If set to
+  <code>None</code>, the default model in the pipeline will be
+  used.</td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>table_classification_model_dir</code></td>
+    <td>The directory path of the table classification model. If set to
+  <code>None</code>, the official model will be downloaded.</td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>wired_table_structure_recognition_model_name</code></td>
+    <td>The name of the wired table structure recognition model. If set to
+  <code>None</code>, the default model in the pipeline will be
+  used.</td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>wired_table_structure_recognition_model_dir</code></td>
+    <td>The directory path of the wired table structure recognition model. If set
+  to <code>None</code>, the official model will be downloaded.</td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>wireless_table_structure_recognition_model_name</code></td>
+    <td>The name of the wireless table structure recognition model. If set to
+  <code>None</code>, the default model in the pipeline will be
+  used.</td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>wireless_table_structure_recognition_model_dir</code></td>
+    <td>The directory path of the wireless table structure recognition model. If
+  set to <code>None</code>, the official model will be downloaded.</td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>wired_table_cells_detection_model_name</code></td>
+    <td>The name of the wired table cell detection model. If set to
+  <code>None</code>, the default model in the pipeline will be
+  used.</td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>wired_table_cells_detection_model_dir</code></td>
+    <td>The directory path of the wired table cell detection model. If set to
+  <code>None</code>, the official model will be downloaded.</td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>wireless_table_cells_detection_model_name</code></td>
+    <td>The name of the wireless table cell detection model. If set to
+  <code>None</code>, the default model in the pipeline will be
+  used.</td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>wireless_table_cells_detection_model_dir</code></td>
+    <td>The directory path of the wireless table cell detection model. If set to
+  <code>None</code>, the official model will be downloaded.</td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>table_orientation_classify_model_name</code></td>
+    <td>The name of the table orientation classification model. If set to
+  <code>None</code>, the default model in the pipeline will be
+  used.</td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>table_orientation_classify_model_dir</code></td>
+    <td>The directory path of the table orientation classification model. If set
+  to <code>None</code>, the official model will be downloaded.</td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>seal_text_detection_model_name</code></td>
+    <td>The name of the seal text detection model. If set to
+  <code>None</code>, the default model in the pipeline will be
+  used.</td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>seal_text_detection_model_dir</code></td>
+    <td>The directory path of the seal text detection model. If set to
+  <code>None</code>, the official model will be downloaded.</td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>seal_det_limit_side_len</code></td>
+    <td>The image side length limit for seal text detection.<ul>
+    <li><b>int</b>: any integer greater than
+  <code>0</code>;</li>
+    <li><b>None</b>: If set to <code>None</code>,
+  the parameter value initialized by the pipeline will be used, and the default
+  initialization value is <code>736</code>.</li>
+    </ul></td>
+    <td><code>int|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>seal_det_limit_type</code></td>
+    <td>The image side length limit type for seal text detection.<ul>
+    <li><b>str</b>: supports <code>min</code> and
+  <code>max</code>, where <code>min</code> indicates
+  that the shortest side of the image is guaranteed to be no less than
+  <code>det_limit_side_len</code>, and <code>max</code>
+  indicates that the longest side of the image is guaranteed to be no greater
+  than <code>limit_side_len</code>;</li>
+    <li><b>None</b>: If set to <code>None</code>,
+  the parameter value initialized by the pipeline will be used, and the default
+  initialization value is <code>min</code>.</li>
+    </ul></td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>seal_det_thresh</code></td>
+    <td>The detection pixel threshold. Only pixels with scores greater than this
+  threshold in the output probability map will be considered as text
+  pixels.<ul>
+    <li><b>float</b>: any floating-point number greater than
+  <code>0</code>;<li><b>None</b>: if set to
+  <code>None</code>, the parameter value initialized by the
+  pipeline will be used by default, which is
+  <code>0.2</code>.</li></li></ul></td>
+    <td><code>float|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>seal_det_box_thresh</code></td>
+    <td>Detection box threshold. When the average score of all pixels within the
+  detected bounding box is greater than this threshold, the result is
+  considered a text region.<ul>
+    <li><b>float</b>: any floating-point number greater than
+  <code>0</code>;<li><b>None</b>: if set to
+  <code>None</code>, the parameter value initialized by the
+  pipeline will be used by default, which is
+  <code>0.6</code>.</li></li></ul></td>
+    <td><code>float|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>seal_det_unclip_ratio</code></td>
+    <td>Expansion coefficient for seal text detection. This method is used to
+  expand the text region. The larger the value, the larger the expanded
+  area.<ul>
+    <li><b>float</b>: any floating-point number greater than
+  <code>0</code>;<li><b>None</b>: if set to
+  <code>None</code>, the parameter value initialized by the
+  pipeline will be used by default, which is
+  <code>0.5</code>.</li></li></ul></td>
+    <td><code>float|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>seal_text_recognition_model_name</code></td>
+    <td>Name of the seal text recognition model. If set to
+  <code>None</code>, the default model of the pipeline will be
+  used.</td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>seal_text_recognition_model_dir</code></td>
+    <td>Directory path of the seal text recognition model. If set to
+  <code>None</code>, the official model will be downloaded.</td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>seal_text_recognition_batch_size</code></td>
+    <td>Batch size of the seal text recognition model. If set to
+  <code>None</code>, the batch size will be set to
+  <code>1</code> by default.</td>
+    <td><code>int|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>seal_rec_score_thresh</code></td>
+    <td>Threshold for seal text recognition. Text results with scores higher than
+  this threshold will be retained.<ul>
+    <li><b>float</b>: any floating-point number greater than
+  <code>0</code>;<li><b>None</b>: if set to
+  <code>None</code>, the parameter value initialized by the
+  pipeline, <code>0.0</code>, will be used by default, meaning no
+  threshold is set.</li></li></ul></td>
+    <td><code>float|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>formula_recognition_model_name</code></td>
+    <td>Name of the formula recognition model. If set to
+  <code>None</code>, the default model of the pipeline will be
+  used.</td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>formula_recognition_model_dir</code></td>
+    <td>Directory path of the formula recognition model. If set to
+  <code>None</code>, the official model will be downloaded.</td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>formula_recognition_batch_size</code></td>
+    <td>The batch size of the formula recognition model. If set to
+  <code>None</code>, the batch size will be set to
+  <code>1</code> by default.</td>
+    <td><code>int|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>use_doc_orientation_classify</code></td>
+    <td>Whether to load and use the document orientation classification module.
+  If set to <code>None</code>, the parameter value initialized by
+  the pipeline will be used, and the default initialization is
+  <code>False</code>.</td>
+    <td><code>bool|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>use_doc_unwarping</code></td>
+    <td>Whether to load and use the text image unwarping module. If set to
+  <code>None</code>, the parameter value initialized by the
+  pipeline will be used, and the default initialization is
+  <code>False</code>.</td>
+    <td><code>bool|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>use_textline_orientation</code></td>
+    <td>Whether to load and use the text line orientation classification module.
+  If set to <code>None</code>, the parameter value initialized by
+  the pipeline will be used, and the default initialization is
+  <code>True</code>.</td>
+    <td><code>bool|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>use_seal_recognition</code></td>
+    <td>Whether to load and use the sub-pipeline for seal text recognition. If
+  set to <code>None</code>, the parameter value initialized by the
+  pipeline will be used, and the default initialization is
+  <code>True</code>.</td>
+    <td><code>bool|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>use_table_recognition</code></td>
+    <td>Whether to load and use the sub-pipeline for table recognition. If set to
+  <code>None</code>The parameter value initialized by the pipeline
+  will be used, and the default initialization is
+  <code>True</code>.</td>
+    <td><code>bool|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>use_formula_recognition</code></td>
+    <td>Whether to load and use the sub-pipeline for formula recognition. If set
+  to <code>None</code>, the parameter value initialized by the
+  pipeline will be used, and the default initialization is
+  <code>True</code>.</td>
+    <td><code>bool|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>use_chart_recognition</code></td>
+    <td>Whether to load and use the chart parsing module. If set to
+  <code>None</code>, the parameter value initialized by the
+  pipeline will be used, and the default initialization is
+  <code>False</code>.</td>
+    <td><code>bool|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>use_region_detection</code></td>
+    <td>Whether to load and use the sub-pipeline for document region detection.
+  If set to <code>None</code>, the parameter value initialized by
+  the pipeline will be used, and the default initialization is
+  <code>True</code>.</td>
+    <td><code>bool|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>chat_bot_config</code></td>
+    <td>Configuration information for the large language model. The configuration
+  content is the following dict:<pre><code>{
+    "module_name": "chat_bot",
+    "model_name": "ernie-3.5-8k",
+    "base_url": "https://qianfan.baidubce.com/v2",
+    "api_type": "openai",
+    "api_key": "api_key" 
+  # Please set this to the actual API key
+    }</code></pre></td>
+    <td><code>dict|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>device</code></td>
+    <td>Device for inference. Support specifying a specific card
+  number:<ul>
+    <li><b>CPU</b>: e.g.,<code>cpu</code>means
+  using CPU for inference;</li>
+    <li><b>GPU</b>: e.g.,<code>gpu:0</code>means
+  using the 1st GPU for inference;</li>
+    <li><b>NPU</b>: e.g.,<code>npu:0</code>means
+  using the 1st NPU for inference;</li>
+    <li><b>XPU</b>: e.g.,<code>xpu:0</code>means
+  using the 1st XPU for inference;</li>
+    <li><b>MLU</b>: e.g.,<code>mlu:0</code>means
+  using the 1st MLU for inference;</li>
+    <li><b>DCU</b>: e.g.,<code>dcu:0</code>means
+  using the 1st DCU for inference;</li>
+    <li><b>None</b>: If set to<code>None</code>,
+  during initialization, the local GPU device 0 will be used preferentially. If
+  not available, the CPU device will be used.</li>
+    </ul></td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
+  <tr>
+    <td><code>enable_hpi</code></td>
+    <td>Whether to enable high-performance inference.</td>
+    <td><code>bool</code></td>
+    <td><code>False</code></td>
+  </tr>
+  <tr>
+    <td><code>use_tensorrt</code></td>
+    <td>Whether to enable the TensorRT subgraph engine of Paddle Inference. If the model does not support acceleration via TensorRT, acceleration will not be used even if this flag is set.<br/>For PaddlePaddle with CUDA 11.8, the compatible TensorRT version is 8.x (x&amp;gt;=6), and it is recommended to install TensorRT 8.6.1.6.<br/></td>
+    <td><code>bool</code></td>
+    <td><code>False</code></td>
+  </tr>
+  <tr>
+    <td><code>precision</code></td>
+    <td>Computational precision, such as fp32, fp16.</td>
+    <td><code>str</code></td>
+    <td><code>"fp32"</code></td>
+  </tr>
+  <tr>
+    <td><code>enable_mkldnn</code></td>
+    <td>Whether to enable MKL-DNN for accelerated inference. If MKL-DNN is not
+  available or the model does not support acceleration via MKL-DNN,
+  acceleration will not be used even if this flag is set.</td>
+    <td><code>bool</code></td>
+    <td><code>True</code></td>
+  </tr>
+  <tr>
+    <td><code>mkldnn_cache_capacity</code></td>
+    <td>MKL-DNN cache capacity.</td>
+    <td><code>int</code></td>
+    <td><code>10</code></td>
+  </tr>
+  <tr>
+    <td><code>cpu_threads</code></td>
+    <td>The number of threads used for inference on the CPU.</td>
+    <td><code>int</code></td>
+    <td><code>8</code></td>
+  </tr>
+  <tr>
+    <td><code>paddlex_config</code></td>
+    <td>Path to the PaddleX pipeline configuration file.</td>
+    <td><code>str|None</code></td>
+    <td><code>None</code></td>
+  </tr>
 </table>
 </details>
 <details><summary>(2) Call the <code>visual_predict()</code>method of the PP-DocTranslation pipeline object to obtain visual prediction results. This method returns a list of results. Additionally, the pipeline also provides the <code>visual_predict_iter()</code>method. Both methods are identical in terms of parameter acceptance and result return. The difference is that <code>visual_predict_iter()</code>returns a <code>generator</code>that can process and obtain prediction results step by step, which is suitable for scenarios involving large datasets or where memory conservation is desired. Either of these two methods can be chosen based on actual needs. Below is <code>visual_predict()</code>Parameters of the method and their descriptions:</summary>
+
 <table>
 <thead>
 <tr>
@@ -1920,6 +2180,7 @@ The process, API description, and output description of PP-DocTranslation predic
 </details>
 <details><summary>(3) Processing visual prediction results: The prediction result for each sample is a corresponding Result object, and it supports operations such as printing, saving as an image, and saving as a <code>json</code> file:</summary>
 <table>
+
 <thead>
 <tr>
 <th>Method</th>
