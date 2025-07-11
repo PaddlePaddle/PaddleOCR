@@ -27,7 +27,7 @@ English | [简体中文](./README_cn.md) | [繁體中文](./README_tcn.md) | [�
 [![Accuracy](https://img.shields.io/badge/Recognition%20Accuracy-🏆-green)](#)
 [![Multi-Language](https://img.shields.io/badge/Support_Languages-80+-brightgreen)](#)
 [![Handwriting](https://img.shields.io/badge/Handwriting-✓-success)](#)
-[![Hardware](https://img.shields.io/badge/Domestic%20Hardware-Kunlunxin%20%7C%20Ascend-red)](#)
+[![Hardware](https://img.shields.io/badge/Heterogeneous%20Hardware-Kunlunxin%20%7C%20Ascend_NPU-red)](#)
 
 > [!TIP]
 > PaddleOCR now provides an MCP server that supports integration with Agent applications like Claude Desktop. For details, please refer to [PaddleOCR MCP Server](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/mcp_server.html).
@@ -42,14 +42,17 @@ English | [简体中文](./README_cn.md) | [繁體中文](./README_tcn.md) | [�
 [![AI Studio](https://img.shields.io/badge/PP_OCRv5-Demo_on_AI_Studio-green)](https://aistudio.baidu.com/community/app/91660/webUI)
 [![AI Studio](https://img.shields.io/badge/PP_StructureV3-Demo_on_AI_Studio-green)](https://aistudio.baidu.com/community/app/518494/webUI)
 [![AI Studio](https://img.shields.io/badge/PP_ChatOCRv4-Demo_on_AI_Studio-green)](https://aistudio.baidu.com/community/app/518493/webUI)
-[![ModelScope](https://img.shields.io/badge/Demo_on_ModelScope-purple?logo=github)](https://www.modelscope.cn/organization/PaddlePaddle)
+[![ModelScope](https://img.shields.io/badge/🤖_Demo_on_ModelScope-purple)](https://www.modelscope.cn/organization/PaddlePaddle)
 [![HuggingFace](https://img.shields.io/badge/Demo_on_HuggingFace-purple.svg?logo=huggingface)](https://huggingface.co/PaddlePaddle)
 
-- **PP-OCRv5 — All-Scenario Text Recognition** A **single model supports five text types** (Simplified Chinese, Traditional Chinese, English, Japanese, and handwriting), with a **13 percentage point increase in accuracy**. Solves the challenge of recognizing text in multilingual documents.
+- **PP-OCRv5 — Universal Scene Text Recognition**  
+  **Single model supports five text types** (Simplified Chinese, Traditional Chinese, English, Japanese, and Pinyin) with **13% accuracy improvement**. Solves multilingual mixed document recognition challenges.
 
-- **PP-StructureV3 — Complex Document Parsing** Intelligently converts complex PDFs into **Markdown format while preserving the original structure**, **outperforming many commercial solutions** on public benchmarks. Perfectly maintains document layout and hierarchy.
+- **PP-StructureV3 — Complex Document Parsing**  
+  Intelligently converts complex PDFs and document images into **Markdown and JSON files that preserve original structure**. **Outperforms** numerous commercial solutions in public benchmarks. **Perfectly maintains document layout and hierarchical structure**.
 
-- **PP-ChatOCRv4 — Intelligent Information Extraction** **Natively integrated with ERNIE 4.5 Turbo** to accurately extract key information from massive document sets, with a **15 percentage point increase in accuracy**. Enables documents to "understand" your questions and provide precise answers.
+- **PP-ChatOCRv4 — Intelligent Information Extraction**  
+  Natively integrates ERNIE 4.5 to **precisely extract key information** from massive documents, with 15% accuracy improvement over previous generation. Makes documents "**understand**" your questions and provide accurate answers.
 
 In addition to providing an outstanding model library, PaddleOCR 3.0 also offers user-friendly tools covering model training, inference, and service deployment, so developers can rapidly bring AI applications to production.
 <div align="center">

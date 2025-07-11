@@ -44,17 +44,17 @@
 [![AI Studio](https://img.shields.io/badge/PP_OCRv5-Demo_on_AI_Studio-green)](https://aistudio.baidu.com/community/app/91660/webUI)
 [![AI Studio](https://img.shields.io/badge/PP_StructureV3-Demo_on_AI_Studio-green)](https://aistudio.baidu.com/community/app/518494/webUI)
 [![AI Studio](https://img.shields.io/badge/PP_ChatOCRv4-Demo_on_AI_Studio-green)](https://aistudio.baidu.com/community/app/518493/webUI)
-[![ModelScope](https://img.shields.io/badge/Demo_on_ModelScope-purple?logo=github)](https://www.modelscope.cn/organization/PaddlePaddle)
+[![ModelScope](https://img.shields.io/badge/🤖_Demo_on_ModelScope-purple)](https://www.modelscope.cn/organization/PaddlePaddle)
 [![HuggingFace](https://img.shields.io/badge/Demo_on_HuggingFace-purple.svg?logo=huggingface)](https://huggingface.co/PaddlePaddle)
 
 - **PP-OCRv5 — 全场景文字识别**  
-  **单模型支持五种文字类型**（简中、繁中、英文、日文及手写体），**精度提升13个百分点**。解决多语言混合文档的识别难题。
+  **单模型支持五种文字类型**（简中、繁中、英文、日文及拼音），精度提升**13个百分点**。解决多语言混合文档的识别难题。
 
 - **PP-StructureV3 — 复杂文档解析**  
-  将复杂PDF智能转换为**保留原始结构的Markdown格式**，**在公开评测中领先众多商业方案**。完美保持文档版式和层次结构。
+  将复杂PDF和文档图像智能转换为保留**原始结构的Markdown文件和JSON**文件，在公开评测中**领先**众多商业方案。**完美保持文档版式和层次结构**。
 
 - **PP-ChatOCRv4 — 智能信息抽取**  
-  **原生集成ERNIE 4.5 Turbo**，从海量文档中精准提取关键信息，**精度提升15个百分点**。让文档"听懂"您的问题并给出准确答案。
+  原生集成ERNIE 4.5，从海量文档中**精准提取关键信息**，精度较上一代提升15个百分点。让文档"**听懂**"您的问题并给出准确答案。
 
 PaddleOCR 3.0除了提供优秀的模型库外，还提供好学易用的工具，覆盖模型训练、推理和服务化部署，方便开发者快速落地AI应用。
 <div align="center">
