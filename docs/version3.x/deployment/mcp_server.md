@@ -115,7 +115,7 @@ paddleocr_mcp --help
 
 2. **准备星河社区服务**
 
-    - 访问 [飞桨星河社区](https://aistudio.baidu.com/pipeline/mine) 并登录。**请注意，目前星河社区要求用户绑定中国大陆手机号。** 如果您不具备此条件，请考虑使用其他工作模式。
+    - 访问 [飞桨星河社区](https://aistudio.baidu.com/pipeline/mine) 并登录。
     - 在左侧"更多内容"下的 "PaddleX 产线" 部分，依次点击：【创建产线】 - 【OCR】- 【通用OCR】-【直接部署】-【开始部署】。
     - 部署成功后，获取您的 **服务基础 URL**（示例：`https://xxxxxx.aistudio-hub.baidu.com`）。
     - 在 [此页面](https://aistudio.baidu.com/index/accessToken) 获取您的 **访问令牌**。

@@ -103,7 +103,7 @@ In this pipeline, you can choose the model to use based on the benchmark data be
 </table>
 
 
-* <b>The layout detection model includes 1 category: Block:</b>
+* <b>The region detection model includes 1 category: Block:</b>
 <table>
 <thead>
 <tr>
@@ -1365,15 +1365,15 @@ any float > <code>0</code>. If not set, the default is <code>0.6</code>.
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
-<td>Whether to use document orientation classification module.</td>
+<td>Whether to load and use the document orientation classification module. If not set, the default is <code>False</code>.</td>
 <td><code>bool</code></td>
-<td><code>False</code></td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
-<td>Whether to use document unwarping module.</td>
+<td>Whether to load and use the document unwarping module. If not set, the default is <code>False</code>.</td>
 <td><code>bool</code></td>
-<td><code>False</code></td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_textline_orientation</code></td>
@@ -1401,13 +1401,13 @@ any float > <code>0</code>. If not set, the default is <code>0.6</code>.
 </tr>
 <tr>
 <td><code>use_chart_recognition</code></td>
-<td>Whether to use the chart parsing module.</td>
+<td>Whether to load and use the chart parsing module. If not set, the default is <code>False</code>.</td>
 <td><code>bool</code></td>
-<td><code>False</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>use_region_detection</code></td>
-<td>Whether to load and use the document region detection pipeline. If not set, the default is <code>True</code>.</td>
+<td>Whether to load and use the document region detection module. If not set, the default is <code>True</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
@@ -1996,13 +1996,13 @@ The above Python script performs the following steps:
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
-<td>Whether to enable the document orientation classification module. If set to <code>None</code>, the default value is <code>True</code>.</td>
+<td>Whether to enable the document orientation classification module. If set to <code>None</code>, the default value is <code>False</code>.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
-<td>Whether to enable the document image unwarping module. If set to <code>None</code>, the default value is <code>True</code>.</td>
+<td>Whether to enable the document image unwarping module. If set to <code>None</code>, the default value is <code>False</code>.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -2032,13 +2032,13 @@ The above Python script performs the following steps:
 </tr>
 <tr>
 <td><code>use_chart_recognition</code></td>
-<td>Whether to load and use the chart parsing module. If set to <code>None</code>, the default value is <code>True</code>.</td>
+<td>Whether to load and use the chart parsing module. If set to <code>None</code>, the default value is <code>False</code>.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_region_detection</code></td>
-<td>Whether to use the document region detection pipeline. If set to <code>None</code>, the default value is <code>True</code>.</td>
+<td>Whether to load and use the document region detection module. If set to <code>None</code>, the default value is <code>True</code>.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -2137,13 +2137,13 @@ MKL-DNN cache capacity.
 <td><code>use_doc_orientation_classify</code></td>
 <td>Whether to use document orientation classification during inference. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
 <td><code>bool|None</code></td>
-<td><code>False</code></td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
 <td>Whether to use document image unwarping during inference. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
 <td><code>bool|None</code></td>
-<td><code>False</code></td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_textline_orientation</code></td>
@@ -2171,13 +2171,13 @@ MKL-DNN cache capacity.
 </tr>
 <tr>
 <td><code>use_chart_recognition</code></td>
-<td>Whether to use the chart parsing module. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
+<td>Whether to use the chart parsing module during inference. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
 <td><code>bool|None</code></td>
-<td><code>False</code></td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_region_detection</code></td>
-<td>Whether to use the document region detection pipeline. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
+<td>Whether to use the document region detection module during inference. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -2550,87 +2550,87 @@ In addition, PaddleOCR provides two other deployment options described in detail
 Below is the API reference and multi-language service invocation examples for basic service deployment:
 
 <details><summary>API Reference</summary>
-<p>Main operations provided by the service:</p>
+<p>For the main operations provided by the service:</p>
 <ul>
-<li>HTTP method: POST</li>
-<li>Request and response bodies are both JSON objects.</li>
-<li>When the request is successful, the response status code is <code>200</code>, and the response body contains:</li>
+<li>The HTTP request method is POST.</li>
+<li>Both the request body and response body are JSON data (JSON objects).</li>
+<li>When the request is processed successfully, the response status code is <code>200</code>, and the attributes of the response body are as follows:</li>
 </ul>
 <table>
 <thead>
 <tr>
 <th>Name</th>
 <th>Type</th>
-<th>Description</th>
+<th>Meaning</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>logId</code></td>
 <td><code>string</code></td>
-<td>UUID of the request</td>
+<td>The UUID of the request.</td>
 </tr>
 <tr>
 <td><code>errorCode</code></td>
 <td><code>integer</code></td>
-<td>Error code, fixed to <code>0</code></td>
+<td>Error code. Fixed as <code>0</code>.</td>
 </tr>
 <tr>
 <td><code>errorMsg</code></td>
 <td><code>string</code></td>
-<td>Error message, fixed to <code>"Success"</code></td>
+<td>Error message. Fixed as <code>"Success"</code>.</td>
 </tr>
 <tr>
 <td><code>result</code></td>
 <td><code>object</code></td>
-<td>Operation result</td>
+<td>The result of the operation.</td>
 </tr>
 </tbody>
 </table>
 <ul>
-<li>When the request fails, the response body includes:</li>
+<li>When the request is not processed successfully, the attributes of the response body are as follows:</li>
 </ul>
 <table>
 <thead>
 <tr>
 <th>Name</th>
 <th>Type</th>
-<th>Description</th>
+<th>Meaning</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>logId</code></td>
 <td><code>string</code></td>
-<td>UUID of the request</td>
+<td>The UUID of the request.</td>
 </tr>
 <tr>
 <td><code>errorCode</code></td>
 <td><code>integer</code></td>
-<td>Error code, same as HTTP status code</td>
+<td>Error code. Same as the response status code.</td>
 </tr>
 <tr>
 <td><code>errorMsg</code></td>
 <td><code>string</code></td>
-<td>Error message</td>
+<td>Error message.</td>
 </tr>
 </tbody>
 </table>
-<p>Main operation provided:</p>
+<p>The main operations provided by the service are as follows:</p>
 <ul>
 <li><b><code>infer</code></b></li>
 </ul>
 <p>Perform layout parsing.</p>
 <p><code>POST /layout-parsing</code></p>
 <ul>
-<li>Request body parameters:</li>
+<li>The attributes of the request body are as follows:</li>
 </ul>
 <table>
 <thead>
 <tr>
 <th>Name</th>
 <th>Type</th>
-<th>Description</th>
+<th>Meaning</th>
 <th>Required</th>
 </tr>
 </thead>
@@ -2638,169 +2638,198 @@ Below is the API reference and multi-language service invocation examples for ba
 <tr>
 <td><code>file</code></td>
 <td><code>string</code></td>
-<td>URL of image or PDF file accessible to the server, or base64-encoded file content. By default, only the first 10 pages of a PDF are processed.<br />To remove this limit, add the following to the pipeline config:
+<td>The URL of an image or PDF file accessible by the server, or the Base64-encoded content of the above file types. By default, for PDF files exceeding 10 pages, only the content of the first 10 pages will be processed.<br />
+To remove the page limit, please add the following configuration to the pipeline configuration file:
 <pre><code>Serving:
   extra:
     max_num_input_imgs: null
-</code></pre>
-</td>
+</code></pre></td>
 <td>Yes</td>
 </tr>
 <tr>
 <td><code>fileType</code></td>
 <td><code>integer</code>｜<code>null</code></td>
-<td>File type. <code>0</code> for PDF, <code>1</code> for image. If omitted, the type is inferred from the URL.</td>
+<td>File type. <code>0</code> represents a PDF file, and <code>1</code> represents an image file. If this attribute is missing from the request body, the file type will be inferred based on the URL.</td>
 <td>No</td>
 </tr>
 <tr>
 <td><code>useDocOrientationClassify</code></td>
 <td><code>boolean</code> | <code>null</code></td>
-<td>Refer to the <code>use_doc_orientation_classify</code> parameter in the pipeline’s <code>predict</code> method.</td>
+<td>Please refer to the description of the <code>use_doc_orientation_classify</code> parameter of the pipeline object's <code>predict</code> method.</td>
 <td>No</td>
 </tr>
 <tr>
 <td><code>useDocUnwarping</code></td>
 <td><code>boolean</code> | <code>null</code></td>
-<td>Refer to the <code>use_doc_unwarping</code> parameter in the pipeline’s <code>predict</code> method.</td>
+<td>Please refer to the description of the <code>use_doc_unwarping</code> parameter of the pipeline object's <code>predict</code> method.</td>
 <td>No</td>
 </tr>
 <tr>
 <td><code>useTextlineOrientation</code></td>
 <td><code>boolean</code> | <code>null</code></td>
-<td>Refer to the <code>use_textline_orientation</code> parameter in the pipeline’s <code>predict</code> method.</td>
+<td>Please refer to the description of the <code>use_textline_orientation</code> parameter of the pipeline object's <code>predict</code> method.</td>
 <td>No</td>
 </tr>
 <tr>
 <td><code>useSealRecognition</code></td>
 <td><code>boolean</code> | <code>null</code></td>
-<td>Refer to the <code>use_seal_recognition</code> parameter in the pipeline’s <code>predict</code> method.</td>
+<td>Please refer to the description of the <code>use_seal_recognition</code> parameter of the pipeline object's <code>predict</code> method.</td>
 <td>No</td>
-</tr>
 </tr>
 <tr>
 <td><code>useTableRecognition</code></td>
 <td><code>boolean</code> | <code>null</code></td>
-<td>Refer to the <code>use_table_recognition</code> parameter in the pipeline’s <code>predict</code> method.</td>
+<td>Please refer to the description of the <code>use_table_recognition</code> parameter of the pipeline object's <code>predict</code> method.</td>
 <td>No</td>
 </tr>
 <tr>
 <td><code>useFormulaRecognition</code></td>
 <td><code>boolean</code> | <code>null</code></td>
-<td>Refer to the <code>use_formula_recognition</code> parameter in the pipeline’s <code>predict</code> method.</td>
+<td>Please refer to the description of the <code>use_formula_recognition</code> parameter of the pipeline object's <code>predict</code> method.</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>useChartRecognition</code></td>
+<td><code>boolean</code> | <code>null</code></td>
+<td>Please refer to the description of the <code>use_chart_recognition</code> parameter of the pipeline object's <code>predict</code> method.</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>useRegionDetection</code></td>
+<td><code>boolean</code> | <code>null</code></td>
+<td>Please refer to the description of the <code>use_region_detection</code> parameter of the pipeline object's <code>predict</code> method.</td>
 <td>No</td>
 </tr>
 <tr>
 <td><code>layoutThreshold</code></td>
-<td><code>number</code> | <code>null</code></td>
-<td>Refer to the <code>layout_threshold</code> parameter in the pipeline’s <code>predict</code> method.</td>
+<td><code>number</code> | <code>object</code> | </code><code>null</code></td>
+<td>Please refer to the description of the <code>layout_threshold</code> parameter of the pipeline object's <code>predict</code> method.</td>
 <td>No</td>
 </tr>
 <tr>
 <td><code>layoutNms</code></td>
 <td><code>boolean</code> | <code>null</code></td>
-<td>Refer to the <code>layout_nms</code> parameter in the pipeline’s <code>predict</code> method.</td>
+<td>Please refer to the description of the <code>layout_nms</code> parameter of the pipeline object's <code>predict</code> method.</td>
 <td>No</td>
 </tr>
 <tr>
 <td><code>layoutUnclipRatio</code></td>
 <td><code>number</code> | <code>array</code> | <code>object</code> | <code>null</code></td>
-<td>Refer to the <code>layout_unclip_ratio</code> parameter in the pipeline’s <code>predict</code> method.</td>
+<td>Please refer to the description of the <code>layout_unclip_ratio</code> parameter of the pipeline object's <code>predict</code> method.</td>
 <td>No</td>
 </tr>
 <tr>
 <td><code>layoutMergeBboxesMode</code></td>
 <td><code>string</code> | <code>object</code> | <code>null</code></td>
-<td>Refer to the <code>layout_merge_bboxes_mode</code> parameter in the pipeline’s <code>predict</code> method.</td>
+<td>Please refer to the description of the <code>layout_merge_bboxes_mode</code> parameter of the pipeline object's <code>predict</code> method.</td>
 <td>No</td>
 </tr>
 <tr>
 <td><code>textDetLimitSideLen</code></td>
 <td><code>integer</code> | <code>null</code></td>
-<td>Refer to the <code>text_det_limit_side_len</code> parameter in the pipeline’s <code>predict</code> method.</td>
+<td>Please refer to the description of the <code>text_det_limit_side_len</code> parameter of the pipeline object's <code>predict</code> method.</td>
 <td>No</td>
 </tr>
 <tr>
 <td><code>textDetLimitType</code></td>
 <td><code>string</code> | <code>null</code></td>
-<td>Refer to the <code>text_det_limit_type</code> parameter in the pipeline’s <code>predict</code> method.</td>
+<td>Please refer to the description of the <code>text_det_limit_type</code> parameter of the pipeline object's <code>predict</code> method.</td>
 <td>No</td>
 </tr>
 <tr>
 <td><code>textDetThresh</code></td>
 <td><code>number</code> | <code>null</code></td>
-<td>Refer to the <code>text_det_thresh</code> parameter in the pipeline’s <code>predict</code> method.</td>
+<td>Please refer to the description of the <code>text_det_thresh</code> parameter of the pipeline object's <code>predict</code> method.</td>
 <td>No</td>
 </tr>
 <tr>
 <td><code>textDetBoxThresh</code></td>
 <td><code>number</code> | <code>null</code></td>
-<td>Refer to the <code>text_det_box_thresh</code> parameter in the pipeline’s <code>predict</code> method.</td>
+<td>Please refer to the description of the <code>text_det_box_thresh</code> parameter of the pipeline object's <code>predict</code> method.</td>
 <td>No</td>
 </tr>
 <tr>
 <td><code>textDetUnclipRatio</code></td>
 <td><code>number</code> | <code>null</code></td>
-<td>Refer to the <code>text_det_unclip_ratio</code> parameter in the pipeline’s <code>predict</code> method.</td>
+<td>Please refer to the description of the <code>text_det_unclip_ratio</code> parameter of the pipeline object's <code>predict</code> method.</td>
 <td>No</td>
 </tr>
 <tr>
 <td><code>textRecScoreThresh</code></td>
 <td><code>number</code> | <code>null</code></td>
-<td>Refer to the <code>text_rec_score_thresh</code> parameter in the pipeline’s <code>predict</code> method.</td>
+<td>Please refer to the description of the <code>text_rec_score_thresh</code> parameter of the pipeline object's <code>predict</code> method.</td>
 <td>No</td>
 </tr>
 <tr>
 <td><code>sealDetLimitSideLen</code></td>
 <td><code>integer</code> | <code>null</code></td>
-<td>Refer to the <code>seal_det_limit_side_len</code> parameter in the pipeline’s <code>predict</code> method.</td>
+<td>Please refer to the description of the <code>seal_det_limit_side_len</code> parameter of the pipeline object's <code>predict</code> method.</td>
 <td>No</td>
 </tr>
 <tr>
 <td><code>sealDetLimitType</code></td>
 <td><code>string</code> | <code>null</code></td>
-<td>Refer to the <code>seal_det_limit_type</code> parameter in the pipeline’s <code>predict</code> method.</td>
+<td>Please refer to the description of the <code>seal_det_limit_type</code> parameter of the pipeline object's <code>predict</code> method.</td>
 <td>No</td>
 </tr>
 <tr>
 <td><code>sealDetThresh</code></td>
 <td><code>number</code> | <code>null</code></td>
-<td>Refer to the <code>seal_det_thresh</code> parameter in the pipeline’s <code>predict</code> method.</td>
+<td>Please refer to the description of the <code>seal_det_thresh</code> parameter of the pipeline object's <code>predict</code> method.</td>
 <td>No</td>
 </tr>
 <tr>
 <td><code>sealDetBoxThresh</code></td>
 <td><code>number</code> | <code>null</code></td>
-<td>Refer to the <code>seal_det_box_thresh</code> parameter in the pipeline’s <code>predict</code> method.</td>
+<td>Please refer to the description of the <code>seal_det_box_thresh</code> parameter of the pipeline object's <code>predict</code> method.</td>
 <td>No</td>
 </tr>
 <tr>
 <td><code>sealDetUnclipRatio</code></td>
 <td><code>number</code> | <code>null</code></td>
-<td>Refer to the <code>seal_det_unclip_ratio</code> parameter in the pipeline’s <code>predict</code> method.</td>
+<td>Please refer to the description of the <code>seal_det_unclip_ratio</code> parameter of the pipeline object's <code>predict</code> method.</td>
 <td>No</td>
 </tr>
 <tr>
 <td><code>sealRecScoreThresh</code></td>
 <td><code>number</code> | <code>null</code></td>
-<td>Refer to the <code>seal_rec_score_thresh</code> parameter in the pipeline’s <code>predict</code> method.</td>
+<td>Please refer to the description of the <code>seal_rec_score_thresh</code> parameter of the pipeline object's <code>predict</code> method.</td>
 <td>No</td>
 </tr>
 <tr>
-<td><code>useTableCellsOcrResults</code></td>
+<td><code>useWiredTableCellsTransToHtml</code></td>
 <td><code>boolean</code></td>
-<td>Refer to the <code>use_table_cells_ocr_results</code> parameter in the pipeline’s <code>predict</code> method.</td>
+<td>Please refer to the description of the <code>use_wired_table_cells_trans_to_html</code> parameter of the pipeline object's <code>predict</code> method.</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>useWirelessTableCellsTransToHtml</code></td>
+<td><code>boolean</code></td>
+<td>Please refer to the description of the <code>use_wireless_table_cells_trans_to_html</code> parameter of the pipeline object's <code>predict</code> method.</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>useTableOrientationClassify</code></td>
+<td><code>boolean</code></td>
+<td>Please refer to the description of the <code>use_table_orientation_classify</code> parameter of the pipeline object's <code>predict</code> method.</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>useOcrResultsWithTableCells</code></td>
+<td><code>boolean</code></td>
+<td>Please refer to the description of the <code>use_ocr_results_with_table_cells</code> parameter of the pipeline object's <code>predict</code> method.</td>
 <td>No</td>
 </tr>
 <tr>
 <td><code>useE2eWiredTableRecModel</code></td>
 <td><code>boolean</code></td>
-<td>Refer to the <code>use_e2e_wired_table_rec_model</code> parameter in the pipeline’s <code>predict</code> method.</td>
+<td>Please refer to the description of the <code>use_e2e_wired_table_rec_model</code> parameter of the pipeline object's <code>predict</code> method.</td>
 <td>No</td>
 </tr>
 <tr>
 <td><code>useE2eWirelessTableRecModel</code></td>
 <td><code>boolean</code></td>
-<td>Refer to the <code>use_e2e_wireless_table_rec_model</code> parameter in the pipeline’s <code>predict</code> method.</td>
+<td>Please refer to the description of the <code>use_e2e_wireless_table_rec_model</code> parameter of the pipeline object's <code>predict</code> method.</td>
 <td>No</td>
 </tr>
 <tr>
@@ -2826,21 +2855,21 @@ If neither the request body nor the configuration file is set (If <code>visualiz
 </tbody>
 </table>
 <ul>
-<li>When the request is successful, the <code>result</code> field of the response contains the following attributes:</li>
+<li>When the request is processed successfully, the <code>result</code> in the response body has the following attributes:</li>
 </ul>
 <table>
 <thead>
 <tr>
 <th>Name</th>
 <th>Type</th>
-<th>Description</th>
+<th>Meaning</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>layoutParsingResults</code></td>
 <td><code>array</code></td>
-<td>Layout parsing results. The array length is 1 (for image input) or the number of processed pages (for PDF input). For PDF input, each element corresponds to one processed page.</td>
+<td>The layout parsing results. The array length is 1 (for image input) or the actual number of document pages processed (for PDF input). For PDF input, each element in the array represents the result of each page actually processed in the PDF file.</td>
 </tr>
 <tr>
 <td><code>dataInfo</code></td>
@@ -2855,61 +2884,61 @@ If neither the request body nor the configuration file is set (If <code>visualiz
 <tr>
 <th>Name</th>
 <th>Type</th>
-<th>Description</th>
+<th>Meaning</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>prunedResult</code></td>
 <td><code>object</code></td>
-<td>A simplified version of the <code>res</code> field from the JSON output of the pipeline’s <code>predict</code> method, with <code>input_path</code> and <code>page_index</code> removed.</td>
+<td>A simplified version of the <code>res</code> field in the JSON representation of the result generated by the <code>predict</code> method of the pipeline object, with the <code>input_path</code> and the <code>page_index</code> fields removed.</td>
 </tr>
 <tr>
 <td><code>markdown</code></td>
 <td><code>object</code></td>
-<td>Markdown result.</td>
+<td>The Markdown result.</td>
 </tr>
 <tr>
 <td><code>outputImages</code></td>
 <td><code>object</code> | <code>null</code></td>
-<td>Refer to the pipeline’s <code>img</code> attribute. Images are JPEG encoded in Base64.</td>
+<td>See the description of the <code>img</code> attribute of the result of the pipeline prediction. The images are in JPEG format and are Base64-encoded.</td>
 </tr>
 <tr>
 <td><code>inputImage</code></td>
 <td><code>string</code> | <code>null</code></td>
-<td>Input image. JPEG encoded in Base64.</td>
+<td>The input image. The image is in JPEG format and is Base64-encoded.</td>
 </tr>
 </tbody>
 </table>
-<p>The <code>markdown</code> object has the following attributes:</p>
+<p><code>markdown</code> is an <code>object</code> with the following attributes:</p>
 <table>
 <thead>
 <tr>
 <th>Name</th>
 <th>Type</th>
-<th>Description</th>
+<th>Meaning</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>text</code></td>
 <td><code>string</code></td>
-<td>Markdown text.</td>
+<td>The Markdown text.</td>
 </tr>
 <tr>
 <td><code>images</code></td>
 <td><code>object</code></td>
-<td>Key-value pairs of image relative paths and Base64-encoded image content.</td>
+<td>A key-value pair of relative paths of Markdown images and Base64-encoded images.</td>
 </tr>
 <tr>
 <td><code>isStart</code></td>
 <td><code>boolean</code></td>
-<td>Whether the first element on the current page is the start of a paragraph.</td>
+<td>Whether the first element on the current page is the start of a segment.</td>
 </tr>
 <tr>
 <td><code>isEnd</code></td>
 <td><code>boolean</code></td>
-<td>Whether the last element on the current page is the end of a paragraph.</td>
+<td>Whether the last element on the current page is the end of a segment.</td>
 </tr>
 </tbody>
 </table></details>
@@ -3506,7 +3535,7 @@ SubPipelines:
 ......
 ```
 
-The pipeline configuration file not only includes parameters supported by the PaddleOCR CLI and Python API but also allows for more advanced configurations. For more details, refer to the corresponding pipeline usage tutorial in the [PaddleX Pipeline Usage Overview](https://paddlepaddle.github.io/PaddleX/3.0/en/pipeline_usage/pipeline_develop_guide.html), and adjust the configurations as needed based on your requirements.
+The pipeline configuration file not only includes parameters supported by the PaddleOCR CLI and Python API but also allows for more advanced configurations. For more details, refer to the corresponding pipeline usage tutorial in the [PaddleX Pipeline Usage Overview](https://paddlepaddle.github.io/PaddleX/latest/en/pipeline_usage/pipeline_develop_guide.html), and adjust the configurations as needed based on your requirements.
 
 1. Load the pipeline configuration file via CLI
 

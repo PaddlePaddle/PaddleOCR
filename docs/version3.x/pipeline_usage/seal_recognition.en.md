@@ -2361,7 +2361,7 @@ SubPipelines:
 ......
 ```
 
-The pipeline configuration file not only contains the parameters supported by the SealRecognition CLI and Python API but also allows for more advanced configurations. Detailed information can be found in the [PaddleX Model pipeline Usage Overview](https://paddlepaddle.github.io/PaddleX/3.0/en/pipeline_usage/pipeline_develop_guide.html), where you can find the corresponding pipeline usage tutorial and adjust various configurations as needed.
+The pipeline configuration file not only contains the parameters supported by the SealRecognition CLI and Python API but also allows for more advanced configurations. Detailed information can be found in the [PaddleX Model pipeline Usage Overview](https://paddlepaddle.github.io/PaddleX/latest/en/pipeline_usage/pipeline_develop_guide.html), where you can find the corresponding pipeline usage tutorial and adjust various configurations as needed.
 
 3. Load pipeline Configuration File in CLI
 

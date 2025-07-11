@@ -88,6 +88,6 @@ PaddleOCR 产线使用教程中的 <b>“开发集成/部署”</b> 部分提供
 
 ## 2. 高稳定性服务化部署
 
-请参考 [PaddleX 服务化部署指南](https://paddlepaddle.github.io/PaddleX/3.0/pipeline_deploy/serving.html#2)。在 [使用 PaddleX 产线配置文件](../paddleocr_and_paddlex.md#3-使用-paddlex-产线配置文件) 中，可以了解关于 PaddleX 产线配置文件的更多信息。
+请参考 [PaddleX 服务化部署指南](https://paddlepaddle.github.io/PaddleX/latest/pipeline_deploy/serving.html#2)。在 [使用 PaddleX 产线配置文件](../paddleocr_and_paddlex.md#3-使用-paddlex-产线配置文件) 中，可以了解关于 PaddleX 产线配置文件的更多信息。
 
 需要说明的是，由于缺乏细粒度优化等原因，当前 PaddleOCR 提供的高稳定性服务化部署方案在性能上可能不及 2.x 版本基于 PaddleServing 的方案；但该新方案已对飞桨 3.0 框架提供了全面支持，我们也将持续优化，后续考虑推出性能更优的部署方案。

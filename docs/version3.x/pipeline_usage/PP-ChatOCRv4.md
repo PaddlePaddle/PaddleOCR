@@ -1171,13 +1171,13 @@ paddleocr pp_chatocrv4_doc -i vehicle_certificate-1.png -k 驾驶室准乘人数
 </tr>
 <tr>
 <td><code>qianfan_api_key</code></td>
-<td>千帆平台的api_key</td>
+<td>千帆平台的API key。</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>pp_docbee_base_url</code></td>
-<td>多模态大模型服务的url。</td>
+<td>多模态大模型服务的URL。</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
@@ -2114,7 +2114,7 @@ for res in visual_predict_res:
 <td><code>visual_info</code></td>
 <td>视觉信息，可以是包含视觉信息的dict，或者由这些dict组成的列表。</td>
 <td><code>list|dict</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>min_characters</code></td>
@@ -2137,7 +2137,7 @@ for res in visual_predict_res:
 <tr>
 <td><code>retriever_config</code></td>
 <td>向量检索大模型配置参数，参数含义与实例化参数基本相同。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
-<td><code>dict</code></td>
+<td><code>dict|None</code></td>
 <td><code>None</code></td>
 </tr>
 </table>
@@ -2177,12 +2177,12 @@ for res in visual_predict_res:
 <td><code>key_list</code></td>
 <td>用于提取信息的单个键或键列表。</td>
 <td><code>Union[str, List[str]]</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>mllm_chat_bot_config</code></td>
 <td>多模态大模型配置参数，参数含义与实例化参数基本相同。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
-<td><code>dict</code></td>
+<td><code>dict|None</code></td>
 <td><code>None</code></td>
 </tr>
 </tbody>
@@ -2225,7 +2225,7 @@ for res in visual_predict_res:
 <tr>
 <td><code>vector_info</code></td>
 <td>用于检索的向量信息。</td>
-<td><code>dict</code></td>
+<td><code>dict|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
@@ -2237,67 +2237,67 @@ for res in visual_predict_res:
 <tr>
 <td><code>text_task_description</code></td>
 <td>文本任务的描述。</td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>text_output_format</code></td>
 <td>文本结果的输出格式。</td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>text_rules_str</code></td>
 <td>生成文本结果的规则。</td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>text_few_shot_demo_text_content</code></td>
 <td>用于少样本演示的文本内容。</td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>text_few_shot_demo_key_value_list</code></td>
 <td>用于少样本演示的键值列表。/td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>table_task_description</code></td>
 <td>表任务的描述。</td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>table_output_format</code></td>
 <td>表结果的输出格式。</td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>table_rules_str</code></td>
 <td>生成表结果的规则。</td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>table_few_shot_demo_text_content</code></td>
 <td>表少样本演示的文本内容。</td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>table_few_shot_demo_key_value_list</code></td>
 <td>表少样本演示的键值列表。</td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>mllm_predict_info</code></td>
 <td>多模态大模型结果。</td>
-<td><code>dict</code></td>
+<td><code>dict|None</code></td>
 <td>
 <code>None</code>
 </td>
@@ -2311,13 +2311,13 @@ for res in visual_predict_res:
 <tr>
 <td><code>chat_bot_config</code></td>
 <td>大语言模型配置信息，参数含义与实例化参数基本相同。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
-<td><code>dict</code></td>
+<td><code>dict|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>retriever_config</code></td>
 <td>向量检索大模型配置参数，参数含义与实例化参数基本相同。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
-<td><code>dict</code></td>
+<td><code>dict|None</code></td>
 <td><code>None</code></td>
 </tr>
 </tbody>
@@ -3726,7 +3726,7 @@ SubModules:
 ......
 ```
 
-在产线配置文件中，不仅包含 PaddleOCR CLI 和 Python API 支持的参数，还可进行更多高级配置，具体信息可在 [PaddleX模型产线使用概览](https://paddlepaddle.github.io/PaddleX/3.0/pipeline_usage/pipeline_develop_guide.html) 中找到对应的产线使用教程，参考其中的详细说明，根据需求调整各项配置。
+在产线配置文件中，不仅包含 PaddleOCR CLI 和 Python API 支持的参数，还可进行更多高级配置，具体信息可在 [PaddleX模型产线使用概览](https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/pipeline_develop_guide.html) 中找到对应的产线使用教程，参考其中的详细说明，根据需求调整各项配置。
 
 3. 在 CLI 中加载产线配置文件
 

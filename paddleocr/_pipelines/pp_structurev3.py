@@ -756,13 +756,11 @@ class PPStructureV3CLISubcommandExecutor(PipelineCLISubcommandExecutor):
         subparser.add_argument(
             "--use_doc_orientation_classify",
             type=str2bool,
-            default=False,
             help="Whether to use document image orientation classification.",
         )
         subparser.add_argument(
             "--use_doc_unwarping",
             type=str2bool,
-            default=False,
             help="Whether to use text image unwarping.",
         )
         subparser.add_argument(
@@ -788,7 +786,6 @@ class PPStructureV3CLISubcommandExecutor(PipelineCLISubcommandExecutor):
         subparser.add_argument(
             "--use_chart_recognition",
             type=str2bool,
-            default=False,
             help="Whether to use chart recognition.",
         )
         subparser.add_argument(
@@ -802,9 +799,4 @@ class PPStructureV3CLISubcommandExecutor(PipelineCLISubcommandExecutor):
         perform_simple_inference(
             PPStructureV3,
             params,
-            predict_param_names={
-                "use_doc_orientation_classify",
-                "use_doc_unwarping",
-                "use_chart_recognition",
-            },
         )
