@@ -2682,7 +2682,7 @@ SubPipelines:
 ......
 ```
 
-The pipeline configuration file includes not only the parameters supported by PaddleOCR CLI and Python API but also allows for more advanced configurations. For detailed information, you can find the corresponding pipeline usage tutorial in [Overview of PaddleX Model Pipeline Usage](https://paddlepaddle.github.io/PaddleX/3.0/en/pipeline_usage/pipeline_develop_guide.html), and refer to the detailed instructions to adjust the configurations according to your needs.
+The pipeline configuration file includes not only the parameters supported by PaddleOCR CLI and Python API but also allows for more advanced configurations. For detailed information, you can find the corresponding pipeline usage tutorial in [Overview of PaddleX Model Pipeline Usage](https://paddlepaddle.github.io/PaddleX/latest/en/pipeline_usage/pipeline_develop_guide.html), and refer to the detailed instructions to adjust the configurations according to your needs.
 
 3. Loading the pipeline configuration file in CLI
 

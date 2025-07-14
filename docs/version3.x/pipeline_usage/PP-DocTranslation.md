@@ -52,7 +52,7 @@ PP-DocTranslation 是飞桨提供的文档智能翻译解决方案，融合了�
 <td>UVDoc</td>
 <td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/UVDoc_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/UVDoc_pretrained.pdparams">训练模型</a></td>
 <td>0.179</td>
-<td>30.3 M</td>
+<td>30.3</td>
 <td>高精度文本图像矫正模型</td>
 </tr>
 </tbody>
@@ -76,7 +76,7 @@ PP-DocTranslation 是飞桨提供的文档智能翻译解决方案，融合了�
 <td>83.2</td>
 <td>53.03 / 17.23</td>
 <td>634.62 / 378.32</td>
-<td>126.01 M</td>
+<td>126.01</td>
 <td>基于RT-DETR-L在包含中英文论文、多栏杂志、报纸、PPT、合同、书本、试卷、研报、古籍、日文文档、竖版文字文档等场景的自建数据集训练的更高精度版面区域定位模型</td>
 </tr>
 <td>PP-DocLayout-L</td>
@@ -84,7 +84,7 @@ PP-DocTranslation 是飞桨提供的文档智能翻译解决方案，融合了�
 <td>90.4</td>
 <td>33.59 / 33.59</td>
 <td>503.01 / 251.08</td>
-<td>123.76 M</td>
+<td>123.76</td>
 <td>基于RT-DETR-L在包含中英文论文、杂志、合同、书本、试卷和研报等场景的自建数据集训练的高精度版面区域定位模型</td>
 </tr>
 <tr>
@@ -266,7 +266,7 @@ PP-OCRv5_server_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ec
 <td>86.38</td>
 <td>8.46 / 2.36</td>
 <td>31.21 / 31.21</td>
-<td>81 M</td>
+<td>81</td>
 <td rowspan="2">PP-OCRv5_rec 是新一代文本识别模型。该模型致力于以单一模型高效、精准地支持简体中文、繁体中文、英文、日文四种主要语言，以及手写、竖版、拼音、生僻字等复杂文本场景的识别。在保持识别效果的同时，兼顾推理速度和模型鲁棒性，为各种场景下的文档理解提供高效、精准的技术支撑。</td>
 </tr>
 <tr>
@@ -276,7 +276,7 @@ PP-OCRv5_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ec
 <td>81.29</td>
 <td>5.43 / 1.46</td>
 <td>21.20 / 5.32</td>
-<td>16 M</td>
+<td>16</td>
 </tr>
 <tr>
 <td>PP-OCRv4_server_rec_doc</td>
@@ -285,7 +285,7 @@ PP-OCRv4_server_rec_doc_infer.tar">推理模型</a>/<a href="https://paddle-mode
 <td>86.58</td>
 <td>8.69 / 2.78</td>
 <td>37.93 / 37.93</td>
-<td>74.7 M</td>
+<td>74.7</td>
 <td>PP-OCRv4_server_rec_doc是在PP-OCRv4_server_rec的基础上，在更多中文文档数据和PP-OCR训练数据的混合数据训练而成，增加了部分繁体字、日文、特殊字符的识别能力，可支持识别的字符为1.5万+，除文档相关的文字识别能力提升外，也同时提升了通用文字的识别能力</td>
 </tr>
 <tr>
@@ -294,7 +294,7 @@ PP-OCRv4_server_rec_doc_infer.tar">推理模型</a>/<a href="https://paddle-mode
 <td>78.74</td>
 <td>5.26 / 1.12</td>
 <td>17.48 / 3.61</td>
-<td>10.6 M</td>
+<td>10.6</td>
 <td>PP-OCRv4的轻量级识别模型，推理效率高，可以部署在包含端侧设备的多种硬件设备中</td>
 </tr>
 <tr>
@@ -303,7 +303,7 @@ PP-OCRv4_server_rec_doc_infer.tar">推理模型</a>/<a href="https://paddle-mode
 <td>80.61 </td>
 <td>8.75 / 2.49</td>
 <td>36.93 / 36.93</td>
-<td>71.2 M</td>
+<td>71.2</td>
 <td>PP-OCRv4的服务器端模型，推理精度高，可以部署在多种不同的服务器上</td>
 </tr>
 <tr>
@@ -313,7 +313,7 @@ PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ec
 <td>72.96</td>
 <td>3.89 / 1.16</td>
 <td>8.72 / 3.56</td>
-<td>9.2 M</td>
+<td>9.2</td>
 <td>PP-OCRv3的轻量级识别模型，推理效率高，可以部署在包含端侧设备的多种硬件设备中</td>
 </tr>
 </table>
@@ -333,7 +333,7 @@ PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ec
 <td>68.81</td>
 <td>10.38 / 8.31</td>
 <td>66.52 / 30.83</td>
-<td>73.9 M</td>
+<td>73.9</td>
 <td rowspan="1">
 SVTRv2 是一种由复旦大学视觉与学习实验室（FVL）的OpenOCR团队研发的服务端文本识别模型，其在PaddleOCR算法模型挑战赛 - 赛题一：OCR端到端识别任务中荣获一等奖，A榜端到端识别精度相比PP-OCRv4提升6%。
 </td>
@@ -355,7 +355,7 @@ SVTRv2 是一种由复旦大学视觉与学习实验室（FVL）的OpenOCR团队
 <td>65.07</td>
 <td>6.29 / 1.57</td>
 <td>20.64 / 5.40</td>
-<td>22.1 M</td>
+<td>22.1</td>
 <td rowspan="1">    RepSVTR 文本识别模型是一种基于SVTRv2 的移动端文本识别模型，其在PaddleOCR算法模型挑战赛 - 赛题一：OCR端到端识别任务中荣获一等奖，B榜端到端识别精度相比PP-OCRv4提升2.5%，推理速度持平。</td>
 </tr>
 </table>
@@ -377,7 +377,7 @@ en_PP-OCRv4_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model
 <td> 70.39</td>
 <td>4.81 / 1.23</td>
 <td>17.20 / 4.18</td>
-<td>6.8 M</td>
+<td>6.8</td>
 <td>基于PP-OCRv4识别模型训练得到的超轻量英文识别模型，支持英文、数字识别</td>
 </tr>
 <tr>
@@ -409,7 +409,7 @@ korean_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-m
 <td>60.21</td>
 <td>3.73 / 0.98</td>
 <td>8.76 / 2.91</td>
-<td>8.6 M</td>
+<td>8.6</td>
 <td>基于PP-OCRv3识别模型训练得到的超轻量韩文识别模型，支持韩文、数字识别</td>
 </tr>
 <tr>
@@ -469,7 +469,7 @@ latin_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-mo
 <td>76.93</td>
 <td>3.53 / 0.78</td>
 <td>8.50 / 6.83</td>
-<td>7.8 M</td>
+<td>7.8</td>
 <td>基于PP-OCRv3识别模型训练得到的超轻量拉丁文识别模型，支持拉丁文、数字识别</td>
 </tr>
 <tr>
@@ -479,7 +479,7 @@ arabic_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-m
 <td>73.55</td>
 <td>3.60 / 0.83</td>
 <td>8.44 / 4.69</td>
-<td>7.8 M</td>
+<td>7.8</td>
 <td>基于PP-OCRv3识别模型训练得到的超轻量阿拉伯字母识别模型，支持阿拉伯字母、数字识别</td>
 </tr>
 <tr>
@@ -499,7 +499,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://padd
 <td>96.44</td>
 <td>3.60 / 0.78</td>
 <td>6.95 / 2.87</td>
-<td>7.9 M</td>
+<td>7.9</td>
 <td>基于PP-OCRv3识别模型训练得到的超轻量梵文字母识别模型，支持梵文字母、数字识别</td>
 </tr>
 </table>
@@ -552,7 +552,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://padd
 <td>87.12</td>
 <td>1311.84 / 1311.84</td>
 <td>- / 8288.07</td>
-<td>167.9 M</td>
+<td>167.9</td>
 <td rowspan="2">PP-FormulaNet 是由百度飞桨视觉团队开发的一款先进的公式识别模型，支持5万个常见LateX源码词汇的识别。PP-FormulaNet-S 版本采用了 PP-HGNetV2-B4 作为其骨干网络，通过并行掩码和模型蒸馏等技术，大幅提升了模型的推理速度，同时保持了较高的识别精度，适用于简单印刷公式、跨行简单印刷公式等场景。而 PP-FormulaNet-L 版本则基于 Vary_VIT_B 作为骨干网络，并在大规模公式数据集上进行了深入训练，在复杂公式的识别方面，相较于PP-FormulaNet-S表现出显著的提升，适用于简单印刷公式、复杂印刷公式、手写公式等场景。 </td>
 
 </tr>
@@ -561,13 +561,13 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://padd
 <td>92.13</td>
 <td>1976.52/-</td>
 <td>-/-</td>
-<td>535.2 M</td>
+<td>535.2</td>
 <td>LaTeX_OCR_rec</td>
 <td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/LaTeX_OCR_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/LaTeX_OCR_rec_pretrained.pdparams">训练模型</a></td>
 <td>71.63</td>
 <td>1088.89 / 1088.89</td>
 <td>- / -</td>
-<td>89.7 M</td>
+<td>89.7</td>
 <td>LaTeX-OCR是一种基于自回归大模型的公式识别算法，通过采用 Hybrid ViT 作为骨干网络，transformer作为解码器，显著提升了公式识别的准确性。</td>
 </tr>
 </tbody>
@@ -1088,15 +1088,15 @@ paddleocr pp_doctranslation -i vehicle_certificate-1.png --target_language en --
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
-<td>是否使用文档方向分类模块。</td>
+<td>是否加载并使用文档方向分类模块。如果不设置，将使用产线初始化的该参数值，默认初始化为<code>False</code>。</td>
 <td><code>bool</code></td>
-<td><code>False</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
-<td>是否使用文本图像矫正模块。</td>
+<td>是否加载并使用文本图像矫正模块。如果不设置，将使用产线初始化的该参数值，默认初始化为<code>False</code>。</td>
 <td><code>bool</code></td>
-<td><code>False</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>use_textline_orientation</code></td>
@@ -1124,14 +1124,20 @@ paddleocr pp_doctranslation -i vehicle_certificate-1.png --target_language en --
 </tr>
 <tr>
 <td><code>use_chart_recognition</code></td>
-<td>是否使用图表解析模块。</td>
+<td>是否加载并使用文档区域检测模块。如果不设置，将使用产线初始化的该参数值，默认初始化为<code>False</code>。</td>
 <td><code>bool</code></td>
-<td><code>False</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>use_region_detection</code></td>
-<td>是否加载并使用文档区域检测子产线。如果不设置，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
+<td>是否加载并使用文档区域检测模块。如果不设置，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
 <td><code>bool</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>qianfan_api_key</code></td>
+<td>千帆平台的API key。</td>
+<td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
@@ -1159,7 +1165,6 @@ paddleocr pp_doctranslation -i vehicle_certificate-1.png --target_language en --
 <td><code>use_tensorrt</code></td>
 <td>是否启用 Paddle Inference 的 TensorRT 子图引擎。如果模型不支持通过 TensorRT 加速，即使设置了此标志，也不会使用加速。<br/>
 对于 CUDA 11.8 版本的飞桨，兼容的 TensorRT 版本为 8.x（x>=6），建议安装 TensorRT 8.6.1.6。<br/>
-
 </td>
 <td><code>bool</code></td>
 <td><code>False</code></td>
@@ -1688,13 +1693,13 @@ PP-DocTranslation 预测的流程、API 说明、产出说明如下：
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
-<td>是否加载并使用文档方向分类模块。如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
+<td>是否加载并使用文档方向分类模块。如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>False</code>。</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
-<td>是否加载并使用文本图像矫正模块。如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
+<td>是否加载并使用文本图像矫正模块。如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>False</code>。</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -1724,13 +1729,13 @@ PP-DocTranslation 预测的流程、API 说明、产出说明如下：
 </tr>
 <tr>
 <td><code>use_chart_recognition</code></td>
-<td>是否加载并使用图表解析模块。如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
+<td>是否加载并使用图表解析模块。如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>False</code>。</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_region_detection</code></td>
-<td>是否加载并使用文档区域检测子产线。如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
+<td>是否加载并使用文档区域检测模块。如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -1774,7 +1779,6 @@ PP-DocTranslation 预测的流程、API 说明、产出说明如下：
 <td><code>use_tensorrt</code></td>
 <td>是否启用 Paddle Inference 的 TensorRT 子图引擎。如果模型不支持通过 TensorRT 加速，即使设置了此标志，也不会使用加速。<br/>
 对于 CUDA 11.8 版本的飞桨，兼容的 TensorRT 版本为 8.x（x>=6），建议安装 TensorRT 8.6.1.6。<br/>
-
 </td>
 <td><code>bool</code></td>
 <td><code>False</code></td>
@@ -1844,13 +1848,13 @@ MKL-DNN 缓存容量。
 <td><code>use_doc_orientation_classify</code></td>
 <td>是否在推理时使用文档方向分类模块。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
 <td><code>bool|None</code></td>
-<td><code>False</code></td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
 <td>是否在推理时使用文本图像矫正模块。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
 <td><code>bool|None</code></td>
-<td><code>False</code></td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_textline_orientation</code></td>
@@ -1878,13 +1882,13 @@ MKL-DNN 缓存容量。
 </tr>
 <tr>
 <td><code>use_chart_recognition</code></td>
-<td>是否使用图表解析模块。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td>是否在推理时使用图表解析模块。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
 <td><code>bool|None</code></td>
-<td><code>False</code></td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_region_detection</code></td>
-<td>是否使用文档区域检测子产线。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td>是否在推理时使用文档区域检测模块。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -2212,7 +2216,7 @@ MKL-DNN 缓存容量。
 <td><code>ori_md_info_list</code></td>
 <td>原始Markdown格式的数据列表，包含需要翻译的内容。必须为字典组成的列表，每个字典表示一个文档块</td>
 <td><code>List[Dict]</code></td>
-<td>无默认值（必填）</td>
+<td></td>
 </tr>
 <tr>
 <td><code>target_language</code></td>
@@ -2399,181 +2403,181 @@ MKL-DNN 缓存容量。
 <tr>
 <td><code>useDocOrientationClassify</code></td>
 <td><code>boolean</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>predict</code> 方法的 <code>use_doc_orientation_classify</code> 参数相关说明。</td>
+<td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>use_doc_orientation_classify</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>useDocUnwarping</code></td>
 <td><code>boolean</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>predict</code> 方法的 <code>use_doc_unwarping</code> 参数相关说明。</td>
+<td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>use_doc_unwarping</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>useTextlineOrientation</code></td>
 <td><code>boolean</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>predict</code> 方法的 <code>use_textline_orientation</code> 参数相关说明。</td>
+<td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>use_textline_orientation</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>useSealRecognition</code></td>
 <td><code>boolean</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>predict</code> 方法的 <code>use_seal_recognition</code> 参数相关说明。</td>
+<td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>use_seal_recognition</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>useTableRecognition</code></td>
 <td><code>boolean</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>predict</code> 方法的 <code>use_table_recognition</code> 参数相关说明。</td>
+<td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>use_table_recognition</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>useFormulaRecognition</code></td>
 <td><code>boolean</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>predict</code> 方法的 <code>use_formula_recognition</code> 参数相关说明。</td>
+<td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>use_formula_recognition</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>useChartRecognition</code></td>
 <td><code>boolean</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>predict</code> 方法的 <code>use_chart_recognition</code> 参数相关说明。</td>
+<td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>use_chart_recognition</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>useRegionDetection</code></td>
 <td><code>boolean</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>predict</code> 方法的 <code>use_region_detection</code> 参数相关说明。</td>
+<td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>use_region_detection</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>layoutThreshold</code></td>
 <td><code>number</code> | <code>object</code> | </code><code>null</code></td>
-<td>请参阅产线对象中 <code>predict</code> 方法的 <code>layout_threshold</code> 参数相关说明。</td>
+<td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>layout_threshold</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>layoutNms</code></td>
 <td><code>boolean</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>predict</code> 方法的 <code>layout_nms</code> 参数相关说明。</td>
+<td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>layout_nms</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>layoutUnclipRatio</code></td>
 <td><code>number</code> | <code>array</code> | <code>object</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>predict</code> 方法的 <code>layout_unclip_ratio</code> 参数相关说明。</td>
+<td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>layout_unclip_ratio</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>layoutMergeBboxesMode</code></td>
 <td><code>string</code> | <code>object</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>predict</code> 方法的 <code>layout_merge_bboxes_mode</code> 参数相关说明。</td>
+<td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>layout_merge_bboxes_mode</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>textDetLimitSideLen</code></td>
 <td><code>integer</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>predict</code> 方法的 <code>text_det_limit_side_len</code> 参数相关说明。</td>
+<td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>text_det_limit_side_len</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>textDetLimitType</code></td>
 <td><code>string</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>predict</code> 方法的 <code>text_det_limit_type</code> 参数相关说明。</td>
+<td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>text_det_limit_type</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>textDetThresh</code></td>
 <td><code>number</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>predict</code> 方法的 <code>text_det_thresh</code> 参数相关说明。</td>
+<td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>text_det_thresh</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>textDetBoxThresh</code></td>
 <td><code>number</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>predict</code> 方法的 <code>text_det_box_thresh</code> 参数相关说明。</td>
+<td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>text_det_box_thresh</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>textDetUnclipRatio</code></td>
 <td><code>number</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>predict</code> 方法的 <code>text_det_unclip_ratio</code> 参数相关说明。</td>
+<td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>text_det_unclip_ratio</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>textRecScoreThresh</code></td>
 <td><code>number</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>predict</code> 方法的 <code>text_rec_score_thresh</code> 参数相关说明。</td>
+<td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>text_rec_score_thresh</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>sealDetLimitSideLen</code></td>
 <td><code>integer</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>predict</code> 方法的 <code>seal_det_limit_side_len</code> 参数相关说明。</td>
+<td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>seal_det_limit_side_len</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>sealDetLimitType</code></td>
 <td><code>string</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>predict</code> 方法的 <code>seal_det_limit_type</code> 参数相关说明。</td>
+<td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>seal_det_limit_type</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>sealDetThresh</code></td>
 <td><code>number</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>predict</code> 方法的 <code>seal_det_thresh</code> 参数相关说明。</td>
+<td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>seal_det_thresh</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>sealDetBoxThresh</code></td>
 <td><code>number</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>predict</code> 方法的 <code>seal_det_box_thresh</code> 参数相关说明。</td>
+<td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>seal_det_box_thresh</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>sealDetUnclipRatio</code></td>
 <td><code>number</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>predict</code> 方法的 <code>seal_det_unclip_ratio</code> 参数相关说明。</td>
+<td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>seal_det_unclip_ratio</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>sealRecScoreThresh</code></td>
 <td><code>number</code> | <code>null</code></td>
-<td>请参阅产线对象中 <code>predict</code> 方法的 <code>seal_rec_score_thresh</code> 参数相关说明。</td>
+<td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>seal_rec_score_thresh</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>useWiredTableCellsTransToHtml</code></td>
 <td><code>boolean</code></td>
-<td>请参阅产线对象中 <code>predict</code> 方法的 <code>use_wired_table_cells_trans_to_html</code> 参数相关说明。</td>
+<td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>use_wired_table_cells_trans_to_html</code> 参数相关说明。</td>
 <td>No</td>
 </tr>
 <tr>
 <td><code>useWirelessTableCellsTransToHtml</code></td>
 <td><code>boolean</code></td>
-<td>请参阅产线对象中 <code>predict</code> 方法的 <code>use_wireless_table_cells_trans_to_html</code> 参数相关说明。</td>
+<td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>use_wireless_table_cells_trans_to_html</code> 参数相关说明。</td>
 <td>No</td>
 </tr>
 <tr>
 <td><code>useTableOrientationClassify</code></td>
 <td><code>boolean</code></td>
-<td>请参阅产线对象中 <code>predict</code> 方法的 <code>use_table_orientation_classify</code> 参数相关说明。</td>
+<td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>use_table_orientation_classify</code> 参数相关说明。</td>
 <td>No</td>
 </tr>
 <tr>
 <td><code>useOcrResultsWithTableCells</code></td>
 <td><code>boolean</code></td>
-<td>请参阅产线对象中 <code>predict</code> 方法的 <code>use_ocr_results_with_table_cells</code> 参数相关说明。</td>
+<td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>use_ocr_results_with_table_cells</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>useE2eWiredTableRecModel</code></td>
 <td><code>boolean</code></td>
-<td>请参阅产线对象中 <code>predict</code> 方法的 <code>use_e2e_wired_table_rec_model</code> 参数相关说明。</td>
+<td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>use_e2e_wired_table_rec_model</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
 <td><code>useE2eWirelessTableRecModel</code></td>
 <td><code>boolean</code></td>
-<td>请参阅产线对象中 <code>predict</code> 方法的 <code>use_e2e_wireless_table_rec_model</code> 参数相关说明。</td>
+<td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>use_e2e_wireless_table_rec_model</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
@@ -2990,7 +2994,7 @@ SubModules:
 ......
 ```
 
-在产线配置文件中，不仅包含 PaddleOCR CLI 和 Python API 支持的参数，还可进行更多高级配置，具体信息可在 [PaddleX模型产线使用概览](https://paddlepaddle.github.io/PaddleX/3.0/pipeline_usage/pipeline_develop_guide.html) 中找到对应的产线使用教程，参考其中的详细说明，根据需求调整各项配置。
+在产线配置文件中，不仅包含 PaddleOCR CLI 和 Python API 支持的参数，还可进行更多高级配置，具体信息可在 [PaddleX模型产线使用概览](https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/pipeline_develop_guide.html) 中找到对应的产线使用教程，参考其中的详细说明，根据需求调整各项配置。
 
 3. 在 CLI 中加载产线配置文件
 

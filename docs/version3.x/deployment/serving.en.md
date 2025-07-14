@@ -87,6 +87,6 @@ The <b>"Development Integration/Deployment"</b> section in the PaddleOCR pipelin
 
 ## 2. High-Stability Serving
 
-Please refer to the [PaddleX Serving Guide](https://paddlepaddle.github.io/PaddleX/3.0/en/pipeline_deploy/serving.html#2). More information about PaddleX pipeline configuration files can be found in [Using PaddleX Pipeline Configuration Files](../paddleocr_and_paddlex.en.md#3-using-paddlex-pipeline-configuration-files).
+Please refer to the [PaddleX Serving Guide](https://paddlepaddle.github.io/PaddleX/latest/en/pipeline_deploy/serving.html#2). More information about PaddleX pipeline configuration files can be found in [Using PaddleX Pipeline Configuration Files](../paddleocr_and_paddlex.en.md#3-using-paddlex-pipeline-configuration-files).
 
 It should be noted that, due to the lack of fine-grained optimization and other reasons, the current high-stability serving deployment solution provided by PaddleOCR may not match the performance of the 2.x version based on PaddleServing. However, this new solution fully supports the PaddlePaddle 3.0 framework. We will continue to optimize it and consider introducing more performant deployment solutions in the future.
