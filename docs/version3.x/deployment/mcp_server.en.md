@@ -15,6 +15,51 @@ This project provides a lightweight [Model Context Protocol (MCP)](https://model
     - **AI Studio Community Service**: Invokes services hosted on the [PaddlePaddle AI Studio Community](https://aistudio.baidu.com/pipeline/mine). This is suitable for quick testing, prototyping, or no-code scenarios.
     - **Self-hosted Service**: Invokes the user's self-hosted PaddleOCR services. This mode offers the advantages of serving and high flexibility. It is suitable for scenarios requiring customized service configurations, as well as those with strict data privacy requirements. **Currently, only the basic serving solution is supported.**
 
+## Examples:
+The following showcases creative use cases built with PaddleOCR MCP server combined with other tools:
+
+### Demo 1
+In Claude for Desktop, extract handwritten content from images and save to note-taking software Notion. The PaddleOCR MCP server extracts text, formulas and other information from images while preserving document structure.
+<div align="center">
+  <img width="65%" src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/paddleocr/mcp_demo/note_to_notion.gif" alt="note_to_notion">
+  <img width="30%" src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/paddleocr/mcp_demo/note.jpg" alt="note">
+</div>
+
+- Note: In addition to the PaddleOCR MCP server, this demo also uses the [Notion MCP server](https://developers.notion.com/docs/mcp).
+
+---
+
+### Demo 2
+In VSCode, convert handwritten ideas or pseudocode into runnable Python scripts that comply with project coding standards with one click, and upload them to GitHub repositories. The PaddleOCR MCP server extracts explicitly handwritten code from images for subsequent processing.
+
+<div align="center">
+  <img width="70%" img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/paddleocr/mcp_demo/code_to_github.gif" alt="code_to_github">
+</div>
+
+- In addition to the PaddleOCR MCP server, this demo also uses the [filesystem MCP server](https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem).
+
+---
+
+### Demo 3
+In Claude for Desktop, convert PDF documents or images containing complex tables, formulas, handwritten text and other content into locally editable files.
+
+#### Demo 3.1
+Convert complex PDF documents with tables and watermarks to editable doc/Word format:
+<div align="center">
+  <img width="70%" img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/paddleocr/mcp_demo/pdf_to_file.gif" alt="pdf_to_file">
+</div>
+
+#### Demo 3.2
+Convert images containing formulas and tables to editable csv/Excel format:
+<div align="center">
+  <img width="70%" img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/00136903a4d0b5f11bd978cb0ef5d3c44f3aa5e9/images/paddleocr/mcp_demo/table_to_excel1.png" alt="table_to_excel1">
+  <img width="50%" img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/00136903a4d0b5f11bd978cb0ef5d3c44f3aa5e9/images/paddleocr/mcp_demo/table_to_excel2.png" alt="table_to_excel2">
+  <img width="45%" img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/00136903a4d0b5f11bd978cb0ef5d3c44f3aa5e9/images/paddleocr/mcp_demo/table_to_excel3.png" alt="table_to_excel3">
+</div>
+
+- In addition to the PaddleOCR MCP server, this demo also uses the [filesystem MCP server](https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem).
+------------
+
 ### Table of Contents
 
 - [Table of Contents](#table-of-contents)
@@ -39,7 +84,7 @@ To install `paddleocr-mcp` using pip:
 
 ```bash
 # Install the wheel
-pip install https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/mcp/paddleocr_mcp/releases/v0.1.0/paddleocr_mcp-0.1.0-py3-none-any.whl
+pip install https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/mcp/paddleocr_mcp/releases/v0.2.0/paddleocr_mcp-0.2.0-py3-none-any.whl
 
 # Or install from source
 # git clone https://github.com/PaddlePaddle/PaddleOCR.git
@@ -52,14 +97,7 @@ To verify successful installation:
 paddleocr_mcp --help
 ```
 
-If the help message is printed, the installation succeeded. This project depends on the `python-magic` library. If you see the following error:
-
-```
-...
-ImportError: failed to find libmagic.  Check your installation
-```
-
-You are likely missing a required native library for python-magic. Please refer to the [official python-magic documentation](https://github.com/ahupp/python-magic?tab=readme-ov-file#installation) for installation instructions.
+If the help message is printed, the installation succeeded.
 
 ## 2. Using with Claude for Desktop
 
@@ -247,7 +285,7 @@ Currently, for both the AI Studio and self-hosted modes, starting the MCP server
           "command": "uvx",
           "args": [
             "--from",
-            "paddleocr-mcp@https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/mcp/paddleocr_mcp/releases/v0.1.0/paddleocr_mcp-0.1.0-py3-none-any.whl",
+            "paddleocr-mcp@https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/mcp/paddleocr_mcp/releases/v0.2.0/paddleocr_mcp-0.2.0-py3-none-any.whl",
             "paddleocr_mcp"
           ],
           "env": {

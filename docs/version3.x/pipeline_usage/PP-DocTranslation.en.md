@@ -1135,9 +1135,7 @@ paddleocr pp_doctranslation -i vehicle_certificate-1.png --target_language en --
 </tr>
 <tr>
 <td><code>use_tensorrt</code></td>
-<td>Whether to enable the TensorRT subgraph engine of Paddle Inference. If the model does not support acceleration by TensorRT, enabling this flag will not enable acceleration.<br/>
-For PaddlePaddle with CUDA 11.8, compatible TensorRT version is 8.x (x≥6), recommended TensorRT version is 8.6.1.6.<br/>
-</td>
+<td>Whether to enable the TensorRT subgraph engine of Paddle Inference. If the model does not support acceleration via TensorRT, acceleration will not be used even if this flag is set.<br/>For PaddlePaddle with CUDA 11.8, the compatible TensorRT version is 8.x (x&amp;gt;=6), and it is recommended to install TensorRT 8.6.1.6.<br/></td>
 <td><code>bool</code></td>
 <td><code>False</code></td>
 </tr>
@@ -1754,9 +1752,7 @@ Relevant parameter descriptions are as follows:
 </tr>
 <tr>
 <td><code>use_tensorrt</code></td>
-<td>Whether to enable Paddle Inference’s TensorRT subgraph engine. If the model does not support acceleration via TensorRT, enabling this flag will have no effect.<br/>
-For Paddle with CUDA 11.8, the compatible TensorRT version is 8.x (x≥6), recommended installation is TensorRT 8.6.1.6.<br/>
-</td>
+<td>Whether to enable the TensorRT subgraph engine of Paddle Inference. If the model does not support acceleration via TensorRT, acceleration will not be used even if this flag is set.<br/>For PaddlePaddle with CUDA 11.8, the compatible TensorRT version is 8.x (x&amp;gt;=6), and it is recommended to install TensorRT 8.6.1.6.<br/></td>
 <td><code>bool</code></td>
 <td><code>False</code></td>
 </tr>
