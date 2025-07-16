@@ -17,14 +17,32 @@ If you only want to use the inference capabilities of PaddleOCR, please refer to
 Install the latest version of the PaddleOCR inference package from PyPI:
 
 ```bash
+# If you only want to use the basic OCR functionality
 python -m pip install paddleocr
+# If you want to use all features including layout parsing, information extraction, multimodal models, etc.
+# python -m pip install "paddleocr[all]"
 ```
 
 Or install from source (default is the development branch):
 
 ```bash
-python -m pip install "git+https://github.com/PaddlePaddle/PaddleOCR.git"
+# If you only want to use the basic OCR functionality
+python -m pip install "paddleocr@git+https://github.com/PaddlePaddle/PaddleOCR.git"
+# If you want to use all features including layout parsing, information extraction, multimodal models, etc.
+# python -m pip install "paddleocr[all]@git+https://github.com/PaddlePaddle/PaddleOCR.git"
 ```
+
+In addition to the `all` dependency group demonstrated above, PaddleOCR also supports installing specific optional features by specifying other dependency groups. The available dependency groups provided by PaddleOCR are as follows:
+
+| Dependency Group | Functionality            |
+| ---------------- | ------------------------ |
+| `doc`            | Document parsing         |
+| `ie`             | Information extraction   |
+| `multimodal`     | Multimodal understanding |
+| `trans`          | Document translation     |
+| `all`            | Full functionality       |
+
+The general OCR pipeline and the document image preprocessing pipeline can be used without installing any additional dependency groups. Apart from these two pipelines, each remaining pipeline belongs to one and only one dependency group. You can refer to the usage documentation of each pipeline to determine which group it belongs to. For individual functional modules, installing any dependency group that includes the module will enable access to its core functionality.
 
 ## 2.2 Install Training Dependencies
 
