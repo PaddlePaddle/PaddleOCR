@@ -799,7 +799,12 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
                   <ul>
                       <li>GPU: NVIDIA Tesla T4</li>
                       <li>CPU: Intel Xeon Gold 6271C @ 2.60GHz</li>
-                      <li>Other Environment: Ubuntu 20.04 / CUDA 11.8 / cuDNN 8.9 / TensorRT 8.6.1.6</li>
+                  </ul>
+              </li>
+              <li><strong>Software Environment:</strong>
+                  <ul>
+                      <li>Ubuntu 20.04 / CUDA 11.8 / cuDNN 8.9 / TensorRT 8.6.1.6</li>
+                      <li>paddlepaddle 3.0.0 / paddleocr 3.0.3</li>
                   </ul>
               </li>
           </ul>
@@ -1109,7 +1114,7 @@ Any floating-point number greater than <code>0</code>. If not set, the value ini
 <td><code>use_tensorrt</code></td>
 <td>Whether to use the Paddle Inference TensorRT subgraph engine. If the model does not support acceleration through TensorRT, setting this flag will not enable acceleration.<br/>
 For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6), and it is recommended to install TensorRT 8.6.1.6.<br/>
-For Paddle with CUDA version 12.6, the compatible TensorRT version is 10.x (x>=5), and it is recommended to install TensorRT 10.5.0.18.
+
 </td>
 <td><code>bool</code></td>
 <td><code>False</code></td>
@@ -1471,7 +1476,7 @@ In the above Python script, the following steps are performed:
 <td><code>use_tensorrt</code></td>
 <td>Whether to use the Paddle Inference TensorRT subgraph engine. If the model does not support acceleration through TensorRT, setting this flag will not enable acceleration.<br/>
 For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6), and it is recommended to install TensorRT 8.6.1.6.<br/>
-For Paddle with CUDA version 12.6, the compatible TensorRT version is 10.x (x>=5), and it is recommended to install TensorRT 10.5.0.18.
+
 </td>
 <td><code>bool</code></td>
 <td><code>False</code></td>
@@ -2677,7 +2682,7 @@ SubPipelines:
 ......
 ```
 
-The pipeline configuration file includes not only the parameters supported by PaddleOCR CLI and Python API but also allows for more advanced configurations. For detailed information, you can find the corresponding pipeline usage tutorial in [Overview of PaddleX Model Pipeline Usage](https://paddlepaddle.github.io/PaddleX/3.0/en/pipeline_usage/pipeline_develop_guide.html), and refer to the detailed instructions to adjust the configurations according to your needs.
+The pipeline configuration file includes not only the parameters supported by PaddleOCR CLI and Python API but also allows for more advanced configurations. For detailed information, you can find the corresponding pipeline usage tutorial in [Overview of PaddleX Model Pipeline Usage](https://paddlepaddle.github.io/PaddleX/latest/en/pipeline_usage/pipeline_develop_guide.html), and refer to the detailed instructions to adjust the configurations according to your needs.
 
 3. Loading the pipeline configuration file in CLI
 

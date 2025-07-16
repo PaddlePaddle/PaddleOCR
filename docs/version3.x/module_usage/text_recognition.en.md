@@ -259,7 +259,7 @@ en_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-mo
 <td>korean_PP-OCRv5_mobile_rec</td>
 <td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
 korean_PP-OCRv5_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/korean_PP-OCRv5_mobile_rec_pretrained.pdparams">Pre-trained Model</a></td>
-<td>90.45</td>
+<td>88.0</td>
 <td>5.43 / 1.46</td>
 <td>21.20 / 5.32</td>
 <td>14</td>
@@ -279,7 +279,7 @@ latin_PP-OCRv5_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle
 <td>eslav_PP-OCRv5_mobile_rec</td>
 <td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
 eslav_PP-OCRv5_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/eslav_PP-OCRv5_mobile_rec_pretrained.pdparams">Pre-trained Model</a></td>
-<td>85.8</td>
+<td>81.6</td>
 <td>5.43 / 1.46</td>
 <td>21.20 / 5.32</td>
 <td>14</td>
@@ -415,7 +415,12 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
                   <ul>
                       <li>GPU: NVIDIA Tesla T4</li>
                       <li>CPU: Intel Xeon Gold 6271C @ 2.60GHz</li>
-                      <li>Other Environment: Ubuntu 20.04 / CUDA 11.8 / cuDNN 8.9 / TensorRT 8.6.1.6</li>
+                  </ul>
+              </li>
+              <li><strong>Software Environment:</strong>
+                  <ul>
+                      <li>Ubuntu 20.04 / CUDA 11.8 / cuDNN 8.9 / TensorRT 8.6.1.6</li>
+                      <li>paddlepaddle 3.0.0 / paddleocr 3.0.3</li>
                   </ul>
               </li>
           </ul>
@@ -534,7 +539,7 @@ By default, GPU 0 is used; if unavailable, CPU is used.
 <td><code>use_tensorrt</code></td>
 <td>Whether to enable the TensorRT subgraph engine of Paddle Inference.<br/>
 For Paddle with CUDA 11.8, the compatible TensorRT version is 8.x (x>=6), recommended 8.6.1.6.<br/>
-For Paddle with CUDA 12.6, the compatible TensorRT version is 10.x (x>=5), recommended 10.5.0.18.
+
 </td>
 <td><code>bool</code></td>
 <td><code>False</code></td>

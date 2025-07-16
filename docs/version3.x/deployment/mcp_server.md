@@ -5,7 +5,7 @@
 
 本项目提供轻量级的 [Model Context Protocol（MCP）](https://modelcontextprotocol.io/introduction) 服务器，旨在将 PaddleOCR 的能力集成到各种大模型应用中。
 
-主要功能如下：
+### 主要功能如下：
 
 - **当前支持的工具**
     - **OCR**：对图像和 PDF 文件进行文本检测与识别。
@@ -14,6 +14,53 @@
     - **本地 Python 库**：在本机直接运行 PaddleOCR 产线。此模式对本地环境与计算机性能有一定要求，适用于需要离线使用、对数据隐私有严格要求的场景。
     - **星河社区服务**：调用托管在 [飞桨星河社区](https://aistudio.baidu.com/pipeline/mine) 的服务。此模式适合快速体验功能、快速验证方案等，也适用于零代码开发场景。
     - **自托管服务**：调用用户自托管的 PaddleOCR 服务。此模式具备服务化部署优势及高度灵活性，适用于需要自定义服务配置的场景，同时也适用于对数据隐私有严格要求的场景。**目前暂时只支持基础服务化部署方案。**
+
+## 示例：
+以下展示了使用 PaddleOCR MCP 服务器结合其他工具搭建的创意案例：
+
+### Demo 1
+在 Claude for Desktop 中，提取图像中的手写内容，并存到笔记软件 Notion。PaddleOCR MCP 服务器从图像中提取了文字、公式等信息，并保留了文档的结构。
+<div align="center">
+  <img width="65%" src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/paddleocr/mcp_demo/note_to_notion.gif" alt="note_to_notion">
+  <img width="30%" src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/paddleocr/mcp_demo/note.jpg" alt="note">
+</div>
+
+- 注: 除 PaddleOCR MCP 服务器外，此 demo 还使用 [Notion MCP 服务器](https://developers.notion.com/docs/mcp)。
+
+---
+
+### Demo 2
+在 VSCode 中，根据手写思路或伪代码一键转换为可运行并符合项目代码风格规范的 Python 脚本，并将其上传到 GitHub 仓库中。PaddleOCR MCP 服务器从图像中准确提取手写代码供后续步骤使用。
+
+<div align="center">
+  <img width="70%" img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/paddleocr/mcp_demo/code_to_github.gif" alt="code_to_github">
+</div>
+
+- 除 PaddleOCR MCP 服务器外，此 demo 还使用 [filesystem MCP 服务器](https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem)。
+
+---
+
+### Demo 3
+在 Claude for Desktop 中，将含有复杂表格、公式、手写文字等内容的 PDF 文档或图片转存为本地可编辑文件。
+
+#### Demo 3.1
+含表格水印复杂文档PDF 转为 doc/Word 可编辑格式：
+<div align="center">
+  <img width="70%" img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/paddleocr/mcp_demo/pdf_to_file.gif" alt="pdf_to_file">
+</div>
+
+#### Demo 3.2
+含公式表格图片转为 csv/Excel 可编辑格式：
+<div align="center">
+  <img width="70%" img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/00136903a4d0b5f11bd978cb0ef5d3c44f3aa5e9/images/paddleocr/mcp_demo/table_to_excel1.png" alt="table_to_excel1">
+  <img width="50%" img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/00136903a4d0b5f11bd978cb0ef5d3c44f3aa5e9/images/paddleocr/mcp_demo/table_to_excel2.png" alt="table_to_excel2">
+  <img width="45%" img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/00136903a4d0b5f11bd978cb0ef5d3c44f3aa5e9/images/paddleocr/mcp_demo/table_to_excel3.png" alt="table_to_excel3">
+</div>
+
+
+- 除 PaddleOCR MCP 服务器外，此 demo 还使用 [filesystem MCP 服务器](https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem)。
+
+---
 
 ### 目录
 
@@ -39,7 +86,7 @@
 
 ```bash
 # 安装 wheel 包
-pip install https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/mcp/paddleocr_mcp/releases/v0.1.0/paddleocr_mcp-0.1.0-py3-none-any.whl
+pip install https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/mcp/paddleocr_mcp/releases/v0.2.0/paddleocr_mcp-0.2.0-py3-none-any.whl
 
 # 或者，从项目源码安装
 # git clone https://github.com/PaddlePaddle/PaddleOCR.git
@@ -52,14 +99,7 @@ pip install https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/mcp/pa
 paddleocr_mcp --help
 ```
 
-如果执行上述命令后打印出了帮助信息，则说明安装成功。本项目依赖 python-magic 库。如果在执行上述命令时出现如下错误提示：
-
-```
-...
-ImportError: failed to find libmagic.  Check your installation
-```
-
-很可能是因为缺少 python-magic 库所需的底层库。请参考 [python-magic 官方文档](https://github.com/ahupp/python-magic?tab=readme-ov-file#installation) 完成相应依赖库的安装。
+如果执行上述命令后打印出了帮助信息，则说明安装成功。
 
 ## 2. 在 Claude for Desktop 中使用
 
@@ -75,7 +115,7 @@ ImportError: failed to find libmagic.  Check your installation
 
 2. **准备星河社区服务**
 
-    - 访问 [飞桨星河社区](https://aistudio.baidu.com/pipeline/mine) 并登录。**请注意，目前星河社区要求用户绑定中国大陆手机号。** 如果您不具备此条件，请考虑使用其他工作模式。
+    - 访问 [飞桨星河社区](https://aistudio.baidu.com/pipeline/mine) 并登录。
     - 在左侧"更多内容"下的 "PaddleX 产线" 部分，依次点击：【创建产线】 - 【OCR】- 【通用OCR】-【直接部署】-【开始部署】。
     - 部署成功后，获取您的 **服务基础 URL**（示例：`https://xxxxxx.aistudio-hub.baidu.com`）。
     - 在 [此页面](https://aistudio.baidu.com/index/accessToken) 获取您的 **访问令牌**。
@@ -243,7 +283,7 @@ ImportError: failed to find libmagic.  Check your installation
           "command": "uvx",
           "args": [
             "--from",
-            "paddleocr-mcp@https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/mcp/paddleocr_mcp/releases/v0.1.0/paddleocr_mcp-0.1.0-py3-none-any.whl",
+            "paddleocr-mcp@https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/mcp/paddleocr_mcp/releases/v0.2.0/paddleocr_mcp-0.2.0-py3-none-any.whl",
             "paddleocr_mcp"
           ],
           "env": {

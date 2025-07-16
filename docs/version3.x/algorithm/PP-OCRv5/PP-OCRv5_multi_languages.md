@@ -2,21 +2,41 @@
 comments: true
 ---
 
-# 一、PP-OCRv5多语种文本识别介绍
+# 一、PP-OCRv5多语种文字识别介绍
 
 
-PP-OCRv5 是 PP-OCR 系列的最新一代文字识别解决方案，专注于多场景、多语种的文字识别任务。在文字类型支持方面，默认配置的识别模型可准确识别简体中文、中文拼音、繁体中文、英文和日文这五大主流文字类型。同时，PP-OCRv5还提供了覆盖37种语言的多语种识别能力，包括韩文、西班牙文、法文、葡萄牙文、德文、意大利文、俄罗斯文等（具体支持语种及缩写详见[第四节](#四-支持语种及缩写)）。相较于前代 PP-OCRv3 版本，PP-OCRv5 在多语言识别准确率上实现了超过30%的提升。
+[PP-OCRv5](./PP-OCRv5.md) 是 PP-OCR 系列的最新一代文字识别解决方案，专注于多场景、多语种的文字识别任务。在文字类型支持方面，默认配置的识别模型可准确识别简体中文、中文拼音、繁体中文、英文和日文这五大主流文字类型。同时，PP-OCRv5还提供了覆盖37种语言的多语种文字识别能力，包括韩文、西班牙文、法文、葡萄牙文、德文、意大利文、俄罗斯文等（具体支持语种及缩写详见[第四节](#四-支持语种及缩写)）。相较于前代 PP-OCRv3 版本，PP-OCRv5 在多语言文字识别准确率上实现了超过30%的提升。
 
+<div align="center">
+  <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/pipelines/ocr/french_0_res.jpg" alt="法文识别结" width="500"/>
+  <br>
+  <b>法文识别结果</b>
+</div>
 
-![img](https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/pipelines/ocr/japan_2_res.jpg)
+<br>
 
-![img](https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/pipelines/ocr/french_0_res.jpg)
+<div align="center">
+  <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/pipelines/ocr/german_0_res.png" alt="德文识别结" width="500"/>
+  <br>
+  <b>德文识别结果</b>
+</div>
 
-![img](https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/pipelines/ocr/german_0_res.png)
+<br>
 
-![img](https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/pipelines/ocr/korean_1_res.jpg)
+<div align="center">
+  <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/pipelines/ocr/korean_1_res.jpg" alt="韩文识别结果" width="500"/>
+  <br>
+  <b>韩文识别结果</b>
+</div>
 
-![img](https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/pipelines/ocr/ru_0.jpeg)
+<br>
+
+<div align="center">
+  <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/pipelines/ocr/ru_0.jpeg" alt="俄文识别结果" width="500"/>
+  <br>
+  <b>俄文识别结果</b>
+</div>
+
 
 ## 二、快速使用
 
@@ -83,10 +103,20 @@ for res in result:
 
 ## 三、指标对比
 
-| 模型 |韩语数据集 精度 (%)|  | 模型 | 拉丁字母语言数据集 精度 (%)|  | 模型| 东斯拉夫语言数据集 精度 (%) |
-|--|--|--|--|--|--|--|--|
-| korean_PP-OCRv5_mobile_rec  | 88.0  |  | latin_PP-OCRv5_mobile_rec   | 84.7  |  | eslav_PP-OCRv5_mobile_rec   | 85.8  |
-| korean_PP-OCRv3_mobile_rec  | 23.0  |  | latin_PP-OCRv3_mobile_rec   | 37.9  |  | cyrillic_PP-OCRv3_mobile_rec| 50.2  |
+| 模型 | 模型下载链接 | 韩语数据集 精度 (%) |
+|-|-|-|
+| korean_PP-OCRv5_mobile_rec |<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/korean_PP-OCRv5_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/korean_PP-OCRv5_mobile_rec_pretrained.pdparams">训练模型</a> | 88.0|
+| korean_PP-OCRv3_mobile_rec | <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/korean_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/korean_PP-OCRv3_mobile_rec_pretrained.pdparams">训练模型</a> | 23.0 |
+
+| 模型 | 模型下载链接 |拉丁字母语言数据集 精度 (%) |
+|-|-|-|
+| latin_PP-OCRv5_mobile_rec | <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/latin_PP-OCRv5_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/latin_PP-OCRv5_mobile_rec_pretrained.pdparams">训练模型</a> | 84.7 |
+| latin_PP-OCRv3_mobile_rec | <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/latin_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/latin_PP-OCRv3_mobile_rec_pretrained.pdparams">训练模型</a> | 37.9 |
+
+| 模型 | 模型下载链接 | 东斯拉夫语言数据集 精度 (%) |
+|-|-|-|
+| eslav_PP-OCRv5_mobile_rec |<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/eslav_PP-OCRv5_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/eslav_PP-OCRv5_mobile_rec_pretrained.pdparams">训练模型</a> | 81.6 |
+| cyrillic_PP-OCRv3_mobile_rec | <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/cyrillic_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/cyrillic_PP-OCRv3_mobile_rec_pretrained.pdparams">训练模型</a> | 50.2 |
 
  **注：**
  - 韩语数据集：PP-OCRv5 最新构建的包含了 5007 张韩语文本图片的识别数据集。
@@ -98,7 +128,7 @@ for res in result:
 | 语种 | 描述 | 缩写 | | 语种 | 描述 | 缩写 |
 | --- | --- | --- | ---|--- | --- | --- |
 | 中文 | Chinese & English | ch | | 匈牙利文 | Hungarian | hu |
-| 英文 | English | en | | 塞尔维亚文（latin） | Serbian(latin) | rslatin |
+| 英文 | English | en | | 塞尔维亚文（latin） | Serbian(latin) | rs_latin |
 | 法文 | French | fr | | 印度尼西亚文 | Indonesian | id |
 | 德文 | German | de | | 欧西坦文 | Occitan | oc |
 | 日文 | Japanese | japan | | 冰岛文 | Icelandic | is |
@@ -118,3 +148,12 @@ for res in result:
 | 乌兹别克文 | Uzbek | uz | | 拉丁文 | Latin | la |
 | 俄罗斯文 | Russian | ru | | 白俄罗斯文 | Belarusian | be |
 | 乌克兰文 | Ukranian | uk | |  |  |  |
+
+
+## 五、模型及其支持的语种
+
+| 模型 | 支持语种 |
+|-|-|
+| korean_PP-OCRv5_mobile_rec | 韩文 |
+| latin_PP-OCRv5_mobile_rec |英文、法文、德文、南非荷兰文、意大利文、西班牙文、波斯尼亚文、葡萄牙文、捷克文、威尔士文、丹麦文、爱沙尼亚文、爱尔兰文、克罗地亚文、乌兹别克文、匈牙利文、塞尔维亚文（latin）、印度尼西亚文、欧西坦文、冰岛文、立陶宛文、毛利文、马来文、荷兰文、挪威文、波兰文、斯洛伐克文、斯洛文尼亚文、阿尔巴尼亚文、瑞典文、西瓦希里文、塔加洛文、土耳其文、拉丁文|
+| eslav_PP-OCRv5_mobile_rec | 俄罗斯文、白俄罗斯文、乌克兰文 |

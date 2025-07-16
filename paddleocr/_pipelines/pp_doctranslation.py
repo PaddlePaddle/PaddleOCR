@@ -256,6 +256,8 @@ class PPDocTranslation(PaddleXPipelineWrapper):
         rules_str=None,
         few_shot_demo_text_content=None,
         few_shot_demo_key_value_list=None,
+        glossary=None,
+        llm_request_interval=0.0,
         chat_bot_config=None,
         **kwargs,
     ):
@@ -268,6 +270,8 @@ class PPDocTranslation(PaddleXPipelineWrapper):
             rules_str=rules_str,
             few_shot_demo_text_content=few_shot_demo_text_content,
             few_shot_demo_key_value_list=few_shot_demo_key_value_list,
+            glossary=glossary,
+            llm_request_interval=llm_request_interval,
             chat_bot_config=chat_bot_config,
             **kwargs,
         )
@@ -283,6 +287,8 @@ class PPDocTranslation(PaddleXPipelineWrapper):
         rules_str=None,
         few_shot_demo_text_content=None,
         few_shot_demo_key_value_list=None,
+        glossary=None,
+        llm_request_interval=0.0,
         chat_bot_config=None,
         **kwargs,
     ):
@@ -296,6 +302,8 @@ class PPDocTranslation(PaddleXPipelineWrapper):
                 rules_str=rules_str,
                 few_shot_demo_text_content=few_shot_demo_text_content,
                 few_shot_demo_key_value_list=few_shot_demo_key_value_list,
+                glossary=glossary,
+                llm_request_interval=llm_request_interval,
                 chat_bot_config=chat_bot_config,
                 **kwargs,
             )
@@ -849,13 +857,11 @@ class PPDocTranslationCLISubcommandExecutor(PipelineCLISubcommandExecutor):
         subparser.add_argument(
             "--use_doc_orientation_classify",
             type=str2bool,
-            default=False,
             help="Whether to use document image orientation classification.",
         )
         subparser.add_argument(
             "--use_doc_unwarping",
             type=str2bool,
-            default=False,
             help="Whether to use text image unwarping.",
         )
         subparser.add_argument(
@@ -881,7 +887,6 @@ class PPDocTranslationCLISubcommandExecutor(PipelineCLISubcommandExecutor):
         subparser.add_argument(
             "--use_chart_recognition",
             type=str2bool,
-            default=False,
             help="Whether to use chart recognition.",
         )
         subparser.add_argument(

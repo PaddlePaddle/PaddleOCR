@@ -7,40 +7,66 @@
 [English](./README.md) | 简体中文 | [繁體中文](./README_tcn.md) | [日本語](./README_ja.md) | [한국어](./README_ko.md) | [Français](./README_fr.md) | [Русский](./README_ru.md) | [Español](./README_es.md) | [العربية](./README_ar.md)
 
 <!-- icon -->
-
 [![stars](https://img.shields.io/github/stars/PaddlePaddle/PaddleOCR?color=ccf)](https://github.com/PaddlePaddle/PaddleOCR)
-[![Downloads](https://img.shields.io/pypi/dm/paddleocr)](https://pypi.org/project/PaddleOCR/)
+[![arXiv](https://img.shields.io/badge/arXiv-2409.18839-b31b1b.svg?logo=arXiv)](https://arxiv.org/pdf/2507.05595)
+[![PyPI Downloads](https://static.pepy.tech/badge/paddleocr/month)](https://pepy.tech/projectsproject/paddleocr)
+[![PyPI Downloads](https://static.pepy.tech/badge/paddleocr)](https://pepy.tech/projects/paddleocr)
+[![Used by](https://img.shields.io/badge/Used%20by-5.8k%2B%20repositories-blue)](https://github.com/PaddlePaddle/PaddleOCR/network/dependents)
+
 ![python](https://img.shields.io/badge/python-3.8~3.12-aff.svg)
 ![os](https://img.shields.io/badge/os-linux%2C%20win%2C%20mac-pink.svg)
 ![hardware](https://img.shields.io/badge/hardware-cpu%2C%20gpu%2C%20xpu%2C%20npu-yellow.svg)
+[![License](https://img.shields.io/badge/license-Apache_2.0-green)](./LICENSE)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/PaddlePaddle/PaddleOCR)
 
 
-[![AI Studio](https://img.shields.io/badge/PP_OCRv5-AI_Studio-green)](https://aistudio.baidu.com/community/app/91660/webUI)
-[![AI Studio](https://img.shields.io/badge/PP_StructureV3-AI_Studio-green)](https://aistudio.baidu.com/community/app/518494/webUI)
-[![AI Studio](https://img.shields.io/badge/PP_ChatOCRv4-AI_Studio-green)](https://aistudio.baidu.com/community/app/518493/webUI)
+**PaddleOCR 是业界领先、可直接部署的 OCR 与文档智能引擎，提供从文本识别到文档理解的全流程解决方案**
 
 </div>
 
-## 🚀 简介
-PaddleOCR自发布以来凭借学术前沿算法和产业落地实践，受到了产学研各方的喜爱，并被广泛应用于众多知名开源项目，例如：Umi-OCR、OmniParser、MinerU、RAGFlow等，已成为广大开发者心中的开源OCR领域的首选工具。2025年5月20日，飞桨团队发布**PaddleOCR 3.0**，全面适配**飞桨框架3.0正式版**，进一步**提升文字识别精度**，支持**多文字类型识别**和**手写体识别**，满足大模型应用对**复杂文档高精度解析**的旺盛需求，结合**ERNIE 4.5 Turbo**显著提升关键信息抽取精度，并新增**对昆仑芯、昇腾等国产硬件**的支持。完整使用文档请参考 [PaddleOCR 3.0 文档](https://paddlepaddle.github.io/PaddleOCR/latest/)。
+# PaddleOCR
+[![Framework](https://img.shields.io/badge/飞桨框架-3.0-orange)](https://www.paddlepaddle.org.cn/)
+[![Accuracy](https://img.shields.io/badge/识别精度-🏆-green)](#)
+[![Multi-Language](https://img.shields.io/badge/支持语言-80+-brightgreen)](#)
+[![Handwriting](https://img.shields.io/badge/手写体识别-✓-success)](#)
+[![Hardware](https://img.shields.io/badge/国产硬件-昆仑芯｜昇腾-red)](#)
 
-PaddleOCR 3.0**新增**三大特色能力：
-- 全场景文字识别模型[PP-OCRv5](docs/version3.x/algorithm/PP-OCRv5/PP-OCRv5.md)：单模型支持五种文字类型和复杂手写体识别；整体识别精度相比上一代**提升13个百分点**。[在线体验](https://aistudio.baidu.com/community/app/91660/webUI)
-- 通用文档解析方案[PP-StructureV3](docs/version3.x/algorithm/PP-StructureV3/PP-StructureV3.md)：支持多场景、多版式 PDF 高精度解析，在公开评测集中**领先众多开源和闭源方案**。[在线体验](https://aistudio.baidu.com/community/app/518494/webUI)
-- 智能文档理解方案[PP-ChatOCRv4](docs/version3.x/algorithm/PP-ChatOCRv4/PP-ChatOCRv4.md)：原生支持ERNIE 4.5 Turbo，精度相比上一代**提升15个百分点**。[在线体验](https://aistudio.baidu.com/community/app/518493/webUI)
+> [!TIP]
+> PaddleOCR 现已提供 MCP服务器，支持与 Claude Desktop 等Agent应用集成。详情请参考 [PaddleOCR MCP 服务器](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/deployment/mcp_server.html)。
+>
+> PaddleOCR 3.0 技术报告现已发布，详情请参考：[PaddleOCR 3.0 Technical Report](https://arxiv.org/pdf/2507.05595 )
+
+
+**PaddleOCR** 将文档和图像转换为**结构化、AI友好的数据**（如JSON和Markdown），**精度达到行业领先水平**——为全球从独立开发者，初创企业和大型企业的AI应用提供强力支撑。凭借**50,000+星标**和**MinerU、RAGFlow、OmniParser**等头部项目的深度集成，PaddleOCR已成为**AI时代**开发者构建智能文档等应用的**首选解决方案**。
+
+### PaddleOCR 3.0 **核心能力**
+
+[![AI Studio](https://img.shields.io/badge/PP_OCRv5-Demo_on_AI_Studio-green)](https://aistudio.baidu.com/community/app/91660/webUI)
+[![AI Studio](https://img.shields.io/badge/PP_StructureV3-Demo_on_AI_Studio-green)](https://aistudio.baidu.com/community/app/518494/webUI)
+[![AI Studio](https://img.shields.io/badge/PP_ChatOCRv4-Demo_on_AI_Studio-green)](https://aistudio.baidu.com/community/app/518493/webUI)
+[![ModelScope](https://img.shields.io/badge/🤖_Demo_on_ModelScope-purple)](https://www.modelscope.cn/organization/PaddlePaddle)
+[![HuggingFace](https://img.shields.io/badge/Demo_on_HuggingFace-purple.svg?logo=huggingface)](https://huggingface.co/PaddlePaddle)
+
+- **PP-OCRv5 — 全场景文字识别**  
+  **单模型支持五种文字类型**（简中、繁中、英文、日文及拼音），精度提升**13个百分点**。解决多语言混合文档的识别难题。
+
+- **PP-StructureV3 — 复杂文档解析**  
+  将复杂PDF和文档图像智能转换为保留**原始结构的Markdown文件和JSON**文件，在公开评测中**领先**众多商业方案。**完美保持文档版式和层次结构**。
+
+- **PP-ChatOCRv4 — 智能信息抽取**  
+  原生集成ERNIE 4.5，从海量文档中**精准提取关键信息**，精度较上一代提升15个百分点。让文档"**听懂**"您的问题并给出准确答案。
 
 PaddleOCR 3.0除了提供优秀的模型库外，还提供好学易用的工具，覆盖模型训练、推理和服务化部署，方便开发者快速落地AI应用。
 <div align="center">
   <p>
-      <img width="100%" src="./docs/images/Arch_cn.png" alt="PaddleOCR Architecture">
+      <img width="100%" src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/paddleocr/README/Arch_cn.jpg" alt="PaddleOCR Architecture">
   </p>
 </div>
-
 
 ## 📣 最新动态
 
 
-🔥🔥2025.06.29: **PaddleOCR 3.1.0** 发布，新增能力如下：
+2025.06.29: **PaddleOCR 3.1.0** 发布，新增能力如下：
 
 - **重要模型和产线：**
   - **新增 PP-OCRv5 多语种文本识别模型**，支持法语、西班牙语、葡萄牙语、俄语、韩语等 37 种语言的文字识别模型的训推流程。**平均精度涨幅超30%。**[详情](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/algorithm/PP-OCRv5/PP-OCRv5_multi_languages.html)
@@ -54,11 +80,13 @@ PaddleOCR 3.0除了提供优秀的模型库外，还提供好学易用的工具�
 
 - **文档优化：** 优化了部分使用文档描述，提升阅读体验。
 
-2025.06.26: **PaddleOCR 3.0.3** 发布，包含：
+<details>
+    <summary><strong>2025.06.26: PaddleOCR 3.0.3 发布</strong></summary>
 - Bug修复：修复`enable_mkldnn`参数不生效的问题，恢复CPU默认使用MKL-DNN推理的行为。
+</details>
 
-2025.06.19: **PaddleOCR 3.0.2** 发布，包含：
-
+<details>
+    <summary><strong>2025.06.19: PaddleOCR 3.0.2 发布</strong></summary>
 - **功能新增：**
   - 模型默认下载源从`BOS`改为`HuggingFace`，同时也支持用户通过更改环境变量`PADDLE_PDX_MODEL_SOURCE`为`BOS`，将模型下载源设置为百度云对象存储BOS。
   - PP-OCRv5、PP-StructureV3、PP-ChatOCRv4等pipeline新增C++、Java、Go、C#、Node.js、PHP 6种语言的服务调用示例。
@@ -88,6 +116,7 @@ PaddleOCR 3.0除了提供优秀的模型库外，还提供好学易用的工具�
 
 - **其他：**
   - 放松numpy、pandas等依赖的版本限制，恢复对Python 3.12的支持。
+</details>
 
 <details>
     <summary><strong>历史日志</strong></summary>
@@ -335,10 +364,13 @@ PaddleOCR 的发展离不开社区贡献！💗衷心感谢所有开发者、合
 ## 🎓 学术引用
 
 ```
-@misc{paddleocr2020,
-title={PaddleOCR, Awesome multilingual OCR toolkits based on PaddlePaddle.},
-author={PaddlePaddle Authors},
-howpublished = {\url{https://github.com/PaddlePaddle/PaddleOCR}},
-year={2020}
+@misc{cui2025paddleocr30technicalreport,
+      title={PaddleOCR 3.0 Technical Report}, 
+      author={Cheng Cui and Ting Sun and Manhui Lin and Tingquan Gao and Yubo Zhang and Jiaxuan Liu and Xueqing Wang and Zelun Zhang and Changda Zhou and Hongen Liu and Yue Zhang and Wenyu Lv and Kui Huang and Yichao Zhang and Jing Zhang and Jun Zhang and Yi Liu and Dianhai Yu and Yanjun Ma},
+      year={2025},
+      eprint={2507.05595},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV},
+      url={https://arxiv.org/abs/2507.05595}
 }
 ```
