@@ -1,0 +1,29 @@
+这张图片展示了一份关于保险索赔服务投资的报告，标题为“Investment within claims services requires investors and managers to consider the varying importance of certain characteristics.”（投资于索赔服务需要投资者和管理者考虑某些特征的不同重要性）。图片中列出了四种不同的业务类型，并详细描述了每种业务类型的特征、人才、技术实现和并购机会。
+
+1. **Loss adjusting**（损失调整）：
+   - **Commercial structure**（商业结构）：基于项目和损失事件，支持长期合作伙伴关系和技术服务。
+   - **Talent**（人才）：由个人人力资本推动，资深调整员具备深厚的专业知识。
+   - **Tech enablement**（技术实现）：复杂，大部分手动流程，有潜力通过技术（如无人机、数据分析、视频报告）进行增强。
+   - **M&A opportunity**（并购机会）：低到中等，专注于选择性并购以增加能力。
+
+2. **Claims services**（索赔服务）：
+   - **WC, P&C, and TPA**（工伤保险、财产和责任保险、第三方管理）：
+     - **Commercial structure**：基于长期合同和采购，由高利润的辅助服务支持。
+     - **Talent**：由人力资本增强，桌面调整员和案件经理通常负责客户关怀。
+     - **Tech enablement**：部分自动化流程，有潜力利用技术平台处理索赔。
+     - **M&A opportunity**：强大的非有机增长机会，长期基于碎片化市场的跑道。
+
+3. **Third-party administrator (TPA)**（第三方管理）：
+   - **Assistance**（援助）：
+     - **Commercial structure**：基于长期合同和采购，通常为高流量损失。
+     - **Talent**：需要技术专长，经过培训的员工具备医疗、监管和物流流程知识。
+     - **Tech enablement**：专业端到端平台支持技术流程，通常有高患者护理标准。
+     - **M&A opportunity**：较小的机会，基于选择性关注的小型收购机会。
+
+4. **Claims tech and specialist services**（索赔技术和专业服务）：
+   - **Commercial structure**：基于年度收入，由许可费和行业专业知识支持。
+   - **Talent**：技术专长的重要性因业务线而异。
+   - **Tech enablement**：基于技术的解决方案提供多线集成和互补能力。
+   - **M&A opportunity**：中等机会，全球范围内（例如，美国为基础的第三方管理系统的政策管理）。
+
+图片底部注明了“McKinsey & Company”和“Investing in insurance: The value imperative 8”字样，表明这是麦肯锡公司关于保险投资价值的研究报告的一部分。

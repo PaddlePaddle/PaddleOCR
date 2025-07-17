@@ -1,0 +1,20 @@
+这是一张包含联系信息的页面截图，标题为“Contacts”。页面分为两个部分：“Authors”和“Regional leadership contacts”。
+
+在“Authors”部分，列出了几位作者及其职位和所在城市，包括：
+- Ashet Mehta，高级合伙人，纽约
+- Karim Thomas，合伙人，硅谷
+- Klaus Dallérup，高级合伙人，哥本哈根
+- Luca Pancaldi，高级合伙人，米兰
+- Miklos Dietz，高级合伙人，温哥华
+- Pradip Patath，高级合伙人，迈阿密
+- Valeria Laszlo，全景高级资产负责人，布达佩斯
+- Vik Sohoni，高级合伙人，芝加哥
+
+在“Regional leadership contacts”部分，列出了不同地区的领导联系人，包括：
+- 亚洲：Renny Thomas，高级合伙人，孟买
+- 欧洲：Stephanie Hauser，高级合伙人，伦敦
+- 拉丁美洲：Felipe Villarreal，高级合伙人，巴拿马
+- 中东和非洲：Luis Cunha，高级合伙人，卡萨布兰卡
+- 北美：Ishaan Seth，高级合伙人，纽约
+
+每个联系人的名字旁边都有他们的电子邮件地址，格式为“名字.姓氏@mckinsey.com”。页面底部有“Global Banking Annual Review 2024: Attaining escape velocity”字样，表明这是麦肯锡公司的一个年度报告的一部分。
