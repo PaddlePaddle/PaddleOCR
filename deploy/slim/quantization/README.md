@@ -1,5 +1,5 @@
-
 # PP-OCR模型量化
+
 复杂的模型有利于提高模型的性能，但也导致模型中存在一定冗余，模型量化将全精度缩减到定点数减少这种冗余，达到减少模型计算复杂度，提高模型推理性能的目的。
 模型量化可以在基本不损失模型的精度的情况下，将FP32精度的模型参数转换为Int8精度，减小模型参数大小并加速计算，使用量化后的模型在移动端等部署时更具备速度优势。
 
@@ -8,11 +8,12 @@
 
 在开始本教程之前，建议先了解[PaddleOCR模型的训练方法](../../../doc/doc_ch/training.md)以及[PaddleSlim](https://paddleslim.readthedocs.io/zh_CN/latest/index.html)
 
-
 ## 快速开始
+
 量化多适用于轻量模型在移动端的部署，当训练出一个模型后，如果希望进一步的压缩模型大小并加速预测，可使用量化的方法压缩模型。
 
 模型量化主要包括五个步骤：
+
 1. 安装 PaddleSlim
 2. 准备训练好的模型
 3. 量化训练
@@ -22,7 +23,7 @@
 ### 1. 安装PaddleSlim
 
 ```bash
-pip3 install paddleslim==2.3.2
+pip3 install paddleslim
 ```
 
 ### 2. 准备训练好的模型
@@ -30,10 +31,11 @@ pip3 install paddleslim==2.3.2
 PaddleOCR提供了一系列训练好的[模型](../../../doc/doc_ch/models_list.md)，如果待量化的模型不在列表中，需要按照[常规训练](../../../doc/doc_ch/quickstart.md)方法得到训练好的模型。
 
 ### 3. 量化训练
+
 量化训练包括离线量化训练和在线量化训练，在线量化训练效果更好，需加载预训练模型，在定义好量化策略后即可对模型进行量化。
 
-
 量化训练的代码位于slim/quantization/quant.py 中，比如训练检测模型，以PPOCRv3检测模型为例，训练指令如下：
+
 ```
 # 下载检测预训练模型：
 wget https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_distill_train.tar
@@ -41,6 +43,7 @@ tar xf ch_PP-OCRv3_det_distill_train.tar
 
 python deploy/slim/quantization/quant.py -c configs/det/ch_PP-OCRv3/ch_PP-OCRv3_det_cml.yml -o Global.pretrained_model='./ch_PP-OCRv3_det_distill_train/best_accuracy'   Global.save_model_dir=./output/quant_model_distill/
 ```
+
 如果要训练识别模型的量化，修改配置文件和加载的模型参数即可。
 
 ### 4. 导出模型
