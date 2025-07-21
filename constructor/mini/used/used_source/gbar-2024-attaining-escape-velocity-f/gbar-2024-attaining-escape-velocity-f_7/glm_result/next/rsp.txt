@@ -1,0 +1,27 @@
+这张图片展示了银行业不同子行业的表现，具体内容如下：
+
+1. **标题**：图片的标题是“Performance in the banking industry varies across and within subsectors.”（银行业在不同子行业的表现各异）。
+
+2. **图表类型**：这是一张堆叠柱状图，显示了2023年各子行业的有形权益回报率（ROTE）的分布。
+
+3. **子行业**：图表中列出了以下子行业：
+   - Financial exchange and trading venue（金融交易所和交易场所）
+   - Consumer finance（消费金融）
+   - Wealth management and brokerage（财富管理和经纪）
+   - Asset management and custody banks（资产管理及托管银行）
+   - Investment banking and brokerage（投资银行和经纪）
+   - Payments（支付）
+   - Universal and commercial banks（全能和商业银行）
+   - Specialized finance（专业金融）
+
+4. **ROTE分布**：每个子行业都有不同的ROTE分布，从8%到54%不等。例如，金融交易所和交易场所的ROTE分布为54%、38%、16%和2%。
+
+5. **平均ROTE和价格与账面比率**：图表底部显示了每个子行业的平均ROTE和价格与账面比率（Price-to-book ratio）。例如，金融交易所和交易场所的平均ROTE为22%，价格与账面比率为3.1x。
+
+6. **数据来源**：数据来源于McKinsey & Company，基于约3000家金融机构的数据。
+
+7. **附加信息**：图片下方还有一些文字，讨论了银行业在提高生产力和规模方面的挑战，以及如何通过削减成本来维持ROTE。
+
+8. **引用**：图片底部引用了Gregor Petrini、Jeff Casey和Debbie Buckland在2023年12月4日发布的报告。
+
+这张图片提供了银行业不同子行业在2023年的表现数据，以及一些相关的分析和讨论。

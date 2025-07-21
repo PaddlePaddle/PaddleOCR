@@ -1,0 +1,34 @@
+这是一张来自麦肯锡公司的图表，标题为“Companies are slow to create the business case for advanced planning and scheduling systems.”（公司对于创建先进计划与调度系统的商业案例进展缓慢）。图表展示了不同公司在APS（先进计划与调度）系统部署阶段中商业案例的状态。
+
+图表分为三个阶段：Blueprinting（蓝图规划）、Piloting（试点）、Deploying（部署）。每个阶段都有四个状态：
+
+1. >10% of business case（商业案例超过10%）
+2. In line with business case（与商业案例一致）
+3. <10% of business case（商业案例低于10%）
+4. No business case yet（尚未有商业案例）
+
+具体数据如下：
+
+- **Blueprinting（蓝图规划）阶段**：
+  - >10% of business case：8%
+  - In line with business case：17%
+  - <10% of business case：67%
+  - No business case yet：8%
+
+- **Piloting（试点）阶段**：
+  - >10% of business case：8%
+  - In line with business case：50%
+  - <10% of business case：33%
+  - No business case yet：8%
+
+- **Deploying（部署）阶段**：
+  - >10% of business case：6%
+  - In line with business case：54%
+  - <10% of business case：29%
+  - No business case yet：11%
+
+图表下方有注释说明，数据可能因为四舍五入而不完全相加至100%。数据来源是麦肯锡全球供应链领导者调查，时间为2024年4月26日至6月10日，共88位受访者。
+
+图表下方的文字部分提到，尽管公司在改进供应链管理系统的理解方面取得了进展，但供应链弹性提升活动进展缓慢。受访者意识到供应链管理系统的局限性，并连续第二年看到对供应链更深层次的理解有所下降。
+
+整体来看，这张图表和文字反映了公司在实施先进计划与调度系统时面临的挑战和进展缓慢的现状。
