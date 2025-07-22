@@ -36,7 +36,7 @@ Tres nuevas características principales en PaddleOCR 3.0:
 Además de proporcionar una excelente biblioteca de modelos, PaddleOCR 3.0 también ofrece herramientas fáciles de usar que cubren el entrenamiento de modelos, la inferencia y el despliegue de servicios, para que los desarrolladores puedan llevar rápidamente las aplicaciones de IA a producción.
 <div align="center">
   <p>
-      <img width="100%" src="../docs/images/Arch.png" alt="Arquitectura de PaddleOCR">
+      <img width="100%" src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/paddleocr/README/Arch.jpg" alt="PaddleOCR Architecture">
   </p>
 </div>
 
