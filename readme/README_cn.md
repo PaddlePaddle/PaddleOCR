@@ -1,10 +1,10 @@
 <div align="center">
   <p>
-      <img width="100%" src="./docs/images/Banner_cn.png" alt="PaddleOCR Banner">
+      <img width="100%" src="../docs/images/Banner_cn.png" alt="PaddleOCR Banner">
   </p>
 
 <!-- language -->
-[English](./README.md) | 简体中文 | [繁體中文](./README_tcn.md) | [日本語](./README_ja.md) | [한국어](./README_ko.md) | [Français](./README_fr.md) | [Русский](./README_ru.md) | [Español](./README_es.md) | [العربية](./README_ar.md)
+[English](../README.md) | 简体中文 | [繁體中文](./README_tcn.md) | [日本語](./README_ja.md) | [한국어](./README_ko.md) | [Français](./README_fr.md) | [Русский](./README_ru.md) | [Español](./README_es.md) | [العربية](./README_ar.md)
 
 <!-- icon -->
 [![stars](https://img.shields.io/github/stars/PaddlePaddle/PaddleOCR?color=ccf)](https://github.com/PaddlePaddle/PaddleOCR)
@@ -16,7 +16,7 @@
 ![python](https://img.shields.io/badge/python-3.8~3.12-aff.svg)
 ![os](https://img.shields.io/badge/os-linux%2C%20win%2C%20mac-pink.svg)
 ![hardware](https://img.shields.io/badge/hardware-cpu%2C%20gpu%2C%20xpu%2C%20npu-yellow.svg)
-[![License](https://img.shields.io/badge/license-Apache_2.0-green)](./LICENSE)
+[![License](https://img.shields.io/badge/license-Apache_2.0-green)](../LICENSE)
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/PaddlePaddle/PaddleOCR)
 
 
@@ -317,13 +317,13 @@ print(chat_result)
 
 <div align="center">
   <p>
-       <img width="100%" src="./docs/images/demo.gif" alt="PP-OCRv5 Demo">
+       <img width="100%" src="../docs/images/demo.gif" alt="PP-OCRv5 Demo">
   </p>
 </div>
 
 <div align="center">
   <p>
-      <img width="100%" src="./docs/images/blue_v3.gif" alt="PP-StructureV3 Demo">
+      <img width="100%" src="../docs/images/blue_v3.gif" alt="PP-StructureV3 Demo">
   </p>
 </div>
 
@@ -344,7 +344,7 @@ PaddleOCR 的发展离不开社区贡献！💗衷心感谢所有开发者、合
 | [QAnything](https://github.com/netease-youdao/QAnything)<a href="https://github.com/netease-youdao/QAnything"><img src="https://img.shields.io/github/stars/netease-youdao/QAnything"></a> |基于任意内容的问答系统|
 | [PDF-Extract-Kit](https://github.com/opendatalab/PDF-Extract-Kit) <a href="https://github.com/opendatalab/PDF-Extract-Kit"><img src="https://img.shields.io/github/stars/opendatalab/PDF-Extract-Kit"></a>|高效复杂PDF文档提取工具包|
 | [Dango-Translator](https://github.com/PantsuDango/Dango-Translator)<a href="https://github.com/PantsuDango/Dango-Translator"><img src="https://img.shields.io/github/stars/PantsuDango/Dango-Translator"></a> |屏幕实时翻译工具|
-| [更多项目](./awesome_projects.md) | |
+| [更多项目](../awesome_projects.md) |  [更多基于PaddleOCR的项目](../awesome_projects.md) |
 
 ## 👩‍👩‍👧‍👦 贡献者
 

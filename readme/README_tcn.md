@@ -1,10 +1,10 @@
 <div align="center">
   <p>
-      <img width="100%" src="./docs/images/Banner_cn.png" alt="PaddleOCR 橫幅">
+      <img width="100%" src="../docs/images/Banner_cn.png" alt="PaddleOCR 橫幅">
   </p>
 
 <!-- language -->
-[English](./README.md) | [简体中文](./README_cn.md) | 繁體中文 | [日本語](./README_ja.md) | [한국어](./README_ko.md) | [Français](./README_fr.md) | [Русский](./README_ru.md) | [Español](./README_es.md) | [العربية](./README_ar.md)
+[English](../README.md) | [简体中文](./README_cn.md) | 繁體中文 | [日本語](./README_ja.md) | [한국어](./README_ko.md) | [Français](./README_fr.md) | [Русский](./README_ru.md) | [Español](./README_es.md) | [العربية](./README_ar.md)
 
 <!-- icon -->
 
@@ -32,7 +32,7 @@ PaddleOCR 3.0 **新增**三大特色功能：
 除了提供優秀的模型庫，PaddleOCR 3.0 還提供好學易用的工具，涵蓋模型訓練、推論及服務化部署，方便開發者快速將 AI 應用落地。
 <div align="center">
   <p>
-      <img width="100%" src="./docs/images/Arch_cn.png" alt="PaddleOCR 架構">
+      <img width="100%" src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/paddleocr/README/Arch_cn.jpg" alt="PaddleOCR Architecture">
   </p>
 </div>
 
@@ -289,13 +289,13 @@ print(chat_result)
 
 <div align="center">
   <p>
-       <img width="100%" src="./docs/images/demo.gif" alt="PP-OCRv5 Demo">
+       <img width="100%" src="../docs/images/demo.gif" alt="PP-OCRv5 Demo">
   </p>
 </div>
 
 <div align="center">
   <p>
-      <img width="100%" src="./docs/images/blue_v3.gif" alt="PP-StructureV3 Demo">
+      <img width="100%" src="../docs/images/blue_v3.gif" alt="PP-StructureV3 Demo">
   </p>
 </div>
 
@@ -316,7 +316,7 @@ PaddleOCR 的發展離不開社群的貢獻！💗 衷心感謝所有的開發�
 | [QAnything](https://github.com/netease-youdao/QAnything)<a href="https://github.com/netease-youdao/QAnything"><img src="https://img.shields.io/github/stars/netease-youdao/QAnything"></a> |基於任意內容的問答系統|
 | [PDF-Extract-Kit](https://github.com/opendatalab/PDF-Extract-Kit) <a href="https://github.com/opendatalab/PDF-Extract-Kit"><img src="https://img.shields.io/github/stars/opendatalab/PDF-Extract-Kit"></a>|高效複雜 PDF 文件擷取工具套件|
 | [Dango-Translator](https://github.com/PantsuDango/Dango-Translator)<a href="https://github.com/PantsuDango/Dango-Translator"><img src="https://img.shields.io/github/stars/PantsuDango/Dango-Translator"></a> |螢幕即時翻譯工具|
-| [更多專案](./awesome_projects.md) | |
+| [更多專案](../awesome_projects.md) | [更多基於PaddleOCR的項目](../awesome_projects.md) |
 
 ## 👩‍👩‍👧‍👦 貢獻者
 
