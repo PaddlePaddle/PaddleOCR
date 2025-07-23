@@ -1,4 +1,4 @@
-# Executable File Packaging Guide
+# Package PaddleOCR Projects
 
 This guide applies to packaging PaddleOCR projects using PyInstaller.
 

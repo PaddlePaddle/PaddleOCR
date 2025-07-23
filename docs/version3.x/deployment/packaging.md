@@ -1,4 +1,4 @@
-# 打包可执行文件指南
+# 打包PaddleOCR项目
 
 本说明适用于通过PyInstaller打包PaddleOCR项目。
 
