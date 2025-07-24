@@ -34,7 +34,7 @@ paddleocr install_hpi_deps {设备类型}
 
 **注意：**
 
-- **目前 CUDA 12.6 + cuDNN 9.5 的高性能推理仅支持 OpenVINO 和 ONNXRuntime 后端，暂不支持 TensorRT 后端。**
+- **目前 CUDA 12.6 + cuDNN 9.5 的高性能推理仅支持 OpenVINO 和 ONNX Runtime 后端，暂不支持 TensorRT 后端。**
 
 ## 1.2 GPU 环境详细说明
 
