@@ -26,16 +26,24 @@ Only one type of device dependency should exist in the same environment. For Win
 
 **It is recommended to use the official PaddlePaddle Docker image to install high-performance inference dependencies.** The corresponding images for each device type are as follows:
 
-- `cpu`: `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddle:3.0.0`
-- `gpu`:
-    - CUDA 11.8: `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddle:3.0.0-gpu-cuda11.8-cudnn8.9-trt8.6`
+- `cpu`：`ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddle:3.1.0`
+- `gpu`：
+    - CUDA 11.8：`ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddle:3.1.0-gpu-cuda11.8-cudnn8.9`
+- `gpu`：
+    - CUDA 12.6：`ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddle:3.1.0-gpu-cuda12.6-cudnn9.5`
+
+**Notice:**
+
+- **Currently, high-performance inference with CUDA 12.6 and cuDNN 9.5 only supports OpenVINO and ONNXRuntime backends, and does not yet support the TensorRT backend.**
 
 ### 1.2 Detailed GPU Environment Instructions
 
-First, ensure that the environment has the required CUDA and cuDNN versions installed. Currently, PaddleOCR only supports CUDA and cuDNN versions compatible with CUDA 11.8 + cuDNN 8.9. Below are the installation instructions for CUDA 11.8 and cuDNN 8.9:
+First, ensure that the environment has the required CUDA and cuDNN versions installed. Currently, PaddleOCR only supports CUDA and cuDNN versions compatible with CUDA 11.8 + cuDNN 8.9. Below are the installation instructions for CUDA and cuDNN:
 
 - [Install CUDA 11.8](https://developer.nvidia.com/cuda-11-8-0-download-archive)
 - [Install cuDNN 8.9](https://docs.nvidia.com/deeplearning/cudnn/archives/cudnn-890/install-guide/index.html)
+- [Install CUDA 12.6](https://developer.nvidia.com/cuda-12-6-0-download-archive)
+- [Install cuDNN 9.5](https://docs.nvidia.com/deeplearning/cudnn/backend/v9.5.0/installation/linux.html)
 
 If using the official PaddlePaddle image, the CUDA and cuDNN versions in the image already meet the requirements, and no additional installation is needed.
 

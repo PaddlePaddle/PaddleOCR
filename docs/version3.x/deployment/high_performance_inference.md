@@ -26,16 +26,24 @@ paddleocr install_hpi_deps {设备类型}
 
 **推荐使用飞桨官方 Docker 镜像安装高性能推理依赖。** 各设备类型对应的镜像如下：
 
-- `cpu`：`ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddle:3.0.0`
+- `cpu`：`ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddle:3.1.0`
 - `gpu`：
-    - CUDA 11.8：`ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddle:3.0.0-gpu-cuda11.8-cudnn8.9-trt8.6`
+    - CUDA 11.8：`ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddle:3.1.0-gpu-cuda11.8-cudnn8.9`
+- `gpu`：
+    - CUDA 12.6：`ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddle:3.1.0-gpu-cuda12.6-cudnn9.5`
+
+**注意：**
+
+- **目前 CUDA 12.6 + cuDNN 9.5 的高性能推理仅支持 OpenVINO 和 ONNXRuntime 后端，暂不支持 TensorRT 后端。**
 
 ## 1.2 GPU 环境详细说明
 
-首先，需要确保环境中安装有符合要求的 CUDA 与 cuDNN。目前 PaddleOCR 仅支持与 CUDA 11.8 + cuDNN 8.9 兼容的 CUDA 和 cuDNN版本。以下分别是 CUDA 11.8 和 cuDNN 8.9 的安装说明文档：
+首先，需要确保环境中安装有符合要求的 CUDA 与 cuDNN。目前 PaddleOCR 支持与 CUDA 11.8 + cuDNN 8.9 或 CUDA 12.6 + cuDNN 9.5 兼容的 CUDA 和 cuDNN版本。以下分别是 CUDA 和 cuDNN 的安装说明文档：
 
 - [安装 CUDA 11.8](https://developer.nvidia.com/cuda-11-8-0-download-archive)
 - [安装 cuDNN 8.9](https://docs.nvidia.com/deeplearning/cudnn/archives/cudnn-890/install-guide/index.html)
+- [安装 CUDA 12.6](https://developer.nvidia.com/cuda-12-6-0-download-archive)
+- [安装 cuDNN 9.5](https://docs.nvidia.com/deeplearning/cudnn/backend/v9.5.0/installation/linux.html)
 
 如果使用飞桨官方镜像，则镜像中的 CUDA 和 cuDNN 版本已经是满足要求的，无需额外安装。
 
