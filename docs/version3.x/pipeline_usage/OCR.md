@@ -22,6 +22,8 @@ OCR（光学字符识别，Optical Character Recognition）是一种将图像中
 
 在本产线中，您可以根据下方的基准测试数据选择使用的模型。
 
+> 推理耗时仅包含模型推理耗时，不包含前后处理耗时。
+
 <details>
 <summary><b>文档图像方向分类模块（可选）：</b></summary>
 <table>

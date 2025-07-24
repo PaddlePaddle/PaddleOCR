@@ -12,6 +12,8 @@ The primary purpose of text image rectification is to perform geometric transfor
 
 ## 2. Supported Model List
 
+> The inference time only includes the model inference time and does not include the time for pre- or post-processing.
+
 <table>
 <thead>
 <tr>

@@ -10,6 +10,8 @@ The Document Image Orientation Classification Module is primarily designed to di
 
 ## 2. Supported Models List
 
+> The inference time only includes the model inference time and does not include the time for pre- or post-processing.
+
 <table>
 <thead>
 <tr>
