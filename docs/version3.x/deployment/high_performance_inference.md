@@ -62,7 +62,7 @@ pip list | grep nvidia-cudnn
 python -m pip install /usr/local/TensorRT-*/python/tensorrt-*-cp310-none-linux_x86_64.whl
 ```
 
-对于其他非 CUDA 12 环境，请参考 [TensorRT 文档](https://docs.nvidia.com/deeplearning/tensorrt/archives/index.html) 安装 TensorRT。示例如下：
+对于其他环境，请参考 [TensorRT 文档](https://docs.nvidia.com/deeplearning/tensorrt/archives/index.html) 安装 TensorRT。示例如下：
 
 ```bash
 # 下载 TensorRT tar 文件
