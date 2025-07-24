@@ -25,6 +25,8 @@ The PP-ChatOCRv4 pipeline includes the following 9 modules. Each module can be t
 
 In this pipeline, you can choose the model to use based on the benchmark data below.
 
+> The inference time only includes the model inference time and does not include the time for pre- or post-processing.
+
 <details>
 <summary><b>Document Image Orientation Classification Module (Optional):</b></summary>
 <table>

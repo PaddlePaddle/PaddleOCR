@@ -12,6 +12,8 @@ PP-DocTranslation is a document intelligent translation solution provided by Pad
 
 In this pipeline, you can select the model to use based on the benchmark data below.
 
+> The inference time only includes the model inference time and does not include the time for pre- or post-processing.
+
 <details><summary> 👉Model List Details</summary>
 <p><b>Document Image Orientation Classification Module:</b></p>
 <table>

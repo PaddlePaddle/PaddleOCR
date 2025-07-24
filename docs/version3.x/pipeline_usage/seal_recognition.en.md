@@ -21,6 +21,8 @@ The seal text recognition pipeline is used to recognize the text content of seal
 
 In this pipeline, you can choose the model to use based on the benchmark data below.
 
+> The inference time only includes the model inference time and does not include the time for pre- or post-processing.
+
 <details>
 <summary> <b>Layout Region Detection Module (Optional):</b></summary>
 
