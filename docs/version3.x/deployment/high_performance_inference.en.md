@@ -38,7 +38,7 @@ Only one type of device dependency should exist in the same environment. For Win
 
 ### 1.2 Detailed GPU Environment Instructions
 
-First, ensure that the environment has the required CUDA and cuDNN versions installed. Currently, PaddleOCR only supports CUDA and cuDNN versions compatible with CUDA 11.8 + cuDNN 8.9. Below are the installation instructions for CUDA and cuDNN:
+First, ensure that the environment has the required CUDA and cuDNN versions installed. Currently, PaddleOCR supports CUDA and cuDNN versions compatible with CUDA 11.8 + cuDNN 8.9 or CUDA 12.6 + cuDNN 9.5. Below are the installation instructions for CUDA and cuDNN:
 
 - [Install CUDA 11.8](https://developer.nvidia.com/cuda-11-8-0-download-archive)
 - [Install cuDNN 8.9](https://docs.nvidia.com/deeplearning/cudnn/archives/cudnn-890/install-guide/index.html)
