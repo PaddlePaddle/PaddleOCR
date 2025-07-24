@@ -173,7 +173,7 @@ plugins:
             产线概述: Pipeline Overview
             基于Python或C++预测引擎推理: Python and CPP Inference
             MCP 服务器: MCP Server
-            产线并行推理: Parallel Inference
+            产线并行推理: Parallel Inference for Pipelines
         # - locale: ja
         #   name: 日本語
         #   site_name: PaddleOCR ドキュメント
