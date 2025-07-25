@@ -1,12 +1,12 @@
 <div align="center">
     <p>
-        <img width="100%" src="./docs/images/Banner.png" alt="PaddleOCR Banner">
+        <img width="100%" src="../docs/images/Banner.png" alt="PaddleOCR Banner">
     </p>
 
 <!-- language -->
 <p>
 
-[English](./README.md) | [简体中文](./README_cn.md) | [繁體中文](./README_tcn.md) | [日本語](./README_ja.md) | [한국어](./README_ko.md) | [Français](./README_fr.md) | [Русский](./README_ru.md) | [Español](./README_es.md) | العربية
+[English](../README.md) | [简体中文](./README_cn.md) | [繁體中文](./README_tcn.md) | [日本語](./README_ja.md) | [한국어](./README_ko.md) | [Français](./README_fr.md) | [Русский](./README_ru.md) | [Español](./README_es.md) | العربية
 
 <!-- icon -->
 
@@ -32,17 +32,19 @@
 في 20 مايو 2025، كشف فريق PaddlePaddle عن PaddleOCR 3.0، المتوافق تمامًا مع الإصدار الرسمي لإطار العمل **PaddlePaddle 3.0**. يعزز هذا التحديث **دقة التعرف على النصوص**، ويضيف دعمًا لـ **التعرف على أنواع نصوص متعددة** و **التعرف على الكتابة اليدوية**، ويلبي الطلب المتزايد من التطبيقات القائمة على النماذج الكبيرة على **التحليل عالي الدقة للمستندات المعقدة**. عند دمجه مع **ERNIE 4.5 Turbo**، فإنه يعزز بشكل كبير دقة استخراج المعلومات الرئيسية. كما يقدم PaddleOCR 3.0 دعمًا لمسرعات الذكاء الاصطناعي الصينية غير المتجانسة مثل **KUNLUNXIN** و **Ascend**. للحصول على وثائق الاستخدام الكاملة، يرجى الرجوع إلى [وثائق PaddleOCR 3.0](https://paddlepaddle.github.io/PaddleOCR/latest/en/index.html).
 
 ##### ثلاث ميزات رئيسية جديدة في PaddleOCR 3.0:
-نموذج التعرف على النصوص في جميع السيناريوهات [PP-OCRv5](./docs/version3.x/algorithm/PP-OCRv5/PP-OCRv5.en.md): نموذج واحد يعالج خمسة أنواع مختلفة من النصوص بالإضافة إلى الكتابة اليدوية المعقدة. زادت دقة التعرف الإجمالية بمقدار 13 نقطة مئوية عن الجيل السابق. [تجربة مباشرة](https://aistudio.baidu.com/community/app/91660/webUI)
+نموذج التعرف على النصوص في جميع السيناريوهات [PP-OCRv5](../docs/version3.x/algorithm/PP-OCRv5/PP-OCRv5.en.md): نموذج واحد يعالج خمسة أنواع مختلفة من النصوص بالإضافة إلى الكتابة اليدوية المعقدة. زادت دقة التعرف الإجمالية بمقدار 13 نقطة مئوية عن الجيل السابق. [تجربة مباشرة](https://aistudio.baidu.com/community/app/91660/webUI)
 
-حل تحليل المستندات العام [PP-StructureV3](./docs/version3.x/algorithm/PP-StructureV3/PP-StructureV3.en.md): يقدم تحليلًا عالي الدقة لملفات PDF متعددة التخطيطات والسيناريوهات، متفوقًا على العديد من الحلول المفتوحة والمغلقة المصدر في المعايير العامة. [تجربة مباشرة](https://aistudio.baidu.com/community/app/518494/webUI)
+حل تحليل المستندات العام [PP-StructureV3](../docs/version3.x/algorithm/PP-StructureV3/PP-StructureV3.en.md): يقدم تحليلًا عالي الدقة لملفات PDF متعددة التخطيطات والسيناريوهات، متفوقًا على العديد من الحلول المفتوحة والمغلقة المصدر في المعايير العامة. [تجربة مباشرة](https://aistudio.baidu.com/community/app/518494/webUI)
 
-حل فهم المستندات الذكي [PP-ChatOCRv4](./docs/version3.x/algorithm/PP-ChatOCRv4/PP-ChatOCRv4.en.md): مدعوم أصلاً بنموذج **ERNIE 4.5 Turbo**، ويحقق دقة أعلى بنسبة 15 نقطة مئوية من سابقه. [تجربة مباشرة](https://aistudio.baidu.com/community/app/518493/webUI)
+حل فهم المستندات الذكي [PP-ChatOCRv4](../docs/version3.x/algorithm/PP-ChatOCRv4/PP-ChatOCRv4.en.md): مدعوم أصلاً بنموذج **ERNIE 4.5 Turbo**، ويحقق دقة أعلى بنسبة 15 نقطة مئوية من سابقه. [تجربة مباشرة](https://aistudio.baidu.com/community/app/518493/webUI)
 
 بالإضافة إلى توفير مكتبة نماذج متميزة، يقدم PaddleOCR 3.0 أيضًا أدوات سهلة الاستخدام تغطي تدريب النماذج والاستدلال ونشر الخدمات، حتى يتمكن المطورون من إدخال تطبيقات الذكاء الاصطناعي إلى الإنتاج بسرعة.
 
-<p align="center">
-    <img width="100%" src="./docs/images/Arch.png" alt="PaddleOCR Architecture">
-</p>
+<div align="center">
+  <p>
+      <img width="100%" src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/paddleocr/README/Arch.jpg" alt="PaddleOCR Architecture">
+  </p>
+</div>
 
 
 
@@ -353,13 +355,13 @@ print(chat_result)
 
 
 <p align="center">
-    <img width="100%" src="./docs/images/demo.gif" alt="PP-OCRv5 Demo">
+    <img width="100%" src="../docs/images/demo.gif" alt="PP-OCRv5 Demo">
 </p>
 
 
 
 <p align="center">
-    <img width="100%" src="./docs/images/blue_v3.gif" alt="PP-StructureV3 Demo">
+    <img width="100%" src="../docs/images/blue_v3.gif" alt="PP-StructureV3 Demo">
 </p>
 
 
@@ -382,7 +384,7 @@ print(chat_result)
 | [QAnything](https://github.com/netease-youdao/QAnything)<a href="https://github.com/netease-youdao/QAnything"><img src="https://img.shields.io/github/stars/netease-youdao/QAnything"></a> |نظام سؤال وجواب يعتمد على أي شيء.|
 | [PDF-Extract-Kit](https://github.com/opendatalab/PDF-Extract-Kit) <a href="https://github.com/opendatalab/PDF-Extract-Kit"><img src="https://img.shields.io/github/stars/opendatalab/PDF-Extract-Kit"></a>|مجموعة أدوات قوية مفتوحة المصدر مصممة لاستخراج محتوى عالي الجودة بكفاءة من مستندات PDF المعقدة والمتنوعة.|
 | [Dango-Translator](https://github.com/PantsuDango/Dango-Translator)<a href="https://github.com/PantsuDango/Dango-Translator"><img src="https://img.shields.io/github/stars/PantsuDango/Dango-Translator"></a> |يتعرف على النص على الشاشة، ويترجمه ويعرض نتائج الترجمة في الوقت الفعلي.|
-| [تعرف على المزيد من المشاريع](./awesome_projects.md) | [مشاريع أخرى تعتمد على PaddleOCR](./awesome_projects.md)|
+| [تعرف على المزيد من المشاريع](../awesome_projects.md) | [مشاريع أخرى تعتمد على PaddleOCR](../awesome_projects.md)|
 
 ## 👩‍👩‍👧‍👦 المساهمون
 
