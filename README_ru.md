@@ -286,6 +286,7 @@ print(chat_result)
 - Конвертация моделей в формат ONNX: [Получение моделей ONNX](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/obtaining_onnx_models.html).
 - Ускорение вывода с использованием движков, таких как OpenVINO, ONNX Runtime, TensorRT, или выполнение вывода с моделями в формате ONNX: [Высокопроизводительный вывод](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/high_performance_inference.html).
 - Ускорение вывода с использованием нескольких GPU и многопроцессности: [Параллельный вывод для конвейеров](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/pipeline_usage/instructions/parallel_inference.html).
+- Интегрируйте PaddleOCR в приложения, написанные на C++, C#, Java и других языках: [Сервис](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/serving.html).
 
 ## ⛰️ Продвинутые руководства
 - [Руководство по PP-OCRv5](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/pipeline_usage/OCR.html)

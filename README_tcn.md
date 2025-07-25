@@ -286,6 +286,7 @@ print(chat_result)
 - 將模型轉換為 ONNX 格式：[取得 ONNX 模型](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/deployment/obtaining_onnx_models.html)
 - 使用 OpenVINO、ONNX Runtime、TensorRT 等引擎加速推論，或使用 ONNX 格式模型執行推論：[高效能推論](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/deployment/high_performance_inference.html)
 - 使用多卡、多進程加速推論：[產線平行推論](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/pipeline_usage/instructions/parallel_inference.html)
+- 在 C++、C#、Java 等語言編寫的應用中整合 PaddleOCR：[服務化部署](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/deployment/serving.html)。
 
 ## ⛰️ 進階指南
 - [PP-OCRv5 使用教學](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/pipeline_usage/OCR.html)

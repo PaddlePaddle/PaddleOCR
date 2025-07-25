@@ -366,6 +366,7 @@ print(chat_result)
 - تحويل النماذج إلى صيغة ONNX: [الحصول على نماذج ONNX](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/obtaining_onnx_models.html).
 - تسريع الاستدلال باستخدام محركات مثل OpenVINO و ONNX Runtime و TensorRT، أو إجراء الاستدلال باستخدام نماذج صيغة ONNX: [الاستدلال عالي الأداء](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/high_performance_inference.html).
 - تسريع الاستدلال باستخدام تعدد وحدات معالجة الرسوميات والعمليات المتعددة: [الاستدلال المتوازي للخطوط الإنتاجية](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/pipeline_usage/instructions/parallel_inference.html).
+- دمج PaddleOCR في التطبيقات المكتوبة بلغات مثل ++C و#C وJava وغيرها: [الخدمة](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/serving.html).
 
 ## 👩‍👩‍👧‍👦 المجتمع
 

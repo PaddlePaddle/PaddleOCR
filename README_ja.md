@@ -278,6 +278,7 @@ print(chat_result)
 - モデルをONNX形式に変換：[ONNXモデルの取得](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/obtaining_onnx_models.html)
 - OpenVINO、ONNX Runtime、TensorRTなどのエンジンを使用して推論を高速化、またはONNX形式モデルで推論を実行：[高性能推論](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/high_performance_inference.html)
 - 複数GPUおよび複数プロセスを使用して推論を高速化：[パイプラインの並列推論](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/pipeline_usage/instructions/parallel_inference.html)
+- C++、C#、Java などで書かれたアプリケーションに PaddleOCR を統合する: [サービング](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/serving.html)。
 
 ## ⛰️ 上級チュートリアル
 - [PP-OCRv5 チュートリアル](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/pipeline_usage/OCR.html)
