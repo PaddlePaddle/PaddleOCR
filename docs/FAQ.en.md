@@ -61,3 +61,7 @@ Versions of exported inference model and inference library should be same. For e
 
 13. **How to identify artistic fonts in signs or advertising images**
 Recognizing artistic fonts in signs or advertising images is a very challenging task because the variation in individual characters is much greater compared to standard fonts. If the artistic font to be identified is within a dictionary list, each word in the dictionary can be treated as a template for recognition using a general image retrieval system. You can try using PaddleClas image recognition system.
+
+14. **How to change the font when visualizing the OCR prediction results?** 
+
+**A**: You can specify the local font file path by using the environment variable `PADDLE_PDX_LOCAL_FONT_FILE_PATH`, such as `PADDLE_PDX_LOCAL_FONT_FILE_PATH=/root/fonts/simfang.ttf`.

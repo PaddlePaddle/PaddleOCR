@@ -776,3 +776,7 @@ nvidia-smi --lock-gpu-clocks=1590 -i 0
 #### Q: 预测时显存爆炸、内存泄漏问题？
 
 **A**: 打开显存/内存优化开关`enable_memory_optim`可以解决该问题，相关代码已合入，[查看详情](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.1/tools/infer/utility.py#L153)。
+
+#### Q: 在可视化预测结果时，能否使用其他字体？
+
+**A**: 可以！通过环境变量`PADDLE_PDX_LOCAL_FONT_FILE_PATH`指定本地字体文件路径即可，如`PADDLE_PDX_LOCAL_FONT_FILE_PATH=/root/fonts/simfang.ttf`。
