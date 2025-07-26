@@ -1,3 +1,5 @@
+[![MseeP.ai Security Assessment Badge](https://mseep.net/pr/paddlepaddle-paddleocr-badge.png)](https://mseep.ai/app/paddlepaddle-paddleocr)
+
 <div align="center">
   <p>
       <img width="100%" src="./docs/images/Banner.png" alt="PaddleOCR Banner">
