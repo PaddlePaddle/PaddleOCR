@@ -13,6 +13,7 @@
 # limitations under the License.
 
 from ._models import (
+    ChartParsing,
     DocImgOrientationClassification,
     DocVLM,
     FormulaRecognition,
@@ -41,6 +42,7 @@ from ._utils.logging import logger
 from ._version import version as __version__
 
 __all__ = [
+    "ChartParsing",
     "DocImgOrientationClassification",
     "DocVLM",
     "FormulaRecognition",

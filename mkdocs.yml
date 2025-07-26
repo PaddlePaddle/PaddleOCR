@@ -133,6 +133,7 @@ plugins:
             文档理解产线: Document Understanding Pipeline
             印章文本识别产线: Seal Text Recognition Pipeline
             通用表格识别v2产线: General Table Recognition v2 Pipeline
+            图表解析模块: Chart Parsing Module
             多硬件使用: Multi-Devices Usage
             PaddleOCR 多硬件使用指南: PaddleOCR Multi-Devices Usage Guide
             昇腾 NPU 飞桨安装教程: Ascend NPU PaddlePaddle Installation Tutorial
@@ -301,6 +302,7 @@ nav:
     - 文本图像矫正模块: version3.x/module_usage/text_image_unwarping.md
     - 文本行方向分类模块: version3.x/module_usage/textline_orientation_classification.md
     - 文本识别模块: version3.x/module_usage/text_recognition.md
+    - 图表解析模块: version3.x/module_usage/chart_parsing.md
   - 产线列表: 
     - 产线概述: version3.x/pipeline_usage/pipeline_overview.md
     - 公式识别产线: version3.x/pipeline_usage/formula_recognition.md
