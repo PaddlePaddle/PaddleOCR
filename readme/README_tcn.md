@@ -22,12 +22,12 @@
 </div>
 
 ## 🚀 簡介
-PaddleOCR 自發布以來，憑藉其學術前沿的演算法與產業落地實踐，深受產學研各界的喜愛，並廣泛應用於眾多知名開源專案，如 Umi-OCR、OmniParser、MinerU、RAGFlow 等，已成為廣大開發者心中開源 OCR 領域的首選工具。2025 年 5 月 20 日，飛槳團隊發布 **PaddleOCR 3.0**，全面適配**飛槳框架 3.0 正式版**，進一步**提升文字辨識精度**，支援**多種文字類型辨識**和**手寫體辨識**，滿足大型模型應用對**複雜文件高精度解析**的旺盛需求。結合**ERNIE 4.5 Turbo**，顯著提升了關鍵資訊擷取的精度，並新增**對崑崙芯、昇騰等國產硬體**的支援。完整使用說明請參閱 [PaddleOCR 3.0 文檔](https://paddlepaddle.github.io/PaddleOCR/latest/)。
+PaddleOCR 自發布以來，憑藉其學術前沿的演算法與產業落地實踐，深受產學研各界的喜愛，並廣泛應用於眾多知名開源專案，如 Umi-OCR、OmniParser、MinerU、RAGFlow 等，已成為廣大開發者心中開源 OCR 領域的首選工具。2025 年 5 月 20 日，飛槳團隊發布 **PaddleOCR 3.0**，全面適配**飛槳框架 3.0 正式版**，進一步**提升文字辨識精度**，支援**多種文字類型辨識**和**手寫體辨識**，滿足大型模型應用對**複雜文件高精度解析**的旺盛需求。結合**ERNIE 4.5**，顯著提升了關鍵資訊擷取的精度，並新增**對崑崙芯、昇騰等國產硬體**的支援。完整使用說明請參閱 [PaddleOCR 3.0 文檔](https://paddlepaddle.github.io/PaddleOCR/latest/)。
 
 PaddleOCR 3.0 **新增**三大特色功能：
 - 全場景文字辨識模型 [PP-OCRv5](../docs/version3.x/algorithm/PP-OCRv5/PP-OCRv5.md)：單一模型支援五種文字類型和複雜手寫體辨識；整體辨識精度相較前一代**提升 13 個百分點**。[線上體驗](https://aistudio.baidu.com/community/app/91660/webUI)
 - 通用文件解析方案 [PP-StructureV3](../docs/version3.x/algorithm/PP-StructureV3/PP-StructureV3.md)：支援多場景、多版式的 PDF 高精度解析，在公開評測集中**領先眾多開源與閉源方案**。[線上體驗](https://aistudio.baidu.com/community/app/518494/webUI)
-- 智慧文件理解方案 [PP-ChatOCRv4](../docs/version3.x/algorithm/PP-ChatOCRv4/PP-ChatOCRv4.md)：原生支援ERNIE 4.5 Turbo，精度相較前一代**提升 15 個百分點**。[線上體驗](https://aistudio.baidu.com/community/app/518493/webUI)
+- 智慧文件理解方案 [PP-ChatOCRv4](../docs/version3.x/algorithm/PP-ChatOCRv4/PP-ChatOCRv4.md)：原生支援ERNIE 4.5，精度相較前一代**提升 15 個百分點**。[線上體驗](https://aistudio.baidu.com/community/app/518493/webUI)
 
 除了提供優秀的模型庫，PaddleOCR 3.0 還提供好學易用的工具，涵蓋模型訓練、推論及服務化部署，方便開發者快速將 AI 應用落地。
 <div align="center">
@@ -44,7 +44,7 @@ PaddleOCR 3.0 **新增**三大特色功能：
 - **主要模型與流程：**
   - **新增 PP-OCRv5 多語言文字識別模型**，支援包括法語、西班牙語、葡萄牙語、俄語、韓語等在內的 37 種語言的文字識別模型訓練與推理。**平均準確率提升超過 30%。** [詳情](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/algorithm/PP-OCRv5/PP-OCRv5_multi_languages.html)
   - 升級了 PP-StructureV3 的 **PP-Chart2Table 模型**，進一步提升圖表轉表格能力。在內部自訂評測集上，指標（RMS-F1）**提升了 9.36 個百分點（71.24% -> 80.60%）。**
-  - 新增基於 PP-StructureV3 和 ERNIE 4.5 Turbo 的**文件翻譯流程 PP-DocTranslation**，支援 Markdown 格式文件、各種複雜版面 PDF 文件及文件圖片翻譯，結果可儲存為 Markdown 格式文件。[詳情](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/pipeline_usage/PP-DocTranslation.html)
+  - 新增基於 PP-StructureV3 和 ERNIE 4.5 的**文件翻譯流程 PP-DocTranslation**，支援 Markdown 格式文件、各種複雜版面 PDF 文件及文件圖片翻譯，結果可儲存為 Markdown 格式文件。[詳情](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/pipeline_usage/PP-DocTranslation.html)
 
 - **新增 MCP server：**[Details](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/deployment/mcp_server.html)
   - **支援 OCR 及 PP-StructureV3 流程。**
@@ -116,7 +116,7 @@ PaddleOCR 3.0 **新增**三大特色功能：
 
 - **PP-ChatOCRv4**: 智慧文件理解方案
    1. 🔥 文件影像（PDF/PNG/JPG）關鍵資訊擷取精度相較前一代**提升 15 個百分點**！
-   2. 💻 原生支援**ERNIE 4.5 Turbo**，並相容 PaddleNLP、Ollama、vLLM 等工具部署的大型模型。
+   2. 💻 原生支援**ERNIE 4.5**，並相容 PaddleNLP、Ollama、vLLM 等工具部署的大型模型。
    3. 🤝 整合 [PP-DocBee2](https://github.com/PaddlePaddle/PaddleMIX/tree/develop/paddlemix/examples/ppdocbee2)，支援印刷體、手寫體、印章、表格、圖表等複雜文件元素的資訊擷取與理解。
 
 [更多日誌](https://paddlepaddle.github.io/PaddleOCR/latest/update/update.html)
