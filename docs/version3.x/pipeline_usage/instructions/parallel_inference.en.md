@@ -1,4 +1,4 @@
-# Parallel Inference in Pipeline
+# Parallel Inference for Pipelines
 
 ## Specifying Multiple Inference Devices
 
