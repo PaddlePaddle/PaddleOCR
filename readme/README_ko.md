@@ -1,10 +1,10 @@
 <div align="center">
   <p>
-      <img width="100%" src="./docs/images/Banner.png" alt="PaddleOCR 배너">
+      <img width="100%" src="../docs/images/Banner.png" alt="PaddleOCR 배너">
   </p>
 
 <!-- language -->
-[English](./README.md) | [简体中文](./README_cn.md) | [繁體中文](./README_tcn.md) | [日本語](./README_ja.md) | 한국어 | [Français](./README_fr.md) | [Русский](./README_ru.md) | [Español](./README_es.md) | [العربية](./README_ar.md)
+[English](../README.md) | [简体中文](./README_cn.md) | [繁體中文](./README_tcn.md) | [日本語](./README_ja.md) | 한국어 | [Français](./README_fr.md) | [Русский](./README_ru.md) | [Español](./README_es.md) | [العربية](./README_ar.md)
 
 <!-- icon -->
 
@@ -24,19 +24,19 @@
 ## 🚀 소개
 PaddleOCR은 출시 이후 최첨단 알고리즘(algorithm)과 실제 애플리케이션(application)에서의 입증된 성능 덕분에 학계, 산업계, 연구 커뮤니티에서 폭넓은 찬사를 받아왔습니다. Umi-OCR, OmniParser, MinerU, RAGFlow와 같은 유명 오픈소스 프로젝트에 이미 적용되어 전 세계 개발자(developer)들에게 필수 OCR 툴킷(toolkit)으로 자리 잡았습니다.
 
-2025년 5월 20일, PaddlePaddle 팀은 **PaddlePaddle 3.0** 프레임워크의 공식 릴리스와 완전히 호환되는 PaddleOCR 3.0을 발표했습니다. 이 업데이트는 **텍스트 인식 정확도를 더욱 향상**시키고, **다중 텍스트 유형 인식** 및 **필기 인식**을 지원하며, 대규모 모델 애플리케이션의 **복잡한 문서의 고정밀 구문 분석**에 대한 증가하는 수요를 충족합니다. **ERNIE 4.5 Turbo**와 결합하면 주요 정보 추출 정확도가 크게 향상됩니다. 사용 설명서 전체는 [PaddleOCR 3.0 문서](https://paddlepaddle.github.io/PaddleOCR/latest/en/index.html)를 참조하십시오.
+2025년 5월 20일, PaddlePaddle 팀은 **PaddlePaddle 3.0** 프레임워크의 공식 릴리스와 완전히 호환되는 PaddleOCR 3.0을 발표했습니다. 이 업데이트는 **텍스트 인식 정확도를 더욱 향상**시키고, **다중 텍스트 유형 인식** 및 **필기 인식**을 지원하며, 대규모 모델 애플리케이션의 **복잡한 문서의 고정밀 구문 분석**에 대한 증가하는 수요를 충족합니다. **ERNIE 4.5**와 결합하면 주요 정보 추출 정확도가 크게 향상됩니다. 사용 설명서 전체는 [PaddleOCR 3.0 문서](https://paddlepaddle.github.io/PaddleOCR/latest/en/index.html)를 참조하십시오.
 
 PaddleOCR 3.0의 세 가지 주요 신규 기능:
-- 범용 장면 텍스트 인식 모델(Universal-Scene Text Recognition Model) [PP-OCRv5](./docs/version3.x/algorithm/PP-OCRv5/PP-OCRv5.en.md): 다섯 가지 다른 텍스트 유형과 복잡한 필기체를 처리하는 단일 모델입니다. 전체 인식 정확도는 이전 세대보다 13%p 향상되었습니다. [온라인 체험](https://aistudio.baidu.com/community/app/91660/webUI)
+- 범용 장면 텍스트 인식 모델(Universal-Scene Text Recognition Model) [PP-OCRv5](../docs/version3.x/algorithm/PP-OCRv5/PP-OCRv5.en.md): 다섯 가지 다른 텍스트 유형과 복잡한 필기체를 처리하는 단일 모델입니다. 전체 인식 정확도는 이전 세대보다 13%p 향상되었습니다. [온라인 체험](https://aistudio.baidu.com/community/app/91660/webUI)
 
-- 일반 문서 파싱(parsing) 솔루션 [PP-StructureV3](./docs/version3.x/algorithm/PP-StructureV3/PP-StructureV3.en.md): 다중 레이아웃(multi-layout), 다중 장면 PDF의 고정밀 파싱(parsing)을 제공하며, 공개 벤치마크(benchmark)에서 많은 오픈 소스 및 클로즈드 소스 솔루션을 능가합니다. [온라인 체험](https://aistudio.baidu.com/community/app/518494/webUI)
+- 일반 문서 파싱(parsing) 솔루션 [PP-StructureV3](../docs/version3.x/algorithm/PP-StructureV3/PP-StructureV3.en.md): 다중 레이아웃(multi-layout), 다중 장면 PDF의 고정밀 파싱(parsing)을 제공하며, 공개 벤치마크(benchmark)에서 많은 오픈 소스 및 클로즈드 소스 솔루션을 능가합니다. [온라인 체험](https://aistudio.baidu.com/community/app/518494/webUI)
 
-- 지능형 문서 이해 솔루션 [PP-ChatOCRv4](./docs/version3.x/algorithm/PP-ChatOCRv4/PP-ChatOCRv4.en.md): ERNIE 4.5 Turbo에 의해 네이티브로 구동되며, 이전 모델보다 15%p 높은 정확도를 달성합니다. [온라인 체험](https://aistudio.baidu.com/community/app/518493/webUI)
+- 지능형 문서 이해 솔루션 [PP-ChatOCRv4](../docs/version3.x/algorithm/PP-ChatOCRv4/PP-ChatOCRv4.en.md): ERNIE 4.5에 의해 네이티브로 구동되며, 이전 모델보다 15%p 높은 정확도를 달성합니다. [온라인 체험](https://aistudio.baidu.com/community/app/518493/webUI)
 
 PaddleOCR 3.0은 뛰어난 모델 라이브러리(model library)를 제공할 뿐만 아니라 모델 훈련, 추론 및 서비스 배포를 포괄하는 사용하기 쉬운 도구를 제공하여 개발자가 AI 애플리케이션을 신속하게 상용화할 수 있도록 지원합니다.
 <div align="center">
   <p>
-      <img width="100%" src="./docs/images/Arch.png" alt="PaddleOCR 아키텍처">
+      <img width="100%" src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/paddleocr/README/Arch.jpg" alt="PaddleOCR Architecture">
   </p>
 </div>
 
@@ -49,7 +49,7 @@ PaddleOCR 3.0은 뛰어난 모델 라이브러리(model library)를 제공할 �
 - **주요 모델 및 파이프라인:**
   - **PP-OCRv5 다국어 텍스트 인식 모델 추가**, 프랑스어, 스페인어, 포르투갈어, 러시아어, 한국어 등 37개 언어의 텍스트 인식 모델 학습 및 추론 지원. **평균 정확도 30% 이상 향상.** [자세히 보기](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/algorithm/PP-OCRv5/PP-OCRv5_multi_languages.html)
   - PP-StructureV3의 **PP-Chart2Table 모델 업그레이드**, 차트에서 표로 변환하는 기능이 더욱 향상됨. 내부 커스텀 평가 세트에서 지표(RMS-F1)가 **9.36%p 상승(71.24% → 80.60%)**.
-  - PP-StructureV3 및 ERNIE 4.5 Turbo 기반 **문서 번역 파이프라인 PP-DocTranslation 신규 출시**, Markdown 형식 문서, 다양한 복잡 레이아웃의 PDF 문서, 문서 이미지를 번역 지원, 결과는 Markdown 형식으로 저장 가능. [자세히 보기](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/pipeline_usage/PP-DocTranslation.html)
+  - PP-StructureV3 및 ERNIE 4.5 기반 **문서 번역 파이프라인 PP-DocTranslation 신규 출시**, Markdown 형식 문서, 다양한 복잡 레이아웃의 PDF 문서, 문서 이미지를 번역 지원, 결과는 Markdown 형식으로 저장 가능. [자세히 보기](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/pipeline_usage/PP-DocTranslation.html)
 
 - **새로운 MCP 서버:** [Details](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/mcp_server.html)
   - **OCR 및 PP-StructureV3 파이프라인을 모두 지원합니다.**
@@ -115,7 +115,7 @@ PaddleOCR 3.0은 뛰어난 모델 라이브러리(model library)를 제공할 �
 
 - **PP-ChatOCRv4**: 지능형 문서 이해 – 이미지/PDF에서 단순한 텍스트가 아닌 핵심 정보 추출.
    1. 🔥 이전 세대에 비해 PDF/PNG/JPG 파일의 핵심 정보 추출에서 **정확도 15%p 향상**.
-   2. 💻 **ERNIE 4.5 Turbo** 기본 지원, PaddleNLP, Ollama, vLLM 등을 통한 대규모 모델 배포와 호환됩니다.
+   2. 💻 **ERNIE 4.5** 기본 지원, PaddleNLP, Ollama, vLLM 등을 통한 대규모 모델 배포와 호환됩니다.
    3. 🤝 [PP-DocBee2](https://github.com/PaddlePaddle/PaddleMIX/tree/develop/paddlemix/examples/ppdocbee2)와 통합되어 인쇄된 텍스트, 필기체, 도장, 표, 차트 등 복잡한 문서의 일반적인 요소 추출 및 이해를 지원합니다.
 
 [히스토리 로그](https://paddlepaddle.github.io/PaddleOCR/latest/en/update.html)
@@ -282,13 +282,13 @@ print(chat_result)
 
 <div align="center">
   <p>
-     <img width="100%" src="./docs/images/demo.gif" alt="PP-OCRv5 데모">
+     <img width="100%" src="../docs/images/demo.gif" alt="PP-OCRv5 데모">
   </p>
 </div>
 
 <div align="center">
   <p>
-     <img width="100%" src="./docs/images/blue_v3.gif" alt="PP-StructureV3 데모">
+     <img width="100%" src="../docs/images/blue_v3.gif" alt="PP-StructureV3 데모">
   </p>
 </div>
 
@@ -311,7 +311,7 @@ PaddleOCR의 발전은 커뮤니티 없이는 불가능합니다! 💗 오랜 �
 | [QAnything](https://github.com/netease-youdao/QAnything)<a href="https://github.com/netease-youdao/QAnything"><img src="https://img.shields.io/github/stars/netease-youdao/QAnything"></a> |무엇이든 기반으로 한 질의응답 시스템.|
 | [PDF-Extract-Kit](https://github.com/opendatalab/PDF-Extract-Kit) <a href="https://github.com/opendatalab/PDF-Extract-Kit"><img src="https://img.shields.io/github/stars/opendatalab/PDF-Extract-Kit"></a>|복잡하고 다양한 PDF 문서에서 고품질 콘텐츠를 효율적으로 추출하도록 설계된 강력한 오픈 소스 툴킷.|
 | [Dango-Translator](https://github.com/PantsuDango/Dango-Translator)<a href="https://github.com/PantsuDango/Dango-Translator"><img src="https://img.shields.io/github/stars/PantsuDango/Dango-Translator"></a> |화면의 텍스트를 인식하여 번역하고 번역 결과를 실시간으로 표시합니다.|
-| [Learn more projects](./awesome_projects.md) | [More projects based on PaddleOCR](./awesome_projects.md)|
+| [Learn more projects](../awesome_projects.md) | [More projects based on PaddleOCR](../awesome_projects.md)|
 
 ## 👩‍👩‍👧‍👦 기여자
 
