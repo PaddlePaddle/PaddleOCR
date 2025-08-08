@@ -36,6 +36,7 @@ PaddleOCR 3.0 **新增**三大特色功能：
   </p>
 </div>
 
+**特別注意**：PaddleOCR 3.x 引入了多項重大的介面變更。**基於 PaddleOCR 2.x 撰寫的舊程式碼很可能與 PaddleOCR 3.x 不相容**。請確保您閱讀的文件與您實際使用的 PaddleOCR 版本相符。[本文件](https://paddlepaddle.github.io/PaddleOCR/latest/update/upgrade_notes.html) 說明了升級的原因以及從 PaddleOCR 2.x 到 3.x 的主要變更。
 
 ## 📣 最新動態
 
@@ -279,7 +280,14 @@ print(chat_result)
 ### 5. **國產硬體支援**
 - [崑崙芯安裝指南](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/other_devices_support/paddlepaddle_install_XPU.html)
 - [昇騰安裝指南](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/other_devices_support/paddlepaddle_install_NPU.html)
-  
+
+## 更多特性
+
+- 將模型轉換為 ONNX 格式：[取得 ONNX 模型](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/deployment/obtaining_onnx_models.html)
+- 使用 OpenVINO、ONNX Runtime、TensorRT 等引擎加速推論，或使用 ONNX 格式模型執行推論：[高效能推論](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/deployment/high_performance_inference.html)
+- 使用多卡、多進程加速推論：[產線平行推論](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/pipeline_usage/instructions/parallel_inference.html)
+- 在 C++、C#、Java 等語言編寫的應用中整合 PaddleOCR：[服務化部署](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/deployment/serving.html)。
+
 ## ⛰️ 進階指南
 - [PP-OCRv5 使用教學](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/pipeline_usage/OCR.html)
 - [PP-StructureV3 使用教學](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/pipeline_usage/PP-StructureV3.html)

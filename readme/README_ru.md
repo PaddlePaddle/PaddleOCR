@@ -40,7 +40,7 @@
   </p>
 </div>
 
-
+**Особое примечание**: PaddleOCR 3.x вводит ряд значительных изменений в интерфейс. **Старый код, написанный на основе PaddleOCR 2.x, скорее всего, несовместим с PaddleOCR 3.x**. Убедитесь, что документация, которую вы читаете, соответствует версии PaddleOCR, которую вы используете. [В этом документе](https://paddlepaddle.github.io/PaddleOCR/latest/en/update/upgrade_notes.html) объясняются причины обновления и основные изменения при переходе с PaddleOCR 2.x на 3.x.
 
 ## 📣 Последние обновления
 
@@ -280,6 +280,13 @@ print(chat_result)
 ### 5. Китайские гетерогенные ИИ-ускорители
 - [Huawei Ascend](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/other_devices_support/paddlepaddle_install_NPU.html)
 - [KUNLUNXIN](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/other_devices_support/paddlepaddle_install_XPU.html)
+
+## Дополнительные функции
+
+- Конвертация моделей в формат ONNX: [Получение моделей ONNX](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/obtaining_onnx_models.html).
+- Ускорение вывода с использованием движков, таких как OpenVINO, ONNX Runtime, TensorRT, или выполнение вывода с моделями в формате ONNX: [Высокопроизводительный вывод](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/high_performance_inference.html).
+- Ускорение вывода с использованием нескольких GPU и многопроцессности: [Параллельный вывод для конвейеров](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/pipeline_usage/instructions/parallel_inference.html).
+- Интегрируйте PaddleOCR в приложения, написанные на C++, C#, Java и других языках: [Сервис](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/serving.html).
 
 ## ⛰️ Продвинутые руководства
 - [Руководство по PP-OCRv5](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/pipeline_usage/OCR.html)

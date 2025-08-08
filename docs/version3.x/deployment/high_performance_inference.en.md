@@ -2,8 +2,9 @@
 
 In real-world production environments, many applications have stringent performance requirements for deployment strategies, particularly regarding response speed, to ensure efficient system operation and a smooth user experience. PaddleOCR provides high-performance inference capabilities, allowing users to enhance model inference speed with a single click without worrying about complex configurations or underlying details. Specifically, PaddleOCR's high-performance inference functionality can:
 
-- Automatically select an appropriate inference backend (e.g., Paddle Inference, OpenVINO, ONNX Runtime, TensorRT) based on prior knowledge and configure acceleration strategies (e.g., increasing the number of inference threads, setting FP16 precision inference);
+- Automatically select an appropriate inference backend (e.g., Paddle Inference, OpenVINO, ONNX Runtime, TensorRT) based on prior knowledge and configure acceleration strategies (e.g., increasing the number of inference threads, setting FP16 precision inference).
 - Automatically convert PaddlePaddle static graph models to ONNX format as needed to leverage better inference backends for acceleration.
+- Perform inference using ONNX models.
 
 This document primarily introduces the installation and usage methods for high-performance inference.
 

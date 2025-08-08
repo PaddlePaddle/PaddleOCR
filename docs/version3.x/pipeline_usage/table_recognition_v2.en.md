@@ -27,6 +27,8 @@ This pipeline is applicable in a variety of fields, including general, manufactu
 
 In this pipeline, you can choose the models to use based on the benchmark data below.
 
+> The inference time only includes the model inference time and does not include the time for pre- or post-processing.
+
 <details>
 <summary> <b>Table Structure Recognition Module Models:</b></summary>
 <table>
