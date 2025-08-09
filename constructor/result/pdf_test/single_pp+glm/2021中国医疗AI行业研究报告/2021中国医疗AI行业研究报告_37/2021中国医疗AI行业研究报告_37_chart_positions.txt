@@ -1,0 +1,5 @@
+Page: 37, Bounding Box: [41, 543, 103, 609], Text: []
+Page: 37, Bounding Box: [42, 633, 103, 697], Text: []
+Page: 37, Bounding Box: [40, 458, 104, 523], Text: []
+Page: 37, Bounding Box: [42, 377, 103, 440], Text: []
+Page: 37, Bounding Box: [41, 297, 102, 358], Text: []
