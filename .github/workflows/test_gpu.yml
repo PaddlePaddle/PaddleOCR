@@ -63,7 +63,7 @@ jobs:
             ln -s $(which pip${py_version}) run_env/pip
             export PATH=$PWD/run_env:${PATH}
             
-            python -m pip install paddlepaddle-gpu==3.0.0 -i https://www.paddlepaddle.org.cn/packages/stable/cu118/
+            python -m pip install paddlepaddle-gpu==3.1.0 -i https://www.paddlepaddle.org.cn/packages/stable/cu118/
             python -c "import paddle; paddle.version.show()"
             python -m pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
             python -m pip install pytest
