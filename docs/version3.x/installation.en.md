@@ -36,9 +36,8 @@ In addition to the `all` dependency group demonstrated above, PaddleOCR also sup
 
 | Dependency Group | Functionality            |
 | ---------------- | ------------------------ |
-| `doc`            | Document parsing         |
+| `doc-parser`     | Document parsing         |
 | `ie`             | Information extraction   |
-| `multimodal`     | Multimodal understanding |
 | `trans`          | Document translation     |
 | `all`            | Full functionality       |
 

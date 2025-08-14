@@ -36,9 +36,8 @@ python -m pip install "paddleocr@git+https://github.com/PaddlePaddle/PaddleOCR.g
 
 | 依赖组名称 | 对应的功能 |
 | - | - |
-| `doc` | 文档解析 |
+| `doc-parser` | 文档解析 |
 | `ie` | 信息抽取 |
-| `multimodal` | 多模态理解 |
 | `trans` | 文档翻译 |
 | `all` | 完整功能 |
 
