@@ -42,6 +42,22 @@ En plus de fournir une bibliothèque de modèles exceptionnelle, PaddleOCR 3.0 p
 
 ## 📣 Mises à jour récentes
 
+
+#### **15/08/2025 : Sortie de PaddleOCR 3.1.1**, comprend :
+
+- **Corrections de bugs :**
+  - Ajout des méthodes manquantes `save_vector`, `save_visual_info_list`, `load_vector`, `load_visual_info_list` à la classe `PP-ChatOCRv4`.
+  - Ajout des paramètres manquants `glossary` et `llm_request_interval` à la méthode `translate` de la classe `PPDocTranslation`.
+
+- **Optimisation de la documentation :**
+  - Ajout d’une démo à la documentation MCP.
+  - Ajout des précisions sur les versions du framework PaddlePaddle et de PaddleOCR utilisées pour les tests des indicateurs de performance.
+  - Correction des erreurs et oublis dans la documentation de la ligne de production de traduction de documents.
+
+- **Autres :**
+  - Modification des dépendances du serveur MCP : utilisation de la bibliothèque pure Python `puremagic` à la place de `python-magic` pour réduire les problèmes d'installation.
+  - Retest des indicateurs de performance de PP-OCRv5 avec la version 3.1.0 de PaddleOCR et mise à jour de la documentation.
+
 #### **29/06/2025 : Sortie de PaddleOCR 3.1.0**, comprend :
 
 - **Modèles et pipelines principaux :**
