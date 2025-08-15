@@ -44,6 +44,21 @@ PaddleOCR 3.0은 뛰어난 모델 라이브러리(model library)를 제공할 �
 
 ## 📣 최신 업데이트
 
+#### **2025.08.15: PaddleOCR 3.1.1 출시**, 주요 내용:
+
+- **버그 수정:**
+  - `PP-ChatOCRv4` 클래스에 누락된 `save_vector`, `save_visual_info_list`, `load_vector`, `load_visual_info_list` 메서드 추가.
+  - `PPDocTranslation` 클래스의 `translate` 메서드에 누락된 `glossary`와 `llm_request_interval` 파라미터 추가.
+
+- **문서 최적화:**
+  - MCP 문서에 데모(demo) 추가.
+  - 성능 지표 테스트에 사용된 PaddlePaddle 프레임워크 및 PaddleOCR 버전 명시 추가.
+  - 문서 번역 생산 라인 문서의 오류 및 누락 수정.
+
+- **기타:**
+  - MCP 서버 의존성 변경: 설치 문제를 줄이기 위해 `python-magic` 대신 pure Python 라이브러리인 `puremagic` 사용.
+  - PaddleOCR 3.1.0 버전으로 PP-OCRv5 성능 지표를 재테스트하고 문서 업데이트.
+
 #### **2025.06.29: PaddleOCR 3.1.0 출시**, 주요 내용:
 
 - **주요 모델 및 파이프라인:**

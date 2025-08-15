@@ -39,6 +39,22 @@ PaddleOCR 3.0 **新增**三大特色功能：
 
 ## 📣 最新動態
 
+ **2025.08.15: 發布 PaddleOCR 3.1.1**，內容包括：
+
+- **Bug修復：**
+  - 補充 `PP-ChatOCRv4` 類缺失的 `save_vector`、`save_visual_info_list`、`load_vector`、`load_visual_info_list` 方法。
+  - 補充 `PPDocTranslation` 類的 `translate` 方法缺失的 `glossary` 和 `llm_request_interval` 參數。
+
+- **文件優化：**
+  - 補充 MCP 文件中的 demo。
+  - 補充文件中測試性能指標所使用的飛槳框架與 PaddleOCR 版本。
+  - 修正文件翻譯產線文件中的錯漏。
+
+- **其他：**
+  - 修改 MCP 伺服器依賴，使用純 Python 函式庫 `puremagic` 取代 `python-magic`，以減少安裝問題。
+  - 使用 3.1.0 版本 PaddleOCR 重新測試 PP-OCRv5 性能指標，並更新文件。
+
+
  **🔥🔥2025.06.29：發布 PaddleOCR 3.1.0**，內容包括：
 
 - **主要模型與流程：**
@@ -53,6 +69,9 @@ PaddleOCR 3.0 **新增**三大特色功能：
 
 - **文件優化：** 優化了部分使用說明文件描述，提升閱讀體驗。
 
+<details>
+    <summary><strong>歷史日誌</strong></summary>
+    
 2025.06.26: **PaddleOCR 3.0.3** 發布，包含：
 
 - 錯誤修復：修復`enable_mkldnn`參數不生效的問題，恢復CPU默認使用MKL-DNN推理的行為。
@@ -89,9 +108,6 @@ PaddleOCR 3.0 **新增**三大特色功能：
 
 - **其他：**
   - 放寬 numpy、pandas 等依賴項的版本限制，恢復對 Python 3.12 的支援。
-
-<details>
-    <summary><strong>歷史日誌</strong></summary>
 
 🔥🔥2025.06.05: **PaddleOCR 3.0.1** 發布，包含：
 

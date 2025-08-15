@@ -52,6 +52,37 @@
 ## 📣 آخر التحديثات
 
 
+<h4 dir="rtl"><strong>2025.08.15: إصدار <bdi dir="ltr">PaddleOCR 3.1.1</bdi>، يتضمن:</strong></h4>
+<ul dir="rtl">
+  <li><strong>تصحيح الأخطاء:</strong>
+    <ul dir="rtl">
+      <li>
+        تمت إضافة الطرق الناقصة <bdi dir="ltr">save_vector</bdi>، <bdi dir="ltr">save_visual_info_list</bdi>، <bdi dir="ltr">load_vector</bdi>، و<bdi dir="ltr">load_visual_info_list</bdi> إلى فئة <bdi dir="ltr">PP-ChatOCRv4</bdi>.
+      </li>
+      <li>
+        تمت إضافة المعاملات الناقصة <bdi dir="ltr">glossary</bdi> و<bdi dir="ltr">llm_request_interval</bdi> إلى دالة <bdi dir="ltr">translate</bdi> في فئة <bdi dir="ltr">PPDocTranslation</bdi>.
+      </li>
+    </ul>
+  </li>
+  <li><strong>تحسين الوثائق:</strong>
+    <ul dir="rtl">
+      <li>تمت إضافة عرض توضيحي إلى وثائق <bdi dir="ltr">MCP</bdi>.</li>
+      <li>تمت إضافة توضيحات حول إصدارات <bdi dir="ltr">PaddlePaddle</bdi> و<bdi dir="ltr">PaddleOCR</bdi> المستخدمة في اختبارات مؤشرات الأداء.</li>
+      <li>تم تصحيح الأخطاء والنواقص في وثائق خط إنتاج ترجمة المستندات.</li>
+    </ul>
+  </li>
+  <li><strong>أخرى:</strong>
+    <ul dir="rtl">
+      <li>
+        تعديل تبعيات خادم <bdi dir="ltr">MCP</bdi>: تم استخدام مكتبة <bdi dir="ltr">puremagic</bdi> (بايثون فقط) بدلاً من <bdi dir="ltr">python-magic</bdi> لتقليل مشاكل التثبيت.
+      </li>
+      <li>
+        إعادة اختبار مؤشرات أداء <bdi dir="ltr">PP-OCRv5</bdi> باستخدام إصدار <bdi dir="ltr">PaddleOCR 3.1.0</bdi> وتحديث الوثائق.
+      </li>
+    </ul>
+  </li>
+</ul>
+
 <h4 dir="rtl">🔥🔥<strong>2025.06.29: إصدار <bdi dir="ltr">PaddleOCR 3.1.0</bdi>، يتضمن:</strong></h4>
 <ul dir="rtl">
   <li><strong>النماذج وخطوط الأنابيب الرئيسية:</strong>
@@ -88,6 +119,11 @@
     </ul>
   </li>
 </ul>
+
+
+<details>
+    <summary dir="rtl"><strong>سجل التحديثات</strong></summary>
+
 
 <h4 dir="rtl">🔥🔥<strong>2025.06.26: إصدار <bdi dir="ltr">PaddleOCR 3.0.3</bdi>، يتضمن:</strong></h4>
 <ul dir="rtl">
@@ -136,8 +172,6 @@
   </li>
 </ul>
 
-<details>
-    <summary dir="rtl"><strong>سجل التحديثات</strong></summary>
 
 <h4 dir="rtl"><strong>🔥🔥 2025.06.05: إصدار <bdi dir="ltr">PaddleOCR 3.0.1</bdi>، يتضمن:</strong></h4>
 <ul dir="rtl">

@@ -44,6 +44,22 @@ PaddleOCR 3.0は、優れたモデルライブラリを提供するだけでな�
 
 ## 📣 最近のアップデート
 
+#### **2025.08.15：PaddleOCR 3.1.1 をリリース**、内容は以下の通りです：
+
+- **バグ修正:**
+  - `PP-ChatOCRv4`クラスに不足していた`save_vector`、`save_visual_info_list`、`load_vector`、`load_visual_info_list`メソッドを追加。
+  - `PPDocTranslation`クラスの`translate`メソッドに不足していた`glossary`および`llm_request_interval`パラメータを追加。
+
+- **ドキュメント最適化:**
+  - MCPドキュメントにデモ例を追加。
+  - 性能指標テストで使用したPaddlePaddleフレームワークとPaddleOCRバージョンを明記。
+  - ドキュメント翻訳パイプラインの誤りや不足を修正。
+
+- **その他:**
+  - MCPサーバーの依存関係を変更：インストール問題を減らすために`python-magic`の代わりにpure Pythonライブラリの`puremagic`を使用。
+  - PaddleOCR 3.1.0バージョンでPP-OCRv5の性能指標を再テストし、ドキュメントを更新。
+
+
 #### **2025.06.29：PaddleOCR 3.1.0 をリリース**、内容は以下の通りです：
 
 - **主なモデルとパイプライン：**
@@ -57,6 +73,11 @@ PaddleOCR 3.0は、優れたモデルライブラリを提供するだけでな�
   - stdio を介してローカルサービスを呼び出し、Streamable HTTP を介してリモートサービスを呼び出すことができます。
 
 - **ドキュメント最適化：** 一部のユーザーガイドの説明を改善し、よりスムーズな読書体験を提供。
+
+
+
+<details>
+    <summary><strong>更新履歴</strong></summary>
 
 #### 🔥🔥**2025.06.26: PaddleOCR 3.0.3のリリース、以下の内容を含みます：**
 
@@ -90,9 +111,6 @@ PaddleOCR 3.0は、優れたモデルライブラリを提供するだけでな�
   - さまざまな構成におけるPP-StructureV3のベンチマーク指標を洗練しました。
 - **その他：**
   - numpyやpandasなどの依存関係のバージョン制限を緩和し、Python 3.12のサポートを復元しました。
-
-<details>
-    <summary><strong>更新履歴</strong></summary>
 
 #### **🔥🔥 2025.06.05: PaddleOCR 3.0.1のリリース、以下の内容を含みます：**
 

@@ -6,6 +6,22 @@ hide:
 ---
 
 ### Recently Update
+
+#### **2025.08.15: Release of PaddleOCR 3.1.1**, includes:
+
+- **Bug Fixes:**
+  - Added the missing methods `save_vector`, `save_visual_info_list`, `load_vector`, and `load_visual_info_list` in the `PP-ChatOCRv4` class.
+  - Added the missing parameters `glossary` and `llm_request_interval` to the `translate` method in the `PPDocTranslation` class.
+
+- **Documentation Improvements:**
+  - Added a demo to the MCP documentation.
+  - Added information about the PaddlePaddle and PaddleOCR version used for performance metrics testing in the documentation.
+  - Fixed errors and omissions in the production line document translation.
+
+- **Others:**
+  - Changed the MCP server dependency to use the pure Python library `puremagic` instead of `python-magic` to reduce installation issues.
+  - Retested PP-OCRv5 performance metrics with PaddleOCR version 3.1.0 and updated the documentation.
+  
 #### **2025.06.29: Release of PaddleOCR 3.1.0**, includes:
 
 - **Key Models and Pipelines:**

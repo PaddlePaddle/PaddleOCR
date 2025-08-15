@@ -42,6 +42,21 @@ Además de proporcionar una excelente biblioteca de modelos, PaddleOCR 3.0 tambi
 
 ## 📣 Últimas actualizaciones
 
+#### **2025.08.15: Lanzamiento de PaddleOCR 3.1.1**, incluye:
+
+- **Corrección de errores:**
+  - Se añadieron los métodos que faltaban `save_vector`, `save_visual_info_list`, `load_vector` y `load_visual_info_list` a la clase `PP-ChatOCRv4`.
+  - Se añadieron los parámetros faltantes `glossary` y `llm_request_interval` al método `translate` de la clase `PPDocTranslation`.
+
+- **Optimización de la documentación:**
+  - Se añadió una demostración de ejemplo a la documentación de MCP.
+  - Se detallaron las versiones del framework PaddlePaddle y de PaddleOCR utilizadas en las pruebas de indicadores de rendimiento.
+  - Se corrigieron errores y omisiones en la documentación sobre la línea de producción de traducción de documentos.
+
+- **Otros:**
+  - Cambios en las dependencias del servidor MCP: se utilizó la biblioteca pura de Python `puremagic` en lugar de `python-magic` para reducir problemas de instalación.
+  - Se volvieron a probar los indicadores de rendimiento de PP-OCRv5 con la versión 3.1.0 de PaddleOCR y se actualizó la documentación.
+
 #### **2025.06.29: Lanzamiento de PaddleOCR 3.1.0**, incluye:
 
 - **Modelos y flujos de trabajo clave:**
@@ -55,6 +70,10 @@ Además de proporcionar una excelente biblioteca de modelos, PaddleOCR 3.0 tambi
   - Permite invocar servicios locales a través de stdio y servicios remotos a través de Streamable HTTP.
 
 - **Optimización de la documentación:** Se han mejorado las descripciones en algunas guías de usuario para una experiencia de lectura más fluida.
+
+
+<details>
+    <summary><strong>Historial de actualizaciones</strong></summary>
 
 #### 🔥🔥**2025.06.26: Lanzamiento de PaddleOCR 3.0.3, incluye:**
 
@@ -95,9 +114,6 @@ Además de proporcionar una excelente biblioteca de modelos, PaddleOCR 3.0 tambi
 - **Otros:**
 
   - Se flexibilizaron las restricciones de versión en dependencias como numpy y pandas, restaurando el soporte para Python 3.12.
-
-<details>
-    <summary><strong>Historial de actualizaciones</strong></summary>
 
 #### **🔥🔥 2025.06.05: Lanzamiento de PaddleOCR 3.0.1, incluye:**
 
