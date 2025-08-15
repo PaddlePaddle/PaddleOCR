@@ -1218,6 +1218,9 @@ class LaTeXOCRDecode(object):
     """Convert between latex-symbol and symbol-index"""
 
     def __init__(self, rec_char_dict_path, **kwargs):
+        # Set the TOKENIZERS_PARALLELISM environment variable to 'false' to suppress
+        # the warning: "The current process just got forked, Disabling parallelism to avoid deadlocks..
+        #  To disable this warning, please explicitly set TOKENIZERS_PARALLELISM=(true | false)" from tokenizers
         os.environ["TOKENIZERS_PARALLELISM"] = "false"
         from tokenizers import Tokenizer as TokenizerFast
 
@@ -1286,6 +1289,9 @@ class UniMERNetDecode(object):
         is_infer=False,
         **kwargs,
     ):
+        # Set the TOKENIZERS_PARALLELISM environment variable to 'false' to suppress
+        # the warning: "The current process just got forked, Disabling parallelism to avoid deadlocks..
+        #  To disable this warning, please explicitly set TOKENIZERS_PARALLELISM=(true | false)" from tokenizers
         os.environ["TOKENIZERS_PARALLELISM"] = "false"
         from tokenizers import Tokenizer as TokenizerFast
         from tokenizers import AddedToken
