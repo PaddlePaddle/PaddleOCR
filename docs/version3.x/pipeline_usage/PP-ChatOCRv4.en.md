@@ -1306,7 +1306,7 @@ Any float > <code>0</code></li>
 <td></td>
 </tr>
 <td><code>pp_docbee_base_url</code></td>
-<td>Configuration for the multimodal large language model.</td>
+<td>URL for the multimodal large language model service.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
@@ -1335,7 +1335,7 @@ Any float > <code>0</code></li>
 <td><code>use_tensorrt</code></td>
 <td>Whether to use the Paddle Inference TensorRT subgraph engine. If the model does not support acceleration through TensorRT, setting this flag will not enable acceleration.<br/>
 For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6), and it is recommended to install TensorRT 8.6.1.6.<br/>
-For Paddle with CUDA version 12.6, the compatible TensorRT version is 10.x (x>=5), and it is recommended to install TensorRT 10.5.0.18.
+
 </td>
 <td><code>bool</code></td>
 <td><code>False</code></td>
@@ -1850,7 +1850,7 @@ The relevant parameter descriptions are as follows:
 <td><code>use_tensorrt</code></td>
 <td>Whether to use the Paddle Inference TensorRT subgraph engine. If the model does not support acceleration through TensorRT, setting this flag will not enable acceleration.<br/>
 For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6), and it is recommended to install TensorRT 8.6.1.6.<br/>
-For Paddle with CUDA version 12.6, the compatible TensorRT version is 10.x (x>=5), and it is recommended to install TensorRT 10.5.0.18.
+
 </td>
 <td><code>bool</code></td>
 <td><code>False</code></td>
@@ -2236,7 +2236,7 @@ The following are the parameters and their descriptions for the `build_vector()`
 <td><code>visual_info</code></td>
 <td>Visual information, can be a dictionary containing visual information, or a list of such dictionaries.</td>
 <td><code>list|dict</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>min_characters</code></td>
@@ -2259,7 +2259,7 @@ The following are the parameters and their descriptions for the `build_vector()`
 <tr>
 <td><code>retriever_config</code></td>
 <td>Configuration parameters for the vector retrieval large model, same as the parameter during instantiation. If set to <code>None</code>, uses instantiation parameters; otherwise, this parameter takes precedence.</td>
-<td><code>dict</code></td>
+<td><code>dict|None</code></td>
 <td><code>None</code></td>
 </tr>
 </table>
@@ -2304,7 +2304,7 @@ The following are the parameters and their descriptions for the `mllm_pred()` me
 <tr>
 <td><code>mllm_chat_bot_config</code></td>
 <td>Configuration parameters for the multimodal large model, same as the parameter during instantiation. If set to <code>None</code>, uses instantiation parameters; otherwise, this parameter takes precedence.</td>
-<td><code>dict</code></td>
+<td><code>dict|None</code></td>
 <td><code>None</code></td>
 </tr>
 </tbody>
@@ -2330,13 +2330,13 @@ The following are the parameters and their descriptions for the `chat()` method:
 <td><code>key_list</code></td>
 <td>A single key or a list of keys used for extracting information.</td>
 <td><code>Union[str, List[str]]</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>visual_info</code></td>
 <td>Visual information result.</td>
 <td><code>List[dict]</code></td>
-<td><code>None</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>use_vector_retrieval</code></td>
@@ -2347,7 +2347,7 @@ The following are the parameters and their descriptions for the `chat()` method:
 <tr>
 <td><code>vector_info</code></td>
 <td>Vector information used for retrieval.</td>
-<td><code>dict</code></td>
+<td><code>dict|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
@@ -2359,67 +2359,67 @@ The following are the parameters and their descriptions for the `chat()` method:
 <tr>
 <td><code>text_task_description</code></td>
 <td>Description of the text task.</td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>text_output_format</code></td>
 <td>Output format for text results.</td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>text_rules_str</code></td>
 <td>Rules for generating text results.</td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>text_few_shot_demo_text_content</code></td>
 <td>Text content for few-shot demonstration.</td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>text_few_shot_demo_key_value_list</code></td>
 <td>Key-value list for few-shot demonstration.</td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>table_task_description</code></td>
 <td>Description of the table task.</td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>table_output_format</code></td>
 <td>Output format for table results.</td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>table_rules_str</code></td>
 <td>Rules for generating table results.</td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>table_few_shot_demo_text_content</code></td>
 <td>Text content for table few-shot demonstration.</td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>table_few_shot_demo_key_value_list</code></td>
 <td>Key-value list for table few-shot demonstration.</td>
-<td><code>str</code></td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>mllm_predict_info</code></td>
 <td>Multimodal large model result.</td>
-<td><code>dict</code></td>
+<td><code>dict|None</code></td>
 <td>
 <code>None</code>
 </td>
@@ -2432,13 +2432,13 @@ The following are the parameters and their descriptions for the `chat()` method:
 <tr>
 <td><code>chat_bot_config</code></td>
 <td>Configuration information for the large language model, same as the parameter during instantiation.</td>
-<td><code>dict</code></td>
+<td><code>dict|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>retriever_config</code></td>
 <td>Configuration parameters for the vector retrieval large model, same as the parameter during instantiation. If set to <code>None</code>, uses instantiation parameters; otherwise, this parameter takes precedence.</td>
-<td><code>dict</code></td>
+<td><code>dict|None</code></td>
 <td><code>None</code></td>
 </tr>
 </tbody>
@@ -3851,7 +3851,7 @@ SubModules:
 ......
 ```
 
-The exported PaddleX pipeline configuration file not only includes parameters supported by PaddleOCR's CLI and Python API but also allows for more advanced settings. Please refer to the corresponding pipeline usage tutorials in [PaddleX Pipeline Usage Overview](https://paddlepaddle.github.io/PaddleX/3.0/en/pipeline_usage/pipeline_develop_guide.html) for detailed instructions on adjusting various configurations according to your needs.
+The exported PaddleX pipeline configuration file not only includes parameters supported by PaddleOCR's CLI and Python API but also allows for more advanced settings. Please refer to the corresponding pipeline usage tutorials in [PaddleX Pipeline Usage Overview](https://paddlepaddle.github.io/PaddleX/latest/en/pipeline_usage/pipeline_develop_guide.html) for detailed instructions on adjusting various configurations according to your needs.
 
 
 3. Loading Pipeline Configuration Files in CLI

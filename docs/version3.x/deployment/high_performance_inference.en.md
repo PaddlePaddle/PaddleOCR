@@ -26,16 +26,24 @@ Only one type of device dependency should exist in the same environment. For Win
 
 **It is recommended to use the official PaddlePaddle Docker image to install high-performance inference dependencies.** The corresponding images for each device type are as follows:
 
-- `cpu`: `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddle:3.0.0`
-- `gpu`:
-    - CUDA 11.8: `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddle:3.0.0-gpu-cuda11.8-cudnn8.9-trt8.6`
+- `cpu`：`ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlex/paddlex:paddlex3.0.1-paddlepaddle3.0.0-cpu`
+- `gpu`：
+    - CUDA 11.8：`ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlex/paddlex:paddlex3.0.1-paddlepaddle3.0.0-gpu-cuda11.8-cudnn8.9-trt8.6`
+- `gpu`：
+    - CUDA 12.6：`ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlex/paddlex:paddlex3.0.1-paddlepaddle3.0.0-gpu-cuda12.6-cudnn9.5-trt10.5`
+
+**Notice:**
+
+- **Currently, high-performance inference with CUDA 12.6 and cuDNN 9.5 only supports OpenVINO and ONNX Runtime backends, and does not yet support the TensorRT backend.**
 
 ### 1.2 Detailed GPU Environment Instructions
 
-First, ensure that the environment has the required CUDA and cuDNN versions installed. Currently, PaddleOCR only supports CUDA and cuDNN versions compatible with CUDA 11.8 + cuDNN 8.9. Below are the installation instructions for CUDA 11.8 and cuDNN 8.9:
+First, ensure that the environment has the required CUDA and cuDNN versions installed. Currently, PaddleOCR supports CUDA and cuDNN versions compatible with CUDA 11.8 + cuDNN 8.9 or CUDA 12.6 + cuDNN 9.5. Below are the installation instructions for CUDA and cuDNN:
 
 - [Install CUDA 11.8](https://developer.nvidia.com/cuda-11-8-0-download-archive)
 - [Install cuDNN 8.9](https://docs.nvidia.com/deeplearning/cudnn/archives/cudnn-890/install-guide/index.html)
+- [Install CUDA 12.6](https://developer.nvidia.com/cuda-12-6-0-download-archive)
+- [Install cuDNN 9.5](https://docs.nvidia.com/deeplearning/cudnn/backend/v9.5.0/installation/linux.html)
 
 If using the official PaddlePaddle image, the CUDA and cuDNN versions in the image already meet the requirements, and no additional installation is needed.
 
@@ -48,7 +56,7 @@ pip list | grep nvidia-cuda
 pip list | grep nvidia-cudnn
 ```
 
-Secondly, it is recommended to ensure that a compatible version of TensorRT is installed in the environment; otherwise, the Paddle Inference TensorRT subgraph engine will be unavailable, and the program may not achieve optimal inference performance. Currently, PaddleOCR only supports TensorRT 8.6.1.6. If using the official PaddlePaddle image, you can install the TensorRT wheel package with the following command:
+Secondly, it is recommended to ensure that a compatible version of TensorRT is installed in the environment; otherwise, the Paddle Inference TensorRT subgraph engine will be unavailable, and the program may not achieve optimal inference performance. Currently, PaddleOCR only supports TensorRT 8.6.1.6 in the CUDA 11.8 environment. If using the official PaddlePaddle image, you can install the TensorRT wheel package with the following command:
 
 ```bash
 python -m pip install /usr/local/TensorRT-*/python/tensorrt-*-cp310-none-linux_x86_64.whl
@@ -91,4 +99,4 @@ result = pipeline.predict(...)
 
 3. During high-performance inference, PaddleOCR automatically handles the conversion of model formats and selects the optimal inference backend whenever possible. Additionally, PaddleOCR supports users specifying ONNX models. For information on converting PaddlePaddle static graph models to ONNX format, refer to [Obtaining ONNX Models](./obtaining_onnx_models.en.md).
 
-4. The high-performance inference capabilities of PaddleOCR rely on PaddleX and its high-performance inference plugins. By passing in a custom PaddleX production line configuration file, you can configure the inference backend and other related settings. Please refer to [Using PaddleX Production Line Configuration Files](../paddleocr_and_paddlex.en.md#3-Using-PaddleX-Pipeline-Configuration-Files) and the [PaddleX High-Performance Inference Guide](https://paddlepaddle.github.io/PaddleX/3.0/en/pipeline_deploy/high_performance_inference.html#22) to learn how to adjust the high-performance inference configurations.
+4. The high-performance inference capabilities of PaddleOCR rely on PaddleX and its high-performance inference plugins. By passing in a custom PaddleX production line configuration file, you can configure the inference backend and other related settings. Please refer to [Using PaddleX Production Line Configuration Files](../paddleocr_and_paddlex.en.md#3-Using-PaddleX-Pipeline-Configuration-Files) and the [PaddleX High-Performance Inference Guide](https://paddlepaddle.github.io/PaddleX/latest/en/pipeline_deploy/high_performance_inference.html#22) to learn how to adjust the high-performance inference configurations.
