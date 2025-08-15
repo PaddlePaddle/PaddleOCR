@@ -63,9 +63,14 @@ void CRNNRecognizer::Run(const std::vector<cv::Mat> &img_list,
       this->resize_op_.Run(srcimg, resize_img, max_wh_ratio,
                            this->use_tensorrt_, this->rec_image_shape_);
       this->normalize_op_.Run(resize_img, this->mean_, this->scale_,
-                              this->is_scale_);
-      batch_width = std::max(resize_img.cols, batch_width);
-      norm_img_batch.emplace_back(std::move(resize_img));
+                              this->is_scale_);      
+      int border = std::max(this->rec_image_shape_[2], (int)(this->rec_image_shape_[1] * max_wh_ratio)) - resize_img.cols;
+			if (border > 0) {
+				cv::copyMakeBorder(resize_img, resize_img, 0, 0, 0, border, cv::BORDER_CONSTANT, { 0, 0, 0 });
+			}
+
+			norm_img_batch.emplace_back(std::move(resize_img));
+			batch_width = std::max(resize_img.cols, batch_width);
     }
 
     std::vector<float> input(batch_num * 3 * imgH * batch_width, 0.0f);
