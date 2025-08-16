@@ -700,7 +700,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
 
 ## 2. Quick Start
 
-Before using the seal text recognition pipeline locally, please ensure that you have completed the installation of the wheel package according to the [installation tutorial](../installation.md). Once the installation is complete, you can experience it locally via the command line or integrate it with Python.
+Before using the seal text recognition pipeline locally, please ensure that you have completed the installation of the wheel package according to the [installation tutorial](../installation.md). If you prefer to install dependencies selectively, please refer to the relevant instructions in the installation documentation. The corresponding dependency group for this pipeline is `doc-parser`. Once the installation is complete, you can experience it locally via the command line or integrate it with Python.
 
 Please note: If you encounter issues such as the program becoming unresponsive, unexpected program termination, running out of memory resources, or extremely slow inference during execution, please try adjusting the configuration according to the documentation, such as disabling unnecessary features or using lighter-weight models.
 
