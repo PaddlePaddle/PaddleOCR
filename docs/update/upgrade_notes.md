@@ -66,9 +66,11 @@ for res in result:
 res.save_to_img("result")
 ```
 
-需要特别指出的是，PaddleOCR 2.x 提供的 `PPStructure` 在 PaddleOCR 3.x 中已被移除。建议使用功能更丰富、解析效果更好的 `PPStructureV3` 替代，并参考相关文档了解新接口的用法。
+在 PaddleOCR 3.x 中，`PaddleOCR.ocr` 方法不再接受 `det`、`rec` 等参数。作为替代，用户可以通过使用更加清晰的 `TextDetection`、`TextRecognition` 等接口实现单功能模块的推理。此外，在 PaddleOCR 2.x 中，可以通过在构造 `PaddleOCR` 对象时传入 `show_log` 参数来控制日志输出。然而，这种设计存在局限：由于所有 `PaddleOCR` 实例共享一个日志器，当一个实例设置了日志行为后，其它实例也会受到影响，这显然不符合预期。为了解决这一问题，PaddleOCR 3.x 引入了全新的日志系统。详细内容请参阅 [日志](../version3.x/logging.md)。
 
-此外，在 PaddleOCR 2.x 中，可以通过在构造 `PaddleOCR` 对象时传入 `show_log` 参数来控制日志输出。然而，这种设计存在局限：由于所有 `PaddleOCR` 实例共享一个日志器，当一个实例设置了日志行为后，其它实例也会受到影响，这显然不符合预期。为了解决这一问题，PaddleOCR 3.x 引入了全新的日志系统。详细内容请参阅 [日志](../version3.x/logging.md)。
+在 PaddleOCR 3.x 中，原有的 `use_onnx` 参数被更加强大的高性能推理功能代替，详情可参考 [高性能推理](../version3.x/deployment/high_performance_inference.md)。
+
+PaddleOCR 2.x 提供的 `PPStructure` 在 PaddleOCR 3.x 中已被移除。建议使用功能更丰富、解析效果更好的 `PPStructureV3` 替代，并参考相关文档了解新接口的用法。
 
 ## 4. PaddleOCR 3.0 已知问题
 

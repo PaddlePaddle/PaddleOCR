@@ -46,8 +46,7 @@
   </p>
 </div>
 
-
-
+**ملاحظة خاصة**: يقدم PaddleOCR 3.x العديد من التغييرات الكبيرة في الواجهات. **من المرجح أن الشيفرة القديمة المبنية على PaddleOCR 2.x غير متوافقة مع PaddleOCR 3.x**. يرجى التأكد من أن الوثائق التي تقرأها تتوافق مع إصدار PaddleOCR الذي تستخدمه. [تشرح هذه الوثيقة](https://paddlepaddle.github.io/PaddleOCR/latest/en/update/upgrade_notes.html) أسباب الترقية والتغييرات الرئيسية من PaddleOCR 2.x إلى 3.x.
 
 ## 📣 آخر التحديثات
 
@@ -374,7 +373,7 @@ print(chat_result)
 </details>
 
 
-### 5. مسرّعات الذكاء الاصطناعي الصينية غير المتجانسة
+## مسرّعات الذكاء الاصطناعي الصينية غير المتجانسة
 <ul dir="rtl">
   <li><a href="https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/other_devices_support/paddlepaddle_install_NPU.html">Huawei Ascend</a></li>
   <li><a href="https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/other_devices_support/paddlepaddle_install_XPU.html">KUNLUNXIN</a></li>
@@ -398,6 +397,12 @@ print(chat_result)
     <img width="100%" src="../docs/images/blue_v3.gif" alt="PP-StructureV3 Demo">
 </p>
 
+### 6. المزيد من الميزات
+
+- تحويل النماذج إلى صيغة ONNX: [الحصول على نماذج ONNX](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/obtaining_onnx_models.html).
+- تسريع الاستدلال باستخدام محركات مثل OpenVINO و ONNX Runtime و TensorRT، أو إجراء الاستدلال باستخدام نماذج صيغة ONNX: [الاستدلال عالي الأداء](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/high_performance_inference.html).
+- تسريع الاستدلال باستخدام تعدد وحدات معالجة الرسوميات والعمليات المتعددة: [الاستدلال المتوازي للخطوط الإنتاجية](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/pipeline_usage/instructions/parallel_inference.html).
+- دمج PaddleOCR في التطبيقات المكتوبة بلغات مثل ++C و#C وJava وغيرها: [الخدمة](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/serving.html).
 
 ## 👩‍👩‍👧‍👦 المجتمع
 

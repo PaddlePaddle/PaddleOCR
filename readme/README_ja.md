@@ -40,7 +40,7 @@ PaddleOCR 3.0は、優れたモデルライブラリを提供するだけでな�
   </p>
 </div>
 
-
+**特別な注意**：PaddleOCR 3.x では、いくつかの重要なインターフェースの変更が導入されています。**PaddleOCR 2.x を基に作成された古いコードは、PaddleOCR 3.x では動作しない可能性があります**。ご利用中の PaddleOCR のバージョンに対応したドキュメントを参照していることを確認してください。[このドキュメント](https://paddlepaddle.github.io/PaddleOCR/latest/en/update/upgrade_notes.html) では、アップグレードの理由と PaddleOCR 2.x から 3.x への主な変更点が説明されています。
 
 ## 📣 最近のアップデート
 
@@ -290,6 +290,13 @@ print(chat_result)
 ```
 
 </details>
+
+## その他の機能
+
+- モデルをONNX形式に変換：[ONNXモデルの取得](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/obtaining_onnx_models.html)
+- OpenVINO、ONNX Runtime、TensorRTなどのエンジンを使用して推論を高速化、またはONNX形式モデルで推論を実行：[高性能推論](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/high_performance_inference.html)
+- 複数GPUおよび複数プロセスを使用して推論を高速化：[パイプラインの並列推論](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/pipeline_usage/instructions/parallel_inference.html)
+- C++、C#、Java などで書かれたアプリケーションに PaddleOCR を統合する: [サービング](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/serving.html)。
 
 ## ⛰️ 上級チュートリアル
 - [PP-OCRv5 チュートリアル](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/pipeline_usage/OCR.html)

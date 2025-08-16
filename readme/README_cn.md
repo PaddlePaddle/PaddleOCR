@@ -63,6 +63,8 @@ PaddleOCR 3.0除了提供优秀的模型库外，还提供好学易用的工具�
   </p>
 </div>
 
+**特别说明**：PaddleOCR 3.x 引入了多项重要的接口变动，**基于 PaddleOCR 2.x 编写的旧代码很可能无法使用 PaddleOCR 3.x 运行**。请确保您阅读的文档与实际使用的 PaddleOCR 版本匹配。[此文档](https://paddlepaddle.github.io/PaddleOCR/latest/update/upgrade_notes.html) 阐述了升级原因及 PaddleOCR 2.x 到 PaddleOCR 3.x 的主要变更。
+
 ## 📣 最新动态
 
 2025.08.15: **PaddleOCR 3.1.1** 发布，包含：
@@ -321,6 +323,13 @@ print(chat_result)
 ### 5. **国产化硬件使用**
 - [昆仑芯安装指南](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/other_devices_support/paddlepaddle_install_XPU.html)
 - [昇腾安装指南](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/other_devices_support/paddlepaddle_install_NPU.html)
+
+## 更多特性
+
+- 将模型转换为 ONNX 格式：[获取 ONNX 模型](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/deployment/obtaining_onnx_models.html)。
+- 使用 OpenVINO、ONNX Runtime、TensorRT等引擎加速推理，或使用 ONNX 格式模型执行推理：[高性能推理](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/deployment/high_performance_inference.html)。
+- 使用多卡、多进程加速推理：[产线并行推理](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/pipeline_usage/instructions/parallel_inference.html)。
+- 在 C++、C#、Java 等语言编写的应用中集成 PaddleOCR：[服务化部署](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/deployment/serving.html)。
   
 ## ⛰️ 进阶指南
 - [PP-OCRv5 使用教程](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/pipeline_usage/OCR.html)

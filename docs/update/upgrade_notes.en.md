@@ -66,9 +66,11 @@ for res in result:
 res.save_to_img("result")
 ```
 
-It’s worth noting that the `PPStructure` module in PaddleOCR 2.x has been removed in 3.x. We recommend switching to `PPStructureV3`, which offers richer functionality and better parsing results. Refer to the relevant documentation for usage details.
+In PaddleOCR 3.x, the `PaddleOCR.ocr` method no longer accepts parameters such as `det` and `rec`. Instead, users can perform module inference using clearer interfaces like `TextDetection` and `TextRecognition`. Additionally, in PaddleOCR 2.x, users could control log output by passing the `show_log` parameter when constructing a `PaddleOCR` object. However, this design had a limitation: since all `PaddleOCR` instances shared a single logger, configuring logging behavior in one instance would affect others—clearly not the desired behavior. To address this issue, PaddleOCR 3.x introduces an entirely new logging system. For details, please refer to the [Logging](../version3.x/logging.en.md) documentation.
 
-Also, in 2.x, the `show_log` parameter could be passed when creating a `PaddleOCR` object to control logging. However, this design affected all `PaddleOCR` instances due to the use of a shared logger—clearly not the expected behavior. PaddleOCR 3.x introduces a brand-new logging system to address this issue. For more details, see [Logging](../version3.x/logging.en.md).
+In PaddleOCR 3.x, the original `use_onnx` parameter has been replaced by a more powerful high-performance inference feature. For details, refer to [High-Performance Inference](../version3.x/deployment/high_performance_inference.en.md).
+
+The `PPStructure` provided in PaddleOCR 2.x has been removed in PaddleOCR 3.x. It is recommended to use the more feature-rich and better-performing `PPStructureV3` instead. Please consult the relevant documentation to learn how to use the new interface.
 
 ## 4. Known Issues in PaddleOCR 3.0
 

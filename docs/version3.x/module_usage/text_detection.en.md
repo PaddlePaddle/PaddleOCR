@@ -9,6 +9,8 @@ The text detection module is a critical component of OCR (Optical Character Reco
 
 ## 2. Supported Models List
 
+> The inference time only includes the model inference time and does not include the time for pre- or post-processing.
+
 <table>
 <thead>
 <tr>
