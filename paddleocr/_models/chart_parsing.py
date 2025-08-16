@@ -19,27 +19,27 @@ from ._doc_vlm import (
 )
 
 
-class DocVLM(BaseDocVLM):
+class ChartParsing(BaseDocVLM):
     @property
     def default_model_name(self):
-        return "PP-DocBee2-3B"
+        return "PP-Chart2Table"
 
     @classmethod
     def get_cli_subcommand_executor(cls):
-        return DocVLMSubcommandExecutor()
+        return ChartParsingSubcommandExecutor()
 
 
-class DocVLMSubcommandExecutor(BaseDocVLMSubcommandExecutor):
+class ChartParsingSubcommandExecutor(BaseDocVLMSubcommandExecutor):
     @property
     def subparser_name(self):
-        return "doc_vlm"
+        return "chart_parsing"
 
     @property
     def wrapper_cls(self):
-        return DocVLM
+        return ChartParsing
 
     def _update_subparser(self, subparser):
         add_simple_inference_args(
             subparser,
-            input_help='Input dict, e.g. `{"image": "https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/medal_table.png", "query": "Recognize this table"}`.',
+            input_help='Input dict, e.g. `{"image": "https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/chart_parsing_02.png"}`.',
         )

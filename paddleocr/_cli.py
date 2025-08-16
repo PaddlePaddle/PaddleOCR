@@ -19,6 +19,7 @@ import sys
 import warnings
 
 from ._models import (
+    ChartParsing,
     DocImgOrientationClassification,
     DocVLM,
     FormulaRecognition,
@@ -67,6 +68,7 @@ def _register_pipelines(subparsers):
 
 def _register_models(subparsers):
     for cls in [
+        ChartParsing,
         DocImgOrientationClassification,
         DocVLM,
         FormulaRecognition,
