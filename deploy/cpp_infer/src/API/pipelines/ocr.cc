@@ -140,8 +140,8 @@ void PaddleOCR::OverrideConfig() {
   if (!FLAGS_cpu_threads.empty()) {
     params_.cpu_threads = std::stoi(FLAGS_cpu_threads);
   }
-  if (!FLAGS_threads.empty()) {
-    params_.threads = std::stoi(FLAGS_threads);
+  if (!FLAGS_thread_num.empty()) {
+    params_.thread_num = std::stoi(FLAGS_thread_num);
   }
   if (!FLAGS_paddlex_config.empty()) {
     params_.paddlex_config = FLAGS_paddlex_config;
@@ -149,18 +149,24 @@ void PaddleOCR::OverrideConfig() {
 }
 
 absl::Status PaddleOCR::CheckParams() {
-  if (!params_.doc_orientation_classify_model_dir.has_value() && !(params_.use_doc_orientation_classify.has_value() && !params_.use_doc_orientation_classify.value())) {
+  if (!params_.doc_orientation_classify_model_dir.has_value() &&
+      !(params_.use_doc_orientation_classify.has_value() &&
+        !params_.use_doc_orientation_classify.value())) {
     return absl::NotFoundError("Require doc orientation classify model dir.");
   }
-  if (!params_.doc_unwarping_model_dir.has_value() && !(params_.use_doc_unwarping.has_value() && !params_.use_doc_unwarping.value())) {
+  if (!params_.doc_unwarping_model_dir.has_value() &&
+      !(params_.use_doc_unwarping.has_value() &&
+        !params_.use_doc_unwarping.value())) {
     return absl::NotFoundError("Require doc unwarping model dir.");
   }
-  if (!params_.textline_orientation_model_dir.has_value()&& !(params_.use_textline_orientation.has_value() && !params_.use_textline_orientation.value())) {
+  if (!params_.textline_orientation_model_dir.has_value() &&
+      !(params_.use_textline_orientation.has_value() &&
+        !params_.use_textline_orientation.value())) {
     return absl::NotFoundError("Require textline orientation model_dir.");
   }
-  if (!params_.text_detection_model_dir.has_value())  {
+  if (!params_.text_detection_model_dir.has_value()) {
     return absl::NotFoundError("Require text detection model dir.");
-  }  
+  }
   if (!params_.text_recognition_model_dir.has_value()) {
     return absl::NotFoundError("Require text recognition model_dir.");
   }
@@ -200,7 +206,7 @@ OCRPipelineParams PaddleOCR::ToOCRPipelineParams(const PaddleOCRParams& from) {
   COPY_PARAMS(mkldnn_cache_capacity)
   COPY_PARAMS(precision)
   COPY_PARAMS(cpu_threads)
-  COPY_PARAMS(threads)
+  COPY_PARAMS(thread_num)
   COPY_PARAMS(paddlex_config)
   return to;
 }

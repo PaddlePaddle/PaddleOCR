@@ -50,7 +50,7 @@ struct PaddleOCRParams {
   int mkldnn_cache_capacity = 10;
   std::string precision = "fp32";
   int cpu_threads = 8;
-  int threads = 1;
+  int thread_num = 1;
   absl::optional<Utility::PaddleXConfigVariant> paddlex_config = absl::nullopt;
 };
 

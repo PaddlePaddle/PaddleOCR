@@ -49,5 +49,5 @@ DECLARE_string(precision);
 DECLARE_string(enable_mkldnn);
 DECLARE_string(mkldnn_cache_capacity);
 DECLARE_string(cpu_threads);
-DECLARE_string(threads);
+DECLARE_string(thread_num);
 DECLARE_string(paddlex_config);

@@ -68,7 +68,7 @@ template <typename Pipeline, typename PipelineParams, typename PipelineInput,
 AutoParallelSimpleInferencePipeline<Pipeline, PipelineParams, PipelineInput,
                                     PipelineResult>::
     AutoParallelSimpleInferencePipeline(const PipelineParams& params)
-    : BasePipeline(), params_(params), thread_num_(params.threads) {
+    : BasePipeline(), params_(params), thread_num_(params.thread_num) {
   auto status = Init();
   if (!status.ok()) {
     INFOE("Pipeline pool init error : %s", status.ToString().c_str());

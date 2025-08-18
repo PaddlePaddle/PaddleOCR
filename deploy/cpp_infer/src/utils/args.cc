@@ -87,7 +87,7 @@ DEFINE_string(enable_mkldnn, "", "enable_mkldnn");
 DEFINE_string(mkldnn_cache_capacity, "", "MKL-DNN cache capacity.");
 DEFINE_string(cpu_threads, "",
               "Number of threads used for paddlepaddle inference on CPU.");
-DEFINE_string(threads, "",
+DEFINE_string(thread_num, "",
               "Number of threads used for pipeline instance inference on CPU.");
 DEFINE_string(paddlex_config, "",
               "Path to the PaddleX pipeline configuration file.");
