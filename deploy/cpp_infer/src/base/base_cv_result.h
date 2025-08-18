@@ -31,7 +31,6 @@ class BaseCVResult {
   virtual ~BaseCVResult() = default;
   std::string Str() const;
   std::unordered_map<std::string, cv::Mat> Img() const;
-  // absl::Status Print() const;
   absl::Status SaveToImg() const;
 
   virtual void SaveToImg(const std::string& save_path) = 0;
@@ -42,5 +41,4 @@ class BaseCVResult {
   std::unordered_map<std::string, std::string> res_;
   ImageWriter img_writer_;
   std::string ToStr() const;
-  // virtual std::unordered_map<std::string, cv::Mat> ToImg() const = 0;
 };
