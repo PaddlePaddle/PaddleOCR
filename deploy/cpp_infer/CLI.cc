@@ -19,13 +19,13 @@
 #include <unordered_map>
 #include <vector>
 
-#include "src/paddleocr/_models/doc_img_orientation_classification.h"
-#include "src/paddleocr/_models/text_detection.h"
-#include "src/paddleocr/_models/text_image_unwarping.h"
-#include "src/paddleocr/_models/text_recognition.h"
-#include "src/paddleocr/_models/textline_orientation_classification.h"
-#include "src/paddleocr/_pipelines/doc_preprocessor.h"
-#include "src/paddleocr/_pipelines/ocr.h"
+#include "src/API/models/doc_img_orientation_classification.h"
+#include "src/API/models/text_detection.h"
+#include "src/API/models/text_image_unwarping.h"
+#include "src/API/models/text_recognition.h"
+#include "src/API/models/textline_orientation_classification.h"
+#include "src/API/pipelines/doc_preprocessor.h"
+#include "src/API/pipelines/ocr.h"
 #include "src/utils/args.h"
 
 static const std::unordered_set<std::string> SUPPORT_MODE_PIPELINE = {
