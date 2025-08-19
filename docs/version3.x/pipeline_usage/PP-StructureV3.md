@@ -1605,10 +1605,11 @@ MKL-DNN 缓存容量。
 from paddleocr import PPStructureV3
 
 pipeline = PPStructureV3()
-# ocr = PPStructureV3(use_doc_orientation_classify=True) # 通过 use_doc_orientation_classify 指定是否使用文档方向分类模型
-# ocr = PPStructureV3(use_doc_unwarping=True) # 通过 use_doc_unwarping 指定是否使用文本图像矫正模块
-# ocr = PPStructureV3(use_textline_orientation=True) # 通过 use_textline_orientation 指定是否使用文本行方向分类模型
-# ocr = PPStructureV3(device="gpu") # 通过 device 指定模型推理时使用 GPU
+# pipeline = PPStructureV3(lang="en") # 将 lang 参数设置为使用英文文本识别模型。对于其他支持的语言，请参阅第5节：附录部分。默认配置为中英文模型。
+# pipeline = PPStructureV3(use_doc_orientation_classify=True) # 通过 use_doc_orientation_classify 指定是否使用文档方向分类模型
+# pipeline = PPStructureV3(use_doc_unwarping=True) # 通过 use_doc_unwarping 指定是否使用文本图像矫正模块
+# pipeline = PPStructureV3(use_textline_orientation=True) # 通过 use_textline_orientation 指定是否使用文本行方向分类模型
+# pipeline = PPStructureV3(device="gpu") # 通过 device 指定模型推理时使用 GPU
 output = pipeline.predict("./pp_structure_v3_demo.png")
 for res in output:
     res.print() ## 打印预测的结构化输出
@@ -3631,3 +3632,139 @@ from paddleocr import PPStructureV3
 
 pipeline = PPStructureV3(paddlex_config="PP-StructureV3.yaml")
 ```
+
+## 5. 附录
+
+<details><summary><b>c</b></summary>
+
+<table border="1" cellspacing="0" cellpadding="4">
+  <thead>
+    <tr>
+      <th><code>lang</code></th>
+      <th>Language Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td><code>abq</code></td><td>Abaza</td></tr>
+    <tr><td><code>af</code></td><td>Afrikaans</td></tr>
+    <tr><td><code>ang</code></td><td>Old English</td></tr>
+    <tr><td><code>ar</code></td><td>Arabic</td></tr>
+    <tr><td><code>ava</code></td><td>Avaric</td></tr>
+    <tr><td><code>az</code></td><td>Azerbaijani</td></tr>
+    <tr><td><code>be</code></td><td>Belarusian</td></tr>
+    <tr><td><code>bg</code></td><td>Bulgarian</td></tr>
+    <tr><td><code>bgc</code></td><td>Haryanvi</td></tr>
+    <tr><td><code>bh</code></td><td>Bihari</td></tr>
+    <tr><td><code>bho</code></td><td>Bhojpuri</td></tr>
+    <tr><td><code>bs</code></td><td>Bosnian</td></tr>
+    <tr><td><code>ch</code></td><td>Chinese (Simplified)</td></tr>
+    <tr><td><code>che</code></td><td>Chechen</td></tr>
+    <tr><td><code>chinese_cht</code></td><td>Chinese (Traditional)</td></tr>
+    <tr><td><code>cs</code></td><td>Czech</td></tr>
+    <tr><td><code>cy</code></td><td>Welsh</td></tr>
+    <tr><td><code>da</code></td><td>Danish</td></tr>
+    <tr><td><code>dar</code></td><td>Dargwa</td></tr>
+    <tr><td><code>de</code> or <code>german</code></td><td>German</td></tr>
+    <tr><td><code>en</code></td><td>English</td></tr>
+    <tr><td><code>es</code></td><td>Spanish</td></tr>
+    <tr><td><code>et</code></td><td>Estonian</td></tr>
+    <tr><td><code>fa</code></td><td>Persian</td></tr>
+    <tr><td><code>fr</code> or <code>french</code></td><td>French</td></tr>
+    <tr><td><code>ga</code></td><td>Irish</td></tr>
+    <tr><td><code>gom</code></td><td>Konkani</td></tr>
+    <tr><td><code>hi</code></td><td>Hindi</td></tr>
+    <tr><td><code>hr</code></td><td>Croatian</td></tr>
+    <tr><td><code>hu</code></td><td>Hungarian</td></tr>
+    <tr><td><code>id</code></td><td>Indonesian</td></tr>
+    <tr><td><code>inh</code></td><td>Ingush</td></tr>
+    <tr><td><code>is</code></td><td>Icelandic</td></tr>
+    <tr><td><code>it</code></td><td>Italian</td></tr>
+    <tr><td><code>japan</code></td><td>Japanese</td></tr>
+    <tr><td><code>ka</code></td><td>Georgian</td></tr>
+    <tr><td><code>kbd</code></td><td>Kabardian</td></tr>
+    <tr><td><code>korean</code></td><td>Korean</td></tr>
+    <tr><td><code>ku</code></td><td>Kurdish</td></tr>
+    <tr><td><code>la</code></td><td>Latin</td></tr>
+    <tr><td><code>lbe</code></td><td>Lak</td></tr>
+    <tr><td><code>lez</code></td><td>Lezghian</td></tr>
+    <tr><td><code>lt</code></td><td>Lithuanian</td></tr>
+    <tr><td><code>lv</code></td><td>Latvian</td></tr>
+    <tr><td><code>mah</code></td><td>Magahi</td></tr>
+    <tr><td><code>mai</code></td><td>Maithili</td></tr>
+    <tr><td><code>mi</code></td><td>Maori</td></tr>
+    <tr><td><code>mn</code></td><td>Mongolian</td></tr>
+    <tr><td><code>mr</code></td><td>Marathi</td></tr>
+    <tr><td><code>ms</code></td><td>Malay</td></tr>
+    <tr><td><code>mt</code></td><td>Maltese</td></tr>
+    <tr><td><code>ne</code></td><td>Nepali</td></tr>
+    <tr><td><code>new</code></td><td>Newari</td></tr>
+    <tr><td><code>nl</code></td><td>Dutch</td></tr>
+    <tr><td><code>no</code></td><td>Norwegian</td></tr>
+    <tr><td><code>oc</code></td><td>Occitan</td></tr>
+    <tr><td><code>pi</code></td><td>Pali</td></tr>
+    <tr><td><code>pl</code></td><td>Polish</td></tr>
+    <tr><td><code>pt</code></td><td>Portuguese</td></tr>
+    <tr><td><code>ro</code></td><td>Romanian</td></tr>
+    <tr><td><code>rs_cyrillic</code></td><td>Serbian (Cyrillic)</td></tr>
+    <tr><td><code>rs_latin</code></td><td>Serbian (Latin)</td></tr>
+    <tr><td><code>ru</code></td><td>Russian</td></tr>
+    <tr><td><code>sa</code></td><td>Sanskrit</td></tr>
+    <tr><td><code>sck</code></td><td>Sadri</td></tr>
+    <tr><td><code>sk</code></td><td>Slovak</td></tr>
+    <tr><td><code>sl</code></td><td>Slovenian</td></tr>
+    <tr><td><code>sq</code></td><td>Albanian</td></tr>
+    <tr><td><code>sv</code></td><td>Swedish</td></tr>
+    <tr><td><code>sw</code></td><td>Swahili</td></tr>
+    <tr><td><code>tab</code></td><td>Tabassaran</td></tr>
+    <tr><td><code>ta</code></td><td>Tamil</td></tr>
+    <tr><td><code>te</code></td><td>Telugu</td></tr>
+    <tr><td><code>tl</code></td><td>Tagalog</td></tr>
+    <tr><td><code>tr</code></td><td>Turkish</td></tr>
+    <tr><td><code>ug</code></td><td>Uyghur</td></tr>
+    <tr><td><code>uk</code></td><td>Ukrainian</td></tr>
+    <tr><td><code>ur</code></td><td>Urdu</td></tr>
+    <tr><td><code>uz</code></td><td>Uzbek</td></tr>
+    <tr><td><code>vi</code></td><td>Vietnamese</td></tr>
+  </tbody>
+</table>
+
+</details>
+
+<details><summary><b>Correspondence Between OCR Model Versions and Supported Languages</b></summary>
+
+<table border="1" cellspacing="0" cellpadding="4">
+  <thead>
+    <tr>
+      <th><code>ocr_version</code></th>
+      <th>Supported <code>lang</code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>PP-OCRv5</code></td>
+      <td><code>ch</code>, <code>en</code>, <code>fr</code>, <code>de</code>, <code>japan</code>, <code>korean</code>, <code>chinese_cht</code>, <code>af</code>, <code>it</code>, <code>es</code>, <code>bs</code>, <code>pt</code>, <code>cs</code>, <code>cy</code>, <code>da</code>, <code>et</code>, <code>ga</code>, <code>hr</code>, <code>hu</code>, <code>rslatin</code>, <code>id</code>, <code>oc</code>, <code>is</code>, <code>lt</code>, <code>mi</code>, <code>ms</code>, <code>nl</code>, <code>no</code>, <code>pl</code>, <code>sk</code>, <code>sl</code>, <code>sq</code>, <code>sv</code>, <code>sw</code>, <code>tl</code>, <code>tr</code>, <code>uz</code>, <code>la</code>, <code>ru</code>, <code>be</code>, <code>uk</code></td>
+    </tr>
+    <tr>
+      <td><code>PP-OCRv4</code></td>
+      <td><code>ch</code>, <code>en</code></td>
+    </tr>
+    <tr>
+      <td><code>PP-OCRv3</code></td>
+      <td>
+        <code>abq</code>, <code>af</code>, <code>ady</code>, <code>ang</code>, <code>ar</code>, <code>ava</code>, <code>az</code>, <code>be</code>,
+        <code>bg</code>, <code>bgc</code>, <code>bh</code>, <code>bho</code>, <code>bs</code>, <code>ch</code>, <code>che</code>,
+        <code>chinese_cht</code>, <code>cs</code>, <code>cy</code>, <code>da</code>, <code>dar</code>, <code>de</code>, <code>german</code>,
+        <code>en</code>, <code>es</code>, <code>et</code>, <code>fa</code>, <code>fr</code>, <code>french</code>, <code>ga</code>, <code>gom</code>,
+        <code>hi</code>, <code>hr</code>, <code>hu</code>, <code>id</code>, <code>inh</code>, <code>is</code>, <code>it</code>, <code>japan</code>,
+        <code>ka</code>, <code>kbd</code>, <code>korean</code>, <code>ku</code>, <code>la</code>, <code>lbe</code>, <code>lez</code>, <code>lt</code>,
+        <code>lv</code>, <code>mah</code>, <code>mai</code>, <code>mi</code>, <code>mn</code>, <code>mr</code>, <code>ms</code>, <code>mt</code>,
+        <code>ne</code>, <code>new</code>, <code>nl</code>, <code>no</code>, <code>oc</code>, <code>pi</code>, <code>pl</code>, <code>pt</code>,
+        <code>ro</code>, <code>rs_cyrillic</code>, <code>rs_latin</code>, <code>ru</code>, <code>sa</code>, <code>sck</code>, <code>sk</code>,
+        <code>sl</code>, <code>sq</code>, <code>sv</code>, <code>sw</code>, <code>ta</code>, <code>tab</code>, <code>te</code>, <code>tl</code>,
+        <code>tr</code>, <code>ug</code>, <code>uk</code>, <code>ur</code>, <code>uz</code>, <code>vi</code>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+</details>
