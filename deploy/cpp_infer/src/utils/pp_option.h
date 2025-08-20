@@ -21,39 +21,39 @@
 #include "absl/status/status.h"
 #include "absl/status/statusor.h"
 #ifdef WITH_GPU
-static constexpr const char* DEVICE = "gpu:0";
+static constexpr const char *DEVICE = "gpu:0";
 #else
-static constexpr const char* DEVICE = "cpu";
+static constexpr const char *DEVICE = "cpu";
 #endif
 class PaddlePredictorOption {
- public:
+public:
   const std::vector<std::string> SUPPORT_RUN_MODE = {"paddle", "paddle_fp16",
                                                      "mkldnn", "mkldnn_bf16"};
 
   const std::vector<std::string> SUPPORT_DEVICE = {"gpu", "cpu"};
 
-  const std::string& RunMode() const;
-  const std::string& DeviceType() const;
+  const std::string &RunMode() const;
+  const std::string &DeviceType() const;
   int DeviceId() const;
   int CpuThreads() const;
-  const std::vector<std::string>& DeletePass() const;
+  const std::vector<std::string> &DeletePass() const;
   bool EnableNewIR() const;
   bool EnableCinn() const;
   int MkldnnCacheCapacity() const;
-  const std::vector<std::string>& GetSupportRunMode() const;
-  const std::vector<std::string>& GetSupportDevice() const;
+  const std::vector<std::string> &GetSupportRunMode() const;
+  const std::vector<std::string> &GetSupportDevice() const;
   std::string DebugString() const;
 
-  absl::Status SetRunMode(const std::string& run_mode);
-  absl::Status SetDeviceType(const std::string& device_type);
+  absl::Status SetRunMode(const std::string &run_mode);
+  absl::Status SetDeviceType(const std::string &device_type);
   absl::Status SetDeviceId(int device_id);
   absl::Status SetCpuThreads(int cpu_threads);
   absl::Status SetMkldnnCacheCapacity(int mkldnn_cache_capacity);
-  void SetDeletePass(const std::vector<std::string>& delete_pass);
+  void SetDeletePass(const std::vector<std::string> &delete_pass);
   void SetEnableNewIR(bool enable_new_ir);
   void SetEnableCinn(bool enable_cinn);
 
- private:
+private:
   std::string run_mode_ = "paddle";
   std::string device_type_ = DEVICE;
   int device_id_ = 0;

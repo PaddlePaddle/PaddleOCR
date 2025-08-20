@@ -25,39 +25,40 @@
 #include "src/utils/func_register.h"
 
 class OCRReisizeNormImg : public BaseProcessor {
- public:
+public:
   OCRReisizeNormImg(
       absl::optional<std::vector<int>> input_shape = absl::nullopt,
       std::vector<int> rec_image_shape = {3, 48, 320})
       : rec_image_shape_(rec_image_shape),
         input_shape_(input_shape.value_or(std::vector<int>())){};
-  absl::StatusOr<std::vector<cv::Mat>> Apply(
-      std::vector<cv::Mat>& input, const void* param = nullptr) const override;
-  absl::StatusOr<cv::Mat> Resize(cv::Mat& image) const;
-  absl::StatusOr<cv::Mat> StaticResize(cv::Mat& image) const;
-  absl::StatusOr<cv::Mat> ResizeNormImg(cv::Mat& image,
+  absl::StatusOr<std::vector<cv::Mat>>
+  Apply(std::vector<cv::Mat> &input,
+        const void *param = nullptr) const override;
+  absl::StatusOr<cv::Mat> Resize(cv::Mat &image) const;
+  absl::StatusOr<cv::Mat> StaticResize(cv::Mat &image) const;
+  absl::StatusOr<cv::Mat> ResizeNormImg(cv::Mat &image,
                                         float max_wh_ratio) const;
   static constexpr int MAX_IMG_W = 3200;
 
- private:
+private:
   std::vector<int> rec_image_shape_;
   std::vector<int> input_shape_;
 };
 
 class CTCLabelDecode {
- public:
-  CTCLabelDecode(const std::vector<std::string>& character_list = {},
+public:
+  CTCLabelDecode(const std::vector<std::string> &character_list = {},
                  bool use_space_char = true);
-  absl::StatusOr<std::vector<std::pair<std::string, float>>> Apply(
-      const cv::Mat& preds) const;
-  absl::StatusOr<std::pair<std::string, float>> Process(
-      const cv::Mat& pred_data) const;
-  absl::StatusOr<std::pair<std::string, float>> Decode(
-      std::list<int>& text_index, std::list<float>& text_prob,
-      bool is_remove_duplicate = false) const;
+  absl::StatusOr<std::vector<std::pair<std::string, float>>>
+  Apply(const cv::Mat &preds) const;
+  absl::StatusOr<std::pair<std::string, float>>
+  Process(const cv::Mat &pred_data) const;
+  absl::StatusOr<std::pair<std::string, float>>
+  Decode(std::list<int> &text_index, std::list<float> &text_prob,
+         bool is_remove_duplicate = false) const;
   void AddSpecialChar();
 
- private:
+private:
   std::vector<std::string> character_list_;
   bool use_space_char_;
   std::unordered_map<int, std::string> dict_;
@@ -66,9 +67,10 @@ class CTCLabelDecode {
 };
 
 class ToBatchUniform : public ToBatch {
- public:
-  absl::StatusOr<std::vector<cv::Mat>> Apply(
-      std::vector<cv::Mat>& input, const void* param = nullptr) const override {
+public:
+  absl::StatusOr<std::vector<cv::Mat>>
+  Apply(std::vector<cv::Mat> &input,
+        const void *param = nullptr) const override {
     if (input.empty()) {
       return absl::InvalidArgumentError("Input image vector is empty.");
     }
@@ -76,7 +78,7 @@ class ToBatchUniform : public ToBatch {
     int dtype = input[0].type();
 
     int maxWidth = 0;
-    for (const auto& img : input) {
+    for (const auto &img : input) {
       if (img.dims != numDims || img.type() != dtype) {
         return absl::InvalidArgumentError(
             "All images must have the same number of dimensions and data type");
@@ -93,7 +95,7 @@ class ToBatchUniform : public ToBatch {
 
     std::vector<cv::Mat> paddedImages;
 
-    for (const auto& img : input) {
+    for (const auto &img : input) {
       int currentWidth = img.size[numDims - 1];
 
       if (currentWidth == maxWidth) {

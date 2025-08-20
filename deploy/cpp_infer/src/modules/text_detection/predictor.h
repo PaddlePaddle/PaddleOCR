@@ -46,7 +46,7 @@ struct TextDetPredictorParams {
 };
 
 class TextDetPredictor : public BasePredictor {
- public:
+public:
   TextDetPredictor(const TextDetPredictorParams &params);
 
   std::vector<TextDetPredictorResult> PredictorResult() const {
@@ -57,10 +57,10 @@ class TextDetPredictor : public BasePredictor {
 
   absl::Status Build();
 
-  std::vector<std::unique_ptr<BaseCVResult>> Process(
-      std::vector<cv::Mat> &batch_data) override;
+  std::vector<std::unique_ptr<BaseCVResult>>
+  Process(std::vector<cv::Mat> &batch_data) override;
 
- private:
+private:
   TextDetPredictorParams params_;
   std::unordered_map<std::string, std::unique_ptr<DBPostProcess>> post_op_;
   std::vector<TextDetPredictorResult> predictor_result_vec_;

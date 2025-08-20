@@ -18,7 +18,7 @@
 #include "src/base/base_pipeline.h"
 
 class PaddleXPipelineWrapper {
- public:
+public:
   virtual ~PaddleXPipelineWrapper() = default;
   PaddleXPipelineWrapper() = delete;
   virtual std::unique_ptr<BasePipeline> CreatePipeline() = 0;

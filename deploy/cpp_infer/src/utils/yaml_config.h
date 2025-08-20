@@ -33,10 +33,10 @@ struct VectorVariant {
 };
 
 class YamlConfig {
- public:
-  YamlConfig(const std::unordered_map<std::string, std::string>& data)
+public:
+  YamlConfig(const std::unordered_map<std::string, std::string> &data)
       : data_(data) {}
-  YamlConfig(const std::string& model_dir);
+  YamlConfig(const std::string &model_dir);
   YamlConfig() = default;
   ~YamlConfig() = default;
 
@@ -47,34 +47,35 @@ class YamlConfig {
   std::unordered_map<std::string, std::string> PostProcessOpInfo() {
     return post_process_op_info_;
   };
-  absl::StatusOr<std::string> GetString(
-      const std::string& key, const std::string& default_value = "") const;
-  absl::StatusOr<int> GetInt(const std::string& key, int default_value) const;
-  absl::StatusOr<float> GetFloat(const std::string& key,
+  absl::StatusOr<std::string>
+  GetString(const std::string &key,
+            const std::string &default_value = "") const;
+  absl::StatusOr<int> GetInt(const std::string &key, int default_value) const;
+  absl::StatusOr<float> GetFloat(const std::string &key,
                                  float default_value) const;
-  absl::StatusOr<double> GetDouble(const std::string& key) const;
-  absl::StatusOr<bool> GetBool(const std::string& key,
+  absl::StatusOr<double> GetDouble(const std::string &key) const;
+  absl::StatusOr<bool> GetBool(const std::string &key,
                                bool default_value) const;
-  absl::StatusOr<std::unordered_map<std::string, std::string>> GetSubModule(
-      const std::string& key) const;
+  absl::StatusOr<std::unordered_map<std::string, std::string>>
+  GetSubModule(const std::string &key) const;
 
-  absl::Status HasKey(const std::string& key) const;
+  absl::Status HasKey(const std::string &key) const;
 
   absl::Status PrintAll() const;
-  absl::Status PrintWithPrefix(const std::string& prefix) const;
+  absl::Status PrintWithPrefix(const std::string &prefix) const;
   absl::Status FindPreProcessOp(
-      const std::string& prefix = "PreProcess.transform_ops[0]") const;
-  std::unordered_map<std::string, std::string>& Data() { return data_; };
+      const std::string &prefix = "PreProcess.transform_ops[0]") const;
+  std::unordered_map<std::string, std::string> &Data() { return data_; };
   std::string ConfigYamlPath() { return config_yaml_path_; };
-  absl::Status GetConfigYamlPaths(const std::string& model_dir);
+  absl::Status GetConfigYamlPaths(const std::string &model_dir);
   absl::Status LoadYamlFile();
-  absl::StatusOr<std::pair<std::string, std::string>> FindKey(
-      const std::string& key);
-  static VectorVariant SmartParseVector(const std::string& input);
+  absl::StatusOr<std::pair<std::string, std::string>>
+  FindKey(const std::string &key);
+  static VectorVariant SmartParseVector(const std::string &input);
 
- private:
+private:
   std::string config_yaml_path_;
-  void ParseNode(const YAML::Node& node, const std::string& prefix = "");
+  void ParseNode(const YAML::Node &node, const std::string &prefix = "");
   std::unordered_map<std::string, std::string> data_;
   std::unordered_map<std::string, std::string> pre_process_op_info_;
   std::unordered_map<std::string, std::string> post_process_op_info_;

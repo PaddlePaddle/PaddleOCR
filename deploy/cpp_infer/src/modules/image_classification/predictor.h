@@ -40,15 +40,15 @@ struct ClasPredictorResult {
 };
 
 class ClasPredictor : public BasePredictor {
- public:
-  explicit ClasPredictor(const ClasPredictorParams& params);
+public:
+  explicit ClasPredictor(const ClasPredictorParams &params);
 
   ClasPredictor() = delete;
 
   absl::Status Build();
 
-  std::vector<std::unique_ptr<BaseCVResult>> Process(
-      std::vector<cv::Mat>& batch_data) override;
+  std::vector<std::unique_ptr<BaseCVResult>>
+  Process(std::vector<cv::Mat> &batch_data) override;
 
   std::vector<ClasPredictorResult> PredictorResult() const {
     return predictor_result_vec_;
@@ -58,7 +58,7 @@ class ClasPredictor : public BasePredictor {
 
   absl::Status BuildResize();
 
- private:
+private:
   ClasPredictorParams params_;
   std::unordered_map<std::string, std::unique_ptr<Topk>> post_op_;
   std::vector<ClasPredictorResult> predictor_result_vec_;

@@ -26,7 +26,7 @@
 namespace PaddlePool {
 
 class ThreadPool {
- public:
+public:
   using MutexGuard = std::lock_guard<std::mutex>;
   using UniqueLock = std::unique_lock<std::mutex>;
   using Thread = std::thread;
@@ -47,7 +47,7 @@ class ThreadPool {
 
   size_t threadsNum() const;
 
- private:
+private:
   static constexpr size_t WAIT_SECONDS = 2;
   void worker();
   void joinFinishedThreads();
@@ -64,7 +64,7 @@ class ThreadPool {
   std::unordered_map<ThreadID, Thread> threads_;
 };
 
-}  // namespace PaddlePool
+} // namespace PaddlePool
 
 namespace PaddlePool {
 
@@ -96,4 +96,4 @@ auto ThreadPool::submit(Func &&func, Ts &&...params)
   return result;
 }
 
-}  // namespace PaddlePool
+} // namespace PaddlePool

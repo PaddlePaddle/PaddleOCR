@@ -24,15 +24,14 @@
 #include "src/utils/pp_option.h"
 #include "src/utils/utility.h"
 
-BasePredictor::BasePredictor(const absl::optional<std::string>& model_dir,
-                             const absl::optional<std::string>& model_name,
-                             const absl::optional<std::string>& device,
-                             const std::string& precision,
+BasePredictor::BasePredictor(const absl::optional<std::string> &model_dir,
+                             const absl::optional<std::string> &model_name,
+                             const absl::optional<std::string> &device,
+                             const std::string &precision,
                              const bool enable_mkldnn,
                              int mkldnn_cache_capacityint, int cpu_threads,
                              int batch_size, const std::string sampler_type)
-    : model_dir_(model_dir),
-      batch_size_(batch_size),
+    : model_dir_(model_dir), batch_size_(batch_size),
       sampler_type_(sampler_type) {
   if (model_dir_.has_value()) {
     config_ = YamlConfig(model_dir_.value());
@@ -89,9 +88,8 @@ BasePredictor::BasePredictor(const absl::optional<std::string>& model_dir,
 
   if (enable_mkldnn && device_type == "cpu") {
     if (precision == "fp16") {
-      INFOW(
-          "When MKLDNN is enabled, FP16 precision is not supported.The "
-          "computation will proceed with FP32 instead.");
+      INFOW("When MKLDNN is enabled, FP16 precision is not supported.The "
+            "computation will proceed with FP32 instead.");
     }
     if (Utility::IsMkldnnAvailable()) {
       auto status_mkldnn = pp_option_ptr_->SetRunMode("mkldnn");
@@ -140,13 +138,13 @@ BasePredictor::BasePredictor(const absl::optional<std::string>& model_dir,
   INFO(pp_option_ptr_->DebugString().c_str());
 }
 
-std::vector<std::unique_ptr<BaseCVResult>> BasePredictor::Predict(
-    const std::string& input) {
+std::vector<std::unique_ptr<BaseCVResult>>
+BasePredictor::Predict(const std::string &input) {
   std::vector<std::string> inputs = {input};
   return Predict(inputs);
 }
 
-const PaddlePredictorOption& BasePredictor::PPOption() {
+const PaddlePredictorOption &BasePredictor::PPOption() {
   return *pp_option_ptr_;
 }
 

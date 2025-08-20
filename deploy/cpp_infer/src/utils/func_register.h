@@ -24,9 +24,9 @@
 #include "absl/status/statusor.h"
 
 class BaseProcessor {
- public:
+public:
   BaseProcessor() = default;
   virtual ~BaseProcessor() = default;
-  virtual absl::StatusOr<std::vector<cv::Mat>> Apply(
-      std::vector<cv::Mat>& input, const void* param_ptr = nullptr) const = 0;
+  virtual absl::StatusOr<std::vector<cv::Mat>>
+  Apply(std::vector<cv::Mat> &input, const void *param_ptr = nullptr) const = 0;
 };

@@ -42,13 +42,13 @@ int PaddlePredictorOption::MkldnnCacheCapacity() const {
   return mkldnn_cache_capacity_;
 }
 
-const std::vector<std::string> &PaddlePredictorOption::GetSupportRunMode()
-    const {
+const std::vector<std::string> &
+PaddlePredictorOption::GetSupportRunMode() const {
   return SUPPORT_RUN_MODE;
 }
 
-const std::vector<std::string> &PaddlePredictorOption::GetSupportDevice()
-    const {
+const std::vector<std::string> &
+PaddlePredictorOption::GetSupportDevice() const {
   return SUPPORT_DEVICE;
 }
 
@@ -61,8 +61,8 @@ absl::Status PaddlePredictorOption::SetRunMode(const std::string &run_mode) {
   return absl::OkStatus();
 }
 
-absl::Status PaddlePredictorOption::SetDeviceType(
-    const std::string &device_type) {
+absl::Status
+PaddlePredictorOption::SetDeviceType(const std::string &device_type) {
   if (std::find(SUPPORT_DEVICE.begin(), SUPPORT_DEVICE.end(), device_type) ==
       SUPPORT_DEVICE.end()) {
     return absl::InvalidArgumentError(
@@ -93,8 +93,8 @@ absl::Status PaddlePredictorOption::SetCpuThreads(int cpu_threads) {
   return absl::OkStatus();
 }
 
-absl::Status PaddlePredictorOption::SetMkldnnCacheCapacity(
-    int mkldnn_cache_capacity) {
+absl::Status
+PaddlePredictorOption::SetMkldnnCacheCapacity(int mkldnn_cache_capacity) {
   if (mkldnn_cache_capacity < 1) {
     throw std::invalid_argument(
         "SetMkldnnCacheCapacity failed! mkldnn_cache_capacity must be >= 1");
@@ -125,7 +125,8 @@ std::string PaddlePredictorOption::DebugString() const {
       << "delete_pass: [";
   for (size_t i = 0; i < delete_pass_.size(); ++i) {
     oss << delete_pass_[i];
-    if (i != delete_pass_.size() - 1) oss << ", ";
+    if (i != delete_pass_.size() - 1)
+      oss << ", ";
   }
   oss << "], "
       << "enable_new_ir: " << (enable_new_ir_ ? "true" : "false") << ", "

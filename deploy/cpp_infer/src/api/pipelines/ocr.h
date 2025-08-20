@@ -55,22 +55,22 @@ struct PaddleOCRParams {
 };
 
 class PaddleOCR {
- public:
-  PaddleOCR(const PaddleOCRParams& params = PaddleOCRParams());
+public:
+  PaddleOCR(const PaddleOCRParams &params = PaddleOCRParams());
 
-  std::vector<std::unique_ptr<BaseCVResult>> Predict(const std::string& input) {
+  std::vector<std::unique_ptr<BaseCVResult>> Predict(const std::string &input) {
     std::vector<std::string> inputs = {input};
     return Predict(inputs);
   };
-  std::vector<std::unique_ptr<BaseCVResult>> Predict(
-      const std::vector<std::string>& input);
+  std::vector<std::unique_ptr<BaseCVResult>>
+  Predict(const std::vector<std::string> &input);
 
   void CreatePipeline();
   void OverrideConfig();
   absl::Status CheckParams();
-  static OCRPipelineParams ToOCRPipelineParams(const PaddleOCRParams& from);
+  static OCRPipelineParams ToOCRPipelineParams(const PaddleOCRParams &from);
 
- private:
+private:
   PaddleOCRParams params_;
   std::unique_ptr<BasePipeline> pipeline_infer_;
 };

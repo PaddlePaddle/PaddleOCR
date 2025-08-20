@@ -31,18 +31,18 @@ ImageBatchSampler::ImageBatchSampler(int batch_size)
     : BaseBatchSampler(batch_size) {}
 
 absl::StatusOr<std::vector<std::vector<cv::Mat>>>
-ImageBatchSampler::SampleFromString(const std::string& input) {
+ImageBatchSampler::SampleFromString(const std::string &input) {
   std::vector<std::string> inputs = {input};
   return SampleFromVector(inputs);
 }
 
 absl::StatusOr<std::vector<std::vector<cv::Mat>>>
-ImageBatchSampler::SampleFromVector(const std::vector<std::string>& inputs) {
+ImageBatchSampler::SampleFromVector(const std::vector<std::string> &inputs) {
   std::vector<std::vector<cv::Mat>> results;
   std::vector<cv::Mat> current_batch;
   input_path_.clear();
   for (size_t i = 0; i < inputs.size(); ++i) {
-    const std::string& input = inputs[i];
+    const std::string &input = inputs[i];
 
     if (Utility::IsDirectory(input)) {
       absl::StatusOr<std::vector<std::string>> files_result =
@@ -58,7 +58,7 @@ ImageBatchSampler::SampleFromVector(const std::vector<std::string>& inputs) {
         return sub_result.status();
       }
 
-      const std::vector<std::vector<cv::Mat>>& sub_batches = sub_result.value();
+      const std::vector<std::vector<cv::Mat>> &sub_batches = sub_result.value();
       for (size_t j = 0; j < sub_batches.size(); ++j) {
         results.push_back(sub_batches[j]);
       }
@@ -84,18 +84,18 @@ ImageBatchSampler::SampleFromVector(const std::vector<std::string>& inputs) {
   }
 
   if (!current_batch.empty()) {
-    results.push_back(current_batch);  // last batch
+    results.push_back(current_batch); // last batch
   }
   return results;
 }
 
 absl::StatusOr<std::vector<std::vector<cv::Mat>>>
-ImageBatchSampler::SampleFromMatVector(const std::vector<cv::Mat>& inputs) {
+ImageBatchSampler::SampleFromMatVector(const std::vector<cv::Mat> &inputs) {
   std::vector<std::vector<cv::Mat>> results;
   std::vector<cv::Mat> current_batch;
 
   for (size_t i = 0; i < inputs.size(); ++i) {
-    const cv::Mat& image = inputs[i];
+    const cv::Mat &image = inputs[i];
 
     if (image.empty()) {
       return absl::InvalidArgumentError("Input image at index " +

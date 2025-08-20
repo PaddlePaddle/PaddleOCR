@@ -26,15 +26,15 @@
 
 using json = nlohmann::json;
 
-void OCRResult::SaveToImg(const std::string& save_path) {
+void OCRResult::SaveToImg(const std::string &save_path) {
   cv::Mat image = pipeline_result_.doc_preprocessor_res.output_image;
   auto texts = pipeline_result_.rec_texts;
   std::vector<std::vector<cv::Point>> boxes;
   std::vector<std::vector<cv::Point2f>> boxes_float =
       pipeline_result_.rec_polys;
-  for (const auto& floatPolygon : pipeline_result_.rec_polys) {
+  for (const auto &floatPolygon : pipeline_result_.rec_polys) {
     std::vector<cv::Point> intPolygon;
-    for (const auto& point : floatPolygon) {
+    for (const auto &point : floatPolygon) {
       intPolygon.push_back(cv::Point(cvRound(point.x), cvRound(point.y)));
     }
     boxes.push_back(intPolygon);
@@ -57,9 +57,9 @@ void OCRResult::SaveToImg(const std::string& save_path) {
   std::uniform_int_distribution<> dis(0, 255);
 
   for (size_t i = 0; i < boxes.size(); ++i) {
-    auto& box = boxes[i];
-    const auto& box_float = boxes_float[i];
-    const auto& text = texts[i];
+    auto &box = boxes[i];
+    const auto &box_float = boxes_float[i];
+    const auto &text = texts[i];
 
     cv::Scalar color(dis(gen), dis(gen), dis(gen));
 
@@ -69,7 +69,8 @@ void OCRResult::SaveToImg(const std::string& save_path) {
       cv::polylines(img_left, polygons, true, color, 8);
       box = GetMinareaRect(box);
       std::vector<int> ys;
-      for (const auto& pt : box) ys.push_back(pt.y);
+      for (const auto &pt : box)
+        ys.push_back(pt.y);
       int min_y = *std::min_element(ys.begin(), ys.end());
       int max_y = *std::max_element(ys.begin(), ys.end());
       int height = static_cast<int>(0.5 * (max_y - min_y));
@@ -142,10 +143,10 @@ void OCRResult::SaveToImg(const std::string& save_path) {
 }
 
 #ifdef USE_FREETYPE
-cv::Mat OCRResult::DrawBoxTextFine(const cv::Size& img_size,
-                                   const std::vector<cv::Point2f>& box,
-                                   const std::string& txt,
-                                   const std::string& vis_font) {
+cv::Mat OCRResult::DrawBoxTextFine(const cv::Size &img_size,
+                                   const std::vector<cv::Point2f> &box,
+                                   const std::string &txt,
+                                   const std::string &vis_font) {
   int box_height = cv::norm(box[0] - box[3]);
   int box_width = cv::norm(box[0] - box[1]);
   auto ft2 = cv::freetype::createFreeType2();
@@ -189,8 +190,8 @@ cv::Mat OCRResult::DrawBoxTextFine(const cv::Size& img_size,
                       cv::BORDER_CONSTANT, cv::Scalar(255, 255, 255));
   return dst;
 }
-cv::Size OCRResult::getActualCharSize(cv::Ptr<cv::freetype::FreeType2>& ft2,
-                                      const std::string& utf8_char,
+cv::Size OCRResult::getActualCharSize(cv::Ptr<cv::freetype::FreeType2> &ft2,
+                                      const std::string &utf8_char,
                                       int font_height) {
   cv::Mat temp = cv::Mat::zeros(300, 300, CV_8UC1);
 
@@ -209,8 +210,8 @@ cv::Size OCRResult::getActualCharSize(cv::Ptr<cv::freetype::FreeType2>& ft2,
   cv::Rect boundingRect = cv::boundingRect(nonZeroPoints);
   return cv::Size(boundingRect.width, boundingRect.height);
 }
-void OCRResult::DrawVerticalText(cv::Ptr<cv::freetype::FreeType2>& ft2,
-                                 cv::Mat& img, const std::string& text, int x,
+void OCRResult::DrawVerticalText(cv::Ptr<cv::freetype::FreeType2> &ft2,
+                                 cv::Mat &img, const std::string &text, int x,
                                  int y, int font_height, cv::Scalar color,
                                  float line_spacing) {
   std::wstring wtext =
@@ -228,8 +229,8 @@ void OCRResult::DrawVerticalText(cv::Ptr<cv::freetype::FreeType2>& ft2,
     y += size.height * 1.1 + line_spacing;
   }
 }
-int OCRResult::CreateFont(cv::Ptr<cv::freetype::FreeType2>& ft2,
-                          const std::string& text, int region_height,
+int OCRResult::CreateFont(cv::Ptr<cv::freetype::FreeType2> &ft2,
+                          const std::string &text, int region_height,
                           int region_width) {
   int font_height = std::max(int(region_height * 0.8), 10);
   int baseline = 0;
@@ -241,8 +242,8 @@ int OCRResult::CreateFont(cv::Ptr<cv::freetype::FreeType2>& ft2,
   }
   return font_height;
 }
-int OCRResult::CreateFontVertical(cv::Ptr<cv::freetype::FreeType2>& ft2,
-                                  const std::string& text, int region_height,
+int OCRResult::CreateFontVertical(cv::Ptr<cv::freetype::FreeType2> &ft2,
+                                  const std::string &text, int region_height,
                                   int region_width, float scale) {
   std::wstring_convert<std::codecvt_utf8<wchar_t>> conv;
   std::wstring wtext = conv.from_bytes(text);
@@ -270,8 +271,8 @@ int OCRResult::CreateFontVertical(cv::Ptr<cv::freetype::FreeType2>& ft2,
 }
 #endif
 
-std::vector<cv::Point> OCRResult::GetMinareaRect(
-    const std::vector<cv::Point>& points) {
+std::vector<cv::Point>
+OCRResult::GetMinareaRect(const std::vector<cv::Point> &points) {
   cv::RotatedRect bounding_box = cv::minAreaRect(points);
 
   cv::Point2f boxPts[4];
@@ -280,7 +281,7 @@ std::vector<cv::Point> OCRResult::GetMinareaRect(
 
   std::sort(
       ptsVec.begin(), ptsVec.end(),
-      [](const cv::Point2f& a, const cv::Point2f& b) { return a.x < b.x; });
+      [](const cv::Point2f &a, const cv::Point2f &b) { return a.x < b.x; });
   int index_a, index_b, index_c, index_d;
   if (ptsVec[1].y > ptsVec[0].y) {
     index_a = 0;
@@ -300,7 +301,7 @@ std::vector<cv::Point> OCRResult::GetMinareaRect(
   std::vector<cv::Point> box = {ptsVec[index_a], ptsVec[index_b],
                                 ptsVec[index_c], ptsVec[index_d]};
 
-  for (auto& pt : box) {
+  for (auto &pt : box) {
     pt.x = static_cast<int>(std::round(pt.x));
     pt.y = static_cast<int>(std::round(pt.y));
   }
@@ -308,7 +309,7 @@ std::vector<cv::Point> OCRResult::GetMinareaRect(
   return box;
 }
 
-void OCRResult::SaveToJson(const std::string& save_path) const {
+void OCRResult::SaveToJson(const std::string &save_path) const {
   nlohmann::ordered_json j;
   j["input_path"] = pipeline_result_.input_path;
 
@@ -320,16 +321,16 @@ void OCRResult::SaveToJson(const std::string& save_path) const {
   if (it != pipeline_result_.model_settings.end() && it->second) {
     nlohmann::ordered_json j_doc_pre;
     j_doc_pre["input_path"] = pipeline_result_.doc_preprocessor_res.input_path;
-    j_doc_pre["page_index"] = nullptr;  //********
+    j_doc_pre["page_index"] = nullptr; //********
     j_doc_pre["model_settings"] =
         pipeline_result_.doc_preprocessor_res.model_settings;
     j_doc_pre["angle"] = pipeline_result_.doc_preprocessor_res.angle;
     j["doc_preprocessor_res"] = j_doc_pre;
   }
   json polys_json = json::array();
-  for (const auto& polygon : pipeline_result_.dt_polys) {
+  for (const auto &polygon : pipeline_result_.dt_polys) {
     json poly_json = json::array();
-    for (const auto& point : polygon) {
+    for (const auto &point : polygon) {
       poly_json.push_back(
           {static_cast<int>(point.x), static_cast<int>(point.y)});
     }
@@ -360,9 +361,9 @@ void OCRResult::SaveToJson(const std::string& save_path) const {
   j["rec_texts"] = pipeline_result_.rec_texts;
   j["rec_scores"] = pipeline_result_.rec_scores;
   json rec_polys_json = json::array();
-  for (const auto& polygon : pipeline_result_.rec_polys) {
+  for (const auto &polygon : pipeline_result_.rec_polys) {
     json poly_json = json::array();
-    for (const auto& point : polygon) {
+    for (const auto &point : polygon) {
       poly_json.push_back(
           {static_cast<int>(point.x), static_cast<int>(point.y)});
     }
@@ -375,7 +376,7 @@ void OCRResult::SaveToJson(const std::string& save_path) const {
 
   std::transform(pipeline_result_.rec_boxes.begin(),
                  pipeline_result_.rec_boxes.end(), std::back_inserter(int_vec),
-                 [](const std::array<float, 4>& arr) {
+                 [](const std::array<float, 4> &arr) {
                    std::array<int, 4> res;
                    for (size_t i = 0; i < 4; ++i) {
                      res[i] = static_cast<int>(arr[i]);
@@ -407,13 +408,14 @@ void OCRResult::SaveToJson(const std::string& save_path) const {
 }
 
 void PrintDocPreprocessorPipelineResult(
-    const DocPreprocessorPipelineResult& doc) {
+    const DocPreprocessorPipelineResult &doc) {
   std::cout << "{\n";
   std::cout << "  \"input_path\": \"" << doc.input_path << "\",\n";
   std::cout << "  \"model_settings\": {";
   bool first = true;
-  for (const auto& kv : doc.model_settings) {
-    if (!first) std::cout << ", ";
+  for (const auto &kv : doc.model_settings) {
+    if (!first)
+      std::cout << ", ";
     std::cout << "\"" << kv.first << "\": " << (kv.second ? "true" : "false");
     first = false;
   }
@@ -422,13 +424,15 @@ void PrintDocPreprocessorPipelineResult(
   std::cout << "}";
 }
 
-void PrintPolys(const std::vector<std::vector<cv::Point2f>>& polys) {
+void PrintPolys(const std::vector<std::vector<cv::Point2f>> &polys) {
   std::cout << "[";
   for (size_t i = 0; i < polys.size(); ++i) {
-    if (i != 0) std::cout << ",\n ";
+    if (i != 0)
+      std::cout << ",\n ";
     std::cout << "[";
     for (size_t j = 0; j < polys[i].size(); ++j) {
-      if (j != 0) std::cout << ", ";
+      if (j != 0)
+        std::cout << ", ";
       std::cout << "[" << polys[i][j].x << ", " << polys[i][j].y << "]";
     }
     std::cout << "]";
@@ -436,48 +440,53 @@ void PrintPolys(const std::vector<std::vector<cv::Point2f>>& polys) {
   std::cout << "]";
 }
 
-void PrintModelSettings(const std::unordered_map<std::string, bool>& ms) {
+void PrintModelSettings(const std::unordered_map<std::string, bool> &ms) {
   std::cout << "{";
   bool first = true;
-  for (const auto& kv : ms) {
-    if (!first) std::cout << ", ";
+  for (const auto &kv : ms) {
+    if (!first)
+      std::cout << ", ";
     std::cout << "\"" << kv.first << "\": " << (kv.second ? "true" : "false");
     first = false;
   }
   std::cout << "}";
 }
 
-void PrintArray(const std::vector<float>& arr) {
+void PrintArray(const std::vector<float> &arr) {
   std::cout << "[";
   for (size_t i = 0; i < arr.size(); ++i) {
-    if (i != 0) std::cout << ", ";
+    if (i != 0)
+      std::cout << ", ";
     std::cout << arr[i];
   }
   std::cout << "]";
 }
 
-void PrintStringArray(const std::vector<std::string>& arr) {
+void PrintStringArray(const std::vector<std::string> &arr) {
   std::cout << "[";
   for (size_t i = 0; i < arr.size(); ++i) {
-    if (i != 0) std::cout << ", ";
+    if (i != 0)
+      std::cout << ", ";
     std::cout << "\"" << arr[i] << "\"";
   }
   std::cout << "]";
 }
 
-void PrintIntArray(const std::vector<int>& arr) {
+void PrintIntArray(const std::vector<int> &arr) {
   std::cout << "[";
   for (size_t i = 0; i < arr.size(); ++i) {
-    if (i != 0) std::cout << ", ";
+    if (i != 0)
+      std::cout << ", ";
     std::cout << arr[i];
   }
   std::cout << "]";
 }
 
-void PrintRecBoxes(const std::vector<std::array<float, 4>>& arr) {
+void PrintRecBoxes(const std::vector<std::array<float, 4>> &arr) {
   std::cout << "[";
   for (size_t i = 0; i < arr.size(); ++i) {
-    if (i != 0) std::cout << ", ";
+    if (i != 0)
+      std::cout << ", ";
     std::cout << "[" << arr[i][0] << ", " << arr[i][1] << ", " << arr[i][2]
               << ", " << arr[i][3] << "]";
   }
@@ -485,7 +494,7 @@ void PrintRecBoxes(const std::vector<std::array<float, 4>>& arr) {
 }
 
 // 假设TextDetParams有合适的输出函数
-void PrintTextDetParams(const TextDetParams& p) {
+void PrintTextDetParams(const TextDetParams &p) {
   std::cout << "{";
   std::cout << "\"limit_side_len\": " << p.text_det_limit_side_len << ", ";
   std::cout << "\"limit_type\": \"" << p.text_det_limit_type << "\", ";

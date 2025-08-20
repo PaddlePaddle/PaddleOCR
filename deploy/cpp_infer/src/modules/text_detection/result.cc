@@ -21,17 +21,17 @@
 #include "third_party/nlohmann/json.hpp"
 
 using json = nlohmann::json;
-void TextDetResult::SaveToImg(const std::string& save_path) {
+void TextDetResult::SaveToImg(const std::string &save_path) {
   cv::Mat img = predictor_result_.input_image.clone();
 
-  const auto& dt_polys = predictor_result_.dt_polys;
-  for (const auto& poly : dt_polys) {
+  const auto &dt_polys = predictor_result_.dt_polys;
+  for (const auto &poly : dt_polys) {
     std::vector<cv::Point> pts;
-    for (const auto& pt : poly) {
+    for (const auto &pt : poly) {
       pts.emplace_back(cv::Point(cvRound(pt.x), cvRound(pt.y)));
     }
 
-    const cv::Point* pts_ptr = pts.data();
+    const cv::Point *pts_ptr = pts.data();
     int npts = pts.size();
     cv::polylines(img, &pts_ptr, &npts, 1, true, cv::Scalar(0, 0, 255), 2);
   }
@@ -71,12 +71,13 @@ void TextDetResult::Print() const {
             << "    }," << std::endl;
 
   std::cout << "    \"dt_polys\": [" << std::endl;
-  for (const auto& polygon : predictor_result_.dt_polys) {
+  for (const auto &polygon : predictor_result_.dt_polys) {
     std::cout << "        [";
     for (size_t i = 0; i < polygon.size(); ++i) {
       std::cout << "[" << static_cast<int>(polygon[i].x) << ", "
                 << static_cast<int>(polygon[i].y) << "]";
-      if (i < polygon.size() - 1) std::cout << ", ";
+      if (i < polygon.size() - 1)
+        std::cout << ", ";
     }
     std::cout << "]," << std::endl;
   }
@@ -87,7 +88,8 @@ void TextDetResult::Print() const {
   for (auto it = predictor_result_.dt_scores.begin();
        it != predictor_result_.dt_scores.end(); ++it) {
     std::cout << *it;
-    if (it < predictor_result_.dt_scores.end() - 1) std::cout << ", ";
+    if (it < predictor_result_.dt_scores.end() - 1)
+      std::cout << ", ";
   }
   std::cout << "]}" << std::endl;
 
@@ -96,16 +98,16 @@ void TextDetResult::Print() const {
   std::cout << "  }\n}" << std::endl;
 }
 
-void TextDetResult::SaveToJson(const std::string& save_path) const {
+void TextDetResult::SaveToJson(const std::string &save_path) const {
   nlohmann::ordered_json j;
 
   j["input_path"] = predictor_result_.input_path;
 
-  j["page_index"] = nullptr;  //********
+  j["page_index"] = nullptr; //********
   json polys_json = json::array();
-  for (const auto& polygon : predictor_result_.dt_polys) {
+  for (const auto &polygon : predictor_result_.dt_polys) {
     json poly_json = json::array();
-    for (const auto& point : polygon) {
+    for (const auto &point : polygon) {
       poly_json.push_back(
           {static_cast<int>(point.x), static_cast<int>(point.y)});
     }

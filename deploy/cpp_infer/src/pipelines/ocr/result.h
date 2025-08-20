@@ -21,38 +21,38 @@
 #include "src/base/base_cv_result.h"
 
 class OCRResult : public BaseCVResult {
- public:
+public:
   OCRResult(OCRPipelineResult pipeline_result_)
       : BaseCVResult(), pipeline_result_(pipeline_result_){};
 
-  void SaveToImg(const std::string& save_path) override;
+  void SaveToImg(const std::string &save_path) override;
   void Print() const override;
-  void SaveToJson(const std::string& save_path) const override;
+  void SaveToJson(const std::string &save_path) const override;
 
 #ifdef USE_FREETYPE
-  static cv::Mat DrawBoxTextFine(const cv::Size& img_ize,
-                                 const std::vector<cv::Point2f>& box,
-                                 const std::string& txt,
-                                 const std::string& vis_font);
+  static cv::Mat DrawBoxTextFine(const cv::Size &img_ize,
+                                 const std::vector<cv::Point2f> &box,
+                                 const std::string &txt,
+                                 const std::string &vis_font);
 
-  static void DrawVerticalText(cv::Ptr<cv::freetype::FreeType2>& ft2,
-                               cv::Mat& img, const std::string& text, int x,
+  static void DrawVerticalText(cv::Ptr<cv::freetype::FreeType2> &ft2,
+                               cv::Mat &img, const std::string &text, int x,
                                int y, int font_height, cv::Scalar color,
                                float line_spacing = 2);
-  static int CreateFont(cv::Ptr<cv::freetype::FreeType2>& ft2,
-                        const std::string& text, int region_height,
+  static int CreateFont(cv::Ptr<cv::freetype::FreeType2> &ft2,
+                        const std::string &text, int region_height,
                         int region_width);
 
-  static int CreateFontVertical(cv::Ptr<cv::freetype::FreeType2>& ft2,
-                                const std::string& text, int region_height,
+  static int CreateFontVertical(cv::Ptr<cv::freetype::FreeType2> &ft2,
+                                const std::string &text, int region_height,
                                 int region_width, float scale = 1.2f);
-  static cv::Size getActualCharSize(cv::Ptr<cv::freetype::FreeType2>& ft2,
-                                    const std::string& utf8_char,
+  static cv::Size getActualCharSize(cv::Ptr<cv::freetype::FreeType2> &ft2,
+                                    const std::string &utf8_char,
                                     int font_height);
 #endif
-  static std::vector<cv::Point> GetMinareaRect(
-      const std::vector<cv::Point>& points);
+  static std::vector<cv::Point>
+  GetMinareaRect(const std::vector<cv::Point> &points);
 
- private:
+private:
   OCRPipelineResult pipeline_result_;
 };

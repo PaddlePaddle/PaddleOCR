@@ -23,13 +23,13 @@
 #include "src/utils/func_register.h"
 
 class DocTrPostProcess {
- public:
+public:
   explicit DocTrPostProcess(double scale = 255.0f);
 
-  absl::StatusOr<std::vector<cv::Mat> > Apply(const cv::Mat& preds) const;
+  absl::StatusOr<std::vector<cv::Mat>> Apply(const cv::Mat &preds) const;
 
-  absl::StatusOr<cv::Mat> Process(cv::Mat& pred_data) const;
+  absl::StatusOr<cv::Mat> Process(cv::Mat &pred_data) const;
 
- private:
+private:
   double scale_;
 };

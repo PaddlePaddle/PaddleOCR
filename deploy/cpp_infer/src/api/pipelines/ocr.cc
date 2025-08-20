@@ -19,7 +19,7 @@
 
 #define COPY_PARAMS(field) to.field = from.field;
 
-PaddleOCR::PaddleOCR(const PaddleOCRParams& params) : params_(params) {
+PaddleOCR::PaddleOCR(const PaddleOCRParams &params) : params_(params) {
   OverrideConfig();
   auto status = CheckParams();
   if (!status.ok()) {
@@ -28,8 +28,8 @@ PaddleOCR::PaddleOCR(const PaddleOCRParams& params) : params_(params) {
   }
   CreatePipeline();
 };
-std::vector<std::unique_ptr<BaseCVResult>> PaddleOCR::Predict(
-    const std::vector<std::string>& input) {
+std::vector<std::unique_ptr<BaseCVResult>>
+PaddleOCR::Predict(const std::vector<std::string> &input) {
   return pipeline_infer_->Predict(input);
 }
 void PaddleOCR::CreatePipeline() {
@@ -173,7 +173,7 @@ absl::Status PaddleOCR::CheckParams() {
   return absl::OkStatus();
 }
 
-OCRPipelineParams PaddleOCR::ToOCRPipelineParams(const PaddleOCRParams& from) {
+OCRPipelineParams PaddleOCR::ToOCRPipelineParams(const PaddleOCRParams &from) {
   OCRPipelineParams to;
   COPY_PARAMS(doc_orientation_classify_model_name)
   COPY_PARAMS(doc_orientation_classify_model_dir)

@@ -26,34 +26,34 @@
 #include "base_predictor.h"
 
 class BasePipeline {
- public:
+public:
   BasePipeline() = default;
   virtual ~BasePipeline() = default;
 
-  std::vector<std::unique_ptr<BaseCVResult>> Predict(const std::string& input) {
+  std::vector<std::unique_ptr<BaseCVResult>> Predict(const std::string &input) {
     std::vector<std::string> inputs = {input};
     return Predict(inputs);
   }
 
-  virtual std::vector<std::unique_ptr<BaseCVResult>> Predict(
-      const std::vector<std::string>& input) = 0;
+  virtual std::vector<std::unique_ptr<BaseCVResult>>
+  Predict(const std::vector<std::string> &input) = 0;
 
   template <typename T, typename... Args>
-  std::unique_ptr<BasePredictor> CreateModule(Args&&... args);
+  std::unique_ptr<BasePredictor> CreateModule(Args &&...args);
 
   template <typename T, typename... Args>
-  std::unique_ptr<BasePipeline> CreatePipeline(Args&&... args);
+  std::unique_ptr<BasePipeline> CreatePipeline(Args &&...args);
 };
 
 template <typename T, typename... Args>
-std::unique_ptr<BasePredictor> BasePipeline::CreateModule(Args&&... args) {
+std::unique_ptr<BasePredictor> BasePipeline::CreateModule(Args &&...args) {
   std::unique_ptr<BasePredictor> base_predictor =
       std::unique_ptr<T>(new T(std::forward<Args>(args)...));
   return base_predictor;
 }
 
 template <typename T, typename... Args>
-std::unique_ptr<BasePipeline> BasePipeline::CreatePipeline(Args&&... args) {
+std::unique_ptr<BasePipeline> BasePipeline::CreatePipeline(Args &&...args) {
   std::unique_ptr<BasePipeline> base_pipeline =
       std::unique_ptr<T>(new T(std::forward<Args>(args)...));
   return base_pipeline;

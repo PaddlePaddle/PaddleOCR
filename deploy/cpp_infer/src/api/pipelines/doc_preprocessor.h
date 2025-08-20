@@ -35,24 +35,24 @@ struct DocPreprocessorParams {
 };
 
 class DocPreprocessor {
- public:
+public:
   DocPreprocessor(
-      const DocPreprocessorParams& params = DocPreprocessorParams());
+      const DocPreprocessorParams &params = DocPreprocessorParams());
 
-  std::vector<std::unique_ptr<BaseCVResult>> Predict(const std::string& input) {
+  std::vector<std::unique_ptr<BaseCVResult>> Predict(const std::string &input) {
     std::vector<std::string> inputs = {input};
     return Predict(inputs);
   };
-  std::vector<std::unique_ptr<BaseCVResult>> Predict(
-      const std::vector<std::string>& input);
+  std::vector<std::unique_ptr<BaseCVResult>>
+  Predict(const std::vector<std::string> &input);
 
   void CreatePipeline();
   void OverrideConfig();
   absl::Status CheckParams();
-  static DocPreprocessorPipelineParams ToDocPreprocessorPipelineParams(
-      const DocPreprocessorParams& from);
+  static DocPreprocessorPipelineParams
+  ToDocPreprocessorPipelineParams(const DocPreprocessorParams &from);
 
- private:
+private:
   DocPreprocessorParams params_;
   std::unique_ptr<BasePipeline> pipeline_infer_;
 };

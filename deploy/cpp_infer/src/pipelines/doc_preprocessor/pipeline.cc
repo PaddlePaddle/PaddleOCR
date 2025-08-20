@@ -19,7 +19,7 @@
 #include "src/modules/image_unwarping/predictor.h"
 
 _DocPreprocessorPipeline::_DocPreprocessorPipeline(
-    const DocPreprocessorPipelineParams& params)
+    const DocPreprocessorPipelineParams &params)
     : BasePipeline(), params_(params) {
   if (params.paddlex_config.has_value()) {
     if (params.paddlex_config.value().IsStr()) {
@@ -118,8 +118,8 @@ _DocPreprocessorPipeline::_DocPreprocessorPipeline(
       new ImageBatchSampler(result_batch.value()));
 };
 
-std::vector<std::unique_ptr<BaseCVResult>> _DocPreprocessorPipeline::Predict(
-    const std::vector<std::string>& input) {
+std::vector<std::unique_ptr<BaseCVResult>>
+_DocPreprocessorPipeline::Predict(const std::vector<std::string> &input) {
   auto model_setting = GetModelSettings();
   auto status = CheckModelSettingsVaild(model_setting);
   if (!status.ok()) {
@@ -139,19 +139,19 @@ std::vector<std::unique_ptr<BaseCVResult>> _DocPreprocessorPipeline::Predict(
   std::vector<std::unique_ptr<BaseCVResult>> base_cv_result_ptr_vec = {};
   std::vector<DocPreprocessorPipelineResult> pipeline_result_vec = {};
   pipeline_result_vec_.clear();
-  for (auto& batch_data : batches.value()) {
+  for (auto &batch_data : batches.value()) {
     origin_image.reserve(batch_data.size());
-    for (const auto& mat : batch_data) {
+    for (const auto &mat : batch_data) {
       origin_image.push_back(mat.clone());
     }
     std::vector<int> angles = {};
     std::vector<cv::Mat> rotate_images = {};
     if (model_setting["use_doc_orientation_classify"]) {
       doc_ori_classify_model_->Predict(batch_data);
-      ClasPredictor* derived =
-          static_cast<ClasPredictor*>(doc_ori_classify_model_.get());
+      ClasPredictor *derived =
+          static_cast<ClasPredictor *>(doc_ori_classify_model_.get());
       std::vector<ClasPredictorResult> preds = derived->PredictorResult();
-      for (auto& pred : preds) {
+      for (auto &pred : preds) {
         auto result_angle = Utility::StringToInt(pred.label_names[0]);
         if (!result_angle.ok()) {
           INFOE("angle is invalid : %s",
@@ -175,11 +175,11 @@ std::vector<std::unique_ptr<BaseCVResult>> _DocPreprocessorPipeline::Predict(
     std::vector<cv::Mat> output_imgs = {};
     if (model_setting["use_doc_unwarping"]) {
       doc_unwarping_model_->Predict(rotate_images);
-      WarpPredictor* derived =
-          static_cast<WarpPredictor*>(doc_unwarping_model_.get());
+      WarpPredictor *derived =
+          static_cast<WarpPredictor *>(doc_unwarping_model_.get());
       std::vector<WarpPredictorResult> preds = derived->PredictorResult();
-      for (auto& pred : preds) {
-        output_imgs.push_back(pred.doctr_img);  //***"RGB" "BGR"
+      for (auto &pred : preds) {
+        output_imgs.push_back(pred.doctr_img); //***"RGB" "BGR"
       }
     } else {
       output_imgs = rotate_images;
@@ -200,7 +200,7 @@ std::vector<std::unique_ptr<BaseCVResult>> _DocPreprocessorPipeline::Predict(
     pipeline_result_vec_.insert(pipeline_result_vec_.end(),
                                 pipeline_result_vec.begin(),
                                 pipeline_result_vec.end());
-    for (auto& pipeline_result : pipeline_result_vec) {
+    for (auto &pipeline_result : pipeline_result_vec) {
       std::unique_ptr<BaseCVResult> base_cv_result_ptr =
           std::unique_ptr<BaseCVResult>(
               new DocPreprocessorResult(pipeline_result));
@@ -244,8 +244,8 @@ absl::Status _DocPreprocessorPipeline::CheckModelSettingsVaild(
   return absl::OkStatus();
 }
 
-std::vector<std::unique_ptr<BaseCVResult>> DocPreprocessorPipeline::Predict(
-    const std::vector<std::string>& input) {
+std::vector<std::unique_ptr<BaseCVResult>>
+DocPreprocessorPipeline::Predict(const std::vector<std::string> &input) {
   if (thread_num_ == 1) {
     return infer_->Predict(input);
   }
@@ -272,7 +272,7 @@ std::vector<std::unique_ptr<BaseCVResult>> DocPreprocessorPipeline::Predict(
   }
   std::vector<std::unique_ptr<BaseCVResult>> results = {};
   results.reserve(input_num);
-  for (auto& infer_data : infer_batch_data.value()) {
+  for (auto &infer_data : infer_batch_data.value()) {
     auto status =
         AutoParallelSimpleInferencePipeline::PredictThread(infer_data);
     if (!status.ok()) {
@@ -295,12 +295,11 @@ std::vector<std::unique_ptr<BaseCVResult>> DocPreprocessorPipeline::Predict(
 }
 
 void _DocPreprocessorPipeline::OverrideConfig() {
-  auto& data = config_.Data();
+  auto &data = config_.Data();
   if (params_.doc_orientation_classify_model_name.has_value()) {
     auto it = config_.FindKey("DocOrientationClassify.model_name");
     if (!it.ok()) {
-      data
-          ["DocPreprocessor.SubModules.DocOrientationClassify."
+      data["DocPreprocessor.SubModules.DocOrientationClassify."
            "model_name"] = params_.doc_orientation_classify_model_name.value();
     } else {
       auto key = it.value().first;
@@ -311,8 +310,7 @@ void _DocPreprocessorPipeline::OverrideConfig() {
   if (params_.doc_orientation_classify_model_dir.has_value()) {
     auto it = config_.FindKey("DocOrientationClassify.model_dir");
     if (!it.ok()) {
-      data
-          ["DocPreprocessor.SubModules.DocOrientationClassify."
+      data["DocPreprocessor.SubModules.DocOrientationClassify."
            "model_dir"] = params_.doc_orientation_classify_model_dir.value();
     } else {
       auto key = it.value().first;

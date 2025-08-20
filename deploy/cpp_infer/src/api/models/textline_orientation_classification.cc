@@ -20,7 +20,7 @@
 #define COPY_PARAMS(field) to.field = from.field;
 
 TextLineOrientationClassification::TextLineOrientationClassification(
-    const TextLineOrientationClassificationParams& params)
+    const TextLineOrientationClassificationParams &params)
     : params_(params) {
   OverrideConfig();
   auto status = CheckParams();
@@ -33,7 +33,7 @@ TextLineOrientationClassification::TextLineOrientationClassification(
 };
 std::vector<std::unique_ptr<BaseCVResult>>
 TextLineOrientationClassification::Predict(
-    const std::vector<std::string>& input) {
+    const std::vector<std::string> &input) {
   return model_infer_->Predict(input);
 }
 void TextLineOrientationClassification::CreateModel() {
@@ -74,7 +74,7 @@ absl::Status TextLineOrientationClassification::CheckParams() {
 
 ClasPredictorParams TextLineOrientationClassification::
     ToTextLineOrientationClassificationModelParams(
-        const TextLineOrientationClassificationParams& from) {
+        const TextLineOrientationClassificationParams &from) {
   ClasPredictorParams to;
   COPY_PARAMS(model_name)
   COPY_PARAMS(model_dir)

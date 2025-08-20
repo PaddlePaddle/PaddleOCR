@@ -27,7 +27,7 @@
 using json = nlohmann::json;
 
 #ifdef USE_FREETYPE
-void TextRecResult::SaveToImg(const std::string& save_path) {
+void TextRecResult::SaveToImg(const std::string &save_path) {
   int image_width = predictor_result_.input_image.size[1];
   int image_height = predictor_result_.input_image.size[0];
   std::string text = predictor_result_.rec_text + "(" +
@@ -75,7 +75,7 @@ void TextRecResult::SaveToImg(const std::string& save_path) {
   }
 }
 int TextRecResult::AdjustFontSize(int image_width,
-                                  const std::string& text) const {
+                                  const std::string &text) const {
   cv::Ptr<cv::freetype::FreeType2> ft2 = cv::freetype::createFreeType2();
   int font_size = static_cast<int>(image_width * 0.06);
 
@@ -86,14 +86,15 @@ int TextRecResult::AdjustFontSize(int image_width,
 
   do {
     text_size = ft2->getTextSize(text, font_size, -1, &baseline);
-    if (text_size.width <= image_width) break;
+    if (text_size.width <= image_width)
+      break;
     font_size--;
   } while (font_size > 0);
 
   return font_size;
 }
 #else
-void TextRecResult::SaveToImg(const std::string& save_path) {
+void TextRecResult::SaveToImg(const std::string &save_path) {
   INFOW(
       "OpenCV was not compiled with the freetype module (opencv_freetype), rec "
       "image will be not saved.");
@@ -111,11 +112,11 @@ void TextRecResult::Print() const {
   std::cout << "}" << std::endl;
 }
 
-void TextRecResult::SaveToJson(const std::string& save_path) const {
+void TextRecResult::SaveToJson(const std::string &save_path) const {
   nlohmann::ordered_json j;
 
   j["input_path"] = predictor_result_.input_path;
-  j["page_index"] = nlohmann::json::value_t::null;  //********
+  j["page_index"] = nlohmann::json::value_t::null; //********
 
   j["rec_text"] = predictor_result_.rec_text;
   j["rec_score"] = predictor_result_.rec_score;

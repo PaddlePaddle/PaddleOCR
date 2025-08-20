@@ -24,16 +24,16 @@
 #include "src/utils/ilogger.h"
 #include "src/utils/pp_option.h"
 class PaddleInfer {
- public:
+public:
   explicit PaddleInfer(const std::string &model_name,
                        const std::string &model_dir,
                        const std::string &model_file_prefix,
                        const PaddlePredictorOption &option);
   ~PaddleInfer() = default;
-  absl::StatusOr<std::vector<cv::Mat>> Apply(
-      const std::vector<cv::Mat> &x);  //***********
+  absl::StatusOr<std::vector<cv::Mat>>
+  Apply(const std::vector<cv::Mat> &x); //***********
 
- private:
+private:
   std::string model_dir_;
   std::string model_file_prefix_;
   std::string model_name_;

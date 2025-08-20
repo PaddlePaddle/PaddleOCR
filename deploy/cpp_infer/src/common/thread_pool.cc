@@ -21,9 +21,7 @@ constexpr size_t ThreadPool::WAIT_SECONDS;
 ThreadPool::ThreadPool() : ThreadPool(Thread::hardware_concurrency()) {}
 
 ThreadPool::ThreadPool(size_t maxThreads)
-    : quit_(false),
-      currentThreads_(0),
-      idleThreads_(0),
+    : quit_(false), currentThreads_(0), idleThreads_(0),
       maxThreads_(maxThreads) {}
 
 ThreadPool::~ThreadPool() {
@@ -87,4 +85,4 @@ void ThreadPool::joinFinishedThreads() {
   }
 }
 
-}  // namespace PaddlePool
+} // namespace PaddlePool

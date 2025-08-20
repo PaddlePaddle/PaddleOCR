@@ -38,13 +38,13 @@ struct WarpPredictorResult {
 };
 
 class WarpPredictor : public BasePredictor {
- public:
-  explicit WarpPredictor(const WarpPredictorParams& params);
+public:
+  explicit WarpPredictor(const WarpPredictorParams &params);
 
   absl::Status Build();
 
-  std::vector<std::unique_ptr<BaseCVResult>> Process(
-      std::vector<cv::Mat>& batch_data) override;
+  std::vector<std::unique_ptr<BaseCVResult>>
+  Process(std::vector<cv::Mat> &batch_data) override;
 
   std::vector<WarpPredictorResult> PredictorResult() const {
     return predictor_result_vec_;
@@ -52,7 +52,7 @@ class WarpPredictor : public BasePredictor {
 
   void ResetResult() override { predictor_result_vec_.clear(); };
 
- private:
+private:
   std::unordered_map<std::string, std::unique_ptr<DocTrPostProcess>> post_op_;
   std::vector<WarpPredictorResult> predictor_result_vec_;
   std::unique_ptr<PaddleInfer> infer_ptr_;

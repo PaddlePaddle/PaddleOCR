@@ -24,10 +24,8 @@ PaddleInfer::PaddleInfer(const std::string &model_name,
                          const std::string &model_dir,
                          const std::string &model_file_prefix,
                          const PaddlePredictorOption &option)
-    : model_name_(model_name),
-      model_dir_(model_dir),
-      model_file_prefix_(model_file_prefix),
-      option_(option) {
+    : model_name_(model_name), model_dir_(model_dir),
+      model_file_prefix_(model_file_prefix), option_(option) {
   auto result = Create();
   if (!result.ok()) {
     INFOE("Create predictor failed: %s", result.status().ToString().c_str());
@@ -133,8 +131,8 @@ absl::StatusOr<std::shared_ptr<paddle_infer::Predictor>> PaddleInfer::Create() {
   return predictor_shared;
 };
 
-absl::StatusOr<std::vector<cv::Mat>> PaddleInfer::Apply(
-    const std::vector<cv::Mat> &x) {
+absl::StatusOr<std::vector<cv::Mat>>
+PaddleInfer::Apply(const std::vector<cv::Mat> &x) {
   for (size_t i = 0; i < x.size(); ++i) {
     auto &input_handle = input_handles_[i];
     std::vector<int> input_shape(x[0].dims);
@@ -156,7 +154,8 @@ absl::StatusOr<std::vector<cv::Mat>> PaddleInfer::Apply(
   for (auto &output_handle : output_handles_) {
     output_shape = output_handle->shape();
     size_t numel = 1;
-    for (auto dim : output_shape) numel *= dim;
+    for (auto dim : output_shape)
+      numel *= dim;
     std::vector<float> out_data(numel);
     output_handle->CopyToCpu(out_data.data());
     outputs.push_back(std::move(out_data));
@@ -173,10 +172,9 @@ absl::Status PaddleInfer::CheckRunMode() {
   if (option_.RunMode().rfind("mkldnn", 0) == 0 &&
       Mkldnn::MKLDNN_BLOCKLIST.count(model_name_) > 0 &&
       option_.DeviceType() == "cpu") {
-    INFOW(
-        "The model %s is not supported to run in MKLDNN mode! Using `paddle` "
-        "instead!",
-        model_name_.c_str());
+    INFOW("The model %s is not supported to run in MKLDNN mode! Using `paddle` "
+          "instead!",
+          model_name_.c_str());
 
     auto result = option_.SetRunMode("paddle");
     if (!result.ok()) {
@@ -185,9 +183,8 @@ absl::Status PaddleInfer::CheckRunMode() {
   }
   if (model_name_ == "LaTeX_OCR_rec" && option_.DeviceType() == "cpu") {
     if (Utility::IsMkldnnAvailable() && option_.RunMode() != "mkldnn") {
-      INFOE(
-          "Now, the `LaTeX_OCR_rec` model only support `mkldnn` mode when "
-          "running on Intel CPU devices. So using `mkldnn` instead.");
+      INFOE("Now, the `LaTeX_OCR_rec` model only support `mkldnn` mode when "
+            "running on Intel CPU devices. So using `mkldnn` instead.");
       exit(-1);
       auto result = option_.SetRunMode("mkldnn");
       if (!result.ok()) {

@@ -25,18 +25,19 @@
 #include "src/utils/func_register.h"
 
 class Resize : public BaseProcessor {
- public:
-  Resize(const std::vector<int>& target_size, bool keep_ratio = false,
-         int size_divisor = 0, const std::string& interp = "LINEAR");
+public:
+  Resize(const std::vector<int> &target_size, bool keep_ratio = false,
+         int size_divisor = 0, const std::string &interp = "LINEAR");
   absl::Status CheckImageSize() const;
-  std::pair<std::vector<int>, double> RescaleSize(
-      const std::vector<int>& img_size) const;
-  absl::StatusOr<std::vector<cv::Mat>> Apply(
-      std::vector<cv::Mat>& input, const void* param = nullptr) const override;
-  absl::StatusOr<cv::Mat> ResizeOne(const cv::Mat& img) const;
-  static absl::StatusOr<int> GetInterp(const std::string& interp);
+  std::pair<std::vector<int>, double>
+  RescaleSize(const std::vector<int> &img_size) const;
+  absl::StatusOr<std::vector<cv::Mat>>
+  Apply(std::vector<cv::Mat> &input,
+        const void *param = nullptr) const override;
+  absl::StatusOr<cv::Mat> ResizeOne(const cv::Mat &img) const;
+  static absl::StatusOr<int> GetInterp(const std::string &interp);
 
- private:
+private:
   std::vector<int> target_size_;
   bool keep_ratio_;
   int size_divisor_;
@@ -44,130 +45,138 @@ class Resize : public BaseProcessor {
 };
 
 class ResizeByShort : public BaseProcessor {
- public:
+public:
   ResizeByShort(int target_short_edge, int size_divisor = 0,
-                const std::string& interp = "LINEAR");
-  absl::StatusOr<std::vector<cv::Mat>> Apply(
-      std::vector<cv::Mat>& input, const void* param = nullptr) const override;
-  absl::StatusOr<cv::Mat> ResizeOne(const cv::Mat& img) const;
+                const std::string &interp = "LINEAR");
+  absl::StatusOr<std::vector<cv::Mat>>
+  Apply(std::vector<cv::Mat> &input,
+        const void *param = nullptr) const override;
+  absl::StatusOr<cv::Mat> ResizeOne(const cv::Mat &img) const;
 
- private:
+private:
   int target_short_edge_;
   int size_divisor_;
   int interp_;
 };
 
 class ReadImage : public BaseProcessor {
- public:
+public:
   enum class Format { BGR, RGB, GRAY };
 
-  ReadImage(const std::string& format = "RGB");
+  ReadImage(const std::string &format = "RGB");
 
-  ReadImage(const ReadImage&) = delete;
-  ReadImage& operator=(const ReadImage&) = delete;
+  ReadImage(const ReadImage &) = delete;
+  ReadImage &operator=(const ReadImage &) = delete;
 
-  absl::StatusOr<std::vector<cv::Mat>> Apply(
-      std::vector<cv::Mat>& input,
-      const void* param_ptr = nullptr) const override;
+  absl::StatusOr<std::vector<cv::Mat>>
+  Apply(std::vector<cv::Mat> &input,
+        const void *param_ptr = nullptr) const override;
 
- private:
-  static absl::StatusOr<Format> StringToFormat(const std::string& format);
+private:
+  static absl::StatusOr<Format> StringToFormat(const std::string &format);
   Format format_;
 };
 
 class Normalize : public BaseProcessor {
- public:
+public:
   Normalize(float scale = 1.0 / 255.0,
-            const std::vector<float>& mean = {0.5, 0.5, 0.5},
-            const std::vector<float>& std = {0.5, 0.5, 0.5});
-  Normalize(float scale = 1.0 / 255.0, const float& mean = 0.5,
-            const float& std = 0.5);
-  absl::StatusOr<cv::Mat> NormalizeOne(const cv::Mat& input) const;
-  absl::StatusOr<std::vector<cv::Mat>> Apply(
-      std::vector<cv::Mat>& input, const void* param = nullptr) const override;
+            const std::vector<float> &mean = {0.5, 0.5, 0.5},
+            const std::vector<float> &std = {0.5, 0.5, 0.5});
+  Normalize(float scale = 1.0 / 255.0, const float &mean = 0.5,
+            const float &std = 0.5);
+  absl::StatusOr<cv::Mat> NormalizeOne(const cv::Mat &input) const;
+  absl::StatusOr<std::vector<cv::Mat>>
+  Apply(std::vector<cv::Mat> &input,
+        const void *param = nullptr) const override;
   static constexpr int CHANNEL = 3;
 
- private:
+private:
   std::vector<float> alpha_;
   std::vector<float> beta_;
 };
 
 class NormalizeImage : public BaseProcessor {
- public:
+public:
   NormalizeImage(float scale = 1.0 / 255.0,
-                 const std::vector<float>& mean = {0.485, 0.456, 0.406},
-                 const std::vector<float>& std = {0.229, 0.224, 0.225});
+                 const std::vector<float> &mean = {0.485, 0.456, 0.406},
+                 const std::vector<float> &std = {0.229, 0.224, 0.225});
 
-  absl::StatusOr<std::vector<cv::Mat>> Apply(
-      std::vector<cv::Mat>& input, const void* param = nullptr) const override;
+  absl::StatusOr<std::vector<cv::Mat>>
+  Apply(std::vector<cv::Mat> &input,
+        const void *param = nullptr) const override;
 
- private:
+private:
   std::vector<float> alpha_;
   std::vector<float> beta_;
 
-  absl::StatusOr<cv::Mat> Normalize(const cv::Mat& img) const;
-  NormalizeImage(const NormalizeImage&) = delete;
-  NormalizeImage& operator=(const NormalizeImage&) = delete;
+  absl::StatusOr<cv::Mat> Normalize(const cv::Mat &img) const;
+  NormalizeImage(const NormalizeImage &) = delete;
+  NormalizeImage &operator=(const NormalizeImage &) = delete;
   static constexpr int CHANNEL = 3;
 };
 
 class ToCHWImage : public BaseProcessor {
- public:
-  absl::StatusOr<std::vector<cv::Mat>> operator()(
-      const std::vector<cv::Mat>& imgs_batch);
-  absl::StatusOr<std::vector<cv::Mat>> Apply(
-      std::vector<cv::Mat>& input, const void* param = nullptr) const override;
+public:
+  absl::StatusOr<std::vector<cv::Mat>>
+  operator()(const std::vector<cv::Mat> &imgs_batch);
+  absl::StatusOr<std::vector<cv::Mat>>
+  Apply(std::vector<cv::Mat> &input,
+        const void *param = nullptr) const override;
 };
 
 class ToBatch : public BaseProcessor {
- public:
-  absl::StatusOr<std::vector<cv::Mat>> operator()(
-      const std::vector<cv::Mat>& imgs) const;
-  absl::StatusOr<std::vector<cv::Mat>> Apply(
-      std::vector<cv::Mat>& input, const void* param = nullptr) const override;
+public:
+  absl::StatusOr<std::vector<cv::Mat>>
+  operator()(const std::vector<cv::Mat> &imgs) const;
+  absl::StatusOr<std::vector<cv::Mat>>
+  Apply(std::vector<cv::Mat> &input,
+        const void *param = nullptr) const override;
 };
 
 class ComponentsProcessor {
- public:
-  static absl::StatusOr<cv::Mat> RotateImage(const cv::Mat& image, int angle);
-  static std::vector<std::vector<cv::Point2f>> SortQuadBoxes(
-      const std::vector<std::vector<cv::Point2f>>& dt_polys);
-  static std::vector<std::vector<cv::Point2f>> SortPolyBoxes(
-      const std::vector<std::vector<cv::Point2f>>& dt_polys);
-  static std::vector<std::array<float, 4>> ConvertPointsToBoxes(
-      const std::vector<std::vector<cv::Point2f>>& dt_polys);
+public:
+  static absl::StatusOr<cv::Mat> RotateImage(const cv::Mat &image, int angle);
+  static std::vector<std::vector<cv::Point2f>>
+  SortQuadBoxes(const std::vector<std::vector<cv::Point2f>> &dt_polys);
+  static std::vector<std::vector<cv::Point2f>>
+  SortPolyBoxes(const std::vector<std::vector<cv::Point2f>> &dt_polys);
+  static std::vector<std::array<float, 4>>
+  ConvertPointsToBoxes(const std::vector<std::vector<cv::Point2f>> &dt_polys);
 };
 
 class CropByPolys {
- public:
+public:
   enum class DetBoxType { kQuad, kPoly };
 
-  CropByPolys(const std::string& box_type = "quad");
+  CropByPolys(const std::string &box_type = "quad");
 
-  absl::StatusOr<std::vector<cv::Mat>> operator()(
-      const cv::Mat& img,
-      const std::vector<std::vector<cv::Point2f>>& dt_polys);
+  absl::StatusOr<std::vector<cv::Mat>>
+  operator()(const cv::Mat &img,
+             const std::vector<std::vector<cv::Point2f>> &dt_polys);
 
-  absl::StatusOr<cv::Mat> GetMinAreaRectCrop(
-      const cv::Mat& img, const std::vector<cv::Point2f>& points) const;
+  absl::StatusOr<cv::Mat>
+  GetMinAreaRectCrop(const cv::Mat &img,
+                     const std::vector<cv::Point2f> &points) const;
 
-  absl::StatusOr<cv::Mat> GetPolyRectCrop(
-      const cv::Mat& img, const std::vector<cv::Point2f>& poly) const;
+  absl::StatusOr<cv::Mat>
+  GetPolyRectCrop(const cv::Mat &img,
+                  const std::vector<cv::Point2f> &poly) const;
 
-  absl::StatusOr<cv::Mat> GetRotateCropImage(
-      const cv::Mat& img, const std::vector<cv::Point2f>& box) const;
+  absl::StatusOr<cv::Mat>
+  GetRotateCropImage(const cv::Mat &img,
+                     const std::vector<cv::Point2f> &box) const;
 
-  std::vector<cv::Point2f> GetMinAreaRectPoints(
-      const std::vector<cv::Point2f>& poly) const;
+  std::vector<cv::Point2f>
+  GetMinAreaRectPoints(const std::vector<cv::Point2f> &poly) const;
 
-  static double IoU(const std::vector<cv::Point2f>& poly1,
-                    const std::vector<cv::Point2f>& poly2);
+  static double IoU(const std::vector<cv::Point2f> &poly1,
+                    const std::vector<cv::Point2f> &poly2);
 
-  static ClipperLib::Path CvPolyToClipperPath(
-      const std::vector<cv::Point2f>& poly);
+  static ClipperLib::Path
+  CvPolyToClipperPath(const std::vector<cv::Point2f> &poly);
 
   static const double SCALE;
 
- private:
+private:
   DetBoxType box_type_;
 };

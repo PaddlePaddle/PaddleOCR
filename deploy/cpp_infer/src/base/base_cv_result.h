@@ -25,8 +25,8 @@
 class ImageWriter {};
 
 class BaseCVResult {
- public:
-  BaseCVResult(const std::string& backend);
+public:
+  BaseCVResult(const std::string &backend);
   BaseCVResult() = default;
   virtual ~BaseCVResult() = default;
   std::string Str() const;
@@ -34,11 +34,11 @@ class BaseCVResult {
   // absl::Status Print() const;
   absl::Status SaveToImg() const;
 
-  virtual void SaveToImg(const std::string& save_path) = 0;
+  virtual void SaveToImg(const std::string &save_path) = 0;
   virtual void Print() const = 0;
-  virtual void SaveToJson(const std::string& save_path) const = 0;
+  virtual void SaveToJson(const std::string &save_path) const = 0;
 
- protected:
+protected:
   std::unordered_map<std::string, std::string> res_;
   ImageWriter img_writer_;
   std::string ToStr() const;

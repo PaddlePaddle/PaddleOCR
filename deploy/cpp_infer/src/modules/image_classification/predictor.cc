@@ -18,7 +18,7 @@
 #include "src/common/image_batch_sampler.h"
 #include "src/utils/ilogger.h"
 
-ClasPredictor::ClasPredictor(const ClasPredictorParams& params)
+ClasPredictor::ClasPredictor(const ClasPredictorParams &params)
     : BasePredictor(params.model_dir, params.model_name, params.device,
                     params.precision, params.enable_mkldnn,
                     params.mkldnn_cache_capacity, params.cpu_threads,
@@ -32,7 +32,7 @@ ClasPredictor::ClasPredictor(const ClasPredictorParams& params)
 };
 
 absl::Status ClasPredictor::BuildResize() {
-  const auto& pre_params = config_.PreProcessOpInfo();
+  const auto &pre_params = config_.PreProcessOpInfo();
   if (pre_params.find("ResizeImage.size") != pre_params.end()) {
     Register<Resize>("Resize", YamlConfig::SmartParseVector(
                                    pre_params.at("ResizeImage.size"))
@@ -47,7 +47,7 @@ absl::Status ClasPredictor::BuildResize() {
 }
 
 absl::Status ClasPredictor::Build() {
-  const auto& pre_params = config_.PreProcessOpInfo();
+  const auto &pre_params = config_.PreProcessOpInfo();
   Register<ReadImage>("Read");
 
   auto status = BuildResize();
@@ -57,7 +57,7 @@ absl::Status ClasPredictor::Build() {
   if (config_.FindKey("Crop").ok()) {
     Register<Crop>("Crop",
                    YamlConfig::SmartParseVector(pre_params.at("CropImage.size"))
-                       .vec_int);  //*************
+                       .vec_int); //*************
   }
   Register<NormalizeImage>(
       "Normalize", std::stof(pre_params.at("NormalizeImage.scale")),
@@ -69,7 +69,7 @@ absl::Status ClasPredictor::Build() {
   Register<ToBatch>("ToBatch");
 
   infer_ptr_ = CreateStaticInfer();
-  const auto& post_params = config_.PostProcessOpInfo();
+  const auto &post_params = config_.PostProcessOpInfo();
   auto gsj = YamlConfig::SmartParseVector(
       post_params.at("PostProcess.Topk.label_list"));
   post_op_["Topk"] = std::unique_ptr<Topk>(
@@ -80,11 +80,11 @@ absl::Status ClasPredictor::Build() {
   return absl::OkStatus();
 };
 
-std::vector<std::unique_ptr<BaseCVResult>> ClasPredictor::Process(
-    std::vector<cv::Mat>& batch_data) {
+std::vector<std::unique_ptr<BaseCVResult>>
+ClasPredictor::Process(std::vector<cv::Mat> &batch_data) {
   std::vector<cv::Mat> origin_image = {};
   origin_image.reserve(batch_data.size());
-  for (const auto& mat : batch_data) {
+  for (const auto &mat : batch_data) {
     origin_image.push_back(mat.clone());
   }
   auto batch_read = pre_op_.at("Read")->Apply(batch_data);
@@ -100,7 +100,7 @@ std::vector<std::unique_ptr<BaseCVResult>> ClasPredictor::Process(
     exit(-1);
   }
   if (config_.FindKey("Crop").ok()) {
-    batch_resize = pre_op_.at("Crop")->Apply(batch_resize.value());  // **
+    batch_resize = pre_op_.at("Crop")->Apply(batch_resize.value()); // **
     if (!batch_resize.ok()) {
       INFOE(batch_resize.status().ToString().c_str());
       exit(-1);
@@ -141,7 +141,8 @@ std::vector<std::unique_ptr<BaseCVResult>> ClasPredictor::Process(
   for (int i = 0; i < cls_result.value().size(); i++, input_index_++) {
     ClasPredictorResult predictor_result;
     if (!input_path_.empty()) {
-      if (input_index_ == input_path_.size()) input_index_ = 0;
+      if (input_index_ == input_path_.size())
+        input_index_ = 0;
       predictor_result.input_path = input_path_[input_index_];
     }
     predictor_result.input_image = origin_image[i];

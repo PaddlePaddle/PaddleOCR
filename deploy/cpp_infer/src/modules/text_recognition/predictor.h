@@ -44,7 +44,7 @@ struct TextRecPredictorParams {
 };
 
 class TextRecPredictor : public BasePredictor {
- public:
+public:
   TextRecPredictor(const TextRecPredictorParams &params);
 
   std::vector<TextRecPredictorResult> PredictorResult() const {
@@ -55,12 +55,12 @@ class TextRecPredictor : public BasePredictor {
 
   absl::Status Build();
 
-  std::vector<std::unique_ptr<BaseCVResult>> Process(
-      std::vector<cv::Mat> &batch_data) override;
+  std::vector<std::unique_ptr<BaseCVResult>>
+  Process(std::vector<cv::Mat> &batch_data) override;
 
   absl::Status CheckRecModelParams();
 
- private:
+private:
   std::unordered_map<std::string, std::unique_ptr<CTCLabelDecode>> post_op_;
   std::vector<TextRecPredictorResult> predictor_result_vec_;
   std::unique_ptr<PaddleInfer> infer_ptr_;

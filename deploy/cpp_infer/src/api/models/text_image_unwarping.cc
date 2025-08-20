@@ -19,7 +19,7 @@
 
 #define COPY_PARAMS(field) to.field = from.field;
 
-TextImageUnwarping::TextImageUnwarping(const TextImageUnwarpingParams& params)
+TextImageUnwarping::TextImageUnwarping(const TextImageUnwarpingParams &params)
     : params_(params) {
   OverrideConfig();
   auto status = CheckParams();
@@ -29,8 +29,8 @@ TextImageUnwarping::TextImageUnwarping(const TextImageUnwarpingParams& params)
   }
   CreateModel();
 };
-std::vector<std::unique_ptr<BaseCVResult>> TextImageUnwarping::Predict(
-    const std::vector<std::string>& input) {
+std::vector<std::unique_ptr<BaseCVResult>>
+TextImageUnwarping::Predict(const std::vector<std::string> &input) {
   return model_infer_->Predict(input);
 }
 void TextImageUnwarping::CreateModel() {
@@ -69,7 +69,7 @@ absl::Status TextImageUnwarping::CheckParams() {
 }
 
 WarpPredictorParams TextImageUnwarping::ToTextImageUnwarpingModelParams(
-    const TextImageUnwarpingParams& from) {
+    const TextImageUnwarpingParams &from) {
   WarpPredictorParams to;
   COPY_PARAMS(model_name)
   COPY_PARAMS(model_dir)

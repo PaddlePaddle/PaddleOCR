@@ -28,12 +28,12 @@ absl::Status BaseBatchSampler::SetBatchSize(int batch_size) {
 
 absl::StatusOr<std::vector<std::vector<std::string>>>
 BaseBatchSampler::SampleFromVectorToStringVector(
-    const std::vector<std::string>& inputs) {
+    const std::vector<std::string> &inputs) {
   std::vector<std::vector<std::string>> result;
   std::vector<std::string> current_batch;
 
   for (size_t i = 0; i < inputs.size(); ++i) {
-    const std::string& input = inputs[i];
+    const std::string &input = inputs[i];
 
     if (Utility::IsDirectory(input)) {
       absl::StatusOr<std::vector<std::string>> files_result =
@@ -48,7 +48,7 @@ BaseBatchSampler::SampleFromVectorToStringVector(
         return sub_result.status();
       }
 
-      const std::vector<std::vector<std::string>>& sub_batches =
+      const std::vector<std::vector<std::string>> &sub_batches =
           sub_result.value();
       for (size_t j = 0; j < sub_batches.size(); ++j) {
         result.push_back(sub_batches[j]);
@@ -69,20 +69,20 @@ BaseBatchSampler::SampleFromVectorToStringVector(
   }
 
   if (!current_batch.empty()) {
-    result.push_back(current_batch);  // last batch
+    result.push_back(current_batch); // last batch
   }
 
   return result;
 }
 
 absl::StatusOr<std::vector<std::vector<std::string>>>
-BaseBatchSampler::SampleFromStringToStringVector(const std::string& input) {
+BaseBatchSampler::SampleFromStringToStringVector(const std::string &input) {
   std::vector<std::string> inputs = {input};
   return SampleFromVectorToStringVector(inputs);
 }
 
-absl::StatusOr<std::vector<std::string>> BaseBatchSampler::GetFilesList(
-    const std::string& path) {
+absl::StatusOr<std::vector<std::string>>
+BaseBatchSampler::GetFilesList(const std::string &path) {
   if (!Utility::FileExists(path).ok()) {
     return absl::NotFoundError("Path not found: " + path);
   }

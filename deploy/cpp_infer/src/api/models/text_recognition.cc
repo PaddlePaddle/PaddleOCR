@@ -19,7 +19,7 @@
 
 #define COPY_PARAMS(field) to.field = from.field;
 
-TextRecognition::TextRecognition(const TextRecognitionParams& params)
+TextRecognition::TextRecognition(const TextRecognitionParams &params)
     : params_(params) {
   OverrideConfig();
   auto status = CheckParams();
@@ -29,8 +29,8 @@ TextRecognition::TextRecognition(const TextRecognitionParams& params)
   }
   CreateModel();
 };
-std::vector<std::unique_ptr<BaseCVResult>> TextRecognition::Predict(
-    const std::vector<std::string>& input) {
+std::vector<std::unique_ptr<BaseCVResult>>
+TextRecognition::Predict(const std::vector<std::string> &input) {
   return model_infer_->Predict(input);
 }
 void TextRecognition::CreateModel() {
@@ -79,7 +79,7 @@ absl::Status TextRecognition::CheckParams() {
 }
 
 TextRecPredictorParams TextRecognition::ToTextRecognitionModelParams(
-    const TextRecognitionParams& from) {
+    const TextRecognitionParams &from) {
   TextRecPredictorParams to;
   COPY_PARAMS(model_name)
   COPY_PARAMS(model_dir)

@@ -19,7 +19,7 @@
 
 #define COPY_PARAMS(field) to.field = from.field;
 
-TextDetection::TextDetection(const TextDetectionParams& params)
+TextDetection::TextDetection(const TextDetectionParams &params)
     : params_(params) {
   OverrideConfig();
   auto status = CheckParams();
@@ -29,8 +29,8 @@ TextDetection::TextDetection(const TextDetectionParams& params)
   }
   CreateModel();
 };
-std::vector<std::unique_ptr<BaseCVResult>> TextDetection::Predict(
-    const std::vector<std::string>& input) {
+std::vector<std::unique_ptr<BaseCVResult>>
+TextDetection::Predict(const std::vector<std::string> &input) {
   return model_infer_->Predict(input);
 }
 void TextDetection::CreateModel() {
@@ -87,8 +87,8 @@ absl::Status TextDetection::CheckParams() {
   return absl::OkStatus();
 }
 
-TextDetPredictorParams TextDetection::ToTextDetectionModelParams(
-    const TextDetectionParams& from) {
+TextDetPredictorParams
+TextDetection::ToTextDetectionModelParams(const TextDetectionParams &from) {
   TextDetPredictorParams to;
   COPY_PARAMS(model_name)
   COPY_PARAMS(model_dir)

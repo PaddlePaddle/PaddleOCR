@@ -21,7 +21,7 @@
 #include "third_party/nlohmann/json.hpp"
 
 using json = nlohmann::json;
-void TopkResult::SaveToImg(const std::string& save_path) {
+void TopkResult::SaveToImg(const std::string &save_path) {
   cv::Mat img = predictor_result_.input_image.clone();
 
   std::ostringstream oss;
@@ -94,22 +94,22 @@ void TopkResult::Print() const {
   std::cout << "}" << std::endl;
 }
 
-void TopkResult::SaveToJson(const std::string& save_path) const {
+void TopkResult::SaveToJson(const std::string &save_path) const {
   nlohmann::ordered_json j;
 
   j["input_path"] = predictor_result_.input_path;
-  j["page_index"] = nullptr;  //********
+  j["page_index"] = nullptr; //********
 
   json class_ids = json::array();
-  for (const auto& item : predictor_result_.class_ids) {
+  for (const auto &item : predictor_result_.class_ids) {
     class_ids.push_back(item);
   }
   json scores = json::array();
-  for (const auto& item : predictor_result_.scores) {
+  for (const auto &item : predictor_result_.scores) {
     scores.push_back(item);
   }
   json label_names = json::array();
-  for (const auto& item : predictor_result_.label_names) {
+  for (const auto &item : predictor_result_.label_names) {
     label_names.push_back(item);
   }
 
@@ -133,17 +133,17 @@ void TopkResult::SaveToJson(const std::string& save_path) const {
   }
 }
 
-int TopkResult::getAdaptiveFontScale(const std::string& text, int imgWidth,
+int TopkResult::getAdaptiveFontScale(const std::string &text, int imgWidth,
                                      int maxWidth, int minFont, int maxFont,
-                                     int thickness, int& outBaseline,
-                                     int& outFontFace) {
+                                     int thickness, int &outBaseline,
+                                     int &outFontFace) {
   int fontFace = cv::FONT_HERSHEY_SIMPLEX;
   double fontScale = 1.0;
   int baseline = 0;
   int bestFontSize = minFont;
 
   for (int fontSize = maxFont; fontSize >= minFont; --fontSize) {
-    fontScale = fontSize / 20.0;  // 20为基准比例，可调
+    fontScale = fontSize / 20.0; // 20为基准比例，可调
     int base;
     cv::Size textSize =
         cv::getTextSize(text, fontFace, fontScale, thickness, &base);

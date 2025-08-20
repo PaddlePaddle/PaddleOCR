@@ -30,7 +30,7 @@
 #include "src/utils/yaml_config.h"
 
 class BasePredictor {
- public:
+public:
   BasePredictor(const absl::optional<std::string> &model_dir = absl::nullopt,
                 const absl::optional<std::string> &model_name = absl::nullopt,
                 const absl::optional<std::string> &device = absl::nullopt,
@@ -52,8 +52,8 @@ class BasePredictor {
 
   void SetBatchSize(int batch_size);
 
-  virtual std::vector<std::unique_ptr<BaseCVResult>> Process(
-      std::vector<cv::Mat> &batch_data) = 0;
+  virtual std::vector<std::unique_ptr<BaseCVResult>>
+  Process(std::vector<cv::Mat> &batch_data) = 0;
   virtual void ResetResult() = 0;
   absl::Status BuildBatchSampler();
 
@@ -67,7 +67,7 @@ class BasePredictor {
   static constexpr const char *MODEL_FILE_PREFIX = "inference";
   static const std::unordered_set<std::string> SAMPLER_TYPE;
 
- protected:
+protected:
   absl::optional<std::string> model_dir_;
   YamlConfig config_;
   int batch_size_;
@@ -86,8 +86,8 @@ void BasePredictor::Register(const std::string &key, Args &&...args) {
 };
 
 template <typename T>
-std::vector<std::unique_ptr<BaseCVResult>> BasePredictor::Predict(
-    const T &input) {
+std::vector<std::unique_ptr<BaseCVResult>>
+BasePredictor::Predict(const T &input) {
   std::vector<std::unique_ptr<BaseCVResult>> result;
   ResetResult();
   auto batches = batch_sampler_ptr_->Apply(input);

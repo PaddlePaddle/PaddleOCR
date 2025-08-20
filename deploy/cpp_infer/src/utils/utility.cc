@@ -21,7 +21,7 @@
 
 #include "ilogger.h"
 
-absl::Status Utility::FileExists(const std::string& path) {
+absl::Status Utility::FileExists(const std::string &path) {
   struct stat st;
   if (stat(path.c_str(), &st) == 0) {
     return absl::OkStatus();
@@ -30,8 +30,8 @@ absl::Status Utility::FileExists(const std::string& path) {
   }
 }
 absl::StatusOr<std::map<std::string, std::pair<std::string, std::string>>>
-Utility::GetModelPaths(const std::string& model_dir,
-                       const std::string& model_file_prefix) {
+Utility::GetModelPaths(const std::string &model_dir,
+                       const std::string &model_file_prefix) {
   std::map<std::string, std::pair<std::string, std::string>> model_paths;
   std::string model_path;
 
@@ -65,8 +65,9 @@ Utility::GetModelPaths(const std::string& model_dir,
   return model_paths;
 }
 
-absl::StatusOr<std::string> Utility::FindModelPath(
-    const std::string& model_dir, const std::string& model_name) {
+absl::StatusOr<std::string>
+Utility::FindModelPath(const std::string &model_dir,
+                       const std::string &model_name) {
   char last_char = model_dir.back();
   std::string model_path;
   if (last_char == PATH_SEPARATOR)
@@ -79,8 +80,8 @@ absl::StatusOr<std::string> Utility::FindModelPath(
   }
   return model_path;
 }
-absl::StatusOr<std::string> Utility::GetDefaultConfig(
-    std::string pipeline_name) {
+absl::StatusOr<std::string>
+Utility::GetDefaultConfig(std::string pipeline_name) {
   std::string current_path = __FILE__;
   for (int i = 0; i < 2; i++) {
     size_t pos = current_path.find_last_of(PATH_SEPARATOR);
@@ -102,8 +103,9 @@ absl::StatusOr<std::string> Utility::GetDefaultConfig(
   return absl::NotFoundError("Could not find pipline config yaml :" +
                              pipeline_name);
 }
-absl::StatusOr<std::string> Utility::GetConfigPaths(
-    const std::string& model_dir, const std::string& model_file_prefix) {
+absl::StatusOr<std::string>
+Utility::GetConfigPaths(const std::string &model_dir,
+                        const std::string &model_file_prefix) {
   std::string config_path = "";
   std::string config_path_find =
       model_dir + PATH_SEPARATOR + model_file_prefix + ".yml";
@@ -150,14 +152,14 @@ bool Utility::IsMkldnnAvailable() {
 #endif
 };
 
-void Utility::PrintShape(const cv::Mat& img) {
+void Utility::PrintShape(const cv::Mat &img) {
   for (int i = 0; i < img.dims; i++) {
     std::cout << img.size[i] << " ";
   }
   std::cout << std::endl;
 }
 
-absl::Status Utility::MyCreateDirectory(const std::string& path) {
+absl::Status Utility::MyCreateDirectory(const std::string &path) {
 #ifdef _WIN32
   int ret = _mkdir(path.c_str());
 #else
@@ -172,7 +174,7 @@ absl::Status Utility::MyCreateDirectory(const std::string& path) {
   return absl::ErrnoToStatus(errno, "Failed to create directory: " + path);
 }
 
-absl::Status Utility::MyCreatePath(const std::string& path) {
+absl::Status Utility::MyCreatePath(const std::string &path) {
   std::vector<std::string> paths;
   std::string tmp;
   for (size_t i = 0; i < path.size(); ++i) {
@@ -181,7 +183,8 @@ absl::Status Utility::MyCreatePath(const std::string& path) {
       paths.push_back(tmp);
     }
   }
-  if (!tmp.empty() && tmp.back() != PATH_SEPARATOR) paths.push_back(tmp);
+  if (!tmp.empty() && tmp.back() != PATH_SEPARATOR)
+    paths.push_back(tmp);
 
   std::string current;
   for (size_t i = 0; i < paths.size(); ++i) {
@@ -194,7 +197,7 @@ absl::Status Utility::MyCreatePath(const std::string& path) {
   return absl::OkStatus();
 }
 
-absl::Status Utility::MyCreateFile(const std::string& filepath) {
+absl::Status Utility::MyCreateFile(const std::string &filepath) {
   std::ifstream infile(filepath.c_str());
   if (infile.good()) {
     return absl::OkStatus();
@@ -209,7 +212,7 @@ absl::Status Utility::MyCreateFile(const std::string& filepath) {
   return absl::OkStatus();
 }
 
-absl::StatusOr<std::vector<cv::Mat>> Utility::SplitBatch(const cv::Mat& batch) {
+absl::StatusOr<std::vector<cv::Mat>> Utility::SplitBatch(const cv::Mat &batch) {
   if (batch.dims < 1) {
     return absl::InvalidArgumentError(
         "Input batch must have at least 1 dimension.");
@@ -224,7 +227,8 @@ absl::StatusOr<std::vector<cv::Mat>> Utility::SplitBatch(const cv::Mat& batch) {
   std::vector<cv::Range> myranges(batch.dims);
   for (int i = 0; i < batch_size; ++i) {
     myranges[0] = cv::Range(i, i + 1);
-    for (int d = 1; d < batch.dims; ++d) myranges[d] = cv::Range::all();
+    for (int d = 1; d < batch.dims; ++d)
+      myranges[d] = cv::Range::all();
     cv::Mat sub_mat = batch(&myranges[0]);
 
     split_mats.push_back(sub_mat);
@@ -233,7 +237,7 @@ absl::StatusOr<std::vector<cv::Mat>> Utility::SplitBatch(const cv::Mat& batch) {
   return split_mats;
 }
 
-std::string Utility::GetFileExtension(const std::string& file_path) {
+std::string Utility::GetFileExtension(const std::string &file_path) {
   size_t pos = file_path.find_last_of('.');
   if (pos == std::string::npos || pos == file_path.length() - 1) {
     return "";
@@ -241,13 +245,13 @@ std::string Utility::GetFileExtension(const std::string& file_path) {
   return file_path.substr(pos + 1);
 }
 
-std::string Utility::ToLower(const std::string& str) {
+std::string Utility::ToLower(const std::string &str) {
   std::string result = str;
   std::transform(result.begin(), result.end(), result.begin(), ::tolower);
   return result;
 }
 
-bool Utility::IsDirectory(const std::string& path) {
+bool Utility::IsDirectory(const std::string &path) {
   struct stat path_stat;
   if (stat(path.c_str(), &path_stat) != 0) {
     return false;
@@ -255,14 +259,14 @@ bool Utility::IsDirectory(const std::string& path) {
   return S_ISDIR(path_stat.st_mode);
 }
 
-void Utility::GetFilesRecursive(const std::string& dir_path,
-                                std::vector<std::string>& file_list) {
-  DIR* dir = opendir(dir_path.c_str());
+void Utility::GetFilesRecursive(const std::string &dir_path,
+                                std::vector<std::string> &file_list) {
+  DIR *dir = opendir(dir_path.c_str());
   if (dir == NULL) {
     return;
   }
 
-  struct dirent* entry;
+  struct dirent *entry;
   while ((entry = readdir(dir)) != NULL) {
     std::string name = entry->d_name;
     if (name == "." || name == "..") {
@@ -286,13 +290,13 @@ void Utility::GetFilesRecursive(const std::string& dir_path,
   closedir(dir);
 }
 
-bool Utility::IsImageFile(const std::string& file_path) {
+bool Utility::IsImageFile(const std::string &file_path) {
   std::string extension = GetFileExtension(file_path);
   std::string lower_ext = ToLower(extension);
   return kImgSuffixes.find(lower_ext) != kImgSuffixes.end();
 }
 
-absl::StatusOr<cv::Mat> Utility::MyLoadImage(const std::string& file_path) {
+absl::StatusOr<cv::Mat> Utility::MyLoadImage(const std::string &file_path) {
   cv::Mat image = cv::imread(file_path, cv::IMREAD_COLOR);
   if (image.empty()) {
     return absl::InvalidArgumentError("Failed to load image: " + file_path);
@@ -300,15 +304,15 @@ absl::StatusOr<cv::Mat> Utility::MyLoadImage(const std::string& file_path) {
   return image;
 }
 
-int Utility::MakeDir(const std::string& path) {
+int Utility::MakeDir(const std::string &path) {
 #ifdef _WIN32
   return _mkdir(path.c_str());
 #else
-  return mkdir(path.c_str(), 0755);  // Linux/macOS 权限 755
+  return mkdir(path.c_str(), 0755); // Linux/macOS 权限 755
 #endif
 }
 
-absl::Status Utility::CreateDirectoryRecursive(const std::string& path) {
+absl::Status Utility::CreateDirectoryRecursive(const std::string &path) {
   if (path.empty()) {
     return absl::InvalidArgumentError("Path cannot be empty");
   }
@@ -338,7 +342,7 @@ absl::Status Utility::CreateDirectoryRecursive(const std::string& path) {
   return absl::OkStatus();
 }
 
-absl::Status Utility::CreateDirectoryForFile(const std::string& filePath) {
+absl::Status Utility::CreateDirectoryForFile(const std::string &filePath) {
   size_t found = filePath.find_last_of(PATH_SEPARATOR);
   if (found != std::string::npos) {
     std::string dirPath = filePath.substr(0, found);
@@ -350,9 +354,10 @@ absl::Status Utility::CreateDirectoryForFile(const std::string& filePath) {
   return absl::OkStatus();
 }
 
-absl::StatusOr<std::string> Utility::SmartCreateDirectoryForImage(
-    std::string save_path, const std::string& input_path,
-    const std::string& suffix) {
+absl::StatusOr<std::string>
+Utility::SmartCreateDirectoryForImage(std::string save_path,
+                                      const std::string &input_path,
+                                      const std::string &suffix) {
   size_t pos = save_path.find_last_of("/\\");
   std::string lastPart = save_path.substr(pos + 1);
   if (lastPart.find(".") == std::string::npos) {
@@ -382,9 +387,10 @@ absl::StatusOr<std::string> Utility::SmartCreateDirectoryForImage(
   return full_path;
 }
 
-absl::StatusOr<std::string> Utility::SmartCreateDirectoryForJson(
-    const std::string& save_path, const std::string& input_path,
-    const std::string& suffix) {
+absl::StatusOr<std::string>
+Utility::SmartCreateDirectoryForJson(const std::string &save_path,
+                                     const std::string &input_path,
+                                     const std::string &suffix) {
   auto full_path = SmartCreateDirectoryForImage(save_path, input_path, suffix);
   if (!full_path.ok()) {
     return full_path.status();
@@ -407,7 +413,7 @@ absl::StatusOr<int> Utility::StringToInt(std::string s) {
   }
 }
 
-bool Utility::StringToBool(const std::string& str) {
+bool Utility::StringToBool(const std::string &str) {
   std::string result = str;
   std::transform(result.begin(), result.end(), result.begin(), ::tolower);
   assert(result == "true" || result == "false");
@@ -418,10 +424,11 @@ bool Utility::StringToBool(const std::string& str) {
   }
 }
 
-std::string Utility::VecToString(const std::vector<int>& input) {
+std::string Utility::VecToString(const std::vector<int> &input) {
   std::string result;
   for (auto it = input.begin(); it != input.end(); ++it) {
-    if (it != input.begin()) result += ",";
+    if (it != input.begin())
+      result += ",";
     result += std::to_string(*it);
   }
   return result;
@@ -472,7 +479,8 @@ Utility::GetOcrModelInfo(std::string lang, std::string ppocr_version) {
                                       ppocr_version);
   }
 
-  if (lang.empty()) lang = "ch";
+  if (lang.empty())
+    lang = "ch";
 
   // Create combined supported languages set
   const static std::unordered_set<std::string> supported_langs = []() {
@@ -519,7 +527,7 @@ Utility::GetOcrModelInfo(std::string lang, std::string ppocr_version) {
   // Initialize return values
   std::string det_model_name;
   std::string rec_model_name;
-  std::string font_name = SIMFANG_FONT;  // Default font
+  std::string font_name = SIMFANG_FONT; // Default font
 
   // Model and font selection logic
   if (ppocr_version == "PP-OCRv5") {
@@ -557,7 +565,7 @@ Utility::GetOcrModelInfo(std::string lang, std::string ppocr_version) {
       return absl::InvalidArgumentError(
           "PP-OCRv4 only support ch and en languages!");
     }
-  } else {  // PP-OCRv3
+  } else { // PP-OCRv3
     det_model_name = "PP-OCRv3_mobile_det";
     std::string rec_lang;
 

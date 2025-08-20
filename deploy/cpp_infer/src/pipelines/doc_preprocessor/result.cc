@@ -22,7 +22,7 @@
 #include "third_party/nlohmann/json.hpp"
 
 using json = nlohmann::json;
-void DocPreprocessorResult::SaveToImg(const std::string& save_path) {
+void DocPreprocessorResult::SaveToImg(const std::string &save_path) {
   cv::Mat input_img = pipeline_result_.input_image.clone();
   cv::Mat rot_img = pipeline_result_.rotate_image.clone();
   cv::Mat output_img = pipeline_result_.output_image.clone();
@@ -91,11 +91,11 @@ void DocPreprocessorResult::Print() const {
   std::cout << "}" << std::endl;
 }
 
-void DocPreprocessorResult::SaveToJson(const std::string& save_path) const {
+void DocPreprocessorResult::SaveToJson(const std::string &save_path) const {
   nlohmann::ordered_json j;
 
   j["input_path"] = pipeline_result_.input_path;
-  j["page_index"] = nullptr;  //********
+  j["page_index"] = nullptr; //********
   j["model_settings"] = pipeline_result_.model_settings;
   j["angle"] = pipeline_result_.angle;
 
@@ -115,7 +115,7 @@ void DocPreprocessorResult::SaveToJson(const std::string& save_path) const {
   }
 }
 
-void DocPreprocessorResult::DrawText(cv::Mat& img, const std::string& text,
+void DocPreprocessorResult::DrawText(cv::Mat &img, const std::string &text,
                                      int x, int y, int width) {
   int fontFace = cv::FONT_HERSHEY_SIMPLEX;
   double fontScale = 0.7;

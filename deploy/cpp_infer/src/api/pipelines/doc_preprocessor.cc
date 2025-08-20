@@ -19,7 +19,7 @@
 
 #define COPY_PARAMS(field) to.field = from.field;
 
-DocPreprocessor::DocPreprocessor(const DocPreprocessorParams& params)
+DocPreprocessor::DocPreprocessor(const DocPreprocessorParams &params)
     : params_(params) {
   OverrideConfig();
   auto status = CheckParams();
@@ -29,8 +29,8 @@ DocPreprocessor::DocPreprocessor(const DocPreprocessorParams& params)
   }
   CreatePipeline();
 };
-std::vector<std::unique_ptr<BaseCVResult>> DocPreprocessor::Predict(
-    const std::vector<std::string>& input) {
+std::vector<std::unique_ptr<BaseCVResult>>
+DocPreprocessor::Predict(const std::vector<std::string> &input) {
   return pipeline_infer_->Predict(input);
 }
 void DocPreprocessor::CreatePipeline() {
@@ -98,7 +98,7 @@ absl::Status DocPreprocessor::CheckParams() {
 }
 
 DocPreprocessorPipelineParams DocPreprocessor::ToDocPreprocessorPipelineParams(
-    const DocPreprocessorParams& from) {
+    const DocPreprocessorParams &from) {
   DocPreprocessorPipelineParams to;
   COPY_PARAMS(doc_orientation_classify_model_name)
   COPY_PARAMS(doc_orientation_classify_model_dir)

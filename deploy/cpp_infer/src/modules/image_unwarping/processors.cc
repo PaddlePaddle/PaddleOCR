@@ -21,15 +21,15 @@
 
 DocTrPostProcess::DocTrPostProcess(double scale) : scale_(scale) {}
 
-absl::StatusOr<std::vector<cv::Mat> > DocTrPostProcess::Apply(
-    const cv::Mat& preds) const {
+absl::StatusOr<std::vector<cv::Mat>>
+DocTrPostProcess::Apply(const cv::Mat &preds) const {
   auto preds_batch = Utility::SplitBatch(preds);
   if (!preds_batch.ok()) {
     return preds_batch.status();
   }
   std::vector<cv::Mat> doc_out;
   doc_out.reserve(preds_batch.value().size());
-  for (auto& pred_data : preds_batch.value()) {
+  for (auto &pred_data : preds_batch.value()) {
     auto result = Process(pred_data);
     if (!result.ok()) {
       return result.status();
@@ -39,9 +39,9 @@ absl::StatusOr<std::vector<cv::Mat> > DocTrPostProcess::Apply(
   return doc_out;
 }
 
-absl::StatusOr<cv::Mat> DocTrPostProcess::Process(cv::Mat& pred_data) const {
+absl::StatusOr<cv::Mat> DocTrPostProcess::Process(cv::Mat &pred_data) const {
   if (pred_data.dims != 4) {
-    return absl::InvalidArgumentError("must have 4D");  //********
+    return absl::InvalidArgumentError("must have 4D"); //********
   }
   std::vector<int> shape = {};
   for (int i = 1; i < pred_data.dims; i++) {
@@ -58,7 +58,7 @@ absl::StatusOr<cv::Mat> DocTrPostProcess::Process(cv::Mat& pred_data) const {
     }
     mat_split[i] = pred_data(&ranges[0]);
   }
-  for (auto& item : mat_split) {
+  for (auto &item : mat_split) {
     std::vector<int> shape_item = {};
     for (int i = 1; i < item.dims; i++) {
       shape_item.push_back(item.size[i]);

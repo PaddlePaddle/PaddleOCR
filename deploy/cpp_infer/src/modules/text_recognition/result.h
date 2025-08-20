@@ -21,15 +21,15 @@
 #include "src/base/base_cv_result.h"
 
 class TextRecResult : public BaseCVResult {
- public:
+public:
   TextRecResult(TextRecPredictorResult predictor_result)
       : BaseCVResult(), predictor_result_(predictor_result){};
   // std::unordered_map<std::string, cv::Mat> ToImg() const override;
-  void SaveToImg(const std::string& save_path) override;
+  void SaveToImg(const std::string &save_path) override;
   void Print() const override;
-  void SaveToJson(const std::string& save_path) const override;
-  int AdjustFontSize(int image_width, const std::string& text) const;
+  void SaveToJson(const std::string &save_path) const override;
+  int AdjustFontSize(int image_width, const std::string &text) const;
 
- private:
+private:
   TextRecPredictorResult predictor_result_;
 };

@@ -77,15 +77,15 @@
 #endif
 
 #if defined(U_OS_LINUX)
-#define __GetTimeBlock \
-  time_t timep;        \
-  time(&timep);        \
-  tm& t = *(tm*)localtime(&timep);
+#define __GetTimeBlock                                                         \
+  time_t timep;                                                                \
+  time(&timep);                                                                \
+  tm &t = *(tm *)localtime(&timep);
 #endif
 
 #if defined(U_OS_WINDOWS)
-#define __GetTimeBlock \
-  tm t;                \
+#define __GetTimeBlock                                                         \
+  tm t;                                                                        \
   _getsystime(&t);
 #endif
 
@@ -93,22 +93,22 @@ namespace iLogger {
 
 using namespace std;
 
-const char* level_string(LogLevel level) {
+const char *level_string(LogLevel level) {
   switch (level) {
-    case LogLevel::Debug:
-      return "debug";
-    case LogLevel::Verbose:
-      return "verbo";
-    case LogLevel::Info:
-      return "info";
-    case LogLevel::Warning:
-      return "warn";
-    case LogLevel::Error:
-      return "error";
-    case LogLevel::Fatal:
-      return "fatal";
-    default:
-      return "unknow";
+  case LogLevel::Debug:
+    return "debug";
+  case LogLevel::Verbose:
+    return "verbo";
+  case LogLevel::Info:
+    return "info";
+  case LogLevel::Warning:
+    return "warn";
+  case LogLevel::Error:
+    return "error";
+  case LogLevel::Fatal:
+    return "fatal";
+  default:
+    return "unknow";
   }
 }
 
@@ -120,41 +120,41 @@ std::tuple<uint8_t, uint8_t, uint8_t> hsv2bgr(float h, float s, float v) {
   const float t = v * (1 - (1 - f) * s);
   float r, g, b;
   switch (h_i) {
-    case 0:
-      r = v;
-      g = t;
-      b = p;
-      break;
-    case 1:
-      r = q;
-      g = v;
-      b = p;
-      break;
-    case 2:
-      r = p;
-      g = v;
-      b = t;
-      break;
-    case 3:
-      r = p;
-      g = q;
-      b = v;
-      break;
-    case 4:
-      r = t;
-      g = p;
-      b = v;
-      break;
-    case 5:
-      r = v;
-      g = p;
-      b = q;
-      break;
-    default:
-      r = 1;
-      g = 1;
-      b = 1;
-      break;
+  case 0:
+    r = v;
+    g = t;
+    b = p;
+    break;
+  case 1:
+    r = q;
+    g = v;
+    b = p;
+    break;
+  case 2:
+    r = p;
+    g = v;
+    b = t;
+    break;
+  case 3:
+    r = p;
+    g = q;
+    b = v;
+    break;
+  case 4:
+    r = t;
+    g = p;
+    b = v;
+    break;
+  case 5:
+    r = v;
+    g = p;
+    b = q;
+    break;
+  default:
+    r = 1;
+    g = 1;
+    b = 1;
+    break;
   }
   return make_tuple(static_cast<uint8_t>(b * 255),
                     static_cast<uint8_t>(g * 255),
@@ -186,7 +186,7 @@ string time_now() {
   return time_string;
 }
 
-size_t file_size(const string& file) {
+size_t file_size(const string &file) {
 #if defined(U_OS_LINUX)
   struct stat st;
   stat(file.c_str(), &st);
@@ -194,7 +194,8 @@ size_t file_size(const string& file) {
 #elif defined(U_OS_WINDOWS)
   WIN32_FIND_DATAA find_data;
   HANDLE hFind = FindFirstFileA(file.c_str(), &find_data);
-  if (hFind == INVALID_HANDLE_VALUE) return 0;
+  if (hFind == INVALID_HANDLE_VALUE)
+    return 0;
 
   FindClose(hFind);
   return (uint64_t)find_data.nFileSizeLow |
@@ -202,7 +203,7 @@ size_t file_size(const string& file) {
 #endif
 }
 
-time_t last_modify(const string& file) {
+time_t last_modify(const string &file) {
 #if defined(U_OS_LINUX)
   struct stat st;
   stat(file.c_str(), &st);
@@ -215,34 +216,53 @@ time_t last_modify(const string& file) {
 
 void sleep(int ms) { this_thread::sleep_for(std::chrono::milliseconds(ms)); }
 
-int get_month_by_name(char* month) {
-  if (strcmp(month, "Jan") == 0) return 0;
-  if (strcmp(month, "Feb") == 0) return 1;
-  if (strcmp(month, "Mar") == 0) return 2;
-  if (strcmp(month, "Apr") == 0) return 3;
-  if (strcmp(month, "May") == 0) return 4;
-  if (strcmp(month, "Jun") == 0) return 5;
-  if (strcmp(month, "Jul") == 0) return 6;
-  if (strcmp(month, "Aug") == 0) return 7;
-  if (strcmp(month, "Sep") == 0) return 8;
-  if (strcmp(month, "Oct") == 0) return 9;
-  if (strcmp(month, "Nov") == 0) return 10;
-  if (strcmp(month, "Dec") == 0) return 11;
+int get_month_by_name(char *month) {
+  if (strcmp(month, "Jan") == 0)
+    return 0;
+  if (strcmp(month, "Feb") == 0)
+    return 1;
+  if (strcmp(month, "Mar") == 0)
+    return 2;
+  if (strcmp(month, "Apr") == 0)
+    return 3;
+  if (strcmp(month, "May") == 0)
+    return 4;
+  if (strcmp(month, "Jun") == 0)
+    return 5;
+  if (strcmp(month, "Jul") == 0)
+    return 6;
+  if (strcmp(month, "Aug") == 0)
+    return 7;
+  if (strcmp(month, "Sep") == 0)
+    return 8;
+  if (strcmp(month, "Oct") == 0)
+    return 9;
+  if (strcmp(month, "Nov") == 0)
+    return 10;
+  if (strcmp(month, "Dec") == 0)
+    return 11;
   return -1;
 }
 
-int get_week_day_by_name(char* wday) {
-  if (strcmp(wday, "Sun") == 0) return 0;
-  if (strcmp(wday, "Mon") == 0) return 1;
-  if (strcmp(wday, "Tue") == 0) return 2;
-  if (strcmp(wday, "Wed") == 0) return 3;
-  if (strcmp(wday, "Thu") == 0) return 4;
-  if (strcmp(wday, "Fri") == 0) return 5;
-  if (strcmp(wday, "Sat") == 0) return 6;
+int get_week_day_by_name(char *wday) {
+  if (strcmp(wday, "Sun") == 0)
+    return 0;
+  if (strcmp(wday, "Mon") == 0)
+    return 1;
+  if (strcmp(wday, "Tue") == 0)
+    return 2;
+  if (strcmp(wday, "Wed") == 0)
+    return 3;
+  if (strcmp(wday, "Thu") == 0)
+    return 4;
+  if (strcmp(wday, "Fri") == 0)
+    return 5;
+  if (strcmp(wday, "Sat") == 0)
+    return 6;
   return -1;
 }
 
-time_t gmtime2ctime(const string& gmt) {
+time_t gmtime2ctime(const string &gmt) {
   char week[4] = {0};
   char month[4] = {0};
   tm date;
@@ -256,12 +276,12 @@ time_t gmtime2ctime(const string& gmt) {
 
 string gmtime(time_t t) {
   t += 28800;
-  tm* gmt = ::gmtime(&t);
+  tm *gmt = ::gmtime(&t);
 
   // http://en.cppreference.com/w/c/chrono/strftime
   // e.g.: Sat, 22 Aug 2015 11:48:50 GMT
   //       5+   3+4+   5+   9+       3   = 29
-  const char* fmt = "%a, %d %b %Y %H:%M:%S GMT";
+  const char *fmt = "%a, %d %b %Y %H:%M:%S GMT";
   char tstr[30];
   strftime(tstr, sizeof(tstr), fmt, gmt);
   return tstr;
@@ -269,7 +289,7 @@ string gmtime(time_t t) {
 
 string gmtime_now() { return gmtime(time(nullptr)); }
 
-bool mkdir(const string& path) {
+bool mkdir(const string &path) {
 #ifdef U_OS_WINDOWS
   return CreateDirectoryA(path.c_str(), nullptr);
 #else
@@ -277,17 +297,20 @@ bool mkdir(const string& path) {
 #endif
 }
 
-bool mkdirs(const string& path) {
-  if (path.empty()) return false;
-  if (exists(path)) return true;
+bool mkdirs(const string &path) {
+  if (path.empty())
+    return false;
+  if (exists(path))
+    return true;
 
   string _path = path;
-  char* dir_ptr = (char*)_path.c_str();
-  char* iter_ptr = dir_ptr;
+  char *dir_ptr = (char *)_path.c_str();
+  char *iter_ptr = dir_ptr;
 
   bool keep_going = *iter_ptr != 0;
   while (keep_going) {
-    if (*iter_ptr == 0) keep_going = false;
+    if (*iter_ptr == 0)
+      keep_going = false;
 
 #ifdef U_OS_WINDOWS
     if (*iter_ptr == '/' || *iter_ptr == '\\' || *iter_ptr == 0) {
@@ -311,7 +334,7 @@ bool mkdirs(const string& path) {
   return true;
 }
 
-bool isfile(const string& file) {
+bool isfile(const string &file) {
 #if defined(U_OS_LINUX)
   struct stat st;
   stat(file.c_str(), &st);
@@ -322,9 +345,10 @@ bool isfile(const string& file) {
 #endif
 }
 
-FILE* fopen_mkdirs(const string& path, const string& mode) {
-  FILE* f = fopen(path.c_str(), mode.c_str());
-  if (f) return f;
+FILE *fopen_mkdirs(const string &path, const string &mode) {
+  FILE *f = fopen(path.c_str(), mode.c_str());
+  if (f)
+    return f;
 
   int p = path.rfind('/');
 
@@ -332,15 +356,17 @@ FILE* fopen_mkdirs(const string& path, const string& mode) {
   int e = path.rfind('\\');
   p = std::max(p, e);
 #endif
-  if (p == -1) return nullptr;
+  if (p == -1)
+    return nullptr;
 
   string directory = path.substr(0, p);
-  if (!mkdirs(directory)) return nullptr;
+  if (!mkdirs(directory))
+    return nullptr;
 
   return fopen(path.c_str(), mode.c_str());
 }
 
-bool exists(const string& path) {
+bool exists(const string &path) {
 #ifdef U_OS_WINDOWS
   return ::PathFileExistsA(path.c_str());
 #elif defined(U_OS_LINUX)
@@ -348,7 +374,7 @@ bool exists(const string& path) {
 #endif
 }
 
-string format(const char* fmt, ...) {
+string format(const char *fmt, ...) {
   va_list vl;
   va_start(vl, fmt);
   char buffer[2048];
@@ -356,8 +382,9 @@ string format(const char* fmt, ...) {
   return buffer;
 }
 
-string file_name(const string& path, bool include_suffix) {
-  if (path.empty()) return "";
+string file_name(const string &path, bool include_suffix) {
+  if (path.empty())
+    return "";
 
   int p = path.rfind('/');
 
@@ -368,17 +395,21 @@ string file_name(const string& path, bool include_suffix) {
   p += 1;
 
   // include suffix
-  if (include_suffix) return path.substr(p);
+  if (include_suffix)
+    return path.substr(p);
 
   int u = path.rfind('.');
-  if (u == -1) return path.substr(p);
+  if (u == -1)
+    return path.substr(p);
 
-  if (u <= p) u = path.size();
+  if (u <= p)
+    u = path.size();
   return path.substr(p, u - p);
 }
 
-string directory(const string& path) {
-  if (path.empty()) return ".";
+string directory(const string &path) {
+  if (path.empty())
+    return ".";
 
   int p = path.rfind('/');
 
@@ -386,18 +417,21 @@ string directory(const string& path) {
   int e = path.rfind('\\');
   p = std::max(p, e);
 #endif
-  if (p == -1) return ".";
+  if (p == -1)
+    return ".";
 
   return path.substr(0, p + 1);
 }
 
-bool begin_with(const string& str, const string& with) {
-  if (str.length() < with.length()) return false;
+bool begin_with(const string &str, const string &with) {
+  if (str.length() < with.length())
+    return false;
   return strncmp(str.c_str(), with.c_str(), with.length()) == 0;
 }
 
-bool end_with(const string& str, const string& with) {
-  if (str.length() < with.length()) return false;
+bool end_with(const string &str, const string &with) {
+  if (str.length() < with.length())
+    return false;
 
   return strncmp(str.c_str() + str.length() - with.length(), with.c_str(),
                  with.length()) == 0;
@@ -444,12 +478,14 @@ static struct Logger {
   shared_ptr<FILE> handler;
   bool logger_shutdown{false};
 
-  void write(const string& line) {
+  void write(const string &line) {
     lock_guard<mutex> l(logger_lock_);
-    if (logger_shutdown) return;
+    if (logger_shutdown)
+      return;
 
     if (!keep_run_) {
-      if (flush_thread_) return;
+      if (flush_thread_)
+        return;
 
       cache_.reserve(1000);
       keep_run_ = true;
@@ -459,7 +495,8 @@ static struct Logger {
   }
 
   void flush() {
-    if (cache_.empty()) return;
+    if (cache_.empty())
+      return;
 
     {
       std::lock_guard<mutex> l(logger_lock_);
@@ -476,7 +513,8 @@ static struct Logger {
       }
 
       if (handler) {
-        for (auto& line : local_) fprintf(handler.get(), "%s\n", line.c_str());
+        for (auto &line : local_)
+          fprintf(handler.get(), "%s\n", line.c_str());
         fflush(handler.get());
         handler.reset();
       }
@@ -499,10 +537,11 @@ static struct Logger {
     flush();
   }
 
-  void set_save_directory(const string& loggerDirectory) {
+  void set_save_directory(const string &loggerDirectory) {
     logger_directory = loggerDirectory;
 
-    if (logger_directory.empty()) logger_directory = ".";
+    if (logger_directory.empty())
+      logger_directory = ".";
 
 #if defined(U_OS_LINUX)
     if (logger_directory.back() != '/') {
@@ -522,12 +561,14 @@ static struct Logger {
   void close() {
     {
       lock_guard<mutex> l(logger_lock_);
-      if (logger_shutdown) return;
+      if (logger_shutdown)
+        return;
 
       logger_shutdown = true;
     };
 
-    if (!keep_run_) return;
+    if (!keep_run_)
+      return;
     keep_run_ = false;
     flush_thread_->join();
     flush_thread_.reset();
@@ -539,19 +580,19 @@ static struct Logger {
 
 void destroy_logger() { __g_logger.close(); }
 
-static void remove_color_text(char* buffer) {
+static void remove_color_text(char *buffer) {
   //"\033[31m%s\033[0m"
-  char* p = buffer;
+  char *p = buffer;
   while (*p) {
     if (*p == 0x1B) {
       char np = *(p + 1);
       if (np == '[') {
         // has token
-        char* t = p + 2;
+        char *t = p + 2;
         while (*t) {
           if (*t == 'm') {
             t = t + 1;
-            char* k = p;
+            char *k = p;
             while (*t) {
               *k++ = *t++;
             }
@@ -566,7 +607,7 @@ static void remove_color_text(char* buffer) {
   }
 }
 
-void set_logger_save_directory(const string& loggerDirectory) {
+void set_logger_save_directory(const string &loggerDirectory) {
   __g_logger.set_save_directory(loggerDirectory);
 }
 
@@ -574,9 +615,10 @@ void set_log_level(LogLevel level) { __g_logger.set_logger_level(level); }
 
 LogLevel get_log_level() { return __g_logger.logger_level; }
 
-void __log_func(const char* file, int line, LogLevel level, const char* fmt,
+void __log_func(const char *file, int line, LogLevel level, const char *fmt,
                 ...) {
-  if (level > __g_logger.logger_level) return;
+  if (level > __g_logger.logger_level)
+    return;
 
   string now = time_now();
   va_list vl;
@@ -641,9 +683,10 @@ void __log_func(const char* file, int line, LogLevel level, const char* fmt,
   }
 }
 
-string load_text_file(const string& file) {
+string load_text_file(const string &file) {
   ifstream in(file, ios::in | ios::binary);
-  if (!in.is_open()) return {};
+  if (!in.is_open())
+    return {};
 
   in.seekg(0, ios::end);
   size_t length = in.tellg();
@@ -653,15 +696,16 @@ string load_text_file(const string& file) {
     in.seekg(0, ios::beg);
     data.resize(length);
 
-    in.read((char*)&data[0], length);
+    in.read((char *)&data[0], length);
   }
   in.close();
   return data;
 }
 
-std::vector<uint8_t> load_file(const string& file) {
+std::vector<uint8_t> load_file(const string &file) {
   ifstream in(file, ios::in | ios::binary);
-  if (!in.is_open()) return {};
+  if (!in.is_open())
+    return {};
 
   in.seekg(0, ios::end);
   size_t length = in.tellg();
@@ -671,7 +715,7 @@ std::vector<uint8_t> load_file(const string& file) {
     in.seekg(0, ios::beg);
     data.resize(length);
 
-    in.read((char*)&data[0], length);
+    in.read((char *)&data[0], length);
   }
   in.close();
   return data;
@@ -685,21 +729,23 @@ bool alphabet_equal(char a, char b, bool ignore_case) {
   return a == b;
 }
 
-static bool pattern_match_body(const char* str, const char* matcher,
+static bool pattern_match_body(const char *str, const char *matcher,
                                bool igrnoe_case) {
   //   abcdefg.pnga          *.png      > false
   //   abcdefg.png           *.png      > true
   //   abcdefg.png          a?cdefg.png > true
 
-  if (!matcher || !*matcher || !str || !*str) return false;
+  if (!matcher || !*matcher || !str || !*str)
+    return false;
 
-  const char* ptr_matcher = matcher;
+  const char *ptr_matcher = matcher;
   while (*str) {
     if (*ptr_matcher == '?') {
       ptr_matcher++;
     } else if (*ptr_matcher == '*') {
       if (*(ptr_matcher + 1)) {
-        if (pattern_match_body(str, ptr_matcher + 1, igrnoe_case)) return true;
+        if (pattern_match_body(str, ptr_matcher + 1, igrnoe_case))
+          return true;
       } else {
         return true;
       }
@@ -715,25 +761,27 @@ static bool pattern_match_body(const char* str, const char* matcher,
   }
 
   while (*ptr_matcher) {
-    if (*ptr_matcher != '*') return false;
+    if (*ptr_matcher != '*')
+      return false;
     ptr_matcher++;
   }
   return true;
 }
 
-bool pattern_match(const char* str, const char* matcher, bool igrnoe_case) {
+bool pattern_match(const char *str, const char *matcher, bool igrnoe_case) {
   //   abcdefg.pnga          *.png      > false
   //   abcdefg.png           *.png      > true
   //   abcdefg.png          a?cdefg.png > true
 
-  if (!matcher || !*matcher || !str || !*str) return false;
+  if (!matcher || !*matcher || !str || !*str)
+    return false;
 
   char filter[500];
   strcpy(filter, matcher);
 
-  vector<const char*> arr;
-  char* ptr_str = filter;
-  char* ptr_prev_str = ptr_str;
+  vector<const char *> arr;
+  char *ptr_str = filter;
+  char *ptr_prev_str = ptr_str;
   while (*ptr_str) {
     if (*ptr_str == ';') {
       *ptr_str = 0;
@@ -743,22 +791,26 @@ bool pattern_match(const char* str, const char* matcher, bool igrnoe_case) {
     ptr_str++;
   }
 
-  if (*ptr_prev_str) arr.push_back(ptr_prev_str);
+  if (*ptr_prev_str)
+    arr.push_back(ptr_prev_str);
 
   for (int i = 0; i < arr.size(); ++i) {
-    if (pattern_match_body(str, arr[i], igrnoe_case)) return true;
+    if (pattern_match_body(str, arr[i], igrnoe_case))
+      return true;
   }
   return false;
 }
 
 #ifdef U_OS_WINDOWS
-vector<string> find_files(const string& directory, const string& filter,
+vector<string> find_files(const string &directory, const string &filter,
                           bool findDirectory, bool includeSubDirectory) {
   string realpath = directory;
-  if (realpath.empty()) realpath = "./";
+  if (realpath.empty())
+    realpath = "./";
 
   char backchar = realpath.back();
-  if (backchar != '\\' && backchar != '/') realpath += "/";
+  if (backchar != '\\' && backchar != '/')
+    realpath += "/";
 
   vector<string> out;
   _WIN32_FIND_DATAA find_data;
@@ -800,16 +852,18 @@ vector<string> find_files(const string& directory, const string& filter,
 #endif
 
 #ifdef U_OS_LINUX
-vector<string> find_files(const string& directory, const string& filter,
+vector<string> find_files(const string &directory, const string &filter,
                           bool findDirectory, bool includeSubDirectory) {
   string realpath = directory;
-  if (realpath.empty()) realpath = "./";
+  if (realpath.empty())
+    realpath = "./";
 
   char backchar = realpath.back();
-  if (backchar != '\\' && backchar != '/') realpath += "/";
+  if (backchar != '\\' && backchar != '/')
+    realpath += "/";
 
-  struct dirent* fileinfo;
-  DIR* handle;
+  struct dirent *fileinfo;
+  DIR *handle;
   stack<string> ps;
   vector<string> out;
   ps.push(realpath);
@@ -845,25 +899,30 @@ vector<string> find_files(const string& directory, const string& filter,
 }
 #endif
 
-string align_blank(const string& input, int align_size, char blank) {
-  if (input.size() >= align_size) return input;
+string align_blank(const string &input, int align_size, char blank) {
+  if (input.size() >= align_size)
+    return input;
   string output = input;
-  for (int i = 0; i < align_size - input.size(); ++i) output.push_back(blank);
+  for (int i = 0; i < align_size - input.size(); ++i)
+    output.push_back(blank);
   return output;
 }
 
-vector<string> split_string(const string& str, const std::string& spstr) {
+vector<string> split_string(const string &str, const std::string &spstr) {
   vector<string> res;
-  if (str.empty()) return res;
-  if (spstr.empty()) return {str};
+  if (str.empty())
+    return res;
+  if (spstr.empty())
+    return {str};
 
   auto p = str.find(spstr);
-  if (p == string::npos) return {str};
+  if (p == string::npos)
+    return {str};
 
   res.reserve(5);
   string::size_type prev = 0;
   int lent = spstr.length();
-  const char* ptr = str.c_str();
+  const char *ptr = str.c_str();
 
   while (p != string::npos) {
     int len = p - prev;
@@ -881,8 +940,8 @@ vector<string> split_string(const string& str, const std::string& spstr) {
   return res;
 }
 
-string replace_string(const string& str, const string& token,
-                      const string& value, int nreplace, int* out_num_replace) {
+string replace_string(const string &str, const string &token,
+                      const string &value, int nreplace, int *out_num_replace) {
   if (nreplace == -1) {
     nreplace = str.size();
   }
@@ -894,9 +953,9 @@ string replace_string(const string& str, const string& token,
   string result;
   result.resize(str.size());
 
-  char* dest = &result[0];
-  const char* src = str.c_str();
-  const char* value_ptr = value.c_str();
+  char *dest = &result[0];
+  const char *src = str.c_str();
+  const char *value_ptr = value.c_str();
   int old_nreplace = nreplace;
   bool keep = true;
   string::size_type pos = 0;
@@ -958,7 +1017,7 @@ string replace_string(const string& str, const string& token,
   return result;
 }
 
-bool save_file(const string& file, const void* data, size_t length,
+bool save_file(const string &file, const void *data, size_t length,
                bool mk_dirs) {
   if (mk_dirs) {
     int p = (int)file.rfind('/');
@@ -968,12 +1027,14 @@ bool save_file(const string& file, const void* data, size_t length,
     p = std::max(p, e);
 #endif
     if (p != -1) {
-      if (!mkdirs(file.substr(0, p))) return false;
+      if (!mkdirs(file.substr(0, p)))
+        return false;
     }
   }
 
-  FILE* f = fopen(file.c_str(), "wb");
-  if (!f) return false;
+  FILE *f = fopen(file.c_str(), "wb");
+  if (!f)
+    return false;
 
   if (data && length > 0) {
     if (fwrite(data, 1, length, f) != length) {
@@ -985,11 +1046,11 @@ bool save_file(const string& file, const void* data, size_t length,
   return true;
 }
 
-bool save_file(const string& file, const string& data, bool mk_dirs) {
+bool save_file(const string &file, const string &data, bool mk_dirs) {
   return save_file(file, data.data(), data.size(), mk_dirs);
 }
 
-bool save_file(const string& file, const vector<uint8_t>& data, bool mk_dirs) {
+bool save_file(const string &file, const vector<uint8_t> &data, bool mk_dirs) {
   return save_file(file, data.data(), data.size(), mk_dirs);
 }
 
@@ -1050,11 +1111,12 @@ static unsigned char from_b64(unsigned char ch) {
   return tab[ch & 127];
 }
 
-string base64_decode(const string& base64) {
-  if (base64.empty()) return "";
+string base64_decode(const string &base64) {
+  if (base64.empty())
+    return "";
 
   int len = base64.size();
-  auto s = (const unsigned char*)base64.data();
+  auto s = (const unsigned char *)base64.data();
   unsigned char a, b, c, d;
   int orig_len = len;
   int dec_len = 0;
@@ -1067,30 +1129,33 @@ string base64_decode(const string& base64) {
   }
   out_data.resize(len / 4 * 3 - count_eq);
 
-  char* dst = const_cast<char*>(out_data.data());
-  char* orig_dst = dst;
+  char *dst = const_cast<char *>(out_data.data());
+  char *orig_dst = dst;
   while (len >= 4 && (a = from_b64(s[0])) != 255 &&
          (b = from_b64(s[1])) != 255 && (c = from_b64(s[2])) != 255 &&
          (d = from_b64(s[3])) != 255) {
     s += 4;
     len -= 4;
-    if (a == 200 || b == 200) break; /* '=' can't be there */
+    if (a == 200 || b == 200)
+      break; /* '=' can't be there */
     *dst++ = a << 2 | b >> 4;
-    if (c == 200) break;
+    if (c == 200)
+      break;
     *dst++ = b << 4 | c >> 2;
-    if (d == 200) break;
+    if (d == 200)
+      break;
     *dst++ = c << 6 | d;
   }
   dec_len = (dst - orig_dst);
   return out_data;
 }
 
-string base64_encode(const void* data, size_t size) {
+string base64_encode(const void *data, size_t size) {
   string encode_result;
   encode_result.reserve(size / 3 * 4 + (size % 3 != 0 ? 4 : 0));
 
-  const unsigned char* current = static_cast<const unsigned char*>(data);
-  static const char* base64_table =
+  const unsigned char *current = static_cast<const unsigned char *>(data);
+  static const char *base64_table =
       "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
   while (size > 2) {
     encode_result += base64_table[current[0] >> 2];
@@ -1119,7 +1184,7 @@ string base64_encode(const void* data, size_t size) {
   return encode_result;
 }
 
-bool delete_file(const string& path) {
+bool delete_file(const string &path) {
 #ifdef U_OS_WINDOWS
   return DeleteFileA(path.c_str());
 #else
@@ -1127,8 +1192,9 @@ bool delete_file(const string& path) {
 #endif
 }
 
-bool rmtree(const string& directory, bool ignore_fail) {
-  if (directory.empty()) return false;
+bool rmtree(const string &directory, bool ignore_fail) {
+  if (directory.empty())
+    return false;
   auto files = find_files(directory, "*", false);
   auto dirs = find_files(directory, "*", true);
 
@@ -1151,16 +1217,17 @@ bool rmtree(const string& directory, bool ignore_fail) {
     if (::rmdir(dirs[i].c_str()) != 0) {
 #endif
       success = false;
-      if (!ignore_fail) return false;
+      if (!ignore_fail)
+        return false;
     }
   }
   return success;
 }
 
-string join_dims(const vector<int64_t>& dims) {
+string join_dims(const vector<int64_t> &dims) {
   stringstream output;
   char buf[64];
-  const char* fmts[] = {"%d", " x %d"};
+  const char *fmts[] = {"%d", " x %d"};
   for (int i = 0; i < dims.size(); ++i) {
     snprintf(buf, sizeof(buf), fmts[i != 0], dims[i]);
     output << buf;
@@ -1168,4 +1235,4 @@ string join_dims(const vector<int64_t>& dims) {
   return output.str();
 }
 
-};  // namespace iLogger
+}; // namespace iLogger

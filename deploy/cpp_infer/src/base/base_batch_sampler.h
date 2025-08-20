@@ -23,7 +23,7 @@
 #include "absl/status/statusor.h"
 
 class BaseBatchSampler {
- public:
+public:
   explicit BaseBatchSampler(int batch_size) : batch_size_(batch_size) {}
   virtual ~BaseBatchSampler() = default;
 
@@ -31,59 +31,59 @@ class BaseBatchSampler {
   absl::Status SetBatchSize(int batch_size);
 
   template <typename T>
-  absl::StatusOr<std::vector<std::vector<cv::Mat>>> Apply(const T& input);
+  absl::StatusOr<std::vector<std::vector<cv::Mat>>> Apply(const T &input);
 
   template <typename T>
-  absl::StatusOr<std::vector<std::vector<cv::Mat>>> Sample(const T& input) {
+  absl::StatusOr<std::vector<std::vector<cv::Mat>>> Sample(const T &input) {
     return absl::InvalidArgumentError(
         "Sample failed! Unsupported type for Sample");
   }
 
-  virtual absl::StatusOr<std::vector<std::vector<cv::Mat>>> SampleFromString(
-      const std::string& input) = 0;
+  virtual absl::StatusOr<std::vector<std::vector<cv::Mat>>>
+  SampleFromString(const std::string &input) = 0;
 
-  virtual absl::StatusOr<std::vector<std::vector<cv::Mat>>> SampleFromVector(
-      const std::vector<std::string>& inputs) = 0;
+  virtual absl::StatusOr<std::vector<std::vector<cv::Mat>>>
+  SampleFromVector(const std::vector<std::string> &inputs) = 0;
   std::vector<std::string> InputPath() { return input_path_; };
 
-  virtual absl::StatusOr<std::vector<std::vector<cv::Mat>>> SampleFromMatVector(
-      const std::vector<cv::Mat>& inputs) = 0;
+  virtual absl::StatusOr<std::vector<std::vector<cv::Mat>>>
+  SampleFromMatVector(const std::vector<cv::Mat> &inputs) = 0;
 
   absl::StatusOr<std::vector<std::vector<std::string>>>
-  SampleFromStringToStringVector(const std::string& input);
+  SampleFromStringToStringVector(const std::string &input);
   absl::StatusOr<std::vector<std::vector<std::string>>>
-  SampleFromVectorToStringVector(const std::vector<std::string>& input);
+  SampleFromVectorToStringVector(const std::vector<std::string> &input);
 
-  absl::StatusOr<std::vector<std::string>> GetFilesList(
-      const std::string& path);
+  absl::StatusOr<std::vector<std::string>>
+  GetFilesList(const std::string &path);
 
- protected:
+protected:
   int batch_size_ = 1;
   std::vector<std::string> input_path_;
 };
 
 template <typename T>
-absl::StatusOr<std::vector<std::vector<cv::Mat>>> BaseBatchSampler::Apply(
-    const T& input) {
+absl::StatusOr<std::vector<std::vector<cv::Mat>>>
+BaseBatchSampler::Apply(const T &input) {
   return Sample(input);
 }
 
 template <>
 inline absl::StatusOr<std::vector<std::vector<cv::Mat>>>
-BaseBatchSampler::Sample<std::string>(const std::string& input) {
+BaseBatchSampler::Sample<std::string>(const std::string &input) {
   return SampleFromString(input);
 }
 
 template <>
 inline absl::StatusOr<std::vector<std::vector<cv::Mat>>>
 BaseBatchSampler::Sample<std::vector<std::string>>(
-    const std::vector<std::string>& input) {
+    const std::vector<std::string> &input) {
   return SampleFromVector(input);
 }
 
 template <>
 inline absl::StatusOr<std::vector<std::vector<cv::Mat>>>
 BaseBatchSampler::Sample<std::vector<cv::Mat>>(
-    const std::vector<cv::Mat>& input) {
+    const std::vector<cv::Mat> &input) {
   return SampleFromMatVector(input);
 }

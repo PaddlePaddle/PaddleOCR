@@ -20,7 +20,7 @@
 #include "absl/strings/str_cat.h"
 #include "src/utils/ilogger.h"
 
-YamlConfig::YamlConfig(const std::string& model_dir) {
+YamlConfig::YamlConfig(const std::string &model_dir) {
   auto status_get = GetConfigYamlPaths(model_dir);
   if (!status_get.ok()) {
     INFOE("Could find files with the .yaml or .yml in %s %s", model_dir.c_str(),
@@ -35,7 +35,7 @@ YamlConfig::YamlConfig(const std::string& model_dir) {
   Init();
 }
 
-absl::Status YamlConfig::GetConfigYamlPaths(const std::string& model_dir) {
+absl::Status YamlConfig::GetConfigYamlPaths(const std::string &model_dir) {
   if (Utility::GetFileExtension(model_dir) == "yaml" ||
       Utility::GetFileExtension(model_dir) == "yml") {
     config_yaml_path_ = model_dir;
@@ -61,21 +61,21 @@ absl::Status YamlConfig::LoadYamlFile() {
     YAML::Node config = YAML::LoadFile(config_yaml_path_);
     ParseNode(config);
     return absl::OkStatus();
-  } catch (const YAML::BadFile& e) {
+  } catch (const YAML::BadFile &e) {
     return absl::NotFoundError(
         absl::StrCat("Failed to open YAML file: ", config_yaml_path_));
-  } catch (const YAML::ParserException& e) {
+  } catch (const YAML::ParserException &e) {
     return absl::InvalidArgumentError(
         absl::StrCat("Failed to parse YAML file: ", e.what()));
-  } catch (const YAML::Exception& e) {
+  } catch (const YAML::Exception &e) {
     return absl::InternalError(absl::StrCat("YAML error: ", e.what()));
-  } catch (const std::exception& e) {
+  } catch (const std::exception &e) {
     return absl::InternalError(absl::StrCat("Unexpected error: ", e.what()));
   }
 }
 
 void YamlConfig::Init() {
-  for (const auto& info : data_) {
+  for (const auto &info : data_) {
     if (info.first.find("DecodeImage.channel_first") != std::string::npos) {
       pre_process_op_info_["DecodeImage.channel_first"] = info.second;
     } else if (info.first.find("DecodeImage.img_mode") != std::string::npos) {
@@ -148,7 +148,7 @@ void YamlConfig::Init() {
   }
 }
 
-void YamlConfig::ParseNode(const YAML::Node& node, const std::string& prefix) {
+void YamlConfig::ParseNode(const YAML::Node &node, const std::string &prefix) {
   if (node.IsMap()) {
     for (auto it = node.begin(); it != node.end(); ++it) {
       std::string key = prefix.empty()
@@ -163,7 +163,8 @@ void YamlConfig::ParseNode(const YAML::Node& node, const std::string& prefix) {
       std::string index_key = prefix + "[" + std::to_string(i) + "]";
       if (node[i].IsScalar()) {
         data_[index_key] = node[i].as<std::string>();
-        if (i > 0) ss << ", ";
+        if (i > 0)
+          ss << ", ";
         ss << node[i].as<std::string>();
       } else {
         ParseNode(node[i], index_key);
@@ -178,9 +179,10 @@ void YamlConfig::ParseNode(const YAML::Node& node, const std::string& prefix) {
   }
 }
 
-absl::StatusOr<std::string> YamlConfig::GetString(
-    const std::string& key, const std::string& default_value) const {
-  for (const auto& info : data_) {
+absl::StatusOr<std::string>
+YamlConfig::GetString(const std::string &key,
+                      const std::string &default_value) const {
+  for (const auto &info : data_) {
     if (info.first.find(key) != std::string::npos) {
       return info.second;
     }
@@ -188,9 +190,9 @@ absl::StatusOr<std::string> YamlConfig::GetString(
   return default_value;
 }
 
-absl::StatusOr<int> YamlConfig::GetInt(const std::string& key,
+absl::StatusOr<int> YamlConfig::GetInt(const std::string &key,
                                        int default_value) const {
-  for (const auto& info : data_) {
+  for (const auto &info : data_) {
     if (info.first.find(key) != std::string::npos) {
       for (int i = 0; i < info.second.size(); i++) {
         if (!std::isdigit(static_cast<uchar>(info.second[i]))) {
@@ -203,9 +205,9 @@ absl::StatusOr<int> YamlConfig::GetInt(const std::string& key,
   return default_value;
 }
 
-absl::StatusOr<float> YamlConfig::GetFloat(const std::string& key,
+absl::StatusOr<float> YamlConfig::GetFloat(const std::string &key,
                                            float default_value) const {
-  for (const auto& info : data_) {
+  for (const auto &info : data_) {
     if (info.first.find(key) != std::string::npos) {
       return std::stof(info.second);
     }
@@ -215,25 +217,25 @@ absl::StatusOr<float> YamlConfig::GetFloat(const std::string& key,
   return default_value;
 }
 
-absl::StatusOr<double> YamlConfig::GetDouble(const std::string& key) const {
+absl::StatusOr<double> YamlConfig::GetDouble(const std::string &key) const {
   auto it = data_.find(key);
   if (it == data_.end()) {
     return absl::NotFoundError(absl::StrCat("Key not found: ", key));
   }
   try {
     return std::stod(it->second);
-  } catch (const std::invalid_argument&) {
+  } catch (const std::invalid_argument &) {
     return absl::InvalidArgumentError(
         absl::StrCat("Invalid double value for key '", key, "': ", it->second));
-  } catch (const std::out_of_range&) {
+  } catch (const std::out_of_range &) {
     return absl::OutOfRangeError(absl::StrCat(
         "Double value out of range for key '", key, "': ", it->second));
   }
 }
 
-absl::StatusOr<bool> YamlConfig::GetBool(const std::string& key,
+absl::StatusOr<bool> YamlConfig::GetBool(const std::string &key,
                                          bool default_value) const {
-  for (const auto& info : data_) {
+  for (const auto &info : data_) {
     if (info.first.find(key) != std::string::npos) {
       if (Utility::ToLower(info.second) == "true") {
         return true;
@@ -247,9 +249,9 @@ absl::StatusOr<bool> YamlConfig::GetBool(const std::string& key,
   return default_value;
 }
 absl::StatusOr<std::unordered_map<std::string, std::string>>
-YamlConfig::GetSubModule(const std::string& key) const {
+YamlConfig::GetSubModule(const std::string &key) const {
   std::unordered_map<std::string, std::string> submodule_result = {};
-  for (const auto& info : data_) {
+  for (const auto &info : data_) {
     if (info.first.find(key) != std::string::npos) {
       submodule_result[info.first] = info.second;
     }
@@ -259,7 +261,7 @@ YamlConfig::GetSubModule(const std::string& key) const {
   }
   return submodule_result;
 }
-absl::Status YamlConfig::HasKey(const std::string& key) const {
+absl::Status YamlConfig::HasKey(const std::string &key) const {
   if (data_.find(key) != data_.end()) {
     return absl::OkStatus();
   }
@@ -267,14 +269,14 @@ absl::Status YamlConfig::HasKey(const std::string& key) const {
 }
 
 absl::Status YamlConfig::PrintAll() const {
-  for (const auto& it : data_) {
+  for (const auto &it : data_) {
     std::cout << it.first << ": " << it.second << std::endl;
   }
   return absl::OkStatus();
 }
 
-absl::Status YamlConfig::PrintWithPrefix(const std::string& prefix) const {
-  for (const auto& it : data_) {
+absl::Status YamlConfig::PrintWithPrefix(const std::string &prefix) const {
+  for (const auto &it : data_) {
     if (it.first.find(prefix) == 0) {
       std::cout << it.first << ": " << it.second << std::endl;
     }
@@ -282,9 +284,9 @@ absl::Status YamlConfig::PrintWithPrefix(const std::string& prefix) const {
   return absl::OkStatus();
 }
 
-absl::Status YamlConfig::FindPreProcessOp(const std::string& prefix) const {
+absl::Status YamlConfig::FindPreProcessOp(const std::string &prefix) const {
   std::unordered_map<std::string, std::string> pre_process_op_info{};
-  for (const auto& it : data_) {
+  for (const auto &it : data_) {
     if (it.first.find(prefix) == 0) {
       std::cout << it.first << ": " << it.second << std::endl;
     }
@@ -292,15 +294,17 @@ absl::Status YamlConfig::FindPreProcessOp(const std::string& prefix) const {
   return absl::OkStatus();
 }
 
-VectorVariant YamlConfig::SmartParseVector(const std::string& input) {
-  auto trimBracketAndSpace = [](const std::string& str) -> std::string {
+VectorVariant YamlConfig::SmartParseVector(const std::string &input) {
+  auto trimBracketAndSpace = [](const std::string &str) -> std::string {
     std::string s = str;
     s.erase(std::remove(s.begin(), s.end(), ' '), s.end());
-    if (!s.empty() && s.front() == '[') s.erase(0, 1);
-    if (!s.empty() && s.back() == ']') s.pop_back();
+    if (!s.empty() && s.front() == '[')
+      s.erase(0, 1);
+    if (!s.empty() && s.back() == ']')
+      s.pop_back();
     return s;
   };
-  auto splitComma = [](const std::string& s) -> std::vector<std::string> {
+  auto splitComma = [](const std::string &s) -> std::vector<std::string> {
     std::vector<std::string> res;
     std::string cur;
     bool inQuotes = false;
@@ -320,20 +324,25 @@ VectorVariant YamlConfig::SmartParseVector(const std::string& input) {
         cur += ch;
       }
     }
-    if (!cur.empty()) res.push_back(cur);
+    if (!cur.empty())
+      res.push_back(cur);
     return res;
   };
-  auto isInt = [](const std::string& s) -> bool {
-    if (s.empty()) return false;
+  auto isInt = [](const std::string &s) -> bool {
+    if (s.empty())
+      return false;
     size_t i = 0;
-    if (s[0] == '-' || s[0] == '+') i = 1;
-    if (i == s.size()) return false;
+    if (s[0] == '-' || s[0] == '+')
+      i = 1;
+    if (i == s.size())
+      return false;
     for (; i < s.size(); ++i) {
-      if (!isdigit(s[i])) return false;
+      if (!isdigit(s[i]))
+        return false;
     }
     return true;
   };
-  auto isFloat = [](const std::string& s) -> bool {
+  auto isFloat = [](const std::string &s) -> bool {
     std::istringstream iss(s);
     float f;
     char c;
@@ -352,8 +361,10 @@ VectorVariant YamlConfig::SmartParseVector(const std::string& input) {
       continue;
     }
     allString = false;
-    if (!isInt(tmp)) allInt = false;
-    if (!isFloat(tmp)) allFloat = false;
+    if (!isInt(tmp))
+      allInt = false;
+    if (!isFloat(tmp))
+      allFloat = false;
   }
 
   if (allString) {
@@ -363,7 +374,7 @@ VectorVariant YamlConfig::SmartParseVector(const std::string& input) {
       result.vec_string.push_back(tmp.substr(1, tmp.size() - 2));
     }
   } else if (allInt) {
-    result.type = VECTOR_INT;  // int maybe is string
+    result.type = VECTOR_INT; // int maybe is string
     for (size_t i = 0; i < items.size(); ++i) {
       result.vec_int.push_back(std::stoi(items[i]));
     }
@@ -384,9 +395,9 @@ VectorVariant YamlConfig::SmartParseVector(const std::string& input) {
   return result;
 }
 
-absl::StatusOr<std::pair<std::string, std::string>> YamlConfig::FindKey(
-    const std::string& key) {
-  for (const auto& info : data_) {
+absl::StatusOr<std::pair<std::string, std::string>>
+YamlConfig::FindKey(const std::string &key) {
+  for (const auto &info : data_) {
     if (info.first.find(key) != std::string::npos) {
       return info;
     }

@@ -28,25 +28,25 @@ struct DocImgOrientationClassificationParams {
 };
 
 class DocImgOrientationClassification {
- public:
+public:
   DocImgOrientationClassification(
-      const DocImgOrientationClassificationParams& params =
+      const DocImgOrientationClassificationParams &params =
           DocImgOrientationClassificationParams());
 
-  std::vector<std::unique_ptr<BaseCVResult>> Predict(const std::string& input) {
+  std::vector<std::unique_ptr<BaseCVResult>> Predict(const std::string &input) {
     std::vector<std::string> inputs = {input};
     return Predict(inputs);
   };
-  std::vector<std::unique_ptr<BaseCVResult>> Predict(
-      const std::vector<std::string>& input);
+  std::vector<std::unique_ptr<BaseCVResult>>
+  Predict(const std::vector<std::string> &input);
 
   void CreateModel();
   void OverrideConfig();
   absl::Status CheckParams();
   static ClasPredictorParams ToDocImgOrientationClassificationModelParams(
-      const DocImgOrientationClassificationParams& from);
+      const DocImgOrientationClassificationParams &from);
 
- private:
+private:
   DocImgOrientationClassificationParams params_;
   std::unique_ptr<BasePredictor> model_infer_;
 };

@@ -21,14 +21,14 @@
 #include "src/base/base_cv_result.h"
 
 class TextDetResult : public BaseCVResult {
- public:
+public:
   TextDetResult(TextDetPredictorResult predictor_result)
       : BaseCVResult(), predictor_result_(predictor_result){};
   // std::unordered_map<std::string, cv::Mat> ToImg() const override;
-  void SaveToImg(const std::string& save_path) override;
+  void SaveToImg(const std::string &save_path) override;
   void Print() const override;
-  void SaveToJson(const std::string& save_path) const override;
+  void SaveToJson(const std::string &save_path) const override;
 
- private:
+private:
   TextDetPredictorResult predictor_result_;
 };

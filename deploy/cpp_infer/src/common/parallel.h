@@ -29,7 +29,7 @@
 template <typename Pipeline, typename PipelineParams, typename PipelineInput,
           typename PipelineResult>
 class AutoParallelSimpleInferencePipeline : public BasePipeline {
- private:
+private:
   struct InferenceInstance {
     std::shared_ptr<BasePipeline> pipeline;
     std::queue<PipelineInput> task_queue;
@@ -39,18 +39,18 @@ class AutoParallelSimpleInferencePipeline : public BasePipeline {
     int instance_id;
   };
 
- public:
-  AutoParallelSimpleInferencePipeline(const PipelineParams& params);
+public:
+  AutoParallelSimpleInferencePipeline(const PipelineParams &params);
   absl::Status Init();
 
-  std::future<PipelineResult> PredictAsync(const PipelineInput& input);
+  std::future<PipelineResult> PredictAsync(const PipelineInput &input);
 
-  absl::Status PredictThread(const PipelineInput& input);
+  absl::Status PredictThread(const PipelineInput &input);
   absl::StatusOr<PipelineResult> GetResult();
 
   virtual ~AutoParallelSimpleInferencePipeline();
 
- private:
+private:
   void ProcessInstanceTasks(int instance_id);
   PipelineParams params_;
   int thread_num_;
@@ -67,7 +67,7 @@ template <typename Pipeline, typename PipelineParams, typename PipelineInput,
           typename PipelineResult>
 AutoParallelSimpleInferencePipeline<Pipeline, PipelineParams, PipelineInput,
                                     PipelineResult>::
-    AutoParallelSimpleInferencePipeline(const PipelineParams& params)
+    AutoParallelSimpleInferencePipeline(const PipelineParams &params)
     : BasePipeline(), params_(params), thread_num_(params.thread_num) {
   if (thread_num_ > 1) {
     auto status = Init();
@@ -80,8 +80,9 @@ AutoParallelSimpleInferencePipeline<Pipeline, PipelineParams, PipelineInput,
 
 template <typename Pipeline, typename PipelineParams, typename PipelineInput,
           typename PipelineResult>
-absl::Status AutoParallelSimpleInferencePipeline<
-    Pipeline, PipelineParams, PipelineInput, PipelineResult>::Init() {
+absl::Status
+AutoParallelSimpleInferencePipeline<Pipeline, PipelineParams, PipelineInput,
+                                    PipelineResult>::Init() {
   try {
     pool_ = std::unique_ptr<PaddlePool::ThreadPool>(
         new PaddlePool::ThreadPool(thread_num_));
@@ -95,10 +96,10 @@ absl::Status AutoParallelSimpleInferencePipeline<
 
       instances_.push_back(std::move(instance));
     }
-  } catch (const std::bad_alloc& e) {
+  } catch (const std::bad_alloc &e) {
     return absl::ResourceExhaustedError(std::string("Out of memory: ") +
                                         e.what());
-  } catch (const std::exception& e) {
+  } catch (const std::exception &e) {
     return absl::InternalError(std::string("Init failed: ") + e.what());
   }
   return absl::OkStatus();
@@ -108,9 +109,9 @@ template <typename Pipeline, typename PipelineParams, typename PipelineInput,
           typename PipelineResult>
 std::future<PipelineResult> AutoParallelSimpleInferencePipeline<
     Pipeline, PipelineParams, PipelineInput,
-    PipelineResult>::PredictAsync(const PipelineInput& input) {
+    PipelineResult>::PredictAsync(const PipelineInput &input) {
   int instance_id = round_robin_index_.fetch_add(1) % thread_num_;
-  auto& instance = instances_[instance_id];
+  auto &instance = instances_[instance_id];
 
   std::promise<PipelineResult> promise;
   auto future = promise.get_future();
@@ -123,7 +124,7 @@ std::future<PipelineResult> AutoParallelSimpleInferencePipeline<
 
   bool expected = false;
   if (instance->is_busy.compare_exchange_strong(
-          expected, true)) {  // one instance just process one input
+          expected, true)) { // one instance just process one input
     pool_->submit([this, instance_id]() { ProcessInstanceTasks(instance_id); });
   }
 
@@ -135,7 +136,7 @@ template <typename Pipeline, typename PipelineParams, typename PipelineInput,
 void AutoParallelSimpleInferencePipeline<
     Pipeline, PipelineParams, PipelineInput,
     PipelineResult>::ProcessInstanceTasks(int instance_id) {
-  auto& instance = instances_[instance_id];
+  auto &instance = instances_[instance_id];
 
   while (true) {
     std::vector<std::string> input;
@@ -161,7 +162,7 @@ void AutoParallelSimpleInferencePipeline<
     try {
       PipelineResult result = instance->pipeline->Predict(input);
       promise.set_value(std::move(result));
-    } catch (const std::exception& e) {
+    } catch (const std::exception &e) {
       promise.set_exception(std::current_exception());
     }
   }
@@ -171,7 +172,7 @@ template <typename Pipeline, typename PipelineParams, typename PipelineInput,
           typename PipelineResult>
 absl::Status AutoParallelSimpleInferencePipeline<
     Pipeline, PipelineParams, PipelineInput,
-    PipelineResult>::PredictThread(const PipelineInput& input) {
+    PipelineResult>::PredictThread(const PipelineInput &input) {
   try {
     auto future = PredictAsync(input);
 
@@ -179,7 +180,7 @@ absl::Status AutoParallelSimpleInferencePipeline<
     legacy_results_.push(std::move(future));
 
     return absl::OkStatus();
-  } catch (const std::exception& e) {
+  } catch (const std::exception &e) {
     return absl::InternalError(std::string("Failed to submit inference: ") +
                                e.what());
   }
@@ -187,8 +188,9 @@ absl::Status AutoParallelSimpleInferencePipeline<
 
 template <typename Pipeline, typename PipelineParams, typename PipelineInput,
           typename PipelineResult>
-absl::StatusOr<PipelineResult> AutoParallelSimpleInferencePipeline<
-    Pipeline, PipelineParams, PipelineInput, PipelineResult>::GetResult() {
+absl::StatusOr<PipelineResult>
+AutoParallelSimpleInferencePipeline<Pipeline, PipelineParams, PipelineInput,
+                                    PipelineResult>::GetResult() {
   std::lock_guard<std::mutex> lock(legacy_results_mutex_);
 
   if (legacy_results_.empty())
@@ -200,7 +202,7 @@ absl::StatusOr<PipelineResult> AutoParallelSimpleInferencePipeline<
 
     PipelineResult result = future.get();
     return result;
-  } catch (const std::exception& e) {
+  } catch (const std::exception &e) {
     return absl::InternalError(std::string("Failed to get inference result: ") +
                                e.what());
   }
@@ -219,7 +221,7 @@ AutoParallelSimpleInferencePipeline<
     legacy_results_.pop();
   }
 
-  for (auto& instance : instances_) {
+  for (auto &instance : instances_) {
     while (instance->is_busy.load()) {
       std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }

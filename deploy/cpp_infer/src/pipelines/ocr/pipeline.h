@@ -96,28 +96,28 @@ struct OCRPipelineParams {
 };
 
 class _OCRPipeline : public BasePipeline {
- public:
-  explicit _OCRPipeline(const OCRPipelineParams& params);
+public:
+  explicit _OCRPipeline(const OCRPipelineParams &params);
   virtual ~_OCRPipeline() = default;
   _OCRPipeline() = delete;
 
-  std::vector<std::unique_ptr<BaseCVResult>> Predict(
-      const std::vector<std::string>& input) override;
+  std::vector<std::unique_ptr<BaseCVResult>>
+  Predict(const std::vector<std::string> &input) override;
 
   std::vector<OCRPipelineResult> PipelineResult() const {
     return pipeline_result_vec_;
   };
 
-  static absl::StatusOr<std::vector<cv::Mat>> RotateImage(
-      const std::vector<cv::Mat>& image_array_list,
-      const std::vector<int>& rotate_angle_list);
+  static absl::StatusOr<std::vector<cv::Mat>>
+  RotateImage(const std::vector<cv::Mat> &image_array_list,
+              const std::vector<int> &rotate_angle_list);
 
   std::unordered_map<std::string, bool> GetModelSettings() const;
   TextDetParams GetTextDetParams() const { return text_det_params_; };
 
   void OverrideConfig();
 
- private:
+private:
   OCRPipelineParams params_;
   YamlConfig config_;
   std::unique_ptr<BaseBatchSampler> batch_sampler_ptr_;
@@ -132,7 +132,7 @@ class _OCRPipeline : public BasePipeline {
   std::unique_ptr<BasePredictor> text_rec_model_;
   std::unique_ptr<CropByPolys> crop_by_polys_;
   std::function<std::vector<std::vector<cv::Point2f>>(
-      const std::vector<std::vector<cv::Point2f>>&)>
+      const std::vector<std::vector<cv::Point2f>> &)>
       sort_boxes_;
   float text_rec_score_thresh_ = 0.0;
   std::string text_type_;
@@ -143,8 +143,8 @@ class OCRPipeline
     : public AutoParallelSimpleInferencePipeline<
           _OCRPipeline, OCRPipelineParams, std::vector<std::string>,
           std::vector<std::unique_ptr<BaseCVResult>>> {
- public:
-  OCRPipeline(const OCRPipelineParams& params)
+public:
+  OCRPipeline(const OCRPipelineParams &params)
       : AutoParallelSimpleInferencePipeline(params),
         thread_num_(params.thread_num) {
     if (thread_num_ == 1) {
@@ -152,10 +152,10 @@ class OCRPipeline
     }
   };
 
-  std::vector<std::unique_ptr<BaseCVResult>> Predict(
-      const std::vector<std::string>& input) override;
+  std::vector<std::unique_ptr<BaseCVResult>>
+  Predict(const std::vector<std::string> &input) override;
 
- private:
+private:
   int thread_num_;
   std::unique_ptr<BasePipeline> infer_;
   std::unique_ptr<BaseBatchSampler> batch_sampler_ptr_;

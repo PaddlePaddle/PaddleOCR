@@ -32,24 +32,24 @@ struct TextRecognitionParams {
 };
 
 class TextRecognition {
- public:
+public:
   TextRecognition(
-      const TextRecognitionParams& params = TextRecognitionParams());
+      const TextRecognitionParams &params = TextRecognitionParams());
 
-  std::vector<std::unique_ptr<BaseCVResult>> Predict(const std::string& input) {
+  std::vector<std::unique_ptr<BaseCVResult>> Predict(const std::string &input) {
     std::vector<std::string> inputs = {input};
     return Predict(inputs);
   };
-  std::vector<std::unique_ptr<BaseCVResult>> Predict(
-      const std::vector<std::string>& input);
+  std::vector<std::unique_ptr<BaseCVResult>>
+  Predict(const std::vector<std::string> &input);
 
   void CreateModel();
   void OverrideConfig();
   absl::Status CheckParams();
-  static TextRecPredictorParams ToTextRecognitionModelParams(
-      const TextRecognitionParams& from);
+  static TextRecPredictorParams
+  ToTextRecognitionModelParams(const TextRecognitionParams &from);
 
- private:
+private:
   TextRecognitionParams params_;
   std::unique_ptr<BasePredictor> model_infer_;
 };

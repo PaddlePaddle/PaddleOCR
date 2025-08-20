@@ -24,19 +24,19 @@
 #include "src/base/base_batch_sampler.h"
 
 class ImageBatchSampler : public BaseBatchSampler {
- public:
+public:
   explicit ImageBatchSampler(int batch_size = 1);
-  virtual ~ImageBatchSampler() {}  //这里还没调研怎么实现  ？？？
+  virtual ~ImageBatchSampler() {} //这里还没调研怎么实现  ？？？
 
-  absl::StatusOr<std::vector<std::vector<cv::Mat>>> SampleFromString(
-      const std::string& input) override;
+  absl::StatusOr<std::vector<std::vector<cv::Mat>>>
+  SampleFromString(const std::string &input) override;
 
-  absl::StatusOr<std::vector<std::vector<cv::Mat>>> SampleFromVector(
-      const std::vector<std::string>& inputs) override;
+  absl::StatusOr<std::vector<std::vector<cv::Mat>>>
+  SampleFromVector(const std::vector<std::string> &inputs) override;
 
-  absl::StatusOr<std::vector<std::vector<cv::Mat>>> SampleFromMatVector(
-      const std::vector<cv::Mat>& inputs) override;
+  absl::StatusOr<std::vector<std::vector<cv::Mat>>>
+  SampleFromMatVector(const std::vector<cv::Mat> &inputs) override;
 
- private:
+private:
   static const std::set<std::string> kImgSuffixes;
 };

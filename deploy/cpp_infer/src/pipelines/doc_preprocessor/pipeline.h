@@ -57,15 +57,15 @@ struct DocPreprocessorPipelineParams {
 };
 
 class _DocPreprocessorPipeline : public BasePipeline {
- public:
+public:
   explicit _DocPreprocessorPipeline(
-      const DocPreprocessorPipelineParams& params);
+      const DocPreprocessorPipelineParams &params);
   virtual ~_DocPreprocessorPipeline() = default;
 
   _DocPreprocessorPipeline() = delete;
 
-  std::vector<std::unique_ptr<BaseCVResult>> Predict(
-      const std::vector<std::string>& input) override;
+  std::vector<std::unique_ptr<BaseCVResult>>
+  Predict(const std::vector<std::string> &input) override;
 
   std::unordered_map<std::string, bool> GetModelSettings(
       absl::optional<bool> use_doc_orientation_classify = absl::nullopt,
@@ -79,7 +79,7 @@ class _DocPreprocessorPipeline : public BasePipeline {
 
   void OverrideConfig();
 
- private:
+private:
   bool use_doc_orientation_classify_;
   bool use_doc_unwarping_;
   std::unique_ptr<BasePredictor> doc_ori_classify_model_;
@@ -95,8 +95,8 @@ class DocPreprocessorPipeline
           _DocPreprocessorPipeline, DocPreprocessorPipelineParams,
           std::vector<std::string>,
           std::vector<std::unique_ptr<BaseCVResult>>> {
- public:
-  DocPreprocessorPipeline(const DocPreprocessorPipelineParams& params)
+public:
+  DocPreprocessorPipeline(const DocPreprocessorPipelineParams &params)
       : AutoParallelSimpleInferencePipeline(params),
         thread_num_(params.thread_num) {
     if (thread_num_ == 1) {
@@ -105,10 +105,10 @@ class DocPreprocessorPipeline
     }
   };
 
-  std::vector<std::unique_ptr<BaseCVResult>> Predict(
-      const std::vector<std::string>& input) override;
+  std::vector<std::unique_ptr<BaseCVResult>>
+  Predict(const std::vector<std::string> &input) override;
 
- private:
+private:
   int thread_num_;
   std::unique_ptr<BasePipeline> infer_;
   std::unique_ptr<BaseBatchSampler> batch_sampler_ptr_;

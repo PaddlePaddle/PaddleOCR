@@ -35,23 +35,23 @@ struct TextDetectionParams {
 };
 
 class TextDetection {
- public:
-  TextDetection(const TextDetectionParams& params = TextDetectionParams());
+public:
+  TextDetection(const TextDetectionParams &params = TextDetectionParams());
 
-  std::vector<std::unique_ptr<BaseCVResult>> Predict(const std::string& input) {
+  std::vector<std::unique_ptr<BaseCVResult>> Predict(const std::string &input) {
     std::vector<std::string> inputs = {input};
     return Predict(inputs);
   };
-  std::vector<std::unique_ptr<BaseCVResult>> Predict(
-      const std::vector<std::string>& input);
+  std::vector<std::unique_ptr<BaseCVResult>>
+  Predict(const std::vector<std::string> &input);
 
   void CreateModel();
   void OverrideConfig();
   absl::Status CheckParams();
-  static TextDetPredictorParams ToTextDetectionModelParams(
-      const TextDetectionParams& from);
+  static TextDetPredictorParams
+  ToTextDetectionModelParams(const TextDetectionParams &from);
 
- private:
+private:
   TextDetectionParams params_;
   std::unique_ptr<BasePredictor> model_infer_;
 };

@@ -23,21 +23,22 @@
 #include "src/utils/func_register.h"
 
 class Crop : public BaseProcessor {
- public:
+public:
   explicit Crop(const std::vector<int> crop_size,
-                const std::string& mode = "Center");
-  explicit Crop(const int crop_size, const std::string& mode = "Center");
-  absl::StatusOr<cv::Mat> CropImage(const cv::Mat& img) const;
-  absl::StatusOr<std::vector<cv::Mat>> Apply(
-      std::vector<cv::Mat>& input, const void* param = nullptr) const override;
+                const std::string &mode = "Center");
+  explicit Crop(const int crop_size, const std::string &mode = "Center");
+  absl::StatusOr<cv::Mat> CropImage(const cv::Mat &img) const;
+  absl::StatusOr<std::vector<cv::Mat>>
+  Apply(std::vector<cv::Mat> &input,
+        const void *param = nullptr) const override;
 
- private:
+private:
   std::vector<int> crop_size_;
   std::string mode_;
 };
 
 class Topk {
- public:
+public:
   struct TopkOutput {
     TopkOutput(int batch) {
       class_ids.reserve(batch);
@@ -49,14 +50,14 @@ class Topk {
     std::vector<std::string> label_names;
   };
   explicit Topk(
-      const std::vector<std::string>& class_names = std::vector<std::string>(),
+      const std::vector<std::string> &class_names = std::vector<std::string>(),
       int topk = 1);
 
-  absl::StatusOr<TopkOutput> Process(const cv::Mat& pred_data) const;
-  absl::StatusOr<std::vector<TopkOutput>> Apply(const cv::Mat& preds,
+  absl::StatusOr<TopkOutput> Process(const cv::Mat &pred_data) const;
+  absl::StatusOr<std::vector<TopkOutput>> Apply(const cv::Mat &preds,
                                                 const int topk = 1);
 
- private:
+private:
   std::vector<std::string> class_names_;
   int topk_;
 };

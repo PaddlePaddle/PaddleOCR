@@ -21,7 +21,7 @@
 #include "third_party/nlohmann/json.hpp"
 
 using json = nlohmann::json;
-void DocTrResult::SaveToImg(const std::string& save_path) {
+void DocTrResult::SaveToImg(const std::string &save_path) {
   absl::StatusOr<std::string> full_path;
   if (predictor_result_.input_path.empty()) {
     auto now = std::chrono::system_clock::now();
@@ -57,11 +57,11 @@ void DocTrResult::Print() const {
   std::cout << "}" << std::endl;
 }
 
-void DocTrResult::SaveToJson(const std::string& save_path) const {
+void DocTrResult::SaveToJson(const std::string &save_path) const {
   nlohmann::ordered_json j;
 
   j["input_path"] = predictor_result_.input_path;
-  j["page_index"] = nullptr;  //********
+  j["page_index"] = nullptr; //********
 
   nlohmann::json mat_array = nlohmann::json::array();
 
@@ -92,10 +92,10 @@ void DocTrResult::SaveToJson(const std::string& save_path) const {
   }
 }
 
-int DocTrResult::getAdaptiveFontScale(const std::string& text, int imgWidth,
+int DocTrResult::getAdaptiveFontScale(const std::string &text, int imgWidth,
                                       int maxWidth, int minFont, int maxFont,
-                                      int thickness, int& outBaseline,
-                                      int& outFontFace) {
+                                      int thickness, int &outBaseline,
+                                      int &outFontFace) {
   int fontFace = cv::FONT_HERSHEY_SIMPLEX;
   double fontScale = 1.0;
   int baseline = 0;

@@ -17,7 +17,7 @@
 #include "result.h"
 #include "src/common/image_batch_sampler.h"
 
-TextDetPredictor::TextDetPredictor(const TextDetPredictorParams& params)
+TextDetPredictor::TextDetPredictor(const TextDetPredictorParams &params)
     : BasePredictor(params.model_dir, params.model_name, params.device,
                     params.precision, params.enable_mkldnn,
                     params.mkldnn_cache_capacity, params.cpu_threads,
@@ -31,7 +31,7 @@ TextDetPredictor::TextDetPredictor(const TextDetPredictorParams& params)
 };
 
 absl::Status TextDetPredictor::Build() {
-  const auto& pre_tfs = config_.PreProcessOpInfo();
+  const auto &pre_tfs = config_.PreProcessOpInfo();
   // Register<ReadImage>("Read", pre_tfs.at("DecodeImage.img_mode"));
   Register<ReadImage>("Read");
   DetResizeForTestParam resize_param;
@@ -47,7 +47,7 @@ absl::Status TextDetPredictor::Build() {
   Register<ToCHWImage>("ToCHW");
   Register<ToBatch>("ToBatch");
   infer_ptr_ = CreateStaticInfer();
-  const auto& post_params = config_.PostProcessOpInfo();
+  const auto &post_params = config_.PostProcessOpInfo();
   DBPostProcessParams db_param;
   db_param.thresh = params_.thresh.has_value()
                         ? params_.thresh
@@ -67,11 +67,11 @@ absl::Status TextDetPredictor::Build() {
   return absl::OkStatus();
 };
 
-std::vector<std::unique_ptr<BaseCVResult>> TextDetPredictor::Process(
-    std::vector<cv::Mat>& batch_data) {
+std::vector<std::unique_ptr<BaseCVResult>>
+TextDetPredictor::Process(std::vector<cv::Mat> &batch_data) {
   std::vector<cv::Mat> origin_image = {};
   origin_image.reserve(batch_data.size());
-  for (const auto& mat : batch_data) {
+  for (const auto &mat : batch_data) {
     origin_image.push_back(mat.clone());
   }
   auto batch_raw_imgs = pre_op_.at("Read")->Apply(batch_data);
@@ -123,7 +123,8 @@ std::vector<std::unique_ptr<BaseCVResult>> TextDetPredictor::Process(
   for (int i = 0; i < db_result.value().size(); i++, input_index_++) {
     TextDetPredictorResult predictor_result;
     if (!input_path_.empty()) {
-      if (input_index_ == input_path_.size()) input_index_ = 0;
+      if (input_index_ == input_path_.size())
+        input_index_ = 0;
       predictor_result.input_path = input_path_[input_index_];
     }
     predictor_result.input_image = origin_image[i];

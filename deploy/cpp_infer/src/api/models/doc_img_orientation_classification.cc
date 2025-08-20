@@ -20,7 +20,7 @@
 #define COPY_PARAMS(field) to.field = from.field;
 
 DocImgOrientationClassification::DocImgOrientationClassification(
-    const DocImgOrientationClassificationParams& params)
+    const DocImgOrientationClassificationParams &params)
     : params_(params) {
   OverrideConfig();
   auto status = CheckParams();
@@ -33,7 +33,7 @@ DocImgOrientationClassification::DocImgOrientationClassification(
 };
 std::vector<std::unique_ptr<BaseCVResult>>
 DocImgOrientationClassification::Predict(
-    const std::vector<std::string>& input) {
+    const std::vector<std::string> &input) {
   return model_infer_->Predict(input);
 }
 void DocImgOrientationClassification::CreateModel() {
@@ -73,7 +73,7 @@ absl::Status DocImgOrientationClassification::CheckParams() {
 
 ClasPredictorParams
 DocImgOrientationClassification::ToDocImgOrientationClassificationModelParams(
-    const DocImgOrientationClassificationParams& from) {
+    const DocImgOrientationClassificationParams &from) {
   ClasPredictorParams to;
   COPY_PARAMS(model_name)
   COPY_PARAMS(model_dir)

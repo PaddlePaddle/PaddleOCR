@@ -29,24 +29,24 @@ struct TextImageUnwarpingParams {
 };
 
 class TextImageUnwarping {
- public:
+public:
   TextImageUnwarping(
-      const TextImageUnwarpingParams& params = TextImageUnwarpingParams());
+      const TextImageUnwarpingParams &params = TextImageUnwarpingParams());
 
-  std::vector<std::unique_ptr<BaseCVResult>> Predict(const std::string& input) {
+  std::vector<std::unique_ptr<BaseCVResult>> Predict(const std::string &input) {
     std::vector<std::string> inputs = {input};
     return Predict(inputs);
   };
-  std::vector<std::unique_ptr<BaseCVResult>> Predict(
-      const std::vector<std::string>& input);
+  std::vector<std::unique_ptr<BaseCVResult>>
+  Predict(const std::vector<std::string> &input);
 
   void CreateModel();
   void OverrideConfig();
   absl::Status CheckParams();
-  static WarpPredictorParams ToTextImageUnwarpingModelParams(
-      const TextImageUnwarpingParams& from);
+  static WarpPredictorParams
+  ToTextImageUnwarpingModelParams(const TextImageUnwarpingParams &from);
 
- private:
+private:
   TextImageUnwarpingParams params_;
   std::unique_ptr<BasePredictor> model_infer_;
 };
