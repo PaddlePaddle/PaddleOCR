@@ -73,11 +73,13 @@ int main(int argc, char *argv[]) {
     main_mode = argv[1];
     if (SUPPORT_MODE_PIPELINE.count(main_mode) == 0 &&
         SUPPORT_MODE_MODEL.count(main_mode) == 0) {
-      PrintErrorInfo("ERROR: Unsupported pipeline or model", main_mode);
+      PrintErrorInfo("ERROR: Unsupported pipeline or module", main_mode);
       exit(-1);
     }
   } else {
-    PrintErrorInfo("Too few params, must provide pipeline or model name.");
+    PrintErrorInfo(
+        "Must provide pipeline or module name, such as ./build/ppocr "
+        "<pipeline_or_module> [--param1] [--param2] [...]");
     exit(-1);
   }
 

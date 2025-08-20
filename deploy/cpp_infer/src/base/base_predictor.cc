@@ -139,7 +139,7 @@ BasePredictor::BasePredictor(const absl::optional<std::string> &model_dir,
     INFO(pp_option_ptr_->DebugString().c_str());
     print_flag = false;
   }
-  INFO("Create model : %s.", model_name_.c_str());
+  INFO("Create model: %s.", model_name_.c_str());
 }
 
 std::vector<std::unique_ptr<BaseCVResult>>
