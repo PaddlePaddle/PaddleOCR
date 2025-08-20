@@ -57,7 +57,7 @@ pip list | grep nvidia-cuda
 pip list | grep nvidia-cudnn
 ```
 
-其次，建议确保环境中安装有符合要求的 TensorRT，否则 Paddle Inference TensorRT 子图引擎将不可用，程序可能无法取得最佳推理性能。**目前 PaddleOCR 仅支持在 CUDA 11.8 环境使用 TensorRT 8.6.1.6**。如果使用飞桨官方镜像，可执行如下命令安装 TensorRT wheel 包：
+其次，建议确保环境中安装有符合要求的 TensorRT，否则 Paddle Inference TensorRT 子图引擎将不可用，程序可能无法取得最佳推理性能。**目前 PaddleOCR 仅支持在 CUDA 11.8 环境使用 TensorRT 8.6.1.6**。如果使用飞桨官方 3.0 镜像，可执行如下命令安装 TensorRT wheel 包：
 
 ```bash
 python -m pip install /usr/local/TensorRT-*/python/tensorrt-*-cp310-none-linux_x86_64.whl
