@@ -2007,6 +2007,7 @@ For Paddle with CUDA 11.8, the compatible TensorRT version is 8.x (x≥6), recom
 <details><summary>(3) Processing visual prediction results: Each sample's prediction result is a corresponding Result object, supporting operations such as printing, saving as images, and saving as <code>json</code> files:</summary>
 
 <table>
+
 <thead>
 <tr>
 <th>Method</th>

@@ -1380,13 +1380,13 @@ any float > <code>0</code>. If not set, the default is <code>0.6</code>.
 </tr>
 <tr>
 <td><code>use_textline_orientation</code></td>
-<td>Whether to load and use the text line orientation classification module. If not set, the default is <code>True</code>.</td>
+<td>Whether to load and use the text line orientation classification module. If not set, the default is <code>False</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_seal_recognition</code></td>
-<td>Whether to load and use seal text recognition subpipeline. If not set, the default is <code>True</code>.</td>
+<td>Whether to load and use seal text recognition subpipeline. If not set, the default is <code>False</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
@@ -2012,13 +2012,13 @@ The above Python script performs the following steps:
 </tr>
 <tr>
 <td><code>use_textline_orientation</code></td>
-<td>Whether to use the text line orientation classification. If set to <code>None</code>, the default value is <code>True</code>.</td>
+<td>Whether to use the text line orientation classification. If set to <code>None</code>, the default value is <code>False</code>.</td>
 <td><code>bool|None</code></td>
 <td>None</td>
 </tr>
 <tr>
 <td><code>use_seal_recognition</code></td>
-<td>Whether to enable seal text recognition subpipeline. If set to <code>None</code>, the default value is <code>True</code>.</td>
+<td>Whether to enable seal text recognition subpipeline. If set to <code>None</code>, the default value is <code>False</code>.</td>
 <td><code>bool|None</code></td>
 <td>None</td>
 </tr>
