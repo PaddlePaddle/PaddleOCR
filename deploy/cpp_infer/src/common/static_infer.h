@@ -20,9 +20,9 @@
 
 #include "absl/status/status.h"
 #include "absl/status/statusor.h"
+#include "paddle_inference_api.h"
 #include "src/utils/ilogger.h"
 #include "src/utils/pp_option.h"
-#include "third_party/paddle_inference/paddle/include/paddle_inference_api.h"
 class PaddleInfer {
  public:
   explicit PaddleInfer(const std::string &model_name,

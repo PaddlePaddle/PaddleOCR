@@ -14,6 +14,7 @@
 
 #pragma once
 
+#include <algorithm>
 #include <opencv2/opencv.hpp>
 #include <string>
 #include <vector>

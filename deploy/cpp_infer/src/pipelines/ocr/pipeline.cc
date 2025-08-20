@@ -365,16 +365,20 @@ std::vector<std::unique_ptr<BaseCVResult>> _OCRPipeline::Predict(
         auto textline_orientation_model_results =
             static_cast<ClasPredictor*>(textline_orientation_model_.get())
                 ->PredictorResult();
-        for (auto& result_angle : textline_orientation_model_results) {
-          angles.push_back(result_angle.class_ids[0]);
-        }
-        auto result_all_subs_of_imgs = RotateImage(all_subs_of_imgs, angles);
-        if (!result_all_subs_of_imgs.ok()) {
-          INFOE("Rotate images fail : %s",
-                result_all_subs_of_imgs.status().ToString().c_str());
-          exit(-1);
-        }
-        all_subs_of_imgs = result_all_subs_of_imgs.value();
+                    textline_orientation_model_results[0].input_image;
+                    for (auto& result_angle :
+                         textline_orientation_model_results) {
+                      angles.push_back(result_angle.class_ids[0]);
+                    }
+                    auto result_all_subs_of_imgs =
+                        RotateImage(all_subs_of_imgs, angles);
+                    if (!result_all_subs_of_imgs.ok()) {
+                      INFOE(
+                          "Rotate images fail : %s",
+                          result_all_subs_of_imgs.status().ToString().c_str());
+                      exit(-1);
+                    }
+                    all_subs_of_imgs = result_all_subs_of_imgs.value();
       } else {
         angles = std::vector<int>(all_subs_of_imgs.size(), -1);
       }
@@ -444,10 +448,17 @@ std::vector<std::unique_ptr<BaseCVResult>> _OCRPipeline::Predict(
 
 std::vector<std::unique_ptr<BaseCVResult>> OCRPipeline::Predict(
     const std::vector<std::string>& input) {
+  if (thread_num_ == 1) {
+    return infer_->Predict(input);
+  }
   batch_sampler_ptr_ =
       std::unique_ptr<BaseBatchSampler>(new ImageBatchSampler(1));
   auto nomeaning = batch_sampler_ptr_->Apply(input);
   int input_num = nomeaning.value().size();
+  if (thread_num_ > input_num) {
+    INFOW("thread num exceed input num, will set %d", input_num);
+    thread_num_ = input_num;
+  }
   int infer_batch_num = input_num / thread_num_;
   auto status = batch_sampler_ptr_->SetBatchSize(infer_batch_num);
   if (!status.ok()) {

@@ -115,18 +115,39 @@ absl::StatusOr<std::string> Utility::GetConfigPaths(
   return config_path;
 };
 
-std::string Utility::GetCpuVendor() {
+bool Utility::IsMkldnnAvailable() {
+#ifdef _WIN32
+  SYSTEM_INFO si;
+  GetSystemInfo(&si);
+
+  char cpuBrand[0x40] = {0};
+  int cpuInfo[4] = {0};
+  __cpuid(cpuInfo, 0x80000002);
+  memcpy(cpuBrand, cpuInfo, sizeof(cpuInfo));
+  __cpuid(cpuInfo, 0x80000003);
+  memcpy(cpuBrand + 16, cpuInfo, sizeof(cpuInfo));
+  __cpuid(cpuInfo, 0x80000004);
+  memcpy(cpuBrand + 32, cpuInfo, sizeof(cpuInfo));
+  std::string brandStr(cpuBrand);
+  if (brandStr.find("Intel") != std::string::npos) {
+    return true;
+  }
+  return false;
+#else
   std::ifstream cpuinfo("/proc/cpuinfo");
   std::string line;
   while (std::getline(cpuinfo, line)) {
     if (line.find("vendor_id") != std::string::npos) {
       auto pos = line.find(":");
       if (pos != std::string::npos) {
-        return line.substr(pos + 2);
+        if (line.substr(pos + 2).find("Intel") != std::string::npos) {
+          return true;
+        }
       }
     }
   }
-  return "";
+  return false;
+#endif
 };
 
 void Utility::PrintShape(const cv::Mat& img) {
@@ -330,8 +351,13 @@ absl::Status Utility::CreateDirectoryForFile(const std::string& filePath) {
 }
 
 absl::StatusOr<std::string> Utility::SmartCreateDirectoryForImage(
-    const std::string& save_path, const std::string& input_path,
+    std::string save_path, const std::string& input_path,
     const std::string& suffix) {
+  size_t pos = save_path.find_last_of("/\\");
+  std::string lastPart = save_path.substr(pos + 1);
+  if (lastPart.find(".") == std::string::npos) {
+    save_path += PATH_SEPARATOR;
+  }
   std::string full_path = save_path;
   auto status = CreateDirectoryForFile(save_path);
   if (!status.ok()) {
@@ -339,7 +365,7 @@ absl::StatusOr<std::string> Utility::SmartCreateDirectoryForImage(
   }
   if (Utility::IsDirectory(save_path)) {
     auto file_path = input_path;
-    size_t pos = file_path.find_last_of(PATH_SEPARATOR);
+    size_t pos = file_path.find_last_of("/\\");
     std::string file_name =
         (pos == std::string::npos) ? file_path : file_path.substr(pos + 1);
     size_t dot_pos = file_name.find_last_of('.');

@@ -1,52 +1,746 @@
-[English](readme.md) | 简体中文
+# 通用OCR产线C++部署
 
-# 服务器端C++预测
-
-- [1. 准备环境](#1)
-    - [1.1 运行准备](#11)
-    - [1.2 编译opencv库](#12)
-    - [1.3 下载或者编译Paddle预测库](#13)
-- [2 开始运行](#2)
+- [1. 环境准备](#1)
+    - [1.1 编译opencv库](#12)
+    - [1.2 下载或者编译Paddle预测库](#13)
+- [2. 运行](#2)
     - [2.1 准备模型](#21)
-    - [2.2 编译PaddleOCR C++预测demo](#22)
-    - [2.3 运行demo](#23)
+    - [2.2 编译可执行文件](#22)
+    - [2.3 运行](#23)
 - [3. FAQ](#3)
 
-本章节介绍PaddleOCR 模型的C++部署方法。C++在性能计算上优于Python，因此，在大多数CPU、GPU部署场景，多采用C++的部署方式，本节将介绍如何在Linux\Windows (CPU\GPU)环境下配置C++环境并完成PaddleOCR模型部署。
+本章节介绍 通用OCR产线的C++部署方法。通用OCR 产线由以下5个模块组成：
 
+1. 文档图像方向分类模块（可选）
+2. 文本图像矫正模块 (可选)
+3. 文本行方向分类模块（可选）
+4. 文本检测模块
+5. 文本识别模块
 
-<a name="1"></a>
+下面将介绍如何在 Linux (CPU/GPU) 环境下配置 C++ 环境并完成通用 OCR 产线部署。
 
 ## 1. 准备环境
 
-<a name="11"></a>
+- Linux 环境。
+    - gcc   8.2（当使用Paddle Inference GPU版本时需要更高版本时，gcc>=11.2）
+    - cmake 3.18
 
-### 1.1 运行准备
+- Windows 环境：具体编译方法请参考 [Windows 编译教程](./docs/windows_vs2022_build.md)。
 
-- Linux环境，推荐使用docker。
-- Windows环境。
+### 1.1 编译 OpenCV 库
 
-* 该文档主要介绍基于Linux环境的PaddleOCR C++预测流程，如果需要在Windows下基于预测库进行C++预测，具体编译方法请参考[Windows下编译教程](./docs/windows_vs2019_build.md)
+首先需要编译 OpenCV 库，编译流程如下：
 
-<a name="12"></a>
-
-### 1.2 编译opencv库
-
-* 首先需要从opencv官网上下载在Linux环境下源码编译的包，以opencv3.4.7为例，下载命令如下。
-
-```bash
-cd deploy/cpp_infer
-wget https://paddleocr.bj.bcebos.com/libs/opencv/opencv-3.4.7.tar.gz
-tar -xf opencv-3.4.7.tar.gz
-```
-
-最终可以在当前目录下看到`opencv-3.4.7/`的文件夹。
-
-* 编译opencv，设置opencv源码路径(`root_path`)以及安装路径(`install_path`)。进入opencv源码路径下，按照下面的方式进行编译。
+修改 `tools/build_opencv.sh`，运行下面的命令完成 OpenCV 的编译。
 
 ```shell
+sh tools/build_opencv.sh
+```
+
+### 1.2 下载Paddle Inference C++ 预编译包或者手动编译源码
+
+可以选择直接下载Paddle Inference官网提供的预编译包或者手动编译源码，下文分别进行具体说明。
+
+#### 1.2.1 直接下载预编译包（推荐）
+[Paddle Inference官网](https://www.paddlepaddle.org.cn/inference/v3.0/guides/install/download_lib.html) 上提供了Linux预测库，可以在官网查看并选择合适的预编译包（*建议选择paddle版本>=3.0.0版本的预测库* ）。
+
+下载之后解压:
+
+```shell
+tar -xf paddle_inference.tgz
+```
+最终会在当前的文件夹中生成`paddle_inference/`的子文件夹。
+#### 1.2.2 预测库源码编译
+[Linux下源码编译](https://www.paddlepaddle.org.cn/inference/v3.0/guides/install/compile/source_compile_under_Linux.html)
+
+## 2. 开始运行
+
+### 2.1 准备模型
+
+可以直接下载 PaddleOCR 提供的推理模型：
+
+<details>
+<summary><b>文档图像方向分类模块（可选）：</b></summary>
+<table>
+<thead>
+<tr>
+<th>模型</th><th>模型下载链接</th>
+<th>Top-1 Acc（%）</th>
+<th>模型存储大小（MB）</th>
+<th>介绍</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PP-LCNet_x1_0_doc_ori</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-LCNet_x1_0_doc_ori_infer.tar">推理模型</a></td>
+<td>99.06</td>
+<td>7</td>
+<td>基于PP-LCNet_x1_0的文档图像分类模型，含有四个类别，即0度，90度，180度，270度</td>
+</tr>
+</tbody>
+</table>
+</details>
+
+<details>
+<summary><b>文本图像矫正模块（可选）：</b></summary>
+<table>
+<thead>
+<tr>
+<th>模型</th><th>模型下载链接</th>
+<th>CER </th>
+<th>模型存储大小（MB）</th>
+<th>介绍</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>UVDoc</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/UVDoc_infer.tar">推理模型</a></td>
+<td>0.179</td>
+<td>30.3</td>
+<td>高精度文本图像矫正模型</td>
+</tr>
+</tbody>
+</table>
+</details>
+
+<details>
+<summary><b>文本行方向分类模块（可选）：</b></summary>
+<table>
+<thead>
+<tr>
+<th>模型</th>
+<th>模型下载链接</th>
+<th>Top-1 Acc（%）</th>
+<th>模型存储大小（MB）</th>
+<th>介绍</th>
+</tr>
+</thead>
+<tbody>
+<td>PP-LCNet_x1_0_textline_ori</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-LCNet_x1_0_textline_ori_infer.tar">推理模型</a></td>
+<td>99.42</td>
+<td>6.5</td>
+<td>基于PP-LCNet_x1_0的文本行分类模型，含有两个类别，即0度，180度</td>
+</tr>
+</tbody>
+</table>
+</details>
+
+<details>
+<summary><b>文本检测模块：</b></summary>
+<table>
+<thead>
+<tr>
+<th>模型</th><th>模型下载链接</th>
+<th>检测Hmean（%）</th>
+<th>模型存储大小（MB）</th>
+<th>介绍</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PP-OCRv5_server_det</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv5_server_det_infer.tar">推理模型</a></td>
+<td>83.8</td>
+<td>84.3</td>
+<td>PP-OCRv5 的服务端文本检测模型，精度更高，适合在性能较好的服务器上部署</td>
+</tr>
+</tbody>
+</table>
+</details>
+
+<details>
+<summary><b>文本识别模块：</b></summary>
+<table>
+<tr>
+<th>模型</th><th>模型下载链接</th>
+<th>识别 Avg Accuracy(%)</th>
+<th>模型存储大小（MB）</th>
+<th>介绍</th>
+</tr>
+<tr>
+<td>PP-OCRv5_server_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+PP-OCRv5_server_rec_infer.tar">推理模型</a></td>
+<td>86.38</td>
+<td>81</td>
+<td rowspan="2">PP-OCRv5_rec 是新一代文本识别模型。该模型致力于以单一模型高效、精准地支持简体中文、繁体中文、英文、日文四种主要语言，以及手写、竖版、拼音、生僻字等复杂文本场景的识别。在保持识别效果的同时，兼顾推理速度和模型鲁棒性，为各种场景下的文档理解提供高效、精准的技术支撑。</td>
+</tr>
+</tbody>
+</table>
+</details>
+
+也可以参考[模型预测章节]()，将训练好的模型导出为推理模型。
+
+模型的目录结构一般如下所示：
+
+```
+PP-OCRv5_mobile_det
+|--inference.pdiparams
+|--inference.json
+|--inference.yml
+```
+
+### 2.2 编译PaddleOCR C++预测demo
+在编译PaddleOCR C++预测demo前，请确保您已经编译好OpenCV库和Paddle Inference预测库。
+
+```shell
+sh tools/build.sh
+```
+
+具体的，需要修改tools/build.sh中环境路径及相关选项，相关内容如下：
+
+```shell
+OPENCV_DIR=your_opencv_dir
+LIB_DIR=your_paddle_inference_dir
+CUDA_LIB_DIR=your_cuda_lib_dir
+CUDNN_LIB_DIR=/your_cudnn_lib_dir
+
+cmake .. \
+    -DPADDLE_LIB=${LIB_DIR} \
+    -DWITH_MKL=ON \
+    -DWITH_GPU=OFF \
+    -DWITH_STATIC_LIB=OFF \
+    -DWITH_TENSORRT=OFF \
+    -DOPENCV_DIR=${OPENCV_DIR} \
+    -DCUDNN_LIB=${CUDNN_LIB_DIR} \
+    -DCUDA_LIB=${CUDA_LIB_DIR} \
+    -DUSE_FREETYPE=OFF
+```
+
+<table>
+<tr>
+<th>参数</th>
+<th>说明</th>
+<th>默认值</th>
+</tr>
+<tr>
+<td><code>OPENCV_DIR</code></td>
+<td>OpenCV编译安装的路径，必填。</td>
+<td></td>
+</tr>
+<tr>
+<td><code>LIB_DIR</code></td>
+<td>下载的 <code>paddle_inference</code> 文件夹或编译生成的Paddle Inference库路径（如 <code>build/paddle_inference_install_dir</code> 文件夹），必填。</td>
+<td></td>
+</tr>
+<tr>
+<td><code>CUDA_LIB_DIR</code></td>
+<td> CUDA库文件路径，通常为<code>/usr/local/cuda/lib64</code>。当Paddle Inference库为GPU版本且设置 <code>-DWITH_GPU=ON</code> 时需要设置该参数。</td>
+<td></td>
+</tr>
+<tr>
+<td><code>CUDNN_LIB_DIR</code></td>
+<td>cuDNN 库文件路径，通常为 <code>/usr/lib/x86_64-linux-gnu/</code> 。当 Paddle Inference 库为 GPU 版本且设置 <code>-DWITH_GPU=ON</code> 时需要设置该参数。</td>
+<td></td>
+</tr>
+<tr>
+<td><code>WITH_GPU</code></td>
+<td>当设置为 ON 且 Paddle Inference 库为 GPU 版本时，可以使用 GPU 推理。</td>
+<td>OFF</td>
+</tr>
+</table>
+
+**注意：以上路径都写绝对路径，不要写相对路径。**
+
+### 2.3 运行
+在本地使用PaddleOCR C++前，请确保您已经成功编译PaddleOCR C++预测demo。编译完成后，可以在本地使用命令行体验或者根据您的实际需求调用PaddleOCR C++ API进行二次开发，并重新编译生成您自己的应用程序。
+
+**请注意，如果在执行过程中遇到程序失去响应、程序异常退出、内存资源耗尽、推理速度极慢等问题，请尝试参考文档调整配置，例如关闭不需要使用的功能或使用更轻量的模型。**
+
+#### 2.3.1 命令行方式
+本demo支持系统串联调用，也支持单个模块的调用。
+
+运行方式：
+
+```shell
+./build/ppocr   [--param1] [--param2] [...]
+```
+
+具体命令如下：
+
+##### 系统串联调用
+
+=== "全模块串联"
+
+    ```bash
+    ./build/ppocr paddleocr --input your_input --save_path your_save_path/  
+    --doc_orientation_classify_model_dir your_doc_orientation_classify_model_dir
+    --doc_unwarping_model_dir your_doc_unwarping_model_dir
+    --textline_orientation_model_dir your_textline_orientation_model_dir
+    --text_detection_model_dir your_text_detection_model_dir
+    --text_recognition_model_dir your_text_recognition_model_dir
+    ```
+
+    输出示例：
+
+    ```bash
+
+    ```
+
+
+=== "文本检测+文本行方向分类+文本识别"
+
+    ```bash
+    ./build/ppocr paddleocr --input your_input --save_path your_save_path/  
+    --doc_orientation_classify_model_dir your_doc_orientation_classify_model_dir
+    --doc_unwarping_model_dir your_doc_unwarping_model_dir
+    --textline_orientation_model_dir your_textline_orientation_model_dir
+    --text_detection_model_dir your_text_detection_model_dir
+    --text_recognition_model_dir your_text_recognition_model_dir
+    --use_doc_orientation_classify False
+    --use_doc_unwarping False
+    ```
+
+    输出示例：
+
+    ```bash
+    ```
+
+=== "文本检测+文本识别"
+
+    ```bash
+    ./build/ppocr paddleocr --input your_input --save_path your_save_path/  
+    --doc_orientation_classify_model_dir your_doc_orientation_classify_model_dir
+    --doc_unwarping_model_dir your_doc_unwarping_model_dir
+    --textline_orientation_model_dir your_textline_orientation_model_dir
+    --text_detection_model_dir your_text_detection_model_dir
+    --text_recognition_model_dir your_text_recognition_model_dir
+    --use_doc_orientation_classify False
+    --use_doc_unwarping False
+    --use_textline_orientation False
+    ```
+
+    输出示例：
+
+    ```bash
+
+    ```
+##### 单模块调用
+
+=== "文档图像方向分类"
+
+    ```bash
+    ./build/ppocr doc_img_orientation_classification --input your_input --save_path your_save_path/  
+    --doc_orientation_classify_model_dir your_doc_orientation_classify_model_dir
+    ```
+
+    输出示例：
+
+    ```bash
+
+    ```
+
+=== "文档图像矫正"
+
+    ```bash
+    ./build/ppocr text_image_unwarping --input your_input --save_path your_save_path/  
+    --doc_unwarping_model_dir your_doc_unwarping_model_dir
+    ```
+
+    输出示例：
+
+    ```bash
+
+    ```    
+=== "文本行方向分类"
+
+    ```bash
+    ./build/ppocr textline_orientation_classification --input your_input --save_path your_save_path/  
+    --textline_orientation_model_dir your_textline_orientation_model_dir
+    ```
+
+    输出示例：
+
+    ```bash
+
+    ```      
+
+=== "文本检测"
+
+    ```bash
+    ./build/ppocr text_detection --input your_input --save_path your_save_path/  
+    --text_detection_model_dir your_text_detection_model_dir
+    ```
+
+    输出示例：
+
+    ```bash
+
+    ```
+    
+=== "文本识别"
+
+    ```bash
+    ./build/ppocr text_recognition --input your_input --save_path your_save_path/  
+    --text_recognition_model_dir your_text_recognition_model_dir
+    ```
+
+    输出示例：
+
+    ```bash
+
+    ```
+#### 2.3.2 C++ API方式集成
+命令行方式是为了快速体验查看效果，一般来说，在项目中，往往需要通过代码集成，您可以通过几行代码即可完成产线的快速推理，推理代码如下：
+```c++
+#include "src/API/pipelines/ocr.h"
+
+int main(){
+    PaddleOCRParams params;
+    params.doc_orientation_classify_model_dir = your_doc_orientation_classify_model_dir; // 文档方向分类模型路径。
+    params.doc_unwarping_model_dir = your_doc_unwarping_model_dir; //文本图像矫正模型路径。
+    params.textline_orientation_model_dir = your_textline_orientation_model_dir; //文本行方向分类模型路径。
+    params.text_detection_model_dir = your_text_detection_model_dir; //文本检测模型路径
+    params.text_recognition_model_dir = your_text_recognition_model_dir; //文本识别模型路径
+    params.vis_font_dir  = your_vis_font_dir; //当编译时添加-DUSE_FREETYPE=ON选项，必须提供相应tff字体文件路径。
+
+    //params.device = "gpu"; //推理时使用GPU。请确保编译时添加-DWITH_GPU=ON选项，否则使用CPU。
+    //params.thread_num = 1;  // 多线程推理，根据硬件性能选择配置。
+    //params.use_doc_orientation_classify = false;  // 不使用文档方向分类模型。
+    //params.use_doc_unwarping = false; // 不使用文本图像矫正模型。
+    //params.use_textline_orientation = false; // 不使用文本行方向分类模型。
+    //params.params.text_recognition_model_name = "PP-OCRv5_server_rec" //使用PP-OCRv5_server_rec模型进行识别。
+
+    auto infer = PaddleOCR(params);
+    auto outputs  = infer.Predict("./input.jpg");
+
+    for (auto& output : outputs) {
+      output->Print();
+      output->SaveToImg("./output/");
+      output->SaveToJson("./output/");
+    }
+}
+```
+
+<details><summary><b>更多支持的可调节参数设置，点击展开以查看调节参数的详细说明</b></summary>
+
+- 通用参数
+
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>参数说明</th>
+<th>参数类型</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>device</code></td>
+<td>用于推理的设备。支持指定具体卡号：
+<ul>
+<li><b>CPU</b>：如 <code>cpu</code> 表示使用 CPU 进行推理；</li>
+<li><b>GPU</b>：如 <code>gpu:0</code> 表示使用第 1 块 GPU 进行推理；</li>
+</ul>如果不设置，将默认使用产线初始化的该参数值，初始化时，如果编译时添加<code>-DWITH_GPU=ON</code>，则会优先使用本地的 GPU 0号设备，否则，将使用 CPU 设备。
+</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>precision</code></td>
+<td>计算精度，如<code>fp32</code>、<code>fp16</code>。</td>
+<td><code>str</code></td>
+<td><code>fp32</code></td>
+</tr>
+<tr>
+<td><code>enable_mkldnn</code></td>
+<td>是否启用 MKL-DNN 加速推理。如果 MKL-DNN 不可用或模型不支持通过 MKL-DNN 加速，即使设置了此标志，也不会使用加速。
+</td>
+<td><code>bool</code></td>
+<td><code>True</code></td>
+</tr>
+<tr>
+<td><code>mkldnn_cache_capacity</code></td>
+<td>
+MKL-DNN 缓存容量。
+</td>
+<td><code>int</code></td>
+<td><code>10</code></td>
+</tr>
+<tr>
+<td><code>cpu_threads</code></td>
+<td>PaddleInference CPU 加速库线程数量</td>
+<td><code>int</code></td>
+<td><code>8</code></td>
+</tr>
+<tr>
+<td><code>thread_num</code></td>
+<td>在 CPU 上进行推理时使用的线程数。实例化相应数量的推理实例并发执行，根据硬件资源合理设置。如果不设置，默认值为1。</td>
+<td><code>int</code></td>
+<td><code>1</code></td>
+</tr>
+<tr>
+<td><code>paddlex_config</code></td>
+<td>PaddleX产线配置文件路径。</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+- 模块开关
+
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>参数说明</th>
+<th>参数类型</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>use_doc_orientation_classify</code></td>
+<td>是否加载并使用文档方向分类模块。如果不设置，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
+<td><code>bool</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>use_doc_unwarping</code></td>
+<td>是否加载并使用文本图像矫正模块。如果不设置，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
+<td><code>bool</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>use_textline_orientation</code></td>
+<td>是否加载并使用文本行方向模块。如果不设置，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
+<td><code>bool</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+- 检测模型相关
+
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>参数说明</th>
+<th>参数类型</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>text_detection_model_name</code></td>
+<td>文本检测模型的名称。如果不设置，将会使用产线默认模型。当传入文本检测模型路径的模型名称与产线默认文本识别模型名称配置不一致时，需指定传入模型的名称。</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>text_detection_model_dir</code></td>
+<td>文本检测模型的目录路径，必填。</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>text_det_limit_side_len</code></td>
+<td>文本检测的图像边长限制。
+大于 <code>0</code> 的任意整数。如果不设置，将使用产线初始化的该参数值，默认初始化为 <code>64</code>。
+</td>
+<td><code>int</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>text_det_limit_type</code></td>
+<td>文本检测的边长度限制类型。支持 <code>min</code> 和 <code>max</code>，<code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>，<code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code>。如果不设置，将使用产线初始化的该参数值，默认初始化为 <code>min</code>。
+</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>text_det_thresh</code></td>
+<td>文本检测像素阈值，输出的概率图中，得分大于该阈值的像素点才会被认为是文字像素点。
+大于<code>0</code>的任意浮点数。如果不设置，将使用产线初始化的该参数值（默认为 <code>0.3</code>）。
+</td>
+<td><code>float</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>text_det_box_thresh</code></td>
+<td>文本检测框阈值，检测结果边框内，所有像素点的平均得分大于该阈值时，该结果会被认为是文字区域。
+大于 <code>0</code> 的任意浮点数。如果不设置，将使用产线初始化的该参数值（默认为 <code>0.6</code>）。
+</td>
+<td><code>float</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>text_det_unclip_ratio</code></td>
+<td>文本检测扩张系数，使用该方法对文字区域进行扩张，该值越大，扩张的面积越大。大于 <code>0</code> 的任意浮点数。如果不设置，将使用产线初始化的该参数值（默认为 <code>2.0</code>）。
+</td>
+<td><code>float</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>text_det_input_shape</code></td>
+<td>文本检测的输入形状，您可以设置3个值代表C，H，W。</td>
+<td><code>std::vector</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+- 方向分类器相关
+
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>参数说明</th>
+<th>参数类型</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>doc_orientation_classify_model_name</code></td>
+<td>文档方向分类模型的名称。如果不设置，将会使用产线默认模型。当传入文档方向分类模型与产线默认模型不一致时，需指定传入模型的名称。</td>
+<td><code>str</code></td>
+<td><code></code></td>
+</tr>
+<tr>
+<td><code>doc_orientation_classify_model_dir</code></td>
+<td>文档方向分类模型的目录路径。当设置<code>use_doc_orientation_classify = false</code>时，可不添加。</td>
+<td><code>str</code></td>
+<td><code></code></td>
+</tr>
+<tr>
+<td><code>textline_orientation_model_name</code></td>
+<td>文本行方向分类模型的名称。如果不设置，将会使用产线默认模型。当传入文本行方向分类模型与产线默认模型不一致时，需指定传入模型的名称。</td>
+<td><code>str</code></td>
+<td><code></code></td>
+</tr>
+<tr>
+<td><code>textline_orientation_model_dir</code></td>
+<td>文本行方向分类模型的目录路径。当设置<code>use_textline_orientation = false</code>时，可不添加。</td>
+<td><code>str</code></td>
+<td><code></code></td>
+</tr>
+<tr>
+<td><code>textline_orientation_batch_size</code></td>
+<td>文本行方向模型的batch size。如果不设置，将会使用产线默认模型。</td>
+<td><code>int</code></td>
+<td><code></code></td>
+</tr>
+</tbody>
+</table>
+
+- 文字识别模型相关
+
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>参数说明</th>
+<th>参数类型</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>text_recognition_model_name</code></td>
+<td>文本识别模型的名称。如果不设置，将会使用产线默认模型。当传入文本识别模型路径的模型名称与产线默认文本识别模型名称配置不一致时，需指定传入模型的名称。</td>
+<td><code>str</code></td>
+<td><code></code></td>
+</tr>
+<tr>
+<td><code>text_recognition_model_dir</code></td>
+<td>文本识别模型的目录路径，必填。</td>
+<td><code>str</code></td>
+<td><code></code></td>
+</tr>
+<tr>
+<td><code>text_recognition_batch_size</code></td>
+<td>文本识别模型的batch size。如果不设置，将会使用产线默认值。</td>
+<td><code>int</code></td>
+<td><code></code></td>
+</tr>
+<tr>
+<td><code>text_rec_score_thresh</code></td>
+<td>文本识别阈值，得分大于该阈值的文本结果会被保留。大于<code>0</code>的任意浮点数。</td>
+<td><code>float</code></td>
+<td><code></code></td>
+</tr>
+<tr>
+<td><code>text_rec_input_shape</code></td>
+<td>文本识别的输入形状，您可以设置3个值代表C，H，W。</td>
+<td><code>std::vector</code></td>
+<td><code></code></td>
+</tr>
+</tbody>
+</table>
+
+- 输入输出相关
+
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>参数说明</th>
+<th>参数类型</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>input</code></td>
+<td>待预测数据，必填。仅支持<code>jpg</code>，<code>png</code>, <code>jpeg</code>,<code>bmp</code>格式的图像，暂不支持 PDF 文件。
+</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>save_path</code></td>
+<td>指定推理结果文件保存的路径。如果不设置，推理结果将保存至当前运行路径下的<code>output</code>文件夹。</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+注意：命令行方式使用上述可调节参数，加前缀<code>--</code>，如：<code>--input your_image.jpg --save_path ./your_output/</code>。
+
+</details>
+
+
+
+## 3. 额外功能
+
+### 3.1 可视化文本识别结果
+
+我们需要 FreeType 去完成字体的渲染，所以需要自己编译包含 FreeType 的 OpenCV。
+FreeType属于opencv_contrib模块，需要下载opencv和opencv_contrib源码，注意版本一致。以下以opencv4.7.0为例，源码下载命令如下。
+
+```bash
+wget https://github.com/opencv/opencv_contrib/archive/refs/tags/4.7.0.zip
+wget https://github.com/opencv/opencv/archive/4.7.0.zip
+unzip opencv.4.7.0.zip
+unzip opencv_contrib.4.7.0.zip
+```
+
+安装FreeType依赖库
+
+```bash
+sudo apt-get update
+sudo apt-get install libfreetype6-dev libharfbuzz-dev
+```
+编译OpenCV包含FreeType模块的命令如下：
+相比于不编译FreeType方式，只需要增加如下三个参数：
+
+- -DOPENCV_EXTRA_MODULES_PATH=your_opencv_contrib-4.7.0/modules/ \
+- -DBUILD_opencv_freetype=ON \
+- -DWITH_FREETYPE=ON
+
+完整命令如下：
+```shell
 root_path="your_opencv_root_path"
-install_path=${root_path}/opencv3
+install_path=${root_path}/opencv4
 build_dir=${root_path}/build
 
 rm -rf ${build_dir}
@@ -69,7 +763,10 @@ cmake .. \
     -DWITH_PNG=ON \
     -DBUILD_PNG=ON \
     -DWITH_TIFF=ON \
-    -DBUILD_TIFF=ON
+    -DBUILD_TIFF=ON \
+    -DOPENCV_EXTRA_MODULES_PATH=your_opencv_contrib-4.7.0/modules/ \
+    -DBUILD_opencv_freetype=ON \
+    -DWITH_FREETYPE=ON
 
 make -j
 make install
@@ -80,388 +777,8 @@ make install
 ```shell
 sh tools/build_opencv.sh
 ```
-
 其中`root_path`为下载的opencv源码路径，`install_path`为opencv的安装路径，`make install`完成之后，会在该文件夹下生成opencv头文件和库文件，用于后面的OCR代码编译。
 
-最终在安装路径下的文件结构如下所示。
+## 4. FAQ
 
-```
-opencv3/
-|-- bin
-|-- include
-|-- lib
-|-- lib64
-|-- share
-```
-
-<a name="13"></a>
-
-### 1.3 下载或者编译Paddle预测库
-
-可以选择直接下载安装或者从源码编译，下文分别进行具体说明。
-
-<a name="131"></a>
-#### 1.3.1 直接下载安装
-
-[Paddle预测库官网](https://www.paddlepaddle.org.cn/inference/master/guides/install/download_lib.html#linux) 上提供了不同cuda版本的Linux预测库，可以在官网查看并选择合适的预测库版本（*建议选择paddle版本>=2.0.1版本的预测库* ）。
-
-下载之后解压:
-
-```shell
-tar -xf paddle_inference.tgz
-```
-
-最终会在当前的文件夹中生成`paddle_inference/`的子文件夹。
-
-<a name="132"></a>
-#### 1.3.2 预测库源码编译
-
-如果希望获取最新预测库特性，可以从github上克隆最新Paddle代码进行编译，生成最新的预测库。
-
-* 使用git获取代码:
-
-```shell
-git clone https://github.com/PaddlePaddle/Paddle.git
-git checkout develop
-```
-
-* 进入Paddle目录，进行编译:
-
-```shell
-rm -rf build
-mkdir build
-cd build
-
-cmake  .. \
-    -DWITH_CONTRIB=OFF \
-    -DWITH_MKL=ON \
-    -DWITH_MKLDNN=ON  \
-    -DWITH_TESTING=OFF \
-    -DCMAKE_BUILD_TYPE=Release \
-    -DWITH_INFERENCE_API_TEST=OFF \
-    -DON_INFER=ON \
-    -DWITH_PYTHON=ON
-make -j
-make inference_lib_dist
-```
-
-更多编译参数选项介绍可以参考[Paddle预测库编译文档](https://www.paddlepaddle.org.cn/documentation/docs/zh/2.0/guides/05_inference_deployment/inference/build_and_install_lib_cn.html#congyuanmabianyi)。
-
-
-* 编译完成之后，可以在`build/paddle_inference_install_dir/`文件下看到生成了以下文件及文件夹。
-
-```
-build/paddle_inference_install_dir/
-|-- CMakeCache.txt
-|-- paddle
-|-- third_party
-|-- version.txt
-```
-
-其中`paddle`就是C++预测所需的Paddle库，`version.txt`中包含当前预测库的版本信息。
-
-<a name="2"></a>
-
-## 2. 开始运行
-
-<a name="21"></a>
-
-### 2.1 准备模型
-
-直接下载PaddleOCR提供的推理模型，或者参考[模型预测章节](../../doc/doc_ch/inference_ppocr.md)，将训练好的模型导出为推理模型。模型导出之后，假设放在`inference`目录下，则目录结构如下。
-
-```
-inference/
-|-- det_db
-|   |--inference.pdiparams
-|   |--inference.pdmodel
-|-- rec_rcnn
-|   |--inference.pdiparams
-|   |--inference.pdmodel
-|-- cls
-|   |--inference.pdiparams
-|   |--inference.pdmodel
-|-- table
-|   |--inference.pdiparams
-|   |--inference.pdmodel
-|-- layout
-|   |--inference.pdiparams
-|   |--inference.pdmodel
-```
-
-<a name="22"></a>
-
-### 2.2 编译PaddleOCR C++预测demo
-
-编译命令如下，其中Paddle C++预测库、opencv等其他依赖库的地址需要换成自己机器上的实际地址。
-
-```shell
-sh tools/build.sh
-```
-
-具体的，需要修改`tools/build.sh`中环境路径，相关内容如下：
-
-```shell
-OPENCV_DIR=your_opencv_dir
-LIB_DIR=your_paddle_inference_dir
-CUDA_LIB_DIR=your_cuda_lib_dir
-CUDNN_LIB_DIR=/your_cudnn_lib_dir
-```
-
-其中，`OPENCV_DIR`为opencv编译安装的地址；`LIB_DIR`为下载(`paddle_inference`文件夹)或者编译生成的Paddle预测库地址(`build/paddle_inference_install_dir`文件夹)；`CUDA_LIB_DIR`为cuda库文件地址，在docker中为`/usr/local/cuda/lib64`；`CUDNN_LIB_DIR`为cudnn库文件地址，在docker中为`/usr/lib/x86_64-linux-gnu/`。**注意：以上路径都写绝对路径，不要写相对路径。**
-
-
-编译完成之后，会在`build`文件夹下生成一个名为`ppocr`的可执行文件。
-
-<a name="23"></a>
-
-### 2.3 运行demo
-
-本demo支持系统串联调用，也支持单个功能的调用，如，只使用检测或识别功能。
-
-**注意** ppocr默认使用`PP-OCRv3`模型，识别模型使用的输入shape为`3,48,320`, 如需使用旧版本的PP-OCR模型，则需要设置参数`--rec_img_h=32`。
-
-
-运行方式：
-```shell
-./build/ppocr [--param1] [--param2] [...]
-```
-具体命令如下：
-
-##### 1. 检测+分类+识别：
-```shell
-./build/ppocr --det_model_dir=inference/det_db \
-    --rec_model_dir=inference/rec_rcnn \
-    --cls_model_dir=inference/cls \
-    --image_dir=../../doc/imgs/12.jpg \
-    --use_angle_cls=true \
-    --det=true \
-    --rec=true \
-    --cls=true \
-```
-
-##### 2. 检测+识别：
-```shell
-./build/ppocr --det_model_dir=inference/det_db \
-    --rec_model_dir=inference/rec_rcnn \
-    --image_dir=../../doc/imgs/12.jpg \
-    --use_angle_cls=false \
-    --det=true \
-    --rec=true \
-    --cls=false \
-```
-
-##### 3. 检测：
-```shell
-./build/ppocr --det_model_dir=inference/det_db \
-    --image_dir=../../doc/imgs/12.jpg \
-    --det=true \
-    --rec=false
-```
-
-##### 4. 分类+识别：
-```shell
-./build/ppocr --rec_model_dir=inference/rec_rcnn \
-    --cls_model_dir=inference/cls \
-    --image_dir=../../doc/imgs_words/ch/word_1.jpg \
-    --use_angle_cls=true \
-    --det=false \
-    --rec=true \
-    --cls=true \
-```
-
-##### 5. 识别：
-```shell
-./build/ppocr --rec_model_dir=inference/rec_rcnn \
-    --image_dir=../../doc/imgs_words/ch/word_1.jpg \
-    --use_angle_cls=false \
-    --det=false \
-    --rec=true \
-    --cls=false \
-```
-
-##### 6. 分类：
-```shell
-./build/ppocr --cls_model_dir=inference/cls \
-    --cls_model_dir=inference/cls \
-    --image_dir=../../doc/imgs_words/ch/word_1.jpg \
-    --use_angle_cls=true \
-    --det=false \
-    --rec=false \
-    --cls=true \
-```
-
-##### 7. 版面分析+表格识别
-```shell
-./build/ppocr --det_model_dir=inference/det_db \
-    --rec_model_dir=inference/rec_rcnn \
-    --table_model_dir=inference/table \
-    --image_dir=../../ppstructure/docs/table/table.jpg \
-    --layout_model_dir=inference/layout \
-    --type=structure \
-    --table=true \
-    --layout=true
-```
-
-##### 8. 版面分析
-```shell
-./build/ppocr --layout_model_dir=inference/layout \
-    --image_dir=../../ppstructure/docs/table/1.png \
-    --type=structure \
-    --table=false \
-    --layout=true \
-    --det=false \
-    --rec=false
-```
-
-##### 9. 表格识别
-```shell
-./build/ppocr --det_model_dir=inference/det_db \
-    --rec_model_dir=inference/rec_rcnn \
-    --table_model_dir=inference/table \
-    --image_dir=../../ppstructure/docs/table/table.jpg \
-    --type=structure \
-    --table=true
-```
-
-更多支持的可调节参数解释如下：
-
-- 通用参数
-
-|参数名称|类型|默认参数|意义|
-| :---: | :---: | :---: | :---: |
-|use_gpu|bool|false|是否使用GPU|
-|gpu_id|int|0|GPU id，使用GPU时有效|
-|gpu_mem|int|4000|申请的GPU内存|
-|cpu_math_library_num_threads|int|10|CPU预测时的线程数，在机器核数充足的情况下，该值越大，预测速度越快|
-|enable_mkldnn|bool|true|是否使用mkldnn库|
-|output|str|./output|可视化结果保存的路径|
-
-- 前向相关
-
-|参数名称|类型|默认参数|意义|
-| :---: | :---: | :---: | :---: |
-|det|bool|true|前向是否执行文字检测|
-|rec|bool|true|前向是否执行文字识别|
-|cls|bool|false|前向是否执行文字方向分类|
-
-
-- 检测模型相关
-
-|参数名称|类型|默认参数|意义|
-| :---: | :---: | :---: | :---: |
-|det_model_dir|string|-|检测模型inference model地址|
-|max_side_len|int|960|输入图像长宽大于960时，等比例缩放图像，使得图像最长边为960|
-|det_db_thresh|float|0.3|用于过滤DB预测的二值化图像，设置为0.-0.3对结果影响不明显|
-|det_db_box_thresh|float|0.5|DB后处理过滤box的阈值，如果检测存在漏框情况，可酌情减小|
-|det_db_unclip_ratio|float|1.6|表示文本框的紧致程度，越小则文本框更靠近文本|
-|det_db_score_mode|string|slow|slow:使用多边形框计算bbox score，fast:使用矩形框计算。矩形框计算速度更快，多边形框对弯曲文本区域计算更准确。|
-|visualize|bool|true|是否对结果进行可视化，为1时，预测结果会保存在`output`字段指定的文件夹下和输入图像同名的图像上。|
-
-- 方向分类器相关
-
-|参数名称|类型|默认参数|意义|
-| :---: | :---: | :---: | :---: |
-|use_angle_cls|bool|false|是否使用方向分类器|
-|cls_model_dir|string|-|方向分类器inference model地址|
-|cls_thresh|float|0.9|方向分类器的得分阈值|
-|cls_batch_num|int|1|方向分类器batchsize|
-
-- 文字识别模型相关
-
-|参数名称|类型|默认参数|意义|
-| :---: | :---: | :---: | :---: |
-|rec_model_dir|string|-|文字识别模型inference model地址|
-|rec_char_dict_path|string|../../ppocr/utils/ppocr_keys_v1.txt|字典文件|
-|rec_batch_num|int|6|文字识别模型batchsize|
-|rec_img_h|int|48|文字识别模型输入图像高度|
-|rec_img_w|int|320|文字识别模型输入图像宽度|
-
-
-- 版面分析模型相关
-
-|参数名称|类型|默认参数|意义|
-| :---: | :---: | :---: | :---: |
-|layout_model_dir|string|-|版面分析模型inference model地址|
-|layout_dict_path|string|../../ppocr/utils/dict/layout_dict/layout_publaynet_dict.txt|字典文件|
-|layout_score_threshold|float|0.5|检测框的分数阈值|
-|layout_nms_threshold|float|0.5|nms的阈值|
-
-
-- 表格识别模型相关
-
-|参数名称|类型|默认参数|意义|
-| :---: | :---: | :---: | :---: |
-|table_model_dir|string|-|表格识别模型inference model地址|
-|table_char_dict_path|string|../../ppocr/utils/dict/table_structure_dict_ch.txt|字典文件|
-|table_max_len|int|488|表格识别模型输入图像长边大小，最终网络输入图像大小为（table_max_len，table_max_len）|
-|merge_no_span_structure|bool|true|是否合并<td> 和 </td> 为<td></td>|
-
-
-* PaddleOCR也支持多语言的预测，更多支持的语言和模型可以参考[识别文档](../../doc/doc_ch/recognition.md)中的多语言字典与模型部分，如果希望进行多语言预测，只需将修改`rec_char_dict_path`（字典文件路径）以及`rec_model_dir`（inference模型路径）字段即可。
-
-最终屏幕上会输出检测结果如下。
-
-- ocr
-
-```bash
-predict img: ../../doc/imgs/12.jpg
-../../doc/imgs/12.jpg
-0       det boxes: [[74,553],[427,542],[428,571],[75,582]] rec text: 打浦路252935号 rec score: 0.947724
-1       det boxes: [[23,507],[513,488],[515,529],[24,548]] rec text: 绿洲仕格维花园公寓 rec score: 0.993728
-2       det boxes: [[187,456],[399,448],[400,480],[188,488]] rec text: 打浦路15号 rec score: 0.964994
-3       det boxes: [[42,413],[483,391],[484,428],[43,450]] rec text: 上海斯格威铂尔大酒店 rec score: 0.980086
-The detection visualized image saved in ./output//12.jpg
-```
-
-- layout+table
-
-```bash
-predict img: ../../ppstructure/docs/table/1.png
-0       type: text, region: [12,729,410,848], score: 0.781044, res: count of ocr result is : 7
-********** print ocr result **********
-0       det boxes: [[4,1],[79,1],[79,12],[4,12]] rec text: CTW1500. rec score: 0.769472
-...
-6       det boxes: [[4,99],[391,99],[391,112],[4,112]] rec text: sate-of-the-artmethods[12.34.36l.ourapproachachieves rec score: 0.90414
-********** end print ocr result **********
-1       type: text, region: [69,342,342,359], score: 0.703666, res: count of ocr result is : 1
-********** print ocr result **********
-0       det boxes: [[8,2],[269,2],[269,13],[8,13]] rec text: Table6.Experimentalresults on CTW-1500 rec score: 0.890454
-********** end print ocr result **********
-2       type: text, region: [70,316,706,332], score: 0.659738, res: count of ocr result is : 2
-********** print ocr result **********
-0       det boxes: [[373,2],[630,2],[630,11],[373,11]] rec text: oroposals.andthegreencontoursarefinal rec score: 0.919729
-1       det boxes: [[8,3],[357,3],[357,11],[8,11]] rec text: Visualexperimentalresultshebluecontoursareboundar rec score: 0.915963
-********** end print ocr result **********
-3       type: text, region: [489,342,789,359], score: 0.630538, res: count of ocr result is : 1
-********** print ocr result **********
-0       det boxes: [[8,2],[294,2],[294,14],[8,14]] rec text: Table7.Experimentalresults onMSRA-TD500 rec score: 0.942251
-********** end print ocr result **********
-4       type: text, region: [444,751,841,848], score: 0.607345, res: count of ocr result is : 5
-********** print ocr result **********
-0       det boxes: [[19,3],[389,3],[389,17],[19,17]] rec text: Inthispaper,weproposeanovel adaptivebound rec score: 0.941031
-1       det boxes: [[4,22],[390,22],[390,36],[4,36]] rec text: aryproposalnetworkforarbitraryshapetextdetection rec score: 0.960172
-2       det boxes: [[4,42],[392,42],[392,56],[4,56]] rec text: whichadoptanboundaryproposalmodeltogeneratecoarse rec score: 0.934647
-3       det boxes: [[4,61],[389,61],[389,75],[4,75]] rec text: ooundaryproposals,andthenadoptanadaptiveboundary rec score: 0.946296
-4       det boxes: [[5,80],[387,80],[387,93],[5,93]] rec text: leformationmodelcombinedwithGCNandRNNtoper rec score: 0.952401
-********** end print ocr result **********
-5       type: title, region: [444,705,564,724], score: 0.785429, res: count of ocr result is : 1
-********** print ocr result **********
-0       det boxes: [[6,2],[113,2],[113,14],[6,14]] rec text: 5.Conclusion rec score: 0.856903
-********** end print ocr result **********
-6       type: table, region: [14,360,402,711], score: 0.963643, res: <html><body><table><thead><tr><td>Methods</td><td>Ext</td><td>R</td><td>P</td><td>F</td><td>FPS</td></tr></thead><tbody><tr><td>TextSnake [18]</td><td>Syn</td><td>85.3</td><td>67.9</td><td>75.6</td><td></td></tr><tr><td>CSE [17]</td><td>MiLT</td><td>76.1</td><td>78.7</td><td>77.4</td><td>0.38</td></tr><tr><td>LOMO[40]</td><td>Syn</td><td>76.5</td><td>85.7</td><td>80.8</td><td>4.4</td></tr><tr><td>ATRR[35]</td><td>Sy-</td><td>80.2</td><td>80.1</td><td>80.1</td><td>-</td></tr><tr><td>SegLink++ [28]</td><td>Syn</td><td>79.8</td><td>82.8</td><td>81.3</td><td>-</td></tr><tr><td>TextField [37]</td><td>Syn</td><td>79.8</td><td>83.0</td><td>81.4</td><td>6.0</td></tr><tr><td>MSR[38]</td><td>Syn</td><td>79.0</td><td>84.1</td><td>81.5</td><td>4.3</td></tr><tr><td>PSENet-1s [33]</td><td>MLT</td><td>79.7</td><td>84.8</td><td>82.2</td><td>3.9</td></tr><tr><td>DB [12]</td><td>Syn</td><td>80.2</td><td>86.9</td><td>83.4</td><td>22.0</td></tr><tr><td>CRAFT [2]</td><td>Syn</td><td>81.1</td><td>86.0</td><td>83.5</td><td>-</td></tr><tr><td>TextDragon [5]</td><td>MLT+</td><td>82.8</td><td>84.5</td><td>83.6</td><td></td></tr><tr><td>PAN [34]</td><td>Syn</td><td>81.2</td><td>86.4</td><td>83.7</td><td>39.8</td></tr><tr><td>ContourNet [36]</td><td></td><td>84.1</td><td>83.7</td><td>83.9</td><td>4.5</td></tr><tr><td>DRRG [41]</td><td>MLT</td><td>83.02</td><td>85.93</td><td>84.45</td><td>-</td></tr><tr><td>TextPerception[23]</td><td>Syn</td><td>81.9</td><td>87.5</td><td>84.6</td><td></td></tr><tr><td>Ours</td><td> Syn</td><td>80.57</td><td>87.66</td><td>83.97</td><td>12.08</td></tr><tr><td>Ours</td><td></td><td>81.45</td><td>87.81</td><td>84.51</td><td>12.15</td></tr><tr><td>Ours</td><td>MLT</td><td>83.60</td><td>86.45</td><td>85.00</td><td>12.21</td></tr></tbody></table></body></html>
-The table visualized image saved in ./output//6_1.png
-7       type: table, region: [462,359,820,657], score: 0.953917, res: <html><body><table><thead><tr><td>Methods</td><td>R</td><td>P</td><td>F</td><td>FPS</td></tr></thead><tbody><tr><td>SegLink [26]</td><td>70.0</td><td>86.0</td><td>77.0</td><td>8.9</td></tr><tr><td>PixelLink [4]</td><td>73.2</td><td>83.0</td><td>77.8</td><td>-</td></tr><tr><td>TextSnake [18]</td><td>73.9</td><td>83.2</td><td>78.3</td><td>1.1</td></tr><tr><td>TextField [37]</td><td>75.9</td><td>87.4</td><td>81.3</td><td>5.2 </td></tr><tr><td>MSR[38]</td><td>76.7</td><td>87.4</td><td>81.7</td><td>-</td></tr><tr><td>FTSN[3]</td><td>77.1</td><td>87.6</td><td>82.0</td><td>:</td></tr><tr><td>LSE[30]</td><td>81.7</td><td>84.2</td><td>82.9</td><td></td></tr><tr><td>CRAFT [2]</td><td>78.2</td><td>88.2</td><td>82.9</td><td>8.6</td></tr><tr><td>MCN [16]</td><td>79</td><td>88</td><td>83</td><td>-</td></tr><tr><td>ATRR[35]</td><td>82.1</td><td>85.2</td><td>83.6</td><td>-</td></tr><tr><td>PAN [34]</td><td>83.8</td><td>84.4</td><td>84.1</td><td>30.2</td></tr><tr><td>DB[12]</td><td>79.2</td><td>91.5</td><td>84.9</td><td>32.0</td></tr><tr><td>DRRG [41]</td><td>82.30</td><td>88.05</td><td>85.08</td><td>-</td></tr><tr><td>Ours (SynText)</td><td>80.68</td><td>85.40</td><td>82.97</td><td>12.68</td></tr><tr><td>Ours (MLT-17)</td><td>84.54</td><td>86.62</td><td>85.57</td><td>12.31</td></tr></tbody></table></body></html>
-The table visualized image saved in ./output//7_1.png
-8       type: figure, region: [14,3,836,310], score: 0.969443, res: count of ocr result is : 26
-********** print ocr result **********
-0       det boxes: [[506,14],[539,15],[539,22],[506,21]] rec text: E rec score: 0.318073
-...
-25      det boxes: [[680,290],[759,288],[759,303],[680,305]] rec text: (d) CTW1500 rec score: 0.95911
-********** end print ocr result **********
-```
-
-<a name="3"></a>
-## 3. FAQ
-
- 1.  遇到报错 `unable to access 'https://github.com/LDOUBLEV/AutoLog.git/': gnutls_handshake() failed: The TLS connection was non-properly terminated.`， 将 `deploy/cpp_infer/external-cmake/auto-log.cmake` 中的github地址改为 https://gitee.com/Double_V/AutoLog 地址即可。
+1. TODO 

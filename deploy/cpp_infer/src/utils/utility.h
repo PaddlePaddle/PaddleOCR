@@ -83,7 +83,7 @@ class Utility {
   static absl::Status FileExists(const std::string& path);
 
   // TODO windows
-  static std::string GetCpuVendor();
+  static bool IsMkldnnAvailable();
 
   static void PrintShape(const cv::Mat& img);
 
@@ -104,7 +104,7 @@ class Utility {
   static absl::Status CreateDirectoryRecursive(const std::string& path);
   static absl::Status CreateDirectoryForFile(const std::string& filePath);
   static absl::StatusOr<std::string> SmartCreateDirectoryForImage(
-      const std::string& save_path, const std::string& input_path,
+      std::string save_path, const std::string& input_path,
       const std::string& suffix = "_res");
   static absl::StatusOr<std::string> SmartCreateDirectoryForJson(
       const std::string& save_path, const std::string& input_path,

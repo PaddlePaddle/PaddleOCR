@@ -87,17 +87,26 @@ BasePredictor::BasePredictor(const absl::optional<std::string>& model_dir,
     ;
   }
 
-  if (enable_mkldnn) {
+  if (enable_mkldnn && device_type == "cpu") {
     if (precision == "fp16") {
       INFOW(
           "When MKLDNN is enabled, FP16 precision is not supported.The "
           "computation will proceed with FP32 instead.");
     }
-    auto status_mkldnn = pp_option_ptr_->SetRunMode("mkldnn");
-    if (!status_mkldnn.ok()) {
-      INFOE("Failed to set run mode: %s", status_mkldnn.ToString().c_str());
-      exit(-1);
-      ;
+    if (Utility::IsMkldnnAvailable()) {
+      auto status_mkldnn = pp_option_ptr_->SetRunMode("mkldnn");
+      if (!status_mkldnn.ok()) {
+        INFOE("Failed to set run mode: %s", status_mkldnn.ToString().c_str());
+        exit(-1);
+        ;
+      }
+    } else {
+      INFOW("Mkldnn is not available, using paddle instead!");
+      auto status_paddle = pp_option_ptr_->SetRunMode("paddle");
+      if (!status_paddle.ok()) {
+        INFOE("Failed to set run mode: %s", status_paddle.ToString().c_str());
+        exit(-1);
+      }
     }
   } else if (precision == "fp16") {
     if (precision == "fp16") {
@@ -108,6 +117,12 @@ BasePredictor::BasePredictor(const absl::optional<std::string>& model_dir,
         exit(-1);
         ;
       }
+    }
+  } else {
+    auto status_paddle = pp_option_ptr_->SetRunMode("paddle");
+    if (!status_paddle.ok()) {
+      INFOE("Failed to set run mode: %s", status_paddle.ToString().c_str());
+      exit(-1);
     }
   }
   auto status_mkldnn_cache_capacityint =

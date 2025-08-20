@@ -38,7 +38,17 @@ class OCRResult : public BaseCVResult {
   static void DrawVerticalText(cv::Ptr<cv::freetype::FreeType2>& ft2,
                                cv::Mat& img, const std::string& text, int x,
                                int y, int font_height, cv::Scalar color,
-                               int line_spacing = 2);
+                               float line_spacing = 2);
+  static int CreateFont(cv::Ptr<cv::freetype::FreeType2>& ft2,
+                        const std::string& text, int region_height,
+                        int region_width);
+
+  static int CreateFontVertical(cv::Ptr<cv::freetype::FreeType2>& ft2,
+                                const std::string& text, int region_height,
+                                int region_width, float scale = 1.2f);
+  static cv::Size getActualCharSize(cv::Ptr<cv::freetype::FreeType2>& ft2,
+                                    const std::string& utf8_char,
+                                    int font_height);
 #endif
   static std::vector<cv::Point> GetMinareaRect(
       const std::vector<cv::Point>& points);

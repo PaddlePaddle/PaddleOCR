@@ -246,10 +246,17 @@ absl::Status _DocPreprocessorPipeline::CheckModelSettingsVaild(
 
 std::vector<std::unique_ptr<BaseCVResult>> DocPreprocessorPipeline::Predict(
     const std::vector<std::string>& input) {
+  if (thread_num_ == 1) {
+    return infer_->Predict(input);
+  }
   batch_sampler_ptr_ =
       std::unique_ptr<BaseBatchSampler>(new ImageBatchSampler(1));
   auto nomeaning = batch_sampler_ptr_->Apply(input);
   int input_num = nomeaning.value().size();
+  if (thread_num_ > input_num) {
+    INFOW("thread num exceed input num, will set %d", input_num);
+    thread_num_ = input_num;
+  }
   int infer_batch_num = input_num / thread_num_;
   auto status = batch_sampler_ptr_->SetBatchSize(infer_batch_num);
   if (!status.ok()) {

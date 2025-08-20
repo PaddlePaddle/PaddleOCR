@@ -15,7 +15,9 @@
 #include "result.h"
 
 #include <algorithm>
+#include <codecvt>
 #include <fstream>
+#include <locale>
 #include <random>
 #include <string>
 
@@ -153,10 +155,12 @@ cv::Mat OCRResult::DrawBoxTextFine(const cv::Size& img_size,
   int n = std::max(int(txt.size()), 1);
 
   int font_height = 10;
-  if (vertical_mode) {
-    font_height = std::max(int(box_height / (n * 1.2)), 10);
-  } else {
-    font_height = std::max(int(box_height * 0.8), 10);
+  if (!txt.empty()) {
+    if (vertical_mode) {
+      font_height = CreateFontVertical(ft2, txt, box_height, box_width);
+    } else {
+      font_height = CreateFont(ft2, txt, box_height, box_width);
+    }
   }
   cv::Mat img_text(box_height, box_width, CV_8UC3, cv::Scalar(255, 255, 255));
   int x = 0, y = 0;
@@ -185,19 +189,84 @@ cv::Mat OCRResult::DrawBoxTextFine(const cv::Size& img_size,
                       cv::BORDER_CONSTANT, cv::Scalar(255, 255, 255));
   return dst;
 }
+cv::Size OCRResult::getActualCharSize(cv::Ptr<cv::freetype::FreeType2>& ft2,
+                                      const std::string& utf8_char,
+                                      int font_height) {
+  cv::Mat temp = cv::Mat::zeros(300, 300, CV_8UC1);
 
+  cv::Point pos(100, 150);
+
+  ft2->putText(temp, utf8_char, pos, font_height, cv::Scalar(255), -1,
+               cv::LINE_AA, false);
+
+  std::vector<cv::Point> nonZeroPoints;
+  cv::findNonZero(temp, nonZeroPoints);
+
+  if (nonZeroPoints.empty()) {
+    return cv::Size(0, 0);
+  }
+
+  cv::Rect boundingRect = cv::boundingRect(nonZeroPoints);
+  return cv::Size(boundingRect.width, boundingRect.height);
+}
 void OCRResult::DrawVerticalText(cv::Ptr<cv::freetype::FreeType2>& ft2,
                                  cv::Mat& img, const std::string& text, int x,
                                  int y, int font_height, cv::Scalar color,
-                                 int line_spacing) {
-  for (size_t i = 0; i < text.length(); ++i) {
-    std::string ch = text.substr(i, 1);
-    ft2->putText(img, ch, cv::Point(x, y), font_height, color, -1, cv::LINE_AA,
-                 true);
+                                 float line_spacing) {
+  std::wstring wtext =
+      std::wstring_convert<std::codecvt_utf8<wchar_t>>().from_bytes(text);
+  for (size_t i = 0; i < wtext.size(); ++i) {
+    std::wstring single_char(1, wtext[i]);
+    std::string utf8_char =
+        std::wstring_convert<std::codecvt_utf8<wchar_t>>().to_bytes(
+            single_char);
+    ft2->putText(img, utf8_char, cv::Point(x, y), font_height, color, -1,
+                 cv::LINE_AA, true);
     int baseline = 0;
-    cv::Size size = ft2->getTextSize(ch, font_height, -1, &baseline);
-    y += size.height + line_spacing;
+    cv::Size size = ft2->getTextSize(utf8_char, font_height, -1, &baseline);
+    size.height += baseline;
+    y += size.height * 1.1 + line_spacing;
   }
+}
+int OCRResult::CreateFont(cv::Ptr<cv::freetype::FreeType2>& ft2,
+                          const std::string& text, int region_height,
+                          int region_width) {
+  int font_height = std::max(int(region_height * 0.8), 10);
+  int baseline = 0;
+  cv::Size text_size = ft2->getTextSize(text, font_height, -1, &baseline);
+  if (text_size.width > region_width) {
+    font_height =
+        static_cast<int>(font_height * region_width / text_size.width);
+    text_size = ft2->getTextSize(text, font_height, -1, &baseline);
+  }
+  return font_height;
+}
+int OCRResult::CreateFontVertical(cv::Ptr<cv::freetype::FreeType2>& ft2,
+                                  const std::string& text, int region_height,
+                                  int region_width, float scale) {
+  std::wstring_convert<std::codecvt_utf8<wchar_t>> conv;
+  std::wstring wtext = conv.from_bytes(text);
+  int n = static_cast<int>(wtext.length());
+  int baseFontSize = static_cast<int>(region_height / n * 0.8 * scale);
+  baseFontSize = std::max(baseFontSize, 10);
+
+  int maxCharWidth = 0;
+  for (size_t i = 0; i < wtext.length(); ++i) {
+    std::wstring singleChar(1, wtext[i]);
+    std::string utf8Char =
+        std::wstring_convert<std::codecvt_utf8<wchar_t>>().to_bytes(singleChar);
+    cv::Size textSize = getActualCharSize(ft2, utf8Char, baseFontSize);
+    maxCharWidth = std::max(maxCharWidth, textSize.width);
+  }
+
+  int finalFontSize = baseFontSize;
+  if (maxCharWidth > region_width) {
+    finalFontSize =
+        static_cast<int>(baseFontSize * region_width / maxCharWidth);
+    finalFontSize = std::max(finalFontSize, 10);
+  }
+
+  return finalFontSize;
 }
 #endif
 
@@ -337,4 +406,129 @@ void OCRResult::SaveToJson(const std::string& save_path) const {
   }
 }
 
-void OCRResult::Print() const { int a = 1; }  //*********
+void PrintDocPreprocessorPipelineResult(
+    const DocPreprocessorPipelineResult& doc) {
+  std::cout << "{\n";
+  std::cout << "  \"input_path\": \"" << doc.input_path << "\",\n";
+  std::cout << "  \"model_settings\": {";
+  bool first = true;
+  for (const auto& kv : doc.model_settings) {
+    if (!first) std::cout << ", ";
+    std::cout << "\"" << kv.first << "\": " << (kv.second ? "true" : "false");
+    first = false;
+  }
+  std::cout << "},\n";
+  std::cout << "  \"angle\": " << doc.angle << "\n";
+  std::cout << "}";
+}
+
+void PrintPolys(const std::vector<std::vector<cv::Point2f>>& polys) {
+  std::cout << "[";
+  for (size_t i = 0; i < polys.size(); ++i) {
+    if (i != 0) std::cout << ",\n ";
+    std::cout << "[";
+    for (size_t j = 0; j < polys[i].size(); ++j) {
+      if (j != 0) std::cout << ", ";
+      std::cout << "[" << polys[i][j].x << ", " << polys[i][j].y << "]";
+    }
+    std::cout << "]";
+  }
+  std::cout << "]";
+}
+
+void PrintModelSettings(const std::unordered_map<std::string, bool>& ms) {
+  std::cout << "{";
+  bool first = true;
+  for (const auto& kv : ms) {
+    if (!first) std::cout << ", ";
+    std::cout << "\"" << kv.first << "\": " << (kv.second ? "true" : "false");
+    first = false;
+  }
+  std::cout << "}";
+}
+
+void PrintArray(const std::vector<float>& arr) {
+  std::cout << "[";
+  for (size_t i = 0; i < arr.size(); ++i) {
+    if (i != 0) std::cout << ", ";
+    std::cout << arr[i];
+  }
+  std::cout << "]";
+}
+
+void PrintStringArray(const std::vector<std::string>& arr) {
+  std::cout << "[";
+  for (size_t i = 0; i < arr.size(); ++i) {
+    if (i != 0) std::cout << ", ";
+    std::cout << "\"" << arr[i] << "\"";
+  }
+  std::cout << "]";
+}
+
+void PrintIntArray(const std::vector<int>& arr) {
+  std::cout << "[";
+  for (size_t i = 0; i < arr.size(); ++i) {
+    if (i != 0) std::cout << ", ";
+    std::cout << arr[i];
+  }
+  std::cout << "]";
+}
+
+void PrintRecBoxes(const std::vector<std::array<float, 4>>& arr) {
+  std::cout << "[";
+  for (size_t i = 0; i < arr.size(); ++i) {
+    if (i != 0) std::cout << ", ";
+    std::cout << "[" << arr[i][0] << ", " << arr[i][1] << ", " << arr[i][2]
+              << ", " << arr[i][3] << "]";
+  }
+  std::cout << "]";
+}
+
+// 假设TextDetParams有合适的输出函数
+void PrintTextDetParams(const TextDetParams& p) {
+  std::cout << "{";
+  std::cout << "\"limit_side_len\": " << p.text_det_limit_side_len << ", ";
+  std::cout << "\"limit_type\": \"" << p.text_det_limit_type << "\", ";
+  std::cout << "\"thresh\": " << p.text_det_thresh << ", ";
+  std::cout << "\"max_side_limit\": " << p.text_det_max_side_limit << ", ";
+  std::cout << "\"box_thresh\": " << p.text_det_box_thresh << ", ";
+  std::cout << "\"unclip_ratio\": " << p.text_det_unclip_ratio;
+  std::cout << "}";
+}
+
+void OCRResult::Print() const {
+  std::cout << "{\n";
+  std::cout << "  \"input_path\": \"" << pipeline_result_.input_path << "\",\n";
+  std::cout << "  \"doc_preprocessor_res\": ";
+  PrintDocPreprocessorPipelineResult(pipeline_result_.doc_preprocessor_res);
+  std::cout << ",\n";
+  std::cout << "  \"dt_polys\": ";
+  PrintPolys(pipeline_result_.dt_polys);
+  std::cout << ",\n";
+  std::cout << "  \"model_settings\": ";
+  PrintModelSettings(pipeline_result_.model_settings);
+  std::cout << ",\n";
+  std::cout << "  \"text_det_params\": ";
+  PrintTextDetParams(pipeline_result_.text_det_params);
+  std::cout << ",\n";
+  std::cout << "  \"text_type\": \"" << pipeline_result_.text_type << "\",\n";
+  std::cout << "  \"text_rec_score_thresh\": "
+            << pipeline_result_.text_rec_score_thresh << ",\n";
+  std::cout << "  \"rec_texts\": ";
+  PrintStringArray(pipeline_result_.rec_texts);
+  std::cout << ",\n";
+  std::cout << "  \"rec_scores\": ";
+  PrintArray(pipeline_result_.rec_scores);
+  std::cout << ",\n";
+  std::cout << "  \"textline_orientation_angles\": ";
+  PrintIntArray(pipeline_result_.textline_orientation_angles);
+  std::cout << ",\n";
+  std::cout << "  \"rec_polys\": ";
+  PrintPolys(pipeline_result_.rec_polys);
+  std::cout << ",\n";
+  std::cout << "  \"rec_boxes\": ";
+  PrintRecBoxes(pipeline_result_.rec_boxes);
+  std::cout << ",\n";
+  std::cout << "  \"vis_fonts\": \"" << pipeline_result_.vis_fonts << "\"\n";
+  std::cout << "}\n";
+}

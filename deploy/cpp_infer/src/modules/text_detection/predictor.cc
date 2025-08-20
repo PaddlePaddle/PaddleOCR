@@ -32,8 +32,8 @@ TextDetPredictor::TextDetPredictor(const TextDetPredictorParams& params)
 
 absl::Status TextDetPredictor::Build() {
   const auto& pre_tfs = config_.PreProcessOpInfo();
-  Register<ReadImage>("Read", pre_tfs.at("DecodeImage.img_mode"));
-
+  // Register<ReadImage>("Read", pre_tfs.at("DecodeImage.img_mode"));
+  Register<ReadImage>("Read");
   DetResizeForTestParam resize_param;
   resize_param.input_shape = params_.input_shape;
   resize_param.max_side_limit = params_.max_side_limit;

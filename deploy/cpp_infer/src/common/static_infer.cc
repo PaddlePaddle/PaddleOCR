@@ -184,9 +184,7 @@ absl::Status PaddleInfer::CheckRunMode() {
     }
   }
   if (model_name_ == "LaTeX_OCR_rec" && option_.DeviceType() == "cpu") {
-    std::string vendor_id_raw = Utility::GetCpuVendor();
-    if (vendor_id_raw.find("GenuineIntel") != std::string::npos &&
-        option_.RunMode() != "mkldnn") {
+    if (Utility::IsMkldnnAvailable() && option_.RunMode() != "mkldnn") {
       INFOE(
           "Now, the `LaTeX_OCR_rec` model only support `mkldnn` mode when "
           "running on Intel CPU devices. So using `mkldnn` instead.");

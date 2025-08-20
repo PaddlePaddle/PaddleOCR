@@ -98,12 +98,18 @@ class DocPreprocessorPipeline
  public:
   DocPreprocessorPipeline(const DocPreprocessorPipelineParams& params)
       : AutoParallelSimpleInferencePipeline(params),
-        thread_num_(params.thread_num){};
+        thread_num_(params.thread_num) {
+    if (thread_num_ == 1) {
+      infer_ =
+          std::unique_ptr<BasePipeline>(new _DocPreprocessorPipeline(params));
+    }
+  };
 
   std::vector<std::unique_ptr<BaseCVResult>> Predict(
       const std::vector<std::string>& input) override;
 
  private:
   int thread_num_;
+  std::unique_ptr<BasePipeline> infer_;
   std::unique_ptr<BaseBatchSampler> batch_sampler_ptr_;
 };

@@ -47,6 +47,21 @@ void TextLineOrientationClassification::OverrideConfig() {
   if (!FLAGS_textline_orientation_model_dir.empty()) {
     params_.model_dir = FLAGS_textline_orientation_model_dir;
   }
+  if (!FLAGS_device.empty()) {
+    params_.device = FLAGS_device;
+  }
+  if (!FLAGS_precision.empty()) {
+    params_.precision = FLAGS_precision;
+  }
+  if (!FLAGS_enable_mkldnn.empty()) {
+    params_.enable_mkldnn = Utility::StringToBool(FLAGS_enable_mkldnn);
+  }
+  if (!FLAGS_mkldnn_cache_capacity.empty()) {
+    params_.mkldnn_cache_capacity = std::stoi(FLAGS_mkldnn_cache_capacity);
+  }
+  if (!FLAGS_cpu_threads.empty()) {
+    params_.cpu_threads = std::stoi(FLAGS_cpu_threads);
+  }
 }
 
 absl::Status TextLineOrientationClassification::CheckParams() {
