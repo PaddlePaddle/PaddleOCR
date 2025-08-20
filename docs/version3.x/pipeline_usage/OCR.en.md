@@ -386,6 +386,16 @@ SVTRv2 is a server-side text recognition model developed by the OpenOCR team fro
 <th>Description</th>
 </tr>
 <tr>
+<td>en_PP-OCRv5_mobile_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+en_PP-OCRv5_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/en_PP-OCRv5_mobile_rec_pretrained.pdparams">Training Model</a></td>
+<td> 85.25</td>
+<td>-</td>
+<td>-</td>
+<td>7.5</td>
+<td>The ultra-lightweight English text recognition model, trained based on the PP-OCRv5 framework, further improves the accuracy of English text recognition, optimizes the omission of spaces, and enhances the recognition performance on handwritten English text.</td>
+</tr>
+<tr>
 <td>en_PP-OCRv4_mobile_rec</td>
 <td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
 en_PP-OCRv4_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/en_PP-OCRv4_mobile_rec_pretrained.pdparams">Training Model</a></td>
@@ -447,6 +457,26 @@ eslav_PP-OCRv5_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle
 <td>21.20 / 5.32</td>
 <td>14</td>
 <td>An East Slavic language recognition model trained based on the PP-OCRv5 recognition framework. Supports East Slavic languages, English and numeric text recognition.</td>
+</tr>
+<tr>
+<td>th_PP-OCRv5_mobile_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+th_PP-OCRv5_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/th_PP-OCRv5_mobile_rec_pretrained.pdparams">Training Model</a></td>
+<td>82.68</td>
+<td>-</td>
+<td>-</td>
+<td>7.5</td>
+<td>The Thai recognition model trained based on the PP-OCRv5 recognition model supports recognition of Thai, English, and numbers.</td>
+</tr>
+<tr>
+<td>el_PP-OCRv5_mobile_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+el_PP-OCRv5_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/el_PP-OCRv5_mobile_rec_pretrained.pdparams">Training Model</a></td>
+<td>89.28</td>
+<td>-</td>
+<td>-</td>
+<td>7.5</td>
+<td>The Greek recognition model trained based on the PP-OCRv5 recognition model supports recognition of Greek, English, and numbers.</td>
 </tr>
 <tr>
 <td>korean_PP-OCRv3_mobile_rec</td>
@@ -807,6 +837,12 @@ Any floating-point number greater than <code>0</code>. If not set, the pipeline'
 . If not set, the pipeline's initialized value for this parameter (defaults to <code>0.0</code>, i.e., no threshold) will be used.
 </td>
 <td><code>float</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>return_word_box</code></td>
+<td>Whether to return word-level boxes. If not set, the pipeline's initialized value for this parameter (defaults to <code>False</code>) will be used.</td>
+<td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>

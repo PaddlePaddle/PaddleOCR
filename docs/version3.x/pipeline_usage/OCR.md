@@ -387,6 +387,16 @@ SVTRv2 是一种由复旦大学视觉与学习实验室（FVL）的OpenOCR团队
 <th>介绍</th>
 </tr>
 <tr>
+<td>en_PP-OCRv5_mobile_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+en_PP-OCRv5_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/en_PP-OCRv5_mobile_rec_pretrained.pdparams">训练模型</a></td>
+<td> 85.25</td>
+<td>-</td>
+<td>-</td>
+<td>7.5</td>
+<td>基于PP-OCRv5识别模型训练得到的超轻量级英文识别模型，进一步提升英文文本的识别准确率，优化空格漏识别的问题，并提高对手写英文文本的识别效果。</td>
+</tr>
+<tr>
 <td>en_PP-OCRv4_mobile_rec</td>
 <td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
 en_PP-OCRv4_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/en_PP-OCRv4_mobile_rec_pretrained.pdparams">训练模型</a></td>
@@ -448,6 +458,26 @@ eslav_PP-OCRv5_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-mo
 <td>21.20 / 5.32</td>
 <td>14</td>
 <td>基于PP-OCRv5识别模型训练得到的东斯拉夫语言识别模型， 支持东斯拉夫语言、英文和数字识别</td>
+</tr>
+<tr>
+<td>th_PP-OCRv5_mobile_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+th_PP-OCRv5_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/th_PP-OCRv5_mobile_rec_pretrained.pdparams">训练模型</a></td>
+<td>82.68</td>
+<td>-</td>
+<td>-</td>
+<td>7.5</td>
+<td>基于PP-OCRv5识别模型训练得到的泰语识别模型， 支持泰语、英文和数字识别</td>
+</tr>
+<tr>
+<td>el_PP-OCRv5_mobile_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
+el_PP-OCRv5_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/el_PP-OCRv5_mobile_rec_pretrained.pdparams">训练模型</a></td>
+<td>89.28</td>
+<td>-</td>
+<td>-</td>
+<td>7.5</td>
+<td>基于PP-OCRv5识别模型训练得到的希腊语识别模型， 支持希腊语、英文和数字识别</td>
 </tr>
 <tr>
 <td>korean_PP-OCRv3_mobile_rec</td>
@@ -808,6 +838,11 @@ paddleocr ocr -i ./general_ocr_002.png --ocr_version PP-OCRv4
 </td>
 <td><code>float</code></td>
 <td></td>
+</tr>
+<tr>
+<td><code>return_word_box</code></td>
+<td>如果不设置，将使用产线初始化的该参数值，默认初始化为<code>False</code>。</td>
+<td><code>bool</code></td>
 </tr>
 <tr>
 <td><code>text_rec_input_shape</code></td>
