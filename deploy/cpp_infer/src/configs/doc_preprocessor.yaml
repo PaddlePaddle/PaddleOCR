@@ -1,0 +1,15 @@
+
+pipeline_name: doc_preprocessor
+
+use_doc_orientation_classify: True
+use_doc_unwarping: True
+batch_size: 1
+SubModules:
+  DocOrientationClassify:
+    module_name: doc_text_orientation
+    model_name: PP-LCNet_x1_0_doc_ori
+    model_dir: null
+  DocUnwarping:
+    module_name: image_unwarping
+    model_name: UVDoc
+    model_dir: null
