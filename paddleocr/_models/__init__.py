@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from .chart_parsing import ChartParsing
 from .doc_img_orientation_classification import DocImgOrientationClassification
 from .doc_vlm import DocVLM
 from .formula_recognition import FormulaRecognition
@@ -26,6 +27,7 @@ from .textline_orientation_classification import TextLineOrientationClassificati
 from .text_recognition import TextRecognition
 
 __all__ = [
+    "ChartParsing",
     "DocImgOrientationClassification",
     "DocVLM",
     "FormulaRecognition",
