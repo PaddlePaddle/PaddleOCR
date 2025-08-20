@@ -412,7 +412,7 @@ In this pipeline, you can choose the model you want to use based on the benchmar
 
 ## 2. Quick Start
 
-Before using the formula recognition pipeline locally, please ensure that you have completed the wheel package installation according to the [installation guide](../installation.en.md). Once installed, you can experience it locally via the command line or integrate it with Python.
+Before using the formula recognition pipeline locally, please ensure that you have completed the wheel package installation according to the [installation guide](../installation.en.md). If you prefer to install dependencies selectively, please refer to the relevant instructions in the installation documentation. The corresponding dependency group for this pipeline is `doc-parser`. Once installed, you can experience it locally via the command line or integrate it with Python.
 
 Please note: If you encounter issues such as the program becoming unresponsive, unexpected program termination, running out of memory resources, or extremely slow inference during execution, please try adjusting the configuration according to the documentation, such as disabling unnecessary features or using lighter-weight models.
 
@@ -1914,7 +1914,7 @@ use_layout_detection: true
 ......
 ```
 
-The pipeline configuration file includes not only the parameters supported by the PaddleOCR CLI and Python API but also advanced configurations. For detailed instructions, refer to the [PaddleX Pipeline Usage Overview](https://paddlepaddle.github.io/PaddleX/3.0/en/pipeline_usage/pipeline_develop_guide.html) and adjust the configurations as needed.  
+The pipeline configuration file includes not only the parameters supported by the PaddleOCR CLI and Python API but also advanced configurations. For detailed instructions, refer to the [PaddleX Pipeline Usage Overview](https://paddlepaddle.github.io/PaddleX/latest/en/pipeline_usage/pipeline_develop_guide.html) and adjust the configurations as needed.  
 
 3.Load the Configuration File in CLI  
 

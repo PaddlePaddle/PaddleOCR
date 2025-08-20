@@ -110,6 +110,7 @@ plugins:
             PP-ChatOCRv4简介: PP-ChatOCRv4 Introduction
             推理部署: Model Deploy
             高性能推理: High-Performance Inference
+            打包PaddleOCR项目: Package PaddleOCR Projects
             获取ONNX模型: Obtaining ONNX Models
             端侧部署: On-Device Deployment
             服务化部署: Serving Deployment
@@ -132,6 +133,7 @@ plugins:
             文档理解产线: Document Understanding Pipeline
             印章文本识别产线: Seal Text Recognition Pipeline
             通用表格识别v2产线: General Table Recognition v2 Pipeline
+            图表解析模块: Chart Parsing Module
             多硬件使用: Multi-Devices Usage
             PaddleOCR 多硬件使用指南: PaddleOCR Multi-Devices Usage Guide
             昇腾 NPU 飞桨安装教程: Ascend NPU PaddlePaddle Installation Tutorial
@@ -172,6 +174,7 @@ plugins:
             产线概述: Pipeline Overview
             基于Python或C++预测引擎推理: Python and CPP Inference
             MCP 服务器: MCP Server
+            产线并行推理: Parallel Inference for Pipelines
         # - locale: ja
         #   name: 日本語
         #   site_name: PaddleOCR ドキュメント
@@ -282,6 +285,9 @@ nav:
     - 服务化部署: version3.x/deployment/serving.md
     - 基于Python或C++预测引擎推理: version3.x/deployment/python_and_cpp_infer.md
     - MCP 服务器: version3.x/deployment/mcp_server.md
+    - 打包PaddleOCR项目: version3.x/deployment/packaging.md 
+    - 产线并行推理: version3.x/pipeline_usage/instructions/parallel_inference.md
+
   - 模块列表: 
     - 模块概述: version3.x/module_usage/module_overview.md
     - 文档图像方向分类模块: version3.x/module_usage/doc_img_orientation_classification.md
@@ -296,6 +302,7 @@ nav:
     - 文本图像矫正模块: version3.x/module_usage/text_image_unwarping.md
     - 文本行方向分类模块: version3.x/module_usage/textline_orientation_classification.md
     - 文本识别模块: version3.x/module_usage/text_recognition.md
+    - 图表解析模块: version3.x/module_usage/chart_parsing.md
   - 产线列表: 
     - 产线概述: version3.x/pipeline_usage/pipeline_overview.md
     - 公式识别产线: version3.x/pipeline_usage/formula_recognition.md
@@ -312,7 +319,6 @@ nav:
     - PaddleOCR 与 PaddleX: version3.x/paddleocr_and_paddlex.md
     - PaddleOCR 3.x 升级说明: update/upgrade_notes.md
     - 配置 PaddleOCR 推理包日志系统: version3.x/logging.md
-    - 产线并行推理: version3.x/pipeline_usage/instructions/parallel_inference.md
 
   - 低代码全流程开发:
       - 概述: version3.x/paddlex/overview.md

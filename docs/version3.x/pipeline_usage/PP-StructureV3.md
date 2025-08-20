@@ -8,7 +8,7 @@ comments: true
 
 版面解析是一种从文档图像中提取结构化信息的技术，主要用于将复杂的文档版面转换为机器可读的数据格式。这项技术在文档管理、信息提取和数据数字化等领域具有广泛的应用。版面解析通过结合光学字符识别（OCR）、图像处理和机器学习算法，能够识别和提取文档中的文本块、标题、段落、图片、表格以及其他版面元素。此过程通常包括版面分析、元素分析和数据格式化三个主要步骤，最终生成结构化的文档数据，提升数据处理的效率和准确性。<b>PP-StructureV3 产线在通用版面解析v1产线的基础上，强化了版面区域检测、表格识别、公式识别的能力，增加了图表理解能力和多栏阅读顺序的恢复能力、结果转换 Markdown 文件的能力，在多种文档数据中，表现优异，可以处理较复杂的文档数据。</b>本产线同时提供了灵活的服务化部署方式，支持在多种硬件上使用多种编程语言调用。不仅如此，本产线也提供了二次开发的能力，您可以基于本产线在您自己的数据集上训练调优，训练后的模型也可以无缝集成。
 
-<b>PP-StructureV3 产线中包含以下6个模块或子产线。每个模块或子产线均可独立进行训练和推理，并包含多个模型。有关详细信息，请点击相应链接以查看文档。</b>
+<b>PP-StructureV3 产线中包含以下7个模块或子产线。每个模块或子产线均可独立进行训练和推理，并包含多个模型。有关详细信息，请点击相应链接以查看文档。</b>
 
 - [版面区域检测模块](../module_usage/layout_detection.md)
 - [通用OCR子产线](./OCR.md)
@@ -16,6 +16,7 @@ comments: true
 - [表格识别子产线](./table_recognition_v2.md) （可选）
 - [印章文本识别子产线](./seal_recognition.md) （可选）
 - [公式识别子产线](./formula_recognition.md) （可选）
+- [图表解析模块](../module_usage/chart_parsing.md) （可选）
 
 在本产线中，您可以根据下方的基准测试数据选择使用的模型。
 
@@ -1036,7 +1037,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://padd
 
 ## 2. 快速开始
 
-在本地使用 PP-StructureV3 产线前，请确保您已经按照[安装教程](../installation.md)完成了wheel包安装。安装完成后，可以在本地使用命令行体验或 Python 集成。
+在本地使用 PP-StructureV3 产线前，请确保您已经按照[安装教程](../installation.md)完成了wheel包安装。安装完成后，可以在本地使用命令行体验或 Python 集成。如果您希望选择性安装依赖，请参考安装教程中的相关说明。该产线对应的依赖分组为 `doc-parser`。
 
 **请注意，如果在执行过程中遇到程序失去响应、程序异常退出、内存资源耗尽、推理速度极慢等问题，请尝试参考文档调整配置，例如关闭不需要使用的功能或使用更轻量的模型。**
 
@@ -1453,15 +1454,15 @@ paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --device gpu
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
-<td>是否使用文档方向分类模块。</td>
+<td>是否加载并使用文档方向分类模块。如果不设置，将使用产线初始化的该参数值，默认初始化为<code>False</code>。</td>
 <td><code>bool</code></td>
-<td><code>False</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
-<td>是否使用文本图像矫正模块。</td>
+<td>是否加载并使用文本图像矫正模块。如果不设置，将使用产线初始化的该参数值，默认初始化为<code>False</code>。</td>
 <td><code>bool</code></td>
-<td><code>False</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>use_textline_orientation</code></td>
@@ -1489,13 +1490,13 @@ paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --device gpu
 </tr>
 <tr>
 <td><code>use_chart_recognition</code></td>
-<td>是否使用图表解析模块。</td>
+<td>是否加载并使用文档区域检测模块。如果不设置，将使用产线初始化的该参数值，默认初始化为<code>False</code>。</td>
 <td><code>bool</code></td>
-<td><code>False</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>use_region_detection</code></td>
-<td>是否加载并使用文档区域检测子产线。如果不设置，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
+<td>是否加载并使用文档区域检测模块。如果不设置，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
@@ -2075,13 +2076,13 @@ for item in markdown_images:
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
-<td>是否加载并使用文档方向分类模块。如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
+<td>是否加载并使用文档方向分类模块。如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>False</code>。</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
-<td>是否加载并使用文本图像矫正模块。如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
+<td>是否加载并使用文本图像矫正模块。如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>False</code>。</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -2111,13 +2112,13 @@ for item in markdown_images:
 </tr>
 <tr>
 <td><code>use_chart_recognition</code></td>
-<td>是否加载并使用图表解析模块。如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
+<td>是否加载并使用图表解析模块。如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>False</code>。</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_region_detection</code></td>
-<td>是否加载并使用文档区域检测子产线。如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
+<td>是否加载并使用文档区域检测模块。如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -2217,13 +2218,13 @@ MKL-DNN 缓存容量。
 <td><code>use_doc_orientation_classify</code></td>
 <td>是否在推理时使用文档方向分类模块。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
 <td><code>bool|None</code></td>
-<td><code>False</code></td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
 <td>是否在推理时使用文本图像矫正模块。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
 <td><code>bool|None</code></td>
-<td><code>False</code></td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_textline_orientation</code></td>
@@ -2251,13 +2252,13 @@ MKL-DNN 缓存容量。
 </tr>
 <tr>
 <td><code>use_chart_recognition</code></td>
-<td>是否使用图表解析模块。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td>是否在推理时使用图表解析模块。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
 <td><code>bool|None</code></td>
-<td><code>False</code></td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_region_detection</code></td>
-<td>是否使用文档区域检测子产线。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td>是否在推理时使用文档区域检测模块。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -2769,8 +2770,20 @@ MKL-DNN 缓存容量。
 <td>否</td>
 </tr>
 <tr>
+<td><code>useChartRecognition</code></td>
+<td><code>boolean</code> | <code>null</code></td>
+<td>请参阅产线对象中 <code>predict</code> 方法的 <code>use_chart_recognition</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>useRegionDetection</code></td>
+<td><code>boolean</code> | <code>null</code></td>
+<td>请参阅产线对象中 <code>predict</code> 方法的 <code>use_region_detection</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
 <td><code>layoutThreshold</code></td>
-<td><code>number</code> | <code>null</code></td>
+<td><code>number</code> | <code>object</code> | </code><code>null</code></td>
 <td>请参阅产线对象中 <code>predict</code> 方法的 <code>layout_threshold</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
@@ -2865,9 +2878,27 @@ MKL-DNN 缓存容量。
 <td>否</td>
 </tr>
 <tr>
-<td><code>useTableCellsOcrResults</code></td>
+<td><code>useWiredTableCellsTransToHtml</code></td>
 <td><code>boolean</code></td>
-<td>请参阅产线对象中 <code>predict</code> 方法的 <code>use_table_cells_ocr_results</code> 参数相关说明。</td>
+<td>请参阅产线对象中 <code>predict</code> 方法的 <code>use_wired_table_cells_trans_to_html</code> 参数相关说明。</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>useWirelessTableCellsTransToHtml</code></td>
+<td><code>boolean</code></td>
+<td>请参阅产线对象中 <code>predict</code> 方法的 <code>use_wireless_table_cells_trans_to_html</code> 参数相关说明。</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>useTableOrientationClassify</code></td>
+<td><code>boolean</code></td>
+<td>请参阅产线对象中 <code>predict</code> 方法的 <code>use_table_orientation_classify</code> 参数相关说明。</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>useOcrResultsWithTableCells</code></td>
+<td><code>boolean</code></td>
+<td>请参阅产线对象中 <code>predict</code> 方法的 <code>use_ocr_results_with_table_cells</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>
@@ -3582,7 +3613,7 @@ SubPipelines:
 ......
 ```
 
-在产线配置文件中，不仅包含 PaddleOCR CLI 和 Python API 支持的参数，还可进行更多高级配置，具体信息可在 [PaddleX模型产线使用概览](https://paddlepaddle.github.io/PaddleX/3.0/pipeline_usage/pipeline_develop_guide.html) 中找到对应的产线使用教程，参考其中的详细说明，根据需求调整各项配置。
+在产线配置文件中，不仅包含 PaddleOCR CLI 和 Python API 支持的参数，还可进行更多高级配置，具体信息可在 [PaddleX模型产线使用概览](https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/pipeline_develop_guide.html) 中找到对应的产线使用教程，参考其中的详细说明，根据需求调整各项配置。
 
 3. 在 CLI 中加载产线配置文件
 

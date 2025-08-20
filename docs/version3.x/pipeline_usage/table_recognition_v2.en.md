@@ -845,7 +845,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
 
 ## 2. Quick Start
 
-Before using the table structure recognition V2 pipeline locally, please ensure that you have completed the installation of the wheel package according to the [installation guide](../installation.md). After installation, you can experience it locally using the command line or Python integration.
+Before using the table structure recognition V2 pipeline locally, please ensure that you have completed the installation of the wheel package according to the [installation guide](../installation.md). If you prefer to install dependencies selectively, please refer to the relevant instructions in the installation documentation. The corresponding dependency group for this pipeline is `doc-parser`. After installation, you can experience it locally using the command line or Python integration.
 
 Please note: If you encounter issues such as the program becoming unresponsive, unexpected program termination, running out of memory resources, or extremely slow inference during execution, please try adjusting the configuration according to the documentation, such as disabling unnecessary features or using lighter-weight models.
 
@@ -2682,7 +2682,7 @@ SubPipelines:
 ......
 ```
 
-The pipeline configuration file includes not only the parameters supported by PaddleOCR CLI and Python API but also allows for more advanced configurations. For detailed information, you can find the corresponding pipeline usage tutorial in [Overview of PaddleX Model Pipeline Usage](https://paddlepaddle.github.io/PaddleX/3.0/en/pipeline_usage/pipeline_develop_guide.html), and refer to the detailed instructions to adjust the configurations according to your needs.
+The pipeline configuration file includes not only the parameters supported by PaddleOCR CLI and Python API but also allows for more advanced configurations. For detailed information, you can find the corresponding pipeline usage tutorial in [Overview of PaddleX Model Pipeline Usage](https://paddlepaddle.github.io/PaddleX/latest/en/pipeline_usage/pipeline_develop_guide.html), and refer to the detailed instructions to adjust the configurations according to your needs.
 
 3. Loading the pipeline configuration file in CLI
 
