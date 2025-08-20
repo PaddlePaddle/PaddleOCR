@@ -320,8 +320,6 @@ void OCRResult::SaveToJson(const std::string &save_path) const {
   auto it = pipeline_result_.model_settings.find("use_doc_preprocessor");
   if (it != pipeline_result_.model_settings.end() && it->second) {
     nlohmann::ordered_json j_doc_pre;
-    j_doc_pre["input_path"] = pipeline_result_.doc_preprocessor_res.input_path;
-    j_doc_pre["page_index"] = nullptr; //********
     j_doc_pre["model_settings"] =
         pipeline_result_.doc_preprocessor_res.model_settings;
     j_doc_pre["angle"] = pipeline_result_.doc_preprocessor_res.angle;
@@ -410,8 +408,7 @@ void OCRResult::SaveToJson(const std::string &save_path) const {
 void PrintDocPreprocessorPipelineResult(
     const DocPreprocessorPipelineResult &doc) {
   std::cout << "{\n";
-  std::cout << "  \"input_path\": \"" << doc.input_path << "\",\n";
-  std::cout << "  \"model_settings\": {";
+  std::cout << "    \"model_settings\": {";
   bool first = true;
   for (const auto &kv : doc.model_settings) {
     if (!first)
@@ -420,8 +417,8 @@ void PrintDocPreprocessorPipelineResult(
     first = false;
   }
   std::cout << "},\n";
-  std::cout << "  \"angle\": " << doc.angle << "\n";
-  std::cout << "}";
+  std::cout << "    \"angle\": " << doc.angle << "\n";
+  std::cout << "  }";
 }
 
 void PrintPolys(const std::vector<std::vector<cv::Point2f>> &polys) {
@@ -490,10 +487,9 @@ void PrintRecBoxes(const std::vector<std::array<float, 4>> &arr) {
     std::cout << "[" << arr[i][0] << ", " << arr[i][1] << ", " << arr[i][2]
               << ", " << arr[i][3] << "]";
   }
-  std::cout << "]";
+  std::cout << "],";
 }
 
-// 假设TextDetParams有合适的输出函数
 void PrintTextDetParams(const TextDetParams &p) {
   std::cout << "{";
   std::cout << "\"limit_side_len\": " << p.text_det_limit_side_len << ", ";
@@ -508,9 +504,11 @@ void PrintTextDetParams(const TextDetParams &p) {
 void OCRResult::Print() const {
   std::cout << "{\n";
   std::cout << "  \"input_path\": \"" << pipeline_result_.input_path << "\",\n";
-  std::cout << "  \"doc_preprocessor_res\": ";
-  PrintDocPreprocessorPipelineResult(pipeline_result_.doc_preprocessor_res);
-  std::cout << ",\n";
+  if (pipeline_result_.model_settings.at("use_doc_preprocessor")) {
+    std::cout << "  \"doc_preprocessor_res\": ";
+    PrintDocPreprocessorPipelineResult(pipeline_result_.doc_preprocessor_res);
+    std::cout << ",\n";
+  }
   std::cout << "  \"dt_polys\": ";
   PrintPolys(pipeline_result_.dt_polys);
   std::cout << ",\n";
@@ -537,7 +535,5 @@ void OCRResult::Print() const {
   std::cout << ",\n";
   std::cout << "  \"rec_boxes\": ";
   PrintRecBoxes(pipeline_result_.rec_boxes);
-  std::cout << ",\n";
-  std::cout << "  \"vis_fonts\": \"" << pipeline_result_.vis_fonts << "\"\n";
-  std::cout << "}\n";
+  std::cout << "\n}" << std::endl;
 }

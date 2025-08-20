@@ -135,7 +135,11 @@ BasePredictor::BasePredictor(const absl::optional<std::string> &model_dir,
     INFOE("Set cpu threads fail : %s", status_cpu_threads.ToString().c_str());
     exit(-1);
   }
-  INFO(pp_option_ptr_->DebugString().c_str());
+  if (print_flag) {
+    INFO(pp_option_ptr_->DebugString().c_str());
+    print_flag = false;
+  }
+  INFO("Create model: %s.", model_name_.c_str());
 }
 
 std::vector<std::unique_ptr<BaseCVResult>>
@@ -168,3 +172,5 @@ absl::Status BasePredictor::BuildBatchSampler() {
 const std::unordered_set<std::string> BasePredictor::SAMPLER_TYPE = {
     "image",
 };
+
+bool BasePredictor::print_flag = true;

@@ -172,7 +172,9 @@ plugins:
             配置 PaddleOCR 推理包日志系统: Configure the logging system for the PaddleOCR inference package
             模块概述: Module Overview
             产线概述: Pipeline Overview
-            基于Python或C++预测引擎推理: Python and CPP Inference
+            通用 OCR 产线 C++ 本地部署 - Linux: C++ Local Deployment for General OCR Pipeline - Linux
+            通用 OCR 产线 C++ 本地部署 - Windows: C++ Local Deployment for General OCR Pipeline - Windows
+            C++ 本地部署: C++ Local Deployment
             MCP 服务器: MCP Server
             产线并行推理: Parallel Inference for Pipelines
         # - locale: ja
@@ -272,6 +274,8 @@ nav:
     - 使用教程: version3.x/pipeline_usage/OCR.md
     - PP-OCRv5简介: version3.x/algorithm/PP-OCRv5/PP-OCRv5.md
     - PP-OCRv5多语种文字识别: version3.x/algorithm/PP-OCRv5/PP-OCRv5_multi_languages.md
+    - 通用 OCR 产线 C++ 本地部署 - Linux: version3.x/deployment/cpp/OCR.md
+    - 通用 OCR 产线 C++ 本地部署 - Windows: version3.x/deployment/cpp/OCR_windows.md
   - PP-StructureV3: 
     - 使用教程: version3.x/pipeline_usage/PP-StructureV3.md
     - PP-StructureV3简介: version3.x/algorithm/PP-StructureV3/PP-StructureV3.md
@@ -283,7 +287,7 @@ nav:
     - 获取ONNX模型: version3.x/deployment/obtaining_onnx_models.md
     - 端侧部署: version3.x/deployment/on_device_deployment.md
     - 服务化部署: version3.x/deployment/serving.md
-    - 基于Python或C++预测引擎推理: version3.x/deployment/python_and_cpp_infer.md
+    - C++ 本地部署: version3.x/deployment/cpp/cpp_local_deployment.md
     - MCP 服务器: version3.x/deployment/mcp_server.md
     - 打包PaddleOCR项目: version3.x/deployment/packaging.md 
     - 产线并行推理: version3.x/pipeline_usage/instructions/parallel_inference.md
