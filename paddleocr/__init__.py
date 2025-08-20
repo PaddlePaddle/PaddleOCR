@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from paddlex.inference.utils.benchmark import benchmark
+
 from ._models import (
     DocImgOrientationClassification,
     DocVLM,
@@ -41,6 +43,7 @@ from ._utils.logging import logger
 from ._version import version as __version__
 
 __all__ = [
+    "benchmark",
     "DocImgOrientationClassification",
     "DocVLM",
     "FormulaRecognition",
