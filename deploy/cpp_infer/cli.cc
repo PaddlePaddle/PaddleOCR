@@ -65,7 +65,8 @@ void PrintErrorInfo(const std::string &msg, const std::string &main_mode = "") {
 int main(int argc, char *argv[]) {
   gflags::ParseCommandLineFlags(&argc, &argv, true);
   if (FLAGS_input.empty()) {
-    INFOE("Require input.");
+    INFOE("Require input, such as ./build/ppocr <pipeline_or_module> --input "
+          "your_image_path [--param1] [--param2] [...]");
     exit(-1);
   }
   std::string main_mode = "";
