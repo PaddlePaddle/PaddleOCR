@@ -261,7 +261,7 @@ if(UNIX)
 endif()
 
 file(GLOB_RECURSE SRC_LIST "./src/*.cc")
-set(SRCS CLI.cc )
+set(SRCS cli.cc )
 add_executable(${DEMO_NAME} ${SRCS} ${SRC_LIST} )
 target_link_libraries(${DEMO_NAME} ${DEPS} )
 
