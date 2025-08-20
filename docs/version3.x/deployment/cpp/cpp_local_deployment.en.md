@@ -1,3 +1,9 @@
 # C++ Local Deployment
 
-[C++ Local Deployment for General OCR Pipeline](./OCR.en.md)
+Linux：
+
+[C++ Local Deployment for General OCR Pipeline - Linux](./OCR.en.md)
+
+Windows:
+
+[C++ Local Deployment for General OCR Pipeline - Windows](./OCR_windows.en.md)
