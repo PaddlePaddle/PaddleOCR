@@ -2107,15 +2107,14 @@ For Paddle with CUDA 11.8, the compatible TensorRT version is 8.x (x≥6), recom
           - `use_doc_orientation_classify`: `(bool)` Controls whether to enable the document image orientation classification sub-module
           - `use_doc_unwarping`: `(bool)` Controls whether to enable the text image unwarping sub-module
         - `angle`: `(int)` Prediction result of the document image orientation classification sub-module, returns actual angle value if enabled
-    - `parsing_res_list`: `(List[Dict])` List of parsing results, each element is a dictionary; list order corresponds to reading order after parsing
-        - `block_bbox`: `(np.ndarray)` Bounding box of layout detection
-        - `block_label`: `(str)` Label of the layout region, e.g. `text`, `table`, etc.
-        - `block_content`: `(str)` Content within the layout region
-        - `seg_start_flag`: `(bool)` Indicates whether this layout region is the start of a paragraph
-        - `seg_end_flag`: `(bool)` Indicates whether this layout region is the end of a paragraph
-        - `sub_label`: `(str)` Sub-label of the layout region, e.g. sub-label of `text` could be `title_text`
-        - `sub_index`: `(int)` Sub-index of the layout region, used for restoring Markdown
-        - `index`: `(int)` Index of the layout region, used to display layout sorting results
+
+    - `parsing_res_list`: `(List[Dict])` A list of parsing results, where each element is a dictionary. The order of the list is the reading order after parsing.
+        - `block_bbox`: `(np.ndarray)` The bounding box of the layout area.
+        - `block_label`: `(str)` The label of the layout area, such as `text`, `table`, etc.
+        - `block_content`: `(str)` The content within the layout area.
+        - `block_id`: `(int)` The index of the layout area, used to display the layout sorting result.
+        - `block_order`: `(int)` The order of the layout area, used to display the reading order of the layout. For non-ordered parts, the default value is `None`.
+
     - `overall_ocr_res`: `(Dict[str, Union[List[str], List[float], numpy.ndarray]])` Global OCR result dictionary
       - `input_path`: `(Union[str, None])` Image path accepted by the image OCR sub-pipeline; if input is `numpy.ndarray`, saved as `None`
       - `page_index`: `None`, here input is `numpy.ndarray`, so value is `None`
