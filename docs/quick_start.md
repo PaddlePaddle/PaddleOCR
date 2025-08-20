@@ -24,9 +24,13 @@ python -m pip install paddlepaddle-gpu==3.0.0 -i https://www.paddlepaddle.org.cn
 
 #### 2. 安装`paddleocr`
 
+执行如下命令安装 PaddleOCR 的完整功能：
+
 ```bash
-pip install paddleocr
+python -m pip install "paddleocr[all]"
 ```
+
+PaddleOCR 也支持根据需要安装部分功能，详情请参考 [PaddleOCR 安装文档](version3.x/installation.md)。
 
 ### 命令行使用
 

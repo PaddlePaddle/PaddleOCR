@@ -17,14 +17,31 @@ If you only want to use the inference capabilities of PaddleOCR, please refer to
 Install the latest version of the PaddleOCR inference package from PyPI:
 
 ```bash
+# If you only want to use the basic text recognition feature (returning text position coordinates and content)
 python -m pip install paddleocr
+# If you want to use all functionalities, such as document parsing, document understanding, document translation, and key information extraction
+# python -m pip install "paddleocr[all]"
 ```
 
 Or install from source (default is the development branch):
 
 ```bash
-python -m pip install "git+https://github.com/PaddlePaddle/PaddleOCR.git"
+# If you only want to use the basic text recognition feature (returning text position coordinates and content)
+python -m pip install "paddleocr@git+https://github.com/PaddlePaddle/PaddleOCR.git"
+# If you want to use all functionalities, such as document parsing, document understanding, document translation, and key information extraction
+# python -m pip install "paddleocr[all]@git+https://github.com/PaddlePaddle/PaddleOCR.git"
 ```
+
+In addition to the `all` dependency group demonstrated above, PaddleOCR also supports installing specific optional features by specifying other dependency groups. The available dependency groups provided by PaddleOCR are as follows:
+
+| Dependency Group | Functionality            |
+| ---------------- | ------------------------ |
+| `doc-parser`     | Document parsing, which can be used to extract layout elements in a document such as tables, formulas, stamps, and images. |
+| `ie`             | Information extraction, which can be used to extract key information from documents, such as names, dates, addresses, amounts, and more. |
+| `trans`          | Document translation, which can be used to translate a document from one language to another. |
+| `all`            | Full functionality. |
+
+The general OCR pipeline (e.g., PP-OCRv3/v4/v5) and the document image preprocessing pipeline can be used without installing any additional dependency groups. Apart from these two pipelines, each remaining pipeline belongs to one and only one dependency group. You can refer to the usage documentation of each pipeline to determine which group it belongs to. For individual functional modules, installing any dependency group that includes the module will enable access to its core functionality.
 
 ## 2.2 Install Training Dependencies
 
