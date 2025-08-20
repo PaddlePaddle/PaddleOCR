@@ -3298,8 +3298,9 @@ You're not viewing the latest version.
 </span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="c1"># 可视化及结果保存更为简洁</span>
 </span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="n">res</span><span class="o">.</span><span class="n">save_to_img</span><span class="p">(</span><span class="s2">&quot;result&quot;</span><span class="p">)</span>
 </span></code></pre></div>
-<p>需要特别指出的是，PaddleOCR 2.x 提供的 <code>PPStructure</code> 在 PaddleOCR 3.x 中已被移除。建议使用功能更丰富、解析效果更好的 <code>PPStructureV3</code> 替代，并参考相关文档了解新接口的用法。</p>
-<p>此外，在 PaddleOCR 2.x 中，可以通过在构造 <code>PaddleOCR</code> 对象时传入 <code>show_log</code> 参数来控制日志输出。然而，这种设计存在局限：由于所有 <code>PaddleOCR</code> 实例共享一个日志器，当一个实例设置了日志行为后，其它实例也会受到影响，这显然不符合预期。为了解决这一问题，PaddleOCR 3.x 引入了全新的日志系统。详细内容请参阅 <a href="../version3.x/logging.html">日志</a>。</p>
+<p>在 PaddleOCR 3.x 中，<code>PaddleOCR.ocr</code> 方法不再接受 <code>det</code>、<code>rec</code> 等参数。作为替代，用户可以通过使用更加清晰的 <code>TextDetection</code>、<code>TextRecognition</code> 等接口实现单功能模块的推理。此外，在 PaddleOCR 2.x 中，可以通过在构造 <code>PaddleOCR</code> 对象时传入 <code>show_log</code> 参数来控制日志输出。然而，这种设计存在局限：由于所有 <code>PaddleOCR</code> 实例共享一个日志器，当一个实例设置了日志行为后，其它实例也会受到影响，这显然不符合预期。为了解决这一问题，PaddleOCR 3.x 引入了全新的日志系统。详细内容请参阅 <a href="../version3.x/logging.html">日志</a>。</p>
+<p>在 PaddleOCR 3.x 中，原有的 <code>use_onnx</code> 参数被更加强大的高性能推理功能代替，详情可参考 <a href="../version3.x/deployment/high_performance_inference.html">高性能推理</a>。</p>
+<p>PaddleOCR 2.x 提供的 <code>PPStructure</code> 在 PaddleOCR 3.x 中已被移除。建议使用功能更丰富、解析效果更好的 <code>PPStructureV3</code> 替代，并参考相关文档了解新接口的用法。</p>
 <h2 id="4-paddleocr-30">4. PaddleOCR 3.0 已知问题<a class="headerlink" href="#4-paddleocr-30" title="Permanent link">&para;</a></h2>
 <p>PaddleOCR 3.x 仍在持续迭代与优化中，目前已知存在以下尚待完善之处：</p>
 <ol>
@@ -3330,7 +3331,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="最后更新">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年8月20日 07:16:23 UTC">2025年8月20日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年8月20日 07:38:35 UTC">2025年8月20日</span>
   </span>
 
     
@@ -3340,7 +3341,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="创建日期">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年8月20日 07:16:23 UTC">2025年8月20日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年8月20日 07:38:35 UTC">2025年8月20日</span>
   </span>
 
     
