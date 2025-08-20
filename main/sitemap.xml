@@ -925,18 +925,18 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://paddlepaddle.github.io/PaddleOCR/mainen/version3.x/deployment/packaging.html"/>
     </url>
     <url>
-        <loc>https://paddlepaddle.github.io/PaddleOCR/main/version3.x/deployment/python_and_cpp_infer.html</loc>
-        <lastmod>2025-08-20</lastmod>
-        <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="zh" href="https://paddlepaddle.github.io/PaddleOCR/main/version3.x/deployment/python_and_cpp_infer.html"/>
-        <xhtml:link rel="alternate" hreflang="en" href="https://paddlepaddle.github.io/PaddleOCR/mainen/version3.x/deployment/python_and_cpp_infer.html"/>
-    </url>
-    <url>
         <loc>https://paddlepaddle.github.io/PaddleOCR/main/version3.x/deployment/serving.html</loc>
         <lastmod>2025-08-20</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="zh" href="https://paddlepaddle.github.io/PaddleOCR/main/version3.x/deployment/serving.html"/>
         <xhtml:link rel="alternate" hreflang="en" href="https://paddlepaddle.github.io/PaddleOCR/mainen/version3.x/deployment/serving.html"/>
+    </url>
+    <url>
+        <loc>https://paddlepaddle.github.io/PaddleOCR/main/version3.x/deployment/cpp/cpp_local_deployment.html</loc>
+        <lastmod>2025-08-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://paddlepaddle.github.io/PaddleOCR/main/version3.x/deployment/cpp/cpp_local_deployment.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://paddlepaddle.github.io/PaddleOCR/mainen/version3.x/deployment/cpp/cpp_local_deployment.html"/>
     </url>
     <url>
         <loc>https://paddlepaddle.github.io/PaddleOCR/main/version3.x/module_usage/chart_parsing.html</loc>
@@ -2079,18 +2079,18 @@
         <xhtml:link rel="alternate" hreflang="zh" href="https://paddlepaddle.github.io/PaddleOCR/mainversion3.x/deployment/packaging.html"/>
     </url>
     <url>
-        <loc>https://paddlepaddle.github.io/PaddleOCR/main/en/version3.x/deployment/python_and_cpp_infer.html</loc>
-        <lastmod>2025-08-20</lastmod>
-        <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://paddlepaddle.github.io/PaddleOCR/main/en/version3.x/deployment/python_and_cpp_infer.html"/>
-        <xhtml:link rel="alternate" hreflang="zh" href="https://paddlepaddle.github.io/PaddleOCR/mainversion3.x/deployment/python_and_cpp_infer.html"/>
-    </url>
-    <url>
         <loc>https://paddlepaddle.github.io/PaddleOCR/main/en/version3.x/deployment/serving.html</loc>
         <lastmod>2025-08-20</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://paddlepaddle.github.io/PaddleOCR/main/en/version3.x/deployment/serving.html"/>
         <xhtml:link rel="alternate" hreflang="zh" href="https://paddlepaddle.github.io/PaddleOCR/mainversion3.x/deployment/serving.html"/>
+    </url>
+    <url>
+        <loc>https://paddlepaddle.github.io/PaddleOCR/main/en/version3.x/deployment/cpp/cpp_local_deployment.html</loc>
+        <lastmod>2025-08-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://paddlepaddle.github.io/PaddleOCR/main/en/version3.x/deployment/cpp/cpp_local_deployment.html"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="https://paddlepaddle.github.io/PaddleOCR/mainversion3.x/deployment/cpp/cpp_local_deployment.html"/>
     </url>
     <url>
         <loc>https://paddlepaddle.github.io/PaddleOCR/main/en/version3.x/module_usage/chart_parsing.html</loc>
