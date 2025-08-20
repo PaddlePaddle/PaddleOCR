@@ -21,7 +21,6 @@
 
 DocPreprocessor::DocPreprocessor(const DocPreprocessorParams &params)
     : params_(params) {
-  OverrideConfig();
   auto status = CheckParams();
   if (!status.ok()) {
     INFOE("Init DocPreprocessor fail : %s", status.ToString().c_str());
@@ -36,51 +35,6 @@ DocPreprocessor::Predict(const std::vector<std::string> &input) {
 void DocPreprocessor::CreatePipeline() {
   pipeline_infer_ = std::unique_ptr<BasePipeline>(
       new DocPreprocessorPipeline(ToDocPreprocessorPipelineParams(params_)));
-}
-void DocPreprocessor::OverrideConfig() {
-  if (!FLAGS_doc_orientation_classify_model_name.empty()) {
-    params_.doc_orientation_classify_model_name =
-        FLAGS_doc_orientation_classify_model_name;
-  }
-  if (!FLAGS_doc_orientation_classify_model_dir.empty()) {
-    params_.doc_orientation_classify_model_dir =
-        FLAGS_doc_orientation_classify_model_dir;
-  }
-  if (!FLAGS_doc_unwarping_model_name.empty()) {
-    params_.doc_unwarping_model_name = FLAGS_doc_unwarping_model_name;
-  }
-  if (!FLAGS_doc_unwarping_model_dir.empty()) {
-    params_.doc_unwarping_model_dir = FLAGS_doc_unwarping_model_dir;
-  }
-
-  if (!FLAGS_use_doc_orientation_classify.empty()) {
-    params_.use_doc_orientation_classify =
-        Utility::StringToBool(FLAGS_use_doc_orientation_classify);
-  }
-  if (!FLAGS_use_doc_unwarping.empty()) {
-    params_.use_doc_unwarping = Utility::StringToBool(FLAGS_use_doc_unwarping);
-  }
-  if (!FLAGS_device.empty()) {
-    params_.device = FLAGS_device;
-  }
-  if (!FLAGS_precision.empty()) {
-    params_.precision = FLAGS_precision;
-  }
-  if (!FLAGS_enable_mkldnn.empty()) {
-    params_.enable_mkldnn = Utility::StringToBool(FLAGS_enable_mkldnn);
-  }
-  if (!FLAGS_mkldnn_cache_capacity.empty()) {
-    params_.mkldnn_cache_capacity = std::stoi(FLAGS_mkldnn_cache_capacity);
-  }
-  if (!FLAGS_cpu_threads.empty()) {
-    params_.cpu_threads = std::stoi(FLAGS_cpu_threads);
-  }
-  if (!FLAGS_thread_num.empty()) {
-    params_.thread_num = std::stoi(FLAGS_thread_num);
-  }
-  if (!FLAGS_paddlex_config.empty()) {
-    params_.paddlex_config = FLAGS_paddlex_config;
-  }
 }
 
 absl::Status DocPreprocessor::CheckParams() {

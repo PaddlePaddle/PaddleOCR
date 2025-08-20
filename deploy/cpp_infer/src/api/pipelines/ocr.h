@@ -66,7 +66,6 @@ public:
   Predict(const std::vector<std::string> &input);
 
   void CreatePipeline();
-  void OverrideConfig();
   absl::Status CheckParams();
   static OCRPipelineParams ToOCRPipelineParams(const PaddleOCRParams &from);
 

@@ -41,7 +41,6 @@ public:
   Predict(const std::vector<std::string> &input);
 
   void CreateModel();
-  void OverrideConfig();
   absl::Status CheckParams();
   static WarpPredictorParams
   ToTextImageUnwarpingModelParams(const TextImageUnwarpingParams &from);

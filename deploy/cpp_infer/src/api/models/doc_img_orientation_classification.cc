@@ -22,7 +22,6 @@
 DocImgOrientationClassification::DocImgOrientationClassification(
     const DocImgOrientationClassificationParams &params)
     : params_(params) {
-  OverrideConfig();
   auto status = CheckParams();
   if (!status.ok()) {
     INFOE("Init DocImgOrientationClassification fail : %s",
@@ -39,29 +38,6 @@ DocImgOrientationClassification::Predict(
 void DocImgOrientationClassification::CreateModel() {
   model_infer_ = std::unique_ptr<BasePredictor>(
       new ClasPredictor(ToDocImgOrientationClassificationModelParams(params_)));
-}
-void DocImgOrientationClassification::OverrideConfig() {
-  if (!FLAGS_doc_orientation_classify_model_name.empty()) {
-    params_.model_name = FLAGS_doc_orientation_classify_model_name;
-  }
-  if (!FLAGS_doc_orientation_classify_model_dir.empty()) {
-    params_.model_dir = FLAGS_doc_orientation_classify_model_dir;
-  }
-  if (!FLAGS_device.empty()) {
-    params_.device = FLAGS_device;
-  }
-  if (!FLAGS_precision.empty()) {
-    params_.precision = FLAGS_precision;
-  }
-  if (!FLAGS_enable_mkldnn.empty()) {
-    params_.enable_mkldnn = Utility::StringToBool(FLAGS_enable_mkldnn);
-  }
-  if (!FLAGS_mkldnn_cache_capacity.empty()) {
-    params_.mkldnn_cache_capacity = std::stoi(FLAGS_mkldnn_cache_capacity);
-  }
-  if (!FLAGS_cpu_threads.empty()) {
-    params_.cpu_threads = std::stoi(FLAGS_cpu_threads);
-  }
 }
 
 absl::Status DocImgOrientationClassification::CheckParams() {

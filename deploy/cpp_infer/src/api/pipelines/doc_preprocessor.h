@@ -47,7 +47,6 @@ public:
   Predict(const std::vector<std::string> &input);
 
   void CreatePipeline();
-  void OverrideConfig();
   absl::Status CheckParams();
   static DocPreprocessorPipelineParams
   ToDocPreprocessorPipelineParams(const DocPreprocessorParams &from);
