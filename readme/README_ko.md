@@ -40,7 +40,7 @@ PaddleOCR 3.0은 뛰어난 모델 라이브러리(model library)를 제공할 �
   </p>
 </div>
 
-
+**특별 참고**: PaddleOCR 3.x는 여러 가지 중요한 인터페이스 변경 사항을 도입했습니다. **PaddleOCR 2.x를 기반으로 작성된 기존 코드는 PaddleOCR 3.x와 호환되지 않을 수 있습니다**. 사용 중인 PaddleOCR 버전에 맞는 문서를 참고하고 있는지 확인해 주세요. [이 문서](https://paddlepaddle.github.io/PaddleOCR/latest/en/update/upgrade_notes.html)에서는 업그레이드 이유와 PaddleOCR 2.x에서 3.x로의 주요 변경 사항을 설명하고 있습니다.
 
 ## 📣 최신 업데이트
 
@@ -287,6 +287,13 @@ print(chat_result)
 ```
 
 </details>
+
+## 추가 기능
+
+- 모델을 ONNX 형식으로 변환: [ONNX 모델 얻기](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/obtaining_onnx_models.html)
+- OpenVINO, ONNX Runtime, TensorRT 같은 엔진을 사용하거나 ONNX 형식 모델로 추론 가속: [고성능 추론](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/high_performance_inference.html)
+- 다중 GPU 및 다중 프로세스를 사용한 추론 가속: [파이프라인 병렬 추론](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/pipeline_usage/instructions/parallel_inference.html)
+- C++, C#, Java 등으로 작성된 애플리케이션에 PaddleOCR 통합: [서빙](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/serving.html).
 
 ## ⛰️ 고급 튜토리얼
 - [PP-OCRv5 튜토리얼](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/pipeline_usage/OCR.html)

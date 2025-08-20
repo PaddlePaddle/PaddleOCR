@@ -23,6 +23,8 @@ The formula recognition pipeline includes the following four modules. Each modul
 
 In this pipeline, you can choose the model you want to use based on the benchmark data provided below.
 
+> The inference time only includes the model inference time and does not include the time for pre- or post-processing.
+
 <details>
 <summary><b>Document Image Orientation Classification Module (Optional):</b></summary>
 <table>

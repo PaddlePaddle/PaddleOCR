@@ -1,6 +1,6 @@
 # 服务化部署
 
-服务化部署是实际生产环境中常见的一种部署形式。通过将推理功能封装为服务，客户端可以通过网络请求来访问这些服务，以获取推理结果。PaddleOCR 推荐用户使用 [PaddleX](https://github.com/PaddlePaddle/PaddleX) 进行服务化部署。请阅读 [PaddleOCR 与 PaddleX 的区别与联系](../paddleocr_and_paddlex.md#1-paddleocr-与-paddlex-的区别与联系) 了解 PaddleOCR 与 PaddleX 的关系。
+服务化部署是实际生产环境中常见的一种部署形式。通过将推理功能封装为服务，客户端可以通过网络请求来访问这些服务，以获取推理结果。**客户端代码可以由不同的编程语言编写，而不必与服务端代码保持一致。** PaddleOCR 推荐用户使用 [PaddleX](https://github.com/PaddlePaddle/PaddleX) 进行服务化部署。请阅读 [PaddleOCR 与 PaddleX 的区别与联系](../paddleocr_and_paddlex.md#1-paddleocr-与-paddlex-的区别与联系) 了解 PaddleOCR 与 PaddleX 的关系。
 
 PaddleX 提供以下服务化部署方案：
 

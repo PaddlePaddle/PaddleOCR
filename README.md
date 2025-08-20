@@ -61,7 +61,7 @@ In addition to providing an outstanding model library, PaddleOCR 3.0 also offers
   </p>
 </div>
 
-
+**Special Note**: PaddleOCR 3.x introduces several significant interface changes. **Old code written based on PaddleOCR 2.x is likely incompatible with PaddleOCR 3.x**. Please ensure that the documentation you are reading matches the version of PaddleOCR you are using. [This document](https://paddlepaddle.github.io/PaddleOCR/latest/en/update/upgrade_notes.html) explains the reasons for the upgrade and the major changes from PaddleOCR 2.x to 3.x.
 
 ## 📣 Recent updates
 
@@ -305,6 +305,13 @@ print(chat_result)
 ### 5. Chinese Heterogeneous AI Accelerators
 - [Huawei Ascend](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/other_devices_support/paddlepaddle_install_NPU.html)
 - [KUNLUNXIN](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/other_devices_support/paddlepaddle_install_XPU.html)
+
+## More Features
+
+- Convert models to ONNX format: [Obtaining ONNX Models](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/obtaining_onnx_models.html).
+- Accelerate inference using engines like OpenVINO, ONNX Runtime, TensorRT, or perform inference using ONNX format models: [High-Performance Inference](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/high_performance_inference.html).
+- Accelerate inference using multi-GPU and multi-process: [Parallel Inference for Pipelines](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/pipeline_usage/instructions/parallel_inference.html).
+- Integrate PaddleOCR into applications written in C++, C#, Java, etc.: [Serving](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/serving.html).
 
 ## ⛰️ Advanced Tutorials
 - [PP-OCRv5 Tutorial](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/pipeline_usage/OCR.html)

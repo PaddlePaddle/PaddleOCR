@@ -22,6 +22,8 @@ The general OCR pipeline is used to solve text recognition tasks by extracting t
 
 In this pipeline, you can select models based on the benchmark test data provided below.
 
+> The inference time only includes the model inference time and does not include the time for pre- or post-processing.
+
 <details>
 <summary><b>Document Image Orientation Classification Module (Optional):</b></summary>
 <table>

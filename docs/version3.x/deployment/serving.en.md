@@ -1,6 +1,6 @@
 # Serving
 
-Serving is a common deployment method in real-world production environments. By encapsulating inference capabilities as services, clients can access these services via network requests to obtain inference results. PaddleOCR recommends using [PaddleX](https://github.com/PaddlePaddle/PaddleX) for serving. Please refer to [Differences and Connections between PaddleOCR and PaddleX](../paddleocr_and_paddlex.en.md#1-Differences-and-Connections-Between-PaddleOCR-and-PaddleX) to understand the relationship between PaddleOCR and PaddleX.
+Serving is a common deployment method in real-world production environments. By encapsulating inference capabilities as services, clients can access these services via network requests to obtain inference results. **The client-side code can be written in different programming languages and does not need to match the server-side code.** PaddleOCR recommends using [PaddleX](https://github.com/PaddlePaddle/PaddleX) for serving. Please refer to [Differences and Connections between PaddleOCR and PaddleX](../paddleocr_and_paddlex.en.md#1-Differences-and-Connections-Between-PaddleOCR-and-PaddleX) to understand the relationship between PaddleOCR and PaddleX.
 
 PaddleX provides the following serving solutions:
 

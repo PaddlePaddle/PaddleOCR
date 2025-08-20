@@ -40,6 +40,8 @@ Además de proporcionar una excelente biblioteca de modelos, PaddleOCR 3.0 tambi
   </p>
 </div>
 
+**Nota especial**: PaddleOCR 3.x introduce varios cambios significativos en la interfaz. **Es probable que el código antiguo escrito basado en PaddleOCR 2.x no sea compatible con PaddleOCR 3.x**. Asegúrese de que la documentación que está leyendo coincida con la versión de PaddleOCR que está utilizando. [Este documento](https://paddlepaddle.github.io/PaddleOCR/latest/en/update/upgrade_notes.html) explica las razones de la actualización y los principales cambios de PaddleOCR 2.x a 3.x.
+
 ## 📣 Últimas actualizaciones
 
 #### **2025.08.15: Lanzamiento de PaddleOCR 3.1.1**, incluye:
@@ -293,6 +295,13 @@ print(chat_result)
 ```
 
 </details>
+
+## Más funciones
+
+- Convertir modelos al formato ONNX: [Obtener modelos ONNX](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/obtaining_onnx_models.html).
+- Acelerar la inferencia usando motores como OpenVINO, ONNX Runtime, TensorRT, o realizar inferencia usando modelos en formato ONNX: [Inferencia de alto rendimiento](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/high_performance_inference.html).
+- Acelerar la inferencia usando múltiples GPU y múltiples procesos: [Inferencia paralela para pipelines](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/pipeline_usage/instructions/parallel_inference.html).
+- Integra PaddleOCR en aplicaciones escritas en C++, C#, Java, etc.: [Servicio](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/serving.html).
 
 ## ⛰️ Tutoriales avanzados
 - [Tutorial de PP-OCRv5](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/pipeline_usage/OCR.html)
