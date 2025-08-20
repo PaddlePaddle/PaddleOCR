@@ -1468,7 +1468,7 @@ paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --device gpu
 </tr>
 <tr>
 <td><code>use_textline_orientation</code></td>
-<td>是否加载并使用文本行方向分类模块。如果不设置，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
+<td>是否加载并使用文本行方向分类模块。如果不设置，将使用产线初始化的该参数值，默认初始化为<code>False</code>。</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
@@ -2090,7 +2090,7 @@ for item in markdown_images:
 </tr>
 <tr>
 <td><code>use_textline_orientation</code></td>
-<td>是否加载并使用文本行方向分类模块。如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
+<td>是否加载并使用文本行方向分类模块。如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>False</code>。</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
