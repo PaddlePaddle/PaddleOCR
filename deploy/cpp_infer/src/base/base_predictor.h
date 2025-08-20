@@ -66,6 +66,7 @@ public:
 
   static constexpr const char *MODEL_FILE_PREFIX = "inference";
   static const std::unordered_set<std::string> SAMPLER_TYPE;
+  static bool print_flag;
 
 protected:
   absl::optional<std::string> model_dir_;
