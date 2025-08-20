@@ -18,7 +18,7 @@
 #include "src/utils/args.h"
 _OCRPipeline::_OCRPipeline(const OCRPipelineParams &params)
     : BasePipeline(), params_(params) {
-  if (params.paddlex_config.has_value()) { //***
+  if (params.paddlex_config.has_value()) {
     if (params.paddlex_config.value().IsStr()) {
       config_ = YamlConfig(params.paddlex_config.value().GetStr());
     } else {
@@ -34,14 +34,26 @@ _OCRPipeline::_OCRPipeline(const OCRPipelineParams &params)
     config_ = YamlConfig(config_path.value());
   }
   OverrideConfig();
-  auto result_use_doc_preprocessor =
-      config_.GetBool("use_doc_preprocessor", true);
-  if (!result_use_doc_preprocessor.ok()) {
-    INFOE("use_doc_preprocessor config error : %s",
-          result_use_doc_preprocessor.status().ToString().c_str());
+  auto result_use_doc_orientation_classify =
+      config_.GetBool("use_doc_orientation_classify", true);
+  if (!result_use_doc_orientation_classify.ok()) {
+    INFOE("use_doc_orientation_classify config error : %s",
+          result_use_doc_orientation_classify.status().ToString().c_str());
     exit(-1);
   }
-  use_doc_preprocessor_ = result_use_doc_preprocessor.value();
+  auto result_use_use_doc_unwarping =
+      config_.GetBool("use_doc_unwarping", true);
+  if (!result_use_use_doc_unwarping.ok()) {
+    INFOE("use_doc_unwarping config error : %s",
+          result_use_use_doc_unwarping.status().ToString().c_str());
+    exit(-1);
+  }
+  if (result_use_doc_orientation_classify.value() ||
+      result_use_use_doc_unwarping.value()) {
+    use_doc_preprocessor_ = true;
+  } else {
+    use_doc_preprocessor_ = false;
+  }
   if (use_doc_preprocessor_) {
     auto result_doc_preprocessor_config = config_.GetSubModule("SubPipelines");
     if (!result_doc_preprocessor_config.ok()) {
