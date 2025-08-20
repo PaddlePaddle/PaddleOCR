@@ -20,5 +20,3 @@ cmake .. \
     -DUSE_FREETYPE=OFF
 
 make -j
-
-../build/ppocr
