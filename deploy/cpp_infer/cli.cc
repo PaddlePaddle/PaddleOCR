@@ -38,7 +38,7 @@ static const std::unordered_set<std::string> SUPPORT_MODE_MODEL = {
     "textline_orientation_classification", "text_detection",
     "text_recognition"};
 
-int main(int argc, char* argv[]) {
+int main(int argc, char *argv[]) {
   gflags::ParseCommandLineFlags(&argc, &argv, true);
   if (FLAGS_input.empty()) {
     INFOE("Require input.");
@@ -58,37 +58,37 @@ int main(int argc, char* argv[]) {
   }
 
   using PredFunc = std::function<std::vector<std::unique_ptr<BaseCVResult>>(
-      const std::string&)>;
+      const std::string &)>;
   std::unordered_map<std::string, PredFunc> pred_map = {
       {"paddleocr",
-       [](const std::string& input) { return PaddleOCR().Predict(input); }},
+       [](const std::string &input) { return PaddleOCR().Predict(input); }},
       {"doc_preprocessor",
-       [](const std::string& input) {
+       [](const std::string &input) {
          return DocPreprocessor().Predict(input);
        }},
       {"text_image_unwarping",
-       [](const std::string& input) {
+       [](const std::string &input) {
          return TextImageUnwarping().Predict(input);
        }},
       {"doc_img_orientation_classification",
-       [](const std::string& input) {
+       [](const std::string &input) {
          return DocImgOrientationClassification().Predict(input);
        }},
       {"textline_orientation_classification",
-       [](const std::string& input) {
+       [](const std::string &input) {
          return TextLineOrientationClassification().Predict(input);
        }},
       {"text_detection",
-       [](const std::string& input) { return TextDetection().Predict(input); }},
+       [](const std::string &input) { return TextDetection().Predict(input); }},
       {"text_recognition",
-       [](const std::string& input) {
+       [](const std::string &input) {
          return TextRecognition().Predict(input);
        }},
 
   };
   auto it = pred_map.find(main_mode);
   auto outputs = it->second(FLAGS_input);
-  for (auto& output : outputs) {
+  for (auto &output : outputs) {
     output->Print();
     output->SaveToImg(FLAGS_save_path);
     output->SaveToJson(FLAGS_save_path);
