@@ -55,8 +55,6 @@ if (WIN32)
 
 else ()
   set(OpenCV_DIR "${OPENCV_DIR}/lib64/cmake/opencv4") 
-  message("******")
-  message("${OpenCV_DIR}")
   find_package(OpenCV REQUIRED)
   if(USE_FREETYPE)
     if(NOT "opencv_freetype" IN_LIST OpenCV_LIBS)
