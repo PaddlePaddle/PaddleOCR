@@ -254,8 +254,8 @@ GetPipelineMoudleParams() {
     ocr_params.paddlex_config = FLAGS_paddlex_config;
     doc_pre_params.paddlex_config = FLAGS_paddlex_config;
   }
-  return std::make_tuple(ocr_params, doc_pre_params, unwarp_params,
-                         doc_orient_params, teline_orient_params, det_params,
+  return std::make_tuple(ocr_params, doc_pre_params, doc_orient_params,
+                         unwarp_params, det_params, teline_orient_params,
                          rec_params);
 }
 
@@ -286,39 +286,33 @@ int main(int argc, char *argv[]) {
   std::unordered_map<std::string, PredFunc> pred_map = {
       {"ocr",
        [&params](const std::string &input) {
-         return PaddleOCR(std::get<PaddleOCRParams>(params)).Predict(input);
+         return PaddleOCR(std::get<0>(params)).Predict(input);
        }},
       {"doc_preprocessor",
        [&params](const std::string &input) {
-         return DocPreprocessor(std::get<DocPreprocessorParams>(params))
+         return DocPreprocessor(std::get<1>(params)).Predict(input);
+       }},
+      {"doc_img_orientation_classification",
+       [&params](const std::string &input) {
+         return DocImgOrientationClassification(std::get<2>(params))
              .Predict(input);
        }},
       {"text_image_unwarping",
        [&params](const std::string &input) {
-         return TextImageUnwarping(std::get<TextImageUnwarpingParams>(params))
-             .Predict(input);
-       }},
-      {"doc_img_orientation_classification",
-       [&params](const std::string &input) {
-         return DocImgOrientationClassification(
-                    std::get<DocImgOrientationClassificationParams>(params))
-             .Predict(input);
-       }},
-      {"textline_orientation_classification",
-       [&params](const std::string &input) {
-         return TextLineOrientationClassification(
-                    std::get<TextLineOrientationClassificationParams>(params))
-             .Predict(input);
+         return TextImageUnwarping(std::get<3>(params)).Predict(input);
        }},
       {"text_detection",
        [&params](const std::string &input) {
-         return TextDetection(std::get<TextDetectionParams>(params))
+         return TextDetection(std::get<4>(params)).Predict(input);
+       }},
+      {"textline_orientation_classification",
+       [&params](const std::string &input) {
+         return TextLineOrientationClassification(std::get<5>(params))
              .Predict(input);
        }},
       {"text_recognition",
        [&params](const std::string &input) {
-         return TextRecognition(std::get<TextRecognitionParams>(params))
-             .Predict(input);
+         return TextRecognition(std::get<6>(params)).Predict(input);
        }},
 
   };
