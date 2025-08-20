@@ -299,6 +299,1179 @@ Unless otherwise specified:
 | server_max_960 | 0.64 | 988.85 | 103.61 | 1831.31 | 1544.26 | 30.29 | 2929.33 | 2079.90 |
 | server_max_640 | 0.57 | 1036.90 | 102.89 | 1838.36 | 1532.50 | 28.91 | 3153.33 | 2743.40 |
 
+### 4. Pipeline benchmark data
+
+<details>
+<summary>Click to expand/collapse the table</summary>
+
+<table border="1">
+<tr><th>Pipeline configuration</th><th>Hardware</th><th>Avg. inference time (s)</th><th>Peak CPU utilization (%)</th><th>Avg. CPU utilization (%)</th><th>Peak host memory (MB)</th><th>Avg. host memory (MB)</th><th>Peak GPU utilization (%)</th><th>Avg. GPU utilization (%)</th><th>Peak device memory (MB)</th><th>Avg. device memory (MB)</th></tr>
+<tr>
+<td rowspan="7">OCR-default</td>
+<td>Intel 6271C</td>
+<td>3.97</td>
+<td>1015.40</td>
+<td>917.61</td>
+<td>4381.22</td>
+<td>3457.78</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Intel 8350C</td>
+<td>3.79</td>
+<td>1022.50</td>
+<td>921.68</td>
+<td>4675.46</td>
+<td>3585.96</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Intel 8350C + A100</td>
+<td>0.65</td>
+<td>113.50</td>
+<td>102.48</td>
+<td>2240.15</td>
+<td>1868.44</td>
+<td>47</td>
+<td>19.60</td>
+<td>7612.00</td>
+<td>6634.15</td>
+</tr>
+<tr>
+<td>Intel 6271C + V100</td>
+<td>1.06</td>
+<td>114.90</td>
+<td>103.05</td>
+<td>2142.66</td>
+<td>1791.43</td>
+<td>72</td>
+<td>20.01</td>
+<td>5516.00</td>
+<td>4812.81</td>
+</tr>
+<tr>
+<td>Intel 8563C + H20</td>
+<td>0.65</td>
+<td>108.90</td>
+<td>101.95</td>
+<td>2456.05</td>
+<td>2080.26</td>
+<td>100</td>
+<td>36.52</td>
+<td>6736.00</td>
+<td>6017.05</td>
+</tr>
+<tr>
+<td>Intel 8350C + A10</td>
+<td>0.74</td>
+<td>115.90</td>
+<td>102.22</td>
+<td>2352.88</td>
+<td>1993.39</td>
+<td>100</td>
+<td>25.56</td>
+<td>6762.00</td>
+<td>6039.93</td>
+</tr>
+<tr>
+<td>Intel 6271C + T4</td>
+<td>1.17</td>
+<td>107.10</td>
+<td>101.78</td>
+<td>2361.88</td>
+<td>1986.61</td>
+<td>100</td>
+<td>51.11</td>
+<td>5282.00</td>
+<td>4585.10</td>
+</tr>
+<tr>
+<td rowspan="9">OCR-nopp-mobile</td>
+<td>Intel 6271C</td>
+<td>1.39</td>
+<td>1019.60</td>
+<td>1007.69</td>
+<td>2178.12</td>
+<td>1873.73</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Intel 8350C</td>
+<td>1.15</td>
+<td>1015.70</td>
+<td>1006.87</td>
+<td>2184.91</td>
+<td>1916.85</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Hygon 7490 + P800</td>
+<td>0.35</td>
+<td>110.80</td>
+<td>103.77</td>
+<td>2022.49</td>
+<td>1808.11</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Intel 8350C + A100</td>
+<td>0.27</td>
+<td>110.90</td>
+<td>103.80</td>
+<td>1762.36</td>
+<td>1525.04</td>
+<td>31</td>
+<td>19.30</td>
+<td>4328.00</td>
+<td>3356.30</td>
+</tr>
+<tr>
+<td>Intel 6271C + V100</td>
+<td>0.55</td>
+<td>113.80</td>
+<td>103.68</td>
+<td>1728.02</td>
+<td>1470.52</td>
+<td>38</td>
+<td>18.59</td>
+<td>4198.00</td>
+<td>3199.12</td>
+</tr>
+<tr>
+<td>Intel 8563C + H20</td>
+<td>0.22</td>
+<td>111.90</td>
+<td>103.99</td>
+<td>2073.88</td>
+<td>1876.14</td>
+<td>32</td>
+<td>20.25</td>
+<td>4386.00</td>
+<td>3435.86</td>
+</tr>
+<tr>
+<td>Intel 8350C + A10</td>
+<td>0.31</td>
+<td>119.90</td>
+<td>104.24</td>
+<td>2037.38</td>
+<td>1771.06</td>
+<td>52</td>
+<td>32.74</td>
+<td>3446.00</td>
+<td>2733.21</td>
+</tr>
+<tr>
+<td>M4</td>
+<td>6.51</td>
+<td>147.30</td>
+<td>106.24</td>
+<td>3550.58</td>
+<td>3236.75</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Intel 6271C + T4</td>
+<td>0.46</td>
+<td>111.90</td>
+<td>103.11</td>
+<td>2035.38</td>
+<td>1742.39</td>
+<td>65</td>
+<td>46.77</td>
+<td>3968.00</td>
+<td>2991.91</td>
+</tr>
+<tr>
+<td rowspan="7">OCR-nopp-server</td>
+<td>Intel 6271C</td>
+<td>3.00</td>
+<td>1016.00</td>
+<td>1004.87</td>
+<td>4445.46</td>
+<td>3179.86</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Intel 8350C</td>
+<td>3.23</td>
+<td>1010.70</td>
+<td>1002.63</td>
+<td>4175.39</td>
+<td>3137.58</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Intel 8350C + A100</td>
+<td>0.34</td>
+<td>110.90</td>
+<td>103.30</td>
+<td>1904.99</td>
+<td>1591.10</td>
+<td>57</td>
+<td>32.29</td>
+<td>7494.00</td>
+<td>6551.47</td>
+</tr>
+<tr>
+<td>Intel 6271C + V100</td>
+<td>0.69</td>
+<td>108.90</td>
+<td>102.95</td>
+<td>1808.30</td>
+<td>1568.64</td>
+<td>72</td>
+<td>35.30</td>
+<td>5410.00</td>
+<td>4741.18</td>
+</tr>
+<tr>
+<td>Intel 8563C + H20</td>
+<td>0.38</td>
+<td>109.40</td>
+<td>102.34</td>
+<td>2100.00</td>
+<td>1863.73</td>
+<td>100</td>
+<td>50.18</td>
+<td>6614.00</td>
+<td>5926.51</td>
+</tr>
+<tr>
+<td>Intel 8350C + A10</td>
+<td>0.41</td>
+<td>109.00</td>
+<td>103.18</td>
+<td>2055.21</td>
+<td>1845.14</td>
+<td>100</td>
+<td>47.15</td>
+<td>6654.00</td>
+<td>5951.22</td>
+</tr>
+<tr>
+<td>Intel 6271C + T4</td>
+<td>0.82</td>
+<td>104.40</td>
+<td>101.73</td>
+<td>1906.88</td>
+<td>1689.69</td>
+<td>100</td>
+<td>76.41</td>
+<td>5178.00</td>
+<td>4502.64</td>
+</tr>
+<tr>
+<td rowspan="9">OCR-nopp-min736-mobile</td>
+<td>Intel 6271C</td>
+<td>1.41</td>
+<td>1020.10</td>
+<td>1008.14</td>
+<td>2184.16</td>
+<td>1911.86</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Intel 8350C</td>
+<td>1.20</td>
+<td>1015.70</td>
+<td>1007.08</td>
+<td>2254.04</td>
+<td>1935.18</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Hygon 7490 + P800</td>
+<td>0.36</td>
+<td>112.90</td>
+<td>104.29</td>
+<td>2174.58</td>
+<td>1827.67</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Intel 8350C + A100</td>
+<td>0.27</td>
+<td>113.90</td>
+<td>104.48</td>
+<td>1717.55</td>
+<td>1529.77</td>
+<td>30</td>
+<td>19.54</td>
+<td>4328.00</td>
+<td>3388.44</td>
+</tr>
+<tr>
+<td>Intel 6271C + V100</td>
+<td>0.57</td>
+<td>118.80</td>
+<td>104.45</td>
+<td>1693.10</td>
+<td>1470.74</td>
+<td>40</td>
+<td>19.83</td>
+<td>4198.00</td>
+<td>3206.91</td>
+</tr>
+<tr>
+<td>Intel 8563C + H20</td>
+<td>0.22</td>
+<td>113.40</td>
+<td>104.66</td>
+<td>2037.13</td>
+<td>1797.10</td>
+<td>31</td>
+<td>20.64</td>
+<td>4384.00</td>
+<td>3427.91</td>
+</tr>
+<tr>
+<td>Intel 8350C + A10</td>
+<td>0.31</td>
+<td>119.30</td>
+<td>106.05</td>
+<td>1879.15</td>
+<td>1732.39</td>
+<td>49</td>
+<td>30.40</td>
+<td>3446.00</td>
+<td>2751.08</td>
+</tr>
+<tr>
+<td>M4</td>
+<td>6.39</td>
+<td>124.90</td>
+<td>107.16</td>
+<td>3578.98</td>
+<td>3209.90</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Intel 6271C + T4</td>
+<td>0.47</td>
+<td>109.60</td>
+<td>103.26</td>
+<td>1961.40</td>
+<td>1742.95</td>
+<td>60</td>
+<td>44.26</td>
+<td>3968.00</td>
+<td>3002.81</td>
+</tr>
+<tr>
+<td rowspan="7">OCR-nopp-min736-server</td>
+<td>Intel 6271C</td>
+<td>3.26</td>
+<td>1068.50</td>
+<td>1004.96</td>
+<td>4582.52</td>
+<td>3135.68</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Intel 8350C</td>
+<td>3.52</td>
+<td>1010.70</td>
+<td>1002.33</td>
+<td>4723.23</td>
+<td>3209.27</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Intel 8350C + A100</td>
+<td>0.35</td>
+<td>108.90</td>
+<td>103.94</td>
+<td>1703.65</td>
+<td>1485.50</td>
+<td>60</td>
+<td>35.54</td>
+<td>7492.00</td>
+<td>6576.97</td>
+</tr>
+<tr>
+<td>Intel 6271C + V100</td>
+<td>0.71</td>
+<td>110.80</td>
+<td>103.54</td>
+<td>1800.06</td>
+<td>1559.28</td>
+<td>78</td>
+<td>36.65</td>
+<td>5410.00</td>
+<td>4741.55</td>
+</tr>
+<tr>
+<td>Intel 8563C + H20</td>
+<td>0.40</td>
+<td>110.20</td>
+<td>102.75</td>
+<td>2012.64</td>
+<td>1843.45</td>
+<td>100</td>
+<td>55.74</td>
+<td>6614.00</td>
+<td>5940.44</td>
+</tr>
+<tr>
+<td>Intel 8350C + A10</td>
+<td>0.44</td>
+<td>114.90</td>
+<td>103.87</td>
+<td>2002.72</td>
+<td>1773.17</td>
+<td>100</td>
+<td>49.28</td>
+<td>6654.00</td>
+<td>5980.68</td>
+</tr>
+<tr>
+<td>Intel 6271C + T4</td>
+<td>0.89</td>
+<td>105.00</td>
+<td>101.91</td>
+<td>2149.31</td>
+<td>1795.35</td>
+<td>100</td>
+<td>76.39</td>
+<td>5176.00</td>
+<td>4528.77</td>
+</tr>
+<tr>
+<td rowspan="9">OCR-nopp-max640-mobile</td>
+<td>Intel 6271C</td>
+<td>1.00</td>
+<td>1033.70</td>
+<td>1005.95</td>
+<td>2021.88</td>
+<td>1743.27</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Intel 8350C</td>
+<td>0.88</td>
+<td>1043.60</td>
+<td>1006.77</td>
+<td>1980.82</td>
+<td>1724.51</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Hygon 7490 + P800</td>
+<td>0.28</td>
+<td>125.70</td>
+<td>101.56</td>
+<td>1962.27</td>
+<td>1782.68</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Intel 8350C + A100</td>
+<td>0.21</td>
+<td>122.50</td>
+<td>101.87</td>
+<td>1772.39</td>
+<td>1569.55</td>
+<td>29</td>
+<td>18.74</td>
+<td>2360.00</td>
+<td>2039.07</td>
+</tr>
+<tr>
+<td>Intel 6271C + V100</td>
+<td>0.43</td>
+<td>133.80</td>
+<td>101.82</td>
+<td>1636.93</td>
+<td>1464.10</td>
+<td>37</td>
+<td>20.94</td>
+<td>2386.00</td>
+<td>2055.30</td>
+</tr>
+<tr>
+<td>Intel 8563C + H20</td>
+<td>0.18</td>
+<td>119.90</td>
+<td>102.12</td>
+<td>2119.93</td>
+<td>1889.49</td>
+<td>29</td>
+<td>20.92</td>
+<td>2636.00</td>
+<td>2321.11</td>
+</tr>
+<tr>
+<td>Intel 8350C + A10</td>
+<td>0.24</td>
+<td>126.80</td>
+<td>101.78</td>
+<td>1905.14</td>
+<td>1739.93</td>
+<td>48</td>
+<td>30.71</td>
+<td>2232.00</td>
+<td>1911.18</td>
+</tr>
+<tr>
+<td>M4</td>
+<td>7.08</td>
+<td>137.80</td>
+<td>104.83</td>
+<td>2931.08</td>
+<td>2658.25</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Intel 6271C + T4</td>
+<td>0.36</td>
+<td>124.80</td>
+<td>101.70</td>
+<td>1983.21</td>
+<td>1729.43</td>
+<td>61</td>
+<td>46.10</td>
+<td>2162.00</td>
+<td>1836.63</td>
+</tr>
+<tr>
+<td rowspan="9">OCR-nopp-max960-mobile</td>
+<td>Intel 6271C</td>
+<td>1.21</td>
+<td>1020.00</td>
+<td>1008.49</td>
+<td>2200.30</td>
+<td>1800.74</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Intel 8350C</td>
+<td>1.01</td>
+<td>1024.10</td>
+<td>1007.32</td>
+<td>2038.80</td>
+<td>1800.05</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Hygon 7490 + P800</td>
+<td>0.32</td>
+<td>107.50</td>
+<td>102.00</td>
+<td>2001.21</td>
+<td>1799.01</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Intel 8350C + A100</td>
+<td>0.23</td>
+<td>107.70</td>
+<td>102.33</td>
+<td>1727.89</td>
+<td>1490.18</td>
+<td>30</td>
+<td>20.19</td>
+<td>2646.00</td>
+<td>2385.40</td>
+</tr>
+<tr>
+<td>Intel 6271C + V100</td>
+<td>0.49</td>
+<td>109.90</td>
+<td>102.26</td>
+<td>1726.01</td>
+<td>1504.90</td>
+<td>38</td>
+<td>20.11</td>
+<td>2498.00</td>
+<td>2227.73</td>
+</tr>
+<tr>
+<td>Intel 8563C + H20</td>
+<td>0.20</td>
+<td>109.90</td>
+<td>102.52</td>
+<td>1959.46</td>
+<td>1798.35</td>
+<td>28</td>
+<td>19.38</td>
+<td>2712.00</td>
+<td>2450.10</td>
+</tr>
+<tr>
+<td>Intel 8350C + A10</td>
+<td>0.27</td>
+<td>102.90</td>
+<td>101.19</td>
+<td>1938.48</td>
+<td>1741.19</td>
+<td>47</td>
+<td>29.27</td>
+<td>3344.00</td>
+<td>2585.02</td>
+</tr>
+<tr>
+<td>M4</td>
+<td>5.44</td>
+<td>122.10</td>
+<td>105.91</td>
+<td>3094.72</td>
+<td>2686.52</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Intel 6271C + T4</td>
+<td>0.41</td>
+<td>106.00</td>
+<td>101.81</td>
+<td>1859.88</td>
+<td>1722.62</td>
+<td>68</td>
+<td>47.05</td>
+<td>2264.00</td>
+<td>2001.07</td>
+</tr>
+<tr>
+<td rowspan="9">OCR-nopp-max640-server</td>
+<td>Intel 6271C</td>
+<td>2.16</td>
+<td>1026.30</td>
+<td>1005.10</td>
+<td>3467.93</td>
+<td>3074.06</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Intel 8350C</td>
+<td>2.30</td>
+<td>1008.70</td>
+<td>1003.32</td>
+<td>3435.54</td>
+<td>3042.62</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Hygon 7490 + P800</td>
+<td>0.35</td>
+<td>104.70</td>
+<td>101.27</td>
+<td>1948.85</td>
+<td>1779.77</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Intel 8350C + A100</td>
+<td>0.25</td>
+<td>104.90</td>
+<td>101.42</td>
+<td>1833.93</td>
+<td>1560.71</td>
+<td>41</td>
+<td>27.61</td>
+<td>4480.00</td>
+<td>3955.14</td>
+</tr>
+<tr>
+<td>Intel 6271C + V100</td>
+<td>0.56</td>
+<td>106.20</td>
+<td>101.47</td>
+<td>1669.73</td>
+<td>1500.87</td>
+<td>58</td>
+<td>31.78</td>
+<td>3160.00</td>
+<td>2838.78</td>
+</tr>
+<tr>
+<td>Intel 8563C + H20</td>
+<td>0.23</td>
+<td>109.40</td>
+<td>101.45</td>
+<td>1968.77</td>
+<td>1800.81</td>
+<td>58</td>
+<td>30.81</td>
+<td>2602.00</td>
+<td>2588.77</td>
+</tr>
+<tr>
+<td>Intel 8350C + A10</td>
+<td>0.30</td>
+<td>106.10</td>
+<td>101.55</td>
+<td>2027.13</td>
+<td>1749.07</td>
+<td>69</td>
+<td>39.10</td>
+<td>3318.00</td>
+<td>2795.54</td>
+</tr>
+<tr>
+<td>M4</td>
+<td>7.26</td>
+<td>133.90</td>
+<td>104.48</td>
+<td>5473.38</td>
+<td>3472.28</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Intel 6271C + T4</td>
+<td>0.58</td>
+<td>103.90</td>
+<td>100.86</td>
+<td>1884.23</td>
+<td>1714.48</td>
+<td>84</td>
+<td>63.50</td>
+<td>2852.00</td>
+<td>2540.37</td>
+</tr>
+<tr>
+<td rowspan="9">OCR-nopp-max960-server</td>
+<td>Intel 6271C</td>
+<td>2.53</td>
+<td>1014.50</td>
+<td>1005.22</td>
+<td>3625.57</td>
+<td>3151.73</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Intel 8350C</td>
+<td>2.66</td>
+<td>1010.60</td>
+<td>1003.39</td>
+<td>3580.64</td>
+<td>3197.09</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Hygon 7490 + P800</td>
+<td>0.40</td>
+<td>105.90</td>
+<td>101.76</td>
+<td>2040.65</td>
+<td>1810.97</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Intel 8350C + A100</td>
+<td>0.29</td>
+<td>108.90</td>
+<td>102.12</td>
+<td>1821.03</td>
+<td>1620.02</td>
+<td>44</td>
+<td>30.38</td>
+<td>4290.00</td>
+<td>2928.79</td>
+</tr>
+<tr>
+<td>Intel 6271C + V100</td>
+<td>0.60</td>
+<td>109.90</td>
+<td>101.98</td>
+<td>1797.75</td>
+<td>1544.96</td>
+<td>61</td>
+<td>32.48</td>
+<td>2936.00</td>
+<td>2117.71</td>
+</tr>
+<tr>
+<td>Intel 8563C + H20</td>
+<td>0.28</td>
+<td>108.80</td>
+<td>101.92</td>
+<td>2016.22</td>
+<td>1811.74</td>
+<td>73</td>
+<td>41.82</td>
+<td>2636.00</td>
+<td>2241.23</td>
+</tr>
+<tr>
+<td>Intel 8350C + A10</td>
+<td>0.34</td>
+<td>111.00</td>
+<td>102.75</td>
+<td>1964.21</td>
+<td>1750.21</td>
+<td>68</td>
+<td>41.25</td>
+<td>2722.00</td>
+<td>2293.74</td>
+</tr>
+<tr>
+<td>M4</td>
+<td>6.28</td>
+<td>129.10</td>
+<td>103.74</td>
+<td>7780.70</td>
+<td>3571.92</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Intel 6271C + T4</td>
+<td>0.67</td>
+<td>116.90</td>
+<td>101.33</td>
+<td>1941.09</td>
+<td>1693.39</td>
+<td>88</td>
+<td>65.48</td>
+<td>2714.00</td>
+<td>1923.06</td>
+</tr>
+<tr>
+<td rowspan="7">OCR-nopp-min1280-server</td>
+<td>Intel 6271C</td>
+<td>4.13</td>
+<td>1043.40</td>
+<td>1005.45</td>
+<td>5993.70</td>
+<td>3454.00</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Intel 8350C</td>
+<td>4.46</td>
+<td>1011.70</td>
+<td>996.72</td>
+<td>5633.51</td>
+<td>3489.79</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Intel 8350C + A100</td>
+<td>0.42</td>
+<td>113.90</td>
+<td>106.08</td>
+<td>1747.88</td>
+<td>1546.18</td>
+<td>85</td>
+<td>43.73</td>
+<td>13558.00</td>
+<td>11297.98</td>
+</tr>
+<tr>
+<td>Intel 6271C + V100</td>
+<td>0.82</td>
+<td>116.80</td>
+<td>105.18</td>
+<td>1873.38</td>
+<td>1609.55</td>
+<td>100</td>
+<td>39.57</td>
+<td>10376.00</td>
+<td>8427.30</td>
+</tr>
+<tr>
+<td>Intel 8563C + H20</td>
+<td>0.55</td>
+<td>114.80</td>
+<td>103.14</td>
+<td>2036.36</td>
+<td>1864.45</td>
+<td>100</td>
+<td>69.67</td>
+<td>13224.00</td>
+<td>11411.31</td>
+</tr>
+<tr>
+<td>Intel 8350C + A10</td>
+<td>0.55</td>
+<td>105.90</td>
+<td>101.86</td>
+<td>1931.35</td>
+<td>1764.44</td>
+<td>100</td>
+<td>56.16</td>
+<td>12418.00</td>
+<td>10510.77</td>
+</tr>
+<tr>
+<td>Intel 6271C + T4</td>
+<td>1.13</td>
+<td>105.90</td>
+<td>102.35</td>
+<td>2066.73</td>
+<td>1787.78</td>
+<td>100</td>
+<td>83.50</td>
+<td>10142.00</td>
+<td>8338.80</td>
+</tr>
+<tr>
+<td rowspan="9">OCR-nopp-min1280-mobile</td>
+<td>Intel 6271C</td>
+<td>1.59</td>
+<td>1019.90</td>
+<td>1008.39</td>
+<td>2366.86</td>
+<td>1992.03</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Intel 8350C</td>
+<td>1.29</td>
+<td>1017.70</td>
+<td>1007.28</td>
+<td>2501.24</td>
+<td>2059.99</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Hygon 7490 + P800</td>
+<td>0.43</td>
+<td>120.90</td>
+<td>107.02</td>
+<td>2108.87</td>
+<td>1821.91</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Intel 8350C + A100</td>
+<td>0.29</td>
+<td>117.90</td>
+<td>107.19</td>
+<td>1847.97</td>
+<td>1570.89</td>
+<td>31</td>
+<td>18.98</td>
+<td>3746.00</td>
+<td>3321.86</td>
+</tr>
+<tr>
+<td>Intel 6271C + V100</td>
+<td>0.61</td>
+<td>122.80</td>
+<td>107.07</td>
+<td>1789.25</td>
+<td>1542.56</td>
+<td>39</td>
+<td>20.52</td>
+<td>4058.00</td>
+<td>3487.46</td>
+</tr>
+<tr>
+<td>Intel 8563C + H20</td>
+<td>0.24</td>
+<td>116.80</td>
+<td>106.80</td>
+<td>2092.63</td>
+<td>1882.77</td>
+<td>28</td>
+<td>18.67</td>
+<td>3902.00</td>
+<td>3444.00</td>
+</tr>
+<tr>
+<td>Intel 8350C + A10</td>
+<td>0.34</td>
+<td>125.80</td>
+<td>106.79</td>
+<td>1959.45</td>
+<td>1783.97</td>
+<td>49</td>
+<td>32.66</td>
+<td>3532.00</td>
+<td>3094.29</td>
+</tr>
+<tr>
+<td>M4</td>
+<td>6.64</td>
+<td>139.40</td>
+<td>107.63</td>
+<td>4283.97</td>
+<td>3112.59</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Intel 6271C + T4</td>
+<td>0.51</td>
+<td>116.90</td>
+<td>105.06</td>
+<td>1927.22</td>
+<td>1675.34</td>
+<td>68</td>
+<td>45.78</td>
+<td>3828.00</td>
+<td>3283.78</td>
+</tr>
+</table>
+
+
+<table border="1">
+<tr><th>Pipeline configuration</th><th>description</th></tr>
+<tr>
+<td>OCR-default</td>
+<td>Default configuration</td>
+</tr>
+<tr>
+<td>OCR-nopp-mobile</td>
+<td>Based on the default configuration, document image preprocessing is disabled and mobile det and rec models are used</td>
+</tr>
+<tr>
+<td>OCR-nopp-server</td>
+<td>Based on the default configuration, document image preprocessing is disabled</td>
+</tr>
+<tr>
+<td>OCR-nopp-min736-mobile</td>
+<td>Based on the default configuration, document image preprocessing is disabled, det model input resizing strategy is set to min+736, and mobile det and rec models are used</td>
+</tr>
+<tr>
+<td>OCR-nopp-min736-server</td>
+<td>Based on the default configuration, document image preprocessing is disabled, and the det model input resizing strategy is set to min+736</td>
+</tr>
+<tr>
+<td>OCR-nopp-max640-mobile</td>
+<td>Based on the default configuration, document image preprocessing is disabled, det model input resizing strategy is set to max+640, and mobile det and rec models are used</td>
+</tr>
+<tr>
+<td>OCR-nopp-max960-mobile</td>
+<td>Based on the default configuration, document image preprocessing is disabled, det model input resizing strategy is set to max+960, and mobile det and rec models are used</td>
+</tr>
+<tr>
+<td>OCR-nopp-max640-server</td>
+<td>Based on the default configuration, document image preprocessing is disabled, and the det model input resizing strategy is set to max+640</td>
+</tr>
+<tr>
+<td>OCR-nopp-max960-server</td>
+<td>Based on the default configuration, document image preprocessing is disabled, and the det model input resizing strategy is set to max+960</td>
+</tr>
+<tr>
+<td>OCR-nopp-min1280-server</td>
+<td>Based on the default configuration, document image preprocessing is disabled, and the det model input resizing strategy is set to min+1280</td>
+</tr>
+<tr>
+<td>OCR-nopp-min1280-mobile</td>
+<td>Based on the default configuration, document image preprocessing is disabled, det model input resizing strategy is set to min+1280, and mobile det and rec models are used</td>
+</tr>
+</table>
+</details>
+
+
+* Test environment:
+    * PaddlePaddle 3.1.0、CUDA 11.8、cuDNN 8.9
+    * PaddleX @ develop (f1eb28e23cfa54ce3e9234d2e61fcb87c93cf407)
+    * Docker image: ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddle:3.1.0-gpu-cuda11.8-cudnn8.9
+* Test data:
+    * Test data containing 200 images from document and general scenarios.
+* Test strategy:
+    * Warm up with 20 samples, then repeat the full dataset once for performance testing.
+* Note:
+    * Since we did not collect device memory data for NPU and XPU, the corresponding entries in the table are marked as N/A.
 
 **CPU**
 

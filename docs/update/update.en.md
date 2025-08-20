@@ -6,12 +6,28 @@ hide:
 ---
 
 ### Recently Update
+
+#### **2025.08.15: Release of PaddleOCR 3.1.1**, includes:
+
+- **Bug Fixes:**
+  - Added the missing methods `save_vector`, `save_visual_info_list`, `load_vector`, and `load_visual_info_list` in the `PP-ChatOCRv4` class.
+  - Added the missing parameters `glossary` and `llm_request_interval` to the `translate` method in the `PPDocTranslation` class.
+
+- **Documentation Improvements:**
+  - Added a demo to the MCP documentation.
+  - Added information about the PaddlePaddle and PaddleOCR version used for performance metrics testing in the documentation.
+  - Fixed errors and omissions in the production line document translation.
+
+- **Others:**
+  - Changed the MCP server dependency to use the pure Python library `puremagic` instead of `python-magic` to reduce installation issues.
+  - Retested PP-OCRv5 performance metrics with PaddleOCR version 3.1.0 and updated the documentation.
+  
 #### **2025.06.29: Release of PaddleOCR 3.1.0**, includes:
 
 - **Key Models and Pipelines:**
   - **Added PP-OCRv5 Multilingual Text Recognition Model**, which supports the training and inference process for text recognition models in 37 languages, including French, Spanish, Portuguese, Russian, Korean, etc. **Average accuracy improved by over 30%.** [Details](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/algorithm/PP-OCRv5/PP-OCRv5_multi_languages.html)
   - Upgraded the **PP-Chart2Table model** in PP-StructureV3, further enhancing the capability of converting charts to tables. On internal custom evaluation sets, the metric (RMS-F1) **increased by 9.36 percentage points (71.24% -> 80.60%).**
-  - Newly launched **document translation pipeline, PP-DocTranslation, based on PP-StructureV3 and ERNIE 4.5 Turbo**, which supports the translation of Markdown format documents, various complex-layout PDF documents, and document images, with the results saved as Markdown format documents. [Details](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/pipeline_usage/PP-DocTranslation.html)
+  - Newly launched **document translation pipeline, PP-DocTranslation, based on PP-StructureV3 and ERNIE 4.5**, which supports the translation of Markdown format documents, various complex-layout PDF documents, and document images, with the results saved as Markdown format documents. [Details](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/pipeline_usage/PP-DocTranslation.html)
 
 
 - **New MCP server:** [Details](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/mcp_server.html)
@@ -93,7 +109,7 @@ hide:
   - Outperforms numerous open and closed-source solutions in public benchmarks.
 
 - **PP-ChatOCRv4: Intelligent Document Understanding Solution**  
-  - Natively supports ERNIE 4.5 Turbo.  
+  - Natively supports ERNIE 4.5.  
   - Delivers a 15% accuracy boost over the previous version.
 
 - **Rebuilt Deployment Capabilities with Unified Inference Interface:**  

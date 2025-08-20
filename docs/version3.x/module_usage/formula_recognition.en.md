@@ -10,6 +10,8 @@ The formula recognition module is a key component of an OCR (Optical Character R
 
 ## II. Supported Model List
 
+> The inference time only includes the model inference time and does not include the time for pre- or post-processing.
+
 <table>
 <tr>
 <th>Model</th><th>Model Download Link</th>

@@ -7,12 +7,27 @@ hide:
 
 ### 更新
 
+#### 2025.08.15: **PaddleOCR 3.1.1** 发布，新增能力如下：
+
+- **bug修复：**
+  - 补充 `PP-ChatOCRv4` 类缺失的`save_vector`、`save_visual_info_list`、`load_vector、load_visual_info_list` 方法。
+  - 补充 `PPDocTranslation` 类的 `translate` 方法缺失的 `glossary 和 `llm_request_interval 参数。
+
+- **文档优化：**
+  - 补充 MCP 文档中的 demo。
+  - 补充文档中测试性能指标使用的飞桨框架与 PaddleOCR 版本。
+  - 修复文档翻译产线文档中的错漏。
+
+- **其他：**
+  - 修改 MCP 服务器依赖，使用纯 Python 库 `puremagic` 代替 `python-magic`，减少安装问题。
+  - 使用 3.1.0 版本 PaddleOCR 重新测试 PP-OCRv5 性能指标，更新文档。
+
 #### 2025.06.29: **PaddleOCR 3.1.0** 发布，新增能力如下：
 
 - **重要模型和产线：**
   - **新增 PP-OCRv5 多语种文本识别模型**，支持法语、西班牙语、葡萄牙语、俄语、韩语等 37 种语言的文字识别模型的训推流程。**平均精度涨幅超30%。**[详情](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/algorithm/PP-OCRv5/PP-OCRv5_multi_languages.html)
   - 升级 PP-StructureV3 中的 **PP-Chart2Table 模型**，图表转表能力进一步升级，在内部自建测评集合上指标（RMS-F1）**提升 9.36 个百分点（71.24% -> 80.60%）。**
-  - 新增基于 PP-StructureV3 和 ERNIE 4.5 Turbo 的**文档翻译产线 PP-DocTranslation，支持翻译 Markdown 格式文档、各种复杂版式的 PDF 文档和文档图像，结果保存为 Markdown 格式文档。**[详情](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/pipeline_usage/PP-DocTranslation.html)
+  - 新增基于 PP-StructureV3 和 ERNIE 4.5 的**文档翻译产线 PP-DocTranslation，支持翻译 Markdown 格式文档、各种复杂版式的 PDF 文档和文档图像，结果保存为 Markdown 格式文档。**[详情](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/pipeline_usage/PP-DocTranslation.html)
 
 - **新增MCP server：**[详情](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/deployment/mcp_server.html)
   - **支持 OCR 和 PP-StructureV3 两种工具；**
@@ -80,7 +95,7 @@ hide:
  
 - **发布通用文档解析方案PP-StructureV3：** 支持多场景、多版式 PDF 高精度解析，在公开评测集中领先众多开源和闭源方案。
 
-- **发布智能文档理解方案PP-ChatOCRv4：** 原生支持文心大模型4.5 Turbo，精度相比上一代提升15个百分点。
+- **发布智能文档理解方案PP-ChatOCRv4：** 原生支持文心大模型4.5，精度相比上一代提升15个百分点。
 
 - **重构部署能力，统一推理接口：** PaddleOCR 3.0 融合了飞桨 PaddleX3.0 工具的底层能力，全面升级推理、部署模块，优化 2.x 版本的设计，统一并优化了 Python API 和命令行接口（CLI）。部署能力现覆盖高性能推理、服务化部署及端侧部署三大场景。
 

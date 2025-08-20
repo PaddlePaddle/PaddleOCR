@@ -8,7 +8,7 @@ comments: true
 
 Layout analysis is a technique used to extract structured information from document images. It is primarily used to convert complex document layouts into machine-readable data formats. This technology has broad applications in document management, information extraction, and data digitization. Layout analysis combines Optical Character Recognition (OCR), image processing, and machine learning algorithms to identify and extract text blocks, titles, paragraphs, images, tables, and other layout elements from documents. This process generally includes three main steps: layout analysis, element analysis, and data formatting. The final result is structured document data, which enhances the efficiency and accuracy of data processing. <b>PP-StructureV3 improves upon the general layout analysis v1 pipeline by enhancing layout region detection, table recognition, and formula recognition. It also adds capabilities such as multi-column reading order recovery, chart understanding, and result conversion to Markdown files. It performs excellently across various document types and can handle complex document data.</b>  This pipeline also provides flexible service deployment options, supporting invocation using multiple programming languages on various hardware. In addition, it offers secondary development capabilities, allowing you to train and fine-tune models on your own dataset and integrate the trained models seamlessly.
 
-<b>The PP-StructureV3 pipeline consists of the following six modules or sub-pipelines. Each module or sub-pipeline can be trained and inferred independently and contains multiple models. For more details, please click the corresponding links to view the documentation.</b>
+<b>The PP-StructureV3 pipeline consists of the following seven modules or sub-pipelines. Each module or sub-pipeline can be trained and inferred independently and contains multiple models. For more details, please click the corresponding links to view the documentation.</b>
 
 - [Layout Detection Module](../module_usage/layout_detection.en.md)
 - [General OCR Subline](./OCR.en.md)
@@ -16,8 +16,11 @@ Layout analysis is a technique used to extract structured information from docum
 - [Table Recognition Subline ](./table_recognition_v2.en.md) （Optional）
 - [Seal Text Recognition Subline](./seal_recognition.en.md) （Optional）
 - [Formula Recognition Subline](./formula_recognition.en.md) （Optional）
+- [Chart Parsing Module](../module_usage/chart_parsing.en.md) (Optional)
 
 In this pipeline, you can choose the model to use based on the benchmark data below.
+
+> The inference time only includes the model inference time and does not include the time for pre- or post-processing.
 
 <details>
 <summary><b>Document Image Orientation Classification Module :</b></summary>
@@ -956,7 +959,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
 
 ## 2. Quick Start
 
-Before using the PP-StructureV3 pipeline locally, please make sure you have completed the installation of the wheel package according to the [installation guide](../installation.en.md). After installation, you can use it via command line or Python integration.
+Before using the PP-StructureV3 pipeline locally, please make sure you have completed the installation of the wheel package according to the [installation guide](../installation.en.md). If you prefer to install dependencies selectively, please refer to the relevant instructions in the installation documentation. The corresponding dependency group for this pipeline is `doc-parser`. After installation, you can use it via command line or Python integration.
 
 Please note: If you encounter issues such as the program becoming unresponsive, unexpected program termination, running out of memory resources, or extremely slow inference during execution, please try adjusting the configuration according to the documentation, such as disabling unnecessary features or using lighter-weight models.
 
