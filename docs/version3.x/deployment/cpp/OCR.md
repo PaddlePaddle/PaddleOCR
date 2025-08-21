@@ -27,6 +27,8 @@
 
 ## 1. 环境准备
 
+- **本章节编译运行时用到的源代码位于 [PaddleOCR/deploy/cpp_infer](https://github.com/PaddlePaddle/PaddleOCR/tree/main/deploy/cpp_infer) 目录下。**
+
 - Linux 环境。
     - gcc   8.2（编译使用 Paddle Inference GPU 版本时，gcc>=11.2）
     - cmake 3.18
