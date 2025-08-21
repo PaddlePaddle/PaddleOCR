@@ -247,7 +247,7 @@ PP-OCRv4_server_rec_doc_infer.tar">推理模型</a></td>
 </table>
 </details>
 
-也可以参考[模型预测章节]()，将训练好的模型导出为推理模型。
+也可以参考各模块的模型导出章节，如[文本检测模块-模型导出](../../module_usage/text_detection.md#44-模型导出)，将训练好的模型导出为推理模型。
 
 模型的目录结构一般如下所示：
 
@@ -260,31 +260,15 @@ PP-OCRv5_mobile_det
 
 ### 2.2 编译预测 demo
 
-在编译通用 OCR C++ 预测 demo 前，请确保您已经编译好 OpenCV 和 Paddle Inference 预测库。
+在编译预测demo前，请确保您已经按照 1.1 和 1.2 节编译好 OpenCV 库和 Paddle Inference 预测库。
+
+修改 tools/build.sh 中的配置后，执行以下命令进行编译：
 
 ```shell
 sh tools/build.sh
 ```
 
-具体的，需要修改 `tools/build.sh` 中环境路径及相关选项，相关内容如下：
-
-```shell
-OPENCV_DIR=your_opencv_dir
-LIB_DIR=your_paddle_inference_dir
-CUDA_LIB_DIR=your_cuda_lib_dir
-CUDNN_LIB_DIR=/your_cudnn_lib_dir
-
-cmake .. \
-    -DPADDLE_LIB=${LIB_DIR} \
-    -DWITH_MKL=ON \
-    -DWITH_GPU=OFF \
-    -DWITH_STATIC_LIB=OFF \
-    -DWITH_TENSORRT=OFF \
-    -DOPENCV_DIR=${OPENCV_DIR} \
-    -DCUDNN_LIB=${CUDNN_LIB_DIR} \
-    -DCUDA_LIB=${CUDA_LIB_DIR} \
-    -DUSE_FREETYPE=OFF
-```
+相关配置参数详细介绍如下：
 
 <table>
 <tr>
@@ -319,7 +303,7 @@ cmake .. \
 </tr>
 </table>
 
-**注意：以上路径都写绝对路径，不要写相对路径。**
+**注意：以上路径需要填绝对路径。**
 
 ### 2.3 运行预测 demo
 
