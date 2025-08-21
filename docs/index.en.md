@@ -44,6 +44,8 @@ You can [Quick Start](./quick_start.en.md) directly, find comprehensive document
 
 
 ## 👩‍👩‍👧‍👦 Community
+* The [PaddleOCR Best Practice Projects](https://aistudio.baidu.com/activitydetail/1503019405) call for submissions is now open!
+📅 **August 5, 2025 – October 30, 2025**. Share your scenario-based PaddleOCR applications and shine in the global developer community! 
 * 👫 Join the [PaddlePaddle Community](https://github.com/PaddlePaddle/community), where you can engage with [paddlepaddle developers](https://www.paddlepaddle.org.cn/developercommunity), researchers, and enthusiasts from around the world.
 * 🎓 Learn from experts through workshops, tutorials, and Q&A sessions [hosted by the AI Studio](https://aistudio.baidu.com/learn/center).
 * 🏆 Participate in [hackathons, challenges, and competitions](https://aistudio.baidu.com/competition) to showcase your skills and win exciting prizes.

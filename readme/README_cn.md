@@ -67,7 +67,39 @@ PaddleOCR 3.0除了提供优秀的模型库外，还提供好学易用的工具�
 
 ## 📣 最新动态
 
-2025.08.15: **PaddleOCR 3.1.1** 发布，包含：
+
+### 🔥🔥2025.08.21: PaddleOCR 3.2.0 发布，包含：
+
+- **重要模型新增：**
+    - 新增 PP-OCRv5 英文、泰文、希腊文识别模型的训练、推理、部署。**其中 PP-OCRv5 英文模型较 PP-OCRv5 主模型在英文场景提升 11%，泰文识别模型精度 82.68%，希腊文识别模型精度 89.28%。**
+
+- **部署能力升级：**
+    - **全面支持飞桨框架 3.1.0 和 3.1.1 版本。**
+    - **全面升级 PP-OCRv5 C++ 本地部署方案，支持 Linux、Windows，功能及精度效果与 Python 方案保持一致。**
+    - **高性能推理支持 CUDA 12，可使用 Paddle Inference、ONNX Runtime 后端推理。**
+    - **高稳定性服务化部署方案全面开源，支持用户根据需求对 Docker 镜像和 SDK 进行定制化修改。**
+    - 高稳定性服务化部署方案支持通过手动构造HTTP请求的方式调用，该方式允许客户端代码使用任意编程语言编写。
+
+- **Benchmark支持**：
+    - **全部产线支持产线细粒度 benchmark，能够测量产线端到端推理时间以及逐层、逐模块的耗时数据，可用于辅助产线性能分析。**
+    - **文档中补充各产线常用配置在主流硬件上的关键指标，包括推理耗时和内存占用等，为用户部署提供参考。**
+
+- **Bug修复：**
+    - 修复模型训练时训练日志保存失败的问题。
+    - 对公式模型的数据增强部分进行了版本兼容性升级，以适应新版本的 albumentations 依赖，并修复了在多进程使用 tokenizers 依赖包时出现的死锁警告。
+    - 修复 PP-StructureV3 配置文件中的 `use_chart_parsing` 等开关行为与其他产线不统一的问题。
+
+- **其他升级：**
+    - **分离必要依赖与可选依赖。使用基础文字识别功能时，仅需安装少量核心依赖；若需文档解析、信息抽取等功能，用户可按需选择安装额外依赖。**
+    - **支持 Windows 用户使用英伟达 50 系显卡，可根据 [安装文档](../docs/version3.x/installation.md) 安装对应版本的 paddle 框架。**
+    - **PP-OCR 系列模型支持返回单文字坐标。**
+    - 模型新增 AIStudio、ModelScope 等下载源。可指定相关下载源下载对应的模型。
+    - 支持图表转表 PP-Chart2Table 单功能模块推理能力。
+    - 优化部分使用文档中的描述，提升易用性。
+
+
+<details>
+<summary><strong>2025.08.15: PaddleOCR 3.1.1 发布</strong></summary>
 
 - **bug修复：**
   - 补充 `PP-ChatOCRv4` 类缺失的`save_vector`、`save_visual_info_list`、`load_vector、load_visual_info_list` 方法。
@@ -81,8 +113,11 @@ PaddleOCR 3.0除了提供优秀的模型库外，还提供好学易用的工具�
 - **其他：**
   - 修改 MCP 服务器依赖，使用纯 Python 库 `puremagic` 代替 `python-magic`，减少安装问题。
   - 使用 3.1.0 版本 PaddleOCR 重新测试 PP-OCRv5 性能指标，更新文档。
+</details>
 
-2025.06.29: **PaddleOCR 3.1.0** 发布，新增能力如下：
+<details>
+
+<summary><strong>2025.06.26: PaddleOCR 3.0.3 发布</strong></summary>
 
 - **重要模型和产线：**
   - **新增 PP-OCRv5 多语种文本识别模型**，支持法语、西班牙语、葡萄牙语、俄语、韩语等 37 种语言的文字识别模型的训推流程。**平均精度涨幅超30%。**[详情](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/algorithm/PP-OCRv5/PP-OCRv5_multi_languages.html)
@@ -95,6 +130,7 @@ PaddleOCR 3.0除了提供优秀的模型库外，还提供好学易用的工具�
   - 支持通过 stdio 调用本地服务，通过 Streamable HTTP 调用远程服务。
 
 - **文档优化：** 优化了部分使用文档描述，提升阅读体验。
+</details>
 
 <details>
     <summary><strong>2025.06.26: PaddleOCR 3.0.3 发布</strong></summary>

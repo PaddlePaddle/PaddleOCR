@@ -432,11 +432,15 @@ The training commands are as follows:
 ```bash
 # Single GPU training (default training method)
 python3 tools/train.py -c configs/det/PP-OCRv4/PP-OCRv4_server_seal_det.yml \
-   -o Global.pretrained_model=./PP-OCRv4_server_seal_det_pretrained.pdparams
+   -o Global.pretrained_model=./PP-OCRv4_server_seal_det_pretrained.pdparams \
+   Train.dataset.data_dir=./dataset/ocr_curve_det_dataset_examples Train.dataset.label_file_list=./dataset/ocr_curve_det_dataset_examples/train.txt \
+   Eval.dataset.data_dir=./dataset/ocr_curve_det_dataset_examples Eval.dataset.label_file_list=./dataset/ocr_curve_det_dataset_examples/val.txt
    
 # Multi-GPU training, specify GPU ids using the --gpus parameter
-python3 -m paddle.distributed.launch --gpus '0,1,2,3' tools/train.py -c configs/det/PP-OCRv4/PP-OCRv4_server_seal_det.yml \
-        -o Global.pretrained_model=./PP-OCRv4_server_seal_det_pretrained.pdparams
+python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs/det/PP-OCRv4/PP-OCRv4_server_seal_det.yml \
+   -o Global.pretrained_model=./PP-OCRv4_server_seal_det_pretrained.pdparams \
+   Train.dataset.data_dir=./dataset/ocr_curve_det_dataset_examples Train.dataset.label_file_list=./dataset/ocr_curve_det_dataset_examples/train.txt \
+   Eval.dataset.data_dir=./dataset/ocr_curve_det_dataset_examples Eval.dataset.label_file_list=./dataset/ocr_curve_det_dataset_examples/val.txt
 ```
 
 ### 4.3 Model Evaluation
@@ -447,15 +451,15 @@ You can evaluate the trained weights, such as `output/xxx/xxx.pdparams`, using t
 # Make sure to set the pretrained_model path to the local path. If using a model that was trained and saved by yourself, be sure to modify the path and filename to {path/to/weights}/{model_name}.
 # Demo test set evaluation
 python3 tools/eval.py -c configs/det/PP-OCRv4/PP-OCRv4_server_seal_det.yml -o \
-Global.pretrained_model=output/xxx/xxx.pdparams
+    Global.pretrained_model=output/xxx/xxx.pdparams
 ```
 
 ### 4.4 Model Export
 
 ```bash
 python3 tools/export_model.py -c configs/det/PP-OCRv4/PP-OCRv4_server_seal_det.yml -o \
-Global.pretrained_model=output/xxx/xxx.pdparams \
-save_inference_dir="./PP-OCRv4_server_seal_det_infer/"
+    Global.pretrained_model=output/xxx/xxx.pdparams \
+    Global.save_inference_dir="./PP-OCRv4_server_seal_det_infer/"
 ```
 
 After exporting the model, the static graph model will be stored in the `./PP-OCRv4_server_seal_det_infer/` directory. In this directory, you will see the following files:
