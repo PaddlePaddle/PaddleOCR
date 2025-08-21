@@ -43,6 +43,34 @@ En plus de fournir une bibliothèque de modèles exceptionnelle, PaddleOCR 3.0 p
 **Remarque spéciale** : PaddleOCR 3.x introduit plusieurs changements importants d’interface. **L'ancien code écrit sur la base de PaddleOCR 2.x est probablement incompatible avec PaddleOCR 3.x**. Veuillez vous assurer que la documentation que vous consultez correspond à la version de PaddleOCR que vous utilisez. [Ce document](https://paddlepaddle.github.io/PaddleOCR/latest/en/update/upgrade_notes.html) explique les raisons de la mise à niveau et les principaux changements entre PaddleOCR 2.x et 3.x.
 
 ## 📣 Mises à jour récentes
+#### **🔥🔥21/08/2025 : Sortie de PaddleOCR 3.2.0**, comprend :
+
+- **Ajouts majeurs de modèles :**
+    - Ajout de l’entraînement, de l’inférence et du déploiement des modèles de reconnaissance PP-OCRv5 en anglais, thaï et grec. **Le modèle anglais PP-OCRv5 offre une amélioration de 11 % dans les scénarios anglophones par rapport au modèle principal PP-OCRv5, tandis que les modèles de reconnaissance thaï et grec atteignent respectivement des précisions de 82,68 % et 89,28 %.**
+
+- **Améliorations des capacités de déploiement :**
+    - **Support complet des versions 3.1.0 et 3.1.1 du framework PaddlePaddle.**
+    - **Mise à niveau complète de la solution de déploiement local PP-OCRv5 en C++ : compatible Linux et Windows, avec des fonctionnalités et une précision identiques à la version Python.**
+    - **Prise en charge des inférences haute performance via CUDA 12, avec possibilité d’utiliser Paddle Inference ou le backend ONNX Runtime.**
+    - **La solution de déploiement orientée service, hautement stable, est désormais entièrement open source, permettant aux utilisateurs de personnaliser les images Docker et les SDK selon leurs besoins.**
+    - Cette solution prend également en charge l’appel via des requêtes HTTP construites manuellement, permettant le développement du client dans n’importe quel langage de programmation.
+
+- **Support du benchmark :**
+    - **Toutes les chaînes de production prennent désormais en charge des benchmarks fins, permettant de mesurer le temps d’inférence de bout en bout ainsi que les temps d’exécution par couche et par module, ce qui facilite l’analyse des performances.**
+    - **La documentation fournit désormais des indicateurs clés (temps d’inférence, occupation mémoire, etc.) sur le matériel courant pour différentes configurations, offrant ainsi des références pour le déploiement.**
+
+- **Corrections de bugs :**
+    - Correction d’un problème d’enregistrement des journaux d’entraînement du modèle.
+    - Mise à jour de la partie augmentation de données du modèle de formule pour garantir la compatibilité avec les nouvelles versions de la dépendance albumentations, et correction d’un avertissement de blocage lors de l’utilisation du package tokenizers en mode multiprocessus.
+    - Correction de l’incohérence du comportement de certains interrupteurs (comme `use_chart_parsing`) dans les fichiers de configuration de PP-StructureV3 par rapport aux autres chaînes de production.
+
+- **Autres améliorations :**
+    - **Séparation des dépendances essentielles et optionnelles : seules les dépendances de base sont nécessaires pour la reconnaissance de texte, tandis que les fonctionnalités avancées (analyse documentaire, extraction d’information, etc.) requièrent l’installation de dépendances supplémentaires selon les besoins.**
+    - **Prise en charge des cartes graphiques NVIDIA série 50 sous Windows ; les utilisateurs peuvent consulter le [guide d’installation](../docs/version3.x/installation.en.md) pour installer la version appropriée du framework Paddle.**
+    - **Les modèles de la série PP-OCR peuvent désormais retourner les coordonnées de chaque caractère individuellement.**
+    - Ajout de nouvelles sources de téléchargement des modèles, telles qu’AIStudio et ModelScope, avec la possibilité de spécifier la source désirée.
+    - Ajout du support pour la conversion de graphique vers tableau via le module PP-Chart2Table.
+    - Optimisation de certaines descriptions de la documentation pour améliorer la facilité d’utilisation.
 
 #### **15/08/2025 : Sortie de PaddleOCR 3.1.1**, comprend :
 

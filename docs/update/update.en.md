@@ -7,6 +7,37 @@ hide:
 
 ### Recently Update
 
+#### 🔥🔥**2025.08.21: Release of PaddleOCR 3.2.0**, includes:
+
+
+- **Significant Model Additions:**
+    - Introduced training, inference, and deployment for PP-OCRv5 recognition models in English, Thai, and Greek. **The PP-OCRv5 English model delivers an 11% improvement in English scenarios compared to the main PP-OCRv5 model, with the Thai and Greek recognition models achieving accuracies of 82.68% and 89.28%, respectively.**
+
+- **Deployment Capability Upgrades:**
+    - **Full support for PaddlePaddle framework versions 3.1.0 and 3.1.1.**
+    - **Comprehensive upgrade of the PP-OCRv5 C++ local deployment solution, now supporting both Linux and Windows, with feature parity and identical accuracy to the Python implementation.**
+    - **High-performance inference now supports CUDA 12, and inference can be performed using either the Paddle Inference or ONNX Runtime backends.**
+    - **The high-stability service-oriented deployment solution is now fully open-sourced, allowing users to customize Docker images and SDKs as required.**
+    - The high-stability service-oriented deployment solution also supports invocation via manually constructed HTTP requests, enabling client-side code development in any programming language.
+
+- **Benchmark Support:**
+    - **All production lines now support fine-grained benchmarking, enabling measurement of end-to-end inference time as well as per-layer and per-module latency data to assist with performance analysis.**
+    - **Documentation has been updated to include key metrics for commonly used configurations on mainstream hardware, such as inference latency and memory usage, providing deployment references for users.**
+
+- **Bug Fixes:**
+    - Resolved the issue of failed log saving during model training.
+    - Upgraded the data augmentation component for formula models for compatibility with newer versions of the albumentations dependency, and fixed deadlock warnings when using the tokenizers package in multi-process scenarios.
+    - Fixed inconsistencies in switch behaviors (e.g., `use_chart_parsing`) in the PP-StructureV3 configuration files compared to other pipelines.
+
+- **Other Enhancements:**
+    - **Separated core and optional dependencies. Only minimal core dependencies are required for basic text recognition; additional dependencies for document parsing and information extraction can be installed as needed.**
+    - **Enabled support for NVIDIA RTX 50 series graphics cards on Windows; users can refer to the [installation guide](../version3.x/installation.en.md) for the corresponding PaddlePaddle framework versions.**
+    - **PP-OCR series models now support returning single-character coordinates.**
+    - Added AIStudio, ModelScope, and other model download sources, allowing users to specify the source for model downloads.
+    - Added support for chart-to-table conversion via the PP-Chart2Table module.
+    - Optimized documentation descriptions to improve usability.
+
+
 #### **2025.08.15: Release of PaddleOCR 3.1.1**, includes:
 
 - **Bug Fixes:**
