@@ -11,7 +11,7 @@ cd ${BUILD_DIR}
 cmake .. \
     -DPADDLE_LIB=${LIB_DIR} \
     -DWITH_MKL=ON \
-    -DWITH_GPU=ON \
+    -DWITH_GPU=OFF \
     -DWITH_STATIC_LIB=OFF \
     -DWITH_TENSORRT=OFF \
     -DOPENCV_DIR=${OPENCV_DIR} \

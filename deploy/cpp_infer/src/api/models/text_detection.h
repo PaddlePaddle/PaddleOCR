@@ -46,7 +46,6 @@ public:
   Predict(const std::vector<std::string> &input);
 
   void CreateModel();
-  void OverrideConfig();
   absl::Status CheckParams();
   static TextDetPredictorParams
   ToTextDetectionModelParams(const TextDetectionParams &from);

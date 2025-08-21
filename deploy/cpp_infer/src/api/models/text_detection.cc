@@ -21,7 +21,6 @@
 
 TextDetection::TextDetection(const TextDetectionParams &params)
     : params_(params) {
-  OverrideConfig();
   auto status = CheckParams();
   if (!status.ok()) {
     INFOE("Init TextDetection fail : %s", status.ToString().c_str());
@@ -36,48 +35,6 @@ TextDetection::Predict(const std::vector<std::string> &input) {
 void TextDetection::CreateModel() {
   model_infer_ = std::unique_ptr<BasePredictor>(
       new TextDetPredictor(ToTextDetectionModelParams(params_)));
-}
-void TextDetection::OverrideConfig() {
-  if (!FLAGS_text_detection_model_name.empty()) {
-    params_.model_name = FLAGS_text_detection_model_name;
-  }
-  if (!FLAGS_text_detection_model_dir.empty()) {
-    params_.model_dir = FLAGS_text_detection_model_dir;
-  }
-  if (!FLAGS_text_det_limit_side_len.empty()) {
-    params_.limit_side_len = std::stoi(FLAGS_text_det_limit_side_len);
-  }
-  if (!FLAGS_text_det_limit_type.empty()) {
-    params_.limit_type = FLAGS_text_det_limit_type;
-  }
-  if (!FLAGS_text_det_thresh.empty()) {
-    params_.thresh = std::stof(FLAGS_text_det_thresh);
-  }
-  if (!FLAGS_text_det_box_thresh.empty()) {
-    params_.box_thresh = std::stof(FLAGS_text_det_box_thresh);
-  }
-  if (!FLAGS_text_det_unclip_ratio.empty()) {
-    params_.unclip_ratio = std::stof(FLAGS_text_det_unclip_ratio);
-  }
-  if (!FLAGS_text_det_input_shape.empty()) {
-    params_.input_shape =
-        YamlConfig::SmartParseVector(FLAGS_text_det_input_shape).vec_int;
-  }
-  if (!FLAGS_device.empty()) {
-    params_.device = FLAGS_device;
-  }
-  if (!FLAGS_precision.empty()) {
-    params_.precision = FLAGS_precision;
-  }
-  if (!FLAGS_enable_mkldnn.empty()) {
-    params_.enable_mkldnn = Utility::StringToBool(FLAGS_enable_mkldnn);
-  }
-  if (!FLAGS_mkldnn_cache_capacity.empty()) {
-    params_.mkldnn_cache_capacity = std::stoi(FLAGS_mkldnn_cache_capacity);
-  }
-  if (!FLAGS_cpu_threads.empty()) {
-    params_.cpu_threads = std::stoi(FLAGS_cpu_threads);
-  }
 }
 
 absl::Status TextDetection::CheckParams() {

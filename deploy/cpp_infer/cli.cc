@@ -24,6 +24,7 @@
 #include <iostream>
 #include <memory>
 #include <string>
+#include <tuple>
 #include <unordered_map>
 #include <vector>
 
@@ -62,6 +63,202 @@ void PrintErrorInfo(const std::string &msg, const std::string &main_mode = "") {
   INFO("==========================================");
 }
 
+std::tuple<PaddleOCRParams, DocPreprocessorParams,
+           DocImgOrientationClassificationParams, TextImageUnwarpingParams,
+           TextDetectionParams, TextLineOrientationClassificationParams,
+           TextRecognitionParams>
+GetPipelineMoudleParams() {
+  PaddleOCRParams ocr_params;
+  DocPreprocessorParams doc_pre_params;
+  DocImgOrientationClassificationParams doc_orient_params;
+  TextImageUnwarpingParams unwarp_params;
+  TextDetectionParams det_params;
+  TextLineOrientationClassificationParams teline_orient_params;
+  TextRecognitionParams rec_params;
+  if (!FLAGS_doc_orientation_classify_model_name.empty()) {
+    ocr_params.doc_orientation_classify_model_name =
+        FLAGS_doc_orientation_classify_model_name;
+    doc_pre_params.doc_orientation_classify_model_name =
+        FLAGS_doc_orientation_classify_model_name;
+    doc_orient_params.model_name = FLAGS_doc_orientation_classify_model_name;
+  }
+  if (!FLAGS_doc_orientation_classify_model_dir.empty()) {
+    ocr_params.doc_orientation_classify_model_dir =
+        FLAGS_doc_orientation_classify_model_dir;
+    doc_pre_params.doc_orientation_classify_model_dir =
+        FLAGS_doc_orientation_classify_model_dir;
+    doc_orient_params.model_dir = FLAGS_doc_orientation_classify_model_dir;
+  }
+  if (!FLAGS_doc_unwarping_model_name.empty()) {
+    ocr_params.doc_unwarping_model_name = FLAGS_doc_unwarping_model_name;
+    doc_pre_params.doc_unwarping_model_name = FLAGS_doc_unwarping_model_name;
+    unwarp_params.model_name = FLAGS_doc_unwarping_model_name;
+  }
+  if (!FLAGS_doc_unwarping_model_dir.empty()) {
+    ocr_params.doc_unwarping_model_dir = FLAGS_doc_unwarping_model_dir;
+    doc_pre_params.doc_unwarping_model_dir = FLAGS_doc_unwarping_model_dir;
+    unwarp_params.model_dir = FLAGS_doc_unwarping_model_dir;
+  }
+  if (!FLAGS_text_detection_model_name.empty()) {
+    ocr_params.text_detection_model_name = FLAGS_text_detection_model_name;
+    det_params.model_name = FLAGS_text_detection_model_name;
+  }
+  if (!FLAGS_text_detection_model_dir.empty()) {
+    ocr_params.text_detection_model_dir = FLAGS_text_detection_model_dir;
+    det_params.model_dir = FLAGS_text_detection_model_dir;
+  }
+  if (!FLAGS_textline_orientation_model_name.empty()) {
+    ocr_params.textline_orientation_model_name =
+        FLAGS_textline_orientation_model_name;
+    teline_orient_params.model_name = FLAGS_textline_orientation_model_name;
+  }
+  if (!FLAGS_textline_orientation_model_dir.empty()) {
+    ocr_params.textline_orientation_model_dir =
+        FLAGS_textline_orientation_model_dir;
+    teline_orient_params.model_dir = FLAGS_textline_orientation_model_dir;
+  }
+  if (!FLAGS_textline_orientation_batch_size.empty()) {
+    ocr_params.textline_orientation_batch_size =
+        std::stoi(FLAGS_textline_orientation_batch_size);
+  }
+  if (!FLAGS_text_recognition_model_name.empty()) {
+    ocr_params.text_recognition_model_name = FLAGS_text_recognition_model_name;
+    rec_params.model_name = FLAGS_text_recognition_model_name;
+  }
+  if (!FLAGS_text_recognition_model_dir.empty()) {
+    ocr_params.text_recognition_model_dir = FLAGS_text_recognition_model_dir;
+    rec_params.model_dir = FLAGS_text_recognition_model_dir;
+  }
+  if (!FLAGS_text_recognition_batch_size.empty()) {
+    ocr_params.text_recognition_batch_size =
+        std::stoi(FLAGS_text_recognition_batch_size);
+    rec_params.batch_size = std::stoi(FLAGS_text_recognition_batch_size);
+    rec_params.input_shape =
+        YamlConfig::SmartParseVector(FLAGS_text_rec_input_shape).vec_int;
+  }
+  if (!FLAGS_use_doc_orientation_classify.empty()) {
+    ocr_params.use_doc_orientation_classify =
+        Utility::StringToBool(FLAGS_use_doc_orientation_classify);
+    doc_pre_params.use_doc_orientation_classify =
+        Utility::StringToBool(FLAGS_use_doc_orientation_classify);
+  }
+  if (!FLAGS_use_doc_unwarping.empty()) {
+    ocr_params.use_doc_unwarping =
+        Utility::StringToBool(FLAGS_use_doc_unwarping);
+    doc_pre_params.use_doc_unwarping =
+        Utility::StringToBool(FLAGS_use_doc_unwarping);
+  }
+  if (!FLAGS_use_textline_orientation.empty()) {
+    ocr_params.use_textline_orientation =
+        Utility::StringToBool(FLAGS_use_textline_orientation);
+  }
+  if (!FLAGS_text_det_limit_side_len.empty()) {
+    ocr_params.text_det_limit_side_len =
+        std::stoi(FLAGS_text_det_limit_side_len);
+  }
+  if (!FLAGS_text_det_limit_type.empty()) {
+    ocr_params.text_det_limit_type = FLAGS_text_det_limit_type;
+    det_params.limit_type = FLAGS_text_det_limit_type;
+  }
+  if (!FLAGS_text_det_thresh.empty()) {
+    ocr_params.text_det_thresh = std::stof(FLAGS_text_det_thresh);
+    det_params.thresh = std::stof(FLAGS_text_det_thresh);
+  }
+  if (!FLAGS_text_det_box_thresh.empty()) {
+    ocr_params.text_det_box_thresh = std::stof(FLAGS_text_det_box_thresh);
+    det_params.box_thresh = std::stof(FLAGS_text_det_box_thresh);
+  }
+  if (!FLAGS_text_det_unclip_ratio.empty()) {
+    ocr_params.text_det_unclip_ratio = std::stof(FLAGS_text_det_unclip_ratio);
+    det_params.unclip_ratio = std::stof(FLAGS_text_det_unclip_ratio);
+  }
+  if (!FLAGS_text_det_input_shape.empty()) {
+    ocr_params.text_det_input_shape =
+        YamlConfig::SmartParseVector(FLAGS_text_det_input_shape).vec_int;
+    det_params.input_shape =
+        YamlConfig::SmartParseVector(FLAGS_text_det_input_shape).vec_int;
+  }
+  if (!FLAGS_text_rec_score_thresh.empty()) {
+    ocr_params.text_rec_score_thresh = std::stof(FLAGS_text_rec_score_thresh);
+  }
+  if (!FLAGS_text_rec_input_shape.empty()) {
+    ocr_params.text_rec_input_shape =
+        YamlConfig::SmartParseVector(FLAGS_text_rec_input_shape).vec_int;
+  }
+  if (!FLAGS_lang.empty()) {
+    ocr_params.lang = FLAGS_lang;
+  }
+  if (!FLAGS_ocr_version.empty()) {
+    ocr_params.ocr_version = FLAGS_ocr_version;
+  }
+  if (!FLAGS_vis_font_dir.empty()) {
+    ocr_params.vis_font_dir = FLAGS_vis_font_dir;
+    rec_params.vis_font_dir = FLAGS_vis_font_dir;
+  }
+  if (!FLAGS_device.empty()) {
+    ocr_params.device = FLAGS_device;
+    doc_pre_params.device = FLAGS_device;
+    doc_orient_params.device = FLAGS_device;
+    unwarp_params.device = FLAGS_device;
+    teline_orient_params.device = FLAGS_device;
+    det_params.device = FLAGS_device;
+    rec_params.device = FLAGS_device;
+  }
+  if (!FLAGS_precision.empty()) {
+    ocr_params.precision = FLAGS_precision;
+    doc_pre_params.precision = FLAGS_precision;
+    doc_orient_params.precision = FLAGS_precision;
+    unwarp_params.precision = FLAGS_precision;
+    teline_orient_params.precision = FLAGS_precision;
+    det_params.precision = FLAGS_precision;
+    rec_params.precision = FLAGS_precision;
+  }
+  if (!FLAGS_enable_mkldnn.empty()) {
+    ocr_params.enable_mkldnn = Utility::StringToBool(FLAGS_enable_mkldnn);
+    doc_pre_params.enable_mkldnn = Utility::StringToBool(FLAGS_enable_mkldnn);
+    doc_orient_params.enable_mkldnn =
+        Utility::StringToBool(FLAGS_enable_mkldnn);
+    unwarp_params.enable_mkldnn = Utility::StringToBool(FLAGS_enable_mkldnn);
+    teline_orient_params.enable_mkldnn =
+        Utility::StringToBool(FLAGS_enable_mkldnn);
+    det_params.enable_mkldnn = Utility::StringToBool(FLAGS_enable_mkldnn);
+    rec_params.enable_mkldnn = Utility::StringToBool(FLAGS_enable_mkldnn);
+  }
+  if (!FLAGS_mkldnn_cache_capacity.empty()) {
+    ocr_params.mkldnn_cache_capacity = std::stoi(FLAGS_mkldnn_cache_capacity);
+    doc_pre_params.mkldnn_cache_capacity =
+        std::stoi(FLAGS_mkldnn_cache_capacity);
+    doc_orient_params.mkldnn_cache_capacity =
+        std::stoi(FLAGS_mkldnn_cache_capacity);
+    unwarp_params.mkldnn_cache_capacity =
+        std::stoi(FLAGS_mkldnn_cache_capacity);
+    teline_orient_params.mkldnn_cache_capacity =
+        std::stoi(FLAGS_mkldnn_cache_capacity);
+    det_params.mkldnn_cache_capacity = std::stoi(FLAGS_mkldnn_cache_capacity);
+    rec_params.mkldnn_cache_capacity = std::stoi(FLAGS_mkldnn_cache_capacity);
+  }
+  if (!FLAGS_cpu_threads.empty()) {
+    ocr_params.cpu_threads = std::stoi(FLAGS_cpu_threads);
+    doc_pre_params.cpu_threads = std::stoi(FLAGS_cpu_threads);
+    doc_orient_params.cpu_threads = std::stoi(FLAGS_cpu_threads);
+    unwarp_params.cpu_threads = std::stoi(FLAGS_cpu_threads);
+    teline_orient_params.cpu_threads = std::stoi(FLAGS_cpu_threads);
+    det_params.cpu_threads = std::stoi(FLAGS_cpu_threads);
+    rec_params.cpu_threads = std::stoi(FLAGS_cpu_threads);
+  }
+  if (!FLAGS_thread_num.empty()) {
+    ocr_params.thread_num = std::stoi(FLAGS_thread_num);
+    doc_pre_params.thread_num = std::stoi(FLAGS_thread_num);
+  }
+  if (!FLAGS_paddlex_config.empty()) {
+    ocr_params.paddlex_config = FLAGS_paddlex_config;
+    doc_pre_params.paddlex_config = FLAGS_paddlex_config;
+  }
+  return std::make_tuple(ocr_params, doc_pre_params, doc_orient_params,
+                         unwarp_params, det_params, teline_orient_params,
+                         rec_params);
+}
+
 int main(int argc, char *argv[]) {
   gflags::ParseCommandLineFlags(&argc, &argv, true);
   if (FLAGS_input.empty()) {
@@ -83,33 +280,39 @@ int main(int argc, char *argv[]) {
         "<pipeline_or_module> [--param1] [--param2] [...]");
     exit(-1);
   }
-
+  auto params = GetPipelineMoudleParams();
   using PredFunc = std::function<std::vector<std::unique_ptr<BaseCVResult>>(
       const std::string &)>;
   std::unordered_map<std::string, PredFunc> pred_map = {
       {"ocr",
-       [](const std::string &input) { return PaddleOCR().Predict(input); }},
-      {"doc_preprocessor",
-       [](const std::string &input) {
-         return DocPreprocessor().Predict(input);
+       [&params](const std::string &input) {
+         return PaddleOCR(std::get<0>(params)).Predict(input);
        }},
-      {"text_image_unwarping",
-       [](const std::string &input) {
-         return TextImageUnwarping().Predict(input);
+      {"doc_preprocessor",
+       [&params](const std::string &input) {
+         return DocPreprocessor(std::get<1>(params)).Predict(input);
        }},
       {"doc_img_orientation_classification",
-       [](const std::string &input) {
-         return DocImgOrientationClassification().Predict(input);
+       [&params](const std::string &input) {
+         return DocImgOrientationClassification(std::get<2>(params))
+             .Predict(input);
        }},
-      {"textline_orientation_classification",
-       [](const std::string &input) {
-         return TextLineOrientationClassification().Predict(input);
+      {"text_image_unwarping",
+       [&params](const std::string &input) {
+         return TextImageUnwarping(std::get<3>(params)).Predict(input);
        }},
       {"text_detection",
-       [](const std::string &input) { return TextDetection().Predict(input); }},
+       [&params](const std::string &input) {
+         return TextDetection(std::get<4>(params)).Predict(input);
+       }},
+      {"textline_orientation_classification",
+       [&params](const std::string &input) {
+         return TextLineOrientationClassification(std::get<5>(params))
+             .Predict(input);
+       }},
       {"text_recognition",
-       [](const std::string &input) {
-         return TextRecognition().Predict(input);
+       [&params](const std::string &input) {
+         return TextRecognition(std::get<6>(params)).Predict(input);
        }},
 
   };
