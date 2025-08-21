@@ -36,25 +36,25 @@
 
 在 cmake-gui 中指定 `opencv-4.7.0` 源码路径，并指定编译生成目录为 `opencv-4.7.0/build`，默认安装路径为 `opencv-4.7.0/build/install`，此安装路径用于后续编译 demo。
 
-<img src="./imgs/opencv_step1.png"/>
+<img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr/deployment/cpp/opencv_step1.png"/>
 
 - Step 2：选择目标平台
 
 选择目标平台为 x64 ，然后点击 finish。
 
-<img src="./imgs/opencv_step2.png"/>
+<img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr/deployment/cpp/opencv_step2.png"/>
 
 - Step 3 ：生成 Visual Studio 项目
 
 依次点击 Configure  ->  Generate  ->  Open in Project，将进入 Visual Studio 2022 编译界面。
 
-<img src="./imgs/opencv_step3.png"/>
+<img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr/deployment/cpp/opencv_step3.png"/>
 
 - Step 4：执行编译
 
-点击开始生成解决方案，完成编译后，点击INSTALL，运行后完成安装。
+点击开始生成解决方案，完成编译后，点击 INSTALL，运行后完成安装。
 
-<img src="./imgs/opencv_step4.png"/>
+<img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr/deployment/cpp/opencv_step4.png"/>
 
 ### 1.2 编译 Paddle Inference
 
@@ -89,13 +89,13 @@ paddle_inference
 
 在 cmake-gui 中指定 `deploy\cpp_infer` 源码路径，并指定编译生成目录为 `deploy\cpp_infer\build`，以下编译步骤说明均以 `D:\PaddleOCR\deploy\cpp_infer` 作为示例源码路径。第一次点击 Configure 报错是正常的，在后续弹出的编译选项中，添加 OpenCV 的安装路径和 Paddle Inference 预测库路径。
 
-<img src="./imgs/windows_step1.png"/>
+<img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr/deployment/cpp/windows_step1.png"/>
 
 - Step 2：选择目标平台
 
 选择目标平台为 x64 ，然后点击 finish。
 
-<img src="./imgs/windows_step2.png"/>
+<img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr/deployment/cpp/windows_step2.png"/>
 
 - Step 3：配置 cmake 编译选项
 
@@ -103,13 +103,13 @@ paddle_inference
     - OpenCV_DIR：同 OPENCV_DIR。
     - PADDLE_LIB：paddle_inference 路径。
 
-<img src="./imgs/windows_step3.png"/>
+<img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr/deployment/cpp/windows_step3.png"/>
 
 - Step 4：生成 Visual Studio 项目
 
 依次点击 Configure  ->  Generate  ->  Open in Project，将进入 Visual Studio 2022 编译界面。
 
-<img src="./imgs/windows_step4.png"/>
+<img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr/deployment/cpp/windows_step4.png"/>
 
 - Step 5：执行编译
 
@@ -118,13 +118,13 @@ paddle_inference
 1. 将 `Debug` 改为 `Release`。
 2. 下载[dirent.h](https://paddleocr.bj.bcebos.com/deploy/cpp_infer/cpp_files/dirent.h)，并拷贝到  Visual Studio 的 include 文件夹下，如 `C:\Program Files (x86)\Microsoft Visual Studio\2022\Community\VC\Auxiliary\VS\include`。
 
-<img src="./imgs/windows_step5.png"/>
+<img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr/deployment/cpp/windows_step5.png"/>
 
 - Step 6：编译结果
 
 编译完成后，可执行文件位于 `deploy/cpp_infer/build/Release/ppocr.exe` 。
 
-<img src="./imgs/windows_step6.png"/>
+<img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr/deployment/cpp/windows_step6.png"/>
 
 - Step 7：demo 预测
 
@@ -165,7 +165,7 @@ FreeType 属于 opencv_contrib 模块，需要下载 OpenvCV 和 opencv_contrib 
 解压 pkg-config 后添加其 bin 目录到系统 PATH 环境变量。
 freetype 编译，需手动更改其安装路径，示例如下：
 
-<img src="./imgs/opencv_freetype_step1.png"/>
+<img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr/deployment/cpp/opencv_freetype_step1.png"/>
 
 再次 Configure， 然后点击 Generate， 完成后，点击 Open Project 按钮，打开 VS ，编译。
 VS里ALL_BUILD, INSTALL. 会在构建文件夹的 install 目录下生成所需的include和lib文件。
@@ -174,11 +174,11 @@ VS里ALL_BUILD, INSTALL. 会在构建文件夹的 install 目录下生成所需�
 
 harfbuzz 编译，需手动更改其安装路径，示例如下：
 
-<img src="./imgs/opencv_freetype_step2.png"/>
+<img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr/deployment/cpp/opencv_freetype_step2.png"/>
 
 设置好上面两项后，再次点击Configure按钮，选择 Advanced Options ，填写 freetype 安装路径。
 
-<img src="./imgs/opencv_freetype_step3.png"/>
+<img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr/deployment/cpp/opencv_freetype_step3.png"/>
 
 然后将 harfbuzz 安装路径添加至系统环境变量。
 
@@ -226,11 +226,11 @@ endif()
 2. 勾选 `WITH_FREETYPE` 项，必须先编译 freetype 和 harfbuzz。
 3. 如果需要支持 freetype，则需要在 Opencv 的 Cmake 配置中加入 freetype 的相关路径。
 
-<img src="./imgs/opencv_freetype_step4.png"/>
+<img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr/deployment/cpp/opencv_freetype_step4.png"/>
 
 搜索 harfbuzz，加入 harfbuzz，加入 的相关路径。
 
-<img src="./imgs/opencv_freetype_step5.png"/>
+<img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr/deployment/cpp/opencv_freetype_step5.png"/>
 
 完成后，再次在 Cmake 界面，点击 configure， 确定没报错后，点击 Generate，最后点击 Open Project，打开 Visual studio，找到 ALL_BUILD 右键Build， 等待编译完成后， 找到 INSTALL 右键 Build。
 
@@ -238,4 +238,4 @@ endif()
 
 编译包含 FreeType 的 OpenCV 生成 demo 可视化文本识别结果：
 
-<img src="./imgs/ocr_res_with_freetype.png"/>
+<img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr/deployment/cpp/ocr_res_with_freetype.png"/>
