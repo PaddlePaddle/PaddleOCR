@@ -4,8 +4,8 @@
     - [1.1 编译 OpenCV 库](#11-编译-opencv-库)
     - [1.2 编译 Paddle Inference](#12-编译-paddle-inference)
 - [2. 开始运行](#2-开始运行)
-    - [2.1 准备模型](#21-准备模型)
-    - [2.2 编译预测 demo](#22-编译预测-demo)
+    - [2.1 编译预测 demo](#21-编译预测-demo)
+    - [2.2 准备模型](#22-准备模型)
     - [2.3 运行预测 demo](#23-运行预测-demo)
     - [2.4 C++ API 集成](#24-c-api-集成)
 - [3. 额外功能](#3-额外功能)
@@ -74,7 +74,54 @@ tar -xvf paddle_inference.tgz
 
 ## 2. 开始运行
 
-### 2.1 准备模型
+### 2.1 编译预测 demo
+
+在编译预测demo前，请确保您已经按照 1.1 和 1.2 节编译好 OpenCV 库和 Paddle Inference 预测库。
+
+修改 tools/build.sh 中的配置后，执行以下命令进行编译：
+
+```shell
+sh tools/build.sh
+```
+
+相关配置参数详细介绍如下：
+
+<table>
+<tr>
+<th>参数</th>
+<th>说明</th>
+<th>默认值</th>
+</tr>
+<tr>
+<td><code>OPENCV_DIR</code></td>
+<td>OpenCV编译安装的路径（如上述编译 OpenCV 时的 <code>install_path</code> ，必填。</td>
+<td></td>
+</tr>
+<tr>
+<td><code>LIB_DIR</code></td>
+<td>下载的 <code>Paddle Inference</code> 的预编译包或手动编译生成的Paddle Inference库路径（如 <code>build/paddle_inference_install_dir</code> 文件夹），必填。</td>
+<td></td>
+</tr>
+<tr>
+<td><code>CUDA_LIB_DIR</code></td>
+<td>CUDA库文件路径，通常为<code>/usr/local/cuda/lib64</code>。当Paddle Inference库为GPU版本且设置 <code>-DWITH_GPU=ON</code> 时需要设置该参数。</td>
+<td></td>
+</tr>
+<tr>
+<td><code>CUDNN_LIB_DIR</code></td>
+<td>cuDNN 库文件路径，通常为 <code>/usr/lib/x86_64-linux-gnu/</code> 。当 Paddle Inference 库为 GPU 版本且设置 <code>-DWITH_GPU=ON</code> 时需要设置该参数。</td>
+<td></td>
+</tr>
+<tr>
+<td><code>WITH_GPU</code></td>
+<td>当设置为 ON 时可以进行 GPU 版本 demo 的编译，要求 Paddle Inference 库为 GPU 版本。</td>
+<td>OFF</td>
+</tr>
+</table>
+
+**注意：以上路径需要填绝对路径。**
+
+### 2.2 准备模型
 
 可以直接下载 PaddleOCR 提供的推理模型：
 
@@ -258,53 +305,6 @@ PP-OCRv5_mobile_det
 |--inference.json
 |--inference.yml
 ```
-
-### 2.2 编译预测 demo
-
-在编译预测demo前，请确保您已经按照 1.1 和 1.2 节编译好 OpenCV 库和 Paddle Inference 预测库。
-
-修改 tools/build.sh 中的配置后，执行以下命令进行编译：
-
-```shell
-sh tools/build.sh
-```
-
-相关配置参数详细介绍如下：
-
-<table>
-<tr>
-<th>参数</th>
-<th>说明</th>
-<th>默认值</th>
-</tr>
-<tr>
-<td><code>OPENCV_DIR</code></td>
-<td>OpenCV编译安装的路径（如上述编译 OpenCV 时的 <code>install_path</code> ，必填。</td>
-<td></td>
-</tr>
-<tr>
-<td><code>LIB_DIR</code></td>
-<td>下载的 <code>Paddle Inference</code> 的预编译包或手动编译生成的Paddle Inference库路径（如 <code>build/paddle_inference_install_dir</code> 文件夹），必填。</td>
-<td></td>
-</tr>
-<tr>
-<td><code>CUDA_LIB_DIR</code></td>
-<td>CUDA库文件路径，通常为<code>/usr/local/cuda/lib64</code>。当Paddle Inference库为GPU版本且设置 <code>-DWITH_GPU=ON</code> 时需要设置该参数。</td>
-<td></td>
-</tr>
-<tr>
-<td><code>CUDNN_LIB_DIR</code></td>
-<td>cuDNN 库文件路径，通常为 <code>/usr/lib/x86_64-linux-gnu/</code> 。当 Paddle Inference 库为 GPU 版本且设置 <code>-DWITH_GPU=ON</code> 时需要设置该参数。</td>
-<td></td>
-</tr>
-<tr>
-<td><code>WITH_GPU</code></td>
-<td>当设置为 ON 时可以进行 GPU 版本 demo 的编译，要求 Paddle Inference 库为 GPU 版本。</td>
-<td>OFF</td>
-</tr>
-</table>
-
-**注意：以上路径需要填绝对路径。**
 
 ### 2.3 运行预测 demo
 
