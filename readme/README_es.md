@@ -44,6 +44,35 @@ Además de proporcionar una excelente biblioteca de modelos, PaddleOCR 3.0 tambi
 
 ## 📣 Últimas actualizaciones
 
+#### **🔥🔥2025.08.21: Lanzamiento de PaddleOCR 3.1.1**, incluye:
+
+- **Actualización de los modelos principales:**
+    - Se añaden funciones de entrenamiento, inferencia y despliegue para los modelos de reconocimiento PP-OCRv5 en inglés, tailandés y griego. **El modelo en inglés logra una mejora del 11% en precisión en comparación con la versión anterior de PP-OCRv5 en escenarios en inglés; el modelo en tailandés alcanza una precisión del 82,68% y el griego del 89,28%.**
+
+- **Mejoras en las capacidades de despliegue:**
+    - **Soporte completo para PaddlePaddle 3.1.0 y 3.1.1.**
+    - **Reforma completa de la solución de despliegue local en C++, compatible con Linux y Windows, alcanzando la misma funcionalidad y precisión que la versión en Python.**
+    - **Soporte para CUDA 12 para inferencia de alto rendimiento, con opción de usar los backends Paddle Inference u ONNX Runtime.**
+    - **Apertura total del código fuente de la solución de despliegue tipo servicio de alta estabilidad, permitiendo a los usuarios personalizar imágenes de Docker o SDK según sus necesidades.**
+    - El despliegue tipo servicio de alta estabilidad también soporta llamadas HTTP manuales, lo que permite a los clientes implementar en cualquier lenguaje.
+
+- **Soporte de benchmarks:**
+    - **Se proporciona una función detallada de benchmark en toda la cadena de producción, permitiendo medir el tiempo de inferencia de extremo a extremo y los tiempos de ejecución de diferentes capas y módulos, facilitando el análisis de rendimiento.**
+    - **La documentación incluye valores de referencia (tiempo de inferencia, uso de memoria, etc.) en las principales plataformas de hardware para ayudar a los usuarios a tomar decisiones de despliegue.**
+
+- **Corrección de errores:**
+    - Corrección del problema por el cual no se guardaban los registros durante el entrenamiento del modelo.
+    - Adaptación de la parte de aumento de datos del modelo matemático a la nueva versión de albumentations, y solución de la advertencia de posible deadlock al utilizar tokenizers en multiproceso.
+    - Corrección de las inconsistencias en el comportamiento de banderas como `use_chart_parsing` en el archivo de configuración de PP-StructureV3 respecto a otras producciones.
+
+- **Otras actualizaciones:**
+    - **Separación de dependencias obligatorias y opcionales; las funciones básicas de reconocimiento requieren solo las dependencias mínimas, mientras que funciones adicionales como análisis de documentos o extracción de información pueden instalarse según necesidad.**
+    - **Soporte para GPU serie 50 de NVIDIA en entorno Windows, consulte la [guía de instalación](../docs/version3.x/installation.en.md) para elegir la versión de Paddle adecuada.**
+    - **Los modelos de la serie PP-OCR ahora pueden devolver las coordenadas de cada carácter.**
+    - Se añaden fuentes de descarga de modelos como AIStudio y ModelScope, permitiendo su selección.
+    - Soporte para la inferencia del módulo de conversión de gráficos a tablas (PP-Chart2Table).
+    - Optimización de algunas descripciones en la documentación para mejorar la facilidad de uso.
+
 #### **2025.08.15: Lanzamiento de PaddleOCR 3.1.1**, incluye:
 
 - **Corrección de errores:**

@@ -65,8 +65,57 @@ In addition to providing an outstanding model library, PaddleOCR 3.0 also offers
 
 ## 📣 Recent updates
 
+### 🔥🔥2025.08.21: Release of PaddleOCR 3.2.0, includes:
 
-#### **2025.06.29: Release of PaddleOCR 3.1.0**, includes:
+
+- **Significant Model Additions:**
+    - Introduced training, inference, and deployment for PP-OCRv5 recognition models in English, Thai, and Greek. **The PP-OCRv5 English model delivers an 11% improvement in English scenarios compared to the main PP-OCRv5 model, with the Thai and Greek recognition models achieving accuracies of 82.68% and 89.28%, respectively.**
+
+- **Deployment Capability Upgrades:**
+    - **Full support for PaddlePaddle framework versions 3.1.0 and 3.1.1.**
+    - **Comprehensive upgrade of the PP-OCRv5 C++ local deployment solution, now supporting both Linux and Windows, with feature parity and identical accuracy to the Python implementation.**
+    - **High-performance inference now supports CUDA 12, and inference can be performed using either the Paddle Inference or ONNX Runtime backends.**
+    - **The high-stability service-oriented deployment solution is now fully open-sourced, allowing users to customize Docker images and SDKs as required.**
+    - The high-stability service-oriented deployment solution also supports invocation via manually constructed HTTP requests, enabling client-side code development in any programming language.
+
+- **Benchmark Support:**
+    - **All production lines now support fine-grained benchmarking, enabling measurement of end-to-end inference time as well as per-layer and per-module latency data to assist with performance analysis.**
+    - **Documentation has been updated to include key metrics for commonly used configurations on mainstream hardware, such as inference latency and memory usage, providing deployment references for users.**
+
+- **Bug Fixes:**
+    - Resolved the issue of failed log saving during model training.
+    - Upgraded the data augmentation component for formula models for compatibility with newer versions of the albumentations dependency, and fixed deadlock warnings when using the tokenizers package in multi-process scenarios.
+    - Fixed inconsistencies in switch behaviors (e.g., `use_chart_parsing`) in the PP-StructureV3 configuration files compared to other pipelines.
+
+- **Other Enhancements:**
+    - **Separated core and optional dependencies. Only minimal core dependencies are required for basic text recognition; additional dependencies for document parsing and information extraction can be installed as needed.**
+    - **Enabled support for NVIDIA RTX 50 series graphics cards on Windows; users can refer to the [installation guide](docs/version3.x/installation.en.md) for the corresponding PaddlePaddle framework versions.**
+    - **PP-OCR series models now support returning single-character coordinates.**
+    - Added AIStudio, ModelScope, and other model download sources, allowing users to specify the source for model downloads.
+    - Added support for chart-to-table conversion via the PP-Chart2Table module.
+    - Optimized documentation descriptions to improve usability.
+
+
+<details>
+<summary><strong>2025.08.15: PaddleOCR 3.1.1 Released</strong></summary>
+
+- **Bug Fixes:**
+  - Added the missing methods `save_vector`, `save_visual_info_list`, `load_vector`, and `load_visual_info_list` in the `PP-ChatOCRv4` class.
+  - Added the missing parameters `glossary` and `llm_request_interval` to the `translate` method in the `PPDocTranslation` class.
+
+- **Documentation Improvements:**
+  - Added a demo to the MCP documentation.
+  - Added information about the PaddlePaddle and PaddleOCR version used for performance metrics testing in the documentation.
+  - Fixed errors and omissions in the production line document translation.
+
+- **Others:**
+  - Changed the MCP server dependency to use the pure Python library `puremagic` instead of `python-magic` to reduce installation issues.
+  - Retested PP-OCRv5 performance metrics with PaddleOCR version 3.1.0 and updated the documentation.
+
+</details>
+
+<details>
+<summary><strong>2025.06.29: PaddleOCR 3.1.0 Released</strong></summary>
 
 - **Key Models and Pipelines:**
   - **Added PP-OCRv5 Multilingual Text Recognition Model**, which supports the training and inference process for text recognition models in 37 languages, including French, Spanish, Portuguese, Russian, Korean, etc. **Average accuracy improved by over 30%.** [Details](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/algorithm/PP-OCRv5/PP-OCRv5_multi_languages.html)
@@ -80,6 +129,8 @@ In addition to providing an outstanding model library, PaddleOCR 3.0 also offers
   - Supports invoking local services via stdio and remote services via Streamable HTTP.
 
 - **Documentation Optimization:** Improved the descriptions in some user guides for a smoother reading experience.
+
+</details>
 
 <details>
     <summary><strong>2025.06.26: PaddleOCR 3.0.3 Released</strong></summary>
