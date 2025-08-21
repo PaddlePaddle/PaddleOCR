@@ -26,10 +26,6 @@ TextRecPredictor::TextRecPredictor(const TextRecPredictorParams &params)
                     params.batch_size, "image"),
       params_(params) {
   auto status = CheckRecModelParams();
-  if (!status.ok()) {
-    INFOE("Rec model params is invaild : %s", status.ToString().c_str());
-    std::exit(-1);
-  }
   auto status_build = Build();
   if (!status_build.ok()) {
     INFOE("Build fail: %s", status_build.ToString().c_str());

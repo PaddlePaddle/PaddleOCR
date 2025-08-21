@@ -8,8 +8,9 @@
     - [2.2 准备模型](#22-准备模型)
     - [2.3 运行预测 demo](#23-运行预测-demo)
     - [2.4 C++ API 集成](#24-c-api-集成)
-- [3. 额外功能](#3-额外功能)
-    - [3.1 可视化文本识别结果](#31-可视化文本识别结果)
+- [3. 拓展功能](#3-拓展功能)
+    - [3.1 多语种文字识别](#31-多语种文字识别)
+    - [3.2 可视化文本识别结果](#32-可视化文本识别结果)
 - [4. FAQ](#4-faq)
 
 本章节介绍通用 OCR 产线 C++ 部署方法。通用 OCR 产线由以下5个模块组成：
@@ -258,23 +259,20 @@ sh tools/build.sh
 </tr>
 <tr>
 <td>PP-OCRv5_server_rec (默认)</td>
-<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
-PP-OCRv5_server_rec_infer.tar">推理模型</a></td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv5_server_rec_infer.tar">推理模型</a></td>
 <td>86.38</td>
 <td>81</td>
 <td rowspan="2">PP-OCRv5_rec 是新一代文本识别模型。该模型致力于以单一模型高效、精准地支持简体中文、繁体中文、英文、日文四种主要语言，以及手写、竖版、拼音、生僻字等复杂文本场景的识别。在保持识别效果的同时，兼顾推理速度和模型鲁棒性，为各种场景下的文档理解提供高效、精准的技术支撑。</td>
 </tr>
 <tr>
 <td>PP-OCRv5_mobile_rec</td>
-<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
-PP-OCRv5_mobile_rec_infer.tar">推理模型</a></td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv5_mobile_rec_infer.tar">推理模型</a></td>
 <td>81.29</td>
 <td>16</td>
 </tr>
 <tr>
 <td>PP-OCRv4_server_rec_doc</td>
-<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
-PP-OCRv4_server_rec_doc_infer.tar">推理模型</a></td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_server_rec_doc_infer.tar">推理模型</a></td>
 <td>86.58</td>
 <td>182</td>
 <td>PP-OCRv4_server_rec_doc 是在 PP-OCRv4_server_rec 的基础上，在更多中文文档数据和PP-OCR训练数据的混合数据训练而成，增加了部分繁体字、日文、特殊字符的识别能力，可支持识别的字符为1.5万+，除文档相关的文字识别能力提升外，也同时提升了通用文字的识别能力</td>
@@ -659,8 +657,6 @@ models
 
     ```bash
     ./build/ppocr ocr --input ./general_ocr_002.png --save_path ./output/  \
-    --doc_orientation_classify_model_dir models/PP-LCNet_x1_0_doc_ori_infer \
-    --doc_unwarping_model_dir models/UVDoc_infer \
     --textline_orientation_model_dir models/PP-LCNet_x1_0_textline_ori_infer \
     --text_detection_model_dir models/PP-OCRv5_server_det_infer \
     --text_recognition_model_dir models/PP-OCRv5_server_rec_infer \
@@ -690,9 +686,6 @@ models
 
     ```bash
     ./build/ppocr ocr --input ./general_ocr_002.png --save_path ./output/  \
-    --doc_orientation_classify_model_dir models/PP-LCNet_x1_0_doc_ori_infer \
-    --doc_unwarping_model_dir models/UVDoc_infer \
-    --textline_orientation_model_dir models/PP-LCNet_x1_0_textline_ori_infer \
     --text_detection_model_dir models/PP-OCRv5_server_det_infer \
     --text_recognition_model_dir models/PP-OCRv5_server_rec_infer \
     --use_doc_orientation_classify False \
@@ -866,9 +859,77 @@ int main(){
 }
 ```
 
-## 3. 额外功能
+## 3. 拓展功能
 
-### 3.1 可视化文本识别结果
+### 3.1 多语种文字识别
+
+PP-OCRv5 还提供了覆盖 39 种语言的多语种文字识别能力，包括韩文、西班牙文、法文、葡萄牙文、德文、意大利文、俄罗斯文、泰文、希腊文等，具体支持语种如下：
+
+<table>
+  <thead>
+    <tr>
+      <th>模型</th>
+      <th>链接</th>
+      <th>支持语种</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>PP-OCRv5_server_rec</td>
+      <td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv5_server_rec_infer.tar">推理模型</a></td>
+      <td>简体中文、繁体中文、英文、日文</td>
+    </tr>
+    <tr>
+      <td>PP-OCRv5_mobile_rec</td>
+      <td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv5_mobile_rec_infer.tar">推理模型</a></td>
+      <td>简体中文、繁体中文、英文、日文</td>
+    </tr>
+    <tr>
+      <td>korean_PP-OCRv5_mobile_rec</td>
+      <td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/korean_PP-OCRv5_mobile_rec_infer.tar">推理模型</a></td>
+      <td>韩文、英文</td>
+    </tr>
+    <tr>
+      <td>latin_PP-OCRv5_mobile_rec</td>
+      <td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/latin_PP-OCRv5_mobile_rec_infer.tar">推理模型</a></td>
+      <td>英文、法文、德文、南非荷兰文、意大利文、西班牙文、波斯尼亚文、葡萄牙文、捷克文、威尔士文、丹麦文、爱沙尼亚文、爱尔兰文、克罗地亚文、乌兹别克文、匈牙利文、塞尔维亚文（latin）、印度尼西亚文、欧西坦文、冰岛文、立陶宛文、毛利文、马来文、荷兰文、挪威文、波兰文、斯洛伐克文、斯洛文尼亚文、阿尔巴尼亚文、瑞典文、西瓦希里文、塔加洛文、土耳其文、拉丁文</td>
+    </tr>
+    <tr>
+      <td>eslav_PP-OCRv5_mobile_rec</td>
+      <td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/eslav_PP-OCRv5_mobile_rec_infer.tar">推理模型</a></td>
+      <td>俄罗斯文、白俄罗斯文、乌克兰文、英文</td>
+    </tr>
+    <tr>
+      <td>th_PP-OCRv5_mobile_rec</td>
+      <td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/th_PP-OCRv5_mobile_rec_infer.tar">推理模型</a></td>
+      <td>泰文、英文</td>
+    </tr>
+    <tr>
+      <td>el_PP-OCRv5_mobile_rec</td>
+      <td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/el_PP-OCRv5_mobile_rec_infer.tar">推理模型</a></td>
+      <td>希腊文、英文</td>
+    </tr>
+    <tr>
+      <td>en_PP-OCRv5_mobile_rec</td>
+      <td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/en_PP-OCRv5_mobile_rec_infer.tar">推理模型</a></td>
+      <td>英文</td>
+    </tr>
+  </tbody>
+</table>
+
+在使用产线或模块时传入对应的识别模型即可，如使用文本识别模块进行法文识别：
+
+```
+./build/ppocr text_recognition \
+--input ./french.png \
+--text_recognition_model_name latin_PP-OCRv5_mobile_rec \
+--text_recognition_model_dir latin_PP-OCRv5_mobile_rec_infer \
+--save_path ./output/
+```
+
+更多详细说明可参考 [PP-OCRv5多语种文字识别介绍](../../algorithm/PP-OCRv5/PP-OCRv5_multi_languages.md)。
+
+### 3.2 可视化文本识别结果
 
 我们需要 FreeType 去完成字体的渲染，所以需要自己编译包含 FreeType 的 OpenCV，注意仅支持 OpenCV 4.x 版本。
 FreeType 属于 opencv_contrib 模块，需要下载 OpenvCV 和 opencv_contrib 源码，注意版本一致。以下以 opencv4.7.0 为例，源码下载命令如下：
