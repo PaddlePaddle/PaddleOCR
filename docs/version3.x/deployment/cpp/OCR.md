@@ -1,13 +1,15 @@
 # 通用 OCR 产线 C++ 部署
 
 - [1. 环境准备](#1)
-    - [1.1 编译opencv库](#12)
-    - [1.2 下载或者编译Paddle预测库](#13)
-- [2. 运行](#2)
-    - [2.1 准备模型](#21)
-    - [2.2 编译可执行文件](#22)
-    - [2.3 运行](#23)
-- [3. FAQ](#3)
+    - [1.1 编译 OpenCV 库](#11-编译-opencv-库)
+    - [1.2 编译 Paddle Inference](#12-编译-paddle-inference)
+- [2. 开始运行](#2-开始运行)
+    - [2.1 准备模型](#21-准备模型)
+    - [2.2 编译预测 demo](#22-编译预测-demo)
+    - [2.3 运行预测 demo](#23-运行预测-demo)
+- [3. 额外功能](#3-额外功能)
+    - [3.1 可视化文本识别结果](#31-可视化文本识别结果)
+- [4. FAQ](#4-faq)
 
 本章节介绍通用 OCR 产线 C++ 部署方法。通用 OCR 产线由以下5个模块组成：
 
@@ -19,47 +21,53 @@
 
 下面将介绍如何在 Linux (CPU/GPU) 环境下配置 C++ 环境并完成通用 OCR 产线部署。
 
-## 1. 准备环境
+- 备注
+    - Windows 环境具体编译方法请参考 [Windows 编译教程](./OCR_windows.md)，在编译完成后，后续运行 demo 的指令与 Linux 一致。
+
+## 1. 环境准备
 
 - Linux 环境。
-    - gcc   8.2（当使用Paddle Inference GPU版本时需要更高版本时，gcc>=11.2）
+    - gcc   8.2（编译使用 Paddle Inference GPU 版本时，gcc>=11.2）
     - cmake 3.18
-
-- Windows 环境：具体编译方法请参考 [Windows 编译教程](./OCR_windows.md)，在编译完成后，后续运行步骤与 Linux 一致。
 
 ### 1.1 编译 OpenCV 库
 
-- 首先需要下载 OpenCV 源码，以 opencv 4.7.0为例，下载命令如下，注意仅支持 OpenCV 4.x。
+目前仅支持 OpenCV 4.x 版本。下面以 OpenCV 4.7.0 为例。
+
+1. 执行如下命令下载 OpenCV 源码：
 
 ```bash
 cd deploy/cpp_infer
 wget https://paddle-model-ecology.bj.bcebos.com/paddlex/cpp/libs/opencv-4.7.0.tgz
 tar -xf opencv-4.7.0.tgz
 ```
-- 编译 OpenCV 库，编译流程如下：
 
-将 `tools/build_opencv.sh` 脚本中的 `root_path` 变量修改为 `opencv-4.7.0` 目录的绝对路径以及 `install_path` 修改为 `${root_path}/opencv4` 。然后，运行下方的命令以完成 OpenCV 的编译。请注意，`install_path` 指定的路径，在后续编译通用 OCR 产线 demo 时，将作为 OpenCV 库的路径使用。
+2. 配置并编译 OpenCV 库：
+- a. 在 `tools/build_opencv.sh` 脚本中，将 `root_path` 设置为 opencv-4.7.0 源码的绝对路径。
+- b. 设置 `install_path`，如默认的 `${root_path}/opencv4`。`install_path` 在后续编译预测 demo 时，将作为 OpenCV 库的路径使用。
+- c. 配置完成后，运行以下命令进行 OpenCV 的编译：
 
-```shell
-sh tools/build_opencv.sh
-```
+    ```bash
+    sh tools/build_opencv.sh
+    ```
 
-### 1.2 下载 Paddle Inference C++ 预编译包或者手动编译源码
+### 1.2 编译 Paddle Inference
 
-可以选择直接下载 Paddle Inference官网提供的预编译包或者手动编译源码，下文分别进行具体说明。
+可以选择直接下载预编译包或者手动编译源码。
 
 #### 1.2.1 直接下载预编译包（推荐）
 
-[Paddle Inference 官网](https://www.paddlepaddle.org.cn/inference/v3.0/guides/install/download_lib.html) 上提供了 Linux 预测库，可以在官网查看并选择合适的预编译包（*建议选择 paddle 版本>=3.0.0版本的预测库* ）。
+[Paddle Inference 官网](https://www.paddlepaddle.org.cn/inference/v3.0/guides/install/download_lib.html) 上提供了 Linux 预测库，可以在官网查看并选择合适的预编译包。
 
 下载之后解压:
 
 ```shell
-tar -xf paddle_inference.tgz
+tar -xvf paddle_inference.tgz
 ```
+
 最终会在当前的文件夹中生成 `paddle_inference/` 的子文件夹。
 
-#### 1.2.2 预测库源码编译
+#### 1.2.2 源码编译预测库
 
 可以选择通过源码自行编译预测库。源码编译可灵活配置各类功能和依赖，以适应不同的硬件和软件环境。详细步骤请参考 [Linux 下源码编译](https://www.paddlepaddle.org.cn/inference/v3.0/guides/install/compile/source_compile_under_Linux.html)。
 
@@ -67,7 +75,7 @@ tar -xf paddle_inference.tgz
 
 ### 2.1 准备模型
 
-可以直接下载 通用 OCR 产线 提供的推理模型：
+可以直接下载 PaddleOCR 提供的推理模型：
 
 <details>
 <summary><b>文档图像方向分类模块（可选）：</b></summary>
@@ -250,7 +258,7 @@ PP-OCRv5_mobile_det
 |--inference.yml
 ```
 
-### 2.2 编译通用 OCR 产线 C++预测demo
+### 2.2 编译预测 demo
 
 在编译PaddleOCR C++预测demo前，请确保您已经编译好OpenCV库和Paddle Inference预测库。
 
@@ -313,7 +321,7 @@ cmake .. \
 
 **注意：以上路径都写绝对路径，不要写相对路径。**
 
-### 2.3 运行
+### 2.3 运行预测 demo
 
 在本地使用通用 OCR 产线 C++前，请先成功编译预测 demo。编译后，可通过命令行体验或调用API进行二次开发并重新编译生成应用程序。
 
