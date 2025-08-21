@@ -716,9 +716,11 @@ models
     }    
     ```
 
-以上示例代码会生成如下文本检测结果图，若需要查看文本识别结果图，请参考后文 **可视化文本识别结果** 小节：
+以上示例代码会生成如下文本检测结果图：
 
-<img src="./imgs/ocr_res.png"/>
+<img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr/deployment/cpp/ocr_res.png"/>
+
+若需要查看文本识别结果图，请参考后文 **可视化文本识别结果** 小节。
 
 #### 2.3.2 调用示例-单模块调用
 
@@ -883,62 +885,29 @@ sudo apt-get update
 sudo apt-get install libfreetype6-dev libharfbuzz-dev
 ```
 
-编译 OpenCV 包含 FreeType 模块的命令如下：
-相比于不编译 FreeType 方式，只需要增加如下三个参数：
+编译包含 FreeType 模块的 OpenCV 的步骤如下：
 
-- -DOPENCV_EXTRA_MODULES_PATH=your_opencv_contrib-4.7.0/modules/
-- -DBUILD_opencv_freetype=ON
-- -DWITH_FREETYPE=ON
+- a. 在 `tools/build_opencv.sh` 脚本中增加如下三个选项：
+    - -DOPENCV_EXTRA_MODULES_PATH=your_opencv_contrib-4.7.0/modules/
+    - -DBUILD_opencv_freetype=ON
+    - -DWITH_FREETYPE=ON
+- b. 在 `tools/build_opencv.sh` 脚本中，将 `root_path` 设置为 opencv-4.7.0 源码的绝对路径。
+- c. 在 `tools/build_opencv.sh` 脚本中，设置 `install_path`，如默认的 `${root_path}/opencv4`。`install_path` 在后续编译预测 demo 时，将作为 OpenCV 库的路径使用。
+- d. 配置完成后，运行以下命令进行 OpenCV 的编译：
 
-完整命令如下：
+    ```bash
+    sh tools/build_opencv.sh
+    ```
 
-```shell
-root_path="your_opencv_root_path"
-install_path=${root_path}/opencv4
-build_dir=${root_path}/build
+- e. 在 `tools/build.sh` 设置 `-DUSE_FREETYPE=ON` 开启文字渲染功能，设置 `--vis_font_dir your_ttf_path` 提供相应 ttf 字体文件路径。运行以下命令进行预测 demo 的编译：
 
-rm -rf ${build_dir}
-mkdir ${build_dir}
-cd ${build_dir}
+    ```bash
+    sh tools/build.sh
+    ```
 
-cmake .. \
-    -DCMAKE_INSTALL_PREFIX=${install_path} \
-    -DCMAKE_BUILD_TYPE=Release \
-    -DBUILD_SHARED_LIBS=OFF \
-    -DWITH_IPP=OFF \
-    -DBUILD_IPP_IW=OFF \
-    -DWITH_LAPACK=OFF \
-    -DWITH_EIGEN=OFF \
-    -DCMAKE_INSTALL_LIBDIR=lib64 \
-    -DWITH_ZLIB=ON \
-    -DBUILD_ZLIB=ON \
-    -DWITH_JPEG=ON \
-    -DBUILD_JPEG=ON \
-    -DWITH_PNG=ON \
-    -DBUILD_PNG=ON \
-    -DWITH_TIFF=ON \
-    -DBUILD_TIFF=ON \
-    -DOPENCV_EXTRA_MODULES_PATH=your_opencv_contrib-4.7.0/modules/ \
-    -DBUILD_opencv_freetype=ON \
-    -DWITH_FREETYPE=ON
+编译并运行预测 demo 可以得到如下可视化文本识别结果：
 
-make -j
-make install
-```
-
-也可以直接修改`tools/build_opencv.sh`的内容，然后直接运行下面的命令进行编译。
-
-```shell
-sh tools/build_opencv.sh
-```
-
-其中`root_path`为下载的opencv源码路径，`install_path`为opencv的安装路径，请注意` install_path` 指定的路径，在上述编译通用 OCR 产线 demo 时，将作为 OpenCV 库的路径使用。
-
-注意：如果完成编译包含 FreeType 的 OpenCV，在编译通用 OCR 产线 demo 时，需要在 `tools/build.sh` 设置 `-DUSE_FREETYPE=ON` 开启文字渲染功能，并且显示指定 `--vis_font_dir your_ttf_path` 提供相应ttf字体文件路径。
-
-编译包含 FreeType 的 OpenCV 生成 demo 可视化文本识别结果：
-
-<img src="./imgs/ocr_res_with_freetype.png"/>
+<img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr/deployment/cpp/ocr_res_with_freetype.png"/>
 
 ## 4. FAQ
 
