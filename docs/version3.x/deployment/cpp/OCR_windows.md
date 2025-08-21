@@ -13,6 +13,8 @@
 
 ## 1. 准备环境
 
+- **本章节编译运行时用到的源代码位于 [PaddleOCR/deploy/cpp_infer](https://github.com/PaddlePaddle/PaddleOCR/tree/main/deploy/cpp_infer) 目录下。**
+
 - Windows 环境：
     - visual studio 2022
     - cmake 3.29
