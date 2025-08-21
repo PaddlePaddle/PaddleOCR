@@ -898,7 +898,7 @@ You're not viewing the latest version.
   
   
     <li class="md-nav__item">
-      <a href="../../version3.x/deployment/cpp/OCR.md" class="md-nav__link">
+      <a href="../version3.x/deployment/cpp/OCR.html" class="md-nav__link">
         
   
   
@@ -921,7 +921,7 @@ You're not viewing the latest version.
   
   
     <li class="md-nav__item">
-      <a href="../../version3.x/deployment/cpp/OCR_windows.md" class="md-nav__link">
+      <a href="../version3.x/deployment/cpp/OCR_windows.html" class="md-nav__link">
         
   
   
@@ -2725,6 +2725,15 @@ You're not viewing the latest version.
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#20250821-release-of-paddleocr-320-includes" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔥🔥2025.08.21: Release of PaddleOCR 3.2.0, includes:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#20250815-release-of-paddleocr-311-includes" class="md-nav__link">
     <span class="md-ellipsis">
       2025.08.15: Release of PaddleOCR 3.1.1, includes:
@@ -3555,6 +3564,15 @@ You're not viewing the latest version.
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#20250821-release-of-paddleocr-320-includes" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔥🔥2025.08.21: Release of PaddleOCR 3.2.0, includes:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#20250815-release-of-paddleocr-311-includes" class="md-nav__link">
     <span class="md-ellipsis">
       2025.08.15: Release of PaddleOCR 3.1.1, includes:
@@ -3938,6 +3956,51 @@ You're not viewing the latest version.
   <h1>Recently Update</h1>
 
 <h3 id="recently-update">Recently Update<a class="headerlink" href="#recently-update" title="Permanent link">&para;</a></h3>
+<h4 id="20250821-release-of-paddleocr-320-includes">🔥🔥<strong>2025.08.21: Release of PaddleOCR 3.2.0</strong>, includes:<a class="headerlink" href="#20250821-release-of-paddleocr-320-includes" title="Permanent link">&para;</a></h4>
+<ul>
+<li>
+<p><strong>Significant Model Additions:</strong></p>
+<ul>
+<li>Introduced training, inference, and deployment for PP-OCRv5 recognition models in English, Thai, and Greek. <strong>The PP-OCRv5 English model delivers an 11% improvement in English scenarios compared to the main PP-OCRv5 model, with the Thai and Greek recognition models achieving accuracies of 82.68% and 89.28%, respectively.</strong></li>
+</ul>
+</li>
+<li>
+<p><strong>Deployment Capability Upgrades:</strong></p>
+<ul>
+<li><strong>Full support for PaddlePaddle framework versions 3.1.0 and 3.1.1.</strong></li>
+<li><strong>Comprehensive upgrade of the PP-OCRv5 C++ local deployment solution, now supporting both Linux and Windows, with feature parity and identical accuracy to the Python implementation.</strong></li>
+<li><strong>High-performance inference now supports CUDA 12, and inference can be performed using either the Paddle Inference or ONNX Runtime backends.</strong></li>
+<li><strong>The high-stability service-oriented deployment solution is now fully open-sourced, allowing users to customize Docker images and SDKs as required.</strong></li>
+<li>The high-stability service-oriented deployment solution also supports invocation via manually constructed HTTP requests, enabling client-side code development in any programming language.</li>
+</ul>
+</li>
+<li>
+<p><strong>Benchmark Support:</strong></p>
+<ul>
+<li><strong>All production lines now support fine-grained benchmarking, enabling measurement of end-to-end inference time as well as per-layer and per-module latency data to assist with performance analysis.</strong></li>
+<li><strong>Documentation has been updated to include key metrics for commonly used configurations on mainstream hardware, such as inference latency and memory usage, providing deployment references for users.</strong></li>
+</ul>
+</li>
+<li>
+<p><strong>Bug Fixes:</strong></p>
+<ul>
+<li>Resolved the issue of failed log saving during model training.</li>
+<li>Upgraded the data augmentation component for formula models for compatibility with newer versions of the albumentations dependency, and fixed deadlock warnings when using the tokenizers package in multi-process scenarios.</li>
+<li>Fixed inconsistencies in switch behaviors (e.g., <code>use_chart_parsing</code>) in the PP-StructureV3 configuration files compared to other pipelines.</li>
+</ul>
+</li>
+<li>
+<p><strong>Other Enhancements:</strong></p>
+<ul>
+<li><strong>Separated core and optional dependencies. Only minimal core dependencies are required for basic text recognition; additional dependencies for document parsing and information extraction can be installed as needed.</strong></li>
+<li><strong>Enabled support for NVIDIA RTX 50 series graphics cards on Windows; users can refer to the <a href="../version3.x/installation.html">installation guide</a> for the corresponding PaddlePaddle framework versions.</strong></li>
+<li><strong>PP-OCR series models now support returning single-character coordinates.</strong></li>
+<li>Added AIStudio, ModelScope, and other model download sources, allowing users to specify the source for model downloads.</li>
+<li>Added support for chart-to-table conversion via the PP-Chart2Table module.</li>
+<li>Optimized documentation descriptions to improve usability.</li>
+</ul>
+</li>
+</ul>
 <h4 id="20250815-release-of-paddleocr-311-includes"><strong>2025.08.15: Release of PaddleOCR 3.1.1</strong>, includes:<a class="headerlink" href="#20250815-release-of-paddleocr-311-includes" title="Permanent link">&para;</a></h4>
 <ul>
 <li><strong>Bug Fixes:</strong></li>
@@ -4202,7 +4265,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 20, 2025 15:36:23 UTC">August 20, 2025</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 21, 2025 09:07:46 UTC">August 21, 2025</span>
   </span>
 
     
@@ -4212,7 +4275,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 20, 2025 15:36:23 UTC">August 20, 2025</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 21, 2025 09:07:46 UTC">August 21, 2025</span>
   </span>
 
     
