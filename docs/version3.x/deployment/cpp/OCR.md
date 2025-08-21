@@ -7,6 +7,7 @@
     - [2.1 准备模型](#21-准备模型)
     - [2.2 编译预测 demo](#22-编译预测-demo)
     - [2.3 运行预测 demo](#23-运行预测-demo)
+    - [2.4 C++ API 集成](#24-c-api-集成)
 - [3. 额外功能](#3-额外功能)
     - [3.1 可视化文本识别结果](#31-可视化文本识别结果)
 - [4. FAQ](#4-faq)
@@ -311,8 +312,6 @@ sh tools/build.sh
 
 **请注意，如果在执行过程中遇到程序失去响应、程序异常退出、内存资源耗尽、推理速度极慢等问题，请尝试参考文档调整配置，例如关闭不需要使用的功能或使用更轻量的模型。**
 
-#### 2.3.1 命令行方式
-
 本 demo 支持系统串联调用，也支持单个模块的调用，运行以下代码前，请您下载[示例图片](https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_002.png)到本地：
 
 运行方式：
@@ -321,264 +320,37 @@ sh tools/build.sh
 ./build/ppocr <pipeline_or_module> [--param1] [--param2] [...]
 ```
 
-具体命令如下：
+常用参数如下：
 
-##### 系统串联调用
+- 输入输出相关
 
-按照2.1节准备模型下载，假设模型的目录结构如下所示：
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>参数说明</th>
+<th>参数类型</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>input</code></td>
+<td>本地待预测图片，必填。仅支持<code>jpg</code>，<code>png</code>, <code>jpeg</code>,<code>bmp</code>格式的图像。
+</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>save_path</code></td>
+<td>指定推理结果文件保存的路径，该路径下会保存推理结果的 json 文件和预测结果图片。</td>
+<td><code>str</code></td>
+<td><code>./output</code></td>
+</tr>
+</tbody>
+</table>
 
-```
-models
-|--PP-LCNet_x1_0_doc_ori_infer
-|--UVDoc_infer
-|--PP-LCNet_x1_0_textline_ori_infer
-|--PP-OCRv5_server_det_infer
-|--PP-OCRv5_server_rec_infer
-```
-
-=== "全模块串联"
-
-    ```bash
-    ./build/ppocr ocr --input ./general_ocr_002.png --save_path ./output/  \
-    --doc_orientation_classify_model_dir models/PP-LCNet_x1_0_doc_ori_infer \
-    --doc_unwarping_model_dir models/UVDoc_infer \
-    --textline_orientation_model_dir models/PP-LCNet_x1_0_textline_ori_infer \
-    --text_detection_model_dir models/PP-OCRv5_server_det_infer \
-    --text_recognition_model_dir models/PP-OCRv5_server_rec_infer \
-    --device cpu
-    ```
-
-    输出示例：
-
-    ```bash
-    {
-       "input_path": "./general_ocr_002.png",
-       "doc_preprocessor_res": {
-           "model_settings": {"use_doc_unwarping": true, "use_doc_orientation_classify": true},
-           "angle": 0
-        },
-       ...,
-       "dt_polys": [[[132, 6], [355, 6], [355, 64], [132, 64]],
-        [[424, 9], [689, 9], [689, 59], [424, 59]],
-         ...,
-        [[664, 8], [867, 4], [868, 55], [665, 60]],
-        [[31, 99], [173, 99], [173, 126], [31, 126]]],
-         ...,
-       "rec_texts": ["登机牌", "BOARDING", "GPASS", ..., ],
-       ...,
-    }        
-    ```
-
-=== "文本检测+文本行方向分类+文本识别"
-
-    ```bash
-    ./build/ppocr ocr --input ./general_ocr_002.png --save_path ./output/  \
-    --doc_orientation_classify_model_dir models/PP-LCNet_x1_0_doc_ori_infer \
-    --doc_unwarping_model_dir models/UVDoc_infer \
-    --textline_orientation_model_dir models/PP-LCNet_x1_0_textline_ori_infer \
-    --text_detection_model_dir models/PP-OCRv5_server_det_infer \
-    --text_recognition_model_dir models/PP-OCRv5_server_rec_infer \
-    --use_doc_orientation_classify False \
-    --use_doc_unwarping False \
-    --device cpu
-    ```
-
-    输出示例：
-
-    ```bash
-    {
-       "input_path": "./general_ocr_002.png",
-       ...,
-        "dt_polys": [[[0, 1], [334, 1], [334, 34], [0, 34]],
-        [[151, 21], [357, 16], [358, 72], [152, 76]],
-         ...,
-        [[675, 97], [740, 97], [740, 121], [675, 121]],
-        [[751, 97], [836, 94], [837, 115], [752, 119]],
-         ...,
-       "rec_texts": ["净小8866-", "登机牌", "BOARDING", "GPASS", ..., ],
-       ...,
-    }    
-    ```
-
-=== "文本检测+文本识别"
-
-    ```bash
-    ./build/ppocr ocr --input ./general_ocr_002.png --save_path ./output/  \
-    --doc_orientation_classify_model_dir models/PP-LCNet_x1_0_doc_ori_infer \
-    --doc_unwarping_model_dir models/UVDoc_infer \
-    --textline_orientation_model_dir models/PP-LCNet_x1_0_textline_ori_infer \
-    --text_detection_model_dir models/PP-OCRv5_server_det_infer \
-    --text_recognition_model_dir models/PP-OCRv5_server_rec_infer \
-    --use_doc_orientation_classify False \
-    --use_doc_unwarping False \
-    --use_textline_orientation False \
-    --device cpu
-    ```
-
-    输出示例：
-
-    ```bash
-    {
-       "input_path": "./general_ocr_002.png",
-       ...,
-       "dt_polys": [[[0, 1], [334, 1], [334, 34], [0, 34]],
-        [[151, 21], [357, 16], [358, 72], [152, 76]],
-         ...,
-        [[61, 109], [194, 106], [194, 132], [61, 135]],
-        [[80, 138], [219, 136], [219, 162], [80, 164]],
-         ...,
-       "rec_texts": ["www.997788.com中国收藏热线","登机牌", "BOARDING", "GPASS", ..., ],
-       ...,
-    }    
-    ```
-
-以上示例代码会生成如下文本检测结果图：
-
-<img src="./imgs/general_ocr_002_ocr_res_img.png"/>
-
-##### 单模块调用
-
-
-=== "文档图像方向分类"   
-
-    ```bash
-    ./build/ppocr doc_img_orientation_classification --input ./general_ocr_002.png --save_path ./output/  \
-    --doc_orientation_classify_model_dir models/PP-LCNet_x1_0_doc_ori_infer \
-    --device cpu 
-    ```
-
-    输出示例：
-
-    ```bash
-    {
-    "res": {
-        "input_path": {./general_ocr_002.png},
-        "class_ids": {0},
-        "scores": {0.926328},
-        "label_names": {0},
-    }
-    ```
-
-=== "文档图像矫正"
-
-    ```bash
-    ./build/ppocr text_image_unwarping --input ./general_ocr_002.png --save_path ./output/  \
-    --doc_unwarping_model_dir models/UVDoc_infer \
-    --device cpu 
-    ```
-
-    输出示例：
-
-    ```bash
-    {
-    "res": {
-        "input_path": {./general_ocr_002.png},
-        "doctr_img": {...}
-    }    
-    ```   
-
-=== "文本行方向分类"
-
-    ```bash
-    ./build/ppocr textline_orientation_classification --input ./general_ocr_002.png --save_path ./output/  \
-    --textline_orientation_model_dir models/PP-LCNet_x1_0_textline_ori_infer \
-    --device cpu 
-    ```
-
-    输出示例：
-
-    ```bash
-    {
-    "res": {
-        "input_path": {./general_ocr_002.png},
-        "class_ids": {0},
-        "scores": {0.719926},
-        "label_names": {0_degree},
-    }
-    ```      
-
-=== "文本检测"
-
-    ```bash
-    ./build/ppocr text_detection --input ./general_ocr_002.png --save_path ./output/  \
-    --text_detection_model_dir models/PP-OCRv5_server_det_infer \
-    --device cpu 
-    ```
-
-    输出示例：
-
-    ```bash
-    {
-    "res": {
-        "input_path": {./general_ocr_002.png    },
-        "dt_polys": [
-            [[98, 456], [834, 441], [834, 466], [98, 480]],
-            [[344, 347], [662, 343], [662, 366], [344, 371]],
-            [[66, 341], [165, 337], [167, 363], [67, 367]],
-            ...,
-            [[0, 1], [331, 0], [332, 32], [0, 34]],
-        ]},
-        "dt_scores": [
-            0.812284, 0.8082, 0.848293, ..., 
-        ]
-      }
-    }
-    ```
-    
-=== "文本识别"
-
-    ```bash
-    ./build/ppocr text_recognition --input ./general_ocr_002.png --save_path ./output/  \
-    --text_recognition_model_dir models/PP-OCRv5_server_rec_infer \ 
-    --device cpu 
-    ```
-
-    输出示例：
-
-    ```bash
-    {
-    "res": {
-        "input_path": {./general_ocr_002.png },
-        "rec_text": { }
-        "rec_score": {0 }
-    }
-    ```
-
-#### 2.3.2 C++ api 方式集成
-
-命令行方式是为了快速体验查看效果，一般来说，在项目中，往往需要通过代码集成，您可以通过几行代码即可完成产线的快速推理，推理代码如下：
-由于通用 OCR 产线配置参数较多，故采用结构体传参进行实例化，结构体命名规则为 `pipeline_class_name  + Params`，如通用 OCR 产线对应的类名为 `PaddleOCR` ，结构体为 `PaddleOCRParams`。
-
-```c++
-#include "src/api/pipelines/ocr.h"
-
-
-int main(){
-    PaddleOCRParams params;
-    params.doc_orientation_classify_model_dir = "models/PP-LCNet_x1_0_doc_ori_infer"; // 文档方向分类模型路径。
-    params.doc_unwarping_model_dir = "models/UVDoc_infer"; // 文本图像矫正模型路径。
-    params.textline_orientation_model_dir = "models/PP-LCNet_x1_0_textline_ori_infer"; // 文本行方向分类模型路径。
-    params.text_detection_model_dir = "models/PP-OCRv5_server_det_infer"; // 文本检测模型路径
-    params.text_recognition_model_dir = "models/PP-OCRv5_server_rec_infer"; // 文本识别模型路径
-
-    // params.vis_font_dir = "your_vis_font_dir"; // 当编译时添加 -DUSE_FREETYPE=ON 选项，必须提供相应 ttf 字体文件路径。
-    // params.device = "gpu"; // 推理时使用GPU。请确保编译时添加 -DWITH_GPU=ON 选项，否则使用CPU。
-    // params.use_doc_orientation_classify = false;  // 不使用文档方向分类模型。
-    // params.use_doc_unwarping = false; // 不使用文本图像矫正模型。
-    // params.use_textline_orientation = false; // 不使用文本行方向分类模型。
-    // params.params.text_recognition_model_name = "PP-OCRv5_server_rec" // 使用 PP-OCRv5_server_rec 模型进行识别。
-
-    auto infer = PaddleOCR(params);
-    auto outputs = infer.Predict("./general_ocr_002.png");
-    for (auto& output : outputs) {
-      output->Print();
-      output->SaveToImg("./output/");
-      output->SaveToJson("./output/");
-    }
-}
-```
-
-<details><summary><b>更多支持的可调节参数设置，点击展开以查看调节参数的详细说明</b></summary>
+<details><summary><b>点击展开查看更多参数的详细说明</b></summary>
 
 - 通用参数
 
@@ -833,37 +605,262 @@ MKL-DNN 缓存容量。
 </tbody>
 </table>
 
-- 输入输出相关
-
-<table>
-<thead>
-<tr>
-<th>参数</th>
-<th>参数说明</th>
-<th>参数类型</th>
-<th>默认值</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>input</code></td>
-<td>待预测数据，必填。仅支持<code>jpg</code>，<code>png</code>, <code>jpeg</code>,<code>bmp</code>格式的图像，暂不支持 PDF 文件。
-</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>save_path</code></td>
-<td>指定推理结果文件保存的路径。如果不设置，推理结果将保存至当前运行路径下的<code>output</code>文件夹。</td>
-<td><code>str</code></td>
-<td>*****</td>
-</tr>
-</tbody>
-</table>
-
-注意：命令行方式使用上述可调节参数，加前缀<code>--</code>，如：<code>--input your_image.jpg --save_path ./your_output/</code>。
-
 </details>
+
+#### 2.3.1 调用示例-系统串联调用
+
+本节提供了系统串联调用的调用示例，按照 2.1 节准备好模型，假设模型的目录结构如下所示：
+
+```
+models
+|--PP-LCNet_x1_0_doc_ori_infer
+|--UVDoc_infer
+|--PP-LCNet_x1_0_textline_ori_infer
+|--PP-OCRv5_server_det_infer
+|--PP-OCRv5_server_rec_infer
+```
+
+=== "全模块串联"
+
+    ```bash
+    ./build/ppocr ocr --input ./general_ocr_002.png --save_path ./output/  \
+    --doc_orientation_classify_model_dir models/PP-LCNet_x1_0_doc_ori_infer \
+    --doc_unwarping_model_dir models/UVDoc_infer \
+    --textline_orientation_model_dir models/PP-LCNet_x1_0_textline_ori_infer \
+    --text_detection_model_dir models/PP-OCRv5_server_det_infer \
+    --text_recognition_model_dir models/PP-OCRv5_server_rec_infer \
+    --device cpu
+    ```
+
+    输出示例：
+
+    ```bash
+    {
+       "input_path": "./general_ocr_002.png",
+       "doc_preprocessor_res": {
+           "model_settings": {"use_doc_unwarping": true, "use_doc_orientation_classify": true},
+           "angle": 0
+        },
+       ...,
+       "dt_polys": [[[132, 6], [355, 6], [355, 64], [132, 64]],
+        [[424, 9], [689, 9], [689, 59], [424, 59]],
+         ...,
+        [[664, 8], [867, 4], [868, 55], [665, 60]],
+        [[31, 99], [173, 99], [173, 126], [31, 126]]],
+         ...,
+       "rec_texts": ["登机牌", "BOARDING", "GPASS", ..., ],
+       ...,
+    }        
+    ```
+
+=== "文本检测+文本行方向分类+文本识别"
+
+    ```bash
+    ./build/ppocr ocr --input ./general_ocr_002.png --save_path ./output/  \
+    --doc_orientation_classify_model_dir models/PP-LCNet_x1_0_doc_ori_infer \
+    --doc_unwarping_model_dir models/UVDoc_infer \
+    --textline_orientation_model_dir models/PP-LCNet_x1_0_textline_ori_infer \
+    --text_detection_model_dir models/PP-OCRv5_server_det_infer \
+    --text_recognition_model_dir models/PP-OCRv5_server_rec_infer \
+    --use_doc_orientation_classify False \
+    --use_doc_unwarping False \
+    --device cpu
+    ```
+
+    输出示例：
+
+    ```bash
+    {
+       "input_path": "./general_ocr_002.png",
+       ...,
+        "dt_polys": [[[0, 1], [334, 1], [334, 34], [0, 34]],
+        [[151, 21], [357, 16], [358, 72], [152, 76]],
+         ...,
+        [[675, 97], [740, 97], [740, 121], [675, 121]],
+        [[751, 97], [836, 94], [837, 115], [752, 119]],
+         ...,
+       "rec_texts": ["净小8866-", "登机牌", "BOARDING", "GPASS", ..., ],
+       ...,
+    }    
+    ```
+
+=== "文本检测+文本识别"
+
+    ```bash
+    ./build/ppocr ocr --input ./general_ocr_002.png --save_path ./output/  \
+    --doc_orientation_classify_model_dir models/PP-LCNet_x1_0_doc_ori_infer \
+    --doc_unwarping_model_dir models/UVDoc_infer \
+    --textline_orientation_model_dir models/PP-LCNet_x1_0_textline_ori_infer \
+    --text_detection_model_dir models/PP-OCRv5_server_det_infer \
+    --text_recognition_model_dir models/PP-OCRv5_server_rec_infer \
+    --use_doc_orientation_classify False \
+    --use_doc_unwarping False \
+    --use_textline_orientation False \
+    --device cpu
+    ```
+
+    输出示例：
+
+    ```bash
+    {
+       "input_path": "./general_ocr_002.png",
+       ...,
+       "dt_polys": [[[0, 1], [334, 1], [334, 34], [0, 34]],
+        [[151, 21], [357, 16], [358, 72], [152, 76]],
+         ...,
+        [[61, 109], [194, 106], [194, 132], [61, 135]],
+        [[80, 138], [219, 136], [219, 162], [80, 164]],
+         ...,
+       "rec_texts": ["www.997788.com中国收藏热线","登机牌", "BOARDING", "GPASS", ..., ],
+       ...,
+    }    
+    ```
+
+以上示例代码会生成如下文本检测结果图，若需要查看文本识别结果图，请参考后文 **可视化文本识别结果** 小节：
+
+<img src="./imgs/ocr_res.png"/>
+
+#### 2.3.2 调用示例-单模块调用
+
+=== "文档图像方向分类"   
+
+    ```bash
+    ./build/ppocr doc_img_orientation_classification --input ./general_ocr_002.png --save_path ./output/  \
+    --doc_orientation_classify_model_dir models/PP-LCNet_x1_0_doc_ori_infer \
+    --device cpu 
+    ```
+
+    输出示例：
+
+    ```bash
+    {
+    "res": {
+        "input_path": {./general_ocr_002.png},
+        "class_ids": {0},
+        "scores": {0.926328},
+        "label_names": {0},
+    }
+    ```
+
+=== "文档图像矫正"
+
+    ```bash
+    ./build/ppocr text_image_unwarping --input ./general_ocr_002.png --save_path ./output/  \
+    --doc_unwarping_model_dir models/UVDoc_infer \
+    --device cpu 
+    ```
+
+    输出示例：
+
+    ```bash
+    {
+    "res": {
+        "input_path": {./general_ocr_002.png},
+        "doctr_img": {...}
+    }    
+    ```   
+
+=== "文本行方向分类"
+
+    ```bash
+    ./build/ppocr textline_orientation_classification --input ./general_ocr_002.png --save_path ./output/  \
+    --textline_orientation_model_dir models/PP-LCNet_x1_0_textline_ori_infer \
+    --device cpu 
+    ```
+
+    输出示例：
+
+    ```bash
+    {
+    "res": {
+        "input_path": {./general_ocr_002.png},
+        "class_ids": {0},
+        "scores": {0.719926},
+        "label_names": {0_degree},
+    }
+    ```      
+
+=== "文本检测"
+
+    ```bash
+    ./build/ppocr text_detection --input ./general_ocr_002.png --save_path ./output/  \
+    --text_detection_model_dir models/PP-OCRv5_server_det_infer \
+    --device cpu 
+    ```
+
+    输出示例：
+
+    ```bash
+    {
+    "res": {
+        "input_path": {./general_ocr_002.png    },
+        "dt_polys": [
+            [[98, 456], [834, 441], [834, 466], [98, 480]],
+            [[344, 347], [662, 343], [662, 366], [344, 371]],
+            [[66, 341], [165, 337], [167, 363], [67, 367]],
+            ...,
+            [[0, 1], [331, 0], [332, 32], [0, 34]],
+        ]},
+        "dt_scores": [
+            0.812284, 0.8082, 0.848293, ..., 
+        ]
+      }
+    }
+    ```
+    
+=== "文本识别"
+
+    ```bash
+    ./build/ppocr text_recognition --input ./general_ocr_rec_001.png --save_path ./output/  \
+    --text_recognition_model_dir models/PP-OCRv5_server_rec_infer \ 
+    --device cpu 
+    ```
+
+    输出示例：
+
+    ```bash
+    {
+    "res": {
+        "input_path": {./general_ocr_rec_001.png },
+        "rec_text": {绿洲仕格维花园公寓 }
+        "rec_score": {0.982409 }
+    }
+    ```
+
+### 2.4 C++ API 集成
+
+命令行方式是为了快速体验查看效果，一般来说，在项目中，往往需要通过代码集成，您可以通过几行代码即可完成产线的快速推理，推理代码如下：
+
+由于通用 OCR 产线配置参数较多，故采用结构体传参进行实例化，结构体命名规则为 `pipeline_class_name  + Params`，如通用 OCR 产线对应的类名为 `PaddleOCR` ，结构体为 `PaddleOCRParams`。
+
+```c++
+#include "src/api/pipelines/ocr.h"
+
+
+int main(){
+    PaddleOCRParams params;
+    params.doc_orientation_classify_model_dir = "models/PP-LCNet_x1_0_doc_ori_infer"; // 文档方向分类模型路径。
+    params.doc_unwarping_model_dir = "models/UVDoc_infer"; // 文本图像矫正模型路径。
+    params.textline_orientation_model_dir = "models/PP-LCNet_x1_0_textline_ori_infer"; // 文本行方向分类模型路径。
+    params.text_detection_model_dir = "models/PP-OCRv5_server_det_infer"; // 文本检测模型路径
+    params.text_recognition_model_dir = "models/PP-OCRv5_server_rec_infer"; // 文本识别模型路径
+
+    // params.device = "gpu"; // 推理时使用GPU。请确保编译时添加 -DWITH_GPU=ON 选项，否则使用CPU。
+    // params.use_doc_orientation_classify = false;  // 不使用文档方向分类模型。
+    // params.use_doc_unwarping = false; // 不使用文本图像矫正模型。
+    // params.use_textline_orientation = false; // 不使用文本行方向分类模型。
+    // params.params.text_recognition_model_name = "PP-OCRv5_server_rec" // 使用 PP-OCRv5_server_rec 模型进行识别。
+    // params.vis_font_dir = "your_vis_font_dir"; // 当编译时添加 -DUSE_FREETYPE=ON 选项，必须提供相应 ttf 字体文件路径。
+
+    auto infer = PaddleOCR(params);
+    auto outputs = infer.Predict("./general_ocr_002.png");
+    for (auto& output : outputs) {
+      output->Print();
+      output->SaveToImg("./output/");
+      output->SaveToJson("./output/");
+    }
+}
+```
 
 ## 3. 额外功能
 
@@ -889,8 +886,8 @@ sudo apt-get install libfreetype6-dev libharfbuzz-dev
 编译 OpenCV 包含 FreeType 模块的命令如下：
 相比于不编译 FreeType 方式，只需要增加如下三个参数：
 
-- -DOPENCV_EXTRA_MODULES_PATH=your_opencv_contrib-4.7.0/modules/ \
-- -DBUILD_opencv_freetype=ON \
+- -DOPENCV_EXTRA_MODULES_PATH=your_opencv_contrib-4.7.0/modules/
+- -DBUILD_opencv_freetype=ON
 - -DWITH_FREETYPE=ON
 
 完整命令如下：
@@ -941,10 +938,11 @@ sh tools/build_opencv.sh
 
 编译包含 FreeType 的 OpenCV 生成 demo 可视化文本识别结果：
 
-<img src="./imgs/general_ocr_002_ocr_res_img_with_freetype.png"/>
+<img src="./imgs/ocr_res_with_freetype.png"/>
 
 ## 4. FAQ
 
-1. 遇到报错 `Model name mismatch, please input the correct model dir. model dir is xxx, but model name is xxx` ，说明指定的模型名称和传入模型不匹配。比如文本识别模型指定名称是 `PP-OCRv5_server_rec `，但传入模型是 `PP-OCRv5_mobile_rec` 对于命令行调用方式需要指定 `--text_recognition_model_name PP-OCRv5_mobile_rec`，其他模型同理。
+1. 如果遇到 `Model name mismatch, please input the correct model dir. model dir is xxx, but model name is xxx` 的报错，说明指定的模型名称和传入模型不匹配。比如文本识别模型指定名称是 `PP-OCRv5_server_rec `，但传入模型是 `PP-OCRv5_mobile_rec`。
+解决：需要调整模型名称或传入的模型。例如上述例子，可以使用 `--text_recognition_model_name PP-OCRv5_mobile_rec` 指定和传入模型匹配的模型名称。
 
-2. 在 Windows 中控制台输出出现乱码，原因可能是控制台默认的字符编码是 GBK，请设置为 UTF-8 编码。
+2. 在 Windows 的控制台中输出出现乱码，原因可能是 Windows 控制台的字符编码是 GBK，请设置为 UTF-8 编码。
