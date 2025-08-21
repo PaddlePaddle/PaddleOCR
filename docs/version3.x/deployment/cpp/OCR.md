@@ -657,8 +657,6 @@ models
 
     ```bash
     ./build/ppocr ocr --input ./general_ocr_002.png --save_path ./output/  \
-    --doc_orientation_classify_model_dir models/PP-LCNet_x1_0_doc_ori_infer \
-    --doc_unwarping_model_dir models/UVDoc_infer \
     --textline_orientation_model_dir models/PP-LCNet_x1_0_textline_ori_infer \
     --text_detection_model_dir models/PP-OCRv5_server_det_infer \
     --text_recognition_model_dir models/PP-OCRv5_server_rec_infer \
@@ -688,9 +686,6 @@ models
 
     ```bash
     ./build/ppocr ocr --input ./general_ocr_002.png --save_path ./output/  \
-    --doc_orientation_classify_model_dir models/PP-LCNet_x1_0_doc_ori_infer \
-    --doc_unwarping_model_dir models/UVDoc_infer \
-    --textline_orientation_model_dir models/PP-LCNet_x1_0_textline_ori_infer \
     --text_detection_model_dir models/PP-OCRv5_server_det_infer \
     --text_recognition_model_dir models/PP-OCRv5_server_rec_infer \
     --use_doc_orientation_classify False \
