@@ -94,7 +94,7 @@ PaddleOCR 3.0除了提供优秀的模型库外，还提供好学易用的工具�
     - **支持 Windows 用户使用英伟达 50 系显卡，可根据 [安装文档](../docs/version3.x/installation.md) 安装对应版本的 paddle 框架。**
     - **PP-OCR 系列模型支持返回单文字坐标。**
     - 模型新增 AIStudio、ModelScope 等下载源。可指定相关下载源下载对应的模型。
-    - 支持图表转表PP-Chart2Table单功能模块推理能力。
+    - 支持图表转表 PP-Chart2Table 单功能模块推理能力。
     - 优化部分使用文档中的描述，提升易用性。
 
 
