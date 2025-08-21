@@ -28,6 +28,7 @@ Below, we will explain how to configure the C++ environment and complete the dep
 ## 1. Environment Preparation
 
 - **The source code used for compilation and execution in this chapter can be found in the [PaddleOCR/deploy/cpp_infer](https://github.com/PaddlePaddle/PaddleOCR/tree/main/deploy/cpp_infer) directory.**
+
 - Linux environment.
     - gcc 8.2 (when compiling with the Paddle Inference GPU version, gcc>=11.2)
     - cmake 3.18
