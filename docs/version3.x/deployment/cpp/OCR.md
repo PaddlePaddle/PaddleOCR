@@ -509,8 +509,8 @@ MKL-DNN 缓存容量。
 <tr>
 <td><code>text_det_input_shape</code></td>
 <td>文本检测的输入形状，您可以设置3个值代表C，H，W。</td>
-<td><code>std::vector</code></td>
-<td></td>
+<td><code>str</code></td>
+<td>""</td>
 </tr>
 </tbody>
 </table>
@@ -599,7 +599,7 @@ MKL-DNN 缓存容量。
 <tr>
 <td><code>text_rec_input_shape</code></td>
 <td>文本识别的输入形状，您可以设置3个值代表C，H，W。</td>
-<td><code>string</code></td>
+<td><code>str</code></td>
 <td>""</td>
 </tr>
 </tbody>
