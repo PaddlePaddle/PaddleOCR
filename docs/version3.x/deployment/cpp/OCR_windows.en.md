@@ -1,4 +1,4 @@
-# General OCR Pipeline C++ Deployment - Windows
+# C++ Local Deployment for General OCR Pipeline - Windows
 
 - [1. Environment Preparation](#1-environment-preparation)
     - [1.1 Compile OpenCV Library](#11-compile-opencv-library)
@@ -9,7 +9,8 @@
     - [2.3 Run Prediction Demo](#23-run-prediction-demo)
     - [2.4 C++ API Integration](#24-c-api-integration)
 - [3. Extended Features](#3-extended-features)
-    - [3.1 Visualize Text Recognition Results](#31-visualize-text-recognition-results)  
+    - [3.1 Multilingual Text Recognition](#31-multilingual-text-recognition)
+    - [3.2 Visualize Text Recognition Results](#32-visualize-text-recognition-results)
 
 ## 1. Environment Preparation
 
@@ -90,7 +91,7 @@ The compilation steps are as follows:
 
   Specify the `deploy\cpp_infer` source code path in cmake-gui, and set the compilation output directory to `deploy\cpp_infer\build`. The following compilation steps will use `D:\PaddleOCR\deploy\cpp_infer` as an example source code path. It is normal to encounter an error during the first Configure click. In the subsequent compilation options that pop up, add the installation path for OpenCV and the Paddle Inference prediction library path.
 
-  <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr/deployment/cpp/windows_step1.png"/>- Step 2：选择目标平台  
+  <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr/deployment/cpp/windows_step1.png"/>- Step 2: Select the target platform
   Select the target platform as x64 and click Finish.  
 
   <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr/deployment/cpp/windows_step2.png"/>  
@@ -144,7 +145,11 @@ Refer to the [General OCR Pipeline C++ Deployment - Linux → 2.4 C++ API Integr
 
 ## 3. Extended Features  
 
-### 3.1 Visualize Text Recognition Results  
+### 3.1 Multilingual Text Recognition
+
+Refer to the [General OCR Pipeline C++ Deployment - Linux → 3.1 Multilingual Text Recognition](./OCR.en.md#31-multilingual-text-recognition) section.  
+
+### 3.2 Visualize Text Recognition Results  
 
 To visualize text recognition results, you need to compile OpenCV with the FreeType module from the `opencv_contrib` repository (version 4.x). Ensure the OpenCV and `opencv_contrib` versions match. Below is an example using `opencv-4.7.0` and `opencv_contrib-4.7.0`:  
 

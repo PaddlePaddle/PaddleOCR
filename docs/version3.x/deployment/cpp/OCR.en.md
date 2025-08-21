@@ -1,4 +1,4 @@
-# General OCR Pipeline C++ Deployment - Linux
+# C++ Local Deployment for General OCR Pipeline - Linux
 
 - [1. Environment Preparation](#1-environment-preparation)
     - [1.1 Compile OpenCV Library](#11-compile-opencv-library)
@@ -8,8 +8,9 @@
     - [2.2 Prepare Models](#22-prepare-models)
     - [2.3 Run Prediction Demo](#23-run-prediction-demo)
     - [2.4 C++ API Integration](#24-c-api-integration)
-- [3. Additional Features](#3-additional-features)
-    - [3.1 Visualize Text Recognition Results](#31-visualize-text-recognition-results)
+- [3. Extended Features](#3-extended-features)
+    - [3.1 Multilingual Text Recognition](#31-multilingual-text-recognition)
+    - [3.2 Visualize Text Recognition Results](#32-visualize-text-recognition-results)
 - [4. FAQ](#4-faq)
 
 This section introduces the method for deploying a general OCR pipeline in C++. The general OCR pipeline consists of the following five modules:
@@ -22,8 +23,8 @@ This section introduces the method for deploying a general OCR pipeline in C++. 
 
 Below, we will explain how to configure the C++ environment and complete the deployment of the general OCR pipeline in a Linux (CPU/GPU) environment.
 
-- Note
-    - For specific compilation methods in a Windows environment, please refer to the [Windows Compilation Tutorial](./OCR_windows.md). After compilation, the subsequent commands for running the demo are the same as those in Linux.
+- Note:
+    - For specific compilation methods in a Windows environment, please refer to the [Windows Compilation Tutorial](./OCR_windows.en.md). After compilation, the subsequent commands for running the demo are the same as those in Linux.
 
 ## 1. Environment Preparation
 
@@ -46,6 +47,7 @@ tar -xf opencv-4.7.0.tgz
 ```
 
 2. Configure and compile the OpenCV library:
+
 - a. In the `tools/build_opencv.sh` script, set `root_path` to the absolute path of the opencv-4.7.0 source code.
 - b. Set `install_path`, such as the default `${root_path}/opencv4`. `install_path` will be used as the path to the OpenCV library when compiling the prediction demo later.
 - c. After configuration, run the following command to compile OpenCV:
@@ -297,7 +299,7 @@ PP-OCRv4_server_rec_doc_infer.tar">Inference Model</a></td>
 </table>
 </details>
 
-You can also refer to the model export sections of each module, such as [Text Detection Module - Model Export](../../module_usage/text_detection.md#44-model-export), to export the trained models as inference models.
+You can also refer to the model export sections of each module, such as [Text Detection Module - Model Export](../../module_usage/text_detection.en.md#44-model-export), to export the trained models as inference models.
 
 The directory structure of the models is generally as follows:
 
@@ -599,8 +601,8 @@ Any floating-point number greater than <code>0</code>. If not set, it will use t
 <tr>
 <td><code>text_rec_input_shape</code></td>
 <td>The input shape for text recognition. You can set 3 values representing C, H, W.</td>
-<td><code>std::vector</code></td>
-<td></td>
+<td><code>str</code></td>
+<td>""</td>
 </tr>
 </tbody>
 </table>
@@ -864,9 +866,77 @@ int main(){
 }
 ```
 
-## 3. Additional Features
+## 3. Extended Features
 
-### 3.1 Visualizing Text Recognition Results
+### 3.1 Multilingual Text Recognition
+
+PP-OCRv5 also provides multilingual text recognition capabilities covering 39 languages, including Korean, Spanish, French, Portuguese, German, Italian, Russian, Thai, Greek, etc. The specific supported languages are as follows:
+
+<table>
+  <thead>
+    <tr>
+      <th>Model</th>
+      <th>Link</th>
+      <th>Supported Languages</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>PP-OCRv5_server_rec</td>
+      <td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv5_server_rec_infer.tar">Inference Model</a></td>
+      <td>Simplified Chinese, Traditional Chinese, English, Japanese</td>
+    </tr>
+    <tr>
+      <td>PP-OCRv5_mobile_rec</td>
+      <td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv5_mobile_rec_infer.tar">Inference Model</a></td>
+      <td>Simplified Chinese, Traditional Chinese, English, Japanese</td>
+    </tr>
+    <tr>
+      <td>korean_PP-OCRv5_mobile_rec</td>
+      <td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/korean_PP-OCRv5_mobile_rec_infer.tar">Inference Model</a></td>
+      <td>Korean, English</td>
+    </tr>
+    <tr>
+      <td>latin_PP-OCRv5_mobile_rec</td>
+      <td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/latin_PP-OCRv5_mobile_rec_infer.tar">Inference Model</a></td>
+      <td>English, French, German, Afrikaans, Italian, Spanish, Bosnian, Portuguese, Czech, Welsh, Danish, Estonian, Irish, Croatian, Uzbek, Hungarian, Serbian (latin), Indonesian, Occitan, Icelandic, Lithuanian, Maori, Malay, Dutch, Norwegian, Polish, Slovak, Slovenian, Albanian, Swedish, Swahili, Tagalog, Turkish, Latin</td>
+    </tr>
+    <tr>
+      <td>eslav_PP-OCRv5_mobile_rec</td>
+      <td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/eslav_PP-OCRv5_mobile_rec_infer.tar">Inference Model</a></td>
+      <td>Russian, Belarusian, Ukrainian, English</td>
+    </tr>
+    <tr>
+      <td>th_PP-OCRv5_mobile_rec</td>
+      <td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/th_PP-OCRv5_mobile_rec_infer.tar">Inference Model</a></td>
+      <td>Thai, English</td>
+    </tr>
+    <tr>
+      <td>el_PP-OCRv5_mobile_rec</td>
+      <td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/el_PP-OCRv5_mobile_rec_infer.tar">Inference Model</a></td>
+      <td>Greek, English</td>
+    </tr>
+    <tr>
+      <td>en_PP-OCRv5_mobile_rec</td>
+      <td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/en_PP-OCRv5_mobile_rec_infer.tar">Inference Model</a></td>
+      <td>English</td>
+    </tr>
+  </tbody>
+</table>
+
+Simply pass the corresponding recognition model when using the pipeline or module. For example, to recognize French text using the text recognition module:
+
+```
+./build/ppocr text_recognition \
+--input ./french.png \
+--text_recognition_model_name latin_PP-OCRv5_mobile_rec \
+--text_recognition_model_dir latin_PP-OCRv5_mobile_rec_infer \
+--save_path ./output/
+```
+
+For more detailed information, refer to the [Introduction to PP-OCRv5 Multilingual Text Recognition](../../algorithm/PP-OCRv5/PP-OCRv5_multi_languages.en.md).
+
+### 3.2 Visualize Text Recognition Results
 
 We use the FreeType module from the opencv_contrib 4.x version for font rendering. If you want to visualize text recognition results, you need to download the source code of both OpenCV and opencv_contrib and compile OpenCV with the FreeType module included. Make sure that the versions of the two are consistent when downloading the source code. The following instructions use opencv-4.7.0 and opencv_contrib-4.7.0 as examples:
 
@@ -911,7 +981,6 @@ After compiling and running the prediction demo, you should see visualized text 
 ## 4. FAQ
 
 1. If you encounter the error `Model name mismatch, please input the correct model dir. model dir is xxx, but model name is xxx`, it means the specified model name doesn't match the provided model. For example, if the text recognition model expects `PP-OCRv5_server_rec` but you provided `PP-OCRv5_mobile_rec`.
-
-**Solution**: Adjust either the model name or the provided model. In the example above, you can specify `--text_recognition_model_name PP-OCRv5_mobile_rec` to match the provided model.
+Solution: Adjust either the model name or the provided model. In the example above, you can specify `--text_recognition_model_name PP-OCRv5_mobile_rec` to match the provided model.
 
 2. If you see garbled text in the Windows console, it may be due to the console's default character encoding (GBK). Change it to UTF-8 encoding.

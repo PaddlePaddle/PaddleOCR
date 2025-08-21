@@ -47,6 +47,7 @@ tar -xf opencv-4.7.0.tgz
 ```
 
 2. 配置并编译 OpenCV 库：
+
 - a. 在 `tools/build_opencv.sh` 脚本中，将 `root_path` 设置为 opencv-4.7.0 源码的绝对路径。
 - b. 设置 `install_path`，如默认的 `${root_path}/opencv4`。`install_path` 在后续编译预测 demo 时，将作为 OpenCV 库的路径使用。
 - c. 配置完成后，运行以下命令进行 OpenCV 的编译：
