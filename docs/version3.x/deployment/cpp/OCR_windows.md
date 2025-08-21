@@ -19,7 +19,7 @@
 
 ### 1.1 编译 OpenCV 库
 
-可以选择直接下载 Opencv 官网提供的预编译包或者手动编译源码，下文分别进行具体说明。
+可以选择直接下载 OpenCV 官网提供的预编译包或者手动编译源码，下文分别进行具体说明。
 
 #### 1.1.1 直接下载预编译包（推荐）
 
@@ -32,7 +32,7 @@
 
 首先需要下载 OpenCV 源码，以 opencv 4.7.0为例，[opencv 4.7.0下载地址](https://paddle-model-ecology.bj.bcebos.com/paddlex/cpp/libs/opencv-4.7.0.tgz)，下载解压后，会在当前的文件夹中生成 `opencv-4.7.0/` 的子文件夹。
 
-- Step 1：构建Visual Studio项目
+- Step 1：构建 Visual Studio 项目
 
 在 cmake-gui 中指定 `opencv-4.7.0` 源码路径，并指定编译生成目录为 `opencv-4.7.0/build`，默认安装路径为 `opencv-4.7.0/build/install`，此安装路径用于后续编译 demo。
 
@@ -81,11 +81,11 @@ paddle_inference
 
 ### 2.1 编译预测 demo
 
-在编译预测demo前，请确保您已经按照 1.1 和 1.2 节编译好 OpenCV 库和 Paddle Inference 预测库。
+在编译预测 demo 前，请确保您已经按照 1.1 和 1.2 节编译好 OpenCV 库和 Paddle Inference 预测库。
 
 编译步骤如下：
 
-- Step 1：构建Visual Studio项目
+- Step 1：构建 Visual Studio 项目
 
 在 cmake-gui 中指定 `deploy\cpp_infer` 源码路径，并指定编译生成目录为 `deploy\cpp_infer\build`，以下编译步骤说明均以 `D:\PaddleOCR\deploy\cpp_infer` 作为示例源码路径。第一次点击 Configure 报错是正常的，在后续弹出的编译选项中，添加 OpenCV 的安装路径和 Paddle Inference 预测库路径。
 
@@ -155,7 +155,6 @@ paddle_inference
 我们需要 FreeType 去完成字体的渲染，所以需要自己编译包含 FreeType 的 OpenCV，注意仅支持 OpenCV 4.x 版本。
 FreeType 属于 opencv_contrib 模块，需要下载 OpenvCV 和 opencv_contrib 源码，注意版本一致。以下以 opencv-4.7.0 为例，[opencv-4.7.0 下载](https://paddle-model-ecology.bj.bcebos.com/paddlex/cpp/libs/opencv-4.7.0.tgz)，[opencv_contrib-4.7.0 下载](https://paddle-model-ecology.bj.bcebos.com/paddlex/cpp/libs/opencv_contrib-4.7.0.tgz)。
 
-
 - Step 1：编译 freetype 和 harfbuzz
 
     - [下载pkg-config](https://sourceforge.net/projects/pkgconfiglite/)
@@ -168,7 +167,7 @@ freetype 编译，需手动更改其安装路径，示例如下：
 <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr/deployment/cpp/opencv_freetype_step1.png"/>
 
 再次 Configure， 然后点击 Generate， 完成后，点击 Open Project 按钮，打开 VS ，编译。
-VS里ALL_BUILD, INSTALL. 会在构建文件夹的 install 目录下生成所需的include和lib文件。
+VS里ALL_BUILD, INSTALL. 会在构建文件夹的 install 目录下生成所需的 include 和 lib 文件。
 
 然后将 freetype 安装路径添加至系统环境变量。
 
@@ -176,7 +175,7 @@ harfbuzz 编译，需手动更改其安装路径，示例如下：
 
 <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr/deployment/cpp/opencv_freetype_step2.png"/>
 
-设置好上面两项后，再次点击Configure按钮，选择 Advanced Options ，填写 freetype 安装路径。
+设置好上面两项后，再次点击 Configure 按钮，选择 Advanced Options ，填写 freetype 安装路径。
 
 <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr/deployment/cpp/opencv_freetype_step3.png"/>
 
