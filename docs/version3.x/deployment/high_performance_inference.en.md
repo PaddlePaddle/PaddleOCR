@@ -2,8 +2,9 @@
 
 In real-world production environments, many applications have stringent performance requirements for deployment strategies, particularly regarding response speed, to ensure efficient system operation and a smooth user experience. PaddleOCR provides high-performance inference capabilities, allowing users to enhance model inference speed with a single click without worrying about complex configurations or underlying details. Specifically, PaddleOCR's high-performance inference functionality can:
 
-- Automatically select an appropriate inference backend (e.g., Paddle Inference, OpenVINO, ONNX Runtime, TensorRT) based on prior knowledge and configure acceleration strategies (e.g., increasing the number of inference threads, setting FP16 precision inference);
+- Automatically select an appropriate inference backend (e.g., Paddle Inference, OpenVINO, ONNX Runtime, TensorRT) based on prior knowledge and configure acceleration strategies (e.g., increasing the number of inference threads, setting FP16 precision inference).
 - Automatically convert PaddlePaddle static graph models to ONNX format as needed to leverage better inference backends for acceleration.
+- Perform inference using ONNX models.
 
 This document primarily introduces the installation and usage methods for high-performance inference.
 
@@ -56,7 +57,7 @@ pip list | grep nvidia-cuda
 pip list | grep nvidia-cudnn
 ```
 
-Secondly, it is recommended to ensure that a compatible version of TensorRT is installed in the environment; otherwise, the Paddle Inference TensorRT subgraph engine will be unavailable, and the program may not achieve optimal inference performance. Currently, PaddleOCR only supports TensorRT 8.6.1.6 in the CUDA 11.8 environment. If using the official PaddlePaddle image, you can install the TensorRT wheel package with the following command:
+Secondly, it is recommended to ensure that a compatible version of TensorRT is installed in the environment; otherwise, the Paddle Inference TensorRT subgraph engine will be unavailable, and the program may not achieve optimal inference performance. Currently, PaddleOCR only supports TensorRT 8.6.1.6 in the CUDA 11.8 environment. If using the official PaddlePaddle 3.0 Docker image, you can install the TensorRT wheel package with the following command:
 
 ```bash
 python -m pip install /usr/local/TensorRT-*/python/tensorrt-*-cp310-none-linux_x86_64.whl

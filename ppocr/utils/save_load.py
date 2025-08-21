@@ -32,7 +32,7 @@ try:
 
     encrypted = encryption.is_encryption_needed()
 except ImportError:
-    get_logger().warning("Skipping import of the encryption module.")
+    print("Skipping import of the encryption module.")
     encrypted = False  # Encryption is not needed if the module cannot be imported
 
 __all__ = ["load_model"]
