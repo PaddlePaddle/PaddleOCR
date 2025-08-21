@@ -3631,102 +3631,102 @@ pipeline = PPStructureV3(paddlex_config="PP-StructureV3.yaml")
 
 ## 5. 附录
 
-<details><summary><b>Supported Languages</b></summary>
+<details><summary><b>支持语言</b></summary>
 
 <table border="1" cellspacing="0" cellpadding="4">
   <thead>
     <tr>
       <th><code>lang</code></th>
-      <th>Language Name</th>
+      <th>语言名称</th>
     </tr>
   </thead>
   <tbody>
-    <tr><td><code>abq</code></td><td>Abaza</td></tr>
-    <tr><td><code>af</code></td><td>Afrikaans</td></tr>
-    <tr><td><code>ang</code></td><td>Old English</td></tr>
-    <tr><td><code>ar</code></td><td>Arabic</td></tr>
-    <tr><td><code>ava</code></td><td>Avaric</td></tr>
-    <tr><td><code>az</code></td><td>Azerbaijani</td></tr>
-    <tr><td><code>be</code></td><td>Belarusian</td></tr>
-    <tr><td><code>bg</code></td><td>Bulgarian</td></tr>
-    <tr><td><code>bgc</code></td><td>Haryanvi</td></tr>
-    <tr><td><code>bh</code></td><td>Bihari</td></tr>
-    <tr><td><code>bho</code></td><td>Bhojpuri</td></tr>
-    <tr><td><code>bs</code></td><td>Bosnian</td></tr>
-    <tr><td><code>ch</code></td><td>Chinese (Simplified)</td></tr>
-    <tr><td><code>che</code></td><td>Chechen</td></tr>
-    <tr><td><code>chinese_cht</code></td><td>Chinese (Traditional)</td></tr>
-    <tr><td><code>cs</code></td><td>Czech</td></tr>
-    <tr><td><code>cy</code></td><td>Welsh</td></tr>
-    <tr><td><code>da</code></td><td>Danish</td></tr>
-    <tr><td><code>dar</code></td><td>Dargwa</td></tr>
-    <tr><td><code>de</code> or <code>german</code></td><td>German</td></tr>
-    <tr><td><code>en</code></td><td>English</td></tr>
-    <tr><td><code>es</code></td><td>Spanish</td></tr>
-    <tr><td><code>et</code></td><td>Estonian</td></tr>
-    <tr><td><code>fa</code></td><td>Persian</td></tr>
-    <tr><td><code>fr</code> or <code>french</code></td><td>French</td></tr>
-    <tr><td><code>ga</code></td><td>Irish</td></tr>
-    <tr><td><code>gom</code></td><td>Konkani</td></tr>
-    <tr><td><code>hi</code></td><td>Hindi</td></tr>
-    <tr><td><code>hr</code></td><td>Croatian</td></tr>
-    <tr><td><code>hu</code></td><td>Hungarian</td></tr>
-    <tr><td><code>id</code></td><td>Indonesian</td></tr>
-    <tr><td><code>inh</code></td><td>Ingush</td></tr>
-    <tr><td><code>is</code></td><td>Icelandic</td></tr>
-    <tr><td><code>it</code></td><td>Italian</td></tr>
-    <tr><td><code>japan</code></td><td>Japanese</td></tr>
-    <tr><td><code>ka</code></td><td>Georgian</td></tr>
-    <tr><td><code>kbd</code></td><td>Kabardian</td></tr>
-    <tr><td><code>korean</code></td><td>Korean</td></tr>
-    <tr><td><code>ku</code></td><td>Kurdish</td></tr>
-    <tr><td><code>la</code></td><td>Latin</td></tr>
-    <tr><td><code>lbe</code></td><td>Lak</td></tr>
-    <tr><td><code>lez</code></td><td>Lezghian</td></tr>
-    <tr><td><code>lt</code></td><td>Lithuanian</td></tr>
-    <tr><td><code>lv</code></td><td>Latvian</td></tr>
-    <tr><td><code>mah</code></td><td>Magahi</td></tr>
-    <tr><td><code>mai</code></td><td>Maithili</td></tr>
-    <tr><td><code>mi</code></td><td>Maori</td></tr>
-    <tr><td><code>mn</code></td><td>Mongolian</td></tr>
-    <tr><td><code>mr</code></td><td>Marathi</td></tr>
-    <tr><td><code>ms</code></td><td>Malay</td></tr>
-    <tr><td><code>mt</code></td><td>Maltese</td></tr>
-    <tr><td><code>ne</code></td><td>Nepali</td></tr>
-    <tr><td><code>new</code></td><td>Newari</td></tr>
-    <tr><td><code>nl</code></td><td>Dutch</td></tr>
-    <tr><td><code>no</code></td><td>Norwegian</td></tr>
-    <tr><td><code>oc</code></td><td>Occitan</td></tr>
-    <tr><td><code>pi</code></td><td>Pali</td></tr>
-    <tr><td><code>pl</code></td><td>Polish</td></tr>
-    <tr><td><code>pt</code></td><td>Portuguese</td></tr>
-    <tr><td><code>ro</code></td><td>Romanian</td></tr>
-    <tr><td><code>rs_cyrillic</code></td><td>Serbian (Cyrillic)</td></tr>
-    <tr><td><code>rs_latin</code></td><td>Serbian (Latin)</td></tr>
-    <tr><td><code>ru</code></td><td>Russian</td></tr>
-    <tr><td><code>sa</code></td><td>Sanskrit</td></tr>
-    <tr><td><code>sck</code></td><td>Sadri</td></tr>
-    <tr><td><code>sk</code></td><td>Slovak</td></tr>
-    <tr><td><code>sl</code></td><td>Slovenian</td></tr>
-    <tr><td><code>sq</code></td><td>Albanian</td></tr>
-    <tr><td><code>sv</code></td><td>Swedish</td></tr>
-    <tr><td><code>sw</code></td><td>Swahili</td></tr>
-    <tr><td><code>tab</code></td><td>Tabassaran</td></tr>
-    <tr><td><code>ta</code></td><td>Tamil</td></tr>
-    <tr><td><code>te</code></td><td>Telugu</td></tr>
-    <tr><td><code>tl</code></td><td>Tagalog</td></tr>
-    <tr><td><code>tr</code></td><td>Turkish</td></tr>
-    <tr><td><code>ug</code></td><td>Uyghur</td></tr>
-    <tr><td><code>uk</code></td><td>Ukrainian</td></tr>
-    <tr><td><code>ur</code></td><td>Urdu</td></tr>
-    <tr><td><code>uz</code></td><td>Uzbek</td></tr>
-    <tr><td><code>vi</code></td><td>Vietnamese</td></tr>
+    <tr><td><code>abq</code></td><td>阿布哈兹文</td></tr>
+    <tr><td><code>af</code></td><td>南非荷兰文</td></tr>
+    <tr><td><code>ang</code></td><td>古英文</td></tr>
+    <tr><td><code>ar</code></td><td>阿拉伯文</td></tr>
+    <tr><td><code>ava</code></td><td>阿瓦尔文</td></tr>
+    <tr><td><code>az</code></td><td>阿塞拜疆文</td></tr>
+    <tr><td><code>be</code></td><td>白俄罗斯文</td></tr>
+    <tr><td><code>bg</code></td><td>保加利亚文</td></tr>
+    <tr><td><code>bgc</code></td><td>哈里亚纳文</td></tr>
+    <tr><td><code>bh</code></td><td>比哈尔文</td></tr>
+    <tr><td><code>bho</code></td><td>博杰普尔文</td></tr>
+    <tr><td><code>bs</code></td><td>波斯尼亚文</td></tr>
+    <tr><td><code>ch</code></td><td>简体中文</td></tr>
+    <tr><td><code>che</code></td><td>车臣文</td></tr>
+    <tr><td><code>chinese_cht</code></td><td>繁体中文</td></tr>
+    <tr><td><code>cs</code></td><td>捷克文</td></tr>
+    <tr><td><code>cy</code></td><td>威尔士文</td></tr>
+    <tr><td><code>da</code></td><td>丹麦文</td></tr>
+    <tr><td><code>dar</code></td><td>达尔格瓦文</td></tr>
+    <tr><td><code>de</code> or <code>german</code></td><td>德文</td></tr>
+    <tr><td><code>en</code></td><td>英文</td></tr>
+    <tr><td><code>es</code></td><td>西班牙文</td></tr>
+    <tr><td><code>et</code></td><td>爱沙尼亚文</td></tr>
+    <tr><td><code>fa</code></td><td>波斯文</td></tr>
+    <tr><td><code>fr</code> or <code>french</code></td><td>法文</td></tr>
+    <tr><td><code>ga</code></td><td>爱尔兰文</td></tr>
+    <tr><td><code>gom</code></td><td>孔卡尼文</td></tr>
+    <tr><td><code>hi</code></td><td>印地文</td></tr>
+    <tr><td><code>hr</code></td><td>克罗地亚文</td></tr>
+    <tr><td><code>hu</code></td><td>匈牙利文</td></tr>
+    <tr><td><code>id</code></td><td>印尼文</td></tr>
+    <tr><td><code>inh</code></td><td>印古什文</td></tr>
+    <tr><td><code>is</code></td><td>冰岛文</td></tr>
+    <tr><td><code>it</code></td><td>意大利文</td></tr>
+    <tr><td><code>japan</code></td><td>日文</td></tr>
+    <tr><td><code>ka</code></td><td>格鲁吉亚文</td></tr>
+    <tr><td><code>kbd</code></td><td>卡巴尔达文</td></tr>
+    <tr><td><code>korean</code></td><td>韩文</td></tr>
+    <tr><td><code>ku</code></td><td>库尔德文</td></tr>
+    <tr><td><code>la</code></td><td>拉丁文</td></tr>
+    <tr><td><code>lbe</code></td><td>拉克文</td></tr>
+    <tr><td><code>lez</code></td><td>列兹金文</td></tr>
+    <tr><td><code>lt</code></td><td>立陶宛文</td></tr>
+    <tr><td><code>lv</code></td><td>拉脱维亚文</td></tr>
+    <tr><td><code>mah</code></td><td>马加希文</td></tr>
+    <tr><td><code>mai</code></td><td>迈蒂利文</td></tr>
+    <tr><td><code>mi</code></td><td>毛利文</td></tr>
+    <tr><td><code>mn</code></td><td>蒙古文</td></tr>
+    <tr><td><code>mr</code></td><td>马拉地文</td></tr>
+    <tr><td><code>ms</code></td><td>马来文</td></tr>
+    <tr><td><code>mt</code></td><td>马耳他文</td></tr>
+    <tr><td><code>ne</code></td><td>尼泊尔文</td></tr>
+    <tr><td><code>new</code></td><td>尼瓦尔文</td></tr>
+    <tr><td><code>nl</code></td><td>荷兰文</td></tr>
+    <tr><td><code>no</code></td><td>挪威文</td></tr>
+    <tr><td><code>oc</code></td><td>奥克文</td></tr>
+    <tr><td><code>pi</code></td><td>巴利文</td></tr>
+    <tr><td><code>pl</code></td><td>波兰文</td></tr>
+    <tr><td><code>pt</code></td><td>葡萄牙文</td></tr>
+    <tr><td><code>ro</code></td><td>罗马尼亚文</td></tr>
+    <tr><td><code>rs_cyrillic</code></td><td>塞尔维亚语西里尔字母</td></tr>
+    <tr><td><code>rs_latin</code></td><td>塞尔维亚语拉丁字母</td></tr>
+    <tr><td><code>ru</code></td><td>俄文</td></tr>
+    <tr><td><code>sa</code></td><td>梵文</td></tr>
+    <tr><td><code>sck</code></td><td>萨达里文</td></tr>
+    <tr><td><code>sk</code></td><td>斯洛伐克文</td></tr>
+    <tr><td><code>sl</code></td><td>斯洛文尼亚文</td></tr>
+    <tr><td><code>sq</code></td><td>阿尔巴尼亚文</td></tr>
+    <tr><td><code>sv</code></td><td>瑞典文</td></tr>
+    <tr><td><code>sw</code></td><td>斯瓦希里文</td></tr>
+    <tr><td><code>tab</code></td><td>塔巴萨兰文</td></tr>
+    <tr><td><code>ta</code></td><td>泰米尔文</td></tr>
+    <tr><td><code>te</code></td><td>泰卢固文</td></tr>
+    <tr><td><code>tl</code></td><td>塔加洛文</td></tr>
+    <tr><td><code>tr</code></td><td>土耳其文</td></tr>
+    <tr><td><code>ug</code></td><td>维吾尔文</td></tr>
+    <tr><td><code>uk</code></td><td>乌克兰文</td></tr>
+    <tr><td><code>ur</code></td><td>乌尔都文</td></tr>
+    <tr><td><code>uz</code></td><td>乌兹别克文</td></tr>
+    <tr><td><code>vi</code></td><td>越南文</td></tr>
   </tbody>
 </table>
 
 </details>
 
-<details><summary><b>Correspondence Between OCR Model Versions and Supported Languages</b></summary>
+<details><summary><b>OCR模型版本与支持语言的对应关系</b></summary>
 
 <table border="1" cellspacing="0" cellpadding="4">
   <thead>
