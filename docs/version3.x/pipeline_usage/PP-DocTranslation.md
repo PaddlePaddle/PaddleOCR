@@ -12,6 +12,8 @@ PP-DocTranslation 是飞桨提供的文档智能翻译解决方案，融合了�
 
 在本产线中，您可以根据下方的基准测试数据选择使用的模型。
 
+> 推理耗时仅包含模型推理耗时，不包含前后处理耗时。
+
 <details><summary> 👉模型列表详情</summary>
 <p><b>文档图像方向分类模块：</b></p>
 <table>
@@ -676,7 +678,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://padd
 
 ## 2. 快速开始
 
-在本地使用 PP-DocTranslation 产线前，请确保您已经按照[安装教程](../installation.md)完成了wheel包安装。
+在本地使用 PP-DocTranslation 产线前，请确保您已经按照[安装教程](../installation.md)完成了wheel包安装。如果您希望选择性安装依赖，请参考安装教程中的相关说明。该产线对应的依赖分组为 `trans`。
 
 **请注意，如果在执行过程中遇到程序失去响应、程序异常退出、内存资源耗尽、推理速度极慢等问题，请尝试参考文档调整配置，例如关闭不需要使用的功能或使用更轻量的模型。**
 
@@ -2139,11 +2141,8 @@ MKL-DNN 缓存容量。
         - `block_bbox`: `(np.ndarray)` 版面区域的边界框。
         - `block_label`: `(str)` 版面区域的标签，例如`text`, `table`等。
         - `block_content`: `(str)` 内容为版面区域内的内容。
-        - `seg_start_flag`: `(bool)` 标识该版面区域是否是段落的开始。
-        - `seg_end_flag`: `(bool)` 标识该版面区域是否是段落的结束。
-        - `sub_label`: `(str)` 版面区域的子标签，例如`text`的子标签可能为`title_text`。
-        - `sub_index`: `(int)` 版面区域的子索引，用于恢复Markdown。
-        - `index`: `(int)` 版面区域的索引，用于显示版面排序结果。
+        - `block_id`: `(int)` 版面区域的索引，用于显示版面排序结果。
+        - `block_order` `(int)` 版面区域的顺序，用于显示版面阅读顺序,对于非排序部分，默认值为 `None`。
 
 
     - `overall_ocr_res`: `(Dict[str, Union[List[str], List[float], numpy.ndarray]])` 全局 OCR 结果的字典
@@ -2373,6 +2372,7 @@ MKL-DNN 缓存容量。
 <ul>
 <li>请求体的属性如下：</li>
 </ul>
+
 <table>
 <thead>
 <tr>
@@ -2625,6 +2625,7 @@ MKL-DNN 缓存容量。
 </table>
 <p><code>layoutParsingResults</code>中的每个元素为一个<code>object</code>，具有如下属性：</p>
 <table>
+
 <thead>
 <tr>
 <th>名称</th>

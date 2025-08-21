@@ -11,7 +11,7 @@ hide:
 
 Since its initial release, PaddleOCR has gained widespread acclaim across academia, industry, and research communities, thanks to its cutting-edge algorithms and proven performance in real-world applications. It’s already powering popular open-source projects like Umi-OCR, OmniParser, MinerU, and RAGFlow, making it the go-to OCR toolkit for developers worldwide.
 
-On May 20, 2025, the PaddlePaddle team unveiled PaddleOCR 3.0, fully compatible with the official release of the [PaddlePaddle 3.0](https://github.com/PaddlePaddle/Paddle) framework. This update further **boosts text-recognition accuracy**, adds support for **multiple text-type recognition** and **handwriting recognition**, and meets the growing demand from large-model applications for **high-precision parsing of complex documents**. When combined with the **ERNIE 4.5 Turbo**, it significantly enhances key-information extraction accuracy. PaddleOCR 3.0 also introduces support for domestic hardware platforms such as **KUNLUNXIN** and **Ascend**.
+On May 20, 2025, the PaddlePaddle team unveiled PaddleOCR 3.0, fully compatible with the official release of the [PaddlePaddle 3.0](https://github.com/PaddlePaddle/Paddle) framework. This update further **boosts text-recognition accuracy**, adds support for **multiple text-type recognition** and **handwriting recognition**, and meets the growing demand from large-model applications for **high-precision parsing of complex documents**. When combined with the **ERNIE 4.5**, it significantly enhances key-information extraction accuracy. PaddleOCR 3.0 also introduces support for domestic hardware platforms such as **KUNLUNXIN** and **Ascend**.
 
 
 Three Major New Features in PaddleOCR 3.0:
@@ -20,7 +20,7 @@ Three Major New Features in PaddleOCR 3.0:
 
 - 🧮 General Document-Parsing Solution [PP-StructureV3](./version3.x/algorithm/PP-StructureV3/PP-StructureV3.en.md): Delivers high-precision parsing of multi-layout, multi-scene PDFs, outperforming many open- and closed-source solutions on public benchmarks. [Online Demo](https://aistudio.baidu.com/community/app/518494/webUI)
 
-- 📈 Intelligent Document-Understanding Solution [PP-ChatOCRv4](./version3.x/algorithm/PP-ChatOCRv4/PP-ChatOCRv4.en.md): Natively powered by the ERNIE 4.5 Turbo, achieving 15 percentage points higher accuracy than its predecessor.[Online Demo](https://aistudio.baidu.com/community/app/518493/webUI)
+- 📈 Intelligent Document-Understanding Solution [PP-ChatOCRv4](./version3.x/algorithm/PP-ChatOCRv4/PP-ChatOCRv4.en.md): Natively powered by the ERNIE 4.5, achieving 15 percentage points higher accuracy than its predecessor.[Online Demo](https://aistudio.baidu.com/community/app/518493/webUI)
 
 In addition to providing an outstanding model library, PaddleOCR 3.0 also offers user-friendly tools covering model training, inference, and service deployment, so developers can rapidly bring AI applications to production.
 
@@ -32,6 +32,8 @@ In addition to providing an outstanding model library, PaddleOCR 3.0 also offers
 </div>
 
 You can [Quick Start](./quick_start.en.md) directly, find comprehensive documentation in the [PaddleOCR Docs](https://paddlepaddle.github.io/PaddleOCR/main/index.html), get support via [Github Issus](https://github.com/PaddlePaddle/PaddleOCR/issues), and explore our OCR courses on [OCR courses on AIStudio](https://aistudio.baidu.com/course/introduce/25207).
+
+**Special Note**: PaddleOCR 3.x introduces several significant interface changes. **Old code written based on PaddleOCR 2.x is likely incompatible with PaddleOCR 3.x**. Please ensure that the documentation you are reading matches the version of PaddleOCR you are using. [This document](./update/upgrade_notes.en.md) explains the reasons for the upgrade and the major changes from PaddleOCR 2.x to 3.x.
 
 ## 🔄 Quick Overview of Execution Results
 

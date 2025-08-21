@@ -3,7 +3,8 @@
 在实际生产环境中，许多应用对部署策略的性能指标（尤其是响应速度）有着较严苛的标准，以确保系统的高效运行与用户体验的流畅性。PaddleOCR 提供高性能推理能力，让用户无需关注复杂的配置和底层细节，一键提升模型的推理速度。具体而言，PaddleOCR 的高性能推理功能能够：
 
 - 结合先验知识自动选择合适的推理后端（Paddle Inference、OpenVINO、ONNX Runtime、TensorRT等），并配置加速策略（如增大推理线程数、设置 FP16 精度推理）；
-- 根据需要自动将飞桨静态图模型转换为 ONNX 格式，以使用更优的推理后端实现加速。
+- 根据需要自动将飞桨静态图模型转换为 ONNX 格式，以使用更优的推理后端实现加速；
+- 使用 ONNX 模型完成推理。
 
 本文档主要介绍高性能推理功能的安装与使用方法。
 
@@ -24,18 +25,26 @@ paddleocr install_hpi_deps {设备类型}
 
 同一环境中只应该存在一种设备类型的依赖。对于 Windows 系统，目前建议在 Docker 容器或者 [WSL](https://learn.microsoft.com/zh-cn/windows/wsl/install) 环境中安装。
 
-**推荐使用飞桨官方 Docker 镜像安装高性能推理依赖。** 各设备类型对应的镜像如下：
+**推荐使用 PaddleX 官方 Docker 镜像安装高性能推理依赖。** 各设备类型对应的镜像如下：
 
-- `cpu`：`ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddle:3.0.0`
+- `cpu`：`ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlex/paddlex:paddlex3.0.1-paddlepaddle3.0.0-cpu`
 - `gpu`：
-    - CUDA 11.8：`ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddle:3.0.0-gpu-cuda11.8-cudnn8.9-trt8.6`
+    - CUDA 11.8：`ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlex/paddlex:paddlex3.0.1-paddlepaddle3.0.0-gpu-cuda11.8-cudnn8.9-trt8.6`
+- `gpu`：
+    - CUDA 12.6：`ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlex/paddlex:paddlex3.0.1-paddlepaddle3.0.0-gpu-cuda12.6-cudnn9.5-trt10.5`
+
+**注意：**
+
+- **目前 CUDA 12.6 + cuDNN 9.5 的高性能推理仅支持 OpenVINO 和 ONNX Runtime 后端，暂不支持 TensorRT 后端。**
 
 ## 1.2 GPU 环境详细说明
 
-首先，需要确保环境中安装有符合要求的 CUDA 与 cuDNN。目前 PaddleOCR 仅支持与 CUDA 11.8 + cuDNN 8.9 兼容的 CUDA 和 cuDNN版本。以下分别是 CUDA 11.8 和 cuDNN 8.9 的安装说明文档：
+首先，需要确保环境中安装有符合要求的 CUDA 与 cuDNN。目前 PaddleOCR 支持与 CUDA 11.8 + cuDNN 8.9 或 CUDA 12.6 + cuDNN 9.5 兼容的 CUDA 和 cuDNN 版本。以下分别是 CUDA 和 cuDNN 的安装说明文档：
 
 - [安装 CUDA 11.8](https://developer.nvidia.com/cuda-11-8-0-download-archive)
 - [安装 cuDNN 8.9](https://docs.nvidia.com/deeplearning/cudnn/archives/cudnn-890/install-guide/index.html)
+- [安装 CUDA 12.6](https://developer.nvidia.com/cuda-12-6-0-download-archive)
+- [安装 cuDNN 9.5](https://docs.nvidia.com/deeplearning/cudnn/backend/v9.5.0/installation/linux.html)
 
 如果使用飞桨官方镜像，则镜像中的 CUDA 和 cuDNN 版本已经是满足要求的，无需额外安装。
 
@@ -48,7 +57,7 @@ pip list | grep nvidia-cuda
 pip list | grep nvidia-cudnn
 ```
 
-其次，建议确保环境中安装有符合要求的 TensorRT，否则 Paddle Inference TensorRT 子图引擎将不可用，程序可能无法取得最佳推理性能。目前 PaddleOCR 仅支持 TensorRT 8.6.1.6。如果使用飞桨官方镜像，可执行如下命令安装 TensorRT wheel 包：
+其次，建议确保环境中安装有符合要求的 TensorRT，否则 Paddle Inference TensorRT 子图引擎将不可用，程序可能无法取得最佳推理性能。**目前 PaddleOCR 仅支持在 CUDA 11.8 环境使用 TensorRT 8.6.1.6**。如果使用飞桨官方 3.0 镜像，可执行如下命令安装 TensorRT wheel 包：
 
 ```bash
 python -m pip install /usr/local/TensorRT-*/python/tensorrt-*-cp310-none-linux_x86_64.whl

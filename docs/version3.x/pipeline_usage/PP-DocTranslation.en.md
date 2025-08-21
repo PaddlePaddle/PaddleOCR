@@ -12,6 +12,8 @@ PP-DocTranslation is a document intelligent translation solution provided by Pad
 
 In this pipeline, you can select the model to use based on the benchmark data below.
 
+> The inference time only includes the model inference time and does not include the time for pre- or post-processing.
+
 <details><summary> 👉Model List Details</summary>
 <p><b>Document Image Orientation Classification Module:</b></p>
 <table>
@@ -679,7 +681,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
 
 ## 2. Quick Start
 
-Before using the PP-DocTranslation pipeline locally, please ensure that you have completed the installation of the wheel package according to the [Installation Tutorial](../installation.en.md).
+Before using the PP-DocTranslation pipeline locally, please ensure that you have completed the installation of the wheel package according to the [Installation Tutorial](../installation.en.md). If you prefer to install dependencies selectively, please refer to the relevant instructions in the installation documentation. The corresponding dependency group for this pipeline is `trans`.
 
 Please note: If you encounter issues such as the program becoming unresponsive, unexpected program termination, running out of memory resources, or extremely slow inference during execution, please try adjusting the configuration according to the documentation, such as disabling unnecessary features or using lighter-weight models.
 
@@ -2005,6 +2007,7 @@ For Paddle with CUDA 11.8, the compatible TensorRT version is 8.x (x≥6), recom
 <details><summary>(3) Processing visual prediction results: Each sample's prediction result is a corresponding Result object, supporting operations such as printing, saving as images, and saving as <code>json</code> files:</summary>
 
 <table>
+
 <thead>
 <tr>
 <th>Method</th>
@@ -2105,15 +2108,14 @@ For Paddle with CUDA 11.8, the compatible TensorRT version is 8.x (x≥6), recom
           - `use_doc_orientation_classify`: `(bool)` Controls whether to enable the document image orientation classification sub-module
           - `use_doc_unwarping`: `(bool)` Controls whether to enable the text image unwarping sub-module
         - `angle`: `(int)` Prediction result of the document image orientation classification sub-module, returns actual angle value if enabled
-    - `parsing_res_list`: `(List[Dict])` List of parsing results, each element is a dictionary; list order corresponds to reading order after parsing
-        - `block_bbox`: `(np.ndarray)` Bounding box of layout detection
-        - `block_label`: `(str)` Label of the layout region, e.g. `text`, `table`, etc.
-        - `block_content`: `(str)` Content within the layout region
-        - `seg_start_flag`: `(bool)` Indicates whether this layout region is the start of a paragraph
-        - `seg_end_flag`: `(bool)` Indicates whether this layout region is the end of a paragraph
-        - `sub_label`: `(str)` Sub-label of the layout region, e.g. sub-label of `text` could be `title_text`
-        - `sub_index`: `(int)` Sub-index of the layout region, used for restoring Markdown
-        - `index`: `(int)` Index of the layout region, used to display layout sorting results
+
+    - `parsing_res_list`: `(List[Dict])` A list of parsing results, where each element is a dictionary. The order of the list is the reading order after parsing.
+        - `block_bbox`: `(np.ndarray)` The bounding box of the layout area.
+        - `block_label`: `(str)` The label of the layout area, such as `text`, `table`, etc.
+        - `block_content`: `(str)` The content within the layout area.
+        - `block_id`: `(int)` The index of the layout area, used to display the layout sorting result.
+        - `block_order`: `(int)` The order of the layout area, used to display the reading order of the layout. For non-ordered parts, the default value is `None`.
+
     - `overall_ocr_res`: `(Dict[str, Union[List[str], List[float], numpy.ndarray]])` Global OCR result dictionary
       - `input_path`: `(Union[str, None])` Image path accepted by the image OCR sub-pipeline; if input is `numpy.ndarray`, saved as `None`
       - `page_index`: `None`, here input is `numpy.ndarray`, so value is `None`

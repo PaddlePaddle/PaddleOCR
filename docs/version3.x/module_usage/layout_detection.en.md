@@ -9,6 +9,8 @@ The core task of structure analysis is to parse and segment the content of input
 
 ## II. Supported Model List
 
+> The inference time only includes the model inference time and does not include the time for pre- or post-processing.
+
 * <b>The layout detection model includes 20 common categories: document title, paragraph title, text, page number, abstract, table, references, footnotes, header, footer, algorithm, formula, formula number, image, table, seal, figure_table title, chart, and sidebar text and lists of references</b>
 <table>
 <thead>
