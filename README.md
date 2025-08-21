@@ -20,6 +20,11 @@ English | [简体中文](./readme/README_cn.md) | [繁體中文](./readme/README
 
 **PaddleOCR is an industry-leading, production-ready OCR and document AI engine, offering end-to-end solutions from text extraction to intelligent document understanding**
 
+The **[PaddleOCR Best Practice Projects](https://aistudio.baidu.com/activitydetail/1503019405)** call for submissions is now open –  
+📅 **August 5, 2025 – October 30, 2025**. 
+🌍 Share your scenario-based PaddleOCR applications and shine in the global developer community!  
+🌏 分享你的场景化 PaddleOCR 应用项目，与全球开发者共创精彩！ 
+
 </div>
 
 # PaddleOCR
