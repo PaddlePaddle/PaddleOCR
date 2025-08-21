@@ -285,11 +285,12 @@ nav:
     - 获取ONNX模型: version3.x/deployment/obtaining_onnx_models.md
     - 端侧部署: version3.x/deployment/on_device_deployment.md
     - 服务化部署: version3.x/deployment/serving.md
-    - 通用 OCR 产线 C++ 本地部署 - Linux: version3.x/deployment/cpp/OCR.md
-    - 通用 OCR 产线 C++ 本地部署 - Windows: version3.x/deployment/cpp/OCR_windows.md
     - MCP 服务器: version3.x/deployment/mcp_server.md
     - 打包PaddleOCR项目: version3.x/deployment/packaging.md 
     - 产线并行推理: version3.x/pipeline_usage/instructions/parallel_inference.md
+    - C++ 本地部署:
+      - 通用 OCR 产线 C++ 本地部署 - Linux: version3.x/deployment/cpp/OCR.md
+      - 通用 OCR 产线 C++ 本地部署 - Windows: version3.x/deployment/cpp/OCR_windows.md
 
   - 模块列表: 
     - 模块概述: version3.x/module_usage/module_overview.md
