@@ -1,6 +1,6 @@
 # 通用 OCR 产线 C++ 部署 - Linux
 
-- [1. 环境准备](#1)
+- [1. 环境准备](#1-环境准备)
     - [1.1 编译 OpenCV 库](#11-编译-opencv-库)
     - [1.2 编译 Paddle Inference](#12-编译-paddle-inference)
 - [2. 开始运行](#2-开始运行)
@@ -47,6 +47,7 @@ tar -xf opencv-4.7.0.tgz
 ```
 
 2. 配置并编译 OpenCV 库：
+
 - a. 在 `tools/build_opencv.sh` 脚本中，将 `root_path` 设置为 opencv-4.7.0 源码的绝对路径。
 - b. 设置 `install_path`，如默认的 `${root_path}/opencv4`。`install_path` 在后续编译预测 demo 时，将作为 OpenCV 库的路径使用。
 - c. 配置完成后，运行以下命令进行 OpenCV 的编译：
@@ -322,7 +323,7 @@ PP-OCRv5_mobile_det
 
 常用参数如下：
 
-- 输入输出相关
+<li>输入输出相关</li>
 
 <table>
 <thead>
@@ -352,7 +353,7 @@ PP-OCRv5_mobile_det
 
 <details><summary><b>点击展开查看更多参数的详细说明</b></summary>
 
-- 通用参数
+<li>通用参数</li>
 
 <table>
 <thead>
@@ -411,7 +412,7 @@ MKL-DNN 缓存容量。
 </tbody>
 </table>
 
-- 模块开关
+<li>模块开关</li>
 
 <table>
 <thead>
@@ -444,7 +445,7 @@ MKL-DNN 缓存容量。
 </tbody>
 </table>
 
-- 检测模型相关
+<li>检测模型相关</li>
 
 <table>
 <thead>
@@ -460,7 +461,7 @@ MKL-DNN 缓存容量。
 <td><code>text_detection_model_name</code></td>
 <td>文本检测模型的名称。如果不设置，将会使用产线默认模型。当传入文本检测模型路径的模型名称与产线默认文本识别模型名称配置不一致时，需指定传入模型的名称。</td>
 <td><code>str</code></td>
-<td>PP-OCRv5_server_det</td>
+<td><code>PP-OCRv5_server_det</code></td>
 </tr>
 <tr>
 <td><code>text_detection_model_dir</code></td>
@@ -509,13 +510,13 @@ MKL-DNN 缓存容量。
 <tr>
 <td><code>text_det_input_shape</code></td>
 <td>文本检测的输入形状，您可以设置3个值代表C，H，W。</td>
-<td><code>std::vector</code></td>
-<td></td>
+<td><code>str</code></td>
+<td>""</td>
 </tr>
 </tbody>
 </table>
 
-- 方向分类器相关
+<li>方向分类器相关</li>
 
 <table>
 <thead>
@@ -560,7 +561,7 @@ MKL-DNN 缓存容量。
 </tbody>
 </table>
 
-- 文字识别模型相关
+<li>文字识别模型相关</li>
 
 <table>
 <thead>
@@ -599,8 +600,8 @@ MKL-DNN 缓存容量。
 <tr>
 <td><code>text_rec_input_shape</code></td>
 <td>文本识别的输入形状，您可以设置3个值代表C，H，W。</td>
-<td><code>std::vector</code></td>
-<td></td>
+<td><code>str</code></td>
+<td>""</td>
 </tr>
 </tbody>
 </table>
@@ -931,8 +932,7 @@ PP-OCRv5 还提供了覆盖 39 种语言的多语种文字识别能力，包括�
 
 ### 3.2 可视化文本识别结果
 
-我们需要 FreeType 去完成字体的渲染，所以需要自己编译包含 FreeType 的 OpenCV，注意仅支持 OpenCV 4.x 版本。
-FreeType 属于 opencv_contrib 模块，需要下载 OpenvCV 和 opencv_contrib 源码，注意版本一致。以下以 opencv4.7.0 为例，源码下载命令如下：
+我们使用 4.x 版本的 opencv_contrib 模块中的 FreeType 进行字体渲染，如果想要可视化文本识别结果，需要下载 OpenCV 和 opencv_contrib 的源码并编译包含 FreeType 模块的 OpenCV。下载源码时需确保两者的版本一致。以下以 opencv-4.7.0 和 opencv_contrib-4.7.0 为例进行说明：
 
 ```bash
 wget https://paddle-model-ecology.bj.bcebos.com/paddlex/cpp/libs/opencv-4.7.0.tgz
