@@ -240,7 +240,11 @@ CTCLabelDecode::Decode(std::list<int> &text_index, std::list<float> &text_prob,
   std::vector<std::string> char_list = {};
   for (auto list_index = text_index.begin(); list_index != text_index.end();
        ++list_index) {
-    char_list.push_back(character_list_[*list_index]);
+    if ((*list_index) < character_list_.size()) {
+      char_list.push_back(character_list_[*list_index]);
+    } else {
+      char_list.push_back(" ");
+    }
   }
   std::list<float> conf_list = {};
   if (!text_prob.empty()) {
