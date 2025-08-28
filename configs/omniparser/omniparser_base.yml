@@ -1,0 +1,146 @@
+Global:
+  use_gpu: true
+  epoch_num: 100
+  log_smooth_window: 20
+  print_batch_step: 10
+  save_model_dir: ./output/omniparser/
+  save_epoch_step: 5
+  eval_batch_step: [0, 2000]
+  cal_metric_during_train: True
+  pretrained_model: ./pretrain_models/resnet50_vd_pretrained
+  checkpoints:
+  save_inference_dir:
+  use_visualdl: false
+  infer_img: 
+  save_res_path: ./output/omniparser/predicts/
+
+Architecture:
+  model_type: unified
+  algorithm: OmniParser
+  Transform:
+  Backbone:
+    name: OmniParserBackbone
+    in_channels: 3
+    layers: 50
+    fpn_out_channels: 256
+  Neck:
+    name: FPN
+    in_channels: [256, 512, 1024, 2048]
+    out_channels: 256
+  PixelHead:
+    name: OmniParserPixelHead
+    in_channels: 256
+    hidden_dim: 256
+    text_loss_weight: 1.0
+    center_loss_weight: 0.5
+    border_loss_weight: 0.5
+    text_threshold: 0.5
+    center_threshold: 0.5
+    border_threshold: 0.5
+  TableHead:
+    name: OmniParserTableHead
+    in_channels: 256
+    hidden_dim: 256
+    structure_loss_weight: 1.0
+    boundary_loss_weight: 0.5
+    structure_thresh: 0.5
+    boundary_thresh: 0.5
+  KIEHead:
+    name: OmniParserKIEHead
+    in_channels: 256
+    hidden_dim: 256
+    num_classes: 10
+    loss_weight: 1.0
+    num_heads: 8
+    dropout: 0.1
+
+Loss:
+  name: MultiTaskLoss
+  weights:
+    pixel_loss: 1.0
+    table_loss: 1.0
+    kie_loss: 1.0
+
+Optimizer:
+  name: Adam
+  beta1: 0.9
+  beta2: 0.999
+  lr:
+    name: Cosine
+    learning_rate: 0.001
+    warmup_epoch: 5
+  regularizer:
+    name: L2
+    factor: 0.00005
+
+PostProcess:
+  name: OmniParserPostProcess
+  mode: 'all'
+  text_threshold: 0.5
+  center_threshold: 0.5
+  border_threshold: 0.5
+  structure_thresh: 0.5
+  boundary_thresh: 0.5
+  classes: ["other", "company", "address", "date", "total", "name"]
+
+Metric:
+  name: MultiTaskMetric
+  main_indicator: hmean
+  text_box_precision: 0.5
+  text_box_recall: 0.5
+  table_structure_precision: 0.5
+  table_structure_recall: 0.5
+  kie_precision: 0.5
+  kie_recall: 0.5
+
+Train:
+  dataset:
+    name: MultiTaskDataSet
+    data_dir: ./train_data/
+    label_file_list: 
+      - ./train_data/omniparser/train.txt
+    ratio_list: [1.0]
+    transforms:
+      - DecodeImage:
+          img_mode: RGB
+          channel_first: false
+      - OmniParserDataProcess:
+          image_shape: [1024, 1024]
+          augmentation: True
+          mean: [0.485, 0.456, 0.406]
+          std: [0.229, 0.224, 0.225]
+          aug_config:
+            - RandomRotate:
+                degrees: 5
+            - RandomBrightness:
+                brightness_range: [0.8, 1.2]
+            - RandomContrast:
+                contrast_range: [0.8, 1.2]
+    collate_fn: MultiTaskBatchCollator
+  loader:
+    shuffle: true
+    drop_last: false
+    batch_size_per_card: 8
+    num_workers: 4
+
+Eval:
+  dataset:
+    name: MultiTaskDataSet
+    data_dir: ./train_data/
+    label_file_list:
+      - ./train_data/omniparser/val.txt
+    transforms:
+      - DecodeImage:
+          img_mode: RGB
+          channel_first: false
+      - OmniParserDataProcess:
+          image_shape: [1024, 1024]
+          augmentation: False
+          mean: [0.485, 0.456, 0.406]
+          std: [0.229, 0.224, 0.225]
+    collate_fn: MultiTaskBatchCollator
+  loader:
+    shuffle: false
+    drop_last: false
+    batch_size_per_card: 4
+    num_workers: 4
