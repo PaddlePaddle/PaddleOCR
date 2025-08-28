@@ -1,0 +1,20 @@
+这是一张包含多个研究文献引用的图片，内容主要涉及心理健康和健康技术的主题。图片中的文本列出了许多研究论文的标题、作者、发表期刊、年份、卷号、页码以及DOI（数字对象标识符）和PubMed ID（Medline）等信息。以下是图片中的一些关键内容：
+
+1. **标题**：IMIR MHEALTH AND UHEALTH
+2. **作者**：Inkster et al
+3. **文献引用**：包含多个研究文献的引用，例如：
+   - Cuijpers P, Donker T, van Straten A, Li J, Andersson G. Is guided self-help as effective as face-to-face psychotherapy for depression and anxiety disorders? A systematic review and meta-analysis of comparative outcome studies. Psychol Med 2010 Dec;40(12):1943-1957.
+   - Lucas GM, Rizzo A, Gratch J, Scherer S, Stratton G, Boberg J, et al. Reporting mental health symptoms: breaking down barriers to care with virtual human interviews. Front Robot AI 2017 Oct 14.
+   - Callan JA, Wright J, Siegle GJ, Howland RH, Kiepfer BB. Use of computer and mobile technologies in the treatment of depression. Arch Psychiatr Nurs 2017 Dec;31(6):311-318.
+   - Ebert DD, Donkin L, Andersson G, Andrews G, Berger T, Carlbring P, et al. Does Internet-based guided self-help for depression cause harm? An individual participant data meta-analysis on deterioration rates and its moderators in randomized controlled trials. Psychol Med 2016 Oct;46(13):2679-2693.
+   - Karyotaki E, Riper H, Twisk J, Hoogendoorn A, Kleiboer A, Mira A, et al. Efficacy of self-guided internet-based cognitive behavioural therapy in the treatment of depressive symptoms: a meta-analysis of individual participant data. J Am Med Assoc Psychiatry 2017 Apr 01;74(4):351-359.
+   - Andrews G, Basu A, Cuijpers P, Craske MG, McEvoy P, English CL, et al. Computer therapy for the anxiety and depression disorders is effective, acceptable and practical health care: an updated meta-analysis. J Anxiety Disord 2018 Apr;55:70-78.
+   - Rathbone AL, Clarry L, Prescott J. Assessing the efficacy of mobile health apps using the basic principles of cognitive behavior therapy: a systematic review. J Med Internet Res 2017 Nov 28;19(11):e399.
+   - Firth J, Torous J, Nicholas J, Carney R, Pratap A, Rosenbaum S, et al. The efficacy of smartphone-based mental health interventions for depressive symptoms: a meta-analysis of randomized controlled trials. World Psychiatry 2017 Oct;16(3):287-298.
+   - Ly KH, Topooco N, Cederlund H, Wallin A, Bergström J, Molander O, et al. Smartphone-supported versus full behavioural activation for depression: a randomised controlled trial. PLoS One 2015;10(5):e0126559.
+   - Ly KH, Trüschel A, Jarl L, Magnusson S, Windahl T, Johansson R, et al. Behavioural activation versus mindfulness-based guided self-help treatment administered through a smartphone application: a randomised controlled trial. Br Med J Open 2014;4(1):e003440.
+   - Ly KH, Janni E, Wrede R, Sørensen M, Donker T, Carlbring P, et al. Experiences of a guided smartphone-based behavioural activation therapy for depression: a qualitative study. Internet Interv 2015 Mar;2(1):60-68.
+   - Ben-Zeev D, Brian RM, Jonathan G, Razzano L, Pashka N, Carpenter-Song E, et al. Mobile health (mHealth) versus clinic-based group intervention for people with serious mental illness: a randomised controlled trial. Psychiatr Serv 2018 May;69(5):e1000063.
+   - Noone C, Hogan MJ. A randomised active-controlled trial to examine the effects of an online mindfulness intervention on executive control, critical thinking and key thinking dispositions in a university student sample. BMC Psychol 2018 Apr 05;6(1):13.
+   - Hoermann S, McCabe KL, Milne DN, Calvo RA. Application of synchronous text-based dialogue systems in mental health interventions: systematic review. J Med Internet Res 2017 Jul 21;19(7):e267.
+   - Fitzpatrick KK, Darcy A,

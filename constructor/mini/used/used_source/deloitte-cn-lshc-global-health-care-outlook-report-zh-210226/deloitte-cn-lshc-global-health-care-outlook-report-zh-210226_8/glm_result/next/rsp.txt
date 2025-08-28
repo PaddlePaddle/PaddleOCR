@@ -1,0 +1,13 @@
+这是一张包含中文和英文的图片，主要内容是关于2021年全球医疗行业的展望。图片中的文字列出了多个参考文献，具体内容如下：
+
+1. 标题：2021年全球医疗行业展望
+2. 参考文献列表：
+   - 30. 同上
+   - 31. Burrell et al., implications of the COVID-19 crisis for the health care ecosystem.
+   - 32. Chris DeRamus, “The cloud is the backbone of remote work,” 福布斯, 2020年6月16日
+   - 33. 同上
+   - 34. Jennifer Radin and Casey Korba, From COVID-19 as Catalyst: The future of work and the workplace in health care, 德勤洞察, 2020年11月12日
+   - 35. 同上
+   - 36. Vollini et al., 《2021德勤全球人力资本趋势》
+
+图片底部显示页码为10。整体来看，这张图片似乎是一份报告或研究文档的一部分，主要讨论了COVID-19疫情对医疗行业的影响以及未来的发展趋势。

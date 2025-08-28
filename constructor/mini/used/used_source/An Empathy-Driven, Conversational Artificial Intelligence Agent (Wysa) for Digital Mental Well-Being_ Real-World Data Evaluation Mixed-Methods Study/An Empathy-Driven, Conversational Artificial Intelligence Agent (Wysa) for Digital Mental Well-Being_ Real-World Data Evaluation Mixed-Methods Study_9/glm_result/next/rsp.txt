@@ -1,0 +1,58 @@
+这是一张包含多个多媒体附录的页面截图，标题为“JMIR MHealth and UHealth”。页面列出了多个附录，每个附录都有简短的描述和文件链接。以下是每个附录的详细描述：
+
+1. **Multimedia Appendix 2**
+   - 描述：补充方法。
+   - 文件类型：PDF文件。
+   - 文件大小：36KB。
+
+2. **Multimedia Appendix 3**
+   - 描述：研究中使用的混合方法。
+   - 文件类型：PNG文件。
+   - 文件大小：16KB。
+
+3. **Multimedia Appendix 4**
+   - 描述：研究招募图表，包括提供2次有效PHQ-9评估的用户，并基于用户的使用情况将用户分为2个比较组。
+   - 文件类型：PNG文件。
+   - 文件大小：39KB。
+
+4. **Multimedia Appendix 5**
+   - 描述：应用内反馈问题和回答。
+   - 文件类型：PDF文件。
+   - 文件大小：34KB。
+
+5. **Multimedia Appendix 6**
+   - 描述：典型用户与Wysa应用的互动。
+   - 文件类型：PNG文件。
+   - 文件大小：50KB。
+
+6. **Multimedia Appendix 7**
+   - 描述：用户的样本对象引述。
+   - 文件类型：PDF文件。
+   - 文件大小：24KB。
+
+7. **Multimedia Appendix 8**
+   - 描述：基于筛查日之间总活跃天数的用户分布。
+   - 文件类型：PNG文件。
+   - 文件大小：11KB。
+
+8. **Multimedia Appendix 9**
+   - 描述：基于筛查日之间天数的Wysa用户分布。
+   - 文件类型：PNG文件。
+   - 文件大小：10KB。
+
+9. **Multimedia Appendix 10**
+   - 描述：所有包含用户的地区和时间区。
+   - 文件类型：PNG文件。
+   - 文件大小：36KB。
+
+10. **Multimedia Appendix 11**
+    - 描述：所有包含用户自我报告的重大事件和变化的分布。
+    - 文件类型：PNG文件。
+    - 文件大小：17KB。
+
+11. **Multimedia Appendix 12**
+    - 描述：所有包含用户自我报告的应对能力的分布。
+    - 文件类型：PNG文件。
+    - 文件大小：15KB。
+
+页面底部包含一个网址链接，指向JMIR MHealth and UHealth期刊的2018年11月11日文章。
