@@ -15,14 +15,14 @@
         <link rel="canonical" href="https://paddlepaddle.github.io/PaddleOCR/main/version3.x/deployment/cpp/OCR.html">
       
       
-        <link rel="prev" href="../serving.html">
+        <link rel="prev" href="../../pipeline_usage/instructions/parallel_inference.html">
       
       
         <link rel="next" href="OCR_windows.html">
       
       
       <link rel="icon" href="../../../version2.x/static/images/logo.jpg">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.17">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.18">
     
     
       
@@ -39,39 +39,63 @@
   
   
     
+      
+      
     
   
     
+      
+      
     
   
     
+      
+      
     
   
     
+      
+      
     
   
     
+      
+      
     
   
     
+      
+      
     
   
     
+      
+      
     
   
     
+      
+      
     
   
     
+      
+      
     
   
     
+      
+      
     
   
     
+      
+      
     
   
     
+      
+      
     
   
   
@@ -82,21 +106,27 @@
   
   
     
-    
       
-    
+      
+        
+      
+      
     
   
     
-    
       
-    
+      
+        
+      
+      
     
   
     
-    
       
-    
+      
+        
+      
+      
     
   
   
@@ -1123,8 +1153,6 @@ You're not viewing the latest version.
       
         
       
-        
-      
     
     
     
@@ -1253,6 +1281,124 @@ You're not viewing the latest version.
   
 
               
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mcp_server.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    MCP 服务器
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../packaging.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    打包PaddleOCR项目
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../pipeline_usage/instructions/parallel_inference.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    产线并行推理
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_8" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_6_8" id="__nav_6_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    C++ 本地部署
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_8_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6_8">
+            <span class="md-nav__icon md-icon"></span>
+            C++ 本地部署
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
             
               
                 
@@ -1445,17 +1591,26 @@ You're not viewing the latest version.
         <li class="md-nav__item">
   <a href="#3" class="md-nav__link">
     <span class="md-ellipsis">
-      3. 额外功能
+      3. 拓展功能
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="3. 额外功能">
+    <nav class="md-nav" aria-label="3. 拓展功能">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
   <a href="#31" class="md-nav__link">
     <span class="md-ellipsis">
-      3.1 可视化文本识别结果
+      3.1 多语种文字识别
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2 可视化文本识别结果
     </span>
   </a>
   
@@ -1507,70 +1662,9 @@ You're not viewing the latest version.
 
               
             
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../mcp_server.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    MCP 服务器
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../packaging.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    打包PaddleOCR项目
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../pipeline_usage/instructions/parallel_inference.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    产线并行推理
-    
-  </span>
-  
-
-      </a>
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -3467,17 +3561,26 @@ You're not viewing the latest version.
         <li class="md-nav__item">
   <a href="#3" class="md-nav__link">
     <span class="md-ellipsis">
-      3. 额外功能
+      3. 拓展功能
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="3. 额外功能">
+    <nav class="md-nav" aria-label="3. 拓展功能">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
   <a href="#31" class="md-nav__link">
     <span class="md-ellipsis">
-      3.1 可视化文本识别结果
+      3.1 多语种文字识别
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2 可视化文本识别结果
     </span>
   </a>
   
@@ -3531,7 +3634,7 @@ You're not viewing the latest version.
 
 <h1 id="ocr-c-linux">通用 OCR 产线 C++ 部署 - Linux<a class="headerlink" href="#ocr-c-linux" title="Permanent link">&para;</a></h1>
 <ul>
-<li><a href="#1">1. 环境准备</a><ul>
+<li><a href="#1-环境准备">1. 环境准备</a><ul>
 <li><a href="#11-编译-opencv-库">1.1 编译 OpenCV 库</a></li>
 <li><a href="#12-编译-paddle-inference">1.2 编译 Paddle Inference</a></li>
 </ul>
@@ -3543,8 +3646,9 @@ You're not viewing the latest version.
 <li><a href="#24-c-api-集成">2.4 C++ API 集成</a></li>
 </ul>
 </li>
-<li><a href="#3-额外功能">3. 额外功能</a><ul>
-<li><a href="#31-可视化文本识别结果">3.1 可视化文本识别结果</a></li>
+<li><a href="#3-拓展功能">3. 拓展功能</a><ul>
+<li><a href="#31-多语种文字识别">3.1 多语种文字识别</a></li>
+<li><a href="#32-可视化文本识别结果">3.2 可视化文本识别结果</a></li>
 </ul>
 </li>
 <li><a href="#4-faq">4. FAQ</a></li>
@@ -3587,8 +3691,12 @@ You're not viewing the latest version.
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>tar<span class="w"> </span>-xf<span class="w"> </span>opencv-4.7.0.tgz
 </span></code></pre></div>
 <ol>
-<li>配置并编译 OpenCV 库：</li>
-<li>a. 在 <code>tools/build_opencv.sh</code> 脚本中，将 <code>root_path</code> 设置为 opencv-4.7.0 源码的绝对路径。</li>
+<li>
+<p>配置并编译 OpenCV 库：</p>
+</li>
+<li>
+<p>a. 在 <code>tools/build_opencv.sh</code> 脚本中，将 <code>root_path</code> 设置为 opencv-4.7.0 源码的绝对路径。</p>
+</li>
 <li>b. 设置 <code>install_path</code>，如默认的 <code>${root_path}/opencv4</code>。<code>install_path</code> 在后续编译预测 demo 时，将作为 OpenCV 库的路径使用。</li>
 <li>
 <p>c. 配置完成后，运行以下命令进行 OpenCV 的编译：</p>
@@ -3780,23 +3888,20 @@ You're not viewing the latest version.
 </tr>
 <tr>
 <td>PP-OCRv5_server_rec (默认)</td>
-<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
-PP-OCRv5_server_rec_infer.tar">推理模型</a></td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv5_server_rec_infer.tar">推理模型</a></td>
 <td>86.38</td>
 <td>81</td>
 <td rowspan="2">PP-OCRv5_rec 是新一代文本识别模型。该模型致力于以单一模型高效、精准地支持简体中文、繁体中文、英文、日文四种主要语言，以及手写、竖版、拼音、生僻字等复杂文本场景的识别。在保持识别效果的同时，兼顾推理速度和模型鲁棒性，为各种场景下的文档理解提供高效、精准的技术支撑。</td>
 </tr>
 <tr>
 <td>PP-OCRv5_mobile_rec</td>
-<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
-PP-OCRv5_mobile_rec_infer.tar">推理模型</a></td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv5_mobile_rec_infer.tar">推理模型</a></td>
 <td>81.29</td>
 <td>16</td>
 </tr>
 <tr>
 <td>PP-OCRv4_server_rec_doc</td>
-<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
-PP-OCRv4_server_rec_doc_infer.tar">推理模型</a></td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_server_rec_doc_infer.tar">推理模型</a></td>
 <td>86.58</td>
 <td>182</td>
 <td>PP-OCRv4_server_rec_doc 是在 PP-OCRv4_server_rec 的基础上，在更多中文文档数据和PP-OCR训练数据的混合数据训练而成，增加了部分繁体字、日文、特殊字符的识别能力，可支持识别的字符为1.5万+，除文档相关的文字识别能力提升外，也同时提升了通用文字的识别能力</td>
@@ -3834,9 +3939,8 @@ PP-OCRv4_server_rec_doc_infer.tar">推理模型</a></td>
 <div class="language-shell highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>./build/ppocr<span class="w"> </span>&lt;pipeline_or_module&gt;<span class="w"> </span><span class="o">[</span>--param1<span class="o">]</span><span class="w"> </span><span class="o">[</span>--param2<span class="o">]</span><span class="w"> </span><span class="o">[</span>...<span class="o">]</span>
 </span></code></pre></div>
 <p>常用参数如下：</p>
-<ul>
 <li>输入输出相关</li>
-</ul>
+
 <table>
 <thead>
 <tr>
@@ -3865,7 +3969,7 @@ PP-OCRv4_server_rec_doc_infer.tar">推理模型</a></td>
 
 <details><summary><b>点击展开查看更多参数的详细说明</b></summary>
 
-- 通用参数
+<li>通用参数</li>
 
 <table>
 <thead>
@@ -3924,7 +4028,7 @@ MKL-DNN 缓存容量。
 </tbody>
 </table>
 
-- 模块开关
+<li>模块开关</li>
 
 <table>
 <thead>
@@ -3957,7 +4061,7 @@ MKL-DNN 缓存容量。
 </tbody>
 </table>
 
-- 检测模型相关
+<li>检测模型相关</li>
 
 <table>
 <thead>
@@ -3973,7 +4077,7 @@ MKL-DNN 缓存容量。
 <td><code>text_detection_model_name</code></td>
 <td>文本检测模型的名称。如果不设置，将会使用产线默认模型。当传入文本检测模型路径的模型名称与产线默认文本识别模型名称配置不一致时，需指定传入模型的名称。</td>
 <td><code>str</code></td>
-<td>PP-OCRv5_server_det</td>
+<td><code>PP-OCRv5_server_det</code></td>
 </tr>
 <tr>
 <td><code>text_detection_model_dir</code></td>
@@ -4022,13 +4126,13 @@ MKL-DNN 缓存容量。
 <tr>
 <td><code>text_det_input_shape</code></td>
 <td>文本检测的输入形状，您可以设置3个值代表C，H，W。</td>
-<td><code>std::vector</code></td>
-<td></td>
+<td><code>str</code></td>
+<td>""</td>
 </tr>
 </tbody>
 </table>
 
-- 方向分类器相关
+<li>方向分类器相关</li>
 
 <table>
 <thead>
@@ -4073,7 +4177,7 @@ MKL-DNN 缓存容量。
 </tbody>
 </table>
 
-- 文字识别模型相关
+<li>文字识别模型相关</li>
 
 <table>
 <thead>
@@ -4112,8 +4216,8 @@ MKL-DNN 缓存容量。
 <tr>
 <td><code>text_rec_input_shape</code></td>
 <td>文本识别的输入形状，您可以设置3个值代表C，H，W。</td>
-<td><code>std::vector</code></td>
-<td></td>
+<td><code>str</code></td>
+<td>""</td>
 </tr>
 </tbody>
 </table>
@@ -4161,14 +4265,12 @@ MKL-DNN 缓存容量。
 </div>
 <div class="tabbed-block">
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>./build/ppocr<span class="w"> </span>ocr<span class="w"> </span>--input<span class="w"> </span>./general_ocr_002.png<span class="w"> </span>--save_path<span class="w"> </span>./output/<span class="w">  </span><span class="se">\</span>
-</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>--doc_orientation_classify_model_dir<span class="w"> </span>models/PP-LCNet_x1_0_doc_ori_infer<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>--doc_unwarping_model_dir<span class="w"> </span>models/UVDoc_infer<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>--textline_orientation_model_dir<span class="w"> </span>models/PP-LCNet_x1_0_textline_ori_infer<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>--text_detection_model_dir<span class="w"> </span>models/PP-OCRv5_server_det_infer<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>--text_recognition_model_dir<span class="w"> </span>models/PP-OCRv5_server_rec_infer<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>--use_doc_orientation_classify<span class="w"> </span>False<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>--use_doc_unwarping<span class="w"> </span>False<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>--device<span class="w"> </span>cpu
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>--textline_orientation_model_dir<span class="w"> </span>models/PP-LCNet_x1_0_textline_ori_infer<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>--text_detection_model_dir<span class="w"> </span>models/PP-OCRv5_server_det_infer<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>--text_recognition_model_dir<span class="w"> </span>models/PP-OCRv5_server_rec_infer<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>--use_doc_orientation_classify<span class="w"> </span>False<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>--use_doc_unwarping<span class="w"> </span>False<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>--device<span class="w"> </span>cpu
 </span></code></pre></div>
 <p>输出示例（若指定了 <code>save_path</code>，则会在该路径下生成标准的 json 预测结果文件和预测结果图片）：</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="o">{</span>
@@ -4187,15 +4289,12 @@ MKL-DNN 缓存容量。
 </div>
 <div class="tabbed-block">
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>./build/ppocr<span class="w"> </span>ocr<span class="w"> </span>--input<span class="w"> </span>./general_ocr_002.png<span class="w"> </span>--save_path<span class="w"> </span>./output/<span class="w">  </span><span class="se">\</span>
-</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>--doc_orientation_classify_model_dir<span class="w"> </span>models/PP-LCNet_x1_0_doc_ori_infer<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>--doc_unwarping_model_dir<span class="w"> </span>models/UVDoc_infer<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>--textline_orientation_model_dir<span class="w"> </span>models/PP-LCNet_x1_0_textline_ori_infer<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>--text_detection_model_dir<span class="w"> </span>models/PP-OCRv5_server_det_infer<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>--text_recognition_model_dir<span class="w"> </span>models/PP-OCRv5_server_rec_infer<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>--use_doc_orientation_classify<span class="w"> </span>False<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-11-8"><a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>--use_doc_unwarping<span class="w"> </span>False<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-11-9"><a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>--use_textline_orientation<span class="w"> </span>False<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-11-10"><a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a>--device<span class="w"> </span>cpu
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>--text_detection_model_dir<span class="w"> </span>models/PP-OCRv5_server_det_infer<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>--text_recognition_model_dir<span class="w"> </span>models/PP-OCRv5_server_rec_infer<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>--use_doc_orientation_classify<span class="w"> </span>False<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>--use_doc_unwarping<span class="w"> </span>False<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>--use_textline_orientation<span class="w"> </span>False<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>--device<span class="w"> </span>cpu
 </span></code></pre></div>
 <p>输出示例（若指定了 <code>save_path</code>，则会在该路径下生成标准的 json 预测结果文件和预测结果图片）：</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="o">{</span>
@@ -4332,18 +4431,79 @@ MKL-DNN 缓存容量。
 </span><span id="__span-23-25"><a id="__codelineno-23-25" name="__codelineno-23-25" href="#__codelineno-23-25"></a><span class="w">    </span><span class="p">}</span>
 </span><span id="__span-23-26"><a id="__codelineno-23-26" name="__codelineno-23-26" href="#__codelineno-23-26"></a><span class="p">}</span>
 </span></code></pre></div>
-<h2 id="3">3. 额外功能<a class="headerlink" href="#3" title="Permanent link">&para;</a></h2>
-<h3 id="31">3.1 可视化文本识别结果<a class="headerlink" href="#31" title="Permanent link">&para;</a></h3>
-<p>我们需要 FreeType 去完成字体的渲染，所以需要自己编译包含 FreeType 的 OpenCV，注意仅支持 OpenCV 4.x 版本。
-FreeType 属于 opencv_contrib 模块，需要下载 OpenvCV 和 opencv_contrib 源码，注意版本一致。以下以 opencv4.7.0 为例，源码下载命令如下：</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>wget<span class="w"> </span>https://paddle-model-ecology.bj.bcebos.com/paddlex/cpp/libs/opencv-4.7.0.tgz
-</span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>wget<span class="w"> </span>https://paddle-model-ecology.bj.bcebos.com/paddlex/cpp/libs/opencv_contrib-4.7.0.tgz
-</span><span id="__span-24-3"><a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a>tar<span class="w"> </span>-xf<span class="w"> </span>opencv-4.7.0.tgz
-</span><span id="__span-24-4"><a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a>tar<span class="w"> </span>-xf<span class="w"> </span>opencv_contrib-4.7.0.tgz
+<h2 id="3">3. 拓展功能<a class="headerlink" href="#3" title="Permanent link">&para;</a></h2>
+<h3 id="31">3.1 多语种文字识别<a class="headerlink" href="#31" title="Permanent link">&para;</a></h3>
+<p>PP-OCRv5 还提供了覆盖 39 种语言的多语种文字识别能力，包括韩文、西班牙文、法文、葡萄牙文、德文、意大利文、俄罗斯文、泰文、希腊文等，具体支持语种如下：</p>
+<table>
+  <thead>
+    <tr>
+      <th>模型</th>
+      <th>链接</th>
+      <th>支持语种</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>PP-OCRv5_server_rec</td>
+      <td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv5_server_rec_infer.tar">推理模型</a></td>
+      <td>简体中文、繁体中文、英文、日文</td>
+    </tr>
+    <tr>
+      <td>PP-OCRv5_mobile_rec</td>
+      <td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv5_mobile_rec_infer.tar">推理模型</a></td>
+      <td>简体中文、繁体中文、英文、日文</td>
+    </tr>
+    <tr>
+      <td>korean_PP-OCRv5_mobile_rec</td>
+      <td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/korean_PP-OCRv5_mobile_rec_infer.tar">推理模型</a></td>
+      <td>韩文、英文</td>
+    </tr>
+    <tr>
+      <td>latin_PP-OCRv5_mobile_rec</td>
+      <td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/latin_PP-OCRv5_mobile_rec_infer.tar">推理模型</a></td>
+      <td>英文、法文、德文、南非荷兰文、意大利文、西班牙文、波斯尼亚文、葡萄牙文、捷克文、威尔士文、丹麦文、爱沙尼亚文、爱尔兰文、克罗地亚文、乌兹别克文、匈牙利文、塞尔维亚文（latin）、印度尼西亚文、欧西坦文、冰岛文、立陶宛文、毛利文、马来文、荷兰文、挪威文、波兰文、斯洛伐克文、斯洛文尼亚文、阿尔巴尼亚文、瑞典文、西瓦希里文、塔加洛文、土耳其文、拉丁文</td>
+    </tr>
+    <tr>
+      <td>eslav_PP-OCRv5_mobile_rec</td>
+      <td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/eslav_PP-OCRv5_mobile_rec_infer.tar">推理模型</a></td>
+      <td>俄罗斯文、白俄罗斯文、乌克兰文、英文</td>
+    </tr>
+    <tr>
+      <td>th_PP-OCRv5_mobile_rec</td>
+      <td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/th_PP-OCRv5_mobile_rec_infer.tar">推理模型</a></td>
+      <td>泰文、英文</td>
+    </tr>
+    <tr>
+      <td>el_PP-OCRv5_mobile_rec</td>
+      <td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/el_PP-OCRv5_mobile_rec_infer.tar">推理模型</a></td>
+      <td>希腊文、英文</td>
+    </tr>
+    <tr>
+      <td>en_PP-OCRv5_mobile_rec</td>
+      <td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/en_PP-OCRv5_mobile_rec_infer.tar">推理模型</a></td>
+      <td>英文</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>在使用产线或模块时传入对应的识别模型即可，如使用文本识别模块进行法文识别：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>./build/ppocr text_recognition \
+</span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>--input ./french.png \
+</span><span id="__span-24-3"><a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a>--text_recognition_model_name latin_PP-OCRv5_mobile_rec \
+</span><span id="__span-24-4"><a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a>--text_recognition_model_dir latin_PP-OCRv5_mobile_rec_infer \
+</span><span id="__span-24-5"><a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a>--save_path ./output/
+</span></code></pre></div>
+<p>更多详细说明可参考 <a href="../../algorithm/PP-OCRv5/PP-OCRv5_multi_languages.html">PP-OCRv5多语种文字识别介绍</a>。</p>
+<h3 id="32">3.2 可视化文本识别结果<a class="headerlink" href="#32" title="Permanent link">&para;</a></h3>
+<p>我们使用 4.x 版本的 opencv_contrib 模块中的 FreeType 进行字体渲染，如果想要可视化文本识别结果，需要下载 OpenCV 和 opencv_contrib 的源码并编译包含 FreeType 模块的 OpenCV。下载源码时需确保两者的版本一致。以下以 opencv-4.7.0 和 opencv_contrib-4.7.0 为例进行说明：</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>wget<span class="w"> </span>https://paddle-model-ecology.bj.bcebos.com/paddlex/cpp/libs/opencv-4.7.0.tgz
+</span><span id="__span-25-2"><a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>wget<span class="w"> </span>https://paddle-model-ecology.bj.bcebos.com/paddlex/cpp/libs/opencv_contrib-4.7.0.tgz
+</span><span id="__span-25-3"><a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a>tar<span class="w"> </span>-xf<span class="w"> </span>opencv-4.7.0.tgz
+</span><span id="__span-25-4"><a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a>tar<span class="w"> </span>-xf<span class="w"> </span>opencv_contrib-4.7.0.tgz
 </span></code></pre></div>
 <p>安装FreeType依赖库</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>sudo<span class="w"> </span>apt-get<span class="w"> </span>update
-</span><span id="__span-25-2"><a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>libfreetype6-dev<span class="w"> </span>libharfbuzz-dev
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>sudo<span class="w"> </span>apt-get<span class="w"> </span>update
+</span><span id="__span-26-2"><a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>libfreetype6-dev<span class="w"> </span>libharfbuzz-dev
 </span></code></pre></div>
 <p>编译包含 FreeType 模块的 OpenCV 的步骤如下：</p>
 <ul>
@@ -4357,12 +4517,12 @@ FreeType 属于 opencv_contrib 模块，需要下载 OpenvCV 和 opencv_contrib 
 <li>c. 在 <code>tools/build_opencv.sh</code> 脚本中，设置 <code>install_path</code>，如默认的 <code>${root_path}/opencv4</code>。<code>install_path</code> 在后续编译预测 demo 时，将作为 OpenCV 库的路径使用。</li>
 <li>
 <p>d. 配置完成后，运行以下命令进行 OpenCV 的编译：</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>sh<span class="w"> </span>tools/build_opencv.sh
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>sh<span class="w"> </span>tools/build_opencv.sh
 </span></code></pre></div>
 </li>
 <li>
 <p>e. 在 <code>tools/build.sh</code> 设置 <code>-DUSE_FREETYPE=ON</code> 开启文字渲染功能，设置 <code>--vis_font_dir your_ttf_path</code> 提供相应 ttf 字体文件路径。运行以下命令进行预测 demo 的编译：</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>sh<span class="w"> </span>tools/build.sh
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>sh<span class="w"> </span>tools/build.sh
 </span></code></pre></div>
 </li>
 </ul>
@@ -4400,7 +4560,7 @@ FreeType 属于 opencv_contrib 模块，需要下载 OpenvCV 和 opencv_contrib 
     <span class="md-icon" title="最后更新">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年8月21日 10:33:44 UTC">2025年8月21日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年8月28日 03:34:30 UTC">2025年8月28日</span>
   </span>
 
     
@@ -4410,7 +4570,7 @@ FreeType 属于 opencv_contrib 模块，需要下载 OpenvCV 和 opencv_contrib 
     <span class="md-icon" title="创建日期">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年8月21日 10:33:44 UTC">2025年8月21日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年8月28日 03:34:30 UTC">2025年8月28日</span>
   </span>
 
     
@@ -4447,7 +4607,7 @@ FreeType 属于 opencv_contrib 模块，需要下载 OpenvCV 和 opencv_contrib 
       <nav class="md-footer__inner md-grid" aria-label="页脚" >
         
           
-          <a href="../serving.html" class="md-footer__link md-footer__link--prev" aria-label="上一页: 服务化部署">
+          <a href="../../pipeline_usage/instructions/parallel_inference.html" class="md-footer__link md-footer__link--prev" aria-label="上一页: 产线并行推理">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l137.3-137.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg>
@@ -4457,7 +4617,7 @@ FreeType 属于 opencv_contrib 模块，需要下载 OpenvCV 和 opencv_contrib 
                 上一页
               </span>
               <div class="md-ellipsis">
-                服务化部署
+                产线并行推理
               </div>
             </div>
           </a>
@@ -4498,7 +4658,8 @@ FreeType 属于 opencv_contrib 模块，需要下载 OpenvCV 和 opencv_contrib 
   
 </div>
       
-        <div class="md-social">
+        
+<div class="md-social">
   
     
     
