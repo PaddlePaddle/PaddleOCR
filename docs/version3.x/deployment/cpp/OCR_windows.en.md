@@ -125,11 +125,11 @@ The compilation steps are as follows:
 
 - Step 6：Run the prediction demo  
 
-  Copy the following files to the `deploy/cpp_infer/build/Release/` directory, then follow Sections 2.2 and 2.3 to run the demo:  
-  1. `paddle_inference/paddle/lib/paddle_inference.dll`  
-  2. `paddle_inference/paddle/lib/common.dll`  
-  3. `deploy/cpp_infer/build/bin/Release/abseil_dll.dll`  
-  4. `deploy/cpp_infer/build/third_party/clipper_ver6.4.2/cpp/Release/polyclipping.dll`  
+  Copy the following files to the `deploy\cpp_infer\build\Release\` directory, then follow Sections 2.2 and 2.3 to run the demo:  
+  1. `paddle_inference\paddle\lib\paddle_inference.dll`  
+  2. `paddle_inference\paddle\lib\common.dll`  
+  3. `deploy\cpp_infer\build\bin\Release\abseil_dll.dll`  
+  4. `deploy\cpp_infer\build\third_party\clipper_ver6.4.2\cpp\Release\polyclipping.dll`  
   5. `opencv-4.7.0\build\install\x64\vc16\bin\opencv_world470.dll`  
 
 ### 2.2 Prepare the Model  
