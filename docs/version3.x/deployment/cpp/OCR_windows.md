@@ -48,6 +48,7 @@
 
 - Step 3 ：生成 Visual Studio 项目
 
+  搜索 `BUILD_opencv_world` 并勾选。
   依次点击 Configure  ->  Generate  ->  Open in Project，将进入 Visual Studio 2022 编译界面。
 
   <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr/deployment/cpp/opencv_step3.png"/>
@@ -134,7 +135,7 @@ paddle_inference
   2. `paddle_inference\paddle\lib\common.dll`
   3. `deploy\cpp_infer\build\bin\Release\abseil_dll.dll`
   4. `deploy\cpp_infer\build\third_party\clipper_ver6.4.2\cpp\Release\polyclipping.dll`
-  5. `opencv-4.7.0\build\install\bin\opencv_world470.dll`
+  5. `opencv-4.7.0\build\install\x64\vc16\bin\opencv_world470.dll`
 
 ### 2.2 准备模型
 
@@ -237,7 +238,7 @@ paddle_inference
 
   <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr/deployment/cpp/opencv_freetype_step5.png"/>
 
-  完成后，再次在 Cmake 界面，点击 configure， 确定没报错后，点击 Generate，最后点击 Open Project，打开 Visual studio，找到 ALL_BUILD 右键Build， 等待编译完成后， 找到 INSTALL 右键 Build。
+  完成后，再次在 Cmake 界面，点击 configure， 确定没报错后，点击 Generate，最后点击 Open Project，打开 Visual studio，将 Debug 切换为 Release，找到 ALL_BUILD 右键 Build， 等待编译完成后， 找到 INSTALL 右键 Build。
 
   注意：如果完成编译包含 FreeType 的 OpenCV，在编译通用 OCR 产线 demo 时，需要在 2.1节 Step 3 配置编译选项时勾选 `USE_FREETYPE` 开启文字渲染功能，并且在运行 demo 时通过 `--vis_font_dir your_ttf_path` 提供相应 ttf 字体文件路径。
 
