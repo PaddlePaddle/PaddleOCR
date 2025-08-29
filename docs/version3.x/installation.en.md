@@ -120,12 +120,12 @@ python -m pip install "paddleocr@git+https://github.com/PaddlePaddle/PaddleOCR.g
 
 In addition to the `all` dependency group demonstrated above, PaddleOCR also supports installing specific optional features by specifying other dependency groups. The available dependency groups provided by PaddleOCR are as follows:
 
-| Dependency Group | Functionality            |
-| ---------------- | ------------------------ |
-| `doc-parser`     | Document parsing, which can be used to extract layout elements in a document such as tables, formulas, stamps, and images. |
-| `ie`             | Information extraction, which can be used to extract key information from documents, such as names, dates, addresses, amounts, and more. |
-| `trans`          | Document translation, which can be used to translate a document from one language to another. |
-| `all`            | Full functionality. |
+| Dependency Group Name | Corresponding Functionality |
+| - | - |
+| `doc-parser` | Document parsing: can be used to extract layout elements such as tables, formulas, stamps, images, etc. from documents; includes models like PP-StructureV3 |
+| `ie` | Information extraction: can be used to extract key information from documents, such as names, dates, addresses, amounts, etc.; includes models like PP-ChatOCRv4 |
+| `trans` | Document translation: can be used to translate documents from one language to another; includes models like PP-DocTranslation |
+| `all` | Complete functionality |
 
 The general OCR pipeline (e.g., PP-OCRv3/v4/v5) and the document image preprocessing pipeline can be used without installing any additional dependency groups. Apart from these two pipelines, each remaining pipeline belongs to one and only one dependency group. You can refer to the usage documentation of each pipeline to determine which group it belongs to. For individual functional modules, installing any dependency group that includes the module will enable access to its core functionality.
 
