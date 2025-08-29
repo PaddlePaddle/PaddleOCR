@@ -57,7 +57,7 @@ Además de proporcionar una excelente biblioteca de modelos, PaddleOCR 3.0 tambi
     - El despliegue tipo servicio de alta estabilidad también soporta llamadas HTTP manuales, lo que permite a los clientes implementar en cualquier lenguaje.
 
 - **Soporte de benchmarks:**
-    - **Se proporciona una función detallada de benchmark en toda la cadena de producción, permitiendo medir el tiempo de inferencia de extremo a extremo y los tiempos de ejecución de diferentes capas y módulos, facilitando el análisis de rendimiento.**
+    - **Se proporciona una función detallada de benchmark en toda la cadena de producción, permitiendo medir el tiempo de inferencia de extremo a extremo y los tiempos de ejecución de diferentes capas y módulos, facilitando el análisis de rendimiento.[Aquí](../docs/version3.x/pipeline_usage/instructions/benchmark.en.md) se explica cómo configurar y utilizar la función de prueba de rendimiento (benchmark).**
     - **La documentación incluye valores de referencia (tiempo de inferencia, uso de memoria, etc.) en las principales plataformas de hardware para ayudar a los usuarios a tomar decisiones de despliegue.**
 
 - **Corrección de errores:**
@@ -185,9 +185,20 @@ Además de proporcionar una excelente biblioteca de modelos, PaddleOCR 3.0 tambi
 Instale PaddlePaddle consultando la [Guía de Instalación](https://www.paddlepaddle.org.cn/en/install/quick?docurl=/documentation/docs/en/develop/install/pip/linux-pip_en.html), y después, instale el toolkit de PaddleOCR.
 
 ```bash
-# Instalar paddleocr
-pip install paddleocr
+# Si solo deseas utilizar la función básica de reconocimiento de texto (devuelve las coordenadas de posición y el contenido del texto), incluyendo la serie PP-OCR
+python -m pip install paddleocr
+# Si deseas utilizar todas las funciones como análisis de documentos, comprensión de documentos, traducción de documentos, extracción de información clave, etc.
+# python -m pip install "paddleocr[all]"
 ```
+
+A partir de la versión 3.2.0, además del grupo de dependencias `all` mostrado arriba, PaddleOCR también permite instalar algunas funciones opcionales especificando otros grupos de dependencias. Todos los grupos de dependencias que proporciona PaddleOCR son los siguientes:
+
+| Nombre del grupo de dependencias | Funcionalidad correspondiente |
+| - | - |
+| `doc-parser` | Análisis de documentos: se puede usar para extraer elementos de diseño como tablas, fórmulas, sellos, imágenes, etc. de los documentos; incluye modelos como PP-StructureV3 |
+| `ie` | Extracción de información: se puede usar para extraer información clave de los documentos, como nombres, fechas, direcciones, montos, etc.; incluye modelos como PP-ChatOCRv4 |
+| `trans` | Traducción de documentos: se puede usar para traducir documentos de un idioma a otro; incluye modelos como PP-DocTranslation |
+| `all` | Funcionalidad completa |
 
 ### 3. Ejecutar inferencia por CLI
 ```bash

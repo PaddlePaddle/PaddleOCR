@@ -56,7 +56,7 @@ En plus de fournir une bibliothèque de modèles exceptionnelle, PaddleOCR 3.0 p
     - Cette solution prend également en charge l’appel via des requêtes HTTP construites manuellement, permettant le développement du client dans n’importe quel langage de programmation.
 
 - **Support du benchmark :**
-    - **Toutes les chaînes de production prennent désormais en charge des benchmarks fins, permettant de mesurer le temps d’inférence de bout en bout ainsi que les temps d’exécution par couche et par module, ce qui facilite l’analyse des performances.**
+    - **Toutes les chaînes de production prennent désormais en charge des benchmarks fins, permettant de mesurer le temps d’inférence de bout en bout ainsi que les temps d’exécution par couche et par module, ce qui facilite l’analyse des performances.[Voici](../docs/version3.x/pipeline_usage/instructions/benchmark.en.md) comment configurer et utiliser la fonctionnalité de benchmark**
     - **La documentation fournit désormais des indicateurs clés (temps d’inférence, occupation mémoire, etc.) sur le matériel courant pour différentes configurations, offrant ainsi des références pour le déploiement.**
 
 - **Corrections de bugs :**
@@ -184,9 +184,20 @@ En plus de fournir une bibliothèque de modèles exceptionnelle, PaddleOCR 3.0 p
 Installez PaddlePaddle en vous référant au [Guide d'installation](https://www.paddlepaddle.org.cn/en/install/quick?docurl=/documentation/docs/en/develop/install/pip/linux-pip_en.html), puis installez la boîte à outils PaddleOCR.
 
 ```bash
-# Installer paddleocr
-pip install paddleocr
+# Si vous souhaitez uniquement utiliser la fonction de reconnaissance de texte de base (retourne les coordonnées de position et le contenu du texte), y compris la série PP-OCR
+python -m pip install paddleocr
+# Si vous souhaitez utiliser toutes les fonctionnalités telles que l’analyse de documents, la compréhension de documents, la traduction de documents, l’extraction d’informations clés, etc.
+# python -m pip install "paddleocr[all]"
 ```
+
+À partir de la version 3.2.0, en plus du groupe de dépendances `all` présenté ci-dessus, PaddleOCR prend également en charge l’installation de certaines fonctionnalités optionnelles en spécifiant d’autres groupes de dépendances. Voici tous les groupes de dépendances proposés par PaddleOCR :
+
+| Nom du groupe de dépendances | Fonctionnalité correspondante |
+| - | - |
+| `doc-parser` | Analyse de documents : permet d’extraire des éléments de mise en page tels que tableaux, formules, tampons, images, etc. à partir des documents ; inclut des modèles comme PP-StructureV3 |
+| `ie` | Extraction d’informations : permet d’extraire des informations clés des documents, telles que noms, dates, adresses, montants, etc. ; inclut des modèles comme PP-ChatOCRv4 |
+| `trans` | Traduction de documents : permet de traduire des documents d’une langue à une autre ; inclut des modèles comme PP-DocTranslation |
+| `all` | Fonctionnalité complète |
 
 ### 3. Exécuter l'inférence par CLI
 ```bash

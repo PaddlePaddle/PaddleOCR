@@ -57,7 +57,7 @@ PaddleOCR 3.0은 뛰어난 모델 라이브러리(model library)를 제공할 �
     - 고안정성 서비스형 배포 솔루션은 수동 HTTP 요청을 통한 호출도 지원, 클라이언트 프로그램은 임의의 언어로 개발 가능.
 
 - **벤치마크 지원:**
-    - **모든 프로덕션 환경에서 세분화된 벤치마크 지원, 엔드투엔드 추론 시간 및 계층별·모듈별 소요 시간 측정 가능, 성능 분석에 도움.**
+    - **모든 프로덕션 환경에서 세분화된 벤치마크 지원, 엔드투엔드 추론 시간 및 계층별·모듈별 소요 시간 측정 가능, 성능 분석에 도움.[여기](../docs/version3.x/pipeline_usage/instructions/benchmark.en.md)는 벤치마크 기능의 설정 및 사용 방법입니다**
     - **문서에 주요 하드웨어에서의 일반적인 설정 기준 지표(추론 시간, 메모리 점유 등) 추가, 사용자 배포에 참고 정보 제공.**
 
 - **버그 수정:**
@@ -178,9 +178,20 @@ PaddleOCR 3.0은 뛰어난 모델 라이브러리(model library)를 제공할 �
 [설치 가이드](https://www.paddlepaddle.org.cn/en/install/quick?docurl=/documentation/docs/en/develop/install/pip/linux-pip_en.html)를 참조하여 PaddlePaddle을 설치한 후, PaddleOCR 툴킷을 설치하십시오.
 
 ```bash
-# paddleocr 설치
-pip install paddleocr
+# 기본 텍스트 인식 기능(텍스트 위치 좌표와 내용을 반환)만 사용하려면(PP-OCR 시리즈 포함)
+python -m pip install paddleocr
+# 문서 분석, 문서 이해, 문서 번역, 주요 정보 추출 등 모든 기능을 사용하려면
+# python -m pip install "paddleocr[all]"
 ```
+
+버전 3.2.0부터 위의 `all` 의존성 그룹 외에도, PaddleOCR는 다른 의존성 그룹을 지정하여 일부 선택적 기능의 설치도 지원합니다. PaddleOCR에서 제공하는 모든 의존성 그룹은 아래와 같습니다.
+
+| 의존성 그룹 이름 | 해당 기능 |
+| - | - |
+| `doc-parser` | 문서 분석: 표, 수식, 도장, 이미지 등 문서에서 레이아웃 요소를 추출할 수 있습니다. PP-StructureV3 등 모델 포함 |
+| `ie` | 정보 추출: 이름, 날짜, 주소, 금액 등 문서에서 주요 정보를 추출할 수 있습니다. PP-ChatOCRv4 등 모델 포함 |
+| `trans` | 문서 번역: 문서를 다른 언어로 번역할 수 있습니다. PP-DocTranslation 등 모델 포함 |
+| `all` | 전체 기능 |
 
 ### 3. CLI를 통한 추론 실행
 ```bash

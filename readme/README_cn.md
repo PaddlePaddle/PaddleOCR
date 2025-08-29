@@ -81,7 +81,7 @@ PaddleOCR 3.0除了提供优秀的模型库外，还提供好学易用的工具�
     - 高稳定性服务化部署方案支持通过手动构造HTTP请求的方式调用，该方式允许客户端代码使用任意编程语言编写。
 
 - **Benchmark支持**：
-    - **全部产线支持产线细粒度 benchmark，能够测量产线端到端推理时间以及逐层、逐模块的耗时数据，可用于辅助产线性能分析。**
+    - **全部产线支持产线细粒度 benchmark，能够测量产线端到端推理时间以及逐层、逐模块的耗时数据，可用于辅助产线性能分析。可以参考[文档](../docs/version3.x/pipeline_usage/instructions/benchmark.md)来进行性能测试。**
     - **文档中补充各产线常用配置在主流硬件上的关键指标，包括推理耗时和内存占用等，为用户部署提供参考。**
 
 - **Bug修复：**
@@ -213,10 +213,22 @@ PaddleOCR 3.0除了提供优秀的模型库外，还提供好学易用的工具�
 
 请参考[安装指南](https://www.paddlepaddle.org.cn/install/quick?docurl=/documentation/docs/zh/develop/install/pip/linux-pip.html)完成**PaddlePaddle 3.0**的安装，然后安装paddleocr。
 
+
 ```bash
-# 安装 paddleocr
-pip install paddleocr
+# 只希望使用基础文字识别功能（返回文字位置坐标和文本内容），包含 PP-OCR 系列
+python -m pip install paddleocr
+# 希望使用文档解析、文档理解、文档翻译、关键信息抽取等全部功能
+# python -m pip install "paddleocr[all]"
 ```
+
+从 3.2.0 版本开始，除了上面演示的 `all` 依赖组以外，PaddleOCR 也支持通过指定其它依赖组，安装部分可选功能。PaddleOCR 提供的所有依赖组如下：
+
+| 依赖组名称 | 对应的功能 |
+| - | - |
+| `doc-parser` | 文档解析，可用于提取文档中的表格、公式、印章、图片等版面元素，包含 PP-StructureV3 等模型方案 |
+| `ie` | 信息抽取，可用于从文档中提取关键信息，如姓名、日期、地址、金额等，包含 PP-ChatOCRv4 等模型方案 |
+| `trans` | 文档翻译，可用于将文档从一种语言翻译为另一种语言，包含 PP-DocTranslation 等模型方案 |
+| `all` | 完整功能 |
 
 ### 3. 命令行方式推理
 ```bash
