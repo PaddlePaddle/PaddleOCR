@@ -13,8 +13,8 @@ edit_uri: edit/main/docs/
 
 theme:
   name: material
-  logo: version2.x/static/images/logo.jpg
-  favicon: version2.x/static/images/logo.jpg
+  logo: version3.x/logo.jpg
+  favicon: version3.x/logo.jpg
   custom_dir: overrides
   features:
     - announce.dismiss
@@ -98,7 +98,7 @@ plugins:
           link: /en/
           nav_translations:
             Home: Home
-            快速开始: Quick Start
+            安装: Installation
             快速开始: Quick Start
             PP-OCRv5: PP-OCRv5
             使用教程: Usage Tutorial
@@ -269,6 +269,7 @@ extra_css:
 
 nav:
   - Home: index.md
+  - 安装: version3.x/installation.md
   - 快速开始: quick_start.md
   - PP-OCRv5: 
     - 使用教程: version3.x/pipeline_usage/OCR.md
@@ -291,6 +292,7 @@ nav:
     - C++ 本地部署:
       - 通用 OCR 产线 C++ 本地部署 - Linux: version3.x/deployment/cpp/OCR.md
       - 通用 OCR 产线 C++ 本地部署 - Windows: version3.x/deployment/cpp/OCR_windows.md
+    - Benchmark: version3.x/pipeline_usage/instructions/benchmark.md
 
   - 模块列表: 
     - 模块概述: version3.x/module_usage/module_overview.md
