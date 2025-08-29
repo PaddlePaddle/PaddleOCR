@@ -3667,12 +3667,13 @@ You're not viewing the latest version.
 <ul>
 <li>Step 3: Generate Visual Studio Project</li>
 </ul>
-<p>Click Configure -&gt; Generate -&gt; Open in Project sequentially to enter the Visual Studio 2022 compilation interface.</p>
+<p>Search for <code>BUILD_opencv_world</code> and check it.
+  Click Configure -&gt; Generate -&gt; Open in Project sequentially to enter the Visual Studio 2022 compilation interface.</p>
 <p><img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr/deployment/cpp/opencv_step3.png"/></p>
 <ul>
 <li>Step 4: Execute Compilation</li>
 </ul>
-<p>Click "Start Solution Generation". After compilation, click INSTALL to complete the installation.</p>
+<p>Click Start Solution Generation. After compilation, click INSTALL to complete the installation.</p>
 <p><img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr/deployment/cpp/opencv_step4.png"/></p>
 <h3 id="12-compile-paddle-inference">1.2 Compile Paddle Inference<a class="headerlink" href="#12-compile-paddle-inference" title="Permanent link">&para;</a></h3>
 <p>You can choose to directly download a pre-compiled package or manually compile the source code.</p>
@@ -3725,12 +3726,12 @@ You're not viewing the latest version.
 <ul>
 <li>Step 6：Run the prediction demo  </li>
 </ul>
-<p>Copy the following files to the <code>deploy/cpp_infer/build/Release/</code> directory, then follow Sections 2.2 and 2.3 to run the demo:<br />
-  1. <code>paddle_inference/paddle/lib/paddle_inference.dll</code><br />
-  2. <code>paddle_inference/paddle/lib/common.dll</code><br />
-  3. <code>deploy/cpp_infer/build/bin/Release/abseil_dll.dll</code><br />
-  4. <code>deploy/cpp_infer/build/third_party/clipper_ver6.4.2/cpp/Release/polyclipping.dll</code><br />
-  5. <code>opencv-4.7.0/build/install/bin/opencv_world470.dll</code>  </p>
+<p>Copy the following files to the <code>deploy\cpp_infer\build\Release\</code> directory, then follow Sections 2.2 and 2.3 to run the demo:<br />
+  1. <code>paddle_inference\paddle\lib\paddle_inference.dll</code><br />
+  2. <code>paddle_inference\paddle\lib\common.dll</code><br />
+  3. <code>deploy\cpp_infer\build\bin\Release\abseil_dll.dll</code><br />
+  4. <code>deploy\cpp_infer\build\third_party\clipper_ver6.4.2\cpp\Release\polyclipping.dll</code><br />
+  5. <code>opencv-4.7.0\build\install\x64\vc16\bin\opencv_world470.dll</code>  </p>
 <h3 id="22-prepare-the-model">2.2 Prepare the Model<a class="headerlink" href="#22-prepare-the-model" title="Permanent link">&para;</a></h3>
 <p>Refer to the <a href="OCR.html#22-prepare-models">General OCR Pipeline C++ Deployment - Linux → 2.2 Prepare the Model</a> section.  </p>
 <h3 id="23-run-the-prediction-demo">2.3 Run the Prediction Demo<a class="headerlink" href="#23-run-the-prediction-demo" title="Permanent link">&para;</a></h3>
@@ -3812,7 +3813,7 @@ You're not viewing the latest version.
 <p><img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr/deployment/cpp/opencv_freetype_step4.png"/></p>
 <p>Search for harfbuzz, add harfbuzz, and add the relevant paths.</p>
 <p><img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr/deployment/cpp/opencv_freetype_step5.png"/></p>
-<p>After completing the above steps, click "Configure" again in the CMake interface. After ensuring there are no errors, click "Generate", and then click "Open Project" to open Visual Studio. Right-click on "ALL_BUILD" and select "Build". After the compilation is completed, right-click on "INSTALL" and select "Build".</p>
+<p>After completing the above steps, click Configure again in the CMake interface. After ensuring there are no errors, click Generate, and then click Open Project to open Visual Studio. Switch from Debug to Release, right-click on ALL_BUILD and select Build. After the compilation is completed, right-click on INSTALL and select Build.</p>
 <p>Note: If you have compiled OpenCV with FreeType included, when compiling the demo for the General OCR Pipeline in Section 2.1 Step 3, you need to check the <code>USE_FREETYPE</code> option to enable text rendering functionality. Additionally, when running the demo, you need to provide the path to the corresponding TTF font file using the <code>--vis_font_dir your_ttf_path</code> parameter.</p>
 <p>After compiling and running the prediction demo, you can obtain the following visualized text recognition results:</p>
 <p><img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr/deployment/cpp/ocr_res_with_freetype.png"/></p>
@@ -3838,7 +3839,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 28, 2025 03:34:30 UTC">August 28, 2025</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 29, 2025 08:53:41 UTC">August 29, 2025</span>
   </span>
 
     
@@ -3848,7 +3849,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 28, 2025 03:34:30 UTC">August 28, 2025</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 29, 2025 08:53:41 UTC">August 29, 2025</span>
   </span>
 
     
