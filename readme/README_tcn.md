@@ -54,7 +54,7 @@ PaddleOCR 3.0 **新增**三大特色功能：
     - 高穩定性服務化部署方案支援通過手動構造 HTTP 請求的方式調用，允許客戶端程式可用任意程式語言編寫。
 
 - **Benchmark 支援：**
-    - **所有產線全面支援細粒度 benchmark，能測量產線端到端推理時間及逐層、逐模組耗時，用於協助產線效能分析。**
+    - **所有產線全面支援細粒度 benchmark，能測量產線端到端推理時間及逐層、逐模組耗時，用於協助產線效能分析。可以參考[文件](../docs/version3.x/pipeline_usage/instructions/benchmark.md)來進行效能測試。**
     - **文件中補充各產線常用配置於主流硬體上的關鍵指標，包括推理耗時、記憶體佔用等，為用戶部署提供參考。**
 
 - **Bug 修復：**
@@ -181,9 +181,20 @@ PaddleOCR 3.0 **新增**三大特色功能：
 請參考[安裝指南](https://www.paddlepaddle.org.cn/install/quick?docurl=/documentation/docs/zh/develop/install/pip/linux-pip.html)完成 **PaddlePaddle 3.0** 的安裝，然後安裝 paddleocr。
 
 ```bash
-# 安裝 paddleocr
-pip install paddleocr
+# 如果你只想使用基本的文字識別功能（返回文字的座標和內容，包括 PP-OCR 系列）
+python -m pip install paddleocr
+# 如果你想使用所有功能，如文檔解析、文檔理解、文檔翻譯、關鍵資訊提取等
+# python -m pip install "paddleocr[all]"
 ```
+
+自 3.2.0 版本起，除了上述的 all 依賴組合外，PaddleOCR 也支持指定其他依賴組合來安裝部分附加功能。PaddleOCR 提供的所有依賴組合如下表所示：
+
+| 依賴組合名稱 | 對應功能 |
+| - | - |
+| `doc-parser` | 文檔解析：可以從文檔中抽取表格、公式、印章、圖片等版面元素，包括 PP-StructureV3 等模型 |
+| `ie` | 資訊抽取：可以從文檔中抽取姓名、日期、地址、金額等關鍵資訊，包括 PP-ChatOCRv4 等模型 |
+| `trans` | 文檔翻譯：可以將文檔翻譯成其他語言，包括 PP-DocTranslation 等模型 |
+| `all` | 所有功能 |
 
 ### 3. 命令列推論
 ```bash
