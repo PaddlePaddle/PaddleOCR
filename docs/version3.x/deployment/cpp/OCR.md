@@ -603,6 +603,12 @@ MKL-DNN 缓存容量。
 <td><code>str</code></td>
 <td>""</td>
 </tr>
+<tr>
+<td><code>return_word_box</code></td>
+<td>是否返回单字符坐标框。如果不设置，将使用产线初始化的该参数值，默认初始化为 <code>false</code>。</td>
+<td><code>bool</code></td>
+<td><code>false</code></td>
+</tr>
 </tbody>
 </table>
 
