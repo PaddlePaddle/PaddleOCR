@@ -48,13 +48,14 @@ First, download the OpenCV source code. Taking OpenCV 4.7.0 as an example, downl
 
 - Step 3: Generate Visual Studio Project
 
+  Search for `BUILD_opencv_world` and check it.
   Click Configure -> Generate -> Open in Project sequentially to enter the Visual Studio 2022 compilation interface.
 
   <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr/deployment/cpp/opencv_step3.png"/>
 
 - Step 4: Execute Compilation
 
-  Click "Start Solution Generation". After compilation, click INSTALL to complete the installation.
+  Click Start Solution Generation. After compilation, click INSTALL to complete the installation.
 
   <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr/deployment/cpp/opencv_step4.png"/>
 
@@ -124,12 +125,12 @@ The compilation steps are as follows:
 
 - Step 6：Run the prediction demo  
 
-  Copy the following files to the `deploy/cpp_infer/build/Release/` directory, then follow Sections 2.2 and 2.3 to run the demo:  
-  1. `paddle_inference/paddle/lib/paddle_inference.dll`  
-  2. `paddle_inference/paddle/lib/common.dll`  
-  3. `deploy/cpp_infer/build/bin/Release/abseil_dll.dll`  
-  4. `deploy/cpp_infer/build/third_party/clipper_ver6.4.2/cpp/Release/polyclipping.dll`  
-  5. `opencv-4.7.0/build/install/bin/opencv_world470.dll`  
+  Copy the following files to the `deploy\cpp_infer\build\Release\` directory, then follow Sections 2.2 and 2.3 to run the demo:  
+  1. `paddle_inference\paddle\lib\paddle_inference.dll`  
+  2. `paddle_inference\paddle\lib\common.dll`  
+  3. `deploy\cpp_infer\build\bin\Release\abseil_dll.dll`  
+  4. `deploy\cpp_infer\build\third_party\clipper_ver6.4.2\cpp\Release\polyclipping.dll`  
+  5. `opencv-4.7.0\build\install\x64\vc16\bin\opencv_world470.dll`  
 
 ### 2.2 Prepare the Model  
 
@@ -230,7 +231,7 @@ To visualize text recognition results, you need to compile OpenCV with the FreeT
 
   <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr/deployment/cpp/opencv_freetype_step5.png"/>
 
-  After completing the above steps, click "Configure" again in the CMake interface. After ensuring there are no errors, click "Generate", and then click "Open Project" to open Visual Studio. Right-click on "ALL_BUILD" and select "Build". After the compilation is completed, right-click on "INSTALL" and select "Build".
+  After completing the above steps, click Configure again in the CMake interface. After ensuring there are no errors, click Generate, and then click Open Project to open Visual Studio. Switch from Debug to Release, right-click on ALL_BUILD and select Build. After the compilation is completed, right-click on INSTALL and select Build.
 
   Note: If you have compiled OpenCV with FreeType included, when compiling the demo for the General OCR Pipeline in Section 2.1 Step 3, you need to check the `USE_FREETYPE` option to enable text rendering functionality. Additionally, when running the demo, you need to provide the path to the corresponding TTF font file using the `--vis_font_dir your_ttf_path` parameter.
 
