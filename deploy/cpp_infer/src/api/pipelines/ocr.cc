@@ -86,6 +86,7 @@ OCRPipelineParams PaddleOCR::ToOCRPipelineParams(const PaddleOCRParams &from) {
   COPY_PARAMS(text_det_input_shape)
   COPY_PARAMS(text_rec_score_thresh)
   COPY_PARAMS(text_rec_input_shape)
+  COPY_PARAMS(return_word_box)
   COPY_PARAMS(lang)
   COPY_PARAMS(ocr_version)
   COPY_PARAMS(vis_font_dir)

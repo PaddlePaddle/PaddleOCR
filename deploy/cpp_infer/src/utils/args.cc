@@ -75,6 +75,7 @@ DEFINE_string(text_rec_score_thresh, "0",
               "than this threshold are retained.");
 DEFINE_string(text_rec_input_shape, "",
               "Input shape of the text recognition model.eg C,H,W");
+DEFINE_string(return_word_box, "", "Determines whether to return word box");
 DEFINE_string(lang, "", "Language in the input image for OCR processing.");
 DEFINE_string(ocr_version, "", "PP-OCR version to use.");
 #ifdef WITH_GPU
