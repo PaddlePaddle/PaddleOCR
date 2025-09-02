@@ -153,7 +153,7 @@ You can directly download the inference models provided by PaddleOCR:
 </details>
 
 <details>
-<summary><b>Text Image Unwraping Module (Optional):</b></summary>
+<summary><b>Text Image Unwrapping Module (Optional):</b></summary>
 <table>
 <thead>
 <tr>
