@@ -19,8 +19,11 @@ dependencies = [
 
 [project.optional-dependencies]
 local = [
-    "paddlepaddle",
     "paddleocr",
+]
+local-cpu = [
+    "paddleocr", 
+    "paddlepaddle",
 ]
 
 [project.scripts]
