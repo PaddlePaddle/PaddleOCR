@@ -106,15 +106,11 @@ This section explains how to use the PaddleOCR MCP server within Claude for Desk
 
 ### 2.1 Quick Start
 
-1. **Install `paddleocr-mcp`**
+If you want to get started quickly, you can use the following configuration to start PaddleOCR MCP local mode (CPU) directly in Claude for Desktop without manual installation:
 
-    Refer to [1. Installation](#1-installation). To avoid dependency conflicts, **it is strongly recommended to install in an isolated virtual environment**.
+1. **Install [uv](https://docs.astral.sh/uv/#installation)**
 
-2. **Install PaddleOCR**
-
-    Install the PaddlePaddle framework and PaddleOCR, as per the [PaddleOCR installation documentation](../installation.en.md).
-
-3. **Add MCP Server Configuration**
+2. **Add MCP Server Configuration**
 
     Locate the `claude_desktop_config.json` configuration file:
 
@@ -127,9 +123,13 @@ This section explains how to use the PaddleOCR MCP server within Claude for Desk
     ```json
     {
       "mcpServers": {
-        "paddleocr-ocr": {
-          "command": "paddleocr_mcp",
-          "args": [],
+        "paddleocr_mcp": {
+          "command": "uvx",
+          "args": [
+            "--from",
+            "paddleocr_mcp[local-cpu]@git+https://github.com/PaddlePaddle/PaddleOCR.git@main#subdirectory=mcp_server",
+            "paddleocr_mcp"
+          ],
           "env": {
             "PADDLEOCR_MCP_PIPELINE": "OCR",
             "PADDLEOCR_MCP_PPOCR_SOURCE": "local"
@@ -138,6 +138,8 @@ This section explains how to use the PaddleOCR MCP server within Claude for Desk
       }
     }
     ```
+
+3. **Restart Claude Desktop** and start using the PaddleOCR MCP service!
 
     **Notes**:
 

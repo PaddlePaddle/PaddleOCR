@@ -19,10 +19,10 @@ dependencies = [
 
 [project.optional-dependencies]
 local = [
-    "paddleocr",
+    "paddleocr[doc-parser]>=3.2",
 ]
 local-cpu = [
-    "paddleocr", 
+    "paddleocr_mcp[local]",
     "paddlepaddle",
 ]
 
