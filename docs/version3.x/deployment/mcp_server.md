@@ -107,42 +107,7 @@ paddleocr_mcp --help
 
 ### 2.1 快速开始
 
-如果您想要快速上手，可以使用以下配置直接在 Claude for Desktop 中启动 PaddleOCR MCP 本地模式（CPU），无需手动安装：
-
-1. **安装 [uv](https://docs.astral.sh/uv/#installation)**
-
-2. **添加 MCP 服务器配置**
-
-    在以下位置之一找到 Claude for Desktop 配置文件：
-
-    - **macOS**：`~/Library/Application Support/Claude/claude_desktop_config.json`
-    - **Windows**：`%APPDATA%\Claude\claude_desktop_config.json`
-    - **Linux**：`~/.config/Claude/claude_desktop_config.json`
-
-    打开 `claude_desktop_config.json` 文件，添加以下配置：
-
-    ```json
-    {
-      "mcpServers": {
-        "paddleocr_mcp": {
-          "command": "uvx",
-          "args": [
-            "--from",
-            "paddleocr_mcp[local-cpu]@git+https://github.com/PaddlePaddle/PaddleOCR.git@main#subdirectory=mcp_server",
-            "paddleocr_mcp"
-          ],
-          "env": {
-            "PADDLEOCR_MCP_PIPELINE": "OCR",
-            "PADDLEOCR_MCP_PPOCR_SOURCE": "local"
-          }
-        }
-      }
-    }
-    ```
-
-3. **重启 Claude Desktop** 并开始使用 PaddleOCR MCP 服务！
-
-接下来以 **星河社区服务** 工作模式为例，引导您快速上手。此模式无需在本地安装复杂的依赖，因此比较适合用于快速体验。
+如果您想要快速上手，以 **星河社区服务** 工作模式为例，引导您快速上手。此模式无需在本地安装复杂的依赖，因此比较适合用于快速体验。
 
 1. **安装 `paddleocr-mcp`**
 
@@ -195,6 +160,41 @@ paddleocr_mcp --help
 4. **重启 MCP 主机**
 
     重启 Claude for Desktop。新的 `paddleocr-ocr` 工具现在应该可以在应用中使用了。
+
+如果想在本地进行快速体验，可以使用以下配置直接在 Claude for Desktop 中启动 PaddleOCR MCP 本地模式（CPU），无需手动安装：
+
+1. **安装 [uv](https://docs.astral.sh/uv/#installation)**
+
+2. **添加 MCP 服务器配置**
+
+    在以下位置之一找到 Claude for Desktop 配置文件：
+
+    - **macOS**：`~/Library/Application Support/Claude/claude_desktop_config.json`
+    - **Windows**：`%APPDATA%\Claude\claude_desktop_config.json`
+    - **Linux**：`~/.config/Claude/claude_desktop_config.json`
+
+    打开 `claude_desktop_config.json` 文件，添加以下配置：
+
+    ```json
+    {
+      "mcpServers": {
+        "paddleocr_mcp": {
+          "command": "uvx",
+          "args": [
+            "--from",
+            "paddleocr_mcp[local-cpu]@git+https://github.com/PaddlePaddle/PaddleOCR.git@main#subdirectory=mcp_server",
+            "paddleocr_mcp"
+          ],
+          "env": {
+            "PADDLEOCR_MCP_PIPELINE": "OCR",
+            "PADDLEOCR_MCP_PPOCR_SOURCE": "local"
+          }
+        }
+      }
+    }
+    ```
+
+3. **重启 Claude Desktop** 并开始使用 PaddleOCR MCP 服务！
 
 ### 2.2 MCP 主机配置说明
 
