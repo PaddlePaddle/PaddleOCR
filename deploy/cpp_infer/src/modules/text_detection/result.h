@@ -28,6 +28,7 @@ public:
   void SaveToImg(const std::string &save_path) override;
   void Print() const override;
   void SaveToJson(const std::string &save_path) const override;
+  TextDetPredictorResult Result() { return predictor_result_; };
 
 private:
   TextDetPredictorResult predictor_result_;
