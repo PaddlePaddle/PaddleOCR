@@ -106,11 +106,15 @@ This section explains how to use the PaddleOCR MCP server within Claude for Desk
 
 ### 2.1 Quick Start
 
-If you want to get started quickly, you can use the following configuration to start PaddleOCR MCP local mode (CPU) directly in Claude for Desktop without manual installation:
+1. **Install `paddleocr-mcp`**
 
-1. **Install [uv](https://docs.astral.sh/uv/#installation)**
+    Refer to [1. Installation](#1-installation). To avoid dependency conflicts, **it is strongly recommended to install in an isolated virtual environment**.
 
-2. **Add MCP Server Configuration**
+2. **Install PaddleOCR**
+
+    Install the PaddlePaddle framework and PaddleOCR, as per the [PaddleOCR installation documentation](../installation.en.md).
+
+3. **Add MCP Server Configuration**
 
     Locate the `claude_desktop_config.json` configuration file:
 
@@ -123,13 +127,9 @@ If you want to get started quickly, you can use the following configuration to s
     ```json
     {
       "mcpServers": {
-        "paddleocr_mcp": {
-          "command": "uvx",
-          "args": [
-            "--from",
-            "paddleocr_mcp[local-cpu]@git+https://github.com/PaddlePaddle/PaddleOCR.git@main#subdirectory=mcp_server",
-            "paddleocr_mcp"
-          ],
+        "paddleocr-ocr": {
+          "command": "paddleocr_mcp",
+          "args": [],
           "env": {
             "PADDLEOCR_MCP_PIPELINE": "OCR",
             "PADDLEOCR_MCP_PPOCR_SOURCE": "local"
@@ -138,8 +138,6 @@ If you want to get started quickly, you can use the following configuration to s
       }
     }
     ```
-
-3. **Restart Claude Desktop** and start using the PaddleOCR MCP service!
 
     **Notes**:
 
@@ -276,32 +274,40 @@ Configuration example:
 
 ### 2.4 Using `uvx`
 
-Currently, for both the AI Studio and self-hosted modes, starting the MCP server via `uvx` is also supported. With this approach, manual installation of `paddleocr-mcp` is not required. The main steps are as follows:
+If you want to quickly experience locally, you can use the following configuration to start PaddleOCR MCP local mode (CPU) directly in Claude for Desktop without manual installation:
 
-1. Install [uv](https://docs.astral.sh/uv/#installation).
-2. Modify `claude_desktop_config.json`. Example for self-hosted mode:
+1. **Install [uv](https://docs.astral.sh/uv/#installation)**
+
+2. **Add MCP Server Configuration**
+
+    Locate the Claude for Desktop configuration file in one of the following locations:
+
+    - **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
+    - **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
+    - **Linux**: `~/.config/Claude/claude_desktop_config.json`
+
+    Open the `claude_desktop_config.json` file and add the following configuration:
 
     ```json
     {
       "mcpServers": {
-        "paddleocr-ocr": {
+        "paddleocr_mcp": {
           "command": "uvx",
           "args": [
             "--from",
-            "paddleocr-mcp@https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/mcp/paddleocr_mcp/releases/v0.2.0/paddleocr_mcp-0.2.0-py3-none-any.whl",
+            "paddleocr_mcp[local-cpu]@git+https://github.com/PaddlePaddle/PaddleOCR.git@main#subdirectory=mcp_server",
             "paddleocr_mcp"
           ],
           "env": {
             "PADDLEOCR_MCP_PIPELINE": "OCR",
-            "PADDLEOCR_MCP_PPOCR_SOURCE": "self_hosted",
-            "PADDLEOCR_MCP_SERVER_URL": "<your-server-url>"
+            "PADDLEOCR_MCP_PPOCR_SOURCE": "local"
           }
         }
       }
     }
     ```
 
-    Due to the different startup methods used, the settings for `command` and `args` in the configuration file differ significantly from those described in [2.1 Quick Start](#21-quick-start). However, the command-line arguments and environment variables (such as `PADDLEOCR_MCP_SERVER_URL`) supported by the MCP service itself can still be set in the same way.
+**Note**: Local mode has certain requirements for computing resources, it is recommended to use on machines with good configuration. If you encounter issues such as long inference time or insufficient memory, consider using the AI Studio community service mode.
 
 ## 3. Running the Server
 

@@ -107,7 +107,7 @@ paddleocr_mcp --help
 
 ### 2.1 快速开始
 
-如果您想要快速上手，以 **星河社区服务** 工作模式为例，引导您快速上手。此模式无需在本地安装复杂的依赖，因此比较适合用于快速体验。
+接下来以 **星河社区服务** 工作模式为例，引导您快速上手。此模式无需在本地安装复杂的依赖，因此比较适合用于快速体验。
 
 1. **安装 `paddleocr-mcp`**
 
@@ -161,40 +161,6 @@ paddleocr_mcp --help
 
     重启 Claude for Desktop。新的 `paddleocr-ocr` 工具现在应该可以在应用中使用了。
 
-如果想在本地进行快速体验，可以使用以下配置直接在 Claude for Desktop 中启动 PaddleOCR MCP 本地模式（CPU），无需手动安装：
-
-1. **安装 [uv](https://docs.astral.sh/uv/#installation)**
-
-2. **添加 MCP 服务器配置**
-
-    在以下位置之一找到 Claude for Desktop 配置文件：
-
-    - **macOS**：`~/Library/Application Support/Claude/claude_desktop_config.json`
-    - **Windows**：`%APPDATA%\Claude\claude_desktop_config.json`
-    - **Linux**：`~/.config/Claude/claude_desktop_config.json`
-
-    打开 `claude_desktop_config.json` 文件，添加以下配置：
-
-    ```json
-    {
-      "mcpServers": {
-        "paddleocr_mcp": {
-          "command": "uvx",
-          "args": [
-            "--from",
-            "paddleocr_mcp[local-cpu]@git+https://github.com/PaddlePaddle/PaddleOCR.git@main#subdirectory=mcp_server",
-            "paddleocr_mcp"
-          ],
-          "env": {
-            "PADDLEOCR_MCP_PIPELINE": "OCR",
-            "PADDLEOCR_MCP_PPOCR_SOURCE": "local"
-          }
-        }
-      }
-    }
-    ```
-
-3. **重启 Claude Desktop** 并开始使用 PaddleOCR MCP 服务！
 
 ### 2.2 MCP 主机配置说明
 
@@ -306,25 +272,33 @@ paddleocr_mcp --help
 
 ### 2.4 使用 `uvx`
 
-对于星河社区服务和自托管服务模式，目前也支持通过 `uvx` 启动 MCP 服务器。这种方式不需要手动安装 `paddleocr-mcp`。主要步骤如下：
+如果想在本地进行快速体验，可以使用以下配置直接在 Claude for Desktop 中启动 PaddleOCR MCP 本地模式（CPU），无需手动安装：
 
-1. 安装 [uv](https://docs.astral.sh/uv/#installation)。
-2. 修改 `claude_desktop_config.json` 文件的内容。以自托管服务模式为例：
+1. **安装 [uv](https://docs.astral.sh/uv/#installation)**
+
+2. **添加 MCP 服务器配置**
+
+    在以下位置之一找到 Claude for Desktop 配置文件：
+
+    - **macOS**：`~/Library/Application Support/Claude/claude_desktop_config.json`
+    - **Windows**：`%APPDATA%\Claude\claude_desktop_config.json`
+    - **Linux**：`~/.config/Claude/claude_desktop_config.json`
+
+    打开 `claude_desktop_config.json` 文件，添加以下配置：
 
     ```json
     {
       "mcpServers": {
-        "paddleocr-ocr": {
+        "paddleocr_mcp": {
           "command": "uvx",
           "args": [
             "--from",
-            "paddleocr-mcp@https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/mcp/paddleocr_mcp/releases/v0.2.0/paddleocr_mcp-0.2.0-py3-none-any.whl",
+            "paddleocr_mcp[local-cpu]@git+https://github.com/PaddlePaddle/PaddleOCR.git@main#subdirectory=mcp_server",
             "paddleocr_mcp"
           ],
           "env": {
             "PADDLEOCR_MCP_PIPELINE": "OCR",
-            "PADDLEOCR_MCP_PPOCR_SOURCE": "self_hosted",
-            "PADDLEOCR_MCP_SERVER_URL": "<your-server-url>"
+            "PADDLEOCR_MCP_PPOCR_SOURCE": "local"
           }
         }
       }
@@ -332,6 +306,8 @@ paddleocr_mcp --help
     ```
 
     由于使用了不一样的启动方式，配置文件中 `command` 和 `args` 的设置都与 [2.1 快速开始](#21-快速开始) 介绍的方式存在显著不同，但 MCP 服务本身支持的命令行参数与环境变量（如 `PADDLEOCR_MCP_SERVER_URL`）仍然可以以相同的方式设置。
+
+    **注意**：本地模式对计算资源有一定要求，建议在配置较好的机器上使用。如遇到推理耗时过长或内存不足等问题，可考虑使用星河社区服务模式。
 
 ## 3. 运行服务器
 
