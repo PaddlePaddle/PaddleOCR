@@ -335,7 +335,7 @@ print(chat_result)
 
 </details>
 
-## Fonctionnalités supplémentaires
+## 🧩 Fonctionnalités supplémentaires
 
 - Convertir les modèles au format ONNX : [Obtention des modèles ONNX](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/obtaining_onnx_models.html).
 - Accélérer l'inférence avec des moteurs comme OpenVINO, ONNX Runtime, TensorRT, ou effectuer l'inférence avec des modèles au format ONNX : [Inférence haute performance](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/high_performance_inference.html).
@@ -358,6 +358,16 @@ print(chat_result)
 <div align="center">
   <p>
      <img width="100%" src="../docs/images/blue_v3.gif" alt="Démo PP-StructureV3">
+  </p>
+</div>
+
+## 🌟 Restez à l'écoute
+
+⭐ **Ajoutez une étoile à ce dépôt pour suivre les mises à jour passionnantes et les nouvelles versions, y compris de puissantes fonctionnalités d'OCR et d'analyse de documents !** ⭐
+
+<div align="center">
+  <p>
+       <img width="1200" src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/paddleocr/README/star_paddleocr.en.gif" alt="Star-Project">
   </p>
 </div>
 

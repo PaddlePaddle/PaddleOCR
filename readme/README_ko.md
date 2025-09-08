@@ -329,7 +329,7 @@ print(chat_result)
 
 </details>
 
-## 추가 기능
+## 🧩 추가 기능
 
 - 모델을 ONNX 형식으로 변환: [ONNX 모델 얻기](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/obtaining_onnx_models.html)
 - OpenVINO, ONNX Runtime, TensorRT 같은 엔진을 사용하거나 ONNX 형식 모델로 추론 가속: [고성능 추론](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/high_performance_inference.html)
@@ -352,6 +352,16 @@ print(chat_result)
 <div align="center">
   <p>
      <img width="100%" src="../docs/images/blue_v3.gif" alt="PP-StructureV3 데모">
+  </p>
+</div>
+
+## 🌟 최신 소식을 놓치지 마세요
+
+⭐ **이 저장소에 스타를 추가하여 강력한 OCR 및 문서 분석 기능을 포함한 흥미로운 업데이트와 새로운 릴리스를 받아보세요!** ⭐
+
+<div align="center">
+  <p>
+       <img width="1200" src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/paddleocr/README/star_paddleocr.en.gif" alt="Star-Project">
   </p>
 </div>
 

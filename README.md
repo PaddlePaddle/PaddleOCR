@@ -9,7 +9,7 @@ English | [简体中文](./readme/README_cn.md) | [繁體中文](./readme/README
 [![arXiv](https://img.shields.io/badge/arXiv-2507.05595-b31b1b.svg?logo=arXiv)](https://arxiv.org/abs/2507.05595)
 [![PyPI Downloads](https://static.pepy.tech/badge/paddleocr/month)](https://pepy.tech/project/paddleocr)
 [![PyPI Downloads](https://static.pepy.tech/badge/paddleocr)](https://pepy.tech/project/paddleocr)
-[![Used by](https://img.shields.io/badge/Used%20by-5.8k%2B%20repositories-blue)](https://github.com/PaddlePaddle/PaddleOCR/network/dependents)
+[![Used by](https://img.shields.io/badge/Used%20by-5.9k%2B%20repositories-blue)](https://github.com/PaddlePaddle/PaddleOCR/network/dependents)
 
 ![python](https://img.shields.io/badge/python-3.8~3.12-aff.svg)
 ![os](https://img.shields.io/badge/os-linux%2C%20win%2C%20mac-pink.svg)
@@ -368,7 +368,7 @@ print(chat_result)
 - [Huawei Ascend](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/other_devices_support/paddlepaddle_install_NPU.html)
 - [KUNLUNXIN](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/other_devices_support/paddlepaddle_install_XPU.html)
 
-## More Features
+## 🧩 More Features
 
 - Convert models to ONNX format: [Obtaining ONNX Models](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/obtaining_onnx_models.html).
 - Accelerate inference using engines like OpenVINO, ONNX Runtime, TensorRT, or perform inference using ONNX format models: [High-Performance Inference](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/high_performance_inference.html).
@@ -394,15 +394,31 @@ print(chat_result)
   </p>
 </div>
 
+
+## ✨ Stay Tuned
+
+⭐ **Star this repository to keep up with exciting updates and new releases, including powerful OCR and document parsing capabilities!** ⭐
+
+<div align="center">
+  <p>
+       <img width="1200" src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/paddleocr/README/star_paddleocr.en.gif" alt="Star-Project">
+  </p>
+</div>
+
 ## 👩‍👩‍👧‍👦 Community
+
+<div align="center">
 
 | PaddlePaddle WeChat official account |  Join the tech discussion group |
 | :---: | :---: |
 | <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr/README/qrcode_for_paddlepaddle_official_account.jpg" width="150"> | <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr/README/qr_code_for_the_questionnaire.jpg" width="150"> |
+</div>
 
 
 ## 😃 Awesome Projects Leveraging PaddleOCR
 PaddleOCR wouldn't be where it is today without its incredible community! 💗 A massive thank you to all our longtime partners, new collaborators, and everyone who's poured their passion into PaddleOCR — whether we've named you or not. Your support fuels our fire!
+
+<div align="center">
 
 | Project Name | Description |
 | ------------ | ----------- |
@@ -414,17 +430,23 @@ PaddleOCR wouldn't be where it is today without its incredible community! 💗 A
 | [PDF-Extract-Kit](https://github.com/opendatalab/PDF-Extract-Kit) <a href="https://github.com/opendatalab/PDF-Extract-Kit"><img src="https://img.shields.io/github/stars/opendatalab/PDF-Extract-Kit"></a>|A powerful open-source toolkit designed to efficiently extract high-quality content from complex and diverse PDF documents.|
 | [Dango-Translator](https://github.com/PantsuDango/Dango-Translator)<a href="https://github.com/PantsuDango/Dango-Translator"><img src="https://img.shields.io/github/stars/PantsuDango/Dango-Translator"></a> |Recognize text on the screen, translate it and show the translation results in real time.|
 | [Learn more projects](./awesome_projects.md) | [More projects based on PaddleOCR](./awesome_projects.md)|
+</div>
 
 ## 👩‍👩‍👧‍👦 Contributors
 
+<div align="center">
 <a href="https://github.com/PaddlePaddle/PaddleOCR/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=PaddlePaddle/PaddleOCR&max=400&columns=20"  width="800"/>
 </a>
-
+</div>
 
 ## 🌟 Star
 
-[![Star History Chart](https://api.star-history.com/svg?repos=PaddlePaddle/PaddleOCR&type=Date)](https://star-history.com/#PaddlePaddle/PaddleOCR&Date)
+<div align="center">
+  <p>
+      <img width="800" src="https://api.star-history.com/svg?repos=PaddlePaddle/PaddleOCR&type=Date" alt="Star-history">
+  </p>
+</div>
 
 
 ## 📄 License

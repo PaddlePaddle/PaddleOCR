@@ -339,7 +339,7 @@ print(chat_result)
 - [Huawei Ascend](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/other_devices_support/paddlepaddle_install_NPU.html)
 - [KUNLUNXIN](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/other_devices_support/paddlepaddle_install_XPU.html)
 
-## Дополнительные функции
+## 🧩 Дополнительные функции
 
 - Конвертация моделей в формат ONNX: [Получение моделей ONNX](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/obtaining_onnx_models.html).
 - Ускорение вывода с использованием движков, таких как OpenVINO, ONNX Runtime, TensorRT, или выполнение вывода с моделями в формате ONNX: [Высокопроизводительный вывод](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/high_performance_inference.html).
@@ -362,6 +362,16 @@ print(chat_result)
 <div align="center">
   <p>
      <img width="100%" src="../docs/images/blue_v3.gif" alt="Демо PP-StructureV3">
+  </p>
+</div>
+
+## 🌟 Не пропустите самые свежие новости
+
+⭐ **Поставьте звезду этому репозиторию, чтобы быть в курсе захватывающих обновлений и новых релизов — включая мощные функции OCR и анализа документов!** ⭐
+
+<div align="center">
+  <p>
+       <img width="1200" src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/paddleocr/README/star_paddleocr.en.gif" alt="Star-Project">
   </p>
 </div>
 

@@ -1,3 +1,7 @@
+---
+comments: true
+---
+
 # High-Performance Inference
 
 In real-world production environments, many applications have stringent performance requirements for deployment strategies, particularly regarding response speed, to ensure efficient system operation and a smooth user experience. PaddleOCR provides high-performance inference capabilities, allowing users to enhance model inference speed with a single click without worrying about complex configurations or underlying details. Specifically, PaddleOCR's high-performance inference functionality can:

@@ -20,7 +20,7 @@ GPU端安装，由于GPU端需要根据具体CUDA版本来对应安装使用，�
 python -m pip install paddlepaddle-gpu==3.0.0 -i https://www.paddlepaddle.org.cn/packages/stable/cu118/
 ```
 
-**请注意，PaddleOCR 依赖于 `3.0` 及以上版本的飞桨框架。**
+**请注意，PaddleOCR 3.x版本 依赖于 `3.0` 及以上版本的飞桨框架。**
 
 #### 2. 安装`paddleocr`
 

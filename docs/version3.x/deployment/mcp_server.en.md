@@ -1,3 +1,7 @@
+---
+comments: true
+---
+
 # PaddleOCR MCP Server
 
 [![PaddleOCR](https://img.shields.io/badge/OCR-PaddleOCR-orange)](https://github.com/PaddlePaddle/PaddleOCR)

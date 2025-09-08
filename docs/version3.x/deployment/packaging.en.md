@@ -1,3 +1,7 @@
+---
+comments: true
+---
+
 # Package PaddleOCR Projects
 
 This guide applies to packaging PaddleOCR projects using PyInstaller.

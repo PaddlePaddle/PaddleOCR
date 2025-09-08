@@ -333,7 +333,7 @@ print(chat_result)
 
 </details>
 
-## その他の機能
+## 🧩 その他の機能
 
 - モデルをONNX形式に変換：[ONNXモデルの取得](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/obtaining_onnx_models.html)
 - OpenVINO、ONNX Runtime、TensorRTなどのエンジンを使用して推論を高速化、またはONNX形式モデルで推論を実行：[高性能推論](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/high_performance_inference.html)
@@ -356,6 +356,16 @@ print(chat_result)
 <div align="center">
   <p>
      <img width="100%" src="../docs/images/blue_v3.gif" alt="PP-StructureV3 Demo">
+  </p>
+</div>
+
+## 🌟 最新情報をお見逃しなく
+
+⭐ **このリポジトリにスターを付けて、強力なOCRやドキュメント解析機能を含む、エキサイティングなアップデートや新リリースに注目しましょう！** ⭐
+
+<div align="center">
+  <p>
+       <img width="1200" src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/paddleocr/README/star_paddleocr.en.gif" alt="Star-Project">
   </p>
 </div>
 
