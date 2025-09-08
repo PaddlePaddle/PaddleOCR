@@ -1,3 +1,9 @@
+---
+comments: true
+hide:
+  - toc
+---
+
 ## 1. Introduction to All-in-One Development
 
 The All-in-One development tool [PaddleX](https://github.com/PaddlePaddle/PaddleX/tree/release/3.0-beta1), based on the advanced technology of PaddleOCR, supports **low-code full-process** development capabilities in the OCR field. Through low-code development, simple and efficient model use, combination, and customization can be achieved. This will significantly **reduce the time consumption** of model development, **lower its development difficulty**, and greatly accelerate the application and promotion speed of models in the industry. Features include:

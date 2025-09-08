@@ -1,3 +1,7 @@
+---
+comments: true
+---
+
 # 打包PaddleOCR项目
 
 本说明适用于通过PyInstaller打包PaddleOCR项目。

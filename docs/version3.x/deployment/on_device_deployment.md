@@ -1,3 +1,7 @@
+---
+comments: true
+---
+
 # OCR 端侧部署 demo 使用指南
 
 - [快速开始](#快速开始)
@@ -343,7 +347,7 @@ OCR 文字识别 demo 由三个模型一起完成 OCR 文字识别功能，对�
 **注意**
 
 - 有关模型优化工具 opt 的详细介绍，可参考 Paddle-Lite 仓库的[模型优化工具 opt](https://www.paddlepaddle.org.cn/lite/v2.12/user_guides/model_optimize_tool.html)
-- 目前仅支持将 `.pdmodel` 格式的静态图模型转换为 `.nb` 格式。
+- 目前仅支持将 `.pdmodel` 格式的静态图模型转换为 `.nb` 格式。在 PaddlePaddle 3.0 以上的版本，默认导出为 `.json` 的模型，如果希望导出为 `.pdmodel` 格式的模型，导出时加上 `-o Global.export_with_pir=False` 即可。
 
 ### 更新模型、标签文件和预测图片
 

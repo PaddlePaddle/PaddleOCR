@@ -1,11 +1,13 @@
 # 一、PP-StructureV3 简介
-**PP-StructureV3** 产线在通用版面解析v1产线的基础上，强化了版面区域检测、表格识别、公式识别的能力，增加了图表理解和多栏阅读顺序的恢复能力、结果转换 Markdown 文件的能力，在多种文档数据中，表现优异，可以处理较复杂的文档数据。本产线同时提供了灵活的服务化部署方式，支持在多种硬件上使用多种编程语言调用。不仅如此，本产线也提供了二次开发的能力，您可以基于本产线在您自己的数据集上训练调优，训练后的模型也可以无缝集成。
+PP-StructureV3 能够将文档图像和 PDF 文件高效转换为结构化内容（如 Markdown 格式），并具备版面区域检测、表格识别、公式识别、图表理解以及多栏阅读顺序恢复等强大功能。该工具在多种文档类型下均表现优异，能够处理复杂的文档数据。PP-StructureV3 支持灵活的服务化部署，兼容多种硬件环境，并可通过多种编程语言进行调用。同时，支持二次开发，用户可以基于自有数据集进行模型训练和优化，训练后的模型可实现无缝集成。
 
 <div align="center">
-<img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr/PP-StructureV3/algorithm_ppstructurev3.png" width="600"/>
+<img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr/PP-StructureV3/algorithm_ppstructurev3.png" width="800"/>
 </div>
 
 # 二、关键指标
+
+<div align="center">
 <table>
   <thead>
     <tr>
@@ -296,6 +298,7 @@
   </tr> 
  </tbody>
 </table>
+</div>
 
 以上部分数据出自：
 * <a href="https://github.com/opendatalab/OmniDocBench">OmniDocBench</a>
@@ -1492,27 +1495,39 @@
 
 <div align="center">
 <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr/PP-StructureV3/algorithm_ppstructurev3_demo.png" width="600"/>
-</div>
+</div> 
 
 <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex%2FPaddleX3.0%2Fdoc_images%2FPP-StructureV3%2Falgorithm_ppstructurev3_demo.pdf">更多示例</a>
 
 # 五、使用方法和常见问题
 
-1. 默认模型是什么配置，如果需要更高精度、更快速度、或者更小显存，应该调哪些参数或者更换哪些模型，对结果影响大概有多大？
+**Q:默认模型是什么配置，如果需要更高精度、更快速度、或者更小显存，应该调哪些参数或者更换哪些模型，对结果影响大概有多大？**
 
-在“使用轻量OCR模型+轻量公式模型，文本检测max 1200”的基础上，将产线配置文件中的use_chart_recognition设置为False，不加载图表识别模型，可以进一步减少显存用量。在V100测试环境中，峰值和平均显存用量分别从8776.0 MB和8680.8 MB降低到6118.0 MB和6016.7 MB；在A100测试环境中，峰值和平均显存用量分别从11716.0 MB和11453.9 MB降低到9850.0 MB和9593.5 MB。
-在Python API或CLI设置device为<设备类型>:<设备编号1>,<设备编号2>...（例如gpu:0,1,2,3）可实现多卡并行推理。如果内置的多卡并行推理功能提速效果仍不满足预期，可参考多进程并行推理示例代码，结合具体场景进行进一步优化：[多进程并行推理](https://github.com/PaddlePaddle/PaddleX/blob/develop/docs/pipeline_usage/instructions/parallel_inference.md#%E5%A4%9A%E8%BF%9B%E7%A8%8B%E5%B9%B6%E8%A1%8C%E6%8E%A8%E7%90%86%E7%A4%BA%E4%BE%8B)。
+**A:** 默认模型均采用了了各个模块参数量最大的模型，3.3 章节中展示了不同的模型选择对于显存和推理速度的影响。可以根据设备情况和样本难易程度选择合适的模型。另外，在 Python API 或 CLI 设置 device 为<设备类型>:<设备编号1>,<设备编号2>...（例如gpu:0,1,2,3）可实现多卡并行推理。如果内置的多卡并行推理功能提速效果仍不满足预期，可参考多进程并行推理示例代码，结合具体场景进行进一步优化：[多进程并行推理](https://www.paddleocr.ai/latest/version3.x/pipeline_usage/instructions/parallel_inference.html)。
 
-2. 服务化部署的常见问题
+---
 
-（1）服务可以并发处理请求吗？
+**Q: PP-StructureV3 是否可以在 CPU 上运行？**
 
-对于基础服务化部署方案，服务同一时间只处理一个请求，该方案主要用于快速验证、打通开发链路，或者用在不需要并发请求的场景；
+**A:** PP-StructureV3 虽然更推荐在 GPU 环境下进行推理，但也支持在 CPU 上运行。得益于多种配置选项及对轻量级模型的充分优化，在仅有 CPU 环境时，用户可以参考 3.3 节选择轻量化配置进行推理。例如，在 Intel 8350C CPU 上，每张图片的推理时间约为 3.74 秒。
 
-对于高稳定性服务化部署方案，服务默认在同一时间只处理一个请求，但用户可以参考服务化部署指南，通过调整配置实现水平扩展，以使服务同时处理多个请求。
+---
 
-（2）如何降低时延、提升吞吐？
+**Q: 如何将 PP-StructureV3 集成到自己的项目中？**
 
-无论使用哪一种服务化部署方案，都可以通过启用高性能推理插件提升模型推理速度，从而降低处理时延。
+**A:**  
+- 对于 Python 项目，可以直接使用 PaddleOCR 的 Python API 完成集成。  
+- 对于其他编程语言，建议通过服务化部署方式集成。PaddleOCR 支持包括 C++、C#、Java、Go、PHP 等多种语言的客户端调用方式，具体集成方法可参考 [官方文档](https://www.paddleocr.ai/latest/version3.x/pipeline_usage/PP-StructureV3.html#3)。  
+- 如果需要与大模型进行交互，PaddleOCR 还提供了 MCP 服务，详细说明可参考 [MCP 服务器](https://www.paddleocr.ai/latest/version3.x/deployment/mcp_server.html)。
 
-此外，对于高稳定性服务化部署方案，通过调整服务配置，设置多个实例，也可以充分利用部署机器的资源，有效提升吞吐。
+---
+
+**Q:服务化部署可以并发处理请求吗？**
+
+**A:** 对于基础服务化部署方案，服务同一时间只处理一个请求，该方案主要用于快速验证、打通开发链路，或者用在不需要并发请求的场景；对于高稳定性服务化部署方案，服务默认在同一时间只处理一个请求，但用户可以参考服务化部署指南，通过调整配置实现水平扩展，以使服务同时处理多个请求。
+
+---
+
+**Q: 服务化部署如何降低时延、提升吞吐？**
+
+**A:** PaddleOCR 提供的2种服务化部署方案，无论使用哪一种方案，都可以通过启用高性能推理插件提升模型推理速度，从而降低处理时延。此外，对于高稳定性服务化部署方案，通过调整服务配置，设置多个实例，也可以充分利用部署机器的资源，有效提升吞吐。高稳定性服务化部署方案调整配置可以参考[文档](https://paddlepaddle.github.io/PaddleX/latest/pipeline_deploy/serving.html#22)。

@@ -1,3 +1,7 @@
+---
+comments: true
+---
+
 # OCR On-Device Deployment Demo Usage Guide
 
 - [Quick Start](#quick-start)
@@ -343,7 +347,7 @@ For detailed instructions on converting `.nb` models using the Python script met
 **Notes**
 
 - For detailed information about the model optimization tool `opt`, refer to Paddle-Lite's [Model Optimization Tool opt](https://www.paddlepaddle.org.cn/lite/v2.12/user_guides/model_optimize_tool.html).
-- Currently, only static graph models in `.pdmodel` format can be converted to `.nb` format.
+- Currently, only static graph models in `.pdmodel` format can be converted to `.nb` format. In PaddlePaddle version 3.0 and above, the default exported model format is `.json`. If you want to export the model in `.pdmodel` format, simply add `-o Global.export_with_pir=False` during export.
 
 ### Updating Models, Label Files, and Prediction Images
 

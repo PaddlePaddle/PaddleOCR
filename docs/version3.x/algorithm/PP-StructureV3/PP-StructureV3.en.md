@@ -1507,22 +1507,33 @@ The serving inference test is based on the NVIDIA A100 + Intel Xeon Platinum 835
 
 # FAQ
 
-1. What is the default configuration? How to get higher accuracy, faster speed, or smaller GPU memory?
+**Q: What is the default model configuration? If I need higher accuracy, faster speed, or lower GPU memory usage, which parameters should I adjust or which models should I switch to? How significant is the impact on results?**
 
-When using mobile OCR models + PP-FormulaNet_plus-M, and max length of text detection set to 1200, if set use_chart_recognition to False and dont not load the chart recognition model, the GPU memory would be reduced. 
+**A:** By default, the largest models for each module are used. Section 3.3 demonstrates how different model selections affect GPU memory consumption and inference speed. You can choose an appropriate model based on your device capabilities and the complexity of your samples. Additionally, in the Python API or CLI, you can set the device parameter as `<device_type>:<device_id1>,<device_id2>...` (e.g., `gpu:0,1,2,3`) to enable multi-GPU parallel inference. If the built-in multi-GPU parallel inference does not meet your speed requirements, you may refer to the example code for multi-process parallel inference and further optimize it for your specific scenario: [Multi-process Parallel Inference](https://www.paddleocr.ai/latest/en/version3.x/pipeline_usage/instructions/parallel_inference.html).
 
-On the V100, the peak and average GPU memory would be reduced from 8776.0 MB and 8680.8 MB to 6118.0 MB and 6016.7 MB, respectively; On the A100, the peak and average GPU memory would be reduced from 11716.0 MB and 11453.9 MB to 9850.0 MB and 9593.5 MB, respectively.
+---
 
-You can using multi-gpus by setting `device` to `gpu:<no.>,<no.>`, such as `gpu:0,1,2,3`. And about multi-process parallel inference, you can refer: [Multi-Process Parallel Inference](https://github.com/PaddlePaddle/PaddleX/blob/develop/docs/pipeline_usage/instructions/parallel_inference.en.md#example-of-multi-process-parallel-inference).
+**Q: Can PP-StructureV3 run on CPU?**
 
-2. About serving deployment
+**A:** While PP-StructureV3 is recommended to run on GPU for optimal performance, it also supports CPU inference. Thanks to a variety of configuration options and sufficient optimization for lightweight models, users can refer to section 3.3 to select lightweight configurations for CPU-only environments. For example, on an Intel 8350C CPU, the inference time per image is about 3.74 seconds.
 
-(1) Can the service handle requests concurrently?
+---
 
-For the basic serving deployment solution, the service processes only one request at a time. This plan is mainly used for rapid verification, to establish the development chain, or for scenarios where concurrent requests are not required.
+**Q: How can I integrate PP-StructureV3 into my own project?**
 
-For high-stability serving deployment solution, the service process only one request at a time by default, but you can refer to the related docs to adjust achieve scaling.
+**A:**  
+- For Python projects, you can directly integrate using the PaddleOCR Python API.  
+- For projects in other programming languages, it is recommended to use service-based deployment. PaddleOCR supports client-side integration in multiple languages, including C++, C#, Java, Go, and PHP. Please refer to the [official documentation](https://www.paddleocr.ai/latest/en/version3.x/pipeline_usage/PP-StructureV3.html#3-development-integration-deployment) for details.  
+- If you need to interact with large language models, PaddleOCR also provides the MCP service. For more information, please refer to the [MCP Server documentation](https://www.paddleocr.ai/latest/en/version3.x/deployment/mcp_server.html).
 
-（2）How to reduce latency and improve throughput?
+---
 
-Use the High-performance inference plugin, and deploy multi instances.
+**Q: Can the serving handle concurrent requests?**
+
+**A:** In the basic service deployment solution, the service processes only one request at a time, which is mainly intended for quick validation, development pipeline integration, or scenarios that do not require concurrent processing. In the high-stability serving solution, the service also processes one request at a time by default, but users can achieve horizontal scaling and concurrent processing by adjusting the configuration as outlined in the service deployment guide.
+
+---
+
+**Q: How can I reduce latency and increase throughput in serving?**
+
+**A:** PaddleOCR offers two types of service deployment solutions. Regardless of the solution used, enabling high-performance inference plugins can accelerate model inference and thus reduce latency. For the high-stability deployment solution, throughput can be further increased by adjusting the service configuration to run multiple instances, making full use of your hardware resources. Please refer to the [documentation](https://paddlepaddle.github.io/PaddleX/latest/en/pipeline_deploy/serving.html#22-adjust-configurations) for more details on configuring high-stability serving.

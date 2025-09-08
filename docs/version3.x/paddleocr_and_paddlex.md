@@ -1,3 +1,7 @@
+---
+comments: true
+---
+
 # PaddleOCR 与 PaddleX
 
 [PaddleX](https://github.com/PaddlePaddle/PaddleX) 是一款基于飞桨框架构建的低代码开发工具，集成了众多开箱即用的预训练模型，支持模型从训练到推理的全流程开发，兼容多款国内外主流硬件，助力 AI 开发者在产业实践中高效落地。

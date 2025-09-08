@@ -1,3 +1,7 @@
+---
+comments: true
+---
+
 # PaddleOCR and PaddleX
 
 [PaddleX](https://github.com/PaddlePaddle/PaddleX) is a low-code development tool built on the PaddlePaddle framework. It integrates numerous out-of-the-box pre-trained models, supports the full-pipeline development from model training to inference, and is compatible with various mainstream hardware both domestically and internationally, empowering AI developers to efficiently deploy solutions in industrial practices.

@@ -486,7 +486,17 @@ print(chat_result)
     <img width="100%" src="../docs/images/blue_v3.gif" alt="PP-StructureV3 Demo">
 </p>
 
-### 6. المزيد من الميزات
+## 🌟 لا تفوت أحدث الأخبار
+
+⭐ **ضع نجمة لهذا المستودع لتكون على اطلاع دائم بأحدث التحديثات والإصدارات الجديدة المثيرة، بما في ذلك ميزات التعرف الضوئي على الحروف (OCR) وتحليل المستندات القوية!** ⭐
+
+<div align="center">
+  <p>
+       <img width="1200" src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/paddleocr/README/star_paddleocr.en.gif" alt="Star-Project">
+  </p>
+</div>
+
+## 🧩 المزيد من الميزات
 
 - تحويل النماذج إلى صيغة ONNX: [الحصول على نماذج ONNX](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/obtaining_onnx_models.html).
 - تسريع الاستدلال باستخدام محركات مثل OpenVINO و ONNX Runtime و TensorRT، أو إجراء الاستدلال باستخدام نماذج صيغة ONNX: [الاستدلال عالي الأداء](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/high_performance_inference.html).

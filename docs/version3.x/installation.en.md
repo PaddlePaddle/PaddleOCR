@@ -138,7 +138,7 @@ To perform model training, exporting, etc., first clone the repository to your l
 git clone https://github.com/PaddlePaddle/PaddleOCR
 
 # (Optional) Switch to a specific branch
-git checkout release/3.0
+git checkout release/3.2
 
 # If you encounter network issues preventing successful cloning, you can also use the repository on Gitee:
 git clone https://gitee.com/paddlepaddle/PaddleOCR

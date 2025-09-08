@@ -1,3 +1,7 @@
+---
+comments: true
+---
+
 # Logging
 
 This document mainly introduces how to configure the logging system for the PaddleOCR inference package. It's important to note that PaddleOCR's inference package uses a different logging system than the training scripts, and this document does not cover the configuration of the logging system used in the training scripts.

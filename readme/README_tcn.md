@@ -338,7 +338,7 @@ print(chat_result)
 - [崑崙芯安裝指南](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/other_devices_support/paddlepaddle_install_XPU.html)
 - [昇騰安裝指南](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/other_devices_support/paddlepaddle_install_NPU.html)
 
-## 更多特性
+## 🧩 更多特性
 
 - 將模型轉換為 ONNX 格式：[取得 ONNX 模型](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/deployment/obtaining_onnx_models.html)
 - 使用 OpenVINO、ONNX Runtime、TensorRT 等引擎加速推論，或使用 ONNX 格式模型執行推論：[高效能推論](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/deployment/high_performance_inference.html)
@@ -361,6 +361,16 @@ print(chat_result)
 <div align="center">
   <p>
       <img width="100%" src="../docs/images/blue_v3.gif" alt="PP-StructureV3 Demo">
+  </p>
+</div>
+
+## 🌟 不要錯過最新資訊
+
+⭐ **請給這個倉庫加星，以便第一時間獲取包含強大 OCR 及文件分析功能的精彩更新和新版本發布！** ⭐
+
+<div align="center">
+  <p>
+       <img width="1200" src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/paddleocr/README/star_paddleocr.en.gif" alt="Star-Project">
   </p>
 </div>
 
