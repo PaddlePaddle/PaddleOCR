@@ -78,18 +78,26 @@ Convert images containing formulas and tables to editable csv/Excel format:
 
 This section explains how to install the `paddleocr-mcp` library via pip.
 
-- For the local Python library mode, you need to install both `paddleocr-mcp` and the PaddlePaddle framework along with PaddleOCR, as per the [PaddleOCR installation documentation](../installation.en.md).
+- For the local Python library mode, you need to install the appropriate optional dependencies:
+  - `paddleocr-mcp[local]`: includes PaddleOCR and necessary document parsing features
+  - `paddleocr-mcp[local-cpu]`: includes the `local` dependencies plus CPU version of PaddlePaddle framework
 - For the AI Studio community service or the self-hosted service modes, if used within MCP hosts like Claude for Desktop, the server can also be run without installation via tools like `uvx`. See [2. Using with Claude for Desktop](#2-using-with-claude-for-desktop) for details.
 
 To install `paddleocr-mcp` using pip:
 
 ```bash
-# Install the wheel
+# Basic installation (for AI Studio and self-hosted service modes only)
 pip install https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/mcp/paddleocr_mcp/releases/v0.2.0/paddleocr_mcp-0.2.0-py3-none-any.whl
+
+# Local mode installation (includes PaddleOCR and document parsing features)
+pip install "paddleocr-mcp[local] @ https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/mcp/paddleocr_mcp/releases/v0.2.0/paddleocr_mcp-0.2.0-py3-none-any.whl"
+
+# Local CPU mode installation (includes PaddleOCR and CPU version of PaddlePaddle framework)
+pip install "paddleocr-mcp[local-cpu] @ https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/mcp/paddleocr_mcp/releases/v0.2.0/paddleocr_mcp-0.2.0-py3-none-any.whl"
 
 # Or install from source
 # git clone https://github.com/PaddlePaddle/PaddleOCR.git
-# pip install -e mcp_server
+# pip install -e mcp_server[local-cpu]  # Choose optional dependencies as needed
 ```
 
 To verify successful installation:
@@ -199,7 +207,29 @@ You can configure the MCP server according to your requirements to run in differ
 
 #### Mode 1: Local Python Library
 
-See [2.1 Quick Start](#21-quick-start).
+**Note**: Local mode has certain requirements for computing resources and is recommended for use on machines with good configuration. This mode may encounter issues such as long inference time or insufficient memory when using CPU inference. If you encounter resource-related issues, consider using the AI Studio community service mode for quick experience.
+
+1. Install `paddleocr-mcp[local]` or `paddleocr-mcp[local-cpu]`.
+2. To avoid dependency conflicts, **it is strongly recommended to install in an isolated virtual environment**.
+3. Refer to the configuration example below to modify the contents of the `claude_desktop_config.json` file.
+4. Restart the MCP host.
+
+Configuration example:
+
+```json
+{
+  "mcpServers": {
+    "paddleocr-ocr": {
+      "command": "paddleocr_mcp",
+      "args": [],
+      "env": {
+        "PADDLEOCR_MCP_PIPELINE": "OCR",
+        "PADDLEOCR_MCP_PPOCR_SOURCE": "local"
+      }
+    }
+  }
+}
+```
 
 #### Mode 2: AI Studio Community Service
 
@@ -277,7 +307,7 @@ Configuration example:
 Currently, for both the AI Studio and self-hosted modes, starting the MCP server via `uvx` is also supported. With this approach, manual installation of `paddleocr-mcp` is not required. The main steps are as follows:
 
 1. Install [uv](https://docs.astral.sh/uv/#installation).
-2. Modify `claude_desktop_config.json`. Example for self-hosted mode:
+2. Modify `claude_desktop_config.json`. Example for AI Studio community service mode:
 
     ```json
     {
@@ -291,8 +321,9 @@ Currently, for both the AI Studio and self-hosted modes, starting the MCP server
           ],
           "env": {
             "PADDLEOCR_MCP_PIPELINE": "OCR",
-            "PADDLEOCR_MCP_PPOCR_SOURCE": "self_hosted",
-            "PADDLEOCR_MCP_SERVER_URL": "<your-server-url>"
+            "PADDLEOCR_MCP_PPOCR_SOURCE": "aistudio",
+            "PADDLEOCR_MCP_SERVER_URL": "<your-server-url>",
+            "PADDLEOCR_MCP_AISTUDIO_ACCESS_TOKEN": "<your-access-token>"
           }
         }
       }
@@ -300,6 +331,29 @@ Currently, for both the AI Studio and self-hosted modes, starting the MCP server
     ```
 
     Due to the different startup methods used, the settings for `command` and `args` in the configuration file differ significantly from those described in [2.1 Quick Start](#21-quick-start). However, the command-line arguments and environment variables (such as `PADDLEOCR_MCP_SERVER_URL`) supported by the MCP service itself can still be set in the same way.
+
+#### Using uvx with Local Mode (Advanced Users)
+
+If you want to experience local mode using the `uvx` approach, you can refer to the following configuration. **Note**: Local mode has certain requirements for computing resources and is recommended for use on machines with good configuration. If you encounter issues such as long inference time or insufficient memory, consider using the AI Studio community service mode.
+
+```json
+{
+  "mcpServers": {
+    "paddleocr-ocr": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "paddleocr_mcp[local-cpu]@git+https://github.com/PaddlePaddle/PaddleOCR.git@main#subdirectory=mcp_server",
+        "paddleocr_mcp"
+      ],
+      "env": {
+        "PADDLEOCR_MCP_PIPELINE": "OCR",
+        "PADDLEOCR_MCP_PPOCR_SOURCE": "local"
+      }
+    }
+  }
+}
+```
 
 ## 3. Running the Server
 

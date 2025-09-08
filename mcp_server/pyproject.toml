@@ -23,7 +23,7 @@ local = [
 ]
 local-cpu = [
     "paddleocr_mcp[local]",
-    "paddlepaddle",
+    "paddlepaddle>=3.0.0",
 ]
 
 [project.scripts]
