@@ -22,7 +22,7 @@
       
       
       <link rel="icon" href="../../../../version3.x/logo.jpg">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.18">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.19">
     
     
       
@@ -4809,20 +4809,23 @@ You're not viewing the latest version.
 
 <p><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex%2FPaddleX3.0%2Fdoc_images%2FPP-StructureV3%2Falgorithm_ppstructurev3_demo.pdf">More Demos</a></p>
 <h1 id="faq">FAQ<a class="headerlink" href="#faq" title="Permanent link">&para;</a></h1>
-<ol>
-<li>What is the default configuration? How to get higher accuracy, faster speed, or smaller GPU memory?</li>
-</ol>
-<p>When using mobile OCR models + PP-FormulaNet_plus-M, and max length of text detection set to 1200, if set use_chart_recognition to False and dont not load the chart recognition model, the GPU memory would be reduced. </p>
-<p>On the V100, the peak and average GPU memory would be reduced from 8776.0 MB and 8680.8 MB to 6118.0 MB and 6016.7 MB, respectively; On the A100, the peak and average GPU memory would be reduced from 11716.0 MB and 11453.9 MB to 9850.0 MB and 9593.5 MB, respectively.</p>
-<p>You can using multi-gpus by setting <code>device</code> to <code>gpu:&lt;no.&gt;,&lt;no.&gt;</code>, such as <code>gpu:0,1,2,3</code>. And about multi-process parallel inference, you can refer: <a href="https://github.com/PaddlePaddle/PaddleX/blob/develop/docs/pipeline_usage/instructions/parallel_inference.en.md#example-of-multi-process-parallel-inference">Multi-Process Parallel Inference</a>.</p>
-<ol>
-<li>About serving deployment</li>
-</ol>
-<p>(1) Can the service handle requests concurrently?</p>
-<p>For the basic serving deployment solution, the service processes only one request at a time. This plan is mainly used for rapid verification, to establish the development chain, or for scenarios where concurrent requests are not required.</p>
-<p>For high-stability serving deployment solution, the service process only one request at a time by default, but you can refer to the related docs to adjust achieve scaling.</p>
-<p>（2）How to reduce latency and improve throughput?</p>
-<p>Use the High-performance inference plugin, and deploy multi instances.</p>
+<p><strong>Q: What is the default model configuration? If I need higher accuracy, faster speed, or lower GPU memory usage, which parameters should I adjust or which models should I switch to? How significant is the impact on results?</strong></p>
+<p><strong>A:</strong> By default, the largest models for each module are used. Section 3.3 demonstrates how different model selections affect GPU memory consumption and inference speed. You can choose an appropriate model based on your device capabilities and the complexity of your samples. Additionally, in the Python API or CLI, you can set the device parameter as <code>&lt;device_type&gt;:&lt;device_id1&gt;,&lt;device_id2&gt;...</code> (e.g., <code>gpu:0,1,2,3</code>) to enable multi-GPU parallel inference. If the built-in multi-GPU parallel inference does not meet your speed requirements, you may refer to the example code for multi-process parallel inference and further optimize it for your specific scenario: <a href="https://www.paddleocr.ai/latest/en/version3.x/pipeline_usage/instructions/parallel_inference.html">Multi-process Parallel Inference</a>.</p>
+<hr />
+<p><strong>Q: Can PP-StructureV3 run on CPU?</strong></p>
+<p><strong>A:</strong> While PP-StructureV3 is recommended to run on GPU for optimal performance, it also supports CPU inference. Thanks to a variety of configuration options and sufficient optimization for lightweight models, users can refer to section 3.3 to select lightweight configurations for CPU-only environments. For example, on an Intel 8350C CPU, the inference time per image is about 3.74 seconds.</p>
+<hr />
+<p><strong>Q: How can I integrate PP-StructureV3 into my own project?</strong></p>
+<p><strong>A:</strong><br />
+- For Python projects, you can directly integrate using the PaddleOCR Python API.<br />
+- For projects in other programming languages, it is recommended to use service-based deployment. PaddleOCR supports client-side integration in multiple languages, including C++, C#, Java, Go, and PHP. Please refer to the <a href="https://www.paddleocr.ai/latest/en/version3.x/pipeline_usage/PP-StructureV3.html#3-development-integration-deployment">official documentation</a> for details.<br />
+- If you need to interact with large language models, PaddleOCR also provides the MCP service. For more information, please refer to the <a href="https://www.paddleocr.ai/latest/en/version3.x/deployment/mcp_server.html">MCP Server documentation</a>.</p>
+<hr />
+<p><strong>Q: Can the serving handle concurrent requests?</strong></p>
+<p><strong>A:</strong> In the basic service deployment solution, the service processes only one request at a time, which is mainly intended for quick validation, development pipeline integration, or scenarios that do not require concurrent processing. In the high-stability serving solution, the service also processes one request at a time by default, but users can achieve horizontal scaling and concurrent processing by adjusting the configuration as outlined in the service deployment guide.</p>
+<hr />
+<p><strong>Q: How can I reduce latency and increase throughput in serving?</strong></p>
+<p><strong>A:</strong> PaddleOCR offers two types of service deployment solutions. Regardless of the solution used, enabling high-performance inference plugins can accelerate model inference and thus reduce latency. For the high-stability deployment solution, throughput can be further increased by adjusting the service configuration to run multiple instances, making full use of your hardware resources. Please refer to the <a href="https://paddlepaddle.github.io/PaddleX/latest/en/pipeline_deploy/serving.html#22-adjust-configurations">documentation</a> for more details on configuring high-stability serving.</p>
 
 
 
@@ -4845,7 +4848,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 29, 2025 15:02:44 UTC">August 29, 2025</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 8, 2025 09:38:54 UTC">September 8, 2025</span>
   </span>
 
     
@@ -4855,7 +4858,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 29, 2025 15:02:44 UTC">August 29, 2025</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 8, 2025 09:38:54 UTC">September 8, 2025</span>
   </span>
 
     

@@ -22,7 +22,7 @@
       
       
       <link rel="icon" href="../logo.jpg">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.18">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.19">
     
     
       
@@ -736,6 +736,8 @@ You're not viewing the latest version.
         <div class="md-main__inner md-grid">
           
             
+              
+                
               
               <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
                 <div class="md-sidebar__scrollwrap">
@@ -3327,7 +3329,9 @@ You're not viewing the latest version.
             
             
               
-              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" hidden>
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
                     
@@ -3385,6 +3389,8 @@ You're not viewing the latest version.
               <article class="md-content__inner md-typeset">
                 
                   
+  
+
 
 
   
@@ -3412,25 +3418,28 @@ You're not viewing the latest version.
 <p>飞桨低代码开发工具<a href="https://github.com/PaddlePaddle/PaddleX">PaddleX</a>，依托于PaddleOCR的先进技术，支持了OCR领域的<strong>低代码全流程</strong>开发能力。通过低代码开发，可实现简单且高效的模型使用、组合与定制。</p>
 </li>
 <li>
-<p>PaddleX 致力于实现产线级别的模型训练、推理与部署。模型产线是指一系列预定义好的、针对特定AI任务的开发流程，其中包含能够独立完成某类任务的单模型（单功能模块）组合。本文档提供<strong>OCR相关产线</strong>的快速推理使用，单功能模块的快速使用以及更多功能请参考<a href="https://paddlepaddle.github.io/PaddleOCR/latest/paddlex/overview.html">PaddleOCR低代码全流程开发</a>中相关章节。</p>
+<p>PaddleX 致力于实现产线级别的模型训练、推理与部署。模型产线是指一系列预定义好的、针对特定AI任务的开发流程，其中包含能够独立完成某类任务的单模型（单功能模块）组合。本文档提供<strong>OCR相关产线</strong>的快速推理使用，单功能模块的快速使用以及更多功能请参考<a href="https://www.paddleocr.ai/latest/version3.x/paddlex/overview.html">PaddleOCR低代码全流程开发</a>中相关章节。</p>
+</li>
+<li>
+<p>关于 PaddleOCR 和 PaddleX 的关系，可以查看<a href="https://www.paddleocr.ai/latest/version3.x/paddleocr_and_paddlex.html"> PaddleOCR 与 PaddleX 关系介绍</a>。</p>
 </li>
 </ul>
 </blockquote>
 <h3 id="_2">🛠️ 安装<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h3>
 <blockquote>
-<p>❗在安装 PaddleX 之前，请确保您已具备基本的 <strong>Python 运行环境</strong>（注：目前支持 Python 3.8 至 Python 3.12）。PaddleX 3.0-rc0 版本依赖的 PaddlePaddle 版本为 3.0.0rc0。</p>
+<p>❗在安装 PaddleX 之前，请确保您已具备基本的 <strong>Python 运行环境</strong>（注：目前支持 Python 3.8 至 Python 3.12）。PaddleX 3.2 版本依赖的 PaddlePaddle 版本为 3.0.0 以上版本。</p>
 </blockquote>
 <ul>
 <li>
 <p><strong>安装 PaddlePaddle</strong>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># CPU 版本</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span><span class="nv">paddlepaddle</span><span class="o">==</span><span class="m">3</span>.0.0rc0<span class="w"> </span>-i<span class="w"> </span>https://www.paddlepaddle.org.cn/packages/stable/cpu/
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span><span class="nv">paddlepaddle</span><span class="o">==</span><span class="m">3</span>.0.0<span class="w"> </span>-i<span class="w"> </span>https://www.paddlepaddle.org.cn/packages/stable/cpu/
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
 </span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1"># GPU 版本，需显卡驱动程序版本 ≥450.80.02（Linux）或 ≥452.39（Windows）</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>paddlepaddle-gpu<span class="o">==</span><span class="m">3</span>.0.0rc0<span class="w"> </span>-i<span class="w"> </span>https://www.paddlepaddle.org.cn/packages/stable/cu118/
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>paddlepaddle-gpu<span class="o">==</span><span class="m">3</span>.0.0<span class="w"> </span>-i<span class="w"> </span>https://www.paddlepaddle.org.cn/packages/stable/cu118/
 </span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="c1"># GPU 版本，需显卡驱动程序版本 ≥545.23.06（Linux）或 ≥545.84（Windows）</span>
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>paddlepaddle-gpu<span class="o">==</span><span class="m">3</span>.0.0rc0<span class="w"> </span>-i<span class="w"> </span>https://www.paddlepaddle.org.cn/packages/stable/cu123/
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="c1"># GPU 版本，需显卡驱动程序版本 ≥550.54.14（Linux）或 ≥550.54.14（Windows）</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>paddlepaddle-gpu<span class="o">==</span><span class="m">3</span>.0.0<span class="w"> </span>-i<span class="w"> </span>https://www.paddlepaddle.org.cn/packages/stable/cu126/
 </span></code></pre></div></p>
 <blockquote>
 <p>❗无需关注物理机上的 CUDA 版本，只需关注显卡驱动程序版本。更多飞桨 Wheel 版本信息，请参考<a href="https://www.paddlepaddle.org.cn/install/quick?docurl=/documentation./docs/zh/install/pip/linux-pip.html">飞桨官网</a>。</p>
@@ -3440,7 +3449,7 @@ You're not viewing the latest version.
 <p><strong>安装PaddleX</strong></p>
 </li>
 </ul>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>pip<span class="w"> </span>install<span class="w"> </span>https://paddle-model-ecology.bj.bcebos.com/paddlex/whl/paddlex-3.0.0rc0-py3-none-any.whl
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;paddlex[ocr]&quot;</span>
 </span></code></pre></div>
 <blockquote>
 <p>❗ 更多安装方式参考 <a href="https://paddlepaddle.github.io/PaddleX/latest/installation/installation.html">PaddleX 安装教程</a></p>
@@ -3512,8 +3521,8 @@ You're not viewing the latest version.
 <td><code>paddlex --pipeline layout_parsing --input https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/demo_paper.png --use_doc_orientation_classify False --use_doc_unwarping False --use_textline_orientation False --save_path ./output --device gpu:0</code></td>
 </tr>
 <tr>
-<td>通用版面解析v2</td>
-<td><code>paddlex --pipeline layout_parsing_v2 --input https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/layout_parsing_v2_demo.png --use_doc_orientation_classify False --use_doc_unwarping False --use_textline_orientation False --save_path ./output --device gpu:0</code></td>
+<td>通用版面解析v3</td>
+<td><code>paddlex --pipeline PP-StructureV3 --input https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/pp_structure_v3_demo.png --use_doc_orientation_classify False --use_doc_unwarping False --use_textline_orientation False --save_path ./output --device gpu:0</code></td>
 </tr>
 </tbody>
 </table>
@@ -3548,52 +3557,52 @@ You're not viewing the latest version.
 <tr>
 <td>通用OCR</td>
 <td><code>OCR</code></td>
-<td><a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/OCR.html#222-python脚本方式集成">通用OCR产线Python脚本使用说明</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/OCR.html#222-python">通用OCR产线Python脚本使用说明</a></td>
 </tr>
 <tr>
 <td>文档图像预处理</td>
 <td><code>doc_preprocessor</code></td>
-<td><a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/doc_preprocessor.html#212-python脚本方式集成">文档图像预处理产线Python脚本使用说明</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/doc_preprocessor.html#212-python脚">文档图像预处理产线Python脚本使用说明</a></td>
 </tr>
 <tr>
 <td>通用表格识别</td>
 <td><code>table_recognition</code></td>
-<td><a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/table_recognition.html#22-python脚本方式集成">通用表格识别产线Python脚本使用说明</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/table_recognition.html#22-python脚">通用表格识别产线Python脚本使用说明</a></td>
 </tr>
 <tr>
 <td>通用表格识别v2</td>
 <td><code>table_recognition_v2</code></td>
-<td><a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/table_recognition_v2.html#22-python脚本方式集成">通用表格识别v2产线Python脚本使用说明</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/table_recognition_v2.html#22-python脚">通用表格识别v2产线Python脚本使用说明</a></td>
 </tr>
 <tr>
 <td>公式识别</td>
 <td><code>formula_recognition</code></td>
-<td><a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/formula_recognition.html#22-python脚本方式集成">公式识别产线Python脚本使用说明</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/formula_recognition.html#222-python">公式识别产线Python脚本使用说明</a></td>
 </tr>
 <tr>
 <td>印章文本识别</td>
 <td><code>seal_recognition</code></td>
-<td><a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/seal_recognition.html#22-python脚本方式集成">印章文本识别产线Python脚本使用说明</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/seal_recognition.html#222-python">印章文本识别产线Python脚本使用说明</a></td>
 </tr>
 <tr>
 <td>通用版面解析</td>
 <td><code>layout_parsing</code></td>
-<td><a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/layout_parsing.html#22-python脚本方式集成">通用版面解析产线Python脚本使用说明</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/layout_parsing.html#22-python">通用版面解析产线Python脚本使用说明</a></td>
 </tr>
 <tr>
-<td>通用版面解析v2</td>
-<td><code>layout_parsing_v2</code></td>
-<td><a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/layout_parsing_v2.html#22-python脚本方式集成">通用版面解析v2产线Python脚本使用说明</a></td>
+<td>通用版面解析v3</td>
+<td><code>PP-StructureV3</code></td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/PP-StructureV3.html#22-python">通用版面解析v3产线Python脚本使用说明</a></td>
 </tr>
 <tr>
 <td>文档场景信息抽取v3</td>
 <td><code>PP-ChatOCRv3-doc</code></td>
-<td><a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/information_extraction_pipelines/document_scene_information_extraction_v3.html#22-本地体验">文档场景信息抽取v3产线Python脚本使用说明</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/information_extraction_pipelines/document_scene_information_extraction_v3.html#22">文档场景信息抽取v3产线Python脚本使用说明</a></td>
 </tr>
 <tr>
 <td>文档场景信息抽取v4</td>
 <td><code>PP-ChatOCRv4-doc</code></td>
-<td><a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/information_extraction_pipelines/document_scene_information_extraction_v4.html#22-本地体验">文档场景信息抽取v4产线Python脚本使用说明</a></td>
+<td><a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/information_extraction_pipelines/document_scene_information_extraction_v4.html#21">文档场景信息抽取v4产线Python脚本使用说明</a></td>
 </tr>
 </tbody>
 </table>
@@ -3619,7 +3628,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="最后更新">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年8月29日 15:02:44 UTC">2025年8月29日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年9月8日 09:38:54 UTC">2025年9月8日</span>
   </span>
 
     
@@ -3629,7 +3638,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="创建日期">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年8月29日 15:02:44 UTC">2025年8月29日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年9月8日 09:38:54 UTC">2025年9月8日</span>
   </span>
 
     
@@ -3639,7 +3648,54 @@ You're not viewing the latest version.
 
 
 
+  
 
+
+
+<h2 id="__comments">评论</h2>
+<!-- Insert generated snippet here -->
+
+<script src="https://giscus.app/client.js" data-repo="PaddlePaddle/PaddleOCR"
+    data-repo-id="MDEwOlJlcG9zaXRvcnkyNjIyOTYxMjI=" data-category="Q&A" data-category-id="DIC_kwDOD6JSOs4COrbO"
+    data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top"
+    data-theme="preferred_color_scheme" data-lang="en" data-loading="lazy" crossorigin="anonymous" async>
+</script>
+
+<!-- Synchronize Giscus theme with palette -->
+<script>
+    var giscus = document.querySelector("script[src*=giscus]")
+
+    // Set palette on initial load
+    var palette = __md_get("__palette")
+    if (palette && typeof palette.color === "object") {
+        var theme = palette.color.scheme === "slate"
+            ? "transparent_dark"
+            : "light"
+
+        // Instruct Giscus to set theme
+        giscus.setAttribute("data-theme", theme)
+    }
+
+    // Register event handlers after documented loaded
+    document.addEventListener("DOMContentLoaded", function () {
+        var ref = document.querySelector("[data-md-component=palette]")
+        ref.addEventListener("change", function () {
+            var palette = __md_get("__palette")
+            if (palette && typeof palette.color === "object") {
+                var theme = palette.color.scheme === "slate"
+                    ? "transparent_dark"
+                    : "light"
+
+                // Instruct Giscus to change theme
+                var frame = document.querySelector(".giscus-frame")
+                frame.contentWindow.postMessage(
+                    { giscus: { setConfig: { theme } } },
+                    "https://giscus.app"
+                )
+            }
+        })
+    })
+</script>
 
                 
               </article>
@@ -3662,6 +3718,8 @@ You're not viewing the latest version.
         <footer class="md-footer">
   
     
+      
+        
       
       <nav class="md-footer__inner md-grid" aria-label="页脚" >
         
