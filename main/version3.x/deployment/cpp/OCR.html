@@ -4485,17 +4485,18 @@ MKL-DNN 缓存容量。
 </span><span id="__span-23-13"><a id="__codelineno-23-13" name="__codelineno-23-13" href="#__codelineno-23-13"></a><span class="w">    </span><span class="c1">// params.use_doc_orientation_classify = false;  // 不使用文档方向分类模型。</span>
 </span><span id="__span-23-14"><a id="__codelineno-23-14" name="__codelineno-23-14" href="#__codelineno-23-14"></a><span class="w">    </span><span class="c1">// params.use_doc_unwarping = false; // 不使用文本图像矫正模型。</span>
 </span><span id="__span-23-15"><a id="__codelineno-23-15" name="__codelineno-23-15" href="#__codelineno-23-15"></a><span class="w">    </span><span class="c1">// params.use_textline_orientation = false; // 不使用文本行方向分类模型。</span>
-</span><span id="__span-23-16"><a id="__codelineno-23-16" name="__codelineno-23-16" href="#__codelineno-23-16"></a><span class="w">    </span><span class="c1">// params.params.text_recognition_model_name = &quot;PP-OCRv5_server_rec&quot; // 使用 PP-OCRv5_server_rec 模型进行识别。</span>
-</span><span id="__span-23-17"><a id="__codelineno-23-17" name="__codelineno-23-17" href="#__codelineno-23-17"></a><span class="w">    </span><span class="c1">// params.vis_font_dir = &quot;your_vis_font_dir&quot;; // 当编译时添加 -DUSE_FREETYPE=ON 选项，必须提供相应 ttf 字体文件路径。</span>
-</span><span id="__span-23-18"><a id="__codelineno-23-18" name="__codelineno-23-18" href="#__codelineno-23-18"></a>
-</span><span id="__span-23-19"><a id="__codelineno-23-19" name="__codelineno-23-19" href="#__codelineno-23-19"></a><span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">infer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PaddleOCR</span><span class="p">(</span><span class="n">params</span><span class="p">);</span>
-</span><span id="__span-23-20"><a id="__codelineno-23-20" name="__codelineno-23-20" href="#__codelineno-23-20"></a><span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">outputs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">infer</span><span class="p">.</span><span class="n">Predict</span><span class="p">(</span><span class="s">&quot;./general_ocr_002.png&quot;</span><span class="p">);</span>
-</span><span id="__span-23-21"><a id="__codelineno-23-21" name="__codelineno-23-21" href="#__codelineno-23-21"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">output</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">outputs</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-23-22"><a id="__codelineno-23-22" name="__codelineno-23-22" href="#__codelineno-23-22"></a><span class="w">      </span><span class="n">output</span><span class="o">-&gt;</span><span class="n">Print</span><span class="p">();</span>
-</span><span id="__span-23-23"><a id="__codelineno-23-23" name="__codelineno-23-23" href="#__codelineno-23-23"></a><span class="w">      </span><span class="n">output</span><span class="o">-&gt;</span><span class="n">SaveToImg</span><span class="p">(</span><span class="s">&quot;./output/&quot;</span><span class="p">);</span>
-</span><span id="__span-23-24"><a id="__codelineno-23-24" name="__codelineno-23-24" href="#__codelineno-23-24"></a><span class="w">      </span><span class="n">output</span><span class="o">-&gt;</span><span class="n">SaveToJson</span><span class="p">(</span><span class="s">&quot;./output/&quot;</span><span class="p">);</span>
-</span><span id="__span-23-25"><a id="__codelineno-23-25" name="__codelineno-23-25" href="#__codelineno-23-25"></a><span class="w">    </span><span class="p">}</span>
-</span><span id="__span-23-26"><a id="__codelineno-23-26" name="__codelineno-23-26" href="#__codelineno-23-26"></a><span class="p">}</span>
+</span><span id="__span-23-16"><a id="__codelineno-23-16" name="__codelineno-23-16" href="#__codelineno-23-16"></a><span class="w">    </span><span class="c1">// params.text_detection_model_name = &quot;PP-OCRv5_server_det&quot;; // 使用 PP-OCRv5_server_det 模型进行检测。</span>
+</span><span id="__span-23-17"><a id="__codelineno-23-17" name="__codelineno-23-17" href="#__codelineno-23-17"></a><span class="w">    </span><span class="c1">// params.text_recognition_model_name = &quot;PP-OCRv5_server_rec&quot;; // 使用 PP-OCRv5_server_rec 模型进行识别。</span>
+</span><span id="__span-23-18"><a id="__codelineno-23-18" name="__codelineno-23-18" href="#__codelineno-23-18"></a><span class="w">    </span><span class="c1">// params.vis_font_dir = &quot;your_vis_font_dir&quot;; // 当编译时添加 -DUSE_FREETYPE=ON 选项，必须提供相应 ttf 字体文件路径。</span>
+</span><span id="__span-23-19"><a id="__codelineno-23-19" name="__codelineno-23-19" href="#__codelineno-23-19"></a>
+</span><span id="__span-23-20"><a id="__codelineno-23-20" name="__codelineno-23-20" href="#__codelineno-23-20"></a><span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">infer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PaddleOCR</span><span class="p">(</span><span class="n">params</span><span class="p">);</span>
+</span><span id="__span-23-21"><a id="__codelineno-23-21" name="__codelineno-23-21" href="#__codelineno-23-21"></a><span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">outputs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">infer</span><span class="p">.</span><span class="n">Predict</span><span class="p">(</span><span class="s">&quot;./general_ocr_002.png&quot;</span><span class="p">);</span>
+</span><span id="__span-23-22"><a id="__codelineno-23-22" name="__codelineno-23-22" href="#__codelineno-23-22"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">output</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">outputs</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-23-23"><a id="__codelineno-23-23" name="__codelineno-23-23" href="#__codelineno-23-23"></a><span class="w">      </span><span class="n">output</span><span class="o">-&gt;</span><span class="n">Print</span><span class="p">();</span>
+</span><span id="__span-23-24"><a id="__codelineno-23-24" name="__codelineno-23-24" href="#__codelineno-23-24"></a><span class="w">      </span><span class="n">output</span><span class="o">-&gt;</span><span class="n">SaveToImg</span><span class="p">(</span><span class="s">&quot;./output/&quot;</span><span class="p">);</span>
+</span><span id="__span-23-25"><a id="__codelineno-23-25" name="__codelineno-23-25" href="#__codelineno-23-25"></a><span class="w">      </span><span class="n">output</span><span class="o">-&gt;</span><span class="n">SaveToJson</span><span class="p">(</span><span class="s">&quot;./output/&quot;</span><span class="p">);</span>
+</span><span id="__span-23-26"><a id="__codelineno-23-26" name="__codelineno-23-26" href="#__codelineno-23-26"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-23-27"><a id="__codelineno-23-27" name="__codelineno-23-27" href="#__codelineno-23-27"></a><span class="p">}</span>
 </span></code></pre></div>
 <h2 id="3">3. 拓展功能<a class="headerlink" href="#3" title="Permanent link">&para;</a></h2>
 <h3 id="31">3.1 多语种文字识别<a class="headerlink" href="#31" title="Permanent link">&para;</a></h3>
@@ -4626,7 +4627,7 @@ MKL-DNN 缓存容量。
     <span class="md-icon" title="最后更新">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年9月8日 09:38:54 UTC">2025年9月8日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年9月8日 14:30:07 UTC">2025年9月8日</span>
   </span>
 
     
@@ -4636,7 +4637,7 @@ MKL-DNN 缓存容量。
     <span class="md-icon" title="创建日期">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年9月8日 09:38:54 UTC">2025年9月8日</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2025年9月8日 14:30:07 UTC">2025年9月8日</span>
   </span>
 
     
