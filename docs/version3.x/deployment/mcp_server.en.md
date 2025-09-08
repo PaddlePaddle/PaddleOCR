@@ -274,40 +274,32 @@ Configuration example:
 
 ### 2.4 Using `uvx`
 
-If you want to quickly experience locally, you can use the following configuration to start PaddleOCR MCP local mode (CPU) directly in Claude for Desktop without manual installation:
+Currently, for both the AI Studio and self-hosted modes, starting the MCP server via `uvx` is also supported. With this approach, manual installation of `paddleocr-mcp` is not required. The main steps are as follows:
 
-1. **Install [uv](https://docs.astral.sh/uv/#installation)**
-
-2. **Add MCP Server Configuration**
-
-    Locate the Claude for Desktop configuration file in one of the following locations:
-
-    - **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
-    - **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
-    - **Linux**: `~/.config/Claude/claude_desktop_config.json`
-
-    Open the `claude_desktop_config.json` file and add the following configuration:
+1. Install [uv](https://docs.astral.sh/uv/#installation).
+2. Modify `claude_desktop_config.json`. Example for self-hosted mode:
 
     ```json
     {
       "mcpServers": {
-        "paddleocr_mcp": {
+        "paddleocr-ocr": {
           "command": "uvx",
           "args": [
             "--from",
-            "paddleocr_mcp[local-cpu]@git+https://github.com/PaddlePaddle/PaddleOCR.git@main#subdirectory=mcp_server",
+            "paddleocr-mcp@https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/mcp/paddleocr_mcp/releases/v0.2.0/paddleocr_mcp-0.2.0-py3-none-any.whl",
             "paddleocr_mcp"
           ],
           "env": {
             "PADDLEOCR_MCP_PIPELINE": "OCR",
-            "PADDLEOCR_MCP_PPOCR_SOURCE": "local"
+            "PADDLEOCR_MCP_PPOCR_SOURCE": "self_hosted",
+            "PADDLEOCR_MCP_SERVER_URL": "<your-server-url>"
           }
         }
       }
     }
     ```
 
-**Note**: Local mode has certain requirements for computing resources, it is recommended to use on machines with good configuration. If you encounter issues such as long inference time or insufficient memory, consider using the AI Studio community service mode.
+    Due to the different startup methods used, the settings for `command` and `args` in the configuration file differ significantly from those described in [2.1 Quick Start](#21-quick-start). However, the command-line arguments and environment variables (such as `PADDLEOCR_MCP_SERVER_URL`) supported by the MCP service itself can still be set in the same way.
 
 ## 3. Running the Server
 
