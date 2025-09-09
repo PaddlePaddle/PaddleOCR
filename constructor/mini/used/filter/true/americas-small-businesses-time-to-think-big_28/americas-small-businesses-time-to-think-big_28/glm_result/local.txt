@@ -1,0 +1,9 @@
+```json
+{
+  "context": "这张图表的大致讲述了美国各子行业对生产率提升的贡献百分比。图表标题为‘Exhibit 9: Narrowing the productivity gap in the United States is equivalent to 5.4 percent of GDP—and ten to 15 subsectors contribute three-fourths of the potential.’，展示了包括批发和汽车贸易、零售贸易、建筑、采矿、信息服务等多个子行业的贡献情况，例如批发和汽车贸易贡献了35%，零售贸易贡献了32%。数据来源为2017年的McKinsey Global Institute analysis和US Census Bureau，排除了某些行业如农业、金融和保险活动等。",
+
+  "prev": "前一页的内容描述了生成式人工智能（gen AI）对小型企业（SMEs）的潜在影响和益处。文章讨论了技术采用差异、技术民主化、数据的有效利用、利用公共资源、加强内部技术人才、利用网络和互动的力量、成功案例以及技能获取等方面，强调了生成式人工智能如何帮助小型企业推动业务增长和创新。文章引用了麦肯锡的研究，指出超过40%的工人是在职业生涯中期才进入技术角色。",
+
+  "next": "后一页的内容描述了美国中小型企业（MSMEs）在各个行业中的表现和机会。关键点包括美国企业可以从欧洲国家学习以提高生产力、制造业供应链的重新配置、CHIPS和Science Act带来的新机会、MSMEs在电子、汽车和制药行业的附加值占比、物流效率问题、建筑行业的需求增加、劳动力市场紧张以及就业机会分布情况。特别指出2024年3月，几乎三分之二的就业机会出现在中小型企业表现低于平均水平的州。"
+}
+```

@@ -1,0 +1,13 @@
+这是一张来自麦肯锡公司的图表，标题为“Beauty brands can take advantage of their relationship with consumers by using digital and AI to transform their direct-to-consumer channel.”（美妆品牌可以利用数字和人工智能技术，通过直接面向消费者的渠道与消费者建立关系，从而获得优势）。图表展示了美妆品牌在价值链中不同环节可能面临的价值分布情况，以一个年收入为30亿美元的美妆品牌为例，该品牌在价值链中可能面临的价值在2900万美元到5000万美元之间。
+
+图表中列出了六个主要的价值来源，分别是：
+
+1. 消费者洞察和需求塑造（Consumer insights and demand shaping）：60-110百万美元
+2. 产品和创新（Product and innovation）：20-40百万美元
+3. 制造和运营（Manufacturing and operations）：5-10百万美元
+4. 供应链规划和物流（Supply chain planning and logistics）：30-50百万美元
+5. 客户和渠道管理（Customer and channel management）：70-120百万美元
+6. 直接面向消费者（Direct to consumer）：90-150百万美元
+7. 核心业务（Core）：5-10百万美元
+
+图表的底部注明了数据是四舍五入到最接近的100万美元。此外，图表的右下角有一个页码“7”，表明这可能是报告的第七页。

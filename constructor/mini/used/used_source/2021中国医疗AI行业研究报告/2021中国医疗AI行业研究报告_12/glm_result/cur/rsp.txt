@@ -1,0 +1,20 @@
+这张图片展示了医疗AI产业的生态结构图。图中分为三个主要部分：医疗设备、AI医疗和消费端。
+
+1. **医疗设备**：
+   - **诊断设备**：包括Canon Medical、Neusoft、Mindray迈瑞、Siemens Healthineers、SonoScape开立等公司。
+   - **治疗设备**：包括Varian、Intuitive、WEGO唯高等公司。
+   - **康复设备**：包括VISHEE伟思、ReWalk、瑞和机器人等公司。
+
+2. **AI医疗**：
+   - **AI医学影像辅助筛查及诊断**：包括安徳医智、数坤科技、推想科技、汇医慧影、睿见、UNITED联影、Airdoc、华大基因、金域医学、KEYMEDICAL、Google等公司。
+   - **临床治疗辅助决策**：包括安徳医智、BioMind、数坤科技、推想科技、汇医慧影、睿见、UNITED联影、Airdoc、华大基因、金域医学、KEYMEDICAL、Google等公司。
+   - **医疗机器人**：包括瑞和机器人、AI-ROBOT、科大讯飞等公司。
+   - **健康管理**：包括科大讯飞、万灵、Healthhope、健康有益、iMore等公司。
+   - **新药研发**：包括Atomwise、安徳医智、IBM Watson、晶泰科技等公司。
+   - **医学研究**：包括医渡云、大数据、RTHINKING、Google等公司。
+
+3. **消费端**：
+   - **医疗机构**：包括医院、体检中心等。
+   - **C端患者**：包括个人用户等。
+
+图片底部注明了资料来源为36氪研究院，并指出本图仅列出部分企业作为代表，未覆盖全产业。
