@@ -22,7 +22,7 @@ local = [
     "paddleocr[doc-parser]>=3.2",
 ]
 local-cpu = [
-    "paddleocr_mcp[local]",
+    "paddleocr[doc-parser]>=3.2",
     "paddlepaddle>=3.0.0",
 ]
 
