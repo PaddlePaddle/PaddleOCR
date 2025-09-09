@@ -406,12 +406,23 @@ class TextRecognizer(object):
 
     def resize_norm_img_svtr(self, img, image_shape):
         imgC, imgH, imgW = image_shape
-        resized_image = cv2.resize(img, (imgW, imgH), interpolation=cv2.INTER_LINEAR)
+        max_wh_ratio = imgW * 1.0 / imgH
+        h, w = img.shape[0], img.shape[1]
+        ratio = w * 1.0 / h
+        max_wh_ratio = min(max(max_wh_ratio, ratio), max_wh_ratio)
+        imgW = int(imgH * max_wh_ratio)
+        if math.ceil(imgH * ratio) > imgW:
+            resized_w = imgW
+        else:
+            resized_w = int(math.ceil(imgH * ratio))
+        resized_image = cv2.resize(img, (resized_w, imgH))
         resized_image = resized_image.astype("float32")
         resized_image = resized_image.transpose((2, 0, 1)) / 255
         resized_image -= 0.5
         resized_image /= 0.5
-        return resized_image
+        padding_im = np.zeros((imgC, imgH, imgW), dtype=np.float32)
+        padding_im[:, :, 0:resized_w] = resized_image
+        return padding_im
 
     def resize_norm_img_cppd_padding(
         self, img, image_shape, padding=True, interpolation=cv2.INTER_LINEAR
