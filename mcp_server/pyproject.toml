@@ -14,6 +14,16 @@ dependencies = [
     "pillow>=9.0.0",
     "puremagic>=1.30.0",
     "typing-extensions>=4.0.0",
+
+]
+
+[project.optional-dependencies]
+local = [
+    "paddleocr[doc-parser]>=3.2",
+]
+local-cpu = [
+    "paddleocr[doc-parser]>=3.2",
+    "paddlepaddle>=3.0.0",
 ]
 
 [project.scripts]
