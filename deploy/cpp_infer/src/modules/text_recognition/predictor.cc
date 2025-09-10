@@ -108,7 +108,7 @@ absl::Status TextRecPredictor::CheckRecModelParams() {
   auto result_models_check = Utility::GetOcrModelInfo(
       params_.lang.value_or(""), params_.ocr_version.value_or(""));
   if (!result_models_check.ok()) {
-    return absl::InvalidArgumentError("lang and ocr_version is invaild : " +
+    return absl::InvalidArgumentError("lang and ocr_version is invalid : " +
                                       result_models_check.status().ToString());
   }
   auto result_model_name = ModelName();

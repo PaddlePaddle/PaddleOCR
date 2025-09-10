@@ -90,7 +90,7 @@ quant_config = {
 
 def sample_generator(loader):
     def __reader__():
-        for indx, data in enumerate(loader):
+        for _, data in enumerate(loader):
             images = np.array(data[0])
             yield images
 
@@ -99,7 +99,7 @@ def sample_generator(loader):
 
 def sample_generator_layoutxlm_ser(loader):
     def __reader__():
-        for indx, data in enumerate(loader):
+        for _, data in enumerate(loader):
             input_ids = np.array(data[0])
             bbox = np.array(data[1])
             attention_mask = np.array(data[2])

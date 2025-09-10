@@ -108,7 +108,7 @@ const char *level_string(LogLevel level) {
   case LogLevel::Fatal:
     return "fatal";
   default:
-    return "unknow";
+    return "unknown";
   }
 }
 

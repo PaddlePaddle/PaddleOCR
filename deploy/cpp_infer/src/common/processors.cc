@@ -79,7 +79,7 @@ Resize::Resize(const std::vector<int> &target_size, bool keep_ratio,
 
   auto interp_value = GetInterp(interp_upper);
   if (!interp_value.ok()) {
-    INFOE("Unknow type: %s", interp_value.status().ToString().c_str());
+    INFOE("Unknown type: %s", interp_value.status().ToString().c_str());
     exit(-1);
   }
   interp_ = interp_value.value();
@@ -134,7 +134,7 @@ ResizeByShort::ResizeByShort(int target_short_edge, int size_divisor,
 
   auto interp_value = Resize::GetInterp(interp_upper);
   if (!interp_value.ok()) {
-    INFOE("Unknow type: %s", interp_value.status().ToString().c_str());
+    INFOE("Unknown type: %s", interp_value.status().ToString().c_str());
     exit(-1);
   }
   interp_ = interp_value.value();

@@ -166,10 +166,10 @@ class MultiScaleDataSet(SimpleDataSet):
     def wh_aware(self):
         data_line_new = []
         wh_ratio = []
-        for lins in self.data_lines:
-            data_line_new.append(lins)
-            lins = lins.decode("utf-8")
-            name, label, w, h = lins.strip("\n").split(self.delimiter)
+        for line in self.data_lines:
+            data_line_new.append(line)
+            line = line.decode("utf-8")
+            name, label, w, h = line.strip("\n").split(self.delimiter)
             wh_ratio.append(float(w) / float(h))
 
         self.data_lines = data_line_new
