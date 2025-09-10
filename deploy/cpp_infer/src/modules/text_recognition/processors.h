@@ -17,6 +17,7 @@
 #include <algorithm>
 #include <opencv2/opencv.hpp>
 #include <string>
+#include <tuple>
 #include <vector>
 
 #include "absl/status/status.h"
@@ -24,11 +25,10 @@
 #include "src/common/processors.h"
 #include "src/utils/func_register.h"
 
-class OCRReisizeNormImg : public BaseProcessor {
+class OCRResizeNormImg : public BaseProcessor {
 public:
-  OCRReisizeNormImg(
-      absl::optional<std::vector<int>> input_shape = absl::nullopt,
-      std::vector<int> rec_image_shape = {3, 48, 320})
+  OCRResizeNormImg(absl::optional<std::vector<int>> input_shape = absl::nullopt,
+                   std::vector<int> rec_image_shape = {3, 48, 320})
       : rec_image_shape_(rec_image_shape),
         input_shape_(input_shape.value_or(std::vector<int>())){};
   absl::StatusOr<std::vector<cv::Mat>>
@@ -45,17 +45,34 @@ private:
   std::vector<int> input_shape_;
 };
 
+struct CTCLabelDecodeResult {
+  std::pair<std::string, float> sentence;
+  float sentence_len = -1;
+  std::vector<std::wstring> word_list = {};
+  std::vector<std::vector<int>> word_col_list = {};
+  std::vector<std::string> state_list = {};
+};
+
 class CTCLabelDecode {
 public:
   CTCLabelDecode(const std::vector<std::string> &character_list = {},
                  bool use_space_char = true);
-  absl::StatusOr<std::vector<std::pair<std::string, float>>>
-  Apply(const cv::Mat &preds) const;
-  absl::StatusOr<std::pair<std::string, float>>
-  Process(const cv::Mat &pred_data) const;
-  absl::StatusOr<std::pair<std::string, float>>
+
+  absl::StatusOr<std::vector<CTCLabelDecodeResult>>
+  Apply(const cv::Mat &preds, const bool return_word_box = false,
+        std::vector<float> wh_ratio_list = {}, float max_wh_ratio = 0.0) const;
+
+  absl::StatusOr<CTCLabelDecodeResult>
+  Process(const cv::Mat &pred_data, bool return_word_box = false) const;
+
+  absl::StatusOr<CTCLabelDecodeResult>
   Decode(std::list<int> &text_index, std::list<float> &text_prob,
-         bool is_remove_duplicate = false) const;
+         bool is_remove_duplicate = false, bool return_word_box = false) const;
+
+  std::tuple<std::vector<std::wstring>, std::vector<std::vector<int>>,
+             std::vector<std::string>>
+  GetWordInfo(const std::string &text_origin,
+              const std::vector<bool> &selection) const;
   void AddSpecialChar();
 
 private:
