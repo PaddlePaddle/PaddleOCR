@@ -32,6 +32,7 @@ public:
                                   int maxWidth, int minFont, int maxFont,
                                   int thickness, int &outBaseline,
                                   int &outFontFace);
+  ClasPredictorResult Result() { return predictor_result_; };
 
 private:
   ClasPredictorResult predictor_result_;

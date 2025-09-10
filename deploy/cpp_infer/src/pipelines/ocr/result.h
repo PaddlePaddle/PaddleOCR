@@ -28,6 +28,7 @@ public:
   void SaveToImg(const std::string &save_path) override;
   void Print() const override;
   void SaveToJson(const std::string &save_path) const override;
+  OCRPipelineResult Result() { return pipeline_result_; };
 
 #ifdef USE_FREETYPE
   static cv::Mat DrawBoxTextFine(const cv::Size &img_ize,

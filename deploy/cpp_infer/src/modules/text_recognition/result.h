@@ -30,6 +30,8 @@ public:
   void SaveToJson(const std::string &save_path) const override;
   int AdjustFontSize(int image_width, const std::string &text) const;
 
+  TextRecPredictorResult Result() { return predictor_result_; };
+
 private:
   TextRecPredictorResult predictor_result_;
 };
