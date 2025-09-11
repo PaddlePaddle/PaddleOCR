@@ -17,6 +17,7 @@
 # maintainability?
 
 import sys
+import platform
 import warnings
 
 from .._utils.cli import (
@@ -181,6 +182,17 @@ class PaddleOCR(PaddleXPipelineWrapper):
         text_rec_score_thresh=None,
         return_word_box=None,
     ):
+        # On macOS, very large images can trigger a low-level bus error in
+        # underlying inference libs. Apply a safe default downscale to keep
+        # # the long edge within 1280 unless the user explicitly overrides.
+        if (
+            platform.system() == "Darwin"
+            and text_det_limit_side_len is None
+            and text_det_limit_type is None
+        ):
+            text_det_limit_side_len = 1280
+            text_det_limit_type = "max"
+
         return self.paddlex_pipeline.predict(
             input,
             use_doc_orientation_classify=use_doc_orientation_classify,
