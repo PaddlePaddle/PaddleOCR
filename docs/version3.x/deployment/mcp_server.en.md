@@ -83,10 +83,11 @@ Convert images containing formulas and tables to editable csv/Excel format:
 This section explains how to install the `paddleocr-mcp` library via pip.
 
 - For the local Python library mode, you need to install both `paddleocr-mcp` and the PaddlePaddle framework along with PaddleOCR, as per the [PaddleOCR installation documentation](../installation.en.md).
-- For the local Python library mode you may also choose an optional extra dependency form:
-  - `paddleocr-mcp[local]`: Includes PaddleOCR (framework not bundled).
-  - `paddleocr-mcp[local-cpu]`: Same as `local` plus the CPU version of PaddlePaddle.
-- The server can be run without prior installation via `uvx` (see [2.4 Using `uvx`](#24-using-uvx)); this applies to AI Studio, self-hosted, and (CPU-only) local modes.
+- For the AI Studio community service or the self-hosted service modes, if used within MCP hosts like Claude for Desktop, the server can also be run without installation via tools like `uvx`. See [2. Using with Claude for Desktop](#2-using-with-claude-for-desktop) for details.
+ - For the local Python library mode you may also select optional extras:
+   - `paddleocr-mcp[local]`: includes PaddleOCR (without the PaddlePaddle framework, which you still install manually as before if needed).
+   - `paddleocr-mcp[local-cpu]`: includes PaddleOCR plus the CPU version of the PaddlePaddle framework.
+ - Additionally, the local (CPU) mode can be started via `uvx` without prior installation (similar to AI Studio / self-hosted). See [2.4 Using `uvx`](#24-using-uvx).
 
 To install `paddleocr-mcp` using pip:
 
@@ -98,11 +99,10 @@ pip install https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/mcp/pa
 # git clone https://github.com/PaddlePaddle/PaddleOCR.git
 # pip install -e mcp_server
 
-# Or install with optional extras for local mode
-# Local mode (includes PaddleOCR; you can still manually install PaddleOCR + PaddlePaddle as before)
+# Or install with optional extras (local mode)
 pip install "paddleocr-mcp[local] @ https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/mcp/paddleocr_mcp/releases/v0.2.0/paddleocr_mcp-0.2.0-py3-none-any.whl"
 
-# Local CPU mode (includes PaddleOCR and CPU PaddlePaddle)
+# Or install with optional extras (local CPU mode)
 pip install "paddleocr-mcp[local-cpu] @ https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/mcp/paddleocr_mcp/releases/v0.2.0/paddleocr_mcp-0.2.0-py3-none-any.whl"
 ```
 
@@ -213,7 +213,7 @@ You can configure the MCP server according to your requirements to run in differ
 
 #### Mode 1: Local Python Library
 
-See [2.1 Quick Start](#21-quick-start).
+See [2.1 Quick Start](#21-quick-start). Alternatively you can install using extras `paddleocr-mcp[local]` or `paddleocr-mcp[local-cpu]` to include (respectively) PaddleOCR only, or PaddleOCR plus the CPU PaddlePaddle framework in a single step.
 
 #### Mode 2: AI Studio Community Service
 
@@ -315,7 +315,7 @@ Currently, for both the AI Studio and self-hosted modes, starting the MCP server
 
     Due to the different startup methods used, the settings for `command` and `args` in the configuration file differ significantly from those described in [2.1 Quick Start](#21-quick-start). However, the command-line arguments and environment variables (such as `PADDLEOCR_MCP_SERVER_URL`) supported by the MCP service itself can still be set in the same way.
 
-3. For local mode with CPU inference, specify the extra as `paddleocr_mcp[local-cpu]`:
+    Local mode (CPU, using the optional extra `local-cpu`) example:
 
     ```json
     {
@@ -336,7 +336,7 @@ Currently, for both the AI Studio and self-hosted modes, starting the MCP server
     }
     ```
 
-    Note: Local mode has higher compute/memory requirements; if you experience latency or OOM issues, consider using the AI Studio mode.
+    For dependency details, performance tuning and pipeline configuration in local mode, see [Mode 1: Local Python Library](#mode-1-local-python-library).
 
 ## 3. Running the Server
 
@@ -377,7 +377,7 @@ You can control the MCP server via environment variables or CLI arguments.
 | `PADDLEOCR_MCP_DEVICE`                | `--device`                | `str`  | Device for inference (`local` mode only).                          | -                                        | `None`        |
 | `PADDLEOCR_MCP_PIPELINE_CONFIG`       | `--pipeline_config`       | `str`  | Path to pipeline config file (`local` mode only).                     | -                                        | `None`        |
 | -                                     | `--http`                  | `bool` | Use Streamable HTTP instead of stdio (for remote/multi-client use).   | -                                        | `False`       |
-| -                                     | `--host`                  | `str`  | Host for the Streamable HTTP mode.                                                   | -                                        | `"127.0.0.1"` |
+| -                                     | `--host`                  | `str`  | Host for the Stremable HTTP mode.                                                   | -                                        | `"127.0.0.1"` |
 | -                                     | `--port`                  | `int`  | Port for the Streamable HTTP mode.                                                   | -                                        | `8000`        |
 | -                                     | `--verbose`               | `bool` | Enable verbose logging for debugging.                                               | -                                        | `False`       |
 
