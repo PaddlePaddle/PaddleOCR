@@ -86,7 +86,7 @@ Utility::GetDefaultConfig(std::string pipeline_name) {
   for (int i = 0; i < 2; i++) {
     size_t pos = current_path.find_last_of(PATH_SEPARATOR);
     if (pos == std::string::npos) {
-      return absl::NotFoundError("Could not find pipline config yaml :" +
+      return absl::NotFoundError("Could not find pipeline config yaml :" +
                                  pipeline_name);
     }
     current_path = current_path.substr(0, pos);
@@ -100,7 +100,7 @@ Utility::GetDefaultConfig(std::string pipeline_name) {
   } else if (FileExists(config_path_yml).ok()) {
     return config_path_yml;
   }
-  return absl::NotFoundError("Could not find pipline config yaml :" +
+  return absl::NotFoundError("Could not find pipeline config yaml :" +
                              pipeline_name);
 }
 absl::StatusOr<std::string>
