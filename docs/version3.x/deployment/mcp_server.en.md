@@ -84,10 +84,13 @@ This section explains how to install the `paddleocr-mcp` library via pip.
 
 - For the local Python library mode, you need to install both `paddleocr-mcp` and the PaddlePaddle framework along with PaddleOCR, as per the [PaddleOCR installation documentation](../installation.en.md).
 - For the AI Studio community service or the self-hosted service modes, if used within MCP hosts like Claude for Desktop, the server can also be run without installation via tools like `uvx`. See [2. Using with Claude for Desktop](#2-using-with-claude-for-desktop) for details.
- - For the local Python library mode you may also select optional extras:
-   - `paddleocr-mcp[local]`: includes PaddleOCR (without the PaddlePaddle framework, which you still install manually as before if needed).
-   - `paddleocr-mcp[local-cpu]`: includes PaddleOCR plus the CPU version of the PaddlePaddle framework.
- - Additionally, the local (CPU) mode can be started via `uvx` without prior installation (similar to AI Studio / self-hosted). See [2.4 Using `uvx`](#24-using-uvx).
+
+For the local Python library mode you may optionally choose convenience extras (helpful to reduce manual dependency steps):
+
+- `paddleocr-mcp[local]`: Includes PaddleOCR (but NOT the PaddlePaddle framework itself).
+- `paddleocr-mcp[local-cpu]`: Includes PaddleOCR AND the CPU version of the PaddlePaddle framework.
+
+It is still recommended to use an isolated virtual environment to avoid conflicts.
 
 To install `paddleocr-mcp` using pip:
 
@@ -99,10 +102,11 @@ pip install https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/mcp/pa
 # git clone https://github.com/PaddlePaddle/PaddleOCR.git
 # pip install -e mcp_server
 
-# Or install with optional extras (local mode)
+# Install with optional extras (choose ONE of the following if you prefer convenience installs)
+# Install PaddleOCR together with the MCP server (framework not included):
 pip install "paddleocr-mcp[local] @ https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/mcp/paddleocr_mcp/releases/v0.2.0/paddleocr_mcp-0.2.0-py3-none-any.whl"
 
-# Or install with optional extras (local CPU mode)
+# Install PaddleOCR and CPU PaddlePaddle framework together:
 pip install "paddleocr-mcp[local-cpu] @ https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/mcp/paddleocr_mcp/releases/v0.2.0/paddleocr_mcp-0.2.0-py3-none-any.whl"
 ```
 
@@ -213,7 +217,7 @@ You can configure the MCP server according to your requirements to run in differ
 
 #### Mode 1: Local Python Library
 
-See [2.1 Quick Start](#21-quick-start). Alternatively you can install using extras `paddleocr-mcp[local]` or `paddleocr-mcp[local-cpu]` to include (respectively) PaddleOCR only, or PaddleOCR plus the CPU PaddlePaddle framework in a single step.
+See [2.1 Quick Start](#21-quick-start).
 
 #### Mode 2: AI Studio Community Service
 
@@ -288,10 +292,12 @@ Configuration example:
 
 ### 2.4 Using `uvx`
 
-Currently, for both the AI Studio and self-hosted modes, starting the MCP server via `uvx` is also supported. With this approach, manual installation of `paddleocr-mcp` is not required. The main steps are as follows:
+Currently, for the AI Studio and self-hosted modes, and (for CPU inference) the local mode, starting the MCP server via `uvx` is also supported. With this approach, manual installation of `paddleocr-mcp` is not required. The main steps are as follows:
 
 1. Install [uv](https://docs.astral.sh/uv/#installation).
-2. Modify `claude_desktop_config.json`. Example for self-hosted mode:
+2. Modify `claude_desktop_config.json`. Examples:
+
+  Self-hosted mode:
 
     ```json
     {
@@ -313,9 +319,7 @@ Currently, for both the AI Studio and self-hosted modes, starting the MCP server
     }
     ```
 
-    Due to the different startup methods used, the settings for `command` and `args` in the configuration file differ significantly from those described in [2.1 Quick Start](#21-quick-start). However, the command-line arguments and environment variables (such as `PADDLEOCR_MCP_SERVER_URL`) supported by the MCP service itself can still be set in the same way.
-
-    Local mode (CPU, using the optional extra `local-cpu`) example:
+    Local mode (CPU, using the `local-cpu` extra):
 
     ```json
     {
@@ -336,7 +340,7 @@ Currently, for both the AI Studio and self-hosted modes, starting the MCP server
     }
     ```
 
-    For dependency details, performance tuning and pipeline configuration in local mode, see [Mode 1: Local Python Library](#mode-1-local-python-library).
+    Because a different startup method is used (`uvx` pulls and runs the package on-demand), only `command` and `args` differ from earlier examples; available environment variables and CLI arguments remain identical.
 
 ## 3. Running the Server
 
