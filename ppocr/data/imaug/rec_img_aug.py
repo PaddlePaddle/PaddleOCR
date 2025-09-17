@@ -304,7 +304,7 @@ class RecResizeImg(object):
         else:
             norm_img, valid_ratio = resize_norm_img(img, self.image_shape, self.padding)
         data["image"] = norm_img
-        data["valid_ratio"] = valid_ratio
+        data["valid_ratio"] = np.float32(valid_ratio)
         return data
 
 
@@ -337,7 +337,7 @@ class VLRecResizeImg(object):
         valid_ratio = min(1.0, float(resized_w / imgW))
 
         data["image"] = norm_img
-        data["valid_ratio"] = valid_ratio
+        data["valid_ratio"] = np.float32(valid_ratio)
         return data
 
 
@@ -365,7 +365,7 @@ class RFLRecResizeImg(object):
             img, self.image_shape, self.padding, self.interpolation
         )
         data["image"] = norm_img
-        data["valid_ratio"] = valid_ratio
+        data["valid_ratio"] = np.float32(valid_ratio)
         return data
 
 
@@ -406,7 +406,7 @@ class SARRecResizeImg(object):
         data["image"] = norm_img
         data["resized_shape"] = resize_shape
         data["pad_shape"] = pad_shape
-        data["valid_ratio"] = valid_ratio
+        data["valid_ratio"] = np.float32(valid_ratio)
         return data
 
 
@@ -538,7 +538,7 @@ class ABINetRecResizeImg(object):
         img = data["image"]
         norm_img, valid_ratio = resize_norm_img_abinet(img, self.image_shape)
         data["image"] = norm_img
-        data["valid_ratio"] = valid_ratio
+        data["valid_ratio"] = np.float32(valid_ratio)
         return data
 
 
@@ -552,7 +552,7 @@ class SVTRRecResizeImg(object):
 
         norm_img, valid_ratio = resize_norm_img(img, self.image_shape, self.padding)
         data["image"] = norm_img
-        data["valid_ratio"] = valid_ratio
+        data["valid_ratio"] = np.float32(valid_ratio)
         return data
 
 
@@ -573,7 +573,7 @@ class RobustScannerRecResizeImg(object):
         data["image"] = norm_img
         data["resized_shape"] = resize_shape
         data["pad_shape"] = pad_shape
-        data["valid_ratio"] = valid_ratio
+        data["valid_ratio"] = np.float32(valid_ratio)
         data["word_positons"] = word_positons
         return data
 
