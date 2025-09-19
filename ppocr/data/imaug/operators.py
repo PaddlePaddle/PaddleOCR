@@ -40,7 +40,7 @@ class DecodeImage(object):
         img = data["image"]
         assert type(img) is bytes and len(img) > 0, "invalid input 'img' in DecodeImage"
         img = np.frombuffer(img, dtype="uint8")
-        if self.img_mode == 'GRAY':
+        if self.img_mode == "GRAY":
             # For GRAY mode, decode directly to a single-channel grayscale image.
             decode_flag = cv2.IMREAD_GRAYSCALE
         else:
@@ -49,9 +49,9 @@ class DecodeImage(object):
 
         if self.ignore_orientation:
             decode_flag |= cv2.IMREAD_IGNORE_ORIENTATION
-        
+
         img = cv2.imdecode(img, decode_flag)
-        
+
         if img is None:
             return None
         if self.img_mode == "GRAY":
