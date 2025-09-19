@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from ..utils.cli import (
+from .._utils.cli import (
     add_simple_inference_args,
     get_subcommand_args,
     perform_simple_inference,
@@ -31,7 +31,7 @@ class FormulaRecognition(PaddleXPredictorWrapper):
 
     @property
     def default_model_name(self):
-        return "PP-FormulaNet-S"
+        return "PP-FormulaNet_plus-M"
 
     @classmethod
     def get_cli_subcommand_executor(cls):

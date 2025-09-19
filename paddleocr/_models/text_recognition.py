@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from ..utils.cli import (
+from .._utils.cli import (
     add_simple_inference_args,
     get_subcommand_args,
     perform_simple_inference,
@@ -34,7 +34,7 @@ class TextRecognition(PaddleXPredictorWrapper):
 
     @property
     def default_model_name(self):
-        return "PP-OCRv4_mobile_rec"
+        return "PP-OCRv5_server_rec"
 
     @classmethod
     def get_cli_subcommand_executor(cls):

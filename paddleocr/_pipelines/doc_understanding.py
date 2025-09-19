@@ -12,15 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from ..utils.cli import (
+from paddlex.utils.pipeline_arguments import custom_type
+
+from .._utils.cli import (
     add_simple_inference_args,
     get_subcommand_args,
     perform_simple_inference,
-    str2bool,
 )
 from .base import PaddleXPipelineWrapper, PipelineCLISubcommandExecutor
 from .utils import create_config_from_structure
-from paddlex.utils.pipeline_arguments import custom_type
 
 
 class DocUnderstanding(PaddleXPipelineWrapper):
@@ -43,15 +43,15 @@ class DocUnderstanding(PaddleXPipelineWrapper):
     def _paddlex_pipeline_name(self):
         return "doc_understanding"
 
+    def predict_iter(self, input, **kwargs):
+        return self.paddlex_pipeline.predict(input, **kwargs)
+
     def predict(
         self,
         input,
         **kwargs,
     ):
-        result = []
-        for res in self.paddlex_pipeline.predict(input, **kwargs):
-            result.append(res)
-        return result
+        return list(self.predict_iter(input, **kwargs))
 
     @classmethod
     def get_cli_subcommand_executor(cls):
@@ -73,7 +73,6 @@ class DocUnderstanding(PaddleXPipelineWrapper):
 
 
 class DocUnderstandingCLISubcommandExecutor(PipelineCLISubcommandExecutor):
-
     input_validator = staticmethod(custom_type(dict))
 
     @property
@@ -81,7 +80,10 @@ class DocUnderstandingCLISubcommandExecutor(PipelineCLISubcommandExecutor):
         return "doc_understanding"
 
     def _update_subparser(self, subparser):
-        add_simple_inference_args(subparser)
+        add_simple_inference_args(
+            subparser,
+            input_help='Input dict, e.g. `{"image": "https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/medal_table.png", "query": "Recognize this table"}`.',
+        )
 
         subparser.add_argument(
             "--doc_understanding_model_name",

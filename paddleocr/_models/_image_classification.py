@@ -14,7 +14,7 @@
 
 import abc
 
-from ..utils.cli import (
+from .._utils.cli import (
     add_simple_inference_args,
     get_subcommand_args,
     perform_simple_inference,
@@ -41,6 +41,12 @@ class ImageClassification(PaddleXPredictorWrapper):
 class ImageClassificationSubcommandExecutor(PredictorCLISubcommandExecutor):
     def _update_subparser(self, subparser):
         add_simple_inference_args(subparser)
+
+        subparser.add_argument(
+            "--topk",
+            type=int,
+            help="Top-k value for prediction results.",
+        )
 
     @property
     @abc.abstractmethod

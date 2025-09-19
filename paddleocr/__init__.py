@@ -12,7 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from paddlex.inference.utils.benchmark import benchmark
+
 from ._models import (
+    ChartParsing,
     DocImgOrientationClassification,
     DocVLM,
     FormulaRecognition,
@@ -32,13 +35,17 @@ from ._pipelines import (
     FormulaRecognitionPipeline,
     PaddleOCR,
     PPChatOCRv4Doc,
+    PPDocTranslation,
     PPStructureV3,
     SealRecognition,
     TableRecognitionPipelineV2,
 )
+from ._utils.logging import logger
 from ._version import version as __version__
 
 __all__ = [
+    "benchmark",
+    "ChartParsing",
     "DocImgOrientationClassification",
     "DocVLM",
     "FormulaRecognition",
@@ -56,8 +63,10 @@ __all__ = [
     "FormulaRecognitionPipeline",
     "PaddleOCR",
     "PPChatOCRv4Doc",
+    "PPDocTranslation",
     "PPStructureV3",
     "SealRecognition",
     "TableRecognitionPipelineV2",
+    "logger",
     "__version__",
 ]

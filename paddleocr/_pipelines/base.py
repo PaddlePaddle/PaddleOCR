@@ -17,15 +17,15 @@ import abc
 import yaml
 from paddlex import create_pipeline
 from paddlex.inference import load_pipeline_config
+from paddlex.utils.config import AttrDict
+from paddlex.utils.deps import DependencyError
 
 from .._abstract import CLISubcommandExecutor
 from .._common_args import (
-    add_common_cli_args,
+    add_common_cli_opts,
     parse_common_args,
     prepare_common_init_args,
 )
-from .._mkldnn_blocklists import PIPELINE_MKLDNN_BLOCKLIST
-from ..utils.logging import logger
 
 _DEFAULT_ENABLE_HPI = None
 
@@ -40,6 +40,17 @@ def _merge_dicts(d1, d2):
     return res
 
 
+def _to_builtin(obj):
+    if isinstance(obj, AttrDict):
+        return {k: _to_builtin(v) for k, v in obj.items()}
+    elif isinstance(obj, dict):
+        return {k: _to_builtin(v) for k, v in obj.items()}
+    elif isinstance(obj, list):
+        return [_to_builtin(item) for item in obj]
+    else:
+        return obj
+
+
 class PaddleXPipelineWrapper(metaclass=abc.ABCMeta):
     def __init__(
         self,
@@ -49,14 +60,6 @@ class PaddleXPipelineWrapper(metaclass=abc.ABCMeta):
     ):
         super().__init__()
         self._paddlex_config = paddlex_config
-        if (
-            common_args.get("enable_mkldnn", None) is None
-            and self._paddlex_pipeline_name in PIPELINE_MKLDNN_BLOCKLIST
-        ):
-            logger.warning(
-                f"oneDNN will be disabled for the {repr(self._paddlex_pipeline_name)} pipeline."
-            )
-            common_args["enable_mkldnn"] = False
         self._common_args = parse_common_args(
             common_args, default_enable_hpi=_DEFAULT_ENABLE_HPI
         )
@@ -70,7 +73,8 @@ class PaddleXPipelineWrapper(metaclass=abc.ABCMeta):
 
     def export_paddlex_config_to_yaml(self, yaml_path):
         with open(yaml_path, "w", encoding="utf-8") as f:
-            yaml.safe_dump(self._merged_paddlex_config, f)
+            config = _to_builtin(self._merged_paddlex_config)
+            yaml.safe_dump(config, f)
 
     @classmethod
     @abc.abstractmethod
@@ -83,7 +87,7 @@ class PaddleXPipelineWrapper(metaclass=abc.ABCMeta):
     def _get_merged_paddlex_config(self):
         if self._paddlex_config is None:
             config = load_pipeline_config(self._paddlex_pipeline_name)
-        elif isinstance(self._config, str):
+        elif isinstance(self._paddlex_config, str):
             config = load_pipeline_config(self._paddlex_config)
         else:
             config = self._paddlex_config
@@ -94,7 +98,12 @@ class PaddleXPipelineWrapper(metaclass=abc.ABCMeta):
 
     def _create_paddlex_pipeline(self):
         kwargs = prepare_common_init_args(None, self._common_args)
-        return create_pipeline(config=self._merged_paddlex_config, **kwargs)
+        try:
+            return create_pipeline(config=self._merged_paddlex_config, **kwargs)
+        except DependencyError as e:
+            raise RuntimeError(
+                "A dependency error occurred during pipeline creation. Please refer to the installation documentation to ensure all required dependencies are installed."
+            ) from e
 
 
 class PipelineCLISubcommandExecutor(CLISubcommandExecutor):
@@ -105,13 +114,17 @@ class PipelineCLISubcommandExecutor(CLISubcommandExecutor):
 
     def add_subparser(self, subparsers):
         subparser = subparsers.add_parser(name=self.subparser_name)
+        self._update_subparser(subparser)
+        add_common_cli_opts(
+            subparser,
+            default_enable_hpi=_DEFAULT_ENABLE_HPI,
+            allow_multiple_devices=True,
+        )
         subparser.add_argument(
             "--paddlex_config",
             type=str,
             help="Path to PaddleX pipeline configuration file.",
         )
-        add_common_cli_args(subparser, default_enable_hpi=_DEFAULT_ENABLE_HPI)
-        self._update_subparser(subparser)
         return subparser
 
     @abc.abstractmethod

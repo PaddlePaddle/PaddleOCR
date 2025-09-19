@@ -12,43 +12,34 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from ..utils.cli import (
-    add_simple_inference_args,
-    get_subcommand_args,
-    perform_simple_inference,
+from .._utils.cli import add_simple_inference_args
+from ._doc_vlm import (
+    BaseDocVLM,
+    BaseDocVLMSubcommandExecutor,
 )
-from .base import PaddleXPredictorWrapper, PredictorCLISubcommandExecutor
 
 
-class DocVLM(PaddleXPredictorWrapper):
-    def __init__(
-        self,
-        *args,
-        **kwargs,
-    ):
-        self._extra_init_args = {}
-        super().__init__(*args, **kwargs)
-
+class DocVLM(BaseDocVLM):
     @property
     def default_model_name(self):
-        return "PP-DocBee-2B"
+        return "PP-DocBee2-3B"
 
     @classmethod
     def get_cli_subcommand_executor(cls):
         return DocVLMSubcommandExecutor()
 
-    def _get_extra_paddlex_predictor_init_args(self):
-        return self._extra_init_args
 
-
-class DocVLMSubcommandExecutor(PredictorCLISubcommandExecutor):
+class DocVLMSubcommandExecutor(BaseDocVLMSubcommandExecutor):
     @property
     def subparser_name(self):
         return "doc_vlm"
 
-    def _update_subparser(self, subparser):
-        add_simple_inference_args(subparser)
+    @property
+    def wrapper_cls(self):
+        return DocVLM
 
-    def execute_with_args(self, args):
-        params = get_subcommand_args(args)
-        perform_simple_inference(DocVLM, params)
+    def _update_subparser(self, subparser):
+        add_simple_inference_args(
+            subparser,
+            input_help='Input dict, e.g. `{"image": "https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/medal_table.png", "query": "Recognize this table"}`.',
+        )

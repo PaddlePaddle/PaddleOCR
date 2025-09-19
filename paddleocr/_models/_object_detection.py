@@ -14,10 +14,11 @@
 
 import abc
 
-from ..utils.cli import (
+from .._utils.cli import (
     add_simple_inference_args,
     get_subcommand_args,
     perform_simple_inference,
+    str2bool,
 )
 from .base import PaddleXPredictorWrapper, PredictorCLISubcommandExecutor
 
@@ -53,27 +54,27 @@ class ObjectDetectionSubcommandExecutor(PredictorCLISubcommandExecutor):
         subparser.add_argument(
             "--img_size",
             type=int,
-            help="The input image size (w, h).",
+            help="Input image size (w, h).",
         )
         subparser.add_argument(
             "--threshold",
             type=float,
-            help="The threshold for filtering out low-confidence predictions.",
+            help="Threshold for filtering out low-confidence predictions.",
         )
         subparser.add_argument(
             "--layout_nms",
-            type=bool,
+            type=str2bool,
             help="Whether to use layout-aware NMS.",
         )
         subparser.add_argument(
             "--layout_unclip_ratio",
             type=float,
-            help="The ratio of unclipping the bounding box.",
+            help="Ratio of unclipping the bounding box.",
         )
         subparser.add_argument(
             "--layout_merge_bboxes_mode",
             type=str,
-            help="The mode for merging bounding boxes.",
+            help="Mode for merging bounding boxes.",
         )
 
     @property
