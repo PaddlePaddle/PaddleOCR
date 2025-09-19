@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "paddleocr_mcp"
+version = "0.2.0"
+requires-python = ">=3.10"
+dependencies = [
+    "mcp>=1.5.0",
+    "fastmcp>=2.0.0",
+    "httpx>=0.24.0",
+    "numpy>=1.24.0",
+    "pillow>=9.0.0",
+    "puremagic>=1.30.0",
+    "typing-extensions>=4.0.0",
+
+]
+
+[project.optional-dependencies]
+local = [
+    "paddleocr[doc-parser]>=3.2",
+]
+local-cpu = [
+    "paddleocr[doc-parser]>=3.2",
+    "paddlepaddle>=3.0.0",
+]
+
+[project.scripts]
+paddleocr_mcp = "paddleocr_mcp.__main__:main"

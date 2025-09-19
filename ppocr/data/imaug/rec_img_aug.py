@@ -103,7 +103,7 @@ class BaseDataAugmentation(object):
             img = jitter(img)
 
         if random.random() <= self.noise_prob:
-            img = add_gasuss_noise(img)
+            img = add_gaussian_noise(img)
 
         if random.random() <= self.reverse_prob:
             img = 255 - img
@@ -785,9 +785,9 @@ def jitter(img):
         return img
 
 
-def add_gasuss_noise(image, mean=0, var=0.1):
+def add_gaussian_noise(image, mean=0, var=0.1):
     """
-    Gasuss noise
+    Gaussian noise
     """
 
     noise = np.random.normal(mean, var**0.5, image.shape)

@@ -12,23 +12,25 @@ The Table Cell Detection Module is a key component of the table recognition task
 
 ## II. Supported Model List
 
+> The inference time only includes the model inference time and does not include the time for pre- or post-processing.
+
 <table>
 <tr>
 <th>Model</th><th>Model Download Link</th>
 <th>mAP(%)</th>
 <th>GPU Inference Time (ms)<br/>[Regular Mode / High-Performance Mode]</th>
 <th>CPU Inference Time (ms)<br/>[Regular Mode / High-Performance Mode]</th>
-<th>Model Storage Size (M)</th>
+<th>Model Storage Size (MB)</th>
 <th>Description</th>
 </tr>
 <tr>
 <td>RT-DETR-L_wired_table_cell_det</td>
 <td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/RT-DETR-L_wired_table_cell_det_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/RT-DETR-L_wired_table_cell_det_pretrained.pdparams">Training Model</a></td>
 <td rowspan="2">82.7</td>
-<td rowspan="2">35.00 / 10.45</td>
-<td rowspan="2">495.51 / 495.51</td>
-<td rowspan="2">124M</td>
-<td rowspan="2">RT-DETR is the first real-time end-to-end object detection model. The Baidu PaddlePaddle Vision team pre-trained on a self-built table cell detection dataset based on the RT-DETR-L as the base model, achieving good performance in detecting both wired and wireless table cells.</td>
+<td rowspan="2">33.47 / 27.02</td>
+<td rowspan="2">402.55 / 256.56</td>
+<td rowspan="2">124</td>
+<td rowspan="2">RT-DETR is a real-time end-to-end object detection model. The Baidu PaddlePaddle Vision team pre-trained on a self-built table cell detection dataset based on the RT-DETR-L as the base model, achieving good performance in detecting both wired and wireless table cells.</td>
 </tr>
 <tr>
 <td>RT-DETR-L_wireless_table_cell_det</td>
@@ -46,7 +48,12 @@ The Table Cell Detection Module is a key component of the table recognition task
                   <ul>
                       <li>GPU: NVIDIA Tesla T4</li>
                       <li>CPU: Intel Xeon Gold 6271C @ 2.60GHz</li>
-                      <li>Other Environment: Ubuntu 20.04 / cuDNN 8.6 / TensorRT 8.5.2.2</li>
+                  </ul>
+              </li>
+              <li><strong>Software Environment:</strong>
+                  <ul>
+                      <li>Ubuntu 20.04 / CUDA 11.8 / cuDNN 8.9 / TensorRT 8.6.1.6</li>
+                      <li>paddlepaddle 3.0.0 / paddleocr 3.0.3</li>
                   </ul>
               </li>
           </ul>
@@ -81,13 +88,15 @@ The Table Cell Detection Module is a key component of the table recognition task
 
 ## III. Quick Start
 
-> ❗ Before starting quickly, please first install the PaddleOCR wheel package. For details, please refer to the [installation tutorial](../installation.md).
+> ❗ Before starting quickly, please first install the PaddleOCR wheel package. For details, please refer to the [installation tutorial](../installation.en.md).
 
 You can quickly experience it with one command:
 
 ```bash
 paddleocr table_cells_detection -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/table_recognition.jpg
 ```
+
+<b>Note: </b>The official models would be download from HuggingFace by default. If can't access to HuggingFace, please set the environment variable `PADDLE_PDX_MODEL_SOURCE="BOS"` to change the model source to BOS. In the future, more model sources will be supported.
 
 You can also integrate model inference from the table cell detection module into your project. Before running the following code, please download the [sample image](https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/table_recognition.jpg) locally.
 
@@ -130,72 +139,83 @@ The relevant methods, parameters, etc., are described as follows:
 <th>Parameter</th>
 <th>Description</th>
 <th>Type</th>
-<th>Options</th>
-<th>Default Value</th>
+<th>Default</th>
 </tr>
 </thead>
+<tbody>
 <tr>
 <td><code>model_name</code></td>
-<td>Model Name</td>
-<td><code>str</code></td>
-<td>None</td>
-<td>None</td>
-</tr>
-<tr>
-<td><code>model_dir</code></td>
-<td>Model Storage Path</td>
-<td><code>str</code></td>
-<td>None</td>
-<td>None</td>
-</tr>
-<tr>
-<td><code>device</code></td>
-<td>Model Inference Device</td>
-<td><code>str</code></td>
-<td>Supports specifying specific GPU card numbers, such as “gpu:0”, specific hardware card numbers, such as “npu:0”, CPU as “cpu”.</td>
-<td><code>gpu:0</code></td>
-</tr>
-<tr>
-<td><code>use_hpip</code></td>
-<td>Whether to enable high-performance inference plugin</td>
-<td><code>bool</code></td>
-<td>None</td>
-<td><code>False</code></td>
-</tr>
-<tr>
-<td><code>hpi_config</code></td>
-<td>High-Performance Inference Configuration</td>
-<td><code>dict</code> | <code>None</code></td>
-<td>None</td>
+<td>Model name. If set to <code>None</code>, <code>RT-DETR-L_wired_table_cell_det</code> will be used.</td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
-<td><code>img_size</code></td>
-<td>Input image size; if not specified, the PaddleX official model configuration will be used by default</td>
-<td><code>int/list</code></td>
-<td>
-<ul>
-  <li><b>int</b>, e.g., 640, indicates resizing the input image to 640x640</li>
-  <li><b>list</b>, e.g., [640, 512], indicates resizing the input image to a width of 640 and a height of 512</li>
-</ul>
+<td><code>model_dir</code></td>
+<td>Model storage path.</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>device</code></td>
+<td>Device for inference.<br/>
+<b>For example:</b> <code>"cpu"</code>, <code>"gpu"</code>, <code>"npu"</code>, <code>"gpu:0"</code>, <code>"gpu:0,1"</code>.<br/>
+If multiple devices are specified, parallel inference will be performed.<br/>
+By default, GPU 0 is used if available; otherwise, CPU is used.</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>enable_hpi</code></td>
+<td>Whether to enable high-performance inference.</td>
+<td><code>bool</code></td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td><code>use_tensorrt</code></td>
+<td>Whether to use the Paddle Inference TensorRT subgraph engine. If the model does not support acceleration through TensorRT, setting this flag will not enable acceleration.<br/>
+For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6), and it is recommended to install TensorRT 8.6.1.6.<br/>
 </td>
+<td><code>bool</code></td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td><code>precision</code></td>
+<td>Computation precision when using the Paddle Inference TensorRT subgraph engine.<br/><b>Options:</b> <code>"fp32"</code>, <code>"fp16"</code>.</td>
+<td><code>str</code></td>
+<td><code>"fp32"</code></td>
+</tr>
+<tr>
+<td><code>enable_mkldnn</code></td>
+<td>Whether to enable MKL-DNN acceleration for inference. If MKL-DNN is unavailable or the model does not support it, acceleration will not be used even if this flag is set.</td>
+<td><code>bool</code></td>
+<td><code>True</code></td>
+</tr>
+<tr>
+<td><code>mkldnn_cache_capacity</code></td>
+<td>MKL-DNN cache capacity.</td>
+<td><code>int</code></td>
+<td><code>10</code></td>
+</tr>
+<tr>
+<td><code>cpu_threads</code></td>
+<td>Number of threads to use for inference on CPUs.</td>
+<td><code>int</code></td>
+<td><code>10</code></td>
+</tr>
+<tr>
+<td><code>img_size</code></td>
+<td>Input image size.<ul><li><b>int</b>: e.g. <code>640</code>, resizes input image to 640x640</li><li><b>list</b>: e.g. <code>[640, 512]</code>, resizes input image to 640 width and 512 height</li></ul></td>
+<td><code>int|list|None</code></td>
 <td>None</td>
 </tr>
 <tr>
 <td><code>threshold</code></td>
-<td>Threshold for filtering out low-confidence prediction results; if not specified, the PaddleX official model configuration will be used by default. In table cell detection tasks, appropriately lowering the threshold may help achieve more accurate results</td>
-<td><code>float/dict</code></td>
-<td>
-<ul>
-  <li><b>float</b>, e.g., 0.2, indicates filtering out all bounding boxes with confidence lower than 0.2</li>
-  <li><b>dictionary</b>, where the key is of type <b>int</b> representing <code>cls_id</code>, and the value is of type <b>float</b> representing the threshold. For example, <code>{0: 0.45, 2: 0.48, 7: 0.4}</code> applies a threshold of 0.45 for category cls_id 0, 0.48 for category cls_id 1, and 0.4 for category cls_id 7</li>
-</ul>
-</td>
-<td>None</td>
+<td>Threshold for filtering out low-confidence prediction results.<ul><li><b>float</b>: e.g. <code>0.2</code>, filters out all boxes with confidence below 0.2.</li><li><b>dict</b>: keys are <code>int</code> (class id), values are <code>float</code> thresholds, e.g. <code>{0: 0.45, 2: 0.48, 7: 0.4}</code>, applies thresholds to specific classes.</li><li><b>None</b>: uses the model's default configuration.</li></ul></td>
+<td><code>float|dict|None</code></td>
+<td><code>None</code></td>
 </tr>
+</tbody>
 </table>
-
-* Among them, `model_name` must be specified. After specifying `model_name`, the default model parameters built into PaddleX are used. When `model_dir` is specified, the user-defined model is used.
 
 * Call the `predict()` method of the table cell detection model for inference prediction. This method will return a result list. Additionally, this module also provides a `predict_iter()` method. Both methods are consistent in terms of parameter acceptance and result return. The difference is that `predict_iter()` returns a `generator`, which can process and obtain prediction results step by step, suitable for handling large datasets or scenarios where memory saving is desired. You can choose to use either of these methods according to your actual needs. The `predict()` method has parameters `input`, `batch_size`, and `threshold`, with specific explanations as follows:
 
@@ -205,42 +225,32 @@ The relevant methods, parameters, etc., are described as follows:
 <th>Parameter</th>
 <th>Description</th>
 <th>Type</th>
-<th>Options</th>
-<th>Default Value</th>
+<th>Default</th>
 </tr>
 </thead>
 <tr>
 <td><code>input</code></td>
-<td>Data to be predicted, supports multiple input types</td>
-<td><code>Python Var</code>/<code>str</code>/<code>list</code></td>
 <td>
+Input data to be predicted. Required. Supports multiple input types:
 <ul>
-  <li><b>Python Variable</b>, such as <code>numpy.ndarray</code> representing image data</li>
-  <li><b>File Path</b>, such as the local path of an image file: <code>/root/data/img.jpg</code></li>
-  <li><b>URL Link</b>, such as the network URL of an image file: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/table_recognition.jpg">Example</a></li>
-  <li><b>Local Directory</b>, which should contain data files to be predicted, such as the local path: <code>/root/data/</code></li>
-  <li><b>List</b>, where list elements must be of the above types, such as <code>[numpy.ndarray, numpy.ndarray]</code>, <code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>, <code>["/root/data1", "/root/data2"]</code></li>
+  <li><b>Python Var</b>: e.g., <code>numpy.ndarray</code> representing image data</li>
+  <li><b>str</b>: Local image file or PDF file path: <code>/root/data/img.jpg</code>; <b>URL</b>: Image or PDF file network URL: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/img_rot180_demo.jpg">Example</a>; <b>Directory</b>: Should contain images for prediction, e.g., <code>/root/data/</code> (currently, PDF files in directories are not supported, PDF files need to be specified by file path)</li>
+  <li><b>list</b>: List elements should be of the above types, e.g., <code>[numpy.ndarray, numpy.ndarray]</code>, <code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>, <code>["/root/data1", "/root/data2"]</code></li>
 </ul>
 </td>
-<td>None</td>
+<td><code>Python Var|str|list</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>batch_size</code></td>
-<td>Batch Size</td>
+<td>Batch size, positive integer.</td>
 <td><code>int</code></td>
-<td>Any integer</td>
 <td>1</td>
 </tr>
 <tr>
 <td><code>threshold</code></td>
-<td>Threshold for filtering out low-confidence prediction results; if not specified, the <code>threshold</code> parameter specified in <code>create_model</code> will be used by default, and if <code>create_model</code> is not specified, the PaddleX official model configuration will be used</td>
-<td><code>float/dict</code></td>
-<td>
-<ul>
-  <li><b>float</b>, e.g., 0.2, indicates filtering out all bounding boxes with confidence lower than 0.2</li>
-  <li><b>dictionary</b>, where the key is of type <b>int</b> representing <code>cls_id</code>, and the value is of type <b>float</b> representing the threshold. For example, <code>{0: 0.45, 2: 0.48, 7: 0.4}</code> applies a threshold of 0.45 for category cls_id 0, 0.48 for category cls_id 1, and 0.4 for category cls_id 7</li>
-</ul>
-</td>
+<td>Same meaning as the instantiation parameters. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
+<td><code>float|dict|None</code></td>
 <td>None</td>
 </tr>
 </table>
@@ -330,6 +340,6 @@ The relevant methods, parameters, etc., are described as follows:
 
 ## IV. Secondary Development
 
-Since PaddleOCR does not directly provide training for the table cell detection module, if you need to train a table cell detection model, you can refer to the [PaddleX Table Cell Detection Module Secondary Development](https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/table_cells_detection.html#_4) section for training. The trained model can be seamlessly integrated into the PaddleOCR API for inference.
+Since PaddleOCR does not directly provide training for the table cell detection module, if you need to train a table cell detection model, you can refer to the [PaddleX Table Cell Detection Module Secondary Development](https://paddlepaddle.github.io/PaddleX/latest/en/module_usage/tutorials/ocr_modules/table_cells_detection.html#iv-secondary-development) section for training. The trained model can be seamlessly integrated into the PaddleOCR API for inference.
 
 ## V. FAQ

@@ -1,19 +1,23 @@
-# Serving Deployment
+---
+comments: true
+---
 
-Serving deployment is a common deployment method in real-world production environments. By encapsulating inference capabilities as services, clients can access these services via network requests to obtain inference results. PaddleOCR recommends using [PaddleX](https://github.com/PaddlePaddle/PaddleX) for serving deployment. Please refer to [Differences and Connections between PaddleOCR and PaddleX](../paddleocr_and_paddlex.en.md#1-Differences-and-Connections-Between-PaddleOCR-and-PaddleX) to understand the relationship between PaddleOCR and PaddleX.
+# Serving
 
-PaddleX provides the following serving deployment solutions:
+Serving is a common deployment method in real-world production environments. By encapsulating inference capabilities as services, clients can access these services via network requests to obtain inference results. **The client-side code can be written in different programming languages and does not need to match the server-side code.** PaddleOCR recommends using [PaddleX](https://github.com/PaddlePaddle/PaddleX) for serving. Please refer to [Differences and Connections between PaddleOCR and PaddleX](../paddleocr_and_paddlex.en.md#1-Differences-and-Connections-Between-PaddleOCR-and-PaddleX) to understand the relationship between PaddleOCR and PaddleX.
 
-- **Basic Serving Deployment**: An easy-to-use serving deployment solution with low development costs.
-- **High-Stability Serving Deployment**: Built based on [NVIDIA Triton Inference Server](https://developer.nvidia.com/triton-inference-server). Compared to the basic serving deployment, this solution offers higher stability and allows users to adjust configurations to optimize performance.
+PaddleX provides the following serving solutions:
 
-**It is recommended to first use the basic serving deployment solution for quick validation**, and then evaluate whether to try more complex solutions based on actual needs.
+- **Basic Serving**: An easy-to-use serving solution with low development costs.
+- **High-Stability Serving**: Built based on [NVIDIA Triton Inference Server](https://developer.nvidia.com/triton-inference-server). Compared to the basic serving, this solution offers higher stability and allows users to adjust configurations to optimize performance.
 
-## 1. Basic Serving Deployment
+**It is recommended to first use the basic serving solution for quick validation**, and then evaluate whether to try more complex solutions based on actual needs.
+
+## 1. Basic Serving
 
 ### 1.1 Install Dependencies
 
-Run the following command to install the PaddleX serving deployment plugin via PaddleX CLI:
+Run the following command to install the PaddleX serving plugin via PaddleX CLI:
 
 ```bash
 paddlex --install serving
@@ -44,7 +48,7 @@ INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
 
 To adjust configurations (such as model path, batch size, deployment device, etc.), specify `--pipeline` as a custom configuration file. Refer to [PaddleOCR and PaddleX](../paddleocr_and_paddlex.en.md) for the mapping between PaddleOCR pipelines and PaddleX pipeline registration names, as well as how to obtain and modify PaddleX pipeline configuration files.
 
-The command-line options related to serving deployment are as follows:
+The command-line options related to serving are as follows:
 
 <table>
 <thead>
@@ -60,7 +64,7 @@ The command-line options related to serving deployment are as follows:
 </tr>
 <tr>
 <td><code>--device</code></td>
-<td>Deployment device for the pipeline. Defaults to <code>cpu</code> (if GPU is unavailable) or <code>gpu</code> (if GPU is available).</td>
+<td>Deployment device for the pipeline. By default, a GPU will be used if available; otherwise, a CPU will be used."</td>
 </tr>
 <tr>
 <td><code>--host</code></td>
@@ -72,11 +76,11 @@ The command-line options related to serving deployment are as follows:
 </tr>
 <tr>
 <td><code>--use_hpip</code></td>
-<td>If specified, uses high-performance inference.</td>
+<td>If specified, uses high-performance inference. Refer to the High-Performance Inference documentation for more information.</td>
 </tr>
 <tr>
 <td><code>--hpi_config</code></td>
-<td>High-performance inference configuration. Refer to the <a href="https://paddlepaddle.github.io/PaddleX/3.0/en/pipeline_deploy/high_performance_inference.html#22">PaddleX High-Performance Inference Guide</a> for more information.</td>
+<td>High-performance inference configuration. Refer to the High-Performance Inference documentation for more information.</td>
 </tr>
 </tbody>
 </table>
@@ -85,8 +89,8 @@ The command-line options related to serving deployment are as follows:
 
 The <b>"Development Integration/Deployment"</b> section in the PaddleOCR pipeline tutorial provides API references and multi-language invocation examples for the service.
 
-## 2. High-Stability Serving Deployment
+## 2. High-Stability Serving
 
-Please refer to the [PaddleX Serving Deployment Guide](https://paddlepaddle.github.io/PaddleX/3.0/en/pipeline_deploy/serving.html#2). More information about PaddleX pipeline configuration files can be found in [Using PaddleX Pipeline Configuration Files](../paddleocr_and_paddlex.en.md#3-using-paddlex-pipeline-configuration-files).
+Please refer to the [PaddleX Serving Guide](https://paddlepaddle.github.io/PaddleX/latest/en/pipeline_deploy/serving.html#2). More information about PaddleX pipeline configuration files can be found in [Using PaddleX Pipeline Configuration Files](../paddleocr_and_paddlex.en.md#3-using-paddlex-pipeline-configuration-files).
 
 It should be noted that, due to the lack of fine-grained optimization and other reasons, the current high-stability serving deployment solution provided by PaddleOCR may not match the performance of the 2.x version based on PaddleServing. However, this new solution fully supports the PaddlePaddle 3.0 framework. We will continue to optimize it and consider introducing more performant deployment solutions in the future.

@@ -19,7 +19,7 @@ from ._constants import (
     DEFAULT_CPU_THREADS,
     DEFAULT_DEVICE,
     DEFAULT_ENABLE_MKLDNN,
-    DEFAULT_MIN_SUBGRAPH_SIZE,
+    DEFAULT_MKLDNN_CACHE_CAPACITY,
     DEFAULT_PRECISION,
     DEFAULT_USE_TENSORRT,
     SUPPORTED_PRECISION_LIST,
@@ -32,9 +32,9 @@ def parse_common_args(kwargs, *, default_enable_hpi):
         "device": DEFAULT_DEVICE,
         "enable_hpi": default_enable_hpi,
         "use_tensorrt": DEFAULT_USE_TENSORRT,
-        "min_subgraph_size": DEFAULT_MIN_SUBGRAPH_SIZE,
         "precision": DEFAULT_PRECISION,
         "enable_mkldnn": DEFAULT_ENABLE_MKLDNN,
+        "mkldnn_cache_capacity": DEFAULT_MKLDNN_CACHE_CAPACITY,
         "cpu_threads": DEFAULT_CPU_THREADS,
     }
 
@@ -50,7 +50,6 @@ def parse_common_args(kwargs, *, default_enable_hpi):
         )
 
     kwargs["use_pptrt"] = kwargs.pop("use_tensorrt")
-    kwargs["pptrt_min_subgraph_size"] = kwargs.pop("min_subgraph_size")
     kwargs["pptrt_precision"] = kwargs.pop("precision")
 
     return kwargs
@@ -62,10 +61,11 @@ def prepare_common_init_args(model_name, common_args):
         device = get_default_device()
     device_type, _ = parse_device(device)
 
-    init_kwargs = {"device": device}
+    init_kwargs = {}
+    init_kwargs["device"] = device
     init_kwargs["use_hpip"] = common_args["enable_hpi"]
 
-    pp_option = PaddlePredictorOption(model_name)
+    pp_option = PaddlePredictorOption()
     if device_type == "gpu":
         if common_args["use_pptrt"]:
             if common_args["pptrt_precision"] == "fp32":
@@ -75,18 +75,17 @@ def prepare_common_init_args(model_name, common_args):
                     "pptrt_precision"
                 ]
                 pp_option.run_mode = "trt_fp16"
+        else:
+            pp_option.run_mode = "paddle"
     elif device_type == "cpu":
         enable_mkldnn = common_args["enable_mkldnn"]
-        if enable_mkldnn is None:
-            from paddle.inference import Config
-
-            if hasattr(Config, "set_mkldnn_cache_capacity"):
-                enable_mkldnn = True
-            else:
-                enable_mkldnn = False
         if enable_mkldnn:
-            pp_option.run_mode = "mkldnn"
-    pp_option.cpu_threads = common_args["cpu_threads"]
+            pp_option.mkldnn_cache_capacity = common_args["mkldnn_cache_capacity"]
+        else:
+            pp_option.run_mode = "paddle"
+        pp_option.cpu_threads = common_args["cpu_threads"]
+    else:
+        pp_option.run_mode = "paddle"
     init_kwargs["pp_option"] = pp_option
 
     return init_kwargs
@@ -113,13 +112,7 @@ def add_common_cli_opts(parser, *, default_enable_hpi, allow_multiple_devices):
         "--use_tensorrt",
         type=str2bool,
         default=DEFAULT_USE_TENSORRT,
-        help="Whether to use the Paddle Inference TensorRT subgraph engine.",
-    )
-    parser.add_argument(
-        "--min_subgraph_size",
-        type=int,
-        default=DEFAULT_MIN_SUBGRAPH_SIZE,
-        help="Minimum subgraph size for TensorRT when using the Paddle Inference TensorRT subgraph engine.",
+        help="Whether to use the Paddle Inference TensorRT subgraph engine. If the model does not support TensorRT acceleration, even if this flag is set, acceleration will not be used.",
     )
     parser.add_argument(
         "--precision",
@@ -132,7 +125,13 @@ def add_common_cli_opts(parser, *, default_enable_hpi, allow_multiple_devices):
         "--enable_mkldnn",
         type=str2bool,
         default=DEFAULT_ENABLE_MKLDNN,
-        help="Enable oneDNN (formerly MKL-DNN) acceleration for inference. By default, oneDNN will be used when available, except for models and pipelines that have known oneDNN issues.",
+        help="Enable MKL-DNN acceleration for inference. If MKL-DNN is unavailable or the model does not support it, acceleration will not be used even if this flag is set.",
+    )
+    parser.add_argument(
+        "--mkldnn_cache_capacity",
+        type=int,
+        default=DEFAULT_MKLDNN_CACHE_CAPACITY,
+        help="MKL-DNN cache capacity.",
     )
     parser.add_argument(
         "--cpu_threads",

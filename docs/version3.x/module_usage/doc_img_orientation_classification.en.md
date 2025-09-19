@@ -2,13 +2,15 @@
 comments: true
 ---
 
-# Tutorial for Document Image Orientation Classification Module
+# Document Image Orientation Classification Module Tutorial
 
 ## 1. Overview
 
 The Document Image Orientation Classification Module is primarily designed to distinguish the orientation of document images and correct them through post-processing. During processes such as document scanning or ID photo capturing, the device might be rotated to achieve clearer images, resulting in images with various orientations. Standard OCR pipelines may not handle these images effectively. By leveraging image classification techniques, the orientation of documents or IDs containing text regions can be pre-determined and adjusted, thereby improving the accuracy of OCR processing.
 
 ## 2. Supported Models List
+
+> The inference time only includes the model inference time and does not include the time for pre- or post-processing.
 
 <table>
 <thead>
@@ -23,10 +25,11 @@ The Document Image Orientation Classification Module is primarily designed to di
 </thead>
 <tbody>
 <tr>
-<td>PP-LCNet_x1_0_doc_ori</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-LCNet_x1_0_doc_ori_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-LCNet_x1_0_doc_ori_pretrained.pdparams">Pretrained Model</a></td>
+<td>PP-LCNet_x1_0_doc_ori</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-LCNet_x1_0_doc_ori_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-LCNet_x1_0_doc_ori_pretrained.pdparams">Pretrained Model</a></td>
 <td>99.06</td>
-<td>2.31 / 0.43</td>
-<td>3.37 / 1.27</td>
+<td>2.62 / 0.59</td>
+<td>3.24 / 1.19</td>
 <td>7</td>
 <td>A document image classification model based on PP-LCNet_x1_0, with four categories: 0°, 90°, 180°, and 270°.</td>
 </tr>
@@ -39,13 +42,18 @@ The Document Image Orientation Classification Module is primarily designed to di
     <li><b>Performance Test Environment</b>
         <ul>
             <li><strong>Test Dataset:</strong> Self-built multi-scenario dataset (1000 images, including ID/document scenarios)</li>
-            <li><strong>Hardware Configuration:</strong>
-                <ul>
-                    <li>GPU: NVIDIA Tesla T4</li>
-                    <li>CPU: Intel Xeon Gold 6271C @ 2.60GHz</li>
-                    <li>Other Environment: Ubuntu 20.04 / cuDNN 8.6 / TensorRT 8.5.2.2</li>
-                </ul>
-            </li>
+              <li><strong>Hardware Configuration:</strong>
+                  <ul>
+                      <li>GPU: NVIDIA Tesla T4</li>
+                      <li>CPU: Intel Xeon Gold 6271C @ 2.60GHz</li>
+                  </ul>
+              </li>
+              <li><strong>Software Environment:</strong>
+                  <ul>
+                      <li>Ubuntu 20.04 / CUDA 11.8 / cuDNN 8.9 / TensorRT 8.6.1.6</li>
+                      <li>paddlepaddle 3.0.0 / paddleocr 3.0.3</li>
+                  </ul>
+              </li>
         </ul>
     </li>
     <li><b>Inference Mode Description</b></li>
@@ -78,13 +86,15 @@ The Document Image Orientation Classification Module is primarily designed to di
 
 ## 3. Quick Start
 
-> ❗ Before starting, please install the PaddleOCR wheel package. For details, refer to the [Installation Guide](https://github.com/PaddlePaddle/PaddleOCR/blob/main/docs/version3.x/quick_start.en.md).
+> ❗ Before starting, please install the PaddleOCR wheel package. For details, refer to the [Installation Guide](../installation.en.md).
 
 You can quickly experience it with one command:
 
 ```bash
 paddleocr doc_img_orientation_classification -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/img_rot180_demo.jpg
 ```
+
+<b>Note: </b>The official models would be download from HuggingFace by default. If can't access to HuggingFace, please set the environment variable `PADDLE_PDX_MODEL_SOURCE="BOS"` to change the model source to BOS. In the future, more model sources will be supported.
 
 You can also integrate the model inference of the Document Image Orientation Classification Module into your project. Before running the following code, please download the [sample image](https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/img_rot180_demo.jpg) to your local machine.
 
@@ -118,88 +128,113 @@ Here is the visualization of the image:
 The explanations of relevant methods and parameters are as follows:
 
 * Instantiate the document image orientation classification model with `DocImgOrientationClassification` (taking `PP-LCNet_x1_0_doc_ori` as an example here). The specific explanations are as follows:
-
 <table>
 <thead>
 <tr>
 <th>Parameter</th>
 <th>Description</th>
-<th>Parameter Type</th>
-<th>Options</th>
-<th>Default Value</th>
+<th>Type</th>
+<th>Default</th>
 </tr>
 </thead>
+<tbody>
 <tr>
 <td><code>model_name</code></td>
-<td>Model name</td>
-<td><code>str</code></td>
-<td>None</td>
+<td>Model name. If set to <code>None</code>, <code>PP-LCNet_x1_0_doc_ori</code> will be used.</td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>model_dir</code></td>
-<td>Model storage path</td>
-<td><code>str</code></td>
-<td>None</td>
-<td>None</td>
+<td>Model storage path.</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>Model inference device</td>
-<td><code>str</code></td>
-<td>Supports specifying the specific card number of GPU, such as "gpu:0", specific card numbers of other hardware, such as "npu:0", and CPU, such as "cpu".</td>
-<td><code>gpu:0</code></td>
+<td>Device for inference.<br/>
+<b>For example:</b><code>"cpu"</code>, <code>"gpu"</code>, <code>"npu"</code>, <code>"gpu:0"</code>, <code>"gpu:0,1"</code>.<br/>
+If multiple devices are specified, parallel inference will be performed.<br/>
+By default, GPU 0 is used if available; otherwise, CPU is used.
+</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
 </tr>
 <tr>
-<td><code>use_hpip</code></td>
-<td>Whether to enable the high-performance inference plugin</td>
+<td><code>enable_hpi</code></td>
+<td>Whether to enable high-performance inference.</td>
 <td><code>bool</code></td>
-<td>None</td>
 <td><code>False</code></td>
 </tr>
 <tr>
-<td><code>hpi_config</code></td>
-<td>High-performance inference configuration</td>
-<td><code>dict</code> | <code>None</code></td>
-<td>None</td>
-<td><code>None</code></td>
+<td><code>use_tensorrt</code></td>
+<td>Whether to use the Paddle Inference TensorRT subgraph engine. If the model does not support acceleration through TensorRT, setting this flag will not enable acceleration.<br/>
+For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6), and it is recommended to install TensorRT 8.6.1.6.<br/>
+
+</td>
+<td><code>bool</code></td>
+<td><code>False</code></td>
 </tr>
+<tr>
+<td><code>precision</code></td>
+<td>Computation precision when using the TensorRT subgraph engine in Paddle Inference.<br/><b>Options:</b><code>"fp32"</code>, <code>"fp16"</code>.</td>
+<td><code>str</code></td>
+<td><code>"fp32"</code></td>
+</tr>
+<tr>
+<td><code>enable_mkldnn</code></td>
+<td>
+Whether to enable MKL-DNN acceleration for inference. If MKL-DNN is unavailable or the model does not support it, acceleration will not be used even if this flag is set.
+</td>
+<td><code>bool</code></td>
+<td><code>True</code></td>
+</tr>
+<tr>
+<td><code>mkldnn_cache_capacity</code></td>
+<td>
+MKL-DNN cache capacity.
+</td>
+<td><code>int</code></td>
+<td><code>10</code></td>
+</tr>
+<tr>
+<td><code>cpu_threads</code></td>
+<td>Number of threads to use for inference on CPUs.</td>
+<td><code>int</code></td>
+<td><code>10</code></td>
+</tr>
+</tbody>
 </table>
 
-* Among them, `model_name` must be specified. After specifying `model_name`, the model parameters built into PaddleX are used by default. On this basis, when `model_dir` is specified, the user-defined model is used.
-
 * Call the `predict()` method of the document image orientation classification model for inference prediction. This method will return a list of results. In addition, this module also provides the `predict_iter()` method. The two methods are completely consistent in terms of parameter acceptance and result return. The difference is that `predict_iter()` returns a `generator`, which can process and obtain prediction results step by step, suitable for scenarios where large datasets need to be processed or memory needs to be saved. You can choose either of these two methods according to your actual needs. The parameters of the `predict()` method are `input` and `batch_size`, and the specific explanations are as follows:
-
 <table>
 <thead>
 <tr>
 <th>Parameter</th>
 <th>Description</th>
-<th>Parameter Type</th>
-<th>Options</th>
-<th>Default Value</th>
+<th>Type</th>
+<th>Default</th>
 </tr>
 </thead>
 <tr>
 <td><code>input</code></td>
-<td>Data to be predicted, supporting multiple input types</td>
-<td><code>Python Var</code>/<code>str</code>/<code>list</code></td>
-<td>
+<td>Input data to be predicted. Required. Supports multiple input types:
 <ul>
-  <li><b>Python variable</b>, such as image data represented by <code>numpy.ndarray</code></li>
-  <li><b>File path</b>, such as the local path of an image file: <code>/root/data/img.jpg</code></li>
-  <li><b>URL link</b>, such as the network URL of an image file: <a href = "https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/img_rot180_demo.jpg">Example</a></li>
-  <li><b>Local directory</b>, which should contain the data files to be predicted, such as the local path: <code>/root/data/</code></li>
-  <li><b>List</b>, the elements of the list should be of the above types, such as <code>[numpy.ndarray, numpy.ndarray]</code>, <code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>, <code>["/root/data1", "/root/data2"]</code></li>
+<li><b>Python Var</b>: e.g., <code>numpy.ndarray</code> representing image data</li>
+<li><b>str</b>: 
+  - Local image or PDF file path: <code>/root/data/img.jpg</code>;
+  - <b>URL</b> of image or PDF file: e.g., <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/img_rot180_demo.jpg">example</a>;
+  - <b>Local directory</b>: directory containing images for prediction, e.g., <code>/root/data/</code> (Note: directories containing PDF files are not supported; PDFs must be specified by exact file path)</li>
+<li><b>list</b>: Elements must be of the above types, e.g., <code>[numpy.ndarray, numpy.ndarray]</code>, <code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>, <code>["/root/data1", "/root/data2"]</code></li>
 </ul>
 </td>
-<td>None</td>
+<td><code>Python Var|str|list</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>batch_size</code></td>
-<td>Batch size</td>
+<td>Batch size, positive integer.</td>
 <td><code>int</code></td>
-<td>Any integer</td>
 <td>1</td>
 </tr>
 </table>
@@ -285,6 +320,10 @@ The explanations of relevant methods and parameters are as follows:
 <td rowspan = "1">Get the visualization image in <code>dict</code> format</td>
 </tr>
 
-</table>## IV. Secondary Development
+</table>
+
+## IV. Secondary Development
 
 Since PaddleOCR does not directly provide training functionality for document image orientation classification, if you need to train a document image orientation classification model, you can refer to the [PaddleX Secondary Development for Document Image Orientation Classification](https://paddlepaddle.github.io/PaddleX/latest/en/module_usage/tutorials/ocr_modules/doc_img_orientation_classification.html#iv-custom-development) section for training guidance. The trained model can be seamlessly integrated into PaddleOCR's API for inference purposes.
+
+## V. FAQ

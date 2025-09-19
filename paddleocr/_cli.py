@@ -16,10 +16,10 @@ import argparse
 import logging
 import subprocess
 import sys
-
 import warnings
 
 from ._models import (
+    ChartParsing,
     DocImgOrientationClassification,
     DocVLM,
     FormulaRecognition,
@@ -39,6 +39,7 @@ from ._pipelines import (
     FormulaRecognitionPipeline,
     PaddleOCR,
     PPChatOCRv4Doc,
+    PPDocTranslation,
     PPStructureV3,
     SealRecognition,
     TableRecognitionPipelineV2,
@@ -55,6 +56,7 @@ def _register_pipelines(subparsers):
         FormulaRecognitionPipeline,
         PaddleOCR,
         PPChatOCRv4Doc,
+        PPDocTranslation,
         PPStructureV3,
         SealRecognition,
         TableRecognitionPipelineV2,
@@ -66,6 +68,7 @@ def _register_pipelines(subparsers):
 
 def _register_models(subparsers):
     for cls in [
+        ChartParsing,
         DocImgOrientationClassification,
         DocVLM,
         FormulaRecognition,
@@ -98,14 +101,16 @@ def _register_install_hpi_deps_command(subparsers):
     subparser.set_defaults(executor=_install_hpi_deps)
 
 
-def _parse_args():
+def _get_parser():
     parser = argparse.ArgumentParser(prog="paddleocr")
-    parser.add_argument("--version", action="version", version=f"%(prog)s {version}")
+    parser.add_argument(
+        "-v", "--version", action="version", version=f"%(prog)s {version}"
+    )
     subparsers = parser.add_subparsers(dest="subcommand")
     _register_pipelines(subparsers)
     _register_models(subparsers)
     _register_install_hpi_deps_command(subparsers)
-    return parser.parse_args()
+    return parser
 
 
 def _execute(args):
@@ -115,5 +120,9 @@ def _execute(args):
 def main():
     logger.setLevel(logging.INFO)
     warnings.filterwarnings("default", category=CLIDeprecationWarning)
-    args = _parse_args()
+    parser = _get_parser()
+    args = parser.parse_args()
+    if args.subcommand is None:
+        parser.print_usage(sys.stderr)
+        sys.exit(2)
     _execute(args)

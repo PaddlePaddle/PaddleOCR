@@ -1,17 +1,17 @@
 [build-system]
-requires = ["setuptools==72.1.0"]
+requires = ["setuptools==72.1.0", "wheel", "setuptools_scm"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "paddleocr"
 # After each version release, the version number needs to be incremented
 dynamic = ["version"]
-description = "Awesome OCR toolkit based on PaddlePaddle"
+description = "Awesome multilingual OCR and document parsing toolkits based on PaddlePaddle"
 authors = [
-    {name = "PaddlePaddle", email = "Paddle-better@baidu.com"},
+    {name = "PaddlePaddle", email = "paddleocr@baidu.com"},
 ]
 maintainers = [
-    {name = "PaddlePaddle", email = "Paddle-better@baidu.com"},
+    {name = "PaddlePaddle", email = "paddleocr@baidu.com"},
 ]
 readme = "README.md"
 requires-python = ">=3.8"
@@ -20,15 +20,15 @@ keywords = [
     "textdetection",
     "textrecognition",
     "paddleocr",
-    "crnn",
-    "east",
-    "star-net",
-    "rosetta",
-    "ocrlite",
-    "db",
     "chineseocr",
-    "chinesetextdetection",
-    "chinesetextrecognition",
+    "pp-ocr",
+    "pp-structure",
+    "document-parsing",
+    "pdf2markdown",
+    "kie",
+    "pp-chatocr",
+    "document-translation",
+    "rag"
 ]
 license = {text = "Apache License 2.0"}
 classifiers = [
@@ -39,7 +39,7 @@ classifiers = [
     "Topic :: Utilities",
 ]
 dependencies = [
-    "paddlex[ocr,ie,multimodal]==3.0.0rc1",
+    "paddlex[ocr-core]>=3.2.0,<3.3.0",
     "PyYAML>=6",
     "typing-extensions>=4.12",
 ]
@@ -52,6 +52,12 @@ issues = "https://github.com/PaddlePaddle/PaddleOCR/issues"
 
 [project.scripts]
 paddleocr = "paddleocr.__main__:console_entry"
+
+[project.optional-dependencies]
+doc-parser = ["paddlex[ocr]>=3.2.0,<3.3.0"]
+ie = ["paddlex[ie]>=3.2.0,<3.3.0"]
+trans = ["paddlex[trans]>=3.2.0,<3.3.0"]
+all = ["paddlex[ocr,ie,trans]>=3.2.0,<3.3.0"]
 
 [tool.setuptools.packages.find]
 where = ["."]

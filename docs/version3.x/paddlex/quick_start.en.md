@@ -1,27 +1,41 @@
+---
+comments: true
+hide:
+  - toc
+---
+
 # ⏭️ Quick Start
+
+> **Note:**
+
+>* The low-code development tool [PaddleX](https://github.com/PaddlePaddle/PaddleX) by PaddlePaddle leverages the advanced technology of PaddleOCR to support **end-to-end low-code development** capabilities in the OCR field. With low-code development, users can achieve simple and efficient model usage, combination, and customization.
+
+>* PaddleX is dedicated to enabling production-level model training, inference, and deployment. A model pipeline refers to a series of predefined development processes for specific AI tasks, including combinations of single models (single-function modules) that can independently accomplish certain tasks. This document provides quick inference usage for **OCR-related pipelines**. For quick usage of single-function modules and more features, please refer to the relevant sections in [Low-Code End-to-End Development with PaddleOCR](https://www.paddleocr.ai/latest/version3.x/paddlex/overview.html).
+
+>* For information about the relationship between PaddleOCR and PaddleX, please refer to the [Introduction to the Relationship between PaddleOCR and PaddleX](https://www.paddleocr.ai/latest/version3.x/paddleocr_and_paddlex.html).
 
 ## 🛠️ Installation
 
-> ❗Before installing PaddleX, please ensure you have a basic **Python runtime environment** (Note: Currently supports running under Python 3.8 to Python 3.10, with more Python versions under adaptation). The PaddlePaddle version required by PaddleX
+> ❗Before installing PaddleX, please make sure you have a basic **Python runtime environment** (Note: Currently, Python 3.8 to Python 3.12 are supported). PaddleX version 3.2 requires PaddlePaddle version 3.0.0 or higher as a dependency.
 
 * **Installing PaddlePaddle**
 
 ```bash
 # CPU
-python -m pip install paddlepaddle==3.0.0rc0 -i https://www.paddlepaddle.org.cn/packages/stable/cpu/
+python -m pip install paddlepaddle==3.0.0 -i https://www.paddlepaddle.org.cn/packages/stable/cpu/
 
 # gpu，requires GPU driver version ≥450.80.02 (Linux) or ≥452.39 (Windows)
-python -m pip install paddlepaddle-gpu==3.0.0rc0 -i https://www.paddlepaddle.org.cn/packages/stable/cu118/
+python -m pip install paddlepaddle-gpu==3.0.0 -i https://www.paddlepaddle.org.cn/packages/stable/cu118/
 
-# gpu，requires GPU driver version ≥545.23.06 (Linux) or ≥545.84 (Windows)
-python -m pip install paddlepaddle-gpu==3.0.0rc0 -i https://www.paddlepaddle.org.cn/packages/stable/cu123/
+# gpu，requires GPU driver version ≥550.54.14 (Linux) or ≥550.54.14 (Windows)
+python -m pip install paddlepaddle-gpu==3.0.0 -i https://www.paddlepaddle.org.cn/packages/stable/cu126/
 ```
 > ❗No need to focus on the CUDA version on the physical machine, only the GPU driver version needs attention. For more information on PaddlePaddle Wheel versions, please refer to the [PaddlePaddle Official Website](https://www.paddlepaddle.org.cn/install/quick?docurl=/documentation./docs/en/install/pip/linux-pip.html).
 
 * **Installing PaddleX**
 
 ```bash
-pip install https://paddle-model-ecology.bj.bcebos.com/paddlex/whl/paddlex-3.0.0rc0-py3-none-any.whl
+pip install "paddlex[ocr]"
 ```
 
 > ❗For more installation methods, refer to the [PaddleX Installation Guide](https://paddlepaddle.github.io/PaddleX/latest/en/installation/installation.html).
@@ -81,7 +95,7 @@ To use the command line for other pipelines, simply adjust the `pipeline` parame
 | Formula Recognition              | `paddlex --pipeline formula_recognition --input https://paddle-model-ecology.bj.bcebos.com/paddlex/demo_image/general_formula_recognition.png --use_layout_detection True --use_doc_orientation_classify False --use_doc_unwarping False --layout_threshold 0.5 --layout_nms True --layout_unclip_ratio  1.0 --layout_merge_bboxes_mode large --save_path ./output --device gpu:0`                                      |
 | Seal Recognition            | `paddlex --pipeline seal_recognition --input https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/seal_text_det.png --use_doc_orientation_classify False --use_doc_unwarping False --device gpu:0 --save_path ./output`                                      |
 | Layout Parsing           | `paddlex --pipeline layout_parsing --input https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/demo_paper.png --use_doc_orientation_classify False --use_doc_unwarping False --use_textline_orientation False --save_path ./output --device gpu:0`                      |
-| Layout Parsing v2        | `paddlex --pipeline layout_parsing_v2 --input https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/layout_parsing_v2_demo.png --use_doc_orientation_classify False --use_doc_unwarping False --use_textline_orientation False --save_path ./output --device gpu:0`                      |
+| PP-StructureV3        | `paddlex --pipeline PP-StructureV3 --input https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/pp_structure_v3_demo.png --use_doc_orientation_classify False --use_doc_unwarping False --use_textline_orientation False --save_path ./output --device gpu:0`                      |
 
 
 
@@ -110,13 +124,13 @@ To use the Python script for other pipelines, simply adjust the `pipeline` param
 
 | pipeline Name           | Corresponding Parameter               | Detailed Explanation                                                                                                      |
 |-------------------------------|-------------------------------------|---------------------------------------------------------------------------------------------------------------|
-| OCR | `OCR` | [Instructions for Using the General OCR Pipeline Python Script](https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/OCR.html#222-python-script-integration) |
-| Document Image Preprocessing | `doc_preprocessor` | [Instructions for Using the Document Image Preprocessing Pipeline Python Script](https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/doc_preprocessor.html#212-python-script-integration) |
-| Table Recognition | `table_recognition` | [Instructions for Using the General Table Recognition Pipeline Python Script](https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/table_recognition.html#22-python-script-integration) |
-| Table Recognition v2 | `table_recognition_v2` | [Instructions for Using the General Table Recognition v2 Pipeline Python Script](https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/table_recognition_v2.html#22-python-script-integration) |
-| Formula Recognition | `formula_recognition` | [Instructions for Using the Formula Recognition Pipeline Python Script](https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/formula_recognition.html#22-python-script-integration) |
-| Seal Recognition | `seal_recognition` | [Instructions for Using the Seal Text Recognition Pipeline Python Script](https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/seal_recognition.html#22-python-script-integration) |
-| Layout Parsing | `layout_parsing` | [Instructions for Using the General Layout Parsing Pipeline Python Script](https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/layout_parsing.html#22-python-script-integration) |
-| Layout Parsing v2 | `layout_parsing_v2` | [Instructions for Using the General Layout Parsing v2 Pipeline Python Script](https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/tutorials/ocr_pipelines/layout_parsing_v2.html#22-python-script-integration) |
-| PP-ChatOCRv3-doc   | `PP-ChatOCRv3-doc` | [PP-ChatOCRv3-doc Pipeline Python Script Usage Instructions](https://paddlepaddle.github.io/PaddleX/latest/en/pipeline_usage/tutorials/information_extraction_pipelines/document_scene_information_extraction_v3.html) |
-| PP-ChatOCRv4-doc | `PP-ChatOCRv4-doc` | [PP-ChatOCRv4-doc Pipeline Python Script Usage Instructions](https://paddlepaddle.github.io/PaddleX/latest/en/pipeline_usage/tutorials/information_extraction_pipelines/document_scene_information_extraction_v4.html) |
+| OCR | `OCR` | [Instructions for Using the General OCR Pipeline Python Script](https://paddlepaddle.github.io/PaddleX/latest/en/pipeline_usage/tutorials/ocr_pipelines/OCR.html#222-python-script-integration) |
+| Document Image Preprocessing | `doc_preprocessor` | [Instructions for Using the Document Image Preprocessing Pipeline Python Script](https://paddlepaddle.github.io/PaddleX/latest/en/pipeline_usage/tutorials/ocr_pipelines/doc_preprocessor.html#212-python-script-integration) |
+| Table Recognition | `table_recognition` | [Instructions for Using the General Table Recognition Pipeline Python Script](https://paddlepaddle.github.io/PaddleX/latest/en/pipeline_usage/tutorials/ocr_pipelines/table_recognition.html#22-python-script-integration) |
+| Table Recognition v2 | `table_recognition_v2` | [Instructions for Using the General Table Recognition v2 Pipeline Python Script](https://paddlepaddle.github.io/PaddleX/latest/en/pipeline_usage/tutorials/ocr_pipelines/table_recognition_v2.html#22-integration-via-python-script) |
+| Formula Recognition | `formula_recognition` | [Instructions for Using the Formula Recognition Pipeline Python Script](https://paddlepaddle.github.io/PaddleX/latest/en/pipeline_usage/tutorials/ocr_pipelines/formula_recognition.html#222-python-script-integration) |
+| Seal Recognition | `seal_recognition` | [Instructions for Using the Seal Text Recognition Pipeline Python Script](https://paddlepaddle.github.io/PaddleX/latest/en/pipeline_usage/tutorials/ocr_pipelines/seal_recognition.html#222-python-script-integration) |
+| Layout Parsing | `layout_parsing` | [Instructions for Using the General Layout Parsing Pipeline Python Script](https://paddlepaddle.github.io/PaddleX/latest/en/pipeline_usage/tutorials/ocr_pipelines/layout_parsing.html#22-integrating-via-python-script) |
+| PP-StructureV3 | `P-StructureV3` | [Instructions for Using the P-StructureV3 Pipeline Python Script](https://paddlepaddle.github.io/PaddleX/latest/en/pipeline_usage/tutorials/ocr_pipelines/PP-StructureV3.html#22-python-script-integration) |
+| PP-ChatOCRv3-doc   | `PP-ChatOCRv3-doc` | [PP-ChatOCRv3-doc Pipeline Python Script Usage Instructions](https://paddlepaddle.github.io/PaddleX/latest/en/pipeline_usage/tutorials/information_extraction_pipelines/document_scene_information_extraction_v3.html#22-local-experience) |
+| PP-ChatOCRv4-doc | `PP-ChatOCRv4-doc` | [PP-ChatOCRv4-doc Pipeline Python Script Usage Instructions](https://paddlepaddle.github.io/PaddleX/latest/en/pipeline_usage/tutorials/information_extraction_pipelines/document_scene_information_extraction_v4.html#21-local-experience) |

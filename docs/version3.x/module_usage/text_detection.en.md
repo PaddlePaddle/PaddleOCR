@@ -9,6 +9,8 @@ The text detection module is a critical component of OCR (Optical Character Reco
 
 ## 2. Supported Models List
 
+> The inference time only includes the model inference time and does not include the time for pre- or post-processing.
+
 <table>
 <thead>
 <tr>
@@ -22,34 +24,38 @@ The text detection module is a critical component of OCR (Optical Character Reco
 </thead>
 <tbody>
 <tr>
-<td>PP-OCRv5_server_det</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv5_server_det_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_server_det_pretrained.pdparams">Training Model</a></td>
+<td>PP-OCRv5_server_det</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv5_server_det_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_server_det_pretrained.pdparams">Training Model</a></td>
 <td>83.8</td>
-<td>- / -</td>
-<td>- / -</td>
-<td>101</td>
+<td>89.55 / 70.19</td>
+<td>383.15 / 383.15</td>
+<td>84.3</td>
 <td>PP-OCRv5 server-side text detection model with higher accuracy, suitable for deployment on high-performance servers</td>
 </tr>
 <tr>
-<td>PP-OCRv5_mobile_det</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv5_mobile_det_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_mobile_det_pretrained.pdparams">Training Model</a></td>
+<td>PP-OCRv5_mobile_det</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv5_mobile_det_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_mobile_det_pretrained.pdparams">Training Model</a></td>
 <td>79.0</td>
-<td>- / -</td>
-<td>- / -</td>
+<td>10.67 / 6.36</td>
+<td>57.77 / 28.15</td>
 <td>4.7</td>
 <td>PP-OCRv5 mobile-side text detection model with higher efficiency, suitable for deployment on edge devices</td>
 </tr>
 <tr>
-<td>PP-OCRv4_server_det</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_server_det_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_det_pretrained.pdparams">Training Model</a></td>
+<td>PP-OCRv4_server_det</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_server_det_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_det_pretrained.pdparams">Training Model</a></td>
 <td>69.2</td>
-<td>83.34 / 80.91</td>
-<td>442.58 / 442.58</td>
+<td>127.82 / 98.87</td>
+<td>585.95 / 489.77</td>
 <td>109</td>
 <td>PP-OCRv4 server-side text detection model with higher accuracy, suitable for deployment on high-performance servers</td>
 </tr>
 <tr>
-<td>PP-OCRv4_mobile_det</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_mobile_det_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_mobile_det_pretrained.pdparams">Training Model</a></td>
+<td>PP-OCRv4_mobile_det</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_mobile_det_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_mobile_det_pretrained.pdparams">Training Model</a></td>
 <td>63.8</td>
-<td>8.79 / 3.13</td>
-<td>51.00 / 28.58</td>
+<td>9.87 / 4.17</td>
+<td>56.60 / 20.79</td>
 <td>4.7</td>
 <td>PP-OCRv4 mobile-side text detection model with higher efficiency, suitable for deployment on edge devices</td>
 </tr>
@@ -66,7 +72,12 @@ The text detection module is a critical component of OCR (Optical Character Reco
                   <ul>
                       <li>GPU: NVIDIA Tesla T4</li>
                       <li>CPU: Intel Xeon Gold 6271C @ 2.60GHz</li>
-                      <li>Other Environments: Ubuntu 20.04 / cuDNN 8.6 / TensorRT 8.5.2.2</li>
+                  </ul>
+              </li>
+              <li><strong>Software Environment:</strong>
+                  <ul>
+                      <li>Ubuntu 20.04 / CUDA 11.8 / cuDNN 8.9 / TensorRT 8.6.1.6</li>
+                      <li>paddlepaddle 3.0.0 / paddleocr 3.0.3</li>
                   </ul>
               </li>
           </ul>
@@ -109,11 +120,13 @@ Use the following command for a quick experience:
 paddleocr text_detection -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_001.png
 ```
 
+<b>Note: </b>The official models would be download from HuggingFace by default. If can't access to HuggingFace, please set the environment variable `PADDLE_PDX_MODEL_SOURCE="BOS"` to change the model source to BOS. In the future, more model sources will be supported.
+
 You can also integrate the model inference into your project. Before running the following code, download the [example image](https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_001.png) locally.
 
 ```python
 from paddleocr import TextDetection
-model = TextDetection(model_name="PP-OCRv5_mobile_det")
+model = TextDetection(model_name="PP-OCRv5_server_det")
 output = model.predict("general_ocr_001.png", batch_size=1)
 for res in output:
     res.print()
@@ -130,9 +143,9 @@ The output will be:
 
        ...,
 
-       [[ 37, 408],
+       [[ 31, 406],
         ...,
-        [ 39, 453]]], dtype=int16), 'dt_scores': [0.832930755107492, 0.8186143846140158, 0.8591595100376676, 0.8718863959111733]}}
+        [ 34, 455]]], dtype=int16), 'dt_scores': [0.873949039891189, 0.8948166013613552, 0.8842595305917041, 0.876953790920377]}}
 ```
 
 Output parameter meanings:
@@ -147,87 +160,121 @@ Visualization example:
 
 Method and parameter descriptions:
 
-* Instantiate the text detection model (e.g., `PP-OCRv5_mobile_det`):
+* Instantiate the text detection model (e.g., `PP-OCRv5_server_det`):
 <table>
 <thead>
 <tr>
 <th>Parameter</th>
 <th>Description</th>
 <th>Type</th>
-<th>Options</th>
 <th>Default</th>
 </tr>
 </thead>
+<tbody>
 <tr>
 <td><code>model_name</code></td>
-<td>Model name</td>
-<td><code>str</code></td>
-<td>All PaddleX-supported text detection model names</td>
-<td>Required</td>
+<td>Model name. If set to <code>None</code>, <code>PP-OCRv5_server_det</code> will be used.</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>model_dir</code></td>
-<td>Model storage path</td>
-<td><code>str</code></td>
-<td>N/A</td>
-<td>N/A</td>
+<td>Model storage path.</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>Inference device</td>
-<td><code>str</code></td>
-<td>GPU (e.g., "gpu:0"), NPU (e.g., "npu:0"), CPU ("cpu")</td>
-<td><code>gpu:0</code></td>
+<td>Device for inference.<br/>
+<b>For example:</b><code>"cpu"</code>, <code>"gpu"</code>, <code>"npu"</code>, <code>"gpu:0"</code>, <code>"gpu:0,1"</code>.<br/>
+If multiple devices are specified, parallel inference will be performed.<br/>
+By default, GPU 0 is used if available; otherwise, CPU is used.
+</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
 </tr>
 <tr>
-<td><code>limit_side_len</code></td>
-<td>Image side length limit for detection</td>
-<td><code>int/None</code></td>
-<td>Positive integer or None (uses default model config)</td>
-<td>None</td>
-</tr>
-<tr>
-<td><code>limit_type</code></td>
-<td>Side length restriction type</td>
-<td><code>str/None</code></td>
-<td>"min" (shortest side ≥ limit) or "max" (longest side ≤ limit)</td>
-<td>None</td>
-</tr>
-<tr>
-<td><code>thresh</code></td>
-<td>Pixel score threshold for text detection</td>
-<td><code>float/None</code></td>
-<td>Positive float or None (uses default model config)</td>
-<td>None</td>
-</tr>
-<tr>
-<td><code>box_thresh</code></td>
-<td>Average score threshold for text regions</td>
-<td><code>float/None</code></td>
-<td>Positive float or None (uses default model config)</td>
-<td>None</td>
-</tr>
-<tr>
-<td><code>unclip_ratio</code></td>
-<td>Expansion coefficient for Vatti clipping algorithm</td>
-<td><code>float/None</code></td>
-<td>Positive float or None (uses default model config)</td>
-<td>None</td>
-</tr>
-<tr>
-<td><code>use_hpip</code></td>
-<td>Enable high-performance inference plugin</td>
+<td><code>enable_hpi</code></td>
+<td>Whether to enable high-performance inference.</td>
 <td><code>bool</code></td>
-<td>N/A</td>
 <td><code>False</code></td>
 </tr>
 <tr>
-<td><code>hpi_config</code></td>
-<td>High-performance inference configuration</td>
-<td><code>dict</code> | <code>None</code></td>
-<td>N/A</td>
+<td><code>use_tensorrt</code></td>
+<td>Whether to use the Paddle Inference TensorRT subgraph engine. If the model does not support acceleration through TensorRT, setting this flag will not enable acceleration.<br/>
+For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6), and it is recommended to install TensorRT 8.6.1.6.<br/>
+
+</td>
+<td><code>bool</code></td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td><code>precision</code></td>
+<td>Computation precision when using the Paddle Inference TensorRT subgraph engine.<br/><b>Options:</b> <code>"fp32"</code>, <code>"fp16"</code>.</td>
+<td><code>str</code></td>
+<td><code>"fp32"</code></td>
+</tr>
+<tr>
+<td><code>enable_mkldnn</code></td>
+<td>Whether to enable MKL-DNN acceleration for inference. If MKL-DNN is unavailable or the model does not support it, acceleration will not be used even if this flag is set.</td>
+<td><code>bool</code></td>
+<td><code>True</code></td>
+</tr>
+<tr>
+<td><code>mkldnn_cache_capacity</code></td>
+<td>MKL-DNN cache capacity.</td>
+<td><code>int</code></td>
+<td><code>10</code></td>
+</tr>
+<tr>
+<td><code>cpu_threads</code></td>
+<td>Number of threads to use for inference on CPUs.</td>
+<td><code>int</code></td>
+<td><code>10</code></td>
+</tr>
+<tr>
+<td><code>limit_side_len</code></td>
+<td>Limit on the side length of the input image for detection. <code>int</code> specifies the value. If set to <code>None</code>, the model's default configuration will be used.</td>
+<td><code>int|None</code></td>
 <td><code>None</code></td>
 </tr>
+<tr>
+<td><code>limit_type</code></td>
+<td>Type of image side length limitation. <code>"min"</code> ensures the shortest side of the image is no less than <code>det_limit_side_len</code>; <code>"max"</code> ensures the longest side is no greater than <code>limit_side_len</code>. If set to <code>None</code>, the model's default configuration will be used.</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>max_side_limit</code></td>
+<td>Limit on the max length of the input image for detection. <code>int</code> limits the longest side of the image for input detection model. If set to <code>None</code>, the model's default configuration will be used.</td>
+<td><code>int|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>thresh</code></td>
+<td>Pixel score threshold. Pixels in the output probability map with scores greater than this threshold are considered text pixels. If set to <code>None</code>, the model's default configuration will be used.</td>
+<td><code>float|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>box_thresh</code></td>
+<td>If the average score of all pixels inside the bounding box is greater than this threshold, the result is considered a text region. If set to <code>None</code>, the model's default configuration will be used.</td>
+<td><code>float|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>unclip_ratio</code></td>
+<td>Expansion ratio for the Vatti clipping algorithm, used to expand the text region. If set to <code>None</code>, the model's default configuration will be used.</td>
+<td><code>float|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>input_shape</code></td>
+<td>Input image size for the model in the format <code>(C, H, W)</code>.</td>
+<td><code>tuple|None</code></td>
+<td><code>None</code></td>
+</tr>
+</tbody>
 </table>
 
 * The `predict()` method parameters:
@@ -237,60 +284,62 @@ Method and parameter descriptions:
 <th>Parameter</th>
 <th>Description</th>
 <th>Type</th>
-<th>Options</th>
 <th>Default</th>
 </tr>
 </thead>
+<tbody>
 <tr>
 <td><code>input</code></td>
-<td>Input data (image path, URL, directory, or list)</td>
-<td><code>Python Var</code>/<code>str</code>/<code>dict</code>/<code>list</code></td>
-<td>Numpy array, file path, URL, directory, or list of these</td>
-<td>Required</td>
+<td>
+Input data to be predicted. Required. Supports multiple input types:
+<ul>
+  <li><b>Python variable</b>: e.g., <code>numpy.ndarray</code> representing image data</li>
+  <li><b>str</b>: Local image file or PDF file path: <code>/root/data/img.jpg</code>; <b>URL</b>: Image or PDF file network URL: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_rec_001.png">Example</a>; <b>Directory</b>: Should contain images for prediction, e.g., <code>/root/data/</code> (currently, PDF files in directories are not supported, PDF files need to be specified by file path)</li>
+  <li><b>list</b>: List elements should be of the above types, e.g., <code>[numpy.ndarray, numpy.ndarray]</code>, <code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>, <code>["/root/data1", "/root/data2"]</code></li>
+</ul>
+</td>
+<td><code>Python Var|str|list</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>batch_size</code></td>
-<td>Batch size</td>
+<td>Batch size, positive integer.</td>
 <td><code>int</code></td>
-<td>Positive integer</td>
 <td>1</td>
 </tr>
 <tr>
 <td><code>limit_side_len</code></td>
-<td>Image side length limit for detection</td>
-<td><code>int/None</code></td>
-<td>Positive integer or None (uses model default)</td>
-<td>None</td>
+<td>Same meaning as the instantiation parameters. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
+<td><code>int|None</code></td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>limit_type</code></td>
-<td>Side length restriction type</td>
-<td><code>str/None</code></td>
-<td>"min" or "max"</td>
-<td>None</td>
+<td>Same meaning as the instantiation parameters. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>thresh</code></td>
-<td>Pixel score threshold for text detection</td>
-<td><code>float/None</code></td>
-<td>Positive float or None (uses model default)</td>
-<td>None</td>
+<td>Same meaning as the instantiation parameters. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
+<td><code>float|None</code></td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>box_thresh</code></td>
-<td>Average score threshold for text regions</td>
-<td><code>float/None</code></td>
-<td>Positive float or None (uses model default)</td>
-<td>None</td>
+<td>Same meaning as the instantiation parameters. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
+<td><code>float|None</code></td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>unclip_ratio</code></td>
-<td>Expansion coefficient for Vatti clipping algorithm</td>
-<td><code>float/None</code></td>
-<td>Positive float or None (uses model default)</td>
-<td>None</td>
+<td>Same meaning as the instantiation parameters. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
+<td><code>float|None</code></td>
+<td><code>None</code></td>
 </tr>
+</tbody>
 </table>
+
 
 * Result processing methods:
 <table>
@@ -376,9 +425,9 @@ Method and parameter descriptions:
 
 If the above models do not meet your requirements, follow these steps for custom development (using `PP-OCRv5_server_det` as an example). First, prepare a text detection dataset (refer to the [Demo Dataset](https://paddle-model-ecology.bj.bcebos.com/paddlex/data/ocr_det_dataset_examples.tar) format). After preparation, proceed with model training and export. The exported model can be integrated into the API. Ensure PaddleOCR dependencies are installed as per the [Installation Guide](../installation.en.md).
 
-## 4.1 Dataset and Pretrained Model Preparation
+### 4.1 Dataset and Pretrained Model Preparation
 
-### 4.1.1 Prepare Dataset
+#### 4.1.1 Prepare Dataset
 
 ```shell
 # Download example dataset
@@ -386,7 +435,7 @@ wget https://paddle-model-ecology.bj.bcebos.com/paddlex/data/ocr_det_dataset_exa
 tar -xf ocr_det_dataset_examples.tar
 ```
 
-### 4.1.2 Download Pretrained Model
+#### 4.1.2 Download Pretrained Model
 
 ```shell
 # Download PP-OCRv5_server_det pretrained model
@@ -404,18 +453,18 @@ Training command:
 python3 tools/train.py -c configs/det/PP-OCRv5/PP-OCRv5_server_det.yml \
     -o Global.pretrained_model=./PP-OCRv5_server_det_pretrained.pdparams \
     Train.dataset.data_dir=./ocr_det_dataset_examples \
-    Train.dataset.label_file_list=[./ocr_det_dataset_examples/train.txt] \
+    Train.dataset.label_file_list='[./ocr_det_dataset_examples/train.txt]' \
     Eval.dataset.data_dir=./ocr_det_dataset_examples \
-    Eval.dataset.label_file_list=[./ocr_det_dataset_examples/val.txt]
+    Eval.dataset.label_file_list='[./ocr_det_dataset_examples/val.txt]'
 
 # Multi-GPU training (specify GPUs with --gpus)
 python3 -m paddle.distributed.launch --gpus '0,1,2,3' tools/train.py \
     -c configs/det/PP-OCRv5/PP-OCRv5_server_det.yml \
     -o Global.pretrained_model=./PP-OCRv5_server_det_pretrained.pdparams \
     Train.dataset.data_dir=./ocr_det_dataset_examples \
-    Train.dataset.label_file_list=[./ocr_det_dataset_examples/train.txt] \
+    Train.dataset.label_file_list='[./ocr_det_dataset_examples/train.txt]' \
     Eval.dataset.data_dir=./ocr_det_dataset_examples \
-    Eval.dataset.label_file_list=[./ocr_det_dataset_examples/val.txt]
+    Eval.dataset.label_file_list='[./ocr_det_dataset_examples/val.txt]'
 ```
 
 ### 4.3 Model Evaluation
@@ -428,7 +477,7 @@ You can evaluate trained weights (e.g., `output/PP-OCRv5_server_det/best_accurac
 python3 tools/eval.py -c configs/det/PP-OCRv5/PP-OCRv5_server_det.yml \
     -o Global.pretrained_model=output/PP-OCRv5_server_det/best_accuracy.pdparams \
     Eval.dataset.data_dir=./ocr_det_dataset_examples \
-    Eval.dataset.label_file_list=[./ocr_det_dataset_examples/val.txt] 
+    Eval.dataset.label_file_list='[./ocr_det_dataset_examples/val.txt]' 
 ```
 
 ### 4.4 Model Export

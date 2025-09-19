@@ -12,9 +12,9 @@ typora-copy-images-to: images
 
 | 数据集名称 |图片下载地址| PPOCR标注下载地址 |
 |---|---|---|
-| PubTabNet |<https://github.com/ibm-aur-nlp/PubTabNet>| jsonl格式，可直接用[pubtab_dataset.py](../../../ppocr/data/pubtab_dataset.py)加载 |
-| 好未来表格识别竞赛数据集 |<https://ai.100tal.com/dataset>| jsonl格式，可直接用[pubtab_dataset.py](../../../ppocr/data/pubtab_dataset.py)加载 |
-| WTW中文场景表格数据集 |<https://github.com/wangwen-whu/WTW-Dataset>| 需要进行转换后才能用[pubtab_dataset.py](../../../ppocr/data/pubtab_dataset.py)加载 |
+| PubTabNet |<https://github.com/ibm-aur-nlp/PubTabNet>| jsonl格式，可直接用[pubtab_dataset.py](https://github.com/PaddlePaddle/PaddleOCR/blob/main/ppocr/data/pubtab_dataset.py)加载 |
+| 好未来表格识别竞赛数据集 |<https://ai.100tal.com/dataset>| jsonl格式，可直接用[pubtab_dataset.py](https://github.com/PaddlePaddle/PaddleOCR/blob/main/ppocr/data/pubtab_dataset.py)加载 |
+| WTW中文场景表格数据集 |<https://github.com/wangwen-whu/WTW-Dataset>| 需要进行转换后才能用[pubtab_dataset.py](https://github.com/PaddlePaddle/PaddleOCR/blob/main/ppocr/data/pubtab_dataset.py)加载 |
 
 ## 1. PubTabNet数据集
 

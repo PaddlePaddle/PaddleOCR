@@ -2,13 +2,15 @@
 comments: true
 ---
 
-# Table Structure Recognition Module Usage Tutorial
+# Table Structure Recognition Module Tutorial
 
 ## 1. Overview
 
-Table structure recognition is an important component of table recognition systems, capable of converting non-editable table images into editable table formats (such as HTML). The goal of table structure recognition is to identify the positions of rows, columns, and cells in tables. The performance of this module directly affects the accuracy and efficiency of the entire table recognition system. The table structure recognition module usually outputs HTML or Latex code for the table area, which is then passed as input to the table content recognition module for further processing.
+Table structure recognition is an important component of table recognition systems, capable of converting non-editable table images into editable table formats (such as HTML). The goal of table structure recognition is to identify the positions of rows, columns, and cells in tables. The performance of this module directly affects the accuracy and efficiency of the entire table recognition system. The table structure recognition module usually outputs HTML code for the table area, which is then passed as input to the table recognition pipeline for further processing.
 
 ## 2. Supported Model List
+
+> The inference time only includes the model inference time and does not include the time for pre- or post-processing.
 
 <table>
 <tr>
@@ -16,23 +18,25 @@ Table structure recognition is an important component of table recognition syste
 <th>Accuracy (%)</th>
 <th>GPU Inference Time (ms)<br/>[Normal Mode / High Performance Mode]</th>
 <th>CPU Inference Time (ms)<br/>[Normal Mode / High Performance Mode]</th>
-<th>Model Storage Size (M)</th>
+<th>Model Storage Size (MB)</th>
 <th>Description</th>
 </tr>
 <tr>
-<td>SLANet</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/SLANet_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/SLANet_pretrained.pdparams">Training Model</a></td>
+<td>SLANet</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/SLANet_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/SLANet_pretrained.pdparams">Training Model</a></td>
 <td>59.52</td>
-<td>103.08 / 103.08</td>
-<td>197.99 / 197.99</td>
-<td>6.9 M</td>
+<td>23.96 / 21.75</td>
+<td>- / 43.12</td>
+<td>6.9</td>
 <td rowspan="1">SLANet is a table structure recognition model independently developed by Baidu PaddlePaddle Vision Team. By adopting a CPU-friendly lightweight backbone network PP-LCNet, high-low level feature fusion module CSP-PAN, and SLA Head, a feature decoding module aligning structure and position information, this model greatly improves the accuracy and inference speed of table structure recognition.</td>
 </tr>
 <tr>
-<td>SLANet_plus</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/SLANet_plus_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/SLANet_plus_pretrained.pdparams">Training Model</a></td>
+<td>SLANet_plus</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/SLANet_plus_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/SLANet_plus_pretrained.pdparams">Training Model</a></td>
 <td>63.69</td>
-<td>140.29 / 140.29</td>
-<td>195.39 / 195.39</td>
-<td>6.9 M</td>
+<td>23.43 / 22.16</td>
+<td>- / 41.80</td>
+<td>6.9</td>
 <td rowspan="1">SLANet_plus is an enhanced version of the table structure recognition model SLANet independently developed by the Baidu PaddlePaddle Vision Team. Compared to SLANet, SLANet_plus has greatly improved the recognition ability for wireless and complex tables, and reduced the model's sensitivity to table positioning accuracy. Even if the table positioning is offset, it can still be accurately recognized.
 </td>
 </tr>
@@ -40,9 +44,9 @@ Table structure recognition is an important component of table recognition syste
 <td>SLANeXt_wired</td>
 <td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/SLANeXt_wired_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/SLANeXt_wired_pretrained.pdparams">Training Model</a></td>
 <td rowspan="2">69.65</td>
-<td rowspan="2">--</td>
-<td rowspan="2">--</td>
-<td rowspan="2">351M</td>
+<td rowspan="2">85.92 / 85.92</td>
+<td rowspan="2">- / 501.66</td>
+<td rowspan="2">351</td>
 <td rowspan="2">The SLANeXt series is a new generation of table structure recognition models independently developed by the Baidu PaddlePaddle Vision Team. Compared to SLANet and SLANet_plus, SLANeXt focuses on table structure recognition, and trains dedicated weights for wired and wireless tables separately. The recognition ability for all types of tables has been significantly improved, especially for wired tables.</td>
 </tr>
 <tr>
@@ -56,12 +60,17 @@ Table structure recognition is an important component of table recognition syste
   <ul>
       <li><b>Performance Test Environment</b>
           <ul>
-              <li><strong>Test Dataset:</strong> High-difficulty Chinese table recognition dataset built internally by PaddleX.</li>
+              <li><strong>Test Dataset:</strong> High-difficulty Chinese table recognition dataset.</li>
               <li><strong>Hardware Configuration:</strong>
                   <ul>
                       <li>GPU: NVIDIA Tesla T4</li>
                       <li>CPU: Intel Xeon Gold 6271C @ 2.60GHz</li>
-                      <li>Other Environment: Ubuntu 20.04 / cuDNN 8.6 / TensorRT 8.5.2.2</li>
+                  </ul>
+              </li>
+              <li><strong>Software Environment:</strong>
+                  <ul>
+                      <li>Ubuntu 20.04 / CUDA 11.8 / cuDNN 8.9 / TensorRT 8.6.1.6</li>
+                      <li>paddlepaddle 3.0.0 / paddleocr 3.0.3</li>
                   </ul>
               </li>
           </ul>
@@ -97,13 +106,15 @@ Table structure recognition is an important component of table recognition syste
 
 ## 3. Quick Start
 
-> ❗ Before getting started, please install the PaddleOCR wheel package. For details, please refer to the [Installation Tutorial](../installation.md).
+> ❗ Before getting started, please install the PaddleOCR wheel package. For details, please refer to the [Installation Tutorial](../installation.en.md).
 
 Quickly experience with a single command:
 
 ```bash
 paddleocr table_structure_recognition -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/table_recognition.jpg
 ```
+
+<b>Note: </b>The official models would be download from HuggingFace by default. If can't access to HuggingFace, please set the environment variable `PADDLE_PDX_MODEL_SOURCE="BOS"` to change the model source to BOS. In the future, more model sources will be supported.
 
 You can also integrate the model inference of the table structure recognition module into your own project. Before running the code below, please download the [sample image](https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/table_recognition.jpg) to your local machine.
 
@@ -139,48 +150,71 @@ Descriptions of related methods and parameters are as follows:
 <th>Parameter</th>
 <th>Description</th>
 <th>Type</th>
-<th>Options</th>
 <th>Default</th>
 </tr>
 </thead>
+<tbody>
 <tr>
 <td><code>model_name</code></td>
-<td>Model name</td>
-<td><code>str</code></td>
-<td>All model names supported by PaddleX</td>
-<td>None</td>
+<td>Model name. If set to <code>None</code>, <code>PP-LCNet_x1_0_table_cls</code> will be used.</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>model_dir</code></td>
-<td>Model storage path</td>
-<td><code>str</code></td>
-<td>None</td>
-<td>None</td>
+<td>Model storage path.</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>Model inference device</td>
-<td><code>str</code></td>
-<td>Supports specifying specific GPU cards, such as “gpu:0”, other hardware such as “npu:0”, CPU as “cpu”.</td>
-<td><code>gpu:0</code></td>
+<td>Device for inference.<br/>
+<b>For example:</b> <code>"cpu"</code>, <code>"gpu"</code>, <code>"npu"</code>, <code>"gpu:0"</code>, <code>"gpu:0,1"</code>.<br/>
+If multiple devices are specified, parallel inference will be performed.<br/>
+By default, GPU 0 is used if available; otherwise, CPU is used.</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
 </tr>
 <tr>
-<td><code>use_hpip</code></td>
-<td>Whether to enable high-performance inference plugin</td>
+<td><code>enable_hpi</code></td>
+<td>Whether to enable high-performance inference.</td>
 <td><code>bool</code></td>
-<td>None</td>
 <td><code>False</code></td>
 </tr>
 <tr>
-<td><code>hpi_config</code></td>
-<td>High-performance inference configuration</td>
-<td><code>dict</code> | <code>None</code></td>
-<td>None</td>
-<td><code>None</code></td>
+<td><code>use_tensorrt</code></td>
+<td>Whether to use the Paddle Inference TensorRT subgraph engine. If the model does not support acceleration through TensorRT, setting this flag will not enable acceleration.<br/>
+For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6), and it is recommended to install TensorRT 8.6.1.6.<br/>
+</td>
+<td><code>bool</code></td>
+<td><code>False</code></td>
 </tr>
+<tr>
+<td><code>precision</code></td>
+<td>Computation precision when using the Paddle Inference TensorRT subgraph engine.<br/><b>Options:</b> <code>"fp32"</code>, <code>"fp16"</code>.</td>
+<td><code>str</code></td>
+<td><code>"fp32"</code></td>
+</tr>
+<tr>
+<td><code>enable_mkldnn</code></td>
+<td>Whether to enable MKL-DNN acceleration for inference. If MKL-DNN is unavailable or the model does not support it, acceleration will not be used even if this flag is set.</td>
+<td><code>bool</code></td>
+<td><code>True</code></td>
+</tr>
+<tr>
+<td><code>mkldnn_cache_capacity</code></td>
+<td>MKL-DNN cache capacity.</td>
+<td><code>int</code></td>
+<td><code>10</code></td>
+</tr>
+<tr>
+<td><code>cpu_threads</code></td>
+<td>Number of threads to use for inference on CPUs.</td>
+<td><code>int</code></td>
+<td><code>10</code></td>
+</tr>
+</tbody>
 </table>
-
-* Among them, `model_name` must be specified. After specifying `model_name`, the built-in model parameters of PaddleX are used by default. On this basis, if `model_dir` is specified, the user's custom model is used.
 
 * Call the `predict()` method of the table structure recognition model for inference prediction, which returns a result list. In addition, this module also provides the `predict_iter()` method. The two are completely consistent in parameter acceptance and result return. The difference is that `predict_iter()` returns a `generator`, which can process and obtain prediction results step by step, suitable for handling large datasets or scenarios where you want to save memory. You can choose to use either method according to your actual needs. The `predict()` method has parameters `input` and `batch_size`, described as follows:
 
@@ -190,34 +224,29 @@ Descriptions of related methods and parameters are as follows:
 <th>Parameter</th>
 <th>Description</th>
 <th>Type</th>
-<th>Options</th>
 <th>Default</th>
 </tr>
 </thead>
 <tr>
 <td><code>input</code></td>
-<td>Data to be predicted, supports multiple input types</td>
-<td><code>Python Var</code>/<code>str</code>/<code>list</code></td>
 <td>
+Data to be predicted. Required. Supports multiple input types:
 <ul>
-  <li><b>Python variable</b>, such as <code>numpy.ndarray</code> image data</li>
-  <li><b>File path</b>, such as the local path of the image file: <code>/root/data/img.jpg</code></li>
-  <li><b>URL link</b>, such as the network URL of the image file: <a href = "https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/table_recognition.jpg">Example</a></li>
-  <li><b>Local directory</b>, which should contain the data files to be predicted, e.g., <code>/root/data/</code></li>
-  <li><b>List</b>, list elements should be the above types, e.g., <code>[numpy.ndarray, numpy.ndarray]</code>, <code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>, <code>["/root/data1", "/root/data2"]</code></li>
+  <li><b>Python Var</b>: e.g., <code>numpy.ndarray</code> representing image data</li>
+  <li><b>str</b>: Local path to an image or PDF file, e.g., <code>/root/data/img.jpg</code>; <b>URL</b>: Network URL to an image or PDF file, e.g., <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/img_rot180_demo.jpg">Example</a>; <b>Directory</b>: A local directory containing images for prediction, e.g., <code>/root/data/</code> (Note: PDF files in directories are not supported; to predict a PDF, specify its file path directly)</li>
+  <li><b>list</b>: A list of the above types, e.g., <code>[numpy.ndarray, numpy.ndarray]</code>, <code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>, <code>["/root/data1", "/root/data2"]</code></li>
 </ul>
 </td>
-<td>None</td>
+<td><code>Python Var|str|list</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>batch_size</code></td>
-<td>Batch size</td>
+<td>Batch size, can be set to any positive integer.</td>
 <td><code>int</code></td>
-<td>Any integer</td>
 <td>1</td>
 </tr>
 </table>
-
 * For processing prediction results, the prediction result of each sample is the corresponding Result object, and supports printing and saving as a `json` file:
 
 <table>
@@ -290,7 +319,7 @@ Descriptions of related methods and parameters are as follows:
 
 ## 4. Secondary Development
 
-If the above models are still not ideal for your scenario, you can try the following steps for secondary development. Here, training `SLANet` is used as an example, and for other models, just replace the corresponding configuration file. First, you need to prepare a dataset for table structure recognition, which can be prepared with reference to the format of the [table structure recognition demo data](https://paddle-model-ecology.bj.bcebos.com/paddlex/data/table_rec_dataset_examples.tar). Once ready, you can train and export the model as follows. After exporting, you can quickly integrate the model into the above API. Here, the table structure recognition demo data is used as an example. Before training the model, please make sure you have installed the dependencies required by PaddleOCR according to the [installation documentation](xxx).
+If the above models are still not ideal for your scenario, you can try the following steps for secondary development. Here, training `SLANet_plus` is used as an example, and for other models, just replace the corresponding configuration file. First, you need to prepare a dataset for table structure recognition, which can be prepared with reference to the format of the [table structure recognition demo data](https://paddle-model-ecology.bj.bcebos.com/paddlex/data/table_rec_dataset_examples.tar). Once ready, you can train and export the model as follows. After exporting, you can quickly integrate the model into the above API. Here, the table structure recognition demo data is used as an example. Before training the model, please make sure you have installed the dependencies required by PaddleOCR according to the [installation documentation](../installation.en.md).
 
 
 ## 4.1 Dataset and Pretrained Model Preparation
@@ -306,49 +335,62 @@ tar -xf table_rec_dataset_examples.tar
 ### 4.1.2 Download Pretrained Model
 
 ```shell
-# Download SLANet pretrained model
-wget https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/SLANet_pretrained.pdparams
+# Download SLANet_plus pretrained model
+wget https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/SLANet_plus_pretrained.pdparams
 ```
 
 ### 4.2 Model Training
 
-PaddleOCR is modularized. When training the `SLANet` recognition model, you need to use the [configuration file](https://github.com/PaddlePaddle/PaddleOCR/blob/main/configs/table/SLANet.yml) of `SLANet`.
+PaddleOCR is modularized. When training the `SLANet_plus` recognition model, you need to use the [configuration file](https://github.com/PaddlePaddle/PaddleOCR/blob/main/configs/table/SLANet_plus.yml) of `SLANet_plus`.
 
 
 The training commands are as follows:
 
 ```bash
 # Single card training (default training method)
-python3 tools/train.py -c configs/table/SLANet.yml \
-   -o Global.pretrained_model=./SLANet_pretrained.pdparams
+python3 tools/train.py -c configs/table/SLANet_plus.yml \
+    -o Global.pretrained_model=./SLANet_plus_pretrained.pdparams
+    Train.dataset.data_dir=./table_rec_dataset_examples \
+    Train.dataset.label_file_list='[./table_rec_dataset_examples/train.txt]' \
+    Eval.dataset.data_dir=./table_rec_dataset_examples \
+    Eval.dataset.label_file_list='[./table_rec_dataset_examples/val.txt]'
+
 # Multi-card training, specify card numbers via --gpus parameter
-python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs/table/SLANet.yml \
-        -o Global.pretrained_model=./SLANet_pretrained.pdparams
+python3 -m paddle.distributed.launch --gpus '0,1,2,3' tools/train.py \
+    -c configs/table/SLANet_plus.yml \
+    -o Global.pretrained_model=./SLANet_plus_pretrained.pdparams
+    -o Global.pretrained_model=./PP-OCRv5_server_det_pretrained.pdparams \
+    Train.dataset.data_dir=./table_rec_dataset_examples \
+    Train.dataset.label_file_list='[./table_rec_dataset_examples/train.txt]' \
+    Eval.dataset.data_dir=./table_rec_dataset_examples \
+    Eval.dataset.label_file_list='[./table_rec_dataset_examples/val.txt]'
 ```
 
 
-### 4.4 Model Evaluation
+### 4.3 Model Evaluation
 
 You can evaluate the trained weights, such as `output/xxx/xxx.pdparams`, using the following command:
 
 ```bash
 # Note to set the path of pretrained_model to the local path. If you use the model saved by your own training, please modify the path and file name to {path/to/weights}/{model_name}.
  # Demo test set evaluation
- python3 tools/eval.py -c configs/table/SLANet.yml -o \
- Global.pretrained_model=output/xxx/xxx.pdparams
- ```
+ python3 tools/eval.py -c configs/table/SLANet_plus.yml -o \
+    Global.pretrained_model=output/xxx/xxx.pdparams
+    Eval.dataset.data_dir=./table_rec_dataset_examples \
+    Eval.dataset.label_file_list='[./table_rec_dataset_examples/val.txt]'
+```
 
-### 4.5 Model Export
+### 4.4 Model Export
 
 ```bash
- python3 tools/export_model.py -c configs/table/SLANet.yml -o \
- Global.pretrained_model=output/xxx/xxx.pdparams \
- save_inference_dir="./SLANet_infer/"
- ```
+ python3 tools/export_model.py -c configs/table/SLANet_plus.yml -o \
+    Global.pretrained_model=output/xxx/xxx.pdparams \
+    Global.save_inference_dir="./SLANet_plus_infer/"
+```
 
- After exporting the model, the static graph model will be stored in `./SLANet_infer/` in the current directory. In this directory, you will see the following files:
+ After exporting the model, the static graph model will be stored in `./SLANet_plus_infer/` in the current directory. In this directory, you will see the following files:
  ```
- ./SLANet_infer/
+ ./SLANet_plus_infer/
  ├── inference.json
  ├── inference.pdiparams
  ├── inference.yml

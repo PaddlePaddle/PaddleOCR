@@ -34,7 +34,7 @@ class TextRecognition(PaddleXPredictorWrapper):
 
     @property
     def default_model_name(self):
-        return "PP-OCRv4_mobile_rec"
+        return "PP-OCRv5_server_rec"
 
     @classmethod
     def get_cli_subcommand_executor(cls):
