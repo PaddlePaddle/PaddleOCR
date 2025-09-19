@@ -1,0 +1,73 @@
+name: PaddleOCR PR Tests GPU
+
+on:
+  push:
+    branches: ["main"]
+    paths-ignore:
+      - '**.md'
+      - '**.txt'
+      - '**.yml'
+      - '**.yaml'
+  pull_request:
+    branches: ["main"]
+    paths-ignore:
+      - '**.md'
+      - '**.txt'
+      - '**.yml'
+      - '**.yaml'
+  workflow_dispatch:
+env:
+  PR_ID: ${{ github.event.pull_request.number }}
+  COMMIT_ID: ${{ github.event.pull_request.head.sha }}
+  work_dir: /workspace/PaddleOCR
+  PADDLENLP_ROOT: /workspace/PaddleOCR
+  TASK: paddleocr-CI-${{ github.event.pull_request.number }}
+  BRANCH: ${{ github.event.pull_request.base.ref }}
+  AGILE_COMPILE_BRANCH: ${{ github.event.pull_request.base.ref }}
+  DIR_NAME: ${{ github.repository }}
+permissions:
+  contents: read
+
+jobs:
+  test-pr-gpu:
+    runs-on: [self-hosted, GPU-2Card-OCR]
+    steps:
+      - name: run test
+        env:
+          py_version: "3.10"
+          paddle_whl: https://paddle-qa.bj.bcebos.com/paddle-pipeline/Develop-GpuSome-LinuxCentos-Gcc82-Cuda118-Cudnn86-Trt85-Py310-CINN-Compile/latest/paddlepaddle_gpu-0.0.0-cp310-cp310-linux_x86_64.whl
+          docker_image: ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddle:latest-dev-cuda11.8-cudnn8.6-trt8.5-gcc82
+        run: |
+          work_dir=$RANDOM
+          mkdir $work_dir
+          cd $work_dir
+          git clone --depth=1 https://github.com/PaddlePaddle/PaddleOCR.git -b main
+          cd PaddleOCR
+          git fetch origin pull/${PR_ID}/head:ci_build
+          git checkout ci_build
+          docker run --gpus all --rm -i --name PaddleOCR_CI_$RANDOM \
+            --shm-size=128g --net=host \
+            -v $PWD:/workspace -w /workspace  \
+            -e "py_version=${py_version}" \
+            -e "paddle_whl=${paddle_whl}" \
+            ${docker_image} /bin/bash -c '
+            ldconfig;
+            nvidia-smi
+            df -hl
+
+            echo ${py_version}
+            rm -rf run_env
+            mkdir run_env
+            ln -s $(which python${py_version}) run_env/python
+            ln -s $(which python${py_version}) run_env/python3
+            ln -s $(which pip${py_version}) run_env/pip
+            export PATH=$PWD/run_env:${PATH}
+            
+            python -m pip install paddlepaddle-gpu==3.1.0 -i https://www.paddlepaddle.org.cn/packages/stable/cu118/
+            python -c "import paddle; paddle.version.show()"
+            python -m pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
+            python -m pip install pytest
+            if [ -f requirements.txt ]; then python -m pip install -r requirements.txt; fi
+            python -m pip install -e ".[all]"
+            python -m pytest --verbose tests/
+            '

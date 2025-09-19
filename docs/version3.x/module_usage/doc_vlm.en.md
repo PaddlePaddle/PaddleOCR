@@ -10,6 +10,8 @@ Document visual language models are a cutting-edge multimodal processing technol
 
 ## II. Supported Model List
 
+> The inference time only includes the model inference time and does not include the time for pre- or post-processing.
+
 <table>
 <tr>
 <th>Model</th><th>Model Download Link</th>
@@ -47,6 +49,8 @@ You can quickly experience it with one line of command:
 ```bash
 paddleocr doc_vlm -i "{'image': 'https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/medal_table.png', 'query': '识别这份表格的内容, 以markdown格式输出'}"
 ```
+
+<b>Note: </b>The official models would be download from HuggingFace by default. If can't access to HuggingFace, please set the environment variable `PADDLE_PDX_MODEL_SOURCE="BOS"` to change the model source to BOS. In the future, more model sources will be supported.
 
 You can also integrate the model inference from the open document visual language model module into your project. Before running the following code, please download the [sample image](https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/medal_table.png) locally.
 
@@ -104,48 +108,33 @@ Explanations of related methods, parameters, etc., are as follows:
 <th>Parameter</th>
 <th>Description</th>
 <th>Type</th>
-<th>Options</th>
 <th>Default</th>
 </tr>
 </thead>
+<tbody>
 <tr>
 <td><code>model_name</code></td>
-<td>Model Name</td>
-<td><code>str</code></td>
-<td>None</td>
+<td>Model name. If set to <code>None</code>, <code>PP-DocBee-2B</code> will be used.</td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>model_dir</code></td>
-<td>Model Storage Path</td>
-<td><code>str</code></td>
-<td>None</td>
-<td>None</td>
+<td>Model storage path.</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>Model Inference Device</td>
-<td><code>str</code></td>
-<td>Supports specifying specific GPU card number, such as "gpu:0", other hardware specific card numbers, such as "npu:0", CPU such as "cpu".</td>
-<td><code>gpu:0</code></td>
-</tr>
-<tr>
-<td><code>use_hpip</code></td>
-<td>Whether to enable high-performance inference plugin. Currently not supported.</td>
-<td><code>bool</code></td>
-<td>None</td>
-<td><code>False</code></td>
-</tr>
-<tr>
-<td><code>hpi_config</code></td>
-<td>High-performance inference configuration. Currently not supported.</td>
-<td><code>dict</code> | <code>None</code></td>
-<td>None</td>
+<td>Device for inference.<br/>
+<b>For example:</b><code>"cpu"</code>, <code>"gpu"</code>, <code>"npu"</code>, <code>"gpu:0"</code>, <code>"gpu:0,1"</code>.<br/>
+By default, GPU 0 is used if available; otherwise, CPU is used.
+</td>
+<td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
+</tbody>
 </table>
-
-* Among them, `model_name` must be specified. After specifying `model_name`, the default built-in model parameters will be used. On this basis, when specifying `model_dir`, user-defined models will be used.
 
 * Call the `predict()` method of the document visual language model for inference prediction. This method will return a result list. Additionally, this module also provides the `predict_iter()` method. Both are completely consistent in terms of parameter acceptance and result return, the difference being that `predict_iter()` returns a `generator`, capable of gradually processing and obtaining prediction results, suitable for handling large datasets or scenarios where memory saving is desired. You can choose to use either of these methods based on actual needs. The `predict()` method parameters include `input`, `batch_size`, with specific explanations as follows:
 
@@ -155,25 +144,21 @@ Explanations of related methods, parameters, etc., are as follows:
 <th>Parameter</th>
 <th>Description</th>
 <th>Type</th>
-<th>Options</th>
 <th>Default</th>
 </tr>
 </thead>
 <tr>
 <td><code>input</code></td>
-<td>Data to be predicted</td>
-<td><code>dict</code></td>
-<td>
-<code>Dict</code>, as multimodal models have different input requirements, it needs to be determined based on the specific model. Specifically:
-<li>PP-DocBee series input format is <code>{'image': image_path, 'query': query_text}</code></li>
+<td>Input data. Required. Since multimodal models have different input requirements, please refer to the specific model for the correct format.<br/>
+For example, for the PP-DocBee series models, the input format should be: <code>{'image': image_path, 'query': query_text}</code>
 </td>
+<td><code>dict</code></td>
 <td>None</td>
 </tr>
 <tr>
 <td><code>batch_size</code></td>
-<td>Batch Size</td>
+<td>Batch size, positive integer.</td>
 <td><code>int</code></td>
-<td>Integer</td>
 <td>1</td>
 </tr>
 </table>

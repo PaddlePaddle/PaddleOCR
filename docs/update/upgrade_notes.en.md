@@ -17,7 +17,7 @@ Given this background, we’ve decided to implement a major, non-backward-compat
 The 3.x upgrade consists of three major enhancements:
 
 1. **New Model Pipelines**: Introduced several new pipelines such as PP-OCRv5, PP-StructureV3, and PP-ChatOCR v4, covering a wide range of base models. These significantly enhance recognition capabilities for various text types, including handwriting, to meet the growing demand for high-precision parsing in complex documents. All models are ready-to-use out of the box, improving development efficiency.
-2. **Refactored Deployment and Unified Inference Interface**: The deployment module in PaddleOCR 3.x is rebuilt using [PaddleX](../version3.x/paddleocr_and_paddlex.en.md)’s underlying capabilities, fixing design flaws from 2.x and unifying both Python APIs and CLI interfaces. The deployment now supports three main scenarios: high-performance inference, service-oriented deployment, and edge deployment.
+2. **Refactored Deployment and Unified Inference Interface**: The deployment module in PaddleOCR 3.x is rebuilt using [PaddleX](../version3.x/paddleocr_and_paddlex.en.md)’s underlying capabilities, fixing design flaws from 2.x and unifying both Python APIs and CLI interfaces. The deployment now supports three main scenarios: high-performance inference, service-oriented deployment, and on-device deployment.
 3. **PaddlePaddle 3.0 Compatibility and Optimized Training**: The new version is fully compatible with PaddlePaddle 3.0, including features like the CINN compiler. It also introduces a standardized model naming system to streamline future updates and maintenance.
 
 Some legacy features from PaddleOCR 2.x remain partially supported in 3.x. For more information, refer to [Legacy Features](../version2.x/legacy/index.en.md).
@@ -66,9 +66,11 @@ for res in result:
 res.save_to_img("result")
 ```
 
-It’s worth noting that the `PPStructure` module in PaddleOCR 2.x has been removed in 3.x. We recommend switching to `PPStructureV3`, which offers richer functionality and better parsing results. Refer to the relevant documentation for usage details.
+In PaddleOCR 3.x, the `PaddleOCR.ocr` method no longer accepts parameters such as `det` and `rec`. Instead, users can perform module inference using clearer interfaces like `TextDetection` and `TextRecognition`. Additionally, in PaddleOCR 2.x, users could control log output by passing the `show_log` parameter when constructing a `PaddleOCR` object. However, this design had a limitation: since all `PaddleOCR` instances shared a single logger, configuring logging behavior in one instance would affect others—clearly not the desired behavior. To address this issue, PaddleOCR 3.x introduces an entirely new logging system. For details, please refer to the [Logging](../version3.x/logging.en.md) documentation.
 
-Also, in 2.x, the `show_log` parameter could be passed when creating a `PaddleOCR` object to control logging. However, this design affected all `PaddleOCR` instances due to the use of a shared logger—clearly not the expected behavior. PaddleOCR 3.x introduces a brand-new logging system to address this issue. For more details, see [Logging](../version3.x/logging.en.md).
+In PaddleOCR 3.x, the original `use_onnx` parameter has been replaced by a more powerful high-performance inference feature. For details, refer to [High-Performance Inference](../version3.x/deployment/high_performance_inference.en.md).
+
+The `PPStructure` provided in PaddleOCR 2.x has been removed in PaddleOCR 3.x. It is recommended to use the more feature-rich and better-performing `PPStructureV3` instead. Please consult the relevant documentation to learn how to use the new interface.
 
 ## 4. Known Issues in PaddleOCR 3.0
 
@@ -76,6 +78,6 @@ PaddleOCR 3.0 is still under active development. Current known limitations inclu
 
 1. Incomplete support for native C++ deployment.
 2. High-performance service-oriented deployment is not yet on par with PaddleServing in 2.x.
-3. Edge deployment currently supports only a subset of key models, with broader support pending.
+3. On-Device Deployment currently supports only a subset of key models, with broader support pending.
 
 If you encounter any issues during use, feel free to submit feedback via GitHub issues. We also warmly welcome more community members to contribute to PaddleOCR's future. Thank you for your continued support and interest!

@@ -31,6 +31,9 @@ class PPChatOCRv4Doc(PaddleXPipelineWrapper):
         doc_unwarping_model_dir=None,
         text_detection_model_name=None,
         text_detection_model_dir=None,
+        textline_orientation_model_name=None,
+        textline_orientation_model_dir=None,
+        textline_orientation_batch_size=None,
         text_recognition_model_name=None,
         text_recognition_model_dir=None,
         text_recognition_batch_size=None,
@@ -43,6 +46,7 @@ class PPChatOCRv4Doc(PaddleXPipelineWrapper):
         seal_text_recognition_batch_size=None,
         use_doc_orientation_classify=None,
         use_doc_unwarping=None,
+        use_textline_orientation=None,
         use_seal_recognition=None,
         use_table_recognition=None,
         layout_threshold=None,
@@ -77,12 +81,33 @@ class PPChatOCRv4Doc(PaddleXPipelineWrapper):
     def _paddlex_pipeline_name(self):
         return "PP-ChatOCRv4-doc"
 
+    def save_vector(self, vector_info, save_path, retriever_config=None):
+        return self.paddlex_pipeline.save_vector(
+            vector_info=vector_info,
+            save_path=save_path,
+            retriever_config=retriever_config,
+        )
+
+    def load_vector(self, data_path, retriever_config=None):
+        return self.paddlex_pipeline.load_vector(
+            data_path=data_path, retriever_config=retriever_config
+        )
+
+    def load_visual_info_list(self, data_path):
+        return self.paddlex_pipeline.load_visual_info_list(data_path=data_path)
+
+    def save_visual_info_list(self, visual_info, save_path):
+        return self.paddlex_pipeline.save_visual_info_list(
+            visual_info=visual_info, save_path=save_path
+        )
+
     def visual_predict_iter(
         self,
         input,
         *,
         use_doc_orientation_classify=None,
         use_doc_unwarping=None,
+        use_textline_orientation=None,
         use_seal_recognition=None,
         use_table_recognition=None,
         layout_threshold=None,
@@ -107,6 +132,7 @@ class PPChatOCRv4Doc(PaddleXPipelineWrapper):
             input,
             use_doc_orientation_classify=use_doc_orientation_classify,
             use_doc_unwarping=use_doc_unwarping,
+            use_textline_orientation=use_textline_orientation,
             use_seal_recognition=use_seal_recognition,
             use_table_recognition=use_table_recognition,
             layout_threshold=layout_threshold,
@@ -134,6 +160,7 @@ class PPChatOCRv4Doc(PaddleXPipelineWrapper):
         *,
         use_doc_orientation_classify=None,
         use_doc_unwarping=None,
+        use_textline_orientation=None,
         use_seal_recognition=None,
         use_table_recognition=None,
         layout_threshold=None,
@@ -159,6 +186,7 @@ class PPChatOCRv4Doc(PaddleXPipelineWrapper):
                 input,
                 use_doc_orientation_classify=use_doc_orientation_classify,
                 use_doc_unwarping=use_doc_unwarping,
+                use_textline_orientation=use_textline_orientation,
                 use_seal_recognition=use_seal_recognition,
                 use_table_recognition=use_table_recognition,
                 layout_threshold=layout_threshold,
@@ -280,6 +308,15 @@ class PPChatOCRv4Doc(PaddleXPipelineWrapper):
             "SubPipelines.LayoutParser.SubPipelines.GeneralOCR.SubModules.TextDetection.model_dir": self._params[
                 "text_detection_model_dir"
             ],
+            "SubPipelines.LayoutParser.SubPipelines.GeneralOCR.SubModules.TextLineOrientation.model_name": self._params[
+                "textline_orientation_model_name"
+            ],
+            "SubPipelines.LayoutParser.SubPipelines.GeneralOCR.SubModules.TextLineOrientation.model_dir": self._params[
+                "textline_orientation_model_dir"
+            ],
+            "SubPipelines.LayoutParser.SubPipelines.GeneralOCR.SubModules.TextLineOrientation.batch_size": self._params[
+                "textline_orientation_batch_size"
+            ],
             "SubPipelines.LayoutParser.SubPipelines.GeneralOCR.SubModules.TextRecognition.model_name": self._params[
                 "text_recognition_model_name"
             ],
@@ -315,6 +352,9 @@ class PPChatOCRv4Doc(PaddleXPipelineWrapper):
             ],
             "SubPipelines.LayoutParser.SubPipelines.DocPreprocessor.use_doc_unwarping": self._params[
                 "use_doc_unwarping"
+            ],
+            "SubPipelines.LayoutParser.SubPipelines.GeneralOCR.use_textline_orientation": self._params[
+                "use_textline_orientation"
             ],
             "SubPipelines.LayoutParser.use_seal_recognition": self._params[
                 "use_seal_recognition"
@@ -402,9 +442,9 @@ class PPChatOCRv4DocCLISubcommandExecutor(PipelineCLISubcommandExecutor):
         subparser.add_argument(
             "--save_path",
             type=str,
-            default="output",
             help="Path to the output directory.",
         )
+
         subparser.add_argument(
             "--invoke_mllm",
             type=str2bool,
@@ -451,6 +491,21 @@ class PPChatOCRv4DocCLISubcommandExecutor(PipelineCLISubcommandExecutor):
             "--text_detection_model_dir",
             type=str,
             help="Path to the text detection model directory.",
+        )
+        subparser.add_argument(
+            "--textline_orientation_model_name",
+            type=str,
+            help="Name of the text line orientation classification model.",
+        )
+        subparser.add_argument(
+            "--textline_orientation_model_dir",
+            type=str,
+            help="Path to the text line orientation classification model directory.",
+        )
+        subparser.add_argument(
+            "--textline_orientation_batch_size",
+            type=int,
+            help="Batch size for the text line orientation classification model.",
         )
         subparser.add_argument(
             "--text_recognition_model_name",
@@ -505,12 +560,17 @@ class PPChatOCRv4DocCLISubcommandExecutor(PipelineCLISubcommandExecutor):
         subparser.add_argument(
             "--use_doc_orientation_classify",
             type=str2bool,
-            help="Whether to use the document image orientation classification model.",
+            help="Whether to use document image orientation classification.",
         )
         subparser.add_argument(
             "--use_doc_unwarping",
             type=str2bool,
-            help="Whether to use the text image unwarping model.",
+            help="Whether to use text image unwarping.",
+        )
+        subparser.add_argument(
+            "--use_textline_orientation",
+            type=str2bool,
+            help="Whether to use text line orientation classification.",
         )
         subparser.add_argument(
             "--use_seal_recognition",
@@ -653,7 +713,7 @@ class PPChatOCRv4DocCLISubcommandExecutor(PipelineCLISubcommandExecutor):
 
         chatocr = PPChatOCRv4Doc(**params)
 
-        result_visual = chatocr.visual_predict(input)
+        result_visual = chatocr.visual_predict_iter(input)
 
         visual_info_list = []
         for res in result_visual:

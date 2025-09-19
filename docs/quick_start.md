@@ -14,17 +14,23 @@ CPU端安装：
 python -m pip install paddlepaddle==3.0.0 -i https://www.paddlepaddle.org.cn/packages/stable/cpu/
 ```
 
-GPU端安装，由于GPU端需要根据具体CUDA版本来对应安装使用，以下仅以Linux平台，pip安装英伟达GPU， CUDA11.8为例，其他平台，请参考[飞桨官网安装文档](https://www.paddlepaddle.org.cn/install/quick)中的说明进行操作。
+GPU端安装，由于GPU端需要根据具体CUDA版本来对应安装使用，以下仅以Linux平台，pip安装英伟达GPU， CUDA 11.8为例，其他平台，请参考[飞桨官网安装文档](https://www.paddlepaddle.org.cn/install/quick)中的说明进行操作。
 
 ```bash
 python -m pip install paddlepaddle-gpu==3.0.0 -i https://www.paddlepaddle.org.cn/packages/stable/cu118/
 ```
 
+**请注意，PaddleOCR 3.x版本 依赖于 `3.0` 及以上版本的飞桨框架。**
+
 #### 2. 安装`paddleocr`
 
+执行如下命令安装 PaddleOCR 的完整功能：
+
 ```bash
-pip install paddleocr==3.0.0
+python -m pip install "paddleocr[all]"
 ```
+
+PaddleOCR 也支持根据需要安装部分功能，详情请参考 [PaddleOCR 安装文档](version3.x/installation.md)。
 
 ### 命令行使用
 
@@ -66,11 +72,11 @@ pip install paddleocr==3.0.0
     # ocr = PaddleOCR(use_doc_orientation_classify=True, use_doc_unwarping=True) # 文本图像预处理+文本检测+方向分类+文本识别
     # ocr = PaddleOCR(use_doc_orientation_classify=False, use_doc_unwarping=False) # 文本检测+文本行方向分类+文本识别
     # ocr = PaddleOCR(
-    #     text_detection_model_name="PP-OCRv5_server_det",
-    #     text_recognition_model_name="PP-OCRv5_server_rec",
+    #     text_detection_model_name="PP-OCRv5_mobile_det",
+    #     text_recognition_model_name="PP-OCRv5_mobile_rec",
     #     use_doc_orientation_classify=False,
     #     use_doc_unwarping=False,
-    #     use_textline_orientation=False) # 更换 PP-OCRv5_server 模型
+    #     use_textline_orientation=False) # 更换 PP-OCRv5_mobile 模型
     result = ocr.predict("./general_ocr_002.png")
     for res in result:
         res.print()

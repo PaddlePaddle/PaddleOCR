@@ -13,8 +13,8 @@ edit_uri: edit/main/docs/
 
 theme:
   name: material
-  logo: version2.x/static/images/logo.jpg
-  favicon: version2.x/static/images/logo.jpg
+  logo: version3.x/logo.jpg
+  favicon: version3.x/logo.jpg
   custom_dir: overrides
   features:
     - announce.dismiss
@@ -98,19 +98,21 @@ plugins:
           link: /en/
           nav_translations:
             Home: Home
-            快速开始: Quick Start
+            安装: Installation
             快速开始: Quick Start
             PP-OCRv5: PP-OCRv5
             使用教程: Usage Tutorial
             PP-OCRv5简介: PP-OCRv5 Introduction
+            PP-OCRv5多语种文字识别: PP-OCRv5 Multilingual Text Recognition
             PP-StructureV3: PP-StructureV3
             PP-StructureV3简介: PP-StructureV3 Introduction
             PP-ChatOCRv4: PP-ChatOCRv4
             PP-ChatOCRv4简介: PP-ChatOCRv4 Introduction
             推理部署: Model Deploy
             高性能推理: High-Performance Inference
-            获取onnx模型: Obtaining ONNX Models
-            端侧部署: Edge Deployment
+            打包PaddleOCR项目: Package PaddleOCR Projects
+            获取ONNX模型: Obtaining ONNX Models
+            端侧部署: On-Device Deployment
             服务化部署: Serving Deployment
             模块列表: Module List
             文档图像方向分类模块: Document Image Orientation Classification Module
@@ -131,6 +133,7 @@ plugins:
             文档理解产线: Document Understanding Pipeline
             印章文本识别产线: Seal Text Recognition Pipeline
             通用表格识别v2产线: General Table Recognition v2 Pipeline
+            图表解析模块: Chart Parsing Module
             多硬件使用: Multi-Devices Usage
             PaddleOCR 多硬件使用指南: PaddleOCR Multi-Devices Usage Guide
             昇腾 NPU 飞桨安装教程: Ascend NPU PaddlePaddle Installation Tutorial
@@ -156,7 +159,7 @@ plugins:
             基于C++预测引擎推理: CPP Inference
             Visual Studio 2019 Community CMake 编译指南: Visual Studio 2019 Community CMake Compilation Guide
             服务化部署: Sever Deployment
-            端侧部署: Device-side Deployment
+            端侧部署: On-Device Deployment
             Android部署: Android Deployment
             Paddle2ONNX模型转化与预测: Paddle2ONNX
             云上飞桨部署工具: Paddle Cloud
@@ -167,6 +170,13 @@ plugins:
             社区贡献: Community Contribution
             附录: Appendix
             配置 PaddleOCR 推理包日志系统: Configure the logging system for the PaddleOCR inference package
+            模块概述: Module Overview
+            产线概述: Pipeline Overview
+            通用 OCR 产线 C++ 本地部署 - Linux: C++ Local Deployment for General OCR Pipeline - Linux
+            通用 OCR 产线 C++ 本地部署 - Windows: C++ Local Deployment for General OCR Pipeline - Windows
+            C++ 本地部署: C++ Local Deployment
+            MCP 服务器: MCP Server
+            产线并行推理: Parallel Inference for Pipelines
         # - locale: ja
         #   name: 日本語
         #   site_name: PaddleOCR ドキュメント
@@ -259,10 +269,12 @@ extra_css:
 
 nav:
   - Home: index.md
+  - 安装: version3.x/installation.md
   - 快速开始: quick_start.md
   - PP-OCRv5: 
     - 使用教程: version3.x/pipeline_usage/OCR.md
     - PP-OCRv5简介: version3.x/algorithm/PP-OCRv5/PP-OCRv5.md
+    - PP-OCRv5多语种文字识别: version3.x/algorithm/PP-OCRv5/PP-OCRv5_multi_languages.md
   - PP-StructureV3: 
     - 使用教程: version3.x/pipeline_usage/PP-StructureV3.md
     - PP-StructureV3简介: version3.x/algorithm/PP-StructureV3/PP-StructureV3.md
@@ -271,10 +283,19 @@ nav:
     - PP-ChatOCRv4简介: version3.x/algorithm/PP-ChatOCRv4/PP-ChatOCRv4.md
   - 推理部署: 
     - 高性能推理: version3.x/deployment/high_performance_inference.md
-    - 获取onnx模型: version3.x/deployment/obtaining_onnx_models.md
+    - 获取ONNX模型: version3.x/deployment/obtaining_onnx_models.md
     - 端侧部署: version3.x/deployment/on_device_deployment.md
     - 服务化部署: version3.x/deployment/serving.md
+    - MCP 服务器: version3.x/deployment/mcp_server.md
+    - 打包PaddleOCR项目: version3.x/deployment/packaging.md 
+    - 产线并行推理: version3.x/pipeline_usage/instructions/parallel_inference.md
+    - C++ 本地部署:
+      - 通用 OCR 产线 C++ 本地部署 - Linux: version3.x/deployment/cpp/OCR.md
+      - 通用 OCR 产线 C++ 本地部署 - Windows: version3.x/deployment/cpp/OCR_windows.md
+    - Benchmark: version3.x/pipeline_usage/instructions/benchmark.md
+
   - 模块列表: 
+    - 模块概述: version3.x/module_usage/module_overview.md
     - 文档图像方向分类模块: version3.x/module_usage/doc_img_orientation_classification.md
     - 文档类视觉语言模型模块: version3.x/module_usage/doc_vlm.md
     - 公式识别模块: version3.x/module_usage/formula_recognition.md
@@ -285,14 +306,17 @@ nav:
     - 表格结构识别模块: version3.x/module_usage/table_structure_recognition.md
     - 文本检测模块: version3.x/module_usage/text_detection.md
     - 文本图像矫正模块: version3.x/module_usage/text_image_unwarping.md
-    - 文本行方向分类模块: version3.x/module_usage/text_line_orientation_classification.md
+    - 文本行方向分类模块: version3.x/module_usage/textline_orientation_classification.md
     - 文本识别模块: version3.x/module_usage/text_recognition.md
+    - 图表解析模块: version3.x/module_usage/chart_parsing.md
   - 产线列表: 
+    - 产线概述: version3.x/pipeline_usage/pipeline_overview.md
     - 公式识别产线: version3.x/pipeline_usage/formula_recognition.md
     - 文档图像预处理产线: version3.x/pipeline_usage/doc_preprocessor.md
     - 文档理解产线: version3.x/pipeline_usage/doc_understanding.md
     - 印章文本识别产线: version3.x/pipeline_usage/seal_recognition.md
     - 通用表格识别v2产线: version3.x/pipeline_usage/table_recognition_v2.md
+    - PP-DocTranslation产线: version3.x/pipeline_usage/PP-DocTranslation.md
   - 多硬件使用:
     - PaddleOCR 多硬件使用指南: version3.x/other_devices_support/multi_devices_use_guide.md
     - 昇腾 NPU 飞桨安装教程: version3.x/other_devices_support/paddlepaddle_install_NPU.md
@@ -301,6 +325,7 @@ nav:
     - PaddleOCR 与 PaddleX: version3.x/paddleocr_and_paddlex.md
     - PaddleOCR 3.x 升级说明: update/upgrade_notes.md
     - 配置 PaddleOCR 推理包日志系统: version3.x/logging.md
+
   - 低代码全流程开发:
       - 概述: version3.x/paddlex/overview.md
       - 快速开始: version3.x/paddlex/quick_start.md

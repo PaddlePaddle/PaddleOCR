@@ -35,16 +35,16 @@
   <tr> 
    <td rowspan="9">Pipeline Tools</td> 
    <td><b>PP-structureV3</b></td> 
-   <td><b>0.147</b></td> 
-   <td><b>0.212</b></td> 
-   <td>0.059</td> 
-   <td><b>0.09</b></td> 
+   <td><b>0.145</b></td> 
+   <td><b>0.206</b></td> 
+   <td>0.058</td> 
+   <td><b>0.088</b></td> 
    <td>0.295</td> 
    <td>0.535</td> 
    <td>0.159</td> 
    <td><b>0.109</b></td> 
-   <td>0.075</td> 
-   <td><b>0.114</b></td> 
+   <td>0.069</td> 
+   <td><b>0.091</b></td> 
   </tr> 
   <tr> 
    <td>MinerU-0.9.3</td> 
@@ -303,209 +303,625 @@ The above data is from:
 * <a href="https://arxiv.org/abs/2412.07626">OmniDocBench: Benchmarking Diverse PDF Document Parsing with Comprehensive Annotations</a>
 
 # End to End Benchmark
-## Requirements
 
+The performance of PP-StructureV3 and MinerU with different configurations under different GPU environments are as follows.
+
+Requirements:
 * Paddle 3.0
 * PaddleOCR 3.0.0
 * MinerU 1.3.10
 * CUDA 11.8
 * cuDNN 8.9
 
-## Data
-1. Local inference
+## Local inference
 
-Data: 15 PDF files, totaling 925 pages, containing elements such as tables, formulas, seals, charts, etc.
+Local inference was tested with both V100 and A100 GPU, evaluating the performance of PP-StructureV3 under 6 different configurations. The test data consists of 15 PDF files, totaling 925 pages, including elements such as tables, formulas, seals, and charts.
 
-Env: NVIDIA Tesla V100 + Intel Xeon Gold 6271C
+In the following PP-StructureV3 configuration, please refer to [PP-OCRv5](../PP-OCRv5/PP-OCRv5.en.md) for OCR model details, see [Formula Recognition](../../module_usage/formula_recognition.en.md) for formula recognition model details, and refer to [Text Detection](../../module_usage/text_detection.en.md) for the max_side_limit setting of the text detection module.
 
-<table>
- <colgroup>
-  <col> 
- </colgroup>
- <tbody>
-  <tr> 
-   <td></td> 
-   <td>Pipeline Configurations</td> 
-   <td>Average time per page (s)</td> 
-   <td>Average CPU (%)</td> 
-   <td>Peak RAM Usage (MB)</td> 
-   <td>Average RAM Usage (MB)</td> 
-   <td>Average GPU (%)</td> 
-   <td>Peak VRAM Usage (MB)</td> 
-   <td>Average VRAM Usage (MB)</td> 
-  </tr> 
-  <tr> 
-   <td rowspan="6">PP-StructureV3</td> 
-   <td>Basic</td> 
-   <td>1.77</td> 
-   <td>111.4</td> 
-   <td>6822.4</td> 
-   <td>5278.2</td> 
-   <td>38.9</td> 
-   <td>17403</td> 
-   <td>16909.3</td> 
-  </tr> 
-  <tr> 
-   <td>Use chart recognition pipeline</td> 
-   <td>4.09</td> 
-   <td>105.3</td> 
-   <td>5628</td> 
-   <td>4085.1</td> 
-   <td>24.7</td> 
-   <td>17403</td> 
-   <td>17030.9</td> 
-  </tr> 
-  <tr> 
-   <td>Use PP-OCRv5_mobile_det + PP-OCRv5_mobile_rec</td> 
-   <td>1.56</td> 
-   <td>113.7</td> 
-   <td>6712.9</td> 
-   <td>5052</td> 
-   <td>29.1</td> 
-   <td>10929</td> 
-   <td>10840.7</td> 
-  </tr> 
-  <tr> 
-   <td>Use PP-FormulaNet_plus-M</td> 
-   <td>1.42</td> 
-   <td>112.9</td> 
-   <td>6944.1</td> 
-   <td>5193.6</td> 
-   <td>38</td> 
-   <td>16390</td> 
-   <td>15840</td> 
-  </tr> 
-  <tr> 
-   <td>Use PP-OCRv5_mobile_det + PP-OCRv5_mobile_rec + PP-FormulaNet_plus-M</td> 
-   <td>1.15</td> 
-   <td>114.8</td> 
-   <td>6666.5</td> 
-   <td>5105.4</td> 
-   <td>26.1</td> 
-   <td>8606</td> 
-   <td>8517.2</td> 
-  </tr> 
-  <tr> 
-   <td>Use PP-OCRv5_mobile_det + PP-OCRv5_mobile_rec + PP-FormulaNet_plus-M, and max input length of text detection set to 1200</td> 
-   <td>0.99</td> 
-   <td>113</td> 
-   <td>7172.9</td> 
-   <td>5686.4</td> 
-   <td>29.2</td> 
-   <td>8776</td> 
-   <td>8680.8</td> 
-  </tr> 
-  <tr> 
-   <td>MinerU</td> 
-   <td>-</td> 
-   <td>1.57</td> 
-   <td>142.9</td> 
-   <td>13655.8</td> 
-   <td>12083</td> 
-   <td>43.3</td> 
-   <td>32406</td> 
-   <td>9915.4</td> 
-  </tr> 
- </tbody>
+### Env: NVIDIA Tesla V100 + Intel Xeon Gold 6271C
+
+<table border="1">
+ <tr>
+  <td>
+   Methods
+  </td>
+  <td colspan="4">
+   Configurations
+  </td>
+  <td rowspan="2">
+   Average time per
+  page
+    (s)
+  </td>
+  <td rowspan="2">
+   Average CPU
+    （%）
+  </td>
+  <td rowspan="2">
+   Peak RAM Usage
+    （GB）
+  </td>
+  <td rowspan="2">
+   Average RAM
+  Usage
+    （GB）
+  </td>
+  <td rowspan="2">
+   Average GPU
+    （%）
+  </td>
+  <td rowspan="2">
+   Peak VRAM Usage
+    （GB）
+  </td>
+  <td rowspan="2">
+   Average VRAM
+  Usage
+    （GB）
+  </td>
+ </tr>
+ <tr>
+  <td rowspan="7">
+   PP-StructureV3
+  </td>
+  <td>
+   OCR Models
+  </td>
+  <td>
+   Formula Recognition Model
+  </td>
+  <td>
+   Chart Recognition Model
+  </td>
+  <td>
+   text detection module max_side_limit
+  </td>
+ </tr>
+ <tr>
+  <td>
+   Server
+  </td>
+  <td>
+   PP-FormulaNet-L
+  </td>
+  <td>
+   ✗
+  </td>
+  <td>
+   4096
+  </td>
+  <td>
+   1.77
+  </td>
+  <td>
+   111.4
+  </td>
+  <td>
+   6.7
+  </td>
+  <td>
+   5.2
+  </td>
+  <td>
+   38.9
+  </td>
+  <td>
+   17.0
+  </td>
+  <td>
+   16.5
+  </td>
+ </tr>
+ <tr>
+  <td>
+   Server
+  </td>
+  <td>
+   PP-FormulaNet-L
+  </td>
+  <td>
+   ✔
+  </td>
+  <td>
+   4096
+  </td>
+  <td>
+   4.09
+  </td>
+  <td>
+   105.3
+  </td>
+  <td>
+   5.5
+  </td>
+  <td>
+   4.0
+  </td>
+  <td>
+   24.7
+  </td>
+  <td>
+   17.0
+  </td>
+  <td>
+   16.6
+  </td>
+ </tr>
+ <tr>
+  <td>
+   Mobile
+  </td>
+  <td>
+   PP-FormulaNet-L
+  </td>
+  <td>
+   ✗
+  </td>
+  <td>
+   4096
+  </td>
+  <td>
+   1.56
+  </td>
+  <td>
+   113.7
+  </td>
+  <td>
+   6.6
+  </td>
+  <td>
+   4.9
+  </td>
+  <td>
+   29.1
+  </td>
+  <td>
+   10.7
+  </td>
+  <td>
+   10.6
+  </td>
+ </tr>
+ <tr>
+  <td>
+   Server
+  </td>
+  <td>
+   PP-FormulaNet-M
+  </td>
+  <td>
+   ✗
+  </td>
+  <td>
+   4096
+  </td>
+  <td>
+   1.42
+  </td>
+  <td>
+   112.9
+  </td>
+  <td>
+   6.8
+  </td>
+  <td>
+   5.1
+  </td>
+  <td>
+   38
+  </td>
+  <td>
+   16.0
+  </td>
+  <td>
+   15.5
+  </td>
+ </tr>
+ <tr>
+  <td>
+   Mobile
+  </td>
+  <td>
+   PP-FormulaNet-M
+  </td>
+  <td>
+   ✗
+  </td>
+  <td>
+   4096
+  </td>
+  <td>
+   1.15
+  </td>
+  <td>
+   114.8
+  </td>
+  <td>
+   6.5
+  </td>
+  <td>
+   5.0
+  </td>
+  <td>
+   26.1
+  </td>
+  <td>
+   8.4
+  </td>
+  <td>
+   8.3
+  </td>
+ </tr>
+ <tr>
+  <td>
+   Mobile
+  </td>
+  <td>
+   PP-FormulaNet-M
+  </td>
+  <td>
+   ✗
+  </td>
+  <td>
+   1200
+  </td>
+  <td>
+   0.99
+  </td>
+  <td>
+   113
+  </td>
+  <td>
+   7.0
+  </td>
+  <td>
+   5.6
+  </td>
+  <td>
+   29.2
+  </td>
+  <td>
+   8.6
+  </td>
+  <td>
+   8.5
+  </td>
+ </tr>
+ <tr>
+  <td>
+   MinerU
+  </td>
+  <td colspan="4">
+   -
+  </td>
+  <td>
+   1.57
+  </td>
+  <td>
+   142.9
+  </td>
+  <td>
+   13.3
+  </td>
+  <td>
+   11.8
+  </td>
+  <td>
+   43.3
+  </td>
+  <td>
+   31.6
+  </td>
+  <td>
+   9.7
+  </td>
+ </tr>
 </table>
 
-Env：NVIDIA A100 + Intel Xeon Platinum 8350C
+### NVIDIA A100 + Intel Xeon Platinum 8350C
 
-<table> 
- <colgroup>
-  <col> 
- </colgroup>
- <tbody>
-  <tr> 
-   <td></td> 
-   <td>Pipeline Configurations</td> 
-   <td>Average time per page (s)</td> 
-   <td>Average CPU (%)</td> 
-   <td>Peak RAM Usage (MB)</td> 
-   <td>Average RAM Usage (MB)</td> 
-   <td>Average GPU (%)</td> 
-   <td>Peak VRAM Usage (MB)</td> 
-   <td>Average VRAM Usage (MB)</td> 
-  </tr> 
-  <tr> 
-   <td rowspan="6">PP-StructureV3</td> 
-   <td>Basic</td> 
-   <td>1.12</td> 
-   <td>109.8</td> 
-   <td>9418.3</td> 
-   <td>7977.9</td> 
-   <td>29.8</td> 
-   <td>22294</td> 
-   <td>21638.4</td> 
-  </tr> 
-  <tr> 
-   <td>Use chart recognition pipeline</td> 
-   <td>2.76</td> 
-   <td>103.7</td> 
-   <td>9253.6</td> 
-   <td>7840.6</td> 
-   <td>24</td> 
-   <td>22298</td> 
-   <td>21555.3</td> 
-  </tr> 
-  <tr> 
-   <td>Use PP-OCRv5_mobile_det + PP-OCRv5_mobile_rec</td> 
-   <td>1.04</td> 
-   <td>110.7</td> 
-   <td>9520.8</td> 
-   <td>8034.3</td> 
-   <td>22</td> 
-   <td>12490</td> 
-   <td>12383.1</td> 
-  </tr> 
-  <tr> 
-   <td>Use PP-FormulaNet_plus-M</td> 
-   <td>0.95</td> 
-   <td>111.4</td> 
-   <td>9272.9</td> 
-   <td>7939.9</td> 
-   <td>28.1</td> 
-   <td>22350</td> 
-   <td>21498.4</td> 
-  </tr> 
-  <tr> 
-   <td>Use PP-OCRv5_mobile_det + PP-OCRv5_mobile_rec + PP-FormulaNet_plus-M</td> 
-   <td>0.89</td> 
-   <td>112.1</td> 
-   <td>9457.2</td> 
-   <td>8031.5</td> 
-   <td>18.5</td> 
-   <td>11642</td> 
-   <td>11433.6</td> 
-  </tr> 
-  <tr> 
-   <td>Use PP-OCRv5_mobile_det + PP-OCRv5_mobile_rec + PP-FormulaNet_plus-M, and max length of text detection set to 1200</td> 
-   <td>0.64</td> 
-   <td>113.5</td> 
-   <td>10401.1</td> 
-   <td>8688.8</td> 
-   <td>23.7</td> 
-   <td>11716</td> 
-   <td>11453.9</td> 
-  </tr> 
-  <tr"> 
-   <td>MinerU</td> 
-   <td>-</td> 
-   <td>1.06</td> 
-   <td>168.3</td> 
-   <td>18690.4</td> 
-   <td>17213.8</td> 
-   <td>27.5</td> 
-   <td>78760</td> 
-   <td>15119</td> 
-  </tr> 
- </tbody>
+<table border="1">
+ <tr>
+  <td>
+   Methods
+  </td>
+  <td colspan="4">
+   Configurations
+  </td>
+  <td rowspan="2">
+   Average time per
+  page
+    (s)
+  </td>
+  <td rowspan="2">
+   Average CPU
+    （%）
+  </td>
+  <td rowspan="2">
+   Peak RAM Usage
+    （GB）
+  </td>
+  <td rowspan="2">
+   Average RAM
+  Usage
+    （GB）
+  </td>
+  <td rowspan="2">
+   Average GPU
+    （%）
+  </td>
+  <td rowspan="2">
+   Peak VRAM Usage
+    （GB）
+  </td>
+  <td rowspan="2">
+   Average VRAM
+  Usage
+    （GB）
+  </td>
+ </tr>
+ <tr>
+  <td rowspan="7">
+   PP-StructureV3
+  </td>
+  <td>
+   OCR Models
+  </td>
+  <td>
+   Formula Recognition Model
+  </td>
+  <td>
+   Chart Recognition Model
+  </td>
+  <td>
+   text detection module max_side_limit
+  </td>
+ </tr>
+ <tr>
+  <td>
+   Server
+  </td>
+  <td>
+   PP-FormulaNet-L
+  </td>
+  <td>
+   ✗
+  </td>
+  <td>
+   4096
+  </td>
+  <td>
+   1.12
+  </td>
+  <td>
+   109.8
+  </td>
+  <td>
+   9.2
+  </td>
+  <td>
+   7.8
+  </td>
+  <td>
+   29.8
+  </td>
+  <td>
+   21.8
+  </td>
+  <td>
+   21.1
+  </td>
+ </tr>
+ <tr>
+  <td>
+   Server
+  </td>
+  <td>
+   PP-FormulaNet-L
+  </td>
+  <td>
+   ✔
+  </td>
+  <td>
+   4096
+  </td>
+  <td>
+   2.76
+  </td>
+  <td>
+   103.7
+  </td>
+  <td>
+   9.0
+  </td>
+  <td>
+   7.7
+  </td>
+  <td>
+   24
+  </td>
+  <td>
+   21.8
+  </td>
+  <td>
+   21.1
+  </td>
+ </tr>
+ <tr>
+  <td>
+   Mobile
+  </td>
+  <td>
+   PP-FormulaNet-L
+  </td>
+  <td>
+   ✗
+  </td>
+  <td>
+   4096
+  </td>
+  <td>
+   1.04
+  </td>
+  <td>
+   110.7
+  </td>
+  <td>
+   9.3
+  </td>
+  <td>
+   7.8
+  </td>
+  <td>
+   22
+  </td>
+  <td>
+   12.2
+  </td>
+  <td>
+   12.1
+  </td>
+ </tr>
+ <tr>
+  <td>
+   Server
+  </td>
+  <td>
+   PP-FormulaNet-M
+  </td>
+  <td>
+   ✗
+  </td>
+  <td>
+   4096
+  </td>
+  <td>
+   0.95
+  </td>
+  <td>
+   111.4
+  </td>
+  <td>
+   9.1
+  </td>
+  <td>
+   7.8
+  </td>
+  <td>
+   28.1
+  </td>
+  <td>
+   21.8
+  </td>
+  <td>
+   21.0
+  </td>
+ </tr>
+ <tr>
+  <td>
+   Mobile
+  </td>
+  <td>
+   PP-FormulaNet-M
+  </td>
+  <td>
+   ✗
+  </td>
+  <td>
+   4096
+  </td>
+  <td>
+   0.89
+  </td>
+  <td>
+   112.1
+  </td>
+  <td>
+   9.2
+  </td>
+  <td>
+   7.8
+  </td>
+  <td>
+   18.5
+  </td>
+  <td>
+   11.4
+  </td>
+  <td>
+   11.2
+  </td>
+ </tr>
+ <tr>
+  <td>
+   Mobile
+  </td>
+  <td>
+   PP-FormulaNet-M
+  </td>
+  <td>
+   ✗
+  </td>
+  <td>
+   1200
+  </td>
+  <td>
+   0.64
+  </td>
+  <td>
+   113.5
+  </td>
+  <td>
+   10.2
+  </td>
+  <td>
+   8.5
+  </td>
+  <td>
+   23.7
+  </td>
+  <td>
+   11.4
+  </td>
+  <td>
+   11.2
+  </td>
+ </tr>
+ <tr>
+  <td>
+   MinerU
+  </td>
+  <td colspan="4">
+   -
+  </td>
+  <td>
+   1.06
+  </td>
+  <td>
+   168.3
+  </td>
+  <td>
+   18.3
+  </td>
+  <td>
+   16.8
+  </td>
+  <td>
+   27.5
+  </td>
+  <td>
+   76.9
+  </td>
+  <td>
+   14.8
+  </td>
+ </tr>
 </table>
 
-2. Serving
+## Serving Inference
 
-Data: 1500 images, including tables, formulas, seals, charts, and other elements.
-Use default configuration.
+The serving inference test is based on the NVIDIA A100 + Intel Xeon Platinum 8350C environment, with test data consisting of 1500 images, including tables, formulas, seals, charts, and other elements.
 
 <table>
  <tbody>
@@ -517,21 +933,568 @@ Use default configuration.
    <td>Success Number/Total Number</td> 
   </tr> 
   <tr"> 
-   <td>4 GPUs * 1</td> 
+   <td>4 GPUs ✖️ 1 instance/gpu</td> 
    <td>4</td> 
    <td>1.69</td> 
    <td>2.36</td> 
-   <td>1</td> 
+   <td>100%</td> 
   </tr> 
   <tr"> 
-   <td>4 GPUs * 4</td> 
+   <td>4 GPUs ✖️ 4 instances/gpu</td> 
    <td>16</td> 
    <td>4.05</td> 
    <td>3.87</td> 
-   <td>1</td> 
+   <td>100%</td> 
   </tr> 
  </tbody>
 </table>
+
+## Pipeline benchmark data
+
+<details>
+<summary>Click to expand/collapse the table</summary>
+
+<table border="1">
+<tr><th>Pipeline configuration</th><th>Hardware</th><th>Avg. inference time (s)</th><th>Peak CPU utilization (%)</th><th>Avg. CPU utilization (%)</th><th>Peak host memory (MB)</th><th>Avg. host memory (MB)</th><th>Peak GPU utilization (%)</th><th>Avg. GPU utilization (%)</th><th>Peak device memory (MB)</th><th>Avg. device memory (MB)</th></tr>
+<tr>
+<td rowspan="5">PP_StructureV3-default</td>
+<td>Intel 8350C + A100</td>
+<td>1.38</td>
+<td>1384.60</td>
+<td>113.26</td>
+<td>5781.59</td>
+<td>3431.21</td>
+<td>100</td>
+<td>32.79</td>
+<td>37370.00</td>
+<td>34165.68</td>
+</tr>
+<tr>
+<td>Intel 6271C + V100</td>
+<td>2.38</td>
+<td>608.70</td>
+<td>109.96</td>
+<td>6388.91</td>
+<td>3737.19</td>
+<td>100</td>
+<td>39.08</td>
+<td>26824.00</td>
+<td>24581.61</td>
+</tr>
+<tr>
+<td>Intel 8563C + H20</td>
+<td>1.36</td>
+<td>744.30</td>
+<td>112.82</td>
+<td>6199.01</td>
+<td>3865.78</td>
+<td>100</td>
+<td>43.81</td>
+<td>35132.00</td>
+<td>32077.12</td>
+</tr>
+<tr>
+<td>Intel 8350C + A10</td>
+<td>1.74</td>
+<td>418.50</td>
+<td>105.96</td>
+<td>6138.25</td>
+<td>3503.41</td>
+<td>100</td>
+<td>48.54</td>
+<td>18536.00</td>
+<td>18353.93</td>
+</tr>
+<tr>
+<td>Intel 6271C + T4</td>
+<td>3.70</td>
+<td>434.40</td>
+<td>105.45</td>
+<td>6865.87</td>
+<td>3595.68</td>
+<td>100</td>
+<td>71.92</td>
+<td>13970.00</td>
+<td>12668.58</td>
+</tr>
+<tr>
+<td rowspan="3">PP_StructureV3-pp</td>
+<td>Intel 8350C + A100</td>
+<td>3.50</td>
+<td>679.30</td>
+<td>105.96</td>
+<td>13850.20</td>
+<td>5146.50</td>
+<td>100</td>
+<td>14.01</td>
+<td>37656.00</td>
+<td>34716.95</td>
+</tr>
+<tr>
+<td>Intel 6271C + V100</td>
+<td>5.03</td>
+<td>494.20</td>
+<td>105.63</td>
+<td>13542.94</td>
+<td>4833.55</td>
+<td>100</td>
+<td>20.36</td>
+<td>29402.00</td>
+<td>26607.92</td>
+</tr>
+<tr>
+<td>Intel 8563C + H20</td>
+<td>3.17</td>
+<td>481.50</td>
+<td>105.13</td>
+<td>14179.97</td>
+<td>5608.80</td>
+<td>100</td>
+<td>19.35</td>
+<td>35454.00</td>
+<td>32512.19</td>
+</tr>
+<tr>
+<td rowspan="2">PP_StructureV3-full</td>
+<td>Intel 8350C + A100</td>
+<td>8.92</td>
+<td>697.30</td>
+<td>102.88</td>
+<td>13777.07</td>
+<td>4573.65</td>
+<td>100</td>
+<td>18.39</td>
+<td>38776.00</td>
+<td>37554.09</td>
+</tr>
+<tr>
+<td>Intel 6271C + V100</td>
+<td>13.12</td>
+<td>437.40</td>
+<td>102.36</td>
+<td>13974.00</td>
+<td>4484.00</td>
+<td>100</td>
+<td>17.50</td>
+<td>29878.00</td>
+<td>28733.59</td>
+</tr>
+<tr>
+<td rowspan="5">PP_StructureV3-seal</td>
+<td>Intel 8350C + A100</td>
+<td>1.39</td>
+<td>747.50</td>
+<td>112.55</td>
+<td>5788.79</td>
+<td>3742.03</td>
+<td>100</td>
+<td>33.81</td>
+<td>38966.00</td>
+<td>35832.44</td>
+</tr>
+<tr>
+<td>Intel 6271C + V100</td>
+<td>2.44</td>
+<td>630.10</td>
+<td>110.18</td>
+<td>6343.39</td>
+<td>3725.98</td>
+<td>100</td>
+<td>42.23</td>
+<td>28078.00</td>
+<td>25834.70</td>
+</tr>
+<tr>
+<td>Intel 8563C + H20</td>
+<td>1.40</td>
+<td>792.20</td>
+<td>113.63</td>
+<td>6673.60</td>
+<td>4417.34</td>
+<td>100</td>
+<td>46.33</td>
+<td>35530.00</td>
+<td>32516.87</td>
+</tr>
+<tr>
+<td>Intel 8350C + A10</td>
+<td>1.75</td>
+<td>422.40</td>
+<td>106.08</td>
+<td>6068.87</td>
+<td>3973.49</td>
+<td>100</td>
+<td>50.12</td>
+<td>19630.00</td>
+<td>18374.37</td>
+</tr>
+<tr>
+<td>Intel 6271C + T4</td>
+<td>3.76</td>
+<td>400.30</td>
+<td>105.10</td>
+<td>6296.28</td>
+<td>3651.42</td>
+<td>100</td>
+<td>72.57</td>
+<td>14304.00</td>
+<td>13268.36</td>
+</tr>
+<tr>
+<td rowspan="4">PP_StructureV3-chart</td>
+<td>Intel 8350C + A100</td>
+<td>7.70</td>
+<td>746.80</td>
+<td>102.69</td>
+<td>6355.58</td>
+<td>4006.48</td>
+<td>100</td>
+<td>22.38</td>
+<td>37380.00</td>
+<td>36730.73</td>
+</tr>
+<tr>
+<td>Intel 6271C + V100</td>
+<td>10.58</td>
+<td>599.20</td>
+<td>102.51</td>
+<td>5754.14</td>
+<td>3333.78</td>
+<td>100</td>
+<td>21.99</td>
+<td>26820.00</td>
+<td>26253.70</td>
+</tr>
+<tr>
+<td>Intel 8350C + A10</td>
+<td>8.03</td>
+<td>413.30</td>
+<td>101.31</td>
+<td>6473.29</td>
+<td>3689.84</td>
+<td>100</td>
+<td>26.19</td>
+<td>18540.00</td>
+<td>18494.69</td>
+</tr>
+<tr>
+<td>Intel 6271C + T4</td>
+<td>11.69</td>
+<td>460.90</td>
+<td>101.85</td>
+<td>6503.12</td>
+<td>3524.06</td>
+<td>100</td>
+<td>46.81</td>
+<td>13966.00</td>
+<td>12481.94</td>
+</tr>
+<tr>
+<td rowspan="5">PP_StructureV3-notable</td>
+<td>Intel 8350C + A100</td>
+<td>1.24</td>
+<td>738.30</td>
+<td>110.45</td>
+<td>5638.16</td>
+<td>3278.30</td>
+<td>100</td>
+<td>35.32</td>
+<td>30320.00</td>
+<td>27026.17</td>
+</tr>
+<tr>
+<td>Intel 6271C + V100</td>
+<td>2.24</td>
+<td>452.40</td>
+<td>107.79</td>
+<td>5579.15</td>
+<td>3635.95</td>
+<td>100</td>
+<td>43.00</td>
+<td>23098.00</td>
+<td>20684.43</td>
+</tr>
+<tr>
+<td>Intel 8563C + H20</td>
+<td>1.18</td>
+<td>989.00</td>
+<td>107.71</td>
+<td>6041.76</td>
+<td>4024.76</td>
+<td>100</td>
+<td>50.67</td>
+<td>33780.00</td>
+<td>29733.15</td>
+</tr>
+<tr>
+<td>Intel 8350C + A10</td>
+<td>1.58</td>
+<td>225.00</td>
+<td>102.56</td>
+<td>5518.10</td>
+<td>3333.08</td>
+<td>100</td>
+<td>49.90</td>
+<td>21532.00</td>
+<td>18567.99</td>
+</tr>
+<tr>
+<td>Intel 6271C + T4</td>
+<td>3.40</td>
+<td>413.30</td>
+<td>103.58</td>
+<td>5874.88</td>
+<td>3662.49</td>
+<td>100</td>
+<td>76.82</td>
+<td>13764.00</td>
+<td>11890.62</td>
+</tr>
+<tr>
+<td rowspan="7">PP_StructureV3-noformula</td>
+<td>Intel 6271C</td>
+<td>7.85</td>
+<td>1172.50</td>
+<td>964.70</td>
+<td>17739.00</td>
+<td>11101.02</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Intel 8350C</td>
+<td>8.83</td>
+<td>1053.50</td>
+<td>970.64</td>
+<td>15463.48</td>
+<td>9408.19</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Intel 8350C + A100</td>
+<td>0.84</td>
+<td>788.60</td>
+<td>124.25</td>
+<td>6246.39</td>
+<td>3674.32</td>
+<td>100</td>
+<td>30.57</td>
+<td>40084.00</td>
+<td>37358.45</td>
+</tr>
+<tr>
+<td>Intel 6271C + V100</td>
+<td>1.42</td>
+<td>606.20</td>
+<td>115.53</td>
+<td>7015.57</td>
+<td>3707.03</td>
+<td>100</td>
+<td>35.63</td>
+<td>29540.00</td>
+<td>27620.28</td>
+</tr>
+<tr>
+<td>Intel 8563C + H20</td>
+<td>0.87</td>
+<td>644.10</td>
+<td>119.23</td>
+<td>6895.76</td>
+<td>4222.85</td>
+<td>100</td>
+<td>50.00</td>
+<td>36878.00</td>
+<td>34104.59</td>
+</tr>
+<tr>
+<td>Intel 8350C + A10</td>
+<td>1.03</td>
+<td>377.50</td>
+<td>106.87</td>
+<td>5819.88</td>
+<td>3830.19</td>
+<td>100</td>
+<td>42.87</td>
+<td>19340.00</td>
+<td>17550.94</td>
+</tr>
+<tr>
+<td>Intel 6271C + T4</td>
+<td>2.02</td>
+<td>430.20</td>
+<td>109.21</td>
+<td>6600.62</td>
+<td>3824.18</td>
+<td>100</td>
+<td>65.75</td>
+<td>14332.00</td>
+<td>12712.18</td>
+</tr>
+<tr>
+<td rowspan="9">PP_StructureV3-lightweight</td>
+<td>Intel 6271C</td>
+<td>4.36</td>
+<td>1189.70</td>
+<td>995.78</td>
+<td>14000.50</td>
+<td>9374.97</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Intel 8350C</td>
+<td>3.74</td>
+<td>1049.60</td>
+<td>967.77</td>
+<td>12960.96</td>
+<td>7644.25</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Hygon 7490 + P800</td>
+<td>0.86</td>
+<td>572.20</td>
+<td>120.84</td>
+<td>8290.49</td>
+<td>3569.44</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Intel 8350C + A100</td>
+<td>0.61</td>
+<td>823.40</td>
+<td>126.25</td>
+<td>9258.22</td>
+<td>3776.63</td>
+<td>52</td>
+<td>18.95</td>
+<td>7456.00</td>
+<td>7131.95</td>
+</tr>
+<tr>
+<td>Intel 6271C + V100</td>
+<td>1.07</td>
+<td>686.80</td>
+<td>116.70</td>
+<td>9381.75</td>
+<td>4126.28</td>
+<td>58</td>
+<td>22.92</td>
+<td>8450.00</td>
+<td>8083.30</td>
+</tr>
+<tr>
+<td>Intel 8563C + H20</td>
+<td>0.46</td>
+<td>999.00</td>
+<td>122.21</td>
+<td>9734.78</td>
+<td>4516.40</td>
+<td>61</td>
+<td>24.41</td>
+<td>7524.00</td>
+<td>7167.52</td>
+</tr>
+<tr>
+<td>Intel 8350C + A10</td>
+<td>0.70</td>
+<td>355.40</td>
+<td>111.51</td>
+<td>9415.45</td>
+<td>4094.06</td>
+<td>89</td>
+<td>30.85</td>
+<td>7248.00</td>
+<td>6927.58</td>
+</tr>
+<tr>
+<td>M4</td>
+<td>12.22</td>
+<td>223.60</td>
+<td>107.35</td>
+<td>9531.22</td>
+<td>7884.61</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Intel 6271C + T4</td>
+<td>1.13</td>
+<td>461.40</td>
+<td>112.16</td>
+<td>7923.09</td>
+<td>3837.31</td>
+<td>85</td>
+<td>41.67</td>
+<td>8218.00</td>
+<td>7902.04</td>
+</tr>
+</table>
+
+
+<table border="1">
+<tr><th>Pipeline configuration</th><th>description</th></tr>
+<tr>
+<td>PP_StructureV3-default</td>
+<td>Default configuration</td>
+</tr>
+<tr>
+<td>PP_StructureV3-pp</td>
+<td>Based on the default configuration, document image preprocessing is enabled</td>
+</tr>
+<tr>
+<td>PP_StructureV3-full</td>
+<td>Based on the default configuration, document image preprocessing and chart parsing are enabled</td>
+</tr>
+<tr>
+<td>PP_StructureV3-seal</td>
+<td>Based on the default configuration, seal text recognition is enabled</td>
+</tr>
+<tr>
+<td>PP_StructureV3-chart</td>
+<td>Based on the default configuration, chart parsing is enabled</td>
+</tr>
+<tr>
+<td>PP_StructureV3-notable</td>
+<td>Based on the default configuration, table recognition is disabled</td>
+</tr>
+<tr>
+<td>PP_StructureV3-noformula</td>
+<td>Based on the default configuration, formula recognition is disabled</td>
+</tr>
+<tr>
+<td>PP_StructureV3-lightweight</td>
+<td>Based on the default configuration, all task models are replaced with lightweight versions</td>
+</tr>
+</table>
+</details>
+
+
+* Test environment:
+    * PaddlePaddle 3.1.0、CUDA 11.8、cuDNN 8.9
+    * PaddleX @ develop (f1eb28e23cfa54ce3e9234d2e61fcb87c93cf407)
+    * Docker image: ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddle:3.1.0-gpu-cuda11.8-cudnn8.9
+* Test data:
+    * Test data containing 280 images including tables, seals, formulas, and charts.
+* Test strategy:
+    * Warm up with 20 samples, then repeat the full dataset once for performance testing.
+* Note:
+    * Since we did not collect device memory data for NPU and XPU, the corresponding entries in the table are marked as N/A.
 
 # PP-StructureV3 Demo
 
@@ -544,22 +1507,33 @@ Use default configuration.
 
 # FAQ
 
-1. What is the default configuration? How to get higher accuracy, faster speed, or smaller GPU memory?
+**Q: What is the default model configuration? If I need higher accuracy, faster speed, or lower GPU memory usage, which parameters should I adjust or which models should I switch to? How significant is the impact on results?**
 
-When using mobile OCR models + PP-FormulaNet_plus-M, and max length of text detection set to 1200, if set use_chart_recognition to False and dont not load the chart recognition model, the GPU memory would be reduced. 
+**A:** By default, the largest models for each module are used. Section 3.3 demonstrates how different model selections affect GPU memory consumption and inference speed. You can choose an appropriate model based on your device capabilities and the complexity of your samples. Additionally, in the Python API or CLI, you can set the device parameter as `<device_type>:<device_id1>,<device_id2>...` (e.g., `gpu:0,1,2,3`) to enable multi-GPU parallel inference. If the built-in multi-GPU parallel inference does not meet your speed requirements, you may refer to the example code for multi-process parallel inference and further optimize it for your specific scenario: [Multi-process Parallel Inference](https://www.paddleocr.ai/latest/en/version3.x/pipeline_usage/instructions/parallel_inference.html).
 
-On the V100, the peak and average GPU memory would be reduced from 8776.0 MB and 8680.8 MB to 6118.0 MB and 6016.7 MB, respectively; On the A100, the peak and average GPU memory would be reduced from 11716.0 MB and 11453.9 MB to 9850.0 MB and 9593.5 MB, respectively.
+---
 
-You can using multi-gpus by setting `device` to `gpu:<no.>,<no.>`, such as `gpu:0,1,2,3`. And about multi-process parallel inference, you can refer: [Multi-Process Parallel Inference](https://github.com/PaddlePaddle/PaddleX/blob/develop/docs/pipeline_usage/instructions/parallel_inference.en.md#example-of-multi-process-parallel-inference).
+**Q: Can PP-StructureV3 run on CPU?**
 
-2. About serving deployment
+**A:** While PP-StructureV3 is recommended to run on GPU for optimal performance, it also supports CPU inference. Thanks to a variety of configuration options and sufficient optimization for lightweight models, users can refer to section 3.3 to select lightweight configurations for CPU-only environments. For example, on an Intel 8350C CPU, the inference time per image is about 3.74 seconds.
 
-(1) Can the service handle requests concurrently?
+---
 
-For the basic serving deployment solution, the service processes only one request at a time. This plan is mainly used for rapid verification, to establish the development chain, or for scenarios where concurrent requests are not required.
+**Q: How can I integrate PP-StructureV3 into my own project?**
 
-For high-stability serving deployment solution, the service process only one request at a time by default, but you can refer to the related docs to adjust achieve scaling.
+**A:**  
+- For Python projects, you can directly integrate using the PaddleOCR Python API.  
+- For projects in other programming languages, it is recommended to use service-based deployment. PaddleOCR supports client-side integration in multiple languages, including C++, C#, Java, Go, and PHP. Please refer to the [official documentation](https://www.paddleocr.ai/latest/en/version3.x/pipeline_usage/PP-StructureV3.html#3-development-integration-deployment) for details.  
+- If you need to interact with large language models, PaddleOCR also provides the MCP service. For more information, please refer to the [MCP Server documentation](https://www.paddleocr.ai/latest/en/version3.x/deployment/mcp_server.html).
 
-（2）How to reduce latency and improve throughput?
+---
 
-Use the High-performance inference plugin, and deploy multi instances.
+**Q: Can the serving handle concurrent requests?**
+
+**A:** In the basic service deployment solution, the service processes only one request at a time, which is mainly intended for quick validation, development pipeline integration, or scenarios that do not require concurrent processing. In the high-stability serving solution, the service also processes one request at a time by default, but users can achieve horizontal scaling and concurrent processing by adjusting the configuration as outlined in the service deployment guide.
+
+---
+
+**Q: How can I reduce latency and increase throughput in serving?**
+
+**A:** PaddleOCR offers two types of service deployment solutions. Regardless of the solution used, enabling high-performance inference plugins can accelerate model inference and thus reduce latency. For the high-stability deployment solution, throughput can be further increased by adjusting the service configuration to run multiple instances, making full use of your hardware resources. Please refer to the [documentation](https://paddlepaddle.github.io/PaddleX/latest/en/pipeline_deploy/serving.html#22-adjust-configurations) for more details on configuring high-stability serving.

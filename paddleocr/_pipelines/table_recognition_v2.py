@@ -72,6 +72,7 @@ class TableRecognitionPipelineV2(PaddleXPipelineWrapper):
     def predict_iter(
         self,
         input,
+        *,
         use_doc_orientation_classify=None,
         use_doc_unwarping=None,
         use_layout_detection=None,
@@ -118,6 +119,7 @@ class TableRecognitionPipelineV2(PaddleXPipelineWrapper):
     def predict(
         self,
         input,
+        *,
         use_doc_orientation_classify=None,
         use_doc_unwarping=None,
         use_layout_detection=None,
@@ -411,12 +413,12 @@ class TableRecognitionPipelineV2CLISubcommandExecutor(PipelineCLISubcommandExecu
         subparser.add_argument(
             "--use_doc_orientation_classify",
             type=str2bool,
-            help="Whether to use the document image orientation classification model.",
+            help="Whether to use document image orientation classification.",
         )
         subparser.add_argument(
             "--use_doc_unwarping",
             type=str2bool,
-            help="Whether to use the text image unwarping model.",
+            help="Whether to use text image unwarping.",
         )
         subparser.add_argument(
             "--use_layout_detection",
