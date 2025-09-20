@@ -227,6 +227,144 @@ class TextDetector(object):
         dt_boxes = np.array(dt_boxes_new)
         return dt_boxes
 
+    def predict_batch(self, img_list, batch_size=None):
+        """
+        批量预测多张图片
+        Args:
+            img_list: 图片列表
+            batch_size: 批处理大小，如果为None则处理所有图片
+        Returns:
+            batch_dt_boxes: 批量检测框结果列表
+            elapse: 总耗时
+        """
+        if batch_size is None:
+            batch_size = len(img_list)
+        
+        all_dt_boxes = []
+        total_elapse = 0
+        
+        # 分批处理
+        for i in range(0, len(img_list), batch_size):
+            batch_imgs = img_list[i:i+batch_size]
+            batch_dt_boxes, elapse = self._predict_single_batch(batch_imgs)
+            all_dt_boxes.extend(batch_dt_boxes)
+            total_elapse += elapse
+            
+        return all_dt_boxes, total_elapse
+    
+    def _predict_single_batch(self, img_list):
+        """
+        处理单个批次的图片
+        """
+        batch_size = len(img_list)
+        ori_imgs = [img.copy() for img in img_list]
+        
+        st = time.time()
+        
+        if self.args.benchmark:
+            self.autolog.times.start()
+        
+        # 批量预处理
+        batch_data = []
+        batch_shape_lists = []
+        
+        for img in img_list:
+            data = {"image": img}
+            data = transform(data, self.preprocess_op)
+            processed_img, shape_list = data
+            if processed_img is not None:
+                batch_data.append(processed_img)
+                batch_shape_lists.append(shape_list)
+        
+        if not batch_data:
+            return [None] * batch_size, 0
+        
+        # 将批量数据组合成一个batch
+        #batch_imgs = np.array(batch_data) #  Error processing batch ['IMG_20241230_162405.HEIC', 'IMG_20241228_171324.HEIC']: setting an array element with a sequence. The requested array has an inhomogeneous shape after 2 dimensions. The detected shape was (2, 3) + inhomogeneous part. # {ndarray::(3,960,704)}{ndarray:(3,704,960)}
+        # 统一批量数据的尺寸 - 填充到最大尺寸
+        if len(batch_data) > 1:
+            # 找到最大的高度和宽度
+            max_h = max(img.shape[1] for img in batch_data)  # shape: (C, H, W)
+            max_w = max(img.shape[2] for img in batch_data)
+            
+            # 将所有图片填充到相同尺寸
+            padded_imgs = []
+            for img in batch_data:
+                c, h, w = img.shape
+                # 创建填充后的图片
+                padded_img = np.zeros((c, max_h, max_w), dtype=img.dtype)
+                padded_img[:, :h, :w] = img  # 左上角对齐
+                padded_imgs.append(padded_img)
+            
+            batch_imgs = np.array(padded_imgs)
+        else:
+            batch_imgs = np.array(batch_data)
+            
+        batch_shape_lists = np.array(batch_shape_lists)
+        
+        if self.args.benchmark:
+            self.autolog.times.stamp()
+            
+            
+        # 批量推理
+        if self.use_onnx:
+            input_dict = {}
+            input_dict[self.input_tensor.name] = batch_imgs
+            outputs = self.predictor.run(self.output_tensors, input_dict)
+        else:
+            self.input_tensor.copy_from_cpu(batch_imgs)
+            self.predictor.run()
+            outputs = []
+            for output_tensor in self.output_tensors:
+                output = output_tensor.copy_to_cpu()
+                outputs.append(output)
+            if self.args.benchmark:
+                self.autolog.times.stamp()
+        
+        # 批量后处理
+        batch_dt_boxes = []
+        
+        for batch_idx in range(len(batch_data)):
+            # 为每张图片提取对应的输出
+            single_outputs = {}
+            if self.det_algorithm == "EAST":
+                single_outputs["f_geo"] = outputs[0][batch_idx:batch_idx+1]
+                single_outputs["f_score"] = outputs[1][batch_idx:batch_idx+1]
+            elif self.det_algorithm == "SAST":
+                single_outputs["f_border"] = outputs[0][batch_idx:batch_idx+1]
+                single_outputs["f_score"] = outputs[1][batch_idx:batch_idx+1]
+                single_outputs["f_tco"] = outputs[2][batch_idx:batch_idx+1]
+                single_outputs["f_tvo"] = outputs[3][batch_idx:batch_idx+1]
+            elif self.det_algorithm in ["DB", "PSE", "DB++"]:
+                single_outputs["maps"] = outputs[0][batch_idx:batch_idx+1]
+            elif self.det_algorithm == "FCE":
+                for i, output in enumerate(outputs):
+                    single_outputs["level_{}".format(i)] = output[batch_idx:batch_idx+1]
+            elif self.det_algorithm == "CT":
+                single_outputs["maps"] = outputs[0][batch_idx:batch_idx+1]
+                single_outputs["score"] = outputs[1][batch_idx:batch_idx+1]
+            else:
+                raise NotImplementedError
+            
+            # 单张图片后处理
+            single_shape_list = batch_shape_lists[batch_idx:batch_idx+1]
+            post_result = self.postprocess_op(single_outputs, single_shape_list)
+            dt_boxes = post_result[0]["points"]
+            
+            if self.args.det_box_type == "poly":
+                dt_boxes = self.filter_tag_det_res_only_clip(dt_boxes, ori_imgs[batch_idx].shape)
+            else: # 这个分支
+                dt_boxes = self.filter_tag_det_res(dt_boxes, ori_imgs[batch_idx].shape)
+                
+            batch_dt_boxes.append(dt_boxes)
+        
+        if self.args.benchmark:
+            self.autolog.times.end(stamp=True)
+            
+        et = time.time()
+        return batch_dt_boxes, et - st
+
+    
     def predict(self, img):
         ori_im = img.copy()
         data = {"image": img}
@@ -293,7 +431,21 @@ class TextDetector(object):
         et = time.time()
         return dt_boxes, et - st
 
-    def __call__(self, img, use_slice=False):
+    def __call__(self, img, use_slice=False, batch_size=None):
+        """
+        文本检测调用接口
+        Args:
+            img: 单张图片或图片列表
+            use_slice: 是否使用切片处理
+            batch_size: 批处理大小（仅当img为列表时有效）
+        Returns:
+            检测框结果和耗时
+        """
+        # 支持批处理
+        if isinstance(img, list):
+            return self.predict_batch(img, batch_size)
+        
+        # 原有的单张图片处理逻辑
         # For image like poster with one side much greater than the other side,
         # splitting recursively and processing with overlap to enhance performance.
         MIN_BOUND_DISTANCE = 50

@@ -727,9 +727,10 @@ class PaddleOCR(predict_system.TextSystem):
             - The preprocess_image function is used to preprocess the input image by applying alpha color replacement, inversion, and binarization if specified.
         """
         assert isinstance(img, (np.ndarray, list, str, bytes))
-        if isinstance(img, list) and det == True:
-            logger.error("When input a list of images, det must be false")
-            exit(0)
+        # 支持多张图片的批处理，移除原有限制
+        # if isinstance(img, list) and det == True:
+        #     logger.error("When input a list of images, det must be false")
+        #     exit(0)
         if cls == True and self.use_angle_cls == False:
             logger.warning(
                 "Since the angle classifier is not initialized, it will not be used during the forward process"
@@ -753,41 +754,83 @@ class PaddleOCR(predict_system.TextSystem):
                 _image = binarize_img(_image)
             return _image
 
-        if det and rec:
+        if det and rec: # 默认 注意我只测试了这一判断情况
             ocr_res = []
             for img in imgs:
-                img = preprocess_image(img)
-                dt_boxes, rec_res, _ = self.__call__(img, cls, slice)
-                if not dt_boxes and not rec_res:
-                    ocr_res.append(None)
-                    continue
-                tmp_res = [[box.tolist(), res] for box, res in zip(dt_boxes, rec_res)]
-                ocr_res.append(tmp_res)
+                # 确保img是单张图片(ndarray)，而不是图片列表
+                if isinstance(img, list):
+                    # 如果img是列表，说明是多张图片，需要预处理后再组成列表传入
+                    processed_imgs = [preprocess_image(single_img) for single_img in img]
+                    batch_results = self.__call__(processed_imgs, cls, slice)
+                    # batch_results是一个列表，每个元素是(dt_boxes, rec_res, time_dict)
+                    for dt_boxes, rec_res, _ in batch_results:
+                        if not dt_boxes and not rec_res:
+                            ocr_res.append(None)
+                            continue
+                        tmp_res = [[box.tolist(), res] for box, res in zip(dt_boxes, rec_res)]
+                        ocr_res.append(tmp_res)
+                else:
+                    # 单张图片处理
+                    img = preprocess_image(img)
+                    dt_boxes, rec_res, _ = self.__call__(img, cls, slice)
+                    if not dt_boxes and not rec_res:
+                        ocr_res.append(None)
+                        continue
+                    tmp_res = [[box.tolist(), res] for box, res in zip(dt_boxes, rec_res)]
+                    ocr_res.append(tmp_res)
             return ocr_res
         elif det and not rec:
             ocr_res = []
             for img in imgs:
-                img = preprocess_image(img)
-                dt_boxes, elapse = self.text_detector(img)
-                if dt_boxes.size == 0:
-                    ocr_res.append(None)
-                    continue
-                tmp_res = [box.tolist() for box in dt_boxes]
-                ocr_res.append(tmp_res)
+                # 确保img是单张图片(ndarray)，而不是图片列表
+                if isinstance(img, list):
+                    # 如果img是列表，说明是多张图片，需要预处理后再传入
+                    processed_imgs = [preprocess_image(single_img) for single_img in img]
+                    # 对于仅检测模式，需要分别处理每张图片
+                    for processed_img in processed_imgs:
+                        dt_boxes, elapse = self.text_detector(processed_img)
+                        if dt_boxes.size == 0:
+                            ocr_res.append(None)
+                            continue
+                        tmp_res = [box.tolist() for box in dt_boxes]
+                        ocr_res.append(tmp_res)
+                else:
+                    # 单张图片处理
+                    img = preprocess_image(img)
+                    dt_boxes, elapse = self.text_detector(img)
+                    if dt_boxes.size == 0:
+                        ocr_res.append(None)
+                        continue
+                    tmp_res = [box.tolist() for box in dt_boxes]
+                    ocr_res.append(tmp_res)
             return ocr_res
         else:
             ocr_res = []
             cls_res = []
             for img in imgs:
-                if not isinstance(img, list):
+                # 确保img是单张图片(ndarray)，而不是图片列表
+                if isinstance(img, list):
+                    # 如果img是列表，说明是多张图片，需要预处理后再传入
+                    processed_imgs = [preprocess_image(single_img) for single_img in img]
+                    # 对于仅识别模式，需要分别处理每张图片
+                    for processed_img in processed_imgs:
+                        processed_img = [processed_img]
+                        if self.use_angle_cls and cls:
+                            processed_img, cls_res_tmp, elapse = self.text_classifier(processed_img)
+                            if not rec:
+                                cls_res.append(cls_res_tmp)
+                        rec_res, elapse = self.text_recognizer(processed_img)
+                        ocr_res.append(rec_res)
+                else:
+                    # 单张图片处理
                     img = preprocess_image(img)
                     img = [img]
-                if self.use_angle_cls and cls:
-                    img, cls_res_tmp, elapse = self.text_classifier(img)
-                    if not rec:
-                        cls_res.append(cls_res_tmp)
-                rec_res, elapse = self.text_recognizer(img)
-                ocr_res.append(rec_res)
+                    if self.use_angle_cls and cls:
+                        img, cls_res_tmp, elapse = self.text_classifier(img)
+                        if not rec:
+                            cls_res.append(cls_res_tmp)
+                    rec_res, elapse = self.text_recognizer(img)
+                    ocr_res.append(rec_res)
             if not rec:
                 return cls_res
             return ocr_res
