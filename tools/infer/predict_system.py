@@ -72,8 +72,110 @@ class TextSystem(object):
             )
             logger.debug(f"{bno}, {rec_res[bno]}")
         self.crop_image_res_index += bbox_num
+    
+    def _batch_process(self, img_list, cls=True, slice={}, batch_size=None):
+        """
+        批量处理多张图片
+        Args:
+            img_list: 图片列表
+            cls: 是否使用角度分类
+            slice: 切片参数（批处理时不支持）
+            batch_size: 批处理大小
+        Returns:
+            批量处理结果
+        """
+        if slice:
+            logger.warning("批处理模式不支持slice参数，将忽略该参数")
+        
+        if batch_size is None:
+            batch_size = min(8, len(img_list))  # 默认批处理大小
+        
+        all_results = []
+        total_time_dict = {"det": 0, "rec": 0, "cls": 0, "all": 0}
+        
+        start_all = time.time()
+        
+        # 批量文本检测
+        logger.info(f"开始批量检测 {len(img_list)} 张图片，批处理大小: {batch_size}")
+        batch_dt_boxes, det_elapse = self.text_detector(img_list, batch_size=batch_size)
+        total_time_dict["det"] = det_elapse
+        
+        # 为每张图片进行后续处理
+        for img_idx, (img, dt_boxes) in enumerate(zip(img_list, batch_dt_boxes)):
+            if dt_boxes is None or len(dt_boxes) == 0:
+                all_results.append((None, None, {"det": 0, "rec": 0, "cls": 0, "all": 0}))
+                continue
+                
+            ori_im = img.copy()
+            img_crop_list = []
+            
+            dt_boxes = sorted_boxes(dt_boxes)
+            
+            # 裁剪文本区域
+            for bno in range(len(dt_boxes)):
+                tmp_box = copy.deepcopy(dt_boxes[bno])
+                if self.args.det_box_type == "quad":
+                    img_crop = get_rotate_crop_image(ori_im, tmp_box)
+                else:
+                    img_crop = get_minarea_rect_crop(ori_im, tmp_box)
+                img_crop_list.append(img_crop)
+            
+            # 角度分类
+            cls_time = 0
+            if self.use_angle_cls and cls and len(img_crop_list) > 0:
+                cls_start = time.time()
+                img_crop_list, angle_list, elapse = self.text_classifier(img_crop_list)
+                cls_time = elapse
+                logger.debug(f"图片 {img_idx+1} cls num: {len(img_crop_list)}, elapsed: {elapse}")
+            
+            # 文本识别
+            rec_time = 0
+            if len(img_crop_list) > 0:
+                rec_start = time.time()
+                if len(img_crop_list) > 1000:
+                    logger.debug(f"图片 {img_idx+1} rec crops num: {len(img_crop_list)}, time and memory cost may be large.")
+                
+                rec_res, elapse = self.text_recognizer(img_crop_list)
+                rec_time = elapse
+                logger.debug(f"图片 {img_idx+1} rec_res num: {len(rec_res)}, elapsed: {elapse}")
+                
+                # 结果过滤
+                filter_boxes, filter_rec_res = [], []
+                for box, rec_result in zip(dt_boxes, rec_res):
+                    text, score = rec_result[0], rec_result[1]
+                    if score >= self.drop_score:
+                        filter_boxes.append(box)
+                        filter_rec_res.append(rec_result)
+                
+                single_time_dict = {"det": det_elapse/len(img_list), "rec": rec_time, "cls": cls_time, "all": 0}
+                all_results.append((filter_boxes, filter_rec_res, single_time_dict))
+            else:
+                single_time_dict = {"det": det_elapse/len(img_list), "rec": 0, "cls": cls_time, "all": 0}
+                all_results.append((None, None, single_time_dict))
+            
+            total_time_dict["rec"] += rec_time
+            total_time_dict["cls"] += cls_time
+        
+        end_all = time.time()
+        total_time_dict["all"] = end_all - start_all
+        
+        logger.info(f"批量处理完成，总耗时: {total_time_dict['all']:.3f}s")
+        return all_results
 
-    def __call__(self, img, cls=True, slice={}):
+    def __call__(self, img, cls=True, slice={}, batch_size=None):
+        """
+        文本系统调用接口，支持单张图片和批处理
+        Args:
+            img: 单张图片或图片列表
+            cls: 是否使用角度分类
+            slice: 切片参数
+            batch_size: 批处理大小
+        """
+        # 支持批处理
+        if isinstance(img, list):
+            return self._batch_process(img, cls, slice, batch_size)
+        
+        # 原有单张图片处理逻辑
         time_dict = {"det": 0, "rec": 0, "cls": 0, "all": 0}
 
         if img is None:
