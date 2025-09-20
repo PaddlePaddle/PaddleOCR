@@ -40,7 +40,10 @@ class TextClassifier(object):
         if os.path.exists(f"{args.cls_model_dir}/inference.yml"):
             model_config = utility.load_config(f"{args.cls_model_dir}/inference.yml")
             model_name = model_config.get("Global", {}).get("model_name", "")
-            if model_name:
+            if model_name and model_name not in [
+                "PP-LCNet_x1_0_textline_ori",
+                "PP-LCNet_x0_25_textline_ori",
+            ]:
                 raise ValueError(
                     f"{model_name} is not supported. Please check if the model is supported by the PaddleOCR wheel."
                 )
