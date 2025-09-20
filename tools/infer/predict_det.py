@@ -278,13 +278,33 @@ class TextDetector(object):
         
         if not batch_data:
             return [None] * batch_size, 0
-            
+        
         # 将批量数据组合成一个batch
-        batch_imgs = np.array(batch_data)
+        #batch_imgs = np.array(batch_data) #  Error processing batch ['IMG_20241230_162405.HEIC', 'IMG_20241228_171324.HEIC']: setting an array element with a sequence. The requested array has an inhomogeneous shape after 2 dimensions. The detected shape was (2, 3) + inhomogeneous part. # {ndarray::(3,960,704)}{ndarray:(3,704,960)}
+        # 统一批量数据的尺寸 - 填充到最大尺寸
+        if len(batch_data) > 1:
+            # 找到最大的高度和宽度
+            max_h = max(img.shape[1] for img in batch_data)  # shape: (C, H, W)
+            max_w = max(img.shape[2] for img in batch_data)
+            
+            # 将所有图片填充到相同尺寸
+            padded_imgs = []
+            for img in batch_data:
+                c, h, w = img.shape
+                # 创建填充后的图片
+                padded_img = np.zeros((c, max_h, max_w), dtype=img.dtype)
+                padded_img[:, :h, :w] = img  # 左上角对齐
+                padded_imgs.append(padded_img)
+            
+            batch_imgs = np.array(padded_imgs)
+        else:
+            batch_imgs = np.array(batch_data)
+            
         batch_shape_lists = np.array(batch_shape_lists)
         
         if self.args.benchmark:
             self.autolog.times.stamp()
+            
             
         # 批量推理
         if self.use_onnx:
