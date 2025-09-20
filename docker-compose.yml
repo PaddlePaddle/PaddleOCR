@@ -1,0 +1,44 @@
+version: "3.8"
+
+services:
+  ocr:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: paddleocr_api
+    environment:
+      # Keep CPU usage predictable
+      OMP_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      # Optional: silence HF telemetry if you ever add HF calls
+      HF_HUB_DISABLE_TELEMETRY: "1"
+      # If you add a simple header auth in FastAPI later:
+      # API_KEY: ${API_KEY}
+    volumes:
+      # Cache models so first-run downloads persist across deploys
+      - ocr-cache:/root/.paddleocr
+    expose:
+      - "8000"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:8000/healthz"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  proxy:
+    image: nginx:alpine
+    container_name: paddleocr_proxy
+    depends_on:
+      ocr:
+        condition: service_healthy
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    # If you want to enforce an API key in Nginx later, you can
+    # add environment + a template + envsubst. Keeping it simple here.
+    restart: unless-stopped
+
+volumes:
+  ocr-cache:

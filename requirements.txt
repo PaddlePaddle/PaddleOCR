@@ -15,3 +15,6 @@ albumentations
 # to be compatible with albumentations
 albucore
 packaging
+fastapi==0.115.0
+uvicorn[standard]==0.30.6
+paddleocr==3.0.0
