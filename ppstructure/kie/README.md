@@ -125,7 +125,7 @@ cd PaddleOCR
 pip install -r requirements.txt
 pip install -r ppstructure/kie/requirements.txt
 # 安装PaddleOCR引擎用于预测
-pip install paddleocr -U
+pip install "paddleocr<3.0"
 ```
 
 NOTE: For KIE tasks, it is necessary to downgrade the Paddle framework version (Paddle<2.6) and the PaddleNLP version (PaddleNLP<2.6).

@@ -20,6 +20,7 @@ import errno
 import os
 import pickle
 import json
+from packaging import version
 
 import paddle
 
@@ -31,10 +32,19 @@ try:
 
     encrypted = encryption.is_encryption_needed()
 except ImportError:
-    get_logger().warning("Skipping import of the encryption module.")
+    print("Skipping import of the encryption module.")
     encrypted = False  # Encryption is not needed if the module cannot be imported
 
 __all__ = ["load_model"]
+
+
+# just to determine the inference model file format
+def get_FLAGS_json_format_model():
+    # json format by default
+    return os.environ.get("FLAGS_json_format_model", "1").lower() in ("1", "true", "t")
+
+
+FLAGS_json_format_model = get_FLAGS_json_format_model()
 
 
 def _mkdir_if_not_exist(path, logger):
@@ -279,13 +289,26 @@ def update_train_results(config, prefix, metric_info, done_flag=False, last_num=
         config["Global"]["save_model_dir"], "train_result.json"
     )
     save_model_tag = ["pdparams", "pdopt", "pdstates"]
-    save_inference_tag = ["inference_config", "pdmodel", "pdiparams", "pdiparams.info"]
+    paddle_version = version.parse(paddle.__version__)
+    if FLAGS_json_format_model or paddle_version >= version.parse("3.0.0"):
+        save_inference_files = {
+            "inference_config": "inference.yml",
+            "pdmodel": "inference.json",
+            "pdiparams": "inference.pdiparams",
+        }
+    else:
+        save_inference_files = {
+            "inference_config": "inference.yml",
+            "pdmodel": "inference.pdmodel",
+            "pdiparams": "inference.pdiparams",
+            "pdiparams.info": "inference.pdiparams.info",
+        }
     if os.path.exists(train_results_path):
         with open(train_results_path, "r") as fp:
             train_results = json.load(fp)
     else:
         train_results = {}
-        train_results["model_name"] = config["Global"]["pdx_model_name"]
+        train_results["model_name"] = config["Global"]["model_name"]
         label_dict_path = config["Global"].get("character_dict_path", "")
         if label_dict_path != "":
             label_dict_path = os.path.abspath(label_dict_path)
@@ -325,11 +348,9 @@ def update_train_results(config, prefix, metric_info, done_flag=False, last_num=
                     prefix,
                     f"{prefix}.{tag}" if tag != "pdstates" else f"{prefix}.states",
                 )
-        for tag in save_inference_tag:
-            train_results["models"]["best"][tag] = os.path.join(
-                prefix,
-                "inference",
-                f"inference.{tag}" if tag != "inference_config" else "inference.yml",
+        for key in save_inference_files:
+            train_results["models"]["best"][key] = os.path.join(
+                prefix, "inference", save_inference_files[key]
             )
     else:
         for i in range(last_num - 1, 0, -1):
@@ -360,11 +381,9 @@ def update_train_results(config, prefix, metric_info, done_flag=False, last_num=
                     prefix,
                     f"{prefix}.{tag}" if tag != "pdstates" else f"{prefix}.states",
                 )
-        for tag in save_inference_tag:
-            train_results["models"][f"last_{1}"][tag] = os.path.join(
-                prefix,
-                "inference",
-                f"inference.{tag}" if tag != "inference_config" else "inference.yml",
+        for key in save_inference_files:
+            train_results["models"][f"last_{1}"][key] = os.path.join(
+                prefix, "inference", save_inference_files[key]
             )
 
     with open(train_results_path, "w") as fp:

@@ -1,4 +1,5 @@
 Global:
+  model_name: SLANet # To use static model for inference.
   use_gpu: true
   epoch_num: 100
   log_smooth_window: 20
@@ -8,7 +9,7 @@ Global:
   # evaluation is run every 1000 iterations after the 0th iteration
   eval_batch_step: [0, 1000]
   cal_metric_during_train: True
-  pretrained_model:
+  pretrained_model: "https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/SLANet_pretrained.pdparams"
   checkpoints:
   save_inference_dir: ./output/SLANet/infer
   use_visualdl: False

@@ -2,11 +2,11 @@
 model_name:ch_PP-OCRv3
 python:python3.7
 2onnx: paddle2onnx
---det_model_dir:./inference/ch_PP-OCRv3_det_infer/
+--det_model_dir:./inference/PP-OCRv3_mobile_det_infer/
 --model_filename:inference.pdmodel
 --params_filename:inference.pdiparams
 --det_save_file:./inference/det_v3_onnx/model.onnx
---rec_model_dir:./inference/ch_PP-OCRv3_rec_infer/
+--rec_model_dir:./inference/PP-OCRv3_mobile_rec_infer/
 --rec_save_file:./inference/rec_v3_onnx/model.onnx
 --opset_version:10
 --enable_onnx_checker:True

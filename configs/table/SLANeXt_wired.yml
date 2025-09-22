@@ -1,4 +1,5 @@
 Global:
+  model_name: SLANeXt_wired # To use static model for inference.
   use_gpu: true
   epoch_num: 400
   log_smooth_window: 20
@@ -9,7 +10,7 @@ Global:
   - 0
   - 331
   cal_metric_during_train: true
-  pretrained_model: null
+  pretrained_model: "https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/SLANeXt_wired_pretrained.pdparams"
   checkpoints: null
   save_inference_dir: ./output/SLANeXt_wired/infer
   use_visualdl: false
@@ -21,6 +22,7 @@ Global:
   infer_mode: false
   use_sync_bn: true
   save_res_path: output/infer
+  d2s_train_image_shape: [3, 512, 512]
 
 Optimizer:
   name: AdamW

@@ -427,11 +427,11 @@ checkpoints：指之前训练的中间结果，例如前一次训练到了100个
 
 #### Q: PP-OCR系统中，文本检测的结果有置信度吗？
 
-**A**：文本检测的结果有置信度，由于推理过程中没有使用，所以没有显示的返回到最终结果中。如果需要文本检测结果的置信度，可以在[文本检测DB的后处理代码](../../ppocr/postprocess/db_postprocess.py)的155行，添加scores信息。这样，在[检测预测代码](../../tools/infer/predict_det.py)的197行，就可以拿到文本检测的scores信息。
+**A**：文本检测的结果有置信度，由于推理过程中没有使用，所以没有显示的返回到最终结果中。如果需要文本检测结果的置信度，可以在[文本检测DB的后处理代码](../ppocr/postprocess/db_postprocess.py)的155行，添加scores信息。这样，在[检测预测代码](../tools/infer/predict_det.py)的197行，就可以拿到文本检测的scores信息。
 
 #### Q: DB文本检测，特征提取网络金字塔构建的部分代码在哪儿？
 
-**A**：特征提取网络金字塔构建的部分:[代码位置](../../ppocr/modeling/necks/db_fpn.py)。ppocr/modeling文件夹里面是组网相关的代码，其中architectures是文本检测或者文本识别整体流程代码；backbones是骨干网络相关代码；necks是类似与FPN的颈函数代码；heads是提取文本检测或者文本识别预测结果相关的头函数；transforms是类似于TPS特征预处理模块。更多的信息可以参考[代码组织结构](./tree.md)。
+**A**：特征提取网络金字塔构建的部分:[代码位置](../ppocr/modeling/necks/db_fpn.py)。ppocr/modeling文件夹里面是组网相关的代码，其中architectures是文本检测或者文本识别整体流程代码；backbones是骨干网络相关代码；necks是类似与FPN的颈函数代码；heads是提取文本检测或者文本识别预测结果相关的头函数；transforms是类似于TPS特征预处理模块。更多的信息可以参考[代码组织结构](./tree.md)。
 
 #### Q：PaddleOCR如何做到横排和竖排同时支持的？
 
@@ -658,7 +658,7 @@ C++TensorRT预测需要使用支持TRT的预测库并在编译时打开[-DWITH_T
 **A**： 推理时识别模型默认的batch_size=6, 如预测图片长度变化大，可能影响预测效果。如果出现上述问题可在推理的时候设置识别bs=1，命令如下：
 
 ```bash linenums="1"
-python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words/ch/word_4.jpg" --rec_model_dir="./ch_PP-OCRv3_rec_infer/" --rec_batch_num=1
+python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words/ch/word_4.jpg" --rec_model_dir="./PP-OCRv3_mobile_rec_infer/" --rec_batch_num=1
 ```
 
 ### 2.13 推理部署
@@ -776,3 +776,7 @@ nvidia-smi --lock-gpu-clocks=1590 -i 0
 #### Q: 预测时显存爆炸、内存泄漏问题？
 
 **A**: 打开显存/内存优化开关`enable_memory_optim`可以解决该问题，相关代码已合入，[查看详情](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.1/tools/infer/utility.py#L153)。
+
+#### Q: 在可视化预测结果时，能否使用其他字体？
+
+**A**: 可以！通过环境变量`PADDLE_PDX_LOCAL_FONT_FILE_PATH`指定本地字体文件路径即可，如`PADDLE_PDX_LOCAL_FONT_FILE_PATH=/root/fonts/simfang.ttf`。

@@ -256,7 +256,7 @@ public class MainActivity extends AppCompatActivity {
         // Load test image from path and run model
         tvInputSetting.setText("Model: " + modelPath.substring(modelPath.lastIndexOf("/") + 1) + "\nOPENCL: " + cbOpencl.isChecked() + "\nCPU Thread Num: " + cpuThreadNum + "\nCPU Power Mode: " + cpuPowerMode);
         tvInputSetting.scrollTo(0, 0);
-        tvStatus.setText("STATUS: load model successed");
+        tvStatus.setText("STATUS: load model succeeded");
 
     }
 
@@ -265,7 +265,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onRunModelSuccessed() {
-        tvStatus.setText("STATUS: run model successed");
+        tvStatus.setText("STATUS: run model succeeded");
         // Obtain results and update UI
         tvInferenceTime.setText("Inference time: " + predictor.inferenceTime() + " ms");
         Bitmap outputImage = predictor.outputImage();

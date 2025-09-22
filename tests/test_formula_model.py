@@ -9,7 +9,7 @@ import pytest
 current_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.abspath(os.path.join(current_dir, "..")))
 from ppocr.modeling.backbones.rec_donut_swin import DonutSwinModel, DonutSwinModelOutput
-from ppocr.modeling.backbones.rec_pphgnetv2 import PPHGNetV2_B4
+from ppocr.modeling.backbones.rec_pphgnetv2 import PPHGNetV2_B4_Formula
 from ppocr.modeling.backbones.rec_vary_vit import Vary_VIT_B_Formula
 from ppocr.modeling.heads.rec_unimernet_head import UniMERNetHead
 from ppocr.modeling.heads.rec_ppformulanet_head import PPFormulaNet_Head
@@ -106,7 +106,7 @@ def test_ppformulanet_s_backbone(sample_image_ppformulanet_s):
     Args:
         sample_image_ppformulanet_s: sample image to be processed.
     """
-    backbone = PPHGNetV2_B4(
+    backbone = PPHGNetV2_B4_Formula(
         class_num=1024,
     )
     backbone.eval()

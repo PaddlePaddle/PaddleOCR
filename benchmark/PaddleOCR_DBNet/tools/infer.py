@@ -35,7 +35,7 @@ from utils.util import draw_bbox, save_result
 class InferenceEngine(object):
     """InferenceEngine
 
-    Inference engina class which contains preprocess, run, postprocess
+    Inference engine class which contains preprocess, run, postprocess
     """
 
     def __init__(self, args):

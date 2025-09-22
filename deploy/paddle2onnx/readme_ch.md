@@ -41,8 +41,8 @@ python3 -m pip install onnxruntime
 以 PP-OCRv3 中文检测、识别、分类模型为例：
 
 ```
-wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_infer.tar
-cd ./inference && tar xf ch_PP-OCRv3_det_infer.tar && cd ..
+wget -nc  -P ./inference https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv3_mobile_det_infer.tar
+cd ./inference && tar xf PP-OCRv3_mobile_det_infer.tar && cd ..
 
 wget -nc  -P ./inference https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_infer.tar
 cd ./inference && tar xf ch_PP-OCRv3_rec_infer.tar && cd ..
@@ -56,7 +56,7 @@ cd ./inference && tar xf ch_ppocr_mobile_v2.0_cls_infer.tar && cd ..
 使用 Paddle2ONNX 将Paddle静态图模型转换为ONNX模型格式：
 
 ```
-paddle2onnx --model_dir ./inference/ch_PP-OCRv3_det_infer \
+paddle2onnx --model_dir ./inference/PP-OCRv3_mobile_det_infer \
 --model_filename inference.pdmodel \
 --params_filename inference.pdiparams \
 --save_file ./inference/det_onnx/model.onnx \
@@ -110,7 +110,7 @@ python3 tools/infer/predict_system.py --use_gpu=False --use_onnx=True \
 python3 tools/infer/predict_system.py --use_gpu=False \
 --cls_model_dir=./inference/ch_ppocr_mobile_v2.0_cls_infer \
 --rec_model_dir=./inference/ch_PP-OCRv3_rec_infer \
---det_model_dir=./inference/ch_PP-OCRv3_det_infer \
+--det_model_dir=./inference/PP-OCRv3_mobile_det_infer \
 --image_dir=./deploy/lite/imgs/lite_demo.png
 ```
 

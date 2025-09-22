@@ -60,7 +60,7 @@ class BasicBlock(nn.Layer):
                 planes, planes, kernel_size=3, padding=1, bias_attr=False
             )
         else:
-            from paddle.version.ops import DeformConv2D
+            from paddle.vision.ops import DeformConv2D
 
             deformable_groups = dcn.get("deformable_groups", 1)
             offset_channels = 18

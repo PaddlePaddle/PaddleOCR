@@ -1,5 +1,5 @@
-root_path="/paddle/PaddleOCR/deploy/cpp_infer/opencv-3.4.7"
-install_path=${root_path}/opencv3
+root_path="./third_party/opencv-4.7.0"
+install_path=${root_path}/opencv4
 build_dir=${root_path}/build
 
 rm -rf ${build_dir}
@@ -22,7 +22,7 @@ cmake .. \
     -DWITH_PNG=ON \
     -DBUILD_PNG=ON \
     -DWITH_TIFF=ON \
-    -DBUILD_TIFF=ON
+    -DBUILD_TIFF=ON 
 
-make -j
+make -j4
 make install
