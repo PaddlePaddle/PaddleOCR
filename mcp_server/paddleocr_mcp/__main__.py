@@ -15,10 +15,9 @@
 # limitations under the License.
 
 import argparse
-import contextlib
+import asyncio
 import os
 import sys
-from typing import AsyncIterator, Dict
 
 from fastmcp import FastMCP
 
@@ -126,8 +125,8 @@ def _validate_args(args: argparse.Namespace) -> None:
             sys.exit(2)
 
 
-def main() -> None:
-    """Main entry point."""
+async def async_main() -> None:
+    """Asynchronous main entry point."""
     args = _parse_args()
 
     _validate_args(args)
@@ -150,16 +149,12 @@ def main() -> None:
             traceback.print_exc(file=sys.stderr)
         sys.exit(1)
 
-    @contextlib.asynccontextmanager
-    async def _lifespan(mcp: FastMCP) -> AsyncIterator[Dict]:
-        async with pipeline_handler:
-            yield {}
-
     try:
+        await pipeline_handler.start()
+
         server_name = f"PaddleOCR {args.pipeline} MCP server"
         mcp = FastMCP(
             name=server_name,
-            lifespan=_lifespan,
             log_level="INFO" if args.verbose else "WARNING",
             mask_error_details=True,
         )
@@ -167,13 +162,13 @@ def main() -> None:
         pipeline_handler.register_tools(mcp)
 
         if args.http:
-            mcp.run(
+            await mcp.run_async(
                 transport="streamable-http",
                 host=args.host,
                 port=args.port,
             )
         else:
-            mcp.run()
+            await mcp.run_async()
 
     except Exception as e:
         print(f"Failed to start the server: {e}", file=sys.stderr)
@@ -182,6 +177,14 @@ def main() -> None:
 
             traceback.print_exc(file=sys.stderr)
         sys.exit(1)
+
+    finally:
+        await pipeline_handler.stop()
+
+
+def main():
+    """Main entry point."""
+    asyncio.run(async_main())
 
 
 if __name__ == "__main__":
