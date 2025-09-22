@@ -84,6 +84,10 @@ comments: true
 本节将介绍如何通过 pip 安装 `paddleocr-mcp` 库。
 
 - 对于本地 Python 库模式，除了安装 `paddleocr-mcp` 外，还需要参考 [PaddleOCR 安装文档](../installation.md) 安装飞桨框架和 PaddleOCR。
+- 对于本地 Python 库模式，也可以考虑选择安装相应的可选依赖：
+  - `paddleocr-mcp[local]`：包含 PaddleOCR（不包含飞桨框架）。
+  - `paddleocr-mcp[local-cpu]`：在 `local` 基础上额外包含 CPU 版本的飞桨框架。
+- 本地模式也支持通过 `uvx` 方式免安装运行服务器（适用于 CPU 推理）。详情请参考 [2.4 使用 `uvx`](#24-使用-uvx) 中的说明。
 - 对于星河社区服务和自托管服务模式，如果希望在 Claude for Desktop 等 MCP 主机中使用，也支持通过 `uvx` 等方式免安装运行服务器。详情请参考 [2. 在 Claude for Desktop 中使用](#2-在-claude-for-desktop-中使用) 中的说明。
 
 使用 pip 安装 `paddleocr-mcp` 库的命令如下：
@@ -95,6 +99,13 @@ pip install https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/mcp/pa
 # 或者，从项目源码安装
 # git clone https://github.com/PaddlePaddle/PaddleOCR.git
 # pip install -e mcp_server
+
+# 通过指定 extra 安装可选依赖
+# 同时安装 PaddleOCR
+pip install "paddleocr-mcp[local] @ https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/mcp/paddleocr_mcp/releases/v0.2.0/paddleocr_mcp-0.2.0-py3-none-any.whl"
+
+# 同时安装 PaddleOCR 和 CPU 版本飞桨框架
+pip install "paddleocr-mcp[local-cpu] @ https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/mcp/paddleocr_mcp/releases/v0.2.0/paddleocr_mcp-0.2.0-py3-none-any.whl"
 ```
 
 可通过以下命令检查是否安装成功：
@@ -177,12 +188,10 @@ paddleocr_mcp --help
 
 您可以根据需求配置 MCP 服务器，使其运行在不同的工作模式。不同工作模式需要的操作流程有所不同，下面将详细介绍。
 
-#### 模式一：本地 Python 库 
-
-1. 安装 `paddleocr-mcp`。
-2. 安装飞桨框架和 PaddleOCR。为避免依赖冲突，**强烈建议在独立的虚拟环境中安装**。
-3. 参考下方的配置示例更改 `claude_desktop_config.json` 文件内容。
-4. 重启 MCP 主机。
+#### 模式一：本地 Python 库
+1. 安装 `paddleocr-mcp`、飞桨框架和 PaddleOCR。对于飞桨框架和 PaddleOCR，可以参考 [PaddleOCR 安装文档](../installation.md) 手动安装，也可以通过 `paddleocr-mcp[local]` 或 `paddleocr-mcp[local-cpu]` 方式于 `paddleocr-mcp` 一同安装。为避免依赖冲突，**强烈建议在独立的虚拟环境中安装**。
+2. 参考下方的配置示例更改 `claude_desktop_config.json` 文件内容。
+3. 重启 MCP 主机。
 
 配置示例：
 
@@ -278,29 +287,54 @@ paddleocr_mcp --help
 对于星河社区服务和自托管服务模式，目前也支持通过 `uvx` 启动 MCP 服务器。这种方式不需要手动安装 `paddleocr-mcp`。主要步骤如下：
 
 1. 安装 [uv](https://docs.astral.sh/uv/#installation)。
-2. 修改 `claude_desktop_config.json` 文件的内容。以自托管服务模式为例：
+2. 修改 `claude_desktop_config.json` 文件。下面给出使用 `uvx` 启动的两种常见模式示例。
 
-    ```json
-    {
-      "mcpServers": {
-        "paddleocr-ocr": {
-          "command": "uvx",
-          "args": [
-            "--from",
-            "paddleocr-mcp@https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/mcp/paddleocr_mcp/releases/v0.2.0/paddleocr_mcp-0.2.0-py3-none-any.whl",
-            "paddleocr_mcp"
-          ],
-          "env": {
-            "PADDLEOCR_MCP_PIPELINE": "OCR",
-            "PADDLEOCR_MCP_PPOCR_SOURCE": "self_hosted",
-            "PADDLEOCR_MCP_SERVER_URL": "<your-server-url>"
-          }
-        }
+  自托管服务模式示例：
+  ```json
+  {
+    "mcpServers": {
+     "paddleocr-ocr": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "paddleocr-mcp@https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/mcp/paddleocr_mcp/releases/v0.2.0/paddleocr_mcp-0.2.0-py3-none-any.whl",
+        "paddleocr_mcp"
+      ],
+      "env": {
+        "PADDLEOCR_MCP_PIPELINE": "OCR",
+        "PADDLEOCR_MCP_PPOCR_SOURCE": "self_hosted",
+        "PADDLEOCR_MCP_SERVER_URL": "<your-server-url>"
       }
+     }
     }
-    ```
+  }
+  ```
 
-    由于使用了不一样的启动方式，配置文件中 `command` 和 `args` 的设置都与 [2.1 快速开始](#21-快速开始) 介绍的方式存在显著不同，但 MCP 服务本身支持的命令行参数与环境变量（如 `PADDLEOCR_MCP_SERVER_URL`）仍然可以以相同的方式设置。
+  本地模式（CPU，使用可选依赖 `local-cpu`）示例：
+  ```json
+  {
+    "mcpServers": {
+     "paddleocr-ocr": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "paddleocr_mcp[local-cpu]@https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/mcp/paddleocr_mcp/releases/v0.2.0/paddleocr_mcp-0.2.0-py3-none-any.whl",
+        "paddleocr_mcp"
+      ],
+      "env": {
+        "PADDLEOCR_MCP_PIPELINE": "OCR",
+        "PADDLEOCR_MCP_PPOCR_SOURCE": "local"
+      }
+     }
+    }
+  }
+  ```
+
+  若需了解本地模式的依赖、性能调优及产线配置，请参见 [模式一：本地 Python 库](#模式一本地-python-库) 部分。
+
+  由于使用了不一样的启动方式，配置文件中 `command` 和 `args` 的设置都与 [2.1 快速开始](#21-快速开始) 介绍的方式存在显著不同，但 MCP 服务本身支持的命令行参数与环境变量（如 `PADDLEOCR_MCP_SERVER_URL`）仍然可以以相同的方式设置。
+
+  说明：仅启动方式不同（通过 `uvx` 拉取并执行），可用的环境变量与命令行参数仍与前文一致。
 
 ## 3. 运行服务器
 
