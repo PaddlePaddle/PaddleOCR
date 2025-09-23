@@ -91,9 +91,10 @@ class MakeShrinkMap(object):
                     cv2.fillPoly(gt, [shrink.astype(np.int32)], 1)
 
         data["shrink_map"] = gt
-        crop_mask = data["crop_mask"]
+        crop_mask = data["crop_mask"] if "crop_mask" in data else None
         if crop_mask is not None:
-            mask = mask * crop_mask # use intersection of crop_mask and src shrink_mask
+            # use intersection of crop_mask and src shrink_mask
+            mask = mask * crop_mask
         data["shrink_mask"] = mask
         return data
 

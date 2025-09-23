@@ -163,7 +163,8 @@ class EastRandomCropData(object):
             padimg[:h, :w] = cv2.resize(
                 img[crop_y : crop_y + crop_h, crop_x : crop_x + crop_w], (w, h)
             )
-            mask[:h, :w] = 1 # mask the padding area
+            # mask the padding area
+            mask[:h, :w] = 1
             img = padimg
         else:
             img = cv2.resize(
