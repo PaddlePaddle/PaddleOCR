@@ -110,9 +110,6 @@ void CrnnResizeImg::Run(const cv::Mat &img, cv::Mat &resize_img, float wh_ratio,
 
   cv::resize(img, resize_img, cv::Size(resize_w, imgH), 0.f, 0.f,
              cv::INTER_LINEAR);
-  cv::copyMakeBorder(resize_img, resize_img, 0, 0, 0,
-                     int(imgW - resize_img.cols), cv::BORDER_CONSTANT,
-                     {0, 0, 0});
 }
 
 void ClsResizeImg::Run(const cv::Mat &img, cv::Mat &resize_img,
