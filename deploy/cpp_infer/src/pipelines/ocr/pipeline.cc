@@ -13,6 +13,7 @@
 // limitations under the License.
 
 #include "pipeline.h"
+#include <codecvt>
 
 #include "result.h"
 #include "src/utils/args.h"
@@ -214,6 +215,9 @@ _OCRPipeline::_OCRPipeline(const OCRPipelineParams &params)
     params_rec.input_shape =
         config_.SmartParseVector(result_rec_input_shape.value()).vec_int;
   }
+  params_rec.return_word_box =
+      config_.GetBool("TextRecognition.return_word_box", false).value();
+  return_word_box_ = params_rec.return_word_box.value();
   params_rec.model_dir = result_text_rec_model_dir.value();
   params_rec.lang = params_.lang;
   params_rec.ocr_version = params_.ocr_version;
@@ -349,6 +353,7 @@ _OCRPipeline::Predict(const std::vector<std::string> &input) {
       results[k].text_det_params = text_det_params_;
       results[k].text_type = text_type_;
       results[k].text_rec_score_thresh = text_rec_score_thresh_;
+      results[k].return_word_box = return_word_box_;
     }
     if (!indices.empty()) {
       std::vector<cv::Mat> all_subs_of_imgs = {};
@@ -435,6 +440,32 @@ _OCRPipeline::Predict(const std::vector<std::string> &input) {
         for (int sno = 0; sno < sub_img_info_list.size(); sno++) {
           auto rec_res = sub_img_info_list[sno].second;
           if (rec_res.rec_score >= text_rec_score_thresh_) {
+            if (return_word_box_) {
+              auto word_result = ComponentsProcessor::CalOCRWordBox(
+                  rec_res.rec_text, dt_polys_list[l][sno],
+                  rec_res.ctc_result.sentence_len, rec_res.ctc_result.word_list,
+                  rec_res.ctc_result.word_col_list,
+                  rec_res.ctc_result.state_list);
+              auto word_box_content_list = word_result.first;
+              auto word_box_list = word_result.second;
+              std::vector<std::string> word_content = {};
+              for (int word_index = 0;
+                   word_index < word_box_content_list.size(); word_index++) {
+                if (rec_res.ctc_result.state_list[word_index] == "cn") {
+                  for (auto &word : word_box_content_list[word_index]) {
+                    std::wstring ws(1, word);
+                    std::wstring_convert<std::codecvt_utf8<wchar_t>> conv;
+                    word_content.push_back(conv.to_bytes(ws));
+                  }
+                } else {
+                  std::wstring_convert<std::codecvt_utf8<wchar_t>> conv;
+                  word_content.push_back(
+                      conv.to_bytes(word_box_content_list[word_index]));
+                }
+              }
+              results[l].text_word.push_back(word_content);
+              results[l].text_word_region.push_back(word_box_list);
+            }
             results[l].rec_texts.push_back(rec_res.rec_text);
             results[l].rec_scores.push_back(rec_res.rec_score);
             results[l].rec_polys.push_back(dt_polys_list[l][sno]);
@@ -447,6 +478,12 @@ _OCRPipeline::Predict(const std::vector<std::string> &input) {
       if (text_type_ == "general") {
         res.rec_boxes =
             ComponentsProcessor::ConvertPointsToBoxes(res.rec_polys);
+        if (return_word_box_) {
+          for (auto &line : res.text_word_region) {
+            res.text_word_boxes.push_back(
+                ComponentsProcessor::ConvertPointsToBoxes(line));
+          }
+        }
       }
       pipeline_result_vec_.push_back(res);
       base_results.push_back(std::unique_ptr<BaseCVResult>(new OCRResult(res)));
@@ -762,6 +799,18 @@ void _OCRPipeline::OverrideConfig() {
       auto key = it.value().first;
       data.erase(data.find(key));
       data[key] = Utility::VecToString(params_.text_rec_input_shape.value());
+    }
+  }
+
+  if (params_.return_word_box.has_value()) {
+    auto it = config_.FindKey("TextRecognition.return_word_box");
+    if (!it.ok()) {
+      data["SubModules.TextRecognition.return_word_box"] =
+          params_.return_word_box ? "true" : "false";
+    } else {
+      auto key = it.value().first;
+      data.erase(data.find(key));
+      data[key] = params_.return_word_box ? "true" : "false";
     }
   }
 }
