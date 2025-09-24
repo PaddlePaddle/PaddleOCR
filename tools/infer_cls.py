@@ -65,10 +65,14 @@ def main():
     model.eval()
     for file in get_image_file_list(config["Global"]["infer_img"]):
         logger.info("infer_img: {}".format(file))
-        with open(file, "rb") as f:
-            img = f.read()
-            data = {"image": img}
-        batch = transform(data, ops)
+        try:
+            with open(file, "rb") as f:
+                img = f.read()
+                data = {"image": img}
+            batch = transform(data, ops)
+        except Exception as e:
+            logger.error(f"Error processing file {file}: {str(e)}")
+            continue
 
         images = np.expand_dims(batch[0], axis=0)
         images = paddle.to_tensor(images)
