@@ -202,7 +202,7 @@ class MultiScaleDataSet(SimpleDataSet):
         padding_im[:, :, :resized_w] = resized_image
         valid_ratio = min(1.0, float(resized_w / imgW))
         data["image"] = padding_im
-        data["valid_ratio"] = valid_ratio
+        data["valid_ratio"] = np.float32(valid_ratio)
         return data
 
     def __getitem__(self, properties):
