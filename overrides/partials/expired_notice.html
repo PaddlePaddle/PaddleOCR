@@ -1,0 +1,9 @@
+{% if is_expired %}
+    <div class="admonition warning">
+        <p class="admonition-title">Warning</p>
+        <p>
+            本文档最后更新于 {{ last_update }}，
+            已超过 {{ expiry_days }} 天未更新，内容可能已经过时，阅读注意甄别。
+        </p>
+    </div>
+{% endif %}
