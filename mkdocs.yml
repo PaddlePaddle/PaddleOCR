@@ -266,7 +266,7 @@ extra:
       link: https://pypi.org/project/paddleocr/
   version:
     provider: mike
-  expiry_days: 180
+  expiry_days: 365
 
 extra_javascript:
   - javascripts/katex.min.js
