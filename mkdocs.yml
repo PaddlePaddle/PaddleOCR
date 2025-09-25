@@ -210,8 +210,13 @@ plugins:
       branch: main
       token: !!python/object/apply:os.getenv ["MKDOCS_GIT_COMMITTERS_APIKEY"]
   - git-revision-date-localized:
-      fallback_to_build_date: false
       enable_creation_date: true
+      timezone: Asia/Shanghai
+      type: iso_datetime
+      exclude:
+        - "index*.md"
+        - "quick_start*.md"
+        - "version3.x/**"
 
 markdown_extensions:
   - abbr
@@ -250,6 +255,9 @@ markdown_extensions:
   - pymdownx.arithmatex:
       generic: true
 
+hooks:
+  - overrides/hooks/expiry.py
+
 extra:
   social:
     - icon: fontawesome/brands/github
@@ -258,6 +266,7 @@ extra:
       link: https://pypi.org/project/paddleocr/
   version:
     provider: mike
+  expiry_days: 365
 
 extra_javascript:
   - javascripts/katex.min.js
@@ -271,30 +280,30 @@ nav:
   - Home: index.md
   - 安装: version3.x/installation.md
   - 快速开始: quick_start.md
-  - PP-OCRv5: 
+  - PP-OCRv5:
     - 使用教程: version3.x/pipeline_usage/OCR.md
     - PP-OCRv5简介: version3.x/algorithm/PP-OCRv5/PP-OCRv5.md
     - PP-OCRv5多语种文字识别: version3.x/algorithm/PP-OCRv5/PP-OCRv5_multi_languages.md
-  - PP-StructureV3: 
+  - PP-StructureV3:
     - 使用教程: version3.x/pipeline_usage/PP-StructureV3.md
     - PP-StructureV3简介: version3.x/algorithm/PP-StructureV3/PP-StructureV3.md
-  - PP-ChatOCRv4: 
+  - PP-ChatOCRv4:
     - 使用教程: version3.x/pipeline_usage/PP-ChatOCRv4.md
     - PP-ChatOCRv4简介: version3.x/algorithm/PP-ChatOCRv4/PP-ChatOCRv4.md
-  - 推理部署: 
+  - 推理部署:
     - 高性能推理: version3.x/deployment/high_performance_inference.md
     - 获取ONNX模型: version3.x/deployment/obtaining_onnx_models.md
     - 端侧部署: version3.x/deployment/on_device_deployment.md
     - 服务化部署: version3.x/deployment/serving.md
     - MCP 服务器: version3.x/deployment/mcp_server.md
-    - 打包PaddleOCR项目: version3.x/deployment/packaging.md 
+    - 打包PaddleOCR项目: version3.x/deployment/packaging.md
     - 产线并行推理: version3.x/pipeline_usage/instructions/parallel_inference.md
     - C++ 本地部署:
       - 通用 OCR 产线 C++ 本地部署 - Linux: version3.x/deployment/cpp/OCR.md
       - 通用 OCR 产线 C++ 本地部署 - Windows: version3.x/deployment/cpp/OCR_windows.md
     - Benchmark: version3.x/pipeline_usage/instructions/benchmark.md
 
-  - 模块列表: 
+  - 模块列表:
     - 模块概述: version3.x/module_usage/module_overview.md
     - 文档图像方向分类模块: version3.x/module_usage/doc_img_orientation_classification.md
     - 文档类视觉语言模型模块: version3.x/module_usage/doc_vlm.md
@@ -309,7 +318,7 @@ nav:
     - 文本行方向分类模块: version3.x/module_usage/textline_orientation_classification.md
     - 文本识别模块: version3.x/module_usage/text_recognition.md
     - 图表解析模块: version3.x/module_usage/chart_parsing.md
-  - 产线列表: 
+  - 产线列表:
     - 产线概述: version3.x/pipeline_usage/pipeline_overview.md
     - 公式识别产线: version3.x/pipeline_usage/formula_recognition.md
     - 文档图像预处理产线: version3.x/pipeline_usage/doc_preprocessor.md
@@ -339,7 +348,7 @@ nav:
     - 版面分析数据集: datasets/layout_datasets.md
     - 表格识别数据集: datasets/table_datasets.md
     - 关键信息提取数据集: datasets/kie_datasets.md
-  - 近期更新: update/update.md 
+  - 近期更新: update/update.md
   - version2.x:
     - 概述: version2.x/legacy/index.md
     - 模型列表: version2.x/legacy/model_list_2.x.md
