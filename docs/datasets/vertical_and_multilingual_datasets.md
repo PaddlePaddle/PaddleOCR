@@ -29,7 +29,7 @@ comments: true
 
 ## 银行信用卡数据集
 
-- **数据来源**: [source](https://www.kesci.com/home/dataset/5954cf1372ead054a5e25870)
+- **数据来源**: [source](https://www.heywhale.com/mw/dataset/5954cf1372ead054a5e25870)
 
 - **数据简介**: 训练数据共提供了三类数据
     - 1.招行样卡数据： 包括卡面图片数据及标注数据，总共618张图片

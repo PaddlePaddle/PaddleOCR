@@ -10,8 +10,8 @@ comments: true
 
 #### 1、ICDAR2019-LSVT
 
-- **数据来源**：<https://ai.baidu.com/broad/introduction?dataset=lsvt>
-- **数据简介**： 共45w中文街景图像，包含5w（2w测试+3w训练）全标注数据（文本坐标+文本内容），40w弱标注数据（仅文本内容），如下图所示：
+- **数据来源**：<https://aistudio.baidu.com/datasetdetail/177210>
+- **数据简介**：共45w中文街景图像，包含5w（2w测试+3w训练）全标注数据（文本坐标+文本内容），40w弱标注数据（仅文本内容），如下图所示：
     ![](./images/LSVT_1.jpg)
     (a) 全标注数据
     ![](./images/LSVT_2.jpg)
@@ -57,7 +57,7 @@ comments: true
 
 #### 5、ICDAR2019-ArT
 
-- **数据来源**：<https://ai.baidu.com/broad/introduction?dataset=art>
+- **数据来源**：<https://aistudio.baidu.com/datasetdetail/177206>
 - **数据简介**：共包含10,166张图像，训练集5603图，测试集4563图。由Total-Text、SCUT-CTW1500、Baidu Curved Scene Text (ICDAR2019-LSVT部分弯曲数据) 三部分组成，包含水平、多方向和弯曲等多种形状的文本。
     ![](./images/ArT.jpg)
 - **下载地址**：<https://ai.baidu.com/broad/download?dataset=art>

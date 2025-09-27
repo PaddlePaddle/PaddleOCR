@@ -36,7 +36,7 @@ Here we have sorted out the commonly used vertical multi-language OCR dataset da
 
 ## Bank credit card dataset
 
-- **Data source**: [source](https://www.kesci.com/home/dataset/5954cf1372ead054a5e25870)
+- **Data source**: [source](https://www.heywhale.com/mw/dataset/5954cf1372ead054a5e25870)
 
 - **Data introduction**: There are three types of training data
     - 1.Sample card data of China Merchants Bank: including card image data and annotation data, a total of 618 pictures

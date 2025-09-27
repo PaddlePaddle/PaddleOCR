@@ -8,8 +8,8 @@ In addition to opensource data, users can also use synthesis tools to synthesize
 
 #### 1. ICDAR2019-LSVT
 
-- **Data sources**：<https://ai.baidu.com/broad/introduction?dataset=lsvt>
-- **Introduction**： A total of 45w Chinese street view images, including 5w (2w test + 3w training) fully labeled data (text coordinates + text content), 40w weakly labeled data (text content only), as shown in the following figure:
+- **Data sources**：<https://aistudio.baidu.com/datasetdetail/177210>
+- **Introduction**：A total of 45w Chinese street view images, including 5w (2w test + 3w training) fully labeled data (text coordinates + text content), 40w weakly labeled data (text content only), as shown in the following figure:
     ![](./images/LSVT_1.jpg)
 
     (a) Fully labeled data
@@ -57,7 +57,7 @@ In addition to opensource data, users can also use synthesis tools to synthesize
 
 #### 5、ICDAR2019-ArT
 
-- **Data source**：<https://ai.baidu.com/broad/introduction?dataset=art>
+- **Data source**：<https://aistudio.baidu.com/datasetdetail/177206>
 - **Introduction**：It includes 10166 images, 5603 in training sets and 4563 in test sets. It is composed of three parts: total text, scut-ctw1500 and Baidu curved scene text, including text with various shapes such as horizontal, multi-directional and curved.
     ![](./images/ArT.jpg)
 - **Download link**：<https://ai.baidu.com/broad/download?dataset=art>
