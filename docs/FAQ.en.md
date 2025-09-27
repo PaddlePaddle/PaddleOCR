@@ -22,7 +22,7 @@ Baidu Self-developed algorithms such as SAST, SRN and end2end PSL will be releas
 
 6. **How to run on Windows or Mac?**
 PaddleOCR has completed the adaptation to Windows and MAC systems. Two points should be noted during operation:
-    1. In [Quick installation](./installation_en.md), if you do not want to install docker, you can skip the first step and start with the second step.
+    1. In [Quick installation](./version3.x/installation.en.md), if you do not want to install docker, you can skip the first step and start with the second step.
     2. When downloading the inference model, if wget is not installed, you can directly click the model link or copy the link address to the browser to download, then extract and place it in the corresponding directory.
 
 7. **The difference between ultra-lightweight model and General OCR model**
@@ -47,7 +47,7 @@ At present, the open source model, dataset and magnitude are as follows:
     English dataset: MJSynth and SynthText synthetic dataset, the amount of data is tens of millions.
     Chinese dataset: LSVT street view dataset with cropped text area, a total of 30w images. In addition, the synthesized data based on LSVT corpus is 500w.
 
-    Among them, the public datasets are opensourced, users can search and download by themselves, or refer to [Chinese data set](dataset/datasets_en.md), synthetic data is not opensourced, users can use open-source synthesis tools to synthesize data themselves. Current available synthesis tools include [text_renderer](https://github.com/Sanster/text_renderer), [SynthText](https://github.com/ankush-me/SynthText), [TextRecognitionDataGenerator](https://github.com/Belval/TextRecognitionDataGenerator), etc.
+    Among them, the public datasets are opensourced, users can search and download by themselves, or refer to [Chinese data set](./datasets/datasets.en.md), synthetic data is not opensourced, users can use open-source synthesis tools to synthesize data themselves. Current available synthesis tools include [text_renderer](https://github.com/Sanster/text_renderer), [SynthText](https://github.com/ankush-me/SynthText), [TextRecognitionDataGenerator](https://github.com/Belval/TextRecognitionDataGenerator), etc.
 
 10. **Error in using the model with TPS module for prediction**
 Error message: Input(X) dims[3] and Input(Grid) dims[2] should be equal, but received X dimension[3]\(108) != Grid dimension[2]\(100)
@@ -62,6 +62,6 @@ Versions of exported inference model and inference library should be same. For e
 13. **How to identify artistic fonts in signs or advertising images**
 Recognizing artistic fonts in signs or advertising images is a very challenging task because the variation in individual characters is much greater compared to standard fonts. If the artistic font to be identified is within a dictionary list, each word in the dictionary can be treated as a template for recognition using a general image retrieval system. You can try using PaddleClas image recognition system.
 
-14. **How to change the font when visualizing the OCR prediction results?** 
+14. **How to change the font when visualizing the OCR prediction results?**
 
 **A**: You can specify the local font file path by using the environment variable `PADDLE_PDX_LOCAL_FONT_FILE_PATH`, such as `PADDLE_PDX_LOCAL_FONT_FILE_PATH=/root/fonts/simfang.ttf`.

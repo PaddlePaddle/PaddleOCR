@@ -24,13 +24,12 @@ PaddleOCR希望可以通过AI的力量助力任何一位有梦想的开发者实
 | 通用工具 | [FastOCRLabel](https://gitee.com/BaoJianQiang/FastOCRLabel)  | 完整的C#版本标注GUI        | [包建强](https://gitee.com/BaoJianQiang)         |
 | 通用工具 | [DangoOCR离线版](https://github.com/PantsuDango/DangoOCR)    | 通用型桌面级即时翻译GUI    | [PantsuDango](https://github.com/PantsuDango)    |
 | 通用工具 | [scr2txt](https://github.com/lstwzd/scr2txt)     | 截屏转文字GUI  | [lstwzd](https://github.com/lstwzd)  |
-| 通用工具 | [ocr_sdk](https://github.com/mymagicpower/AIAS/blob/main/1_image_sdks/text_recognition/ocr_sdk)     | OCR java SDK工具箱  | [Calvin](https://github.com/mymagicpower)  |
-| 通用工具 | [iocr](https://github.com/mymagicpower/AIAS/blob/main/8_suite_hub/iocr)     | IOCR 自定义模板识别(支持表格识别)  | [Calvin](https://github.com/mymagicpower)  |
+| 通用工具 | [ocr_sdk](https://github.com/mymagicpower/AIAS/tree/d4b328f85c21df6c47b06da797490ecae830b49a/1_sdks/1_image_sdks/ocr_sdks)     | OCR java SDK工具箱  | [Calvin](https://github.com/mymagicpower)  |
 | 通用工具 | [Lmdb Dataset Format Conversion Tool](https://github.com/OneYearIsEnough/PaddleOCR-Recog-LmdbDataset-Conversion) | 文本识别任务中lmdb数据格式转换工具 | [OneYearIsEnough](https://github.com/OneYearIsEnough) |
 | 通用工具 | [用paddleocr打造一款“盗幕笔记”](https://github.com/kjf4096/paddleocr_dmbj) | 用PaddleOCR记笔记 | [kjf4096](https://github.com/kjf4096) |
 | 垂类工具 | [AI Studio项目](https://aistudio.baidu.com/aistudio/projectdetail/1054614?channelType=0&channel=0) | 英文视频自动生成字幕       | [叶月水狐](https://aistudio.baidu.com/aistudio/personalcenter/thirdview/322052) |
 | 垂类工具 | [id_card_ocr](https://github.com/baseli/id_card_ocr)         | 身份证复印件识别           | [baseli](https://github.com/baseli)  |
-| 垂类工具 | [Paddle_Table_Image_Reader](https://github.com/thunder95/Paddle_Table_Image_Reader) | 能看懂表格图片的数据助手   | [thunder95](https://github.com/thunder95])       |
+| 垂类工具 | [Paddle_Table_Image_Reader](https://github.com/thunder95/Paddle_Table_Image_Reader) | 能看懂表格图片的数据助手   | [thunder95](https://github.com/thunder95)       |
 | 垂类工具 | [AI Studio项目](https://aistudio.baidu.com/aistudio/projectdetail/3382897) | OCR流程中对手写体进行过滤       | [daassh](https://github.com/daassh) |
 | 垂类场景调优 | [AI Studio项目](https://aistudio.baidu.com/aistudio/projectdetail/2803693) | 电表读数和编号识别      | [深渊上的坑](https://github.com/edencfc) |
 | 垂类场景调优 | [AI Studio项目](https://aistudio.baidu.com/aistudio/projectdetail/3284199) | LCD液晶字符检测      | [Dream拒杰](https://github.com/zhangyingying520) |
@@ -47,7 +46,7 @@ PaddleOCR希望可以通过AI的力量助力任何一位有梦想的开发者实
 
 ### 1.2 为PaddleOCR新增功能
 
-- 非常感谢 [authorfu](https://github.com/authorfu) 贡献Android([#340](https://github.com/PaddlePaddle/PaddleOCR/pull/340))和[xiadeye](https://github.com/xiadeye) 贡献IOS的demo代码([#325](https://github.com/PaddlePaddle/PaddleOCR/pull/325))
+- 非常感谢 [authorfu](https://github.com/authorfu) 贡献Android([#340](https://github.com/PaddlePaddle/PaddleOCR/pull/340))和[xxlyu-2046](https://github.com/xxlyu-2046) 贡献IOS的demo代码([#325](https://github.com/PaddlePaddle/PaddleOCR/pull/325))
 - 非常感谢 [tangmq](https://gitee.com/tangmq) 给PaddleOCR增加Docker化部署服务，支持快速发布可调用的Restful API服务([#507](https://github.com/PaddlePaddle/PaddleOCR/pull/507))。
 - 非常感谢 [lijinhan](https://github.com/lijinhan) 给PaddleOCR增加java SpringBoot 调用OCR Hubserving接口完成对OCR服务化部署的使用([#1027](https://github.com/PaddlePaddle/PaddleOCR/pull/1027))。
 - 非常感谢 [Evezerest](https://github.com/Evezerest)， [ninetailskim](https://github.com/ninetailskim)， [edencfc](https://github.com/edencfc)， [BeyondYourself](https://github.com/BeyondYourself)， [1084667371](https://github.com/1084667371) 贡献了[PPOCRLabel](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.3/PPOCRLabel/README_ch.md) 的完整代码。
@@ -61,7 +60,7 @@ PaddleOCR希望可以通过AI的力量助力任何一位有梦想的开发者实
 
 ### 1.4 文档优化与翻译
 
-- 非常感谢 **[RangeKing](https://github.com/RangeKing)，[HustBestCat](https://github.com/HustBestCat)，[v3fc](https://github.com/v3fc)，[1084667371](https://github.com/1084667371)** 贡献翻译《动手学OCR》notebook[电子书英文版](https://github.com/PaddlePaddle/PaddleOCR/tree/dygraph/notebook/notebook_en)。
+- 非常感谢 **[RangeKing](https://github.com/RangeKing)，[HustBestCat](https://github.com/HustBestCat)，[v3fc](https://github.com/v3fc)，[1084667371](https://github.com/1084667371)** 贡献翻译《动手学OCR》notebook[电子书英文版](https://github.com/PaddleOCR-Community/Dive-into-OCR/tree/main/notebook_en)。
 - 非常感谢 [thunderstudying](https://github.com/thunderstudying)，[RangeKing](https://github.com/RangeKing)，[livingbody](https://github.com/livingbody)， [WZMIAOMIAO](https://github.com/WZMIAOMIAO)，[haigang1975](https://github.com/haigang1975) 补充多个英文markdown文档。
 - 非常感谢 **[fanruinet](https://github.com/fanruinet)** 润色和修复35篇英文文档([#5205](https://github.com/PaddlePaddle/PaddleOCR/pull/5205))。
 - 非常感谢 [Khanh Tran](https://github.com/xxxpsyduck) 和 [Karl Horky](https://github.com/karlhorky) 贡献修改英文文档。
