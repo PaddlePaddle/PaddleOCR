@@ -50,7 +50,7 @@ def test_visual_predict(pp_doctranslation_pipeline, image_path):
         {"text_rec_score_thresh": 0.5},
     ],
 )
-def test_predict_params(
+def test_visual_predict_params(
     monkeypatch,
     pp_doctranslation_pipeline,
     params,
