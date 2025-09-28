@@ -431,7 +431,7 @@ checkpoints：指之前训练的中间结果，例如前一次训练到了100个
 
 #### Q: DB文本检测，特征提取网络金字塔构建的部分代码在哪儿？
 
-**A**：特征提取网络金字塔构建的部分:[代码位置](../ppocr/modeling/necks/db_fpn.py)。ppocr/modeling文件夹里面是组网相关的代码，其中architectures是文本检测或者文本识别整体流程代码；backbones是骨干网络相关代码；necks是类似与FPN的颈函数代码；heads是提取文本检测或者文本识别预测结果相关的头函数；transforms是类似于TPS特征预处理模块。更多的信息可以参考[代码组织结构](./tree.md)。
+**A**：特征提取网络金字塔构建的部分:[代码位置](../ppocr/modeling/necks/db_fpn.py)。ppocr/modeling文件夹里面是组网相关的代码，其中architectures是文本检测或者文本识别整体流程代码；backbones是骨干网络相关代码；necks是类似与FPN的颈函数代码；heads是提取文本检测或者文本识别预测结果相关的头函数；transforms是类似于TPS特征预处理模块。
 
 #### Q：PaddleOCR如何做到横排和竖排同时支持的？
 
@@ -569,7 +569,7 @@ checkpoints：指之前训练的中间结果，例如前一次训练到了100个
 
 #### Q: 怎么加速训练过程呢？
 
-**A**：OCR模型训练过程中一般包含大量的数据增广，这些数据增广是比较耗时的，因此可以离线生成大量增广后的图像，直接送入网络进行训练，机器资源充足的情况下，也可以使用分布式训练的方法，可以参考[分布式训练教程文档](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/doc/doc_ch/distributed_training.md)。
+**A**：OCR模型训练过程中一般包含大量的数据增广，这些数据增广是比较耗时的，因此可以离线生成大量增广后的图像，直接送入网络进行训练，机器资源充足的情况下，也可以使用分布式训练的方法，可以参考[分布式训练教程文档](./version2.x/ppocr/blog/distributed_training.md)。
 
 #### Q: 一些特殊场景的数据识别效果差，但是数据量很少，不够用来finetune怎么办？
 
@@ -627,7 +627,7 @@ lr:
 #### Q: 训练程序启动后直到结束，看不到训练过程log？
 
 **A**: 可以从以下三方面考虑：
-    1. 检查训练进程是否正常退出、显存占用是否释放、是否有残留进程，如果确定是训练程序卡死，可以检查环境配置，遇到环境问题建议使用docker，可以参考说明文档[安装](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.1/doc/doc_ch/installation.md)。
+    1. 检查训练进程是否正常退出、显存占用是否释放、是否有残留进程，如果确定是训练程序卡死，可以检查环境配置，遇到环境问题建议使用docker，可以参考说明文档[安装](./version3.x/installation.md)。
     2. 检查数据集的数据量是否太小，可调小batch size从而增加一个epoch中的训练step数量，或在训练config文件中，将参数print_batch_step改为1，即每一个step打印一次log信息。
     3. 如果使用私有数据集训练，可先用PaddleOCR提供/推荐的数据集进行训练，排查私有数据集是否存在问题。
 
@@ -673,7 +673,7 @@ python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words/ch/word_4.jpg" 
 
 #### Q：PaddleOCR中，对于模型预测加速，CPU加速的途径有哪些？基于TenorRT加速GPU对输入有什么要求？
 
-**A**：（1）CPU可以使用mkldnn进行加速；对于python inference的话，可以把enable_mkldnn改为true，[参考代码](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/tools/infer/utility.py#L99)，对于cpp inference的话，可参考[文档](https://github.com/PaddlePaddle/PaddleOCR/tree/dygraph/deploy/cpp_infer)
+**A**：（1）CPU可以使用mkldnn进行加速；对于python inference的话，可以把`enable_mkldnn`改为`true`，[参考代码](https://github.com/PaddlePaddle/PaddleOCR/blob/ee9d22b4524eab44170568c98e73d742ce997ff2/tools/infer/utility.py#L132)，对于cpp inference的话，可参考[文档](./version3.x/deployment/cpp/cpp_local_deployment.md)
 
 （2）GPU需要注意变长输入问题等，TRT6 之后才支持变长输入
 

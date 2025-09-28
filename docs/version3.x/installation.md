@@ -9,6 +9,7 @@ comments: true
 安装飞桨 PaddlePaddle 时，支持通过 Docker 安装和通过 pip 安装。
 
 ## 1.1 基于 Docker 安装飞桨
+
 <b>若您通过 Docker 安装</b>，请参考下述命令，使用飞桨框架官方 Docker 镜像，创建一个名为 `paddleocr` 的容器，并将当前工作目录映射到容器内的 `/paddle` 目录：
 
 若您使用的 Docker 版本 >= 19.03，请执行：
@@ -45,6 +46,7 @@ nvidia-docker run --name paddleocr -v $PWD:/paddle --shm-size=8G --network=host 
 * 注：更多飞桨官方 docker 镜像请参考[飞桨官网](https://www.paddlepaddle.org.cn/install/quick?docurl=/documentation/docs/zh/install/docker/linux-docker.html)。
 
 ## 1.2 基于 pip 安装飞桨
+
 <b>若您通过 pip 安装</b>，请参考下述命令，用 pip 在当前环境中安装飞桨 PaddlePaddle：
 
 ```bash
@@ -65,6 +67,7 @@ python -m pip install paddlepaddle-gpu==3.0.0 -i https://www.paddlepaddle.org.cn
 ```bash
 python -c "import paddle; print(paddle.__version__)"
 ```
+
 如果已安装成功，将输出以下内容：
 
 ```bash
