@@ -6735,7 +6735,7 @@ checkpoints：指之前训练的中间结果，例如前一次训练到了100个
 <h4 id="q-pp-ocr">Q: PP-OCR系统中，文本检测的结果有置信度吗？<a class="headerlink" href="#q-pp-ocr" title="Permanent link">&para;</a></h4>
 <p><strong>A</strong>：文本检测的结果有置信度，由于推理过程中没有使用，所以没有显示的返回到最终结果中。如果需要文本检测结果的置信度，可以在<a href="../ppocr/postprocess/db_postprocess.py">文本检测DB的后处理代码</a>的155行，添加scores信息。这样，在<a href="../tools/infer/predict_det.py">检测预测代码</a>的197行，就可以拿到文本检测的scores信息。</p>
 <h4 id="q-db">Q: DB文本检测，特征提取网络金字塔构建的部分代码在哪儿？<a class="headerlink" href="#q-db" title="Permanent link">&para;</a></h4>
-<p><strong>A</strong>：特征提取网络金字塔构建的部分:<a href="../ppocr/modeling/necks/db_fpn.py">代码位置</a>。ppocr/modeling文件夹里面是组网相关的代码，其中architectures是文本检测或者文本识别整体流程代码；backbones是骨干网络相关代码；necks是类似与FPN的颈函数代码；heads是提取文本检测或者文本识别预测结果相关的头函数；transforms是类似于TPS特征预处理模块。更多的信息可以参考<a href="./tree.md">代码组织结构</a>。</p>
+<p><strong>A</strong>：特征提取网络金字塔构建的部分:<a href="../ppocr/modeling/necks/db_fpn.py">代码位置</a>。ppocr/modeling文件夹里面是组网相关的代码，其中architectures是文本检测或者文本识别整体流程代码；backbones是骨干网络相关代码；necks是类似与FPN的颈函数代码；heads是提取文本检测或者文本识别预测结果相关的头函数；transforms是类似于TPS特征预处理模块。</p>
 <h4 id="qpaddleocr">Q：PaddleOCR如何做到横排和竖排同时支持的？<a class="headerlink" href="#qpaddleocr" title="Permanent link">&para;</a></h4>
 <p><strong>A</strong>：合成了一批竖排文字，逆时针旋转90度后加入训练集与横排一起训练。预测时根据图片长宽比判断是否为竖排，若为竖排则将crop出的文本逆时针旋转90度后送入识别网络。</p>
 <h4 id="q_27">Q: 目前知识蒸馏有哪些主要的实践思路？<a class="headerlink" href="#q_27" title="Permanent link">&para;</a></h4>
@@ -6818,7 +6818,7 @@ checkpoints：指之前训练的中间结果，例如前一次训练到了100个
 <h4 id="q-iaa">Q: iaa里面添加的数据增强方式，是每张图像训练都会做增强还是随机的？如何添加一个数据增强方法？<a class="headerlink" href="#q-iaa" title="Permanent link">&para;</a></h4>
 <p><strong>A</strong>：iaa增强的训练配置参考：<a href="https://github.com/PaddlePaddle/PaddleOCR/blob/0ccc1720c252beb277b9e522a1b228eb6abffb8a/configs/det/ch_ppocr_v2.0/ch_det_mv3_db_v2.0.yml#L82">这里</a>。其中{ 'type': Fliplr, 'args': { 'p': 0.5 } } p是概率。新增数据增强，可以参考<a href="https://github.com/PaddlePaddle/PaddleOCR/blob/release%2F2.1/doc/doc_ch/add_new_algorithm.md#%E6%95%B0%E6%8D%AE%E5%8A%A0%E8%BD%BD%E5%92%8C%E5%A4%84%E7%90%86">这个方法</a></p>
 <h4 id="q_33">Q: 怎么加速训练过程呢？<a class="headerlink" href="#q_33" title="Permanent link">&para;</a></h4>
-<p><strong>A</strong>：OCR模型训练过程中一般包含大量的数据增广，这些数据增广是比较耗时的，因此可以离线生成大量增广后的图像，直接送入网络进行训练，机器资源充足的情况下，也可以使用分布式训练的方法，可以参考<a href="https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/doc/doc_ch/distributed_training.md">分布式训练教程文档</a>。</p>
+<p><strong>A</strong>：OCR模型训练过程中一般包含大量的数据增广，这些数据增广是比较耗时的，因此可以离线生成大量增广后的图像，直接送入网络进行训练，机器资源充足的情况下，也可以使用分布式训练的方法，可以参考<a href="version2.x/ppocr/blog/distributed_training.html">分布式训练教程文档</a>。</p>
 <h4 id="q-finetune_1">Q: 一些特殊场景的数据识别效果差，但是数据量很少，不够用来finetune怎么办？<a class="headerlink" href="#q-finetune_1" title="Permanent link">&para;</a></h4>
 <p><strong>A</strong>：您可以合成一些接近使用场景的数据用于训练。
 我们计划推出基于特定场景的文本数据合成工具，请您持续关注PaddleOCR的近期更新。</p>
@@ -6851,7 +6851,7 @@ checkpoints：指之前训练的中间结果，例如前一次训练到了100个
 <p><strong>A</strong>: 考虑内存，显存（使用GPU训练的话）是否不足，可在配置文件中，将训练和评估的batch size调小一些。需要注意，训练batch size调小时，学习率learning rate也要调小，一般可按等比例调整。</p>
 <h4 id="q-log">Q: 训练程序启动后直到结束，看不到训练过程log？<a class="headerlink" href="#q-log" title="Permanent link">&para;</a></h4>
 <p><strong>A</strong>: 可以从以下三方面考虑：
-    1. 检查训练进程是否正常退出、显存占用是否释放、是否有残留进程，如果确定是训练程序卡死，可以检查环境配置，遇到环境问题建议使用docker，可以参考说明文档<a href="https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.1/doc/doc_ch/installation.md">安装</a>。
+    1. 检查训练进程是否正常退出、显存占用是否释放、是否有残留进程，如果确定是训练程序卡死，可以检查环境配置，遇到环境问题建议使用docker，可以参考说明文档<a href="version3.x/installation.html">安装</a>。
     2. 检查数据集的数据量是否太小，可调小batch size从而增加一个epoch中的训练step数量，或在训练config文件中，将参数print_batch_step改为1，即每一个step打印一次log信息。
     3. 如果使用私有数据集训练，可先用PaddleOCR提供/推荐的数据集进行训练，排查私有数据集是否存在问题。</p>
 <h4 id="q-num-workers">Q: 配置文件中的参数num workers是什么意思，应该如何设置？<a class="headerlink" href="#q-num-workers" title="Permanent link">&para;</a></h4>
@@ -6876,7 +6876,7 @@ C++TensorRT预测需要使用支持TRT的预测库并在编译时打开<a href="
 <p>（1）基于训练引擎推理不需要转换模型，但是需要先组网再load参数，语言只支持python，不适合系统集成。</p>
 <p>（2）基于预测引擎的推理需要先转换模型为inference格式，然后可以进行不需要组网的推理，语言支持c++和python，适合系统集成。</p>
 <h4 id="qpaddleocrcputenorrtgpu">Q：PaddleOCR中，对于模型预测加速，CPU加速的途径有哪些？基于TenorRT加速GPU对输入有什么要求？<a class="headerlink" href="#qpaddleocrcputenorrtgpu" title="Permanent link">&para;</a></h4>
-<p><strong>A</strong>：（1）CPU可以使用mkldnn进行加速；对于python inference的话，可以把enable_mkldnn改为true，<a href="https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/tools/infer/utility.py#L99">参考代码</a>，对于cpp inference的话，可参考<a href="https://github.com/PaddlePaddle/PaddleOCR/tree/dygraph/deploy/cpp_infer">文档</a></p>
+<p><strong>A</strong>：（1）CPU可以使用mkldnn进行加速；对于python inference的话，可以把<code>enable_mkldnn</code>改为<code>true</code>，<a href="https://github.com/PaddlePaddle/PaddleOCR/blob/ee9d22b4524eab44170568c98e73d742ce997ff2/tools/infer/utility.py#L132">参考代码</a>，对于cpp inference的话，可参考<a href="version3.x/deployment/cpp/cpp_local_deployment.html">文档</a></p>
 <p>（2）GPU需要注意变长输入问题等，TRT6 之后才支持变长输入</p>
 <h4 id="qhubservingpdserving">Q：hubserving、pdserving这两种部署方式区别是什么？<a class="headerlink" href="#qhubservingpdserving" title="Permanent link">&para;</a></h4>
 <p><strong>A</strong>：hubserving原本是paddlehub的配套服务部署工具，可以很方便的将paddlehub内置的模型部署为服务，paddleocr使用了这个功能，并将模型路径等参数暴露出来方便用户自定义修改。paddle serving是面向所有paddle模型的部署工具，文档中可以看到我们提供了快速版和标准版，其中快速版和hubserving的本质是一样的，而标准版基于rpc，更稳定，更适合分布式部署。</p>
@@ -6962,7 +6962,7 @@ ocr_system: 检测识别串联预测</p>
     <span class="md-icon" title="最后更新">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="2025年9月27日 01:12:55 CST">2025-09-27 01:12:55</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="2025年9月28日 08:12:04 CST">2025-09-28 08:12:04</span>
   </span>
 
     
@@ -6972,7 +6972,7 @@ ocr_system: 检测识别串联预测</p>
     <span class="md-icon" title="创建日期">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="2025年9月27日 01:12:55 CST">2025-09-27 01:12:55</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="2025年9月28日 08:12:04 CST">2025-09-28 08:12:04</span>
   </span>
 
     
@@ -6990,9 +6990,9 @@ ocr_system: 检测识别串联预测</p>
     
     <nav>
       
-        <a href="https://github.com/TingquanGao" class="md-author" title="@TingquanGao">
+        <a href="https://github.com/SWHL" class="md-author" title="@SWHL">
           
-          <img src="https://avatars.githubusercontent.com/u/12560511?v=4&size=72" alt="TingquanGao">
+          <img src="https://avatars.githubusercontent.com/u/28639377?v=4&size=72" alt="SWHL">
         </a>
       
         <a href="https://github.com/web-flow" class="md-author" title="@web-flow">
@@ -7000,14 +7000,14 @@ ocr_system: 检测识别串联预测</p>
           <img src="https://avatars.githubusercontent.com/u/19864447?v=4&size=72" alt="web-flow">
         </a>
       
+        <a href="https://github.com/TingquanGao" class="md-author" title="@TingquanGao">
+          
+          <img src="https://avatars.githubusercontent.com/u/12560511?v=4&size=72" alt="TingquanGao">
+        </a>
+      
         <a href="https://github.com/emmanuel-ferdman" class="md-author" title="@emmanuel-ferdman">
           
           <img src="https://avatars.githubusercontent.com/u/35470921?v=4&size=72" alt="emmanuel-ferdman">
-        </a>
-      
-        <a href="https://github.com/zhangyubo0722" class="md-author" title="@zhangyubo0722">
-          
-          <img src="https://avatars.githubusercontent.com/u/94225063?v=4&size=72" alt="zhangyubo0722">
         </a>
       
       
