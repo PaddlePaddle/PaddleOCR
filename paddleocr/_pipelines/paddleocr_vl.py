@@ -38,6 +38,7 @@ class PaddleOCRVL(PaddleXPipelineWrapper):
         vl_rec_model_dir=None,
         vl_rec_backend=None,
         vl_rec_server_url=None,
+        vl_rec_max_concurrency=None,
         doc_orientation_classify_model_name=None,
         doc_orientation_classify_model_dir=None,
         doc_unwarping_model_name=None,
@@ -245,6 +246,11 @@ class PaddleOCRVLCLISubcommandExecutor(PipelineCLISubcommandExecutor):
             "--vl_rec_server_url",
             type=str,
             help="Server URL used by the VL recognition module.",
+        )
+        subparser.add_argument(
+            "--vl_rec_max_concurrency",
+            type=str,
+            help="Maximum concurrency for making VLM requests.",
         )
 
         subparser.add_argument(
