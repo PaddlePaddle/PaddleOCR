@@ -81,6 +81,11 @@ class PaddleOCRVL(PaddleXPipelineWrapper):
         use_queues=None,
         prompt_label=None,
         format_block_content=None,
+        repetition_penalty=None,
+        temperature=None,
+        top_p=None,
+        min_pixels=None,
+        max_pixels=None,
         **kwargs,
     ):
         return self.paddlex_pipeline.predict(
@@ -96,6 +101,11 @@ class PaddleOCRVL(PaddleXPipelineWrapper):
             use_queues=use_queues,
             prompt_label=prompt_label,
             format_block_content=format_block_content,
+            repetition_penalty=repetition_penalty,
+            temperature=temperature,
+            top_p=top_p,
+            min_pixels=min_pixels,
+            max_pixels=max_pixels,
             **kwargs,
         )
 
@@ -114,6 +124,11 @@ class PaddleOCRVL(PaddleXPipelineWrapper):
         use_queues=None,
         prompt_label=None,
         format_block_content=None,
+        repetition_penalty=None,
+        temperature=None,
+        top_p=None,
+        min_pixels=None,
+        max_pixels=None,
         **kwargs,
     ):
         return list(
@@ -130,9 +145,17 @@ class PaddleOCRVL(PaddleXPipelineWrapper):
                 use_queues=use_queues,
                 prompt_label=prompt_label,
                 format_block_content=format_block_content,
+                repetition_penalty=repetition_penalty,
+                temperature=temperature,
+                top_p=top_p,
+                min_pixels=min_pixels,
+                max_pixels=max_pixels,
                 **kwargs,
             )
         )
+
+    def concatenate_markdown_pages(self, markdown_list):
+        return self.paddlex_pipeline.concatenate_markdown_pages(markdown_list)
 
     @classmethod
     def get_cli_subcommand_executor(cls):
@@ -309,6 +332,31 @@ class PaddleOCRVLCLISubcommandExecutor(PipelineCLISubcommandExecutor):
             type=str,
             help="Prompt label for the VLM.",
         )
+        subparser.add_argument(
+            "--repetition_penalty",
+            type=float,
+            help="Repetition penalty used in sampling for the VLM.",
+        )
+        subparser.add_argument(
+            "--temperature",
+            type=float,
+            help="Temperature parameter used in sampling for the VLM.",
+        )
+        subparser.add_argument(
+            "--top_p",
+            type=float,
+            help="Top-p parameter used in sampling for the VLM.",
+        )
+        subparser.add_argument(
+            "--min_pixels",
+            type=int,
+            help="Minimum pixels for image preprocessing for the VLM.",
+        )
+        subparser.add_argument(
+            "--max_pixels",
+            type=int,
+            help="Maximum pixels for image preprocessing for the VLM.",
+        )
 
     def execute_with_args(self, args):
         params = get_subcommand_args(args)
@@ -318,5 +366,10 @@ class PaddleOCRVLCLISubcommandExecutor(PipelineCLISubcommandExecutor):
             predict_param_names={
                 "use_queues",
                 "prompt_label",
+                "repetition_penalty",
+                "temperature",
+                "top_p",
+                "min_pixels",
+                "max_pixels",
             },
         )
