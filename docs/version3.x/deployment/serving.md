@@ -84,7 +84,6 @@ INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
 </tr>
 </tbody>
 </table>
-</table>
 
 ### 1.3 调用服务
 
