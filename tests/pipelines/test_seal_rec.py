@@ -68,3 +68,38 @@ def test_predict_params(
         "dummy_path",
         params,
     )
+
+
+def test_paddlex_version_warning(monkeypatch) -> None:
+    """
+    Test that a warning is issued for PaddleX versions with the multi-page PDF bug.
+    """
+    import warnings
+
+    # Mock paddlex to simulate version 3.2.0
+    class MockPaddleX:
+        __version__ = "3.2.0"
+
+    monkeypatch.setitem(__import__("sys").modules, "paddlex", MockPaddleX())
+
+    # Test that a warning is issued during initialization
+    with warnings.catch_warnings(record=True) as w:
+        warnings.simplefilter("always")
+        # Import seal_recognition here to trigger the warning
+        from paddleocr._pipelines.seal_recognition import SealRecognition
+
+        # Create instance which should trigger the version check
+        try:
+            _ = SealRecognition()
+        except Exception:
+            # Initialization might fail due to missing PaddleX modules, but that's OK
+            # We're just testing if the warning is issued
+            pass
+
+        # Check that a warning was issued
+        assert len(w) >= 1
+        assert any(
+            "PaddleX version" in str(warning.message) and "multi-page PDFs" in str(warning.message)
+            for warning in w
+        ), f"Expected warning about PaddleX version bug, got: {[str(warning.message) for warning in w]}"
+
