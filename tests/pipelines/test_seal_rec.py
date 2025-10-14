@@ -99,7 +99,7 @@ def test_paddlex_version_warning(monkeypatch) -> None:
         # Check that a warning was issued
         assert len(w) >= 1
         assert any(
-            "PaddleX version" in str(warning.message) and "multi-page PDFs" in str(warning.message)
+            "PaddleX version" in str(warning.message)
+            and "multi-page PDFs" in str(warning.message)
             for warning in w
         ), f"Expected warning about PaddleX version bug, got: {[str(warning.message) for warning in w]}"
-
