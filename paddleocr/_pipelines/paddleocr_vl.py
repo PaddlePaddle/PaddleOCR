@@ -64,7 +64,7 @@ class PaddleOCRVL(PaddleXPipelineWrapper):
 
     @property
     def _paddlex_pipeline_name(self):
-        return "PP-OCR-VL"
+        return "PaddleOCR-VL"
 
     def predict_iter(
         self,
