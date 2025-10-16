@@ -43,6 +43,21 @@ En plus de fournir une bibliothèque de modèles exceptionnelle, PaddleOCR 3.0 p
 **Remarque spéciale** : PaddleOCR 3.x introduit plusieurs changements importants d’interface. **L'ancien code écrit sur la base de PaddleOCR 2.x est probablement incompatible avec PaddleOCR 3.x**. Veuillez vous assurer que la documentation que vous consultez correspond à la version de PaddleOCR que vous utilisez. [Ce document](https://paddlepaddle.github.io/PaddleOCR/latest/en/update/upgrade_notes.html) explique les raisons de la mise à niveau et les principaux changements entre PaddleOCR 2.x et 3.x.
 
 ## 📣 Mises à jour récentes
+
+#### **🔥🔥 16/10/2025 : PaddleOCR 3.3.0 publié**, comprenant :
+
+**Lancement de PaddleOCR-VL :**
+- **Présentation du modèle :**
+    - PaddleOCR-VL est un modèle de pointe (SOTA) efficace en ressources, spécialisé dans l’analyse de documents. Au cœur de la solution, PaddleOCR-VL-0.9B est un modèle vision-langage (VLM) compact et puissant qui intègre un encodeur visuel à résolution dynamique de type NaViT et un modèle linguistique ERNIE-4.5-0.3B, permettant une reconnaissance précise des éléments. Ce modèle innovant prend en charge 109 langues et excelle dans la reconnaissance d’éléments complexes (texte, tableaux, formules, graphiques, etc.), tout en minimisant la consommation de ressources. Des évaluations complètes sur des benchmarks publics et internes montrent que PaddleOCR-VL atteint des performances SOTA tant pour l’analyse documentaire au niveau de la page qu’au niveau des éléments, surpassant largement les solutions existantes. Il rivalise également avec les meilleurs VLM et offre une vitesse d’inférence rapide, ce qui le rend très adapté à une utilisation en production. Le modèle est disponible en téléchargement et en utilisation sur [HuggingFace](https://huggingface.co/PaddlePaddle/PaddleOCR-VL).
+
+- **Principales caractéristiques :**
+    - Architecture vision-langage compacte et puissante : propose un nouveau modèle vision-langage efficace en ressources, spécialement conçu pour une inférence efficace et des performances exceptionnelles en reconnaissance d’éléments. Il combine un encodeur visuel dynamique de haute résolution de type NaViT et un modèle linguistique ERNIE-4.5-0.3B léger, améliorant considérablement la capacité de reconnaissance et l’efficacité du décodage. Cette intégration réduit le coût de calcul tout en maintenant une grande précision, idéale pour des applications de traitement documentaire efficaces et pratiques.
+    - Performances SOTA en analyse documentaire : PaddleOCR-VL atteint des performances de pointe tant pour l’analyse documentaire au niveau de la page que pour la reconnaissance au niveau des éléments. Il surpasse largement les solutions traditionnelles basées sur des pipelines et rivalise efficacement avec les principaux modèles vision-langage (VLM). Il excelle dans la reconnaissance d’éléments complexes comme les textes, tableaux, formules, graphiques, et peut traiter du contenu difficile tel que l’écriture manuscrite ou les documents historiques. Cela lui confère une grande polyvalence, s’adaptant à de nombreux types et scénarios de documents.
+    - Prise en charge multilingue : PaddleOCR-VL prend en charge 109 langues, y compris les principales langues du monde (chinois, anglais, japonais, latin, coréen, etc.), ainsi que le russe (cyrillique), l’arabe, l’hindi (devanagari), le thaïlandais et d’autres systèmes d’écriture et structures linguistiques. Ce large support multilingue est un atout majeur pour le traitement de documents à l’échelle mondiale et multilingue.
+
+**Lancement du modèle multilingue PP-OCRv5 :**
+- Améliore la précision et la couverture de la reconnaissance des caractères latins, et ajoute la prise en charge du cyrillique, de l’arabe, du devanagari, du télougou, du tamoul, etc. Au total, la reconnaissance couvre 109 langues ; le modèle ne compte que 2 millions de paramètres, et dans certains cas, la précision est améliorée de plus de 40 % par rapport à la génération précédente.
+
 #### **🔥🔥21/08/2025 : Sortie de PaddleOCR 3.2.0**, comprend :
 
 - **Ajouts majeurs de modèles :**
@@ -210,6 +225,9 @@ paddleocr pp_structurev3 -i https://paddle-model-ecology.bj.bcebos.com/paddlex/i
 # Obtenez d'abord la clé API Qianfan, puis exécutez l'inférence PP-ChatOCRv4
 paddleocr pp_chatocrv4_doc -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/vehicle_certificate-1.png -k 驾驶室准乘人数 --qianfan_api_key your_api_key --use_doc_orientation_classify False --use_doc_unwarping False
 
+# Exécuter l'inférence PaddleOCR-VL
+paddleocr doc_parser -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/paddleocr_vl_demo.png
+
 # Obtenir plus d'informations sur "paddleocr ocr"
 paddleocr ocr --help
 ```
@@ -335,6 +353,22 @@ print(chat_result)
 
 </details>
 
+<details>
+   <summary><strong>4.4 Exemple PaddleOCR-VL</strong></summary>
+
+```python
+from paddleocr import PaddleOCRVL
+
+pipeline = PaddleOCRVL()
+output = pipeline.predict("https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/paddleocr_vl_demo.png")
+for res in output:
+    res.print()
+    res.save_to_json(save_path="output")
+    res.save_to_markdown(save_path="output")
+```
+
+</details>
+
 ## 🧩 Fonctionnalités supplémentaires
 
 - Convertir les modèles au format ONNX : [Obtention des modèles ONNX](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/obtaining_onnx_models.html).
@@ -346,6 +380,7 @@ print(chat_result)
 - [Tutoriel PP-OCRv5](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/pipeline_usage/OCR.html)
 - [Tutoriel PP-StructureV3](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/pipeline_usage/PP-StructureV3.html)
 - [Tutoriel PP-ChatOCRv4](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/pipeline_usage/PP-ChatOCRv4.html)
+- [Tutoriel PaddleOCR-VL](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/pipeline_usage/PaddleOCR-VL.html)
 
 ## 🔄 Aperçu rapide des résultats d'exécution
 

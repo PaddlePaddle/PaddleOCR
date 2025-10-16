@@ -44,6 +44,21 @@ PaddleOCR 3.0は、優れたモデルライブラリを提供するだけでな�
 
 ## 📣 最近のアップデート
 
+#### **🔥🔥 2025.10.16：PaddleOCR 3.3.0がリリースされ**、内容は以下の通りです：
+
+- PaddleOCR-VL をリリース：
+    - モデル紹介：
+        - PaddleOCR-VLは、ドキュメント解析向けに特化した最先端（SOTA）かつリソース効率の高いモデルです。中核となるPaddleOCR-VL-0.9Bは、コンパクトながら強力なビジョン・ランゲージ・モデル（VLM）であり、NaViTスタイルの動的解像度ビジュアルエンコーダとERNIE-4.5-0.3B言語モデルを統合することで、正確な要素認識を実現しています。この革新的なモデルは109言語に対応し、複雑な要素（テキスト、表、数式、チャートなど）の認識に優れ、なおかつリソース消費を最小限に抑えています。広く使われている公開ベンチマークや社内ベンチマークでの包括的な評価を通じて、PaddleOCR-VLはページレベルのドキュメント解析や要素レベルの認識の両方でSOTA性能を達成しています。既存のソリューションを大きく上回り、トップクラスのVLMと比べても強力な競争力を発揮し、高速な推論速度も実現しています。これらの強みから、実際の現場への導入にも非常に適しています。本モデルは[HuggingFace](https://huggingface.co/PaddlePaddle/PaddleOCR-VL)で公開されており、どなたでもダウンロード・ご利用いただけます！
+
+    - 主な特徴：
+        - コンパクトで強力なVLMアーキテクチャ：リソース効率の高い推論のために特別に設計された新しいビジョン・ランゲージ・モデルを提供し、要素認識において優れたパフォーマンスを実現します。NaViTスタイルの動的高解像度ビジュアルエンコーダと軽量なERNIE-4.5-0.3B言語モデルを統合することで、認識能力とデコーディング効率を大幅に向上させました。この統合により、高精度を維持しつつ計算コストを削減し、効率的かつ実用的なドキュメント処理アプリケーションに最適です。
+        - ドキュメント解析におけるSOTA性能：PaddleOCR-VLは、ページレベルのドキュメント解析と要素レベルの認識の両方で最先端の性能を達成しています。既存のパイプライン型ソリューションを大幅に上回り、主要なビジョン・ランゲージ・モデル（VLM）と比べても強力な競争力を示しています。さらに、テキスト・表・数式・チャートなどの複雑なドキュメント要素の認識にも優れており、手書きテキストや歴史的文書を含む幅広いチャレンジングなコンテンツタイプにも対応できます。これにより、非常に汎用性が高く、さまざまなドキュメントタイプやシナリオに適しています。
+        - 多言語対応：PaddleOCR-VLは109言語に対応しており、主要な世界言語（中国語・英語・日本語・ラテン語・韓国語など）をはじめ、ロシア語（キリル文字）、アラビア語、ヒンディー語（デーヴァナーガリー文字）、タイ語など、さまざまな文字体系や構造の言語にも対応しています。この幅広い言語カバーは、多言語・グローバルなドキュメント処理シーンでの適用性を大きく高めています。
+
+- PP-OCRv5 多言語認識モデルをリリース：
+    - ラテン文字認識の精度とカバレッジを向上し、キリル文字・アラビア語・デーヴァナーガリー文字・テルグ語・タミル語などの言語にも新たに対応。109言語の認識をカバーしています。モデルサイズはわずか2Mパラメータで、一部のモデルでは前世代比で精度が40%以上向上しています。
+
+
 #### **🔥🔥2025.08.21：PaddleOCR 3.2.0 をリリース**、内容は以下の通りです：
 
 
@@ -208,6 +223,9 @@ paddleocr pp_structurev3 -i https://paddle-model-ecology.bj.bcebos.com/paddlex/i
 # 最初にQianfan APIキーを取得し、その後PP-ChatOCRv4の推論を実行
 paddleocr pp_chatocrv4_doc -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/vehicle_certificate-1.png -k 驾驶室准乘人数 --qianfan_api_key your_api_key --use_doc_orientation_classify False --use_doc_unwarping False 
 
+# PaddleOCR-VLの推論を実行
+paddleocr doc_parser -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/paddleocr_vl_demo.png
+
 # "paddleocr ocr" の詳細情報を取得
 paddleocr ocr --help
 ```
@@ -333,6 +351,22 @@ print(chat_result)
 
 </details>
 
+<details>
+   <summary><strong>4.4 PaddleOCR-VLの例</strong></summary>
+
+```python
+from paddleocr import PaddleOCRVL
+
+pipeline = PaddleOCRVL()
+output = pipeline.predict("https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/paddleocr_vl_demo.png")
+for res in output:
+    res.print()
+    res.save_to_json(save_path="output")
+    res.save_to_markdown(save_path="output")
+```
+
+</details>
+
 ## 🧩 その他の機能
 
 - モデルをONNX形式に変換：[ONNXモデルの取得](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/obtaining_onnx_models.html)
@@ -344,6 +378,7 @@ print(chat_result)
 - [PP-OCRv5 チュートリアル](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/pipeline_usage/OCR.html)
 - [PP-StructureV3 チュートリアル](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/pipeline_usage/PP-StructureV3.html)
 - [PP-ChatOCRv4 チュートリアル](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/pipeline_usage/PP-ChatOCRv4.html)
+- [PaddleOCR-VL チュートリアル](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/pipeline_usage/PaddleOCR-VL.html)
 
 ## 🔄 実行結果のクイックレビュー
 
