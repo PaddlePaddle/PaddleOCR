@@ -218,7 +218,7 @@ paddleocr doc_parser -i ./paddleocr_vl_demo.png --use_doc_orientation_classify T
 paddleocr doc_parser -i ./paddleocr_vl_demo.png --use_doc_unwarping True
 
 # 通过 --use_layout_detection 指定是否使用版面区域检测排序模块
-paddleocr doc_parser -i ./paddleocr_vl_demo.png --use_layout_detection True
+paddleocr doc_parser -i ./paddleocr_vl_demo.png --use_layout_detection False
 ```
 
 <details><summary><b>命令行支持更多参数设置，点击展开以查看命令行参数的详细说明</b></summary>
@@ -1130,15 +1130,11 @@ MKL-DNN 缓存容量。
 
 #### 3.1.1 使用 Docker 镜像
 
-PaddleOCR 针对不同推理加速框架提供了相应的 Docker 镜像，用于快速启动 VLM 推理服务：
-
-* **vLLM**：`ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddlex-genai-vllm-server`
-* **SGLang**：`ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddlex-genai-sglang-server`
-
-以 vLLM 为例，可使用以下命令启动服务：
+PaddleOCR 提供了 Docker 镜像，用于快速启动 vLLM 推理服务。可使用以下命令启动服务：
 
 ```bash
 docker run \
+    -it \
     --rm \
     --gpus all \
     --network host \
@@ -1151,6 +1147,7 @@ docker run \
 
 ```bash
 docker run \
+    -it \
     --rm \
     --gpus all \
     --network host \
