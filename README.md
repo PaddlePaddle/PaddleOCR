@@ -239,6 +239,9 @@ paddleocr pp_structurev3 -i https://paddle-model-ecology.bj.bcebos.com/paddlex/i
 # Get the Qianfan API Key at first, and then run PP-ChatOCRv4 inference
 paddleocr pp_chatocrv4_doc -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/vehicle_certificate-1.png -k 驾驶室准乘人数 --qianfan_api_key your_api_key --use_doc_orientation_classify False --use_doc_unwarping False 
 
+# Run PaddleOCR-VL inference
+paddleocr doc_parser -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/paddleocr_vl_demo.png
+
 # Get more information about "paddleocr ocr"
 paddleocr ocr --help
 ```
@@ -364,6 +367,22 @@ print(chat_result)
 
 </details>
 
+<details>
+   <summary><strong>4.4 PaddleOCR-VL Example</strong></summary>
+
+```python
+from paddleocr import PaddleOCRVL
+
+pipeline = PaddleOCRVL()
+output = pipeline.predict("https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/paddleocr_vl_demo.png")
+for res in output:
+    res.print()
+    res.save_to_json(save_path="output")
+    res.save_to_markdown(save_path="output")
+```
+
+</details>
+
 ### 5. Chinese Heterogeneous AI Accelerators
 - [Huawei Ascend](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/other_devices_support/paddlepaddle_install_NPU.html)
 - [KUNLUNXIN](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/other_devices_support/paddlepaddle_install_XPU.html)
@@ -376,9 +395,11 @@ print(chat_result)
 - Integrate PaddleOCR into applications written in C++, C#, Java, etc.: [Serving](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/serving.html).
 
 ## ⛰️ Advanced Tutorials
+
 - [PP-OCRv5 Tutorial](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/pipeline_usage/OCR.html)
 - [PP-StructureV3 Tutorial](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/pipeline_usage/PP-StructureV3.html)
 - [PP-ChatOCRv4 Tutorial](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/pipeline_usage/PP-ChatOCRv4.html)
+- [PaddleOCR-VL Tutorial](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/pipeline_usage/PaddleOCR-VL.html)
 
 ## 🔄 Quick Overview of Execution Results
 

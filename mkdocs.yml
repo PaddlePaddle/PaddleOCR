@@ -108,6 +108,8 @@ plugins:
             PP-StructureV3简介: PP-StructureV3 Introduction
             PP-ChatOCRv4: PP-ChatOCRv4
             PP-ChatOCRv4简介: PP-ChatOCRv4 Introduction
+            PaddleOCR-VL: PaddleOCR-VL
+            PaddleOCR-VL简介: PaddleOCR-VL Introduction
             推理部署: Model Deploy
             高性能推理: High-Performance Inference
             打包PaddleOCR项目: Package PaddleOCR Projects
@@ -134,6 +136,7 @@ plugins:
             印章文本识别产线: Seal Text Recognition Pipeline
             通用表格识别v2产线: General Table Recognition v2 Pipeline
             图表解析模块: Chart Parsing Module
+            PaddleOCR-VL产线: PaddleOCR-VL Pipeline
             多硬件使用: Multi-Devices Usage
             PaddleOCR 多硬件使用指南: PaddleOCR Multi-Devices Usage Guide
             昇腾 NPU 飞桨安装教程: Ascend NPU PaddlePaddle Installation Tutorial
@@ -290,6 +293,9 @@ nav:
   - PP-ChatOCRv4:
     - 使用教程: version3.x/pipeline_usage/PP-ChatOCRv4.md
     - PP-ChatOCRv4简介: version3.x/algorithm/PP-ChatOCRv4/PP-ChatOCRv4.md
+  - PaddleOCR-VL:
+    - 使用教程: version3.x/pipeline_usage/PaddleOCR-VL.md
+    - PaddleOCR-VL简介: version3.x/algorithm/PaddleOCR-VL/PaddleOCR-VL.md
   - 推理部署:
     - 高性能推理: version3.x/deployment/high_performance_inference.md
     - 获取ONNX模型: version3.x/deployment/obtaining_onnx_models.md

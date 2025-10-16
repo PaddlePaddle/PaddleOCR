@@ -111,7 +111,7 @@ def _register_install_genai_server_deps_command(subparsers):
     def _install_genai_server_deps(args):
         try:
             subprocess.check_call(
-                ["paddlex", "--install", "genai-{args.variant}-server"]
+                ["paddlex", "--install", f"genai-{args.variant}-server"]
             )
         except subprocess.CalledProcessError:
             sys.exit("Failed to install dependencies")
@@ -122,7 +122,11 @@ def _register_install_genai_server_deps_command(subparsers):
 
 
 def _register_genai_server_command(subparsers):
-    from paddlex.inference.genai.server import get_arg_parser, run_genai_server
+    # TODO: Register the subparser whether the plugin is installed or not
+    try:
+        from paddlex.inference.genai.server import get_arg_parser, run_genai_server
+    except RuntimeError:
+        return
 
     def _show_prompt_when_server_is_running(host, port, backend):
         if host == "0.0.0.0":

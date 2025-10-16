@@ -11,7 +11,7 @@ hide:
 Installation for CPU:
 
 ```bash
-python -m pip install paddlepaddle==3.0.0 -i https://www.paddlepaddle.org.cn/packages/stable/cpu/
+python -m pip install paddlepaddle==3.2.0 -i https://www.paddlepaddle.org.cn/packages/stable/cpu/
 ```
 
 Installation for GPU: 
@@ -19,7 +19,7 @@ Installation for GPU:
 Since GPU installation requires specific CUDA versions, the following example is for installing NVIDIA GPU on the Linux platform with CUDA 11.8. For other platforms, please refer to the instructions in the [PaddlePaddle official installation documentation](https://www.paddlepaddle.org.cn/install/quick).
 
 ```bash
-python -m pip install paddlepaddle-gpu==3.0.0 -i https://www.paddlepaddle.org.cn/packages/stable/cu118/
+python -m pip install paddlepaddle-gpu==3.2.0 -i https://www.paddlepaddle.org.cn/packages/stable/cu118/
 ```
 
 **Please note that PaddleOCR 3.x depends on PaddlePaddle version `3.0` or above.**
