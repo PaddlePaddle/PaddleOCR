@@ -44,6 +44,20 @@ Además de proporcionar una excelente biblioteca de modelos, PaddleOCR 3.0 tambi
 
 ## 📣 Últimas actualizaciones
 
+#### **🔥🔥 16.10.2025: PaddleOCR 3.3.0 lanzado**, incluye:
+
+**Lanzamiento de PaddleOCR-VL:**
+- **Introducción al modelo:**
+    - PaddleOCR-VL es un modelo de última generación (SOTA) y eficiente en recursos, especializado en el análisis de documentos. Su núcleo, PaddleOCR-VL-0.9B, es un modelo compacto y potente de visión-lenguaje (VLM) que integra un codificador visual de resolución dinámica al estilo NaViT y un modelo de lenguaje ERNIE-4.5-0.3B, logrando un reconocimiento preciso de elementos. Este innovador modelo admite 109 idiomas y es excelente en el reconocimiento de elementos complejos (texto, tablas, fórmulas, gráficos, etc.), minimizando el consumo de recursos. Las evaluaciones exhaustivas en benchmarks públicos y privados demuestran que PaddleOCR-VL alcanza el rendimiento SOTA tanto en el análisis de documentos a nivel de página como en el reconocimiento a nivel de elemento, superando ampliamente a las soluciones existentes. También compite con los mejores VLM y ofrece una velocidad de inferencia rápida, lo que lo hace muy adecuado para su aplicación práctica. El modelo está disponible para descarga y uso en [HuggingFace](https://huggingface.co/PaddlePaddle/PaddleOCR-VL).
+
+- **Características principales:**
+    - Arquitectura compacta y potente de visión-lenguaje: ofrece un nuevo modelo eficiente en recursos especialmente diseñado para la inferencia y excelente en el reconocimiento de elementos. Combina un codificador visual de alta resolución dinámico al estilo NaViT y un modelo de lenguaje ERNIE-4.5-0.3B ligero, mejorando significativamente la capacidad de reconocimiento y la eficiencia de decodificación. Esta integración reduce el coste computacional y mantiene una alta precisión, siendo ideal para aplicaciones de procesamiento de documentos eficientes y prácticas.
+    - Rendimiento SOTA en el análisis de documentos: PaddleOCR-VL logra un rendimiento de vanguardia tanto en el análisis a nivel de página como en el reconocimiento a nivel de elemento. Supera ampliamente a las soluciones basadas en pipelines tradicionales y compite eficazmente con los principales modelos de visión-lenguaje (VLM). Es excelente en el reconocimiento de elementos complejos como texto, tablas, fórmulas y gráficos, y es capaz de manejar contenidos desafiantes como texto manuscrito o documentos históricos. Esto le otorga una gran versatilidad, adaptándose a múltiples tipos y escenarios de documentos.
+    - Soporte multilingüe: PaddleOCR-VL admite 109 idiomas, incluyendo los principales idiomas mundiales (chino, inglés, japonés, latín, coreano, etc.), así como ruso (cirílico), árabe, hindi (devanagari), tailandés y otros sistemas de escritura y estructuras lingüísticas. Este amplio soporte multilingüe es una gran ventaja para el procesamiento de documentos a nivel global y multilingüe.
+
+**Lanzamiento del modelo multilingüe PP-OCRv5:**
+- Mejora la precisión y el rango de reconocimiento de caracteres latinos, y añade soporte para cirílico, árabe, devanagari, telugu, tamil, entre otros. En total, cubre el reconocimiento de 109 idiomas; el modelo tiene solo 2 millones de parámetros y, en algunos casos, la precisión mejora más de un 40% respecto a la generación anterior.
+
 #### **🔥🔥2025.08.21: Lanzamiento de PaddleOCR 3.1.1**, incluye:
 
 - **Actualización de los modelos principales:**
