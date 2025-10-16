@@ -347,8 +347,15 @@ class PaddleOCR(PaddleXPipelineWrapper):
             "vi",
             "french",
             "german",
+            "fi",
+            "eu",
+            "gl",
+            "lb",
+            "rm",
+            "ca",
+            "qu",
         ]
-        ARABIC_LANGS = ["ar", "fa", "ug", "ur"]
+        ARABIC_LANGS = ["ar", "fa", "ug", "ur", "ps", "ku", "sd", "bal"]
         ESLAV_LANGS = ["ru", "be", "uk"]
         CYRILLIC_LANGS = [
             "ru",
@@ -367,6 +374,23 @@ class PaddleOCR(PaddleXPipelineWrapper):
             "lbe",
             "lez",
             "tab",
+            "kk",
+            "ky",
+            "tg",
+            "mk",
+            "tt",
+            "cv",
+            "ba",
+            "mhr",
+            "mo",
+            "udm",
+            "kv",
+            "os",
+            "bua",
+            "xal",
+            "tyv",
+            "sah",
+            "kaa",
         ]
         DEVANAGARI_LANGS = [
             "hi",
@@ -400,18 +424,25 @@ class PaddleOCR(PaddleXPipelineWrapper):
         if ppocr_version is None:
             if (
                 lang
-                in ["ch", "chinese_cht", "en", "japan", "korean", "th", "el"]
+                in [
+                    "ch",
+                    "chinese_cht",
+                    "en",
+                    "japan",
+                    "korean",
+                    "th",
+                    "el",
+                    "te",
+                    "ta",
+                ]
                 + LATIN_LANGS
                 + ESLAV_LANGS
-            ):
-                ppocr_version = "PP-OCRv5"
-            elif lang in (
-                LATIN_LANGS
                 + ARABIC_LANGS
                 + CYRILLIC_LANGS
                 + DEVANAGARI_LANGS
-                + SPECIFIC_LANGS
             ):
+                ppocr_version = "PP-OCRv5"
+            elif lang in (SPECIFIC_LANGS):
                 ppocr_version = "PP-OCRv3"
             else:
                 # Unknown language specified
@@ -427,12 +458,22 @@ class PaddleOCR(PaddleXPipelineWrapper):
                 rec_lang = "latin"
             elif lang in ESLAV_LANGS:
                 rec_lang = "eslav"
+            elif lang in ARABIC_LANGS:
+                rec_lang = "arabic"
+            elif lang in CYRILLIC_LANGS:
+                rec_lang = "cyrillic"
+            elif lang in DEVANAGARI_LANGS:
+                rec_lang = "devanagari"
             elif lang == "korean":
                 rec_lang = "korean"
             elif lang == "th":
                 rec_lang = "th"
             elif lang == "el":
                 rec_lang = "el"
+            elif lang == "te":
+                rec_lang = "te"
+            elif lang == "ta":
+                rec_lang = "ta"
 
             if rec_lang is not None:
                 rec_model_name = f"{rec_lang}_PP-OCRv5_mobile_rec"
