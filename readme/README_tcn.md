@@ -230,9 +230,13 @@ paddleocr pp_structurev3 -i https://paddle-model-ecology.bj.bcebos.com/paddlex/i
 # 執行 PP-ChatOCRv4 推論前，需先取得千帆 API Key
 paddleocr pp_chatocrv4_doc -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/vehicle_certificate-1.png -k 駕駛室准乘人數 --qianfan_api_key your_api_key --use_doc_orientation_classify False --use_doc_unwarping False 
 
+# 執行 PaddleOCR-VL 推論
+paddleocr doc_parser -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/paddleocr_vl_demo.png
+
 # 查看 "paddleocr ocr" 詳細參數
 paddleocr ocr --help
 ```
+
 ### 4. API 推論
 
 **4.1 PP-OCRv5 範例**
@@ -356,6 +360,21 @@ print(chat_result)
 
 </details>
 
+<details>
+   <summary><strong>4.4 PaddleOCR-VL 範例</strong></summary>
+
+```python
+from paddleocr import PaddleOCRVL
+
+pipeline = PaddleOCRVL()
+output = pipeline.predict("https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/paddleocr_vl_demo.png")
+for res in output:
+    res.print()
+    res.save_to_json(save_path="output")
+    res.save_to_markdown(save_path="output")
+```
+
+</details>
 
 ### 5. **國產硬體支援**
 - [崑崙芯安裝指南](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/other_devices_support/paddlepaddle_install_XPU.html)
@@ -369,9 +388,11 @@ print(chat_result)
 - 在 C++、C#、Java 等語言編寫的應用中整合 PaddleOCR：[服務化部署](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/deployment/serving.html)。
 
 ## ⛰️ 進階指南
+
 - [PP-OCRv5 使用教學](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/pipeline_usage/OCR.html)
 - [PP-StructureV3 使用教學](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/pipeline_usage/PP-StructureV3.html)
 - [PP-ChatOCRv4 使用教學](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/pipeline_usage/PP-ChatOCRv4.html)
+- [PaddleOCR-VL 使用教學](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/pipeline_usage/PaddleOCR-VL.html)
 
 ## 🔄 效果展示
 

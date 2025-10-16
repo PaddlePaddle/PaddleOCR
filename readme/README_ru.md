@@ -224,6 +224,9 @@ paddleocr pp_structurev3 -i https://paddle-model-ecology.bj.bcebos.com/paddlex/i
 # Сначала получите Qianfan API Key, а затем запустите инференс PP-ChatOCRv4
 paddleocr pp_chatocrv4_doc -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/vehicle_certificate-1.png -k 驾驶室准乘人数 --qianfan_api_key your_api_key --use_doc_orientation_classify False --use_doc_unwarping False 
 
+# Запустить инференс PaddleOCR-VL
+paddleocr doc_parser -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/paddleocr_vl_demo.png
+
 # Получить больше информации о "paddleocr ocr"
 paddleocr ocr --help
 ```
@@ -349,6 +352,22 @@ print(chat_result)
 
 </details>
 
+<details>
+   <summary><strong>4.4 Пример для PaddleOCR-VL</strong></summary>
+
+```python
+from paddleocr import PaddleOCRVL
+
+pipeline = PaddleOCRVL()
+output = pipeline.predict("https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/paddleocr_vl_demo.png")
+for res in output:
+    res.print()
+    res.save_to_json(save_path="output")
+    res.save_to_markdown(save_path="output")
+```
+
+</details>
+
 ### 5. Китайские гетерогенные ИИ-ускорители
 - [Huawei Ascend](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/other_devices_support/paddlepaddle_install_NPU.html)
 - [KUNLUNXIN](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/other_devices_support/paddlepaddle_install_XPU.html)
@@ -364,6 +383,7 @@ print(chat_result)
 - [Руководство по PP-OCRv5](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/pipeline_usage/OCR.html)
 - [Руководство по PP-StructureV3](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/pipeline_usage/PP-StructureV3.html)
 - [Руководство по PP-ChatOCRv4](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/pipeline_usage/PP-ChatOCRv4.html)
+- [Руководство по PaddleOCR-VL](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/pipeline_usage/PaddleOCR-VL.html)
 
 ## 🔄 Краткий обзор результатов выполнения
 
