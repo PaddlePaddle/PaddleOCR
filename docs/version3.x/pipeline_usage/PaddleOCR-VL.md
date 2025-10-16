@@ -198,11 +198,15 @@ tbd
 
 ## 2. 快速开始
 
-在本地使用 PaddleOCR-VL 产线前，请确保您已经按照[安装教程](../installation.md)完成了 wheel 包安装。安装完成后，可以在本地使用命令行体验或 Python 集成。如果您希望选择性安装依赖，请参考安装教程中的相关说明。该产线对应的依赖分组为 `doc-parser`。
+在本地使用 PaddleOCR-VL 产线前，请确保您已经按照[安装教程](../installation.md)完成了 wheel 包安装。安装完成后，可以在本地使用命令行体验或 Python 集成。如果您希望选择性安装依赖，请参考安装教程中的相关说明。该产线对应的依赖分组为 `doc-parser`。此外，为了使用飞桨框架读取 safetensors 格式模型，请执行如下命令安装 safetensors：
+
+```bash
+pytyon -m pip install https://paddle-whl.bj.bcebos.com/nightly/cu126/safetensors/safetensors-0.6.2.dev0-cp38-abi3-linux_x86_64.whl
+```
+
+对于 Windows 系统，目前仅支持在 WSL 或者 Docker 环境中执行推理。
 
 **请注意，如果在执行过程中遇到程序失去响应、程序异常退出、内存资源耗尽、推理速度极慢等问题，请尝试参考文档调整配置，例如关闭不需要使用的功能或使用更轻量的模型。**
-
-> 对于 Windows 系统，目前仅支持在 WSL 或者 Docker 环境中执行推理。
 
 ### 2.1 命令行方式体验
 
