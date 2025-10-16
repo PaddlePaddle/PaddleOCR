@@ -47,9 +47,7 @@ English | [简体中文](./readme/README_cn.md) | [繁體中文](./readme/README
 
 [![AI Studio](https://img.shields.io/badge/PP__OCRv5-Demo_on_AI_Studio-blue)](https://aistudio.baidu.com/community/app/91660/webUI)
 [![AI Studio](https://img.shields.io/badge/PP__StructureV3-Demo_on_AI_Studio-blue)](https://aistudio.baidu.com/community/app/518494/webUI)
-[![AI Studio](https://img.shields.io/badge/PP--
-
-ChatOCRv4-Demo_on_AI_Studio-blue)](https://aistudio.baidu.com/community/app/518493/webUI)
+[![AI Studio](https://img.shields.io/badge/PP--ChatOCRv4-Demo_on_AI_Studio-blue)](https://aistudio.baidu.com/community/app/518493/webUI)
 
 
 - **PaddleOCR-VL - Multilingual Document Parsing via a 0.9B VLM**  
