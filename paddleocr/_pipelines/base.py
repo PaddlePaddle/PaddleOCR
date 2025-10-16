@@ -76,6 +76,9 @@ class PaddleXPipelineWrapper(metaclass=abc.ABCMeta):
             config = _to_builtin(self._merged_paddlex_config)
             yaml.safe_dump(config, f)
 
+    def close(self):
+        self.paddlex_pipeline.close()
+
     @classmethod
     @abc.abstractmethod
     def get_cli_subcommand_executor(cls):

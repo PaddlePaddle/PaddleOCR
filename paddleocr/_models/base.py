@@ -57,6 +57,9 @@ class PaddleXPredictorWrapper(metaclass=abc.ABCMeta):
         result = list(self.predict_iter(*args, **kwargs))
         return result
 
+    def close(self):
+        self.paddlex_predictor.close()
+
     @classmethod
     @abc.abstractmethod
     def get_cli_subcommand_executor(cls):
