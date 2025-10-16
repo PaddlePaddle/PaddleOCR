@@ -201,7 +201,7 @@ tbd
 在本地使用 PaddleOCR-VL 产线前，请确保您已经按照[安装教程](../installation.md)完成了 wheel 包安装。安装完成后，可以在本地使用命令行体验或 Python 集成。如果您希望选择性安装依赖，请参考安装教程中的相关说明。该产线对应的依赖分组为 `doc-parser`。此外，为了使用飞桨框架读取 safetensors 格式模型，请执行如下命令安装 safetensors：
 
 ```bash
-pytyon -m pip install https://paddle-whl.bj.bcebos.com/nightly/cu126/safetensors/safetensors-0.6.2.dev0-cp38-abi3-linux_x86_64.whl
+python -m pip install https://paddle-whl.bj.bcebos.com/nightly/cu126/safetensors/safetensors-0.6.2.dev0-cp38-abi3-linux_x86_64.whl
 ```
 
 对于 Windows 系统，目前仅支持在 WSL 或者 Docker 环境中执行推理。
@@ -1208,7 +1208,7 @@ paddleocr genai_server --model_name PaddleOCR-VL-0.9B --backend vllm --port 8118
 可通过 `--vl_rec_backend` 指定后端类型（`vllm-server` 或 `sglang-server`），通过 `--vl_rec_server_url` 指定服务地址，例如：
 
 ```bash
-paddleocr doc_parser --input paddleocr_vl_demo.png --vl_rec_backend vllm-server --vl_rec_server_url http://127.0.0.1:8118
+paddleocr doc_parser --input paddleocr_vl_demo.png --vl_rec_backend vllm-server --vl_rec_server_url http://127.0.0.1:8118/v1
 ```
 
 #### 3.2.2 Python API 调用
@@ -1216,7 +1216,7 @@ paddleocr doc_parser --input paddleocr_vl_demo.png --vl_rec_backend vllm-server 
 创建 `PaddleOCRVL` 对象时传入 `vl_rec_backend` 和 `vl_rec_server_url` 参数：
 
 ```python
-pipeline = PaddleOCRVL(vl_rec_backend="vllm-server", vl_rec_server_url="http://127.0.0.1:8118")
+pipeline = PaddleOCRVL(vl_rec_backend="vllm-server", vl_rec_server_url="http://127.0.0.1:8118/v1")
 ```
 
 #### 3.2.3 服务化部署
@@ -1227,8 +1227,8 @@ pipeline = PaddleOCRVL(vl_rec_backend="vllm-server", vl_rec_server_url="http://1
 VLRecognition:
   ...
   genai_config:
-    backend: vllm
-    server_url: http://127.0.0.1:8118
+    backend: vllm-server
+    server_url: http://127.0.0.1:8118/v1
 ```
 
 ### 3.3 性能调优
