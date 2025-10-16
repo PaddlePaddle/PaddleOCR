@@ -121,6 +121,7 @@ plugins:
             文档类视觉语言模型模块: Document Visual Language Model Module
             公式识别模块: Formula Recognition Module
             版面区域检测模块: Layout Detection
+            版面分析模块: Layout Analysis
             印章文本检测模块: Seal Text Detection
             表格单元格检测模块: Table Cell Detection Module
             表格分类模块: Table Classification Module
@@ -315,6 +316,7 @@ nav:
     - 文档类视觉语言模型模块: version3.x/module_usage/doc_vlm.md
     - 公式识别模块: version3.x/module_usage/formula_recognition.md
     - 版面区域检测模块: version3.x/module_usage/layout_detection.md
+    - 版面分析模块: version3.x/module_usage/layout_analysis.md
     - 印章文本检测模块: version3.x/module_usage/seal_text_detection.md
     - 表格单元格检测模块: version3.x/module_usage/table_cells_detection.md
     - 表格分类模块: version3.x/module_usage/table_classification.md
