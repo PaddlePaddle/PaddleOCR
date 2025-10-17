@@ -25,7 +25,7 @@ English | [简体中文](./readme/README_cn.md) | [繁體中文](./readme/README
 # PaddleOCR
 [![Framework](https://img.shields.io/badge/PaddlePaddle-3.0-orange)](https://www.paddlepaddle.org.cn/en)
 [![Accuracy](https://img.shields.io/badge/Recognition%20Accuracy-🏆-green)](#)
-[![Multi-Language](https://img.shields.io/badge/Support_Languages-80+-brightgreen)](#)
+[![Multi-Language](https://img.shields.io/badge/Support_Languages-100+-brightgreen)](#)
 [![Handwriting](https://img.shields.io/badge/Handwriting-✓-success)](#)
 [![Hardware](https://img.shields.io/badge/Heterogeneous%20Hardware-Kunlunxin%20%7C%20Ascend_NPU-red)](#)
 
@@ -76,8 +76,8 @@ In addition to providing an outstanding model library, PaddleOCR 3.0 also offers
 ### 🔥🔥 2025.10.16: PaddleOCR 3.3.0 released, includes:
 
 - Released PaddleOCR-VL:
-    - Model Introduction:
-        - **PaddleOCR-VL** is a SOTA and resource-efficient model tailored for document parsing. Its core component is PaddleOCR-VL-0.9B, a compact yet powerful vision-language model (VLM) that integrates a NaViT-style dynamic resolution visual encoder with the ERNIE-4.5-0.3B language model to enable accurate element recognition. This innovative model efficiently supports 109 languages and excels in recognizing complex elements (e.g., text, tables, formulas, and charts), while maintaining minimal resource consumption. Through comprehensive evaluations on widely used public benchmarks and in-house benchmarks, PaddleOCR-VL achieves SOTA performance in both page-level document parsing and element-level recognition. It significantly outperforms existing solutions, exhibits strong competitiveness against top-tier VLMs, and delivers fast inference speeds. These strengths make it highly suitable for practical deployment in real-world scenarios. The model has been released on [HuggingFace](https://huggingface.co/PaddlePaddle/PaddleOCR-VL). Everyone is welcome to download and use it!
+    - **Model Introduction**:
+        - **PaddleOCR-VL** is a SOTA and resource-efficient model tailored for document parsing. Its core component is PaddleOCR-VL-0.9B, a compact yet powerful vision-language model (VLM) that integrates a NaViT-style dynamic resolution visual encoder with the ERNIE-4.5-0.3B language model to enable accurate element recognition. **This innovative model efficiently supports 109 languages and excels in recognizing complex elements (e.g., text, tables, formulas, and charts), while maintaining minimal resource consumption**. Through comprehensive evaluations on widely used public benchmarks and in-house benchmarks, PaddleOCR-VL achieves SOTA performance in both page-level document parsing and element-level recognition. It significantly outperforms existing solutions, exhibits strong competitiveness against top-tier VLMs, and delivers fast inference speeds. These strengths make it highly suitable for practical deployment in real-world scenarios. The model has been released on [HuggingFace](https://huggingface.co/PaddlePaddle/PaddleOCR-VL). Everyone is welcome to download and use it! More introduction infomation can be found in [PaddleOCR-VL](https://www.paddleocr.ai/latest/version3.x/algorithm/PaddleOCR-VL/PaddleOCR-VL.html).
 
     - **Core Features**:
         - **Compact yet Powerful VLM Architecture**: We present a novel vision-language model that is specifically designed for resource-efficient inference, achieving outstanding performance in element recognition. By integrating a NaViT-style dynamic high-resolution visual encoder with the lightweight ERNIE-4.5-0.3B language model, we significantly enhance the model’s recognition capabilities and decoding efficiency. This integration maintains high accuracy while reducing computational demands, making it well-suited for efficient and practical document processing applications.
