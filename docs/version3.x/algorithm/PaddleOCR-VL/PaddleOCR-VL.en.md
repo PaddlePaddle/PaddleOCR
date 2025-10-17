@@ -162,3 +162,14 @@ To improve the inference performance of PaddleOCR-VL, we introduce multi-threadi
 <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr_vl/chart_01.jpg" width="300"/>
 <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr_vl/chart_02.jpg" width="300"/>
 </div>
+
+
+## 6. FAQ
+
+1. How to use PaddleOCR-VL for document parsing?
+
+Please refer to our usage documentation [PaddleOCR-VL Usage](../../pipeline_usage/PaddleOCR-VL.en.md).
+
+2. How to fine-tune the PaddleOCR-VL model?
+
+Currently, we do not support fine-tuning of the model, but it is a high-priority feature and will be released soon. Please stay tuned.

@@ -166,3 +166,14 @@ PaddleOCR-VL能够支持多种类型的文档解析，以下是一些预测案�
 <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr_vl/chart_01.jpg" width="300"/>
 <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr_vl/chart_02.jpg" width="300"/>
 </div>
+
+
+## 六、FAQ
+
+1. 如何使用 PaddleOCR-VL 做文档解析 ？
+
+参考我们的使用文档 [PaddleOCR-VL使用](../../pipeline_usage/PaddleOCR-VL.md)
+
+2. 如何对 PaddleOCR-VL 模型进行微调 ？
+
+目前我们暂不支持模型的微调，但已经在高优的支持中，即将发布，请保持关注。
