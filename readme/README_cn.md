@@ -35,7 +35,7 @@
 > PaddleOCR 现已提供 MCP服务器，支持与 Claude Desktop 等Agent应用集成。详情请参考 [PaddleOCR MCP 服务器](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/deployment/mcp_server.html)。
 >
 > PaddleOCR 3.0 技术报告现已发布，详情请参考：[PaddleOCR 3.0 Technical Report](https://arxiv.org/pdf/2507.05595 )
-> PaddleOCR-VL 技术报告现已发布，详情请参考：[PaddleOCR-VL Technical Report](https://ernie.baidu.com/blog/publication/PaddleOCR-VL_Technical_Report.pdf)
+> PaddleOCR-VL 技术报告现已发布，详情请参考：[PaddleOCR-VL Technical Report](https://arxiv.org/abs/2510.14528)
 
 
 **PaddleOCR** 将文档和图像转换为**结构化、AI友好的数据**（如JSON和Markdown），**精度达到行业领先水平**——为全球从独立开发者，初创企业和大型企业的AI应用提供强力支撑。凭借**50,000+星标**和**MinerU、RAGFlow、OmniParser**等头部项目的深度集成，PaddleOCR已成为**AI时代**开发者构建智能文档等应用的**首选解决方案**。

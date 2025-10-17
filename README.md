@@ -34,7 +34,7 @@ English | [简体中文](./readme/README_cn.md) | [繁體中文](./readme/README
 >
 > The PaddleOCR 3.0 Technical Report is now available. See details at: [PaddleOCR 3.0 Technical Report](https://arxiv.org/abs/2507.05595)
 >
-> The PaddleOCR-VL Technical Report is now available. See details at [PaddleOCR-VL Technical Report](https://ernie.baidu.com/blog/publication/PaddleOCR-VL_Technical_Report.pdf)
+> The PaddleOCR-VL Technical Report is now available. See details at [PaddleOCR-VL Technical Report](https://arxiv.org/abs/2510.14528)
 
 
 **PaddleOCR** converts documents and images into **structured, AI-friendly data** (like JSON and Markdown) with **industry-leading accuracy**—powering AI applications for everyone from indie developers and startups to large enterprises worldwide. With over **50,000 stars** and deep integration into leading projects like **MinerU, RAGFlow, and OmniParser**, PaddleOCR has become the **premier solution** for developers building intelligent document applications in the **AI era**.
