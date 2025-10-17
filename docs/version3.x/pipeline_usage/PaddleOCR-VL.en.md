@@ -937,6 +937,20 @@ docker run \
     paddlex_genai_server --model_name PaddleOCR-VL-0.9B --host 0.0.0.0 --port 8118 --backend vllm
 ```
 
+If you are using an NVIDIA 50 series graphics card (Compute Capacity >= 12), you need to install a specific version of FlashAttention before launching the service.
+
+```
+docker run \
+    -it \
+    --rm \
+    --gpus all \
+    --network host \
+    ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddlex-genai-vllm-server \
+    /bin/bash
+python -m pip install flash-attn==2.8.3
+paddlex_genai_server --model_name PaddleOCR-VL-0.9B --backend vllm --port 8118
+```
+
 #### 3.1.2 Installation and Usage via PaddleOCR CLI
 
 Since the inference acceleration framework may have dependency conflicts with the PaddlePaddle framework, it is recommended to install it in a virtual environment. Taking vLLM as an example:
@@ -959,6 +973,12 @@ paddleocr install_genai_server_deps <name of the inference acceleration framewor
 ```
 
 The currently supported frameworks are named `vllm` and `sglang`, corresponding to vLLM and SGLang, respectively.
+
+If you are using an NVIDIA 50 series graphics card (Compute Capacity >= 12), you need to install a specific version of FlashAttention before launching the service.
+
+```
+python -m pip install flash-attn==2.8.3
+```
 
 After installation, you can start the service using the `paddleocr genai_server` command:
 

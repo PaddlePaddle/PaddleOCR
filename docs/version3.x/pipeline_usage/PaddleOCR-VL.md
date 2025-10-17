@@ -967,6 +967,20 @@ docker run \
     paddlex_genai_server --model_name PaddleOCR-VL-0.9B --host 0.0.0.0 --port 8118 --backend vllm
 ```
 
+若您使用的是  NVIDIA 50 系显卡 (Compute Capacity >= 12)，需要在启动服务前安装指定版本的 FlashAttention:
+
+```
+docker run \
+    -it \
+    --rm \
+    --gpus all \
+    --network host \
+    ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddlex-genai-vllm-server \
+    /bin/bash
+python -m pip install flash-attn==2.8.3
+paddlex_genai_server --model_name PaddleOCR-VL-0.9B --backend vllm --port 8118
+```
+
 #### 3.1.2 通过 PaddleOCR CLI 安装和使用
 
 由于推理加速框架可能与飞桨框架存在依赖冲突，建议在虚拟环境中安装。以 vLLM 为例：
@@ -989,6 +1003,12 @@ paddleocr install_genai_server_deps <推理加速框架名称>
 ```
 
 当前支持的框架名称为 `vllm` 和 `sglang`，分别对应 vLLM 和 SGLang。
+
+若您使用的是  NVIDIA 50 系显卡 (Compute Capacity >= 12)，需要在启动服务前安装指定版本的 FlashAttention:
+
+```
+python -m pip install flash-attn==2.8.3
+```
 
 安装完成后，可通过 `paddleocr genai_server` 命令启动服务：
 
