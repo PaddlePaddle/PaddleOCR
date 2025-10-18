@@ -32,6 +32,7 @@ public:
                                   int maxWidth, int minFont, int maxFont,
                                   int thickness, int &outBaseline,
                                   int &outFontFace);
+  WarpPredictorResult Result() { return predictor_result_; };
 
 private:
   WarpPredictorResult predictor_result_;
