@@ -181,4 +181,3 @@ PaddleOCR-VL能够支持多种类型的文档解析，以下是一些预测案�
 3. 为什么我的图表没有识别出来，如何使用图表识别 ？
 
 因为我们默认图表识别的功能是关闭的，需要手动开启，请参考 [PaddleOCR-VL使用](../../pipeline_usage/PaddleOCR-VL.md), 设置 use_chart_recognition为True 参数来开启。
-
