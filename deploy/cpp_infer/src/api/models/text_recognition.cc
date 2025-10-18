@@ -51,6 +51,7 @@ TextRecPredictorParams TextRecognition::ToTextRecognitionModelParams(
   COPY_PARAMS(model_dir)
   COPY_PARAMS(batch_size)
   COPY_PARAMS(input_shape)
+  COPY_PARAMS(return_word_box)
   COPY_PARAMS(vis_font_dir)
   COPY_PARAMS(device)
   COPY_PARAMS(enable_mkldnn)

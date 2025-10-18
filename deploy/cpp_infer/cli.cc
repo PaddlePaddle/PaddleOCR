@@ -67,7 +67,7 @@ std::tuple<PaddleOCRParams, DocPreprocessorParams,
            DocImgOrientationClassificationParams, TextImageUnwarpingParams,
            TextDetectionParams, TextLineOrientationClassificationParams,
            TextRecognitionParams>
-GetPipelineMoudleParams() {
+GetPipelineModuleParams() {
   PaddleOCRParams ocr_params;
   DocPreprocessorParams doc_pre_params;
   DocImgOrientationClassificationParams doc_orient_params;
@@ -181,6 +181,10 @@ GetPipelineMoudleParams() {
   if (!FLAGS_text_rec_score_thresh.empty()) {
     ocr_params.text_rec_score_thresh = std::stof(FLAGS_text_rec_score_thresh);
   }
+  if (!FLAGS_return_word_box.empty()) {
+    ocr_params.return_word_box = Utility::StringToBool(FLAGS_return_word_box);
+    rec_params.return_word_box = Utility::StringToBool(FLAGS_return_word_box);
+  }
   if (!FLAGS_text_rec_input_shape.empty()) {
     ocr_params.text_rec_input_shape =
         YamlConfig::SmartParseVector(FLAGS_text_rec_input_shape).vec_int;
@@ -280,7 +284,7 @@ int main(int argc, char *argv[]) {
         "<pipeline_or_module> [--param1] [--param2] [...]");
     exit(-1);
   }
-  auto params = GetPipelineMoudleParams();
+  auto params = GetPipelineModuleParams();
   using PredFunc = std::function<std::vector<std::unique_ptr<BaseCVResult>>(
       const std::string &)>;
   std::unordered_map<std::string, PredFunc> pred_map = {
