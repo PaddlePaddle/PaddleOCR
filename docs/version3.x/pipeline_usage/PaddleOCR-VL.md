@@ -993,7 +993,7 @@ paddleocr install_genai_server_deps <推理加速框架名称>
 
 当前支持的框架名称为 `vllm` 和 `sglang`，分别对应 vLLM 和 SGLang。
 
-若您使用的是  NVIDIA 50 系显卡 (Compute Capacity >= 12)，需要在启动服务前安装指定版本的 FlashAttention:
+若您使用的是  NVIDIA 50 系显卡 (Compute Capability >= 12)，需要在启动服务前安装指定版本的 FlashAttention:
 
 ```bash
 python -m pip install flash-attn==2.8.3
