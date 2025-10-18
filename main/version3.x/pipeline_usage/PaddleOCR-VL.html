@@ -3967,6 +3967,7 @@ You're not viewing the latest version.
 <!-- Page content -->
 <h1 id="paddleocr-vl">PaddleOCR-VL介绍<a class="headerlink" href="#paddleocr-vl" title="Permanent link">&para;</a></h1>
 <p>PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的元素识别设计。其核心组件为 PaddleOCR-VL-0.9B，这是一种紧凑而强大的视觉语言模型（VLM），它由 NaViT 风格的动态分辨率视觉编码器与 ERNIE-4.5-0.3B 语言模型组成，能够实现精准的元素识别。该模型支持 109 种语言，并在识别复杂元素（如文本、表格、公式和图表）方面表现出色，同时保持极低的资源消耗。通过在广泛使用的公开基准与内部基准上的全面评测，PaddleOCR-VL 在页级级文档解析与元素级识别均达到 SOTA 表现。它显著优于现有的基于Pipeline方案和文档解析多模态方案以及先进的通用多模态大模型，并具备更快的推理速度。这些优势使其非常适合在真实场景中落地部署。</p>
+<p><img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr_vl/metrics/allmetric.png"/></p>
 <h2 id="1">1. 环境准备<a class="headerlink" href="#1" title="Permanent link">&para;</a></h2>
 <p>安装 PaddlePaddle 和 PaddleOCR:</p>
 <div class="language-shell highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>paddlepaddle-gpu<span class="o">==</span><span class="m">3</span>.2.0<span class="w"> </span>-i<span class="w"> </span>https://www.paddlepaddle.org.cn/packages/stable/cu126/
@@ -3976,6 +3977,33 @@ You're not viewing the latest version.
 <blockquote>
 <p>对于 Windows 用户，请使用 WSL 或者 Docker 进行环境搭建。</p>
 </blockquote>
+<p>运行 PaddleOCR-VL 对 GPU 硬件有以下要求：</p>
+<table border="1">
+<thead>
+  <tr>
+    <th>推理方式</th>
+    <th>GPU Compute Capability</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>PaddlePaddle</td>
+    <td>≥ 8.5</td>
+  </tr>
+  <tr>
+    <td>vLLM</td>
+    <td>≥ 8 （RTX 3060，RTX 5070，A10，A100, ...） <br />  
+    7 ≤ GPU Compute Capability < 8 （T4，V100，...）支持运行，但可能出现请求超时、OOM 等异常情况，不推荐使用
+    </td>
+  </tr>
+  <tr>
+    <td>SGLang</td>
+    <td>8 ≤ GPU Compute Capability < 12</td>
+  </tr>
+</tbody>
+</table>
+
+<p>目前 PaddleOCR-VL 暂不支持 CPU 及 Arm 架构，后续将根据实际需求扩展更多硬件支持，敬请期待！</p>
 <h2 id="2">2. 快速开始<a class="headerlink" href="#2" title="Permanent link">&para;</a></h2>
 <p>PaddleOCR-VL 支持 CLI 命令行方式和 Python API 两种使用方式，其中 CLI 命令行方式更简单，适合快速验证功能，而 Python API 方式更灵活，适合集成到现有项目中。</p>
 <h3 id="21">2.1 命令行方式体验<a class="headerlink" href="#21" title="Permanent link">&para;</a></h3>
@@ -4857,7 +4885,7 @@ MKL-DNN 缓存容量。
 </span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">    </span>ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddlex-genai-vllm-server<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">    </span>paddlex_genai_server<span class="w"> </span>--model_name<span class="w"> </span>PaddleOCR-VL-0.9B<span class="w"> </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0<span class="w"> </span>--port<span class="w"> </span><span class="m">8118</span><span class="w"> </span>--backend<span class="w"> </span>vllm
 </span></code></pre></div>
-<p>若您使用的是  NVIDIA 50 系显卡 (Compute Capacity &gt;= 12)，需要在启动服务前安装指定版本的 FlashAttention:</p>
+<p>若您使用的是  NVIDIA 50 系显卡 (Compute Capability &gt;= 12)，需要在启动服务前安装指定版本的 FlashAttention:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>docker<span class="w"> </span>run<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">    </span>-it<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">    </span>--rm<span class="w"> </span><span class="se">\</span>
@@ -4883,11 +4911,11 @@ MKL-DNN 缓存容量。
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>paddleocr<span class="w"> </span>install_genai_server_deps<span class="w"> </span>&lt;推理加速框架名称&gt;
 </span></code></pre></div>
 <p>当前支持的框架名称为 <code>vllm</code> 和 <code>sglang</code>，分别对应 vLLM 和 SGLang。</p>
-<p>若您使用的是  NVIDIA 50 系显卡 (Compute Capacity &gt;= 12)，需要在启动服务前安装指定版本的 FlashAttention:</p>
+<p>若您使用的是  NVIDIA 50 系显卡 (Compute Capability &gt;= 12)，需要在启动服务前安装指定版本的 FlashAttention:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>flash-attn<span class="o">==</span><span class="m">2</span>.8.3
 </span></code></pre></div>
-<p>安装完成后，可通过 <code>paddleocr genai_server</code> 命令启动服务：</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>paddleocr<span class="w"> </span>genai_server<span class="w"> </span>--model_name<span class="w"> </span>PaddleOCR-VL-0.9B<span class="w"> </span>--backend<span class="w"> </span>vllm<span class="w"> </span>--port<span class="w"> </span><span class="m">8118</span>
+<p>安装完成后，可通过 <code>paddlex_genai_server</code> 命令启动服务：</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>paddlex_genai_server<span class="w"> </span>--model_name<span class="w"> </span>PaddleOCR-VL-0.9B<span class="w"> </span>--backend<span class="w"> </span>vllm<span class="w"> </span>--port<span class="w"> </span><span class="m">8118</span>
 </span></code></pre></div>
 <p>该命令支持的参数如下：</p>
 <table>
