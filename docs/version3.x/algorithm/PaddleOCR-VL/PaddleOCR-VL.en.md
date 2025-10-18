@@ -173,3 +173,8 @@ Please refer to our usage documentation [PaddleOCR-VL Usage](../../pipeline_usag
 2. How to fine-tune the PaddleOCR-VL model?
 
 Currently, we do not support fine-tuning of the model, but it is a high-priority feature and will be released soon. Please stay tuned.
+
+3. Why was my chart not recognized and how can I use chart recognition?
+
+Because our default chart recognition function is turned off, it needs to be manually turned on. Please refer to [PaddleOCR-VL Usage] (../../ipeline_usage/PaddleOCR-VL. md) and set the use_chart_recognition为True parameters to True turn it on.
+
