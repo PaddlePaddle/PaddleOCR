@@ -173,3 +173,7 @@ Please refer to our usage documentation [PaddleOCR-VL Usage](../../pipeline_usag
 2. How to fine-tune the PaddleOCR-VL model?
 
 Currently, we do not support fine-tuning of the model, but it is a high-priority feature and will be released soon. Please stay tuned.
+
+5. If the results of the layout check are not satisfactory, what solutions can be optimized?
+
+Since layout detection is mainly trained for various document scenarios, if your test data is non-standard documents such as license plates, tickets images or ID Cards and you want to do OCR recognition, you can directly use the PaddleOCR-VL-0.9B model and turn off the layout detection model by setting use_layout_detection to False. If you find any layout detection errors, you can directly try the effect of using PaddleOCR-VL-0.9B alone. 
