@@ -2454,7 +2454,7 @@ MKL-DNN cache capacity.
             <li><code>model_settings</code>: <code>(Dict)</code> OCR model configuration</li>
             <li><code>dt_polys</code>: <code>(List[numpy.ndarray])</code> List of polygons for text detection. Each box is a numpy array with shape (4, 2), dtype int16</li>
             <li><code>dt_scores</code>: <code>(List[float])</code> Confidence scores for detection boxes</li>
-            <li><code>text_det_params</code>: `(Dict[str, Dict[str, int, float]])` Text detection module parameters</li>
+            <li><code>text_det_params</code>: <code>(Dict[str, Dict[str, int, float]])</code> Text detection module parameters</li>
                 <ul>
                     <li><code>limit_side_len</code>: <code>(int)</code> Side length limit for image preprocessing</li>
                     <li><code>limit_type</code>: <code>(str)</code> Limit processing method</li>
@@ -2464,13 +2464,13 @@ MKL-DNN cache capacity.
                     <li><code>text_type</code>: <code>(str)</code> Text detection type, currently fixed as "general"</li>
                 </ul>
             <li><code>text_type</code>: <code>(str)</code> Text detection type, currently fixed as "general"</li>
-            <li><code>textline_orientation_angles</code>: `(List[int])` Orientation classification results for text lines</li>
+            <li><code>textline_orientation_angles</code>: <code>(List[int])</code> Orientation classification results for text lines</li>
             <li><code>text_rec_score_thresh</code>: <code>(float)</code> Threshold for text recognition filtering</li>
             <li><code>rec_texts</code>: <code>(List[str])</code> Recognized texts filtered by score threshold</li>
             <li><code>rec_scores</code>: <code>(List[float])</code> Recognition scores filtered by threshold</li>
             <li><code>rec_polys</code>: <code>(List[numpy.ndarray])</code> Filtered detection boxes, same format as <code>dt_polys</code></li>
          </ul>
-    <li><code>formula_res_list</code>: `(List[Dict[str, Union[numpy.ndarray, List[float], str]]])` List of formula recognition results</li>
+    <li><code>formula_res_list</code>: <code>(List[Dict[str, Union[numpy.ndarray, List[float], str]]])</code> List of formula recognition results</li>
         <ul>
             <li><code>rec_formula</code>: <code>(str)</code> Recognized formula string</li>
             <li><code>rec_polys</code>: <code>(numpy.ndarray)</code> Bounding box for the formula, shape (4, 2), dtype int16</li>
@@ -2504,10 +2504,10 @@ MKL-DNN cache capacity.
         </ul>
     </ul>
 </li>
-<li>Calling <code>save_to_json()</code> saves the above content to the specified `save_path`. If it’s a directory, the saved path will be `save_path/{your_img_basename}_res.json`. If it’s a file, it saves directly. Numpy arrays are converted to lists since JSON doesn't support them.</li>
-<li>Calling <code>save_to_img()</code> saves visual results to the specified `save_path`. If a directory, various visualizations such as layout detection, OCR, and reading order are saved. If a file, only the last image is saved and others are overwritten.</li>
-<li>Calling <code>save_to_markdown()</code> saves converted markdown files to `save_path/{your_img_basename}.md`. For PDF input, it's recommended to specify a directory to avoid file overwriting.</li>
-<li>Calling <code>concatenate_markdown_pages()</code> merges multi-page markdown results from the `PP-StructureV3 pipeline` into a single document and returns the merged content.</li>
+<li>Calling <code>save_to_json()</code> saves the above content to the specified <code>save_path</code>. If it’s a directory, the saved path will be <code>save_path/{your_img_basename}_res.json</code>. If it’s a file, it saves directly. Numpy arrays are converted to lists since JSON doesn't support them.</li>
+<li>Calling <code>save_to_img()</code> saves visual results to the specified <code>save_path</code>. If a directory, various visualizations such as layout detection, OCR, and reading order are saved. If a file, only the last image is saved and others are overwritten.</li>
+<li>Calling <code>save_to_markdown()</code> saves converted markdown files to <code>save_path/{your_img_basename}.md</code>. For PDF input, it's recommended to specify a directory to avoid file overwriting.</li>
+<li>Calling <code>concatenate_markdown_pages()</code> merges multi-page markdown results from the <code>PP-StructureV3 pipeline</code>  into a single document and returns the merged content.</li>
 
 Additionally, you can access the prediction results and visual images through the following attributes:
 
@@ -2541,8 +2541,8 @@ Additionally, you can access the prediction results and visual images through th
 </table>
 <ul>
     <li>The <code>json</code> attribute returns the prediction result as a dictionary, which is consistent with the content saved using the <code>save_to_json()</code> method.</li>
-    <li>The <code>img</code> attribute returns the prediction result as a dictionary. The keys include <code>layout_det_res</code>, <code>overall_ocr_res</code>, <code>text_paragraphs_ocr_res</code>, <code>formula_res_region1</code>, <code>table_cell_img</code>, and <code>seal_res_region1</code>, each corresponding to a visualized <code>Image.Image</code>, object for layout detection, OCR, text paragraph, formula, table, and seal results. If optional modules are not used, the dictionary only contains `layout_det_res`.</li>
-    <li>The <code>markdown</code> attribute returns the prediction result as a dictionary. The keys include <code>markdown_texts</code>, <code>markdown_images</code>, and <code>page_continuation_flags</code>, where the values represent the markdown text, displayed images (`Image.Image` objects), and a boolean tuple indicating whether the first and last elements of the current page are paragraph boundaries.</li>
+    <li>The <code>img</code> attribute returns the prediction result as a dictionary. The keys include <code>layout_det_res</code>, <code>overall_ocr_res</code>, <code>text_paragraphs_ocr_res</code>, <code>formula_res_region1</code>, <code>table_cell_img</code>, and <code>seal_res_region1</code>, each corresponding to a visualized <code>Image.Image</code>, object for layout detection, OCR, text paragraph, formula, table, and seal results. If optional modules are not used, the dictionary only contains <code>layout_det_res</code>.</li>
+    <li>The <code>markdown</code> attribute returns the prediction result as a dictionary. The keys include <code>markdown_texts</code>, <code>markdown_images</code>, and <code>page_continuation_flags</code>, where the values represent the markdown text, displayed images (<code>Image.Image</code> objects), and a boolean tuple indicating whether the first and last elements of the current page are paragraph boundaries.</li>
 </ul>
 </details>
 
