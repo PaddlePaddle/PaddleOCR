@@ -28,7 +28,7 @@
 
 在非docker环境中，需要手动安装如下依赖项:
 
-- 软件可通过[安装脚本](https://github.com/apache/tvm/blob/main/docker/install/ubuntu_install_ethosu_driver_stack.sh)一键安装
+- 软件可通过[安装脚本](https://github.com/apache/tvm/blob/v0.9.0/docker/install/ubuntu_install_ethosu_driver_stack.sh)一键安装
   - [Fixed Virtual Platform (FVP) based on Arm(R) Corstone(TM)-300 software](https://developer.arm.com/tools-and-software/open-source-software/arm-platforms-software/arm-ecosystem-fvps)
   - [cmake 3.19.5](https://github.com/Kitware/CMake/releases/)
   - [GCC toolchain from Arm(R)](https://developer.arm.com/-/media/Files/downloads/gnu-rm/10-2020q4/gcc-arm-none-eabi-10-2020-q4-major-x86_64-linux.tar.bz2)
@@ -86,7 +86,7 @@ export PATH=/opt/arm/FVP_Corstone_SSE-300/models/Linux64_GCC-6.4:/opt/arm/cmake/
 模型描述
 -----------------
 
-在这个demo中，我们使用的模型是基于[PP-OCRv3](https://github.com/PaddlePaddle/PaddleOCR/blob/dygraph/doc/doc_ch/PP-OCRv3_introduction.md)的英文识别模型。由于Arm(R) Cortex(R)-M55 CPU不支持rnn算子，我们在PP-OCRv3原始文本识别模型的基础上进行适配，最终模型大小为2.7M。
+在这个demo中，我们使用的模型是基于[PP-OCRv3](https://github.com/PaddlePaddle/PaddleOCR/blob/main/docs/version2.x/ppocr/blog/PP-OCRv3_introduction.md)的英文识别模型。由于Arm(R) Cortex(R)-M55 CPU不支持rnn算子，我们在PP-OCRv3原始文本识别模型的基础上进行适配，最终模型大小为2.7M。
 
 PP-OCRv3是[PaddleOCR](https://github.com/PaddlePaddle/PaddleOCR)发布的PP-OCR系列模型的第三个版本，该系列模型具有以下特点：
    - 超轻量级OCR系统：检测（3.6M）+方向分类器（1.4M）+识别（12M）=17.0M。

@@ -122,13 +122,13 @@ After executing the command, the predicted identification information will be pr
 ONNXRuntime result：
 
 <div align="center">
-    <img src="../../doc/imgs_results/multi_lang/img_12.jpg" width=800">
+    <img src="../../docs/version2.x/ppocr/images/multi_lang/img_12.jpg" width=800">
 </div>
 
 Paddle Inference result：
 
 <div align="center">
-    <img src="../../doc/imgs_results/multi_lang/img_12.jpg" width=800">
+    <img src="../../docs/version2.x/ppocr/images/multi_lang/img_12.jpg" width=800">
 </div>
 
 

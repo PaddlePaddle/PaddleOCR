@@ -71,7 +71,7 @@ pip3 install paddlehub==2.1.0 --upgrade -i https://mirror.baidu.com/pypi/simple
 
 **模型路径可在`params.py`中查看和修改。**
 
-更多模型可以从PaddleOCR提供的模型库[PP-OCR](../../doc/doc_ch/models_list.md)和[PP-Structure](../../ppstructure/docs/models_list.md)下载，也可以替换成自己训练转换好的模型。
+更多模型可以从PaddleOCR提供的模型库[PP-OCR](../../docs/version2.x/ppstructure/models_list.md)和[PP-Structure](../../docs/version2.x/ppstructure/models_list.en.md)下载，也可以替换成自己训练转换好的模型。
 
 ### 2.3 安装服务模块
 PaddleOCR提供5种服务模块，根据需要安装所需模块。
