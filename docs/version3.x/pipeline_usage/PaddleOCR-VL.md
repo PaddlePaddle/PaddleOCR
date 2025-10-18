@@ -17,6 +17,35 @@ python -m pip install https://paddle-whl.bj.bcebos.com/nightly/cu126/safetensors
 ```
 > 对于 Windows 用户，请使用 WSL 或者 Docker 进行环境搭建。
 
+运行 PaddleOCR-VL 产线对 GPU 硬件有以下要求：
+
+<table border="1">
+<thead>
+  <tr>
+    <th>推理方式</th>
+    <th>GPU Compute Capability</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>PaddlePaddle</td>
+    <td>≥ 8.5</td>
+  </tr>
+  <tr>
+    <td>vLLM</td>
+    <td>≥ 8 （RTX 3060，RTX 5070，A10，A100, ...） <br />  
+    7 ≤ GPU Compute Capability < 8 （T4，V100，...）支持运行，但可能出现请求超时、OOM 等异常情况，不推荐使用
+    </td>
+  </tr>
+  <tr>
+    <td>SGLang</td>
+    <td>8 ≤ GPU Compute Capability < 12</td>
+  </tr>
+</tbody>
+</table>
+
+目前 PaddleOCR-VL 产线暂不支持 CPU 及 Arm 架构，后续将根据实际需求扩展更多硬件支持，敬请期待！
+
 ## 2. 快速开始
 
 PaddleOCR-VL 支持 CLI 命令行方式和 Python API 两种使用方式，其中 CLI 命令行方式更简单，适合快速验证功能，而 Python API 方式更灵活，适合集成到现有项目中。
@@ -927,7 +956,7 @@ docker run \
     paddlex_genai_server --model_name PaddleOCR-VL-0.9B --host 0.0.0.0 --port 8118 --backend vllm
 ```
 
-若您使用的是  NVIDIA 50 系显卡 (Compute Capacity >= 12)，需要在启动服务前安装指定版本的 FlashAttention:
+若您使用的是  NVIDIA 50 系显卡 (Compute Capability >= 12)，需要在启动服务前安装指定版本的 FlashAttention:
 
 ```bash
 docker run \
@@ -970,10 +999,10 @@ paddleocr install_genai_server_deps <推理加速框架名称>
 python -m pip install flash-attn==2.8.3
 ```
 
-安装完成后，可通过 `paddleocr genai_server` 命令启动服务：
+安装完成后，可通过 `paddlex_genai_server` 命令启动服务：
 
 ```bash
-paddleocr genai_server --model_name PaddleOCR-VL-0.9B --backend vllm --port 8118
+paddlex_genai_server --model_name PaddleOCR-VL-0.9B --backend vllm --port 8118
 ```
 
 该命令支持的参数如下：
