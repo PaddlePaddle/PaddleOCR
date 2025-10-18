@@ -20,6 +20,7 @@ import random
 import traceback
 from paddle.io import Dataset
 from .imaug import transform, create_operators
+from paddle import get_device
 
 
 class SimpleDataSet(Dataset):
@@ -203,6 +204,8 @@ class MultiScaleDataSet(SimpleDataSet):
         valid_ratio = min(1.0, float(resized_w / imgW))
         data["image"] = padding_im
         data["valid_ratio"] = valid_ratio
+        if "iluvatar_gpu" in get_device():
+            data["valid_ratio"] = np.float32(valid_ratio)
         return data
 
     def __getitem__(self, properties):

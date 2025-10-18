@@ -28,6 +28,7 @@ from .abinet_aug import (
     SVTRDeterioration,
     ParseQDeterioration,
 )
+from paddle import get_device
 from paddle.vision.transforms import Compose
 
 
@@ -305,6 +306,8 @@ class RecResizeImg(object):
             norm_img, valid_ratio = resize_norm_img(img, self.image_shape, self.padding)
         data["image"] = norm_img
         data["valid_ratio"] = valid_ratio
+        if "iluvatar_gpu" in get_device():
+            data["valid_ratio"] = np.float32(valid_ratio)
         return data
 
 
@@ -338,6 +341,8 @@ class VLRecResizeImg(object):
 
         data["image"] = norm_img
         data["valid_ratio"] = valid_ratio
+        if "iluvatar_gpu" in get_device():
+            data["valid_ratio"] = np.float32(valid_ratio)
         return data
 
 
@@ -366,6 +371,8 @@ class RFLRecResizeImg(object):
         )
         data["image"] = norm_img
         data["valid_ratio"] = valid_ratio
+        if "iluvatar_gpu" in get_device():
+            data["valid_ratio"] = np.float32(valid_ratio)
         return data
 
 
@@ -407,6 +414,8 @@ class SARRecResizeImg(object):
         data["resized_shape"] = resize_shape
         data["pad_shape"] = pad_shape
         data["valid_ratio"] = valid_ratio
+        if "iluvatar_gpu" in get_device():
+            data["valid_ratio"] = np.float32(valid_ratio)
         return data
 
 
@@ -539,6 +548,8 @@ class ABINetRecResizeImg(object):
         norm_img, valid_ratio = resize_norm_img_abinet(img, self.image_shape)
         data["image"] = norm_img
         data["valid_ratio"] = valid_ratio
+        if "iluvatar_gpu" in get_device():
+            data["valid_ratio"] = np.float32(valid_ratio)
         return data
 
 
@@ -553,6 +564,8 @@ class SVTRRecResizeImg(object):
         norm_img, valid_ratio = resize_norm_img(img, self.image_shape, self.padding)
         data["image"] = norm_img
         data["valid_ratio"] = valid_ratio
+        if "iluvatar_gpu" in get_device():
+            data["valid_ratio"] = np.float32(valid_ratio)
         return data
 
 
@@ -574,6 +587,8 @@ class RobustScannerRecResizeImg(object):
         data["resized_shape"] = resize_shape
         data["pad_shape"] = pad_shape
         data["valid_ratio"] = valid_ratio
+        if "iluvatar_gpu" in get_device():
+            data["valid_ratio"] = np.float32(valid_ratio)
         data["word_positons"] = word_positons
         return data
 
