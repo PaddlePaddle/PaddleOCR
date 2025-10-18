@@ -177,4 +177,3 @@ Currently, we do not support fine-tuning of the model, but it is a high-priority
 3. Why was my chart not recognized and how can I use chart recognition?
 
 Because our default chart recognition function is turned off, it needs to be manually turned on. Please refer to [PaddleOCR-VL Usage](../../pipeline_usage/PaddleOCR-VL.en.md) and set the use_chart_recognition为True parameters to True turn it on.
-
