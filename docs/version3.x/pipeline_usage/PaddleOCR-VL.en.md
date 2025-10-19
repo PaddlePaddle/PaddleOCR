@@ -6,6 +6,8 @@ comments: true
 
 PaddleOCR-VL is a SOTA and resource-efficient model tailored for document parsing. Its core component is PaddleOCR-VL-0.9B, a compact yet powerful vision-language model (VLM) that integrates a NaViT-style dynamic resolution visual encoder with the ERNIE-4.5-0.3B language model to enable accurate element recognition. This innovative model efficiently supports 109 languages and excels in recognizing complex elements (e.g., text, tables, formulas, and charts), while maintaining minimal resource consumption. Through comprehensive evaluations on widely used public benchmarks and in-house benchmarks, PaddleOCR-VL achieves SOTA performance in both page-level document parsing and element-level recognition. It significantly outperforms existing solutions, exhibits strong competitiveness against top-tier VLMs, and delivers fast inference speeds. These strengths make it highly suitable for practical deployment in real-world scenarios.
 
+<img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr_vl/metrics/allmetric.png"/>
+
 ## 1. Environment Preparation
 
 Install PaddlePaddle and PaddleOCR:
@@ -16,6 +18,35 @@ python -m pip install -U "paddleocr[doc-parser]"
 python -m pip install https://paddle-whl.bj.bcebos.com/nightly/cu126/safetensors/safetensors-0.6.2.dev0-cp38-abi3-linux_x86_64.whl
 ```
 > For Windows users, please use WSL or a Docker container.
+
+Running the PaddleOCR-VL has the following GPU hardware requirements:
+
+<table border="1">
+<thead>
+  <tr>
+    <th>Inference Method</th>
+    <th>GPU Compute Capability</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>PaddlePaddle</td>
+    <td>≥ 8.5</td>
+  </tr>
+  <tr>
+    <td>vLLM</td>
+    <td>≥ 8 (RTX 3060, RTX 5070, A10, A100, ...) <br />  
+    7 ≤ GPU Compute Capability < 8 (T4, V100, ...) Supported but may experience issues like request timeouts, OOM errors, etc. Not recommended for use.
+    </td>
+  </tr>
+  <tr>
+    <td>SGLang</td>
+    <td>8 ≤ GPU Compute Capability < 12</td>
+  </tr>
+</tbody>
+</table>
+
+The PaddleOCR-VL currently does not support CPU or Arm architecture. Support for more hardware will be expanded based on actual requirements in the future. Stay tuned!
 
 ## 2. Quick Start
 
@@ -889,7 +920,7 @@ docker run \
     paddlex_genai_server --model_name PaddleOCR-VL-0.9B --host 0.0.0.0 --port 8118 --backend vllm
 ```
 
-If you are using an NVIDIA 50 series graphics card (Compute Capacity >= 12), you need to install a specific version of FlashAttention before launching the service.
+If you are using an NVIDIA 50 series graphics card (Compute Capability >= 12), you need to install a specific version of FlashAttention before launching the service.
 
 ```bash
 docker run \
@@ -926,16 +957,16 @@ paddleocr install_genai_server_deps <name of the inference acceleration framewor
 
 The currently supported frameworks are named `vllm` and `sglang`, corresponding to vLLM and SGLang, respectively.
 
-If you are using an NVIDIA 50 series graphics card (Compute Capacity >= 12), you need to install a specific version of FlashAttention before launching the service.
+If you are using an NVIDIA 50 series graphics card (Compute Capability >= 12), you need to install a specific version of FlashAttention before launching the service.
 
 ```bash
 python -m pip install flash-attn==2.8.3
 ```
 
-After installation, you can start the service using the `paddleocr genai_server` command:
+After installation, you can start the service using the `paddlex_genai_server` command:
 
 ```bash
-paddleocr genai_server --model_name PaddleOCR-VL-0.9B --backend vllm --port 8118
+paddlex_genai_server --model_name PaddleOCR-VL-0.9B --backend vllm --port 8118
 ```
 
 The parameters supported by this command are as follows:
