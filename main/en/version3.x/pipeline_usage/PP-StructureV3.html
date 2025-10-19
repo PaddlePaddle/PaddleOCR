@@ -6111,85 +6111,99 @@ MKL-DNN cache capacity.
 </tr>
 </table>
 
-- Calling `print()` will print the result to the terminal. Explanation of the printed content:
-    - `input_path`: `(str)` Input path of the image or PDF to be predicted
-
-    - `page_index`: `(Union[int, None])` If input is a PDF, indicates the page number; otherwise `None`
-
-    - `model_settings`: `(Dict[str, bool])` Model parameters configured for the pipeline
-
-        - `use_doc_preprocessor`: `(bool)` Whether to enable document preprocessor sub-pipeline
-        - `use_seal_recognition`: `(bool)` Whether to enable seal text recognition sub-pipeline
-        - `use_table_recognition`: `(bool)` Whether to enable table recognition sub-pipeline
-        - `use_formula_recognition`: `(bool)` Whether to enable formula recognition sub-pipeline
-
-    - `doc_preprocessor_res`: `(Dict[str, Union[List[float], str]])` Document preprocessing result dictionary, only exists if `use_doc_preprocessor=True`
-        - `input_path`: `(str)` Image path accepted by document preprocessor, `None` if input is `numpy.ndarray`
-        - `page_index`: `None` since input is `numpy.ndarray`
-        - `model_settings`: `(Dict[str, bool])` Model configuration for the document preprocessor
-          - `use_doc_orientation_classify`: `(bool)` Whether to enable document orientation classification
-          - `use_doc_unwarping`: `(bool)` Whether to enable image unwarping
-        - `angle`: `(int)` Predicted angle result if orientation classification is enabled
-
-    - `parsing_res_list`: `(List[Dict])` A list of parsing results, where each element is a dictionary. The order of the list is the reading order after parsing.
-        - `block_bbox`: `(np.ndarray)` The bounding box of the layout area.
-        - `block_label`: `(str)` The label of the layout area, such as `text`, `table`, etc.
-        - `block_content`: `(str)` The content within the layout area.
-        - `block_id`: `(int)` The index of the layout area, used to display the layout sorting result.
-        - `block_order`: `(int)` The order of the layout area, used to display the reading order of the layout. For non-ordered parts, the default value is `None`.
-
-    - `overall_ocr_res`: `(Dict[str, Union[List[str], List[float], numpy.ndarray]])` Dictionary of global OCR results
-      - `input_path`: `(Union[str, None])` OCR sub-pipeline input path; `None` if input is `numpy.ndarray`
-      - `page_index`: `None` since input is `numpy.ndarray`
-      - `model_settings`: `(Dict)` OCR model configuration
-      - `dt_polys`: `(List[numpy.ndarray])` List of polygons for text detection. Each box is a numpy array with shape (4, 2), dtype int16
-      - `dt_scores`: `(List[float])` Confidence scores for detection boxes
-      - `text_det_params`: `(Dict[str, Dict[str, int, float]])` Text detection module parameters
-        - `limit_side_len`: `(int)` Side length limit for image preprocessing
-        - `limit_type`: `(str)` Limit processing method
-        - `thresh`: `(float)` Threshold for text pixel classification
-        - `box_thresh`: `(float)` Threshold for text detection boxes
-        - `unclip_ratio`: `(float)` Unclip ratio for expanding boxes
-        - `text_type`: `(str)` Text detection type, currently fixed as "general"
-
-      - `text_type`: `(str)` Text detection type, currently fixed as "general"
-      - `textline_orientation_angles`: `(List[int])` Orientation classification results for text lines
-      - `text_rec_score_thresh`: `(float)` Threshold for text recognition filtering
-      - `rec_texts`: `(List[str])` Recognized texts filtered by score threshold
-      - `rec_scores`: `(List[float])` Recognition scores filtered by threshold
-      - `rec_polys`: `(List[numpy.ndarray])` Filtered detection boxes, same format as `dt_polys`
-
-    - `formula_res_list`: `(List[Dict[str, Union[numpy.ndarray, List[float], str]]])` List of formula recognition results
-        - `rec_formula`: `(str)` Recognized formula string
-        - `rec_polys`: `(numpy.ndarray)` Bounding box for the formula, shape (4, 2), dtype int16
-        - `formula_region_id`: `(int)` Region ID of the formula
-
-    - `seal_res_list`: `(List[Dict[str, Union[numpy.ndarray, List[float], str]]])` List of seal text recognition results
-        - `input_path`: `(str)` Input path for the seal image
-        - `page_index`: `None` since input is `numpy.ndarray`
-        - `model_settings`: `(Dict)` Model configuration for seal text recognition
-        - `dt_polys`: `(List[numpy.ndarray])` Seal detection boxes, same format as `dt_polys`
-        - `text_det_params`: `(Dict[str, Dict[str, int, float]])` Detection parameters, same as above
-        - `text_type`: `(str)` Detection type, currently fixed as "seal"
-        - `text_rec_score_thresh`: `(float)` Score threshold for recognition
-        - `rec_texts`: `(List[str])` Recognized texts filtered by score
-        - `rec_scores`: `(List[float])` Recognition scores filtered by threshold
-        - `rec_polys`: `(List[numpy.ndarray])` Filtered seal boxes, same format as `dt_polys`
-        - `rec_boxes`: `(numpy.ndarray)` Rectangle boxes, shape (n, 4), dtype int16
-
-    - `table_res_list`: `(List[Dict[str, Union[numpy.ndarray, List[float], str]]])` List of table recognition results
-        - `cell_box_list`: `(List[numpy.ndarray])` Bounding boxes of table cells
-        - `pred_html`: `(str)` Table as an HTML string
-        - `table_ocr_pred`: `(dict)` OCR results for the table
-            - `rec_polys`: `(List[numpy.ndarray])` Detected cell boxes
-            - `rec_texts`: `(List[str])` Recognized texts for cells
-            - `rec_scores`: `(List[float])` Confidence scores for cell recognition
-            - `rec_boxes`: `(numpy.ndarray)` Rectangle boxes for detection, shape (n, 4), dtype int16
-
-- Calling `save_to_json()` saves the above content to the specified `save_path`. If it’s a directory, the saved path will be `save_path/{your_img_basename}_res.json`. If it’s a file, it saves directly. Numpy arrays are converted to lists since JSON doesn't support them.
-- Calling `save_to_img()` saves visual results to the specified `save_path`. If a directory, various visualizations such as layout detection, OCR, and reading order are saved. If a file, only the last image is saved and others are overwritten.
-- Calling `save_to_markdown()` saves converted markdown files to `save_path/{your_img_basename}.md`. For PDF input, it's recommended to specify a directory to avoid file overwriting.
-- Calling `concatenate_markdown_pages()` merges multi-page markdown results from the `PP-StructureV3 pipeline` into a single document and returns the merged content.
+<ul>
+ <li> Calling <code>print()</code> will print the result to the terminal. Explanation of the printed content:</li>
+     <ul>
+    <li><code>input_path</code>: <code>(str)</code> Input path of the image or PDF to be predicted</li>
+    <li><code>page_index</code>: <code>(Union[int, None])</code> If input is a PDF, indicates the page number; otherwise <code>None</code></li>
+    <li><code>model_settings</code>: <code>(Dict[str, bool])</code> Model parameters configured for the pipeline</li>
+        <ul>
+            <li><code>use_doc_preprocessor</code>: <code>(bool)</code> Whether to enable document preprocessor sub-pipeline</li>
+            <li><code>use_seal_recognition</code>: <code>(bool)</code> Whether to enable seal text recognition sub-pipeline</li>
+            <li><code>use_table_recognition</code>: <code>(bool)</code> Whether to enable table recognition sub-pipeline</li>
+            <li><code>use_formula_recognition</code>: <code>(bool)</code> Whether to enable formula recognition sub-pipeline</li>
+        </ul>
+    </li>
+    <li><code>doc_preprocessor_res</code>: <code>(Dict[str, Union[List[float], str]])</code> Document preprocessing result dictionary, only exists if <code>use_doc_preprocessor=True</code></li>
+        <ul>
+        <li><code>input_path</code>: <code>(str)</code> Image path accepted by document preprocessor, <code>None</code> if input is <code>numpy.ndarray</code></li>
+        <li><code>page_index</code>: <code>None</code> since input is <code>numpy.ndarray</code></li>
+        <li><code>model_settings</code>: <code>(Dict[str, bool])</code> Model configuration for the document preprocessor</li>
+            <ul>
+                <li><code>use_doc_orientation_classify</code>: <code>(bool)</code> Whether to enable document orientation classification</li>
+                <li><code>use_doc_unwarping</code>: <code>(bool)</code> Whether to enable image unwarping</li>
+            </ul>
+        <li><code>angle</code>: <code>(int)</code> Predicted angle result if orientation classification is enabled</li>
+        </ul>
+    <li><code>parsing_res_list</code>: <code>(List[Dict])</code> A list of parsing results, where each element is a dictionary. The order of the list is the reading order after parsing.</li>
+        <ul>
+            <li><code>block_bbox</code>: <code>(np.ndarray)</code> The bounding box of the layout area.</li>
+            <li><code>block_label</code>: <code>(str)</code> The label of the layout area, such as <code>text</code>, <code>table</code>, etc.</li>
+            <li><code>block_content</code>: <code>(str)</code> The content within the layout area.</li>
+            <li><code>block_id</code>: <code>(int)</code> The index of the layout area, used to display the layout sorting result.</li>
+            <li><code>block_order</code>: <code>(int)</code> The order of the layout area, used to display the reading order of the layout. For non-ordered parts, the default value is <code>None</code>.</li>
+        </ul>
+    <li><code>overall_ocr_res</code>: <code>(Dict[str, Union[List[str], List[float], numpy.ndarray]])</code>  Dictionary of global OCR results</li>
+        <ul>
+            <li><code>input_path</code>: <code>(Union[str, None])</code> OCR sub-pipeline input path; <code>None</code> if input is <code>numpy.ndarray</code></li>
+            <li><code>page_index</code>: <code>None</code> since input is <code>numpy.ndarray</code></li>
+            <li><code>model_settings</code>: <code>(Dict)</code> OCR model configuration</li>
+            <li><code>dt_polys</code>: <code>(List[numpy.ndarray])</code> List of polygons for text detection. Each box is a numpy array with shape (4, 2), dtype int16</li>
+            <li><code>dt_scores</code>: <code>(List[float])</code> Confidence scores for detection boxes</li>
+            <li><code>text_det_params</code>: <code>(Dict[str, Dict[str, int, float]])</code> Text detection module parameters</li>
+                <ul>
+                    <li><code>limit_side_len</code>: <code>(int)</code> Side length limit for image preprocessing</li>
+                    <li><code>limit_type</code>: <code>(str)</code> Limit processing method</li>
+                    <li><code>thresh</code>: <code>(float)</code> Threshold for text pixel classification</li>
+                    <li><code>box_thresh</code>: <code>(float)</code> Threshold for text detection boxes</li>
+                    <li><code>unclip_ratio</code>: <code>(float)</code> Unclip ratio for expanding boxes</li>
+                    <li><code>text_type</code>: <code>(str)</code> Text detection type, currently fixed as "general"</li>
+                </ul>
+            <li><code>text_type</code>: <code>(str)</code> Text detection type, currently fixed as "general"</li>
+            <li><code>textline_orientation_angles</code>: <code>(List[int])</code> Orientation classification results for text lines</li>
+            <li><code>text_rec_score_thresh</code>: <code>(float)</code> Threshold for text recognition filtering</li>
+            <li><code>rec_texts</code>: <code>(List[str])</code> Recognized texts filtered by score threshold</li>
+            <li><code>rec_scores</code>: <code>(List[float])</code> Recognition scores filtered by threshold</li>
+            <li><code>rec_polys</code>: <code>(List[numpy.ndarray])</code> Filtered detection boxes, same format as <code>dt_polys</code></li>
+         </ul>
+    <li><code>formula_res_list</code>: <code>(List[Dict[str, Union[numpy.ndarray, List[float], str]]])</code> List of formula recognition results</li>
+        <ul>
+            <li><code>rec_formula</code>: <code>(str)</code> Recognized formula string</li>
+            <li><code>rec_polys</code>: <code>(numpy.ndarray)</code> Bounding box for the formula, shape (4, 2), dtype int16</li>
+            <li><code>formula_region_id</code>: <code>(int)</code> Region ID of the formula</li>
+        </ul>
+    <li><code>seal_res_list</code>: <code>(List[Dict[str, Union[numpy.ndarray, List[float], str]]])</code> List of seal text recognition results</li>
+        <ul>
+            <li><code>input_path</code>: <code>(str)</code> Input path for the seal image</li>
+            <li><code>page_index</code>: <code>None</code> since input is <code>numpy.ndarray</code></li>
+            <li><code>model_settings</code>: <code>(Dict)</code> Model configuration for seal text recognition</li>
+            <li><code>dt_polys</code>: <code>(List[numpy.ndarray])</code> Seal detection boxes, same format as <code>dt_polys</code></li>
+            <li><code>text_det_params</code>: <code>(Dict[str, Dict[str, int, float]])</code> Detection parameters, same as above</li>
+            <li><code>text_type</code>: <code>(str)</code> Detection type, currently fixed as "seal"</li>
+            <li><code>text_rec_score_thresh</code>: <code>(float)</code> Score threshold for recognition</li>
+            <li><code>rec_texts</code>: <code>(List[str])</code> Recognized texts filtered by score</li>
+            <li><code>rec_scores</code>: <code>(List[float])</code> Recognition scores filtered by threshold</li>
+            <li><code>rec_polys</code>: <code>(List[numpy.ndarray])</code> Filtered seal boxes, same format as <code>dt_polys</code></li>
+            <li><code>rec_boxes</code>: <code>(numpy.ndarray)</code> Rectangle boxes, shape (n, 4), dtype int16</li>
+        </ul>
+    <li><code>table_res_list</code>: <code>(List[Dict[str, Union[numpy.ndarray, List[float], str]]])</code> List of table recognition results</li>
+        <ul>
+            <li><code>cell_box_list</code>: <code>(List[numpy.ndarray])</code> Bounding boxes of table cells</li>
+            <li><code>pred_html</code>: <code>(str)</code> Table as an HTML string</li>
+            <li><code>table_ocr_pred</code>: <code>(Dict)</code> OCR results for the table</li>
+            <ul>
+                <li><code>rec_polys</code>: <code>(List[numpy.ndarray])</code> Detected cell boxes</li>
+                <li><code>rec_texts</code>: <code>(List[str])</code> Recognized texts for cells</li>
+                <li><code>rec_scores</code>: <code>(List[float])</code> Confidence scores for cell recognition</li>
+                <li><code>rec_boxes</code>: <code>(numpy.ndarray)</code> Rectangle boxes for detection, shape (n, 4), dtype int16</li>
+            </ul>
+        </ul>
+    </ul>
+</li>
+<li>Calling <code>save_to_json()</code> saves the above content to the specified <code>save_path</code>. If it’s a directory, the saved path will be <code>save_path/{your_img_basename}_res.json</code>. If it’s a file, it saves directly. Numpy arrays are converted to lists since JSON doesn't support them.</li>
+<li>Calling <code>save_to_img()</code> saves visual results to the specified <code>save_path</code>. If a directory, various visualizations such as layout detection, OCR, and reading order are saved. If a file, only the last image is saved and others are overwritten.</li>
+<li>Calling <code>save_to_markdown()</code> saves converted markdown files to <code>save_path/{your_img_basename}.md</code>. For PDF input, it's recommended to specify a directory to avoid file overwriting.</li>
+<li>Calling <code>concatenate_markdown_pages()</code> merges multi-page markdown results from the <code>PP-StructureV3 pipeline</code>  into a single document and returns the merged content.</li>
 
 Additionally, you can access the prediction results and visual images through the following attributes:
 
@@ -6221,10 +6235,11 @@ Additionally, you can access the prediction results and visual images through th
 </tr>
 </tbody>
 </table>
-- The `json` attribute returns the prediction result as a dictionary, which is consistent with the content saved using the `save_to_json()` method.
-- The `img` attribute returns the prediction result as a dictionary. The keys include `layout_det_res`, `overall_ocr_res`, `text_paragraphs_ocr_res`, `formula_res_region1`, `table_cell_img`, and `seal_res_region1`, each corresponding to a visualized `Image.Image` object for layout detection, OCR, text paragraph, formula, table, and seal results. If optional modules are not used, the dictionary only contains `layout_det_res`.
-- The `markdown` attribute returns the prediction result as a dictionary. The keys include `markdown_texts`, `markdown_images`, and `page_continuation_flags`, where the values represent the markdown text, displayed images (`Image.Image` objects), and a boolean tuple indicating whether the first and last elements of the current page are paragraph boundaries.
-
+<ul>
+    <li>The <code>json</code> attribute returns the prediction result as a dictionary, which is consistent with the content saved using the <code>save_to_json()</code> method.</li>
+    <li>The <code>img</code> attribute returns the prediction result as a dictionary. The keys include <code>layout_det_res</code>, <code>overall_ocr_res</code>, <code>text_paragraphs_ocr_res</code>, <code>formula_res_region1</code>, <code>table_cell_img</code>, and <code>seal_res_region1</code>, each corresponding to a visualized <code>Image.Image</code>, object for layout detection, OCR, text paragraph, formula, table, and seal results. If optional modules are not used, the dictionary only contains <code>layout_det_res</code>.</li>
+    <li>The <code>markdown</code> attribute returns the prediction result as a dictionary. The keys include <code>markdown_texts</code>, <code>markdown_images</code>, and <code>page_continuation_flags</code>, where the values represent the markdown text, displayed images (<code>Image.Image</code> objects), and a boolean tuple indicating whether the first and last elements of the current page are paragraph boundaries.</li>
+</ul>
 </details>
 
 <h2 id="3-development-integration-deployment">3. Development Integration / Deployment<a class="headerlink" href="#3-development-integration-deployment" title="Permanent link">&para;</a></h2>

@@ -6192,86 +6192,100 @@ MKL-DNN 缓存容量。
 </tr>
 </table>
 
-- 调用`print()` 方法会将结果打印到终端，打印到终端的内容解释如下：
-    - `input_path`: `(str)` 待预测图像或者PDF的输入路径
-
-    - `page_index`: `(Union[int, None])` 如果输入是PDF文件，则表示当前是PDF的第几页，否则为 `None`
-
-    - `model_settings`: `(Dict[str, bool])` 配置产线所需的模型参数
-
-        - `use_doc_preprocessor`: `(bool)` 控制是否启用文档预处理子产线
-        - `use_seal_recognition`: `(bool)` 控制是否启用印章文本识别子产线
-        - `use_table_recognition`: `(bool)` 控制是否启用表格识别子产线
-        - `use_formula_recognition`: `(bool)` 控制是否启用公式识别子产线
-
-    - `doc_preprocessor_res`: `(Dict[str, Union[List[float], str]])` 文档预处理结果dict，仅当`use_doc_preprocessor=True`时存在
-        - `input_path`: `(str)` 文档预处理子产线接受的图像路径，当输入为`numpy.ndarray`时，保存为`None`，此处为`None`
-        - `page_index`: `None`，此处的输入为`numpy.ndarray`，所以值为`None`
-        - `model_settings`: `(Dict[str, bool])` 文档预处理子产线的模型配置参数
-          - `use_doc_orientation_classify`: `(bool)` 控制是否启用文档图像方向分类子模块
-          - `use_doc_unwarping`: `(bool)` 控制是否启用文本图像扭曲矫正子模块
-        - `angle`: `(int)` 文档图像方向分类子模块的预测结果，启用时返回实际角度值
-
-    - `parsing_res_list`: `(List[Dict])` 解析结果的列表，每个元素为一个字典，列表顺序为解析后的阅读顺序。
-        - `block_bbox`: `(np.ndarray)` 版面区域的边界框。
-        - `block_label`: `(str)` 版面区域的标签，例如`text`, `table`等。
-        - `block_content`: `(str)` 内容为版面区域内的内容。
-        - `block_id`: `(int)` 版面区域的索引，用于显示版面排序结果。
-        - `block_order` `(int)` 版面区域的顺序，用于显示版面阅读顺序,对于非排序部分，默认值为 `None`。
-
-    - `overall_ocr_res`: `(Dict[str, Union[List[str], List[float], numpy.ndarray]])` 全局 OCR 结果的dict
-      - `input_path`: `(Union[str, None])` 图像OCR子产线接受的图像路径，当输入为`numpy.ndarray`时，保存为`None`
-      - `page_index`: `None`，此处的输入为`numpy.ndarray`，所以值为`None`
-      - `model_settings`: `(Dict)` OCR子产线的模型配置参数
-      - `dt_polys`: `(List[numpy.ndarray])` 文本检测的多边形框列表。每个检测框由4个顶点坐标构成的numpy数组表示，数组shape为(4, 2)，数据类型为int16
-      - `dt_scores`: `(List[float])` 文本检测框的置信度列表
-      - `text_det_params`: `(Dict[str, Dict[str, int, float]])` 文本检测模块的配置参数
-        - `limit_side_len`: `(int)` 图像预处理时的边长限制值
-        - `limit_type`: `(str)` 边长限制的处理方式
-        - `thresh`: `(float)` 文本像素分类的置信度阈值
-        - `box_thresh`: `(float)` 文本检测框的置信度阈值
-        - `unclip_ratio`: `(float)` 文本检测框的膨胀系数
-        - `text_type`: `(str)` 文本检测的类型，当前固定为"general"
-
-      - `text_type`: `(str)` 文本检测的类型，当前固定为"general"
-      - `textline_orientation_angles`: `(List[int])` 文本行方向分类的预测结果。启用时返回实际角度值（如[0,0,1]
-      - `text_rec_score_thresh`: `(float)` 文本识别结果的过滤阈值
-      - `rec_texts`: `(List[str])` 文本识别结果列表，仅包含置信度超过`text_rec_score_thresh`的文本
-      - `rec_scores`: `(List[float])` 文本识别的置信度列表，已按`text_rec_score_thresh`过滤
-      - `rec_polys`: `(List[numpy.ndarray])` 经过置信度过滤的文本检测框列表，格式同`dt_polys`
-
-    - `formula_res_list`: `(List[Dict[str, Union[numpy.ndarray, List[float], str]]])` 公式识别结果列表，每个元素为一个dict
-        - `rec_formula`: `(str)` 公式识别结果
-        - `rec_polys`: `(numpy.ndarray)` 公式检测框，shape为(4, 2)，dtype为int16
-        - `formula_region_id`: `(int)` 公式所在的区域编号
-
-    - `seal_res_list`: `(List[Dict[str, Union[numpy.ndarray, List[float], str]]])` 印章文本识别结果列表，每个元素为一个dict
-        - `input_path`: `(str)` 印章图像的输入路径
-        - `page_index`: `None`，此处的输入为`numpy.ndarray`，所以值为`None`
-        - `model_settings`: `(Dict)` 印章文本识别子产线的模型配置参数
-        - `dt_polys`: `(List[numpy.ndarray])` 印章检测框列表，格式同`dt_polys`
-        - `text_det_params`: `(Dict[str, Dict[str, int, float]])` 印章检测模块的配置参数, 具体参数含义同上
-        - `text_type`: `(str)` 印章检测的类型，当前固定为"seal"
-        - `text_rec_score_thresh`: `(float)` 印章文本识别结果的过滤阈值
-        - `rec_texts`: `(List[str])` 印章文本识别结果列表，仅包含置信度超过`text_rec_score_thresh`的文本
-        - `rec_scores`: `(List[float])` 印章文本识别的置信度列表，已按`text_rec_score_thresh`过滤
-        - `rec_polys`: `(List[numpy.ndarray])` 经过置信度过滤的印章检测框列表，格式同`dt_polys`
-        - `rec_boxes`: `(numpy.ndarray)` 检测框的矩形边界框数组，shape为(n, 4)，dtype为int16。每一行表示一个矩形
-
-    - `table_res_list`: `(List[Dict[str, Union[numpy.ndarray, List[float], str]]])` 表格识别结果列表，每个元素为一个dict
-        - `cell_box_list`: `(List[numpy.ndarray])` 表格单元格的边界框列表
-        - `pred_html`: `(str)` 表格的HTML格式字符串
-        - `table_ocr_pred`: `(dict)` 表格的OCR识别结果
-            - `rec_polys`: `(List[numpy.ndarray])` 单元格的检测框列表
-            - `rec_texts`: `(List[str])` 单元格的识别结果
-            - `rec_scores`: `(List[float])` 单元格的识别置信度
-            - `rec_boxes`: `(numpy.ndarray)` 检测框的矩形边界框数组，shape为(n, 4)，dtype为int16。每一行表示一个矩形
-
-- 调用`save_to_json()` 方法会将上述内容保存到指定的 `save_path` 中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_res.json`，如果指定为文件，则直接保存到该文件中。由于 json 文件不支持保存numpy数组，因此会将其中的 `numpy.array` 类型转换为列表形式。
-- 调用`save_to_img()` 方法会将可视化结果保存到指定的 `save_path` 中，如果指定为目录，则会将版面区域检测可视化图像、全局OCR可视化图像、版面阅读顺序可视化图像等内容保存，如果指定为文件，则直接保存到该文件中。(产线通常包含较多结果图片，不建议直接指定为具体的文件路径，否则多张图会被覆盖，仅保留最后一张图)
-- 调用`save_to_markdown()` 方法会将转化后的 Markdown 文件保存到指定的 `save_path` 中，保存的文件路径为`save_path/{your_img_basename}.md`，如果输入是 PDF 文件，建议直接指定目录，否责多个 markdown 文件会被覆盖。
-- 调用 `concatenate_markdown_pages()` 方法将 `PP-StructureV3 pipeline` 输出的多页Markdown内容`markdown_list`合并为单个完整文档，并返回合并后的Markdown内容。
-
+<ul>
+   <li>调用<code>print()</code> 方法会将结果打印到终端，打印到终端的内容解释如下：</li>
+      <ul>
+        <li><code>input_path</code>: <code>(str)</code>  待预测图像或者PDF的输入路径</li>
+        <li><code>page_index</code>: <code>(Union[int, None])</code> 如果输入是PDF文件，则表示当前是PDF的第几页，否则为  <code>None</code></li>
+        <li><code>model_settings</code>: <code>(Dict[str, bool])</code>  配置产线所需的模型参数</li>
+            <ul>
+                <li><code>use_doc_preprocessor</code>: <code>(bool)</code>  控制是否启用文档预处理子产线</li>
+                <li><code>use_seal_recognition</code>: <code>(bool)</code> 控制是否启用印章文本识别子产线</li>
+                <li><code>use_table_recognition</code>: <code>(bool)</code> 控制是否启用表格识别子产线</li>
+                <li><code>use_formula_recognition</code>: <code>(bool)</code> 控制是否启用公式识别子产线</li>
+            </ul>
+        </li>
+        <li><code>doc_preprocessor_res</code>: <code>(Dict[str, Union[List[float], str]])</code> 文档预处理结果dict，仅当<code>use_doc_preprocessor=True</code>时存在</li>
+            <ul>
+                <li><code>input_path</code>: <code>(str)</code>  文档预处理子产线接受的图像路径，当输入为 <code>numpy.ndarray</code> 时，保存为<code> None</code> ，此处为<code> None</code> </li>
+                <li><code>page_index</code>: <code>None</code> ，此处的输入为<code>numpy.ndarray</code> ，所以值为<code> None</code> </li>
+                <li><code>model_settings</code>: <code>(Dict[str, bool])</code>  文档预处理子产线的模型配置参数</li>
+                    <ul>
+                        <li><code>use_doc_orientation_classify</code>: <code>(bool)</code>  控制是否启用文档图像方向分类子模块</li>
+                        <li><code>use_doc_unwarping</code>: <code>(bool)</code>  控制是否启用文本图像扭曲矫正子模块</li>
+                    </ul>
+                <li><code>angle</code>: <code>(int)</code>  文档图像方向分类子模块的预测结果，启用时返回实际角度值</li>
+            </ul>
+        <li><code>parsing_res_list</code>: <code>(List[Dict])</code> 解析结果的列表，每个元素为一个字典，列表顺序为解析后的阅读顺序。</li>
+            <ul>
+                <li><code>block_bbox</code>: <code>(np.ndarray)</code> 版面区域的边界框。</li>
+                <li><code>block_label</code>: <code>(str)</code> 版面区域的标签，例如<code>text</code>, <code>table</code>等。</li>
+                <li><code>block_content</code>: <code>(str)</code> 内容为版面区域内的内容。</li>
+                <li><code>block_id</code>: <code>(int)</code> 版面区域的索引，用于显示版面排序结果。</li>
+                <li><code>block_order</code> <code>(int)</code> 版面区域的顺序，用于显示版面阅读顺序,对于非排序部分，默认值为 <code> None</code> 。</li>
+            </ul>
+            <li><code>overall_ocr_res</code>: <code>(Dict[str, Union[List[str], List[float], numpy.ndarray]])</code> 全局 OCR 结果的dict</li>
+                <ul>
+                    <li><code>input_path</code>: <code>(Union[str, None])</code> 图像OCR子产线接受的图像路径，当输入为<code>numpy.ndarray</code>时，保存为<code> None</code> </li>
+                    <li><code>page_index</code>: <code> None</code> ，此处的输入为<code>numpy.ndarray</code>，所以值为<code> None</code> </li>
+                    <li><code>model_settings</code>: <code>(Dict)</code> OCR子产线的模型配置参数</li>
+                    <li><code>dt_polys</code>: <code>(List[numpy.ndarray])</code> 文本检测的多边形框列表。每个检测框由4个顶点坐标构成的numpy数组表示，数组shape为(4, 2)，数据类型为int16</li>
+                    <li><code>dt_scores</code>: <code>(List[float])</code> 文本检测框的置信度列表</li>
+                    <li><code>text_det_params</code>: <code>(Dict[str, Dict[str, int, float]])</code> 文本检测模块的配置参数</li>
+                        <ul>
+                            <li><code>limit_side_len</code>: <code>(int)</code> 图像预处理时的边长限制值</li>
+                            <li><code>limit_type</code>: <code>(str)</code> 边长限制的处理方式</li>
+                            <li><code>thresh</code>: <code>(float)</code> 文本像素分类的置信度阈值</li>
+                            <li><code>box_thresh</code>: <code>(float)</code> 文本检测框的置信度阈值</li>
+                            <li><code>unclip_ratio</code>: <code>(float)</code> 文本检测框的膨胀系数</li>
+                            <li><code>text_type</code>: <code>(str)</code> 文本检测的类型，当前固定为"general"</li>
+                        </ul>
+                    <li><code>text_type</code>: <code>(str)</code> 文本检测的类型，当前固定为"general"</li>
+                    <li><code>textline_orientation_angles</code>: <code>(List[int])</code> 文本行方向分类的预测结果。启用时返回实际角度值（如[0,0,1]</li>
+                    <li><code>text_rec_score_thresh</code>: <code>(float)</code> 文本识别结果的过滤阈值</li>
+                    <li><code>rec_texts</code>: <code>(List[str])</code> 文本识别结果列表，仅包含置信度超过<code>text_rec_score_thresh</code>的文本</li>
+                    <li><code>rec_scores</code>: <code>(List[float])</code> 文本识别的置信度列表，已按<code>text_rec_score_thresh</code>过滤</li>
+                    <li><code>rec_polys</code>: <code>(List[numpy.ndarray])</code> 经过置信度过滤的文本检测框列表，格式同<code>dt_polys</code></li>
+                </ul>
+            <li><code>formula_res_list</code>: <code>(List[Dict[str, Union[numpy.ndarray, List[float], str]]])</code> 公式识别结果列表，每个元素为一个dict</li>
+                <ul>
+                    <li><code>rec_formula</code>: <code>(str)</code> 公式识别结果</li>
+                    <li><code>rec_polys</code>: <code>(numpy.ndarray)</code> 公式检测框，shape为(4, 2)，dtype为int16</li>
+                    <li><code>formula_region_id</code>: <code>(int)</code> 公式所在的区域编号</li>
+                </ul>
+            <li><code>seal_res_list</code>: <code>(List[Dict[str, Union[numpy.ndarray, List[float], str]]])</code> 印章文本识别结果列表，每个元素为一个dict</li>
+                <ul>
+                    <li><code>input_path</code>: <code>(str)</code> 印章图像的输入路径</li>
+                    <li><code>page_index</code>: <code> None</code> ，此处的输入为<code>numpy.ndarray</code>，所以值为<code> None</code> </li>
+                    <li><code>model_settings</code>: <code>(Dict)</code> 印章文本识别子产线的模型配置参数</li>
+                    <li><code>dt_polys</code>: <code>(List[numpy.ndarray])</code> 印章检测框列表，格式同<code>dt_polys</code></li>
+                    <li><code>text_det_params</code>: <code>(Dict[str, Dict[str, int, float]])</code> 印章检测模块的配置参数, 具体参数含义同上</li>
+                    <li><code>text_type</code>: <code>(str)</code> 印章检测的类型，当前固定为"seal"</li>
+                    <li><code>text_rec_score_thresh</code>: <code>(float)</code> 印章文本识别结果的过滤阈值</li>
+                    <li><code>rec_texts</code>: <code>(List[str])</code> 印章文本识别结果列表，仅包含置信度超过<code>text_rec_score_thresh</code>的文本</li>
+                    <li><code>rec_scores</code>: <code>(List[float])</code> 印章文本识别的置信度列表，已按<code>dt_polys</code>过滤</li>
+                    <li><code>rec_polys</code>: <code>(List[numpy.ndarray])</code> 经过置信度过滤的印章检测框列表，格式同<code>dt_polys</code></li>
+                    <li><code>rec_boxes</code>: <code>(numpy.ndarray)</code> 检测框的矩形边界框数组，shape为(n, 4)，dtype为int16。每一行表示一个矩形</li>
+                </ul>
+            <li><code>table_res_list</code>: <code>(List[Dict[str, Union[numpy.ndarray, List[float], str]]])</code> 表格识别结果列表，每个元素为一个dict</li>
+                <ul>
+                    <li><code>cell_box_list</code>: <code>(List[numpy.ndarray])</code> 表格单元格的边界框列表</li>
+                    <li><code>pred_html</code>: <code>(str)</code> 表格的HTML格式字符串</li>
+                    <li><code>table_ocr_pred</code>: <code>(dict)</code> 表格的OCR识别结果</li>
+                    <ul>
+                        <li><code>rec_polys</code>: <code>(List[numpy.ndarray])</code> 单元格的检测框列表</li>
+                        <li><code>rec_texts</code>: <code>(List[str])</code> 单元格的识别结果</li>
+                        <li><code>rec_scores</code>: <code>(List[float])</code>单元格的识别置信度</li>
+                        <li><code>rec_boxes</code>: <code>(numpy.ndarray)</code> 检测框的矩形边界框数组，shape为(n, 4)，dtype为int16。每一行表示一个矩形</li>
+                    </ul>
+                </ul>
+            </ul>
+    </li>
+    <li>调用<code>save_to_json()</code> 方法会将上述内容保存到指定的 <code>save_path</code> 中，如果指定为目录，则保存的路径为<code>save_path/{your_img_basename}_res.json</code>，如果指定为文件，则直接保存到该文件中。由于 json 文件不支持保存numpy数组，因此会将其中的 <code>numpy.array</code> 类型转换为列表形式。</li>
+    <li>调用<code>save_to_img()</code> 方法会将可视化结果保存到指定的 <code>save_path</code> 中，如果指定为目录，则会将版面区域检测可视化图像、全局OCR可视化图像、版面阅读顺序可视化图像等内容保存，如果指定为文件，则直接保存到该文件中。(产线通常包含较多结果图片，不建议直接指定为具体的文件路径，否则多张图会被覆盖，仅保留最后一张图)</li>
+    <li>调用<code>save_to_markdown()</code> 方法会将转化后的 Markdown 文件保存到指定的 <code>save_path</code> 中，保存的文件路径为<code>save_path/{your_img_basename}.md</code>，如果输入是 PDF 文件，建议直接指定目录，否责多个 markdown 文件会被覆盖。
+    调用 <code>concatenate_markdown_pages()</code> 方法将 <code>PP-StructureV3 pipeline</code> 输出的多页Markdown内容<code>markdown_list</code>合并为单个完整文档，并返回合并后的Markdown内容。</li>
+</ul>
 此外，也支持通过属性获取带结果的可视化图像和预测结果，具体如下：
 <table>
 <thead>
@@ -6301,11 +6315,11 @@ MKL-DNN 缓存容量。
 </tr>
 </tbody>
 </table>
-
-- `json` 属性获取的预测结果为dict类型的数据，相关内容与调用 `save_to_json()` 方法保存的内容一致。
-- `img` 属性返回的预测结果是一个dict类型的数据。其中，键分别为 `layout_det_res`、`overall_ocr_res`、`text_paragraphs_ocr_res`、`formula_res_region1`、`table_cell_img` 和 `seal_res_region1`，对应的值是 `Image.Image` 对象：分别用于显示版面区域检测、OCR、OCR文本段落、公式、表格和印章结果的可视化图像。如果没有使用可选模块，则dict中只包含 `layout_det_res`。
-- `markdown` 属性返回的预测结果是一个dict类型的数据。其中，键分别为 `markdown_texts` 、 `markdown_images`和`page_continuation_flags`，对应的值分别是 markdown 文本，在 Markdown 中显示的图像（`Image.Image` 对象）和用于标识当前页面第一个元素是否为段开始以及最后一个元素是否为段结束的bool元组。
-
+<ul>
+    <li><code>json</code> 属性获取的预测结果为dict类型的数据，相关内容与调用 <code>save_to_json()</code> 方法保存的内容一致。</li>
+    <li><code>img</code> 属性返回的预测结果是一个dict类型的数据。其中，键分别为 <code>layout_det_res</code>、<code>overall_ocr_res</code>、<code>text_paragraphs_ocr_res</code>、<code>formula_res_region1</code>、<code>table_cell_img</code> 和 <code>seal_res_region1</code>，对应的值是 <code>Image.Image</code> 对象：分别用于显示版面区域检测、OCR、OCR文本段落、公式、表格和印章结果的可视化图像。如果没有使用可选模块，则dict中只包含 <code>layout_det_res</code>。</li>
+    <li><code>markdown</code> 属性返回的预测结果是一个dict类型的数据。其中，键分别为 <code>markdown_texts</code> 、 <code>markdown_images</code>和<code>page_continuation_flags</code>，对应的值分别是 markdown 文本，在 Markdown 中显示的图像（<code>Image.Image</code> 对象）和用于标识当前页面第一个元素是否为段开始以及最后一个元素是否为段结束的bool元组。</li>
+</ul>
 </details>
 
 <h2 id="3">3. 开发集成/部署<a class="headerlink" href="#3" title="Permanent link">&para;</a></h2>
