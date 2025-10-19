@@ -65,7 +65,7 @@ PaddleOCR is being oversight by a [PMC](https://github.com/PaddlePaddle/PaddleOC
 
     - Release[PP-ChatOCR](https://aistudio.baidu.com/aistudio/modelsdetail?modelId=332), a new scheme for extracting key information of general scenes using PP-OCR model and ERNIE LLM.
 
-- 🔨**2022.11 Add implementation of [4 cutting-edge algorithms](./algorithm/overview.en.md)**：Text Detection [DRRG](./algorithm/text_detection/algorithm_det_drrg.en.md),  Text Recognition [RFL](./algorithm/text_recognition/algorithm_rec_rfl.en.md), Image Super-Resolution [Text Telescope](./algorithm/super_resolution/algorithm_sr_telescope.en.md)，Handwritten Mathematical Expression Recognition [CAN](./algorithm/formula_recognition/algorithm_rec_can.en.md)
+- 🔨**2022.11 Add implementation of [4 cutting-edge algorithms](../version2.x/algorithm/overview.en.md)**：Text Detection [DRRG](../version2.x/algorithm/text_detection/algorithm_det_drrg.en.md),  Text Recognition [RFL](../version2.x/algorithm/text_recognition/algorithm_rec_rfl.en.md), Image Super-Resolution [Text Telescope](../version2.x/algorithm/super_resolution/algorithm_sr_telescope.en.md)，Handwritten Mathematical Expression Recognition [CAN](../version2.x/algorithm/formula_recognition/algorithm_rec_can.en.md)
 
 - **2022.10 release [optimized JS version PP-OCRv3 model](./ppocr/infer_deploy/paddle_js.en.md)** with 4.3M model size, 8x faster inference time, and a ready-to-use web demo
 
@@ -84,9 +84,9 @@ PaddleOCR is being oversight by a [PMC](https://github.com/PaddlePaddle/PaddleOC
 
 - **2022.8 Add implementation of [8 cutting-edge algorithms](./algorithm/overview.en.md)**
 
-    - Text Detection: [FCENet](./algorithm/text_detection/algorithm_det_fcenet.en.md), [DB++](./algorithm/text_detection/algorithm_det_db.en.md)
-    - Text Recognition: [ViTSTR](./algorithm/text_recognition/algorithm_rec_vitstr.en.md), [ABINet](./algorithm/text_recognition/algorithm_rec_abinet.en.md), [VisionLAN](./algorithm/text_recognition/algorithm_rec_visionlan.en.md), [SPIN](./algorithm/text_recognition/algorithm_rec_spin.en.md), [RobustScanner](./algorithm/text_recognition/algorithm_rec_robustscanner.en.md)
-    - Table Recognition: [TableMaster](./algorithm/table_recognition/algorithm_table_master.en.md)
+    - Text Detection: [FCENet](../version2.x/algorithm/text_detection/algorithm_det_fcenet.en.md), [DB++](../version2.x/algorithm/text_detection/algorithm_det_db.en.md)
+    - Text Recognition: [ViTSTR](../version2.x/algorithm/text_recognition/algorithm_rec_vitstr.en.md), [ABINet](../version2.x/algorithm/text_recognition/algorithm_rec_abinet.en.md), [VisionLAN](../version2.x/algorithm/text_recognition/algorithm_rec_visionlan.en.md), [SPIN](../version2.x/algorithm/text_recognition/algorithm_rec_spin.en.md), [RobustScanner](../version2.x/algorithm/text_recognition/algorithm_rec_robustscanner.en.md)
+    - Table Recognition: [TableMaster](../version2.x/algorithm/table_recognition/algorithm_table_master.en.md)
 - **2022.5.9 Release PaddleOCR [release/2.5](https://github.com/PaddlePaddle/PaddleOCR/tree/release/2.5)**
 
     - Release [PP-OCRv3](./ppocr/overview.en.md#pp-ocrv3): With comparable speed, the effect of Chinese scene is further improved by 5% compared with PP-OCRv2, the effect of English scene is improved by 11%, and the average recognition accuracy of 80 language multilingual models is improved by more than 5%.
