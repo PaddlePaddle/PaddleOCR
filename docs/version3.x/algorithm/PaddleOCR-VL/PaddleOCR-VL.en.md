@@ -174,6 +174,10 @@ Please refer to our usage documentation [PaddleOCR-VL Usage](../../pipeline_usag
 
 Currently, we do not support fine-tuning of the model, but it is a high-priority feature and will be released soon. Please stay tuned.
 
+3. Why was my chart not recognized and how can I use chart recognition?
+
+Because our default chart recognition function is turned off, it needs to be manually turned on. Please refer to [PaddleOCR-VL Usage](../../pipeline_usage/PaddleOCR-VL.en.md) and set the use_chart_recognition为True parameters to True turn it on.
+
 4. What are the 109 supported languages?
 
 Chinese, English, Korea, Japanese, Thai, Greek, Tamil, Telugu
