@@ -654,7 +654,7 @@ If not set, the initialized parameter value will be used.
 </tr>
 <tr>
 <td><code>prompt_label</code></td>
-<td>The prompt type setting for the VL model, which takes effect only when <code>use_layout_detection=False</code>.</td>
+<td>The prompt type setting for the VL model, which takes effect only when <code>use_layout_detection=False</code>. The fillable parameters are <code>ocr</code>、<code>formula</code>、<code>table</code> and <code>chart</code>.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -1235,6 +1235,12 @@ Below are the API references for basic service-based deployment and examples of 
 <td><code>fileType</code></td>
 <td><code>integer</code>|<code>null</code></td>
 <td>File type.<code>0</code> represents a PDF file,<code>1</code> represents an image file. If this property is not present in the request body, the file type will be inferred from the URL.</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>useDocOrientationClassify</code></td>
+<td><code>boolean</code> | <code>null</code></td>
+<td>Please refer to the description of the <code>use_doc_orientation_classify</code> parameter in the <code>predict</code> method of the PaddleOCR-VL object.</td>
 <td>No</td>
 </tr>
 <tr>
