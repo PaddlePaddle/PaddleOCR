@@ -30,7 +30,7 @@ hide:
 
 - **其他升级：**
     - **分离必要依赖与可选依赖。使用基础文字识别功能时，仅需安装少量核心依赖；若需文档解析、信息抽取等功能，用户可按需选择安装额外依赖。**
-    - **支持 Windows 用户使用英伟达 50 系显卡，可根据 [安装文档](../docs/version3.x/installation.md) 安装对应版本的 paddle 框架。**
+    - **支持 Windows 用户使用英伟达 50 系显卡，可根据 [安装文档](../version3.x/installation.md) 安装对应版本的 paddle 框架。**
     - **PP-OCR 系列模型支持返回单文字坐标。**
     - 模型新增 AIStudio、ModelScope 等下载源。可指定相关下载源下载对应的模型。
     - 支持图表转表PP-Chart2Table单功能模块推理能力。
@@ -195,7 +195,7 @@ hide:
 - [表格识别](./ppstructure/table/README_ch.md)模型优化：设计 3 大优化策略，预测耗时不变情况下，模型精度提升 6%；
 - [关键信息抽取](./ppstructure/kie/README_ch.md)模型优化：设计视觉无关模型结构，语义实体识别精度提升 2.8%，关系抽取精度提升 9.1%。
 
-#### **2022.8 发布 [OCR 场景应用集合](./applications)**：包含数码管、液晶屏、车牌、高精度 SVTR 模型、手写体识别等**9 个垂类模型**，覆盖通用，制造、金融、交通行业的主要 OCR 垂类应用
+#### **2022.8 发布 [OCR 场景应用集合](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.8/applications/README_en.md)**：包含数码管、液晶屏、车牌、高精度 SVTR 模型、手写体识别等**9 个垂类模型**，覆盖通用，制造、金融、交通行业的主要 OCR 垂类应用
 
 #### 2022.5.9 发布PaddleOCR v2.5。发布内容包括
 
@@ -220,7 +220,7 @@ hide:
 
 #### 2020.12.15 更新数据合成工具[Style-Text](https://github.com/PFCCLab/StyleText/blob/main/README_ch.md)，可以批量合成大量与目标场景类似的图像，在多个场景验证，效果明显提升
 
-#### 2020.12.07 [FAQ](../../doc/doc_ch/FAQ.md)新增5个高频问题，总数124个，并且计划以后每周一都会更新，欢迎大家持续关注
+#### 2020.12.07 [FAQ](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.1/doc/doc_ch/FAQ.md)新增5个高频问题，总数124个，并且计划以后每周一都会更新，欢迎大家持续关注
 
 #### 2020.11.25 更新半自动标注工具[PPOCRLabel](https://github.com/PFCCLab/PPOCRLabel/blob/main/README_ch.md)，辅助开发者高效完成标注任务，输出格式与PP-OCR训练任务完美衔接
 
@@ -232,7 +232,7 @@ hide:
 
 #### 2020.9.17 更新[英文识别模型](./models_list.md#english-recognition-model)和[多语种识别模型](./models_list.md#english-recognition-model)，已支持`德语、法语、日语、韩语`，更多语种识别模型将持续更新
 
-#### 2020.8.26 更新OCR相关的84个常见问题及解答，具体参考[FAQ](./FAQ.md)
+#### 2020.8.26 更新OCR相关的84个常见问题及解答，具体参考[FAQ](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.1/doc/doc_ch/FAQ.md)
 
 #### 2020.8.24 支持通过whl包安装使用PaddleOCR，具体参考[Paddleocr Package使用说明](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_ch/whl.md)
 
@@ -250,7 +250,7 @@ hide:
 
 #### 2020.7.9 添加支持空格的识别模型，识别效果，预测及训练方式请参考快速开始和文本识别训练相关文档
 
-#### 2020.7.9 添加数据增强、学习率衰减策略,具体参考[配置文件](./config.md)
+#### 2020.7.9 添加数据增强、学习率衰减策略,具体参考[配置文件](../version2.x/ppocr/blog/config.md)
 
 #### 2020.6.8 添加[数据集](dataset/datasets.md)，并保持持续更新
 
