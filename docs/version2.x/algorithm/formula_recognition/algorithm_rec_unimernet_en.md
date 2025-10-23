@@ -10,7 +10,7 @@ Using UniMERNet general mathematical expression recognition datasets for trainin
 
 | Model           | Backbone       | config                                                  | SPE-<br/>BLEU↑ | SPE-<br/>EditDis↓ | CPE-<br/>BLEU↑  |CPE-<br/>EditDis↓ | SCE-<br/>BLEU↑ | SCE-<br/>EditDis↓ | HWE-<br/>BLEU↑ | HWE-<br/>EditDis↓ | Download link |
 |-----------|--------|---------------------------------------------------|:--------------:|:-----------------:|:----------:|:----------------:|:---------:|:-----------------:|:--------------:|:-----------------:|---|
-| UniMERNet | Donut Swin | [UniMERNet.yaml](../../../configs/rec/UniMERNet.yaml) |     0.9187     |      0.0584       |  0.9252    |      0.0596      | 0.6068 |     0.2297        |   0.9157|     0.0546           |[trained model](https://paddleocr.bj.bcebos.com/contribution/rec_unimernet_train.tar)|
+| UniMERNet | Donut Swin | [UniMERNet.yaml](../../../../configs/rec/UniMERNet.yaml) |     0.9187     |      0.0584       |  0.9252    |      0.0596      | 0.6068 |     0.2297        |   0.9157|     0.0546           |[trained model](https://paddleocr.bj.bcebos.com/contribution/rec_unimernet_train.tar)|
 
 SPE represents simple formulas, CPE represents complex formulas, SCE represents scanned captured formulas, and HWE represents handwritten formulas. Example images of each type of formula are shown below:
 
@@ -33,7 +33,7 @@ Please refer to [Text Recognition Tutorial](../../ppocr/model_train/recognition.
 
 Dataset Preparation:
 
-Download UniMER-1M.zip and UniMER-Test.zip from [Hugging Face]((https://huggingface.co/datasets/wanderkid/UniMER_Dataset/tree/main)). Download the HME100K dataset from the [TAL AI Platform](https://ai.100tal.com/dataset). After that, use the following command to create a dataset directory and convert the dataset.
+Download UniMER-1M.zip and UniMER-Test.zip from [OpenDataLab](https://opendatalab.com/OpenDataLab/UniMER-Dataset). Download the HME100K dataset from the [TAL AI Platform](https://ai.100tal.com/dataset). After that, use the following command to create a dataset directory and convert the dataset.
 
 ```shell
 # create the UniMERNet dataset directory

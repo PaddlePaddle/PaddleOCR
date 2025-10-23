@@ -23,9 +23,9 @@ Paddle Lite是飞桨轻量化推理引擎，为手机、IOT端提供高效推理
 交叉编译环境用于编译 Paddle Lite 和 PaddleOCR 的C++ demo。
 支持多种开发环境，不同开发环境的编译流程请参考对应文档。
 
-1. [Docker](https://paddle-lite.readthedocs.io/zh/latest/source_compile/compile_env.html#docker)
-2. [Linux](https://paddle-lite.readthedocs.io/zh/latest/source_compile/compile_env.html#linux)
-3. [MAC OS](https://paddle-lite.readthedocs.io/zh/latest/source_compile/compile_env.html#mac-os)
+1. [Docker](https://paddle-lite-pjc.readthedocs.io/zh/latest/user_guides/source_compile.html#docker)
+2. [Linux](https://paddle-lite-pjc.readthedocs.io/zh/latest/user_guides/source_compile.html#linux)
+3. [MAC OS](https://paddle-lite-pjc.readthedocs.io/zh/latest/user_guides/source_compile.html#mac-os)
 
 ### 1.2 准备预测库
 
@@ -54,7 +54,7 @@ Paddle Lite是飞桨轻量化推理引擎，为手机、IOT端提供高效推理
 
 注意：编译Paddle-Lite获得预测库时，需要打开`--with_cv=ON --with_extra=ON`两个选项，`--arch`表示`arm`版本，这里指定为armv8，
 更多编译命令
-介绍请参考 [链接](https://paddle-lite.readthedocs.io/zh/release-v2.10_a/source_compile/linux_x86_compile_android.html) 。
+介绍请参考 [链接](https://paddle-lite-pjc.readthedocs.io/zh/latest/user_guides/source_compile.html#paddlelite) 。
 
 直接下载预测库并解压后，可以得到`inference_lite_lib.android.armv8/`文件夹，通过编译Paddle-Lite得到的预测库位于
 `Paddle-Lite/build.lite.android.armv8.gcc/inference_lite_lib.android.armv8/`文件夹下。
