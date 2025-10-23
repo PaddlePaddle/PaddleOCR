@@ -10,7 +10,7 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
 
 ## 1. 环境准备
 
-安装 PaddlePaddle 和 PaddleOCR:
+安装 PaddlePaddle 和 PaddleOCR（要求 Python 版本为 3.8–3.12）:
 
 ```shell
 python -m pip install paddlepaddle-gpu==3.2.0 -i https://www.paddlepaddle.org.cn/packages/stable/cu126/
@@ -31,7 +31,7 @@ python -m pip install https://paddle-whl.bj.bcebos.com/nightly/cu126/safetensors
 <tbody>
   <tr>
     <td>PaddlePaddle</td>
-    <td>≥ 8.5</td>
+    <td>≥ 7</td>
   </tr>
   <tr>
     <td>vLLM</td>
@@ -933,7 +933,7 @@ MKL-DNN 缓存容量。
 
 #### 3.1.1 使用 Docker 镜像
 
-PaddleOCR 提供了 Docker 镜像，用于快速启动 vLLM 推理服务。可使用以下命令启动服务：
+PaddleOCR 提供了 Docker 镜像，用于快速启动 vLLM 推理服务。可使用以下命令启动服务（Docker 版本 >= 19.03）：
 
 ```bash
 docker run \
@@ -968,6 +968,7 @@ docker run \
     --network host \
     ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddlex-genai-vllm-server \
     /bin/bash
+# 进入容器后
 python -m pip install flash-attn==2.8.3
 paddlex_genai_server --model_name PaddleOCR-VL-0.9B --backend vllm --port 8118
 ```
@@ -1000,6 +1001,8 @@ paddleocr install_genai_server_deps <推理加速框架名称>
 ```bash
 python -m pip install flash-attn==2.8.3
 ```
+
+通过 `paddleocr install_genai_server_deps` 安装的 vLLM 与 SGLang 均为 **CUDA 12** 版本，请确保本地 GPU 驱动与之兼容。
 
 安装完成后，可通过 `paddlex_genai_server` 命令启动服务：
 

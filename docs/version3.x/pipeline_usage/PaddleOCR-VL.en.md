@@ -10,7 +10,7 @@ PaddleOCR-VL is a SOTA and resource-efficient model tailored for document parsin
 
 ## 1. Environment Preparation
 
-Install PaddlePaddle and PaddleOCR:
+Install PaddlePaddle and PaddleOCR (requires Python version 3.8–3.12):
 
 ```shell
 python -m pip install paddlepaddle-gpu==3.2.0 -i https://www.paddlepaddle.org.cn/packages/stable/cu126/
@@ -895,7 +895,7 @@ The inference performance under the default configuration has not been fully opt
 
 #### 3.1.1 Using Docker Images
 
-PaddleOCR provides Docker images for quickly starting the vLLM inference service. The service can be started using the following command:
+PaddleOCR provides Docker images for quickly launching vLLM inference services. You can start the service using the following command (Docker version ≥ 19.03):
 
 ```bash
 docker run \
@@ -930,6 +930,7 @@ docker run \
     --network host \
     ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddlex-genai-vllm-server \
     /bin/bash
+# After entering the container
 python -m pip install flash-attn==2.8.3
 paddlex_genai_server --model_name PaddleOCR-VL-0.9B --backend vllm --port 8118
 ```
@@ -962,6 +963,8 @@ If you are using an NVIDIA 50 series graphics card (Compute Capability >= 12), y
 ```bash
 python -m pip install flash-attn==2.8.3
 ```
+
+The vLLM and SGLang installed via `paddleocr install_genai_server_deps` are both **CUDA 12** versions. Please ensure your local GPU drivers are compatible with this requirement.
 
 After installation, you can start the service using the `paddlex_genai_server` command:
 
