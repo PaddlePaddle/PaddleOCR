@@ -13,40 +13,49 @@ PaddleOCR-VL is a SOTA and resource-efficient model tailored for document parsin
 Install PaddlePaddle and PaddleOCR (requires Python version 3.8–3.12):
 
 ```shell
+# The following command installs PaddlePaddle for CUDA 12.6. For other CUDA versions, please refer to https://www.paddlepaddle.org.cn/en/install/quick?docurl=/documentation/docs/en/develop/install/pip/linux-pip_en.html
 python -m pip install paddlepaddle-gpu==3.2.0 -i https://www.paddlepaddle.org.cn/packages/stable/cu126/
 python -m pip install -U "paddleocr[doc-parser]"
 python -m pip install https://paddle-whl.bj.bcebos.com/nightly/cu126/safetensors/safetensors-0.6.2.dev0-cp38-abi3-linux_x86_64.whl
 ```
 > For Windows users, please use WSL or a Docker container.
 
-Running the PaddleOCR-VL has the following GPU hardware requirements:
+# PaddleOCR-VL support for inference devices is as follows:
 
 <table border="1">
 <thead>
   <tr>
     <th>Inference Method</th>
-    <th>GPU Compute Capability</th>
+    <th>Supports x64 CPU</th>
+    <th>Supported GPU Compute Capability</th>
+    <th>Supported CUDA Versions</th>
   </tr>
 </thead>
 <tbody>
   <tr>
     <td>PaddlePaddle</td>
-    <td>≥ 8.5</td>
+    <td>✅</td>
+    <td>≥ 7</td>
+    <td>11.8, 12.6, 12.8</td>
   </tr>
   <tr>
     <td>vLLM</td>
+    <td>🚧</td>
     <td>≥ 8 (RTX 3060, RTX 5070, A10, A100, ...) <br />  
-    7 ≤ GPU Compute Capability < 8 (T4, V100, ...) Supported but may experience issues like request timeouts, OOM errors, etc. Not recommended for use.
+    7 ≤ GPU Compute Capability < 8 (T4, V100, ...) can run but may experience issues like request timeouts, OOM, etc. Not recommended for use.
     </td>
+    <td>12.8</td>
   </tr>
   <tr>
     <td>SGLang</td>
+     <td>🚧</td>
     <td>8 ≤ GPU Compute Capability < 12</td>
+    <td>12.8</td>
   </tr>
 </tbody>
 </table>
 
-The PaddleOCR-VL currently does not support CPU or Arm architecture. Support for more hardware will be expanded based on actual requirements in the future. Stay tuned!
+> Currently, PaddleOCR-VL does not support ARM architecture CPUs. Support for more hardware will be expanded based on actual requirements in the future. Stay tuned!
 
 ## 2. Quick Start
 

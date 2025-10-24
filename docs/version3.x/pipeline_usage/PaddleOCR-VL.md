@@ -13,40 +13,49 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
 安装 PaddlePaddle 和 PaddleOCR（要求 Python 版本为 3.8–3.12）:
 
 ```shell
+# 以下命令安装 CUDA 12.6 版本的 PaddlePaddle，对于其他 CUDA 版本，请参考 https://www.paddlepaddle.org.cn/install/quick?docurl=/documentation/docs/zh/develop/install/pip/linux-pip.html
 python -m pip install paddlepaddle-gpu==3.2.0 -i https://www.paddlepaddle.org.cn/packages/stable/cu126/
 python -m pip install -U "paddleocr[doc-parser]"
 python -m pip install https://paddle-whl.bj.bcebos.com/nightly/cu126/safetensors/safetensors-0.6.2.dev0-cp38-abi3-linux_x86_64.whl
 ```
 > 对于 Windows 用户，请使用 WSL 或者 Docker 进行环境搭建。
 
-运行 PaddleOCR-VL 对 GPU 硬件有以下要求：
+PaddleOCR-VL 对推理设备的支持情况如下：
 
 <table border="1">
 <thead>
   <tr>
     <th>推理方式</th>
-    <th>GPU Compute Capability</th>
+    <th>支持 x64 CPU</th>
+    <th>支持的 GPU Compute Capability</th>
+    <th>支持的 CUDA 版本</th>
   </tr>
 </thead>
 <tbody>
   <tr>
     <td>PaddlePaddle</td>
+    <td>✅</td>
     <td>≥ 7</td>
+    <td>11.8、12.6、12.8</td>
   </tr>
   <tr>
     <td>vLLM</td>
+    <td>🚧</td>
     <td>≥ 8 （RTX 3060，RTX 5070，A10，A100, ...） <br />  
     7 ≤ GPU Compute Capability < 8 （T4，V100，...）支持运行，但可能出现请求超时、OOM 等异常情况，不推荐使用
     </td>
+    <td>12.8</td>
   </tr>
   <tr>
     <td>SGLang</td>
+     <td>🚧</td>
     <td>8 ≤ GPU Compute Capability < 12</td>
+    <td>12.8</td>
   </tr>
 </tbody>
 </table>
 
-目前 PaddleOCR-VL 暂不支持 CPU 及 Arm 架构，后续将根据实际需求扩展更多硬件支持，敬请期待！
+> 当前，PaddleOCR-VL 暂不支持 ARM 架构 CPU。后续将根据实际需求扩展更多硬件支持，敬请期待！
 
 ## 2. 快速开始
 
