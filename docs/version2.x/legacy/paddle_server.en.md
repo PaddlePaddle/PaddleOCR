@@ -34,7 +34,7 @@ The introduction and tutorial of Paddle Serving service deployment framework ref
 
 PaddleOCR operating environment and Paddle Serving operating environment are needed.
 
-1. Please prepare PaddleOCR operating environment reference [link](../environment.en.md).
+1. Please prepare PaddleOCR operating environment reference [link](../ppocr/environment.en.md).
    Download the corresponding paddlepaddle whl package according to the environment, it is recommended to install version 2.2.2.
 
 2. The steps of PaddleServing operating environment prepare are as follows:
@@ -63,7 +63,7 @@ PaddleOCR operating environment and Paddle Serving operating environment are nee
 
 When using PaddleServing for service deployment, you need to convert the saved inference model into a serving model that is easy to deploy.
 
-Firstly, download the [inference model](../model_list.en.md) of PPOCR
+Firstly, download the [inference model](../ppocr/model_list.en.md) of PPOCR
 
 ```bash linenums="1"
 # Download and unzip the OCR text detection model

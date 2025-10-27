@@ -29,7 +29,7 @@ PaddleOCR은 사용자들이 보다 나은 모델을 훈련하여 실전에 투�
 ## 📣최근 업데이트
 
 - **🔥2022년 8월 24일에 패들 OCR 출시 [출시/2.6](https://github.com/PaddlePaddle/PaddleOCR/tree/release/2.6)**
-  차이니즈 씬에 맞춘 완전 업그레이드 된 기능과 성능을 갖춘 ; [PP-Structurev2](../../ppstructure/) 출시, 그리고 레이아웃 리커버리 ](../../ppstructure/recovery) 신규 지원 및 PDF 를 워드로 전환하는 원 라인 명령
+  차이니즈 씬에 맞춘 완전 업그레이드 된 기능과 성능을 갖춘 ; [PP-Structurev2](../../ppstructure/) 출시, 그리고 레이아웃 [리커버리](../../ppstructure/recovery) 신규 지원 및 PDF 를 워드로 전환하는 원 라인 명령
     - [레이아웃 분석](../../ppstructure/layout)  최적화: 95% 감소된 모델 저장, while 반면 속도는 11배 증가하고, 평균 CPU 시간 비용은 41ms에 불과함;
     - [표 인식](../../ppstructure/table) 최적화: 3 최적화 전략이 디자인되고 모델 정확도는 비교 가능한 시간 소비 하에 6% 개선됨;
     - [핵심 정보 추출](../../ppstructure/kie)  최적화： 시각에 의존하지 않는 모델 구조가 디자인되고, 의미체 인식 정확도가 2.8% 증가되며 관계 추출 정확도는 9.1% 증가됨.
@@ -121,14 +121,14 @@ paddleocr --image_dir /your/test/image.jpg --lang=korean
         - [핵심 정보 추출](../../ppstructure/kie/README.md)
     - [추론 및 배치](../../deploy/README.md)
         - [파이톤 추론](../version2.x/ppstructure/infer_deploy/python_infer.en.md)
-        - [C++ 추론](../../deploy/cpp_infer/readme.md)
+        - [C++ 추론](../version2.x/legacy/cpp_infer.en.md)
         - [서빙](../../deploy/hubserving/readme_en.md)
 - [학문적 알고리즘](../version2.x/algorithm/overview.en.md)
-    - [텍스트 감지](../doc_en/algorithm_overview_en.md)
-    - [텍스트 인식](../doc_en/algorithm_overview_en.md)
-    - [종단종OCR](../doc_en/algorithm_overview_en.md)
-    - [표 인식](../doc_en/algorithm_overview_en.md)
-    - [핵심 정보 추출](../doc_en/algorithm_overview_en.md)
+    - [텍스트 감지](../version2.x/algorithm/overview.en.md)
+    - [텍스트 인식](../version2.x/algorithm/overview.en.md)
+    - [종단종OCR](../version2.x/algorithm/overview.en.md)
+    - [표 인식](../version2.x/algorithm/overview.en.md)
+    - [핵심 정보 추출](../version2.x/algorithm/overview.en.md)
     - [PaddleOCR에 신규 알고리즘 추가](../version2.x/algorithm/add_new_algorithm.en.md)
 - 데이터 주석 및 합성
     - [반-자동 주석 툴: PPOCRLabel](https://github.com/PFCCLab/PPOCRLabel/blob/main/README.md)

@@ -26,7 +26,7 @@ comments: true
 
 ## 3. 模型训练、评估、预测
 
-上述SLANet_LCNetv2模型使用PubTabNet表格识别公开数据集训练得到，数据集下载可参考 [table_datasets](../../datasets/table_datasets.md)。
+上述SLANet_LCNetv2模型使用PubTabNet表格识别公开数据集训练得到，数据集下载可参考 [table_datasets](../../../datasets/table_datasets.md)。
 
 ### 启动训练
 

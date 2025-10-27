@@ -8,7 +8,7 @@ comments: true
 ## 1. 算法简介
 
 论文信息：
-> [STAR-Net: a spatial attention residue network for scene text recognition.](http://www.bmva.org/bmvc/2016/papers/paper043/paper043.pdf)
+> [STAR-Net: a spatial attention residue network for scene text recognition.](https://www.bmva-archive.org.uk/bmvc/2016/papers/paper043/paper043.pdf)
 > Wei Liu, Chaofeng Chen, Kwan-Yee K. Wong, Zhizhong Su and Junyu Han.
 > BMVC, pages 43.1-43.13, 2016
 
@@ -90,17 +90,17 @@ dict_character = list(self.character_str)
 
 ### 4.2 C++推理
 
-准备好推理模型后，参考[cpp infer](../../ppocr/infer_deploy/cpp_infer.md)教程进行操作即可。
+准备好推理模型后，参考[cpp infer](../../../version2.x/legacy/cpp_infer.md)教程进行操作即可。
 
 ### 4.3 Serving服务化部署
 
-准备好推理模型后，参考[pdserving](../../ppocr/infer_deploy/paddle_server.md)教程进行Serving服务化部署，包括Python Serving和C++ Serving两种模式。
+准备好推理模型后，参考[pdserving](../../../version2.x/legacy/paddle_server.md)教程进行Serving服务化部署，包括Python Serving和C++ Serving两种模式。
 
 ### 4.4 更多推理部署
 
 STAR-Net模型还支持以下推理部署方式：
 
-- Paddle2ONNX推理：准备好推理模型后，参考[paddle2onnx](../../ppocr/infer_deploy/paddle2onnx.md)教程操作。
+- Paddle2ONNX推理：准备好推理模型后，参考[paddle2onnx](../../../version2.x/legacy/paddle2onnx.md)教程操作。
 
 ## 5. FAQ
 

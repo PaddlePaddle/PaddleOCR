@@ -13,7 +13,7 @@ This section introduces the features and models related to the PaddleOCR 2.x bra
 
 ## Models Supported by PaddleOCR 2.x Branch:
 
-* [Model List](model_list.md)
+* [Model List](../ppocr/model_list.en.md)
 
 ## Features Supported by PaddleOCR 2.x Branch:
 
@@ -22,9 +22,9 @@ This section introduces the features and models related to the PaddleOCR 2.x bra
 * [Compilation Guide for Visual Studio 2019 Community CMake](windows_vs2019_build.en.md)
 * [Service-Oriented Deployment](paddle_server.en.md)
 * [Android Deployment](android_demo.en.md)
-* [Jetson Deployment](Jetson_infer.en.md)
+* [Jetson Deployment](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.10/docs/infer_deploy/Jetson_infer.en.md)
 * [Edge Device Deployment](lite.en.md)
-* [Web Frontend Deployment](paddle_js.en.md)
+* [Web Frontend Deployment](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.10/docs/infer_deploy/paddle_js.en.md)
 * [Paddle2ONNX Model Conversion and Prediction](paddle2onnx.en.md)
-* [PaddlePaddle Cloud Deployment Tool](paddle_cloud.en.md)
+* [PaddlePaddle Cloud Deployment Tool](paddle_cloud.md)
 * [Benchmark](benchmark.en.md)

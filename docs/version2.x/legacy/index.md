@@ -13,7 +13,7 @@ hide:
 
 ## PaddleOCR 2.x 分支支持的模型：
 
-* [模型列表](model_list.md)
+* [模型列表](../ppocr/model_list.md)
 
 ## PaddleOCR 2.x 分支支持的功能：
 
@@ -22,9 +22,9 @@ hide:
 * [Visual Studio 2019 Community CMake 编译指南](windows_vs2019_build.md)
 * [服务化部署](paddle_server.md)
 * [Android 部署](android_demo.md)
-* [Jetson 部署](Jetson_infer.md)
+* [Jetson 部署](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.10/docs/infer_deploy/Jetson_infer.md)
 * [端侧部署](lite.md)
-* [网页前端部署](paddle_js.md)
+* [网页前端部署](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.10/docs/infer_deploy/paddle_js.md)
 * [Paddle2ONNX模型转化与预测](paddle2onnx.md)
 * [云上飞桨部署工具](paddle_cloud.md)
 * [Benchmark](benchmark.md)
