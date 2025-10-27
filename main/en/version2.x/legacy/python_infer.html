@@ -3756,7 +3756,7 @@ Set as <code>limit_type='min', det_limit_side_len=960</code>, it means that the 
 <div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-6-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1"></a>Predicts<span class="w"> </span>of<span class="w"> </span>./doc/imgs_words/en/word_1.png:<span class="w"> </span><span class="o">(</span><span class="s1">&#39;JOINT&#39;</span>,<span class="w"> </span><span class="m">0</span>.998160719871521<span class="o">)</span>
 </span></code></pre></div></td></tr></table></div>
 <h3 id="3-multilingual-model-inference">3. Multilingual Model Inference<a class="headerlink" href="#3-multilingual-model-inference" title="Permanent link">&para;</a></h3>
-<p>If you need to predict <a href="../model_list.en.md">other language models</a>, when using inference model prediction, you need to specify the dictionary path used by <code>--rec_char_dict_path</code>. At the same time, in order to get the correct visualization results,
+<p>If you need to predict <a href="../ppocr/model_list.html">other language models</a>, when using inference model prediction, you need to specify the dictionary path used by <code>--rec_char_dict_path</code>. At the same time, in order to get the correct visualization results,
 You need to specify the visual font path through <code>--vis_font_path</code>. There are small language fonts provided by default under the <code>doc/fonts</code> path, such as Korean recognition:</p>
 <div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-7-1">1</a></span>
 <span class="normal"><a href="#__codelineno-7-2">2</a></span>
@@ -3803,7 +3803,7 @@ You need to specify the visual font path through <code>--vis_font_path</code>. T
 </span></code></pre></div></td></tr></table></div>
 <p>After executing the command, the recognition result image is as follows:</p>
 <p><img alt="" src="../../../version2.x/legacy/images/system_res_00018069_v3.jpg" /></p>
-<p>For more configuration and explanation of inference parameters, please refer to：<a href="../blog/inference_args.en.md">Model Inference Parameters Explained Tutorial</a>。</p>
+<p>For more configuration and explanation of inference parameters, please refer to：<a href="../ppocr/blog/inference_args.html">Model Inference Parameters Explained Tutorial</a>。</p>
 <h2 id="tensorrt-inference">TensorRT Inference<a class="headerlink" href="#tensorrt-inference" title="Permanent link">&para;</a></h2>
 <p>Paddle Inference ensembles TensorRT using subgraph mode. For GPU deployment scenarios, TensorRT can optimize some subgraphs, including horizontal and vertical integration of OPs, filter redundant OPs, and automatically select the optimal OP kernels for to speed up inference.</p>
 <p>You need to do the following 2 steps for inference using TRT.</p>
@@ -3847,7 +3847,7 @@ You need to specify the visual font path through <code>--vis_font_path</code>. T
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="October 27, 2025 17:15:41 CST">2025-10-27 17:15:41</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="October 27, 2025 22:38:28 CST">2025-10-27 22:38:28</span>
   </span>
 
     
@@ -3857,7 +3857,7 @@ You need to specify the visual font path through <code>--vis_font_path</code>. T
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="October 27, 2025 17:15:41 CST">2025-10-27 17:15:41</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="October 27, 2025 22:38:28 CST">2025-10-27 22:38:28</span>
   </span>
 
     

@@ -3540,7 +3540,7 @@ You're not viewing the latest version.
 <p>PaddleOCR将一个算法分解为以下几个部分，并对各部分进行模块化处理，方便快速组合出新的算法。</p>
 <p>下面将分别对每个部分进行介绍，并介绍如何在该部分里添加新算法所需模块。</p>
 <h2 id="1">1. 数据加载和处理<a class="headerlink" href="#1" title="Permanent link">&para;</a></h2>
-<p>数据加载和处理由不同的模块(module)组成，其完成了图片的读取、数据增强和label的制作。这一部分在<a href="../../ppocr/data">ppocr/data</a>下。 各个文件及文件夹作用说明如下:</p>
+<p>数据加载和处理由不同的模块(module)组成，其完成了图片的读取、数据增强和label的制作。这一部分在<a href="../../../ppocr/data">ppocr/data</a>下。 各个文件及文件夹作用说明如下:</p>
 <div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1">1</a></span>
 <span class="normal"><a href="#__codelineno-0-2">2</a></span>
 <span class="normal"><a href="#__codelineno-0-3">3</a></span>
@@ -3559,7 +3559,7 @@ You're not viewing the latest version.
 </span></code></pre></div></td></tr></table></div>
 <p>PaddleOCR内置了大量图像操作相关模块，对于没有没有内置的模块可通过如下步骤添加:</p>
 <ol>
-<li>在 <a href="../../ppocr/data/imaug">ppocr/data/imaug</a> 文件夹下新建文件，如my_module.py。</li>
+<li>在 <a href="../../../ppocr/data/imaug">ppocr/data/imaug</a> 文件夹下新建文件，如my_module.py。</li>
 <li>
 <p>在 my_module.py 文件内添加相关代码，示例代码如下:</p>
 <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1"> 1</a></span>
@@ -3590,7 +3590,7 @@ You're not viewing the latest version.
 </span></code></pre></div></td></tr></table></div>
 </li>
 <li>
-<p>在 <a href="../../ppocr/data/imaug/__init__.py">ppocr/data/imaug/_<em>init_</em>.py</a> 文件内导入添加的模块。</p>
+<p>在 <a href="../../../ppocr/data/imaug/__init__.py">ppocr/data/imaug/_<em>init_</em>.py</a> 文件内导入添加的模块。</p>
 </li>
 </ol>
 <p>数据处理的所有处理步骤由不同的模块顺序执行而成，在config文件中按照列表的形式组合并执行。如:</p>
@@ -3615,7 +3615,7 @@ You're not viewing the latest version.
 </span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10"></a><span class="w">      </span><span class="nt">keep_keys</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="w"> </span><span class="s">&#39;image&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;label&#39;</span><span class="w"> </span><span class="p p-Indicator">]</span><span class="w"> </span><span class="c1"># dataloader will return list in this order</span>
 </span></code></pre></div></td></tr></table></div>
 <h2 id="2">2. 网络<a class="headerlink" href="#2" title="Permanent link">&para;</a></h2>
-<p>网络部分完成了网络的组网操作，PaddleOCR将网络划分为四部分，这一部分在<a href="../../ppocr/modeling">ppocr/modeling</a>下。 进入网络的数据将按照顺序(transforms-&gt;backbones-&gt;
+<p>网络部分完成了网络的组网操作，PaddleOCR将网络划分为四部分，这一部分在<a href="../../../ppocr/modeling">ppocr/modeling</a>下。 进入网络的数据将按照顺序(transforms-&gt;backbones-&gt;
 necks-&gt;heads)依次通过这四个部分。</p>
 <div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-3-1">1</a></span>
 <span class="normal"><a href="#__codelineno-3-2">2</a></span>
@@ -3629,7 +3629,7 @@ necks-&gt;heads)依次通过这四个部分。</p>
 </span></code></pre></div></td></tr></table></div>
 <p>PaddleOCR内置了DB,EAST,SAST,CRNN和Attention等算法相关的常用模块，对于没有内置的模块可通过如下步骤添加，四个部分添加步骤一致，以backbones为例:</p>
 <ol>
-<li>在 <a href="../../ppocr/modeling/backbones">ppocr/modeling/backbones</a> 文件夹下新建文件，如my_backbone.py。</li>
+<li>在 <a href="../../../ppocr/modeling/backbones">ppocr/modeling/backbones</a> 文件夹下新建文件，如my_backbone.py。</li>
 <li>
 <p>在 my_backbone.py 文件内添加相关代码，示例代码如下:</p>
 <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-4-1"> 1</a></span>
@@ -3664,7 +3664,7 @@ necks-&gt;heads)依次通过这四个部分。</p>
 </span></code></pre></div></td></tr></table></div>
 </li>
 <li>
-<p>在 <a href="../../ppocr/modeling/backbones/__init__.py">ppocr/modeling/backbones/_<em>init_</em>.py</a>文件内导入添加的模块。</p>
+<p>在 <a href="../../../ppocr/modeling/backbones/__init__.py">ppocr/modeling/backbones/_<em>init_</em>.py</a>文件内导入添加的模块。</p>
 </li>
 </ol>
 <p>在完成网络的四部分模块添加之后，只需要配置文件中进行配置即可使用，如:</p>
@@ -3701,10 +3701,10 @@ necks-&gt;heads)依次通过这四个部分。</p>
 </span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16"></a><span class="w">    </span><span class="nt">args1</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">args1</span>
 </span></code></pre></div></td></tr></table></div>
 <h2 id="3">3. 后处理<a class="headerlink" href="#3" title="Permanent link">&para;</a></h2>
-<p>后处理实现解码网络输出获得文本框或者识别到的文字。这一部分在<a href="../../ppocr/postprocess">ppocr/postprocess</a>下。
+<p>后处理实现解码网络输出获得文本框或者识别到的文字。这一部分在<a href="../../../ppocr/postprocess">ppocr/postprocess</a>下。
 PaddleOCR内置了DB,EAST,SAST,CRNN和Attention等算法相关的后处理模块，对于没有内置的组件可通过如下步骤添加:</p>
 <ol>
-<li>在 <a href="../../ppocr/postprocess">ppocr/postprocess</a> 文件夹下新建文件，如 my_postprocess.py。</li>
+<li>在 <a href="../../../ppocr/postprocess">ppocr/postprocess</a> 文件夹下新建文件，如 my_postprocess.py。</li>
 <li>
 <p>在 my_postprocess.py 文件内添加相关代码，示例代码如下:</p>
 <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-6-1"> 1</a></span>
@@ -3761,7 +3761,7 @@ PaddleOCR内置了DB,EAST,SAST,CRNN和Attention等算法相关的后处理模块
 </span></code></pre></div></td></tr></table></div>
 </li>
 <li>
-<p>在 <a href="../../ppocr/postprocess/__init__.py">ppocr/postprocess/_<em>init_</em>.py</a>文件内导入添加的模块。</p>
+<p>在 <a href="../../../ppocr/postprocess/__init__.py">ppocr/postprocess/_<em>init_</em>.py</a>文件内导入添加的模块。</p>
 </li>
 </ol>
 <p>在后处理模块添加之后，只需要配置文件中进行配置即可使用，如:</p>
@@ -3774,10 +3774,10 @@ PaddleOCR内置了DB,EAST,SAST,CRNN和Attention等算法相关的后处理模块
 </span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4"></a><span class="w">  </span><span class="nt">args2</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">args2</span>
 </span></code></pre></div></td></tr></table></div>
 <h2 id="4">4. 损失函数<a class="headerlink" href="#4" title="Permanent link">&para;</a></h2>
-<p>损失函数用于计算网络输出和label之间的距离。这一部分在<a href="../../ppocr/losses">ppocr/losses</a>下。
+<p>损失函数用于计算网络输出和label之间的距离。这一部分在<a href="../../../ppocr/losses">ppocr/losses</a>下。
 PaddleOCR内置了DB,EAST,SAST,CRNN和Attention等算法相关的损失函数模块，对于没有内置的模块可通过如下步骤添加:</p>
 <ol>
-<li>在 <a href="../../ppocr/losses">ppocr/losses</a> 文件夹下新建文件，如 my_loss.py。</li>
+<li>在 <a href="../../../ppocr/losses">ppocr/losses</a> 文件夹下新建文件，如 my_loss.py。</li>
 <li>
 <p>在 my_loss.py 文件内添加相关代码，示例代码如下:</p>
 <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-8-1"> 1</a></span>
@@ -3812,7 +3812,7 @@ PaddleOCR内置了DB,EAST,SAST,CRNN和Attention等算法相关的损失函数模
 </span></code></pre></div></td></tr></table></div>
 </li>
 <li>
-<p>在 <a href="../../ppocr/losses/__init__.py">ppocr/losses/_<em>init_</em>.py</a>文件内导入添加的模块。</p>
+<p>在 <a href="../../../ppocr/losses/__init__.py">ppocr/losses/_<em>init_</em>.py</a>文件内导入添加的模块。</p>
 </li>
 </ol>
 <p>在损失函数添加之后，只需要配置文件中进行配置即可使用，如:</p>
@@ -3825,9 +3825,9 @@ PaddleOCR内置了DB,EAST,SAST,CRNN和Attention等算法相关的损失函数模
 </span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4"></a><span class="w">  </span><span class="nt">args2</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">args2</span>
 </span></code></pre></div></td></tr></table></div>
 <h2 id="5">5. 指标评估<a class="headerlink" href="#5" title="Permanent link">&para;</a></h2>
-<p>指标评估用于计算网络在当前batch上的性能。这一部分在<a href="../../ppocr/metrics">ppocr/metrics</a>下。 PaddleOCR内置了检测，分类和识别等算法相关的指标评估模块，对于没有内置的模块可通过如下步骤添加:</p>
+<p>指标评估用于计算网络在当前batch上的性能。这一部分在<a href="../../../ppocr/metrics">ppocr/metrics</a>下。 PaddleOCR内置了检测，分类和识别等算法相关的指标评估模块，对于没有内置的模块可通过如下步骤添加:</p>
 <ol>
-<li>在 <a href="../../ppocr/metrics">ppocr/metrics</a> 文件夹下新建文件，如my_metric.py。</li>
+<li>在 <a href="../../../ppocr/metrics">ppocr/metrics</a> 文件夹下新建文件，如my_metric.py。</li>
 <li>
 <p>在 my_metric.py 文件内添加相关代码，示例代码如下:</p>
 <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-10-1"> 1</a></span>
@@ -3896,7 +3896,7 @@ PaddleOCR内置了DB,EAST,SAST,CRNN和Attention等算法相关的损失函数模
 </span></code></pre></div></td></tr></table></div>
 </li>
 <li>
-<p>在 <a href="../../ppocr/metrics/__init__.py">ppocr/metrics/_<em>init_</em>.py</a>文件内导入添加的模块。</p>
+<p>在 <a href="../../../ppocr/metrics/__init__.py">ppocr/metrics/_<em>init_</em>.py</a>文件内导入添加的模块。</p>
 </li>
 </ol>
 <p>在指标评估模块添加之后，只需要配置文件中进行配置即可使用，如:</p>
@@ -3907,12 +3907,12 @@ PaddleOCR内置了DB,EAST,SAST,CRNN和Attention等算法相关的损失函数模
 </span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3"></a><span class="w">  </span><span class="nt">main_indicator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">acc</span>
 </span></code></pre></div></td></tr></table></div>
 <h2 id="6">6. 优化器<a class="headerlink" href="#6" title="Permanent link">&para;</a></h2>
-<p>优化器用于训练网络。优化器内部还包含了网络正则化和学习率衰减模块。 这一部分在<a href="../../ppocr/optimizer">ppocr/optimizer</a>下。 PaddleOCR内置了<code>Momentum</code>,<code>Adam</code>
+<p>优化器用于训练网络。优化器内部还包含了网络正则化和学习率衰减模块。 这一部分在<a href="../../../ppocr/optimizer">ppocr/optimizer</a>下。 PaddleOCR内置了<code>Momentum</code>,<code>Adam</code>
 和<code>RMSProp</code>等常用的优化器模块，<code>Linear</code>,<code>Cosine</code>,<code>Step</code>和<code>Piecewise</code>等常用的正则化模块与<code>L1Decay</code>和<code>L2Decay</code>等常用的学习率衰减模块。
 对于没有内置的模块可通过如下步骤添加，以<code>optimizer</code>为例:</p>
 <ol>
 <li>
-<p>在 <a href="../../ppocr/optimizer/optimizer.py">ppocr/optimizer/optimizer.py</a> 文件内创建自己的优化器，示例代码如下:</p>
+<p>在 <a href="../../../ppocr/optimizer/optimizer.py">ppocr/optimizer/optimizer.py</a> 文件内创建自己的优化器，示例代码如下:</p>
 <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-12-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-12-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-12-3"> 3</a></span>
@@ -3986,7 +3986,7 @@ PaddleOCR内置了DB,EAST,SAST,CRNN和Attention等算法相关的损失函数模
     <span class="md-icon" title="最后更新">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="2025年10月27日 17:15:41 CST">2025-10-27 17:15:41</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="2025年10月27日 22:38:28 CST">2025-10-27 22:38:28</span>
   </span>
 
     
@@ -3996,7 +3996,7 @@ PaddleOCR内置了DB,EAST,SAST,CRNN和Attention等算法相关的损失函数模
     <span class="md-icon" title="创建日期">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="2025年10月27日 17:15:41 CST">2025-10-27 17:15:41</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="2025年10月27日 22:38:28 CST">2025-10-27 22:38:28</span>
   </span>
 
     
@@ -4014,14 +4014,19 @@ PaddleOCR内置了DB,EAST,SAST,CRNN和Attention等算法相关的损失函数模
     
     <nav>
       
-        <a href="https://github.com/cuicheng01" class="md-author" title="@cuicheng01">
+        <a href="https://github.com/liuhongen1234567" class="md-author" title="@liuhongen1234567">
           
-          <img src="https://avatars.githubusercontent.com/u/45199522?v=4&size=72" alt="cuicheng01">
+          <img src="https://avatars.githubusercontent.com/u/65936492?v=4&size=72" alt="liuhongen1234567">
         </a>
       
         <a href="https://github.com/web-flow" class="md-author" title="@web-flow">
           
           <img src="https://avatars.githubusercontent.com/u/19864447?v=4&size=72" alt="web-flow">
+        </a>
+      
+        <a href="https://github.com/cuicheng01" class="md-author" title="@cuicheng01">
+          
+          <img src="https://avatars.githubusercontent.com/u/45199522?v=4&size=72" alt="cuicheng01">
         </a>
       
       

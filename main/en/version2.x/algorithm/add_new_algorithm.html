@@ -3548,7 +3548,7 @@ You're not viewing the latest version.
 </ul>
 <p>The following will introduce each part separately, and introduce how to add the modules required for the new algorithm.</p>
 <h2 id="data-loading-and-processing">Data loading and processing<a class="headerlink" href="#data-loading-and-processing" title="Permanent link">&para;</a></h2>
-<p>Data loading and processing are composed of different modules, which complete the image reading, data augment and label production. This part is under <a href="../../ppocr/data">ppocr/data</a>. The explanation of each file and folder are as follows:</p>
+<p>Data loading and processing are composed of different modules, which complete the image reading, data augment and label production. This part is under <a href="../../../ppocr/data">ppocr/data</a>. The explanation of each file and folder are as follows:</p>
 <div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1">1</a></span>
 <span class="normal"><a href="#__codelineno-0-2">2</a></span>
 <span class="normal"><a href="#__codelineno-0-3">3</a></span>
@@ -3567,7 +3567,7 @@ You're not viewing the latest version.
 </span></code></pre></div></td></tr></table></div>
 <p>PaddleOCR has a large number of built-in image operation related modules. For modules that are not built-in, you can add them through the following steps:</p>
 <ol>
-<li>Create a new file under the <a href="../../ppocr/data/imaug">ppocr/data/imaug</a> folder, such as my_module.py.</li>
+<li>Create a new file under the <a href="../../../ppocr/data/imaug">ppocr/data/imaug</a> folder, such as my_module.py.</li>
 <li>
 <p>Add code in the my_module.py file, the sample code is as follows:</p>
 <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1"> 1</a></span>
@@ -3598,7 +3598,7 @@ You're not viewing the latest version.
 </span></code></pre></div></td></tr></table></div>
 </li>
 <li>
-<p>Import the added module in the <a href="../../ppocr/data/imaug/__init__.py">ppocr/data/imaug/_<em>init_</em>.py</a> file.</p>
+<p>Import the added module in the <a href="../../../ppocr/data/imaug/__init__.py">ppocr/data/imaug/_<em>init_</em>.py</a> file.</p>
 </li>
 </ol>
 <p>All different modules of data processing are executed by sequence, combined and executed in the form of a list in the config file. Such as:</p>
@@ -3623,7 +3623,7 @@ You're not viewing the latest version.
 </span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10"></a><span class="w">      </span><span class="nt">keep_keys</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="w"> </span><span class="s">&#39;image&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;label&#39;</span><span class="w"> </span><span class="p p-Indicator">]</span><span class="w"> </span><span class="c1"># dataloader will return list in this order</span>
 </span></code></pre></div></td></tr></table></div>
 <h2 id="network">Network<a class="headerlink" href="#network" title="Permanent link">&para;</a></h2>
-<p>The network part completes the construction of the network, and PaddleOCR divides the network into four parts, which are under <a href="../../ppocr/modeling">ppocr/modeling</a>. The data entering the network will pass through these four parts in sequence(transforms-&gt;backbones-&gt;
+<p>The network part completes the construction of the network, and PaddleOCR divides the network into four parts, which are under <a href="../../../ppocr/modeling">ppocr/modeling</a>. The data entering the network will pass through these four parts in sequence(transforms-&gt;backbones-&gt;
 necks-&gt;heads).</p>
 <div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-3-1">1</a></span>
 <span class="normal"><a href="#__codelineno-3-2">2</a></span>
@@ -3637,7 +3637,7 @@ necks-&gt;heads).</p>
 </span></code></pre></div></td></tr></table></div>
 <p>PaddleOCR has built-in commonly used modules related to algorithms such as DB, EAST, SAST, CRNN and Attention. For modules that do not have built-in, you can add them through the following steps, the four parts are added in the same steps, take backbones as an example:</p>
 <ol>
-<li>Create a new file under the <a href="../../ppocr/modeling/backbones">ppocr/modeling/backbones</a> folder, such as my_backbone.py.</li>
+<li>Create a new file under the <a href="../../../ppocr/modeling/backbones">ppocr/modeling/backbones</a> folder, such as my_backbone.py.</li>
 <li>
 <p>Add code in the my_backbone.py file, the sample code is as follows:</p>
 <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-4-1"> 1</a></span>
@@ -3672,7 +3672,7 @@ necks-&gt;heads).</p>
 </span></code></pre></div></td></tr></table></div>
 </li>
 <li>
-<p>Import the added module in the <a href="../../ppocr/modeling/backbones/__init__.py">ppocr/modeling/backbones/_<em>init_</em>.py</a> file.</p>
+<p>Import the added module in the <a href="../../../ppocr/modeling/backbones/__init__.py">ppocr/modeling/backbones/_<em>init_</em>.py</a> file.</p>
 </li>
 </ol>
 <p>After adding the four-part modules of the network, you only need to configure them in the configuration file to use, such as:</p>
@@ -3709,10 +3709,10 @@ necks-&gt;heads).</p>
 </span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16"></a><span class="w">    </span><span class="nt">args1</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">args1</span>
 </span></code></pre></div></td></tr></table></div>
 <h2 id="post-processing">Post-processing<a class="headerlink" href="#post-processing" title="Permanent link">&para;</a></h2>
-<p>Post-processing realizes decoding network output to obtain text box or recognized text. This part is under <a href="../../ppocr/postprocess">ppocr/postprocess</a>.
+<p>Post-processing realizes decoding network output to obtain text box or recognized text. This part is under <a href="../../../ppocr/postprocess">ppocr/postprocess</a>.
 PaddleOCR has built-in post-processing modules related to algorithms such as DB, EAST, SAST, CRNN and Attention. For components that are not built-in, they can be added through the following steps:</p>
 <ol>
-<li>Create a new file under the <a href="../../ppocr/postprocess">ppocr/postprocess</a> folder, such as my_postprocess.py.</li>
+<li>Create a new file under the <a href="../../../ppocr/postprocess">ppocr/postprocess</a> folder, such as my_postprocess.py.</li>
 <li>
 <p>Add code in the my_postprocess.py file, the sample code is as follows:</p>
 <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-6-1"> 1</a></span>
@@ -3769,7 +3769,7 @@ PaddleOCR has built-in post-processing modules related to algorithms such as DB,
 </span></code></pre></div></td></tr></table></div>
 </li>
 <li>
-<p>Import the added module in the <a href="../../ppocr/postprocess/__init__.py">ppocr/postprocess/_<em>init_</em>.py</a> file.</p>
+<p>Import the added module in the <a href="../../../ppocr/postprocess/__init__.py">ppocr/postprocess/_<em>init_</em>.py</a> file.</p>
 </li>
 </ol>
 <p>After the post-processing module is added, you only need to configure it in the configuration file to use, such as:</p>
@@ -3782,7 +3782,7 @@ PaddleOCR has built-in post-processing modules related to algorithms such as DB,
 </span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4"></a><span class="nt">args2</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">args2</span>
 </span></code></pre></div></td></tr></table></div>
 <h2 id="loss">Loss<a class="headerlink" href="#loss" title="Permanent link">&para;</a></h2>
-<p>The loss function is used to calculate the distance between the network output and the label. This part is under <a href="../../ppocr/losses">ppocr/losses</a>.
+<p>The loss function is used to calculate the distance between the network output and the label. This part is under <a href="../../../ppocr/losses">ppocr/losses</a>.
 PaddleOCR has built-in loss function modules related to algorithms such as DB, EAST, SAST, CRNN and Attention. For modules that do not have built-in modules, you can add them through the following steps:</p>
 <ol>
 <li>Create a new file in the <a href="../../ppocr/losses">ppocr/losses</a> folder, such as my_loss.py.</li>
@@ -3820,7 +3820,7 @@ PaddleOCR has built-in loss function modules related to algorithms such as DB, E
 </span></code></pre></div></td></tr></table></div>
 </li>
 <li>
-<p>Import the added module in the <a href="../../ppocr/losses/__init__.py">ppocr/losses/_<em>init_</em>.py</a> file.</p>
+<p>Import the added module in the <a href="../../../ppocr/losses/__init__.py">ppocr/losses/_<em>init_</em>.py</a> file.</p>
 </li>
 </ol>
 <p>After the loss function module is added, you only need to configure it in the configuration file to use it, such as:</p>
@@ -3833,9 +3833,9 @@ PaddleOCR has built-in loss function modules related to algorithms such as DB, E
 </span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4"></a><span class="w">  </span><span class="nt">args2</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">args2</span>
 </span></code></pre></div></td></tr></table></div>
 <h2 id="metric">Metric<a class="headerlink" href="#metric" title="Permanent link">&para;</a></h2>
-<p>Metric is used to calculate the performance of the network on the current batch. This part is under <a href="../../ppocr/metrics">ppocr/metrics</a>. PaddleOCR has built-in evaluation modules related to algorithms such as detection, classification and recognition. For modules that do not have built-in modules, you can add them through the following steps:</p>
+<p>Metric is used to calculate the performance of the network on the current batch. This part is under <a href="../../../ppocr/metrics">ppocr/metrics</a>. PaddleOCR has built-in evaluation modules related to algorithms such as detection, classification and recognition. For modules that do not have built-in modules, you can add them through the following steps:</p>
 <ol>
-<li>Create a new file under the <a href="../../ppocr/metrics">ppocr/metrics</a> folder, such as my_metric.py.</li>
+<li>Create a new file under the <a href="../../../ppocr/metrics">ppocr/metrics</a> folder, such as my_metric.py.</li>
 <li>
 <p>Add code in the my_metric.py file, the sample code is as follows:</p>
 <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-10-1"> 1</a></span>
@@ -3904,7 +3904,7 @@ PaddleOCR has built-in loss function modules related to algorithms such as DB, E
 </span></code></pre></div></td></tr></table></div>
 </li>
 <li>
-<p>Import the added module in the <a href="../../ppocr/metrics/__init__.py">ppocr/metrics/_<em>init_</em>.py</a> file.</p>
+<p>Import the added module in the <a href="../../../ppocr/metrics/__init__.py">ppocr/metrics/_<em>init_</em>.py</a> file.</p>
 </li>
 </ol>
 <p>After the metric module is added, you only need to configure it in the configuration file to use it, such as:</p>
@@ -3915,12 +3915,12 @@ PaddleOCR has built-in loss function modules related to algorithms such as DB, E
 </span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3"></a><span class="w">  </span><span class="nt">main_indicator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">acc</span>
 </span></code></pre></div></td></tr></table></div>
 <h2 id="optimizer">Optimizer<a class="headerlink" href="#optimizer" title="Permanent link">&para;</a></h2>
-<p>The optimizer is used to train the network. The optimizer also contains network regularization and learning rate decay modules. This part is under <a href="../../ppocr/optimizer">ppocr/optimizer</a>. PaddleOCR has built-in
+<p>The optimizer is used to train the network. The optimizer also contains network regularization and learning rate decay modules. This part is under <a href="../../../ppocr/optimizer">ppocr/optimizer</a>. PaddleOCR has built-in
 Commonly used optimizer modules such as <code>Momentum</code>, <code>Adam</code> and <code>RMSProp</code>, common regularization modules such as <code>Linear</code>, <code>Cosine</code>, <code>Step</code> and <code>Piecewise</code>, and common learning rate decay modules such as <code>L1Decay</code> and <code>L2Decay</code>.
 Modules without built-in can be added through the following steps, take <code>optimizer</code> as an example:</p>
 <ol>
 <li>
-<p>Create your own optimizer in the <a href="../../ppocr/optimizer/optimizer.py">ppocr/optimizer/optimizer.py</a> file, the sample code is as follows:</p>
+<p>Create your own optimizer in the <a href="../../../ppocr/optimizer/optimizer.py">ppocr/optimizer/optimizer.py</a> file, the sample code is as follows:</p>
 <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-12-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-12-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-12-3"> 3</a></span>
@@ -3994,7 +3994,7 @@ Modules without built-in can be added through the following steps, take <code>op
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="October 27, 2025 17:15:41 CST">2025-10-27 17:15:41</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="October 27, 2025 22:38:28 CST">2025-10-27 22:38:28</span>
   </span>
 
     
@@ -4004,7 +4004,7 @@ Modules without built-in can be added through the following steps, take <code>op
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="October 27, 2025 17:15:41 CST">2025-10-27 17:15:41</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="October 27, 2025 22:38:28 CST">2025-10-27 22:38:28</span>
   </span>
 
     
