@@ -1023,6 +1023,8 @@ python -m pip install flash-attn==2.8.3
 
 The vLLM and SGLang installed via `paddleocr install_genai_server_deps` are both **CUDA 12** versions. Please ensure your local GPU drivers are compatible with this requirement.
 
+> During the execution of the `paddleocr install_genai_server_deps` command, CUDA compilation tools such as nvcc may be required. If these tools are not available in your environment (for example, when using the `paddleocr-vl` image), you can obtain precompiled versions of FlashAttention from [this repository](https://github.com/mjun0812/flash-attention-prebuild-wheels) (install version 2.8.3 for NVIDIA 50-series GPUs, and version 2.8.2 for other GPU models). Install the precompiled package first, and then proceed with the subsequent command. For example, if you are using a non-50-series GPU, execute the following command in the `paddleocr-vl` image: `python -m pip install https://github.com/mjun0812/flash-attention-prebuild-wheels/releases/download/v0.3.14/flash_attn-2.8.2+cu128torch2.8-cp310-cp310-linux_x86_64.whl`.
+
 After installation, you can start the service using the `paddlex_genai_server` command:
 
 ```shell
@@ -1128,7 +1130,7 @@ docker compose up
 
 The server will listen on port **8080** by default.
 
-This method accelerates VLM inference based on the vLLM framework, making it more suitable for production environment deployment. However, it requires the machine to be equipped with a GPU and the NVIDIA drivers to support CUDA 12.8.
+This method accelerates VLM inference based on the vLLM framework, making it more suitable for production environment deployment. However, it requires the machine to be equipped with a GPU and the NVIDIA drivers to support CUDA 12.8. The default Docker images are not compatible with NVIDIA 50-series graphics cards. If you wish to use these graphics cards, please refer to Section 3 for instructions on installing a specific version of FlashAttention in the `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server` image.
 
 Additionally, after starting the server using this method, no internet connection is required except for pulling the images. For deployment in an offline environment, you can first pull the images involved in the Compose file on a networked machine, export them, transfer them to the offline machine, and import them. The service can then be started in the offline environment.
 

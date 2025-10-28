@@ -1060,6 +1060,8 @@ python -m pip install flash-attn==2.8.3
 
 通过 `paddleocr install_genai_server_deps` 安装的 vLLM 与 SGLang 均为 **CUDA 12.8** 版本，请确保本地 GPU 驱动与之兼容。
 
+> `paddleocr install_genai_server_deps` 命令在执行过程中可能需要使用 nvcc 等 CUDA 编译工具。如果您的环境中没有这些工具（例如在使用 `paddleocr-vl` 镜像），可以从 [此仓库](https://github.com/mjun0812/flash-attention-prebuild-wheels) 获取 FlashAttention 的预编译版本（对于 NVIDIA 50 系显卡，安装 2.8.3；对于其他型号显卡，安装 2.8.2），先安装预编译包，再执行后续命令。例如，如果您使用非 50 系显卡，在 `paddleocr-vl` 镜像中，执行 `python -m pip install https://github.com/mjun0812/flash-attention-prebuild-wheels/releases/download/v0.3.14/flash_attn-2.8.2+cu128torch2.8-cp310-cp310-linux_x86_64.whl`。
+
 安装完成后，可通过 `paddleocr genai_server` 命令启动服务：
 
 ```shell
@@ -1167,7 +1169,7 @@ docker compose up
 
 服务器将默认监听 **8080** 端口。
 
-此方式基于 vLLM 框架对 VLM 推理进行加速，更适合生产环境部署，但要求机器配备 GPU，并且 NVIDIA 驱动程序支持 CUDA 12.8。
+此方式基于 vLLM 框架对 VLM 推理进行加速，更适合生产环境部署，但要求机器配备 GPU，并且 NVIDIA 驱动程序支持 CUDA 12.8。默认的 Docker 镜像并不适用于 NVIDIA 50 系显卡，如果希望在这些显卡上使用，请参考第 3 节中的介绍，在 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server` 镜像中安装特定版本的 FlashAttention。
 
 此外，使用此方式启动服务器后，除拉取镜像外，无需连接互联网。如需在离线环境中部署，可先在联网机器上拉取 Compose 文件中涉及的镜像，导出并传输至离线机器中导入，即可在离线环境下启动服务。
 
