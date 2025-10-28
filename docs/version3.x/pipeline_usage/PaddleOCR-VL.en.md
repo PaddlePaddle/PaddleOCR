@@ -23,7 +23,8 @@ docker run \
 # Call PaddleOCR CLI or Python API inside the container
 ```
 
-If you wish to use PaddleOCR-VL in an environment without internet access, replace `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest` in the above command with the offline version image `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-offline`. You need to pull the image on a machine with internet access, import the image to the offline machine, and then start the container using that image on the offline machine. For example:
+The image size is approximately 8 GB. If you want to use **PaddleOCR-VL** in an environment without internet access, replace `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest` in the above command with the offline version image
+`ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-offline` (the offline image is about 11 GB). You’ll need to pull the image on a machine with internet access, import it to the offline machine, and then use it to start the container. For example:
 
 ```shell
 # Execute on a machine with internet access
@@ -53,15 +54,13 @@ Execute the following commands to complete the installation:
 
 ```shell
 # The following command installs PaddlePaddle for CUDA 12.6. For other CUDA versions and CPU-only version, please refer to: https://www.paddlepaddle.org.cn/install/quick?docurl=/documentation/docs/zh/develop/install/pip/linux-pip.html
-python -m pip install paddlepaddle-gpu==3.2.1 -i https://www.paddlepaddle.org.cn/packages/stable/cu126/
+python -m pip install paddlepaddle-gpu==3.2.0 -i https://www.paddlepaddle.org.cn/packages/stable/cu126/
 python -m pip install -U "paddleocr[doc-parser]"
 # For Linux systems, run:
 python -m pip install https://paddle-whl.bj.bcebos.com/nightly/cu126/safetensors/safetensors-0.6.2.dev0-cp38-abi3-linux_x86_64.whl
-# For Windows systems, run:
-# python -m pip install https://xly-devops.cdn.bcebos.com/safetensors-nightly/safetensors-0.6.2.dev0-cp38-abi3-win_amd64.whl
 ```
 
-> **Please ensure you install PaddlePaddle framework version 3.2.1 or above, along with the special version of safetensors.** For macOS users, please use Docker for environment setup.
+> **Please make sure to install PaddlePaddle version 3.2.0 or above, and also install the special version of `safetensors`.** For Windows users, please use **WSL** or **Docker** to set up the environment; for macOS users, please use **Docker** for environment setup.
 
 # PaddleOCR-VL support for inference devices is as follows:
 
@@ -961,9 +960,9 @@ docker run \
     ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest
 ```
 
-The server listens on port **8080** by default.
+The image size is approximately 12 GB. The server listens on port **8080** by default.
 
-If you wish to start the service in an environment without internet access, replace `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest` in the above command with the offline version image `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-offline`.
+If you wish to start the service in an environment without internet access, replace `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest` in the above command with the offline version image `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-offline`. The offline image size is approximately 14 GB.
 
 You can pass parameters when starting the container to override the default configurations. For supported parameters, please refer to the next subsection. For example:
 
