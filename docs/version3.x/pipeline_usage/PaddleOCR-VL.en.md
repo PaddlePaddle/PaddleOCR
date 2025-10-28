@@ -1129,7 +1129,7 @@ This method accelerates VLM inference based on the vLLM framework, making it mor
 
 Additionally, after starting the server using this method, no internet connection is required except for pulling the images. For deployment in an offline environment, you can first pull the images involved in the Compose file on a networked machine, export them, transfer them to the offline machine, and import them. The service can then be started in the offline environment.
 
-If you need to adjust pipeline configurations (such as model path, batch size, deployment device, etc.), you can overwrite the modified pipeline configuration file to `/home/paddleocr/pipeline_config.yaml` in the `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl` image (or the corresponding container). For the correspondence between PaddleOCR pipelines and PaddleX pipeline registration names, as well as how to obtain and modify PaddleX pipeline configuration files, please refer to [PaddleOCR and PaddleX](../paddleocr_and_paddlex.md). Furthermore, section 4.1.3 will introduce how to adjust the pipeline configuration based on common requirements.
+If you need to adjust pipeline configurations (such as model path, batch size, deployment device, etc.), you can overwrite the modified pipeline configuration file to `/home/paddleocr/pipeline_config.yaml` in the `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl` image (or the corresponding container). For the correspondence between PaddleOCR pipelines and PaddleX pipeline registration names, as well as how to obtain and modify PaddleX pipeline configuration files, please refer to [PaddleOCR and PaddleX](../paddleocr_and_paddlex.en.md). Furthermore, section 4.1.3 will introduce how to adjust the pipeline configuration based on common requirements.
 
 #### 4.1.2 Local Installation and Startup
 
@@ -1193,7 +1193,7 @@ The command-line options related to serving are as follows:
 </tbody>
 </table>
 
-If you need to adjust pipeline configurations (such as model path, batch size, deployment device, etc.), you can specify the `--pipeline` parameter as a custom configuration file path. For the correspondence between PaddleOCR pipelines and PaddleX pipeline registration names, as well as how to obtain and modify PaddleX pipeline configuration files, please refer to [PaddleOCR and PaddleX](../paddleocr_and_paddlex.md). Furthermore, section 4.1.3 will introduce how to adjust the pipeline configuration based on common requirements.
+If you need to adjust pipeline configurations (such as model path, batch size, deployment device, etc.), you can specify the `--pipeline` parameter as a custom configuration file path. For the correspondence between PaddleOCR pipelines and PaddleX pipeline registration names, as well as how to obtain and modify PaddleX pipeline configuration files, please refer to [PaddleOCR and PaddleX](../paddleocr_and_paddlex.en.md). Furthermore, section 4.1.3 will introduce how to adjust the pipeline configuration based on common requirements.
 
 #### 4.1.3 Pipeline Configuration Adjustment Instructions
 
@@ -2095,3 +2095,9 @@ foreach ($result as $i => $item) {
 </code></pre></details>
 </details>
 <br/>
+
+## 5. Model Fine-Tuning
+
+If you find that the accuracy of PaddleOCR-VL does not meet expectations in specific business scenarios, we recommend using the [ERNIEKit toolkit](https://github.com/PaddlePaddle/ERNIE/tree/release/v1.4) to perform Supervised Fine-Tuning (SFT) on the PaddleOCR-VL-0.9B model. For detailed steps, please refer to the [ERNIEKit documentation](https://github.com/PaddlePaddle/ERNIE/blob/release/v1.4/docs/paddleocr_vl_sft.md).
+
+> Fine-tuning for the layout detection sorting model is currently not supported.

@@ -2141,3 +2141,9 @@ foreach ($result as $i => $item) {
 </code></pre></details>
 </details>
 <br/>
+
+## 5. 模型微调
+
+若您发现 PaddleOCR-VL 在特定业务场景中的精度表现未达预期，我们推荐使用 [ERNIEKit 套件](https://github.com/PaddlePaddle/ERNIE/tree/release/v1.4) 对 PaddleOCR-VL-0.9B 模型进行有监督微调（SFT）。具体操作步骤可参考 [ERNIEKit 官方文档](https://github.com/PaddlePaddle/ERNIE/blob/release/v1.4/docs/paddleocr_vl_sft_zh.md)。
+
+> 目前暂不支持对版面检测排序模型进行微调。
