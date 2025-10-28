@@ -1128,7 +1128,16 @@ You can obtain the Compose file from [here](https://github.com/PaddlePaddle/Padd
 docker compose up
 ```
 
-The server will listen on port **8080** by default.
+After startup, you will see output similar to the following:
+
+```text
+paddleocr-vl-api             | INFO:     Started server process [1]
+paddleocr-vl-api             | INFO:     Waiting for application startup.
+paddleocr-vl-api             | INFO:     Application startup complete.
+paddleocr-vl-api             | INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
+```
+
+The server listens on port **8080** by default.
 
 This method accelerates VLM inference based on the vLLM framework, making it more suitable for production environment deployment. However, it requires the machine to be equipped with a GPU and the NVIDIA drivers to support CUDA 12.8. The default Docker images are not compatible with NVIDIA 50-series graphics cards. If you wish to use these graphics cards, please refer to Section 3 for instructions on installing a specific version of FlashAttention in the `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server` image.
 

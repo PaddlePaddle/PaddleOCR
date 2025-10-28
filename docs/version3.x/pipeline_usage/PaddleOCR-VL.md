@@ -1167,7 +1167,16 @@ PaddleOCR 会将来自单张或多张输入图像中的子图分组并对服务�
 docker compose up
 ```
 
-服务器将默认监听 **8080** 端口。
+启动后将看到类似如下输出：
+
+```text
+paddleocr-vl-api             | INFO:     Started server process [1]
+paddleocr-vl-api             | INFO:     Waiting for application startup.
+paddleocr-vl-api             | INFO:     Application startup complete.
+paddleocr-vl-api             | INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
+```
+
+服务器默认监听 **8080** 端口。
 
 此方式基于 vLLM 框架对 VLM 推理进行加速，更适合生产环境部署，但要求机器配备 GPU，并且 NVIDIA 驱动程序支持 CUDA 12.8。默认的 Docker 镜像并不适用于 NVIDIA 50 系显卡，如果希望在这些显卡上使用，请参考第 3 节中的介绍，在 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server` 镜像中安装特定版本的 FlashAttention。
 
