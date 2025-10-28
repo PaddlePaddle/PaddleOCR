@@ -24,7 +24,7 @@ docker run \
 ```
 
 The image size is approximately 8 GB. If you want to use **PaddleOCR-VL** in an environment without internet access, replace `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest` in the above command with the offline version image
-`ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-offline` (the offline image is about 11 GB). You’ll need to pull the image on a machine with internet access, import it to the offline machine, and then use it to start the container. For example:
+`ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-offline` (the offline image is about 10 GB). You’ll need to pull the image on a machine with internet access, import it to the offline machine, and then use it to start the container. For example:
 
 ```shell
 # Execute on a machine with internet access
@@ -960,9 +960,9 @@ docker run \
     ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest
 ```
 
-The image size is approximately 12 GB. The server listens on port **8080** by default.
+The image size is approximately 13 GB. The server listens on port **8080** by default.
 
-If you wish to start the service in an environment without internet access, replace `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest` in the above command with the offline version image `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-offline`. The offline image size is approximately 14 GB.
+If you wish to start the service in an environment without internet access, replace `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest` in the above command with the offline version image `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-offline`. The offline image size is approximately 15 GB.
 
 You can pass parameters when starting the container to override the default configurations. For supported parameters, please refer to the next subsection. For example:
 
