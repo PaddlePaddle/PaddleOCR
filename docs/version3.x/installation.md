@@ -41,6 +41,12 @@ nvidia-docker run --name paddleocr -v $PWD:/paddle --shm-size=8G --network=host 
 nvidia-docker run --name paddleocr -v $PWD:/paddle --shm-size=8G --network=host -it ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddle:3.0.0-gpu-cuda12.6-cudnn9.5-trt10.5 /bin/bash
 </code></pre></details>
 
+执行以下命令安装 opencv 所需依赖：
+
+```
+apt update && apt install libglib2.0-0 libgl1 -y
+```
+
 * 若您使用的 Docker 版本 <= 17.06，请升级 Docker 版本。
 
 * 注：更多飞桨官方 docker 镜像请参考[飞桨官网](https://www.paddlepaddle.org.cn/install/quick?docurl=/documentation/docs/zh/install/docker/linux-docker.html)。

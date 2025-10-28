@@ -10,6 +10,30 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
 
 ## 1. 环境准备
 
+<blockquote>
+对于 Windows 用户，请先使用 WSL 或者 Docker 进入 Linux 系统，再进行后续步骤。
+<details><summary> 👉点击展开使用 Docker 的操作示例</summary>
+您可以通过 <code>nvidia-smi</code> 查看自己的 NVIDIA 驱动版本。请确保自己的 NVIDIA 驱动在 CUDA 12.6 版本或以上，若您使用的是 RTX 50 系 GPU，建议 NVIDIA 驱动在 CUDA 12.9 版本或以上。
+<pre>
+<code>
+# 启动一个 Docker 容器
+docker run \
+    -it \
+    --gpus all \
+    --name paddleocr \
+    -v $PWD:/paddle \
+    --shm-size=8G \
+    --network=host \
+    ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddle:3.0.0-gpu-cuda12.6-cudnn9.5-trt10.5 \
+    /bin/bash
+# 安装 opencv 所需依赖
+apt update && apt install libglib2.0-0 libgl1 -y
+</code>
+</pre>
+</details>
+</blockquote>
+
+
 安装 PaddlePaddle 和 PaddleOCR:
 
 ```shell
@@ -17,7 +41,6 @@ python -m pip install paddlepaddle-gpu==3.2.0 -i https://www.paddlepaddle.org.cn
 python -m pip install -U "paddleocr[doc-parser]"
 python -m pip install https://paddle-whl.bj.bcebos.com/nightly/cu126/safetensors/safetensors-0.6.2.dev0-cp38-abi3-linux_x86_64.whl
 ```
-> 对于 Windows 用户，请使用 WSL 或者 Docker 进行环境搭建。
 
 运行 PaddleOCR-VL 对 GPU 硬件有以下要求：
 
