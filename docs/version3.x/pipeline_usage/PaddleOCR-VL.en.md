@@ -52,13 +52,16 @@ source .venv_paddleocr/bin/activate
 Execute the following commands to complete the installation:
 
 ```shell
-# The following command installs PaddlePaddle for CUDA 12.6. For other CUDA versions and the CPU version, please refer to https://www.paddlepaddle.org.cn/install/quick?docurl=/documentation/docs/zh/develop/install/pip/linux-pip.html
-python -m pip install paddlepaddle-gpu==3.2.0 -i https://www.paddlepaddle.org.cn/packages/stable/cu126/
+# The following command installs PaddlePaddle for CUDA 12.6. For other CUDA versions and CPU-only version, please refer to: https://www.paddlepaddle.org.cn/install/quick?docurl=/documentation/docs/zh/develop/install/pip/linux-pip.html
+python -m pip install paddlepaddle-gpu==3.2.1 -i https://www.paddlepaddle.org.cn/packages/stable/cu126/
 python -m pip install -U "paddleocr[doc-parser]"
+# For Linux systems, run:
 python -m pip install https://paddle-whl.bj.bcebos.com/nightly/cu126/safetensors/safetensors-0.6.2.dev0-cp38-abi3-linux_x86_64.whl
+# For Windows systems, run:
+# python -m pip install https://xly-devops.cdn.bcebos.com/safetensors-nightly/safetensors-0.6.2.dev0-cp38-abi3-win_amd64.whl
 ```
 
-> For Windows users, please use WSL or Docker to set up the environment; for macOS users, please use Docker to set up the environment.
+> **Please ensure you install PaddlePaddle framework version 3.2.1 or above, along with the special version of safetensors.** For macOS users, please use Docker for environment setup.
 
 # PaddleOCR-VL support for inference devices is as follows:
 
@@ -95,7 +98,8 @@ python -m pip install https://paddle-whl.bj.bcebos.com/nightly/cu126/safetensors
 </tbody>
 </table>
 
-> Currently, PaddleOCR-VL does not support ARM architecture CPUs. Support for more hardware will be expanded based on actual requirements in the future. Stay tuned!
+> Currently, PaddleOCR-VL does not support ARM architecture CPUs. Support for more hardware will be expanded based on actual requirements in the future. Stay tuned!  
+> vLLM and SGLang cannot run natively on Windows or macOS. Please use the Docker image we provide.
 
 ## 2. Quick Start
 

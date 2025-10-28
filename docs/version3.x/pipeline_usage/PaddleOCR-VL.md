@@ -53,12 +53,15 @@ source .venv_paddleocr/bin/activate
 
 ```shell
 # 以下命令安装 CUDA 12.6 版本的 PaddlePaddle，对于其他 CUDA 版本以及 CPU 版本，请参考 https://www.paddlepaddle.org.cn/install/quick?docurl=/documentation/docs/zh/develop/install/pip/linux-pip.html
-python -m pip install paddlepaddle-gpu==3.2.0 -i https://www.paddlepaddle.org.cn/packages/stable/cu126/
+python -m pip install paddlepaddle-gpu==3.2.1 -i https://www.paddlepaddle.org.cn/packages/stable/cu126/
 python -m pip install -U "paddleocr[doc-parser]"
+# 对于 Linux 系统，执行：
 python -m pip install https://paddle-whl.bj.bcebos.com/nightly/cu126/safetensors/safetensors-0.6.2.dev0-cp38-abi3-linux_x86_64.whl
+# 对于 Windows 系统，执行：
+# python -m pip install https://xly-devops.cdn.bcebos.com/safetensors-nightly/safetensors-0.6.2.dev0-cp38-abi3-win_amd64.whl
 ```
 
-> 对于 Windows 用户，请使用 WSL 或者 Docker 进行环境搭建；对于 macOS 用户，请使用 Docker 进行环境搭建。
+> **请注意安装 3.2.1 及以上版本的飞桨框架，同时安装特殊版本的 safetensors。** 对于 macOS 用户，请使用 Docker 进行环境搭建。
 
 PaddleOCR-VL 对推理设备的支持情况如下：
 
@@ -95,13 +98,14 @@ PaddleOCR-VL 对推理设备的支持情况如下：
 </tbody>
 </table>
 
-> 当前，PaddleOCR-VL 暂不支持 ARM 架构 CPU。后续将根据实际需求扩展更多硬件支持，敬请期待！
+> 当前，PaddleOCR-VL 暂不支持 ARM 架构 CPU。后续将根据实际需求扩展更多硬件支持，敬请期待！  
+> vLLM 与 SGLang 无法在 Windows 或 macOS 上原生运行，请使用我们提供的 Docker 镜像。
 
 ## 2. 快速开始
 
 PaddleOCR-VL 支持 CLI 命令行方式和 Python API 两种使用方式，其中 CLI 命令行方式更简单，适合快速验证功能，而 Python API 方式更灵活，适合集成到现有项目中。
 
-> 本节所介绍的方法主要用于快速验证，其推理速度、显存占用及稳定性表现未必能满足生产环境的要求。**若需部署至生产环境，我们强烈建议使用专门的推理加速框架**，具体方法请参考下一节。
+> 本节所介绍的方法主要用于快速验证，其推理速度、显存占用及稳定性表现未必能满足生产环境的要求。**若需部署至生产环境，我们强烈建议使用专门的推理加速框架** ，具体方法请参考下一节。
 
 ### 2.1 命令行方式体验
 
