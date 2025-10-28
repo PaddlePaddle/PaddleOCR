@@ -12,7 +12,7 @@ ENV PYTHONDONTWRITEBYTECODE=1
 
 RUN python -m pip install paddlepaddle-gpu==3.2.0 -i https://www.paddlepaddle.org.cn/packages/stable/cu126/
 ARG PADDLEOCR_VERSION=">=3.3.1,<3.4"
-RUN python -m pip install install "paddleocr${PADDLEOCR_VERSION}" \
+RUN python -m pip install "paddleocr${PADDLEOCR_VERSION}" \
     && python -m pip install https://paddle-whl.bj.bcebos.com/nightly/cu126/safetensors/safetensors-0.6.2.dev0-cp38-abi3-linux_x86_64.whl \
     && paddlex --install serving
 
