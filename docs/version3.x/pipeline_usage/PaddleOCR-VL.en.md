@@ -1217,7 +1217,7 @@ Section 2 has already detailed how to start the VLM inference service.
 
 **Enabling Document Image Preprocessing Functionality**
 
-The service started with the default configuration (whether via Docker or PaddleX CLI) does not support the document preprocessing function. If a client calls this function, an error message will be returned. To enable document preprocessing, set `use_doc_preprocessor` to `True` in the pipeline configuration file and start the service using the modified configuration file.
+The service started with the default configuration does not support the document preprocessing function. If a client calls this function, an error message will be returned. To enable document preprocessing, set `use_doc_preprocessor` to `True` in the pipeline configuration file and start the service using the modified configuration file.
 
 **Disabling Result Visualization Functionality**
 

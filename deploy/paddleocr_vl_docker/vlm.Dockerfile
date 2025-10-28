@@ -1,6 +1,6 @@
 FROM ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddlex-genai-vllm-server:latest
 
-RUN python -m pip install 'paddleocr<3.4'
+RUN python -m pip install 'paddleocr>=3.3,<3.4'
 RUN paddleocr install_genai_server_deps vllm
 
 RUN groupadd -g 1000 paddleocr \
