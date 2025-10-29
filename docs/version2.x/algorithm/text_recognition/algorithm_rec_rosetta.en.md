@@ -84,7 +84,7 @@ Not currently supported
 
 The Rosetta model also supports the following inference deployment methods:
 
-- Paddle2ONNX Inference: After preparing the inference model, refer to the [paddle2onnx](../../ppocr/infer_deploy/paddle2onnx.en.md) tutorial.
+- Paddle2ONNX Inference: After preparing the inference model, refer to the [paddle2onnx](../../../version2.x/legacy/paddle2onnx.en.md) tutorial.
 
 ## 5. FAQ
 

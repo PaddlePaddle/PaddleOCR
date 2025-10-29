@@ -328,6 +328,10 @@ class PPDocTranslation(PaddleXPipelineWrapper):
             "SubPipelines.LayoutParser.SubPipelines.DocPreprocessor.use_doc_unwarping": self._params[
                 "use_doc_unwarping"
             ],
+            "SubPipelines.LayoutParser.use_doc_preprocessor": self._params[
+                "use_doc_orientation_classify"
+            ]
+            or self._params["use_doc_unwarping"],
             "SubPipelines.LayoutParser.SubPipelines.GeneralOCR.use_textline_orientation": self._params[
                 "use_textline_orientation"
             ],

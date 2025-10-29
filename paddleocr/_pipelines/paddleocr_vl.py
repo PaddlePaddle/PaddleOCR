@@ -169,6 +169,8 @@ class PaddleOCRVL(PaddleXPipelineWrapper):
             "SubPipelines.DocPreprocessor.use_doc_unwarping": self._params[
                 "use_doc_unwarping"
             ],
+            "use_doc_preprocessor": self._params["use_doc_orientation_classify"]
+            or self._params["use_doc_unwarping"],
             "use_layout_detection": self._params["use_layout_detection"],
             "use_chart_recognition": self._params["use_chart_recognition"],
             "format_block_content": self._params["format_block_content"],

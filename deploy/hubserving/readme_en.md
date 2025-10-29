@@ -69,7 +69,7 @@ Before installing the service module, you need to prepare the inference model an
 | KIE(SER+RE) | ./inference/re_vi_layoutxlm_xfund_infer/ |
 
 **The model path can be found and modified in `params.py`.**
-More models provided by PaddleOCR can be obtained from the [model library](../../doc/doc_en/models_list_en.md). You can also use models trained by yourself.
+More models provided by PaddleOCR can be obtained from the [model library](../../docs/version2.x/ppocr/model_list.en.md). You can also use models trained by yourself.
 
 ### 2.3 Install Service Module
 PaddleOCR provides 5 kinds of service modules, install the required modules according to your needs.
