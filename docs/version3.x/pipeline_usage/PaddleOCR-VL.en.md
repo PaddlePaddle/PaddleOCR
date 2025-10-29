@@ -10,53 +10,107 @@ PaddleOCR-VL is a SOTA and resource-efficient model tailored for document parsin
 
 ## 1. Environment Preparation
 
-Install PaddlePaddle and PaddleOCR:
+We recommend using the official Docker image (requires Docker version >= 19.03, a machine equipped with a GPU, and NVIDIA drivers supporting CUDA 12.8):
 
 ```shell
+docker run \
+    -it \
+    --gpus all \
+    --network host \
+    --user root \
+    ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest \
+    /bin/bash
+# Call PaddleOCR CLI or Python API inside the container
+```
+
+The image size is approximately 8 GB. If you want to use **PaddleOCR-VL** in an environment without internet access, replace `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest` in the above command with the offline version image
+`ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-offline` (the offline image is about 11 GB). You’ll need to pull the image on a machine with internet access, import it to the offline machine, and then use it to start the container. For example:
+
+```shell
+# Execute on a machine with internet access
+docker pull ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-offline
+# Save the image to a file
+docker save ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-offline -o paddleocr-vl-latest-offline.tar
+
+# Transfer the image file to the offline machine
+
+# Execute on the offline machine
+docker load -i paddleocr-vl-latest-offline.tar
+# After this, you can use `docker run` to start the container on the offline machine
+```
+
+If you cannot use Docker, you can also manually install PaddlePaddle and PaddleOCR. Python version 3.8–3.12 is required.
+
+**We strongly recommend installing PaddleOCR-VL in a virtual environment to avoid dependency conflicts.** For example, use the Python venv standard library to create a virtual environment:
+
+```shell
+# Create a virtual environment
+python -m venv .venv_paddleocr
+# Activate the environment
+source .venv_paddleocr/bin/activate
+```
+
+Execute the following commands to complete the installation:
+
+```shell
+# The following command installs PaddlePaddle for CUDA 12.6. For other CUDA versions and CPU-only version, please refer to: https://www.paddlepaddle.org.cn/install/quick?docurl=/documentation/docs/zh/develop/install/pip/linux-pip.html
 python -m pip install paddlepaddle-gpu==3.2.0 -i https://www.paddlepaddle.org.cn/packages/stable/cu126/
 python -m pip install -U "paddleocr[doc-parser]"
+# For Linux systems, run:
 python -m pip install https://paddle-whl.bj.bcebos.com/nightly/cu126/safetensors/safetensors-0.6.2.dev0-cp38-abi3-linux_x86_64.whl
 ```
-> For Windows users, please use WSL or a Docker container.
 
-Running the PaddleOCR-VL has the following GPU hardware requirements:
+> **Please make sure to install PaddlePaddle version 3.2.0 or above, and also install the special version of `safetensors`.** For Windows users, please use **WSL** or **Docker** to set up the environment; for macOS users, please use **Docker** for environment setup.
+
+# PaddleOCR-VL support for inference devices is as follows:
 
 <table border="1">
 <thead>
   <tr>
     <th>Inference Method</th>
-    <th>GPU Compute Capability</th>
+    <th>Supports x64 CPU</th>
+    <th>Supported GPU Compute Capability</th>
+    <th>Supported CUDA Versions</th>
   </tr>
 </thead>
 <tbody>
   <tr>
     <td>PaddlePaddle</td>
-    <td>≥ 8.5</td>
+    <td>✅</td>
+    <td>≥ 7</td>
+    <td>11.8, 12.6, 12.8</td>
   </tr>
   <tr>
     <td>vLLM</td>
+    <td>🚧</td>
     <td>≥ 8 (RTX 3060, RTX 5070, A10, A100, ...) <br />  
-    7 ≤ GPU Compute Capability < 8 (T4, V100, ...) Supported but may experience issues like request timeouts, OOM errors, etc. Not recommended for use.
+    7 ≤ GPU Compute Capability < 8 (T4, V100, ...) can run but may experience issues like request timeouts, OOM, etc. Not recommended for use.
     </td>
+    <td>12.8</td>
   </tr>
   <tr>
     <td>SGLang</td>
+     <td>🚧</td>
     <td>8 ≤ GPU Compute Capability < 12</td>
+    <td>12.8</td>
   </tr>
 </tbody>
 </table>
 
-The PaddleOCR-VL currently does not support CPU or Arm architecture. Support for more hardware will be expanded based on actual requirements in the future. Stay tuned!
+> Currently, PaddleOCR-VL does not support ARM architecture CPUs. Support for more hardware will be expanded based on actual requirements in the future. Stay tuned!  
+> vLLM and SGLang cannot run natively on Windows or macOS. Please use the Docker image we provide.
 
 ## 2. Quick Start
 
 PaddleOCR-VL supports two usage methods: CLI command line and Python API. The CLI command line method is simpler and suitable for quickly verifying functionality, while the Python API method is more flexible and suitable for integration into existing projects.
 
+> The methods introduced in this section are primarily for rapid validation. Their inference speed, memory usage, and stability may not meet the requirements of a production environment. **If deployment to a production environment is needed, we strongly recommend using a dedicated inference acceleration framework**. For specific methods, please refer to the next section.
+
 ### 2.1 Command Line Usage
 
 Run a single command to quickly test the PaddleOCR-VL ：
 
-```bash
+```shell
 paddleocr doc_parser -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/paddleocr_vl_demo.png
 
 # Use --use_doc_orientation_classify to enable document orientation classification
@@ -895,54 +949,58 @@ The inference performance under the default configuration has not been fully opt
 
 #### 3.1.1 Using Docker Images
 
-PaddleOCR provides Docker images for quickly starting the vLLM inference service. The service can be started using the following command:
+PaddleOCR provides Docker images for quickly launching vLLM inference services. You can use the following command to start the service (requires Docker version >= 19.03, a machine equipped with a GPU, and NVIDIA drivers supporting CUDA 12.8):
 
-```bash
+```shell
 docker run \
     -it \
     --rm \
     --gpus all \
     --network host \
-    ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddlex-genai-vllm-server
+    ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest
 ```
 
-The service listens on port **8080** by default.
+The image size is approximately 13 GB. The server listens on port **8080** by default.
 
-When starting the container, you can pass in parameters to override the default configuration. The parameters are consistent with the `paddleocr genai_server` command (see the next subsection for details). For example:
+If you wish to start the service in an environment without internet access, replace `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest` in the above command with the offline version image `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-offline`. The offline image size is approximately 15 GB.
 
-```bash
+You can pass parameters when starting the container to override the default configurations. For supported parameters, please refer to the next subsection. For example:
+
+```shell
 docker run \
     -it \
     --rm \
     --gpus all \
     --network host \
-    ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddlex-genai-vllm-server \
-    paddlex_genai_server --model_name PaddleOCR-VL-0.9B --host 0.0.0.0 --port 8118 --backend vllm
+    ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest \
+    paddleocr genai_server --model_name PaddleOCR-VL-0.9B --host 0.0.0.0 --port 8118 --backend vllm
 ```
 
-If you are using an NVIDIA 50 series graphics card (Compute Capability >= 12), you need to install a specific version of FlashAttention before launching the service.
+If you are using an NVIDIA 50-series graphics card (Compute Capability >= 12), you need to install a specific version of FlashAttention before starting the service:
 
-```bash
+```shell
 docker run \
     -it \
     --rm \
     --gpus all \
     --network host \
-    ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddlex-genai-vllm-server \
+    ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest \
     /bin/bash
-python -m pip install flash-attn==2.8.3
-paddlex_genai_server --model_name PaddleOCR-VL-0.9B --backend vllm --port 8118
+# After entering the container
+python -m pip install https://github.com/mjun0812/flash-attention-prebuild-wheels/releases/download/v0.4.11/flash_attn-2.8.3+cu128torch2.8-cp310-cp310-linux_x86_64.whl
+paddleocr genai_server --model_name PaddleOCR-VL-0.9B --backend vllm --port 8118
 ```
 
 #### 3.1.2 Installation and Usage via PaddleOCR CLI
 
 Since the inference acceleration framework may have dependency conflicts with the PaddlePaddle framework, it is recommended to install it in a virtual environment. Taking vLLM as an example:
 
-```bash
+```shell
+# If there is currently an activated virtual environment, first deactivate it using `deactivate`
 # Create a virtual environment
-python -m venv .venv
+python -m venv .venv_vlm
 # Activate the environment
-source .venv/bin/activate
+source .venv_vlm/bin/activate
 # Install PaddleOCR
 python -m pip install "paddleocr[doc-parser]"
 # Install dependencies for inference acceleration service
@@ -951,7 +1009,7 @@ paddleocr install_genai_server_deps vllm
 
 Usage of the `paddleocr install_genai_server_deps` command:
 
-```bash
+```shell
 paddleocr install_genai_server_deps <name of the inference acceleration framework>
 ```
 
@@ -959,13 +1017,17 @@ The currently supported frameworks are named `vllm` and `sglang`, corresponding 
 
 If you are using an NVIDIA 50 series graphics card (Compute Capability >= 12), you need to install a specific version of FlashAttention before launching the service.
 
-```bash
+```shell
 python -m pip install flash-attn==2.8.3
 ```
 
+The vLLM and SGLang installed via `paddleocr install_genai_server_deps` are both **CUDA 12** versions. Please ensure your local GPU drivers are compatible with this requirement.
+
+> During the execution of the `paddleocr install_genai_server_deps` command, CUDA compilation tools such as nvcc may be required. If these tools are not available in your environment (for example, when using the `paddleocr-vl` image), you can obtain precompiled versions of FlashAttention from [this repository](https://github.com/mjun0812/flash-attention-prebuild-wheels) (install version 2.8.3 for NVIDIA 50-series GPUs, and version 2.8.2 for other GPU models). Install the precompiled package first, and then proceed with the subsequent command. For example, if you are using a non-50-series GPU, execute the following command in the `paddleocr-vl` image: `python -m pip install https://github.com/mjun0812/flash-attention-prebuild-wheels/releases/download/v0.3.14/flash_attn-2.8.2+cu128torch2.8-cp310-cp310-linux_x86_64.whl`.
+
 After installation, you can start the service using the `paddlex_genai_server` command:
 
-```bash
+```shell
 paddlex_genai_server --model_name PaddleOCR-VL-0.9B --backend vllm --port 8118
 ```
 
@@ -988,7 +1050,7 @@ After starting the VLM inference service, the client can invoke the service thro
 
 The backend type (`vllm-server` or `sglang-server`) can be specified via `--vl_rec_backend`, and the service address can be specified via `--vl_rec_server_url`. For example:
 
-```bash
+```shell
 paddleocr doc_parser --input paddleocr_vl_demo.png --vl_rec_backend vllm-server --vl_rec_server_url http://127.0.0.1:8118/v1
 ```
 
@@ -998,18 +1060,6 @@ Pass the `vl_rec_backend` and `vl_rec_server_url` parameters when creating the `
 
 ```python
 pipeline = PaddleOCRVL(vl_rec_backend="vllm-server", vl_rec_server_url="http://127.0.0.1:8118/v1")
-```
-
-#### 3.2.3 Service-Oriented Deployment
-
-The fields `VLRecognition.genai_config.backend` and `VLRecognition.genai_config.server_url` can be modified in the configuration file, for example:
-
-```yaml
-VLRecognition:
-  ...
-  genai_config:
-    backend: vllm-server
-    server_url: http://127.0.0.1:8118/v1
 ```
 
 ### 3.3 Performance Tuning
@@ -1034,7 +1084,7 @@ gpu-memory-utilization: 0.3
 
 2. Specify the configuration file path when starting the service, for example, using the `paddleocr genai_server` command:
 
-```bash
+```shell
 paddleocr genai_server --model_name PaddleOCR-VL-0.9B --backend vllm --backend_config vllm_config.yaml
 
 
@@ -1064,27 +1114,52 @@ The following configurations are tailored for scenarios with a one-to-one corres
 
 ## 4. Serving
 
-If you need to directly apply PaddleOCR-VL in your Python project, you can refer to the example code in [2.2 Python Script Integration](#22-python-script-integration).
+If you wish to directly integrate PaddleOCR-VL into your Python project, you can refer to the sample code provided in [2.2 Python Script Method](#22-python-script-method-integration).
 
-Additionally, PaddleOCR offers other deployment methods, detailed as follows:
+Furthermore, PaddleOCR also supports deploying PaddleOCR-VL as a service. This section will detail the serving steps. Please note that the pipeline service introduced in this section differs from the VLM inference service in the previous section: the latter is only responsible for one step (i.e., VLM inference) in the complete workflow and is called as an underlying service by the former.
 
-### 1.1 Install Dependencies
+### 4.1 Running the Server
 
-Run the following command to install the PaddleX serving plugin via PaddleX CLI:
+#### 4.1.1 Using Docker Compose
 
-```bash
+You can obtain the Compose file from [here](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/compose.yaml). After downloading it locally, execute the following command to start the server:
+
+```shell
+docker compose up
+```
+
+After startup, you will see output similar to the following:
+
+```text
+paddleocr-vl-api             | INFO:     Started server process [1]
+paddleocr-vl-api             | INFO:     Waiting for application startup.
+paddleocr-vl-api             | INFO:     Application startup complete.
+paddleocr-vl-api             | INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
+```
+
+The server listens on port **8080** by default.
+
+This method accelerates VLM inference based on the vLLM framework, making it more suitable for production environment deployment. However, it requires the machine to be equipped with a GPU and the NVIDIA drivers to support CUDA 12.8. The default Docker images are not compatible with NVIDIA 50-series graphics cards. If you wish to use these graphics cards, please refer to Section 3 for instructions on installing a specific version of FlashAttention in the `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server` image.
+
+Additionally, after starting the server using this method, no internet connection is required except for pulling the images. For deployment in an offline environment, you can first pull the images involved in the Compose file on a networked machine, export them, transfer them to the offline machine, and import them. The service can then be started in the offline environment.
+
+If you need to adjust pipeline configurations (such as model path, batch size, deployment device, etc.), you can overwrite the modified pipeline configuration file to `/home/paddleocr/pipeline_config.yaml` in the `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl` image (or the corresponding container). For the correspondence between PaddleOCR pipelines and PaddleX pipeline registration names, as well as how to obtain and modify PaddleX pipeline configuration files, please refer to [PaddleOCR and PaddleX](../paddleocr_and_paddlex.en.md). Furthermore, section 4.1.3 will introduce how to adjust the pipeline configuration based on common requirements.
+
+#### 4.1.2 Local Installation and Startup
+
+Execute the following command to install the serving plugin via the PaddleX CLI:
+
+```shell
 paddlex --install serving
 ```
 
-### 1.2 Run the Server
+Then, use the PaddleX CLI to start the server:
 
-Run the server via PaddleX CLI:
-
-```bash
+```shell
 paddlex --serve --pipeline PaddleOCR-VL
 ```
 
-You should see information similar to the following:
+After startup, you will see output similar to the following:
 
 ```text
 INFO:     Started server process [63108]
@@ -1093,7 +1168,7 @@ INFO:     Application startup complete.
 INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
 ```
 
-To adjust configurations (such as model path, batch size, deployment device, etc.), specify `--pipeline` as a custom configuration file. Refer to [PaddleOCR and PaddleX](../paddleocr_and_paddlex.en.md) for the mapping between PaddleOCR pipelines and PaddleX pipeline registration names, as well as how to obtain and modify PaddleX pipeline configuration files.
+The server listens on port **8080** by default.
 
 The command-line options related to serving are as follows:
 
@@ -1132,9 +1207,82 @@ The command-line options related to serving are as follows:
 </tbody>
 </table>
 
+If you need to adjust pipeline configurations (such as model path, batch size, deployment device, etc.), you can specify the `--pipeline` parameter as a custom configuration file path. For the correspondence between PaddleOCR pipelines and PaddleX pipeline registration names, as well as how to obtain and modify PaddleX pipeline configuration files, please refer to [PaddleOCR and PaddleX](../paddleocr_and_paddlex.en.md). Furthermore, section 4.1.3 will introduce how to adjust the pipeline configuration based on common requirements.
+
+#### 4.1.3 Pipeline Configuration Adjustment Instructions
+
+**Using Acceleration Frameworks to Improve VLM Inference Performance**
+
+To use acceleration frameworks like vLLM to improve VLM inference performance, you can modify the `VLRecognition.genai_config.backend` and `VLRecognition.genai_config.server_url` fields in the pipeline configuration file, for example:
+
+```yaml
+VLRecognition:
+  ...
+  genai_config:
+    backend: vllm-server
+    server_url: http://127.0.0.1:8118/v1
+```
+
+Section 2 has already detailed how to start the VLM inference service.
+
+**Enabling Document Image Preprocessing Functionality**
+
+The service started with the default configuration does not support the document preprocessing function. If a client calls this function, an error message will be returned. To enable document preprocessing, set `use_doc_preprocessor` to `True` in the pipeline configuration file and start the service using the modified configuration file.
+
+**Disabling Result Visualization Functionality**
+
+The service returns visualized results by default, which introduces additional overhead. To disable this functionality, add the following configuration to the pipeline configuration file:
+
+```yaml
+Serving:
+  visualize: False
+```
+
+Alternatively, you can set the `visualize` field to `false` in the request body to disable visualization for a single request.
+
+**Configuring Returned Image URLs**
+
+For the visualized result images and images contained within Markdown, the service returns them as Base64 encoded strings by default. To return images as URLs instead, add the following configuration to the pipeline configuration file:
+
+```yaml
+Serving:
+  extra:
+    file_storage:
+      type: bos
+      endpoint: https://bj.bcebos.com
+      bucket_name: some-bucket
+      ak: xxx
+      sk: xxx
+      key_prefix: deploy
+    return_img_urls: True
+```
+
+Currently, it supports storing the generated images to Baidu Object Storage (BOS) and returning URLs. The relevant parameters are explained below:
+
+- `endpoint`: Access domain name. Must be configured.
+- `ak`: Baidu AI Cloud AK. Must be configured.
+- `sk`: Baidu AI Cloud SK. Must be configured.
+- `bucket_name`: Bucket name. Must be configured.
+- `key_prefix`: Uniform prefix for object keys.
+- `connection_timeout_in_mills`: Request timeout period (in milliseconds).
+
+For more information, such as how to obtain AK/SK, please refer to the [Baidu Intelligent Cloud Official Documentation](https://cloud.baidu.com/doc/BOS/index.html).
+
+**Modifying PDF Parsing Page Limit**
+
+For performance considerations, the service only processes the first 10 pages of received PDF files by default. To adjust the page limit, add the following configuration to the pipeline configuration file:
+
+```yaml
+Serving:
+  extra:
+    max_num_input_imgs: <new page limit, e.g., 100>
+```
+
+Setting `max_num_input_imgs` to `null` removes the page limit.
+
 ### 4.3 Client-Side Invocation
 
-Below are the API references for basic service-based deployment and examples of multilingual service invocation:
+Below are the API reference and examples of multi-language service invocation:
 
 <details><summary>API Reference</summary>
 <p>Main operations provided by the service:</p>
@@ -1436,7 +1584,7 @@ Below are the API references for basic service-based deployment and examples of 
 </tr>
 </tbody>
 </table></details>
-<details><summary>Multilingual Service Invocation Example</summary>
+<details><summary>Multi-Language Service Invocation Examples</summary>
 <details>
 <summary>Python</summary>
 
@@ -1961,3 +2109,9 @@ foreach ($result as $i => $item) {
 </code></pre></details>
 </details>
 <br/>
+
+## 5. Model Fine-Tuning
+
+If you find that the accuracy of PaddleOCR-VL does not meet expectations in specific business scenarios, we recommend using the [ERNIEKit toolkit](https://github.com/PaddlePaddle/ERNIE/tree/release/v1.4) to perform Supervised Fine-Tuning (SFT) on the PaddleOCR-VL-0.9B model. For detailed steps, please refer to the [ERNIEKit documentation](https://github.com/PaddlePaddle/ERNIE/blob/release/v1.4/docs/paddleocr_vl_sft.md).
+
+> Fine-tuning for the layout detection sorting model is currently not supported.

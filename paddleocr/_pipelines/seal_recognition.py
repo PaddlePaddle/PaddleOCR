@@ -202,6 +202,8 @@ class SealRecognition(PaddleXPipelineWrapper):
             "SubPipelines.DocPreprocessor.use_doc_unwarping": self._params[
                 "use_doc_unwarping"
             ],
+            "use_doc_preprocessor": self._params["use_doc_orientation_classify"]
+            or self._params["use_doc_unwarping"],
             "SubPipelines.SealOCR.SubModules.TextDetection.model_name": self._params[
                 "seal_text_detection_model_name"
             ],

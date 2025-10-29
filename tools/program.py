@@ -115,7 +115,14 @@ def merge_config(config, opts):
     return config
 
 
-def check_device(use_gpu, use_xpu=False, use_npu=False, use_mlu=False, use_gcu=False, use_iluvatar_gpu=False):
+def check_device(
+    use_gpu,
+    use_xpu=False,
+    use_npu=False,
+    use_mlu=False,
+    use_gcu=False,
+    use_iluvatar_gpu=False,
+):
     """
     Log error and exit when set use_gpu=true in paddlepaddle
     cpu version.

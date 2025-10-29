@@ -241,7 +241,9 @@ class DetResizeForTest(object):
         data["image"] = img
         data["shape"] = np.array([src_h, src_w, ratio_h, ratio_w])
         if "iluvatar_gpu" in get_device():
-            data["shape"] = np.array([src_h, src_w, ratio_h, ratio_w]).astype(np.float32)
+            data["shape"] = np.array([src_h, src_w, ratio_h, ratio_w]).astype(
+                np.float32
+            )
         return data
 
     def image_padding(self, im, value=0):
