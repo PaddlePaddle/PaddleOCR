@@ -13,7 +13,7 @@ hide:
 ## 云上飞桨部署工具的优势
 
 <div align="center">
-  <img src="./images/paddlecloud.png" title="architecture" width="80%" height="80%" alt="">
+  <img src="../../../deploy/paddlecloud/images/paddlecloud.png" title="architecture" width="80%" height="80%" alt="">
 </div>
 
 - **模型套件Docker镜像大礼包。**
@@ -228,7 +228,7 @@ pdc-redis-master-0                                   1/1     Running   0        
 ### 2.2 云原生组件介绍
 
 <div align="center">
-  <img src="./images/architecture.jpeg" title="architecture" width="60%" height="60%" alt="">
+  <img src="../../../deploy/paddlecloud/images/architecture.jpeg" title="architecture" width="60%" height="60%" alt="">
 </div>
 
 - **数据缓存组件。** 数据缓存组件使用JuiceFS作为缓存引擎，能够将远程样本数据缓存到训练集群本地，大幅加速云上飞桨分布式训练作业。

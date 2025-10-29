@@ -561,24 +561,24 @@ class OCRHandler(SimpleInferencePipelineHandler):
         }
 
     async def _parse_local_result(self, local_result: Dict, ctx: Context) -> Dict:
-        result = local_result[0]
-        texts = result["rec_texts"]
-        scores = result["rec_scores"]
-        boxes = result["rec_boxes"]
-
         clean_texts, confidences, text_lines = [], [], []
 
-        for i, text in enumerate(texts):
-            if text and text.strip():
-                conf = scores[i] if i < len(scores) else 0
-                clean_texts.append(text.strip())
-                confidences.append(conf)
-                instance = {
-                    "text": text.strip(),
-                    "confidence": round(conf, 3),
-                    "bbox": boxes[i].tolist(),
-                }
-                text_lines.append(instance)
+        for result in local_result:
+            texts = result["rec_texts"]
+            scores = result["rec_scores"]
+            boxes = result["rec_boxes"]
+
+            for i, text in enumerate(texts):
+                if text and text.strip():
+                    conf = scores[i] if i < len(scores) else 0
+                    clean_texts.append(text.strip())
+                    confidences.append(conf)
+                    instance = {
+                        "text": text.strip(),
+                        "confidence": round(conf, 3),
+                        "bbox": boxes[i].tolist(),
+                    }
+                    text_lines.append(instance)
 
         return {
             "text": "\n".join(clean_texts),
