@@ -36,9 +36,9 @@ English | [简体中文](./readme/README_cn.md) | [繁體中文](./readme/README
 > [!TIP]
 > PaddleOCR now provides an MCP server that supports integration with Agent applications like Claude Desktop. For details, please refer to [PaddleOCR MCP Server](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/mcp_server.html).
 >
-> The PaddleOCR 3.0 Technical Report is now available. See details at: [PaddleOCR 3.0 Technical Report](https://arxiv.org/abs/2507.05595);
+> The PaddleOCR 3.0 Technical Report is now available. See details at: [PaddleOCR 3.0 Technical Report](https://arxiv.org/abs/2507.05595).
 >
-> The PaddleOCR-VL Technical Report is now available. See details at [PaddleOCR-VL Technical Report](https://arxiv.org/abs/2510.14528);
+> The PaddleOCR-VL Technical Report is now available. See details at [PaddleOCR-VL Technical Report](https://arxiv.org/abs/2510.14528).
 >
 > The Beta version of the PaddleOCR official website is now live, offering a more convenient online experience and large-scale PDF file parsing, as well as free API and MCP services. For more details, please visit the [PaddleOCR official website](https://www.paddleocr.com).
 

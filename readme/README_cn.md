@@ -36,8 +36,9 @@
 > [!TIP]
 > PaddleOCR 现已提供 MCP服务器，支持与 Claude Desktop 等Agent应用集成。详情请参考 [PaddleOCR MCP 服务器](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/deployment/mcp_server.html)。
 >
-> PaddleOCR 3.0 技术报告现已发布，详情请参考：[PaddleOCR 3.0 Technical Report](https://arxiv.org/pdf/2507.05595 )
-> PaddleOCR-VL 技术报告现已发布，详情请参考：[PaddleOCR-VL Technical Report](https://arxiv.org/abs/2510.14528)
+> PaddleOCR 3.0 技术报告现已发布，详情请参考：[PaddleOCR 3.0 Technical Report](https://arxiv.org/pdf/2507.05595)。
+>
+> PaddleOCR-VL 技术报告现已发布，详情请参考：[PaddleOCR-VL Technical Report](https://arxiv.org/abs/2510.14528)。
 >
 > PaddleOCR 官网 Beta 版现已上线，支持更便捷的在线体验和大批量 PDF 文件解析，并提供免费 API 及 MCP 服务。更多详情请参见 [PaddleOCR 官网](https://www.paddleocr.com)。
 
