@@ -10,7 +10,7 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
 
 ## 1. 环境准备
 
-我们推荐使用官方 Docker 镜像（要求 Docker 版本 >= 19.03，机器装配有 GPU 且 NVIDIA 驱动支持 CUDA 12.8）：
+我们推荐使用官方 Docker 镜像（要求 Docker 版本 >= 19.03，机器装配有 GPU 且 NVIDIA 驱动支持 CUDA 12.6）：
 
 ```shell
 docker run \
@@ -986,7 +986,7 @@ MKL-DNN 缓存容量。
 
 #### 3.1.1 使用 Docker 镜像
 
-PaddleOCR 提供了 Docker 镜像，用于快速启动 vLLM 推理服务。可使用以下命令启动服务（要求 Docker 版本 >= 19.03，机器装配有 GPU 且 NVIDIA 驱动支持 CUDA 12.8）：
+PaddleOCR 提供了 Docker 镜像，用于快速启动 vLLM 推理服务。可使用以下命令启动服务（要求 Docker 版本 >= 19.03，机器装配有 GPU 且 NVIDIA 驱动支持 CUDA 12.6）：
 
 ```shell
 docker run \
@@ -1178,7 +1178,7 @@ paddleocr-vl-api             | INFO:     Uvicorn running on http://0.0.0.0:8080 
 
 服务器默认监听 **8080** 端口。
 
-此方式基于 vLLM 框架对 VLM 推理进行加速，更适合生产环境部署，但要求机器配备 GPU，并且 NVIDIA 驱动程序支持 CUDA 12.8。默认的 Docker 镜像并不适用于 NVIDIA 50 系显卡，如果希望在这些显卡上使用，请参考第 3 节中的介绍，在 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server` 镜像中安装特定版本的 FlashAttention。
+此方式基于 vLLM 框架对 VLM 推理进行加速，更适合生产环境部署，但要求机器配备 GPU，并且 NVIDIA 驱动程序支持 CUDA 12.6。默认的 Docker 镜像并不适用于 NVIDIA 50 系显卡，如果希望在这些显卡上使用，请参考第 3 节中的介绍，在 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server` 镜像中安装特定版本的 FlashAttention。
 
 此外，使用此方式启动服务器后，除拉取镜像外，无需连接互联网。如需在离线环境中部署，可先在联网机器上拉取 Compose 文件中涉及的镜像，导出并传输至离线机器中导入，即可在离线环境下启动服务。
 
@@ -1470,7 +1470,7 @@ Serving:
 </tr>
 <tr>
 <td><code>promptLabel</code></td>
-<td><code>string</code> | <code>object</code> | <code>null</code></td>
+<td><code>string</code> | <code>null</code></td>
 <td>请参阅PaddleOCR-VL对象中 <code>predict</code> 方法的 <code>prompt_label</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
