@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 
 build_for_offline='false'
-tag_suffix='latest'
 paddleocr_version='>=3.3.1,<3.4'
+build_for_sm120='false'
+tag_suffix='latest'
+vlm_base_image_tag_suffix='latest'
 
 while [[ $# -gt 0 ]]; do
     case $1 in
@@ -13,6 +15,16 @@ while [[ $# -gt 0 ]]; do
             ;;
         --ppocr-version)
             paddleocr_version="==$2"
+            shift
+            shift
+            ;;
+        --sm120)
+            build_for_sm120='true'
+            vlm_base_image_tag_suffix='latest-sm120'
+            shift
+            ;;
+        --tag-suffix)
+            tag_suffix="$2"
             shift
             shift
             ;;
@@ -28,6 +40,7 @@ docker build \
     -t "ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:${tag_suffix}" \
     --build-arg BUILD_FOR_OFFLINE="${build_for_offline}" \
     --build-arg PADDLEOCR_VERSION="${paddleocr_version}" \
+    --build-arg BUILD_FOR_SM120="${build_for_sm120}" \
     --build-arg http_proxy="${http_proxy}" \
     --build-arg https_proxy="${https_proxy}" \
     --build-arg no_proxy="${no_proxy}" \
@@ -38,6 +51,7 @@ docker build \
     -t "ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:${tag_suffix}" \
     --build-arg BUILD_FOR_OFFLINE="${build_for_offline}" \
     --build-arg PADDLEOCR_VERSION="${paddleocr_version}" \
+    --build-arg BASE_IMAGE_TAG_SUFFIX="${vlm_base_image_tag_suffix}" \
     --build-arg http_proxy="${http_proxy}" \
     --build-arg https_proxy="${https_proxy}" \
     --build-arg no_proxy="${no_proxy}" \
