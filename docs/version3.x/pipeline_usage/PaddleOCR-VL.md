@@ -2,7 +2,7 @@
 comments: true
 ---
 
-# PaddleOCR-VL介绍
+# PaddleOCR-VL 使用教程
 
 PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的元素识别设计。其核心组件为 PaddleOCR-VL-0.9B，这是一种紧凑而强大的视觉语言模型（VLM），它由 NaViT 风格的动态分辨率视觉编码器与 ERNIE-4.5-0.3B 语言模型组成，能够实现精准的元素识别。该模型支持 109 种语言，并在识别复杂元素（如文本、表格、公式和图表）方面表现出色，同时保持极低的资源消耗。通过在广泛使用的公开基准与内部基准上的全面评测，PaddleOCR-VL 在页级级文档解析与元素级识别均达到 SOTA 表现。它显著优于现有的基于Pipeline方案和文档解析多模态方案以及先进的通用多模态大模型，并具备更快的推理速度。这些优势使其非常适合在真实场景中落地部署。
 
@@ -10,7 +10,7 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
 
 ## PaddleOCR-VL 对推理设备的支持情况
 
-目前 PaddleOCR-VL 有三种推理方式，请确认您的推理设备是否满足下表要求：
+目前 PaddleOCR-VL 有三种推理方式，支持的推理设备不完全相同，请确认您的推理设备是否满足下表要求再进行 PaddleOCR-VL 的推理部署：
 
 <table border="1">
 <thead>
@@ -26,7 +26,7 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
     <td>PaddlePaddle</td>
     <td>✅</td>
     <td>≥ 7</td>
-    <td>11.8、12.6、12.9</td>
+    <td>≥ 11.8</td>
   </tr>
   <tr>
     <td>vLLM</td>
@@ -34,13 +34,13 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
     <td>≥ 8 （RTX 3060，RTX 5070，A10，A100, ...） <br />  
     7 ≤ GPU Compute Capability < 8 （T4，V100，...）支持运行，但可能出现请求超时、OOM 等异常情况，不推荐使用
     </td>
-    <td>12.6</td>
+    <td>≥ 12.6</td>
   </tr>
   <tr>
     <td>SGLang</td>
      <td>🚧</td>
     <td>8 ≤ GPU Compute Capability < 12</td>
-    <td>12.6</td>
+    <td>≥ 12.6</td>
   </tr>
 </tbody>
 </table>
@@ -48,14 +48,14 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
 > 当前，PaddleOCR-VL 暂不支持 ARM 架构 CPU。后续将根据实际需求扩展更多硬件支持，敬请期待！  
 > vLLM 与 SGLang 无法在 Windows 或 macOS 上原生运行，请使用我们提供的 Docker 镜像。
 
-由于不同硬件所需的依赖各不相同，如果您的硬件满足要求，请参考下表查看相应的环境配置教程：
+由于不同硬件所需的依赖各不相同，如果您的硬件满足上述表格的要求，请参考下表查看对应的教程进行环境配置：
 
 <table border="1">
   <thead>
     <tr>
       <th>硬件类型</th>
-      <th>硬件具体型号</th>
-      <th>使用教程</th>
+      <th>硬件型号</th>
+      <th>环境配置教程</th>
     </tr>
   </thead>
   <tbody>
@@ -66,11 +66,11 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
     </tr>
     <tr>
       <td>RTX 50 系</td>
-      <td><a src="./">PaddleOCR-VL RTX 50 环境配置教程</a></td>
+      <td><a href="./PaddleOCR-VL-RTX50.md">PaddleOCR-VL RTX 50 环境配置教程</a></td>
     </tr>
     <tr>
       <td>x64 CPU</td>
-      <td>无特殊要求</td>
+      <td>-</td>
       <td>本教程</td>
     </tr>
     <tr>
@@ -86,17 +86,19 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
   </tbody>
 </table>
 
+> 例如您使用的是 RTX 50 系 GPU，满足 PaddlePaddle 和 vLLM 推理方式的设备要求，请参考 [PaddleOCR-VL RTX 50 环境配置教程](./PaddleOCR-VL-RTX50.md) 完成环境配置后再进行 PaddleOCR-VL 的使用。
+
 ## 1. 环境准备
 
 此步骤主要介绍如何搭建 PaddleOCR-VL 的运行环境，有以下两种方式，任选一种即可：
 
-- 方法一：使用官方 Docker 镜像
+- 方法一：使用官方 Docker 镜像。
 
-- 方法二：手动安装 PaddlePaddle 和 PaddleOCR
+- 方法二：手动安装 PaddlePaddle 和 PaddleOCR。
 
 ### 1.1 方法一：使用 Docker 镜像
 
-我们推荐使用官方 Docker 镜像（要求 Docker 版本 >= 19.03，机器装配有 GPU 且 NVIDIA 驱动在 CUDA 12.6 版本或以上）：
+我们推荐使用官方 Docker 镜像（要求 Docker 版本 >= 19.03，机器装配有 GPU 且 NVIDIA 驱动支持 CUDA 12.6 或以上版本）：
 
 ```shell
 docker run \
@@ -1042,7 +1044,7 @@ MKL-DNN 缓存容量。
 
 #### 3.1.1 方法一：使用 Docker 镜像
 
-PaddleOCR 提供了 Docker 镜像（镜像大小约为 13 GB），用于快速启动 vLLM 推理服务。可使用以下命令启动服务（要求 Docker 版本 >= 19.03，机器装配有 GPU 且 NVIDIA 驱动在 CUDA 12.6 版本或以上）：
+PaddleOCR 提供了 Docker 镜像（镜像大小约为 13 GB），用于快速启动 vLLM 推理服务。可使用以下命令启动服务（要求 Docker 版本 >= 19.03，机器装配有 GPU 且 NVIDIA 驱动支持 CUDA 12.6 或以上版本）：
 
 ```shell
 docker run \
@@ -1082,15 +1084,9 @@ paddleocr install_genai_server_deps <推理加速框架名称>
 
 当前支持的框架名称为 `vllm` 和 `sglang`，分别对应 vLLM 和 SGLang。
 
-若您使用的是  NVIDIA 50 系显卡 (Compute Capability >= 12)，需要在启动服务前安装指定版本的 FlashAttention:
-
-```shell
-python -m pip install flash-attn==2.8.3
-```
-
 通过 `paddleocr install_genai_server_deps` 安装的 vLLM 与 SGLang 均为 **CUDA 12.6** 版本，请确保本地 NVIDIA 驱动与此版本一致或更高。
 
-> `paddleocr install_genai_server_deps` 命令在执行过程中可能需要使用 nvcc 等 CUDA 编译工具。如果您的环境中没有这些工具（例如在使用 `paddleocr-vl` 镜像），可以从 [此仓库](https://github.com/mjun0812/flash-attention-prebuild-wheels) 获取 FlashAttention 的预编译版本（对于 NVIDIA 50 系显卡，安装 2.8.3；对于其他型号显卡，安装 2.8.2），先安装预编译包，再执行后续命令。例如，如果您使用非 50 系显卡，在 `paddleocr-vl` 镜像中，执行 `python -m pip install https://github.com/mjun0812/flash-attention-prebuild-wheels/releases/download/v0.3.14/flash_attn-2.8.2+cu128torch2.8-cp310-cp310-linux_x86_64.whl`。
+> `paddleocr install_genai_server_deps` 命令在执行过程中可能需要使用 nvcc 等 CUDA 编译工具。如果您的环境中没有这些工具（例如在使用 `paddleocr-vl` 镜像），可以从 [此仓库](https://github.com/mjun0812/flash-attention-prebuild-wheels) 获取 FlashAttention 的预编译版本，先安装预编译包，再执行后续命令。例如，您在 `paddleocr-vl` 镜像中，执行 `python -m pip install https://github.com/mjun0812/flash-attention-prebuild-wheels/releases/download/v0.3.14/flash_attn-2.8.2+cu128torch2.8-cp310-cp310-linux_x86_64.whl`。
 
 安装完成后，可通过 `paddleocr genai_server` 命令启动服务：
 
@@ -1183,13 +1179,13 @@ PaddleOCR 会将来自单张或多张输入图像中的子图分组并对服务�
 
 此步骤主要介绍如何将 PaddleOCR-VL 部署为服务并调用，有以下两种方式，任选一种即可：
 
-- 方法一：使用 Docker Compose 部署。
+- 方法一：使用 Docker Compose 部署（推荐使用）。
 
 - 方法二：手动安装依赖部署。
 
 请注意，本节所介绍 PaddleOCR-VL 服务与上一节中的 VLM 推理服务有所区别：后者仅负责完整流程中的一个环节（即 VLM 推理），并作为前者的底层服务被调用。
 
-### 4.1 方法一：使用 Docker Compose 部署
+### 4.1 方法一：使用 Docker Compose 部署（推荐使用）
 
 您可以从 [此处](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/compose.yaml) 获取 Compose 文件并下载到本地，然后在刚刚下载的 Compose 文件目录下执行以下命令启动服务器，默认监听 **8080** 端口：
 
@@ -1207,7 +1203,7 @@ paddleocr-vl-api             | INFO:     Application startup complete.
 paddleocr-vl-api             | INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
 ```
 
-此方式基于 vLLM 框架对 VLM 推理进行加速，更适合生产环境部署，但要求机器配备 GPU，并且 NVIDIA 驱动程序在 CUDA 12.6 版本或以上。
+此方式基于 vLLM 框架对 VLM 推理进行加速，更适合生产环境部署，但要求机器配备 GPU，并且 NVIDIA 驱动程序支持 CUDA 12.6 或以上版本。
 
 此外，使用此方式启动服务器后，除拉取镜像外，无需连接互联网。如需在离线环境中部署，可先在联网机器上拉取 Compose 文件中涉及的镜像，导出并传输至离线机器中导入，即可在离线环境下启动服务。
 
