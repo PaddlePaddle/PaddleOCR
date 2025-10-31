@@ -10,7 +10,12 @@ ENV PIP_NO_CACHE_DIR=0
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONDONTWRITEBYTECODE=1
 
-RUN python -m pip install paddlepaddle-gpu==3.2.0 -i https://www.paddlepaddle.org.cn/packages/stable/cu126/
+ARG BUILD_FOR_SM120=false
+RUN if [ "${BUILD_FOR_SM120}" = 'true']; then \
+        python -m pip install paddlepaddle-gpu==3.2.1 -i https://www.paddlepaddle.org.cn/packages/stable/cu129/ \
+    else \
+        python -m pip install paddlepaddle-gpu==3.2.1 -i https://www.paddlepaddle.org.cn/packages/stable/cu126/ \
+    fi
 ARG PADDLEOCR_VERSION=">=3.3.1,<3.4"
 RUN python -m pip install "paddleocr[doc-parser]${PADDLEOCR_VERSION}" \
     && python -m pip install https://paddle-whl.bj.bcebos.com/nightly/cu126/safetensors/safetensors-0.6.2.dev0-cp38-abi3-linux_x86_64.whl \

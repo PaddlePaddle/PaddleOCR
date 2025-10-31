@@ -1,4 +1,6 @@
-FROM ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddlex-genai-vllm-server:latest
+ARG BASE_IMAGE_TAG_SUFFIX="latest"
+
+FROM ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddlex-genai-vllm-server:${BASE_IMAGE_TAG_SUFFIX}
 
 ARG PADDLEOCR_VERSION=">=3.3.1,<3.4"
 RUN python -m pip install "paddleocr${PADDLEOCR_VERSION}"
