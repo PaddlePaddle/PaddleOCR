@@ -86,6 +86,7 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
 此步骤主要介绍如何搭建 PaddleOCR-VL 的运行环境，有以下两种方式，任选一种即可：
 
 方法一：使用官方 Docker 镜像
+
 方法二：手动安装 PaddlePaddle 和 PaddleOCR
 
 ### 1.1 方法一：使用 Docker 镜像
@@ -415,7 +416,6 @@ MKL-DNN 缓存容量。
 </tbody>
 </table>
 </details>
-<br />
 
 运行结果会被打印到终端上，默认配置的 PaddleOCR-VL 的运行结果如下：
 
@@ -1032,6 +1032,7 @@ MKL-DNN 缓存容量。
 启动 VLM 推理服务有以下两种方式，任选一种即可：
 
 方法一：使用官方 Docker 镜像启动服务。
+
 方法二：通过 PaddleOCR CLI 手动安装依赖后启动服务。
 
 #### 3.1.1 方法一：使用 Docker 镜像
@@ -1178,6 +1179,7 @@ PaddleOCR 会将来自单张或多张输入图像中的子图分组并对服务�
 此步骤主要介绍如何将 PaddleOCR-VL 部署为服务并调用，有以下两种方式，任选一种即可：
 
 方法一：使用 Docker Compose 部署。
+
 方法二：手动安装依赖部署。
 
 请注意，本节所介绍 PaddleOCR-VL 服务与上一节中的 VLM 推理服务有所区别：后者仅负责完整流程中的一个环节（即 VLM 推理），并作为前者的底层服务被调用。
@@ -2102,7 +2104,6 @@ foreach ($result as $i => $item) {
 ?&gt;
 </code></pre></details>
 </details>
-<br/>
 
 ### 4.4 产线配置调整说明
 
