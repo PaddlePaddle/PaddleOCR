@@ -172,7 +172,7 @@ Please refer to our usage documentation [PaddleOCR-VL Usage](../../pipeline_usag
 
 2. How to fine-tune the PaddleOCR-VL model?
 
-Currently, we do not support fine-tuning of the model, but it is a high-priority feature and will be released soon. Please stay tuned.
+We recommend using the [ERNIEKit toolkit](https://github.com/PaddlePaddle/ERNIE/tree/release/v1.4) to perform Supervised Fine-Tuning (SFT) on the PaddleOCR-VL-0.9B model. For detailed steps, please refer to the [ERNIEKit documentation](https://github.com/PaddlePaddle/ERNIE/blob/release/v1.4/docs/paddleocr_vl_sft.md).
 
 3. Why was my chart not recognized and how can I use chart recognition?
 
