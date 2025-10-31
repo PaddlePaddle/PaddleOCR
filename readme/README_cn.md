@@ -8,13 +8,16 @@
 
 <!-- icon -->
 [![stars](https://img.shields.io/github/stars/PaddlePaddle/PaddleOCR?color=ccf)](https://github.com/PaddlePaddle/PaddleOCR)
+[![forks](https://img.shields.io/github/forks/PaddlePaddle/PaddleOCR.svg)](https://github.com/PaddlePaddle/PaddleOCR)
 [![arXiv](https://img.shields.io/badge/PaddleOCR_3.0-Technical%20Report-b31b1b.svg?logo=arXiv)](https://arxiv.org/pdf/2507.05595)
 [![arXiv](https://img.shields.io/badge/PaddleOCR--VL-Technical%20Report-b31b1b.svg?logo=arXiv)](https://arxiv.org/abs/2510.14528)
+
 [![PyPI Downloads](https://static.pepy.tech/badge/paddleocr/month)](https://pepy.tech/projectsproject/paddleocr)
 [![PyPI Downloads](https://static.pepy.tech/badge/paddleocr)](https://pepy.tech/projects/paddleocr)
 [![Used by](https://img.shields.io/badge/Used%20by-6k%2B%20repositories-blue)](https://github.com/PaddlePaddle/PaddleOCR/network/dependents)
-
+[![PyPI version](https://img.shields.io/pypi/v/paddleocr)](https://pypi.org/project/paddleocr/)
 ![python](https://img.shields.io/badge/python-3.8~3.12-aff.svg)
+
 ![os](https://img.shields.io/badge/os-linux%2C%20win%2C%20mac-pink.svg)
 ![hardware](https://img.shields.io/badge/hardware-cpu%2C%20gpu%2C%20xpu%2C%20npu-yellow.svg)
 [![License](https://img.shields.io/badge/license-Apache_2.0-green)](../LICENSE)
