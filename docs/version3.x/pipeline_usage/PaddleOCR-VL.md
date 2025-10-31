@@ -2118,7 +2118,7 @@ foreach ($result as $i => $item) {
 
 #### 4.4.1 生成配置文件
 
-```python
+```shell
 paddlex --get_pipeline_config PaddleOCR-VL
 ```
 
