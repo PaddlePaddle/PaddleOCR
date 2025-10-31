@@ -275,6 +275,27 @@ export FLAGS_initial_cpu_memory_in_mb=2000  # 设置初始化内存约2G左右
 （1）在快速安装时，如果不想安装docker，可跳过第一步，直接从第二步安装paddle开始。
 （2）inference模型下载时，如果没有安装wget，可直接点击模型链接或将链接地址复制到浏览器进行下载，并解压放置到相应目录。
 
+#### Q：PaddleOCR安装失败，提示依赖冲突怎么办？
+
+**A**：这是常见问题，可以通过以下方式解决：
+（1）创建新的虚拟环境：`conda create -n paddleocr python=3.8`，然后激活环境安装
+（2）使用指定版本安装：`pip install paddleocr==3.2.0 --no-deps`，然后单独安装依赖
+（3）如果使用conda，可以尝试：`conda install -c conda-forge paddleocr`
+
+#### Q：GPU环境配置问题，CUDA版本不匹配怎么办？
+
+**A**：首先检查CUDA版本：`nvidia-smi`，然后安装对应版本的PaddlePaddle：
+- CUDA 11.8：`pip install paddlepaddle-gpu==3.0.0 -f https://www.paddlepaddle.org.cn/whl/linux/mkl/avx/stable.html`
+- CUDA 12.0：`pip install paddlepaddle-gpu==3.0.0 -f https://www.paddlepaddle.org.cn/whl/linux/mkl/avx/stable.html`
+验证GPU是否可用：`python -c "import paddle; print(paddle.is_compiled_with_cuda())"`
+
+#### Q：模型下载失败或下载缓慢怎么办？
+
+**A**：可以通过以下方式解决：
+（1）设置模型下载源：`os.environ['PADDLE_PDX_MODEL_SOURCE'] = 'BOS'`（使用百度云存储）
+（2）手动下载模型：直接访问模型链接下载并解压到本地目录
+（3）使用本地模型：在初始化时指定`model_dir`参数指向本地模型路径
+
 ### 2.3 数据量说明
 
 #### Q：简单的对于精度要求不高的OCR任务，数据集需要准备多少张呢？
@@ -495,6 +516,50 @@ checkpoints：指之前训练的中间结果，例如前一次训练到了100个
 检测框大小过于紧贴文字或检测框过大，可以调整db_unclip_ratio这个参数，加大参数可以扩大检测框，减小参数可以减小检测框大小；
 检测框存在很多漏检问题，可以减小DB检测后处理的阈值参数det_db_box_thresh，防止一些检测框被过滤掉，也可以尝试设置det_db_score_mode为'slow';
 其他方法可以选择use_dilation为True，对检测输出的feature map做膨胀处理，一般情况下，会有效果改善；
+
+#### Q: GPU推理速度慢，如何优化性能？
+
+**A**：可以通过以下方式优化：
+（1）启用高性能推理：设置`enable_hpi=True`，自动选择最优加速策略
+（2）启用TensorRT加速：设置`use_tensorrt=True`，需要CUDA 11.8+和TensorRT 8.6+
+（3）使用半精度：设置`precision="fp16"`，可以显著提升速度
+（4）调整批处理大小：根据显存大小设置合适的`batch_size`
+（5）使用移动端模型：在精度要求不高时使用`PP-OCRv5_mobile`系列模型
+
+#### Q: GPU内存不足（CUDA out of memory）怎么办？
+
+**A**：可以通过以下方式解决：
+（1）减小批处理大小：将`batch_size`设置为1
+（2）减小图像尺寸：设置`det_limit_side_len=640`
+（3）启用内存优化：设置`enable_memory_optim=True`
+（4）限制GPU内存使用：设置`gpu_mem=200`
+（5）使用移动端模型：切换到`PP-OCRv5_mobile`系列模型
+
+#### Q: 如何选择合适的模型？
+
+**A**：根据应用场景选择：
+- 服务器高精度场景：使用`PP-OCRv5_server`系列，精度最高
+- 移动端部署：使用`PP-OCRv5_mobile`系列，模型小速度快
+- 实时处理：使用`PP-OCRv5_mobile`系列，推理速度快
+- 批量处理：使用`PP-OCRv5_server`系列，精度高
+- 多语言识别：使用`PP-OCRv5_multi_languages`，支持37种语言
+
+#### Q: 本地模型路径配置问题，如何在隔离网络环境下使用？
+
+**A**：可以通过以下方式配置：
+（1）使用本地模型路径：在初始化时指定`model_dir`参数
+（2）设置模型下载源：`os.environ['PADDLE_PDX_MODEL_SOURCE'] = 'BOS'`
+（3）手动下载模型：从官方链接下载模型并解压到本地
+（4）示例代码：
+```python
+ocr = PaddleOCR(
+    det_model_dir='./models/PP-OCRv5_server_det_infer/',
+    rec_model_dir='./models/PP-OCRv5_server_rec_infer/',
+    cls_model_dir='./models/PP-OCRv5_cls_infer/',
+    use_angle_cls=True,
+    lang='ch'
+)
+```
 
 #### Q：同一张图通用检测出21个条目，轻量级检测出26个 ，难道不是轻量级的好吗？
 
@@ -729,6 +794,44 @@ ocr_system: 检测识别串联预测
 #### Q: 如何多进程预测？
 
 **A**: 近期PaddleOCR新增了[多进程预测控制参数](https://github.com/PaddlePaddle/PaddleOCR/blob/a312647be716776c1aac33ff939ae358a39e8188/tools/infer/utility.py#L103)，`use_mp`表示是否使用多进程，`total_process_num`表示在使用多进程时的进程数。具体使用方式请参考[文档](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.1/doc/doc_ch/inference.md#1-%E8%B6%85%E8%BD%BB%E9%87%8F%E4%B8%AD%E6%96%87ocr%E6%A8%A1%E5%9E%8B%E6%8E%A8%E7%90%86)。
+
+#### Q: 如何部署PaddleOCR为Web服务？
+
+**A**：可以通过以下方式部署：
+（1）使用Flask部署：创建简单的Web API服务
+（2）使用gunicorn部署：`gunicorn -w 4 -b 0.0.0.0:5000 app:app`
+（3）使用异步处理：结合asyncio和ThreadPoolExecutor
+（4）示例代码：
+```python
+from flask import Flask, request, jsonify
+from paddleocr import PaddleOCR
+
+app = Flask(__name__)
+ocr = PaddleOCR(use_angle_cls=True, lang='ch')
+
+@app.route('/ocr', methods=['POST'])
+def ocr_api():
+    file = request.files['image']
+    result = ocr.ocr(file, cls=True)
+    return jsonify({'result': result})
+```
+
+#### Q: C++部署常见问题及解决方案？
+
+**A**：常见问题及解决方案：
+（1）找不到动态库：设置`export LD_LIBRARY_PATH=/path/to/paddle/lib:$LD_LIBRARY_PATH`
+（2）OpenCV版本不匹配：确保OpenCV版本与编译时一致
+（3）模型格式问题：确保使用正确的推理模型格式
+（4）编译问题：确保CMake配置正确，使用`cmake .. -DCMAKE_BUILD_TYPE=Release`
+
+#### Q: 服务性能优化建议？
+
+**A**：可以通过以下方式优化：
+（1）启用高性能推理：设置`enable_hpi=True`
+（2）使用批处理：合理设置`batch_size`
+（3）启用TensorRT：设置`use_tensorrt=True`
+（4）使用异步处理：避免阻塞请求
+（5）负载均衡：使用多个服务实例
 
 #### Q: 怎么解决paddleOCR在T4卡上有越预测越慢的情况？
 
