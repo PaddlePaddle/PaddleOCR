@@ -42,6 +42,7 @@ struct PaddleOCRParams {
   absl::optional<std::vector<int>> text_det_input_shape = absl::nullopt;
   absl::optional<float> text_rec_score_thresh = absl::nullopt;
   absl::optional<std::vector<int>> text_rec_input_shape = absl::nullopt;
+  absl::optional<bool> return_word_box = absl::nullopt;
   absl::optional<std::string> lang = absl::nullopt;
   absl::optional<std::string> ocr_version = absl::nullopt;
   absl::optional<std::string> vis_font_dir = absl::nullopt;
