@@ -2,6 +2,10 @@ ARG FASTDEPLOY_VERSION="2.2.1"
 
 FROM ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/fastdeploy-cuda-12.6:${FASTDEPLOY_VERSION}
 
+RUN apt-get update \
+    && apt-get install -y libgl1 libglib2.0-0 \
+    && rm -rf /var/lib/apt/lists/*
+
 ARG PADDLEOCR_VERSION=">=3.3.2,<3.4"
 RUN python -m pip install "paddleocr${PADDLEOCR_VERSION}"
 RUN paddleocr install_genai_server_deps fastdeploy
