@@ -20,13 +20,13 @@ PP-OCRv3 detection training includes two steps:
 
 ### 2.1 Prepare data and operating environment
 
-The training data uses icdar2015 data. For the steps of preparing the training set, refer to [ocr_dataset](./dataset/ocr_datasets.md).
+The training data uses icdar2015 data. For the steps of preparing the training set, refer to [ocr_dataset](../../../datasets/ocr_datasets.md).
 
-For the preparation of the operating environment, refer to [document](./installation.md).
+For the preparation of the operating environment, refer to [document](../installation.en.md).
 
 ### 2.2 Train the teacher model
 
-The configuration file for teacher model training is [PP-OCRv3_det_dml.yml](https://github.com/PaddlePaddle/PaddleOCR/blob/release%2F2.5/configs/det/PP-OCRv3/PP-OCRv3_det_dml.yml). The Backbone, Neck, and Head of the teacher model structure are Resnet50, LKPAN, and DBHead respectively, and are trained using the DML distillation method. For a detailed introduction to the configuration file, refer to [Document](./knowledge_distillation.md).
+The configuration file for teacher model training is [PP-OCRv3_det_dml.yml](../../../../configs/det/PP-OCRv3/PP-OCRv3_det_dml.yml). The Backbone, Neck, and Head of the teacher model structure are Resnet50, LKPAN, and DBHead respectively, and are trained using the DML distillation method. For a detailed introduction to the configuration file, refer to [Document](../model_compress/knowledge_distillation.en.md).
 
 Download ImageNet pre-trained model:
 
@@ -92,7 +92,7 @@ The extracted model parameters can be used for further fine-tuning or distillati
 
 ### 2.3 Training the student model
 
-The configuration file for training the student model is [PP-OCRv3_det_cml.yml](https://github.com/PaddlePaddle/PaddleOCR/blob/release%2F2.5/configs/det/PP-OCRv3/PP-OCRv3_det_cml.yml)
+The configuration file for training the student model is [PP-OCRv3_det_cml.yml](../../../../configs/det/PP-OCRv3/PP-OCRv3_det_cml.yml)
 The teacher model trained in the previous section is used as supervision, and the CML method is used to train a lightweight student model.
 
 Download the ImageNet pre-trained model of the student model:
@@ -205,7 +205,7 @@ print(s_params.keys())
 paddle.save(s_params, "./student.pdparams")
 ```
 
-Train using the configuration file [PP-OCRv3_mobile_det.yml](https://github.com/PaddlePaddle/PaddleOCR/blob/release%2F2.5/configs/det/PP-OCRv3/PP-OCRv3_mobile_det.yml).
+Train using the configuration file [PP-OCRv3_mobile_det.yml](../../../../configs/det/PP-OCRv3/PP-OCRv3_mobile_det.yml).
 
 **Start training**
 

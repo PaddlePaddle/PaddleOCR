@@ -67,5 +67,5 @@ python3.7 deploy/slim/prune/export_prune_model.py -c configs/det/ch_ppocr_v2.0/c
 
 inference model的预测和部署参考：
 
-1. [inference model python端预测](../infer_deploy/python_infer.md)
-2. [inference model C++预测](../infer_deploy/cpp_infer.md)
+1. [inference model python端预测](../../legacy/python_infer.md)
+2. [inference model C++预测](../../legacy/cpp_infer.md)

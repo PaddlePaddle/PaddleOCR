@@ -35,7 +35,7 @@ Optimizer:
 
 `Piecewise` stands for piece-wise constant attenuation. Different learning rates are specified in different learning stages, and the learning rate stay the same in each stage.
 
-`warmup_epoch` means that in the first 5 epochs, the learning rate will be increased gradually from 0 to base_lr. For all strategies, please refer to the code [learning_rate.py](../../ppocr/optimizer/learning_rate.py).
+`warmup_epoch` means that in the first 5 epochs, the learning rate will be increased gradually from 0 to base_lr. For all strategies, please refer to the code [learning_rate.py](../../../../ppocr/optimizer/learning_rate.py).
 
 ### 2.2 Regularization
 
@@ -76,7 +76,7 @@ The current open source models, data sets and magnitudes are as follows:
   - Chinese data set, LSVT street view data set crops the image according to the truth value, and performs position calibration, a total of 30w images. In addition, based on the LSVT corpus, 500w of synthesized data.
   - Small language data set, using different corpora and fonts, respectively generated 100w synthetic data set, and using ICDAR-MLT as the verification set.
 
-Among them, the public data sets are all open source, users can search and download by themselves, or refer to [Chinese data set](../../datasets/datasets.en.md), synthetic data is not open source, users can use open source synthesis tools to synthesize by themselves. Synthesis tools include [text_renderer](https://github.com/Sanster/text_renderer), [SynthText](https://github.com/ankush-me/SynthText), [TextRecognitionDataGenerator](https://github.com/Belval/TextRecognitionDataGenerator) etc.
+Among them, the public data sets are all open source, users can search and download by themselves, or refer to [Chinese data set](../../../datasets/datasets.en.md), synthetic data is not open source, users can use open source synthesis tools to synthesize by themselves. Synthesis tools include [text_renderer](https://github.com/Sanster/text_renderer), [SynthText](https://github.com/ankush-me/SynthText), [TextRecognitionDataGenerator](https://github.com/Belval/TextRecognitionDataGenerator) etc.
 
 ### 3.2 Vertical Scene
 
