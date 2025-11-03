@@ -110,6 +110,7 @@ plugins:
             PP-ChatOCRv4简介: PP-ChatOCRv4 Introduction
             PaddleOCR-VL: PaddleOCR-VL
             PaddleOCR-VL简介: PaddleOCR-VL Introduction
+            PaddleOCR-VL RTX 50 环境配置教程: PaddleOCR-VL-RTX50 Environment Configuration Tutorial
             推理部署: Model Deploy
             高性能推理: High-Performance Inference
             打包PaddleOCR项目: Package PaddleOCR Projects
@@ -297,6 +298,7 @@ nav:
   - PaddleOCR-VL:
     - 使用教程: version3.x/pipeline_usage/PaddleOCR-VL.md
     - PaddleOCR-VL简介: version3.x/algorithm/PaddleOCR-VL/PaddleOCR-VL.md
+    - PaddleOCR-VL RTX 50 环境配置教程: version3.x/pipeline_usage/PaddleOCR-VL-RTX50.md
   - 推理部署:
     - 高性能推理: version3.x/deployment/high_performance_inference.md
     - 获取ONNX模型: version3.x/deployment/obtaining_onnx_models.md
