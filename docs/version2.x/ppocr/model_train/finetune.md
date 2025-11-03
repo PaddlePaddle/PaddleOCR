@@ -30,7 +30,7 @@ PaddleOCR提供的PP-OCR系列模型在通用场景中性能优异，能够解�
 
 ### 2.2 模型选择
 
-建议选择PP-OCRv3模型（配置文件：[PP-OCRv3_mobile_det.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/det/PP-OCRv3/PP-OCRv3_mobile_det.yml)，预训练模型：[ch_PP-OCRv3_det_distill_train.tar](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv3_mobile_det_pretrained.pdparams)）进行微调，其精度与泛化性能是目前提供的最优预训练模型。
+建议选择PP-OCRv3模型（配置文件：[PP-OCRv3_mobile_det.yml](../../../../configs/det/PP-OCRv3/PP-OCRv3_mobile_det.yml)，预训练模型：[ch_PP-OCRv3_det_distill_train.tar](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv3_mobile_det_pretrained.pdparams)）进行微调，其精度与泛化性能是目前提供的最优预训练模型。
 
 更多PP-OCR系列模型，请参考[PP-OCR 系列模型库](../model_list.md)。
 
@@ -80,7 +80,7 @@ PaddleOCR提供的配置文件是在8卡训练（相当于总的batch size是`8*
 |  use_dilation | bool | False | 是否对分割结果进行膨胀以获取更优检测效果 |
 |  det_db_score_mode | str | "fast" | DB的检测结果得分计算方法，支持`fast`和`slow`，`fast`是根据polygon的外接矩形边框内的所有像素计算平均得分，`slow`是根据原始polygon内的所有像素计算平均得分，计算速度相对较慢一些，但是更加准确一些。 |
 
-更多关于推理方法的介绍可以参考[Paddle Inference推理教程](../infer_deploy/python_infer.md)。
+更多关于推理方法的介绍可以参考 [Paddle Inference推理教程](../../legacy/python_infer.md)。
 
 ## 3. 文本识别模型微调
 
@@ -92,14 +92,14 @@ PaddleOCR提供的配置文件是在8卡训练（相当于总的batch size是`8*
 
 * 数据合成：针对部分字符识别有误的情况，建议获取一批特定字符数据，加入到原数据中使用小学习率微调。其中原始数据与新增数据比例可尝试 10:1 ～ 5：1， 避免单一场景数据过多导致模型过拟合，同时尽量平衡语料词频，确保常用字的出现频率不会过低。
 
-  特定字符生成可以使用 TextRenderer 工具，合成例子可参考 [数码管数据合成](../../applications/光功率计数码管字符识别.md)
+  特定字符生成可以使用 TextRenderer 工具，合成例子可参考 [数码管数据合成](https://www.paddleocr.ai/v2.10.0/applications/%E5%85%89%E5%8A%9F%E7%8E%87%E8%AE%A1%E6%95%B0%E7%A0%81%E7%AE%A1%E5%AD%97%E7%AC%A6%E8%AF%86%E5%88%AB.html)
   ，合成数据语料尽量来自真实使用场景，在贴近真实场景的基础上保持字体、背景的丰富性，有助于提升模型效果。
 
 * 通用中英文数据：在训练的时候，可以在训练集中添加通用真实数据（如在不更换字典的微调场景中，建议添加LSVT、RCTW、MTWI等真实数据），进一步提升模型的泛化性能。
 
 ### 3.2 模型选择
 
-建议选择PP-OCRv3模型（配置文件：[PP-OCRv3_mobile_rec_distillation.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/PP-OCRv3/PP-OCRv3_mobile_rec_distillation.yml)，预训练模型：[ch_PP-OCRv3_rec_train.tar](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_train.tar)）进行微调，其精度与泛化性能是目前提供的最优预训练模型。
+建议选择PP-OCRv3模型（配置文件：[PP-OCRv3_mobile_rec_distillation.yml](../../../../configs/rec/PP-OCRv3/PP-OCRv3_mobile_rec_distillation.yml)，预训练模型：[ch_PP-OCRv3_rec_train.tar](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_train.tar)）进行微调，其精度与泛化性能是目前提供的最优预训练模型。
 
 更多PP-OCR系列模型，请参考[PP-OCR 系列模型库](../model_list.md)。
 
