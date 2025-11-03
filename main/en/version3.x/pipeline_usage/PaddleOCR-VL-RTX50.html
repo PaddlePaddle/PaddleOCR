@@ -15,10 +15,14 @@
         <link rel="canonical" href="https://paddlepaddle.github.io/PaddleOCR/main/en/version3.x/pipeline_usage/PaddleOCR-VL-RTX50.html">
       
       
+        <link rel="prev" href="../algorithm/PaddleOCR-VL/PaddleOCR-VL.html">
+      
+      
+        <link rel="next" href="../deployment/high_performance_inference.html">
       
       
       <link rel="icon" href="../../../version3.x/logo.jpg">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.22">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.23">
     
     
       
@@ -482,10 +486,12 @@ You're not viewing the latest version.
   
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
+      <li class="md-tabs__item md-tabs__item--active">
         <a href="PaddleOCR-VL.html" class="md-tabs__link">
           
   
@@ -1187,8 +1193,10 @@ You're not viewing the latest version.
       
   
   
+    
   
   
+  
     
     
       
@@ -1196,23 +1204,26 @@ You're not viewing the latest version.
       
         
       
-    
-    
-    
-      
+        
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    
       
         
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
         
           
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
-        
-          
-          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
             
   
   
@@ -1225,7 +1236,7 @@ You're not viewing the latest version.
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_7">
             <span class="md-nav__icon md-icon"></span>
             PaddleOCR-VL
@@ -1273,6 +1284,215 @@ You're not viewing the latest version.
   
 
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    PaddleOCR-VL-RTX50 Environment Configuration Tutorial
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="PaddleOCR-VL-RTX50.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    PaddleOCR-VL-RTX50 Environment Configuration Tutorial
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-environment-preparation" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Environment Preparation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Environment Preparation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-method-1-using-docker-image" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.1 Method 1: Using Docker Image
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-method-2-manually-install-paddlepaddle-and-paddleocr" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.2 Method 2: Manually Install PaddlePaddle and PaddleOCR
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-quick-start" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Quick Start
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-improving-vlm-inference-performance-using-inference-acceleration-frameworks" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Improving VLM Inference Performance Using Inference Acceleration Frameworks
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Improving VLM Inference Performance Using Inference Acceleration Frameworks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-starting-the-vlm-inference-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.1 Starting the VLM Inference Service
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.1 Starting the VLM Inference Service">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#311-method-1-using-docker-image" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.1.1 Method 1: Using Docker Image
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#312-method-2-installation-and-usage-via-paddleocr-cli" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.1.2 Method 2: Installation and Usage via PaddleOCR CLI
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-client-usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2 Client Usage
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#41-method-1-deployment-using-docker-compose" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.1 Method 1: Deployment Using Docker Compose
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-method-2-manual-installation-of-dependencies-for-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.2 Method 2: Manual Installation of Dependencies for Deployment
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-client-invocation-method" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.3 Client Invocation Method
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-pipeline-configuration-adjustment-instructions" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.4 Pipeline Configuration Adjustment Instructions
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-model-fine-tuning" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Model Fine-Tuning
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -3890,6 +4110,44 @@ You're not viewing the latest version.
       
         <footer class="md-footer">
   
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../algorithm/PaddleOCR-VL/PaddleOCR-VL.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: PaddleOCR-VL Introduction">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256l137.3-137.4c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                PaddleOCR-VL Introduction
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../deployment/high_performance_inference.html" class="md-footer__link md-footer__link--next" aria-label="Next: High-Performance Inference">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                High-Performance Inference
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M247.1 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L179.2 256 41.9 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
     
   
   <div class="md-footer-meta md-typeset">
