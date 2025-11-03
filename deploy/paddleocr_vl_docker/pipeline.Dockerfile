@@ -49,8 +49,9 @@ RUN if [ "${BUILD_FOR_OFFLINE}" = 'true' ]; then \
         && wget -P "${HOME}/.paddlex/fonts" https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/fonts/PingFang-SC-Regular.ttf; \
     fi
 
-COPY --chown=paddleocr:paddleocr pipeline_config.yaml /home/paddleocr
+COPY --chown=paddleocr:paddleocr pipeline_config_vllm.yaml /home/paddleocr
+COPY --chown=paddleocr:paddleocr pipeline_config_fastdeploy.yaml /home/paddleocr
 
 EXPOSE 8080
 
-CMD ["paddlex", "--serve", "--pipeline", "/home/paddleocr/pipeline_config.yaml"]
+CMD ["paddlex", "--serve", "--pipeline", "/home/paddleocr/pipeline_config_vllm.yaml"]
