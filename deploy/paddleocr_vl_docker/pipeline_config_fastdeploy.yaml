@@ -77,7 +77,7 @@ SubModules:
     batch_size: 4096
     genai_config:
       backend: fastdeploy-server
-      server_url: http://paddleocr-genai-vllm-server:8080/v1
+      server_url: http://paddleocr-genai-vlm-server:8080/v1
 
 SubPipelines:
   DocPreprocessor:
