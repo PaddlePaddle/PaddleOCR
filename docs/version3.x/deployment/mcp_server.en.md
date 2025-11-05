@@ -96,7 +96,7 @@ To install `paddleocr-mcp` using pip:
 
 ```bash
 # Install the wheel
-pip install https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/mcp/paddleocr_mcp/releases/v0.2.0/paddleocr_mcp-0.2.0-py3-none-any.whl
+pip install https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/mcp/paddleocr_mcp/releases/v0.2.1/paddleocr_mcp-0.2.1-py3-none-any.whl
 
 # Or install from source
 # git clone https://github.com/PaddlePaddle/PaddleOCR.git
@@ -104,10 +104,10 @@ pip install https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/mcp/pa
 
 # Install with optional extras (choose ONE of the following if you prefer convenience installs)
 # Install PaddleOCR together with the MCP server (framework not included):
-pip install "paddleocr-mcp[local] @ https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/mcp/paddleocr_mcp/releases/v0.2.0/paddleocr_mcp-0.2.0-py3-none-any.whl"
+pip install "paddleocr-mcp[local] @ https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/mcp/paddleocr_mcp/releases/v0.2.1/paddleocr_mcp-0.2.1-py3-none-any.whl"
 
 # Install PaddleOCR and CPU PaddlePaddle framework together:
-pip install "paddleocr-mcp[local-cpu] @ https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/mcp/paddleocr_mcp/releases/v0.2.0/paddleocr_mcp-0.2.0-py3-none-any.whl"
+pip install "paddleocr-mcp[local-cpu] @ https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/mcp/paddleocr_mcp/releases/v0.2.1/paddleocr_mcp-0.2.1-py3-none-any.whl"
 ```
 
 To verify successful installation:
@@ -306,7 +306,7 @@ Currently, for the AI Studio and self-hosted modes, and (for CPU inference) the 
           "command": "uvx",
           "args": [
             "--from",
-            "paddleocr-mcp@https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/mcp/paddleocr_mcp/releases/v0.2.0/paddleocr_mcp-0.2.0-py3-none-any.whl",
+            "paddleocr-mcp@https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/mcp/paddleocr_mcp/releases/v0.2.1/paddleocr_mcp-0.2.1-py3-none-any.whl",
             "paddleocr_mcp"
           ],
           "env": {
@@ -328,7 +328,7 @@ Currently, for the AI Studio and self-hosted modes, and (for CPU inference) the 
           "command": "uvx",
           "args": [
             "--from",
-            "paddleocr_mcp[local-cpu]@https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/mcp/paddleocr_mcp/releases/v0.2.0/paddleocr_mcp-0.2.0-py3-none-any.whl",
+            "paddleocr_mcp[local-cpu]@https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/mcp/paddleocr_mcp/releases/v0.2.1/paddleocr_mcp-0.2.1-py3-none-any.whl",
             "paddleocr_mcp"
           ],
           "env": {
