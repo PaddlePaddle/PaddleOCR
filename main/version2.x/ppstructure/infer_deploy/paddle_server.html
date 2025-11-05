@@ -3621,7 +3621,7 @@ You're not viewing the latest version.
 <p>PaddleOCR提供2种服务部署方式：</p>
 <ul>
 <li>基于PaddleHub Serving的部署：代码路径为<code>./deploy/hubserving</code>，按照本教程使用；</li>
-<li>基于PaddleServing的部署：代码路径为<code>./deploy/pdserving</code>，使用方法参考<a href="../../ppocr/infer_deploy/paddle_server.md">文档</a>。</li>
+<li>基于PaddleServing的部署：代码路径为<code>./deploy/pdserving</code>，使用方法参考<a href="../../legacy/paddle_server.html">文档</a>。</li>
 </ul>
 <h1 id="paddlehub-serving">基于PaddleHub Serving的服务部署<a class="headerlink" href="#paddlehub-serving" title="Permanent link">&para;</a></h1>
 <p>hubserving服务部署目录下包括文本检测、文本方向分类，文本识别、文本检测+文本方向分类+文本识别3阶段串联，版面分析、表格识别和PP-Structure七种服务包，请根据需求选择相应的服务包进行安装和启动。目录结构如下：</p>
@@ -4070,8 +4070,8 @@ You're not viewing the latest version.
 <p><strong>强烈建议修改后先直接运行<code>module.py</code>调试，能正确运行预测后再启动服务测试。</strong></p>
 <p><strong>注意：</strong> PPOCR-v3识别模型使用的图片输入shape为<code>3,48,320</code>,因此需要修改<code>params.py</code>中的<code>cfg.rec_image_shape = "3, 48, 320"</code>，如果不使用PPOCR-v3识别模型，则无需修改该参数。
 3. （可选）如果想要重命名模块需要更改<code>module.py</code>文件中的以下行：
-   - <a href="https://github.com/PaddlePaddle/PaddleOCR/blob/a923f35de57b5e378f8dd16e54d0a3e4f51267fd/deploy/hubserving/ocr_system/module.py#L35"><code>from deploy.hubserving.ocr_system.params import read_params</code>中的<code>ocr_system</code></a>
-   - <a href="https://github.com/PaddlePaddle/PaddleOCR/blob/a923f35de57b5e378f8dd16e54d0a3e4f51267fd/deploy/hubserving/ocr_system/module.py#L39"><code>name="ocr_system",</code>中的<code>ocr_system</code></a>
+   - <a href="../../../../deploy/hubserving/ocr_system/module.py#L35"><code>from deploy.hubserving.ocr_system.params import read_params</code>中的<code>ocr_system</code></a>
+   - <a href="../../../../deploy/hubserving/ocr_system/module.py#L39"><code>name="ocr_system",</code>中的<code>ocr_system</code></a>
 4. （可选）可能需要删除<code>__pycache__</code>目录以强制刷新CPython缓存：</p>
 <div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-13-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1"></a>find<span class="w"> </span>deploy/hubserving/ocr_system<span class="w"> </span>-name<span class="w"> </span><span class="s1">&#39;__pycache__&#39;</span><span class="w"> </span>-exec<span class="w"> </span>rm<span class="w"> </span>-r<span class="w"> </span><span class="o">{}</span><span class="w"> </span><span class="se">\;</span>
 </span></code></pre></div></td></tr></table></div>
@@ -4109,7 +4109,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="最后更新">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="2025年11月3日 21:49:01 CST">2025-11-03 21:49:01</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="2025年11月5日 08:16:48 CST">2025-11-05 08:16:48</span>
   </span>
 
     
@@ -4119,7 +4119,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="创建日期">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="2025年11月3日 21:49:01 CST">2025-11-03 21:49:01</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="2025年11月5日 08:16:48 CST">2025-11-05 08:16:48</span>
   </span>
 
     

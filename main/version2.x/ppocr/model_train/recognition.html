@@ -3830,7 +3830,6 @@ You're not viewing the latest version.
 <p>多语言模型的训练数据集均为100w的合成数据，使用了开源合成工具 <a href="https://github.com/Sanster/text_renderer">text_renderer</a> ，少量的字体可以通过下面两种方式下载。</p>
 <ul>
 <li><a href="https://pan.baidu.com/s/1bS_u207Rm7YbY33wOECKDA">百度网盘</a> 提取码：frgi</li>
-<li><a href="https://drive.google.com/file/d/18cSWX7wXSy4G0tbKJ0d9PuIaiwRLHpjA/view">google drive</a></li>
 </ul>
 <h3 id="14">1.4. 字典<a class="headerlink" href="#14" title="Permanent link">&para;</a></h3>
 <p>最后需要提供一个字典（{word_dict_name}.txt），使模型在训练时，可以将所有出现的字符映射为字典的索引。</p>
@@ -3860,7 +3859,7 @@ You're not viewing the latest version.
 <p><code>ppocr/utils/dict/german_dict.txt</code> 是一个包含131个字符的德文字典</p>
 <p><code>ppocr/utils/en_dict.txt</code> 是一个包含96个字符的英文字典</p>
 <p>目前的多语言模型仍处在demo阶段，会持续优化模型并补充语种，<strong>非常欢迎您为我们提供其他语言的字典和字体</strong>，
-如您愿意可将字典文件提交至 <a href="../../ppocr/utils/dict">dict</a>，我们会在Repo中感谢您。</p>
+如您愿意可将字典文件提交至 <a href="../../../../ppocr/utils/dict">dict</a>，我们会在Repo中感谢您。</p>
 <ul>
 <li>自定义字典</li>
 </ul>
@@ -3870,7 +3869,7 @@ You're not viewing the latest version.
 <h3 id="16">1.6. 数据增强<a class="headerlink" href="#16" title="Permanent link">&para;</a></h3>
 <p>PaddleOCR提供了多种数据增强方式，默认配置文件中已经添加了数据增广。</p>
 <p>默认的扰动方式有：颜色空间转换(cvtColor)、模糊(blur)、抖动(jitter)、噪声(Gasuss noise)、随机切割(random crop)、透视(perspective)、颜色反转(reverse)、TIA数据增广。</p>
-<p>训练过程中每种扰动方式以40%的概率被选择，具体代码实现请参考：<a href="../../ppocr/data/imaug/rec_img_aug.py">rec_img_aug.py</a></p>
+<p>训练过程中每种扰动方式以40%的概率被选择，具体代码实现请参考：<a href="../../../../ppocr/data/imaug/rec_img_aug.py">rec_img_aug.py</a></p>
 <p><em>由于OpenCV的兼容性问题，扰动操作暂时只支持Linux</em></p>
 <h2 id="2">2. 开始训练<a class="headerlink" href="#2" title="Permanent link">&para;</a></h2>
 <p>PaddleOCR提供了训练脚本、评估脚本和预测脚本，本节将以 PP-OCRv3 英文识别模型为例：</p>
@@ -3969,7 +3968,7 @@ You're not viewing the latest version.
 <p>PaddleOCR支持训练和评估交替进行, 可以在 <code>configs/rec/PP-OCRv3/en_PP-OCRv3_mobile_rec.yml</code> 中修改 <code>eval_batch_step</code> 设置评估频率，默认每500个iter评估一次。评估过程中默认将最佳acc模型，保存为 <code>output/en_PP-OCRv3_mobile_rec/best_accuracy</code> 。</p>
 <p>如果验证集很大，测试将会比较耗时，建议减少评估次数，或训练完再进行评估。</p>
 <p><strong>提示：</strong> 可通过 -c 参数选择 <code>configs/rec/</code> 路径下的多种模型配置进行训练，PaddleOCR支持的识别算法可以参考<a href="../../algorithm/overview.html">前沿算法列表</a>：</p>
-<p>训练中文数据，推荐使用<a href="https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/PP-OCRv3/PP-OCRv3_mobile_rec_distillation.yml">PP-OCRv3_mobile_rec_distillation.yml</a>，如您希望尝试其他算法在中文数据集上的效果，请参考下列说明修改配置文件：</p>
+<p>训练中文数据，推荐使用<a href="../../../../configs/rec/PP-OCRv3/PP-OCRv3_mobile_rec_distillation.yml">PP-OCRv3_mobile_rec_distillation.yml</a>，如您希望尝试其他算法在中文数据集上的效果，请参考下列说明修改配置文件：</p>
 <p>以 <code>PP-OCRv3_mobile_rec_distillation.yml</code> 为例：</p>
 <div class="language-yaml highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-11-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-11-2"> 2</a></span>
@@ -4092,7 +4091,7 @@ You're not viewing the latest version.
 </span></code></pre></div></td></tr></table></div>
 <p><strong>注意</strong>：<code>Global.checkpoints</code>的优先级高于<code>Global.pretrained_model</code>的优先级，即同时指定两个参数时，优先加载<code>Global.checkpoints</code>指定的模型，如果<code>Global.checkpoints</code>指定的模型路径有误，会加载<code>Global.pretrained_model</code>指定的模型。</p>
 <h3 id="23-backbone">2.3. 更换Backbone 训练<a class="headerlink" href="#23-backbone" title="Permanent link">&para;</a></h3>
-<p>PaddleOCR将网络划分为四部分，分别在<a href="../../ppocr/modeling">ppocr/modeling</a>下。 进入网络的数据将按照顺序(transforms-&gt;backbones-&gt;necks-&gt;heads)依次通过这四个部分。</p>
+<p>PaddleOCR将网络划分为四部分，分别在<a href="../../../../ppocr/modeling">ppocr/modeling</a>下。 进入网络的数据将按照顺序(transforms-&gt;backbones-&gt;necks-&gt;heads)依次通过这四个部分。</p>
 <div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-13-1">1</a></span>
 <span class="normal"><a href="#__codelineno-13-2">2</a></span>
 <span class="normal"><a href="#__codelineno-13-3">3</a></span>
@@ -4106,7 +4105,7 @@ You're not viewing the latest version.
 <p>如果要更换的Backbone 在PaddleOCR中有对应实现，直接修改配置yml文件中<code>Backbone</code>部分的参数即可。</p>
 <p>如果要使用新的Backbone，更换backbones的例子如下:</p>
 <ol>
-<li>在 <a href="../../ppocr/modeling/backbones">ppocr/modeling/backbones</a> 文件夹下新建文件，如my_backbone.py。</li>
+<li>在 <a href="../../../../ppocr/modeling/backbones">ppocr/modeling/backbones</a> 文件夹下新建文件，如my_backbone.py。</li>
 <li>在 my_backbone.py 文件内添加相关代码，示例代码如下:</li>
 </ol>
 <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-14-1"> 1</a></span>
@@ -4140,7 +4139,7 @@ You're not viewing the latest version.
 </span><span id="__span-14-15"><a id="__codelineno-14-15" name="__codelineno-14-15"></a>        <span class="k">return</span> <span class="n">y</span>
 </span></code></pre></div></td></tr></table></div>
 <ol>
-<li>在 <a href="https://github.com/PaddlePaddle/PaddleOCR/blob/main/ppocr/modeling/backbones/__init__.py">ppocr/modeling/backbones/_<em>init_</em>.py</a>文件内导入添加的<code>MyBackbone</code>模块，然后修改配置文件中Backbone进行配置即可使用，格式如下:</li>
+<li>在 <a href="../../../../ppocr/modeling/backbones/__init__.py">ppocr/modeling/backbones/_<em>init_</em>.py</a>文件内导入添加的<code>MyBackbone</code>模块，然后修改配置文件中Backbone进行配置即可使用，格式如下:</li>
 </ol>
 <div class="language-yaml highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-15-1">1</a></span>
 <span class="normal"><a href="#__codelineno-15-2">2</a></span>
@@ -4167,7 +4166,7 @@ You're not viewing the latest version.
 <h3 id="26">2.6. 知识蒸馏训练<a class="headerlink" href="#26" title="Permanent link">&para;</a></h3>
 <p>PaddleOCR支持了基于知识蒸馏的文本识别模型训练过程，更多内容可以参考<a href="../model_compress/knowledge_distillation.html">知识蒸馏说明文档</a>。</p>
 <h3 id="27">2.7. 多语言模型训练<a class="headerlink" href="#27" title="Permanent link">&para;</a></h3>
-<p>PaddleOCR目前已支持80种（除中文外）语种识别，<code>configs/rec/multi_languages</code> 路径下提供了一个多语言的配置文件模版: <a href="https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/multi_language/rec_multi_language_lite_train.yml">rec_multi_language_lite_train.yml</a>。</p>
+<p>PaddleOCR目前已支持80种（除中文外）语种识别，<code>configs/rec/multi_languages</code> 路径下提供了一个多语言的配置文件模版: <a href="../../../../configs/rec/multi_language/rec_multi_language_lite_train.yml">rec_multi_language_lite_train.yml</a>。</p>
 <p>按语系划分，目前PaddleOCR支持的语种有：</p>
 <table>
 <thead>
@@ -4493,7 +4492,7 @@ DCU设备上运行需要设置环境变量 <code>export HIP_VISIBLE_DEVICES=0,1,
     <span class="md-icon" title="最后更新">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="2025年11月3日 21:49:01 CST">2025-11-03 21:49:01</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="2025年11月5日 08:16:48 CST">2025-11-05 08:16:48</span>
   </span>
 
     
@@ -4503,7 +4502,7 @@ DCU设备上运行需要设置环境变量 <code>export HIP_VISIBLE_DEVICES=0,1,
     <span class="md-icon" title="创建日期">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="2025年11月3日 21:49:01 CST">2025-11-03 21:49:01</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="2025年11月5日 08:16:48 CST">2025-11-05 08:16:48</span>
   </span>
 
     

@@ -3568,7 +3568,7 @@ L_{CTC} = -log(y^{'})
 <div class="arithmatex">\[
 L_{Focal\_CTC} = \alpha * (1 - y^{'})^{\gamma} * L_{CTC}
 \]</div>
-<p>In the experiment, the value of &gamma; is 2, &alpha; = 1, see this for specific implementation: <a href="../../ppocr/losses/rec_ctc_loss.py">rec_ctc_loss.py</a></p>
+<p>In the experiment, the value of &gamma; is 2, &alpha; = 1, see this for specific implementation: <a href="../../../../ppocr/losses/rec_ctc_loss.py">rec_ctc_loss.py</a></p>
 <h2 id="2-a-ctc-loss">2. A-CTC Loss<a class="headerlink" href="#2-a-ctc-loss" title="Permanent link">&para;</a></h2>
 <p>A-CTC Loss is short for CTC Loss + ACE Loss. Among them, ACE Loss was proposed by the paper, “<a href="https://arxiv.org/abs/1904.08364">Aggregation Cross-Entropy for Sequence Recognition</a>”. Compared with CTCLoss, ACE Loss has the following two advantages:
 + ACE Loss can solve the recognition problem of 2-D text, while CTCLoss can only process 1-D text
@@ -3580,7 +3580,7 @@ A_CTC Loss is defined as follows:</p>
 <div class="arithmatex">\[
 L_{A-CTC} = L_{CTC} + \lambda * L_{ACE}
 \]</div>
-<p>In the experiment, λ = 0.1. See the ACE loss implementation code: <a href="../../ppocr/losses/ace_loss.py">ace_loss.py</a></p>
+<p>In the experiment, λ = 0.1. See the ACE loss implementation code: <a href="../../../../ppocr/losses/ace_loss.py">ace_loss.py</a></p>
 <h2 id="3-c-ctc-loss">3. C-CTC Loss<a class="headerlink" href="#3-c-ctc-loss" title="Permanent link">&para;</a></h2>
 <p>C-CTC Loss is short for CTC Loss + Center Loss. Among them, Center Loss was proposed by the paper, “<a href="https://link.springer.com/chapter/10.1007/978-3-319-46478-7_31">A Discriminative Feature Learning Approach for Deep Face Recognition</a>“. It was first used in face recognition tasks to increase the distance between classes and reduce the distance within classes. It is an earlier and also widely used algorithm.</p>
 <p>In the task of Chinese OCR recognition, through the analysis of bad cases, we found that a major difficulty in Chinese recognition is that there are many similar characters, which are easy to misunderstand. From this, we thought about whether we can learn from the idea of n to increase the class spacing of similar characters, to improve recognition accuracy. However, Metric Learning is mainly used in the field of image recognition, and the label of the training data is a fixed value; for OCR recognition, it is a sequence recognition task essentially, and there is no explicit alignment between features and labels. Therefore, how to combine the two is still a direction worth exploring.</p>
@@ -3588,7 +3588,7 @@ L_{A-CTC} = L_{CTC} + \lambda * L_{ACE}
 <div class="arithmatex">\[
 L_{C-CTC} = L_{CTC} + \lambda * L_{center}
 \]</div>
-<p>In the experiment, we set λ=0.25. See the center_loss implementation code: <a href="../../ppocr/losses/center_loss.py">center_loss.py</a></p>
+<p>In the experiment, we set λ=0.25. See the center_loss implementation code: <a href="../../../../ppocr/losses/center_loss.py">center_loss.py</a></p>
 <p>It is worth mentioning that in C-CTC Loss, choosing to initialize the Center randomly does not bring significant improvement. Our Center initialization method is as follows:
 + Based on the original CTCLoss, a network N is obtained by training
 + Select the training set, identify the completely correct part, and form the set G
@@ -3619,7 +3619,7 @@ L_{C-CTC} = L_{CTC} + \lambda * L_{center}
 </tbody>
 </table>
 <p>Based on the above experimental conclusions, we adopted the C-CTC strategy in PP-OCRv2. It is worth mentioning that, because PP-OCRv2 deals with the recognition task of 6625 Chinese characters, the character set is relatively large and there are many similar characters, so the C-CTC solution brings a significant improvement on this task. But if you switch to other OCR recognition tasks, the conclusion may be different. You can try Focal-CTC, A-CTC, C-CTC, and the combined solution EnhancedCTC. We believe it will bring different degrees of improvement.</p>
-<p>The unified combined plan is shown in the following file: <a href="../../ppocr/losses/rec_enhanced_ctc_loss.py">rec_enhanced_ctc_loss.py</a></p>
+<p>The unified combined plan is shown in the following file: <a href="../../../../ppocr/losses/rec_enhanced_ctc_loss.py">rec_enhanced_ctc_loss.py</a></p>
 
 <!-- Source file information -->
 
@@ -3644,7 +3644,7 @@ L_{C-CTC} = L_{CTC} + \lambda * L_{center}
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="November 3, 2025 21:49:01 CST">2025-11-03 21:49:01</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="November 5, 2025 08:16:48 CST">2025-11-05 08:16:48</span>
   </span>
 
     
@@ -3654,7 +3654,7 @@ L_{C-CTC} = L_{CTC} + \lambda * L_{center}
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="November 3, 2025 21:49:01 CST">2025-11-03 21:49:01</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="November 5, 2025 08:16:48 CST">2025-11-05 08:16:48</span>
   </span>
 
     

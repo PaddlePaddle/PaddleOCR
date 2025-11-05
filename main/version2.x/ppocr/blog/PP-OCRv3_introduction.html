@@ -3913,7 +3913,7 @@ You're not viewing the latest version.
 <h3 id="5udml">（5）UDML：联合互学习策略<a class="headerlink" href="#5udml" title="Permanent link">&para;</a></h3>
 <p>UDML（Unified-Deep Mutual Learning）联合互学习是PP-OCRv2中就采用的对于文本识别非常有效的提升模型效果的策略。在PP-OCRv3中，针对两个不同的SVTR_LCNet和Attention结构，对他们之间的PP-LCNet的特征图、SVTR模块的输出和Attention模块的输出同时进行监督训练。使用该策略，识别模型的准确率进一步提升到78.4%（+1.5%）。</p>
 <h3 id="6uim">（6）UIM：无标注数据挖掘方案<a class="headerlink" href="#6uim" title="Permanent link">&para;</a></h3>
-<p>UIM（Unlabeled Images Mining）是一种非常简单的无标注数据挖掘方案。核心思想是利用高精度的文本识别大模型对无标注数据进行预测，获取伪标签，并且选择预测置信度高的样本作为训练数据，用于训练小模型。使用该策略，识别模型的准确率进一步提升到79.4%（+1%）。实际操作中，我们使用全量数据集训练高精度SVTR-Tiny模型（acc=82.5%）进行数据挖掘，点击获取<a href="../applications/高精度中文识别模型.md">模型下载地址和使用教程</a>。</p>
+<p>UIM（Unlabeled Images Mining）是一种非常简单的无标注数据挖掘方案。核心思想是利用高精度的文本识别大模型对无标注数据进行预测，获取伪标签，并且选择预测置信度高的样本作为训练数据，用于训练小模型。使用该策略，识别模型的准确率进一步提升到79.4%（+1%）。实际操作中，我们使用全量数据集训练高精度SVTR-Tiny模型（acc=82.5%）进行数据挖掘，点击获取<a href="https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.8/applications/%E9%AB%98%E7%B2%BE%E5%BA%A6%E4%B8%AD%E6%96%87%E8%AF%86%E5%88%AB%E6%A8%A1%E5%9E%8B.md">模型下载地址和使用教程</a>。</p>
 <p><img src="./images/UIM.png" alt="img" style="zoom:67%;" /></p>
 <h2 id="4">4. 端到端评估<a class="headerlink" href="#4" title="Permanent link">&para;</a></h2>
 <p>经过以上优化，最终PP-OCRv3在速度可比情况下，中文场景端到端Hmean指标相比于PP-OCRv2提升5%，效果大幅提升。具体指标如下表所示：</p>
@@ -4036,7 +4036,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="最后更新">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="2025年11月3日 21:49:01 CST">2025-11-03 21:49:01</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="2025年11月5日 08:16:48 CST">2025-11-05 08:16:48</span>
   </span>
 
     
@@ -4046,7 +4046,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="创建日期">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="2025年11月3日 21:49:01 CST">2025-11-03 21:49:01</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="2025年11月5日 08:16:48 CST">2025-11-05 08:16:48</span>
   </span>
 
     

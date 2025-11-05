@@ -3809,8 +3809,8 @@ You're not viewing the latest version.
 <li>在整理标注文件的时候，建议将other这个类别（其他，无需关注的文本行可以标注为other）放在第一行，在解析的时候，会将<code>other</code>类别的类别id解析为0，后续不会对该类进行可视化。</li>
 </ul>
 <h3 id="13">1.3. 数据下载<a class="headerlink" href="#13" title="Permanent link">&para;</a></h3>
-<p>如果你没有本地数据集，可以从<a href="https://github.com/doc-analysis/XFUND">XFUND</a>或者<a href="https://guillaumejaume.github.io/FUNSD/">FUNSD</a>官网下载数据，然后使用XFUND与FUNSD的处理脚本(<a href="../../ppstructure/kie/tools/trans_xfun_data.py">XFUND</a>, <a href="../../ppstructure/kie/tools/trans_funsd_label.py">FUNSD</a>)，生成用于PaddleOCR训练的数据格式，并使用公开数据集快速体验关键信息抽取的流程。</p>
-<p>更多关于公开数据集的介绍，请参考<a href="../../datasets/kie_datasets.md">关键信息抽取数据集说明文档</a>。</p>
+<p>如果你没有本地数据集，可以从<a href="https://github.com/doc-analysis/XFUND">XFUND</a>或者<a href="https://guillaumejaume.github.io/FUNSD/">FUNSD</a>官网下载数据，然后使用XFUND与FUNSD的处理脚本(<a href="../../../../ppstructure/kie/tools/trans_xfun_data.py">XFUND</a>, <a href="../../../../ppstructure/kie/tools/trans_funsd_label.py">FUNSD</a>)，生成用于PaddleOCR训练的数据格式，并使用公开数据集快速体验关键信息抽取的流程。</p>
+<p>更多关于公开数据集的介绍，请参考<a href="../../../datasets/kie_datasets.html">关键信息抽取数据集说明文档</a>。</p>
 <p>PaddleOCR也支持了关键信息抽取模型的标注，具体使用方法请参考：<a href="https://github.com/PFCCLab/PPOCRLabel/blob/main/README_ch.md">PPOCRLabel使用文档</a>。</p>
 <h2 id="2_1">2. 开始训练<a class="headerlink" href="#2_1" title="Permanent link">&para;</a></h2>
 <p>PaddleOCR提供了训练脚本、评估脚本和预测脚本，本节将以 VI-LayoutXLM 多模态预训练模型为例进行讲解。</p>
@@ -4029,8 +4029,8 @@ You're not viewing the latest version.
 </span></code></pre></div></td></tr></table></div>
 <p><strong>注意:</strong> （1）采用多机多卡训练时，需要替换上面命令中的ips值为您机器的地址，机器之间需要能够相互ping通；（2）训练时需要在多个机器上分别启动命令。查看机器ip地址的命令为<code>ifconfig</code>；（3）更多关于分布式训练的性能优势等信息，请参考：<a href="../blog/distributed_training.html">分布式训练教程</a>。</p>
 <h3 id="25">2.5. 知识蒸馏训练<a class="headerlink" href="#25" title="Permanent link">&para;</a></h3>
-<p>PaddleOCR支持了基于U-DML知识蒸馏的关键信息抽取模型训练过程，配置文件请参考：<a href="https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh_udml.yml">ser_vi_layoutxlm_xfund_zh_udml.yml</a>，更多关于知识蒸馏的说明文档请参考：<a href="../model_compress/knowledge_distillation.html">知识蒸馏说明文档</a>。</p>
-<p><strong>注意</strong>： PaddleOCR中LayoutXLM系列关键信息抽取模型的保存与加载逻辑与PaddleNLP保持一致，因此在蒸馏的过程中仅保存了学生模型的参数，如果希望使用保存的模型进行评估，需要使用学生模型的配置（上面的蒸馏文件对应的学生模型为<a href="https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh.yml">ser_vi_layoutxlm_xfund_zh.yml</a>）</p>
+<p>PaddleOCR支持了基于U-DML知识蒸馏的关键信息抽取模型训练过程，配置文件请参考：<a href="../../../../configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh_udml.yml">ser_vi_layoutxlm_xfund_zh_udml.yml</a>，更多关于知识蒸馏的说明文档请参考：<a href="../model_compress/knowledge_distillation.html">知识蒸馏说明文档</a>。</p>
+<p><strong>注意</strong>： PaddleOCR中LayoutXLM系列关键信息抽取模型的保存与加载逻辑与PaddleNLP保持一致，因此在蒸馏的过程中仅保存了学生模型的参数，如果希望使用保存的模型进行评估，需要使用学生模型的配置（上面的蒸馏文件对应的学生模型为<a href="../../../../configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh.yml">ser_vi_layoutxlm_xfund_zh.yml</a>）</p>
 <h3 id="26">2.6. 其他训练环境<a class="headerlink" href="#26" title="Permanent link">&para;</a></h3>
 <ul>
 <li>
@@ -4253,7 +4253,7 @@ DCU设备上运行需要设置环境变量 <code>export HIP_VISIBLE_DEVICES=0,1,
     <span class="md-icon" title="最后更新">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="2025年11月3日 21:49:01 CST">2025-11-03 21:49:01</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="2025年11月5日 08:16:48 CST">2025-11-05 08:16:48</span>
   </span>
 
     
@@ -4263,7 +4263,7 @@ DCU设备上运行需要设置环境变量 <code>export HIP_VISIBLE_DEVICES=0,1,
     <span class="md-icon" title="创建日期">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="2025年11月3日 21:49:01 CST">2025-11-03 21:49:01</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="2025年11月5日 08:16:48 CST">2025-11-05 08:16:48</span>
   </span>
 
     

@@ -3582,10 +3582,10 @@ You're not viewing the latest version.
 </li>
 </ul>
 <h3 id="21-prepare-data-and-operating-environment">2.1 Prepare data and operating environment<a class="headerlink" href="#21-prepare-data-and-operating-environment" title="Permanent link">&para;</a></h3>
-<p>The training data uses icdar2015 data. For the steps of preparing the training set, refer to <a href="./dataset/ocr_datasets.md">ocr_dataset</a>.</p>
-<p>For the preparation of the operating environment, refer to <a href="./installation.md">document</a>.</p>
+<p>The training data uses icdar2015 data. For the steps of preparing the training set, refer to <a href="../../../datasets/ocr_datasets.html">ocr_dataset</a>.</p>
+<p>For the preparation of the operating environment, refer to <a href="../installation.html">document</a>.</p>
 <h3 id="22-train-the-teacher-model">2.2 Train the teacher model<a class="headerlink" href="#22-train-the-teacher-model" title="Permanent link">&para;</a></h3>
-<p>The configuration file for teacher model training is <a href="https://github.com/PaddlePaddle/PaddleOCR/blob/release%2F2.5/configs/det/PP-OCRv3/PP-OCRv3_det_dml.yml">PP-OCRv3_det_dml.yml</a>. The Backbone, Neck, and Head of the teacher model structure are Resnet50, LKPAN, and DBHead respectively, and are trained using the DML distillation method. For a detailed introduction to the configuration file, refer to <a href="./knowledge_distillation.md">Document</a>.</p>
+<p>The configuration file for teacher model training is <a href="../../../../configs/det/PP-OCRv3/PP-OCRv3_det_dml.yml">PP-OCRv3_det_dml.yml</a>. The Backbone, Neck, and Head of the teacher model structure are Resnet50, LKPAN, and DBHead respectively, and are trained using the DML distillation method. For a detailed introduction to the configuration file, refer to <a href="../model_compress/knowledge_distillation.html">Document</a>.</p>
 <p>Download ImageNet pre-trained model:</p>
 <div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1">1</a></span>
 <span class="normal"><a href="#__codelineno-0-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="c1"># Download ResNet50_vd pre-trained model</span>
@@ -3656,7 +3656,7 @@ best_accuracy contains the parameters of two models, corresponding to Student an
 </span></code></pre></div></td></tr></table></div>
 <p>The extracted model parameters can be used for further fine-tuning or distillation training of the model.</p>
 <h3 id="23-training-the-student-model">2.3 Training the student model<a class="headerlink" href="#23-training-the-student-model" title="Permanent link">&para;</a></h3>
-<p>The configuration file for training the student model is <a href="https://github.com/PaddlePaddle/PaddleOCR/blob/release%2F2.5/configs/det/PP-OCRv3/PP-OCRv3_det_cml.yml">PP-OCRv3_det_cml.yml</a>
+<p>The configuration file for training the student model is <a href="../../../../configs/det/PP-OCRv3/PP-OCRv3_det_cml.yml">PP-OCRv3_det_cml.yml</a>
 The teacher model trained in the previous section is used as supervision, and the CML method is used to train a lightweight student model.</p>
 <p>Download the ImageNet pre-trained model of the student model:</p>
 <div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-5-1">1</a></span>
@@ -3782,7 +3782,7 @@ The model evaluation command is as follows:</p>
 </span><span id="__span-12-10"><a id="__codelineno-12-10" name="__codelineno-12-10"></a><span class="c1"># Save</span>
 </span><span id="__span-12-11"><a id="__codelineno-12-11" name="__codelineno-12-11"></a>paddle.save<span class="o">(</span>s_params,<span class="w"> </span><span class="s2">&quot;./student.pdparams&quot;</span><span class="o">)</span>
 </span></code></pre></div></td></tr></table></div>
-<p>Train using the configuration file <a href="https://github.com/PaddlePaddle/PaddleOCR/blob/release%2F2.5/configs/det/PP-OCRv3/PP-OCRv3_mobile_det.yml">PP-OCRv3_mobile_det.yml</a>.</p>
+<p>Train using the configuration file <a href="../../../../configs/det/PP-OCRv3/PP-OCRv3_mobile_det.yml">PP-OCRv3_mobile_det.yml</a>.</p>
 <p><strong>Start training</strong></p>
 <div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-13-1">1</a></span>
 <span class="normal"><a href="#__codelineno-13-2">2</a></span>
@@ -3869,7 +3869,7 @@ The model evaluation command is as follows:</p>
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="November 3, 2025 21:49:01 CST">2025-11-03 21:49:01</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="November 5, 2025 08:16:48 CST">2025-11-05 08:16:48</span>
   </span>
 
     
@@ -3879,7 +3879,7 @@ The model evaluation command is as follows:</p>
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="November 3, 2025 21:49:01 CST">2025-11-03 21:49:01</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="November 5, 2025 08:16:48 CST">2025-11-05 08:16:48</span>
   </span>
 
     

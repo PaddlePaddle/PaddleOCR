@@ -3635,7 +3635,7 @@ You're not viewing the latest version.
 </span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7"></a><span class="w">    </span><span class="nt">warmup_epoch</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
 </span></code></pre></div></td></tr></table></div>
 <p>Piecewise 代表分段常数衰减，在不同的学习阶段指定不同的学习率，在每段内学习率相同。
-warmup_epoch 代表在前5个epoch中，学习率将逐渐从0增加到base_lr。全部策略可以参考代码<a href="../../ppocr/optimizer/learning_rate.py">learning_rate.py</a> 。</p>
+warmup_epoch 代表在前5个epoch中，学习率将逐渐从0增加到base_lr。全部策略可以参考代码 <a href="../../../../ppocr/optimizer/learning_rate.py">learning_rate.py</a> 。</p>
 <h3 id="22">2.2 正则化<a class="headerlink" href="#22" title="Permanent link">&para;</a></h3>
 <p>正则化可以有效的避免算法过拟合，PaddleOCR中提供了L1、L2正则方法，L1 和 L2 正则化是最常用的正则化方法。L1 正则化向目标函数添加正则化项，以减少参数的绝对值总和；而 L2 正则化中，添加正则化项的目的在于减少参数平方的总和。配置方法如下：</p>
 <div class="language-yaml highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1">1</a></span>
@@ -3668,7 +3668,7 @@ warmup_epoch 代表在前5个epoch中，学习率将逐渐从0增加到base_lr�
 <li>中文数据集，LSVT街景数据集根据真值将图crop出来，并进行位置校准，总共30w张图像。此外基于LSVT的语料，合成数据500w。</li>
 <li>小语种数据集，使用不同语料和字体，分别生成了100w合成数据集，并使用ICDAR-MLT作为验证集。</li>
 </ul>
-<p>其中，公开数据集都是开源的，用户可自行搜索下载，也可参考<a href="../../datasets/datasets.md">中文数据集</a>，合成数据暂不开源，用户可使用开源合成工具自行合成，可参考的合成工具包括<a href="https://github.com/Sanster/text_renderer">text_renderer</a> 、<a href="https://github.com/ankush-me/SynthText">SynthText</a> 、<a href="https://github.com/Belval/TextRecognitionDataGenerator">TextRecognitionDataGenerator</a> 等。</p>
+<p>其中，公开数据集都是开源的，用户可自行搜索下载，也可参考<a href="../../../datasets/datasets.html">中文数据集</a>，合成数据暂不开源，用户可使用开源合成工具自行合成，可参考的合成工具包括<a href="https://github.com/Sanster/text_renderer">text_renderer</a> 、<a href="https://github.com/ankush-me/SynthText">SynthText</a> 、<a href="https://github.com/Belval/TextRecognitionDataGenerator">TextRecognitionDataGenerator</a> 等。</p>
 <h3 id="32">3.2 垂类场景<a class="headerlink" href="#32" title="Permanent link">&para;</a></h3>
 <p>PaddleOCR主要聚焦通用OCR，如果有垂类需求，您可以用PaddleOCR+垂类数据自己训练；
 如果缺少带标注的数据，或者不想投入研发成本，建议直接调用开放的API，开放的API覆盖了目前比较常见的一些垂类。</p>
@@ -3702,10 +3702,10 @@ warmup_epoch 代表在前5个epoch中，学习率将逐渐从0增加到base_lr�
 <hr />
 <p>具体的训练教程可点击下方链接跳转：</p>
 <ul>
-<li><a href="./detection.md">文本检测模型训练</a></li>
-<li><a href="./recognition.md">文本识别模型训练</a></li>
-<li><a href="./angle_class.md">文本方向分类器训练</a></li>
-<li><a href="../model_compress/knowledge_distillation.md">知识蒸馏</a></li>
+<li><a href="../../ppocr/model_train/detection.html">文本检测模型训练</a></li>
+<li><a href="../../ppocr/model_train/recognition.html">文本识别模型训练</a></li>
+<li><a href="../../ppocr/model_train/angle_class.html">文本方向分类器训练</a></li>
+<li><a href="../../ppocr/model_compress/knowledge_distillation.html">知识蒸馏</a></li>
 </ul>
 
 <!-- Source file information -->
@@ -3731,7 +3731,7 @@ warmup_epoch 代表在前5个epoch中，学习率将逐渐从0增加到base_lr�
     <span class="md-icon" title="最后更新">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="2025年11月3日 21:49:01 CST">2025-11-03 21:49:01</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="2025年11月5日 08:16:48 CST">2025-11-05 08:16:48</span>
   </span>
 
     
@@ -3741,7 +3741,7 @@ warmup_epoch 代表在前5个epoch中，学习率将逐渐从0增加到base_lr�
     <span class="md-icon" title="创建日期">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="2025年11月3日 21:49:01 CST">2025-11-03 21:49:01</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="2025年11月5日 08:16:48 CST">2025-11-05 08:16:48</span>
   </span>
 
     

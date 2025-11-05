@@ -3817,7 +3817,6 @@ supported by PaddleOCR. The data conversion tool is in <code>ppocr/utils/gen_lab
 <p>The multi-language model training method is the same as the Chinese model. The training data set is 100w synthetic data. A small amount of fonts and test data can be downloaded using the following two methods.</p>
 <ul>
 <li><a href="https://pan.baidu.com/s/1bS_u207Rm7YbY33wOECKDA">Baidu Netdisk</a> ,Extraction code:frgi.</li>
-<li><a href="https://drive.google.com/file/d/18cSWX7wXSy4G0tbKJ0d9PuIaiwRLHpjA/view">Google drive</a></li>
 </ul>
 <h3 id="14-dictionary">1.4. Dictionary<a class="headerlink" href="#14-dictionary" title="Permanent link">&para;</a></h3>
 <p>Finally, a dictionary ({word_dict_name}.txt) needs to be provided so that when the model is trained, all the characters that appear can be mapped to the dictionary index.</p>
@@ -3845,7 +3844,7 @@ supported by PaddleOCR. The data conversion tool is in <code>ppocr/utils/gen_lab
 <li><code>ppocr/utils/dict/german_dict.txt</code>: A German dictionary containing 131 characters.</li>
 <li><code>ppocr/utils/en_dict.txt</code>: An English dictionary containing 96 characters.</li>
 </ul>
-<p>Currently, the multilingual models are still in the demo stage, and we are continuously improving the models and adding new languages. <strong>We highly welcome you to provide dictionaries and fonts for other languages</strong>. If you are willing, you can submit your dictionary files to the <a href="../../ppocr/utils/dict">dict</a> directory, and we will credit you in the repo.
+<p>Currently, the multilingual models are still in the demo stage, and we are continuously improving the models and adding new languages. <strong>We highly welcome you to provide dictionaries and fonts for other languages</strong>. If you are willing, you can submit your dictionary files to the <a href="../../../../ppocr/utils/dict">dict</a> directory, and we will credit you in the repo.
 To customize the dict file, please modify the <code>character_dict_path</code> field in <code>configs/rec/rec_icdar15_train.yml</code>.</p>
 <ul>
 <li>Custom Dictionary</li>
@@ -3856,7 +3855,7 @@ To customize the dict file, please modify the <code>character_dict_path</code> f
 <h3 id="16-data-augmentation">1.6. Data Augmentation<a class="headerlink" href="#16-data-augmentation" title="Permanent link">&para;</a></h3>
 <p>PaddleOCR provides a variety of data augmentation methods. All the augmentation methods are enabled by default.</p>
 <p>The default perturbation methods are: cvtColor, blur, jitter, Gasuss noise, random crop, perspective, color reverse, TIA augmentation.</p>
-<p>Each disturbance method is selected with a 40% probability during the training process. For specific code implementation, please refer to: <a href="../../ppocr/data/imaug/rec_img_aug.py">rec_img_aug.py</a></p>
+<p>Each disturbance method is selected with a 40% probability during the training process. For specific code implementation, please refer to: <a href="../../../../ppocr/data/imaug/rec_img_aug.py">rec_img_aug.py</a></p>
 <h2 id="2-training">2. Training<a class="headerlink" href="#2-training" title="Permanent link">&para;</a></h2>
 <p>PaddleOCR provides training scripts, evaluation scripts, and prediction scripts. This section will take the PP-OCRv3 English recognition model as an example:</p>
 <h3 id="21-start-training">2.1. Start Training<a class="headerlink" href="#21-start-training" title="Permanent link">&para;</a></h3>
@@ -3896,7 +3895,7 @@ To customize the dict file, please modify the <code>character_dict_path</code> f
 <li>Tip: You can use the <code>-c</code> parameter to select multiple model configurations under the <code>configs/rec/</code> path for training. The recognition algorithms supported at <a href="../../algorithm/overview.html">rec_algorithm</a>:</li>
 </ul>
 <p>For training Chinese data, it is recommended to use
-<a href="https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/PP-OCRv3/PP-OCRv3_mobile_rec_distillation.yml">PP-OCRv3_mobile_rec_distillation.yml</a>. If you want to try the result of other algorithms on the Chinese data set, please refer to the following instructions to modify the configuration file:</p>
+<a href="../../../../configs/rec/PP-OCRv3/PP-OCRv3_mobile_rec_distillation.yml">PP-OCRv3_mobile_rec_distillation.yml</a>. If you want to try the result of other algorithms on the Chinese data set, please refer to the following instructions to modify the configuration file:</p>
 <p>Take <code>PP-OCRv3_mobile_rec_distillation.yml</code> as an example:</p>
 <div class="language-yaml highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-10-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-10-2"> 2</a></span>
@@ -4022,7 +4021,7 @@ To customize the dict file, please modify the <code>character_dict_path</code> f
 </span></code></pre></div></td></tr></table></div>
 <p><strong>Note</strong>: The priority of <code>Global.checkpoints</code> is higher than that of <code>Global.pretrained_model</code>, that is, when two parameters are specified at the same time, the model specified by <code>Global.checkpoints</code> will be loaded first. If the model path specified by <code>Global.checkpoints</code> is wrong, the one specified by <code>Global.pretrained_model</code> will be loaded.</p>
 <h3 id="23-training-with-new-backbone">2.3 Training with New Backbone<a class="headerlink" href="#23-training-with-new-backbone" title="Permanent link">&para;</a></h3>
-<p>The network part completes the construction of the network, and PaddleOCR divides the network into four parts, which are under <a href="../../ppocr/modeling">ppocr/modeling</a>. The data entering the network will pass through these four parts in sequence(transforms-&gt;backbones-&gt;
+<p>The network part completes the construction of the network, and PaddleOCR divides the network into four parts, which are under <a href="../../../../ppocr/modeling">ppocr/modeling</a>. The data entering the network will pass through these four parts in sequence(transforms-&gt;backbones-&gt;
 necks-&gt;heads).</p>
 <div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-12-1">1</a></span>
 <span class="normal"><a href="#__codelineno-12-2">2</a></span>
@@ -4037,7 +4036,7 @@ necks-&gt;heads).</p>
 <p>If the Backbone to be replaced has a corresponding implementation in PaddleOCR, you can directly modify the parameters in the <code>Backbone</code> part of the configuration yml file.</p>
 <p>However, if you want to use a new Backbone, an example of replacing the backbones is as follows:</p>
 <ol>
-<li>Create a new file under the <a href="../../ppocr/modeling/backbones">ppocr/modeling/backbones</a> folder, such as my_backbone.py.</li>
+<li>Create a new file under the <a href="../../../../ppocr/modeling/backbones">ppocr/modeling/backbones</a> folder, such as my_backbone.py.</li>
 <li>Add code in the my_backbone.py file, the sample code is as follows:</li>
 </ol>
 <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-13-1"> 1</a></span>
@@ -4071,7 +4070,7 @@ necks-&gt;heads).</p>
 </span><span id="__span-13-15"><a id="__codelineno-13-15" name="__codelineno-13-15"></a>        <span class="k">return</span> <span class="n">y</span>
 </span></code></pre></div></td></tr></table></div>
 <ol>
-<li>Import the added module in the <a href="https://github.com/PaddlePaddle/PaddleOCR/blob/main/ppocr/modeling/backbones/__init__.py">ppocr/modeling/backbones/_<em>init_</em>.py</a> file.</li>
+<li>Import the added module in the <a href="../../../../ppocr/modeling/backbones/__init__.py">ppocr/modeling/backbones/_<em>init_</em>.py</a> file.</li>
 </ol>
 <p>After adding the four-part modules of the network, you only need to configure them in the configuration file to use, such as:</p>
 <div class="language-yaml highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-14-1">1</a></span>
@@ -4420,7 +4419,7 @@ In contrast, the <strong>checkpoint model</strong> only saves the model's parame
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="November 3, 2025 21:49:01 CST">2025-11-03 21:49:01</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="November 5, 2025 08:16:48 CST">2025-11-05 08:16:48</span>
   </span>
 
     
@@ -4430,7 +4429,7 @@ In contrast, the <strong>checkpoint model</strong> only saves the model's parame
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="November 3, 2025 21:49:01 CST">2025-11-03 21:49:01</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="November 5, 2025 08:16:48 CST">2025-11-05 08:16:48</span>
   </span>
 
     

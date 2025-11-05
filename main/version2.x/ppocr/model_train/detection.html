@@ -3682,7 +3682,7 @@ You're not viewing the latest version.
 <p>本节以icdar2015数据集为例，介绍PaddleOCR中检测模型训练、评估、测试的使用方式。</p>
 <h2 id="1">1. 准备数据和模型<a class="headerlink" href="#1" title="Permanent link">&para;</a></h2>
 <h3 id="11">1.1 准备数据集<a class="headerlink" href="#11" title="Permanent link">&para;</a></h3>
-<p>准备数据集可参考 <a href="../../datasets/ocr_datasets.md">ocr_datasets</a> 。</p>
+<p>准备数据集可参考 <a href="../../../datasets/ocr_datasets.html">ocr_datasets</a> 。</p>
 <h3 id="12">1.2 下载预训练模型<a class="headerlink" href="#12" title="Permanent link">&para;</a></h3>
 <p>首先下载模型backbone的pretrain model，PaddleOCR的检测模型目前支持两种backbone，分别是MobileNetV3、ResNet_vd系列，
 您可以根据需求使用<a href="https://github.com/PaddlePaddle/PaddleClas/tree/release/2.0/ppcls/modeling/architectures">PaddleClas</a>中的模型更换backbone，
@@ -3731,7 +3731,7 @@ You're not viewing the latest version.
 </span></code></pre></div></td></tr></table></div>
 <p><strong>注意</strong>：<code>Global.checkpoints</code>的优先级高于<code>Global.pretrained_model</code>的优先级，即同时指定两个参数时，优先加载<code>Global.checkpoints</code>指定的模型，如果<code>Global.checkpoints</code>指定的模型路径有误，会加载<code>Global.pretrained_model</code>指定的模型。</p>
 <h3 id="23-backbone">2.3 更换Backbone 训练<a class="headerlink" href="#23-backbone" title="Permanent link">&para;</a></h3>
-<p>PaddleOCR将网络划分为四部分，分别在<a href="../../ppocr/modeling">ppocr/modeling</a>下。 进入网络的数据将按照顺序(transforms-&gt;backbones-&gt;
+<p>PaddleOCR将网络划分为四部分，分别在<a href="../../../../ppocr/modeling">ppocr/modeling</a>下。 进入网络的数据将按照顺序(transforms-&gt;backbones-&gt;
 necks-&gt;heads)依次通过这四个部分。</p>
 <div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-4-1">1</a></span>
 <span class="normal"><a href="#__codelineno-4-2">2</a></span>
@@ -3746,7 +3746,7 @@ necks-&gt;heads)依次通过这四个部分。</p>
 <p>如果要更换的Backbone 在PaddleOCR中有对应实现，直接修改配置yml文件中<code>Backbone</code>部分的参数即可。</p>
 <p>如果要使用新的Backbone，更换backbones的例子如下:</p>
 <ol>
-<li>在 <a href="../../ppocr/modeling/backbones">ppocr/modeling/backbones</a> 文件夹下新建文件，如my_backbone.py。</li>
+<li>在 <a href="../../../../ppocr/modeling/backbones">ppocr/modeling/backbones</a> 文件夹下新建文件，如my_backbone.py。</li>
 <li>在 my_backbone.py 文件内添加相关代码，示例代码如下:</li>
 </ol>
 <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-5-1"> 1</a></span>
@@ -3780,7 +3780,7 @@ necks-&gt;heads)依次通过这四个部分。</p>
 </span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15"></a>        <span class="k">return</span> <span class="n">y</span>
 </span></code></pre></div></td></tr></table></div>
 <ol>
-<li>在 <a href="../../ppocr/modeling/backbones/__init__.py">ppocr/modeling/backbones/_<em>init_</em>.py</a>文件内导入添加的<code>MyBackbone</code>模块，然后修改配置文件中Backbone进行配置即可使用，格式如下:</li>
+<li>在 <a href="../../../../ppocr/modeling/backbones/__init__.py">ppocr/modeling/backbones/_<em>init_</em>.py</a>文件内导入添加的<code>MyBackbone</code>模块，然后修改配置文件中Backbone进行配置即可使用，格式如下:</li>
 </ol>
 <div class="language-yaml highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-6-1">1</a></span>
 <span class="normal"><a href="#__codelineno-6-2">2</a></span>
@@ -3867,8 +3867,8 @@ DCU设备上运行需要设置环境变量 <code>export HIP_VISIBLE_DEVICES=0,1,
 <p>Q1: 训练模型转inference 模型之后预测效果不一致？</p>
 <p><strong>A</strong>：此类问题出现较多，问题多是trained model预测时候的预处理、后处理参数和inference model预测的时候的预处理、后处理参数不一致导致的。以det_mv3_db.yml配置文件训练的模型为例，训练模型、inference模型预测结果不一致问题解决方式如下：</p>
 <ul>
-<li>检查<a href="https://github.com/PaddlePaddle/PaddleOCR/blob/c1ed243fb68d5d466258243092e56cbae32e2c14/configs/det/det_mv3_db.yml#L116">trained model预处理</a>，和<a href="https://github.com/PaddlePaddle/PaddleOCR/blob/c1ed243fb68d5d466258243092e56cbae32e2c14/tools/infer/predict_det.py#L42">inference model的预测预处理</a>函数是否一致。算法在评估的时候，输入图像大小会影响精度，为了和论文保持一致，训练icdar15配置文件中将图像resize到[736, 1280]，但是在inference model预测的时候只有一套默认参数，会考虑到预测速度问题，默认限制图像最长边为960做resize的。训练模型预处理和inference模型的预处理函数位于<a href="https://github.com/PaddlePaddle/PaddleOCR/blob/c1ed243fb68d5d466258243092e56cbae32e2c14/ppocr/data/imaug/operators.py#L147">ppocr/data/imaug/operators.py</a></li>
-<li>检查<a href="https://github.com/PaddlePaddle/PaddleOCR/blob/c1ed243fb68d5d466258243092e56cbae32e2c14/configs/det/det_mv3_db.yml#L51">trained model后处理</a>，和<a href="https://github.com/PaddlePaddle/PaddleOCR/blob/c1ed243fb68d5d466258243092e56cbae32e2c14/tools/infer/utility.py#L50">inference 后处理参数</a>是否一致。</li>
+<li>检查<a href="../../../../configs/det/det_mv3_db.yml#L116">trained model预处理</a>，和<a href="../../../../tools/infer/predict_det.py#L42">inference model的预测预处理</a>函数是否一致。算法在评估的时候，输入图像大小会影响精度，为了和论文保持一致，训练icdar15配置文件中将图像resize到[736, 1280]，但是在inference model预测的时候只有一套默认参数，会考虑到预测速度问题，默认限制图像最长边为960做resize的。训练模型预处理和inference模型的预处理函数位于<a href="../../../../ppocr/data/imaug/operators.py#L147">ppocr/data/imaug/operators.py</a></li>
+<li>检查<a href="../../../../configs/det/det_mv3_db.yml#L51">trained model后处理</a>，和<a href="../../../../tools/infer/utility.py#L50">inference 后处理参数</a>是否一致。</li>
 </ul>
 <p>Q1: 训练EAST模型提示找不到lanms库？</p>
 <p><strong>A</strong>：执行pip3 install lanms-nova 即可。</p>
@@ -3896,7 +3896,7 @@ DCU设备上运行需要设置环境变量 <code>export HIP_VISIBLE_DEVICES=0,1,
     <span class="md-icon" title="最后更新">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="2025年11月3日 21:49:01 CST">2025-11-03 21:49:01</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="2025年11月5日 08:16:48 CST">2025-11-05 08:16:48</span>
   </span>
 
     
@@ -3906,7 +3906,7 @@ DCU设备上运行需要设置环境变量 <code>export HIP_VISIBLE_DEVICES=0,1,
     <span class="md-icon" title="创建日期">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="2025年11月3日 21:49:01 CST">2025-11-03 21:49:01</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="2025年11月5日 08:16:48 CST">2025-11-05 08:16:48</span>
   </span>
 
     

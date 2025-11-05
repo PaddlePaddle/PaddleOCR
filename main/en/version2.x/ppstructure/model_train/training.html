@@ -3635,7 +3635,7 @@ A variety of learning rate update strategies are provided by PaddleOCR, which ca
 </span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7"></a><span class="w">    </span><span class="nt">warmup_epoch</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
 </span></code></pre></div></td></tr></table></div>
 <p><code>Piecewise</code> stands for piece-wise constant attenuation. Different learning rates are specified in different learning stages, and the learning rate stay the same in each stage.</p>
-<p><code>warmup_epoch</code> means that in the first 5 epochs, the learning rate will be increased gradually from 0 to base_lr. For all strategies, please refer to the code <a href="../../ppocr/optimizer/learning_rate.py">learning_rate.py</a>.</p>
+<p><code>warmup_epoch</code> means that in the first 5 epochs, the learning rate will be increased gradually from 0 to base_lr. For all strategies, please refer to the code <a href="../../../../ppocr/optimizer/learning_rate.py">learning_rate.py</a>.</p>
 <h3 id="22-regularization">2.2 Regularization<a class="headerlink" href="#22-regularization" title="Permanent link">&para;</a></h3>
 <p>Regularization can effectively avoid algorithm over-fitting. PaddleOCR provides L1 and L2 regularization methods.
 L1 and L2 regularization are the most widely used regularization methods.
@@ -3672,7 +3672,7 @@ The configuration method is as follows:</p>
 <li>Chinese data set, LSVT street view data set crops the image according to the truth value, and performs position calibration, a total of 30w images. In addition, based on the LSVT corpus, 500w of synthesized data.</li>
 <li>Small language data set, using different corpora and fonts, respectively generated 100w synthetic data set, and using ICDAR-MLT as the verification set.</li>
 </ul>
-<p>Among them, the public data sets are all open source, users can search and download by themselves, or refer to <a href="../../datasets/datasets.en.md">Chinese data set</a>, synthetic data is not open source, users can use open source synthesis tools to synthesize by themselves. Synthesis tools include <a href="https://github.com/Sanster/text_renderer">text_renderer</a>, <a href="https://github.com/ankush-me/SynthText">SynthText</a>, <a href="https://github.com/Belval/TextRecognitionDataGenerator">TextRecognitionDataGenerator</a> etc.</p>
+<p>Among them, the public data sets are all open source, users can search and download by themselves, or refer to <a href="../../../datasets/datasets.html">Chinese data set</a>, synthetic data is not open source, users can use open source synthesis tools to synthesize by themselves. Synthesis tools include <a href="https://github.com/Sanster/text_renderer">text_renderer</a>, <a href="https://github.com/ankush-me/SynthText">SynthText</a>, <a href="https://github.com/Belval/TextRecognitionDataGenerator">TextRecognitionDataGenerator</a> etc.</p>
 <h3 id="32-vertical-scene">3.2 Vertical Scene<a class="headerlink" href="#32-vertical-scene" title="Permanent link">&para;</a></h3>
 <p>PaddleOCR mainly focuses on general OCR. If you have vertical requirements, you can use PaddleOCR + vertical data to train yourself;
 If there is a lack of labeled data, or if you do not want to invest in research and development costs, it is recommended to directly call the open API, which covers some of the more common vertical categories.</p>
@@ -3706,9 +3706,9 @@ If there is a lack of labeled data, or if you do not want to invest in research 
 <hr />
 <p>Click the following links for detailed training tutorial:</p>
 <ul>
-<li><a href="./detection.en.md">text detection model training</a></li>
-<li><a href="./recognition.en.md">text recognition model training</a></li>
-<li><a href="./angle_class.en.md">text direction classification model training</a></li>
+<li><a href="../../ppocr/model_train/detection.html">text detection model training</a></li>
+<li><a href="../../ppocr/model_train/recognition.html">text recognition model training</a></li>
+<li><a href="../../ppocr/model_train/angle_class.html">text direction classification model training</a></li>
 </ul>
 
 <!-- Source file information -->
@@ -3734,7 +3734,7 @@ If there is a lack of labeled data, or if you do not want to invest in research 
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="November 3, 2025 21:49:01 CST">2025-11-03 21:49:01</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="November 5, 2025 08:16:48 CST">2025-11-05 08:16:48</span>
   </span>
 
     
@@ -3744,7 +3744,7 @@ If there is a lack of labeled data, or if you do not want to invest in research 
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="November 3, 2025 21:49:01 CST">2025-11-03 21:49:01</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="November 5, 2025 08:16:48 CST">2025-11-05 08:16:48</span>
   </span>
 
     

@@ -3682,7 +3682,7 @@ You're not viewing the latest version.
 <p>This section uses the icdar2015 dataset as an example to introduce the training, evaluation, and testing of the detection model in PaddleOCR.</p>
 <h2 id="1-data-and-weights-preparation">1. Data and Weights Preparation<a class="headerlink" href="#1-data-and-weights-preparation" title="Permanent link">&para;</a></h2>
 <h3 id="11-data-preparation">1.1 Data Preparation<a class="headerlink" href="#11-data-preparation" title="Permanent link">&para;</a></h3>
-<p>To prepare datasets, refer to <a href="../../datasets/ocr_datasets.en.md">ocr_datasets</a>.</p>
+<p>To prepare datasets, refer to <a href="../../../datasets/ocr_datasets.html">ocr_datasets</a>.</p>
 <h3 id="12-download-pre-trained-model">1.2 Download Pre-trained Model<a class="headerlink" href="#12-download-pre-trained-model" title="Permanent link">&para;</a></h3>
 <p>First download the pre-trained model. The detection model of PaddleOCR currently supports 3 backbones, namely MobileNetV3, ResNet18_vd and ResNet50_vd. You can use the model in <a href="https://github.com/PaddlePaddle/PaddleClas/tree/release/2.0/ppcls/modeling/architectures">PaddleClas</a> to replace backbone according to your needs.
 And the responding download link of backbone pre-trained weights can be found in (<a href="https://github.com/PaddlePaddle/PaddleClas/blob/release%2F2.0/README_cn.md#resnet%E5%8F%8A%E5%85%B6vd%E7%B3%BB%E5%88%97">https://github.com/PaddlePaddle/PaddleClas/blob/release%2F2.0/README_cn.md#resnet%E5%8F%8A%E5%85%B6vd%E7%B3%BB%E5%88%97</a>).</p>
@@ -3751,7 +3751,7 @@ For a detailed explanation of the configuration file, please refer to <a href=".
 </span></code></pre></div></td></tr></table></div>
 <p><strong>Note</strong>: The priority of <code>Global.checkpoints</code> is higher than that of <code>Global.pretrained_model</code>, that is, when two parameters are specified at the same time, the model specified by <code>Global.checkpoints</code> will be loaded first. If the model path specified by <code>Global.checkpoints</code> is wrong, the one specified by <code>Global.pretrained_model</code> will be loaded.</p>
 <h3 id="23-training-with-new-backbone">2.3 Training with New Backbone<a class="headerlink" href="#23-training-with-new-backbone" title="Permanent link">&para;</a></h3>
-<p>The network part completes the construction of the network, and PaddleOCR divides the network into four parts, which are under <a href="../../ppocr/modeling">ppocr/modeling</a>. The data entering the network will pass through these four parts in sequence(transforms-&gt;backbones-&gt;
+<p>The network part completes the construction of the network, and PaddleOCR divides the network into four parts, which are under <a href="../../../../ppocr/modeling">ppocr/modeling</a>. The data entering the network will pass through these four parts in sequence(transforms-&gt;backbones-&gt;
 necks-&gt;heads).</p>
 <div class="language-bash highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-5-1">1</a></span>
 <span class="normal"><a href="#__codelineno-5-2">2</a></span>
@@ -3766,7 +3766,7 @@ necks-&gt;heads).</p>
 <p>If the Backbone to be replaced has a corresponding implementation in PaddleOCR, you can directly modify the parameters in the <code>Backbone</code> part of the configuration yml file.</p>
 <p>However, if you want to use a new Backbone, an example of replacing the backbones is as follows:</p>
 <ol>
-<li>Create a new file under the <a href="../../ppocr/modeling/backbones">ppocr/modeling/backbones</a> folder, such as my_backbone.py.</li>
+<li>Create a new file under the <a href="../../../../ppocr/modeling/backbones">ppocr/modeling/backbones</a> folder, such as my_backbone.py.</li>
 <li>Add code in the my_backbone.py file, the sample code is as follows:</li>
 </ol>
 <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-6-1"> 1</a></span>
@@ -3800,7 +3800,7 @@ necks-&gt;heads).</p>
 </span><span id="__span-6-15"><a id="__codelineno-6-15" name="__codelineno-6-15"></a>        <span class="k">return</span> <span class="n">y</span>
 </span></code></pre></div></td></tr></table></div>
 <ol>
-<li>Import the added module in the <a href="../../ppocr/modeling/backbones/__init__.py">ppocr/modeling/backbones/_<em>init_</em>.py</a> file.</li>
+<li>Import the added module in the <a href="../../../../ppocr/modeling/backbones/__init__.py">ppocr/modeling/backbones/_<em>init_</em>.py</a> file.</li>
 </ol>
 <p>After adding the four-part modules of the network, you only need to configure them in the configuration file to use, such as:</p>
 <div class="language-yaml highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-7-1">1</a></span>
@@ -3845,7 +3845,7 @@ Running on a DCU device requires setting the environment variable <code>export H
 </li>
 </ul>
 <h3 id="28-fine-tuning">2.8 Fine-tuning<a class="headerlink" href="#28-fine-tuning" title="Permanent link">&para;</a></h3>
-<p>In actual use, it is recommended to load the official pre-trained model and fine-tune it in your own data set. For the fine-tuning method of the detection model, please refer to: <a href="./finetune_en.md">Model Fine-tuning Tutorial</a>.</p>
+<p>In actual use, it is recommended to load the official pre-trained model and fine-tune it in your own data set. For the fine-tuning method of the detection model, please refer to: <a href="finetune.html">Model Fine-tuning Tutorial</a>.</p>
 <h2 id="3-evaluation-and-test">3. Evaluation and Test<a class="headerlink" href="#3-evaluation-and-test" title="Permanent link">&para;</a></h2>
 <h3 id="31-evaluation">3.1 Evaluation<a class="headerlink" href="#31-evaluation" title="Permanent link">&para;</a></h3>
 <p>PaddleOCR calculates three indicators for evaluating performance of OCR detection task: Precision, Recall, and Hmean(F-Score).</p>
@@ -3884,8 +3884,8 @@ Running on a DCU device requires setting the environment variable <code>export H
 <p>Q1: The prediction results of trained model and inference model are inconsistent?</p>
 <p><strong>A</strong>: Most of the problems are caused by the inconsistency of the pre-processing and post-processing parameters during the prediction of the trained model and the pre-processing and post-processing parameters during the prediction of the inference model. Taking the model trained by the det_mv3_db.yml configuration file as an example, the solution to the problem of inconsistent prediction results between the training model and the inference model is as follows:</p>
 <ul>
-<li>Check whether the <a href="https://github.com/PaddlePaddle/PaddleOCR/blob/c1ed243fb68d5d466258243092e56cbae32e2c14/configs/det/det_mv3_db.yml#L116">trained model preprocessing</a> is consistent with the prediction <a href="https://github.com/PaddlePaddle/PaddleOCR/blob/c1ed243fb68d5d466258243092e56cbae32e2c14/tools/infer/predict_det.py#L42">preprocessing function of the inference model</a>. When the algorithm is evaluated, the input image size will affect the accuracy. In order to be consistent with the paper, the image is resized to [736, 1280] in the training icdar15 configuration file, but there is only a set of default parameters when the inference model predicts, which will be considered. To predict the speed problem, the longest side of the image is limited to 960 for resize by default. The preprocessing function of the training model preprocessing and the inference model is located in <a href="https://github.com/PaddlePaddle/PaddleOCR/blob/c1ed243fb68d5d466258243092e56cbae32e2c14/ppocr/data/imaug/operators.py#L147">ppocr/data/imaug/operators.py</a>.</li>
-<li>Check whether the <a href="https://github.com/PaddlePaddle/PaddleOCR/blob/c1ed243fb68d5d466258243092e56cbae32e2c14/configs/det/det_mv3_db.yml#L51">post-processing of the trained model</a> is consistent with the <a href="https://github.com/PaddlePaddle/PaddleOCR/blob/c1ed243fb68d5d466258243092e56cbae32e2c14/tools/infer/utility.py#L50">post-processing parameters of the inference</a>.</li>
+<li>Check whether the <a href="../../../../configs/det/det_mv3_db.yml#L116">trained model preprocessing</a> is consistent with the prediction <a href="../../../../tools/infer/predict_det.py#L42">preprocessing function of the inference model</a>. When the algorithm is evaluated, the input image size will affect the accuracy. In order to be consistent with the paper, the image is resized to [736, 1280] in the training icdar15 configuration file, but there is only a set of default parameters when the inference model predicts, which will be considered. To predict the speed problem, the longest side of the image is limited to 960 for resize by default. The preprocessing function of the training model preprocessing and the inference model is located in <a href="../../../../ppocr/data/imaug/operators.py#L147">ppocr/data/imaug/operators.py</a>.</li>
+<li>Check whether the <a href="../../../../configs/det/det_mv3_db.yml#L51">post-processing of the trained model</a> is consistent with the <a href="../../../../tools/infer/utility.py#L50">post-processing parameters of the inference</a>.</li>
 </ul>
 
 <!-- Source file information -->
@@ -3911,7 +3911,7 @@ Running on a DCU device requires setting the environment variable <code>export H
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="November 3, 2025 21:49:01 CST">2025-11-03 21:49:01</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="November 5, 2025 08:16:48 CST">2025-11-05 08:16:48</span>
   </span>
 
     
@@ -3921,7 +3921,7 @@ Running on a DCU device requires setting the environment variable <code>export H
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="November 3, 2025 21:49:01 CST">2025-11-03 21:49:01</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="November 5, 2025 08:16:48 CST">2025-11-05 08:16:48</span>
   </span>
 
     

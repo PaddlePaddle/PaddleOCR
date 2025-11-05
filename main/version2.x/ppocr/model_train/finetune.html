@@ -3642,7 +3642,7 @@ You're not viewing the latest version.
 </li>
 </ul>
 <h3 id="22">2.2 模型选择<a class="headerlink" href="#22" title="Permanent link">&para;</a></h3>
-<p>建议选择PP-OCRv3模型（配置文件：<a href="https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/det/PP-OCRv3/PP-OCRv3_mobile_det.yml">PP-OCRv3_mobile_det.yml</a>，预训练模型：<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv3_mobile_det_pretrained.pdparams">ch_PP-OCRv3_det_distill_train.tar</a>）进行微调，其精度与泛化性能是目前提供的最优预训练模型。</p>
+<p>建议选择PP-OCRv3模型（配置文件：<a href="../../../../configs/det/PP-OCRv3/PP-OCRv3_mobile_det.yml">PP-OCRv3_mobile_det.yml</a>，预训练模型：<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv3_mobile_det_pretrained.pdparams">ch_PP-OCRv3_det_distill_train.tar</a>）进行微调，其精度与泛化性能是目前提供的最优预训练模型。</p>
 <p>更多PP-OCR系列模型，请参考<a href="../model_list.html">PP-OCR 系列模型库</a>。</p>
 <p>注意：在使用上述预训练模型的时候，需要使用文件夹中的<code>student.pdparams</code>文件作为预训练模型，即，仅使用学生模型。</p>
 <h3 id="23">2.3 训练超参选择<a class="headerlink" href="#23" title="Permanent link">&para;</a></h3>
@@ -3737,7 +3737,7 @@ You're not viewing the latest version.
 </tr>
 </tbody>
 </table>
-<p>更多关于推理方法的介绍可以参考<a href="../infer_deploy/python_infer.md">Paddle Inference推理教程</a>。</p>
+<p>更多关于推理方法的介绍可以参考 <a href="../../legacy/python_infer.html">Paddle Inference推理教程</a>。</p>
 <h2 id="3">3. 文本识别模型微调<a class="headerlink" href="#3" title="Permanent link">&para;</a></h2>
 <h3 id="31">3.1 数据选择<a class="headerlink" href="#31" title="Permanent link">&para;</a></h3>
 <ul>
@@ -3751,13 +3751,13 @@ You're not viewing the latest version.
 <p>数据合成：针对部分字符识别有误的情况，建议获取一批特定字符数据，加入到原数据中使用小学习率微调。其中原始数据与新增数据比例可尝试 10:1 ～ 5：1， 避免单一场景数据过多导致模型过拟合，同时尽量平衡语料词频，确保常用字的出现频率不会过低。</p>
 </li>
 </ul>
-<p>特定字符生成可以使用 TextRenderer 工具，合成例子可参考 <a href="../../applications/光功率计数码管字符识别.md">数码管数据合成</a>
+<p>特定字符生成可以使用 TextRenderer 工具，合成例子可参考 <a href="https://www.paddleocr.ai/v2.10.0/applications/%E5%85%89%E5%8A%9F%E7%8E%87%E8%AE%A1%E6%95%B0%E7%A0%81%E7%AE%A1%E5%AD%97%E7%AC%A6%E8%AF%86%E5%88%AB.html">数码管数据合成</a>
   ，合成数据语料尽量来自真实使用场景，在贴近真实场景的基础上保持字体、背景的丰富性，有助于提升模型效果。</p>
 <ul>
 <li>通用中英文数据：在训练的时候，可以在训练集中添加通用真实数据（如在不更换字典的微调场景中，建议添加LSVT、RCTW、MTWI等真实数据），进一步提升模型的泛化性能。</li>
 </ul>
 <h3 id="32">3.2 模型选择<a class="headerlink" href="#32" title="Permanent link">&para;</a></h3>
-<p>建议选择PP-OCRv3模型（配置文件：<a href="https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/PP-OCRv3/PP-OCRv3_mobile_rec_distillation.yml">PP-OCRv3_mobile_rec_distillation.yml</a>，预训练模型：<a href="https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_train.tar">ch_PP-OCRv3_rec_train.tar</a>）进行微调，其精度与泛化性能是目前提供的最优预训练模型。</p>
+<p>建议选择PP-OCRv3模型（配置文件：<a href="../../../../configs/rec/PP-OCRv3/PP-OCRv3_mobile_rec_distillation.yml">PP-OCRv3_mobile_rec_distillation.yml</a>，预训练模型：<a href="https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_train.tar">ch_PP-OCRv3_rec_train.tar</a>）进行微调，其精度与泛化性能是目前提供的最优预训练模型。</p>
 <p>更多PP-OCR系列模型，请参考<a href="../model_list.html">PP-OCR 系列模型库</a>。</p>
 <p>PP-OCRv3 模型使用了GTC策略，其中SAR分支参数量大，当训练数据为简单场景时模型容易过拟合，导致微调效果不佳，建议去除GTC策略，模型结构部分配置文件修改如下：</p>
 <div class="language-yaml highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1"> 1</a></span>
@@ -3970,7 +3970,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="最后更新">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="2025年11月3日 21:49:01 CST">2025-11-03 21:49:01</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="2025年11月5日 08:16:48 CST">2025-11-05 08:16:48</span>
   </span>
 
     
@@ -3980,7 +3980,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="创建日期">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="2025年11月3日 21:49:01 CST">2025-11-03 21:49:01</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="2025年11月5日 08:16:48 CST">2025-11-05 08:16:48</span>
   </span>
 
     

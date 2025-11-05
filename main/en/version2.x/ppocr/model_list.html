@@ -3631,7 +3631,7 @@ You're not viewing the latest version.
 <tr>
 <td>inference model</td>
 <td>inference.pdmodel、inference.pdiparams</td>
-<td>Used for inference based on Paddle inference engine，<a href="./infer_deploy/python_infer.en.md">detail</a></td>
+<td>Used for inference based on Paddle inference engine，<a href="../legacy/python_infer.html">detail</a></td>
 </tr>
 <tr>
 <td>trained model, pre-trained model</td>
@@ -3646,7 +3646,7 @@ You're not viewing the latest version.
 </tbody>
 </table>
 <p>The relationship of the above models is as follows.</p>
-<p><img alt="" src="../imgs_en/model_prod_flow_en.png" /></p>
+<p><img alt="" src="../../../version2.x/ppocr/images/model_prod_flow_en.png" /></p>
 <h2 id="1-text-detection-model">1. Text Detection Model<a class="headerlink" href="#1-text-detection-model" title="Permanent link">&para;</a></h2>
 <h3 id="1-chinese-detection-model">1. Chinese Detection Model<a class="headerlink" href="#1-chinese-detection-model" title="Permanent link">&para;</a></h3>
 <table>
@@ -3663,28 +3663,28 @@ You're not viewing the latest version.
 <tr>
 <td>PP-OCRv4_mobile_det</td>
 <td>[New] Original lightweight model, supporting Chinese, English, multilingual text detection</td>
-<td><a href="https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/det/PP-OCRv4/PP-OCRv4_mobile_det.yml">PP-OCRv4_mobile_det.yml</a></td>
+<td><a href="../../../configs/det/PP-OCRv4/PP-OCRv4_mobile_det.yml">PP-OCRv4_mobile_det.yml</a></td>
 <td>4.70M</td>
 <td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_mobile_det_infer.tar">inference model</a> / <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_mobile_det_pretrained.pdparams">trained model</a></td>
 </tr>
 <tr>
 <td>PP-OCRv4_server_det</td>
 <td>[New] Original high-precision model, supporting Chinese, English, multilingual text detection</td>
-<td><a href="https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/det/PP-OCRv4/PP-OCRv4_server_det.yml">PP-OCRv4_server_det.yml</a></td>
+<td><a href="../../../configs/det/PP-OCRv4/PP-OCRv4_server_det.yml">PP-OCRv4_server_det.yml</a></td>
 <td>110M</td>
 <td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_server_det_infer.tar">inference model</a> / <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_det_pretrained.pdparams">trained model</a></td>
 </tr>
 <tr>
 <td>PP-OCRv3_mobile_det</td>
 <td>Original lightweight model, supporting Chinese, English, multilingual text detection</td>
-<td><a href="https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/det/PP-OCRv3/PP-OCRv3_mobile_det.yml">PP-OCRv3_mobile_det.yml</a></td>
+<td><a href="../../../configs/det/PP-OCRv3/PP-OCRv3_mobile_det.yml">PP-OCRv3_mobile_det.yml</a></td>
 <td>1.1M</td>
 <td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv3_mobile_det_infer.tar">inference model</a> / <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv3_mobile_det_pretrained.pdparams">trained model</a> / <a href="https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_slim_infer.nb">nb模型</a></td>
 </tr>
 <tr>
 <td>PP-OCRv3_server_det</td>
 <td>Original high-precision model, supporting Chinese, English, multilingual text detection</td>
-<td><a href="https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/det/PP-OCRv3/PP-OCRv3_server_det.yml">PP-OCRv3_server_det.yml</a></td>
+<td><a href="../../../configs/det/PP-OCRv3/PP-OCRv3_server_det.yml">PP-OCRv3_server_det.yml</a></td>
 <td>3.80M</td>
 <td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv3_server_det_infer.tar">inference model</a> / <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv3_server_det_pretrained.pdparams">trained model</a></td>
 </tr>
@@ -3705,14 +3705,14 @@ You're not viewing the latest version.
 <tr>
 <td>en_PP-OCRv3_det_slim</td>
 <td>[New] Slim quantization with distillation lightweight detection model, supporting English</td>
-<td><a href="https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/det/PP-OCRv3/PP-OCRv3_mobile_det.yml">PP-OCRv3_det_cml.yml</a></td>
+<td><a href="../../../configs/det/PP-OCRv3/PP-OCRv3_mobile_det.yml">PP-OCRv3_det_cml.yml</a></td>
 <td>1.1M</td>
 <td><a href="https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_det_slim_infer.tar">inference model</a> / <a href="https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_det_slim_distill_train.tar">trained model</a> / <a href="https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_det_slim_infer.nb">nb model</a></td>
 </tr>
 <tr>
 <td>en_PP-OCRv3_det</td>
 <td>[New] Original lightweight detection model, supporting English</td>
-<td><a href="https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/det/PP-OCRv3/PP-OCRv3_mobile_det.yml">PP-OCRv3_det_cml.yml</a></td>
+<td><a href="../../../configs/det/PP-OCRv3/PP-OCRv3_mobile_det.yml">PP-OCRv3_det_cml.yml</a></td>
 <td>3.8M</td>
 <td><a href="https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_det_infer.tar">inference model</a> / <a href="https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_det_distill_train.tar">trained model</a></td>
 </tr>
@@ -3768,49 +3768,49 @@ You're not viewing the latest version.
 <tr>
 <td>PP-OCRv3_mobile_rec_slim</td>
 <td>[New] Slim quantization with distillation lightweight model, supporting Chinese, English text recognition</td>
-<td><a href="https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/PP-OCRv3/PP-OCRv3_mobile_rec_distillation.yml">PP-OCRv3_mobile_rec_distillation.yml</a></td>
+<td><a href="../../../configs/rec/PP-OCRv3/PP-OCRv3_mobile_rec_distillation.yml">PP-OCRv3_mobile_rec_distillation.yml</a></td>
 <td>4.9M</td>
 <td><a href="https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_slim_infer.tar">inference model</a> / <a href="https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_slim_train.tar">trained model</a> / <a href="https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_slim_infer.nb">nb model</a></td>
 </tr>
 <tr>
 <td>PP-OCRv3_mobile_rec</td>
 <td>[New] Original lightweight model, supporting Chinese, English, multilingual text recognition</td>
-<td><a href="https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/PP-OCRv3/PP-OCRv3_mobile_rec_distillation.yml">PP-OCRv3_mobile_rec_distillation.yml</a></td>
+<td><a href="../../../configs/rec/PP-OCRv3/PP-OCRv3_mobile_rec_distillation.yml">PP-OCRv3_mobile_rec_distillation.yml</a></td>
 <td>12.4M</td>
 <td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv3_mobile_rec_infer.tar">inference model</a> / <a href="https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_train.tar">trained model</a></td>
 </tr>
 <tr>
 <td>ch_PP-OCRv2_rec_slim</td>
 <td>Slim quantization with distillation lightweight model, supporting Chinese, English text recognition</td>
-<td><a href="https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/ch_PP-OCRv2/ch_PP-OCRv2_rec.yml">ch_PP-OCRv2_rec.yml</a></td>
+<td><a href="../../../configs/rec/ch_PP-OCRv2/ch_PP-OCRv2_rec.yml">ch_PP-OCRv2_rec.yml</a></td>
 <td>9.0M</td>
 <td><a href="https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_rec_slim_quant_infer.tar">inference model</a> / <a href="https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_rec_slim_quant_train.tar">trained model</a></td>
 </tr>
 <tr>
 <td>ch_PP-OCRv2_rec</td>
 <td>Original lightweight model, supporting Chinese, English, and multilingual text recognition</td>
-<td><a href="https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/ch_PP-OCRv2/ch_PP-OCRv2_rec_distillation.yml">ch_PP-OCRv2_rec_distillation.yml</a></td>
+<td><a href="../../../configs/rec/ch_PP-OCRv2/ch_PP-OCRv2_rec_distillation.yml">ch_PP-OCRv2_rec_distillation.yml</a></td>
 <td>8.5M</td>
 <td><a href="https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_rec_infer.tar">inference model</a> / <a href="https://paddleocr.bj.bcebos.com/PP-OCRv2/chinese/ch_PP-OCRv2_rec_train.tar">trained model</a></td>
 </tr>
 <tr>
 <td>ch_ppocr_mobile_slim_v2.0_rec</td>
 <td>Slim pruned and quantized lightweight model, supporting Chinese, English and number recognition</td>
-<td><a href="https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml">rec_chinese_lite_train_v2.0.yml</a></td>
+<td><a href="../../../configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml">rec_chinese_lite_train_v2.0.yml</a></td>
 <td>6.0M</td>
 <td><a href="https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_slim_infer.tar">inference model</a> / <a href="https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_slim_train.tar">trained model</a></td>
 </tr>
 <tr>
 <td>ch_ppocr_mobile_v2.0_rec</td>
 <td>Original lightweight model, supporting Chinese, English and number recognition</td>
-<td><a href="https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml">rec_chinese_lite_train_v2.0.yml</a></td>
+<td><a href="../../../configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml">rec_chinese_lite_train_v2.0.yml</a></td>
 <td>5.2M</td>
 <td><a href="https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_infer.tar">inference model</a> / <a href="https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_train.tar">trained model</a> / <a href="https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_pre.tar">pre-trained model</a></td>
 </tr>
 <tr>
 <td>ch_ppocr_server_v2.0_rec</td>
 <td>General model, supporting Chinese, English and number recognition</td>
-<td><a href="https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/ch_ppocr_v2.0/rec_chinese_common_train_v2.0.yml">rec_chinese_common_train_v2.0.yml</a></td>
+<td><a href="../../../configs/rec/ch_ppocr_v2.0/rec_chinese_common_train_v2.0.yml">rec_chinese_common_train_v2.0.yml</a></td>
 <td>94.8M</td>
 <td><a href="https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_rec_infer.tar">inference model</a> / <a href="https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_rec_train.tar">trained model</a> / <a href="https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_server_v2.0_rec_pre.tar">pre-trained model</a></td>
 </tr>
@@ -3832,14 +3832,14 @@ You're not viewing the latest version.
 <tr>
 <td>en_PP-OCRv3_mobile_rec_slim</td>
 <td>[New] Slim quantization with distillation lightweight model, supporting English, English text recognition</td>
-<td><a href="https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/PP-OCRv3/en_PP-OCRv3_mobile_rec.yml">en_PP-OCRv3_mobile_rec.yml</a></td>
+<td><a href="../../../configs/rec/PP-OCRv3/en_PP-OCRv3_mobile_rec.yml">en_PP-OCRv3_mobile_rec.yml</a></td>
 <td>3.2M</td>
 <td><a href="https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_rec_slim_infer.tar">inference model</a> / <a href="https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_rec_slim_train.tar">trained model</a> / <a href="https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_rec_slim_infer.nb">nb model</a></td>
 </tr>
 <tr>
 <td>en_PP-OCRv3_mobile_rec</td>
 <td>[New] Original lightweight model, supporting English, English, multilingual text recognition</td>
-<td><a href="https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/PP-OCRv3/en_PP-OCRv3_mobile_rec.yml">en_PP-OCRv3_mobile_rec.yml</a></td>
+<td><a href="../../../configs/rec/PP-OCRv3/en_PP-OCRv3_mobile_rec.yml">en_PP-OCRv3_mobile_rec.yml</a></td>
 <td>9.6M</td>
 <td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/en_PP-OCRv3_mobile_rec_infer.tar">inference model</a> / <a href="https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_rec_train.tar">trained model</a></td>
 </tr>
@@ -3877,7 +3877,7 @@ You're not viewing the latest version.
 <td>korean_PP-OCRv3_mobile_rec</td>
 <td>ppocr/utils/dict/korean_dict.txt</td>
 <td>Lightweight model for Korean recognition</td>
-<td><a href="https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/PP-OCRv3/multi_language/korean_PP-OCRv3_mobile_rec.yml">korean_PP-OCRv3_mobile_rec.yml</a></td>
+<td><a href="../../../configs/rec/PP-OCRv3/multi_language/korean_PP-OCRv3_mobile_rec.yml">korean_PP-OCRv3_mobile_rec.yml</a></td>
 <td>11.0M</td>
 <td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/japan_PP-OCRv3_mobile_rec_infer.tar">inference model</a> / <a href="https://paddleocr.bj.bcebos.com/PP-OCRv3/multilingual/korean_PP-OCRv3_rec_train.tar">trained model</a></td>
 </tr>
@@ -3885,7 +3885,7 @@ You're not viewing the latest version.
 <td>japan_PP-OCRv3_mobile_rec</td>
 <td>ppocr/utils/dict/japan_dict.txt</td>
 <td>Lightweight model for Japanese recognition</td>
-<td><a href="https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/PP-OCRv3/multi_language/japan_PP-OCRv3_mobile_rec.yml">japan_PP-OCRv3_mobile_rec.yml</a></td>
+<td><a href="../../../configs/rec/PP-OCRv3/multi_language/japan_PP-OCRv3_mobile_rec.yml">japan_PP-OCRv3_mobile_rec.yml</a></td>
 <td>11.0M</td>
 <td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/japan_PP-OCRv3_mobile_rec_infer.tar">inference model</a> / <a href="https://paddleocr.bj.bcebos.com/PP-OCRv3/multilingual/japan_PP-OCRv3_rec_train.tar">trained model</a></td>
 </tr>
@@ -3893,7 +3893,7 @@ You're not viewing the latest version.
 <td>chinese_cht_PP-OCRv3_mobile_rec</td>
 <td>ppocr/utils/dict/chinese_cht_dict.txt</td>
 <td>Lightweight model for chinese cht</td>
-<td><a href="https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/PP-OCRv3/multi_language/chinese_cht_PP-OCRv3_mobile_rec.yml">chinese_cht_PP-OCRv3_mobile_rec.yml</a></td>
+<td><a href="../../../configs/rec/PP-OCRv3/multi_language/chinese_cht_PP-OCRv3_mobile_rec.yaml">chinese_cht_PP-OCRv3_mobile_rec.yml</a></td>
 <td>12.0M</td>
 <td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/chinese_cht_PP-OCRv3_mobile_rec_infer.tar">inference model</a> / <a href="https://paddleocr.bj.bcebos.com/PP-OCRv3/multilingual/chinese_cht_PP-OCRv3_rec_train.tar">trained model</a></td>
 </tr>
@@ -3901,7 +3901,7 @@ You're not viewing the latest version.
 <td>te_PP-OCRv3_mobile_rec</td>
 <td>ppocr/utils/dict/te_dict.txt</td>
 <td>Lightweight model for Telugu recognition</td>
-<td><a href="https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/PP-OCRv3/multi_language/te_PP-OCRv3_mobile_rec.yml">te_PP-OCRv3_mobile_rec.yml</a></td>
+<td><a href="../../../configs/rec/PP-OCRv3/multi_language/te_PP-OCRv3_mobile_rec.yml">te_PP-OCRv3_mobile_rec.yml</a></td>
 <td>9.6M</td>
 <td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/te_PP-OCRv3_mobile_rec_infer.tar">inference model</a> / <a href="https://paddleocr.bj.bcebos.com/PP-OCRv3/multilingual/te_PP-OCRv3_rec_train.tar">trained model</a></td>
 </tr>
@@ -3909,7 +3909,7 @@ You're not viewing the latest version.
 <td>ka_PP-OCRv3_mobile_rec</td>
 <td>ppocr/utils/dict/ka_dict.txt</td>
 <td>Lightweight model for Kannada recognition</td>
-<td><a href="https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/PP-OCRv3/multi_language/ka_PP-OCRv3_mobile_rec.yml">ka_PP-OCRv3_mobile_rec.yml</a></td>
+<td><a href="../../../configs/rec/PP-OCRv3/multi_language/ka_PP-OCRv3_mobile_rec.yml">ka_PP-OCRv3_mobile_rec.yml</a></td>
 <td>9.9M</td>
 <td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/ka_PP-OCRv3_mobile_rec_infer.tar">inference model</a> / <a href="https://paddleocr.bj.bcebos.com/PP-OCRv3/multilingual/ka_PP-OCRv3_rec_train.tar">trained model</a></td>
 </tr>
@@ -3917,15 +3917,15 @@ You're not viewing the latest version.
 <td>ta_PP-OCRv3_mobile_rec</td>
 <td>ppocr/utils/dict/ta_dict.txt</td>
 <td>Lightweight model for Tamil recognition</td>
-<td><a href="https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/PP-OCRv3/multi_language/ta_PP-OCRv3_mobile_rec.yml">ta_PP-OCRv3_mobile_rec.yml</a></td>
+<td><a href="../../../configs/rec/PP-OCRv3/multi_language/ta_PP-OCRv3_mobile_rec.yml">ta_PP-OCRv3_mobile_rec.yml</a></td>
 <td>9.6M</td>
-<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/ta_PP-OCRv3_rec_infer.tar">inference model</a> / <a href="https://paddleocr.bj.bcebos.com/PP-OCRv3/multilingual/ta_PP-OCRv3_rec_train.tar">trained model</a></td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/ta_PP-OCRv3_mobile_rec_infer.tar">inference model</a> / <a href="https://paddleocr.bj.bcebos.com/PP-OCRv3/multilingual/ta_PP-OCRv3_rec_train.tar">trained model</a></td>
 </tr>
 <tr>
 <td>latin_PP-OCRv3_mobile_rec</td>
 <td>ppocr/utils/dict/latin_dict.txt</td>
 <td>Lightweight model for latin recognition</td>
-<td><a href="https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/PP-OCRv3/multi_language/latin_PP-OCRv3_mobile_rec.yml">latin_PP-OCRv3_mobile_rec.yml</a></td>
+<td><a href="../../../configs/rec/PP-OCRv3/multi_language/latin_PP-OCRv3_mobile_rec.yml">latin_PP-OCRv3_mobile_rec.yml</a></td>
 <td>9.7M</td>
 <td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/latin_PP-OCRv3_mobile_rec_infer.tar">inference model</a> / <a href="https://paddleocr.bj.bcebos.com/PP-OCRv3/multilingual/latin_PP-OCRv3_rec_train.tar">trained model</a></td>
 </tr>
@@ -3933,7 +3933,7 @@ You're not viewing the latest version.
 <td>arabic_PP-OCRv3_mobile_rec</td>
 <td>ppocr/utils/dict/arabic_dict.txt</td>
 <td>Lightweight model for arabic recognition</td>
-<td><a href="https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/PP-OCRv3/multi_language/arabic_PP-OCRv3_mobile_rec.yml">arabic_PP-OCRv3_mobile_rec.yml</a></td>
+<td><a href="../../../configs/rec/PP-OCRv3/multi_language/arabic_PP-OCRv3_mobile_rec.yml">arabic_PP-OCRv3_mobile_rec.yml</a></td>
 <td>9.6M</td>
 <td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/arabic_PP-OCRv3_mobile_rec_infer.tar">inference model</a> / <a href="https://paddleocr.bj.bcebos.com/PP-OCRv3/multilingual/arabic_PP-OCRv3_rec_train.tar">trained model</a></td>
 </tr>
@@ -3941,7 +3941,7 @@ You're not viewing the latest version.
 <td>cyrillic_PP-OCRv3_mobile_rec</td>
 <td>ppocr/utils/dict/cyrillic_dict.txt</td>
 <td>Lightweight model for cyrillic recognition</td>
-<td><a href="https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/PP-OCRv3/multi_language/cyrillic_PP-OCRv3_rec.yml">cyrillic_PP-OCRv3_mobile_rec.yml</a></td>
+<td><a href="../../../configs/rec/PP-OCRv3/multi_language/cyrillic_PP-OCRv3_mobile_rec.yml">cyrillic_PP-OCRv3_mobile_rec.yml</a></td>
 <td>9.6M</td>
 <td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/cyrillic_PP-OCRv3_mobile_rec_infer.tar">inference model</a> / <a href="https://paddleocr.bj.bcebos.com/PP-OCRv3/multilingual/cyrillic_PP-OCRv3_rec_train.tar">trained model</a></td>
 </tr>
@@ -3949,7 +3949,7 @@ You're not viewing the latest version.
 <td>devanagari_PP-OCRv3_mobile_rec</td>
 <td>ppocr/utils/dict/devanagari_dict.txt</td>
 <td>Lightweight model for devanagari recognition</td>
-<td><a href="https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/PP-OCRv3/multi_language/devanagari_PP-OCRv3_mobile_rec.yml">devanagari_PP-OCRv3_mobile_rec.yml</a></td>
+<td><a href="../../../configs/rec/PP-OCRv3/multi_language/devanagari_PP-OCRv3_mobile_rec.yml">devanagari_PP-OCRv3_mobile_rec.yml</a></td>
 <td>9.9M</td>
 <td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/devanagari_PP-OCRv3_mobile_rec_infer.tar">inference model</a> / <a href="https://paddleocr.bj.bcebos.com/PP-OCRv3/multilingual/devanagari_PP-OCRv3_rec_train.tar">trained model</a></td>
 </tr>
@@ -3971,7 +3971,7 @@ You're not viewing the latest version.
 <tr>
 <td>ch_ppocr_mobile_slim_v2.0_cls</td>
 <td>Slim quantized model for text angle classification</td>
-<td><a href="https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/cls/cls_mv3.yml">cls_mv3.yml</a></td>
+<td><a href="../../../configs/cls/cls_mv3.yml">cls_mv3.yml</a></td>
 <td>2.1M</td>
 <td><a href="https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_slim_infer.tar">inference model</a> / <a href="https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_slim_train.tar">trained model</a> / <a href="https://paddleocr.bj.bcebos.com/PP-OCRv2/lite/ch_ppocr_mobile_v2.0_cls_infer_opt.nb">nb model</a></td>
 </tr>
@@ -4080,7 +4080,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="November 3, 2025 21:49:01 CST">2025-11-03 21:49:01</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="November 5, 2025 08:16:48 CST">2025-11-05 08:16:48</span>
   </span>
 
     
@@ -4090,7 +4090,7 @@ You're not viewing the latest version.
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="November 3, 2025 21:49:01 CST">2025-11-03 21:49:01</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="November 5, 2025 08:16:48 CST">2025-11-05 08:16:48</span>
   </span>
 
     

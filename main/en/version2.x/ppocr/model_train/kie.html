@@ -3809,8 +3809,8 @@ You're not viewing the latest version.
 <li>In the dictionary file, it is recommended to put the <code>other</code> category (other textlines that need not be paid attention to can be labeled as <code>other</code>) on the first line. When parsing, the category ID of the 'other' category will be resolved to 0, and the textlines predicted as <code>other</code> will not be visualized later.</li>
 </ul>
 <h3 id="13-download-data">1.3. Download data<a class="headerlink" href="#13-download-data" title="Permanent link">&para;</a></h3>
-<p>If you do not have local dataset, you can download the source files of <a href="https://github.com/doc-analysis/XFUND">XFUND</a> or <a href="https://guillaumejaume.github.io/FUNSD">FUNSD</a> and use the scripts of <a href="../../ppstructure/kie/tools/trans_xfun_data.py">XFUND</a> or <a href="../../ppstructure/kie/tools/trans_funsd_label.py">FUNSD</a> for transform them into PaddleOCR format. Then you can use the public dataset to quick experience KIE.</p>
-<p>For more information about public KIE datasets, please refer to <a href="../../datasets/kie_datasets.en.md">KIE dataset tutorial</a>.</p>
+<p>If you do not have local dataset, you can download the source files of <a href="https://github.com/doc-analysis/XFUND">XFUND</a> or <a href="https://guillaumejaume.github.io/FUNSD">FUNSD</a> and use the scripts of <a href="../../../../ppstructure/kie/tools/trans_xfun_data.py">XFUND</a> or <a href="../../../../ppstructure/kie/tools/trans_funsd_label.py">FUNSD</a> for transform them into PaddleOCR format. Then you can use the public dataset to quick experience KIE.</p>
+<p>For more information about public KIE datasets, please refer to <a href="../../../datasets/kie_datasets.html">KIE dataset tutorial</a>.</p>
 <p>PaddleOCR also supports the annotation of KIE models. Please refer to <a href="https://github.com/PFCCLab/PPOCRLabel/blob/main/README.md">PPOCRLabel tutorial</a>.</p>
 <h2 id="2-training">2. Training<a class="headerlink" href="#2-training" title="Permanent link">&para;</a></h2>
 <p>PaddleOCR provides training scripts, evaluation scripts and inference scripts. We will introduce based on VI-LayoutXLM model in this section.
@@ -3929,7 +3929,7 @@ This section will take the VI layoutxlm multimodal pre training model as an exam
 </table>
 <p>PaddleOCR supports evaluation during training. you can modify <code>eval_batch_step</code> in the config file <code>configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh.yml</code> (default as 19 iters). Trained model with best hmean will be saved as <code>output/ser_vi_layoutxlm_xfund_zh/best_accuracy/</code>.</p>
 <p>If the evaluation dataset is very large, it's recommended to enlarge the eval interval or evaluate the model after training.</p>
-<p><strong>Note:</strong> for more KIE models training and configuration files, you can go into <code>configs/kie/</code> or refer to <a href="./algorithm_overview_en.md">Frontier KIE algorithms</a>.</p>
+<p><strong>Note:</strong> for more KIE models training and configuration files, you can go into <code>configs/kie/</code> or refer to <a href="../../algorithm/overview.html">Frontier KIE algorithms</a>.</p>
 <p>If you want to train model on your own dataset, you need to modify the data path, dictionary file and category number in the configuration file.</p>
 <p>Take <code>configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh.yml</code> as an example, contents we need to fix is as follows.</p>
 <div class="language-yaml highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-8-1"> 1</a></span>
@@ -4032,7 +4032,7 @@ This section will take the VI layoutxlm multimodal pre training model as an exam
 <p><strong>Note:</strong> (1) When using multi-machine and multi-gpu training, you need to replace the ips value in the above command with the address of your machine, and the machines need to be able to ping each other. (2) Training needs to be launched separately on multiple machines. The command to view the ip address of the machine is <code>ifconfig</code>. (3) For more details about the distributed training speedup ratio, please refer to <a href="../blog/distributed_training.html">Distributed Training Tutorial</a>.</p>
 <h3 id="25-train-with-knowledge-distillation">2.5. Train with Knowledge Distillation<a class="headerlink" href="#25-train-with-knowledge-distillation" title="Permanent link">&para;</a></h3>
 <p>Knowledge distillation is supported in PaddleOCR for KIE model training process. The configuration file is <a href="https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh_udml.yml">ser_vi_layoutxlm_xfund_zh_udml.yml</a>. For more information, please refer to <a href="../model_compress/knowledge_distillation.html">doc</a>.</p>
-<p><strong>Note:</strong> The saving and loading logic of the LayoutXLM series KIE models in PaddleOCR is consistent with PaddleNLP, so only the parameters of the student model are saved in the distillation process. If you want to use the saved model for evaluation, you need to use the configuration of the student model (the student model corresponding to the distillation file above is <a href="https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh.yml">ser_vi_layoutxlm_xfund_zh.yml</a>.</p>
+<p><strong>Note:</strong> The saving and loading logic of the LayoutXLM series KIE models in PaddleOCR is consistent with PaddleNLP, so only the parameters of the student model are saved in the distillation process. If you want to use the saved model for evaluation, you need to use the configuration of the student model (the student model corresponding to the distillation file above is <a href="../../../../configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh.yml">ser_vi_layoutxlm_xfund_zh.yml</a>.</p>
 <h3 id="26-training-on-other-platform">2.6. Training on other platform<a class="headerlink" href="#26-training-on-other-platform" title="Permanent link">&para;</a></h3>
 <ul>
 <li>
@@ -4262,7 +4262,7 @@ Running on a DCU device requires setting the environment variable <code>export H
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="November 3, 2025 21:49:01 CST">2025-11-03 21:49:01</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="November 5, 2025 08:16:48 CST">2025-11-05 08:16:48</span>
   </span>
 
     
@@ -4272,7 +4272,7 @@ Running on a DCU device requires setting the environment variable <code>export H
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="November 3, 2025 21:49:01 CST">2025-11-03 21:49:01</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="November 5, 2025 08:16:48 CST">2025-11-05 08:16:48</span>
   </span>
 
     

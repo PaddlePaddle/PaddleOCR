@@ -3709,7 +3709,7 @@ the final improvement is more than 5%.</p>
 The configuration files of the model structure, loss function, post-processing, metric calculation and other modules need to be fine-tuned.</p>
 <p>The following takes the knowledge distillation configuration file for recognition and detection as an example to analyze the training and configuration of knowledge distillation.</p>
 <h3 id="21-recognition-model-configuration-file-analysis">2.1 Recognition Model Configuration File Analysis<a class="headerlink" href="#21-recognition-model-configuration-file-analysis" title="Permanent link">&para;</a></h3>
-<p>The configuration file is in <a href="https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/ch_PP-OCRv2/ch_PP-OCRv2_rec_distillation.yml">ch_PP-OCRv2_rec_distillation.yml</a>.</p>
+<p>The configuration file is in <a href="../../../../configs/rec/ch_PP-OCRv2/ch_PP-OCRv2_rec_distillation.yml">ch_PP-OCRv2_rec_distillation.yml</a>.</p>
 <h4 id="211-model-structure">2.1.1 Model Structure<a class="headerlink" href="#211-model-structure" title="Permanent link">&para;</a></h4>
 <p>In the knowledge distillation task, the model structure configuration is as follows.</p>
 <div class="language-yaml highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1"> 1</a></span>
@@ -4108,8 +4108,8 @@ and then use the standard loss function class to calculate.</p>
 <li>DML loss between SAR branch of <code>Student</code> and <code>Teacher</code>'s final output <code>head_out</code> (loss weight equals 0.5).</li>
 <li>L2 loss between <code>Student</code> and <code>Teacher</code>'s backbone network output <code>backbone_out</code> (loss weight equals 1.0).</li>
 </ul>
-<p>For more specific implementation of <code>CombinedLoss</code>, please refer to: <a href="../../ppocr/losses/combined_loss.py#L23">combined_loss.py</a>.
-For more specific implementations of distillation loss functions such as <code>DistillationCTCLoss</code>, please refer to <a href="../../ppocr/losses/distillation_loss.py">distillation_loss.py</a></p>
+<p>For more specific implementation of <code>CombinedLoss</code>, please refer to: <a href="../../../../ppocr/losses/combined_loss.py#L23">combined_loss.py</a>.
+For more specific implementations of distillation loss functions such as <code>DistillationCTCLoss</code>, please refer to <a href="../../../../ppocr/losses/distillation_loss.py">distillation_loss.py</a></p>
 <h4 id="213-post-processing">2.1.3 Post-processing<a class="headerlink" href="#213-post-processing" title="Permanent link">&para;</a></h4>
 <p>In the knowledge distillation task, the post-processing configuration is as follows.</p>
 <div class="language-yaml highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-4-1">1</a></span>
@@ -4124,7 +4124,7 @@ For more specific implementations of distillation loss functions such as <code>D
 </span></code></pre></div></td></tr></table></div>
 <p>Taking the above configuration as an example, the CTC decoding output of the two sub-networks <code>Student</code> and <code>Teacher</code> will be calculated at the same time.
 Among them, <code>key</code> is the name of the subnet, and <code>value</code> is the list of subnets.</p>
-<p>For more specific implementation of <code>DistillationCTCLabelDecode</code>, please refer to: <a href="../../ppocr/postprocess/rec_postprocess.py#L128">rec_postprocess.py</a></p>
+<p>For more specific implementation of <code>DistillationCTCLabelDecode</code>, please refer to: <a href="../../../../ppocr/postprocess/rec_postprocess.py#L128">rec_postprocess.py</a></p>
 <h4 id="214-metric-calculation">2.1.4 Metric Calculation<a class="headerlink" href="#214-metric-calculation" title="Permanent link">&para;</a></h4>
 <p>In the knowledge distillation task, the metric calculation configuration is as follows.</p>
 <div class="language-yaml highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-5-1">1</a></span>
@@ -4141,11 +4141,11 @@ Among them, <code>key</code> is the name of the subnet, and <code>value</code> i
 </span></code></pre></div></td></tr></table></div>
 <p>Taking the above configuration as an example, the accuracy metric of the <code>Student</code> subnet will be used as the judgment metric for saving the best model.
 At the same time, the accuracy metric of all subnets will be printed out in the log.</p>
-<p>For more specific implementation of <code>DistillationMetric</code>, please refer to: <a href="../../ppocr/metrics/distillation_metric.py#L24">distillation_metric.py</a>.</p>
+<p>For more specific implementation of <code>DistillationMetric</code>, please refer to: <a href="../../../../ppocr/metrics/distillation_metric.py#L24">distillation_metric.py</a>.</p>
 <h4 id="215-fine-tuning-distillation-model">2.1.5 Fine-tuning Distillation Model<a class="headerlink" href="#215-fine-tuning-distillation-model" title="Permanent link">&para;</a></h4>
 <p>There are two ways to fine-tune the recognition distillation task.</p>
 <ol>
-<li>Fine-tuning based on knowledge distillation: this situation is relatively simple, download the pre-trained model. Then configure the pre-training model path and your own data path in <a href="https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/PP-OCRv3/PP-OCRv3_mobile_rec_distillation.yml">PP-OCRv3_mobile_rec_distillation.yml</a> to perform fine-tuning training of the model.</li>
+<li>Fine-tuning based on knowledge distillation: this situation is relatively simple, download the pre-trained model. Then configure the pre-training model path and your own data path in <a href="../../../../configs/rec/PP-OCRv3/PP-OCRv3_mobile_rec_distillation.yml">PP-OCRv3_mobile_rec_distillation.yml</a> to perform fine-tuning training of the model.</li>
 <li>
 <p>Do not use knowledge distillation in fine-tuning: In this case, you need to first extract the student model parameters from the pre-training model. The specific steps are as follows.</p>
 </li>
@@ -4182,7 +4182,7 @@ At the same time, the accuracy metric of all subnets will be printed out in the 
 </span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10"></a><span class="c1"># Save weight parameters</span>
 </span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11"></a><span class="n">paddle</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">s_params</span><span class="p">,</span> <span class="s2">&quot;ch_PP-OCRv3_rec_train/student.pdparams&quot;</span><span class="p">)</span>
 </span></code></pre></div></td></tr></table></div>
-<p>After the extraction is complete, use <a href="https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/PP-OCRv3/PP-OCRv3_mobile_rec.yml">PP-OCRv3_mobile_rec.yml</a> to modify the path of the pre-trained model (the path of the exported <code>student.pdparams</code> model) and your own data path to fine-tune the model.</p>
+<p>After the extraction is complete, use <a href="../../../../configs/rec/PP-OCRv3/PP-OCRv3_mobile_rec.yml">PP-OCRv3_mobile_rec.yml</a> to modify the path of the pre-trained model (the path of the exported <code>student.pdparams</code> model) and your own data path to fine-tune the model.</p>
 <h3 id="22-detection-model-configuration-file-analysis">2.2 Detection Model Configuration File Analysis<a class="headerlink" href="#22-detection-model-configuration-file-analysis" title="Permanent link">&para;</a></h3>
 <p>The configuration file of the detection model distillation is in the <code>PaddleOCR/configs/det/ch_PP-OCRv3/</code> directory, which contains three distillation configuration files:</p>
 <ul>
@@ -4268,8 +4268,8 @@ At the same time, the accuracy metric of all subnets will be printed out in the 
 </span><span id="__span-8-38"><a id="__codelineno-8-38" name="__codelineno-8-38"></a><span class="w">        </span><span class="nt">k</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">50</span>
 </span></code></pre></div></td></tr></table></div>
 <p>If DML is used, that is, the method of two small models learning from each other, the Teacher network structure in the above configuration file needs to be set to the same configuration as the Student model.
-Refer to the configuration file for details. <a href="https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/det/PP-OCRv3/PP-OCRv3_det_dml.yml">PP-OCRv3_det_dml.yml</a></p>
-<p>The following describes the configuration file parameters <a href="https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/det/PP-OCRv3/PP-OCRv3_mobile_det.yml">PP-OCRv3_det_cml.yml</a>:</p>
+Refer to the configuration file for details. <a href="../../../../configs/det/PP-OCRv3/PP-OCRv3_det_dml.yml">PP-OCRv3_det_dml.yml</a></p>
+<p>The following describes the configuration file parameters <a href="../../../../configs/det/PP-OCRv3/PP-OCRv3_mobile_det.yml">PP-OCRv3_det_cml.yml</a>:</p>
 <div class="language-yaml highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-9-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-9-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-9-3"> 3</a></span>
@@ -4390,7 +4390,7 @@ Refer to the configuration file for details. <a href="https://github.com/PaddleP
 </span><span id="__span-9-59"><a id="__codelineno-9-59" name="__codelineno-9-59"></a><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DBHead</span>
 </span><span id="__span-9-60"><a id="__codelineno-9-60" name="__codelineno-9-60"></a><span class="w">        </span><span class="nt">k</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">50</span>
 </span></code></pre></div></td></tr></table></div>
-<p>The specific implementation code of the distillation model <code>DistillationModel</code> class can refer to <a href="../../ppocr/modeling/architectures/distillation_model.py">distillation_model.py</a>.</p>
+<p>The specific implementation code of the distillation model <code>DistillationModel</code> class can refer to <a href="../../../../ppocr/modeling/architectures/distillation_model.py">distillation_model.py</a>.</p>
 <p>The final model output is a dictionary, the key is the name of all the sub-networks, for example, here are <code>Student</code> and <code>Teacher</code>, and the value is the output of the corresponding sub-network,
 which can be <code>Tensor</code> (only the last layer of the network is returned) and <code>dict</code> (also returns the characteristic information in the middle).</p>
 <p>In the distillation task, in order to facilitate the addition of the distillation loss function, the output of each network is saved as a <code>dict</code>, which contains the sub-module output.
@@ -4468,8 +4468,8 @@ The key contains <code>backbone_out</code>, <code>neck_out</code>, <code>head_ou
 </span><span id="__span-11-28"><a id="__codelineno-11-28" name="__codelineno-11-28"></a><span class="w">      </span><span class="nt">beta</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
 </span><span id="__span-11-29"><a id="__codelineno-11-29" name="__codelineno-11-29"></a><span class="w">      </span><span class="nt">ohem_ratio</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
 </span></code></pre></div></td></tr></table></div>
-<p>For more specific implementation of <code>DistillationDilaDBLoss</code>, please refer to: <a href="https://github.com/PaddlePaddle/PaddleOCR/blob/release%2F2.4/ppocr/losses/distillation_loss.py#L185">distillation_loss.py</a>.
-For more specific implementations of distillation loss functions such as <code>DistillationDBLoss</code>, please refer to: <a href="https://github.com/PaddlePaddle/PaddleOCR/blob/04c44974b13163450dfb6bd2c327863f8a194b3c/ppocr/losses/distillation_loss.py?_pjax=%23js-repo-pjax-container%2C%20div%5Bitemtype%3D%22http%3A%2F%2Fschema.org%2FSoftwareSourceCode%22%5D%20main%2C%20%5Bdata-pjax-container%5D#L148">distillation_loss.py</a></p>
+<p>For more specific implementation of <code>DistillationDilaDBLoss</code>, please refer to: <a href="../../../../ppocr/losses/distillation_loss.py#L185">distillation_loss.py</a>.
+For more specific implementations of distillation loss functions such as <code>DistillationDBLoss</code>, please refer to: <a href="../../../../ppocr/losses/distillation_loss.py#L148">distillation_loss.py</a></p>
 <h4 id="223-post-processing">2.2.3 Post-processing<a class="headerlink" href="#223-post-processing" title="Permanent link">&para;</a></h4>
 <p>In the task of detecting knowledge distillation, the post-processing configuration of detecting distillation is as follows.</p>
 <div class="language-yaml highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-12-1">1</a></span>
@@ -4488,7 +4488,7 @@ For more specific implementations of distillation loss functions such as <code>D
 </span></code></pre></div></td></tr></table></div>
 <p>Taking the above configuration as an example, the output of the three subnets <code>Student</code>, <code>Student2</code> and <code>Teacher</code> will be calculated at the same time for post-processing calculations.
 Since there are multiple inputs, there are also multiple outputs returned by post-processing.
-For a more specific implementation of <code>DistillationDBPostProcess</code>, please refer to: <a href="../../ppocr/postprocess/db_postprocess.py#L195">db_postprocess.py</a></p>
+For a more specific implementation of <code>DistillationDBPostProcess</code>, please refer to: <a href="../../../../ppocr/postprocess/db_postprocess.py#L195">db_postprocess.py</a></p>
 <h4 id="224-metric-calculation">2.2.4 Metric Calculation<a class="headerlink" href="#224-metric-calculation" title="Permanent link">&para;</a></h4>
 <p>In the knowledge distillation task, the metric calculation configuration is as follows.</p>
 <div class="language-yaml highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-13-1">1</a></span>
@@ -4564,7 +4564,7 @@ Model Structure</p>
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="November 3, 2025 21:49:01 CST">2025-11-03 21:49:01</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="November 5, 2025 08:16:48 CST">2025-11-05 08:16:48</span>
   </span>
 
     
@@ -4574,7 +4574,7 @@ Model Structure</p>
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="November 3, 2025 21:49:01 CST">2025-11-03 21:49:01</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime" title="November 5, 2025 08:16:48 CST">2025-11-05 08:16:48</span>
   </span>
 
     
