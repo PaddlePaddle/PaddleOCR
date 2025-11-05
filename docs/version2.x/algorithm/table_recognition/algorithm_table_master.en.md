@@ -25,7 +25,7 @@ Please refer to ["Environment Preparation"](../../ppocr/environment.en.md) to co
 
 ## 3. Model Training / Evaluation / Prediction
 
-The above TableMaster model is trained using the PubTabNet table recognition public dataset. For the download of the dataset, please refer to [table_datasets](../../datasets/table_datasets.en.md).
+The above TableMaster model is trained using the PubTabNet table recognition public dataset. For the download of the dataset, please refer to [table_datasets](../../../datasets/table_datasets.en.md).
 
 After the data download is complete, please refer to [Text Recognition Training Tutorial](../../ppocr/model_train/recognition.en.md) for training. PaddleOCR has modularized the code structure, so that you only need to **replace the configuration file** to train different models.
 

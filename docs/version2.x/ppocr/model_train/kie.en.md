@@ -93,9 +93,9 @@ The final dataset shall have the following file structure.
 
 ### 1.3. Download data
 
-If you do not have local dataset, you can download the source files of [XFUND](https://github.com/doc-analysis/XFUND) or [FUNSD](https://guillaumejaume.github.io/FUNSD) and use the scripts of [XFUND](../../ppstructure/kie/tools/trans_xfun_data.py) or [FUNSD](../../ppstructure/kie/tools/trans_funsd_label.py) for transform them into PaddleOCR format. Then you can use the public dataset to quick experience KIE.
+If you do not have local dataset, you can download the source files of [XFUND](https://github.com/doc-analysis/XFUND) or [FUNSD](https://guillaumejaume.github.io/FUNSD) and use the scripts of [XFUND](../../../../ppstructure/kie/tools/trans_xfun_data.py) or [FUNSD](../../../../ppstructure/kie/tools/trans_funsd_label.py) for transform them into PaddleOCR format. Then you can use the public dataset to quick experience KIE.
 
-For more information about public KIE datasets, please refer to [KIE dataset tutorial](../../datasets/kie_datasets.en.md).
+For more information about public KIE datasets, please refer to [KIE dataset tutorial](../../../datasets/kie_datasets.en.md).
 
 PaddleOCR also supports the annotation of KIE models. Please refer to [PPOCRLabel tutorial](https://github.com/PFCCLab/PPOCRLabel/blob/main/README.md).
 
@@ -178,7 +178,7 @@ PaddleOCR supports evaluation during training. you can modify `eval_batch_step` 
 
 If the evaluation dataset is very large, it's recommended to enlarge the eval interval or evaluate the model after training.
 
-**Note:** for more KIE models training and configuration files, you can go into `configs/kie/` or refer to [Frontier KIE algorithms](./algorithm_overview_en.md).
+**Note:** for more KIE models training and configuration files, you can go into `configs/kie/` or refer to [Frontier KIE algorithms](../../algorithm/overview.en.md).
 
 If you want to train model on your own dataset, you need to modify the data path, dictionary file and category number in the configuration file.
 
@@ -261,7 +261,7 @@ python3 -m paddle.distributed.launch --ips="xx.xx.xx.xx,xx.xx.xx.xx" --gpus '0,1
 
 Knowledge distillation is supported in PaddleOCR for KIE model training process. The configuration file is [ser_vi_layoutxlm_xfund_zh_udml.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh_udml.yml). For more information, please refer to [doc](../model_compress/knowledge_distillation.en.md).
 
-**Note:** The saving and loading logic of the LayoutXLM series KIE models in PaddleOCR is consistent with PaddleNLP, so only the parameters of the student model are saved in the distillation process. If you want to use the saved model for evaluation, you need to use the configuration of the student model (the student model corresponding to the distillation file above is [ser_vi_layoutxlm_xfund_zh.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh.yml).
+**Note:** The saving and loading logic of the LayoutXLM series KIE models in PaddleOCR is consistent with PaddleNLP, so only the parameters of the student model are saved in the distillation process. If you want to use the saved model for evaluation, you need to use the configuration of the student model (the student model corresponding to the distillation file above is [ser_vi_layoutxlm_xfund_zh.yml](../../../../configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh.yml).
 
 ### 2.6. Training on other platform
 

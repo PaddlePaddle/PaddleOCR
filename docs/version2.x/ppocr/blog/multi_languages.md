@@ -156,14 +156,14 @@ im_show.save('result.jpg')
 
 ![img](./images/korean.jpg)
 
-ppocr 还支持方向分类， 更多使用方式请参考：[whl包使用说明](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.0/doc/doc_ch/whl.md)
+ppocr 还支持方向分类， 更多使用方式请参考：[whl包使用说明](whl.md)
 
 ## 3 自定义训练
 
-ppocr 支持使用自己的数据进行自定义训练或finetune, 其中识别模型可以参考[法语配置文件](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/multi_language/rec_french_lite_train.yml)
+ppocr 支持使用自己的数据进行自定义训练或finetune, 其中识别模型可以参考[法语配置文件](../../../../configs/rec/multi_language/rec_french_lite_train.yml)
 修改训练数据路径、字典等参数。
 
-详细数据准备、训练过程可参考：[文本识别](../doc_ch/recognition.md)、[文本检测](../doc_ch/detection.md)。
+详细数据准备、训练过程可参考：[文本识别](../../ppocr/model_train/recognition.md)、[文本检测](../../ppocr/model_train/detection.md)。
 
 假设已经准备好了训练数据，可根据以下步骤快速启动训练：
 
@@ -217,17 +217,17 @@ python3 tools/train.py -c configs/rec/rec_french_lite_train.yml -o Global.pretra
 python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs/rec/rec_french_lite_train.yml -o Global.pretrained_model=french_mobile_v2.0_rec_train/best_accuracy
 ```
 
-更多功能如预测部署、数据标注等功能可以阅读完整的[文档教程](../../README_ch.md)。
+更多功能如预测部署、数据标注等功能可以阅读完整的[文档教程](../../../index/index.md)。
 
 ## 4 预测部署
 
 除了安装whl包进行快速预测，ppocr 也提供了多种预测部署方式，如有需求可阅读相关文档：
 
-- [基于Python脚本预测引擎推理](./inference_ppocr.md)
-- [基于C++预测引擎推理](../../deploy/cpp_infer/readme_ch.md)
-- [服务化部署](../../deploy/hubserving/readme.md)
-- [端侧部署](../../deploy/lite/readme_ch.md)
-- [Benchmark](./benchmark.md)
+- [基于Python脚本预测引擎推理](../../legacy/python_infer.md)
+- [基于C++预测引擎推理](../../legacy/cpp_infer.md)
+- [服务化部署](../../../../deploy/hubserving/readme.md)
+- [端侧部署](../../../../deploy/lite/readme_ch.md)
+- [Benchmark](../../legacy/benchmark.md)
 
 ## 5 支持语种及缩写
 
