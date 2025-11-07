@@ -1,0 +1,22 @@
+# PaddleOCR and PaddlePaddle - Modern versions
+paddleocr>=3.3.0
+paddlepaddle>=3.0.0
+
+# Web framework - FastAPI for async performance
+fastapi>=0.115.0
+uvicorn[standard]>=0.32.0
+
+# Required by PaddleOCR
+numpy>=1.23.0,<2.0.0
+opencv-python-headless>=4.8.0
+Pillow>=10.0.0
+PyYAML>=6.0
+
+# Additional dependencies from PaddleOCR requirements
+shapely>=2.0.0
+scikit-image>=0.21.0
+pyclipper>=1.3.0
+rapidfuzz>=3.0.0
+
+# Optional but recommended
+python-multipart>=0.0.6  # For file uploads

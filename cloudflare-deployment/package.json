@@ -1,0 +1,20 @@
+{
+  "name": "paddleocr-cloudflare",
+  "version": "1.0.0",
+  "description": "PaddleOCR deployment on Cloudflare Containers",
+  "private": true,
+  "scripts": {
+    "deploy": "wrangler deploy",
+    "dev": "wrangler dev",
+    "tail": "wrangler tail",
+    "build-local": "docker build -t paddleocr-local .",
+    "test-local": "docker run -p 8000:8000 paddleocr-local"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20250110.0",
+    "wrangler": "^3.106.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

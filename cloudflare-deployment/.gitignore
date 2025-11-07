@@ -1,0 +1,36 @@
+# Wrangler
+.wrangler/
+worker-configuration.d.ts
+
+# Logs
+*.log
+npm-debug.log*
+
+# Environment
+.env
+.env.local
+
+# Dependencies
+node_modules/
+
+# Models (auto-downloaded)
+models/
+*.pdmodel
+*.pdiparams
+*.pdiparams.info
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+*.so
+
+# Testing
+.pytest_cache/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo

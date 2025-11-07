@@ -1,0 +1,55 @@
+# Cloudflare Wrangler Configuration for PaddleOCR Container
+# Requires Cloudflare Containers (Public Beta)
+
+name = "paddleocr-service"
+main = "src/index.js"
+compatibility_date = "2025-06-24"
+
+# Container configuration
+[[containers]]
+# Class name must match Durable Object binding
+class_name = "PaddleOCRContainer"
+
+# Path to Dockerfile (will build and push on deploy)
+image = "./Dockerfile"
+
+# Instance type - using 8GB RAM, 4 vCPU configuration
+# Available instance types:
+# - dev: 256 MB RAM, 1/16 vCPU
+# - basic: 1 GB RAM, 1/4 vCPU
+# - standard: 4 GB RAM, 1/2 vCPU
+# - large: 8 GB RAM, 4 vCPU (your configuration)
+instance_type = "large"
+
+# Maximum concurrent container instances
+# Start conservative, scale up based on load
+max_instances = 10
+
+# Durable Objects binding (required for containers)
+[[durable_objects.bindings]]
+name = "PADDLE_OCR"
+class_name = "PaddleOCRContainer"
+
+# Migration for Durable Object
+# Required for initial deployment
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["PaddleOCRContainer"]
+
+# Environment variables (optional)
+[vars]
+OCR_LANG = "ch"  # Default language: ch, en, french, german, etc.
+OCR_VERSION = "PP-OCRv4"  # PP-OCRv3, PP-OCRv4, or PP-OCRv5
+USE_ANGLE_CLS = "true"  # Use text orientation classifier
+LOG_LEVEL = "INFO"  # DEBUG, INFO, WARNING, ERROR
+MAX_IMAGE_SIZE = "10485760"  # 10MB in bytes
+
+# Optional: Use KV for caching OCR results
+# [[kv_namespaces]]
+# binding = "OCR_CACHE"
+# id = "your-kv-namespace-id"
+
+# Optional: Use R2 for storing processed images
+# [[r2_buckets]]
+# binding = "OCR_IMAGES"
+# bucket_name = "paddleocr-images"
