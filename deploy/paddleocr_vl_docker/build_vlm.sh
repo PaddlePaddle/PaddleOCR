@@ -70,13 +70,13 @@ if [ "${backend}" = 'vllm' ]; then
     fi
 elif [ "${backend}" = 'fastdeploy' ]; then
     if [ "${device_type}" = 'gpu' ]; then
-        base_image='ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/fastdeploy-cuda-12.6:2.3.0-rc0'
+        base_image='ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/fastdeploy-cuda-12.6:2.3.0'
     elif [ "${device_type}" = 'gpu-sm120' ]; then
         base_image=''
     elif [ "${device_type}" = 'dcu' ]; then
         base_image=''
     elif [ "${device_type}" = 'xpu' ]; then
-        base_image='ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/fastdeploy-xpu:2.3.0-rc0'
+        base_image='ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/fastdeploy-xpu:2.3.0'
     else
         base_image=''
     fi
