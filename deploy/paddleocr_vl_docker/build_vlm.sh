@@ -3,7 +3,7 @@
 device_type=''
 backend=''
 build_for_offline='false'
-paddleocr_version='>=3.3.1,<3.4'
+paddleocr_version='>=3.3.2,<3.4'
 tag_suffix='latest'
 base_image=''
 
