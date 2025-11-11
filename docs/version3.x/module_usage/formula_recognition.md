@@ -12,131 +12,134 @@ comments: true
 
 > 推理耗时仅包含模型推理耗时，不包含前后处理耗时。
 
-<table>
-<tr>
-<th>模型</th><th>模型下载链接</th>
-<th>En-BLEU(%)</th>
-<th>Zh-BLEU(%)</th>
-<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>模型存储大小（MB）</th>
-<th>介绍</th>
-</tr>
-<tr>
-<td>UniMERNet</td>
-<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/UniMERNet_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/UniMERNet_pretrained.pdparams">训练模型</a></td>
-<td>85.91</td>
-<td>43.50</td>
-<td>1311.84 / 1311.84</td>
-<td>- / 8288.07</td>
-<td>1530</td>
-<td>UniMERNet是由上海AI Lab研发的一款公式识别模型。该模型采用Donut Swin作为编码器，MBartDecoder作为解码器，并通过在包含简单公式、复杂公式、扫描捕捉公式和手写公式在内的一百万数据集上进行训练，大幅提升了模型对真实场景公式的识别准确率</td>
-</tr>
-<td>PP-FormulaNet-S</td>
-<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet-S_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet-S_pretrained.pdparams">训练模型</a></td>
-<td>87.00</td>
-<td>45.71</td>
-<td>182.25 / 182.25</td>
-<td>- / 254.39</td>
-<td>224</td>
-<td rowspan="2">PP-FormulaNet 是由百度飞桨视觉团队开发的一款先进的公式识别模型，支持5万个常见LateX源码词汇的识别。PP-FormulaNet-S 版本采用了 PP-HGNetV2-B4 作为其骨干网络，通过并行掩码和模型蒸馏等技术，大幅提升了模型的推理速度，同时保持了较高的识别精度，适用于简单印刷公式、跨行简单印刷公式等场景。而 PP-FormulaNet-L 版本则基于 Vary_VIT_B 作为骨干网络，并在大规模公式数据集上进行了深入训练，在复杂公式的识别方面，相较于PP-FormulaNet-S表现出显著的提升，适用于简单印刷公式、复杂印刷公式、手写公式等场景。 </td>
+### 🔬🔬 UniMERNet
+**模型类型：** 推理模型/训练模型 | **模型存储大小：** 1530 MB  
+**模型介绍：**  
+UniMERNet是由上海AI Lab研发的一款公式识别模型。该模型采用Donut Swin作为编码器，MBartDecoder作为解码器，并通过在包含简单公式、复杂公式、扫描捕捉公式和手写公式在内的百万数据集上进行训练，大幅提升了模型对真实场景公式的识别能力。
 
-</tr>
-<td>PP-FormulaNet-L</td>
-<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet-L_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet-L_pretrained.pdparams">训练模型</a></td>
-<td>90.36</td>
-<td>45.78</td>
-<td>1482.03 / 1482.03</td>
-<td>- / 3131.54</td>
-<td>695</td>
-</tr>
-<td>PP-FormulaNet_plus-S</td>
-<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet_plus-S_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet_plus-S_pretrained.pdparams">训练模型</a></td>
-<td>88.71</td>
-<td>53.32</td>
-<td>179.20 / 179.20</td>
-<td>- / 260.99</td>
-<td>248</td>
-<td rowspan="3">PP-FormulaNet_plus 是百度飞桨视觉团队在 PP-FormulaNet 的基础上开发的增强版公式识别模型。与原版相比，PP-FormulaNet_plus 在训练中使用了更为丰富的公式数据集，包括中文学位论文、专业书籍、教材试卷以及数学期刊等多种来源。这一扩展显著提升了模型的识别能力。
+**性能指标：**
+| 指标名称 | En-BLEU(%) | Zh-BLEU(%) | GPU推理耗时 (ms) | CPU推理耗时 (ms) |
+| :--- | :--- | :--- | :--- | :--- |
+| **常规模式** | 85.91 | 43.50 | 1311.84 | - |
+| **高性能模式** | - | - | 1311.84 | 8288.07 |
 
-其中，PP-FormulaNet_plus-M 和 PP-FormulaNet_plus-L 模型新增了对中文公式的支持，并将公式的最大预测 token 数从 1024 扩大至 2560，大幅提升了对复杂公式的识别性能。同时，PP-FormulaNet_plus-S 模型则专注于增强英文公式的识别能力。通过这些改进，PP-FormulaNet_plus 系列模型在处理复杂多样的公式识别任务时表现更加出色。 </td>
-</tr>
-<tr>
-<td>PP-FormulaNet_plus-M</td>
-<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet_plus-M_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet_plus-M_pretrained.pdparams">训练模型</a></td>
-<td>91.45</td>
-<td>89.76</td>
-<td>1040.27 / 1040.27</td>
-<td>- / 1615.80</td>
-<td>592</td>
-</tr>
-<tr>
-<td>PP-FormulaNet_plus-L</td>
-<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet_plus-L_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet_plus-L_pretrained.pdparams">训练模型</a></td>
-<td>92.22</td>
-<td>90.64</td>
-<td>1476.07 / 1476.07</td>
-<td>- / 3125.58</td>
-<td>698</td>
-</tr>
-<tr>
-<td>LaTeX_OCR_rec</td>
-<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/LaTeX_OCR_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/LaTeX_OCR_rec_pretrained.pdparams">训练模型</a></td>
-<td>74.55</td>
-<td>39.96</td>
-<td>1088.89 / 1088.89</td>
-<td>- / -</td>
-<td>99</td>
-<td>LaTeX-OCR是一种基于自回归大模型的公式识别算法，通过采用 Hybrid ViT 作为骨干网络，transformer作为解码器，显著提升了公式识别的准确性。</td>
-</tr>
-</table>
- <strong>测试环境说明:</strong>
+**下载链接：**  
+[推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/UniMERNet_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/UniMERNet_pretrained.pdparams)
 
-  <ul>
-      <li><b>性能测试环境</b>
-          <ul>
-              <li><strong>测试数据集：</strong>PaddleOCR 内部自建公式识别测试集</li>
-              <li><strong>硬件配置：</strong>
-                  <ul>
-                      <li>GPU：NVIDIA Tesla T4</li>
-                      <li>CPU：Intel Xeon Gold 6271C @ 2.60GHz</li>
-                  </ul>
-              </li>
-              <li><strong>软件环境：</strong>
-                  <ul>
-                      <li>Ubuntu 20.04 / CUDA 11.8 / cuDNN 8.9 / TensorRT 8.6.1.6</li>
-                      <li>paddlepaddle 3.0.0 / paddleocr 3.0.3</li>
-                  </ul>
-              </li>
-          </ul>
-      </li>
-      <li><b>推理模式说明</b></li>
-  </ul>
+---
 
-<table border="1">
-    <thead>
-        <tr>
-            <th>模式</th>
-            <th>GPU配置</th>
-            <th>CPU配置</th>
-            <th>加速技术组合</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>常规模式</td>
-            <td>FP32精度 / 无TRT加速</td>
-            <td>FP32精度 / 8线程</td>
-            <td>PaddleInference</td>
-        </tr>
-        <tr>
-            <td>高性能模式</td>
-            <td>选择先验精度类型和加速策略的最优组合</td>
-            <td>FP32精度 / 8线程</td>
-            <td>选择先验最优后端（Paddle/OpenVINO/TRT等）</td>
-        </tr>
-    </tbody>
-</table>
+### ⚡⚡⚡ PP-FormulaNet-S
+**模型类型：** 推理模型/训练模型 | **模型存储大小：** 224 MB  
+**模型介绍：**  
+PP-FormulaNet 是由百度飞桨视觉团队开发的一款先进的公式识别模型，支持5万个常见LateX源码词汇的识别。PP-FormulaNet-S 版本采用了 PP-HGNetV2-B4 作为其骨干网络，通过并行掩码和模型蒸馏等技术，大幅提升了模型的推理速度，同时保持了较高的识别精度，适用于简单印刷公式、跨行简单印刷公式等场景。
+
+**性能指标：**
+| 指标名称 | En-BLEU(%) | Zh-BLEU(%) | GPU推理耗时 (ms) | CPU推理耗时 (ms) |
+| :--- | :--- | :--- | :--- | :--- |
+| **常规模式** | 87.00 | 45.71 | 182.25 | - |
+| **高性能模式** | - | - | 182.25 | 254.39 |
+
+**下载链接：**  
+[推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet-S_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet-S_pretrained.pdparams)
+
+---
+
+### 🧠🧠🧠 PP-FormulaNet-L
+**模型类型：** 推理模型/训练模型 | **模型存储大小：** 695 MB  
+**模型介绍：**  
+PP-FormulaNet-L 版本基于 Vary_VIT_B 作为骨干网络，并在大规模公式数据集上进行了深入训练，在复杂公式的识别方面表现出显著提升，适用于简单印刷公式、复杂印刷公式、手写公式等场景。
+
+**性能指标：**
+| 指标名称 | En-BLEU(%) | Zh-BLEU(%) | GPU推理耗时 (ms) | CPU推理耗时 (ms) |
+| :--- | :--- | :--- | :--- | :--- |
+| **常规模式** | 90.36 | 45.78 | 1482.03 | - |
+| **高性能模式** | - | - | 1482.03 | 3131.54 |
+
+**下载链接：**  
+[推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet-L_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet-L_pretrained.pdparams)
+
+---
+
+### 🚀🚀🚀 PP-FormulaNet_plus-S
+**模型类型：** 推理模型/训练模型 | **模型存储大小：** 248 MB  
+**模型介绍：**  
+PP-FormulaNet_plus 是百度飞桨视觉团队在 PP-FormulaNet 基础上开发的增强版公式识别模型。通过使用更丰富的公式数据集（包括中文学位论文、专业书籍等），显著提升了模型的识别能力。PP-FormulaNet_plus-S 专注于增强英文公式识别能力。
+
+**性能指标：**
+| 指标名称 | En-BLEU(%) | Zh-BLEU(%) | GPU推理耗时 (ms) | CPU推理耗时 (ms) |
+| :--- | :--- | :--- | :--- | :--- |
+| **常规模式** | 88.71 | 53.32 | 179.20 | - |
+| **高性能模式** | - | - | 179.20 | 260.99 |
+
+**下载链接：**  
+[推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet_plus-S_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet_plus-S_pretrained.pdparams)
+
+---
+
+### 🌐🌐 PP-FormulaNet_plus-M
+**模型类型：** 推理模型/训练模型 | **模型存储大小：** 592 MB  
+**模型介绍：**  
+PP-FormulaNet_plus-M 新增对中文公式的支持，并将公式最大预测 token 数扩大至 2560，大幅提升了对复杂公式的识别性能。
+
+**性能指标：**
+| 指标名称 | En-BLEU(%) | Zh-BLEU(%) | GPU推理耗时 (ms) | CPU推理耗时 (ms) |
+| :--- | :--- | :--- | :--- | :--- |
+| **常规模式** | 91.45 | 89.76 | 1040.27 | - |
+| **高性能模式** | - | - | 1040.27 | 1615.80 |
+
+**下载链接：**  
+[推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet_plus-M_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet_plus-M_pretrained.pdparams)
+
+---
+
+### 🧩🧩🧩 PP-FormulaNet_plus-L
+**模型类型：** 推理模型/训练模型 | **模型存储大小：** 698 MB  
+**模型介绍：**  
+PP-FormulaNet_plus-L 是增强版的旗舰模型，通过扩展训练数据和提升模型容量，在处理复杂多样的公式识别任务时表现更加出色。
+
+**性能指标：**
+| 指标名称 | En-BLEU(%) | Zh-BLEU(%) | GPU推理耗时 (ms) | CPU推理耗时 (ms) |
+| :--- | :--- | :--- | :--- | :--- |
+| **常规模式** | 92.22 | 90.64 | 1476.07 | - |
+| **高性能模式** | - | - | 1476.07 | 3125.58 |
+
+**下载链接：**  
+[推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet_plus-L_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet_plus-L_pretrained.pdparams)
+
+---
+
+### 📜📜 LaTeX_OCR_rec
+**模型类型：** 推理模型/训练模型 | **模型存储大小：** 99 MB  
+**模型介绍：**  
+LaTeX-OCR是一种基于自回归大模型的公式识别算法，通过采用 Hybrid ViT 作为骨干网络，transformer作为解码器，显著提升了公式识别的准确性。
+
+**性能指标：**
+| 指标名称 | En-BLEU(%) | Zh-BLEU(%) | GPU推理耗时 (ms) | CPU推理耗时 (ms) |
+| :--- | :--- | :--- | :--- | :--- |
+| **常规模式** | 74.55 | 39.96 | 1088.89 | - |
+| **高性能模式** | - | - | 1088.89 | - |
+
+**下载链接：**  
+[推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/LaTeX_OCR_rec_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/LaTeX_OCR_rec_pretrained.pdparams)
+
+---
+
+### 🧪🧪🧪 测试环境说明
+**性能测试环境：**
+- **测试数据集：** PaddleOCR 内部自建公式识别测试集
+- **硬件配置：**
+  - GPU：NVIDIA Tesla T4
+  - CPU：Intel Xeon Gold 6271C @ 2.60GHz
+- **软件环境：**
+  - Ubuntu 20.04 / CUDA 11.8 / cuDNN 8.9 / TensorRT 8.6.1.6
+  - paddlepaddle 3.0.0 / paddleocr 3.0.3
+
+**推理模式说明：**
+| 模式 | GPU配置 | CPU配置 | 加速技术组合 |
+| :--- | :--- | :--- | :--- |
+| **常规模式** | FP32精度 / 无TRT加速 | FP32精度 / 8线程 | PaddleInference |
+| **高性能模式** | 选择先验精度类型和加速策略的最优组合 | FP32精度 / 8线程 | 选择先验最优后端（Paddle/OpenVINO/TRT等） |
+
 
 
 ## 三、快速开始
