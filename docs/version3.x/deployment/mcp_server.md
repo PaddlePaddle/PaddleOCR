@@ -14,9 +14,10 @@ comments: true
 - **当前支持的工具**
     - **OCR**：对图像和 PDF 文件进行文本检测与识别。
     - **PP-StructureV3**：从图像或 PDF 文件中识别和提取文本块、标题、段落、图片、表格以及其他版面元素，将输入转换为 Markdown 文档。
+    - **PaddleOCR-VL**：使用基于多模态大模型的方案，从图像或 PDF 文件中识别和提取文本块、标题、段落、图片、表格以及其他版面元素，将输入转换为 Markdown 文档。
 - **支持运行在如下工作模式**
     - **本地 Python 库**：在本机直接运行 PaddleOCR 产线。此模式对本地环境与计算机性能有一定要求，适用于需要离线使用、对数据隐私有严格要求的场景。
-    - **星河社区服务**：调用托管在 [飞桨星河社区](https://aistudio.baidu.com/pipeline/mine) 的服务。此模式适合快速体验功能、快速验证方案等，也适用于零代码开发场景。
+    - **PaddleOCR 官网服务**：调用 [PaddleOCR 官网](https://aistudio.baidu.com/paddleocr) 提供的云服务。此模式适合快速体验功能、快速验证方案等，也适用于零代码开发场景。
     - **自托管服务**：调用用户自托管的 PaddleOCR 服务。此模式具备服务化部署优势及高度灵活性，适用于需要自定义服务配置的场景，同时也适用于对数据隐私有严格要求的场景。**目前暂时只支持基础服务化部署方案。**
 
 ## 示例：
@@ -88,7 +89,7 @@ comments: true
   - `paddleocr-mcp[local]`：包含 PaddleOCR（不包含飞桨框架）。
   - `paddleocr-mcp[local-cpu]`：在 `local` 基础上额外包含 CPU 版本的飞桨框架。
 - 本地模式也支持通过 `uvx` 方式免安装运行服务器（适用于 CPU 推理）。详情请参考 [2.4 使用 `uvx`](#24-使用-uvx) 中的说明。
-- 对于星河社区服务和自托管服务模式，如果希望在 Claude for Desktop 等 MCP 主机中使用，也支持通过 `uvx` 等方式免安装运行服务器。详情请参考 [2. 在 Claude for Desktop 中使用](#2-在-claude-for-desktop-中使用) 中的说明。
+- 对于 PaddleOCR 官网服务和自托管服务模式，如果希望在 Claude for Desktop 等 MCP 主机中使用，也支持通过 `uvx` 等方式免安装运行服务器。详情请参考 [2. 在 Claude for Desktop 中使用](#2-在-claude-for-desktop-中使用) 中的说明。
 
 使用 pip 安装 `paddleocr-mcp` 库的命令如下：
 
@@ -122,17 +123,15 @@ paddleocr_mcp --help
 
 ### 2.1 快速开始
 
-接下来以 **星河社区服务** 工作模式为例，引导您快速上手。此模式无需在本地安装复杂的依赖，因此比较适合用于快速体验。
+接下来以 **PaddleOCR 官网服务** 工作模式为例，引导您快速上手。此模式无需在本地安装复杂的依赖，因此比较适合用于快速体验。
 
 1. **安装 `paddleocr-mcp`**
 
     请参考 [1. 安装](#1-安装)。
 
-2. **准备星河社区服务**
+2. **获取服务基础 URL 与星河社区访问令牌**
 
-    - 访问 [飞桨星河社区](https://aistudio.baidu.com/pipeline/mine) 并登录。
-    - 在左侧"更多内容"下的 "PaddleX 产线" 部分，依次点击：【创建产线】 - 【OCR】- 【通用OCR】-【直接部署】-【开始部署】。
-    - 部署成功后，获取您的 **服务基础 URL**（示例：`https://xxxxxx.aistudio-hub.baidu.com`）。
+    - 在 [此页面](https://aistudio.baidu.com/paddleocr/task) 点击左上角的“API”，复制“文字识别（PP-OCRv5）”对应的 `API_URL` 去掉端点末尾（`/ocr`）的部分，即服务的基础 URL，如 `https://xxxxxx.aistudio-app.com`。您可以需要注册并登陆飞桨星河社区帐号。
     - 在 [此页面](https://aistudio.baidu.com/index/accessToken) 获取您的 **访问令牌**。
 
 3. **添加 MCP 服务器配置**
@@ -164,7 +163,7 @@ paddleocr_mcp --help
 
     **说明**：
 
-    - 将 `<your-server-url>` 替换为您的星河社区服务的基础 URL，例如 `https://xxxxx.aistudio-hub.baidu.com`，注意不要带有端点路径（如 `/ocr`）。
+    - 将 `<your-server-url>` 替换为上一步获取的服务基础 URL。
     - 将 `<your-access-token>` 替换为您的访问令牌。
 
     **注意**：
@@ -212,6 +211,7 @@ paddleocr_mcp --help
 
 **说明**：
 
+- `PADDLEOCR_MCP_PIPELINE` 需要被设置为产线名称。详见第 4 节。
 - `PADDLEOCR_MCP_PIPELINE_CONFIG` 为可选项，不设置时使用产线默认配置。如需调整配置，例如更换模型，请参考 [PaddleOCR 文档](../paddleocr_and_paddlex.md) 导出产线配置文件，并将 `PADDLEOCR_MCP_PIPELINE_CONFIG` 设置为配置文件的绝对路径。
 - **推理性能提示**：
 
@@ -245,20 +245,21 @@ paddleocr_mcp --help
         # 配置文件保存到 `PP-StructureV3.yaml` 中
         pipeline.export_paddlex_config_to_yaml("PP-StructureV3.yaml")
         ```
+    
+    **对于 PaddleOCR-VL产线，不建议使用 CPU 推理。**
 
-#### 模式二：星河社区服务
+#### 模式二：PaddleOCR 官网服务
 
 请参考 [2.1 快速开始](#21-快速开始)。
 
-除了使用平台预设的模型方案，您也可以在平台上自行训练并部署自定义模型。
+对于文字识别以外的任务，请在 PaddleOCR 官网获取任务对应的服务基础 URL，并正确设置 `PADDLEOCR_MCP_PIPELINE` 与 `PADDLEOCR_MCP_SERVER_URL`（参数说明详见第 4 节）。
 
 #### 模式三：自托管服务
 
 1. 在需要运行 PaddleOCR 推理服务器的环境中，参考 [PaddleOCR 服务化部署文档](./serving.md) 运行推理服务器。
-3. 在需要运行 MCP 服务器的环境中安装 `paddleocr-mcp`。
-4. 参考下方的配置示例更改 `claude_desktop_config.json` 文件内容。
-5. 将您的服务地址填入 `PADDLEOCR_MCP_SERVER_URL` (例如：`"http://127.0.0.1:8000"`)。
-6. 重启 MCP 主机。
+2. 在需要运行 MCP 服务器的环境中安装 `paddleocr-mcp`。
+3. 参考下方的配置示例更改 `claude_desktop_config.json` 文件内容。将您的服务地址填入 `PADDLEOCR_MCP_SERVER_URL` (例如：`"http://127.0.0.1:8000"`)。
+4. 重启 MCP 主机。
 
 配置示例：
 
@@ -280,11 +281,12 @@ paddleocr_mcp --help
 
 **说明**：
 
+- `PADDLEOCR_MCP_PIPELINE` 需要被设置为产线名称。详见第 4 节。
 - 将 `<your-server-url>` 替换为底层服务的基础 URL（如：`http://127.0.0.1:8000`）。
 
 ### 2.4 使用 `uvx`
 
-对于星河社区服务和自托管服务模式，目前也支持通过 `uvx` 启动 MCP 服务器。这种方式不需要手动安装 `paddleocr-mcp`。主要步骤如下：
+对于 PaddleOCR 官网服务和自托管服务模式，目前也支持通过 `uvx` 启动 MCP 服务器。这种方式不需要手动安装 `paddleocr-mcp`。主要步骤如下：
 
 1. 安装 [uv](https://docs.astral.sh/uv/#installation)。
 2. 修改 `claude_desktop_config.json` 文件。下面给出使用 `uvx` 启动的两种常见模式示例。
@@ -349,7 +351,7 @@ paddleocr_mcp --help
 示例命令如下：
 
 ```bash
-# OCR + 星河社区服务 + stdio
+# OCR + PaddleOCR 官网服务 + stdio
 PADDLEOCR_MCP_AISTUDIO_ACCESS_TOKEN=xxxxxx paddleocr_mcp --pipeline OCR --ppocr_source aistudio --server_url https://xxxxxx.aistudio-hub.baidu.com
 
 # PP-StructureV3 + 本地 Python 库 + stdio
@@ -367,8 +369,8 @@ paddleocr_mcp --pipeline OCR --ppocr_source self_hosted --server_url http://127.
 
 | 环境变量 | 命令行参数 | 类型 | 描述 | 可选值 | 默认值 |
 |:---------|:-----------|:-----|:-----|:-------|:-------|
-| `PADDLEOCR_MCP_PIPELINE` | `--pipeline` | `str` | 要运行的产线。 | `"OCR"`，`"PP-StructureV3"` | `"OCR"` |
-| `PADDLEOCR_MCP_PPOCR_SOURCE` | `--ppocr_source` | `str` | PaddleOCR 能力来源。 | `"local"`（本地 Python 库），`"aistudio"`（星河社区服务），`"self_hosted"`（自托管服务） | `"local"` |
+| `PADDLEOCR_MCP_PIPELINE` | `--pipeline` | `str` | 要运行的产线。 | `"OCR"`，`"PP-StructureV3"`，`"PaddleOCR-VL"` | `"OCR"` |
+| `PADDLEOCR_MCP_PPOCR_SOURCE` | `--ppocr_source` | `str` | PaddleOCR 能力来源。 | `"local"`（本地 Python 库），`"aistudio"`（PaddleOCR 官网服务），`"self_hosted"`（自托管服务） | `"local"` |
 | `PADDLEOCR_MCP_SERVER_URL` | `--server_url` | `str` | 底层服务基础 URL（`aistudio` 或 `self_hosted` 模式下必需）。 | - | `None` |
 | `PADDLEOCR_MCP_AISTUDIO_ACCESS_TOKEN` | `--aistudio_access_token` | `str` | AI Studio 访问令牌（`aistudio` 模式下必需）。 | - | `None` |
 | `PADDLEOCR_MCP_TIMEOUT` | `--timeout` | `int` | 底层服务请求的读取超时时间（秒）。 | - | `60` |
@@ -383,4 +385,4 @@ paddleocr_mcp --pipeline OCR --ppocr_source self_hosted --server_url http://127.
 
 - 在本地 Python 库模式下，当前提供的工具无法处理 Base64 编码的 PDF 文档输入。
 - 在本地 Python 库模式下，当前提供的工具不会根据模型提示的 `file_type` 推断文件类型，对于一些复杂 URL 可能处理失败。
-- 对于 PP-StructureV3 产线，若输入文件中包含图像，返回结果可能会显著增加 token 使用量。若无需图像内容，可通过提示词明确排除，以降低资源消耗。
+- 对于 PP-StructureV3 和 PaddleOCR-VL 产线，若输入文件中包含图像，返回结果可能会显著增加 token 使用量。若无需图像内容，可通过提示词明确排除，以降低资源消耗。
