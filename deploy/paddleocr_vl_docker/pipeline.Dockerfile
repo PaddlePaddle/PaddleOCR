@@ -4,15 +4,20 @@ FROM ${BASE_IMAGE}
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN apt-get update \
-    && apt-get install -y libgl1 \
-    && rm -rf /var/lib/apt/lists/*
-
 ENV PIP_NO_CACHE_DIR=0
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONDONTWRITEBYTECODE=1
 
 ARG DEVICE_TYPE="gpu"
+
+RUN if [ "${DEVICE_TYPE}" != 'dcu' ]; then \
+        apt-get update \
+            && apt-get install -y libgl1 \
+            && rm -rf /var/lib/apt/lists/*; \
+    fi
+
+RUN python -m pip install https://paddle-whl.bj.bcebos.com/nightly/cu126/safetensors/safetensors-0.6.2.dev0-cp38-abi3-linux_x86_64.whl
+
 RUN if [ "${DEVICE_TYPE}" = 'gpu' ]; then \
         python -m pip install paddlepaddle-gpu==3.2.1 -i https://www.paddlepaddle.org.cn/packages/stable/cu126/; \
     elif [ "${DEVICE_TYPE}" = 'gpu-sm120' ]; then \
@@ -27,7 +32,6 @@ RUN if [ "${DEVICE_TYPE}" = 'gpu' ]; then \
 
 ARG PADDLEOCR_VERSION=">=3.3.2,<3.4"
 RUN python -m pip install "paddleocr[doc-parser]${PADDLEOCR_VERSION}" \
-    && python -m pip install https://paddle-whl.bj.bcebos.com/nightly/cu126/safetensors/safetensors-0.6.2.dev0-cp38-abi3-linux_x86_64.whl \
     && paddlex --install serving
 
 RUN groupadd -g 1000 paddleocr \
