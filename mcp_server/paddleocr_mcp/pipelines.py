@@ -39,7 +39,7 @@ from PIL import Image as PILImage
 from typing_extensions import Literal, Self, assert_never
 
 try:
-    from paddleocr import PaddleOCR, PPStructureV3
+    from paddleocr import PaddleOCR, PaddleOCRVL, PPStructureV3
 
     LOCAL_OCR_AVAILABLE = True
 except ImportError:
@@ -653,44 +653,7 @@ class OCRHandler(SimpleInferencePipelineHandler):
             return output
 
 
-class PPStructureV3Handler(SimpleInferencePipelineHandler):
-    def register_tools(self, mcp: FastMCP) -> None:
-        @mcp.tool("pp_structurev3")
-        async def _pp_structurev3(
-            input_data: str,
-            output_mode: OutputMode = "simple",
-            file_type: Optional[str] = None,
-            return_images: bool = True,
-            *,
-            ctx: Context,
-        ) -> Union[str, List[Union[TextContent, ImageContent]]]:
-            """Extracts structured markdown from complex documents (images/PDFs), including tables, formulas, etc. Accepts file path, URL, or Base64.
-
-            Args:
-                input_data: The file to process (file path, URL, or Base64 string).
-                output_mode: The desired output format.
-                    - "simple": (Default) Clean, readable markdown with embedded images. Best for most use cases.
-                    - "detailed": JSON data about document structure, plus markdown. Only use this when coordinates are specifically required.
-                file_type: File type. This parameter is REQUIRED when `input_data` is a URL and should be omitted for other types.
-                    - "image": For image files
-                    - "pdf": For PDF documents
-                    - None: For unknown file types
-                return_images: Whether to return the images extracted from the document.
-            """
-            return await self.process(
-                input_data,
-                output_mode,
-                ctx,
-                file_type,
-                format_kwargs={"return_images": return_images},
-            )
-
-    def _create_local_engine(self) -> Any:
-        return PPStructureV3(
-            paddlex_config=self._pipeline_config,
-            device=self._device,
-        )
-
+class _LayoutParsingHandler(SimpleInferencePipelineHandler):
     def _get_service_endpoint(self) -> str:
         return "layout-parsing"
 
@@ -868,9 +831,88 @@ class PPStructureV3Handler(SimpleInferencePipelineHandler):
         return content_list or [TextContent(type="text", text=markdown_text)]
 
 
+class PPStructureV3Handler(_LayoutParsingHandler):
+    def register_tools(self, mcp: FastMCP) -> None:
+        @mcp.tool("pp_structurev3")
+        async def _pp_structurev3(
+            input_data: str,
+            output_mode: OutputMode = "simple",
+            file_type: Optional[str] = None,
+            return_images: bool = True,
+            *,
+            ctx: Context,
+        ) -> Union[str, List[Union[TextContent, ImageContent]]]:
+            """Extracts structured markdown from complex documents (images/PDFs), including tables, formulas, etc. Accepts file path, URL, or Base64.
+
+            Args:
+                input_data: The file to process (file path, URL, or Base64 string).
+                output_mode: The desired output format.
+                    - "simple": (Default) Clean, readable markdown with embedded images. Best for most use cases.
+                    - "detailed": JSON data about document structure, plus markdown. Only use this when coordinates are specifically required.
+                file_type: File type. This parameter is REQUIRED when `input_data` is a URL and should be omitted for other types.
+                    - "image": For image files
+                    - "pdf": For PDF documents
+                    - None: For unknown file types
+                return_images: Whether to return the images extracted from the document.
+            """
+            return await self.process(
+                input_data,
+                output_mode,
+                ctx,
+                file_type,
+                format_kwargs={"return_images": return_images},
+            )
+
+    def _create_local_engine(self) -> Any:
+        return PPStructureV3(
+            paddlex_config=self._pipeline_config,
+            device=self._device,
+        )
+
+
+class PaddleOCRVLHandler(_LayoutParsingHandler):
+    def register_tools(self, mcp: FastMCP) -> None:
+        @mcp.tool("paddleocr_vl")
+        async def _paddleocr_vl(
+            input_data: str,
+            output_mode: OutputMode = "simple",
+            file_type: Optional[str] = None,
+            return_images: bool = True,
+            *,
+            ctx: Context,
+        ) -> Union[str, List[Union[TextContent, ImageContent]]]:
+            """Extracts structured markdown from complex documents (images/PDFs) using a VLM-based approach. The extracted elements include tables, formulas, etc. Accepts file path, URL, or Base64.
+
+            Args:
+                input_data: The file to process (file path, URL, or Base64 string).
+                output_mode: The desired output format.
+                    - "simple": (Default) Clean, readable markdown with embedded images. Best for most use cases.
+                    - "detailed": JSON data about document structure, plus markdown. Only use this when coordinates are specifically required.
+                file_type: File type. This parameter is REQUIRED when `input_data` is a URL and should be omitted for other types.
+                    - "image": For image files
+                    - "pdf": For PDF documents
+                    - None: For unknown file types
+                return_images: Whether to return the images extracted from the document.
+            """
+            return await self.process(
+                input_data,
+                output_mode,
+                ctx,
+                file_type,
+                format_kwargs={"return_images": return_images},
+            )
+
+    def _create_local_engine(self) -> Any:
+        return PaddleOCRVL(
+            paddlex_config=self._pipeline_config,
+            device=self._device,
+        )
+
+
 _PIPELINE_HANDLERS: Dict[str, Type[PipelineHandler]] = {
     "OCR": OCRHandler,
     "PP-StructureV3": PPStructureV3Handler,
+    "PaddleOCR-VL": PaddleOCRVLHandler,
 }
 
 
