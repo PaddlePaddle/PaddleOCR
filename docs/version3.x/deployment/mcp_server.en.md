@@ -96,8 +96,8 @@ It is still recommended to use an isolated virtual environment to avoid conflict
 To install `paddleocr-mcp` using pip:
 
 ```bash
-# Install the wheel
-pip install https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/mcp/paddleocr_mcp/releases/v0.2.1/paddleocr_mcp-0.2.1-py3-none-any.whl
+# Install from PyPI
+pip install -U paddleocr-mcp
 
 # Or install from source
 # git clone https://github.com/PaddlePaddle/PaddleOCR.git
@@ -105,10 +105,10 @@ pip install https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/mcp/pa
 
 # Install with optional extras (choose ONE of the following if you prefer convenience installs)
 # Install PaddleOCR together with the MCP server (framework not included):
-pip install "paddleocr-mcp[local] @ https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/mcp/paddleocr_mcp/releases/v0.2.1/paddleocr_mcp-0.2.1-py3-none-any.whl"
+pip install "paddleocr-mcp[local]"
 
 # Install PaddleOCR and CPU PaddlePaddle framework together:
-pip install "paddleocr-mcp[local-cpu] @ https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/mcp/paddleocr_mcp/releases/v0.2.1/paddleocr_mcp-0.2.1-py3-none-any.whl"
+pip install "paddleocr-mcp[local-cpu]"
 ```
 
 To verify successful installation:
@@ -307,7 +307,7 @@ Currently, for the PaddleOCR official website and self-hosted modes, and (for CP
           "command": "uvx",
           "args": [
             "--from",
-            "paddleocr-mcp@https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/mcp/paddleocr_mcp/releases/v0.2.1/paddleocr_mcp-0.2.1-py3-none-any.whl",
+            "paddleocr-mcp",
             "paddleocr_mcp"
           ],
           "env": {
@@ -329,7 +329,7 @@ Currently, for the PaddleOCR official website and self-hosted modes, and (for CP
           "command": "uvx",
           "args": [
             "--from",
-            "paddleocr_mcp[local-cpu]@https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/mcp/paddleocr_mcp/releases/v0.2.1/paddleocr_mcp-0.2.1-py3-none-any.whl",
+            "paddleocr_mcp[local-cpu]",
             "paddleocr_mcp"
           ],
           "env": {
