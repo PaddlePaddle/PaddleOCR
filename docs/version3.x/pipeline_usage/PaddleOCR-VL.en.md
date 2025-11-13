@@ -1389,7 +1389,7 @@ Below are the API reference and examples of multi-language service invocation:
 </tr>
 <tr>
 <td><code>promptLabel</code></td>
-<td><code>string</code>|<code>object</code>|<code>null</code></td>
+<td><code>string</code>|<code>null</code></td>
 <td>Please refer to the description of the <code>prompt_label</code> parameter in the  <code>predict</code> method of the PaddleOCR-VL object.</td>
 <td>No</td>
 </tr>
