@@ -71,13 +71,18 @@ for res in output:
 ```
 
 参数含义如下：
-- `input_path`：输入的待预测图像的路径
-- `page_index`：如果输入是PDF文件，则表示当前是PDF的第几页，否则为 `None`
-- `boxes`：按照阅读顺序排序的版面元素预测信息，一个字典列表。按照阅读顺序，每个字典代表一个检出版面的元素，包含以下信息：
-  - `cls_id`：类别ID，一个整数
-  - `label`：类别标签，一个字符串
-  - `score`：目标框置信度，一个浮点数
-  - `coordinate`：目标框坐标，一个浮点数列表，格式为<code>[xmin, ymin, xmax, ymax]</code>
+<ul>
+<li><code>input_path</code>：输入的待预测图像的路径</li>
+<li><code>page_index</code>：如果输入是PDF文件，则表示当前是PDF的第几页，否则为 <code>None</code></li>
+<li><code>boxes</code>：预测的目标框信息，一个字典列表。每个字典代表一个检出的目标，包含以下信息：
+    <ol start="1" type="1">
+        <li><code>cls_id</code>：类别ID，一个整数</li>
+        <li><code>label</code>：类别标签，一个字符串</li>
+        <li><code>score</code>：目标框置信度，一个浮点数</li>
+        <li><code>coordinate</code>：目标框坐标，一个浮点数列表，格式为<code>[xmin, ymin, xmax, ymax]</code></li>
+    </ol>
+</li>
+</ul>
 
 
 相关方法、参数等说明如下：
@@ -94,7 +99,9 @@ for res in output:
 <tbody>
 <tr>
 <td><code>model_name</code></td>
-<td>模型名称。如果设置为<code>None</code>，则使用<code>PP-DocLayout-L</code></td>
+<td><b>含义：</b>模型名称。<br/>
+<b>说明：</b>
+如果设置为<code>None</code>，则使用<code>PP-DocLayout-L</code></td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -106,7 +113,8 @@ for res in output:
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>用于推理的设备。<br/>
+<td><b>含义：</b>用于推理的设备。<br/>
+<b>说明：</b>
 <b>例如：</b><code>"cpu"</code>、<code>"gpu"</code>、<code>"npu"</code>、<code>"gpu:0"</code>、<code>"gpu:0,1"</code>。<br/>
 如指定多个设备，将进行并行推理。<br/>
 默认情况下，优先使用 GPU 0；若不可用则使用 CPU。
@@ -122,7 +130,9 @@ for res in output:
 </tr>
 <tr>
 <td><code>use_tensorrt</code></td>
-<td>是否启用 Paddle Inference 的 TensorRT 子图引擎。如果模型不支持通过 TensorRT 加速，即使设置了此标志，也不会使用加速。<br/>
+<td><b>含义：</b>是否启用 Paddle Inference 的 TensorRT 子图引擎。<br/>
+<b>说明：</b>
+如果模型不支持通过 TensorRT 加速，即使设置了此标志，也不会使用加速。<br/>
 对于 CUDA 11.8 版本的飞桨，兼容的 TensorRT 版本为 8.x（x>=6），建议安装 TensorRT 8.6.1.6。<br/>
 
 </td>
@@ -131,14 +141,18 @@ for res in output:
 </tr>
 <tr>
 <td><code>precision</code></td>
-<td>当使用 Paddle Inference 的 TensorRT 子图引擎时设置的计算精度。<br/><b>可选项：</b><code>"fp32"</code>、<code>"fp16"</code>。</td>
+<td><b>含义：</b>当使用 Paddle Inference 的 TensorRT 子图引擎时设置的计算精度。<br/>
+<b>说明：</b>
+<b>可选项：</b><code>"fp32"</code>、<code>"fp16"</code>。</td>
 <td><code>str</code></td>
 <td><code>"fp32"</code></td>
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
 <td>
-是否启用 MKL-DNN 加速推理。如果 MKL-DNN 不可用或模型不支持通过 MKL-DNN 加速，即使设置了此标志，也不会使用加速。<br/>
+<b>含义：</b>是否启用 MKL-DNN 加速推理。<br/>
+<b>说明：</b>
+如果 MKL-DNN 不可用或模型不支持通过 MKL-DNN 加速，即使设置了此标志，也不会使用加速。<br/>
 </td>
 <td><code>bool</code></td>
 <td><code>True</code></td>
@@ -146,20 +160,21 @@ for res in output:
 <tr>
 <td><code>mkldnn_cache_capacity</code></td>
 <td>
-MKL-DNN 缓存容量。
+<b>含义：</b>MKL-DNN 缓存容量。
 </td>
 <td><code>int</code></td>
 <td><code>10</code></td>
 </tr>
 <tr>
 <td><code>cpu_threads</code></td>
-<td>在 CPU 上推理时使用的线程数量。</td>
+<td><b>含义：</b>在 CPU 上推理时使用的线程数量。</td>
 <td><code>int</code></td>
 <td><code>10</code></td>
 </tr>
 <tr>
 <td><code>img_size</code></td>
-<td>输入图像大小。
+<td><b>含义：</b>输入图像大小。<br/>
+<b>说明：</b>
 <ul>
 <li><b>int</b>：如<code>640</code>，表示将输入图像resize到640x640大小。</li>
 <li><b>list</b>：如<code>[640, 512]</code>，表示将输入图像resize到宽为640、高为512。</li>
@@ -170,7 +185,8 @@ MKL-DNN 缓存容量。
 </tr>
 <tr>
 <td><code>threshold</code></td>
-<td>用于过滤掉低置信度预测结果的阈值。
+<td><b>含义：</b>用于过滤掉低置信度预测结果的阈值。<br/>
+<b>说明：</b>
 <ul>
 <li><b>float</b>：如<code>0.2</code>，表示过滤掉所有阈值小于0.2的目标框。</li>
 <li><b>dict</b>：字典的键为<code>int</code>类型，代表类别ID；值为<code>float</code>类型阈值。如<code>{0: 0.45, 2: 0.48, 7: 0.4}</code>，表示对ID为0的类别应用阈值0.45、ID为1的类别应用阈值0.48、ID为7的类别应用阈值0.4。</li>
@@ -182,7 +198,8 @@ MKL-DNN 缓存容量。
 </tr>
 <tr>
 <td><code>layout_nms</code></td>
-<td>是否使用NMS后处理，过滤重叠框。
+<td><b>含义：</b>是否使用NMS后处理，过滤重叠框。<br/>
+<b>说明：</b>
 <ul>
 <li><b>bool</b>表示使用/不使用NMS进行检测框的后处理过滤重叠框。</li>
 <li><b>None</b>使用模型默认的配置。</li>
@@ -193,7 +210,8 @@ MKL-DNN 缓存容量。
 </tr>
 <tr>
 <td><code>layout_unclip_ratio</code></td>
-<td>检测框的边长缩放倍数。</b>
+<td><b>含义：</b>检测框的边长缩放倍数。<br/>
+<b>说明：</b>
 <ul>
 <li><b>float</b>：大于0的浮点数，如<code>1.1</code>，表示将模型输出的检测框中心不变，宽和高都扩张1.1倍。</li>
 <li><b>list</b>：如<code>[1.2, 1.5]</code>，表示将模型输出的检测框中心不变，宽度扩张1.2倍，高度扩张1.5倍。</li>
@@ -206,7 +224,8 @@ MKL-DNN 缓存容量。
 </tr>
 <tr>
 <td><code>layout_merge_bboxes_mode</code></td>
-<td>模型输出的检测框的合并处理模式。
+<td><b>含义：</b>模型输出的检测框的合并处理模式。<br/>
+<b>说明：</b>
 <ul>
 <li><b>"large"</b>：设置为<code>"large"</code>，表示在模型输出的检测框中，对于互相重叠包含的检测框，只保留外部最大的框，删除重叠的内部框。</li>
 <li><b>"small"</b>：设置为<code>"small"</code>，表示在模型输出的检测框中，对于互相重叠包含的检测框，只保留内部被包含的小框，删除重叠的外部框。</li>
@@ -222,7 +241,7 @@ MKL-DNN 缓存容量。
 </table>
 
 
-* 调用目标检测模型的 `predict()` 方法进行推理预测，该方法会返回一个结果列表。另外，本模块还提供了 `predict_iter()` 方法。两者在参数接受和结果返回方面是完全一致的，区别在于 `predict_iter()` 返回的是一个 `generator`，能够逐步处理和获取预测结果，适合处理大型数据集或希望节省内存的场景。可以根据实际需求选择使用这两种方法中的任意一种。`predict()` 方法参数有 `input`、`batch_size`和`threshold`，具体说明如下：
+* 调用目标检测模型的 <code>predict()</code> 方法进行推理预测，该方法会返回一个结果列表。另外，本模块还提供了 <code>predict_iter()</code> 方法。两者在参数接受和结果返回方面是完全一致的，区别在于 <code>predict_iter()</code> 返回的是一个 <code>generator</code>，能够逐步处理和获取预测结果，适合处理大型数据集或希望节省内存的场景。可以根据实际需求选择使用这两种方法中的任意一种。<code>predict()</code> 方法参数有 <code>input</code> 、<code>batch_size</code>和<code>threshold</code>，具体说明如下：
 <table>
 <thead>
 <tr>
@@ -234,7 +253,8 @@ MKL-DNN 缓存容量。
 </thead>
 <tr>
 <td><code>input</code></td>
-<td>待预测数据，支持多种输入类型，必填。
+<td><b>含义：</b>待预测数据，支持多种输入类型，必填。<br/>
+<b>说明：</b>
 <ul>
 <li><b>Python Var</b>：如 <code>numpy.ndarray</code> 表示的图像数据</li>
 <li><b>str</b>：如图像文件或者PDF文件的本地路径：<code>/root/data/img.jpg</code>；<b>如URL链接</b>，如图像文件或PDF文件的网络URL：<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/img_rot180_demo.jpg">示例</a>；<b>如本地目录</b>，该目录下需包含待预测图像，如本地路径：<code>/root/data/</code>(当前不支持目录中包含PDF文件的预测，PDF文件需要指定到具体文件路径)</li>
@@ -246,31 +266,41 @@ MKL-DNN 缓存容量。
 </tr>
 <tr>
 <td><code>batch_size</code></td>
-<td>批大小，可设置为任意正整数。</td>
+<td><b>含义：</b>批大小。<br/>
+<b>说明：</b>
+可设置为任意正整数。</td>
 <td><code>int</code></td>
 <td>1</td>
 </tr>
 <tr>
 <td><code>threshold</code></td>
-<td>参数含义与实例化参数基本相同。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td><b>含义：</b>参数含义与实例化参数基本相同。<br/>
+<b>说明：</b>
+设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
 <td><code>float|dict|None</code></td>
 <td>None</td>
 </tr>
 <tr>
 <td><code>layout_nms</code></td>
-<td>参数含义与实例化参数基本相同。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</b>
+<td><b>含义：</b>参数含义与实例化参数基本相同。<br/>
+<b>说明：</b>
+设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
 <td><code>bool|None</code></td>
 <td>None</td>
 </tr>
 <tr>
 <td><code>layout_unclip_ratio</code></td>
-<td>参数含义与实例化参数基本相同。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。
+<td><b>含义：</b>参数含义与实例化参数基本相同。<br/>
+<b>说明：</b>
+设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
 <td><code>float|list|dict|None</code></td>
 <td>None</td>
 </tr>
 <tr>
 <td><code>layout_merge_bboxes_mode</code></td>
-<td>参数含义与实例化参数基本相同。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。
+<td><b>含义：</b>参数含义与实例化参数基本相同。<br/>
+<b>说明：</b>
+设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。
 </td>
 <td><code>str|dict|None</code></td>
 <td>None</td>
@@ -278,7 +308,7 @@ MKL-DNN 缓存容量。
 </tbody>
 </table>
 
-* 对预测结果进行处理，每个样本的预测结果均为对应的Result对象，且支持打印、保存为图片、保存为`json`文件的操作:
+* 对预测结果进行处理，每个样本的预测结果均为对应的Result对象，且支持打印、保存为图片、保存为<code>json</code>文件的操作:
 
 <table>
 <thead>
