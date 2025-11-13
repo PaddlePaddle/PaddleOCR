@@ -71,5 +71,5 @@ python deploy/slim/prune/export_prune_model.py -c configs/det/ch_ppocr_v2.0/ch_d
 
 Reference for prediction and deployment of inference model:
 
-1. [inference model python prediction](../infer_deploy/python_infer.en.md)
-2. [inference model C++ prediction](../infer_deploy/cpp_infer.en.md)
+1. [inference model python prediction](../../legacy/python_infer.en.md)
+2. [inference model C++ prediction](../../legacy/cpp_infer.en.md)

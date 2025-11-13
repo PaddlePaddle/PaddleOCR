@@ -1,0 +1,97 @@
+
+pipeline_name: PaddleOCR-VL
+
+batch_size: 64
+
+use_queues: True
+
+use_doc_preprocessor: False
+use_layout_detection: True
+use_chart_recognition: False
+format_block_content: False
+
+SubModules:
+  LayoutDetection:
+    module_name: layout_detection
+    model_name: PP-DocLayoutV2
+    model_dir: null
+    batch_size: 8
+    threshold: 
+      0: 0.5 # abstract
+      1: 0.5 # algorithm
+      2: 0.5 # aside_text
+      3: 0.5 # chart
+      4: 0.5 # content
+      5: 0.4 # formula
+      6: 0.4 # doc_title
+      7: 0.5 # figure_title
+      8: 0.5 # footer
+      9: 0.5 # footer
+      10: 0.5 # footnote
+      11: 0.5 # formula_number
+      12: 0.5 # header
+      13: 0.5 # header
+      14: 0.5 # image
+      15: 0.4 # formula
+      16: 0.5 # number
+      17: 0.4 # paragraph_title
+      18: 0.5 # reference
+      19: 0.5 # reference_content
+      20: 0.45 # seal
+      21: 0.5 # table
+      22: 0.4 # text
+      23: 0.4 # text
+      24: 0.5 # vision_footnote
+    layout_nms: True
+    layout_unclip_ratio: [1.0, 1.0] 
+    layout_merge_bboxes_mode: 
+      0: "union" # abstract
+      1: "union" # algorithm
+      2: "union" # aside_text
+      3: "large" # chart
+      4: "union" # content
+      5: "large" # display_formula
+      6: "large" # doc_title
+      7: "union" # figure_title
+      8: "union" # footer
+      9: "union" # footer
+      10: "union" # footnote
+      11: "union" # formula_number
+      12: "union" # header
+      13: "union" # header
+      14: "union" # image
+      15: "large" # inline_formula
+      16: "union" # number
+      17: "large" # paragraph_title
+      18: "union" # reference
+      19: "union" # reference_content
+      20: "union" # seal
+      21: "union" # table
+      22: "union" # text
+      23: "union" # text
+      24: "union" # vision_footnote
+  VLRecognition:
+    module_name: vl_recognition
+    model_name: PaddleOCR-VL-0.9B
+    model_dir: null
+    batch_size: 4096
+    genai_config:
+      backend: fastdeploy-server
+      server_url: http://paddleocr-vlm-server:8080/v1
+
+SubPipelines:
+  DocPreprocessor:
+    pipeline_name: doc_preprocessor
+    batch_size: 8
+    use_doc_orientation_classify: True
+    use_doc_unwarping: True
+    SubModules:
+      DocOrientationClassify:
+        module_name: doc_text_orientation
+        model_name: PP-LCNet_x1_0_doc_ori
+        model_dir: null
+        batch_size: 8
+      DocUnwarping:
+        module_name: image_unwarping
+        model_name: UVDoc
+        model_dir: null

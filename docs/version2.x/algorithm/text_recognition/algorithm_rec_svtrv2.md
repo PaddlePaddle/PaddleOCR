@@ -13,10 +13,10 @@ comments: true
 |模型|配置文件|端到端|下载链接|
 | --- | --- | --- | --- |
 |PP-OCRv4| |A榜 62.77% <br> B榜 62.51%| [Model List](../../ppocr/model_list.md) |
-|SVTRv2(Rec Sever)|[configs/rec/SVTRv2/ch_SVTRv2_rec.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/SVTRv2/ch_SVTRv2_rec.yml)|A榜 68.81% (使用PP-OCRv4检测模型)| [训练模型](https://paddleocr.bj.bcebos.com/openatom/openatom_rec_svtrv2_ch_train.tar) / [推理模型](https://paddleocr.bj.bcebos.com/openatom/openatom_rec_svtrv2_ch_infer.tar) |
-|RepSVTR(Mobile)|[识别](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/SVTRv2/ch_RepSVTR_rec.yml) <br> [识别蒸馏](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/SVTRv2/ch_SVTRv2_rec_distillation.yml) <br> [检测](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/det/det_repsvtr_db.yml)|B榜 65.07%| 识别: [训练模型](https://paddleocr.bj.bcebos.com/openatom/openatom_rec_repsvtr_ch_train.tar) / [推理模型](https://paddleocr.bj.bcebos.com/openatom/openatom_rec_repsvtr_ch_infer.tar) <br> 识别蒸馏: [训练模型](https://paddleocr.bj.bcebos.com/openatom/openatom_rec_svtrv2_distill_ch_train.tar) / [推理模型](https://paddleocr.bj.bcebos.com/openatom/openatom_rec_svtrv2_distill_ch_infer.tar) <br> 检测: [训练模型](https://paddleocr.bj.bcebos.com/openatom/openatom_det_repsvtr_ch_train.tar) / [推理模型](https://paddleocr.bj.bcebos.com/openatom/openatom_det_repsvtr_ch_infer.tar) |
+|SVTRv2(Rec Sever)|[configs/rec/SVTRv2/ch_SVTRv2_rec.yml](../../../../configs/rec/SVTRv2/ch_SVTRv2_rec.yml)|A榜 68.81% (使用PP-OCRv4检测模型)| [训练模型](https://paddleocr.bj.bcebos.com/openatom/openatom_rec_svtrv2_ch_train.tar) / [推理模型](https://paddleocr.bj.bcebos.com/openatom/openatom_rec_svtrv2_ch_infer.tar) |
+|RepSVTR(Mobile)|[识别](../../../../configs/rec/SVTRv2/ch_RepSVTR_rec.yml) <br> [识别蒸馏](../../../../configs/rec/SVTRv2/ch_SVTRv2_rec_distillation.yml) <br> [检测](../../../../configs/det/det_repsvtr_db.yml)|B榜 65.07%| 识别: [训练模型](https://paddleocr.bj.bcebos.com/openatom/openatom_rec_repsvtr_ch_train.tar) / [推理模型](https://paddleocr.bj.bcebos.com/openatom/openatom_rec_repsvtr_ch_infer.tar) <br> 识别蒸馏: [训练模型](https://paddleocr.bj.bcebos.com/openatom/openatom_rec_svtrv2_distill_ch_train.tar) / [推理模型](https://paddleocr.bj.bcebos.com/openatom/openatom_rec_svtrv2_distill_ch_infer.tar) <br> 检测: [训练模型](https://paddleocr.bj.bcebos.com/openatom/openatom_det_repsvtr_ch_train.tar) / [推理模型](https://paddleocr.bj.bcebos.com/openatom/openatom_det_repsvtr_ch_infer.tar) |
 
-🚀 快速使用：参考PP-OCR推理[说明文档](https://github.com/PaddlePaddle/PaddleOCR/blob/main/doc/doc_ch/inference_ppocr.md)，将检测和识别模型替换为上表中对应的RepSVTR或SVTRv2推理模型即可使用。
+🚀 快速使用：参考PP-OCR推理[说明文档](../../legacy/python_infer.md)，将检测和识别模型替换为上表中对应的RepSVTR或SVTRv2推理模型即可使用。
 
 ## 2. 环境配置
 
@@ -87,7 +87,7 @@ python3 tools/infer/predict_rec.py --image_dir='./doc/imgs_words_en/word_10.png'
 # 预测文件夹下所有图像时，可修改image_dir为文件夹，如 --image_dir='./doc/imgs_words_en/'。
 ```
 
-![](../../ppocr/infer_deploy/images/word_10.png)
+![](./images/word_10.png)
 
 执行命令后，上面图像的预测结果（识别的文本和得分）会打印到屏幕上，示例如下：
 结果如下：

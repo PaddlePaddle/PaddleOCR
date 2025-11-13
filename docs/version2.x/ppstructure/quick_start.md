@@ -397,4 +397,4 @@ dict 里各个字段说明如下：
 
 ## 3. 小结
 
-通过本节内容，相信您已经熟练掌握通过PaddleOCR whl包调用PP-Structure相关功能的使用方法，您可以参考[文档教程](../index.md)，获取包括模型训练、推理部署等更详细的使用教程。
+通过本节内容，相信您已经熟练掌握通过PaddleOCR whl包调用PP-Structure相关功能的使用方法，您可以参考[文档教程](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.7.1/README_ch.md)，获取包括模型训练、推理部署等更详细的使用教程。

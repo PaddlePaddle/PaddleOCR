@@ -299,6 +299,8 @@ class PPStructureV3(PaddleXPipelineWrapper):
             "SubPipelines.DocPreprocessor.use_doc_unwarping": self._params[
                 "use_doc_unwarping"
             ],
+            "use_doc_preprocessor": self._params["use_doc_orientation_classify"]
+            or self._params["use_doc_unwarping"],
             "SubPipelines.GeneralOCR.use_textline_orientation": self._params[
                 "use_textline_orientation"
             ],

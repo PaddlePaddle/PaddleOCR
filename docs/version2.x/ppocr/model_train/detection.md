@@ -11,7 +11,7 @@ comments: true
 
 ### 1.1 准备数据集
 
-准备数据集可参考 [ocr_datasets](../../datasets/ocr_datasets.md) 。
+准备数据集可参考 [ocr_datasets](../../../datasets/ocr_datasets.md) 。
 
 ### 1.2 下载预训练模型
 
@@ -68,7 +68,7 @@ python3 tools/train.py -c configs/det/det_mv3_db.yml -o Global.checkpoints=./you
 
 ### 2.3 更换Backbone 训练
 
-PaddleOCR将网络划分为四部分，分别在[ppocr/modeling](../../ppocr/modeling)下。 进入网络的数据将按照顺序(transforms->backbones->
+PaddleOCR将网络划分为四部分，分别在[ppocr/modeling](../../../../ppocr/modeling)下。 进入网络的数据将按照顺序(transforms->backbones->
 necks->heads)依次通过这四个部分。
 
 ```bash linenums="1"
@@ -83,7 +83,7 @@ necks->heads)依次通过这四个部分。
 
 如果要使用新的Backbone，更换backbones的例子如下:
 
-1. 在 [ppocr/modeling/backbones](../../ppocr/modeling/backbones) 文件夹下新建文件，如my_backbone.py。
+1. 在 [ppocr/modeling/backbones](../../../../ppocr/modeling/backbones) 文件夹下新建文件，如my_backbone.py。
 2. 在 my_backbone.py 文件内添加相关代码，示例代码如下:
 
 ```python linenums="1"
@@ -104,7 +104,7 @@ class MyBackbone(nn.Layer):
         return y
 ```
 
-3. 在 [ppocr/modeling/backbones/\_*init\_*.py](../../ppocr/modeling/backbones/__init__.py)文件内导入添加的`MyBackbone`模块，然后修改配置文件中Backbone进行配置即可使用，格式如下:
+3. 在 [ppocr/modeling/backbones/\_*init\_*.py](../../../../ppocr/modeling/backbones/__init__.py)文件内导入添加的`MyBackbone`模块，然后修改配置文件中Backbone进行配置即可使用，格式如下:
 
 ```yaml linenums="1"
 Backbone:
@@ -228,8 +228,8 @@ Q1: 训练模型转inference 模型之后预测效果不一致？
 
 **A**：此类问题出现较多，问题多是trained model预测时候的预处理、后处理参数和inference model预测的时候的预处理、后处理参数不一致导致的。以det_mv3_db.yml配置文件训练的模型为例，训练模型、inference模型预测结果不一致问题解决方式如下：
 
-- 检查[trained model预处理](https://github.com/PaddlePaddle/PaddleOCR/blob/c1ed243fb68d5d466258243092e56cbae32e2c14/configs/det/det_mv3_db.yml#L116)，和[inference model的预测预处理](https://github.com/PaddlePaddle/PaddleOCR/blob/c1ed243fb68d5d466258243092e56cbae32e2c14/tools/infer/predict_det.py#L42)函数是否一致。算法在评估的时候，输入图像大小会影响精度，为了和论文保持一致，训练icdar15配置文件中将图像resize到[736, 1280]，但是在inference model预测的时候只有一套默认参数，会考虑到预测速度问题，默认限制图像最长边为960做resize的。训练模型预处理和inference模型的预处理函数位于[ppocr/data/imaug/operators.py](https://github.com/PaddlePaddle/PaddleOCR/blob/c1ed243fb68d5d466258243092e56cbae32e2c14/ppocr/data/imaug/operators.py#L147)
-- 检查[trained model后处理](https://github.com/PaddlePaddle/PaddleOCR/blob/c1ed243fb68d5d466258243092e56cbae32e2c14/configs/det/det_mv3_db.yml#L51)，和[inference 后处理参数](https://github.com/PaddlePaddle/PaddleOCR/blob/c1ed243fb68d5d466258243092e56cbae32e2c14/tools/infer/utility.py#L50)是否一致。
+- 检查[trained model预处理](../../../../configs/det/det_mv3_db.yml#L116)，和[inference model的预测预处理](../../../../tools/infer/predict_det.py#L42)函数是否一致。算法在评估的时候，输入图像大小会影响精度，为了和论文保持一致，训练icdar15配置文件中将图像resize到[736, 1280]，但是在inference model预测的时候只有一套默认参数，会考虑到预测速度问题，默认限制图像最长边为960做resize的。训练模型预处理和inference模型的预处理函数位于[ppocr/data/imaug/operators.py](../../../../ppocr/data/imaug/operators.py#L147)
+- 检查[trained model后处理](../../../../configs/det/det_mv3_db.yml#L51)，和[inference 后处理参数](../../../../tools/infer/utility.py#L50)是否一致。
 
 Q1: 训练EAST模型提示找不到lanms库？
 

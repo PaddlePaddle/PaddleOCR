@@ -22,7 +22,7 @@ from .base import PaddleXPipelineWrapper, PipelineCLISubcommandExecutor
 from .utils import create_config_from_structure
 
 
-_SUPPORTED_VL_BACKENDS = ["native", "vllm-server", "sglang-server"]
+_SUPPORTED_VL_BACKENDS = ["native", "vllm-server", "sglang-server", "fastdeploy-server"]
 
 
 class PaddleOCRVL(PaddleXPipelineWrapper):
@@ -169,6 +169,8 @@ class PaddleOCRVL(PaddleXPipelineWrapper):
             "SubPipelines.DocPreprocessor.use_doc_unwarping": self._params[
                 "use_doc_unwarping"
             ],
+            "use_doc_preprocessor": self._params["use_doc_orientation_classify"]
+            or self._params["use_doc_unwarping"],
             "use_layout_detection": self._params["use_layout_detection"],
             "use_chart_recognition": self._params["use_chart_recognition"],
             "format_block_content": self._params["format_block_content"],

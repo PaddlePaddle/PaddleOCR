@@ -26,4 +26,5 @@
 | [PaddleSharp](https://github.com/sdcb/PaddleSharp) <a href="https://github.com/sdcb/PaddleSharp"><img src="https://img.shields.io/github/stars/sdcb/PaddleSharp"></a>|.NET/C# binding for Baidu paddle inference library and PaddleOCR |
 | [python-office](https://github.com/CoderWanFeng/python-office) <a href="https://github.com/CoderWanFeng/python-office"><img src="https://img.shields.io/github/stars/CoderWanFeng/python-office"></a> | Python tool for office works. |
 | [OnnxOCR](https://github.com/jingsongliujing/OnnxOCR) <a href="https://github.com/jingsongliujing/OnnxOCR"><img src="https://img.shields.io/github/stars/jingsongliujing/OnnxOCR"></a>|A lightweight OCR system based on PaddleOCR, decoupled from the PaddlePaddle deep learning training framework, with ultra-fast inference speed |
+| [Frigate](https://github.com/blakeblackshear/frigate) <a href="https://github.com/blakeblackshear/frigate"><img src="https://img.shields.io/github/stars/blakeblackshear/frigate"></a> | Real-time NVR system with AI-powered object detection and License Plate Recognition (LPR) using PaddleOCR. |
 | ... |... |
