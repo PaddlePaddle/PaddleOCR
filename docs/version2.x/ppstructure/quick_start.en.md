@@ -262,7 +262,7 @@ for line in result:
 
 #### 2.2.5 Key Information Extraction
 
-Key information extraction does not currently support use by the whl package. For detailed usage tutorials, please refer to: [Inference](../infer_deploy/python_infer.en.md).
+Key information extraction does not currently support use by the whl package. For detailed usage tutorials, please refer to: [Inference](../legacy/python_infer.en.md).
 
 #### 2.2.6 layout recovery
 
@@ -392,4 +392,4 @@ Most of the parameters are consistent with the PaddleOCR whl package, see [whl p
 
 ## 3. Summary
 
-Through the content in this section, you can master the use of PP-Structure related functions through PaddleOCR whl package. Please refer to [documentation tutorial](../index.en.md) for more detailed usage tutorials including model training, inference and deployment, etc.
+Through the content in this section, you can master the use of PP-Structure related functions through PaddleOCR whl package. Please refer to [documentation tutorial](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.7.1/README_en.md) for more detailed usage tutorials including model training, inference and deployment, etc.

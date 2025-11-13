@@ -6,21 +6,43 @@ hide:
 ---
 
 
+---
+comments: true
+hide:
+  - navigation
+  - toc
+---
 
-![PaddleOCR Banner](./images/Banner.png)
+<div align="center">
+  <p>
+    <a href="https://paddlepaddle.github.io/PaddleOCR/latest/index.html" target="_blank">
+      <img width="100%" src="./images/Banner.png" alt="PaddleOCR Banner"></a>
+  </p>
+</div>
+
 
 Since its initial release, PaddleOCR has gained widespread acclaim across academia, industry, and research communities, thanks to its cutting-edge algorithms and proven performance in real-world applications. It’s already powering popular open-source projects like Umi-OCR, OmniParser, MinerU, and RAGFlow, making it the go-to OCR toolkit for developers worldwide.
 
 On May 20, 2025, the PaddlePaddle team unveiled PaddleOCR 3.0, fully compatible with the official release of the [PaddlePaddle 3.0](https://github.com/PaddlePaddle/Paddle) framework. This update further **boosts text-recognition accuracy**, adds support for **multiple text-type recognition** and **handwriting recognition**, and meets the growing demand from large-model applications for **high-precision parsing of complex documents**. When combined with the **ERNIE 4.5**, it significantly enhances key-information extraction accuracy. PaddleOCR 3.0 also introduces support for domestic hardware platforms such as **KUNLUNXIN** and **Ascend**.
 
 
-Three Major New Features in PaddleOCR 3.0:
+**Major Features in PaddleOCR 3.x:**
 
-- 🖼️ Universal-Scene Text Recognition Model [PP-OCRv5](version3.x/algorithm/PP-OCRv5/PP-OCRv5.en.md): A single model that handles five different text types plus complex handwriting. Overall recognition accuracy has increased by 13 percentage points over the previous generation.[Online Demo](https://aistudio.baidu.com/community/app/91660/webUI)
+- **PaddleOCR-VL - Multilingual Document Parsing via a 0.9B VLM**  
+  **The SOTA and resource-efficient model tailored for document parsing**, that supports 109 languages and excels in recognizing complex elements (e.g., text, tables, formulas, and charts), while maintaining minimal resource consumption.
 
-- 🧮 General Document-Parsing Solution [PP-StructureV3](./version3.x/algorithm/PP-StructureV3/PP-StructureV3.en.md): Delivers high-precision parsing of multi-layout, multi-scene PDFs, outperforming many open- and closed-source solutions on public benchmarks. [Online Demo](https://aistudio.baidu.com/community/app/518494/webUI)
+- **PP-OCRv5 — Universal Scene Text Recognition**  
+  **Single model supports five text types** (Simplified Chinese, Traditional Chinese, English, Japanese, and Pinyin) with **13% accuracy improvement**. Solves multilingual mixed document recognition challenges.
 
-- 📈 Intelligent Document-Understanding Solution [PP-ChatOCRv4](./version3.x/algorithm/PP-ChatOCRv4/PP-ChatOCRv4.en.md): Natively powered by the ERNIE 4.5, achieving 15 percentage points higher accuracy than its predecessor.[Online Demo](https://aistudio.baidu.com/community/app/518493/webUI)
+- **PP-StructureV3 — Complex Document Parsing**  
+  Intelligently converts complex PDFs and document images into **Markdown and JSON files that preserve original structure**. **Outperforms** numerous commercial solutions in public benchmarks. **Perfectly maintains document layout and hierarchical structure**.
+
+- **PP-ChatOCRv4 — Intelligent Information Extraction**  
+  Natively integrates ERNIE 4.5 to **precisely extract key information** from massive documents, with 15% accuracy improvement over previous generation. Makes documents "**understand**" your questions and provide accurate answers.
+
+> [!TIP]
+> 
+> On October 24, 2025, the PaddleOCR official website Beta version was launched, offering a more convenient online experience and large-scale PDF file parsing, as well as free API and MCP services. For more details, please visit the [PaddleOCR official website](https://www.paddleocr.com).
 
 In addition to providing an outstanding model library, PaddleOCR 3.0 also offers user-friendly tools covering model training, inference, and service deployment, so developers can rapidly bring AI applications to production.
 
@@ -38,10 +60,31 @@ You can [Quick Start](./quick_start.en.md) directly, find comprehensive document
 ## 🔄 Quick Overview of Execution Results
 
 
-![PP-OCRv5 Demo](./images/demo.gif)
+### PP-OCRv5
 
-![PP-StructureV3 Demo](./images/blue_v3.gif)
+<div align="center">
+  <p>
+       <img width="100%" src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/paddleocr/README/PP-OCRv5_demo.gif" alt="PP-OCRv5 Demo">
+  </p>
+</div>
 
+
+
+### PP-StructureV3
+
+<div align="center">
+  <p>
+      <img width="100%" src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/paddleocr/README/PP-StructureV3_demo.gif" alt="PP-StructureV3 Demo">
+  </p>
+</div>
+
+### PaddleOCR-VL
+
+<div align="center">
+  <p>
+      <img width="100%" src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/paddleocr/README/PaddleOCR-VL_demo.gif" alt="PP-StructureV3 Demo">
+  </p>
+</div>
 
 ## 👩‍👩‍👧‍👦 Community
 * The [PaddleOCR Best Practice Projects](https://aistudio.baidu.com/activitydetail/1503019405) call for submissions is now open!
