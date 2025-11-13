@@ -10,7 +10,7 @@ This section uses the icdar2015 dataset as an example to introduce the training,
 
 ### 1.1 Data Preparation
 
-To prepare datasets, refer to [ocr_datasets](../../datasets/ocr_datasets.en.md).
+To prepare datasets, refer to [ocr_datasets](../../../datasets/ocr_datasets.en.md).
 
 ### 1.2 Download Pre-trained Model
 
@@ -84,7 +84,7 @@ python3 tools/train.py -c configs/det/det_mv3_db.yml -o Global.checkpoints=./you
 
 ### 2.3 Training with New Backbone
 
-The network part completes the construction of the network, and PaddleOCR divides the network into four parts, which are under [ppocr/modeling](../../ppocr/modeling). The data entering the network will pass through these four parts in sequence(transforms->backbones->
+The network part completes the construction of the network, and PaddleOCR divides the network into four parts, which are under [ppocr/modeling](../../../../ppocr/modeling). The data entering the network will pass through these four parts in sequence(transforms->backbones->
 necks->heads).
 
 ```bash linenums="1"
@@ -99,7 +99,7 @@ If the Backbone to be replaced has a corresponding implementation in PaddleOCR, 
 
 However, if you want to use a new Backbone, an example of replacing the backbones is as follows:
 
-1. Create a new file under the [ppocr/modeling/backbones](../../ppocr/modeling/backbones) folder, such as my_backbone.py.
+1. Create a new file under the [ppocr/modeling/backbones](../../../../ppocr/modeling/backbones) folder, such as my_backbone.py.
 2. Add code in the my_backbone.py file, the sample code is as follows:
 
 ```python linenums="1"
@@ -120,7 +120,7 @@ class MyBackbone(nn.Layer):
         return y
 ```
 
-3. Import the added module in the [ppocr/modeling/backbones/\_*init\_*.py](../../ppocr/modeling/backbones/__init__.py) file.
+3. Import the added module in the [ppocr/modeling/backbones/\_*init\_*.py](../../../../ppocr/modeling/backbones/__init__.py) file.
 
 After adding the four-part modules of the network, you only need to configure them in the configuration file to use, such as:
 
@@ -172,7 +172,7 @@ Running on a DCU device requires setting the environment variable `export HIP_VI
 
 ### 2.8 Fine-tuning
 
-In actual use, it is recommended to load the official pre-trained model and fine-tune it in your own data set. For the fine-tuning method of the detection model, please refer to: [Model Fine-tuning Tutorial](./finetune_en.md).
+In actual use, it is recommended to load the official pre-trained model and fine-tune it in your own data set. For the fine-tuning method of the detection model, please refer to: [Model Fine-tuning Tutorial](./finetune.en.md).
 
 ## 3. Evaluation and Test
 
@@ -244,5 +244,5 @@ Q1: The prediction results of trained model and inference model are inconsistent
 
 **A**: Most of the problems are caused by the inconsistency of the pre-processing and post-processing parameters during the prediction of the trained model and the pre-processing and post-processing parameters during the prediction of the inference model. Taking the model trained by the det_mv3_db.yml configuration file as an example, the solution to the problem of inconsistent prediction results between the training model and the inference model is as follows:
 
-- Check whether the [trained model preprocessing](https://github.com/PaddlePaddle/PaddleOCR/blob/c1ed243fb68d5d466258243092e56cbae32e2c14/configs/det/det_mv3_db.yml#L116) is consistent with the prediction [preprocessing function of the inference model](https://github.com/PaddlePaddle/PaddleOCR/blob/c1ed243fb68d5d466258243092e56cbae32e2c14/tools/infer/predict_det.py#L42). When the algorithm is evaluated, the input image size will affect the accuracy. In order to be consistent with the paper, the image is resized to [736, 1280] in the training icdar15 configuration file, but there is only a set of default parameters when the inference model predicts, which will be considered. To predict the speed problem, the longest side of the image is limited to 960 for resize by default. The preprocessing function of the training model preprocessing and the inference model is located in [ppocr/data/imaug/operators.py](https://github.com/PaddlePaddle/PaddleOCR/blob/c1ed243fb68d5d466258243092e56cbae32e2c14/ppocr/data/imaug/operators.py#L147).
-- Check whether the [post-processing of the trained model](https://github.com/PaddlePaddle/PaddleOCR/blob/c1ed243fb68d5d466258243092e56cbae32e2c14/configs/det/det_mv3_db.yml#L51) is consistent with the [post-processing parameters of the inference](https://github.com/PaddlePaddle/PaddleOCR/blob/c1ed243fb68d5d466258243092e56cbae32e2c14/tools/infer/utility.py#L50).
+- Check whether the [trained model preprocessing](../../../../configs/det/det_mv3_db.yml#L116) is consistent with the prediction [preprocessing function of the inference model](../../../../tools/infer/predict_det.py#L42). When the algorithm is evaluated, the input image size will affect the accuracy. In order to be consistent with the paper, the image is resized to [736, 1280] in the training icdar15 configuration file, but there is only a set of default parameters when the inference model predicts, which will be considered. To predict the speed problem, the longest side of the image is limited to 960 for resize by default. The preprocessing function of the training model preprocessing and the inference model is located in [ppocr/data/imaug/operators.py](../../../../ppocr/data/imaug/operators.py#L147).
+- Check whether the [post-processing of the trained model](../../../../configs/det/det_mv3_db.yml#L51) is consistent with the [post-processing parameters of the inference](../../../../tools/infer/utility.py#L50).

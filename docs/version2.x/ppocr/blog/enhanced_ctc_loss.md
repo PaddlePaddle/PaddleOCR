@@ -40,7 +40,7 @@ $$
 L_{Focal\_CTC} = \alpha * (1 - y^{'})^{\gamma} * L_{CTC}
 $$
 
-实验中，&gamma;取值为2, &alpha;= 1, 具体实现见:  [rec_ctc_loss.py](../../ppocr/losses/rec_ctc_loss.py)
+实验中，&gamma;取值为2, &alpha;= 1, 具体实现见:  [rec_ctc_loss.py](../../../../ppocr/losses/rec_ctc_loss.py)
 
 ## 2. A-CTC Loss
 
@@ -60,7 +60,7 @@ $$
 L_{A-CTC} = L_{CTC} + \lambda * L_{ACE}
 $$
 
-实验中，λ = 0.1.  ACE loss实现代码见:  [ace_loss.py](../../ppocr/losses/ace_loss.py)
+实验中，λ = 0.1.  ACE loss实现代码见:  [ace_loss.py](../../../../ppocr/losses/ace_loss.py)
 
 ## 3. C-CTC Loss
 
@@ -72,7 +72,7 @@ $$
 L_{C-CTC} = L_{CTC} + \lambda * L_{center}
 $$
 
-实验中，我们设置λ=0.25. center_loss实现代码见:  [center_loss.py](../../ppocr/losses/center_loss.py)
+实验中，我们设置λ=0.25. center_loss实现代码见:  [center_loss.py](../../../../ppocr/losses/center_loss.py)
 
 值得一提的是， 在C-CTC Loss中，选择随机初始化Center并不能够带来明显的提升. 我们的Center初始化方法如下：
 
@@ -98,4 +98,4 @@ python tools/export_center.py -c configs/rec/ch_PP-OCRv2/ch_PP-OCRv2_rec.yml -o 
 |gain| +0.3% | +0.7% | +1.7% |
 
 基于上述实验结论，我们在PP-OCRv2中，采用了C-CTC的策略。 值得一提的是，由于PP-OCRv2 处理的是6625个中文字符的识别任务，字符集比较大，形似字较多，所以在该任务上C-CTC 方案带来的提升较大。 但如果换做其他OCR识别任务，结论可能会有所不同。大家可以尝试Focal-CTC，A-CTC, C-CTC以及组合方案EnhancedCTC，相信会带来不同程度的提升效果。
-统一的融合方案见如下文件：  [rec_enhanced_ctc_loss.py](../../ppocr/losses/rec_enhanced_ctc_loss.py)
+统一的融合方案见如下文件：  [rec_enhanced_ctc_loss.py](../../../../ppocr/losses/rec_enhanced_ctc_loss.py)
