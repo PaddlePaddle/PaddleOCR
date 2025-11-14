@@ -5,19 +5,10 @@ hide:
   - toc
 ---
 
-
----
-comments: true
-hide:
-  - navigation
-  - toc
----
-
 <div align="center">
   <p>
     <a href="https://paddlepaddle.github.io/PaddleOCR/latest/index.html" target="_blank">
-      <img width="100%" src="../images/Banner.png" alt="PaddleOCR Banner">
-    </a>
+      <img width="100%" src="././images/Banner.png" alt="PaddleOCR Banner"></a>
   </p>
 </div>
 
