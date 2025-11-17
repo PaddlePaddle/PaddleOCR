@@ -5901,8 +5901,8 @@ MKL-DNN 缓存容量。
 </ul>
 <p>请注意，本节所介绍 PaddleOCR-VL 服务与上一节中的 VLM 推理服务有所区别：后者仅负责完整流程中的一个环节（即 VLM 推理），并作为前者的底层服务被调用。</p>
 <h3 id="41-docker-compose">4.1 方法一：使用 Docker Compose 部署（推荐使用）<a class="headerlink" href="#41-docker-compose" title="Permanent link">&para;</a></h3>
-<p>您可以从 <a href="https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/compose.yaml">此处</a> 获取 Compose 文件并下载到本地，然后在刚刚下载的 Compose 文件目录下执行以下命令启动服务器，默认监听 <strong>8080</strong> 端口：</p>
-<div class="language-shell highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="c1"># 必须在 compose.yaml 文件所在的目录中执行</span>
+<p>您可以分别从 <a href="https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/compose.yaml">此处</a> 和 <a href="https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/.env">此处</a> 获取 Compose 文件与环境变量配置文件并下载到本地，然后在刚刚下载的文件所在目录下执行以下命令启动服务器，默认监听 <strong>8080</strong> 端口：</p>
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="c1"># 必须在 compose.yaml 和 .env 文件所在的目录中执行</span>
 </span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>up
 </span></code></pre></div>
 <p>启动后将看到类似如下输出：</p>
