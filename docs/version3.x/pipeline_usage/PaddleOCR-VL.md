@@ -1187,10 +1187,10 @@ PaddleOCR 会将来自单张或多张输入图像中的子图分组并对服务�
 
 ### 4.1 方法一：使用 Docker Compose 部署（推荐使用）
 
-您可以从 [此处](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/compose.yaml) 获取 Compose 文件并下载到本地，然后在刚刚下载的 Compose 文件目录下执行以下命令启动服务器，默认监听 **8080** 端口：
+您可以分别从 [此处](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/compose.yaml) 和 [此处](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/.env) 获取 Compose 文件与环境变量配置文件并下载到本地，然后在刚刚下载的文件所在目录下执行以下命令启动服务器，默认监听 **8080** 端口：
 
 ```shell
-# 必须在 compose.yaml 文件所在的目录中执行
+# 必须在 compose.yaml 和 .env 文件所在的目录中执行
 docker compose up
 ```
 
@@ -1428,7 +1428,7 @@ INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
 </tr>
 <tr>
 <td><code>promptLabel</code></td>
-<td><code>string</code> | <code>object</code> | <code>null</code></td>
+<td><code>string</code> | <code>null</code></td>
 <td>请参阅PaddleOCR-VL对象中 <code>predict</code> 方法的 <code>prompt_label</code> 参数相关说明。</td>
 <td>否</td>
 </tr>

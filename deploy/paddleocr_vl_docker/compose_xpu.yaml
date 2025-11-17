@@ -14,7 +14,6 @@ services:
             - driver: nvidia
               device_ids: ["0"]
               capabilities: [gpu]
-    # TODO: Allow using a regular user
     user: root
     restart: unless-stopped
     environment:
@@ -22,6 +21,7 @@ services:
     command: /bin/bash -c "paddlex --serve --pipeline /home/paddleocr/pipeline_config_${VLM_BACKEND}.yaml"
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:8080/health || exit 1"]
+    shm_size: 64G
 
   paddleocr-vlm-server:
     image: ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-${VLM_BACKEND}-server:${VLM_IMAGE_TAG_SUFFIX}
@@ -33,9 +33,9 @@ services:
             - driver: nvidia
               device_ids: ["0"]
               capabilities: [gpu]
-    # TODO: Allow using a regular user
     user: root
     restart: unless-stopped
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:8080/health || exit 1"]
       start_period: 300s
+    shm_size: 64G
