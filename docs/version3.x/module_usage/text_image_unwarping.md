@@ -12,77 +12,38 @@ comments: true
 
 > 推理耗时仅包含模型推理耗时，不包含前后处理耗时。
 
-<table>
-<thead>
-<tr>
-<th>模型</th><th>模型下载链接</th>
-<th>CER </th>
-<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>模型存储大小（MB）</th>
-<th>介绍</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>UVDoc</td>
-<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/UVDoc_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/UVDoc_pretrained.pdparams">训练模型</a></td>
-<td>0.179</td>
-<td>19.05 / 19.05</td>
-<td>- / 869.82</td>
-<td>30.3</td>
-<td>高精度文本图像矫正模型</td>
-</tr>
-</tbody>
-</table>
+### 📐📐 UVDoc
+**模型类型：** 推理模型/训练模型 | **模型存储大小：** 30.3 MB  
+**模型介绍：**  
+高精度文本图像矫正模型，专门用于文档图像的几何矫正和去扭曲处理。
 
-<strong>测试环境说明:</strong>
+**性能指标：**
+| 指标名称 | CER | GPU推理耗时 (ms) | CPU推理耗时 (ms) |
+| :--- | :--- | :--- | :--- |
+| **常规模式** | 0.179 | 19.05 | - |
+| **高性能模式** | - | 19.05 | 869.82 |
 
-  <ul>
-      <li><b>性能测试环境</b>
-          <ul>
-              <li><strong>测试数据集：</strong><a href="https://www3.cs.stonybrook.edu/~cvl/docunet.html">DocUNet benchmark</a>数据集。</li>
-              <li><strong>硬件配置：</strong>
-                  <ul>
-                      <li>GPU：NVIDIA Tesla T4</li>
-                      <li>CPU：Intel Xeon Gold 6271C @ 2.60GHz</li>
-                  </ul>
-              </li>
-              <li><strong>软件环境：</strong>
-                  <ul>
-                      <li>Ubuntu 20.04 / CUDA 11.8 / cuDNN 8.9 / TensorRT 8.6.1.6</li>
-                      <li>paddlepaddle 3.0.0 / paddleocr 3.0.3</li>
-                  </ul>
-              </li>
-          </ul>
-      </li>
-      <li><b>推理模式说明</b></li>
-  </ul>
+**下载链接：**  
+[推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/UVDoc_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/UVDoc_pretrained.pdparams)
 
-<table border="1">
-    <thead>
-        <tr>
-            <th>模式</th>
-            <th>GPU配置</th>
-            <th>CPU配置</th>
-            <th>加速技术组合</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>常规模式</td>
-            <td>FP32精度 / 无TRT加速</td>
-            <td>FP32精度 / 8线程</td>
-            <td>PaddleInference</td>
-        </tr>
-        <tr>
-            <td>高性能模式</td>
-            <td>选择先验精度类型和加速策略的最优组合</td>
-            <td>FP32精度 / 8线程</td>
-            <td>选择先验最优后端（Paddle/OpenVINO/TRT等）</td>
-        </tr>
-    </tbody>
-</table>
+---
+
+### 🧪🧪🧪 测试环境说明
+**性能测试环境：**
+- **测试数据集：** [DocUNet benchmark](https://www3.cs.stonybrook.edu/~cvl/docunet.html)数据集
+- **硬件配置：**
+  - GPU：NVIDIA Tesla T4
+  - CPU：Intel Xeon Gold 6271C @ 2.60GHz
+- **软件环境：**
+  - Ubuntu 20.04 / CUDA 11.8 / cuDNN 8.9 / TensorRT 8.6.1.6
+  - paddlepaddle 3.0.0 / paddleocr 3.0.3
+
+**推理模式说明：**
+| 模式 | GPU配置 | CPU配置 | 加速技术组合 |
+| :--- | :--- | :--- | :--- |
+| **常规模式** | FP32精度 / 无TRT加速 | FP32精度 / 8线程 | PaddleInference |
+| **高性能模式** | 选择先验精度类型和加速策略的最优组合 | FP32精度 / 8线程 | 选择先验最优后端（Paddle/OpenVINO/TRT等） |
+
 
 
 ## 三、快速开始
