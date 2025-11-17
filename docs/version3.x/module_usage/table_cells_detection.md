@@ -12,78 +12,49 @@ comments: true
 
 > 推理耗时仅包含模型推理耗时，不包含前后处理耗时。
 
-<table>
-<tr>
-<th>模型</th><th>模型下载链接</th>
-<th>mAP(%)</th>
-<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>模型存储大小（MB）</th>
-<th>介绍</th>
-</tr>
-<tr>
-<td>RT-DETR-L_wired_table_cell_det</td>
-<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/RT-DETR-L_wired_table_cell_det_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/RT-DETR-L_wired_table_cell_det_pretrained.pdparams">训练模型</a></td>
-<td rowspan="2">82.7</td>
-<td rowspan="2">33.47 / 27.02</td>
-<td rowspan="2">402.55 / 256.56</td>
-<td rowspan="2">124</td>
-<td rowspan="2">RT-DETR 是一个实时的端到端目标检测模型。百度飞桨视觉团队基于 RT-DETR-L 作为基础模型，在自建表格单元格检测数据集上完成预训练，实现了对有线表格、无线表格均有较好性能的表格单元格检测。
-</td>
-</tr>
-<tr>
-<td>RT-DETR-L_wireless_table_cell_det</td>
-<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/RT-DETR-L_wireless_table_cell_det_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/RT-DETR-L_wireless_table_cell_det_pretrained.pdparams">训练模型</a></td>
-</tr>
-</table>
+### 📊📊 RT-DETR-L表格单元格检测模型
+**模型类型：** 推理模型/训练模型 | **模型存储大小：** 124 MB  
+**模型介绍：**  
+RT-DETR 是一个实时的端到端目标检测模型。百度飞桨视觉团队基于 RT-DETR-L 作为基础模型，在自建表格单元格检测数据集上完成预训练，实现了对有线表格、无线表格均有较好性能的表格单元格检测。
 
-<strong>测试环境说明:</strong>
+#### 有线表格单元格检测
+**性能指标：**
+| 指标名称 | mAP(%) | GPU推理耗时 (ms) | CPU推理耗时 (ms) |
+| :--- | :--- | :--- | :--- |
+| **常规模式** | 82.7 | 33.47 | 402.55 |
+| **高性能模式** | - | 27.02 | 256.56 |
 
-  <ul>
-      <li><b>性能测试环境</b>
-          <ul>
-              <li><strong>测试数据集：</strong>自建的内部评测集。</li>
-              <li><strong>硬件配置：</strong>
-                  <ul>
-                      <li>GPU：NVIDIA Tesla T4</li>
-                      <li>CPU：Intel Xeon Gold 6271C @ 2.60GHz</li>
-                  </ul>
-              </li>
-              <li><strong>软件环境：</strong>
-                  <ul>
-                      <li>Ubuntu 20.04 / CUDA 11.8 / cuDNN 8.9 / TensorRT 8.6.1.6</li>
-                      <li>paddlepaddle 3.0.0 / paddleocr 3.0.3</li>
-                  </ul>
-              </li>
-          </ul>
-      </li>
-      <li><b>推理模式说明</b></li>
-  </ul>
+**下载链接：**  
+[推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/RT-DETR-L_wired_table_cell_det_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/RT-DETR-L_wired_table_cell_det_pretrained.pdparams)
 
-<table border="1">
-    <thead>
-        <tr>
-            <th>模式</th>
-            <th>GPU配置</th>
-            <th>CPU配置</th>
-            <th>加速技术组合</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>常规模式</td>
-            <td>FP32精度 / 无TRT加速</td>
-            <td>FP32精度 / 8线程</td>
-            <td>PaddleInference</td>
-        </tr>
-        <tr>
-            <td>高性能模式</td>
-            <td>选择先验精度类型和加速策略的最优组合</td>
-            <td>FP32精度 / 8线程</td>
-            <td>选择先验最优后端（Paddle/OpenVINO/TRT等）</td>
-        </tr>
-    </tbody>
-</table>
+#### 无线表格单元格检测
+**性能指标：**
+| 指标名称 | mAP(%) | GPU推理耗时 (ms) | CPU推理耗时 (ms) |
+| :--- | :--- | :--- | :--- |
+| **常规模式** | 82.7 | 33.47 | 402.55 |
+| **高性能模式** | - | 27.02 | 256.56 |
+
+**下载链接：**  
+[推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/RT-DETR-L_wireless_table_cell_det_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/RT-DETR-L_wireless_table_cell_det_pretrained.pdparams)
+
+---
+
+### 🧪🧪🧪 测试环境说明
+**性能测试环境：**
+- **测试数据集：** 自建的内部评测集
+- **硬件配置：**
+  - GPU：NVIDIA Tesla T4
+  - CPU：Intel Xeon Gold 6271C @ 2.60GHz
+- **软件环境：**
+  - Ubuntu 20.04 / CUDA 11.8 / cuDNN 8.9 / TensorRT 8.6.1.6
+  - paddlepaddle 3.0.0 / paddleocr 3.0.3
+
+**推理模式说明：**
+| 模式 | GPU配置 | CPU配置 | 加速技术组合 |
+| :--- | :--- | :--- | :--- |
+| **常规模式** | FP32精度 / 无TRT加速 | FP32精度 / 8线程 | PaddleInference |
+| **高性能模式** | 选择先验精度类型和加速策略的最优组合 | FP32精度 / 8线程 | 选择先验最优后端（Paddle/OpenVINO/TRT等） |
+
 
 ## 三、快速开始
 
