@@ -26,6 +26,13 @@ UniMERNet是由上海AI Lab研发的一款公式识别模型。该模型采用Do
 **下载链接：**  
 [推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/UniMERNet_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/UniMERNet_pretrained.pdparams)
 
+[Hugging Face](https://huggingface.co/PaddlePaddle/UniMERNet  ) 
+
+[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/UniMERNet  ) 
+
+[AI Studio](https://aistudio.baidu.com/modelsdetail/31890  ) 
+
+
 ---
 
 ### ⚡⚡⚡ PP-FormulaNet-S
@@ -41,6 +48,14 @@ PP-FormulaNet 是由百度飞桨视觉团队开发的一款先进的公式识别
 
 **下载链接：**  
 [推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet-S_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet-S_pretrained.pdparams)
+
+ 
+[Hugging Face](https://huggingface.co/PaddlePaddle/PP-FormulaNet-S  ) 
+
+[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PP-FormulaNet-S  ) 
+
+[AI Studio](https://aistudio.baidu.com/modelsdetail/31924  ) 
+
 
 ---
 
@@ -58,6 +73,13 @@ PP-FormulaNet-L 版本基于 Vary_VIT_B 作为骨干网络，并在大规模公�
 **下载链接：**  
 [推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet-L_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet-L_pretrained.pdparams)
 
+[Hugging Face](https://huggingface.co/PaddlePaddle/PP-FormulaNet-L  ) 
+
+[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PP-FormulaNet-L  ) 
+
+[AI Studio](https://aistudio.baidu.com/modelsdetail/31900  ) 
+
+
 ---
 
 ### 🚀🚀🚀 PP-FormulaNet_plus-S
@@ -73,6 +95,12 @@ PP-FormulaNet_plus 是百度飞桨视觉团队在 PP-FormulaNet 基础上开发�
 
 **下载链接：**  
 [推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet_plus-S_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet_plus-S_pretrained.pdparams)
+
+[Hugging Face](https://huggingface.co/PaddlePaddle/PP-FormulaNet_plus-S  ) 
+
+[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PP-FormulaNet-plus-S  ) 
+
+[AI Studio](https://aistudio.baidu.com/modelsdetail/31904  ) 
 
 ---
 
@@ -90,6 +118,12 @@ PP-FormulaNet_plus-M 新增对中文公式的支持，并将公式最大预测 t
 **下载链接：**  
 [推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet_plus-M_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet_plus-M_pretrained.pdparams)
 
+[Hugging Face](https://huggingface.co/PaddlePaddle/PP-FormulaNet_plus-M  ) 
+
+[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PP-FormulaNet-plus-M  ) 
+
+[AI Studio](https://aistudio.baidu.com/modelsdetail/31882  ) 
+
 ---
 
 ### 🧩🧩🧩 PP-FormulaNet_plus-L
@@ -106,6 +140,13 @@ PP-FormulaNet_plus-L 是增强版的旗舰模型，通过扩展训练数据和�
 **下载链接：**  
 [推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet_plus-L_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet_plus-L_pretrained.pdparams)
 
+[Hugging Face](https://huggingface.co/PaddlePaddle/PP-FormulaNet_plus-L  ) 
+
+[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PP-FormulaNet_plus-L  ) 
+
+[AI Studio](https://aistudio.baidu.com/modelsdetail/31856  ) 
+
+
 ---
 
 ### 📜📜 LaTeX_OCR_rec
@@ -121,6 +162,12 @@ LaTeX-OCR是一种基于自回归大模型的公式识别算法，通过采用 H
 
 **下载链接：**  
 [推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/LaTeX_OCR_rec_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/LaTeX_OCR_rec_pretrained.pdparams)
+
+[Hugging Face](https://huggingface.co/PaddlePaddle/LaTeX_OCR_rec  )
+
+[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/LaTeX_OCR_rec  )
+
+[AI Studio](https://aistudio.baidu.com/modelsdetail/31893  )
 
 ---
 
