@@ -612,7 +612,7 @@ for res in output:
 <td rowspan="2">获取格式为 <code>dict</code> 的可视化图像</td>
 </tr>
 </table>
-
+<ul>
 <li><code>json</code> 属性获取的预测结果为dict类型的数据，相关内容与调用 <code>save_to_json()</code> 方法保存的内容一致。</li>
 <li><code>img</code> 属性返回的预测结果是一个dict类型的数据。其中，键为 <code>preprocessed_img</code>，对应的值是 <code>Image.Image</code> 对象：用于显示 doc_preprocessor 结果的可视化图像。</li>
 </ul>
