@@ -25,6 +25,12 @@ PP-DocBee 是飞桨团队自研的一款专注于文档理解的多模态大模�
 **下载链接：**  
 [推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocBee-2B_infer.tar)
 
+[Hugging Face](https://huggingface.co/PaddlePaddle/PP-DocBee-2B  )
+
+[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PP-DocBee-2B  )
+
+[AI Studio](https://aistudio.baidu.com/modelsdetail/31934  )
+
 ---
 
 ### 🐝🐝🐝 PP-DocBee-7B
@@ -34,6 +40,13 @@ PP-DocBee 是飞桨团队自研的一款专注于文档理解的多模态大模�
 
 **下载链接：**  
 [推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocBee-7B_infer.tar)
+
+[Hugging Face](https://huggingface.co/PaddlePaddle/PP-DocBee-7B  )
+
+[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PP-DocBee-7B  )
+
+[AI Studio](https://aistudio.baidu.com/modelsdetail/31868  )
+
 
 ---
 
@@ -49,6 +62,12 @@ PP-DocBee2 是飞桨团队自研的一款专注于文档理解的多模态大模
 
 **下载链接：**  
 [推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocBee2-3B_infer.tar)
+
+[Hugging Face](https://huggingface.co/PaddlePaddle/PP-DocBee2-3B  )
+
+[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PP-DocBee2-3B  )
+
+[AI Studio](https://aistudio.baidu.com/modelsdetail/31901  )
 
 ---
 
