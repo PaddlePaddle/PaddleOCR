@@ -26,6 +26,13 @@ PP-OCRv4的服务端印章文本检测模型，精度更高，适合在较好的
 **下载链接：**  
 [推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCR极速pdfv4_server_seal_det_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_seal_det_pretrained.pdparams)
 
+[Hugging Face](https://huggingface.co/PaddlePaddle/PP-OCRv4_server_seal_det )
+
+[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PP-OCRv4_server_seal_det )
+
+[AI Studio](https://aistudio.baidu.com/modelsdetail/31857 )
+
+
 ---
 
 ### 📱📱 PP-OCRv4_mobile_seal_det
@@ -41,6 +48,12 @@ PP-OCRv4的移动端印章文本检测模型，效率更高，适合在端侧部
 
 **下载链接：**  
 [推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_mobile_seal_det_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_mobile_seal_det_pretrained.pdparams)
+
+[Hugging Face](https://huggingface.co/PaddlePaddle/PP-OCRv4_mobile_seal_det )
+
+[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PP-OCRv4_mobile_seal_det )
+
+[AI Studio](https://aistudio.baidu.com/modelsdetail/31866 )
 
 ---
 
