@@ -26,6 +26,12 @@ comments: true
 **下载链接：**  
 [推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-LCNet_x1_0_doc_ori_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-LCNet_x1_0_doc_ori_pretrained.pdparams)
 
+[Hugging Face](https://huggingface.co/PaddlePaddle/PP-LCNet_x1_0_doc_ori) 
+
+[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PP-LCNet_x1_0_doc_ori) 
+
+[AI Studio](https://aistudio.baidu.com/modelsdetail/31905) 
+
 ---
 
 ### 🧪🧪🧪 测试环境说明
