@@ -13,13 +13,14 @@ def pp_structurev3_pipeline():
     return PPStructureV3()
 
 
+@pytest.mark.resource_intensive
 @pytest.mark.parametrize(
     "image_path",
     [
         TEST_DATA_DIR / "doc_with_formula.png",
     ],
 )
-def test_visual_predict(pp_structurev3_pipeline, image_path):
+def test_predict(pp_structurev3_pipeline, image_path):
     result = pp_structurev3_pipeline.predict(str(image_path))
 
     check_simple_inference_result(result)

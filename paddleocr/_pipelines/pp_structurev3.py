@@ -83,13 +83,13 @@ class PPStructureV3(PaddleXPipelineWrapper):
         formula_recognition_model_name=None,
         formula_recognition_model_dir=None,
         formula_recognition_batch_size=None,
-        use_doc_orientation_classify=False,
-        use_doc_unwarping=False,
-        use_textline_orientation=False,
-        use_seal_recognition=False,
+        use_doc_orientation_classify=None,
+        use_doc_unwarping=None,
+        use_textline_orientation=None,
+        use_seal_recognition=None,
         use_table_recognition=None,
         use_formula_recognition=None,
-        use_chart_recognition=False,
+        use_chart_recognition=None,
         use_region_detection=None,
         lang=None,
         ocr_version=None,
@@ -299,6 +299,8 @@ class PPStructureV3(PaddleXPipelineWrapper):
             "SubPipelines.DocPreprocessor.use_doc_unwarping": self._params[
                 "use_doc_unwarping"
             ],
+            "use_doc_preprocessor": self._params["use_doc_orientation_classify"]
+            or self._params["use_doc_unwarping"],
             "SubPipelines.GeneralOCR.use_textline_orientation": self._params[
                 "use_textline_orientation"
             ],

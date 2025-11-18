@@ -5,7 +5,7 @@ comments: true
 # Server-side C++ Inference
 
 This chapter introduces the C++ deployment steps of the PaddleOCR model. C++ is better than Python in terms of performance. Therefore, in CPU and GPU deployment scenarios, C++ deployment is mostly used.
-This section will introduce how to configure the C++ environment and deploy PaddleOCR in Linux (CPU\GPU) environment. For Windows deployment please refer to [Windows](../../ppocr/infer_deploy/windows_vs2019_build.en.md) compilation guidelines.
+This section will introduce how to configure the C++ environment and deploy PaddleOCR in Linux (CPU\GPU) environment. For Windows deployment please refer to [Windows](../../legacy/windows_vs2019_build.en.md) compilation guidelines.
 
 ## 1. Prepare the Environment
 

@@ -24,6 +24,7 @@ import cv2
 import numpy as np
 import math
 from PIL import Image
+from paddle import get_device
 
 
 class DecodeImage(object):
@@ -239,6 +240,10 @@ class DetResizeForTest(object):
             img, [ratio_h, ratio_w] = self.resize_image_type1(img)
         data["image"] = img
         data["shape"] = np.array([src_h, src_w, ratio_h, ratio_w])
+        if "iluvatar_gpu" in get_device():
+            data["shape"] = np.array([src_h, src_w, ratio_h, ratio_w]).astype(
+                np.float32
+            )
         return data
 
     def image_padding(self, im, value=0):

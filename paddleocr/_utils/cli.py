@@ -61,12 +61,15 @@ def perform_simple_inference(wrapper_cls, params, predict_param_names=None):
 
     wrapper = wrapper_cls(**init_params)
 
-    result = wrapper.predict_iter(input_, **predict_params)
+    try:
+        result = wrapper.predict_iter(input_, **predict_params)
 
-    t1 = time.time()
-    for i, res in enumerate(result):
-        logger.info(f"Processed item {i} in {(time.time()-t1) * 1000} ms")
         t1 = time.time()
-        res.print()
-        if save_path:
-            res.save_all(save_path)
+        for i, res in enumerate(result):
+            logger.info(f"Processed item {i} in {(time.time()-t1) * 1000} ms")
+            t1 = time.time()
+            res.print()
+            if save_path:
+                res.save_all(save_path)
+    finally:
+        wrapper.close()

@@ -19,7 +19,7 @@ def table_recognition_v2_pipeline():
         TEST_DATA_DIR / "table.jpg",
     ],
 )
-def test_visual_predict(table_recognition_v2_pipeline, image_path):
+def test_predict(table_recognition_v2_pipeline, image_path):
     result = table_recognition_v2_pipeline.predict(
         str(image_path), use_doc_orientation_classify=False, use_doc_unwarping=False
     )

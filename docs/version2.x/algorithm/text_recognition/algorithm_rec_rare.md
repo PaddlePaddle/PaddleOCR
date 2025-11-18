@@ -84,7 +84,7 @@ Predicts of doc/imgs_words/en/word_1.png:('joint ', 0.9999969601631165)
 
 RARE模型还支持以下推理部署方式：
 
-- Paddle2ONNX推理：准备好推理模型后，参考[paddle2onnx](../../ppocr/infer_deploy/paddle2onnx.md)教程操作。
+- Paddle2ONNX推理：准备好推理模型后，参考[paddle2onnx](../../../version2.x/legacy/paddle2onnx.md)教程操作。
 
 ## 5. FAQ
 
