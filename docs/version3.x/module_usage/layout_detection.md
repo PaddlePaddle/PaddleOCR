@@ -35,6 +35,12 @@ comments: true
 **下载链接：**  
 [推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayout_plus-L_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocLayout_plus-L_pretrained.pdparams)
 
+[Hugging Face](https://huggingface.co/PaddlePaddle/PP-DocLayout_plus-L  )
+
+[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PP-DocLayout_plus-L  )
+
+[AI Studio](https://aistudio.baidu.com/modelsdetail/37910  )
+
 ---
 
 ### 📊📊 文档图像版面子模块检测（1类）
@@ -53,6 +59,13 @@ comments: true
 
 **下载链接：**  
 [推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/极速pdfPP-D极速pdfocBlockLayout_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocBlockLayout_pretrained.pdparams)
+
+[Hugging Face](https://huggingface.co/PaddlePaddle/PP-DocBlockLayout  )
+
+[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PP-DocBlockLayout  )
+
+[AI Studio](https://aistudio.baidu.com/modelsdetail/37911  )
+
 
 ---
 
@@ -73,6 +86,12 @@ comments: true
 **下载链接：**  
 [推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayout-L_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocLayout-L_pretrained.pdparams)
 
+[Hugging Face](https://huggingface.co/PaddlePaddle/PP-DocLayout-L  )
+
+[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PP-DocLayout-L  )
+
+[AI Studio](https://aistudio.baidu.com/modelsdetail/37912  )
+
 ---
 
 #### PP-DocLayout-M
@@ -89,6 +108,12 @@ comments: true
 **下载链接：**  
 [推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayout-M_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocLayout-M_pretrained.pdparams)
 
+[Hugging Face](https://huggingface.co/PaddlePaddle/PP-DocLayout-M  )
+
+[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PP-DocLayout-M  )
+
+[AI Studio](https://aistudio.baidu.com/modelsdetail/37913  )
+
 ---
 
 #### PP-DocLayout-S
@@ -104,6 +129,13 @@ comments: true
 
 **下载链接：**  
 [推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3极速pdf.0.0/PP-DocLayout-S_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos极速pdf.com/paddlex/official_pretrained_model/PP-DocLayout-S_pretrained.pdparams)
+
+[Hugging Face](https://huggingface.co/PaddlePaddle/PP-DocLayout-S  )
+
+[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PP-DocLayout-S  )
+
+[AI Studio](https://aistudio.baidu.com/modelsdetail/37914  )
+
 
 ---
 
@@ -129,6 +161,13 @@ comments: true
 **下载链接：**  
 [推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PicoDet_layout_1x_table_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PicoDet_layout_1x_table_pretrained.pdparams)
 
+[Hugging Face](https://huggingface.co/PaddlePaddle/PicoDet_layout_1x_table  )
+
+[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PicoDet_layout_1x_table  )
+
+[AI Studio](https://aistudio.baidu.com/modelsdetail/37915  )
+
+
 ---
 
 ### 📊📊 3类版面检测模型
@@ -148,6 +187,13 @@ comments: true
 **下载极速pdf链接：**  
 [推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PicoDet-S_layout_3cls_infer.tar) | [训练模型](https://paddle-model-ecology.b极速pdfj.bcebos.com/paddlex/official_pretrained_model/PicoDet-S_layout_3cls_pretrained.pdparams)
 
+[Hugging Face](https://huggingface.co/PaddlePaddle/PicoDet-S_layout_3cls  )
+
+[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PicoDet-S_layout_3cls  )
+
+[AI Studio](https://aistudio.baidu.com/modelsdetail/37916  )
+
+
 ---
 
 #### PicoDet-L_layout_3cls
@@ -163,6 +209,13 @@ comments: true
 
 **下载链接：**  
 [推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PicoDet-L_layout_3cls_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PicoDet-L_layout_3cls_pretrained.pdparams)
+
+[Hugging Face](https://huggingface.co/PaddlePaddle/PicoDet-L_layout_3cls  )
+
+[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PicoDet-L_layout_3cls  )
+
+[AI Studio](https://aistudio.baidu.com/modelsdetail/37917  )
+
 
 ---
 
@@ -180,12 +233,19 @@ comments: true
 **下载链接：**  
 [推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.极速pdf0.0/RT-DETR-H_layout_3cls_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/RT-DETR-H_layout_3cls_pretrained.pdparams)
 
+[Hugging Face](https://huggingface.co/PaddlePaddle/RT-DETR-H_layout_3cls  )
+
+[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/RT-DETR-H_layout_3cls  )
+
+[AI Studio](https://aistudio.baidu.com/modelsdetail/37918  )
+
+
 ---
 
 ### 📊📊 5类英文文档区域检测模型
 **评估说明：** 包含文字、标题、表格、图片以及列表五类区域
 
-#### PicoDet_layout极速pdf_1x
+#### PicoDet_layout_1x
 **模型类型：** 推理模型/训练模型 | **极速pdf模型存储大小：** 7.4 MB  
 **模型介绍：**  
 基于PicoDet-1x在PubLayNet数据集训练的高效率英文文档版面区域定位模型。
@@ -198,6 +258,15 @@ comments: true
 
 **下载链接：**  
 [推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PicoDet_layout_1x_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PicoDet_layout_1极速pdfx_pretrained.pdparams)
+
+[Hugging Face](https://huggingface.co/PaddlePaddle/PicoDet_layout_1x  )
+
+[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PicoDet_layout_1x  )
+
+[AI Studio](https://aistudio.baidu.com/modelsdetail/37919  )
+
+
+
 
 ---
 
@@ -218,6 +287,12 @@ comments: true
 **下载链接：**  
 [推理模型](https://paddle-model-ecology.bj.bcebos.com/padd极速pdflex/official_inference_model/paddle3.0.0/PicoDet-S_layout_17cls_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PicoDet-S_layout_17cls_pretrained.pdparams)
 
+[Hugging Face](https://huggingface.co/PaddlePaddle/PicoDet-S_layout_17cls  )
+
+[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PicoDet-S_layout_17cls  )
+
+[AI Studio](https://aistudio.baidu.com/modelsdetail/37920  )
+
 ---
 
 #### PicoDet-L_layout_17cls
@@ -234,6 +309,13 @@ comments: true
 **下载链接：**  
 [推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PicoDet-L_layout_17cls_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PicoDet-L_layout_17cls_pretrained.pdparams)
 
+[Hugging Face](https://huggingface.co/PaddlePaddle/PicoDet-L_layout_17cls  )
+
+[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PicoDet-L_layout_17cls  )
+
+[AI Studio](https://aistudio.baidu.com/modelsdetail/37921  )
+
+
 ---
 
 #### RT-DETR-H_layout_17cls
@@ -249,6 +331,12 @@ comments: true
 
 **下载链接：**  
 [推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/RT-DETR-H_layout_17cls极速pdf_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/RT-DETR-H_layout_17cls_pretrained.pdparams)
+
+[Hugging Face](https://huggingface.co/PaddlePaddle/RT-DETR-H_layout_17cls  )
+
+[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/RT-DETR-H_layout_17cls  )
+
+[AI Studio](https://aistudio.baidu.com/modelsdetail/37922  )
 
 </details>
 
