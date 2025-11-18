@@ -227,10 +227,11 @@ See [2.1 Quick Start](#21-quick-start).
 
 1. Install `paddleocr-mcp`.
 2. Obtain the service base URL and AI Studio Community access token.
-   - On [this page](https://aistudio.baidu.com/paddleocr/task), click "API" in the upper left corner. Copy the `API_URL` corresponding to the task you want to run, and remove the endpoint suffix (e.g., `/ocr`) — this gives you the service base URL, e.g., `https://xxxxxx.aistudio-app.com`. You may need to register and log in to a **PaddlePaddle AI Studio Community** account.
-   - On [this page](https://aistudio.baidu.com/index/accessToken), obtain your **access token**.
+
+    On this page, click "API" in the upper-left corner. Copy the `API_URL` corresponding to "Text Recognition (PP-OCRv5)", and remove the trailing endpoint (`/ocr`) to get the base URL of the service (e.g., `https://xxxxxx.aistudio-app.com`). Also copy the `TOKEN`, which is your access token. You may need to register and log in to your PaddlePaddle AI Studio Community account.
+
 3. Refer to the configuration example below to modify the contents of the `claude_desktop_config.json` file.
-3. Restart the MCP host.
+4. Restart the MCP host.
 
 Configuration example:
 

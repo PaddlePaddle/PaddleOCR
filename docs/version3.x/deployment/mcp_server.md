@@ -131,8 +131,7 @@ paddleocr_mcp --help
 
 2. **获取服务基础 URL 与星河社区访问令牌**
 
-    - 在 [此页面](https://aistudio.baidu.com/paddleocr/task) 点击左上角的“API”，复制“文字识别（PP-OCRv5）”对应的 `API_URL` 去掉端点末尾（`/ocr`）的部分，即服务的基础 URL，如 `https://xxxxxx.aistudio-app.com`。您可以需要注册并登陆飞桨星河社区帐号。
-    - 在 [此页面](https://aistudio.baidu.com/index/accessToken) 获取您的 **访问令牌**。
+    在 [此页面](https://aistudio.baidu.com/paddleocr/task) 点击左上角的“API”，复制“文字识别（PP-OCRv5）”对应的 `API_URL` 去掉端点末尾（`/ocr`）的部分，即服务的基础 URL（如 `https://xxxxxx.aistudio-app.com`），以及 `TOKEN`，即您的访问令牌。您可能需要注册并登陆飞桨星河社区帐号。
 
 3. **添加 MCP 服务器配置**
 
