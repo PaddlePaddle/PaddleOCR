@@ -21,31 +21,26 @@ comments: true
 
 下表仅给出 PP-DocLayoutV2 的版面检测精度。该精度指标的评估数据集是自建的版面区域检测数据集，包含了中英文论文、杂志、报纸、研报、PPT、试卷、课本等 1000 张文档类型图片，包含 25 类常见的版面元素：文档标题、段落标题、文本、竖排文本、页码、摘要、目录、参考文献、脚注、图像脚注、页眉、页脚、页眉图像、页脚图像、算法、行内公式、行间公式、公式编号、图像、表格、图和表标题（图标题、表格标题和图表标题）、印章、图表、侧栏文本和参考文献内容。
 
-<table>
-<thead>
-<tr>
-<th>模型</th><th>模型下载链接</th>
-<th>mAP(0.5)（%）</th>
-<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>模型存储大小（MB）</th>
-<th>介绍</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>PP-DocLayoutV2</td>
-<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayoutV2_infer.tar">推理模型</a></td>
-<td>81.4</td>
-<td> - </td>
-<td> - </td>
-<td>203.8</td>
-<td>自研的版面分析模型在包含中英文论文、多栏杂志、报纸、PPT、合同、书本、试卷、研报、古籍、日文文档、竖版文字文档等场景的自建数据集训练的更高精度版面区域定位和版面阅读顺序恢复模型</td>
-</tr>
-<tr>
-</tbody>
-</table>
+> 推理耗时仅包含模型推理耗时，不包含前后处理耗时。
 
+### 📊📊 PP-DocLayoutV2
+**模型类型：** 推理模型 | **模型存储大小：** 203.8 MB  
+**模型介绍：**  
+自研的版面分析模型在包含中英文论文、多栏杂志、报纸、PPT、合同、书本、试卷、研报、古籍、日文文档、竖版文字文档等场景的自建数据集训练的更高精度版面区域定位和版面阅读顺序恢复模型。
+
+**性能指标：**
+| 指标名称 | mAP(0.5)(%) |
+| :--- | :--- |
+| **版面检测精度** | 81.4 |
+
+**下载链接：**  
+[推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayoutV2_infer.tar)
+
+[Hugging Face](https://huggingface.co/PaddlePaddle/PP-DocLayoutV2) 
+
+[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PP-DocLayoutV2) 
+
+[AI Studio](https://aistudio.baidu.com/modelsdetail/37908) 
 
 ## 三、快速开始
 
