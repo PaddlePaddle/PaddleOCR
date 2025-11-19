@@ -158,7 +158,7 @@ for res in output:
 <td><code>model_name</code></td>
 <td><b>含义：</b>模型名称。<br/>
 <b>说明：</b>
-模型名称。如果设置为<code>None</code>，则使用<code>PP-OCRv4_mobile_seal_det</code>。</td>
+如果设置为<code>None</code>，则使用<code>PP-OCRv4_mobile_seal_det</code>。</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
