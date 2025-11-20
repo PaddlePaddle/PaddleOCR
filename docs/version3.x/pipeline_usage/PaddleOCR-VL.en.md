@@ -1070,7 +1070,7 @@ The parameters supported by this command are as follows:
 
 ### 3.2 Client Usage Methods
 
-After launching the VLM inference service, the client can call the service through PaddleOCR.
+After launching the VLM inference service, the client can call the service through PaddleOCR. **Please note that because the client needs to invoke the sequential model for layout detection, it is still recommended to run the client on GPU or other acceleration devices to achieve more stable and efficient performance.**
 
 #### 3.2.1 CLI Invocation
 
@@ -2105,7 +2105,7 @@ The service started with default configurations does not support document prepro
 
 **Disable Result Visualization Functionality**
 
-The service returns visualized results by default, which introduces additional overhead. To disable this functionality, add the following configuration to the production configuration file:
+The service returns visualized results by default, which introduces additional overhead. To disable this functionality, add the following configuration to the production configuration file (`Serving` is a top-level field):
 
 ```yaml
 Serving:
@@ -2116,7 +2116,7 @@ Additionally, you can set the `visualize` field to `false` in the request body t
 
 **Configure Return of Image URLs**
 
-For visualized result images and images included in Markdown, the service returns them in Base64 encoding by default. To return images as URLs instead, add the following configuration to the production configuration file:
+For visualized result images and images included in Markdown, the service returns them in Base64 encoding by default. To return images as URLs instead, add the following configuration to the production configuration file (`Serving` is a top-level field):
 
 ```yaml
 Serving:
@@ -2144,7 +2144,7 @@ For more information on obtaining AK/SK and other details, refer to the [Baidu I
 
 **Modify PDF Parsing Page Limit**
 
-For performance considerations, the service processes only the first 10 pages of received PDF files by default. To adjust the page limit, add the following configuration to the production configuration file:
+For performance considerations, the service processes only the first 10 pages of received PDF files by default. To adjust the page limit, add the following configuration to the production configuration file (`Serving` is a top-level field):
 
 ```yaml
 Serving:
