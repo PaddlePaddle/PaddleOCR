@@ -2250,7 +2250,7 @@ for res in visual_predict_res:
 </table>
 <ul>
     <li><code>json</code> 属性获取的预测结果为dict类型的数据，相关内容与调用 <code>save_to_json()</code> 方法保存的内容一致。</li>
-    <li><code>img</code> 属性返回的预测结果是一个dict类型的数据。其中，键分别为 <code>layout_det_res</code>、<code>overall_ocr_res</code>、<code>text_paragraphs_ocr_res</code>、<code>formula_res_region1</code>、<code>table_cell_img</code> 和 <code>seal_res_region1</code>，对应的值是 <code>Image.Image</code> 对象：分别用于显示版面区域检测、OCR、OCR文本段落、公式、表格和印章结果的可视化图像。如果没有使用可选模块，则dict中只包含 <code>layout_det_res</code>。
+    <li><code>img</code> 属性返回的预测结果是一个dict类型的数据。其中，键分别为 <code>layout_det_res</code>、<code>overall_ocr_res</code>、<code>text_paragraphs_ocr_res</code>、<code>formula_res_region1</code>、<code>table_cell_img</code> 和 <code>seal_res_region1</code>，对应的值是 <code>Image.Image</code> 对象：分别用于显示版面区域检测、OCR、OCR文本段落、公式、表格和印章结果的可视化图像。如果没有使用可选模块，则dict中只包含 <code>layout_det_res</code>。</li>
 </ul>
 </details>
 
