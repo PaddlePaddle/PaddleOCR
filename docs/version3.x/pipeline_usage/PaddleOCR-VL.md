@@ -1203,7 +1203,13 @@ paddleocr-vl-api             | INFO:     Application startup complete.
 paddleocr-vl-api             | INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
 ```
 
-此方式基于 vLLM 框架对 VLM 推理进行加速，更适合生产环境部署，但要求机器配备 GPU，并且 NVIDIA 驱动程序支持 CUDA 12.6 或以上版本。
+此方式基于 vLLM 等框架对 VLM 推理进行加速，更适合生产环境部署，但要求机器配备 GPU，并且 NVIDIA 驱动程序支持 CUDA 12.6 或以上版本。
+
+`.env` 文件可用于配置环境变量，详细介绍如下：
+
+- `API_IMAGE_TAG_SUFFIX`：启动产线服务使用的镜像的标签后缀。默认为 `latest-offline`，表示使用离线 GPU 镜像。
+- `VLM_BACKEND`：VLM 推理后端，目前支持 `vllm` 和 `fastdeploy`。默认为 `vllm`。
+- `VLM_IMAGE_TAG_SUFFIX`：启动 VLM 推理服务使用的镜像的标签后缀。默认为 `latest-offline`，表示使用离线 GPU 镜像。
 
 此外，使用此方式启动服务器后，除拉取镜像外，无需连接互联网。如需在离线环境中部署，可先在联网机器上拉取 Compose 文件中涉及的镜像，导出并传输至离线机器中导入，即可在离线环境下启动服务。
 

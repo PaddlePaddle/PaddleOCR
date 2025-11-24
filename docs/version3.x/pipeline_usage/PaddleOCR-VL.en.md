@@ -1166,7 +1166,13 @@ paddleocr-vl-api             | INFO:     Application startup complete.
 paddleocr-vl-api             | INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
 ```
 
-This method accelerates VLM inference using the vLLM framework and is more suitable for production environment deployment. It requires the machine to be equipped with a GPU and NVIDIA drivers supporting CUDA 12.6 or higher.
+This solution accelerates VLM inference based on frameworks like vLLM, making it more suitable for production environment deployment. However, it requires the machine to be equipped with a GPU and the NVIDIA driver to support CUDA 12.6 or higher.
+
+The `.env` file can be used to configure environment variables, with detailed descriptions as follows:
+
+- `API_IMAGE_TAG_SUFFIX`: The tag suffix of the image used to start the pipeline service. The default is `latest-offline`, indicating the use of an offline GPU image.
+- `VLM_BACKEND`: The VLM inference backend, currently supporting `vllm` and `fastdeploy`. The default is `vllm`.
+- `VLM_IMAGE_TAG_SUFFIX`: The tag suffix of the image used to start the VLM inference service. The default is `latest-offline`, indicating the use of an offline GPU image.
 
 Additionally, after starting the server using this method, no internet connection is required except for pulling the image. For offline environment deployment, you can first pull the images involved in the Compose file on an online machine, export and transfer them to the offline machine for import, and then start the service in the offline environment.
 
