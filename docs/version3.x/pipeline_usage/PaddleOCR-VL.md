@@ -10,43 +10,75 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
 
 ## PaddleOCR-VL 对推理设备的支持情况
 
-目前 PaddleOCR-VL 有三种推理方式，支持的推理设备不完全相同，请确认您的推理设备是否满足下表要求再进行 PaddleOCR-VL 的推理部署：
+目前 PaddleOCR-VL 有四种推理方式，支持的推理设备不完全相同，请确认您的推理设备是否满足下表要求再进行 PaddleOCR-VL 的推理部署：
 
 <table border="1">
 <thead>
   <tr>
     <th>推理方式</th>
-    <th>支持 x64 CPU</th>
-    <th>支持的 GPU Compute Capability</th>
-    <th>支持的 CUDA 版本</th>
+    <th>x64 CPU</th>
+    <th>DCU</th>
+    <th>XPU</th>
+    <th>沐曦</th>
+    <th>天数</th>
+    <th>NVIDIA GPU</th>
   </tr>
 </thead>
 <tbody>
   <tr>
     <td>PaddlePaddle</td>
     <td>✅</td>
-    <td>≥ 7</td>
-    <td>≥ 11.8</td>
+    <td>✅</td>
+    <td>✅</td>
+    <td>🚧</td>
+    <td>🚧</td>
+    <td>
+    <li>GPU Compute Capability ≥ 7</li>
+    <li>CUDA 版本 ≥ 11.8</li>
+    </td>
   </tr>
   <tr>
     <td>vLLM</td>
+    <td>❌</td>
+    <td>✅</td>
     <td>🚧</td>
-    <td>≥ 8 （RTX 3060，RTX 5070，A10，A100, ...） <br />  
-    7 ≤ GPU Compute Capability < 8 （T4，V100，...）支持运行，但可能出现请求超时、OOM 等异常情况，不推荐使用
+    <td>🚧</td>
+    <td>🚧</td>
+    <td>
+    <li>GPU Compute Capability ≥ 8 （RTX 3060，RTX 5070，A10，A100, ...） <br /></li>
+    <li>CUDA 版本 ≥ 12.6</li><br />
+    备注：7 ≤ GPU Compute Capability < 8 （T4，V100，...）支持运行，但可能出现请求超时、OOM 等异常情况，不推荐使用
     </td>
-    <td>≥ 12.6</td>
   </tr>
   <tr>
     <td>SGLang</td>
-     <td>🚧</td>
-    <td>8 ≤ GPU Compute Capability < 12</td>
-    <td>≥ 12.6</td>
+    <td>❌</td>
+    <td>🚧</td>
+    <td>🚧</td>
+    <td>🚧</td>
+    <td>🚧</td>
+    <td>
+    <li>8 ≤ GPU Compute Capability < 12</li>
+    <li>CUDA 版本 ≥ 12.6</li>
+    </td>
+  </tr>
+  <tr>
+    <td>FastDeploy</td>
+    <td>❌</td>
+    <td>🚧</td>
+    <td>✅</td>
+    <td>🚧</td>
+    <td>🚧</td>
+    <td>
+    <li>8 ≤ GPU Compute Capability < 12</li>
+    <li>CUDA 版本 ≥ 12.6</li>
+    </td>
   </tr>
 </tbody>
 </table>
 
 > 当前，PaddleOCR-VL 暂不支持 ARM 架构 CPU。后续将根据实际需求扩展更多硬件支持，敬请期待！  
-> vLLM 与 SGLang 无法在 Windows 或 macOS 上原生运行，请使用我们提供的 Docker 镜像。
+> vLLM、SGLang 和 FastDeploy 无法在 Windows 或 macOS 上原生运行，请使用我们提供的 Docker 镜像。
 
 由于不同硬件所需的依赖各不相同，如果您的硬件满足上述表格的要求，请参考下表查看对应的教程进行环境配置：
 
@@ -54,39 +86,33 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
   <thead>
     <tr>
       <th>硬件类型</th>
-      <th>硬件型号</th>
       <th>环境配置教程</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td rowspan="2">NVIDIA GPU</td>
-      <td>RTX 30、40 系</td>
-      <td>本教程</td>
-    </tr>
-    <tr>
-      <td>RTX 50 系</td>
-      <td><a href="./PaddleOCR-VL-RTX50.md">PaddleOCR-VL RTX 50 环境配置教程</a></td>
-    </tr>
-    <tr>
       <td>x64 CPU</td>
-      <td>-</td>
       <td>本教程</td>
+    </tr>
+    <tr>
+      <td>NVIDIA GPU</td>
+      <td>
+      <li>NVIDIA Blackwell GPU（如RTX 50 系）参考 <a href="./PaddleOCR-VL-NVIDIA-Blackwell.md">PaddleOCR-VL NVIDIA Blackwell 环境配置教程</a></li>
+      <li>其他 NVIDIA GPU 参考本教程</li>
+      </td>
     </tr>
     <tr>
       <td>XPU</td>
-      <td>🚧</td>
-      <td>🚧</td>
+      <td><a href="./PaddleOCR-VL-XPU.md">PaddleOCR-VL XPU 环境配置教程</a></td>
     </tr>
     <tr>
       <td>DCU</td>
-      <td>🚧</td>
-      <td>🚧</td>
+      <td><a href="./PaddleOCR-VL-DCU.md">PaddleOCR-VL DCU 环境配置教程</a></td>
     </tr>
   </tbody>
 </table>
 
-> 例如您使用的是 RTX 50 系 GPU，满足 PaddlePaddle 和 vLLM 推理方式的设备要求，请参考 [PaddleOCR-VL RTX 50 环境配置教程](./PaddleOCR-VL-RTX50.md) 完成环境配置后再进行 PaddleOCR-VL 的使用。
+> 例如您使用的是 RTX 50 系 GPU，满足 PaddlePaddle 和 vLLM 推理方式的设备要求，请参考 [PaddleOCR-VL NVIDIA Blackwell 环境配置教程](./PaddleOCR-VL-NVIDIA-Blackwell.md) 完成环境配置后再进行 PaddleOCR-VL 的使用。
 
 ## 1. 环境准备
 
@@ -111,7 +137,7 @@ docker run \
 # 在容器中调用 PaddleOCR CLI 或 Python API
 ```
 
-镜像的大小约为 8 GB。如果您希望在无法连接互联网的环境中使用 PaddleOCR-VL，请将上述命令中的 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest` 更换为离线版本镜像 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-offline`（离线镜像大小约为 11 GB）。您需要在可以联网的机器上拉取镜像，将镜像导入到离线机器，然后在离线机器使用该镜像启动容器。例如：
+如果您希望在无法连接互联网的环境中使用 PaddleOCR-VL，请将上述命令中的 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest` （镜像的大小约为 8 GB）更换为离线版本镜像 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-offline`（镜像大小约为 10 GB）。您需要在可以联网的机器上拉取镜像，将镜像导入到离线机器，然后在离线机器使用该镜像启动容器。例如：
 
 ```shell
 # 在能够联网的机器上执行
@@ -1032,7 +1058,7 @@ MKL-DNN 缓存容量。
 
 ## 3. 使用推理加速框架提升 VLM 推理性能
 
-默认配置下的推理性能未经过充分优化，可能无法满足实际生产需求。此步骤主要介绍如何使用 vLLM 和 SGLang 推理加速框架来提升 PaddleOCR-VL 的推理性能。
+默认配置下的推理性能未经过充分优化，可能无法满足实际生产需求。此步骤主要介绍如何使用 vLLM、SGLang 和 FastDeploy 推理加速框架来提升 PaddleOCR-VL 的推理性能。
 
 ### 3.1 启动 VLM 推理服务
 
@@ -1044,21 +1070,37 @@ MKL-DNN 缓存容量。
 
 #### 3.1.1 方法一：使用 Docker 镜像
 
-PaddleOCR 提供了 Docker 镜像（镜像大小约为 13 GB），用于快速启动 vLLM 推理服务。可使用以下命令启动服务（要求 Docker 版本 >= 19.03，机器装配有 GPU 且 NVIDIA 驱动支持 CUDA 12.6 或以上版本）：
+PaddleOCR 提供了 Docker 镜像，用于快速启动 vLLM 或 FastDeploy 推理服务。可使用以下命令启动服务（要求 Docker 版本 >= 19.03，机器装配有 GPU 且 NVIDIA 驱动支持 CUDA 12.6 或以上版本）：
 
-```shell
-docker run \
-    -it \
-    --rm \
-    --gpus all \
-    --network host \
-    ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest \
-    paddleocr genai_server --model_name PaddleOCR-VL-0.9B --host 0.0.0.0 --port 8118 --backend vllm
-```
+=== "启动 vLLM 服务"
 
-启动 vLLM 推理服务可以传入更多参数，支持的参数详见下一小节。
+    ```shell
+    docker run \
+        -it \
+        --rm \
+        --gpus all \
+        --network host \
+        ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest \
+        paddleocr genai_server --model_name PaddleOCR-VL-0.9B --host 0.0.0.0 --port 8118 --backend vllm
+    ```
 
-如果您希望在无法连接互联网的环境中启动服务，请将上述命令中的 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest` 更换为离线版本镜像 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-offline`。离线镜像大小约为 15 GB。
+    如果您希望在无法连接互联网的环境中启动服务，请将上述命令中的 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest`（镜像大小约为 13 GB）更换为离线版本镜像 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-offline`（镜像大小约为 15 GB）。
+
+=== "启动 FastDeploy 服务"
+
+    ```shell
+    docker run \
+        -it \
+        --rm \
+        --gpus all \
+        --network host \
+        ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-fastdeploy-server:latest \
+        paddleocr genai_server --model_name PaddleOCR-VL-0.9B --host 0.0.0.0 --port 8118 --backend fastdeploy
+    ```
+
+    如果您希望在无法连接互联网的环境中启动服务，请将上述命令中的 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-fastdeploy-server:latest`（镜像大小约为 43 GB）更换为离线版本镜像 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-fastdeploy-server:latest-offline`（镜像大小约为 45 GB）。
+
+启动 vLLM 或 FastDeploy 推理服务可以传入更多参数，支持的参数详见下一小节。
 
 #### 3.1.2 方法二：通过 PaddleOCR CLI 安装和使用
 
@@ -1082,7 +1124,7 @@ paddleocr install_genai_server_deps vllm
 paddleocr install_genai_server_deps <推理加速框架名称>
 ```
 
-当前支持的框架名称为 `vllm` 和 `sglang`，分别对应 vLLM 和 SGLang。
+当前支持的框架名称为 `vllm`、`sglang` 和 `fastdeploy`，分别对应 vLLM、SGLang 和 FastDeploy。
 
 通过 `paddleocr install_genai_server_deps` 安装的 vLLM 与 SGLang 均为 **CUDA 12.6** 版本，请确保本地 NVIDIA 驱动与此版本一致或更高。
 
@@ -1135,6 +1177,7 @@ pipeline = PaddleOCRVL(vl_rec_backend="vllm-server", vl_rec_server_url="http://1
 
 - [vLLM 官方参数调优指南](https://docs.vllm.ai/en/latest/configuration/optimization.html)
 - [SGLang 超参数调整文档](https://docs.sglang.ai/advanced_features/hyperparameter_tuning.html)
+- [FastDeploy 最佳实践文档](https://paddlepaddle.github.io/FastDeploy/zh/best_practices/PaddleOCR-VL-0.9B/)
 
 PaddleOCR VLM 推理服务支持通过配置文件进行调参。以下示例展示如何调整 vLLM 服务器的 `gpu-memory-utilization` 和 `max-num-seqs` 参数：
 
@@ -1143,7 +1186,7 @@ PaddleOCR VLM 推理服务支持通过配置文件进行调参。以下示例展
    ```yaml
    gpu-memory-utilization: 0.3
    max-num-seqs: 128
-   ```
+   ``` 
 
 2. 启动服务时指定配置文件路径，例如使用 `paddleocr genai_server` 命令：
 
@@ -1173,7 +1216,10 @@ PaddleOCR 会将来自单张或多张输入图像中的子图分组并对服务�
 **NVIDIA RTX 3060**
 
 - **服务端**
-  - vLLM：`gpu-memory-utilization=0.8`
+    - vLLM：`gpu-memory-utilization: 0.8`
+    - FastDeploy：
+        - `gpu-memory-utilization: 0.8`
+        - `max-concurrency: 2048`
 
 ## 4. 服务化部署
 

@@ -24,10 +24,12 @@ docker run \
     --network host \
     --user root \
     --shm-size 64G \
-    ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest \
+    ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-xpu \
     /bin/bash
 # 在容器中调用 PaddleOCR CLI 或 Python API
 ```
+
+如果您希望在无法连接互联网的环境中启动服务，请将上述命令中的 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-xpu`（镜像大小约为 12 GB）更换为离线版本镜像 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-xpu-offline`（镜像大小约为 14 GB）。
 
 ### 1.2 方法二：手动安装 PaddlePaddle 和 PaddleOCR
 
@@ -71,9 +73,11 @@ docker run \
     --gpus all \
     --network host \
     --shm-size 64G \
-    ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-fastdeploy-server:latest-xpu-offline \
+    ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-fastdeploy-server:latest-xpu \
     paddleocr genai_server --model_name PaddleOCR-VL-0.9B --host 0.0.0.0 --port 8118 --backend fastdeploy
 ```
+
+如果您希望在无法连接互联网的环境中启动服务，请将上述命令中的 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-fastdeploy-server:latest-xpu`（镜像大小约为 47 GB）更换为离线版本镜像 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-fastdeploy-server:latest-xpu-offline`（镜像大小约为 49 GB）。
 
 ### 3.2 客户端使用方法
 

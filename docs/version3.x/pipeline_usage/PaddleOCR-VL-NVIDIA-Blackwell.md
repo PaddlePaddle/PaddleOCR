@@ -31,20 +31,7 @@ docker run \
 # 在容器中调用 PaddleOCR CLI 或 Python API
 ```
 
-如果您希望在无法连接互联网的环境中使用 PaddleOCR-VL，请将上述命令中的 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-sm120` 更换为离线版本镜像 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-sm120-offline`。您需要在可以联网的机器上拉取镜像，将镜像导入到离线机器，然后在离线机器使用该镜像启动容器。例如：
-
-```shell
-# 在能够联网的机器上执行
-docker pull ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-sm120-offline
-# 将镜像保存到文件中
-docker save ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-sm120-offline -o paddleocr-vl-latest-sm120-offline.tar
-
-# 将镜像文件传输到离线机器
-
-# 在离线机器上执行
-docker load -i paddleocr-vl-latest-sm120-offline.tar
-# 之后可以在离线机器上使用 `docker run` 启动容器
-```
+如果您希望在无法连接互联网的环境中使用 PaddleOCR-VL，请将上述命令中的 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-sm120`（镜像大小约为 10 GB）更换为离线版本镜像 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-sm120-offline`（镜像大小约为 12 GB）。
 
 ### 1.2 方法二：手动安装 PaddlePaddle 和 PaddleOCR
 
@@ -103,9 +90,9 @@ docker run \
     paddleocr genai_server --model_name PaddleOCR-VL-0.9B --host 0.0.0.0 --port 8118 --backend vllm
 ```
 
-启动 vLLM 推理服务可以传入更多参数，支持的参数详见下一小节。
+如果您希望在无法连接互联网的环境中启动服务，请将上述命令中的 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-sm120`（镜像大小约为 12 GB）更换为离线版本镜像 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-sm120-offline`（镜像大小约为 14 GB）。
 
-如果您希望在无法连接互联网的环境中启动服务，请将上述命令中的 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-sm120` 更换为离线版本镜像 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-sm120-offline`。
+启动 vLLM 推理服务可以传入更多参数，支持的参数详见下一小节。
 
 #### 3.1.2 方法二：通过 PaddleOCR CLI 安装和使用
 

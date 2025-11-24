@@ -31,10 +31,12 @@ docker run -it \
   --security-opt seccomp=unconfined \
   -v /opt/hyhal/:/opt/hyhal/:ro \
   --shm-size=64G \
-  ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-dcu-offline \
+  ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-dcu \
   /bin/bash
 # 在容器中调用 PaddleOCR CLI 或 Python API
 ```
+
+如果您希望在无法连接互联网的环境中启动服务，请将上述命令中的 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-dcu`（镜像大小约为 21 GB）更换为离线版本镜像 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-dcu-offline`（镜像大小约为 23 GB）。
 
 ### 1.2 方法二：手动安装 PaddlePaddle 和 PaddleOCR
 
@@ -84,9 +86,11 @@ docker run -it \
   --security-opt seccomp=unconfined \
   -v /opt/hyhal/:/opt/hyhal/:ro \
   --shm-size=64G \
-  ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-dcu-offline \
+  ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-dcu \
   paddleocr genai_server --model_name PaddleOCR-VL-0.9B --host 0.0.0.0 --port 8118 --backend vllm
 ```
+
+如果您希望在无法连接互联网的环境中启动服务，请将上述命令中的 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-dcu`（镜像大小约为 25 GB）更换为离线版本镜像 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-dcu-offline`（镜像大小约为 27 GB）。
 
 ### 3.2 客户端使用方法
 
