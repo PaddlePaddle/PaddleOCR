@@ -2,9 +2,9 @@
 comments: true
 ---
 
-# PaddleOCR-VL-NVIDIA-Blackwell 环境配置教程
+# PaddleOCR-VL NVIDIA Blackwell 架构 GPU 环境配置教程
 
-本教程是 NVIDIA Blackwell GPU 的环境配置教程，目的是完成相关的环境配置，环境配置完毕后请参考 [PaddleOCR-VL 使用教程](./PaddleOCR-VL.md) 使用 PaddleOCR-VL。
+本教程是 NVIDIA Blackwell 架构 GPU 的环境配置教程，目的是完成相关的环境配置，环境配置完毕后请参考 [PaddleOCR-VL 使用教程](./PaddleOCR-VL.md) 使用 PaddleOCR-VL。
 
 教程开始前，**请确认您的 NVIDIA 驱动支持 CUDA 12.9 或以上版本**。
 

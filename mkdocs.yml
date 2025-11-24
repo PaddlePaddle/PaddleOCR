@@ -110,7 +110,7 @@ plugins:
             PP-ChatOCRv4简介: PP-ChatOCRv4 Introduction
             PaddleOCR-VL: PaddleOCR-VL
             PaddleOCR-VL简介: PaddleOCR-VL Introduction
-            PaddleOCR-VL NVIDIA Blackwell 环境配置教程: PaddleOCR-VL NVIDIA Blackwell Environment Configuration Tutorial
+            PaddleOCR-VL NVIDIA Blackwell 架构 GPU 环境配置教程: PaddleOCR-VL NVIDIA Blackwell GPUs Environment Configuration Tutorial
             PaddleOCR-VL XPU 环境配置教程: PaddleOCR-VL XPU Environment Configuration Tutorial
             PaddleOCR-VL DCU 环境配置教程: PaddleOCR-VL DCU Environment Configuration Tutorial
             推理部署: Model Deploy
@@ -300,7 +300,7 @@ nav:
   - PaddleOCR-VL:
     - 使用教程: version3.x/pipeline_usage/PaddleOCR-VL.md
     - PaddleOCR-VL简介: version3.x/algorithm/PaddleOCR-VL/PaddleOCR-VL.md
-    - PaddleOCR-VL NVIDIA Blackwell 环境配置教程: version3.x/pipeline_usage/PaddleOCR-VL-NVIDIA-Blackwell.md
+    - PaddleOCR-VL NVIDIA Blackwell 架构 GPU 环境配置教程: version3.x/pipeline_usage/PaddleOCR-VL-NVIDIA-Blackwell.md
     - PaddleOCR-VL XPU 环境配置教程: version3.x/pipeline_usage/PaddleOCR-VL-XPU.md
     - PaddleOCR-VL DCU 环境配置教程: version3.x/pipeline_usage/PaddleOCR-VL-DCU.md
   - 推理部署:

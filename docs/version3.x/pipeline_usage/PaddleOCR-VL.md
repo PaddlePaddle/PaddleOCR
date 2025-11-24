@@ -19,8 +19,8 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
     <th>x64 CPU</th>
     <th>DCU</th>
     <th>XPU</th>
-    <th>沐曦</th>
-    <th>天数</th>
+    <th>沐曦 GPU</th>
+    <th>天数 GPU</th>
     <th>NVIDIA GPU</th>
   </tr>
 </thead>
@@ -97,7 +97,7 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
     <tr>
       <td>NVIDIA GPU</td>
       <td>
-      <li>NVIDIA Blackwell GPU（如RTX 50 系）参考 <a href="./PaddleOCR-VL-NVIDIA-Blackwell.md">PaddleOCR-VL NVIDIA Blackwell 环境配置教程</a></li>
+      <li>NVIDIA Blackwell 架构 GPU（如RTX 50 系）参考 <a href="./PaddleOCR-VL-NVIDIA-Blackwell.md">PaddleOCR-VL NVIDIA Blackwell 架构 GPU 环境配置教程</a></li>
       <li>其他 NVIDIA GPU 参考本教程</li>
       </td>
     </tr>
@@ -112,7 +112,7 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
   </tbody>
 </table>
 
-> 例如您使用的是 RTX 50 系 GPU，满足 PaddlePaddle 和 vLLM 推理方式的设备要求，请参考 [PaddleOCR-VL NVIDIA Blackwell 环境配置教程](./PaddleOCR-VL-NVIDIA-Blackwell.md) 完成环境配置后再进行 PaddleOCR-VL 的使用。
+> 例如您使用的是 RTX 50 系 GPU，满足 PaddlePaddle 和 vLLM 推理方式的设备要求，请参考 [PaddleOCR-VL NVIDIA Blackwell 架构 GPU 环境配置教程](./PaddleOCR-VL-NVIDIA-Blackwell.md) 完成环境配置后再进行 PaddleOCR-VL 的使用。
 
 ## 1. 环境准备
 
@@ -1186,7 +1186,7 @@ PaddleOCR VLM 推理服务支持通过配置文件进行调参。以下示例展
    ```yaml
    gpu-memory-utilization: 0.3
    max-num-seqs: 128
-   ``` 
+   ```
 
 2. 启动服务时指定配置文件路径，例如使用 `paddleocr genai_server` 命令：
 
