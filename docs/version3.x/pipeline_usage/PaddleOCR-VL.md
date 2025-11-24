@@ -2118,11 +2118,22 @@ foreach ($result as $i => $item) {
 
 调整服务化部署的 PaddleOCR-VL 配置只需以下三步：
 
-1. 生成配置文件 
+1. 获取配置文件 
 2. 修改配置文件
 3. 应用配置文件
 
-#### 4.4.1 生成配置文件
+#### 4.4.1 获取配置文件
+
+**若您使用 Docker Compose 部署：**
+
+根据使用的后端，下载对应的产线配置文件：
+
+- vLLM：[pipeline_config_vllm.yaml](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/pipeline_config_vllm.yaml)
+- FastDeploy：[pipeline_config_fastdeploy.yaml](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/pipeline_config_fastdeploy.yaml)
+
+**若您手动安装依赖部署：**
+
+执行以下命令生成产线配置文件：
 
 ```shell
 paddlex --get_pipeline_config PaddleOCR-VL
@@ -2141,6 +2152,8 @@ VLRecognition:
     backend: vllm-server
     server_url: http://127.0.0.1:8118/v1
 ```
+
+Docker Compose 方案默认已使用加速框架。
 
 **启用文档图像预处理功能**
 
@@ -2199,13 +2212,24 @@ Serving:
 
 #### 4.4.3 应用配置文件
 
-**若您是 Docker Compose 部署：**
+**若您使用 Docker Compose 部署：**
 
-将自定义的产线配置文件覆盖至 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl`（或对应容器）中的 `/home/paddleocr/pipeline_config.yaml`。
+设置 Compose 文件中的 `services.paddleocr-vl-api.volumes` 字段，将产线配置文件挂载到 `/home/paddleocr` 目录。例如：
 
-**若您是手动安装依赖部署：**
+```yaml
+services:
+  paddleocr-vl-api:
+    ...
+    volumes:
+      - pipeline_config_vllm.yaml:/home/paddleocr/pipeline_config.yaml
+...
+```
 
-将 `--pipeline` 参数指定为自定义配置文件路径。
+> 在生产环境中，您也可以自行构建镜像，将配置文件打包到镜像中。
+
+**若您手动安装依赖部署：**
+
+在启动服务时，将 `--pipeline` 参数指定为自定义配置文件路径。
 
 ## 5. 模型微调
 
