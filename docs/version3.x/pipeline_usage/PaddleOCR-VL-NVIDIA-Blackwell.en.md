@@ -245,7 +245,7 @@ To adjust pipeline-related configurations (such as model paths, batch sizes, dep
 
 Please refer to the corresponding section in the [PaddleOCR-VL Usage Tutorial](./PaddleOCR-VL.en.md).
 
-### 4.4 Instructions for Adjusting Production Line Configurations
+### 4.4 Pipeline Configuration Adjustment Instructions
 
 Please refer to the corresponding section in the [PaddleOCR-VL Usage Tutorial](./PaddleOCR-VL.en.md).
 

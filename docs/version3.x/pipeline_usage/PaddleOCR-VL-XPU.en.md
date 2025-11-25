@@ -119,13 +119,13 @@ This method accelerates VLM inference based on the FastDeploy framework and is m
 
 Additionally, after starting the server using this method, no internet connection is required except for pulling the image. If you need to deploy in an offline environment, you can first pull the images involved in the Compose file on a connected machine, export them, and transfer them to the offline machine for import to start the service in an offline environment.
 
-If you need to adjust production-related configurations (such as model path, batch size, deployment device, etc.), please refer to section 4.4.
+If you need to adjust pipeline configurations (such as model path, batch size, deployment device, etc.), please refer to section 4.4.
 
 ### 4.3 Client Invocation Methods
 
 Please refer to the corresponding section in the [PaddleOCR-VL Usage Tutorial](./PaddleOCR-VL.en.md).
 
-### 4.4 Instructions for Production Configuration Adjustments
+### 4.4 Pipeline Configuration Adjustment Instructions
 
 Please refer to the corresponding section in the [PaddleOCR-VL Usage Tutorial](./PaddleOCR-VL.en.md).
 
