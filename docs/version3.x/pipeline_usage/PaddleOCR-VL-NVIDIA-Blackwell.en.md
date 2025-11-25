@@ -26,12 +26,12 @@ docker run \
     --gpus all \
     --network host \
     --user root \
-    ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-sm120 \
+    ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-gpu-sm120 \
     /bin/bash
 # Call PaddleOCR CLI or Python API in the container
 ```
 
-If you wish to use PaddleOCR-VL in an offline environment, replace `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-sm120` (image size ~10 GB) in the above command with the offline version image `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-sm120-offline` (image size ~12 GB).
+If you wish to use PaddleOCR-VL in an offline environment, replace `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-gpu-sm120` (image size ~10 GB) in the above command with the offline version image `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-gpu-sm120-offline` (image size ~12 GB).
 
 ### 1.2 Method 2: Manually Install PaddlePaddle and PaddleOCR
 
@@ -86,11 +86,11 @@ docker run \
     --rm \
     --gpus all \
     --network host \
-    ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-sm120 \
+    ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-gpu-sm120 \
     paddleocr genai_server --model_name PaddleOCR-VL-0.9B --host 0.0.0.0 --port 8118 --backend vllm
 ```
 
-If you wish to start the service in an offline environment, replace `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-sm120` (image size ~12 GB) in the above command with the offline version image `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-sm120-offline` (image size ~14 GB).
+If you wish to start the service in an offline environment, replace `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-gpu-sm120` (image size ~12 GB) in the above command with the offline version image `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-gpu-sm120-offline` (image size ~14 GB).
 
 More parameters can be passed when starting the vLLM inference service; supported parameters are detailed in the next subsection.
 
@@ -158,9 +158,9 @@ Please note that the PaddleOCR-VL service introduced in this section differs fro
 2. Copy the following content and save it as a `.env` file:
 
     ```
-    API_IMAGE_TAG_SUFFIX=latest-sm120-offline
+    API_IMAGE_TAG_SUFFIX=latest-gpu-sm120-offline
     VLM_BACKEND=vllm
-    VLM_IMAGE_TAG_SUFFIX=latest-sm120-offline
+    VLM_IMAGE_TAG_SUFFIX=latest-gpu-sm120-offline
     ```
 
 3. Execute the following command in the directory containing the `compose.yaml` and `.env` files to start the server, which will listen on port **8080** by default:

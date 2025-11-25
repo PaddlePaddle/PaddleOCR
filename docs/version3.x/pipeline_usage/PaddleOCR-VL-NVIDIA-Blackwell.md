@@ -26,12 +26,12 @@ docker run \
     --gpus all \
     --network host \
     --user root \
-    ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-sm120 \
+    ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-gpu-sm120 \
     /bin/bash
 # 在容器中调用 PaddleOCR CLI 或 Python API
 ```
 
-如果您希望在无法连接互联网的环境中使用 PaddleOCR-VL，请将上述命令中的 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-sm120`（镜像大小约为 10 GB）更换为离线版本镜像 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-sm120-offline`（镜像大小约为 12 GB）。
+如果您希望在无法连接互联网的环境中使用 PaddleOCR-VL，请将上述命令中的 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-gpu-sm120`（镜像大小约为 10 GB）更换为离线版本镜像 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-gpu-sm120-offline`（镜像大小约为 12 GB）。
 
 ### 1.2 方法二：手动安装 PaddlePaddle 和 PaddleOCR
 
@@ -86,11 +86,11 @@ docker run \
     --rm \
     --gpus all \
     --network host \
-    ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-sm120 \
+    ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-gpu-sm120 \
     paddleocr genai_server --model_name PaddleOCR-VL-0.9B --host 0.0.0.0 --port 8118 --backend vllm
 ```
 
-如果您希望在无法连接互联网的环境中启动服务，请将上述命令中的 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-sm120`（镜像大小约为 12 GB）更换为离线版本镜像 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-sm120-offline`（镜像大小约为 14 GB）。
+如果您希望在无法连接互联网的环境中启动服务，请将上述命令中的 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-gpu-sm120`（镜像大小约为 12 GB）更换为离线版本镜像 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-gpu-sm120-offline`（镜像大小约为 14 GB）。
 
 启动 vLLM 推理服务可以传入更多参数，支持的参数详见下一小节。
 
@@ -159,9 +159,9 @@ paddleocr genai_server --model_name PaddleOCR-VL-0.9B --backend vllm --port 8118
 2. 复制以下内容并保存为 `.env` 文件：
 
     ```
-    API_IMAGE_TAG_SUFFIX=latest-sm120-offline
+    API_IMAGE_TAG_SUFFIX=latest-gpu-sm120-offline
     VLM_BACKEND=vllm
-    VLM_IMAGE_TAG_SUFFIX=latest-sm120-offline
+    VLM_IMAGE_TAG_SUFFIX=latest-gpu-sm120-offline
     ```
 
 3. 在 `compose.yaml` 和 `.env` 文件所在目录下执行以下命令启动服务器，默认监听 **8080** 端口：
