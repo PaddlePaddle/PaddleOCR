@@ -66,7 +66,7 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
     </tr>
     <tr>
       <td>RTX 50 系</td>
-      <td><a href="./PaddleOCR-VL-RTX50.md">PaddleOCR-VL RTX 50 环境配置教程</a></td>
+      <td><a href="./PaddleOCR-VL-RTX50.html">PaddleOCR-VL RTX 50 环境配置教程</a></td>
     </tr>
     <tr>
       <td>x64 CPU</td>
