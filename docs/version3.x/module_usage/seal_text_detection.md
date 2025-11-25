@@ -12,7 +12,7 @@ comments: true
 
 > 推理耗时仅包含模型推理耗时，不包含前后处理耗时。
 
-### 🖋️🖋️ PP-OCRv4_server_seal_det
+###  PP-OCRv4_server_seal_det
 **模型类型：** 推理模型/训练模型 | **模型存储大小：** 109 MB  
 **模型介绍：**  
 PP-OCRv4的服务端印章文本检测模型，精度更高，适合在较好的服务器上部署。
@@ -24,18 +24,13 @@ PP-OCRv4的服务端印章文本检测模型，精度更高，适合在较好的
 | **高性能模式** | - | 91.57 | 439.86 |
 
 **下载链接：**  
-[推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCR极速pdfv4_server_seal_det_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_seal_det_pretrained.pdparams)
-
-[Hugging Face](https://huggingface.co/PaddlePaddle/PP-OCRv4_server_seal_det )
-
-[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PP-OCRv4_server_seal_det )
-
-[AI Studio](https://aistudio.baidu.com/modelsdetail/31857 )
-
+| 训练模型 |  推理模型 |
+|:---: |:---: |
+|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCR极速pdfv4_server_seal_det_infer.tar)|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_seal_det_pretrained.pdparams),[AI Studio](https://aistudio.baidu.com/modelsdetail/31857 ),[Hugging Face](https://huggingface.co/PaddlePaddle/PP-LCNet_x1_0_doc_ori) ,[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PP-OCRv4_server_seal_det )  |
 
 ---
 
-### 📱📱 PP-OCRv4_mobile_seal_det
+###  PP-OCRv4_mobile_seal_det
 **模型类型：** 推理模型/训练模型 | **模型存储大小：** 4.7 MB  
 **模型介绍：**  
 PP-OCRv4的移动端印章文本检测模型，效率更高，适合在端侧部署。
@@ -47,17 +42,13 @@ PP-OCRv4的移动端印章文本检测模型，效率更高，适合在端侧部
 | **高性能模式** | - | 3.56 | 19.64 |
 
 **下载链接：**  
-[推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_mobile_seal_det_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_mobile_seal_det_pretrained.pdparams)
-
-[Hugging Face](https://huggingface.co/PaddlePaddle/PP-OCRv4_mobile_seal_det )
-
-[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PP-OCRv4_mobile_seal_det )
-
-[AI Studio](https://aistudio.baidu.com/modelsdetail/31866 )
+| 训练模型 |  推理模型 |
+|:---: |:---: |
+|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_mobile_seal_det_infer.tar)|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_mobile_seal_det_pretrained.pdparams),[AI Studio](https://aistudio.baidu.com/modelsdetail/31866 ),[Hugging Face](https://huggingface.co/PaddlePaddle/PP-LCNet_x1_0_doc_ori) ,[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PP-OCRv4_mobile_seal_det )  |
 
 ---
 
-### 🧪🧪🧪 测试环境说明
+###  测试环境说明
 **性能测试环境：**
 - **测试数据集：** 自建的内部数据集，包含500张圆形印章图像
 - **硬件配置：**
