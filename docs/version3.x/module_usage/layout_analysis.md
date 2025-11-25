@@ -23,7 +23,7 @@ comments: true
 
 > 推理耗时仅包含模型推理耗时，不包含前后处理耗时。
 
-### 📊📊 PP-DocLayoutV2
+###  PP-DocLayoutV2
 **模型类型：** 推理模型 | **模型存储大小：** 203.8 MB  
 **模型介绍：**  
 自研的版面分析模型在包含中英文论文、多栏杂志、报纸、PPT、合同、书本、试卷、研报、古籍、日文文档、竖版文字文档等场景的自建数据集训练的更高精度版面区域定位和版面阅读顺序恢复模型。
@@ -34,13 +34,10 @@ comments: true
 | **版面检测精度** | 81.4 |
 
 **下载链接：**  
-[推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayoutV2_infer.tar)
+|  推理模型 |
+|:---: |
+|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayoutV2_infer.tar),[AI Studio](https://aistudio.baidu.com/modelsdetail/37908),[Hugging Face](https://huggingface.co/PaddlePaddle/PP-DocLayoutV2)  ,[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PP-DocLayoutV2) |
 
-[Hugging Face](https://huggingface.co/PaddlePaddle/PP-DocLayoutV2) 
-
-[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PP-DocLayoutV2) 
-
-[AI Studio](https://aistudio.baidu.com/modelsdetail/37908) 
 
 ## 三、快速开始
 
