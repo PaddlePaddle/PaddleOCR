@@ -12,7 +12,7 @@ comments: true
 
 > 推理耗时仅包含模型推理耗时，不包含前后处理耗时。
 
-### 📐📐 PP-LCNet_x1_0_doc_ori
+###  PP-LCNet_x1_0_doc_ori
 **模型类型：** 推理模型/训练模型 | **模型存储大小：** 7 MB  
 **模型介绍：**  
 基于PP-LCNet_x1_0的文档图像分类模型，含有四个类别，即0度，90度，180度，270度。主要用于将文档图像的方向区分出来，并使用后处理将其矫正，提高OCR处理的准确性。
@@ -24,13 +24,9 @@ comments: true
 | **高性能模式** | - | 0.59 | 1.19 |
 
 **下载链接：**  
-[推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-LCNet_x1_0_doc_ori_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-LCNet_x1_0_doc_ori_pretrained.pdparams)
-
-[Hugging Face](https://huggingface.co/PaddlePaddle/PP-LCNet_x1_0_doc_ori) 
-
-[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PP-LCNet_x1_0_doc_ori) 
-
-[AI Studio](https://aistudio.baidu.com/modelsdetail/31905) 
+| 训练模型 |  推理模型 |
+|:---: |:---: |
+|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-LCNet_x1_0_doc_ori_infer.tar)|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-LCNet_x1_0_doc_ori_pretrained.pdparams),[AI Studio](https://aistudio.baidu.com/modelsdetail/31905) ,[Hugging Face](https://huggingface.co/PaddlePaddle/PP-LCNet_x1_0_doc_ori)  ,[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PP-LCNet_x1_0_doc_ori)   |
 
 ---
 
