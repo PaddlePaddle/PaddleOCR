@@ -12,7 +12,7 @@ comments: true
 
 > 推理耗时仅包含模型推理耗时，不包含前后处理耗时。
 
-### 📊📊 RT-DETR-L表格单元格检测模型
+###  RT-DETR-L表格单元格检测模型
 **模型类型：** 推理模型/训练模型 | **模型存储大小：** 124 MB  
 **模型介绍：**  
 RT-DETR 是一个实时的端到端目标检测模型。百度飞桨视觉团队基于 RT-DETR-L 作为基础模型，在自建表格单元格检测数据集上完成预训练，实现了对有线表格、无线表格均有较好性能的表格单元格检测。
@@ -24,8 +24,12 @@ RT-DETR 是一个实时的端到端目标检测模型。百度飞桨视觉团队
 | **常规模式** | 82.7 | 33.47 | 402.55 |
 | **高性能模式** | - | 27.02 | 256.56 |
 
-**下载链接：**  
-[推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/RT-DETR-L_wired_table_cell_det_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/RT-DETR-L_wired_table_cell_det_pretrained.pdparams)
+**下载链接：**
+
+| 训练模型 | 推理模型 |
+|:---:|:---:|
+|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/RT-DETR-L_wired_table_cell_det_pretrained.pdparams)|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/RT-DETR-L_wired_table_cell_det_infer.tar),[AI Studio](https://aistudio.baidu.com/modelsdetail/31916),[Hugging Face](https://huggingface.co/PaddlePaddle/RT-DETR-L_wired_table_cell_det),[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/RT-DETR-L_wired_table_cell_det) |
+
 
 #### 无线表格单元格检测
 **性能指标：**
@@ -34,12 +38,15 @@ RT-DETR 是一个实时的端到端目标检测模型。百度飞桨视觉团队
 | **常规模式** | 82.7 | 33.47 | 402.55 |
 | **高性能模式** | - | 27.02 | 256.56 |
 
-**下载链接：**  
-[推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/RT-DETR-L_wireless_table_cell_det_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/RT-DETR-L_wireless_table_cell_det_pretrained.pdparams)
+**下载链接：**
+
+| 训练模型 | 推理模型 |
+|:---:|:---:|
+|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/RT-DETR-L_wireless_table_cell_det_pretrained.pdparams)|[BOS源]( https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/RT-DETR-L_wireless_table_cell_det_infer.tar),[AI Studio](https://aistudio.baidu.com/modelsdetail/31875),[Hugging Face](https://huggingface.co/PaddlePaddle/RT-DETR-L_wireless_table_cell_det),[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/RT-DETR-L_wireless_table_cell_det ) |
 
 ---
 
-### 🧪🧪🧪 测试环境说明
+###  测试环境说明
 **性能测试环境：**
 - **测试数据集：** 自建的内部评测集
 - **硬件配置：**
