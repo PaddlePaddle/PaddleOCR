@@ -8,85 +8,111 @@ PaddleOCR-VL is an advanced and efficient document parsing model designed specif
 
 <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr_vl/metrics/allmetric.png"/>
 
-## PaddleOCR-VL Inference Device Support
+## Inference Device Support for PaddleOCR-VL
 
-Currently, PaddleOCR-VL offers three inference methods, each with varying levels of support for inference devices. Please verify that your inference device meets the requirements in the table below before proceeding with PaddleOCR-VL inference deployment:
+Currently, PaddleOCR-VL offers four inference methods, with varying levels of support for different inference devices. Please confirm that your inference device meets the requirements in the table below before proceeding with PaddleOCR-VL deployment:
 
 <table border="1">
 <thead>
   <tr>
     <th>Inference Method</th>
-    <th>x64 CPU Support</th>
-    <th>GPU Compute Capability Support</th>
-    <th>CUDA Version Support</th>
+    <th>x64 CPU</th>
+    <th>DCU</th>
+    <th>XPU</th>
+    <th>MetaX GPU</th>
+    <th>Iluvatar GPU</th>
+    <th>NVIDIA GPU</th>
   </tr>
 </thead>
 <tbody>
   <tr>
     <td>PaddlePaddle</td>
     <td>✅</td>
-    <td>≥ 7</td>
-    <td>≥ 11.8</td>
+    <td>✅</td>
+    <td>✅</td>
+    <td>🚧</td>
+    <td>🚧</td>
+    <td>
+    <li>GPU Compute Capability ≥ 7</li>
+    <li>CUDA version ≥ 11.8</li>
+    </td>
   </tr>
   <tr>
     <td>vLLM</td>
+    <td>❌</td>
+    <td>✅</td>
     <td>🚧</td>
-    <td>≥ 8 (RTX 3060, RTX 5070, A10, A100, ...) <br />  
-    7 ≤ GPU Compute Capability < 8 (T4, V100, ...) is supported but may encounter request timeouts, OOM errors, or other abnormalities. Not recommended.
+    <td>🚧</td>
+    <td>🚧</td>
+    <td>
+    <li>GPU Compute Capability ≥ 8 (RTX 3060, RTX 5070, A10, A100, ...)</li><br />
+    <li>CUDA version ≥ 12.6</li><br />
+    Note: Devices with 7 ≤ GPU Compute Capability < 8 (T4, V100, ...) can run but may experience request timeouts, OOM errors, or other anomalies. Use is not recommended.
     </td>
-    <td>≥ 12.6</td>
   </tr>
   <tr>
     <td>SGLang</td>
-     <td>🚧</td>
-    <td>8 ≤ GPU Compute Capability < 12</td>
-    <td>≥ 12.6</td>
+    <td>❌</td>
+    <td>🚧</td>
+    <td>🚧</td>
+    <td>🚧</td>
+    <td>🚧</td>
+    <td>
+    <li>8 ≤ GPU Compute Capability < 12</li>
+    <li>CUDA version ≥ 12.6</li>
+    </td>
+  </tr>
+  <tr>
+    <td>FastDeploy</td>
+    <td>❌</td>
+    <td>🚧</td>
+    <td>✅</td>
+    <td>🚧</td>
+    <td>🚧</td>
+    <td>
+    <li>8 ≤ GPU Compute Capability < 12</li>
+    <li>CUDA version ≥ 12.6</li>
+    </td>
   </tr>
 </tbody>
 </table>
 
 > Currently, PaddleOCR-VL does not support ARM architecture CPUs. Additional hardware support will be added based on actual demand in the future. Stay tuned!  
-> vLLM and SGLang cannot run natively on Windows or macOS. Please use our provided Docker image instead.
+> vLLM, SGLang, and FastDeploy cannot run natively on Windows or macOS. Please use our provided Docker images instead.
 
-Since different hardware configurations require different dependencies, if your hardware meets the requirements in the table above, please refer to the following table for the corresponding environment configuration tutorial:
+Since different hardware requires different dependencies, if your hardware meets the requirements in the table above, please refer to the following table for the corresponding tutorial to configure your environment:
 
 <table border="1">
   <thead>
     <tr>
       <th>Hardware Type</th>
-      <th>Hardware Model</th>
       <th>Environment Configuration Tutorial</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td rowspan="2">NVIDIA GPU</td>
-      <td>RTX 30, 40 Series</td>
-      <td>This usage tutorial</td>
-    </tr>
-    <tr>
-      <td>RTX 50 Series</td>
-      <td><a href="./PaddleOCR-VL-RTX50.en.md">PaddleOCR-VL RTX 50 Environment Configuration Tutorial</a></td>
-    </tr>
-    <tr>
       <td>x64 CPU</td>
-      <td>-</td>
-      <td>This usage tutorial</td>
+      <td>This tutorial</td>
+    </tr>
+    <tr>
+      <td>NVIDIA GPU</td>
+      <td>
+      <li>NVIDIA Blackwell architecture GPU (e.g., RTX 50 series) refer to <a href="./PaddleOCR-VL-NVIDIA-Blackwell.en.md">PaddleOCR-VL NVIDIA Blackwell Architecture GPU Environment Configuration Tutorial</a></li>
+      <li>Other NVIDIA GPUs refer to this tutorial</li>
+      </td>
     </tr>
     <tr>
       <td>XPU</td>
-      <td>🚧</td>
-      <td>🚧</td>
+      <td><a href="./PaddleOCR-VL-XPU.en.md">PaddleOCR-VL XPU Environment Configuration Tutorial</a></td>
     </tr>
     <tr>
       <td>DCU</td>
-      <td>🚧</td>
-      <td>🚧</td>
+      <td><a href="./PaddleOCR-VL-DCU.en.md">PaddleOCR-VL DCU Environment Configuration Tutorial</a></td>
     </tr>
   </tbody>
 </table>
 
-> For example, if you are using an RTX 50 Series GPU that meets the device requirements for PaddlePaddle and vLLM inference methods, please refer to the [PaddleOCR-VL RTX 50 Environment Configuration Tutorial](./PaddleOCR-VL-RTX50.en.md) to complete environment configuration before using PaddleOCR-VL.
+> For example, if you are using an RTX 50 series GPU that meets the device requirements for both PaddlePaddle and vLLM inference methods, please refer to the [PaddleOCR-VL NVIDIA Blackwell Architecture GPU Environment Configuration Tutorial](./PaddleOCR-VL-NVIDIA-Blackwell.en.md) to complete the environment configuration before using PaddleOCR-VL.
 
 ## 1. Environment Preparation
 
@@ -111,7 +137,7 @@ docker run \
 # Invoke PaddleOCR CLI or Python API within the container
 ```
 
-The image size is approximately 8 GB. If you need to use PaddleOCR-VL in an offline environment, replace `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest` in the above command with the offline version image `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-offline` (offline image size is approximately 11 GB). You will need to pull the image on an internet-connected machine, import it into the offline machine, and then start the container using this image on the offline machine. For example:
+If you need to use PaddleOCR-VL in an offline environment, replace `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest` (image size approximately 8 GB) in the above command with the offline version image `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-offline` (image size is approximately 10 GB). You will need to pull the image on an internet-connected machine, import it into the offline machine, and then start the container using this image on the offline machine. For example:
 
 ```shell
 # Execute on an internet-connected machine
@@ -995,7 +1021,7 @@ Additionally, it also supports obtaining visualized images and prediction result
 
 ## 3. Enhancing VLM Inference Performance Using Inference Acceleration Frameworks
 
-The inference performance under default configurations is not fully optimized and may not meet actual production requirements. This step primarily introduces how to use the vLLM and SGLang inference acceleration frameworks to enhance the inference performance of PaddleOCR-VL.
+The inference performance under default configurations is not fully optimized and may not meet actual production requirements. This step primarily introduces how to use the vLLM, SGLang and FastDeploy inference acceleration frameworks to enhance the inference performance of PaddleOCR-VL.
 
 ### 3.1 Launching the VLM Inference Service
 
@@ -1007,21 +1033,37 @@ There are two methods to launch the VLM inference service; choose either one:
 
 #### 3.1.1 Method 1: Using Docker Image
 
-PaddleOCR provides a Docker image (approximately 13 GB in size) for quickly launching the vLLM inference service. Use the following command to launch the service (requires Docker version >= 19.03, a machine equipped with a GPU, and NVIDIA drivers supporting CUDA 12.6 or higher):
+PaddleOCR provides Docker images for quickly launching vLLM or FastDeploy inference services. You can use the following commands to start the services (requires Docker version >= 19.03, a machine equipped with a GPU, and NVIDIA drivers supporting CUDA 12.6 or later):
 
-```shell
-docker run \
-    -it \
-    --rm \
-    --gpus all \
-    --network host \
-    ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest \
-    paddleocr genai_server --model_name PaddleOCR-VL-0.9B --host 0.0.0.0 --port 8118 --backend vllm
-```
+=== "Launch vLLM Service"
 
-More parameters can be passed when launching the vLLM inference service; refer to the next subsection for supported parameters.
+    ```shell
+    docker run \
+        -it \
+        --rm \
+        --gpus all \
+        --network host \
+        ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest \
+        paddleocr genai_server --model_name PaddleOCR-VL-0.9B --host 0.0.0.0 --port 8118 --backend vllm
+    ```
 
-If you wish to launch the service in an environment without internet access, replace `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest` in the above command with the offline version image `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-offline`. The offline image is approximately 15 GB in size.
+    If you wish to start the service in an environment without internet access, replace `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest` (image size approximately 13 GB) in the above command with the offline version image `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-offline` (image size approximately 15 GB).
+
+=== "Launch FastDeploy Service"
+
+    ```shell
+    docker run \
+        -it \
+        --rm \
+        --gpus all \
+        --network host \
+        ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-fastdeploy-server:latest \
+        paddleocr genai_server --model_name PaddleOCR-VL-0.9B --host 0.0.0.0 --port 8118 --backend fastdeploy
+    ```
+
+    If you wish to start the service in an environment without internet access, replace `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-fastdeploy-server:latest` (image size approximately 43 GB) in the above command with the offline version image `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-fastdeploy-server:latest-offline` (image size approximately 45 GB).
+
+More parameters can be passed when launching vLLM or FastDeploy inference services. The supported parameters are detailed in the next subsection.
 
 #### 3.1.2 Method 2: Installation and Usage via PaddleOCR CLI
 
@@ -1045,7 +1087,7 @@ Usage of the `paddleocr install_genai_server_deps` command:
 paddleocr install_genai_server_deps <inference acceleration framework name>
 ```
 
-Currently supported framework names are `vllm` and `sglang`, corresponding to vLLM and SGLang, respectively.
+Currently supported framework names are `vllm`, `sglang` and `fastdeploy`, corresponding to vLLM, SGLang and FastDeploy, respectively.
 
 The vLLM and SGLang installed via `paddleocr install_genai_server_deps` are both **CUDA 12.6** versions; ensure that your local NVIDIA drivers are consistent with or higher than this version.
 
@@ -1098,6 +1140,7 @@ Different inference acceleration frameworks support different parameters. Refer 
 
 - [vLLM Official Parameter Tuning Guide](https://docs.vllm.ai/en/latest/configuration/optimization.html)
 - [SGLang Hyperparameter Tuning Documentation](https://docs.sglang.ai/advanced_features/hyperparameter_tuning.html)
+- [FastDeploy Best Practices](https://paddlepaddle.github.io/FastDeploy/best_practices/PaddleOCR-VL-0.9B/)
 
 The PaddleOCR VLM inference service supports parameter tuning through configuration files. The following example shows how to adjust the `gpu-memory-utilization` and `max-num-seqs` parameters for the vLLM server:
 
@@ -1136,7 +1179,10 @@ The following configurations are for scenarios with a 1:1 client-to-VLM inferenc
 **NVIDIA RTX 3060**
 
 - **Server-Side**
-  - vLLM: `gpu-memory-utilization=0.8`
+    - vLLM: `gpu-memory-utilization: 0.8`
+    - FastDeploy: 
+        - `gpu-memory-utilization: 0.8`
+        - `max-concurrency: 2048`
 
 ## 4. Service Deployment
 
