@@ -16,9 +16,7 @@ comments: true
 
 ## 二、支持模型列表
 
-> 推理耗时仅包含模型推理耗时，不包含前后处理耗时。
-
-### 📊📊 版面检测模型（20类）
+###  版面检测模型（20类）
 **评估说明：** 以上精度指标的评估集是自建的版面区域检测数据集，包含中英文论文、杂志、报纸、研报、PPT、试卷、课本等 1300 张文档类型图片。
 
 #### PP-DocLayout_plus-L
@@ -33,17 +31,14 @@ comments: true
 | **高性能模式** | - | 17.23 | 极速pdf378.32 |
 
 **下载链接：**  
-[推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayout_plus-L_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocLayout_plus-L_pretrained.pdparams)
+| 训练模型 |  推理模型 |
+|:---: |:---: |
+|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayout_plus-L_infer.tar)|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocLayout_plus-L_pretrained.pdparams),[AI Studio](https://aistudio.baidu.com/modelsdetail/37910  ),[Hugging Face](https://huggingface.co/PaddlePaddle/PP-DocLayout_plus-L  ),[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PP-DocLayout_plus-L  ) |
 
-[Hugging Face](https://huggingface.co/PaddlePaddle/PP-DocLayout_plus-L  )
-
-[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PP-DocLayout_plus-L  )
-
-[AI Studio](https://aistudio.baidu.com/modelsdetail/37910  )
 
 ---
 
-### 📊📊 文档图像版面子模块检测（1类）
+### 文档图像版面子模块检测（1类）
 **评估说明：** 以上精度指标的评估集是自建的版面子区域检测数据集，包含中英文论文、杂志、报纸、研报、PPT、试卷、课本等 1000 张文档类型图片。
 
 #### PP-DocBlockLayout
@@ -58,18 +53,13 @@ comments: true
 | **高性能模式** | - | 28.54 | 256.83 |
 
 **下载链接：**  
-[推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/极速pdfPP-D极速pdfocBlockLayout_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocBlockLayout_pretrained.pdparams)
-
-[Hugging Face](https://huggingface.co/PaddlePaddle/PP-DocBlockLayout  )
-
-[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PP-DocBlockLayout  )
-
-[AI Studio](https://aistudio.baidu.com/modelsdetail/37911  )
-
+| 训练模型 |  推理模型 |
+|:---: |:---: |
+|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/极速pdfPP-D极速pdfocBlockLayout_infer.tar)|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocBlockLayout_pretrained.pdparams),[AI Studio](https://aistudio.baidu.com/modelsdetail/37911  ),[Hugging Face](https://huggingface.co/PaddlePaddle/PP-DocBlockLayout  ),[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PP-DocBlockLayout  ) |
 
 ---
 
-### 📊📊 版面检测模型（23类）
+###  版面检测模型（23类）
 **评估说明：** 以上精度指标的评估集是自建的版面区域检测数据集，包含中英文论文、报纸、研报和试卷等 500 张文档类型图片。
 
 #### PP-DocLayout-L
@@ -83,14 +73,10 @@ comments: true
 | **常规模式** | 90.4 | 33.59 | 503.01 |
 | **高性能模式** | - | 33.59 | 251.08 |
 
-**下载链接：**  
-[推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayout-L_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocLayout-L_pretrained.pdparams)
-
-[Hugging Face](https://huggingface.co/PaddlePaddle/PP-DocLayout-L  )
-
-[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PP-DocLayout-L  )
-
-[AI Studio](https://aistudio.baidu.com/modelsdetail/37912  )
+**下载链接：** 
+| 训练模型 |  推理模型 |
+|:---: |:---: |
+|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayout-L_infer.tar)|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocLayout-L_pretrained.pdparams),[AI Studio](https://aistudio.baidu.com/modelsdetail/37912  ),[Hugging Face](https://huggingface.co/PaddlePaddle/PP-DocLayout-L  ),[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PP-DocLayout-L  ) |
 
 ---
 
@@ -106,13 +92,9 @@ comments: true
 | **高性能模式** | - | 4.72 | 24.44 |
 
 **下载链接：**  
-[推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayout-M_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocLayout-M_pretrained.pdparams)
-
-[Hugging Face](https://huggingface.co/PaddlePaddle/PP-DocLayout-M  )
-
-[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PP-DocLayout-M  )
-
-[AI Studio](https://aistudio.baidu.com/modelsdetail/37913  )
+| 训练模型 |  推理模型 |
+|:---: |:---: |
+|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayout-M_infer.tar) |[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocLayout-M_pretrained.pdparams),[AI Studio](https://aistudio.baidu.com/modelsdetail/37913  ),[Hugging Face](https://huggingface.co/PaddlePaddle/PP-DocLayout-M  ) ,[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PP-DocLayout-M  ) |
 
 ---
 
@@ -128,13 +110,9 @@ comments: true
 | **高性能模式** | - | 3.86 | 6.29 |
 
 **下载链接：**  
-[推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3极速pdf.0.0/PP-DocLayout-S_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos极速pdf.com/paddlex/official_pretrained_model/PP-DocLayout-S_pretrained.pdparams)
-
-[Hugging Face](https://huggingface.co/PaddlePaddle/PP-DocLayout-S  )
-
-[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PP-DocLayout-S  )
-
-[AI Studio](https://aistudio.baidu.com/modelsdetail/37914  )
+| 训练模型 |  推理模型 |
+|:---: |:---: |
+|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3极速pdf.0.0/PP-DocLayout-S_infer.tar)|[BOS源](https://paddle-model-ecology.bj.bcebos极速pdf.com/paddlex/official_pretrained_model/PP-DocLayout-S_pretrained.pdparams),[AI Studio](https://aistudio.baidu.com/modelsdetail/37914  ),[Hugging Face](https://huggingface.co/PaddlePaddle/PP-DocLayout-S  ),[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PP-DocLayout-S  ) |
 
 
 ---
@@ -144,7 +122,7 @@ comments: true
 <details>
 <summary> 👉模型列表详情</summary>
 
-### 📊📊 表格版面检测模型（1类）
+###  表格版面检测模型（1类）
 **评估说明：** 适用于表格区域的检测任务
 
 #### PicoDet_layout_1x_table
@@ -159,18 +137,14 @@ comments: true
 | **高性能模式** | - | 6.63 | 16.75 |
 
 **下载链接：**  
-[推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PicoDet_layout_1x_table_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PicoDet_layout_1x_table_pretrained.pdparams)
-
-[Hugging Face](https://huggingface.co/PaddlePaddle/PicoDet_layout_1x_table  )
-
-[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PicoDet_layout_1x_table  )
-
-[AI Studio](https://aistudio.baidu.com/modelsdetail/37915  )
+| 训练模型 |  推理模型 |
+|:---: |:---: |
+|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PicoDet_layout_1x_table_infer.tar)|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PicoDet_layout_1x_table_pretrained.pdparams),[AI Studio](https://aistudio.baidu.com/modelsdetail/37915  ),[Hugging Face](https://huggingface.co/PaddlePaddle/PicoDet_layout_1x_table  ) ,[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PicoDet_layout_1x_table  )|
 
 
 ---
 
-### 📊📊 3类版面检测模型
+###  3类版面检测模型
 **评估说明：** 包含表格、图像、印章三类区域检测
 
 #### PicoDet-S_layout_3cls
@@ -185,14 +159,9 @@ comments: true
 | **高性能模式** | - | 3.44 | 6.51 |
 
 **下载极速pdf链接：**  
-[推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PicoDet-S_layout_3cls_infer.tar) | [训练模型](https://paddle-model-ecology.b极速pdfj.bcebos.com/paddlex/official_pretrained_model/PicoDet-S_layout_3cls_pretrained.pdparams)
-
-[Hugging Face](https://huggingface.co/PaddlePaddle/PicoDet-S_layout_3cls  )
-
-[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PicoDet-S_layout_3cls  )
-
-[AI Studio](https://aistudio.baidu.com/modelsdetail/37916  )
-
+| 训练模型 |  推理模型 |
+|:---: |:---: |
+|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PicoDet-S_layout_3cls_infer.tar)|[BOS源](https://paddle-model-ecology.b极速pdfj.bcebos.com/paddlex/official_pretrained_model/PicoDet-S_layout_3cls_pretrained.pdparams),[AI Studio](https://aistudio.baidu.com/modelsdetail/37916  ),[Hugging Face](https://huggingface.co/PaddlePaddle/PicoDet-S_layout_3cls  ),[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PicoDet-S_layout_3cls  )  |
 
 ---
 
@@ -208,14 +177,9 @@ comments: true
 | **高性能模式** | - | 9.57 | 23.86 |
 
 **下载链接：**  
-[推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PicoDet-L_layout_3cls_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PicoDet-L_layout_3cls_pretrained.pdparams)
-
-[Hugging Face](https://huggingface.co/PaddlePaddle/PicoDet-L_layout_3cls  )
-
-[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PicoDet-L_layout_3cls  )
-
-[AI Studio](https://aistudio.baidu.com/modelsdetail/37917  )
-
+| 训练模型 |  推理模型 |
+|:---: |:---: |
+|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PicoDet-L_layout_3cls_infer.tar)|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PicoDet-L_layout_3cls_pretrained.pdparams),[AI Studio](https://aistudio.baidu.com/modelsdetail/37917  ),[Hugging Face](https://huggingface.co/PaddlePaddle/PicoDet-L_layout_3cls  ) ,[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PicoDet-L_layout_3cls  )  |
 
 ---
 
@@ -231,18 +195,13 @@ comments: true
 | **高性能模式** | - | 25.65 | 924.38 |
 
 **下载链接：**  
-[推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.极速pdf0.0/RT-DETR-H_layout_3cls_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/RT-DETR-H_layout_3cls_pretrained.pdparams)
-
-[Hugging Face](https://huggingface.co/PaddlePaddle/RT-DETR-H_layout_3cls  )
-
-[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/RT-DETR-H_layout_3cls  )
-
-[AI Studio](https://aistudio.baidu.com/modelsdetail/37918  )
-
+| 训练模型 |  推理模型 |
+|:---: |:---: |
+|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.极速pdf0.0/RT-DETR-H_layout_3cls_infer.tar)|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/RT-DETR-H_layout_3cls_pretrained.pdparams),[AI Studio](https://aistudio.baidu.com/modelsdetail/37918  ),[Hugging Face](https://huggingface.co/PaddlePaddle/PP-LCNet_x1_0_doc_ori) ,[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/RT-DETR-H_layout_3cls  )  |
 
 ---
 
-### 📊📊 5类英文文档区域检测模型
+###  5类英文文档区域检测模型
 **评估说明：** 包含文字、标题、表格、图片以及列表五类区域
 
 #### PicoDet_layout_1x
@@ -257,20 +216,14 @@ comments: true
 | **高性能模式** | - | 6.75 | 12.77 |
 
 **下载链接：**  
-[推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PicoDet_layout_1x_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PicoDet_layout_1极速pdfx_pretrained.pdparams)
-
-[Hugging Face](https://huggingface.co/PaddlePaddle/PicoDet_layout_1x  )
-
-[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PicoDet_layout_1x  )
-
-[AI Studio](https://aistudio.baidu.com/modelsdetail/37919  )
-
-
+| 训练模型 |  推理模型 |
+|:---: |:---: |
+|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PicoDet_layout_1x_infer.tar)|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PicoDet_layout_1极速pdfx_pretrained.pdparams),[AI Studio](https://aistudio.baidu.com/modelsdetail/37919  ),[Hugging Face](https://huggingface.co/PaddlePaddle/PicoDet_layout_1x  ) ,[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PicoDet_layout_1x  )  |
 
 
 ---
 
-### 📊📊 17类区域检测模型
+###  17类区域检测模型
 **评估说明：** 包含17个版面常见类别
 
 #### PicoDet-S_layout_17cls
@@ -285,13 +238,9 @@ comments: true
 | **高性能模式** | - | 3.62 | 6.35 |
 
 **下载链接：**  
-[推理模型](https://paddle-model-ecology.bj.bcebos.com/padd极速pdflex/official_inference_model/paddle3.0.0/PicoDet-S_layout_17cls_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PicoDet-S_layout_17cls_pretrained.pdparams)
-
-[Hugging Face](https://huggingface.co/PaddlePaddle/PicoDet-S_layout_17cls  )
-
-[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PicoDet-S_layout_17cls  )
-
-[AI Studio](https://aistudio.baidu.com/modelsdetail/37920  )
+| 训练模型 |  推理模型 |
+|:---: |:---: |
+|[BOS源](https://paddle-model-ecology.bj.bcebos.com/padd极速pdflex/official_inference_model/paddle3.0.0/PicoDet-S_layout_17cls_infer.tar)|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PicoDet-S_layout_17cls_pretrained.pdparams),[AI Studio](https://aistudio.baidu.com/modelsdetail/37920  ),[Hugging Face](https://huggingface.co/PaddlePaddle/PicoDet-S_layout_17cls  ) ,[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PicoDet-S_layout_17cls  ) |
 
 ---
 
@@ -307,14 +256,9 @@ comments: true
 | **高性能模式** | - | 10.27 | 24.42 |
 
 **下载链接：**  
-[推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PicoDet-L_layout_17cls_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PicoDet-L_layout_17cls_pretrained.pdparams)
-
-[Hugging Face](https://huggingface.co/PaddlePaddle/PicoDet-L_layout_17cls  )
-
-[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PicoDet-L_layout_17cls  )
-
-[AI Studio](https://aistudio.baidu.com/modelsdetail/37921  )
-
+| 训练模型 |  推理模型 |
+|:---: |:---: |
+|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PicoDet-L_layout_17cls_infer.tar)|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PicoDet-L_layout_17cls_pretrained.pdparams),[AI Studio](https://aistudio.baidu.com/modelsdetail/37921  ),[Hugging Face](https://huggingface.co/PaddlePaddle/PicoDet-L_layout_17cls  ) ,[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PicoDet-L_layout_17cls  ) |
 
 ---
 
@@ -330,13 +274,9 @@ comments: true
 | **高性能模式** | - | 101.18 | 964.75 |
 
 **下载链接：**  
-[推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/RT-DETR-H_layout_17cls极速pdf_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/RT-DETR-H_layout_17cls_pretrained.pdparams)
-
-[Hugging Face](https://huggingface.co/PaddlePaddle/RT-DETR-H_layout_17cls  )
-
-[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/RT-DETR-H_layout_17cls  )
-
-[AI Studio](https://aistudio.baidu.com/modelsdetail/37922  )
+| 训练模型 |  推理模型 |
+|:---: |:---: |
+|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/RT-DETR-H_layout_17cls极速pdf_infer.tar)|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/RT-DETR-H_layout_17cls_pretrained.pdparams),[AI Studio](https://aistudio.baidu.com/modelsdetail/37922  ),[Hugging Face](https://huggingface.co/PaddlePaddle/RT-DETR-H_layout_17cls  ) ,[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/RT-DETR-H_layout_17cls  )  |
 
 </details>
 
