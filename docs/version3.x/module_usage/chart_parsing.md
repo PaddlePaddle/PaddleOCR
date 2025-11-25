@@ -12,7 +12,7 @@ comments: true
 
 > 推理耗时仅包含模型推理耗时，不包含前后处理耗时。
 
-### 📊📊 PP-Chart2Table
+###  PP-Chart2Table
 **模型类型：** 推理模型 | **模型存储大小：** 1.4 GB  
 **模型介绍：**  
 PP-Chart2Table是飞桨团队自研的一款专注于图表解析的多模态模型，在中英文图表解析任务中展现出卓越性能。团队专为图表解析设计了Shuffled Chart Data Retrieval训练任务，并结合精心设计的令牌掩码策略，显著提升其在图表转数据表任务上的性能。此外，团队通过精心设计的数据合成流程增强了PP-Chart2Table的能力，该流程利用高质量的种子数据，并结合RAG和大语言模型人格设计，以生成更丰富多样化的数据。
@@ -23,7 +23,10 @@ PP-Chart2Table是飞桨团队自研的一款专注于图表解析的多模态模
 | **内部评估** | 80.60 |
 
 **下载链接：**  
-[推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-Chart2Table_infer.tar)
+| 训练模型 | 推理模型 |
+|:---:|:---:|
+| 暂无 | [BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-Chart2Table_infer.tar), [AI Studio](https://aistudio.baidu.com/modelsdetail/31864), [Hugging Face](https://huggingface.co/PaddlePaddle/PP-Chart2Table), [ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PP-Chart2Table) |
+
 
 ---
 
