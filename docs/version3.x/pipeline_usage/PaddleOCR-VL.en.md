@@ -1176,7 +1176,7 @@ The `.env` file can be used to configure environment variables, with detailed de
 
 Additionally, after starting the server using this method, no internet connection is required except for pulling the image. For offline environment deployment, you can first pull the images involved in the Compose file on an online machine, export and transfer them to the offline machine for import, and then start the service in the offline environment.
 
-If you need to adjust pipeline configuration (such as model path, batch size, deployment device, etc.), refer to Section 4.4.
+If you need to adjust pipeline configurations (such as model path, batch size, deployment device, etc.), refer to Section 4.4.
 
 ### 4.2 Method 2: Manually Install Dependencies for Deployment
 
