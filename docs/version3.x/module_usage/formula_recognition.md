@@ -12,7 +12,7 @@ comments: true
 
 > 推理耗时仅包含模型推理耗时，不包含前后处理耗时。
 
-### 🔬🔬 UniMERNet
+###  UniMERNet
 **模型类型：** 推理模型/训练模型 | **模型存储大小：** 1530 MB  
 **模型介绍：**  
 UniMERNet是由上海AI Lab研发的一款公式识别模型。该模型采用Donut Swin作为编码器，MBartDecoder作为解码器，并通过在包含简单公式、复杂公式、扫描捕捉公式和手写公式在内的百万数据集上进行训练，大幅提升了模型对真实场景公式的识别能力。
@@ -24,18 +24,14 @@ UniMERNet是由上海AI Lab研发的一款公式识别模型。该模型采用Do
 | **高性能模式** | - | - | 1311.84 | 8288.07 |
 
 **下载链接：**  
-[推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/UniMERNet_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/UniMERNet_pretrained.pdparams)
-
-[Hugging Face](https://huggingface.co/PaddlePaddle/UniMERNet  ) 
-
-[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/UniMERNet  ) 
-
-[AI Studio](https://aistudio.baidu.com/modelsdetail/31890  ) 
-
+| 训练模型 |  推理模型 |
+|:---: |:---: |
+|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/UniMERNet_infer.tar)|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/UniMERNet_pretrained.pdparams),[AI Studio](https://aistudio.baidu.com/modelsdetail/31890  ) 
+,[Hugging Face](https://huggingface.co/PaddlePaddle/UniMERNet  )  ,[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/UniMERNet  )   |
 
 ---
 
-### ⚡⚡⚡ PP-FormulaNet-S
+###  PP-FormulaNet-S
 **模型类型：** 推理模型/训练模型 | **模型存储大小：** 224 MB  
 **模型介绍：**  
 PP-FormulaNet 是由百度飞桨视觉团队开发的一款先进的公式识别模型，支持5万个常见LateX源码词汇的识别。PP-FormulaNet-S 版本采用了 PP-HGNetV2-B4 作为其骨干网络，通过并行掩码和模型蒸馏等技术，大幅提升了模型的推理速度，同时保持了较高的识别精度，适用于简单印刷公式、跨行简单印刷公式等场景。
@@ -47,19 +43,14 @@ PP-FormulaNet 是由百度飞桨视觉团队开发的一款先进的公式识别
 | **高性能模式** | - | - | 182.25 | 254.39 |
 
 **下载链接：**  
-[推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet-S_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet-S_pretrained.pdparams)
-
- 
-[Hugging Face](https://huggingface.co/PaddlePaddle/PP-FormulaNet-S  ) 
-
-[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PP-FormulaNet-S  ) 
-
-[AI Studio](https://aistudio.baidu.com/modelsdetail/31924  ) 
+| 训练模型 |  推理模型 |
+|:---: |:---: |
+|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet-S_infer.tar)|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet-S_pretrained.pdparams),[AI Studio](https://aistudio.baidu.com/modelsdetail/31924  ) ,[Hugging Face](https://huggingface.co/PaddlePaddle/PP-FormulaNet-S  )  ,[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PP-FormulaNet-S  )    |
 
 
 ---
 
-### 🧠🧠🧠 PP-FormulaNet-L
+###  PP-FormulaNet-L
 **模型类型：** 推理模型/训练模型 | **模型存储大小：** 695 MB  
 **模型介绍：**  
 PP-FormulaNet-L 版本基于 Vary_VIT_B 作为骨干网络，并在大规模公式数据集上进行了深入训练，在复杂公式的识别方面表现出显著提升，适用于简单印刷公式、复杂印刷公式、手写公式等场景。
@@ -71,18 +62,13 @@ PP-FormulaNet-L 版本基于 Vary_VIT_B 作为骨干网络，并在大规模公�
 | **高性能模式** | - | - | 1482.03 | 3131.54 |
 
 **下载链接：**  
-[推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet-L_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet-L_pretrained.pdparams)
-
-[Hugging Face](https://huggingface.co/PaddlePaddle/PP-FormulaNet-L  ) 
-
-[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PP-FormulaNet-L  ) 
-
-[AI Studio](https://aistudio.baidu.com/modelsdetail/31900  ) 
-
+| 训练模型 |  推理模型 |
+|:---: |:---: |
+|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet-L_infer.tar)|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet-L_pretrained.pdparams),[AI Studio](https://aistudio.baidu.com/modelsdetail/31900  ) ,[Hugging Face](https://huggingface.co/PaddlePaddle/PP-FormulaNet-L  ) ,[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PP-FormulaNet-L  )     |
 
 ---
 
-### 🚀🚀🚀 PP-FormulaNet_plus-S
+###  PP-FormulaNet_plus-S
 **模型类型：** 推理模型/训练模型 | **模型存储大小：** 248 MB  
 **模型介绍：**  
 PP-FormulaNet_plus 是百度飞桨视觉团队在 PP-FormulaNet 基础上开发的增强版公式识别模型。通过使用更丰富的公式数据集（包括中文学位论文、专业书籍等），显著提升了模型的识别能力。PP-FormulaNet_plus-S 专注于增强英文公式识别能力。
@@ -94,17 +80,14 @@ PP-FormulaNet_plus 是百度飞桨视觉团队在 PP-FormulaNet 基础上开发�
 | **高性能模式** | - | - | 179.20 | 260.99 |
 
 **下载链接：**  
-[推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet_plus-S_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet_plus-S_pretrained.pdparams)
-
-[Hugging Face](https://huggingface.co/PaddlePaddle/PP-FormulaNet_plus-S  ) 
-
-[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PP-FormulaNet-plus-S  ) 
-
-[AI Studio](https://aistudio.baidu.com/modelsdetail/31904  ) 
+| 训练模型 |  推理模型 |
+|:---: |:---: |
+|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet_plus-S_infer.tar)|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet_plus-S_pretrained.pdparams),[AI Studio](https://aistudio.baidu.com/modelsdetail/31904  ) 
+,[Hugging Face](https://huggingface.co/PaddlePaddle/PP-FormulaNet_plus-S  )  ,[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PP-FormulaNet-plus-S  )     |
 
 ---
 
-### 🌐🌐 PP-FormulaNet_plus-M
+###  PP-FormulaNet_plus-M
 **模型类型：** 推理模型/训练模型 | **模型存储大小：** 592 MB  
 **模型介绍：**  
 PP-FormulaNet_plus-M 新增对中文公式的支持，并将公式最大预测 token 数扩大至 2560，大幅提升了对复杂公式的识别性能。
@@ -116,17 +99,15 @@ PP-FormulaNet_plus-M 新增对中文公式的支持，并将公式最大预测 t
 | **高性能模式** | - | - | 1040.27 | 1615.80 |
 
 **下载链接：**  
-[推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet_plus-M_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet_plus-M_pretrained.pdparams)
+| 训练模型 |  推理模型 |
+|:---: |:---: |
+|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet_plus-M_infer.tar)|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet_plus-M_pretrained.pdparams),[AI Studio](https://aistudio.baidu.com/modelsdetail/31882  ) 
+,[Hugging Face](https://huggingface.co/PaddlePaddle/PP-FormulaNet_plus-M  ) ,[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PP-FormulaNet-plus-M  )    |
 
-[Hugging Face](https://huggingface.co/PaddlePaddle/PP-FormulaNet_plus-M  ) 
-
-[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PP-FormulaNet-plus-M  ) 
-
-[AI Studio](https://aistudio.baidu.com/modelsdetail/31882  ) 
 
 ---
 
-### 🧩🧩🧩 PP-FormulaNet_plus-L
+###  PP-FormulaNet_plus-L
 **模型类型：** 推理模型/训练模型 | **模型存储大小：** 698 MB  
 **模型介绍：**  
 PP-FormulaNet_plus-L 是增强版的旗舰模型，通过扩展训练数据和提升模型容量，在处理复杂多样的公式识别任务时表现更加出色。
@@ -138,18 +119,15 @@ PP-FormulaNet_plus-L 是增强版的旗舰模型，通过扩展训练数据和�
 | **高性能模式** | - | - | 1476.07 | 3125.58 |
 
 **下载链接：**  
-[推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet_plus-L_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet_plus-L_pretrained.pdparams)
-
-[Hugging Face](https://huggingface.co/PaddlePaddle/PP-FormulaNet_plus-L  ) 
-
-[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PP-FormulaNet_plus-L  ) 
-
-[AI Studio](https://aistudio.baidu.com/modelsdetail/31856  ) 
+| 训练模型 |  推理模型 |
+|:---: |:---: |
+|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-FormulaNet_plus-L_infer.tar)|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-FormulaNet_plus-L_pretrained.pdparams),[AI Studio](https://aistudio.baidu.com/modelsdetail/31856  ) 
+,[Hugging Face](https://huggingface.co/PaddlePaddle/PP-FormulaNet_plus-L  ) ,[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PP-FormulaNet_plus-L  )     |
 
 
 ---
 
-### 📜📜 LaTeX_OCR_rec
+###  LaTeX_OCR_rec
 **模型类型：** 推理模型/训练模型 | **模型存储大小：** 99 MB  
 **模型介绍：**  
 LaTeX-OCR是一种基于自回归大模型的公式识别算法，通过采用 Hybrid ViT 作为骨干网络，transformer作为解码器，显著提升了公式识别的准确性。
@@ -161,17 +139,15 @@ LaTeX-OCR是一种基于自回归大模型的公式识别算法，通过采用 H
 | **高性能模式** | - | - | 1088.89 | - |
 
 **下载链接：**  
-[推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/LaTeX_OCR_rec_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/LaTeX_OCR_rec_pretrained.pdparams)
+| 训练模型 |  推理模型 |
+|:---: |:---: |
+|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/LaTeX_OCR_rec_infer.tar)|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/LaTeX_OCR_rec_pretrained.pdparams),[AI Studio](https://aistudio.baidu.com/modelsdetail/31893  ) 
+,[Hugging Face](https://huggingface.co/PaddlePaddle/LaTeX_OCR_rec  ) ,[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/LaTeX_OCR_rec  ) |
 
-[Hugging Face](https://huggingface.co/PaddlePaddle/LaTeX_OCR_rec  )
-
-[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/LaTeX_OCR_rec  )
-
-[AI Studio](https://aistudio.baidu.com/modelsdetail/31893  )
 
 ---
 
-### 🧪🧪🧪 测试环境说明
+###  测试环境说明
 **性能测试环境：**
 - **测试数据集：** PaddleOCR 内部自建公式识别测试集
 - **硬件配置：**
