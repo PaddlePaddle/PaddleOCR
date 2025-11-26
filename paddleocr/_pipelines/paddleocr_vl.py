@@ -39,6 +39,7 @@ class PaddleOCRVL(PaddleXPipelineWrapper):
         vl_rec_backend=None,
         vl_rec_server_url=None,
         vl_rec_max_concurrency=None,
+        vl_rec_api_key=None,
         doc_orientation_classify_model_name=None,
         doc_orientation_classify_model_dir=None,
         doc_unwarping_model_name=None,
@@ -196,6 +197,12 @@ class PaddleOCRVL(PaddleXPipelineWrapper):
             "SubModules.VLRecognition.genai_config.server_url": self._params[
                 "vl_rec_server_url"
             ],
+            "SubModules.VLRecognition.genai_config.max_concurrency": self._params[
+                "vl_rec_max_concurrency"
+            ],
+            "SubModules.VLRecognition.genai_config.client_kwargs.api_key": self._params[
+                "vl_rec_api_key"
+            ],
             "SubPipelines.DocPreprocessor.SubModules.DocOrientationClassify.model_name": self._params[
                 "doc_orientation_classify_model_name"
             ],
@@ -276,6 +283,11 @@ class PaddleOCRVLCLISubcommandExecutor(PipelineCLISubcommandExecutor):
             "--vl_rec_max_concurrency",
             type=str,
             help="Maximum concurrency for making VLM requests.",
+        )
+        subparser.add_argument(
+            "--vl_rec_api_key",
+            type=str,
+            help="API key for the VLM server.",
         )
 
         subparser.add_argument(

@@ -269,6 +269,12 @@ paddleocr doc_parser -i ./paddleocr_vl_demo.png --use_layout_detection False
 <td></td>
 </tr>
 <tr>
+<td><code>vl_rec_api_key</code></td>
+<td>如果多模态识别模型使用推理服务，该参数用于指定服务的 API key。</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
 <td><code>doc_orientation_classify_model_name</code></td>
 <td>文档方向分类模型的名称。如果不设置，将使用初始化的默认值。</td>
 <td><code>str</code></td>
@@ -590,6 +596,12 @@ for item in markdown_images:
 <tr>
 <td><code>vl_rec_max_concurrency</code></td>
 <td>如果多模态识别模型使用推理服务，该参数用于指定最大并发请求数。</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>vl_rec_api_key</code></td>
+<td>如果多模态识别模型使用推理服务，该参数用于指定服务的 API key。</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
