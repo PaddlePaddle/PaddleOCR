@@ -95,8 +95,8 @@ class BaseRecLabelDecode(object):
         for c_i, char in enumerate(text):
             if "\u4e00" <= char <= "\u9fff":
                 c_state = "cn"
-            elif bool(re.search(r"[\w]", char, re.UNICODE)) and not char == "_":
-                # Use \w with UNICODE flag to match letters (including accented chars like ä, ö, ü, é, etc.) and digits
+            elif bool(re.search(r"\w", char)) and not char == "_":
+                # Use \w to match letters (including accented chars like ä, ö, ü, é, etc.) and digits
                 # Exclude underscore since \w includes it but we want to treat it as splitter
                 c_state = "en&num"
             else:
