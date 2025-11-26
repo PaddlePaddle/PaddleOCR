@@ -1289,6 +1289,10 @@ You're not viewing the latest version.
       
         
       
+        
+      
+        
+      
     
     
     
@@ -1790,14 +1794,70 @@ You're not viewing the latest version.
   
   
     <li class="md-nav__item">
-      <a href="PaddleOCR-VL-RTX50.html" class="md-nav__link">
+      <a href="PaddleOCR-VL-NVIDIA-Blackwell.html" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    PaddleOCR-VL RTX 50 环境配置教程
+    PaddleOCR-VL NVIDIA Blackwell 架构 GPU 环境配置教程
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="PaddleOCR-VL-XPU.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PaddleOCR-VL XPU 环境配置教程
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="PaddleOCR-VL-DCU.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PaddleOCR-VL DCU 环境配置教程
   
 
     
@@ -4770,83 +4830,109 @@ You're not viewing the latest version.
 <p>PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的元素识别设计。其核心组件为 PaddleOCR-VL-0.9B，这是一种紧凑而强大的视觉语言模型（VLM），它由 NaViT 风格的动态分辨率视觉编码器与 ERNIE-4.5-0.3B 语言模型组成，能够实现精准的元素识别。该模型支持 109 种语言，并在识别复杂元素（如文本、表格、公式和图表）方面表现出色，同时保持极低的资源消耗。通过在广泛使用的公开基准与内部基准上的全面评测，PaddleOCR-VL 在页级级文档解析与元素级识别均达到 SOTA 表现。它显著优于现有的基于Pipeline方案和文档解析多模态方案以及先进的通用多模态大模型，并具备更快的推理速度。这些优势使其非常适合在真实场景中落地部署。</p>
 <p><img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr_vl/metrics/allmetric.png"/></p>
 <h2 id="paddleocr-vl_1">PaddleOCR-VL 对推理设备的支持情况<a class="headerlink" href="#paddleocr-vl_1" title="Permanent link">&para;</a></h2>
-<p>目前 PaddleOCR-VL 有三种推理方式，支持的推理设备不完全相同，请确认您的推理设备是否满足下表要求再进行 PaddleOCR-VL 的推理部署：</p>
+<p>目前 PaddleOCR-VL 有四种推理方式，支持的推理设备不完全相同，请确认您的推理设备是否满足下表要求再进行 PaddleOCR-VL 的推理部署：</p>
 <table border="1">
 <thead>
   <tr>
     <th>推理方式</th>
-    <th>支持 x64 CPU</th>
-    <th>支持的 GPU Compute Capability</th>
-    <th>支持的 CUDA 版本</th>
+    <th>x64 CPU</th>
+    <th>DCU</th>
+    <th>XPU</th>
+    <th>沐曦 GPU</th>
+    <th>天数 GPU</th>
+    <th>NVIDIA GPU</th>
   </tr>
 </thead>
 <tbody>
   <tr>
     <td>PaddlePaddle</td>
     <td>✅</td>
-    <td>≥ 7</td>
-    <td>≥ 11.8</td>
+    <td>✅</td>
+    <td>✅</td>
+    <td>🚧</td>
+    <td>🚧</td>
+    <td>
+    <li>GPU Compute Capability ≥ 7</li>
+    <li>CUDA 版本 ≥ 11.8</li>
+    </td>
   </tr>
   <tr>
     <td>vLLM</td>
+    <td>❌</td>
+    <td>✅</td>
     <td>🚧</td>
-    <td>≥ 8 （RTX 3060，RTX 5070，A10，A100, ...） <br />  
-    7 ≤ GPU Compute Capability < 8 （T4，V100，...）支持运行，但可能出现请求超时、OOM 等异常情况，不推荐使用
+    <td>🚧</td>
+    <td>🚧</td>
+    <td>
+    <li>GPU Compute Capability ≥ 8 （RTX 3060，RTX 5070，A10，A100, ...） <br /></li>
+    <li>CUDA 版本 ≥ 12.6</li><br />
+    备注：7 ≤ GPU Compute Capability < 8 （T4，V100，...）支持运行，但可能出现请求超时、OOM 等异常情况，不推荐使用
     </td>
-    <td>≥ 12.6</td>
   </tr>
   <tr>
     <td>SGLang</td>
-     <td>🚧</td>
-    <td>8 ≤ GPU Compute Capability < 12</td>
-    <td>≥ 12.6</td>
+    <td>❌</td>
+    <td>🚧</td>
+    <td>🚧</td>
+    <td>🚧</td>
+    <td>🚧</td>
+    <td>
+    <li>8 ≤ GPU Compute Capability < 12</li>
+    <li>CUDA 版本 ≥ 12.6</li>
+    </td>
+  </tr>
+  <tr>
+    <td>FastDeploy</td>
+    <td>❌</td>
+    <td>🚧</td>
+    <td>✅</td>
+    <td>🚧</td>
+    <td>🚧</td>
+    <td>
+    <li>8 ≤ GPU Compute Capability < 12</li>
+    <li>CUDA 版本 ≥ 12.6</li>
+    </td>
   </tr>
 </tbody>
 </table>
 
 <blockquote>
 <p>当前，PaddleOCR-VL 暂不支持 ARM 架构 CPU。后续将根据实际需求扩展更多硬件支持，敬请期待！<br />
-vLLM 与 SGLang 无法在 Windows 或 macOS 上原生运行，请使用我们提供的 Docker 镜像。</p>
+vLLM、SGLang 和 FastDeploy 无法在 Windows 或 macOS 上原生运行，请使用我们提供的 Docker 镜像。</p>
 </blockquote>
 <p>由于不同硬件所需的依赖各不相同，如果您的硬件满足上述表格的要求，请参考下表查看对应的教程进行环境配置：</p>
 <table border="1">
   <thead>
     <tr>
       <th>硬件类型</th>
-      <th>硬件型号</th>
       <th>环境配置教程</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td rowspan="2">NVIDIA GPU</td>
-      <td>RTX 30、40 系</td>
-      <td>本教程</td>
-    </tr>
-    <tr>
-      <td>RTX 50 系</td>
-      <td><a href="./PaddleOCR-VL-RTX50.md">PaddleOCR-VL RTX 50 环境配置教程</a></td>
-    </tr>
-    <tr>
       <td>x64 CPU</td>
-      <td>-</td>
       <td>本教程</td>
+    </tr>
+    <tr>
+      <td>NVIDIA GPU</td>
+      <td>
+      <li>NVIDIA Blackwell 架构 GPU（如RTX 50 系）参考 <a href="./PaddleOCR-VL-NVIDIA-Blackwell.md">PaddleOCR-VL NVIDIA Blackwell 架构 GPU 环境配置教程</a></li>
+      <li>其他 NVIDIA GPU 参考本教程</li>
+      </td>
     </tr>
     <tr>
       <td>XPU</td>
-      <td>🚧</td>
-      <td>🚧</td>
+      <td><a href="./PaddleOCR-VL-XPU.md">PaddleOCR-VL XPU 环境配置教程</a></td>
     </tr>
     <tr>
       <td>DCU</td>
-      <td>🚧</td>
-      <td>🚧</td>
+      <td><a href="./PaddleOCR-VL-DCU.md">PaddleOCR-VL DCU 环境配置教程</a></td>
     </tr>
   </tbody>
 </table>
 
 <blockquote>
-<p>例如您使用的是 RTX 50 系 GPU，满足 PaddlePaddle 和 vLLM 推理方式的设备要求，请参考 <a href="PaddleOCR-VL-RTX50.html">PaddleOCR-VL RTX 50 环境配置教程</a> 完成环境配置后再进行 PaddleOCR-VL 的使用。</p>
+<p>例如您使用的是 RTX 50 系 GPU，满足 PaddlePaddle 和 vLLM 推理方式的设备要求，请参考 <a href="PaddleOCR-VL-NVIDIA-Blackwell.html">PaddleOCR-VL NVIDIA Blackwell 架构 GPU 环境配置教程</a> 完成环境配置后再进行 PaddleOCR-VL 的使用。</p>
 </blockquote>
 <h2 id="1">1. 环境准备<a class="headerlink" href="#1" title="Permanent link">&para;</a></h2>
 <p>此步骤主要介绍如何搭建 PaddleOCR-VL 的运行环境，有以下两种方式，任选一种即可：</p>
@@ -4869,7 +4955,7 @@ vLLM 与 SGLang 无法在 Windows 或 macOS 上原生运行，请使用我们提
 </span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span>/bin/bash
 </span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="c1"># 在容器中调用 PaddleOCR CLI 或 Python API</span>
 </span></code></pre></div>
-<p>镜像的大小约为 8 GB。如果您希望在无法连接互联网的环境中使用 PaddleOCR-VL，请将上述命令中的 <code>ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest</code> 更换为离线版本镜像 <code>ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-offline</code>（离线镜像大小约为 11 GB）。您需要在可以联网的机器上拉取镜像，将镜像导入到离线机器，然后在离线机器使用该镜像启动容器。例如：</p>
+<p>如果您希望在无法连接互联网的环境中使用 PaddleOCR-VL，请将上述命令中的 <code>ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest</code> （镜像的大小约为 8 GB）更换为离线版本镜像 <code>ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-offline</code>（镜像大小约为 10 GB）。您需要在可以联网的机器上拉取镜像，将镜像导入到离线机器，然后在离线机器使用该镜像启动容器。例如：</p>
 <div class="language-shell highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># 在能够联网的机器上执行</span>
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>docker<span class="w"> </span>pull<span class="w"> </span>ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-offline
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="c1"># 将镜像保存到文件中</span>
@@ -5773,7 +5859,7 @@ MKL-DNN 缓存容量。
 </details>
 
 <h2 id="3-vlm">3. 使用推理加速框架提升 VLM 推理性能<a class="headerlink" href="#3-vlm" title="Permanent link">&para;</a></h2>
-<p>默认配置下的推理性能未经过充分优化，可能无法满足实际生产需求。此步骤主要介绍如何使用 vLLM 和 SGLang 推理加速框架来提升 PaddleOCR-VL 的推理性能。</p>
+<p>默认配置下的推理性能未经过充分优化，可能无法满足实际生产需求。此步骤主要介绍如何使用 vLLM、SGLang 和 FastDeploy 推理加速框架来提升 PaddleOCR-VL 的推理性能。</p>
 <h3 id="31-vlm">3.1 启动 VLM 推理服务<a class="headerlink" href="#31-vlm" title="Permanent link">&para;</a></h3>
 <p>启动 VLM 推理服务有以下两种方式，任选一种即可：</p>
 <ul>
@@ -5785,7 +5871,10 @@ MKL-DNN 缓存容量。
 </li>
 </ul>
 <h4 id="311-docker">3.1.1 方法一：使用 Docker 镜像<a class="headerlink" href="#311-docker" title="Permanent link">&para;</a></h4>
-<p>PaddleOCR 提供了 Docker 镜像（镜像大小约为 13 GB），用于快速启动 vLLM 推理服务。可使用以下命令启动服务（要求 Docker 版本 &gt;= 19.03，机器装配有 GPU 且 NVIDIA 驱动支持 CUDA 12.6 或以上版本）：</p>
+<p>PaddleOCR 提供了 Docker 镜像，用于快速启动 vLLM 或 FastDeploy 推理服务。可使用以下命令启动服务（要求 Docker 版本 &gt;= 19.03，机器装配有 GPU 且 NVIDIA 驱动支持 CUDA 12.6 或以上版本）：</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">启动 vLLM 服务</label><label for="__tabbed_1_2">启动 FastDeploy 服务</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
 <div class="language-shell highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>docker<span class="w"> </span>run<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">    </span>-it<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">    </span>--rm<span class="w"> </span><span class="se">\</span>
@@ -5794,30 +5883,44 @@ MKL-DNN 缓存容量。
 </span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">    </span>ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">    </span>paddleocr<span class="w"> </span>genai_server<span class="w"> </span>--model_name<span class="w"> </span>PaddleOCR-VL-0.9B<span class="w"> </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0<span class="w"> </span>--port<span class="w"> </span><span class="m">8118</span><span class="w"> </span>--backend<span class="w"> </span>vllm
 </span></code></pre></div>
-<p>启动 vLLM 推理服务可以传入更多参数，支持的参数详见下一小节。</p>
-<p>如果您希望在无法连接互联网的环境中启动服务，请将上述命令中的 <code>ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest</code> 更换为离线版本镜像 <code>ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-offline</code>。离线镜像大小约为 15 GB。</p>
+<p>如果您希望在无法连接互联网的环境中启动服务，请将上述命令中的 <code>ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest</code>（镜像大小约为 13 GB）更换为离线版本镜像 <code>ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-offline</code>（镜像大小约为 15 GB）。</p>
+</div>
+<div class="tabbed-block">
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>docker<span class="w"> </span>run<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">    </span>-it<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">    </span>--rm<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">    </span>--gpus<span class="w"> </span>all<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="w">    </span>--network<span class="w"> </span>host<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="w">    </span>ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-fastdeploy-server:latest<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="w">    </span>paddleocr<span class="w"> </span>genai_server<span class="w"> </span>--model_name<span class="w"> </span>PaddleOCR-VL-0.9B<span class="w"> </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0<span class="w"> </span>--port<span class="w"> </span><span class="m">8118</span><span class="w"> </span>--backend<span class="w"> </span>fastdeploy
+</span></code></pre></div>
+<p>如果您希望在无法连接互联网的环境中启动服务，请将上述命令中的 <code>ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-fastdeploy-server:latest</code>（镜像大小约为 43 GB）更换为离线版本镜像 <code>ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-fastdeploy-server:latest-offline</code>（镜像大小约为 45 GB）。</p>
+</div>
+</div>
+</div>
+<p>启动 vLLM 或 FastDeploy 推理服务可以传入更多参数，支持的参数详见下一小节。</p>
 <h4 id="312-paddleocr-cli">3.1.2 方法二：通过 PaddleOCR CLI 安装和使用<a class="headerlink" href="#312-paddleocr-cli" title="Permanent link">&para;</a></h4>
 <p>由于推理加速框架可能与飞桨框架存在依赖冲突，建议在虚拟环境中安装。以 vLLM 为例：</p>
-<div class="language-shell highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1"># 如果当前存在已激活的虚拟环境，先通过 `deactivate` 取消激活</span>
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="c1"># 创建虚拟环境</span>
-</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>python<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>.venv_vlm
-</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="c1"># 激活环境</span>
-</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="nb">source</span><span class="w"> </span>.venv_vlm/bin/activate
-</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="c1"># 安装 PaddleOCR</span>
-</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;paddleocr[doc-parser]&quot;</span>
-</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="c1"># 安装推理加速服务依赖</span>
-</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>paddleocr<span class="w"> </span>install_genai_server_deps<span class="w"> </span>vllm
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># 如果当前存在已激活的虚拟环境，先通过 `deactivate` 取消激活</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="c1"># 创建虚拟环境</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>python<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>.venv_vlm
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="c1"># 激活环境</span>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="nb">source</span><span class="w"> </span>.venv_vlm/bin/activate
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="c1"># 安装 PaddleOCR</span>
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;paddleocr[doc-parser]&quot;</span>
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="c1"># 安装推理加速服务依赖</span>
+</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>paddleocr<span class="w"> </span>install_genai_server_deps<span class="w"> </span>vllm
 </span></code></pre></div>
 <p><code>paddleocr install_genai_server_deps</code> 命令用法：</p>
-<div class="language-shell highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>paddleocr<span class="w"> </span>install_genai_server_deps<span class="w"> </span>&lt;推理加速框架名称&gt;
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>paddleocr<span class="w"> </span>install_genai_server_deps<span class="w"> </span>&lt;推理加速框架名称&gt;
 </span></code></pre></div>
-<p>当前支持的框架名称为 <code>vllm</code> 和 <code>sglang</code>，分别对应 vLLM 和 SGLang。</p>
+<p>当前支持的框架名称为 <code>vllm</code>、<code>sglang</code> 和 <code>fastdeploy</code>，分别对应 vLLM、SGLang 和 FastDeploy。</p>
 <p>通过 <code>paddleocr install_genai_server_deps</code> 安装的 vLLM 与 SGLang 均为 <strong>CUDA 12.6</strong> 版本，请确保本地 NVIDIA 驱动与此版本一致或更高。</p>
 <blockquote>
 <p><code>paddleocr install_genai_server_deps</code> 命令在执行过程中可能需要使用 nvcc 等 CUDA 编译工具。如果您的环境中没有这些工具（例如在使用 <code>paddleocr-vl</code> 镜像），可以从 <a href="https://github.com/mjun0812/flash-attention-prebuild-wheels">此仓库</a> 获取 FlashAttention 的预编译版本，先安装预编译包，再执行后续命令。例如，您在 <code>paddleocr-vl</code> 镜像中，执行 <code>python -m pip install https://github.com/mjun0812/flash-attention-prebuild-wheels/releases/download/v0.3.14/flash_attn-2.8.2+cu128torch2.8-cp310-cp310-linux_x86_64.whl</code>。</p>
 </blockquote>
 <p>安装完成后，可通过 <code>paddleocr genai_server</code> 命令启动服务：</p>
-<div class="language-shell highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>paddleocr<span class="w"> </span>genai_server<span class="w"> </span>--model_name<span class="w"> </span>PaddleOCR-VL-0.9B<span class="w"> </span>--backend<span class="w"> </span>vllm<span class="w"> </span>--port<span class="w"> </span><span class="m">8118</span>
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>paddleocr<span class="w"> </span>genai_server<span class="w"> </span>--model_name<span class="w"> </span>PaddleOCR-VL-0.9B<span class="w"> </span>--backend<span class="w"> </span>vllm<span class="w"> </span>--port<span class="w"> </span><span class="m">8118</span>
 </span></code></pre></div>
 <p>该命令支持的参数如下：</p>
 <table>
@@ -5858,11 +5961,11 @@ MKL-DNN 缓存容量。
 <p>启动 VLM 推理服务后，客户端即可通过 PaddleOCR 调用该服务。<strong>请注意，由于客户端需要调用版面检测的顺序模型，仍建议在 GPU 等加速设备上运行客户端，以获得更稳定和高效的性能。</strong></p>
 <h4 id="321-cli">3.2.1 CLI 调用<a class="headerlink" href="#321-cli" title="Permanent link">&para;</a></h4>
 <p>可通过 <code>--vl_rec_backend</code> 指定后端类型（<code>vllm-server</code> 或 <code>sglang-server</code>），通过 <code>--vl_rec_server_url</code> 指定服务地址，例如：</p>
-<div class="language-shell highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>paddleocr<span class="w"> </span>doc_parser<span class="w"> </span>--input<span class="w"> </span>paddleocr_vl_demo.png<span class="w"> </span>--vl_rec_backend<span class="w"> </span>vllm-server<span class="w"> </span>--vl_rec_server_url<span class="w"> </span>http://127.0.0.1:8118/v1
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>paddleocr<span class="w"> </span>doc_parser<span class="w"> </span>--input<span class="w"> </span>paddleocr_vl_demo.png<span class="w"> </span>--vl_rec_backend<span class="w"> </span>vllm-server<span class="w"> </span>--vl_rec_server_url<span class="w"> </span>http://127.0.0.1:8118/v1
 </span></code></pre></div>
 <h4 id="322-python-api">3.2.2 Python API 调用<a class="headerlink" href="#322-python-api" title="Permanent link">&para;</a></h4>
 <p>创建 <code>PaddleOCRVL</code> 对象时传入 <code>vl_rec_backend</code> 和 <code>vl_rec_server_url</code> 参数：</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="n">pipeline</span> <span class="o">=</span> <span class="n">PaddleOCRVL</span><span class="p">(</span><span class="n">vl_rec_backend</span><span class="o">=</span><span class="s2">&quot;vllm-server&quot;</span><span class="p">,</span> <span class="n">vl_rec_server_url</span><span class="o">=</span><span class="s2">&quot;http://127.0.0.1:8118/v1&quot;</span><span class="p">)</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="n">pipeline</span> <span class="o">=</span> <span class="n">PaddleOCRVL</span><span class="p">(</span><span class="n">vl_rec_backend</span><span class="o">=</span><span class="s2">&quot;vllm-server&quot;</span><span class="p">,</span> <span class="n">vl_rec_server_url</span><span class="o">=</span><span class="s2">&quot;http://127.0.0.1:8118/v1&quot;</span><span class="p">)</span>
 </span></code></pre></div>
 <h3 id="33">3.3 性能调优<a class="headerlink" href="#33" title="Permanent link">&para;</a></h3>
 <p>默认配置是在单张 NVIDIA A100 上进行调优的，并假设客户端独占服务，因此可能不适用于其他环境。如果用户在实际使用中遇到性能问题，可以尝试以下优化方法。</p>
@@ -5871,21 +5974,22 @@ MKL-DNN 缓存容量。
 <ul>
 <li><a href="https://docs.vllm.ai/en/latest/configuration/optimization.html">vLLM 官方参数调优指南</a></li>
 <li><a href="https://docs.sglang.ai/advanced_features/hyperparameter_tuning.html">SGLang 超参数调整文档</a></li>
+<li><a href="https://paddlepaddle.github.io/FastDeploy/zh/best_practices/PaddleOCR-VL-0.9B/">FastDeploy 最佳实践文档</a></li>
 </ul>
 <p>PaddleOCR VLM 推理服务支持通过配置文件进行调参。以下示例展示如何调整 vLLM 服务器的 <code>gpu-memory-utilization</code> 和 <code>max-num-seqs</code> 参数：</p>
 <ol>
 <li>创建 YAML 文件 <code>vllm_config.yaml</code>，内容如下：</li>
 </ol>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="nt">gpu-memory-utilization</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.3</span>
-</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="nt">max-num-seqs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">128</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="nt">gpu-memory-utilization</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.3</span>
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="nt">max-num-seqs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">128</span>
 </span></code></pre></div>
 <ol>
 <li>启动服务时指定配置文件路径，例如使用 <code>paddleocr genai_server</code> 命令：</li>
 </ol>
-<div class="language-shell highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>paddleocr<span class="w"> </span>genai_server<span class="w"> </span>--model_name<span class="w"> </span>PaddleOCR-VL-0.9B<span class="w"> </span>--backend<span class="w"> </span>vllm<span class="w"> </span>--backend_config<span class="w"> </span>vllm_config.yaml
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>paddleocr<span class="w"> </span>genai_server<span class="w"> </span>--model_name<span class="w"> </span>PaddleOCR-VL-0.9B<span class="w"> </span>--backend<span class="w"> </span>vllm<span class="w"> </span>--backend_config<span class="w"> </span>vllm_config.yaml
 </span></code></pre></div>
 <p>如果使用支持进程替换（process substitution）的 shell（如 Bash），也可以无需创建配置文件，直接在启动服务时传入配置项：</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>paddleocr<span class="w"> </span>genai_server<span class="w"> </span>--model_name<span class="w"> </span>PaddleOCR-VL-0.9B<span class="w"> </span>--backend<span class="w"> </span>vllm<span class="w"> </span>--backend_config<span class="w"> </span>&lt;<span class="o">(</span><span class="nb">echo</span><span class="w"> </span>-e<span class="w"> </span><span class="s1">&#39;gpu-memory-utilization: 0.3\nmax-num-seqs: 128&#39;</span><span class="o">)</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>paddleocr<span class="w"> </span>genai_server<span class="w"> </span>--model_name<span class="w"> </span>PaddleOCR-VL-0.9B<span class="w"> </span>--backend<span class="w"> </span>vllm<span class="w"> </span>--backend_config<span class="w"> </span>&lt;<span class="o">(</span><span class="nb">echo</span><span class="w"> </span>-e<span class="w"> </span><span class="s1">&#39;gpu-memory-utilization: 0.3\nmax-num-seqs: 128&#39;</span><span class="o">)</span>
 </span></code></pre></div>
 <h4 id="332">3.3.2 客户端参数调整<a class="headerlink" href="#332" title="Permanent link">&para;</a></h4>
 <p>PaddleOCR 会将来自单张或多张输入图像中的子图分组并对服务器发起并发请求，因此并发请求数对性能影响显著。</p>
@@ -5898,8 +6002,15 @@ MKL-DNN 缓存容量。
 <p>以下配置均针对客户端与 VLM 推理服务为 1 对 1 的场景。</p>
 <p><strong>NVIDIA RTX 3060</strong></p>
 <ul>
-<li><strong>服务端</strong></li>
-<li>vLLM：<code>gpu-memory-utilization=0.8</code></li>
+<li><strong>服务端</strong><ul>
+<li>vLLM：<code>gpu-memory-utilization: 0.8</code></li>
+<li>FastDeploy：<ul>
+<li><code>gpu-memory-utilization: 0.8</code></li>
+<li><code>max-concurrency: 2048</code></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 <h2 id="4">4. 服务化部署<a class="headerlink" href="#4" title="Permanent link">&para;</a></h2>
 <p>此步骤主要介绍如何将 PaddleOCR-VL 部署为服务并调用，有以下两种方式，任选一种即可：</p>
@@ -5914,14 +6025,14 @@ MKL-DNN 缓存容量。
 <p>请注意，本节所介绍 PaddleOCR-VL 服务与上一节中的 VLM 推理服务有所区别：后者仅负责完整流程中的一个环节（即 VLM 推理），并作为前者的底层服务被调用。</p>
 <h3 id="41-docker-compose">4.1 方法一：使用 Docker Compose 部署（推荐使用）<a class="headerlink" href="#41-docker-compose" title="Permanent link">&para;</a></h3>
 <p>您可以分别从 <a href="https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/compose.yaml">此处</a> 和 <a href="https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/.env">此处</a> 获取 Compose 文件与环境变量配置文件并下载到本地，然后在刚刚下载的文件所在目录下执行以下命令启动服务器，默认监听 <strong>8080</strong> 端口：</p>
-<div class="language-shell highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="c1"># 必须在 compose.yaml 和 .env 文件所在的目录中执行</span>
-</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>up
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="c1"># 必须在 compose.yaml 和 .env 文件所在的目录中执行</span>
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>docker<span class="w"> </span>compose<span class="w"> </span>up
 </span></code></pre></div>
 <p>启动后将看到类似如下输出：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>paddleocr-vl-api             | INFO:     Started server process [1]
-</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>paddleocr-vl-api             | INFO:     Waiting for application startup.
-</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>paddleocr-vl-api             | INFO:     Application startup complete.
-</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>paddleocr-vl-api             | INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
+<div class="language-text highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>paddleocr-vl-api             | INFO:     Started server process [1]
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>paddleocr-vl-api             | INFO:     Waiting for application startup.
+</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>paddleocr-vl-api             | INFO:     Application startup complete.
+</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>paddleocr-vl-api             | INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
 </span></code></pre></div>
 <p>此方式基于 vLLM 等框架对 VLM 推理进行加速，更适合生产环境部署，但要求机器配备 GPU，并且 NVIDIA 驱动程序支持 CUDA 12.6 或以上版本。</p>
 <p><code>.env</code> 文件可用于配置环境变量，详细介绍如下：</p>
@@ -5934,16 +6045,16 @@ MKL-DNN 缓存容量。
 <p>如需调整产线相关配置（如模型路径、批处理大小、部署设备等），可参考 4.4 小节。</p>
 <h3 id="42">4.2 方法二：手动安装依赖部署<a class="headerlink" href="#42" title="Permanent link">&para;</a></h3>
 <p>执行以下命令，通过 PaddleX CLI 安装服务化部署插件：</p>
-<div class="language-shell highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>paddlex<span class="w"> </span>--install<span class="w"> </span>serving
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>paddlex<span class="w"> </span>--install<span class="w"> </span>serving
 </span></code></pre></div>
 <p>然后，使用 PaddleX CLI 启动服务器：</p>
-<div class="language-shell highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>paddlex<span class="w"> </span>--serve<span class="w"> </span>--pipeline<span class="w"> </span>PaddleOCR-VL
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>paddlex<span class="w"> </span>--serve<span class="w"> </span>--pipeline<span class="w"> </span>PaddleOCR-VL
 </span></code></pre></div>
 <p>启动后将看到类似如下输出，服务器默认监听 <strong>8080</strong> 端口：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>INFO:     Started server process [63108]
-</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>INFO:     Waiting for application startup.
-</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>INFO:     Application startup complete.
-</span><span id="__span-20-4"><a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a>INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
+<div class="language-text highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>INFO:     Started server process [63108]
+</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>INFO:     Waiting for application startup.
+</span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>INFO:     Application startup complete.
+</span><span id="__span-21-4"><a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a>INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
 </span></code></pre></div>
 <p>与服务化部署相关的命令行参数如下：</p>
 <table>
@@ -6840,38 +6951,38 @@ foreach ($result as $i => $item) {
 </ul>
 <p><strong>若您手动安装依赖部署：</strong></p>
 <p>执行以下命令生成产线配置文件：</p>
-<div class="language-shell highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>paddlex<span class="w"> </span>--get_pipeline_config<span class="w"> </span>PaddleOCR-VL
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>paddlex<span class="w"> </span>--get_pipeline_config<span class="w"> </span>PaddleOCR-VL
 </span></code></pre></div>
 <h4 id="442">4.4.2 修改配置文件<a class="headerlink" href="#442" title="Permanent link">&para;</a></h4>
 <p><strong>使用加速框架提升 VLM 推理性能</strong></p>
 <p>如需使用 vLLM 等加速框架提升 VLM 推理性能（第 2 节详细介绍如何启动 VLM 推理服务），可在产线配置文件中修改 <code>VLRecognition.genai_config.backend</code> 和 <code>VLRecognition.genai_config.server_url</code> 字段，例如：</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="nt">VLRecognition</span><span class="p">:</span>
-</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">...</span>
-</span><span id="__span-22-3"><a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">genai_config</span><span class="p p-Indicator">:</span>
-</span><span id="__span-22-4"><a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="w">    </span><span class="nt">backend</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vllm-server</span>
-</span><span id="__span-22-5"><a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a><span class="w">    </span><span class="nt">server_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://127.0.0.1:8118/v1</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="nt">VLRecognition</span><span class="p">:</span>
+</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+</span><span id="__span-23-3"><a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">genai_config</span><span class="p p-Indicator">:</span>
+</span><span id="__span-23-4"><a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a><span class="w">    </span><span class="nt">backend</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vllm-server</span>
+</span><span id="__span-23-5"><a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a><span class="w">    </span><span class="nt">server_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://127.0.0.1:8118/v1</span>
 </span></code></pre></div>
 <p>Docker Compose 方案默认已使用加速框架。</p>
 <p><strong>启用文档图像预处理功能</strong></p>
 <p>默认配置启动的服务不支持文档预处理功能。若客户端调用该功能，将返回错误信息。如需启用文档预处理，请在产线配置文件中将 <code>use_doc_preprocessor</code> 设置为 <code>True</code>，并使用修改后的配置文件启动服务。</p>
 <p><strong>禁用结果可视化功能</strong></p>
 <p>服务默认返回可视化结果，这会引入额外开销。如需禁用该功能，可在产线配置文件中添加如下配置（<code>Serving</code> 为顶层字段）：</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="nt">Serving</span><span class="p">:</span>
-</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="w">  </span><span class="nt">visualize</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="nt">Serving</span><span class="p">:</span>
+</span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="w">  </span><span class="nt">visualize</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span>
 </span></code></pre></div>
 <p>此外，也可在请求体中设置 <code>visualize</code> 字段为 <code>false</code>，以针对单次请求禁用可视化。</p>
 <p><strong>配置返回图像 URL</strong></p>
 <p>对于可视化结果图及 Markdown 中包含的图像，服务默认以 Base64 编码返回。如需以 URL 形式返回图像，可在产线配置文件中添加如下配置（<code>Serving</code> 为顶层字段）：</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="nt">Serving</span><span class="p">:</span>
-</span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="w">  </span><span class="nt">extra</span><span class="p">:</span>
-</span><span id="__span-24-3"><a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a><span class="w">    </span><span class="nt">file_storage</span><span class="p">:</span>
-</span><span id="__span-24-4"><a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a><span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">bos</span>
-</span><span id="__span-24-5"><a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a><span class="w">      </span><span class="nt">endpoint</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://bj.bcebos.com</span>
-</span><span id="__span-24-6"><a id="__codelineno-24-6" name="__codelineno-24-6" href="#__codelineno-24-6"></a><span class="w">      </span><span class="nt">bucket_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">some-bucket</span>
-</span><span id="__span-24-7"><a id="__codelineno-24-7" name="__codelineno-24-7" href="#__codelineno-24-7"></a><span class="w">      </span><span class="nt">ak</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">xxx</span>
-</span><span id="__span-24-8"><a id="__codelineno-24-8" name="__codelineno-24-8" href="#__codelineno-24-8"></a><span class="w">      </span><span class="nt">sk</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">xxx</span>
-</span><span id="__span-24-9"><a id="__codelineno-24-9" name="__codelineno-24-9" href="#__codelineno-24-9"></a><span class="w">      </span><span class="nt">key_prefix</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">deploy</span>
-</span><span id="__span-24-10"><a id="__codelineno-24-10" name="__codelineno-24-10" href="#__codelineno-24-10"></a><span class="w">    </span><span class="nt">return_img_urls</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="nt">Serving</span><span class="p">:</span>
+</span><span id="__span-25-2"><a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="w">  </span><span class="nt">extra</span><span class="p">:</span>
+</span><span id="__span-25-3"><a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a><span class="w">    </span><span class="nt">file_storage</span><span class="p">:</span>
+</span><span id="__span-25-4"><a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a><span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">bos</span>
+</span><span id="__span-25-5"><a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a><span class="w">      </span><span class="nt">endpoint</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://bj.bcebos.com</span>
+</span><span id="__span-25-6"><a id="__codelineno-25-6" name="__codelineno-25-6" href="#__codelineno-25-6"></a><span class="w">      </span><span class="nt">bucket_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">some-bucket</span>
+</span><span id="__span-25-7"><a id="__codelineno-25-7" name="__codelineno-25-7" href="#__codelineno-25-7"></a><span class="w">      </span><span class="nt">ak</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">xxx</span>
+</span><span id="__span-25-8"><a id="__codelineno-25-8" name="__codelineno-25-8" href="#__codelineno-25-8"></a><span class="w">      </span><span class="nt">sk</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">xxx</span>
+</span><span id="__span-25-9"><a id="__codelineno-25-9" name="__codelineno-25-9" href="#__codelineno-25-9"></a><span class="w">      </span><span class="nt">key_prefix</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">deploy</span>
+</span><span id="__span-25-10"><a id="__codelineno-25-10" name="__codelineno-25-10" href="#__codelineno-25-10"></a><span class="w">    </span><span class="nt">return_img_urls</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
 </span></code></pre></div>
 <p>目前支持将生成的图像存储至百度智能云对象存储（BOS）并返回 URL。相关参数说明如下：</p>
 <ul>
@@ -6885,20 +6996,20 @@ foreach ($result as $i => $item) {
 <p>有关 AK/SK 获取等更多信息，请参考 <a href="https://cloud.baidu.com/doc/BOS/index.html">百度智能云官方文档</a>。</p>
 <p><strong>修改 PDF 解析页数限制</strong></p>
 <p>出于性能考虑，服务默认仅处理接收到的 PDF 文件的前 10 页。如需调整页数限制，可在产线配置文件中添加如下配置（<code>Serving</code> 为顶层字段）：</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="nt">Serving</span><span class="p">:</span>
-</span><span id="__span-25-2"><a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="w">  </span><span class="nt">extra</span><span class="p">:</span>
-</span><span id="__span-25-3"><a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a><span class="w">    </span><span class="nt">max_num_input_imgs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;新的页数限制，例如 100&gt;</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="nt">Serving</span><span class="p">:</span>
+</span><span id="__span-26-2"><a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a><span class="w">  </span><span class="nt">extra</span><span class="p">:</span>
+</span><span id="__span-26-3"><a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a><span class="w">    </span><span class="nt">max_num_input_imgs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;新的页数限制，例如 100&gt;</span>
 </span></code></pre></div>
 <p>将 <code>max_num_input_imgs</code> 设置为 <code>null</code> 可解除页数限制。</p>
 <h4 id="443">4.4.3 应用配置文件<a class="headerlink" href="#443" title="Permanent link">&para;</a></h4>
 <p><strong>若您使用 Docker Compose 部署：</strong></p>
 <p>设置 Compose 文件中的 <code>services.paddleocr-vl-api.volumes</code> 字段，将产线配置文件挂载到 <code>/home/paddleocr</code> 目录。例如：</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="nt">services</span><span class="p">:</span>
-</span><span id="__span-26-2"><a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a><span class="w">  </span><span class="nt">paddleocr-vl-api</span><span class="p">:</span>
-</span><span id="__span-26-3"><a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a><span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">...</span>
-</span><span id="__span-26-4"><a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a><span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">volumes</span><span class="p p-Indicator">:</span>
-</span><span id="__span-26-5"><a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pipeline_config_vllm.yaml:/home/paddleocr/pipeline_config.yaml</span>
-</span><span id="__span-26-6"><a id="__codelineno-26-6" name="__codelineno-26-6" href="#__codelineno-26-6"></a><span class="nn">...</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="nt">services</span><span class="p">:</span>
+</span><span id="__span-27-2"><a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a><span class="w">  </span><span class="nt">paddleocr-vl-api</span><span class="p">:</span>
+</span><span id="__span-27-3"><a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a><span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+</span><span id="__span-27-4"><a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a><span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">volumes</span><span class="p p-Indicator">:</span>
+</span><span id="__span-27-5"><a id="__codelineno-27-5" name="__codelineno-27-5" href="#__codelineno-27-5"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pipeline_config_vllm.yaml:/home/paddleocr/pipeline_config.yaml</span>
+</span><span id="__span-27-6"><a id="__codelineno-27-6" name="__codelineno-27-6" href="#__codelineno-27-6"></a><span class="nn">...</span>
 </span></code></pre></div>
 <blockquote>
 <p>在生产环境中，您也可以自行构建镜像，将配置文件打包到镜像中。</p>
