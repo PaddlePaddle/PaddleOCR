@@ -1696,7 +1696,7 @@ You're not viewing the latest version.
   <a href="#441" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4.4.1 生成配置文件
+        4.4.1 获取配置文件
       
     </span>
   </a>
@@ -4649,7 +4649,7 @@ You're not viewing the latest version.
   <a href="#441" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4.4.1 生成配置文件
+        4.4.1 获取配置文件
       
     </span>
   </a>
@@ -5843,7 +5843,7 @@ MKL-DNN 缓存容量。
 </tbody>
 </table>
 <h3 id="32">3.2 客户端使用方法<a class="headerlink" href="#32" title="Permanent link">&para;</a></h3>
-<p>启动 VLM 推理服务后，客户端即可通过 PaddleOCR 调用该服务。</p>
+<p>启动 VLM 推理服务后，客户端即可通过 PaddleOCR 调用该服务。<strong>请注意，由于客户端需要调用版面检测的顺序模型，仍建议在 GPU 等加速设备上运行客户端，以获得更稳定和高效的性能。</strong></p>
 <h4 id="321-cli">3.2.1 CLI 调用<a class="headerlink" href="#321-cli" title="Permanent link">&para;</a></h4>
 <p>可通过 <code>--vl_rec_backend</code> 指定后端类型（<code>vllm-server</code> 或 <code>sglang-server</code>），通过 <code>--vl_rec_server_url</code> 指定服务地址，例如：</p>
 <div class="language-shell highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>paddleocr<span class="w"> </span>doc_parser<span class="w"> </span>--input<span class="w"> </span>paddleocr_vl_demo.png<span class="w"> </span>--vl_rec_backend<span class="w"> </span>vllm-server<span class="w"> </span>--vl_rec_server_url<span class="w"> </span>http://127.0.0.1:8118/v1
@@ -5911,7 +5911,13 @@ MKL-DNN 缓存容量。
 </span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>paddleocr-vl-api             | INFO:     Application startup complete.
 </span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>paddleocr-vl-api             | INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
 </span></code></pre></div>
-<p>此方式基于 vLLM 框架对 VLM 推理进行加速，更适合生产环境部署，但要求机器配备 GPU，并且 NVIDIA 驱动程序支持 CUDA 12.6 或以上版本。</p>
+<p>此方式基于 vLLM 等框架对 VLM 推理进行加速，更适合生产环境部署，但要求机器配备 GPU，并且 NVIDIA 驱动程序支持 CUDA 12.6 或以上版本。</p>
+<p><code>.env</code> 文件可用于配置环境变量，详细介绍如下：</p>
+<ul>
+<li><code>API_IMAGE_TAG_SUFFIX</code>：启动产线服务使用的镜像的标签后缀。默认为 <code>latest-offline</code>，表示使用离线 GPU 镜像。</li>
+<li><code>VLM_BACKEND</code>：VLM 推理后端，目前支持 <code>vllm</code> 和 <code>fastdeploy</code>。默认为 <code>vllm</code>。</li>
+<li><code>VLM_IMAGE_TAG_SUFFIX</code>：启动 VLM 推理服务使用的镜像的标签后缀。默认为 <code>latest-offline</code>，表示使用离线 GPU 镜像。</li>
+</ul>
 <p>此外，使用此方式启动服务器后，除拉取镜像外，无需连接互联网。如需在离线环境中部署，可先在联网机器上拉取 Compose 文件中涉及的镜像，导出并传输至离线机器中导入，即可在离线环境下启动服务。</p>
 <p>如需调整产线相关配置（如模型路径、批处理大小、部署设备等），可参考 4.4 小节。</p>
 <h3 id="42">4.2 方法二：手动安装依赖部署<a class="headerlink" href="#42" title="Permanent link">&para;</a></h3>
@@ -6809,11 +6815,19 @@ foreach ($result as $i => $item) {
 </blockquote>
 <p>调整服务化部署的 PaddleOCR-VL 配置只需以下三步：</p>
 <ol>
-<li>生成配置文件 </li>
+<li>获取配置文件 </li>
 <li>修改配置文件</li>
 <li>应用配置文件</li>
 </ol>
-<h4 id="441">4.4.1 生成配置文件<a class="headerlink" href="#441" title="Permanent link">&para;</a></h4>
+<h4 id="441">4.4.1 获取配置文件<a class="headerlink" href="#441" title="Permanent link">&para;</a></h4>
+<p><strong>若您使用 Docker Compose 部署：</strong></p>
+<p>根据使用的后端，下载对应的产线配置文件：</p>
+<ul>
+<li>vLLM：<a href="https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/pipeline_config_vllm.yaml">pipeline_config_vllm.yaml</a></li>
+<li>FastDeploy：<a href="https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/pipeline_config_fastdeploy.yaml">pipeline_config_fastdeploy.yaml</a></li>
+</ul>
+<p><strong>若您手动安装依赖部署：</strong></p>
+<p>执行以下命令生成产线配置文件：</p>
 <div class="language-shell highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>paddlex<span class="w"> </span>--get_pipeline_config<span class="w"> </span>PaddleOCR-VL
 </span></code></pre></div>
 <h4 id="442">4.4.2 修改配置文件<a class="headerlink" href="#442" title="Permanent link">&para;</a></h4>
@@ -6825,16 +6839,17 @@ foreach ($result as $i => $item) {
 </span><span id="__span-22-4"><a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="w">    </span><span class="nt">backend</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vllm-server</span>
 </span><span id="__span-22-5"><a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a><span class="w">    </span><span class="nt">server_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://127.0.0.1:8118/v1</span>
 </span></code></pre></div>
+<p>Docker Compose 方案默认已使用加速框架。</p>
 <p><strong>启用文档图像预处理功能</strong></p>
 <p>默认配置启动的服务不支持文档预处理功能。若客户端调用该功能，将返回错误信息。如需启用文档预处理，请在产线配置文件中将 <code>use_doc_preprocessor</code> 设置为 <code>True</code>，并使用修改后的配置文件启动服务。</p>
 <p><strong>禁用结果可视化功能</strong></p>
-<p>服务默认返回可视化结果，这会引入额外开销。如需禁用该功能，可在产线配置文件中添加如下配置：</p>
+<p>服务默认返回可视化结果，这会引入额外开销。如需禁用该功能，可在产线配置文件中添加如下配置（<code>Serving</code> 为顶层字段）：</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="nt">Serving</span><span class="p">:</span>
 </span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="w">  </span><span class="nt">visualize</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span>
 </span></code></pre></div>
 <p>此外，也可在请求体中设置 <code>visualize</code> 字段为 <code>false</code>，以针对单次请求禁用可视化。</p>
 <p><strong>配置返回图像 URL</strong></p>
-<p>对于可视化结果图及 Markdown 中包含的图像，服务默认以 Base64 编码返回。如需以 URL 形式返回图像，可在产线配置文件中添加如下配置：</p>
+<p>对于可视化结果图及 Markdown 中包含的图像，服务默认以 Base64 编码返回。如需以 URL 形式返回图像，可在产线配置文件中添加如下配置（<code>Serving</code> 为顶层字段）：</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="nt">Serving</span><span class="p">:</span>
 </span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="w">  </span><span class="nt">extra</span><span class="p">:</span>
 </span><span id="__span-24-3"><a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a><span class="w">    </span><span class="nt">file_storage</span><span class="p">:</span>
@@ -6857,17 +6872,27 @@ foreach ($result as $i => $item) {
 </ul>
 <p>有关 AK/SK 获取等更多信息，请参考 <a href="https://cloud.baidu.com/doc/BOS/index.html">百度智能云官方文档</a>。</p>
 <p><strong>修改 PDF 解析页数限制</strong></p>
-<p>出于性能考虑，服务默认仅处理接收到的 PDF 文件的前 10 页。如需调整页数限制，可在产线配置文件中添加如下配置：</p>
+<p>出于性能考虑，服务默认仅处理接收到的 PDF 文件的前 10 页。如需调整页数限制，可在产线配置文件中添加如下配置（<code>Serving</code> 为顶层字段）：</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="nt">Serving</span><span class="p">:</span>
 </span><span id="__span-25-2"><a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="w">  </span><span class="nt">extra</span><span class="p">:</span>
 </span><span id="__span-25-3"><a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a><span class="w">    </span><span class="nt">max_num_input_imgs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;新的页数限制，例如 100&gt;</span>
 </span></code></pre></div>
 <p>将 <code>max_num_input_imgs</code> 设置为 <code>null</code> 可解除页数限制。</p>
 <h4 id="443">4.4.3 应用配置文件<a class="headerlink" href="#443" title="Permanent link">&para;</a></h4>
-<p><strong>若您是 Docker Compose 部署：</strong></p>
-<p>将自定义的产线配置文件覆盖至 <code>ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl</code>（或对应容器）中的 <code>/home/paddleocr/pipeline_config.yaml</code>。</p>
-<p><strong>若您是手动安装依赖部署：</strong></p>
-<p>将 <code>--pipeline</code> 参数指定为自定义配置文件路径。</p>
+<p><strong>若您使用 Docker Compose 部署：</strong></p>
+<p>设置 Compose 文件中的 <code>services.paddleocr-vl-api.volumes</code> 字段，将产线配置文件挂载到 <code>/home/paddleocr</code> 目录。例如：</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="nt">services</span><span class="p">:</span>
+</span><span id="__span-26-2"><a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a><span class="w">  </span><span class="nt">paddleocr-vl-api</span><span class="p">:</span>
+</span><span id="__span-26-3"><a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a><span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+</span><span id="__span-26-4"><a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a><span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">volumes</span><span class="p p-Indicator">:</span>
+</span><span id="__span-26-5"><a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pipeline_config_vllm.yaml:/home/paddleocr/pipeline_config.yaml</span>
+</span><span id="__span-26-6"><a id="__codelineno-26-6" name="__codelineno-26-6" href="#__codelineno-26-6"></a><span class="nn">...</span>
+</span></code></pre></div>
+<blockquote>
+<p>在生产环境中，您也可以自行构建镜像，将配置文件打包到镜像中。</p>
+</blockquote>
+<p><strong>若您手动安装依赖部署：</strong></p>
+<p>在启动服务时，将 <code>--pipeline</code> 参数指定为自定义配置文件路径。</p>
 <h2 id="5">5. 模型微调<a class="headerlink" href="#5" title="Permanent link">&para;</a></h2>
 <p>若您发现 PaddleOCR-VL 在特定业务场景中的精度表现未达预期，我们推荐使用 <a href="https://github.com/PaddlePaddle/ERNIE/tree/release/v1.4">ERNIEKit 套件</a> 对 PaddleOCR-VL-0.9B 模型进行有监督微调（SFT）。具体操作步骤可参考 <a href="https://github.com/PaddlePaddle/ERNIE/blob/release/v1.4/docs/paddleocr_vl_sft_zh.md">ERNIEKit 官方文档</a>。</p>
 <blockquote>

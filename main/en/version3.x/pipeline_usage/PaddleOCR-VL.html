@@ -1681,22 +1681,22 @@ You're not viewing the latest version.
 </li>
         
           <li class="md-nav__item">
-  <a href="#44-production-configuration-adjustment-instructions" class="md-nav__link">
+  <a href="#44-pipeline-configuration-adjustment-instructions" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4.4 Production Configuration Adjustment Instructions
+        4.4 Pipeline Configuration Adjustment Instructions
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="4.4 Production Configuration Adjustment Instructions">
+    <nav class="md-nav" aria-label="4.4 Pipeline Configuration Adjustment Instructions">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#441-generate-the-configuration-file" class="md-nav__link">
+  <a href="#441-obtain-the-configuration-file" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4.4.1 Generate the Configuration File
+        4.4.1 Obtain the Configuration File
       
     </span>
   </a>
@@ -4634,22 +4634,22 @@ You're not viewing the latest version.
 </li>
         
           <li class="md-nav__item">
-  <a href="#44-production-configuration-adjustment-instructions" class="md-nav__link">
+  <a href="#44-pipeline-configuration-adjustment-instructions" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4.4 Production Configuration Adjustment Instructions
+        4.4 Pipeline Configuration Adjustment Instructions
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="4.4 Production Configuration Adjustment Instructions">
+    <nav class="md-nav" aria-label="4.4 Pipeline Configuration Adjustment Instructions">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#441-generate-the-configuration-file" class="md-nav__link">
+  <a href="#441-obtain-the-configuration-file" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4.4.1 Generate the Configuration File
+        4.4.1 Obtain the Configuration File
       
     </span>
   </a>
@@ -4942,7 +4942,7 @@ For example, the local path of an image file or PDF file: <code>/root/data/img.j
 </tr>
 <tr>
 <td><code>layout_detection_model_name</code></td>
-<td>Name of the layout area detection and ranking model. If not set, the default model of the production line will be used.</td>
+<td>Name of the layout area detection and ranking model. If not set, the default model of the pipeline will be used.</td>
 <td><code>str</code></td>
 </tr>
 <tr>
@@ -5134,7 +5134,7 @@ If not set, the initialized parameter value will be used.
 </tr>
 <tr>
 <td><code>paddlex_config</code></td>
-<td>The file path for PaddleX production line configuration.</td>
+<td>The file path for PaddleX pipeline configuration.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
@@ -5150,7 +5150,7 @@ If not set, the initialized parameter value will be used.
 </code></pre></details>
 
 <p>For explanation of the result parameters, refer to <a href="#222-python-script-integration">2.2 Python Script Integration</a>.</p>
-<p><b>Note: </b> The default model for the production line is relatively large, which may result in slower inference speed. It is recommended to use <a href="#31-starting-the-vlm-inference-service">inference acceleration frameworks to enhance VLM inference performance</a> for faster inference.</p>
+<p><b>Note: </b> The default model for the pipeline is relatively large, which may result in slower inference speed. It is recommended to use <a href="#31-starting-the-vlm-inference-service">inference acceleration frameworks to enhance VLM inference performance</a> for faster inference.</p>
 <h3 id="22-python-script-integration">2.2 Python Script Integration<a class="headerlink" href="#22-python-script-integration" title="Permanent link">&para;</a></h3>
 <p>The command line method is for quick testing and visualization. In actual projects, you usually need to integrate the model via code. You can perform pipeline inference with just a few lines of code as shown below:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">paddleocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">PaddleOCRVL</span>
@@ -5203,7 +5203,7 @@ If not set, the initialized parameter value will be used.
 <li>In the example code, the parameters <code>use_doc_orientation_classify</code> and  <code>use_doc_unwarping</code> are all set to <code>False</code> by default. These indicate that document orientation classification and document image unwarping are disabled. You can manually set them to <code>True</code> if needed.</li>
 </ul>
 <p>The above Python script performs the following steps:</p>
-<details><summary>(1) Instantiate the production line object. Specific parameter descriptions are as follows:</summary>
+<details><summary>(1) Instantiate the pipeline object. Specific parameter descriptions are as follows:</summary>
 <table>
 <thead>
 <tr>
@@ -5216,7 +5216,7 @@ If not set, the initialized parameter value will be used.
 <tbody>
 <tr>
 <td><code>layout_detection_model_name</code></td>
-<td>Name of the layout area detection and ranking model. If set to <code>None</code>, the default model of the production line will be used.</td>
+<td>Name of the layout area detection and ranking model. If set to <code>None</code>, the default model of the pipeline will be used.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -5232,14 +5232,14 @@ If not set, the initialized parameter value will be used.
 <ul>
 <li><b>float</b>: Any floating-point number between <code>0-1</code>;</li>
 <li><b>dict</b>: <code>{0:0.1}</code> The key is the class ID, and the value is the threshold for that class;</li>
-<li><b>None</b>: If set to <code>None</code>, the parameter value initialized by the production line will be used.</li>
+<li><b>None</b>: If set to <code>None</code>, the parameter value initialized by the pipeline will be used.</li>
 </ul>
 <td><code>float|dict|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>layout_nms</code></td>
-<td>Whether to use post-processing NMS for layout detection. If set to <code>None</code>, the parameter value initialized by the production line will be used.</td>
+<td>Whether to use post-processing NMS for layout detection. If set to <code>None</code>, the parameter value initialized by the pipeline will be used.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -5251,7 +5251,7 @@ Expansion coefficient for the detection box of the layout area detection model.
 <li><b>float</b>: Any floating-point number greater than <code>0</code></li>
 <li><b>Tuple[float,float]</b>: The respective expansion coefficients in the horizontal and vertical directions;</li>
 <li><b>dict</b>: where the key of the dict is of <b>int</b> type, representing <code>cls_id</code>, and the value is of</code>tuple <code>type, such as</code>{0: (1.1, 2.0)}, indicating that the center of the detection box for class 0 output by the model remains unchanged, with the width expanded by 1.1 times and the height expanded by 2.0 times;</li>
-<li><b>None</b>: If set to <code>None</code>, the parameter value initialized by the production line will be used.</li>
+<li><b>None</b>: If set to <code>None</code>, the parameter value initialized by the pipeline will be used.</li>
 </ul>
 <td><code>float|Tuple[float,float]|dict|None</code></td>
 <td><code>None</code></td>
@@ -5405,7 +5405,7 @@ If not set, the initialized parameter value will be used.
 </tr>
 <tr>
 <td><code>paddlex_config</code></td>
-<td>The file path for PaddleX production line configuration.</td>
+<td>The file path for PaddleX pipeline configuration.</td>
 <td><code>str</code></td>
 <td><code>None</code></td>
 <td></td>
@@ -5414,7 +5414,7 @@ If not set, the initialized parameter value will be used.
 </table>
 </details>
 
-<details><summary>(2) Call the <code>predict()</code>method of the PaddleOCR-VL production line object for inference prediction. This method will return a list of results. Additionally, the production line also provides the <code>predict_iter()</code>Method. The two are completely consistent in terms of parameter acceptance and result return. The difference lies in that <code>predict_iter()</code>returns a <code>generator</code>, which can process and obtain prediction results step by step. It is suitable for scenarios involving large datasets or where memory conservation is desired. You can choose either of these two methods based on actual needs. Below are the parameters of the <code>predict()</code>method and their descriptions:</summary>
+<details><summary>(2) Call the <code>predict()</code>method of the PaddleOCR-VL pipeline object for inference prediction. This method will return a list of results. Additionally, the pipeline also provides the <code>predict_iter()</code>Method. The two are completely consistent in terms of parameter acceptance and result return. The difference lies in that <code>predict_iter()</code>returns a <code>generator</code>, which can process and obtain prediction results step by step. It is suitable for scenarios involving large datasets or where memory conservation is desired. You can choose either of these two methods based on actual needs. Below are the parameters of the <code>predict()</code>method and their descriptions:</summary>
 <table>
 <thead>
 <tr>
@@ -5688,7 +5688,7 @@ If not set, the initialized parameter value will be used.
         - `block_order` `(int)` The order of the layout region, used to display the layout reading order. For non-sorted parts, the default value is `None`.
 
 
-- Calling the `save_to_img()` method will save the visualization results to the specified `save_path`. If a directory is specified, visualized images for layout region detection, global OCR, layout reading order, etc., will be saved. If a file is specified, it will be saved directly to that file. (Production lines typically contain many result images, so it is not recommended to directly specify a specific file path, as multiple images will be overwritten, retaining only the last one.)
+- Calling the `save_to_img()` method will save the visualization results to the specified `save_path`. If a directory is specified, visualized images for layout region detection, global OCR, layout reading order, etc., will be saved. If a file is specified, it will be saved directly to that file. (Pipelines typically contain many result images, so it is not recommended to directly specify a specific file path, as multiple images will be overwritten, retaining only the last one.)
 - Calling the `save_to_markdown()` method will save the converted Markdown file to the specified `save_path`. The saved file path will be `save_path/{your_img_basename}.md`. If the input is a PDF file, it is recommended to directly specify a directory; otherwise, multiple markdown files will be overwritten.
 
 Additionally, it also supports obtaining visualized images and prediction results with results through attributes, as follows:<table>
@@ -5807,7 +5807,7 @@ Additionally, it also supports obtaining visualized images and prediction result
 </tbody>
 </table>
 <h3 id="32-client-usage-methods">3.2 Client Usage Methods<a class="headerlink" href="#32-client-usage-methods" title="Permanent link">&para;</a></h3>
-<p>After launching the VLM inference service, the client can call the service through PaddleOCR.</p>
+<p>After launching the VLM inference service, the client can call the service through PaddleOCR. <strong>Please note that because the client needs to invoke the sequential model for layout detection, it is still recommended to run the client on GPU or other acceleration devices to achieve more stable and efficient performance.</strong></p>
 <h4 id="321-cli-invocation">3.2.1 CLI Invocation<a class="headerlink" href="#321-cli-invocation" title="Permanent link">&para;</a></h4>
 <p>Specify the backend type (<code>vllm-server</code> or <code>sglang-server</code>) using <code>--vl_rec_backend</code> and the service address using <code>--vl_rec_server_url</code>, for example:</p>
 <div class="language-shell highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>paddleocr<span class="w"> </span>doc_parser<span class="w"> </span>--input<span class="w"> </span>paddleocr_vl_demo.png<span class="w"> </span>--vl_rec_backend<span class="w"> </span>vllm-server<span class="w"> </span>--vl_rec_server_url<span class="w"> </span>http://127.0.0.1:8118/v1
@@ -5875,9 +5875,15 @@ Additionally, it also supports obtaining visualized images and prediction result
 </span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>paddleocr-vl-api             | INFO:     Application startup complete.
 </span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>paddleocr-vl-api             | INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
 </span></code></pre></div>
-<p>This method accelerates VLM inference using the vLLM framework and is more suitable for production environment deployment. It requires the machine to be equipped with a GPU and NVIDIA drivers supporting CUDA 12.6 or higher.</p>
+<p>This solution accelerates VLM inference based on frameworks like vLLM, making it more suitable for production environment deployment. However, it requires the machine to be equipped with a GPU and the NVIDIA driver to support CUDA 12.6 or higher.</p>
+<p>The <code>.env</code> file can be used to configure environment variables, with detailed descriptions as follows:</p>
+<ul>
+<li><code>API_IMAGE_TAG_SUFFIX</code>: The tag suffix of the image used to start the pipeline service. The default is <code>latest-offline</code>, indicating the use of an offline GPU image.</li>
+<li><code>VLM_BACKEND</code>: The VLM inference backend, currently supporting <code>vllm</code> and <code>fastdeploy</code>. The default is <code>vllm</code>.</li>
+<li><code>VLM_IMAGE_TAG_SUFFIX</code>: The tag suffix of the image used to start the VLM inference service. The default is <code>latest-offline</code>, indicating the use of an offline GPU image.</li>
+</ul>
 <p>Additionally, after starting the server using this method, no internet connection is required except for pulling the image. For offline environment deployment, you can first pull the images involved in the Compose file on an online machine, export and transfer them to the offline machine for import, and then start the service in the offline environment.</p>
-<p>If you need to adjust production-related configurations (such as model path, batch size, deployment device, etc.), refer to Section 4.4.</p>
+<p>If you need to adjust pipeline configurations (such as model path, batch size, deployment device, etc.), refer to Section 4.4.</p>
 <h3 id="42-method-2-manually-install-dependencies-for-deployment">4.2 Method 2: Manually Install Dependencies for Deployment<a class="headerlink" href="#42-method-2-manually-install-dependencies-for-deployment" title="Permanent link">&para;</a></h3>
 <p>Execute the following command to install the service deployment plugin via the PaddleX CLI:</p>
 <div class="language-shell highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>paddlex<span class="w"> </span>--install<span class="w"> </span>serving
@@ -6019,7 +6025,7 @@ Additionally, it also supports obtaining visualized images and prediction result
 <tr>
 <td><code>file</code></td>
 <td><code>string</code></td>
-<td>The URL of an image file or PDF file accessible to the server, or the Base64-encoded result of the content of the aforementioned file types. By default, for PDF files with more than 10 pages, only the first 10 pages will be processed.<br/>To remove the page limit, add the following configuration to the production line configuration file:<pre> <code>Serving:
+<td>The URL of an image file or PDF file accessible to the server, or the Base64-encoded result of the content of the aforementioned file types. By default, for PDF files with more than 10 pages, only the first 10 pages will be processed.<br/>To remove the page limit, add the following configuration to the pipeline configuration file:<pre> <code>Serving:
   extra:
     max_num_input_imgs: null</code></pre>
 </td>
@@ -6761,38 +6767,47 @@ foreach ($result as $i => $item) {
 </code></pre></details>
 </details>
 
-<h3 id="44-production-configuration-adjustment-instructions">4.4 Production Configuration Adjustment Instructions<a class="headerlink" href="#44-production-configuration-adjustment-instructions" title="Permanent link">&para;</a></h3>
+<h3 id="44-pipeline-configuration-adjustment-instructions">4.4 Pipeline Configuration Adjustment Instructions<a class="headerlink" href="#44-pipeline-configuration-adjustment-instructions" title="Permanent link">&para;</a></h3>
 <blockquote>
-<p>If you do not need to adjust production configurations, you can ignore this section.</p>
+<p>If you do not need to adjust pipeline configurations, you can ignore this section.</p>
 </blockquote>
 <p>Adjusting the PaddleOCR-VL configuration for service deployment involves only three steps:</p>
 <ol>
-<li>Generate the configuration file</li>
+<li>Obtain the configuration file</li>
 <li>Modify the configuration file</li>
 <li>Apply the configuration file</li>
 </ol>
-<h4 id="441-generate-the-configuration-file">4.4.1 Generate the Configuration File<a class="headerlink" href="#441-generate-the-configuration-file" title="Permanent link">&para;</a></h4>
+<h4 id="441-obtain-the-configuration-file">4.4.1 Obtain the Configuration File<a class="headerlink" href="#441-obtain-the-configuration-file" title="Permanent link">&para;</a></h4>
+<p><strong>If you are deploying using Docker Compose:</strong></p>
+<p>Download the corresponding pipeline configuration file based on the backend you are using:</p>
+<ul>
+<li>vLLM: <a href="https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/pipeline_config_vllm.yaml">pipeline_config_vllm.yaml</a></li>
+<li>FastDeploy: <a href="https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/pipeline_config_fastdeploy.yaml">pipeline_config_fastdeploy.yaml</a></li>
+</ul>
+<p><strong>If you are deploying by manually installing dependencies:</strong></p>
+<p>Execute the following command to generate the pipeline configuration file:</p>
 <div class="language-shell highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>paddlex<span class="w"> </span>--get_pipeline_config<span class="w"> </span>PaddleOCR-VL
 </span></code></pre></div>
 <h4 id="442-modify-the-configuration-file">4.4.2 Modify the Configuration File<a class="headerlink" href="#442-modify-the-configuration-file" title="Permanent link">&para;</a></h4>
 <p><strong>Enhance VLM Inference Performance Using Acceleration Frameworks</strong></p>
-<p>To improve VLM inference performance using acceleration frameworks such as vLLM (refer to Section 2 for detailed instructions on starting the VLM inference service), modify the <code>VLRecognition.genai_config.backend</code> and <code>VLRecognition.genai_config.server_url</code> fields in the production configuration file, as shown below:</p>
+<p>To improve VLM inference performance using acceleration frameworks such as vLLM (refer to Section 2 for detailed instructions on starting the VLM inference service), modify the <code>VLRecognition.genai_config.backend</code> and <code>VLRecognition.genai_config.server_url</code> fields in the pipeline configuration file, as shown below:</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="nt">VLRecognition</span><span class="p">:</span>
 </span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">...</span>
 </span><span id="__span-22-3"><a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">genai_config</span><span class="p p-Indicator">:</span>
 </span><span id="__span-22-4"><a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="w">    </span><span class="nt">backend</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vllm-server</span>
 </span><span id="__span-22-5"><a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a><span class="w">    </span><span class="nt">server_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http://127.0.0.1:8118/v1</span>
 </span></code></pre></div>
+<p>The Docker Compose solution already uses an acceleration framework by default.</p>
 <p><strong>Enable Document Image Preprocessing Functionality</strong></p>
-<p>The service started with default configurations does not support document preprocessing. If a client attempts to invoke this functionality, an error message will be returned. To enable document preprocessing, set <code>use_doc_preprocessor</code> to <code>True</code> in the production configuration file and start the service using the modified configuration file.</p>
+<p>The service started with default configurations does not support document preprocessing. If a client attempts to invoke this functionality, an error message will be returned. To enable document preprocessing, set <code>use_doc_preprocessor</code> to <code>True</code> in the pipeline configuration file and start the service using the modified configuration file.</p>
 <p><strong>Disable Result Visualization Functionality</strong></p>
-<p>The service returns visualized results by default, which introduces additional overhead. To disable this functionality, add the following configuration to the production configuration file:</p>
+<p>The service returns visualized results by default, which introduces additional overhead. To disable this functionality, add the following configuration to the pipeline configuration file (<code>Serving</code> is a top-level field):</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="nt">Serving</span><span class="p">:</span>
 </span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="w">  </span><span class="nt">visualize</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span>
 </span></code></pre></div>
 <p>Additionally, you can set the <code>visualize</code> field to <code>false</code> in the request body to disable visualization for a single request.</p>
 <p><strong>Configure Return of Image URLs</strong></p>
-<p>For visualized result images and images included in Markdown, the service returns them in Base64 encoding by default. To return images as URLs instead, add the following configuration to the production configuration file:</p>
+<p>For visualized result images and images included in Markdown, the service returns them in Base64 encoding by default. To return images as URLs instead, add the following configuration to the pipeline configuration file (<code>Serving</code> is a top-level field):</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="nt">Serving</span><span class="p">:</span>
 </span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="w">  </span><span class="nt">extra</span><span class="p">:</span>
 </span><span id="__span-24-3"><a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a><span class="w">    </span><span class="nt">file_storage</span><span class="p">:</span>
@@ -6815,7 +6830,7 @@ foreach ($result as $i => $item) {
 </ul>
 <p>For more information on obtaining AK/SK and other details, refer to the <a href="https://cloud.baidu.com/doc/BOS/index.html">Baidu Intelligent Cloud Official Documentation</a>.</p>
 <p><strong>Modify PDF Parsing Page Limit</strong></p>
-<p>For performance considerations, the service processes only the first 10 pages of received PDF files by default. To adjust the page limit, add the following configuration to the production configuration file:</p>
+<p>For performance considerations, the service processes only the first 10 pages of received PDF files by default. To adjust the page limit, add the following configuration to the pipeline configuration file (<code>Serving</code> is a top-level field):</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="nt">Serving</span><span class="p">:</span>
 </span><span id="__span-25-2"><a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="w">  </span><span class="nt">extra</span><span class="p">:</span>
 </span><span id="__span-25-3"><a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a><span class="w">    </span><span class="nt">max_num_input_imgs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;new page limit, e.g., 100&gt;</span>
@@ -6823,9 +6838,20 @@ foreach ($result as $i => $item) {
 <p>Set <code>max_num_input_imgs</code> to <code>null</code> to remove the page limit.</p>
 <h4 id="443-apply-the-configuration-file">4.4.3 Apply the Configuration File<a class="headerlink" href="#443-apply-the-configuration-file" title="Permanent link">&para;</a></h4>
 <p><strong>If you deployed using Docker Compose</strong>:</p>
-<p>Overwrite the custom production configuration file to <code>/home/paddleocr/pipeline_config.yaml</code> in the <code>ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl</code> container (or the corresponding container).</p>
-<p><strong>If you deployed by manually installing dependencies</strong>:</p>
-<p>Specify the <code>--pipeline</code> parameter as the path to the custom configuration file.</p>
+<p><strong>If you are deploying using Docker Compose:</strong></p>
+<p>Set the <code>services.paddleocr-vl-api.volumes</code> field in the Compose file to mount the pipeline configuration file to the <code>/home/paddleocr</code> directory. For example:</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="nt">services</span><span class="p">:</span>
+</span><span id="__span-26-2"><a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a><span class="w">  </span><span class="nt">paddleocr-vl-api</span><span class="p">:</span>
+</span><span id="__span-26-3"><a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a><span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+</span><span id="__span-26-4"><a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a><span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">volumes</span><span class="p p-Indicator">:</span>
+</span><span id="__span-26-5"><a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pipeline_config_vllm.yaml:/home/paddleocr/pipeline_config.yaml</span>
+</span><span id="__span-26-6"><a id="__codelineno-26-6" name="__codelineno-26-6" href="#__codelineno-26-6"></a><span class="nn">...</span>
+</span></code></pre></div>
+<blockquote>
+<p>In a production environment, you can also build the image yourself and package the configuration file into the image.</p>
+</blockquote>
+<p><strong>If you are deploying by manually installing dependencies:</strong></p>
+<p>When starting the service, specify the <code>--pipeline</code> parameter as the path to your custom configuration file.</p>
 <h2 id="5-model-fine-tuning">5. Model Fine-Tuning<a class="headerlink" href="#5-model-fine-tuning" title="Permanent link">&para;</a></h2>
 <p>If you find that PaddleOCR-VL does not meet accuracy expectations in specific business scenarios, we recommend using the <a href="https://github.com/PaddlePaddle/ERNIE/tree/release/v1.4">ERNIEKit suite</a> to perform supervised fine-tuning (SFT) on the PaddleOCR-VL-0.9B model. For detailed instructions, refer to the <a href="https://github.com/PaddlePaddle/ERNIE/blob/release/v1.4/docs/paddleocr_vl_sft.md">ERNIEKit Official Documentation</a>.</p>
 <blockquote>
