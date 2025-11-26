@@ -11,7 +11,7 @@ services:
     restart: unless-stopped
     environment:
       - VLM_BACKEND=${VLM_BACKEND:-vllm}
-    command: /bin/bash -c "paddlex --serve --pipeline /home/paddleocr/pipeline_config_${VLM_BACKEND}.yaml"
+    command: /bin/bash -c "paddlex --serve --pipeline /home/paddleocr/pipeline_config_${VLM_BACKEND}.yaml --device npu"
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:8080/health || exit 1"]
     volumes:

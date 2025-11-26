@@ -41,6 +41,10 @@ WORKDIR /home/paddleocr
 
 USER paddleocr
 
+RUN if [ "${DEVICE_TYPE}" = 'dcu' ]; then \
+        echo 'source /opt/dtk-24.04.1/env.sh' >> "${HOME}/.bashrc"; \
+    fi
+
 ARG BUILD_FOR_OFFLINE=false
 RUN if [ "${BUILD_FOR_OFFLINE}" = 'true' ]; then \
         mkdir -p "${HOME}/.paddlex/official_models" \
