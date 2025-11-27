@@ -187,67 +187,11 @@ Please note that the PaddleOCR-VL service introduced in this section differs fro
     paddleocr-vl-api             | INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
     ```
 
+To adjust pipeline-related configurations (such as model paths, batch sizes, deployment devices, etc.), refer to Section 4.4.
+
 ### 4.2 Method 2: Manually Install Dependencies for Deployment
 
-Execute the following command to install the service deployment plugin via the PaddleX CLI:
-
-```shell
-paddlex --install serving
-```
-
-Then, start the server using the PaddleX CLI:
-
-```shell
-paddlex --serve --pipeline PaddleOCR-VL
-```
-
-After startup, you will see output similar to the following, with the server listening on port **8080** by default:
-
-```text
-INFO:     Started server process [63108]
-INFO:     Waiting for application startup.
-INFO:     Application startup complete.
-INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
-```
-
-The command-line parameters related to service deployment are as follows:
-
-<table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>--pipeline</code></td>
-<td>Registered name of the PaddleX pipeline or path to the pipeline configuration file.</td>
-</tr>
-<tr>
-<td><code>--device</code></td>
-<td>Device for pipeline deployment. By default, GPU is used if available; otherwise, CPU is used.</td>
-</tr>
-<tr>
-<td><code>--host</code></td>
-<td>Hostname or IP address to which the server is bound. Defaults to <code>0.0.0.0</code>.</td>
-</tr>
-<tr>
-<td><code>--port</code></td>
-<td>Port number on which the server listens. Defaults to <code>8080</code>.</td>
-</tr>
-<tr>
-<td><code>--use_hpip</code></td>
-<td>Enable high-performance inference mode. Refer to the high-performance inference documentation for more information.</td>
-</tr>
-<tr>
-<td><code>--hpi_config</code></td>
-<td>High-performance inference configuration. Refer to the high-performance inference documentation for more information.</td>
-</tr>
-</tbody>
-</table>
-
-To adjust pipeline-related configurations (such as model paths, batch sizes, deployment devices, etc.), refer to Section 4.4.
+Please refer to the corresponding section in the [PaddleOCR-VL Usage Tutorial](./PaddleOCR-VL.en.md).
 
 ### 4.3 Client Invocation Methods
 

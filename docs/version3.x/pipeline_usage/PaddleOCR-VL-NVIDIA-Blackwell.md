@@ -188,67 +188,11 @@ paddleocr genai_server --model_name PaddleOCR-VL-0.9B --backend vllm --port 8118
     paddleocr-vl-api             | INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
     ```
 
+如需调整产线相关配置（如模型路径、批处理大小、部署设备等），可参考 4.4 小节。
+
 ### 4.2 方法二：手动安装依赖部署
 
-执行以下命令，通过 PaddleX CLI 安装服务化部署插件：
-
-```shell
-paddlex --install serving
-```
-
-然后，使用 PaddleX CLI 启动服务器：
-
-```shell
-paddlex --serve --pipeline PaddleOCR-VL
-```
-
-启动后将看到类似如下输出，服务器默认监听 **8080** 端口：
-
-```text
-INFO:     Started server process [63108]
-INFO:     Waiting for application startup.
-INFO:     Application startup complete.
-INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
-```
-
-与服务化部署相关的命令行参数如下：
-
-<table>
-<thead>
-<tr>
-<th>名称</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>--pipeline</code></td>
-<td>PaddleX 产线注册名或产线配置文件路径。</td>
-</tr>
-<tr>
-<td><code>--device</code></td>
-<td>产线部署设备。默认情况下，若 GPU 可用则使用 GPU，否则使用 CPU。</td>
-</tr>
-<tr>
-<td><code>--host</code></td>
-<td>服务器绑定的主机名或 IP 地址，默认为 <code>0.0.0.0</code>。</td>
-</tr>
-<tr>
-<td><code>--port</code></td>
-<td>服务器监听的端口号，默认为 <code>8080</code>。</td>
-</tr>
-<tr>
-<td><code>--use_hpip</code></td>
-<td>启用高性能推理模式。请参考高性能推理文档了解更多信息。</td>
-</tr>
-<tr>
-<td><code>--hpi_config</code></td>
-<td>高性能推理配置。请参考高性能推理文档了解更多信息。</td>
-</tr>
-</tbody>
-</table>
-
-如需调整产线相关配置（如模型路径、批处理大小、部署设备等），可参考 4.4 小节。
+请参考[PaddleOCR-VL 使用教程](./PaddleOCR-VL.md) 相同章节。
 
 ### 4.3 客户端调用方式
 
