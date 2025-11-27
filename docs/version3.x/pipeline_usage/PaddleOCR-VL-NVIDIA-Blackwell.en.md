@@ -6,6 +6,14 @@ comments: true
 
 This tutorial provides guidance on configuring the environment for NVIDIA Blackwell-architecture GPUs. After completing the environment setup, please refer to the [PaddleOCR-VL Usage Tutorial](./PaddleOCR-VL.en.md) to use PaddleOCR-VL.
 
+NVIDIA Blackwell-architecture GPUs include, but are not limited to:
+
+- RTX 5090
+- RTX 5080
+- RTX 5070、RTX 5070 Ti
+- RTX 5060、RTX 5060 Ti
+- RTX 5050
+
 Before starting the tutorial, **please ensure that your NVIDIA driver supports CUDA 12.9 or higher**.
 
 ## 1. Environment Preparation

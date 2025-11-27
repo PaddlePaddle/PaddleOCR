@@ -6,6 +6,14 @@ comments: true
 
 本教程是 NVIDIA Blackwell 架构 GPU 的环境配置教程，目的是完成相关的环境配置，环境配置完毕后请参考 [PaddleOCR-VL 使用教程](./PaddleOCR-VL.md) 使用 PaddleOCR-VL。
 
+NVIDIA Blackwell 架构 GPU 包括但不限于以下几种：
+
+- RTX 5090
+- RTX 5080
+- RTX 5070、RTX 5070 Ti
+- RTX 5060、RTX 5060 Ti
+- RTX 5050
+
 教程开始前，**请确认您的 NVIDIA 驱动支持 CUDA 12.9 或以上版本**。
 
 ## 1. 环境准备

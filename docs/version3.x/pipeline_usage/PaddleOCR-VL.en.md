@@ -45,9 +45,8 @@ Currently, PaddleOCR-VL offers four inference methods, with varying levels of su
     <td>🚧</td>
     <td>🚧</td>
     <td>
-    <li>GPU Compute Capability ≥ 8 (RTX 3060, RTX 5070, A10, A100, ...)</li><br />
-    <li>CUDA version ≥ 12.6</li><br />
-    Note: Devices with 7 ≤ GPU Compute Capability < 8 (T4, V100, ...) can run but may experience request timeouts, OOM errors, or other anomalies. Use is not recommended.
+    <li>GPU Compute Capability ≥ 8</li>
+    <li>CUDA version ≥ 12.6</li>
     </td>
   </tr>
   <tr>
@@ -77,8 +76,11 @@ Currently, PaddleOCR-VL offers four inference methods, with varying levels of su
 </tbody>
 </table>
 
-> Currently, PaddleOCR-VL does not support ARM architecture CPUs. Additional hardware support will be added based on actual demand in the future. Stay tuned!  
-> vLLM, SGLang, and FastDeploy cannot run natively on Windows or macOS. Please use our provided Docker images instead.
+> Notes:
+> 1. NVIDIA GPU Compute Capability ≥ 8 cards include RTX 3060, RTX 5070, A10, A100, etc. For more models, please refer to [CUDA GPU Compute Capability](https://developer.nvidia.com/cuda-gpus).
+> 2. vLLM can launch services on NVIDIA GPUs with 7 ≤ GPU Compute Capability < 8 (e.g., T4, V100, ...), but exceptions such as request timeouts and OOM may occur, so it is not recommended.
+> 3. Currently, PaddleOCR-VL does not support ARM architecture CPUs. More hardware support will be expanded based on actual needs in the future, so stay tuned!
+> 4. vLLM, SGLang, and FastDeploy cannot run natively on Windows or macOS. Please use the Docker images we provide.
 
 Since different hardware requires different dependencies, if your hardware meets the requirements in the table above, please refer to the following table for the corresponding tutorial to configure your environment:
 

@@ -21,7 +21,7 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
     <th>XPU</th>
     <th>沐曦 GPU</th>
     <th>天数 GPU</th>
-    <th>NVIDIA GPU</th>
+    <th>英伟达 GPU</th>
   </tr>
 </thead>
 <tbody>
@@ -45,9 +45,8 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
     <td>🚧</td>
     <td>🚧</td>
     <td>
-    <li>GPU Compute Capability ≥ 8 （RTX 3060，RTX 5070，A10，A100, ...） <br /></li>
-    <li>CUDA 版本 ≥ 12.6</li><br />
-    备注：7 ≤ GPU Compute Capability < 8 （T4，V100，...）支持运行，但可能出现请求超时、OOM 等异常情况，不推荐使用
+    <li>GPU Compute Capability ≥ 8</li>
+    <li>CUDA 版本 ≥ 12.6</li>
     </td>
   </tr>
   <tr>
@@ -77,8 +76,11 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
 </tbody>
 </table>
 
-> 当前，PaddleOCR-VL 暂不支持 ARM 架构 CPU。后续将根据实际需求扩展更多硬件支持，敬请期待！  
-> vLLM、SGLang 和 FastDeploy 无法在 Windows 或 macOS 上原生运行，请使用我们提供的 Docker 镜像。
+> 备注：
+> 1. 英伟达 GPU Compute Capability ≥ 8 的卡有 RTX 3060，RTX 5070，A10，A100 等，更多型号可查看 [CUDA GPU 计算能力](https://developer.nvidia.cn/cuda-gpus)。
+> 2. vLLM 可以在 7 ≤ GPU Compute Capability < 8 （T4，V100，...）等英伟达 GPU 上启动服务，但可能出现请求超时、OOM 等异常情况，不推荐使用。
+> 3. 当前，PaddleOCR-VL 暂不支持 ARM 架构 CPU。后续将根据实际需求扩展更多硬件支持，敬请期待！  
+> 4. vLLM、SGLang 和 FastDeploy 无法在 Windows 或 macOS 上原生运行，请使用我们提供的 Docker 镜像。
 
 由于不同硬件所需的依赖各不相同，如果您的硬件满足上述表格的要求，请参考下表查看对应的教程进行环境配置：
 
