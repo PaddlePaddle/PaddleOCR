@@ -11,7 +11,7 @@ comments: true
 
 > 推理耗时仅包含模型推理耗时，不包含前后处理耗时。
 
-### 🚀🚀 PP-OCRv5_server_det
+###  PP-OCRv5_server_det
 **模型类型：** 推理模型/训练模型 | **模型存储大小：** 84.3 MB  
 **模型介绍：**  
 PP-OCRv5 的服务端文本检测模型，精度更高，适合在性能较好的服务器上部署。
@@ -23,11 +23,13 @@ PP-OCRv5 的服务端文本检测模型，精度更高，适合在性能较好�
 | **高性能模式** | - | 70.19 | 383.15 |
 
 **下载链接：**  
-[推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv5_server_det_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_server_det_pretrained.pdparams)
+| 训练模型 |  推理模型 |
+|:---: |:---: |
+|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv5_server_det_infer.tar )|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_server_det_pretrained.pdparams ),[AI Studio](https://aistudio.baidu.com/modelsdetail/31908 ),[Hugging Face](https://huggingface.co/PaddlePaddle/PP-OCRv5_server_det ),[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PP-OCRv5_server_det ) |
 
 ---
 
-### 📱📱 PP-OCRv5_mobile_det
+###  PP-OCRv5_mobile_det
 **模型类型：** 推理模型/训练模型 | **模型存储大小：** 4.7 MB  
 **模型介绍：**  
 PP-OCRv5 的移动端文本检测模型，效率更高，适合在端侧设备部署。
@@ -39,11 +41,12 @@ PP-OCRv5 的移动端文本检测模型，效率更高，适合在端侧设备�
 | **高性能模式** | - | 6.36 | 28.15 |
 
 **下载链接：**  
-[推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv5_mobile_det_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_mobile_det_pretrained.pdparams)
-
+| 训练模型 |  推理模型 |
+|:---: |:---: |
+|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv5_mobile_det_infer.tar )|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_mobile_det_pretrained.pdparams ),[AI Studio](https://aistudio.baidu.com/modelsdetail/31886 ),[Hugging Face](https://huggingface.co/PaddlePaddle/PP-OCRv5_mobile_det ),[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PP-OCRv5_mobile_det ) |
 ---
 
-### 🚀🚀 PP-OCRv4_server_det
+###  PP-OCRv4_server_det
 **模型类型：** 推理模型/训练模型 | **模型存储大小：** 109 MB  
 **模型介绍：**  
 PP-OCRv4 的服务端文本检测模型，精度更高，适合在性能较好的服务器上部署。
@@ -55,11 +58,13 @@ PP-OCRv4 的服务端文本检测模型，精度更高，适合在性能较好�
 | **高性能模式** | - | 98.87 | 489.77 |
 
 **下载链接：**  
-[推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_server_det_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_det_pretrained.pdparams)
+| 训练模型 |  推理模型 |
+|:---: |:---: |
+|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_server_det_infer.tar )|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_det_pretrained.pdparams ),[AI Studio](https://aistudio.baidu.com/modelsdetail/31911 ),[Hugging Face](https://huggingface.co/PaddlePaddle/PP-OCRv4_server_det ),[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PP-OCRv4_server_det ) |
 
 ---
 
-### 📱📱 PP-OCRv4_mobile_det
+###  PP-OCRv4_mobile_det
 **模型类型：** 推理模型/训练模型 | **模型存储大小：** 4.7 MB  
 **模型介绍：**  
 PP-OCRv4 的移动端文本检测模型，效率更高，适合在端侧设备部署。
@@ -71,11 +76,13 @@ PP-OCRv4 的移动端文本检测模型，效率更高，适合在端侧设备�
 | **高性能模式** | - | 4.17 | 20.79 |
 
 **下载链接：**  
-[推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_mobile_det_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_mobile_det_pretrained.pdparams)
+| 训练模型 |  推理模型 |
+|:---: |:---: |
+|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_mobile_det_infer.tar )|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_mobile_det_pretrained.pdparams ),[AI Studio](https://aistudio.baidu.com/modelsdetail/31879 ),[Hugging Face](https://huggingface.co/PaddlePaddle/PP-OCRv4_mobile_det ),[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PP-OCRv4_mobile_det ) |
 
 ---
 
-### 🧪🧪🧪 测试环境说明
+###  测试环境说明
 **性能测试环境：**
 - **测试数据集：** PaddleOCR3.0 全新构建多语种（包含中、繁、英、日），覆盖街景、网图、文档、手写、模糊、旋转、扭曲等多个场景的文本检测数据集，包含2677 张图片
 - **硬件配置：**
