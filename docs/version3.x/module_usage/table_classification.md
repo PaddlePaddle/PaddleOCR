@@ -12,7 +12,7 @@ comments: true
 
 > 推理耗时仅包含模型推理耗时，不包含前后处理耗时。
 
-### 📊📊 PP-LCNet_x1_0_table_cls
+###  PP-LCNet_x1_0_table_cls
 **模型类型：** 推理模型/训练模型 | **模型存储大小：** 6.6 MB  
 **模型介绍：**  
 基于PP-LCNet_x1_0的表格分类模型，主要用于识别表格的类型和结构。
@@ -24,11 +24,12 @@ comments: true
 | **高性能模式** | - | 0.60 | 1.14 |
 
 **下载链接：**  
-[推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-LCNet_x1_0_table_cls_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-LCNet_x1_0_table_cls_pretrained.pdparams)
-
+| 训练模型 |  推理模型 |
+|:---: |:---: |
+|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-LCNet_x1_0_table_cls_infer.tar )|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-LCNet_x1_0_table_cls_pretrained.pdparams ),[AI Studio](https://aistudio.baidu.com/modelsdetail/31873  ),[Hugging Face](https://huggingface.co/PaddlePaddle/PP-LCNet_x1_0_table_cls ),[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PP-LCNet_x1_0_table_cls ) |
 ---
 
-### 🧪🧪🧪 测试环境说明
+###  测试环境说明
 **性能测试环境：**
 - **测试数据集：** 自建的内部评测数据集
 - **硬件配置：**
