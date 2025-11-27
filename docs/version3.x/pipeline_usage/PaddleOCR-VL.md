@@ -8,6 +8,27 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
 
 <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr_vl/metrics/allmetric.png"/>
 
+## 流程导览
+
+在开始之前，请参考下一节了解 PaddleOCR-VL 对推理设备的支持情况，**以确定您的设备是否满足运行要求。** 若您的设备满足运行要求，请根据您的需求选择相关章节阅读。
+
+部分推理硬件可能需要参考我们提供的其他环境配置文档，但流程是一样的，不影响您的阅读下面的流程导览：
+
+1. **想快速体验 PaddleOCR-VL**：
+    
+    如果您希望快速体验 PaddleOCR-VL 推理的效果，请阅读 [1. 环境准备](#1-环境准备) 和 [2. 快速开始](#2-快速开始)。
+
+2. **想提高 PaddleOCR-VL 推理速度**：
+    
+    快速体验虽然可以让您感受到 PaddleOCR-VL 的效果，但是推理速度不是最佳状态。如果您希望提高推理速度或应用于生产环境，请阅读 [3. 使用推理加速框架提升 VLM 推理性能](#3-使用推理加速框架提升-vlm-推理性能) 。
+
+3. **想进行服务化部署 PaddleOCR-VL**：
+
+    如果您想将 PaddleOCR-VL 设置为一个网络服务（API），这样其他设备或应用程序无需配置环境，仅通过一个特定的网址就可以来访问和调用它，我们有两种方式：
+
+    - 使用 Docker Compose 部署（一键启动，推荐使用）：请阅读 [4.1 方法一：使用 Docker Compose 部署](#41-方法一使用-docker-compose-部署推荐使用) 和 [4.3 客户端调用方式](#43-客户端调用方式)。
+    - 进行手动部署：请阅读 [1. 环境准备](#1-环境准备)、 [4.2 方法二：手动部署](#42-方法二手动部署) 和 [4.3 客户端调用方式](#43-客户端调用方式)。
+
 ## PaddleOCR-VL 对推理设备的支持情况
 
 目前 PaddleOCR-VL 有四种推理方式，支持的推理设备不完全相同，请确认您的推理设备是否满足下表要求再进行 PaddleOCR-VL 的推理部署：
@@ -1234,7 +1255,7 @@ PaddleOCR 会将来自单张或多张输入图像中的子图分组并对服务�
 
 - 方法一：使用 Docker Compose 部署（推荐使用）。
 
-- 方法二：手动安装依赖部署。
+- 方法二：手动部署。
 
 请注意，本节所介绍 PaddleOCR-VL 服务与上一节中的 VLM 推理服务有所区别：后者仅负责完整流程中的一个环节（即 VLM 推理），并作为前者的底层服务被调用。
 
@@ -1258,17 +1279,103 @@ paddleocr-vl-api             | INFO:     Uvicorn running on http://0.0.0.0:8080 
 
 此方式基于 vLLM 等框架对 VLM 推理进行加速，更适合生产环境部署，但要求机器配备 GPU，并且 NVIDIA 驱动程序支持 CUDA 12.6 或以上版本。
 
-`.env` 文件可用于配置环境变量，详细介绍如下：
+此外，使用此方式启动服务器后，除拉取镜像外，无需连接互联网。如需在离线环境中部署，可先在联网机器上拉取 Compose 文件中涉及的镜像，导出并传输至离线机器中导入，即可在离线环境下启动服务。
+
+Docker Compose 通过读取 `.env` 和 `compose.yaml` 文件里面的配置，启动 2 个容器以运行 PaddleOCR-VL 服务器，您可以通过修改 `.env` 和 `compose.yaml` 来满足一些自定义需求，例如：
+
+<details>
+<summary>1. 更改 PaddleOCR-VL 服务的端口</summary>
+
+编辑 `compose.yaml` 文件中的 `paddleocr-vl-api.ports` 来更改端口。例如，如果您需要将服务端口更换为 8111，可以进行以下修改：
+
+```diff
+  paddleocr-vl-api:
+    ...
+    ports:
+-     - 8080:8080
++     - 8111:8080
+    ...
+```
+
+</details>
+
+<details>
+<summary>2. 指定 PaddleOCR-VL 服务所使用的 GPU</summary>
+
+编辑 `compose.yaml` 文件中的 `paddleocr-vl-api.ports` 来更改所使用的 GPU。例如，如果您需要使用卡 1 进行部署，可以进行以下修改：
+
+```diff
+  paddleocr-vl-api:
+    ...
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+-             device_ids: ["0"]
++             device_ids: ["1"]
+              capabilities: [gpu]
+    ...
+  paddleocr-vlm-server:
+    ...
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+-             device_ids: ["0"]
++             device_ids: ["1"]
+              capabilities: [gpu]
+    ...
+```
+
+</details>
+
+<details>
+<summary>3. 调整 VLM 服务端配置</summary>
+
+若您想调整 VLM 服务端的配置，可以参考 [3.3.1 服务端参数调整](#331-服务端参数调整) 生成配置文件。
+
+生成配置文件后，将以下增加的 `paddleocr-vlm-server.volumes` 和 `paddleocr-vlm-server.command` 字段复制到您的 `compose.yaml` 中。请将 `/path/to/your_config.yaml` 替换为您的实际配置文件路径。
+
+```yaml
+  paddleocr-vlm-server:
+    ...
+    volumes: /path/to/your_config.yaml:/home/paddleocr/vlm_server_config.yaml
+    command: addleocr genai_server --model_name PaddleOCR-VL-0.9B --backend vllm --backend_config /home/paddleocr/vlm_server_config.yaml
+    ...
+```
+
+</details>
+
+<details>
+<summary>4. 更改 VLM 推理后端</summary>
+
+修改 `.env` 文件中的 `VLM_BACKEND`，例如将 VLM 推理后端修改为 `fastdeploy`：
+
+```diff
+  API_IMAGE_TAG_SUFFIX=latest-offline
+- VLM_BACKEND=vllm
++ VLM_BACKEND=fastdeploy
+  VLM_IMAGE_TAG_SUFFIX=latest-offline
+```
+
+`.env` 文件内容介绍：
 
 - `API_IMAGE_TAG_SUFFIX`：启动产线服务使用的镜像的标签后缀。默认为 `latest-offline`，表示使用离线 GPU 镜像。
 - `VLM_BACKEND`：VLM 推理后端，目前支持 `vllm` 和 `fastdeploy`。默认为 `vllm`。
 - `VLM_IMAGE_TAG_SUFFIX`：启动 VLM 推理服务使用的镜像的标签后缀。默认为 `latest-offline`，表示使用离线 GPU 镜像。
 
-此外，使用此方式启动服务器后，除拉取镜像外，无需连接互联网。如需在离线环境中部署，可先在联网机器上拉取 Compose 文件中涉及的镜像，导出并传输至离线机器中导入，即可在离线环境下启动服务。
+</details>
 
-如需调整产线相关配置（如模型路径、批处理大小、部署设备等），可参考 4.4 小节。
+<details>
+<summary>5. 调整产线相关配置（如模型路径、批处理大小、部署设备等）</summary>
 
-### 4.2 方法二：手动安装依赖部署
+参考本文中 [4.4 产线配置调整说明](#44-产线配置调整说明) 小节。
+
+</details>
+
+### 4.2 方法二：手动部署
 
 执行以下命令，通过 PaddleX CLI 安装服务化部署插件：
 
@@ -2190,7 +2297,7 @@ foreach ($result as $i => $item) {
 - vLLM：[pipeline_config_vllm.yaml](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/pipeline_config_vllm.yaml)
 - FastDeploy：[pipeline_config_fastdeploy.yaml](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/pipeline_config_fastdeploy.yaml)
 
-**若您手动安装依赖部署：**
+**若您是手动部署：**
 
 执行以下命令生成产线配置文件：
 
@@ -2286,7 +2393,7 @@ services:
 
 > 在生产环境中，您也可以自行构建镜像，将配置文件打包到镜像中。
 
-**若您手动安装依赖部署：**
+**若您是手动部署：**
 
 在启动服务时，将 `--pipeline` 参数指定为自定义配置文件路径。
 
