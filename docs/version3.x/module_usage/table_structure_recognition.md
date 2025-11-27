@@ -12,7 +12,7 @@ comments: true
 
 > 推理耗时仅包含模型推理耗时，不包含前后处理耗时。
 
-### 📊📊 SLANet
+###  SLANet
 **模型类型：** 推理模型/训练模型 | **模型存储大小：** 6.9 MB  
 **模型介绍：**  
 SLANet 是百度飞桨视觉团队自研的表格结构识别模型。该模型通过采用 CPU 友好型轻量级骨干网络 PP-LCNet、高低层特征融合模块 CSP-PAN、结构与位置信息对齐的特征解码模块 SLA Head，大幅提升了表格结构识别的精度和推理速度。
@@ -24,11 +24,13 @@ SLANet 是百度飞桨视觉团队自研的表格结构识别模型。该模型�
 | **高性能模式** | - | 21.75 | 43.12 |
 
 **下载链接：**  
-[推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/SLANet_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/SLANet_pretrained.pdparams)
+| 训练模型 |  推理模型 |
+|:---: |:---: |
+|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/SLANet_infer.tar )|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/SLANet_pretrained.pdparams ),[AI Studio](https://aistudio.baidu.com/modelsdetail/31889 ),[Hugging Face](https://huggingface.co/PaddlePaddle/SLANet ),[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/SLANet  ) |
 
 ---
 
-### 📊📊 SLANet_plus
+###  SLANet_plus
 **模型类型：** 推理模型/训练模型 | **模型存储大小：** 6.9 MB  
 **模型介绍：**  
 SLANet_plus 是百度飞桨视觉团队自研的表格结构识别模型 SLANet 的增强版。相较于 SLANet，SLANet_plus 对无线表、复杂表格的识别能力得到了大幅提升，并降低了模型对表格定位准确性的敏感度，即使表格定位出现偏移，也能够较准确地进行识别。
@@ -40,11 +42,13 @@ SLANet_plus 是百度飞桨视觉团队自研的表格结构识别模型 SLANet 
 | **高性能模式** | - | 22.16 | 41.80 |
 
 **下载链接：**  
-[推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/SLANet_plus_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/SLANet_plus_pretrained.pdparams)
+| 训练模型 |  推理模型 |
+|:---: |:---: |
+|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/SLANet_plus_infer.tar )|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/SLANet_plus_pretrained.pdparams ),[AI Studio](https://aistudio.baidu.com/modelsdetail/31913 ),[Hugging Face](https://huggingface.co/PaddlePaddle/SLANet_plus ),[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/SLANet_plus  ) |
 
 ---
 
-### 📊📊 SLANeXt
+###  SLANeXt
 **模型类型：** 推理模型/训练模型 | **模型存储大小：** 351 MB  
 **模型介绍：**  
 SLANeXt 系列是百度飞桨视觉团队自研的新一代表格结构识别模型。相较于 SLANet 和 SLANet_plus，SLANeXt 专注于对表格结构进行识别，并且对有线表格(wired)和无线表格(wireless)的识别分别训练了专用的权重，对各类型表格的识别能力都得到了明显提高，特别是对有线表格的识别能力得到了大幅提升。
@@ -57,7 +61,9 @@ SLANeXt 系列是百度飞桨视觉团队自研的新一代表格结构识别模
 | **高性能模式** | - | 85.92 | 501.66 |
 
 **下载链接：**  
-[推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/SLANeXt_wired_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/SLANeXt_wired_pretrained.pdparams)
+| 训练模型 |  推理模型 |
+|:---: |:---: |
+|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/SLANeXt_wired_infer.tar )|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/SLANeXt_wired_pretrained.pdparams ),[AI Studio](https://aistudio.baidu.com/modelsdetail/31865  ),[Hugging Face](https://huggingface.co/PaddlePaddle/SLANeXtWired),[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/SLANeXtWired)|
 
 #### SLANeXt_wireless
 **性能指标：**
@@ -67,11 +73,13 @@ SLANeXt 系列是百度飞桨视觉团队自研的新一代表格结构识别模
 | **高性能模式** | - | 85.92 | 501.66 |
 
 **下载链接：**  
-[推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/SLANeXt_wireless_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/SLANeXt_wireless_pretrained.pdparams)
+| 训练模型 |  推理模型 |
+|:---: |:---: |
+|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/SLANeXt_wireless_infer.tar )|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/SLANeXt_wireless_pretrained.pdparams ),[AI Studio](https://aistudio.baidu.com/modelsdetail/31898 ),[Hugging Face](https://huggingface.co/PaddlePaddle/SLANeXt_wireless ),[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/SLANeXt_wireless ) |
 
 ---
 
-### 🧪🧪🧪 测试环境说明
+###  测试环境说明
 **性能测试环境：**
 - **测试数据集：** 内部自建的高难度中文表格识别数据集
 - **硬件配置：**
