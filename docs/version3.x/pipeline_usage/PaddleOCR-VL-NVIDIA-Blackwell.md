@@ -188,6 +188,10 @@ paddleocr genai_server --model_name PaddleOCR-VL-0.9B --backend vllm --port 8118
     paddleocr-vl-api             | INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
     ```
 
+此方式基于 vLLM 框架对 VLM 推理进行加速，更适合生产环境部署。
+
+此外，使用此方式启动服务器后，除拉取镜像外，无需连接互联网。如需在离线环境中部署，可先在联网机器上拉取 Compose 文件中涉及的镜像，导出并传输至离线机器中导入，即可在离线环境下启动服务。
+
 如需调整产线相关配置（如模型路径、批处理大小、部署设备等），可参考 4.4 小节。
 
 ### 4.2 方法二：手动安装依赖部署
