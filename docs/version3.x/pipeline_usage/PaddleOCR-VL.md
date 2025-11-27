@@ -269,6 +269,12 @@ paddleocr doc_parser -i ./paddleocr_vl_demo.png --use_layout_detection False
 <td></td>
 </tr>
 <tr>
+<td><code>vl_rec_api_key</code></td>
+<td>如果多模态识别模型使用推理服务，该参数用于指定服务的 API key。</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
 <td><code>doc_orientation_classify_model_name</code></td>
 <td>文档方向分类模型的名称。如果不设置，将使用初始化的默认值。</td>
 <td><code>str</code></td>
@@ -590,6 +596,12 @@ for item in markdown_images:
 <tr>
 <td><code>vl_rec_max_concurrency</code></td>
 <td>如果多模态识别模型使用推理服务，该参数用于指定最大并发请求数。</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>vl_rec_api_key</code></td>
+<td>如果多模态识别模型使用推理服务，该参数用于指定服务的 API key。</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -1107,7 +1119,7 @@ paddleocr genai_server --model_name PaddleOCR-VL-0.9B --backend vllm --port 8118
 
 ### 3.2 客户端使用方法
 
-启动 VLM 推理服务后，客户端即可通过 PaddleOCR 调用该服务。
+启动 VLM 推理服务后，客户端即可通过 PaddleOCR 调用该服务。**请注意，由于客户端需要调用版面检测的顺序模型，仍建议在 GPU 等加速设备上运行客户端，以获得更稳定和高效的性能。**
 
 #### 3.2.1 CLI 调用
 
@@ -1187,10 +1199,10 @@ PaddleOCR 会将来自单张或多张输入图像中的子图分组并对服务�
 
 ### 4.1 方法一：使用 Docker Compose 部署（推荐使用）
 
-您可以从 [此处](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/compose.yaml) 获取 Compose 文件并下载到本地，然后在刚刚下载的 Compose 文件目录下执行以下命令启动服务器，默认监听 **8080** 端口：
+您可以分别从 [此处](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/compose.yaml) 和 [此处](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/.env) 获取 Compose 文件与环境变量配置文件并下载到本地，然后在刚刚下载的文件所在目录下执行以下命令启动服务器，默认监听 **8080** 端口：
 
 ```shell
-# 必须在 compose.yaml 文件所在的目录中执行
+# 必须在 compose.yaml 和 .env 文件所在的目录中执行
 docker compose up
 ```
 
@@ -1203,7 +1215,13 @@ paddleocr-vl-api             | INFO:     Application startup complete.
 paddleocr-vl-api             | INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
 ```
 
-此方式基于 vLLM 框架对 VLM 推理进行加速，更适合生产环境部署，但要求机器配备 GPU，并且 NVIDIA 驱动程序支持 CUDA 12.6 或以上版本。
+此方式基于 vLLM 等框架对 VLM 推理进行加速，更适合生产环境部署，但要求机器配备 GPU，并且 NVIDIA 驱动程序支持 CUDA 12.6 或以上版本。
+
+`.env` 文件可用于配置环境变量，详细介绍如下：
+
+- `API_IMAGE_TAG_SUFFIX`：启动产线服务使用的镜像的标签后缀。默认为 `latest-offline`，表示使用离线 GPU 镜像。
+- `VLM_BACKEND`：VLM 推理后端，目前支持 `vllm` 和 `fastdeploy`。默认为 `vllm`。
+- `VLM_IMAGE_TAG_SUFFIX`：启动 VLM 推理服务使用的镜像的标签后缀。默认为 `latest-offline`，表示使用离线 GPU 镜像。
 
 此外，使用此方式启动服务器后，除拉取镜像外，无需连接互联网。如需在离线环境中部署，可先在联网机器上拉取 Compose 文件中涉及的镜像，导出并传输至离线机器中导入，即可在离线环境下启动服务。
 
@@ -2118,11 +2136,22 @@ foreach ($result as $i => $item) {
 
 调整服务化部署的 PaddleOCR-VL 配置只需以下三步：
 
-1. 生成配置文件 
+1. 获取配置文件 
 2. 修改配置文件
 3. 应用配置文件
 
-#### 4.4.1 生成配置文件
+#### 4.4.1 获取配置文件
+
+**若您使用 Docker Compose 部署：**
+
+根据使用的后端，下载对应的产线配置文件：
+
+- vLLM：[pipeline_config_vllm.yaml](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/pipeline_config_vllm.yaml)
+- FastDeploy：[pipeline_config_fastdeploy.yaml](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/pipeline_config_fastdeploy.yaml)
+
+**若您手动安装依赖部署：**
+
+执行以下命令生成产线配置文件：
 
 ```shell
 paddlex --get_pipeline_config PaddleOCR-VL
@@ -2142,13 +2171,15 @@ VLRecognition:
     server_url: http://127.0.0.1:8118/v1
 ```
 
+Docker Compose 方案默认已使用加速框架。
+
 **启用文档图像预处理功能**
 
 默认配置启动的服务不支持文档预处理功能。若客户端调用该功能，将返回错误信息。如需启用文档预处理，请在产线配置文件中将 `use_doc_preprocessor` 设置为 `True`，并使用修改后的配置文件启动服务。
 
 **禁用结果可视化功能**
 
-服务默认返回可视化结果，这会引入额外开销。如需禁用该功能，可在产线配置文件中添加如下配置：
+服务默认返回可视化结果，这会引入额外开销。如需禁用该功能，可在产线配置文件中添加如下配置（`Serving` 为顶层字段）：
 
 ```yaml
 Serving:
@@ -2159,7 +2190,7 @@ Serving:
 
 **配置返回图像 URL**
 
-对于可视化结果图及 Markdown 中包含的图像，服务默认以 Base64 编码返回。如需以 URL 形式返回图像，可在产线配置文件中添加如下配置：
+对于可视化结果图及 Markdown 中包含的图像，服务默认以 Base64 编码返回。如需以 URL 形式返回图像，可在产线配置文件中添加如下配置（`Serving` 为顶层字段）：
 
 ```yaml
 Serving:
@@ -2187,7 +2218,7 @@ Serving:
 
 **修改 PDF 解析页数限制**
 
-出于性能考虑，服务默认仅处理接收到的 PDF 文件的前 10 页。如需调整页数限制，可在产线配置文件中添加如下配置：
+出于性能考虑，服务默认仅处理接收到的 PDF 文件的前 10 页。如需调整页数限制，可在产线配置文件中添加如下配置（`Serving` 为顶层字段）：
 
 ```yaml
 Serving:
@@ -2199,13 +2230,24 @@ Serving:
 
 #### 4.4.3 应用配置文件
 
-**若您是 Docker Compose 部署：**
+**若您使用 Docker Compose 部署：**
 
-将自定义的产线配置文件覆盖至 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl`（或对应容器）中的 `/home/paddleocr/pipeline_config.yaml`。
+设置 Compose 文件中的 `services.paddleocr-vl-api.volumes` 字段，将产线配置文件挂载到 `/home/paddleocr` 目录。例如：
 
-**若您是手动安装依赖部署：**
+```yaml
+services:
+  paddleocr-vl-api:
+    ...
+    volumes:
+      - pipeline_config_vllm.yaml:/home/paddleocr/pipeline_config.yaml
+...
+```
 
-将 `--pipeline` 参数指定为自定义配置文件路径。
+> 在生产环境中，您也可以自行构建镜像，将配置文件打包到镜像中。
+
+**若您手动安装依赖部署：**
+
+在启动服务时，将 `--pipeline` 参数指定为自定义配置文件路径。
 
 ## 5. 模型微调
 
