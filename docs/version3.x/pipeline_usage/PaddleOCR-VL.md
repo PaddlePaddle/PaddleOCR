@@ -14,18 +14,18 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
 
 <table border="1">
 <thead>
-  <tr>
+  <tr style="text-align: center;">
     <th>推理方式</th>
     <th>英伟达 GPU</th>
-    <th>海光 DCU</th>
     <th>昆仑芯 XPU</th>
+    <th>海光 DCU</th>
     <th>沐曦 GPU</th>
     <th>天数 GPU</th>
     <th>x64 CPU</th>
   </tr>
 </thead>
 <tbody>
-  <tr>
+  <tr style="text-align: center;">
     <td>PaddlePaddle</td>
     <td>✅</td>
     <td>✅</td>
@@ -34,16 +34,16 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
     <td>🚧</td>
     <td>✅</td>
   </tr>
-  <tr>
+  <tr style="text-align: center;">
     <td>vLLM</td>
     <td>✅</td>
-    <td>✅</td>
     <td>🚧</td>
+    <td>✅</td>
     <td>🚧</td>
     <td>🚧</td>
     <td>❌</td>
   </tr>
-  <tr>
+  <tr style="text-align: center;">
     <td>SGLang</td>
     <td>✅</td>
     <td>🚧</td>
@@ -52,11 +52,11 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
     <td>🚧</td>
     <td>❌</td>
   </tr>
-  <tr>
+  <tr style="text-align: center;">
     <td>FastDeploy</td>
     <td>✅</td>
-    <td>🚧</td>
     <td>✅</td>
+    <td>🚧</td>
     <td>🚧</td>
     <td>🚧</td>
     <td>❌</td>

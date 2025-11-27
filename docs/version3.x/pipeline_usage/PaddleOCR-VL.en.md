@@ -16,16 +16,16 @@ Currently, PaddleOCR-VL offers four inference methods, with varying levels of su
 <thead>
   <tr>
     <th>Inference Method</th>
-    <th>HYGON DCU</th>
+    <th>NVIDIA GPU</th>
     <th>KUNLUNXIN XPU</th>
+    <th>HYGON DCU</th>
     <th>MetaX GPU</th>
     <th>Iluvatar GPU</th>
-    <th>NVIDIA GPU</th>
     <th>x64 CPU</th>
   </tr>
 </thead>
 <tbody>
-  <tr>
+  <tr style="text-align: center;">
     <td>PaddlePaddle</td>
     <td>✅</td>
     <td>✅</td>
@@ -34,16 +34,16 @@ Currently, PaddleOCR-VL offers four inference methods, with varying levels of su
     <td>🚧</td>
     <td>✅</td>
   </tr>
-  <tr>
+  <tr style="text-align: center;">
     <td>vLLM</td>
     <td>✅</td>
-    <td>✅</td>
     <td>🚧</td>
+    <td>✅</td>
     <td>🚧</td>
     <td>🚧</td>
     <td>❌</td>
   </tr>
-  <tr>
+  <tr style="text-align: center;">
     <td>SGLang</td>
     <td>✅</td>
     <td>🚧</td>
@@ -52,11 +52,11 @@ Currently, PaddleOCR-VL offers four inference methods, with varying levels of su
     <td>🚧</td>
     <td>❌</td>
   </tr>
-  <tr>
+  <tr style="text-align: center;">
     <td>FastDeploy</td>
     <td>✅</td>
-    <td>🚧</td>
     <td>✅</td>
+    <td>🚧</td>
     <td>🚧</td>
     <td>🚧</td>
     <td>❌</td>
