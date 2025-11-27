@@ -12,7 +12,7 @@ comments: true
 
 > 推理耗时仅包含模型推理耗时，不包含前后处理耗时。
 
-### 📐📐 UVDoc
+###  UVDoc
 **模型类型：** 推理模型/训练模型 | **模型存储大小：** 30.3 MB  
 **模型介绍：**  
 高精度文本图像矫正模型，专门用于文档图像的几何矫正和去扭曲处理。
@@ -24,11 +24,13 @@ comments: true
 | **高性能模式** | - | 19.05 | 869.82 |
 
 **下载链接：**  
-[推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/UVDoc_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/UVDoc_pretrained.pdparams)
+| 训练模型 |  推理模型 |
+|:---: |:---: |
+|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/UVDoc_infer.tar )|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/UVDoc_pretrained.pdparams ),[AI Studio](https://aistudio.baidu.com/modelsdetail/31915 ),[Hugging Face](https://huggingface.co/PaddlePaddle/UVDoc ),[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/UVDoc ) |
 
 ---
 
-### 🧪🧪🧪 测试环境说明
+###  测试环境说明
 **性能测试环境：**
 - **测试数据集：** [DocUNet benchmark](https://www3.cs.stonybrook.edu/~cvl/docunet.html)数据集
 - **硬件配置：**
