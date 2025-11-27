@@ -4516,6 +4516,14 @@ You're not viewing the latest version.
 <!-- Page content -->
 <h1 id="paddleocr-vl-nvidia-blackwell-gpu">PaddleOCR-VL NVIDIA Blackwell 架构 GPU 环境配置教程<a class="headerlink" href="#paddleocr-vl-nvidia-blackwell-gpu" title="Permanent link">&para;</a></h1>
 <p>本教程是 NVIDIA Blackwell 架构 GPU 的环境配置教程，目的是完成相关的环境配置，环境配置完毕后请参考 <a href="PaddleOCR-VL.html">PaddleOCR-VL 使用教程</a> 使用 PaddleOCR-VL。</p>
+<p>NVIDIA Blackwell 架构 GPU 包括但不限于以下几种：</p>
+<ul>
+<li>RTX 5090</li>
+<li>RTX 5080</li>
+<li>RTX 5070、RTX 5070 Ti</li>
+<li>RTX 5060、RTX 5060 Ti</li>
+<li>RTX 5050</li>
+</ul>
 <p>教程开始前，<strong>请确认您的 NVIDIA 驱动支持 CUDA 12.9 或以上版本</strong>。</p>
 <h2 id="1">1. 环境准备<a class="headerlink" href="#1" title="Permanent link">&para;</a></h2>
 <p>此步骤主要介绍如何搭建 PaddleOCR-VL 的运行环境，有以下两种方式，任选一种即可：</p>
@@ -4681,56 +4689,11 @@ You're not viewing the latest version.
 </span></code></pre></div>
 </li>
 </ol>
-<h3 id="42">4.2 方法二：手动安装依赖部署<a class="headerlink" href="#42" title="Permanent link">&para;</a></h3>
-<p>执行以下命令，通过 PaddleX CLI 安装服务化部署插件：</p>
-<div class="language-shell highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>paddlex<span class="w"> </span>--install<span class="w"> </span>serving
-</span></code></pre></div>
-<p>然后，使用 PaddleX CLI 启动服务器：</p>
-<div class="language-shell highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>paddlex<span class="w"> </span>--serve<span class="w"> </span>--pipeline<span class="w"> </span>PaddleOCR-VL
-</span></code></pre></div>
-<p>启动后将看到类似如下输出，服务器默认监听 <strong>8080</strong> 端口：</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>INFO:     Started server process [63108]
-</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>INFO:     Waiting for application startup.
-</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>INFO:     Application startup complete.
-</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
-</span></code></pre></div>
-<p>与服务化部署相关的命令行参数如下：</p>
-<table>
-<thead>
-<tr>
-<th>名称</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>--pipeline</code></td>
-<td>PaddleX 产线注册名或产线配置文件路径。</td>
-</tr>
-<tr>
-<td><code>--device</code></td>
-<td>产线部署设备。默认情况下，若 GPU 可用则使用 GPU，否则使用 CPU。</td>
-</tr>
-<tr>
-<td><code>--host</code></td>
-<td>服务器绑定的主机名或 IP 地址，默认为 <code>0.0.0.0</code>。</td>
-</tr>
-<tr>
-<td><code>--port</code></td>
-<td>服务器监听的端口号，默认为 <code>8080</code>。</td>
-</tr>
-<tr>
-<td><code>--use_hpip</code></td>
-<td>启用高性能推理模式。请参考高性能推理文档了解更多信息。</td>
-</tr>
-<tr>
-<td><code>--hpi_config</code></td>
-<td>高性能推理配置。请参考高性能推理文档了解更多信息。</td>
-</tr>
-</tbody>
-</table>
-
+<p>此方式基于 vLLM 框架对 VLM 推理进行加速，更适合生产环境部署。</p>
+<p>此外，使用此方式启动服务器后，除拉取镜像外，无需连接互联网。如需在离线环境中部署，可先在联网机器上拉取 Compose 文件中涉及的镜像，导出并传输至离线机器中导入，即可在离线环境下启动服务。</p>
 <p>如需调整产线相关配置（如模型路径、批处理大小、部署设备等），可参考 4.4 小节。</p>
+<h3 id="42">4.2 方法二：手动安装依赖部署<a class="headerlink" href="#42" title="Permanent link">&para;</a></h3>
+<p>请参考<a href="PaddleOCR-VL.html">PaddleOCR-VL 使用教程</a> 相同章节。</p>
 <h3 id="43">4.3 客户端调用方式<a class="headerlink" href="#43" title="Permanent link">&para;</a></h3>
 <p>请参考<a href="PaddleOCR-VL.html">PaddleOCR-VL 使用教程</a> 相同章节。</p>
 <h3 id="44">4.4 产线配置调整说明<a class="headerlink" href="#44" title="Permanent link">&para;</a></h3>

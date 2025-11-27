@@ -4833,72 +4833,67 @@ You're not viewing the latest version.
 <p>目前 PaddleOCR-VL 有四种推理方式，支持的推理设备不完全相同，请确认您的推理设备是否满足下表要求再进行 PaddleOCR-VL 的推理部署：</p>
 <table border="1">
 <thead>
-  <tr>
+  <tr style="text-align: center;">
     <th>推理方式</th>
-    <th>x64 CPU</th>
-    <th>DCU</th>
-    <th>XPU</th>
+    <th>英伟达 GPU</th>
+    <th>昆仑芯 XPU</th>
+    <th>海光 DCU</th>
     <th>沐曦 GPU</th>
     <th>天数 GPU</th>
-    <th>NVIDIA GPU</th>
+    <th>x64 CPU</th>
   </tr>
 </thead>
 <tbody>
-  <tr>
+  <tr style="text-align: center;">
     <td>PaddlePaddle</td>
     <td>✅</td>
     <td>✅</td>
     <td>✅</td>
     <td>🚧</td>
     <td>🚧</td>
-    <td>
-    <li>GPU Compute Capability ≥ 7</li>
-    <li>CUDA 版本 ≥ 11.8</li>
-    </td>
+    <td>✅</td>
   </tr>
-  <tr>
+  <tr style="text-align: center;">
     <td>vLLM</td>
-    <td>❌</td>
+    <td>✅</td>
+    <td>🚧</td>
     <td>✅</td>
     <td>🚧</td>
     <td>🚧</td>
-    <td>🚧</td>
-    <td>
-    <li>GPU Compute Capability ≥ 8 （RTX 3060，RTX 5070，A10，A100, ...） <br /></li>
-    <li>CUDA 版本 ≥ 12.6</li><br />
-    备注：7 ≤ GPU Compute Capability < 8 （T4，V100，...）支持运行，但可能出现请求超时、OOM 等异常情况，不推荐使用
-    </td>
+    <td>❌</td>
   </tr>
-  <tr>
+  <tr style="text-align: center;">
     <td>SGLang</td>
-    <td>❌</td>
-    <td>🚧</td>
-    <td>🚧</td>
-    <td>🚧</td>
-    <td>🚧</td>
-    <td>
-    <li>8 ≤ GPU Compute Capability < 12</li>
-    <li>CUDA 版本 ≥ 12.6</li>
-    </td>
-  </tr>
-  <tr>
-    <td>FastDeploy</td>
-    <td>❌</td>
-    <td>🚧</td>
     <td>✅</td>
     <td>🚧</td>
     <td>🚧</td>
-    <td>
-    <li>8 ≤ GPU Compute Capability < 12</li>
-    <li>CUDA 版本 ≥ 12.6</li>
-    </td>
+    <td>🚧</td>
+    <td>🚧</td>
+    <td>❌</td>
+  </tr>
+  <tr style="text-align: center;">
+    <td>FastDeploy</td>
+    <td>✅</td>
+    <td>✅</td>
+    <td>🚧</td>
+    <td>🚧</td>
+    <td>🚧</td>
+    <td>❌</td>
   </tr>
 </tbody>
 </table>
 
 <blockquote>
-<p>当前，PaddleOCR-VL 暂不支持 ARM 架构 CPU。后续将根据实际需求扩展更多硬件支持，敬请期待！<br />
-vLLM、SGLang 和 FastDeploy 无法在 Windows 或 macOS 上原生运行，请使用我们提供的 Docker 镜像。</p>
+<p><strong>备注</strong> ：
+1. 使用英伟达 GPU 推理时需要注意 Compute Capability（简称 CC） 和 CUDA 版本（简称 CUDA）是否满足要求：
+- PaddlePaddle: CC ≥ 7.0, CUDA ≥ 11.8
+- vLLM: CC ≥ 8.0, CUDA ≥ 12.6
+- SGLang: 8.0 ≤ CC &lt; 12.0, CUDA ≥ 12.6
+- FastDeploy: 8.0 ≤ CC &lt; 12.0, CUDA ≥ 12.6
+- CC ≥ 8 的常见显卡包括 RTX 30/40/50 系列及 A10/A100 等，更多型号可查看 <a href="https://developer.nvidia.cn/cuda-gpus">CUDA GPU 计算能力</a>
+2. 虽然 vLLM 可在 T4/V100 等 CC 7.x 的 NVIDIA GPU 上启动，但容易出现超时或 OOM，不推荐使用。
+3. 当前，PaddleOCR-VL 暂不支持 ARM 架构 CPU。后续将根据实际需求扩展更多硬件支持，敬请期待！<br />
+4. vLLM、SGLang 和 FastDeploy 无法在 Windows 或 macOS 上原生运行，请使用我们提供的 Docker 镜像。</p>
 </blockquote>
 <p>由于不同硬件所需的依赖各不相同，如果您的硬件满足上述表格的要求，请参考下表查看对应的教程进行环境配置：</p>
 <table border="1">
@@ -4914,18 +4909,18 @@ vLLM、SGLang 和 FastDeploy 无法在 Windows 或 macOS 上原生运行，请�
       <td>本教程</td>
     </tr>
     <tr>
-      <td>NVIDIA GPU</td>
+      <td>英伟达 GPU</td>
       <td>
       <li>NVIDIA Blackwell 架构 GPU（如RTX 50 系）参考 <a href="./PaddleOCR-VL-NVIDIA-Blackwell.md">PaddleOCR-VL NVIDIA Blackwell 架构 GPU 环境配置教程</a></li>
       <li>其他 NVIDIA GPU 参考本教程</li>
       </td>
     </tr>
     <tr>
-      <td>XPU</td>
+      <td>昆仑芯 XPU</td>
       <td><a href="./PaddleOCR-VL-XPU.md">PaddleOCR-VL XPU 环境配置教程</a></td>
     </tr>
     <tr>
-      <td>DCU</td>
+      <td>海光 DCU</td>
       <td><a href="./PaddleOCR-VL-DCU.md">PaddleOCR-VL DCU 环境配置教程</a></td>
     </tr>
   </tbody>

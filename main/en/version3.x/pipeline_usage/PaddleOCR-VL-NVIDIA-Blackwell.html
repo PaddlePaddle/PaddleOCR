@@ -4516,6 +4516,14 @@ You're not viewing the latest version.
 <!-- Page content -->
 <h1 id="paddleocr-vl-nvidia-blackwell-architecture-gpus-environment-configuration-tutorial">PaddleOCR-VL NVIDIA Blackwell-Architecture GPUs Environment Configuration Tutorial<a class="headerlink" href="#paddleocr-vl-nvidia-blackwell-architecture-gpus-environment-configuration-tutorial" title="Permanent link">&para;</a></h1>
 <p>This tutorial provides guidance on configuring the environment for NVIDIA Blackwell-architecture GPUs. After completing the environment setup, please refer to the <a href="PaddleOCR-VL.html">PaddleOCR-VL Usage Tutorial</a> to use PaddleOCR-VL.</p>
+<p>NVIDIA Blackwell-architecture GPUs include, but are not limited to:</p>
+<ul>
+<li>RTX 5090</li>
+<li>RTX 5080</li>
+<li>RTX 5070、RTX 5070 Ti</li>
+<li>RTX 5060、RTX 5060 Ti</li>
+<li>RTX 5050</li>
+</ul>
 <p>Before starting the tutorial, <strong>please ensure that your NVIDIA driver supports CUDA 12.9 or higher</strong>.</p>
 <h2 id="1-environment-preparation">1. Environment Preparation<a class="headerlink" href="#1-environment-preparation" title="Permanent link">&para;</a></h2>
 <p>This section introduces how to set up the PaddleOCR-VL runtime environment using one of the following two methods:</p>
@@ -4680,56 +4688,11 @@ You're not viewing the latest version.
 </span></code></pre></div>
 </li>
 </ol>
-<h3 id="42-method-2-manually-install-dependencies-for-deployment">4.2 Method 2: Manually Install Dependencies for Deployment<a class="headerlink" href="#42-method-2-manually-install-dependencies-for-deployment" title="Permanent link">&para;</a></h3>
-<p>Execute the following command to install the service deployment plugin via the PaddleX CLI:</p>
-<div class="language-shell highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>paddlex<span class="w"> </span>--install<span class="w"> </span>serving
-</span></code></pre></div>
-<p>Then, start the server using the PaddleX CLI:</p>
-<div class="language-shell highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>paddlex<span class="w"> </span>--serve<span class="w"> </span>--pipeline<span class="w"> </span>PaddleOCR-VL
-</span></code></pre></div>
-<p>After startup, you will see output similar to the following, with the server listening on port <strong>8080</strong> by default:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>INFO:     Started server process [63108]
-</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>INFO:     Waiting for application startup.
-</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>INFO:     Application startup complete.
-</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
-</span></code></pre></div>
-<p>The command-line parameters related to service deployment are as follows:</p>
-<table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>--pipeline</code></td>
-<td>Registered name of the PaddleX pipeline or path to the pipeline configuration file.</td>
-</tr>
-<tr>
-<td><code>--device</code></td>
-<td>Device for pipeline deployment. By default, GPU is used if available; otherwise, CPU is used.</td>
-</tr>
-<tr>
-<td><code>--host</code></td>
-<td>Hostname or IP address to which the server is bound. Defaults to <code>0.0.0.0</code>.</td>
-</tr>
-<tr>
-<td><code>--port</code></td>
-<td>Port number on which the server listens. Defaults to <code>8080</code>.</td>
-</tr>
-<tr>
-<td><code>--use_hpip</code></td>
-<td>Enable high-performance inference mode. Refer to the high-performance inference documentation for more information.</td>
-</tr>
-<tr>
-<td><code>--hpi_config</code></td>
-<td>High-performance inference configuration. Refer to the high-performance inference documentation for more information.</td>
-</tr>
-</tbody>
-</table>
-
+<p>This method accelerates VLM inference using the vLLM framework and is more suitable for production environment deployment.</p>
+<p>Additionally, after starting the server in this manner, no internet connection is required except for image pulling. For deployment in an offline environment, you can first pull the images involved in the Compose file on a connected machine, export them, and transfer them to the offline machine for import to start the service in an offline environment.</p>
 <p>To adjust pipeline-related configurations (such as model paths, batch sizes, deployment devices, etc.), refer to Section 4.4.</p>
+<h3 id="42-method-2-manually-install-dependencies-for-deployment">4.2 Method 2: Manually Install Dependencies for Deployment<a class="headerlink" href="#42-method-2-manually-install-dependencies-for-deployment" title="Permanent link">&para;</a></h3>
+<p>Please refer to the corresponding section in the <a href="PaddleOCR-VL.html">PaddleOCR-VL Usage Tutorial</a>.</p>
 <h3 id="43-client-invocation-methods">4.3 Client Invocation Methods<a class="headerlink" href="#43-client-invocation-methods" title="Permanent link">&para;</a></h3>
 <p>Please refer to the corresponding section in the <a href="PaddleOCR-VL.html">PaddleOCR-VL Usage Tutorial</a>.</p>
 <h3 id="44-pipeline-configuration-adjustment-instructions">4.4 Pipeline Configuration Adjustment Instructions<a class="headerlink" href="#44-pipeline-configuration-adjustment-instructions" title="Permanent link">&para;</a></h3>
