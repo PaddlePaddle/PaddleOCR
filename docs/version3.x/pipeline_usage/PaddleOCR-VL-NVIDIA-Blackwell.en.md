@@ -6,6 +6,14 @@ comments: true
 
 This tutorial provides guidance on configuring the environment for NVIDIA Blackwell-architecture GPUs. After completing the environment setup, please refer to the [PaddleOCR-VL Usage Tutorial](./PaddleOCR-VL.en.md) to use PaddleOCR-VL.
 
+NVIDIA Blackwell-architecture GPUs include, but are not limited to:
+
+- RTX 5090
+- RTX 5080
+- RTX 5070、RTX 5070 Ti
+- RTX 5060、RTX 5060 Ti
+- RTX 5050
+
 Before starting the tutorial, **please ensure that your NVIDIA driver supports CUDA 12.9 or higher**.
 
 ## 1. Environment Preparation
@@ -179,67 +187,15 @@ Please note that the PaddleOCR-VL service introduced in this section differs fro
     paddleocr-vl-api             | INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
     ```
 
-### 4.2 Method 2: Manually Install Dependencies for Deployment
+This method accelerates VLM inference using the vLLM framework and is more suitable for production environment deployment.
 
-Execute the following command to install the service deployment plugin via the PaddleX CLI:
-
-```shell
-paddlex --install serving
-```
-
-Then, start the server using the PaddleX CLI:
-
-```shell
-paddlex --serve --pipeline PaddleOCR-VL
-```
-
-After startup, you will see output similar to the following, with the server listening on port **8080** by default:
-
-```text
-INFO:     Started server process [63108]
-INFO:     Waiting for application startup.
-INFO:     Application startup complete.
-INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
-```
-
-The command-line parameters related to service deployment are as follows:
-
-<table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>--pipeline</code></td>
-<td>Registered name of the PaddleX pipeline or path to the pipeline configuration file.</td>
-</tr>
-<tr>
-<td><code>--device</code></td>
-<td>Device for pipeline deployment. By default, GPU is used if available; otherwise, CPU is used.</td>
-</tr>
-<tr>
-<td><code>--host</code></td>
-<td>Hostname or IP address to which the server is bound. Defaults to <code>0.0.0.0</code>.</td>
-</tr>
-<tr>
-<td><code>--port</code></td>
-<td>Port number on which the server listens. Defaults to <code>8080</code>.</td>
-</tr>
-<tr>
-<td><code>--use_hpip</code></td>
-<td>Enable high-performance inference mode. Refer to the high-performance inference documentation for more information.</td>
-</tr>
-<tr>
-<td><code>--hpi_config</code></td>
-<td>High-performance inference configuration. Refer to the high-performance inference documentation for more information.</td>
-</tr>
-</tbody>
-</table>
+Additionally, after starting the server in this manner, no internet connection is required except for image pulling. For deployment in an offline environment, you can first pull the images involved in the Compose file on a connected machine, export them, and transfer them to the offline machine for import to start the service in an offline environment.
 
 To adjust pipeline-related configurations (such as model paths, batch sizes, deployment devices, etc.), refer to Section 4.4.
+
+### 4.2 Method 2: Manually Install Dependencies for Deployment
+
+Please refer to the corresponding section in the [PaddleOCR-VL Usage Tutorial](./PaddleOCR-VL.en.md).
 
 ### 4.3 Client Invocation Methods
 

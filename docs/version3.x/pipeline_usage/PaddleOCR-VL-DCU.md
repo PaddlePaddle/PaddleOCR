@@ -4,7 +4,7 @@ comments: true
 
 # PaddleOCR-VL DCU 环境配置教程
 
-本教程是 PaddleOCR-VL DCU 的环境配置教程，目的是完成相关的环境配置，环境配置完毕后请参考 [PaddleOCR-VL 使用教程](./PaddleOCR-VL.md) 使用 PaddleOCR-VL。
+本教程是 PaddleOCR-VL 海光 DCU 的环境配置教程，目的是完成相关的环境配置，环境配置完毕后请参考 [PaddleOCR-VL 使用教程](./PaddleOCR-VL.md) 使用 PaddleOCR-VL。
 
 ## 1. 环境准备
 
