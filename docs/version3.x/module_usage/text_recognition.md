@@ -12,7 +12,7 @@ comments: true
 
 > 推理耗时仅包含模型推理耗时，不包含前后处理耗时。
 
-### 🚀🚀 PP-OCRv5_server_rec
+###  PP-OCRv5_server_rec
 **模型类型：** 推理模型/训练模型 | **模型存储大小：** 81 MB  
 **模型介绍：**  
 PP-OCRv5_rec 是新一代文本识别模型。该模型致力于以单一模型高效、精准地支持简体中文、繁体中文、英文、日文四种主要语言，以及手写、竖版、拼音、生僻字等复杂文本场景的识别。
@@ -24,11 +24,13 @@ PP-OCRv5_rec 是新一代文本识别模型。该模型致力于以单一模型�
 | **高性能模式** | - | 2.36 | 31.21 |
 
 **下载链接：**  
-[推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv5_server_rec_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_server_rec_pretrained.pdparams)
+| 训练模型 |  推理模型 |
+|:---: |:---: |
+|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv5_server_rec_infer.tar )|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_server_rec_pretrained.pdparams ),[AI Studio](https://aistudio.baidu.com/modelsdetail/31909 ),[Hugging Face](https://huggingface.co/PaddlePaddle/PP-OCRv5_server_rec ),[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PP-OCRv5_server_rec ) |
 
 ---
 
-### 📱📱 PP-OCRv5_mobile_rec
+###  PP-OCRv5_mobile_rec
 **模型类型：** 推理模型/训练模型 | **模型存储大小：** 16 MB  
 **模型介绍：**  
 PP-OCRv5_rec 是新一代文本识别模型。该模型致力于以单一模型高效、精准地支持简体中文、繁体中文、英文、日文四种主要语言，以及手写、竖版、拼音、生僻字等复杂文本场景的识别。
@@ -40,11 +42,12 @@ PP-OCRv5_rec 是新一代文本识别模型。该模型致力于以单一模型�
 | **高性能模式** | - | 1.46 | 5.32 |
 
 **下载链接：**  
-[推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv5_mobile_rec_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_mobile_rec_pretrained.pdparams)
-
+| 训练模型 |  推理模型 |
+|:---: |:---: |
+|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv5_mobile_rec_infer.tar )|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_mobile_rec_pretrained.pdparams ),[AI Studio](https://aistudio.baidu.com/modelsdetail/31872 ),[Hugging Face](https://huggingface.co/PaddlePaddle/PP-OCRv5_mobile_rec ),[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PP-OCRv5_mobile_rec ) |
 ---
 
-### 📄📄 PP-OCRv4_server_rec_doc
+###  PP-OCRv4_server_rec_doc
 **模型类型：** 推理模型/训练模型 | **模型存储大小：** 182 MB  
 **模型介绍：**  
 PP-OCRv4_server_rec_doc是在PP-OCRv4_server_rec的基础上，在更多中文文档数据和PP-OCR训练数据的混合数据训练而成，增加了部分繁体字、日文、特殊字符的识别能力，可支持识别的字符为1.5万+。
@@ -56,11 +59,13 @@ PP-OCRv4_server_rec_doc是在PP-OCRv4_server_rec的基础上，在更多中文�
 | **高性能模式** | - | 2.78 | 37.93 |
 
 **下载链接：**  
-[推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_server_rec_doc_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_rec_doc_pretrained.pdparams)
+| 训练模型 |  推理模型 |
+|:---: |:---: |
+|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_server_rec_doc_infer.tar )|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_rec_doc_pretrained.pdparams ),[AI Studio](https://aistudio.baidu.com/modelsdetail/31859 ),[Hugging Face](https://huggingface.co/PaddlePaddle/PP-OCRv4_server_rec_doc ),[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PP-OCRv4_server_rec_doc ) |
 
 ---
 
-### 📱📱 PP-OCRv4_mobile_rec
+###  PP-OCRv4_mobile_rec
 **模型类型：** 推理模型/训练模型 | **模型存储大小：** 10.5 MB  
 **模型介绍：**  
 PP-OCRv4的轻量级识别模型，推理效率高，可以部署在包含端侧设备的多种硬件设备中。
@@ -72,11 +77,13 @@ PP-OCRv4的轻量级识别模型，推理效率高，可以部署在包含端侧
 | **高性能模式** | - | 1.12 | 3.61 |
 
 **下载链接：**  
-[推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_mobile_rec_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_mobile_rec_pretrained.pdparams)
+| 训练模型 |  推理模型 |
+|:---: |:---: |
+|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_mobile_rec_infer.tar )|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_mobile_rec_pretrained.pdparams ),[AI Studio](https://aistudio.baidu.com/modelsdetail/31914 ),[Hugging Face](https://huggingface.co/PaddlePaddle/PP-OCRv4_mobile_rec ),[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PP-OCRv4_mobile_rec ) |
 
 ---
 
-### 🚀🚀 PP-OCRv4_server_rec
+###  PP-OCRv4_server_rec
 **模型类型：** 推理模型/训练模型 | **模型存储大小：** 173 MB  
 **模型介绍：**  
 PP-OCRv4的服务器端模型，推理精度高，可以部署在多种不同的服务器上。
@@ -88,11 +95,13 @@ PP-OCRv4的服务器端模型，推理精度高，可以部署在多种不同的
 | **高性能模式** | - | 2.49 | 36.93 |
 
 **下载链接：**  
-[推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_server_rec_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_rec_pretrained.pdparams)
+| 训练模型 |  推理模型 |
+|:---: |:---: |
+|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_server_rec_infer.tar )|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_rec_pretrained.pdparams ),[AI Studio](https://aistudio.baidu.com/modelsdetail/31931 ),[Hugging Face](https://huggingface.co/PaddlePaddle/PP-OCRv4_server_rec ),[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PP-OCRv4_server_rec ) |
 
 ---
 
-### 🌐🌐 en_PP-OCRv4_mobile_rec
+###  en_PP-OCRv4_mobile_rec
 **模型类型：** 推理模型/训练模型 | **模型存储大小：** 7.5 MB  
 **模型介绍：**  
 基于PP-OCRv4识别模型训练得到的超轻量英文识别模型，支持英文、数字识别。
@@ -104,8 +113,9 @@ PP-OCRv4的服务器端模型，推理精度高，可以部署在多种不同的
 | **高性能模式** | - | 1.23 | 4.18 |
 
 **下载链接：**  
-[推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/en_PP-OCRv4_mobile_rec_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/en_PP-OCRv4_mobile_rec_pretrained.pdparams)
-
+| 训练模型 |  推理模型 |
+|:---: |:---: |
+|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/en_PP-OCRv4_mobile_rec_infer.tar )|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/en_PP-OCRv4_mobile_rec_pretrained.pdparams ),[AI Studio](https://aistudio.baidu.com/modelsdetail/31895 ),[Hugging Face](https://huggingface.co/PaddlePaddle/en_PP-OCRv4_mobile_rec ),[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/en_PP-OCRv4_mobile_rec ) |
 ---
 
 > ❗ 以上列出的是文本识别模块重点支持的<b>4个核心模型</b>，该模块总共支持<b>20个全量模型</b>，包含多个多语言文本识别模型，完整的模型列表如下：
@@ -113,7 +123,7 @@ PP-OCRv4的服务器端模型，推理精度高，可以部署在多种不同的
 <details>
 <summary> 👉模型列表详情</summary>
 
-### 🏆🏆 ch_SVTRv2_rec
+###  ch_SVTRv2_rec
 **模型类型：** 推理模型/训练模型 | **模型存储大小：** 80.5 MB  
 **模型介绍：**  
 SVTRv2 是一种由复旦大学视觉与学习实验室（FVL）的OpenOCR团队研发的服务端文本识别模型，其在PaddleOCR算法模型挑战赛 - 赛题一：OCR端到端识别任务中荣获一等奖，A榜端到端识别精度相比PP-OCRv4提升6%。
@@ -125,11 +135,13 @@ SVTRv2 是一种由复旦大学视觉与学习实验室（FVL）的OpenOCR团队
 | **高性能模式** | - | 8.31 | 30.83 |
 
 **下载链接：**  
-[推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/ch_SVTRv2_rec_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/ch_SVTRv2_rec_pretrained.pdparams)
+| 训练模型 |  推理模型 |
+|:---: |:---: |
+|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/ch_SVTRv2_rec_infer.tar)|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/ch_SVTRv2_rec_pretrained.pdparams),[AI Studio](https://aistudio.baidu.com/modelsdetail/31887 ),[Hugging Face](https://huggingface.co/PaddlePaddle/ch_svTRv2_rec ),[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/ch_svTRv2_rec ) |
 
 ---
 
-### 🏆🏆 ch_RepSVTR_rec
+###  ch_RepSVTR_rec
 **模型类型：** 推理模型/训练模型 | **模型存储大小：** 48.8 MB  
 **模型介绍：**  
 RepSVTR 文本识别模型是一种基于SVTRv2 的移动端文本识别模型，其在PaddleOCR算法模型挑战赛 - 赛题一：OCR端到端识别任务中荣获一等奖，B榜端到端识别精度相比PP-OCRv4提升2.5%，推理速度持平。
@@ -141,11 +153,13 @@ RepSVTR 文本识别模型是一种基于SVTRv2 的移动端文本识别模型�
 | **高性能模式** | - | 1.57 | 5.40 |
 
 **下载链接：**  
-[推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/ch_RepSVTR_rec_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/ch_RepSVTR_rec_pretrained.pdparams)
+| 训练模型 |  推理模型 |
+|:---: |:---: |
+|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/ch_RepSVTR_rec_infer.tar )|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/ch_RepSVTR_rec_pretrained.pdparams ),[AI Studio](https://aistudio.baidu.com/modelsdetail/31899 ),[Hugging Face](https://huggingface.co/PaddlePaddle/ch_RepSVTR_rec ),[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/ch_RepSVTR_rec ) |
 
 ---
 
-### 🌐🌐 en_PP-OCRv5_mobile_rec
+###  en_PP-OCRv5_mobile_rec
 **模型类型：** 推理模型/训练模型 | **模型存储大小：** 7.5 MB  
 **模型介绍：**  
 基于PP-OCRv5识别模型训练得到的超轻量级英文识别模型，进一步提升英文文本的识别准确率，优化空格漏识别的问题，并提高对手写英文文本的识别效果。
@@ -156,11 +170,13 @@ RepSVTR 文本识别模型是一种基于SVTRv2 的移动端文本识别模型�
 | **常规模式** | 85.25 |
 
 **下载链接：**  
-[推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/en_PP-OCRv5_mobile_rec_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/en_PP-OCRv5_mobile_rec_pretrained.pdparams)
+| 训练模型 |  推理模型 |
+|:---: |:---: |
+|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/en_PP-OCRv5_mobile_rec_infer.tar )|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/en_PP-OCRv5_mobile_rec_pretrained.pdparams ),[AI Studio](https://aistudio.baidu.com/modelsdetail/33810 ),[Hugging Face](https://huggingface.co/PaddlePaddle/en_PP-OCRv5_mobile_rec ),[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/en_PP-OCRv5_mobile_rec ) |
 
 ---
 
-### 🌐🌐 korean_PP-OCRv5_mobile_rec
+### korean_PP-OCRv5_mobile_rec
 **模型类型：** 推理模型/训练模型 | **模型存储大小：** 14 MB  
 **模型介绍：**  
 基于PP-OCRv5识别模型训练得到的超轻量韩文识别模型，支持韩文、英文和数字识别。
@@ -172,11 +188,13 @@ RepSVTR 文本识别模型是一种基于SVTRv2 的移动端文本识别模型�
 | **高性能模式** | - | 1.46 | 5.32 |
 
 **下载链接：**  
-[推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/korean_PP-OCRv5_mobile_rec_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/korean_PP-OCRv5_mobile_rec_pretrained.pdparams)
+| 训练模型 |  推理模型 |
+|:---: |:---: |
+|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/korean_PP-OCRv5_mobile_rec_infer.tar )|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/korean_PP-OCRv5_mobile_rec_pretrained.pdparams ),[AI Studio](https://aistudio.baidu.com/modelsdetail/31927 ),[Hugging Face](https://huggingface.co/PaddlePaddle/korean_PP-OCRv5_mobile_rec ),[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/korean_PP-OCRv5_mobile_rec ) |
 
 ---
 
-### 🌐🌐 latin_PP-OCRv5_mobile_rec
+###  latin_PP-OCRv5_mobile_rec
 **模型类型：** 推理模型/训练模型 | **模型存储大小：** 14 MB  
 **模型介绍：**  
 基于PP-OCRv5识别模型训练得到的拉丁文识别模型，支持大部分拉丁字母语言、数字识别。
@@ -188,11 +206,13 @@ RepSVTR 文本识别模型是一种基于SVTRv2 的移动端文本识别模型�
 | **高性能模式** | - | 1.46 | 5.32 |
 
 **下载链接：**  
-[推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/latin_PP-OCRv5_mobile_rec_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/latin_PP-OCRv5_mobile_rec_pretrained.pdparams)
+| 训练模型 |  推理模型 |
+|:---: |:---: |
+|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/latin_PP-OCRv5_mobile_rec_infer.tar )|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/latin_PP-OCRv5_mobile_rec_pretrained.pdparams ),[AI Studio](https://aistudio.baidu.com/modelsdetail/31861 ),[Hugging Face](https://huggingface.co/PaddlePaddle/latin_PP-OCRv5_mobile_rec ),[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/latin_PP-OCRv5_mobile_rec ) |
 
 ---
 
-### 🧪🧪🧪 测试环境说明
+###  测试环境说明
 **性能测试环境：**
 - **硬件配置：**
   - GPU：NVIDIA Tesla T4
