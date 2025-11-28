@@ -89,16 +89,16 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
 </tbody>
 </table>
 
-> [!TIP]
-> 1. 使用英伟达 GPU 推理时需要注意 Compute Capability（简称 CC） 和 CUDA 版本（简称 CUDA）是否满足要求：
->    - PaddlePaddle: CC ≥ 7.0, CUDA ≥ 11.8
->    - vLLM: CC ≥ 8.0, CUDA ≥ 12.6
->    - SGLang: 8.0 ≤ CC < 12.0, CUDA ≥ 12.6
->    - FastDeploy: 8.0 ≤ CC < 12.0, CUDA ≥ 12.6
->    - CC ≥ 8 的常见显卡包括 RTX 30/40/50 系列及 A10/A100 等，更多型号可查看 [CUDA GPU 计算能力](https://developer.nvidia.cn/cuda-gpus)
-> 2. 虽然 vLLM 可在 T4/V100 等 CC 7.x 的 NVIDIA GPU 上启动，但容易出现超时或 OOM，不推荐使用。
-> 3. 当前，PaddleOCR-VL 暂不支持 ARM 架构 CPU。后续将根据实际需求扩展更多硬件支持，敬请期待！  
-> 4. vLLM、SGLang 和 FastDeploy 无法在 Windows 或 macOS 上原生运行，请使用我们提供的 Docker 镜像。
+> TIP:
+> - 使用英伟达 GPU 推理时需要注意 Compute Capability（简称 CC） 和 CUDA 版本（简称 CUDA）是否满足要求：
+> >  - PaddlePaddle: CC ≥ 7.0, CUDA ≥ 11.8
+> >  - vLLM: CC ≥ 8.0, CUDA ≥ 12.6
+> >  - SGLang: 8.0 ≤ CC < 12.0, CUDA ≥ 12.6
+> >  - FastDeploy: 8.0 ≤ CC < 12.0, CUDA ≥ 12.6
+> >  - CC ≥ 8 的常见显卡包括 RTX 30/40/50 系列及 A10/A100 等，更多型号可查看 [CUDA GPU 计算能力](https://developer.nvidia.cn/cuda-gpus)
+> - 虽然 vLLM 可在 T4/V100 等 CC 7.x 的 NVIDIA GPU 上启动，但容易出现超时或 OOM，不推荐使用。
+> - 当前，PaddleOCR-VL 暂不支持 ARM 架构 CPU。后续将根据实际需求扩展更多硬件支持，敬请期待！  
+> - vLLM、SGLang 和 FastDeploy 无法在 Windows 或 macOS 上原生运行，请使用我们提供的 Docker 镜像。
 
 由于不同硬件所需的依赖各不相同，如果您的硬件满足上述表格的要求，请参考下表查看对应的教程进行环境配置：
 
@@ -132,7 +132,7 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
   </tbody>
 </table>
 
-> [!TIP]
+> TIP:
 > 例如您使用的是 RTX 50 系 GPU，满足 PaddlePaddle 和 vLLM 推理方式的设备要求，请参考 [PaddleOCR-VL NVIDIA Blackwell 架构 GPU 环境配置教程](./PaddleOCR-VL-NVIDIA-Blackwell.md) 完成环境配置后再进行 PaddleOCR-VL 的使用。
 
 ## 1. 环境准备
@@ -198,7 +198,7 @@ python -m pip install https://paddle-whl.bj.bcebos.com/nightly/cu126/safetensors
 python -m pip install https://xly-devops.cdn.bcebos.com/safetensors-nightly/safetensors-0.6.2.dev0-cp38-abi3-win_amd64.whl
 ```
 
-> [!IMPORTANT]
+> IMPORTANT:
 > **请注意安装 3.2.1 及以上版本的飞桨框架，同时安装特殊版本的 safetensors。** 对于 macOS 用户，请使用 Docker 进行环境搭建。
 
 ## 2. 快速开始
@@ -207,7 +207,7 @@ python -m pip install https://xly-devops.cdn.bcebos.com/safetensors-nightly/safe
 
 PaddleOCR-VL 支持 CLI 命令行方式和 Python API 两种使用方式，其中 CLI 命令行方式更简单，适合快速验证功能，而 Python API 方式更灵活，适合集成到现有项目中。
 
-> [!TIP]
+> TIP:
 > 本节所介绍的方法主要用于快速验证，其推理速度、显存占用及稳定性表现未必能满足生产环境的要求。**若需部署至生产环境，我们强烈建议使用专门的推理加速框架** ，具体方法请参考下一节。
 
 ### 2.1 命令行方式体验
@@ -2300,7 +2300,7 @@ foreach ($result as $i => $item) {
 
 ### 4.4 产线配置调整说明
 
-> [!NOTE]
+> NOTE:
 > 若您无需调整产线配置，可忽略此小节。
 
 调整服务化部署的 PaddleOCR-VL 配置只需以下三步：
