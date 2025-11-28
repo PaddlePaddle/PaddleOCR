@@ -4932,25 +4932,21 @@ You're not viewing the latest version.
 
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<div class="language-text highlight"><pre><span></span><code>1. When using NVIDIA GPU for inference, ensure that the Compute Capability (CC) and CUDA version meet the requirements:
-
-- PaddlePaddle: CC ≥ 7.0, CUDA ≥ 11.8
-- vLLM: CC ≥ 8.0, CUDA ≥ 12.6
-- SGLang: 8.0 ≤ CC &lt; 12.0, CUDA ≥ 12.6
-- FastDeploy: 8.0 ≤ CC &lt; 12.0, CUDA ≥ 12.6
-- Common GPUs with CC ≥ 8 include RTX 30/40/50 series and A10/A100, etc. For more models, refer to [CUDA GPU Compute Capability](https://developer.nvidia.com/cuda-gpus)
-</code></pre></div>
-<ol>
-<li>
-<p>vLLM compatibility note: Although vLLM can be launched on NVIDIA GPUs with CC 7.x such as T4/V100, timeout or OOM issues may occur, and its use is not recommended.</p>
+<ul>
+<li>When using NVIDIA GPU for inference, ensure that the Compute Capability (CC) and CUDA version meet the requirements:<blockquote>
+<ul>
+<li>PaddlePaddle: CC ≥ 7.0, CUDA ≥ 11.8</li>
+<li>vLLM: CC ≥ 8.0, CUDA ≥ 12.6</li>
+<li>SGLang: 8.0 ≤ CC &lt; 12.0, CUDA ≥ 12.6</li>
+<li>FastDeploy: 8.0 ≤ CC &lt; 12.0, CUDA ≥ 12.6</li>
+<li>Common GPUs with CC ≥ 8 include RTX 30/40/50 series and A10/A100, etc. For more models, refer to <a href="https://developer.nvidia.com/cuda-gpus">CUDA GPU Compute Capability</a></li>
+</ul>
+</blockquote>
 </li>
-<li>
-<p>Currently, PaddleOCR-VL does not support ARM architecture CPUs. More hardware support will be expanded based on actual needs in the future, so stay tuned!</p>
-</li>
-<li>
-<p>vLLM, SGLang, and FastDeploy cannot run natively on Windows or macOS. Please use the Docker images we provide.</p>
-</li>
-</ol>
+<li>vLLM compatibility note: Although vLLM can be launched on NVIDIA GPUs with CC 7.x such as T4/V100, timeout or OOM issues may occur, and its use is not recommended.</li>
+<li>Currently, PaddleOCR-VL does not support ARM architecture CPUs. More hardware support will be expanded based on actual needs in the future, so stay tuned!</li>
+<li>vLLM, SGLang, and FastDeploy cannot run natively on Windows or macOS. Please use the Docker images we provide.</li>
+</ul>
 </div>
 <p>Since different hardware requires different dependencies, if your hardware meets the requirements in the table above, please refer to the following table for the corresponding tutorial to configure your environment:</p>
 <table border="1">
@@ -4983,10 +4979,11 @@ You're not viewing the latest version.
   </tbody>
 </table>
 
-<blockquote>
-<p>[!TIP]
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>
 For example, if you are using an RTX 50 series GPU that meets the device requirements for both PaddlePaddle and vLLM inference methods, please refer to the <a href="PaddleOCR-VL-NVIDIA-Blackwell.html">PaddleOCR-VL NVIDIA Blackwell Architecture GPU Environment Configuration Tutorial</a> to complete the environment configuration before using PaddleOCR-VL.</p>
-</blockquote>
+</div>
 <h2 id="1-environment-preparation">1. Environment Preparation<a class="headerlink" href="#1-environment-preparation" title="Permanent link">&para;</a></h2>
 <p>This section explains how to set up the runtime environment for PaddleOCR-VL. Choose one of the following two methods:</p>
 <ul>
@@ -5037,16 +5034,18 @@ For example, if you are using an RTX 50 series GPU that meets the device require
 </span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="c1"># For Windows systems, run:</span>
 </span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>https://xly-devops.cdn.bcebos.com/safetensors-nightly/safetensors-0.6.2.dev0-cp38-abi3-win_amd64.whl
 </span></code></pre></div>
-<blockquote>
-<p>[!IMPORTANT]
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>
 <strong>Please ensure that you install PaddlePaddle framework version 3.2.1 or above, along with the special version of safetensors.</strong> For macOS users, please use Docker to set up the environment.</p>
-</blockquote>
+</div>
 <h2 id="2-quick-start">2. Quick Start<a class="headerlink" href="#2-quick-start" title="Permanent link">&para;</a></h2>
 <p>PaddleOCR-VL supports two usage methods: CLI command line and Python API. The CLI command line method is simpler and suitable for quickly verifying functionality, while the Python API method is more flexible and suitable for integration into existing projects.</p>
-<blockquote>
-<p>[!TIP]
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>
 The methods introduced in this section are primarily for rapid validation. Their inference speed, memory usage, and stability may not meet the requirements of a production environment. <strong>If deployment to a production environment is needed, we strongly recommend using a dedicated inference acceleration framework</strong>. For specific methods, please refer to the next section.</p>
-</blockquote>
+</div>
 <h3 id="21-command-line-usage">2.1 Command Line Usage<a class="headerlink" href="#21-command-line-usage" title="Permanent link">&para;</a></h3>
 <p>Run a single command to quickly test the PaddleOCR-VL ：</p>
 <div class="language-shell highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>paddleocr<span class="w"> </span>doc_parser<span class="w"> </span>-i<span class="w"> </span>https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/paddleocr_vl_demo.png
@@ -7037,10 +7036,11 @@ foreach ($result as $i => $item) {
 </details>
 
 <h3 id="44-pipeline-configuration-adjustment-instructions">4.4 Pipeline Configuration Adjustment Instructions<a class="headerlink" href="#44-pipeline-configuration-adjustment-instructions" title="Permanent link">&para;</a></h3>
-<blockquote>
-<p>[!NOTE]
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>
 If you do not need to adjust pipeline configurations, you can ignore this section.</p>
-</blockquote>
+</div>
 <p>Adjusting the PaddleOCR-VL configuration for service deployment involves only three steps:</p>
 <ol>
 <li>Obtain the configuration file</li>
