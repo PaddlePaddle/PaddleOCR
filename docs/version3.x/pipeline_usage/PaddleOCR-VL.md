@@ -29,6 +29,10 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
     - 使用 Docker Compose 部署（一键启动，推荐使用）：请阅读 [4.1 方法一：使用 Docker Compose 部署](#41-方法一使用-docker-compose-部署推荐使用) 和 [4.3 客户端调用方式](#43-客户端调用方式)。
     - 进行手动部署：请阅读 [1. 环境准备](#1-环境准备)、 [4.2 方法二：手动部署](#42-方法二手动部署) 和 [4.3 客户端调用方式](#43-客户端调用方式)。
 
+4. **希望对 PaddleOCR-VL 进行微调以适配特定业务**：
+
+    如果您发现 PaddleOCR-VL 在特定业务场景中的精度表现未达预期，请阅读 [5. 模型微调](#5-模型微调)
+
 ## PaddleOCR-VL 对推理设备的支持情况
 
 目前 PaddleOCR-VL 有四种推理方式，支持的推理设备不完全相同，请确认您的推理设备是否满足下表要求再进行 PaddleOCR-VL 的推理部署：
@@ -1130,16 +1134,15 @@ PaddleOCR 提供了 Docker 镜像，用于快速启动 vLLM 或 FastDeploy 推�
 
 启动 vLLM 或 FastDeploy 推理服务时，我们提供了一套默认参数设置。如果您有调整显存占用等更多参数的需求，可以自行配置更多参数。请参考 [3.3.1 服务端参数调整](#331-服务端参数调整) 创建配置文件，然后将该文件挂载到容器中，并在启动服务的命令中使用 `backend_config` 指定配置文件，以 vLLM 为例：
 
-```diff
+```shell
 docker run \
     -it \
     --rm \
     --gpus all \
     --network host \
-+   -v vllm_config.yml:/tmp/vllm_config.yml \  
+    -v vllm_config.yml:/tmp/vllm_config.yml \  
     ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest \
--   paddleocr genai_server --model_name PaddleOCR-VL-0.9B --host 0.0.0.0 --port 8118 --backend vllm
-+   paddleocr genai_server --model_name PaddleOCR-VL-0.9B --host 0.0.0.0 --port 8118 --backend vllm --backend_config /tmp/vllm_config.yml
+    paddleocr genai_server --model_name PaddleOCR-VL-0.9B --host 0.0.0.0 --port 8118 --backend vllm --backend_config /tmp/vllm_config.yml
 ```
 
 #### 3.1.2 方法二：通过 PaddleOCR CLI 安装和使用
