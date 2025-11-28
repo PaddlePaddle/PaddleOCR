@@ -79,6 +79,19 @@ docker run \
 
 If you wish to start the service in an environment without internet access, replace `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-fastdeploy-server:latest-xpu` (image size approximately 47 GB) in the above command with the offline version image `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-fastdeploy-server:latest-xpu-offline` (image size approximately 49 GB).
 
+When launching the FastDeploy inference service, we provide a set of default parameter settings. If you need to adjust parameters such as GPU memory usage, you can configure additional parameters yourself. Please refer to [3.3.1 Server Parameter Adjustment](./PaddleOCR-VL.en.md#331-server-parameter-adjustment) to create a configuration file, then mount this file into the container and specify the configuration file using `backend_config` in the command to start the service, for example:
+
+```shell
+docker run \
+    -it \
+    --rm \
+    --gpus all \
+    --network host \
+    -v fastdeploy_config.yml:/tmp/fastdeploy_config.yml \  
+    ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-xpu \
+    paddleocr genai_server --model_name PaddleOCR-VL-0.9B --host 0.0.0.0 --port 8118 --backend vllm --backend_config /tmp/fastdeploy_config.yml
+```
+
 ### 3.2 Client Usage Method
 
 Please refer to the corresponding section in the [PaddleOCR-VL Usage Tutorial](./PaddleOCR-VL.en.md).
@@ -119,7 +132,76 @@ This method accelerates VLM inference based on the FastDeploy framework and is m
 
 Additionally, after starting the server using this method, no internet connection is required except for pulling the image. If you need to deploy in an offline environment, you can first pull the images involved in the Compose file on a connected machine, export them, and transfer them to the offline machine for import to start the service in an offline environment.
 
-If you need to adjust pipeline configurations (such as model path, batch size, deployment device, etc.), please refer to section 4.4.
+Docker Compose starts two containers sequentially by reading configurations from the `.env` and `compose.yaml` files, running the underlying VLM inference service and the PaddleOCR-VL service (pipeline service) respectively.
+
+The meanings of each environment variable contained in the `.env` file are as follows:
+
+```
+- `API_IMAGE_TAG_SUFFIX`: The tag suffix of the image used to launch the pipeline service.
+- `VLM_BACKEND`: The VLM inference backend.
+- `VLM_IMAGE_TAG_SUFFIX`: The tag suffix of the image used to launch the VLM inference service.
+```
+
+You can modify `compose.yaml` to meet custom requirements, for example:
+
+<details>
+<summary>1. Change the port of the PaddleOCR-VL service</summary>
+
+Edit `paddleocr-vl-api.ports` in the `compose.yaml` file to change the port. For example, if you need to change the service port to 8111, make the following modifications:
+```diff
+  paddleocr-vl-api:
+    ...
+    ports:
+-     - 8080:8080
++     - 8111:8080
+    ...
+```
+
+</details>
+
+<details>
+<summary>2. Specify the XPU used by the PaddleOCR-VL service</summary>
+
+Edit `environment` in the `compose.yaml` file to change the XPU used. For example, if you need to use card 1 for deployment, make the following modifications:
+
+```diff
+  paddleocr-vl-api:
+    ...
+    environment:
++     - XPU_VISIBLE_DEVICES: 1
+    ...
+  paddleocr-vlm-server:
+    ...
+    environment:
++     - XPU_VISIBLE_DEVICES: 1
+    ...
+```
+
+</details>
+
+<details>
+<summary>3. Adjust VLM server configuration</summary>
+
+If you want to adjust the VLM server configuration, refer to [3.3.1 Server Parameter Adjustment](./PaddleOCR-VL.en.md#331-server-parameter-adjustment) to generate a configuration file.
+
+After generating the configuration file, add the following `paddleocr-vlm-server.volumes` and `paddleocr-vlm-server.command` fields to your `compose.yaml`. Replace `/path/to/your_config.yaml` with your actual configuration file path.
+
+```yaml
+  paddleocr-vlm-server:
+    ...
+    volumes: /path/to/your_config.yaml:/home/paddleocr/vlm_server_config.yaml
+    command: paddleocr genai_server --model_name PaddleOCR-VL-0.9B --backend fastdeploy --backend_config /home/paddleocr/vlm_server_config.yaml
+    ...
+```
+
+</details>
+
+<details>
+<summary>4. Adjust pipeline-related configurations (such as model path, batch size, deployment device, etc.)</summary>
+
+Refer to the [4.4 Pipeline Configuration Adjustment Instructions](./PaddleOCR-VL.en.md#44-pipeline-configuration-adjustment-instructions) section.
+
+</details>
 
 ### 4.3 Client Invocation Methods
 

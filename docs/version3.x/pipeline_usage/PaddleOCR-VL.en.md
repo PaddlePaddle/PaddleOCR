@@ -8,6 +8,31 @@ PaddleOCR-VL is an advanced and efficient document parsing model designed specif
 
 <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr_vl/metrics/allmetric.png"/>
 
+## Process Guide
+
+Before starting, please refer to the next section for information on the inference device support provided by PaddleOCR-VL to **determine if your device meets the operational requirements.** If your device meets the requirements, please select the relevant section to read based on your needs.
+
+For some inference hardware, you may need to refer to other environment configuration documents we provide, but the process remains the same and does not affect your reading of the following process guide:
+
+1. **Want to quickly experience PaddleOCR-VL**:
+
+    If you wish to quickly experience the inference effects of PaddleOCR-VL, please read [1. Environment Preparation](#1-environment-preparation) and [2. Quick Start](#2-quick-start).
+
+2. **Want to use PaddleOCR-VL in a production environment**:
+
+    Although the quick experience allows you to feel the effects of PaddleOCR-VL, it may not be optimal in terms of inference speed and GPU memory usage. If you wish to apply PaddleOCR-VL in a production environment and have higher requirements for inference performance, please read [3. Enhancing VLM Inference Performance Using Inference Acceleration Frameworks](#3-enhancing-vlm-inference-performance-using-inference-acceleration-frameworks).
+
+3. **Want to deploy PaddleOCR-VL as an API service**:
+
+    If you want to deploy PaddleOCR-VL as a web service (API) so that other devices or applications can access and call it through a specific URL without configuring the environment, we offer two methods:
+
+    - Deployment using Docker Compose (one-click start, recommended): Please read [4.1 Method 1: Deploy Using Docker Compose](#41-method-1-deploy-using-docker-compose-recommended) and [4.3 Client-Side Invocation](#43-client-side-invocation).
+    - Manual deployment: Please read [1. Environment Preparation](#1-environment-preparation), [4.2 Method 2: Manual Deployment](#42-method-2-manual-deployment), and [4.3 Client-Side Invocation](#43-client-side-invocation).
+
+4. **Want to fine-tune PaddleOCR-VL to adapt to specific business needs**:
+
+    If you find that the accuracy performance of PaddleOCR-VL in specific business scenarios does not meet expectations, please read [5. Model Fine-tuning](#5-model-fine-tuning).
+
 ## Inference Device Support for PaddleOCR-VL
 
 Currently, PaddleOCR-VL offers four inference methods, with varying levels of support for different inference devices. Please confirm that your inference device meets the requirements in the table below before proceeding with PaddleOCR-VL deployment:
@@ -1069,7 +1094,18 @@ PaddleOCR provides Docker images for quickly launching vLLM or FastDeploy infere
 
     If you wish to start the service in an environment without internet access, replace `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-fastdeploy-server:latest` (image size approximately 43 GB) in the above command with the offline version image `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-fastdeploy-server:latest-offline` (image size approximately 45 GB).
 
-More parameters can be passed when launching vLLM or FastDeploy inference services. The supported parameters are detailed in the next subsection.
+When starting the vLLM or FastDeploy inference service, we provide a set of default parameter settings. If you have additional requirements for adjusting parameters such as GPU memory usage, you can configure more parameters yourself. Please refer to [3.3.1 Server-side Parameter Adjustment](#331-server-side-parameter-adjustment) to create a configuration file, then mount this file into the container, and specify the configuration file using `backend_config` in the command to start the service. Taking vLLM as an example:
+
+```shell
+docker run \
+    -it \
+    --rm \
+    --gpus all \
+    --network host \
+    -v vllm_config.yml:/tmp/vllm_config.yml \  
+    ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest \
+    paddleocr genai_server --model_name PaddleOCR-VL-0.9B --host 0.0.0.0 --port 8118 --backend vllm --backend_config /tmp/vllm_config.yml
+```
 
 #### 3.1.2 Method 2: Installation and Usage via PaddleOCR CLI
 
@@ -1196,7 +1232,7 @@ This step mainly introduces how to deploy PaddleOCR-VL as a service and invoke i
 
 - Method 1: Deploy using Docker Compose (recommended).
 
-- Method 2: Manually install dependencies for deployment.
+- Method 2: Manual Deployment.
 
 Note that the PaddleOCR-VL service described in this section differs from the VLM inference service in the previous section: the latter is responsible for only one part of the complete process (i.e., VLM inference) and is called as an underlying service by the former.
 
@@ -1220,17 +1256,105 @@ paddleocr-vl-api             | INFO:     Uvicorn running on http://0.0.0.0:8080 
 
 This solution accelerates VLM inference based on frameworks like vLLM, making it more suitable for production environment deployment. However, it requires the machine to be equipped with a GPU and the NVIDIA driver to support CUDA 12.6 or higher.
 
-The `.env` file can be used to configure environment variables, with detailed descriptions as follows:
+Additionally, after starting the server using this method, no internet connection is required except for pulling the image. For offline environment deployment, you can first pull the images involved in the Compose file on an online machine, export and transfer them to the offline machine for import, and then start the service in the offline environment.
+
+Docker Compose starts two containers in sequence by reading the configurations in the `.env` and `compose.yaml` files, running the underlying VLM inference service and the PaddleOCR-VL service (Pipeline) respectively.
+
+The meanings of each environment variable contained in the `.env` file are as follows:
 
 - `API_IMAGE_TAG_SUFFIX`: The tag suffix of the image used to start the pipeline service. The default is `latest-offline`, indicating the use of an offline GPU image.
 - `VLM_BACKEND`: The VLM inference backend, currently supporting `vllm` and `fastdeploy`. The default is `vllm`.
 - `VLM_IMAGE_TAG_SUFFIX`: The tag suffix of the image used to start the VLM inference service. The default is `latest-offline`, indicating the use of an offline GPU image.
 
-Additionally, after starting the server using this method, no internet connection is required except for pulling the image. For offline environment deployment, you can first pull the images involved in the Compose file on an online machine, export and transfer them to the offline machine for import, and then start the service in the offline environment.
+You can meet custom requirements by modifying `.env` and `compose.yaml`, for example:
 
-If you need to adjust pipeline configurations (such as model path, batch size, deployment device, etc.), refer to Section 4.4.
+<details>
+<summary>1. Change the port of the PaddleOCR-VL service</summary>
 
-### 4.2 Method 2: Manually Install Dependencies for Deployment
+Edit `paddleocr-vl-api.ports` in the `compose.yaml` file to change the port. For example, if you need to change the service port to 8111, make the following modifications:
+
+```diff
+  paddleocr-vl-api:
+    ...
+    ports:
+-     - 8080:8080
++     - 8111:8080
+    ...
+```
+
+</details>
+
+<details>
+<summary>2. Specify the GPU used by the PaddleOCR-VL service</summary>
+
+Edit `device_ids` in the `compose.yaml` file to change the GPU used. For example, if you need to use GPU card 1 for deployment, make the following modifications:
+
+```diff
+  paddleocr-vl-api:
+    ...
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+-             device_ids: ["0"]
++             device_ids: ["1"]
+              capabilities: [gpu]
+    ...
+  paddleocr-vlm-server:
+    ...
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+-             device_ids: ["0"]
++             device_ids: ["1"]
+              capabilities: [gpu]
+    ...
+```
+
+</details>
+
+<details>
+<summary>3. Adjust VLM server-side configuration</summary>
+
+If you want to adjust the VLM server-side configuration, please refer to [3.3.1 Server-side Parameter Adjustment](#331-server-side-parameter-adjustment) to generate a configuration file.
+
+After generating the configuration file, add the following `paddleocr-vlm-server.volumes` and `paddleocr-vlm-server.command` fields to your `compose.yaml`. Please replace `/path/to/your_config.yaml` with your actual configuration file path.
+
+```yaml
+  paddleocr-vlm-server:
+    ...
+    volumes: /path/to/your_config.yaml:/home/paddleocr/vlm_server_config.yaml
+    command: paddleocr genai_server --model_name PaddleOCR-VL-0.9B --backend vllm --backend_config /home/paddleocr/vlm_server_config.yaml
+    ...
+```
+
+</details>
+
+<details>
+<summary>4. Change the VLM inference backend</summary>
+
+Modify `VLM_BACKEND` in the `.env` file, for example, to change the VLM inference backend to `fastdeploy`:
+
+```diff
+  API_IMAGE_TAG_SUFFIX=latest-offline
+- VLM_BACKEND=vllm
++ VLM_BACKEND=fastdeploy
+  VLM_IMAGE_TAG_SUFFIX=latest-offline
+```
+
+</details>
+
+<details>
+<summary>5. Adjust pipeline configurations (such as model path, batch size, deployment device, etc.)</summary>
+
+Refer to section [4.4 Pipeline Configuration Adjustment Instructions](#44-pipeline-configuration-adjustment-instructions) in this document.
+
+</details>
+
+### 4.2 Method 2: Manual Deployment
 
 Execute the following command to install the service deployment plugin via the PaddleX CLI:
 

@@ -92,6 +92,26 @@ docker run -it \
 
 If you wish to start the service in an environment without internet access, replace `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-dcu` (image size approximately 25 GB) in the above command with the offline version image `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-dcu-offline` (image size approximately 27 GB).
 
+When launching the vLLM inference service, we provide a set of default parameter settings. If you need to adjust parameters such as GPU memory usage, you can configure additional parameters yourself. Please refer to [3.3.1 Server-side Parameter Adjustment](./PaddleOCR-VL.md#331-server-side-parameter-adjustment) to create a configuration file, then mount the file into the container and specify the configuration file using `backend_config` in the command to start the service, for example:
+
+```shell
+docker run -it \
+  --rm \
+  --user root \
+  --privileged \
+  --device /dev/kfd \
+  --device /dev/dri \
+  --device /dev/mkfd \
+  --group-add video \
+  --cap-add SYS_PTRACE \
+  --security-opt seccomp=unconfined \
+  -v /opt/hyhal/:/opt/hyhal/:ro \
+  -v vllm_config.yml:/tmp/vllm_config.yml \
+  --shm-size=64G \
+  ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-dcu \
+  paddleocr genai_server --model_name PaddleOCR-VL-0.9B --host 0.0.0.0 --port 8118 --backend vllm --backend_config /tmp/vllm_config.yml
+```
+
 ### 3.2 Client Usage Method
 
 Please refer to the corresponding section in the [PaddleOCR-VL Usage Tutorial](./PaddleOCR-VL.en.md).
@@ -130,7 +150,78 @@ This method accelerates VLM inference using the vLLM framework and is more suita
 
 Additionally, after starting the server in this manner, no internet connection is required except for image pulling. For deployment in an offline environment, you can first pull the images involved in the Compose file on a connected machine, export them, and transfer them to the offline machine for import to start the service in an offline environment.
 
-To adjust pipeline configurations (such as model paths, batch sizes, deployment devices, etc.), refer to Section 4.4.
+Docker Compose starts two containers sequentially by reading configurations from the `.env` and `compose.yaml` files, running the underlying VLM inference service and the PaddleOCR-VL service (pipeline service) respectively.
+
+The meanings of each environment variable contained in the `.env` file are as follows:
+
+```
+- `API_IMAGE_TAG_SUFFIX`: The tag suffix of the image used to launch the pipeline service.
+- `VLM_BACKEND`: The VLM inference backend.
+- `VLM_IMAGE_TAG_SUFFIX`: The tag suffix of the image used to launch the VLM inference service.
+```
+
+You can modify `compose.yaml` to meet custom requirements, for example:
+
+<details>
+<summary>1. Change the port of the PaddleOCR-VL service</summary>
+
+Edit `paddleocr-vl-api.ports` in the `compose.yaml` file to change the port. For example, if you need to change the service port to 8111, make the following modifications:
+
+```diff
+  paddleocr-vl-api:
+    ...
+    ports:
+-     - 8080:8080
++     - 8111:8080
+    ...
+```
+
+</details>
+
+<details>
+<summary>2. Specify the DCU used by the PaddleOCR-VL service</summary>
+
+Edit `environment` in the `compose.yaml` file to change the DCU used. For example, if you need to deploy using card 1, make the following modifications:
+
+```diff
+  paddleocr-vl-api:
+    ...
+    environment:
++     - HIP_VISIBLE_DEVICES: 1
+    ...
+  paddleocr-vlm-server:
+    ...
+    environment:
++     - HIP_VISIBLE_DEVICES: 1
+    ...
+```
+
+
+</details>
+
+<details>
+<summary>3. Adjust VLM server-side configuration</summary>
+
+If you want to adjust the VLM server-side configuration, refer to [3.3.1 Server-side Parameter Adjustment](./PaddleOCR-VL.md#331-server-side-parameter-adjustment) to generate a configuration file.
+
+After generating the configuration file, add the following `paddleocr-vlm-server.volumes` and `paddleocr-vlm-server.command` fields to your `compose.yaml`. Replace `/path/to/your_config.yaml` with your actual configuration file path.
+
+```yaml
+  paddleocr-vlm-server:
+    ...
+    volumes: /path/to/your_config.yaml:/home/paddleocr/vlm_server_config.yaml
+    command: paddleocr genai_server --model_name PaddleOCR-VL-0.9B --backend vllm --backend_config /home/paddleocr/vlm_server_config.yaml
+    ...
+```
+
+</details>
+
+<details>
+<summary>4. Adjust pipeline-related configurations (such as model path, batch size, deployment device, etc.)</summary>
+
+Refer to the [4.4 Pipeline Configuration Adjustment Instructions](./PaddleOCR-VL.en.md#44-pipeline-configuration-adjustment-instructions) section.
+
+</details>
 
 ### 4.3 Client Invocation Method
 
