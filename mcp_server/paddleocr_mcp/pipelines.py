@@ -138,6 +138,7 @@ class PipelineHandler(abc.ABC):
         device: Optional[str],
         server_url: Optional[str],
         aistudio_access_token: Optional[str],
+        qianfan_api_key: Optional[str],
         timeout: Optional[int],
     ) -> None:
         """Initialize the pipeline handler.
@@ -149,12 +150,13 @@ class PipelineHandler(abc.ABC):
             device: Device to run inference on.
             server_url: Base URL for service mode.
             aistudio_access_token: AI Studio access token.
+            qianfan_api_key: Qianfan API key.
             timeout: Read timeout in seconds for HTTP requests.
         """
         self._pipeline = pipeline
         if ppocr_source == "local":
             self._mode = "local"
-        elif ppocr_source in ("aistudio", "self_hosted"):
+        elif ppocr_source in ("aistudio", "qianfan", "self_hosted"):
             self._mode = "service"
         else:
             raise ValueError(f"Unknown PaddleOCR source {repr(ppocr_source)}")
@@ -163,6 +165,7 @@ class PipelineHandler(abc.ABC):
         self._device = device
         self._server_url = server_url
         self._aistudio_access_token = aistudio_access_token
+        self._qianfan_api_key = qianfan_api_key
         self._timeout = timeout or 60
 
         if self._mode == "local":
@@ -472,7 +475,9 @@ class SimpleInferencePipelineHandler(PipelineHandler):
             raise RuntimeError("Server URL not configured")
 
         endpoint = self._get_service_endpoint()
-        url = f"{self._server_url.rstrip('/')}/{endpoint.lstrip('/')}"
+        if endpoint:
+            endpoint = "/" + endpoint
+        url = f"{self._server_url.rstrip('/')}{endpoint}"
 
         payload = self._prepare_service_payload(processed_input, file_type, **kwargs)
         headers = {"Content-Type": "application/json"}
@@ -481,6 +486,10 @@ class SimpleInferencePipelineHandler(PipelineHandler):
             if not self._aistudio_access_token:
                 raise RuntimeError("Missing AI Studio access token")
             headers["Authorization"] = f"token {self._aistudio_access_token}"
+        elif self._ppocr_source == "qianfan":
+            if not self._qianfan_api_key:
+                raise RuntimeError("Missing Qianfan API key")
+            headers["Authorization"] = f"Bearer {self._qianfan_api_key}"
 
         try:
             timeout = httpx.Timeout(
@@ -907,6 +916,15 @@ class PaddleOCRVLHandler(_LayoutParsingHandler):
             paddlex_config=self._pipeline_config,
             device=self._device,
         )
+
+    def _get_service_endpoint(self) -> str:
+        return "layout-parsing" if self._ppocr_source != "qianfan" else "paddleocr"
+
+    def _transform_service_kwargs(self, kwargs: Dict[str, Any]) -> Dict[str, Any]:
+        kwargs = super()._transform_service_kwargs(kwargs)
+        if self._ppocr_source == "qianfan":
+            kwargs["model"] = "paddleocr-vl-0.9b"
+        return kwargs
 
 
 _PIPELINE_HANDLERS: Dict[str, Type[PipelineHandler]] = {
