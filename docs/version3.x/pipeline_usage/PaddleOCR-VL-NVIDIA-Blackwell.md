@@ -221,7 +221,7 @@ Docker Compose 通过读取 `.env` 和 `compose.yaml` 文件中配置，先后�
 <details>
 <summary>2. 指定 PaddleOCR-VL 服务所使用的 GPU</summary>
 
-编辑 `compose.yaml` 文件中的 `devices` 来更改所使用的 GPU。例如，如果您需要使用卡 1 进行部署，可以进行以下修改：
+编辑 `compose.yaml` 文件中的 `device_ids` 来更改所使用的 GPU。例如，如果您需要使用卡 1 进行部署，可以进行以下修改：
 
 ```diff
   paddleocr-vl-api:
