@@ -28,11 +28,42 @@ using json = nlohmann::json;
 
 void OCRResult::SaveToImg(const std::string &save_path) {
   cv::Mat image = pipeline_result_.doc_preprocessor_res.output_image;
-  auto texts = pipeline_result_.rec_texts;
-  std::vector<std::vector<cv::Point>> boxes;
-  std::vector<std::vector<cv::Point2f>> boxes_float =
-      pipeline_result_.rec_polys;
-  for (const auto &floatPolygon : pipeline_result_.rec_polys) {
+  std::vector<std::string> texts = {};
+  std::vector<std::vector<cv::Point>> boxes = {};
+  std::vector<std::vector<cv::Point2f>> boxes_float = {};
+  if (pipeline_result_.return_word_box) {
+    std::vector<std::vector<cv::Point2f>> flat_word_region;
+    for (const auto &sublist : pipeline_result_.text_word_region) {
+      for (const auto &item : sublist) {
+        flat_word_region.push_back(item);
+      }
+    }
+    std::vector<std::string> text_word = {};
+    for (const auto &word : pipeline_result_.text_word) {
+      for (const auto &item : word) {
+        text_word.push_back(item);
+      }
+    }
+    for (size_t idx = 0; idx < flat_word_region.size(); ++idx) {
+      const std::vector<cv::Point2f> &word_region = flat_word_region[idx];
+      if (word_region.size() < 4)
+        continue;
+      int box_height = static_cast<int>(
+          std::sqrt(std::pow(word_region[0].x - word_region[3].x, 2) +
+                    std::pow(word_region[0].y - word_region[3].y, 2)));
+      int box_width = static_cast<int>(
+          std::sqrt(std::pow(word_region[0].x - word_region[1].x, 2) +
+                    std::pow(word_region[0].y - word_region[1].y, 2)));
+      if (box_height == 0 || box_width == 0)
+        continue;
+      boxes_float.push_back(word_region);
+      texts.push_back(text_word[idx]);
+    }
+  } else {
+    texts = pipeline_result_.rec_texts;
+    boxes_float = pipeline_result_.rec_polys;
+  }
+  for (const auto &floatPolygon : boxes_float) {
     std::vector<cv::Point> intPolygon;
     for (const auto &point : floatPolygon) {
       intPolygon.push_back(cv::Point(cvRound(point.x), cvRound(point.y)));
@@ -356,6 +387,7 @@ void OCRResult::SaveToJson(const std::string &save_path) const {
         pipeline_result_.textline_orientation_angles;
   }
   j["text_rec_score_thresh"] = pipeline_result_.text_rec_score_thresh;
+  j["return_word_box"] = pipeline_result_.return_word_box;
   j["rec_texts"] = pipeline_result_.rec_texts;
   j["rec_scores"] = pipeline_result_.rec_scores;
   json rec_polys_json = json::array();
@@ -369,19 +401,11 @@ void OCRResult::SaveToJson(const std::string &save_path) const {
   }
   j["rec_polys"] = rec_polys_json;
 
-  std::vector<std::array<int, 4>> int_vec;
-  int_vec.reserve(pipeline_result_.rec_boxes.size());
-
-  std::transform(pipeline_result_.rec_boxes.begin(),
-                 pipeline_result_.rec_boxes.end(), std::back_inserter(int_vec),
-                 [](const std::array<float, 4> &arr) {
-                   std::array<int, 4> res;
-                   for (size_t i = 0; i < 4; ++i) {
-                     res[i] = static_cast<int>(arr[i]);
-                   }
-                   return res;
-                 });
-  j["rec_boxes"] = int_vec;
+  j["rec_boxes"] = pipeline_result_.rec_boxes;
+  if (pipeline_result_.return_word_box) {
+    j["text_word_boxes"] = pipeline_result_.text_word_boxes;
+    j["text_word"] = pipeline_result_.text_word;
+  }
 
   absl::StatusOr<std::string> full_path;
   if (pipeline_result_.input_path.empty()) {
@@ -479,7 +503,7 @@ void PrintIntArray(const std::vector<int> &arr) {
   std::cout << "]";
 }
 
-void PrintRecBoxes(const std::vector<std::array<float, 4>> &arr) {
+void PrintRecBoxes(const std::vector<std::array<int, 4>> &arr) {
   std::cout << "[";
   for (size_t i = 0; i < arr.size(); ++i) {
     if (i != 0)
@@ -509,11 +533,11 @@ void OCRResult::Print() const {
     PrintDocPreprocessorPipelineResult(pipeline_result_.doc_preprocessor_res);
     std::cout << ",\n";
   }
-  std::cout << "  \"dt_polys\": ";
-  PrintPolys(pipeline_result_.dt_polys);
-  std::cout << ",\n";
   std::cout << "  \"model_settings\": ";
   PrintModelSettings(pipeline_result_.model_settings);
+  std::cout << ",\n";
+  std::cout << "  \"dt_polys\": ";
+  PrintPolys(pipeline_result_.dt_polys);
   std::cout << ",\n";
   std::cout << "  \"text_det_params\": ";
   PrintTextDetParams(pipeline_result_.text_det_params);
@@ -521,6 +545,21 @@ void OCRResult::Print() const {
   std::cout << "  \"text_type\": \"" << pipeline_result_.text_type << "\",\n";
   std::cout << "  \"text_rec_score_thresh\": "
             << pipeline_result_.text_rec_score_thresh << ",\n";
+  std::cout << "  \"return_word_box\": "
+            << (pipeline_result_.return_word_box ? "true" : "false") << ",\n";
+
+  std::cout << "  \"text_word_boxes\": ";
+  if (pipeline_result_.return_word_box) {
+    for (const auto &item : pipeline_result_.text_word_boxes) {
+      PrintRecBoxes(item);
+    }
+  }
+  std::cout << "  \"text_word\": ";
+  if (pipeline_result_.return_word_box) {
+    for (const auto &item : pipeline_result_.text_word) {
+      PrintStringArray(item);
+    }
+  }
   std::cout << "  \"rec_texts\": ";
   PrintStringArray(pipeline_result_.rec_texts);
   std::cout << ",\n";
