@@ -25,11 +25,24 @@ docker run \
     --user root \
     --shm-size 64G \
     ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-xpu \
-    /bin/bash
+    paddleocr genai_server --model_name PaddleOCR-VL-0.9B --host 0.0.0.0 --port 8118 --backend fastdeploy
 # 在容器中调用 PaddleOCR CLI 或 Python API
 ```
 
 如果您希望在无法连接互联网的环境中启动服务，请将上述命令中的 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-xpu`（镜像大小约为 12 GB）更换为离线版本镜像 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-xpu-offline`（镜像大小约为 14 GB）。
+
+启动 FastDeploy 推理服务时，我们提供了一套默认参数设置。如果您有调整显存占用等更多参数的需求，可以自行配置更多参数。请参考 [3.3.1 服务端参数调整](./PaddleOCR-VL.md#331-服务端参数调整) 创建配置文件，然后将该文件挂载到容器中，并在启动服务的命令中使用 `backend_config` 指定配置文件，例如：
+
+```shell
+docker run \
+    -it \
+    --rm \
+    --gpus all \
+    --network host \
+    -v fastdeploy_config.yml:/tmp/fastdeploy_config.yml \  
+    ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-xpu \
+    paddleocr genai_server --model_name PaddleOCR-VL-0.9B --host 0.0.0.0 --port 8118 --backend vllm --backend_config /tmp/fastdeploy_config.yml
+```
 
 ### 1.2 方法二：手动安装 PaddlePaddle 和 PaddleOCR
 
@@ -120,7 +133,75 @@ docker run \
 
 此外，使用此方式启动服务器后，除拉取镜像外，无需连接互联网。如需在离线环境中部署，可先在联网机器上拉取 Compose 文件中涉及的镜像，导出并传输至离线机器中导入，即可在离线环境下启动服务。
 
-如需调整产线相关配置（如模型路径、批处理大小、部署设备等），可参考 4.4 小节。
+Docker Compose 通过读取 `.env` 和 `compose.yaml` 文件中配置，先后启动 2 个容器，分别运行底层 VLM 推理服务，以及 PaddleOCR-VL 服务（产线服务）。
+
+`.env` 文件中包含的各环境变量含义如下：
+
+- `API_IMAGE_TAG_SUFFIX`：启动产线服务使用的镜像的标签后缀。
+- `VLM_BACKEND`：VLM 推理后端。
+- `VLM_IMAGE_TAG_SUFFIX`：启动 VLM 推理服务使用的镜像的标签后缀。
+
+您可以通过修改 `compose.yaml` 来满足自定义需求，例如：
+
+<details>
+<summary>1. 更改 PaddleOCR-VL 服务的端口</summary>
+
+编辑 `compose.yaml` 文件中的 `paddleocr-vl-api.ports` 来更改端口。例如，如果您需要将服务端口更换为 8111，可以进行以下修改：
+
+```diff
+  paddleocr-vl-api:
+    ...
+    ports:
+-     - 8080:8080
++     - 8111:8080
+    ...
+```
+
+</details>
+
+<details>
+<summary>2. 指定 PaddleOCR-VL 服务所使用的 XPU</summary>
+
+编辑 `compose.yaml` 文件中的 `environment` 来更改所使用的 XPU。例如，如果您需要使用卡 1 进行部署，可以进行以下修改：
+
+```diff
+  paddleocr-vl-api:
+    ...
+    environment:
++     - XPU_VISIBLE_DEVICES: 1
+    ...
+  paddleocr-vlm-server:
+    ...
+    environment:
++     - XPU_VISIBLE_DEVICES: 1
+    ...
+```
+
+</details>
+
+<details>
+<summary>3. 调整 VLM 服务端配置</summary>
+
+若您想调整 VLM 服务端的配置，可以参考 [3.3.1 服务端参数调整](./PaddleOCR-VL.md#331-服务端参数调整) 生成配置文件。
+
+生成配置文件后，将以下的 `paddleocr-vlm-server.volumes` 和 `paddleocr-vlm-server.command` 字段增加到您的 `compose.yaml` 中。请将 `/path/to/your_config.yaml` 替换为您的实际配置文件路径。
+
+```yaml
+  paddleocr-vlm-server:
+    ...
+    volumes: /path/to/your_config.yaml:/home/paddleocr/vlm_server_config.yaml
+    command: paddleocr genai_server --model_name PaddleOCR-VL-0.9B --backend fastdeploy --backend_config /home/paddleocr/vlm_server_config.yaml
+    ...
+```
+
+</details>
+
+<details>
+<summary>4. 调整产线相关配置（如模型路径、批处理大小、部署设备等）</summary>
+
+参考 [4.4 产线配置调整说明](./PaddleOCR-VL.md#44-产线配置调整说明) 小节。
+
+</details>
 
 ### 4.3 客户端调用方式
 
