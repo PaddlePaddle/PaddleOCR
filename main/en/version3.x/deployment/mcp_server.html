@@ -1916,10 +1916,21 @@ You're not viewing the latest version.
 </li>
         
           <li class="md-nav__item">
-  <a href="#mode-3-self-hosted-service" class="md-nav__link">
+  <a href="#mode-3-qianfan-platform-services" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Mode 3: Self-hosted Service
+        Mode 3: Qianfan Platform Services
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mode-4-self-hosted-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mode 4: Self-hosted Service
       
     </span>
   </a>
@@ -4493,10 +4504,21 @@ You're not viewing the latest version.
 </li>
         
           <li class="md-nav__item">
-  <a href="#mode-3-self-hosted-service" class="md-nav__link">
+  <a href="#mode-3-qianfan-platform-services" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Mode 3: Self-hosted Service
+        Mode 3: Qianfan Platform Services
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mode-4-self-hosted-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mode 4: Self-hosted Service
       
     </span>
   </a>
@@ -4639,6 +4661,7 @@ You're not viewing the latest version.
 <li><strong>Supported Working Modes</strong><ul>
 <li><strong>Local Python Library</strong>: Runs PaddleOCR pipelines directly on the local machine. This mode requires a suitable local environment and hardware, and is ideal for offline use or privacy-sensitive scenarios.</li>
 <li><strong>PaddleOCR Official Website Service</strong>: Invokes services provided by the <a href="https://aistudio.baidu.com/paddleocr?lang=en">PaddleOCR Official Website</a>. This is suitable for quick testing, prototyping, or no-code scenarios.</li>
+<li><strong>Qianfan Platform Service</strong>: Calls the cloud services provided by Baidu AI Cloud's Qianfan large model platform.</li>
 <li><strong>Self-hosted Service</strong>: Invokes the user's self-hosted PaddleOCR services. This mode offers the advantages of serving and high flexibility. It is suitable for scenarios requiring customized service configurations, as well as those with strict data privacy requirements. <strong>Currently, only the basic serving solution is supported.</strong></li>
 </ul>
 </li>
@@ -4704,29 +4727,25 @@ You're not viewing the latest version.
 <h2 id="1-installation">1. Installation<a class="headerlink" href="#1-installation" title="Permanent link">&para;</a></h2>
 <p>This section explains how to install the <code>paddleocr-mcp</code> library via pip.</p>
 <ul>
-<li>For the local Python library mode, you need to install both <code>paddleocr-mcp</code> and the PaddlePaddle framework along with PaddleOCR, as per the <a href="../installation.html">PaddleOCR installation documentation</a>.</li>
-<li>For the PaddleOCR official website service or the self-hosted service modes, if used within MCP hosts like Claude for Desktop, the server can also be run without installation via tools like <code>uvx</code>. See <a href="#2-using-with-claude-for-desktop">2. Using with Claude for Desktop</a> for details.</li>
+<li>For the local Python library mode, in addition to installing <code>paddleocr-mcp</code>, you also need to install the PaddlePaddle framework and PaddleOCR by referring to the <a href="../installation.html">PaddleOCR installation guide</a>.</li>
+<li>For the local Python library mode, you may also consider installing the corresponding optional dependencies:</li>
+<li><code>paddleocr-mcp[local]</code>: includes PaddleOCR (without the PaddlePaddle framework).</li>
+<li><code>paddleocr-mcp[local-cpu]</code>: based on <code>local</code>, additionally includes the CPU version of the PaddlePaddle framework.</li>
+<li>PaddleOCR also supports running the server without installation through methods like <code>uvx</code>. For details, please refer to the instructions in <a href="#2-using-with-claude-for-desktop">2. Using with Claude for Desktop</a>.</li>
 </ul>
-<p>For the local Python library mode you may optionally choose convenience extras (helpful to reduce manual dependency steps):</p>
-<ul>
-<li><code>paddleocr-mcp[local]</code>: Includes PaddleOCR (but NOT the PaddlePaddle framework itself).</li>
-<li><code>paddleocr-mcp[local-cpu]</code>: Includes PaddleOCR AND the CPU version of the PaddlePaddle framework.</li>
-</ul>
-<p>It is still recommended to use an isolated virtual environment to avoid conflicts.</p>
 <p>To install <code>paddleocr-mcp</code> using pip:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Install from PyPI</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </span>paddleocr-mcp
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1"># Or install from source</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="c1"># git clone https://github.com/PaddlePaddle/PaddleOCR.git</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="c1"># pip install -e mcp_server</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1"># Install from source</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/PaddlePaddle/PaddleOCR.git
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>mcp_server
 </span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>
 </span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="c1"># Install with optional extras (choose ONE of the following if you prefer convenience installs)</span>
 </span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="c1"># Install PaddleOCR together with the MCP server (framework not included):</span>
 </span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;paddleocr-mcp[local]&quot;</span>
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="c1"># Install PaddleOCR and CPU PaddlePaddle framework together:</span>
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;paddleocr-mcp[local-cpu]&quot;</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="c1"># Install PaddleOCR and CPU PaddlePaddle framework together:</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;paddleocr-mcp[local-cpu]&quot;</span>
 </span></code></pre></div>
 <p>To verify successful installation:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>paddleocr_mcp<span class="w"> </span>--help
@@ -4869,11 +4888,11 @@ You're not viewing the latest version.
 <ul>
 <li>Do not expose your access token.</li>
 </ul>
-<h4 id="mode-3-self-hosted-service">Mode 3: Self-hosted Service<a class="headerlink" href="#mode-3-self-hosted-service" title="Permanent link">&para;</a></h4>
+<h4 id="mode-3-qianfan-platform-services">Mode 3: Qianfan Platform Services<a class="headerlink" href="#mode-3-qianfan-platform-services" title="Permanent link">&para;</a></h4>
 <ol>
-<li>In the environment where you need to run the PaddleOCR inference server, run the inference server as per the <a href="serving.html">PaddleOCR serving documentation</a>.</li>
-<li>Install <code>paddleocr-mcp</code> where the MCP server will run.</li>
-<li>Refer to the configuration example below to modify the contents of the <code>claude_desktop_config.json</code> file. Set <code>PADDLEOCR_MCP_SERVER_URL</code> (e.g., <code>"http://127.0.0.1:8000"</code>).</li>
+<li>Install <code>paddleocr-mcp</code>.</li>
+<li>Obtain an API key by referring to the <a href="https://cloud.baidu.com/doc/qianfan-api/s/ym9chdsy5">Qianfan Platform Official Documentation</a>.</li>
+<li>Modify the <code>claude_desktop_config.json</code> file according to the configuration example below. Set <code>PADDLEOCR_MCP_QIANFAN_API_KEY</code> to your Qianfan platform API key.</li>
 <li>Restart the MCP host.</li>
 </ol>
 <p>Configuration example:</p>
@@ -4883,13 +4902,40 @@ You're not viewing the latest version.
 </span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">      </span><span class="nt">&quot;command&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;paddleocr_mcp&quot;</span><span class="p">,</span>
 </span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">      </span><span class="nt">&quot;args&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
 </span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">      </span><span class="nt">&quot;env&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">        </span><span class="nt">&quot;PADDLEOCR_MCP_PIPELINE&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;OCR&quot;</span><span class="p">,</span>
-</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="w">        </span><span class="nt">&quot;PADDLEOCR_MCP_PPOCR_SOURCE&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;self_hosted&quot;</span><span class="p">,</span>
-</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="w">        </span><span class="nt">&quot;PADDLEOCR_MCP_SERVER_URL&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;your-server-url&gt;&quot;</span>
-</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="w">      </span><span class="p">}</span>
-</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="w">    </span><span class="p">}</span>
-</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="w">  </span><span class="p">}</span>
-</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="p">}</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">        </span><span class="nt">&quot;PADDLEOCR_MCP_PIPELINE&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;PaddleOCR-VL&quot;</span><span class="p">,</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="w">        </span><span class="nt">&quot;PADDLEOCR_MCP_PPOCR_SOURCE&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;qianfan&quot;</span><span class="p">,</span>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="w">        </span><span class="nt">&quot;PADDLEOCR_MCP_SERVER_URL&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://qianfan.baidubce.com/v2/ocr&quot;</span><span class="p">,</span>
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="w">        </span><span class="nt">&quot;PADDLEOCR_MCP_QIANFAN_API_KEY&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;your-api-key&gt;&quot;</span>
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="w">      </span><span class="p">}</span>
+</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="p">}</span>
+</span></code></pre></div>
+<p><strong>Note</strong>:</p>
+<ul>
+<li>The Qianfan platform service currently only supports PaddleOCR-VL.</li>
+</ul>
+<h4 id="mode-4-self-hosted-service">Mode 4: Self-hosted Service<a class="headerlink" href="#mode-4-self-hosted-service" title="Permanent link">&para;</a></h4>
+<ol>
+<li>In the environment where you need to run the PaddleOCR inference server, run the inference server as per the <a href="serving.html">PaddleOCR serving documentation</a>.</li>
+<li>Install <code>paddleocr-mcp</code> where the MCP server will run.</li>
+<li>Refer to the configuration example below to modify the contents of the <code>claude_desktop_config.json</code> file. Set <code>PADDLEOCR_MCP_SERVER_URL</code> (e.g., <code>"http://127.0.0.1:8000"</code>).</li>
+<li>Restart the MCP host.</li>
+</ol>
+<p>Configuration example:</p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="p">{</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span><span class="nt">&quot;mcpServers&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">    </span><span class="nt">&quot;paddleocr-ocr&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">      </span><span class="nt">&quot;command&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;paddleocr_mcp&quot;</span><span class="p">,</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">      </span><span class="nt">&quot;args&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">      </span><span class="nt">&quot;env&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">        </span><span class="nt">&quot;PADDLEOCR_MCP_PIPELINE&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;OCR&quot;</span><span class="p">,</span>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">        </span><span class="nt">&quot;PADDLEOCR_MCP_PPOCR_SOURCE&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;self_hosted&quot;</span><span class="p">,</span>
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="w">        </span><span class="nt">&quot;PADDLEOCR_MCP_SERVER_URL&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;your-server-url&gt;&quot;</span>
+</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="w">      </span><span class="p">}</span>
+</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="p">}</span>
 </span></code></pre></div>
 <p><strong>Note</strong>:</p>
 <ul>
@@ -4897,7 +4943,7 @@ You're not viewing the latest version.
 <li>Replace <code>&lt;your-server-url&gt;</code> with your service’s base URL (e.g., <code>http://127.0.0.1:8000</code>).</li>
 </ul>
 <h3 id="24-using-uvx">2.4 Using <code>uvx</code><a class="headerlink" href="#24-using-uvx" title="Permanent link">&para;</a></h3>
-<p>Currently, for the PaddleOCR official website and self-hosted modes, and (for CPU inference) the local mode, starting the MCP server via <code>uvx</code> is also supported. With this approach, manual installation of <code>paddleocr-mcp</code> is not required. The main steps are as follows:</p>
+<p>PaddleOCR also supports starting the MCP server via <code>uvx</code>. With this approach, manual installation of <code>paddleocr-mcp</code> is not required. The main steps are as follows:</p>
 <ol>
 <li>Install <a href="https://docs.astral.sh/uv/#installation">uv</a>.</li>
 <li>Modify <code>claude_desktop_config.json</code>. Examples:</li>
@@ -4923,7 +4969,7 @@ You're not viewing the latest version.
 }
 ```
 
-Local mode (CPU, using the `local-cpu` extra):
+Local mode (inference on CPUs, using the `local-cpu` extra):
 
 ```json
 {
@@ -4944,22 +4990,24 @@ Local mode (CPU, using the `local-cpu` extra):
 }
 ```
 
-Because a different startup method is used (`uvx` pulls and runs the package on-demand), only `command` and `args` differ from earlier examples; available environment variables and CLI arguments remain identical.
+For information on local mode dependencies, performance tuning, and production configuration, please refer to the [3.1 Quick Start](#21-quick-start) section.
+
+Due to the use of a different startup method, the `command` and `args` settings in the configuration file differ from the previously described approach. However, the command-line arguments and environment variables supported by the MCP service (such as `PADDLEOCR_MCP_SERVER_URL`) can still be set in the same way.
 </code></pre></div>
 <h2 id="3-running-the-server">3. Running the Server<a class="headerlink" href="#3-running-the-server" title="Permanent link">&para;</a></h2>
 <p>In addition to MCP hosts like Claude for Desktop, you can also run the PaddleOCR MCP server via the CLI.</p>
 <p>To view help:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>paddleocr_mcp<span class="w"> </span>--help
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>paddleocr_mcp<span class="w"> </span>--help
 </span></code></pre></div>
 <p>Example commands:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># OCR + PaddleOCR official website service + stdio</span>
-</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="nv">PADDLEOCR_MCP_AISTUDIO_ACCESS_TOKEN</span><span class="o">=</span>xxxxxx<span class="w"> </span>paddleocr_mcp<span class="w"> </span>--pipeline<span class="w"> </span>OCR<span class="w"> </span>--ppocr_source<span class="w"> </span>aistudio<span class="w"> </span>--server_url<span class="w"> </span>https://xxxxxx.aistudio-hub.baidu.com
-</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>
-</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="c1"># PP-StructureV3 + local Python library + stdio</span>
-</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>paddleocr_mcp<span class="w"> </span>--pipeline<span class="w"> </span>PP-StructureV3<span class="w"> </span>--ppocr_source<span class="w"> </span><span class="nb">local</span>
-</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>
-</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="c1"># OCR + self-hosted service + Streamable HTTP</span>
-</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>paddleocr_mcp<span class="w"> </span>--pipeline<span class="w"> </span>OCR<span class="w"> </span>--ppocr_source<span class="w"> </span>self_hosted<span class="w"> </span>--server_url<span class="w"> </span>http://127.0.0.1:8080<span class="w"> </span>--http
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1"># OCR + PaddleOCR official website service + stdio</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="nv">PADDLEOCR_MCP_AISTUDIO_ACCESS_TOKEN</span><span class="o">=</span>xxxxxx<span class="w"> </span>paddleocr_mcp<span class="w"> </span>--pipeline<span class="w"> </span>OCR<span class="w"> </span>--ppocr_source<span class="w"> </span>aistudio<span class="w"> </span>--server_url<span class="w"> </span>https://xxxxxx.aistudio-hub.baidu.com
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="c1"># PP-StructureV3 + local Python library + stdio</span>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>paddleocr_mcp<span class="w"> </span>--pipeline<span class="w"> </span>PP-StructureV3<span class="w"> </span>--ppocr_source<span class="w"> </span><span class="nb">local</span>
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="c1"># OCR + self-hosted service + Streamable HTTP</span>
+</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>paddleocr_mcp<span class="w"> </span>--pipeline<span class="w"> </span>OCR<span class="w"> </span>--ppocr_source<span class="w"> </span>self_hosted<span class="w"> </span>--server_url<span class="w"> </span>http://127.0.0.1:8080<span class="w"> </span>--http
 </span></code></pre></div>
 <p>You can find all the supported parameters of the PaddleOCR MCP server in <a href="#4-parameter-reference">4. Parameter Reference</a>.</p>
 <h2 id="4-parameter-reference">4. Parameter Reference<a class="headerlink" href="#4-parameter-reference" title="Permanent link">&para;</a></h2>
@@ -4989,14 +5037,14 @@ Because a different startup method is used (`uvx` pulls and runs the package on-
 <td><code>--ppocr_source</code></td>
 <td><code>str</code></td>
 <td>Source of PaddleOCR capabilities.</td>
-<td><code>"local"</code> (local Python library), <code>"aistudio"</code> (PaddleOCR official website service), <code>"self_hosted"</code> (self-hosted service)</td>
+<td><code>"local"</code> (local Python library), <code>"aistudio"</code> (PaddleOCR official website service), <code>"qianfan"</code> (Qianfan platform service), <code>"self_hosted"</code> (self-hosted service)</td>
 <td><code>"local"</code></td>
 </tr>
 <tr>
 <td><code>PADDLEOCR_MCP_SERVER_URL</code></td>
 <td><code>--server_url</code></td>
 <td><code>str</code></td>
-<td>Base URL for the underlying service (<code>aistudio</code> or <code>self_hosted</code> mode only).</td>
+<td>Base URL for the underlying service (required for <code>aistudio</code>, <code>qianfan</code>, or <code>self_hosted</code> modes).</td>
 <td>-</td>
 <td><code>None</code></td>
 </tr>
@@ -5004,7 +5052,7 @@ Because a different startup method is used (`uvx` pulls and runs the package on-
 <td><code>PADDLEOCR_MCP_AISTUDIO_ACCESS_TOKEN</code></td>
 <td><code>--aistudio_access_token</code></td>
 <td><code>str</code></td>
-<td>AI Studio access token (<code>aistudio</code> mode only).</td>
+<td>AI Studio access token (required for <code>aistudio</code> mode).</td>
 <td>-</td>
 <td><code>None</code></td>
 </tr>

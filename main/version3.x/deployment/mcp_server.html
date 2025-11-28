@@ -1919,7 +1919,18 @@ You're not viewing the latest version.
   <a href="#_4" class="md-nav__link">
     <span class="md-ellipsis">
       
-        模式三：自托管服务
+        模式三：千帆平台服务
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        模式四：自托管服务
       
     </span>
   </a>
@@ -4496,7 +4507,18 @@ You're not viewing the latest version.
   <a href="#_4" class="md-nav__link">
     <span class="md-ellipsis">
       
-        模式三：自托管服务
+        模式三：千帆平台服务
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        模式四：自托管服务
       
     </span>
   </a>
@@ -4639,6 +4661,7 @@ You're not viewing the latest version.
 <li><strong>支持运行在如下工作模式</strong><ul>
 <li><strong>本地 Python 库</strong>：在本机直接运行 PaddleOCR 产线。此模式对本地环境与计算机性能有一定要求，适用于需要离线使用、对数据隐私有严格要求的场景。</li>
 <li><strong>PaddleOCR 官网服务</strong>：调用 <a href="https://aistudio.baidu.com/paddleocr">PaddleOCR 官网</a> 提供的云服务。此模式适合快速体验功能、快速验证方案等，也适用于零代码开发场景。</li>
+<li><strong>千帆平台服务</strong>：调用百度智能云千帆大模型平台提供的云服务。</li>
 <li><strong>自托管服务</strong>：调用用户自托管的 PaddleOCR 服务。此模式具备服务化部署优势及高度灵活性，适用于需要自定义服务配置的场景，同时也适用于对数据隐私有严格要求的场景。<strong>目前暂时只支持基础服务化部署方案。</strong></li>
 </ul>
 </li>
@@ -4708,23 +4731,21 @@ You're not viewing the latest version.
 <li>对于本地 Python 库模式，也可以考虑选择安装相应的可选依赖：</li>
 <li><code>paddleocr-mcp[local]</code>：包含 PaddleOCR（不包含飞桨框架）。</li>
 <li><code>paddleocr-mcp[local-cpu]</code>：在 <code>local</code> 基础上额外包含 CPU 版本的飞桨框架。</li>
-<li>本地模式也支持通过 <code>uvx</code> 方式免安装运行服务器（适用于 CPU 推理）。详情请参考 <a href="#24-使用-uvx">2.4 使用 <code>uvx</code></a> 中的说明。</li>
-<li>对于 PaddleOCR 官网服务和自托管服务模式，如果希望在 Claude for Desktop 等 MCP 主机中使用，也支持通过 <code>uvx</code> 等方式免安装运行服务器。详情请参考 <a href="#2-在-claude-for-desktop-中使用">2. 在 Claude for Desktop 中使用</a> 中的说明。</li>
+<li>PaddleOCR 也支持通过 <code>uvx</code> 等方式免安装运行服务器。详情请参考 <a href="#2-在-claude-for-desktop-中使用">2. 在 Claude for Desktop 中使用</a> 中的说明。</li>
 </ul>
 <p>使用 pip 安装 <code>paddleocr-mcp</code> 库的命令如下：</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># 从 PyPI 安装</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </span>paddleocr-mcp
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1"># 或者，从项目源码安装</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="c1"># git clone https://github.com/PaddlePaddle/PaddleOCR.git</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="c1"># pip install -e mcp_server</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1"># 从项目源码安装</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/PaddlePaddle/PaddleOCR.git
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>mcp_server
 </span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>
 </span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="c1"># 通过指定 extra 安装可选依赖</span>
 </span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="c1"># 同时安装 PaddleOCR</span>
 </span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;paddleocr-mcp[local]&quot;</span>
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="c1"># 同时安装 PaddleOCR 和 CPU 版本飞桨框架</span>
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;paddleocr-mcp[local-cpu]&quot;</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="c1"># 同时安装 PaddleOCR 和 CPU 版本飞桨框架</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;paddleocr-mcp[local-cpu]&quot;</span>
 </span></code></pre></div>
 <p>可通过以下命令检查是否安装成功：</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>paddleocr_mcp<span class="w"> </span>--help
@@ -4733,7 +4754,7 @@ You're not viewing the latest version.
 <h2 id="2-claude-for-desktop">2. 在 Claude for Desktop 中使用<a class="headerlink" href="#2-claude-for-desktop" title="Permanent link">&para;</a></h2>
 <p>本节将介绍如何在 Claude for Desktop 中使用 PaddleOCR MCP 服务器。对于其他 MCP 主机，也可参照本节的步骤，并根据实际情况进行相应调整。</p>
 <h3 id="21">2.1 快速开始<a class="headerlink" href="#21" title="Permanent link">&para;</a></h3>
-<p>接下来以 <strong>PaddleOCR 官网服务</strong> 工作模式为例，引导您快速上手。此模式无需在本地安装复杂的依赖，因此比较适合用于快速体验。</p>
+<p>接下来以 <strong>PaddleOCR 官网服务</strong> 工作模式为例，引导您快速上手。</p>
 <ol>
 <li>
 <p><strong>安装 <code>paddleocr-mcp</code></strong></p>
@@ -4855,11 +4876,11 @@ You're not viewing the latest version.
 <h4 id="paddleocr">模式二：PaddleOCR 官网服务<a class="headerlink" href="#paddleocr" title="Permanent link">&para;</a></h4>
 <p>请参考 <a href="#21-快速开始">2.1 快速开始</a>。</p>
 <p>对于文字识别以外的任务，请在 PaddleOCR 官网获取任务对应的服务基础 URL，并正确设置 <code>PADDLEOCR_MCP_PIPELINE</code> 与 <code>PADDLEOCR_MCP_SERVER_URL</code>（参数说明详见第 4 节）。</p>
-<h4 id="_4">模式三：自托管服务<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h4>
+<h4 id="_4">模式三：千帆平台服务<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h4>
 <ol>
-<li>在需要运行 PaddleOCR 推理服务器的环境中，参考 <a href="serving.html">PaddleOCR 服务化部署文档</a> 运行推理服务器。</li>
-<li>在需要运行 MCP 服务器的环境中安装 <code>paddleocr-mcp</code>。</li>
-<li>参考下方的配置示例更改 <code>claude_desktop_config.json</code> 文件内容。将您的服务地址填入 <code>PADDLEOCR_MCP_SERVER_URL</code> (例如：<code>"http://127.0.0.1:8000"</code>)。</li>
+<li>安装 <code>paddleocr-mcp</code>。</li>
+<li>参考 <a href="https://cloud.baidu.com/doc/qianfan-api/s/ym9chdsy5">千帆平台官方文档</a> 获取 API key。</li>
+<li>参考下方的配置示例更改 <code>claude_desktop_config.json</code> 文件内容。将 <code>PADDLEOCR_MCP_QIANFAN_API_KEY</code> 设置为千帆平台的 API key。</li>
 <li>重启 MCP 主机。</li>
 </ol>
 <p>配置示例：</p>
@@ -4869,13 +4890,40 @@ You're not viewing the latest version.
 </span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">      </span><span class="nt">&quot;command&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;paddleocr_mcp&quot;</span><span class="p">,</span>
 </span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">      </span><span class="nt">&quot;args&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
 </span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">      </span><span class="nt">&quot;env&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">        </span><span class="nt">&quot;PADDLEOCR_MCP_PIPELINE&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;OCR&quot;</span><span class="p">,</span>
-</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="w">        </span><span class="nt">&quot;PADDLEOCR_MCP_PPOCR_SOURCE&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;self_hosted&quot;</span><span class="p">,</span>
-</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="w">        </span><span class="nt">&quot;PADDLEOCR_MCP_SERVER_URL&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;your-server-url&gt;&quot;</span>
-</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="w">      </span><span class="p">}</span>
-</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="w">    </span><span class="p">}</span>
-</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="w">  </span><span class="p">}</span>
-</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="p">}</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">        </span><span class="nt">&quot;PADDLEOCR_MCP_PIPELINE&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;PaddleOCR-VL&quot;</span><span class="p">,</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="w">        </span><span class="nt">&quot;PADDLEOCR_MCP_PPOCR_SOURCE&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;qianfan&quot;</span><span class="p">,</span>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="w">        </span><span class="nt">&quot;PADDLEOCR_MCP_SERVER_URL&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://qianfan.baidubce.com/v2/ocr&quot;</span><span class="p">,</span>
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="w">        </span><span class="nt">&quot;PADDLEOCR_MCP_QIANFAN_API_KEY&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;your-api-key&gt;&quot;</span>
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="w">      </span><span class="p">}</span>
+</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="p">}</span>
+</span></code></pre></div>
+<p><strong>说明</strong>：</p>
+<ul>
+<li>千帆平台服务目前仅支持 PaddleOCR-VL。</li>
+</ul>
+<h4 id="_5">模式四：自托管服务<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h4>
+<ol>
+<li>在需要运行 PaddleOCR 推理服务器的环境中，参考 <a href="serving.html">PaddleOCR 服务化部署文档</a> 运行推理服务器。</li>
+<li>在需要运行 MCP 服务器的环境中安装 <code>paddleocr-mcp</code>。</li>
+<li>参考下方的配置示例更改 <code>claude_desktop_config.json</code> 文件内容。将您的服务地址填入 <code>PADDLEOCR_MCP_SERVER_URL</code> (例如：<code>"http://127.0.0.1:8000"</code>)。</li>
+<li>重启 MCP 主机。</li>
+</ol>
+<p>配置示例：</p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="p">{</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span><span class="nt">&quot;mcpServers&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">    </span><span class="nt">&quot;paddleocr-ocr&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">      </span><span class="nt">&quot;command&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;paddleocr_mcp&quot;</span><span class="p">,</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">      </span><span class="nt">&quot;args&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">      </span><span class="nt">&quot;env&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">        </span><span class="nt">&quot;PADDLEOCR_MCP_PIPELINE&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;OCR&quot;</span><span class="p">,</span>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">        </span><span class="nt">&quot;PADDLEOCR_MCP_PPOCR_SOURCE&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;self_hosted&quot;</span><span class="p">,</span>
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="w">        </span><span class="nt">&quot;PADDLEOCR_MCP_SERVER_URL&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;your-server-url&gt;&quot;</span>
+</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="w">      </span><span class="p">}</span>
+</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="p">}</span>
 </span></code></pre></div>
 <p><strong>说明</strong>：</p>
 <ul>
@@ -4883,65 +4931,64 @@ You're not viewing the latest version.
 <li>将 <code>&lt;your-server-url&gt;</code> 替换为底层服务的基础 URL（如：<code>http://127.0.0.1:8000</code>）。</li>
 </ul>
 <h3 id="24-uvx">2.4 使用 <code>uvx</code><a class="headerlink" href="#24-uvx" title="Permanent link">&para;</a></h3>
-<p>对于 PaddleOCR 官网服务和自托管服务模式，目前也支持通过 <code>uvx</code> 启动 MCP 服务器。这种方式不需要手动安装 <code>paddleocr-mcp</code>。主要步骤如下：</p>
+<p>PaddleOCR 也支持通过 <code>uvx</code> 启动 MCP 服务器。这种方式不需要手动安装 <code>paddleocr-mcp</code>。主要步骤如下：</p>
 <ol>
 <li>安装 <a href="https://docs.astral.sh/uv/#installation">uv</a>。</li>
-<li>修改 <code>claude_desktop_config.json</code> 文件。下面给出使用 <code>uvx</code> 启动的两种常见模式示例。</li>
+<li>修改 <code>claude_desktop_config.json</code> 文件。示例如下：</li>
 </ol>
-<p>自托管服务模式示例：
-  <div class="language-json highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="p">{</span>
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span><span class="nt">&quot;mcpServers&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">   </span><span class="nt">&quot;paddleocr-ocr&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">    </span><span class="nt">&quot;command&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uvx&quot;</span><span class="p">,</span>
-</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">    </span><span class="nt">&quot;args&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">      </span><span class="s2">&quot;--from&quot;</span><span class="p">,</span>
-</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">      </span><span class="s2">&quot;paddleocr-mcp&quot;</span><span class="p">,</span>
-</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">      </span><span class="s2">&quot;paddleocr_mcp&quot;</span>
-</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="w">    </span><span class="p">],</span>
-</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="w">    </span><span class="nt">&quot;env&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="w">      </span><span class="nt">&quot;PADDLEOCR_MCP_PIPELINE&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;OCR&quot;</span><span class="p">,</span>
-</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="w">      </span><span class="nt">&quot;PADDLEOCR_MCP_PPOCR_SOURCE&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;self_hosted&quot;</span><span class="p">,</span>
-</span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="w">      </span><span class="nt">&quot;PADDLEOCR_MCP_SERVER_URL&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;your-server-url&gt;&quot;</span>
-</span><span id="__span-6-14"><a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a><span class="w">    </span><span class="p">}</span>
-</span><span id="__span-6-15"><a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a><span class="w">   </span><span class="p">}</span>
-</span><span id="__span-6-16"><a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a><span class="w">  </span><span class="p">}</span>
-</span><span id="__span-6-17"><a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a><span class="p">}</span>
-</span></code></pre></div></p>
-<p>本地模式（CPU，使用可选依赖 <code>local-cpu</code>）示例：
-  <div class="language-json highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="p">{</span>
+<p>自托管服务模式示例：</p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="p">{</span>
 </span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">  </span><span class="nt">&quot;mcpServers&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 </span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">   </span><span class="nt">&quot;paddleocr-ocr&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 </span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">    </span><span class="nt">&quot;command&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uvx&quot;</span><span class="p">,</span>
 </span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">    </span><span class="nt">&quot;args&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
 </span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">      </span><span class="s2">&quot;--from&quot;</span><span class="p">,</span>
-</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">      </span><span class="s2">&quot;paddleocr_mcp[local-cpu]&quot;</span><span class="p">,</span>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">      </span><span class="s2">&quot;paddleocr-mcp&quot;</span><span class="p">,</span>
 </span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="w">      </span><span class="s2">&quot;paddleocr_mcp&quot;</span>
 </span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="w">    </span><span class="p">],</span>
 </span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="w">    </span><span class="nt">&quot;env&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 </span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="w">      </span><span class="nt">&quot;PADDLEOCR_MCP_PIPELINE&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;OCR&quot;</span><span class="p">,</span>
-</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a><span class="w">      </span><span class="nt">&quot;PADDLEOCR_MCP_PPOCR_SOURCE&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;local&quot;</span>
-</span><span id="__span-7-13"><a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a><span class="w">    </span><span class="p">}</span>
-</span><span id="__span-7-14"><a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a><span class="w">   </span><span class="p">}</span>
-</span><span id="__span-7-15"><a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a><span class="w">  </span><span class="p">}</span>
-</span><span id="__span-7-16"><a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a><span class="p">}</span>
-</span></code></pre></div></p>
-<p>若需了解本地模式的依赖、性能调优及产线配置，请参见 <a href="#模式一本地-python-库">模式一：本地 Python 库</a> 部分。</p>
-<p>由于使用了不一样的启动方式，配置文件中 <code>command</code> 和 <code>args</code> 的设置都与 <a href="#21-快速开始">2.1 快速开始</a> 介绍的方式存在显著不同，但 MCP 服务本身支持的命令行参数与环境变量（如 <code>PADDLEOCR_MCP_SERVER_URL</code>）仍然可以以相同的方式设置。</p>
-<p>说明：仅启动方式不同（通过 <code>uvx</code> 拉取并执行），可用的环境变量与命令行参数仍与前文一致。</p>
+</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a><span class="w">      </span><span class="nt">&quot;PADDLEOCR_MCP_PPOCR_SOURCE&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;self_hosted&quot;</span><span class="p">,</span>
+</span><span id="__span-7-13"><a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a><span class="w">      </span><span class="nt">&quot;PADDLEOCR_MCP_SERVER_URL&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;your-server-url&gt;&quot;</span>
+</span><span id="__span-7-14"><a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-7-15"><a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a><span class="w">   </span><span class="p">}</span>
+</span><span id="__span-7-16"><a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-7-17"><a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>本地模式（CPU 推理，使用可选依赖 <code>local-cpu</code>）示例：</p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="p">{</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">  </span><span class="nt">&quot;mcpServers&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">   </span><span class="nt">&quot;paddleocr-ocr&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">    </span><span class="nt">&quot;command&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uvx&quot;</span><span class="p">,</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="w">    </span><span class="nt">&quot;args&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="w">      </span><span class="s2">&quot;--from&quot;</span><span class="p">,</span>
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="w">      </span><span class="s2">&quot;paddleocr_mcp[local-cpu]&quot;</span><span class="p">,</span>
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="w">      </span><span class="s2">&quot;paddleocr_mcp&quot;</span>
+</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="w">    </span><span class="p">],</span>
+</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="w">    </span><span class="nt">&quot;env&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="w">      </span><span class="nt">&quot;PADDLEOCR_MCP_PIPELINE&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;OCR&quot;</span><span class="p">,</span>
+</span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="w">      </span><span class="nt">&quot;PADDLEOCR_MCP_PPOCR_SOURCE&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;local&quot;</span>
+</span><span id="__span-8-13"><a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-8-14"><a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a><span class="w">   </span><span class="p">}</span>
+</span><span id="__span-8-15"><a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-8-16"><a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>如需了解本地模式的依赖、性能调优及产线配置，请参考 <a href="#模式一本地-python-库">模式一：本地 Python 库</a> 部分。</p>
+<p>由于使用了不一样的启动方式，配置文件中 <code>command</code> 和 <code>args</code> 的设置都与前文介绍的方式存在不同，但 MCP 服务本身支持的命令行参数与环境变量（如 <code>PADDLEOCR_MCP_SERVER_URL</code>）仍然可以以相同的方式设置。</p>
 <h2 id="3">3. 运行服务器<a class="headerlink" href="#3" title="Permanent link">&para;</a></h2>
 <p>除了在 Claude for Desktop 等 MCP 主机中使用外，您也可以通过 CLI 运行 PaddleOCR MCP 服务器。</p>
 <p>执行以下命令可以打印帮助信息：</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>paddleocr_mcp<span class="w"> </span>--help
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>paddleocr_mcp<span class="w"> </span>--help
 </span></code></pre></div>
 <p>示例命令如下：</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># OCR + PaddleOCR 官网服务 + stdio</span>
-</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="nv">PADDLEOCR_MCP_AISTUDIO_ACCESS_TOKEN</span><span class="o">=</span>xxxxxx<span class="w"> </span>paddleocr_mcp<span class="w"> </span>--pipeline<span class="w"> </span>OCR<span class="w"> </span>--ppocr_source<span class="w"> </span>aistudio<span class="w"> </span>--server_url<span class="w"> </span>https://xxxxxx.aistudio-hub.baidu.com
-</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>
-</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="c1"># PP-StructureV3 + 本地 Python 库 + stdio</span>
-</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>paddleocr_mcp<span class="w"> </span>--pipeline<span class="w"> </span>PP-StructureV3<span class="w"> </span>--ppocr_source<span class="w"> </span><span class="nb">local</span>
-</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>
-</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="c1"># OCR + 本地服务 + Streamable HTTP</span>
-</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>paddleocr_mcp<span class="w"> </span>--pipeline<span class="w"> </span>OCR<span class="w"> </span>--ppocr_source<span class="w"> </span>self_hosted<span class="w"> </span>--server_url<span class="w"> </span>http://127.0.0.1:8080<span class="w"> </span>--http
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1"># OCR + PaddleOCR 官网服务 + stdio</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="nv">PADDLEOCR_MCP_AISTUDIO_ACCESS_TOKEN</span><span class="o">=</span>xxxxxx<span class="w"> </span>paddleocr_mcp<span class="w"> </span>--pipeline<span class="w"> </span>OCR<span class="w"> </span>--ppocr_source<span class="w"> </span>aistudio<span class="w"> </span>--server_url<span class="w"> </span>https://xxxxxx.aistudio-hub.baidu.com
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="c1"># PP-StructureV3 + 本地 Python 库 + stdio</span>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>paddleocr_mcp<span class="w"> </span>--pipeline<span class="w"> </span>PP-StructureV3<span class="w"> </span>--ppocr_source<span class="w"> </span><span class="nb">local</span>
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="c1"># OCR + 本地服务 + Streamable HTTP</span>
+</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>paddleocr_mcp<span class="w"> </span>--pipeline<span class="w"> </span>OCR<span class="w"> </span>--ppocr_source<span class="w"> </span>self_hosted<span class="w"> </span>--server_url<span class="w"> </span>http://127.0.0.1:8080<span class="w"> </span>--http
 </span></code></pre></div>
 <p>在 <a href="#4-参数说明">4. 参数说明</a> 中可以了解 PaddleOCR MCP 服务器支持的全部参数。</p>
 <h2 id="4">4. 参数说明<a class="headerlink" href="#4" title="Permanent link">&para;</a></h2>
@@ -4971,14 +5018,14 @@ You're not viewing the latest version.
 <td style="text-align: left;"><code>--ppocr_source</code></td>
 <td style="text-align: left;"><code>str</code></td>
 <td style="text-align: left;">PaddleOCR 能力来源。</td>
-<td style="text-align: left;"><code>"local"</code>（本地 Python 库），<code>"aistudio"</code>（PaddleOCR 官网服务），<code>"self_hosted"</code>（自托管服务）</td>
+<td style="text-align: left;"><code>"local"</code>（本地 Python 库），<code>"aistudio"</code>（PaddleOCR 官网服务），<code>"qianfan"</code>（千帆平台服务），<code>"self_hosted"</code>（自托管服务）</td>
 <td style="text-align: left;"><code>"local"</code></td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>PADDLEOCR_MCP_SERVER_URL</code></td>
 <td style="text-align: left;"><code>--server_url</code></td>
 <td style="text-align: left;"><code>str</code></td>
-<td style="text-align: left;">底层服务基础 URL（<code>aistudio</code> 或 <code>self_hosted</code> 模式下必需）。</td>
+<td style="text-align: left;">底层服务基础 URL（<code>aistudio</code>、<code>qianfan</code>、<code>self_hosted</code> 模式下必需）。</td>
 <td style="text-align: left;">-</td>
 <td style="text-align: left;"><code>None</code></td>
 </tr>
