@@ -14,17 +14,17 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
 
 部分推理硬件可能需要参考我们提供的其他环境配置文档，但流程是一样的，不影响您的阅读下面的流程导览：
 
-1. **想快速体验 PaddleOCR-VL**：
+1. **希望快速体验 PaddleOCR-VL**：
     
-    如果您希望快速体验 PaddleOCR-VL 推理的效果，请阅读 [1. 环境准备](#1-环境准备) 和 [2. 快速开始](#2-快速开始)。
+    如果您希望快速体验 PaddleOCR-VL 的推理效果，请阅读 [1. 环境准备](#1-环境准备) 和 [2. 快速开始](#2-快速开始)。
 
-2. **想提高 PaddleOCR-VL 推理速度**：
+2. **希望将 PaddleOCR-VL 用于生产环境**：
     
-    快速体验虽然可以让您感受到 PaddleOCR-VL 的效果，但是推理速度不是最佳状态。如果您希望提高推理速度或应用于生产环境，请阅读 [3. 使用推理加速框架提升 VLM 推理性能](#3-使用推理加速框架提升-vlm-推理性能) 。
+    快速体验虽然可以让您感受到 PaddleOCR-VL 的效果，但在推理速度、显存占用等方面不是最佳状态。如果您希望将 PaddleOCR-VL 应用于生产环境，并且对推理性能有更高的要求，请阅读 [3. 使用推理加速框架提升 VLM 推理性能](#3-使用推理加速框架提升-vlm-推理性能) 。
 
-3. **想进行服务化部署 PaddleOCR-VL**：
+3. **希望将 PaddleOCR-VL 部署为 API 服务**：
 
-    如果您想将 PaddleOCR-VL 设置为一个网络服务（API），这样其他设备或应用程序无需配置环境，仅通过一个特定的网址就可以来访问和调用它，我们有两种方式：
+    如果您想将 PaddleOCR-VL 部署为一个网络服务（API），这样其他设备或应用程序无需配置环境，仅通过一个特定的网址就可以来访问和调用它，我们提供两种方式：
 
     - 使用 Docker Compose 部署（一键启动，推荐使用）：请阅读 [4.1 方法一：使用 Docker Compose 部署](#41-方法一使用-docker-compose-部署推荐使用) 和 [4.3 客户端调用方式](#43-客户端调用方式)。
     - 进行手动部署：请阅读 [1. 环境准备](#1-环境准备)、 [4.2 方法二：手动部署](#42-方法二手动部署) 和 [4.3 客户端调用方式](#43-客户端调用方式)。
@@ -1128,7 +1128,19 @@ PaddleOCR 提供了 Docker 镜像，用于快速启动 vLLM 或 FastDeploy 推�
 
     如果您希望在无法连接互联网的环境中启动服务，请将上述命令中的 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-fastdeploy-server:latest`（镜像大小约为 43 GB）更换为离线版本镜像 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-fastdeploy-server:latest-offline`（镜像大小约为 45 GB）。
 
-启动 vLLM 或 FastDeploy 推理服务可以传入更多参数，支持的参数详见下一小节。
+启动 vLLM 或 FastDeploy 推理服务时，我们提供了一套默认参数设置。如果您有调整显存占用等更多参数的需求，可以自行配置更多参数。请参考 [3.3.1 服务端参数调整](#331-服务端参数调整) 创建配置文件，然后将该文件挂载到容器中，并在启动服务的命令中使用 `backend_config` 指定配置文件，以 vLLM 为例：
+
+```diff
+docker run \
+    -it \
+    --rm \
+    --gpus all \
+    --network host \
++   -v vllm_config.yml:/tmp/vllm_config.yml \  
+    ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest \
+-   paddleocr genai_server --model_name PaddleOCR-VL-0.9B --host 0.0.0.0 --port 8118 --backend vllm
++   paddleocr genai_server --model_name PaddleOCR-VL-0.9B --host 0.0.0.0 --port 8118 --backend vllm --backend_config /tmp/vllm_config.yml
+```
 
 #### 3.1.2 方法二：通过 PaddleOCR CLI 安装和使用
 
@@ -1281,7 +1293,15 @@ paddleocr-vl-api             | INFO:     Uvicorn running on http://0.0.0.0:8080 
 
 此外，使用此方式启动服务器后，除拉取镜像外，无需连接互联网。如需在离线环境中部署，可先在联网机器上拉取 Compose 文件中涉及的镜像，导出并传输至离线机器中导入，即可在离线环境下启动服务。
 
-Docker Compose 通过读取 `.env` 和 `compose.yaml` 文件里面的配置，启动 2 个容器以运行 PaddleOCR-VL 服务器，您可以通过修改 `.env` 和 `compose.yaml` 来满足一些自定义需求，例如：
+Docker Compose 通过读取 `.env` 和 `compose.yaml` 文件中配置，先后启动 2 个容器，分别运行底层 VLM 推理服务，以及 PaddleOCR-VL 服务（产线服务）。
+
+`.env` 文件中包含的各环境变量含义如下：
+
+- `API_IMAGE_TAG_SUFFIX`：启动产线服务使用的镜像的标签后缀。默认为 `latest-offline`，表示使用离线 GPU 镜像。
+- `VLM_BACKEND`：VLM 推理后端，目前支持 `vllm` 和 `fastdeploy`。默认为 `vllm`。
+- `VLM_IMAGE_TAG_SUFFIX`：启动 VLM 推理服务使用的镜像的标签后缀。默认为 `latest-offline`，表示使用离线 GPU 镜像。
+
+您可以通过修改 `.env` 和 `compose.yaml` 来满足自定义需求，例如：
 
 <details>
 <summary>1. 更改 PaddleOCR-VL 服务的端口</summary>
@@ -1336,7 +1356,7 @@ Docker Compose 通过读取 `.env` 和 `compose.yaml` 文件里面的配置，�
 
 若您想调整 VLM 服务端的配置，可以参考 [3.3.1 服务端参数调整](#331-服务端参数调整) 生成配置文件。
 
-生成配置文件后，将以下增加的 `paddleocr-vlm-server.volumes` 和 `paddleocr-vlm-server.command` 字段复制到您的 `compose.yaml` 中。请将 `/path/to/your_config.yaml` 替换为您的实际配置文件路径。
+生成配置文件后，将以下的 `paddleocr-vlm-server.volumes` 和 `paddleocr-vlm-server.command` 字段增加到您的 `compose.yaml` 中。请将 `/path/to/your_config.yaml` 替换为您的实际配置文件路径。
 
 ```yaml
   paddleocr-vlm-server:
@@ -1359,12 +1379,6 @@ Docker Compose 通过读取 `.env` 和 `compose.yaml` 文件里面的配置，�
 + VLM_BACKEND=fastdeploy
   VLM_IMAGE_TAG_SUFFIX=latest-offline
 ```
-
-`.env` 文件内容介绍：
-
-- `API_IMAGE_TAG_SUFFIX`：启动产线服务使用的镜像的标签后缀。默认为 `latest-offline`，表示使用离线 GPU 镜像。
-- `VLM_BACKEND`：VLM 推理后端，目前支持 `vllm` 和 `fastdeploy`。默认为 `vllm`。
-- `VLM_IMAGE_TAG_SUFFIX`：启动 VLM 推理服务使用的镜像的标签后缀。默认为 `latest-offline`，表示使用离线 GPU 镜像。
 
 </details>
 
