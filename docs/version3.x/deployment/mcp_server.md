@@ -18,9 +18,11 @@ comments: true
 - **支持运行在如下工作模式**
     - **本地 Python 库**：在本机直接运行 PaddleOCR 产线。此模式对本地环境与计算机性能有一定要求，适用于需要离线使用、对数据隐私有严格要求的场景。
     - **PaddleOCR 官网服务**：调用 [PaddleOCR 官网](https://aistudio.baidu.com/paddleocr) 提供的云服务。此模式适合快速体验功能、快速验证方案等，也适用于零代码开发场景。
+    - **千帆平台服务**：调用百度智能云千帆大模型平台提供的云服务。
     - **自托管服务**：调用用户自托管的 PaddleOCR 服务。此模式具备服务化部署优势及高度灵活性，适用于需要自定义服务配置的场景，同时也适用于对数据隐私有严格要求的场景。**目前暂时只支持基础服务化部署方案。**
 
 ## 示例：
+
 以下展示了使用 PaddleOCR MCP 服务器结合其他工具搭建的创意案例：
 
 ### Demo 1
@@ -46,15 +48,18 @@ comments: true
 ---
 
 ### Demo 3
+
 在 Claude for Desktop 中，将含有复杂表格、公式、手写文字等内容的 PDF 文档或图片转存为本地可编辑文件。
 
 #### Demo 3.1
+
 含表格水印复杂文档PDF 转为 doc/Word 可编辑格式：
 <div align="center">
   <img width="70%" img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/paddleocr/mcp_demo/pdf_to_file.gif" alt="pdf_to_file">
 </div>
 
 #### Demo 3.2
+
 含公式表格图片转为 csv/Excel 可编辑格式：
 <div align="center">
   <img width="70%" img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/00136903a4d0b5f11bd978cb0ef5d3c44f3aa5e9/images/paddleocr/mcp_demo/table_to_excel1.png" alt="table_to_excel1">
@@ -88,8 +93,7 @@ comments: true
 - 对于本地 Python 库模式，也可以考虑选择安装相应的可选依赖：
   - `paddleocr-mcp[local]`：包含 PaddleOCR（不包含飞桨框架）。
   - `paddleocr-mcp[local-cpu]`：在 `local` 基础上额外包含 CPU 版本的飞桨框架。
-- 本地模式也支持通过 `uvx` 方式免安装运行服务器（适用于 CPU 推理）。详情请参考 [2.4 使用 `uvx`](#24-使用-uvx) 中的说明。
-- 对于 PaddleOCR 官网服务和自托管服务模式，如果希望在 Claude for Desktop 等 MCP 主机中使用，也支持通过 `uvx` 等方式免安装运行服务器。详情请参考 [2. 在 Claude for Desktop 中使用](#2-在-claude-for-desktop-中使用) 中的说明。
+- PaddleOCR 也支持通过 `uvx` 等方式免安装运行服务器。详情请参考 [2. 在 Claude for Desktop 中使用](#2-在-claude-for-desktop-中使用) 中的说明。
 
 使用 pip 安装 `paddleocr-mcp` 库的命令如下：
 
@@ -97,14 +101,13 @@ comments: true
 # 从 PyPI 安装
 pip install -U paddleocr-mcp
 
-# 或者，从项目源码安装
-# git clone https://github.com/PaddlePaddle/PaddleOCR.git
-# pip install -e mcp_server
+# 从项目源码安装
+git clone https://github.com/PaddlePaddle/PaddleOCR.git
+pip install -e mcp_server
 
 # 通过指定 extra 安装可选依赖
 # 同时安装 PaddleOCR
 pip install "paddleocr-mcp[local]"
-
 # 同时安装 PaddleOCR 和 CPU 版本飞桨框架
 pip install "paddleocr-mcp[local-cpu]"
 ```
@@ -123,7 +126,7 @@ paddleocr_mcp --help
 
 ### 2.1 快速开始
 
-接下来以 **PaddleOCR 官网服务** 工作模式为例，引导您快速上手。此模式无需在本地安装复杂的依赖，因此比较适合用于快速体验。
+接下来以 **PaddleOCR 官网服务** 工作模式为例，引导您快速上手。
 
 1. **安装 `paddleocr-mcp`**
 
@@ -187,6 +190,7 @@ paddleocr_mcp --help
 您可以根据需求配置 MCP 服务器，使其运行在不同的工作模式。不同工作模式需要的操作流程有所不同，下面将详细介绍。
 
 #### 模式一：本地 Python 库
+
 1. 安装 `paddleocr-mcp`、飞桨框架和 PaddleOCR。对于飞桨框架和 PaddleOCR，可以参考 [PaddleOCR 安装文档](../installation.md) 手动安装，也可以通过 `paddleocr-mcp[local]` 或 `paddleocr-mcp[local-cpu]` 方式于 `paddleocr-mcp` 一同安装。为避免依赖冲突，**强烈建议在独立的虚拟环境中安装**。
 2. 参考下方的配置示例更改 `claude_desktop_config.json` 文件内容。
 3. 重启 MCP 主机。
@@ -253,7 +257,37 @@ paddleocr_mcp --help
 
 对于文字识别以外的任务，请在 PaddleOCR 官网获取任务对应的服务基础 URL，并正确设置 `PADDLEOCR_MCP_PIPELINE` 与 `PADDLEOCR_MCP_SERVER_URL`（参数说明详见第 4 节）。
 
-#### 模式三：自托管服务
+#### 模式三：千帆平台服务
+
+1. 安装 `paddleocr-mcp`。
+2. 参考 [千帆平台官方文档](https://cloud.baidu.com/doc/qianfan-api/s/ym9chdsy5) 获取 API key。
+3. 参考下方的配置示例更改 `claude_desktop_config.json` 文件内容。将 `PADDLEOCR_MCP_QIANFAN_API_KEY` 设置为千帆平台的 API key。
+4. 重启 MCP 主机。
+
+配置示例：
+
+```json
+{
+  "mcpServers": {
+    "paddleocr-ocr": {
+      "command": "paddleocr_mcp",
+      "args": [],
+      "env": {
+        "PADDLEOCR_MCP_PIPELINE": "PaddleOCR-VL",
+        "PADDLEOCR_MCP_PPOCR_SOURCE": "qianfan",
+        "PADDLEOCR_MCP_SERVER_URL": "https://qianfan.baidubce.com/v2/ocr",
+        "PADDLEOCR_MCP_QIANFAN_API_KEY": "<your-api-key>"
+      }
+    }
+  }
+}
+```
+
+**说明**：
+
+- 千帆平台服务目前仅支持 PaddleOCR-VL。
+
+#### 模式四：自托管服务
 
 1. 在需要运行 PaddleOCR 推理服务器的环境中，参考 [PaddleOCR 服务化部署文档](./serving.md) 运行推理服务器。
 2. 在需要运行 MCP 服务器的环境中安装 `paddleocr-mcp`。
@@ -285,12 +319,13 @@ paddleocr_mcp --help
 
 ### 2.4 使用 `uvx`
 
-对于 PaddleOCR 官网服务和自托管服务模式，目前也支持通过 `uvx` 启动 MCP 服务器。这种方式不需要手动安装 `paddleocr-mcp`。主要步骤如下：
+PaddleOCR 也支持通过 `uvx` 启动 MCP 服务器。这种方式不需要手动安装 `paddleocr-mcp`。主要步骤如下：
 
 1. 安装 [uv](https://docs.astral.sh/uv/#installation)。
-2. 修改 `claude_desktop_config.json` 文件。下面给出使用 `uvx` 启动的两种常见模式示例。
+2. 修改 `claude_desktop_config.json` 文件。示例如下：
 
   自托管服务模式示例：
+
   ```json
   {
     "mcpServers": {
@@ -311,7 +346,8 @@ paddleocr_mcp --help
   }
   ```
 
-  本地模式（CPU，使用可选依赖 `local-cpu`）示例：
+  本地模式（CPU 推理，使用可选依赖 `local-cpu`）示例：
+
   ```json
   {
     "mcpServers": {
@@ -331,11 +367,9 @@ paddleocr_mcp --help
   }
   ```
 
-  若需了解本地模式的依赖、性能调优及产线配置，请参见 [模式一：本地 Python 库](#模式一本地-python-库) 部分。
+  如需了解本地模式的依赖、性能调优及产线配置，请参考 [模式一：本地 Python 库](#模式一本地-python-库) 部分。
 
-  由于使用了不一样的启动方式，配置文件中 `command` 和 `args` 的设置都与 [2.1 快速开始](#21-快速开始) 介绍的方式存在显著不同，但 MCP 服务本身支持的命令行参数与环境变量（如 `PADDLEOCR_MCP_SERVER_URL`）仍然可以以相同的方式设置。
-
-  说明：仅启动方式不同（通过 `uvx` 拉取并执行），可用的环境变量与命令行参数仍与前文一致。
+  由于使用了不一样的启动方式，配置文件中 `command` 和 `args` 的设置都与前文介绍的方式存在不同，但 MCP 服务本身支持的命令行参数与环境变量（如 `PADDLEOCR_MCP_SERVER_URL`）仍然可以以相同的方式设置。
 
 ## 3. 运行服务器
 
@@ -369,8 +403,8 @@ paddleocr_mcp --pipeline OCR --ppocr_source self_hosted --server_url http://127.
 | 环境变量 | 命令行参数 | 类型 | 描述 | 可选值 | 默认值 |
 |:---------|:-----------|:-----|:-----|:-------|:-------|
 | `PADDLEOCR_MCP_PIPELINE` | `--pipeline` | `str` | 要运行的产线。 | `"OCR"`，`"PP-StructureV3"`，`"PaddleOCR-VL"` | `"OCR"` |
-| `PADDLEOCR_MCP_PPOCR_SOURCE` | `--ppocr_source` | `str` | PaddleOCR 能力来源。 | `"local"`（本地 Python 库），`"aistudio"`（PaddleOCR 官网服务），`"self_hosted"`（自托管服务） | `"local"` |
-| `PADDLEOCR_MCP_SERVER_URL` | `--server_url` | `str` | 底层服务基础 URL（`aistudio` 或 `self_hosted` 模式下必需）。 | - | `None` |
+| `PADDLEOCR_MCP_PPOCR_SOURCE` | `--ppocr_source` | `str` | PaddleOCR 能力来源。 | `"local"`（本地 Python 库），`"aistudio"`（PaddleOCR 官网服务），`"qianfan"`（千帆平台服务），`"self_hosted"`（自托管服务） | `"local"` |
+| `PADDLEOCR_MCP_SERVER_URL` | `--server_url` | `str` | 底层服务基础 URL（`aistudio`、`qianfan`、`self_hosted` 模式下必需）。 | - | `None` |
 | `PADDLEOCR_MCP_AISTUDIO_ACCESS_TOKEN` | `--aistudio_access_token` | `str` | AI Studio 访问令牌（`aistudio` 模式下必需）。 | - | `None` |
 | `PADDLEOCR_MCP_TIMEOUT` | `--timeout` | `int` | 底层服务请求的读取超时时间（秒）。 | - | `60` |
 | `PADDLEOCR_MCP_DEVICE` | `--device` | `str` | 指定运行推理的设备（仅在 `local` 模式下生效）。 | - | `None` |
