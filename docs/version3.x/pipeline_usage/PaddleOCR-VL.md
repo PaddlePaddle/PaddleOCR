@@ -91,11 +91,11 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
 
 > [!TIP]
 > 1. 使用英伟达 GPU 推理时需要注意 Compute Capability（简称 CC） 和 CUDA 版本（简称 CUDA）是否满足要求：
-> - PaddlePaddle: CC ≥ 7.0, CUDA ≥ 11.8
-> - vLLM: CC ≥ 8.0, CUDA ≥ 12.6
-> - SGLang: 8.0 ≤ CC < 12.0, CUDA ≥ 12.6
-> - FastDeploy: 8.0 ≤ CC < 12.0, CUDA ≥ 12.6
-> - CC ≥ 8 的常见显卡包括 RTX 30/40/50 系列及 A10/A100 等，更多型号可查看 [CUDA GPU 计算能力](https://developer.nvidia.cn/cuda-gpus)
+>    - PaddlePaddle: CC ≥ 7.0, CUDA ≥ 11.8
+>    - vLLM: CC ≥ 8.0, CUDA ≥ 12.6
+>    - SGLang: 8.0 ≤ CC < 12.0, CUDA ≥ 12.6
+>    - FastDeploy: 8.0 ≤ CC < 12.0, CUDA ≥ 12.6
+>    - CC ≥ 8 的常见显卡包括 RTX 30/40/50 系列及 A10/A100 等，更多型号可查看 [CUDA GPU 计算能力](https://developer.nvidia.cn/cuda-gpus)
 > 2. 虽然 vLLM 可在 T4/V100 等 CC 7.x 的 NVIDIA GPU 上启动，但容易出现超时或 OOM，不推荐使用。
 > 3. 当前，PaddleOCR-VL 暂不支持 ARM 架构 CPU。后续将根据实际需求扩展更多硬件支持，敬请期待！  
 > 4. vLLM、SGLang 和 FastDeploy 无法在 Windows 或 macOS 上原生运行，请使用我们提供的 Docker 镜像。
