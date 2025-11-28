@@ -286,7 +286,7 @@ Refer to the [4.4 Pipeline Configuration Adjustment Instructions](./PaddleOCR-VL
 
 </details>
 
-### 4.2 Method 2: Manually Install Dependencies for Deployment
+### 4.2 Method 2: Manually Deployment
 
 Please refer to the corresponding section in the [PaddleOCR-VL Usage Tutorial](./PaddleOCR-VL.en.md).
 

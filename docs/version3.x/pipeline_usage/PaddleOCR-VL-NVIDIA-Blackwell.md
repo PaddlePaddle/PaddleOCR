@@ -285,7 +285,7 @@ Docker Compose 通过读取 `.env` 和 `compose.yaml` 文件中配置，先后�
 
 </details>
 
-### 4.2 方法二：手动安装依赖部署
+### 4.2 方法二：手动部署
 
 请参考[PaddleOCR-VL 使用教程](./PaddleOCR-VL.md) 相同章节。
 
