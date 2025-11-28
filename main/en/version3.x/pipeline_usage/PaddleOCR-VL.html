@@ -4931,7 +4931,7 @@ You're not viewing the latest version.
 </table>
 
 <blockquote>
-<p><strong>Notes</strong>:
+<p>[!TIP]
 1. When using NVIDIA GPU for inference, ensure that the Compute Capability (CC) and CUDA version meet the requirements:
 - PaddlePaddle: CC ≥ 7.0, CUDA ≥ 11.8
 - vLLM: CC ≥ 8.0, CUDA ≥ 12.6
@@ -4974,7 +4974,8 @@ You're not viewing the latest version.
 </table>
 
 <blockquote>
-<p>For example, if you are using an RTX 50 series GPU that meets the device requirements for both PaddlePaddle and vLLM inference methods, please refer to the <a href="PaddleOCR-VL-NVIDIA-Blackwell.html">PaddleOCR-VL NVIDIA Blackwell Architecture GPU Environment Configuration Tutorial</a> to complete the environment configuration before using PaddleOCR-VL.</p>
+<p>[!TIP]
+For example, if you are using an RTX 50 series GPU that meets the device requirements for both PaddlePaddle and vLLM inference methods, please refer to the <a href="PaddleOCR-VL-NVIDIA-Blackwell.html">PaddleOCR-VL NVIDIA Blackwell Architecture GPU Environment Configuration Tutorial</a> to complete the environment configuration before using PaddleOCR-VL.</p>
 </blockquote>
 <h2 id="1-environment-preparation">1. Environment Preparation<a class="headerlink" href="#1-environment-preparation" title="Permanent link">&para;</a></h2>
 <p>This section explains how to set up the runtime environment for PaddleOCR-VL. Choose one of the following two methods:</p>
@@ -5027,12 +5028,14 @@ You're not viewing the latest version.
 </span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>https://xly-devops.cdn.bcebos.com/safetensors-nightly/safetensors-0.6.2.dev0-cp38-abi3-win_amd64.whl
 </span></code></pre></div>
 <blockquote>
-<p><strong>Please ensure that you install PaddlePaddle framework version 3.2.1 or above, along with the special version of safetensors.</strong> For macOS users, please use Docker to set up the environment.</p>
+<p>[!IMPORTANT]
+<strong>Please ensure that you install PaddlePaddle framework version 3.2.1 or above, along with the special version of safetensors.</strong> For macOS users, please use Docker to set up the environment.</p>
 </blockquote>
 <h2 id="2-quick-start">2. Quick Start<a class="headerlink" href="#2-quick-start" title="Permanent link">&para;</a></h2>
 <p>PaddleOCR-VL supports two usage methods: CLI command line and Python API. The CLI command line method is simpler and suitable for quickly verifying functionality, while the Python API method is more flexible and suitable for integration into existing projects.</p>
 <blockquote>
-<p>The methods introduced in this section are primarily for rapid validation. Their inference speed, memory usage, and stability may not meet the requirements of a production environment. <strong>If deployment to a production environment is needed, we strongly recommend using a dedicated inference acceleration framework</strong>. For specific methods, please refer to the next section.</p>
+<p>[!TIP]
+The methods introduced in this section are primarily for rapid validation. Their inference speed, memory usage, and stability may not meet the requirements of a production environment. <strong>If deployment to a production environment is needed, we strongly recommend using a dedicated inference acceleration framework</strong>. For specific methods, please refer to the next section.</p>
 </blockquote>
 <h3 id="21-command-line-usage">2.1 Command Line Usage<a class="headerlink" href="#21-command-line-usage" title="Permanent link">&para;</a></h3>
 <p>Run a single command to quickly test the PaddleOCR-VL ：</p>
@@ -7025,7 +7028,8 @@ foreach ($result as $i => $item) {
 
 <h3 id="44-pipeline-configuration-adjustment-instructions">4.4 Pipeline Configuration Adjustment Instructions<a class="headerlink" href="#44-pipeline-configuration-adjustment-instructions" title="Permanent link">&para;</a></h3>
 <blockquote>
-<p>If you do not need to adjust pipeline configurations, you can ignore this section.</p>
+<p>[!NOTE]
+If you do not need to adjust pipeline configurations, you can ignore this section.</p>
 </blockquote>
 <p>Adjusting the PaddleOCR-VL configuration for service deployment involves only three steps:</p>
 <ol>
