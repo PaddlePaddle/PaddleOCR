@@ -132,7 +132,7 @@ Since different hardware requires different dependencies, if your hardware meets
   </tbody>
 </table>
 
-> [!TIP]
+> TIP:
 > For example, if you are using an RTX 50 series GPU that meets the device requirements for both PaddlePaddle and vLLM inference methods, please refer to the [PaddleOCR-VL NVIDIA Blackwell Architecture GPU Environment Configuration Tutorial](./PaddleOCR-VL-NVIDIA-Blackwell.en.md) to complete the environment configuration before using PaddleOCR-VL.
 
 ## 1. Environment Preparation
@@ -198,14 +198,14 @@ python -m pip install https://paddle-whl.bj.bcebos.com/nightly/cu126/safetensors
 python -m pip install https://xly-devops.cdn.bcebos.com/safetensors-nightly/safetensors-0.6.2.dev0-cp38-abi3-win_amd64.whl
 ```
 
-> [!IMPORTANT]
+> IMPORTANT:
 > **Please ensure that you install PaddlePaddle framework version 3.2.1 or above, along with the special version of safetensors.** For macOS users, please use Docker to set up the environment.
 
 ## 2. Quick Start
 
 PaddleOCR-VL supports two usage methods: CLI command line and Python API. The CLI command line method is simpler and suitable for quickly verifying functionality, while the Python API method is more flexible and suitable for integration into existing projects.
 
-> [!TIP]
+> TIP:
 > The methods introduced in this section are primarily for rapid validation. Their inference speed, memory usage, and stability may not meet the requirements of a production environment. **If deployment to a production environment is needed, we strongly recommend using a dedicated inference acceleration framework**. For specific methods, please refer to the next section.
 
 ### 2.1 Command Line Usage
@@ -2256,7 +2256,7 @@ foreach ($result as $i => $item) {
 
 ### 4.4 Pipeline Configuration Adjustment Instructions
 
-> [!NOTE]
+> NOTE:
 > If you do not need to adjust pipeline configurations, you can ignore this section.
 
 Adjusting the PaddleOCR-VL configuration for service deployment involves only three steps:
