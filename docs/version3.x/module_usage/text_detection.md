@@ -11,104 +11,93 @@ comments: true
 
 > 推理耗时仅包含模型推理耗时，不包含前后处理耗时。
 
-<table>
-<thead>
-<tr>
-<th>模型</th><th>模型下载链接</th>
-<th>检测Hmean（%）</th>
-<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>模型存储大小（MB）</th>
-<th>介绍</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>PP-OCRv5_server_det</td>
-<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv5_server_det_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_server_det_pretrained.pdparams">训练模型</a></td>
-<td>83.8</td>
-<td>89.55 / 70.19</td>
-<td>383.15 / 383.15</td>
-<td>84.3</td>
-<td>PP-OCRv5 的服务端文本检测模型，精度更高，适合在性能较好的服务器上部署</td>
-</tr>
-<tr>
-<td>PP-OCRv5_mobile_det</td>
-<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv5_mobile_det_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_mobile_det_pretrained.pdparams">训练模型</a></td>
-<td>79.0</td>
-<td>10.67 / 6.36</td>
-<td>57.77 / 28.15</td>
-<td>4.7</td>
-<td>PP-OCRv5 的移动端文本检测模型，效率更高，适合在端侧设备部署</td>
-</tr>
-<tr>
-<td>PP-OCRv4_server_det</td>
-<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_server_det_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_det_pretrained.pdparams">训练模型</a></td>
-<td>69.2</td>
-<td>127.82 / 98.87</td>
-<td>585.95 / 489.77</td>
-<td>109</td>
-<td>PP-OCRv4 的服务端文本检测模型，精度更高，适合在性能较好的服务器上部署</td>
-</tr>
-<tr>
-<td>PP-OCRv4_mobile_det</td>
-<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_mobile_det_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_mobile_det_pretrained.pdparams">训练模型</a></td>
-<td>63.8</td>
-<td>9.87 / 4.17</td>
-<td>56.60 / 20.79</td>
-<td>4.7</td>
-<td>PP-OCRv4 的移动端文本检测模型，效率更高，适合在端侧设备部署</td>
-</tr>
-</tbody>
-</table>
+###  PP-OCRv5_server_det
+**模型类型：** 推理模型/训练模型 | **模型存储大小：** 84.3 MB  
+**模型介绍：**  
+PP-OCRv5 的服务端文本检测模型，精度更高，适合在性能较好的服务器上部署。
 
-<strong>测试环境说明:</strong>
+**性能指标：**
+| 指标名称 | 检测Hmean(%) | GPU推理耗时 (ms) | CPU推理耗时 (ms) |
+| :--- | :--- | :--- | :--- |
+| **常规模式** | 83.8 | 89.55 | 383.15 |
+| **高性能模式** | - | 70.19 | 383.15 |
 
-  <ul>
-      <li><b>性能测试环境</b>
-          <ul>
-              <li><strong>测试数据集：</strong>PaddleOCR3.0 全新构建多语种（包含中、繁、英、日），覆盖街景、网图、文档、手写、模糊、旋转、扭曲等多个场景的文本检测数据集，包含2677 张图片。</li>
-              <li><strong>硬件配置：</strong>
-                  <ul>
-                      <li>GPU：NVIDIA Tesla T4</li>
-                      <li>CPU：Intel Xeon Gold 6271C @ 2.60GHz</li>
-                  </ul>
-              </li>
-              <li><strong>软件环境：</strong>
-                  <ul>
-                      <li>Ubuntu 20.04 / CUDA 11.8 / cuDNN 8.9 / TensorRT 8.6.1.6</li>
-                      <li>paddlepaddle 3.0.0 / paddleocr 3.0.3</li>
-                  </ul>
-              </li>
-          </ul>
-      </li>
-      <li><b>推理模式说明</b></li>
-  </ul>
+**下载链接：**  
+| 训练模型 |  推理模型 |
+|:---: |:---: |
+|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv5_server_det_infer.tar )|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_server_det_pretrained.pdparams ),[AI Studio](https://aistudio.baidu.com/modelsdetail/31908 ),[Hugging Face](https://huggingface.co/PaddlePaddle/PP-OCRv5_server_det ),[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PP-OCRv5_server_det ) |
 
-<table border="1">
-    <thead>
-        <tr>
-            <th>模式</th>
-            <th>GPU配置</th>
-            <th>CPU配置</th>
-            <th>加速技术组合</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>常规模式</td>
-            <td>FP32精度 / 无TRT加速</td>
-            <td>FP32精度 / 8线程</td>
-            <td>PaddleInference</td>
-        </tr>
-        <tr>
-            <td>高性能模式</td>
-            <td>选择先验精度类型和加速策略的最优组合</td>
-            <td>FP32精度 / 8线程</td>
-            <td>选择先验最优后端（Paddle/OpenVINO/TRT等）</td>
-        </tr>
-    </tbody>
-</table>
+---
+
+###  PP-OCRv5_mobile_det
+**模型类型：** 推理模型/训练模型 | **模型存储大小：** 4.7 MB  
+**模型介绍：**  
+PP-OCRv5 的移动端文本检测模型，效率更高，适合在端侧设备部署。
+
+**性能指标：**
+| 指标名称 | 检测Hmean(%) | GPU推理耗时 (ms) | CPU推理耗时 (ms) |
+| :--- | :--- | :--- | :--- |
+| **常规模式** | 79.0 | 10.67 | 57.77 |
+| **高性能模式** | - | 6.36 | 28.15 |
+
+**下载链接：**  
+| 训练模型 |  推理模型 |
+|:---: |:---: |
+|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv5_mobile_det_infer.tar )|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_mobile_det_pretrained.pdparams ),[AI Studio](https://aistudio.baidu.com/modelsdetail/31886 ),[Hugging Face](https://huggingface.co/PaddlePaddle/PP-OCRv5_mobile_det ),[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PP-OCRv5_mobile_det ) |
+---
+
+###  PP-OCRv4_server_det
+**模型类型：** 推理模型/训练模型 | **模型存储大小：** 109 MB  
+**模型介绍：**  
+PP-OCRv4 的服务端文本检测模型，精度更高，适合在性能较好的服务器上部署。
+
+**性能指标：**
+| 指标名称 | 检测Hmean(%) | GPU推理耗时 (ms) | CPU推理耗时 (ms) |
+| :--- | :--- | :--- | :--- |
+| **常规模式** | 69.2 | 127.82 | 585.95 |
+| **高性能模式** | - | 98.87 | 489.77 |
+
+**下载链接：**  
+| 训练模型 |  推理模型 |
+|:---: |:---: |
+|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_server_det_infer.tar )|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_det_pretrained.pdparams ),[AI Studio](https://aistudio.baidu.com/modelsdetail/31911 ),[Hugging Face](https://huggingface.co/PaddlePaddle/PP-OCRv4_server_det ),[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PP-OCRv4_server_det ) |
+
+---
+
+###  PP-OCRv4_mobile_det
+**模型类型：** 推理模型/训练模型 | **模型存储大小：** 4.7 MB  
+**模型介绍：**  
+PP-OCRv4 的移动端文本检测模型，效率更高，适合在端侧设备部署。
+
+**性能指标：**
+| 指标名称 | 检测Hmean(%) | GPU推理耗时 (ms) | CPU推理耗时 (ms) |
+| :--- | :--- | :--- | :--- |
+| **常规模式** | 63.8 | 9.87 | 56.60 |
+| **高性能模式** | - | 4.17 | 20.79 |
+
+**下载链接：**  
+| 训练模型 |  推理模型 |
+|:---: |:---: |
+|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_mobile_det_infer.tar )|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_mobile_det_pretrained.pdparams ),[AI Studio](https://aistudio.baidu.com/modelsdetail/31879 ),[Hugging Face](https://huggingface.co/PaddlePaddle/PP-OCRv4_mobile_det ),[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PP-OCRv4_mobile_det ) |
+
+---
+
+###  测试环境说明
+**性能测试环境：**
+- **测试数据集：** PaddleOCR3.0 全新构建多语种（包含中、繁、英、日），覆盖街景、网图、文档、手写、模糊、旋转、扭曲等多个场景的文本检测数据集，包含2677 张图片
+- **硬件配置：**
+  - GPU：NVIDIA Tesla T4
+  - CPU：Intel Xeon Gold 6271C @ 2.60GHz
+- **软件环境：**
+  - Ubuntu 20.04 / CUDA 11.8 / cuDNN 8.9 / TensorRT 8.6.1.6
+  - paddlepaddle 3.0.0 / paddleocr 3.0.3
+
+**推理模式说明：**
+| 模式 | GPU配置 | CPU配置 | 加速技术组合 |
+| :--- | :--- | :--- | :--- |
+| **常规模式** | FP32精度 / 无TRT加速 | FP32精度 / 8线程 | PaddleInference |
+| **高性能模式** | 选择先验精度类型和加速策略的最优组合 | FP32精度 / 8线程 | 选择先验最优后端（Paddle/OpenVINO/TRT等） |
+
 
 ## 三、快速开始
 

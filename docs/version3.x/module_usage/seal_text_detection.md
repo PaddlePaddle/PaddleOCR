@@ -12,85 +12,58 @@ comments: true
 
 > 推理耗时仅包含模型推理耗时，不包含前后处理耗时。
 
-<table>
-<thead>
-<tr>
-<th>模型</th><th>模型下载链接</th>
-<th>检测Hmean（%）</th>
-<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>模型存储大小（MB）</th>
-<th>介绍</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>PP-OCRv4_server_seal_det</td>
-<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_server_seal_det_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_seal_det_pretrained.pdparams">训练模型</a></td>
-<td>98.40</td>
-<td>124.64 / 91.57</td>
-<td>545.68 / 439.86</td>
-<td>109</td>
-<td>PP-OCRv4的服务端印章文本检测模型，精度更高，适合在较好的服务器上部署</td>
-</tr>
-<tr>
-<td>PP-OCRv4_mobile_seal_det</td>
-<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_mobile_seal_det_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_mobile_seal_det_pretrained.pdparams">训练模型</a></td>
-<td>96.36</td>
-<td>9.70 / 3.56</td>
-<td>50.38 / 19.64</td>
-<td>4.7</td>
-<td>PP-OCRv4的移动端印章文本检测模型，效率更高，适合在端侧部署</td>
-</tr>
-</tbody>
-</table>
-<strong>测试环境说明:</strong>
+###  PP-OCRv4_server_seal_det
+**模型类型：** 推理模型/训练模型 | **模型存储大小：** 109 MB  
+**模型介绍：**  
+PP-OCRv4的服务端印章文本检测模型，精度更高，适合在较好的服务器上部署。
 
-  <ul>
-      <li><b>性能测试环境</b>
-          <ul>
-              <li><strong>测试数据集：</strong>自建的内部数据集，包含500张圆形印章图像。</li>
-              <li><strong>硬件配置：</strong>
-                  <ul>
-                      <li>GPU：NVIDIA Tesla T4</li>
-                      <li>CPU：Intel Xeon Gold 6271C @ 2.60GHz</li>
-                  </ul>
-              </li>
-              <li><strong>软件环境：</strong>
-                  <ul>
-                      <li>Ubuntu 20.04 / CUDA 11.8 / cuDNN 8.9 / TensorRT 8.6.1.6</li>
-                      <li>paddlepaddle 3.0.0 / paddleocr 3.0.3</li>
-                  </ul>
-              </li>
-          </ul>
-      </li>
-      <li><b>推理模式说明</b></li>
-  </ul>
+**性能指标：**
+| 指标名称 | 检测Hmean(%) | GPU推理耗时 (ms) | CPU推理耗时 (ms) |
+| :--- | :--- | :--- | :--- |
+| **常规模式** | 98.40 | 124.64 | 545.68 |
+| **高性能模式** | - | 91.57 | 439.86 |
 
-<table border="1">
-    <thead>
-        <tr>
-            <th>模式</th>
-            <th>GPU配置</th>
-            <th>CPU配置</th>
-            <th>加速技术组合</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>常规模式</td>
-            <td>FP32精度 / 无TRT加速</td>
-            <td>FP32精度 / 8线程</td>
-            <td>PaddleInference</td>
-        </tr>
-        <tr>
-            <td>高性能模式</td>
-            <td>选择先验精度类型和加速策略的最优组合</td>
-            <td>FP32精度 / 8线程</td>
-            <td>选择先验最优后端（Paddle/OpenVINO/TRT等）</td>
-        </tr>
-    </tbody>
-</table>
+**下载链接：**  
+| 训练模型 |  推理模型 |
+|:---: |:---: |
+|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCR极速pdfv4_server_seal_det_infer.tar)|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_seal_det_pretrained.pdparams),[AI Studio](https://aistudio.baidu.com/modelsdetail/31857 ),[Hugging Face](https://huggingface.co/PaddlePaddle/PP-LCNet_x1_0_doc_ori) ,[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PP-OCRv4_server_seal_det )  |
+
+---
+
+###  PP-OCRv4_mobile_seal_det
+**模型类型：** 推理模型/训练模型 | **模型存储大小：** 4.7 MB  
+**模型介绍：**  
+PP-OCRv4的移动端印章文本检测模型，效率更高，适合在端侧部署。
+
+**性能指标：**
+| 指标名称 | 检测Hmean(%) | GPU推理耗时 (ms) | CPU推理耗时 (ms) |
+| :--- | :--- | :--- | :--- |
+| **常规模式** | 96.36 | 9.70 | 50.38 |
+| **高性能模式** | - | 3.56 | 19.64 |
+
+**下载链接：**  
+| 训练模型 |  推理模型 |
+|:---: |:---: |
+|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_mobile_seal_det_infer.tar)|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_mobile_seal_det_pretrained.pdparams),[AI Studio](https://aistudio.baidu.com/modelsdetail/31866 ),[Hugging Face](https://huggingface.co/PaddlePaddle/PP-LCNet_x1_0_doc_ori) ,[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PP-OCRv4_mobile_seal_det )  |
+
+---
+
+###  测试环境说明
+**性能测试环境：**
+- **测试数据集：** 自建的内部数据集，包含500张圆形印章图像
+- **硬件配置：**
+  - GPU：NVIDIA Tesla T4
+  - CPU：Intel Xeon Gold 6271C @ 2.60GHz
+- **软件环境：**
+  - Ubuntu 20.04 / CUDA 11.8 / cuDNN 8.9 / TensorRT 8.6.1.6
+  - paddlepaddle 3.0.0 / paddleocr 3.0.3
+
+**推理模式说明：**
+| 模式 | GPU配置 | CPU配置 | 加速技术组合 |
+| :--- | :--- | :--- | :--- |
+| **常规模式** | FP32精度 / 无TRT加速 | FP32精度 / 8线程 | PaddleInference |
+| **高性能模式** | 选择先验精度类型和加速策略的最优组合 | FP32精度 / 8极速pdf线程 | 选择先验最优后端（Paddle/OpenVINO/TRT等） |
+
 
 ## 三、快速开始
 
