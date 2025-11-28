@@ -228,7 +228,7 @@ plugins:
 markdown_extensions:
   - abbr
   - attr_list
-  - callouts
+  - github-callouts
   - pymdownx.snippets
   - pymdownx.critic
   - pymdownx.caret
