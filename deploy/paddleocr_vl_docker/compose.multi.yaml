@@ -1,0 +1,207 @@
+version: "3.9"
+
+x-api-base: &api-base
+  image: ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:${API_IMAGE_TAG_SUFFIX:-latest}
+  restart: unless-stopped
+  user: root
+  environment:
+    - VLM_BACKEND=${VLM_BACKEND:-vllm}
+  command: /bin/bash -c "paddlex --serve --pipeline /home/paddleocr/pipeline_config_${VLM_BACKEND}.yaml"
+  healthcheck:
+    test: ["CMD-SHELL", "curl -f http://localhost:8080/health || exit 1"]
+    interval: 30s
+    timeout: 10s
+    retries: 3
+
+x-vlm-base: &vlm-base
+  image: ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-${VLM_BACKEND}-server:${VLM_IMAGE_TAG_SUFFIX:-latest}
+  restart: unless-stopped
+  user: root
+  healthcheck:
+    test: ["CMD-SHELL", "curl -f http://localhost:8080/health || exit 1"]
+    interval: 30s
+    timeout: 10s
+    retries: 3
+
+services:
+  paddleocr-vl-api-gpu0:
+    <<: *api-base
+    container_name: paddleocr-vl-api-gpu0
+    depends_on:
+      paddleocr-vlm-server-gpu0:
+        condition: service_healthy
+    ports:
+      - "18080:8080"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: ["0"]
+              capabilities: [gpu]
+    networks:
+      paddleocr-vl-gpu0:
+        aliases:
+          - paddleocr-vl-api
+
+  paddleocr-vlm-server-gpu0:
+    <<: *vlm-base
+    container_name: paddleocr-vlm-server-gpu0
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: ["0"]
+              capabilities: [gpu]
+    networks:
+      paddleocr-vl-gpu0:
+        aliases:
+          - paddleocr-vlm-server
+
+  paddleocr-vl-api-gpu1:
+    <<: *api-base
+    container_name: paddleocr-vl-api-gpu1
+    depends_on:
+      paddleocr-vlm-server-gpu1:
+        condition: service_healthy
+    ports:
+      - "18081:8080"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: ["1"]
+              capabilities: [gpu]
+    networks:
+      paddleocr-vl-gpu1:
+        aliases:
+          - paddleocr-vl-api
+
+  paddleocr-vlm-server-gpu1:
+    <<: *vlm-base
+    container_name: paddleocr-vlm-server-gpu1
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: ["1"]
+              capabilities: [gpu]
+    networks:
+      paddleocr-vl-gpu1:
+        aliases:
+          - paddleocr-vlm-server
+
+  paddleocr-vl-api-gpu2:
+    <<: *api-base
+    container_name: paddleocr-vl-api-gpu2
+    depends_on:
+      paddleocr-vlm-server-gpu2:
+        condition: service_healthy
+    ports:
+      - "18082:8080"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: ["2"]
+              capabilities: [gpu]
+    networks:
+      paddleocr-vl-gpu2:
+        aliases:
+          - paddleocr-vl-api
+
+  paddleocr-vlm-server-gpu2:
+    <<: *vlm-base
+    container_name: paddleocr-vlm-server-gpu2
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: ["2"]
+              capabilities: [gpu]
+    networks:
+      paddleocr-vl-gpu2:
+        aliases:
+          - paddleocr-vlm-server
+
+  paddleocr-vl-api-gpu3:
+    <<: *api-base
+    container_name: paddleocr-vl-api-gpu3
+    depends_on:
+      paddleocr-vlm-server-gpu3:
+        condition: service_healthy
+    ports:
+      - "18083:8080"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: ["3"]
+              capabilities: [gpu]
+    networks:
+      paddleocr-vl-gpu3:
+        aliases:
+          - paddleocr-vl-api
+
+  paddleocr-vlm-server-gpu3:
+    <<: *vlm-base
+    container_name: paddleocr-vlm-server-gpu3
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: ["3"]
+              capabilities: [gpu]
+    networks:
+      paddleocr-vl-gpu3:
+        aliases:
+          - paddleocr-vlm-server
+
+  paddleocr-vl-api-gpu4:
+    <<: *api-base
+    container_name: paddleocr-vl-api-gpu4
+    depends_on:
+      paddleocr-vlm-server-gpu4:
+        condition: service_healthy
+    ports:
+      - "18084:8080"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: ["4"]
+              capabilities: [gpu]
+    networks:
+      paddleocr-vl-gpu4:
+        aliases:
+          - paddleocr-vl-api
+
+  paddleocr-vlm-server-gpu4:
+    <<: *vlm-base
+    container_name: paddleocr-vlm-server-gpu4
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: ["4"]
+              capabilities: [gpu]
+    networks:
+      paddleocr-vl-gpu4:
+        aliases:
+          - paddleocr-vlm-server
+
+networks:
+  paddleocr-vl-gpu0:
+  paddleocr-vl-gpu1:
+  paddleocr-vl-gpu2:
+  paddleocr-vl-gpu3:
+  paddleocr-vl-gpu4:

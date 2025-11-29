@@ -1,0 +1,82 @@
+# 多实例部署示例：多个 PaddleOCR API 共享单个 VLM 推理服务
+# 使用方式：
+#   1. 将本文件复制为 compose.yaml（或在 docker compose 命令中通过 -f 指定）。
+#   2. 启动服务：docker compose up -d
+#   3.（可选）结合 nginx.multi_instance.conf 通过 Nginx 对多个 API 实例做负载均衡。
+
+services:
+  paddleocr-vl-api-1:
+    image: ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:${API_IMAGE_TAG_SUFFIX:-latest}
+    container_name: paddleocr-vl-api-1
+    ports:
+      - "8081:8080"
+    depends_on:
+      paddleocr-vlm-server:
+        condition: service_healthy
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: ["0"]
+              capabilities: [gpu]
+    user: root
+    restart: unless-stopped
+    environment:
+      - VLM_BACKEND=${VLM_BACKEND:-vllm}
+    command: /bin/bash -c "paddlex --serve --pipeline /home/paddleocr/pipeline_config_${VLM_BACKEND}.yaml"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8080/health || exit 1"]
+
+  paddleocr-vl-api-2:
+    image: ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:${API_IMAGE_TAG_SUFFIX:-latest}
+    container_name: paddleocr-vl-api-2
+    ports:
+      - "8082:8080"
+    depends_on:
+      paddleocr-vlm-server:
+        condition: service_healthy
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: ["0"]
+              capabilities: [gpu]
+    user: root
+    restart: unless-stopped
+    environment:
+      - VLM_BACKEND=${VLM_BACKEND:-vllm}
+    command: /bin/bash -c "paddlex --serve --pipeline /home/paddleocr/pipeline_config_${VLM_BACKEND}.yaml"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8080/health || exit 1"]
+
+  # 如需更多实例，可参考上述配置增添 paddleocr-vl-api-3、-4 ...
+
+  nginx-lb:
+    image: nginx:alpine
+    container_name: paddleocr-vl-nginx-lb
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx.multi_instance.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - paddleocr-vl-api-1
+      - paddleocr-vl-api-2
+    restart: unless-stopped
+
+  paddleocr-vlm-server:
+    image: ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-${VLM_BACKEND:-vllm}-server:${VLM_IMAGE_TAG_SUFFIX:-latest}
+    container_name: paddleocr-vlm-server
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: ["0"]
+              capabilities: [gpu]
+    user: root
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8080/health || exit 1"]
+      start_period: 300s
