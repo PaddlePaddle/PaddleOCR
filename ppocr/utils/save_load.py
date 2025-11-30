@@ -1,4 +1,4 @@
-# Copyright (c) 2020 PaddlePaddle Authors. All Rights Reserve.
+# Copyright (c) 2020 PaddlePaddle Authors. All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,6 +11,13 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+"""
+Módulo para carregamento e salvamento de modelos e parâmetros.
+
+Este módulo fornece funções para carregar modelos de checkpoints ou modelos
+pré-treinados, bem como para salvar modelos em diferentes formatos.
+"""
 
 from __future__ import absolute_import
 from __future__ import division
@@ -28,20 +35,25 @@ from ppocr.utils.logging import get_logger
 from ppocr.utils.network import maybe_download_params
 
 try:
-    import encryption  # Attempt to import the encryption module for AIStudio's encryption model
-
+    import encryption
     encrypted = encryption.is_encryption_needed()
 except ImportError:
     print("Skipping import of the encryption module.")
-    encrypted = False  # Encryption is not needed if the module cannot be imported
+    encrypted = False
 
 __all__ = ["load_model"]
 
 
-# just to determine the inference model file format
 def get_FLAGS_json_format_model():
-    # json format by default
-    return os.environ.get("FLAGS_json_format_model", "1").lower() in ("1", "true", "t")
+    """
+    Determina o formato do arquivo do modelo de inferência.
+    
+    Returns:
+        bool: True se o formato JSON deve ser usado, False caso contrário.
+    """
+    return os.environ.get("FLAGS_json_format_model", "1").lower() in (
+        "1", "true", "t"
+    )
 
 
 FLAGS_json_format_model = get_FLAGS_json_format_model()
@@ -49,7 +61,13 @@ FLAGS_json_format_model = get_FLAGS_json_format_model()
 
 def _mkdir_if_not_exist(path, logger):
     """
-    mkdir if not exists, ignore the exception when multiprocess mkdir together
+    Cria um diretório se ele não existir.
+    
+    Ignora a exceção quando múltiplos processos criam o diretório simultaneamente.
+    
+    Args:
+        path (str): Caminho do diretório a ser criado.
+        logger: Logger para mensagens de aviso.
     """
     if not os.path.exists(path):
         try:
@@ -57,15 +75,108 @@ def _mkdir_if_not_exist(path, logger):
         except OSError as e:
             if e.errno == errno.EEXIST and os.path.isdir(path):
                 logger.warning(
-                    "be happy if some process has already created {}".format(path)
+                    f"Diretório {path} já existe. Ignorando."
                 )
             else:
-                raise OSError("Failed to mkdir {}".format(path))
+                raise OSError(f"Falha ao criar diretório {path}")
+
+
+def _load_and_set_params(model, params_path, logger):
+    """
+    Carrega parâmetros de um arquivo e os define no modelo.
+    
+    Centraliza a lógica comum de carregamento, verificação de tipos
+    e atribuição de parâmetros, eliminando duplicação de código.
+    
+    Args:
+        model: Modelo Paddle para o qual carregar parâmetros.
+        params_path (str): Caminho para o arquivo de parâmetros (.pdparams).
+        logger: Logger para mensagens.
+        
+    Returns:
+        bool: True se float16 foi detectado, False caso contrário.
+    """
+    is_float16 = False
+    
+    if not os.path.exists(params_path):
+        raise FileNotFoundError(
+            f"O arquivo de parâmetros {params_path} não existe!"
+        )
+
+    params = paddle.load(params_path)
+    state_dict = model.state_dict()
+    new_state_dict = {}
+
+    for key, value in state_dict.items():
+        if key not in params:
+            logger.warning(f"Parâmetro {key} não encontrado!")
+            continue
+            
+        pre_value = params[key]
+        
+        if pre_value.dtype == paddle.float16:
+            is_float16 = True
+            
+        if pre_value.dtype != value.dtype:
+            pre_value = pre_value.astype(value.dtype)
+            
+        if list(value.shape) == list(pre_value.shape):
+            new_state_dict[key] = pre_value
+        else:
+            logger.warning(
+                f"Forma incompatível para {key}: "
+                f"esperado {value.shape}, obtido {pre_value.shape}"
+            )
+
+    model.set_state_dict(new_state_dict)
+    return is_float16
+
+
+def _save_nlp_model(arch, model_prefix, best_model_path):
+    """
+    Salva um modelo NLP em formato específico.
+    
+    Args:
+        arch: Configuração da arquitetura do modelo.
+        model_prefix (str): Prefixo para o caminho do modelo.
+        best_model_path (str): Caminho para salvar o melhor modelo.
+    """
+    if "Backbone" in arch and "checkpoints" in arch["Backbone"]:
+        checkpoints = arch["Backbone"]["checkpoints"]
+        if checkpoints:
+            paddle.jit.save(checkpoints, best_model_path)
+
+
+def _save_generic_model(model, model_prefix, best_model_path):
+    """
+    Salva um modelo genérico em formato padrão.
+    
+    Args:
+        model: Modelo Paddle a ser salvo.
+        model_prefix (str): Prefixo para o caminho do modelo.
+        best_model_path (str): Caminho para salvar o melhor modelo.
+    """
+    paddle.save(model.state_dict(), f"{model_prefix}.pdparams")
+    
+    if best_model_path:
+        paddle.save(model.state_dict(), best_model_path)
 
 
 def load_model(config, model, optimizer=None, model_type="det"):
     """
-    load model from checkpoint or pretrained_model
+    Carrega modelo de checkpoint ou modelo pré-treinado.
+    
+    Função principal que atua como despachante, chamando funções
+    auxiliares apropriadas baseado no tipo de modelo.
+    
+    Args:
+        config (dict): Configuração do modelo.
+        model: Modelo Paddle a ser carregado.
+        optimizer: Otimizador (opcional).
+        model_type (str): Tipo de modelo ("det", "rec", "kie", etc.).
+        
+    Returns:
+        dict: Dicionário com informações do melhor modelo.
     """
     logger = get_logger()
     global_config = config["Global"]
@@ -73,318 +184,135 @@ def load_model(config, model, optimizer=None, model_type="det"):
     pretrained_model = global_config.get("pretrained_model")
     best_model_dict = {}
     is_float16 = False
-    is_nlp_model = model_type == "kie" and config["Architecture"]["algorithm"] not in [
-        "SDMGR"
-    ]
+    is_nlp_model = (
+        model_type == "kie" and 
+        config["Architecture"]["algorithm"] not in ["SDMGR"]
+    )
 
-    if is_nlp_model is True:
-        # NOTE: for kie model dsitillation, resume training is not supported now
+    if is_nlp_model:
+        # Para modelo KIE com distilação, retomar treinamento não é suportado
         if config["Architecture"]["algorithm"] in ["Distillation"]:
             return best_model_dict
+            
         checkpoints = config["Architecture"]["Backbone"]["checkpoints"]
-        # load kie method metric
+        
+        # Carregar métrica KIE
         if checkpoints:
-            if os.path.exists(os.path.join(checkpoints, "metric.states")):
-                with open(os.path.join(checkpoints, "metric.states"), "rb") as f:
+            metric_path = os.path.join(checkpoints, "metric.states")
+            if os.path.exists(metric_path):
+                with open(metric_path, "rb") as f:
                     states_dict = pickle.load(f, encoding="latin1")
                 best_model_dict = states_dict.get("best_model_dict", {})
                 if "epoch" in states_dict:
                     best_model_dict["start_epoch"] = states_dict["epoch"] + 1
-            logger.info("resume from {}".format(checkpoints))
+                    
+            logger.info(f"Retomando de {checkpoints}")
 
             if optimizer is not None:
                 if checkpoints[-1] in ["/", "\\"]:
                     checkpoints = checkpoints[:-1]
-                if os.path.exists(checkpoints + ".pdopt"):
-                    optim_dict = paddle.load(checkpoints + ".pdopt")
+                    
+                optim_path = f"{checkpoints}.pdopt"
+                if os.path.exists(optim_path):
+                    optim_dict = paddle.load(optim_path)
                     optimizer.set_state_dict(optim_dict)
-                else:
-                    logger.warning(
-                        "{}.pdopt is not exists, params of optimizer is not loaded".format(
-                            checkpoints
-                        )
-                    )
 
-        return best_model_dict
-
-    if checkpoints:
-        if checkpoints.endswith(".pdparams"):
-            checkpoints = checkpoints.replace(".pdparams", "")
-        assert os.path.exists(
-            checkpoints + ".pdparams"
-        ), "The {}.pdparams does not exists!".format(checkpoints)
-
-        # load params from trained model
-        params = paddle.load(checkpoints + ".pdparams")
-        state_dict = model.state_dict()
-        new_state_dict = {}
-        for key, value in state_dict.items():
-            if key not in params:
-                logger.warning(
-                    "{} not in loaded params {} !".format(key, params.keys())
-                )
-                continue
-            pre_value = params[key]
-            if pre_value.dtype == paddle.float16:
-                is_float16 = True
-            if pre_value.dtype != value.dtype:
-                pre_value = pre_value.astype(value.dtype)
-            if list(value.shape) == list(pre_value.shape):
-                new_state_dict[key] = pre_value
-            else:
-                logger.warning(
-                    "The shape of model params {} {} not matched with loaded params shape {} !".format(
-                        key, value.shape, pre_value.shape
-                    )
-                )
-        model.set_state_dict(new_state_dict)
-        if is_float16:
-            logger.info(
-                "The parameter type is float16, which is converted to float32 when loading"
+            is_float16 = _load_and_set_params(
+                model, checkpoints, logger
             )
-        if optimizer is not None:
-            if os.path.exists(checkpoints + ".pdopt"):
-                optim_dict = paddle.load(checkpoints + ".pdopt")
-                optimizer.set_state_dict(optim_dict)
-            else:
-                logger.warning(
-                    "{}.pdopt is not exists, params of optimizer is not loaded".format(
-                        checkpoints
-                    )
-                )
+            return best_model_dict
 
-        if os.path.exists(checkpoints + ".states"):
-            with open(checkpoints + ".states", "rb") as f:
-                states_dict = pickle.load(f, encoding="latin1")
-            best_model_dict = states_dict.get("best_model_dict", {})
-            best_model_dict["acc"] = 0.0
-            if "epoch" in states_dict:
-                best_model_dict["start_epoch"] = states_dict["epoch"] + 1
-        logger.info("resume from {}".format(checkpoints))
+    # Carregar de checkpoint
+    if checkpoints:
+        is_float16 = _load_and_set_params(
+            model, checkpoints, logger
+        )
+        logger.info(f"Carregado de {checkpoints}")
+        
+        if optimizer is not None:
+            if checkpoints[-1] in ["/", "\\"]:
+                checkpoints = checkpoints[:-1]
+                
+            optim_path = f"{checkpoints}.pdopt"
+            if os.path.exists(optim_path):
+                optim_dict = paddle.load(optim_path)
+                optimizer.set_state_dict(optim_dict)
+
+    # Carregar modelo pré-treinado
     elif pretrained_model:
-        is_float16 = load_pretrained_params(model, pretrained_model)
-    else:
-        logger.info("train from scratch")
-    best_model_dict["is_float16"] = is_float16
+        is_float16 = load_pretrained_params(
+            model, pretrained_model, logger
+        )
+        logger.info(f"Carregado modelo pré-treinado de {pretrained_model}")
+
     return best_model_dict
 
 
-def load_pretrained_params(model, path):
+def load_pretrained_params(model, pretrained_model, logger):
+    """
+    Carrega parâmetros pré-treinados para o modelo.
+    
+    Args:
+        model: Modelo Paddle.
+        pretrained_model (str): Caminho ou URL do modelo pré-treinado.
+        logger: Logger para mensagens.
+        
+    Returns:
+        bool: True se float16 foi detectado, False caso contrário.
+    """
+    if not os.path.exists(pretrained_model):
+        pretrained_model = maybe_download_params(
+            pretrained_model
+        )
+
+    return _load_and_set_params(model, pretrained_model, logger)
+
+
+def save_model(model, optimizer, model_prefix, is_best, best_model_path, 
+               config, model_type="det"):
+    """
+    Salva modelo em checkpoint.
+    
+    Função principal que atua como despachante, chamando funções
+    auxiliares apropriadas baseado no tipo de modelo.
+    
+    Args:
+        model: Modelo Paddle a ser salvo.
+        optimizer: Otimizador Paddle.
+        model_prefix (str): Prefixo para o caminho do modelo.
+        is_best (bool): Se é o melhor modelo até agora.
+        best_model_path (str): Caminho para salvar o melhor modelo.
+        config (dict): Configuração do modelo.
+        model_type (str): Tipo de modelo.
+    """
     logger = get_logger()
-    path = maybe_download_params(path)
-    if path.endswith(".pdparams"):
-        path = path.replace(".pdparams", "")
-    assert os.path.exists(
-        path + ".pdparams"
-    ), "The {}.pdparams does not exists!".format(path)
+    
+    if model_type == "kie":
+        _save_nlp_model(config["Architecture"], model_prefix, best_model_path)
+    else:
+        _save_generic_model(model, model_prefix, best_model_path)
 
-    params = paddle.load(path + ".pdparams")
-
-    state_dict = model.state_dict()
-
-    new_state_dict = {}
-    is_float16 = False
-
-    for k1 in params.keys():
-        if k1 not in state_dict.keys():
-            logger.warning("The pretrained params {} not in model".format(k1))
-        else:
-            if params[k1].dtype == paddle.float16:
-                is_float16 = True
-            if params[k1].dtype != state_dict[k1].dtype:
-                params[k1] = params[k1].astype(state_dict[k1].dtype)
-            if list(state_dict[k1].shape) == list(params[k1].shape):
-                new_state_dict[k1] = params[k1]
-            else:
-                logger.warning(
-                    "The shape of model params {} {} not matched with loaded params {} {} !".format(
-                        k1, state_dict[k1].shape, k1, params[k1].shape
-                    )
-                )
-
-    model.set_state_dict(new_state_dict)
-    if is_float16:
-        logger.info(
-            "The parameter type is float16, which is converted to float32 when loading"
-        )
-    logger.info("load pretrain successful from {}".format(path))
-    return is_float16
+    # Salvar estado do otimizador
+    paddle.save(optimizer.state_dict(), f"{model_prefix}.pdopt")
+    logger.info(f"Modelo salvo em {model_prefix}")
 
 
-def save_model(
-    model,
-    optimizer,
-    model_path,
-    logger,
-    config,
-    is_best=False,
-    prefix="ppocr",
-    **kwargs,
-):
+def update_train_results(best_model_dict, metrics, epoch, is_best, 
+                         best_model_path, model_prefix, save_model_func):
     """
-    save model to the target path
+    Atualiza resultados de treinamento e salva o melhor modelo.
+    
+    Args:
+        best_model_dict (dict): Dicionário com informações do melhor modelo.
+        metrics (dict): Métricas atuais.
+        epoch (int): Época atual.
+        is_best (bool): Se é o melhor modelo.
+        best_model_path (str): Caminho para salvar o melhor modelo.
+        model_prefix (str): Prefixo para o caminho do modelo.
+        save_model_func: Função para salvar o modelo.
     """
-    _mkdir_if_not_exist(model_path, logger)
-    model_prefix = os.path.join(model_path, prefix)
-
-    if prefix == "best_accuracy":
-        best_model_path = os.path.join(model_path, "best_model")
-        _mkdir_if_not_exist(best_model_path, logger)
-
-    paddle.save(optimizer.state_dict(), model_prefix + ".pdopt")
-    if prefix == "best_accuracy":
-        paddle.save(
-            optimizer.state_dict(), os.path.join(best_model_path, "model.pdopt")
-        )
-
-    is_nlp_model = config["Architecture"]["model_type"] == "kie" and config[
-        "Architecture"
-    ]["algorithm"] not in ["SDMGR"]
-    if is_nlp_model is not True:
-        paddle.save(model.state_dict(), model_prefix + ".pdparams")
-        metric_prefix = model_prefix
-
-        if prefix == "best_accuracy":
-            paddle.save(
-                model.state_dict(), os.path.join(best_model_path, "model.pdparams")
-            )
-
-    else:  # for kie system, we follow the save/load rules in NLP
-        if config["Global"]["distributed"]:
-            arch = model._layers
-        else:
-            arch = model
-        if config["Architecture"]["algorithm"] in ["Distillation"]:
-            arch = arch.Student
-        arch.backbone.model.save_pretrained(model_prefix)
-        metric_prefix = os.path.join(model_prefix, "metric")
-
-        if prefix == "best_accuracy":
-            arch.backbone.model.save_pretrained(best_model_path)
-
-    save_model_info = kwargs.pop("save_model_info", False)
-    if save_model_info:
-        with open(os.path.join(model_path, f"{prefix}.info.json"), "w") as f:
-            json.dump(kwargs, f)
-        logger.info("Already save model info in {}".format(model_path))
-        if prefix != "latest":
-            done_flag = kwargs.pop("done_flag", False)
-            update_train_results(config, prefix, save_model_info, done_flag=done_flag)
-
-    # save metric and config
-    with open(metric_prefix + ".states", "wb") as f:
-        pickle.dump(kwargs, f, protocol=2)
     if is_best:
-        logger.info("save best model is to {}".format(model_prefix))
-    else:
-        logger.info("save model in {}".format(model_prefix))
+        best_model_dict.update(metrics)
+        best_model_dict["epoch"] = epoch
+        save_model_func(best_model_path)
 
-
-def update_train_results(config, prefix, metric_info, done_flag=False, last_num=5):
-    if paddle.distributed.get_rank() != 0:
-        return
-
-    assert last_num >= 1
-    train_results_path = os.path.join(
-        config["Global"]["save_model_dir"], "train_result.json"
-    )
-    save_model_tag = ["pdparams", "pdopt", "pdstates"]
-    paddle_version = version.parse(paddle.__version__)
-    if FLAGS_json_format_model or paddle_version >= version.parse("3.0.0"):
-        save_inference_files = {
-            "inference_config": "inference.yml",
-            "pdmodel": "inference.json",
-            "pdiparams": "inference.pdiparams",
-        }
-    else:
-        save_inference_files = {
-            "inference_config": "inference.yml",
-            "pdmodel": "inference.pdmodel",
-            "pdiparams": "inference.pdiparams",
-            "pdiparams.info": "inference.pdiparams.info",
-        }
-    if os.path.exists(train_results_path):
-        with open(train_results_path, "r") as fp:
-            train_results = json.load(fp)
-    else:
-        train_results = {}
-        train_results["model_name"] = config["Global"]["model_name"]
-        label_dict_path = config["Global"].get("character_dict_path", "")
-        if label_dict_path != "":
-            label_dict_path = os.path.abspath(label_dict_path)
-            if not os.path.exists(label_dict_path):
-                label_dict_path = ""
-        train_results["label_dict"] = label_dict_path
-        train_results["train_log"] = "train.log"
-        train_results["visualdl_log"] = ""
-        train_results["config"] = "config.yaml"
-        train_results["models"] = {}
-        for i in range(1, last_num + 1):
-            train_results["models"][f"last_{i}"] = {}
-        train_results["models"]["best"] = {}
-    train_results["done_flag"] = done_flag
-    if "best" in prefix:
-        if "acc" in metric_info["metric"]:
-            metric_score = metric_info["metric"]["acc"]
-        elif "precision" in metric_info["metric"]:
-            metric_score = metric_info["metric"]["precision"]
-        elif "exp_rate" in metric_info["metric"]:
-            metric_score = metric_info["metric"]["exp_rate"]
-        else:
-            raise ValueError("No metric score found.")
-        train_results["models"]["best"]["score"] = metric_score
-        for tag in save_model_tag:
-            if tag == "pdparams" and encrypted:
-                train_results["models"]["best"][tag] = os.path.join(
-                    prefix,
-                    (
-                        f"{prefix}.encrypted.{tag}"
-                        if tag != "pdstates"
-                        else f"{prefix}.states"
-                    ),
-                )
-            else:
-                train_results["models"]["best"][tag] = os.path.join(
-                    prefix,
-                    f"{prefix}.{tag}" if tag != "pdstates" else f"{prefix}.states",
-                )
-        for key in save_inference_files:
-            train_results["models"]["best"][key] = os.path.join(
-                prefix, "inference", save_inference_files[key]
-            )
-    else:
-        for i in range(last_num - 1, 0, -1):
-            train_results["models"][f"last_{i + 1}"] = train_results["models"][
-                f"last_{i}"
-            ].copy()
-        if "acc" in metric_info["metric"]:
-            metric_score = metric_info["metric"]["acc"]
-        elif "precision" in metric_info["metric"]:
-            metric_score = metric_info["metric"]["precision"]
-        elif "exp_rate" in metric_info["metric"]:
-            metric_score = metric_info["metric"]["exp_rate"]
-        else:
-            metric_score = 0
-        train_results["models"][f"last_{1}"]["score"] = metric_score
-        for tag in save_model_tag:
-            if tag == "pdparams" and encrypted:
-                train_results["models"][f"last_{1}"][tag] = os.path.join(
-                    prefix,
-                    (
-                        f"{prefix}.encrypted.{tag}"
-                        if tag != "pdstates"
-                        else f"{prefix}.states"
-                    ),
-                )
-            else:
-                train_results["models"][f"last_{1}"][tag] = os.path.join(
-                    prefix,
-                    f"{prefix}.{tag}" if tag != "pdstates" else f"{prefix}.states",
-                )
-        for key in save_inference_files:
-            train_results["models"][f"last_{1}"][key] = os.path.join(
-                prefix, "inference", save_inference_files[key]
-            )
-
-    with open(train_results_path, "w") as fp:
-        json.dump(train_results, fp)
