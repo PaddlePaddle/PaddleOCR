@@ -102,35 +102,12 @@ Currently, PaddleOCR-VL offers four inference methods, with varying levels of su
 
 Since different hardware requires different dependencies, if your hardware meets the requirements in the table above, please refer to the following table for the corresponding tutorial to configure your environment:
 
-<table border="1">
-  <thead>
-    <tr>
-      <th>Hardware Type</th>
-      <th>Environment Configuration Tutorial</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>x64 CPU</td>
-      <td>This tutorial</td>
-    </tr>
-    <tr>
-      <td>NVIDIA GPU</td>
-      <td>
-      <li>NVIDIA Blackwell architecture GPU (e.g., RTX 50 series) refer to <a href="./PaddleOCR-VL-NVIDIA-Blackwell.en.md">PaddleOCR-VL NVIDIA Blackwell Architecture GPU Environment Configuration Tutorial</a></li>
-      <li>Other NVIDIA GPUs refer to this tutorial</li>
-      </td>
-    </tr>
-    <tr>
-      <td>KUNLUNXIN XPU</td>
-      <td><a href="./PaddleOCR-VL-XPU.en.md">PaddleOCR-VL XPU Environment Configuration Tutorial</a></td>
-    </tr>
-    <tr>
-      <td>HYGON DCU</td>
-      <td><a href="./PaddleOCR-VL-DCU.en.md">PaddleOCR-VL DCU Environment Configuration Tutorial</a></td>
-    </tr>
-  </tbody>
-</table>
+| Hardware Type  | Environment Configuration Tutorial                                                                                           |
+|----------------|------------------------------------------------------------------------------------------------------------------------------|
+| x64 CPU        | This tutorial                                                                                                                |
+| NVIDIA GPU     | - NVIDIA Blackwell architecture GPU (e.g., RTX 50 series) refer to [PaddleOCR-VL NVIDIA Blackwell Architecture GPU Environment Configuration Tutorial](./PaddleOCR-VL-NVIDIA-Blackwell.en.md) <br/> - Other NVIDIA GPUs refer to this tutorial |
+| KUNLUNXIN XPU  | [PaddleOCR-VL XPU Environment Configuration Tutorial](./PaddleOCR-VL-XPU.en.md)                                              |
+| HYGON DCU      | [PaddleOCR-VL DCU Environment Configuration Tutorial](./PaddleOCR-VL-DCU.en.md)                                              |
 
 > TIP:
 > For example, if you are using an RTX 50 series GPU that meets the device requirements for both PaddlePaddle and vLLM inference methods, please refer to the [PaddleOCR-VL NVIDIA Blackwell Architecture GPU Environment Configuration Tutorial](./PaddleOCR-VL-NVIDIA-Blackwell.en.md) to complete the environment configuration before using PaddleOCR-VL.

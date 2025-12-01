@@ -31,7 +31,7 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
 
 4. **希望对 PaddleOCR-VL 进行微调以适配特定业务**：
 
-    如果您发现 PaddleOCR-VL 在特定业务场景中的精度表现未达预期，请阅读 [5. 模型微调](#5-模型微调)
+    如果您发现 PaddleOCR-VL 在特定业务场景中的精度表现未达预期，请阅读 [5. 模型微调](#5-模型微调)。
 
 ## PaddleOCR-VL 对推理设备的支持情况
 
@@ -102,35 +102,12 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
 
 由于不同硬件所需的依赖各不相同，如果您的硬件满足上述表格的要求，请参考下表查看对应的教程进行环境配置：
 
-<table border="1">
-  <thead>
-    <tr>
-      <th>硬件类型</th>
-      <th>环境配置教程</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>x64 CPU</td>
-      <td>本教程</td>
-    </tr>
-    <tr>
-      <td>英伟达 GPU</td>
-      <td>
-      <li>NVIDIA Blackwell 架构 GPU（如RTX 50 系）参考 <a href="./PaddleOCR-VL-NVIDIA-Blackwell.md">PaddleOCR-VL NVIDIA Blackwell 架构 GPU 环境配置教程</a></li>
-      <li>其他 NVIDIA GPU 参考本教程</li>
-      </td>
-    </tr>
-    <tr>
-      <td>昆仑芯 XPU</td>
-      <td><a href="./PaddleOCR-VL-XPU.md">PaddleOCR-VL XPU 环境配置教程</a></td>
-    </tr>
-    <tr>
-      <td>海光 DCU</td>
-      <td><a href="./PaddleOCR-VL-DCU.md">PaddleOCR-VL DCU 环境配置教程</a></td>
-    </tr>
-  </tbody>
-</table>
+| 硬件类型         | 环境配置教程 |
+|-----------------|--------------------------------------------------|
+| x64 CPU         | 本教程                                           |
+| 英伟达 GPU      | - NVIDIA Blackwell 架构 GPU（如RTX 50 系）参考 [PaddleOCR-VL NVIDIA Blackwell 架构 GPU 环境配置教程](./PaddleOCR-VL-NVIDIA-Blackwell.md) <br/> - 其他 NVIDIA GPU 参考本教程 |
+| 昆仑芯 XPU      | [PaddleOCR-VL XPU 环境配置教程](./PaddleOCR-VL-XPU.md) |
+| 海光 DCU        | [PaddleOCR-VL DCU 环境配置教程](./PaddleOCR-VL-DCU.md) |
 
 > TIP:
 > 例如您使用的是 RTX 50 系 GPU，满足 PaddlePaddle 和 vLLM 推理方式的设备要求，请参考 [PaddleOCR-VL NVIDIA Blackwell 架构 GPU 环境配置教程](./PaddleOCR-VL-NVIDIA-Blackwell.md) 完成环境配置后再进行 PaddleOCR-VL 的使用。
