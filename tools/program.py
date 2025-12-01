@@ -122,6 +122,7 @@ def check_device(
     use_mlu=False,
     use_gcu=False,
     use_iluvatar_gpu=False,
+    use_metax_gpu=False,
 ):
     """
     Log error and exit when set use_gpu=true in paddlepaddle
@@ -164,6 +165,14 @@ def check_device(
         if use_gcu and not paddle.device.is_compiled_with_custom_device("gcu"):
             print(err.format("use_gcu", "gcu", "gcu", "use_gcu"))
             sys.exit(1)
+        if use_metax_gpu and not paddle.device.is_compiled_with_custom_device(
+            "metax_gpu"
+        ):
+            print(
+                err.format("use_metax_gpu", "metax_gpu", "metax_gpu", "use_metax_gpu")
+            )
+            sys.exit(1)
+
     except Exception as e:
         pass
 
@@ -840,6 +849,8 @@ def preprocess(is_train=False):
     use_npu = config["Global"].get("use_npu", False)
     use_mlu = config["Global"].get("use_mlu", False)
     use_gcu = config["Global"].get("use_gcu", False)
+    use_metax_gpu = config["Global"].get("use_metax_gpu", False)
+
     use_iluvatar_gpu = config["Global"].get("use_iluvatar_gpu", False)
 
     alg = config["Architecture"]["algorithm"]
@@ -904,11 +915,15 @@ def preprocess(is_train=False):
         device = "mlu:{0}".format(os.getenv("FLAGS_selected_mlus", 0))
     elif use_gcu:  # Use Enflame GCU(General Compute Unit)
         device = "gcu:{0}".format(os.getenv("FLAGS_selected_gcus", 0))
+    elif use_metax_gpu:  # Use Enflame GCU(General Compute Unit)
+        device = "metax:{0}".format(os.getenv("FLAGS_selected_metaxs", 0))
     elif use_iluvatar_gpu:
         device = "iluvatar_gpu:{0}".format(dist.ParallelEnv().dev_id)
     else:
         device = "gpu:{}".format(dist.ParallelEnv().dev_id) if use_gpu else "cpu"
-    check_device(use_gpu, use_xpu, use_npu, use_mlu, use_gcu, use_iluvatar_gpu)
+    check_device(
+        use_gpu, use_xpu, use_npu, use_mlu, use_gcu, use_iluvatar_gpu, use_metax_gpu
+    )
 
     device = paddle.set_device(device)
 
