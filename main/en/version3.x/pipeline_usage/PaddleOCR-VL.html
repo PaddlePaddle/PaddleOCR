@@ -4949,36 +4949,32 @@ You're not viewing the latest version.
 </ul>
 </div>
 <p>Since different hardware requires different dependencies, if your hardware meets the requirements in the table above, please refer to the following table for the corresponding tutorial to configure your environment:</p>
-<table border="1">
-  <thead>
-    <tr>
-      <th>Hardware Type</th>
-      <th>Environment Configuration Tutorial</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>x64 CPU</td>
-      <td>This tutorial</td>
-    </tr>
-    <tr>
-      <td>NVIDIA GPU</td>
-      <td>
-      <li>NVIDIA Blackwell architecture GPU (e.g., RTX 50 series) refer to <a href="./PaddleOCR-VL-NVIDIA-Blackwell.en.md">PaddleOCR-VL NVIDIA Blackwell Architecture GPU Environment Configuration Tutorial</a></li>
-      <li>Other NVIDIA GPUs refer to this tutorial</li>
-      </td>
-    </tr>
-    <tr>
-      <td>KUNLUNXIN XPU</td>
-      <td><a href="./PaddleOCR-VL-XPU.en.md">PaddleOCR-VL XPU Environment Configuration Tutorial</a></td>
-    </tr>
-    <tr>
-      <td>HYGON DCU</td>
-      <td><a href="./PaddleOCR-VL-DCU.en.md">PaddleOCR-VL DCU Environment Configuration Tutorial</a></td>
-    </tr>
-  </tbody>
+<table>
+<thead>
+<tr>
+<th>Hardware Type</th>
+<th>Environment Configuration Tutorial</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>x64 CPU</td>
+<td>This tutorial</td>
+</tr>
+<tr>
+<td>NVIDIA GPU</td>
+<td>- NVIDIA Blackwell architecture GPU (e.g., RTX 50 series) refer to <a href="PaddleOCR-VL-NVIDIA-Blackwell.html">PaddleOCR-VL NVIDIA Blackwell Architecture GPU Environment Configuration Tutorial</a> <br/> - Other NVIDIA GPUs refer to this tutorial</td>
+</tr>
+<tr>
+<td>KUNLUNXIN XPU</td>
+<td><a href="PaddleOCR-VL-XPU.html">PaddleOCR-VL XPU Environment Configuration Tutorial</a></td>
+</tr>
+<tr>
+<td>HYGON DCU</td>
+<td><a href="PaddleOCR-VL-DCU.html">PaddleOCR-VL DCU Environment Configuration Tutorial</a></td>
+</tr>
+</tbody>
 </table>
-
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p>
@@ -5029,9 +5025,9 @@ For example, if you are using an RTX 50 series GPU that meets the device require
 <div class="language-shell highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># The following command installs the PaddlePaddle version for CUDA 12.6. For other CUDA versions and the CPU version, please refer to https://www.paddlepaddle.org.cn/install/quick?docurl=/documentation/docs/zh/develop/install/pip/linux-pip.html</span>
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>paddlepaddle-gpu<span class="o">==</span><span class="m">3</span>.2.1<span class="w"> </span>-i<span class="w"> </span>https://www.paddlepaddle.org.cn/packages/stable/cu126/
 </span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </span><span class="s2">&quot;paddleocr[doc-parser]&quot;</span>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="c1"># For Linux systems, run:</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="c1"># For Linux systems, please directly copy and execute the following commands without modifying the cuda version in the link:</span>
 </span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>https://paddle-whl.bj.bcebos.com/nightly/cu126/safetensors/safetensors-0.6.2.dev0-cp38-abi3-linux_x86_64.whl
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="c1"># For Windows systems, run:</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="c1"># For Windows systems, directly copy and execute the following command:</span>
 </span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>https://xly-devops.cdn.bcebos.com/safetensors-nightly/safetensors-0.6.2.dev0-cp38-abi3-win_amd64.whl
 </span></code></pre></div>
 <div class="admonition important">
@@ -6073,7 +6069,7 @@ Additionally, it also supports obtaining visualized images and prediction result
 <details>
 <summary>1. Change the port of the PaddleOCR-VL service</summary>
 
-Edit `paddleocr-vl-api.ports` in the `compose.yaml` file to change the port. For example, if you need to change the service port to 8111, make the following modifications:
+Edit <code>paddleocr-vl-api.ports</code> in the <code>compose.yaml</code> file to change the port. For example, if you need to change the service port to 8111, make the following modifications:
 
 <div class="language-diff highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="w"> </span> paddleocr-vl-api:
 </span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="w"> </span>   ...
@@ -6088,7 +6084,7 @@ Edit `paddleocr-vl-api.ports` in the `compose.yaml` file to change the port. For
 <details>
 <summary>2. Specify the GPU used by the PaddleOCR-VL service</summary>
 
-Edit `device_ids` in the `compose.yaml` file to change the GPU used. For example, if you need to use GPU card 1 for deployment, make the following modifications:
+Edit <code>device_ids</code> in the <code>compose.yaml</code> file to change the GPU used. For example, if you need to use GPU card 1 for deployment, make the following modifications:
 
 <div class="language-diff highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="w"> </span> paddleocr-vl-api:
 </span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="w"> </span>   ...
@@ -6119,14 +6115,14 @@ Edit `device_ids` in the `compose.yaml` file to change the GPU used. For example
 <details>
 <summary>3. Adjust VLM server-side configuration</summary>
 
-If you want to adjust the VLM server-side configuration, please refer to [3.3.1 Server-side Parameter Adjustment](#331-server-side-parameter-adjustment) to generate a configuration file.
+If you want to adjust the VLM server-side configuration, please refer to <a href="#331-server-side-parameter-adjustment">3.3.1 Server-side Parameter Adjustment</a> to generate a configuration file.
 
-After generating the configuration file, add the following `paddleocr-vlm-server.volumes` and `paddleocr-vlm-server.command` fields to your `compose.yaml`. Please replace `/path/to/your_config.yaml` with your actual configuration file path.
+After generating the configuration file, add the following <code>paddleocr-vlm-server.volumes</code> and <code>paddleocr-vlm-server.command</code> fields to your <code>compose.yaml</code>. Please replace <code>/path/to/your_config.yaml</code> with your actual configuration file path.
 
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="w">  </span><span class="nt">paddleocr-vlm-server</span><span class="p">:</span>
 </span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">...</span>
 </span><span id="__span-22-3"><a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">volumes</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/path/to/your_config.yaml:/home/paddleocr/vlm_server_config.yaml</span>
-</span><span id="__span-22-4"><a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="w">    </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">paddleocr genai_server --model_name PaddleOCR-VL-0.9B --backend vllm --backend_config /home/paddleocr/vlm_server_config.yaml</span>
+</span><span id="__span-22-4"><a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="w">    </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">paddleocr genai_server --model_name PaddleOCR-VL-0.9B --host 0.0.0.0 --port 8118 --backend vllm --backend_config /home/paddleocr/vlm_server_config.yaml</span>
 </span><span id="__span-22-5"><a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a><span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">...</span>
 </span></code></pre></div>
 
@@ -6135,7 +6131,7 @@ After generating the configuration file, add the following `paddleocr-vlm-server
 <details>
 <summary>4. Change the VLM inference backend</summary>
 
-Modify `VLM_BACKEND` in the `.env` file, for example, to change the VLM inference backend to `fastdeploy`:
+Modify <code>VLM_BACKEND</code> in the <code>.env</code> file, for example, to change the VLM inference backend to <code>fastdeploy</code>:
 
 <div class="language-diff highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="w"> </span> API_IMAGE_TAG_SUFFIX=latest-offline
 </span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="gd">- VLM_BACKEND=vllm</span>
@@ -6148,7 +6144,7 @@ Modify `VLM_BACKEND` in the `.env` file, for example, to change the VLM inferenc
 <details>
 <summary>5. Adjust pipeline configurations (such as model path, batch size, deployment device, etc.)</summary>
 
-Refer to section [4.4 Pipeline Configuration Adjustment Instructions](#44-pipeline-configuration-adjustment-instructions) in this document.
+Refer to section <a href="#44-pipeline-configuration-adjustment-instructions">4.4 Pipeline Configuration Adjustment Instructions</a> in this document.
 
 </details>
 
