@@ -231,9 +231,7 @@ class DKDLoss(nn.Layer):
         pred_student = self._cat_mask(pred_student, gt_mask, other_mask)
         pred_teacher = self._cat_mask(pred_teacher, gt_mask, other_mask)
         log_pred_student = paddle.log(pred_student)
-        tckd_loss = self._kl_div(log_pred_student, pred_teacher) * (
-            self.temperature**2
-        )
+        tckd_loss = self._kl_div(log_pred_student, pred_teacher) * (self.temperature**2)
         pred_teacher_part2 = F.softmax(
             logits_teacher / self.temperature - 1000.0 * gt_mask, axis=1
         )

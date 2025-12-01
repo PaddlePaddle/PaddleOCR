@@ -198,9 +198,9 @@ class ArgsParser(ArgumentParser):
             lang = "cyrillic"
         elif lang in devanagari_lang:
             lang = "devanagari"
-        global_config["Global"][
-            "character_dict_path"
-        ] = "ppocr/utils/dict/{}_dict.txt".format(lang)
+        global_config["Global"]["character_dict_path"] = (
+            "ppocr/utils/dict/{}_dict.txt".format(lang)
+        )
         global_config["Global"]["save_model_dir"] = "./output/rec_{}_lite".format(lang)
         global_config["Train"]["dataset"]["label_file_list"] = [
             "train_data/{}_train.txt".format(lang)
