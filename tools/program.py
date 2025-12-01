@@ -165,10 +165,13 @@ def check_device(
         if use_gcu and not paddle.device.is_compiled_with_custom_device("gcu"):
             print(err.format("use_gcu", "gcu", "gcu", "use_gcu"))
             sys.exit(1)
-        if use_metax_gpu and not paddle.device.is_compiled_with_custom_device("metax_gpu"):
-            print(err.format("use_metax_gpu", "metax_gpu", "metax_gpu", "use_metax_gpu"))
+        if use_metax_gpu and not paddle.device.is_compiled_with_custom_device(
+            "metax_gpu"
+        ):
+            print(
+                err.format("use_metax_gpu", "metax_gpu", "metax_gpu", "use_metax_gpu")
+            )
             sys.exit(1)
-
 
     except Exception as e:
         pass
@@ -918,7 +921,9 @@ def preprocess(is_train=False):
         device = "iluvatar_gpu:{0}".format(dist.ParallelEnv().dev_id)
     else:
         device = "gpu:{}".format(dist.ParallelEnv().dev_id) if use_gpu else "cpu"
-    check_device(use_gpu, use_xpu, use_npu, use_mlu, use_gcu, use_iluvatar_gpu,use_metax_gpu)
+    check_device(
+        use_gpu, use_xpu, use_npu, use_mlu, use_gcu, use_iluvatar_gpu, use_metax_gpu
+    )
 
     device = paddle.set_device(device)
 

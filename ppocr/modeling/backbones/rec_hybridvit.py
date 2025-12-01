@@ -241,7 +241,6 @@ class Mlp(nn.Layer):
 
 
 class Block(nn.Layer):
-
     def __init__(
         self,
         dim,
@@ -320,9 +319,9 @@ class HybridTransformer(nn.Layer):
     ):
         super(HybridTransformer, self).__init__()
         self.num_classes = num_classes
-        self.num_features = self.embed_dim = (
-            embed_dim  # num_features for consistency with other models
-        )
+        self.num_features = (
+            self.embed_dim
+        ) = embed_dim  # num_features for consistency with other models
         self.num_tokens = 2 if distilled else 1
         norm_layer = norm_layer or partial(nn.LayerNorm, epsilon=1e-6)
         act_layer = act_layer or nn.GELU
