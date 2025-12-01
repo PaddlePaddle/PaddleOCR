@@ -60,13 +60,9 @@ source .venv_paddleocr/bin/activate
 # 注意这里安装的是 cu129 的 PaddlePaddle
 python -m pip install paddlepaddle-gpu==3.2.1 -i https://www.paddlepaddle.org.cn/packages/stable/cu129/
 python -m pip install -U "paddleocr[doc-parser]"
-# 对于 Linux 系统，执行：
-python -m pip install https://paddle-whl.bj.bcebos.com/nightly/cu126/safetensors/safetensors-0.6.2.dev0-cp38-abi3-linux_x86_64.whl
-# 对于 Windows 系统，执行：
-python -m pip install https://xly-devops.cdn.bcebos.com/safetensors-nightly/safetensors-0.6.2.dev0-cp38-abi3-win_amd64.whl
 ```
 
-> **请注意安装 3.2.1 及以上版本的飞桨框架，同时安装特殊版本的 safetensors。**
+> **请注意安装 3.2.1 及以上版本的飞桨框架。**
 
 ## 2. 快速开始
 

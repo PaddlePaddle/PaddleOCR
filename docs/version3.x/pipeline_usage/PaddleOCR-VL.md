@@ -170,14 +170,10 @@ source .venv_paddleocr/bin/activate
 # 以下命令安装 CUDA 12.6 版本的 PaddlePaddle，对于其他 CUDA 版本以及 CPU 版本，请参考 https://www.paddlepaddle.org.cn/install/quick?docurl=/documentation/docs/zh/develop/install/pip/linux-pip.html
 python -m pip install paddlepaddle-gpu==3.2.1 -i https://www.paddlepaddle.org.cn/packages/stable/cu126/
 python -m pip install -U "paddleocr[doc-parser]"
-# 对于 Linux 系统，请直接复制并执行以下命令，无需修改链接中的 cuda 版本：
-python -m pip install https://paddle-whl.bj.bcebos.com/nightly/cu126/safetensors/safetensors-0.6.2.dev0-cp38-abi3-linux_x86_64.whl
-# 对于Windows 系统，请直接复制并执行以下命令：
-python -m pip install https://xly-devops.cdn.bcebos.com/safetensors-nightly/safetensors-0.6.2.dev0-cp38-abi3-win_amd64.whl
 ```
 
 > IMPORTANT:
-> **请注意安装 3.2.1 及以上版本的飞桨框架，同时安装特殊版本的 safetensors。** 对于 macOS 用户，请使用 Docker 进行环境搭建。
+> **请注意安装 3.2.1 及以上版本的飞桨框架。** 对于 macOS 用户，请使用 Docker 进行环境搭建。
 
 ## 2. 快速开始
 

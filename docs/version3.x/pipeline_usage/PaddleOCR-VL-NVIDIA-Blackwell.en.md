@@ -60,13 +60,9 @@ Run the following commands to complete the installation:
 # Note that PaddlePaddle for cu129 is being installed here
 python -m pip install paddlepaddle-gpu==3.2.1 -i https://www.paddlepaddle.org.cn/packages/stable/cu129/
 python -m pip install -U "paddleocr[doc-parser]"
-# For Linux systems, run:
-python -m pip install https://paddle-whl.bj.bcebos.com/nightly/cu126/safetensors/safetensors-0.6.2.dev0-cp38-abi3-linux_x86_64.whl
-# For Windows systems, run:
-python -m pip install https://xly-devops.cdn.bcebos.com/safetensors-nightly/safetensors-0.6.2.dev0-cp38-abi3-win_amd64.whl
 ```
 
-> **Please ensure that PaddlePaddle framework version 3.2.1 or higher is installed, along with the special version of safetensors.**
+> **Please ensure that PaddlePaddle framework version 3.2.1 or higher is installed.**
 
 ## 2. Quick Start
 
