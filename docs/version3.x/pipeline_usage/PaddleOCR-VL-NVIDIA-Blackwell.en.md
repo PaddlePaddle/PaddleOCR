@@ -217,7 +217,7 @@ You can modify `compose.yaml` to meet custom requirements, for example:
 <details>
 <summary>1. Change the port of the PaddleOCR-VL service</summary>
 
-Edit `paddleocr-vl-api.ports` in the `compose.yaml` file to change the port. For example, if you need to change the service port to 8111, make the following modifications:
+Edit <code>paddleocr-vl-api.ports</code> in the <code>compose.yaml</code> file to change the port. For example, if you need to change the service port to 8111, make the following modifications:
 
 ```diff
   paddleocr-vl-api:
@@ -233,7 +233,7 @@ Edit `paddleocr-vl-api.ports` in the `compose.yaml` file to change the port. For
 <details>
 <summary>2. Specify the GPU used by the PaddleOCR-VL service</summary>
 
-Edit `device_ids` in the `compose.yaml` file to change the GPU used. For example, if you need to use GPU card 1 for deployment, make the following modifications:
+Edit <code>environment</code> in the <code>compose.yaml</code> file to change the GPU used. For example, if you need to use card 1 for deployment, make the following modifications:
 
 ```diff
   paddleocr-vl-api:
@@ -265,15 +265,15 @@ Edit `device_ids` in the `compose.yaml` file to change the GPU used. For example
 <details>
 <summary>3. Adjust VLM server-side configuration</summary>
 
-If you want to adjust the VLM server-side configuration, please refer to [3.3.1 Server-side Parameter Adjustment](#331-server-side-parameter-adjustment) to generate a configuration file.
+If you want to adjust the VLM server configuration, refer to <a href="./PaddleOCR-VL.en.md#331-server-parameter-adjustment">3.3.1 Server Parameter Adjustment</a> to generate a configuration file.
 
-After generating the configuration file, add the following `paddleocr-vlm-server.volumes` and `paddleocr-vlm-server.command` fields to your `compose.yaml`. Please replace `/path/to/your_config.yaml` with your actual configuration file path.
+After generating the configuration file, add the following <code>paddleocr-vlm-server.volumes</code> and <code>paddleocr-vlm-server.command</code> fields to your <code>compose.yaml</code>. Replace <code>/path/to/your_config.yaml</code> with your actual configuration file path.
 
 ```yaml
   paddleocr-vlm-server:
     ...
     volumes: /path/to/your_config.yaml:/home/paddleocr/vlm_server_config.yaml
-    command: paddleocr genai_server --model_name PaddleOCR-VL-0.9B --backend vllm --backend_config /home/paddleocr/vlm_server_config.yaml
+    command: paddleocr genai_server --model_name PaddleOCR-VL-0.9B --host 0.0.0.0 --port 8118 --backend vllm --backend_config /home/paddleocr/vlm_server_config.yaml
     ...
 ```
 
@@ -282,7 +282,7 @@ After generating the configuration file, add the following `paddleocr-vlm-server
 <details>
 <summary>4. Adjust pipeline-related configurations (such as model path, batch size, deployment device, etc.)</summary>
 
-Refer to the [4.4 Pipeline Configuration Adjustment Instructions](./PaddleOCR-VL.en.md#44-pipeline-configuration-adjustment-instructions) section.
+Refer to the <a href="./PaddleOCR-VL.en.md#44-pipeline-configuration-adjustment-instructions">4.4 Pipeline Configuration Adjustment Instructions</a> section.
 
 </details>
 

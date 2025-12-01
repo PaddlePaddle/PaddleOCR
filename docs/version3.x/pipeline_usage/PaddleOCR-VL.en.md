@@ -192,9 +192,9 @@ Run the following commands to complete the installation:
 # The following command installs the PaddlePaddle version for CUDA 12.6. For other CUDA versions and the CPU version, please refer to https://www.paddlepaddle.org.cn/install/quick?docurl=/documentation/docs/zh/develop/install/pip/linux-pip.html
 python -m pip install paddlepaddle-gpu==3.2.1 -i https://www.paddlepaddle.org.cn/packages/stable/cu126/
 python -m pip install -U "paddleocr[doc-parser]"
-# For Linux systems, run:
+# For Linux systems, directly copy and execute the following command:
 python -m pip install https://paddle-whl.bj.bcebos.com/nightly/cu126/safetensors/safetensors-0.6.2.dev0-cp38-abi3-linux_x86_64.whl
-# For Windows systems, run:
+# For Windows systems, directly copy and execute the following command:
 python -m pip install https://xly-devops.cdn.bcebos.com/safetensors-nightly/safetensors-0.6.2.dev0-cp38-abi3-win_amd64.whl
 ```
 
@@ -1274,7 +1274,7 @@ You can meet custom requirements by modifying `.env` and `compose.yaml`, for exa
 <details>
 <summary>1. Change the port of the PaddleOCR-VL service</summary>
 
-Edit `paddleocr-vl-api.ports` in the `compose.yaml` file to change the port. For example, if you need to change the service port to 8111, make the following modifications:
+Edit <code>paddleocr-vl-api.ports</code> in the <code>compose.yaml</code> file to change the port. For example, if you need to change the service port to 8111, make the following modifications:
 
 ```diff
   paddleocr-vl-api:
@@ -1290,7 +1290,7 @@ Edit `paddleocr-vl-api.ports` in the `compose.yaml` file to change the port. For
 <details>
 <summary>2. Specify the GPU used by the PaddleOCR-VL service</summary>
 
-Edit `device_ids` in the `compose.yaml` file to change the GPU used. For example, if you need to use GPU card 1 for deployment, make the following modifications:
+Edit <code>device_ids</code> in the <code>compose.yaml</code> file to change the GPU used. For example, if you need to use GPU card 1 for deployment, make the following modifications:
 
 ```diff
   paddleocr-vl-api:
@@ -1322,15 +1322,15 @@ Edit `device_ids` in the `compose.yaml` file to change the GPU used. For example
 <details>
 <summary>3. Adjust VLM server-side configuration</summary>
 
-If you want to adjust the VLM server-side configuration, please refer to [3.3.1 Server-side Parameter Adjustment](#331-server-side-parameter-adjustment) to generate a configuration file.
+If you want to adjust the VLM server-side configuration, please refer to <a href="#331-server-side-parameter-adjustment">3.3.1 Server-side Parameter Adjustment</a> to generate a configuration file.
 
-After generating the configuration file, add the following `paddleocr-vlm-server.volumes` and `paddleocr-vlm-server.command` fields to your `compose.yaml`. Please replace `/path/to/your_config.yaml` with your actual configuration file path.
+After generating the configuration file, add the following <code>paddleocr-vlm-server.volumes</code> and <code>paddleocr-vlm-server.command</code> fields to your <code>compose.yaml</code>. Please replace <code>/path/to/your_config.yaml</code> with your actual configuration file path.
 
 ```yaml
   paddleocr-vlm-server:
     ...
     volumes: /path/to/your_config.yaml:/home/paddleocr/vlm_server_config.yaml
-    command: paddleocr genai_server --model_name PaddleOCR-VL-0.9B --backend vllm --backend_config /home/paddleocr/vlm_server_config.yaml
+    command: paddleocr genai_server --model_name PaddleOCR-VL-0.9B --host 0.0.0.0 --port 8118 --backend vllm --backend_config /home/paddleocr/vlm_server_config.yaml
     ...
 ```
 
@@ -1339,7 +1339,7 @@ After generating the configuration file, add the following `paddleocr-vlm-server
 <details>
 <summary>4. Change the VLM inference backend</summary>
 
-Modify `VLM_BACKEND` in the `.env` file, for example, to change the VLM inference backend to `fastdeploy`:
+Modify <code>VLM_BACKEND</code> in the <code>.env</code> file, for example, to change the VLM inference backend to <code>fastdeploy</code>:
 
 ```diff
   API_IMAGE_TAG_SUFFIX=latest-offline
@@ -1353,7 +1353,7 @@ Modify `VLM_BACKEND` in the `.env` file, for example, to change the VLM inferenc
 <details>
 <summary>5. Adjust pipeline configurations (such as model path, batch size, deployment device, etc.)</summary>
 
-Refer to section [4.4 Pipeline Configuration Adjustment Instructions](#44-pipeline-configuration-adjustment-instructions) in this document.
+Refer to section <a href="#44-pipeline-configuration-adjustment-instructions">4.4 Pipeline Configuration Adjustment Instructions</a> in this document.
 
 </details>
 
