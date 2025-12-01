@@ -27,7 +27,7 @@ repos:
         files: \.(c|cc|cxx|cpp|cu|h|hpp|hxx|cuh|proto)$
 # For Python files
 -   repo: https://github.com/psf/black.git
-    rev: 24.10.0
+    rev: 22.10.0
     hooks:
     -   id: black
         files: (.*\.(py|pyi|bzl)|BUILD|.*\.BUILD|WORKSPACE)$

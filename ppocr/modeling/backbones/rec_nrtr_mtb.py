@@ -35,7 +35,9 @@ class MTB(nn.Layer):
                     ),
                 )
                 self.block.add_sublayer("relu_{}".format(i), nn.ReLU())
-                self.block.add_sublayer("bn_{}".format(i), nn.BatchNorm2D(32 * (2**i)))
+                self.block.add_sublayer(
+                    "bn_{}".format(i), nn.BatchNorm2D(32 * (2**i))
+                )
 
     def forward(self, images):
         x = self.block(images)

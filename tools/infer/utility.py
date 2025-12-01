@@ -353,6 +353,7 @@ def create_predictor(args, mode, logger):
                 config.enable_custom_device(
                     "metax_gpu", 0, paddle.inference.PrecisionType.Half
                 )
+
             else:
                 config.enable_custom_device("metax_gpu")
         elif args.use_xpu:
