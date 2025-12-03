@@ -12,8 +12,33 @@ ARG DEVICE_TYPE="gpu"
 
 RUN if [ "${DEVICE_TYPE}" != 'dcu' ]; then \
         apt-get update \
-            && apt-get install -y libgl1 \
+            && apt-get install -y --no-install-recommends libgl1 \
+            && apt-get install -y --no-install-recommends \
+                fontconfig \
+                fonts-dejavu-core \
+                fonts-liberation \
+                fonts-noto-cjk \
+                fonts-wqy-microhei \
+                fonts-freefont-ttf \
+            && fc-cache -fv \
             && rm -rf /var/lib/apt/lists/*; \
+    else \
+        yum install -y \
+            fontconfig \
+            dejavu-sans-fonts \
+            dejavu-serif-fonts \
+            liberation-fonts \
+            liberation-mono-fonts \
+            liberation-sans-fonts \
+            liberation-serif-fonts \
+            google-noto-cjk-fonts \
+            wqy-microhei-fonts \
+            gnu-free-fonts-common \
+            gnu-free-mono-fonts \
+            gnu-free-sans-fonts \
+            gnu-free-serif-fonts \
+        && fc-cache -fv \
+        && yum clean all;
     fi
 
 RUN python -m pip install https://paddle-whl.bj.bcebos.com/nightly/cu126/safetensors/safetensors-0.6.2.dev0-cp38-abi3-linux_x86_64.whl
