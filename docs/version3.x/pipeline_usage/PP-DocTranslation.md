@@ -1146,7 +1146,6 @@ paddleocr pp_doctranslation -i vehicle_certificate-1.png --target_language en --
 </tr>
 <tr>
 <td><code>seal_text_recognition_model_dir</code></td>
-<td>印章文本识别模型的目录路径。
 <td><b>含义：</b>印章文本识别模型的目录路径。<br/>
 <b>说明：</b>
 如果不设置，将会下载官方模型。</td>
@@ -1173,7 +1172,6 @@ paddleocr pp_doctranslation -i vehicle_certificate-1.png --target_language en --
 </tr>
 <tr>
 <td><code>formula_recognition_model_name</code></td>
-<td>公式识别模型的名称。
 <td><b>含义：</b>公式识别模型的名称。<br/>
 <b>说明：</b>
 如果不设置，将会使用产线默认模型。</td>
@@ -1182,7 +1180,6 @@ paddleocr pp_doctranslation -i vehicle_certificate-1.png --target_language en --
 </tr>
 <tr>
 <td><code>formula_recognition_model_dir</code></td>
-<td>公式识别模型的目录路径。
 <td><b>含义：</b>公式识别模型的目录路径。<br/>
 <b>说明：</b>
 如果不设置，将会下载官方模型。</td>
@@ -1191,7 +1188,6 @@ paddleocr pp_doctranslation -i vehicle_certificate-1.png --target_language en --
 </tr>
 <tr>
 <td><code>formula_recognition_batch_size</code></td>
-<td>公式识别模型的batch size。
 <td><b>含义：</b>公式识别模型的batch size。<br/>
 <b>说明：</b>
 如果不设置，将默认设置batch size为<code>1</code>。</td>
@@ -1200,7 +1196,6 @@ paddleocr pp_doctranslation -i vehicle_certificate-1.png --target_language en --
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
-<td>是否加载并使用文档方向分类模块。
 <td><b>含义：</b>是否加载并使用文档方向分类模块。<br/>
 <b>说明：</b>
 如果不设置，将使用产线初始化的该参数值，默认初始化为<code>False</code>。</td>
@@ -1209,7 +1204,6 @@ paddleocr pp_doctranslation -i vehicle_certificate-1.png --target_language en --
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
-<td>是否加载并使用文本图像矫正模块。
 <td><b>含义：</b>是否加载并使用文本图像矫正模块。<br/>
 <b>说明：</b>
 如果不设置，将使用产线初始化的该参数值，默认初始化为<code>False</code>。</td>
@@ -1218,7 +1212,6 @@ paddleocr pp_doctranslation -i vehicle_certificate-1.png --target_language en --
 </tr>
 <tr>
 <td><code>use_textline_orientation</code></td>
-<td>是否加载并使用文本行方向分类模块。
 <td><b>含义：</b>是否加载并使用文本行方向分类模块。<br/>
 <b>说明：</b>
 如果不设置，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
@@ -1227,7 +1220,6 @@ paddleocr pp_doctranslation -i vehicle_certificate-1.png --target_language en --
 </tr>
 <tr>
 <td><code>use_seal_recognition</code></td>
-<td>是否加载并使用印章文本识别子产线。
 <td><b>含义：</b>是否加载并使用印章文本识别子产线。<br/>
 <b>说明：</b>
 如果不设置，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
@@ -1236,7 +1228,6 @@ paddleocr pp_doctranslation -i vehicle_certificate-1.png --target_language en --
 </tr>
 <tr>
 <td><code>use_table_recognition</code></td>
-<td>是否加载并使用表格识别子产线。
 <td><b>含义：</b>是否加载并使用表格识别子产线。<br/>
 <b>说明：</b>
 如果不设置，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
@@ -1245,7 +1236,6 @@ paddleocr pp_doctranslation -i vehicle_certificate-1.png --target_language en --
 </tr>
 <tr>
 <td><code>use_formula_recognition</code></td>
-<td>是否加载并使用公式识别子产线。
 <td><b>含义：</b>是否加载并使用公式识别子产线。<br/>
 <b>说明：</b>
 如果不设置，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
@@ -1254,7 +1244,6 @@ paddleocr pp_doctranslation -i vehicle_certificate-1.png --target_language en --
 </tr>
 <tr>
 <td><code>use_chart_recognition</code></td>
-<td>是否加载并使用文档区域检测模块。
 <td><b>含义：</b>是否加载并使用文档区域检测模块。<br/>
 <b>说明：</b>
 如果不设置，将使用产线初始化的该参数值，默认初始化为<code>False</code>。</td>
@@ -1263,7 +1252,6 @@ paddleocr pp_doctranslation -i vehicle_certificate-1.png --target_language en --
 </tr>
 <tr>
 <td><code>use_region_detection</code></td>
-<td>是否加载并使用文档区域检测模块。
 <td><b>含义：</b>是否加载并使用文档区域检测模块。<br/>
 <b>说明：</b>
 如果不设置，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
