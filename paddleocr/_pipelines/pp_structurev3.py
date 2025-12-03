@@ -91,6 +91,8 @@ class PPStructureV3(PaddleXPipelineWrapper):
         use_formula_recognition=None,
         use_chart_recognition=None,
         use_region_detection=None,
+        format_block_content=None,
+        markdown_ignore_labels=None,
         lang=None,
         ocr_version=None,
         **kwargs,
@@ -152,6 +154,7 @@ class PPStructureV3(PaddleXPipelineWrapper):
         use_formula_recognition=None,
         use_chart_recognition=None,
         use_region_detection=None,
+        format_block_content=None,
         layout_threshold=None,
         layout_nms=None,
         layout_unclip_ratio=None,
@@ -174,6 +177,7 @@ class PPStructureV3(PaddleXPipelineWrapper):
         use_ocr_results_with_table_cells=True,
         use_e2e_wired_table_rec_model=False,
         use_e2e_wireless_table_rec_model=True,
+        markdown_ignore_labels=None,
         **kwargs,
     ):
         return self.paddlex_pipeline.predict(
@@ -186,6 +190,7 @@ class PPStructureV3(PaddleXPipelineWrapper):
             use_formula_recognition=use_formula_recognition,
             use_chart_recognition=use_chart_recognition,
             use_region_detection=use_region_detection,
+            format_block_content=format_block_content,
             layout_threshold=layout_threshold,
             layout_nms=layout_nms,
             layout_unclip_ratio=layout_unclip_ratio,
@@ -208,6 +213,7 @@ class PPStructureV3(PaddleXPipelineWrapper):
             use_ocr_results_with_table_cells=use_ocr_results_with_table_cells,
             use_e2e_wired_table_rec_model=use_e2e_wired_table_rec_model,
             use_e2e_wireless_table_rec_model=use_e2e_wireless_table_rec_model,
+            markdown_ignore_labels=markdown_ignore_labels,
             **kwargs,
         )
 
@@ -223,6 +229,7 @@ class PPStructureV3(PaddleXPipelineWrapper):
         use_formula_recognition=None,
         use_chart_recognition=None,
         use_region_detection=None,
+        format_block_content=None,
         layout_threshold=None,
         layout_nms=None,
         layout_unclip_ratio=None,
@@ -245,6 +252,7 @@ class PPStructureV3(PaddleXPipelineWrapper):
         use_ocr_results_with_table_cells=True,
         use_e2e_wired_table_rec_model=False,
         use_e2e_wireless_table_rec_model=True,
+        markdown_ignore_labels=None,
         **kwargs,
     ):
         return list(
@@ -258,6 +266,7 @@ class PPStructureV3(PaddleXPipelineWrapper):
                 use_formula_recognition=use_formula_recognition,
                 use_chart_recognition=use_chart_recognition,
                 use_region_detection=use_region_detection,
+                format_block_content=format_block_content,
                 layout_threshold=layout_threshold,
                 layout_nms=layout_nms,
                 layout_unclip_ratio=layout_unclip_ratio,
@@ -280,6 +289,7 @@ class PPStructureV3(PaddleXPipelineWrapper):
                 use_ocr_results_with_table_cells=use_ocr_results_with_table_cells,
                 use_e2e_wired_table_rec_model=use_e2e_wired_table_rec_model,
                 use_e2e_wireless_table_rec_model=use_e2e_wireless_table_rec_model,
+                markdown_ignore_labels=markdown_ignore_labels,
                 **kwargs,
             )
         )
@@ -309,6 +319,8 @@ class PPStructureV3(PaddleXPipelineWrapper):
             "use_formula_recognition": self._params["use_formula_recognition"],
             "use_chart_recognition": self._params["use_chart_recognition"],
             "use_region_detection": self._params["use_region_detection"],
+            "format_block_content": self._params["format_block_content"],
+            "markdown_ignore_labels": self._params["markdown_ignore_labels"],
             "SubModules.LayoutDetection.model_name": self._params[
                 "layout_detection_model_name"
             ],
@@ -995,6 +1007,18 @@ class PPStructureV3CLISubcommandExecutor(PipelineCLISubcommandExecutor):
             "--use_region_detection",
             type=str2bool,
             help="Whether to use region detection.",
+        )
+
+        subparser.add_argument(
+            "--format_block_content",
+            type=str2bool,
+            help="Whether to format block content to Markdown.",
+        )
+        subparser.add_argument(
+            "--markdown_ignore_labels",
+            type=str,
+            nargs="+",
+            help="List of layout labels to ignore in Markdown output.",
         )
 
     def execute_with_args(self, args):

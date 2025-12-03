@@ -378,6 +378,18 @@ paddleocr doc_parser -i ./paddleocr_vl_demo.png --use_layout_detection False
 <td></td>
 </tr>
 <tr>
+<td><code>merge_layout_blocks</code></td>
+<td>控制是否对跨栏或上下交错分栏的版面检测框进行合并。如果不设置，将使用初始化的默认值，默认初始化为<code>True</code>。</td>
+<td><code>bool</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>markdown_ignore_labels</code></td>
+<td>需要在Markdown中忽略的版面标签。如果不设置，将使用初始化的参数值。</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
 <td><code>use_queues</code></td>
 <td>用于控制是否启用内部队列。当设置为 <code>True</code> 时，数据加载（如将 PDF 页面渲染为图像）、版面检测模型处理以及 VLM 推理将分别在独立线程中异步执行，通过队列传递数据，从而提升效率。对于页数较多的 PDF 文档，或是包含大量图像或 PDF 文件的目录，这种方式尤其高效。</td>
 <td><code>bool</code></td>
@@ -709,6 +721,18 @@ for item in markdown_images:
 <td><code>None</code></td>
 </tr>
 <tr>
+<td><code>merge_layout_blocks</code></td>
+<td>控制是否对跨栏或上下交错分栏的版面检测框进行合并。如果设置为<code>None</code>，将使用初始化的默认值，默认初始化为<code>True</code>。</td>
+<td><code>bool|None</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>markdown_ignore_labels</code></td>
+<td>需要在Markdown中忽略的版面标签。如果设置为<code>None</code>，将使用初始化的默认值。</td>
+<td><code>list|None</code></td>
+<td></td>
+</tr>
+<tr>
 <td><code>device</code></td>
 <td>用于推理的设备。支持指定具体卡号：
 <ul>
@@ -893,6 +917,24 @@ MKL-DNN 缓存容量。
 <td><code>max_pixels</code></td>
 <td>VL模型预处理图像时允许的最大像素数。</td>
 <td><code>int|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>max_new_tokens</code></td>
+<td>VL模型生成的最大token数。</td>
+<td><code>int|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>merge_layout_blocks</code></td>
+<td>控制是否对跨栏或上下交错分栏的版面检测框进行合并。</td>
+<td><code>bool|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>markdown_ignore_labels</code></td>
+<td>需要在Markdown中忽略的版面标签。</td>
+<td><code>list|None</code></td>
 <td><code>None</code></td>
 </tr>
 </table>
@@ -1652,6 +1694,24 @@ INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
 <td><code>maxPixels</code></td>
 <td><code>number</code> | <code>null</code></td>
 <td>请参阅PaddleOCR-VL对象中 <code>predict</code> 方法的 <code>max_pixels</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>maxNewTokens</code></td>
+<td><code>number</code> | <code>null</code></td>
+<td>请参阅PaddleOCR-VL对象中 <code>predict</code> 方法的 <code>max_new_tokens</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>mergeLayoutBlocks</code></td>
+<td><code>boolean</code> | <code>null</code></td>
+<td>请参阅PaddleOCR-VL对象中 <code>predict</code> 方法的 <code>merge_layout_blocks</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>markdownLayoutBlocks</code></td>
+<td><code>array</code> | <code>null</code></td>
+<td>请参阅PaddleOCR-VL对象中 <code>predict</code> 方法的 <code>markdown_layout_blocks</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>

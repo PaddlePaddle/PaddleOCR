@@ -1503,6 +1503,18 @@ paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --device gpu
 <td></td>
 </tr>
 <tr>
+<td><code>format_block_content</code></td>
+<td>是否将<code>block_content</code>中的内容格式化为Markdown格式。如果不设置，将使用初始化的默认值，默认初始化为<code>False</code>。</td>
+<td><code>bool</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>markdown_ignore_labels</code></td>
+<td>需要在Markdown中忽略的版面标签。如果不设置，将使用产线初始化的该参数值。</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
 <td><code>device</code></td>
 <td>用于推理的设备。支持指定具体卡号：
 <ul>
@@ -2126,6 +2138,18 @@ for item in markdown_images:
 <td><code>None</code></td>
 </tr>
 <tr>
+<td><code>format_block_content</code></td>
+<td>是否将<code>block_content</code>中的内容格式化为Markdown格式。如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>False</code>。</td>
+<td><code>bool|None</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>markdown_ignore_labels</code></td>
+<td>需要在Markdown中忽略的版面标签。如果不设置，将使用产线初始化的该参数值。</td>
+<td><code>list|None</code></td>
+<td></td>
+</tr>
+<tr>
 <td><code>device</code></td>
 <td>用于推理的设备。支持指定具体卡号：
 <ul>
@@ -2266,6 +2290,12 @@ MKL-DNN 缓存容量。
 <td><code>None</code></td>
 </tr>
 <tr>
+<td><code>format_block_content</code></td>
+<td>是否将<code>block_content</code>中的内容格式化为Markdown格式。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td><code>bool|None</code></td>
+<td></td>
+</tr>
+<tr>
 <td><code>layout_threshold</code></td>
 <td>参数含义与实例化参数基本相同。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
 <td><code>float|dict|None</code></td>
@@ -2396,6 +2426,12 @@ MKL-DNN 缓存容量。
 <td>是否启用无线表端到端表格识别模式，启用则不使用单元格检测模型，只使用表格结构识别模型。</td>
 <td><code>bool</code></td>
 <td><code>True</code></td>
+</tr>
+<tr>
+<td><code>markdown_ignore_labels</code></td>
+<td>需要在Markdown中忽略的版面标签。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td><code>list|None</code></td>
+<td></td>
 </tr>
 </table>
 </details>
@@ -2792,6 +2828,12 @@ MKL-DNN 缓存容量。
 <td>否</td>
 </tr>
 <tr>
+<td><code>formatBlockContent</code></td>
+<td><code>boolean</code> | <code>null</code></td>
+<td>请参阅产线对象中 <code>predict</code> 方法的 <code>format_block_content</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
 <td><code>layoutThreshold</code></td>
 <td><code>number</code> | <code>object</code> | </code><code>null</code></td>
 <td>请参阅产线对象中 <code>predict</code> 方法的 <code>layout_threshold</code> 参数相关说明。</td>
@@ -2921,6 +2963,12 @@ MKL-DNN 缓存容量。
 <td><code>useE2eWirelessTableRecModel</code></td>
 <td><code>boolean</code></td>
 <td>请参阅产线对象中 <code>predict</code> 方法的 <code>use_e2e_wireless_table_rec_model</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>markdownIgnoreLabels</code></td>
+<td><code>array</code> | <code>null</code></td>
+<td>请参阅产线对象中 <code>predict</code> 方法的 <code>markdown_ignore_labels</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
 <tr>

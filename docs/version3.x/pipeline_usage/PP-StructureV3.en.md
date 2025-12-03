@@ -1415,6 +1415,19 @@ any float > <code>0</code>. If not set, the default is <code>0.6</code>.
 <td></td>
 </tr>
 <tr>
+<td><code>format_block_content</code></td>
+<td>Whether to format the content in <code>block_content</code> as Markdown.
+If not set, the initialized default value will be used, which is <code>False</code> by default.</td>
+<td><code>bool</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>markdown_ignore_labels</code></td>
+<td>Layout tags that need to be ignored in Markdown. If not set, the initialized default value will be used.</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
 <td><code>device</code></td>
 <td>Device for inference. You can specify a device ID:
 <ul>
@@ -2047,6 +2060,19 @@ The above Python script performs the following steps:
 <td><code>None</code></td>
 </tr>
 <tr>
+<td><code>format_block_content</code></td>
+<td>Whether to format the content in <code>block_content</code> as Markdown.
+If set to <code>None</code>, the default value is <code>False</code>.</td>
+<td><code>bool|None</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>markdown_ignore_labels</code></td>
+<td>Layout tags that need to be ignored in Markdown. If not set, the initialized default value will be used.</td>
+<td><code>list|None</code></td>
+<td></td>
+</tr>
+<tr>
 <td><code>device</code></td>
 <td>Device used for inference. Supports specifying device ID:
 <ul>
@@ -2186,6 +2212,12 @@ MKL-DNN cache capacity.
 <td><code>None</code></td>
 </tr>
 <tr>
+<td><code>format_block_content</code></td>
+<td>Whether to format the content in <code>block_content</code> as Markdown. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
+<td><code>bool|None</code></td>
+<td></td>
+</tr>
+<tr>
 <td><code>layout_threshold</code></td>
 <td>Same meaning as the instantiation parameters. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
 <td><code>float|dict|None</code></td>
@@ -2316,6 +2348,12 @@ MKL-DNN cache capacity.
 <td>Whether to enable end-to-end wireless table recognition mode. If enabled, the cell detection model will not be used, and only the table structure recognition model will be used.</td>
 <td><code>bool</code></td>
 <td><code>True</code></td>
+</tr>
+<tr>
+<td><code>markdown_ignore_labels</code></td>
+<td>Layout tags that need to be ignored in Markdown. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
+<td><code>list|None</code></td>
+<td></td>
 </tr>
 </table>
 </details>
@@ -2712,6 +2750,12 @@ To remove the page limit, please add the following configuration to the pipeline
 <td>No</td>
 </tr>
 <tr>
+<td><code>formatBlockContent</code></td>
+<td><code>boolean</code> | <code>null</code></td>
+<td>Please refer to the description of the <code>format_block_content</code> parameter of the pipeline object's <code>predict</code> method.</td>
+<td>No</td>
+</tr>
+<tr>
 <td><code>layoutThreshold</code></td>
 <td><code>number</code> | <code>object</code> | </code><code>null</code></td>
 <td>Please refer to the description of the <code>layout_threshold</code> parameter of the pipeline object's <code>predict</code> method.</td>
@@ -2841,6 +2885,12 @@ To remove the page limit, please add the following configuration to the pipeline
 <td><code>useE2eWirelessTableRecModel</code></td>
 <td><code>boolean</code></td>
 <td>Please refer to the description of the <code>use_e2e_wireless_table_rec_model</code> parameter of the pipeline object's <code>predict</code> method.</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>markdownIgnoreLabels</code></td>
+<td><code>array</code> | <code>null</code></td>
+<td>Please refer to the description of the <code>markdown_ignore_labels</code> parameter of the pipeline object's <code>predict</code> method.</td>
 <td>No</td>
 </tr>
 <tr>
