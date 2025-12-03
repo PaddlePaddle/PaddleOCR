@@ -1090,9 +1090,9 @@ paddleocr pp_chatocrv4_doc -i vehicle_certificate-1.png -k 驾驶室准乘人数
 <tr>
 <td><code>layout_nms</code></td>
 <td><b>含义：</b>版面检测是否使用后处理NMS。<br/>
-<b>说明：</b>如果不设置，将使用产线初始化的该参数值，默认初始化为c。</td>
+<b>说明：</b>如果不设置，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
 <td><code>bool</code></td>
-<td><code>0.5</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>layout_unclip_ratio</code></td>
