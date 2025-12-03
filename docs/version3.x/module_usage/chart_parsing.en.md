@@ -99,7 +99,7 @@ Detailed explanation of related methods and parameters:
 <tr>
 <td><code>model_name</code></td>
 <td><b>Meaning:</b> Model name.<br/>
-<b>Example:</b> 
+<b>Description:</b> 
 If set to <code>None</code>, defaults to <code>PP-Chart2Table</code>.</td>
 <td><code>str | None</code></td>
 <td><code>None</code></td>
