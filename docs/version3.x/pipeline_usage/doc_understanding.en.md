@@ -81,7 +81,7 @@ paddleocr doc_understanding -i "{'image': 'https://paddle-model-ecology.bj.bcebo
 <tr>
 <td><code>input</code></td>
 <td><b>Meaning:</b>Data to be predicted,  required.<br/>
-<b>Explanation:</b>
+<b>Description:</b>
 "{'image': 'https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/medal_table.png', 'query': 'Recognize the content of this table and output it in markdown format'}".
 </td>
 <td><code>str</code></td>
@@ -90,7 +90,7 @@ paddleocr doc_understanding -i "{'image': 'https://paddle-model-ecology.bj.bcebo
 <tr>
 <td><code>save_path</code></td>
 <td><b>Meaning:</b>Specify the path for saving the inference result file.<br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 If not set, the inference result will not be saved locally.</td>
 <td><code>str</code></td>
 <td></td>
@@ -98,7 +98,7 @@ If not set, the inference result will not be saved locally.</td>
 <tr>
 <td><code>doc_understanding_model_name</code></td>
 <td><b>Meaning:</b>The name of the document understanding model.<br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 If not set, the default model of the pipeline will be used.</td>
 <td><code>str</code></td>
 <td></td>
@@ -106,7 +106,7 @@ If not set, the default model of the pipeline will be used.</td>
 <tr>
 <td><code>doc_understanding_model_dir</code></td>
 <td><b>Meaning:</b>The directory path of the document understanding model.<br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 If not set, the official model will be downloaded.</td>
 <td><code>str</code></td>
 <td></td>
@@ -114,7 +114,7 @@ If not set, the official model will be downloaded.</td>
 <tr>
 <td><code>doc_understanding_batch_size</code></td>
 <td><b>Meaning:</b>The batch size of the document understanding model.<br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 If not set, the default batch size will be set to <code>1</code>.</td>
 <td><code>int</code></td>
 <td></td>
@@ -122,7 +122,7 @@ If not set, the default batch size will be set to <code>1</code>.</td>
 <tr>
 <td><code>device</code></td>
 <td><b>Meaning:</b>The device used for inference.<br/> 
-<b>Explanation:</b> 
+<b>Description:</b> 
 Supports specifying a specific card number:
 <ul>
 <li><b>CPU</b>: For example, <code>cpu</code> indicates using the CPU for inference;</li>
@@ -189,7 +189,7 @@ In the above Python script, the following steps are performed:
 <tr>
 <td><code>doc_understanding_model_name</code></td>
 <td><b>Meaning:</b>The name of the document understanding model. <br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 If set to <code>None</code>, the default model of the pipeline will be used.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
@@ -197,7 +197,7 @@ If set to <code>None</code>, the default model of the pipeline will be used.</td
 <tr>
 <td><code>doc_understanding_model_dir</code></td>
 <td><b>Meaning:</b>The directory path of the document understanding model. <br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 If set to <code>None</code>, the official model will be downloaded.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
@@ -205,7 +205,7 @@ If set to <code>None</code>, the official model will be downloaded.</td>
 <tr>
 <td><code>doc_understanding_batch_size</code></td>
 <td><b>Meaning:</b>The batch size of the document understanding model.<br/> 
-<b>Explanation:</b> 
+<b>Description:</b> 
 If set to <code>None</code>, the default batch size will be set to <code>1</code>.</td>
 <td><code>int|None</code></td>
 <td><code>None</code></td>
@@ -213,7 +213,7 @@ If set to <code>None</code>, the default batch size will be set to <code>1</code
 <tr>
 <td><code>device</code></td>
 <td><b>Meaning:</b>The device used for inference. <br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 Supports specifying a specific card number:
 <ul>
 <li><b>CPU</b>: For example, <code>cpu</code> indicates using the CPU for inference;</li>
@@ -255,7 +255,7 @@ Below are the parameters and their descriptions for the <code>predict()</code> m
 <tr>
 <td><code>input</code></td>
 <td><b>Meaning:</b>Data to be predicted, currently only supports dictionary type input<br/>
-<b>Explanation:</b>
+<b>Description:</b>
 <ul>
   <li><b>Python Dict</b>: The input format for PP-DocBee is: <code>{"image":/path/to/image, "query": user question}</code>, representing the input image and corresponding user question.</li>
 </ul>

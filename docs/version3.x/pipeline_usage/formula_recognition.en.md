@@ -449,7 +449,7 @@ paddleocr formula_recognition_pipeline -i ./general_formula_recognition_001.png 
 <tr>
 <td><code>input</code></td>
 <td><b>Meaning:</b>Data to be predicted, required.<br/>
-<b>Explanation:</b>
+<b>Description:</b>
 Local path of image or PDF file, e.g., <code>/root/data/img.jpg</code>; <b>URL link</b>, e.g., network URL of image or PDF file: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/demo_image/pipelines/general_formula_recognition_001.png">Example</a>; <b>Local directory</b>, the directory should contain images to be predicted, e.g., local path: <code>/root/data/</code> (currently does not support prediction of PDF files in directories; PDF files must be specified with a specific file path).
 </td>
 <td><code>str</code></td>
@@ -459,7 +459,7 @@ Local path of image or PDF file, e.g., <code>/root/data/img.jpg</code>; <b>URL l
 <td><code>save_path</code></td>
 <td>
 <b>Meaning:</b>Specify the path to save the inference results file. <br/>
-<b>Explanation:</b>
+<b>Description:</b>
 If not set, the inference results will not be saved locally.</td>
 <td><code>str</code></td>
 <td></td>
@@ -468,7 +468,7 @@ If not set, the inference results will not be saved locally.</td>
 <td><code>doc_orientation_classify_model_name</code></td>
 <td> 
 <b>Meaning:</b>The name of the document orientation classification model.<br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 If not set, the default model in pipeline will be used.</td>
 <td><code>str</code></td>
 <td></td>
@@ -476,7 +476,7 @@ If not set, the default model in pipeline will be used.</td>
 <tr>
 <td><code>doc_orientation_classify_model_dir</code></td>
 <td><b>Meaning:</b>The directory path of the document orientation classification model. <br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 If not set, the official model will be downloaded.</td>
 <td><code>str</code></td>
 <td></td>
@@ -484,7 +484,7 @@ If not set, the official model will be downloaded.</td>
 <tr>
 <td><code>doc_orientation_classify_batch_size</code></td>
 <td><b>Meaning:</b>The batch size of the document orientation classification model. <br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 If not set, the default batch size will be set to <code>1</code>.
 </td>
 <td><code>int</code></td>
@@ -493,7 +493,7 @@ If not set, the default batch size will be set to <code>1</code>.
 <tr>
 <td><code>doc_unwarping_model_name</code></td>
 <td><b>Meaning:</b> The name of the text image unwarping model. <br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 If not set, the default model in pipeline will be used.</td>
 <td><code>str</code></td>
 <td></td>
@@ -501,7 +501,7 @@ If not set, the default model in pipeline will be used.</td>
 <tr>
 <td><code>doc_unwarping_model_dir</code></td>
 <td> <b>Meaning:</b>The directory path of the  text image unwarping model. <br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 If not set, the official model will be downloaded.
 </td>
 <td><code>str</code></td>
@@ -510,7 +510,7 @@ If not set, the official model will be downloaded.
 <tr>
 <td><code>doc_unwarping_batch_size</code></td>
 <td><b>Meaning:</b>The batch size of the text image unwarping model. <br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 If not set, the default batch size will be set to <code>1</code>.</td>
 <td><code>int</code></td>
 <td></td>
@@ -518,7 +518,7 @@ If not set, the default batch size will be set to <code>1</code>.</td>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
 <td><b>Meaning:</b>Whether to load and use the document orientation classification module. <br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 If not set, the parameter will be set to the value initialized in the pipeline, which is <code>True</code> by default.</td>
 <td><code>bool</code></td>
 <td></td>
@@ -527,7 +527,7 @@ If not set, the parameter will be set to the value initialized in the pipeline, 
 <td><code>use_doc_unwarping</code></td>
 <td>
 <b>Meaning:</b>Whether to load and use the text image unwarping module. <br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 If not set, the parameter will be set to the value initialized in the pipeline, which is <code>True</code> by default.</td>
 <td><code>bool</code></td>
 <td></td>
@@ -536,7 +536,7 @@ If not set, the parameter will be set to the value initialized in the pipeline, 
 <td><code>layout_detection_model_name</code></td>
 <td>
 <b>Meaning:</b>The name of the layout detection model. <br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 If not set, the default model in pipeline will be used. </td>
 <td><code>str</code></td>
 <td></td>
@@ -544,7 +544,7 @@ If not set, the default model in pipeline will be used. </td>
 <tr>
 <td><code>layout_detection_model_dir</code></td>
 <td> <b>Meaning:</b>The directory path of the  layout detection model. <br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 If not set, the official model will be downloaded.
 </td>
 <td><code>str</code></td>
@@ -553,7 +553,7 @@ If not set, the official model will be downloaded.
 <tr>
 <td><code>layout_threshold</code></td>
 <td><b>Meaning:</b>Score threshold for the layout model. <br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 Any value between <code>0-1</code>. If not set, the default value is used, which is <code>0.5</code>.
 </td>
 <td><code>float</code></td>
@@ -563,7 +563,7 @@ Any value between <code>0-1</code>. If not set, the default value is used, which
 <td><code>layout_nms</code></td>
 <td>
 <b>Meaning:</b>Whether to use Non-Maximum Suppression (NMS) as post-processing for layout detection. <br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 If not set, the parameter will be set to the value initialized in the pipeline, which is <code>True</code> by default.
 </td>
 <td><code>bool</code></td>
@@ -572,7 +572,7 @@ If not set, the parameter will be set to the value initialized in the pipeline, 
 <tr>
 <td><code>layout_unclip_ratio</code></td>
 <td><b>Meaning:</b>Unclip ratio for detected boxes in layout detection model. <br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 Any float > <code>0</code>. If not set, the default is <code>1.0</code>.
 </td>
 <td><code>float</code></td>
@@ -581,7 +581,7 @@ Any float > <code>0</code>. If not set, the default is <code>1.0</code>.
 <tr>
 <td><code>layout_merge_bboxes_mode</code></td>
 <td><b>Meaning:</b>The merging mode for the detection boxes output by the model in layout region detection. <br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 <ul>
 <li><b>large</b>: When set to "large", only the largest outer bounding box will be retained for overlapping bounding boxes, and the inner overlapping boxes will be removed;</li>
 <li><b>small</b>: When set to "small", only the smallest inner bounding boxes will be retained for overlapping bounding boxes, and the outer overlapping boxes will be removed;</li>
@@ -594,7 +594,7 @@ Any float > <code>0</code>. If not set, the default is <code>1.0</code>.
 <tr>
 <td><code>layout_detection_batch_size</code></td>
 <td><b>Meaning:</b>The batch size for the layout region detection model. <br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 If not set, the default batch size will be set to <code>1</code>.</td>
 <td><code>int</code></td>
 <td></td>
@@ -603,7 +603,7 @@ If not set, the default batch size will be set to <code>1</code>.</td>
 <td><code>use_layout_detection</code></td>
 <td>
 <b>Meaning:</b>Whether to load and use the layout detection module. <br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 If not set, the parameter will be set to the value initialized in the pipeline, which is <code>True</code> by default.</td>
 <td><code>bool</code></td>
 <td></td>
@@ -612,7 +612,7 @@ If not set, the parameter will be set to the value initialized in the pipeline, 
 <td><code>formula_recognition_model_name</code></td>
 <td>
 <b>Meaning:</b>The name of the formula recognition model. <br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 If not set, the default model from the pipeline will be used.
 </td>
 <td><code>str</code></td>
@@ -621,7 +621,7 @@ If not set, the default model from the pipeline will be used.
 <tr>
 <td><code>formula_recognition_model_dir</code></td>
 <td><b>Meaning:</b>The directory path of the formula recognition model. <br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 If not set, the official model will be downloaded.
 </td>
 <td><code>str</code></td>
@@ -630,7 +630,7 @@ If not set, the official model will be downloaded.
 <tr>
 <td><code>formula_recognition_batch_size</code></td>
 <td><b>Meaning:</b>The batch size for the formula recognition model. <br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 If not set, the batch size will default to <code>1</code>.</td>
 <td><code>int</code></td>
 <td></td>
@@ -638,7 +638,7 @@ If not set, the batch size will default to <code>1</code>.</td>
 <tr>
 <td><code>device</code></td>
 <td><b>Meaning:</b>The device used for inference. <br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 You can specify a particular card number:
 <ul>
 <li><b>CPU</b>: e.g., <code>cpu</code> indicates using CPU for inference;</li>
@@ -661,7 +661,7 @@ You can specify a particular card number:
 <tr>
 <td><code>use_tensorrt</code></td>
 <b>Meaning:</b>Whether to use the Paddle Inference TensorRT subgraph engine. If the model does not support acceleration through TensorRT, setting this flag will not enable acceleration.<br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6), and it is recommended to install TensorRT 8.6.1.6.<br/>
 
 </td>
@@ -677,7 +677,7 @@ For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6)
 <tr>
 <td><code>enable_mkldnn</code></td>
 <td><b>Meaning:</b>Whether to enable MKL-DNN acceleration for inference. <br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 If MKL-DNN is unavailable or the model does not support it, acceleration will not be used even if this flag is set.
 </td>
 <td><code>bool</code></td>
@@ -766,7 +766,7 @@ In the above Python script, the following steps are executed:
 <tr>
 <td><code>doc_orientation_classify_model_name</code></td>
 <td><b>Meaning:</b>The name of the document orientation classification model.<br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 If set to <code>None</code>, the default model in pipeline will be used.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
@@ -774,7 +774,7 @@ If set to <code>None</code>, the default model in pipeline will be used.</td>
 <tr>
 <td><code>doc_orientation_classify_model_dir</code></td>
 <td><b>Meaning:</b>The directory path of the document orientation classification model. <br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 If set to <code>None</code>, the official model will be downloaded.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
@@ -782,7 +782,7 @@ If set to <code>None</code>, the official model will be downloaded.</td>
 <tr>
 <td><code>doc_orientation_classify_batch_size</code></td>
 <td><b>Meaning:</b>The batch size of the document orientation classification model. <br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 If set to <code>None</code>, the default batch size will be set to <code>1</code>.</td>
 <td><code>int|None</code></td>
 <td><code>None</code></td>
@@ -790,7 +790,7 @@ If set to <code>None</code>, the default batch size will be set to <code>1</code
 <tr>
 <td><code>doc_unwarping_model_name</code></td>
 <td><b>Meaning:</b>The name of the text image unwarping model. <br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 If set to <code>None</code>, the default model in pipeline will be used.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
@@ -798,7 +798,7 @@ If set to <code>None</code>, the default model in pipeline will be used.</td>
 <tr>
 <td><code>doc_unwarping_model_dir</code></td>
 <td><b>Meaning:</b>The directory path of the  text image unwarping model. <br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 If set to <code>None</code>, the official model will be downloaded.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
@@ -806,7 +806,7 @@ If set to <code>None</code>, the official model will be downloaded.</td>
 <tr>
 <td><code>doc_unwarping_batch_size</code></td>
 <td><b>Meaning:</b>The batch size of the text image unwarping model. <br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 If set to <code>None</code>, the default batch size will be set to <code>1</code>.</td>
 <td><code>int|None</code></td>
 <td><code>None</code></td>
@@ -814,7 +814,7 @@ If set to <code>None</code>, the default batch size will be set to <code>1</code
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
 <td><b>Meaning:</b>Whether to load and use the document orientation classification module. <br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 If set to <code>None</code>, the parameter will be set to the value initialized in the pipeline, which is <code>True</code> by default.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
@@ -822,7 +822,7 @@ If set to <code>None</code>, the parameter will be set to the value initialized 
 <tr>
 <td><code>use_doc_unwarping</code></td>
 <td><b>Meaning:</b>Whether to load and use the text image unwarping module.<br/> 
-<b>Explanation:</b> 
+<b>Description:</b> 
 If set to <code>None</code>, the parameter will be set to the value initialized in the pipeline, which is <code>True</code> by default.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
@@ -830,7 +830,7 @@ If set to <code>None</code>, the parameter will be set to the value initialized 
 <tr>
 <td><code>layout_detection_model_name</code></td>
 <td><b>Meaning:</b>The name of the layout detection model. <br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 If set to <code>None</code>, the default model in pipeline will be used. </td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
@@ -838,7 +838,7 @@ If set to <code>None</code>, the default model in pipeline will be used. </td>
 <tr>
 <td><code>layout_detection_model_dir</code></td>
 <td><b>Meaning:</b>The directory path of the  layout detection model. <br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 If set to <code>None</code>, the official model will be downloaded.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
@@ -846,7 +846,7 @@ If set to <code>None</code>, the official model will be downloaded.</td>
 <tr>
 <td><code>layout_threshold</code></td>
 <td><b>Meaning:</b>Threshold for layout detection, used to filter out predictions with low confidence. <br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 <ul>
 <li><b>float</b>: Such as 0.2, indicates filtering out all bounding boxes with a confidence score less than 0.2;</li>
 <li><b>Dictionary</b>: With <b>int</b> keys representing <code>cls_id</code> and <b>float</b> values as thresholds. For example, <code>{0: 0.45, 2: 0.48, 7: 0.4}</code> indicates applying a threshold of 0.45 for class ID 0, 0.48 for class ID 2, and 0.4 for class ID 7;</li>
@@ -859,7 +859,7 @@ If set to <code>None</code>, the official model will be downloaded.</td>
 <tr>
 <td><code>layout_nms</code></td>
 <td><b>Meaning:</b>Whether to use Non-Maximum Suppression (NMS) as post-processing for layout detection. <br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 If set to <code>None</code>, the parameter will be set to the value initialized in the pipeline, which is set to <code>True</code> by default.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
@@ -867,7 +867,7 @@ If set to <code>None</code>, the parameter will be set to the value initialized 
 <tr>
 <td><code>layout_unclip_ratio</code></td>
 <td><b>Meaning:</b>Expansion factor for the detection boxes of the layout region detection model. <br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 <ul>
 <li><b>float</b>: Any float greater than <code>0</code>;</li>
 <li><b>Tuple[float,float]</b>: Expansion ratios in horizontal and vertical directions;</li>
@@ -881,7 +881,7 @@ If set to <code>None</code>, the parameter will be set to the value initialized 
 <tr>
 <td><code>layout_merge_bboxes_mode</code></td>
 <td><b>Meaning:</b>Filtering method for overlapping boxes in layout detection. <br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 <ul>
 <li><b>str</b>: Options include <code>large</code>, <code>small</code>, and <code>union</code> to retain the larger box, smaller box, or both;</li>
 <li><b>dict</b>: A dictionary with <b>int</b> keys representing <code>cls_id</code>, and <b>str</b> values, e.g., <code>{0: "large", 2: "small"}</code> means using different modes for different classes;</li>
@@ -894,7 +894,7 @@ If set to <code>None</code>, the parameter will be set to the value initialized 
 <tr>
 <td><code>layout_detection_batch_size</code></td>
 <td><b>Meaning:</b>The batch size for the layout region detection model.<br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 If set to <code>None</code>, the default batch size will be set to <code>1</code>.</td>
 <td><code>int|None</code></td>
 <td><code>None</code></td>
@@ -902,7 +902,7 @@ If set to <code>None</code>, the default batch size will be set to <code>1</code
 <tr>
 <td><code>use_layout_detection</code></td>
 <td><b>Meaning:</b>Whether to load and use the layout detection module. <br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 If set to <code>None</code>, the parameter will be set to the value initialized in the pipeline, which is <code>True</code> by default.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
@@ -910,7 +910,7 @@ If set to <code>None</code>, the parameter will be set to the value initialized 
 <tr>
 <td><code>formula_recognition_model_name</code></td>
 <td><b>Meaning:</b>The name of the formula recognition model. <br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 If set to <code>None</code>, the default model from the pipeline will be used.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
@@ -918,7 +918,7 @@ If set to <code>None</code>, the default model from the pipeline will be used.</
 <tr>
 <td><code>formula_recognition_model_dir</code></td>
 <td><b>Meaning:</b>The directory path of the formula recognition model. <br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 If set to <code>None</code>, the official model will be downloaded.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
@@ -926,7 +926,7 @@ If set to <code>None</code>, the official model will be downloaded.</td>
 <tr>
 <td><code>formula_recognition_batch_size</code></td>
 <td><b>Meaning:</b>The batch size for the formula recognition model. <br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 If set to  <code>None</code>, the batch size will default to <code>1</code>.</td>
 <td><code>int|None</code></td>
 <td><code>None</code></td>
@@ -934,7 +934,7 @@ If set to  <code>None</code>, the batch size will default to <code>1</code>.</td
 <tr>
 <td><code>device</code></td>
 <td><b>Meaning:</b>The device used for inference. <br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 You can specify a particular card number:
 <ul>
 <li><b>CPU</b>: e.g., <code>cpu</code> indicates using CPU for inference;</li>
@@ -958,7 +958,7 @@ You can specify a particular card number:
 <tr>
 <td><code>use_tensorrt</code></td>
 <td><b>Meaning:</b>Whether to use the Paddle Inference TensorRT subgraph engine. If the model does not support acceleration through TensorRT, setting this flag will not enable acceleration.<br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6), and it is recommended to install TensorRT 8.6.1.6.<br/>
 
 </td>
@@ -974,7 +974,7 @@ For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6)
 <tr>
 <td><code>enable_mkldnn</code></td>
 <td><b>Meaning:</b>Whether to enable MKL-DNN acceleration for inference. <br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 If MKL-DNN is unavailable or the model does not support it, acceleration will not be used even if this flag is set.
 </td>
 <td><code>bool</code></td>
@@ -1021,7 +1021,7 @@ Here are the parameters of the <code>predict()</code> method and their descripti
 <tr>
 <td><code>input</code></td>
 <td><b>Meaning:</b>Data to be predicted, supporting multiple input types, required.<br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 <ul>
 <li><b>Python Var</b>: Image data represented by <code>numpy.ndarray;</code></li>
 <li><b>str</b>: Local path of image or PDF file, e.g., <code>/root/data/img.jpg</code>; <b>URL link</b>, e.g., network URL of image or PDF file: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/demo_image/pipelines/general_formula_recognition_001.png">Example</a>; <b>Local directory</b>, the directory should contain images to be predicted, e.g., local path: <code>/root/data/</code> (currently does not support prediction of PDF files in directories; PDF files must be specified with a specific file path);</li>
@@ -1054,7 +1054,7 @@ Here are the parameters of the <code>predict()</code> method and their descripti
 <tr>
 <td><code>layout_threshold</code></td>
 <td><b>Meaning:</b>Same meaning as the instantiation parameters. <br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
 <td><code>float|dict|None</code></td>
 <td><code>None</code></td>
@@ -1062,7 +1062,7 @@ If set to <code>None</code>, the instantiation value is used; otherwise, this pa
 <tr>
 <td><code>layout_nms</code></td>
 <td><b>Meaning:</b>Same meaning as the instantiation parameters. <br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
@@ -1070,14 +1070,14 @@ If set to <code>None</code>, the instantiation value is used; otherwise, this pa
 <tr>
 <td><code>layout_unclip_ratio</code></td>
 <td><b>Meaning:</b>Same meaning as the instantiation parameters. <br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
 <td><code>float|Tuple[float,float]|dict|None</code></td>
 <td><code>None</code></td>
 <tr>
 <td><code>layout_merge_bboxes_mode</code></td>
 <td><b>Meaning:</b>Same meaning as the instantiation parameters. <br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
 <td><code>string</code></td>
 <td><code>None</code></td>

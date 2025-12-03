@@ -166,7 +166,7 @@ paddleocr doc_preprocessor -i ./doc_test_rotated.jpg --device gpu
 <tr>
 <td><code>input</code></td>
 <td><b>Meaning:</b>The data to be predicted. This parameter is required.<br/>
-<b>Explanation:</b>
+<b>Description:</b>
 For example, the local path of an image file or PDF file: <code>/root/data/img.jpg</code>; <b>or a URL link</b>, such as the network URL of an image file or PDF file: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/demo_image/doc_test_rotated.jpg">example</a>; <b>or a local directory</b>, which should contain the images to be predicted, such as the local path: <code>/root/data/</code> (currently does not support prediction of PDF files in directories; PDF files need to be specified to a specific file path).
 </td>
 <td><code>str</code></td>
@@ -175,7 +175,7 @@ For example, the local path of an image file or PDF file: <code>/root/data/img.j
 <tr>
 <td><code>save_path</code></td>
 <td><b>Meaning:</b>Specify the path to save the inference result file. <br/>
-<b>Explanation:</b>
+<b>Description:</b>
 If not set, the inference result will not be saved locally.</td>
 <td><code>str</code></td>
 <td></td>
@@ -183,7 +183,7 @@ If not set, the inference result will not be saved locally.</td>
 <tr>
 <td><code>doc_orientation_classify_model_name</code></td>
 <td><b>Meaning:</b>The name of the document orientation classification model.<br/>
-<b>Explanation:</b>
+<b>Description:</b>
 If not set, the pipeline's default model will be used.</td>
 <td><code>str</code></td>
 <td></td>
@@ -191,7 +191,7 @@ If not set, the pipeline's default model will be used.</td>
 <tr>
 <td><code>doc_orientation_classify_model_dir</code></td>
 <td><b>Meaning:</b>The directory path of the document orientation classification model. <br/>
-<b>Explanation:</b>
+<b>Description:</b>
 If not set, the official model will be downloaded.</td>
 <td><code>str</code></td>
 <td></td>
@@ -199,7 +199,7 @@ If not set, the official model will be downloaded.</td>
 <tr>
 <td><code>doc_unwarping_model_name</code></td>
 <td><b>Meaning:</b>The name of the text image unwarping model. <br/>
-<b>Explanation:</b>
+<b>Description:</b>
 If not set, the pipeline's default model will be used.</td>
 <td><code>str</code></td>
 <td></td>
@@ -207,7 +207,7 @@ If not set, the pipeline's default model will be used.</td>
 <tr>
 <td><code>doc_unwarping_model_dir</code></td>
 <td><b>Meaning:</b>The directory path of the text image unwarping model. <br/>
-<b>Explanation:</b>
+<b>Description:</b>
 If not set, the official model will be downloaded.</td>
 <td><code>str</code></td>
 <td></td>
@@ -215,7 +215,7 @@ If not set, the official model will be downloaded.</td>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
 <td><b>Meaning:</b>Whether to load and use  the document orientation classification module. <br/>
-<b>Explanation:</b>
+<b>Description:</b>
 If not set, the parameter value initialized by the pipeline will be used, which defaults to <code>True</code>.</td>
 <td><code>bool</code></td>
 <td></td>
@@ -223,7 +223,7 @@ If not set, the parameter value initialized by the pipeline will be used, which 
 <tr>
 <td><code>use_doc_unwarping</code></td>
 <td><b>Meaning:</b>Whether to load and use  the text image unwarping module. <br/>
-<b>Explanation:</b>
+<b>Description:</b>
 If not set, the parameter value initialized by the pipeline will be used, which defaults to <code>True</code>.</td>
 <td><code>bool</code></td>
 <td></td>
@@ -231,7 +231,7 @@ If not set, the parameter value initialized by the pipeline will be used, which 
 <tr>
 <td><code>device</code></td>
 <td><b>Meaning:</b>The device used for inference. <br/>
-<b>Explanation:</b>
+<b>Description:</b>
 Support for specifying specific card numbers:
 <ul>
 <li><b>CPU</b>: For example, <code>cpu</code> indicates using the CPU for inference;</li>
@@ -255,7 +255,7 @@ If not set, the pipeline initialized value for this parameter will be used. Duri
 <tr>
 <td><code>use_tensorrt</code></td>
 <td><b>Meaning:</b>Whether to use the Paddle Inference TensorRT subgraph engine.<br/> 
-<b>Explanation:</b>
+<b>Description:</b>
 If the model does not support acceleration through TensorRT, setting this flag will not enable acceleration.<br/>
 For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6), and it is recommended to install TensorRT 8.6.1.6.<br/>
 
@@ -272,7 +272,7 @@ For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6)
 <tr>
 <td><code>enable_mkldnn</code></td>
 <td><b>Meaning:</b>Whether to enable MKL-DNN acceleration for inference. <br/>
-<b>Explanation:</b>
+<b>Description:</b>
 If MKL-DNN is unavailable or the model does not support it, acceleration will not be used even if this flag is set.</td>
 <td><code>bool</code></td>
 <td><code>True</code></td>
@@ -347,7 +347,7 @@ In the above Python script, the following steps are executed:
 <tr>
 <td><code>doc_orientation_classify_model_name</code></td>
 <td><b>Meaning:</b>The name of the document orientation classification model. <br/>
-<b>Explanation:</b>
+<b>Description:</b>
 If set to <code>None</code>, the pipeline's default model will be used.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
@@ -355,7 +355,7 @@ If set to <code>None</code>, the pipeline's default model will be used.</td>
 <tr>
 <td><code>doc_orientation_classify_model_dir</code></td>
 <td><b>Meaning:</b>The directory path of the document orientation classification model. <br/>
-<b>Explanation:</b>
+<b>Description:</b>
 If set to <code>None</code>, the official model will be downloaded.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
@@ -363,7 +363,7 @@ If set to <code>None</code>, the official model will be downloaded.</td>
 <tr>
 <td><code>doc_unwarping_model_name</code></td>
 <td><b>Meaning:</b>The name of the text image unwarping model. <br/>
-<b>Explanation:</b>
+<b>Description:</b>
 If set to <code>None</code>, the pipeline's default model will be used.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
@@ -371,7 +371,7 @@ If set to <code>None</code>, the pipeline's default model will be used.</td>
 <tr>
 <td><code>doc_unwarping_model_dir</code></td>
 <td><b>Meaning:</b>The directory path of the text image unwarping model. <br/>
-<b>Explanation:</b>
+<b>Description:</b>
 If set to <code>None</code>, the official model will be downloaded.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
@@ -379,7 +379,7 @@ If set to <code>None</code>, the official model will be downloaded.</td>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
 <td><b>Meaning:</b>Whether to load and use the document orientation classification module. <br/>
-<b>Explanation:</b>
+<b>Description:</b>
 If set to <code>None</code>, the parameter value initialized by the pipeline will be used, which defaults to <code>True</code>.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
@@ -387,7 +387,7 @@ If set to <code>None</code>, the parameter value initialized by the pipeline wil
 <tr>
 <td><code>use_doc_unwarping</code></td>
 <td><b>Meaning:</b>Whether to load and use the text image unwarping module. <br/>
-<b>Explanation:</b>
+<b>Description:</b>
 If set to <code>None</code>, the parameter value initialized by the pipeline will be used, which defaults to <code>True</code>.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
@@ -395,7 +395,7 @@ If set to <code>None</code>, the parameter value initialized by the pipeline wil
 <tr>
 <td><code>device</code></td>
 <td><b>Meaning:</b>The device used for inference. <br/>
-<b>Explanation:</b>
+<b>Description:</b>
 Support for specifying specific card numbers:
 <ul>
 <li><b>CPU</b>: For example, <code>cpu</code> indicates using the CPU for inference;</li>
@@ -419,7 +419,7 @@ Support for specifying specific card numbers:
 <tr>
 <td><code>use_tensorrt</code></td>
 <td><b>Meaning:</b>Whether to use the Paddle Inference TensorRT subgraph engine.<br/> 
-<b>Explanation:</b>
+<b>Description:</b>
 If the model does not support acceleration through TensorRT, setting this flag will not enable acceleration.<br/>
 For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6), and it is recommended to install TensorRT 8.6.1.6.<br/>
 
@@ -436,7 +436,7 @@ For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6)
 <tr>
 <td><code>enable_mkldnn</code></td>
 <td><b>Meaning:</b>Whether to enable MKL-DNN acceleration for inference. <br/>
-<b>Explanation:</b>
+<b>Description:</b>
 If MKL-DNN is unavailable or the model does not support it, acceleration will not be used even if this flag is set.</td>
 <td><code>bool</code></td>
 <td><code>True</code></td>
@@ -482,7 +482,7 @@ The following are the parameters and their descriptions of the <code>predict()</
 <tr>
 <td><code>input</code></td>
 <td><b>Meaning:</b>The data to be predicted, supporting multiple input types. This parameter is required.<br/>
-<b>Explanation:</b>
+<b>Description:</b>
 <ul>
 <li><b>Python Var</b>: For example, image data represented as <code>numpy.ndarray</code>;</li>
 <li><b>str</b>: For example, the local path of an image file or PDF file: <code>/root/data/img.jpg</code>; <b>or a URL link</b>, such as the network URL of an image file or PDF file: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/demo_image/doc_test_rotated.jpg">example</a>; <b>or a local directory</b>, which should contain the images to be predicted, such as the local path: <code>/root/data/</code> (currently does not support prediction of PDF files in directories; PDF files need to be specified to a specific file path);</li>
