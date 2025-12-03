@@ -1050,7 +1050,6 @@ for item in markdown_images:
     </ol>
   </li>
   <li>调用<code>save_to_json()</code> 方法会将上述内容保存到指定的<code>save_path</code>中，如果指定为目录，则保存的路径为<code>save_path/{your_img_basename}_res.json</code>，如果指定为文件，则直接保存到该文件中。由于json文件不支持保存numpy数组，因此会将其中的<code>numpy.array</code>类型转换为列表形式。json中的字段内容如下：</li>
-  <li>
     <ol start="1" type="1">
       <li><code>input_path</code>: <code>(str)</code> 待预测图像的输入路径</li>
       <li><code>page_index</code>: <code>(Union[int, None])</code> 如果输入是PDF文件，则表示当前是PDF的第几页，否则为 <code>None</code></li>
