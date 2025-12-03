@@ -154,7 +154,7 @@ The relevant methods, parameters, etc., are described as follows:
 <tr>
 <td><code>device</code></td>
 <td><b>Meaning:</b> Device(s) to use for inference.<br/>
-<b>Explanation:</b>
+<b>Description:</b>
 <b>Examples:</b> <code>cpu</code>, <code>gpu</code>, <code>npu</code>, <code>gpu:0</code>, <code>gpu:0,1</code>.<br/>
 If multiple devices are specified, inference will be performed in parallel. Note that parallel inference is not always supported.<br/>
 By default, GPU 0 will be used if available; otherwise, the CPU will be used.
@@ -171,7 +171,7 @@ By default, GPU 0 will be used if available; otherwise, the CPU will be used.
 <tr>
 <td><code>use_tensorrt</code></td>
 <td><b>Meaning:</b> Whether to use the Paddle Inference TensorRT subgraph engine.<br/> 
-<b>Explanation:</b>
+<b>Description:</b>
 If the model does not support acceleration through TensorRT, setting this flag will not enable acceleration.<br/>
 For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6), and it is recommended to install TensorRT 8.6.1.6.<br/>
 
@@ -182,7 +182,7 @@ For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6)
 <tr>
 <td><code>precision</code></td>
 <td><b>Meaning:</b>Precision for TensorRT when using the Paddle Inference TensorRT subgraph engine.<br/>
-<b>Explanation:</b>
+<b>Description:</b>
 <b>Options:</b> <code>fp32</code>, <code>fp16</code>, etc.</td>
 <td><code>str</code></td>
 <td><code>fp32</code></td>
@@ -191,7 +191,7 @@ For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6)
 <td><code>enable_mkldnn</code></td>
 <td>
 <b>Meaning:</b> Whether to enable MKL-DNN acceleration for inference. <br/>
-<b>Explanation:</b>
+<b>Description:</b>
 If MKL-DNN is unavailable or the model does not support it, acceleration will not be used even if this flag is set.
 </td>
 <td><code>bool</code></td>
@@ -228,7 +228,7 @@ If MKL-DNN is unavailable or the model does not support it, acceleration will no
 <tr>
 <td><code>input</code></td>
 <td><b>Meaning:</b> Input data to be predicted. Required.<br/> 
-<b>Explanation:</b>
+<b>Description:</b>
 Supports multiple input types:
 <ul>
 <li><b>Python Var</b>: e.g., <code>numpy.ndarray</code> representing image data</li>
@@ -248,7 +248,7 @@ Supports multiple input types:
 <tr>
 <td><code>batch_size</code></td>
 <td><b>Meaning:</b> Batch size<br/>
-<b>Explanation:</b>
+<b>Description:</b>
 Positive integer.</td>
 <td><code>int</code></td>
 <td>1</td>

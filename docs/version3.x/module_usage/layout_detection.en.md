@@ -372,7 +372,7 @@ Relevant methods, parameters, and explanations are as follows:
 <tr>
 <td><code>model_name</code></td>
 <td><b>Meaning:</b> Model name.<br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 If set to <code>None</code>, <code>PP-DocLayout-L</code> will be used.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
@@ -386,7 +386,7 @@ If set to <code>None</code>, <code>PP-DocLayout-L</code> will be used.</td>
 <tr>
 <td><code>device</code></td>
 <td><b>Meaning:</b>Device for inference.<br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 <b>For example:</b> <code>"cpu"</code>, <code>"gpu"</code>, <code>"npu"</code>, <code>"gpu:0"</code>, <code>"gpu:0,1"</code>.<br/>
 If multiple devices are specified, parallel inference will be performed.<br/>
 By default, GPU 0 is used if available; otherwise, CPU is used.
@@ -403,7 +403,7 @@ By default, GPU 0 is used if available; otherwise, CPU is used.
 <tr>
 <td><code>use_tensorrt</code></td>
 <td><b>Meaning:</b>Whether to use the Paddle Inference TensorRT subgraph engine.<br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 If the model does not support acceleration through TensorRT, setting this flag will not enable acceleration.<br/>
 For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6), and it is recommended to install TensorRT 8.6.1.6.<br/>
 
@@ -414,7 +414,7 @@ For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6)
 <tr>
 <td><code>precision</code></td>
 <td><b>Meaning:</b>Computation precision when using the TensorRT subgraph engine in Paddle Inference.<br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 <b>Options:</b> <code>"fp32"</code>, <code>"fp16"</code>.</td>
 <td><code>str</code></td>
 <td><code>"fp32"</code></td>
@@ -423,7 +423,7 @@ For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6)
 <td><code>enable_mkldnn</code></td>
 <td>
 <b>Meaning:</b>Whether to enable MKL-DNN acceleration for inference. <br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 If MKL-DNN is unavailable or the model does not support it, acceleration will not be used even if this flag is set.
 </td>
 <td><code>bool</code></td>
@@ -446,7 +446,7 @@ If MKL-DNN is unavailable or the model does not support it, acceleration will no
 <tr>
 <td><code>img_size</code></td>
 <td><b>Meaning:</b>Input image size.<br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 <ul>
 <li><b>int</b>: e.g. <code>640</code>, resizes input image to 640x640.</li>
 <li><b>list</b>: e.g. <code>[640, 512]</code>, resizes input image to width 640 and height 512.</li>
@@ -458,7 +458,7 @@ If MKL-DNN is unavailable or the model does not support it, acceleration will no
 <tr>
 <td><code>threshold</code></td>
 <td><b>Meaning:</b>Threshold for filtering low-confidence predictions.<br/>
-<b>Explanation:</b>
+<b>Description:</b>
 <ul>
 <li><b>float</b>: e.g. <code>0.2</code>, filters out all boxes with confidence below 0.2.</li>
 <li><b>dict</b>: The key is <code>int</code> (class id), the value is <code>float</code> (threshold). For example, <code>{0: 0.45, 2: 0.48, 7: 0.4}</code> means class 0 uses threshold 0.45, class 2 uses 0.48, class 7 uses 0.4.</li>
@@ -471,7 +471,7 @@ If MKL-DNN is unavailable or the model does not support it, acceleration will no
 <tr>
 <td><code>layout_nms</code></td>
 <td><b>Meaning:</b>Whether to use NMS post-processing to filter overlapping boxes.<br/>
-<b>Explanation:</b>
+<b>Description:</b>
 <ul>
 <li><b>bool</b>: whether to use NMS for post-processing to filter overlapping boxes.</li>
 <li><b>None</b>: uses the model's default configuration.</li>
@@ -483,7 +483,7 @@ If MKL-DNN is unavailable or the model does not support it, acceleration will no
 <tr>
 <td><code>layout_unclip_ratio</code></td>
 <td><b>Meaning:</b>Scaling factor for the side length of the detection box.<br/>
-<b>Explanation:</b>
+<b>Description:</b>
 <ul>
 <li><b>float</b>: A float greater than 0, e.g. <code>1.1</code>, expands width and height by 1.1 times.</li>
 <li><b>list</b>: e.g. <code>[1.2, 1.5]</code>, expands width by 1.2x and height by 1.5x.</li>
@@ -497,7 +497,7 @@ If MKL-DNN is unavailable or the model does not support it, acceleration will no
 <tr>
 <td><code>layout_merge_bboxes_mode</code></td>
 <td><b>Meaning:</b>Merge mode for model output bounding boxes.<br/>
-<b>Explanation:</b>
+<b>Description:</b>
 <ul>
 <li><b>"large"</b>: Only keep the largest outer box among overlapping boxes, remove inner boxes.</li>
 <li><b>"small"</b>: Only keep the smallest inner box among overlapping boxes, remove outer boxes.</li>
@@ -527,7 +527,7 @@ If MKL-DNN is unavailable or the model does not support it, acceleration will no
 <tr>
 <td><code>input</code></td>
 <td><b>Meaning:</b>Input data to be predicted. Required. <br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 Supports multiple input types:<ul>
 <li><b>Python Var</b>: e.g., <code>numpy.ndarray</code> representing image data</li>
 <li><b>str</b>: 
@@ -546,7 +546,7 @@ Supports multiple input types:<ul>
 <tr>
 <td><code>batch_size</code></td>
 <td><b>Meaning:</b>Batch size.<br/>
- <b>Explanation:</b> 
+ <b>Description:</b> 
  positive integer.</td>
 <td><code>int</code></td>
 <td>1</td>
@@ -554,7 +554,7 @@ Supports multiple input types:<ul>
 <tr>
 <td><code>threshold</code></td>
 <td><b>Meaning:</b>Same meaning as the instantiation parameters. <br/>
-<b>Explanation:</b>
+<b>Description:</b>
 If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
 <td><code>float|dict|None</code></td>
 <td>None</td>
@@ -562,7 +562,7 @@ If set to <code>None</code>, the instantiation value is used; otherwise, this pa
 <tr>
 <td><code>layout_nms</code></td>
 <td><b>Meaning:</b>Same meaning as the instantiation parameters. <br/>
-<b>Explanation:</b>
+<b>Description:</b>
 If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
 <td><code>bool|None</code></td>
 <td>None</td>
@@ -570,7 +570,7 @@ If set to <code>None</code>, the instantiation value is used; otherwise, this pa
 <tr>
 <td><code>layout_unclip_ratio</code></td>
 <td><b>Meaning:</b>Same meaning as the instantiation parameters. <br/>
-<b>Explanation:</b>
+<b>Description:</b>
 If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
 <td><code>float|list|dict|None</code></td>
 <td>None</td>
@@ -578,7 +578,7 @@ If set to <code>None</code>, the instantiation value is used; otherwise, this pa
 <tr>
 <td><code>layout_merge_bboxes_mode</code></td>
 <td><b>Meaning:</b>Same meaning as the instantiation parameters. <br/>
-<b>Explanation:</b>
+<b>Description:</b>
 If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
 <td><code>str|dict|None</code></td>
 <td>None</td>

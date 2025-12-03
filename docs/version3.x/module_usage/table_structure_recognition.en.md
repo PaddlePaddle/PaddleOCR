@@ -158,7 +158,7 @@ Descriptions of related methods and parameters are as follows:
 <tr>
 <td><code>model_name</code></td>
 <td><b>Meaning:</b> Model name.<br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 If set to <code>None</code>, <code>PP-LCNet_x1_0_table_cls</code> will be used.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
@@ -172,7 +172,7 @@ If set to <code>None</code>, <code>PP-LCNet_x1_0_table_cls</code> will be used.<
 <tr>
 <td><code>device</code></td>
 <td><b>Meaning:</b>Device for inference.<br/>
-<b>Explanation:</b>
+<b>Description:</b>
 <b>For example:</b> <code>"cpu"</code>, <code>"gpu"</code>, <code>"npu"</code>, <code>"gpu:0"</code>, <code>"gpu:0,1"</code>.<br/>
 If multiple devices are specified, parallel inference will be performed.<br/>
 By default, GPU 0 is used if available; otherwise, CPU is used.</td>
@@ -188,7 +188,7 @@ By default, GPU 0 is used if available; otherwise, CPU is used.</td>
 <tr>
 <td><code>use_tensorrt</code></td>
 <td><b>Meaning:</b>Whether to use the Paddle Inference TensorRT subgraph engine.<br/> 
-<b>Explanation:</b>
+<b>Description:</b>
 If the model does not support acceleration through TensorRT, setting this flag will not enable acceleration.<br/>
 For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6), and it is recommended to install TensorRT 8.6.1.6.<br/>
 </td>
@@ -198,7 +198,7 @@ For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6)
 <tr>
 <td><code>precision</code></td>
 <td><b>Meaning:</b>Computation precision when using the Paddle Inference TensorRT subgraph engine.<br/>
-<b>Explanation:</b>
+<b>Description:</b>
 <b>Options:</b> <code>"fp32"</code>, <code>"fp16"</code>.</td>
 <td><code>str</code></td>
 <td><code>"fp32"</code></td>
@@ -206,7 +206,7 @@ For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6)
 <tr>
 <td><code>enable_mkldnn</code></td>
 <td><b>Meaning:</b>Whether to enable MKL-DNN acceleration for inference. <br/>
-<b>Explanation:</b>
+<b>Description:</b>
 If MKL-DNN is unavailable or the model does not support it, acceleration will not be used even if this flag is set.</td>
 <td><code>bool</code></td>
 <td><code>True</code></td>
@@ -241,7 +241,7 @@ If MKL-DNN is unavailable or the model does not support it, acceleration will no
 <td><code>input</code></td>
 <td>
 <b>Meaning:</b>Data to be predicted. Required. <br/>
-<b>Explanation:</b>
+<b>Description:</b>
 Supports multiple input types:
 <ul>
   <li><b>Python Var</b>: e.g., <code>numpy.ndarray</code> representing image data</li>
@@ -255,7 +255,7 @@ Supports multiple input types:
 <tr>
 <td><code>batch_size</code></td>
 <td><b>Meaning:</b>Batch size. <br/>
-<b>Explanation:</b>
+<b>Description:</b>
 Can be set to any positive integer.</td>
 <td><code>int</code></td>
 <td>1</td>

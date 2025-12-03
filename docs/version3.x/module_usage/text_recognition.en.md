@@ -586,7 +586,7 @@ Descriptions of related methods and parameters are as follows:
 <tbody>
 <tr>
 <td><code>model_name</code></td>
-<td><b>Explanation:</b> If set to <code>None</code>, <code>PP-OCRv5_server_rec</code> is used.</td>
+<td><b>Description:</b> If set to <code>None</code>, <code>PP-OCRv5_server_rec</code> is used.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -599,7 +599,7 @@ Descriptions of related methods and parameters are as follows:
 <tr>
 <td><code>device</code></td>
 <td><b>Meaning:</b> Device for inference.<br/>
-<b>Explanation:</b>
+<b>Description:</b>
 <b>Examples:</b> <code>"cpu"</code>, <code>"gpu"</code>, <code>"npu"</code>, <code>"gpu:0"</code>, <code>"gpu:0,1"</code>.<br/>
 If multiple devices are specified, inference will be performed in parallel.<br/>
 By default, GPU 0 is used; if unavailable, CPU is used.
@@ -616,7 +616,7 @@ By default, GPU 0 is used; if unavailable, CPU is used.
 <tr>
 <td><code>use_tensorrt</code></td>
 <td><b>Meaning:</b> Whether to enable the TensorRT subgraph engine of Paddle Inference.<br/>
-<b>Explanation:</b>
+<b>Description:</b>
 For Paddle with CUDA 11.8, the compatible TensorRT version is 8.x (x>=6), recommended 8.6.1.6.<br/>
 
 </td>
@@ -626,7 +626,7 @@ For Paddle with CUDA 11.8, the compatible TensorRT version is 8.x (x>=6), recomm
 <tr>
 <td><code>precision</code></td>
 <td><b>Meaning:</b>Precision for TensorRT when using the Paddle Inference TensorRT subgraph engine.<br/>
-<b>Explanation:</b>
+<b>Description:</b>
 <b>Options:</b> <code>fp32</code>, <code>fp16</code>.</td>
 <td><code>str</code></td>
 <td><code>"fp32"</code></td>
@@ -634,7 +634,7 @@ For Paddle with CUDA 11.8, the compatible TensorRT version is 8.x (x>=6), recomm
 <tr>
 <td><code>enable_mkldnn</code></td>
 <td><b>Meaning:</b> Whether to enable MKL-DNN acceleration for inference. <br/>
-<b>Explanation:</b>
+<b>Description:</b>
 If MKL-DNN is unavailable or the model does not support it, acceleration will not be used even if this flag is set.</td>
 <td><code>bool</code></td>
 <td><code>True</code></td>
@@ -674,7 +674,7 @@ If MKL-DNN is unavailable or the model does not support it, acceleration will no
 <tr>
 <td><code>input</code></td>
 <td><b>Meaning:</b>Data to be predicted, supporting multiple input types, required.<br/>
-<b>Explanation:</b>
+<b>Description:</b>
 <ul>
 <li><b>Python Var</b>: Image data represented by <code>numpy.ndarray</code></li>
 <li><b>str</b>: Local path of image file or PDF file: <code>/root/data/img.jpg</code>; <b>URL link</b>: Network URL of image file or PDF file: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_rec_001.png">Example</a>; <b>Local directory</b>: The directory should contain the images to be predicted, such as <code>/root/data/</code> (currently, prediction of PDF files in the directory is not supported, PDF files need to be specified to a specific file path)</li>

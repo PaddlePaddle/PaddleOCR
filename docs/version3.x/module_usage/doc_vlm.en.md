@@ -117,7 +117,7 @@ Explanations of related methods, parameters, etc., are as follows:
 <tr>
 <td><code>model_name</code></td>
 <td><b>Meaning:</b> Model name.<br/>
-<b>Explanation:</b>
+<b>Description:</b>
  If set to <code>None</code>, <code>PP-DocBee-2B</code> will be used.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
@@ -131,7 +131,7 @@ Explanations of related methods, parameters, etc., are as follows:
 <tr>
 <td><code>device</code></td>
 <td><b>Meaning:</b> Device for inference.<br/>
-<b>Explanation:</b>
+<b>Description:</b>
 <b>For example:</b><code>"cpu"</code>, <code>"gpu"</code>, <code>"npu"</code>, <code>"gpu:0"</code>, <code>"gpu:0,1"</code>.<br/>
 By default, GPU 0 is used if available; otherwise, CPU is used.
 </td>
@@ -155,7 +155,7 @@ By default, GPU 0 is used if available; otherwise, CPU is used.
 <tr>
 <td><code>input</code></td>
 <td><b>Meaning:</b> Input data. Required. <br/>
-<b>Explanation:</b>
+<b>Description:</b>
 Since multimodal models have different input requirements, please refer to the specific model for the correct format.<br/>
 For example, for the PP-DocBee series models, the input format should be: <code>{'image': image_path, 'query': query_text}</code>
 </td>
@@ -165,7 +165,7 @@ For example, for the PP-DocBee series models, the input format should be: <code>
 <tr>
 <td><code>batch_size</code></td>
 <td><b>Meaning:</b>Batch size.<br/>
-<b>Explanation:</b>
+<b>Description:</b>
 Positive integer.</td>
 <td><code>int</code></td>
 <td>1</td>

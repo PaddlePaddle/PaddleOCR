@@ -176,7 +176,7 @@ Method and parameter descriptions:
 <tr>
 <td><code>model_name</code></td>
 <td><b>Meaning:</b>Model name.<br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 If set to <code>None</code>, <code>PP-OCRv5_server_det</code> will be used.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
@@ -190,7 +190,7 @@ If set to <code>None</code>, <code>PP-OCRv5_server_det</code> will be used.</td>
 <tr>
 <td><code>device</code></td>
 <td><b>Meaning:</b>Device for inference.<br/>
-<b>Explanation:</b>
+<b>Description:</b>
 <b>For example:</b><code>"cpu"</code>, <code>"gpu"</code>, <code>"npu"</code>, <code>"gpu:0"</code>, <code>"gpu:0,1"</code>.<br/>
 If multiple devices are specified, parallel inference will be performed.<br/>
 By default, GPU 0 is used if available; otherwise, CPU is used.
@@ -207,7 +207,7 @@ By default, GPU 0 is used if available; otherwise, CPU is used.
 <tr>
 <td><code>use_tensorrt</code></td>
 <td><b>Meaning:</b>Whether to use the Paddle Inference TensorRT subgraph engine.<br/> 
-<b>Explanation:</b>
+<b>Description:</b>
 If the model does not support acceleration through TensorRT, setting this flag will not enable acceleration.<br/>
 For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6), and it is recommended to install TensorRT 8.6.1.6.<br/>
 
@@ -218,7 +218,7 @@ For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6)
 <tr>
 <td><code>precision</code></td>
 <td><b>Meaning:</b>Computation precision when using the Paddle Inference TensorRT subgraph engine.<br/>
-<b>Explanation:</b>
+<b>Description:</b>
 <b>Options:</b> <code>"fp32"</code>, <code>"fp16"</code>.</td>
 <td><code>str</code></td>
 <td><code>"fp32"</code></td>
@@ -226,7 +226,7 @@ For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6)
 <tr>
 <td><code>enable_mkldnn</code></td>
 <td><b>Meaning:</b>Whether to enable MKL-DNN acceleration for inference. <br/>
-<b>Explanation:</b>
+<b>Description:</b>
 If MKL-DNN is unavailable or the model does not support it, acceleration will not be used even if this flag is set.</td>
 <td><code>bool</code></td>
 <td><code>True</code></td>
@@ -246,7 +246,7 @@ If MKL-DNN is unavailable or the model does not support it, acceleration will no
 <tr>
 <td><code>limit_side_len</code></td>
 <td><b>Meaning:</b>Limit on the side length of the input image for detection. 
-<b>Explanation:</b>
+<b>Description:</b>
 <code>int</code> specifies the value. If set to <code>None</code>, the model's default configuration will be used.</td>
 <td><code>int|None</code></td>
 <td><code>None</code></td>
@@ -254,7 +254,7 @@ If MKL-DNN is unavailable or the model does not support it, acceleration will no
 <tr>
 <td><code>limit_type</code></td>
 <td><b>Meaning:</b>Type of image side length limitation. <br/>
-<b>Explanation:</b>
+<b>Description:</b>
 <code>"min"</code> ensures the shortest side of the image is no less than <code>det_limit_side_len</code>; <code>"max"</code> ensures the longest side is no greater than <code>limit_side_len</code>. If set to <code>None</code>, the model's default configuration will be used.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
@@ -262,7 +262,7 @@ If MKL-DNN is unavailable or the model does not support it, acceleration will no
 <tr>
 <td><code>max_side_limit</code></td>
 <td><b>Meaning:</b>Limit on the max length of the input image for detection. <br/>
-<b>Explanation:</b>
+<b>Description:</b>
 <code>int</code> limits the longest side of the image for input detection model. If set to <code>None</code>, the model's default configuration will be used.</td>
 <td><code>int|None</code></td>
 <td><code>None</code></td>
@@ -270,7 +270,7 @@ If MKL-DNN is unavailable or the model does not support it, acceleration will no
 <tr>
 <td><code>thresh</code></td>
 <td><b>Meaning:</b>Pixel score threshold. Pixels in the output probability map with scores greater than this threshold are considered text pixels. <br/>
-<b>Explanation:</b>
+<b>Description:</b>
 If set to <code>None</code>, the model's default configuration will be used.</td>
 <td><code>float|None</code></td>
 <td><code>None</code></td>
@@ -278,7 +278,7 @@ If set to <code>None</code>, the model's default configuration will be used.</td
 <tr>
 <td><code>box_thresh</code></td>
 <td><b>Meaning:</b>If the average score of all pixels inside the bounding box is greater than this threshold, the result is considered a text region. <br/>
-<b>Explanation:</b>
+<b>Description:</b>
 If set to <code>None</code>, the model's default configuration will be used.</td>
 <td><code>float|None</code></td>
 <td><code>None</code></td>
@@ -286,7 +286,7 @@ If set to <code>None</code>, the model's default configuration will be used.</td
 <tr>
 <td><code>unclip_ratio</code></td>
 <td><b>Meaning:</b>Expansion ratio for the Vatti clipping algorithm, used to expand the text region. 
-<b>Explanation:</b>
+<b>Description:</b>
 If set to <code>None</code>, the model's default configuration will be used.</td>
 <td><code>float|None</code></td>
 <td><code>None</code></td>
@@ -315,7 +315,7 @@ If set to <code>None</code>, the model's default configuration will be used.</td
 <td><code>input</code></td>
 <td>
 <b>Meaning:</b>Input data to be predicted. Required.<br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 Supports multiple input types:
 <ul>
   <li><b>Python variable</b>: e.g., <code>numpy.ndarray</code> representing image data</li>
@@ -329,14 +329,14 @@ Supports multiple input types:
 <tr>
 <td><code>batch_size</code></td>
 <td><b>Meaning:</b>Batch size<br/>
-<b>Explanation:</b>Positive integer.</td>
+<b>Description:</b>Positive integer.</td>
 <td><code>int</code></td>
 <td>1</td>
 </tr>
 <tr>
 <td><code>limit_side_len</code></td>
 <td><b>Meaning:</b>Same meaning as the instantiation parameters. <br/>
-<b>Explanation:</b>
+<b>Description:</b>
 If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
 <td><code>int|None</code></td>
 <td><code>None</code></td>
@@ -344,7 +344,7 @@ If set to <code>None</code>, the instantiation value is used; otherwise, this pa
 <tr>
 <td><code>limit_type</code></td>
 <td><b>Meaning:</b>Same meaning as the instantiation parameters. <br/>
-<b>Explanation:</b>
+<b>Description:</b>
 If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
@@ -352,7 +352,7 @@ If set to <code>None</code>, the instantiation value is used; otherwise, this pa
 <tr>
 <td><code>thresh</code></td>
 <td><b>Meaning:</b>Same meaning as the instantiation parameters. <br/>
-<b>Explanation:</b>
+<b>Description:</b>
 If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
 <td><code>float|None</code></td>
 <td><code>None</code></td>
@@ -360,7 +360,7 @@ If set to <code>None</code>, the instantiation value is used; otherwise, this pa
 <tr>
 <td><code>box_thresh</code></td>
 <td><b>Meaning:</b>Same meaning as the instantiation parameters. <br/>
-<b>Explanation:</b>
+<b>Description:</b>
 If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
 <td><code>float|None</code></td>
 <td><code>None</code></td>
@@ -368,7 +368,7 @@ If set to <code>None</code>, the instantiation value is used; otherwise, this pa
 <tr>
 <td><code>unclip_ratio</code></td>
 <td><b>Meaning:</b>Same meaning as the instantiation parameters. <br/>
-<b>Explanation:</b>
+<b>Description:</b>
 If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
 <td><code>float|None</code></td>
 <td><code>None</code></td>

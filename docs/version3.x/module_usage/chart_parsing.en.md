@@ -113,7 +113,7 @@ If set to <code>None</code>, defaults to <code>PP-Chart2Table</code>.</td>
 <tr>
 <td><code>device</code></td>
 <td><b>Meaning:</b> Inference device.<br/>
-<b>Explanation:</b>
+<b>Description:</b>
 <b>Examples:</b> <code>"cpu"</code>, <code>"gpu"</code>, <code>"npu"</code>, <code>"gpu:0"</code><br/>
 Defaults to GPU 0 if available; otherwise falls back to CPU.
 </td>
@@ -139,7 +139,7 @@ Defaults to GPU 0 if available; otherwise falls back to CPU.
 <tr>
 <td><code>input</code></td>
 <td><b>Meaning:</b> Input data (required). <br/>
-<b>Explanation:</b>
+<b>Description:</b>
 Input formats vary by model.<br/>
 <ul>
 <li>For PP-Chart2Table: <code>{'image': image_path}</code></li>
@@ -151,7 +151,7 @@ Input formats vary by model.<br/>
 <tr>
 <td><code>batch_size</code></td>
 <td><b>Meaning:</b> Batch size. <br/>
-<b>Explanation:</b>
+<b>Description:</b>
 Any positive integer.</td>
 <td><code>int</code></td>
 <td>1</td>
