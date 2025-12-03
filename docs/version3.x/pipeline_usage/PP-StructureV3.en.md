@@ -1416,14 +1416,13 @@ any float > <code>0</code>. If not set, the default is <code>0.6</code>.
 </tr>
 <tr>
 <td><code>format_block_content</code></td>
-<td>Whether to format the content in <code>block_content</code> as Markdown.
-If not set, the initialized default value will be used, which is <code>False</code> by default.</td>
+<td>Whether to format the content in <code>block_content</code> as Markdown. If not set, the initialized default value will be used, which is <code>False</code> by default.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>markdown_ignore_labels</code></td>
-<td>Layout tags that need to be ignored in Markdown. If not set, the initialized default value will be used.</td>
+<td>Layout tags that need to be ignored in Markdown. If not set, the initialized default value will be used, which is <code>['number','footnote','header','header_image','footer','footer_image','aside_text']</code> by default.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
@@ -2061,14 +2060,13 @@ The above Python script performs the following steps:
 </tr>
 <tr>
 <td><code>format_block_content</code></td>
-<td>Whether to format the content in <code>block_content</code> as Markdown.
-If set to <code>None</code>, the default value is <code>False</code>.</td>
+<td>Whether to format the content in <code>block_content</code> as Markdown. If set to <code>None</code>, the default value is <code>False</code>.</td>
 <td><code>bool|None</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>markdown_ignore_labels</code></td>
-<td>Layout tags that need to be ignored in Markdown. If not set, the initialized default value will be used.</td>
+<td>Layout tags that need to be ignored in Markdown. If set to <code>None</code>, the default value is <code>['number','footnote','header','header_image','footer','footer_image','aside_text']</code>.</td>
 <td><code>list|None</code></td>
 <td></td>
 </tr>
@@ -2458,12 +2456,17 @@ MKL-DNN cache capacity.
      <ul>
     <li><code>input_path</code>: <code>(str)</code> Input path of the image or PDF to be predicted</li>
     <li><code>page_index</code>: <code>(Union[int, None])</code> If input is a PDF, indicates the page number; otherwise <code>None</code></li>
+    <li><code>page_count</code>: <code>(Union[int, None])</code> If the input is a PDF file, it indicates the total number of pages in the PDF; otherwise, it is <code>None</code>.</li>
+    <li><code>width</code>: <code>(int)</code> The width of the original input image.</li>
+    <li><code>height</code>: <code>(int)</code> The height of the original input image.</li>
     <li><code>model_settings</code>: <code>(Dict[str, bool])</code> Model parameters configured for the pipeline</li>
         <ul>
             <li><code>use_doc_preprocessor</code>: <code>(bool)</code> Whether to enable document preprocessor sub-pipeline</li>
             <li><code>use_seal_recognition</code>: <code>(bool)</code> Whether to enable seal text recognition sub-pipeline</li>
             <li><code>use_table_recognition</code>: <code>(bool)</code> Whether to enable table recognition sub-pipeline</li>
             <li><code>use_formula_recognition</code>: <code>(bool)</code> Whether to enable formula recognition sub-pipeline</li>
+            <li><code>format_block_content</code>: <code>(bool)</code> Controls whether to format the <code>block_content</code> into Markdown format</li>
+            <li><code>markdown_ignore_labels</code>: <code>(List[str])</code> Labels of layout regions that need to be ignored in Markdown</li>
         </ul>
     </li>
     <li><code>doc_preprocessor_res</code>: <code>(Dict[str, Union[List[float], str]])</code> Document preprocessing result dictionary, only exists if <code>use_doc_preprocessor=True</code></li>

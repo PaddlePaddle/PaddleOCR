@@ -365,7 +365,7 @@ If not set, the initialized parameter value will be used.
 </tr>
 <tr>
 <td><code>markdown_ignore_labels</code></td>
-<td>Layout labels that need to be ignored in Markdown. If not set, the initialized default value will be used.</td>
+<td>Layout labels that need to be ignored in Markdown. If not set, the initialized default value will be used, which defaults to initialization as<code>['number','footnote','header','header_image','footer','footer_image','aside_text']</code>.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
@@ -702,7 +702,7 @@ If not set, the initialized parameter value will be used.
 </tr>
 <tr>
 <td><code>markdown_ignore_labels</code></td>
-<td>Layout labels that need to be ignored in Markdown. If not set, the initialized default value will be used.</td>
+<td>Layout labels that need to be ignored in Markdown. If not set, the initialized default value will be used, which defaults to initialization as<code>['number','footnote','header','header_image','footer','footer_image','aside_text']</code>.</td>
 <td><code>list|None</code></td>
 <td></td>
 </tr>
@@ -1011,11 +1011,18 @@ If not set, the initialized parameter value will be used.
 
     - `page_index`: `(Union[int, None])` If the input is a PDF file, it indicates the current page number of the PDF; otherwise, it is `None`.
 
+    - `page_count`: `(Union[int, None])` If the input is a PDF file, it indicates the total number of pages in the PDF; otherwise, it is `None`.
+
+    - `width`: `(int)` The width of the original input image.
+
+    - `height`: `(int)` The height of the original input image.
+
     - `model_settings`: `(Dict[str, bool])` Model parameters required for configuring PaddleOCR-VL.
         - `use_doc_preprocessor`: `(bool)` Controls whether to enable the document preprocessing sub-pipeline.
         - `use_layout_detection`: `(bool)` Controls whether to enable the layout detection module.
         - `use_chart_recognition`: `(bool)` Controls whether to enable the chart recognition function.
         - `format_block_content`: `(bool)` Controls whether to save the formatted markdown content in `JSON`.
+        - `markdown_ignore_labels`: `(List[str])` Labels of layout regions that need to be ignored in Markdown
 
     - `doc_preprocessor_res`: `(Dict[str, Union[List[float], str]])` A dictionary of document preprocessing results, which exists only when `use_doc_preprocessor=True`.
         - `input_path`: `(str)` The image path accepted by the document preprocessing sub-pipeline. When the input is a `numpy.ndarray`, it is saved as `None`; here, it is `None`.

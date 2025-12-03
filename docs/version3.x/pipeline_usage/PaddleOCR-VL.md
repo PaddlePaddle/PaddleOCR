@@ -385,7 +385,7 @@ paddleocr doc_parser -i ./paddleocr_vl_demo.png --use_layout_detection False
 </tr>
 <tr>
 <td><code>markdown_ignore_labels</code></td>
-<td>需要在Markdown中忽略的版面标签。如果不设置，将使用初始化的参数值。</td>
+<td>需要在Markdown中忽略的版面标签。如果不设置，将使用初始化的默认值，默认初始化为<code>['number','footnote','header','header_image','footer','footer_image','aside_text']</code>。</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
@@ -728,7 +728,7 @@ for item in markdown_images:
 </tr>
 <tr>
 <td><code>markdown_ignore_labels</code></td>
-<td>需要在Markdown中忽略的版面标签。如果设置为<code>None</code>，将使用初始化的默认值。</td>
+<td>需要在Markdown中忽略的版面标签。如果设置为<code>None</code>，将使用初始化的默认值，默认初始化为<code>['number','footnote','header','header_image','footer','footer_image','aside_text']</code>。</td>
 <td><code>list|None</code></td>
 <td></td>
 </tr>
@@ -1045,12 +1045,19 @@ MKL-DNN 缓存容量。
 
     - `page_index`: `(Union[int, None])` 如果输入是PDF文件，则表示当前是PDF的第几页，否则为 `None`
 
+    - `page_count`: `(Union[int, None])` 如果输入是PDF文件，表示当前是PDF的总页数，否则为 `None`
+
+    - `width`: `(int)` 原始输入图像的宽度。
+
+    - `height`: `(int)` 原始输入图像的高度。
+
     - `model_settings`: `(Dict[str, bool])` 配置 PaddleOCR-VL 所需的模型参数
 
         - `use_doc_preprocessor`: `(bool)` 控制是否启用文档预处理子产线 
         - `use_layout_detection`: `(bool)` 控制是否启用版面检测模块
         - `use_chart_recognition`: `(bool)` 控制是否开启图表识别功能
         - `format_block_content`: `(bool)` 控制是否在`JSON`中保存格式化后的markdown内容
+        - `markdown_ignore_labels`: `(List[str])` 需要在Markdown中忽略的版面标签
 
     - `doc_preprocessor_res`: `(Dict[str, Union[List[float], str]])` 文档预处理结果dict，仅当`use_doc_preprocessor=True`时存在
         - `input_path`: `(str)` 文档预处理子接受的图像路径，当输入为`numpy.ndarray`时，保存为`None`，此处为`None`
