@@ -731,7 +731,7 @@ paddleocr ocr -i ./general_ocr_002.png --ocr_version PP-OCRv4
 <tr>
 <td><code>input</code></td>
 <td><b>Meaning:</b>Data to be predicted, required.<br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 Local path of an image file or PDF file: <code>/root/data/img.jpg</code>; <b>URL link</b>, such as the network URL of an image file or PDF file: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_002.png">Example</a>; <b>Local directory</b>, which must contain images to be predicted, such as the local path: <code>/root/data/</code> (currently, predicting PDFs in a directory is not supported; PDFs need to specify the exact file path).
 </td>
 <td><code>str</code></td>
@@ -740,7 +740,7 @@ Local path of an image file or PDF file: <code>/root/data/img.jpg</code>; <b>URL
 <tr>
 <td><code>save_path</code></td>
 <td><b>Meaning:</b>Path to save inference result files. <br/>
-<b>Explanatio:</b>
+<b>Description:</b>
 If not set, inference results will not be saved locally.</td>
 <td><code>str</code></td>
 <td></td>
@@ -748,7 +748,7 @@ If not set, inference results will not be saved locally.</td>
 <tr>
 <td><code>doc_orientation_classify_model_name</code></td>
 <td><b>Meaning:</b>Name of the document orientation classification model.<br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 If not set, the pipeline default model will be used.</td>
 <td><code>str</code></td>
 <td></td>
@@ -756,7 +756,7 @@ If not set, the pipeline default model will be used.</td>
 <tr>
 <td><code>doc_orientation_classify_model_dir</code></td>
 <td><b>Meaning:</b>Directory path of the document orientation classification model. <br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 If not set, the official model will be downloaded.</td>
 <td><code>str</code></td>
 <td></td>
@@ -764,7 +764,7 @@ If not set, the official model will be downloaded.</td>
 <tr>
 <td><code>doc_unwarping_model_name</code></td>
 <td><b>Meaning:</b>Name of the text image unwarping model. <br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 If not set, the pipeline default model will be used.</td>
 <td><code>str</code></td>
 <td></td>
@@ -772,7 +772,7 @@ If not set, the pipeline default model will be used.</td>
 <tr>
 <td><code>doc_unwarping_model_dir</code></td>
 <td><b>Meaning:</b>Directory path of the text image unwarping model.<br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 If not set, the official model will be downloaded.</td>
 <td><code>str</code></td>
 <td></td>
@@ -780,7 +780,7 @@ If not set, the official model will be downloaded.</td>
 <tr>
 <td><code>text_detection_model_name</code></td>
 <td><b>Meaning:</b>Name of the text detection model.<br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 If not set, the pipeline default model will be used.</td>
 <td><code>str</code></td>
 <td></td>
@@ -788,7 +788,7 @@ If not set, the pipeline default model will be used.</td>
 <tr>
 <td><code>text_detection_model_dir</code></td>
 <td><b>Meaning:</b>Directory path of the text detection model. <br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 If not set, the official model will be downloaded.</td>
 <td><code>str</code></td>
 <td></td>
@@ -796,7 +796,7 @@ If not set, the official model will be downloaded.</td>
 <tr>
 <td><code>textline_orientation_model_name</code></td>
 <td><b>Meaning:</b>Name of the text line orientation model. <br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 If not set, the pipeline default model will be used.</td>
 <td><code>str</code></td>
 <td></td>
@@ -804,7 +804,7 @@ If not set, the pipeline default model will be used.</td>
 <tr>
 <td><code>textline_orientation_model_dir</code></td>
 <td><b>Meaning:</b>Directory path of the text line orientation model. <br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 If not set, the official model will be downloaded.</td>
 <td><code>str</code></td>
 <td></td>
@@ -812,7 +812,7 @@ If not set, the official model will be downloaded.</td>
 <tr>
 <td><code>textline_orientation_batch_size</code></td>
 <td><b>Meaning:</b>Batch size for the text line orientation model. <br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 If not set, the default batch size will be <code>1</code>.</td>
 <td><code>int</code></td>
 <td></td>
@@ -820,7 +820,7 @@ If not set, the default batch size will be <code>1</code>.</td>
 <tr>
 <td><code>text_recognition_model_name</code></td>
 <td><b>Meaning:</b>Name of the text recognition model. <br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 If not set, the pipeline default model will be used.</td>
 <td><code>str</code></td>
 <td></td>
@@ -828,7 +828,7 @@ If not set, the pipeline default model will be used.</td>
 <tr>
 <td><code>text_recognition_model_dir</code></td>
 <td><b>Meaning:</b>Directory path of the text recognition model. <br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 If not set, the official model will be downloaded.</td>
 <td><code>str</code></td>
 <td></td>
@@ -836,7 +836,7 @@ If not set, the official model will be downloaded.</td>
 <tr>
 <td><code>text_recognition_batch_size</code></td>
 <td><b>Meaning:</b>Batch size for the text recognition model. <br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 If not set, the default batch size will be <code>1</code>.</td>
 <td><code>int</code></td>
 <td></td>
@@ -844,7 +844,7 @@ If not set, the default batch size will be <code>1</code>.</td>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
 <td><b>Meaning:</b>Whether to load and use the document orientation classification module. <br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 If not set, the pipeline's initialized value for this parameter (defaults to <code>True</code>) will be used.</td>
 <td><code>bool</code></td>
 <td></td>
@@ -852,7 +852,7 @@ If not set, the pipeline's initialized value for this parameter (defaults to <co
 <tr>
 <td><code>use_doc_unwarping</code></td>
 <td><b>Meaning:</b>Whether to load and use the text image unwarping module. <br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 If not set, the pipeline's initialized value for this parameter (defaults to <code>True</code>) will be used.</td>
 <td><code>bool</code></td>
 <td></td>
@@ -860,7 +860,7 @@ If not set, the pipeline's initialized value for this parameter (defaults to <co
 <tr>
 <td><code>use_textline_orientation</code></td>
 <td><b>Meaning:</b>Whether to load and use the text line orientation module. <br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 If not set, the pipeline's initialized value for this parameter (defaults to <code>True</code>) will be used.</td>
 <td><code>bool</code></td>
 <td></td>
@@ -868,7 +868,7 @@ If not set, the pipeline's initialized value for this parameter (defaults to <co
 <tr>
 <td><code>text_det_limit_side_len</code></td>
 <td><b>Meaning:</b>Image side length limitation for text detection. <br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 Any integer greater than <code>0</code>. If not set, the pipeline's initialized value for this parameter (defaults to <code>64</code>) will be used.
 </td>
 <td><code>int</code></td>
@@ -877,7 +877,7 @@ Any integer greater than <code>0</code>. If not set, the pipeline's initialized 
 <tr>
 <td><code>text_det_limit_type</code></td>
 <td><b>Meaning:</b>Type of side length limit for text detection. <br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 Supports <code>min</code> and <code>max</code>. <code>min</code> means ensuring the shortest side of the image is not smaller than <code>det_limit_side_len</code>, and <code>max</code> means ensuring the longest side of the image is not larger than <code>limit_side_len</code>. If not set, the pipeline's initialized value for this parameter (defaults to <code>min</code>) will be used.
 </td>
 <td><code>str</code></td>
@@ -886,7 +886,7 @@ Supports <code>min</code> and <code>max</code>. <code>min</code> means ensuring 
 <tr>
 <td><code>text_det_thresh</code></td>
 <td><b>Meaning:</b>Pixel threshold for text detection. In the output probability map, pixels with scores higher than this threshold will be considered text pixels.<br/>
-<b>Explanation:</b>
+<b>Description:</b>
 Any floating-point number greater than <code>0</code>. If not set, the pipeline's initialized value for this parameter (defaults to <code>0.3</code>) will be used.
 </td>
 <td><code>float</code></td>
@@ -895,7 +895,7 @@ Any floating-point number greater than <code>0</code>. If not set, the pipeline'
 <tr>
 <td><code>text_det_box_thresh</code></td>
 <td><b>Meaning:</b>Text detection box threshold.<br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 If the average score of all pixels within the detected result boundary is higher than this threshold, the result will be considered a text region.
 Any floating-point number greater than <code>0</code>. If not set, the pipeline's initialized value for this parameter (defaults to <code>0.6</code>) will be used.
 </td>
@@ -905,7 +905,7 @@ Any floating-point number greater than <code>0</code>. If not set, the pipeline'
 <tr>
 <td><code>text_det_unclip_ratio</code></td>
 <td><b>Meaning:</b>Text detection expansion coefficient. This method is used to expand the text region—the larger the value, the larger the expanded area. <br/>
-<b>Explanation:</b>
+<b>Description:</b>
 Any floating-point number greater than <code>0</code>. If not set, the pipeline's initialized value for this parameter (defaults to <code>2.0</code>) will be used.
 </td>
 <td><code>float</code></td>
@@ -920,7 +920,7 @@ Any floating-point number greater than <code>0</code>. If not set, the pipeline'
 <tr>
 <td><code>text_rec_score_thresh</code></td>
 <td><b>Meaning:</b>Text recognition threshold. Text results with scores higher than this threshold will be retained.<br/>
-<b>Explanation:</b>
+<b>Description:</b>
 Any floating-point number greater than <code>0</code>
 . If not set, the pipeline's initialized value for this parameter (defaults to <code>0.0</code>, i.e., no threshold) will be used.
 </td>
@@ -930,7 +930,7 @@ Any floating-point number greater than <code>0</code>
 <tr>
 <td><code>return_word_box</code></td>
 <td><b>Meaning:</b>Whether to return word-level boxes.<br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 If not set, the pipeline's initialized value for this parameter (defaults to <code>False</code>) will be used.</td>
 <td><code>bool</code></td>
 <td></td>
@@ -944,7 +944,7 @@ If not set, the pipeline's initialized value for this parameter (defaults to <co
 <tr>
 <td><code>lang</code></td>
 <td><b>Meaning:</b>OCR model language to use.<br/>
-<b>Explanation:</b>
+<b>Description:</b>
 The table in the appendix lists all the supported languages.
 </td>
 <td><code>str</code></td>
@@ -953,7 +953,7 @@ The table in the appendix lists all the supported languages.
 <tr>
 <td><code>ocr_version</code></td>
 <td><b>Meaning:</b>Version of OCR models.<br/>
-<b>Explanation:</b>
+<b>Description:</b>
 <ul>
 <li><b>PP-OCRv5</b>: Use PP-OCRv5 series models;
 <li><b>PP-OCRv4</b>: Use PP-OCRv4 series models;
@@ -967,7 +967,7 @@ Please note that not every <code>ocr_version</code> supports all <code>lang</cod
 
 <td><code>device</code></td>
 <td><b>Meaning:</b>Device for inference. <br/>
-<b>Explanation:</b>
+<b>Description:</b>
 Supports specifying a specific card number:
 <ul>
 <li><b>CPU</b>: <code>cpu</code> indicates using CPU for inference;</li>
@@ -990,7 +990,7 @@ Supports specifying a specific card number:
 <tr>
 <td><code>use_tensorrt</code></td>
 <td><b>Meaning:</b>Whether to use the Paddle Inference TensorRT subgraph engine. <br/>
-<b>Explanation:</b>
+<b>Description:</b>
 If the model does not support acceleration through TensorRT, setting this flag will not enable acceleration.<br/>
 For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6), and it is recommended to install TensorRT 8.6.1.6.<br/>
 
@@ -1007,7 +1007,7 @@ For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6)
 <tr>
 <td><code>enable_mkldnn</code></td>
 <td><b>Meaning:</b>Whether to enable MKL-DNN acceleration for inference. <br/>
-<b>Explanation:</b>
+<b>Description:</b>
 If MKL-DNN is unavailable or the model does not support it, acceleration will not be used even if this flag is set.
 </td>
 <td><code>bool</code></td>
@@ -1049,33 +1049,33 @@ If MKL-DNN is unavailable or the model does not support it, acceleration will no
 <tbody>
 <tr>
 <td><code>det_model_dir</code></td>
-<td><b>Explanation:</b>Deprecated. Please refer <code>text_detection_model_dir</code> , they cannot be specified simultaneously with the new parameters.</td>
+<td><b>Description:</b>Deprecated. Please refer <code>text_detection_model_dir</code> , they cannot be specified simultaneously with the new parameters.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>det_limit_side_len</code></td>
-<td><b>Explanation:</b>Deprecated. Please refer <code>text_det_limit_side_len</code> , they cannot be specified simultaneously with the new parameters.</td>
+<td><b>Description:</b>Deprecated. Please refer <code>text_det_limit_side_len</code> , they cannot be specified simultaneously with the new parameters.</td>
 <td><code>int</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>det_limit_type</code></td>
-<td><b>Explanation:</b>Deprecated. Please refer <code>text_det_limit_type</code> , they cannot be specified simultaneously with the new parameters.
+<td><b>Description:</b>Deprecated. Please refer <code>text_det_limit_type</code> , they cannot be specified simultaneously with the new parameters.
 </td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>det_db_thresh</code></td>
-<td><b>Explanation:</b>Deprecated. Please refer <code>text_det_thresh</code> , they cannot be specified simultaneously with the new parameters.
+<td><b>Description:</b>Deprecated. Please refer <code>text_det_thresh</code> , they cannot be specified simultaneously with the new parameters.
 </td>
 <td><code>float</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>det_db_box_thresh</code></td>
-<td><b>Explanation:</b>Deprecated. Please refer <code>text_det_box_thresh</code> , they cannot be specified simultaneously with the new parameters.
+<td><b>Description:</b>Deprecated. Please refer <code>text_det_box_thresh</code> , they cannot be specified simultaneously with the new parameters.
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -1089,31 +1089,31 @@ If MKL-DNN is unavailable or the model does not support it, acceleration will no
 </tr>
 <tr>
 <td><code>rec_model_dir</code></td>
-<td><b>Explanation:</b>Deprecated. Please refer <code>text_recognition_model_dir</code> , they cannot be specified simultaneously with the new parameters.</td>
+<td><b>Description:</b>Deprecated. Please refer <code>text_recognition_model_dir</code> , they cannot be specified simultaneously with the new parameters.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>rec_batch_num</code></td>
-<td><b>Explanation:</b>Deprecated. Please refer <code>text_recognition_batch_size</code> , they cannot be specified simultaneously with the new parameters.</td>
+<td><b>Description:</b>Deprecated. Please refer <code>text_recognition_batch_size</code> , they cannot be specified simultaneously with the new parameters.</td>
 <td><code>int</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_angle_cls</code></td>
-<td><b>Explanation:</b>Deprecated. Please refer <code>use_textline_orientation</code> , they cannot be specified simultaneously with the new parameters.</td>
+<td><b>Description:</b>Deprecated. Please refer <code>use_textline_orientation</code> , they cannot be specified simultaneously with the new parameters.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>cls_model_dir</code></td>
-<td><b>Explanation:</b>Deprecated. Please refer <code>textline_orientation_model_dir</code> , they cannot be specified simultaneously with the new parameters.</td>
+<td><b>Description:</b>Deprecated. Please refer <code>textline_orientation_model_dir</code> , they cannot be specified simultaneously with the new parameters.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>cls_batch_num</code></td>
-<td><b>Explanation:</b>Deprecated. Please refer <code>textline_orientation_batch_size</code> , they cannot be specified simultaneously with the new parameters.</td>
+<td><b>Description:</b>Deprecated. Please refer <code>textline_orientation_batch_size</code> , they cannot be specified simultaneously with the new parameters.</td>
 <td><code>int</code></td>
 <td></td>
 </tr>
@@ -1196,7 +1196,7 @@ In the above Python script, the following steps are performed:
 <tr>
 <td><code>doc_orientation_classify_model_name</code></td>
 <td><b>Meaning:</b>Name of the document orientation classification model. <br/>
-<b>Explanation:</b>
+<b>Description:</b>
 If set to <code>None</code>, the pipeline's default model will be used.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
@@ -1204,7 +1204,7 @@ If set to <code>None</code>, the pipeline's default model will be used.</td>
 <tr>
 <td><code>doc_orientation_classify_model_dir</code></td>
 <td><b>Meaning:</b>Directory path of the document orientation classification model. <br/>
-<b>Explanation:</b>
+<b>Description:</b>
 If set to <code>None</code>, the official model will be downloaded.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
@@ -1212,7 +1212,7 @@ If set to <code>None</code>, the official model will be downloaded.</td>
 <tr>
 <td><code>doc_unwarping_model_name</code></td>
 <td><b>Meaning:</b>Name of the text image unwarping model. <br/>
-<b>Explanation:</b>
+<b>Description:</b>
 If set to <code>None</code>, the pipeline's default model will be used.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
@@ -1220,7 +1220,7 @@ If set to <code>None</code>, the pipeline's default model will be used.</td>
 <tr>
 <td><code>doc_unwarping_model_dir</code></td>
 <td><b>Meaning:</b>Directory path of the text image unwarping model. <br/>
-<b>Explanation:</b>
+<b>Description:</b>
 If set to <code>None</code>, the official model will be downloaded.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
@@ -1228,7 +1228,7 @@ If set to <code>None</code>, the official model will be downloaded.</td>
 <tr>
 <td><code>text_detection_model_name</code></td>
 <td><b>Meaning:</b>Name of the text detection model. <br/>
-<b>Explanation:</b>
+<b>Description:</b>
 If set to <code>None</code>, the pipeline's default model will be used.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
@@ -1236,7 +1236,7 @@ If set to <code>None</code>, the pipeline's default model will be used.</td>
 <tr>
 <td><code>text_detection_model_dir</code></td>
 <td><b>Meaning:</b>Directory path of the text detection model. <br/>
-<b>Explanation:</b>
+<b>Description:</b>
 If set to <code>None</code>, the official model will be downloaded.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
@@ -1244,7 +1244,7 @@ If set to <code>None</code>, the official model will be downloaded.</td>
 <tr>
 <td><code>textline_orientation_model_name</code></td>
 <td><b>Meaning:</b>Name of the text line orientation model. <br/>
-<b>Explanation:</b>
+<b>Description:</b>
 If set to <code>None</code>, the pipeline's default model will be used.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
@@ -1252,7 +1252,7 @@ If set to <code>None</code>, the pipeline's default model will be used.</td>
 <tr>
 <td><code>textline_orientation_model_dir</code></td>
 <td><b>Meaning:</b>Directory path of the text line orientation model. <br/>
-<b>Explanation:</b>
+<b>Description:</b>
 If set to <code>None</code>, the official model will be downloaded.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
@@ -1260,7 +1260,7 @@ If set to <code>None</code>, the official model will be downloaded.</td>
 <tr>
 <td><code>textline_orientation_batch_size</code></td>
 <td><b>Meaning:</b>Batch size for the text line orientation model. <br/>
-<b>Explanation:</b>
+<b>Description:</b>
 If set to <code>None</code>, the default batch size will be <code>1</code>.</td>
 <td><code>int|None</code></td>
 <td><code>None</code></td>
@@ -1268,7 +1268,7 @@ If set to <code>None</code>, the default batch size will be <code>1</code>.</td>
 <tr>
 <td><code>text_recognition_model_name</code></td>
 <td><b>Meaning:</b>Name of the text recognition model. <br/>
-<b>Explanation:</b>
+<b>Description:</b>
 If set to <code>None</code>, the pipeline's default model will be used.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
@@ -1276,7 +1276,7 @@ If set to <code>None</code>, the pipeline's default model will be used.</td>
 <tr>
 <td><code>text_recognition_model_dir</code></td>
 <td><b>Meaning:</b>Directory path of the text recognition model. <br/>
-<b>Explanation:</b>
+<b>Description:</b>
 If set to <code>None</code>, the official model will be downloaded.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
@@ -1284,7 +1284,7 @@ If set to <code>None</code>, the official model will be downloaded.</td>
 <tr>
 <td><code>text_recognition_batch_size</code></td>
 <td><b>Meaning:</b>Batch size for the text recognition model. <br/>
-<b>Explanation:</b>
+<b>Description:</b>
 If set to <code>None</code>, the default batch size will be <code>1</code>.</td>
 <td><code>int|None</code></td>
 <td><code>None</code></td>
@@ -1292,7 +1292,7 @@ If set to <code>None</code>, the default batch size will be <code>1</code>.</td>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
 <td><b>Meaning:</b>Whether to load and use the document orientation classification module. <br/>
-<b>Explanation:</b>
+<b>Description:</b>
 If set to <code>None</code>, the pipeline's initialized value for this parameter (defaults to <code>True</code>) will be used.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
@@ -1300,7 +1300,7 @@ If set to <code>None</code>, the pipeline's initialized value for this parameter
 <tr>
 <td><code>use_doc_unwarping</code></td>
 <td><b>Meaning:</b>Whether to load and use the text image unwarping module. <br/>
-<b>Explanation:</b>
+<b>Description:</b>
 If set to <code>None</code>, the pipeline's initialized value for this parameter (defaults to <code>True</code>) will be used.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
@@ -1308,7 +1308,7 @@ If set to <code>None</code>, the pipeline's initialized value for this parameter
 <tr>
 <td><code>use_textline_orientation</code></td>
 <td><b></b>Meaning:</b>Whether to load and use the text line orientation module. <br/>
-<b>Explanation:</b>
+<b>Description:</b>
 If set to <code>None</code>, the pipeline's initialized value for this parameter (defaults to <code>True</code>) will be used.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
@@ -1316,7 +1316,7 @@ If set to <code>None</code>, the pipeline's initialized value for this parameter
 <tr>
 <td><code>text_det_limit_side_len</code></td>
 <td><b>Meaning:</b>Image side length limitation for text detection. <br/>
-<b>Explanation:</b>
+<b>Description:</b>
  <ul>
  <li><b>int</b>: Any integer greater than <code>0</code>;</li>
  <li><b>None</b>: If set to <code>None</code>, the pipeline's initialized value for this parameter (defaults to <code>64</code>) will be used.</li>
@@ -1328,7 +1328,7 @@ If set to <code>None</code>, the pipeline's initialized value for this parameter
 <tr>
 <td><code>text_det_limit_type</code></td>
 <td><b>Meaning:</b>Type of side length limit for text detection. <br/>
-<b>Explanation:</b>
+<b>Description:</b>
  <ul>
  <li><b>str</b>: Supports <code>min</code> and <code>max</code>, where <code>min</code> means ensuring the shortest side of the image is not smaller than <code>det_limit_side_len</code>, and <code>max</code> means ensuring the longest side of the image is not larger than <code>limit_side_len</code>;</li>
  <li><b>None</b>: If set to <code>None</code>, the pipeline's initialized value for this parameter (defaults to <code>min</code>) will be used.</li>
@@ -1340,7 +1340,7 @@ If set to <code>None</code>, the pipeline's initialized value for this parameter
 <tr>
 <td><code>text_det_thresh</code></td>
 <td><b>Meaning:</b>Pixel threshold for text detection. Pixels with scores higher than this threshold in the output probability map will be considered text pixels. <br/>
-<b>Explanation:</b>
+<b>Description:</b>
  <ul>
  <li><b>float</b>: Any floating-point number greater than <code>0</code>;
 <li><b>None</b>: If set to <code>None</code>, the pipeline's initialized value for this parameter (defaults to <code>0.3</code>) will be used.</li></li></ul>
@@ -1351,7 +1351,7 @@ If set to <code>None</code>, the pipeline's initialized value for this parameter
 <tr>
 <td><code>text_det_box_thresh</code></td>
 <td><b>Meaning:</b>Box threshold for text detection. A detection result will be considered a text region if the average score of all pixels within the bounding box is higher than this threshold. <br/>
-<b>Explanation:</b>
+<b>Description:</b>
  <ul>
  <li><b>float</b>: Any floating-point number greater than <code>0</code>;
  <li><b>None</b>: If set to <code>None</code>, the pipeline's initialized value for this parameter (defaults to <code>0.6</code>) will be used.</li></li></ul>
@@ -1362,7 +1362,7 @@ If set to <code>None</code>, the pipeline's initialized value for this parameter
 <tr>
 <td><code>text_det_unclip_ratio</code></td>
 <td><b>Meaning:</b>Dilation coefficient for text detection. This method is used to dilate the text region, and the larger this value, the larger the dilated area. <br/>
-<b>Explanation:</b>
+<b>Description:</b>
  <ul>
  <li><b>float</b>: Any floating-point number greater than <code>0</code>;
 <li><b>None</b>: If set to <code>None</code>, the pipeline's initialized value for this parameter (defaults to <code>2.0</code>) will be used.</li></li></ul>
@@ -1379,7 +1379,7 @@ If set to <code>None</code>, the pipeline's initialized value for this parameter
 <tr>
 <td><code>text_rec_score_thresh</code></td>
 <td><b>Meaning:</b>Recognition score threshold for text. Text results with scores higher than this threshold will be retained. <br/>
-<b>Explanation:</b>
+<b>Description:</b>
  <ul>
 <li><b>float</b>: Any floating-point number greater than <code>0</code>;
     <li><b>None</b>: If set to <code>None</code>, the pipeline's initialized value for this parameter (defaults to <code>0.0</code>, i.e., no threshold) will be used.</li></li></ul>
@@ -1396,7 +1396,7 @@ If set to <code>None</code>, the pipeline's initialized value for this parameter
 <tr>
 <td><code>lang</code></td>
 <td><b>Meaning:</b>OCR model language to use.<br/>
-<b>Explanation:</b>
+<b>Description:</b>
 The table in the appendix lists all the supported languages.
 </td>
 <td><code>str|None</code></td>
@@ -1405,7 +1405,7 @@ The table in the appendix lists all the supported languages.
 <tr>
 <td><code>ocr_version</code></td>
 <td><b>Meaning:</b>Version of OCR models. <br/>
-<b>Explanation:</b>
+<b>Description:</b>
 <ul>
 <li><b>PP-OCRv5</b>: Use PP-OCRv5 series models;</li>
 <li><b>PP-OCRv4</b>: Use PP-OCRv4 series models;</li>
@@ -1419,7 +1419,7 @@ Please note that not every <code>ocr_version</code> supports all <code>lang</cod
 <tr>
 <td><code>device</code></td>
 <td><b>Meaning:</b>Device for inference. <br/>
-<b>Explanation:</b>
+<b>Description:</b>
 Supports specifying a specific card number:
 <ul>
 <li><b>CPU</b>: e.g., <code>cpu</code> for CPU inference;</li>
@@ -1443,7 +1443,7 @@ Supports specifying a specific card number:
 <tr>
 <td><code>use_tensorrt</code></td>
 <td><b>Meaning:</b>Whether to use the Paddle Inference TensorRT subgraph engine. If the model does not support acceleration through TensorRT, setting this flag will not enable acceleration.<br/>
-<b>Explanation:</b>
+<b>Description:</b>
 For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6), and it is recommended to install TensorRT 8.6.1.6.<br/>
 
 </td>
@@ -1459,7 +1459,7 @@ For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6)
 <tr>
 <td><code>enable_mkldnn</code></td>
 <td><b>Meaning:</b>Whether to enable MKL-DNN acceleration for inference.<br/>
-<b>Explanation:</b> 
+<b>Description:</b> 
 If MKL-DNN is unavailable or the model does not support it, acceleration will not be used even if this flag is set.</td>
 <td><code>bool</code></td>
 <td><code>True</code></td>
@@ -1502,7 +1502,7 @@ If MKL-DNN is unavailable or the model does not support it, acceleration will no
 <tr>
 <td><code>input</code></td>
 <td><b>Meaning:</b>Data to be predicted, supporting multiple input types, required.<br/>
-<b>Explanation:</b>
+<b>Description:</b>
 <ul>
 <li><b>Python Var</b>: Image data represented by <code>numpy.ndarray</code>;</li>
 <li><b>str</b>: Local path of an image file or PDF file: <code>/root/data/img.jpg</code>; <b>URL link</b>, such as the network URL of an image file or PDF file: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_002.png">example</a>; <b>local directory</b>, which needs to contain images to be predicted, such as the local path: <code>/root/data/</code> (currently, predicting PDF files in the directory is not supported; PDF files need to specify the specific file path);</li>
@@ -1531,42 +1531,42 @@ If MKL-DNN is unavailable or the model does not support it, acceleration will no
 </tr>
 <td><code>text_det_limit_side_len</code></td>
 <td><b>Meaning:</b>Same meaning as the instantiation parameters.<br/> 
-<b>Explanation:</b>
+<b>Description:</b>
 If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
 <td><code>int|None</code></td>
 <td><code>None</code></td>
 </tr>
 <td><code>text_det_limit_type</code></td>
 <td><b>Meaning:</b>Same meaning as the instantiation parameters. <br/>
-<b>Explanation:</b>
+<b>Description:</b>
 If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <td><code>text_det_thresh</code></td>
 <td><b>Meaning:</b>Same meaning as the instantiation parameters. <br/>
-<b>Explanation:</b>
+<b>Description:</b>
 If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
 <td><code>float|None</code></td>
 <td><code>None</code></td>
 </tr>
 <td><code>text_det_box_thresh</code></td>
 <td><b>Meaning:</b>Same meaning as the instantiation parameters. <br/>
-<b>Explanation:</b>
+<b>Description:</b>
 If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
 <td><code>float|None</code></td>
 <td><code>None</code></td>
 </tr>
 <td><code>text_det_unclip_ratio</code></td>
 <td><b>Meaning:</b>Same meaning as the instantiation parameters. <br/>
-<b>Explanation:</b>
+<b>Description:</b>
 If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
 <td><code>float|None</code></td>
 <td><code>None</code></td>
 </tr>
 <td><code>text_rec_score_thresh</code></td>
 <td><b>Meaning:</b>Same meaning as the instantiation parameters. <br/>
-<b>Explanation:</b>
+<b>Description:</b>
 If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
 <td><code>float|None</code></td>
 <td><code>None</code></td>
