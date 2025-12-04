@@ -91,13 +91,13 @@ def test_french_word_grouping():
 
         if len(word_list) != len(test["expected_words"]):
             passed = False
-            print(f"\n❌ FAILED: {text}")
+            print(f"\nFAILED: {text}")
             print(
                 f"   Expected {len(test['expected_words'])} words, got {len(word_list)}"
             )
         elif state_list != test["expected_states"]:
             passed = False
-            print(f"\n❌ FAILED: {text}")
+            print(f"\nFAILED: {text}")
             print(f"   Expected states: {test['expected_states']}")
             print(f"   Got states: {state_list}")
         else:
@@ -107,12 +107,12 @@ def test_french_word_grouping():
             ):
                 if expected != actual:
                     passed = False
-                    print(f"\n❌ FAILED: {text}")
+                    print(f"\nFAILED: {text}")
                     print(f"   Word {i}: Expected {expected}, got {actual}")
                     break
 
         if passed:
-            print(f"\n✅ PASSED: {text}")
+            print(f"\nPASSED: {text}")
             print(f"   Text: '{test_text}'")
             print(f"   Words: {[''.join(w) for w in word_list]}")
             print(f"   States: {state_list}")
@@ -124,9 +124,9 @@ def test_french_word_grouping():
 
     print("\n" + "=" * 70)
     if all_passed:
-        print("✅ All tests PASSED! French accented words are properly grouped.")
+        print("All tests PASSED! French accented words are properly grouped.")
     else:
-        print("❌ Some tests FAILED. Please review the output above.")
+        print("Some tests FAILED. Please review the output above.")
     print("=" * 70)
 
     return all_passed
