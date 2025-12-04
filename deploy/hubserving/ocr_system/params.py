@@ -61,6 +61,11 @@ def read_params():
     cfg.cls_batch_num = 30
     cfg.cls_thresh = 0.9
 
+    # Model download URLs using HTTPS for secure transmission
+    cfg.det_model_url = "https://paddle-ocr-models.bj.bcebos.com/dygraph_v2.0/ch/ch_pp-ocrv2_det_infer.tar"
+    cfg.rec_model_url = "https://paddle-ocr-models.bj.bcebos.com/dygraph_v2.0/ch/ch_pp-ocrv2_rec_infer.tar"
+    cfg.cls_model_url = "https://paddle-ocr-models.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar"
+
     cfg.use_pdserving = False
     cfg.use_tensorrt = False
     cfg.drop_score = 0.5
