@@ -14,6 +14,8 @@ comments: true
 
 - 方法二：手动安装 PaddlePaddle 和 PaddleOCR。
 
+**我们强烈推荐采用 Docker 镜像的方式，以最大程度减少可能出现的环境问题。**
+
 ### 1.1 方法一：使用 Docker 镜像
 
 我们推荐使用官方 Docker 镜像（要求 Docker 版本 >= 19.03）：

@@ -120,6 +120,8 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
 
 - 方法二：手动安装 PaddlePaddle 和 PaddleOCR。
 
+**我们强烈推荐采用 Docker 镜像的方式，以最大程度减少可能出现的环境问题。**
+
 ### 1.1 方法一：使用 Docker 镜像
 
 我们推荐使用官方 Docker 镜像（要求 Docker 版本 >= 19.03，机器装配有 GPU 且 NVIDIA 驱动支持 CUDA 12.6 或以上版本）：
@@ -1080,6 +1082,8 @@ MKL-DNN 缓存容量。
 
 - 方法二：通过 PaddleOCR CLI 手动安装依赖后启动服务。
 
+**我们强烈推荐采用 Docker 镜像的方式，以最大程度减少可能出现的环境问题。**
+
 #### 3.1.1 方法一：使用 Docker 镜像
 
 PaddleOCR 提供了 Docker 镜像，用于快速启动 vLLM 或 FastDeploy 推理服务。可使用以下命令启动服务（要求 Docker 版本 >= 19.03，机器装配有 GPU 且 NVIDIA 驱动支持 CUDA 12.6 或以上版本）：
@@ -1127,7 +1131,7 @@ docker run \
 
 #### 3.1.2 方法二：通过 PaddleOCR CLI 安装和使用
 
-由于推理加速框架可能与飞桨框架存在依赖冲突，建议在虚拟环境中安装。以 vLLM 为例：
+由于推理加速框架可能与飞桨框架存在依赖冲突，建议在虚拟环境中安装：
 
 ```shell
 # 如果当前存在已激活的虚拟环境，先通过 `deactivate` 取消激活
@@ -1135,6 +1139,13 @@ docker run \
 python -m venv .venv_vlm
 # 激活环境
 source .venv_vlm/bin/activate
+```
+
+vLLM 和 SGLang 依赖 FlashAttention，而安装 FlashAttention 时可能需要使用 nvcc 等 CUDA 编译工具。如果您的环境中没有这些工具（例如在使用 `paddleocr-vl` 镜像），可以从 [此仓库](https://github.com/mjun0812/flash-attention-prebuild-wheels) 获取 FlashAttention 的预编译版本（要求 2.8.2 版本），先安装预编译包，再执行后续命令。例如，在 `paddleocr-vl` 镜像中，执行 `python -m pip install https://github.com/mjun0812/flash-attention-prebuild-wheels/releases/download/v0.3.14/flash_attn-2.8.2+cu128torch2.8-cp310-cp310-linux_x86_64.whl`。对于 FastDeploy，无需执行此步骤。
+
+安装 PaddleOCR 及推理加速服务依赖，以 vLLM 为例：
+
+```shell
 # 安装 PaddleOCR
 python -m pip install "paddleocr[doc-parser]"
 # 安装推理加速服务依赖
@@ -1150,8 +1161,6 @@ paddleocr install_genai_server_deps <推理加速框架名称>
 当前支持的框架名称为 `vllm`、`sglang` 和 `fastdeploy`，分别对应 vLLM、SGLang 和 FastDeploy。
 
 通过 `paddleocr install_genai_server_deps` 安装的 vLLM 与 SGLang 均为 **CUDA 12.6** 版本，请确保本地 NVIDIA 驱动与此版本一致或更高。
-
-> `paddleocr install_genai_server_deps` 命令在执行过程中可能需要使用 nvcc 等 CUDA 编译工具。如果您的环境中没有这些工具（例如在使用 `paddleocr-vl` 镜像），可以从 [此仓库](https://github.com/mjun0812/flash-attention-prebuild-wheels) 获取 FlashAttention 的预编译版本，先安装预编译包，再执行后续命令。例如，您在 `paddleocr-vl` 镜像中，执行 `python -m pip install https://github.com/mjun0812/flash-attention-prebuild-wheels/releases/download/v0.3.14/flash_attn-2.8.2+cu128torch2.8-cp310-cp310-linux_x86_64.whl`。
 
 安装完成后，可通过 `paddleocr genai_server` 命令启动服务：
 
@@ -1252,7 +1261,7 @@ PaddleOCR 会将来自单张或多张输入图像中的子图分组并对服务�
 
 - 方法二：手动部署。
 
-请注意，本节所介绍 PaddleOCR-VL 服务与上一节中的 VLM 推理服务有所区别：后者仅负责完整流程中的一个环节（即 VLM 推理），并作为前者的底层服务被调用。
+> 请注意，本节所介绍 PaddleOCR-VL 服务与上一节中的 VLM 推理服务有所区别：后者仅负责完整流程中的一个环节（即 VLM 推理），并作为前者的底层服务被调用。此外，根据本节所述方式启动的 PaddleOCR-VL 服务一次仅能处理一个请求，后续我们将补充说明支持并发调用的服务启动方式。
 
 ### 4.1 方法一：使用 Docker Compose 部署（推荐使用）
 
