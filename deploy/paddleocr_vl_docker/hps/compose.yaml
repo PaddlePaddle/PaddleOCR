@@ -1,0 +1,51 @@
+services:
+  paddleocr-vl-api:
+    build:
+      context: .
+      dockerfile: gateway.Dockerfile
+    container_name: paddleocr-vl-api
+    ports:
+      - 8080:8080
+    depends_on:
+      paddleocr-vl-tritonserver:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8080/health || exit 1"]
+
+  paddleocr-vl-tritonserver:
+    build:
+      context: .
+      dockerfile: tritonserver.Dockerfile
+    container_name: paddleocr-vl-tritonserver
+    depends_on:
+      paddleocr-vlm-server:
+        condition: service_healthy
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: ["0"]
+              capabilities: [gpu]
+    shm_size: 4gb
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8000/v2/health/ready || exit 1"]
+
+  paddleocr-vlm-server:
+    image: ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-offline
+    container_name: paddleocr-vlm-server
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: ["0"]
+              capabilities: [gpu]
+    # TODO: Allow using a regular user
+    user: root
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8080/health || exit 1"]
+      start_period: 300s
