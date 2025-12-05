@@ -524,6 +524,19 @@ for item in markdown_images:
             image.save(file_path)
 ```
 
+如果您需要处理多个文件，**建议将包含文件的目录路径，或者文件路径列表传入 `predict` 方法**，以最大化处理效率。例如：
+
+```python
+# `imgs` 目录中包含多张待处理图像：file1.png、file2.png、file3.png
+# 传入目录路径
+output = pipeline.predict("imgs")
+# 或者传入文件路径列表
+output = pipeline.predict(["imgs/file1.png", "imgs/file2.png", "imgs/file3.png"])
+# 以上两种方式的处理效率高于下列方式：
+# for file in ["imgs/file1.png", "imgs/file2.png", "imgs/file3.png"]:
+#     output = pipeline.predict(file)
+```
+
 **注：**
 
 - 在示例代码中，`use_doc_orientation_classify`、`use_doc_unwarping` 参数默认均设置为 `False`，分别表示关闭文档方向分类、文本图像矫正功能，如果需要使用这些功能，可以手动设置为 `True`。

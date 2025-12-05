@@ -499,6 +499,19 @@ for item in markdown_images:
             image.save(file_path)
 ```
 
+If you need to process multiple files, **it is recommended to pass the directory path containing the files or a list of file paths to the `predict` method** to maximize processing efficiency. For example:
+
+```python
+# The `imgs` directory contains multiple images to be processed: file1.png, file2.png, file3.png
+# Pass the directory path
+output = pipeline.predict("imgs")
+# Or pass a list of file paths
+output = pipeline.predict(["imgs/file1.png", "imgs/file2.png", "imgs/file3.png"])
+# Both of the above methods are more efficient than the following approach:
+# for file in ["imgs/file1.png", "imgs/file2.png", "imgs/file3.png"]:
+#     output = pipeline.predict(file)
+```
+
 **Note:**
 
 - In the example code, the parameters `use_doc_orientation_classify` and  `use_doc_unwarping` are all set to `False` by default. These indicate that document orientation classification and document image unwarping are disabled. You can manually set them to `True` if needed.
