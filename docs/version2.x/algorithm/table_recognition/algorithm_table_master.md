@@ -25,7 +25,7 @@ comments: true
 
 ## 3. 模型训练、评估、预测
 
-上述TableMaster模型使用PubTabNet表格识别公开数据集训练得到，数据集下载可参考 [table_datasets](../../datasets/table_datasets.md)。
+上述TableMaster模型使用PubTabNet表格识别公开数据集训练得到，数据集下载可参考 [table_datasets](../../../datasets/table_datasets.md)。
 
 数据下载完成后，请参考[文本识别教程](../../ppocr/model_train/recognition.md)进行训练。PaddleOCR对代码进行了模块化，训练不同的模型只需要**更换配置文件**即可。
 

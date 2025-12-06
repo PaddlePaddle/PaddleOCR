@@ -1,6 +1,6 @@
 # PaddleOCR模型推理参数解释
 
-在使用PaddleOCR进行模型推理时，可以自定义修改参数，来修改模型、数据、预处理、后处理等内容（参数文件：[utility.py](../../tools/infer/utility.py)），详细的参数解释如下所示。
+在使用PaddleOCR进行模型推理时，可以自定义修改参数，来修改模型、数据、预处理、后处理等内容（参数文件：[utility.py](../../../../tools/infer/utility.py)），详细的参数解释如下所示。
 
 * 全局信息
 

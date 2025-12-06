@@ -92,7 +92,7 @@ paddleocr --image_dir /your/test/image.jpg --lang=japan # change for i18n abbr
 
 ## 📖 チュートリアル
 
-- [環境の準備](../doc_en/environment_en.md)
+- [環境の準備](../version2.x/ppocr/environment.en.md)
 - [PP-OCR 🔥](../version2.x/ppocr/overview.en.md)
     - [クイックスタート](../version2.x/ppocr/quick_start.en.md)
     - [Model Zoo](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.9/doc/doc_en/models_en.md)
@@ -104,7 +104,7 @@ paddleocr --image_dir /your/test/image.jpg --lang=japan # change for i18n abbr
         - [モデルの量子化](../../deploy/slim/quantization/README_en.md)
         - [モデルの剪裁](../../deploy/slim/prune/README_en.md)
         - [知識の蒸留](../version2.x/ppocr/model_compress/knowledge_distillation.en.md)
-    - [推論と展開](./deploy/README.md)
+    - [推論と展開](../../deploy/README.md)
         - [Python 推論](../version2.x/legacy/python_infer.en.md)
         - [C++ 推論](../version2.x/legacy/cpp_infer.en.md)
         - [サービング](../version2.x/legacy/paddle_server.en.md)

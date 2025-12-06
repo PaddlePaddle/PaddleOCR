@@ -48,7 +48,7 @@ The following takes the knowledge distillation configuration file for recognitio
 
 ### 2.1 Recognition Model Configuration File Analysis
 
-The configuration file is in [ch_PP-OCRv2_rec_distillation.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/ch_PP-OCRv2/ch_PP-OCRv2_rec_distillation.yml).
+The configuration file is in [ch_PP-OCRv2_rec_distillation.yml](../../../../configs/rec/ch_PP-OCRv2/ch_PP-OCRv2_rec_distillation.yml).
 
 #### 2.1.1 Model Structure
 
@@ -286,8 +286,8 @@ Taking the above configuration as an example, the final distillation training lo
 - DML loss between SAR branch of `Student` and `Teacher`'s final output `head_out` (loss weight equals 0.5).
 - L2 loss between `Student` and `Teacher`'s backbone network output `backbone_out` (loss weight equals 1.0).
 
-For more specific implementation of `CombinedLoss`, please refer to: [combined_loss.py](../../ppocr/losses/combined_loss.py#L23).
-For more specific implementations of distillation loss functions such as `DistillationCTCLoss`, please refer to [distillation_loss.py](../../ppocr/losses/distillation_loss.py)
+For more specific implementation of `CombinedLoss`, please refer to: [combined_loss.py](../../../../ppocr/losses/combined_loss.py#L23).
+For more specific implementations of distillation loss functions such as `DistillationCTCLoss`, please refer to [distillation_loss.py](../../../../ppocr/losses/distillation_loss.py)
 
 #### 2.1.3 Post-processing
 
@@ -304,7 +304,7 @@ PostProcess:
 Taking the above configuration as an example, the CTC decoding output of the two sub-networks `Student` and `Teacher` will be calculated at the same time.
 Among them, `key` is the name of the subnet, and `value` is the list of subnets.
 
-For more specific implementation of `DistillationCTCLabelDecode`, please refer to: [rec_postprocess.py](../../ppocr/postprocess/rec_postprocess.py#L128)
+For more specific implementation of `DistillationCTCLabelDecode`, please refer to: [rec_postprocess.py](../../../../ppocr/postprocess/rec_postprocess.py#L128)
 
 #### 2.1.4 Metric Calculation
 
@@ -322,13 +322,13 @@ Metric:
 Taking the above configuration as an example, the accuracy metric of the `Student` subnet will be used as the judgment metric for saving the best model.
 At the same time, the accuracy metric of all subnets will be printed out in the log.
 
-For more specific implementation of `DistillationMetric`, please refer to: [distillation_metric.py](../../ppocr/metrics/distillation_metric.py#L24).
+For more specific implementation of `DistillationMetric`, please refer to: [distillation_metric.py](../../../../ppocr/metrics/distillation_metric.py#L24).
 
 #### 2.1.5 Fine-tuning Distillation Model
 
 There are two ways to fine-tune the recognition distillation task.
 
-1. Fine-tuning based on knowledge distillation: this situation is relatively simple, download the pre-trained model. Then configure the pre-training model path and your own data path in [PP-OCRv3_mobile_rec_distillation.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/PP-OCRv3/PP-OCRv3_mobile_rec_distillation.yml) to perform fine-tuning training of the model.
+1. Fine-tuning based on knowledge distillation: this situation is relatively simple, download the pre-trained model. Then configure the pre-training model path and your own data path in [PP-OCRv3_mobile_rec_distillation.yml](../../../../configs/rec/PP-OCRv3/PP-OCRv3_mobile_rec_distillation.yml) to perform fine-tuning training of the model.
 2. Do not use knowledge distillation in fine-tuning: In this case, you need to first extract the student model parameters from the pre-training model. The specific steps are as follows.
 
 - First download the pre-trained model and unzip it.
@@ -354,7 +354,7 @@ print(s_params.keys())
 paddle.save(s_params, "ch_PP-OCRv3_rec_train/student.pdparams")
 ```
 
-After the extraction is complete, use [PP-OCRv3_mobile_rec.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/PP-OCRv3/PP-OCRv3_mobile_rec.yml) to modify the path of the pre-trained model (the path of the exported `student.pdparams` model) and your own data path to fine-tune the model.
+After the extraction is complete, use [PP-OCRv3_mobile_rec.yml](../../../../configs/rec/PP-OCRv3/PP-OCRv3_mobile_rec.yml) to modify the path of the pre-trained model (the path of the exported `student.pdparams` model) and your own data path to fine-tune the model.
 
 ### 2.2 Detection Model Configuration File Analysis
 
@@ -410,9 +410,9 @@ Architecture:
 ```
 
 If DML is used, that is, the method of two small models learning from each other, the Teacher network structure in the above configuration file needs to be set to the same configuration as the Student model.
-Refer to the configuration file for details. [PP-OCRv3_det_dml.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/det/PP-OCRv3/PP-OCRv3_det_dml.yml)
+Refer to the configuration file for details. [PP-OCRv3_det_dml.yml](../../../../configs/det/PP-OCRv3/PP-OCRv3_det_dml.yml)
 
-The following describes the configuration file parameters [PP-OCRv3_det_cml.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/det/PP-OCRv3/PP-OCRv3_mobile_det.yml):
+The following describes the configuration file parameters [PP-OCRv3_det_cml.yml](../../../../configs/det/PP-OCRv3/PP-OCRv3_mobile_det.yml):
 
 ```yaml linenums="1"
 Architecture:
@@ -478,7 +478,7 @@ Architecture:
 
 ```
 
-The specific implementation code of the distillation model `DistillationModel` class can refer to [distillation_model.py](../../ppocr/modeling/architectures/distillation_model.py).
+The specific implementation code of the distillation model `DistillationModel` class can refer to [distillation_model.py](../../../../ppocr/modeling/architectures/distillation_model.py).
 
 The final model output is a dictionary, the key is the name of all the sub-networks, for example, here are `Student` and `Teacher`, and the value is the output of the corresponding sub-network,
 which can be `Tensor` (only the last layer of the network is returned) and `dict` (also returns the characteristic information in the middle).
@@ -537,8 +537,8 @@ Loss:
       ohem_ratio: 3
 ```
 
-For more specific implementation of `DistillationDilaDBLoss`, please refer to: [distillation_loss.py](https://github.com/PaddlePaddle/PaddleOCR/blob/release%2F2.4/ppocr/losses/distillation_loss.py#L185).
-For more specific implementations of distillation loss functions such as `DistillationDBLoss`, please refer to: [distillation_loss.py](https://github.com/PaddlePaddle/PaddleOCR/blob/04c44974b13163450dfb6bd2c327863f8a194b3c/ppocr/losses/distillation_loss.py?_pjax=%23js-repo-pjax-container%2C%20div%5Bitemtype%3D%22http%3A%2F%2Fschema.org%2FSoftwareSourceCode%22%5D%20main%2C%20%5Bdata-pjax-container%5D#L148)
+For more specific implementation of `DistillationDilaDBLoss`, please refer to: [distillation_loss.py](../../../../ppocr/losses/distillation_loss.py#L185).
+For more specific implementations of distillation loss functions such as `DistillationDBLoss`, please refer to: [distillation_loss.py](../../../../ppocr/losses/distillation_loss.py#L148)
 
 #### 2.2.3 Post-processing
 
@@ -556,7 +556,7 @@ PostProcess:
 
 Taking the above configuration as an example, the output of the three subnets `Student`, `Student2` and `Teacher` will be calculated at the same time for post-processing calculations.
 Since there are multiple inputs, there are also multiple outputs returned by post-processing.
-For a more specific implementation of `DistillationDBPostProcess`, please refer to: [db_postprocess.py](../../ppocr/postprocess/db_postprocess.py#L195)
+For a more specific implementation of `DistillationDBPostProcess`, please refer to: [db_postprocess.py](../../../../ppocr/postprocess/db_postprocess.py#L195)
 
 #### 2.2.4 Metric Calculation
 

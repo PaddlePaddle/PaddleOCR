@@ -96,7 +96,7 @@ PaddleOCR is being oversight by a [PMC](https://github.com/PaddlePaddle/PaddleOC
 
 ## 🌟 Features
 
-PaddleOCR support a variety of cutting-edge algorithms related to OCR, and developed industrial featured models/solution [PP-OCR](../version2.x/ppocr/overview.md)、[PP-Structure](./ppstructure/overview.md) and [PP-ChatOCR](https://aistudio.baidu.com/aistudio/projectdetail/6488689) on this basis, and get through the whole process of data production, model training, compression, inference and deployment.
+PaddleOCR support a variety of cutting-edge algorithms related to OCR, and developed industrial featured models/solution [PP-OCR](../version2.x/ppocr/overview.md)、[PP-Structure](../../ppstructure/README.md) and [PP-ChatOCR](https://aistudio.baidu.com/aistudio/projectdetail/6488689) on this basis, and get through the whole process of data production, model training, compression, inference and deployment.
 
 ![img](../images/ppocrv4_en.jpg)
 
@@ -133,7 +133,7 @@ More details, please refer to [Multilingual OCR Development Plan](https://github
 
 ![](../images/PP-OCRv3-pic001.jpg)
 
-![](./images/PP-OCRv3-pic002.jpg)
+![](../images/PP-OCRv3-pic002.jpg)
 
 ![](../images/PP-OCRv3-pic003.jpg)
 
@@ -143,7 +143,7 @@ More details, please refer to [Multilingual OCR Development Plan](https://github
 
 ![](../images/en_2.png)
 
-![](./images/en_3-0398013.png)
+![](../images/en_3-0398013.png)
 
 ### PP-OCRv3 Multilingual model
 
