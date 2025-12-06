@@ -74,9 +74,12 @@ for res in results:
 {'res': {'image': 'medal_table.png', 'query': '识别这份表格的内容, 以markdown格式输出', 'result': '| 名次 | 国家/地区 | 金牌 | 银牌 | 铜牌 | 奖牌总数 |\n| --- | --- | --- | --- | --- | --- |\n| 1 | 中国（CHN） | 48 | 22 | 30 | 100 |\n| 2 | 美国（USA） | 36 | 39 | 37 | 112 |\n| 3 | 俄罗斯（RUS） | 24 | 13 | 23 | 60 |\n| 4 | 英国（GBR） | 19 | 13 | 19 | 51 |\n| 5 | 德国（GER） | 16 | 11 | 14 | 41 |\n| 6 | 澳大利亚（AUS） | 14 | 15 | 17 | 46 |\n| 7 | 韩国（KOR） | 13 | 11 | 8 | 32 |\n| 8 | 日本（JPN） | 9 | 8 | 8 | 25 |\n| 9 | 意大利（ITA） | 8 | 9 | 10 | 27 |\n| 10 | 法国（FRA） | 7 | 16 | 20 | 43 |\n| 11 | 荷兰（NED） | 7 | 5 | 4 | 16 |\n| 12 | 乌克兰（UKR） | 7 | 4 | 11 | 22 |\n| 13 | 肯尼亚（KEN） | 6 | 4 | 6 | 16 |\n| 14 | 西班牙（ESP） | 5 | 11 | 3 | 19 |\n| 15 | 牙买加（JAM） | 5 | 4 | 2 | 11 |\n'}}
 ```
 运行结果参数含义如下：
-- `image`: 表示输入待预测图像的路径
-- `query`: 表述输入待预测的文本信息
-- `result`: 模型预测的结果信息
+<ul>
+<li><b>image</b>: 表示输入待预测图像的路径</li>
+<li><b>query</b>: 表述输入待预测的文本信息</li>
+<li><b>result</b>: 模型预测的结果信息</li>
+</ul>
+
 
 预测结果打印可视化如下：
 
@@ -103,7 +106,7 @@ for res in results:
 
 相关方法、参数等说明如下：
 
-* `DocVLM`实例化文档类视觉语言模型（此处以`PP-DocBee-2B`为例），具体说明如下：
+* <code>DocVLM</code>实例化文档类视觉语言模型（此处以<code>PP-DocBee-2B</code>为例），具体说明如下：
 <table>
 <thead>
 <tr>
@@ -116,19 +119,22 @@ for res in results:
 <tbody>
 <tr>
 <td><code>model_name</code></td>
-<td>>模型名称。如果设置为<code>None</code>，则使用<code>PP-DocBee-2B</code>。</td>
+<td><b>含义：</b>模型名称。<br/>
+<b>说明：</b>
+如果设置为<code>None</code>，则使用<code>PP-DocBee-2B</code>。</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>model_dir</code></td>
-<td>模型存储路径。</td>
+<td><b>含义：</b>模型存储路径。</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>用于推理的设备。<br/>
+<td><b>含义：</b>用于推理的设备。<br/>
+<b>说明：</b>
 <b>例如：</b><code>"cpu"</code>、<code>"gpu"</code>、<code>"npu"</code>、<code>"gpu:0"</code></code>。
 默认情况下，优先使用 GPU 0；若不可用则使用 CPU。
 </td>
@@ -138,7 +144,7 @@ for res in results:
 </tbody>
 </table>
 
-* 调用文档类视觉语言模型的 `predict()` 方法进行推理预测，该方法会返回一个结果列表。另外，本模块还提供了 `predict_iter()` 方法。两者在参数接受和结果返回方面是完全一致的，区别在于 `predict_iter()` 返回的是一个 `generator`，能够逐步处理和获取预测结果，适合处理大型数据集或希望节省内存的场景。可以根据实际需求选择使用这两种方法中的任意一种。`predict()` 方法参数有 `input` 、 `batch_size`，具体说明如下：
+* 调用文档类视觉语言模型的 <code>predict()</code> 方法进行推理预测，该方法会返回一个结果列表。另外，本模块还提供了 <code>predict_iter()</code> 方法。两者在参数接受和结果返回方面是完全一致的，区别在于 <code>predict_iter()</code> 返回的是一个 <code>generator</code>，能够逐步处理和获取预测结果，适合处理大型数据集或希望节省内存的场景。可以根据实际需求选择使用这两种方法中的任意一种。<code>predict()</code> 方法参数有 <code>input</code> 和 <code>batch_size</code>，具体说明如下：
 
 <table>
 <thead>
@@ -151,7 +157,9 @@ for res in results:
 </thead>
 <tr>
 <td><code>input</code></td>
-<td>待预测数据，必填。由于多模态模型对输入要求不同，请根据具体模型设定输入格式。<br/>
+<td><b>含义：</b>待预测数据，必填。<br/>
+<b>说明：</b>
+由于多模态模型对输入要求不同，请根据具体模型设定输入格式。<br/>
 例如：对于 PP-DocBee 系列模型，输入形式应为：<code>{'image': image_path, 'query': query_text}</code>
 </td>
 <td><code>dict</code></td>
@@ -159,13 +167,15 @@ for res in results:
 </tr>
 <tr>
 <td><code>batch_size</code></td>
-<td>批大小，可设置为任意正整数。</td>
+<td><b>含义：</b>批大小。<br/>
+<b>说明：</b>
+可设置为任意正整数。</td>
 <td><code>int</code></td>
 <td>1</td>
 </tr>
 </table>
 
-* 对预测结果进行处理，每个样本的预测结果均为对应的Result对象，且支持打印、保存为`json`文件的操作:
+* 对预测结果进行处理，每个样本的预测结果均为对应的Result对象，且支持打印、保存为<code>json</code>文件的操作:
 
 <table>
 <thead>
