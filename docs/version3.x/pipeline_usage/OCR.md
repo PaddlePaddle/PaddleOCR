@@ -928,6 +928,82 @@ paddleocr ocr -i ./general_ocr_002.png --ocr_version PP-OCRv4
 <td></td>
 </tr>
 <tr>
+<tr>
+<td><code>device</code></td>
+<td><b>含义：</b>用于推理的设备。<br><b>说明：</b>支持指定具体卡号：
+<ul>
+<li><b>CPU</b>：如 <code>cpu</code> 表示使用 CPU 进行推理；</li>
+<li><b>GPU</b>：如 <code>gpu:0</code> 表示使用第 1 块 GPU 进行推理；</li>
+<li><b>NPU</b>：如 <code>npu:0</code> 表示使用第 1 块 NPU 进行推理；</li>
+<li><b>XPU</b>：如 <code>xpu:0</code> 表示使用第 1 块 XPU 进行推理；</li>
+<li><b>MLU</b>：如 <code>mlu:0</code> 表示使用第 1 块 MLU 进行推理；</li>
+<li><b>DCU</b>：如 <code>dcu:0</code> 表示使用第 1 块 DCU 进行推理；</li>
+</ul>如果不设置，将默认使用产线初始化的该参数值，初始化时，会优先使用本地的 GPU 0号设备，如果没有，则使用 CPU 设备。</br>
+</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>enable_hpi</code></td>
+<td><b>含义：</b>是否启用高性能推理。
+<br><b>说明：</b>如果不设置，将使用默认值<code>False</code>。</br></td>
+<td><code>bool</code></td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td><code>use_tensorrt</code></td>
+<td><b>含义：</b>是否启用 Paddle Inference 的 TensorRT 子图引擎。<br/><b>说明：</b>如果模型不支持通过 TensorRT 加速，即使设置了此标志，也不会使用加速。<br/>
+对于 CUDA 11.8 版本的飞桨，兼容的 TensorRT 版本为 8.x（x>=6），建议安装 TensorRT 8.6.1.6。<br/>
+
+</td>
+<td><code>bool</code></td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td><code>precision</code></td>
+<td><b>含义：</b>计算精度，如 fp32、fp16。<br/><b>说明：</b>如果不设置，将使用默认值<code>fp32</code>。</br></td>
+<td><code>str</code></td>
+<td><code>fp32</code></td>
+</tr>
+<tr>
+<td><code>enable_mkldnn</code></td>
+<td><b>含义：</b>是否启用 MKL-DNN 加速推理。<br/><b>说明：</b>如果 MKL-DNN 不可用或模型不支持通过 MKL-DNN 加速，即使设置了此标志，也不会使用加速。<br/>
+</td>
+<td><code>bool</code></td>
+<td><code>True</code></td>
+</tr>
+<tr>
+<td><code>mkldnn_cache_capacity</code></td>
+<td>
+<b>含义：</b>MKL-DNN 缓存容量。<br/><b>说明：</b>如果不设置，将使用默认值<code>10</code>。</br></td>
+<td><code>int</code></td>
+<td><code>10</code></td>
+</tr>
+<tr>
+<td><code>cpu_threads</code></td>
+<td><b>含义：</b>在 CPU 上进行推理时使用的线程数。<br/><b>说明：</b>如果不设置，将使用默认值<code>8</code>。</br></td>
+<td><code>int</code></td>
+<td><code>8</code></td>
+</tr>
+<tr>
+<td><code>paddlex_config</code></td>
+<td><b>含义：</b>PaddleX产线配置文件路径。</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<b>以下参数在2.x版本已经废弃，为方便之前版本使用者故列出</b>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>参数说明</th>
+<th>参数类型</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
 <td><code>det_model_dir</code></td>
 <td><b>说明：</b>已废弃，请参考<code>text_detection_model_dir</code>，且与新的参数不能同时指定。</td>
 <td><code>str</code></td>
@@ -995,69 +1071,6 @@ paddleocr ocr -i ./general_ocr_002.png --ocr_version PP-OCRv4
 <td><code>cls_batch_num</code></td>
 <td><b>说明：</b>已废弃，请参考<code>textline_orientation_batch_size</code>，且与新的参数不能同时指定。</td>
 <td><code>int</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>device</code></td>
-<td><b>含义：</b>用于推理的设备。<br><b>说明：</b>支持指定具体卡号：
-<ul>
-<li><b>CPU</b>：如 <code>cpu</code> 表示使用 CPU 进行推理；</li>
-<li><b>GPU</b>：如 <code>gpu:0</code> 表示使用第 1 块 GPU 进行推理；</li>
-<li><b>NPU</b>：如 <code>npu:0</code> 表示使用第 1 块 NPU 进行推理；</li>
-<li><b>XPU</b>：如 <code>xpu:0</code> 表示使用第 1 块 XPU 进行推理；</li>
-<li><b>MLU</b>：如 <code>mlu:0</code> 表示使用第 1 块 MLU 进行推理；</li>
-<li><b>DCU</b>：如 <code>dcu:0</code> 表示使用第 1 块 DCU 进行推理；</li>
-</ul>如果不设置，将默认使用产线初始化的该参数值，初始化时，会优先使用本地的 GPU 0号设备，如果没有，则使用 CPU 设备。</br>
-</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>enable_hpi</code></td>
-<td><b>含义：</b>是否启用高性能推理。
-<br><b>说明：</b>如果不设置，将使用默认值<code>False</code>。</br></td>
-<td><code>bool</code></td>
-<td><code>False</code></td>
-</tr>
-<tr>
-<td><code>use_tensorrt</code></td>
-<td><b>含义：</b>是否启用 Paddle Inference 的 TensorRT 子图引擎。<br/><b>说明：</b>如果模型不支持通过 TensorRT 加速，即使设置了此标志，也不会使用加速。<br/>
-对于 CUDA 11.8 版本的飞桨，兼容的 TensorRT 版本为 8.x（x>=6），建议安装 TensorRT 8.6.1.6。<br/>
-
-</td>
-<td><code>bool</code></td>
-<td><code>False</code></td>
-</tr>
-<tr>
-<td><code>precision</code></td>
-<td><b>含义：</b>计算精度，如 fp32、fp16。<br/><b>说明：</b>如果不设置，将使用默认值<code>fp32</code>。</br></td>
-<td><code>str</code></td>
-<td><code>fp32</code></td>
-</tr>
-<tr>
-<td><code>enable_mkldnn</code></td>
-<td><b>含义：</b>是否启用 MKL-DNN 加速推理。<br/><b>说明：</b>如果 MKL-DNN 不可用或模型不支持通过 MKL-DNN 加速，即使设置了此标志，也不会使用加速。<br/>
-</td>
-<td><code>bool</code></td>
-<td><code>True</code></td>
-</tr>
-<tr>
-<td><code>mkldnn_cache_capacity</code></td>
-<td>
-<b>含义：</b>MKL-DNN 缓存容量。<br/><b>说明：</b>如果不设置，将使用默认值<code>10</code>。</br></td>
-<td><code>int</code></td>
-<td><code>10</code></td>
-</tr>
-<tr>
-<td><code>cpu_threads</code></td>
-<td><b>含义：</b>在 CPU 上进行推理时使用的线程数。<br/><b>说明：</b>如果不设置，将使用默认值<code>8</code>。</br></td>
-<td><code>int</code></td>
-<td><code>8</code></td>
-</tr>
-<tr>
-<td><code>paddlex_config</code></td>
-<td><b>含义：</b>PaddleX产线配置文件路径。</td>
-<td><code>str</code></td>
 <td></td>
 </tr>
 </tbody>

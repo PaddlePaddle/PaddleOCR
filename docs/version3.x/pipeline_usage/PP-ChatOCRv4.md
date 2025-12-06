@@ -1090,9 +1090,9 @@ paddleocr pp_chatocrv4_doc -i vehicle_certificate-1.png -k 驾驶室准乘人数
 <tr>
 <td><code>layout_nms</code></td>
 <td><b>含义：</b>版面检测是否使用后处理NMS。<br/>
-<b>说明：</b>如果不设置，将使用产线初始化的该参数值，默认初始化为c。</td>
+<b>说明：</b>如果不设置，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
 <td><code>bool</code></td>
-<td><code>0.5</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>layout_unclip_ratio</code></td>
@@ -2250,7 +2250,7 @@ for res in visual_predict_res:
 </table>
 <ul>
     <li><code>json</code> 属性获取的预测结果为dict类型的数据，相关内容与调用 <code>save_to_json()</code> 方法保存的内容一致。</li>
-    <li><code>img</code> 属性返回的预测结果是一个dict类型的数据。其中，键分别为 <code>layout_det_res</code>、<code>overall_ocr_res</code>、<code>text_paragraphs_ocr_res</code>、<code>formula_res_region1</code>、<code>table_cell_img</code> 和 <code>seal_res_region1</code>，对应的值是 <code>Image.Image</code> 对象：分别用于显示版面区域检测、OCR、OCR文本段落、公式、表格和印章结果的可视化图像。如果没有使用可选模块，则dict中只包含 <code>layout_det_res</code>。
+    <li><code>img</code> 属性返回的预测结果是一个dict类型的数据。其中，键分别为 <code>layout_det_res</code>、<code>overall_ocr_res</code>、<code>text_paragraphs_ocr_res</code>、<code>formula_res_region1</code>、<code>table_cell_img</code> 和 <code>seal_res_region1</code>，对应的值是 <code>Image.Image</code> 对象：分别用于显示版面区域检测、OCR、OCR文本段落、公式、表格和印章结果的可视化图像。如果没有使用可选模块，则dict中只包含 <code>layout_det_res</code>。</li>
 </ul>
 </details>
 
