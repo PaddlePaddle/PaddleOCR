@@ -18,6 +18,35 @@ import paddle
 from paddle.nn import functional as F
 import re
 import json
+import unicodedata
+
+
+def is_latin_char(char):
+    """
+    Check if a character is a Latin letter (including accented characters).
+    This will properly categorize accented characters like é, è, à, ç, etc.
+    """
+    try:
+        # Get the Unicode category
+        category = unicodedata.category(char)
+        # Lu = Letter, uppercase
+        # Ll = Letter, lowercase
+        # Lt = Letter, titlecase
+        # Lm = Letter, modifier (includes some Latin extended characters)
+        if not category.startswith("L"):
+            return False
+
+        # Check if the character name starts with LATIN
+        # This covers all Latin-based characters including:
+        # - LATIN SMALL LETTER E WITH ACUTE (é)
+        # - LATIN SMALL LETTER A WITH GRAVE (à)
+        # - LATIN SMALL LETTER C WITH CEDILLA (ç)
+        # - LATIN SMALL LETTER E WITH CIRCUMFLEX (ê)
+        # - etc.
+        char_name = unicodedata.name(char, "")
+        return char_name.startswith("LATIN")
+    except ValueError:
+        return False
 
 
 class BaseRecLabelDecode(object):
@@ -95,10 +124,15 @@ class BaseRecLabelDecode(object):
         for c_i, char in enumerate(text):
             if "\u4e00" <= char <= "\u9fff":
                 c_state = "cn"
-            elif bool(re.search("[a-zA-Z0-9]", char)):
+            # Modified condition to include accented characters used in French and other Latin-based languages
+            elif bool(re.search("[a-zA-Z0-9]", char)) or is_latin_char(char):
                 c_state = "en&num"
             else:
                 c_state = "splitter"
+
+            # Handle apostrophes in French words like "n'êtes"
+            if char == "'" and state == "en&num":
+                c_state = "en&num"
 
             if (
                 char == "."

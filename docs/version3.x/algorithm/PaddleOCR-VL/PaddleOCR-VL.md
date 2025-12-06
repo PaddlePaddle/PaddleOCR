@@ -176,7 +176,7 @@ PaddleOCR-VL能够支持多种类型的文档解析，以下是一些预测案�
 
 2. 如何对 PaddleOCR-VL 模型进行微调 ？
 
-目前我们暂不支持模型的微调，但已经在高优的支持中，即将发布，请保持关注。
+我们推荐使用 [ERNIEKit 套件](https://github.com/PaddlePaddle/ERNIE/tree/release/v1.4) 对 PaddleOCR-VL-0.9B 模型进行有监督微调（SFT）。具体操作步骤可参考 [ERNIEKit 官方文档](https://github.com/PaddlePaddle/ERNIE/blob/release/v1.4/docs/paddleocr_vl_sft_zh.md)。
 
 3. 为什么我的图表没有识别出来，如何使用图表识别 ？
 

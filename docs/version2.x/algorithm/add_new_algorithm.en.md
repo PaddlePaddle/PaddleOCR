@@ -180,7 +180,7 @@ args2: args2
 The loss function is used to calculate the distance between the network output and the label. This part is under [ppocr/losses](../../../ppocr/losses).
 PaddleOCR has built-in loss function modules related to algorithms such as DB, EAST, SAST, CRNN and Attention. For modules that do not have built-in modules, you can add them through the following steps:
 
-1. Create a new file in the [ppocr/losses](../../ppocr/losses) folder, such as my_loss.py.
+1. Create a new file in the [ppocr/losses](../../../ppocr/losses) folder, such as my_loss.py.
 2. Add code in the my_loss.py file, the sample code is as follows:
 
     ```python linenums="1"
