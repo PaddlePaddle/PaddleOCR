@@ -13,7 +13,7 @@ comments: true
 - Linux环境，推荐使用docker。
 - Windows环境。
 
-- 该文档主要介绍基于Linux环境的PaddleOCR C++预测流程，如果需要在Windows下基于预测库进行C++预测，具体编译方法请参考[Windows下编译教程](../../ppocr/infer_deploy/windows_vs2019_build.md)
+- 该文档主要介绍基于Linux环境的PaddleOCR C++预测流程，如果需要在Windows下基于预测库进行C++预测，具体编译方法请参考[Windows下编译教程](../../legacy/windows_vs2019_build.md)
 
 ### 1.2 编译opencv库
 
@@ -144,7 +144,7 @@ build/paddle_inference_install_dir/
 
 ### 2.1 准备模型
 
-直接下载PaddleOCR提供的推理模型，或者参考[模型预测章节](../../ppocr/infer_deploy/python_infer.md)，将训练好的模型导出为推理模型。模型导出之后，假设放在`inference`目录下，则目录结构如下：
+直接下载PaddleOCR提供的推理模型，或者参考[模型预测章节](../../legacy/python_infer.md)，将训练好的模型导出为推理模型。模型导出之后，假设放在`inference`目录下，则目录结构如下：
 
 ```text linenums="1"
 inference/
