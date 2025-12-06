@@ -196,7 +196,7 @@ The detection visualized image saved in ./test_img_result.jpg
 **备注：**
 
  - `PaddleX-Lite-Deploy/ocr/assets/labels/` 目录下存放了 PP-OCRv3、PP-OCRv4 模型的字典文件 `ppocr_keys_v1.txt` 以及 PP-OCRv5 模型的字典文件 `ppocr_keys_ocrv5.txt`。在实际推理过程中，会根据模型名称自动选择相应的字典文件，因此无需手动干预。
- - 如果使用的 nb 模型是英文数字或其他语言的模型，需要更换为对应语言的字典。PaddleOCR 仓库提供了[部分字典文件](https://github.com/PaddlePaddle/PaddleOCR/tree/release/2.3/ppocr/utils)。
+ - 如果使用的 nb 模型是英文数字或其他语言的模型，需要更换为对应语言的字典。PaddleOCR 仓库提供了[部分字典文件](../../../ppocr/utils)。
 
 ```shell
 # run.sh 脚本中可执行文件的参数含义：

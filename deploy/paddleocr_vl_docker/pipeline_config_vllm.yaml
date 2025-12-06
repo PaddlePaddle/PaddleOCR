@@ -74,10 +74,10 @@ SubModules:
     module_name: vl_recognition
     model_name: PaddleOCR-VL-0.9B
     model_dir: null
-    batch_size: 2048
+    batch_size: 4096
     genai_config:
       backend: vllm-server
-      server_url: http://paddleocr-genai-vllm-server:8080/v1
+      server_url: http://paddleocr-vlm-server:8080/v1
 
 SubPipelines:
   DocPreprocessor:

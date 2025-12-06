@@ -47,7 +47,6 @@ def differentiable_all_reduce(input):
 
 
 class NaiveSyncBatchNorm(nn.BatchNorm2D):
-
     def __init__(self, *args, stats_mode="", **kwargs):
         super().__init__(*args, **kwargs)
         assert stats_mode in ["", "N"]
