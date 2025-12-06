@@ -55,7 +55,7 @@ PP-OCRv3系统pipeline如下：
 
 ## 3. benchmark
 
-关于PP-OCR系列模型之间的性能对比，请查看[benchmark](./infer_deploy/benchmark.md)文档。
+关于PP-OCR系列模型之间的性能对比，请查看[benchmark](../legacy/benchmark.md)文档。
 
 ## 4. 效果展示 [more](./visualization.md)
 
