@@ -15,7 +15,7 @@ Here we have sorted out some Chinese OCR training and prediction tricks, which a
 
     - Similar as the 4 stages of ResNet, the replacement of text detection backbone network is to determine those four stages to facilitate the integration of FPN like the object detection heads. In addition, for the text detection problem, the pre trained model in ImageNet1000 can accelerate the convergence and improve the accuracy.
 
-    - In order to replace the backbone network of text recognition, we need to pay attention to the descending position of network width and height stride. Since the ratio between width and height is large in chinese text recognition, the frequency of height decrease is less and the frequency of width decrease is more. You can refer the [modifies of MobileNetV3](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/ppocr/modeling/backbones/rec_mobilenet_v3.py) in PaddleOCR.
+    - In order to replace the backbone network of text recognition, we need to pay attention to the descending position of network width and height stride. Since the ratio between width and height is large in chinese text recognition, the frequency of height decrease is less and the frequency of width decrease is more. You can refer the [modifies of MobileNetV3](../../../../ppocr/modeling/backbones/rec_mobilenet_v3.py) in PaddleOCR.
 
 #### 2. Long Chinese Text Recognition
 
@@ -26,7 +26,7 @@ Here we have sorted out some Chinese OCR training and prediction tricks, which a
 
 - **Tips**
 
-  During the training, the training samples are not directly resized to [3,32,320]. At first, the height of samples are resized to 32 and keep the ratio between the width and the height. When the width is less than 320, the excess parts are padding 0. Besides, when the ratio between the width and the height of the samples is larger than 10, these samples will be ignored. When the prediction for one image, do as above, but do not limit the max ratio between the width and the height. When the prediction for an images batch, do as training, but the resized target width is the longest width of the images in the batch. [Code as following](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/tools/infer/predict_rec.py)：
+  During the training, the training samples are not directly resized to [3,32,320]. At first, the height of samples are resized to 32 and keep the ratio between the width and the height. When the width is less than 320, the excess parts are padding 0. Besides, when the ratio between the width and the height of the samples is larger than 10, these samples will be ignored. When the prediction for one image, do as above, but do not limit the max ratio between the width and the height. When the prediction for an images batch, do as training, but the resized target width is the longest width of the images in the batch. [Code as following](../../../../tools/infer/predict_rec.py)：
 
   ```python linenums="1"
   def resize_norm_img(self, img, max_wh_ratio):
