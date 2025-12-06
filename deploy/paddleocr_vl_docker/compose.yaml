@@ -1,11 +1,11 @@
 services:
   paddleocr-vl-api:
-    image: ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-offline
+    image: ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:${API_IMAGE_TAG_SUFFIX}
     container_name: paddleocr-vl-api
     ports:
       - 8080:8080
     depends_on:
-      paddleocr-genai-vllm-server:
+      paddleocr-vlm-server:
         condition: service_healthy
     deploy:
       resources:
@@ -14,13 +14,18 @@ services:
             - driver: nvidia
               device_ids: ["0"]
               capabilities: [gpu]
+    # TODO: Allow using a regular user
+    user: root
     restart: unless-stopped
+    environment:
+      - VLM_BACKEND=${VLM_BACKEND:-vllm}
+    command: /bin/bash -c "paddlex --serve --pipeline /home/paddleocr/pipeline_config_${VLM_BACKEND}.yaml"
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:8080/health || exit 1"]
 
-  paddleocr-genai-vllm-server:
-    image: ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-offline
-    container_name: paddleocr-genai-vllm-server
+  paddleocr-vlm-server:
+    image: ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-${VLM_BACKEND}-server:${VLM_IMAGE_TAG_SUFFIX}
+    container_name: paddleocr-vlm-server
     deploy:
       resources:
         reservations:
@@ -28,6 +33,8 @@ services:
             - driver: nvidia
               device_ids: ["0"]
               capabilities: [gpu]
+    # TODO: Allow using a regular user
+    user: root
     restart: unless-stopped
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:8080/health || exit 1"]

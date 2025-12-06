@@ -19,13 +19,13 @@ PP-OCRv3检测训练包括两个步骤：
 
 ### 2.1 准备数据和运行环境
 
-训练数据采用icdar2015数据，准备训练集步骤参考[ocr_dataset](./dataset/ocr_datasets.md).
+训练数据采用icdar2015数据，准备训练集步骤参考[ocr_dataset](../../../datasets/ocr_datasets.md).
 
-运行环境准备参考[文档](./installation.md)。
+运行环境准备参考[文档](../installation.md)。
 
 ### 2.2 训练教师模型
 
-教师模型训练的配置文件是[PP-OCRv3_det_dml.yml](https://github.com/PaddlePaddle/PaddleOCR/blob/release%2F2.5/configs/det/PP-OCRv3/PP-OCRv3_det_dml.yml)。教师模型模型结构的Backbone、Neck、Head分别为Resnet50, LKPAN, DBHead，采用DML的蒸馏方法训练。有关配置文件的详细介绍参考[文档](./knowledge_distillation.md)。
+教师模型训练的配置文件是[PP-OCRv3_det_dml.yml](../../../../configs/det/PP-OCRv3/PP-OCRv3_det_dml.yml)。教师模型模型结构的Backbone、Neck、Head分别为Resnet50, LKPAN, DBHead，采用DML的蒸馏方法训练。有关配置文件的详细介绍参考[文档](../model_compress/knowledge_distillation.md)。
 
 下载ImageNet预训练模型：
 
@@ -91,7 +91,7 @@ paddle.save(s_params, "./pretrain_models/dml_teacher.pdparams")
 
 ### 2.3 训练学生模型
 
-训练学生模型的配置文件是[PP-OCRv3_det_cml.yml](https://github.com/PaddlePaddle/PaddleOCR/blob/release%2F2.5/configs/det/PP-OCRv3/PP-OCRv3_det_cml.yml)
+训练学生模型的配置文件是[PP-OCRv3_det_cml.yml](../../../../configs/det/PP-OCRv3/PP-OCRv3_det_cml.yml)
 上一节训练得到的教师模型作为监督，采用CML方式训练得到轻量的学生模型。
 
 下载学生模型的ImageNet预训练模型：
@@ -202,7 +202,7 @@ print(s_params.keys())
 paddle.save(s_params, "./student.pdparams")
 ```
 
-使用配置文件[PP-OCRv3_mobile_det.yml](https://github.com/PaddlePaddle/PaddleOCR/blob/release%2F2.5/configs/det/PP-OCRv3/PP-OCRv3_mobile_det.yml)训练。
+使用配置文件[PP-OCRv3_mobile_det.yml](../../../../configs/det/PP-OCRv3/PP-OCRv3_mobile_det.yml)训练。
 
 **启动训练**
 
