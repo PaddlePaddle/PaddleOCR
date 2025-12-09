@@ -1146,7 +1146,7 @@ The parameters supported by this command are as follows:
 
 ### 3.2 Client Usage Methods
 
-After launching the VLM inference service, the client can call the service through PaddleOCR. **Please note that because the client needs to invoke the sequential model for layout detection, it is still recommended to run the client on GPU or other acceleration devices to achieve more stable and efficient performance.**
+After launching the VLM inference service, the client can call the service through PaddleOCR. **Please note that because the client needs to invoke the sequential model for layout detection, it is still recommended to run the client on GPU or other acceleration devices to achieve more stable and efficient performance. Please refer to Section 1 for the client-side environment configuration. The configuration described in Section 3.1 applies only to starting the service and is not applicable to the client.**
 
 #### 3.2.1 CLI Invocation
 
