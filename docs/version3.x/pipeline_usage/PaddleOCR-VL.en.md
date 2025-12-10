@@ -2355,7 +2355,7 @@ services:
   paddleocr-vl-api:
     ...
     volumes:
-      - pipeline_config_vllm.yaml:/home/paddleocr/pipeline_config.yaml
+      - ./pipeline_config_vllm.yaml:/home/paddleocr/pipeline_config.yaml
 ...
 ```
 
