@@ -285,7 +285,7 @@ paddleocr_mcp --help
 
 **说明**：
 
-- 千帆平台服务目前仅支持 PaddleOCR-VL。
+- `PADDLEOCR_MCP_PIPELINE` 需要被设置为产线名称。详见第 4 节。千帆平台服务目前仅支持 PaddleOCR-VL 和 PP-StructureV3。
 
 #### 模式四：自托管服务
 
