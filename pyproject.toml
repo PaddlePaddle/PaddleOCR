@@ -43,6 +43,7 @@ dependencies = [
     "PyYAML>=6",
     "requests",
     "typing-extensions>=4.12",
+    "langchain-core>=0.1.0",
 ]
 
 [project.urls]
