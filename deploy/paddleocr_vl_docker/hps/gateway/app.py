@@ -39,7 +39,14 @@ def _create_aistudio_output_without_result(error_code: str, error_msg: str) -> d
 def _add_primary_operations(app: fastapi.FastAPI) -> None:
     def _create_handler(model_name: str):
         def _handler(request: dict):
-            output = triton_request(triton_client, model_name, request)
+            try:
+                output = triton_request(triton_client, model_name, request)
+            except Exception as e:
+                logger.error("Failed to process request", exc_info=True)
+                output = _create_aistudio_output_without_result(
+                    500, "Internal server error"
+                )
+                return JSONResponse(status_code=500, content=output)
             if output["errorCode"] != 0:
                 output = _create_aistudio_output_without_result(
                     output["errorCode"], output["errorMsg"]
