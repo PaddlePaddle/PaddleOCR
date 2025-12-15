@@ -241,7 +241,6 @@ class Mlp(nn.Layer):
 
 
 class Block(nn.Layer):
-
     def __init__(
         self,
         dim,
