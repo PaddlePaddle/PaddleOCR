@@ -104,7 +104,7 @@ You can quickly experience the functionality with a single command:
 paddleocr textline_orientation_classification -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/textline_rot180_demo.jpg
 ```  
 
-<b>Note: </b>The official models would be download from HuggingFace by default. If can't access to HuggingFace, please set the environment variable `PADDLE_PDX_MODEL_SOURCE="BOS"` to change the model source to BOS. In the future, more model sources will be supported.
+<b>Note: </b>The official models would be download from HuggingFace by default. If can't access to HuggingFace, please set the environment variable <code>PADDLE_PDX_MODEL_SOURCE="BOS"</code> to change the model source to BOS. In the future, more model sources will be supported.
 
 You can also integrate the text line orientation classification model into your project. Run the following code after downloading the [example image](https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/textline_rot180_demo.jpg) to your local machine. 
 
@@ -125,19 +125,20 @@ After running, the result obtained is:
 ```
 
 The meanings of the running results parameters are as follows:
-
-- `input_path`：Indicates the path of the input image.
-- `page_index`：If the input is a PDF file, it indicates the current page number of the PDF; otherwise, it is `None`.
-- `class_ids`：Indicates the class ID of the prediction result.
-- `scores`：Indicates the confidence score of the prediction result.
-- `label_names`：Indicates the class name of the prediction result.
-The visualization image is as follows:
+<ul>
+<li><code>input_path</code>：Indicates the path of the input image.</li>
+<li><code>page_index</code>：If the input is a PDF file, it indicates the current page number of the PDF; otherwise, it is <code>None</code></li>
+<li><code>class_ids</code>：Indicates the class ID of the prediction result.</li>
+<li><code>scores</code>：Indicates the confidence score of the prediction result.</li>
+<li><code>label_names</code>：Indicates the class name of the prediction result.
+The visualization image is as follows:</li>
+</ul>
 
 <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/modules/textline_ori_classification/textline_rot180_demo_res.jpg">
 
 The explanations for the methods, parameters, etc., are as follows:
 
-* `TextLineOrientationClassification` instantiates a textline classification model (here, `PP-LCNet_x0_25_textline_ori` is used as an example), and the specific explanations are as follows:
+* <code>TextLineOrientationClassification</code> instantiates a textline classification model (here, <code>PP-LCNet_x0_25_textline_ori</code> is used as an example), and the specific explanations are as follows:
 
 <table>
 <thead>
@@ -151,19 +152,22 @@ The explanations for the methods, parameters, etc., are as follows:
 <tbody>
 <tr>
 <td><code>model_name</code></td>
-<td>Model name. If set to <code>None</code>, <code>PP-LCNet_x0_25_textline_ori</code> will be used.</td>
+<td><b>Meaning:</b> Model name.<br/>
+<b>Description:</b> 
+If set to <code>None</code>, <code>PP-LCNet_x0_25_textline_ori</code> will be used.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>model_dir</code></td>
-<td>Model storage path.</td>
+<td><b>Meaning:</b>Model storage path.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>Device for inference.<br/>
+<td><b>Meaning:</b> Device for inference.<br/>
+<b>Description:</b> 
 <b>For example:</b> <code>"cpu"</code>, <code>"gpu"</code>, <code>"npu"</code>, <code>"gpu:0"</code>, <code>"gpu:0,1"</code>.<br/>
 If multiple devices are specified, parallel inference will be performed.<br/>
 By default, GPU 0 is used if available; otherwise, CPU is used.
@@ -173,13 +177,15 @@ By default, GPU 0 is used if available; otherwise, CPU is used.
 </tr>
 <tr>
 <td><code>enable_hpi</code></td>
-<td>Whether to enable high-performance inference.</td>
+<td><b>Meaning:</b> Whether to enable high-performance inference.</td>
 <td><code>bool</code></td>
 <td><code>False</code></td>
 </tr>
 <tr>
 <td><code>use_tensorrt</code></td>
-<td>Whether to use the Paddle Inference TensorRT subgraph engine. If the model does not support acceleration through TensorRT, setting this flag will not enable acceleration.<br/>
+<td><b>Meaning:</b> Whether to use the Paddle Inference TensorRT subgraph engine. <br/>
+<b>Description:</b> 
+If the model does not support acceleration through TensorRT, setting this flag will not enable acceleration.<br/>
 For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6), and it is recommended to install TensorRT 8.6.1.6.<br/>
 
 </td>
@@ -188,14 +194,18 @@ For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6)
 </tr>
 <tr>
 <td><code>precision</code></td>
-<td>Computation precision when using the TensorRT subgraph engine in Paddle Inference.<br/><b>Options:</b> <code>"fp32"</code>, <code>"fp16"</code>.</td>
+<td><b>Meaning:</b> Computation precision when using the TensorRT subgraph engine in Paddle Inference.<br/>
+<b>Description:</b> 
+<b>Options:</b> <code>"fp32"</code>, <code>"fp16"</code>.</td>
 <td><code>str</code></td>
 <td><code>"fp32"</code></td>
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
 <td>
-Whether to enable MKL-DNN acceleration for inference. If MKL-DNN is unavailable or the model does not support it, acceleration will not be used even if this flag is set.
+<b>Meaning:</b> Whether to enable MKL-DNN acceleration for inference. <br/>
+<b>Description:</b> 
+If MKL-DNN is unavailable or the model does not support it, acceleration will not be used even if this flag is set.
 </td>
 <td><code>bool</code></td>
 <td><code>True</code></td>
@@ -203,21 +213,21 @@ Whether to enable MKL-DNN acceleration for inference. If MKL-DNN is unavailable 
 <tr>
 <td><code>mkldnn_cache_capacity</code></td>
 <td>
-MKL-DNN cache capacity.
+<b>Meaning:</b>MKL-DNN cache capacity.
 </td>
 <td><code>int</code></td>
 <td><code>10</code></td>
 </tr>
 <tr>
 <td><code>cpu_threads</code></td>
-<td>Number of threads to use for inference on CPUs.</td>
+<td><b>Meaning:</b> Number of threads to use for inference on CPUs.</td>
 <td><code>int</code></td>
 <td><code>10</code></td>
 </tr>
 </tbody>
 </table>
 
-* Use the `predict()` method of the text line direction classification model to perform inference. This method returns a list of results. In addition, this module also provides the `predict_iter()` method. Both methods accept the same parameters and return the same result format. The difference is that `predict_iter()` returns a `generator`, which processes and retrieves prediction results step by step. It is suitable for handling large datasets or memory-efficient scenarios. You can choose either method based on your actual needs. The `predict()` method accepts the parameters `input` and `batch_size`, which are described in detail below:
+* Use the <code>predict()</code>  method of the text line direction classification model to perform inference. This method returns a list of results. In addition, this module also provides the <code>predict_iter()</code> method. Both methods accept the same parameters and return the same result format. The difference is that <code>predict_iter()</code> returns a <code>generator</code>, which processes and retrieves prediction results step by step. It is suitable for handling large datasets or memory-efficient scenarios. You can choose either method based on your actual needs. The <code>predict()</code>  method accepts the parameters <code>input</code> and <code>batch_size</code>, which are described in detail below:
 <table>
 <thead>
 <tr>
@@ -229,12 +239,17 @@ MKL-DNN cache capacity.
 </thead>
 <tr>
 <td><code>input</code></td>
-<td>Input data to be predicted. Required. Supports multiple input types:<ul>
+<td><b>Meaning:</b>Input data to be predicted. Required. <br/>
+<b>Description:</b> 
+Supports multiple input types:<ul>
 <li><b>Python Var</b>: e.g., <code>numpy.ndarray</code> representing image data</li>
 <li><b>str</b>: 
-  - Local image or PDF file path: <code>/root/data/img.jpg</code>;
-  - <b>URL</b> of image or PDF file: e.g., <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_doc_preprocessor_002.png">example</a>;
-  - <b>Local directory</b>: directory containing images for prediction, e.g., <code>/root/data/</code> (Note: directories containing PDF files are not supported; PDFs must be specified by exact file path)</li>
+    <ul>
+  <li>Local image or PDF file path: <code>/root/data/img.jpg</code>;</li>
+  <li><b>URL</b> of image or PDF file: e.g., <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_doc_preprocessor_002.png">example</a>;</li>
+  <li><b>Local directory</b>: directory containing images for prediction, e.g., <code>/root/data/</code> (Note: directories containing PDF files are not supported; PDFs must be specified by exact file path)</li>
+  </ul>
+  </li>
 <li><b>list</b>: Elements must be of the above types, e.g., <code>[numpy.ndarray, numpy.ndarray]</code>, <code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>, <code>["/root/data1", "/root/data2"]</code></li>
 </ul>
 </td>
@@ -243,13 +258,15 @@ MKL-DNN cache capacity.
 </tr>
 <tr>
 <td><code>batch_size</code></td>
-<td>Batch size,  positive integer.</td>
+<td><b>Meaning:</b>Batch size. <br/>
+<b>Description:</b> 
+Positive integer.</td>
 <td><code>int</code></td>
 <td>1</td>
 </tr>
 </table>
 
-* Call the `predict()` method of the text line orientation classification model for inference. This method will return a list of results. In addition, this module also provides a `predict_iter()` method. Both methods accept the same parameters and return the same results, but `predict_iter()` returns a `generator`, which is more suitable for processing large datasets or when you want to save memory. You can choose either method according to your needs. The parameters of the `predict()` method are `input` and `batch_size`, as described below:
+* Call the <code>predict()</code> method of the text line orientation classification model for inference. This method will return a list of results. In addition, this module also provides a <code>predict_iter()</code> method. Both methods accept the same parameters and return the same results, but <code>predict_iter()</code> returns a <code>generator</code>, which is more suitable for processing large datasets or when you want to save memory. You can choose either method according to your needs. The parameters of the <code>predict()</code> method are <code>input</code> and <code>batch_size</code>, as described below:
 
 
 
@@ -265,7 +282,9 @@ MKL-DNN cache capacity.
 </thead>
 <tr>
 <td><code>input</code></td>
-<td>Data to be predicted, supporting multiple input types</td>
+<td><b>Meaning:</b>Data to be predicted,<br/>
+<b>Description:</b>
+Supporting multiple input types</td>
 <td><code>Python Var|str|list</code></td>
 <td>
 <ul>
@@ -280,14 +299,14 @@ MKL-DNN cache capacity.
 </tr>
 <tr>
 <td><code>batch_size</code></td>
-<td>Batch size</td>
+<td><b>Meaning:</b>Batch size</td>
 <td><code>int</code></td>
 <td>Any integer</td>
 <td>1</td>
 </tr>
 </table>
 
-* The prediction results are processed, and the prediction result for each sample is of type `dict`. It supports operations such as printing, saving as an image, and saving as a `json` file:
+* The prediction results are processed, and the prediction result for each sample is of type <code>dict</code>. It supports operations such as printing, saving as an image, and saving as a <code>json</code> file:
 
 <table>
 <thead>

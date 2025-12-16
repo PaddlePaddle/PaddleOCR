@@ -73,9 +73,11 @@ After running, the result is:
 ```
 
 The meaning of the result parameters is as follows:
-- `image`: Indicates the path of the input image to be predicted
-- `query`: Represents the input text information to be predicted
-- `result`: Information of the model's prediction result
+<ul>
+<li><b>image</b>: Indicates the path of the input image to be predicted</li>
+<li><b>query</b>: Represents the input text information to be predicted</li>
+<li><b>result</b>: Information of the model's prediction result</li>
+</ul>
 
 The visualization of the prediction result is as follows:
 
@@ -101,7 +103,7 @@ The visualization of the prediction result is as follows:
 
 Explanations of related methods, parameters, etc., are as follows:
 
-* `DocVLM` instantiates the document visual language model (taking `PP-DocBee-2B` as an example), with specific explanations as follows:
+* <code>DocVLM</code> instantiates the document visual language model (taking <code>PP-DocBee-2B</code> as an example), with specific explanations as follows:
 <table>
 <thead>
 <tr>
@@ -114,19 +116,22 @@ Explanations of related methods, parameters, etc., are as follows:
 <tbody>
 <tr>
 <td><code>model_name</code></td>
-<td>Model name. If set to <code>None</code>, <code>PP-DocBee-2B</code> will be used.</td>
+<td><b>Meaning:</b> Model name.<br/>
+<b>Description:</b>
+ If set to <code>None</code>, <code>PP-DocBee-2B</code> will be used.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>model_dir</code></td>
-<td>Model storage path.</td>
+<td><b>Meaning:</b>Model storage path.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>Device for inference.<br/>
+<td><b>Meaning:</b> Device for inference.<br/>
+<b>Description:</b>
 <b>For example:</b><code>"cpu"</code>, <code>"gpu"</code>, <code>"npu"</code>, <code>"gpu:0"</code>, <code>"gpu:0,1"</code>.<br/>
 By default, GPU 0 is used if available; otherwise, CPU is used.
 </td>
@@ -136,7 +141,7 @@ By default, GPU 0 is used if available; otherwise, CPU is used.
 </tbody>
 </table>
 
-* Call the `predict()` method of the document visual language model for inference prediction. This method will return a result list. Additionally, this module also provides the `predict_iter()` method. Both are completely consistent in terms of parameter acceptance and result return, the difference being that `predict_iter()` returns a `generator`, capable of gradually processing and obtaining prediction results, suitable for handling large datasets or scenarios where memory saving is desired. You can choose to use either of these methods based on actual needs. The `predict()` method parameters include `input`, `batch_size`, with specific explanations as follows:
+* Call the  <code>predict()</code> method of the document visual language model for inference prediction. This method will return a result list. Additionally, this module also provides the <code>predict_iter()</code> method. Both are completely consistent in terms of parameter acceptance and result return, the difference being that <code>predict_iter()</code> returns a <code>generator</code>, capable of gradually processing and obtaining prediction results, suitable for handling large datasets or scenarios where memory saving is desired. You can choose to use either of these methods based on actual needs. The <code>predict()</code> method parameters include  <code>input</code> , <code>batch_size</code>, with specific explanations as follows:
 
 <table>
 <thead>
@@ -149,7 +154,9 @@ By default, GPU 0 is used if available; otherwise, CPU is used.
 </thead>
 <tr>
 <td><code>input</code></td>
-<td>Input data. Required. Since multimodal models have different input requirements, please refer to the specific model for the correct format.<br/>
+<td><b>Meaning:</b> Input data. Required. <br/>
+<b>Description:</b>
+Since multimodal models have different input requirements, please refer to the specific model for the correct format.<br/>
 For example, for the PP-DocBee series models, the input format should be: <code>{'image': image_path, 'query': query_text}</code>
 </td>
 <td><code>dict</code></td>
@@ -157,13 +164,15 @@ For example, for the PP-DocBee series models, the input format should be: <code>
 </tr>
 <tr>
 <td><code>batch_size</code></td>
-<td>Batch size, positive integer.</td>
+<td><b>Meaning:</b>Batch size.<br/>
+<b>Description:</b>
+Positive integer.</td>
 <td><code>int</code></td>
 <td>1</td>
 </tr>
 </table>
 
-* Process the prediction results. The prediction result for each sample is the corresponding Result object, and it supports operations such as printing and saving as `json` file:
+* Process the prediction results. The prediction result for each sample is the corresponding Result object, and it supports operations such as printing and saving as <code>json</code> file:
 
 <table>
 <thead>

@@ -149,10 +149,12 @@ The output will be:
 ```
 
 Output parameter meanings:
-- `input_path`: Path of the input image.
-- `page_index`: If the input is a PDF, this indicates the current page number; otherwise, it is `None`.
-- `dt_polys`: Predicted text detection boxes, where each box contains four vertices (x, y coordinates).
-- `dt_scores`: Confidence scores of the predicted text detection boxes.
+<ul>
+<li><code>input_path</code>：Path of the input image.</li>
+<li><code>page_index</code>：If the input is a PDF, this indicates the current page number; otherwise, it is  <code>None</code></li>
+<li><code>dt_polys</code>：Predicted text detection boxes, where each box contains four vertices (x, y coordinates).</li>
+<li><code>dt_scores</code>：Confidence scores of the predicted text detection boxes.</li>
+</ul>
 
 Visualization example:
 
@@ -160,7 +162,7 @@ Visualization example:
 
 Method and parameter descriptions:
 
-* Instantiate the text detection model (e.g., `PP-OCRv5_server_det`):
+* Instantiate the text detection model (e.g., <code>PP-OCRv5_server_det</code>):
 <table>
 <thead>
 <tr>
@@ -173,19 +175,22 @@ Method and parameter descriptions:
 <tbody>
 <tr>
 <td><code>model_name</code></td>
-<td>Model name. If set to <code>None</code>, <code>PP-OCRv5_server_det</code> will be used.</td>
+<td><b>Meaning:</b>Model name.<br/>
+<b>Description:</b> 
+If set to <code>None</code>, <code>PP-OCRv5_server_det</code> will be used.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>model_dir</code></td>
-<td>Model storage path.</td>
+<td><b>Meaning:</b>Model storage path.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>Device for inference.<br/>
+<td><b>Meaning:</b>Device for inference.<br/>
+<b>Description:</b>
 <b>For example:</b><code>"cpu"</code>, <code>"gpu"</code>, <code>"npu"</code>, <code>"gpu:0"</code>, <code>"gpu:0,1"</code>.<br/>
 If multiple devices are specified, parallel inference will be performed.<br/>
 By default, GPU 0 is used if available; otherwise, CPU is used.
@@ -195,13 +200,15 @@ By default, GPU 0 is used if available; otherwise, CPU is used.
 </tr>
 <tr>
 <td><code>enable_hpi</code></td>
-<td>Whether to enable high-performance inference.</td>
+<td><b>Meaning:</b>Whether to enable high-performance inference.</td>
 <td><code>bool</code></td>
 <td><code>False</code></td>
 </tr>
 <tr>
 <td><code>use_tensorrt</code></td>
-<td>Whether to use the Paddle Inference TensorRT subgraph engine. If the model does not support acceleration through TensorRT, setting this flag will not enable acceleration.<br/>
+<td><b>Meaning:</b>Whether to use the Paddle Inference TensorRT subgraph engine.<br/> 
+<b>Description:</b>
+If the model does not support acceleration through TensorRT, setting this flag will not enable acceleration.<br/>
 For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6), and it is recommended to install TensorRT 8.6.1.6.<br/>
 
 </td>
@@ -210,74 +217,90 @@ For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6)
 </tr>
 <tr>
 <td><code>precision</code></td>
-<td>Computation precision when using the Paddle Inference TensorRT subgraph engine.<br/><b>Options:</b> <code>"fp32"</code>, <code>"fp16"</code>.</td>
+<td><b>Meaning:</b>Computation precision when using the Paddle Inference TensorRT subgraph engine.<br/>
+<b>Description:</b>
+<b>Options:</b> <code>"fp32"</code>, <code>"fp16"</code>.</td>
 <td><code>str</code></td>
 <td><code>"fp32"</code></td>
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
-<td>Whether to enable MKL-DNN acceleration for inference. If MKL-DNN is unavailable or the model does not support it, acceleration will not be used even if this flag is set.</td>
+<td><b>Meaning:</b>Whether to enable MKL-DNN acceleration for inference. <br/>
+<b>Description:</b>
+If MKL-DNN is unavailable or the model does not support it, acceleration will not be used even if this flag is set.</td>
 <td><code>bool</code></td>
 <td><code>True</code></td>
 </tr>
 <tr>
 <td><code>mkldnn_cache_capacity</code></td>
-<td>MKL-DNN cache capacity.</td>
+<td><b>Meaning:</b>MKL-DNN cache capacity.</td>
 <td><code>int</code></td>
 <td><code>10</code></td>
 </tr>
 <tr>
 <td><code>cpu_threads</code></td>
-<td>Number of threads to use for inference on CPUs.</td>
+<td><b>Meaning:</b>Number of threads to use for inference on CPUs.</td>
 <td><code>int</code></td>
 <td><code>10</code></td>
 </tr>
 <tr>
 <td><code>limit_side_len</code></td>
-<td>Limit on the side length of the input image for detection. <code>int</code> specifies the value. If set to <code>None</code>, the model's default configuration will be used.</td>
+<td><b>Meaning:</b>Limit on the side length of the input image for detection. 
+<b>Description:</b>
+<code>int</code> specifies the value. If set to <code>None</code>, the model's default configuration will be used.</td>
 <td><code>int|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>limit_type</code></td>
-<td>Type of image side length limitation. <code>"min"</code> ensures the shortest side of the image is no less than <code>det_limit_side_len</code>; <code>"max"</code> ensures the longest side is no greater than <code>limit_side_len</code>. If set to <code>None</code>, the model's default configuration will be used.</td>
+<td><b>Meaning:</b>Type of image side length limitation. <br/>
+<b>Description:</b>
+<code>"min"</code> ensures the shortest side of the image is no less than <code>det_limit_side_len</code>; <code>"max"</code> ensures the longest side is no greater than <code>limit_side_len</code>. If set to <code>None</code>, the model's default configuration will be used.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>max_side_limit</code></td>
-<td>Limit on the max length of the input image for detection. <code>int</code> limits the longest side of the image for input detection model. If set to <code>None</code>, the model's default configuration will be used.</td>
+<td><b>Meaning:</b>Limit on the max length of the input image for detection. <br/>
+<b>Description:</b>
+<code>int</code> limits the longest side of the image for input detection model. If set to <code>None</code>, the model's default configuration will be used.</td>
 <td><code>int|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>thresh</code></td>
-<td>Pixel score threshold. Pixels in the output probability map with scores greater than this threshold are considered text pixels. If set to <code>None</code>, the model's default configuration will be used.</td>
+<td><b>Meaning:</b>Pixel score threshold. Pixels in the output probability map with scores greater than this threshold are considered text pixels. <br/>
+<b>Description:</b>
+If set to <code>None</code>, the model's default configuration will be used.</td>
 <td><code>float|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>box_thresh</code></td>
-<td>If the average score of all pixels inside the bounding box is greater than this threshold, the result is considered a text region. If set to <code>None</code>, the model's default configuration will be used.</td>
+<td><b>Meaning:</b>If the average score of all pixels inside the bounding box is greater than this threshold, the result is considered a text region. <br/>
+<b>Description:</b>
+If set to <code>None</code>, the model's default configuration will be used.</td>
 <td><code>float|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>unclip_ratio</code></td>
-<td>Expansion ratio for the Vatti clipping algorithm, used to expand the text region. If set to <code>None</code>, the model's default configuration will be used.</td>
+<td><b>Meaning:</b>Expansion ratio for the Vatti clipping algorithm, used to expand the text region. 
+<b>Description:</b>
+If set to <code>None</code>, the model's default configuration will be used.</td>
 <td><code>float|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>input_shape</code></td>
-<td>Input image size for the model in the format <code>(C, H, W)</code>.</td>
+<td><b>Meaning:</b>Input image size for the model in the format <code>(C, H, W)</code>.</td>
 <td><code>tuple|None</code></td>
 <td><code>None</code></td>
 </tr>
 </tbody>
 </table>
 
-* The `predict()` method parameters:
+* The <code>predict()</code> method parameters:
 <table>
 <thead>
 <tr>
@@ -291,7 +314,9 @@ For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6)
 <tr>
 <td><code>input</code></td>
 <td>
-Input data to be predicted. Required. Supports multiple input types:
+<b>Meaning:</b>Input data to be predicted. Required.<br/>
+<b>Description:</b> 
+Supports multiple input types:
 <ul>
   <li><b>Python variable</b>: e.g., <code>numpy.ndarray</code> representing image data</li>
   <li><b>str</b>: Local image file or PDF file path: <code>/root/data/img.jpg</code>; <b>URL</b>: Image or PDF file network URL: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_rec_001.png">Example</a>; <b>Directory</b>: Should contain images for prediction, e.g., <code>/root/data/</code> (currently, PDF files in directories are not supported, PDF files need to be specified by file path)</li>
@@ -303,37 +328,48 @@ Input data to be predicted. Required. Supports multiple input types:
 </tr>
 <tr>
 <td><code>batch_size</code></td>
-<td>Batch size, positive integer.</td>
+<td><b>Meaning:</b>Batch size<br/>
+<b>Description:</b>Positive integer.</td>
 <td><code>int</code></td>
 <td>1</td>
 </tr>
 <tr>
 <td><code>limit_side_len</code></td>
-<td>Same meaning as the instantiation parameters. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
+<td><b>Meaning:</b>Same meaning as the instantiation parameters. <br/>
+<b>Description:</b>
+If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
 <td><code>int|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>limit_type</code></td>
-<td>Same meaning as the instantiation parameters. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
+<td><b>Meaning:</b>Same meaning as the instantiation parameters. <br/>
+<b>Description:</b>
+If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>thresh</code></td>
-<td>Same meaning as the instantiation parameters. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
+<td><b>Meaning:</b>Same meaning as the instantiation parameters. <br/>
+<b>Description:</b>
+If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
 <td><code>float|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>box_thresh</code></td>
-<td>Same meaning as the instantiation parameters. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
+<td><b>Meaning:</b>Same meaning as the instantiation parameters. <br/>
+<b>Description:</b>
+If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
 <td><code>float|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>unclip_ratio</code></td>
-<td>Same meaning as the instantiation parameters. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
+<td><b>Meaning:</b>Same meaning as the instantiation parameters. <br/>
+<b>Description:</b>
+If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
 <td><code>float|None</code></td>
 <td><code>None</code></td>
 </tr>

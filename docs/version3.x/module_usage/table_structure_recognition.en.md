@@ -134,16 +134,17 @@ After running, the result is:
 ```
 
 Parameter meanings are as follows:
-
-- `input_path`: The path of the input table image to be predicted
-- `page_index`: If the input is a PDF file, indicates the page number of the PDF; otherwise, it is `None`
-- `boxes`: Predicted table cell information, a list consisting of the coordinates of predicted table cells. Notably, table cell predictions for the SLANeXt series models are invalid
-- `structure`: Predicted table structure HTML expressions, a list consisting of predicted HTML keywords in order
-- `structure_score`: Confidence of the predicted table structure
+<ul>
+<li><code>input_path</code>：The path of the input table image to be predicted</li>
+<li><code>page_index</code>：If the input is a PDF file, indicates the page number of the PDF; otherwise, it is  <code>None</code></li>
+<li><code>boxes</code>： Predicted table cell information, a list consisting of the coordinates of predicted table cells. Notably, table cell predictions for the SLANeXt series models are invalid</li>
+<li><code>structure</code>：Predicted table structure HTML expressions, a list consisting of predicted HTML keywords in order</li>
+<li><code>structure_score</code>：Confidence of the predicted table structure</li>
+</ul>
 
 Descriptions of related methods and parameters are as follows:
 
-* `TableStructureRecognition` instantiates a table structure recognition model (using `SLANet` as an example). Details are as follows:
+* <code>TableStructureRecognition</code> instantiates a table structure recognition model (using <code>SLANet</code> as an example). Details are as follows:
 <table>
 <thead>
 <tr>
@@ -156,19 +157,22 @@ Descriptions of related methods and parameters are as follows:
 <tbody>
 <tr>
 <td><code>model_name</code></td>
-<td>Model name. If set to <code>None</code>, <code>PP-LCNet_x1_0_table_cls</code> will be used.</td>
+<td><b>Meaning:</b> Model name.<br/>
+<b>Description:</b> 
+If set to <code>None</code>, <code>PP-LCNet_x1_0_table_cls</code> will be used.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>model_dir</code></td>
-<td>Model storage path.</td>
+<td><b>Meaning:</b>Model storage path.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>Device for inference.<br/>
+<td><b>Meaning:</b>Device for inference.<br/>
+<b>Description:</b>
 <b>For example:</b> <code>"cpu"</code>, <code>"gpu"</code>, <code>"npu"</code>, <code>"gpu:0"</code>, <code>"gpu:0,1"</code>.<br/>
 If multiple devices are specified, parallel inference will be performed.<br/>
 By default, GPU 0 is used if available; otherwise, CPU is used.</td>
@@ -177,13 +181,15 @@ By default, GPU 0 is used if available; otherwise, CPU is used.</td>
 </tr>
 <tr>
 <td><code>enable_hpi</code></td>
-<td>Whether to enable high-performance inference.</td>
+<td><b>Meaning:</b>Whether to enable high-performance inference.</td>
 <td><code>bool</code></td>
 <td><code>False</code></td>
 </tr>
 <tr>
 <td><code>use_tensorrt</code></td>
-<td>Whether to use the Paddle Inference TensorRT subgraph engine. If the model does not support acceleration through TensorRT, setting this flag will not enable acceleration.<br/>
+<td><b>Meaning:</b>Whether to use the Paddle Inference TensorRT subgraph engine.<br/> 
+<b>Description:</b>
+If the model does not support acceleration through TensorRT, setting this flag will not enable acceleration.<br/>
 For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6), and it is recommended to install TensorRT 8.6.1.6.<br/>
 </td>
 <td><code>bool</code></td>
@@ -191,32 +197,36 @@ For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6)
 </tr>
 <tr>
 <td><code>precision</code></td>
-<td>Computation precision when using the Paddle Inference TensorRT subgraph engine.<br/><b>Options:</b> <code>"fp32"</code>, <code>"fp16"</code>.</td>
+<td><b>Meaning:</b>Computation precision when using the Paddle Inference TensorRT subgraph engine.<br/>
+<b>Description:</b>
+<b>Options:</b> <code>"fp32"</code>, <code>"fp16"</code>.</td>
 <td><code>str</code></td>
 <td><code>"fp32"</code></td>
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
-<td>Whether to enable MKL-DNN acceleration for inference. If MKL-DNN is unavailable or the model does not support it, acceleration will not be used even if this flag is set.</td>
+<td><b>Meaning:</b>Whether to enable MKL-DNN acceleration for inference. <br/>
+<b>Description:</b>
+If MKL-DNN is unavailable or the model does not support it, acceleration will not be used even if this flag is set.</td>
 <td><code>bool</code></td>
 <td><code>True</code></td>
 </tr>
 <tr>
 <td><code>mkldnn_cache_capacity</code></td>
-<td>MKL-DNN cache capacity.</td>
+<td><b>Meaning:</b>MKL-DNN cache capacity.</td>
 <td><code>int</code></td>
 <td><code>10</code></td>
 </tr>
 <tr>
 <td><code>cpu_threads</code></td>
-<td>Number of threads to use for inference on CPUs.</td>
+<td><b>Meaning:</b>Number of threads to use for inference on CPUs.</td>
 <td><code>int</code></td>
 <td><code>10</code></td>
 </tr>
 </tbody>
 </table>
 
-* Call the `predict()` method of the table structure recognition model for inference prediction, which returns a result list. In addition, this module also provides the `predict_iter()` method. The two are completely consistent in parameter acceptance and result return. The difference is that `predict_iter()` returns a `generator`, which can process and obtain prediction results step by step, suitable for handling large datasets or scenarios where you want to save memory. You can choose to use either method according to your actual needs. The `predict()` method has parameters `input` and `batch_size`, described as follows:
+* Call the <code>predict()</code> method of the table structure recognition model for inference prediction, which returns a result list. In addition, this module also provides the <code>predict_iter()</code> method. The two are completely consistent in parameter acceptance and result return. The difference is that <code>predict_iter()</code> returns a <code>generator</code>, which can process and obtain prediction results step by step, suitable for handling large datasets or scenarios where you want to save memory. You can choose to use either method according to your actual needs. The <code>predict()</code> method has parameters <code>input</code> and <code>batch_size</code>, described as follows:
 
 <table>
 <thead>
@@ -230,7 +240,9 @@ For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6)
 <tr>
 <td><code>input</code></td>
 <td>
-Data to be predicted. Required. Supports multiple input types:
+<b>Meaning:</b>Data to be predicted. Required. <br/>
+<b>Description:</b>
+Supports multiple input types:
 <ul>
   <li><b>Python Var</b>: e.g., <code>numpy.ndarray</code> representing image data</li>
   <li><b>str</b>: Local path to an image or PDF file, e.g., <code>/root/data/img.jpg</code>; <b>URL</b>: Network URL to an image or PDF file, e.g., <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/img_rot180_demo.jpg">Example</a>; <b>Directory</b>: A local directory containing images for prediction, e.g., <code>/root/data/</code> (Note: PDF files in directories are not supported; to predict a PDF, specify its file path directly)</li>
@@ -242,12 +254,14 @@ Data to be predicted. Required. Supports multiple input types:
 </tr>
 <tr>
 <td><code>batch_size</code></td>
-<td>Batch size, can be set to any positive integer.</td>
+<td><b>Meaning:</b>Batch size. <br/>
+<b>Description:</b>
+Can be set to any positive integer.</td>
 <td><code>int</code></td>
 <td>1</td>
 </tr>
 </table>
-* For processing prediction results, the prediction result of each sample is the corresponding Result object, and supports printing and saving as a `json` file:
+* For processing prediction results, the prediction result of each sample is the corresponding Result object, and supports printing and saving as a <code>json</code> file:
 
 <table>
 <thead>
