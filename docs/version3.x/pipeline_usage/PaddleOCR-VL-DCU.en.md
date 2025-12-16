@@ -75,7 +75,6 @@ PaddleOCR provides a Docker image for quickly starting the vLLM inference servic
 
 ```shell
 docker run -it \
-  --rm \
   --user root \
   --privileged \
   --device /dev/kfd \

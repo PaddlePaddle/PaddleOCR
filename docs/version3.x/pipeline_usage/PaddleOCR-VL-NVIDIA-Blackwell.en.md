@@ -91,7 +91,6 @@ PaddleOCR provides a Docker image for quickly starting the vLLM inference servic
 ```shell
 docker run \
     -it \
-    --rm \
     --gpus all \
     --network host \
     ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-gpu-sm120 \

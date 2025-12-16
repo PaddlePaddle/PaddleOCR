@@ -75,7 +75,6 @@ PaddleOCR 提供了 Docker 镜像，用于快速启动 vLLM 推理服务。可�
 
 ```shell
 docker run -it \
-  --rm \
   --user root \
   --privileged \
   --device /dev/kfd \
