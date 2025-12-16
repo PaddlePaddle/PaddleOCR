@@ -56,7 +56,7 @@ python -m pip install https://paddle-whl.bj.bcebos.com/nightly/cu126/safetensors
 
 ## 2. 快速开始
 
-请参考[PaddleOCR-VL 使用教程](./PaddleOCR-VL.md)相同章节。
+请参考[PaddleOCR-VL 使用教程](./PaddleOCR-VL.md)相同章节，注意需要指定 `deivce="xpu"`。
 
 ## 3. 使用推理加速框架提升 VLM 推理性能
 
@@ -69,9 +69,8 @@ PaddleOCR 提供了 Docker 镜像，用于快速启动 FastDeploy 推理服务�
 ```shell
 docker run \
     -it \
-    --rm \
-    --gpus all \
     --network host \
+    --user root \
     --shm-size 64G \
     ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-fastdeploy-server:latest-xpu \
     paddleocr genai_server --model_name PaddleOCR-VL-0.9B --host 0.0.0.0 --port 8118 --backend fastdeploy

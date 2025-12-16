@@ -63,7 +63,7 @@ python -m pip install https://paddle-whl.bj.bcebos.com/nightly/cu126/safetensors
 
 ## 2. 快速开始
 
-请参考[PaddleOCR-VL 使用教程](./PaddleOCR-VL.md)相同章节。
+请参考[PaddleOCR-VL 使用教程](./PaddleOCR-VL.md)相同章节，注意需要指定 `deivce="dcu"`。
 
 ## 3. 使用推理加速框架提升 VLM 推理性能
 
