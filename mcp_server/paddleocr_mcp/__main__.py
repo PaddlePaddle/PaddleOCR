@@ -137,7 +137,7 @@ def _validate_args(args: argparse.Namespace) -> None:
                     file=sys.stderr,
                 )
                 sys.exit(2)
-            if args.pipeline not in ("PaddleOCR-VL",):
+            if args.pipeline not in ("PaddleOCR-VL", "PP-StructureV3"):
                 print(
                     f"{repr(args.pipeline)} is currently not supported when using the {repr(args.ppocr_source)} source.",
                     file=sys.stderr,
