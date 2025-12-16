@@ -284,6 +284,11 @@ If not set, the initialized parameter value will be used.
 <td><code>str</code></td>
 </tr>
 <tr>
+<td><code>vl_rec_api_model_name</code></td>
+<td>If the multimodal recognition model uses an inference service, this parameter is used to specify the model name of the service.</td>
+<td><code>str</code></td>
+</tr>
+<tr>
 <td><code>vl_rec_api_key</code></td>
 <td>If the multimodal recognition model uses an inference service, this parameter is used to specify the API key of the service.</td>
 <td><code>str</code></td>
@@ -595,6 +600,12 @@ If not set, the initialized parameter value will be used.
 <tr>
 <td><code>vl_rec_max_concurrency</code></td>
 <td>If the multimodal recognition model uses an inference service, this parameter is used to specify the maximum number of concurrent requests.</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>vl_rec_api_model_name</code></td>
+<td>If the multimodal recognition model uses an inference service, this parameter is used to specify the model name of the service.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -1042,6 +1053,8 @@ There are two methods to launch the VLM inference service; choose either one:
 
 - Method 2: Launch the service by manually installing dependencies via the PaddleOCR CLI.
 
+In addition, cloud platforms such as [SiliconFlow](https://siliconflow.cn/) and [Novita AI](https://novita.ai/models-console/model-detail/paddlepaddle-paddleocr-vl) also provide managed services. If you choose to use such services, you can skip this section and directly read [3.2 Client Usage Methods](#32-client-usage-methods).
+
 #### 3.1.1 Method 1: Using Docker Image
 
 PaddleOCR provides Docker images for quickly launching vLLM or FastDeploy inference services. You can use the following commands to start the services (requires Docker version >= 19.03, a machine equipped with a GPU, and NVIDIA drivers supporting CUDA 12.6 or later):
@@ -1141,15 +1154,83 @@ After launching the VLM inference service, the client can call the service throu
 Specify the backend type (`vllm-server` or `sglang-server`) using `--vl_rec_backend` and the service address using `--vl_rec_server_url`, for example:
 
 ```shell
-paddleocr doc_parser --input paddleocr_vl_demo.png --vl_rec_backend vllm-server --vl_rec_server_url http://127.0.0.1:8118/v1
+paddleocr doc_parser --input paddleocr_vl_demo.png --vl_rec_backend vllm-server --vl_rec_server_url http://localhost:8118/v1
+```
+
+In addition, you can specify the model name used by the service via `--vl_rec_api_model_name`, and specify the API key used for authentication via `--vl_rec_api_key`. Examples are as follows:
+
+Using a service started with the default parameters of `vllm serve`:
+
+```shell
+paddleocr doc_parser \
+    --input paddleocr_vl_demo.png \
+    --vl_rec_backend vllm-server \
+    --vl_rec_server_url http://localhost:8000/v1 \
+    --vl_rec_api_model_name 'PaddlePaddle/PaddleOCR-VL'
+```
+
+SiliconFlow platform:
+
+```shell
+paddleocr doc_parser \
+    --input paddleocr_vl_demo.png \
+    --vl_rec_backend vllm-server \
+    --vl_rec_server_url https://api.siliconflow.cn/v1 \
+    --vl_rec_api_model_name 'PaddlePaddle/PaddleOCR-VL' \
+    --vl_rec_api_key xxxxxx
+```
+
+Novita AI platform:
+
+```shell
+paddleocr doc_parser \
+    --input paddleocr_vl_demo.png \
+    --vl_rec_backend vllm-server \
+    --vl_rec_server_url https://api.novita.ai/openai \
+    --vl_rec_api_model_name 'paddlepaddle/paddleocr-vl' \
+    --vl_rec_api_key xxxxxx
 ```
 
 #### 3.2.2 Python API Invocation
 
-Pass the `vl_rec_backend` and `vl_rec_server_url` parameters when creating a `PaddleOCRVL` object:
+When creating a `PaddleOCRVL` object, pass the `vl_rec_backend` and `vl_rec_server_url` parameters to specify the backend type and the service endpoint, respectively:
 
 ```python
-pipeline = PaddleOCRVL(vl_rec_backend="vllm-server", vl_rec_server_url="http://127.0.0.1:8118/v1")
+pipeline = PaddleOCRVL(vl_rec_backend="vllm-server", vl_rec_server_url="http://localhost:8118/v1")
+```
+
+In addition, you can specify the model name used by the service via `vl_rec_api_model_name`, and specify the API key used for authentication via `vl_rec_api_key`.
+
+Using a service started with the default parameters of `vllm serve`:
+
+```python
+pipeline = PaddleOCRVL(
+    vl_rec_backend="vllm-server", 
+    vl_rec_server_url="http://localhost:8000/v1",
+    vl_rec_api_model_name="PaddlePaddle/PaddleOCR-VL",
+)
+```
+
+SiliconFlow platform:
+
+```python
+pipeline = PaddleOCRVL(
+    vl_rec_backend="vllm-server", 
+    vl_rec_server_url="https://api.siliconflow.cn/v1",
+    vl_rec_api_model_name="PaddlePaddle/PaddleOCR-VL",
+    vl_rec_api_key="xxxxxx",
+)
+```
+
+Novita AI platform:
+
+```python
+pipeline = PaddleOCRVL(
+    vl_rec_backend="vllm-server", 
+    vl_rec_server_url="https://api.novita.ai/openai",
+    vl_rec_api_model_name="paddlepaddle/paddleocr-vl",
+    vl_rec_api_key="xxxxxx",
+)
 ```
 
 ### 3.3 Performance Tuning
@@ -2270,7 +2351,7 @@ VLRecognition:
   ...
   genai_config:
     backend: vllm-server
-    server_url: http://127.0.0.1:8118/v1
+    server_url: http://localhost:8118/v1
 ```
 
 The Docker Compose solution already uses an acceleration framework by default.
