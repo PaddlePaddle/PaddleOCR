@@ -123,6 +123,21 @@ def _validate_args(args: argparse.Namespace) -> None:
                 file=sys.stderr,
             )
             sys.exit(2)
+        elif args.ppocr_source == "qianfan":
+            if not args.qianfan_api_key:
+                print("Error: The Qianfan API key is required.", file=sys.stderr)
+                print(
+                    "Please either set `--qianfan_api_key` or set the environment variable "
+                    "`PADDLEOCR_MCP_QIANFAN_API_KEY`.",
+                    file=sys.stderr,
+                )
+                sys.exit(2)
+            if args.pipeline not in ("PaddleOCR-VL", "PP-StructureV3"):
+                print(
+                    f"{repr(args.pipeline)} is currently not supported when using the {repr(args.ppocr_source)} source.",
+                    file=sys.stderr,
+                )
+                sys.exit(2)
 
 
 async def async_main() -> None:

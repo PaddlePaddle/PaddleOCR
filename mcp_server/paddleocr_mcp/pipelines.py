@@ -655,7 +655,7 @@ class OCRHandler(SimpleInferencePipelineHandler):
 
 class _LayoutParsingHandler(SimpleInferencePipelineHandler):
     def _get_service_endpoint(self) -> str:
-        return "layout-parsing"
+        return "layout-parsing" if self._ppocr_source != "qianfan" else "paddleocr"
 
     def _transform_local_kwargs(self, kwargs: Dict[str, Any]) -> Dict[str, Any]:
         return {
@@ -869,6 +869,12 @@ class PPStructureV3Handler(_LayoutParsingHandler):
             device=self._device,
         )
 
+    def _transform_service_kwargs(self, kwargs: Dict[str, Any]) -> Dict[str, Any]:
+        kwargs = super()._transform_service_kwargs(kwargs)
+        if self._ppocr_source == "qianfan":
+            kwargs["model"] = "pp-structurev3"
+        return kwargs
+
 
 class PaddleOCRVLHandler(_LayoutParsingHandler):
     def register_tools(self, mcp: FastMCP) -> None:
@@ -907,6 +913,12 @@ class PaddleOCRVLHandler(_LayoutParsingHandler):
             paddlex_config=self._pipeline_config,
             device=self._device,
         )
+
+    def _transform_service_kwargs(self, kwargs: Dict[str, Any]) -> Dict[str, Any]:
+        kwargs = super()._transform_service_kwargs(kwargs)
+        if self._ppocr_source == "qianfan":
+            kwargs["model"] = "paddleocr-vl-0.9b"
+        return kwargs
 
 
 _PIPELINE_HANDLERS: Dict[str, Type[PipelineHandler]] = {
