@@ -23,6 +23,7 @@ docker run \
     -it \
     --network host \
     --user root \
+    --priviledged \
     --shm-size 64G \
     ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-xpu \
     /bin/bash
