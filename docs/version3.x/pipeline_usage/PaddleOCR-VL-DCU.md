@@ -30,7 +30,7 @@ docker run -it \
   --cap-add SYS_PTRACE \
   --security-opt seccomp=unconfined \
   -v /opt/hyhal/:/opt/hyhal/:ro \
-  --shm-size=64G \
+  --shm-size=64g \
   ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-dcu \
   /bin/bash
 # 在容器中调用 PaddleOCR CLI 或 Python API
@@ -85,7 +85,7 @@ docker run -it \
   --cap-add SYS_PTRACE \
   --security-opt seccomp=unconfined \
   -v /opt/hyhal/:/opt/hyhal/:ro \
-  --shm-size=64G \
+  --shm-size=64g \
   ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-dcu \
   paddleocr genai_server --model_name PaddleOCR-VL-0.9B --host 0.0.0.0 --port 8118 --backend vllm
 ```
@@ -107,7 +107,7 @@ docker run -it \
   --security-opt seccomp=unconfined \
   -v /opt/hyhal/:/opt/hyhal/:ro \
   -v vllm_config.yml:/tmp/vllm_config.yml \
-  --shm-size=64G \
+  --shm-size=64g \
   ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-dcu \
   paddleocr genai_server --model_name PaddleOCR-VL-0.9B --host 0.0.0.0 --port 8118 --backend vllm --backend_config /tmp/vllm_config.yml
 ```

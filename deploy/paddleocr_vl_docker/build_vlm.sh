@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-device_type=''
-backend=''
+device_type='gpu'
+backend='vllm'
 build_for_offline='false'
 paddleocr_version='>=3.3.2,<3.4'
 tag_suffix='latest'
@@ -10,33 +10,56 @@ base_image=''
 while [[ $# -gt 0 ]]; do
     case $1 in
         --device-type)
+            [ -z "$2" ] && {
+                echo "`--device-type` requires a value" >&2
+                exit 2
+            }
             device_type="$2"
             shift
             shift
-            if [ "${device_type}" != 'gpu' ] && [ "${device_type}" != 'gpu-sm120' ] && [ "${device_type}" != 'dcu' ] && [ "${device_type}" != 'xpu' ]; then
-                echo "Unknown device type: ${device_type}" >&2
-                exit 2
-            fi
+            case "${device_type}" in
+                gpu|gpu-sm120|dcu|xpu|metax-gpu)
+                    ;;
+                *)
+                    echo "Unknown device type: ${device_type}" >&2
+                    exit 2
+                    ;;
+            esac
             ;;
-        --backend)
-            backend="$2"
-            shift
-            shift
-            if [ "${backend}" != 'vllm' ] && [ "${backend}" != 'fastdeploy' ]; then
-                echo "Unknown backend: ${backend}" >&2
-                exit 2
-            fi
-            ;;
+            --backend)
+                [ -z "$2" ] && {
+                    echo "`--backend` requires a value" >&2
+                    exit 2
+                }
+                backend="$2"
+                shift 2
+                case "${backend}" in
+                    vllm|fastdeploy)
+                        ;;
+                    *)
+                        echo "Unknown backend: ${backend}" >&2
+                        exit 2
+                        ;;
+                esac
+                ;;
         --offline)
             build_for_offline='true'
             shift
             ;;
         --ppocr-version)
+            [ -z "$2" ] && {
+                echo "`--ppocr-version` requires a value" >&2
+                exit 2
+            }
             paddleocr_version="==$2"
             shift
             shift
             ;;
         --tag-suffix)
+            [ -z "$2" ] && {
+                echo "`--tag-suffix` requires a value" >&2
+                exit 2
+            }
             tag_suffix="$2"
             shift
             shift
@@ -65,6 +88,8 @@ if [ "${backend}" = 'vllm' ]; then
         base_image='image.sourcefind.cn:5000/dcu/admin/base/vllm:0.9.2-ubuntu22.04-dtk25.04.2-py3.10'
     elif [ "${device_type}" = 'xpu' ]; then
         base_image=''
+    elif [ "${device_type}" = 'metax-gpu' ]; then
+        base_image=''
     else
         base_image=''
     fi
@@ -77,6 +102,8 @@ elif [ "${backend}" = 'fastdeploy' ]; then
         base_image=''
     elif [ "${device_type}" = 'xpu' ]; then
         base_image='ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/fastdeploy-xpu:2.3.0'
+    elif [ "${device_type}" = 'metax-gpu' ]; then
+        base_image='ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddlex-fastdeploy-metax-gpu:2.3.0'
     else
         base_image=''
     fi

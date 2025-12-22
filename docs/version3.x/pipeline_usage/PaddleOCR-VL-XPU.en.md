@@ -23,7 +23,7 @@ docker run \
     -it \
     --network host \
     --user root \
-    --shm-size 64G \
+    --shm-size 64g \
     ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-xpu \
     /bin/bash
 # Call PaddleOCR CLI or Python API in the container
@@ -72,7 +72,7 @@ docker run \
     --rm \
     --gpus all \
     --network host \
-    --shm-size 64G \
+    --shm-size 64g \
     ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-fastdeploy-server:latest-xpu \
     paddleocr genai_server --model_name PaddleOCR-VL-0.9B --host 0.0.0.0 --port 8118 --backend fastdeploy
 ```
