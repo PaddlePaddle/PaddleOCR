@@ -1,10 +1,15 @@
-ARG BASE_IMAGE="ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddlex-genai-vllm-server:latest"
+ARG BACKEND
 
-FROM ${BASE_IMAGE}
+
+FROM ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/fastdeploy-xpu:2.3.0 AS base-fastdeploy
+
+
+FROM base-${BACKEND}
+
+ARG BACKEND
 
 ARG PADDLEOCR_VERSION=">=3.3.2,<3.4"
 RUN python -m pip install "paddleocr${PADDLEOCR_VERSION}"
-ARG BACKEND="vllm"
 
 RUN groupadd -g 1000 paddleocr \
     && useradd -m -s /bin/bash -u 1000 -g 1000 paddleocr

@@ -3,7 +3,7 @@
 build_for_offline='false'
 paddleocr_version='>=3.3.2,<3.4'
 tag_suffix='latest'
-base_image='python:3.10'
+dockerfile=pipeline.Dockerfile
 
 while [[ $# -gt 0 ]]; do
     case $1 in
@@ -61,19 +61,11 @@ if [ "${build_for_offline}" = 'true' ]; then
     tag_suffix="${tag_suffix}-offline"
 fi
 
-if [ "${device_type}" = 'dcu' ]; then
-    base_image='ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddle-dcu:dtk24.04.1-kylinv10-gcc82'
-elif [ "${device_type}" = 'xpu' ]; then
-    base_image='ccr-2vdh3abv-pub.cnc.bj.baidubce.com/device/paddle-xpu:ubuntu20-x86_64-gcc84-py310'
-elif [ "${device_type}" = 'metax-gpu' ]; then
-    base_image='ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddlex-paddle-metax-gpu:3.3.0'
-fi
+dockerfile="accelerators/${device_type}/pipeline.Dockerfile"
 
 docker build \
-    -f pipeline.Dockerfile \
+    -f "${dockerfile}" \
     -t "ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:${tag_suffix}" \
-    --build-arg BASE_IMAGE="${base_image}" \
-    --build-arg DEVICE_TYPE="${device_type}" \
     --build-arg BUILD_FOR_OFFLINE="${build_for_offline}" \
     --build-arg PADDLEOCR_VERSION="${paddleocr_version}" \
     --build-arg http_proxy="${http_proxy}" \

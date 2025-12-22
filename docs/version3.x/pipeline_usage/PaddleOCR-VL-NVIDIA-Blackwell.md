@@ -173,17 +173,9 @@ paddleocr genai_server --model_name PaddleOCR-VL-0.9B --backend vllm --port 8118
 
 ### 4.1 方法一：使用 Docker Compose 部署
 
-1. 从 [此处](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/compose.yaml) 复制内容保存为 `compose.yaml` 文件。
+1. 分别从 [此处](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/accelerators/gpu-sm120/compose.yaml) 和 [此处](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/accelerators/gpu-sm120/.env) 获取 Compose 文件与环境变量配置文件并下载到本地。
 
-2. 复制以下内容并保存为 `.env` 文件：
-
-    ```
-    API_IMAGE_TAG_SUFFIX=latest-gpu-sm120-offline
-    VLM_BACKEND=vllm
-    VLM_IMAGE_TAG_SUFFIX=latest-gpu-sm120-offline
-    ```
-
-3. 在 `compose.yaml` 和 `.env` 文件所在目录下执行以下命令启动服务器，默认监听 **8080** 端口：
+2. 在 `compose.yaml` 和 `.env` 文件所在目录下执行以下命令启动服务器，默认监听 **8080** 端口：
 
     ```shell
     # 必须在 compose.yaml 和 .env 文件所在的目录中执行

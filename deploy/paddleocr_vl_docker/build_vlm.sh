@@ -5,7 +5,6 @@ backend='vllm'
 build_for_offline='false'
 paddleocr_version='>=3.3.2,<3.4'
 tag_suffix='latest'
-base_image=''
 
 while [[ $# -gt 0 ]]; do
     case $1 in
@@ -79,48 +78,11 @@ if [ "${build_for_offline}" = 'true' ]; then
     tag_suffix="${tag_suffix}-offline"
 fi
 
-if [ "${backend}" = 'vllm' ]; then
-    if [ "${device_type}" = 'gpu' ]; then
-        base_image='ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddlex-genai-vllm-server:latest'
-    elif [ "${device_type}" = 'gpu-sm120' ]; then
-        base_image='ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddlex-genai-vllm-server:latest-sm120'
-    elif [ "${device_type}" = 'dcu' ]; then
-        base_image='image.sourcefind.cn:5000/dcu/admin/base/vllm:0.9.2-ubuntu22.04-dtk25.04.2-py3.10'
-    elif [ "${device_type}" = 'xpu' ]; then
-        base_image=''
-    elif [ "${device_type}" = 'metax-gpu' ]; then
-        base_image=''
-    else
-        base_image=''
-    fi
-elif [ "${backend}" = 'fastdeploy' ]; then
-    if [ "${device_type}" = 'gpu' ]; then
-        base_image='ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/fastdeploy-cuda-12.6:2.3.0'
-    elif [ "${device_type}" = 'gpu-sm120' ]; then
-        base_image=''
-    elif [ "${device_type}" = 'dcu' ]; then
-        base_image=''
-    elif [ "${device_type}" = 'xpu' ]; then
-        base_image='ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/fastdeploy-xpu:2.3.0'
-    elif [ "${device_type}" = 'metax-gpu' ]; then
-        base_image='ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddlex-fastdeploy-metax-gpu:2.3.0'
-    else
-        base_image=''
-    fi
-else
-    echo "Unknown backend: ${backend}" >&2
-    exit 1
-fi
-
-if [ -z "${base_image}" ]; then
-    echo "Backend '${backend}' does not support device type '${device_type}'" >&2
-    exit 2
-fi
+dockerfile="accelerators/${device_type}/vlm.Dockerfile"
 
 docker build \
-    -f vlm.Dockerfile \
+    -f "${dockerfile}" \
     -t "ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-${backend}-server:${tag_suffix}" \
-    --build-arg BASE_IMAGE="${base_image}" \
     --build-arg BUILD_FOR_OFFLINE="${build_for_offline}" \
     --build-arg PADDLEOCR_VERSION="${paddleocr_version}" \
     --build-arg BACKEND="${backend}" \

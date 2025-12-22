@@ -122,15 +122,9 @@ Please refer to the corresponding section in the [PaddleOCR-VL Usage Tutorial](.
 
 This step mainly introduces how to use Docker Compose to deploy PaddleOCR-VL as a service and call it. The specific process is as follows:
 
-1. Copy the content from [here](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/compose_dcu.yaml) and save it as a `compose.yaml` file.
-
-2. Copy the following content and save it as a `.env` file:
-
-    ```
-    API_IMAGE_TAG_SUFFIX=latest-dcu-offline
-    VLM_BACKEND=vllm
-    VLM_IMAGE_TAG_SUFFIX=latest-dcu-offline
-    ```3. Execute the following command in the directory where the `compose.yaml` and `.env` files are located to start the server, which listens on port **8080** by default:
+1. Download the Compose file and the environment variable configuration file separately from [here](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/accelerators/dcu/compose.yaml) and [here](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/accelerators/dcu/.env) to your local machine.
+    
+2. Execute the following command in the directory where the `compose.yaml` and `.env` files are located to start the server, which listens on port **8080** by default:
 
     ```shell
     # Must be executed in the directory where compose.yaml and .env files are located

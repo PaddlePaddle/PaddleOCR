@@ -172,17 +172,9 @@ Please note that the PaddleOCR-VL service introduced in this section differs fro
 
 ### 4.1 Method 1: Deploy Using Docker Compose
 
-1. Copy the content from [here](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/compose.yaml) and save it as a `compose.yaml` file.
+1. Download the Compose file and the environment variable configuration file separately from [here](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/accelerators/gpu-sm120/compose.yaml) and [here](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/accelerators/gpu-sm120/.env) to your local machine.
 
-2. Copy the following content and save it as a `.env` file:
-
-    ```
-    API_IMAGE_TAG_SUFFIX=latest-gpu-sm120-offline
-    VLM_BACKEND=vllm
-    VLM_IMAGE_TAG_SUFFIX=latest-gpu-sm120-offline
-    ```
-
-3. Execute the following command in the directory containing the `compose.yaml` and `.env` files to start the server, which will listen on port **8080** by default:
+2. Execute the following command in the directory containing the `compose.yaml` and `.env` files to start the server, which will listen on port **8080** by default:
 
     ```shell
     # Must be executed in the directory containing compose.yaml and .env files

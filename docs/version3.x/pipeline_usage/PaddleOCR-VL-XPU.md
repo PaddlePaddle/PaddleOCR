@@ -103,17 +103,9 @@ docker run \
 此步骤主要介绍如何使用 Docker Compose 将 PaddleOCR-VL 部署为服务并调用，具体流程如下：
 
 
-1. 从 [此处](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/compose_xpu.yaml) 复制内容保存为 `compose.yaml` 文件。
+1. 分别从 [此处](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/accelerators/xpu/compose.yaml) 和 [此处](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/accelerators/xpu/.env) 获取 Compose 文件与环境变量配置文件并下载到本地。
 
-2. 复制以下内容并保存为 `.env` 文件：
-
-    ```
-    API_IMAGE_TAG_SUFFIX=latest-xpu-offline
-    VLM_BACKEND=fastdeploy
-    VLM_IMAGE_TAG_SUFFIX=latest-xpu-offline
-    ```
-
-3. 在 `compose.yaml` 和 `.env` 文件所在目录下执行以下命令启动服务器，默认监听 **8080** 端口：
+2. 在 `compose.yaml` 和 `.env` 文件所在目录下执行以下命令启动服务器，默认监听 **8080** 端口：
 
     ```shell
     # 必须在 compose.yaml 和 .env 文件所在的目录中执行
