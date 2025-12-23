@@ -302,6 +302,12 @@ paddleocr doc_parser -i ./paddleocr_vl_demo.png --use_layout_detection False
 <td></td>
 </tr>
 <tr>
+<td><code>vl_rec_api_model_name</code></td>
+<td>如果多模态识别模型使用推理服务，该参数用于指定服务的模型名称。</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
 <td><code>vl_rec_api_key</code></td>
 <td>如果多模态识别模型使用推理服务，该参数用于指定服务的 API key。</td>
 <td><code>str</code></td>
@@ -640,6 +646,12 @@ for item in markdown_images:
 <tr>
 <td><code>vl_rec_max_concurrency</code></td>
 <td>如果多模态识别模型使用推理服务，该参数用于指定最大并发请求数。</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>vl_rec_api_model_name</code></td>
+<td>如果多模态识别模型使用推理服务，该参数用于指定服务的模型名称。</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -1098,6 +1110,8 @@ MKL-DNN 缓存容量。
 
 - 方法二：通过 PaddleOCR CLI 手动安装依赖后启动服务。
 
+此外，[硅基流动](https://siliconflow.cn/)、[Novita AI](https://novita.ai/models-console/model-detail/paddlepaddle-paddleocr-vl) 等云平台还提供托管服务。若采用此类服务，可跳过本小节，直接阅读 [3.2 客户端使用方法](#32-客户端使用方法)。
+
 #### 3.1.1 方法一：使用 Docker 镜像
 
 PaddleOCR 提供了 Docker 镜像，用于快速启动 vLLM 或 FastDeploy 推理服务。可使用以下命令启动服务（要求 Docker 版本 >= 19.03，机器装配有 GPU 且 NVIDIA 驱动支持 CUDA 12.6 或以上版本）：
@@ -1197,15 +1211,83 @@ paddleocr genai_server --model_name PaddleOCR-VL-0.9B --backend vllm --port 8118
 可通过 `--vl_rec_backend` 指定后端类型（`vllm-server` 或 `sglang-server`），通过 `--vl_rec_server_url` 指定服务地址，例如：
 
 ```shell
-paddleocr doc_parser --input paddleocr_vl_demo.png --vl_rec_backend vllm-server --vl_rec_server_url http://127.0.0.1:8118/v1
+paddleocr doc_parser --input paddleocr_vl_demo.png --vl_rec_backend vllm-server --vl_rec_server_url http://localhost:8118/v1
+```
+
+此外，可通过 `--vl_rec_api_model_name` 指定服务使用的模型名称，`--vl_rec_api_key` 指定鉴权使用的 API key。示例如下：
+
+使用通过 `vllm serve` 默认参数启动的服务：
+
+```shell
+paddleocr doc_parser \
+    --input paddleocr_vl_demo.png \
+    --vl_rec_backend vllm-server \
+    --vl_rec_server_url http://localhost:8000/v1 \
+    --vl_rec_api_model_name 'PaddlePaddle/PaddleOCR-VL'
+```
+
+硅基流动平台：
+
+```shell
+paddleocr doc_parser \
+    --input paddleocr_vl_demo.png \
+    --vl_rec_backend vllm-server \
+    --vl_rec_server_url https://api.siliconflow.cn/v1 \
+    --vl_rec_api_model_name 'PaddlePaddle/PaddleOCR-VL' \
+    --vl_rec_api_key xxxxxx
+```
+
+Novita AI 平台：
+
+```shell
+paddleocr doc_parser \
+    --input paddleocr_vl_demo.png \
+    --vl_rec_backend vllm-server \
+    --vl_rec_server_url https://api.novita.ai/openai \
+    --vl_rec_api_model_name 'paddlepaddle/paddleocr-vl' \
+    --vl_rec_api_key xxxxxx
 ```
 
 #### 3.2.2 Python API 调用
 
-创建 `PaddleOCRVL` 对象时传入 `vl_rec_backend` 和 `vl_rec_server_url` 参数：
+创建 `PaddleOCRVL` 对象时传入 `vl_rec_backend` 和 `vl_rec_server_url` 参数，分别指定后端类型和服务地址：
 
 ```python
-pipeline = PaddleOCRVL(vl_rec_backend="vllm-server", vl_rec_server_url="http://127.0.0.1:8118/v1")
+pipeline = PaddleOCRVL(vl_rec_backend="vllm-server", vl_rec_server_url="http://localhost:8118/v1")
+```
+
+此外，可通过 `vl_rec_api_model_name` 指定服务使用的模型名称，`vl_rec_api_key` 指定鉴权使用的 API key。
+
+使用通过 `vllm serve` 默认参数启动的服务：
+
+```python
+pipeline = PaddleOCRVL(
+    vl_rec_backend="vllm-server", 
+    vl_rec_server_url="http://localhost:8000/v1",
+    vl_rec_api_model_name="PaddlePaddle/PaddleOCR-VL",
+)
+```
+
+硅基流动平台：
+
+```python
+pipeline = PaddleOCRVL(
+    vl_rec_backend="vllm-server", 
+    vl_rec_server_url="https://api.siliconflow.cn/v1",
+    vl_rec_api_model_name="PaddlePaddle/PaddleOCR-VL",
+    vl_rec_api_key="xxxxxx",
+)
+```
+
+Novita AI 平台：
+
+```python
+pipeline = PaddleOCRVL(
+    vl_rec_backend="vllm-server", 
+    vl_rec_server_url="https://api.novita.ai/openai",
+    vl_rec_api_model_name="paddlepaddle/paddleocr-vl",
+    vl_rec_api_key="xxxxxx",
+)
 ```
 
 ### 3.3 性能调优
@@ -2332,7 +2414,7 @@ VLRecognition:
   ...
   genai_config:
     backend: vllm-server
-    server_url: http://127.0.0.1:8118/v1
+    server_url: http://localhost:8118/v1
 ```
 
 Docker Compose 方案默认已使用加速框架。
