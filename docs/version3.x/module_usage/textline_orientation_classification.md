@@ -12,90 +12,59 @@ comments: true
 
 > 推理耗时仅包含模型推理耗时，不包含前后处理耗时。
 
-<table>
-<thead>
-<tr>
-<th>模型</th>
-<th>模型下载链接</th>
-<th>Top-1 Acc（%）</th>
-<th>GPU推理耗时（ms）</th>
-<th>CPU推理耗时 (ms)</th>
-<th>模型存储大小（MB）</th>
-<th>介绍</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>PP-LCNet_x0_25_textline_ori</td>
-<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-LCNet_x0_25_textline_ori_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-LCNet_x0_25_textline_ori_pretrained.pdparams">训练模型</a></td>
-<td>98.85</td>
-<td>2.16 / 0.41</td>
-<td>2.37 / 0.73</td>
-<td>0.96</td>
-<td>基于PP-LCNet_x0_25的文本行分类模型，含有两个类别，即0度，180度</td>
-</tr>
-<tr>
-<td>PP-LCNet_x1_0_textline_ori</td>
-<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-LCNet_x1_0_textline_ori_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-LCNet_x1_0_textline_ori_pretrained.pdparams">训练模型</a></td>
-<td>99.42</td>
-<td>- / -</td>
-<td>2.98 / 2.98</td>
-<td>6.5</td>
-<td>基于PP-LCNet_x1_0的文本行分类模型，含有两个类别，即0度，180度</td>
-</tr>
-</tbody>
-</table>
+### 📐📐 PP-LCNet_x0_25_textline_ori
+**模型类型：** 推理模型/训练模型 | **模型存储大小：** 0.96 MB  
+**模型介绍：**  
+基于PP-LCNet_x0_25的文本行分类模型，含有两个类别，即0度，180度。
 
-> ❗ <b>注</b>：文本行方向分类模型于 2025.5.26 升级，并增加 `PP-LCNet_x1_0_textline_ori`，如需使用升级前的模型权重，请点击<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-LCNet_x0_25_textline_ori_infer.bak.tar">下载链接</a>。
+**性能指标：**
+| 指标名称 | Top-1 Acc(%) | GPU推理耗时 (ms) | CPU推理耗时 (ms) |
+| :--- | :--- | :--- | :--- |
+| **常规模式** | 98.85 | 2.16 | 2.37 |
+| **高性能模式** | - | 0.41 | 0.73 |
 
-<strong>测试环境说明:</strong>
+**下载链接：**  
+[推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-LCNet_x0_25_textline_ori_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-LCNet_x0_25_textline_ori_pretrained.pdparams)
 
-  <ul>
-      <li><b>性能测试环境</b>
-          <ul>
-              <li><strong>测试数据集：</strong>PaddleOCR 自建的数据集，覆盖证件和文档等多个场景，包含 1000 张图片。</li>
-              <li><strong>硬件配置：</strong>
-                  <ul>
-                      <li>GPU：NVIDIA Tesla T4</li>
-                      <li>CPU：Intel Xeon Gold 6271C @ 2.60GHz</li>
-                  </ul>
-              </li>
-              <li><strong>软件环境：</strong>
-                  <ul>
-                      <li>Ubuntu 20.04 / CUDA 11.8 / cuDNN 8.9 / TensorRT 8.6.1.6</li>
-                      <li>paddlepaddle 3.0.0 / paddleocr 3.0.3</li>
-                  </ul>
-              </li>
-          </ul>
-      </li>
-      <li><b>推理模式说明</b></li>
-  </ul>
+---
 
+### 📐📐 PP-LCNet_x1_0_textline_ori
+**模型类型：** 推理模型/训练模型 | **模型存储大小：** 6.5 MB  
+**模型介绍：**  
+基于PP-LCNet_x1_0的文本行分类模型，含有两个类别，即0度，180度。
 
-<table border="1">
-    <thead>
-        <tr>
-            <th>模式</th>
-            <th>GPU配置</th>
-            <th>CPU配置</th>
-            <th>加速技术组合</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>常规模式</td>
-            <td>FP32精度 / 无TRT加速</td>
-            <td>FP32精度 / 8线程</td>
-            <td>PaddleInference</td>
-        </tr>
-        <tr>
-            <td>高性能模式</td>
-            <td>选择先验精度类型和加速策略的最优组合</td>
-            <td>FP32精度 / 8线程</td>
-            <td>选择先验最优后端（Paddle/OpenVINO/TRT等）</td>
-        </tr>
-    </tbody>
-</table>
+**性能指标：**
+| 指标名称 | Top-1 Acc(%) | CPU推理耗时 (ms) |
+| :--- | :--- | :--- |
+| **常规模式** | 99.42 | 2.98 |
+| **高性能模式** | - | 2.98 |
+
+**下载链接：**  
+[推理模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-LCNet_x1_0_textline_ori_infer.tar) | [训练模型](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-LCNet_x1_0_textline_ori_pretrained.pdparams)
+
+---
+
+### 📝📝 升级说明
+> ❗ **注：** 文本行方向分类模型于 2025.5.26 升级，并增加 `PP-LCNet_x1_0_textline_ori`，如需使用升级前的模型权重，请点击[下载链接](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-LCNet_x0_25_textline_ori_infer.bak.tar)
+
+---
+
+### 🧪🧪🧪 测试环境说明
+**性能测试环境：**
+- **测试数据集：** PaddleOCR 自建的数据集，覆盖证件和文档等多个场景，包含 1000 张图片
+- **硬件配置：**
+  - GPU：NVIDIA Tesla T4
+  - CPU：Intel Xeon Gold 6271C @ 2.60GHz
+- **软件环境：**
+  - Ubuntu 20.04 / CUDA 11.8 / cuDNN 8.9 / TensorRT 8.6.1.6
+  - paddlepaddle 3.0.0 / paddleocr 3.0.3
+
+**推理模式说明：**
+| 模式 | GPU配置 | CPU配置 | 加速技术组合 |
+| :--- | :--- | :--- | :--- |
+| **常规模式** | FP32精度 / 无TRT加速 | FP32精度 / 8线程 | PaddleInference |
+| **高性能模式** | 选择先验精度类型和加速策略的最优组合 | FP32精度 / 8线程 | 选择先验最优后端（Paddle/OpenVINO/TRT等） |
+
 
 ## 三、快速开始
 

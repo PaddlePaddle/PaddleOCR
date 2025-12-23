@@ -1,312 +1,287 @@
 ---
+
 comments: true
+
 ---
 
-# 版面区域检测模块使用教程
+
+# 版面区域检测模块使用教程 
+
 
 ## 一、概述
 
+
 版面区域检测任务的核心是对输入的文档图像进行内容解析和区域划分。通过识别图像中的不同元素（如文字、图表、图像、公式、段落、摘要、参考文献等），将其归类为预定义的类别，并确定这些区域在文档中的位置。
+
 
 ## 二、支持模型列表
 
-> 推理耗时仅包含模型推理耗时，不包含前后处理耗时。
+###  版面检测模型（20类）
+**评估说明：** 以上精度指标的评估集是自建的版面区域检测数据集，包含中英文论文、杂志、报纸、研报、PPT、试卷、课本等 1300 张文档类型图片。
 
-* <b>版面检测模型，包含20个常见的类别：文档标题、段落标题、文本、页码、摘要、目录、参考文献、脚注、页眉、页脚、算法、公式、公式编号、图像、表格、图和表标题（图标题、表格标题和图表标题）、印章、图表、侧栏文本和参考文献内容</b>
-<table>
-<thead>
-<tr>
-<th>模型</th><th>模型下载链接</th>
-<th>mAP(0.5)（%）</th>
-<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>模型存储大小（MB）</th>
-<th>介绍</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>PP-DocLayout_plus-L</td>
-<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayout_plus-L_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocLayout_plus-L_pretrained.pdparams">训练模型</a></td>
-<td>83.2</td>
-<td>53.03 / 17.23</td>
-<td>634.62 / 378.32</td>
-<td>126.01</td>
-<td>基于RT-DETR-L在包含中英文论文、多栏杂志、报纸、PPT、合同、书本、试卷、研报、古籍、日文文档、竖版文字文档等场景的自建数据集训练的更高精度版面区域定位模型</td>
-</tr>
-<tr>
-</tbody>
-</table>
+#### PP-DocLayout_plus-L
+**模型类型：** 推理模型/训练模型 | **模型存储大小：** 126.01 MB  
+**模型介绍：**  
+基于RT-DETR-L在包含中英文论文、多栏杂志、报纸、PPT、合同、书本、试卷极速pdf、研报、古籍、日文文档、竖版文字文档等场景的自建数据集训练的更高精度版面区域定位模型。
 
-<b>注：以上精度指标的评估集是自建的版面区域检测数据集，包含中英文论文、杂志、报纸、研报、PPT、试卷、课本等 1300 张文档类型图片。</b>
+**性能指标：**
+| 指标名称 | mAP(0.5)(%) | GPU推理耗时 (ms) | CPU推理耗时 (ms) |
+| :--- | :--- | :--- | :--- |
+| **常规模式** | 83.2 | 53.03 | 634.62 |
+| **高性能模式** | - | 17.23 | 极速pdf378.32 |
 
-* <b>文档图像版面子模块检测，包含1个 版面区域 类别，能检测多栏的报纸、杂志的每个子文章的文本区域：</b>
-<table>
-<thead>
-<tr>
-<th>模型</th><th>模型下载链接</th>
-<th>mAP(0.5)（%）</th>
-<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>模型存储大小（MB）</th>
-<th>介绍</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>PP-DocBlockLayout</td>
-<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocBlockLayout_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocBlockLayout_pretrained.pdparams">训练模型</a></td>
-<td>95.9</td>
-<td>34.60 / 28.54</td>
-<td>506.43 / 256.83</td>
-<td>123.92</td>
-<td>基于RT-DETR-L在包含中英文论文、多栏杂志、报纸、PPT、合同、书本、试卷、研报、古籍、日文文档、竖版文字文档等场景的自建数据集训练的文档图像版面子模块检测模型</td>
-</tr>
-<tr>
-</tbody>
-</table>
+**下载链接：**  
+| 训练模型 |  推理模型 |
+|:---: |:---: |
+|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayout_plus-L_infer.tar)|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocLayout_plus-L_pretrained.pdparams),[AI Studio](https://aistudio.baidu.com/modelsdetail/37910  ),[Hugging Face](https://huggingface.co/PaddlePaddle/PP-DocLayout_plus-L  ),[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PP-DocLayout_plus-L  ) |
 
-<b>注：以上精度指标的评估集是自建的版面子区域检测数据集，包含中英文论文、杂志、报纸、研报、PPT、试卷、课本等 1000 张文档类型图片。</b>
 
-* <b>版面检测模型，包含23个常见的类别：文档标题、段落标题、文本、页码、摘要、目录、参考文献、脚注、页眉、页脚、算法、公式、公式编号、图像、图表标题、表格、表格标题、印章、图表标题、图表、页眉图像、页脚图像、侧栏文本</b>
-<table>
-<thead>
-<tr>
-<th>模型</th><th>模型下载链接</th>
-<th>mAP(0.5)（%）</th>
-<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>模型存储大小（MB）</th>
-<th>介绍</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>PP-DocLayout-L</td>
-<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayout-L_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocLayout-L_pretrained.pdparams">训练模型</a></td>
-<td>90.4</td>
-<td>33.59 / 33.59</td>
-<td>503.01 / 251.08</td>
-<td>123.76</td>
-<td>基于RT-DETR-L在包含中英文论文、杂志、合同、书本、试卷和研报等场景的自建数据集训练的高精度版面区域定位模型</td>
-</tr>
-<tr>
-<td>PP-DocLayout-M</td>
-<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayout-M_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocLayout-M_pretrained.pdparams">训练模型</a></td>
-<td>75.2</td>
-<td>13.03 / 4.72</td>
-<td>43.39 / 24.44</td>
-<td>22.578</td>
-<td>基于PicoDet-L在包含中英文论文、杂志、合同、书本、试卷和研报等场景的自建数据集训练的精度效率平衡的版面区域定位模型</td>
-</tr>
-<tr>
-<td>PP-DocLayout-S</td>
-<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayout-S_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocLayout-S_pretrained.pdparams">训练模型</a></td>
-<td>70.9</td>
-<td>11.54 / 3.86</td>
-<td>18.53 / 6.29</td>
-<td>4.834</td>
-<td>基于PicoDet-S在中英文论文、杂志、合同、书本、试卷和研报等场景上自建数据集训练的高效率版面区域定位模型</td>
-</tr>
-</tbody>
-</table>
+---
 
-<b>注：以上精度指标的评估集是自建的版面区域检测数据集，包含中英文论文、报纸、研报和试卷等 500 张文档类型图片。</b>
+### 文档图像版面子模块检测（1类）
+**评估说明：** 以上精度指标的评估集是自建的版面子区域检测数据集，包含中英文论文、杂志、报纸、研报、PPT、试卷、课本等 1000 张文档类型图片。
+
+#### PP-DocBlockLayout
+**模型类型：** 推理模型/训练模型 | **模型存储大小：** 123.92 MB  
+**模型介绍：**  
+基于RT-DETR-L在包含中英文论文、多栏杂志、报纸、PPT、合同、书本、试卷、研报、古籍、日文文档、竖版文字文档等场景的自建数据集训练的文档图像版面子模块检测模型。
+
+**性能指标：**
+| 指标名称 | mAP(0.极速pdf5)(%) | GPU推理耗时 (ms) | CPU推理耗时 (ms) |
+| :--- | :--- | :--- | :--- |
+| **常规模式** | 95.9 | 34.60 | 506.43 |
+| **高性能模式** | - | 28.54 | 256.83 |
+
+**下载链接：**  
+| 训练模型 |  推理模型 |
+|:---: |:---: |
+|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/极速pdfPP-D极速pdfocBlockLayout_infer.tar)|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocBlockLayout_pretrained.pdparams),[AI Studio](https://aistudio.baidu.com/modelsdetail/37911  ),[Hugging Face](https://huggingface.co/PaddlePaddle/PP-DocBlockLayout  ),[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PP-DocBlockLayout  ) |
+
+---
+
+###  版面检测模型（23类）
+**评估说明：** 以上精度指标的评估集是自建的版面区域检测数据集，包含中英文论文、报纸、研报和试卷等 500 张文档类型图片。
+
+#### PP-DocLayout-L
+**模型类型：** 推理模型/训练模型 | **模型存储大小：** 123.76 MB  
+**模型介绍：**  
+基于RT-DETR-L在包含中英文论文、杂志、合同、书本、试卷和研报等场景的自建数据集训练的高精度版面区域定位模型。
+
+**性能指标：**
+| 指标名称 | mAP(0.5)(%) | GPU推理耗时 (ms) | CPU推理耗时 (ms) |
+| :--- | :--- | :--- | :--- |
+| **常规模式** | 90.4 | 33.59 | 503.01 |
+| **高性能模式** | - | 33.59 | 251.08 |
+
+**下载链接：** 
+| 训练模型 |  推理模型 |
+|:---: |:---: |
+|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayout-L_infer.tar)|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocLayout-L_pretrained.pdparams),[AI Studio](https://aistudio.baidu.com/modelsdetail/37912  ),[Hugging Face](https://huggingface.co/PaddlePaddle/PP-DocLayout-L  ),[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PP-DocLayout-L  ) |
+
+---
+
+#### PP-DocLayout-M
+**模型类型：** 推理模型/训练模型 | **模型存储大小：极速pdf** 22.578 MB  
+**模型介绍：**  
+基于PicoDet-L在包含中英文论文、杂志、合同、书本、试卷和研报等场景的自建数据集训练的精度效率平衡的版面区域定位模型。
+
+**性能指标：**
+| 指标名称 | mAP(0.5)(%) | GPU推理耗时 (ms) | CPU推理耗时 (ms) |
+| :--- | :极速pdf--- | :--- | :--- |
+| **常规模式** | 75.2 | 13.03 | 43.39 |
+| **高性能模式** | - | 4.72 | 24.44 |
+
+**下载链接：**  
+| 训练模型 |  推理模型 |
+|:---: |:---: |
+|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayout-M_infer.tar) |[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-DocLayout-M_pretrained.pdparams),[AI Studio](https://aistudio.baidu.com/modelsdetail/37913  ),[Hugging Face](https://huggingface.co/PaddlePaddle/PP-DocLayout-M  ) ,[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PP-DocLayout-M  ) |
+
+---
+
+#### PP-DocLayout-S
+**模型类型：** 推理模型/训练模型 | **模型存储大小：** 4.834 MB  
+**模型介绍：**  
+基于PicoDet-S在中英文论文、杂志、合同、书本、试卷和研报等场景上自建数据集训练的高效率版面区域定位极速pdf模型。
+
+**性能指标：**
+| 指标名称 | mAP(0.5)(%) | GPU推理耗时 (ms) | CPU推理耗时 (ms) |
+| :--- | :--- | :--- | :--- |
+| **常规模式** | 70.9 | 11.54 | 18.53 |
+| **高性能模式** | - | 3.86 | 6.29 |
+
+**下载链接：**  
+| 训练模型 |  推理模型 |
+|:---: |:---: |
+|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3极速pdf.0.0/PP-DocLayout-S_infer.tar)|[BOS源](https://paddle-model-ecology.bj.bcebos极速pdf.com/paddlex/official_pretrained_model/PP-DocLayout-S_pretrained.pdparams),[AI Studio](https://aistudio.baidu.com/modelsdetail/37914  ),[Hugging Face](https://huggingface.co/PaddlePaddle/PP-DocLayout-S  ),[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PP-DocLayout-S  ) |
+
+
+---
 
 > ❗ 以上列出的是版面检测模块重点支持的<b>5个核心模型</b>，该模块总共支持<b>13个全量模型</b>，包含多个预定义了不同类别的模型，完整的模型列表如下：
 
-<details><summary> 👉模型列表详情</summary>
+<details>
+<summary> 👉模型列表详情</summary>
 
-* <b>表格版面检测模型</b>
-<table>
-<thead>
-<tr>
-<th>模型</th><th>模型下载链接</th>
-<th>mAP(0.5)（%）</th>
-<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>模型存储大小（MB）</th>
-<th>介绍</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>PicoDet_layout_1x_table</td>
-<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PicoDet_layout_1x_table_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PicoDet_layout_1x_table_pretrained.pdparams">训练模型</a></td>
-<td>97.5</td>
-<td>9.57 / 6.63</td>
-<td>27.66 / 16.75</td>
-<td>7.4</td>
-<td>基于PicoDet-1x在自建数据集训练的高效率版面区域定位模型，可定位表格这1类区域</td>
-</tr>
-</tbody></table>
+###  表格版面检测模型（1类）
+**评估说明：** 适用于表格区域的检测任务
 
-* <b>3类版面检测模型，包含表格、图像、印章</b>
-<table>
-<thead>
-<tr>
-<th>模型</th><th>模型下载链接</th>
-<th>mAP(0.5)（%）</th>
-<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>模型存储大小（MB）</th>
-<th>介绍</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>PicoDet-S_layout_3cls</td>
-<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PicoDet-S_layout_3cls_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PicoDet-S_layout_3cls_pretrained.pdparams">训练模型</a></td>
-<td>88.2</td>
-<td>8.43 / 3.44</td>
-<td>17.60 / 6.51</td>
-<td>4.8</td>
-<td>基于PicoDet-S轻量模型在中英文论文、杂志和研报等场景上自建数据集训练的高效率版面区域定位模型</td>
-</tr>
-<tr>
-<td>PicoDet-L_layout_3cls</td>
-<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PicoDet-L_layout_3cls_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PicoDet-L_layout_3cls_pretrained.pdparams">训练模型</a></td>
-<td>89.0</td>
-<td>12.80 / 9.57</td>
-<td>45.04 / 23.86</td>
-<td>22.6</td>
-<td>基于PicoDet-L在中英文论文、杂志和研报等场景上自建数据集训练的效率精度均衡版面区域定位模型</td>
-</tr>
-<tr>
-<td>RT-DETR-H_layout_3cls</td>
-<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/RT-DETR-H_layout_3cls_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/RT-DETR-H_layout_3cls_pretrained.pdparams">训练模型</a></td>
-<td>95.8</td>
-<td>114.80 / 25.65</td>
-<td>924.38 / 924.38</td>
-<td>470.1</td>
-<td>基于RT-DETR-H在中英文论文、杂志和研报等场景上自建数据集训练的高精度版面区域定位模型</td>
-</tr>
-</tbody></table>
+#### PicoDet_layout_1x_table
+**模型类型：** 推理模型/训练模型 | **模型存储大小：** 7.4 MB  
+**模型介绍：**  
+基于PicoDet-1极速pdfx在自建数据集训练的高效率版面区域定位模型，可定位表格这1类区域。
 
-* <b>5类英文文档区域检测模型，包含文字、标题、表格、图片以及列表</b>
-<table>
-<thead>
-<tr>
-<th>模型</th><th>模型下载链接</th>
-<th>mAP(0.5)（%）</th>
-<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>模型存储大小（MB）</th>
-<th>介绍</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>PicoDet_layout_1x</td>
-<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PicoDet_layout_1x_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PicoDet_layout_1x_pretrained.pdparams">训练模型</a></td>
-<td>97.8</td>
-<td>9.62 / 6.75</td>
-<td>26.96 / 12.77</td>
-<td>7.4</td>
-<td>基于PicoDet-1x在PubLayNet数据集训练的高效率英文文档版面区域定位模型</td>
-</tr>
-</tbody></table>
+**性能指标：**
+| 指标名称 | mAP(0.5)(%) | GPU推理耗时 (ms) | CPU推理耗时 (ms) |
+| :--- | :--- | :--- | :--- |
+| **常规模式** | 97.5 | 9.57 | 27.66 |
+| **高性能模式** | - | 6.63 | 16.75 |
 
-* <b>17类区域检测模型，包含17个版面常见类别，分别是：段落标题、图片、文本、数字、摘要、内容、图表标题、公式、表格、表格标题、参考文献、文档标题、脚注、页眉、算法、页脚、印章</b>
-<table>
-<thead>
-<tr>
-<th>模型</th><th>模型下载链接</th>
-<th>mAP(0.5)（%）</th>
-<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>模型存储大小（MB）</th>
-<th>介绍</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>PicoDet-S_layout_17cls</td>
-<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PicoDet-S_layout_17cls_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PicoDet-S_layout_17cls_pretrained.pdparams">训练模型</a></td>
-<td>87.4</td>
-<td>8.80 / 3.62</td>
-<td>17.51 / 6.35</td>
-<td>4.8</td>
-<td>基于PicoDet-S轻量模型在中英文论文、杂志和研报等场景上自建数据集训练的高效率版面区域定位模型</td>
-</tr>
-<tr>
-<td>PicoDet-L_layout_17cls</td>
-<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PicoDet-L_layout_17cls_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PicoDet-L_layout_17cls_pretrained.pdparams">训练模型</a></td>
-<td>89.0</td>
-<td>12.60 / 10.27</td>
-<td>43.70 / 24.42</td>
-<td>22.6</td>
-<td>基于PicoDet-L在中英文论文、杂志和研报等场景上自建数据集训练的效率精度均衡版面区域定位模型</td>
-</tr>
-<tr>
-<td>RT-DETR-H_layout_17cls</td>
-<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/RT-DETR-H_layout_17cls_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/RT-DETR-H_layout_17cls_pretrained.pdparams">训练模型</a></td>
-<td>98.3</td>
-<td>115.29 / 101.18</td>
-<td>964.75 / 964.75</td>
-<td>470.2</td>
-<td>基于RT-DETR-H在中英文论文、杂志和研报等场景上自建数据集训练的高精度版面区域定位模型</td>
-</tr>
-</tbody>
-</table>
+**下载链接：**  
+| 训练模型 |  推理模型 |
+|:---: |:---: |
+|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PicoDet_layout_1x_table_infer.tar)|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PicoDet_layout_1x_table_pretrained.pdparams),[AI Studio](https://aistudio.baidu.com/modelsdetail/37915  ),[Hugging Face](https://huggingface.co/PaddlePaddle/PicoDet_layout_1x_table  ) ,[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PicoDet_layout_1x_table  )|
 
- <strong>测试环境说明:</strong>
 
-  <ul>
-      <li><b>性能测试环境</b>
-          <ul>
-              <li><strong>测试数据集：</strong>
-                 <ul>
-                    <li>20类版面检测模型： PaddleOCR 自建的版面区域检测数据集，包含中英文论文、杂志、报纸、研报、PPT、试卷、课本等 1300 张文档类型图片。</li>
-                    <li>1类版面子区域检测模型： PaddleOCR 自建的版面子区域检测数据集，包含中英文论文、杂志、报纸、研报、PPT、试卷、课本等 1000 张文档类型图片。</li>                 
-                    <li>23类版面检测模型： PaddleOCR 自建的版面区域检测数据集，包含中英文论文、杂志、合同、书本、试卷和研报等常见的 500 张文档类型图片。</li>
-                    <li>3类版面检测模型：PaddleOCR 自建的版面区域检测数据集，包含中英文论文、杂志和研报等常见的 1154 张文档类型图片。</li>
-                    <li>5类英文文档区域检测模型： <a href="https://developer.ibm.com/exchanges/data/all/publaynet" target="_blank">PubLayNet</a> 的评估数据集，包含英文文档的 11245 张图片。</li>
-                    <li>17类区域检测模型：PaddleOCR 自建的版面区域检测数据集，包含中英文论文、杂志和研报等常见的 892 张文档类型图片。</li>
-                 </ul>
-              </li>
-              <li><strong>硬件配置：</strong>
-                  <ul>
-                      <li>GPU：NVIDIA Tesla T4</li>
-                      <li>CPU：Intel Xeon Gold 6271C @ 2.60GHz</li>
-                  </ul>
-              </li>
-              <li><strong>软件环境：</strong>
-                  <ul>
-                      <li>Ubuntu 20.04 / CUDA 11.8 / cuDNN 8.9 / TensorRT 8.6.1.6</li>
-                      <li>paddlepaddle 3.0.0 / paddleocr 3.0.3</li>
-                  </ul>
-              </li>
-          </ul>
-      </li>
-      <li><b>推理模式说明</b></li>
-  </ul>
+---
 
-<table border="1">
-    <thead>
-        <tr>
-            <th>模式</th>
-            <th>GPU配置</th>
-            <th>CPU配置</th>
-            <th>加速技术组合</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>常规模式</td>
-            <td>FP32精度 / 无TRT加速</td>
-            <td>FP32精度 / 8线程</td>
-            <td>PaddleInference</td>
-        </tr>
-        <tr>
-            <td>高性能模式</td>
-            <td>选择先验精度类型和加速策略的最优组合</td>
-            <td>FP32精度 / 8线程</td>
-            <td>选择先验最优后端（Paddle/OpenVINO/TRT等）</td>
-        </tr>
-    </tbody>
-</table>
+###  3类版面检测模型
+**评估说明：** 包含表格、图像、印章三类区域检测
+
+#### PicoDet-S_layout_3cls
+**模型类型：** 推理模型/训练模型 | **模型存储大小：** 4.8 MB  
+**模型介绍：**  
+基于PicoDet-S轻量模型在中英文论文、杂志和研报等场景上自建数据集训练的高效率版面区域定位模型。
+
+**性能指标：**
+| 指标名称 | mAP(0.5)(%) | GPU推理耗时 (ms) | CPU推理耗时 (ms) |
+| :--- | :--- | :--- | :--- |
+| **常规模式** | 88.2 | 8.43 | 极速pdf17.60 |
+| **高性能模式** | - | 3.44 | 6.51 |
+
+**下载极速pdf链接：**  
+| 训练模型 |  推理模型 |
+|:---: |:---: |
+|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PicoDet-S_layout_3cls_infer.tar)|[BOS源](https://paddle-model-ecology.b极速pdfj.bcebos.com/paddlex/official_pretrained_model/PicoDet-S_layout_3cls_pretrained.pdparams),[AI Studio](https://aistudio.baidu.com/modelsdetail/37916  ),[Hugging Face](https://huggingface.co/PaddlePaddle/PicoDet-S_layout_3cls  ),[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PicoDet-S_layout_3cls  )  |
+
+---
+
+#### PicoDet-L_layout_3cls
+**模型类型：** 推理模型/训练模型 | **模型存储大小：** 22.6 MB  
+**模型介绍：**  
+基于PicoDet-L在中英文论文、杂志和研报等场景上自建数据集训练的效率精度均衡版面区域定位模型。
+
+**性能指标：**
+| 指标名称 | mAP(0.5)(%) | GPU推理耗时 (ms) | CPU推理耗时 (ms) |
+| :--- | :--- | :--- | :--- |
+| **常规模式** | 89.0 | 12.80 | 45.04 |
+| **高性能模式** | - | 9.57 | 23.86 |
+
+**下载链接：**  
+| 训练模型 |  推理模型 |
+|:---: |:---: |
+|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PicoDet-L_layout_3cls_infer.tar)|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PicoDet-L_layout_3cls_pretrained.pdparams),[AI Studio](https://aistudio.baidu.com/modelsdetail/37917  ),[Hugging Face](https://huggingface.co/PaddlePaddle/PicoDet-L_layout_3cls  ) ,[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PicoDet-L_layout_3cls  )  |
+
+---
+
+#### RT-DETR-H_layout_3cls
+**模型类型：** 推理模型/训练模型 | **模型存储大小：** 470.1 MB  
+**模型介绍：**  
+基于RT-DETR-H在中英文论文、杂志和研报等场景上自建数据集训练的高精度版面区域定位模型。
+
+**性能指标：**
+| 指标名称 | mAP(0.5)(%) | GPU推理耗时 (ms) | CPU推理耗时 (ms) |
+| :--- | :--- | :--- | :--- |
+| **常规模式** | 95.8 | 114.80 | 924.38 |
+| **高性能模式** | - | 25.65 | 924.38 |
+
+**下载链接：**  
+| 训练模型 |  推理模型 |
+|:---: |:---: |
+|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.极速pdf0.0/RT-DETR-H_layout_3cls_infer.tar)|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/RT-DETR-H_layout_3cls_pretrained.pdparams),[AI Studio](https://aistudio.baidu.com/modelsdetail/37918  ),[Hugging Face](https://huggingface.co/PaddlePaddle/PP-LCNet_x1_0_doc_ori) ,[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/RT-DETR-H_layout_3cls  )  |
+
+---
+
+###  5类英文文档区域检测模型
+**评估说明：** 包含文字、标题、表格、图片以及列表五类区域
+
+#### PicoDet_layout_1x
+**模型类型：** 推理模型/训练模型 | **极速pdf模型存储大小：** 7.4 MB  
+**模型介绍：**  
+基于PicoDet-1x在PubLayNet数据集训练的高效率英文文档版面区域定位模型。
+
+**性能指标：**
+| 指标名称 | mAP(0.5)(%) | GPU推理耗时 (ms极速pdf) | CPU推理耗时 (ms) |
+| :--- | :--- | :--- | :--- |
+| **常规模式极速pdf** | 97.8 | 9.62 | 26.极速pdf96 |
+| **高性能模式** | - | 6.75 | 12.77 |
+
+**下载链接：**  
+| 训练模型 |  推理模型 |
+|:---: |:---: |
+|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PicoDet_layout_1x_infer.tar)|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PicoDet_layout_1极速pdfx_pretrained.pdparams),[AI Studio](https://aistudio.baidu.com/modelsdetail/37919  ),[Hugging Face](https://huggingface.co/PaddlePaddle/PicoDet_layout_1x  ) ,[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PicoDet_layout_1x  )  |
+
+
+---
+
+###  17类区域检测模型
+**评估说明：** 包含17个版面常见类别
+
+#### PicoDet-S_layout_17cls
+**模型类型：** 推理模型/训练模型 | **模型存储大小：** 4.8 MB  
+**模型介绍：**  
+基于PicoDet-S轻量模型在中英文论文、杂志和研报等场景上自建数据集训练的高效率版面区域定位模型。
+
+**性能指标：**
+| 指标名称 | mAP(0.5)(%) | GPU推理耗时 (ms) | CPU推理耗时 (ms) |
+| :--- | :--- | :--- | :--- |
+| **常规模式** | 87.4 | 8.80 | 17.51 |
+| **高性能模式** | - | 3.62 | 6.35 |
+
+**下载链接：**  
+| 训练模型 |  推理模型 |
+|:---: |:---: |
+|[BOS源](https://paddle-model-ecology.bj.bcebos.com/padd极速pdflex/official_inference_model/paddle3.0.0/PicoDet-S_layout_17cls_infer.tar)|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PicoDet-S_layout_17cls_pretrained.pdparams),[AI Studio](https://aistudio.baidu.com/modelsdetail/37920  ),[Hugging Face](https://huggingface.co/PaddlePaddle/PicoDet-S_layout_17cls  ) ,[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PicoDet-S_layout_17cls  ) |
+
+---
+
+#### PicoDet-L_layout_17cls
+**模型类型：** 推理模型/训练模型 | **模型存储大小：** 22.6 MB  
+**模型介绍：**  
+基于PicoDet-L在中英文论文、杂志和研报等场景上自建数据集训练的效率精度均衡版面区域定位模型。
+
+**性能指标：**
+| 指标名称 | mAP(0.5)(%) | GPU推理耗时 (ms) | CPU推理耗时 (ms) |
+| :--- | :--- | :--- | :--- |
+| **常规模式** | 89.0 | 12.60 | 43.70 |
+| **高性能模式** | - | 10.27 | 24.42 |
+
+**下载链接：**  
+| 训练模型 |  推理模型 |
+|:---: |:---: |
+|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PicoDet-L_layout_17cls_infer.tar)|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PicoDet-L_layout_17cls_pretrained.pdparams),[AI Studio](https://aistudio.baidu.com/modelsdetail/37921  ),[Hugging Face](https://huggingface.co/PaddlePaddle/PicoDet-L_layout_17cls  ) ,[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PicoDet-L_layout_17cls  ) |
+
+---
+
+#### RT-DETR-H_layout_17cls
+**模型类型：** 推理模型/训练模型 | **模型存储大小：** 470.2 MB  
+**模型介绍：**  
+基于RT-DETR-H在中英文论文、杂志和研报等场景上自建数据集训练的高精度版面区域定位模型。
+
+**性能指标：**
+| 指标名称 | mAP(0.5)(%) | GPU推理耗时 (ms) | CPU推理耗时 (ms) |
+| :--- | :--- | :--- | :--- |
+| **常规模式** | 98.3 | 115.29 | 964.75 |
+| **高性能模式** | - | 101.18 | 964.75 |
+
+**下载链接：**  
+| 训练模型 |  推理模型 |
+|:---: |:---: |
+|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/RT-DETR-H_layout_17cls极速pdf_infer.tar)|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/RT-DETR-H_layout_17cls_pretrained.pdparams),[AI Studio](https://aistudio.baidu.com/modelsdetail/37922  ),[Hugging Face](https://huggingface.co/PaddlePaddle/RT-DETR-H_layout_17cls  ) ,[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/RT-DETR-H_layout_17cls  )  |
+
 </details>
+
+
+
 
 ## 三、快速开始
 

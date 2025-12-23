@@ -10,27 +10,31 @@ comments: true
 
 ## 二、支持模型列表
 
+> 推理耗时仅包含模型推理耗时，不包含前后处理耗时。
 
-<table>
-<tr>
-<th>模型</th><th>模型下载链接</th>
-<th>模型参数规模（B）</th>
-<th>模型存储大小（GB）</th>
-<th>模型分数 </th>
-<th>介绍</th>
-</tr>
-<tr>
-<td>PP-Chart2Table</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-Chart2Table_infer.tar">推理模型</a></td>
-<td>0.58</td>
-<td>1.4</td>
-<th>80.60</th>
-<td>PP-Chart2Table是飞桨团队自研的一款专注于图表解析的多模态模型，在中英文图表解析任务中展现出卓越性能。团队专为图表解析设计了Shuffled Chart Data Retrieval训练任务，并结合精心设计的令牌掩码策略，显著提升其在图表转数据表任务上的性能。此外，团队通过精心设计的数据合成流程增强了PP-Chart2Table的能力，该流程利用高质量的种子数据，并结合RAG和大语言模型人格设计，以生成更丰富多样化的数据。为了处理大量未标记的分布外 (OOD) 数据，团队采用了两阶段大模型蒸馏训练过程，确保模型在广泛的真实世界数据集中具有出色的适应性和泛化能力。在内部业务的中英文场景测试中，PP-Chart2Table不仅达到同参数量级模型中的SOTA水平，更在关键场景中实现了与7B参数量级VLM模型相当的精度。</td>
-</tr>
-</table>
+###  PP-Chart2Table
+**模型类型：** 推理模型 | **模型存储大小：** 1.4 GB  
+**模型介绍：**  
+PP-Chart2Table是飞桨团队自研的一款专注于图表解析的多模态模型，在中英文图表解析任务中展现出卓越性能。团队专为图表解析设计了Shuffled Chart Data Retrieval训练任务，并结合精心设计的令牌掩码策略，显著提升其在图表转数据表任务上的性能。此外，团队通过精心设计的数据合成流程增强了PP-Chart2Table的能力，该流程利用高质量的种子数据，并结合RAG和大语言模型人格设计，以生成更丰富多样化的数据。
 
-<b>注：以上模型分数为内部评估集模型测试结果，共1801条数据，包括了各个场景（财报、法律法规、合同等）下的各种图表类型（柱状图、折线图、饼图等）的测试样本，暂时未有计划公开。</b>
+**性能指标：**
+| 指标名称 | 模型分数 |
+| :--- | :--- |
+| **内部评估** | 80.60 |
 
-> ❗ <b>注</b>：PP-Chart2Table模型于 2025.6.27 升级，如需使用升级前的模型权重，请点击<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-Chart2Table_infer.bak.tar">下载链接</a>
+**下载链接：**  
+| 训练模型 | 推理模型 |
+|:---:|:---:|
+| 暂无 | [BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-Chart2Table_infer.tar), [AI Studio](https://aistudio.baidu.com/modelsdetail/31864), [Hugging Face](https://huggingface.co/PaddlePaddle/PP-Chart2Table), [ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PP-Chart2Table) |
+
+
+---
+
+### 📝📝 评估说明
+**注：** 以上模型分数为内部评估集模型测试结果，共1801条数据，包括了各个场景（财报、法律法规、合同等）下的各种图表类型（柱状图、折线图、饼图等）的测试样本，暂时未有计划公开。
+
+> ❗❗ **注：** PP-Chart2Table模型于 2025.6.27 升级，如需使用升级前的模型权重，请点击[下载链接](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-Chart2Table_infer.bak.tar)
+
 
 ## 三、快速开始
 
