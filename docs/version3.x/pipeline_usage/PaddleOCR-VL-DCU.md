@@ -117,6 +117,10 @@ docker run -it \
 
 请参考 [PaddleOCR-VL 使用教程](./PaddleOCR-VL.md) 相同章节。
 
+### 3.3 性能调优
+
+请参考[PaddleOCR-VL 使用教程](./PaddleOCR-VL.md) 相同章节。
+
 ## 4. 服务化部署
 
 >请注意，本节所介绍 PaddleOCR-VL 服务与上一节中的 VLM 推理服务有所区别：后者仅负责完整流程中的一个环节（即 VLM 推理），并作为前者的底层服务被调用。

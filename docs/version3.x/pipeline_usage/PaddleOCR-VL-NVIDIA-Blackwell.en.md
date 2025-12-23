@@ -159,6 +159,10 @@ The parameters supported by this command are as follows:
 
 Please refer to the corresponding section in the [PaddleOCR-VL Usage Tutorial](./PaddleOCR-VL.en.md).
 
+### 3.3 Performance Tuning
+
+Please refer to the corresponding section in the [PaddleOCR-VL Usage Tutorial](./PaddleOCR-VL.en.md).
+
 ## 4. Service Deployment
 
 This section mainly introduces how to deploy PaddleOCR-VL as a service and invoke it. There are two methods available; choose one:

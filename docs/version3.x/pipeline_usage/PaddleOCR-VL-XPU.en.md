@@ -99,6 +99,10 @@ docker run \
 
 Please refer to the corresponding section in the [PaddleOCR-VL Usage Tutorial](./PaddleOCR-VL.en.md).
 
+### 3.3 Performance Tuning
+
+Please refer to the corresponding section in the [PaddleOCR-VL Usage Tutorial](./PaddleOCR-VL.en.md).
+
 ## 4. Service Deployment
 
 >Please note that the PaddleOCR-VL service introduced in this section differs from the VLM inference service in the previous section: the latter is only responsible for one part of the complete process (i.e., VLM inference) and is called as an underlying service by the former.

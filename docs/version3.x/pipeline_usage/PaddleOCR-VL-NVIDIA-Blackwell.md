@@ -160,6 +160,10 @@ paddleocr genai_server --model_name PaddleOCR-VL-0.9B --backend vllm --port 8118
 
 请参考[PaddleOCR-VL 使用教程](./PaddleOCR-VL.md) 相同章节。
 
+### 3.3 性能调优
+
+请参考[PaddleOCR-VL 使用教程](./PaddleOCR-VL.md) 相同章节。
+
 ## 4. 服务化部署
 
 此步骤主要介绍如何将 PaddleOCR-VL 部署为服务并调用，有以下两种方式，任选一种即可：
