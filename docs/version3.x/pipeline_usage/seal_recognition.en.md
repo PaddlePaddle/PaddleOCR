@@ -924,6 +924,8 @@ Any float > <code>0</code>. If not set, the default is <code>0.0</code> (no thre
 <li><b>XPU</b>: For example, <code>xpu:0</code> indicates using the first XPU for inference.</li>
 <li><b>MLU</b>: For example, <code>mlu:0</code> indicates using the first MLU for inference.</li>
 <li><b>DCU</b>: For example, <code>dcu:0</code> indicates using the first DCU for inference.</li>
+<li><b>MetaX GPU</b>: For example, <code>metax_gpu:0</code> indicates using the first MetaX GPU for inference.</li>
+<li><b>Iluvatar GPU</b>: For example, <code>iluvatar_gpu:0</code> indicates using the first Iluvatar GPU for inference.</li>
 </ul>If not set, the pipeline initialized value for this parameter will be used. During initialization, the local GPU device 0 will be preferred; if unavailable, the CPU device will be used.
 </td>
 <td><code>str</code></td>
@@ -1244,6 +1246,8 @@ In the above Python script, the following steps were executed:
 <li><b>XPU</b>: e.g., <code>xpu:0</code> means using XPU 0;</li>
 <li><b>MLU</b>: e.g., <code>mlu:0</code> means using MLU 0;</li>
 <li><b>DCU</b>: e.g., <code>dcu:0</code> means using DCU 0;</li>
+<li><b>MetaX GPU</b>: e.g., <code>metax_gpu:0</code> means using MetaX GPU 0;</li>
+<li><b>Iluvatar GPU</b>: e.g., <code>iluvatar_gpu:0</code> means using Iluvatar GPU 0;</li>
 <li><b>None</b>: If set to <code>None</code>, the pipeline initialized value for this parameter will be used. During initialization, the local GPU device 0 will be preferred; if unavailable, the CPU device will be used.</li>
 </ul>
 </td>

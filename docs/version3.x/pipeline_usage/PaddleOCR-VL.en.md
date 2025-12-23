@@ -108,6 +108,7 @@ Since different hardware requires different dependencies, if your hardware meets
 | NVIDIA GPU     | - NVIDIA Blackwell architecture GPU (e.g., RTX 50 series) refer to [PaddleOCR-VL NVIDIA Blackwell Architecture GPU Environment Configuration Tutorial](./PaddleOCR-VL-NVIDIA-Blackwell.en.md) <br/> - Other NVIDIA GPUs refer to this tutorial |
 | KUNLUNXIN XPU  | [PaddleOCR-VL XPU Environment Configuration Tutorial](./PaddleOCR-VL-XPU.en.md)                                              |
 | HYGON DCU      | [PaddleOCR-VL DCU Environment Configuration Tutorial](./PaddleOCR-VL-DCU.en.md)                                              |
+| MetaX GPU      | [PaddleOCR-VL MetaX GPU Environment Configuration Tutorial](./PaddleOCR-VL-MetaX-GPU.en.md)                                              |
 
 > TIP:
 > For example, if you are using an RTX 50 series GPU that meets the device requirements for both PaddlePaddle and vLLM inference methods, please refer to the [PaddleOCR-VL NVIDIA Blackwell Architecture GPU Environment Configuration Tutorial](./PaddleOCR-VL-NVIDIA-Blackwell.en.md) to complete the environment configuration before using PaddleOCR-VL.
@@ -198,6 +199,9 @@ paddleocr doc_parser -i ./paddleocr_vl_demo.png --device xpu
 
 # HYGON DCU
 paddleocr doc_parser -i ./paddleocr_vl_demo.png --device dcu
+
+# MetaX GPU
+paddleocr doc_parser -i ./paddleocr_vl_demo.png --device metax_gpu
 
 # Use --use_doc_orientation_classify to enable document orientation classification
 paddleocr doc_parser -i ./paddleocr_vl_demo.png --use_doc_orientation_classify True
@@ -392,6 +396,8 @@ If not set, the initialized parameter value will be used.
 <li><b>XPU</b>: For example,<code>xpu:0</code> indicates using the first XPU for inference;</li>
 <li><b>MLU</b>: For example,<code>mlu:0</code> indicates using the first MLU for inference;</li>
 <li><b>DCU</b>: For example,<code>dcu:0</code> indicates using the first DCU for inference;</li>
+<li><b>MetaX GPU</b>: For example,<code>metax_gpu:0</code> indicates using the first MetaX GPU for inference;</li>
+<li><b>Iluvatar GPU</b>: For example,<code>iluvatar_gpu:0</code> indicates using the first Iluvatar GPU for inference;</li>
 </ul>If not set, the initialized default value will be used. During initialization, the local GPU device 0 will be used preferentially. If it is not available, the CPU device will be used.</td>
 <td><code>str</code></td>
 <td></td>
@@ -463,9 +469,13 @@ pipeline = PaddleOCRVL()
 # pipeline = PaddleOCRVL(device="xpu")
 # HYGON DCU
 # pipeline = PaddleOCRVL(device="dcu")
+# MetaX GPU
+# pipeline = PaddleOCRVL(device="metax_gpu")
+
 # pipeline = PaddleOCRVL(use_doc_orientation_classify=True) # Use use_doc_orientation_classify to enable/disable document orientation classification model
 # pipeline = PaddleOCRVL(use_doc_unwarping=True) # Use use_doc_unwarping to enable/disable document unwarping module
 # pipeline = PaddleOCRVL(use_layout_detection=False) # Use use_layout_detection to enable/disable layout detection module
+
 output = pipeline.predict("./paddleocr_vl_demo.png")
 for res in output:
     res.print() ## Print the structured prediction output
@@ -488,6 +498,8 @@ pipeline = PaddleOCRVL()
 # pipeline = PaddleOCRVL(device="xpu")
 # HYGON DCU
 # pipeline = PaddleOCRVL(device="dcu")
+# MetaX GPU
+# pipeline = PaddleOCRVL(device="metax_gpu")
 
 output = pipeline.predict(input=input_file)
 
@@ -686,6 +698,8 @@ If not set, the initialized parameter value will be used.
 <li><b>XPU</b>: For example,<code>xpu:0</code> indicates using the first XPU for inference;</li>
 <li><b>MLU</b>: For example,<code>mlu:0</code> indicates using the first MLU for inference;</li>
 <li><b>DCU</b>: For example,<code>dcu:0</code> indicates using the first DCU for inference;</li>
+<li><b>MetaX GPU</b>: For example,<code>metax_gpu:0</code> indicates using the first MetaX GPU for inference;</li>
+<li><b>Iluvatar GPU</b>: For example,<code>iluvatar_gpu:0</code> indicates using the first Iluvatar GPU for inference;</li>
 </ul>If not set, the initialized default value will be used. During initialization, the local GPU device 0 will be used preferentially. If it is not available, the CPU device will be used.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>

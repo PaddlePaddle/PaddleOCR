@@ -108,6 +108,7 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
 | 英伟达 GPU      | - NVIDIA Blackwell 架构 GPU（如RTX 50 系）参考 [PaddleOCR-VL NVIDIA Blackwell 架构 GPU 环境配置教程](./PaddleOCR-VL-NVIDIA-Blackwell.md) <br/> - 其他 NVIDIA GPU 参考本教程 |
 | 昆仑芯 XPU      | [PaddleOCR-VL XPU 环境配置教程](./PaddleOCR-VL-XPU.md) |
 | 海光 DCU        | [PaddleOCR-VL DCU 环境配置教程](./PaddleOCR-VL-DCU.md) |
+| 沐曦 GPU        | [PaddleOCR-VL 沐曦 GPU 环境配置教程](./PaddleOCR-VL-MetaX-GPU.md) |
 
 > TIP:
 > 例如您使用的是 RTX 50 系 GPU，满足 PaddlePaddle 和 vLLM 推理方式的设备要求，请参考 [PaddleOCR-VL NVIDIA Blackwell 架构 GPU 环境配置教程](./PaddleOCR-VL-NVIDIA-Blackwell.md) 完成环境配置后再进行 PaddleOCR-VL 的使用。
@@ -200,6 +201,9 @@ paddleocr doc_parser -i ./paddleocr_vl_demo.png --device xpu
 
 # 海光 DCU
 paddleocr doc_parser -i ./paddleocr_vl_demo.png --device dcu
+
+# 沐曦 GPU
+paddleocr doc_parser -i ./paddleocr_vl_demo.png --device metax_gpu
 
 # 通过 --use_doc_orientation_classify 指定是否使用文档方向分类模型
 paddleocr doc_parser -i ./paddleocr_vl_demo.png --use_doc_orientation_classify True
@@ -413,6 +417,8 @@ paddleocr doc_parser -i ./paddleocr_vl_demo.png --use_layout_detection False
 <li><b>XPU</b>：如 <code>xpu:0</code> 表示使用第 1 块 XPU 进行推理；</li>
 <li><b>MLU</b>：如 <code>mlu:0</code> 表示使用第 1 块 MLU 进行推理；</li>
 <li><b>DCU</b>：如 <code>dcu:0</code> 表示使用第 1 块 DCU 进行推理；</li>
+<li><b>沐曦 GPU</b>：如 <code>metax_gpu:0</code> 表示使用第 1 块沐曦 GPU 进行推理；</li>
+<li><b>天数 GPU</b>：如 <code>iluvatar_gpu:0</code> 表示使用第 1 块天数 GPU 进行推理；</li>
 </ul>如果不设置，将使用初始化的默认值，初始化时，会优先使用本地的 GPU 0号设备，如果没有，则使用 CPU 设备。
 </td>
 <td><code>str</code></td>
@@ -488,9 +494,13 @@ pipeline = PaddleOCRVL()
 # pipeline = PaddleOCRVL(device="xpu")
 # 海光 DCU
 # pipeline = PaddleOCRVL(device="dcu")
+# 沐曦 GPU
+# pipeline = PaddleOCRVL(device="metax_gpu")
+
 # pipeline = PaddleOCRVL(use_doc_orientation_classify=True) # 通过 use_doc_orientation_classify 指定是否使用文档方向分类模型
 # pipeline = PaddleOCRVL(use_doc_unwarping=True) # 通过 use_doc_unwarping 指定是否使用文本图像矫正模块
 # pipeline = PaddleOCRVL(use_layout_detection=False) # 通过 use_layout_detection 指定是否使用版面区域检测排序模块
+
 output = pipeline.predict("./paddleocr_vl_demo.png")
 for res in output:
     res.print() ## 打印预测的结构化输出
@@ -513,6 +523,8 @@ pipeline = PaddleOCRVL()
 # pipeline = PaddleOCRVL(device="xpu")
 # 海光 DCU
 # pipeline = PaddleOCRVL(device="dcu")
+# 沐曦 GPU
+# pipeline = PaddleOCRVL(device="metax_gpu")
 
 output = pipeline.predict(input=input_file)
 
@@ -713,6 +725,8 @@ for item in markdown_images:
 <li><b>XPU</b>：如 <code>xpu:0</code> 表示使用第 1 块 XPU 进行推理；</li>
 <li><b>MLU</b>：如 <code>mlu:0</code> 表示使用第 1 块 MLU 进行推理；</li>
 <li><b>DCU</b>：如 <code>dcu:0</code> 表示使用第 1 块 DCU 进行推理；</li>
+<li><b>沐曦 GPU</b>：如 <code>metax_gpu:0</code> 表示使用第 1 块沐曦 GPU 进行推理；</li>
+<li><b>天数 GPU</b>：如 <code>iluvatar_gpu:0</code> 表示使用第 1 块天数 GPU 进行推理；</li>
 <li><b>None</b>：如果设置为<code>None</code>，初始化时，会优先使用本地的 GPU 0号设备，如果没有，则使用 CPU 设备。</li>
 </ul>
 </td>
