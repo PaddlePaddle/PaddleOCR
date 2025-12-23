@@ -1415,6 +1415,18 @@ any float > <code>0</code>. If not set, the default is <code>0.6</code>.
 <td></td>
 </tr>
 <tr>
+<td><code>format_block_content</code></td>
+<td>Whether to format the content in <code>block_content</code> as Markdown. If not set, the initialized default value will be used, which is <code>False</code> by default.</td>
+<td><code>bool</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>markdown_ignore_labels</code></td>
+<td>Layout tags that need to be ignored in Markdown. If not set, the initialized default value will be used, which is <code>['number','footnote','header','header_image','footer','footer_image','aside_text']</code> by default.</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
 <td><code>device</code></td>
 <td>Device for inference. You can specify a device ID:
 <ul>
@@ -2047,6 +2059,18 @@ The above Python script performs the following steps:
 <td><code>None</code></td>
 </tr>
 <tr>
+<td><code>format_block_content</code></td>
+<td>Whether to format the content in <code>block_content</code> as Markdown. If set to <code>None</code>, the default value is <code>False</code>.</td>
+<td><code>bool|None</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>markdown_ignore_labels</code></td>
+<td>Layout tags that need to be ignored in Markdown. If set to <code>None</code>, the default value is <code>['number','footnote','header','header_image','footer','footer_image','aside_text']</code>.</td>
+<td><code>list|None</code></td>
+<td></td>
+</tr>
+<tr>
 <td><code>device</code></td>
 <td>Device used for inference. Supports specifying device ID:
 <ul>
@@ -2186,6 +2210,12 @@ MKL-DNN cache capacity.
 <td><code>None</code></td>
 </tr>
 <tr>
+<td><code>format_block_content</code></td>
+<td>Whether to format the content in <code>block_content</code> as Markdown. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
+<td><code>bool|None</code></td>
+<td></td>
+</tr>
+<tr>
 <td><code>layout_threshold</code></td>
 <td>Same meaning as the instantiation parameters. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
 <td><code>float|dict|None</code></td>
@@ -2317,6 +2347,12 @@ MKL-DNN cache capacity.
 <td><code>bool</code></td>
 <td><code>True</code></td>
 </tr>
+<tr>
+<td><code>markdown_ignore_labels</code></td>
+<td>Layout tags that need to be ignored in Markdown. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
+<td><code>list|None</code></td>
+<td></td>
+</tr>
 </table>
 </details>
 
@@ -2420,12 +2456,17 @@ MKL-DNN cache capacity.
      <ul>
     <li><code>input_path</code>: <code>(str)</code> Input path of the image or PDF to be predicted</li>
     <li><code>page_index</code>: <code>(Union[int, None])</code> If input is a PDF, indicates the page number; otherwise <code>None</code></li>
+    <li><code>page_count</code>: <code>(Union[int, None])</code> If the input is a PDF file, it indicates the total number of pages in the PDF; otherwise, it is <code>None</code>.</li>
+    <li><code>width</code>: <code>(int)</code> The width of the original input image.</li>
+    <li><code>height</code>: <code>(int)</code> The height of the original input image.</li>
     <li><code>model_settings</code>: <code>(Dict[str, bool])</code> Model parameters configured for the pipeline</li>
         <ul>
             <li><code>use_doc_preprocessor</code>: <code>(bool)</code> Whether to enable document preprocessor sub-pipeline</li>
             <li><code>use_seal_recognition</code>: <code>(bool)</code> Whether to enable seal text recognition sub-pipeline</li>
             <li><code>use_table_recognition</code>: <code>(bool)</code> Whether to enable table recognition sub-pipeline</li>
             <li><code>use_formula_recognition</code>: <code>(bool)</code> Whether to enable formula recognition sub-pipeline</li>
+            <li><code>format_block_content</code>: <code>(bool)</code> Controls whether to format the <code>block_content</code> into Markdown format</li>
+            <li><code>markdown_ignore_labels</code>: <code>(List[str])</code> Labels of layout regions that need to be ignored in Markdown</li>
         </ul>
     </li>
     <li><code>doc_preprocessor_res</code>: <code>(Dict[str, Union[List[float], str]])</code> Document preprocessing result dictionary, only exists if <code>use_doc_preprocessor=True</code></li>
@@ -2712,6 +2753,12 @@ To remove the page limit, please add the following configuration to the pipeline
 <td>No</td>
 </tr>
 <tr>
+<td><code>formatBlockContent</code></td>
+<td><code>boolean</code> | <code>null</code></td>
+<td>Please refer to the description of the <code>format_block_content</code> parameter of the pipeline object's <code>predict</code> method.</td>
+<td>No</td>
+</tr>
+<tr>
 <td><code>layoutThreshold</code></td>
 <td><code>number</code> | <code>object</code> | </code><code>null</code></td>
 <td>Please refer to the description of the <code>layout_threshold</code> parameter of the pipeline object's <code>predict</code> method.</td>
@@ -2841,6 +2888,12 @@ To remove the page limit, please add the following configuration to the pipeline
 <td><code>useE2eWirelessTableRecModel</code></td>
 <td><code>boolean</code></td>
 <td>Please refer to the description of the <code>use_e2e_wireless_table_rec_model</code> parameter of the pipeline object's <code>predict</code> method.</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>markdownIgnoreLabels</code></td>
+<td><code>array</code> | <code>null</code></td>
+<td>Please refer to the description of the <code>markdown_ignore_labels</code> parameter of the pipeline object's <code>predict</code> method.</td>
 <td>No</td>
 </tr>
 <tr>
