@@ -1,3 +1,5 @@
+# TODO: Allow regular users
+
 FROM ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddle-dcu:dtk24.04.1-kylinv10-gcc82
 
 ENV DEBIAN_FRONTEND=noninteractive
@@ -21,7 +23,18 @@ WORKDIR /home/paddleocr
 
 USER paddleocr
 
-RUN echo 'source /opt/dtk-24.04.1/env.sh' >> "${HOME}/.bashrc"
+ENV HYHAL_PATH=/opt/hyhal
+ENV DTKROOT=/opt/
+ENV AMDGPU_TARGETS="gfx906;gfx926;gfx928"
+ENV ROCM_PATH=/opt/dtk-24.04.1
+ENV HIP_PATH=/opt/dtk-24.04.1/hip
+ENV MIOPEN_FIND_MODE=3
+
+ENV PATH="${ROCM_PATH}/bin:${ROCM_PATH}/llvm/bin:${ROCM_PATH}/hip/bin:${ROCM_PATH}/hip/bin/hipify:${HYHAL_PATH}/bin:${PATH}"
+ENV LD_LIBRARY_PATH="${ROCM_PATH}/lib:${ROCM_PATH}/lib64:${HYHAL_PATH}/lib:${HYHAL_PATH}/lib64:${LD_LIBRARY_PATH}"
+ENV LD_LIBRARY_PATH="${ROCM_PATH}/hip/lib:${ROCM_PATH}/llvm/lib:${LD_LIBRARY_PATH}"
+ENV C_INCLUDE_PATH="${ROCM_PATH}/include:${HYHAL_PATH}/include:${ROCM_PATH}/llvm/include"
+ENV CPLUS_INCLUDE_PATH="${ROCM_PATH}/include:${HYHAL_PATH}/include:${ROCM_PATH}/llvm/include"
 
 ARG BUILD_FOR_OFFLINE=false
 RUN if [ "${BUILD_FOR_OFFLINE}" = 'true' ]; then \
@@ -49,5 +62,4 @@ COPY --chown=paddleocr:paddleocr pipeline_config_fastdeploy.yaml /home/paddleocr
 
 EXPOSE 8080
 
-# TODO: Move bashrc logic to Dockerfile
-CMD source ~/.bashrc && paddlex --serve --pipeline /home/paddleocr/pipeline_config_vllm.yaml
+CMD ["paddlex", "--serve", "--pipeline", "/home/paddleocr/pipeline_config_vllm.yaml", "--device", "dcu"]

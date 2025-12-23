@@ -1,3 +1,5 @@
+# TODO: Allow regular users
+
 FROM ccr-2vdh3abv-pub.cnc.bj.baidubce.com/device/paddle-xpu:ubuntu20-x86_64-gcc84-py310
 
 ENV DEBIAN_FRONTEND=noninteractive
