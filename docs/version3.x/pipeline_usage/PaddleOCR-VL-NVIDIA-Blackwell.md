@@ -91,7 +91,6 @@ PaddleOCR 提供了 Docker 镜像，用于快速启动 vLLM 推理服务。可�
 ```shell
 docker run \
     -it \
-    --rm \
     --gpus all \
     --network host \
     ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-gpu-sm120 \

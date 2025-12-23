@@ -23,6 +23,7 @@ docker run \
     -it \
     --network host \
     --user root \
+    --priviledged \
     --shm-size 64g \
     ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-xpu \
     /bin/bash
@@ -56,7 +57,7 @@ python -m pip install https://paddle-whl.bj.bcebos.com/nightly/cu126/safetensors
 
 ## 2. Quick Start
 
-Please refer to the corresponding section in the [PaddleOCR-VL Usage Tutorial](./PaddleOCR-VL.en.md).
+Please refer to the corresponding section in the [PaddleOCR-VL Usage Tutorial](./PaddleOCR-VL.en.md), making sure to specify `device='xpu'`.
 
 ## 3. Enhancing VLM Inference Performance Using Inference Acceleration Framework
 
@@ -69,9 +70,9 @@ PaddleOCR provides a Docker image for quickly starting the FastDeploy inference 
 ```shell
 docker run \
     -it \
-    --rm \
-    --gpus all \
     --network host \
+    --user root \
+    --privileged \
     --shm-size 64g \
     ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-fastdeploy-server:latest-xpu \
     paddleocr genai_server --model_name PaddleOCR-VL-0.9B --host 0.0.0.0 --port 8118 --backend fastdeploy
@@ -85,8 +86,10 @@ When launching the FastDeploy inference service, we provide a set of default par
 docker run \
     -it \
     --rm \
-    --gpus all \
     --network host \
+    --user root \
+    --privileged \
+    --shm-size 64G \
     -v fastdeploy_config.yml:/tmp/fastdeploy_config.yml \  
     ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-fastdeploy-server:latest-xpu \
     paddleocr genai_server --model_name PaddleOCR-VL-0.9B --host 0.0.0.0 --port 8118 --backend vllm --backend_config /tmp/fastdeploy_config.yml
