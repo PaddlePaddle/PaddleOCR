@@ -699,6 +699,23 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
 <br />
 <b>If you are more concerned with model accuracy, please choose a model with higher accuracy. If you are more concerned with inference speed, please choose a model with faster inference speed. If you are more concerned with model storage size, please choose a model with smaller storage size</b>.
 
+## 1.1 Known Issues
+
+⚠️ **Multi-page PDF Processing Issue (PaddleX v3.2.0/v3.2.1)**
+
+If you are using PaddleX v3.2.0 or v3.2.1, you may encounter an `IndexError: list index out of range` error when processing multi-page PDF files. This is a known bug in PaddleX that has been fixed in subsequent versions.
+
+**Solutions:**
+
+1. **Recommended**: Install the PaddleX version with the fix
+   ```bash
+   pip install 'git+https://github.com/PaddlePaddle/PaddleX.git@release/3.2#egg=paddlex[ocr-core]'
+   ```
+
+2. **Temporary workaround**: Split multi-page PDFs into single-page PDFs and process them separately
+
+Related link: [PaddleX Fix Commit](https://github.com/PaddlePaddle/PaddleX/commit/bdcc1f7dc)
+
 
 ## 2. Quick Start
 

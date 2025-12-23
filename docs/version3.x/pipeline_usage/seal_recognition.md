@@ -700,7 +700,24 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://padd
 </details>
 
 <br />
-<b>如您更考虑模型精度，请选择精度较高的模型，如您更考虑模型推理速度，请选择推理速度较快的模型，如您更考虑模型存储大小，请选择存储大小较小的模型</b>。
+<b>如您更考虑模型精度，请选择精度较高的模型,如您更考虑模型推理速度，请选择推理速度较快的模型，如您更考虑模型存储大小，请选择存储大小较小的模型</b>。
+
+## 1.1 已知问题
+
+⚠️ **多页PDF处理问题 (PaddleX v3.2.0/v3.2.1)**
+
+如果您使用 PaddleX v3.2.0 或 v3.2.1 版本，在处理多页PDF文件时可能会遇到 `IndexError: list index out of range` 错误。这是 PaddleX 的一个已知bug，已在后续版本中修复。
+
+**解决方案：**
+
+1. **推荐方式**：安装包含修复的 PaddleX 版本
+   ```bash
+   pip install 'git+https://github.com/PaddlePaddle/PaddleX.git@release/3.2#egg=paddlex[ocr-core]'
+   ```
+
+2. **临时方案**：将多页PDF拆分为单页PDF分别处理
+
+相关链接：[PaddleX修复提交](https://github.com/PaddlePaddle/PaddleX/commit/bdcc1f7dc)
 
 ## 2. 快速开始
 
