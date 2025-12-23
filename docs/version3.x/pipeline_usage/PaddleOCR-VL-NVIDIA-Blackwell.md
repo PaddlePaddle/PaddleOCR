@@ -39,7 +39,7 @@ docker run \
 # 在容器中调用 PaddleOCR CLI 或 Python API
 ```
 
-如果您希望在无法连接互联网的环境中使用 PaddleOCR-VL，请将上述命令中的 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-gpu-sm120`（镜像大小约为 10 GB）更换为离线版本镜像 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-gpu-sm120-offline`（镜像大小约为 12 GB）。
+如果您希望在无法连接互联网的环境中使用 PaddleOCR-VL，请将上述命令中的 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-gpu-sm120` 更换为离线版本镜像 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-gpu-sm120-offline`。
 
 ### 1.2 方法二：手动安装 PaddlePaddle 和 PaddleOCR
 
@@ -70,7 +70,7 @@ python -m pip install https://xly-devops.cdn.bcebos.com/safetensors-nightly/safe
 
 ## 2. 快速开始
 
-请参考[PaddleOCR-VL 使用教程](./PaddleOCR-VL.md)相同章节。
+请参考 [PaddleOCR-VL 使用教程](./PaddleOCR-VL.md) 相同章节。
 
 ## 3. 使用推理加速框架提升 VLM 推理性能
 
@@ -98,7 +98,7 @@ docker run \
     paddleocr genai_server --model_name PaddleOCR-VL-0.9B --host 0.0.0.0 --port 8118 --backend vllm
 ```
 
-如果您希望在无法连接互联网的环境中启动服务，请将上述命令中的 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-gpu-sm120`（镜像大小约为 12 GB）更换为离线版本镜像 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-gpu-sm120-offline`（镜像大小约为 14 GB）。
+如果您希望在无法连接互联网的环境中启动服务，请将上述命令中的 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-gpu-sm120`更换为离线版本镜像 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-gpu-sm120-offline`。
 
 启动 vLLM 推理服务时，我们提供了一套默认参数设置。如果您有调整显存占用等更多参数的需求，可以自行配置更多参数。请参考 [3.3.1 服务端参数调整](#331-服务端参数调整) 创建配置文件，然后将该文件挂载到容器中，并在启动服务的命令中使用 `backend_config` 指定配置文件，例如：
 

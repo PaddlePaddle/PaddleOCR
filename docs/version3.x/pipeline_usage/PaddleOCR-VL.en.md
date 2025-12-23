@@ -16,22 +16,22 @@ For some inference hardware, you may need to refer to other environment configur
 
 1. **Want to quickly experience PaddleOCR-VL**:
 
-    If you wish to quickly experience the inference effects of PaddleOCR-VL, please read [1. Environment Preparation](#1-environment-preparation) and [2. Quick Start](#2-quick-start).
+    If you wish to quickly experience the inference effects of PaddleOCR-VL, please read [1. Environment Preparation](#1-environment-preparation) and [2. Quick Start](#2-quick-start), or the corresponding chapters in documentation for other hardware.
 
 2. **Want to use PaddleOCR-VL in a production environment**:
 
-    Although the quick experience allows you to feel the effects of PaddleOCR-VL, it may not be optimal in terms of inference speed and GPU memory usage. If you wish to apply PaddleOCR-VL in a production environment and have higher requirements for inference performance, please read [3. Enhancing VLM Inference Performance Using Inference Acceleration Frameworks](#3-enhancing-vlm-inference-performance-using-inference-acceleration-frameworks).
+    Although the quick experience allows you to feel the effects of PaddleOCR-VL, it may not be optimal in terms of inference speed and GPU memory usage. If you wish to apply PaddleOCR-VL in a production environment and have higher requirements for inference performance, please read [3. Enhancing VLM Inference Performance Using Inference Acceleration Frameworks](#3-enhancing-vlm-inference-performance-using-inference-acceleration-frameworks) or the corresponding chapter in documentation for other hardware.
 
 3. **Want to deploy PaddleOCR-VL as an API service**:
 
     If you want to deploy PaddleOCR-VL as a web service (API) so that other devices or applications can access and call it through a specific URL without configuring the environment, we offer two methods:
 
-    - Deployment using Docker Compose (one-click start, recommended): Please read [4.1 Method 1: Deploy Using Docker Compose](#41-method-1-deploy-using-docker-compose-recommended) and [4.3 Client-Side Invocation](#43-client-side-invocation).
-    - Manual deployment: Please read [1. Environment Preparation](#1-environment-preparation), [4.2 Method 2: Manual Deployment](#42-method-2-manual-deployment), and [4.3 Client-Side Invocation](#43-client-side-invocation).
+    - Deployment using Docker Compose (one-click start, recommended): Please read [4.1 Method 1: Deploy Using Docker Compose](#41-method-1-deploy-using-docker-compose-recommended) and [4.3 Client-Side Invocation](#43-client-side-invocation), or the corresponding chapters in documentation for other hardware.
+    - Manual deployment: Please read [1. Environment Preparation](#1-environment-preparation), [4.2 Method 2: Manual Deployment](#42-method-2-manual-deployment), and [4.3 Client-Side Invocation](#43-client-side-invocation), or the corresponding chapters in documentation for other hardware.
 
 4. **Want to fine-tune PaddleOCR-VL to adapt to specific business needs**:
 
-    If you find that the accuracy performance of PaddleOCR-VL in specific business scenarios does not meet expectations, please read [5. Model Fine-tuning](#5-model-fine-tuning).
+    If you find that the accuracy performance of PaddleOCR-VL in specific business scenarios does not meet expectations, please read [5. Model Fine-tuning](#5-model-fine-tuning) or the corresponding chapter in documentation for other hardware.
 
 ## Inference Device Support for PaddleOCR-VL
 
