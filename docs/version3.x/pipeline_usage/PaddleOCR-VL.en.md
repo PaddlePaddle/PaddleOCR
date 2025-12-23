@@ -190,7 +190,14 @@ PaddleOCR-VL supports two usage methods: CLI command line and Python API. The CL
 Run a single command to quickly test the PaddleOCR-VL ：
 
 ```shell
+# NVIDIA GPU
 paddleocr doc_parser -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/paddleocr_vl_demo.png
+
+# KUNLUNXIN XPU
+paddleocr doc_parser -i ./paddleocr_vl_demo.png --device xpu
+
+# HYGON DCU
+paddleocr doc_parser -i ./paddleocr_vl_demo.png --device dcu
 
 # Use --use_doc_orientation_classify to enable document orientation classification
 paddleocr doc_parser -i ./paddleocr_vl_demo.png --use_doc_orientation_classify True
@@ -450,7 +457,12 @@ The command line method is for quick testing and visualization. In actual projec
 ```python
 from paddleocr import PaddleOCRVL
 
+# NVIDIA GPU
 pipeline = PaddleOCRVL()
+# KUNLUNXIN XPU
+# pipeline = PaddleOCRVL(device="xpu")
+# HYGON DCU
+# pipeline = PaddleOCRVL(device="dcu")
 # pipeline = PaddleOCRVL(use_doc_orientation_classify=True) # Use use_doc_orientation_classify to enable/disable document orientation classification model
 # pipeline = PaddleOCRVL(use_doc_unwarping=True) # Use use_doc_unwarping to enable/disable document unwarping module
 # pipeline = PaddleOCRVL(use_layout_detection=False) # Use use_layout_detection to enable/disable layout detection module
@@ -470,7 +482,13 @@ from paddleocr import PaddleOCRVL
 input_file = "./your_pdf_file.pdf"
 output_path = Path("./output")
 
+# NVIDIA GPU
 pipeline = PaddleOCRVL()
+# KUNLUNXIN XPU
+# pipeline = PaddleOCRVL(device="xpu")
+# HYGON DCU
+# pipeline = PaddleOCRVL(device="dcu")
+
 output = pipeline.predict(input=input_file)
 
 markdown_list = []

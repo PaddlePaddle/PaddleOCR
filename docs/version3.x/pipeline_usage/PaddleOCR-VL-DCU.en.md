@@ -63,7 +63,7 @@ python -m pip install https://paddle-whl.bj.bcebos.com/nightly/cu126/safetensors
 
 ## 2. Quick Start
 
-Please refer to the corresponding section in the [PaddleOCR-VL Usage Tutorial](./PaddleOCR-VL.en.md).
+Please refer to the corresponding section in the [PaddleOCR-VL Usage Tutorial](./PaddleOCR-VL.en.md), making sure to specify `device='dcu'`.
 
 ## 3. Improving VLM Inference Performance Using Inference Acceleration Framework
 
@@ -75,7 +75,6 @@ PaddleOCR provides a Docker image for quickly starting the vLLM inference servic
 
 ```shell
 docker run -it \
-  --rm \
   --user root \
   --privileged \
   --device /dev/kfd \
