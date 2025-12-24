@@ -1723,7 +1723,57 @@ Below are the API reference and examples of multi-language service invocation:
 <td>Whether the last element on the current page is the end of a paragraph.</td>
 </tr>
 </tbody>
-</table></details>
+</table>
+<ul>
+  <li><b><code>concatenatePages</code></b></li>
+</ul>
+<p>Concatenate pages from Markdown results</p>
+<p><code>POST /concatenate-markdown</code></p>
+
+<ul>
+  <li>The request body has the following properties:</li>
+</ul>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Required</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>pages</code></td>
+      <td><code>array</code></td>
+      <td>An array of pages. Each element is a Markdown object returned by the <code>infer</code> operation.</td>
+      <td>Yes</td>
+    </tr>
+  </tbody>
+</table>
+
+<ul>
+  <li>When the request is processed successfully, the <code>result</code> field in the response body has the following properties:</li>
+</ul>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>text</code></td>
+      <td><code>string</code></td>
+      <td>The concatenated Markdown text.</td>
+    </tr>
+  </tbody>
+</table>
+</details>
 <details><summary>Multi-Language Service Invocation Examples</summary>
 <details>
 <summary>Python</summary>
