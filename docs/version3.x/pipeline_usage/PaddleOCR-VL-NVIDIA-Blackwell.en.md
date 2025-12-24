@@ -24,6 +24,8 @@ This section introduces how to set up the PaddleOCR-VL runtime environment using
 
 - Method 2: Manually install PaddlePaddle and PaddleOCR.
 
+**We strongly recommend using the Docker image to minimize potential environment-related issues.**
+
 ### 1.1 Method 1: Using Docker Image
 
 We recommend using the official Docker image (requires Docker version >= 19.03, GPU-equipped machine with NVIDIA driver supporting CUDA 12.9 or higher):
@@ -84,6 +86,8 @@ There are two methods to start the VLM inference service; choose one:
 
 - Method 2: Manually install dependencies and start the service via PaddleOCR CLI.
 
+**We strongly recommend using the Docker image to minimize potential environment-related issues.**
+
 #### 3.1.1 Method 1: Using Docker Image
 
 PaddleOCR provides a Docker image for quickly starting the vLLM inference service. Use the following command to start the service (requires Docker version >= 19.03, GPU-equipped machine with NVIDIA driver supporting CUDA 12.9 or higher):
@@ -114,21 +118,26 @@ docker run \
 
 #### 3.1.2 Method 2: Installation and Usage via PaddleOCR CLI
 
-Since inference acceleration frameworks may have dependency conflicts with the PaddlePaddle framework, installation in a virtual environment is recommended. Taking vLLM as an example:
+Due to potential dependency conflicts between inference acceleration frameworks and PaddlePaddle, it is recommended to install them in a virtual environment:
 
 ```shell
-# If there is an active virtual environment, deactivate it first using `deactivate`
+# If a virtual environment is currently activated, deactivate it first using `deactivate`
 # Create a virtual environment
 python -m venv .venv_vlm
 # Activate the environment
 source .venv_vlm/bin/activate
-# Install PaddleOCR
-python -m pip install "paddleocr[doc-parser]"# Install dependencies for inference acceleration services
-paddleocr install_genai_server_deps vllm
-python -m pip install flash-attn==2.8.3
 ```
 
-> The `paddleocr install_genai_server_deps` command may require CUDA compilation tools such as nvcc during execution. If these tools are not available in your environment or the installation takes too long, you can obtain a pre-compiled version of FlashAttention from [this repository](https://github.com/mjun0812/flash-attention-prebuild-wheels). For example, run `python -m pip install https://github.com/mjun0812/flash-attention-prebuild-wheels/releases/download/v0.3.14/flash_attn-2.8.2+cu128torch2.8-cp310-cp310-linux_x86_64.whl`.
+vLLM and SGLang depend on FlashAttention, and installing FlashAttention may require CUDA compilation tools such as `nvcc`. If these tools are not available in your environment (for example, when using the `paddleocr-vl` image), you can obtain a prebuilt FlashAttention package (version 2.8.3 required) from [this repository](https://github.com/mjun0812/flash-attention-prebuild-wheels), install it first, and then proceed with subsequent commands. For example, in the `paddleocr-vl` image, run `python -m pip install https://github.com/mjun0812/flash-attention-prebuild-wheels/releases/download/v0.3.14/flash_attn-2.8.3+cu128torch2.8-cp310-cp310-linux_x86_64.whl`. This step is not required for FastDeploy.
+
+Install PaddleOCR and the dependencies of inference acceleration services, using vLLM as an example:
+
+```shell
+# Install PaddleOCR
+python -m pip install "paddleocr[doc-parser]"
+# Install inference acceleration service dependencies
+paddleocr install_genai_server_deps vllm
+```
 
 Usage of the `paddleocr install_genai_server_deps` command:
 
@@ -167,7 +176,7 @@ This section mainly introduces how to deploy PaddleOCR-VL as a service and invok
 
 - Method 2: Manually install dependencies for deployment.
 
-Please note that the PaddleOCR-VL service introduced in this section differs from the VLM inference service in the previous section: the latter is responsible for only one part of the complete process (i.e., VLM inference) and is called as an underlying service by the former.
+>Please note that the PaddleOCR-VL service introduced in this section differs from the VLM inference service in the previous section: the latter is responsible for only one part of the complete process (i.e., VLM inference) and is called as an underlying service by the former.
 
 ### 4.1 Method 1: Deploy Using Docker Compose
 

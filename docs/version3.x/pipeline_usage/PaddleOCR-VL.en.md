@@ -20,7 +20,7 @@ For some inference hardware, you may need to refer to other environment configur
 
 2. **Want to use PaddleOCR-VL in a production environment**:
 
-    Although the quick experience allows you to feel the effects of PaddleOCR-VL, it may not be optimal in terms of inference speed and GPU memory usage. If you wish to apply PaddleOCR-VL in a production environment and have higher requirements for inference performance, please read [3. Enhancing VLM Inference Performance Using Inference Acceleration Frameworks](#3-enhancing-vlm-inference-performance-using-inference-acceleration-frameworks).
+    Although the quick experience allows you to feel the effects of PaddleOCR-VL, it may not be optimal in terms of inference speed and GPU memory usage. If you wish to apply PaddleOCR-VL in a production environment and have higher requirements for inference performance, please read [3. Enhancing VLM Inference Performance Using Inference Acceleration Frameworks](#3-enhancing-vlm-inference-performance-using-inference acceleration-frameworks).
 
 3. **Want to deploy PaddleOCR-VL as an API service**:
 
@@ -119,6 +119,8 @@ This section explains how to set up the runtime environment for PaddleOCR-VL. Ch
 - Method 1: Use the official Docker image.
 
 - Method 2: Manually install PaddlePaddle and PaddleOCR.
+
+**We strongly recommend using the Docker image to minimize potential environment-related issues.**
 
 ### 1.1 Method 1: Using Docker Image
 
@@ -513,6 +515,19 @@ for item in markdown_images:
             file_path = output_path / path
             file_path.parent.mkdir(parents=True, exist_ok=True)
             image.save(file_path)
+```
+
+If you need to process multiple files, **it is recommended to pass the directory path containing the files or a list of file paths to the `predict` method** to maximize processing efficiency. For example:
+
+```python
+# The `imgs` directory contains multiple images to be processed: file1.png, file2.png, file3.png
+# Pass the directory path
+output = pipeline.predict("imgs")
+# Or pass a list of file paths
+output = pipeline.predict(["imgs/file1.png", "imgs/file2.png", "imgs/file3.png"])
+# Both of the above methods are more efficient than the following approach:
+# for file in ["imgs/file1.png", "imgs/file2.png", "imgs/file3.png"]:
+#     output = pipeline.predict(file)
 ```
 
 **Note:**
@@ -1060,6 +1075,8 @@ There are two methods to launch the VLM inference service; choose either one:
 
 - Method 2: Launch the service by manually installing dependencies via the PaddleOCR CLI.
 
+**We strongly recommend using the Docker image to minimize potential environment-related issues.**
+
 #### 3.1.1 Method 1: Using Docker Image
 
 PaddleOCR provides Docker images for quickly launching vLLM or FastDeploy inference services. You can use the following commands to start the services (requires Docker version >= 19.03, a machine equipped with a GPU, and NVIDIA drivers supporting CUDA 12.6 or later):
@@ -1107,31 +1124,26 @@ docker run \
 
 #### 3.1.2 Method 2: Installation and Usage via PaddleOCR CLI
 
-Since inference acceleration frameworks may have dependency conflicts with the PaddlePaddle framework, it is recommended to install them in a virtual environment. Taking vLLM as an example:
+Due to potential dependency conflicts between inference acceleration frameworks and PaddlePaddle, it is recommended to install them in a virtual environment:
 
 ```shell
-# If there is an active virtual environment currently, deactivate it first using `deactivate`
+# If a virtual environment is currently activated, deactivate it first using `deactivate`
 # Create a virtual environment
 python -m venv .venv_vlm
 # Activate the environment
 source .venv_vlm/bin/activate
-# Install PaddleOCR
-python -m pip install "paddleocr[doc-parser]"
-# Install dependencies for the inference acceleration service
-paddleocr install_genai_server_deps vllm
 ```
 
-Usage of the `paddleocr install_genai_server_deps` command:
+vLLM and SGLang depend on FlashAttention, and installing FlashAttention may require CUDA compilation tools such as `nvcc`. If these tools are not available in your environment (for example, when using the `paddleocr-vl` image), you can obtain a prebuilt FlashAttention package (version 2.8.2 required) from [this repository](https://github.com/mjun0812/flash-attention-prebuild-wheels), install it first, and then proceed with subsequent commands. For example, in the `paddleocr-vl` image, run `python -m pip install https://github.com/mjun0812/flash-attention-prebuild-wheels/releases/download/v0.3.14/flash_attn-2.8.2+cu128torch2.8-cp310-cp310-linux_x86_64.whl`. This step is not required for FastDeploy.
+
+Install PaddleOCR and the dependencies of inference acceleration services, using vLLM as an example:
 
 ```shell
-paddleocr install_genai_server_deps <inference acceleration framework name>
+# Install PaddleOCR
+python -m pip install "paddleocr[doc-parser]"
+# Install inference acceleration service dependencies
+paddleocr install_genai_server_deps vllm
 ```
-
-Currently supported framework names are `vllm`, `sglang` and `fastdeploy`, corresponding to vLLM, SGLang and FastDeploy, respectively.
-
-The vLLM and SGLang installed via `paddleocr install_genai_server_deps` are both **CUDA 12.6** versions; ensure that your local NVIDIA drivers are consistent with or higher than this version.
-
-> The `paddleocr install_genai_server_deps` command may require CUDA compilation tools such as nvcc during execution. If these tools are not available in your environment (e.g., when using the `paddleocr-vl` image), you can obtain a precompiled version of FlashAttention from [this repository](https://github.com/mjun0812/flash-attention-prebuild-wheels). Install the precompiled package before executing subsequent commands. For example, if you are in the `paddleocr-vl` image, execute `python -m pip install https://github.com/mjun0812/flash-attention-prebuild-wheels/releases/download/v0.3.14/flash_attn-2.8.2+cu128torch2.8-cp310-cp310-linux_x86_64.whl`.
 
 After installation, you can launch the service using the `paddleocr genai_server` command:
 
@@ -1152,7 +1164,7 @@ The parameters supported by this command are as follows:
 
 ### 3.2 Client Usage Methods
 
-After launching the VLM inference service, the client can call the service through PaddleOCR. **Please note that because the client needs to invoke the sequential model for layout detection, it is still recommended to run the client on GPU or other acceleration devices to achieve more stable and efficient performance.**
+After launching the VLM inference service, the client can call the service through PaddleOCR. **Please note that because the client needs to invoke the sequential model for layout detection, it is still recommended to run the client on GPU or other acceleration devices to achieve more stable and efficient performance. Please refer to Section 1 for the client-side environment configuration. The configuration described in Section 3.1 applies only to starting the service and is not applicable to the client.**
 
 #### 3.2.1 CLI Invocation
 
@@ -1232,7 +1244,7 @@ This step mainly introduces how to deploy PaddleOCR-VL as a service and invoke i
 
 - Method 2: Manual Deployment.
 
-Note that the PaddleOCR-VL service described in this section differs from the VLM inference service in the previous section: the latter is responsible for only one part of the complete process (i.e., VLM inference) and is called as an underlying service by the former.
+> Note that the PaddleOCR-VL service described in this section differs from the VLM inference service in the previous section: the latter is responsible for only one part of the complete process (i.e., VLM inference) and is called as an underlying service by the former. In addition, the PaddleOCR-VL service started according to the instructions in this section can handle only one request at a time. We will later provide instructions on how to start the service with support for concurrent requests.
 
 ### 4.1 Method 1: Deploy Using Docker Compose (Recommended)
 
@@ -2361,7 +2373,7 @@ services:
   paddleocr-vl-api:
     ...
     volumes:
-      - pipeline_config_vllm.yaml:/home/paddleocr/pipeline_config.yaml
+      - ./pipeline_config_vllm.yaml:/home/paddleocr/pipeline_config.yaml
 ...
 ```
 
