@@ -50,10 +50,14 @@ struct OCRPipelineResult {
   std::string text_type = "";
   float text_rec_score_thresh = 0.0;
   std::vector<std::string> rec_texts = {};
+  std::vector<std::vector<std::string>> text_word = {};
+  std::vector<std::vector<std::vector<cv::Point2f>>> text_word_region = {};
   std::vector<float> rec_scores = {};
+  bool return_word_box = false;
   std::vector<int> textline_orientation_angles = {};
   std::vector<std::vector<cv::Point2f>> rec_polys = {};
-  std::vector<std::array<float, 4>> rec_boxes = {};
+  std::vector<std::array<int, 4>> rec_boxes = {};
+  std::vector<std::vector<std::array<int, 4>>> text_word_boxes = {};
   std::string vis_fonts = "";
 };
 
@@ -83,6 +87,7 @@ struct OCRPipelineParams {
   absl::optional<std::vector<int>> text_det_input_shape = absl::nullopt;
   absl::optional<float> text_rec_score_thresh = absl::nullopt;
   absl::optional<std::vector<int>> text_rec_input_shape = absl::nullopt;
+  absl::optional<bool> return_word_box = absl::nullopt;
   absl::optional<std::string> lang = absl::nullopt;
   absl::optional<std::string> ocr_version = absl::nullopt;
   absl::optional<std::string> vis_font_dir = absl::nullopt;
@@ -137,6 +142,7 @@ private:
   float text_rec_score_thresh_ = 0.0;
   std::string text_type_;
   TextDetParams text_det_params_;
+  bool return_word_box_;
 };
 
 class OCRPipeline

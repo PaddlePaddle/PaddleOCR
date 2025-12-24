@@ -16,6 +16,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <codecvt>
 #include <numeric>
 #include <stdexcept>
 #include <unordered_map>
@@ -636,9 +637,9 @@ std::vector<std::vector<cv::Point2f>> ComponentsProcessor::SortPolyBoxes(
   return dt_polys_rank;
 }
 
-std::vector<std::array<float, 4>> ComponentsProcessor::ConvertPointsToBoxes(
+std::vector<std::array<int, 4>> ComponentsProcessor::ConvertPointsToBoxes(
     const std::vector<std::vector<cv::Point2f>> &dt_polys) {
-  std::vector<std::array<float, 4>> dt_boxes;
+  std::vector<std::array<int, 4>> dt_boxes;
   for (const auto &poly : dt_polys) {
     if (poly.empty()) {
       continue;
@@ -658,7 +659,8 @@ std::vector<std::array<float, 4>> ComponentsProcessor::ConvertPointsToBoxes(
       if (pt.y > bottom)
         bottom = pt.y;
     }
-    dt_boxes.push_back({left, top, right, bottom});
+    dt_boxes.push_back({static_cast<int>(left), static_cast<int>(top),
+                        static_cast<int>(right), static_cast<int>(bottom)});
   }
   return dt_boxes;
 }
@@ -773,17 +775,14 @@ CropByPolys::GetPolyRectCrop(const cv::Mat &img,
   if (poly.size() < 4)
     return absl::InvalidArgumentError(
         "Less than 4 points for GetPolyRectCrop.");
-  // 对Poly和最小外接矩形做IoU判断
   std::vector<cv::Point2f> minrect = GetMinAreaRectPoints(poly);
   if (minrect.size() != 4)
     return absl::InternalError("Failed to get minarea rect.");
   double iou = IoU(poly, minrect);
-  // 若IoU>0.7则返回直接crop，否则可做更复杂处理，如透视矫正，可进一步实现自定义变形矫正
   auto crop_result = GetRotateCropImage(img, minrect);
   if (!crop_result.ok())
     return crop_result.status();
-  // 测试下如果IoU很高就用直接的最小外接矩形crop，否则复杂矫正（本实现只用直接crop）
-  // 若需更强几何修复，可集成TPS、ThinPlateSpline或AutoRectifier
+
   return *crop_result;
 }
 
@@ -823,4 +822,128 @@ double CropByPolys::IoU(const std::vector<cv::Point2f> &poly1,
   if (area_union < 1e-8)
     return 0.0;
   return area_inter / area_union;
+}
+
+std::vector<ComponentsProcessor::Box>
+ComponentsProcessor::SortBoxes(const std::vector<Box> &boxes, float y_thresh) {
+  struct BoxWithCenter {
+    Box box;
+    Point center;
+  };
+  std::vector<BoxWithCenter> items;
+  for (const Box &box : boxes) {
+    double x = 0, y = 0;
+    for (const auto &p : box) {
+      x += p.x;
+      y += p.y;
+    }
+    x /= box.size();
+    y /= box.size();
+    items.push_back({box, Point(x, y)});
+  }
+  std::sort(items.begin(), items.end(),
+            [](const BoxWithCenter &a, const BoxWithCenter &b) {
+              return a.center.y < b.center.y;
+            });
+
+  std::vector<std::vector<BoxWithCenter>> lines;
+  std::vector<BoxWithCenter> current_line;
+  double last_y = NAN;
+  for (const auto &item : items) {
+    if (std::isnan(last_y) || std::fabs(item.center.y - last_y) < y_thresh) {
+      current_line.push_back(item);
+    } else {
+      lines.push_back(current_line);
+      current_line.clear();
+      current_line.push_back(item);
+    }
+    last_y = item.center.y;
+  }
+  if (!current_line.empty())
+    lines.push_back(current_line);
+
+  std::vector<Box> final_boxes;
+  for (auto &line : lines) {
+    std::sort(line.begin(), line.end(),
+              [](const BoxWithCenter &a, const BoxWithCenter &b) {
+                return a.center.x < b.center.x;
+              });
+    for (const auto &item : line) {
+      final_boxes.push_back(item.box);
+    }
+  }
+  return final_boxes;
+}
+
+std::pair<std::vector<std::wstring>, std::vector<ComponentsProcessor::Box>>
+ComponentsProcessor::CalOCRWordBox(
+    const std::string &rec_str, const Box &box, int col_num,
+    const std::vector<std::wstring> &word_list,
+    const std::vector<std::vector<int>> &word_col_list,
+    const std::vector<std::string> &state_list) {
+  std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
+  std::wstring text = converter.from_bytes(rec_str);
+  double bbox_x_start = box[0].x;
+  double bbox_x_end = box[1].x;
+  double bbox_y_start = box[0].y;
+  double bbox_y_end = box[2].y;
+  double cell_width = (bbox_x_end - bbox_x_start) / col_num;
+
+  std::vector<Box> word_box_list;
+  std::vector<std::wstring> word_box_content_list;
+  std::vector<double> cn_width_list;
+  std::vector<int> cn_col_list;
+  std::wstring word_box_content_cn;
+
+  for (size_t idx = 0; idx < word_list.size(); ++idx) {
+    const std::wstring &word = word_list[idx];
+    const std::vector<int> &word_col = word_col_list[idx];
+    const std::string &state = state_list[idx];
+    if (state == "cn") {
+      if (word_col.size() != 1) {
+        double char_seq_length =
+            (word_col.back() - word_col.front() + 1) * cell_width;
+        double char_width = char_seq_length / (word_col.size() - 1);
+        cn_width_list.push_back(char_width);
+      }
+      for (int col : word_col)
+        cn_col_list.push_back(col);
+      word_box_content_cn += word;
+    } else {
+      double cell_x_start = bbox_x_start + word_col.front() * cell_width;
+      double cell_x_end = bbox_x_start + (word_col.back() + 1) * cell_width;
+      Box cell = {
+          Point(cell_x_start, bbox_y_start), Point(cell_x_end, bbox_y_start),
+          Point(cell_x_end, bbox_y_end), Point(cell_x_start, bbox_y_end)};
+      word_box_list.push_back(cell);
+      word_box_content_list.push_back(word);
+    }
+  }
+
+  if (!cn_col_list.empty()) {
+    double avg_char_width;
+    if (!cn_width_list.empty()) {
+      avg_char_width =
+          std::accumulate(cn_width_list.begin(), cn_width_list.end(), 0.0) /
+          cn_width_list.size();
+    } else {
+      avg_char_width = (bbox_x_end - bbox_x_start) / rec_str.size();
+    }
+    for (int center_idx : cn_col_list) {
+      double center_x = (center_idx + 0.5) * cell_width;
+      double cell_x_start =
+          std::max(center_x - avg_char_width / 2, 0.0) + bbox_x_start;
+      double cell_x_end =
+          std::min(center_x + avg_char_width / 2, bbox_x_end - bbox_x_start) +
+          bbox_x_start;
+      Box cell = {
+          Point(cell_x_start, bbox_y_start), Point(cell_x_end, bbox_y_start),
+          Point(cell_x_end, bbox_y_end), Point(cell_x_start, bbox_y_end)};
+      word_box_list.push_back(cell);
+    }
+    word_box_content_list.push_back(word_box_content_cn);
+  }
+
+  std::vector<Box> sorted_word_box_list = SortBoxes(word_box_list, 12.0);
+  return {word_list, sorted_word_box_list};
 }

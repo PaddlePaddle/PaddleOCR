@@ -135,13 +135,27 @@ public:
 
 class ComponentsProcessor {
 public:
+  // using  Point =  std::array<double, 2>;
+  // using Box = std::array<Point, 4> ;
+  using Point = cv::Point2f;
+  using Box = std::vector<Point>;
+
   static absl::StatusOr<cv::Mat> RotateImage(const cv::Mat &image, int angle);
   static std::vector<std::vector<cv::Point2f>>
   SortQuadBoxes(const std::vector<std::vector<cv::Point2f>> &dt_polys);
   static std::vector<std::vector<cv::Point2f>>
   SortPolyBoxes(const std::vector<std::vector<cv::Point2f>> &dt_polys);
-  static std::vector<std::array<float, 4>>
+  static std::vector<std::array<int, 4>>
   ConvertPointsToBoxes(const std::vector<std::vector<cv::Point2f>> &dt_polys);
+
+  static std::vector<Box> SortBoxes(const std::vector<Box> &boxes,
+                                    float y_thresh = 10.0);
+
+  static std::pair<std::vector<std::wstring>, std::vector<Box>>
+  CalOCRWordBox(const std::string &rec_str, const Box &box, int col_num,
+                const std::vector<std::wstring> &word_list,
+                const std::vector<std::vector<int>> &word_col_list,
+                const std::vector<std::string> &state_list);
 };
 
 class CropByPolys {

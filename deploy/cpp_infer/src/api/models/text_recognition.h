@@ -29,6 +29,7 @@ struct TextRecognitionParams {
   int cpu_threads = 8;
   int batch_size = 1;
   absl::optional<std::vector<int>> input_shape = absl::nullopt;
+  absl::optional<bool> return_word_box = absl::nullopt;
 };
 
 class TextRecognition {
