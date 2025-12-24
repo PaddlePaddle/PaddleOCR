@@ -16,8 +16,6 @@ RUN if [ "${DEVICE_TYPE}" != 'dcu' ]; then \
             && rm -rf /var/lib/apt/lists/*; \
     fi
 
-RUN python -m pip install https://paddle-whl.bj.bcebos.com/nightly/cu126/safetensors/safetensors-0.6.2.dev0-cp38-abi3-linux_x86_64.whl
-
 RUN if [ "${DEVICE_TYPE}" = 'gpu' ]; then \
         python -m pip install paddlepaddle-gpu==3.2.1 -i https://www.paddlepaddle.org.cn/packages/stable/cu126/; \
     elif [ "${DEVICE_TYPE}" = 'gpu-sm120' ]; then \

@@ -56,10 +56,9 @@ Execute the following commands to complete the installation:
 ```shell
 python -m pip install paddlepaddle-dcu==3.2.1 -i https://www.paddlepaddle.org.cn/packages/stable/dcu/
 python -m pip install -U "paddleocr[doc-parser]"
-python -m pip install https://paddle-whl.bj.bcebos.com/nightly/cu126/safetensors/safetensors-0.6.2.dev0-cp38-abi3-linux_x86_64.whl
 ```
 
-> **Please note to install PaddlePaddle version 3.2.1 or above, and install the special version of safetensors.**
+> **Please note to install PaddlePaddle version 3.2.1 or above.**
 
 ## 2. Quick Start
 
