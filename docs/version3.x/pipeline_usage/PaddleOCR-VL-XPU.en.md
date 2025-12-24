@@ -105,7 +105,7 @@ Please refer to the corresponding section in the [PaddleOCR-VL Usage Tutorial](.
 
 This step mainly introduces how to deploy PaddleOCR-VL as a service and call it using Docker Compose. The specific process is as follows:
 
-1. Copy the content from [here](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/compose_xpu.yaml) and save it as a `compose.yaml` file.
+1. Copy the content from [here](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/accelerators/compose_xpu.yaml) and save it as a `compose.yaml` file.
 
 2. Copy the following content and save it as a `.env` file:
 

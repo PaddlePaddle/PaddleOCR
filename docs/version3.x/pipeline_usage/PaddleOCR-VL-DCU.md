@@ -121,7 +121,7 @@ docker run -it \
 
 此步骤主要介绍如何使用 Docker Compose 将 PaddleOCR-VL 部署为服务并调用，具体流程如下：
 
-1. 从 [此处](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/compose_dcu.yaml) 复制内容保存为 `compose.yaml` 文件。
+1. 从 [此处](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/accelerators/compose_dcu.yaml) 复制内容保存为 `compose.yaml` 文件。
 
 2. 复制以下内容并保存为 `.env` 文件：
 
