@@ -3,18 +3,8 @@ name: PaddleOCR PR Tests GPU
 on:
   push:
     branches: ["main"]
-    paths-ignore:
-      - '**.md'
-      - '**.txt'
-      - '**.yml'
-      - '**.yaml'
   pull_request:
     branches: ["main"]
-    paths-ignore:
-      - '**.md'
-      - '**.txt'
-      - '**.yml'
-      - '**.yaml'
   workflow_dispatch:
 env:
   PR_ID: ${{ github.event.pull_request.number }}
@@ -29,8 +19,26 @@ permissions:
   contents: read
 
 jobs:
+  detect-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      docs_only: ${{ steps.filter.outputs.docs_only }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: filter
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            docs_only:
+              - '**.md'
+              - '**.txt'
+              - '**.yml'
+              - '**.yaml'
+
   test-pr-gpu:
     runs-on: [self-hosted, GPU-2Card-OCR]
+    needs: detect-changes
+    if: needs.detect-changes.outputs.docs_only != 'true'
     steps:
       - name: run test
         env:
