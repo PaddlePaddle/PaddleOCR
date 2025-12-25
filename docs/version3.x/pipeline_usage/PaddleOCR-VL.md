@@ -1772,7 +1772,7 @@ INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
 <li><b><code>concatenatePages</code></b></li>
 </ul>
 <p>对Markdown结果进行页面拼接</p>
-<p><code>POST /concatenate-markdown</code></p>
+<p><code>POST /concatenate-pages</code></p>
 <ul>
 <li>请求体的属性如下：</li>
 </ul>

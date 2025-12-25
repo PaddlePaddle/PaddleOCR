@@ -1728,7 +1728,7 @@ Below are the API reference and examples of multi-language service invocation:
   <li><b><code>concatenatePages</code></b></li>
 </ul>
 <p>Concatenate pages from Markdown results</p>
-<p><code>POST /concatenate-markdown</code></p>
+<p><code>POST /concatenate-pages</code></p>
 
 <ul>
   <li>The request body has the following properties:</li>
