@@ -67,8 +67,12 @@ def main():
     config = load_config(FLAGS.config)
     config = merge_config(config, FLAGS.opt)
     logger = get_logger()
-    # build post process
 
+    # build dataloader
+    set_signal_handlers()
+    valid_dataloader = build_dataloader(config, "Eval", device, logger)
+
+    # build post process
     post_process_class = build_post_process(config["PostProcess"], config["Global"])
 
     # build model
@@ -81,19 +85,14 @@ def main():
                 if (
                     config["Architecture"]["Models"][key]["Head"]["name"] == "MultiHead"
                 ):  # for multi head
+                    out_channels_list = {}
                     if config["PostProcess"]["name"] == "DistillationSARLabelDecode":
                         char_num = char_num - 2
-                    # update SARLoss params
-                    assert (
-                        list(config["Loss"]["loss_config_list"][-1].keys())[0]
-                        == "DistillationSARLoss"
-                    )
-                    config["Loss"]["loss_config_list"][-1]["DistillationSARLoss"][
-                        "ignore_index"
-                    ] = (char_num + 1)
-                    out_channels_list = {}
+                    if config["PostProcess"]["name"] == "DistillationNRTRLabelDecode":
+                        char_num = char_num - 3
                     out_channels_list["CTCLabelDecode"] = char_num
                     out_channels_list["SARLabelDecode"] = char_num + 2
+                    out_channels_list["NRTRLabelDecode"] = char_num + 3
                     config["Architecture"]["Models"][key]["Head"][
                         "out_channels_list"
                     ] = out_channels_list
@@ -102,48 +101,109 @@ def main():
                         "out_channels"
                     ] = char_num
         elif config["Architecture"]["Head"]["name"] == "MultiHead":  # for multi head
+            out_channels_list = {}
             if config["PostProcess"]["name"] == "SARLabelDecode":
                 char_num = char_num - 2
-            # update SARLoss params
-            assert list(config["Loss"]["loss_config_list"][1].keys())[0] == "SARLoss"
-            if config["Loss"]["loss_config_list"][1]["SARLoss"] is None:
-                config["Loss"]["loss_config_list"][1]["SARLoss"] = {
-                    "ignore_index": char_num + 1
-                }
-            else:
-                config["Loss"]["loss_config_list"][1]["SARLoss"]["ignore_index"] = (
-                    char_num + 1
-                )
-            out_channels_list = {}
+            if config["PostProcess"]["name"] == "NRTRLabelDecode":
+                char_num = char_num - 3
             out_channels_list["CTCLabelDecode"] = char_num
             out_channels_list["SARLabelDecode"] = char_num + 2
+            out_channels_list["NRTRLabelDecode"] = char_num + 3
             config["Architecture"]["Head"]["out_channels_list"] = out_channels_list
         else:  # base rec model
             config["Architecture"]["Head"]["out_channels"] = char_num
 
-        if config["PostProcess"]["name"] == "SARLabelDecode":  # for SAR model
-            config["Loss"]["ignore_index"] = char_num - 1
-
     model = build_model(config["Architecture"])
+    extra_input_models = [
+        "SRN",
+        "NRTR",
+        "SAR",
+        "SEED",
+        "SVTR",
+        "SVTR_LCNet",
+        "VisionLAN",
+        "RobustScanner",
+        "SVTR_HGNet",
+    ]
+    extra_input = False
+    if config["Architecture"]["algorithm"] == "Distillation":
+        for key in config["Architecture"]["Models"]:
+            extra_input = (
+                extra_input
+                or config["Architecture"]["Models"][key]["algorithm"]
+                in extra_input_models
+            )
+    else:
+        extra_input = config["Architecture"]["algorithm"] in extra_input_models
+    if "model_type" in config["Architecture"].keys():
+        if config["Architecture"]["algorithm"] == "CAN":
+            model_type = "can"
+        elif config["Architecture"]["algorithm"] == "LaTeXOCR":
+            model_type = "latexocr"
+            config["Metric"]["cal_bleu_score"] = True
+        elif config["Architecture"]["algorithm"] == "UniMERNet":
+            model_type = "unimernet"
+            config["Metric"]["cal_bleu_score"] = True
+        elif config["Architecture"]["algorithm"] in [
+            "PP-FormulaNet-S",
+            "PP-FormulaNet-L",
+        ]:
+            model_type = "pp_formulanet"
+            config["Metric"]["cal_bleu_score"] = True
+        else:
+            model_type = config["Architecture"]["model_type"]
+    else:
+        model_type = None
 
     # get QAT model
     quanter = QAT(config=quant_config)
     quanter.quantize(model)
 
-    load_model(config, model)
-
     # build metric
     eval_class = build_metric(config["Metric"])
+    # amp
+    use_amp = config["Global"].get("use_amp", False)
+    amp_level = config["Global"].get("amp_level", "O2")
+    amp_custom_black_list = config["Global"].get("amp_custom_black_list", [])
+    if use_amp:
+        AMP_RELATED_FLAGS_SETTING = {
+            "FLAGS_cudnn_batchnorm_spatial_persistent": 1,
+        }
+        paddle.set_flags(AMP_RELATED_FLAGS_SETTING)
+        scale_loss = config["Global"].get("scale_loss", 1.0)
+        use_dynamic_loss_scaling = config["Global"].get(
+            "use_dynamic_loss_scaling", False
+        )
+        scaler = paddle.amp.GradScaler(
+            init_loss_scaling=scale_loss,
+            use_dynamic_loss_scaling=use_dynamic_loss_scaling,
+        )
+        if amp_level == "O2":
+            model = paddle.amp.decorate(
+                models=model, level=amp_level, master_weight=True
+            )
+    else:
+        scaler = None
 
-    # build dataloader
-    set_signal_handlers()
-    valid_dataloader = build_dataloader(config, "Eval", device, logger)
+    best_model_dict = load_model(
+        config, model, model_type=config["Architecture"]["model_type"]
+    )
+    if len(best_model_dict):
+        logger.info("metric in ckpt ***************")
+        for k, v in best_model_dict.items():
+            logger.info("{}:{}".format(k, v))
 
-    use_srn = config["Architecture"]["algorithm"] == "SRN"
-    model_type = config["Architecture"].get("model_type", None)
     # start eval
     metric = program.eval(
-        model, valid_dataloader, post_process_class, eval_class, model_type, use_srn
+        model,
+        valid_dataloader,
+        post_process_class,
+        eval_class,
+        model_type,
+        extra_input,
+        scaler,
+        amp_level,
+        amp_custom_black_list,
     )
     model.eval()
 
@@ -176,12 +236,23 @@ def main():
                 archs[idx],
                 sub_model_save_path,
                 logger,
+                None,
+                config,
                 input_shape,
                 quanter,
             )
     else:
         save_path = os.path.join(save_path, "inference")
-        export_single_model(model, arch_config, save_path, logger, input_shape, quanter)
+        export_single_model(
+            model,
+            arch_config,
+            save_path,
+            logger,
+            None,
+            config,
+            input_shape,
+            quanter,
+        )
 
 
 if __name__ == "__main__":
