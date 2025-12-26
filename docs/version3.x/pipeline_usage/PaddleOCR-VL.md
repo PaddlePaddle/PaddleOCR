@@ -192,7 +192,14 @@ PaddleOCR-VL 支持 CLI 命令行方式和 Python API 两种使用方式，其�
 一行命令即可快速体验 PaddleOCR-VL 效果：
 
 ```shell
+# 英伟达 GPU
 paddleocr doc_parser -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/paddleocr_vl_demo.png
+
+# 昆仑芯 XPU
+paddleocr doc_parser -i ./paddleocr_vl_demo.png --device xpu
+
+# 海光 DCU
+paddleocr doc_parser -i ./paddleocr_vl_demo.png --device dcu
 
 # 通过 --use_doc_orientation_classify 指定是否使用文档方向分类模型
 paddleocr doc_parser -i ./paddleocr_vl_demo.png --use_doc_orientation_classify True
@@ -475,7 +482,12 @@ MKL-DNN 缓存容量。
 ```python
 from paddleocr import PaddleOCRVL
 
+# 英伟达 GPU
 pipeline = PaddleOCRVL()
+# 昆仑芯 XPU
+# pipeline = PaddleOCRVL(device="xpu")
+# 海光 DCU
+# pipeline = PaddleOCRVL(device="dcu")
 # pipeline = PaddleOCRVL(use_doc_orientation_classify=True) # 通过 use_doc_orientation_classify 指定是否使用文档方向分类模型
 # pipeline = PaddleOCRVL(use_doc_unwarping=True) # 通过 use_doc_unwarping 指定是否使用文本图像矫正模块
 # pipeline = PaddleOCRVL(use_layout_detection=False) # 通过 use_layout_detection 指定是否使用版面区域检测排序模块
@@ -495,7 +507,13 @@ from paddleocr import PaddleOCRVL
 input_file = "./your_pdf_file.pdf"
 output_path = Path("./output")
 
+# 英伟达 GPU
 pipeline = PaddleOCRVL()
+# 昆仑芯 XPU
+# pipeline = PaddleOCRVL(device="xpu")
+# 海光 DCU
+# pipeline = PaddleOCRVL(device="dcu")
+
 output = pipeline.predict(input=input_file)
 
 markdown_list = []
