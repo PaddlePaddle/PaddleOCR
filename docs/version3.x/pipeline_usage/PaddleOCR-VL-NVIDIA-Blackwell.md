@@ -39,7 +39,7 @@ docker run \
 # 在容器中调用 PaddleOCR CLI 或 Python API
 ```
 
-如果您希望在无法连接互联网的环境中使用 PaddleOCR-VL，请将上述命令中的 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-gpu-sm120`（镜像大小约为 10 GB）更换为离线版本镜像 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-gpu-sm120-offline`（镜像大小约为 12 GB）。
+如果您希望在无法连接互联网的环境中使用 PaddleOCR-VL，请将上述命令中的 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-gpu-sm120` 更换为离线版本镜像 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-gpu-sm120-offline`。
 
 ### 1.2 方法二：手动安装 PaddlePaddle 和 PaddleOCR
 
@@ -70,7 +70,7 @@ python -m pip install https://xly-devops.cdn.bcebos.com/safetensors-nightly/safe
 
 ## 2. 快速开始
 
-请参考[PaddleOCR-VL 使用教程](./PaddleOCR-VL.md)相同章节。
+请参考 [PaddleOCR-VL 使用教程](./PaddleOCR-VL.md) 相同章节。
 
 ## 3. 使用推理加速框架提升 VLM 推理性能
 
@@ -97,7 +97,7 @@ docker run \
     paddleocr genai_server --model_name PaddleOCR-VL-0.9B --host 0.0.0.0 --port 8118 --backend vllm
 ```
 
-如果您希望在无法连接互联网的环境中启动服务，请将上述命令中的 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-gpu-sm120`（镜像大小约为 12 GB）更换为离线版本镜像 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-gpu-sm120-offline`（镜像大小约为 14 GB）。
+如果您希望在无法连接互联网的环境中启动服务，请将上述命令中的 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-gpu-sm120`更换为离线版本镜像 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-gpu-sm120-offline`。
 
 启动 vLLM 推理服务时，我们提供了一套默认参数设置。如果您有调整显存占用等更多参数的需求，可以自行配置更多参数。请参考 [3.3.1 服务端参数调整](#331-服务端参数调整) 创建配置文件，然后将该文件挂载到容器中，并在启动服务的命令中使用 `backend_config` 指定配置文件，例如：
 
@@ -160,6 +160,10 @@ paddleocr genai_server --model_name PaddleOCR-VL-0.9B --backend vllm --port 8118
 
 请参考[PaddleOCR-VL 使用教程](./PaddleOCR-VL.md) 相同章节。
 
+### 3.3 性能调优
+
+请参考[PaddleOCR-VL 使用教程](./PaddleOCR-VL.md) 相同章节。
+
 ## 4. 服务化部署
 
 此步骤主要介绍如何将 PaddleOCR-VL 部署为服务并调用，有以下两种方式，任选一种即可：
@@ -172,17 +176,9 @@ paddleocr genai_server --model_name PaddleOCR-VL-0.9B --backend vllm --port 8118
 
 ### 4.1 方法一：使用 Docker Compose 部署
 
-1. 从 [此处](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/compose.yaml) 复制内容保存为 `compose.yaml` 文件。
+1. 分别从 [此处](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/accelerators/gpu-sm120/compose.yaml) 和 [此处](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/accelerators/gpu-sm120/.env) 获取 Compose 文件与环境变量配置文件并下载到本地。
 
-2. 复制以下内容并保存为 `.env` 文件：
-
-    ```
-    API_IMAGE_TAG_SUFFIX=latest-gpu-sm120-offline
-    VLM_BACKEND=vllm
-    VLM_IMAGE_TAG_SUFFIX=latest-gpu-sm120-offline
-    ```
-
-3. 在 `compose.yaml` 和 `.env` 文件所在目录下执行以下命令启动服务器，默认监听 **8080** 端口：
+2. 在 `compose.yaml` 和 `.env` 文件所在目录下执行以下命令启动服务器，默认监听 **8080** 端口：
 
     ```shell
     # 必须在 compose.yaml 和 .env 文件所在的目录中执行
