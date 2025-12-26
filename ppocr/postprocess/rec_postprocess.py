@@ -18,35 +18,6 @@ import paddle
 from paddle.nn import functional as F
 import re
 import json
-import unicodedata
-
-
-def is_latin_char(char):
-    """
-    Check if a character is a Latin letter (including accented characters).
-    This will properly categorize accented characters like é, è, à, ç, etc.
-    """
-    try:
-        # Get the Unicode category
-        category = unicodedata.category(char)
-        # Lu = Letter, uppercase
-        # Ll = Letter, lowercase
-        # Lt = Letter, titlecase
-        # Lm = Letter, modifier (includes some Latin extended characters)
-        if not category.startswith("L"):
-            return False
-
-        # Check if the character name starts with LATIN
-        # This covers all Latin-based characters including:
-        # - LATIN SMALL LETTER E WITH ACUTE (é)
-        # - LATIN SMALL LETTER A WITH GRAVE (à)
-        # - LATIN SMALL LETTER C WITH CEDILLA (ç)
-        # - LATIN SMALL LETTER E WITH CIRCUMFLEX (ê)
-        # - etc.
-        char_name = unicodedata.name(char, "")
-        return char_name.startswith("LATIN")
-    except ValueError:
-        return False
 
 
 class BaseRecLabelDecode(object):
@@ -124,8 +95,9 @@ class BaseRecLabelDecode(object):
         for c_i, char in enumerate(text):
             if "\u4e00" <= char <= "\u9fff":
                 c_state = "cn"
-            # Modified condition to include accented characters used in French and other Latin-based languages
-            elif bool(re.search("[a-zA-Z0-9]", char)) or is_latin_char(char):
+            # Use \w with UNICODE flag to match letters (including accented chars like ä, ö, ü, é, etc.) and digits
+            # Exclude underscore since \w includes it but we want to treat it as splitter
+            elif bool(re.search(r"[\w]", char, re.UNICODE)) and char != "_":
                 c_state = "en&num"
             else:
                 c_state = "splitter"
