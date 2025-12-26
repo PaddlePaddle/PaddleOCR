@@ -113,6 +113,7 @@ plugins:
             PaddleOCR-VL NVIDIA Blackwell 架构 GPU 环境配置教程: PaddleOCR-VL NVIDIA Blackwell-Architecture GPUs Environment Configuration Tutorial
             PaddleOCR-VL XPU 环境配置教程: PaddleOCR-VL XPU Environment Configuration Tutorial
             PaddleOCR-VL DCU 环境配置教程: PaddleOCR-VL DCU Environment Configuration Tutorial
+            PaddleOCR-VL 沐曦 GPU 环境配置教程: PaddleOCR-VL MetaX GPU Environment Configuration Tutorial
             推理部署: Model Deploy
             高性能推理: High-Performance Inference
             打包PaddleOCR项目: Package PaddleOCR Projects
@@ -304,6 +305,7 @@ nav:
     - PaddleOCR-VL NVIDIA Blackwell 架构 GPU 环境配置教程: version3.x/pipeline_usage/PaddleOCR-VL-NVIDIA-Blackwell.md
     - PaddleOCR-VL XPU 环境配置教程: version3.x/pipeline_usage/PaddleOCR-VL-XPU.md
     - PaddleOCR-VL DCU 环境配置教程: version3.x/pipeline_usage/PaddleOCR-VL-DCU.md
+    - PaddleOCR-VL 沐曦 GPU 环境配置教程: version3.x/pipeline_usage/PaddleOCR-VL-MetaX-GPU.md
   - 推理部署:
     - 高性能推理: version3.x/deployment/high_performance_inference.md
     - 获取ONNX模型: version3.x/deployment/obtaining_onnx_models.md
