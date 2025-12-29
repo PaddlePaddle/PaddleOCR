@@ -1,6 +1,4 @@
-ARG BASE_IMAGE="python:3.10"
-
-FROM ${BASE_IMAGE}
+FROM python:3.10
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -8,27 +6,13 @@ ENV PIP_NO_CACHE_DIR=0
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONDONTWRITEBYTECODE=1
 
-ARG DEVICE_TYPE="gpu"
-
-RUN if [ "${DEVICE_TYPE}" != 'dcu' ]; then \
-        apt-get update \
-            && apt-get install -y libgl1 \
-            && rm -rf /var/lib/apt/lists/*; \
-    fi
+RUN apt-get update \
+    && apt-get install -y libgl1 \
+    && rm -rf /var/lib/apt/lists/*
 
 RUN python -m pip install https://paddle-whl.bj.bcebos.com/nightly/cu126/safetensors/safetensors-0.6.2.dev0-cp38-abi3-linux_x86_64.whl
 
-RUN if [ "${DEVICE_TYPE}" = 'gpu' ]; then \
-        python -m pip install paddlepaddle-gpu==3.2.1 -i https://www.paddlepaddle.org.cn/packages/stable/cu126/; \
-    elif [ "${DEVICE_TYPE}" = 'gpu-sm120' ]; then \
-        python -m pip install paddlepaddle-gpu==3.2.1 -i https://www.paddlepaddle.org.cn/packages/stable/cu129/; \
-    elif [ "${DEVICE_TYPE}" = 'dcu' ]; then \
-        python -m pip install paddlepaddle-dcu==3.2.1 -i https://www.paddlepaddle.org.cn/packages/stable/dcu/; \
-    elif [ "${DEVICE_TYPE}" = 'xpu' ]; then \
-        python -m pip install paddlepaddle-xpu==3.2.1 -i https://www.paddlepaddle.org.cn/packages/stable/xpu-p800/; \
-    else \
-        false; \
-    fi
+RUN python -m pip install paddlepaddle-gpu==3.2.1 -i https://www.paddlepaddle.org.cn/packages/stable/cu126/
 
 ARG PADDLEOCR_VERSION=">=3.3.2,<3.4"
 RUN python -m pip install "paddleocr[doc-parser]${PADDLEOCR_VERSION}" \
@@ -40,10 +24,6 @@ ENV HOME=/home/paddleocr
 WORKDIR /home/paddleocr
 
 USER paddleocr
-
-RUN if [ "${DEVICE_TYPE}" = 'dcu' ]; then \
-        echo 'source /opt/dtk-24.04.1/env.sh' >> "${HOME}/.bashrc"; \
-    fi
 
 ARG BUILD_FOR_OFFLINE=false
 RUN if [ "${BUILD_FOR_OFFLINE}" = 'true' ]; then \

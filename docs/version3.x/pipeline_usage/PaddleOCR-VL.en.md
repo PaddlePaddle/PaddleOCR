@@ -16,22 +16,22 @@ For some inference hardware, you may need to refer to other environment configur
 
 1. **Want to quickly experience PaddleOCR-VL**:
 
-    If you wish to quickly experience the inference effects of PaddleOCR-VL, please read [1. Environment Preparation](#1-environment-preparation) and [2. Quick Start](#2-quick-start).
+    If you wish to quickly experience the inference effects of PaddleOCR-VL, please read [1. Environment Preparation](#1-environment-preparation) and [2. Quick Start](#2-quick-start), or the corresponding chapters in documentation for other hardware.
 
 2. **Want to use PaddleOCR-VL in a production environment**:
 
-    Although the quick experience allows you to feel the effects of PaddleOCR-VL, it may not be optimal in terms of inference speed and GPU memory usage. If you wish to apply PaddleOCR-VL in a production environment and have higher requirements for inference performance, please read [3. Enhancing VLM Inference Performance Using Inference Acceleration Frameworks](#3-enhancing-vlm-inference-performance-using-inference-acceleration-frameworks).
+    Although the quick experience allows you to feel the effects of PaddleOCR-VL, it may not be optimal in terms of inference speed and GPU memory usage. If you wish to apply PaddleOCR-VL in a production environment and have higher requirements for inference performance, please read [3. Enhancing VLM Inference Performance Using Inference Acceleration Frameworks](#3-enhancing-vlm-inference-performance-using-inference-acceleration-frameworks) or the corresponding chapter in documentation for other hardware.
 
 3. **Want to deploy PaddleOCR-VL as an API service**:
 
     If you want to deploy PaddleOCR-VL as a web service (API) so that other devices or applications can access and call it through a specific URL without configuring the environment, we offer two methods:
 
-    - Deployment using Docker Compose (one-click start, recommended): Please read [4.1 Method 1: Deploy Using Docker Compose](#41-method-1-deploy-using-docker-compose-recommended) and [4.3 Client-Side Invocation](#43-client-side-invocation).
-    - Manual deployment: Please read [1. Environment Preparation](#1-environment-preparation), [4.2 Method 2: Manual Deployment](#42-method-2-manual-deployment), and [4.3 Client-Side Invocation](#43-client-side-invocation).
+    - Deployment using Docker Compose (one-click start, recommended): Please read [4.1 Method 1: Deploy Using Docker Compose](#41-method-1-deploy-using-docker-compose-recommended) and [4.3 Client-Side Invocation](#43-client-side-invocation), or the corresponding chapters in documentation for other hardware.
+    - Manual deployment: Please read [1. Environment Preparation](#1-environment-preparation), [4.2 Method 2: Manual Deployment](#42-method-2-manual-deployment), and [4.3 Client-Side Invocation](#43-client-side-invocation), or the corresponding chapters in documentation for other hardware.
 
 4. **Want to fine-tune PaddleOCR-VL to adapt to specific business needs**:
 
-    If you find that the accuracy performance of PaddleOCR-VL in specific business scenarios does not meet expectations, please read [5. Model Fine-tuning](#5-model-fine-tuning).
+    If you find that the accuracy performance of PaddleOCR-VL in specific business scenarios does not meet expectations, please read [5. Model Fine-tuning](#5-model-fine-tuning) or the corresponding chapter in documentation for other hardware.
 
 ## Inference Device Support for PaddleOCR-VL
 
@@ -108,6 +108,7 @@ Since different hardware requires different dependencies, if your hardware meets
 | NVIDIA GPU     | - NVIDIA Blackwell architecture GPU (e.g., RTX 50 series) refer to [PaddleOCR-VL NVIDIA Blackwell Architecture GPU Environment Configuration Tutorial](./PaddleOCR-VL-NVIDIA-Blackwell.en.md) <br/> - Other NVIDIA GPUs refer to this tutorial |
 | KUNLUNXIN XPU  | [PaddleOCR-VL XPU Environment Configuration Tutorial](./PaddleOCR-VL-XPU.en.md)                                              |
 | HYGON DCU      | [PaddleOCR-VL DCU Environment Configuration Tutorial](./PaddleOCR-VL-DCU.en.md)                                              |
+| MetaX GPU      | [PaddleOCR-VL MetaX GPU Environment Configuration Tutorial](./PaddleOCR-VL-MetaX-GPU.en.md)                                              |
 
 > TIP:
 > For example, if you are using an RTX 50 series GPU that meets the device requirements for both PaddlePaddle and vLLM inference methods, please refer to the [PaddleOCR-VL NVIDIA Blackwell Architecture GPU Environment Configuration Tutorial](./PaddleOCR-VL-NVIDIA-Blackwell.en.md) to complete the environment configuration before using PaddleOCR-VL.
@@ -190,7 +191,17 @@ PaddleOCR-VL supports two usage methods: CLI command line and Python API. The CL
 Run a single command to quickly test the PaddleOCR-VL ：
 
 ```shell
+# NVIDIA GPU
 paddleocr doc_parser -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/paddleocr_vl_demo.png
+
+# KUNLUNXIN XPU
+paddleocr doc_parser -i ./paddleocr_vl_demo.png --device xpu
+
+# HYGON DCU
+paddleocr doc_parser -i ./paddleocr_vl_demo.png --device dcu
+
+# MetaX GPU
+paddleocr doc_parser -i ./paddleocr_vl_demo.png --device metax_gpu
 
 # Use --use_doc_orientation_classify to enable document orientation classification
 paddleocr doc_parser -i ./paddleocr_vl_demo.png --use_doc_orientation_classify True
@@ -385,6 +396,8 @@ If not set, the initialized parameter value will be used.
 <li><b>XPU</b>: For example,<code>xpu:0</code> indicates using the first XPU for inference;</li>
 <li><b>MLU</b>: For example,<code>mlu:0</code> indicates using the first MLU for inference;</li>
 <li><b>DCU</b>: For example,<code>dcu:0</code> indicates using the first DCU for inference;</li>
+<li><b>MetaX GPU</b>: For example,<code>metax_gpu:0</code> indicates using the first MetaX GPU for inference;</li>
+<li><b>Iluvatar GPU</b>: For example,<code>iluvatar_gpu:0</code> indicates using the first Iluvatar GPU for inference;</li>
 </ul>If not set, the initialized default value will be used. During initialization, the local GPU device 0 will be used preferentially. If it is not available, the CPU device will be used.</td>
 <td><code>str</code></td>
 <td></td>
@@ -450,10 +463,19 @@ The command line method is for quick testing and visualization. In actual projec
 ```python
 from paddleocr import PaddleOCRVL
 
+# NVIDIA GPU
 pipeline = PaddleOCRVL()
+# KUNLUNXIN XPU
+# pipeline = PaddleOCRVL(device="xpu")
+# HYGON DCU
+# pipeline = PaddleOCRVL(device="dcu")
+# MetaX GPU
+# pipeline = PaddleOCRVL(device="metax_gpu")
+
 # pipeline = PaddleOCRVL(use_doc_orientation_classify=True) # Use use_doc_orientation_classify to enable/disable document orientation classification model
 # pipeline = PaddleOCRVL(use_doc_unwarping=True) # Use use_doc_unwarping to enable/disable document unwarping module
 # pipeline = PaddleOCRVL(use_layout_detection=False) # Use use_layout_detection to enable/disable layout detection module
+
 output = pipeline.predict("./paddleocr_vl_demo.png")
 for res in output:
     res.print() ## Print the structured prediction output
@@ -470,7 +492,15 @@ from paddleocr import PaddleOCRVL
 input_file = "./your_pdf_file.pdf"
 output_path = Path("./output")
 
+# NVIDIA GPU
 pipeline = PaddleOCRVL()
+# KUNLUNXIN XPU
+# pipeline = PaddleOCRVL(device="xpu")
+# HYGON DCU
+# pipeline = PaddleOCRVL(device="dcu")
+# MetaX GPU
+# pipeline = PaddleOCRVL(device="metax_gpu")
+
 output = pipeline.predict(input=input_file)
 
 markdown_list = []
@@ -668,6 +698,8 @@ If not set, the initialized parameter value will be used.
 <li><b>XPU</b>: For example,<code>xpu:0</code> indicates using the first XPU for inference;</li>
 <li><b>MLU</b>: For example,<code>mlu:0</code> indicates using the first MLU for inference;</li>
 <li><b>DCU</b>: For example,<code>dcu:0</code> indicates using the first DCU for inference;</li>
+<li><b>MetaX GPU</b>: For example,<code>metax_gpu:0</code> indicates using the first MetaX GPU for inference;</li>
+<li><b>Iluvatar GPU</b>: For example,<code>iluvatar_gpu:0</code> indicates using the first Iluvatar GPU for inference;</li>
 </ul>If not set, the initialized default value will be used. During initialization, the local GPU device 0 will be used preferentially. If it is not available, the CPU device will be used.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
