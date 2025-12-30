@@ -595,6 +595,8 @@ paddleocr formula_recognition_pipeline -i ./general_formula_recognition_001.png 
 <li><b>XPU</b>：如 <code>xpu:0</code> 表示使用第 1 块 XPU 进行推理；</li>
 <li><b>MLU</b>：如 <code>mlu:0</code> 表示使用第 1 块 MLU 进行推理；</li>
 <li><b>DCU</b>：如 <code>dcu:0</code> 表示使用第 1 块 DCU 进行推理；</li>
+<li><b>沐曦 GPU</b>：如 <code>metax_gpu:0</code> 表示使用第 1 块沐曦 GPU 进行推理；</li>
+<li><b>天数 GPU</b>：如 <code>iluvatar_gpu:0</code> 表示使用第 1 块天数 GPU 进行推理；</li>
 </ul>如果不设置， 将默认使用产线初始化的该参数值，初始化时，会优先使用本地的 GPU 0号设备，如果没有，则使用 CPU 设备。
 
 </td>
@@ -849,6 +851,8 @@ for res in output:
 <li><b>XPU</b>：如 <code>xpu:0</code> 表示使用第 1 块 XPU 进行推理；</li>
 <li><b>MLU</b>：如 <code>mlu:0</code> 表示使用第 1 块 MLU 进行推理；</li>
 <li><b>DCU</b>：如 <code>dcu:0</code> 表示使用第 1 块 DCU 进行推理；</li>
+<li><b>沐曦 GPU</b>：如 <code>metax_gpu:0</code> 表示使用第 1 块沐曦 GPU 进行推理；</li>
+<li><b>天数 GPU</b>：如 <code>iluvatar_gpu:0</code> 表示使用第 1 块天数 GPU 进行推理；</li>
 <li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化时，会优先使用本地的 GPU 0号设备，如果没有，则使用 CPU 设备。</li>
 </ul>
 </td>
