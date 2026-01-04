@@ -1250,7 +1250,7 @@ Note that the PaddleOCR-VL service described in this section differs from the VL
 
 ### 4.1 Method 1: Deploy Using Docker Compose (Recommended)
 
-You can obtain the Compose file and the environment variables configuration file from [here](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/compose.yaml) and [here](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/.env), respectively, and download them to your local machine. Then, in the directory where the files were just downloaded, execute the following command to start the server, which will listen on port **8080** by default:
+You can obtain the Compose file and the environment variables configuration file from [here](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/accelerators/gpu/compose.yaml) and [here](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/accelerators/gpu/.env), respectively, and download them to your local machine. Then, in the directory where the files were just downloaded, execute the following command to start the server, which will listen on port **8080** by default:
 
 ```shell
 # Must be executed in the directory containing the compose.yaml and .env files
