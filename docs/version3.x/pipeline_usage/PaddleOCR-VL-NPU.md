@@ -29,6 +29,7 @@ docker run -it \
   --network host \
   ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-npu \
   /bin/bash
+# 在容器中调用 PaddleOCR CLI 或 Python API
 ```
 
 如果您希望在无法连接互联网的环境中启动服务，请将上述命令中的 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-npu` 更换为离线版本镜像 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-npu-offline`。
@@ -58,7 +59,7 @@ python -m pip install -U "paddleocr[doc-parser]"
 
 ## 2. 快速开始
 
-NPU 暂时不支持使用 PaddlePaddle 推理方式推理，请参考使用下一节使用 vLLM 推理加速框架推理：
+NPU 暂时不支持使用 PaddlePaddle 推理方式推理，请参考使用下一节使用 vLLM 推理加速框架推理。
 
 ## 3. 使用推理加速框架提升 VLM 推理性能
 

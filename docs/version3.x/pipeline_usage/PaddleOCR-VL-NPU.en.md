@@ -2,9 +2,9 @@
 comments: true
 ---
 
-# PaddleOCR-VL iluvatar GPU Environment Configuration Tutorial
+# PaddleOCR-VL NPU Environment Configuration Tutorial
 
-This tutorial is a guide for configuring the PaddleOCR-VL iluvatar GPU environment. The purpose is to complete the relevant environment setup. After the environment configuration is complete, please refer to the [PaddleOCR-VL Usage Tutorial](./PaddleOCR-VL.en.md) to use PaddleOCR-VL.
+This tutorial is a guide for configuring the PaddleOCR-VL ASCEND NPU environment. The purpose is to complete the relevant environment setup. After the environment configuration is complete, please refer to the [PaddleOCR-VL Usage Tutorial](./PaddleOCR-VL.en.md) to use PaddleOCR-VL.
 
 ## 1. Environment Preparation
 
@@ -22,19 +22,17 @@ We recommend using the official Docker image (requires Docker version >= 19.03):
 docker run -it \
   --user root \
   --privileged \
-  -v /usr/src:/usr/src \
-  -v /lib/modules:/lib/modules \
-  -v /dev:/dev \
-  --cap-add SYS_PTRACE \
-  --pid host \
+  -v /usr/local/Ascend/driver:/usr/local/Ascend/driver \
+  -v /usr/local/bin/npu-smi:/usr/local/bin/npu-smi \
+  -v /usr/local/dcmi:/usr/local/dcmi \
   --shm-size 64g \
   --network host \
-  ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-iluvatar \
+  ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-npu \
   /bin/bash
 # Call PaddleOCR CLI or Python API in the container
 ```
 
-If you wish to start the service in an environment without internet access, replace `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-iluvatar` in the above command with the offline version image `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-iluvatar-offline`.
+If you wish to start the service in an environment without internet access, replace `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-npu` in the above command with the offline version image `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-npu-offline`.
 
 ### 1.2 Method 2: Manually Install PaddlePaddle and PaddleOCR
 
@@ -53,57 +51,53 @@ Execute the following commands to complete the installation:
 
 ```shell
 python -m pip install paddlepaddle==3.2.0 -i https://www.paddlepaddle.org.cn/packages/stable/cpu/
-python -m pip install paddle-iluvatar-gpu==3.2.0 -i https://www.paddlepaddle.org.cn/packages/stable/maca/
+python -m pip install paddle-custom-npu==3.2.0 -i https://www.paddlepaddle.org.cn/packages/stable/npu/
 python -m pip install -U "paddleocr[doc-parser]"
 ```
 
-> **Please note to install PaddlePaddle version 3.2.0 or above.**
+> **Please note to install PaddlePaddle version 3.2.1 or above, and install the special version of safetensors.**
 
 ## 2. Quick Start
 
-Please refer to the corresponding section in the [PaddleOCR-VL Usage Tutorial](./PaddleOCR-VL.en.md), making sure to specify `device='iluvatar_gpu'`.
+The NPU currently does not support inference using the `PaddlePaddle` inference method. Please refer to the next section on using the `vLLM` inference acceleration framework for inference.
 
 ## 3. Improving VLM Inference Performance Using Inference Acceleration Framework
 
-The inference performance under default configurations is not fully optimized and may not meet actual production requirements. This step mainly introduces how to use the FastDeploy inference acceleration framework to improve the inference performance of PaddleOCR-VL.
+The inference performance under default configurations is not fully optimized and may not meet actual production requirements. This step mainly introduces how to use the vLLM inference acceleration framework to improve the inference performance of PaddleOCR-VL.
 
 ### 3.1 Starting the VLM Inference Service
 
-PaddleOCR provides a Docker image for quickly starting the FastDeploy inference service. Use the following command to start the service (requires Docker version >= 19.03):
+PaddleOCR provides a Docker image for quickly starting the vLLM inference service. Use the following command to start the service (requires Docker version >= 19.03):
 
 ```shell
 docker run -it \
   --user root \
   --privileged \
-  -v /usr/src:/usr/src \
-  -v /lib/modules:/lib/modules \
-  -v /dev:/dev \
-  --cap-add SYS_PTRACE \
-  --pid host \
+  -v /usr/local/Ascend/driver:/usr/local/Ascend/driver \
+  -v /usr/local/bin/npu-smi:/usr/local/bin/npu-smi \
+  -v /usr/local/dcmi:/usr/local/dcmi \
   --shm-size 64g \
   --network host \
-  ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-fastdeploy-server:latest-iluvatar \
-  paddleocr genai_server --model_name PaddleOCR-VL-0.9B --host 0.0.0.0 --port 8118 --backend fastdeploy
+  ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-npu \
+  paddleocr genai_server --model_name PaddleOCR-VL-0.9B --host 0.0.0.0 --port 8118 --backend vllm
 ```
 
-If you wish to start the service in an environment without internet access, replace `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-fastdeploy-server:latest-iluvatar` in the above command with the offline version image `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-fastdeploy-server:latest-iluvatar-offline`.
+If you wish to start the service in an environment without internet access, replace `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-npu` in the above command with the offline version image `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-npu-offline`.
 
-When launching the FastDeploy inference service, we provide a set of default parameter settings. If you need to adjust parameters such as GPU memory usage, you can configure additional parameters yourself. Please refer to [3.3.1 Server-side Parameter Adjustment](./PaddleOCR-VL.en.md#331-server-side-parameter-adjustment) to create a configuration file, then mount the file into the container and specify the configuration file using `backend_config` in the command to start the service, for example:
+When launching the vLLM inference service, we provide a set of default parameter settings. If you need to adjust parameters such as GPU memory usage, you can configure additional parameters yourself. Please refer to [3.3.1 Server-side Parameter Adjustment](./PaddleOCR-VL.en.md#331-server-side-parameter-adjustment) to create a configuration file, then mount the file into the container and specify the configuration file using `backend_config` in the command to start the service, for example:
 
 ```shell
 docker run -it \
   --user root \
   --privileged \
-  -v /usr/src:/usr/src \
-  -v /lib/modules:/lib/modules \
-  -v /dev:/dev \
-  --cap-add SYS_PTRACE \
-  --pid host \
+  -v /usr/local/Ascend/driver:/usr/local/Ascend/driver \
+  -v /usr/local/bin/npu-smi:/usr/local/bin/npu-smi \
+  -v /usr/local/dcmi:/usr/local/dcmi \
+  -v vllm_config.yml:/tmp/vllm_config.yml \
   --shm-size 64g \
   --network host \
-  -v fastdeploy_config.yml:/tmp/fastdeploy_config.yml \
-  ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-fastdeploy-server:latest-iluvatar \
-  paddleocr genai_server --model_name PaddleOCR-VL-0.9B --host 0.0.0.0 --port 8118 --backend fastdeploy --backend_config /tmp/fastdeploy_config.yml
+  ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-npu \
+  paddleocr genai_server --model_name PaddleOCR-VL-0.9B --host 0.0.0.0 --port 8118 --backend vllm --backend_config /tmp/vllm_config.yml
 ```
 
 ### 3.2 Client Usage Method
@@ -120,7 +114,7 @@ Please refer to the corresponding section in the [PaddleOCR-VL Usage Tutorial](.
 
 This step mainly introduces how to use Docker Compose to deploy PaddleOCR-VL as a service and call it. The specific process is as follows:
 
-1. Download the Compose file and the environment variable configuration file separately from [here](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/accelerators/iluvatar-gpu/compose.yaml) and [here](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/accelerators/iluvatar-gpu/.env) to your local machine.
+1. Download the Compose file and the environment variable configuration file separately from [here](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/accelerators/npu/compose.yaml) and [here](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/accelerators/npu/.env) to your local machine.
     
 2. Execute the following command in the directory where the `compose.yaml` and `.env` files are located to start the server, which listens on port **8080** by default:
 
@@ -138,7 +132,7 @@ This step mainly introduces how to use Docker Compose to deploy PaddleOCR-VL as 
     paddleocr-vl-api             | INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
     ```
 
-This method accelerates VLM inference using the FastDeploy framework and is more suitable for production environment deployment.
+This method accelerates VLM inference using the vLLM framework and is more suitable for production environment deployment.
 
 Additionally, after starting the server in this manner, no internet connection is required except for image pulling. For deployment in an offline environment, you can first pull the images involved in the Compose file on a connected machine, export them, and transfer them to the offline machine for import to start the service in an offline environment.
 
@@ -171,20 +165,20 @@ Edit <code>paddleocr-vl-api.ports</code> in the <code>compose.yaml</code> file t
 </details>
 
 <details>
-<summary>2. Specify the GPU used by the PaddleOCR-VL service</summary>
+<summary>2. Specify the NPU used by the PaddleOCR-VL service</summary>
 
-Edit <code>environment</code> in the <code>compose.yaml</code> file to change the GPU used. For example, if you need to use card 1 for deployment, make the following modifications:
+Edit <code>environment</code> in the <code>compose.yaml</code> file to change the NPU used. For example, if you need to use card 1 for deployment, make the following modifications:
 
 ```diff
   paddleocr-vl-api:
     ...
     environment:
-+     - CUDA_VISIBLE_DEVICES: 1
++     - ASCEND_RT_VISIBLE_DEVICES: 1
     ...
   paddleocr-vlm-server:
     ...
     environment:
-+     - CUDA_VISIBLE_DEVICES: 1
++     - ASCEND_RT_VISIBLE_DEVICES: 1
     ...
 ```
 
@@ -202,7 +196,7 @@ After generating the configuration file, add the following <code>paddleocr-vlm-s
   paddleocr-vlm-server:
     ...
     volumes: /path/to/your_config.yaml:/home/paddleocr/vlm_server_config.yaml
-    command: paddleocr genai_server --model_name PaddleOCR-VL-0.9B --host 0.0.0.0 --port 8118 --backend fastdeploy --backend_config /home/paddleocr/vlm_server_config.yaml
+    command: paddleocr genai_server --model_name PaddleOCR-VL-0.9B --host 0.0.0.0 --port 8118 --backend vllm --backend_config /home/paddleocr/vlm_server_config.yaml
     ...
 ```
 
