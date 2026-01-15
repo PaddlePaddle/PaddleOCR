@@ -14,6 +14,8 @@ This step mainly introduces how to set up the runtime environment for PaddleOCR-
 
 - Method 2: Manually install PaddlePaddle and PaddleOCR.
 
+**We strongly recommend using the Docker image to minimize potential environment-related issues.**
+
 ### 1.1 Method 1: Using Docker Image
 
 We recommend using the official Docker image (requires Docker version >= 19.03):

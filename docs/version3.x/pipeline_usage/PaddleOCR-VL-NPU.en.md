@@ -14,6 +14,8 @@ This step mainly introduces how to set up the runtime environment for PaddleOCR-
 
 - Method 2: Manually install PaddlePaddle and PaddleOCR.
 
+**We strongly recommend using the Docker image to minimize potential environment-related issues.**
+
 ### 1.1 Method 1: Using Docker Image
 
 We recommend using the official Docker image (requires Docker version >= 19.03):
@@ -55,7 +57,7 @@ python -m pip install paddle-custom-npu==3.2.0 -i https://www.paddlepaddle.org.c
 python -m pip install -U "paddleocr[doc-parser]"
 ```
 
-> **Please note to install PaddlePaddle version 3.2.1 or above, and install the special version of safetensors.**
+> **Please note to install PaddlePaddle version 3.2.1 or above.**
 
 ## 2. Quick Start
 

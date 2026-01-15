@@ -91,7 +91,7 @@ docker run \
     --shm-size 64G \
     -v fastdeploy_config.yml:/tmp/fastdeploy_config.yml \  
     ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-fastdeploy-server:latest-xpu \
-    paddleocr genai_server --model_name PaddleOCR-VL-0.9B --host 0.0.0.0 --port 8118 --backend vllm --backend_config /tmp/fastdeploy_config.yml
+    paddleocr genai_server --model_name PaddleOCR-VL-0.9B --host 0.0.0.0 --port 8118 --backend fastdeploy --backend_config /tmp/fastdeploy_config.yml
 ```
 
 ### 3.2 客户端使用方法
