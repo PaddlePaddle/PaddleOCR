@@ -5,21 +5,13 @@ hide:
   - toc
 ---
 
-
----
-comments: true
-hide:
-  - navigation
-  - toc
----
-
 <div align="center">
   <p>
     <a href="https://paddlepaddle.github.io/PaddleOCR/latest/index.html" target="_blank">
-      <img width="100%" src="./images/Banner.png" alt="PaddleOCR Banner"></a>
+      <img width="100%" src="https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/main/docs/images/Banner.png" alt="PaddleOCR Banner">
+    </a>
   </p>
 </div>
-
 
 Since its initial release, PaddleOCR has gained widespread acclaim across academia, industry, and research communities, thanks to its cutting-edge algorithms and proven performance in real-world applications. It’s already powering popular open-source projects like Umi-OCR, OmniParser, MinerU, and RAGFlow, making it the go-to OCR toolkit for developers worldwide.
 

@@ -96,7 +96,7 @@ The following table only presents the layout detection accuracy of PP-DocLayoutV
 
 
 
-<b>Note: </b>The official models would be download from HuggingFace by default. If can't access to HuggingFace, please set the environment variable `PADDLE_PDX_MODEL_SOURCE="BOS"` to change the model source to BOS. In the future, more model sources will be supported.
+<b>Note: </b>The official models would be download from HuggingFace by default. If can't access to HuggingFace, please set the environment variable <code>PADDLE_PDX_MODEL_SOURCE="BOS"</code> to change the model source to BOS. In the future, more model sources will be supported.
 
 You can also integrate the model inference from the layout area detection module into your project. Before running the following code, please download [Example Image](https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/layout.jpg) Go to the local area.
 
@@ -118,14 +118,18 @@ After running, the result obtained is:
 ```
 
 The meanings of the parameters are as follows:
-- `input_path`: The path to the input image for prediction.
-- `page_index`: If the input is a PDF file, it indicates which page of the PDF it is; otherwise, it is `None`.
-- `boxes`: Predicted layout element information sorted in reading order, represented as a list of dictionaries. According to the reading order, each dictionary represents a detected layout element and contains the following information:
-  - `cls_id`: Class ID, an integer.
-  - `label`: Class label, a string.
-  - `score`: Confidence score of the bounding box, a float.
-  - `coordinate`: Coordinates of the bounding box, a list of floats in the format <code>[xmin, ymin, xmax, ymax]</code>.
-
+<ul>
+<li><code>input_path</code>：The path to the input image for prediction.</li>
+<li><code>page_index</code>：If the input is a PDF file, it indicates which page of the PDF it is; otherwise, it is <code>None</code>.</li>
+<li><code>boxes</code>：Predicted layout element information sorted in reading order, represented as a list of dictionaries. According to the reading order, each dictionary represents a detected layout element and contains the following information:
+    <ol start="1" type="1">
+        <li><code>cls_id</code>：Class ID, an integer.</li>
+        <li><code>label</code>：Class label, a string.</li>
+        <li><code>score</code>：Confidence score of the bounding box, a float.</li>
+        <li><code>coordinate</code>：Coordinates of the bounding box, a list of floats in the format <code>[xmin, ymin, xmax, ymax]</code></li>
+    </ol>
+</li>
+</ul>
 
 
 Relevant methods, parameters, and explanations are as follows:
@@ -142,19 +146,23 @@ Relevant methods, parameters, and explanations are as follows:
 <tbody>
 <tr>
 <td><code>model_name</code></td>
-<td>Model name. If set to <code>None</code>, <code>PP-DocLayout-L</code> will be used.</td>
+<td><b>Meaning:</b> Model name. <br/>
+<b>Description:</b>
+If set to <code>None</code>, <code>PP-DocLayout-L</code> will be used.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>model_dir</code></td>
-<td>Model storage path.</td>
+<td><b>Meaning:</b>Model storage path.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>Device for inference.<br/>
+<td><b>Meaning:</b> Device for inference. <br/>
+<b>Description:</b>
+If set to <code>None</code>, <code>"cpu"</code> will be used. <br/>
 <b>For example:</b> <code>"cpu"</code>, <code>"gpu"</code>, <code>"npu"</code>, <code>"gpu:0"</code>, <code>"gpu:0,1"</code>.<br/>
 If multiple devices are specified, parallel inference will be performed.<br/>
 By default, GPU 0 is used if available; otherwise, CPU is used.
@@ -164,13 +172,15 @@ By default, GPU 0 is used if available; otherwise, CPU is used.
 </tr>
 <tr>
 <td><code>enable_hpi</code></td>
-<td>Whether to enable high-performance inference.</td>
+<td><b>Meaning:</b>Whether to enable high-performance inference.</td>
 <td><code>bool</code></td>
 <td><code>False</code></td>
 </tr>
 <tr>
 <td><code>use_tensorrt</code></td>
-<td>Whether to use the Paddle Inference TensorRT subgraph engine. If the model does not support acceleration through TensorRT, setting this flag will not enable acceleration.<br/>
+<td><b>Meaning:</b>Whether to use the Paddle Inference TensorRT subgraph engine. <br/>
+<b>Description:</b>
+If the model does not support acceleration through TensorRT, setting this flag will not enable acceleration.<br/>
 For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6), and it is recommended to install TensorRT 8.6.1.6.<br/>
 
 </td>
@@ -179,14 +189,18 @@ For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6)
 </tr>
 <tr>
 <td><code>precision</code></td>
-<td>Computation precision when using the TensorRT subgraph engine in Paddle Inference.<br/><b>Options:</b> <code>"fp32"</code>, <code>"fp16"</code>.</td>
+<td><b>Meaning:</b>Computation precision when using the TensorRT subgraph engine in Paddle Inference. <br/>
+<b>Description:</b>
+<b>Options:</b> <code>"fp32"</code>, <code>"fp16"</code>.</td>
 <td><code>str</code></td>
 <td><code>"fp32"</code></td>
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
 <td>
-Whether to enable MKL-DNN acceleration for inference. If MKL-DNN is unavailable or the model does not support it, acceleration will not be used even if this flag is set.
+<b>Meaning:</b>Whether to enable MKL-DNN acceleration for inference. <br/>
+<b>Description:</b>
+If MKL-DNN is unavailable or the model does not support it, acceleration will not be used even if this flag is set.
 </td>
 <td><code>bool</code></td>
 <td><code>True</code></td>
@@ -194,20 +208,22 @@ Whether to enable MKL-DNN acceleration for inference. If MKL-DNN is unavailable 
 <tr>
 <td><code>mkldnn_cache_capacity</code></td>
 <td>
-MKL-DNN cache capacity.
+<b>Meaning:</b>MKL-DNN cache capacity.
 </td>
 <td><code>int</code></td>
 <td><code>10</code></td>
 </tr>
 <tr>
 <td><code>cpu_threads</code></td>
-<td>Number of threads to use for inference on CPUs.</td>
+<td><b>Meaning:</b>Number of threads to use for inference on CPUs.</td>
 <td><code>int</code></td>
 <td><code>10</code></td>
 </tr>
 <tr>
 <td><code>img_size</code></td>
-<td>Input image size.<ul>
+<td><b>Meaning:</b>Input image size.<br/>
+<b>Description:</b>
+<ul>
 <li><b>int</b>: e.g. <code>640</code>, resizes input image to 640x640.</li>
 <li><b>list</b>: e.g. <code>[640, 512]</code>, resizes input image to width 640 and height 512.</li>
 </ul>
@@ -217,7 +233,9 @@ MKL-DNN cache capacity.
 </tr>
 <tr>
 <td><code>threshold</code></td>
-<td>Threshold for filtering low-confidence predictions.<ul>
+<td><b>Meaning:</b>Threshold for filtering low-confidence predictions.<br/>
+<b>Description:</b>
+<ul>
 <li><b>float</b>: e.g. <code>0.2</code>, filters out all boxes with confidence below 0.2.</li>
 <li><b>dict</b>: The key is <code>int</code> (class id), the value is <code>float</code> (threshold). For example, <code>{0: 0.45, 2: 0.48, 7: 0.4}</code> means class 0 uses threshold 0.45, class 2 uses 0.48, class 7 uses 0.4.</li>
 <li><b>None</b>: uses the model's default configuration.</li>
@@ -228,7 +246,8 @@ MKL-DNN cache capacity.
 </tr>
 <tr>
 <td><code>layout_nms</code></td>
-<td>Whether to use NMS post-processing to filter overlapping boxes.
+<td><b>Meaning:</b>Whether to use NMS post-processing to filter overlapping boxes.<br/>
+<b>Description:</b>
 <ul>
 <li><b>bool</b>: whether to use NMS for post-processing to filter overlapping boxes.</li>
 <li><b>None</b>: uses the model's default configuration.</li>
@@ -239,7 +258,9 @@ MKL-DNN cache capacity.
 </tr>
 <tr>
 <td><code>layout_unclip_ratio</code></td>
-<td>Scaling factor for the side length of the detection box.<ul>
+<td><b>Meaning:</b>Scaling factor for the side length of the detection box.<br/>
+<b>Description:</b>
+<ul>
 <li><b>float</b>: A float greater than 0, e.g. <code>1.1</code>, expands width and height by 1.1 times.</li>
 <li><b>list</b>: e.g. <code>[1.2, 1.5]</code>, expands width by 1.2x and height by 1.5x.</li>
 <li><b>dict</b>: The key is <code>int</code> (class id), the value is <code>tuple</code> of two floats (width ratio, height ratio). For example, <code>{0: (1.1, 2.0)}</code> means for class 0, width is expanded by 1.1x and height by 2.0x.</li>
@@ -251,7 +272,9 @@ MKL-DNN cache capacity.
 </tr>
 <tr>
 <td><code>layout_merge_bboxes_mode</code></td>
-<td>Merge mode for model output bounding boxes.<ul>
+<td><b>Meaning:</b>Merge mode for model output bounding boxes.<br/>
+<b>Description:</b>
+<ul>
 <li><b>"large"</b>: Only keep the largest outer box among overlapping boxes, remove inner boxes.</li>
 <li><b>"small"</b>: Only keep the smallest inner box among overlapping boxes, remove outer boxes.</li>
 <li><b>"union"</b>: Keep all boxes, no filtering.</li>
@@ -265,7 +288,7 @@ MKL-DNN cache capacity.
 </tbody>
 </table>
 
-* The `predict()` method of the target detection model is called for inference prediction. The parameters of the `predict()` method are `input`, `batch_size`, and `threshold`, which are explained as follows:
+* The <code>predict()</code> method of the target detection model is called for inference prediction. The parameters of the <code>predict()</code> method are <code>input</code>, <code>batch_size</code>, and <code>threshold</code>, which are explained as follows:
 
 <table>
 <thead>
@@ -279,12 +302,16 @@ MKL-DNN cache capacity.
 <tbody>
 <tr>
 <td><code>input</code></td>
-<td>Input data to be predicted. Required. Supports multiple input types:<ul>
+<td><b>Meaning:</b>Input data to be predicted. Required.<br/>
+ <b>Description:</b>
+ Supports multiple input types:<ul>
 <li><b>Python Var</b>: e.g., <code>numpy.ndarray</code> representing image data</li>
 <li><b>str</b>: 
-  - Local image or PDF file path: <code>/root/data/img.jpg</code>;
-  - <b>URL</b> of image or PDF file: e.g., <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/img_rot180_demo.jpg">example</a>;
-  - <b>Local directory</b>: directory containing images for prediction, e.g., <code>/root/data/</code> (Note: directories containing PDF files are not supported; PDFs must be specified by exact file path)</li>
+  <ul>
+  <li>Local image or PDF file path: <code>/root/data/img.jpg</code>;</li>
+  <li><b>URL</b> of image or PDF file: e.g., <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/img_rot180_demo.jpg">example</a>;</li>
+  <li><b>Local directory</b>: directory containing images for prediction, e.g., <code>/root/data/</code> (Note: directories containing PDF files are not supported; PDFs must be specified by exact file path)</li>
+  </ul>
 <li><b>list</b>: Elements must be of the above types, e.g., <code>[numpy.ndarray, numpy.ndarray]</code>, <code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>, <code>["/root/data1", "/root/data2"]</code></li>
 </ul>
 </td>
@@ -293,31 +320,41 @@ MKL-DNN cache capacity.
 </tr>
 <tr>
 <td><code>batch_size</code></td>
-<td>Batch size, positive integer.</td>
+<td><b>Meaning:</b>Batch size<br/>
+<b>Description:</b>
+Positive integer.</td>
 <td><code>int</code></td>
 <td>1</td>
 </tr>
 <tr>
 <td><code>threshold</code></td>
-<td>Same meaning as the instantiation parameters. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
+<td><b>Meaning:</b>Same meaning as the instantiation parameters. <br/>
+<b>Description:</b>
+If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
 <td><code>float|dict|None</code></td>
 <td>None</td>
 </tr>
 <tr>
 <td><code>layout_nms</code></td>
-<td>Same meaning as the instantiation parameters. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
+<td><b>Meaning:</b>Same meaning as the instantiation parameters. <br/>
+<b>Description:</b>
+ If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
 <td><code>bool|None</code></td>
 <td>None</td>
 </tr>
 <tr>
 <td><code>layout_unclip_ratio</code></td>
-<td>Same meaning as the instantiation parameters. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
+<td><b>Meaning:</b>Same meaning as the instantiation parameters. <br/>
+<b>Description:</b>
+If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
 <td><code>float|list|dict|None</code></td>
 <td>None</td>
 </tr>
 <tr>
 <td><code>layout_merge_bboxes_mode</code></td>
-<td>Same meaning as the instantiation parameters. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
+<td><b>Meaning:</b>Same meaning as the instantiation parameters. <br/>
+<b>Description:</b>
+If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
 <td><code>str|dict|None</code></td>
 <td>None</td>
 </tr>
@@ -325,7 +362,7 @@ MKL-DNN cache capacity.
 </table>
 
 
-* Process the prediction results, with each sample's prediction result being the corresponding Result object, and supporting operations such as printing, saving as an image, and saving as a 'json' file:
+* Process the prediction results, with each sample's prediction result being the corresponding Result object, and supporting operations such as printing, saving as an image, and saving as a <code>json</code> file:
 
 <table>
 <thead>
