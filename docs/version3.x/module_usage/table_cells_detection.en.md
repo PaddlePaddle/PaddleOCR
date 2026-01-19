@@ -117,22 +117,25 @@ After running, the result obtained is:
 ```
 
 The parameter meanings are as follows:
-
-- `input_path`: Path of the input image to be predicted
-- `page_index`: If the input is a PDF file, it indicates which page of the PDF it is; otherwise, it is `None`
-- `boxes`: Predicted bounding box information, a list of dictionaries. Each dictionary represents a detected object and contains the following information:
-  - `cls_id`: Class ID, an integer
-  - `label`: Class label, a string
-  - `score`: Confidence of the bounding box, a float
-  - `coordinate`: Coordinates of the bounding box, a list of floats in the format <code>[xmin, ymin, xmax, ymax]</code>
-
+<ul>
+<li><code>input_path</code>: Path of the input image to be predicted</li>
+<li><code>page_index</code>: If the input is a PDF file, it indicates which page of the PDF it is; otherwise, it is `None`</li>
+<li><code>boxes</code>: Predicted bounding box information, a list of dictionaries. Each dictionary represents a detected object and contains the following information:
+    <ol start = "1" type ="1">
+  <li><code>cls_id</code>: Class ID, an integer</li>
+  <li><code>label</code>: Class label, a string</li>
+  <li><code>score</code>: Confidence of the bounding box, a float</li>
+  <li><code>coordinate</code>: Coordinates of the bounding box, a list of floats in the format <code>[xmin, ymin, xmax, ymax]</code></li>
+    </ol>
+</li>
+</ul>
 The visualized image is as follows:
 
 <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/modules/table_cells_detection/01.jpg">
 
 The relevant methods, parameters, etc., are described as follows:
 
-* `TableCellsDetection` instantiates the table cell detection model (taking `RT-DETR-L_wired_table_cell_det` as an example here), with specific explanations as follows:
+* <code>TableCellsDetection</code> instantiates the table cell detection model (taking <code>RT-DETR-L_wired_table_cell_det</code> as an example here), with specific explanations as follows:
 <table>
 <thead>
 <tr>
@@ -145,19 +148,22 @@ The relevant methods, parameters, etc., are described as follows:
 <tbody>
 <tr>
 <td><code>model_name</code></td>
-<td>Model name. If set to <code>None</code>, <code>RT-DETR-L_wired_table_cell_det</code> will be used.</td>
+<td><b>Meaning:</b> Model name.<br/>
+<b>Description:</b> 
+If set to <code>None</code>, <code>RT-DETR-L_wired_table_cell_det</code> will be used.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>model_dir</code></td>
-<td>Model storage path.</td>
+<td><b>Meaning:</b>Model storage path.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>Device for inference.<br/>
+<td><b>Meaning:</b>Device for inference.<br/>
+<b>Description:</b> 
 <b>For example:</b> <code>"cpu"</code>, <code>"gpu"</code>, <code>"npu"</code>, <code>"gpu:0"</code>, <code>"gpu:0,1"</code>.<br/>
 If multiple devices are specified, parallel inference will be performed.<br/>
 By default, GPU 0 is used if available; otherwise, CPU is used.</td>
@@ -166,13 +172,15 @@ By default, GPU 0 is used if available; otherwise, CPU is used.</td>
 </tr>
 <tr>
 <td><code>enable_hpi</code></td>
-<td>Whether to enable high-performance inference.</td>
+<td><b>Meaning:</b>Whether to enable high-performance inference.</td>
 <td><code>bool</code></td>
 <td><code>False</code></td>
 </tr>
 <tr>
 <td><code>use_tensorrt</code></td>
-<td>Whether to use the Paddle Inference TensorRT subgraph engine. If the model does not support acceleration through TensorRT, setting this flag will not enable acceleration.<br/>
+<td><b>Meaning:</b>Whether to use the Paddle Inference TensorRT subgraph engine.<br/> 
+<b>Description:</b> 
+If the model does not support acceleration through TensorRT, setting this flag will not enable acceleration.<br/>
 For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6), and it is recommended to install TensorRT 8.6.1.6.<br/>
 </td>
 <td><code>bool</code></td>
@@ -180,44 +188,52 @@ For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6)
 </tr>
 <tr>
 <td><code>precision</code></td>
-<td>Computation precision when using the Paddle Inference TensorRT subgraph engine.<br/><b>Options:</b> <code>"fp32"</code>, <code>"fp16"</code>.</td>
+<td><b>Meaning:</b>Computation precision when using the Paddle Inference TensorRT subgraph engine.<br/>
+<b>Description:</b> 
+<b>Options:</b> <code>"fp32"</code>, <code>"fp16"</code>.</td>
 <td><code>str</code></td>
 <td><code>"fp32"</code></td>
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
-<td>Whether to enable MKL-DNN acceleration for inference. If MKL-DNN is unavailable or the model does not support it, acceleration will not be used even if this flag is set.</td>
+<td><b>Meaning:</b>Whether to enable MKL-DNN acceleration for inference. <br/>
+<b>Description:</b> 
+If MKL-DNN is unavailable or the model does not support it, acceleration will not be used even if this flag is set.</td>
 <td><code>bool</code></td>
 <td><code>True</code></td>
 </tr>
 <tr>
 <td><code>mkldnn_cache_capacity</code></td>
-<td>MKL-DNN cache capacity.</td>
+<td><b>Meaning:</b>MKL-DNN cache capacity.</td>
 <td><code>int</code></td>
 <td><code>10</code></td>
 </tr>
 <tr>
 <td><code>cpu_threads</code></td>
-<td>Number of threads to use for inference on CPUs.</td>
+<td><b>Meaning:</b>Number of threads to use for inference on CPUs.</td>
 <td><code>int</code></td>
 <td><code>10</code></td>
 </tr>
 <tr>
 <td><code>img_size</code></td>
-<td>Input image size.<ul><li><b>int</b>: e.g. <code>640</code>, resizes input image to 640x640</li><li><b>list</b>: e.g. <code>[640, 512]</code>, resizes input image to 640 width and 512 height</li></ul></td>
+<td><b>Meaning:</b>Input image size.<br/>
+<b>Description:</b> 
+<ul><li><b>int</b>: e.g. <code>640</code>, resizes input image to 640x640</li><li><b>list</b>: e.g. <code>[640, 512]</code>, resizes input image to 640 width and 512 height</li></ul></td>
 <td><code>int|list|None</code></td>
 <td>None</td>
 </tr>
 <tr>
 <td><code>threshold</code></td>
-<td>Threshold for filtering out low-confidence prediction results.<ul><li><b>float</b>: e.g. <code>0.2</code>, filters out all boxes with confidence below 0.2.</li><li><b>dict</b>: keys are <code>int</code> (class id), values are <code>float</code> thresholds, e.g. <code>{0: 0.45, 2: 0.48, 7: 0.4}</code>, applies thresholds to specific classes.</li><li><b>None</b>: uses the model's default configuration.</li></ul></td>
+<td><b>Meaning:</b>Threshold for filtering out low-confidence prediction results.<br/>
+<b>Description:</b>
+<ul><li><b>float</b>: e.g. <code>0.2</code>, filters out all boxes with confidence below 0.2.</li><li><b>dict</b>: keys are <code>int</code> (class id), values are <code>float</code> thresholds, e.g. <code>{0: 0.45, 2: 0.48, 7: 0.4}</code>, applies thresholds to specific classes.</li><li><b>None</b>: uses the model's default configuration.</li></ul></td>
 <td><code>float|dict|None</code></td>
 <td><code>None</code></td>
 </tr>
 </tbody>
 </table>
 
-* Call the `predict()` method of the table cell detection model for inference prediction. This method will return a result list. Additionally, this module also provides a `predict_iter()` method. Both methods are consistent in terms of parameter acceptance and result return. The difference is that `predict_iter()` returns a `generator`, which can process and obtain prediction results step by step, suitable for handling large datasets or scenarios where memory saving is desired. You can choose to use either of these methods according to your actual needs. The `predict()` method has parameters `input`, `batch_size`, and `threshold`, with specific explanations as follows:
+* Call the <code>predict()</code> method of the table cell detection model for inference prediction. This method will return a result list. Additionally, this module also provides a <code>predict_iter()</code> method. Both methods are consistent in terms of parameter acceptance and result return. The difference is that <code>predict_iter()</code> returns a <code>generator</code>, which can process and obtain prediction results step by step, suitable for handling large datasets or scenarios where memory saving is desired. You can choose to use either of these methods according to your actual needs. The <code>predict()</code> method has parameters <code>input</code>, <code>batch_size</code>, and <code>threshold</code>, with specific explanations as follows:
 
 <table>
 <thead>
@@ -231,7 +247,9 @@ For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6)
 <tr>
 <td><code>input</code></td>
 <td>
-Input data to be predicted. Required. Supports multiple input types:
+<b>Meaning:</b>Input data to be predicted. Required.<br/>
+<b>Description:</b>
+Supports multiple input types:
 <ul>
   <li><b>Python Var</b>: e.g., <code>numpy.ndarray</code> representing image data</li>
   <li><b>str</b>: Local image file or PDF file path: <code>/root/data/img.jpg</code>; <b>URL</b>: Image or PDF file network URL: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/img_rot180_demo.jpg">Example</a>; <b>Directory</b>: Should contain images for prediction, e.g., <code>/root/data/</code> (currently, PDF files in directories are not supported, PDF files need to be specified by file path)</li>
@@ -243,19 +261,22 @@ Input data to be predicted. Required. Supports multiple input types:
 </tr>
 <tr>
 <td><code>batch_size</code></td>
-<td>Batch size, positive integer.</td>
+<td><b>Meaning:</b>Batch size.<br/>
+<b>Description:</b>
+Positive integer.</td>
 <td><code>int</code></td>
 <td>1</td>
 </tr>
 <tr>
 <td><code>threshold</code></td>
-<td>Same meaning as the instantiation parameters. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
+<td><b>Meaning:</b>Same meaning as the instantiation parameters.<br/>
+<b>Description:</b>If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
 <td><code>float|dict|None</code></td>
 <td>None</td>
 </tr>
 </table>
 
-* Process the prediction results. The prediction result for each sample is a corresponding Result object, which supports printing, saving as an image, and saving as a `json` file:
+* Process the prediction results. The prediction result for each sample is a corresponding Result object, which supports printing, saving as an image, and saving as a <code>json</code> file:
 
 <table>
 <thead>

@@ -80,38 +80,45 @@ paddleocr doc_understanding -i "{'image': 'https://paddle-model-ecology.bj.bcebo
 <tbody>
 <tr>
 <td><code>input</code></td>
-<td>待预测数据，必填。如"{'image': 'https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/medal_table.png', 'query': '识别这份表格的内容，以markdown格式输出'}"。
+<td><b>含义：</b>待预测数据，必填。<br/>
+<b>说明：</b>
+如<code>{'image': 'https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/medal_table.png', 'query': '识别这份表格的内容，以markdown格式输出'}</code>。
 </td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>save_path</code></td>
-<td>指定推理结果文件保存的路径。如果不设置，推理结果将不会保存到本地。</td>
+<td><b>含义：</b>指定推理结果文件保存的路径。<br/>
+<b>说明：</b>如果不设置，推理结果将不会保存到本地。</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>doc_understanding_model_name</code></td>
-<td>文档理解模型的名称。如果不设置，将会使用产线默认模型。</td>
+<td><b>含义：</b>文档理解模型的名称。<br/>
+<b>说明：</b>如果不设置，将会使用产线默认模型。</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>doc_understanding_model_dir</code></td>
-<td>文档理解模型的目录路径。如果不设置，将会下载官方模型。</td>
+<td><b>含义：</b>文档理解模型的目录路径。<br/>
+<b>说明：</b>如果不设置，将会下载官方模型。</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>doc_understanding_batch_size</code></td>
-<td>文档理解模型的batch size。如果设置为<code>None</code>，将默认设置batch size为<code>1</code>。</td>
+<td><b>含义：</b>文档理解模型的batch size。<br/>
+<b>说明：</b>如果不设置，将默认设置batch size为<code>1</code>。</td>
 <td><code>int</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>用于推理的设备。支持指定具体卡号：
+<td><b>含义：</b>用于推理的设备。<br/>
+<b>说明：</b>支持指定具体卡号：
 <ul>
 <li><b>CPU</b>：如 <code>cpu</code> 表示使用 CPU 进行推理；</li>
 <li><b>GPU</b>：如 <code>gpu:0</code> 表示使用第 1 块 GPU 进行推理；</li>
@@ -128,7 +135,7 @@ paddleocr doc_understanding -i "{'image': 'https://paddle-model-ecology.bj.bcebo
 </tr>
 <tr>
 <td><code>paddlex_config</code></td>
-<td>PaddleX产线配置文件路径。</td>
+<td><b>含义：</b>PaddleX产线配置文件路径。</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
@@ -164,7 +171,7 @@ for res in output:
 
 在上述 Python 脚本中，执行了如下几个步骤：
 
-（1）通过 `DocUnderstanding()` 实例化文档理解产线产线对象，具体参数说明如下：
+（1）通过 <code>DocUnderstanding()</code> 实例化文档理解产线产线对象，具体参数说明如下：
 
 <table>
 <thead>
@@ -178,25 +185,33 @@ for res in output:
 <tbody>
 <tr>
 <td><code>doc_understanding_model_name</code></td>
-<td>文档理解模型的名称。如果设置为<code>None</code>，将会使用产线默认模型。</td>
+<td><b>含义：</b>文档理解模型的名称。<br/>
+<b>说明：</b>
+如果设置为<code>None</code>，将会使用产线默认模型。</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>doc_understanding_model_dir</code></td>
-<td>文档理解模型的目录路径。如果设置为<code>None</code>，将会下载官方模型。</td>
+<td><b>含义：</b>文档理解模型的目录路径。<br/>
+<b>说明：</b>
+如果不设置，将会下载官方模型。</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>doc_understanding_batch_size</code></td>
-<td>文档理解模型的batch size。如果设置为<code>None</code>，将默认设置batch size为<code>1</code>。</td>
+<td><b>含义：</b>文档理解模型的batch size。<br/>
+<b>说明：</b>
+如果设置为<code>None</code>，将默认设置batch size为<code>1</code>。</td>
 <td><code>int|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>用于推理的设备。支持指定具体卡号：
+<td><b>含义：</b>用于推理的设备。<br/>
+<b>说明：</b>
+支持指定具体卡号：
 <ul>
 <li><b>CPU</b>：如 <code>cpu</code> 表示使用 CPU 进行推理；</li>
 <li><b>GPU</b>：如 <code>gpu:0</code> 表示使用第 1 块 GPU 进行推理；</li>
@@ -214,18 +229,18 @@ for res in output:
 </tr>
 <tr>
 <td><code>paddlex_config</code></td>
-<td>PaddleX产线配置文件路径。</td>
+<td><b>含义：</b>PaddleX产线配置文件路径。</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 </tbody>
 </table>
 
-（2）调用 文档理解产线 产线对象的 `predict()` 方法进行推理预测，该方法会返回一个结果列表。
+（2）调用 文档理解产线 产线对象的 <code>predict()</code> 方法进行推理预测，该方法会返回一个结果列表。
 
-另外，产线还提供了 `predict_iter()` 方法。两者在参数接受和结果返回方面是完全一致的，区别在于 `predict_iter()` 返回的是一个 `generator`，能够逐步处理和获取预测结果，适合处理大型数据集或希望节省内存的场景。可以根据实际需求选择使用这两种方法中的任意一种。
+另外，产线还提供了 <code>predict_iter()</code> 方法。两者在参数接受和结果返回方面是完全一致的，区别在于 <code>predict_iter()</code> 返回的是一个 <code>generator</code>，能够逐步处理和获取预测结果，适合处理大型数据集或希望节省内存的场景。可以根据实际需求选择使用这两种方法中的任意一种。
 
-以下是 `predict()` 方法的参数及其说明：
+以下是 <code>predict()</code> 方法的参数及其说明：
 
 <table>
 <thead>
@@ -238,7 +253,8 @@ for res in output:
 </thead>
 <tr>
 <td><code>input</code></td>
-<td>待预测数据，目前仅支持dict类型的输入
+<td><b>含义：</b>待预测数据，目前仅支持dict类型的输入。<br/>
+<b>说明：</b>   
 <ul>
   <li><b>Python Dict</b>：如PP-DocBee的输入形式为: <code>{"image":/path/to/image, "query": user question}</code> ,分别表示输入的图像和对应的用户问题。</li>
 </ul>
@@ -248,7 +264,7 @@ for res in output:
 </tr>
 </table>
 
-（3）对预测结果进行处理，每个样本的预测结果均为对应的Result对象，且支持打印、保存为`json`文件的操作:
+（3）对预测结果进行处理，每个样本的预测结果均为对应的Result对象，且支持打印、保存为 <code>json</code> 文件的操作:
 
 <table>
 <thead>
