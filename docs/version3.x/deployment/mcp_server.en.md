@@ -146,7 +146,7 @@ This section explains how to use the PaddleOCR MCP server within Claude for Desk
     ```json
     {
       "mcpServers": {
-        "paddleocr-ocr": {
+        "paddleocr": {
           "command": "paddleocr_mcp",
           "args": [],
           "env": {
@@ -205,7 +205,7 @@ This section explains how to use the PaddleOCR MCP server within Claude for Desk
 
 4. **Restart the MCP Host**
 
-    Restart Claude for Desktop. The `paddleocr-ocr` tool should now be available in the application.
+    Restart Claude for Desktop. The `paddleocr` server should now be available in the application.
 
 ### 2.2 MCP Host Configuration Details
 
@@ -238,7 +238,7 @@ Configuration example:
 ```json
 {
   "mcpServers": {
-    "paddleocr-ocr": {
+    "paddleocr": {
       "command": "paddleocr_mcp",
       "args": [],
       "env": {
@@ -262,7 +262,37 @@ Configuration example:
 
 - Do not expose your access token.
 
-#### Mode 3: Self-hosted Service
+#### Mode 3: Qianfan Platform Services
+
+1. Install `paddleocr-mcp`.
+2. Obtain an API key by referring to the [Qianfan Platform Official Documentation](https://cloud.baidu.com/doc/qianfan-api/s/ym9chdsy5).
+3. Modify the `claude_desktop_config.json` file according to the configuration example below. Set `PADDLEOCR_MCP_QIANFAN_API_KEY` to your Qianfan platform API key.
+4. Restart the MCP host.
+
+Configuration example:
+
+```json
+{
+  "mcpServers": {
+    "paddleocr": {
+      "command": "paddleocr_mcp",
+      "args": [],
+      "env": {
+        "PADDLEOCR_MCP_PIPELINE": "PaddleOCR-VL",
+        "PADDLEOCR_MCP_PPOCR_SOURCE": "qianfan",
+        "PADDLEOCR_MCP_SERVER_URL": "https://qianfan.baidubce.com/v2/ocr",
+        "PADDLEOCR_MCP_QIANFAN_API_KEY": "<your-api-key>"
+      }
+    }
+  }
+}
+```
+
+**Note**:
+
+- `PADDLEOCR_MCP_PIPELINE` should be set to the pipeline name. See Section 4 for more details. The Qianfan platform service currently only supports PaddleOCR-VL and PP-StructureV3.
+
+#### Mode 4: Self-hosted Service
 
 1. In the environment where you need to run the PaddleOCR inference server, run the inference server as per the [PaddleOCR serving documentation](./serving.en.md).
 2. Install `paddleocr-mcp` where the MCP server will run.
@@ -274,7 +304,7 @@ Configuration example:
 ```json
 {
   "mcpServers": {
-    "paddleocr-ocr": {
+    "paddleocr": {
       "command": "paddleocr_mcp",
       "args": [],
       "env": {
@@ -304,7 +334,7 @@ Currently, for the PaddleOCR official website and self-hosted modes, and (for CP
     ```json
     {
       "mcpServers": {
-        "paddleocr-ocr": {
+        "paddleocr": {
           "command": "uvx",
           "args": [
             "--from",
@@ -326,7 +356,7 @@ Currently, for the PaddleOCR official website and self-hosted modes, and (for CP
     ```json
     {
       "mcpServers": {
-        "paddleocr-ocr": {
+        "paddleocr": {
           "command": "uvx",
           "args": [
             "--from",

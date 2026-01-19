@@ -146,7 +146,7 @@ paddleocr_mcp --help
     ```json
     {
       "mcpServers": {
-        "paddleocr-ocr": {
+        "paddleocr": {
           "command": "paddleocr_mcp",
           "args": [],
           "env": {
@@ -172,7 +172,7 @@ paddleocr_mcp --help
 
 5. **重启 MCP 主机**
 
-    重启 Claude for Desktop。新的 `paddleocr-ocr` 工具现在应该可以在应用中使用了。
+    重启 Claude for Desktop。新的 `paddleocr` 服务现在应该可以在应用中使用了。
 
 ### 2.2 MCP 主机配置说明
 
@@ -196,7 +196,7 @@ paddleocr_mcp --help
 ```json
 {
   "mcpServers": {
-    "paddleocr-ocr": {
+    "paddleocr": {
       "command": "paddleocr_mcp",
       "args": [],
       "env": {
@@ -253,7 +253,37 @@ paddleocr_mcp --help
 
 对于文字识别以外的任务，请在 PaddleOCR 官网获取任务对应的服务基础 URL，并正确设置 `PADDLEOCR_MCP_PIPELINE` 与 `PADDLEOCR_MCP_SERVER_URL`（参数说明详见第 4 节）。
 
-#### 模式三：自托管服务
+#### 模式三：千帆平台服务
+
+1. 安装 `paddleocr-mcp`。
+2. 参考 [千帆平台官方文档](https://cloud.baidu.com/doc/qianfan-api/s/ym9chdsy5) 获取 API key。
+3. 参考下方的配置示例更改 `claude_desktop_config.json` 文件内容。将 `PADDLEOCR_MCP_QIANFAN_API_KEY` 设置为千帆平台的 API key。
+4. 重启 MCP 主机。
+
+配置示例：
+
+```json
+{
+  "mcpServers": {
+    "paddleocr": {
+      "command": "paddleocr_mcp",
+      "args": [],
+      "env": {
+        "PADDLEOCR_MCP_PIPELINE": "PaddleOCR-VL",
+        "PADDLEOCR_MCP_PPOCR_SOURCE": "qianfan",
+        "PADDLEOCR_MCP_SERVER_URL": "https://qianfan.baidubce.com/v2/ocr",
+        "PADDLEOCR_MCP_QIANFAN_API_KEY": "<your-api-key>"
+      }
+    }
+  }
+}
+```
+
+**说明**：
+
+- `PADDLEOCR_MCP_PIPELINE` 需要被设置为产线名称。详见第 4 节。千帆平台服务目前仅支持 PaddleOCR-VL 和 PP-StructureV3。
+
+#### 模式四：自托管服务
 
 1. 在需要运行 PaddleOCR 推理服务器的环境中，参考 [PaddleOCR 服务化部署文档](./serving.md) 运行推理服务器。
 2. 在需要运行 MCP 服务器的环境中安装 `paddleocr-mcp`。
@@ -265,7 +295,7 @@ paddleocr_mcp --help
 ```json
 {
   "mcpServers": {
-    "paddleocr-ocr": {
+    "paddleocr": {
       "command": "paddleocr_mcp",
       "args": [],
       "env": {
@@ -294,7 +324,7 @@ paddleocr_mcp --help
   ```json
   {
     "mcpServers": {
-     "paddleocr-ocr": {
+     "paddleocr": {
       "command": "uvx",
       "args": [
         "--from",
@@ -315,7 +345,7 @@ paddleocr_mcp --help
   ```json
   {
     "mcpServers": {
-     "paddleocr-ocr": {
+     "paddleocr": {
       "command": "uvx",
       "args": [
         "--from",
