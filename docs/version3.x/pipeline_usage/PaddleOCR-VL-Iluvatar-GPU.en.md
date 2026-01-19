@@ -2,7 +2,7 @@
 comments: true
 ---
 
-# PaddleOCR-VL iluvatar GPU Environment Configuration Tutorial
+# PaddleOCR-VL Iluvatar GPU Environment Configuration Tutorial
 
 This tutorial is a guide for configuring the PaddleOCR-VL iluvatar GPU environment. The purpose is to complete the relevant environment setup. After the environment configuration is complete, please refer to the [PaddleOCR-VL Usage Tutorial](./PaddleOCR-VL.en.md) to use PaddleOCR-VL.
 
