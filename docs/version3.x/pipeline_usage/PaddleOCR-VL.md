@@ -1253,6 +1253,7 @@ PaddleOCR 提供了 Docker 镜像，用于快速启动 vLLM 或 FastDeploy 推�
         --rm \
         --gpus all \
         --network host \
+        --shm-size 64G \
         ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-fastdeploy-server:latest \
         paddleocr genai_server --model_name PaddleOCR-VL-0.9B --host 0.0.0.0 --port 8118 --backend fastdeploy
     ```
