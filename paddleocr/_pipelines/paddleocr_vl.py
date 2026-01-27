@@ -22,7 +22,13 @@ from .base import PaddleXPipelineWrapper, PipelineCLISubcommandExecutor
 from .utils import create_config_from_structure
 
 
-_SUPPORTED_VL_BACKENDS = ["native", "vllm-server", "sglang-server", "fastdeploy-server"]
+_SUPPORTED_VL_BACKENDS = [
+    "native",
+    "vllm-server",
+    "sglang-server",
+    "fastdeploy-server",
+    "mlx-vlm-server",
+]
 
 
 class PaddleOCRVL(PaddleXPipelineWrapper):
