@@ -48,6 +48,7 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
     <th>天数 GPU</th>
     <th>昇腾 NPU</th>
     <th>x64 CPU</th>
+    <th>Apple Silicon</th>
   </tr>
 </thead>
 <tbody>
@@ -60,6 +61,7 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
     <td>✅</td>
     <td>🚧</td>
     <td>✅</td>
+    <td>✅</td>
   </tr>
   <tr style="text-align: center;">
     <td>vLLM</td>
@@ -69,6 +71,7 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
     <td>🚧</td>
     <td>🚧</td>
     <td>✅</td>
+    <td>❌</td>
     <td>❌</td>
   </tr>
   <tr style="text-align: center;">
@@ -80,6 +83,7 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
     <td>🚧</td>
     <td>🚧</td>
     <td>❌</td>
+    <td>❌</td>
   </tr>
   <tr style="text-align: center;">
     <td>FastDeploy</td>
@@ -90,6 +94,18 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
     <td>✅</td>
     <td>🚧</td>
     <td>❌</td>
+    <td>❌</td>
+  </tr>
+  <tr style="text-align: center;">
+    <td>MLX-VLM</td>
+    <td>❌</td>
+    <td>❌</td>
+    <td>❌</td>
+    <td>❌</td>
+    <td>❌</td>
+    <td>❌</td>
+    <td>❌</td>
+    <td>✅</td>
   </tr>
 </tbody>
 </table>
@@ -116,6 +132,7 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
 | 沐曦 GPU        | [PaddleOCR-VL 沐曦 GPU 环境配置教程](./PaddleOCR-VL-MetaX-GPU.md) |
 | 天数 GPU        | [PaddleOCR-VL 天数 GPU 环境配置教程](./PaddleOCR-VL-Iluvatar-GPU.md) |
 | 昇腾 NPU        | [PaddleOCR-VL 昇腾 NPU 环境配置教程](./PaddleOCR-VL-NPU.md) |
+| Apple Silicon        | [PaddleOCR-VL Apple Silicon 环境配置教程](./PaddleOCR-VL-Apple-Silicon.md) |
 
 > TIP:
 > 例如您使用的是 RTX 50 系 GPU，满足 PaddlePaddle 和 vLLM 推理方式的设备要求，请参考 [PaddleOCR-VL NVIDIA Blackwell 架构 GPU 环境配置教程](./PaddleOCR-VL-NVIDIA-Blackwell.md) 完成环境配置后再进行 PaddleOCR-VL 的使用。
