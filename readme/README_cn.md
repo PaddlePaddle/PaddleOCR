@@ -83,7 +83,18 @@ PaddleOCR 3.0除了提供优秀的模型库外，还提供好学易用的工具�
 
 ## 📣 最新动态
 
-### 🔥🔥2025.10.16: PaddleOCR 3.3.0 发布，包含：
+### 🔥🔥2026.1.29: PaddleOCR 3.4.0 发布，包含：
+
+- **发布 PaddleOCR-VL-1.5**：
+    - **PaddleOCR-VL-1.5** 是 PaddleOCR-VL 系列的全新迭代版本。在全面优化 1.0 版本核心能力的基础上，**该模型在文档解析权威评测集 OmniDocBench v1.5 上斩获了 94.5% 的高精度**，超越了全球的顶尖通用大模型及文档解析专用模型。
+
+      PaddleOCR-VL-1.5 创新性地支持了文档元素的异形框定位，使得 PaddleOCR-VL-1.5 在扫描、倾斜、弯折、屏幕拍摄及复杂光照等真实落地场景中均表现卓越，实现了全面的 SOTA。此外，模型进一步集成了印章识别与文本检测识别任务，关键指标持续领跑主流模型。
+
+      您可以在 [PaddleOCR官网](https://www.paddleocr.com) 在线使用或者调用该模型的API。
+
+<details>
+<summary><strong>2025.10.16: PaddleOCR 3.3.0 发布</strong></summary>
+
 - **发布PaddleOCR-VL**：
     - **模型介绍**：
         - **PaddleOCR-VL** 是一款先进、高效的文档解析模型，专为文档中的元素识别设计。其核心组件为 PaddleOCR-VL-0.9B，这是一种紧凑而强大的视觉语言模型（VLM），它由 NaViT 风格的动态分辨率视觉编码器与 ERNIE-4.5-0.3B 语言模型组成，能够实现精准的元素识别。**该模型支持 109 种语言，并在识别复杂元素（如文本、表格、公式和图表）方面表现出色，同时保持极低的资源消耗。通过在广泛使用的公开基准与内部基准上的全面评测，PaddleOCR-VL 在页级级文档解析与元素级识别均达到 SOTA 表现**。它显著优于现有的基于Pipeline方案和文档解析多模态方案以及先进的通用多模态大模型，并具备更快的推理速度。这些优势使其非常适合在真实场景中落地部署。模型已发布至[HuggingFace](https://huggingface.co/PaddlePaddle/PaddleOCR-VL)，欢迎大家下载使用！更多介绍内容请点击[PaddleOCR-VL](https://www.paddleocr.ai/latest/version3.x/algorithm/PaddleOCR-VL/PaddleOCR-VL.html)。
@@ -96,6 +107,7 @@ PaddleOCR 3.0除了提供优秀的模型库外，还提供好学易用的工具�
 - **发布PP-OCRv5小语种识别模型**：
     - 优化拉丁文识别的准度和广度，新增西里尔文、阿拉伯文、天城文、泰卢固语、泰米尔语等语系，覆盖109种语言文字的识别。模型参数量仅为2M，部分模型精度较上一代提升40%以上。
 
+</details>
 
 <details>
 <summary><strong>2025.08.21: PaddleOCR 3.2.0 发布</strong></summary>
