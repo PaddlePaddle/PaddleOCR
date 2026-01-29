@@ -110,6 +110,10 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
 </tbody>
 </table>
 
+<details><summary>推理方式说明</summary>
+“PaddlePaddle” 表示版面检测模型与 VLM 均使用飞桨框架推理，PaddleOCR CLI 与 Python API 默认使用这种推理方式；其余推理方式遵循 “版面检测模型推理方式 + VLM 推理方式” 的格式，如“PaddlePaddle + vLLM”是指版面检测模型使用 PaddlePaddle 推理，VLM 使用 vLLM 推理。
+</details>
+
 > TIP:
 > - 使用英伟达 GPU 推理时需要注意 Compute Capability（简称 CC） 和 CUDA 版本（简称 CUDA）是否满足要求：
 > >  - PaddlePaddle: CC ≥ 7.0, CUDA ≥ 11.8
