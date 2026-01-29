@@ -25,7 +25,7 @@ jobs:
           path: .cache
           restore-keys: |
             mkdocs-material-
-      - run: pip install mike mkdocs-material jieba mkdocs-git-revision-date-localized-plugin mkdocs-git-committers-plugin-2 mkdocs-static-i18n
+      - run: pip install mike mkdocs-material jieba mkdocs-git-revision-date-localized-plugin mkdocs-git-committers-plugin-2 mkdocs-static-i18n markdown-callouts
       - run: |
           git fetch origin gh-pages --depth=1
           mike deploy --push "${{ github.ref_name }}"
