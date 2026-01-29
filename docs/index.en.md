@@ -15,7 +15,7 @@ hide:
 
 Since its initial release, PaddleOCR has gained widespread acclaim across academia, industry, and research communities, thanks to its cutting-edge algorithms and proven performance in real-world applications. It’s already powering popular open-source projects like Umi-OCR, OmniParser, MinerU, and RAGFlow, making it the go-to OCR toolkit for developers worldwide.
 
-**On January 29, 2026, PaddleOCR open-sourced the advanced and efficient document parsing model PaddleOCR-VL-1.5.** PaddleOCR-VL-1.5 is a new iterative version of the PaddleOCR-VL series. Based on comprehensive optimization of the core capabilities of version 1.0, the model achieves 94.5% accuracy on the authoritative document parsing benchmark OmniDocBench v1.5, surpassing top global general-purpose large models and document parsing–specific models.
+**On January 29, 2026, PaddleOCR open-sourced the advanced and efficient document parsing model PaddleOCR-VL-1.5.** PaddleOCR-VL-1.5 is a new iterative version of the PaddleOCR-VL series. Based on comprehensive optimization of the core capabilities of version 1.0, **the model achieves 94.5% accuracy on the authoritative document parsing benchmark OmniDocBench v1.5**, surpassing top global general-purpose large models and document parsing–specific models.
 
 PaddleOCR-VL-1.5 innovatively supports irregular-shaped bounding box localization of document elements, enabling excellent performance in real-world application scenarios such as scanning, skew, warping, screen-photography, and complex illumination, achieving comprehensive SOTA performance. In addition, the model further integrates seal recognition and spotting tasks, with key metrics continuing to lead mainstream models.
 
