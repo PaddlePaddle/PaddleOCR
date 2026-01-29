@@ -123,7 +123,6 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
 > >  - CC ≥ 8 的常见显卡包括 RTX 30/40/50 系列及 A10/A100 等，更多型号可查看 [CUDA GPU 计算能力](https://developer.nvidia.cn/cuda-gpus)
 > - 虽然 vLLM 可在 T4/V100 等 CC 7.x 的 NVIDIA GPU 上启动，但容易出现超时或 OOM，不推荐使用。
 > - vLLM、SGLang 和 FastDeploy 无法在 Windows 上原生运行，请使用我们提供的 Docker 镜像。
-> - 推理方式遵循 “版面检测模型推理方式 + VLM 推理方式” 的格式，如 PaddlePaddle + vLLM 是指版面检测模型使用 PaddlePaddle 推理，VLM 使用 vLLM 推理。
 
 由于不同硬件所需的依赖各不相同，如果您的硬件满足上述表格的要求，请参考下表查看对应的教程进行环境配置：
 
