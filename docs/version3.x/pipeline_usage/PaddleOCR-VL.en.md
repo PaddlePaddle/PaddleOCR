@@ -134,7 +134,7 @@ Since different hardware requires different dependencies, if your hardware meets
 | HYGON DCU      | [PaddleOCR-VL DCU Environment Configuration Tutorial](./PaddleOCR-VL-DCU.en.md)                                              |
 | MetaX GPU      | [PaddleOCR-VL MetaX GPU Environment Configuration Tutorial](./PaddleOCR-VL-MetaX-GPU.en.md)                                              |
 | Iluvatar GPU        | [PaddleOCR-VL Iluvatar GPU Environment Configuration Tutorial](./PaddleOCR-VL-Iluvatar-GPU.en.md) |
-| Ascend NPU        | [PaddleOCR-VL NPU Environment Configuration Tutorial](./PaddleOCR-VL-NPU.en.md) |
+| Huawei Ascend NPU        | [PaddleOCR-VL NPU Environment Configuration Tutorial](./PaddleOCR-VL-NPU.en.md) |
 | Apple Silicon        | [PaddleOCR-VL Apple Silicon Environment Configuration Tutorial](./PaddleOCR-VL-Apple-Silicon.en.md) |
 
 > TIP:

@@ -134,7 +134,7 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
 | 海光 DCU        | [PaddleOCR-VL DCU 环境配置教程](./PaddleOCR-VL-DCU.md) |
 | 沐曦 GPU        | [PaddleOCR-VL 沐曦 GPU 环境配置教程](./PaddleOCR-VL-MetaX-GPU.md) |
 | 天数 GPU        | [PaddleOCR-VL 天数 GPU 环境配置教程](./PaddleOCR-VL-Iluvatar-GPU.md) |
-| 昇腾 NPU        | [PaddleOCR-VL 昇腾 NPU 环境配置教程](./PaddleOCR-VL-NPU.md) |
+| 华为昇腾 NPU        | [PaddleOCR-VL 华为昇腾 NPU 环境配置教程](./PaddleOCR-VL-NPU.md) |
 | Apple Silicon        | [PaddleOCR-VL Apple Silicon 环境配置教程](./PaddleOCR-VL-Apple-Silicon.md) |
 
 > TIP:
