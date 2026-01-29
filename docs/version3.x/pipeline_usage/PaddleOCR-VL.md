@@ -37,7 +37,7 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
 
 ## PaddleOCR-VL 对推理设备的支持情况
 
-目前 PaddleOCR-VL 有四种推理方式，支持的推理设备不完全相同，请确认您的推理设备是否满足下表要求再进行 PaddleOCR-VL 的推理部署：
+目前 PaddleOCR-VL 有五种推理方式，支持的推理设备不完全相同，请确认您的推理设备是否满足下表要求再进行 PaddleOCR-VL 的推理部署：
 
 <table border="1">
 <thead>
@@ -50,6 +50,7 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
     <th>天数 GPU</th>
     <th>华为昇腾 NPU</th>
     <th>x64 CPU</th>
+    <th>Apple Silicon</th>
   </tr>
 </thead>
 <tbody>
@@ -62,9 +63,10 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
     <td>✅</td>
     <td>🚧</td>
     <td>✅</td>
+    <td>✅</td>
   </tr>
   <tr style="text-align: center;">
-    <td>vLLM</td>
+    <td>PaddlePaddle + vLLM</td>
     <td>✅</td>
     <td>🚧</td>
     <td>✅</td>
@@ -72,9 +74,10 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
     <td>🚧</td>
     <td>✅</td>
     <td>❌</td>
+    <td>❌</td>
   </tr>
   <tr style="text-align: center;">
-    <td>SGLang</td>
+    <td>PaddlePaddle + SGLang</td>
     <td>✅</td>
     <td>🚧</td>
     <td>🚧</td>
@@ -82,9 +85,10 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
     <td>🚧</td>
     <td>🚧</td>
     <td>❌</td>
+    <td>❌</td>
   </tr>
   <tr style="text-align: center;">
-    <td>FastDeploy</td>
+    <td>PaddlePaddle + FastDeploy</td>
     <td>✅</td>
     <td>✅</td>
     <td>🚧</td>
@@ -92,9 +96,25 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
     <td>✅</td>
     <td>🚧</td>
     <td>❌</td>
+    <td>❌</td>
+  </tr>
+  <tr style="text-align: center;">
+    <td>PaddlePaddle + MLX-VLM</td>
+    <td>❌</td>
+    <td>❌</td>
+    <td>❌</td>
+    <td>❌</td>
+    <td>❌</td>
+    <td>❌</td>
+    <td>❌</td>
+    <td>✅</td>
   </tr>
 </tbody>
 </table>
+
+<details><summary>推理方式说明</summary>
+“PaddlePaddle” 表示版面检测模型与 VLM 均使用飞桨框架推理，PaddleOCR CLI 与 Python API 默认使用这种推理方式；其余推理方式遵循 “版面检测模型推理方式 + VLM 推理方式” 的格式，如“PaddlePaddle + vLLM”是指版面检测模型使用 PaddlePaddle 推理，VLM 使用 vLLM 推理。
+</details>
 
 > TIP:
 > - 使用英伟达 GPU 推理时需要注意 Compute Capability（简称 CC） 和 CUDA 版本（简称 CUDA）是否满足要求：
@@ -104,8 +124,7 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
 > >  - FastDeploy: 8.0 ≤ CC < 12.0, CUDA ≥ 12.6
 > >  - CC ≥ 8 的常见显卡包括 RTX 30/40/50 系列及 A10/A100 等，更多型号可查看 [CUDA GPU 计算能力](https://developer.nvidia.cn/cuda-gpus)
 > - 虽然 vLLM 可在 T4/V100 等 CC 7.x 的 NVIDIA GPU 上启动，但容易出现超时或 OOM，不推荐使用。
-> - 当前，PaddleOCR-VL 暂不支持 ARM 架构 CPU。后续将根据实际需求扩展更多硬件支持，敬请期待！  
-> - vLLM、SGLang 和 FastDeploy 无法在 Windows 或 macOS 上原生运行，请使用我们提供的 Docker 镜像。
+> - vLLM、SGLang 和 FastDeploy 无法在 Windows 上原生运行，请使用我们提供的 Docker 镜像。
 
 由于不同硬件所需的依赖各不相同，如果您的硬件满足上述表格的要求，请参考下表查看对应的教程进行环境配置：
 
@@ -118,6 +137,10 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
 | 沐曦 GPU        | [PaddleOCR-VL 沐曦 GPU 环境配置教程](./PaddleOCR-VL-MetaX-GPU.md) |
 | 天数 GPU        | [PaddleOCR-VL 天数 GPU 环境配置教程](./PaddleOCR-VL-Iluvatar-GPU.md) |
 | 华为昇腾 NPU        | [PaddleOCR-VL 华为昇腾 NPU 环境配置教程](./PaddleOCR-VL-NPU.md) |
+| Apple Silicon        | [PaddleOCR-VL Apple Silicon 环境配置教程](./PaddleOCR-VL-Apple-Silicon.md) |
+
+> TIP:
+> 例如您使用的是 RTX 50 系 GPU，满足 PaddlePaddle 和 vLLM 推理方式的设备要求，请参考 [PaddleOCR-VL NVIDIA Blackwell 架构 GPU 环境配置教程](./PaddleOCR-VL-NVIDIA-Blackwell.md) 完成环境配置后再进行 PaddleOCR-VL 的使用。
 
 ## 1. 环境准备
 
@@ -186,7 +209,7 @@ python -m pip install -U "paddleocr[doc-parser]"
 ```
 
 > IMPORTANT:
-> **请注意安装 3.2.1 及以上版本的飞桨框架。** 对于 macOS 用户，请使用 Docker 进行环境搭建。
+> **请注意安装 3.2.1 及以上版本的飞桨框架。**
 
 ## 2. 快速开始
 

@@ -37,7 +37,7 @@ For some inference hardware, you may need to refer to other environment configur
 
 ## Inference Device Support for PaddleOCR-VL
 
-Currently, PaddleOCR-VL offers four inference methods, with varying levels of support for different inference devices. Please confirm that your inference device meets the requirements in the table below before proceeding with PaddleOCR-VL deployment:
+Currently, PaddleOCR-VL offers five inference methods, with varying levels of support for different inference devices. Please confirm that your inference device meets the requirements in the table below before proceeding with PaddleOCR-VL deployment:
 
 <table border="1">
 <thead>
@@ -50,6 +50,7 @@ Currently, PaddleOCR-VL offers four inference methods, with varying levels of su
     <th>Iluvatar GPU</th>
     <th>Huawei Ascend NPU</th>
     <th>x64 CPU</th>
+    <th>Apple Silicon</th>
   </tr>
 </thead>
 <tbody>
@@ -62,9 +63,10 @@ Currently, PaddleOCR-VL offers four inference methods, with varying levels of su
     <td>✅</td>
     <td>🚧</td>
     <td>✅</td>
+    <td>✅</td>
   </tr>
   <tr style="text-align: center;">
-    <td>vLLM</td>
+    <td>PaddlePaddle + vLLM</td>
     <td>✅</td>
     <td>🚧</td>
     <td>✅</td>
@@ -72,9 +74,10 @@ Currently, PaddleOCR-VL offers four inference methods, with varying levels of su
     <td>🚧</td>
     <td>✅</td>
     <td>❌</td>
+    <td>❌</td>
   </tr>
   <tr style="text-align: center;">
-    <td>SGLang</td>
+    <td>PaddlePaddle + SGLang</td>
     <td>✅</td>
     <td>🚧</td>
     <td>🚧</td>
@@ -82,9 +85,10 @@ Currently, PaddleOCR-VL offers four inference methods, with varying levels of su
     <td>🚧</td>
     <td>🚧</td>
     <td>❌</td>
+    <td>❌</td>
   </tr>
   <tr style="text-align: center;">
-    <td>FastDeploy</td>
+    <td>PaddlePaddle + FastDeploy</td>
     <td>✅</td>
     <td>✅</td>
     <td>🚧</td>
@@ -92,9 +96,25 @@ Currently, PaddleOCR-VL offers four inference methods, with varying levels of su
     <td>✅</td>
     <td>🚧</td>
     <td>❌</td>
+    <td>❌</td>
+  </tr>
+  <tr style="text-align: center;">
+    <td>PaddlePaddle + MLX-VLM</td>
+    <td>❌</td>
+    <td>❌</td>
+    <td>❌</td>
+    <td>❌</td>
+    <td>❌</td>
+    <td>❌</td>
+    <td>❌</td>
+    <td>✅</td>
   </tr>
 </tbody>
 </table>
+
+<details><summary>Explanation of Inference Method</summary>
+"PaddlePaddle" indicates that both the layout detection model and the VLM use the PaddlePaddle framework for inference. This is the default mode for the PaddleOCR CLI and Python API. Other inference method follow the format "Layout Detection Model Inference method + VLM Inference method". For example, "PaddlePaddle + vLLM" means the layout detection model uses PaddlePaddle, while the VLM uses vLLM.
+</details>
 
 > TIP:
 > - When using NVIDIA GPU for inference, ensure that the Compute Capability (CC) and CUDA version meet the requirements:
@@ -104,8 +124,7 @@ Currently, PaddleOCR-VL offers four inference methods, with varying levels of su
 > >  - FastDeploy: 8.0 ≤ CC < 12.0, CUDA ≥ 12.6
 > >  - Common GPUs with CC ≥ 8 include RTX 30/40/50 series and A10/A100, etc. For more models, refer to [CUDA GPU Compute Capability](https://developer.nvidia.com/cuda-gpus)
 > - vLLM compatibility note: Although vLLM can be launched on NVIDIA GPUs with CC 7.x such as T4/V100, timeout or OOM issues may occur, and its use is not recommended.
-> - Currently, PaddleOCR-VL does not support ARM architecture CPUs. More hardware support will be expanded based on actual needs in the future, so stay tuned!
-> - vLLM, SGLang, and FastDeploy cannot run natively on Windows or macOS. Please use the Docker images we provide.
+> - vLLM, SGLang, and FastDeploy cannot run natively on Windows. Please use the Docker images we provide.
 
 Since different hardware requires different dependencies, if your hardware meets the requirements in the table above, please refer to the following table for the corresponding tutorial to configure your environment:
 
@@ -118,6 +137,10 @@ Since different hardware requires different dependencies, if your hardware meets
 | MetaX GPU      | [PaddleOCR-VL MetaX GPU Environment Configuration Tutorial](./PaddleOCR-VL-MetaX-GPU.en.md)                                              |
 | Iluvatar GPU        | [PaddleOCR-VL Iluvatar GPU Environment Configuration Tutorial](./PaddleOCR-VL-Iluvatar-GPU.en.md) |
 | Huawei Ascend NPU        | [PaddleOCR-VL NPU Environment Configuration Tutorial](./PaddleOCR-VL-NPU.en.md) |
+| Apple Silicon        | [PaddleOCR-VL Apple Silicon Environment Configuration Tutorial](./PaddleOCR-VL-Apple-Silicon.en.md) |
+
+> TIP:
+> For example, if you are using an RTX 50 series GPU that meets the device requirements for both PaddlePaddle and vLLM inference methods, please refer to the [PaddleOCR-VL NVIDIA Blackwell Architecture GPU Environment Configuration Tutorial](./PaddleOCR-VL-NVIDIA-Blackwell.en.md) to complete the environment configuration before using PaddleOCR-VL.
 
 ## 1. Environment Preparation
 
@@ -186,7 +209,7 @@ python -m pip install -U "paddleocr[doc-parser]"
 ```
 
 > IMPORTANT:
-> **Please ensure that you install PaddlePaddle framework version 3.2.1 or above.** For macOS users, please use Docker to set up the environment.
+> **Please ensure that you install PaddlePaddle framework version 3.2.1 or above.**
 
 ## 2. Quick Start
 
