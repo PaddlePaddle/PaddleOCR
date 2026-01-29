@@ -1,6 +1,6 @@
 # TODO: Allow regular users
 
-FROM ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddlex-paddle-metax-gpu:3.3.0
+FROM ccr-2vdh3abv-pub.cnc.bj.baidubce.com/device/paddle-ixuca:3.3.0
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -18,6 +18,10 @@ RUN apt-get update \
     && fc-cache -fv \
     && rm -rf /var/lib/apt/lists/*
 
+RUN --mount=type=cache,target=/root/.cache/pip \
+    python -m pip install paddlepaddle==3.3.0.dev20251219 -i https://www.paddlepaddle.org.cn/packages/nightly/cpu/ \
+    && python -m pip install paddle-iluvatar-gpu==3.0.0.dev20251223 -i https://www.paddlepaddle.org.cn/packages/nightly/ixuca/
+
 ARG PADDLEOCR_VERSION=">=3.4.0,<3.5"
 ARG PADDLEX_VERSION=">=3.4.0,<3.5"
 RUN --mount=type=cache,target=/root/.cache/pip \
@@ -30,19 +34,9 @@ WORKDIR /home/paddleocr
 
 USER paddleocr
 
-ENV MACA_PATH=/opt/maca
-
-RUN "${MACA_PATH}/tools/cu-bridge/tools/pre_make"
-
-ENV CUDA_PATH="${HOME}/cu-bridge/CUDA_DIR"
-
-ENV LD_LIBRARY_PATH="${CUDA_PATH}/lib64:${MACA_PATH}/lib:${MACA_PATH}/mxgpu_llvm/lib:${LD_LIBRARY_PATH}"
-
-ENV MACA_VISIBLE_DEVICES="0,1,2,3,4,5,6,7"
-ENV PADDLE_XCCL_BACKEND="metax_gpu"
-ENV FLAGS_weight_only_linear_arch=80
-ENV FD_MOE_BACKEND="cutlass"
-ENV FD_ENC_DEC_BLOCK_NUM=2
+ENV PADDLE_XCCL_BACKEND=iluvatar_gpu
+ENV FD_SAMPLING_CLASS=rejection
+ENV LD_PRELOAD=/usr/local/corex/lib64/libcuda.so.1
 
 ARG BUILD_FOR_OFFLINE=false
 RUN if [ "${BUILD_FOR_OFFLINE}" = 'true' ]; then \
@@ -70,4 +64,4 @@ COPY --chown=paddleocr:paddleocr pipeline_config_fastdeploy.yaml /home/paddleocr
 
 EXPOSE 8080
 
-CMD ["paddlex", "--serve", "--pipeline", "/home/paddleocr/pipeline_config_vllm.yaml", "--device", "metax_gpu"]
+CMD ["paddlex", "--serve", "--pipeline", "/home/paddleocr/pipeline_config_vllm.yaml", "--device", "iluvatar_gpu"]

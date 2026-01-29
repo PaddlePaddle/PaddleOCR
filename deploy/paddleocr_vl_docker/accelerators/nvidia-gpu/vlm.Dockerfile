@@ -1,9 +1,10 @@
-# TODO: Allow regular users
-
-ARG BACKEND=fastdeploy
+ARG BACKEND=vllm
 
 
-FROM ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddlex-fastdeploy-metax-gpu:2.3.0 AS base-fastdeploy
+FROM ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddlex-genai-vllm-server:latest AS base-vllm
+
+
+FROM ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/fastdeploy-cuda-12.6:2.3.0 AS base-fastdeploy
 
 
 FROM base-${BACKEND}
@@ -19,21 +20,6 @@ ENV HOME=/home/paddleocr
 WORKDIR /home/paddleocr
 
 USER paddleocr
-
-ENV MACA_PATH=/opt/maca
-
-RUN "${MACA_PATH}/tools/cu-bridge/tools/pre_make"
-
-ENV CUDA_PATH="${HOME}/cu-bridge/CUDA_DIR"
-
-ENV LD_LIBRARY_PATH="${CUDA_PATH}/lib64:${MACA_PATH}/lib:${MACA_PATH}/mxgpu_llvm/lib:${LD_LIBRARY_PATH}"
-
-ENV MACA_VISIBLE_DEVICES="0,1,2,3,4,5,6,7"
-# TODO: Set these env vars only in FastDeploy image
-ENV PADDLE_XCCL_BACKEND="metax_gpu"
-ENV FLAGS_weight_only_linear_arch=80
-ENV FD_MOE_BACKEND="cutlass"
-ENV FD_ENC_DEC_BLOCK_NUM=2
 
 ARG BUILD_FOR_OFFLINE=false
 RUN if [ "${BUILD_FOR_OFFLINE}" = 'true' ]; then \

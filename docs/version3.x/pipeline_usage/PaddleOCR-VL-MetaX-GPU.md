@@ -36,6 +36,11 @@ docker run -it \
 
 如果您希望在无法连接互联网的环境中启动服务，请将上述命令中的 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-metax-gpu` 更换为离线版本镜像 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-metax-gpu-offline`。
 
+> TIP:
+> 标签后缀为 `latest-xxx` 的镜像对应 PaddleOCR 的最新版本。如果希望使用特定版本的 PaddleOCR 镜像，可以将标签中的 `latest` 替换为对应版本号：`paddleocr<major>.<minor>`。
+> 例如：
+> `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:paddleocr3.3-metax-gpu-offline`
+
 ### 1.2 方法二：手动安装 PaddlePaddle 和 PaddleOCR
 
 如果您无法使用 Docker，也可以手动安装 PaddlePaddle 和 PaddleOCR。要求 Python 版本为 3.8–3.12。
@@ -83,7 +88,7 @@ docker run -it \
   --shm-size 64g \
   --network host \
   ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-fastdeploy-server:latest-metax-gpu \
-  paddleocr genai_server --model_name PaddleOCR-VL-0.9B --host 0.0.0.0 --port 8118 --backend fastdeploy
+  paddleocr genai_server --model_name PaddleOCR-VL-1.5-0.9B --host 0.0.0.0 --port 8118 --backend fastdeploy
 ```
 
 如果您希望在无法连接互联网的环境中启动服务，请将上述命令中的 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-fastdeploy-server:latest-metax-gpu` 更换为离线版本镜像 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-fastdeploy-server:latest-metax-gpu-offline`。
@@ -103,8 +108,13 @@ docker run -it \
   --network host \
   -v fastdeploy_config.yml:/tmp/fastdeploy_config.yml \
   ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-fastdeploy-server:latest-metax-gpu \
-  paddleocr genai_server --model_name PaddleOCR-VL-0.9B --host 0.0.0.0 --port 8118 --backend fastdeploy --backend_config /tmp/fastdeploy_config.yml
+  paddleocr genai_server --model_name PaddleOCR-VL-1.5-0.9B --host 0.0.0.0 --port 8118 --backend fastdeploy --backend_config /tmp/fastdeploy_config.yml
 ```
+
+> TIP:
+> 标签后缀为 `latest-xxx` 的镜像对应 PaddleOCR 的最新版本。如果希望使用特定版本的 PaddleOCR 镜像，可以将标签中的 `latest` 替换为对应版本号：`paddleocr<major>.<minor>`。
+> 例如：
+> `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:paddleocr3.3-metax-gpu-offline`
 
 ### 3.2 客户端使用方法
 
@@ -200,7 +210,7 @@ Docker Compose 通过读取 `.env` 和 `compose.yaml` 文件中配置，先后�
   paddleocr-vlm-server:
     ...
     volumes: /path/to/your_config.yaml:/home/paddleocr/vlm_server_config.yaml
-    command: paddleocr genai_server --model_name PaddleOCR-VL-0.9B --host 0.0.0.0 --port 8118 --backend fastdeploy --backend_config /home/paddleocr/vlm_server_config.yaml
+    command: paddleocr genai_server --model_name PaddleOCR-VL-1.5-0.9B --host 0.0.0.0 --port 8118 --backend fastdeploy --backend_config /home/paddleocr/vlm_server_config.yaml
     ...
 ```
 

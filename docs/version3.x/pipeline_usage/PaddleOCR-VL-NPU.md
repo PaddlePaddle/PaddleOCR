@@ -2,9 +2,9 @@
 comments: true
 ---
 
-# PaddleOCR-VL 昇腾 NPU 环境配置教程
+# PaddleOCR-VL 华为昇腾 NPU 环境配置教程
 
-本教程是 PaddleOCR-VL 昇腾 NPU 的环境配置教程，目的是完成相关的环境配置，环境配置完毕后请参考 [PaddleOCR-VL 使用教程](./PaddleOCR-VL.md) 使用 PaddleOCR-VL。
+本教程是 PaddleOCR-VL 华为昇腾 NPU 的环境配置教程，目的是完成相关的环境配置，环境配置完毕后请参考 [PaddleOCR-VL 使用教程](./PaddleOCR-VL.md) 使用 PaddleOCR-VL。
 
 ## 1. 环境准备
 
@@ -29,12 +29,17 @@ docker run -it \
   -v /usr/local/dcmi:/usr/local/dcmi \
   --shm-size 64g \
   --network host \
-  ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-npu \
+  ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-huawei-npu \
   /bin/bash
 # 在容器中调用 PaddleOCR CLI 或 Python API
 ```
 
-如果您希望在无法连接互联网的环境中启动服务，请将上述命令中的 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-npu` 更换为离线版本镜像 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-npu-offline`。
+如果您希望在无法连接互联网的环境中启动服务，请将上述命令中的 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-huawei-npu` 更换为离线版本镜像 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-huawei-npu-offline`。
+
+> TIP:
+> 标签后缀为 `latest-xxx` 的镜像对应 PaddleOCR 的最新版本。如果希望使用特定版本的 PaddleOCR 镜像，可以将标签中的 `latest` 替换为对应版本号：`paddleocr<major>.<minor>`。
+> 例如：
+> `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:paddleocr3.4-huawei-npu-offline`
 
 ### 1.2 方法二：手动安装 PaddlePaddle 和 PaddleOCR
 
@@ -80,11 +85,11 @@ docker run -it \
   -v /usr/local/dcmi:/usr/local/dcmi \
   --shm-size 64g \
   --network host \
-  ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-npu \
+  ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-huawei-npu \
   paddleocr genai_server --model_name PaddleOCR-VL-0.9B --host 0.0.0.0 --port 8118 --backend vllm
 ```
 
-如果您希望在无法连接互联网的环境中启动服务，请将上述命令中的 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-npu` 更换为离线版本镜像 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-npu-offline`。
+如果您希望在无法连接互联网的环境中启动服务，请将上述命令中的 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-huawei-npu` 更换为离线版本镜像 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-huawei-npu-offline`。
 
 启动 vLLM 推理服务时，我们提供了一套默认参数设置。如果您有调整显存占用等更多参数的需求，可以自行配置更多参数。请参考 [3.3.1 服务端参数调整](./PaddleOCR-VL.md#331-服务端参数调整) 创建配置文件，然后将该文件挂载到容器中，并在启动服务的命令中使用 `backend_config` 指定配置文件，例如：
 
@@ -98,9 +103,14 @@ docker run -it \
   -v vllm_config.yml:/tmp/vllm_config.yml \
   --shm-size 64g \
   --network host \
-  ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-npu \
+  ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-huawei-npu \
   paddleocr genai_server --model_name PaddleOCR-VL-0.9B --host 0.0.0.0 --port 8118 --backend vllm --backend_config /tmp/vllm_config.yml
 ```
+
+> TIP:
+> 标签后缀为 `latest-xxx` 的镜像对应 PaddleOCR 的最新版本。如果希望使用特定版本的 PaddleOCR 镜像，可以将标签中的 `latest` 替换为对应版本号：`paddleocr<major>.<minor>`。
+> 例如：
+> `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:paddleocr3.4-huawei-npu-offline`
 
 ### 3.2 客户端使用方法
 
@@ -116,7 +126,7 @@ docker run -it \
 
 此步骤主要介绍如何使用 Docker Compose 将 PaddleOCR-VL 部署为服务并调用，具体流程如下：
 
-1. 分别从 [此处](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/accelerators/npu/compose.yaml) 和 [此处](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/accelerators/npu/.env) 获取 Compose 文件与环境变量配置文件并下载到本地。
+1. 分别从 [此处](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/accelerators/huawei-npu/compose.yaml) 和 [此处](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/accelerators/huawei-npu/.env) 获取 Compose 文件与环境变量配置文件并下载到本地。
 
 2. 在 `compose.yaml` 和 `.env` 文件所在目录下执行以下命令启动服务器，默认监听 **8080** 端口：
 

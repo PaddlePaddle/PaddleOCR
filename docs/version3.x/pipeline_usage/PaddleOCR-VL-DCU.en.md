@@ -14,6 +14,8 @@ This step mainly introduces how to set up the runtime environment for PaddleOCR-
 
 - Method 2: Manually install PaddlePaddle and PaddleOCR.
 
+**We strongly recommend using the Docker image to minimize potential environment-related issues.**
+
 ### 1.1 Method 1: Using Docker Image
 
 We recommend using the official Docker image (requires Docker version >= 19.03):
@@ -32,12 +34,17 @@ docker run -it \
   -v /opt/hyhal/:/opt/hyhal/:ro \
   --shm-size 64g \
   --network host \
-  ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-dcu \
+  ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-hygon-dcu \
   /bin/bash
 # Call PaddleOCR CLI or Python API in the container
 ```
 
-If you wish to start the service in an environment without internet access, replace `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-dcu` in the above command with the offline version image `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-dcu-offline`.
+If you wish to start the service in an environment without internet access, replace `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-hygon-dcu` in the above command with the offline version image `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-hygon-dcu-offline`.
+
+> TIP:
+> Images with the `latest-xxx` tag correspond to the latest version of PaddleOCR. If you want to use a specific version of the PaddleOCR image, you can replace `latest` in the tag with the desired version number: `paddleocr<major>.<minor>`.
+> For example:
+> `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:paddleocr3.3-hygon-dcu-offline`
 
 ### 1.2 Method 2: Manually Install PaddlePaddle and PaddleOCR
 
@@ -86,11 +93,11 @@ docker run -it \
   -v /opt/hyhal/:/opt/hyhal/:ro \
   --shm-size 64g \
   --network host \
-  ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-dcu \
-  paddleocr genai_server --model_name PaddleOCR-VL-0.9B --host 0.0.0.0 --port 8118 --backend vllm
+  ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-hygon-dcu \
+  paddleocr genai_server --model_name PaddleOCR-VL-1.5-0.9B --host 0.0.0.0 --port 8118 --backend vllm
 ```
 
-If you wish to start the service in an environment without internet access, replace `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-dcu` in the above command with the offline version image `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-dcu-offline`.
+If you wish to start the service in an environment without internet access, replace `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-hygon-dcu` in the above command with the offline version image `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-hygon-dcu-offline`.
 
 When launching the vLLM inference service, we provide a set of default parameter settings. If you need to adjust parameters such as GPU memory usage, you can configure additional parameters yourself. Please refer to [3.3.1 Server-side Parameter Adjustment](./PaddleOCR-VL.en.md#331-server-side-parameter-adjustment) to create a configuration file, then mount the file into the container and specify the configuration file using `backend_config` in the command to start the service, for example:
 
@@ -110,8 +117,13 @@ docker run -it \
   --shm-size 64g \
   --network host \
   ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-dcu \
-  paddleocr genai_server --model_name PaddleOCR-VL-0.9B --host 0.0.0.0 --port 8118 --backend vllm --backend_config /tmp/vllm_config.yml
+  paddleocr genai_server --model_name PaddleOCR-VL-1.5-0.9B --host 0.0.0.0 --port 8118 --backend vllm --backend_config /tmp/vllm_config.yml
 ```
+
+> TIP:
+> Images with the `latest-xxx` tag correspond to the latest version of PaddleOCR. If you want to use a specific version of the PaddleOCR image, you can replace `latest` in the tag with the desired version number: `paddleocr<major>.<minor>`.
+> For example:
+> `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:paddleocr3.3-hygon-dcu-offline`
 
 ### 3.2 Client Usage Method
 
@@ -127,7 +139,7 @@ Please refer to the corresponding section in the [PaddleOCR-VL Usage Tutorial](.
 
 This step mainly introduces how to use Docker Compose to deploy PaddleOCR-VL as a service and call it. The specific process is as follows:
 
-1. Download the Compose file and the environment variable configuration file separately from [here](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/accelerators/dcu/compose.yaml) and [here](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/accelerators/dcu/.env) to your local machine.
+1. Download the Compose file and the environment variable configuration file separately from [here](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/accelerators/hygon-dcu/compose.yaml) and [here](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/accelerators/hygon-dcu/.env) to your local machine.
     
 2. Execute the following command in the directory where the `compose.yaml` and `.env` files are located to start the server, which listens on port **8080** by default:
 
@@ -209,7 +221,7 @@ After generating the configuration file, add the following <code>paddleocr-vlm-s
   paddleocr-vlm-server:
     ...
     volumes: /path/to/your_config.yaml:/home/paddleocr/vlm_server_config.yaml
-    command: paddleocr genai_server --model_name PaddleOCR-VL-0.9B --host 0.0.0.0 --port 8118 --backend vllm --backend_config /home/paddleocr/vlm_server_config.yaml
+    command: paddleocr genai_server --model_name PaddleOCR-VL-1.5-0.9B --host 0.0.0.0 --port 8118 --backend vllm --backend_config /home/paddleocr/vlm_server_config.yaml
     ...
 ```
 

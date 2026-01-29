@@ -1507,6 +1507,18 @@ paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --device gpu
 <td><code>True</code></td>
 </tr>
 <tr>
+<td><code>format_block_content</code></td>
+<td><b>含义：</b>是否将<code>block_content</code>中的内容格式化为Markdown格式。<br><b>说明：</b>如果不设置，将使用产线初始化的该参数值，默认初始化为<code>False</code>。</br></td>
+<td><code>bool</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>markdown_ignore_labels</code></td>
+<td><b>含义：</b>需要在Markdown中忽略的版面标签。<br><b>说明：</b>如果不设置，将使用产线初始化的该参数值，默认初始化为<code>['number','footnote','header','header_image','footer','footer_image','aside_text']</code>。</br></td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
 <td><code>device</code></td>
 <td><b>含义：</b>用于推理的设备。
 <br><b>说明：</b>支持指定具体卡号：
@@ -2212,6 +2224,18 @@ for item in markdown_images:
 <td><code>None</code></td>
 </tr>
 <tr>
+<td><code>format_block_content</code></td>
+<td>是否将<code>block_content</code>中的内容格式化为Markdown格式。如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>False</code>。</td>
+<td><code>bool|None</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>markdown_ignore_labels</code></td>
+<td>需要在Markdown中忽略的版面标签。如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>['number','footnote','header','header_image','footer','footer_image','aside_text']</code>。</td>
+<td><code>list|None</code></td>
+<td></td>
+</tr>
+<tr>
 <td><code>device</code></td>
 <td><b>含义：</b>用于推理的设备。
 <br><b>说明：</b>支持指定具体卡号：
@@ -2367,6 +2391,13 @@ for item in markdown_images:
 <td><code>None</code></td>
 </tr>
 <tr>
+<td><code>format_block_content</code></td>
+<td><b>含义：</b>是否将<code>block_content</code>中的内容格式化为Markdown格式。
+<br><b>说明：</b>设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</br></td>
+<td><code>bool|None</code></td>
+<td></td>
+</tr>
+<tr>
 <td><code>layout_threshold</code></td>
 <td><b>含义：</b>参数含义与实例化参数基本相同。
 <br><b>说明：</b>设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</br></td>
@@ -2514,6 +2545,13 @@ for item in markdown_images:
 <td><code>bool</code></td>
 <td><code>True</code></td>
 </tr>
+<tr>
+<td><code>markdown_ignore_labels</code></td>
+<td><b>含义：</b>需要在Markdown中忽略的版面标签。
+<br><b>说明：</b>设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</br></td>
+<td><code>list|None</code></td>
+<td></td>
+</tr>
 </table>
 </details>
 
@@ -2617,13 +2655,18 @@ for item in markdown_images:
       <ol start="1" type = "1"> 
         <li><code>input_path</code>: <code>(str)</code>  待预测图像或者PDF的输入路径</li>
         <li><code>page_index</code>: <code>(Union[int, None])</code> 如果输入是PDF文件，则表示当前是PDF的第几页，否则为  <code>None</code></li>
+        <li><code>page_count</code>: <code>(Union[int, None])</code> 如果输入是PDF文件，表示当前是PDF的总页数，否则为 <code>None</code></li>
+        <li><code>width</code>: <code>(int)</code> 原始输入图像的宽度</li>
+        <li><code>height</code>: <code>(int)</code> 原始输入图像的高度</li>
         <li><code>model_settings</code>: <code>(Dict[str, bool])</code>  配置产线所需的模型参数</li>
             <ol start = "1" type = "a" > 
                 <li><code>use_doc_preprocessor</code>: <code>(bool)</code>  控制是否启用文档预处理子产线</li>
                 <li><code>use_seal_recognition</code>: <code>(bool)</code> 控制是否启用印章文本识别子产线</li>
                 <li><code>use_table_recognition</code>: <code>(bool)</code> 控制是否启用表格识别子产线</li>
                 <li><code>use_formula_recognition</code>: <code>(bool)</code> 控制是否启用公式识别子产线</li>
-            </ol>
+                <li><code>format_block_content</code>: <code>(bool)</code> 控制是否将 <code>block_content</code> 中的内容格式化为Markdown格式</li>
+                <li><code>markdown_ignore_labels</code>: <code>(List[str])</code> 需要在Markdown中忽略的版面标签</li>
+            </ul>
         </li>
         <li><code>doc_preprocessor_res</code>: <code>(Dict[str, Union[List[float], str]])</code> 文档预处理结果dict，仅当<code>use_doc_preprocessor=True</code>时存在</li>
             <ol start = "1" type = "a" > 
@@ -2909,6 +2952,12 @@ for item in markdown_images:
 <td>否</td>
 </tr>
 <tr>
+<td><code>formatBlockContent</code></td>
+<td><code>boolean</code> | <code>null</code></td>
+<td>请参阅产线对象中 <code>predict</code> 方法的 <code>format_block_content</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
 <td><code>layoutThreshold</code></td>
 <td><code>number</code> | <code>object</code> | </code><code>null</code></td>
 <td>请参阅产线对象中 <code>predict</code> 方法的 <code>layout_threshold</code> 参数相关说明。</td>
@@ -3041,6 +3090,24 @@ for item in markdown_images:
 <td>否</td>
 </tr>
 <tr>
+<td><code>markdownIgnoreLabels</code></td>
+<td><code>array</code> | <code>null</code></td>
+<td>请参阅产线对象中 <code>predict</code> 方法的 <code>markdown_ignore_labels</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>prettifyMarkdown</code></td>
+<td><code>boolean</code></td>
+<td>是否输出美化后的 Markdown 文本。默认为 <code>true</code>。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>showFormulaNumber</code></td>
+<td><code>boolean</code></td>
+<td>输出的 Markdown 文本中是否包含公式编号。默认为 <code>false</code>。</td>
+<td>否</td>
+</tr>
+<tr>
 <td><code>visualize</code></td>
 <td><code>boolean</code> | <code>null</code></td>
 <td>是否返回可视化结果图以及处理过程中的中间图像等。
@@ -3146,7 +3213,8 @@ for item in markdown_images:
 <td>当前页面最后一个元素是否为段结束。</td>
 </tr>
 </tbody>
-</table></details>
+</table>
+</details>
 <details><summary>多语言调用服务示例</summary>
 <details>
 <summary>Python</summary>
