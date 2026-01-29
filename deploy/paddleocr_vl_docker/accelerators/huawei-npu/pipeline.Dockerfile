@@ -19,7 +19,6 @@ FROM base-${TARGETARCH} AS base
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-ENV PIP_NO_CACHE_DIR=0
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONDONTWRITEBYTECODE=1
 
@@ -34,14 +33,17 @@ RUN apt-get update \
     && fc-cache -fv \
     && rm -rf /var/lib/apt/lists/*
 
-RUN python -m pip install paddlepaddle==3.2.0 -i https://www.paddlepaddle.org.cn/packages/stable/cpu/ \
+RUN --mount=type=cache,target=/root/.cache/pip \
+    python -m pip install paddlepaddle==3.2.0 -i https://www.paddlepaddle.org.cn/packages/stable/cpu/ \
     && python -m pip install paddle-custom-npu==3.2.0 -i https://www.paddlepaddle.org.cn/packages/stable/npu/
 
 ARG PADDLEOCR_VERSION=">=3.4.0,<3.5"
 ARG PADDLEX_VERSION=">=3.4.0,<3.5"
-RUN python -m pip install "paddleocr[doc-parser]${PADDLEOCR_VERSION}" "paddlex[serving]${PADDLEX_VERSION}"
+RUN --mount=type=cache,target=/root/.cache/pip \
+    python -m pip install "paddleocr[doc-parser]${PADDLEOCR_VERSION}" "paddlex[serving]${PADDLEX_VERSION}"
 
-RUN python -m pip install numpy==1.26.4 opencv-contrib-python==3.4.18.65
+RUN --mount=type=cache,target=/root/.cache/pip \
+    python -m pip install numpy==1.26.4 opencv-contrib-python==3.4.18.65
 
 RUN groupadd -g 1001 paddleocr \
     && useradd -m -s /bin/bash -u 1001 -g 1001 paddleocr

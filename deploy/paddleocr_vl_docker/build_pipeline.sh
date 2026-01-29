@@ -9,6 +9,7 @@ paddlex_version='3.4.0'
 platform='linux/amd64'
 action='load'
 registry='ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle'
+builder=''
 
 show_usage() {
     cat << EOF
@@ -26,6 +27,7 @@ Options:
                             tar: Export as tar file
                             none: Build only, no output
   --registry <registry>     Custom image registry [default: ${registry}]
+  --builder <name>          Buildx builder name (override default)
   -h, --help               Show this help message
 
 Examples:
@@ -111,6 +113,14 @@ while [[ $# -gt 0 ]]; do
             shift
             shift
             ;;
+        --builder)
+            [ -z "${2-}" ] && {
+                echo "Error: '--builder' requires a value" >&2
+                exit 2
+            }
+            builder="$2"
+            shift 2
+            ;;
         -h|--help)
             show_usage
             exit 0
@@ -153,6 +163,7 @@ base_image_name='paddleocr-vl'
 # Main tags
 main_tag="${registry}/${base_image_name}:${tag_suffix}"
 version_tag="${registry}/${base_image_name}:${tag_suffix/latest/${image_version}}"
+paddleocr_version_tag="${registry}/${base_image_name}:${tag_suffix/latest/paddleocr${paddleocr_version%.*}}"
 
 # Build arguments array
 build_args=(
@@ -160,6 +171,7 @@ build_args=(
     '-f' "${dockerfile}"
     '-t' "${main_tag}"
     '-t' "${version_tag}"
+    '-t' "${paddleocr_version_tag}"
     '--build-arg' "BUILD_FOR_OFFLINE=${build_for_offline}"
     '--build-arg' "PADDLEOCR_VERSION===${paddleocr_version}"
     '--build-arg' "PADDLEX_VERSION===${paddlex_version}"
@@ -172,6 +184,10 @@ build_args=(
     '.'
 )
 
+if [[ -n "${builder}" ]]; then
+    build_args=('--builder' "${builder}" "${build_args[@]}")
+fi
+
 echo "========================================="
 echo "Build Configuration:"
 echo "  Device Type:     ${device_type}"
@@ -181,6 +197,7 @@ echo "  PaddleX:         ${paddlex_version}"
 echo "  Platform:        ${platform}"
 echo "  Action:          ${action}"
 echo "  Registry:        ${registry}"
+echo "  Builder:         ${builder:-<default>}"
 echo "  Dockerfile:      ${dockerfile}"
 echo "  Tags:"
 echo "    - ${main_tag}"

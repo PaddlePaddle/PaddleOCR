@@ -5,14 +5,16 @@ ARG BACKEND=fastdeploy
 
 FROM ccr-2vdh3abv-pub.cnc.bj.baidubce.com/device/paddle-ixuca:paddle-ocr-vl-1107 AS base-fastdeploy
 
-RUN python -m pip install fastdeploy_iluvatar_gpu==2.4.0.dev0 -i https://www.paddlepaddle.org.cn/packages/stable/ixuca/
+RUN --mount=type=cache,target=/root/.cache/pip \
+    python -m pip install fastdeploy_iluvatar_gpu==2.4.0.dev0 -i https://www.paddlepaddle.org.cn/packages/stable/ixuca/
 
 
 FROM base-${BACKEND}
 
 ARG PADDLEOCR_VERSION=">=3.4.0,<3.5"
 ARG PADDLEX_VERSION=">=3.4.0,<3.5"
-RUN python -m pip install "paddleocr[doc-parser]${PADDLEOCR_VERSION}" "paddlex[serving]${PADDLEX_VERSION}"
+RUN --mount=type=cache,target=/root/.cache/pip \
+    python -m pip install "paddleocr${PADDLEOCR_VERSION}" "paddlex${PADDLEX_VERSION}"
 
 RUN groupadd -g 1000 paddleocr \
     && useradd -m -s /bin/bash -u 1000 -g 1000 paddleocr
@@ -31,9 +33,9 @@ RUN if [ "${BUILD_FOR_OFFLINE}" = 'true' ]; then \
         mkdir -p "${HOME}/.paddlex/official_models" \
         && cd "${HOME}/.paddlex/official_models" \
         && wget https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PaddleOCR-VL-1.5_infer.tar \
-        && tar -xf PaddleOCR-VL_infer.tar \
-        && mv PaddleOCR-VL_infer PaddleOCR-VL \
-        && rm -f PaddleOCR-VL_infer.tar; \
+        && tar -xf PaddleOCR-VL-1.5_infer.tar \
+        && mv PaddleOCR-VL-1.5_infer PaddleOCR-VL-1.5 \
+        && rm -f PaddleOCR-VL-1.5_infer.tar; \
     fi
 
 ARG BACKEND
