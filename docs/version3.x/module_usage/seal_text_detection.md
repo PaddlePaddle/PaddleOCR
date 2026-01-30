@@ -131,9 +131,11 @@ for res in output:
 ```
 
 运行结果参数含义如下：
-- `input_path`：表示输入待预测图像的路径
-- `dt_polys`：表示预测的文本检测框，其中每个文本检测框包含一个多边形的多个顶点。其中每个顶点都是一个列表，分别表示该顶点的x坐标和y坐标
-- `dt_scores`：表示预测的文本检测框的置信度
+<ul>
+<li> <code>input_path</code>：表示输入待预测图像的路径</li>
+<li> <code>dt_polys</code>：表示预测的文本检测框，其中每个文本检测框包含一个多边形的多个顶点。其中每个顶点都是一个列表，分别表示该顶点的x坐标和y坐标</li>
+<li> <code>dt_scores</code>：表示预测的文本检测框的置信度</li>
+</ul>
 
 可视化图片如下：
 
@@ -141,7 +143,7 @@ for res in output:
 
 相关方法、参数等说明如下：
 
-* `SealTextDetection`实例化文本检测模型（此处以`PP-OCRv4_server_seal_det`为例），具体说明如下：
+* <code>SealTextDetection</code>实例化文本检测模型（此处以<code>PP-OCRv4_server_seal_det</code>为例），具体说明如下：
 <table>
 <thead>
 <tr>
@@ -154,19 +156,22 @@ for res in output:
 <tbody>
 <tr>
 <td><code>model_name</code></td>
-<td>模型名称。模型名称。如果设置为<code>None</code>，则使用<code>PP-OCRv4_mobile_seal_det</code>。</td>
+<td><b>含义：</b>模型名称。<br/>
+<b>说明：</b>
+如果设置为<code>None</code>，则使用<code>PP-OCRv4_mobile_seal_det</code>。</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>model_dir</code></td>
-<td>模型存储路径。</td>
+<td><b>含义：</b>模型存储路径。</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>用于推理的设备。<br/>
+<td><b>含义：</b>用于推理的设备。<br/>
+<b>说明：</b>
 <b>例如：</b><code>"cpu"</code>、<code>"gpu"</code>、<code>"npu"</code>、<code>"gpu:0"</code>、<code>"gpu:0,1"</code>。<br/>
 如指定多个设备，将进行并行推理。<br/>
 默认情况下，优先使用 GPU 0；若不可用则使用 CPU。
@@ -176,13 +181,15 @@ for res in output:
 </tr>
 <tr>
 <td><code>enable_hpi</code></td>
-<td>是否启用高性能推理。</td>
+<td><b>含义：</b>是否启用高性能推理。</td>
 <td><code>bool</code></td>
 <td><code>False</code></td>
 </tr>
 <tr>
 <td><code>use_tensorrt</code></td>
-<td>是否启用 Paddle Inference 的 TensorRT 子图引擎。如果模型不支持通过 TensorRT 加速，即使设置了此标志，也不会使用加速。<br/>
+<td><b>含义：</b>是否启用 Paddle Inference 的 TensorRT 子图引擎。<br/>
+<b>说明：</b>
+如果模型不支持通过 TensorRT 加速，即使设置了此标志，也不会使用加速。<br/>
 对于 CUDA 11.8 版本的飞桨，兼容的 TensorRT 版本为 8.x（x>=6），建议安装 TensorRT 8.6.1.6。<br/>
 
 </td>
@@ -191,14 +198,18 @@ for res in output:
 </tr>
 <tr>
 <td><code>precision</code></td>
-<td>当使用 Paddle Inference 的 TensorRT 子图引擎时设置的计算精度。<br/><b>可选项：</b><code>"fp32"</code>、<code>"fp16"</code>。</td>
+<td><b>含义：</b>当使用 Paddle Inference 的 TensorRT 子图引擎时设置的计算精度。<br/>
+<b>说明：</b>
+<b>可选项：</b><code>"fp32"</code>、<code>"fp16"</code>。</td>
 <td><code>str</code></td>
 <td><code>"fp32"</code></td>
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
 <td>
-是否启用 MKL-DNN 加速推理。如果 MKL-DNN 不可用或模型不支持通过 MKL-DNN 加速，即使设置了此标志，也不会使用加速。<br/>
+<b>含义：</b>是否启用 MKL-DNN 加速推理。<br/>
+<b>说明：</b>
+如果 MKL-DNN 不可用或模型不支持通过 MKL-DNN 加速，即使设置了此标志，也不会使用加速。<br/>
 </td>
 <td><code>bool</code></td>
 <td><code>True</code></td>
@@ -206,57 +217,69 @@ for res in output:
 <tr>
 <td><code>mkldnn_cache_capacity</code></td>
 <td>
-MKL-DNN 缓存容量。
+<b>含义：</b>MKL-DNN 缓存容量。
 </td>
 <td><code>int</code></td>
 <td><code>10</code></td>
 </tr>
 <tr>
 <td><code>cpu_threads</code></td>
-<td>在 CPU 上推理时使用的线程数量。</td>
+<td><b>含义：</b>在 CPU 上推理时使用的线程数量。</td>
 <td><code>int</code></td>
 <td><code>10</code></td>
 </tr>
 <tr>
 <td><code>limit_side_len</code></td>
-<td>检测的图像边长限制：<code>int</code> 表示边长限制数值，如果设置为<code>None</code>, 将使用模型默认配置。</td>
+<td><b>含义：</b>检测的图像边长限制：<code>int</code> 表示边长限制数值<br/>
+<b>说明：</b>
+如果设置为<code>None</code>, 将使用模型默认配置。</td>
 <td><code>int|None</td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>limit_type</code></td>
-<td>检测的图像边长限制，检测的边长限制类型，<code>"min"</code> 表示保证图像最短边不小于 det_limit_side_len，<code>"max"</code> 表示保证图像最长边不大于 <code>limit_side_len</code>。如果设置为 <code>None</code>，将使用模型默认配置。</td>
+<td><b>含义：</b>检测的图像边长限制，检测的边长限制类型<br/>
+<b>说明：</b>
+<code>"min"</code> 表示保证图像最短边不小于 det_limit_side_len，<code>"max"</code> 表示保证图像最长边不大于 <code>limit_side_len</code>。如果设置为 <code>None</code>，将使用模型默认配置。</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>thresh</code></td>
-<td>像素得分阈值。输出概率图中得分大于该阈值的像素点被认为是文本像素。可选大于0的float任意浮点数。如果设置为<code>None</code>。将使用模型默认配置。</td>
+<td><b>含义：</b>像素得分阈值。<br/>
+<b>说明：</b>
+输出概率图中得分大于该阈值的像素点被认为是文本像素。可选大于0的float任意浮点数。如果设置为<code>None</code>。将使用模型默认配置。</td>
 <td><code>float|None</td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>box_thresh</code></td>
-<td>检测结果边框内，所有像素点的平均得分大于该阈值时，该结果会被认为是文字区域。可选大于0的float任意浮点数。如果设置为<code>None</code>, 将使用模型默认配置。</td>
+<td><b>含义：</b>检测结果边框内，所有像素点的平均得分大于该阈值时，该结果会被认为是文字区域。<br/>
+<b>说明：</b>
+可选大于0的float任意浮点数。如果设置为<code>None</code>, 将使用模型默认配置。</td>
 <td><code>float|None</td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>unclip_ratio</code></td>
-<td>Vatti clipping算法的扩张系数，使用该方法对文字区域进行扩张。可选大于0的任意浮点数。如果设置为<code>None</code>, 将使用模型默认配置。</td>
+<td><b>含义：</b>Vatti clipping算法的扩张系数，使用该方法对文字区域进行扩张。<br/>
+<b>说明：</b>
+可选大于0的任意浮点数。如果设置为<code>None</code>, 将使用模型默认配置。</td>
 <td><code>float|None</td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>input_shape</code></td>
-<td>模型输入图像尺寸，格式为 <code>(C, H, W)</code>。若为 <code>None</code>，将使用模型默认配置。</td>
+<td><b>含义：</b>模型输入图像尺寸，格式为 <code>(C, H, W)</code>。<br/>
+<b>说明：</b>
+若为 <code>None</code>，将使用模型默认配置。</td>
 <td><code>tuple|None</td>
 <td><code>None</code></td>
 </tr>
 </tbody>
 </table>
 
-* 调用印章文本检测模型的 `predict()` 方法进行推理预测，该方法会返回一个结果列表。另外，本模块还提供了 `predict_iter()` 方法。两者在参数接受和结果返回方面是完全一致的，区别在于 `predict_iter()` 返回的是一个 `generator`，能够逐步处理和获取预测结果，适合处理大型数据集或希望节省内存的场景。可以根据实际需求选择使用这两种方法中的任意一种。`predict()` 方法参数有 `input`、 `batch_size`、 `limit_side_len`、 `limit_type`、 `thresh`、 `box_thresh`、 `max_candidates`、`unclip_ratio`，具体说明如下：
+* 调用印章文本检测模型的 <code>predict()</code> 方法进行推理预测，该方法会返回一个结果列表。另外，本模块还提供了 <code>predict_iter()</code> 方法。两者在参数接受和结果返回方面是完全一致的，区别在于 <code>predict_iter()</code> 返回的是一个 <code>generator</code>，能够逐步处理和获取预测结果，适合处理大型数据集或希望节省内存的场景。可以根据实际需求选择使用这两种方法中的任意一种。<code>predict()</code>  方法参数有 <code>input</code> 、<code>batch_size</code>、 <code>limit_side_len</code>、 <code>limit_type</code>、 <code>thresh</code>、 <code>box_thresh</code>、 <code>max_candidates</code>、<code>unclip_ratio</code>，具体说明如下：
 <table>
 <thead>
 <tr>
@@ -268,7 +291,8 @@ MKL-DNN 缓存容量。
 </thead>
 <tr>
 <td><code>input</code></td>
-<td>待预测数据，支持多种输入类型，必填。
+<td><b>含义：</b>待预测数据，支持多种输入类型，必填。<br/>
+<b>说明：</b>
 <ul>
 <li><b>Python Var</b>：如 <code>numpy.ndarray</code> 表示的图像数据</li>
 <li><b>str</b>：如图像文件或者PDF文件的本地路径：<code>/root/data/img.jpg</code>；<b>如URL链接</b>，如图像文件或PDF文件的网络URL：<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/img_rot180_demo.jpg">示例</a>；<b>如本地目录</b>，该目录下需包含待预测图像，如本地路径：<code>/root/data/</code>(当前不支持目录中包含PDF文件的预测，PDF文件需要指定到具体文件路径)</li>
@@ -280,44 +304,56 @@ MKL-DNN 缓存容量。
 </tr>
 <tr>
 <td><code>batch_size</code></td>
-<td>批大小，可设置为任意正整数。</td>
+<td><b>含义：</b>批大小。<br/>
+<b>说明：</b>
+可设置为任意正整数。</td>
 <td><code>int</code></td>
 <td>1</td>
 </tr>
 <tr>
 <td><code>limit_side_len</code></td>
-<td>参数含义与实例化参数基本相同。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td><b>含义：</b>参数含义与实例化参数基本相同。<br/>
+<b>说明：</b>
+设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
 <td><code>int|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>limit_type</code></td>
-<td>参数含义与实例化参数基本相同。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td><b>含义：</b>参数含义与实例化参数基本相同。<br/>
+<b>说明：</b>
+设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>thresh</code></td>
-<td>参数含义与实例化参数基本相同。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td><b>含义：</b>参数含义与实例化参数基本相同。<br/>
+<b>说明：</b>
+设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
 <td><code>float|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>box_thresh</code></td>
-<td>参数含义与实例化参数基本相同。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td><b>含义：</b>参数含义与实例化参数基本相同。<br/>
+<b>说明：</b>
+设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
 <td><code>float|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>unclip_ratio</code></td>
-<td>参数含义与实例化参数基本相同。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td><b>含义：</b>参数含义与实例化参数基本相同。<br/>
+<b>说明：</b>
+设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
 <td><code>float|None</code></td>
 <td><code>None</code></td>
 </tr>
 </tbody>
 </table>
 
-* 对预测结果进行处理，每个样本的预测结果均为对应的Result对象，且支持打印、保存为图片、保存为`json`文件的操作:
+* 对预测结果进行处理，每个样本的预测结果均为对应的Result对象，且支持打印、保存为图片、保存为<code>json</code>文件的操作:
 
 <table>
 <thead>
@@ -401,7 +437,7 @@ MKL-DNN 缓存容量。
 
 ## 四、二次开发
 
-如果以上模型在您的场景上效果仍然不理想，您可以尝试以下步骤进行二次开发，此处以训练 `PP-OCRv4_server_seal_det` 举例，其他模型替换对应配置文件即可。首先，您需要准备文本检测的数据集，可以参考[印章文本检测 Demo 数据](https://paddle-model-ecology.bj.bcebos.com/paddlex/data/ocr_curve_det_dataset_examples.tar)的格式准备，准备好后，即可按照以下步骤进行模型训练和导出，导出后，可以将模型快速集成到上述 API 中。此处以印章文本检测 Demo 数据示例。在训练模型之前，请确保已经按照[安装文档](../installation.md)安装了 PaddleOCR 所需要的依赖。
+如果以上模型在您的场景上效果仍然不理想，您可以尝试以下步骤进行二次开发，此处以训练 <code>PP-OCRv4_server_seal_det</code> 举例，其他模型替换对应配置文件即可。首先，您需要准备文本检测的数据集，可以参考[印章文本检测 Demo 数据](https://paddle-model-ecology.bj.bcebos.com/paddlex/data/ocr_curve_det_dataset_examples.tar)的格式准备，准备好后，即可按照以下步骤进行模型训练和导出，导出后，可以将模型快速集成到上述 API 中。此处以印章文本检测 Demo 数据示例。在训练模型之前，请确保已经按照[安装文档](../installation.md)安装了 PaddleOCR 所需要的依赖。
 
 
 ### 4.1 数据集、预训练模型准备

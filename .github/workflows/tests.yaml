@@ -3,25 +3,35 @@ name: PaddleOCR PR Tests
 on:
   push:
     branches: ["main", "release/*"]
-    paths-ignore:
-      - '**.md'
-      - '**.txt'
-      - '**.yml'
-      - '**.yaml'
   pull_request:
     branches: ["main", "release/*"]
     paths-ignore:
-      - '**.md'
-      - '**.txt'
-      - '**.yml'
-      - '**.yaml'
+
 
 permissions:
   contents: read
 
 jobs:
+  detect-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      docs_only: ${{ steps.filter.outputs.docs_only }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: filter
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            docs_only:
+              - '**.md'
+              - '**.txt'
+              - '**.yml'
+              - '**.yaml'
+
   test-pr:
     runs-on: ubuntu-latest
+    needs: detect-changes
+    if: needs.detect-changes.outputs.docs_only != 'true'
 
     steps:
     - uses: actions/checkout@v4

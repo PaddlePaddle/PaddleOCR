@@ -116,10 +116,12 @@ After running, the result will be:
 ```
 
 The meaning of the output parameters is as follows:
-- `input_path`: Represents the path of the input image.
-- `class_ids`: Represents the predicted class ID, with four categories: 0°, 90°, 180°, and 270°.
-```- `scores`: Represents the confidence level of the prediction result.
-- `label_names`: Represents the category names of the prediction results.
+<ul>
+<li><code>input_path</code>：Represents the path of the input image.</li>
+<li><code>class_ids</code>：Represents the predicted class ID, with four categories: 0°, 90°, 180°, and 270°.</li>
+<li><code>scores</code>：Represents the confidence level of the prediction result.</li>
+<li><code>label_names</code>：Represents the category names of the prediction results.</li>
+</ul>
 
 Here is the visualization of the image:
 
@@ -127,7 +129,7 @@ Here is the visualization of the image:
 
 The explanations of relevant methods and parameters are as follows:
 
-* Instantiate the document image orientation classification model with `DocImgOrientationClassification` (taking `PP-LCNet_x1_0_doc_ori` as an example here). The specific explanations are as follows:
+* Instantiate the document image orientation classification model with <code>DocImgOrientationClassification</code> (taking <code>PP-LCNet_x1_0_doc_ori</code> as an example here). The specific explanations are as follows:
 <table>
 <thead>
 <tr>
@@ -140,19 +142,22 @@ The explanations of relevant methods and parameters are as follows:
 <tbody>
 <tr>
 <td><code>model_name</code></td>
-<td>Model name. If set to <code>None</code>, <code>PP-LCNet_x1_0_doc_ori</code> will be used.</td>
+<td><b>Meaning：</b>Model name. <br/>
+<b>Description：</b>
+If set to <code>None</code>, <code>PP-LCNet_x1_0_doc_ori</code> will be used.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>model_dir</code></td>
-<td>Model storage path.</td>
+<td><b>Meaning：</b>Model storage path.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>Device for inference.<br/>
+<td><b>Meaning：</b>Device for inference.<br/>
+<b>Description：</b>
 <b>For example:</b><code>"cpu"</code>, <code>"gpu"</code>, <code>"npu"</code>, <code>"gpu:0"</code>, <code>"gpu:0,1"</code>.<br/>
 If multiple devices are specified, parallel inference will be performed.<br/>
 By default, GPU 0 is used if available; otherwise, CPU is used.
@@ -162,13 +167,15 @@ By default, GPU 0 is used if available; otherwise, CPU is used.
 </tr>
 <tr>
 <td><code>enable_hpi</code></td>
-<td>Whether to enable high-performance inference.</td>
+<td><b>Meaning：</b>Whether to enable high-performance inference.</td>
 <td><code>bool</code></td>
 <td><code>False</code></td>
 </tr>
 <tr>
 <td><code>use_tensorrt</code></td>
-<td>Whether to use the Paddle Inference TensorRT subgraph engine. If the model does not support acceleration through TensorRT, setting this flag will not enable acceleration.<br/>
+<td><b>Meaning：</b>Whether to use the Paddle Inference TensorRT subgraph engine.<br/>
+ <b>Description：</b>
+ If the model does not support acceleration through TensorRT, setting this flag will not enable acceleration.<br/>
 For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6), and it is recommended to install TensorRT 8.6.1.6.<br/>
 
 </td>
@@ -177,14 +184,18 @@ For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6)
 </tr>
 <tr>
 <td><code>precision</code></td>
-<td>Computation precision when using the TensorRT subgraph engine in Paddle Inference.<br/><b>Options:</b><code>"fp32"</code>, <code>"fp16"</code>.</td>
+<td><b>Meaning：</b>Computation precision when using the TensorRT subgraph engine in Paddle Inference.<br/>
+<b>Description：</b>
+<b>Options:</b><code>"fp32"</code>, <code>"fp16"</code>.</td>
 <td><code>str</code></td>
 <td><code>"fp32"</code></td>
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
 <td>
-Whether to enable MKL-DNN acceleration for inference. If MKL-DNN is unavailable or the model does not support it, acceleration will not be used even if this flag is set.
+<b>Meaning：</b>Whether to enable MKL-DNN acceleration for inference. <br/>
+<b>Description：</b>
+If MKL-DNN is unavailable or the model does not support it, acceleration will not be used even if this flag is set.
 </td>
 <td><code>bool</code></td>
 <td><code>True</code></td>
@@ -192,21 +203,21 @@ Whether to enable MKL-DNN acceleration for inference. If MKL-DNN is unavailable 
 <tr>
 <td><code>mkldnn_cache_capacity</code></td>
 <td>
-MKL-DNN cache capacity.
+<b>Meaning：</b>MKL-DNN cache capacity.
 </td>
 <td><code>int</code></td>
 <td><code>10</code></td>
 </tr>
 <tr>
 <td><code>cpu_threads</code></td>
-<td>Number of threads to use for inference on CPUs.</td>
+<td><b>Meaning：</b>Number of threads to use for inference on CPUs.</td>
 <td><code>int</code></td>
 <td><code>10</code></td>
 </tr>
 </tbody>
 </table>
 
-* Call the `predict()` method of the document image orientation classification model for inference prediction. This method will return a list of results. In addition, this module also provides the `predict_iter()` method. The two methods are completely consistent in terms of parameter acceptance and result return. The difference is that `predict_iter()` returns a `generator`, which can process and obtain prediction results step by step, suitable for scenarios where large datasets need to be processed or memory needs to be saved. You can choose either of these two methods according to your actual needs. The parameters of the `predict()` method are `input` and `batch_size`, and the specific explanations are as follows:
+* Call the  <code>predict()</code>  method of the document image orientation classification model for inference prediction. This method will return a list of results. In addition, this module also provides the <code>predict_iter()</code> method. The two methods are completely consistent in terms of parameter acceptance and result return. The difference is that  <code>predict_iter()</code>  returns a  <code>generator</code>, which can process and obtain prediction results step by step, suitable for scenarios where large datasets need to be processed or memory needs to be saved. You can choose either of these two methods according to your actual needs. The parameters of the <code>predict()</code>  method are <code>input</code> and <code>batch_size</code>, and the specific explanations are as follows:
 <table>
 <thead>
 <tr>
@@ -218,13 +229,14 @@ MKL-DNN cache capacity.
 </thead>
 <tr>
 <td><code>input</code></td>
-<td>Input data to be predicted. Required. Supports multiple input types:
+<td><b>Meaning：</b>Input data to be predicted. Required. <br/>
+<b>Description：</b>
+Supports multiple input types:
 <ul>
 <li><b>Python Var</b>: e.g., <code>numpy.ndarray</code> representing image data</li>
-<li><b>str</b>: 
-  - Local image or PDF file path: <code>/root/data/img.jpg</code>;
-  - <b>URL</b> of image or PDF file: e.g., <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/img_rot180_demo.jpg">example</a>;
-  - <b>Local directory</b>: directory containing images for prediction, e.g., <code>/root/data/</code> (Note: directories containing PDF files are not supported; PDFs must be specified by exact file path)</li>
+<li><b>str</b>：Local image or PDF file path: <code>/root/data/img.jpg</code>；
+<b>URL</b> of image or PDF file: e.g., <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/img_rot180_demo.jpg">example</a>;
+<b>Local directory</b>: directory containing images for prediction, e.g., <code>/root/data/</code> (Note: directories containing PDF files are not supported; PDFs must be specified by exact file path)</li>
 <li><b>list</b>: Elements must be of the above types, e.g., <code>[numpy.ndarray, numpy.ndarray]</code>, <code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>, <code>["/root/data1", "/root/data2"]</code></li>
 </ul>
 </td>
@@ -233,13 +245,15 @@ MKL-DNN cache capacity.
 </tr>
 <tr>
 <td><code>batch_size</code></td>
-<td>Batch size, positive integer.</td>
+<td><b>Meaning：</b>Batch size. <br/>
+<b>Description：</b>
+Positive integer.</td>
 <td><code>int</code></td>
 <td>1</td>
 </tr>
 </table>
 
-* Process the prediction results. The prediction result for each sample is the corresponding Result object, and it supports operations such as printing, saving as an image, and saving as a `json` file:
+* Process the prediction results. The prediction result for each sample is the corresponding Result object, and it supports operations such as printing, saving as an image, and saving as a <code>json</code> file:
 
 <table>
 <thead>

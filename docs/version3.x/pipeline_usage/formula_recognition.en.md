@@ -414,7 +414,7 @@ In this pipeline, you can choose the model you want to use based on the benchmar
 
 ## 2. Quick Start
 
-Before using the formula recognition pipeline locally, please ensure that you have completed the wheel package installation according to the [installation guide](../installation.en.md). If you prefer to install dependencies selectively, please refer to the relevant instructions in the installation documentation. The corresponding dependency group for this pipeline is `doc-parser`. Once installed, you can experience it locally via the command line or integrate it with Python.
+Before using the formula recognition pipeline locally, please ensure that you have completed the wheel package installation according to the [installation guide](../installation.en.md). If you prefer to install dependencies selectively, please refer to the relevant instructions in the installation documentation. The corresponding dependency group for this pipeline is <code>doc-parser</code>. Once installed, you can experience it locally via the command line or integrate it with Python.
 
 Please note: If you encounter issues such as the program becoming unresponsive, unexpected program termination, running out of memory resources, or extremely slow inference during execution, please try adjusting the configuration according to the documentation, such as disabling unnecessary features or using lighter-weight models.
 
@@ -448,7 +448,8 @@ paddleocr formula_recognition_pipeline -i ./general_formula_recognition_001.png 
 <tbody>
 <tr>
 <td><code>input</code></td>
-<td>Data to be predicted, required.
+<td><b>Meaning:</b>Data to be predicted, required.<br/>
+<b>Description:</b>
 Local path of image or PDF file, e.g., <code>/root/data/img.jpg</code>; <b>URL link</b>, e.g., network URL of image or PDF file: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/demo_image/pipelines/general_formula_recognition_001.png">Example</a>; <b>Local directory</b>, the directory should contain images to be predicted, e.g., local path: <code>/root/data/</code> (currently does not support prediction of PDF files in directories; PDF files must be specified with a specific file path).
 </td>
 <td><code>str</code></td>
@@ -457,79 +458,103 @@ Local path of image or PDF file, e.g., <code>/root/data/img.jpg</code>; <b>URL l
 <tr>
 <td><code>save_path</code></td>
 <td>
-Specify the path to save the inference results file. If not set, the inference results will not be saved locally.</td>
+<b>Meaning:</b>Specify the path to save the inference results file. <br/>
+<b>Description:</b>
+If not set, the inference results will not be saved locally.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>doc_orientation_classify_model_name</code></td>
 <td> 
-The name of the document orientation classification model. If not set, the default model in pipeline will be used.</td>
+<b>Meaning:</b>The name of the document orientation classification model.<br/>
+<b>Description:</b> 
+If not set, the default model in pipeline will be used.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>doc_orientation_classify_model_dir</code></td>
-<td>The directory path of the document orientation classification model. If not set, the official model will be downloaded.</td>
+<td><b>Meaning:</b>The directory path of the document orientation classification model. <br/>
+<b>Description:</b> 
+If not set, the official model will be downloaded.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>doc_orientation_classify_batch_size</code></td>
-<td>The batch size of the document orientation classification model. If not set, the default batch size will be set to <code>1</code>.
+<td><b>Meaning:</b>The batch size of the document orientation classification model. <br/>
+<b>Description:</b> 
+If not set, the default batch size will be set to <code>1</code>.
 </td>
 <td><code>int</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>doc_unwarping_model_name</code></td>
-<td> The name of the text image unwarping model. If not set, the default model in pipeline will be used.</td>
+<td><b>Meaning:</b> The name of the text image unwarping model. <br/>
+<b>Description:</b> 
+If not set, the default model in pipeline will be used.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>doc_unwarping_model_dir</code></td>
-<td> The directory path of the  text image unwarping model. If not set, the official model will be downloaded.
+<td> <b>Meaning:</b>The directory path of the  text image unwarping model. <br/>
+<b>Description:</b> 
+If not set, the official model will be downloaded.
 </td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>doc_unwarping_batch_size</code></td>
-<td>The batch size of the text image unwarping model. If not set, the default batch size will be set to <code>1</code>.</td>
+<td><b>Meaning:</b>The batch size of the text image unwarping model. <br/>
+<b>Description:</b> 
+If not set, the default batch size will be set to <code>1</code>.</td>
 <td><code>int</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
-<td>Whether to load and use the document orientation classification module. If not set, the parameter will be set to the value initialized in the pipeline, which is <code>True</code> by default.</td>
+<td><b>Meaning:</b>Whether to load and use the document orientation classification module. <br/>
+<b>Description:</b> 
+If not set, the parameter will be set to the value initialized in the pipeline, which is <code>True</code> by default.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
 <td>
-Whether to load and use the text image unwarping module. If not set, the parameter will be set to the value initialized in the pipeline, which is <code>True</code> by default.</td>
+<b>Meaning:</b>Whether to load and use the text image unwarping module. <br/>
+<b>Description:</b> 
+If not set, the parameter will be set to the value initialized in the pipeline, which is <code>True</code> by default.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>layout_detection_model_name</code></td>
 <td>
-The name of the layout detection model. If not set, the default model in pipeline will be used. </td>
+<b>Meaning:</b>The name of the layout detection model. <br/>
+<b>Description:</b> 
+If not set, the default model in pipeline will be used. </td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>layout_detection_model_dir</code></td>
-<td> The directory path of the  layout detection model. If not set, the official model will be downloaded.
+<td> <b>Meaning:</b>The directory path of the  layout detection model. <br/>
+<b>Description:</b> 
+If not set, the official model will be downloaded.
 </td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>layout_threshold</code></td>
-<td>Score threshold for the layout model. Any value between <code>0-1</code>. If not set, the default value is used, which is <code>0.5</code>.
+<td><b>Meaning:</b>Score threshold for the layout model. <br/>
+<b>Description:</b> 
+Any value between <code>0-1</code>. If not set, the default value is used, which is <code>0.5</code>.
 </td>
 <td><code>float</code></td>
 <td></td>
@@ -537,21 +562,26 @@ The name of the layout detection model. If not set, the default model in pipelin
 <tr>
 <td><code>layout_nms</code></td>
 <td>
-Whether to use Non-Maximum Suppression (NMS) as post-processing for layout detection. If not set, the parameter will be set to the value initialized in the pipeline, which is <code>True</code> by default.
+<b>Meaning:</b>Whether to use Non-Maximum Suppression (NMS) as post-processing for layout detection. <br/>
+<b>Description:</b> 
+If not set, the parameter will be set to the value initialized in the pipeline, which is <code>True</code> by default.
 </td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>layout_unclip_ratio</code></td>
-<td>Unclip ratio for detected boxes in layout detection model. Any float > <code>0</code>. If not set, the default is <code>1.0</code>.
+<td><b>Meaning:</b>Unclip ratio for detected boxes in layout detection model. <br/>
+<b>Description:</b> 
+Any float > <code>0</code>. If not set, the default is <code>1.0</code>.
 </td>
 <td><code>float</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>layout_merge_bboxes_mode</code></td>
-<td>The merging mode for the detection boxes output by the model in layout region detection.
+<td><b>Meaning:</b>The merging mode for the detection boxes output by the model in layout region detection. <br/>
+<b>Description:</b> 
 <ul>
 <li><b>large</b>: When set to "large", only the largest outer bounding box will be retained for overlapping bounding boxes, and the inner overlapping boxes will be removed;</li>
 <li><b>small</b>: When set to "small", only the smallest inner bounding boxes will be retained for overlapping bounding boxes, and the outer overlapping boxes will be removed;</li>
@@ -563,41 +593,53 @@ Whether to use Non-Maximum Suppression (NMS) as post-processing for layout detec
 </tr>
 <tr>
 <td><code>layout_detection_batch_size</code></td>
-<td>The batch size for the layout region detection model. If not set, the default batch size will be set to <code>1</code>.</td>
+<td><b>Meaning:</b>The batch size for the layout region detection model. <br/>
+<b>Description:</b> 
+If not set, the default batch size will be set to <code>1</code>.</td>
 <td><code>int</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_layout_detection</code></td>
 <td>
-Whether to load and use the layout detection module. If not set, the parameter will be set to the value initialized in the pipeline, which is <code>True</code> by default.</td>
+<b>Meaning:</b>Whether to load and use the layout detection module. <br/>
+<b>Description:</b> 
+If not set, the parameter will be set to the value initialized in the pipeline, which is <code>True</code> by default.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>formula_recognition_model_name</code></td>
 <td>
-The name of the formula recognition model. If not set, the default model from the pipeline will be used.
+<b>Meaning:</b>The name of the formula recognition model. <br/>
+<b>Description:</b> 
+If not set, the default model from the pipeline will be used.
 </td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>formula_recognition_model_dir</code></td>
-<td>The directory path of the formula recognition model. If not set, the official model will be downloaded.
+<td><b>Meaning:</b>The directory path of the formula recognition model. <br/>
+<b>Description:</b> 
+If not set, the official model will be downloaded.
 </td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>formula_recognition_batch_size</code></td>
-<td>The batch size for the formula recognition model. If not set, the batch size will default to <code>1</code>.</td>
+<td><b>Meaning:</b>The batch size for the formula recognition model. <br/>
+<b>Description:</b> 
+If not set, the batch size will default to <code>1</code>.</td>
 <td><code>int</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>The device used for inference. You can specify a particular card number:
+<td><b>Meaning:</b>The device used for inference. <br/>
+<b>Description:</b> 
+You can specify a particular card number:
 <ul>
 <li><b>CPU</b>: e.g., <code>cpu</code> indicates using CPU for inference;</li>
 <li><b>GPU</b>: e.g., <code>gpu:0</code> indicates using the 1st GPU for inference;</li>
@@ -614,13 +656,14 @@ The name of the formula recognition model. If not set, the default model from th
 </tr>
 <tr>
 <td><code>enable_hpi</code></td>
-<td>Whether to enable the high-performance inference plugin.</td>
+<td><b>Meaning:</b>Whether to enable the high-performance inference plugin.</td>
 <td><code>bool</code></td>
 <td><code>False</code></td>
 </tr>
 <tr>
 <td><code>use_tensorrt</code></td>
-<td>Whether to use the Paddle Inference TensorRT subgraph engine. If the model does not support acceleration through TensorRT, setting this flag will not enable acceleration.<br/>
+<b>Meaning:</b>Whether to use the Paddle Inference TensorRT subgraph engine. If the model does not support acceleration through TensorRT, setting this flag will not enable acceleration.<br/>
+<b>Description:</b> 
 For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6), and it is recommended to install TensorRT 8.6.1.6.<br/>
 
 </td>
@@ -629,13 +672,15 @@ For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6)
 </tr>
 <tr>
 <td><code>precision</code></td>
-<td>Compute precision, such as FP32 or FP16.</td>
+<td><b>Meaning:</b>Compute precision, such as FP32 or FP16.</td>
 <td><code>str</code></td>
 <td><code>fp32</code></td>
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
-<td>Whether to enable MKL-DNN acceleration for inference. If MKL-DNN is unavailable or the model does not support it, acceleration will not be used even if this flag is set.
+<td><b>Meaning:</b>Whether to enable MKL-DNN acceleration for inference. <br/>
+<b>Description:</b> 
+If MKL-DNN is unavailable or the model does not support it, acceleration will not be used even if this flag is set.
 </td>
 <td><code>bool</code></td>
 <td><code>True</code></td>
@@ -643,7 +688,7 @@ For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6)
 <tr>
 <td><code>mkldnn_cache_capacity</code></td>
 <td>
-MKL-DNN cache capacity.
+<b>Meaning:</b>MKL-DNN cache capacity.
 </td>
 <td><code>int</code></td>
 <td><code>10</code></td>
@@ -651,13 +696,13 @@ MKL-DNN cache capacity.
 <tr>
 <td><code>cpu_threads</code></td>
 <td>
-The number of threads to use when performing inference on the CPU.</td>
+<b>Meaning:</b>The number of threads to use when performing inference on the CPU.</td>
 <td><code>int</code></td>
 <td><code>8</code></td>
 </tr>
 <tr>
 <td><code>paddlex_config</code></td>
-<td>Path to PaddleX pipeline configuration file.</td>
+<td><b>Meaning:</b>Path to PaddleX pipeline configuration file.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
@@ -675,7 +720,7 @@ The results of running the default configuration of the formula recognition pipe
 
 The explanation of the running result parameters can refer to the result interpretation in [ 2.2 Python Script Integration](#22-python-script-integration).
 
-The visualization results are saved under `save_path`, where the visualization result of formula recognition is as follows:
+The visualization results are saved under <code>save_path</code>, where the visualization result of formula recognition is as follows:
 
 <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/formula_recognition/04_paddleocr3.png" style="width: 70%"/>
 
@@ -708,7 +753,7 @@ for res in output:
 
 In the above Python script, the following steps are executed:
 
-（1）Instantiate the formula recognition pipeline object through `create_pipeline()`, with specific parameters as follows:
+（1）Instantiate the formula recognition pipeline object through <code>create_pipeline()</code>, with specific parameters as follows:
 
 <table>
 <thead>
@@ -722,67 +767,88 @@ In the above Python script, the following steps are executed:
 <tbody>
 <tr>
 <td><code>doc_orientation_classify_model_name</code></td>
-<td>The name of the document orientation classification model. If set to <code>None</code>, the default model in pipeline will be used.</td>
+<td><b>Meaning:</b>The name of the document orientation classification model.<br/>
+<b>Description:</b> 
+If set to <code>None</code>, the default model in pipeline will be used.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>doc_orientation_classify_model_dir</code></td>
-<td>The directory path of the document orientation classification model. If set to <code>None</code>, the official model will be downloaded.</td>
+<td><b>Meaning:</b>The directory path of the document orientation classification model. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the official model will be downloaded.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>doc_orientation_classify_batch_size</code></td>
-<td>The batch size of the document orientation classification model. If set to <code>None</code>, the default batch size will be set to <code>1</code>.</td>
+<td><b>Meaning:</b>The batch size of the document orientation classification model. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the default batch size will be set to <code>1</code>.</td>
 <td><code>int|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>doc_unwarping_model_name</code></td>
-<td>The name of the text image unwarping model. If set to <code>None</code>, the default model in pipeline will be used.</td>
+<td><b>Meaning:</b>The name of the text image unwarping model. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the default model in pipeline will be used.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>doc_unwarping_model_dir</code></td>
-<td>The directory path of the  text image unwarping model. If set to <code>None</code>, the official model will be downloaded.</td>
+<td><b>Meaning:</b>The directory path of the  text image unwarping model. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the official model will be downloaded.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>doc_unwarping_batch_size</code></td>
-<td>The batch size of the text image unwarping model. If set to <code>None</code>, the default batch size will be set to <code>1</code>.</td>
+<td><b>Meaning:</b>The batch size of the text image unwarping model. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the default batch size will be set to <code>1</code>.</td>
 <td><code>int|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
-<td>Whether to load and use the document orientation classification module. If set to <code>None</code>, the parameter will be set to the value initialized in the pipeline, which is <code>True</code> by default.</td>
+<td><b>Meaning:</b>Whether to load and use the document orientation classification module. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the parameter will be set to the value initialized in the pipeline, which is <code>True</code> by default.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
-<td>Whether to load and use the text image unwarping module. If set to <code>None</code>, the parameter will be set to the value initialized in the pipeline, which is <code>True</code> by default.</td>
+<td><b>Meaning:</b>Whether to load and use the text image unwarping module.<br/> 
+<b>Description:</b> 
+If set to <code>None</code>, the parameter will be set to the value initialized in the pipeline, which is <code>True</code> by default.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>layout_detection_model_name</code></td>
-<td>The name of the layout detection model. If set to <code>None</code>, the default model in pipeline will be used. </td>
+<td><b>Meaning:</b>The name of the layout detection model. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the default model in pipeline will be used. </td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>layout_detection_model_dir</code></td>
-<td>The directory path of the  layout detection model. If set to <code>None</code>, the official model will be downloaded.</td>
+<td><b>Meaning:</b>The directory path of the  layout detection model. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the official model will be downloaded.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>layout_threshold</code></td>
-<td>Threshold for layout detection, used to filter out predictions with low confidence.
+<td><b>Meaning:</b>Threshold for layout detection, used to filter out predictions with low confidence. <br/>
+<b>Description:</b> 
 <ul>
 <li><b>float</b>: Such as 0.2, indicates filtering out all bounding boxes with a confidence score less than 0.2;</li>
 <li><b>Dictionary</b>: With <b>int</b> keys representing <code>cls_id</code> and <b>float</b> values as thresholds. For example, <code>{0: 0.45, 2: 0.48, 7: 0.4}</code> indicates applying a threshold of 0.45 for class ID 0, 0.48 for class ID 2, and 0.4 for class ID 7;</li>
@@ -794,13 +860,16 @@ In the above Python script, the following steps are executed:
 </tr>
 <tr>
 <td><code>layout_nms</code></td>
-<td>Whether to use Non-Maximum Suppression (NMS) as post-processing for layout detection. If set to <code>None</code>, the parameter will be set to the value initialized in the pipeline, which is set to <code>True</code> by default.</td>
+<td><b>Meaning:</b>Whether to use Non-Maximum Suppression (NMS) as post-processing for layout detection. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the parameter will be set to the value initialized in the pipeline, which is set to <code>True</code> by default.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>layout_unclip_ratio</code></td>
-<td>Expansion factor for the detection boxes of the layout region detection model.
+<td><b>Meaning:</b>Expansion factor for the detection boxes of the layout region detection model. <br/>
+<b>Description:</b> 
 <ul>
 <li><b>float</b>: Any float greater than <code>0</code>;</li>
 <li><b>Tuple[float,float]</b>: Expansion ratios in horizontal and vertical directions;</li>
@@ -813,7 +882,8 @@ In the above Python script, the following steps are executed:
 </tr>
 <tr>
 <td><code>layout_merge_bboxes_mode</code></td>
-<td>Filtering method for overlapping boxes in layout detection.
+<td><b>Meaning:</b>Filtering method for overlapping boxes in layout detection. <br/>
+<b>Description:</b> 
 <ul>
 <li><b>str</b>: Options include <code>large</code>, <code>small</code>, and <code>union</code> to retain the larger box, smaller box, or both;</li>
 <li><b>dict</b>: A dictionary with <b>int</b> keys representing <code>cls_id</code>, and <b>str</b> values, e.g., <code>{0: "large", 2: "small"}</code> means using different modes for different classes;</li>
@@ -825,37 +895,49 @@ In the above Python script, the following steps are executed:
 </tr>
 <tr>
 <td><code>layout_detection_batch_size</code></td>
-<td>The batch size for the layout region detection model. If set to <code>None</code>, the default batch size will be set to <code>1</code>.</td>
+<td><b>Meaning:</b>The batch size for the layout region detection model.<br/>
+<b>Description:</b> 
+If set to <code>None</code>, the default batch size will be set to <code>1</code>.</td>
 <td><code>int|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_layout_detection</code></td>
-<td>Whether to load and use the layout detection module. If set to <code>None</code>, the parameter will be set to the value initialized in the pipeline, which is <code>True</code> by default.</td>
+<td><b>Meaning:</b>Whether to load and use the layout detection module. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the parameter will be set to the value initialized in the pipeline, which is <code>True</code> by default.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>formula_recognition_model_name</code></td>
-<td>The name of the formula recognition model. If set to <code>None</code>, the default model from the pipeline will be used.</td>
+<td><b>Meaning:</b>The name of the formula recognition model. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the default model from the pipeline will be used.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>formula_recognition_model_dir</code></td>
-<td>The directory path of the formula recognition model. If set to <code>None</code>, the official model will be downloaded.</td>
+<td><b>Meaning:</b>The directory path of the formula recognition model. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the official model will be downloaded.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>formula_recognition_batch_size</code></td>
-<td>The batch size for the formula recognition model. If set to  <code>None</code>, the batch size will default to <code>1</code>.</td>
+<td><b>Meaning:</b>The batch size for the formula recognition model. <br/>
+<b>Description:</b> 
+If set to  <code>None</code>, the batch size will default to <code>1</code>.</td>
 <td><code>int|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>The device used for inference. You can specify a particular card number:
+<td><b>Meaning:</b>The device used for inference. <br/>
+<b>Description:</b> 
+You can specify a particular card number:
 <ul>
 <li><b>CPU</b>: e.g., <code>cpu</code> indicates using CPU for inference;</li>
 <li><b>GPU</b>: e.g., <code>gpu:0</code> indicates using the 1st GPU for inference;</li>
@@ -873,13 +955,14 @@ In the above Python script, the following steps are executed:
 </tr>
 <tr>
 <td><code>enable_hpi</code></td>
-<td>Whether to enable the high-performance inference plugin.</td>
+<td><b>Meaning:</b>Whether to enable the high-performance inference plugin.</td>
 <td><code>bool</code></td>
 <td><code>False</code></td>
 </tr>
 <tr>
 <td><code>use_tensorrt</code></td>
-<td>Whether to use the Paddle Inference TensorRT subgraph engine. If the model does not support acceleration through TensorRT, setting this flag will not enable acceleration.<br/>
+<td><b>Meaning:</b>Whether to use the Paddle Inference TensorRT subgraph engine. If the model does not support acceleration through TensorRT, setting this flag will not enable acceleration.<br/>
+<b>Description:</b> 
 For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6), and it is recommended to install TensorRT 8.6.1.6.<br/>
 
 </td>
@@ -888,13 +971,15 @@ For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6)
 </tr>
 <tr>
 <td><code>precision</code></td>
-<td>Compute precision, such as FP32 or FP16.</td>
+<td><b>Meaning:</b>Compute precision, such as FP32 or FP16.</td>
 <td><code>str</code></td>
 <td><code>"fp32"</code></td>
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
-<td>Whether to enable MKL-DNN acceleration for inference. If MKL-DNN is unavailable or the model does not support it, acceleration will not be used even if this flag is set.
+<td><b>Meaning:</b>Whether to enable MKL-DNN acceleration for inference. <br/>
+<b>Description:</b> 
+If MKL-DNN is unavailable or the model does not support it, acceleration will not be used even if this flag is set.
 </td>
 <td><code>bool</code></td>
 <td><code>True</code></td>
@@ -902,31 +987,31 @@ For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6)
 <tr>
 <td><code>mkldnn_cache_capacity</code></td>
 <td>
-MKL-DNN cache capacity.
+<b>Meaning:</b>MKL-DNN cache capacity.
 </td>
 <td><code>int</code></td>
 <td><code>10</code></td>
 </tr>
 <tr>
 <td><code>cpu_threads</code></td>
-<td>The number of threads to use when performing inference on the CPU.</td>
+<td><b>Meaning:</b>The number of threads to use when performing inference on the CPU.</td>
 <td><code>int</code></td>
 <td><code>8</code></td>
 </tr>
 <tr>
 <td><code>paddlex_config</code></td>
-<td>Path to PaddleX pipeline configuration file.</td>
+<td><b>Meaning:</b>Path to PaddleX pipeline configuration file.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 </tbody>
 </table>
 
-（2）Call the `predict()` method of the formula recognition pipeline object to perform inference prediction. This method will return a list of results.
+（2）Call the <code>predict()</code> method of the formula recognition pipeline object to perform inference prediction. This method will return a list of results.
 
-Additionally, the pipeline also provides the `predict_iter()` method. Both methods are completely consistent in terms of parameter acceptance and result return. The difference is that `predict_iter()` returns a `generator`, which allows for step-by-step processing and retrieval of prediction results. This is suitable for handling large datasets or scenarios where memory saving is desired. You can choose to use either of these methods based on your actual needs.
+Additionally, the pipeline also provides the <code>predict_iter()</code> method. Both methods are completely consistent in terms of parameter acceptance and result return. The difference is that <code>predict_iter()</code> returns a <code>generator</code>, which allows for step-by-step processing and retrieval of prediction results. This is suitable for handling large datasets or scenarios where memory saving is desired. You can choose to use either of these methods based on your actual needs.
 
-Here are the parameters of the `predict()` method and their descriptions:
+Here are the parameters of the <code>predict()</code> method and their descriptions:
 <table>
 <thead>
 <tr>
@@ -939,7 +1024,8 @@ Here are the parameters of the `predict()` method and their descriptions:
 <tbody>
 <tr>
 <td><code>input</code></td>
-<td>Data to be predicted, supporting multiple input types, required.
+<td><b>Meaning:</b>Data to be predicted, supporting multiple input types, required.<br/>
+<b>Description:</b> 
 <ul>
 <li><b>Python Var</b>: Image data represented by <code>numpy.ndarray;</code></li>
 <li><b>str</b>: Local path of image or PDF file, e.g., <code>/root/data/img.jpg</code>; <b>URL link</b>, e.g., network URL of image or PDF file: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/demo_image/pipelines/general_formula_recognition_001.png">Example</a>; <b>Local directory</b>, the directory should contain images to be predicted, e.g., local path: <code>/root/data/</code> (currently does not support prediction of PDF files in directories; PDF files must be specified with a specific file path);</li>
@@ -952,50 +1038,58 @@ Here are the parameters of the `predict()` method and their descriptions:
 <tr>
 <td><code>use_layout_detection</code></td>
 <td>
-Whether to use the layout detection module during inference. </td>
+<b>Meaning:</b>Whether to use the layout detection module during inference. </td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
 <td>
-Whether to use the document orientation classification module during inference.</td>
+<b>Meaning:</b>Whether to use the document orientation classification module during inference.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
-<td>Whether to use the text image unwarping module during inference.</td>
+<td><b>Meaning:</b>Whether to use the text image unwarping module during inference.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>layout_threshold</code></td>
-<td>Same meaning as the instantiation parameters. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
+<td><b>Meaning:</b>Same meaning as the instantiation parameters. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
 <td><code>float|dict|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>layout_nms</code></td>
-<td>Same meaning as the instantiation parameters. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
+<td><b>Meaning:</b>Same meaning as the instantiation parameters. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>layout_unclip_ratio</code></td>
-<td>Same meaning as the instantiation parameters. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
+<td><b>Meaning:</b>Same meaning as the instantiation parameters. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
 <td><code>float|Tuple[float,float]|dict|None</code></td>
 <td><code>None</code></td>
 <tr>
 <td><code>layout_merge_bboxes_mode</code></td>
-<td>Same meaning as the instantiation parameters. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
+<td><b>Meaning:</b>Same meaning as the instantiation parameters. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
 <td><code>string</code></td>
 <td><code>None</code></td>
 </tr>
 </tr></tr></tbody>
 </table>
 
-（3）Process the prediction results, where the prediction result for each sample corresponds to a Result object, and supports operations such as printing, saving as an image, and saving as a `json` file:
+（3）Process the prediction results, where the prediction result for each sample corresponds to a Result object, and supports operations such as printing, saving as an image, and saving as a <code>json</code> file:
 
 <table>
 <thead>
@@ -1057,38 +1151,52 @@ Whether to use the document orientation classification module during inference.<
 <td>无</td>
 </tr>
 </table>
+<ul>
+  <li>Calling the <code>print()</code> method will print the results to the terminal. The content printed to the terminal is explained as follows:
+    <ol start="1" type="1">
+      <li><code>input_path</code>: <code>(str)</code> The input path of the image to be predicted.</li>
+      <li><code>page_index</code>: <code>(Union[int, None])</code> If the input is a PDF file, this indicates the current page number of the PDF. Otherwise, it is <code>None</code></li>
+      <li><code>model_settings</code>: <code>(Dict[str, bool])</code> The model parameters required for the pipeline configuration.
+        <ol >
+          <li><code>use_doc_preprocessor</code>: <code>(bool)</code> Controls whether to enable the document preprocessing sub-pipeline.</li>
+          <li><code>use_layout_detection</code>: <code>(bool)</code> Controls whether to enable the layout detection module.</li>
+        </ol>
+      </li>
+      <li><code>doc_preprocessor_res</code>: <code>(Dict[str, Union[str, Dict[str, bool], int]])</code> The output result of the document preprocessing sub-pipeline. It exists only when <code>use_doc_preprocessor=True</code>
+        <ol>
+          <li><code>input_path</code>: <code>(Union[str, None])</code> T <code>numpy.ndarray</code>, it is saved as <code>None</code>.</li>
+          <li><code>model_settings</code>: <code>(Dict)</code> he model configuration parameters of the preprocessing sub-pipeline.
+            <ul>
+              <li><code>use_doc_orientation_classify</code>: <code>(bool)</code> Controls whether to enable document orientation classification.</li>
+              <li><code>use_doc_unwarping</code>: <code>(bool)</code> Controls whether to enable document distortion correction.</li>
+            </ul>
+          </li>
+          <li><code>angle</code>: <code>(int)</code> The prediction result of document orientation classification. When enabled, it takes values from [0,1,2,3], corresponding to [0°,90°,180°,270°]; when disabled, it is -1.</li>
+        </ol>
+      </li>
+      <li><code>layout_det_res</code>: <code>(Dict[str, List[Dict]])</code> The output result of the layout area detection module. It exists only when <code>use_layout_detection=True</code></li>
+        <ol>
+          <li><code>input_path</code>: <code>(Union[str, None])</code> The image path accepted by the layout area detection module. When the input is a <code>numpy.ndarray</code>, it is saved as <code>None</code>.</li>
+            <ol>
+                <li><code>boxes</code>: <code>(List[Dict[int, str, float, List[float]]])</code> A list of layout area detection prediction results.</li>
+                <li><code>cls_id</code>: <code>(int)</code> The class ID predicted by layout area detection.</li>
+                <li><code>label</code>: <code>(str)</code> The class label predicted by layout area detection.</li>
+                <li><code>score</code>: <code>(float)</code> The confidence score of the predicted class.</li>
+                <li><code>coordinate</code>: <code>(List[float])</code> The bounding box coordinates predicted by layout area detection, in the format [x_min, y_min, x_max, y_max], where (x_min, y_min) is the top-left corner and (x_max, y_max) is the bottom-right corner.</li>
+            </ol>
+          <li><code>formula_res_list</code>: <code>(List[Dict[str, int, List[float]]])</code>  A list of formula recognition prediction results.</li>
+            <ol>
+                <li><code>rec_formula</code>: <code>(str)</code> The LaTeX source code predicted by formula recognition.</li>
+                <li><code>formula_region_id</code>: <code>(int)</code>  The ID number predicted by formula recognition.</li>
+                <li><code>dt_polys</code>:  <code>(List[float])</code> The bounding box coordinates predicted by formula recognition, in the format [x_min, y_min, x_max, y_max], where (x_min, y_min) is the top-left corner and (x_max, y_max) is the bottom-right corner.</li>
+            </ol>
+        </li>
+      </li>
+    </ol>
+  </li>
+  <li>Calling the <code>save_to_json()</code> method will save the above content to the specified <code>save_path</code>. If a directory is specified, the saved path will be <code>save_path/{your_img_basename}_res.json</code>. If a file is specified, it will be saved directly to that file. Since JSON files do not support saving numpy arrays, <code>numpy.array</code> types will be converted to list format.</li>
+<li>Calling the <code>save_to_img()</code> method will save the visualization results to the specified <code>save_path</code>. If a directory is specified, the saved path will be <code>save_path/{your_img_basename}_formula_res_img.{your_img_extension}</code>. If a file is specified, it will be saved directly to that file. (The pipeline usually contains many result images, so it is not recommended to specify a specific file path directly, otherwise multiple images will be overwritten and only the last one will be retained.)</li>
 
-- Calling the `print()` method will print the results to the terminal. The content printed to the terminal is explained as follows:
-
-    - `input_path`: `(str)` The input path of the image to be predicted.
-
-    - `page_index`: `(Union[int, None])` If the input is a PDF file, this indicates the current page number of the PDF. Otherwise, it is `None`
-
-    - `model_settings`: `(Dict[str, bool])` The model parameters required for the pipeline configuration.
-
-        - `use_doc_preprocessor`: `(bool)` Controls whether to enable the document preprocessing sub-pipeline.
-        - `use_layout_detection`: `(bool)` Controls whether to enable the layout area detection module.
-
-    - `doc_preprocessor_res`: `(Dict[str, Union[str, Dict[str, bool], int]])` The output result of the document preprocessing sub-pipeline. It exists only when `use_doc_preprocessor=True`.
-        - `input_path`: `(Union[str, None])` The image path accepted by the image preprocessing sub-pipeline. When the input is a `numpy.ndarray`, it is saved as `None`.
-        - `model_settings`: `(Dict)` The model configuration parameters of the preprocessing sub-pipeline.
-            - `use_doc_orientation_classify`: `(bool)` Controls whether to enable document orientation classification.
-            - `use_doc_unwarping`: `(bool)` Controls whether to enable document distortion correction.
-        - `angle`: `(int)` The prediction result of document orientation classification. When enabled, it takes values from [0,1,2,3], corresponding to [0°,90°,180°,270°]; when disabled, it is -1.
-    - `layout_det_res`: `(Dict[str, List[Dict]])` The output result of the layout area detection module. It exists only when `use_layout_detection=True`.
-        - `input_path`: `(Union[str, None])` The image path accepted by the layout area detection module. When the input is a `numpy.ndarray`, it is saved as `None`.
-        - `boxes`: `(List[Dict[int, str, float, List[float]]])` A list of layout area detection prediction results.
-            - `cls_id`: `(int)` The class ID predicted by layout area detection.
-            - `label`: `(str)` The class label predicted by layout area detection.
-            - `score`: `(float)` The confidence score of the predicted class.
-            - `coordinate`: `(List[float])` The bounding box coordinates predicted by layout area detection, in the format [x_min, y_min, x_max, y_max], where (x_min, y_min) is the top-left corner and (x_max, y_max) is the bottom-right corner.
-    - `formula_res_list`: `(List[Dict[str, int, List[float]]])` A list of formula recognition prediction results.
-        - `rec_formula`: `(str)` The LaTeX source code predicted by formula recognition.
-        - `formula_region_id`: `(int)` The ID number predicted by formula recognition.
-        - `dt_polys`: `(List[float])` The bounding box coordinates predicted by formula recognition, in the format [x_min, y_min, x_max, y_max], where (x_min, y_min) is the top-left corner and (x_max, y_max) is the bottom-right corner.
-
-- Calling the `save_to_json()` method will save the above content to the specified `save_path`. If a directory is specified, the saved path will be `save_path/{your_img_basename}_res.json`. If a file is specified, it will be saved directly to that file. Since JSON files do not support saving numpy arrays, `numpy.array` types will be converted to list format.
-- Calling the `save_to_img()` method will save the visualization results to the specified `save_path`. If a directory is specified, the saved path will be `save_path/{your_img_basename}_formula_res_img.{your_img_extension}`. If a file is specified, it will be saved directly to that file. (The pipeline usually contains many result images, so it is not recommended to specify a specific file path directly, otherwise multiple images will be overwritten and only the last one will be retained.)
 
 * In addition, you can also obtain the visualization image with results and the prediction results through attributes, as follows:
 
@@ -1110,9 +1218,10 @@ Whether to use the document orientation classification module during inference.<
 </table>
 
 
-
-- The prediction result obtained from the `json` attribute is of the dict type, and its content is consistent with what is saved by calling the `save_to_json()` method.
-- The prediction result returned by the  `img` attribute is a dictionary-type data. The keys are  `preprocessed_img`、 `layout_det_res` and `formula_res_img`, and the corresponding values are three `Image.Image` objects: the first one is used to display the visualization of image preprocessing, the second one is for displaying the visualization of layout region detection, and the third one is for displaying the visualization of formula recognition. If the image preprocessing submodule is not used, the dictionary will not contain the `preprocessed_img` key. Similarly, if the layout region detection submodule is not used, the dictionary will not contain the `layout_det_res` key.
+<ul>
+<li>The prediction result obtained from the <code>json</code> attribute is of the dict type, and its content is consistent with what is saved by calling the <code>save_to_json()</code> method.</li>
+<li>The prediction result returned by the  <code>img</code> attribute is a dictionary-type data. The keys are  <code>preprocessed_img</code>、 <code>layout_det_res</code> and <code>formula_res_img</code>, and the corresponding values are three <code>Image.Image</code> objects: the first one is used to display the visualization of image preprocessing, the second one is for displaying the visualization of layout region detection, and the third one is for displaying the visualization of formula recognition. If the image preprocessing submodule is not used, the dictionary will not contain the <code>preprocessed_img</code> key. Similarly, if the layout region detection submodule is not used, the dictionary will not contain the <code>layout_det_res</code> key.</li>
+</ul>
 
 ## 3. Development Integration/Deployment
 

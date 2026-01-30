@@ -148,7 +148,7 @@ This section explains how to use the PaddleOCR MCP server within Claude for Desk
     ```json
     {
       "mcpServers": {
-        "paddleocr-ocr": {
+        "paddleocr": {
           "command": "paddleocr_mcp",
           "args": [],
           "env": {
@@ -207,7 +207,7 @@ This section explains how to use the PaddleOCR MCP server within Claude for Desk
 
 4. **Restart the MCP Host**
 
-    Restart Claude for Desktop. The `paddleocr-ocr` tool should now be available in the application.
+    Restart Claude for Desktop. The `paddleocr` server should now be available in the application.
 
 ### 2.2 MCP Host Configuration Details
 
@@ -240,7 +240,7 @@ Configuration example:
 ```json
 {
   "mcpServers": {
-    "paddleocr-ocr": {
+    "paddleocr": {
       "command": "paddleocr_mcp",
       "args": [],
       "env": {
@@ -276,7 +276,7 @@ Configuration example:
 ```json
 {
   "mcpServers": {
-    "paddleocr-ocr": {
+    "paddleocr": {
       "command": "paddleocr_mcp",
       "args": [],
       "env": {
@@ -306,7 +306,7 @@ Configuration example:
 ```json
 {
   "mcpServers": {
-    "paddleocr-ocr": {
+    "paddleocr": {
       "command": "paddleocr_mcp",
       "args": [],
       "env": {
@@ -336,7 +336,7 @@ PaddleOCR also supports starting the MCP server via `uvx`. With this approach, m
     ```json
     {
       "mcpServers": {
-        "paddleocr-ocr": {
+        "paddleocr": {
           "command": "uvx",
           "args": [
             "--from",
@@ -358,7 +358,7 @@ PaddleOCR also supports starting the MCP server via `uvx`. With this approach, m
     ```json
     {
       "mcpServers": {
-        "paddleocr-ocr": {
+        "paddleocr": {
           "command": "uvx",
           "args": [
             "--from",

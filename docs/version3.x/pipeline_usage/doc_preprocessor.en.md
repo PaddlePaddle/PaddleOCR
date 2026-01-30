@@ -165,7 +165,8 @@ paddleocr doc_preprocessor -i ./doc_test_rotated.jpg --device gpu
 <tbody>
 <tr>
 <td><code>input</code></td>
-<td>The data to be predicted. This parameter is required.
+<td><b>Meaning:</b>The data to be predicted. This parameter is required.<br/>
+<b>Description:</b>
 For example, the local path of an image file or PDF file: <code>/root/data/img.jpg</code>; <b>or a URL link</b>, such as the network URL of an image file or PDF file: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/demo_image/doc_test_rotated.jpg">example</a>; <b>or a local directory</b>, which should contain the images to be predicted, such as the local path: <code>/root/data/</code> (currently does not support prediction of PDF files in directories; PDF files need to be specified to a specific file path).
 </td>
 <td><code>str</code></td>
@@ -173,49 +174,65 @@ For example, the local path of an image file or PDF file: <code>/root/data/img.j
 </tr>
 <tr>
 <td><code>save_path</code></td>
-<td>Specify the path to save the inference result file. If not set, the inference result will not be saved locally.</td>
+<td><b>Meaning:</b>Specify the path to save the inference result file. <br/>
+<b>Description:</b>
+If not set, the inference result will not be saved locally.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>doc_orientation_classify_model_name</code></td>
-<td>The name of the document orientation classification model. If not set, the pipeline's default model will be used.</td>
+<td><b>Meaning:</b>The name of the document orientation classification model.<br/>
+<b>Description:</b>
+If not set, the pipeline's default model will be used.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>doc_orientation_classify_model_dir</code></td>
-<td>The directory path of the document orientation classification model. If not set, the official model will be downloaded.</td>
+<td><b>Meaning:</b>The directory path of the document orientation classification model. <br/>
+<b>Description:</b>
+If not set, the official model will be downloaded.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>doc_unwarping_model_name</code></td>
-<td>The name of the text image unwarping model. If not set, the pipeline's default model will be used.</td>
+<td><b>Meaning:</b>The name of the text image unwarping model. <br/>
+<b>Description:</b>
+If not set, the pipeline's default model will be used.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>doc_unwarping_model_dir</code></td>
-<td>The directory path of the text image unwarping model. If not set, the official model will be downloaded.</td>
+<td><b>Meaning:</b>The directory path of the text image unwarping model. <br/>
+<b>Description:</b>
+If not set, the official model will be downloaded.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
-<td>Whether to load and use  the document orientation classification module. If not set, the parameter value initialized by the pipeline will be used, which defaults to <code>True</code>.</td>
+<td><b>Meaning:</b>Whether to load and use  the document orientation classification module. <br/>
+<b>Description:</b>
+If not set, the parameter value initialized by the pipeline will be used, which defaults to <code>True</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
-<td>Whether to load and use  the text image unwarping module. If not set, the parameter value initialized by the pipeline will be used, which defaults to <code>True</code>.</td>
+<td><b>Meaning:</b>Whether to load and use  the text image unwarping module. <br/>
+<b>Description:</b>
+If not set, the parameter value initialized by the pipeline will be used, which defaults to <code>True</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>The device used for inference. Support for specifying specific card numbers:
+<td><b>Meaning:</b>The device used for inference. <br/>
+<b>Description:</b>
+Support for specifying specific card numbers:
 <ul>
 <li><b>CPU</b>: For example, <code>cpu</code> indicates using the CPU for inference;</li>
 <li><b>GPU</b>: For example, <code>gpu:0</code> indicates using the first GPU for inference;</li>
@@ -233,13 +250,15 @@ If not set, the pipeline initialized value for this parameter will be used. Duri
 </tr>
 <tr>
 <td><code>enable_hpi</code></td>
-<td>Whether to enable high-performance inference.</td>
+<td><b>Meaning:</b>Whether to enable high-performance inference.</td>
 <td><code>bool</code></td>
 <td><code>False</code></td>
 </tr>
 <tr>
 <td><code>use_tensorrt</code></td>
-<td>Whether to use the Paddle Inference TensorRT subgraph engine. If the model does not support acceleration through TensorRT, setting this flag will not enable acceleration.<br/>
+<td><b>Meaning:</b>Whether to use the Paddle Inference TensorRT subgraph engine.<br/> 
+<b>Description:</b>
+If the model does not support acceleration through TensorRT, setting this flag will not enable acceleration.<br/>
 For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6), and it is recommended to install TensorRT 8.6.1.6.<br/>
 
 </td>
@@ -248,33 +267,35 @@ For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6)
 </tr>
 <tr>
 <td><code>precision</code></td>
-<td>The computational precision, such as fp32, fp16.</td>
+<td><b>Meaning:</b>The computational precision, such as fp32, fp16.</td>
 <td><code>str</code></td>
 <td><code>fp32</code></td>
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
-<td>Whether to enable MKL-DNN acceleration for inference. If MKL-DNN is unavailable or the model does not support it, acceleration will not be used even if this flag is set.</td>
+<td><b>Meaning:</b>Whether to enable MKL-DNN acceleration for inference. <br/>
+<b>Description:</b>
+If MKL-DNN is unavailable or the model does not support it, acceleration will not be used even if this flag is set.</td>
 <td><code>bool</code></td>
 <td><code>True</code></td>
 </tr>
 <tr>
 <td><code>mkldnn_cache_capacity</code></td>
 <td>
-MKL-DNN cache capacity.
+<b>Meaning:</b>MKL-DNN cache capacity.
 </td>
 <td><code>int</code></td>
 <td><code>10</code></td>
 </tr>
 <tr>
 <td><code>cpu_threads</code></td>
-<td>The number of threads used for inference on the CPU.</td>
+<td><b>Meaning:</b>The number of threads used for inference on the CPU.</td>
 <td><code>int</code></td>
 <td><code>8</code></td>
 </tr>
 <tr>
 <td><code>paddlex_config</code></td>
-<td>Path to PaddleX pipeline configuration file.</td>
+<td><b>Meaning:</b>Path to PaddleX pipeline configuration file.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
@@ -283,12 +304,12 @@ MKL-DNN cache capacity.
 </details>
 <br />
 
-The running results will be printed to the terminal. The running results of the `doc_preprocessor` pipeline with default configuration are as follows:
+The running results will be printed to the terminal. The running results of the <code>doc_preprocessor</code> pipeline with default configuration are as follows:
 ```bash
 {'res': {'input_path': '/root/.paddlex/predict_input/doc_test_rotated.jpg', 'page_index': None, 'model_settings': {'use_doc_orientation_classify': True, 'use_doc_unwarping': True}, 'angle': 180}}
 ```
 
-The visualization results are saved under the `save_path`. The visualization results are as follows:
+The visualization results are saved under the <code>save_path</code>. The visualization results are as follows:
 
 <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/doc_preprocessor/02.jpg"/>
 
@@ -313,7 +334,7 @@ for res in output:
 
 In the above Python script, the following steps are executed:
 
-(1) Instantiate the `doc_preprocessor` pipeline object via `DocPreprocessor()`. The specific parameter descriptions are as follows:
+(1) Instantiate the <code>doc_preprocessor</code> pipeline object via <code>DocPreprocessor()</code>. The specific parameter descriptions are as follows:
 
 <table>
 <thead>
@@ -327,43 +348,57 @@ In the above Python script, the following steps are executed:
 <tbody>
 <tr>
 <td><code>doc_orientation_classify_model_name</code></td>
-<td>The name of the document orientation classification model. If set to <code>None</code>, the pipeline's default model will be used.</td>
+<td><b>Meaning:</b>The name of the document orientation classification model. <br/>
+<b>Description:</b>
+If set to <code>None</code>, the pipeline's default model will be used.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>doc_orientation_classify_model_dir</code></td>
-<td>The directory path of the document orientation classification model. If set to <code>None</code>, the official model will be downloaded.</td>
+<td><b>Meaning:</b>The directory path of the document orientation classification model. <br/>
+<b>Description:</b>
+If set to <code>None</code>, the official model will be downloaded.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>doc_unwarping_model_name</code></td>
-<td>The name of the text image unwarping model. If set to <code>None</code>, the pipeline's default model will be used.</td>
+<td><b>Meaning:</b>The name of the text image unwarping model. <br/>
+<b>Description:</b>
+If set to <code>None</code>, the pipeline's default model will be used.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>doc_unwarping_model_dir</code></td>
-<td>The directory path of the text image unwarping model. If set to <code>None</code>, the official model will be downloaded.</td>
+<td><b>Meaning:</b>The directory path of the text image unwarping model. <br/>
+<b>Description:</b>
+If set to <code>None</code>, the official model will be downloaded.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
-<td>Whether to load and use the document orientation classification module. If set to <code>None</code>, the parameter value initialized by the pipeline will be used, which defaults to <code>True</code>.</td>
+<td><b>Meaning:</b>Whether to load and use the document orientation classification module. <br/>
+<b>Description:</b>
+If set to <code>None</code>, the parameter value initialized by the pipeline will be used, which defaults to <code>True</code>.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
-<td>Whether to load and use the text image unwarping module. If set to <code>None</code>, the parameter value initialized by the pipeline will be used, which defaults to <code>True</code>.</td>
+<td><b>Meaning:</b>Whether to load and use the text image unwarping module. <br/>
+<b>Description:</b>
+If set to <code>None</code>, the parameter value initialized by the pipeline will be used, which defaults to <code>True</code>.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>The device used for inference. Support for specifying specific card numbers:
+<td><b>Meaning:</b>The device used for inference. <br/>
+<b>Description:</b>
+Support for specifying specific card numbers:
 <ul>
 <li><b>CPU</b>: For example, <code>cpu</code> indicates using the CPU for inference;</li>
 <li><b>GPU</b>: For example, <code>gpu:0</code> indicates using the first GPU for inference;</li>
@@ -381,13 +416,15 @@ In the above Python script, the following steps are executed:
 </tr>
 <tr>
 <td><code>enable_hpi</code></td>
-<td>Whether to enable high-performance inference.</td>
+<td><b>Meaning:</b>Whether to enable high-performance inference.</td>
 <td><code>bool</code></td>
 <td><code>False</code></td>
 </tr>
 <tr>
 <td><code>use_tensorrt</code></td>
-<td>Whether to use the Paddle Inference TensorRT subgraph engine. If the model does not support acceleration through TensorRT, setting this flag will not enable acceleration.<br/>
+<td><b>Meaning:</b>Whether to use the Paddle Inference TensorRT subgraph engine.<br/> 
+<b>Description:</b>
+If the model does not support acceleration through TensorRT, setting this flag will not enable acceleration.<br/>
 For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6), and it is recommended to install TensorRT 8.6.1.6.<br/>
 
 </td>
@@ -396,44 +433,46 @@ For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6)
 </tr>
 <tr>
 <td><code>precision</code></td>
-<td>The computational precision, such as fp32, fp16.</td>
+<td><b>Meaning:</b>The computational precision, such as fp32, fp16.</td>
 <td><code>str</code></td>
 <td><code>"fp32"</code></td>
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
-<td>Whether to enable MKL-DNN acceleration for inference. If MKL-DNN is unavailable or the model does not support it, acceleration will not be used even if this flag is set.</td>
+<td><b>Meaning:</b>Whether to enable MKL-DNN acceleration for inference. <br/>
+<b>Description:</b>
+If MKL-DNN is unavailable or the model does not support it, acceleration will not be used even if this flag is set.</td>
 <td><code>bool</code></td>
 <td><code>True</code></td>
 </tr>
 <tr>
 <td><code>mkldnn_cache_capacity</code></td>
 <td>
-MKL-DNN cache capacity.
+<b>Meaning:</b>MKL-DNN cache capacity.<br/>
 </td>
 <td><code>int</code></td>
 <td><code>10</code></td>
 </tr>
 <tr>
 <td><code>cpu_threads</code></td>
-<td>The number of threads used for inference on the CPU.</td>
+<td><b>Meaning:</b>The number of threads used for inference on the CPU.</td>
 <td><code>int</code></td>
 <td><code>8</code></td>
 </tr>
 <tr>
 <td><code>paddlex_config</code></td>
-<td>Path to PaddleX pipeline configuration file.</td>
+<td><b>Meaning:</b>Path to PaddleX pipeline configuration file.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 </tbody>
 </table>
 
-(2) Call the `predict()` method of the `doc_preprocessor` pipeline object for inference prediction. This method will return a list of results.
+(2) Call the <code>predict()</code> method of the <code>doc_preprocessor</code> pipeline object for inference prediction. This method will return a list of results.
 
-In addition, the pipeline also provides the `predict_iter()` method. The two methods are completely consistent in terms of parameter acceptance and result return. The difference is that `predict_iter()` returns a `generator`, which can process and obtain prediction results step by step, suitable for scenarios with large datasets or where memory savings are desired. You can choose either of the two methods according to your actual needs.
+In addition, the pipeline also provides the <code>predict_iter()</code> method. The two methods are completely consistent in terms of parameter acceptance and result return. The difference is that <code>predict_iter()</code> returns a <code>generator</code>, which can process and obtain prediction results step by step, suitable for scenarios with large datasets or where memory savings are desired. You can choose either of the two methods according to your actual needs.
 
-The following are the parameters and their descriptions of the `predict()` method:
+The following are the parameters and their descriptions of the <code>predict()</code> method:
 
 <table>
 <thead>
@@ -446,7 +485,8 @@ The following are the parameters and their descriptions of the `predict()` metho
 </thead>
 <tr>
 <td><code>input</code></td>
-<td>The data to be predicted, supporting multiple input types. This parameter is required.
+<td><b>Meaning:</b>The data to be predicted, supporting multiple input types. This parameter is required.<br/>
+<b>Description:</b>
 <ul>
 <li><b>Python Var</b>: For example, image data represented as <code>numpy.ndarray</code>;</li>
 <li><b>str</b>: For example, the local path of an image file or PDF file: <code>/root/data/img.jpg</code>; <b>or a URL link</b>, such as the network URL of an image file or PDF file: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/demo_image/doc_test_rotated.jpg">example</a>; <b>or a local directory</b>, which should contain the images to be predicted, such as the local path: <code>/root/data/</code> (currently does not support prediction of PDF files in directories; PDF files need to be specified to a specific file path);</li>
@@ -458,20 +498,20 @@ The following are the parameters and their descriptions of the `predict()` metho
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
-<td>Whether to use the document orientation classification module during inference.</td>
+<td><b>Meaning:</b>Whether to use the document orientation classification module during inference.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
-<td>Whether to use the text image unwarping module during inference.</td>
+<td><b>Meaning:</b>Whether to use the text image unwarping module during inference.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 
 </table>
 
-(3) Process the prediction results. The prediction result for each sample is a corresponding Result object, which supports operations such as printing, saving as an image, and saving as a `json` file:
+(3) Process the prediction results. The prediction result for each sample is a corresponding Result object, which supports operations such as printing, saving as an image, and saving as a <code>json</code> file:
 
 <table>
 <thead>
@@ -534,22 +574,24 @@ The following are the parameters and their descriptions of the `predict()` metho
 </tr>
 </table>Here's the continuation of the translation:
 
-- Calling the `print()` method will output the results to the terminal. The content printed to the terminal is explained as follows:
+<ul>
+<li>Calling the<code>print()</code> method will output the results to the terminal. The content printed to the terminal is explained as follows:</li>
+    <ol start="1" type="1">
+     <li><code>input_path</code>: <code>(str)</code> The input path of the image to be predicted
+</li>
+     <li><code>page_index</code>: <code>(Union[int, None])</code> If the input is a PDF file, it indicates the current page number of the PDF; otherwise, it is  <code>None</code></li>  
+     <li><code>model_settings</code>: <code>(Dict[str, bool])</code> Model parameters configured for the pipeline
+</li>
+        <ol>
+        <li><code>use_doc_orientation_classify</code>: <code>(bool)</code> Controls whether to enable the document orientation classification module</li>
+        <li><code>use_doc_unwarping</code>: <code>(bool)</code> Controls whether to enable the text image rectification module</li>
+        </ol>
+    <li><code>angle</code>: <code>(int)</code> The prediction result of the document orientation classification. When enabled, the value is one of [0,90,180,270]; when disabled, it is -1</li>
+    </ol>
+<li> Calling the<code>save_to_json()</code> method will save the above content to the specified<code>save_path</code>. If a directory is specified, the saved path will be <code>save_path/{your_img_basename}.json</code>，If a file is specified, it will be saved directly to that file. Since JSON files do not support saving numpy arrays,<code>numpy.array</code>types will be converted to list form.
+</li>
+<li>Calling the<code>save_to_img()</code> method will save the visualization results to the specified<code>save_path</code>. If a directory is specified, the saved path will be <code>save_path/{your_img_basename}_doc_preprocessor_res_img.{your_img_extension}</code>. If a file is specified, it will be saved directly to that file. (Production lines usually contain many result images, so it is not recommended to specify a specific file path directly, as multiple images will be overwritten, and only the last image will be retained)</li>
 
-    - `input_path`: `(str)` The input path of the image to be predicted
-
-    - `page_index`: `(Union[int, None])` If the input is a PDF file, it indicates the current page number of the PDF; otherwise, it is `None`
-
-    - `model_settings`: `(Dict[str, bool])` Model parameters configured for the pipeline
-
-        - `use_doc_orientation_classify`: `(bool)` Controls whether to enable the document orientation classification module
-        - `use_doc_unwarping`: `(bool)` Controls whether to enable the text image rectification module
-
-    - `angle`: `(int)` The prediction result of the document orientation classification. When enabled, the value is one of [0,90,180,270]; when disabled, it is -1
-
-- Calling the `save_to_json()` method will save the above content to the specified `save_path`. If a directory is specified, the saved path will be `save_path/{your_img_basename}.json`. If a file is specified, it will be saved directly to that file. Since JSON files do not support saving numpy arrays, `numpy.array` types will be converted to list form.
-
-- Calling the `save_to_img()` method will save the visualization results to the specified `save_path`. If a directory is specified, the saved path will be `save_path/{your_img_basename}_doc_preprocessor_res_img.{your_img_extension}`. If a file is specified, it will be saved directly to that file. (Production lines usually contain many result images, so it is not recommended to specify a specific file path directly, as multiple images will be overwritten, and only the last image will be retained)
 
 * In addition, it also supports obtaining visualization images and prediction results with results through attributes, as follows:
 
@@ -569,9 +611,10 @@ The following are the parameters and their descriptions of the `predict()` metho
 <td rowspan="2">Obtain visualization images in dictionary format</td>
 </tr>
 </table>
-
-- The prediction result obtained by the `json` attribute is data of type dict, and the content is consistent with that saved by calling the `save_to_json()` method.
-- The prediction result returned by the `img` attribute is a dictionary-type data. The key is `preprocessed_img`, and the corresponding value is an `Image.Image` object: a visualization image for displaying the doc_preprocessor result.
+<ul>
+<li>The prediction result obtained by the <code>json</code> attribute is data of type dict, and the content is consistent with that saved by calling the <code>save_to_json()</code> method.</li>
+<li>The prediction result returned by the <code>img</code> attribute is a dictionary-type data. The key is <code>preprocessed_img</code>, and the corresponding value is an <code>Image.Image</code> object: a visualization image for displaying the doc_preprocessor result.</li>
+</ul>
 
 ## 3. Development Integration/Deployment
 

@@ -21,7 +21,7 @@ services:
     restart: unless-stopped
     environment:
       - VLM_BACKEND=${VLM_BACKEND:-vllm}
-    command: /bin/bash -c "source ~/.bashrc && paddlex --serve --pipeline /home/paddleocr/pipeline_config_${VLM_BACKEND}.yaml --device metax_gpu"
+    command: /bin/bash -c "paddlex --serve --pipeline /home/paddleocr/pipeline_config_${VLM_BACKEND}.yaml --device metax_gpu"
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:8080/health || exit 1"]
 
