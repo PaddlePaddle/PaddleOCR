@@ -112,11 +112,12 @@ plugins:
             PaddleOCR-VL-1.5简介: PaddleOCR-VL-1.5 Introduction
             PaddleOCR-VL简介: PaddleOCR-VL Introduction
             PaddleOCR-VL NVIDIA Blackwell 架构 GPU 环境配置教程: PaddleOCR-VL NVIDIA Blackwell-Architecture GPUs Environment Configuration Tutorial
-            PaddleOCR-VL XPU 环境配置教程: PaddleOCR-VL XPU Environment Configuration Tutorial
-            PaddleOCR-VL DCU 环境配置教程: PaddleOCR-VL DCU Environment Configuration Tutorial
+            PaddleOCR-VL 昆仑芯 XPU 环境配置教程: PaddleOCR-VL KUNLUNXIN XPU Environment Configuration Tutorial
+            PaddleOCR-VL 海光 DCU 环境配置教程: PaddleOCR-VL HYGON DCU Environment Configuration Tutorial
             PaddleOCR-VL 沐曦 GPU 环境配置教程: PaddleOCR-VL MetaX GPU Environment Configuration Tutorial
             PaddleOCR-VL 天数 GPU 环境配置教程: PaddleOCR-VL Iluvatar GPU Environment Configuration Tutorial
-            PaddleOCR-VL 昇腾 NPU 环境配置教程: PaddleOCR-VL Ascend GPU Environment Configuration Tutorial
+            PaddleOCR-VL 华为昇腾 NPU 环境配置教程: PaddleOCR-VL Huawei Ascend NPU Environment Configuration Tutorial
+            PaddleOCR-VL Apple Silicon 环境配置教程: PaddleOCR-VL Apple Silicon Environment Configuration Tutorial
             推理部署: Model Deploy
             高性能推理: High-Performance Inference
             打包PaddleOCR项目: Package PaddleOCR Projects
@@ -307,11 +308,12 @@ nav:
     - PaddleOCR-VL-1.5简介: version3.x/algorithm/PaddleOCR-VL/PaddleOCR-VL-1.5.md
     - PaddleOCR-VL简介: version3.x/algorithm/PaddleOCR-VL/PaddleOCR-VL.md
     - PaddleOCR-VL NVIDIA Blackwell 架构 GPU 环境配置教程: version3.x/pipeline_usage/PaddleOCR-VL-NVIDIA-Blackwell.md
-    - PaddleOCR-VL XPU 环境配置教程: version3.x/pipeline_usage/PaddleOCR-VL-XPU.md
-    - PaddleOCR-VL DCU 环境配置教程: version3.x/pipeline_usage/PaddleOCR-VL-DCU.md
+    - PaddleOCR-VL 昆仑芯 XPU 环境配置教程: version3.x/pipeline_usage/PaddleOCR-VL-Kunlunxin-XPU.md
+    - PaddleOCR-VL 海光 DCU 环境配置教程: version3.x/pipeline_usage/PaddleOCR-VL-Hygon-DCU.md
     - PaddleOCR-VL 沐曦 GPU 环境配置教程: version3.x/pipeline_usage/PaddleOCR-VL-MetaX-GPU.md
     - PaddleOCR-VL 天数 GPU 环境配置教程: version3.x/pipeline_usage/PaddleOCR-VL-Iluvatar-GPU.md
-    - PaddleOCR-VL 昇腾 NPU 环境配置教程: version3.x/pipeline_usage/PaddleOCR-VL-NPU.md
+    - PaddleOCR-VL 华为昇腾 NPU 环境配置教程: version3.x/pipeline_usage/PaddleOCR-VL-Huawei-Ascend-NPU.md
+    - PaddleOCR-VL Apple Silicon 环境配置教程: version3.x/pipeline_usage/PaddleOCR-VL-Apple-Silicon.md
   - 推理部署:
     - 高性能推理: version3.x/deployment/high_performance_inference.md
     - 获取ONNX模型: version3.x/deployment/obtaining_onnx_models.md

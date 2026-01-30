@@ -13,6 +13,8 @@ Apple Silicon 包括但不限于以下几种：
 - Apple M3
 - Apple M4
 
+目前 PaddleOCR-VL 已在 Apple M4 上完成精度验证；鉴于硬件环境的多样性，其他 Apple Silicon 的兼容性尚未验证。我们诚挚欢迎社区用户在不同硬件上进行测试并反馈您的运行结果。
+
 ## 1. 环境准备
 
 **我们强烈推荐您在虚拟环境中安装 PaddleOCR-VL，以避免发生依赖冲突。** 例如，使用 Python venv 标准库创建虚拟环境：

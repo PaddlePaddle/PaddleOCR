@@ -13,6 +13,8 @@ Apple Silicon include, but are not limited to:
 - Apple M3
 - Apple M4
 
+PaddleOCR-VL has been verified for accuracy and speed on the Apple M4. However, due to hardware diversity, compatibility with other Apple Silicon has not yet been confirmed. We welcome the community to test on different hardware setups and share your results.
+
 ## 1. Environment Preparation
 
 **We strongly recommend installing PaddleOCR-VL in a virtual environment to avoid dependency conflicts.** For example, use the Python venv standard library to create a virtual environment:
