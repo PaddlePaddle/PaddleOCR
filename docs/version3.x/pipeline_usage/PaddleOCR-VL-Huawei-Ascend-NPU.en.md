@@ -2,9 +2,9 @@
 comments: true
 ---
 
-# PaddleOCR-VL NPU Environment Configuration Tutorial
+# PaddleOCR-VL Huawei Ascend NPU Environment Configuration Tutorial
 
-This tutorial is a guide for configuring the PaddleOCR-VL HUAWEI ASCEND NPU environment. The purpose is to complete the relevant environment setup. After the environment configuration is complete, please refer to the [PaddleOCR-VL Usage Tutorial](./PaddleOCR-VL.en.md) to use PaddleOCR-VL.
+This tutorial is a guide for configuring the PaddleOCR-VL Huawei Ascend NPU environment. The purpose is to complete the relevant environment setup. After the environment configuration is complete, please refer to the [PaddleOCR-VL Usage Tutorial](./PaddleOCR-VL.en.md) to use PaddleOCR-VL.
 
 ## 1. Environment Preparation
 

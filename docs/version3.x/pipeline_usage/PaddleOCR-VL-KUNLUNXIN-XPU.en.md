@@ -2,7 +2,7 @@
 comments: true
 ---
 
-# PaddleOCR-VL XPU Environment Configuration Tutorial
+# PaddleOCR-VL KUNLUNXIN XPU Environment Configuration Tutorial
 
 This tutorial is a guide for configuring the environment for PaddleOCR-VL KUNLUNXIN XPU. After completing the environment setup, please refer to the [PaddleOCR-VL Usage Tutorial](./PaddleOCR-VL.en.md) to use PaddleOCR-VL.
 

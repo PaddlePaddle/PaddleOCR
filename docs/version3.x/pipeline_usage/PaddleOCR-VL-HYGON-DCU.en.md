@@ -2,7 +2,7 @@
 comments: true
 ---
 
-# PaddleOCR-VL DCU Environment Configuration Tutorial
+# PaddleOCR-VL HYGON DCU Environment Configuration Tutorial
 
 This tutorial is a guide for configuring the PaddleOCR-VL HYGON DCU environment. The purpose is to complete the relevant environment setup. After the environment configuration is complete, please refer to the [PaddleOCR-VL Usage Tutorial](./PaddleOCR-VL.en.md) to use PaddleOCR-VL.
 

@@ -132,11 +132,11 @@ Since different hardware requires different dependencies, if your hardware meets
 |----------------|------------------------------------------------------------------------------------------------------------------------------|
 | x64 CPU        | This tutorial                                                                                                                |
 | NVIDIA GPU     | - NVIDIA Blackwell architecture GPU (e.g., RTX 50 series) refer to [PaddleOCR-VL NVIDIA Blackwell Architecture GPU Environment Configuration Tutorial](./PaddleOCR-VL-NVIDIA-Blackwell.en.md) <br/> - Other NVIDIA GPUs refer to this tutorial |
-| KUNLUNXIN XPU  | [PaddleOCR-VL XPU Environment Configuration Tutorial](./PaddleOCR-VL-XPU.en.md)                                              |
-| HYGON DCU      | [PaddleOCR-VL DCU Environment Configuration Tutorial](./PaddleOCR-VL-DCU.en.md)                                              |
+| KUNLUNXIN XPU  | [PaddleOCR-VL KUNLUNXIN XPU Environment Configuration Tutorial](./PaddleOCR-VL-KUNLUNXIN-XPU.en.md)                                              |
+| HYGON DCU      | [PaddleOCR-VL HYGON DCU Environment Configuration Tutorial](./PaddleOCR-VL-HYGON-DCU.en.md)                                              |
 | MetaX GPU      | [PaddleOCR-VL MetaX GPU Environment Configuration Tutorial](./PaddleOCR-VL-MetaX-GPU.en.md)                                              |
 | Iluvatar GPU        | [PaddleOCR-VL Iluvatar GPU Environment Configuration Tutorial](./PaddleOCR-VL-Iluvatar-GPU.en.md) |
-| Huawei Ascend NPU        | [PaddleOCR-VL NPU Environment Configuration Tutorial](./PaddleOCR-VL-NPU.en.md) |
+| Huawei Ascend NPU        | [PaddleOCR-VL Huawei Ascend NPU Environment Configuration Tutorial](./PaddleOCR-VL-Huawei-Ascend-NPU.en.md) |
 | Apple Silicon        | [PaddleOCR-VL Apple Silicon Environment Configuration Tutorial](./PaddleOCR-VL-Apple-Silicon.en.md) |
 
 > TIP:
