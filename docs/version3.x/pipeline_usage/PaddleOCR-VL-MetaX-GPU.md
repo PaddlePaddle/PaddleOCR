@@ -6,6 +6,8 @@ comments: true
 
 本教程是 PaddleOCR-VL 沐曦 GPU 的环境配置教程，目的是完成相关的环境配置，环境配置完毕后请参考 [PaddleOCR-VL 使用教程](./PaddleOCR-VL.md) 使用 PaddleOCR-VL。
 
+目前 PaddleOCR-VL 已在沐曦 C550 上完成精度、速度验证；鉴于硬件环境的多样性，其他沐曦 GPU 的兼容性尚未验证。我们诚挚欢迎社区用户在不同硬件上进行测试并反馈您的运行结果。
+
 ## 1. 环境准备
 
 此步骤主要介绍如何搭建 PaddleOCR-VL 的运行环境，有以下两种方式，任选一种即可：

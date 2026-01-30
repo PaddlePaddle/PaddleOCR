@@ -14,6 +14,8 @@ NVIDIA Blackwell 架构 GPU 包括但不限于以下几种：
 - RTX 5060、RTX 5060 Ti
 - RTX 5050
 
+目前 PaddleOCR-VL 已在 RTX 5070 上完成精度、速度验证；鉴于硬件环境的多样性，其他 NVIDIA Blackwell 架构 GPU 的兼容性尚未验证。我们诚挚欢迎社区用户在不同硬件上进行测试并反馈您的运行结果。
+
 教程开始前，**请确认您的 NVIDIA 驱动支持 CUDA 12.9 或以上版本**。
 
 ## 1. 环境准备

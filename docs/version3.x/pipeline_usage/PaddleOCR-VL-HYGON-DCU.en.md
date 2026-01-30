@@ -6,6 +6,8 @@ comments: true
 
 This tutorial is a guide for configuring the PaddleOCR-VL HYGON DCU environment. The purpose is to complete the relevant environment setup. After the environment configuration is complete, please refer to the [PaddleOCR-VL Usage Tutorial](./PaddleOCR-VL.en.md) to use PaddleOCR-VL.
 
+PaddleOCR-VL has been verified for accuracy and speed on the HYGON K100AI. However, due to hardware diversity, compatibility with other HYGON DCUs has not yet been confirmed. We welcome the community to test on different hardware setups and share your results.
+
 ## 1. Environment Preparation
 
 This step mainly introduces how to set up the runtime environment for PaddleOCR-VL. There are two methods available; choose either one:

@@ -14,6 +14,8 @@ NVIDIA Blackwell-architecture GPUs include, but are not limited to:
 - RTX 5060、RTX 5060 Ti
 - RTX 5050
 
+PaddleOCR-VL has been verified for accuracy and speed on the RTX 5070. However, due to hardware diversity, compatibility with other NVIDIA Blackwell-architecture GPUs has not yet been confirmed. We welcome the community to test on different hardware setups and share your results.
+
 Before starting the tutorial, **please ensure that your NVIDIA driver supports CUDA 12.9 or higher**.
 
 ## 1. Environment Preparation
