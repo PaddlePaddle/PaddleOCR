@@ -1246,6 +1246,7 @@ output = pipeline.predict(["imgs/file1.png", "imgs/file2.png", "imgs/file3.png"]
 <td><code>Bool</code></td>
 <td><code>False</code></td>
 </tr>
+</table>
 </details>
 
 <details><summary>（4）对预测结果进行处理：每个样本的预测结果均为对应的Result对象，且支持打印、保存为图片、保存为<code>json</code>文件的操作:</summary>
