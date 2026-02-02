@@ -238,6 +238,12 @@ paddleocr doc_parser -i ./paddleocr_vl_demo.png --device dcu
 # MetaX GPU
 paddleocr doc_parser -i ./paddleocr_vl_demo.png --device metax_gpu
 
+# Apple Silicon
+paddleocr doc_parser -i ./paddleocr_vl_demo.png --device cpu
+
+# Huawei Ascend NPU 
+# Huawei Ascend NPU please refer to Chapter 3 for inference using PaddlePaddle + vLLM
+
 # Use --use_doc_orientation_classify to enable document orientation classification
 paddleocr doc_parser -i ./paddleocr_vl_demo.png --use_doc_orientation_classify True
 
@@ -654,6 +660,10 @@ pipeline = PaddleOCRVL()
 # pipeline = PaddleOCRVL(device="dcu")
 # MetaX GPU
 # pipeline = PaddleOCRVL(device="metax_gpu")
+# Apple Silicon
+# pipeline = PaddleOCRVL(device="cpu")
+# Huawei Ascend NPU 
+# Huawei Ascend NPU please refer to Chapter 3 for inference using PaddlePaddle + vLLM
 
 # pipeline = PaddleOCRVL(use_doc_orientation_classify=True) # Use use_doc_orientation_classify to enable/disable document orientation classification model
 # pipeline = PaddleOCRVL(use_doc_unwarping=True) # Use use_doc_unwarping to enable/disable document unwarping module
@@ -666,21 +676,14 @@ for res in output:
     res.save_to_markdown(save_path="output") ## Save the current image's result in Markdown format
 ```
 
-For PDF files, each page will be processed individually, and a separate Markdown file will be generated for each page. If you wish to perform cross-page table merging, reconstruct multi-level labels, or merge multi-page results, you can achieve this using the following method:
+For PDF files, each page will be processed individually, and a separate Markdown file will be generated for each page. If you wish to perform cross-page table merging, reconstruct multi-level headings, or merge multi-page results, you can achieve this using the following method:
 
 ```python
 from paddleocr import PaddleOCRVL
 
 input_file = "./your_pdf_file.pdf"
 
-# NVIDIA GPU
 pipeline = PaddleOCRVL()
-# KUNLUNXIN XPU
-# pipeline = PaddleOCRVL(device="xpu")
-# HYGON DCU
-# pipeline = PaddleOCRVL(device="dcu")
-# MetaX GPU
-# pipeline = PaddleOCRVL(device="metax_gpu")
 
 output = pipeline.predict(input=input_file)
 
