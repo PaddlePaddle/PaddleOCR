@@ -48,8 +48,7 @@ python -m pip install -U "paddleocr[doc-parser]"
 安装 MLX-VLM 推理框架：
 
 ```shell
-python -m pip install -U mlx-vlm
-python -m pip install "transformers<5.0.0"
+python -m pip install -U mlx-vlm "transformers<5.0.0"
 ```
 
 启动 MLX-VLM 推理服务：
