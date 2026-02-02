@@ -308,8 +308,8 @@ nav:
     - PaddleOCR-VL-1.5简介: version3.x/algorithm/PaddleOCR-VL/PaddleOCR-VL-1.5.md
     - PaddleOCR-VL简介: version3.x/algorithm/PaddleOCR-VL/PaddleOCR-VL.md
     - PaddleOCR-VL NVIDIA Blackwell 架构 GPU 环境配置教程: version3.x/pipeline_usage/PaddleOCR-VL-NVIDIA-Blackwell.md
-    - PaddleOCR-VL 昆仑芯 XPU 环境配置教程: version3.x/pipeline_usage/PaddleOCR-VL-Kunlunxin-XPU.md
-    - PaddleOCR-VL 海光 DCU 环境配置教程: version3.x/pipeline_usage/PaddleOCR-VL-Hygon-DCU.md
+    - PaddleOCR-VL 昆仑芯 XPU 环境配置教程: version3.x/pipeline_usage/PaddleOCR-VL-KUNLUNXIN-XPU.md
+    - PaddleOCR-VL 海光 DCU 环境配置教程: version3.x/pipeline_usage/PaddleOCR-VL-HYGON-DCU.md
     - PaddleOCR-VL 沐曦 GPU 环境配置教程: version3.x/pipeline_usage/PaddleOCR-VL-MetaX-GPU.md
     - PaddleOCR-VL 天数 GPU 环境配置教程: version3.x/pipeline_usage/PaddleOCR-VL-Iluvatar-GPU.md
     - PaddleOCR-VL 华为昇腾 NPU 环境配置教程: version3.x/pipeline_usage/PaddleOCR-VL-Huawei-Ascend-NPU.md
