@@ -240,6 +240,12 @@ paddleocr doc_parser -i ./paddleocr_vl_demo.png --device dcu
 # 沐曦 GPU
 paddleocr doc_parser -i ./paddleocr_vl_demo.png --device metax_gpu
 
+# Apple Silicon
+paddleocr doc_parser -i ./paddleocr_vl_demo.png --device cpu
+
+# 华为昇腾 NPU 
+# 华为昇腾 NPU 请参考第 3 章节使用 PaddlePaddle + vLLM 的方式进行推理
+
 # 通过 --use_doc_orientation_classify 指定是否使用文档方向分类模型
 paddleocr doc_parser -i ./paddleocr_vl_demo.png --use_doc_orientation_classify True
 
@@ -632,6 +638,10 @@ pipeline = PaddleOCRVL()
 # pipeline = PaddleOCRVL(device="dcu")
 # 沐曦 GPU
 # pipeline = PaddleOCRVL(device="metax_gpu")
+# Apple Silicon
+# pipeline = PaddleOCRVL(device="cpu")
+# 华为昇腾 NPU 
+# 华为昇腾 NPU 请参考第 3 章节使用 PaddlePaddle + vLLM 的方式进行推理
 
 # pipeline = PaddleOCRVL(use_doc_orientation_classify=True) # 通过 use_doc_orientation_classify 指定是否使用文档方向分类模型
 # pipeline = PaddleOCRVL(use_doc_unwarping=True) # 通过 use_doc_unwarping 指定是否使用文本图像矫正模块
@@ -644,7 +654,7 @@ for res in output:
     res.save_to_markdown(save_path="output") ## 保存当前图像的markdown格式的结果
 ```
 
-如果是 PDF 文件，会将 PDF 的每一页单独处理，每一页的 Markdown 文件也会对应单独的结果。如果您希望对多页的推理结果进行跨页表格合并、重建多级标和合并多页结果等需求，可以通过如下方式实现：
+如果是 PDF 文件，会将 PDF 的每一页单独处理，每一页的 Markdown 文件也会对应单独的结果。如果您希望对多页的推理结果进行跨页表格合并、重建多级标题和合并多页结果等需求，可以通过如下方式实现：
 
 ```python
 from paddleocr import PaddleOCRVL
@@ -652,14 +662,7 @@ from paddleocr import PaddleOCRVL
 input_file = "./your_pdf_file.pdf"
 output_path = Path("./output")
 
-# 英伟达 GPU
 pipeline = PaddleOCRVL()
-# 昆仑芯 XPU
-# pipeline = PaddleOCRVL(device="xpu")
-# 海光 DCU
-# pipeline = PaddleOCRVL(device="dcu")
-# 沐曦 GPU
-# pipeline = PaddleOCRVL(device="metax_gpu")
 
 output = pipeline.predict(input=input_file)
 
@@ -671,24 +674,10 @@ output = pipeline.restructure_pages(pages_res)
 # output = pipeline.restructure_pages(pages_res, merge_table=True, relevel_titles=True) # 合并跨页表格，重建多级标题
 # output = pipeline.restructure_pages(pages_res, merge_table=True, relevel_titles=True, merge_pages=True) # 合并跨页表格，重建多级标题，合并多页结果为一页
 
-
 for res in output:
     res.print() ## 打印预测的结构化输出
     res.save_to_json(save_path="output") ## 保存当前图像的结构化json结果
     res.save_to_markdown(save_path="output") ## 保存当前图像的markdown格式的结果
-```
-
-如果您需要处理多个文件，**建议将包含文件的目录路径，或者文件路径列表传入 `predict` 方法**，以最大化处理效率。例如：
-
-```python
-# `imgs` 目录中包含多张待处理图像：file1.png、file2.png、file3.png
-# 传入目录路径
-output = pipeline.predict("imgs")
-# 或者传入文件路径列表
-output = pipeline.predict(["imgs/file1.png", "imgs/file2.png", "imgs/file3.png"])
-# 以上两种方式的处理效率高于下列方式：
-# for file in ["imgs/file1.png", "imgs/file2.png", "imgs/file3.png"]:
-#     output = pipeline.predict(file)
 ```
 
 如果您需要处理多个文件，**建议将包含文件的目录路径，或者文件路径列表传入 `predict` 方法**，以最大化处理效率。例如：
