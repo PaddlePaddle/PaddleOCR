@@ -1211,6 +1211,8 @@ output = pipeline.predict(["imgs/file1.png", "imgs/file2.png", "imgs/file3.png"]
 <th>参数说明</th>
 <th>参数类型</th>
 <th>默认值</th>
+</tr>
+</thead>
 <tr>
 <td><code>res_list</code></td>
 <td><b>含义：</b>多页 PDF 推理预测出的结果列表。</td>
@@ -1235,6 +1237,7 @@ output = pipeline.predict(["imgs/file1.png", "imgs/file2.png", "imgs/file3.png"]
 <td><code>Bool</code></td>
 <td><code>False</code></td>
 </tr>
+</table>
 </details>
 
 <details><summary>（4）对预测结果进行处理：每个样本的预测结果均为对应的Result对象，且支持打印、保存为图片、保存为<code>json</code>文件的操作:</summary>
@@ -1412,68 +1415,7 @@ output = pipeline.predict(["imgs/file1.png", "imgs/file2.png", "imgs/file3.png"]
   </li>
 <li>调用<code>save_to_img()</code> 方法会将可视化结果保存到指定的<code>save_path</code>中，如果指定为目录，则会将版面区域检测可视化图像、全局OCR可视化图像、版面阅读顺序可视化图像等内容保存，如果指定为文件，则直接保存到该文件中。</li>
 <li>调用<code>save_to_markdown()</code> 方法会将转化后的 Markdown 文件保存到指定的<code>save_path</code>中，保存的文件路径为<code>save_path/{your_img_basename}.md</code>，如果输入是 PDF 文件，建议直接指定目录，否责多个 markdown 文件会被覆盖。</li>
-
-    - `page_index`: `(Union[int, None])` 如果输入是PDF文件，则表示当前是PDF的第几页，否则为 `None`
-
-    - `page_count`: `(Union[int, None])` 如果输入是PDF文件，表示当前是PDF的总页数，否则为 `None`
-
-    - `width`: `(int)` 原始输入图像的宽度。
-
-    - `height`: `(int)` 原始输入图像的高度。
-
-    - `model_settings`: `(Dict[str, bool])` 配置 PaddleOCR-VL 所需的模型参数
-
-        - `use_doc_preprocessor`: `(bool)` 控制是否启用文档预处理子产线 
-        - `use_layout_detection`: `(bool)` 控制是否启用版面检测模块
-        - `use_chart_recognition`: `(bool)` 控制是否开启图表识别功能
-        - `format_block_content`: `(bool)` 控制是否在`JSON`中保存格式化后的markdown内容
-        - `markdown_ignore_labels`: `(List[str])` 需要在Markdown中忽略的版面标签
-
-    - `doc_preprocessor_res`: `(Dict[str, Union[List[float], str]])` 文档预处理结果dict，仅当`use_doc_preprocessor=True`时存在
-        - `input_path`: `(str)` 文档预处理子接受的图像路径，当输入为`numpy.ndarray`时，保存为`None`，此处为`None`
-        - `page_index`: `None`，此处的输入为`numpy.ndarray`，所以值为`None`
-        - `model_settings`: `(Dict[str, bool])` 文档预处理子的模型配置参数
-          - `use_doc_orientation_classify`: `(bool)` 控制是否启用文档图像方向分类子模块
-          - `use_doc_unwarping`: `(bool)` 控制是否启用文本图像扭曲矫正子模块
-        - `angle`: `(int)` 文档图像方向分类子模块的预测结果，启用时返回实际角度值
-
-    - `parsing_res_list`: `(List[Dict])` 解析结果的列表，每个元素为一个字典，列表顺序为解析后的阅读顺序。
-        - `block_bbox`: `(np.ndarray)` 版面区域的边界框。
-        - `block_label`: `(str)` 版面区域的标签，例如`text`, `table`等。
-        - `block_content`: `(str)` 内容为版面区域内的内容。
-        - `block_id`: `(int)` 版面区域的索引，用于显示版面排序结果。
-        - `block_order` `(int)` 版面区域的顺序，用于显示版面阅读顺序,对于非排序部分，默认值为 `None`。
-
-- 调用`save_to_json()` 方法会将上述内容保存到指定的 `save_path` 中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_res.json`，如果指定为文件，则直接保存到该文件中。由于 json 文件不支持保存numpy数组，因此会将其中的 `numpy.array` 类型转换为列表形式。json中的字段内容如下：
-    - `input_path`: `(str)` 待预测图像或者PDF的输入路径
-
-    - `page_index`: `(Union[int, None])` 如果输入是PDF文件，则表示当前是PDF的第几页，否则为 `None`
-
-    - `model_settings`: `(Dict[str, bool])` 配置 PaddleOCR-VL 所需的模型参数
-
-        - `use_doc_preprocessor`: `(bool)` 控制是否启用文档预处理子产线 
-        - `use_layout_detection`: `(bool)` 控制是否启用版面检测模块
-        - `use_chart_recognition`: `(bool)` 控制是否开启图表识别功能
-        - `format_block_content`: `(bool)` 控制是否在`JSON`中保存格式化后的markdown内容
-
-    - `doc_preprocessor_res`: `(Dict[str, Union[List[float], str]])` 文档预处理结果dict，仅当`use_doc_preprocessor=True`时存在
-        - `input_path`: `(str)` 文档预处理子接受的图像路径，当输入为`numpy.ndarray`时，保存为`None`，此处为`None`
-        - `page_index`: `None`，此处的输入为`numpy.ndarray`，所以值为`None`
-        - `model_settings`: `(Dict[str, bool])` 文档预处理子的模型配置参数
-          - `use_doc_orientation_classify`: `(bool)` 控制是否启用文档图像方向分类子模块
-          - `use_doc_unwarping`: `(bool)` 控制是否启用文本图像扭曲矫正子模块
-        - `angle`: `(int)` 文档图像方向分类子模块的预测结果，启用时返回实际角度值
-
-    - `parsing_res_list`: `(List[Dict])` 解析结果的列表，每个元素为一个字典，列表顺序为解析后的阅读顺序。
-        - `block_bbox`: `(np.ndarray)` 版面区域的边界框。
-        - `block_label`: `(str)` 版面区域的标签，例如`text`, `table`等。
-        - `block_content`: `(str)` 内容为版面区域内的内容。
-        - `block_id`: `(int)` 版面区域的索引，用于显示版面排序结果。
-        - `block_order` `(int)` 版面区域的顺序，用于显示版面阅读顺序,对于非排序部分，默认值为 `None`。
-- 调用`save_to_img()` 方法会将可视化结果保存到指定的 `save_path` 中，如果指定为目录，则会将版面区域检测可视化图像、全局OCR可视化图像、版面阅读顺序可视化图像等内容保存，如果指定为文件，则直接保存到该文件中。
-- 调用`save_to_markdown()` 方法会将转化后的 Markdown 文件保存到指定的 `save_path` 中，保存的文件路径为`save_path/{your_img_basename}.md`，如果输入是 PDF 文件，建议直接指定目录，否责多个 markdown 文件会被覆盖。
-
-此外，也支持通过属性获取带结果的可视化图像和预测结果，具体如下：
+<li>此外，也支持通过属性获取带结果的可视化图像和预测结果，具体如下：
 <table>
 <thead>
 <tr>
@@ -1507,7 +1449,7 @@ output = pipeline.predict(["imgs/file1.png", "imgs/file2.png", "imgs/file3.png"]
   <li><code>json</code> 属性获取的预测结果为dict类型的数据，相关内容与调用 <code>save_to_json()</code> 方法保存的内容一致。</li>
   <li><code>img</code> 属性返回的预测结果是一个dict类型的数据。其中，键分别为 <code>ocr_res_img</code> 和 <code>preprocessed_img</code>，对应的值是两个 <code>Image.Image</code> 对象：一个用于显示 OCR 结果的可视化图像，另一个用于展示图像预处理的可视化图像。如果没有使用图像预处理子模块，则dict中只包含 <code>ocr_res_img</code>。</li>
 </ul>
-
+</li>
 </details>
 
 
@@ -1629,7 +1571,7 @@ paddleocr genai_server --model_name PaddleOCR-VL-1.5-0.9B --backend vllm --port 
 
 ### 3.2 客户端使用方法
 
-启动 VLM 推理服务后，客户端即可通过 PaddleOCR 调用该服务。**请注意，由于客户端需要调用版面检测的顺序模型，仍建议在 GPU 等加速设备上运行客户端，以获得更稳定和高效的性能。客户端环境配置请参考第 1 节，3.1 节介绍的环境配置仅适用于启动服务，不适用于客户端。**
+启动 VLM 推理服务后，客户端即可通过 PaddleOCR 调用该服务。**请注意，由于客户端需要调用版面检测模型，仍建议在 GPU 等加速设备上运行客户端，以获得更稳定和高效的性能。客户端环境配置请参考第 1 节，3.1 节介绍的环境配置仅适用于启动服务，不适用于客户端。**
 
 #### 3.2.1 CLI 调用
 
