@@ -30,9 +30,9 @@ For more details, please refer to Chapter 2 and Chapter 3.
 
 ### 2.2 Model
 
-It is recommended to choose the PP-OCRv3 model (configuration file: [PP-OCRv3_mobile_det.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/det/PP-OCRv3/PP-OCRv3_mobile_det.yml)，pre-trained model: [ch_PP-OCRv3_det_distill_train.tar](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_distill_train.tar), its accuracy and generalization performance is the best pre-training model currently available.
+It is recommended to choose the PP-OCRv3 model (configuration file: [PP-OCRv3_mobile_det.yml](../../../../configs/det/PP-OCRv3/PP-OCRv3_mobile_det.yml)，pre-trained model: [ch_PP-OCRv3_det_distill_train.tar](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_distill_train.tar), its accuracy and generalization performance is the best pre-training model currently available.
 
-For more PP-OCR series models, please refer to [PP-OCR Series Model Library](../models_list.en.md).
+For more PP-OCR series models, please refer to [PP-OCR Series Model Library](../model_list.en.md).
 
 Note: When using the above pre-trained model, you need to use the `student.pdparams` file in the folder as the pre-trained model, that is, only use the student model.
 
@@ -80,7 +80,7 @@ When exporting and inferring the trained model, you can further adjust the predi
 |  use_dilation | bool | False | Whether to expand the segmentation results to obtain better detection results |
 |  det_db_score_mode | str | "fast" | DB's detection result score calculation method supports `fast` and `slow`. `fast` calculates the average score based on all pixels in the polygon’s circumscribed rectangle border, and `slow` calculates the average score based on all pixels in the original polygon. The calculation speed is relatively slower, but more accurate. |
 
-For more information on inference methods, please refer to[Paddle Inference doc](../infer_deploy/python_infer.en.md).
+For more information on inference methods, please refer to [Paddle Inference doc](../../legacy/python_infer.en.md).
 
 ## 3. Text recognition model fine-tuning
 
@@ -92,14 +92,14 @@ For more information on inference methods, please refer to[Paddle Inference doc]
 
 * Data synthesis: In the case of some character recognition errors, it is recommended to obtain a batch of specific character dataset, add it to the original dataset and use a small learning rate for fine-tuning. The ratio of original dataset to new dataset can be 10:1 to 5:1 to avoid overfitting of the model caused by too much data in a single scene. At the same time, try to balance the word frequency of the corpus to ensure that the frequency of common words will not be too low.
 
-  Specific characters can be generated using the TextRenderer tool, for synthesis examples, please refer to [data synthesis](../../applications/光功率计数码管字符识别.md)
+  Specific characters can be generated using the TextRenderer tool, for synthesis examples, please refer to [data synthesis](https://www.paddleocr.ai/v2.10.0/applications/%E5%85%89%E5%8A%9F%E7%8E%87%E8%AE%A1%E6%95%B0%E7%A0%81%E7%AE%A1%E5%AD%97%E7%AC%A6%E8%AF%86%E5%88%AB.html)
   . The synthetic data corpus should come from real usage scenarios as much as possible, and keep the richness of fonts and backgrounds on the basis of being close to the real scene, which will help improve the model effect.
 
 * Common Chinese and English data: During training, common real data can be added to the training set (for example, in the fine-tuning scenario without changing the dictionary, it is recommended to add real data such as LSVT, RCTW, MTWI) to further improve the generalization performance of the model.
 
 ### 3.2 Model
 
-It is recommended to choose the PP-OCRv3 model (configuration file: [PP-OCRv3_mobile_rec_distillation.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/PP-OCRv3/PP-OCRv3_mobile_rec_distillation.yml)，pre-trained model: [PP-OCRv3_mobile_rec_train.tar](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_train.tar)，its accuracy and generalization performance is the best pre-training model currently available.
+It is recommended to choose the PP-OCRv3 model (configuration file: [PP-OCRv3_mobile_rec_distillation.yml](../../../../configs/rec/PP-OCRv3/PP-OCRv3_mobile_rec_distillation.yml)，pre-trained model: [PP-OCRv3_mobile_rec_train.tar](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_train.tar)，its accuracy and generalization performance is the best pre-training model currently available.
 
 For more PP-OCR series models, please refer to [PP-OCR Series Model Library](../model_list.en.md).
 

@@ -16,7 +16,7 @@ During the recent years, the end-to-end OCR algorithm has been well developed, i
 - A graph based modification module (GRM) is proposed to further improve the performance of model recognition
 - Higher accuracy and faster prediction speed
 
-For details of PGNet algorithm, please refer to [paper](https://www.aaai.org/AAAI21Papers/AAAI-2885.WangP.pdf). The schematic diagram of the algorithm is as follows:
+For details of PGNet algorithm, please refer to [paper](https://cdn.aaai.org/ojs/16383/16383-13-19877-1-2-20210518.pdf). The schematic diagram of the algorithm is as follows:
 
 ![](./images/pgnet_framework.png)
 

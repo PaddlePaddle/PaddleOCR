@@ -152,6 +152,8 @@ class FormulaRecognitionPipeline(PaddleXPipelineWrapper):
             "SubPipelines.DocPreprocessor.use_doc_unwarping": self._params[
                 "use_doc_unwarping"
             ],
+            "use_doc_preprocessor": self._params["use_doc_orientation_classify"]
+            or self._params["use_doc_unwarping"],
             "SubPipelines.DocPreprocessor.SubModules.DocOrientationClassify.model_name": self._params[
                 "doc_orientation_classify_model_name"
             ],

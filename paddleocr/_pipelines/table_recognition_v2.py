@@ -177,6 +177,8 @@ class TableRecognitionPipelineV2(PaddleXPipelineWrapper):
             "SubPipelines.DocPreprocessor.use_doc_unwarping": self._params[
                 "use_doc_unwarping"
             ],
+            "use_doc_preprocessor": self._params["use_doc_orientation_classify"]
+            or self._params["use_doc_unwarping"],
             "use_layout_detection": self._params["use_layout_detection"],
             "use_ocr_model": self._params["use_ocr_model"],
             "SubModules.LayoutDetection.model_name": self._params[

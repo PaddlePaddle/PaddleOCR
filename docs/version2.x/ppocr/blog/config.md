@@ -40,50 +40,50 @@ comments: true
 |      label_list          |    设置方向分类器支持的角度       |    ['0','180']    |     仅在方向分类器中生效 |
 |      save_res_path          |    设置检测模型的结果保存地址       |    ./output/det_db/predicts_db.txt    |     仅在检测模型中生效 |
 
-### Optimizer ([ppocr/optimizer](../../ppocr/optimizer))
+### Optimizer ([ppocr/optimizer](../../../../ppocr/optimizer))
 
 |         字段             |      用途       |      默认值      |            备注             |
 | :---------------------: |:-------------:|:-------------:|   :--------------------:   |
-|      name        |     优化器类名     |     Adam      |  目前支持`Momentum`,`Adam`,`RMSProp`, 见[ppocr/optimizer/optimizer.py](../../ppocr/optimizer/optimizer.py)  |
+|      name        |     优化器类名     |     Adam      |  目前支持`Momentum`,`Adam`,`RMSProp`, 见[ppocr/optimizer/optimizer.py](../../../../ppocr/optimizer/optimizer.py)  |
 |      beta1           | 设置一阶矩估计的指数衰减率 |      0.9      |               \             |
 |      beta2           | 设置二阶矩估计的指数衰减率 |     0.999     |               \             |
 |      clip_norm           |  所允许的二范数最大值   |               |               \             |
 |      **lr**                | 设置学习率decay方式  |       -       |       \  |
-|        name    |  学习率decay类名   |    Cosine     | 目前支持`Linear`,`Cosine`,`Step`,`Piecewise`, 见[ppocr/optimizer/learning_rate.py](../../ppocr/optimizer/learning_rate.py) |
+|        name    |  学习率decay类名   |    Cosine     | 目前支持`Linear`,`Cosine`,`Step`,`Piecewise`, 见[ppocr/optimizer/learning_rate.py](../../../../ppocr/optimizer/learning_rate.py) |
 |        learning_rate      |     基础学习率     |     0.001     |  \        |
 |      **regularizer**      |   设置网络正则化方式   |       -       | \        |
-|        name      |     正则化类名     |      L2       | 目前支持`L1`,`L2`, 见[ppocr/optimizer/regularizer.py](../../ppocr/optimizer/regularizer.py)        |
+|        name      |     正则化类名     |      L2       | 目前支持`L1`,`L2`, 见[ppocr/optimizer/regularizer.py](../../../../ppocr/optimizer/regularizer.py)        |
 |        factor      |     正则化系数     |       0.00001        |  \        |
 
-### Architecture ([ppocr/modeling](../../ppocr/modeling))
+### Architecture ([ppocr/modeling](../../../../ppocr/modeling))
 
 在PaddleOCR中，网络被划分为Transform,Backbone,Neck和Head四个阶段
 
 |         字段             |            用途            |      默认值        |            备注             |
 | :---------------------: |  :---------------------:   | :--------------:  |   :--------------------:   |
 |      model_type        |         网络类型          |  rec  |  目前支持`rec`,`det`,`cls`  |
-|      algorithm           |    模型名称  |       CRNN         |               支持列表见[algorithm_overview](./algorithm_overview.md)             |
-|      **Transform**           |    设置变换方式  |       -       |               目前仅rec类型的算法支持, 具体见[ppocr/modeling/transforms](../../ppocr/modeling/transforms)              |
+|      algorithm           |    模型名称  |       CRNN         |               支持列表见[algorithm_overview](../../algorithm/overview.en.md)             |
+|      **Transform**           |    设置变换方式  |       -       |               目前仅rec类型的算法支持, 具体见[ppocr/modeling/transforms](../../../../ppocr/modeling/transforms)              |
 |        name    |      变换方式类名   |         TPS       | 目前支持`TPS` |
 |        num_fiducial      |    TPS控制点数        |       20      |  上下边各十个       |
 |        loc_lr      |    定位网络学习率        |       0.1      |  \      |
 |        model_name      |    定位网络大小        |       small      |  目前支持`small`,`large`       |
-|      **Backbone**      |  设置网络backbone类名        |       -      | 具体见[ppocr/modeling/backbones](../../ppocr/modeling/backbones)        |
+|      **Backbone**      |  设置网络backbone类名        |       -      | 具体见[ppocr/modeling/backbones](../../../../ppocr/modeling/backbones)        |
 |        name      |    backbone类名       |       ResNet     | 目前支持`MobileNetV3`,`ResNet`        |
 |        layers      |    resnet层数       |       34     |  支持18,34,50,101,152,200       |
 |        model_name      |    MobileNetV3 网络大小       |       small     |  支持`small`,`large`       |
-|      **Neck**      |  设置网络neck        |       -      | 具体见[ppocr/modeling/necks](../../ppocr/modeling/necks)        |
+|      **Neck**      |  设置网络neck        |       -      | 具体见[ppocr/modeling/necks](../../../../ppocr/modeling/necks)        |
 |        name      |    neck类名       |       SequenceEncoder     | 目前支持`SequenceEncoder`,`DBFPN`        |
 |        encoder_type      |    SequenceEncoder编码器类型       |       rnn     |  支持`reshape`,`fc`,`rnn`       |
 |        hidden_size      |   rnn内部单元数       |       48     |  \      |
 |        out_channels      |   DBFPN输出通道数       |       256     |  \      |
-|      **Head**      |  设置网络Head        |       -      | 具体见[ppocr/modeling/heads](../../ppocr/modeling/heads)        |
+|      **Head**      |  设置网络Head        |       -      | 具体见[ppocr/modeling/heads](../../../../ppocr/modeling/heads)        |
 |        name      |    head类名       |       CTCHead     | 目前支持`CTCHead`,`DBHead`,`ClsHead`        |
 |        fc_decay      |    CTCHead正则化系数       |       0.0004     |  \      |
 |        k      |   DBHead二值化系数       |       50     |  \      |
 |        class_dim      |   ClsHead输出分类数       |       2     |  \      |
 
-### Loss ([ppocr/losses](../../ppocr/losses))
+### Loss ([ppocr/losses](../../../../ppocr/losses))
 
 |         字段             |            用途            |      默认值        |            备注             |
 | :---------------------: |  :---------------------:   | :--------------:  |   :--------------------:   |
@@ -94,7 +94,7 @@ comments: true
 |      alpha        |        DBLossloss中shrink_map_loss的系数       |  5  |  \  |
 |      beta        |        DBLossloss中threshold_map_loss的系数       |  10  |  \  |
 
-### PostProcess ([ppocr/postprocess](../../ppocr/postprocess))
+### PostProcess ([ppocr/postprocess](../../../../ppocr/postprocess))
 
 |         字段             |            用途            |      默认值        |            备注             |
 | :---------------------: |  :---------------------:   | :--------------:  |   :--------------------:   |
@@ -104,14 +104,14 @@ comments: true
 |      max_candidates        |        DBPostProcess中输出的最大文本框数量        |  1000  |   |
 |      unclip_ratio        |        DBPostProcess中对文本框进行放大的比例       |  2.0  |  \  |
 
-### Metric ([ppocr/metrics](../../ppocr/metrics))
+### Metric ([ppocr/metrics](../../../../ppocr/metrics))
 
 |         字段             |            用途            |      默认值        |            备注             |
 | :---------------------: |  :---------------------:   | :--------------:  |   :--------------------:   |
 |      name        |         指标评估方法名称          |  CTCLabelDecode  |  目前支持`DetMetric`,`RecMetric`,`ClsMetric`  |
 |      main_indicator        |        主要指标,用于选取最优模型         |  acc |  对于检测方法为hmean，识别和分类方法为acc  |
 
-### Dataset  ([ppocr/data](../../ppocr/data))
+### Dataset  ([ppocr/data](../../../../ppocr/data))
 
 |         字段             |            用途            |      默认值        |            备注             |
 | :---------------------: |  :---------------------:   | :--------------:  |   :--------------------:   |
@@ -120,7 +120,7 @@ comments: true
 |      data_dir        |        数据集图片存放路径         |  ./train_data |  \  |
 |      label_file_list        |        数据标签路径         |  ["./train_data/train_list.txt"] | dataset为LMDBDataSet时不需要此参数   |
 |      ratio_list        |        数据集的比例         |  [1.0] | 若label_file_list中有两个train_list，且ratio_list为[0.4,0.6]，则从train_list1中采样40%，从train_list2中采样60%组合整个dataset   |
-|      transforms        |        对图片和标签进行变换的方法列表         |  [DecodeImage,CTCLabelEncode,RecResizeImg,KeepKeys] |   见[ppocr/data/imaug](../../ppocr/data/imaug)  |
+|      transforms        |        对图片和标签进行变换的方法列表         |  [DecodeImage,CTCLabelEncode,RecResizeImg,KeepKeys] |   见[ppocr/data/imaug](../../../../ppocr/data/imaug)  |
 |      **loader**        |        dataloader相关         |  - |   |
 |      shuffle        |        每个epoch是否将数据集顺序打乱         |  True | \  |
 |      batch_size_per_card        |        训练时单卡batch size         |  256 | \  |
@@ -129,13 +129,13 @@ comments: true
 
 ## 3. 多语言配置文件生成
 
-PaddleOCR目前已支持80种（除中文外）语种识别，`configs/rec/multi_languages` 路径下提供了一个多语言的配置文件模版: [rec_multi_language_lite_train.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/multi_language/rec_multi_language_lite_train.yml)。
+PaddleOCR目前已支持80种（除中文外）语种识别，`configs/rec/multi_languages` 路径下提供了一个多语言的配置文件模版: [rec_multi_language_lite_train.yml](../../../../configs/rec/multi_language/rec_multi_language_lite_train.yml)。
 
 您有两种方式创建所需的配置文件：
 
 1. 通过脚本自动生成
 
-[generate_multi_language_configs.py](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/multi_language/generate_multi_language_configs.py) 可以帮助您生成多语言模型的配置文件
+[generate_multi_language_configs.py](../../../../configs/rec/multi_language/generate_multi_language_configs.py) 可以帮助您生成多语言模型的配置文件
 
 * 以意大利语为例，如果您的数据是按如下格式准备的：
 

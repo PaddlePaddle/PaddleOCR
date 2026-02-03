@@ -5,7 +5,7 @@ comments: true
 
 # PaddleOCR 快速开始
 
- **说明：** 本文主要介绍PaddleOCR wheel包对PP-OCR系列模型的快速使用。如要体验文档分析相关功能，请参考[PP-Structure快速使用教程](../ppstructure/overview.md)。此外，飞桨低代码开发工具<b>PaddleX</b>依托PaddleOCR的先进技术，支持了OCR领域的<b>低代码全流程开发能力，大幅减少开发时间和难度</b>，同时将<b>文本图像智能分析、通用OCR、通用版面解析、通用表格识别、公式识别、印章文本识别</b>涉及的17个模型整合为6条模型产线，通过极简的Python API一键调用,详情请见[低代码全流程开发](https://paddlepaddle.github.io/PaddleOCR/latest/paddlex/quick_start.html)。
+ **说明：** 本文主要介绍PaddleOCR wheel包对PP-OCR系列模型的快速使用。如要体验文档分析相关功能，请参考[PP-Structure快速使用教程](../ppstructure/overview.md)。此外，飞桨低代码开发工具<b>PaddleX</b>依托PaddleOCR的先进技术，支持了OCR领域的<b>低代码全流程开发能力，大幅减少开发时间和难度</b>，同时将<b>文本图像智能分析、通用OCR、通用版面解析、通用表格识别、公式识别、印章文本识别</b>涉及的17个模型整合为6条模型产线，通过极简的Python API一键调用,详情请见[低代码全流程开发](https://www.paddleocr.ai/v2.10.0/paddlex/quick_start.html)。
 
 
 ## 1. 安装
@@ -105,7 +105,7 @@ paddleocr默认使用PP-OCRv4模型(`--ocr_version PP-OCRv4`)，如需使用其�
 | PP-OCRv2 | 支持中英文的检测和识别，方向分类器，多语言暂未更新 |
 | PP-OCR   | 支持中、英文检测和识别，方向分类器，支持多语种识别 |
 
-如需新增自己训练的模型，可以在[paddleocr](https://github.com/PaddlePaddle/PaddleOCR/blob/c65a66c5fd37dee64916a8b2a2c84ea273d98cac/paddleocr.py)中增加模型链接和字段，重新编译即可。
+如需新增自己训练的模型，可以在[paddleocr](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.10/paddleocr.py)中增加模型链接和字段，重新编译即可。
 
 更多whl包使用可参考[whl包文档](./blog/whl.md)
 
@@ -182,7 +182,7 @@ im_show.save('result.jpg')
 
 结果可视化
 
-![](./images/11_det_rec.jpg)
+![](./blog/images/11_det_rec.jpg)
 
 如果输入是PDF文件，那么可以参考下面代码进行可视化
 

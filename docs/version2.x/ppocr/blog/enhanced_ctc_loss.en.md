@@ -40,7 +40,7 @@ $$
 L_{Focal\_CTC} = \alpha * (1 - y^{'})^{\gamma} * L_{CTC}
 $$
 
-In the experiment, the value of &gamma; is 2, &alpha; = 1, see this for specific implementation: [rec_ctc_loss.py](../../ppocr/losses/rec_ctc_loss.py)
+In the experiment, the value of &gamma; is 2, &alpha; = 1, see this for specific implementation: [rec_ctc_loss.py](../../../../ppocr/losses/rec_ctc_loss.py)
 
 ## 2. A-CTC Loss
 A-CTC Loss is short for CTC Loss + ACE Loss. Among them, ACE Loss was proposed by the paper, “[Aggregation Cross-Entropy for Sequence Recognition](https://arxiv.org/abs/1904.08364)”. Compared with CTCLoss, ACE Loss has the following two advantages:
@@ -58,7 +58,7 @@ $$
 L_{A-CTC} = L_{CTC} + \lambda * L_{ACE}
 $$
 
-In the experiment, λ = 0.1. See the ACE loss implementation code: [ace_loss.py](../../ppocr/losses/ace_loss.py)
+In the experiment, λ = 0.1. See the ACE loss implementation code: [ace_loss.py](../../../../ppocr/losses/ace_loss.py)
 
 ## 3. C-CTC Loss
 C-CTC Loss is short for CTC Loss + Center Loss. Among them, Center Loss was proposed by the paper, “[A Discriminative Feature Learning Approach for Deep Face Recognition](https://link.springer.com/chapter/10.1007/978-3-319-46478-7_31)“. It was first used in face recognition tasks to increase the distance between classes and reduce the distance within classes. It is an earlier and also widely used algorithm.
@@ -71,7 +71,7 @@ $$
 L_{C-CTC} = L_{CTC} + \lambda * L_{center}
 $$
 
-In the experiment, we set λ=0.25. See the center_loss implementation code: [center_loss.py](../../ppocr/losses/center_loss.py)
+In the experiment, we set λ=0.25. See the center_loss implementation code: [center_loss.py](../../../../ppocr/losses/center_loss.py)
 
 It is worth mentioning that in C-CTC Loss, choosing to initialize the Center randomly does not bring significant improvement. Our Center initialization method is as follows:
 + Based on the original CTCLoss, a network N is obtained by training
@@ -97,4 +97,4 @@ For the above three solutions, we conducted training and evaluation based on Bai
 
 Based on the above experimental conclusions, we adopted the C-CTC strategy in PP-OCRv2. It is worth mentioning that, because PP-OCRv2 deals with the recognition task of 6625 Chinese characters, the character set is relatively large and there are many similar characters, so the C-CTC solution brings a significant improvement on this task. But if you switch to other OCR recognition tasks, the conclusion may be different. You can try Focal-CTC, A-CTC, C-CTC, and the combined solution EnhancedCTC. We believe it will bring different degrees of improvement.
 
-The unified combined plan is shown in the following file: [rec_enhanced_ctc_loss.py](../../ppocr/losses/rec_enhanced_ctc_loss.py)
+The unified combined plan is shown in the following file: [rec_enhanced_ctc_loss.py](../../../../ppocr/losses/rec_enhanced_ctc_loss.py)

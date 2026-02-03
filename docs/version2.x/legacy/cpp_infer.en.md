@@ -369,7 +369,7 @@ Table recognition related parameters
 |table_max_len|int|488|The size of the long side of the input image of the table recognition model, the final input image size of the network is（table_max_len，table_max_len）|
 |merge_no_span_structure|bool|true|Whether to merge <td> and </td> to <td></td|
 
-Multi-language inference is also supported in PaddleOCR, you can refer to [recognition tutorial](../model_train/recognition.en.md) for more supported languages and models in PaddleOCR. Specifically, if you want to infer using multi-language models, you just need to modify values of `rec_char_dict_path` and `rec_model_dir`.
+Multi-language inference is also supported in PaddleOCR, you can refer to [recognition tutorial](../ppocr/model_train/recognition.en.md) for more supported languages and models in PaddleOCR. Specifically, if you want to infer using multi-language models, you just need to modify values of `rec_char_dict_path` and `rec_model_dir`.
 
 The detection results will be shown on the screen, which is as follows.
 

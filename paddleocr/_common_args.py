@@ -23,6 +23,7 @@ from ._constants import (
     DEFAULT_PRECISION,
     DEFAULT_USE_TENSORRT,
     SUPPORTED_PRECISION_LIST,
+    DEFAULT_USE_CINN,
 )
 from ._utils.cli import str2bool
 
@@ -36,6 +37,7 @@ def parse_common_args(kwargs, *, default_enable_hpi):
         "enable_mkldnn": DEFAULT_ENABLE_MKLDNN,
         "mkldnn_cache_capacity": DEFAULT_MKLDNN_CACHE_CAPACITY,
         "cpu_threads": DEFAULT_CPU_THREADS,
+        "enable_cinn": DEFAULT_USE_CINN,
     }
 
     unknown_names = kwargs.keys() - default_vals.keys()
@@ -86,6 +88,7 @@ def prepare_common_init_args(model_name, common_args):
         pp_option.cpu_threads = common_args["cpu_threads"]
     else:
         pp_option.run_mode = "paddle"
+    pp_option.enable_cinn = common_args["enable_cinn"]
     init_kwargs["pp_option"] = pp_option
 
     return init_kwargs
@@ -138,4 +141,10 @@ def add_common_cli_opts(parser, *, default_enable_hpi, allow_multiple_devices):
         type=int,
         default=DEFAULT_CPU_THREADS,
         help="Number of threads to use for inference on CPUs.",
+    )
+    parser.add_argument(
+        "--enable_cinn",
+        type=str2bool,
+        default=DEFAULT_USE_CINN,
+        help="Whether to use the CINN compiler.",
     )

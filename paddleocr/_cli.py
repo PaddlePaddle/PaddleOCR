@@ -117,7 +117,9 @@ def _register_install_genai_server_deps_command(subparsers):
             sys.exit("Failed to install dependencies")
 
     subparser = subparsers.add_parser("install_genai_server_deps")
-    subparser.add_argument("variant", type=str, choices=["vllm", "sglang"])
+    subparser.add_argument(
+        "variant", type=str, choices=["vllm", "sglang", "fastdeploy"]
+    )
     subparser.set_defaults(executor=_install_genai_server_deps)
 
 

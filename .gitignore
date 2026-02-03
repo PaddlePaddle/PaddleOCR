@@ -25,7 +25,7 @@ log/
 
 build/
 dist/
-paddleocr.egg-info/
+*.egg-info/
 /deploy/android_demo/app/OpenCV/
 /deploy/android_demo/app/PaddleLite/
 /deploy/android_demo/app/.cxx/

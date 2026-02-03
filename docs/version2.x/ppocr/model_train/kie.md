@@ -92,9 +92,9 @@ HEADER
 
 ### 1.3. 数据下载
 
-如果你没有本地数据集，可以从[XFUND](https://github.com/doc-analysis/XFUND)或者[FUNSD](https://guillaumejaume.github.io/FUNSD/)官网下载数据，然后使用XFUND与FUNSD的处理脚本([XFUND](../../ppstructure/kie/tools/trans_xfun_data.py), [FUNSD](../../ppstructure/kie/tools/trans_funsd_label.py))，生成用于PaddleOCR训练的数据格式，并使用公开数据集快速体验关键信息抽取的流程。
+如果你没有本地数据集，可以从[XFUND](https://github.com/doc-analysis/XFUND)或者[FUNSD](https://guillaumejaume.github.io/FUNSD/)官网下载数据，然后使用XFUND与FUNSD的处理脚本([XFUND](../../../../ppstructure/kie/tools/trans_xfun_data.py), [FUNSD](../../../../ppstructure/kie/tools/trans_funsd_label.py))，生成用于PaddleOCR训练的数据格式，并使用公开数据集快速体验关键信息抽取的流程。
 
-更多关于公开数据集的介绍，请参考[关键信息抽取数据集说明文档](../../datasets/kie_datasets.md)。
+更多关于公开数据集的介绍，请参考[关键信息抽取数据集说明文档](../../../datasets/kie_datasets.md)。
 
 PaddleOCR也支持了关键信息抽取模型的标注，具体使用方法请参考：[PPOCRLabel使用文档](https://github.com/PFCCLab/PPOCRLabel/blob/main/README_ch.md)。
 
@@ -257,9 +257,9 @@ python3 -m paddle.distributed.launch --ips="xx.xx.xx.xx,xx.xx.xx.xx" --gpus '0,1
 
 ### 2.5. 知识蒸馏训练
 
-PaddleOCR支持了基于U-DML知识蒸馏的关键信息抽取模型训练过程，配置文件请参考：[ser_vi_layoutxlm_xfund_zh_udml.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh_udml.yml)，更多关于知识蒸馏的说明文档请参考：[知识蒸馏说明文档](../model_compress/knowledge_distillation.md)。
+PaddleOCR支持了基于U-DML知识蒸馏的关键信息抽取模型训练过程，配置文件请参考：[ser_vi_layoutxlm_xfund_zh_udml.yml](../../../../configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh_udml.yml)，更多关于知识蒸馏的说明文档请参考：[知识蒸馏说明文档](../model_compress/knowledge_distillation.md)。
 
-**注意**： PaddleOCR中LayoutXLM系列关键信息抽取模型的保存与加载逻辑与PaddleNLP保持一致，因此在蒸馏的过程中仅保存了学生模型的参数，如果希望使用保存的模型进行评估，需要使用学生模型的配置（上面的蒸馏文件对应的学生模型为[ser_vi_layoutxlm_xfund_zh.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh.yml)）
+**注意**： PaddleOCR中LayoutXLM系列关键信息抽取模型的保存与加载逻辑与PaddleNLP保持一致，因此在蒸馏的过程中仅保存了学生模型的参数，如果希望使用保存的模型进行评估，需要使用学生模型的配置（上面的蒸馏文件对应的学生模型为[ser_vi_layoutxlm_xfund_zh.yml](../../../../configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh.yml)）
 
 ### 2.6. 其他训练环境
 

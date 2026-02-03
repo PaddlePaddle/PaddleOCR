@@ -111,7 +111,6 @@ python gen_label.py --mode="rec" --input_path="{path/of/origin/label}" --output_
 多语言模型的训练数据集均为100w的合成数据，使用了开源合成工具 [text_renderer](https://github.com/Sanster/text_renderer) ，少量的字体可以通过下面两种方式下载。
 
 - [百度网盘](https://pan.baidu.com/s/1bS_u207Rm7YbY33wOECKDA) 提取码：frgi
-- [google drive](https://drive.google.com/file/d/18cSWX7wXSy4G0tbKJ0d9PuIaiwRLHpjA/view)
 
 ### 1.4. 字典
 
@@ -149,7 +148,7 @@ PaddleOCR内置了一部分字典，可以按需使用。
 `ppocr/utils/en_dict.txt` 是一个包含96个字符的英文字典
 
 目前的多语言模型仍处在demo阶段，会持续优化模型并补充语种，**非常欢迎您为我们提供其他语言的字典和字体**，
-如您愿意可将字典文件提交至 [dict](../../ppocr/utils/dict)，我们会在Repo中感谢您。
+如您愿意可将字典文件提交至 [dict](../../../../ppocr/utils/dict)，我们会在Repo中感谢您。
 
 - 自定义字典
 
@@ -165,7 +164,7 @@ PaddleOCR提供了多种数据增强方式，默认配置文件中已经添加�
 
 默认的扰动方式有：颜色空间转换(cvtColor)、模糊(blur)、抖动(jitter)、噪声(Gasuss noise)、随机切割(random crop)、透视(perspective)、颜色反转(reverse)、TIA数据增广。
 
-训练过程中每种扰动方式以40%的概率被选择，具体代码实现请参考：[rec_img_aug.py](../../ppocr/data/imaug/rec_img_aug.py)
+训练过程中每种扰动方式以40%的概率被选择，具体代码实现请参考：[rec_img_aug.py](../../../../ppocr/data/imaug/rec_img_aug.py)
 
 *由于OpenCV的兼容性问题，扰动操作暂时只支持Linux*
 
@@ -231,7 +230,7 @@ PaddleOCR支持训练和评估交替进行, 可以在 `configs/rec/PP-OCRv3/en_P
 
 **提示：** 可通过 -c 参数选择 `configs/rec/` 路径下的多种模型配置进行训练，PaddleOCR支持的识别算法可以参考[前沿算法列表](../../algorithm/overview.md)：
 
-训练中文数据，推荐使用[PP-OCRv3_mobile_rec_distillation.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/PP-OCRv3/PP-OCRv3_mobile_rec_distillation.yml)，如您希望尝试其他算法在中文数据集上的效果，请参考下列说明修改配置文件：
+训练中文数据，推荐使用[PP-OCRv3_mobile_rec_distillation.yml](../../../../configs/rec/PP-OCRv3/PP-OCRv3_mobile_rec_distillation.yml)，如您希望尝试其他算法在中文数据集上的效果，请参考下列说明修改配置文件：
 
 以 `PP-OCRv3_mobile_rec_distillation.yml` 为例：
 
@@ -309,7 +308,7 @@ python3 tools/train.py -c configs/rec/PP-OCRv3/en_PP-OCRv3_mobile_rec.yml -o Glo
 
 ### 2.3. 更换Backbone 训练
 
-PaddleOCR将网络划分为四部分，分别在[ppocr/modeling](../../ppocr/modeling)下。 进入网络的数据将按照顺序(transforms->backbones->necks->heads)依次通过这四个部分。
+PaddleOCR将网络划分为四部分，分别在[ppocr/modeling](../../../../ppocr/modeling)下。 进入网络的数据将按照顺序(transforms->backbones->necks->heads)依次通过这四个部分。
 
 ```bash linenums="1"
 ├── architectures # 网络的组网代码
@@ -323,7 +322,7 @@ PaddleOCR将网络划分为四部分，分别在[ppocr/modeling](../../ppocr/mod
 
 如果要使用新的Backbone，更换backbones的例子如下:
 
-1. 在 [ppocr/modeling/backbones](../../ppocr/modeling/backbones) 文件夹下新建文件，如my_backbone.py。
+1. 在 [ppocr/modeling/backbones](../../../../ppocr/modeling/backbones) 文件夹下新建文件，如my_backbone.py。
 2. 在 my_backbone.py 文件内添加相关代码，示例代码如下:
 
 ```python linenums="1"
@@ -344,7 +343,7 @@ class MyBackbone(nn.Layer):
         return y
 ```
 
-3. 在 [ppocr/modeling/backbones/\_*init\_*.py](https://github.com/PaddlePaddle/PaddleOCR/blob/main/ppocr/modeling/backbones/__init__.py)文件内导入添加的`MyBackbone`模块，然后修改配置文件中Backbone进行配置即可使用，格式如下:
+3. 在 [ppocr/modeling/backbones/\_*init\_*.py](../../../../ppocr/modeling/backbones/__init__.py)文件内导入添加的`MyBackbone`模块，然后修改配置文件中Backbone进行配置即可使用，格式如下:
 
 ```yaml linenums="1"
 Backbone:
@@ -381,7 +380,7 @@ PaddleOCR支持了基于知识蒸馏的文本识别模型训练过程，更多�
 
 ### 2.7. 多语言模型训练
 
-PaddleOCR目前已支持80种（除中文外）语种识别，`configs/rec/multi_languages` 路径下提供了一个多语言的配置文件模版: [rec_multi_language_lite_train.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/multi_language/rec_multi_language_lite_train.yml)。
+PaddleOCR目前已支持80种（除中文外）语种识别，`configs/rec/multi_languages` 路径下提供了一个多语言的配置文件模版: [rec_multi_language_lite_train.yml](../../../../configs/rec/multi_language/rec_multi_language_lite_train.yml)。
 
 按语系划分，目前PaddleOCR支持的语种有：
 

@@ -24,6 +24,7 @@ from __future__ import unicode_literals
 import numpy as np
 import cv2
 import random
+from paddle import get_device
 
 
 def is_poly_in_rect(poly, x, y, w, h):
@@ -179,6 +180,8 @@ class EastRandomCropData(object):
                 texts_crop.append(text)
         data["image"] = img
         data["polys"] = np.array(text_polys_crop)
+        if "iluvatar_gpu" in get_device():
+            data["polys"] = np.array(text_polys_crop).astype(np.float32)
         data["ignore_tags"] = ignore_tags_crop
         data["texts"] = texts_crop
         return data

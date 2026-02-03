@@ -166,14 +166,31 @@ To improve the inference performance of PaddleOCR-VL, we introduce multi-threadi
 
 ## 6. FAQ
 
-1. How to use PaddleOCR-VL for document parsing?
+**1.How to use PaddleOCR-VL for document parsing?**
 
 Please refer to our usage documentation [PaddleOCR-VL Usage](../../pipeline_usage/PaddleOCR-VL.en.md).
 
-2. How to fine-tune the PaddleOCR-VL model?
+**2. How to fine-tune the PaddleOCR-VL model?**
 
 Currently, we do not support fine-tuning of the model, but it is a high-priority feature and will be released soon. Please stay tuned.
 
-5. If the results of the layout check are not satisfactory, what solutions can be optimized?
+**3. Why was my chart not recognized and how can I use chart recognition?**
+
+Because our default chart recognition function is turned off, it needs to be manually turned on. Please refer to [PaddleOCR-VL Usage](../../pipeline_usage/PaddleOCR-VL.en.md) and set the use_chart_recognition为True parameters to True turn it on.
+
+**4. What are the 109 supported languages?**
+
+Chinese, English, Korea, Japanese, Thai, Greek, Tamil, Telugu
+
+Arabic: Arabic, Persian, Uyghur, Urdu, Pashto, Kurdish, Sindhi, Balochi 
+
+Latin: French, German, Afrikaans, Italian, Spanish, Bosnian, Portuguese, Czech, Welsh, Danish, Estonian, Irish, Croatian, Uzbek, Hungarian, Serbian (Latin), Indonesian, Occitan, Icelandic, Lithuanian, Maori, Malay, Dutch, Norwegian, Polish, Slovak, Slovenian, Albanian, Swedish, Swahili, Tagalog, Turkish, Latin, Azerbaijani, Kurdish, Latvian, Maltese, Pali, Romanian, Vietnamese, Finnish, Basque, Galician, Luxembourgish, Romansh, Catalan, Quechua 
+
+Cyrillic: Russian, Belarusian, Ukrainian, Serbian (Cyrillic), Bulgarian, Mongolian, Abkhazian, Adyghe, Kabardian, Avar, Dargin, Ingush, Chechen, Lak, Lezgin, Tabasaran, Kazakh, Kyrgyz, Tajik, Macedonian, Tatar, Chuvash, Bashkir, Malian, Moldovan, Udmurt, Komi, Ossetian, Buryat, Kalmyk, Tuvan, Sakha, Karakalpak 
+
+Devanagari: Hindi, Marathi, Nepali, Bihari, Maithili, Angika, Bhojpuri, Magahi, Santali, Newari, Konkani, Sanskrit, Haryanvi 
+
+**5. If the results of the layout check are not satisfactory, what solutions can be optimized?**
 
 Since layout detection is mainly trained for various document scenarios, if your test data is non-standard documents such as license plates, tickets images or ID Cards and you want to do OCR recognition, you can directly use the PaddleOCR-VL-0.9B model and turn off the layout detection model by setting use_layout_detection to False. If you find any layout detection errors, you can directly try the effect of using PaddleOCR-VL-0.9B alone. 
+We recommend using the [ERNIEKit toolkit](https://github.com/PaddlePaddle/ERNIE/tree/release/v1.4) to perform Supervised Fine-Tuning (SFT) on the PaddleOCR-VL-0.9B model. For detailed steps, please refer to the [ERNIEKit documentation](https://github.com/PaddlePaddle/ERNIE/blob/release/v1.4/docs/paddleocr_vl_sft.md).

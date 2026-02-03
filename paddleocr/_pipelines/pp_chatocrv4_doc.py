@@ -356,6 +356,10 @@ class PPChatOCRv4Doc(PaddleXPipelineWrapper):
             "SubPipelines.LayoutParser.SubPipelines.GeneralOCR.use_textline_orientation": self._params[
                 "use_textline_orientation"
             ],
+            "SubPipelines.LayoutParser.use_doc_preprocessor": self._params[
+                "use_doc_orientation_classify"
+            ]
+            or self._params["use_doc_unwarping"],
             "SubPipelines.LayoutParser.use_seal_recognition": self._params[
                 "use_seal_recognition"
             ],

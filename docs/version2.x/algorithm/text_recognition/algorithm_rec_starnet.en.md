@@ -7,7 +7,7 @@ comments: true
 ## 1. Introduction
 
 Paper information:
-> [STAR-Net: a spatial attention residue network for scene text recognition.](http://www.bmva.org/bmvc/2016/papers/paper043/paper043.pdf)
+> [STAR-Net: a spatial attention residue network for scene text recognition.](https://www.bmva-archive.org.uk/bmvc/2016/papers/paper043/paper043.pdf)
 > Wei Liu, Chaofeng Chen, Kwan-Yee K. Wong, Zhizhong Su and Junyu Han.
 > BMVC, pages 43.1-43.13, 2016
 
@@ -87,17 +87,17 @@ dict_character = list(self.character_str)
 
 ### 4.2 C++ Inference
 
-After preparing the inference model, refer to the [cpp infer](../../ppocr/infer_deploy/cpp_infer.en.md) tutorial to operate.
+After preparing the inference model, refer to the [cpp infer](../../../version2.x/legacy/cpp_infer.en.md) tutorial to operate.
 
 ### 4.3 Serving
 
-After preparing the inference model, refer to the [pdserving](../../ppocr/infer_deploy/paddle_server.en.md) tutorial for Serving deployment, including two modes: Python Serving and C++ Serving.
+After preparing the inference model, refer to the [pdserving](../../../version2.x/legacy/paddle_server.en.md) tutorial for Serving deployment, including two modes: Python Serving and C++ Serving.
 
 ### 4.4 More
 
 The STAR-Net model also supports the following inference deployment methods:
 
-- Paddle2ONNX Inference: After preparing the inference model, refer to the [paddle2onnx](../../ppocr/infer_deploy/paddle2onnx.en.md) tutorial.
+- Paddle2ONNX Inference: After preparing the inference model, refer to the [paddle2onnx](../../../version2.x/legacy/paddle2onnx.en.md) tutorial.
 
 ## 5. FAQ
 

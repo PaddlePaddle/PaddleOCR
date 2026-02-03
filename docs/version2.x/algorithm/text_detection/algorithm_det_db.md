@@ -62,17 +62,17 @@ python3 tools/infer/predict_det.py --image_dir="./doc/imgs_en/img_10.jpg" --det_
 
 ### 4.2 C++推理
 
-准备好推理模型后，参考[cpp infer](../../ppocr/infer_deploy/cpp_infer.md)教程进行操作即可。
+准备好推理模型后，参考[cpp infer](../../../version2.x/legacy/cpp_infer.md)教程进行操作即可。
 
 ### 4.3 Serving服务化部署
 
-准备好推理模型后，参考[pdserving](../../ppocr/infer_deploy/paddle_server.md)教程进行Serving服务化部署，包括Python Serving和C++ Serving两种模式。
+准备好推理模型后，参考[pdserving](../../../version2.x/legacy/paddle_server.md)教程进行Serving服务化部署，包括Python Serving和C++ Serving两种模式。
 
 ### 4.4 更多推理部署
 
 DB模型还支持以下推理部署方式：
 
-- Paddle2ONNX推理：准备好推理模型后，参考[paddle2onnx](../../ppocr/infer_deploy/paddle2onnx.md)教程操作。
+- Paddle2ONNX推理：准备好推理模型后，参考[paddle2onnx](../../../version2.x/legacy/paddle2onnx.md)教程操作。
 
 ## 5. FAQ
 

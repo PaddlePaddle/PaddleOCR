@@ -34,7 +34,7 @@ Optimizer:
 ```
 
 Piecewise 代表分段常数衰减，在不同的学习阶段指定不同的学习率，在每段内学习率相同。
-warmup_epoch 代表在前5个epoch中，学习率将逐渐从0增加到base_lr。全部策略可以参考代码[learning_rate.py](../../ppocr/optimizer/learning_rate.py) 。
+warmup_epoch 代表在前5个epoch中，学习率将逐渐从0增加到base_lr。全部策略可以参考代码 [learning_rate.py](../../../../ppocr/optimizer/learning_rate.py) 。
 
 ### 2.2 正则化
 
@@ -71,7 +71,7 @@ Optimizer:
   - 中文数据集，LSVT街景数据集根据真值将图crop出来，并进行位置校准，总共30w张图像。此外基于LSVT的语料，合成数据500w。
   - 小语种数据集，使用不同语料和字体，分别生成了100w合成数据集，并使用ICDAR-MLT作为验证集。
 
-其中，公开数据集都是开源的，用户可自行搜索下载，也可参考[中文数据集](../../datasets/datasets.md)，合成数据暂不开源，用户可使用开源合成工具自行合成，可参考的合成工具包括[text_renderer](https://github.com/Sanster/text_renderer) 、[SynthText](https://github.com/ankush-me/SynthText) 、[TextRecognitionDataGenerator](https://github.com/Belval/TextRecognitionDataGenerator) 等。
+其中，公开数据集都是开源的，用户可自行搜索下载，也可参考[中文数据集](../../../datasets/datasets.md)，合成数据暂不开源，用户可使用开源合成工具自行合成，可参考的合成工具包括[text_renderer](https://github.com/Sanster/text_renderer) 、[SynthText](https://github.com/ankush-me/SynthText) 、[TextRecognitionDataGenerator](https://github.com/Belval/TextRecognitionDataGenerator) 等。
 
 ### 3.2 垂类场景
 
@@ -122,7 +122,7 @@ c. 利用数据生成算法合成数据，例如pix2pix或[StyleText](https://gi
 
 具体的训练教程可点击下方链接跳转：
 
-- [文本检测模型训练](./detection.md)
-- [文本识别模型训练](./recognition.md)
-- [文本方向分类器训练](./angle_class.md)
-- [知识蒸馏](../model_compress/knowledge_distillation.md)
+- [文本检测模型训练](../../ppocr/model_train/detection.md)
+- [文本识别模型训练](../../ppocr/model_train/recognition.md)
+- [文本方向分类器训练](../../ppocr/model_train/angle_class.md)
+- [知识蒸馏](../../ppocr/model_compress/knowledge_distillation.md)

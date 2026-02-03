@@ -9,10 +9,10 @@ The accuracy of the above models on the corresponding test sets is as follows:
 
 | Model           | Backbone       | config                  | En-BLEU↑  | GPU Inference Time (ms)| Download link |
 |-----------|--------|----------------------------------------|:-----------------:|:--------------:|:--------------:|
-| UniMERNet | Donut Swin | [UniMERNet.yaml](../../../configs/rec/UniMERNet.yaml) |     85.91  | 2266.96 | [trained model](https://paddleocr.bj.bcebos.com/contribution/rec_unimernet_train.tar)|
-| PP-FormulaNet-S | PPHGNetV2_B4 | [PP-FormulaNet-S.yaml](../../../configs/rec/PP-FormuaNet/PP-FormulaNet-S.yaml) |   87.00   | 202.25 |[trained model](https://paddleocr.bj.bcebos.com/contribution/rec_ppformulanet_s_train.tar)|
-| PP-FormulaNet-L | Vary_VIT_B | [PP-FormulaNet-L.yaml](../../../configs/rec/PP-FormuaNet/PP-FormulaNet-L.yaml) |    90.36   | 1976.52  |[trained model](https://paddleocr.bj.bcebos.com/contribution/rec_ppformulanet_l_train.tar )|
-| LaTeX-OCR | Hybrid ViT |[LaTeX_OCR_rec.yaml](https://github.com/PaddlePaddle/PaddleOCR/blob/main/configs/rec/LaTeX_OCR_rec.yaml)|   74.55   | 	1244.61   |[trained model](https://paddleocr.bj.bcebos.com/contribution/rec_latex_ocr_train.tar)|
+| UniMERNet | Donut Swin | [UniMERNet.yaml](../../../../configs/rec/UniMERNet.yaml) |     85.91  | 2266.96 | [trained model](https://paddleocr.bj.bcebos.com/contribution/rec_unimernet_train.tar)|
+| PP-FormulaNet-S | PPHGNetV2_B4 | [PP-FormulaNet-S.yaml](../../../../configs/rec/PP-FormuaNet/PP-FormulaNet-S.yaml) |   87.00   | 202.25 |[trained model](https://paddleocr.bj.bcebos.com/contribution/rec_ppformulanet_s_train.tar)|
+| PP-FormulaNet-L | Vary_VIT_B | [PP-FormulaNet-L.yaml](../../../../configs/rec/PP-FormuaNet/PP-FormulaNet-L.yaml) |    90.36   | 1976.52  |[trained model](https://paddleocr.bj.bcebos.com/contribution/rec_ppformulanet_l_train.tar )|
+| LaTeX-OCR | Hybrid ViT |[LaTeX_OCR_rec.yaml](../../../../configs/rec/LaTeX_OCR_rec.yaml)|   74.55   | 	1244.61   |[trained model](https://paddleocr.bj.bcebos.com/contribution/rec_latex_ocr_train.tar)|
 
 
 The English formula evaluation set here contains both simple and complex formulas from UniMERNet, as well as simple, medium, and complex formulas independently created by PaddleX.

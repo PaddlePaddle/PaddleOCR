@@ -16,7 +16,7 @@ PP-StructureV2系统流程图如下所示，文档图像首先经过图像矫正
 
 ![img](./images/195265734-6f4b5a7f-59b1-4fcc-af6d-89afc9bd51e1-20240705140834325.jpg)
 
-更多技术细节：👉 PP-StructureV2技术报告 [中文版](docs/PP-StructureV2_introduction.md)，[英文版](https://arxiv.org/abs/2210.05391)。
+更多技术细节：👉 PP-StructureV2技术报告 [中文版](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.9/ppstructure/docs/PP-StructureV2_introduction.md)，[英文版](https://arxiv.org/abs/2210.05391)。
 
 PP-StructureV2支持各个模块独立使用或灵活搭配，如，可以单独使用版面分析，或单独使用表格识别，点击下面相应链接获取各个独立模块的使用教程：
 

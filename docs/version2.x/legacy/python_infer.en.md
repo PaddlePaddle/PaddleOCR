@@ -90,7 +90,7 @@ Predicts of ./doc/imgs_words/en/word_1.png: ('JOINT', 0.998160719871521)
 
 ### 3. Multilingual Model Inference
 
-If you need to predict [other language models](../model_list.en.md), when using inference model prediction, you need to specify the dictionary path used by `--rec_char_dict_path`. At the same time, in order to get the correct visualization results,
+If you need to predict [other language models](../ppocr/model_list.en.md), when using inference model prediction, you need to specify the dictionary path used by `--rec_char_dict_path`. At the same time, in order to get the correct visualization results,
 You need to specify the visual font path through `--vis_font_path`. There are small language fonts provided by default under the `doc/fonts` path, such as Korean recognition:
 
 ```bash linenums="1"
@@ -147,7 +147,7 @@ After executing the command, the recognition result image is as follows:
 
 ![](./images/system_res_00018069_v3.jpg)
 
-For more configuration and explanation of inference parameters, please refer to：[Model Inference Parameters Explained Tutorial](../blog/inference_args.en.md)。
+For more configuration and explanation of inference parameters, please refer to：[Model Inference Parameters Explained Tutorial](../ppocr/blog/inference_args.en.md)。
 
 ## TensorRT Inference
 

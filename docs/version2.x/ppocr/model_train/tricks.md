@@ -15,7 +15,7 @@ comments: true
 
 - 和ResNet的4个阶段类似，文本检测骨干网络的更换就是确定这4个阶段，以便于像物体检测heads一样集成FPN。另外，对于文本检测问题，ImageNet1000中的预训练模型可以加速收敛并提高准确率。
 
-- 更换文本识别骨干网络时，需要注意网络宽度和高度步长的下降位置。由于中文文本识别中宽度和高度的比值较大，因此高度下降的频率较少，宽度下降的频率较多。可以参考PaddleOCR中[MobileNetV3的修改](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/ppocr/modeling/backbones/rec_mobilenet_v3.py)。
+- 更换文本识别骨干网络时，需要注意网络宽度和高度步长的下降位置。由于中文文本识别中宽度和高度的比值较大，因此高度下降的频率较少，宽度下降的频率较多。可以参考PaddleOCR中 [MobileNetV3的修改](../../../../ppocr/modeling/backbones/rec_mobilenet_v3.py)。
 
 #### 2、长中文文本识别
 
@@ -26,7 +26,7 @@ comments: true
 
 - **小技巧**
 
-在训练时，不要直接将训练样本resize到[3,32,320]，先将样本的高度resize为32，并保持宽高比，当宽度小于320时，超出部分用0填充。另外，当样本的宽高比大于10时，这些样本将被忽略。对一张图片进行预测时，同上，但不限制最大宽高比。对一批图像进行预测时，按照训练的方式进行，但调整后的目标宽度是该批图像的最长宽度。 [代码如下](https://github.com/PaddlePaddle/PaddleOCR/blob/develop/tools/infer/predict_rec.py)：
+在训练时，不要直接将训练样本resize到[3,32,320]，先将样本的高度resize为32，并保持宽高比，当宽度小于320时，超出部分用0填充。另外，当样本的宽高比大于10时，这些样本将被忽略。对一张图片进行预测时，同上，但不限制最大宽高比。对一批图像进行预测时，按照训练的方式进行，但调整后的目标宽度是该批图像的最长宽度。 [代码如下](../../../../tools/infer/predict_rec.py)：
 
   ```python linenums="1"
   def resize_norm_img(self, img, max_wh_ratio):

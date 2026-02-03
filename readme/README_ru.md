@@ -212,7 +212,7 @@ python -m pip install paddleocr
 
 | Название группы зависимостей | Соответствующая функция |
 | - | - |
-| `doc-parser` | Анализ документов: может извлекать элементы макета, такие как таблицы, формулы, печати, изображения и т.д. из документов. Включая модели, такие как PP-StructureV3 |
+| `doc-parser` | Документный парсинг: может использоваться для извлечения элементов макета, таких как таблицы, формулы, штампы, изображения и т.д. из документов; включает такие модели, как PP-StructureV3, PaddleOCR-VL. |
 | `ie` | Извлечение информации: может извлекать ключевую информацию, такую как имена, даты, адреса, суммы и т.д. из документов. Включая модели, такие как PP-ChatOCRv4 |
 | `trans` | Перевод документов: может переводить документы на другие языки. Включая модели, такие как PP-DocTranslation |
 | `all` | Все функции |
@@ -426,8 +426,10 @@ PaddleOCR не был бы там, где он есть сегодня, без �
 | Название проекта | Описание |
 | ------------ | ----------- |
 | [RAGFlow](https://github.com/infiniflow/ragflow) <a href="https://github.com/infiniflow/ragflow"><img src="https://img.shields.io/github/stars/infiniflow/ragflow"></a>|RAG-движок, основанный на глубоком понимании документов.|
+| [pathway](https://github.com/pathwaycom/pathway) <a href="https://github.com/pathwaycom/pathway"><img src="https://img.shields.io/github/stars/pathwaycom/pathway"></a>|Python ETL-фреймворк для потоковой обработки, анализа в реальном времени, конвейеров LLM и RAG|
 | [MinerU](https://github.com/opendatalab/MinerU) <a href="https://github.com/opendatalab/MinerU"><img src="https://img.shields.io/github/stars/opendatalab/MinerU"></a>|Инструмент для преобразования документов различных типов в Markdown|
 | [Umi-OCR](https://github.com/hiroi-sora/Umi-OCR) <a href="https://github.com/hiroi-sora/Umi-OCR"><img src="https://img.shields.io/github/stars/hiroi-sora/Umi-OCR"></a>|Бесплатное офлайн-программное обеспечение для пакетного OCR с открытым исходным кодом.|
+| [cherry-studio](https://github.com/CherryHQ/cherry-studio) <a href="https://github.com/CherryHQ/cherry-studio"><img src="https://img.shields.io/github/stars/CherryHQ/cherry-studio"></a>|Настольный клиент, поддерживающий нескольких поставщиков LLM.|
 | [OmniParser](https://github.com/microsoft/OmniParser)<a href="https://github.com/microsoft/OmniParser"><img src="https://img.shields.io/github/stars/microsoft/OmniParser"></a> |Инструмент парсинга экрана для GUI-агента, основанного исключительно на компьютерном зрении.|
 | [QAnything](https://github.com/netease-youdao/QAnything)<a href="https://github.com/netease-youdao/QAnything"><img src="https://img.shields.io/github/stars/netease-youdao/QAnything"></a> |Система вопросов и ответов на основе любого контента.|
 | [PDF-Extract-Kit](https://github.com/opendatalab/PDF-Extract-Kit) <a href="https://github.com/opendatalab/PDF-Extract-Kit"><img src="https://img.shields.io/github/stars/opendatalab/PDF-Extract-Kit"></a>|Мощный инструментарий с открытым исходным кодом, предназначенный для эффективного извлечения высококачественного контента из сложных и разнообразных PDF-документов.|
@@ -451,11 +453,24 @@ PaddleOCR не был бы там, где он есть сегодня, без �
 
 ## 🎓 Цитирование
 
-```
-@misc{paddleocr2020,
-title={PaddleOCR, Awesome multilingual OCR toolkits based on PaddlePaddle.},
-author={PaddlePaddle Authors},
-howpublished = {\url{https://github.com/PaddlePaddle/PaddleOCR}},
-year={2020}
+```bibtex
+@misc{cui2025paddleocr30technicalreport,
+      title={PaddleOCR 3.0 Technical Report}, 
+      author={Cheng Cui and Ting Sun and Manhui Lin and Tingquan Gao and Yubo Zhang and Jiaxuan Liu and Xueqing Wang and Zelun Zhang and Changda Zhou and Hongen Liu and Yue Zhang and Wenyu Lv and Kui Huang and Yichao Zhang and Jing Zhang and Jun Zhang and Yi Liu and Dianhai Yu and Yanjun Ma},
+      year={2025},
+      eprint={2507.05595},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV},
+      url={https://arxiv.org/abs/2507.05595}, 
 }
-``` 
+
+@misc{cui2025paddleocrvlboostingmultilingualdocument,
+      title={PaddleOCR-VL: Boosting Multilingual Document Parsing via a 0.9B Ultra-Compact Vision-Language Model}, 
+      author={Cheng Cui and Ting Sun and Suyin Liang and Tingquan Gao and Zelun Zhang and Jiaxuan Liu and Xueqing Wang and Changda Zhou and Hongen Liu and Manhui Lin and Yue Zhang and Yubo Zhang and Handong Zheng and Jing Zhang and Jun Zhang and Yi Liu and Dianhai Yu and Yanjun Ma},
+      year={2025},
+      eprint={2510.14528},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV},
+      url={https://arxiv.org/abs/2510.14528}, 
+}
+```

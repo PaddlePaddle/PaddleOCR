@@ -36,4 +36,4 @@ When performing prediction, you need to specify the path of a single image or a 
 python3 tools/infer/predict_system.py --image_dir="./doc/imgs/11.jpg" --det_model_dir="./inference/det/"  --rec_model_dir="./inference/rec/"
 ```
 
-For more details about text detection and recognition concatenation, please refer to the document [Inference](../infer_deploy/python_infer.en.md)
+For more details about text detection and recognition concatenation, please refer to the document [Inference](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.9/doc/doc_en/inference_en.md)

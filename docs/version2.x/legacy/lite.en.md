@@ -24,9 +24,9 @@ Supports multiple development environments.
 
 For the compilation process of different development environments, please refer to the corresponding documents.
 
-1. [Docker](https://paddle-lite.readthedocs.io/zh/latest/source_compile/compile_env.html#docker)
-2. [Linux](https://paddle-lite.readthedocs.io/zh/latest/source_compile/compile_env.html#linux)
-3. [MAC OS](https://paddle-lite.readthedocs.io/zh/latest/source_compile/compile_env.html#mac-os)
+1. [Docker](https://paddle-lite-pjc.readthedocs.io/zh/latest/user_guides/source_compile.html#docker)
+2. [Linux](https://paddle-lite-pjc.readthedocs.io/zh/latest/user_guides/source_compile.html#linux)
+3. [MAC OS](https://paddle-lite-pjc.readthedocs.io/zh/latest/user_guides/source_compile.html#mac-os)
 
 ### 1.2 Prepare Paddle-Lite library
 
@@ -55,7 +55,7 @@ There are two ways to obtain the Paddle-Lite library:
 
 Note: When compiling Paddle-Lite to obtain the Paddle-Lite library, you need to turn on the two options `--with_cv=ON --with_extra=ON`, `--arch` means the `arm` version, here is designated as armv8,
 
-More compilation commands refer to the introduction [link](https://paddle-lite.readthedocs.io/zh/release-v2.10_a/source_compile/linux_x86_compile_android.html) 。
+More compilation commands refer to the introduction [link](https://paddle-lite-pjc.readthedocs.io/zh/latest/user_guides/source_compile.html#paddlelite) 。
 
 After directly downloading the Paddle-Lite library and decompressing it, you can get the `inference_lite_lib.android.armv8/` folder, and the Paddle-Lite library obtained by compiling Paddle-Lite is located
 `Paddle-Lite/build.lite.android.armv8.gcc/inference_lite_lib.android.armv8/` folder.

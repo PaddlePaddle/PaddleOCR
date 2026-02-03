@@ -5,7 +5,7 @@ comments: true
 PaddleOCR provides 2 service deployment methods:
 
 - Based on **PaddleHub Serving**: Code path is `./deploy/hubserving`. Please follow this tutorial.
-- Based on **PaddleServing**: Code path is `./deploy/pdserving`. Please refer to the [tutorial](../../ppocr/infer_deploy/paddle_server.en.md) for usage.
+- Based on **PaddleServing**: Code path is `./deploy/pdserving`. Please refer to the [tutorial](../../legacy/paddle_server.en.md) for usage.
 
 # Service deployment based on PaddleHub Serving
 
@@ -252,8 +252,8 @@ hub serving stop --port/-p XXXX
 
    **Note** The image input shape used by the PPOCR-v3 recognition model is `3, 48, 320`, so you need to modify `cfg.rec_image_shape = "3, 48, 320"` in `params.py`, if you do not use the PPOCR-v3 recognition model, then there is no need to modify this parameter.
 3. (Optional) If you want to rename the module, the following lines should be modified:
-   - [`ocr_system` within `from deploy.hubserving.ocr_system.params import read_params`](https://github.com/PaddlePaddle/PaddleOCR/blob/a923f35de57b5e378f8dd16e54d0a3e4f51267fd/deploy/hubserving/ocr_system/module.py#L35)
-   - [`ocr_system` within `name="ocr_system",`](https://github.com/PaddlePaddle/PaddleOCR/blob/a923f35de57b5e378f8dd16e54d0a3e4f51267fd/deploy/hubserving/ocr_system/module.py#L39)
+   - [`ocr_system` within `from deploy.hubserving.ocr_system.params import read_params`](../../../../deploy/hubserving/ocr_system/module.py#L35)
+   - [`ocr_system` within `name="ocr_system",`](../../../../deploy/hubserving/ocr_system/module.py#L39)
 4. (Optional) It may require you to delete the directory `__pycache__` to force flush build cache of CPython:
 
    ```bash linenums="1"

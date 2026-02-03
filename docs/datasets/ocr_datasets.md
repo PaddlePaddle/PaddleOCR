@@ -127,7 +127,7 @@ train_data/rec/train/word_002.jpg   用科技让复杂的世界更简单
 
 | 数据集名称 | 图片下载地址 | PaddleOCR 标注下载地址                                                         |
 |---|---|---------------------------------------------------------------------|
-| en benchmark(MJ, SJ, IIIT, SVT, IC03, IC13, IC15, SVTP, and CUTE.) | [DTRB](https://github.com/clovaai/deep-text-recognition-benchmark#download-lmdb-dataset-for-traininig-and-evaluation-from-here) | LMDB格式，可直接用[lmdb_dataset.py](../../../ppocr/data/lmdb_dataset.py)加载 |
+| en benchmark(MJ, SJ, IIIT, SVT, IC03, IC13, IC15, SVTP, and CUTE.) | [DTRB](https://github.com/clovaai/deep-text-recognition-benchmark#download-lmdb-dataset-for-traininig-and-evaluation-from-here) | LMDB格式，可直接用[lmdb_dataset.py](../../ppocr/data/lmdb_dataset.py)加载 |
 |ICDAR 2015| <http://rrc.cvc.uab.es/?ch=4&com=downloads> | [train](https://paddleocr.bj.bcebos.com/dataset/rec_gt_train.txt)/ [test](https://paddleocr.bj.bcebos.com/dataset/rec_gt_test.txt) |
 | 多语言数据集 |[百度网盘](https://pan.baidu.com/s/1bS_u207Rm7YbY33wOECKDA) 提取码：frgi | 图片下载地址中已包含 |
 

@@ -115,7 +115,7 @@ python3 tools/infer/predict_rec.py --image_dir='./docs/datasets/images/pme_demo/
 ```
 &nbsp;
 
-![测试图片样例](../../datasets/images/pme_demo/0000295.png)
+![测试图片样例](../../../datasets/images/pme_demo/0000295.png)
 
 执行命令后，上面图像的预测结果（识别的公式）会打印到屏幕上，示例如下：
 ```shell

@@ -40,7 +40,7 @@ PaddleOCR中集成了知识蒸馏的算法，具体地，有以下几个主要�
 
 ### 2.1 识别配置文件解析
 
-配置文件在[PP-OCRv3_mobile_rec_distillation.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/PP-OCRv3/PP-OCRv3_mobile_rec_distillation.yml)。
+配置文件在[PP-OCRv3_mobile_rec_distillation.yml](../../../../configs/rec/PP-OCRv3/PP-OCRv3_mobile_rec_distillation.yml)。
 
 #### 2.1.1 模型结构
 
@@ -277,7 +277,7 @@ Loss:
 - `Student`和`Teacher`最终输出(`head_out`)的SAR分支之间的DML loss，权重为0.5。
 - `Student`和`Teacher`的骨干网络输出(`backbone_out`)之间的l2 loss，权重为1。
 
-关于`CombinedLoss`更加具体的实现可以参考: [combined_loss.py](../../ppocr/losses/combined_loss.py#L23)。关于`DistillationCTCLoss`等蒸馏损失函数更加具体的实现可以参考[distillation_loss.py](../../ppocr/losses/distillation_loss.py)。
+关于`CombinedLoss`更加具体的实现可以参考: [combined_loss.py](../../../../ppocr/losses/combined_loss.py#L23)。关于`DistillationCTCLoss`等蒸馏损失函数更加具体的实现可以参考[distillation_loss.py](../../../../ppocr/losses/distillation_loss.py)。
 
 #### 2.1.3 后处理
 
@@ -293,7 +293,7 @@ PostProcess:
 
 以上述配置为例，最终会同时计算`Student`和`Teahcer` 2个子网络的CTC解码输出，返回一个`dict`，`key`为用于处理的子网络名称，`value`为用于处理的子网络列表。
 
-关于`DistillationCTCLabelDecode`更加具体的实现可以参考: [rec_postprocess.py](../../ppocr/postprocess/rec_postprocess.py#L128)
+关于`DistillationCTCLabelDecode`更加具体的实现可以参考: [rec_postprocess.py](../../../../ppocr/postprocess/rec_postprocess.py#L128)
 
 #### 2.1.4 指标计算
 
@@ -310,7 +310,7 @@ Metric:
 
 以上述配置为例，最终会使用`Student`子网络的acc指标作为保存best model的判断指标，同时，日志中也会打印出所有子网络的acc指标。
 
-关于`DistillationMetric`更加具体的实现可以参考: [distillation_metric.py](../../ppocr/metrics/distillation_metric.py#L24)。
+关于`DistillationMetric`更加具体的实现可以参考: [distillation_metric.py](../../../../ppocr/metrics/distillation_metric.py#L24)。
 
 #### 2.1.5 蒸馏模型微调
 
@@ -344,7 +344,7 @@ print(s_params.keys())
 paddle.save(s_params, "ch_PP-OCRv3_rec_train/student.pdparams")
 ```
 
-转化完成之后，使用[PP-OCRv3_mobile_rec.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/PP-OCRv3/PP-OCRv3_mobile_rec.yml)，修改预训练模型的路径（为导出的`student.pdparams`模型路径）以及自己的数据路径，即可进行模型微调。
+转化完成之后，使用[PP-OCRv3_mobile_rec.yml](../../../../configs/rec/PP-OCRv3/PP-OCRv3_mobile_rec.yml)，修改预训练模型的路径（为导出的`student.pdparams`模型路径）以及自己的数据路径，即可进行模型微调。
 
 ### 2.2 检测配置文件解析
 
@@ -398,9 +398,9 @@ Architecture:
 
 ```
 
-如果是采用DML，即两个小模型互相学习的方法，上述配置文件里的Teacher网络结构需要设置为Student模型一样的配置，具体参考配置文件[PP-OCRv3_det_dml.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/det/PP-OCRv3/PP-OCRv3_det_dml.yml)。
+如果是采用DML，即两个小模型互相学习的方法，上述配置文件里的Teacher网络结构需要设置为Student模型一样的配置，具体参考配置文件[PP-OCRv3_det_dml.yml](../../../../configs/det/PP-OCRv3/PP-OCRv3_det_dml.yml)。
 
-下面介绍[PP-OCRv3_det_cml.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/det/PP-OCRv3/PP-OCRv3_mobile_det.yml)的配置文件参数：
+下面介绍[PP-OCRv3_det_cml.yml](../../../../configs/det/PP-OCRv3/PP-OCRv3_mobile_det.yml)的配置文件参数：
 
 ```yaml linenums="1"
 Architecture:
@@ -466,7 +466,7 @@ Architecture:
 
 ```
 
-蒸馏模型`DistillationModel`类的具体实现代码可以参考[distillation_model.py](../../ppocr/modeling/architectures/distillation_model.py)。
+蒸馏模型`DistillationModel`类的具体实现代码可以参考[distillation_model.py](../../../../ppocr/modeling/architectures/distillation_model.py)。
 
 最终模型`forward`输出为一个字典，key为所有的子网络名称，例如这里为`Student`与`Teacher`，value为对应子网络的输出，可以为`Tensor`（只返回该网络的最后一层）和`dict`（也返回了中间的特征信息）。
 
@@ -524,7 +524,7 @@ Loss:
 
 ```
 
-关于`DistillationDilaDBLoss`更加具体的实现可以参考: [distillation_loss.py](https://github.com/PaddlePaddle/PaddleOCR/blob/release%2F2.4/ppocr/losses/distillation_loss.py#L185)。关于`DistillationDBLoss`等蒸馏损失函数更加具体的实现可以参考[distillation_loss.py](https://github.com/PaddlePaddle/PaddleOCR/blob/04c44974b13163450dfb6bd2c327863f8a194b3c/ppocr/losses/distillation_loss.py?_pjax=%23js-repo-pjax-container%2C%20div%5Bitemtype%3D%22http%3A%2F%2Fschema.org%2FSoftwareSourceCode%22%5D%20main%2C%20%5Bdata-pjax-container%5D#L148)。
+关于`DistillationDilaDBLoss`更加具体的实现可以参考: [distillation_loss.py](../../../../ppocr/losses/distillation_loss.py#L185)。关于`DistillationDBLoss`等蒸馏损失函数更加具体的实现可以参考[distillation_loss.py](../../../../ppocr/losses/distillation_loss.py#L148)。
 
 #### 2.2.3 后处理
 
@@ -542,7 +542,7 @@ PostProcess:
 
 以上述配置为例，最终会同时计算`Student`，`Student2`和`Teacher` 3个子网络的输出做后处理计算。同时，由于有多个输入，后处理返回的输出也有多个，
 
-关于`DistillationDBPostProcess`更加具体的实现可以参考: [db_postprocess.py](../../ppocr/postprocess/db_postprocess.py#L195)
+关于`DistillationDBPostProcess`更加具体的实现可以参考: [db_postprocess.py](../../../../ppocr/postprocess/db_postprocess.py#L195)
 
 #### 2.2.4 蒸馏指标计算
 

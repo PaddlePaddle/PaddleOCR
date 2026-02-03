@@ -8,10 +8,10 @@
 
 | 模型          | 骨干网络       | 配置文件                   | En-BLEU↑  |GPU推理耗时（ms）| 下载链接 |
 |-----------|--------|----------------------------------------|:-----------------:|:--------------:|:--------------:|
-| UniMERNet | Donut Swin | [UniMERNet.yaml](../../../configs/rec/UniMERNet.yaml) |     85.91   | 2266.96 | [训练模型](https://paddleocr.bj.bcebos.com/contribution/rec_unimernet_train.tar)|
-| PP-FormulaNet-S | PPHGNetV2_B4 | [PP-FormulaNet-S.yaml](../../../configs/rec/PP-FormuaNet/PP-FormulaNet-S.yaml) |   87.00 | 202.25 |[训练模型](https://paddleocr.bj.bcebos.com/contribution/rec_ppformulanet_s_train.tar)|
-| PP-FormulaNet-L | Vary_VIT_B | [PP-FormulaNet-L.yaml](../../../configs/rec/PP-FormuaNet/PP-FormulaNet-L.yaml) |    90.36    | 1976.52  |[训练模型](https://paddleocr.bj.bcebos.com/contribution/rec_ppformulanet_l_train.tar )|
-| LaTeX-OCR | Hybrid ViT |[LaTeX_OCR_rec.yaml](https://github.com/PaddlePaddle/PaddleOCR/blob/main/configs/rec/LaTeX_OCR_rec.yaml)|   74.55   | 	1244.61   |[训练模型](https://paddleocr.bj.bcebos.com/contribution/rec_latex_ocr_train.tar)|
+| UniMERNet | Donut Swin | [UniMERNet.yaml](../../../../configs/rec/UniMERNet.yaml) |     85.91   | 2266.96 | [训练模型](https://paddleocr.bj.bcebos.com/contribution/rec_unimernet_train.tar)|
+| PP-FormulaNet-S | PPHGNetV2_B4 | [PP-FormulaNet-S.yaml](../../../../configs/rec/PP-FormuaNet/PP-FormulaNet-S.yaml) |   87.00 | 202.25 |[训练模型](https://paddleocr.bj.bcebos.com/contribution/rec_ppformulanet_s_train.tar)|
+| PP-FormulaNet-L | Vary_VIT_B | [PP-FormulaNet-L.yaml](../../../../configs/rec/PP-FormuaNet/PP-FormulaNet-L.yaml) |    90.36    | 1976.52  |[训练模型](https://paddleocr.bj.bcebos.com/contribution/rec_ppformulanet_l_train.tar )|
+| LaTeX-OCR | Hybrid ViT |[LaTeX_OCR_rec.yaml](../../../../configs/rec/LaTeX_OCR_rec.yaml)|   74.55   | 	1244.61   |[训练模型](https://paddleocr.bj.bcebos.com/contribution/rec_latex_ocr_train.tar)|
 
 这里，英文公式评估集包含UniMERNet的简单和复杂公式，以及PaddleX内部自建的简单、中等和复杂公式。
 

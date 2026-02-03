@@ -55,11 +55,11 @@ For downstream tasks, generally speaking, `200~300` training images can guarante
 
 ##### (2) Model
 
-In terms of model selection, PP-OCRv3 detection model is recommended. For more information about the training methods of the detection model, please refer to: [Text detection tutorial](../../doc/doc_en/detection_en.md) and [PP-OCRv3 detection model tutorial](../../doc/doc_ch/PPOCRv3_det_train.md).
+In terms of model selection, PP-OCRv3 detection model is recommended. For more information about the training methods of the detection model, please refer to: [Text detection tutorial](../../ppocr/model_train/detection.en.md) and [PP-OCRv3 detection model tutorial](../../ppocr/model_train/PPOCRv3_det_train.en.md).
 
 #### 2.1.2 Text recognition
 
-Compared with the natural scene, the text recognition in the document image is generally relatively easier (the background is not too complex), so **it is suggested to** try the PP-OCRv3 general text recognition model provided in PaddleOCR ([PP-OCRv3 model list](../../doc/doc_en/models_list_en.md))
+Compared with the natural scene, the text recognition in the document image is generally relatively easier (the background is not too complex), so **it is suggested to** try the PP-OCRv3 general text recognition model provided in PaddleOCR ([PP-OCRv3 model list](../../ppocr/model_list.en.md))
 
 ##### (1) Data
 
@@ -82,7 +82,7 @@ Train:
 
 ##### (2) Model
 
-In terms of model selection, PP-OCRv3 recognition model is recommended. For more information about the training methods of the recognition model, please refer to: [Text recognition tutorial](../../doc/doc_en/recognition_en.md) and [PP-OCRv3 model list](../../doc/doc_en/models_list_en.md).
+In terms of model selection, PP-OCRv3 recognition model is recommended. For more information about the training methods of the recognition model, please refer to: [Text recognition tutorial](../../ppocr/model_train/recognition.en.md) and [PP-OCRv3 model list](../../ppocr/model_list.en.md).
 
 ### 2.2 Train KIE Models
 
@@ -107,7 +107,7 @@ Take the ID card scenario as an example. The key information generally includes 
 
 In terms of data, generally speaking, for relatively fixed scenes, **50** training images can achieve acceptable effects. You can refer to [PPOCRLabel](https://github.com/PFCCLab/PPOCRLabel/blob/main/README.md) for finish the labeling process.
 
-In terms of model, it is recommended to use the VI-layoutXLM model proposed in PP-StructureV2. It is improved based on the LayoutXLM model, removing the visual feature extraction module, and further improving the model inference speed without the significant reduction on model accuracy. For more tutorials, please refer to [VI-LayoutXLM introduction](../../doc/doc_en/algorithm_kie_vi_layoutxlm_en.md) and [KIE tutorial](../../doc/doc_en/kie_en.md).
+In terms of model, it is recommended to use the VI-layoutXLM model proposed in PP-StructureV2. It is improved based on the LayoutXLM model, removing the visual feature extraction module, and further improving the model inference speed without the significant reduction on model accuracy. For more tutorials, please refer to [VI-LayoutXLM introduction](../../algorithm/kie/algorithm_kie_vi_layoutxlm.en.md) and [KIE tutorial](../../ppocr/model_train/kie.en.md).
 
 #### 2.2.2 SER + RE
 
@@ -129,7 +129,7 @@ During annotation, if value is multiple text lines, a key-value pair can be adde
 
 In terms of data, generally speaking, for relatively fixed scenes, about **50** training images can achieve acceptable effects.
 
-In terms of model, it is recommended to use the VI-layoutXLM model proposed in PP-StructureV2. It is improved based on the LayoutXLM model, removing the visual feature extraction module, and further improving the model inference speed without the significant reduction on model accuracy. For more tutorials, please refer to [VI-LayoutXLM introduction](../../doc/doc_en/algorithm_kie_vi_layoutxlm_en.md) and [KIE tutorial](../../doc/doc_en/kie_en.md).
+In terms of model, it is recommended to use the VI-layoutXLM model proposed in PP-StructureV2. It is improved based on the LayoutXLM model, removing the visual feature extraction module, and further improving the model inference speed without the significant reduction on model accuracy. For more tutorials, please refer to [VI-LayoutXLM introduction](../../algorithm/kie/algorithm_kie_vi_layoutxlm.en.md) and [KIE tutorial](../../ppocr/model_train/kie.en.md).
 
 ## 3. Reference
 

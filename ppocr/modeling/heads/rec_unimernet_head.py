@@ -49,7 +49,6 @@ xavier_normal_ = XavierNormal()
 
 
 class ModelOutput(OrderedDict):
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -733,15 +732,17 @@ class MBartDecoderLayer(nn.Layer):
             cross_attn_past_key_value = (
                 past_key_value[-2:] if past_key_value is not None else None
             )
-            hidden_states, cross_attn_weights, cross_attn_present_key_value = (
-                self.encoder_attn(
-                    hidden_states=hidden_states,
-                    key_value_states=encoder_hidden_states,
-                    attention_mask=encoder_attention_mask,
-                    layer_head_mask=cross_attn_layer_head_mask,
-                    past_key_value=cross_attn_past_key_value,
-                    output_attentions=output_attentions,
-                )
+            (
+                hidden_states,
+                cross_attn_weights,
+                cross_attn_present_key_value,
+            ) = self.encoder_attn(
+                hidden_states=hidden_states,
+                key_value_states=encoder_hidden_states,
+                attention_mask=encoder_attention_mask,
+                layer_head_mask=cross_attn_layer_head_mask,
+                past_key_value=cross_attn_past_key_value,
+                output_attentions=output_attentions,
             )
             hidden_states = nn.functional.dropout(
                 hidden_states, p=self.dropout, training=self.training

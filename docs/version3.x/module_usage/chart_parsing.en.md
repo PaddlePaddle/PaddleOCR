@@ -65,9 +65,10 @@ The output result will be:
 ```
 
 Explanation of output parameters:
-
-* `image`: The path to the input image
-* `result`: The model's prediction output
+<ul>
+<li><code>image</code>: The path to the input image</li>
+<li><code>result</code>:  The model's prediction output</li>
+</ul>
 
 The visualized result is:
 
@@ -83,7 +84,7 @@ Year | Avg Revenue per 5-star Hotel (Million CNY) | Avg Profit per 5-star Hotel 
 
 Detailed explanation of related methods and parameters:
 
-* Instantiate a vision-language model with `ChartParsing`. Parameters:
+* Instantiate a vision-language model with <code>ChartParsing</code>. Parameters:
 
 <table>
 <thead>
@@ -97,19 +98,22 @@ Detailed explanation of related methods and parameters:
 <tbody>
 <tr>
 <td><code>model_name</code></td>
-<td>Model name. If set to <code>None</code>, defaults to <code>PP-Chart2Table</code>.</td>
+<td><b>Meaning:</b> Model name.<br/>
+<b>Description:</b> 
+If set to <code>None</code>, defaults to <code>PP-Chart2Table</code>.</td>
 <td><code>str | None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>model_dir</code></td>
-<td>Model storage path.</td>
+<td><b>Meaning</b>Model storage path.</td>
 <td><code>str | None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>Inference device.<br/>
+<td><b>Meaning:</b> Inference device.<br/>
+<b>Description:</b>
 <b>Examples:</b> <code>"cpu"</code>, <code>"gpu"</code>, <code>"npu"</code>, <code>"gpu:0"</code><br/>
 Defaults to GPU 0 if available; otherwise falls back to CPU.
 </td>
@@ -119,9 +123,9 @@ Defaults to GPU 0 if available; otherwise falls back to CPU.
 </tbody>
 </table>
 
-* Use the model's `predict()` method for inference. This returns a list of results. The module also offers a `predict_iter()` method, which behaves identically in terms of inputs and outputs but returns a generator—ideal for large datasets or memory-sensitive scenarios. Choose based on your needs.
+* Use the model's <code>predict()</code>  method for inference. This returns a list of results. The module also offers a <code>predict_iter()</code> method, which behaves identically in terms of inputs and outputs but returns a generator—ideal for large datasets or memory-sensitive scenarios. Choose based on your needs.
 
-`predict()` method parameters:
+<code>predict()</code> method parameters:
 
 <table>
 <thead>
@@ -134,21 +138,27 @@ Defaults to GPU 0 if available; otherwise falls back to CPU.
 </thead>
 <tr>
 <td><code>input</code></td>
-<td>Input data (required). Input formats vary by model.<br/>
-For PP-Chart2Table: <code>{'image': image_path}</code>
+<td><b>Meaning:</b> Input data (required). <br/>
+<b>Description:</b>
+Input formats vary by model.<br/>
+<ul>
+<li>For PP-Chart2Table: <code>{'image': image_path}</code></li>
+</ul>
 </td>
 <td><code>dict</code></td>
 <td>N/A</td>
 </tr>
 <tr>
 <td><code>batch_size</code></td>
-<td>Batch size. Any positive integer.</td>
+<td><b>Meaning:</b> Batch size. <br/>
+<b>Description:</b>
+Any positive integer.</td>
 <td><code>int</code></td>
 <td>1</td>
 </tr>
 </table>
 
-* Prediction results are returned as `Result` objects for each sample, with support for printing and saving to JSON:
+* Prediction results are returned as <code>Result</code> objects for each sample, with support for printing and saving to JSON:
 
 <table>
 <thead>
@@ -192,13 +202,13 @@ For PP-Chart2Table: <code>{'image': image_path}</code>
 <tr>
 <td><code>indent</code></td>
 <td><code>int</code></td>
-<td>Same as in `print()`</td>
+<td>Same as in <code>print()</code></td>
 <td>4</td>
 </tr>
 <tr>
 <td><code>ensure_ascii</code></td>
 <td><code>bool</code></td>
-<td>Same as in `print()`</td>
+<td>Same as in <code>print()</code></td>
 <td><code>False</code></td>
 </tr>
 </table>

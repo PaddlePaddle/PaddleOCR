@@ -16,7 +16,7 @@ OCR算法可以分为两阶段算法和端对端的算法。二阶段OCR算法�
 - 提出基于图的修正模块（GRM）来进一步提高模型识别性能
 - 精度更高，预测速度更快
 
-PGNet算法细节详见[论文](https://www.aaai.org/AAAI21Papers/AAAI-2885.WangP.pdf) ,算法原理图如下所示：
+PGNet算法细节详见[论文](https://cdn.aaai.org/ojs/16383/16383-13-19877-1-2-20210518.pdf) ,算法原理图如下所示：
 
 ![](./images/pgnet_framework.png)
 

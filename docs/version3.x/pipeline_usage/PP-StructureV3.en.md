@@ -959,7 +959,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
 
 ## 2. Quick Start
 
-Before using the PP-StructureV3 pipeline locally, please make sure you have completed the installation of the wheel package according to the [installation guide](../installation.en.md). If you prefer to install dependencies selectively, please refer to the relevant instructions in the installation documentation. The corresponding dependency group for this pipeline is `doc-parser`. After installation, you can use it via command line or Python integration.
+Before using the PP-StructureV3 pipeline locally, please make sure you have completed the installation of the wheel package according to the [installation guide](../installation.en.md). If you prefer to install dependencies selectively, please refer to the relevant instructions in the installation documentation. The corresponding dependency group for this pipeline is <code>doc-parser</code>. After installation, you can use it via command line or Python integration.
 
 Please note: If you encounter issues such as the program becoming unresponsive, unexpected program termination, running out of memory resources, or extremely slow inference during execution, please try adjusting the configuration according to the documentation, such as disabling unnecessary features or using lighter-weight models.
 
@@ -996,7 +996,8 @@ paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --device gpu
 <tbody>
 <tr>
 <td><code>input</code></td>
-<td>Data to be predicted. Required.
+<td><b>Meaning:</b>Data to be predicted. Required.<br/>
+<b>Description:</b>
 .e.g., local path to image or PDF file: <code>/root/data/img.jpg</code>; <b>URL</b>, e.g., online image or PDF: <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/demo_paper.png">example</a>; <b>local directory</b>: directory containing images to predict, e.g., <code>/root/data/</code> (currently, directories with PDFs are not supported; PDFs must be specified by file path).
 </td>
 <td><code>str</code></td>
@@ -1004,44 +1005,57 @@ paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --device gpu
 </tr>
 <tr>
 <td><code>save_path</code></td>
-<td>Path to save inference results. If not set, results will not be saved locally.</td>
+<td><b>Meaning:</b>Path to save inference results.<br/>
+<b>Description:</b> 
+If not set, results will not be saved locally.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>layout_detection_model_name</code></td>
-<td>Name of the layout detection model. If not set, the default model will be used.</td>
+<td><b>Meaning:</b>Name of the layout detection model.<br/>
+<b>Description:</b> 
+If not set, the default model will be used.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>layout_detection_model_dir</code></td>
-<td>Directory path of the layout detection model. If not set, the official model will be downloaded.</td>
+<td><b>Meaning:</b>Directory path of the layout detection model.<br/>
+<b>Description:</b> 
+If not set, the official model will be downloaded.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>layout_threshold</code></td>
-<td>Score threshold for the layout model. Any value between <code>0-1</code>. If not set, the default value is used, which is <code>0.5</code>.
+<td><b>Meaning:</b>Score threshold for the layout model.<br/>
+<b>Description:</b> 
+Any value between <code>0-1</code>. If not set, the default value is used, which is <code>0.5</code>.
 </td>
 <td><code>float</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>layout_nms</code></td>
-<td>Whether to use Non-Maximum Suppression (NMS) as post-processing for layout detection. If not set, the parameter will default to the value initialized in the pipeline, which is set to <code>True</code> by default.</td>
+<td><b>Meaning:</b>Whether to use Non-Maximum Suppression (NMS) as post-processing for layout detection. <br/>
+<b>Description:</b> 
+If not set, the parameter will default to the value initialized in the pipeline, which is set to <code>True</code> by default.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>layout_unclip_ratio</code></td>
-<td>Unclip ratio for detected boxes in layout detection model. Any float > <code>0</code>. If not set, the default is <code>1.0</code>.
+<td><b>Meaning:</b>Unclip ratio for detected boxes in layout detection model.<br/>
+<b>Description:</b> 
+Any float > <code>0</code>. If not set, the default is <code>1.0</code>.
 <td><code>float</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>layout_merge_bboxes_mode</code></td>
-<td>The merging mode for the detection boxes output by the model in layout detection.
+<td><b>Meaning:</b>The merging mode for the detection boxes output by the model in layout detection.<br/>
+<b>Description:</b> 
 <ul>
 <li><b>large</b>: When set to "large", only the largest outer bounding box will be retained for overlapping bounding boxes, and the inner overlapping boxes will be removed;</li>
 <li><b>small</b>: When set to "small", only the smallest inner bounding boxes will be retained for overlapping bounding boxes, and the outer overlapping boxes will be removed;</li>
@@ -1053,96 +1067,123 @@ paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --device gpu
 </tr>
 <tr>
 <td><code>chart_recognition_model_name</code></td>
-<td>Name of the chart parsing model. If not set, the default model will be used.</td>
+<td><b>Meaning:</b>Name of the chart parsing model.<br/>
+<b>Description:</b> 
+If not set, the default model will be used.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>chart_recognition_model_dir</code></td>
-<td>Directory path of the chart parsing model. If not set, the official model will be downloaded.</td>
+<td><b>Meaning:</b>Directory path of the chart parsing model.<br/>
+<b>Description:</b> 
+If not set, the official model will be downloaded.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>chart_recognition_batch_size</code></td>
-<td>Batch size for the chart parsing model. If not set, the default batch size is <code>1</code>.</td>
+<td><b>Meaning:</b>Batch size for the chart parsing model.<br/>
+<b>Description:</b> 
+If not set, the default batch size is <code>1</code>.</td>
 <td><code>int</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>region_detection_model_name</code></td>
-<td>Name of the region detection model. If not set, the default model will be used.</td>
+<td><b>Meaning:</b>Name of the region detection model.<br/>
+<b>Description:</b> 
+If not set, the default model will be used.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>region_detection_model_dir</code></td>
-<td>Directory path of the region detection model. If not set, the official model will be downloaded.</td>
+<td><b>Meaning:</b>Directory path of the region detection model.<br/>
+<b>Description:</b> 
+If not set, the official model will be downloaded.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>doc_orientation_classify_model_name</code></td>
-<td>Name of the document orientation classification model. If not set, the default model will be used.</td>
+<td><b>Meaning:</b>Name of the document orientation classification model.<br/>
+<b>Description:</b> 
+If not set, the default model will be used.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>doc_orientation_classify_model_dir</code></td>
-<td>Directory path of the document orientation classification model. If not set, the official model will be downloaded.</td>
+<td><b>Meaning:</b>Directory path of the document orientation classification model.<br/>
+<b>Description:</b> 
+If not set, the official model will be downloaded.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>doc_unwarping_model_name</code></td>
-<td>Name of the document unwarping model. If not set, the default model will be used.</td>
+<td><b>Meaning:</b>Name of the document unwarping model.<br/>
+<b>Description:</b> 
+If not set, the default model will be used.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>doc_unwarping_model_dir</code></td>
-<td>Directory path of the document unwarping model. If not set, the official model will be downloaded.</td>
+<td><b>Meaning:</b>Directory path of the document unwarping model.<br/>
+<b>Description:</b> 
+If not set, the official model will be downloaded.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>text_detection_model_name</code></td>
-<td>Name of the text detection model. If not set, the default model will be used.</td>
+<td><b>Meaning:</b>Name of the text detection model.<br/>
+<b>Description:</b> 
+If not set, the default model will be used.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>text_detection_model_dir</code></td>
-<td>Directory path of the text detection model. If not set, the official model will be downloaded.</td>
+<td><b>Meaning:</b>Directory path of the text detection model.<br/>
+<b>Description:</b> 
+If not set, the official model will be downloaded.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>text_det_limit_side_len</code></td>
-<td>Image side length limitation for text detection. Any integer > <code>0</code>. If not set, the default value will be <code>960</code>.
+<td><b>Meaning:</b>Image side length limitation for text detection.<br/>
+<b>Description:</b> 
+Any integer > <code>0</code>. If not set, the default value will be <code>960</code>.
 </td>
 <td><code>int</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>text_det_limit_type</code></td>
-<td>Type of the image side length limit for text detection.
-supports <code>min</code> and <code>max</code>; <code>min</code> means ensuring the shortest side of the image is not less than <code>det_limit_side_len</code>, <code>max</code> means the longest side does not exceed <code>limit_side_len</code>. If not set, the default value will be <code>max</code>.
+<td><b>Meaning:</b>Type of the image side length limit for text detection.<br/>
+<b>Description:</b> 
+Supports <code>min</code> and <code>max</code>; <code>min</code> means ensuring the shortest side of the image is not less than <code>det_limit_side_len</code>, <code>max</code> means the longest side does not exceed <code>limit_side_len</code>. If not set, the default value will be <code>max</code>.
 </td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>text_det_thresh</code></td>
-<td>Pixel threshold for detection. Pixels with scores above this value in the probability map are considered text.Any float > <code>0</code>
-. If not set, the default is <code>0.3</code>.
+<td><b>Meaning:</b>Pixel threshold for text detection. Pixels with scores above this value in the probability map are considered text.<br/>
+<b>Description:</b> 
+Any float > <code>0</code>. If not set, the default is <code>0.3</code>.
 </td>
 <td><code>float</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>text_det_box_thresh</code></td>
-<td>Box threshold. A bounding box is considered text if the average score of pixels inside is greater than this value.
+<td><b>Meaning:</b>Box threshold for text detection. A bounding box is considered text if the average score of pixels inside is greater than this value.<br/>
+<b>Description:</b> 
 Any float > <code>0</code>. If not set, the default is <code>0.6</code>.
 </td>
 <td><code>float</code></td>
@@ -1150,51 +1191,65 @@ Any float > <code>0</code>. If not set, the default is <code>0.6</code>.
 </tr>
 <tr>
 <td><code>text_det_unclip_ratio</code></td>
-<td>Expansion ratio for text detection. The higher the value, the larger the expansion area.
-any float > <code>0</code>. If not set, the default is <code>2.0</code>.
+<td><b>Meaning:</b>Expansion ratio for text detection. The higher the value, the larger the expansion area.<br/>
+<b>Description:</b> 
+Any float > <code>0</code>. If not set, the default is <code>2.0</code>.
 </td>
 <td><code>float</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>textline_orientation_model_name</code></td>
-<td>Name of the text line orientation model. If not set, the default model will be used.</td>
+<td><b>Meaning:</b>Name of the text line orientation model.<br/>
+<b>Description:</b> 
+If not set, the default model will be used.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>textline_orientation_model_dir</code></td>
-<td>Directory of the text line orientation model. If not set, the official model will be downloaded.</td>
+<td><b>Meaning:</b>Directory path of the text line orientation model.<br/>
+<b>Description:</b> 
+If not set, the official model will be downloaded.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>textline_orientation_batch_size</code></td>
-<td>Batch size for the text line orientation model. If not set, the default is <code>1</code>.</td>
+<td><b>Meaning:</b>Batch size for the text line orientation model.<br/>
+<b>Description:</b> 
+If not set, the default is <code>1</code>.</td>
 <td><code>int</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>text_recognition_model_name</code></td>
-<td>Name of the text recognition model. If not set, the default model will be used.</td>
+<td><b>Meaning:</b>Name of the text recognition model.<br/>
+<b>Description:</b> 
+If not set, the default model will be used.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>text_recognition_model_dir</code></td>
-<td>Directory of the text recognition model. If not set, the official model will be downloaded.</td>
+<td><b>Meaning:</b>Directory of the text recognition model. <br/>
+<b>Description:</b> 
+If not set, the official model will be downloaded.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>text_recognition_batch_size</code></td>
-<td>Batch size for text recognition. If not set, the default is <code>1</code>.</td>
+<td><b>Meaning:</b>Batch size for text recognition.<br/>
+<b>Description:</b> 
+If not set, the default is <code>1</code>.</td>
 <td><code>int</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>text_rec_score_thresh</code></td>
-<td>Score threshold for text recognition. Only results above this value will be kept.
+<td><b>Meaning:</b>Score threshold for text recognition. Only results above this value will be kept.<br/>
+<b>Description:</b> 
 Any float > <code>0</code>. If not set, the default is <code>0.0</code> (no threshold).
 </td>
 <td><code>float</code></td>
@@ -1202,91 +1257,120 @@ Any float > <code>0</code>. If not set, the default is <code>0.0</code> (no thre
 </tr>
 <tr>
 <td><code>table_classification_model_name</code></td>
-<td>Name of the table classification model. If not set, the default model will be used.</td>
+<td><b>Meaning:</b>Name of the table classification model.<br/>
+<b>Description:</b> 
+If not set, the default model will be used.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>table_classification_model_dir</code></td>
-<td>Directory of the table classification model. If not set, the official model will be downloaded.</td>
+<td><b>Meaning:</b>Directory of the table classification model. <br/>
+<b>Description:</b> 
+If not set, the official model will be downloaded.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>wired_table_structure_recognition_model_name</code></td>
-<td>Name of the wired table structure recognition model. If not set, the default model will be used.</td>
+<td><b>Meaning:</b>Name of the wired table structure recognition model.<br/>
+<b>Description:</b> 
+If not set, the default model will be used.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>wired_table_structure_recognition_model_dir</code></td>
-<td>Directory of the wired table structure recognition model. If not set, the official model will be downloaded.</td>
+<td><b>Meaning:</b>Directory of the wired table structure recognition model. <br/>
+<b>Description:</b> 
+If not set, the official model will be downloaded.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>wireless_table_structure_recognition_model_name</code></td>
-<td>Name of the wireless table structure recognition model. If not set, the default model will be used.</td>
+<td><b>Meaning:</b>Name of the wireless table structure recognition model. <br/>
+<b>Description:</b> 
+If not set, the default model will be used.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>wireless_table_structure_recognition_model_dir</code></td>
-<td>Directory of the wireless table structure recognition model. If not set, the official model will be downloaded.</td>
+<td><b>Meaning:</b>Directory of the wireless table structure recognition model. <br/>
+<b>Description:</b> 
+If not set, the official model will be downloaded.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>wired_table_cells_detection_model_name</code></td>
-<td>Name of the wired table cell detection model. If not set, the default model will be used.</td>
+<td><b>Meaning:</b>Name of the wired table cell detection model. <br/>
+<b>Description:</b> 
+If not set, the default model will be used.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>wired_table_cells_detection_model_dir</code></td>
-<td>Directory of the wired table cell detection model. If not set, the official model will be downloaded.</td>
+<td><b>Meaning:</b>Directory of the wired table cell detection model. <br/>
+<b>Description:</b> 
+If not set, the official model will be downloaded.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>wireless_table_cells_detection_model_name</code></td>
-<td>Name of the wireless table cell detection model. If not set, the default model will be used.</td>
+<td><b>Meaning:</b>Name of the wireless table cell detection model. <br/>
+<b>Description:</b> 
+If not set, the default model will be used.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>wireless_table_cells_detection_model_dir</code></td>
-<td>Directory of the wireless table cell detection model. If not set, the official model will be downloaded.</td>
+<td><b>Meaning:</b>Directory of the wireless table cell detection model. <br/>
+<b>Description:</b> 
+If not set, the official model will be downloaded.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>table_orientation_classify_model_name</code></td>
-<td>Name of the wireless table orientation classification model. If not set, the default model will be used.</td>
+<td><b>Meaning:</b>Name of the wireless table orientation classification model. <br/>
+<b>Description:</b> 
+If not set, the default model will be used.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>table_orientation_classify_model_dir</code></td>
-<td>Directory of the table orientation classification model. If not set, the official model will be downloaded.</td>
+<td><b>Meaning:</b>Directory of the table orientation classification model. <br/>
+<b>Description:</b> 
+If not set, the official model will be downloaded.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>seal_text_detection_model_name</code></td>
-<td>Name of the seal text detection model. If not set, the default model will be used.</td>
+<td><b>Meaning:</b>Name of the seal text detection model. <br/>
+<b>Description:</b> 
+If not set, the default model will be used.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>seal_text_detection_model_dir</code></td>
-<td>Directory of the seal text detection model. If not set, the official model will be downloaded.</td>
+<td><b>Meaning:</b>Directory of the seal text detection model. <br/>
+<b>Description:</b> 
+If not set, the official model will be downloaded.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>seal_det_limit_side_len</code></td>
-<td>Image side length limit for seal text detection.
+<td><b>Meaning:</b>Image side length limit for seal text detection. <br/>
+<b>Description:</b> 
 Any integer > <code>0</code>. If not set, the default is <code>736</code>.
 </td>
 <td><code>int</code></td>
@@ -1294,129 +1378,180 @@ Any integer > <code>0</code>. If not set, the default is <code>736</code>.
 </tr>
 <tr>
 <td><code>seal_det_limit_type</code></td>
-<td>Limit type for image side in seal text detection.
-supports <code>min</code> and <code>max</code>; <code>min</code> ensures shortest side ≥ <code>det_limit_side_len</code>, <code>max</code> ensures longest side ≤ <code>limit_side_len</code>. If not set, the default is <code>min</code>.
+<td><b>Meaning:</b>Limit type for image side in seal text detection. <br/>
+<b>Description:</b> 
+Supports <code>min</code> and <code>max</code>; <code>min</code> ensures shortest side ≥ <code>det_limit_side_len</code>, <code>max</code> ensures longest side ≤ <code>limit_side_len</code>. If not set, the default is <code>min</code>.
 </td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>seal_det_thresh</code></td>
-<td>Pixel threshold. Pixels with scores above this value in the probability map are considered text.
-any float > <code>0</code>. If not set, the default is <code>0.2</code>.
+<td><b>Meaning:</b>Pixel threshold. Pixels with scores above this value in the probability map are considered text. <br/>
+<b>Description:</b> 
+Any float > <code>0</code>. If not set, the default is <code>0.2</code>.
 </td>
 <td><code>float</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>seal_det_box_thresh</code></td>
-<td>Box threshold. Boxes with average pixel scores above this value are considered text regions.
-any float > <code>0</code>. If not set, the default is <code>0.6</code>.
+<td><b>Meaning:</b>Box threshold. Boxes with average pixel scores above this value are considered text regions. <br/>
+<b>Description:</b> 
+Any float > <code>0</code>. If not set, the default is <code>0.6</code>.
 </td>
 <td><code>float</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>seal_det_unclip_ratio</code></td>
-<td>Expansion ratio for seal text detection. Higher value means larger expansion area.Any float > <code>0</code>. If not set, the default is <code>0.5</code>.
+<td><b>Meaning:</b>Expansion ratio for seal text detection. Higher value means larger expansion area. <br/>
+<b>Description:</b> 
+Any float > <code>0</code>. If not set, the default is <code>0.5</code>.
 </td>
 <td><code>float</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>seal_text_recognition_model_name</code></td>
-<td>Name of the seal text recognition model. If not set, the default model will be used.</td>
+<td><b>Meaning:</b>Name of the seal text recognition model. <br/>
+<b>Description:</b> 
+If not set, the default model will be used.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>seal_text_recognition_model_dir</code></td>
-<td>Directory of the seal text recognition model. If not set, the official model will be downloaded.</td>
+<td><b>Meaning:</b>Directory of the seal text recognition model. <br/>
+<b>Description:</b> 
+If not set, the official model will be downloaded.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>seal_text_recognition_batch_size</code></td>
-<td>Batch size for seal text recognition. If not set, the default is <code>1</code>.</td>
+<td><b>Meaning:</b>Batch size for seal text recognition. <br/>
+<b>Description:</b> 
+If not set, the default is <code>1</code>.</td>
 <td><code>int</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>seal_rec_score_thresh</code></td>
-<td>Recognition score threshold. Text results above this value will be kept. Any float > <code>0</code>. If not set, the default is <code>0.0</code> (no threshold).
+<td><b>Meaning:</b>Recognition score threshold. Text results above this value will be kept. <br/>
+<b>Description:</b> 
+Any float > <code>0</code>. If not set, the default is <code>0.0</code> (no threshold).
 </td>
 <td><code>float</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>formula_recognition_model_name</code></td>
-<td>Name of the formula recognition model. If not set, the default model will be used.</td>
+<td><b>Meaning:</b>Name of the formula recognition model. <br/>
+<b>Description:</b> 
+If not set, the default model will be used.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>formula_recognition_model_dir</code></td>
-<td>Directory of the formula recognition model. If not set, the official model will be downloaded.</td>
+<td><b>Meaning:</b>Directory of the formula recognition model. <br/>
+<b>Description:</b> 
+If not set, the official model will be downloaded.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>formula_recognition_batch_size</code></td>
-<td>Batch size of the formula recognition model. If not set, the default is <code>1</code>.</td>
+<td><b>Meaning:</b>Batch size of the formula recognition model. <br/>
+<b>Description:</b> 
+If not set, the default is <code>1</code>.</td>
 <td><code>int</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
-<td>Whether to load and use the document orientation classification module. If not set, the default is <code>False</code>.</td>
+<td><b>Meaning:</b>Whether to load and use the document orientation classification module. <br/>
+<b>Description:</b> 
+If not set, the default is <code>False</code>.</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
-<td>Whether to load and use the document unwarping module. If not set, the default is <code>False</code>.</td>
+<td><b>Meaning:</b>Whether to load and use the document unwarping module. <br/>
+<b>Description:</b> 
+If not set, the default is <code>False</code>.</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_textline_orientation</code></td>
-<td>Whether to load and use the text line orientation classification module. If not set, the default is <code>False</code>.</td>
+<td><b>Meaning:</b>Whether to load and use the text line orientation classification module. <br/>
+<b>Description:</b> 
+If not set, the default is <code>False</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_seal_recognition</code></td>
-<td>Whether to load and use seal text recognition subpipeline. If not set, the default is <code>False</code>.</td>
+<td><b>Meaning:</b>Whether to load and use seal text recognition subpipeline. <br/>
+<b>Description:</b> 
+If not set, the default is <code>False</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_table_recognition</code></td>
-<td>Whether to load and use table recognition subpipeline. If not set, the default is <code>True</code>.</td>
+<td><b>Meaning:</b>Whether to load and use table recognition subpipeline. <br/>
+<b>Description:</b> 
+If not set, the default is <code>True</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_formula_recognition</code></td>
-<td>Whether to load and use formula recognition subpipeline. If not set, the default is <code>True</code>.</td>
+<td><b>Meaning:</b>Whether to load and use formula recognition subpipeline. <br/>
+<b>Description:</b> 
+If not set, the default is <code>True</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_chart_recognition</code></td>
-<td>Whether to load and use the chart parsing module. If not set, the default is <code>False</code>.</td>
+<td><b>Meaning:</b>Whether to load and use the chart parsing module. <br/>
+<b>Description:</b> 
+If not set, the default is <code>False</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_region_detection</code></td>
-<td>Whether to load and use the document region detection module. If not set, the default is <code>True</code>.</td>
+<td><b>Meaning:</b>Whether to load and use the document region detection module. <br/>
+<b>Description:</b> 
+If not set, the default is <code>True</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
+<td><code>format_block_content</code></td>
+<td><b>Meaning:</b>Whether to format the content in <code>block_content</code> as Markdown.<br/>
+<b>Description:</b> If not set, the initialized default value will be used, which is <code>False</code> by default.</td>
+<td><code>bool</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>markdown_ignore_labels</code></td>
+<td><b>Meaning:</b>Layout tags that need to be ignored in Markdown.<br/>
+<b>Description:</b> If not set, the initialized default value will be used, which is <code>['number','footnote','header','header_image','footer','footer_image','aside_text']</code> by default.</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
 <td><code>device</code></td>
-<td>Device for inference. You can specify a device ID:
+<td><b>Meaning:</b>Device for inference. <br/>
+<b>Description:</b> 
+You can specify a device ID:
 <ul>
 <li><b>CPU</b>: e.g., <code>cpu</code> means using CPU for inference;</li>
 <li><b>GPU</b>: e.g., <code>gpu:0</code> means GPU 0</li>
@@ -1424,6 +1559,8 @@ any float > <code>0</code>. If not set, the default is <code>0.6</code>.
 <li><b>XPU</b>: e.g., <code>xpu:0</code> means XPU 0</li>
 <li><b>MLU</b>: e.g., <code>mlu:0</code> means MLU 0</li>
 <li><b>DCU</b>: e.g., <code>dcu:0</code> means DCU 0</li>
+<li><b>MetaX GPU</b>: e.g., <code>metax_gpu:0</code> means MetaX GPU 0</li>
+<li><b>Iluvatar GPU</b>: e.g., <code>iluvatar_gpu:0</code> means Iluvatar GPU 0</li>
 </ul>If not set, the pipeline initialized value for this parameter will be used. During initialization, the local GPU device 0 will be preferred; if unavailable, the CPU device will be used.
 </td>
 <td><code>str</code></td>
@@ -1431,13 +1568,15 @@ any float > <code>0</code>. If not set, the default is <code>0.6</code>.
 </tr>
 <tr>
 <td><code>enable_hpi</code></td>
-<td>Whether to enable high performance inference.</td>
+<td><b>Meaning:</b>Whether to enable high performance inference.</td>
 <td><code>bool</code></td>
 <td><code>False</code></td>
 </tr>
 <tr>
 <td><code>use_tensorrt</code></td>
-<td>Whether to use the Paddle Inference TensorRT subgraph engine. If the model does not support acceleration through TensorRT, setting this flag will not enable acceleration.<br/>
+<td><b>Meaning:</b>Whether to use the Paddle Inference TensorRT subgraph engine. <br/>
+<b>Description:</b> 
+If the model does not support acceleration through TensorRT, setting this flag will not enable acceleration.<br/>
 For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6), and it is recommended to install TensorRT 8.6.1.6.<br/>
 
 </td>
@@ -1446,33 +1585,35 @@ For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6)
 </tr>
 <tr>
 <td><code>precision</code></td>
-<td>Computation precision, e.g., fp32, fp16.</td>
+<td><b>Meaning:</b>Computation precision, e.g., fp32, fp16.</td>
 <td><code>str</code></td>
 <td><code>fp32</code></td>
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
-<td>Whether to enable MKL-DNN acceleration for inference. If MKL-DNN is unavailable or the model does not support it, acceleration will not be used even if this flag is set.
+<td><b>Meaning:</b>Whether to enable MKL-DNN acceleration for inference. <br/>
+<b>Description:</b> 
+If MKL-DNN is unavailable or the model does not support it, acceleration will not be used even if this flag is set.
 <td><code>bool</code></td>
 <td><code>True</code></td>
 </tr>
 <tr>
 <td><code>mkldnn_cache_capacity</code></td>
 <td>
-MKL-DNN cache capacity.
+<b>Meaning:</b>MKL-DNN cache capacity.
 </td>
 <td><code>int</code></td>
 <td><code>10</code></td>
 </tr>
 <tr>
 <td><code>cpu_threads</code></td>
-<td>Number of threads to use when inferring on CPU.</td>
+<td><b>Meaning:</b>Number of threads to use when inferring on CPU.</td>
 <td><code>int</code></td>
 <td><code>8</code></td>
 </tr>
 <tr>
 <td><code>paddlex_config</code></td>
-<td>Path to the PaddleX pipeline configuration file.</td>
+<td><b>Meaning:</b>Path to the PaddleX pipeline configuration file.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
@@ -1590,19 +1731,24 @@ The above Python script performs the following steps:
 <tbody>
 <tr>
 <td><code>layout_detection_model_name</code></td>
-<td>Name of the layout detection model. If set to <code>None</code>, the pipeline default model is used.</td>
+<td><b>Meaning:</b>Name of the layout detection model. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the pipeline default model is used.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>layout_detection_model_dir</code></td>
-<td>Directory path of the layout detection model. If set to <code>None</code>, the official model will be downloaded.</td>
+<td><b>Meaning:</b>Directory path of the layout detection model. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the official model will be downloaded.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>layout_threshold</code></td>
-<td>Score threshold for the layout model.
+<td><b>Meaning:</b>Score threshold for the layout model. <br/>
+<b>Description:</b> 
 <ul>
 <li><b>float</b>: Any float between <code>0-1</code>;</li>
 <li><b>dict</b>: <code>{0:0.1}</code> where the key is the class ID and the value is the threshold for that class;</li>
@@ -1614,13 +1760,16 @@ The above Python script performs the following steps:
 </tr>
 <tr>
 <td><code>layout_nms</code></td>
-<td>Whether to use Non-Maximum Suppression (NMS) as post-processing for layout detection. If set to <code>None</code>, the parameter will default to the value initialized in the pipeline, which is set to <code>True</code> by default.</td>
+<td><b>Meaning:</b>Whether to use Non-Maximum Suppression (NMS) as post-processing for layout detection. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the parameter will default to the value initialized in the pipeline, which is set to <code>True</code> by default.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>layout_unclip_ratio</code></td>
-<td>Expansion ratio for the bounding boxes from the layout detection model.
+<td><b>Meaning:</b>Expansion ratio for the bounding boxes from the layout detection model. <br/>
+<b>Description:</b> 
 <ul>
 <li><b>float</b>: Any float greater than <code>0</code>;</li>
 <li><b>Tuple[float,float]</b>: Expansion ratios in horizontal and vertical directions;</li>
@@ -1633,7 +1782,8 @@ The above Python script performs the following steps:
 </tr>
 <tr>
 <td><code>layout_merge_bboxes_mode</code></td>
-<td>Filtering method for overlapping boxes in layout detection.
+<td><b>Meaning:</b>Filtering method for overlapping boxes in layout detection. <br/>
+<b>Description:</b> 
 <ul>
 <li><b>str</b>: Options include <code>large</code>, <code>small</code>, and <code>union</code> to retain the larger box, smaller box, or both;</li>
 <li><b>dict</b>: A dictionary with <b>int</b> keys representing <code>cls_id</code>, and <b>str</b> values, e.g., <code>{0: "large", 2: "small"}</code> means using different modes for different classes;</li>
@@ -1645,73 +1795,96 @@ The above Python script performs the following steps:
 </tr>
 <tr>
 <td><code>chart_recognition_model_name</code></td>
-<td>Name of the chart parsing model. If set to <code>None</code>, the pipeline default model is used.</td>
+<td><b>Meaning:</b>Name of the chart parsing model. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the pipeline default model is used.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>chart_recognition_model_dir</code></td>
-<td>Directory path of the chart parsing model. If set to <code>None</code>, the official model will be downloaded.</td>
+<td><b>Meaning:</b>Directory path of the chart parsing model. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the official model will be downloaded.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>chart_recognition_batch_size</code></td>
-<td>Batch size for the chart parsing model. If set to <code>None</code>, the default is <code>1</code>.</td>
+<td><b>Meaning:</b>Batch size for the chart parsing model. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the default is <code>1</code>.</td>
 <td><code>int|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>region_detection_model_name</code></td>
-<td>Name of the region detection model for sub-modules in document layout. If set to <code>None</code>, the pipeline default model is used.</td>
+<td><b>Meaning:</b>Name of the region detection model for sub-modules in document layout. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the pipeline default model is used.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>region_detection_model_dir</code></td>
-<td>Directory path of the region detection model. If set to <code>None</code>, the official model will be downloaded.</td>
+<td><b>Meaning:</b>Directory path of the region detection model. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the official model will be downloaded.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>doc_orientation_classify_model_name</code></td>
-<td>Name of the document orientation classification model. If set to <code>None</code>, the pipeline default model is used.</td>
+<td><b>Meaning:</b>Name of the document orientation classification model. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the pipeline default model is used.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>doc_orientation_classify_model_dir</code></td>
-<td>Directory path of the document orientation classification model. If set to <code>None</code>, the official model will be downloaded.</td>
+<td><b>Meaning:</b>Directory path of the document orientation classification model. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the official model will be downloaded.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>doc_unwarping_model_name</code></td>
-<td>Name of the document unwarping model. If set to <code>None</code>, the pipeline default model is used.</td>
+<td><b>Meaning:</b>Name of the document unwarping model. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the pipeline default model is used.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>doc_unwarping_model_dir</code></td>
-<td>Directory path of the document unwarping model. If set to <code>None</code>, the official model will be downloaded.</td>
+<td><b>Meaning:</b>Directory path of the document unwarping model. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the official model will be downloaded.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>text_detection_model_name</code></td>
-<td>Name of the text detection model. If set to <code>None</code>, the pipeline default model is used.</td>
+<td><b>Meaning:</b>Name of the text detection model. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the pipeline default model is used.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>text_detection_model_dir</code></td>
-<td>Directory path of the text detection model. If set to <code>None</code>, the official model will be downloaded.</td>
+<td><b>Meaning:</b>Directory path of the text detection model. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the official model will be downloaded.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>text_det_limit_side_len</code></td>
-<td>Image side length limitation for text detection.
+<td><b>Meaning:</b>Image side length limitation for text detection. <br/>
+<b>Description:</b> 
 <ul>
 <li><b>int</b>: Any integer greater than <code>0</code>;</li>
 <li><b>None</b>: If set to <code>None</code>, uses the pipeline default of <code>960</code>.</li>
@@ -1723,6 +1896,8 @@ The above Python script performs the following steps:
 <tr>
 <td><code>text_det_limit_type</code></td>
 <td>
+<b>Meaning:</b>Limit type for text detection. <br/>
+<b>Description:</b> 
 <ul>
 <li><b>str</b>: Supports <code>min</code> and <code>max</code>. <code>min</code> ensures the shortest side is no less than <code>det_limit_side_len</code>, while <code>max</code> ensures the longest side is no greater than <code>limit_side_len</code>;</li>
 <li><b>None</b>: If set to <code>None</code>, uses the pipeline default of <code>max</code>.</li>
@@ -1733,7 +1908,8 @@ The above Python script performs the following steps:
 </tr>
 <tr>
 <td><code>text_det_thresh</code></td>
-<td>Pixel threshold for detection. Pixels in the output probability map with scores above this value are considered as text pixels.
+<td><b>Meaning:</b>Pixel threshold for detection. Pixels in the output probability map with scores above this value are considered as text pixels. <br/>
+<b>Description:</b> 
 <ul>
 <li><b>float</b>: Any float greater than <code>0</code>;</li>
 <li><b>None</b>: If set to <code>None</code>, uses the pipeline default value of <code>0.3</code>.</li>
@@ -1744,7 +1920,8 @@ The above Python script performs the following steps:
 </tr>
 <tr>
 <td><code>text_det_box_thresh</code></td>
-<td>Bounding box threshold. If the average score of all pixels inside the box exceeds this threshold, it is considered a text region.
+<td><b>Meaning:</b>Bounding box threshold. If the average score of all pixels inside the box exceeds this threshold, it is considered a text region. <br/>
+<b>Description:</b> 
 <ul>
 <li><b>float</b>: Any float greater than <code>0</code>;</li>
 <li><b>None</b>: If set to <code>None</code>, uses the pipeline default value of <code>0.6</code>.</li>
@@ -1755,7 +1932,8 @@ The above Python script performs the following steps:
 </tr>
 <tr>
 <td><code>text_det_unclip_ratio</code></td>
-<td>Expansion ratio for text detection. The larger the value, the more the text region is expanded.
+<td><b>Meaning:</b>Expansion ratio for text detection. The larger the value, the more the text region is expanded. <br/>
+<b>Description:</b> 
 <ul>
 <li><b>float</b>: Any float greater than <code>0</code>;</li>
 <li><b>None</b>: If set to <code>None</code>, uses the pipeline default value of <code>2.0</code>.</li>
@@ -1766,43 +1944,56 @@ The above Python script performs the following steps:
 </tr>
 <tr>
 <td><code>textline_orientation_model_name</code></td>
-<td>Name of the textline orientation model. If set to <code>None</code>, the pipeline default model is used.</td>
+<td><b>Meaning:</b>Name of the textline orientation model. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the pipeline default model is used.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>textline_orientation_model_dir</code></td>
-<td>Directory path of the textline orientation model. If set to <code>None</code>, the official model will be downloaded.</td>
+<td><b>Meaning:</b>Directory path of the textline orientation model. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the official model will be downloaded.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>textline_orientation_batch_size</code></td>
-<td>Batch size for the textline orientation model. If set to <code>None</code>, the default batch size is <code>1</code>.</td>
+<td><b>Meaning:</b>Batch size for the textline orientation model. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the default batch size is <code>1</code>.</td>
 <td><code>int|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>text_recognition_model_name</code></td>
-<td>Name of the text recognition model. If set to <code>None</code>, the pipeline default model is used.</td>
+<td><b>Meaning:</b>Name of the text recognition model. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the pipeline default model is used.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>text_recognition_model_dir</code></td>
-<td>Directory path of the text recognition model. If set to <code>None</code>, the official model will be downloaded.</td>
+<td><b>Meaning:</b>Directory path of the text recognition model. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the official model will be downloaded.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>text_recognition_batch_size</code></td>
-<td>Batch size for the text recognition model. If set to <code>None</code>, the default batch size is <code>1</code>.</td>
+<td><b>Meaning:</b>Batch size for the text recognition model. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the default batch size is <code>1</code>.</td>
 <td><code>int|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>text_rec_score_thresh</code></td>
-<td>Score threshold for text recognition. Only results with scores above this threshold will be retained.
+<td><b>Meaning:</b>Score threshold for text recognition. Only results with scores above this threshold will be retained. <br/>
+<b>Description:</b> 
 <ul>
 <li><b>float</b>: Any float greater than <code>0</code>;</li>
 <li><b>None</b>: If set to <code>None</code>, uses the pipeline default of <code>0.0</code> (no threshold).</li>
@@ -1813,92 +2004,121 @@ The above Python script performs the following steps:
 </tr>
 <tr>
 <td><code>table_classification_model_name</code></td>
-<td>Name of the table classification model. If set to <code>None</code>, the pipeline default model is used.</td>
+<td><b>Meaning:</b>Name of the table classification model. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the pipeline default model is used.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>table_classification_model_dir</code></td>
-<td>Directory path of the table classification model. If set to <code>None</code>, the official model will be downloaded.</td>
+<td><b>Meaning:</b>Directory path of the table classification model. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the official model will be downloaded.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>wired_table_structure_recognition_model_name</code></td>
-<td>Name of the wired table structure recognition model. If set to <code>None</code>, the pipeline default model is used.</td>
+<td><b>Meaning:</b>Name of the wired table structure recognition model. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the pipeline default model is used.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>wired_table_structure_recognition_model_dir</code></td>
-<td>Directory path of the wired table structure recognition model. If set to <code>None</code>, the official model will be downloaded.</td>
+<td><b>Meaning:</b>Directory path of the wired table structure recognition model. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the official model will be downloaded.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>wireless_table_structure_recognition_model_name</code></td>
-<td>Name of the wireless table structure recognition model. If set to <code>None</code>, the pipeline default model is used.</td>
+<td><b>Meaning:</b>Name of the wireless table structure recognition model. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the pipeline default model is used.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>wireless_table_structure_recognition_model_dir</code></td>
-<td>Directory path of the wireless table structure recognition model. If set to <code>None</code>, the official model will be downloaded.</td>
+<td><b>Meaning:</b>Directory path of the wireless table structure recognition model. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the official model will be downloaded.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>wired_table_cells_detection_model_name</code></td>
-<td>Name of the wired table cell detection model. If set to <code>None</code>, the pipeline default model is used.</td>
+<td><b>Meaning:</b>Name of the wired table cell detection model. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the pipeline default model is used.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>wired_table_cells_detection_model_dir</code></td>
-<td>Directory path of the wired table cell detection model. If set to <code>None</code>, the official model will be downloaded.</td>
+<td><b>Meaning:</b>Directory path of the wired table cell detection model. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the official model will be downloaded.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <tr>
 <td><code>wireless_table_cells_detection_model_name</code></td>
-<td>Name of the wireless table cell detection model. If set to <code>None</code>, the pipeline default model is used.</td>
+<td><b>Meaning:</b>Name of the wireless table cell detection model. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the pipeline default model is used.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>wireless_table_cells_detection_model_dir</code></td>
-<td>Directory path of the wireless table cell detection model. If set to <code>None</code>, the official model will be downloaded.</td>
+<td><b>Meaning:</b>Directory path of the wireless table cell detection model. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the official model will be downloaded.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>table_orientation_classify_model_name</code></td>
-<td>Name of the wireless table orientation classification model. If set to <code>None</code>, the pipeline default model is used.</td>
+<td><b>Meaning:</b>Name of the wireless table orientation classification model. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the pipeline default model is used.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>table_orientation_classify_model_dir</code></td>
-<td>Directory of the table orientation classification model. If set to <code>None</code>, the official model will be downloaded.</td>
+<td><b>Meaning:</b>Directory of the table orientation classification model. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the official model will be downloaded.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>seal_text_detection_model_name</code></td>
-<td>Name of the seal text detection model. If set to <code>None</code>, the pipeline default model is used.</td>
+<td><b>Meaning:</b>Name of the seal text detection model. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the pipeline default model is used.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>seal_text_detection_model_dir</code></td>
-<td>Directory path of the seal text detection model. If set to <code>None</code>, the official model will be downloaded.</td>
+<td><b>Meaning:</b>Directory path of the seal text detection model. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the official model will be downloaded.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>seal_det_limit_side_len</code></td>
-<td>Image side length limit for seal text detection.
+<td><b>Meaning:</b>Image side length limit for seal text detection. <br/>
+<b>Description:</b> 
 <ul>
 <li><b>int</b>: Any integer greater than <code>0</code>;</li>
 <li><b>None</b>: If set to <code>None</code>, the default value is <code>736</code>.</li>
@@ -1909,7 +2129,8 @@ The above Python script performs the following steps:
 </tr>
 <tr>
 <td><code>seal_det_limit_type</code></td>
-<td>Limit type for seal text detection image side length.
+<td><b>Meaning:</b>Limit type for seal text detection image side length. <br/>
+<b>Description:</b> 
 <ul>
 <li><b>str</b>: Supports <code>min</code> and <code>max</code>. <code>min</code> ensures the shortest side is no less than <code>det_limit_side_len</code>, while <code>max</code> ensures the longest side is no greater than <code>limit_side_len</code>;</li>
 <li><b>None</b>: If set to <code>None</code>, the default value is <code>min</code>.</li>
@@ -1920,7 +2141,8 @@ The above Python script performs the following steps:
 </tr>
 <tr>
 <td><code>seal_det_thresh</code></td>
-<td>Pixel threshold for detection. Pixels with scores greater than this value in the probability map are considered text pixels.
+<td><b>Meaning:</b>Pixel threshold for detection. Pixels with scores greater than this value in the probability map are considered text pixels. <br/>
+<b>Description:</b> 
 <ul>
 <li><b>float</b>: Any float greater than <code>0</code>;</li>
 <li><b>None</b>: If set to <code>None</code>, the default value is <code>0.2</code>.</li>
@@ -1931,7 +2153,8 @@ The above Python script performs the following steps:
 </tr>
 <tr>
 <td><code>seal_det_box_thresh</code></td>
-<td>Bounding box threshold. If the average score of all pixels inside a detection box exceeds this threshold, it is considered a text region.
+<td><b>Meaning:</b>Bounding box threshold. If the average score of all pixels inside a detection box exceeds this threshold, it is considered a text region. <br/>
+<b>Description:</b> 
 <ul>
 <li><b>float</b>: Any float greater than <code>0</code>;</li>
 <li><b>None</b>: If set to <code>None</code>, the default value is <code>0.6</code>.</li>
@@ -1942,7 +2165,8 @@ The above Python script performs the following steps:
 </tr>
 <tr>
 <td><code>seal_det_unclip_ratio</code></td>
-<td>Expansion ratio for seal text detection. The larger the value, the larger the expanded area.
+<td><b>Meaning:</b>Expansion ratio for seal text detection. The larger the value, the larger the expanded area. <br/>
+<b>Description:</b> 
 <ul>
 <li><b>float</b>: Any float greater than <code>0</code>;</li>
 <li><b>None</b>: If set to <code>None</code>, the default value is <code>0.5</code>.</li>
@@ -1953,25 +2177,32 @@ The above Python script performs the following steps:
 </tr>
 <tr>
 <td><code>seal_text_recognition_model_name</code></td>
-<td>Name of the seal text recognition model. If set to <code>None</code>, the pipeline default model is used.</td>
+<td><b>Meaning:</b>Name of the seal text recognition model. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the pipeline default model is used.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>seal_text_recognition_model_dir</code></td>
-<td>Directory path of the seal text recognition model. If set to <code>None</code>, the official model will be downloaded.</td>
+<td><b>Meaning:</b>Directory path of the seal text recognition model. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the official model will be downloaded.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>seal_text_recognition_batch_size</code></td>
-<td>Batch size for the seal text recognition model. If set to <code>None</code>, the default value is <code>1</code>.</td>
+<td><b>Meaning:</b>Batch size for the seal text recognition model. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the default value is <code>1</code>.</td>
 <td><code>int|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>seal_rec_score_thresh</code></td>
-<td>Score threshold for seal text recognition. Text results with scores above this threshold will be retained.
+<td><b>Meaning:</b>Score threshold for seal text recognition. Text results with scores above this threshold will be retained. <br/>
+<b>Description:</b> 
 <ul>
 <li><b>float</b>: Any float greater than <code>0</code>;</li>
 <li><b>None</b>: If set to <code>None</code>, the default value is <code>0.0</code> (no threshold).</li>
@@ -1982,73 +2213,111 @@ The above Python script performs the following steps:
 </tr>
 <tr>
 <td><code>formula_recognition_model_name</code></td>
-<td>Name of the formula recognition model. If set to <code>None</code>, the pipeline default model is used.</td>
+<td><b>Meaning:</b>Name of the formula recognition model. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the pipeline default model is used.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>formula_recognition_model_dir</code></td>
-<td>Directory path of the formula recognition model. If set to <code>None</code>, the official model will be downloaded.</td>
+<td><b>Meaning:</b>Directory path of the formula recognition model. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the official model will be downloaded.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>formula_recognition_batch_size</code></td>
-<td>Batch size for the formula recognition model. If set to <code>None</code>, the default value is <code>1</code>.</td>
+<td><b>Meaning:</b>Batch size for the formula recognition model. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the default value is <code>1</code>.</td>
 <td><code>int|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
-<td>Whether to enable the document orientation classification module. If set to <code>None</code>, the default value is <code>False</code>.</td>
+<td><b>Meaning:</b>Whether to enable the document orientation classification module. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the default value is <code>False</code>.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
-<td>Whether to enable the document image unwarping module. If set to <code>None</code>, the default value is <code>False</code>.</td>
+<td><b>Meaning:</b>Whether to enable the document image unwarping module. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the default value is <code>False</code>.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_textline_orientation</code></td>
-<td>Whether to use the text line orientation classification. If set to <code>None</code>, the default value is <code>False</code>.</td>
+<td><b>Meaning:</b>Whether to use the text line orientation classification. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the default value is <code>False</code>.</td>
 <td><code>bool|None</code></td>
 <td>None</td>
 </tr>
 <tr>
 <td><code>use_seal_recognition</code></td>
-<td>Whether to enable seal text recognition subpipeline. If set to <code>None</code>, the default value is <code>False</code>.</td>
+<td><b>Meaning:</b>Whether to enable seal text recognition subpipeline. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the default value is <code>False</code>.</td>
 <td><code>bool|None</code></td>
 <td>None</td>
 </tr>
 <tr>
 <td><code>use_table_recognition</code></td>
-<td>Whether to enable table recognition subpipeline. If set to <code>None</code>, the default value is <code>True</code>.</td>
+<td><b>Meaning:</b>Whether to enable table recognition subpipeline. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the default value is <code>True</code>.</td>
 <td><code>bool|None</code></td>
 <td>None</td>
 </tr>
 <tr>
 <td><code>use_formula_recognition</code></td>
-<td>Whether to enable formula recognition subpipeline. If set to <code>None</code>, the default value is <code>True</code>.</td>
+<td><b>Meaning:</b>Whether to enable formula recognition subpipeline. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the default value is <code>True</code>.</td>
 <td><code>bool|None</code></td>
 <td>None</td>
 </tr>
 <tr>
 <td><code>use_chart_recognition</code></td>
-<td>Whether to load and use the chart parsing module. If set to <code>None</code>, the default value is <code>False</code>.</td>
+<td><b>Meaning:</b>Whether to load and use the chart parsing module. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the default value is <code>False</code>.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_region_detection</code></td>
-<td>Whether to load and use the document region detection module. If set to <code>None</code>, the default value is <code>True</code>.</td>
+<td><b>Meaning:</b>Whether to load and use the document region detection module. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the default value is <code>True</code>.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
+<td><code>format_block_content</code></td>
+<td><b>Meaning:</b>Whether to format the content in <code>block_content</code> as Markdown.<br/>
+<b>Description:</b> If set to <code>None</code>, the default value is <code>False</code>.</td>
+<td><code>bool|None</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>markdown_ignore_labels</code></td>
+<td><b>Meaning:</b>Layout tags that need to be ignored in Markdown.<br/>
+<b>Description:</b> If set to <code>None</code>, the default value is <code>['number','footnote','header','header_image','footer','footer_image','aside_text']</code>.</td>
+<td><code>list|None</code></td>
+<td></td>
+</tr>
+<tr>
 <td><code>device</code></td>
-<td>Device used for inference. Supports specifying device ID:
+<td><b>Meaning:</b>Device used for inference. <br/>
+<b>Description:</b> 
+Supports specifying device ID:
 <ul>
 <li><b>CPU</b>: e.g., <code>cpu</code> means using CPU for inference;</li>
 <li><b>GPU</b>: e.g., <code>gpu:0</code> means using GPU 0;</li>
@@ -2056,6 +2325,8 @@ The above Python script performs the following steps:
 <li><b>XPU</b>: e.g., <code>xpu:0</code> means using XPU 0;</li>
 <li><b>MLU</b>: e.g., <code>mlu:0</code> means using MLU 0;</li>
 <li><b>DCU</b>: e.g., <code>dcu:0</code> means using DCU 0;</li>
+<li><b>MetaX GPU</b>: e.g., <code>metax_gpu:0</code> means using MetaX GPU 0;</li>
+<li><b>Iluvatar GPU</b>: e.g., <code>iluvatar_gpu:0</code> means using Iluvatar GPU 0;</li>
 <li><b>None</b>: If set to <code>None</code>, the pipeline initialized value for this parameter will be used. During initialization, the local GPU device 0 will be preferred; if unavailable, the CPU device will be used.</li>
 </ul>
 </td>
@@ -2064,13 +2335,15 @@ The above Python script performs the following steps:
 </tr>
 <tr>
 <td><code>enable_hpi</code></td>
-<td>Whether to enable high-performance inference.</td>
+<td><b>Meaning:</b>Whether to enable high-performance inference.</td>
 <td><code>bool</code></td>
 <td><code>False</code></td>
 </tr>
 <tr>
 <td><code>use_tensorrt</code></td>
-<td>Whether to use the Paddle Inference TensorRT subgraph engine. If the model does not support acceleration through TensorRT, setting this flag will not enable acceleration.<br/>
+<td><b>Meaning:</b>Whether to use the Paddle Inference TensorRT subgraph engine. <br/>
+<b>Description:</b> 
+If the model does not support acceleration through TensorRT, setting this flag will not enable acceleration.<br/>
 For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6), and it is recommended to install TensorRT 8.6.1.6.<br/>
 
 </td>
@@ -2079,33 +2352,35 @@ For Paddle with CUDA version 11.8, the compatible TensorRT version is 8.x (x>=6)
 </tr>
 <tr>
 <td><code>precision</code></td>
-<td>Computation precision, e.g., fp32, fp16.</td>
+<td><b>Meaning:</b>Computation precision, e.g., fp32, fp16.</td>
 <td><code>str</code></td>
 <td><code>"fp32"</code></td>
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
-<td>Whether to enable MKL-DNN acceleration for inference. If MKL-DNN is unavailable or the model does not support it, acceleration will not be used even if this flag is set.</td>
+<td><b>Meaning:</b>Whether to enable MKL-DNN acceleration for inference. <br/>
+<b>Description:</b> 
+If MKL-DNN is unavailable or the model does not support it, acceleration will not be used even if this flag is set.</td>
 <td><code>bool</code></td>
 <td><code>True</code></td>
 </tr>
 <tr>
 <td><code>mkldnn_cache_capacity</code></td>
 <td>
-MKL-DNN cache capacity.
+<b>Meaning:</b>MKL-DNN cache capacity.
 </td>
 <td><code>int</code></td>
 <td><code>10</code></td>
 </tr>
 <tr>
 <td><code>cpu_threads</code></td>
-<td>Number of threads used for inference on CPU.</td>
+<td><b>Meaning:</b>Number of threads used for inference on CPU.</td>
 <td><code>int</code></td>
 <td><code>8</code></td>
 </tr>
 <tr>
 <td><code>paddlex_config</code></td>
-<td>Path to the PaddleX pipeline configuration file.</td>
+<td><b>Meaning:</b>Path to the PaddleX pipeline configuration file.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -2127,7 +2402,9 @@ MKL-DNN cache capacity.
 </thead>
 <tr>
 <td><code>input</code></td>
-<td>Input data to be predicted. Required. Supports multiple types:
+<td><b>Meaning:</b>Input data to be predicted. Required. <br/>
+<b>Description:</b> 
+Supports multiple types:
 <ul>
 <li><b>Python Var</b>: Image data represented as <code>numpy.ndarray</code>;</li>
 <li><b>str</b>: Local path to image or PDF file, e.g., <code>/root/data/img.jpg</code>; <b>URL</b> to image or PDF, e.g., <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/demo_paper.png">example</a>; <b>directory</b> containing image files, e.g., <code>/root/data/</code> (directories with PDFs are not supported, use full file path for PDFs);</li>
@@ -2139,183 +2416,255 @@ MKL-DNN cache capacity.
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
-<td>Whether to use document orientation classification during inference. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
+<td><b>Meaning:</b>Whether to use document orientation classification during inference. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
-<td>Whether to use document image unwarping during inference. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
+<td><b>Meaning:</b>Whether to use document image unwarping during inference. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_textline_orientation</code></td>
-<td>Whether to use textline orientation classification during inference. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
+<td><b>Meaning:</b>Whether to use textline orientation classification during inference. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_seal_recognition</code></td>
-<td>Whether to use the seal text recognition sub-pipeline during inference. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
+<td><b>Meaning:</b>Whether to use the seal text recognition sub-pipeline during inference. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_table_recognition</code></td>
-<td>Whether to use the table recognition sub-pipeline during inference. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
+<td><b>Meaning:</b>Whether to use the table recognition sub-pipeline during inference. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_formula_recognition</code></td>
-<td>Whether to use the formula recognition sub-pipeline during inference. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
+<td><b>Meaning:</b>Whether to use the formula recognition sub-pipeline during inference. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_chart_recognition</code></td>
-<td>Whether to use the chart parsing module during inference. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
+<td><b>Meaning:</b>Whether to use the chart parsing module during inference. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_region_detection</code></td>
-<td>Whether to use the document region detection module during inference. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
+<td><b>Meaning:</b>Whether to use the document region detection module during inference. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
+<td><code>format_block_content</code></td>
+<td>Whether to format the content in <code>block_content</code> as Markdown. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
+<td><code>bool|None</code></td>
+<td></td>
+</tr>
+<tr>
 <td><code>layout_threshold</code></td>
-<td>Same meaning as the instantiation parameters. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
+<td><b>Meaning:</b>Same meaning as the instantiation parameters. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
 <td><code>float|dict|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>layout_nms</code></td>
-<td>Same meaning as the instantiation parameters. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
+<td><b>Meaning:</b>Same meaning as the instantiation parameters. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>layout_unclip_ratio</code></td>
-<td>Same meaning as the instantiation parameters. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
+<td><b>Meaning:</b>Same meaning as the instantiation parameters. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
 <td><code>float|Tuple[float,float]|dict|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>layout_merge_bboxes_mode</code></td>
-<td>Same meaning as the instantiation parameters. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
+<td><b>Meaning:</b>Same meaning as the instantiation parameters. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
 <td><code>str|dict|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>text_det_limit_side_len</code></td>
-<td>Same meaning as the instantiation parameters. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
+<td><b>Meaning:</b>Same meaning as the instantiation parameters. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
 <td><code>int|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>text_det_limit_type</code></td>
-<td>Same meaning as the instantiation parameters. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
+<td><b>Meaning:</b>Same meaning as the instantiation parameters. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>text_det_thresh</code></td>
-<td>Same meaning as the instantiation parameters. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
+<td><b>Meaning:</b>Same meaning as the instantiation parameters. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
 <td><code>float|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>text_det_box_thresh</code></td>
-<td>Same meaning as the instantiation parameters. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
+<td><b>Meaning:</b>Same meaning as the instantiation parameters. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
 <td><code>float|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>text_det_unclip_ratio</code></td>
-<td>Same meaning as the instantiation parameters. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
+<td><b>Meaning:</b>Same meaning as the instantiation parameters. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
 <td><code>float|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>text_rec_score_thresh</code></td>
-<td>Same meaning as the instantiation parameters. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
+<td><b>Meaning:</b>Same meaning as the instantiation parameters. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
 <td><code>float|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>seal_det_limit_side_len</code></td>
-<td>Same meaning as the instantiation parameters. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
+<td><b>Meaning:</b>Same meaning as the instantiation parameters. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
 <td><code>int|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>seal_det_limit_type</code></td>
-<td>Same meaning as the instantiation parameters. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
+<td><b>Meaning:</b>Same meaning as the instantiation parameters. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>seal_det_thresh</code></td>
-<td>Same meaning as the instantiation parameters. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
+<td><b>Meaning:</b>Same meaning as the instantiation parameters. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
 <td><code>float|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>seal_det_box_thresh</code></td>
-<td>Same meaning as the instantiation parameters. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
+<td><b>Meaning:</b>Same meaning as the instantiation parameters. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
 <td><code>float|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>seal_det_unclip_ratio</code></td>
-<td>Same meaning as the instantiation parameters. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
+<td><b>Meaning:</b>Same meaning as the instantiation parameters. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
 <td><code>float|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>seal_rec_score_thresh</code></td>
-<td>Same meaning as the instantiation parameters. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
+<td><b>Meaning:</b>Same meaning as the instantiation parameters. <br/>
+<b>Description:</b> 
+If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
 <td><code>float|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_wired_table_cells_trans_to_html</code></td>
-<td>Whether to enable direct conversion of wired table cell detection results to HTML. If enabled, HTML will be constructed directly based on the geometric relationship of wired table cell detection results.</td>
+<td><b>Meaning:</b>Whether to enable direct conversion of wired table cell detection results to HTML. <br/>
+<b>Description:</b> 
+If enabled, HTML will be constructed directly based on the geometric relationship of wired table cell detection results.</td>
 <td><code>bool</code></td>
 <td><code>False</code></td>
 </tr>
 <tr>
 <td><code>use_wireless_table_cells_trans_to_html</code></td>
-<td>Whether to enable direct conversion of wireless table cell detection results to HTML. If enabled, HTML will be constructed directly based on the geometric relationship of wireless table cell detection results.</td>
+<td><b>Meaning:</b>Whether to enable direct conversion of wireless table cell detection results to HTML. <br/>
+<b>Description:</b> 
+If enabled, HTML will be constructed directly based on the geometric relationship of wireless table cell detection results.</td>
 <td><code>bool</code></td>
 <td><code>False</code></td>
 </tr>
 <tr>
 <td><code>use_table_orientation_classify</code></td>
-<td>Whether to enable table orientation classification. When enabled, it can correct the orientation and correctly complete table recognition if the table in the image is rotated by 90/180/270 degrees.</td>
+<td><b>Meaning:</b>Whether to enable table orientation classification. <br/>
+<b>Description:</b> 
+When enabled, it can correct the orientation and correctly complete table recognition if the table in the image is rotated by 90/180/270 degrees.</td>
 <td><code>bool</code></td>
 <td><code>True</code></td>
 </tr>
 <tr>
 <td><code>use_ocr_results_with_table_cells</code></td>
-<td>Whether to enable OCR within cell segmentation. When enabled, OCR detection results will be segmented and re-recognized based on cell prediction results to avoid text loss.</td>
+<td><b>Meaning:</b>Whether to enable OCR within cell segmentation. <br/>
+<b>Description:</b> 
+When enabled, OCR detection results will be segmented and re-recognized based on cell prediction results to avoid text loss.</td>
 <td><code>bool</code></td>
 <td><code>True</code></td>
 </tr>
 <tr>
 <td><code>use_e2e_wired_table_rec_model</code></td>
-<td>Whether to enable end-to-end wired table recognition mode. If enabled, the cell detection model will not be used, and only the table structure recognition model will be used.</td>
+<td><b>Meaning:</b>Whether to enable end-to-end wired table recognition mode. <br/>
+<b>Description:</b> 
+If enabled, the cell detection model will not be used, and only the table structure recognition model will be used.</td>
 <td><code>bool</code></td>
 <td><code>False</code></td>
 </tr>
 <tr>
 <td><code>use_e2e_wireless_table_rec_model</code></td>
-<td>Whether to enable end-to-end wireless table recognition mode. If enabled, the cell detection model will not be used, and only the table structure recognition model will be used.</td>
+<td><b>Meaning:</b>Whether to enable end-to-end wireless table recognition mode. <br/>
+<b>Description:</b> 
+If enabled, the cell detection model will not be used, and only the table structure recognition model will be used.</td>
 <td><code>bool</code></td>
 <td><code>True</code></td>
+</tr>
+<tr>
+<td><code>markdown_ignore_labels</code></td>
+<td>Layout tags that need to be ignored in Markdown. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
+<td><code>list|None</code></td>
+<td></td>
 </tr>
 </table>
 </details>
@@ -2415,85 +2764,104 @@ MKL-DNN cache capacity.
 </tr>
 </table>
 
-- Calling `print()` will print the result to the terminal. Explanation of the printed content:
-    - `input_path`: `(str)` Input path of the image or PDF to be predicted
-
-    - `page_index`: `(Union[int, None])` If input is a PDF, indicates the page number; otherwise `None`
-
-    - `model_settings`: `(Dict[str, bool])` Model parameters configured for the pipeline
-
-        - `use_doc_preprocessor`: `(bool)` Whether to enable document preprocessor sub-pipeline
-        - `use_seal_recognition`: `(bool)` Whether to enable seal text recognition sub-pipeline
-        - `use_table_recognition`: `(bool)` Whether to enable table recognition sub-pipeline
-        - `use_formula_recognition`: `(bool)` Whether to enable formula recognition sub-pipeline
-
-    - `doc_preprocessor_res`: `(Dict[str, Union[List[float], str]])` Document preprocessing result dictionary, only exists if `use_doc_preprocessor=True`
-        - `input_path`: `(str)` Image path accepted by document preprocessor, `None` if input is `numpy.ndarray`
-        - `page_index`: `None` since input is `numpy.ndarray`
-        - `model_settings`: `(Dict[str, bool])` Model configuration for the document preprocessor
-          - `use_doc_orientation_classify`: `(bool)` Whether to enable document orientation classification
-          - `use_doc_unwarping`: `(bool)` Whether to enable image unwarping
-        - `angle`: `(int)` Predicted angle result if orientation classification is enabled
-
-    - `parsing_res_list`: `(List[Dict])` A list of parsing results, where each element is a dictionary. The order of the list is the reading order after parsing.
-        - `block_bbox`: `(np.ndarray)` The bounding box of the layout area.
-        - `block_label`: `(str)` The label of the layout area, such as `text`, `table`, etc.
-        - `block_content`: `(str)` The content within the layout area.
-        - `block_id`: `(int)` The index of the layout area, used to display the layout sorting result.
-        - `block_order`: `(int)` The order of the layout area, used to display the reading order of the layout. For non-ordered parts, the default value is `None`.
-
-    - `overall_ocr_res`: `(Dict[str, Union[List[str], List[float], numpy.ndarray]])` Dictionary of global OCR results
-      - `input_path`: `(Union[str, None])` OCR sub-pipeline input path; `None` if input is `numpy.ndarray`
-      - `page_index`: `None` since input is `numpy.ndarray`
-      - `model_settings`: `(Dict)` OCR model configuration
-      - `dt_polys`: `(List[numpy.ndarray])` List of polygons for text detection. Each box is a numpy array with shape (4, 2), dtype int16
-      - `dt_scores`: `(List[float])` Confidence scores for detection boxes
-      - `text_det_params`: `(Dict[str, Dict[str, int, float]])` Text detection module parameters
-        - `limit_side_len`: `(int)` Side length limit for image preprocessing
-        - `limit_type`: `(str)` Limit processing method
-        - `thresh`: `(float)` Threshold for text pixel classification
-        - `box_thresh`: `(float)` Threshold for text detection boxes
-        - `unclip_ratio`: `(float)` Unclip ratio for expanding boxes
-        - `text_type`: `(str)` Text detection type, currently fixed as "general"
-
-      - `text_type`: `(str)` Text detection type, currently fixed as "general"
-      - `textline_orientation_angles`: `(List[int])` Orientation classification results for text lines
-      - `text_rec_score_thresh`: `(float)` Threshold for text recognition filtering
-      - `rec_texts`: `(List[str])` Recognized texts filtered by score threshold
-      - `rec_scores`: `(List[float])` Recognition scores filtered by threshold
-      - `rec_polys`: `(List[numpy.ndarray])` Filtered detection boxes, same format as `dt_polys`
-
-    - `formula_res_list`: `(List[Dict[str, Union[numpy.ndarray, List[float], str]]])` List of formula recognition results
-        - `rec_formula`: `(str)` Recognized formula string
-        - `rec_polys`: `(numpy.ndarray)` Bounding box for the formula, shape (4, 2), dtype int16
-        - `formula_region_id`: `(int)` Region ID of the formula
-
-    - `seal_res_list`: `(List[Dict[str, Union[numpy.ndarray, List[float], str]]])` List of seal text recognition results
-        - `input_path`: `(str)` Input path for the seal image
-        - `page_index`: `None` since input is `numpy.ndarray`
-        - `model_settings`: `(Dict)` Model configuration for seal text recognition
-        - `dt_polys`: `(List[numpy.ndarray])` Seal detection boxes, same format as `dt_polys`
-        - `text_det_params`: `(Dict[str, Dict[str, int, float]])` Detection parameters, same as above
-        - `text_type`: `(str)` Detection type, currently fixed as "seal"
-        - `text_rec_score_thresh`: `(float)` Score threshold for recognition
-        - `rec_texts`: `(List[str])` Recognized texts filtered by score
-        - `rec_scores`: `(List[float])` Recognition scores filtered by threshold
-        - `rec_polys`: `(List[numpy.ndarray])` Filtered seal boxes, same format as `dt_polys`
-        - `rec_boxes`: `(numpy.ndarray)` Rectangle boxes, shape (n, 4), dtype int16
-
-    - `table_res_list`: `(List[Dict[str, Union[numpy.ndarray, List[float], str]]])` List of table recognition results
-        - `cell_box_list`: `(List[numpy.ndarray])` Bounding boxes of table cells
-        - `pred_html`: `(str)` Table as an HTML string
-        - `table_ocr_pred`: `(dict)` OCR results for the table
-            - `rec_polys`: `(List[numpy.ndarray])` Detected cell boxes
-            - `rec_texts`: `(List[str])` Recognized texts for cells
-            - `rec_scores`: `(List[float])` Confidence scores for cell recognition
-            - `rec_boxes`: `(numpy.ndarray)` Rectangle boxes for detection, shape (n, 4), dtype int16
-
-- Calling `save_to_json()` saves the above content to the specified `save_path`. If it’s a directory, the saved path will be `save_path/{your_img_basename}_res.json`. If it’s a file, it saves directly. Numpy arrays are converted to lists since JSON doesn't support them.
-- Calling `save_to_img()` saves visual results to the specified `save_path`. If a directory, various visualizations such as layout detection, OCR, and reading order are saved. If a file, only the last image is saved and others are overwritten.
-- Calling `save_to_markdown()` saves converted markdown files to `save_path/{your_img_basename}.md`. For PDF input, it's recommended to specify a directory to avoid file overwriting.
-- Calling `concatenate_markdown_pages()` merges multi-page markdown results from the `PP-StructureV3 pipeline` into a single document and returns the merged content.
+<ul>
+ <li> Calling <code>print()</code> will print the result to the terminal. Explanation of the printed content:</li>
+     <ul>
+    <li><code>input_path</code>: <code>(str)</code> Input path of the image or PDF to be predicted</li>
+    <li><code>page_index</code>: <code>(Union[int, None])</code> If input is a PDF, indicates the page number; otherwise <code>None</code></li>
+    <li><code>page_count</code>: <code>(Union[int, None])</code> If the input is a PDF file, it indicates the total number of pages in the PDF; otherwise, it is <code>None</code>.</li>
+    <li><code>width</code>: <code>(int)</code> The width of the original input image.</li>
+    <li><code>height</code>: <code>(int)</code> The height of the original input image.</li>
+    <li><code>model_settings</code>: <code>(Dict[str, bool])</code> Model parameters configured for the pipeline</li>
+        <ul>
+            <li><code>use_doc_preprocessor</code>: <code>(bool)</code> Whether to enable document preprocessor sub-pipeline</li>
+            <li><code>use_seal_recognition</code>: <code>(bool)</code> Whether to enable seal text recognition sub-pipeline</li>
+            <li><code>use_table_recognition</code>: <code>(bool)</code> Whether to enable table recognition sub-pipeline</li>
+            <li><code>use_formula_recognition</code>: <code>(bool)</code> Whether to enable formula recognition sub-pipeline</li>
+            <li><code>format_block_content</code>: <code>(bool)</code> Controls whether to format the <code>block_content</code> into Markdown format</li>
+            <li><code>markdown_ignore_labels</code>: <code>(List[str])</code> Labels of layout regions that need to be ignored in Markdown</li>
+        </ul>
+    </li>
+    <li><code>doc_preprocessor_res</code>: <code>(Dict[str, Union[List[float], str]])</code> Document preprocessing result dictionary, only exists if <code>use_doc_preprocessor=True</code></li>
+        <ul>
+        <li><code>input_path</code>: <code>(str)</code> Image path accepted by document preprocessor, <code>None</code> if input is <code>numpy.ndarray</code></li>
+        <li><code>page_index</code>: <code>None</code> since input is <code>numpy.ndarray</code></li>
+        <li><code>model_settings</code>: <code>(Dict[str, bool])</code> Model configuration for the document preprocessor</li>
+            <ul>
+                <li><code>use_doc_orientation_classify</code>: <code>(bool)</code> Whether to enable document orientation classification</li>
+                <li><code>use_doc_unwarping</code>: <code>(bool)</code> Whether to enable image unwarping</li>
+            </ul>
+        <li><code>angle</code>: <code>(int)</code> Predicted angle result if orientation classification is enabled</li>
+        </ul>
+    <li><code>parsing_res_list</code>: <code>(List[Dict])</code> A list of parsing results, where each element is a dictionary. The order of the list is the reading order after parsing.</li>
+        <ul>
+            <li><code>block_bbox</code>: <code>(np.ndarray)</code> The bounding box of the layout area.</li>
+            <li><code>block_label</code>: <code>(str)</code> The label of the layout area, such as <code>text</code>, <code>table</code>, etc.</li>
+            <li><code>block_content</code>: <code>(str)</code> The content within the layout area.</li>
+            <li><code>block_id</code>: <code>(int)</code> The index of the layout area, used to display the layout sorting result.</li>
+            <li><code>block_order</code>: <code>(int)</code> The order of the layout area, used to display the reading order of the layout. For non-ordered parts, the default value is <code>None</code>.</li>
+        </ul>
+    <li><code>overall_ocr_res</code>: <code>(Dict[str, Union[List[str], List[float], numpy.ndarray]])</code>  Dictionary of global OCR results</li>
+        <ul>
+            <li><code>input_path</code>: <code>(Union[str, None])</code> OCR sub-pipeline input path; <code>None</code> if input is <code>numpy.ndarray</code></li>
+            <li><code>page_index</code>: <code>None</code> since input is <code>numpy.ndarray</code></li>
+            <li><code>model_settings</code>: <code>(Dict)</code> OCR model configuration</li>
+            <li><code>dt_polys</code>: <code>(List[numpy.ndarray])</code> List of polygons for text detection. Each box is a numpy array with shape (4, 2), dtype int16</li>
+            <li><code>dt_scores</code>: <code>(List[float])</code> Confidence scores for detection boxes</li>
+            <li><code>text_det_params</code>: <code>(Dict[str, Dict[str, int, float]])</code> Text detection module parameters</li>
+                <ul>
+                    <li><code>limit_side_len</code>: <code>(int)</code> Side length limit for image preprocessing</li>
+                    <li><code>limit_type</code>: <code>(str)</code> Limit processing method</li>
+                    <li><code>thresh</code>: <code>(float)</code> Threshold for text pixel classification</li>
+                    <li><code>box_thresh</code>: <code>(float)</code> Threshold for text detection boxes</li>
+                    <li><code>unclip_ratio</code>: <code>(float)</code> Unclip ratio for expanding boxes</li>
+                    <li><code>text_type</code>: <code>(str)</code> Text detection type, currently fixed as "general"</li>
+                </ul>
+            <li><code>text_type</code>: <code>(str)</code> Text detection type, currently fixed as "general"</li>
+            <li><code>textline_orientation_angles</code>: <code>(List[int])</code> Orientation classification results for text lines</li>
+            <li><code>text_rec_score_thresh</code>: <code>(float)</code> Threshold for text recognition filtering</li>
+            <li><code>rec_texts</code>: <code>(List[str])</code> Recognized texts filtered by score threshold</li>
+            <li><code>rec_scores</code>: <code>(List[float])</code> Recognition scores filtered by threshold</li>
+            <li><code>rec_polys</code>: <code>(List[numpy.ndarray])</code> Filtered detection boxes, same format as <code>dt_polys</code></li>
+         </ul>
+    <li><code>formula_res_list</code>: <code>(List[Dict[str, Union[numpy.ndarray, List[float], str]]])</code> List of formula recognition results</li>
+        <ul>
+            <li><code>rec_formula</code>: <code>(str)</code> Recognized formula string</li>
+            <li><code>rec_polys</code>: <code>(numpy.ndarray)</code> Bounding box for the formula, shape (4, 2), dtype int16</li>
+            <li><code>formula_region_id</code>: <code>(int)</code> Region ID of the formula</li>
+        </ul>
+    <li><code>seal_res_list</code>: <code>(List[Dict[str, Union[numpy.ndarray, List[float], str]]])</code> List of seal text recognition results</li>
+        <ul>
+            <li><code>input_path</code>: <code>(str)</code> Input path for the seal image</li>
+            <li><code>page_index</code>: <code>None</code> since input is <code>numpy.ndarray</code></li>
+            <li><code>model_settings</code>: <code>(Dict)</code> Model configuration for seal text recognition</li>
+            <li><code>dt_polys</code>: <code>(List[numpy.ndarray])</code> Seal detection boxes, same format as <code>dt_polys</code></li>
+            <li><code>text_det_params</code>: <code>(Dict[str, Dict[str, int, float]])</code> Detection parameters, same as above</li>
+            <li><code>text_type</code>: <code>(str)</code> Detection type, currently fixed as "seal"</li>
+            <li><code>text_rec_score_thresh</code>: <code>(float)</code> Score threshold for recognition</li>
+            <li><code>rec_texts</code>: <code>(List[str])</code> Recognized texts filtered by score</li>
+            <li><code>rec_scores</code>: <code>(List[float])</code> Recognition scores filtered by threshold</li>
+            <li><code>rec_polys</code>: <code>(List[numpy.ndarray])</code> Filtered seal boxes, same format as <code>dt_polys</code></li>
+            <li><code>rec_boxes</code>: <code>(numpy.ndarray)</code> Rectangle boxes, shape (n, 4), dtype int16</li>
+        </ul>
+    <li><code>table_res_list</code>: <code>(List[Dict[str, Union[numpy.ndarray, List[float], str]]])</code> List of table recognition results</li>
+        <ul>
+            <li><code>cell_box_list</code>: <code>(List[numpy.ndarray])</code> Bounding boxes of table cells</li>
+            <li><code>pred_html</code>: <code>(str)</code> Table as an HTML string</li>
+            <li><code>table_ocr_pred</code>: <code>(Dict)</code> OCR results for the table</li>
+            <ul>
+                <li><code>rec_polys</code>: <code>(List[numpy.ndarray])</code> Detected cell boxes</li>
+                <li><code>rec_texts</code>: <code>(List[str])</code> Recognized texts for cells</li>
+                <li><code>rec_scores</code>: <code>(List[float])</code> Confidence scores for cell recognition</li>
+                <li><code>rec_boxes</code>: <code>(numpy.ndarray)</code> Rectangle boxes for detection, shape (n, 4), dtype int16</li>
+            </ul>
+        </ul>
+    </ul>
+</li>
+<li>Calling <code>save_to_json()</code> saves the above content to the specified <code>save_path</code>. If it’s a directory, the saved path will be <code>save_path/{your_img_basename}_res.json</code>. If it’s a file, it saves directly. Numpy arrays are converted to lists since JSON doesn't support them.</li>
+<li>Calling <code>save_to_img()</code> saves visual results to the specified <code>save_path</code>. If a directory, various visualizations such as layout detection, OCR, and reading order are saved. If a file, only the last image is saved and others are overwritten.</li>
+<li>Calling <code>save_to_markdown()</code> saves converted markdown files to <code>save_path/{your_img_basename}.md</code>. For PDF input, it's recommended to specify a directory to avoid file overwriting.</li>
+<li>Calling <code>concatenate_markdown_pages()</code> merges multi-page markdown results from the <code>PP-StructureV3 pipeline</code>  into a single document and returns the merged content.</li>
 
 Additionally, you can access the prediction results and visual images through the following attributes:
 
@@ -2525,10 +2893,11 @@ Additionally, you can access the prediction results and visual images through th
 </tr>
 </tbody>
 </table>
-- The `json` attribute returns the prediction result as a dictionary, which is consistent with the content saved using the `save_to_json()` method.
-- The `img` attribute returns the prediction result as a dictionary. The keys include `layout_det_res`, `overall_ocr_res`, `text_paragraphs_ocr_res`, `formula_res_region1`, `table_cell_img`, and `seal_res_region1`, each corresponding to a visualized `Image.Image` object for layout detection, OCR, text paragraph, formula, table, and seal results. If optional modules are not used, the dictionary only contains `layout_det_res`.
-- The `markdown` attribute returns the prediction result as a dictionary. The keys include `markdown_texts`, `markdown_images`, and `page_continuation_flags`, where the values represent the markdown text, displayed images (`Image.Image` objects), and a boolean tuple indicating whether the first and last elements of the current page are paragraph boundaries.
-
+<ul>
+    <li>The <code>json</code> attribute returns the prediction result as a dictionary, which is consistent with the content saved using the <code>save_to_json()</code> method.</li>
+    <li>The <code>img</code> attribute returns the prediction result as a dictionary. The keys include <code>layout_det_res</code>, <code>overall_ocr_res</code>, <code>text_paragraphs_ocr_res</code>, <code>formula_res_region1</code>, <code>table_cell_img</code>, and <code>seal_res_region1</code>, each corresponding to a visualized <code>Image.Image</code>, object for layout detection, OCR, text paragraph, formula, table, and seal results. If optional modules are not used, the dictionary only contains <code>layout_det_res</code>.</li>
+    <li>The <code>markdown</code> attribute returns the prediction result as a dictionary. The keys include <code>markdown_texts</code>, <code>markdown_images</code>, and <code>page_continuation_flags</code>, where the values represent the markdown text, displayed images (<code>Image.Image</code> objects), and a boolean tuple indicating whether the first and last elements of the current page are paragraph boundaries.</li>
+</ul>
 </details>
 
 ## 3. Development Integration / Deployment
@@ -2697,6 +3066,12 @@ To remove the page limit, please add the following configuration to the pipeline
 <td>No</td>
 </tr>
 <tr>
+<td><code>formatBlockContent</code></td>
+<td><code>boolean</code> | <code>null</code></td>
+<td>Please refer to the description of the <code>format_block_content</code> parameter of the pipeline object's <code>predict</code> method.</td>
+<td>No</td>
+</tr>
+<tr>
 <td><code>layoutThreshold</code></td>
 <td><code>number</code> | <code>object</code> | </code><code>null</code></td>
 <td>Please refer to the description of the <code>layout_threshold</code> parameter of the pipeline object's <code>predict</code> method.</td>
@@ -2829,6 +3204,24 @@ To remove the page limit, please add the following configuration to the pipeline
 <td>No</td>
 </tr>
 <tr>
+<td><code>markdownIgnoreLabels</code></td>
+<td><code>array</code> | <code>null</code></td>
+<td>Please refer to the description of the <code>markdown_ignore_labels</code> parameter of the pipeline object's <code>predict</code> method.</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>prettifyMarkdown</code></td>
+<td><code>boolean</code></td>
+<td>Whether to output beautified Markdown text. The default is <code>true</code>.</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>showFormulaNumber</code></td>
+<td><code>boolean</code></td>
+<td>Whether to include formula numbers in the output Markdown text. The default is <code>false</code>.</td>
+<td>No</td>
+</tr>
+<tr>
 <td><code>visualize</code></td>
 <td><code>boolean</code> | <code>null</code></td>
 <td>
@@ -2937,7 +3330,8 @@ If neither the request body nor the configuration file is set (If <code>visualiz
 <td>Whether the last element on the current page is the end of a segment.</td>
 </tr>
 </tbody>
-</table></details>
+</table>
+</details>
 <details><summary>Multi-language Service Call Examples</summary>
 <details>
 <summary>Python</summary>

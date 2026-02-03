@@ -9,7 +9,7 @@ hide:
  <img src="https://github.com/PaddlePaddle/PaddleOCR/releases/download/v2.9.1/PaddleOCR_log.png" align="middle" width = "600"/>
   <p align="center">
       <a href="https://discord.gg/z9xaRVjdbD"><img src="https://img.shields.io/badge/Chat-on%20discord-7289da.svg?sanitize=true" alt="Chat"></a>
-      <a href="./LICENSE"><img src="https://img.shields.io/badge/license-Apache%202-dfd.svg"></a>
+      <a href="https://github.com/PaddlePaddle/PaddleOCR/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-Apache%202-dfd.svg"></a>
       <a href="https://github.com/PaddlePaddle/PaddleOCR/releases"><img src="https://img.shields.io/github/v/release/PaddlePaddle/PaddleOCR?color=ffa"></a>
       <a href=""><img src="https://img.shields.io/badge/python-3.7+-aff.svg"></a>
       <a href=""><img src="https://img.shields.io/badge/os-linux%2C%20win%2C%20mac-pink.svg"></a>
@@ -34,19 +34,19 @@ PaddleOCR は、さまざまな言語で、優れた最先端かつ実用的な 
     - [表認識](../../ppstructure/table) 最適化：3つの最適化戦略設計、モデルの精度が従来より同時間比が 6% 向上。
     - [キー情報抽出](../../ppstructure/kie) 最適化:視覚に依存しないモデル構造設計、語彙の実態識別精度が 2.8% 向上、関係抽出の精度が 9.1% 向上。
 
-- **🔥2022.7 リリース [OCR scene application collection](../../applications/README_en.md)**
+- **🔥2022.7 リリース [OCR scene application collection](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.8/applications/README_en.md)**
     - デジタルチューブ、液晶画面、ナンバー プレート、手書き認識モデル、高精度 SVTR モデルなど、**9つの垂直モデル**をリリース、一般、製造、金融、運輸業界の主要な OCR 垂直アプリケーションをカバー。
 
 - **🔥2022.5.9 リリース PaddleOCR [release/2.5](https://github.com/PaddlePaddle/PaddleOCR/tree/release/2.5)**
-    - [PP-OCRv3](../doc_en/ppocr_introduction_en.md#pp-ocrv3)リリース: 同等の速度で、中国語の識別効果は PP-OCRv2 より 5% 向上、英語の識別効果は 11% 向上し、80 言語の多言語モデルの平均認識精度は 5% 以上向上。
+    - [PP-OCRv3](../version2.x/ppocr/overview.en.md#pp-ocrv3)リリース: 同等の速度で、中国語の識別効果は PP-OCRv2 より 5% 向上、英語の識別効果は 11% 向上し、80 言語の多言語モデルの平均認識精度は 5% 以上向上。
     - [PPOCRLabelv2](https://github.com/PFCCLab/PPOCRLabel)リリース: 表認識タスク、キー情報抽出タスク、イレギュラーテキスト画像のアノテーション機能を追加。
-    - インタラクティブな電子書籍 [*"OCR に没入"*](../doc_en/ocr_book_en.md)、 をリリース。 OCRフルスタック技術の最先端の理論とコードの実践をカバー。
+    - インタラクティブな電子書籍 [*"OCR に没入"*](../version2.x/ppocr/blog/ocr_book.en.md)、 をリリース。 OCRフルスタック技術の最先端の理論とコードの実践をカバー。
 
-- [もっと](../doc_en/update_en.md)
+- [もっと](../update/update.en.md)
 
 ## 🌟 PaddleOCRとは？
 
-PaddleOCRは、OCRに関連するさまざまな最先端のアルゴリズムに対応する、産業用の機能モデル/ソリューション [PP-OCR](../doc_en/ppocr_introduction_en.md) や [PP-Structure](../../ppstructure/README.md) を開発。これに基づき、データの生成、モデルのトレーニング、圧縮、推論、展開の全プロセスを実行可能。
+PaddleOCRは、OCRに関連するさまざまな最先端のアルゴリズムに対応する、産業用の機能モデル/ソリューション [PP-OCR](../version2.x/ppocr/overview.en.md) や [PP-Structure](../../ppstructure/README.md) を開発。これに基づき、データの生成、モデルのトレーニング、圧縮、推論、展開の全プロセスを実行可能。
 
 <div align="center">
     <img src="https://user-images.githubusercontent.com/50011306/195771471-fad5eb1d-190d-4a7b-8b0c-0433fb32445f.png">
@@ -60,13 +60,13 @@ pip3 install paddleocr
 paddleocr --image_dir /your/test/image.jpg --lang=japan # change for i18n abbr
 ```
 
->Python環境がない場合は [環境の準備](../doc_en/environment_en.md)に従ってください。[チュートリアル](#Tutorials) から始めることをお勧めします。
+>Python環境がない場合は [環境の準備](../version2.x/ppocr/environment.en.md)に従ってください。[チュートリアル](#Tutorials) から始めることをお勧めします。
 
 <a name="本"></a>
 
 ## 📚 電子書籍：*OCRに入る*
 
-- [OCRに没入](../doc_en/ocr_book_en.md)
+- [OCRに没入](../version2.x/ppocr/blog/ocr_book.en.md)
 
 <a name="コミュニティ"></a>
 
@@ -84,70 +84,70 @@ paddleocr --image_dir /your/test/image.jpg --lang=japan # change for i18n abbr
 | 英語超軽量PP-OCRv3モデル（13.4M） | en_PP-OCRv3_xx | モバイル & サーバー | [推論モデル](https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_det_infer.tar) / [トレーニングモデル](https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_det_distill_train.tar) | [推論モデル](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/en_PP-OCRv3_mobile_rec_infer.tar) / [トレーニングモデル](https://paddleocr.bj.bcebos.com/PP-OCRv3/english/en_PP-OCRv3_rec_train.tar) |
 | 中国語と英語の超軽量 PP-OCRv3 モデル（16.2M）    | ch_PP-OCRv3_xx          | モバイル & サーバー | [推論モデル](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv3_mobile_det_infer.tar) / [トレーニングモデル](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv3_mobile_det_pretrained.pdparams) | [推論モデル](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv3_mobile_rec_infer.tar) / [トレーニングモデル](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_train.tar) |
 
-- その他のモデルのダウンロード (多言語を含む) については、[PP-OCR シリーズ モデルのダウンロード] (../doc_en/models_list_en.md)をご参照ください。
+- その他のモデルのダウンロード (多言語を含む) については、[PP-OCR シリーズ モデルのダウンロード](../version2.x/ppocr/model_list.en.md)をご参照ください。
 - 新しい言語のリクエストについては、 [新しい言語_リクエストのガイドライン](#language_requests)を参照してください。
-- 構造文書分析モデルについては、[PP-Structure models](../../ppstructure/docs/models_list_en.md)をご参照ください。
+- 構造文書分析モデルについては、[PP-Structure models](../version2.x/ppstructure/models_list.en.md)をご参照ください。
 
 <a name="チュートリアル"></a>
 
 ## 📖 チュートリアル
 
-- [環境の準備](../doc_en/environment_en.md)
-- [PP-OCR 🔥](../doc_en/ppocr_introduction_en.md)
-    - [クイックスタート](../doc_en/quickstart_en.md)
-    - [Model Zoo](../doc_en/models_en.md)
-    - [トレーニング モデル](../doc_en/training_en.md)
-        - [テキスト検出](../doc_en/detection_en.md)
-        - [テキスト認識](../doc_en/recognition_en.md)
-        - [テキスト方向の分類](../doc_en/angle_class_en.md)
+- [環境の準備](../version2.x/ppocr/environment.en.md)
+- [PP-OCR 🔥](../version2.x/ppocr/overview.en.md)
+    - [クイックスタート](../version2.x/ppocr/quick_start.en.md)
+    - [Model Zoo](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.9/doc/doc_en/models_en.md)
+    - [トレーニング モデル](../version2.x/ppocr/model_train/training.en.md)
+        - [テキスト検出](../version2.x/ppocr/model_train/detection.en.md)
+        - [テキスト認識](../version2.x/ppocr/model_train/recognition.en.md)
+        - [テキスト方向の分類](../version2.x/ppocr/model_train/angle_class.en.md)
     - モデル圧縮
-        - [モデルの量子化](./deploy/slim/quantization/README_en.md)
-        - [モデルの剪裁](./deploy/slim/prune/README_en.md)
-        - [知識の蒸留](../doc_en/knowledge_distillation_en.md)
-    - [推論と展開](./deploy/README.md)
-        - [Python 推論](../doc_en/inference_ppocr_en.md)
-        - [C++ 推論](./deploy/cpp_infer/readme.md)
-        - [サービング](./deploy/pdserving/README.md)
-        - [モバイル](./deploy/lite/readme.md)
-        - [Paddle2ONNX](./deploy/paddle2onnx/readme.md)
-        - [PaddleCloud](./deploy/paddlecloud/README.md)
-        - [Benchmark](../doc_en/benchmark_en.md)
+        - [モデルの量子化](../../deploy/slim/quantization/README_en.md)
+        - [モデルの剪裁](../../deploy/slim/prune/README_en.md)
+        - [知識の蒸留](../version2.x/ppocr/model_compress/knowledge_distillation.en.md)
+    - [推論と展開](../../deploy/README.md)
+        - [Python 推論](../version2.x/legacy/python_infer.en.md)
+        - [C++ 推論](../version2.x/legacy/cpp_infer.en.md)
+        - [サービング](../version2.x/legacy/paddle_server.en.md)
+        - [モバイル](../../deploy/lite/readme.md)
+        - [Paddle2ONNX](../../deploy/paddle2onnx/readme.md)
+        - [PaddleCloud](../../deploy/paddlecloud/README.md)
+        - [Benchmark](../version2.x/legacy/benchmark.en.md)
 - [PP-Structure 🔥](../../ppstructure/README.md)
-    - [クイックスタート](../../ppstructure/docs/quickstart_en.md)
-    - [Model Zoo](../../ppstructure/docs/models_list_en.md)
-    - [トレーニング モデル](../doc_en/training_en.md)
+    - [クイックスタート](../version2.x/ppstructure/quick_start.en.md)
+    - [Model Zoo](../version2.x/ppstructure/models_list.en.md)
+    - [トレーニング モデル](../version2.x/ppocr/model_train/training.en.md)
         - [レイアウト分析](../../ppstructure/layout/README.md)
         - [表認識](../../ppstructure/table/README.md)
         - [キー情報抽出](../../ppstructure/kie/README.md)
-    - [推論と展開](./deploy/README.md)
-        - [Python 推論](../../ppstructure/docs/inference_en.md)
-        - [C++ 推論](./deploy/cpp_infer/readme.md)
-        - [サービング](./deploy/hubserving/readme_en.md)
-- [アカデミックアリゴリズム](../doc_en/algorithm_overview_en.md)
-    - [テキスト検出](../doc_en/algorithm_overview_en.md)
-    - [テキスト認識](../doc_en/algorithm_overview_en.md)
-    - [エンド・ツー・エンド OCR](../doc_en/algorithm_overview_en.md)
-    - [表認識](../doc_en/algorithm_overview_en.md)
-    - [キー情報抽出](../doc_en/algorithm_overview_en.md)
-    - [PaddleOCR に新しいアルゴリズムを追加する](../doc_en/add_new_algorithm_en.md)
+    - [推論と展開](../../deploy/README.md)
+        - [Python 推論](../version2.x/ppstructure/infer_deploy/python_infer.en.md)
+        - [C++ 推論](../version2.x/legacy/cpp_infer.en.md)
+        - [サービング](../../deploy/hubserving/readme_en.md)
+- [アカデミックアリゴリズム](../version2.x/algorithm/overview.en.md)
+    - [テキスト検出](../version2.x/algorithm/overview.en.md)
+    - [テキスト認識](../version2.x/algorithm/overview.en.md)
+    - [エンド・ツー・エンド OCR](../version2.x/algorithm/overview.en.md)
+    - [表認識](../version2.x/algorithm/overview.en.md)
+    - [キー情報抽出](../version2.x/algorithm/overview.en.md)
+    - [PaddleOCR に新しいアルゴリズムを追加する](../version2.x/algorithm/add_new_algorithm.en.md)
 - データの注釈と合成
     - [半自動注釈ツール: PPOCRLabel](https://github.com/PFCCLab/PPOCRLabel/blob/main/README.md)
     - [データ合成ツール: Style-Text](https://github.com/PFCCLab/StyleText/blob/main/README.md)
-    - [その他のデータ注釈ツール](../doc_en/data_annotation_en.md)
-    - [その他のデータ合成ツール](../doc_en/data_synthesis_en.md)
+    - [その他のデータ注釈ツール](../data_anno_synth/data_annotation.en.md)
+    - [その他のデータ合成ツール](../data_anno_synth/data_synthesis.en.md)
 - データセット
-    - [一般OCRデータセット(中国語/英語)](../doc_en/dataset/datasets_en.md)
-    - [HandWritten_OCR_Datasets(中国語)](../doc_en/dataset/handwritten_datasets_en.md)
-    - [各種OCRデータセット(多言語対応)](../doc_en/dataset/vertical_and_multilingual_datasets_en.md)
-    - [レイアウト分析](../doc_en/dataset/layout_datasets_en.md)
-    - [表認識](../doc_en/dataset/table_datasets_en.md)
-    - [キー情報抽出](../doc_en/dataset/kie_datasets_en.md)
-- [コード構造](../doc_en/tree_en.md)
+    - [一般OCRデータセット(中国語/英語)](../datasets/datasets.en.md)
+    - [HandWritten_OCR_Datasets(中国語)](../datasets/handwritten_datasets.en.md)
+    - [各種OCRデータセット(多言語対応)](../datasets/vertical_and_multilingual_datasets.en.md)
+    - [レイアウト分析](../datasets/layout_datasets.en.md)
+    - [表認識](../datasets/table_datasets.en.md)
+    - [キー情報抽出](../datasets/kie_datasets.en.md)
+- [コード構造](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.9/doc/doc_en/tree_en.md)
 - [視覚化](#Visualization)
 - [コミュニティ](#Community)
 - [新言語のリクエスト](#language_requests)
-- [よくある質問](../doc_en/FAQ_en.md)
-- [参考文献](../doc_en/reference_en.md)
+- [よくある質問](../FAQ.en.md)
+- [参考文献](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.9/doc/doc_en/reference_en.md)
 - [ライセンス](#LICENSE)
 
 <a name="language_requests"></a>
@@ -162,29 +162,29 @@ paddleocr --image_dir /your/test/image.jpg --lang=japan # change for i18n abbr
 
 <a name="ビジュアリゼーション"></a>
 
-## 👀 ビジュアリゼーション [more](../doc_en/visualization_en.md)
+## 👀 ビジュアリゼーション [more](../version2.x/ppocr/visualization.en.md)
 
 <details open>
 <summary>PP-OCRv3 多言語モデル</summary>
 <div align="center">
-    <img src="../imgs_results/PP-OCRv3/multi_lang/japan_2.jpg" width="800">
-    <img src="../imgs_results/PP-OCRv3/multi_lang/korean_1.jpg" width="800">
+    <img src="../version2.x/ppocr/images/PP-OCRv3/multi_lang/japan_2.jpg" width="800">
+    <img src="../version2.x/ppocr/images/PP-OCRv3/multi_lang/korean_1.jpg" width="800">
 </div>
 </details>
 
 <details open>
 <summary>PP-OCRv3 英語 モデル</summary>
 <div align="center">
-    <img src="../imgs_results/PP-OCRv3/en/en_1.png" width="800">
-    <img src="../imgs_results/PP-OCRv3/en/en_2.png" width="800">
+    <img src="../version2.x/ppocr/images/PP-OCRv3/en/en_1.png" width="800">
+    <img src="../version2.x/ppocr/images/PP-OCRv3/en/en_2.png" width="800">
 </div>
 </details>
 <details open>
 <summary>PP-OCRv3 中国語 モデル</summary>
 <div align="center">
-    <img src="../imgs_results/PP-OCRv3/ch/PP-OCRv3-pic001.jpg" width="800">
-    <img src="../imgs_results/PP-OCRv3/ch/PP-OCRv3-pic002.jpg" width="800">
-    <img src="../imgs_results/PP-OCRv3/ch/PP-OCRv3-pic003.jpg" width="800">
+    <img src="../version2.x/ppocr/images/PP-OCRv3/ch/PP-OCRv3-pic001.jpg" width="800">
+    <img src="../version2.x/ppocr/images/PP-OCRv3/ch/PP-OCRv3-pic002.jpg" width="800">
+    <img src="../version2.x/ppocr/images/PP-OCRv3/ch/PP-OCRv3-pic003.jpg" width="800">
 </div>
 </details>
 
@@ -192,7 +192,7 @@ paddleocr --image_dir /your/test/image.jpg --lang=japan # change for i18n abbr
 <summary>PP-Structurev2</summary>
 1. レイアウト分析＋テーブル認識
 <div align="center">
-    <img src="../../ppstructure/docs/table/ppstructure.GIF" width="800">
+    <img src="../version2.x/ppstructure/images/ppstructure.gif" width="800">
 </div>
 2. SER (セマンティックエンティティ認識)
 <div align="center">

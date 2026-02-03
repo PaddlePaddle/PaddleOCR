@@ -207,7 +207,7 @@ python -m pip install paddleocr
 
 | 의존성 그룹 이름 | 해당 기능 |
 | - | - |
-| `doc-parser` | 문서 분석: 표, 수식, 도장, 이미지 등 문서에서 레이아웃 요소를 추출할 수 있습니다. PP-StructureV3 등 모델 포함 |
+| `doc-parser` | 문서 파싱: 문서에서 표, 수식, 도장, 이미지 등과 같은 레이아웃 요소를 추출하는 데 사용할 수 있습니다. PP-StructureV3, PaddleOCR-VL과 같은 모델을 포함합니다. |
 | `ie` | 정보 추출: 이름, 날짜, 주소, 금액 등 문서에서 주요 정보를 추출할 수 있습니다. PP-ChatOCRv4 등 모델 포함 |
 | `trans` | 문서 번역: 문서를 다른 언어로 번역할 수 있습니다. PP-DocTranslation 등 모델 포함 |
 | `all` | 전체 기능 |
@@ -417,8 +417,10 @@ PaddleOCR의 발전은 커뮤니티 없이는 불가능합니다! 💗 오랜 �
 | 프로젝트 이름 | 설명 |
 | ------------ | ----------- |
 | [RAGFlow](https://github.com/infiniflow/ragflow) <a href="https://github.com/infiniflow/ragflow"><img src="https://img.shields.io/github/stars/infiniflow/ragflow"></a>|심층 문서 이해 기반의 RAG 엔진.|
+| [pathway](https://github.com/pathwaycom/pathway) <a href="https://github.com/pathwaycom/pathway"><img src="https://img.shields.io/github/stars/pathwaycom/pathway"></a>|스트림 처리, 실시간 분석, LLM 파이프라인 및 RAG를 위한 Python ETL 프레임워크|
 | [MinerU](https://github.com/opendatalab/MinerU) <a href="https://github.com/opendatalab/MinerU"><img src="https://img.shields.io/github/stars/opendatalab/MinerU"></a>|다중 유형 문서를 마크다운(Markdown)으로 변환하는 도구|
 | [Umi-OCR](https://github.com/hiroi-sora/Umi-OCR) <a href="https://github.com/hiroi-sora/Umi-OCR"><img src="https://img.shields.io/github/stars/hiroi-sora/Umi-OCR"></a>|무료, 오픈 소스, 배치 오프라인 OCR 소프트웨어.|
+| [cherry-studio](https://github.com/CherryHQ/cherry-studio) <a href="https://github.com/CherryHQ/cherry-studio"><img src="https://img.shields.io/github/stars/CherryHQ/cherry-studio"></a>|여러 LLM 공급자를 지원하는 데스크톱 클라이언트|
 | [OmniParser](https://github.com/microsoft/OmniParser)<a href="https://github.com/microsoft/OmniParser"><img src="https://img.shields.io/github/stars/microsoft/OmniParser"></a> |순수 비전 기반 GUI 에이전트를 위한 화면 파싱(parsing) 도구.|
 | [QAnything](https://github.com/netease-youdao/QAnything)<a href="https://github.com/netease-youdao/QAnything"><img src="https://img.shields.io/github/stars/netease-youdao/QAnything"></a> |무엇이든 기반으로 한 질의응답 시스템.|
 | [PDF-Extract-Kit](https://github.com/opendatalab/PDF-Extract-Kit) <a href="https://github.com/opendatalab/PDF-Extract-Kit"><img src="https://img.shields.io/github/stars/opendatalab/PDF-Extract-Kit"></a>|복잡하고 다양한 PDF 문서에서 고품질 콘텐츠를 효율적으로 추출하도록 설계된 강력한 오픈 소스 툴킷.|
@@ -442,11 +444,24 @@ PaddleOCR의 발전은 커뮤니티 없이는 불가능합니다! 💗 오랜 �
 
 ## 🎓 인용
 
-```
-@misc{paddleocr2020,
-title={PaddleOCR, Awesome multilingual OCR toolkits based on PaddlePaddle.},
-author={PaddlePaddle Authors},
-howpublished = {\url{https://github.com/PaddlePaddle/PaddleOCR}},
-year={2020}
+```bibtex
+@misc{cui2025paddleocr30technicalreport,
+      title={PaddleOCR 3.0 Technical Report}, 
+      author={Cheng Cui and Ting Sun and Manhui Lin and Tingquan Gao and Yubo Zhang and Jiaxuan Liu and Xueqing Wang and Zelun Zhang and Changda Zhou and Hongen Liu and Yue Zhang and Wenyu Lv and Kui Huang and Yichao Zhang and Jing Zhang and Jun Zhang and Yi Liu and Dianhai Yu and Yanjun Ma},
+      year={2025},
+      eprint={2507.05595},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV},
+      url={https://arxiv.org/abs/2507.05595}, 
+}
+
+@misc{cui2025paddleocrvlboostingmultilingualdocument,
+      title={PaddleOCR-VL: Boosting Multilingual Document Parsing via a 0.9B Ultra-Compact Vision-Language Model}, 
+      author={Cheng Cui and Ting Sun and Suyin Liang and Tingquan Gao and Zelun Zhang and Jiaxuan Liu and Xueqing Wang and Changda Zhou and Hongen Liu and Manhui Lin and Yue Zhang and Yubo Zhang and Handong Zheng and Jing Zhang and Jun Zhang and Yi Liu and Dianhai Yu and Yanjun Ma},
+      year={2025},
+      eprint={2510.14528},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV},
+      url={https://arxiv.org/abs/2510.14528}, 
 }
 ```

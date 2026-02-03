@@ -4,7 +4,7 @@ comments: true
 
 # PaddleOCR Quick Start
 
-**Note:** This tutorial mainly introduces the usage of PP-OCR series models, please refer to [PP-Structure Quick Start](../ppstructure/overview.en.md) for the quick use of document analysis related functions. In addition, the All-in-One development tool PaddleX relies on the advanced technology of PaddleOCR to support low-code full-process development capabilities in the OCR field, significantly reducing development time and complexity. It also integrates the 17 models involved in text image intelligent analysis, OCR, layout parsing, table recognition, formula recognition, and seal text recognition into 6 pipelines, which can be invoked with a simple Python API. For more details, please see [Low-Code Full-Process Development](https://paddlepaddle.github.io/PaddleOCR/latest/en/paddlex/quick_start.html).
+**Note:** This tutorial mainly introduces the usage of PP-OCR series models, please refer to [PP-Structure Quick Start](../ppstructure/overview.en.md) for the quick use of document analysis related functions. In addition, the All-in-One development tool PaddleX relies on the advanced technology of PaddleOCR to support low-code full-process development capabilities in the OCR field, significantly reducing development time and complexity. It also integrates the 17 models involved in text image intelligent analysis, OCR, layout parsing, table recognition, formula recognition, and seal text recognition into 6 pipelines, which can be invoked with a simple Python API. For more details, please see [Low-Code Full-Process Development](https://www.paddleocr.ai/v2.10.0/en/paddlex/quick_start.html).
 
 ## 1. Installation
 
@@ -108,7 +108,7 @@ paddleocr uses the PP-OCRv4 model by default(`--ocr_version PP-OCRv4`). If you w
 | PP-OCRv2 | only supports Chinese and English detection and recognition, direction classifier, multilingual model is not updated |
 | PP-OCR   | support Chinese and English detection and recognition, direction classifier, support multilingual recognition |
 
-If you want to add your own trained model, you can add model links and keys in [paddleocr](https://github.com/PaddlePaddle/PaddleOCR/blob/c65a66c5fd37dee64916a8b2a2c84ea273d98cac/paddleocr.py) and recompile.
+If you want to add your own trained model, you can add model links and keys in [paddleocr](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.10/paddleocr.py) and recompile.
 
 More whl package usage can be found in [whl package](./blog/whl.en.md)
 
@@ -186,7 +186,7 @@ Output will be a list, each item contains bounding box, text and recognition con
 
 Visualization of results
 
-![](./images/11_det_rec.jpg)
+![](./blog/images/11_det_rec.jpg)
 
 If the input is a PDF file, you can refer to the following code for visualization
 

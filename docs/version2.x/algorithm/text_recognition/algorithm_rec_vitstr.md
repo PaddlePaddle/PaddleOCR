@@ -15,7 +15,7 @@ comments: true
 
 |模型|骨干网络|配置文件|Acc|下载链接|
 | --- | --- | --- | --- | --- |
-|ViTSTR|ViTSTR|[rec_vitstr_none_ce.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/rec_vitstr_none_ce.yml)|79.82%|[训练模型](https://paddleocr.bj.bcebos.com/rec_vitstr_none_ce_train.tar)|
+|ViTSTR|ViTSTR|[rec_vitstr_none_ce.yml](../../../../configs/rec/rec_vitstr_none_ce.yml)|79.82%|[训练模型](https://paddleocr.bj.bcebos.com/rec_vitstr_none_ce_train.tar)|
 
 ## 2. 环境配置
 

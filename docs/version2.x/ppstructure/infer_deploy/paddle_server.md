@@ -5,7 +5,7 @@ comments: true
 PaddleOCR提供2种服务部署方式：
 
 - 基于PaddleHub Serving的部署：代码路径为`./deploy/hubserving`，按照本教程使用；
-- 基于PaddleServing的部署：代码路径为`./deploy/pdserving`，使用方法参考[文档](../../ppocr/infer_deploy/paddle_server.md)。
+- 基于PaddleServing的部署：代码路径为`./deploy/pdserving`，使用方法参考[文档](../../legacy/paddle_server.md)。
 
 # 基于PaddleHub Serving的服务部署
 
@@ -258,8 +258,8 @@ python tools/test_hubserving.py --server_url=http://127.0.0.1:8868/predict/ocr_s
 
    **注意：** PPOCR-v3识别模型使用的图片输入shape为`3,48,320`,因此需要修改`params.py`中的`cfg.rec_image_shape = "3, 48, 320"`，如果不使用PPOCR-v3识别模型，则无需修改该参数。
 3. （可选）如果想要重命名模块需要更改`module.py`文件中的以下行：
-   - [`from deploy.hubserving.ocr_system.params import read_params`中的`ocr_system`](https://github.com/PaddlePaddle/PaddleOCR/blob/a923f35de57b5e378f8dd16e54d0a3e4f51267fd/deploy/hubserving/ocr_system/module.py#L35)
-   - [`name="ocr_system",`中的`ocr_system`](https://github.com/PaddlePaddle/PaddleOCR/blob/a923f35de57b5e378f8dd16e54d0a3e4f51267fd/deploy/hubserving/ocr_system/module.py#L39)
+   - [`from deploy.hubserving.ocr_system.params import read_params`中的`ocr_system`](../../../../deploy/hubserving/ocr_system/module.py#L35)
+   - [`name="ocr_system",`中的`ocr_system`](../../../../deploy/hubserving/ocr_system/module.py#L39)
 4. （可选）可能需要删除`__pycache__`目录以强制刷新CPython缓存：
 
    ```bash linenums="1"

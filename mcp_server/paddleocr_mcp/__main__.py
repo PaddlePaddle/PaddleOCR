@@ -32,15 +32,15 @@ def _parse_args() -> argparse.Namespace:
 
     parser.add_argument(
         "--pipeline",
-        choices=["OCR", "PP-StructureV3"],
+        choices=["OCR", "PP-StructureV3", "PaddleOCR-VL"],
         default=os.getenv("PADDLEOCR_MCP_PIPELINE", "OCR"),
         help="Pipeline name.",
     )
     parser.add_argument(
         "--ppocr_source",
-        choices=["local", "aistudio", "self_hosted"],
+        choices=["local", "aistudio", "qianfan", "self_hosted"],
         default=os.getenv("PADDLEOCR_MCP_PPOCR_SOURCE", "local"),
-        help="Source of PaddleOCR functionality: local (local library), aistudio (AI Studio service), self_hosted (self-hosted server).",
+        help="Source of PaddleOCR functionality: local (local library), aistudio (AI Studio service), qianfan (Qianfan service), self_hosted (self-hosted server).",
     )
     parser.add_argument(
         "--http",
@@ -86,6 +86,11 @@ def _parse_args() -> argparse.Namespace:
         help="AI Studio access token (required for AI Studio).",
     )
     parser.add_argument(
+        "--qianfan_api_key",
+        default=os.getenv("PADDLEOCR_MCP_QIANFAN_API_KEY"),
+        help="Qianfan API key (required for Qianfan).",
+    )
+    parser.add_argument(
         "--timeout",
         type=int,
         default=int(os.getenv("PADDLEOCR_MCP_TIMEOUT", "60")),
@@ -105,7 +110,7 @@ def _validate_args(args: argparse.Namespace) -> None:
         )
         sys.exit(2)
 
-    if args.ppocr_source in ["aistudio", "self_hosted"]:
+    if args.ppocr_source in ["aistudio", "qianfan", "self_hosted"]:
         if not args.server_url:
             print("Error: The server base URL is required.", file=sys.stderr)
             print(
@@ -123,6 +128,21 @@ def _validate_args(args: argparse.Namespace) -> None:
                 file=sys.stderr,
             )
             sys.exit(2)
+        elif args.ppocr_source == "qianfan":
+            if not args.qianfan_api_key:
+                print("Error: The Qianfan API key is required.", file=sys.stderr)
+                print(
+                    "Please either set `--qianfan_api_key` or set the environment variable "
+                    "`PADDLEOCR_MCP_QIANFAN_API_KEY`.",
+                    file=sys.stderr,
+                )
+                sys.exit(2)
+            if args.pipeline not in ("PaddleOCR-VL", "PP-StructureV3"):
+                print(
+                    f"{repr(args.pipeline)} is currently not supported when using the {repr(args.ppocr_source)} source.",
+                    file=sys.stderr,
+                )
+                sys.exit(2)
 
 
 async def async_main() -> None:
@@ -139,6 +159,7 @@ async def async_main() -> None:
             device=args.device,
             server_url=args.server_url,
             aistudio_access_token=args.aistudio_access_token,
+            qianfan_api_key=args.qianfan_api_key,
             timeout=args.timeout,
         )
     except Exception as e:

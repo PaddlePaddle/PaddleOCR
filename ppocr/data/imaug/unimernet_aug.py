@@ -65,7 +65,6 @@ class Dilation(A.ImageOnlyTransform):
 
 
 class Bitmap(A.ImageOnlyTransform):
-
     def __init__(self, value=0, lower=200, always_apply=False, p=0.5):
         super().__init__(always_apply=always_apply, p=p)
         self.lower = lower

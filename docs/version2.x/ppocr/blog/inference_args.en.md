@@ -5,7 +5,7 @@ comments: true
 
 # PaddleOCR Model Inference Parameter Explanation
 
-When using PaddleOCR for model inference, you can customize the modification parameters to modify the model, data, preprocessing, postprocessing, etc. (parameter file: [utility.py](../../tools/infer/utility.py))，The detailed parameter explanation is as follows:
+When using PaddleOCR for model inference, you can customize the modification parameters to modify the model, data, preprocessing, postprocessing, etc. (parameter file: [utility.py](../../../../tools/infer/utility.py))，The detailed parameter explanation is as follows:
 
 * Global parameters
 

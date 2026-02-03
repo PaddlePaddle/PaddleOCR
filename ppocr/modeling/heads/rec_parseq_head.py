@@ -365,7 +365,7 @@ class ParseQHead(nn.Layer):
             temp = paddle.triu(
                 x=paddle.ones(shape=[num_steps, num_steps], dtype="bool"), diagonal=2
             )
-            posi = np.where(temp.cpu().numpy() == True)
+            posi = paddle.where(temp == True)
             query_mask[posi] = 0
             bos = paddle.full(shape=(bs, 1), fill_value=self.bos_id).astype("int64")
             for i in range(self.refine_iters):

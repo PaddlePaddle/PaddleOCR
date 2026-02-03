@@ -48,7 +48,7 @@ For more details, please refer to [PP-OCRv3 technical report](https://arxiv.org/
 
 ## 3. Benchmark
 
-For the performance comparison between PP-OCR series models, please check the [benchmark](./infer_deploy/benchmark.en.md) documentation.
+For the performance comparison between PP-OCR series models, please check the [benchmark](../legacy/benchmark.en.md) documentation.
 
 ## 4. Visualization [more](./visualization.en.md)
 
@@ -78,7 +78,7 @@ For the performance comparison between PP-OCR series models, please check the [b
 
 ### 5.2 Model training / compression / deployment
 
-For more tutorials, including model training, model compression, deployment, etc., please refer to [tutorials](../../README.md#Tutorials).
+For more tutorials, including model training, model compression, deployment, etc., please refer to [tutorials](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.6.1/README.md#Tutorials).
 
 ## 6. Model zoo
 

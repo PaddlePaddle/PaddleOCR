@@ -13,7 +13,7 @@ Recommended working environment:
 - CUDA 10.1 / CUDA 10.2
 - cuDNN 7.6
 
-> If you already have a Python environment installed, you can skip to [PaddleOCR Quick Start](./quickstart_en.md).
+> If you already have a Python environment installed, you can skip to [PaddleOCR Quick Start](../ppocr/quick_start.en.md).
 
 ## 1. Python Environment Setup
 

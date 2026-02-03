@@ -312,7 +312,7 @@ python -m pip install paddleocr
 
 | اسم مجموعة التبعيات   | الوظيفة المقابلة |
 | -                     | -               |
-| `doc-parser`          | تحليل المستندات: يمكن استخدامها لاستخراج عناصر التخطيط مثل الجداول، الصيغ، الأختام، الصور، إلخ من المستندات؛ تشمل نماذج مثل PP-StructureV3 |
+| `doc-parser`          | تحليل المستندات: يمكن استخدامه لاستخراج عناصر التخطيط مثل الجداول، الصيغ، الأختام، الصور، وغيرها من المستندات؛ ويشمل نماذج مثل PP-StructureV3 وPaddleOCR-VL. |
 | `ie`                  | استخراج المعلومات: يمكن استخدامها لاستخراج المعلومات الرئيسية مثل الأسماء، التواريخ، العناوين، المبالغ، إلخ من المستندات؛ تشمل نماذج مثل PP-ChatOCRv4 |
 | `trans`               | ترجمة المستندات: يمكن استخدامها لترجمة المستندات من لغة إلى أخرى؛ تشمل نماذج مثل PP-DocTranslation |
 | `all`                 | جميع الميزات الكاملة      |
@@ -516,8 +516,10 @@ print(chat_result)
 | اسم المشروع | الوصف |
 | ------------ | ----------- |
 | [RAGFlow](https://github.com/infiniflow/ragflow) <a href="https://github.com/infiniflow/ragflow"><img src="https://img.shields.io/github/stars/infiniflow/ragflow"></a>|محرك RAG يعتمد على فهم عميق للوثائق.|
+| [pathway](https://github.com/pathwaycom/pathway) <a href="https://github.com/pathwaycom/pathway"><img src="https://img.shields.io/github/stars/pathwaycom/pathway"></a>|إطار عمل ETL بلغة بايثون لمعالجة التدفق، التحليل الفوري، خطوط أنابيب LLM وRAG.|
 | [MinerU](https://github.com/opendatalab/MinerU) <a href="https://github.com/opendatalab/MinerU"><img src="https://img.shields.io/github/stars/opendatalab/MinerU"></a>|أداة تحويل المستندات متعددة الأنواع إلى Markdown|
 | [Umi-OCR](https://github.com/hiroi-sora/Umi-OCR) <a href="https://github.com/hiroi-sora/Umi-OCR"><img src="https://img.shields.io/github/stars/hiroi-sora/Umi-OCR"></a>|برنامج OCR مجاني ومفتوح المصدر للعمل دفعة واحدة دون اتصال بالإنترنت.|
+| [cherry-studio](https://github.com/CherryHQ/cherry-studio) <a href="https://github.com/CherryHQ/cherry-studio"><img src="https://img.shields.io/github/stars/CherryHQ/cherry-studio"></a>|عميل سطح مكتب يدعم عدة مزودي LLM.|
 | [OmniParser](https://github.com/microsoft/OmniParser)<a href="https://github.com/microsoft/OmniParser"><img src="https://img.shields.io/github/stars/microsoft/OmniParser"></a> |أداة OmniParser: أداة تحليل الشاشة لوكيل واجهة المستخدم الرسومية المستند إلى الرؤية البحتة.|
 | [QAnything](https://github.com/netease-youdao/QAnything)<a href="https://github.com/netease-youdao/QAnything"><img src="https://img.shields.io/github/stars/netease-youdao/QAnything"></a> |نظام سؤال وجواب يعتمد على أي شيء.|
 | [PDF-Extract-Kit](https://github.com/opendatalab/PDF-Extract-Kit) <a href="https://github.com/opendatalab/PDF-Extract-Kit"><img src="https://img.shields.io/github/stars/opendatalab/PDF-Extract-Kit"></a>|مجموعة أدوات قوية مفتوحة المصدر مصممة لاستخراج محتوى عالي الجودة بكفاءة من مستندات PDF المعقدة والمتنوعة.|
@@ -543,11 +545,24 @@ print(chat_result)
 
 ## 🎓 الاستشهاد الأكاديمي
 
-```
-@misc{paddleocr2020,
-title={PaddleOCR, Awesome multilingual OCR toolkits based on PaddlePaddle.},
-author={PaddlePaddle Authors},
-howpublished = {\url{https://github.com/PaddlePaddle/PaddleOCR}},
-year={2020}
+```bibtex
+@misc{cui2025paddleocr30technicalreport,
+      title={PaddleOCR 3.0 Technical Report}, 
+      author={Cheng Cui and Ting Sun and Manhui Lin and Tingquan Gao and Yubo Zhang and Jiaxuan Liu and Xueqing Wang and Zelun Zhang and Changda Zhou and Hongen Liu and Yue Zhang and Wenyu Lv and Kui Huang and Yichao Zhang and Jing Zhang and Jun Zhang and Yi Liu and Dianhai Yu and Yanjun Ma},
+      year={2025},
+      eprint={2507.05595},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV},
+      url={https://arxiv.org/abs/2507.05595}, 
+}
+
+@misc{cui2025paddleocrvlboostingmultilingualdocument,
+      title={PaddleOCR-VL: Boosting Multilingual Document Parsing via a 0.9B Ultra-Compact Vision-Language Model}, 
+      author={Cheng Cui and Ting Sun and Suyin Liang and Tingquan Gao and Zelun Zhang and Jiaxuan Liu and Xueqing Wang and Changda Zhou and Hongen Liu and Manhui Lin and Yue Zhang and Yubo Zhang and Handong Zheng and Jing Zhang and Jun Zhang and Yi Liu and Dianhai Yu and Yanjun Ma},
+      year={2025},
+      eprint={2510.14528},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV},
+      url={https://arxiv.org/abs/2510.14528}, 
 }
 ```

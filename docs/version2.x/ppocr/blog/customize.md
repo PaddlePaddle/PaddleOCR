@@ -36,4 +36,4 @@ PaddleOCR提供了检测和识别模型的串联工具，可以将训练好的�
 python3 tools/infer/predict_system.py --image_dir="./doc/imgs/11.jpg" --det_model_dir="./inference/det/"  --rec_model_dir="./inference/rec/"
 ```
 
-更多的文本检测、识别串联推理使用方式请参考文档教程中的[基于预测引擎推理](../infer_deploy/python_infer.md)。
+更多的文本检测、识别串联推理使用方式请参考文档教程中的[基于预测引擎推理](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.9/doc/doc_ch/inference.md)。

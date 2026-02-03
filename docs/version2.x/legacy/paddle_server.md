@@ -37,7 +37,7 @@ AIStudio演示案例可参考 [基于PaddleServing的OCR服务化部署实战](h
 
 需要准备PaddleOCR的运行环境和Paddle Serving的运行环境。
 
-- 准备PaddleOCR的运行环境[链接](../environment.md)
+- 准备PaddleOCR的运行环境[链接](../ppocr/environment.md)
 
     ```bash linenums="1"
     git clone https://github.com/PaddlePaddle/PaddleOCR
@@ -65,7 +65,7 @@ wget https://paddle-serving.bj.bcebos.com/test-dev/whl/paddle_serving_app-0.8.3-
 pip3 install paddle_serving_app-0.8.3-py3-none-any.whl
 ```
 
-**Note:** 如果要安装最新版本的PaddleServing参考[链接](https://github.com/PaddlePaddle/Serving/blob/v0.8.3/doc/Latest_Packages_CN.md)。
+**Note:** 如果要安装最新版本的PaddleServing参考[链接](https://github.com/PaddlePaddle/Serving/blob/v0.9.0/doc/Latest_Packages_CN.md)。
 
 ### 模型转换
 
@@ -236,7 +236,7 @@ python3 -m paddle_serving_server.serve --model ppocr_det_v3_serving ppocr_rec_v3
 ```
 
 成功启动服务后，log.txt中会打印类似如下日志
-![](./imgs/start_server.png)
+![](./images/start_server.png)
 
 #### 3. 发送服务请求
 

@@ -15,15 +15,31 @@ hide:
 
 PaddleOCR自发布以来凭借学术前沿算法和产业落地实践，受到了产学研各方的喜爱，并被广泛应用于众多知名开源项目，例如：Umi-OCR、OmniParser、MinerU、RAGFlow等，已成为广大开发者心中的开源OCR领域的首选工具。2025年5月20日，飞桨团队发布**PaddleOCR 3.0**，全面适配[飞桨框架3.0](https://github.com/PaddlePaddle/Paddle)正式版，进一步**提升文字识别精度**，支持**多文字类型识别**和**手写体识别**，满足大模型应用对**复杂文档高精度解析**的旺盛需求，结合**文心大模型4.5**显著提升关键信息抽取精度，并新增**对昆仑芯、昇腾等国产硬件**的支持。
 
+**2026 年 1 月 29 日，PaddleOCR 开源了先进、高效的文档解析模型 PaddleOCR-VL-1.5。** PaddleOCR-VL-1.5 是 PaddleOCR-VL 系列的全新迭代版本。在全面优化 1.0 版本核心能力的基础上，**该模型在文档解析权威评测集 OmniDocBench v1.5 上斩获了 94.5% 的高精度**，超越了全球的顶尖通用大模型及文档解析专用模型。
 
-PaddleOCR 3.0**新增**三大特色能力：
+PaddleOCR-VL-1.5 创新性地支持了文档元素的异形框定位，使得 PaddleOCR-VL-1.5 在扫描、倾斜、弯折、屏幕拍摄及复杂光照等真实落地场景中均表现卓越，实现了全面的 SOTA。此外，模型进一步集成了印章识别与文本检测识别任务，关键指标持续领跑主流模型。
 
-- 🖼️全场景文字识别模型[PP-OCRv5](./version3.x/algorithm/PP-OCRv5/PP-OCRv5.md)：单模型支持五种文字类型和复杂手写体识别；整体识别精度相比上一代**提升13个百分点**。[在线体验](https://aistudio.baidu.com/community/app/91660/webUI)
+您可以在 [PaddleOCR官网](https://www.paddleocr.com) 在线使用或者调用该模型的API。
 
-- 🧮通用文档解析方案[PP-StructureV3](./version3.x/algorithm/PP-StructureV3/PP-StructureV3.md)：支持多场景、多版式 PDF 高精度解析，在公开评测集中**领先众多开源和闭源方案**。[在线体验](https://aistudio.baidu.com/community/app/518494/webUI)
 
-- 📈智能文档理解方案[PP-ChatOCRv4](./version3.x/algorithm/PP-ChatOCRv4/PP-ChatOCRv4.md)：原生支持文心大模型4.5，精度相比上一代**提升15个百分点**。[在线体验](https://aistudio.baidu.com/community/app/518493/webUI)
+**PaddleOCR 3.x 核心特色能力：**
 
+
+- **PaddleOCR-VL - 通过 0.9B 超紧凑视觉语言模型增强多语种文档解析**  
+  **面向文档解析的 SOTA 且资源高效的模型**, 支持 109 种语言，在复杂元素（如文本、表格、公式和图表）识别方面表现出色，同时资源消耗极低。
+
+- **PP-OCRv5 — 全场景文字识别**  
+  **单模型支持五种文字类型**（简中、繁中、英文、日文及拼音），精度提升**13个百分点**。解决多语言混合文档的识别难题。
+
+- **PP-StructureV3 — 复杂文档解析**  
+  将复杂PDF和文档图像智能转换为保留**原始结构的Markdown文件和JSON**文件，在公开评测中**领先**众多商业方案。**完美保持文档版式和层次结构**。
+
+- **PP-ChatOCRv4 — 智能信息抽取**  
+  原生集成ERNIE 4.5，从海量文档中**精准提取关键信息**，精度较上一代提升15个百分点。让文档"**听懂**"您的问题并给出准确答案。
+
+> [!TIP]
+> 
+> 2025 年 10 月 24 日，PaddleOCR 官网 Beta 版现上线，支持更便捷的在线体验和大批量 PDF 文件解析，并提供免费 API 及 MCP 服务。更多详情请参见 [PaddleOCR 官网](https://www.paddleocr.com)。
 
 PaddleOCR 3.0除了提供优秀的模型库外，还提供好学易用的工具，覆盖模型训练、推理和服务化部署，方便开发者快速落地AI应用。
 <div align="center">
@@ -39,17 +55,29 @@ PaddleOCR 3.0除了提供优秀的模型库外，还提供好学易用的工具�
 
 ## 🔄 快速一览运行效果
 
-<div align="center">
-  <p>
-    <a href="https://paddlepaddle.github.io/PaddleOCR/latest/index.html" target="_blank">
-      <img width="100%" src="./images/demo.gif" alt="PP-OCRv5 Demo"></a>
-  </p>
-</div>
+### PP-OCRv5
 
 <div align="center">
   <p>
-    <a href="https://paddlepaddle.github.io/PaddleOCR/latest/index.html" target="_blank">
-      <img width="100%" src="./images/blue_v3.gif" alt="PP-StructureV3 Demo"></a>
+       <img width="100%" src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/paddleocr/README/PP-OCRv5_demo.gif" alt="PP-OCRv5 Demo">
+  </p>
+</div>
+
+
+
+### PP-StructureV3
+
+<div align="center">
+  <p>
+      <img width="100%" src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/paddleocr/README/PP-StructureV3_demo.gif" alt="PP-StructureV3 Demo">
+  </p>
+</div>
+
+### PaddleOCR-VL
+
+<div align="center">
+  <p>
+      <img width="100%" src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/paddleocr/README/PaddleOCR-VL_demo.gif" alt="PP-StructureV3 Demo">
   </p>
 </div>
 
