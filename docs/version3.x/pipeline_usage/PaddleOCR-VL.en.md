@@ -238,6 +238,12 @@ paddleocr doc_parser -i ./paddleocr_vl_demo.png --device dcu
 # MetaX GPU
 paddleocr doc_parser -i ./paddleocr_vl_demo.png --device metax_gpu
 
+# Apple Silicon
+paddleocr doc_parser -i ./paddleocr_vl_demo.png --device cpu
+
+# Huawei Ascend NPU 
+# Huawei Ascend NPU please refer to Chapter 3 for inference using PaddlePaddle + vLLM
+
 # Use --use_doc_orientation_classify to enable document orientation classification
 paddleocr doc_parser -i ./paddleocr_vl_demo.png --use_doc_orientation_classify True
 
@@ -654,6 +660,10 @@ pipeline = PaddleOCRVL()
 # pipeline = PaddleOCRVL(device="dcu")
 # MetaX GPU
 # pipeline = PaddleOCRVL(device="metax_gpu")
+# Apple Silicon
+# pipeline = PaddleOCRVL(device="cpu")
+# Huawei Ascend NPU 
+# Huawei Ascend NPU please refer to Chapter 3 for inference using PaddlePaddle + vLLM
 
 # pipeline = PaddleOCRVL(use_doc_orientation_classify=True) # Use use_doc_orientation_classify to enable/disable document orientation classification model
 # pipeline = PaddleOCRVL(use_doc_unwarping=True) # Use use_doc_unwarping to enable/disable document unwarping module
@@ -666,21 +676,14 @@ for res in output:
     res.save_to_markdown(save_path="output") ## Save the current image's result in Markdown format
 ```
 
-For PDF files, each page will be processed individually, and a separate Markdown file will be generated for each page. If you wish to perform cross-page table merging, reconstruct multi-level labels, or merge multi-page results, you can achieve this using the following method:
+For PDF files, each page will be processed individually, and a separate Markdown file will be generated for each page. If you wish to perform cross-page table merging, reconstruct multi-level headings, or merge multi-page results, you can achieve this using the following method:
 
 ```python
 from paddleocr import PaddleOCRVL
 
 input_file = "./your_pdf_file.pdf"
 
-# NVIDIA GPU
 pipeline = PaddleOCRVL()
-# KUNLUNXIN XPU
-# pipeline = PaddleOCRVL(device="xpu")
-# HYGON DCU
-# pipeline = PaddleOCRVL(device="dcu")
-# MetaX GPU
-# pipeline = PaddleOCRVL(device="metax_gpu")
 
 output = pipeline.predict(input=input_file)
 
@@ -1443,7 +1446,8 @@ Setting it to <code>None</code> means using the instantiation parameter; otherwi
 - Calling the `save_to_img()` method will save the visualization results to the specified `save_path`. If a directory is specified, visualized images for layout region detection, global OCR, layout reading order, etc., will be saved. If a file is specified, it will be saved directly to that file. (Pipelines typically contain many result images, so it is not recommended to directly specify a specific file path, as multiple images will be overwritten, retaining only the last one.)
 - Calling the `save_to_markdown()` method will save the converted Markdown file to the specified `save_path`. The saved file path will be `save_path/{your_img_basename}.md`. If the input is a PDF file, it is recommended to directly specify a directory; otherwise, multiple markdown files will be overwritten.
 
-Additionally, it also supports obtaining visualized images and prediction results with results through attributes, as follows:<table>
+<li>Additionally, it also supports obtaining visualized images and prediction results with results through attributes, as follows:
+<table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -1477,7 +1481,7 @@ Additionally, it also supports obtaining visualized images and prediction result
   <li>The prediction result returned by the <code>img</code> attribute is data of dict type. The keys are <code>layout_det_res</code>, <code>overall_ocr_res</code>, <code>text_paragraphs_ocr_res</code>, <code>formula_res_region1</code>, <code>table_cell_img</code>, and <code>seal_res_region1</code>, with corresponding values being <code>Image.Image</code> objects: used to display visualized images of layout region detection, OCR, OCR text paragraphs, formulas, tables, and seal results, respectively. If optional modules are not used, the dict only contains <code>layout_det_res</code>.</li>
   <li>The prediction result returned by the <code>markdown</code> attribute is data of dict type. The keys are <code>markdown_texts</code>, <code>markdown_images</code>, and <code>page_continuation_flags</code>, with corresponding values being markdown text, images displayed in Markdown (<code>Image.Image</code> objects), and a bool tuple used to identify whether the first element on the current page is the start of a paragraph and whether the last element is the end of a paragraph, respectively.</li>
 </ul>
-
+</li>
 </details>
 
 ## 3. Enhancing VLM Inference Performance Using Inference Acceleration Frameworks
@@ -1588,7 +1592,7 @@ The parameters supported by this command are as follows:
 
 ### 3.2 Client Usage Methods
 
-After launching the VLM inference service, the client can call the service through PaddleOCR. **Please note that because the client needs to invoke the sequential model for layout detection, it is still recommended to run the client on GPU or other acceleration devices to achieve more stable and efficient performance. Please refer to Section 1 for the client-side environment configuration. The configuration described in Section 3.1 applies only to starting the service and is not applicable to the client.**
+After launching the VLM inference service, the client can call the service through PaddleOCR. **Please note that because the client needs to call the layout detection model, it is still recommended to run the client on GPU or other acceleration devices to achieve more stable and efficient performance. Please refer to Section 1 for the client-side environment configuration. The configuration described in Section 3.1 applies only to starting the service and is not applicable to the client.**
 
 #### 3.2.1 CLI Invocation
 

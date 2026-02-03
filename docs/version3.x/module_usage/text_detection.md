@@ -114,13 +114,50 @@ comments: true
 
 > ❗ 在快速开始前，请先安装 PaddleOCR 的 wheel 包，详细请参考 [安装教程](../installation.md)。
 
+### 3.1 环境准备
+
+#### 3.1.1 基础安装
+
+```bash
+# 安装基础版本（仅包含文本检测功能）
+pip install paddleocr
+
+# 安装完整版本（包含所有功能）
+pip install "paddleocr[all]"
+```
+
+#### 3.1.2 环境验证
+
+```python
+# 验证安装是否成功
+import paddleocr
+print(f"PaddleOCR版本: {paddleocr.__version__}")
+
+# 验证GPU是否可用
+import paddle
+print(f"Paddle版本: {paddle.__version__}")
+print(f"GPU可用: {paddle.is_compiled_with_cuda()}")
+print(f"GPU数量: {paddle.device.cuda.device_count()}")
+```
+
+### 3.2 命令行快速体验
+
 使用一行命令即可快速体验：
 
 ```bash
+# 使用默认模型进行文本检测
 paddleocr text_detection -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_001.png
+
+# 指定模型进行检测
+paddleocr text_detection -i general_ocr_001.png --model_name PP-OCRv5_server_det
+
+# 批量处理本地图片
+paddleocr text_detection -i ./images/ --model_name PP-OCRv5_mobile_det
 ```
 
 <b>注：</b>PaddleOCR 官方模型默认从 HuggingFace 获取，如运行环境访问 HuggingFace 不便，可通过环境变量修改模型源为 BOS：`PADDLE_PDX_MODEL_SOURCE="BOS"`，未来将支持更多主流模型源；
+
+### 3.3 Python API 使用
 
 您也可以将文本检测的模块中的模型推理集成到您的项目中。运行以下代码前，请您下载[示例图片](https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_001.png)到本地。
 
@@ -539,7 +576,85 @@ python3 tools/export_model.py -c configs/det/PP-OCRv5/PP-OCRv5_server_det.yml -o
  ```
 至此，二次开发完成，该静态图模型可以直接集成到 PaddleOCR 的 API 中。
 
-## 五、FAQ
+## 五、常见问题与解决方案
 
-- 通过参数`limit_type`和`limit_side_len`来对图片的尺寸进行限制，`limit_type`可选参数为[`max`, `min`]，`limit_side_len` 为正整数，一般设置为 32 的倍数，比如 960。
+### 5.1 性能优化问题
+
+#### Q: GPU推理速度慢怎么办？
+
+**A**: 可以通过以下方式优化：
+（1）启用高性能推理：设置`enable_hpi=True`，自动选择最优加速策略
+（2）启用TensorRT加速：设置`use_tensorrt=True`，需要CUDA 11.8+和TensorRT 8.6+
+（3）使用半精度：设置`precision="fp16"`，可以显著提升速度
+（4）调整批处理大小：根据显存大小设置合适的`batch_size`
+（5）使用移动端模型：在精度要求不高时使用`PP-OCRv5_mobile`系列模型
+
+#### Q: GPU内存不足（CUDA out of memory）怎么办？
+
+**A**: 可以通过以下方式解决：
+（1）减小批处理大小：将`batch_size`设置为1
+（2）减小图像尺寸：设置`det_limit_side_len=640`
+（3）启用内存优化：设置`enable_memory_optim=True`
+（4）限制GPU内存使用：设置`gpu_mem=200`
+（5）使用移动端模型：切换到`PP-OCRv5_mobile`系列模型
+
+### 5.2 检测精度问题
+
+#### Q: 检测框不准确或漏检怎么办？
+
+**A**: 可以通过以下方式优化：
+（1）调整检测参数：
+```python
+model = TextDetection(
+    model_name="PP-OCRv5_server_det",
+    thresh=0.3,  # 降低像素阈值
+    box_thresh=0.5,  # 降低检测框阈值
+    unclip_ratio=2.0,  # 增大扩张系数
+    limit_side_len=1216  # 增大图像尺寸
+)
+```
+（2）使用更精确的后处理模式：设置`det_db_score_mode="slow"`
+（3）启用膨胀处理：设置`use_dilation=True`
+
+### 5.3 模型选择建议
+
+#### Q: 如何选择合适的模型？
+
+**A**: 根据应用场景选择：
+- 服务器高精度场景：使用`PP-OCRv5_server_det`，精度最高
+- 移动端部署：使用`PP-OCRv5_mobile_det`，模型小速度快
+- 实时处理：使用`PP-OCRv5_mobile_det`，推理速度快
+- 批量处理：使用`PP-OCRv5_server_det`，精度高
+
+### 5.4 参数调优建议
+
+#### Q: 如何调优检测参数？
+
+**A**: 通过参数`limit_type`和`limit_side_len`来对图片的尺寸进行限制，`limit_type`可选参数为[`max`, `min`]，`limit_side_len` 为正整数，一般设置为 32 的倍数，比如 960。
+
 如果输入图形分辨率不大，建议使用`limit_type=min` 和 `limit_side_len=960` 节省计算资源的同时能获得最佳检测效果。如果输入图片的分辨率比较大，而且想使用更大的分辨率预测，可以设置 `limit_side_len` 为想要的值，比如 1216。
+
+#### Q: 不同场景的参数配置建议？
+
+**A**: 
+- **高精度配置**：`limit_side_len=1216`, `thresh=0.3`, `box_thresh=0.5`, `unclip_ratio=1.5`
+- **高速度配置**：`limit_side_len=640`, `thresh=0.5`, `box_thresh=0.7`, `unclip_ratio=1.2`
+- **平衡配置**：`limit_side_len=960`, `thresh=0.4`, `box_thresh=0.6`, `unclip_ratio=1.5`
+
+### 5.5 错误处理
+
+#### Q: 模型加载失败怎么办？
+
+**A**: 
+（1）检查模型路径是否正确
+（2）确保模型文件完整（inference.pdmodel, inference.pdiparams, inference.json）
+（3）设置模型下载源：`os.environ['PADDLE_PDX_MODEL_SOURCE'] = 'BOS'`
+（4）使用本地模型：指定`model_dir`参数
+
+#### Q: 输入数据格式错误怎么办？
+
+**A**: 
+（1）检查图像文件是否存在
+（2）确保图像格式正确（支持PNG、JPG、JPEG）
+（3）验证图像尺寸（最小10x10像素）
+（4）检查图像是否为3通道格式
