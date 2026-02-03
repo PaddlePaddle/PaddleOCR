@@ -706,6 +706,58 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://padd
 
 **请注意，如果在执行过程中遇到程序失去响应、程序异常退出、内存资源耗尽、推理速度极慢等问题，请尝试参考文档调整配置，例如关闭不需要使用的功能或使用更轻量的模型。**
 
+### 2.0 环境准备
+
+#### 2.0.1 基础安装
+
+```bash
+# 安装基础版本（仅包含OCR功能）
+pip install paddleocr
+
+# 安装完整版本（包含所有功能）
+pip install "paddleocr[all]"
+```
+
+#### 2.0.2 环境验证
+
+```python
+# 验证安装是否成功
+import paddleocr
+print(f"PaddleOCR版本: {paddleocr.__version__}")
+
+# 验证GPU是否可用
+import paddle
+print(f"Paddle版本: {paddle.__version__}")
+print(f"GPU可用: {paddle.is_compiled_with_cuda()}")
+print(f"GPU数量: {paddle.device.cuda.device_count()}")
+```
+
+#### 2.0.3 常见安装问题解决
+
+**问题1：依赖冲突**
+```bash
+# 解决方案：创建新的虚拟环境
+conda create -n paddleocr python=3.8
+conda activate paddleocr
+pip install paddleocr
+```
+
+**问题2：GPU环境配置**
+```bash
+# 检查CUDA版本
+nvidia-smi
+
+# 安装对应版本的PaddlePaddle
+pip install paddlepaddle-gpu==3.0.0 -f https://www.paddlepaddle.org.cn/whl/linux/mkl/avx/stable.html
+```
+
+**问题3：模型下载失败**
+```python
+# 设置模型下载源
+import os
+os.environ['PADDLE_PDX_MODEL_SOURCE'] = 'BOS'  # 使用百度云存储
+```
+
 ### 2.1 命令行方式
 
 一行命令即可快速体验OCR产线效果。运行以下代码前，请您下载[示例图片](https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_002.png)到本地：
@@ -2584,3 +2636,51 @@ pipeline = PaddleOCR(paddlex_config="PaddleOCR.yaml")
 </table>
 
 </details>
+
+## 5. 常见问题与解决方案
+
+### 5.1 性能优化问题
+
+#### Q: GPU推理速度慢怎么办？
+
+**A**: 可以通过以下方式优化：
+（1）启用高性能推理：设置`enable_hpi=True`，自动选择最优加速策略
+（2）启用TensorRT加速：设置`use_tensorrt=True`，需要CUDA 11.8+和TensorRT 8.6+
+（3）使用半精度：设置`precision="fp16"`，可以显著提升速度
+（4）调整批处理大小：根据显存大小设置合适的`batch_size`
+（5）使用移动端模型：在精度要求不高时使用`PP-OCRv5_mobile`系列模型
+
+#### Q: GPU内存不足（CUDA out of memory）怎么办？
+
+**A**: 可以通过以下方式解决：
+（1）减小批处理大小：将`batch_size`设置为1
+（2）减小图像尺寸：设置`det_limit_side_len=640`
+（3）启用内存优化：设置`enable_memory_optim=True`
+（4）限制GPU内存使用：设置`gpu_mem=200`
+（5）使用移动端模型：切换到`PP-OCRv5_mobile`系列模型
+
+### 5.2 模型选择问题
+
+#### Q: 如何选择合适的模型？
+
+**A**: 根据应用场景选择：
+- 服务器高精度场景：使用`PP-OCRv5_server`系列，精度最高
+- 移动端部署：使用`PP-OCRv5_mobile`系列，模型小速度快
+- 实时处理：使用`PP-OCRv5_mobile`系列，推理速度快
+- 批量处理：使用`PP-OCRv5_server`系列，精度高
+- 多语言识别：使用`PP-OCRv5_multi_languages`，支持37种语言
+
+### 5.3 最佳实践
+
+#### Q: 生产环境部署建议？
+
+**A**: 
+（1）使用高性能推理配置
+（2）启用TensorRT加速
+（3）合理设置批处理大小
+（4）监控GPU内存使用情况
+（5）做好错误处理和日志记录
+
+## 6. 总结
+
+通用OCR产线是PaddleOCR的核心功能，通过合理选择模型和配置参数，可以在不同场景下获得最佳的识别效果。建议根据部署环境选择合适的模型，根据应用需求调整参数，充分利用GPU加速和批处理优化。
