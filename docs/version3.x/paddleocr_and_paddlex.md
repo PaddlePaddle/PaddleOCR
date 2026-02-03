@@ -33,6 +33,7 @@ PaddleOCR、PaddleX 和飞桨框架的版本存在如下对应关系：
 | `3.1.x` | `>= 3.1.0, < 3.2.0` | `>= 3.0.0` |
 | `3.2.x` | `>= 3.2.0, < 3.3.0` | `>= 3.0.0` |
 | `3.3.x` | `>= 3.3.0, < 3.4.0` | `>= 3.0.0` |
+| `3.4.x` | `>= 3.4.0, < 3.5.0` | `>= 3.0.0` |
 
 ## 2. PaddleOCR 产线与 PaddleX 产线注册名的对应关系
 
@@ -47,6 +48,7 @@ PaddleOCR、PaddleX 和飞桨框架的版本存在如下对应关系：
 | 文档图像预处理 | `doc_preprocessor` |
 | 文档理解 | `doc_understanding` |
 | PP-DocTranslation | `PP-DocTranslation` |
+| PaddleOCR-VL | `PaddleOCR-VL`、`PaddleOCR-VL-1.5` |
 
 ## 3. 使用 PaddleX 产线配置文件
 

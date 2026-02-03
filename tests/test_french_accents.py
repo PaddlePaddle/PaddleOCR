@@ -129,9 +129,8 @@ def test_french_word_grouping():
         print("Some tests FAILED. Please review the output above.")
     print("=" * 70)
 
-    return all_passed
+    assert all_passed, "Some French accent tests failed"
 
 
 if __name__ == "__main__":
-    success = test_french_word_grouping()
-    sys.exit(0 if success else 1)
+    test_french_word_grouping()

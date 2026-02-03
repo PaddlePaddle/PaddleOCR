@@ -149,7 +149,7 @@ paddleocr_mcp --help
     ```json
     {
       "mcpServers": {
-        "paddleocr-ocr": {
+        "paddleocr": {
           "command": "paddleocr_mcp",
           "args": [],
           "env": {
@@ -175,7 +175,7 @@ paddleocr_mcp --help
 
 5. **重启 MCP 主机**
 
-    重启 Claude for Desktop。新的 `paddleocr-ocr` 工具现在应该可以在应用中使用了。
+    重启 Claude for Desktop。新的 `paddleocr` 服务现在应该可以在应用中使用了。
 
 ### 2.2 MCP 主机配置说明
 
@@ -200,7 +200,7 @@ paddleocr_mcp --help
 ```json
 {
   "mcpServers": {
-    "paddleocr-ocr": {
+    "paddleocr": {
       "command": "paddleocr_mcp",
       "args": [],
       "env": {
@@ -269,7 +269,7 @@ paddleocr_mcp --help
 ```json
 {
   "mcpServers": {
-    "paddleocr-ocr": {
+    "paddleocr": {
       "command": "paddleocr_mcp",
       "args": [],
       "env": {
@@ -285,7 +285,7 @@ paddleocr_mcp --help
 
 **说明**：
 
-- 千帆平台服务目前仅支持 PaddleOCR-VL。
+- `PADDLEOCR_MCP_PIPELINE` 需要被设置为产线名称。详见第 4 节。千帆平台服务目前仅支持 PaddleOCR-VL 和 PP-StructureV3。
 
 #### 模式四：自托管服务
 
@@ -299,7 +299,7 @@ paddleocr_mcp --help
 ```json
 {
   "mcpServers": {
-    "paddleocr-ocr": {
+    "paddleocr": {
       "command": "paddleocr_mcp",
       "args": [],
       "env": {
@@ -329,7 +329,7 @@ PaddleOCR 也支持通过 `uvx` 启动 MCP 服务器。这种方式不需要手�
   ```json
   {
     "mcpServers": {
-     "paddleocr-ocr": {
+     "paddleocr": {
       "command": "uvx",
       "args": [
         "--from",
@@ -351,7 +351,7 @@ PaddleOCR 也支持通过 `uvx` 启动 MCP 服务器。这种方式不需要手�
   ```json
   {
     "mcpServers": {
-     "paddleocr-ocr": {
+     "paddleocr": {
       "command": "uvx",
       "args": [
         "--from",
