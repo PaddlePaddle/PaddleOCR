@@ -48,9 +48,8 @@ The inference performance under default configurations is not fully optimized an
 Install the MLX-VLM inference framework:
 
 ```shell
-git clone https://github.com/Blaizzy/mlx-vlm.git
-cd mlx-vlm
-pip install -e .
+python -m pip install -U mlx-vlm
+python -m pip install "transformers<5.0.0"
 ```
 
 Start the MLX-VLM inference service:

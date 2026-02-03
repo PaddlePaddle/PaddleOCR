@@ -48,9 +48,8 @@ python -m pip install -U "paddleocr[doc-parser]"
 安装 MLX-VLM 推理框架：
 
 ```shell
-git clone https://github.com/Blaizzy/mlx-vlm.git
-cd mlx-vlm
-pip install -e .
+python -m pip install -U mlx-vlm
+python -m pip install "transformers<5.0.0"
 ```
 
 启动 MLX-VLM 推理服务：
