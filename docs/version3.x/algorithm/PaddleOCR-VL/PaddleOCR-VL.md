@@ -170,19 +170,19 @@ PaddleOCR-VL能够支持多种类型的文档解析，以下是一些预测案�
 
 ## 六、FAQ
 
-1. 如何使用 PaddleOCR-VL 做文档解析 ？
+**1.如何使用 PaddleOCR-VL 做文档解析 ？**
 
 参考我们的使用文档 [PaddleOCR-VL使用](../../pipeline_usage/PaddleOCR-VL.md)
 
-2. 如何对 PaddleOCR-VL 模型进行微调 ？
+**2.如何对 PaddleOCR-VL 模型进行微调 ？**
 
-我们推荐使用 [ERNIEKit 套件](https://github.com/PaddlePaddle/ERNIE/tree/release/v1.4) 对 PaddleOCR-VL-0.9B 模型进行有监督微调（SFT）。具体操作步骤可参考 [ERNIEKit 官方文档](https://github.com/PaddlePaddle/ERNIE/blob/release/v1.4/docs/paddleocr_vl_sft_zh.md)。
+目前我们暂不支持模型的微调，但已经在高优的支持中，即将发布，请保持关注。
 
-3. 为什么我的图表没有识别出来，如何使用图表识别 ？
+**3.为什么我的图表没有识别出来，如何使用图表识别 ？**
 
 因为我们默认图表识别的功能是关闭的，需要手动开启，请参考 [PaddleOCR-VL使用](../../pipeline_usage/PaddleOCR-VL.md), 设置 use_chart_recognition为True 参数来开启。
 
-4. 支持的109种语言有哪些？
+**4.支持的109种语言有哪些？**
 
 中文、英语、韩语、日语、泰语、希腊语、泰米尔语、泰卢固语
 
@@ -193,3 +193,8 @@ PaddleOCR-VL能够支持多种类型的文档解析，以下是一些预测案�
 西里尔文：俄语、白俄罗斯语、乌克兰语、塞尔维亚语（西里尔文）、保加利亚语、蒙古语、阿布哈兹语、阿迪杰语、卡巴尔达语、阿瓦尔语、达尔金语、印古什语、车臣语、拉克语、列兹金语、塔巴萨兰语、哈萨克语、吉尔吉斯语、塔吉克语、马其顿语、鞑靼语、楚瓦什语、巴什基尔语、马里语、摩尔多瓦语、乌德穆尔特语、科米语、奥塞梯语、布里亚特语、卡尔梅克语、图瓦语、萨哈语、卡拉卡尔帕克语
 
 天城语：印地语、马拉地语、尼泊尔语、比哈里语、迈蒂利语、安吉卡语、博杰普里语、马基语、桑塔利语、纽瓦里语、康卡尼语、梵语、哈里亚维语
+
+**5.如果版面检测的结果不理想，有什么方案可以优化？**
+
+由于版面检测主要针对各种文档场景训练，所以您的测试数据如果是非标准文档，如车牌，火车票或身份证图像想做OCR识别，那可以直接使用PaddleOCR-VL-0.9B的模型，通过设置 use_layout_detection 为 False 关闭版面检测模型。如果您发现有任何版面检测的错误，都可以直接尝试一下单独使用PaddleOCR-VL-0.9B的效果。
+我们推荐使用 [ERNIEKit 套件](https://github.com/PaddlePaddle/ERNIE/tree/release/v1.4) 对 PaddleOCR-VL-0.9B 模型进行有监督微调（SFT）。具体操作步骤可参考 [ERNIEKit 官方文档](https://github.com/PaddlePaddle/ERNIE/blob/release/v1.4/docs/paddleocr_vl_sft_zh.md)。
