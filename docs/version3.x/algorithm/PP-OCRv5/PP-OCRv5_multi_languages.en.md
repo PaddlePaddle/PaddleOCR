@@ -211,7 +211,7 @@ For more details on the `PaddleOCR` class parameters, please refer to the [Pytho
 | Galician | Galician | gl | | Luxembourgish | Luxembourgish | lb |
 | Romansh | Romansh | rm | | Catalan | Catalan | ca |
 | Quechua | Quechua | qu | | Telugu | Telugu | te |
-| Serbian (Cyrillic) | Serbian (Cyrillic) | sr | | Bulgarian | Bulgarian | bg |
+| Serbian (Cyrillic) | Serbian (Cyrillic) | rs_cyrillic | | Bulgarian | Bulgarian | bg |
 | Mongolian | Mongolian | mn | | Abkhaz | Abkhaz | ab |
 | Adyghe | Adyghe | ady | | Kabardian | Kabardian | kbd |
 | Avar | Avar | av | | Dargwa | Dargwa | dar |
