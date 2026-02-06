@@ -1,0 +1,21 @@
+name: dbnet
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - anyconfig==0.9.10
+  - future==0.18.2
+  - imgaug==0.4.0
+  - matplotlib==3.1.2
+  - numpy==1.17.4
+  - opencv
+  - pyclipper
+  - PyYAML==5.2
+  - scikit-image==0.16.2
+  - Shapely==1.6.4
+  - tensorboard=2
+  - tqdm==4.40.1
+  - ipython
+  - pip
+  - pip:
+    - polygon3

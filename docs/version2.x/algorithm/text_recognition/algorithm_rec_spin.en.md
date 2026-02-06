@@ -1,0 +1,93 @@
+---
+comments: true
+---
+
+# SPIN: Structure-Preserving Inner Offset Network for Scene Text Recognition
+
+## 1. Introduction
+
+Paper:
+> [SPIN: Structure-Preserving Inner Offset Network for Scene Text Recognition](https://arxiv.org/abs/2005.13117)
+> Chengwei Zhang, Yunlu Xu, Zhanzhan Cheng, Shiliang Pu, Yi Niu, Fei Wu, Futai Zou
+> AAAI, 2020
+
+Using MJSynth and SynthText two text recognition datasets for training, and evaluating on IIIT, SVT, IC03, IC13, IC15, SVTP, CUTE datasets. The algorithm reproduction effect is as follows:
+
+|Model|Backbone|config|Acc|Download link|
+| --- | --- | --- | --- | --- |
+|SPIN|ResNet32|[rec_r32_gaspin_bilstm_att.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/rec_r32_gaspin_bilstm_att.yml)|90.00%|[trained model](https://paddleocr.bj.bcebos.com/contribution/rec_r32_gaspin_bilstm_att.tar) |
+
+## 2. Environment
+
+Please refer to ["Environment Preparation"](../../ppocr/environment.en.md) to configure the PaddleOCR environment, and refer to ["Project Clone"](../../ppocr/blog/clone.en.md)to clone the project code.
+
+## 3. Model Training / Evaluation / Prediction
+
+Please refer to [Text Recognition Tutorial](../../ppocr/model_train/recognition.en.md). PaddleOCR modularizes the code, and training different recognition models only requires **changing the configuration file**.
+
+### Training
+
+Specifically, after the data preparation is completed, the training can be started. The training command is as follows:
+
+```bash linenums="1"
+# Single GPU training (long training period, not recommended)
+python3 tools/train.py -c configs/rec/rec_r32_gaspin_bilstm_att.yml
+
+# Multi GPU training, specify the gpu number through the --gpus parameter
+python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs/rec/rec_r32_gaspin_bilstm_att.yml
+```
+
+### Evaluation
+
+```bash linenums="1"
+# GPU evaluation
+python3 -m paddle.distributed.launch --gpus '0' tools/eval.py -c configs/rec/rec_r32_gaspin_bilstm_att.yml -o Global.pretrained_model={path/to/weights}/best_accuracy
+```
+
+### Prediction
+
+```bash linenums="1"
+# The configuration file used for prediction must match the training
+python3 tools/infer_rec.py -c configs/rec/rec_r32_gaspin_bilstm_att.yml -o Global.pretrained_model={path/to/weights}/best_accuracy Global.infer_img=doc/imgs_words/en/word_1.png
+```
+
+## 4. Inference and Deployment
+
+### 4.1 Python Inference
+
+First, the model saved during the SPIN text recognition training process is converted into an inference model. you can use the following command to convert:
+
+```bash linenums="1"
+python3 tools/export_model.py -c configs/rec/rec_r32_gaspin_bilstm_att.yml -o Global.pretrained_model={path/to/weights}/best_accuracy  Global.save_inference_dir=./inference/rec_r32_gaspin_bilstm_att
+```
+
+For SPIN text recognition model inference, the following commands can be executed:
+
+```bash linenums="1"
+python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words/en/word_1.png" --rec_model_dir="./inference/rec_r32_gaspin_bilstm_att/" --rec_image_shape="3, 32, 100" --rec_algorithm="SPIN" --rec_char_dict_path="/ppocr/utils/dict/spin_dict.txt" --use_space_char=False
+```
+
+### 4.2 C++ Inference
+
+Not supported
+
+### 4.3 Serving
+
+Not supported
+
+### 4.4 More
+
+Not supported
+
+## 5. FAQ
+
+## Citation
+
+```bibtex
+@article{2020SPIN,
+  title={SPIN: Structure-Preserving Inner Offset Network for Scene Text Recognition},
+  author={Chengwei Zhang and Yunlu Xu and Zhanzhan Cheng and Shiliang Pu and Yi Niu and Fei Wu and Futai Zou},
+  journal={AAAI2020},
+  year={2020},
+}
+```

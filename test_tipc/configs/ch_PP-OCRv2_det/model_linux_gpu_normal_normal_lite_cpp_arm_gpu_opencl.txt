@@ -1,0 +1,13 @@
+===========================lite_params===========================
+inference:./ocr_db_crnn det
+runtime_device:ARM_GPU_OPENCL
+det_infer_model:ch_PP-OCRv2_det_infer|ch_PP-OCRv2_det_slim_quant_infer
+null:null
+null:null
+--cpu_threads:1|4
+--det_batch_size:1
+null:null
+--image_dir:./test_data/icdar2015_lite/text_localization/ch4_test_images/
+--config_dir:./config.txt
+null:null
+--benchmark:True

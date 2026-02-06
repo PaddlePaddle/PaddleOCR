@@ -1,0 +1,62 @@
+# PaddleOCR
+
+name: 🐛 Bug Report
+description: Problems with PaddleOCR
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for submitting a PaddleOCR 🐛 Bug Report!
+
+  - type: checkboxes
+    attributes:
+      label: 🔎 Search before asking
+      description: >
+        Please search the PaddleOCR [Docs](https://paddlepaddle.github.io/PaddleOCR/), [Issues](https://github.com/PaddlePaddle/PaddleOCR/issues) and [Discussions](https://github.com/PaddlePaddle/PaddleOCR/discussions) to see if a similar bug report already exists.
+      options:
+        - label: I have searched the PaddleOCR [Docs](https://paddlepaddle.github.io/PaddleOCR/) and found no similar bug report.
+          required: true
+        - label: I have searched the PaddleOCR [Issues](https://github.com/PaddlePaddle/PaddleOCR/issues) and found no similar bug report.
+          required: true
+        - label: I have searched the PaddleOCR [Discussions](https://github.com/PaddlePaddle/PaddleOCR/discussions) and found no similar bug report.
+          required: true
+
+  - type: textarea
+    attributes:
+      label: 🐛 Bug (问题描述)
+      description: Provide console output with error messages and/or screenshots of the bug. (请提供详细报错信息或者截图)
+      placeholder: |
+        💡 ProTip! Include as much information as possible (screenshots, logs, tracebacks etc.) to receive the most helpful response.
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: 🏃‍♂️ Environment (运行环境)
+      description: Please specify the software and hardware you used to produce the bug. (请给出详细依赖包信息，便于复现问题)
+      placeholder: |
+        ```bash
+        OS                  macOS-13.5.2
+        Environment         Jupyter
+        Python              3.11.2
+        PaddleOCR           2.8.1
+        Install             git
+        RAM                 16.00 GB
+        CPU                 Apple M2
+        CUDA                None
+        ```
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: 🌰 Minimal Reproducible Example (最小可复现问题的Demo)
+      description: >
+        When asking a question, people will be better able to provide help if you provide code that they can easily understand and use to **reproduce** the problem.
+        This is referred to by community members as creating a [minimal reproducible example](https://stackoverflow.com/help/minimal-reproducible-example). (请务必提供该Demo，这样节省大家时间)
+      placeholder: |
+        ```bash
+        # Code to reproduce your issue here
+        ```
+    validations:
+      required: true

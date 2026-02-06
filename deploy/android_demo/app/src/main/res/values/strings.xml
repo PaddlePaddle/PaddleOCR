@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">PaddleOCR</string>
+    <string name="CHOOSE_PRE_INSTALLED_MODEL_KEY">CHOOSE_PRE_INSTALLED_MODEL_KEY</string>
+    <string name="ENABLE_CUSTOM_SETTINGS_KEY">ENABLE_CUSTOM_SETTINGS_KEY</string>
+    <string name="MODEL_PATH_KEY">MODEL_PATH_KEY</string>
+    <string name="LABEL_PATH_KEY">LABEL_PATH_KEY</string>
+    <string name="IMAGE_PATH_KEY">IMAGE_PATH_KEY</string>
+    <string name="CPU_THREAD_NUM_KEY">CPU_THREAD_NUM_KEY</string>
+    <string name="CPU_POWER_MODE_KEY">CPU_POWER_MODE_KEY</string>
+    <string name="DET_LONG_SIZE_KEY">DET_LONG_SIZE_KEY</string>
+    <string name="SCORE_THRESHOLD_KEY">SCORE_THRESHOLD_KEY</string>
+    <string name="MODEL_PATH_DEFAULT">models/ch_PP-OCRv2</string>
+    <string name="LABEL_PATH_DEFAULT">labels/ppocr_keys_v1.txt</string>
+    <string name="IMAGE_PATH_DEFAULT">images/det_0.jpg</string>
+    <string name="CPU_THREAD_NUM_DEFAULT">4</string>
+    <string name="CPU_POWER_MODE_DEFAULT">LITE_POWER_HIGH</string>
+    <string name="DET_LONG_SIZE_DEFAULT">960</string>
+    <string name="SCORE_THRESHOLD_DEFAULT">0.1</string>
+</resources>

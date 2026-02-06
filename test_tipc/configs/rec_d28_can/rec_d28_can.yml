@@ -1,0 +1,122 @@
+Global:
+  use_gpu: True
+  epoch_num: 240
+  log_smooth_window: 20
+  print_batch_step: 10
+  save_model_dir: ./output/rec/can/
+  save_epoch_step: 1
+  # evaluation is run every 1105 iterations (1 epoch)(batch_size = 8)
+  eval_batch_step: [0, 1105]
+  cal_metric_during_train: True
+  pretrained_model:
+  checkpoints:
+  save_inference_dir:
+  use_visualdl: False
+  infer_img: doc/datasets/crohme_demo/hme_00.jpg
+  # for data or label process
+  character_dict_path: ppocr/utils/dict/latex_symbol_dict.txt
+  max_text_length: 36
+  infer_mode: False
+  use_space_char: False
+  save_res_path: ./output/rec/predicts_can.txt
+
+Optimizer:
+  name: Momentum
+  momentum: 0.9
+  clip_norm_global: 100.0
+  lr:
+    name: TwoStepCosine
+    learning_rate: 0.01
+    warmup_epoch: 1
+  weight_decay: 0.0001
+
+Architecture:
+  model_type: rec
+  algorithm: CAN
+  in_channels: 1
+  Transform:
+  Backbone:
+    name: DenseNet 
+    growthRate: 24
+    reduction: 0.5
+    bottleneck: True
+    use_dropout: True
+    input_channel: 1 
+  Head:
+    name: CANHead
+    in_channel: 684
+    out_channel: 111
+    max_text_length: 36
+    ratio: 16
+    attdecoder:
+      is_train: True
+      input_size: 256
+      hidden_size: 256
+      encoder_out_channel: 684
+      dropout: True
+      dropout_ratio: 0.5
+      word_num: 111
+      counting_decoder_out_channel: 111
+      attention:
+        attention_dim: 512
+        word_conv_kernel: 1
+   
+Loss:
+  name: CANLoss
+
+PostProcess:
+  name: CANLabelDecode
+
+Metric:
+  name: CANMetric
+  main_indicator: exp_rate
+
+Train:
+  dataset:
+    name: SimpleDataSet
+    data_dir: ./train_data/CROHME_lite/training/images/
+    label_file_list: ["./train_data/CROHME_lite/training/labels.txt"]
+    transforms:
+      - DecodeImage:
+          channel_first: False
+      - NormalizeImage:
+          mean: [0,0,0]
+          std: [1,1,1]
+          order: 'hwc'
+      - GrayImageChannelFormat: 
+          inverse: True
+      - CANLabelEncode:
+          lower: False
+      - KeepKeys:
+          keep_keys: ['image', 'label']
+  loader:
+    shuffle: True
+    batch_size_per_card: 8
+    drop_last: False
+    num_workers: 4
+    collate_fn: DyMaskCollator
+
+Eval:
+  dataset:
+    name: SimpleDataSet
+    data_dir: ./train_data/CROHME_lite/evaluation/images/
+    label_file_list: ["./train_data/CROHME_lite/evaluation/labels.txt"]
+    transforms: 
+      - DecodeImage:
+          channel_first: False
+      - NormalizeImage:
+          mean: [0,0,0]
+          std: [1,1,1]
+          order: 'hwc'
+      - GrayImageChannelFormat:
+          inverse: True
+      - CANLabelEncode:
+          lower: False
+      - KeepKeys:
+          keep_keys: ['image', 'label']
+  loader:
+    shuffle: False
+    drop_last: False
+    batch_size_per_card: 1
+    num_workers: 4
+    collate_fn: DyMaskCollator

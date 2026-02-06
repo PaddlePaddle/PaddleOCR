@@ -1,0 +1,129 @@
+Global:
+  use_gpu: true
+  epoch_num: 400
+  log_smooth_window: 20
+  print_batch_step: 5
+  save_model_dir: ./output/table_mv3/
+  save_epoch_step: 400
+  # evaluation is run every 400 iterations after the 0th iteration
+  eval_batch_step: [0, 400]
+  cal_metric_during_train: True
+  pretrained_model:
+  checkpoints:
+  save_inference_dir:
+  use_visualdl: False
+  infer_img: ppstructure/docs/table/table.jpg
+  save_res_path: output/table_mv3
+  # for data or label process
+  character_dict_path: ppocr/utils/dict/table_structure_dict.txt
+  character_type: en
+  max_text_length: &max_text_length 500
+  box_format: &box_format 'xyxy' # 'xywh', 'xyxy', 'xyxyxyxy'
+  infer_mode: False
+  amp_custom_black_list: ['matmul_v2','elementwise_add']
+
+Optimizer:
+  name: Adam
+  beta1: 0.9
+  beta2: 0.999
+  clip_norm: 5.0
+  lr:
+    learning_rate: 0.001
+  regularizer:
+    name: 'L2'
+    factor: 0.00000
+
+Architecture:
+  model_type: table
+  algorithm: TableAttn
+  Backbone:
+    name: MobileNetV3
+    scale: 1.0
+    model_name: small
+    disable_se: true
+  Head:
+    name: TableAttentionHead
+    hidden_size: 256
+    max_text_length: *max_text_length
+    loc_reg_num: &loc_reg_num 4
+
+Loss:
+  name: TableAttentionLoss
+  structure_weight: 100.0
+  loc_weight: 10000.0
+
+PostProcess:
+  name: TableLabelDecode
+
+Metric:
+  name: TableMetric
+  main_indicator: acc
+  compute_bbox_metric: false # cost many time, set False for training
+
+Train:
+  dataset:
+    name: PubTabDataSet
+    data_dir: train_data/table/pubtabnet/train/
+    label_file_list: [train_data/table/pubtabnet/PubTabNet_2.0.0_train.jsonl]
+    transforms:
+      - DecodeImage: # load image
+          img_mode: BGR
+          channel_first: False
+      - TableLabelEncode:
+          learn_empty_box: False
+          merge_no_span_structure: False
+          replace_empty_cell_token: False
+          loc_reg_num: *loc_reg_num
+          max_text_length: *max_text_length
+      - TableBoxEncode:
+      - ResizeTableImage:
+          max_len: 488
+      - NormalizeImage:
+          scale: 1./255.
+          mean: [0.485, 0.456, 0.406]
+          std: [0.229, 0.224, 0.225]
+          order: 'hwc'
+      - PaddingTableImage:
+          size: [488, 488]
+      - ToCHWImage:
+      - KeepKeys:
+          keep_keys: [ 'image', 'structure', 'bboxes', 'bbox_masks', 'shape' ]
+  loader:
+    shuffle: True
+    batch_size_per_card: 48
+    drop_last: True
+    num_workers: 1
+
+Eval:
+  dataset:
+    name: PubTabDataSet
+    data_dir: train_data/table/pubtabnet/val/
+    label_file_list: [train_data/table/pubtabnet/PubTabNet_2.0.0_val.jsonl]
+    transforms:
+      - DecodeImage: # load image
+          img_mode: BGR
+          channel_first: False
+      - TableLabelEncode:
+          learn_empty_box: False
+          merge_no_span_structure: False
+          replace_empty_cell_token: False
+          loc_reg_num: *loc_reg_num
+          max_text_length: *max_text_length
+      - TableBoxEncode:
+      - ResizeTableImage:
+          max_len: 488
+      - NormalizeImage:
+          scale: 1./255.
+          mean: [0.485, 0.456, 0.406]
+          std: [0.229, 0.224, 0.225]
+          order: 'hwc'
+      - PaddingTableImage:
+          size: [488, 488]
+      - ToCHWImage:
+      - KeepKeys:
+          keep_keys: [ 'image', 'structure', 'bboxes', 'bbox_masks', 'shape' ]
+  loader:
+    shuffle: False
+    drop_last: False
+    batch_size_per_card: 48
+    num_workers: 1

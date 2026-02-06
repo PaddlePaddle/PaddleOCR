@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+    <PreferenceCategory android:title="Model Settings">
+        <ListPreference
+                android:defaultValue="@string/MODEL_PATH_DEFAULT"
+                android:key="@string/CHOOSE_PRE_INSTALLED_MODEL_KEY"
+                android:negativeButtonText="@null"
+                android:positiveButtonText="@null"
+                android:title="Choose pre-installed models" />
+        <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="@string/ENABLE_CUSTOM_SETTINGS_KEY"
+                android:summaryOn="Enable"
+                android:summaryOff="Disable"
+                android:title="Enable custom settings"/>
+        <EditTextPreference
+                android:key="@string/MODEL_PATH_KEY"
+                android:defaultValue="@string/MODEL_PATH_DEFAULT"
+                android:title="Model Path" />
+        <EditTextPreference
+                android:key="@string/LABEL_PATH_KEY"
+                android:defaultValue="@string/LABEL_PATH_DEFAULT"
+                android:title="Label Path" />
+        <ListPreference
+                android:key="@string/IMAGE_PATH_KEY"
+                android:defaultValue="@string/IMAGE_PATH_DEFAULT"
+                android:entries="@array/image_name_entries"
+                android:entryValues="@array/image_name_values"
+                android:title="Image Path" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="CPU Settings">
+        <ListPreference
+                android:defaultValue="@string/CPU_THREAD_NUM_DEFAULT"
+                android:key="@string/CPU_THREAD_NUM_KEY"
+                android:negativeButtonText="@null"
+                android:positiveButtonText="@null"
+                android:title="CPU Thread Num"
+                android:entries="@array/cpu_thread_num_entries"
+                android:entryValues="@array/cpu_thread_num_values"/>
+        <ListPreference
+                android:defaultValue="@string/CPU_POWER_MODE_DEFAULT"
+                android:key="@string/CPU_POWER_MODE_KEY"
+                android:negativeButtonText="@null"
+                android:positiveButtonText="@null"
+                android:title="CPU Power Mode"
+                android:entries="@array/cpu_power_mode_entries"
+                android:entryValues="@array/cpu_power_mode_values"/>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Input Settings">
+        <EditTextPreference
+                android:key="@string/DET_LONG_SIZE_KEY"
+                android:defaultValue="@string/DET_LONG_SIZE_DEFAULT"
+                android:title="det long size" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Output Settings">
+        <EditTextPreference
+                android:key="@string/SCORE_THRESHOLD_KEY"
+                android:defaultValue="@string/SCORE_THRESHOLD_DEFAULT"
+                android:title="Score Threshold" />
+    </PreferenceCategory>
+</PreferenceScreen>

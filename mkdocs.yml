@@ -1,0 +1,392 @@
+site_name: PaddleOCR 文档
+site_url: https://paddlepaddle.github.io/PaddleOCR/
+site_author: PaddleOCR PMC
+site_description:
+  Awesome multilingual OCR toolkits based on PaddlePaddle (practical ultra lightweight OCR system, support 80+ languages recognition, provide data annotation and synthesis tools, support training and deployment among server, mobile, embedded and IoT devices)
+
+repo_name: PaddlePaddle/PaddleOCR
+repo_url: https://github.com/PaddlePaddle/PaddleOCR
+
+copyright: Copyright &copy; 2024 Maintained by PaddleOCR PMC.
+
+edit_uri: edit/main/docs/
+
+theme:
+  name: material
+  logo: version3.x/logo.jpg
+  favicon: version3.x/logo.jpg
+  custom_dir: overrides
+  features:
+    - announce.dismiss
+    - content.tooltips
+    - content.code.copy
+    - content.tabs.link
+    - content.footnote.tooltips
+    - content.action.edit
+    - content.action.view
+    - navigation.expand  # 默认打开所有的字节
+    - navigation.tabs # 顶级索引被作为tab
+    - navigation.tabs.sticky # tab始终可见
+    - navigation.top # 开启顶部导航栏
+    - navigation.tracking # 导航栏跟踪
+    - navigation.footer
+    - navigation.indexes
+    - search.highlight # 搜索高亮
+    - search.share # 搜索分享
+    - search.suggest # 搜索建议
+    - toc.follow # 目录跟踪-页面右侧的小目录
+
+  palette:
+    - media: "(prefers-color-scheme: light)" # 浅色
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)" # 深色
+      scheme: slate
+      primary: black
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to system preference
+
+  icon:
+    logo: logo
+    previous: fontawesome/solid/angle-left
+    next: fontawesome/solid/angle-right
+    repo: fontawesome/brands/github
+    edit: material/pencil
+    view: material/eye
+    tag:
+      default-tag: fontawesome/solid/tag
+      hardware-tag: fontawesome/solid/microchip
+      software-tag: fontawesome/solid/laptop-code
+    admonition:
+      note: octicons/tag-16
+      abstract: octicons/checklist-16
+      info: octicons/info-16
+      tip: octicons/squirrel-16
+      success: octicons/check-16
+      question: octicons/question-16
+      warning: octicons/alert-16
+      failure: octicons/x-circle-16
+      danger: octicons/zap-16
+      bug: octicons/bug-16
+      example: octicons/beaker-16
+      quote: octicons/quote-16
+
+plugins:
+  - tags
+  - offline
+  - search:
+      separator: '[\s\u200b\-_,:!=\[\: )"`/]+|\.(?!\d)|&[lg]t;|(?!\b)(?=[A-Z][a-z])'
+  - i18n:
+      docs_structure: suffix
+      fallback_to_default: true
+      reconfigure_material: true
+      reconfigure_search: true
+      languages:
+        - locale: zh
+          name: 简体中文
+          default: true
+          build: true
+        - locale: en
+          name: English
+          site_name: PaddleOCR Documentation
+          link: /en/
+          nav_translations:
+            Home: Home
+            安装: Installation
+            快速开始: Quick Start
+            PP-OCRv5: PP-OCRv5
+            使用教程: Usage Tutorial
+            PP-OCRv5简介: PP-OCRv5 Introduction
+            PP-OCRv5多语种文字识别: PP-OCRv5 Multilingual Text Recognition
+            PP-StructureV3: PP-StructureV3
+            PP-StructureV3简介: PP-StructureV3 Introduction
+            PP-ChatOCRv4: PP-ChatOCRv4
+            PP-ChatOCRv4简介: PP-ChatOCRv4 Introduction
+            PaddleOCR-VL: PaddleOCR-VL
+            PaddleOCR-VL-1.5简介: PaddleOCR-VL-1.5 Introduction
+            PaddleOCR-VL简介: PaddleOCR-VL Introduction
+            PaddleOCR-VL NVIDIA Blackwell 架构 GPU 环境配置教程: PaddleOCR-VL NVIDIA Blackwell-Architecture GPUs Environment Configuration Tutorial
+            PaddleOCR-VL 昆仑芯 XPU 环境配置教程: PaddleOCR-VL KUNLUNXIN XPU Environment Configuration Tutorial
+            PaddleOCR-VL 海光 DCU 环境配置教程: PaddleOCR-VL HYGON DCU Environment Configuration Tutorial
+            PaddleOCR-VL 沐曦 GPU 环境配置教程: PaddleOCR-VL MetaX GPU Environment Configuration Tutorial
+            PaddleOCR-VL 天数 GPU 环境配置教程: PaddleOCR-VL Iluvatar GPU Environment Configuration Tutorial
+            PaddleOCR-VL 华为昇腾 NPU 环境配置教程: PaddleOCR-VL Huawei Ascend NPU Environment Configuration Tutorial
+            PaddleOCR-VL Apple Silicon 环境配置教程: PaddleOCR-VL Apple Silicon Environment Configuration Tutorial
+            推理部署: Model Deploy
+            高性能推理: High-Performance Inference
+            打包PaddleOCR项目: Package PaddleOCR Projects
+            获取ONNX模型: Obtaining ONNX Models
+            端侧部署: On-Device Deployment
+            服务化部署: Serving Deployment
+            模块列表: Module List
+            文档图像方向分类模块: Document Image Orientation Classification Module
+            文档类视觉语言模型模块: Document Visual Language Model Module
+            公式识别模块: Formula Recognition Module
+            版面区域检测模块: Layout Detection
+            版面分析模块: Layout Analysis
+            印章文本检测模块: Seal Text Detection
+            表格单元格检测模块: Table Cell Detection Module
+            表格分类模块: Table Classification Module
+            表格结构识别模块: Table Structure Recognition Module
+            文本检测模块: Text Detection Module
+            文本图像矫正模块: Text Image Rectification Module
+            文本行方向分类模块: Text Line Orientation Classification Module
+            文本识别模块: Text Recognition Module
+            产线列表: Pipeline List
+            公式识别产线: Formula Recognition Pipeline
+            文档图像预处理产线: Document Image Preprocessing Pipeline
+            文档理解产线: Document Understanding Pipeline
+            印章文本识别产线: Seal Text Recognition Pipeline
+            通用表格识别v2产线: General Table Recognition v2 Pipeline
+            图表解析模块: Chart Parsing Module
+            PaddleOCR-VL产线: PaddleOCR-VL Pipeline
+            多硬件使用: Multi-Devices Usage
+            PaddleOCR 多硬件使用指南: PaddleOCR Multi-Devices Usage Guide
+            昇腾 NPU 飞桨安装教程: Ascend NPU PaddlePaddle Installation Tutorial
+            昆仑 XPU 飞桨安装教程: Kunlun XPU PaddlePaddle Installation Tutorial
+            其他说明: Other Notes
+            PaddleOCR 与 PaddleX: PaddleOCR and PaddleX
+            PaddleOCR 3.x 升级说明: PaddleOCR 3.x Upgrade Notes
+            低代码全流程开发: All-in-One Development
+            概述: Overview
+            数据标注与合成&数据集: Data Annotation and Synthesis & Datasets
+            其它数据标注工具: Other data annotation tools
+            其它数据合成工具: Others data synthesis tools
+            通用中英文OCR数据集: General Chinese and English OCR dataset
+            手写中文OCR数据集: Handwritten Chinese OCR Dataset
+            垂类多语言OCR数据集: Vertical multi-language OCR dataset
+            版面分析数据集: Layout Analysis Dataset
+            表格识别数据集: Table recognition dataset
+            关键信息提取数据集: Key Information Extraction Dataset
+            近期更新: Recently Update
+            版本2.x: Version 2.x
+            模型列表: Model List
+            基于Python预测引擎推理: Python Inference
+            基于C++预测引擎推理: CPP Inference
+            Visual Studio 2019 Community CMake 编译指南: Visual Studio 2019 Community CMake Compilation Guide
+            服务化部署: Sever Deployment
+            端侧部署: On-Device Deployment
+            Android部署: Android Deployment
+            Paddle2ONNX模型转化与预测: Paddle2ONNX
+            云上飞桨部署工具: Paddle Cloud
+            Benchmark: Benchmark
+            博客: Blog
+            常见问题: FAQ
+            社区: Community
+            社区贡献: Community Contribution
+            附录: Appendix
+            配置 PaddleOCR 推理包日志系统: Configure the logging system for the PaddleOCR inference package
+            模块概述: Module Overview
+            产线概述: Pipeline Overview
+            通用 OCR 产线 C++ 本地部署 - Linux: C++ Local Deployment for General OCR Pipeline - Linux
+            通用 OCR 产线 C++ 本地部署 - Windows: C++ Local Deployment for General OCR Pipeline - Windows
+            C++ 本地部署: C++ Local Deployment
+            MCP 服务器: MCP Server
+            产线并行推理: Parallel Inference for Pipelines
+        # - locale: ja
+        #   name: 日本語
+        #   site_name: PaddleOCR ドキュメント
+        #   link: /ja/
+        #   nav_translations:
+        #     Home: トップページ
+        # - locale: ru
+        #   name: Pу́сский язы́к
+        #   site_name: Документация PaddleOCR
+        #   link: /ru/
+        #   nav_translations:
+        #     Home: Главная страница
+        # - locale: hi
+        #   name: हिन्दी
+        #   site_name: पैडलओसीआर दस्तावेज़ीकरण
+        #   link: /hi/
+        #   nav_translations:
+        #     Home: घर पृष्ठ
+        # - locale: ko
+        #   name: 한국인
+        #   site_name: PaddleOCR 문서
+        #   link: /ko/
+        #   nav_translations:
+        #     Home: 첫 페이지
+        # - locale: "null"
+        #   name: Help translating
+        #   build: false
+        #   fixed_link: "https://github.com/PaddlePaddle/PaddleOCR/discussions/13374"
+  - git-committers:
+      repository: PaddlePaddle/PaddleOCR
+      branch: main
+      token: !!python/object/apply:os.getenv ["MKDOCS_GIT_COMMITTERS_APIKEY"]
+  - git-revision-date-localized:
+      enable_creation_date: true
+      timezone: Asia/Shanghai
+      type: iso_datetime
+      exclude:
+        - "index*.md"
+        - "quick_start*.md"
+        - "version3.x/**"
+
+markdown_extensions:
+  - abbr
+  - attr_list
+  - callouts
+  - pymdownx.snippets
+  - pymdownx.critic
+  - pymdownx.caret
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.tilde
+  - footnotes
+  - def_list
+  - md_in_html
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - toc:
+      permalink: true
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.highlight:
+        anchor_linenums: true
+        line_spans: __span
+        pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.tabbed:
+      alternate_style: true
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.arithmatex:
+      generic: true
+
+hooks:
+  - overrides/hooks/expiry.py
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/PaddlePaddle/PaddleOCR
+    - icon: fontawesome/brands/python
+      link: https://pypi.org/project/paddleocr/
+  version:
+    provider: mike
+  expiry_days: 365
+
+extra_javascript:
+  - javascripts/katex.min.js
+  - https://unpkg.com/katex@0/dist/katex.min.js
+  - https://unpkg.com/katex@0/dist/contrib/auto-render.min.js
+
+extra_css:
+  - https://unpkg.com/katex@0/dist/katex.min.css
+
+nav:
+  - Home: index.md
+  - 安装: version3.x/installation.md
+  - 快速开始: quick_start.md
+  - PP-OCRv5:
+    - 使用教程: version3.x/pipeline_usage/OCR.md
+    - PP-OCRv5简介: version3.x/algorithm/PP-OCRv5/PP-OCRv5.md
+    - PP-OCRv5多语种文字识别: version3.x/algorithm/PP-OCRv5/PP-OCRv5_multi_languages.md
+  - PP-StructureV3:
+    - 使用教程: version3.x/pipeline_usage/PP-StructureV3.md
+    - PP-StructureV3简介: version3.x/algorithm/PP-StructureV3/PP-StructureV3.md
+  - PP-ChatOCRv4:
+    - 使用教程: version3.x/pipeline_usage/PP-ChatOCRv4.md
+    - PP-ChatOCRv4简介: version3.x/algorithm/PP-ChatOCRv4/PP-ChatOCRv4.md
+  - PaddleOCR-VL:
+    - 使用教程: version3.x/pipeline_usage/PaddleOCR-VL.md
+    - PaddleOCR-VL-1.5简介: version3.x/algorithm/PaddleOCR-VL/PaddleOCR-VL-1.5.md
+    - PaddleOCR-VL简介: version3.x/algorithm/PaddleOCR-VL/PaddleOCR-VL.md
+    - PaddleOCR-VL NVIDIA Blackwell 架构 GPU 环境配置教程: version3.x/pipeline_usage/PaddleOCR-VL-NVIDIA-Blackwell.md
+    - PaddleOCR-VL 昆仑芯 XPU 环境配置教程: version3.x/pipeline_usage/PaddleOCR-VL-KUNLUNXIN-XPU.md
+    - PaddleOCR-VL 海光 DCU 环境配置教程: version3.x/pipeline_usage/PaddleOCR-VL-HYGON-DCU.md
+    - PaddleOCR-VL 沐曦 GPU 环境配置教程: version3.x/pipeline_usage/PaddleOCR-VL-MetaX-GPU.md
+    - PaddleOCR-VL 天数 GPU 环境配置教程: version3.x/pipeline_usage/PaddleOCR-VL-Iluvatar-GPU.md
+    - PaddleOCR-VL 华为昇腾 NPU 环境配置教程: version3.x/pipeline_usage/PaddleOCR-VL-Huawei-Ascend-NPU.md
+    - PaddleOCR-VL Apple Silicon 环境配置教程: version3.x/pipeline_usage/PaddleOCR-VL-Apple-Silicon.md
+  - 推理部署:
+    - 高性能推理: version3.x/deployment/high_performance_inference.md
+    - 获取ONNX模型: version3.x/deployment/obtaining_onnx_models.md
+    - 端侧部署: version3.x/deployment/on_device_deployment.md
+    - 服务化部署: version3.x/deployment/serving.md
+    - MCP 服务器: version3.x/deployment/mcp_server.md
+    - 打包PaddleOCR项目: version3.x/deployment/packaging.md
+    - 产线并行推理: version3.x/pipeline_usage/instructions/parallel_inference.md
+    - C++ 本地部署:
+      - 通用 OCR 产线 C++ 本地部署 - Linux: version3.x/deployment/cpp/OCR.md
+      - 通用 OCR 产线 C++ 本地部署 - Windows: version3.x/deployment/cpp/OCR_windows.md
+    - Benchmark: version3.x/pipeline_usage/instructions/benchmark.md
+
+  - 模块列表:
+    - 模块概述: version3.x/module_usage/module_overview.md
+    - 文档图像方向分类模块: version3.x/module_usage/doc_img_orientation_classification.md
+    - 文档类视觉语言模型模块: version3.x/module_usage/doc_vlm.md
+    - 公式识别模块: version3.x/module_usage/formula_recognition.md
+    - 版面区域检测模块: version3.x/module_usage/layout_detection.md
+    - 版面分析模块: version3.x/module_usage/layout_analysis.md
+    - 印章文本检测模块: version3.x/module_usage/seal_text_detection.md
+    - 表格单元格检测模块: version3.x/module_usage/table_cells_detection.md
+    - 表格分类模块: version3.x/module_usage/table_classification.md
+    - 表格结构识别模块: version3.x/module_usage/table_structure_recognition.md
+    - 文本检测模块: version3.x/module_usage/text_detection.md
+    - 文本图像矫正模块: version3.x/module_usage/text_image_unwarping.md
+    - 文本行方向分类模块: version3.x/module_usage/textline_orientation_classification.md
+    - 文本识别模块: version3.x/module_usage/text_recognition.md
+    - 图表解析模块: version3.x/module_usage/chart_parsing.md
+  - 产线列表:
+    - 产线概述: version3.x/pipeline_usage/pipeline_overview.md
+    - 公式识别产线: version3.x/pipeline_usage/formula_recognition.md
+    - 文档图像预处理产线: version3.x/pipeline_usage/doc_preprocessor.md
+    - 文档理解产线: version3.x/pipeline_usage/doc_understanding.md
+    - 印章文本识别产线: version3.x/pipeline_usage/seal_recognition.md
+    - 通用表格识别v2产线: version3.x/pipeline_usage/table_recognition_v2.md
+    - PP-DocTranslation产线: version3.x/pipeline_usage/PP-DocTranslation.md
+  - 多硬件使用:
+    - PaddleOCR 多硬件使用指南: version3.x/other_devices_support/multi_devices_use_guide.md
+    - 昇腾 NPU 飞桨安装教程: version3.x/other_devices_support/paddlepaddle_install_NPU.md
+    - 昆仑 XPU 飞桨安装教程: version3.x/other_devices_support/paddlepaddle_install_XPU.md
+  - 其他说明:
+    - PaddleOCR 与 PaddleX: version3.x/paddleocr_and_paddlex.md
+    - PaddleOCR 3.x 升级说明: update/upgrade_notes.md
+    - 配置 PaddleOCR 推理包日志系统: version3.x/logging.md
+
+  - 低代码全流程开发:
+      - 概述: version3.x/paddlex/overview.md
+      - 快速开始: version3.x/paddlex/quick_start.md
+  - 数据标注与合成&数据集:
+    - 概述: data_anno_synth/overview.md
+    - 其它数据标注工具: data_anno_synth/data_annotation.md
+    - 其它数据合成工具: data_anno_synth/data_synthesis.md
+    - 通用中英文OCR数据集: datasets/datasets.md
+    - 手写中文OCR数据集: datasets/handwritten_datasets.md
+    - 垂类多语言OCR数据集: datasets/vertical_and_multilingual_datasets.md
+    - 版面分析数据集: datasets/layout_datasets.md
+    - 表格识别数据集: datasets/table_datasets.md
+    - 关键信息提取数据集: datasets/kie_datasets.md
+  - 近期更新: update/update.md
+  - version2.x:
+    - 概述: version2.x/legacy/index.md
+    - 模型列表: version2.x/legacy/model_list_2.x.md
+    - 基于Python预测引擎推理: version2.x/legacy/python_infer.md
+    - 基于C++预测引擎推理: version2.x/legacy/cpp_infer.md
+    - Visual Studio 2019 Community CMake 编译指南: version2.x/legacy/windows_vs2019_build.md
+    - 服务化部署: version2.x/legacy/paddle_server.md
+    - Android部署: version2.x/legacy/android_demo.md
+    - 端侧部署: version2.x/legacy/lite.md
+    - Paddle2ONNX模型转化与预测: version2.x/legacy/paddle2onnx.md
+    - 云上飞桨部署工具: version2.x/legacy/paddle_cloud.md
+    - Benchmark: version2.x/legacy/benchmark.md
+  - FAQ: FAQ.md
+  - 社区:
+    - 社区贡献: community/community_contribution.md
+    - 附录: community/code_and_doc.md

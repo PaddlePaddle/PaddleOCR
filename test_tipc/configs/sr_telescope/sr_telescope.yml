@@ -1,0 +1,83 @@
+Global:
+  use_gpu: true
+  epoch_num: 2
+  log_smooth_window: 20
+  print_batch_step: 10
+  save_model_dir: ./output/sr/sr_telescope/
+  save_epoch_step: 3
+  # evaluation is run every 2000 iterations
+  eval_batch_step: [0, 1000]
+  cal_metric_during_train: False
+  pretrained_model:
+  checkpoints:
+  save_inference_dir:  ./output/sr/sr_telescope/infer
+  use_visualdl: False
+  infer_img: doc/imgs_words_en/word_52.png
+  # for data or label process
+  character_dict_path:
+  max_text_length: 100
+  infer_mode: False
+  use_space_char: False
+  save_res_path: ./output/sr/predicts_telescope.txt
+
+Optimizer:
+  name: Adam
+  beta1: 0.5
+  beta2: 0.999
+  clip_norm: 0.25
+  lr:
+    learning_rate: 0.0001
+
+Architecture:
+  model_type: sr
+  algorithm: Telescope
+  Transform:
+    name: TBSRN
+    STN: True
+    infer_mode: False
+
+Loss:
+  name: TelescopeLoss
+  confuse_dict_path: ./ppocr/utils/dict/confuse.pkl
+
+
+PostProcess:
+  name: None
+
+Metric:
+  name: SRMetric
+  main_indicator: all
+
+Train:
+  dataset:
+    name: LMDBDataSetSR
+    data_dir: ./train_data/TextZoom/test
+    transforms:
+      - SRResize:
+          imgH: 32
+          imgW: 128
+          down_sample_scale: 2
+      - KeepKeys:
+          keep_keys: ['img_lr', 'img_hr', 'label'] # dataloader will return list in this order
+  loader:
+    shuffle: False
+    batch_size_per_card: 16
+    drop_last: True
+    num_workers: 4
+
+Eval:
+  dataset:
+    name: LMDBDataSetSR
+    data_dir: ./train_data/TextZoom/test
+    transforms:
+      - SRResize:
+          imgH: 32
+          imgW: 128
+          down_sample_scale: 2
+      - KeepKeys:
+          keep_keys: ['img_lr', 'img_hr', 'label'] # dataloader will return list in this order
+  loader:
+    shuffle: False
+    drop_last: False
+    batch_size_per_card: 16
+    num_workers: 4

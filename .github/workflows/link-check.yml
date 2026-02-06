@@ -1,0 +1,35 @@
+name: Link Checker
+
+on:
+  repository_dispatch:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+  schedule:
+    - cron: "00 18 * * 6"
+
+jobs:
+  linkChecker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Link Checker
+        id: lychee
+        uses: lycheeverse/lychee-action@v2
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        with:
+            args: --exclude 'docs/index/*.md' 'docs/update/*.md' --verbose --no-progress --max-redirects 8 'docs/**/*.md'
+            format: markdown
+            fail: false
+            output: lychee/results.md
+
+      - name: Create Issue From File
+        if: steps.lychee.outputs.exit_code != 0
+        uses: peter-evans/create-issue-from-file@v6
+        with:
+          title: Link Checker Report
+          content-filepath: ./lychee/results.md
+          labels: report, automated issue

@@ -1,0 +1,106 @@
+Global:
+  use_gpu: true
+  epoch_num: 8
+  log_smooth_window: 200
+  print_batch_step: 200
+  save_model_dir: ./output/rec/r45_visionlan
+  save_epoch_step: 1
+  # evaluation is run every 2000 iterations
+  eval_batch_step: [0, 2000]
+  cal_metric_during_train: True
+  pretrained_model:
+  checkpoints: 
+  save_inference_dir:
+  use_visualdl: True
+  infer_img: doc/imgs_words/en/word_2.png
+  # for data or label process
+  character_dict_path:
+  max_text_length: &max_text_length 25
+  training_step: &training_step LA
+  infer_mode: False
+  use_space_char: False
+  save_res_path: ./output/rec/predicts_visionlan.txt
+
+Optimizer:
+  name: Adam
+  beta1: 0.9
+  beta2: 0.999
+  clip_norm: 20.0
+  group_lr: true
+  training_step: *training_step
+  lr:
+    name: Piecewise
+    decay_epochs: [6]
+    values: [0.0001, 0.00001] 
+  regularizer:
+    name: 'L2'
+    factor: 0
+
+Architecture:
+  model_type: rec
+  algorithm: VisionLAN
+  Transform:
+  Backbone:
+    name: ResNet45
+    strides: [2, 2, 2, 1, 1]
+  Head:
+    name: VLHead
+    n_layers: 3
+    n_position: 256
+    n_dim: 512
+    max_text_length: *max_text_length
+    training_step: *training_step
+
+Loss:
+  name: VLLoss
+  mode: *training_step
+  weight_res: 0.5
+  weight_mas: 0.5
+
+PostProcess:
+  name: VLLabelDecode
+
+Metric:
+  name: RecMetric
+  is_filter: true
+
+
+Train:
+  dataset:
+    name: LMDBDataSet
+    data_dir: ./train_data/data_lmdb_release/training/
+    transforms:
+      - DecodeImage: # load image
+          img_mode: RGB
+          channel_first: False
+      - ABINetRecAug:
+      - VLLabelEncode: # Class handling label
+      - VLRecResizeImg:
+          image_shape: [3, 64, 256]
+      - KeepKeys:
+          keep_keys: ['image', 'label', 'label_res', 'label_sub', 'label_id', 'length'] # dataloader will return list in this order
+  loader:
+    shuffle: True
+    batch_size_per_card: 220
+    drop_last: True
+    num_workers: 4
+
+Eval:
+  dataset:
+    name: LMDBDataSet
+    data_dir: ./train_data/data_lmdb_release/validation/
+    transforms:
+      - DecodeImage: # load image
+          img_mode: RGB
+          channel_first: False
+      - VLLabelEncode: # Class handling label
+      - VLRecResizeImg:
+          image_shape: [3, 64, 256]
+      - KeepKeys:
+          keep_keys: ['image', 'label', 'label_res', 'label_sub', 'label_id', 'length'] # dataloader will return list in this order
+  loader:
+    shuffle: False
+    drop_last: False
+    batch_size_per_card: 64
+    num_workers: 4
+  

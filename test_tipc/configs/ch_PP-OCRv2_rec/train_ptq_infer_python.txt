@@ -1,0 +1,21 @@
+===========================kl_quant_params===========================
+model_name:ch_PP-OCRv2_rec_KL
+python:python3.7
+Global.pretrained_model:null
+Global.save_inference_dir:null
+infer_model:./inference/ch_PP-OCRv2_rec_infer/
+infer_export:deploy/slim/quantization/quant_kl.py -c test_tipc/configs/ch_PP-OCRv2_rec/ch_PP-OCRv2_rec_distillation.yml -o
+infer_quant:True
+inference:tools/infer/predict_rec.py --rec_image_shape="3,32,320"
+--use_gpu:False|True
+--enable_mkldnn:False
+--cpu_threads:6
+--rec_batch_num:1|6
+--use_tensorrt:False
+--precision:int8
+--rec_model_dir:
+--image_dir:./inference/rec_inference
+null:null
+--benchmark:True
+null:null
+null:null

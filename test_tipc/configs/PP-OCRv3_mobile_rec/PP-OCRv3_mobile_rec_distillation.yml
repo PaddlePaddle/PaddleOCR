@@ -1,0 +1,206 @@
+Global:
+  debug: false
+  use_gpu: true
+  epoch_num: 800
+  log_smooth_window: 20
+  print_batch_step: 10
+  save_model_dir: ./output/rec_ppocr_v3_distillation
+  save_epoch_step: 3
+  eval_batch_step: [0, 2000]
+  cal_metric_during_train: true
+  pretrained_model:
+  checkpoints:
+  save_inference_dir:
+  use_visualdl: false
+  infer_img: doc/imgs_words/ch/word_1.jpg
+  character_dict_path: ppocr/utils/ppocr_keys_v1.txt
+  max_text_length: &max_text_length 25
+  infer_mode: false
+  use_space_char: true
+  distributed: true
+  save_res_path: ./output/rec/predicts_ppocrv3_distillation.txt
+  d2s_train_image_shape: [3, 48, -1]
+
+
+Optimizer:
+  name: Adam
+  beta1: 0.9
+  beta2: 0.999
+  lr:
+    name: Piecewise
+    decay_epochs : [700]
+    values : [0.0005, 0.00005]
+    warmup_epoch: 5
+  regularizer:
+    name: L2
+    factor: 3.0e-05
+
+
+Architecture:
+  model_type: &model_type "rec"
+  name: DistillationModel
+  algorithm: Distillation
+  Models:
+    Teacher:
+      pretrained:
+      freeze_params: false
+      return_all_feats: true
+      model_type: *model_type
+      algorithm: SVTR_LCNet
+      Transform:
+      Backbone:
+        name: MobileNetV1Enhance
+        scale: 0.5
+        last_conv_stride: [1, 2]
+        last_pool_type: avg
+      Head:
+        name: MultiHead
+        head_list:
+          - CTCHead:
+              Neck:
+                name: svtr
+                dims: 64
+                depth: 2
+                hidden_dims: 120
+                use_guide: True
+              Head:
+                fc_decay: 0.00001
+          - SARHead:
+              enc_dim: 512
+              max_text_length: *max_text_length
+    Student:
+      pretrained:
+      freeze_params: false
+      return_all_feats: true
+      model_type: *model_type
+      algorithm: SVTR_LCNet
+      Transform:
+      Backbone:
+        name: MobileNetV1Enhance
+        scale: 0.5
+        last_conv_stride: [1, 2]
+        last_pool_type: avg
+      Head:
+        name: MultiHead
+        head_list:
+          - CTCHead:
+              Neck:
+                name: svtr
+                dims: 64
+                depth: 2
+                hidden_dims: 120
+                use_guide: True
+              Head:
+                fc_decay: 0.00001
+          - SARHead:
+              enc_dim: 512
+              max_text_length: *max_text_length
+Loss:
+  name: CombinedLoss
+  loss_config_list:
+  - DistillationDMLLoss:
+      weight: 1.0
+      act: "softmax"
+      use_log: true
+      model_name_pairs:
+      - ["Student", "Teacher"]
+      key: head_out
+      multi_head: True
+      dis_head: ctc
+      name: dml_ctc
+  - DistillationDMLLoss:
+      weight: 0.5
+      act: "softmax"
+      use_log: true
+      model_name_pairs:
+      - ["Student", "Teacher"]
+      key: head_out
+      multi_head: True
+      dis_head: sar
+      name: dml_sar
+  - DistillationDistanceLoss:
+      weight: 1.0
+      mode: "l2"
+      model_name_pairs:
+      - ["Student", "Teacher"]
+      key: backbone_out
+  - DistillationCTCLoss:
+      weight: 1.0
+      model_name_list: ["Student", "Teacher"]
+      key: head_out
+      multi_head: True
+  - DistillationSARLoss:
+      weight: 1.0
+      model_name_list: ["Student", "Teacher"]
+      key: head_out
+      multi_head: True
+
+PostProcess:
+  name: DistillationCTCLabelDecode
+  model_name: ["Student", "Teacher"]
+  key: head_out
+  multi_head: True
+
+Metric:
+  name: DistillationMetric
+  base_metric_name: RecMetric
+  main_indicator: acc
+  key: "Student"
+  ignore_space: True
+
+Train:
+  dataset:
+    name: SimpleDataSet
+    data_dir: ./train_data/ic15_data/
+    ext_op_transform_idx: 1
+    label_file_list:
+    - ./train_data/ic15_data/rec_gt_train.txt
+    transforms:
+    - DecodeImage:
+        img_mode: BGR
+        channel_first: false
+    - RecConAug:
+        prob: 0.5
+        ext_data_num: 2
+        image_shape: [48, 320, 3]
+    - RecAug:
+    - MultiLabelEncode:
+    - RecResizeImg:
+        image_shape: [3, 48, 320]
+    - KeepKeys:
+        keep_keys:
+        - image
+        - label_ctc
+        - label_sar
+        - length
+        - valid_ratio
+  loader:
+    shuffle: true
+    batch_size_per_card: 128
+    drop_last: true
+    num_workers: 4
+Eval:
+  dataset:
+    name: SimpleDataSet
+    data_dir: ./train_data/ic15_data
+    label_file_list:
+    - ./train_data/ic15_data/rec_gt_test.txt
+    transforms:
+    - DecodeImage:
+        img_mode: BGR
+        channel_first: false
+    - MultiLabelEncode:
+    - RecResizeImg:
+        image_shape: [3, 48, 320]
+    - KeepKeys:
+        keep_keys:
+        - image
+        - label_ctc
+        - label_sar
+        - length
+        - valid_ratio
+  loader:
+    shuffle: false
+    drop_last: false
+    batch_size_per_card: 128
+    num_workers: 4

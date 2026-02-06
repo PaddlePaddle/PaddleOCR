@@ -1,0 +1,334 @@
+# Copyright (c) 2025 PaddlePaddle Authors. All Rights Reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+"""
+PaddleOCR Document Parsing Library
+
+Simple document parsing API wrapper for PaddleOCR.
+"""
+
+import base64
+import logging
+import os
+from pathlib import Path
+from typing import Any, Optional
+from urllib.parse import urlparse, unquote
+
+import httpx
+
+logger = logging.getLogger(__name__)
+
+# =============================================================================
+# Constants
+# =============================================================================
+
+DEFAULT_TIMEOUT = 600  # seconds (10 minutes)
+API_GUIDE_URL = "https://paddleocr.com"
+
+
+# =============================================================================
+# Environment
+# =============================================================================
+
+_env_loaded = False
+
+
+def _load_env():
+    """Load .env file if available."""
+    global _env_loaded
+    if _env_loaded:
+        return
+    try:
+        from dotenv import load_dotenv
+
+        env_file = Path(__file__).parent.parent.parent / ".env"
+        if env_file.exists():
+            load_dotenv(env_file)
+    except ImportError:
+        pass
+    _env_loaded = True
+
+
+def _get_env(key: str, *fallback_keys: str) -> str:
+    """Get environment variable with fallback keys."""
+    _load_env()
+    value = os.getenv(key, "").strip()
+    if value:
+        return value
+    for fallback in fallback_keys:
+        value = os.getenv(fallback, "").strip()
+        if value:
+            logger.debug(f"Using fallback env var: {fallback}")
+            return value
+    return ""
+
+
+def get_config() -> tuple[str, str]:
+    """
+    Get API URL and token from environment.
+
+    Returns:
+        tuple of (api_url, token)
+
+    Raises:
+        ValueError: If not configured
+    """
+    api_url = _get_env("PADDLEOCR_DOC_PARSING_API_URL")
+    token = _get_env("PADDLEOCR_ACCESS_TOKEN")
+
+    if not api_url:
+        raise ValueError(
+            f"PADDLEOCR_DOC_PARSING_API_URL not configured. Get your API at: {API_GUIDE_URL}"
+        )
+    if not token:
+        raise ValueError(
+            f"PADDLEOCR_ACCESS_TOKEN not configured. Get your API at: {API_GUIDE_URL}"
+        )
+
+    # Normalize URL
+    if not api_url.startswith(("http://", "https://")):
+        api_url = f"https://{api_url}"
+
+    return api_url, token
+
+
+# =============================================================================
+# File Utilities
+# =============================================================================
+
+
+def _detect_file_type(path_or_url: str) -> int:
+    """Detect file type: 0=PDF, 1=Image."""
+    path = path_or_url.lower()
+    if path.startswith(("http://", "https://")):
+        path = unquote(urlparse(path).path)
+
+    if path.endswith(".pdf"):
+        return 0
+    elif path.endswith((".png", ".jpg", ".jpeg", ".bmp", ".tiff", ".tif", ".webp")):
+        return 1
+    else:
+        raise ValueError(f"Unsupported file format: {path_or_url}")
+
+
+def _load_file_as_base64(file_path: str) -> str:
+    """Load local file and encode as base64."""
+    path = Path(file_path)
+    if not path.exists():
+        raise FileNotFoundError(f"File not found: {file_path}")
+
+    return base64.b64encode(path.read_bytes()).decode("utf-8")
+
+
+# =============================================================================
+# API Request
+# =============================================================================
+
+
+def _make_api_request(api_url: str, token: str, params: dict) -> dict:
+    """
+    Make PaddleOCR document parsing API request.
+
+    Args:
+        api_url: API endpoint URL
+        token: Access token
+        params: Request parameters
+
+    Returns:
+        API response dict
+
+    Raises:
+        RuntimeError: On API errors
+    """
+    headers = {
+        "Authorization": f"token {token}",
+        "Content-Type": "application/json",
+    }
+
+    timeout = float(os.getenv("PADDLEOCR_DOC_PARSING_TIMEOUT", str(DEFAULT_TIMEOUT)))
+
+    try:
+        with httpx.Client(timeout=timeout) as client:
+            resp = client.post(api_url, json=params, headers=headers)
+    except httpx.TimeoutException:
+        raise RuntimeError(f"API request timed out after {timeout}s")
+    except httpx.RequestError as e:
+        raise RuntimeError(f"API request failed: {e}")
+
+    # Handle HTTP errors
+    if resp.status_code == 401 or resp.status_code == 403:
+        raise RuntimeError(
+            f"Authentication failed ({resp.status_code}). Check your token."
+        )
+    elif resp.status_code == 429:
+        raise RuntimeError("API rate limit exceeded (429)")
+    elif resp.status_code >= 500:
+        raise RuntimeError(f"API service error ({resp.status_code})")
+    elif resp.status_code != 200:
+        raise RuntimeError(f"API error ({resp.status_code}): {resp.text[:200]}")
+
+    # Parse response
+    try:
+        result = resp.json()
+    except Exception:
+        raise RuntimeError(f"Invalid JSON response: {resp.text[:200]}")
+
+    # Check API-level error
+    if result.get("errorCode", 0) != 0:
+        raise RuntimeError(f"API error: {result.get('errorMsg', 'Unknown error')}")
+
+    return result
+
+
+# =============================================================================
+# Main API
+# =============================================================================
+
+
+def parse_document(
+    file_path: Optional[str] = None,
+    file_url: Optional[str] = None,
+    **options,
+) -> dict[str, Any]:
+    """
+    Parse document with PaddleOCR.
+
+    Args:
+        file_path: Local file path
+        file_url: URL to file
+        **options: Additional API options
+
+    Returns:
+        {
+            "ok": True,
+            "text": "extracted text...",
+            "result": { raw API result },
+            "error": None
+        }
+        or on error:
+        {
+            "ok": False,
+            "text": "",
+            "result": None,
+            "error": {"code": "...", "message": "..."}
+        }
+    """
+    # Validate input
+    if not file_path and not file_url:
+        return _error("INPUT_ERROR", "file_path or file_url required")
+
+    # Get config
+    try:
+        api_url, token = get_config()
+    except ValueError as e:
+        return _error("CONFIG_ERROR", str(e))
+
+    # Build request params
+    try:
+        if file_url:
+            params = {"file_url": file_url}
+        else:
+            params = {
+                "file": _load_file_as_base64(file_path),
+                "fileType": _detect_file_type(file_path),
+            }
+
+        params.update(options)
+
+    except (ValueError, FileNotFoundError) as e:
+        return _error("INPUT_ERROR", str(e))
+
+    # Call API
+    try:
+        result = _make_api_request(api_url, token, params)
+    except RuntimeError as e:
+        return _error("API_ERROR", str(e))
+
+    # Extract text
+    text = _extract_text(result)
+
+    # Extract layoutParsingResults array for callers
+    raw_result = result.get("result", {})
+    if isinstance(raw_result, dict):
+        pages = raw_result.get("layoutParsingResults", [])
+    else:
+        pages = raw_result
+
+    return {
+        "ok": True,
+        "text": text,
+        "result": pages,
+        "error": None,
+    }
+
+
+def _extract_text(result) -> str:
+    """Extract text from document parsing result."""
+    # API returns {"errorCode": 0, "result": {"layoutParsingResults": [{page}, ...]}}
+    raw_result = result.get("result", result) if isinstance(result, dict) else result
+
+    # Extract layoutParsingResults array from the result wrapper
+    if isinstance(raw_result, dict):
+        pages = raw_result.get("layoutParsingResults", [])
+    elif isinstance(raw_result, list):
+        pages = raw_result
+    else:
+        pages = []
+
+    # Handle list of pages
+    if isinstance(pages, list) and pages:
+        texts = []
+        for page in pages:
+            if not isinstance(page, dict):
+                continue
+            # Prefer markdown.text
+            md = page.get("markdown", {})
+            if isinstance(md, dict) and md.get("text"):
+                texts.append(md["text"])
+                continue
+            # Fallback: concatenate parsing_res_list block_content
+            pruned = page.get("prunedResult", {})
+            blocks = pruned.get("parsing_res_list", [])
+            if blocks:
+                page_text = "\n\n".join(
+                    b.get("block_content", "")
+                    for b in blocks
+                    if isinstance(b.get("block_content"), str)
+                )
+                texts.append(page_text)
+        return "\n\n".join(texts)
+
+    # Handle dict (single result or legacy format)
+    if isinstance(pages, dict):
+        md = pages.get("markdown", {})
+        if isinstance(md, dict) and md.get("text"):
+            return md["text"]
+        if isinstance(md, str):
+            return md
+        if "text" in pages:
+            return pages["text"]
+        if "full_text" in pages:
+            return pages["full_text"]
+
+    return str(result)
+
+
+def _error(code: str, message: str) -> dict:
+    """Create error response."""
+    return {
+        "ok": False,
+        "text": "",
+        "result": None,
+        "error": {"code": code, "message": message},
+    }

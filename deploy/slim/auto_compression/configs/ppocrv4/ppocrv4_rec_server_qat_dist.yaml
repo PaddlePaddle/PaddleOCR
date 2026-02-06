@@ -1,0 +1,113 @@
+Global:
+  model_dir: ./models/ch_PP-OCRv4_rec_server_infer
+  model_filename: inference.pdmodel
+  params_filename: inference.pdiparams
+  model_type: rec
+  algorithm: SVTR
+  character_dict_path: ./ppocr_keys_v1.txt
+  max_text_length: &max_text_length 25
+  use_space_char: true
+
+Distillation:
+  alpha: 1.0
+  loss: 'l2'
+
+QuantAware:
+  use_pact: false
+  activation_bits: 8
+  is_full_quantize: false
+  onnx_format: false
+  activation_quantize_type: moving_average_abs_max
+  weight_quantize_type: channel_wise_abs_max
+  not_quant_pattern:
+  - skip_quant
+  quantize_op_types:
+  - conv2d
+  weight_bits: 8
+
+TrainConfig:
+  epochs: 1
+  eval_iter: 1000
+  logging_iter: 100
+  learning_rate: 
+    type: CosineAnnealingDecay 
+    learning_rate: 0.00001
+  optimizer_builder:
+    optimizer:
+      type: Adam
+    weight_decay: 5.0e-05
+
+PostProcess:
+  name: CTCLabelDecode 
+
+Metric:
+  name: RecMetric
+  main_indicator: acc
+  ignore_space: False 
+
+Train:
+  dataset:
+    name: MultiScaleDataSet
+    ds_width: false
+    data_dir: datasets/real_data/
+    ext_op_transform_idx: 1
+    label_file_list:
+    - datasets/real_data/train_list.txt
+    transforms:
+    - DecodeImage:
+        img_mode: BGR
+        channel_first: false
+    - RecConAug:
+        prob: 0.5
+        ext_data_num: 2
+        image_shape: [48, 320, 3]
+        max_text_length: *max_text_length
+    - RecAug:
+    - MultiLabelEncode:
+        gtc_encode: NRTRLabelEncode
+    - KeepKeys:
+        keep_keys:
+        - image
+        - label_ctc
+        - label_gtc
+        - length
+        - valid_ratio
+  sampler:
+    name: MultiScaleSampler
+    scales: [[320, 32], [320, 48], [320, 64]]
+    first_bs: &bs 64
+    fix_bs: false
+    divided_factor: [8, 16] # w, h
+    is_training: True
+  loader:
+    shuffle: true
+    batch_size_per_card: *bs
+    drop_last: true
+    num_workers: 8
+
+Eval:
+  dataset:
+    name: SimpleDataSet
+    data_dir: datasets/real_data/
+    label_file_list:
+    - datasets/real_data/val_list.txt
+    transforms:
+    - DecodeImage:
+        img_mode: BGR
+        channel_first: false
+    - MultiLabelEncode:
+        gtc_encode: NRTRLabelEncode
+    - RecResizeImg:
+        image_shape: [3, 48, 320]
+    - KeepKeys:
+        keep_keys:
+        - image
+        - label_ctc
+        - label_gtc
+        - length
+        - valid_ratio
+  loader:
+    shuffle: false
+    drop_last: false
+    batch_size_per_card: 1
+    num_workers: 4

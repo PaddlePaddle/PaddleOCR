@@ -1,0 +1,21 @@
+===========================train_params===========================
+model_name:vi_layoutxlm_ser_KL
+python:python3.7
+Global.pretrained_model:
+Global.save_inference_dir:null
+infer_model:./inference/ser_vi_layoutxlm_xfund_infer/
+infer_export:deploy/slim/quantization/quant_kl.py -c ./configs/kie/vi_layoutxlm/ser_vi_layoutxlm_xfund_zh.yml -o Train.loader.batch_size_per_card=1 Eval.loader.batch_size_per_card=1
+infer_quant:True
+inference:ppstructure/kie/predict_kie_token_ser.py  --kie_algorithm=LayoutXLM  --ser_dict_path=train_data/XFUND/class_list_xfun.txt --output=output --ocr_order_method=tb-yx
+--use_gpu:True|False
+--enable_mkldnn:False
+--cpu_threads:6
+--rec_batch_num:1
+--use_tensorrt:False
+--precision:int8
+--ser_model_dir:
+--image_dir:./ppstructure/docs/kie/input/zh_val_42.jpg
+null:null
+--benchmark:True
+null:null
+null:null

@@ -1,0 +1,116 @@
+Global:
+  use_gpu: True
+  epoch_num: 20
+  log_smooth_window: 20
+  print_batch_step: 5
+  save_model_dir: ./output/rec/parseq
+  save_epoch_step: 3
+  # evaluation is run every 5000 iterations after the 4000th iteration
+  eval_batch_step: [0, 500]
+  cal_metric_during_train: True
+  pretrained_model: 
+  checkpoints:
+  save_inference_dir:
+  use_visualdl: False
+  infer_img: doc/imgs_words_en/word_10.png
+  # for data or label process
+  character_dict_path: ppocr/utils/dict/parseq_dict.txt
+  character_type: en
+  max_text_length: 25
+  num_heads: 8
+  infer_mode: False
+  use_space_char: False
+  save_res_path: ./output/rec/predicts_parseq.txt
+
+
+Optimizer:
+  name: Adam
+  beta1: 0.9
+  beta2: 0.999
+  lr:
+    name: OneCycle
+    max_lr: 0.0007
+
+Architecture:
+  model_type: rec
+  algorithm: ParseQ
+  in_channels: 3
+  Transform:
+  Backbone:
+    name: ViTParseQ
+    img_size: [32, 128]
+    patch_size: [4, 8]
+    embed_dim: 384
+    depth: 12
+    num_heads: 6
+    mlp_ratio: 4
+    in_channels: 3
+  Head:
+    name: ParseQHead
+    # Architecture
+    max_text_length: 25
+    embed_dim: 384
+    dec_num_heads: 12
+    dec_mlp_ratio: 4
+    dec_depth: 1
+    # Training
+    perm_num: 6
+    perm_forward: true
+    perm_mirrored: true
+    dropout: 0.1
+    # Decoding mode (test)
+    decode_ar: true
+    refine_iters: 1
+
+Loss:
+  name: ParseQLoss
+
+PostProcess:
+  name: ParseQLabelDecode
+
+Metric:
+  name: RecMetric
+  main_indicator: acc
+  is_filter: True
+
+Train:
+  dataset:
+    name: LMDBDataSet
+    data_dir:
+    transforms:
+      - DecodeImage: # load image
+          img_mode: BGR
+          channel_first: False
+      - ParseQRecAug:
+          aug_type: 0 # or 1
+      - ParseQLabelEncode:
+      - SVTRRecResizeImg:
+          image_shape: [3, 32, 128]
+          padding: False
+      - KeepKeys:
+          keep_keys: ['image', 'label', 'length'] # dataloader will return list in this order
+  loader:
+    shuffle: True
+    batch_size_per_card: 192
+    drop_last: True
+    num_workers: 4
+
+Eval:
+  dataset:
+    name: LMDBDataSet
+    data_dir:
+    transforms:
+      - DecodeImage: # load image
+          img_mode: BGR
+          channel_first: False
+      - ParseQLabelEncode: # Class handling label
+      - SVTRRecResizeImg:
+          image_shape: [3, 32, 128]
+          padding: False
+      - KeepKeys:
+          keep_keys: ['image', 'label', 'length'] 
+  loader:
+    shuffle: False
+    drop_last: False
+    batch_size_per_card: 384
+    num_workers: 4

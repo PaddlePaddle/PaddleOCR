@@ -1,0 +1,23 @@
+===========================serving_params===========================
+model_name:ch_PP-OCRv2
+python:python3.7
+trans_model:-m paddle_serving_client.convert
+--det_dirname:./inference/ch_PP-OCRv2_det_infer/
+--model_filename:inference.pdmodel
+--params_filename:inference.pdiparams
+--det_serving_server:./deploy/pdserving/ppocr_det_v2_serving/
+--det_serving_client:./deploy/pdserving/ppocr_det_v2_client/
+--rec_dirname:./inference/ch_PP-OCRv2_rec_infer/
+--rec_serving_server:./deploy/pdserving/ppocr_rec_v2_serving/
+--rec_serving_client:./deploy/pdserving/ppocr_rec_v2_client/
+serving_dir:./deploy/pdserving
+web_service:web_service.py --config=config.yml --opt op.det.concurrency="1" op.rec.concurrency="1"
+op.det.local_service_conf.devices:gpu|null
+op.det.local_service_conf.use_mkldnn:False
+op.det.local_service_conf.thread_num:6
+op.det.local_service_conf.use_trt:False
+op.det.local_service_conf.precision:fp32
+op.det.local_service_conf.model_config:
+op.rec.local_service_conf.model_config:
+pipline:pipeline_http_client.py
+--image_dir:../../doc/imgs/1.jpg

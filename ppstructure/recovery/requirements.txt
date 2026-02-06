@@ -1,0 +1,4 @@
+python-docx
+beautifulsoup4
+fonttools>=4.43.0
+fire>=0.3.0

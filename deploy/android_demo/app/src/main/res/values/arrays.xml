@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="image_name_entries">
+        <item>det_0.jpg</item>
+        <item>det_90.jpg</item>
+        <item>det_180.jpg</item>
+        <item>det_270.jpg</item>
+        <item>rec_0.jpg</item>
+        <item>rec_0_180.jpg</item>
+        <item>rec_1.jpg</item>
+        <item>rec_1_180.jpg</item>
+    </string-array>
+    <string-array name="image_name_values">
+        <item>images/det_0.jpg</item>
+        <item>images/det_90.jpg</item>
+        <item>images/det_180.jpg</item>
+        <item>images/det_270.jpg</item>
+        <item>images/rec_0.jpg</item>
+        <item>images/rec_0_180.jpg</item>
+        <item>images/rec_1.jpg</item>
+        <item>images/rec_1_180.jpg</item>
+    </string-array>
+    <string-array name="cpu_thread_num_entries">
+        <item>1 threads</item>
+        <item>2 threads</item>
+        <item>4 threads</item>
+        <item>8 threads</item>
+    </string-array>
+    <string-array name="cpu_thread_num_values">
+        <item>1</item>
+        <item>2</item>
+        <item>4</item>
+        <item>8</item>
+    </string-array>
+    <string-array name="cpu_power_mode_entries">
+        <item>HIGH(only big cores)</item>
+        <item>LOW(only LITTLE cores)</item>
+        <item>FULL(all cores)</item>
+        <item>NO_BIND(depends on system)</item>
+        <item>RAND_HIGH</item>
+        <item>RAND_LOW</item>
+    </string-array>
+    <string-array name="cpu_power_mode_values">
+        <item>LITE_POWER_HIGH</item>
+        <item>LITE_POWER_LOW</item>
+        <item>LITE_POWER_FULL</item>
+        <item>LITE_POWER_NO_BIND</item>
+        <item>LITE_POWER_RAND_HIGH</item>
+        <item>LITE_POWER_RAND_LOW</item>
+    </string-array>
+    <string-array name="input_color_format_entries">
+        <item>BGR color format</item>
+        <item>RGB color format</item>
+    </string-array>
+    <string-array name="input_color_format_values">
+        <item>BGR</item>
+        <item>RGB</item>
+    </string-array>
+    <string-array name="run_Model">
+        <item>检测+分类+识别</item>
+        <item>检测+识别</item>
+        <item>分类+识别</item>
+        <item>检测</item>
+        <item>识别</item>
+        <item>分类</item>
+    </string-array>
+</resources>

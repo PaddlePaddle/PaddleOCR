@@ -1,0 +1,75 @@
+[build-system]
+requires = ["setuptools==72.1.0", "wheel", "setuptools_scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "paddleocr"
+# After each version release, the version number needs to be incremented
+dynamic = ["version"]
+description = "Awesome multilingual OCR and document parsing toolkits based on PaddlePaddle"
+authors = [
+    {name = "PaddlePaddle", email = "paddleocr@baidu.com"},
+]
+maintainers = [
+    {name = "PaddlePaddle", email = "paddleocr@baidu.com"},
+]
+readme = "README.md"
+requires-python = ">=3.8"
+keywords = [
+    "ocr",
+    "textdetection",
+    "textrecognition",
+    "paddleocr",
+    "chineseocr",
+    "pp-ocr",
+    "pp-structure",
+    "document-parsing",
+    "pdf2markdown",
+    "kie",
+    "pp-chatocr",
+    "document-translation",
+    "rag"
+]
+license = {text = "Apache License 2.0"}
+classifiers = [
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Natural Language :: Chinese (Simplified)",
+    "Programming Language :: Python :: 3",
+    "Topic :: Utilities",
+]
+dependencies = [
+    "paddlex[ocr-core]>=3.4.0,<3.5.0",
+    "PyYAML>=6",
+    "requests",
+    "typing-extensions>=4.12",
+]
+
+[project.urls]
+homepage = "https://github.com/PaddlePaddle/PaddleOCR"
+documentation = "https://github.com/PaddlePaddle/PaddleOCR/blob/main/README.md"
+repository = "https://github.com/PaddlePaddle/PaddleOCR.git"
+issues = "https://github.com/PaddlePaddle/PaddleOCR/issues"
+
+[project.scripts]
+paddleocr = "paddleocr.__main__:console_entry"
+
+[project.optional-dependencies]
+doc-parser = ["paddlex[ocr,genai-client]>=3.4.0,<3.5.0"]
+ie = ["paddlex[ie]>=3.4.0,<3.5.0"]
+trans = ["paddlex[trans]>=3.4.0,<3.5.0"]
+all = ["paddlex[ocr,genai-client,ie,trans]>=3.4.0,<3.5.0"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["paddleocr", "paddleocr.*"]
+namespaces = false
+
+[tool.setuptools_scm]
+version_scheme = 'release-branch-semver'
+
+[tool.pytest.ini_options]
+markers = [
+    "resource_intensive: mark a test as resource intensive"
+]
+addopts = "-m 'not resource_intensive'"
