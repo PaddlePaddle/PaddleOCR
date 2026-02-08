@@ -67,7 +67,7 @@ Secondly, it is recommended to ensure that a compatible version of TensorRT is i
 python -m pip install /usr/local/TensorRT-*/python/tensorrt-*-cp310-none-linux_x86_64.whl
 ```
 
-For other environments, refer to the [TensorRT documentation](https://docs.nvidia.com/deeplearning/tensorrt/archives/index.html) to install TensorRT. Here is an example:
+For other environments, refer to the [TensorRT documentation](https://docs.nvidia.com/deeplearning/tensorrt/latest/index.html) to install TensorRT. Here is an example:
 
 ```bash
 # Download the TensorRT tar file

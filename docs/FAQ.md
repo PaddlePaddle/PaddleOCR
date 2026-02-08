@@ -272,7 +272,7 @@ export FLAGS_initial_cpu_memory_in_mb=2000  # 设置初始化内存约2G左右
 #### Q：PaddleOCR是否支持在Windows或Mac系统上运行？
 
 **A**：PaddleOCR已完成Windows和Mac系统适配，运行时注意两点：
-（1）在快速安装时，如果不想安装docker，可跳过第一步，直接从第二步安装paddle开始。
+（1）在[快速安装](https://www.paddleocr.ai/main/en/quick_start.html)时，如果不想安装docker，可跳过第一步，直接从第二步安装paddle开始。
 （2）inference模型下载时，如果没有安装wget，可直接点击模型链接或将链接地址复制到浏览器进行下载，并解压放置到相应目录。
 
 #### Q：PaddleOCR安装失败，提示依赖冲突怎么办？
