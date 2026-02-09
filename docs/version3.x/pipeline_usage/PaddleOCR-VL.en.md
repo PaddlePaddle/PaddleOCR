@@ -40,7 +40,7 @@ For some inference hardware, you may need to refer to other environment configur
 
 ## Inference Device Support for PaddleOCR-VL
 
-Currently, PaddleOCR-VL offers five inference methods, with varying levels of support for different inference devices. Please confirm that your inference device meets the requirements in the table below before proceeding with PaddleOCR-VL deployment:
+Currently, PaddleOCR-VL offers six inference methods, with varying levels of support for different inference devices. Please confirm that your inference device meets the requirements in the table below before proceeding with PaddleOCR-VL deployment:
 
 <table border="1">
 <thead>
@@ -112,6 +112,17 @@ Currently, PaddleOCR-VL offers five inference methods, with varying levels of su
     <td>❌</td>
     <td>✅</td>
   </tr>
+  <tr style="text-align: center;">
+    <td>PaddlePaddle + llama.cpp</td>
+    <td>✅</td>
+    <td>🚧</td>
+    <td>🚧</td>
+    <td>🚧</td>
+    <td>🚧</td>
+    <td>🚧</td>
+    <td>✅</td>
+    <td>🚧</td>
+  </tr>
 </tbody>
 </table>
 
@@ -133,7 +144,7 @@ Since different hardware requires different dependencies, if your hardware meets
 
 | Hardware Type  | Environment Configuration Tutorial                                                                                           |
 |----------------|------------------------------------------------------------------------------------------------------------------------------|
-| x64 CPU        | This tutorial                                                                                                                |
+| x64 CPU        | This tutorial (Dependencies must be installed manually for now)                                                                                                                |
 | NVIDIA GPU     | - NVIDIA Blackwell architecture GPU (e.g., RTX 50 series) refer to [PaddleOCR-VL NVIDIA Blackwell Architecture GPU Environment Configuration Tutorial](./PaddleOCR-VL-NVIDIA-Blackwell.en.md) <br/> - Other NVIDIA GPUs refer to this tutorial |
 | KUNLUNXIN XPU  | [PaddleOCR-VL KUNLUNXIN XPU Environment Configuration Tutorial](./PaddleOCR-VL-KUNLUNXIN-XPU.en.md)                                              |
 | HYGON DCU      | [PaddleOCR-VL HYGON DCU Environment Configuration Tutorial](./PaddleOCR-VL-HYGON-DCU.en.md)                                              |
@@ -1492,9 +1503,20 @@ The inference performance under default configurations is not fully optimized an
 
 There are two methods to launch the VLM inference service; choose either one:
 
-- Method 1: Launch the service using the official Docker image.
+- Method 1: Launch the service using the official Docker image. Currently supported:
+    - FastDeploy
+    - vLLM
 
-- Method 2: Launch the service by manually installing dependencies via the PaddleOCR CLI.
+- Method 2: Launch the service by manually installing dependencies via the PaddleOCR CLI. Currently supported:
+    - FastDeploy
+    - vLLM
+    - SGLang
+
+- Method 3: Launch service directly using inference acceleration frameworks. Currently supported:
+    - FastDeploy
+    - vLLM
+    - MLX-VLM
+    - llama.cpp
 
 **We strongly recommend using the Docker image to minimize potential environment-related issues.**
 
@@ -1552,6 +1574,8 @@ docker run \
 
 #### 3.1.2 Method 2: Installation and Usage via PaddleOCR CLI
 
+**The PaddleOCR CLI has already resolved complex version compatibility issues. Instead of spending time studying framework documentation, you can install the necessary environment with a single command.**
+
 Due to potential dependency conflicts between inference acceleration frameworks and PaddlePaddle, it is recommended to install them in a virtual environment:
 
 ```shell
@@ -1590,13 +1614,34 @@ The parameters supported by this command are as follows:
 | `--backend`        | Backend name, i.e., the name of the inference acceleration framework used; options are `vllm` or `sglang` |
 | `--backend_config` | Can specify a YAML file containing backend configurations      |
 
+#### 3.1.3 Launch Service Directly Using Inference Acceleration Frameworks
+
+**If you need to install a custom version of an inference framework and launch the service natively, please refer to the following guidelines. Please note that when launching natively, the pre-configured performance tuning parameters provided by PaddleOCR will not be applied.**
+
+- FastDeploy: [Refer to this document](https://paddlepaddle.github.io/FastDeploy/best_practices/PaddleOCR-VL-0.9B/)
+- vLLM: [Refer to this document](https://docs.vllm.ai/projects/recipes/en/latest/PaddlePaddle/PaddleOCR-VL.html)
+- MLX-VLM: [Refer to this document](./PaddleOCR-VL-Apple-Silicon.en.md)
+- llama.cpp:
+    1. Install llama.cpp by referring to the `Quick start` section in the [llama.cpp github](https://github.com/ggml-org/llama.cpp).
+    2. Download the model files in gguf format: [megemini/PaddleOCR-VL-1.5-GGUF](https://modelscope.cn/models/megemini/PaddleOCR-VL-1.5-GGUF/files) or [megemini/PaddleOCR-VL-GGUF](https://modelscope.cn/models/megemini/PaddleOCR-VL-GGUF/files).
+    3. Execute the following command to start the inference service. For an introduction to the parameters, please refer to [LLaMA.cpp HTTP Server](https://github.com/ggml-org/llama.cpp/blob/master/tools/server/README.md):
+
+        ```shell
+        ./build/bin/llama-server \
+          -m /path/to/PaddleOCR-VL-1.5-GGUF.gguf \
+          --mmproj /path/to/PaddleOCR-VL-1.5-GGUF-mmproj.gguf  \
+          --port 8111  \
+          --host 0.0.0.0 \
+          --temp 0
+        ```
+
 ### 3.2 Client Usage Methods
 
 After launching the VLM inference service, the client can call the service through PaddleOCR. **Please note that because the client needs to call the layout detection model, it is still recommended to run the client on GPU or other acceleration devices to achieve more stable and efficient performance. Please refer to Section 1 for the client-side environment configuration. The configuration described in Section 3.1 applies only to starting the service and is not applicable to the client.**
 
 #### 3.2.1 CLI Invocation
 
-Specify the backend type (`vllm-server` or `sglang-server`) using `--vl_rec_backend` and the service address using `--vl_rec_server_url`, for example:
+Specify the backend type (`vllm-server`, `sglang-server`, `fastdeploy-server`, `mlx-vlm-server` or `llama-cpp-server`) using `--vl_rec_backend` and the service address using `--vl_rec_server_url`, for example:
 
 ```shell
 paddleocr doc_parser --input paddleocr_vl_demo.png --vl_rec_backend vllm-server --vl_rec_server_url http://localhost:8118/v1
@@ -1640,7 +1685,7 @@ paddleocr doc_parser \
 
 #### 3.2.2 Python API Invocation
 
-When creating a `PaddleOCRVL` object, pass the `vl_rec_backend` and `vl_rec_server_url` parameters to specify the backend type and the service endpoint, respectively:
+When creating a `PaddleOCRVL` object, specify the backend type (`vllm-server`, `sglang-server`, `fastdeploy-server`, `mlx-vlm-server` or `llama-cpp-server`) using `vl_rec_backend` and the service address using `vl_rec_server_url`, for example:
 
 ```python
 pipeline = PaddleOCRVL(vl_rec_backend="vllm-server", vl_rec_server_url="http://localhost:8118/v1")

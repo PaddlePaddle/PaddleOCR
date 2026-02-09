@@ -1622,7 +1622,7 @@ paddleocr genai_server --model_name PaddleOCR-VL-1.5-0.9B --backend vllm --port 
 
 #### 3.2.1 CLI 调用
 
-可通过 `--vl_rec_backend` 指定后端类型（`vllm-server`、`sglang-server`、`fastdeploy-server`、`llama-cpp-server` 或 `mlx-vlm-server`），通过 `--vl_rec_server_url` 指定服务地址，例如：
+可通过 `--vl_rec_backend` 指定后端类型（`vllm-server`、`sglang-server`、`fastdeploy-server`、`mlx-vlm-server` 或 `llama-cpp-server`），通过 `--vl_rec_server_url` 指定服务地址，例如：
 
 ```shell
 paddleocr doc_parser --input paddleocr_vl_demo.png --vl_rec_backend vllm-server --vl_rec_server_url http://localhost:8118/v1
@@ -1666,7 +1666,7 @@ paddleocr doc_parser \
 
 #### 3.2.2 Python API 调用
 
-创建 `PaddleOCRVL` 对象时传入 `vl_rec_backend` 指定后端类型（`vllm-server`、`sglang-server`、`fastdeploy-server`、`llama-cpp-server` 或 `mlx-vlm-server`）， `vl_rec_server_url` 指定服务地址，例如：
+创建 `PaddleOCRVL` 对象时传入 `vl_rec_backend` 指定后端类型（`vllm-server`、`sglang-server`、`fastdeploy-server`、`mlx-vlm-server` 或 `llama-cpp-server`）， `vl_rec_server_url` 指定服务地址，例如：
 
 ```python
 pipeline = PaddleOCRVL(vl_rec_backend="vllm-server", vl_rec_server_url="http://localhost:8118/v1")
