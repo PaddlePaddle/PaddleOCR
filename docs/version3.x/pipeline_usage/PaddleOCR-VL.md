@@ -40,7 +40,7 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
 
 ## PaddleOCR-VL 对推理设备的支持情况
 
-目前 PaddleOCR-VL 有五种推理方式，支持的推理设备不完全相同，请确认您的推理设备是否满足下表要求再进行 PaddleOCR-VL 的推理部署：
+目前 PaddleOCR-VL 有六种推理方式，支持的推理设备不完全相同，请确认您的推理设备是否满足下表要求再进行 PaddleOCR-VL 的推理部署：
 
 <table border="1">
 <thead>
@@ -112,6 +112,17 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
     <td>❌</td>
     <td>✅</td>
   </tr>
+  <tr style="text-align: center;">
+    <td>PaddlePaddle + llama.cpp</td>
+    <td>✅</td>
+    <td>🚧</td>
+    <td>🚧</td>
+    <td>🚧</td>
+    <td>🚧</td>
+    <td>🚧</td>
+    <td>✅</td>
+    <td>🚧</td>
+  </tr>
 </tbody>
 </table>
 
@@ -133,7 +144,7 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
 
 | 硬件类型         | 环境配置教程 |
 |-----------------|--------------------------------------------------|
-| x64 CPU         | 本教程                                           |
+| x64 CPU         | 本教程（当前仅支持手动安装依赖） |
 | 英伟达 GPU      | - NVIDIA Blackwell 架构 GPU（如RTX 50 系）参考 [PaddleOCR-VL NVIDIA Blackwell 架构 GPU 环境配置教程](./PaddleOCR-VL-NVIDIA-Blackwell.md) <br/> - 其他 NVIDIA GPU 参考本教程 |
 | 昆仑芯 XPU      | [PaddleOCR-VL 昆仑芯 XPU 环境配置教程](./PaddleOCR-VL-KUNLUNXIN-XPU.md) |
 | 海光 DCU        | [PaddleOCR-VL 海光 DCU 环境配置教程](./PaddleOCR-VL-HYGON-DCU.md) |
