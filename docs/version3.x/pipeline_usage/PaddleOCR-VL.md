@@ -1461,9 +1461,20 @@ output = pipeline.predict(["imgs/file1.png", "imgs/file2.png", "imgs/file3.png"]
 
 启动 VLM 推理服务有以下两种方式，任选一种即可：
 
-- 方法一：使用官方 Docker 镜像启动服务。
+- 方法一：使用官方 Docker 镜像启动服务，目前支持：
+    - FastDeploy
+    - vLLM
 
-- 方法二：通过 PaddleOCR CLI 手动安装依赖后启动服务。
+- 方法二：通过 PaddleOCR CLI 手动安装依赖后启动服务，目前支持：
+    - FastDeploy
+    - vLLM
+    - SGLang
+
+- 方法三：通过推理框架安装方式安装依赖后启动服务，目前支持：
+    - FastDeploy
+    - vLLM
+    - MLX-VLM
+    - llama.cpp
 
 **我们强烈推荐采用 Docker 镜像的方式，以最大程度减少可能出现的环境问题。**
 
@@ -1521,6 +1532,8 @@ docker run \
 
 #### 3.1.2 方法二：通过 PaddleOCR CLI 安装和使用
 
+**PaddleOCR CLI 已经为您解决了复杂的版本兼容性问题。您无需花费时间研究推理框架的文档，只需一条简单的命令即可安装推理框架所需的依赖环境。**
+
 由于推理加速框架可能与飞桨框架存在依赖冲突，建议在虚拟环境中安装：
 
 ```shell
@@ -1569,13 +1582,36 @@ paddleocr genai_server --model_name PaddleOCR-VL-1.5-0.9B --backend vllm --port 
 | `--backend`        | 后端名称，即使用的推理加速框架名称，可选 `vllm` 或 `sglang` |
 | `--backend_config` | 可指定 YAML 文件，包含后端配置        |
 
+#### 3.1.3 方法三：通过推理框架安装方式安装和使用
+
+**如果您更习惯使用推理框架的原生构建流程，或者需要进行深度的自定义配置，可参考以下文档或流程完成推理框架的安装。**
+
+- FastDeploy：[参考此文档](https://paddlepaddle.github.io/FastDeploy/zh/best_practices/PaddleOCR-VL-0.9B/)
+- vLLM：[参考此文档](https://docs.vllm.ai/projects/recipes/en/latest/PaddlePaddle/PaddleOCR-VL.html)
+- MLX-VLM：[参考此文档](./PaddleOCR-VL-Apple-Silicon.md)
+- llama.cpp：，
+    1. 参考 [llama.cpp github](https://github.com/ggml-org/llama.cpp) 中的 `Quick start` 安装 llama.cpp。
+    2. 下载 gguf 格式的模型文件：[megemini/PaddleOCR-VL-1.5-GGUF](https://modelscope.cn/models/megemini/PaddleOCR-VL-1.5-GGUF/files) 或 [megemini/PaddleOCR-VL-GGUF](https://modelscope.cn/models/megemini/PaddleOCR-VL-GGUF/files)。
+    3. 执行以下命令启动推理服务：
+      ```shell
+      
+      ./build/bin/llama-server \
+        -m /path/to/PaddleOCR-VL-1.5.gguf \
+        --mmproj /path/to/PaddleOCR-VL-1.5-mmproj.gguf  \
+        --port 8111  \
+        --host 0.0.0.0 \
+        --temp 0
+      ```
+
+</details>
+
 ### 3.2 客户端使用方法
 
 启动 VLM 推理服务后，客户端即可通过 PaddleOCR 调用该服务。**请注意，由于客户端需要调用版面检测模型，仍建议在 GPU 等加速设备上运行客户端，以获得更稳定和高效的性能。客户端环境配置请参考第 1 节，3.1 节介绍的环境配置仅适用于启动服务，不适用于客户端。**
 
 #### 3.2.1 CLI 调用
 
-可通过 `--vl_rec_backend` 指定后端类型（`vllm-server` 或 `sglang-server`），通过 `--vl_rec_server_url` 指定服务地址，例如：
+可通过 `--vl_rec_backend` 指定后端类型（`vllm-server`、`sglang-server`、`fastdeploy-server` 或 `llama-cpp-server`），通过 `--vl_rec_server_url` 指定服务地址，例如：
 
 ```shell
 paddleocr doc_parser --input paddleocr_vl_demo.png --vl_rec_backend vllm-server --vl_rec_server_url http://localhost:8118/v1
@@ -1619,7 +1655,7 @@ paddleocr doc_parser \
 
 #### 3.2.2 Python API 调用
 
-创建 `PaddleOCRVL` 对象时传入 `vl_rec_backend` 和 `vl_rec_server_url` 参数，分别指定后端类型和服务地址：
+创建 `PaddleOCRVL` 对象时传入 `vl_rec_backend` 指定后端类型（`vllm-server`、`sglang-server`、`fastdeploy-server` 或 `llama-cpp-server`）， `vl_rec_server_url` 指定服务地址，例如：
 
 ```python
 pipeline = PaddleOCRVL(vl_rec_backend="vllm-server", vl_rec_server_url="http://localhost:8118/v1")
