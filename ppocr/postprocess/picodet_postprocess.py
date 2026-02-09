@@ -26,6 +26,10 @@ def hard_nms(box_scores, iou_threshold, top_k=-1, candidate_size=200):
     Returns:
          picked: a list of indexes of the kept boxes
     """
+    if box_scores.size == 0:
+        return np.empty((0, box_scores.shape[-1] if box_scores.ndim == 2 else 0))
+    if box_scores.ndim == 1:
+        box_scores = box_scores.reshape(1, -1)
     scores = box_scores[:, -1]
     boxes = box_scores[:, :-1]
     picked = []
@@ -238,6 +242,8 @@ class PicoDetPostProcess(object):
 
             else:
                 picked_box_probs = np.concatenate(picked_box_probs)
+                if picked_box_probs.ndim == 1:
+                    picked_box_probs = picked_box_probs.reshape(1, -1)
 
                 # resize output boxes
                 picked_box_probs[:, :4] = self.warp_boxes(
