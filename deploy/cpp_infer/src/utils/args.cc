@@ -54,7 +54,7 @@ DEFINE_string(text_det_limit_side_len, "64",
               "text detection model.");
 DEFINE_string(text_det_limit_type, "min",
               "This determines how the side length limit is applied to the "
-              "input image before feeding it into the text deteciton model.");
+              "input image before feeding it into the text detection model.");
 DEFINE_string(text_det_thresh, "0.3",
               "Detection pixel threshold for the text detection model. Pixels "
               "with scores greater than this threshold in the output "
