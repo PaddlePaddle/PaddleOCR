@@ -12,6 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from ._utils.langchain_shim import apply_langchain_shim
+apply_langchain_shim()
+
 from paddlex.inference.utils.benchmark import benchmark
 
 from ._models import (
