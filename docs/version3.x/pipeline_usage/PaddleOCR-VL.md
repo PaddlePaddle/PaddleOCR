@@ -1605,15 +1605,14 @@ paddleocr genai_server --model_name PaddleOCR-VL-1.5-0.9B --backend vllm --port 
     2. 下载 gguf 格式的模型文件：[megemini/PaddleOCR-VL-1.5-GGUF](https://modelscope.cn/models/megemini/PaddleOCR-VL-1.5-GGUF/files) 或 [megemini/PaddleOCR-VL-GGUF](https://modelscope.cn/models/megemini/PaddleOCR-VL-GGUF/files)。
     3. 执行以下命令启动推理服务：
 
-      ```shell
-      
-      ./build/bin/llama-server \
-        -m /path/to/PaddleOCR-VL-1.5.gguf \
-        --mmproj /path/to/PaddleOCR-VL-1.5-mmproj.gguf  \
-        --port 8111  \
-        --host 0.0.0.0 \
-        --temp 0
-      ```
+        ```shell
+        ./build/bin/llama-server \
+          -m /path/to/PaddleOCR-VL-1.5.gguf \
+          --mmproj /path/to/PaddleOCR-VL-1.5-mmproj.gguf  \
+          --port 8111  \
+          --host 0.0.0.0 \
+          --temp 0
+        ```
 
 </details>
 
