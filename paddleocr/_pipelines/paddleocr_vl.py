@@ -30,6 +30,7 @@ _SUPPORTED_VL_BACKENDS = [
     "sglang-server",
     "fastdeploy-server",
     "mlx-vlm-server",
+    "llama-cpp-server",
 ]
 
 
