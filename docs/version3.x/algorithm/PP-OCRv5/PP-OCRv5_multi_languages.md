@@ -198,7 +198,7 @@ for res in result:
 | 加利西亚文| Galician | gl | | 卢森堡文 | Luxembourgish | lb |
 | 罗曼什文 | Romansh | rm | | 加泰罗尼亚文 | Catalan | ca |
 | 克丘亚文 | Quechua |qu | | 泰卢固文 |Telugu |te |
-| 塞尔维亚语（西里尔字母） | Serbian (Cyrillic) | sr | | 保加利亚文 | Bulgarian | bg |
+| 塞尔维亚语（西里尔字母） | Serbian (Cyrillic) | rs_cyrillic | | 保加利亚文 | Bulgarian | bg |
 | 蒙古文 | Mongolian | mn | | 阿布哈兹文 | Abkhaz | ab |
 | 阿迪赫文 | Adyghe | ady | | 卡巴尔达文 | Kabardian | kbd |
 | 阿瓦尔文 | Avar | av | | 达尔格瓦文 | Dargwa | dar |
