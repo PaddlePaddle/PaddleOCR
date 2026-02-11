@@ -1659,15 +1659,14 @@ paddleocr doc_parser \
     --vl_rec_api_model_name 'PaddlePaddle/PaddleOCR-VL-1.5'
 ```
 
-硅基流动平台（目前只支持 PaddleOCR-VL-0.9B，即 v1 版本模型）：
+硅基流动平台：
 
 ```shell
 paddleocr doc_parser \
     --input paddleocr_vl_demo.png \
-    --pipeline_version v1 \
     --vl_rec_backend vllm-server \
     --vl_rec_server_url https://api.siliconflow.cn/v1 \
-    --vl_rec_api_model_name 'PaddlePaddle/PaddleOCR-VL' \
+    --vl_rec_api_model_name 'PaddlePaddle/PaddleOCR-VL-1.5' \
     --vl_rec_api_key xxxxxx
 ```
 
@@ -1703,14 +1702,13 @@ pipeline = PaddleOCRVL(
 )
 ```
 
-硅基流动平台（目前只支持 PaddleOCR-VL-0.9B，即 v1 版本模型）：
+硅基流动平台：
 
 ```python
 pipeline = PaddleOCRVL(
-    pipeline_version="v1",
     vl_rec_backend="vllm-server", 
     vl_rec_server_url="https://api.siliconflow.cn/v1",
-    vl_rec_api_model_name="PaddlePaddle/PaddleOCR-VL",
+    vl_rec_api_model_name="PaddlePaddle/PaddleOCR-VL-1.5",
     vl_rec_api_key="xxxxxx",
 )
 ```

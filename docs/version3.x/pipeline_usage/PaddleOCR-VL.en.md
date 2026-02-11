@@ -1607,15 +1607,14 @@ paddleocr doc_parser \
     --vl_rec_api_model_name 'PaddlePaddle/PaddleOCR-VL-1.5'
 ```
 
-SiliconFlow platform (currently only PaddleOCR-VL-0.9B is supported, i.e., the v1 model):
+SiliconFlow platform:
 
 ```shell
 paddleocr doc_parser \
     --input paddleocr_vl_demo.png \
-    --pipeline_version v1 \
     --vl_rec_backend vllm-server \
     --vl_rec_server_url https://api.siliconflow.cn/v1 \
-    --vl_rec_api_model_name 'PaddlePaddle/PaddleOCR-VL' \
+    --vl_rec_api_model_name 'PaddlePaddle/PaddleOCR-VL-1.5' \
     --vl_rec_api_key xxxxxx
 ```
 
@@ -1655,10 +1654,9 @@ SiliconFlow platform (currently only PaddleOCR-VL-0.9B is supported, i.e., the v
 
 ```python
 pipeline = PaddleOCRVL(
-    pipeline_version="v1",
     vl_rec_backend="vllm-server", 
     vl_rec_server_url="https://api.siliconflow.cn/v1",
-    vl_rec_api_model_name="PaddlePaddle/PaddleOCR-VL",
+    vl_rec_api_model_name="PaddlePaddle/PaddleOCR-VL-1.5",
     vl_rec_api_key="xxxxxx",
 )
 ```
