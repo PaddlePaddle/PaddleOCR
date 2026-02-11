@@ -2064,11 +2064,7 @@ INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
 <tr>
 <td><code>file</code></td>
 <td><code>string</code></td>
-<td>服务器可访问的图像文件或PDF文件的URL，或上述类型文件内容的Base64编码结果。默认对于超过10页的PDF文件，只有前10页的内容会被处理。<br /> 要解除页数限制，请在产线配置文件中添加以下配置：
-<pre><code>Serving:
-  extra:
-    max_num_input_imgs: null
-</code></pre>
+<td>服务器可访问的图像文件或PDF文件的URL，或上述类型文件内容的Base64编码结果。
 </td>
 <td>是</td>
 </tr>
@@ -3059,17 +3055,17 @@ Serving:
 
 有关 AK/SK 获取等更多信息，请参考 [百度智能云官方文档](https://cloud.baidu.com/doc/BOS/index.html)。
 
-**修改 PDF 解析页数限制**
+**限制 PDF 解析页数**
 
-出于性能考虑，服务默认仅处理接收到的 PDF 文件的前 10 页。如需调整页数限制，可在产线配置文件中添加如下配置（`Serving` 为顶层字段）：
+服务默认处理完整的 PDF 文件。在实际生产环境中，若 PDF 页数过多，可能会影响系统稳定性，导致处理超时或资源占用过高。为保障服务的稳定运行，建议根据实际情况合理设置页数上限。可在产线配置文件中添加如下配置（`Serving` 为顶层字段）：
 
 ```yaml
 Serving:
   extra:
-    max_num_input_imgs: <新的页数限制，例如 100>
+    max_num_input_imgs: <页数限制，例如 100>
 ```
 
-将 `max_num_input_imgs` 设置为 `null` 可解除页数限制。
+将 `max_num_input_imgs` 设置为 `null` 时，不对 PDF 页数进行限制。
 
 #### 4.4.3 应用配置文件
 
