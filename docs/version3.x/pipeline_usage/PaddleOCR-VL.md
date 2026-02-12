@@ -3046,6 +3046,7 @@ Serving:
       sk: xxx
       key_prefix: deploy
     return_img_urls: True
+    url_expires_in: 3600
 ```
 
 目前支持将生成的图像存储至百度智能云对象存储（BOS）并返回 URL。相关参数说明如下：
@@ -3056,6 +3057,7 @@ Serving:
 - `bucket_name`：存储空间名称，必须配置。
 - `key_prefix`：Object key 的统一前缀。
 - `connection_timeout_in_mills`：请求超时时间（单位：毫秒）。
+- `url_expires_in`：URL 有效期（单位：秒）。`-1` 表示永不过期。
 
 有关 AK/SK 获取等更多信息，请参考 [百度智能云官方文档](https://cloud.baidu.com/doc/BOS/index.html)。
 

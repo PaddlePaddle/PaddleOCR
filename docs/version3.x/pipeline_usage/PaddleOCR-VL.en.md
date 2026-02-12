@@ -2992,6 +2992,7 @@ Serving:
       sk: xxx
       key_prefix: deploy
     return_img_urls: True
+    url_expires_in: 3600
 ```
 
 Currently, storing generated images in Baidu Intelligent Cloud Object Storage (BOS) and returning URLs is supported. The parameters are described as follows:
@@ -3002,6 +3003,7 @@ Currently, storing generated images in Baidu Intelligent Cloud Object Storage (B
 - `bucket_name`: Storage bucket name (required).
 - `key_prefix`: Unified prefix for object keys.
 - `connection_timeout_in_mills`: Request timeout in milliseconds.
+- `url_expires_in`: URL validity period (in seconds). `-1` indicates it never expires.
 
 For more information on obtaining AK/SK and other details, refer to the [Baidu Intelligent Cloud Official Documentation](https://cloud.baidu.com/doc/BOS/index.html).
 
