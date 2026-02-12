@@ -41,9 +41,9 @@ HOW TO GET YOUR API CREDENTIALS
 
 1. Visit: https://paddleocr.com
 2. Log in with your Baidu account
-3. Click "API" in the navigation menu
-4. Select your model and copy the API URL
-5. Click your avatar -> "Access Token" -> Copy the token
+3. Open your model's API call example page
+4. Copy the API URL from the example request
+5. Copy your access token from the same API setup page
 
 Then configure:
   python skills/paddleocr-doc-parsing/scripts/configure.py
@@ -58,7 +58,9 @@ Or manually create .env file in project root:
 
 
 def main():
-    parser = argparse.ArgumentParser(description="PaddleOCR Document Parsing smoke test")
+    parser = argparse.ArgumentParser(
+        description="PaddleOCR Document Parsing smoke test"
+    )
     parser.add_argument("--test-url", help="Optional: Custom document URL for testing")
     parser.add_argument(
         "--skip-api-test",
@@ -121,7 +123,8 @@ def main():
 
     # Use provided test URL or default
     test_url = (
-        args.test_url or "https://paddleocr.bj.bcebos.com/dataset/document_layout_sample.png"
+        args.test_url
+        or "https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/pp_structure_v3_demo.png"
     )
     print(f"  Test document: {test_url}")
 
@@ -134,7 +137,7 @@ def main():
         print(f"\n  X API call failed: {error.get('message')}")
         if "Authentication" in error.get("message", ""):
             print("\n  Hint: Check if your token is correct and not expired.")
-            print("        Get a new token at: https://paddleocr.com -> Avatar -> Access Token")
+            print("        Get a new token from your PaddleOCR API management page.")
         return 1
 
     print("  + API call successful!")
@@ -152,7 +155,9 @@ def main():
     print("=" * 60)
     print("\nNext steps:")
     print('  python skills/paddleocr-doc-parsing/scripts/vl_caller.py --file-url "URL"')
-    print('  python skills/paddleocr-doc-parsing/scripts/vl_caller.py --file-path "doc.pdf"')
+    print(
+        '  python skills/paddleocr-doc-parsing/scripts/vl_caller.py --file-path "doc.pdf"'
+    )
 
     return 0
 

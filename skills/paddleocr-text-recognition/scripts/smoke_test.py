@@ -58,7 +58,9 @@ Or manually create .env file in project root:
 
 
 def main():
-    parser = argparse.ArgumentParser(description="PaddleOCR Text Recognition smoke test")
+    parser = argparse.ArgumentParser(
+        description="PaddleOCR Text Recognition smoke test"
+    )
     parser.add_argument("--test-url", help="Optional: Custom image URL for testing")
     parser.add_argument(
         "--skip-api-test",
@@ -135,7 +137,9 @@ def main():
         print(f"\n  X API call failed: {error.get('message')}")
         if "Authentication" in error.get("message", ""):
             print("\n  Hint: Check if your token is correct and not expired.")
-            print("        Get a new token at: https://paddleocr.com -> Avatar -> Access Token")
+            print(
+                "        Get a new token at: https://paddleocr.com -> Avatar -> Access Token"
+            )
         return 1
 
     print("  + API call successful!")

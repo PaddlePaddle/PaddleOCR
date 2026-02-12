@@ -32,7 +32,24 @@ import sys
 from pathlib import Path
 
 
-def save_config(api_url: str, token: str, project_root: Path, quiet: bool = False) -> bool:
+def _read_env_config(env_file: Path) -> dict:
+    """Read key/value pairs from .env file."""
+    config = {}
+    if not env_file.exists():
+        return config
+
+    with open(env_file, "r", encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if line and not line.startswith("#") and "=" in line:
+                key, value = line.split("=", 1)
+                config[key.strip()] = value.strip()
+    return config
+
+
+def save_config(
+    api_url: str, token: str, project_root: Path, quiet: bool = False
+) -> bool:
     """
     Save configuration to .env file
 
@@ -57,17 +74,15 @@ def save_config(api_url: str, token: str, project_root: Path, quiet: bool = Fals
                 print("Configuration cancelled")
                 return False
 
-        with open(env_file, "r", encoding="utf-8") as f:
-            for line in f:
-                line = line.strip()
-                if line and not line.startswith("#") and "=" in line:
-                    key, value = line.split("=", 1)
-                    key = key.strip()
-                    if key not in [
-                        "PADDLEOCR_DOC_PARSING_API_URL",
-                        "PADDLEOCR_ACCESS_TOKEN",
-                    ]:
-                        existing_config[key] = value.strip()
+        existing_config = {
+            key: value
+            for key, value in _read_env_config(env_file).items()
+            if key
+            not in [
+                "PADDLEOCR_DOC_PARSING_API_URL",
+                "PADDLEOCR_ACCESS_TOKEN",
+            ]
+        }
 
     # Write to .env file
     try:
@@ -119,7 +134,9 @@ Examples:
 Get your API credentials at: https://paddleocr.com
         """,
     )
-    parser.add_argument("--api-url", help="Document parsing API URL (non-interactive mode)")
+    parser.add_argument(
+        "--api-url", help="Document parsing API URL (non-interactive mode)"
+    )
     parser.add_argument("--token", help="Access token (non-interactive mode)")
     parser.add_argument("--quiet", action="store_true", help="Suppress output messages")
 
@@ -148,7 +165,9 @@ Get your API credentials at: https://paddleocr.com
             # Save configuration (CLI mode always overwrites without asking)
             if save_config(api_url, token, project_root, quiet=True):
                 if not args.quiet:
-                    masked_token = token[:8] + "..." + token[-4:] if len(token) > 12 else "***"
+                    masked_token = (
+                        token[:8] + "..." + token[-4:] if len(token) > 12 else "***"
+                    )
                     print("\n[OK] Configuration complete!")
                     print(f"  PADDLEOCR_DOC_PARSING_API_URL: {api_url}")
                     print(f"  PADDLEOCR_ACCESS_TOKEN: {masked_token}")
@@ -182,12 +201,7 @@ Get your API credentials at: https://paddleocr.com
     existing_config = {}
     if env_file.exists():
         print("Found existing .env file, loading current values...")
-        with open(env_file, "r", encoding="utf-8") as f:
-            for line in f:
-                line = line.strip()
-                if line and not line.startswith("#") and "=" in line:
-                    key, value = line.split("=", 1)
-                    existing_config[key.strip()] = value.strip()
+        existing_config = _read_env_config(env_file)
         print()
 
     # Get current values
@@ -219,7 +233,9 @@ Get your API credentials at: https://paddleocr.com
     print("2. PADDLEOCR_ACCESS_TOKEN - Your access token")
     if current_token:
         masked_token = (
-            current_token[:8] + "..." + current_token[-4:] if len(current_token) > 12 else "***"
+            current_token[:8] + "..." + current_token[-4:]
+            if len(current_token) > 12
+            else "***"
         )
         print(f"   Current: {masked_token}")
 

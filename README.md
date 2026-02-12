@@ -1,7 +1,7 @@
 # PaddleOCR-SKILLs
 
 <p align="center">
-  <strong>Multi-Model OCR Skills Suite for Claude Code</strong>
+  <strong>Multi-Model OCR Skills Suite for AI Agents</strong>
 </p>
 
 <p align="center">
@@ -11,7 +11,7 @@
 <p align="center">
   <img src="https://img.shields.io/badge/python-3.8+-blue.svg" alt="Python">
   <img src="https://img.shields.io/badge/license-MIT-green.svg" alt="License">
-  <img src="https://img.shields.io/badge/Claude%20Code-Skills-purple.svg" alt="Claude Code Skills">
+  <img src="https://img.shields.io/badge/AI%20Agent-Skills-purple.svg" alt="AI Agent Skills">
 </p>
 
 <p align="center">
@@ -51,7 +51,7 @@ This repository provides two complementary OCR skills for different document pro
 
 ## 📦 Installation
 
-> **Prerequisites**: Node.js >= 14, Python 3.8+, [Claude Code CLI](https://claude.ai/code)
+> **Prerequisites**: Node.js >= 14, Python 3.8+, a compatible AI agent CLI
 
 ### Install Skills
 
@@ -69,7 +69,7 @@ npx skills add Aidenwu0209/PaddleOCR-Skills --skill paddleocr-text-recognition
 npx skills add Aidenwu0209/PaddleOCR-Skills --skill paddleocr-doc-parsing
 ```
 
-After installation, the installer will prompt you to select which AI agents to install to (Claude Code, Cursor, Cline, etc.).
+After installation, the installer will prompt you to select which AI agents to install to (Codex, Cursor, Cline, etc.).
 
 ### Configure API Credentials
 
@@ -77,12 +77,12 @@ Get your API credentials at [Paddle AI Studio](https://paddleocr.com), then conf
 
 **paddleocr-text-recognition:**
 ```bash
-python ~/.claude/skills/paddleocr-text-recognition/scripts/configure.py
+python <skills-dir>/paddleocr-text-recognition/scripts/configure.py
 ```
 
 **paddleocr-doc-parsing:**
 ```bash
-python ~/.claude/skills/paddleocr-doc-parsing/scripts/configure.py
+python <skills-dir>/paddleocr-doc-parsing/scripts/configure.py
 ```
 
 <details>
@@ -112,12 +112,12 @@ After installation, just describe your need in natural language:
 **Simple text extraction**:
 > "Extract text from this image: screenshot.png"
 
-Claude will use **paddleocr-text-recognition** for fast text recognition.
+Your AI agent will use **paddleocr-text-recognition** for fast text recognition.
 
 **Complex document parsing**:
 > "Parse this invoice table: invoice.pdf"
 
-Claude will use **paddleocr-doc-parsing** for structured data extraction.
+Your AI agent will use **paddleocr-doc-parsing** for structured data extraction.
 
 ---
 
@@ -142,12 +142,10 @@ Claude will use **paddleocr-doc-parsing** for structured data extraction.
 ### paddleocr-text-recognition Documentation
 - [Skill Guide](./skills/paddleocr-text-recognition/SKILL.md) - How to use paddleocr-text-recognition
 - [Output Schema](./skills/paddleocr-text-recognition/references/output_schema.md) - Output format specification
-- [Provider API](./skills/paddleocr-text-recognition/references/provider_api.md) - API contract details
 
 ### paddleocr-doc-parsing Documentation
 - [Skill Guide](./skills/paddleocr-doc-parsing/SKILL.md) - How to use paddleocr-doc-parsing
 - [Output Schema](./skills/paddleocr-doc-parsing/references/output_schema.md) - Output format specification
-- [Provider API](./skills/paddleocr-doc-parsing/references/provider_api.md) - API contract details
 
 > **Note**: Model versions and capabilities are determined by the API endpoint. Get the latest API at [Paddle AI Studio](https://paddleocr.com).
 
@@ -271,5 +269,5 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 ---
 
 <p align="center">
-  Made with ❤️ for Claude Code
+  Made with ❤️ for AI Agents
 </p>

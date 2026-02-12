@@ -35,6 +35,9 @@ logger = logging.getLogger(__name__)
 
 DEFAULT_TIMEOUT = 600  # seconds (10 minutes)
 API_GUIDE_URL = "https://paddleocr.com"
+FILE_TYPE_PDF = 0
+FILE_TYPE_IMAGE = 1
+IMAGE_EXTENSIONS = (".png", ".jpg", ".jpeg", ".bmp", ".tiff", ".tif", ".webp")
 
 
 # =============================================================================
@@ -115,9 +118,9 @@ def _detect_file_type(path_or_url: str) -> int:
         path = unquote(urlparse(path).path)
 
     if path.endswith(".pdf"):
-        return 0
-    elif path.endswith((".png", ".jpg", ".jpeg", ".bmp", ".tiff", ".tif", ".webp")):
-        return 1
+        return FILE_TYPE_PDF
+    elif path.endswith(IMAGE_EXTENSIONS):
+        return FILE_TYPE_IMAGE
     else:
         raise ValueError(f"Unsupported file format: {path_or_url}")
 
@@ -167,16 +170,28 @@ def _make_api_request(api_url: str, token: str, params: dict) -> dict:
         raise RuntimeError(f"API request failed: {e}")
 
     # Handle HTTP errors
-    if resp.status_code == 401 or resp.status_code == 403:
-        raise RuntimeError(
-            f"Authentication failed ({resp.status_code}). Check your token."
-        )
-    elif resp.status_code == 429:
-        raise RuntimeError("API rate limit exceeded (429)")
-    elif resp.status_code >= 500:
-        raise RuntimeError(f"API service error ({resp.status_code})")
-    elif resp.status_code != 200:
-        raise RuntimeError(f"API error ({resp.status_code}): {resp.text[:200]}")
+    if resp.status_code != 200:
+        error_detail = ""
+        try:
+            error_body = resp.json()
+            if isinstance(error_body, dict):
+                error_detail = str(error_body.get("errorMsg", "")).strip()
+        except Exception:
+            pass
+
+        if not error_detail:
+            error_detail = (resp.text[:200] or "No response body").strip()
+
+        if resp.status_code == 403:
+            raise RuntimeError(f"Authentication failed (403): {error_detail}")
+        elif resp.status_code == 429:
+            raise RuntimeError(f"API rate limit exceeded (429): {error_detail}")
+        elif resp.status_code >= 500:
+            raise RuntimeError(
+                f"API service error ({resp.status_code}): {error_detail}"
+            )
+        else:
+            raise RuntimeError(f"API error ({resp.status_code}): {error_detail}")
 
     # Parse response
     try:
@@ -199,6 +214,7 @@ def _make_api_request(api_url: str, token: str, params: dict) -> dict:
 def parse_document(
     file_path: Optional[str] = None,
     file_url: Optional[str] = None,
+    file_type: Optional[int] = None,
     **options,
 ) -> dict[str, Any]:
     """
@@ -207,6 +223,7 @@ def parse_document(
     Args:
         file_path: Local file path
         file_url: URL to file
+        file_type: Optional file type override (0=PDF, 1=Image)
         **options: Additional API options
 
     Returns:
@@ -227,6 +244,8 @@ def parse_document(
     # Validate input
     if not file_path and not file_url:
         return _error("INPUT_ERROR", "file_path or file_url required")
+    if file_type is not None and file_type not in (FILE_TYPE_PDF, FILE_TYPE_IMAGE):
+        return _error("INPUT_ERROR", "file_type must be 0 (PDF) or 1 (Image)")
 
     # Get config
     try:
@@ -237,14 +256,20 @@ def parse_document(
     # Build request params
     try:
         if file_url:
-            params = {"file_url": file_url}
+            params = {"file": file_url}
+            resolved_file_type = (
+                file_type if file_type is not None else _detect_file_type(file_url)
+            )
         else:
+            resolved_file_type = (
+                file_type if file_type is not None else _detect_file_type(file_path)
+            )
             params = {
                 "file": _load_file_as_base64(file_path),
-                "fileType": _detect_file_type(file_path),
             }
 
         params.update(options)
+        params["fileType"] = resolved_file_type
 
     except (ValueError, FileNotFoundError) as e:
         return _error("INPUT_ERROR", str(e))
@@ -256,7 +281,10 @@ def parse_document(
         return _error("API_ERROR", str(e))
 
     # Extract text
-    text = _extract_text(result)
+    try:
+        text = _extract_text(result)
+    except ValueError as e:
+        return _error("API_ERROR", str(e))
 
     return {
         "ok": True,
@@ -268,53 +296,42 @@ def parse_document(
 
 def _extract_text(result) -> str:
     """Extract text from document parsing result."""
-    # API returns {"errorCode": 0, "result": {"layoutParsingResults": [{page}, ...]}}
-    raw_result = result.get("result", result) if isinstance(result, dict) else result
+    if not isinstance(result, dict):
+        raise ValueError(
+            "Invalid response schema: top-level response must be an object"
+        )
 
-    # Extract layoutParsingResults array from the result wrapper
-    if isinstance(raw_result, dict):
-        pages = raw_result.get("layoutParsingResults", [])
-    elif isinstance(raw_result, list):
-        pages = raw_result
-    else:
-        pages = []
+    raw_result = result.get("result")
+    if not isinstance(raw_result, dict):
+        raise ValueError("Invalid response schema: missing result object")
 
-    # Handle list of pages
-    if isinstance(pages, list) and pages:
-        texts = []
-        for page in pages:
-            if not isinstance(page, dict):
-                continue
-            # Prefer markdown.text
-            md = page.get("markdown", {})
-            if isinstance(md, dict) and md.get("text"):
-                texts.append(md["text"])
-                continue
-            # Fallback: concatenate parsing_res_list block_content
-            pruned = page.get("prunedResult", {})
-            blocks = pruned.get("parsing_res_list", [])
-            if blocks:
-                page_text = "\n\n".join(
-                    b.get("block_content", "")
-                    for b in blocks
-                    if isinstance(b.get("block_content"), str)
-                )
-                texts.append(page_text)
-        return "\n\n".join(texts)
+    pages = raw_result.get("layoutParsingResults")
+    if not isinstance(pages, list):
+        raise ValueError(
+            "Invalid response schema: result.layoutParsingResults must be an array"
+        )
 
-    # Handle dict (single result or legacy format)
-    if isinstance(pages, dict):
-        md = pages.get("markdown", {})
-        if isinstance(md, dict) and md.get("text"):
-            return md["text"]
-        if isinstance(md, str):
-            return md
-        if "text" in pages:
-            return pages["text"]
-        if "full_text" in pages:
-            return pages["full_text"]
+    texts = []
+    for i, page in enumerate(pages):
+        if not isinstance(page, dict):
+            raise ValueError(
+                f"Invalid response schema: result.layoutParsingResults[{i}] must be an object"
+            )
 
-    return str(result)
+        markdown = page.get("markdown")
+        if not isinstance(markdown, dict):
+            raise ValueError(
+                f"Invalid response schema: result.layoutParsingResults[{i}].markdown must be an object"
+            )
+
+        text = markdown.get("text")
+        if not isinstance(text, str):
+            raise ValueError(
+                f"Invalid response schema: result.layoutParsingResults[{i}].markdown.text must be a string"
+            )
+        texts.append(text)
+
+    return "\n\n".join(texts)
 
 
 def _error(code: str, message: str) -> dict:

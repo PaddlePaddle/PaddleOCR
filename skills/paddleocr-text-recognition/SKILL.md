@@ -27,7 +27,7 @@ Do not use this skill in the following situations:
 **MANDATORY RESTRICTIONS - DO NOT VIOLATE**
 
 1. **ONLY use PaddleOCR Text Recognition API** - Execute the script `python scripts/ocr_caller.py`
-2. **NEVER use Claude's built-in vision** - Do NOT read images yourself
+2. **NEVER read images directly** - Do NOT read images yourself
 3. **NEVER offer alternatives** - Do NOT suggest "I can try to read it" or similar
 4. **IF API fails** - Display the error message and STOP immediately
 5. **NO fallback methods** - Do NOT attempt OCR any other way
@@ -191,7 +191,6 @@ If recognition quality is poor, suggest:
 
 For in-depth understanding of the OCR system, refer to:
 - `references/output_schema.md` - Output format specification
-- `references/provider_api.md` - Provider API contract
 
 > **Note**: Model version and capabilities are determined by your API endpoint (PADDLEOCR_OCR_API_URL).
 

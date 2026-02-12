@@ -2,7 +2,7 @@
 name: paddleocr-doc-parsing
 description: >
   Advanced document parsing with PaddleOCR. Returns complete document
-  structure including text, tables, formulas, charts, and layout information. Claude extracts
+  structure including text, tables, formulas, charts, and layout information. The AI agent extracts
   relevant content based on user needs.
 ---
 
@@ -28,7 +28,7 @@ description: >
 **⛔ MANDATORY RESTRICTIONS - DO NOT VIOLATE ⛔**
 
 1. **ONLY use PaddleOCR Document Parsing API** - Execute the script `python scripts/vl_caller.py`
-2. **NEVER use Claude's built-in vision** - Do NOT parse documents yourself
+2. **NEVER parse documents directly** - Do NOT parse documents yourself
 3. **NEVER offer alternatives** - Do NOT suggest "I can try to analyze it" or similar
 4. **IF API fails** - Display the error message and STOP immediately
 5. **NO fallback methods** - Do NOT attempt document parsing any other way
@@ -68,6 +68,10 @@ If the script execution fails (API not configured, network error, etc.):
    - Seals and stamps
    - Layout and reading order
 
+   **Input type note**:
+   - Actual supported file types depend on the model behind your endpoint.
+   - Maximum supported set: `PDF`, `PNG`, `JPG`, `JPEG`, `BMP`, `TIFF`, `TIF`, `WEBP`.
+
 3. **Extract what the user needs** from the complete data based on their request.
 
 ### IMPORTANT: Complete Content Display
@@ -82,7 +86,7 @@ If the script execution fails (API not configured, network error, etc.):
 
 **What this means**:
 - ✅ **DO**: Display complete text, all tables, all formulas as requested
-- ✅ **DO**: Present content in reading order using `reading_order` array
+- ✅ **DO**: Present content in page order using the top-level `text` or `result[n].markdown.text`
 - ❌ **DON'T**: Truncate with "..." unless content is excessively long (>10,000 chars)
 - ❌ **DON'T**: Summarize or provide excerpts when user asks for full content
 - ❌ **DON'T**: Say "Here's a preview" when user expects complete output
@@ -90,7 +94,7 @@ If the script execution fails (API not configured, network error, etc.):
 **Example - Correct**:
 ```
 User: "Extract all the text from this document"
-Claude: I've parsed the complete document. Here's all the extracted text:
+Agent: I've parsed the complete document. Here's all the extracted text:
 
 [Display entire text field or concatenated regions in reading order]
 
@@ -105,7 +109,7 @@ Quality: Excellent (confidence: 0.92)
 **Example - Incorrect** ❌:
 ```
 User: "Extract all the text"
-Claude: "I found a document with multiple sections. Here's the beginning:
+Agent: "I found a document with multiple sections. Here's the beginning:
 'Introduction...' (content truncated for brevity)"
 ```
 
@@ -139,66 +143,43 @@ The script returns a JSON envelope wrapping the raw API result:
 **Key fields**:
 - `text` — extracted markdown text from all pages (use this for quick text display)
 - `result` — raw API result array (one object per page), for detailed block-level access
-- `result[n].prunedResult.parsing_res_list` — array of detected content blocks
-- `result[n].markdown.text` — full page content in markdown/HTML
-
-### Block Labels
-
-The `block_label` field indicates the content type:
-
-| Label | Description |
-|-------|-------------|
-| `text` | Regular text content |
-| `table` | Table (content is HTML `<table>`) |
-| `image` | Embedded image |
-| `seal` | Seal or stamp |
-| `figure_title` | Figure/chart title or caption |
-| `vision_footnote` | Footnote detected by vision model |
-| `aside_text` | Side/margin text |
-
-### Content Extraction Guidelines
-
-**Based on user intent, filter the blocks**:
-
-| User Says | What to Extract | How |
-|-----------|-----------------|-----|
-| "Extract all text" | Everything | Use `text` field directly |
-| "Get all tables" | table blocks only | Filter `parsing_res_list` by `block_label == "table"` |
-| "Show main content" | text + table blocks | Filter out `aside_text`, `image` |
-| "Complete document" | Everything | Use `text` field or iterate all blocks |
+- `result[n].prunedResult` — structured parsing output for each page
+- `result[n].markdown` — full rendered page output in markdown/HTML
 
 ### Usage Examples
 
-**Example 1: Extract Main Content** (default behavior)
+**Example 1: Extract Full Document Text**
 ```bash
 python scripts/vl_caller.py \
   --file-url "https://example.com/paper.pdf" \
   --pretty
 ```
 
-Then filter JSON to extract core content:
-- Include: text, table, formula, figure, footnote
-- Exclude: header, footer, page_number
+Then use:
+- Top-level `text` for quick full-text output
+- `result[n].markdown.text` when page-level output is needed
 
-**Example 2: Extract Tables Only**
+**Example 2: Extract Structured Page Data**
 ```bash
 python scripts/vl_caller.py \
   --file-path "./financial_report.pdf" \
   --pretty
 ```
 
-Then filter JSON:
-- Only keep regions where type="table"
-- Present table content in markdown format
+Then use:
+- `result[n].prunedResult` for structured parsing data (layout/content/confidence)
+- `result[n].markdown` for rendered page content
 
-**Example 3: Complete Document with Everything**
+**Example 3: Return Complete Parsing Output**
 ```bash
 python scripts/vl_caller.py \
   --file-url "URL" \
   --pretty
 ```
 
-Then use the `text` field or present all regions in reading_order.
+Then return:
+- Full `text` when user asks for full document content
+- The raw `result` object when user needs complete structured data
 
 ### First-Time Configuration
 
@@ -259,16 +240,11 @@ python scripts/vl_caller.py --file-url "https://your-server.com/large_file.pdf"
 #### Process Specific Pages (PDF Only)
 If you only need certain pages from a large PDF, extract them first:
 ```bash
-# Using pypdfium2 (requires: pip install pypdfium2)
-python -c "
-import pypdfium2 as pdfium
-doc = pdfium.PdfDocument('large.pdf')
-# Extract pages 0-4 (first 5 pages)
-new_doc = pdfium.PdfDocument.new()
-for i in range(min(5, len(doc))):
-    new_doc.import_pages(doc, [i])
-new_doc.save('pages_1_5.pdf')
-"
+# Extract pages 1-5
+python scripts/split_pdf.py large.pdf pages_1_5.pdf --pages "1-5"
+
+# Mixed ranges are supported
+python scripts/split_pdf.py large.pdf selected_pages.pdf --pages "1-5,8,10-12"
 
 # Then process the smaller file
 python scripts/vl_caller.py --file-path "pages_1_5.pdf"
@@ -276,7 +252,7 @@ python scripts/vl_caller.py --file-path "pages_1_5.pdf"
 
 ### Error Handling
 
-**Authentication failed (401/403)**:
+**Authentication failed (403)**:
 ```
 error: Authentication failed
 ```
@@ -294,39 +270,10 @@ error: Unsupported file format
 ```
 → File format not supported, convert to PDF/PNG/JPG
 
-### Pseudo-Code: Content Extraction
-
-**Extract all text** (most common):
-```python
-def extract_all_text(json_response):
-    # Quickest: use the pre-extracted text field
-    print(json_response['text'])
-```
-
-**Extract tables only**:
-```python
-def extract_tables(json_response):
-    for page in json_response['result']:
-        blocks = page['prunedResult']['parsing_res_list']
-        tables = [b for b in blocks if b['block_label'] == 'table']
-        for i, table in enumerate(tables):
-            print(f"Table {i+1}:")
-            print(table['block_content'])  # HTML table
-```
-
-**Iterate all blocks**:
-```python
-def extract_by_block(json_response):
-    for page in json_response['result']:
-        blocks = page['prunedResult']['parsing_res_list']
-        for block in blocks:
-            print(f"[{block['block_label']}] {block['block_content'][:100]}")
-```
-
 ## Important Notes
 
 - **The script NEVER filters content** - It always returns complete data
-- **Claude decides what to present** - Based on user's specific request
+- **The AI agent decides what to present** - Based on user's specific request
 - **All data is always available** - Can be re-interpreted for different needs
 - **No information is lost** - Complete document structure preserved
 
@@ -334,7 +281,6 @@ def extract_by_block(json_response):
 
 For in-depth understanding of the PaddleOCR Document Parsing system, refer to:
 - `references/output_schema.md` - Output format specification
-- `references/provider_api.md` - Provider API contract
 
 > **Note**: Model version and capabilities are determined by your API endpoint (PADDLEOCR_DOC_PARSING_API_URL).
 

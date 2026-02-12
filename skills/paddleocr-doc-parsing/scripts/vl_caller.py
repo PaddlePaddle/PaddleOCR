@@ -68,8 +68,12 @@ Configuration:
     input_group.add_argument("--file-path", help="Local file path")
 
     # Output options
-    parser.add_argument("--pretty", action="store_true", help="Pretty-print JSON output")
-    parser.add_argument("--output", "-o", metavar="FILE", help="Save result to JSON file")
+    parser.add_argument(
+        "--pretty", action="store_true", help="Pretty-print JSON output"
+    )
+    parser.add_argument(
+        "--output", "-o", metavar="FILE", help="Save result to JSON file"
+    )
 
     args = parser.parse_args()
 
@@ -77,6 +81,9 @@ Configuration:
     result = parse_document(
         file_path=args.file_path,
         file_url=args.file_url,
+        useDocUnwarping=False,
+        useDocOrientationClassify=False,
+        visualize=False,
     )
 
     # Format output

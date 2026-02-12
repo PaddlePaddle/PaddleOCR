@@ -64,7 +64,9 @@ def optimize_image(
         background = Image.new("RGB", img.size, (255, 255, 255))
         if img.mode == "P":
             img = img.convert("RGBA")
-        background.paste(img, mask=img.split()[-1] if img.mode in ("RGBA", "LA") else None)
+        background.paste(
+            img, mask=img.split()[-1] if img.mode in ("RGBA", "LA") else None
+        )
         img = background
 
     # Determine output format
@@ -140,7 +142,7 @@ def optimize_pdf(input_path: Path, output_path: Path, max_size_mb: float = 20):
     print(f"Pages: {n_pages}")
 
     # Render pages to images and rebuild PDF
-    dpi = 150  # Lower DPI for smaller file
+    dpi = 144  # Lower DPI for smaller file
     scale = dpi / 72
 
     page_images = []
@@ -155,11 +157,12 @@ def optimize_pdf(input_path: Path, output_path: Path, max_size_mb: float = 20):
 
     # Save as PDF using Pillow
     if page_images:
-        page_images[0].save(
+        first_page, *rest_pages = page_images
+        first_page.save(
             output_path,
             "PDF",
             save_all=True,
-            append_images=page_images[1:] if len(page_images) > 1 else [],
+            append_images=rest_pages,
             quality=85,
         )
 
