@@ -244,7 +244,7 @@ git add README.md
 pre-commit
 ```
 
-Repeat these steps until the pre-comit format check does not error. As shown below.
+Repeat these steps until the pre-commit format check does not error. As shown below.
 
 ![img](./images/precommit_pass.png)
 
