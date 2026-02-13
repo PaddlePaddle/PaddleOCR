@@ -11,13 +11,13 @@ PaddleOCR-VL is an advanced and efficient document parsing model designed specif
 <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr_vl_1_5/paddleocr-vl-1.5_metrics.png"/>
 
 > INFO:
-> PaddleOCR provides a unified interface for the PaddleOCR-VL model series to facilitate quick setup and usage. Unless otherwise specified, the term "PaddleOCR-VL" in subsequent sections and related environment configuration documentation refers to the PaddleOCR-VL model series (e.g., PaddleOCR-VL-1.5). References specific to the PaddleOCR-VL v1 version will be explicitly noted.
+> PaddleOCR provides a unified interface for the PaddleOCR-VL model series to facilitate quick setup and usage. Unless otherwise specified, the term "PaddleOCR-VL" in subsequent sections and related usage tutorials refers to the PaddleOCR-VL model series (e.g., PaddleOCR-VL-1.5). References specific to the PaddleOCR-VL v1 version will be explicitly noted.
 
 ## Process Guide
 
 Before starting, please refer to the next section for information on the inference device support provided by PaddleOCR-VL to **determine if your device meets the operational requirements.** If your device meets the requirements, please select the relevant section to read based on your needs.
 
-For some inference hardware, you may need to refer to other environment configuration documents we provide, but the process remains the same and does not affect your reading of the following process guide:
+For some inference hardware, you may need to refer to other usage tutorials we provide, but the process remains the same and does not affect your reading of the following process guide:
 
 1. **Want to quickly experience PaddleOCR-VL**:
 
@@ -47,8 +47,8 @@ Currently, PaddleOCR-VL offers six inference methods, with varying levels of sup
   <tr>
     <th>Inference Method</th>
     <th>NVIDIA GPU</th>
-    <th>KUNLUNXIN XPU</th>
-    <th>HYGON DCU</th>
+    <th>Kunlunxin XPU</th>
+    <th>Hygon DCU</th>
     <th>MetaX GPU</th>
     <th>Iluvatar GPU</th>
     <th>Huawei Ascend NPU</th>
@@ -140,21 +140,21 @@ Currently, PaddleOCR-VL offers six inference methods, with varying levels of sup
 > - vLLM compatibility note: Although vLLM can be launched on NVIDIA GPUs with CC 7.x such as T4/V100, timeout or OOM issues may occur, and its use is not recommended.
 > - vLLM, SGLang, and FastDeploy cannot run natively on Windows. Please use the Docker images we provide.
 
-Since different hardware requires different dependencies, if your hardware meets the requirements in the table above, please refer to the following table for the corresponding tutorial to configure your environment:
+Since different hardware requires different dependencies, if your hardware meets the requirements in the table above, please refer to the following table for the corresponding usage tutorial:
 
-| Hardware Type  | Environment Configuration Tutorial                                                                                           |
+| Hardware Type  | Usage Tutorial                                                                                           |
 |----------------|------------------------------------------------------------------------------------------------------------------------------|
 | x64 CPU        | This tutorial (Dependencies must be installed manually for now)                                                                                                                |
-| NVIDIA GPU     | - NVIDIA Blackwell architecture GPU (e.g., RTX 50 series) refer to [PaddleOCR-VL NVIDIA Blackwell Architecture GPU Environment Configuration Tutorial](./PaddleOCR-VL-NVIDIA-Blackwell.en.md) <br/> - Other NVIDIA GPUs refer to this tutorial |
-| KUNLUNXIN XPU  | [PaddleOCR-VL KUNLUNXIN XPU Environment Configuration Tutorial](./PaddleOCR-VL-KUNLUNXIN-XPU.en.md)                                              |
-| HYGON DCU      | [PaddleOCR-VL HYGON DCU Environment Configuration Tutorial](./PaddleOCR-VL-HYGON-DCU.en.md)                                              |
-| MetaX GPU      | [PaddleOCR-VL MetaX GPU Environment Configuration Tutorial](./PaddleOCR-VL-MetaX-GPU.en.md)                                              |
-| Iluvatar GPU        | [PaddleOCR-VL Iluvatar GPU Environment Configuration Tutorial](./PaddleOCR-VL-Iluvatar-GPU.en.md) |
-| Huawei Ascend NPU        | [PaddleOCR-VL Huawei Ascend NPU Environment Configuration Tutorial](./PaddleOCR-VL-Huawei-Ascend-NPU.en.md) |
-| Apple Silicon        | [PaddleOCR-VL Apple Silicon Environment Configuration Tutorial](./PaddleOCR-VL-Apple-Silicon.en.md) |
+| NVIDIA GPU     | - NVIDIA Blackwell architecture GPU (e.g., RTX 50 series) refer to [PaddleOCR-VL NVIDIA Blackwell Architecture GPU Usage Tutorial](./PaddleOCR-VL-NVIDIA-Blackwell.en.md) <br/> - Other NVIDIA GPUs refer to this tutorial |
+| Kunlunxin XPU  | [PaddleOCR-VL Kunlunxin XPU Usage Tutorial](./PaddleOCR-VL-Kunlunxin-XPU.en.md)                                              |
+| Hygon DCU      | [PaddleOCR-VL Hygon DCU Usage Tutorial](./PaddleOCR-VL-Hygon-DCU.en.md)                                              |
+| MetaX GPU      | [PaddleOCR-VL MetaX GPU Usage Tutorial](./PaddleOCR-VL-MetaX-GPU.en.md)                                              |
+| Iluvatar GPU        | [PaddleOCR-VL Iluvatar GPU Usage Tutorial](./PaddleOCR-VL-Iluvatar-GPU.en.md) |
+| Huawei Ascend NPU        | [PaddleOCR-VL Huawei Ascend NPU Usage Tutorial](./PaddleOCR-VL-Huawei-Ascend-NPU.en.md) |
+| Apple Silicon        | [PaddleOCR-VL Apple Silicon Usage Tutorial](./PaddleOCR-VL-Apple-Silicon.en.md) |
 
 > TIP:
-> For example, if you are using an RTX 50 series GPU that meets the device requirements for both PaddlePaddle and vLLM inference methods, please refer to the [PaddleOCR-VL NVIDIA Blackwell Architecture GPU Environment Configuration Tutorial](./PaddleOCR-VL-NVIDIA-Blackwell.en.md) to complete the environment configuration before using PaddleOCR-VL.
+> For example, if you are using an RTX 50 series GPU that meets the device requirements for both PaddlePaddle and vLLM inference methods, please refer to the [PaddleOCR-VL NVIDIA Blackwell Architecture GPU Usage Tutorial](./PaddleOCR-VL-NVIDIA-Blackwell.en.md) to learn about relevant configurations and usage.
 
 ## 1. Environment Preparation
 
@@ -240,10 +240,10 @@ Run a single command to quickly test the PaddleOCR-VL ：
 # NVIDIA GPU
 paddleocr doc_parser -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/paddleocr_vl_demo.png
 
-# KUNLUNXIN XPU
+# Kunlunxin XPU
 paddleocr doc_parser -i ./paddleocr_vl_demo.png --device xpu
 
-# HYGON DCU
+# Hygon DCU
 paddleocr doc_parser -i ./paddleocr_vl_demo.png --device dcu
 
 # MetaX GPU
@@ -665,9 +665,9 @@ from paddleocr import PaddleOCRVL
 
 # NVIDIA GPU
 pipeline = PaddleOCRVL()
-# KUNLUNXIN XPU
+# Kunlunxin XPU
 # pipeline = PaddleOCRVL(device="xpu")
-# HYGON DCU
+# Hygon DCU
 # pipeline = PaddleOCRVL(device="dcu")
 # MetaX GPU
 # pipeline = PaddleOCRVL(device="metax_gpu")

@@ -11,13 +11,13 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
 <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr_vl_1_5/paddleocr-vl-1.5_metrics.png"/>
 
 > INFO:
-> PaddleOCR 为 PaddleOCR-VL 系列模型提供了统一的接口，方便用户快速上手和使用。除非另有说明，在随后的章节及相关环境配置文档中提到的 “PaddleOCR-VL” 均指 PaddleOCR-VL 系列模型（如 PaddleOCR-VL-1.5 等）；若特指 PaddleOCR-VL v1 版本，将另行明确标注。
+> PaddleOCR 为 PaddleOCR-VL 系列模型提供了统一的接口，方便用户快速上手和使用。除非另有说明，在随后的章节及相关使用教程中提到的 “PaddleOCR-VL” 均指 PaddleOCR-VL 系列模型（如 PaddleOCR-VL-1.5 等）；若特指 PaddleOCR-VL v1 版本，将另行明确标注。
 
 ## 流程导览
 
 在开始之前，请参考下一节了解 PaddleOCR-VL 对推理设备的支持情况，**以确定您的设备是否满足运行要求。** 若您的设备满足运行要求，请根据您的需求选择相关章节阅读。
 
-部分推理硬件可能需要参考我们提供的其他环境配置文档，但流程是一样的，不影响您的阅读下面的流程导览：
+部分推理硬件可能需要参考我们提供的其他使用教程，但流程是一样的，不影响您的阅读下面的流程导览：
 
 1. **希望快速体验 PaddleOCR-VL**：
     
@@ -140,21 +140,21 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
 > - 虽然 vLLM 可在 T4/V100 等 CC 7.x 的 NVIDIA GPU 上启动，但容易出现超时或 OOM，不推荐使用。
 > - vLLM、SGLang 和 FastDeploy 无法在 Windows 上原生运行，请使用我们提供的 Docker 镜像。
 
-由于不同硬件所需的依赖各不相同，如果您的硬件满足上述表格的要求，请参考下表查看对应的教程进行环境配置：
+由于不同硬件所需的依赖各不相同，如果您的硬件满足上述表格的要求，请参考下表查看对应的使用教程：
 
-| 硬件类型         | 环境配置教程 |
+| 硬件类型         | 使用教程 |
 |-----------------|--------------------------------------------------|
 | x64 CPU         | 本教程（当前仅支持手动安装依赖） |
-| 英伟达 GPU      | - NVIDIA Blackwell 架构 GPU（如RTX 50 系）参考 [PaddleOCR-VL NVIDIA Blackwell 架构 GPU 环境配置教程](./PaddleOCR-VL-NVIDIA-Blackwell.md) <br/> - 其他 NVIDIA GPU 参考本教程 |
-| 昆仑芯 XPU      | [PaddleOCR-VL 昆仑芯 XPU 环境配置教程](./PaddleOCR-VL-KUNLUNXIN-XPU.md) |
-| 海光 DCU        | [PaddleOCR-VL 海光 DCU 环境配置教程](./PaddleOCR-VL-HYGON-DCU.md) |
-| 沐曦 GPU        | [PaddleOCR-VL 沐曦 GPU 环境配置教程](./PaddleOCR-VL-MetaX-GPU.md) |
-| 天数 GPU        | [PaddleOCR-VL 天数 GPU 环境配置教程](./PaddleOCR-VL-Iluvatar-GPU.md) |
-| 华为昇腾 NPU        | [PaddleOCR-VL 华为昇腾 NPU 环境配置教程](./PaddleOCR-VL-Huawei-Ascend-NPU.md) |
-| Apple Silicon        | [PaddleOCR-VL Apple Silicon 环境配置教程](./PaddleOCR-VL-Apple-Silicon.md) |
+| 英伟达 GPU      | - NVIDIA Blackwell 架构 GPU（如RTX 50 系）参考 [PaddleOCR-VL NVIDIA Blackwell 架构 GPU 使用教程](./PaddleOCR-VL-NVIDIA-Blackwell.md) <br/> - 其他 NVIDIA GPU 参考本教程 |
+| 昆仑芯 XPU      | [PaddleOCR-VL 昆仑芯 XPU 使用教程](./PaddleOCR-VL-Kunlunxin-XPU.md) |
+| 海光 DCU        | [PaddleOCR-VL 海光 DCU 使用教程](./PaddleOCR-VL-Hygon-DCU.md) |
+| 沐曦 GPU        | [PaddleOCR-VL 沐曦 GPU 使用教程](./PaddleOCR-VL-MetaX-GPU.md) |
+| 天数 GPU        | [PaddleOCR-VL 天数 GPU 使用教程](./PaddleOCR-VL-Iluvatar-GPU.md) |
+| 华为昇腾 NPU        | [PaddleOCR-VL 华为昇腾 NPU 使用教程](./PaddleOCR-VL-Huawei-Ascend-NPU.md) |
+| Apple Silicon        | [PaddleOCR-VL Apple Silicon 使用教程](./PaddleOCR-VL-Apple-Silicon.md) |
 
 > TIP:
-> 例如您使用的是 RTX 50 系 GPU，满足 PaddlePaddle 和 vLLM 推理方式的设备要求，请参考 [PaddleOCR-VL NVIDIA Blackwell 架构 GPU 环境配置教程](./PaddleOCR-VL-NVIDIA-Blackwell.md) 完成环境配置后再进行 PaddleOCR-VL 的使用。
+> 例如您使用的是 RTX 50 系 GPU，满足 PaddlePaddle 和 vLLM 推理方式的设备要求，请参考 [PaddleOCR-VL NVIDIA Blackwell 架构 GPU 使用教程](./PaddleOCR-VL-NVIDIA-Blackwell.md) 了解相关配置和用法。
 
 ## 1. 环境准备
 
@@ -266,7 +266,7 @@ paddleocr doc_parser -i ./paddleocr_vl_demo.png --use_doc_unwarping True
 # 通过 --use_layout_detection 指定是否使用版面区域检测排序模块
 paddleocr doc_parser -i ./paddleocr_vl_demo.png --use_layout_detection False
 ```
-<!-- Luxorion-12 修改：表格参数修改-->
+
 <details><summary><b>命令行支持更多参数设置，点击展开以查看命令行参数的详细说明</b></summary>
 <table>
 <thead>
@@ -709,7 +709,7 @@ output = pipeline.predict(["imgs/file1.png", "imgs/file2.png", "imgs/file3.png"]
 - 在示例代码中，`use_doc_orientation_classify`、`use_doc_unwarping` 参数默认均设置为 `False`，分别表示关闭文档方向分类、文本图像矫正功能，如果需要使用这些功能，可以手动设置为 `True`。
 
 在上述 Python 脚本中，执行了如下几个步骤：
-<!-- Luxorion-12 修改：表格参数说明-->
+
 <details><summary>（1）实例化对象，具体参数说明如下：</summary>
 
 <table>
