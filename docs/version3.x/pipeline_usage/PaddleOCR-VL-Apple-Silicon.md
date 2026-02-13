@@ -2,9 +2,9 @@
 comments: true
 ---
 
-# PaddleOCR-VL Apple Silicon 环境配置教程
+# PaddleOCR-VL Apple Silicon 使用教程
 
-本教程是 PaddleOCR-VL Apple Silicon 的环境配置教程，目的是完成相关的环境配置，环境配置完毕后请参考 [PaddleOCR-VL 使用教程](./PaddleOCR-VL.md) 使用 PaddleOCR-VL。
+本教程是 PaddleOCR-VL 在 Apple Silicon 上的使用指南，涵盖了从环境准备到服务化部署的完整流程。
 
 Apple Silicon 包括但不限于以下几种：
 
@@ -37,7 +37,7 @@ python -m pip install -U "paddleocr[doc-parser]"
 
 ## 2. 快速开始
 
-请参考[PaddleOCR-VL 使用教程](./PaddleOCR-VL.md)相同章节。
+请参考[PaddleOCR-VL 使用教程 - 2. 快速开始](./PaddleOCR-VL.md#2-快速开始)。
 
 ## 3. 使用推理加速框架提升 VLM 推理性能
 
@@ -85,20 +85,24 @@ pipeline = PaddleOCRVL(
 
 ### 3.3 性能调优
 
-请参考[PaddleOCR-VL 使用教程](./PaddleOCR-VL.md) 相同章节。
+请参考[PaddleOCR-VL 使用教程 - 3.3 性能调优](./PaddleOCR-VL.md#33-性能调优)。
 
 ## 4. 服务化部署
 
-目前仅支持**手动部署**方式，请参考[PaddleOCR-VL 使用教程](./PaddleOCR-VL.md) **4.2 方法二：手动部署**。
+目前仅支持**手动部署**方式。
 
-### 4.3 客户端调用方式
+### 4.1 手动部署
 
-请参考[PaddleOCR-VL 使用教程](./PaddleOCR-VL.md) 相同章节。
+请参考[PaddleOCR-VL 使用教程](./PaddleOCR-VL.md) 4.2 方法二：手动部署。
 
-### 4.4 产线配置调整说明
+### 4.2 客户端调用方式
 
-请参考[PaddleOCR-VL 使用教程](./PaddleOCR-VL.md) 相同章节。
+请参考[PaddleOCR-VL 使用教程 - 4.3 客户端调用方式](./PaddleOCR-VL.md#43-客户端调用方式)。
+
+### 4.3 产线配置调整说明
+
+请参考[PaddleOCR-VL 使用教程 - 4.4 产线配置调整说明](./PaddleOCR-VL.md#44-产线配置调整说明)。
 
 ## 5. 模型微调
 
-请参考[PaddleOCR-VL 使用教程](./PaddleOCR-VL.md) 相同章节。
+请参考[PaddleOCR-VL 使用教程 - 5. 模型微调](./PaddleOCR-VL.md#5-模型微调)。

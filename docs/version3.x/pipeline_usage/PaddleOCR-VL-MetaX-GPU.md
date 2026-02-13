@@ -2,9 +2,9 @@
 comments: true
 ---
 
-# PaddleOCR-VL 沐曦 GPU 环境配置教程
+# PaddleOCR-VL 沐曦 GPU 使用教程
 
-本教程是 PaddleOCR-VL 沐曦 GPU 的环境配置教程，目的是完成相关的环境配置，环境配置完毕后请参考 [PaddleOCR-VL 使用教程](./PaddleOCR-VL.md) 使用 PaddleOCR-VL。
+本教程是 PaddleOCR-VL 在沐曦 GPU 上的使用指南，涵盖了从环境准备到服务化部署的完整流程。
 
 目前 PaddleOCR-VL 已在沐曦 C550 上完成精度、速度验证；鉴于硬件环境的多样性，其他沐曦 GPU 的兼容性尚未验证。我们诚挚欢迎社区用户在不同硬件上进行测试并反馈您的运行结果。
 
@@ -25,7 +25,6 @@ docker run -it \
   --user root \
   --privileged \
   --device /dev/dri:/dev/dri \
-  --device /dev/dri \
   --device /dev/mxcd:/dev/mxcd \
   --security-opt seccomp=unconfined \
   --security-opt apparmor=unconfined \
@@ -68,7 +67,7 @@ python -m pip install -U "paddleocr[doc-parser]"
 
 ## 2. 快速开始
 
-请参考 [PaddleOCR-VL 使用教程](./PaddleOCR-VL.md) 相同章节，注意需要指定 `device="metax_gpu"`。
+请参考 [PaddleOCR-VL 使用教程 - 2. 快速开始](./PaddleOCR-VL.md#2-快速开始)，注意需要指定 `device="metax_gpu"`。
 
 ## 3. 使用推理加速框架提升 VLM 推理性能
 
@@ -83,7 +82,6 @@ docker run -it \
   --user root \
   --privileged \
   --device /dev/dri:/dev/dri \
-  --device /dev/dri \
   --device /dev/mxcd:/dev/mxcd \
   --security-opt seccomp=unconfined \
   --security-opt apparmor=unconfined \
@@ -102,7 +100,6 @@ docker run -it \
   --user root \
   --privileged \
   --device /dev/dri:/dev/dri \
-  --device /dev/dri \
   --device /dev/mxcd:/dev/mxcd \
   --security-opt seccomp=unconfined \
   --security-opt apparmor=unconfined \
@@ -120,15 +117,17 @@ docker run -it \
 
 ### 3.2 客户端使用方法
 
-请参考[PaddleOCR-VL 使用教程](./PaddleOCR-VL.md) 相同章节。
+请参考 [PaddleOCR-VL 使用教程 - 3.2 客户端使用方法](./PaddleOCR-VL.md#32-客户端使用方法)。
 
 ### 3.3 性能调优
 
-请参考[PaddleOCR-VL 使用教程](./PaddleOCR-VL.md) 相同章节。
+请参考 [PaddleOCR-VL 使用教程 - 3.3 性能调优](./PaddleOCR-VL.md#33-性能调优)。
 
 ## 4. 服务化部署
 
 >请注意，本节所介绍 PaddleOCR-VL 服务与上一节中的 VLM 推理服务有所区别：后者仅负责完整流程中的一个环节（即 VLM 推理），并作为前者的底层服务被调用。
+
+### 4.1 使用 Docker Compose 部署
 
 此步骤主要介绍如何使用 Docker Compose 将 PaddleOCR-VL 部署为服务并调用，具体流程如下：
 
@@ -225,14 +224,14 @@ Docker Compose 通过读取 `.env` 和 `compose.yaml` 文件中配置，先后�
 
 </details>
 
-### 4.3 客户端调用方式
+### 4.2 客户端调用方式
 
-请参考[PaddleOCR-VL 使用教程](./PaddleOCR-VL.md) 相同章节。
+请参考 [PaddleOCR-VL 使用教程 - 4.3 客户端调用方式](./PaddleOCR-VL.md#43-客户端调用方式)。
 
-### 4.4 产线配置调整说明
+### 4.3 产线配置调整说明
 
-请参考[PaddleOCR-VL 使用教程](./PaddleOCR-VL.md) 相同章节。
+请参考 [PaddleOCR-VL 使用教程 - 4.4 产线配置调整说明](./PaddleOCR-VL.md#44-产线配置调整说明)。
 
 ## 5. 模型微调
 
-请参考[PaddleOCR-VL 使用教程](./PaddleOCR-VL.md) 相同章节。
+请参考 [PaddleOCR-VL 使用教程 - 5. 模型微调](./PaddleOCR-VL.md#5-模型微调)。

@@ -2,9 +2,9 @@
 comments: true
 ---
 
-# PaddleOCR-VL MetaX GPU Environment Configuration Tutorial
+# PaddleOCR-VL MetaX GPU Usage Tutorial
 
-This tutorial is a guide for configuring the PaddleOCR-VL MetaX GPU environment. The purpose is to complete the relevant environment setup. After the environment configuration is complete, please refer to the [PaddleOCR-VL Usage Tutorial](./PaddleOCR-VL.en.md) to use PaddleOCR-VL.
+This tutorial is a guide for using PaddleOCR-VL on MetaX GPU, covering the complete workflow from environment preparation to service deployment.
 
 PaddleOCR-VL has been verified for accuracy and speed on the MetaX C550. However, due to hardware diversity, compatibility with other MetaX GPUs has not yet been confirmed. We welcome the community to test on different hardware setups and share your results.
 
@@ -25,7 +25,6 @@ docker run -it \
   --user root \
   --privileged \
   --device /dev/dri:/dev/dri \
-  --device /dev/dri \
   --device /dev/mxcd:/dev/mxcd \
   --security-opt seccomp=unconfined \
   --security-opt apparmor=unconfined \
@@ -68,7 +67,7 @@ python -m pip install -U "paddleocr[doc-parser]"
 
 ## 2. Quick Start
 
-Please refer to the corresponding section in the [PaddleOCR-VL Usage Tutorial](./PaddleOCR-VL.en.md), making sure to specify `device='metax_gpu'`.
+Please refer to [PaddleOCR-VL Usage Tutorial - 2. Quick Start](./PaddleOCR-VL.en.md#2-quick-start), making sure to specify `device='metax_gpu'`.
 
 ## 3. Improving VLM Inference Performance Using Inference Acceleration Framework
 
@@ -83,7 +82,6 @@ docker run -it \
   --user root \
   --privileged \
   --device /dev/dri:/dev/dri \
-  --device /dev/dri \
   --device /dev/mxcd:/dev/mxcd \
   --security-opt seccomp=unconfined \
   --security-opt apparmor=unconfined \
@@ -102,7 +100,6 @@ docker run -it \
   --user root \
   --privileged \
   --device /dev/dri:/dev/dri \
-  --device /dev/dri \
   --device /dev/mxcd:/dev/mxcd \
   --security-opt seccomp=unconfined \
   --security-opt apparmor=unconfined \
@@ -120,15 +117,17 @@ docker run -it \
 
 ### 3.2 Client Usage Method
 
-Please refer to the corresponding section in the [PaddleOCR-VL Usage Tutorial](./PaddleOCR-VL.en.md).
+Please refer to [PaddleOCR-VL Usage Tutorial - 3.2 Client Usage Method](./PaddleOCR-VL.en.md#32-client-usage-method).
 
 ### 3.3 Performance Tuning
 
-Please refer to the corresponding section in the [PaddleOCR-VL Usage Tutorial](./PaddleOCR-VL.en.md).
+Please refer to [PaddleOCR-VL Usage Tutorial - 3.3 Performance Tuning](./PaddleOCR-VL.en.md#33-performance-tuning).
 
 ## 4. Service Deployment
 
 >Please note that the PaddleOCR-VL service introduced in this section is different from the VLM inference service in the previous section: the latter is only responsible for one part of the complete process (i.e., VLM inference) and is called as an underlying service by the former.
+
+### 4.1 Deploy Using Docker Compose
 
 This step mainly introduces how to use Docker Compose to deploy PaddleOCR-VL as a service and call it. The specific process is as follows:
 
@@ -227,14 +226,14 @@ Refer to the <a href="./PaddleOCR-VL.en.md#44-pipeline-configuration-adjustment-
 
 </details>
 
-### 4.3 Client Invocation Method
+### 4.2 Client Invocation Method
 
-Please refer to the corresponding section in the [PaddleOCR-VL Usage Tutorial](./PaddleOCR-VL.en.md).
+Please refer to [PaddleOCR-VL Usage Tutorial - 4.3 Client Invocation Method](./PaddleOCR-VL.en.md#43-client-invocation-method).
 
-### 4.4 Pipeline Configuration Adjustment Instructions
+### 4.3 Pipeline Configuration Adjustment Instructions
 
-Please refer to the corresponding section in the [PaddleOCR-VL Usage Tutorial](./PaddleOCR-VL.en.md).
+Please refer to [PaddleOCR-VL Usage Tutorial - 4.4 Pipeline Configuration Adjustment Instructions](./PaddleOCR-VL.en.md#44-pipeline-configuration-adjustment-instructions).
 
 ## 5. Model Fine-Tuning
 
-Please refer to the corresponding section in the [PaddleOCR-VL Usage Tutorial](./PaddleOCR-VL.en.md).
+Please refer to [PaddleOCR-VL Usage Tutorial - 5. Model Fine-Tuning](./PaddleOCR-VL.en.md#5-model-fine-tuning).

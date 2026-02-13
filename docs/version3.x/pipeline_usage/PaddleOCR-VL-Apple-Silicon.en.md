@@ -2,9 +2,9 @@
 comments: true
 ---
 
-# PaddleOCR-VL Apple Silicon Environment Configuration Tutorial
+# PaddleOCR-VL Apple Silicon Usage Tutorial
 
-This tutorial is a guide for configuring the PaddleOCR-VL Apple Silicon environment. The purpose is to complete the relevant environment setup. After the environment configuration is complete, please refer to the [PaddleOCR-VL Usage Tutorial](./PaddleOCR-VL.en.md) to use PaddleOCR-VL.
+This tutorial is a guide for using PaddleOCR-VL on Apple Silicon, covering the complete workflow from environment preparation to service deployment.
 
 Apple Silicon include, but are not limited to:
 
@@ -37,7 +37,7 @@ python -m pip install -U "paddleocr[doc-parser]"
 
 ## 2. Quick Start
 
-Please refer to the corresponding section in the [PaddleOCR-VL Usage Tutorial](./PaddleOCR-VL.en.md).
+Please refer to [PaddleOCR-VL Usage Tutorial - 2. Quick Start](./PaddleOCR-VL.en.md#2-quick-start).
 
 ## 3. Improving VLM Inference Performance Using Inference Acceleration Frameworks
 
@@ -85,7 +85,7 @@ pipeline = PaddleOCRVL(
 
 ### 3.3 Performance Tuning
 
-Please refer to the corresponding section in the [PaddleOCR-VL Usage Tutorial](./PaddleOCR-VL.en.md).
+Please refer to [PaddleOCR-VL Usage Tutorial - 3.3 Performance Tuning](./PaddleOCR-VL.en.md#33-performance-tuning).
 
 ## 4. Service Deployment
 
@@ -93,12 +93,12 @@ Currently, only **manual deployment** is supported. Please refer to **Section 4.
 
 ### 4.3 Client Invocation Methods
 
-Please refer to the corresponding section in the [PaddleOCR-VL Usage Tutorial](./PaddleOCR-VL.en.md).
+Please refer to [PaddleOCR-VL Usage Tutorial - 4.3 Client Invocation Methods](./PaddleOCR-VL.en.md#43-client-invocation-methods).
 
 ### 4.4 Pipeline Configuration Adjustment Instructions
 
-Please refer to the corresponding section in the [PaddleOCR-VL Usage Tutorial](./PaddleOCR-VL.en.md).
+Please refer to [PaddleOCR-VL Usage Tutorial - 4.4 Pipeline Configuration Adjustment Instructions](./PaddleOCR-VL.en.md#44-pipeline-configuration-adjustment-instructions).
 
 ## 5. Model Fine-Tuning
 
-Please refer to the corresponding section in the [PaddleOCR-VL Usage Tutorial](./PaddleOCR-VL.en.md).
+Please refer to [PaddleOCR-VL Usage Tutorial - 5. Model Fine-Tuning](./PaddleOCR-VL.en.md#5-model-fine-tuning).
