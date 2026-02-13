@@ -80,3 +80,7 @@ SubPipelines:
         module_name: image_unwarping
         model_name: UVDoc
         model_dir: null
+
+Serving:
+  extra:
+    max_num_input_imgs: null
