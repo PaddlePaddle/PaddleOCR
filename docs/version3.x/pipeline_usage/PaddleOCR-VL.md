@@ -40,7 +40,7 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
 
 ## PaddleOCR-VL 对推理设备的支持情况
 
-目前 PaddleOCR-VL 有五种推理方式，支持的推理设备不完全相同，请确认您的推理设备是否满足下表要求再进行 PaddleOCR-VL 的推理部署：
+目前 PaddleOCR-VL 有六种推理方式，支持的推理设备不完全相同，请确认您的推理设备是否满足下表要求再进行 PaddleOCR-VL 的推理部署：
 
 <table border="1">
 <thead>
@@ -76,8 +76,8 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
     <td>🚧</td>
     <td>🚧</td>
     <td>✅</td>
-    <td>❌</td>
-    <td>❌</td>
+    <td>-</td>
+    <td>-</td>
   </tr>
   <tr style="text-align: center;">
     <td>PaddlePaddle + SGLang</td>
@@ -87,8 +87,8 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
     <td>🚧</td>
     <td>🚧</td>
     <td>🚧</td>
-    <td>❌</td>
-    <td>❌</td>
+    <td>-</td>
+    <td>-</td>
   </tr>
   <tr style="text-align: center;">
     <td>PaddlePaddle + FastDeploy</td>
@@ -98,19 +98,30 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
     <td>✅</td>
     <td>✅</td>
     <td>🚧</td>
-    <td>❌</td>
-    <td>❌</td>
+    <td>-</td>
+    <td>-</td>
   </tr>
   <tr style="text-align: center;">
     <td>PaddlePaddle + MLX-VLM</td>
-    <td>❌</td>
-    <td>❌</td>
-    <td>❌</td>
-    <td>❌</td>
-    <td>❌</td>
-    <td>❌</td>
-    <td>❌</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
     <td>✅</td>
+  </tr>
+  <tr style="text-align: center;">
+    <td>PaddlePaddle + llama.cpp</td>
+    <td>✅</td>
+    <td>🚧</td>
+    <td>🚧</td>
+    <td>🚧</td>
+    <td>🚧</td>
+    <td>🚧</td>
+    <td>✅</td>
+    <td>🚧</td>
   </tr>
 </tbody>
 </table>
@@ -133,7 +144,7 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
 
 | 硬件类型         | 环境配置教程 |
 |-----------------|--------------------------------------------------|
-| x64 CPU         | 本教程                                           |
+| x64 CPU         | 本教程（当前仅支持手动安装依赖） |
 | 英伟达 GPU      | - NVIDIA Blackwell 架构 GPU（如RTX 50 系）参考 [PaddleOCR-VL NVIDIA Blackwell 架构 GPU 环境配置教程](./PaddleOCR-VL-NVIDIA-Blackwell.md) <br/> - 其他 NVIDIA GPU 参考本教程 |
 | 昆仑芯 XPU      | [PaddleOCR-VL 昆仑芯 XPU 环境配置教程](./PaddleOCR-VL-KUNLUNXIN-XPU.md) |
 | 海光 DCU        | [PaddleOCR-VL 海光 DCU 环境配置教程](./PaddleOCR-VL-HYGON-DCU.md) |
@@ -220,7 +231,7 @@ python -m pip install -U "paddleocr[doc-parser]"
 
 PaddleOCR-VL 支持 CLI 命令行方式和 Python API 两种使用方式，其中 CLI 命令行方式更简单，适合快速验证功能，而 Python API 方式更灵活，适合集成到现有项目中。
 
-> TIP:
+> IMPORTANT:
 > 本节所介绍的方法主要用于快速验证，其推理速度、显存占用及稳定性表现未必能满足生产环境的要求。**若需部署至生产环境，我们强烈建议使用专门的推理加速框架** ，具体方法请参考下一节。
 
 ### 2.1 命令行方式体验
@@ -670,9 +681,9 @@ pages_res = list(output)
 
 output = pipeline.restructure_pages(pages_res)
 
-# output = pipeline.restructure_pages(pages_res, merge_table=True) # 合并跨页表格
-# output = pipeline.restructure_pages(pages_res, merge_table=True, relevel_titles=True) # 合并跨页表格，重建多级标题
-# output = pipeline.restructure_pages(pages_res, merge_table=True, relevel_titles=True, merge_pages=True) # 合并跨页表格，重建多级标题，合并多页结果为一页
+# output = pipeline.restructure_pages(pages_res, merge_tables=True) # 合并跨页表格
+# output = pipeline.restructure_pages(pages_res, merge_tables=True, relevel_titles=True) # 合并跨页表格，重建多级标题
+# output = pipeline.restructure_pages(pages_res, merge_tables=True, relevel_titles=True, concatenate_pages=True) # 合并跨页表格，重建多级标题，合并多页结果为一页
 
 for res in output:
     res.print() ## 打印预测的结构化输出
@@ -1461,9 +1472,20 @@ output = pipeline.predict(["imgs/file1.png", "imgs/file2.png", "imgs/file3.png"]
 
 启动 VLM 推理服务有以下两种方式，任选一种即可：
 
-- 方法一：使用官方 Docker 镜像启动服务。
+- 方法一：使用官方 Docker 镜像启动服务，目前支持：
+    - FastDeploy
+    - vLLM
 
-- 方法二：通过 PaddleOCR CLI 手动安装依赖后启动服务。
+- 方法二：通过 PaddleOCR CLI 手动安装依赖后启动服务，目前支持：
+    - FastDeploy
+    - vLLM
+    - SGLang
+
+- 方法三：直接使用推理加速框架启动服务，目前支持：
+    - FastDeploy
+    - vLLM
+    - MLX-VLM
+    - llama.cpp
 
 **我们强烈推荐采用 Docker 镜像的方式，以最大程度减少可能出现的环境问题。**
 
@@ -1521,6 +1543,8 @@ docker run \
 
 #### 3.1.2 方法二：通过 PaddleOCR CLI 安装和使用
 
+**PaddleOCR CLI 已经为您解决了复杂的版本兼容性问题。您无需花费时间研究推理框架的文档，只需一条简单的命令即可安装推理框架所需的依赖环境。**
+
 由于推理加速框架可能与飞桨框架存在依赖冲突，建议在虚拟环境中安装：
 
 ```shell
@@ -1569,13 +1593,36 @@ paddleocr genai_server --model_name PaddleOCR-VL-1.5-0.9B --backend vllm --port 
 | `--backend`        | 后端名称，即使用的推理加速框架名称，可选 `vllm` 或 `sglang` |
 | `--backend_config` | 可指定 YAML 文件，包含后端配置        |
 
+#### 3.1.3 方法三：直接使用推理加速框架启动服务
+
+**如果您需要安装自定义版本的推理框架并使用原生方式启动服务，请参考以下指引。请注意，使用原生方式启动时，将无法应用 PaddleOCR 预置的性能调优参数。**
+
+- FastDeploy：[参考此文档](https://paddlepaddle.github.io/FastDeploy/zh/best_practices/PaddleOCR-VL-0.9B/)
+- vLLM：[参考此文档](https://docs.vllm.ai/projects/recipes/en/latest/PaddlePaddle/PaddleOCR-VL.html)
+- MLX-VLM：[参考此文档](./PaddleOCR-VL-Apple-Silicon.md)
+- llama.cpp：
+    1. 参考 [llama.cpp github](https://github.com/ggml-org/llama.cpp) 中的 `Quick start` 安装 llama.cpp。
+    2. 下载 gguf 格式的模型文件：[megemini/PaddleOCR-VL-1.5-GGUF](https://modelscope.cn/models/megemini/PaddleOCR-VL-1.5-GGUF/files) 或 [megemini/PaddleOCR-VL-GGUF](https://modelscope.cn/models/megemini/PaddleOCR-VL-GGUF/files)。
+    3. 执行以下命令启动推理服务，参数介绍可参考 [LLaMA.cpp HTTP Server](https://github.com/ggml-org/llama.cpp/blob/master/tools/server/README.md)：
+
+        ```shell
+        ./build/bin/llama-server \
+          -m /path/to/PaddleOCR-VL-1.5-GGUF.gguf \
+          --mmproj /path/to/PaddleOCR-VL-1.5-GGUF-mmproj.gguf  \
+          --port 8111  \
+          --host 0.0.0.0 \
+          --temp 0
+        ```
+
+</details>
+
 ### 3.2 客户端使用方法
 
 启动 VLM 推理服务后，客户端即可通过 PaddleOCR 调用该服务。**请注意，由于客户端需要调用版面检测模型，仍建议在 GPU 等加速设备上运行客户端，以获得更稳定和高效的性能。客户端环境配置请参考第 1 节，3.1 节介绍的环境配置仅适用于启动服务，不适用于客户端。**
 
 #### 3.2.1 CLI 调用
 
-可通过 `--vl_rec_backend` 指定后端类型（`vllm-server` 或 `sglang-server`），通过 `--vl_rec_server_url` 指定服务地址，例如：
+可通过 `--vl_rec_backend` 指定后端类型（`vllm-server`、`sglang-server`、`fastdeploy-server`、`mlx-vlm-server` 或 `llama-cpp-server`），通过 `--vl_rec_server_url` 指定服务地址，例如：
 
 ```shell
 paddleocr doc_parser --input paddleocr_vl_demo.png --vl_rec_backend vllm-server --vl_rec_server_url http://localhost:8118/v1
@@ -1619,7 +1666,7 @@ paddleocr doc_parser \
 
 #### 3.2.2 Python API 调用
 
-创建 `PaddleOCRVL` 对象时传入 `vl_rec_backend` 和 `vl_rec_server_url` 参数，分别指定后端类型和服务地址：
+创建 `PaddleOCRVL` 对象时传入 `vl_rec_backend` 指定后端类型（`vllm-server`、`sglang-server`、`fastdeploy-server`、`mlx-vlm-server` 或 `llama-cpp-server`）， `vl_rec_server_url` 指定服务地址，例如：
 
 ```python
 pipeline = PaddleOCRVL(vl_rec_backend="vllm-server", vl_rec_server_url="http://localhost:8118/v1")
@@ -2165,7 +2212,7 @@ INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
 <tr>
 <td><code>mergeTables</code></td>
 <td><code>boolean</code></td>
-<td>请参阅PaddleOCR-VL对象中 <code>restructure_pages</code> 方法的 <code>merge_table</code> 参数相关说明。仅当<code>restructurePages</code>为<code>true</code>时生效。</td>
+<td>请参阅PaddleOCR-VL对象中 <code>restructure_pages</code> 方法的 <code>merge_tables</code> 参数相关说明。仅当<code>restructurePages</code>为<code>true</code>时生效。</td>
 <td>否</td>
 </tr>
 <tr>

@@ -35,6 +35,9 @@ logger = logging.getLogger(__name__)
 
 DEFAULT_TIMEOUT = 120  # seconds
 API_GUIDE_URL = "https://paddleocr.com"
+FILE_TYPE_PDF = 0
+FILE_TYPE_IMAGE = 1
+IMAGE_EXTENSIONS = (".png", ".jpg", ".jpeg", ".bmp", ".tiff", ".tif", ".webp")
 
 # =============================================================================
 # Environment
@@ -90,8 +93,12 @@ def get_config() -> tuple[str, str]:
     # Normalize URL
     if not api_url.startswith(("http://", "https://")):
         api_url = f"https://{api_url}"
-    if not api_url.endswith("/ocr"):
-        api_url = api_url.rstrip("/") + "/ocr"
+    api_path = urlparse(api_url).path.rstrip("/")
+    if not api_path.endswith("/ocr"):
+        raise ValueError(
+            "PADDLEOCR_OCR_API_URL must be a full endpoint ending with /ocr. "
+            "Example: https://your-service.paddleocr.com/ocr"
+        )
 
     return api_url, token
 
@@ -108,9 +115,9 @@ def _detect_file_type(path_or_url: str) -> int:
         path = unquote(urlparse(path).path)
 
     if path.endswith(".pdf"):
-        return 0
-    elif path.endswith((".png", ".jpg", ".jpeg", ".bmp", ".tiff", ".tif", ".webp")):
-        return 1
+        return FILE_TYPE_PDF
+    elif path.endswith(IMAGE_EXTENSIONS):
+        return FILE_TYPE_IMAGE
     else:
         raise ValueError(f"Unsupported file format: {path_or_url}")
 
@@ -159,16 +166,28 @@ def _make_api_request(api_url: str, token: str, params: dict) -> dict:
         raise RuntimeError(f"API request failed: {e}")
 
     # Handle HTTP errors
-    if resp.status_code == 401 or resp.status_code == 403:
-        raise RuntimeError(
-            f"Authentication failed ({resp.status_code}). Check your token."
-        )
-    elif resp.status_code == 429:
-        raise RuntimeError("API rate limit exceeded (429)")
-    elif resp.status_code >= 500:
-        raise RuntimeError(f"API service error ({resp.status_code})")
-    elif resp.status_code != 200:
-        raise RuntimeError(f"API error ({resp.status_code}): {resp.text[:200]}")
+    if resp.status_code != 200:
+        error_detail = ""
+        try:
+            error_body = resp.json()
+            if isinstance(error_body, dict):
+                error_detail = str(error_body.get("errorMsg", "")).strip()
+        except Exception:
+            pass
+
+        if not error_detail:
+            error_detail = (resp.text[:200] or "No response body").strip()
+
+        if resp.status_code == 403:
+            raise RuntimeError(f"Authentication failed (403): {error_detail}")
+        elif resp.status_code == 429:
+            raise RuntimeError(f"API rate limit exceeded (429): {error_detail}")
+        elif resp.status_code >= 500:
+            raise RuntimeError(
+                f"API service error ({resp.status_code}): {error_detail}"
+            )
+        else:
+            raise RuntimeError(f"API error ({resp.status_code}): {error_detail}")
 
     # Parse response
     try:
@@ -191,6 +210,7 @@ def _make_api_request(api_url: str, token: str, params: dict) -> dict:
 def ocr(
     file_path: Optional[str] = None,
     file_url: Optional[str] = None,
+    file_type: Optional[int] = None,
     **options,
 ) -> dict[str, Any]:
     """
@@ -199,6 +219,7 @@ def ocr(
     Args:
         file_path: Local file path
         file_url: URL to file
+        file_type: Optional file type override (0=PDF, 1=Image)
         **options: Additional API options (passed directly to API)
 
     Returns:
@@ -219,6 +240,8 @@ def ocr(
     # Validate input
     if not file_path and not file_url:
         return _error("INPUT_ERROR", "file_path or file_url required")
+    if file_type is not None and file_type not in (FILE_TYPE_PDF, FILE_TYPE_IMAGE):
+        return _error("INPUT_ERROR", "file_type must be 0 (PDF) or 1 (Image)")
 
     # Get config
     try:
@@ -228,16 +251,28 @@ def ocr(
 
     # Build request params
     try:
+        resolved_file_type: Optional[int] = None
         if file_url:
             params = {"file": file_url}
-            file_type = _detect_file_type(file_url)
+            if file_type is not None:
+                resolved_file_type = file_type
+            else:
+                try:
+                    resolved_file_type = _detect_file_type(file_url)
+                except ValueError:
+                    resolved_file_type = None
         else:
             params = {"file": _load_file_as_base64(file_path)}
-            file_type = _detect_file_type(file_path)
+            resolved_file_type = (
+                file_type if file_type is not None else _detect_file_type(file_path)
+            )
 
-        params["fileType"] = file_type
         params["visualize"] = False
         params.update(options)
+        if resolved_file_type is not None:
+            params["fileType"] = resolved_file_type
+        else:
+            params.pop("fileType", None)
 
     except (ValueError, FileNotFoundError) as e:
         return _error("INPUT_ERROR", str(e))

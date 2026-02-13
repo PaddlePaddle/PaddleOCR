@@ -102,6 +102,13 @@ def get_config() -> tuple[str, str]:
     # Normalize URL
     if not api_url.startswith(("http://", "https://")):
         api_url = f"https://{api_url}"
+    api_path = urlparse(api_url).path.rstrip("/")
+    if not api_path.endswith("/layout-parsing"):
+        raise ValueError(
+            "PADDLEOCR_DOC_PARSING_API_URL must be a full endpoint ending with "
+            "/layout-parsing. "
+            "Example: https://your-service.paddleocr.com/layout-parsing"
+        )
 
     return api_url, token
 
@@ -255,11 +262,10 @@ def parse_document(
 
     # Build request params
     try:
+        resolved_file_type: Optional[int] = None
         if file_url:
             params = {"file": file_url}
-            resolved_file_type = (
-                file_type if file_type is not None else _detect_file_type(file_url)
-            )
+            resolved_file_type = file_type
         else:
             resolved_file_type = (
                 file_type if file_type is not None else _detect_file_type(file_path)
@@ -269,7 +275,10 @@ def parse_document(
             }
 
         params.update(options)
-        params["fileType"] = resolved_file_type
+        if resolved_file_type is not None:
+            params["fileType"] = resolved_file_type
+        elif file_url:
+            params.pop("fileType", None)
 
     except (ValueError, FileNotFoundError) as e:
         return _error("INPUT_ERROR", str(e))

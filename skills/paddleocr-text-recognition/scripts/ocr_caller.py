@@ -52,6 +52,9 @@ Examples:
   # OCR local file
   python scripts/paddleocr-text-recognition/ocr_caller.py --file-path "./document.pdf" --pretty
 
+  # OCR with explicit file type override
+  python scripts/paddleocr-text-recognition/ocr_caller.py --file-url "URL" --file-type 1 --pretty
+
   # Save result to file
   python scripts/paddleocr-text-recognition/ocr_caller.py --file-url "URL" --output result.json
 
@@ -68,6 +71,12 @@ Configuration:
 
     # Output options
     parser.add_argument(
+        "--file-type",
+        type=int,
+        choices=[0, 1],
+        help="Optional file type override (0=PDF, 1=Image)",
+    )
+    parser.add_argument(
         "--pretty", action="store_true", help="Pretty-print JSON output"
     )
     parser.add_argument(
@@ -80,6 +89,7 @@ Configuration:
     result = ocr(
         file_path=args.file_path,
         file_url=args.file_url,
+        file_type=args.file_type,
     )
 
     # Format output

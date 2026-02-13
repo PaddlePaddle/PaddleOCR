@@ -45,6 +45,10 @@ If the script execution fails (API not configured, network error, etc.):
    - User provides local file path: Use the `--file-path` parameter
    - User uploads image: Save it first, then use `--file-path`
 
+   **Input type note**:
+   - Supported file types depend on the model and endpoint configuration.
+   - Follow the official endpoint/API documentation for the exact supported formats.
+
 2. **Execute OCR**:
    ```bash
    python scripts/ocr_caller.py --file-url "URL provided by user" --pretty
@@ -101,6 +105,11 @@ python scripts/ocr_caller.py --file-url "https://example.com/invoice.jpg" --pret
 **Local File OCR**:
 ```bash
 python scripts/ocr_caller.py --file-path "./document.pdf" --pretty
+```
+
+**OCR With Explicit File Type**:
+```bash
+python scripts/ocr_caller.py --file-url "https://example.com/input" --file-type 1 --pretty
 ```
 
 ### Understanding the Output
@@ -192,7 +201,7 @@ If recognition quality is poor, suggest:
 For in-depth understanding of the OCR system, refer to:
 - `references/output_schema.md` - Output format specification
 
-> **Note**: Model version and capabilities are determined by your API endpoint (PADDLEOCR_OCR_API_URL).
+> **Note**: Model version, capabilities, and supported file formats are determined by your API endpoint (`PADDLEOCR_OCR_API_URL`) and its official API documentation.
 
 ## Testing the Skill
 

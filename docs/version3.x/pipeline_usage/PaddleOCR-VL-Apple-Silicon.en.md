@@ -49,7 +49,6 @@ Install the MLX-VLM inference framework:
 
 ```shell
 python -m pip install -U mlx-vlm
-python -m pip install "transformers<5.0.0"
 ```
 
 Start the MLX-VLM inference service:

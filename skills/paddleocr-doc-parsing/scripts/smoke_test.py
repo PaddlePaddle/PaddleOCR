@@ -49,7 +49,7 @@ Then configure:
   python skills/paddleocr-doc-parsing/scripts/configure.py
 
 Or manually create .env file in project root:
-  PADDLEOCR_DOC_PARSING_API_URL=https://your-api-url.paddleocr.com/v1
+  PADDLEOCR_DOC_PARSING_API_URL=https://your-api-url.paddleocr.com/layout-parsing
   PADDLEOCR_ACCESS_TOKEN=your_token_here
 
 ============================================================

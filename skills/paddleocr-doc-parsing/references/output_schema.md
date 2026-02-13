@@ -10,7 +10,7 @@ This document defines the output envelope returned by `vl_caller.py`.
 {
   "ok": true,
   "text": "Extracted text from all pages",
-  "result": { "raw provider response" },
+  "result": { ... },  // raw provider response
   "error": null
 }
 ```
@@ -42,12 +42,7 @@ On error:
 The `result` field contains raw provider output.  
 Raw fields may vary by model version and endpoint.
 
-Important:
-- Different models can return different low-level fields.
-- The example below is based on **PaddleOCR-VL-1.5**.
-- Consumers should rely on stable high-level fields documented in this file.
-
-## Raw Result Example (PaddleOCR-VL-1.5)
+## Raw Result Example
 
 ```json
 {
@@ -64,7 +59,8 @@ Important:
           "text": "Full page content in markdown/HTML format",
           "images": {
             "imgs/filename.jpg": "https://..."
-          }
+          },
+          "...": "other model-specific fields"
         }
       }
     ]
@@ -81,9 +77,9 @@ Important:
   Rendered output for page `n`.
 
 - `result[n].markdown.text`  
-  Full page text used by `vl_caller.py` to build top-level `text`.
+  Full page markdown text returned in the raw response.
 
-## Text Extraction in `vl_caller.py`
+## Text Extraction
 
 `vl_caller.py` extracts top-level `text` from `result.layoutParsingResults[n].markdown.text` and joins pages with `\n\n`.
 

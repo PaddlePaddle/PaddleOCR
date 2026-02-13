@@ -129,7 +129,7 @@ Examples:
   python configure.py
 
   # CLI mode (non-interactive)
-  python configure.py --api-url "https://your-service.paddleocr.com/v1" --token "your_token"
+  python configure.py --api-url "https://your-service.paddleocr.com/layout-parsing" --token "your_token"
 
 Get your API credentials at: https://paddleocr.com
         """,
@@ -214,7 +214,7 @@ Get your API credentials at: https://paddleocr.com
 
     # Prompt for API URL
     print("1. PADDLEOCR_DOC_PARSING_API_URL - Document parsing API endpoint")
-    print("   Example: https://your-service.paddleocr.com/v1")
+    print("   Example: https://your-service.paddleocr.com/layout-parsing")
     if current_api_url:
         print(f"   Current: {current_api_url}")
 

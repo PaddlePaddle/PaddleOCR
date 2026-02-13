@@ -228,7 +228,12 @@ Supported formats:
     ext = input_path.suffix.lower()
 
     if ext == ".pdf":
-        optimize_pdf(input_path, output_path, args.target_size)
+        # TODO: Re-enable PDF optimization after a stable page rendering/compression
+        # strategy is validated across different document types.
+        print("ERROR: PDF optimization is temporarily disabled.")
+        print("       TODO: rework the PDF optimization strategy for reliability.")
+        print("       For now, use --file-url directly or split PDF pages first.")
+        sys.exit(1)
     elif ext in [".png", ".jpg", ".jpeg", ".bmp", ".tiff", ".tif"]:
         optimize_image(input_path, output_path, args.quality, args.target_size)
     else:

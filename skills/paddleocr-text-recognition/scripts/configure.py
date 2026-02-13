@@ -30,6 +30,7 @@ import argparse
 import re
 import sys
 from pathlib import Path
+from urllib.parse import urlparse
 
 # Add parent directory to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent))
@@ -61,26 +62,26 @@ def parse_input(user_input: str) -> str:
     return user_input
 
 
-def normalize_api_url(url: str) -> str:
+def validate_api_url(url: str) -> str:
     """
-    Normalize API URL
-    Supports:
-    - https://xxx.aistudio-app.com/ocr
-    - https://xxx.aistudio-app.com
-    - xxx.aistudio-app.com
-
-    Returns: https://xxx.aistudio-app.com/ocr
+    Validate and normalize OCR API endpoint URL.
+    Requires a full endpoint ending with /ocr.
     """
     url = url.strip()
+    if not url:
+        raise ValueError("API URL cannot be empty")
+    if not url.startswith(("http://", "https://")):
+        url = f"https://{url}"
+    url = url.rstrip("/")
 
-    # Remove http:// or https://
-    url = re.sub(r"^https?://", "", url)
+    api_path = urlparse(url).path.rstrip("/")
+    if not api_path.endswith("/ocr"):
+        raise ValueError(
+            "API URL must be a full endpoint ending with /ocr. "
+            "Example: https://your-service.paddleocr.com/ocr"
+        )
 
-    # Remove trailing /ocr or other paths
-    url = re.sub(r"/.*$", "", url)
-
-    # Return complete API URL
-    return f"https://{url}/ocr"
+    return url
 
 
 def mask_token(token: str) -> str:
@@ -242,8 +243,8 @@ Examples:
     # ========================================
     if args.api_url and args.token:
         try:
-            # Normalize API URL
-            api_url = normalize_api_url(parse_input(args.api_url))
+            # Validate full OCR endpoint URL
+            api_url = validate_api_url(parse_input(args.api_url))
             token = parse_input(args.token)
 
             # Validate
@@ -297,9 +298,9 @@ Examples:
         # Parse input
         api_url_raw = parse_input(api_url_input)
 
-        # Normalize
+        # Validate full OCR endpoint URL
         try:
-            api_url = normalize_api_url(api_url_raw)
+            api_url = validate_api_url(api_url_raw)
             print(f"[OK] Recognized: {api_url}\n")
             break
         except Exception as e:

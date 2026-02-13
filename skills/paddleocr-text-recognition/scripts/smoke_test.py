@@ -41,9 +41,9 @@ HOW TO GET YOUR API CREDENTIALS
 
 1. Visit: https://paddleocr.com
 2. Log in with your Baidu account
-3. Click "API" in the navigation menu
-4. Copy the API URL (e.g., https://xxx.paddleocr.com/ocr)
-5. Click your avatar -> "Access Token" -> Copy the token
+3. Open your model's API call example page
+4. Copy the API URL from the example request
+5. Copy your access token from the same API setup page
 
 Then configure:
   python skills/paddleocr-text-recognition/scripts/configure.py
@@ -137,9 +137,7 @@ def main():
         print(f"\n  X API call failed: {error.get('message')}")
         if "Authentication" in error.get("message", ""):
             print("\n  Hint: Check if your token is correct and not expired.")
-            print(
-                "        Get a new token at: https://paddleocr.com -> Avatar -> Access Token"
-            )
+            print("        Get a new token from your API call example page.")
         return 1
 
     print("  + API call successful!")

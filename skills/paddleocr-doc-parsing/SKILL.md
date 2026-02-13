@@ -69,10 +69,13 @@ If the script execution fails (API not configured, network error, etc.):
    - Layout and reading order
 
    **Input type note**:
-   - Actual supported file types depend on the model behind your endpoint.
-   - Maximum supported set: `PDF`, `PNG`, `JPG`, `JPEG`, `BMP`, `TIFF`, `TIF`, `WEBP`.
+   - Supported file types depend on the model and endpoint configuration.
+   - Always follow the file type constraints documented by your endpoint API.
 
-3. **Extract what the user needs** from the complete data based on their request.
+3. **Extract what the user needs** from stable contract fields based on their request:
+   - Top-level `text`
+   - `result[n].markdown`
+   - `result[n].prunedResult`
 
 ### IMPORTANT: Complete Content Display
 
@@ -86,7 +89,7 @@ If the script execution fails (API not configured, network error, etc.):
 
 **What this means**:
 - ✅ **DO**: Display complete text, all tables, all formulas as requested
-- ✅ **DO**: Present content in page order using the top-level `text` or `result[n].markdown.text`
+- ✅ **DO**: Present content using stable contract fields: top-level `text`, `result[n].markdown`, and `result[n].prunedResult`
 - ❌ **DON'T**: Truncate with "..." unless content is excessively long (>10,000 chars)
 - ❌ **DON'T**: Summarize or provide excerpts when user asks for full content
 - ❌ **DON'T**: Say "Here's a preview" when user expects complete output
@@ -121,29 +124,15 @@ The script returns a JSON envelope wrapping the raw API result:
 {
   "ok": true,
   "text": "Full markdown/HTML text extracted from all pages",
-  "result": [
-    {
-      "prunedResult": {
-        "parsing_res_list": [
-          {"block_label": "text", "block_content": "Paragraph text content here...", "block_bbox": [100, 200, 500, 230], "block_id": 3},
-          {"block_label": "table", "block_content": "<table>...</table>", "block_bbox": [50, 300, 900, 600], "block_id": 5},
-          {"block_label": "seal", "block_content": "<img .../>", "block_bbox": [400, 50, 600, 180], "block_id": 2}
-        ]
-      },
-      "markdown": {
-        "text": "Full page content in markdown/HTML format",
-        "images": {"imgs/filename.jpg": "https://..."}
-      }
-    }
-  ],
+  "result": { ... },  // raw provider response
   "error": null
 }
 ```
 
 **Key fields**:
 - `text` — extracted markdown text from all pages (use this for quick text display)
-- `result` — raw API result array (one object per page), for detailed block-level access
-- `result[n].prunedResult` — structured parsing output for each page
+- `result` - raw provider response object
+- `result[n].prunedResult` - structured parsing output for each page (layout/content/confidence and related metadata)
 - `result[n].markdown` — full rendered page output in markdown/HTML
 
 ### Usage Examples
@@ -157,7 +146,7 @@ python scripts/vl_caller.py \
 
 Then use:
 - Top-level `text` for quick full-text output
-- `result[n].markdown.text` when page-level output is needed
+- `result[n].markdown` when page-level output is needed
 
 **Example 2: Extract Structured Page Data**
 ```bash
@@ -179,7 +168,7 @@ python scripts/vl_caller.py \
 
 Then return:
 - Full `text` when user asks for full document content
-- The raw `result` object when user needs complete structured data
+- `result[n].prunedResult` and `result[n].markdown` when user needs complete structured page data
 
 ### First-Time Configuration
 
