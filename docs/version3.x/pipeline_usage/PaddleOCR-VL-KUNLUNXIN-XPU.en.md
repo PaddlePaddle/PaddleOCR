@@ -2,9 +2,11 @@
 comments: true
 ---
 
-# PaddleOCR-VL XPU Environment Configuration Tutorial
+# PaddleOCR-VL KUNLUNXIN XPU Environment Configuration Tutorial
 
 This tutorial is a guide for configuring the environment for PaddleOCR-VL KUNLUNXIN XPU. After completing the environment setup, please refer to the [PaddleOCR-VL Usage Tutorial](./PaddleOCR-VL.en.md) to use PaddleOCR-VL.
+
+PaddleOCR-VL has been verified for accuracy and speed on the KUNLUNXIN P800. However, due to hardware diversity, compatibility with other KUNLUNXIN XPUs has not yet been confirmed. We welcome the community to test on different hardware setups and share your results.
 
 ## 1. Environment Preparation
 
@@ -32,7 +34,7 @@ docker run \
 # Call PaddleOCR CLI or Python API in the container
 ```
 
-If you wish to start the service in an environment without internet access, replace `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-kunlunxin-xpu` in the above command with the offline version image `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-kunlunxin-xpu-offline`.
+If you wish to start the service in an environment without internet access, replace `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-kunlunxin-xpu` (image size approximately 13 GB) in the above command with the offline version image `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-kunlunxin-xpu-offline` (image size approximately 15 GB).
 
 > TIP:
 > Images with the `latest-xxx` tag correspond to the latest version of PaddleOCR. If you want to use a specific version of the PaddleOCR image, you can replace `latest` in the tag with the desired version number: `paddleocr<major>.<minor>`.
@@ -84,7 +86,7 @@ docker run \
     paddleocr genai_server --model_name PaddleOCR-VL-1.5-0.9B --host 0.0.0.0 --port 8118 --backend fastdeploy
 ```
 
-If you wish to start the service in an environment without internet access, replace `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-fastdeploy-server:latest-kunlunxin-xpu` in the above command with the offline version image `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-fastdeploy-server:latest-kunlunxin-xpu-offline`.
+If you wish to start the service in an environment without internet access, replace `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-fastdeploy-server:latest-kunlunxin-xpu` (image size approximately 53 GB) in the above command with the offline version image `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-fastdeploy-server:latest-kunlunxin-xpu-offline` (image size approximately 55 GB).
 
 When launching the FastDeploy inference service, we provide a set of default parameter settings. If you need to adjust parameters such as GPU memory usage, you can configure additional parameters yourself. Please refer to [3.3.1 Server Parameter Adjustment](./PaddleOCR-VL.en.md#331-server-parameter-adjustment) to create a configuration file, then mount this file into the container and specify the configuration file using `backend_config` in the command to start the service, for example:
 
