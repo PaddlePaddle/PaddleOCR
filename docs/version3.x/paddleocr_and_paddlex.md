@@ -48,7 +48,8 @@ PaddleOCR、PaddleX 和飞桨框架的版本存在如下对应关系：
 | 文档图像预处理 | `doc_preprocessor` |
 | 文档理解 | `doc_understanding` |
 | PP-DocTranslation | `PP-DocTranslation` |
-| PaddleOCR-VL | `PaddleOCR-VL`、`PaddleOCR-VL-1.5` |
+| PaddleOCR-VL | `PaddleOCR-VL` |
+| PaddleOCR-VL-1.5 | `PaddleOCR-VL-1.5` |
 
 ## 3. 使用 PaddleX 产线配置文件
 

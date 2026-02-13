@@ -48,7 +48,8 @@ The version correspondence between PaddleOCR, PaddleX, and the PaddlePaddle fram
 | Document Image Preprocessing | `doc_preprocessor` |
 | Document Understanding | `doc_understanding` |
 | PP-DocTranslation | `PP-DocTranslation` |
-| PaddleOCR-VL | `PaddleOCR-VL`、`PaddleOCR-VL-1.5` |
+| PaddleOCR-VL | `PaddleOCR-VL` |
+| PaddleOCR-VL-1.5 | `PaddleOCR-VL-1.5` |
 
 ## 3. Using PaddleX Pipeline Configuration Files
 
