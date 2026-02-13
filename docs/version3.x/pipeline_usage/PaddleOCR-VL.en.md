@@ -2064,9 +2064,7 @@ Below are the API reference and examples of multi-language service invocation:
 <tr>
 <td><code>file</code></td>
 <td><code>string</code></td>
-<td>The URL of an image file or PDF file accessible to the server, or the Base64-encoded result of the content of the aforementioned file types. By default, for PDF files with more than 10 pages, only the first 10 pages will be processed.<br/>To remove the page limit, add the following configuration to the pipeline configuration file:<pre> <code>Serving:
-  extra:
-    max_num_input_imgs: null</code></pre>
+<td>The URL of an image file or PDF file accessible to the server, or the Base64-encoded result of the content of the aforementioned file types.
 </td>
 <td>Yes</td>
 </tr>
@@ -3044,6 +3042,7 @@ Serving:
       sk: xxx
       key_prefix: deploy
     return_img_urls: True
+    url_expires_in: 3600
 ```
 
 Currently, storing generated images in Baidu Intelligent Cloud Object Storage (BOS) and returning URLs is supported. The parameters are described as follows:
@@ -3054,20 +3053,21 @@ Currently, storing generated images in Baidu Intelligent Cloud Object Storage (B
 - `bucket_name`: Storage bucket name (required).
 - `key_prefix`: Unified prefix for object keys.
 - `connection_timeout_in_mills`: Request timeout in milliseconds.
+- `url_expires_in`: URL validity period (in seconds). `-1` indicates it never expires.
 
 For more information on obtaining AK/SK and other details, refer to the [Baidu Intelligent Cloud Official Documentation](https://cloud.baidu.com/doc/BOS/index.html).
 
-**Modify PDF Parsing Page Limit**
+**Limit the Number of PDF Pages Parsed**
 
-For performance considerations, the service processes only the first 10 pages of received PDF files by default. To adjust the page limit, add the following configuration to the pipeline configuration file (`Serving` is a top-level field):
+By default, the service processes the entire PDF file. In production environments, if a PDF contains too many pages, it may affect system stability, leading to processing timeouts or excessive resource usage. To ensure stable service operation, it is recommended to set a reasonable page limit based on actual needs. You can add the following configuration to the production configuration file (`Serving` is the top-level field):
 
 ```yaml
 Serving:
   extra:
-    max_num_input_imgs: <new page limit, e.g., 100>
+    max_num_input_imgs: <page limit, e.g., 100>
 ```
 
-Set `max_num_input_imgs` to `null` to remove the page limit.
+When `max_num_input_imgs` is set to `null`, there will be no limit on the number of PDF pages.
 
 #### 4.4.3 Apply the Configuration File
 
