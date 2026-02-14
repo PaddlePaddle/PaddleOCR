@@ -11,11 +11,9 @@ description: >
 
 Invoke this skill in the following situations:
 - Extract text from images (screenshots, photos, scans, charts)
-- Read text from PDF or document images
-- Perform OCR on any visual content containing text
-- Parse structured documents (invoices, receipts, forms, tables)
-- Recognize text in photos taken by mobile phones
-- Extract text from URLs pointing to images or PDFs
+- Read text from PDFs or document images
+- Parse structured text content (invoices, receipts, forms, tables)
+- Extract text from URLs or local files pointing to images/PDFs
 
 Do not use this skill in the following situations:
 - Plain text files that can be read directly with the Read tool
@@ -145,19 +143,19 @@ CONFIG_ERROR: PADDLEOCR_OCR_API_URL not configured. Get your API at: https://pad
 
 2. **Tell user to provide credentials**:
    ```
-   Please visit the URL above to get your API_URL and TOKEN.
+   Please visit the URL above to get your PADDLEOCR_OCR_API_URL and PADDLEOCR_ACCESS_TOKEN.
    Once you have them, send them to me and I'll configure it automatically.
    ```
 
 3. **When user provides credentials** (accept any format):
-   - `API_URL=https://xxx.paddleocr.com/ocr, TOKEN=abc123...`
+   - `PADDLEOCR_OCR_API_URL=https://xxx.paddleocr.com/ocr, PADDLEOCR_ACCESS_TOKEN=abc123...`
    - `Here's my API: https://xxx and token: abc123`
    - Copy-pasted code format
    - Any other reasonable format
 
 4. **Parse credentials from user's message**:
-   - Extract API_URL value (look for URLs with paddleocr.com or similar)
-   - Extract TOKEN value (long alphanumeric string, usually 40+ chars)
+   - Extract PADDLEOCR_OCR_API_URL value (look for URLs with paddleocr.com or similar)
+   - Extract PADDLEOCR_ACCESS_TOKEN value (long alphanumeric string, usually 40+ chars)
 
 5. **Configure automatically**:
    ```bash

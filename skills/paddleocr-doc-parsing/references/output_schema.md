@@ -68,7 +68,7 @@ Raw fields may vary by model version and endpoint.
 }
 ```
 
-## Stable Fields for Downstream Use
+## Important Fields
 
 - `result[n].prunedResult`  
   Structured parsing data for page `n` (layout elements, locations, content, confidence, and related metadata).
@@ -77,7 +77,7 @@ Raw fields may vary by model version and endpoint.
   Rendered output for page `n`.
 
 - `result[n].markdown.text`  
-  Full page markdown text returned in the raw response.
+  Full page markdown text.
 
 ## Text Extraction
 

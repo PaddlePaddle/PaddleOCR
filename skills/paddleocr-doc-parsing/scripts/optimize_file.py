@@ -18,10 +18,9 @@
 File Optimizer for PaddleOCR Document Parsing
 
 Compresses and optimizes large files to meet size requirements.
-Supports images (PNG, JPG) and PDFs.
+Supports image files only.
 
 Usage:
-    python scripts/optimize_file.py input.pdf output.pdf --target-size 15
     python scripts/optimize_file.py input.png output.png --quality 85
 """
 
@@ -105,77 +104,7 @@ def optimize_image(
         print("Consider:")
         print("  - Lower quality (--quality 70)")
         print("  - Use --file-url instead of local file")
-        print("  - Split multi-page documents")
-
-
-def optimize_pdf(input_path: Path, output_path: Path, max_size_mb: float = 20):
-    """
-    Optimize PDF by re-rendering pages as compressed images
-
-    Args:
-        input_path: Input PDF path
-        output_path: Output PDF path
-        max_size_mb: Target max size in MB
-    """
-    try:
-        import pypdfium2 as pdfium
-    except ImportError:
-        print("ERROR: pypdfium2 not installed")
-        print("Install with: pip install pypdfium2")
-        sys.exit(1)
-
-    try:
-        from PIL import Image
-    except ImportError:
-        print("ERROR: Pillow not installed")
-        print("Install with: pip install Pillow")
-        sys.exit(1)
-
-    print(f"Optimizing PDF: {input_path}")
-
-    original_size = input_path.stat().st_size / 1024 / 1024
-    print(f"Original size: {original_size:.2f}MB")
-
-    # Open PDF
-    doc = pdfium.PdfDocument(input_path)
-    n_pages = len(doc)
-    print(f"Pages: {n_pages}")
-
-    # Render pages to images and rebuild PDF
-    dpi = 144  # Lower DPI for smaller file
-    scale = dpi / 72
-
-    page_images = []
-    for page_num in range(n_pages):
-        page = doc[page_num]
-        bitmap = page.render(scale=scale)
-        pil_image = bitmap.to_pil().convert("RGB")
-        page_images.append(pil_image)
-        print(f"Processed page {page_num + 1}/{n_pages}")
-
-    doc.close()
-
-    # Save as PDF using Pillow
-    if page_images:
-        first_page, *rest_pages = page_images
-        first_page.save(
-            output_path,
-            "PDF",
-            save_all=True,
-            append_images=rest_pages,
-            quality=85,
-        )
-
-    new_size = output_path.stat().st_size / 1024 / 1024
-    print(f"Optimized size: {new_size:.2f}MB")
-    print(f"Reduction: {((original_size - new_size) / original_size * 100):.1f}%")
-
-    if new_size > max_size_mb:
-        print(f"\nWARNING: PDF still larger than {max_size_mb}MB")
-        print("Consider:")
-        print("  - Split into multiple files")
-        print("  - Process specific pages only")
-        print("  - Use --file-url instead")
+        print("  - Use a smaller or resized image")
 
 
 def main():
@@ -190,15 +119,8 @@ Examples:
   # Optimize with specific quality
   python scripts/optimize_file.py input.jpg output.jpg --quality 70
 
-  # Optimize PDF
-  python scripts/optimize_file.py input.pdf output.pdf
-
-  # Target specific size
-  python scripts/optimize_file.py input.pdf output.pdf --target-size 15
-
 Supported formats:
-  - Images: PNG, JPG, JPEG, BMP, TIFF
-  - Documents: PDF
+  - Images: PNG, JPG, JPEG, BMP, TIFF, TIF
         """,
     )
 
@@ -227,18 +149,11 @@ Supported formats:
     # Determine file type
     ext = input_path.suffix.lower()
 
-    if ext == ".pdf":
-        # TODO: Re-enable PDF optimization after a stable page rendering/compression
-        # strategy is validated across different document types.
-        print("ERROR: PDF optimization is temporarily disabled.")
-        print("       TODO: rework the PDF optimization strategy for reliability.")
-        print("       For now, use --file-url directly or split PDF pages first.")
-        sys.exit(1)
-    elif ext in [".png", ".jpg", ".jpeg", ".bmp", ".tiff", ".tif"]:
+    if ext in [".png", ".jpg", ".jpeg", ".bmp", ".tiff", ".tif"]:
         optimize_image(input_path, output_path, args.quality, args.target_size)
     else:
         print(f"ERROR: Unsupported file format: {ext}")
-        print("Supported: PDF, PNG, JPG, JPEG, BMP, TIFF")
+        print("Supported: PNG, JPG, JPEG, BMP, TIFF, TIF")
         sys.exit(1)
 
     print(f"\nOptimized file saved to: {output_path}")

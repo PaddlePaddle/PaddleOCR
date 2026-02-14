@@ -50,6 +50,14 @@ If the script execution fails (API not configured, network error, etc.):
    python scripts/vl_caller.py --file-path "file path"
    ```
 
+   **Optional: explicitly set file type**:
+   ```bash
+   python scripts/vl_caller.py --file-url "URL provided by user" --file-type 0
+   ```
+   - `--file-type 0`: PDF
+   - `--file-type 1`: image
+   - If omitted, the service can infer file type from input.
+
    **Save result to file** (recommended):
    ```bash
    python scripts/vl_caller.py --file-url "URL" --output result.json --pretty
@@ -179,7 +187,7 @@ The error will show:
 Configuration error: API not configured. Get your API at: https://paddleocr.com
 ```
 
-**Auto-configuration workflow**:
+**Configuration workflow**:
 
 1. **Show the exact error message** to user (including the URL)
 
@@ -190,13 +198,13 @@ Configuration error: API not configured. Get your API at: https://paddleocr.com
    ```
 
 3. **When user provides credentials** (accept any format):
-   - `PADDLEOCR_DOC_PARSING_API_URL=https://xxx.com/layout-parsing, PADDLEOCR_ACCESS_TOKEN=abc123...`
+   - `PADDLEOCR_DOC_PARSING_API_URL=https://xxx.paddleocr.com/layout-parsing, PADDLEOCR_ACCESS_TOKEN=abc123...`
    - `Here's my API: https://xxx and token: abc123`
    - Copy-pasted code format
    - Any other reasonable format
 
 4. **Parse credentials from user's message**:
-   - Extract PADDLEOCR_DOC_PARSING_API_URL value (look for URLs)
+   - Extract PADDLEOCR_DOC_PARSING_API_URL value (look for URLs with paddleocr.com or similar)
    - Extract PADDLEOCR_ACCESS_TOKEN value (long alphanumeric string, usually 40+ chars)
 
 5. **Configure automatically**:

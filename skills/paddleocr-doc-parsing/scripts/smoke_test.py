@@ -39,11 +39,11 @@ def print_config_guide():
 HOW TO GET YOUR API CREDENTIALS
 ============================================================
 
-1. Visit: https://paddleocr.com
+1. Visit: https://aistudio.baidu.com/paddleocr
 2. Log in with your Baidu account
-3. Open your model's API call example page
-4. Copy the API URL from the example request
-5. Copy your access token from the same API setup page
+3. Open your model's Example Code section
+4. In Example Code, copy the API URL value
+5. In Example Code, copy the Access Token value
 
 Then configure:
   python skills/paddleocr-doc-parsing/scripts/configure.py
@@ -137,7 +137,9 @@ def main():
         print(f"\n  X API call failed: {error.get('message')}")
         if "Authentication" in error.get("message", ""):
             print("\n  Hint: Check if your token is correct and not expired.")
-            print("        Get a new token from your PaddleOCR API management page.")
+            print(
+                "        Get a new token from the PaddleOCR page example code section."
+            )
         return 1
 
     print("  + API call successful!")

@@ -67,13 +67,15 @@ Configuration:
     input_group.add_argument("--file-url", help="URL to document (PDF, PNG, JPG, etc.)")
     input_group.add_argument("--file-path", help="Local file path")
 
-    # Output options
+    # Optional input options
     parser.add_argument(
         "--file-type",
         type=int,
         choices=[0, 1],
         help="Optional file type override (0=PDF, 1=Image)",
     )
+
+    # Output options
     parser.add_argument(
         "--pretty", action="store_true", help="Pretty-print JSON output"
     )
