@@ -1634,6 +1634,18 @@ The parameters supported by this command are as follows:
           --host 0.0.0.0 \
           --temp 0
         ```
+    > TIP:
+    >
+    > If encountering the error `tokenize: error: number of bitmaps (1) does not match number of markers (0).`, you can use the `--chat-template-file` parameter to specify the template file. For example:
+    > ```shell
+    > ./build/bin/llama-server \
+    > -m /path/to/PaddleOCR-VL-1.5-GGUF.gguf \
+    > --mmproj /path/to/PaddleOCR-VL-1.5-GGUF-mmproj.gguf  \
+    > --port 8111  \
+    > --host 0.0.0.0 \
+    > --temp 0 \
+    > --chat-template-file /path/to/chat_template_llama.jinja
+    > ```
 
 ### 3.2 Client Usage Methods
 

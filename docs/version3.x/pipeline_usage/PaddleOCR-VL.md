@@ -1613,6 +1613,18 @@ paddleocr genai_server --model_name PaddleOCR-VL-1.5-0.9B --backend vllm --port 
           --host 0.0.0.0 \
           --temp 0
         ```
+    > TIP:
+    >
+    > 如果出现错误 `tokenize: error: number of bitmaps (1) does not match number of markers (0).`，可以使用 `--chat-template-file` 参数指定模板文件。比如：
+    > ```shell
+    > ./build/bin/llama-server \
+    > -m /path/to/PaddleOCR-VL-1.5-GGUF.gguf \
+    > --mmproj /path/to/PaddleOCR-VL-1.5-GGUF-mmproj.gguf  \
+    > --port 8111  \
+    > --host 0.0.0.0 \
+    > --temp 0 \
+    > --chat-template-file /path/to/chat_template_llama.jinja
+    > ```
 
 </details>
 
