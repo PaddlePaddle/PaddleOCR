@@ -176,20 +176,22 @@ async def async_main() -> None:
         server_name = f"PaddleOCR {args.pipeline} MCP server"
         mcp = FastMCP(
             name=server_name,
-            log_level="INFO" if args.verbose else "WARNING",
             mask_error_details=True,
         )
 
         pipeline_handler.register_tools(mcp)
+
+        log_level = "INFO" if args.verbose else "WARNING"
 
         if args.http:
             await mcp.run_async(
                 transport="streamable-http",
                 host=args.host,
                 port=args.port,
+                log_level=log_level,
             )
         else:
-            await mcp.run_async()
+            await mcp.run_async(log_level=log_level)
 
     except Exception as e:
         print(f"Failed to start the server: {e}", file=sys.stderr)
