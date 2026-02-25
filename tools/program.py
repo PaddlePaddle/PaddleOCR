@@ -293,7 +293,7 @@ def train(
         extra_input = config["Architecture"]["algorithm"] in extra_input_models
     try:
         model_type = config["Architecture"]["model_type"]
-    except:
+    except Exception:
         model_type = None
 
     algorithm = config["Architecture"]["algorithm"]

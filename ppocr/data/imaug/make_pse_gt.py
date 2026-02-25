@@ -96,7 +96,7 @@ class MakePseGt(object):
                 continue
             try:
                 shrunk = np.array(shrunk[0]).reshape(-1, 2)
-            except:
+            except Exception:
                 if ignore_tags is not None:
                     ignore_tags[i] = True
                 continue

@@ -925,7 +925,7 @@ def get_warpR(config):
         dy = -r1
         T1 = np.float32([[1.0, 0, dx], [0, 1.0, dy], [0, 0, 1.0 / ratio]])
         ret = T1.dot(warpR)
-    except:
+    except Exception:
         ratio = 1.0
         T1 = np.float32([[1.0, 0, 0], [0, 1.0, 0], [0, 0, 1.0]])
         ret = T1

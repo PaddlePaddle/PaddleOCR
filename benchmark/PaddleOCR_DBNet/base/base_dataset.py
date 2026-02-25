@@ -79,7 +79,7 @@ class BaseDataSet(Dataset):
                 return data_dict
             else:
                 return data
-        except:
+        except Exception:
             return self.__getitem__(np.random.randint(self.__len__()))
 
     def __len__(self):

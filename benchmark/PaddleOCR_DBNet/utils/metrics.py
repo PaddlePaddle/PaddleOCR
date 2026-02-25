@@ -27,7 +27,7 @@ class runningScore(object):
                 self.confusion_matrix += self._fast_hist(
                     lt.flatten(), lp.flatten(), self.n_classes
                 )
-            except:
+            except Exception:
                 pass
 
     def get_scores(self):

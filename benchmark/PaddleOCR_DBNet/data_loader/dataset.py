@@ -56,7 +56,7 @@ class ICDAR2015Dataset(BaseDataSet):
                         label = params[8]
                         texts.append(label)
                         ignores.append(label in self.ignore_tags)
-                except:
+                except Exception:
                     print("load label failed on {}".format(label_path))
         data = {
             "text_polys": np.array(boxes),

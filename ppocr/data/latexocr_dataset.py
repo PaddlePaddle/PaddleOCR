@@ -151,7 +151,7 @@ class LaTeXOCRDataSet(Dataset):
                 return self.__getitem__(rnd_idx)
             return (images_transform, labels, attention_mask)
 
-        except:
+        except Exception:
 
             self.logger.error(
                 "When parsing line {}, error happened with msg: {}".format(

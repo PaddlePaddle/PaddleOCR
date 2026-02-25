@@ -12,7 +12,7 @@ def load_CIFAR_batch(filename):
         Y = datadict[b"fine_labels"]
         try:
             X = X.reshape(10000, 3, 32, 32)
-        except:
+        except Exception:
             X = X.reshape(50000, 3, 32, 32)
         Y = np.array(Y)
         print(Y.shape)

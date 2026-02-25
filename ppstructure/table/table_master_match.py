@@ -528,7 +528,7 @@ def merge_span_token(master_token_list):
             else:
                 new_master_token_list.append(master_token_list[pointer])
                 pointer += 1
-        except:
+        except Exception:
             print("Break in merge...")
             break
     new_master_token_list.append("</tbody>")

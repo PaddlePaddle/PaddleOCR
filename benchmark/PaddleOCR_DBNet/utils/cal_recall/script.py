@@ -117,7 +117,7 @@ def evaluate_method(gtFilePath, submFilePath, evaluationParams):
     def get_intersection_over_union(pD, pG):
         try:
             return get_intersection(pD, pG) / get_union(pD, pG)
-        except:
+        except Exception:
             return 0
 
     def get_intersection(pD, pG):

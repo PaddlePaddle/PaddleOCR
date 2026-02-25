@@ -15,7 +15,7 @@ try:
     from openpyxl.styles.fills import FILL_SOLID
     from openpyxl.styles.numbers import FORMAT_CURRENCY_USD_SIMPLE, FORMAT_PERCENTAGE
     from openpyxl.styles.colors import BLACK
-except:
+except Exception:
     import warnings
 
     warnings.warn(

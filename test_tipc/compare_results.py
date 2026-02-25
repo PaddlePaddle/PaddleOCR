@@ -49,7 +49,7 @@ def parser_results_from_log_by_name(log_path, names_list):
         result = outs.split("{}".format(name))[-1]
         try:
             result = json.loads(result)
-        except:
+        except Exception:
             result = np.array([int(r) for r in result.split()]).reshape(-1, 4)
         parser_results[name] = result
     return parser_results
@@ -67,7 +67,7 @@ def load_gt_from_file(gt_file):
         image_name = image_name.split("/")[-1]
         try:
             result = json.loads(result)
-        except:
+        except Exception:
             result = np.array([int(r) for r in result.split()]).reshape(-1, 4)
         parser_gt[image_name] = result
     return parser_gt

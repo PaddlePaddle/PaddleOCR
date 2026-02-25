@@ -83,7 +83,7 @@ class PGDataSet(Dataset):
             if self.mode.lower() == "eval":
                 try:
                     img_id = int(data_line.split(".")[0][7:])
-                except:
+                except Exception:
                     img_id = 0
             data = {"img_path": img_path, "label": label, "img_id": img_id}
             if not os.path.exists(img_path):

@@ -57,7 +57,7 @@ class LayoutPredictor(hub.Module):
                 print("use gpu: ", use_gpu)
                 print("CUDA_VISIBLE_DEVICES: ", _places)
                 cfg.gpu_mem = 8000
-            except:
+            except Exception:
                 raise RuntimeError(
                     "Environment Variable CUDA_VISIBLE_DEVICES is not set correctly. If you wanna use gpu, please set CUDA_VISIBLE_DEVICES via export CUDA_VISIBLE_DEVICES=cuda_device_id."
                 )

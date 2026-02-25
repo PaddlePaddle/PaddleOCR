@@ -254,7 +254,7 @@ class LMDBDataSetTableMaster(LMDBDataSet):
 
         try:
             data = pickle.loads(txn.get(str(index).encode("utf8")))
-        except:
+        except Exception:
             return None
 
         # img_name, img, info_lines

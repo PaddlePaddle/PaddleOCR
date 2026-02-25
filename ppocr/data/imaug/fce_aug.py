@@ -564,7 +564,7 @@ class SquareResizePad:
         try:
             polygons[:, :, 0::2] = polygons[:, :, 0::2] * out_size[1] / w + offset[0]
             polygons[:, :, 1::2] = polygons[:, :, 1::2] * out_size[0] / h + offset[1]
-        except:
+        except Exception:
             pass
         results["polys"] = polygons
 

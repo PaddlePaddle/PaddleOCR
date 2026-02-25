@@ -83,7 +83,7 @@ def eval_function(exe, compiled_test_program, test_feed_names, test_fetch_list):
                     feed={test_feed_names[0]: images},
                     fetch_list=test_fetch_list,
                 )
-            except:
+            except Exception:
                 preds, _ = exe.run(
                     compiled_test_program,
                     feed={test_feed_names[0]: images},

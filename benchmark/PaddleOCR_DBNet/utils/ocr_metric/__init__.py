@@ -15,5 +15,5 @@ def get_metric(config):
         else:
             cls = eval(config["type"])(args)
         return cls
-    except:
+    except Exception:
         return None

@@ -973,7 +973,7 @@ class NRTRLabelDecode(BaseRecLabelDecode):
             for idx in range(len(text_index[batch_idx])):
                 try:
                     char_idx = self.character[int(text_index[batch_idx][idx])]
-                except:
+                except Exception:
                     continue
                 if char_idx == "</s>":  # end
                     break

@@ -39,7 +39,7 @@ def convert_label(label_dir, mode="gt", save_dir="./save_results/"):
         try:
             tmp = line.split("\t")
             assert len(tmp) == 2, ""
-        except:
+        except Exception:
             tmp = line.strip().split("    ")
 
         gt_lists = []

@@ -29,5 +29,5 @@ for i, line in enumerate(lines):
                 cv2.imwrite(small_image_path, image)
                 with open(new_annotation_file, "a") as f:
                     f.write(f"{line}")
-    except:
+    except Exception:
         continue

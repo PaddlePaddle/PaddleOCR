@@ -299,7 +299,7 @@ if __name__ == "__main__":
                     or int(run_info["FINAL_RESULT"]) == 0
                 ):
                     run_info["JOB_FAIL_FLAG"] = 1
-            except:
+            except Exception:
                 pass
         elif args.index == 3:
             run_info["FINAL_RESULT"] = {}

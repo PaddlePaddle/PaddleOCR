@@ -79,7 +79,7 @@ class SimpleDataSet(Dataset):
             try:
                 info = json.loads(file_name)
                 file_name = random.choice(info)
-            except:
+            except Exception:
                 pass
         return file_name
 
@@ -136,7 +136,7 @@ class SimpleDataSet(Dataset):
             data["ext_data"] = self.get_ext_data()
             data["filename"] = data["img_path"]
             outs = transform(data, self.ops)
-        except:
+        except Exception:
             self.logger.error(
                 "When parsing line {}, error happened with msg: {}".format(
                     data_line, traceback.format_exc()
@@ -242,7 +242,7 @@ class MultiScaleDataSet(SimpleDataSet):
             if outs is not None:
                 outs = self.resize_norm_img(outs, img_width, img_height)
                 outs = transform(outs, self.ops[-1:])
-        except:
+        except Exception:
             self.logger.error(
                 "When parsing line {}, error happened with msg: {}".format(
                     data_line, traceback.format_exc()

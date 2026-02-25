@@ -18,7 +18,7 @@ from __future__ import print_function
 
 try:
     from collections import Callable
-except:
+except Exception:
     from collections.abc import Callable
 
 import numpy as np

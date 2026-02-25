@@ -115,7 +115,7 @@ class PubTabDataSet(Dataset):
                 img = f.read()
                 data["image"] = img
             outs = transform(data, self.ops)
-        except:
+        except Exception:
             import traceback
 
             err = traceback.format_exc()
