@@ -3,9 +3,6 @@
 [![PyPI - Version](https://img.shields.io/pypi/v/langchain-paddleocr?label=%20)](https://pypi.org/project/langchain-paddleocr/#history)
 [![PyPI - License](https://img.shields.io/pypi/l/langchain-paddleocr)](https://opensource.org/licenses/MIT)
 [![PyPI - Downloads](https://img.shields.io/pepy/dt/langchain-paddleocr)](https://pypistats.org/packages/langchain-paddleocr)
-[![Twitter](https://img.shields.io/twitter/url/https/twitter.com/langchainai.svg?style=social&label=Follow%20%40LangChainAI)](https://twitter.com/langchainai)
-
-Looking for the JS/TS version? Check out [LangChain.js](https://github.com/langchain-ai/langchainjs).
 
 This package provides access to PaddleOCR's capabilities within the LangChain ecosystem.
 
@@ -15,16 +12,35 @@ This package provides access to PaddleOCR's capabilities within the LangChain ec
 pip install langchain-paddleocr
 ```
 
+## Basic Usage
+
+### `PaddleOCRVLLoader`
+
+The `PaddleOCRVLLoader` enables you to:
+
+- Extract text and layout information from PDF and image files using models from Baidu's PaddleOCR-VL series (e.g., PaddleOCR-VL, PaddleOCR-VL-1.5)
+- Process documents from local files or remote URLs
+
+Basic usage of `PaddleOCRVLLoader` looks as follows:
+
+```python
+from langchain_paddleocr import PaddleOCRVLLoader
+from pydantic import SecretStr
+
+loader = PaddleOCRVLLoader(
+    file_path="path/to/document.pdf",
+    api_url="your-api-endpoint",
+    access_token=SecretStr("your-access-token")  # Optional if using environment variable `PADDLEOCR_ACCESS_TOKEN`
+)
+
+docs = loader.load()
+
+for doc in docs[:2]:
+    print(f"Content: {doc.page_content[:200]}...")
+    print(f"Source: {doc.metadata['source']}")
+    print("---")
+```
+
 ## 📖 Documentation
 
-For full documentation, see the [API reference](https://reference.langchain.com/python/integrations/langchain_paddleocr/). For conceptual guides, tutorials, and examples on using these classes, see the [LangChain Docs](https://docs.langchain.com/oss/python/integrations/providers/paddleocr).
-
-## 📕 Releases & Versioning
-
-See our [Releases](https://docs.langchain.com/oss/python/release-policy) and [Versioning](https://docs.langchain.com/oss/python/versioning) policies.
-
-## 💁 Contributing
-
-As an open-source project in a rapidly developing field, we are extremely open to contributions, whether it be in the form of a new feature, improved infrastructure, or better documentation.
-
-For detailed information on how to contribute, see the [Contributing Guide](https://docs.langchain.com/oss/python/contributing/overview).
+For full documentation, see the [API reference](https://reference.langchain.com/python/integrations/langchain_paddleocr/). For conceptual guides, tutorials, and usage examples, see the [LangChain Docs](https://docs.langchain.com/oss/python/integrations/providers/paddleocr).

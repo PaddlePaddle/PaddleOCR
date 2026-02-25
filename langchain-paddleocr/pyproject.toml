@@ -4,24 +4,24 @@ build-backend = "hatchling.build"
 
 [project]
 name = "langchain-paddleocr"
-version = "0.3.3"
+version = "0.1.0"
 description = "An integration package connecting PaddleOCR and LangChain"
 authors = []
 readme = "README.md"
 license = { text = "MIT" }
 requires-python = ">=3.10,<3.13"
 dependencies = [
-    "paddleocr>=3.4.0",
-    "paddlex[serving]>=3.4.1",
+    "paddleocr>=3.4.0,<3.5.0",
+    "paddlex[serving]>=3.4.1,<3.5.0",
     "langchain-core>=1.2.5,<2.0.0",
     "requests>=2.32.5",
     "pydantic>=2.0.0,<3.0.0",
 ]
 
 [project.urls]
-"Source Code" = "https://github.com/langchain-ai/langchain-paddleocr/tree/main/libs/paddleocr"
-"Release Notes" = "https://github.com/langchain-ai/langchain-paddleocr/releases"
-Repository = "https://github.com/langchain-ai/langchain-paddleocr"
+"Source Code" = "https://github.com/PaddlePaddle/PaddleOCR/tree/main/langchain-paddleocr"
+"Release Notes" = "https://github.com/PaddlePaddle/PaddleOCR/releases"
+Repository = "https://github.com/PaddlePaddle/PaddleOCR"
 
 [dependency-groups]
 lint = ["ruff>=0.13.1,<0.14.0"]
