@@ -10,6 +10,9 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
 
 <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr_vl_1_5/paddleocr-vl-1.5_metrics.png"/>
 
+> INFO:
+> PaddleOCR 为 PaddleOCR-VL 系列模型提供了统一的接口，方便用户快速上手和使用。除非另有说明，在随后的章节及相关环境配置文档中提到的 “PaddleOCR-VL” 均指 PaddleOCR-VL 系列模型（如 PaddleOCR-VL-1.5 等）；若特指 PaddleOCR-VL v1 版本，将另行明确标注。
+
 ## 流程导览
 
 在开始之前，请参考下一节了解 PaddleOCR-VL 对推理设备的支持情况，**以确定您的设备是否满足运行要求。** 若您的设备满足运行要求，请根据您的需求选择相关章节阅读。
@@ -37,7 +40,7 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
 
 ## PaddleOCR-VL 对推理设备的支持情况
 
-目前 PaddleOCR-VL 有五种推理方式，支持的推理设备不完全相同，请确认您的推理设备是否满足下表要求再进行 PaddleOCR-VL 的推理部署：
+目前 PaddleOCR-VL 有六种推理方式，支持的推理设备不完全相同，请确认您的推理设备是否满足下表要求再进行 PaddleOCR-VL 的推理部署：
 
 <table border="1">
 <thead>
@@ -73,8 +76,8 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
     <td>🚧</td>
     <td>🚧</td>
     <td>✅</td>
-    <td>❌</td>
-    <td>❌</td>
+    <td>-</td>
+    <td>-</td>
   </tr>
   <tr style="text-align: center;">
     <td>PaddlePaddle + SGLang</td>
@@ -84,8 +87,8 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
     <td>🚧</td>
     <td>🚧</td>
     <td>🚧</td>
-    <td>❌</td>
-    <td>❌</td>
+    <td>-</td>
+    <td>-</td>
   </tr>
   <tr style="text-align: center;">
     <td>PaddlePaddle + FastDeploy</td>
@@ -95,19 +98,30 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
     <td>✅</td>
     <td>✅</td>
     <td>🚧</td>
-    <td>❌</td>
-    <td>❌</td>
+    <td>-</td>
+    <td>-</td>
   </tr>
   <tr style="text-align: center;">
     <td>PaddlePaddle + MLX-VLM</td>
-    <td>❌</td>
-    <td>❌</td>
-    <td>❌</td>
-    <td>❌</td>
-    <td>❌</td>
-    <td>❌</td>
-    <td>❌</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
     <td>✅</td>
+  </tr>
+  <tr style="text-align: center;">
+    <td>PaddlePaddle + llama.cpp</td>
+    <td>✅</td>
+    <td>🚧</td>
+    <td>🚧</td>
+    <td>🚧</td>
+    <td>🚧</td>
+    <td>🚧</td>
+    <td>✅</td>
+    <td>🚧</td>
   </tr>
 </tbody>
 </table>
@@ -130,13 +144,13 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
 
 | 硬件类型         | 环境配置教程 |
 |-----------------|--------------------------------------------------|
-| x64 CPU         | 本教程                                           |
+| x64 CPU         | 本教程（当前仅支持手动安装依赖） |
 | 英伟达 GPU      | - NVIDIA Blackwell 架构 GPU（如RTX 50 系）参考 [PaddleOCR-VL NVIDIA Blackwell 架构 GPU 环境配置教程](./PaddleOCR-VL-NVIDIA-Blackwell.md) <br/> - 其他 NVIDIA GPU 参考本教程 |
-| 昆仑芯 XPU      | [PaddleOCR-VL XPU 环境配置教程](./PaddleOCR-VL-XPU.md) |
-| 海光 DCU        | [PaddleOCR-VL DCU 环境配置教程](./PaddleOCR-VL-DCU.md) |
+| 昆仑芯 XPU      | [PaddleOCR-VL 昆仑芯 XPU 环境配置教程](./PaddleOCR-VL-KUNLUNXIN-XPU.md) |
+| 海光 DCU        | [PaddleOCR-VL 海光 DCU 环境配置教程](./PaddleOCR-VL-HYGON-DCU.md) |
 | 沐曦 GPU        | [PaddleOCR-VL 沐曦 GPU 环境配置教程](./PaddleOCR-VL-MetaX-GPU.md) |
 | 天数 GPU        | [PaddleOCR-VL 天数 GPU 环境配置教程](./PaddleOCR-VL-Iluvatar-GPU.md) |
-| 华为昇腾 NPU        | [PaddleOCR-VL 华为昇腾 NPU 环境配置教程](./PaddleOCR-VL-NPU.md) |
+| 华为昇腾 NPU        | [PaddleOCR-VL 华为昇腾 NPU 环境配置教程](./PaddleOCR-VL-Huawei-Ascend-NPU.md) |
 | Apple Silicon        | [PaddleOCR-VL Apple Silicon 环境配置教程](./PaddleOCR-VL-Apple-Silicon.md) |
 
 > TIP:
@@ -217,7 +231,7 @@ python -m pip install -U "paddleocr[doc-parser]"
 
 PaddleOCR-VL 支持 CLI 命令行方式和 Python API 两种使用方式，其中 CLI 命令行方式更简单，适合快速验证功能，而 Python API 方式更灵活，适合集成到现有项目中。
 
-> TIP:
+> IMPORTANT:
 > 本节所介绍的方法主要用于快速验证，其推理速度、显存占用及稳定性表现未必能满足生产环境的要求。**若需部署至生产环境，我们强烈建议使用专门的推理加速框架** ，具体方法请参考下一节。
 
 ### 2.1 命令行方式体验
@@ -236,6 +250,12 @@ paddleocr doc_parser -i ./paddleocr_vl_demo.png --device dcu
 
 # 沐曦 GPU
 paddleocr doc_parser -i ./paddleocr_vl_demo.png --device metax_gpu
+
+# Apple Silicon
+paddleocr doc_parser -i ./paddleocr_vl_demo.png --device cpu
+
+# 华为昇腾 NPU 
+# 华为昇腾 NPU 请参考第 3 章节使用 PaddlePaddle + vLLM 的方式进行推理
 
 # 通过 --use_doc_orientation_classify 指定是否使用文档方向分类模型
 paddleocr doc_parser -i ./paddleocr_vl_demo.png --use_doc_orientation_classify True
@@ -629,6 +649,10 @@ pipeline = PaddleOCRVL()
 # pipeline = PaddleOCRVL(device="dcu")
 # 沐曦 GPU
 # pipeline = PaddleOCRVL(device="metax_gpu")
+# Apple Silicon
+# pipeline = PaddleOCRVL(device="cpu")
+# 华为昇腾 NPU 
+# 华为昇腾 NPU 请参考第 3 章节使用 PaddlePaddle + vLLM 的方式进行推理
 
 # pipeline = PaddleOCRVL(use_doc_orientation_classify=True) # 通过 use_doc_orientation_classify 指定是否使用文档方向分类模型
 # pipeline = PaddleOCRVL(use_doc_unwarping=True) # 通过 use_doc_unwarping 指定是否使用文本图像矫正模块
@@ -641,7 +665,7 @@ for res in output:
     res.save_to_markdown(save_path="output") ## 保存当前图像的markdown格式的结果
 ```
 
-如果是 PDF 文件，会将 PDF 的每一页单独处理，每一页的 Markdown 文件也会对应单独的结果。如果您希望对多页的推理结果进行跨页表格合并、重建多级标和合并多页结果等需求，可以通过如下方式实现：
+如果是 PDF 文件，会将 PDF 的每一页单独处理，每一页的 Markdown 文件也会对应单独的结果。如果您希望对多页的推理结果进行跨页表格合并、重建多级标题和合并多页结果等需求，可以通过如下方式实现：
 
 ```python
 from paddleocr import PaddleOCRVL
@@ -649,14 +673,7 @@ from paddleocr import PaddleOCRVL
 input_file = "./your_pdf_file.pdf"
 output_path = Path("./output")
 
-# 英伟达 GPU
 pipeline = PaddleOCRVL()
-# 昆仑芯 XPU
-# pipeline = PaddleOCRVL(device="xpu")
-# 海光 DCU
-# pipeline = PaddleOCRVL(device="dcu")
-# 沐曦 GPU
-# pipeline = PaddleOCRVL(device="metax_gpu")
 
 output = pipeline.predict(input=input_file)
 
@@ -664,28 +681,14 @@ pages_res = list(output)
 
 output = pipeline.restructure_pages(pages_res)
 
-# output = pipeline.restructure_pages(pages_res, merge_table=True) # 合并跨页表格
-# output = pipeline.restructure_pages(pages_res, merge_table=True, relevel_titles=True) # 合并跨页表格，重建多级标题
-# output = pipeline.restructure_pages(pages_res, merge_table=True, relevel_titles=True, merge_pages=True) # 合并跨页表格，重建多级标题，合并多页结果为一页
-
+# output = pipeline.restructure_pages(pages_res, merge_tables=True) # 合并跨页表格
+# output = pipeline.restructure_pages(pages_res, merge_tables=True, relevel_titles=True) # 合并跨页表格，重建多级标题
+# output = pipeline.restructure_pages(pages_res, merge_tables=True, relevel_titles=True, concatenate_pages=True) # 合并跨页表格，重建多级标题，合并多页结果为一页
 
 for res in output:
     res.print() ## 打印预测的结构化输出
     res.save_to_json(save_path="output") ## 保存当前图像的结构化json结果
     res.save_to_markdown(save_path="output") ## 保存当前图像的markdown格式的结果
-```
-
-如果您需要处理多个文件，**建议将包含文件的目录路径，或者文件路径列表传入 `predict` 方法**，以最大化处理效率。例如：
-
-```python
-# `imgs` 目录中包含多张待处理图像：file1.png、file2.png、file3.png
-# 传入目录路径
-output = pipeline.predict("imgs")
-# 或者传入文件路径列表
-output = pipeline.predict(["imgs/file1.png", "imgs/file2.png", "imgs/file3.png"])
-# 以上两种方式的处理效率高于下列方式：
-# for file in ["imgs/file1.png", "imgs/file2.png", "imgs/file3.png"]:
-#     output = pipeline.predict(file)
 ```
 
 如果您需要处理多个文件，**建议将包含文件的目录路径，或者文件路径列表传入 `predict` 方法**，以最大化处理效率。例如：
@@ -1219,6 +1222,8 @@ output = pipeline.predict(["imgs/file1.png", "imgs/file2.png", "imgs/file3.png"]
 <th>参数说明</th>
 <th>参数类型</th>
 <th>默认值</th>
+</tr>
+</thead>
 <tr>
 <td><code>res_list</code></td>
 <td><b>含义：</b>多页 PDF 推理预测出的结果列表。</td>
@@ -1243,6 +1248,7 @@ output = pipeline.predict(["imgs/file1.png", "imgs/file2.png", "imgs/file3.png"]
 <td><code>Bool</code></td>
 <td><code>False</code></td>
 </tr>
+</table>
 </details>
 
 <details><summary>（4）对预测结果进行处理：每个样本的预测结果均为对应的Result对象，且支持打印、保存为图片、保存为<code>json</code>文件的操作:</summary>
@@ -1420,68 +1426,7 @@ output = pipeline.predict(["imgs/file1.png", "imgs/file2.png", "imgs/file3.png"]
   </li>
 <li>调用<code>save_to_img()</code> 方法会将可视化结果保存到指定的<code>save_path</code>中，如果指定为目录，则会将版面区域检测可视化图像、全局OCR可视化图像、版面阅读顺序可视化图像等内容保存，如果指定为文件，则直接保存到该文件中。</li>
 <li>调用<code>save_to_markdown()</code> 方法会将转化后的 Markdown 文件保存到指定的<code>save_path</code>中，保存的文件路径为<code>save_path/{your_img_basename}.md</code>，如果输入是 PDF 文件，建议直接指定目录，否责多个 markdown 文件会被覆盖。</li>
-
-    - `page_index`: `(Union[int, None])` 如果输入是PDF文件，则表示当前是PDF的第几页，否则为 `None`
-
-    - `page_count`: `(Union[int, None])` 如果输入是PDF文件，表示当前是PDF的总页数，否则为 `None`
-
-    - `width`: `(int)` 原始输入图像的宽度。
-
-    - `height`: `(int)` 原始输入图像的高度。
-
-    - `model_settings`: `(Dict[str, bool])` 配置 PaddleOCR-VL 所需的模型参数
-
-        - `use_doc_preprocessor`: `(bool)` 控制是否启用文档预处理子产线 
-        - `use_layout_detection`: `(bool)` 控制是否启用版面检测模块
-        - `use_chart_recognition`: `(bool)` 控制是否开启图表识别功能
-        - `format_block_content`: `(bool)` 控制是否在`JSON`中保存格式化后的markdown内容
-        - `markdown_ignore_labels`: `(List[str])` 需要在Markdown中忽略的版面标签
-
-    - `doc_preprocessor_res`: `(Dict[str, Union[List[float], str]])` 文档预处理结果dict，仅当`use_doc_preprocessor=True`时存在
-        - `input_path`: `(str)` 文档预处理子接受的图像路径，当输入为`numpy.ndarray`时，保存为`None`，此处为`None`
-        - `page_index`: `None`，此处的输入为`numpy.ndarray`，所以值为`None`
-        - `model_settings`: `(Dict[str, bool])` 文档预处理子的模型配置参数
-          - `use_doc_orientation_classify`: `(bool)` 控制是否启用文档图像方向分类子模块
-          - `use_doc_unwarping`: `(bool)` 控制是否启用文本图像扭曲矫正子模块
-        - `angle`: `(int)` 文档图像方向分类子模块的预测结果，启用时返回实际角度值
-
-    - `parsing_res_list`: `(List[Dict])` 解析结果的列表，每个元素为一个字典，列表顺序为解析后的阅读顺序。
-        - `block_bbox`: `(np.ndarray)` 版面区域的边界框。
-        - `block_label`: `(str)` 版面区域的标签，例如`text`, `table`等。
-        - `block_content`: `(str)` 内容为版面区域内的内容。
-        - `block_id`: `(int)` 版面区域的索引，用于显示版面排序结果。
-        - `block_order` `(int)` 版面区域的顺序，用于显示版面阅读顺序,对于非排序部分，默认值为 `None`。
-
-- 调用`save_to_json()` 方法会将上述内容保存到指定的 `save_path` 中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_res.json`，如果指定为文件，则直接保存到该文件中。由于 json 文件不支持保存numpy数组，因此会将其中的 `numpy.array` 类型转换为列表形式。json中的字段内容如下：
-    - `input_path`: `(str)` 待预测图像或者PDF的输入路径
-
-    - `page_index`: `(Union[int, None])` 如果输入是PDF文件，则表示当前是PDF的第几页，否则为 `None`
-
-    - `model_settings`: `(Dict[str, bool])` 配置 PaddleOCR-VL 所需的模型参数
-
-        - `use_doc_preprocessor`: `(bool)` 控制是否启用文档预处理子产线 
-        - `use_layout_detection`: `(bool)` 控制是否启用版面检测模块
-        - `use_chart_recognition`: `(bool)` 控制是否开启图表识别功能
-        - `format_block_content`: `(bool)` 控制是否在`JSON`中保存格式化后的markdown内容
-
-    - `doc_preprocessor_res`: `(Dict[str, Union[List[float], str]])` 文档预处理结果dict，仅当`use_doc_preprocessor=True`时存在
-        - `input_path`: `(str)` 文档预处理子接受的图像路径，当输入为`numpy.ndarray`时，保存为`None`，此处为`None`
-        - `page_index`: `None`，此处的输入为`numpy.ndarray`，所以值为`None`
-        - `model_settings`: `(Dict[str, bool])` 文档预处理子的模型配置参数
-          - `use_doc_orientation_classify`: `(bool)` 控制是否启用文档图像方向分类子模块
-          - `use_doc_unwarping`: `(bool)` 控制是否启用文本图像扭曲矫正子模块
-        - `angle`: `(int)` 文档图像方向分类子模块的预测结果，启用时返回实际角度值
-
-    - `parsing_res_list`: `(List[Dict])` 解析结果的列表，每个元素为一个字典，列表顺序为解析后的阅读顺序。
-        - `block_bbox`: `(np.ndarray)` 版面区域的边界框。
-        - `block_label`: `(str)` 版面区域的标签，例如`text`, `table`等。
-        - `block_content`: `(str)` 内容为版面区域内的内容。
-        - `block_id`: `(int)` 版面区域的索引，用于显示版面排序结果。
-        - `block_order` `(int)` 版面区域的顺序，用于显示版面阅读顺序,对于非排序部分，默认值为 `None`。
-- 调用`save_to_img()` 方法会将可视化结果保存到指定的 `save_path` 中，如果指定为目录，则会将版面区域检测可视化图像、全局OCR可视化图像、版面阅读顺序可视化图像等内容保存，如果指定为文件，则直接保存到该文件中。
-- 调用`save_to_markdown()` 方法会将转化后的 Markdown 文件保存到指定的 `save_path` 中，保存的文件路径为`save_path/{your_img_basename}.md`，如果输入是 PDF 文件，建议直接指定目录，否责多个 markdown 文件会被覆盖。
-
-此外，也支持通过属性获取带结果的可视化图像和预测结果，具体如下：
+<li>此外，也支持通过属性获取带结果的可视化图像和预测结果，具体如下：
 <table>
 <thead>
 <tr>
@@ -1515,7 +1460,7 @@ output = pipeline.predict(["imgs/file1.png", "imgs/file2.png", "imgs/file3.png"]
   <li><code>json</code> 属性获取的预测结果为dict类型的数据，相关内容与调用 <code>save_to_json()</code> 方法保存的内容一致。</li>
   <li><code>img</code> 属性返回的预测结果是一个dict类型的数据。其中，键分别为 <code>ocr_res_img</code> 和 <code>preprocessed_img</code>，对应的值是两个 <code>Image.Image</code> 对象：一个用于显示 OCR 结果的可视化图像，另一个用于展示图像预处理的可视化图像。如果没有使用图像预处理子模块，则dict中只包含 <code>ocr_res_img</code>。</li>
 </ul>
-
+</li>
 </details>
 
 
@@ -1527,9 +1472,20 @@ output = pipeline.predict(["imgs/file1.png", "imgs/file2.png", "imgs/file3.png"]
 
 启动 VLM 推理服务有以下两种方式，任选一种即可：
 
-- 方法一：使用官方 Docker 镜像启动服务。
+- 方法一：使用官方 Docker 镜像启动服务，目前支持：
+    - FastDeploy
+    - vLLM
 
-- 方法二：通过 PaddleOCR CLI 手动安装依赖后启动服务。
+- 方法二：通过 PaddleOCR CLI 手动安装依赖后启动服务，目前支持：
+    - FastDeploy
+    - vLLM
+    - SGLang
+
+- 方法三：直接使用推理加速框架启动服务，目前支持：
+    - FastDeploy
+    - vLLM
+    - MLX-VLM
+    - llama.cpp
 
 **我们强烈推荐采用 Docker 镜像的方式，以最大程度减少可能出现的环境问题。**
 
@@ -1587,6 +1543,8 @@ docker run \
 
 #### 3.1.2 方法二：通过 PaddleOCR CLI 安装和使用
 
+**PaddleOCR CLI 已经为您解决了复杂的版本兼容性问题。您无需花费时间研究推理框架的文档，只需一条简单的命令即可安装推理框架所需的依赖环境。**
+
 由于推理加速框架可能与飞桨框架存在依赖冲突，建议在虚拟环境中安装：
 
 ```shell
@@ -1635,13 +1593,36 @@ paddleocr genai_server --model_name PaddleOCR-VL-1.5-0.9B --backend vllm --port 
 | `--backend`        | 后端名称，即使用的推理加速框架名称，可选 `vllm` 或 `sglang` |
 | `--backend_config` | 可指定 YAML 文件，包含后端配置        |
 
+#### 3.1.3 方法三：直接使用推理加速框架启动服务
+
+**如果您需要安装自定义版本的推理框架并使用原生方式启动服务，请参考以下指引。请注意，使用原生方式启动时，将无法应用 PaddleOCR 预置的性能调优参数。**
+
+- FastDeploy：[参考此文档](https://paddlepaddle.github.io/FastDeploy/zh/best_practices/PaddleOCR-VL-0.9B/)
+- vLLM：[参考此文档](https://docs.vllm.ai/projects/recipes/en/latest/PaddlePaddle/PaddleOCR-VL.html)
+- MLX-VLM：[参考此文档](./PaddleOCR-VL-Apple-Silicon.md)
+- llama.cpp：
+    1. 参考 [llama.cpp github](https://github.com/ggml-org/llama.cpp) 中的 `Quick start` 安装 llama.cpp。
+    2. 下载 gguf 格式的模型文件：[megemini/PaddleOCR-VL-1.5-GGUF](https://modelscope.cn/models/megemini/PaddleOCR-VL-1.5-GGUF/files) 或 [megemini/PaddleOCR-VL-GGUF](https://modelscope.cn/models/megemini/PaddleOCR-VL-GGUF/files)。
+    3. 执行以下命令启动推理服务，参数介绍可参考 [LLaMA.cpp HTTP Server](https://github.com/ggml-org/llama.cpp/blob/master/tools/server/README.md)：
+
+        ```shell
+        ./build/bin/llama-server \
+          -m /path/to/PaddleOCR-VL-1.5-GGUF.gguf \
+          --mmproj /path/to/PaddleOCR-VL-1.5-GGUF-mmproj.gguf  \
+          --port 8111  \
+          --host 0.0.0.0 \
+          --temp 0
+        ```
+
+</details>
+
 ### 3.2 客户端使用方法
 
-启动 VLM 推理服务后，客户端即可通过 PaddleOCR 调用该服务。**请注意，由于客户端需要调用版面检测的顺序模型，仍建议在 GPU 等加速设备上运行客户端，以获得更稳定和高效的性能。客户端环境配置请参考第 1 节，3.1 节介绍的环境配置仅适用于启动服务，不适用于客户端。**
+启动 VLM 推理服务后，客户端即可通过 PaddleOCR 调用该服务。**请注意，由于客户端需要调用版面检测模型，仍建议在 GPU 等加速设备上运行客户端，以获得更稳定和高效的性能。客户端环境配置请参考第 1 节，3.1 节介绍的环境配置仅适用于启动服务，不适用于客户端。**
 
 #### 3.2.1 CLI 调用
 
-可通过 `--vl_rec_backend` 指定后端类型（`vllm-server` 或 `sglang-server`），通过 `--vl_rec_server_url` 指定服务地址，例如：
+可通过 `--vl_rec_backend` 指定后端类型（`vllm-server`、`sglang-server`、`fastdeploy-server`、`mlx-vlm-server` 或 `llama-cpp-server`），通过 `--vl_rec_server_url` 指定服务地址，例如：
 
 ```shell
 paddleocr doc_parser --input paddleocr_vl_demo.png --vl_rec_backend vllm-server --vl_rec_server_url http://localhost:8118/v1
@@ -1685,7 +1666,7 @@ paddleocr doc_parser \
 
 #### 3.2.2 Python API 调用
 
-创建 `PaddleOCRVL` 对象时传入 `vl_rec_backend` 和 `vl_rec_server_url` 参数，分别指定后端类型和服务地址：
+创建 `PaddleOCRVL` 对象时传入 `vl_rec_backend` 指定后端类型（`vllm-server`、`sglang-server`、`fastdeploy-server`、`mlx-vlm-server` 或 `llama-cpp-server`）， `vl_rec_server_url` 指定服务地址，例如：
 
 ```python
 pipeline = PaddleOCRVL(vl_rec_backend="vllm-server", vl_rec_server_url="http://localhost:8118/v1")
@@ -2064,11 +2045,7 @@ INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
 <tr>
 <td><code>file</code></td>
 <td><code>string</code></td>
-<td>服务器可访问的图像文件或PDF文件的URL，或上述类型文件内容的Base64编码结果。默认对于超过10页的PDF文件，只有前10页的内容会被处理。<br /> 要解除页数限制，请在产线配置文件中添加以下配置：
-<pre><code>Serving:
-  extra:
-    max_num_input_imgs: null
-</code></pre>
+<td>服务器可访问的图像文件或PDF文件的URL，或上述类型文件内容的Base64编码结果。
 </td>
 <td>是</td>
 </tr>
@@ -2231,7 +2208,7 @@ INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
 <tr>
 <td><code>mergeTables</code></td>
 <td><code>boolean</code></td>
-<td>请参阅PaddleOCR-VL对象中 <code>restructure_pages</code> 方法的 <code>merge_table</code> 参数相关说明。仅当<code>restructurePages</code>为<code>true</code>时生效。</td>
+<td>请参阅PaddleOCR-VL对象中 <code>restructure_pages</code> 方法的 <code>merge_tables</code> 参数相关说明。仅当<code>restructurePages</code>为<code>true</code>时生效。</td>
 <td>否</td>
 </tr>
 <tr>
@@ -3046,6 +3023,7 @@ Serving:
       sk: xxx
       key_prefix: deploy
     return_img_urls: True
+    url_expires_in: 3600
 ```
 
 目前支持将生成的图像存储至百度智能云对象存储（BOS）并返回 URL。相关参数说明如下：
@@ -3056,20 +3034,21 @@ Serving:
 - `bucket_name`：存储空间名称，必须配置。
 - `key_prefix`：Object key 的统一前缀。
 - `connection_timeout_in_mills`：请求超时时间（单位：毫秒）。
+- `url_expires_in`：URL 有效期（单位：秒）。`-1` 表示永不过期。
 
 有关 AK/SK 获取等更多信息，请参考 [百度智能云官方文档](https://cloud.baidu.com/doc/BOS/index.html)。
 
-**修改 PDF 解析页数限制**
+**限制 PDF 解析页数**
 
-出于性能考虑，服务默认仅处理接收到的 PDF 文件的前 10 页。如需调整页数限制，可在产线配置文件中添加如下配置（`Serving` 为顶层字段）：
+服务默认处理完整的 PDF 文件。在实际生产环境中，若 PDF 页数过多，可能会影响系统稳定性，导致处理超时或资源占用过高。为保障服务的稳定运行，建议根据实际情况合理设置页数上限。可在产线配置文件中添加如下配置（`Serving` 为顶层字段）：
 
 ```yaml
 Serving:
   extra:
-    max_num_input_imgs: <新的页数限制，例如 100>
+    max_num_input_imgs: <页数限制，例如 100>
 ```
 
-将 `max_num_input_imgs` 设置为 `null` 可解除页数限制。
+将 `max_num_input_imgs` 设置为 `null` 时，不对 PDF 页数进行限制。
 
 #### 4.4.3 应用配置文件
 

@@ -19,7 +19,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 RUN --mount=type=cache,target=/root/.cache/pip \
-    python -m pip install https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/deploy/hardware/whl/paddlepaddle_xpu-0.0.0-cp310-cp310-linux_x86_64.whl
+    python -m pip install paddlepaddle-xpu==3.2.1 -i https://www.paddlepaddle.org.cn/packages/stable/xpu-p800/
 
 ARG PADDLEOCR_VERSION=">=3.4.0,<3.5"
 ARG PADDLEX_VERSION=">=3.4.0,<3.5"
