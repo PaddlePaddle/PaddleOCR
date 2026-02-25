@@ -1,7 +1,7 @@
 # langchain-paddleocr
 
 [![PyPI - 版本](https://img.shields.io/pypi/v/langchain-paddleocr?label=%20)](https://pypi.org/project/langchain-paddleocr/#history)
-[![PyPI - 许可证](https://img.shields.io/pypi/l/langchain-paddleocr)](https://opensource.org/licenses/MIT)
+[![PyPI - 许可证](https://img.shields.io/pypi/l/langchain-paddleocr)](https://opensource.org/license/apache-2-0)
 [![PyPI - 下载量](https://img.shields.io/pepy/dt/langchain-paddleocr)](https://pypistats.org/packages/langchain-paddleocr)
 
 本 Python 包在 LangChain 生态系统中提供对 PaddleOCR 功能的访问。

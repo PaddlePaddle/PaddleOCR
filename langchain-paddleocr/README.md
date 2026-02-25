@@ -1,7 +1,7 @@
 # langchain-paddleocr
 
 [![PyPI - Version](https://img.shields.io/pypi/v/langchain-paddleocr?label=%20)](https://pypi.org/project/langchain-paddleocr/#history)
-[![PyPI - License](https://img.shields.io/pypi/l/langchain-paddleocr)](https://opensource.org/licenses/MIT)
+[![PyPI - License](https://img.shields.io/pypi/l/langchain-paddleocr)](https://opensource.org/license/apache-2-0)
 [![PyPI - Downloads](https://img.shields.io/pepy/dt/langchain-paddleocr)](https://pypistats.org/packages/langchain-paddleocr)
 
 This package provides access to PaddleOCR's capabilities within the LangChain ecosystem.

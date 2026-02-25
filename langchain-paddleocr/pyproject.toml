@@ -8,7 +8,7 @@ version = "0.1.0"
 description = "An integration package connecting PaddleOCR and LangChain"
 authors = []
 readme = "README.md"
-license = { text = "MIT" }
+license = { text = "Apache License 2.0" }
 requires-python = ">=3.10,<3.13"
 dependencies = [
     "paddleocr>=3.4.0,<3.5.0",
