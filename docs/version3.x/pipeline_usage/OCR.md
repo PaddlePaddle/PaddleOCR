@@ -706,6 +706,58 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://padd
 
 **请注意，如果在执行过程中遇到程序失去响应、程序异常退出、内存资源耗尽、推理速度极慢等问题，请尝试参考文档调整配置，例如关闭不需要使用的功能或使用更轻量的模型。**
 
+### 2.0 环境准备
+
+#### 2.0.1 基础安装
+
+```bash
+# 安装基础版本（仅包含OCR功能）
+pip install paddleocr
+
+# 安装完整版本（包含所有功能）
+pip install "paddleocr[all]"
+```
+
+#### 2.0.2 环境验证
+
+```python
+# 验证安装是否成功
+import paddleocr
+print(f"PaddleOCR版本: {paddleocr.__version__}")
+
+# 验证GPU是否可用
+import paddle
+print(f"Paddle版本: {paddle.__version__}")
+print(f"GPU可用: {paddle.is_compiled_with_cuda()}")
+print(f"GPU数量: {paddle.device.cuda.device_count()}")
+```
+
+#### 2.0.3 常见安装问题解决
+
+**问题1：依赖冲突**
+```bash
+# 解决方案：创建新的虚拟环境
+conda create -n paddleocr python=3.8
+conda activate paddleocr
+pip install paddleocr
+```
+
+**问题2：GPU环境配置**
+```bash
+# 检查CUDA版本
+nvidia-smi
+
+# 安装对应版本的PaddlePaddle
+pip install paddlepaddle-gpu==3.0.0 -f https://www.paddlepaddle.org.cn/whl/linux/mkl/avx/stable.html
+```
+
+**问题3：模型下载失败**
+```python
+# 设置模型下载源
+import os
+os.environ['PADDLE_PDX_MODEL_SOURCE'] = 'BOS'  # 使用百度云存储
+```
+
 ### 2.1 命令行方式
 
 一行命令即可快速体验OCR产线效果。运行以下代码前，请您下载[示例图片](https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_002.png)到本地：
@@ -723,6 +775,8 @@ paddleocr ocr -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_im
 paddleocr ocr -i ./general_ocr_002.png --ocr_version PP-OCRv4
 ```
 
+<!-- Luxorion-12修改：表格参数描述 -->
+
 <details><summary><b>命令行支持更多参数设置，点击展开以查看命令行参数的详细说明</b></summary>
 <table>
 <thead>
@@ -736,264 +790,198 @@ paddleocr ocr -i ./general_ocr_002.png --ocr_version PP-OCRv4
 <tbody>
 <tr>
 <td><code>input</code></td>
-<td>待预测数据，必填。如图像文件或者PDF文件的本地路径：<code>/root/data/img.jpg</code>；<b>如URL链接</b>，如图像文件或PDF文件的网络URL：<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_002.png">示例</a>；<b>如本地目录</b>，该目录下需包含待预测图像，如本地路径：<code>/root/data/</code>(当前不支持目录中包含PDF文件的预测，PDF文件需要指定到具体文件路径)。
+<td><b>含义：</b>待预测数据，必填。<br><b>说明：</b>如图像文件或者PDF文件的本地路径：<code>/root/data/img.jpg</code>；<br><b>如URL链接</b>，如图像文件或PDF文件的网络URL：<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_002.png">示例</a>；</br><b>如本地目录</b>，该目录下需包含待预测图像，如本地路径：<code>/root/data/</code>(当前不支持目录中包含PDF文件的预测，PDF文件需要指定到具体文件路径)。</br>
 </td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>save_path</code></td>
-<td>指定推理结果文件保存的路径。如果不设置，推理结果将不会保存到本地。</td>
+<td><b>含义：</b>指定推理结果文件保存的路径。<br><b>说明：</b>如果不设置，推理结果将不会保存到本地。</br></td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>doc_orientation_classify_model_name</code></td>
-<td>文档方向分类模型的名称。如果不设置，将会使用产线默认模型。</td>
+<td><b>含义：</b>文档方向分类模型的名称。<br><b>说明：</b>如果不设置，将会使用产线默认模型。</br></td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>doc_orientation_classify_model_dir</code></td>
-<td>文档方向分类模型的目录路径。如果不设置，将会下载官方模型。</td>
+<td><b>含义：</b>文档方向分类模型的目录路径。<br><b>说明：</b>如果不设置，将会下载官方模型。</br></td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>doc_unwarping_model_name</code></td>
-<td>文本图像矫正模型的名称。如果不设置，将会使用产线默认模型。</td>
+<td><b>含义：</b>文本图像矫正模型的名称。<br><b>说明：</b>如果不设置，将会使用产线默认模型。</br></td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>doc_unwarping_model_dir</code></td>
-<td>文本图像矫正模型的目录路径。如果不设置，将会下载官方模型。</td>
+<td><b>含义：</b>文本图像矫正模型的目录路径。<br><b>说明：</b>如果不设置，将会下载官方模型。</br></td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>text_detection_model_name</code></td>
-<td>文本检测模型的名称。如果不设置，将会使用产线默认模型。</td>
+<td><b>含义：</b>文本检测模型的名称。<br><b>说明：</b>如果不设置，将会使用产线默认模型。</br></td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>text_detection_model_dir</code></td>
-<td>文本检测模型的目录路径。如果不设置，将会下载官方模型。</td>
+<td><b>含义：</b>文本检测模型的目录路径。<br><b>说明：</b>如果不设置，将会下载官方模型。</br></td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>textline_orientation_model_name</code></td>
-<td>文本行方向模型的名称。如果不设置，将会使用产线默认模型。</td>
+<td><b>含义：</b>文本行方向模型的名称。<br><b>说明：</b>如果不设置，将会使用产线默认模型。</br></td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>textline_orientation_model_dir</code></td>
-<td>文本行方向模型的目录路径。如果不设置，将会下载官方模型。</td>
+<td><b>含义：</b>文本行方向模型的目录路径。<br><b>说明：</b>如果不设置，将会下载官方模型。</br></td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>textline_orientation_batch_size</code></td>
-<td>文本行方向模型的batch size。如果不设置，将默认设置batch size为<code>1</code>。</td>
+<td><b>含义：</b>文本行方向模型的batch size。<br><b>说明：</b>如果不设置，将默认设置batch size为<code>1</code>。</br></td>
 <td><code>int</code></td>
-<td></td>
+<td><code>1</code></td>
 </tr>
 <tr>
 <td><code>text_recognition_model_name</code></td>
-<td>文本识别模型的名称。如果不设置，将会使用产线默认模型。</td>
+<td><b>含义：</b>文本识别模型的名称。<br><b>说明：</b>如果不设置，将会使用产线默认模型。</br></td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>text_recognition_model_dir</code></td>
-<td>文本识别模型的目录路径。如果不设置，将会下载官方模型。</td>
+<td><b>含义：</b>文本识别模型的目录路径。<br><b>说明：</b>如果不设置，将会下载官方模型。</br></td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>text_recognition_batch_size</code></td>
-<td>文本识别模型的batch size。如果不设置，将默认设置batch size为<code>1</code>。</td>
+<td><b>含义：</b>文本识别模型的batch size。<br><b>说明：</b>如果不设置，将默认设置batch size为<code>1</code>。</br></td>
 <td><code>int</code></td>
-<td></td>
+<td><code>1</code></td>
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
-<td>是否加载并使用文档方向分类模块。如果不设置，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
+<td><b>含义：</b>是否加载并使用文档方向分类模块。<br><b>说明：</b>如果不设置，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</br></td>
 <td><code>bool</code></td>
-<td></td>
+<td><code>True</code></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
-<td>是否加载并使用文本图像矫正模块。如果不设置，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
+<td><b>含义：</b>是否加载并使用文本图像矫正模块。<br><b>说明：</b>如果不设置，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</br></td>
 <td><code>bool</code></td>
-<td></td>
+<td><code>True</code></td>
 </tr>
 <tr>
 <td><code>use_textline_orientation</code></td>
-<td>是否加载并使用文本行方向模块。如果不设置，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
+<td><b>含义：</b>是否加载并使用文本行方向模块。<br><b>说明：</b>如果不设置，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</br></td>
 <td><code>bool</code></td>
-<td></td>
+<td><code>True</code></td>
 </tr>
 <tr>
 <td><code>text_det_limit_side_len</code></td>
-<td>文本检测的图像边长限制。
-大于 <code>0</code> 的任意整数。如果不设置，将使用产线初始化的该参数值，默认初始化为 <code>64</code>。
+<td><b>含义：</b>文本检测的图像边长限制。
+<br><b>说明：</b>大于 <code>0</code> 的任意整数。</br>如果不设置，将使用产线初始化的该参数值，默认初始化为 <code>64</code>。
 </td>
 <td><code>int</code></td>
-<td></td>
+<td><code>64</code></td>
 </tr>
 <tr>
 <td><code>text_det_limit_type</code></td>
-<td>文本检测的边长度限制类型。支持 <code>min</code> 和 <code>max</code>，<code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>，<code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code>。如果不设置，将使用产线初始化的该参数值，默认初始化为 <code>min</code>。
+<td><b>含义：</b>文本检测的边长度限制类型。
+<br><b>说明：</b>支持 <code>min</code> 和 <code>max</code>，<code>min</code> 表示保证图像最短边不小于<code>det_limit_side_len</code>，<code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code>。</br>如果不设置，将使用产线初始化的该参数值，默认初始化为 <code>min</code>。
 </td>
 <td><code>str</code></td>
-<td></td>
+<td><code>min</code></td>
 </tr>
 <tr>
 <td><code>text_det_thresh</code></td>
-<td>文本检测像素阈值，输出的概率图中，得分大于该阈值的像素点才会被认为是文字像素点。
-大于<code>0</code>的任意浮点数。如果不设置，将使用产线初始化的该参数值（默认为 <code>0.3</code>）。
+<td><b>含义：</b>文本检测像素阈值，输出的概率图中，得分大于该阈值的像素点才会被认为是文字像素点。
+<br><b>说明：</b>大于<code>0</code>的任意浮点数。</br>如果不设置，将使用产线初始化的该参数值（默认为 <code>0.3</code>）。
 </td>
 <td><code>float</code></td>
-<td></td>
+<td><code>0.3</code></td>
 </tr>
 <tr>
 <td><code>text_det_box_thresh</code></td>
-<td>文本检测框阈值，检测结果边框内，所有像素点的平均得分大于该阈值时，该结果会被认为是文字区域。
-大于 <code>0</code> 的任意浮点数。如果不设置，将使用产线初始化的该参数值（默认为 <code>0.6</code>）。
+<td><b>含义：</b>文本检测框阈值，检测结果边框内，所有像素点的平均得分大于该阈值时，该结果会被认为是文字区域。
+<br><b>说明：</b>大于 <code>0</code> 的任意浮点数。</br>如果不设置，将使用产线初始化的该参数值（默认为 <code>0.6</code>）。
 </td>
 <td><code>float</code></td>
-<td></td>
+<td><code>0.6</code></td>
 </tr>
 <tr>
 <td><code>text_det_unclip_ratio</code></td>
-<td>文本检测扩张系数，使用该方法对文字区域进行扩张，该值越大，扩张的面积越大。大于 <code>0</code> 的任意浮点数。如果不设置，将使用产线初始化的该参数值（默认为 <code>2.0</code>）。
+<td><b>含义：</b>文本检测扩张系数，使用该方法对文字区域进行扩张，该值越大，扩张的面积越大。
+<br><b>说明：</b>大于 <code>0</code> 的任意浮点数。</br>如果不设置，将使用产线初始化的该参数值（默认为 <code>2.0</code>）。
 </td>
 <td><code>float</code></td>
-<td></td>
+<td><code>2.0</code></td>
 </tr>
 <tr>
 <td><code>text_det_input_shape</code></td>
-<td>文本检测的输入形状，您可以设置3个值代表C，H，W。</td>
+<td><b>含义：</b>文本检测的输入形状。<br><b>说明：</b>可以设置3个值代表C，H，W。</br></td>
 <td><code>int</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>text_rec_score_thresh</code></td>
-<td>文本识别阈值，得分大于该阈值的文本结果会被保留。
-大于<code>0</code>的任意浮点数。如果不设置，将使用产线初始化的该参数值（默认为 <code>0.0</code>，即不设阈值）。
-</td>
+<td><b>含义：</b>文本识别阈值，得分大于该阈值的文本结果会被保留。
+<br><b>说明：</b>大于<code>0</code>的任意浮点数。</br>如果不设置，将使用产线初始化的该参数值（默认为 <code>0.0</code>，即不设阈值）。
 <td><code>float</code></td>
-<td></td>
+<td><code>0.0</code></td>
 </tr>
 <tr>
 <td><code>return_word_box</code></td>
-<td>如果不设置，将使用产线初始化的该参数值，默认初始化为<code>False</code>。</td>
+<td><b>含义：</b>是否返回识别结果的文字框坐标。
+<b>说明：</b><br>如果不设置，将使用产线初始化的该参数值，默认初始化为<code>False</code>。</br></td>
 <td><code>bool</code></td>
+<td><code>False</code></td>
 </tr>
 <tr>
 <td><code>text_rec_input_shape</code></td>
-<td>文本识别的输入形状。</td>
+<td><b>含义：</b>文本识别的输入形状。</td>
 <td><code>tuple</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>lang</code></td>
-<td>使用指定语言的 OCR 模型。
-附录中的表格中列举了全部支持的语言。
+<td><b>含义：</b>使用指定语言的 OCR 模型。
+<br><b>说明：</b>附录中的表格中列举了全部支持的语言。</br>
 </td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>ocr_version</code></td>
-<td>OCR 模型版本。
+<td><b>含义：</b>OCR 模型版本。
+<br><b>说明：</b>
 <ul>
 <li><b>PP-OCRv5</b>：使用PP-OCRv5系列模型；
 <li><b>PP-OCRv4</b>：使用PP-OCRv4系列模型；
 <li><b>PP-OCRv3</b>：使用PP-OCRv3系列模型。
 </ul>
 注意不是每个<code>ocr_version</code>都支持所有的<code>lang</code>，请查看附录中的对应关系表。
-</td>
+</td></br>
 <td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>det_model_dir</code></td>
-<td>已废弃，请参考<code>text_detection_model_dir</code>，且与新的参数不能同时指定。</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>det_limit_side_len</code></td>
-<td>已废弃，请参考<code>text_det_limit_side_len</code>，且与新的参数不能同时指定。</td>
-<td><code>int</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>det_limit_type</code></td>
-<td>已废弃，请参考<code>text_det_limit_type</code>，且与新的参数不能同时指定。
-</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>det_db_thresh</code></td>
-<td>已废弃，请参考<code>text_det_thresh</code>，且与新的参数不能同时指定。
-</td>
-<td><code>float</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>det_db_box_thresh</code></td>
-<td>已废弃，请参考<code>text_det_box_thresh</code>，且与新的参数不能同时指定。
-</td>
-<td><code>float</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>det_db_unclip_ratio</code></td>
-<td>已废弃，请参考<code>text_det_unclip_ratio</code>，且与新的参数不能同时指定。
-</td>
-<td><code>float</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>rec_model_dir</code></td>
-<td>已废弃，请参考<code>text_recognition_model_dir</code>，且与新的参数不能同时指定。</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>rec_batch_num</code></td>
-<td>已废弃，请参考<code>text_recognition_batch_size</code>，且与新的参数不能同时指定。</td>
-<td><code>int</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>use_angle_cls</code></td>
-<td>已废弃，请参考<code>use_textline_orientation</code>，且与新的参数不能同时指定。</td>
-<td><code>bool</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>cls_model_dir</code></td>
-<td>已废弃，请参考<code>textline_orientation_model_dir</code>，且与新的参数不能同时指定。</td>
-<td><code>str</code></td>
-<td></td>
-</tr>
-<tr>
-<td><code>cls_batch_num</code></td>
-<td>已废弃，请参考<code>textline_orientation_batch_size</code>，且与新的参数不能同时指定。</td>
-<td><code>int</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>用于推理的设备。支持指定具体卡号：
+<td><b>含义：</b>用于推理的设备。<br><b>说明：</b>支持指定具体卡号：
 <ul>
 <li><b>CPU</b>：如 <code>cpu</code> 表示使用 CPU 进行推理；</li>
 <li><b>GPU</b>：如 <code>gpu:0</code> 表示使用第 1 块 GPU 进行推理；</li>
@@ -1001,20 +989,23 @@ paddleocr ocr -i ./general_ocr_002.png --ocr_version PP-OCRv4
 <li><b>XPU</b>：如 <code>xpu:0</code> 表示使用第 1 块 XPU 进行推理；</li>
 <li><b>MLU</b>：如 <code>mlu:0</code> 表示使用第 1 块 MLU 进行推理；</li>
 <li><b>DCU</b>：如 <code>dcu:0</code> 表示使用第 1 块 DCU 进行推理；</li>
-</ul>如果不设置，将默认使用产线初始化的该参数值，初始化时，会优先使用本地的 GPU 0号设备，如果没有，则使用 CPU 设备。
+<li><b>沐曦 GPU</b>：如 <code>metax_gpu:0</code> 表示使用第 1 块沐曦 GPU 进行推理；</li>
+<li><b>天数 GPU</b>：如 <code>iluvatar_gpu:0</code> 表示使用第 1 块天数 GPU 进行推理；</li>
+</ul>如果不设置，将默认使用产线初始化的该参数值，初始化时，会优先使用本地的 GPU 0号设备，如果没有，则使用 CPU 设备。</br>
 </td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>enable_hpi</code></td>
-<td>是否启用高性能推理。</td>
+<td><b>含义：</b>是否启用高性能推理。
+<br><b>说明：</b>如果不设置，将使用默认值<code>False</code>。</br></td>
 <td><code>bool</code></td>
 <td><code>False</code></td>
 </tr>
 <tr>
 <td><code>use_tensorrt</code></td>
-<td>是否启用 Paddle Inference 的 TensorRT 子图引擎。如果模型不支持通过 TensorRT 加速，即使设置了此标志，也不会使用加速。<br/>
+<td><b>含义：</b>是否启用 Paddle Inference 的 TensorRT 子图引擎。<br/><b>说明：</b>如果模型不支持通过 TensorRT 加速，即使设置了此标志，也不会使用加速。<br/>
 对于 CUDA 11.8 版本的飞桨，兼容的 TensorRT 版本为 8.x（x>=6），建议安装 TensorRT 8.6.1.6。<br/>
 
 </td>
@@ -1023,13 +1014,13 @@ paddleocr ocr -i ./general_ocr_002.png --ocr_version PP-OCRv4
 </tr>
 <tr>
 <td><code>precision</code></td>
-<td>计算精度，如 fp32、fp16。</td>
+<td><b>含义：</b>计算精度，如 fp32、fp16。<br/><b>说明：</b>如果不设置，将使用默认值<code>fp32</code>。</br></td>
 <td><code>str</code></td>
 <td><code>fp32</code></td>
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
-<td>是否启用 MKL-DNN 加速推理。如果 MKL-DNN 不可用或模型不支持通过 MKL-DNN 加速，即使设置了此标志，也不会使用加速。
+<td><b>含义：</b>是否启用 MKL-DNN 加速推理。<br/><b>说明：</b>如果 MKL-DNN 不可用或模型不支持通过 MKL-DNN 加速，即使设置了此标志，也不会使用加速。<br/>
 </td>
 <td><code>bool</code></td>
 <td><code>True</code></td>
@@ -1037,21 +1028,102 @@ paddleocr ocr -i ./general_ocr_002.png --ocr_version PP-OCRv4
 <tr>
 <td><code>mkldnn_cache_capacity</code></td>
 <td>
-MKL-DNN 缓存容量。
-</td>
+<b>含义：</b>MKL-DNN 缓存容量。<br/><b>说明：</b>如果不设置，将使用默认值<code>10</code>。</br></td>
 <td><code>int</code></td>
 <td><code>10</code></td>
 </tr>
 <tr>
 <td><code>cpu_threads</code></td>
-<td>在 CPU 上进行推理时使用的线程数。</td>
+<td><b>含义：</b>在 CPU 上进行推理时使用的线程数。<br/><b>说明：</b>如果不设置，将使用默认值<code>8</code>。</br></td>
 <td><code>int</code></td>
 <td><code>8</code></td>
 </tr>
 <tr>
 <td><code>paddlex_config</code></td>
-<td>PaddleX产线配置文件路径。</td>
+<td><b>含义：</b>PaddleX产线配置文件路径。</td>
 <td><code>str</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<b>以下参数在2.x版本已经废弃，为方便之前版本使用者故列出</b>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>参数说明</th>
+<th>参数类型</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<td><code>det_model_dir</code></td>
+<td><b>说明：</b>已废弃，请参考<code>text_detection_model_dir</code>，且与新的参数不能同时指定。</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>det_limit_side_len</code></td>
+<td><b>说明：</b>已废弃，请参考<code>text_det_limit_side_len</code>，且与新的参数不能同时指定。</td>
+<td><code>int</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>det_limit_type</code></td>
+<td><b>说明：</b>已废弃，请参考<code>text_det_limit_type</code>，且与新的参数不能同时指定。
+</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>det_db_thresh</code></td>
+<td><b>说明：</b>已废弃，请参考<code>text_det_thresh</code>，且与新的参数不能同时指定。
+</td>
+<td><code>float</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>det_db_box_thresh</code></td>
+<td><b>说明：</b>已废弃，请参考<code>text_det_box_thresh</code>，且与新的参数不能同时指定。
+</td>
+<td><code>float</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>det_db_unclip_ratio</code></td>
+<td><b>说明：</b>已废弃，请参考<code>text_det_unclip_ratio</code>，且与新的参数不能同时指定。
+</td>
+<td><code>float</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>rec_model_dir</code></td>
+<td><b>说明：</b>已废弃，请参考<code>text_recognition_model_dir</code>，且与新的参数不能同时指定。</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>rec_batch_num</code></td>
+<td><b>说明：</b>已废弃，请参考<code>text_recognition_batch_size</code>，且与新的参数不能同时指定。</td>
+<td><code>int</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>use_angle_cls</code></td>
+<td><b>说明：</b>已废弃，请参考<code>use_textline_orientation</code>，且与新的参数不能同时指定。</td>
+<td><code>bool</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>cls_model_dir</code></td>
+<td><b>说明：</b>已废弃，请参考<code>textline_orientation_model_dir</code>，且与新的参数不能同时指定。</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>cls_batch_num</code></td>
+<td><b>说明：</b>已废弃，请参考<code>textline_orientation_batch_size</code>，且与新的参数不能同时指定。</td>
+<td><code>int</code></td>
 <td></td>
 </tr>
 </tbody>
@@ -1116,7 +1188,7 @@ for res in result:
     res.save_to_img("output")
     res.save_to_json("output")
 ```
-
+<!-- Luxorion-12 修改：表格参数说明-->
 在上述 Python 脚本中，执行了如下几个步骤：
 
 <details><summary>（1）通过 <code>PaddleOCR()</code> 实例化 OCR 产线对象，具体参数说明如下：</summary>
@@ -1133,156 +1205,177 @@ for res in result:
   <tbody>
 <tr>
 <td><code>doc_orientation_classify_model_name</code></td>
-<td>文档方向分类模型的名称。如果设置为<code>None</code>，将会使用产线默认模型。</td>
+<td><b>含义：</b>文档方向分类模型的名称。
+<br><b>说明：</b>如果设置为<code>None</code>，将会使用产线默认模型。</br></td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>doc_orientation_classify_model_dir</code></td>
-<td>文档方向分类模型的目录路径。如果设置为<code>None</code>，将会下载官方模型。</td>
+<td><b>含义：</b>文档方向分类模型的目录路径。
+<br><b>说明：</b>如果设置为<code>None</code>，将会下载官方模型。</br></td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>doc_unwarping_model_name</code></td>
-<td>文本图像矫正模型的名称。如果设置为<code>None</code>，将会使用产线默认模型。</td>
+<td><b>含义：</b>文本图像矫正模型的名称。
+<br><b>说明：</b>如果设置为<code>None</code>，将会使用产线默认模型。</br></td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>doc_unwarping_model_dir</code></td>
-<td>文本图像矫正模型的目录路径。如果设置为<code>None</code>，将会下载官方模型。</td>
+<td><b>含义：</b>文本图像矫正模型的目录路径。
+<br><b>说明：</b>如果设置为<code>None</code>，将会下载官方模型。</br></td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>text_detection_model_name</code></td>
-<td>文本检测模型的名称。如果设置为<code>None</code>，将会使用产线默认模型。</td>
+<td><b>含义：</b>文本检测模型的名称。
+<br><b>说明：</b>如果设置为<code>None</code>，将会使用产线默认模型。</br></td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>text_detection_model_dir</code></td>
-<td>文本检测模型的目录路径。如果设置为<code>None</code>，将会下载官方模型。</td>
+<td><b>含义：</b>文本检测模型的目录路径。
+<br><b>说明：</b>如果设置为<code>None</code>，将会下载官方模型。</br></td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>textline_orientation_model_name</code></td>
-<td>文本行方向模型的名称。如果设置为<code>None</code>，将会使用产线默认模型。</td>
+<td><b>含义：</b>文本行方向模型的名称。
+<br><b>说明：</b>如果设置为<code>None</code>，将会使用产线默认模型。</br></td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>textline_orientation_model_dir</code></td>
-<td>文本行方向模型的目录路径。如果设置为<code>None</code>，将会下载官方模型。</td>
+<td><b>含义：</b>文本行方向模型的目录路径。
+<br><b>说明：</b>如果设置为<code>None</code>，将会下载官方模型。</br></td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>textline_orientation_batch_size</code></td>
-<td>文本行方向模型的batch size。如果设置为<code>None</code>，将默认设置batch size为<code>1</code>。</td>
+<td><b>含义：</b>文本行方向模型的batch size。
+<br><b>说明：</b>如果设置为<code>None</code>，将默认设置batch size为<code>1</code>。</br></td>
 <td><code>int|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>text_recognition_model_name</code></td>
-<td>文本识别模型的名称。如果设置为<code>None</code>，将会使用产线默认模型。</td>
+<td><b>含义：</b>文本识别模型的名称。
+<br><b>说明：</b>如果设置为<code>None</code>，将会使用产线默认模型。</br></td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>text_recognition_model_dir</code></td>
-<td>文本识别模型的目录路径。如果设置为<code>None</code>，将会下载官方模型。</td>
+<td><b>含义：</b>文本识别模型的目录路径。
+<br><b>说明：</b>如果设置为<code>None</code>，将会下载官方模型。</br></td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>text_recognition_batch_size</code></td>
-<td>文本识别模型的batch size。如果设置为<code>None</code>，将默认设置batch size为<code>1</code>。</td>
+<td><b>含义：</b>文本识别模型的batch size。
+<br><b>说明：</b>如果设置为<code>None</code>，将默认设置batch size为<code>1</code>。</br></td>
 <td><code>int|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
-<td>是否加载并使用文档方向分类模块。如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
+<td><b>含义：</b>是否加载并使用文档方向分类模块。
+<br><b>说明：</b>如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</br></td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
-<td>是否加载并使用文本图像矫正模块。如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
+<td><b>含义：</b>是否加载并使用文本图像矫正模块。
+<br><b>说明：</b>如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</br></td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_textline_orientation</code></td>
-<td>是否加载并使用文本行方向模块。如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</td>
+<td><b>含义：</b>是否加载并使用文本行方向模块。
+<br><b>说明：</b>如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>True</code>。</br></td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>text_det_limit_side_len</code></td>
-<td>文本检测的图像边长限制。
+<td><b>含义：</b>文本检测的图像边长限制。
+<br><b>说明：</b>
 <ul>
 <li><b>int</b>：大于 <code>0</code> 的任意整数；</li>
 <li><b>None</b>：如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为 <code>64</code>。</li>
 </ur>
-</td>
+</br></td>
 <td><code>int|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>text_det_limit_type</code></td>
-<td>文本检测的边长度限制类型。
+<td><b>含义：</b>文本检测的边长度限制类型。
+<br><b>说明：</b>
 <ul>
 <li><b>str</b>：支持 <code>min</code> 和 <code>max</code>，<code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>，<code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code>；</li>
 <li><b>None</b>：如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为 <code>min</code>。</li>
 </ur>
-</td>
+</br></td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>text_det_thresh</code></td>
-<td>文本检测像素阈值，输出的概率图中，得分大于该阈值的像素点才会被认为是文字像素点。
+<td><b>含义：</b>文本检测像素阈值，输出的概率图中，得分大于该阈值的像素点才会被认为是文字像素点。
+<br><b>说明：</b>
 <ul>
 <li><b>float</b>：大于<code>0</code>的任意浮点数；
 <li><b>None</b>：如果设置为<code>None</code>，将使用产线初始化的该参数值（默认为<code>0.3</code>）。</li>
 </td>
 <td><code>float|None</code></td>
 <td><code>None</code></td>
-</tr>
+</br></tr>
 <tr>
 <td><code>text_det_box_thresh</code></td>
-<td>文本检测框阈值，检测结果边框内，所有像素点的平均得分大于该阈值时，该结果会被认为是文字区域。
+<td><b>含义：</b>文本检测框阈值，检测结果边框内，所有像素点的平均得分大于该阈值时，该结果会被认为是文字区域。
+<br><b>说明：</b>
 <ul>
 <li><b>float</b>：大于<code>0</code>的任意浮点数；
 <li><b>None</b>：如果设置为<code>None</code>，将使用产线初始化的该参数值（默认为<code>0.6</code>）。
 </td>
 <td><code>float|None</code></td>
 <td><code>None</code></td>
-</tr>
+</br></tr>
 <tr>
 <td><code>text_det_unclip_ratio</code></td>
-<td>文本检测扩张系数，使用该方法对文字区域进行扩张，该值越大，扩张的面积越大。
+<td><b></b>含义：</b>文本检测扩张系数，使用该方法对文字区域进行扩张，该值越大，扩张的面积越大。
+<br><b>说明：</b>
 <ul>
 <li><b>float</b>：大于<code>0</code>的任意浮点数；
 <li><b>None</b>：如果设置为<code>None</code>，将使用产线初始化的该参数值（默认为<code>2.0</code>）。
 </ur>
-</td>
+</br></td>
 <td><code>float|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>text_det_input_shape</code></td>
-<td>文本检测的输入形状。</td>
+<td><b>含义：</b>文本检测的输入形状。</td>
 <td><code>tuple|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>text_rec_score_thresh</code></td>
-<td>文本识别阈值，得分大于该阈值的文本结果会被保留。
+<td><b>含义：</b>文本识别阈值，得分大于该阈值的文本结果会被保留。
+<br><b>说明：</b>
 <ul>
 <li><b>float</b>：大于<code>0</code>的任意浮点数；
 <li><b>None</b>：如果设置为<code>None</code>，将使用产线初始化的该参数值（默认为<code>0.0</code>，即不设阈值）。
@@ -1290,37 +1383,40 @@ for res in result:
 </td>
 <td><code>float|None</code></td>
 <td><code>None</code></td>
-</tr>
+</br></tr>
 <tr>
 <td><code>text_rec_input_shape</code></td>
-<td>文本识别的输入形状。</td>
+<td><b>含义：</b>文本识别的输入形状。</td>
 <td><code>tuple|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>lang</code></td>
-<td>使用指定语言的 OCR 模型。
-附录中的表格中列举了全部支持的语言。
-</td>
+<td><b>含义：</b>使用指定语言的 OCR 模型。
+<br><b>说明：</b>附录中的表格中列举了全部支持的语言。
+</br></td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>ocr_version</code></td>
-<td>OCR 模型版本。
+<td><b>含义：</b>OCR 模型版本。
+<br><b>说明：</b>
 <ul>
 <li><b>PP-OCRv5</b>：使用PP-OCRv5系列模型；
 <li><b>PP-OCRv4</b>：使用PP-OCRv4系列模型；
 <li><b>PP-OCRv3</b>：使用PP-OCRv3系列模型。
 </ul>
 注意不是每个<code>ocr_version</code>都支持所有的<code>lang</code>，请查看附录中的对应关系表。
-</td>
+</br></td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>用于推理的设备。支持指定具体卡号：
+<td><b>含义：</b>用于推理的设备。
+<br><b>说明：</b>
+支持指定具体卡号：
 <ul>
 <li><b>CPU</b>：如 <code>cpu</code> 表示使用 CPU 进行推理；</li>
 <li><b>GPU</b>：如 <code>gpu:0</code> 表示使用第 1 块 GPU 进行推理；</li>
@@ -1328,21 +1424,24 @@ for res in result:
 <li><b>XPU</b>：如 <code>xpu:0</code> 表示使用第 1 块 XPU 进行推理；</li>
 <li><b>MLU</b>：如 <code>mlu:0</code> 表示使用第 1 块 MLU 进行推理；</li>
 <li><b>DCU</b>：如 <code>dcu:0</code> 表示使用第 1 块 DCU 进行推理；</li>
+<li><b>沐曦 GPU</b>：如 <code>metax_gpu:0</code> 表示使用第 1 块沐曦 GPU 进行推理；</li>
+<li><b>天数 GPU</b>：如 <code>iluvatar_gpu:0</code> 表示使用第 1 块天数 GPU 进行推理；</li>
 <li><b>None</b>：如果设置为<code>None</code>，将默认使用产线初始化的该参数值，初始化时，会优先使用本地的 GPU 0号设备，如果没有，则使用 CPU 设备。
 </ur>
-</td>
+</br></td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>enable_hpi</code></td>
-<td>是否启用高性能推理。</td>
+<td><b>含义：</b>是否启用高性能推理。</td>
 <td><code>bool</code></td>
 <td><code>False</code></td>
 </tr>
 <tr>
 <td><code>use_tensorrt</code></td>
-<td>是否启用 Paddle Inference 的 TensorRT 子图引擎。如果模型不支持通过 TensorRT 加速，即使设置了此标志，也不会使用加速。<br/>
+<td><b>含义：</b>是否启用 Paddle Inference 的 TensorRT 子图引擎。
+<b>说明：</b>如果模型不支持通过 TensorRT 加速，即使设置了此标志，也不会使用加速。<br/>
 对于 CUDA 11.8 版本的飞桨，兼容的 TensorRT 版本为 8.x（x>=6），建议安装 TensorRT 8.6.1.6。<br/>
 
 </td>
@@ -1351,33 +1450,34 @@ for res in result:
 </tr>
 <tr>
 <td><code>precision</code></td>
-<td>计算精度，如 fp32、fp16。</td>
+<td><b>含义：</b>计算精度，如 fp32、fp16。</td>
 <td><code>str</code></td>
 <td><code>"fp32"</code></td>
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
-<td>是否启用 MKL-DNN 加速推理。如果 MKL-DNN 不可用或模型不支持通过 MKL-DNN 加速，即使设置了此标志，也不会使用加速。
+<td><b>含义：</b>是否启用 MKL-DNN 加速推理。
+<br><b>说明：</b>如果 MKL-DNN 不可用或模型不支持通过 MKL-DNN 加速，即使设置了此标志，也不会使用加速。</br></td>
 <td><code>bool</code></td>
 <td><code>True</code></td>
 </tr>
 <tr>
 <td><code>mkldnn_cache_capacity</code></td>
 <td>
-MKL-DNN 缓存容量。
+<b>含义：</b>MKL-DNN 缓存容量。
 </td>
 <td><code>int</code></td>
 <td><code>10</code></td>
 </tr>
 <tr>
 <td><code>cpu_threads</code></td>
-<td>在 CPU 上进行推理时使用的线程数。</td>
+<td><b>含义：</b>在 CPU 上进行推理时使用的线程数。</td>
 <td><code>int</code></td>
 <td><code>8</code></td>
 </tr>
 <tr>
 <td><code>paddlex_config</code></td>
-<td>PaddleX产线配置文件路径。</td>
+<td><b>含义：</b>PaddleX产线配置文件路径。</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -1398,60 +1498,69 @@ MKL-DNN 缓存容量。
 </thead>
 <tr>
 <td><code>input</code></td>
-<td>待预测数据，支持多种输入类型，必填。
+<td><b>含义：</b>待预测数据
+<br><b>说明：</b>支持多种输入类型，必填。
 <ul>
 <li><b>Python Var</b>：如 <code>numpy.ndarray</code> 表示的图像数据；</li>
-<li><b>str</b>：如图像文件或者PDF文件的本地路径：<code>/root/data/img.jpg</code>；<b>如URL链接</b>，如图像文件或PDF文件的网络URL：<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_002.png">示例</a>；<b>如本地目录</b>，该目录下需包含待预测图像，如本地路径：<code>/root/data/</code>(当前不支持目录中包含PDF文件的预测，PDF文件需要指定到具体文件路径)；</li>
+<li><b>str</b>：如图像文件或者PDF文件的本地路径：<code>/root/data/img.jpg</code>；
+<br><b>如URL链接</b>，如图像文件或PDF文件的网络URL：<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_002.png">示例</a>；</br>
+<b>如本地目录</b>，该目录下需包含待预测图像，如本地路径：<code>/root/data/</code>(当前不支持目录中包含PDF文件的预测，PDF文件需要指定到具体文件路径)；</li>
 <li><b>list</b>：列表元素需为上述类型数据，如<code>[numpy.ndarray, numpy.ndarray]</code>，<code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>，<code>["/root/data1", "/root/data2"]。</code></li>
 </ul>
-</td>
+</br></td>
 <td><code>Python Var|str|list</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
-<td>是否在推理时使用文档方向分类模块。</td>
+<td><b>含义：</b>是否在推理时使用文档方向分类模块。</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
-<td>是否在推理时使用文本图像矫正模块。</td>
+<td><b>含义：</b>是否在推理时使用文本图像矫正模块。</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <td><code>use_textline_orientation</code></td>
-<td>是否在推理时使用文本行方向分类模块。</td>
+<td><b>含义：</b>是否在推理时使用文本行方向分类模块。</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <td><code>text_det_limit_side_len</code></td>
-<td>参数含义与实例化参数基本相同。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td><b>含义：</b>参数含义与实例化参数基本相同。
+<br><b>说明：</b>设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</br></td>
 <td><code>int|None</code></td>
 <td><code>None</code></td>
 </tr>
 <td><code>text_det_limit_type</code></td>
-<td>参数含义与实例化参数基本相同。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td><b>含义：</b>参数含义与实例化参数基本相同。
+<br><b>说明：</b>设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</br></td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <td><code>text_det_thresh</code></td>
-<td>参数含义与实例化参数基本相同。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td><b>含义：</b>参数含义与实例化参数基本相同。
+<br><b>说明：</b>设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</br></td>
 <td><code>float|None</code></td>
 <td><code>None</code></td>
 </tr>
 <td><code>text_det_box_thresh</code></td>
-<td>参数含义与实例化参数基本相同。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td><b>含义：</b>参数含义与实例化参数基本相同。
+<br><b>说明：</b>设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</br></td>
 <td><code>float|None</code></td>
 <td><code>None</code></td>
 </tr>
 <td><code>text_det_unclip_ratio</code></td>
-<td>参数含义与实例化参数基本相同。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td><b>含义：</b>参数含义与实例化参数基本相同。
+<br><b>说明：</b>设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</br></td>
 <td><code>float|None</code></td>
 <td><code>None</code></td>
 </tr>
 <td><code>text_rec_score_thresh</code></td>
-<td>参数含义与实例化参数基本相同。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td><b>含义：</b>参数含义与实例化参数基本相同。
+<br><b>说明：</b>设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</br></td>
 <td><code>float|None</code></td>
 <td><code>None</code></td>
 </table>
@@ -1522,17 +1631,17 @@ MKL-DNN 缓存容量。
 
 <ul>
   <li>调用<code>print()</code> 方法会将结果打印到终端，打印到终端的内容解释如下：
-    <ul>
+    <ol start="1" type="1">
       <li><code>input_path</code>: <code>(str)</code> 待预测图像的输入路径</li>
       <li><code>page_index</code>: <code>(Union[int, None])</code> 如果输入是PDF文件，则表示当前是PDF的第几页，否则为 <code>None</code></li>
       <li><code>model_settings</code>: <code>(Dict[str, bool])</code> 配置产线所需的模型参数
-        <ul>
+        <ol >
           <li><code>use_doc_preprocessor</code>: <code>(bool)</code> 控制是否启用文档预处理子产线</li>
           <li><code>use_textline_orientation</code>: <code>(bool)</code> 控制是否启用文本行方向分类模块</li>
-        </ul>
+        </ol>
       </li>
       <li><code>doc_preprocessor_res</code>: <code>(Dict[str, Union[str, Dict[str, bool], int]])</code> 文档预处理子产线的输出结果。仅当<code>use_doc_preprocessor=True</code>时存在
-        <ul>
+        <ol >
           <li><code>input_path</code>: <code>(Union[str, None])</code> 图像预处理子产线接受的图像路径，当输入为<code>numpy.ndarray</code>时，保存为<code>None</code></li>
           <li><code>model_settings</code>: <code>(Dict)</code> 预处理子产线的模型配置参数
             <ul>
@@ -1541,7 +1650,7 @@ MKL-DNN 缓存容量。
             </ul>
           </li>
           <li><code>angle</code>: <code>(int)</code> 文档方向分类的预测结果。启用时取值为[0,1,2,3]，分别对应[0°,90°,180°,270°]；未启用时为-1</li>
-        </ul>
+        </ol>
       </li>
       <li><code>dt_polys</code>: <code>(List[numpy.ndarray])</code> 文本检测的多边形框列表。每个检测框由4个顶点坐标构成的numpy数组表示，数组shape为(4, 2)，数据类型为int16</li>
       <li><code>dt_scores</code>: <code>(List[float])</code> 文本检测框的置信度列表</li>
@@ -1561,7 +1670,7 @@ MKL-DNN 缓存容量。
       <li><code>rec_scores</code>: <code>(List[float])</code> 文本识别的置信度列表，已按<code>text_rec_score_thresh</code>过滤</li>
       <li><code>rec_polys</code>: <code>(List[numpy.ndarray])</code> 经过置信度过滤的文本检测框列表，格式同<code>dt_polys</code></li>
       <li><code>rec_boxes</code>: <code>(numpy.ndarray)</code> 检测框的矩形边界框数组，shape为(n, 4)，dtype为int16。每一行表示一个矩形框的[x_min, y_min, x_max, y_max]坐标，其中(x_min, y_min)为左上角坐标，(x_max, y_max)为右下角坐标</li>
-    </ul>
+    </ol>
   </li>
   <li>调用<code>save_to_json()</code> 方法会将上述内容保存到指定的<code>save_path</code>中，如果指定为目录，则保存的路径为<code>save_path/{your_img_basename}_res.json</code>，如果指定为文件，则直接保存到该文件中。由于json文件不支持保存numpy数组，因此会将其中的<code>numpy.array</code>类型转换为列表形式。</li>
   <li>调用<code>save_to_img()</code> 方法会将可视化结果保存到指定的<code>save_path</code>中，如果指定为目录，则保存的路径为<code>save_path/{your_img_basename}_ocr_res_img.{your_img_extension}</code>，如果指定为文件，则直接保存到该文件中。(产线通常包含较多结果图片，不建议直接指定为具体的文件路径，否则多张图会被覆盖，仅保留最后一张图)</li>
@@ -2501,7 +2610,7 @@ pipeline = PaddleOCR(paddlex_config="PaddleOCR.yaml")
   <tbody>
     <tr>
       <td><code>PP-OCRv5</code></td>
-      <td><code>ch</code>, <code>en</code>, <code>fr</code>, <code>de</code>, <code>japan</code>, <code>korean</code>, <code>chinese_cht</code>, <code>af</code>, <code>it</code>, <code>es</code>, <code>bs</code>, <code>pt</code>, <code>cs</code>, <code>cy</code>, <code>da</code>, <code>et</code>, <code>ga</code>, <code>hr</code>, <code>hu</code>, <code>rslatin</code>, <code>id</code>, <code>oc</code>, <code>is</code>, <code>lt</code>, <code>mi</code>, <code>ms</code>, <code>nl</code>, <code>no</code>, <code>pl</code>, <code>sk</code>, <code>sl</code>, <code>sq</code>, <code>sv</code>, <code>sw</code>, <code>tl</code>, <code>tr</code>, <code>uz</code>, <code>la</code>, <code>ru</code>, <code>be</code>, <code>uk</code></td>
+      <td><code>ch</code>, <code>en</code>, <code>fr</code>, <code>de</code>, <code>japan</code>, <code>korean</code>, <code>chinese_cht</code>, <code>af</code>, <code>it</code>, <code>es</code>, <code>bs</code>, <code>pt</code>, <code>cs</code>, <code>cy</code>, <code>da</code>, <code>et</code>, <code>ga</code>, <code>hr</code>, <code>hu</code>, <code>rslatin</code>, <code>id</code>, <code>oc</code>, <code>is</code>, <code>lt</code>, <code>mi</code>, <code>ms</code>, <code>nl</code>, <code>no</code>, <code>pl</code>, <code>sk</code>, <code>sl</code>, <code>sq</code>, <code>sv</code>, <code>sw</code>, <code>tl</code>, <code>tr</code>, <code>uz</code>, <code>la</code>, <code>ru</code>, <code>be</code>, <code>uk</code>, <code>th</code>, <code>el</code>, <code>az</code>, <code>ku</code>, <code>lv</code>, <code>mt</code>, <code>pi</code>, <code>ro</code>, <code>vi</code>, <code>fi</code>, <code>eu</code>, <code>gl</code>, <code>lb</code>, <code>rm</code>, <code>ca</code>, <code>qu</code>, <code>te</code>, <code>sr</code>, <code>bg</code>, <code>mn</code>, <code>ab</code>, <code>ady</code>, <code>kbd</code>, <code>av</code>, <code>dar</code>, <code>inh</code>, <code>ce</code>, <code>lki</code>, <code>lez</code>, <code>tab</code>, <code>kk</code>, <code>ky</code>, <code>tg</code>, <code>mk</code>, <code>tt</code>, <code>cv</code>, <code>ba</code>, <code>mhr</code>, <code>mo</code>, <code>udm</code>, <code>kv</code>, <code>os</code>, <code>bua</code>, <code>xal</code>, <code>tyv</code>, <code>sah</code>, <code>kaa</code>, <code>ar</code>, <code>fa</code>, <code>ug</code>, <code>ur</code>, <code>ps</code>, <code>ku</code>, <code>sd</code>, <code>bal</code>, <code>hi</code>, <code>mr</code>, <code>ne</code>, <code>bh</code>, <code>mai</code>, <code>ang</code>, <code>bho</code>, <code>mah</code>, <code>sck</code>, <code>new</code>, <code>gom</code>, <code>sa</code>, <code>bgc</code>, <code>ta</code></td>
     </tr>
     <tr>
       <td><code>PP-OCRv4</code></td>
@@ -2527,3 +2636,51 @@ pipeline = PaddleOCR(paddlex_config="PaddleOCR.yaml")
 </table>
 
 </details>
+
+## 5. 常见问题与解决方案
+
+### 5.1 性能优化问题
+
+#### Q: GPU推理速度慢怎么办？
+
+**A**: 可以通过以下方式优化：
+（1）启用高性能推理：设置`enable_hpi=True`，自动选择最优加速策略
+（2）启用TensorRT加速：设置`use_tensorrt=True`，需要CUDA 11.8+和TensorRT 8.6+
+（3）使用半精度：设置`precision="fp16"`，可以显著提升速度
+（4）调整批处理大小：根据显存大小设置合适的`batch_size`
+（5）使用移动端模型：在精度要求不高时使用`PP-OCRv5_mobile`系列模型
+
+#### Q: GPU内存不足（CUDA out of memory）怎么办？
+
+**A**: 可以通过以下方式解决：
+（1）减小批处理大小：将`batch_size`设置为1
+（2）减小图像尺寸：设置`det_limit_side_len=640`
+（3）启用内存优化：设置`enable_memory_optim=True`
+（4）限制GPU内存使用：设置`gpu_mem=200`
+（5）使用移动端模型：切换到`PP-OCRv5_mobile`系列模型
+
+### 5.2 模型选择问题
+
+#### Q: 如何选择合适的模型？
+
+**A**: 根据应用场景选择：
+- 服务器高精度场景：使用`PP-OCRv5_server`系列，精度最高
+- 移动端部署：使用`PP-OCRv5_mobile`系列，模型小速度快
+- 实时处理：使用`PP-OCRv5_mobile`系列，推理速度快
+- 批量处理：使用`PP-OCRv5_server`系列，精度高
+- 多语言识别：使用`PP-OCRv5_multi_languages`，支持37种语言
+
+### 5.3 最佳实践
+
+#### Q: 生产环境部署建议？
+
+**A**: 
+（1）使用高性能推理配置
+（2）启用TensorRT加速
+（3）合理设置批处理大小
+（4）监控GPU内存使用情况
+（5）做好错误处理和日志记录
+
+## 6. 总结
+
+通用OCR产线是PaddleOCR的核心功能，通过合理选择模型和配置参数，可以在不同场景下获得最佳的识别效果。建议根据部署环境选择合适的模型，根据应用需求调整参数，充分利用GPU加速和批处理优化。

@@ -6,87 +6,155 @@ comments: true
 
 PaddleOCR-VL is an advanced and efficient document parsing model designed specifically for element recognition in documents. Its core component is PaddleOCR-VL-0.9B, a compact yet powerful Vision-Language Model (VLM) composed of a NaViT-style dynamic resolution visual encoder and the ERNIE-4.5-0.3B language model, enabling precise element recognition. The model supports 109 languages and excels in recognizing complex elements (such as text, tables, formulas, and charts) while maintaining extremely low resource consumption. Comprehensive evaluations on widely used public benchmarks and internal benchmarks demonstrate that PaddleOCR-VL achieves SOTA performance in both page-level document parsing and element-level recognition. It significantly outperforms existing Pipeline-based solutions, document parsing multimodal schemes, and advanced general-purpose multimodal large models, while offering faster inference speeds. These advantages make it highly suitable for deployment in real-world scenarios.
 
-<img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr_vl/metrics/allmetric.png"/>
+**On January 29, 2026, we released PaddleOCR-VL-1.5. PaddleOCR-VL-1.5 not only significantly improved the accuracy on the OmniDocBench v1.5 evaluation set to 94.5%, but also innovatively supports irregular-shaped bounding box localization. As a result, PaddleOCR-VL-1.5 demonstrates outstanding performance in real-world scenarios such as Skew, Warping, Screen Photography, Illumination, and Scanning. In addition, the model has added new capabilities for seal (stamp) recognition and text detection and recognition, with key metrics continuing to lead the industry.**
 
-## PaddleOCR-VL Inference Device Support
+<img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr_vl_1_5/paddleocr-vl-1.5_metrics.png"/>
 
-Currently, PaddleOCR-VL offers three inference methods, each with varying levels of support for inference devices. Please verify that your inference device meets the requirements in the table below before proceeding with PaddleOCR-VL inference deployment:
+> INFO:
+> PaddleOCR provides a unified interface for the PaddleOCR-VL model series to facilitate quick setup and usage. Unless otherwise specified, the term "PaddleOCR-VL" in subsequent sections and related usage tutorials refers to the PaddleOCR-VL model series (e.g., PaddleOCR-VL-1.5). References specific to the PaddleOCR-VL v1 version will be explicitly noted.
+
+## Process Guide
+
+Before starting, please refer to the next section for information on the inference device support provided by PaddleOCR-VL to **determine if your device meets the operational requirements.** If your device meets the requirements, please select the relevant section to read based on your needs.
+
+For some inference hardware, you may need to refer to other usage tutorials we provide, but the process remains the same and does not affect your reading of the following process guide:
+
+1. **Want to quickly experience PaddleOCR-VL**:
+
+    If you wish to quickly experience the inference effects of PaddleOCR-VL, please read [1. Environment Preparation](#1-environment-preparation) and [2. Quick Start](#2-quick-start), or the corresponding chapters in documentation for other hardware.
+
+2. **Want to use PaddleOCR-VL in a production environment**:
+
+    Although the quick experience allows you to feel the effects of PaddleOCR-VL, it may not be optimal in terms of inference speed and GPU memory usage. If you wish to apply PaddleOCR-VL in a production environment and have higher requirements for inference performance, please read [3. Enhancing VLM Inference Performance Using Inference Acceleration Frameworks](#3-enhancing-vlm-inference-performance-using-inference-acceleration-frameworks) or the corresponding chapter in documentation for other hardware.
+
+3. **Want to deploy PaddleOCR-VL as an API service**:
+
+    If you want to deploy PaddleOCR-VL as a web service (API) so that other devices or applications can access and call it through a specific URL without configuring the environment, we offer two methods:
+
+    - Deployment using Docker Compose (one-click start, recommended): Please read [4.1 Method 1: Deploy Using Docker Compose](#41-method-1-deploy-using-docker-compose-recommended) and [4.3 Client-Side Invocation](#43-client-side-invocation), or the corresponding chapters in documentation for other hardware.
+    - Manual deployment: Please read [1. Environment Preparation](#1-environment-preparation), [4.2 Method 2: Manual Deployment](#42-method-2-manual-deployment), and [4.3 Client-Side Invocation](#43-client-side-invocation), or the corresponding chapters in documentation for other hardware.
+
+4. **Want to fine-tune PaddleOCR-VL to adapt to specific business needs**:
+
+    If you find that the accuracy performance of PaddleOCR-VL in specific business scenarios does not meet expectations, please read [5. Model Fine-tuning](#5-model-fine-tuning) or the corresponding chapter in documentation for other hardware.
+
+## Inference Device Support for PaddleOCR-VL
+
+Currently, PaddleOCR-VL offers six inference methods, with varying levels of support for different inference devices. Please confirm that your inference device meets the requirements in the table below before proceeding with PaddleOCR-VL deployment:
 
 <table border="1">
 <thead>
   <tr>
     <th>Inference Method</th>
-    <th>x64 CPU Support</th>
-    <th>GPU Compute Capability Support</th>
-    <th>CUDA Version Support</th>
+    <th>NVIDIA GPU</th>
+    <th>Kunlunxin XPU</th>
+    <th>Hygon DCU</th>
+    <th>MetaX GPU</th>
+    <th>Iluvatar GPU</th>
+    <th>Huawei Ascend NPU</th>
+    <th>x64 CPU</th>
+    <th>Apple Silicon</th>
   </tr>
 </thead>
 <tbody>
-  <tr>
+  <tr style="text-align: center;">
     <td>PaddlePaddle</td>
     <td>✅</td>
-    <td>≥ 7</td>
-    <td>≥ 11.8</td>
-  </tr>
-  <tr>
-    <td>vLLM</td>
+    <td>✅</td>
+    <td>✅</td>
+    <td>✅</td>
+    <td>✅</td>
     <td>🚧</td>
-    <td>≥ 8 (RTX 3060, RTX 5070, A10, A100, ...) <br />  
-    7 ≤ GPU Compute Capability < 8 (T4, V100, ...) is supported but may encounter request timeouts, OOM errors, or other abnormalities. Not recommended.
-    </td>
-    <td>≥ 12.6</td>
+    <td>✅</td>
+    <td>✅</td>
   </tr>
-  <tr>
-    <td>SGLang</td>
-     <td>🚧</td>
-    <td>8 ≤ GPU Compute Capability < 12</td>
-    <td>≥ 12.6</td>
+  <tr style="text-align: center;">
+    <td>PaddlePaddle + vLLM</td>
+    <td>✅</td>
+    <td>🚧</td>
+    <td>✅</td>
+    <td>🚧</td>
+    <td>🚧</td>
+    <td>✅</td>
+    <td>-</td>
+    <td>-</td>
+  </tr>
+  <tr style="text-align: center;">
+    <td>PaddlePaddle + SGLang</td>
+    <td>✅</td>
+    <td>🚧</td>
+    <td>🚧</td>
+    <td>🚧</td>
+    <td>🚧</td>
+    <td>🚧</td>
+    <td>-</td>
+    <td>-</td>
+  </tr>
+  <tr style="text-align: center;">
+    <td>PaddlePaddle + FastDeploy</td>
+    <td>✅</td>
+    <td>✅</td>
+    <td>🚧</td>
+    <td>✅</td>
+    <td>✅</td>
+    <td>🚧</td>
+    <td>-</td>
+    <td>-</td>
+  </tr>
+  <tr style="text-align: center;">
+    <td>PaddlePaddle + MLX-VLM</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+    <td>✅</td>
+  </tr>
+  <tr style="text-align: center;">
+    <td>PaddlePaddle + llama.cpp</td>
+    <td>✅</td>
+    <td>🚧</td>
+    <td>🚧</td>
+    <td>🚧</td>
+    <td>🚧</td>
+    <td>🚧</td>
+    <td>✅</td>
+    <td>🚧</td>
   </tr>
 </tbody>
 </table>
 
-> Currently, PaddleOCR-VL does not support ARM architecture CPUs. Additional hardware support will be added based on actual demand in the future. Stay tuned!  
-> vLLM and SGLang cannot run natively on Windows or macOS. Please use our provided Docker image instead.
+<details><summary>Explanation of Inference Method</summary>
+"PaddlePaddle" indicates that both the layout detection model and the VLM use the PaddlePaddle framework for inference. This is the default mode for the PaddleOCR CLI and Python API. Other inference method follow the format "Layout Detection Model Inference method + VLM Inference method". For example, "PaddlePaddle + vLLM" means the layout detection model uses PaddlePaddle, while the VLM uses vLLM.
+</details>
 
-Since different hardware configurations require different dependencies, if your hardware meets the requirements in the table above, please refer to the following table for the corresponding environment configuration tutorial:
+> TIP:
+> - When using NVIDIA GPU for inference, ensure that the Compute Capability (CC) and CUDA version meet the requirements:
+> >  - PaddlePaddle: CC ≥ 7.0, CUDA ≥ 11.8
+> >  - vLLM: CC ≥ 8.0, CUDA ≥ 12.6
+> >  - SGLang: 8.0 ≤ CC < 12.0, CUDA ≥ 12.6
+> >  - FastDeploy: 8.0 ≤ CC < 12.0, CUDA ≥ 12.6
+> >  - Common GPUs with CC ≥ 8 include RTX 30/40/50 series and A10/A100, etc. For more models, refer to [CUDA GPU Compute Capability](https://developer.nvidia.com/cuda-gpus)
+> - vLLM compatibility note: Although vLLM can be launched on NVIDIA GPUs with CC 7.x such as T4/V100, timeout or OOM issues may occur, and its use is not recommended.
+> - vLLM, SGLang, and FastDeploy cannot run natively on Windows. Please use the Docker images we provide.
 
-<table border="1">
-  <thead>
-    <tr>
-      <th>Hardware Type</th>
-      <th>Hardware Model</th>
-      <th>Environment Configuration Tutorial</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td rowspan="2">NVIDIA GPU</td>
-      <td>RTX 30, 40 Series</td>
-      <td>This usage tutorial</td>
-    </tr>
-    <tr>
-      <td>RTX 50 Series</td>
-      <td><a href="./PaddleOCR-VL-RTX50.en.md">PaddleOCR-VL RTX 50 Environment Configuration Tutorial</a></td>
-    </tr>
-    <tr>
-      <td>x64 CPU</td>
-      <td>-</td>
-      <td>This usage tutorial</td>
-    </tr>
-    <tr>
-      <td>XPU</td>
-      <td>🚧</td>
-      <td>🚧</td>
-    </tr>
-    <tr>
-      <td>DCU</td>
-      <td>🚧</td>
-      <td>🚧</td>
-    </tr>
-  </tbody>
-</table>
+Since different hardware requires different dependencies, if your hardware meets the requirements in the table above, please refer to the following table for the corresponding usage tutorial:
 
-> For example, if you are using an RTX 50 Series GPU that meets the device requirements for PaddlePaddle and vLLM inference methods, please refer to the [PaddleOCR-VL RTX 50 Environment Configuration Tutorial](./PaddleOCR-VL-RTX50.en.md) to complete environment configuration before using PaddleOCR-VL.
+| Hardware Type  | Usage Tutorial                                                                                           |
+|----------------|------------------------------------------------------------------------------------------------------------------------------|
+| x64 CPU        | This tutorial (Dependencies must be installed manually for now)                                                                                                                |
+| NVIDIA GPU     | - NVIDIA Blackwell architecture GPU (e.g., RTX 50 series) refer to [PaddleOCR-VL NVIDIA Blackwell Architecture GPU Usage Tutorial](./PaddleOCR-VL-NVIDIA-Blackwell.en.md) <br/> - Other NVIDIA GPUs refer to this tutorial |
+| Kunlunxin XPU  | [PaddleOCR-VL Kunlunxin XPU Usage Tutorial](./PaddleOCR-VL-Kunlunxin-XPU.en.md)                                              |
+| Hygon DCU      | [PaddleOCR-VL Hygon DCU Usage Tutorial](./PaddleOCR-VL-Hygon-DCU.en.md)                                              |
+| MetaX GPU      | [PaddleOCR-VL MetaX GPU Usage Tutorial](./PaddleOCR-VL-MetaX-GPU.en.md)                                              |
+| Iluvatar GPU        | [PaddleOCR-VL Iluvatar GPU Usage Tutorial](./PaddleOCR-VL-Iluvatar-GPU.en.md) |
+| Huawei Ascend NPU        | [PaddleOCR-VL Huawei Ascend NPU Usage Tutorial](./PaddleOCR-VL-Huawei-Ascend-NPU.en.md) |
+| Apple Silicon        | [PaddleOCR-VL Apple Silicon Usage Tutorial](./PaddleOCR-VL-Apple-Silicon.en.md) |
+
+> TIP:
+> For example, if you are using an RTX 50 series GPU that meets the device requirements for both PaddlePaddle and vLLM inference methods, please refer to the [PaddleOCR-VL NVIDIA Blackwell Architecture GPU Usage Tutorial](./PaddleOCR-VL-NVIDIA-Blackwell.en.md) to learn about relevant configurations and usage.
 
 ## 1. Environment Preparation
 
@@ -95,6 +163,8 @@ This section explains how to set up the runtime environment for PaddleOCR-VL. Ch
 - Method 1: Use the official Docker image.
 
 - Method 2: Manually install PaddlePaddle and PaddleOCR.
+
+**We strongly recommend using the Docker image to minimize potential environment-related issues.**
 
 ### 1.1 Method 1: Using Docker Image
 
@@ -106,25 +176,30 @@ docker run \
     --gpus all \
     --network host \
     --user root \
-    ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest \
+    ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-nvidia-gpu \
     /bin/bash
 # Invoke PaddleOCR CLI or Python API within the container
 ```
 
-The image size is approximately 8 GB. If you need to use PaddleOCR-VL in an offline environment, replace `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest` in the above command with the offline version image `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-offline` (offline image size is approximately 11 GB). You will need to pull the image on an internet-connected machine, import it into the offline machine, and then start the container using this image on the offline machine. For example:
+If you need to use PaddleOCR-VL in an offline environment, replace `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-nvidia-gpu` (image size approximately 8 GB) in the above command with the offline version image `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-nvidia-gpu-offline` (image size is approximately 10 GB). You will need to pull the image on an internet-connected machine, import it into the offline machine, and then start the container using this image on the offline machine. For example:
 
 ```shell
 # Execute on an internet-connected machine
-docker pull ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-offline
+docker pull ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-nvidia-gpu-offline
 # Save the image to a file
-docker save ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-offline -o paddleocr-vl-latest-offline.tar
+docker save ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-nvidia-gpu-offline -o paddleocr-vl-latest-nvidia-gpu-offline.tar
 
 # Transfer the image file to the offline machine
 
 # Execute on the offline machine
-docker load -i paddleocr-vl-latest-offline.tar
+docker load -i paddleocr-vl-latest-nvidia-gpu-offline.tar
 # After that, you can use `docker run` to start the container on the offline machine
 ```
+
+> TIP:
+> Images with the `latest-xxx` tag correspond to the latest version of PaddleOCR. If you want to use a specific version of the PaddleOCR image, you can replace `latest` in the tag with the desired version number: `paddleocr<major>.<minor>`.
+> For example:
+> `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:paddleocr3.3-nvidia-gpu-offline`
 
 ### 1.2 Method 2: Manually Install PaddlePaddle and PaddleOCR
 
@@ -145,18 +220,16 @@ Run the following commands to complete the installation:
 # The following command installs the PaddlePaddle version for CUDA 12.6. For other CUDA versions and the CPU version, please refer to https://www.paddlepaddle.org.cn/install/quick?docurl=/documentation/docs/zh/develop/install/pip/linux-pip.html
 python -m pip install paddlepaddle-gpu==3.2.1 -i https://www.paddlepaddle.org.cn/packages/stable/cu126/
 python -m pip install -U "paddleocr[doc-parser]"
-# For Linux systems, run:
-python -m pip install https://paddle-whl.bj.bcebos.com/nightly/cu126/safetensors/safetensors-0.6.2.dev0-cp38-abi3-linux_x86_64.whl
-# For Windows systems, run:
-python -m pip install https://xly-devops.cdn.bcebos.com/safetensors-nightly/safetensors-0.6.2.dev0-cp38-abi3-win_amd64.whl
 ```
 
-> **Please ensure that you install PaddlePaddle framework version 3.2.1 or above, along with the special version of safetensors.** For macOS users, please use Docker to set up the environment.
+> IMPORTANT:
+> **Please ensure that you install PaddlePaddle framework version 3.2.1 or above.**
 
 ## 2. Quick Start
 
 PaddleOCR-VL supports two usage methods: CLI command line and Python API. The CLI command line method is simpler and suitable for quickly verifying functionality, while the Python API method is more flexible and suitable for integration into existing projects.
 
+> IMPORTANT:
 > The methods introduced in this section are primarily for rapid validation. Their inference speed, memory usage, and stability may not meet the requirements of a production environment. **If deployment to a production environment is needed, we strongly recommend using a dedicated inference acceleration framework**. For specific methods, please refer to the next section.
 
 ### 2.1 Command Line Usage
@@ -164,7 +237,23 @@ PaddleOCR-VL supports two usage methods: CLI command line and Python API. The CL
 Run a single command to quickly test the PaddleOCR-VL ：
 
 ```shell
+# NVIDIA GPU
 paddleocr doc_parser -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/paddleocr_vl_demo.png
+
+# Kunlunxin XPU
+paddleocr doc_parser -i ./paddleocr_vl_demo.png --device xpu
+
+# Hygon DCU
+paddleocr doc_parser -i ./paddleocr_vl_demo.png --device dcu
+
+# MetaX GPU
+paddleocr doc_parser -i ./paddleocr_vl_demo.png --device metax_gpu
+
+# Apple Silicon
+paddleocr doc_parser -i ./paddleocr_vl_demo.png --device cpu
+
+# Huawei Ascend NPU 
+# Huawei Ascend NPU please refer to Chapter 3 for inference using PaddlePaddle + vLLM
 
 # Use --use_doc_orientation_classify to enable document orientation classification
 paddleocr doc_parser -i ./paddleocr_vl_demo.png --use_doc_orientation_classify True
@@ -183,48 +272,79 @@ paddleocr doc_parser -i ./paddleocr_vl_demo.png --use_layout_detection False
 <th>Parameter</th>
 <th>Description</th>
 <th>Type</th>
+<th>Default</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>input</code></td>
-<td>Data to be predicted, required.
+<td><b>Meaning:</b>Data to be predicted, required. <br/>
+<b>Description:</b> 
 For example, the local path of an image file or PDF file: <code>/root/data/img.jpg</code>;<b>Such as a URL link</b>, for example, the network URL of an image file or PDF file:<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/demo_paper.png">Example</a>;<b>Such as a local directory</b>, which should contain the images to be predicted, for example, the local path: <code>/root/data/</code>(Currently, prediction for directories containing PDF files is not supported. PDF files need to be specified with a specific file path).</td>
 <td><code>str</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>save_path</code></td>
-<td>Specify the path where the inference result file will be saved. If not set, the inference results will not be saved locally.</td>
+<td><b>Meaning:</b>Specify the path where the inference result file will be saved. <br/>
+<b>Description:</b> 
+If not set, the inference results will not be saved locally.</td>
 <td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+  <td><code>pipeline_version</code></td>
+  <td>
+    <b>Meaning:</b> Specifies the pipeline version.<br/>
+    <b>Description:</b> The currently available values are <code>"v1"</code> and <code>"v1.5"</code>.
+  </td>
+  <td><code>str</code></td>
+  <td>"v1.5"</td>
 </tr>
 <tr>
 <td><code>layout_detection_model_name</code></td>
-<td>Name of the layout area detection and ranking model. If not set, the default model of the production line will be used.</td>
+<td><b>Meaning:</b>Name of the layout area detection and ranking model.<br/>
+<b>Description:</b>
+ If not set, the default model of the production line will be used.</td>
 <td><code>str</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>layout_detection_model_dir</code></td>
-<td>Directory path of the layout area detection and ranking model. If not set, the official model will be downloaded.</td>
+<td><b>Meaning:</b>Directory path of the layout area detection and ranking model.<br/> 
+<b>Description:</b> 
+If not set, the official model will be downloaded.</td>
 <td><code>str</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>layout_threshold</code></td>
-<td>Score threshold for the layout model. Any value between  <code>0-1</code>. If not set, the default value is used, which is  <code>0.5</code>.
-</td>
+<td><b>Meaning:</b>Score threshold for the layout model. <br/>
+<b>Description:</b> 
+Any value between  <code>0-1</code>. If not set, the default value is used, which is  <code>0.5</code>.
+<td><code>float</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>layout_nms</code></td>
-<td>Whether to use post-processing NMS for layout detection. If not set, the initialized default value will be used.</td>
+<td><b>Meaning:</b>Whether to use post-processing NMS for layout detection. <br/>
+<b>Description:</b> 
+If not set, the initialized default value will be used.</td>
 <td><code>bool</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>layout_unclip_ratio</code></td>
-<td>Expansion coefficient for the detection boxes of the layout area detection model.Any floating-point number greater than <code>0</code>. If not set, the initialized default value will be used.</td>
+<td><b>Meaning:</b>Expansion coefficient for the detection boxes of the layout area detection model. <br/>
+<b>Description:</b> 
+Any floating-point number greater than <code>0</code>. If not set, the initialized default value will be used.</td>
 <td><code>float</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>layout_merge_bboxes_mode</code></td>
-<td>Merging mode for the detection boxes output by the model in layout detection.
+<td><b>Meaning:</b>Merging mode for the detection boxes output by the model in layout detection. <br/>
+<b>Description:</b> 
 <ul>
 <li><b>large</b> when set to large, it means that among the detection boxes output by the model, for overlapping and contained boxes, only the outermost largest box is retained, and the overlapping inner boxes are deleted;</li>
 <li><b>small</b>, when set to small, it means that among the detection boxes output by the model, for overlapping and contained boxes, only the innermost contained small box is retained, and the overlapping outer boxes are deleted;</li>
@@ -232,166 +352,290 @@ For example, the local path of an image file or PDF file: <code>/root/data/img.j
 If not set, the initialized parameter value will be used.
 </td>
 <td><code>str</code></td>
+<td></td>
+</tr>
 <tr>
 <td><code>vl_rec_model_name</code></td>
-<td>Name of the multimodal recognition model. If not set, the default model will be used.</td>
+<td><b>Meaning:</b>Name of the multimodal recognition model. <br/>
+<b>Description:</b> 
+If not set, the default model will be used.</td>
 <td><code>str</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>vl_rec_model_dir</code></td>
-<td>Directory path of the multimodal recognition model. If not set, the official model will be downloaded.</td>
+<td><b>Meaning:</b>Directory path of the multimodal recognition model. <br/>
+<b>Description:</b> 
+If not set, the official model will be downloaded.</td>
 <td><code>str</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>vl_rec_backend</code></td>
-<td>Inference backend used by the multimodal recognition model.</td>
+<td><b>Meaning:</b>Inference backend used by the multimodal recognition model.</td>
 <td><code>str</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>vl_rec_server_url</code></td>
-<td>If the multimodal recognition model uses an inference service, this parameter is used to specify the server URL.</td>
+<td><b>Description:</b>If the multimodal recognition model uses an inference service, this parameter is used to specify the server URL.</td>
 <td><code>str</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>vl_rec_max_concurrency</code></td>
-<td>If the multimodal recognition model uses an inference service, this parameter is used to specify the maximum number of concurrent requests.</td>
+<td><b>Meaning:</b>If the multimodal recognition model uses an inference service, this parameter is used to specify the maximum number of concurrent requests.</td>
+<td><code>int</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>vl_rec_api_model_name</code></td>
+<td><b>Meaning:</b>If the multimodal recognition model uses an inference service, this parameter is used to specify the model name of the service.</td>
 <td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>vl_rec_api_key</code></td>
+<td><b>Meaning:</b>If the multimodal recognition model uses an inference service, this parameter is used to specify the API key of the service.</td>
+<td><code>str</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>doc_orientation_classify_model_name</code></td>
-<td>Name of the document orientation classification model. If not set, the initialized default value will be used.</td>
+<td><b>Meaning:</b>Name of the document orientation classification model.<br/>
+<b>Description:</b>
+If not set, the initialized default value will be used.</td>
 <td><code>str</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>doc_orientation_classify_model_dir</code></td>
-<td>Directory path of the document orientation classification model. If not set, the official model will be downloaded.</td>
+<td><b>Meaning:</b>Directory path of the document orientation classification model. <br/>
+<b>Description:</b>
+If not set, the official model will be downloaded.</td>
 <td><code>str</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>doc_unwarping_model_name</code></td>
-<td>Name of the text image rectification model. If not set, the initialized default value will be used.</td>
+<td><b>Meaning:</b>Name of the text image rectification model. <br/>
+<b>Description:</b>
+If not set, the initialized default value will be used.</td>
 <td><code>str</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>doc_unwarping_model_dir</code></td>
-<td>Directory path of the text image rectification model. If not set, the official model will be downloaded.</td>
+<td><b>Meaning:</b>Directory path of the text image rectification model. <br/>
+<b>Description:</b>
+If not set, the official model will be downloaded.</td>
 <td><code>str</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
-<td>Whether to load and use the document orientation classification module. If not set, the initialized default value will be used, which is initialized to<code>False</code>.</td>
-<td><code>bool</code></td>
-</tr>
-<tr>
-<td><code>use_doc_unwarping</code></td>
-<td>Whether to load and use the text image rectification module. If not set, the initialized default value will be used, which is initialized to <code>False.</td>
-<td><code>bool</code></td>
-</tr>
-<tr>
-<td><code>use_layout_detection</code></td>
-<td>Whether to load and use the layout area detection and ranking module. If not set, the initialized default value will be used, which is initialized to <code>True</code>.</td>
-<td><code>bool</code></td>
-</tr>
-<tr>
-<td><code>use_chart_recognition</code></td>
-<td>Whether to use the chart parsing function. If not set, the initialized default value will be used, which is initialized to <code>False</code>.</td>
-<td><code>bool</code></td>
-</tr>
-<tr>
-<td><code>format_block_content</code></td>
-<td>Controls whether to format the <code>block_content</code> content within as Markdown. If not set, the initialized default value will be used, which defaults to initialization as<code>False</code>.</td>
+<td><b>Meaning:</b>Whether to load and use the document orientation classification module. <br/>
+<b>Description:</b>
+If not set, the initialized default value will be used, which is initialized to<code>False</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
+<td><code>use_doc_unwarping</code></td>
+<td><b>Meaning:</b>Whether to load and use the text image rectification module. <br/>
+<b>Description:</b>
+If not set, the initialized default value will be used, which is initialized to <code>False</code>.</td>
+<td><code>bool</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>use_layout_detection</code></td>
+<td><b>Meaning:</b>Whether to load and use the layout area detection and ranking module. <br/>
+<b>Description:</b>
+If not set, the initialized default value will be used, which is initialized to <code>True</code>.</td>
+<td><code>bool</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>use_chart_recognition</code></td>
+<td><b>Meaning:</b>Whether to use the chart parsing function. <br/>
+<b>Description:</b>
+If not set, the initialized default value will be used, which is initialized to <code>False</code>.</td>
+<td><code>bool</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>use_seal_recognition</code></td>
+<td><b>Meaning:</b>Whether to use the seal recognition function.<br/>
+<b>Description:</b> If not set, the initialized default value will be used, which defaults to initialization as <code>False</code>.</td>
+<td><code>bool</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>use_ocr_for_image_block</code></td>
+<td><b>Meaning:</b>Whether to perform OCR on text within image blocks.<br/>
+<b>Description:</b> If not set, the initialized default value will be used, which defaults to initialization as <code>False</code>.</td>
+<td><code>bool</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>format_block_content</code></td>
+<td><b>Meaning:</b>Controls whether to format the <code>block_content</code> content within as Markdown. <br/>
+<b>Description:</b>
+If not set, the initialized default value will be used, which defaults to initialization as<code>False</code>.</td>
+<td><code>bool</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>merge_layout_blocks</code></td>
+<td><b>Meaning:</b>Control whether to merge the layout detection boxes for cross-column or staggered top and bottom columns.<br/>
+<b>Description:</b> If not set, the initialized default value will be used, which defaults to initialization as<code>True</code>.</td>
+<td><code>bool</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>markdown_ignore_labels</code></td>
+<td><b>Meaning:</b>Layout labels that need to be ignored in Markdown.<br/>
+<b>Description:</b> If not set, the initialized default value will be used, which defaults to initialization as<code>['number','footnote','header','header_image','footer','footer_image','aside_text']</code>.</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+  <td><code>layout_shape_mode</code></td>
+  <td>
+    <b>Meaning:</b>Specifies the geometric representation mode for layout detection results. It defines how the boundaries of detected regions (e.g., text blocks, images, tables) are calculated and displayed.<br/>
+    <b>Description:</b> Value descriptions:
+    <ul>
+      <li>
+        <b>rect (rectangle)</b>:
+        Outputs an axis-aligned bounding box (including x1, y1, x2, y2).
+        Suitable for standard horizontally aligned layouts.
+      </li>
+      <li>
+        <b>quad (quadrilateral)</b>:
+        Outputs an arbitrary quadrilateral composed of four vertices.
+        Suitable for regions with skew or perspective distortion.
+      </li>
+      <li>
+        <b>poly (polygon)</b>:
+        Outputs a closed contour composed of multiple coordinate points.
+        Suitable for irregularly shaped or curved layout elements,
+        offering the highest precision.
+      </li>
+      <li>
+        <b>auto (automatic)</b>:
+        The system automatically selects the most appropriate shape
+        representation based on the complexity and confidence of the
+        detected targets.
+      </li>
+    </ul>
+  </td>
+  <td><code>str</code></td>
+  <td>"auto"</td>
+</tr>
+<tr>
 <td><code>use_queues</code></td>
-<td>Used to control whether to enable internal queues. When set to <code>True</code>, data loading (such as rendering PDF pages as images), layout detection model processing, and VLM inference will be executed asynchronously in separate threads, with data passed through queues, thereby improving efficiency. This approach is particularly efficient for PDF documents with a large number of pages or directories containing a large number of images or PDF files.</td>
+<td><b>Meaning:</b>Used to control whether to enable internal queues.<br/>
+<b>Description:</b> When set to <code>True</code>, data loading (such as rendering PDF pages as images), layout detection model processing, and VLM inference will be executed asynchronously in separate threads, with data passed through queues, thereby improving efficiency. This approach is particularly efficient for PDF documents with a large number of pages or directories containing a large number of images or PDF files. If not set, the initialized default value will be used, which defaults to initialization as <code>True</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>prompt_label</code></td>
-<td>The prompt type setting for the VL model, which takes effect if and only if <code>use_layout_detection=False</code>.</td>
+<td><b>Meaning:</b>The prompt type setting for the VL model, which takes effect if and only if <code>use_layout_detection=False</code>.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>repetition_penalty</code></td>
-<td>The repetition penalty parameter used in VL model sampling.</td>
+<td><b>Meaning:</b>The repetition penalty parameter used in VL model sampling.</td>
 <td><code>float</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>temperature</code></td>
-<td>The temperature parameter used in VL model sampling.</td>
+<td><b>Meaning:</b>The temperature parameter used in VL model sampling.</td>
 <td><code>float</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>top_p</code></td>
-<td>The top-p parameter used in VL model sampling.</td>
+<td><b>Meaning:</b>The top-p parameter used in VL model sampling.</td>
 <td><code>float</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>min_pixels</code></td>
-<td>The minimum number of pixels allowed when the VL model preprocesses images.</td>
+<td><b>Meaning:</b>The minimum number of pixels allowed when the VL model preprocesses images.</td>
 <td><code>int</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>max_pixels</code></td>
-<td>The maximum number of pixels allowed when the VL model preprocesses images.</td>
+<td><b>Meaning:</b>The maximum number of pixels allowed when the VL model preprocesses images.</td>
 <td><code>int</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>device</code></td>
-<td>The device used for inference. Supports specifying specific card numbers:<ul>
+<td><b>Meaning:</b>The device used for inference. <br/>
+<b>Description:</b>
+Supports specifying specific card numbers:<ul>
 <li><b>CPU</b>: For example,<code>cpu</code> indicates using the CPU for inference;</li>
 <li><b>GPU</b>: For example,<code>gpu:0</code> indicates using the first GPU for inference;</li>
 <li><b>NPU</b>: For example,<code>npu:0</code> indicates using the first NPU for inference;</li>
 <li><b>XPU</b>: For example,<code>xpu:0</code> indicates using the first XPU for inference;</li>
 <li><b>MLU</b>: For example,<code>mlu:0</code> indicates using the first MLU for inference;</li>
 <li><b>DCU</b>: For example,<code>dcu:0</code> indicates using the first DCU for inference;</li>
+<li><b>MetaX GPU</b>: For example,<code>metax_gpu:0</code> indicates using the first MetaX GPU for inference;</li>
+<li><b>Iluvatar GPU</b>: For example,<code>iluvatar_gpu:0</code> indicates using the first Iluvatar GPU for inference;</li>
 </ul>If not set, the initialized default value will be used. During initialization, the local GPU device 0 will be used preferentially. If it is not available, the CPU device will be used.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
 <tr>
 <td><code>enable_hpi</code></td>
-<td>Whether to enable high-performance inference.</td>
+<td><b>Meaning:</b>Whether to enable high-performance inference.</td>
 <td><code>bool</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>use_tensorrt</code></td>
-<td>Whether to enable the TensorRT subgraph engine of Paddle Inference. If the model does not support acceleration via TensorRT, acceleration will not be used even if this flag is set.<br/>For PaddlePaddle version with CUDA 11.8, the compatible TensorRT version is 8.x (x&amp;gt;=6). It is recommended to install TensorRT 8.6.1.6.<br/>
+<td><b>Meaning:</b>Whether to enable the TensorRT subgraph engine of Paddle Inference. 
+If the model does not support acceleration via TensorRT, acceleration will not be used even if this flag is set.<br/>For PaddlePaddle version with CUDA 11.8, the compatible TensorRT version is 8.x (x&amp;gt;=6). It is recommended to install TensorRT 8.6.1.6.<br/>
 </td>
 <td><code>bool</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>precision</code></td>
-<td>Computational precision, such as fp32, fp16.</td>
+<td><b>Meaning:</b>Computational precision, such as fp32, fp16.</td>
 <td><code>str</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
-<td>Whether to enable MKL-DNN accelerated inference. If MKL-DNN is not available or the model does not support acceleration via MKL-DNN, acceleration will not be used even if this flag is set.</td>
+<td><b>Meaning:</b>Whether to enable MKL-DNN accelerated inference. <br/>
+<b>Description:</b>
+If MKL-DNN is not available or the model does not support acceleration via MKL-DNN, acceleration will not be used even if this flag is set.</td>
 <td><code>bool</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>mkldnn_cache_capacity</code></td>
-<td>MKL-DNN cache capacity.</td>
+<td><b>Meaning:</b>MKL-DNN cache capacity.</td>
 <td><code>int</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>cpu_threads</code></td>
-<td>The number of threads used for inference on the CPU.</td>
+<td><b>Meaning:</b>The number of threads used for inference on the CPU.</td>
 <td><code>int</code></td>
+<td></td>
 </tr>
 <tr>
 <td><code>paddlex_config</code></td>
-<td>The file path for PaddleX production line configuration.</td>
+<td><b>Meaning:</b>The file path for PaddleX production line configuration.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
@@ -410,7 +654,7 @@ The inference result will be printed in the terminal. The default output of the 
 
 For explanation of the result parameters, refer to [2.2 Python Script Integration](#222-python-script-integration).
 
-<b>Note: </b> The default model for the production line is relatively large, which may result in slower inference speed. It is recommended to use [inference acceleration frameworks to enhance VLM inference performance](#31-starting-the-vlm-inference-service) for faster inference.
+<b>Note: </b> The default model for the pipeline is relatively large, which may result in slower inference speed. It is recommended to use [inference acceleration frameworks to enhance VLM inference performance](#31-starting-the-vlm-inference-service) for faster inference.
 
 ### 2.2 Python Script Integration
 
@@ -419,10 +663,23 @@ The command line method is for quick testing and visualization. In actual projec
 ```python
 from paddleocr import PaddleOCRVL
 
+# NVIDIA GPU
 pipeline = PaddleOCRVL()
+# Kunlunxin XPU
+# pipeline = PaddleOCRVL(device="xpu")
+# Hygon DCU
+# pipeline = PaddleOCRVL(device="dcu")
+# MetaX GPU
+# pipeline = PaddleOCRVL(device="metax_gpu")
+# Apple Silicon
+# pipeline = PaddleOCRVL(device="cpu")
+# Huawei Ascend NPU 
+# Huawei Ascend NPU please refer to Chapter 3 for inference using PaddlePaddle + vLLM
+
 # pipeline = PaddleOCRVL(use_doc_orientation_classify=True) # Use use_doc_orientation_classify to enable/disable document orientation classification model
 # pipeline = PaddleOCRVL(use_doc_unwarping=True) # Use use_doc_unwarping to enable/disable document unwarping module
 # pipeline = PaddleOCRVL(use_layout_detection=False) # Use use_layout_detection to enable/disable layout detection module
+
 output = pipeline.predict("./paddleocr_vl_demo.png")
 for res in output:
     res.print() ## Print the structured prediction output
@@ -430,49 +687,48 @@ for res in output:
     res.save_to_markdown(save_path="output") ## Save the current image's result in Markdown format
 ```
 
-For PDF files, each page will be processed individually and generate a separate Markdown file. If you want to convert the entire PDF to a single Markdown file, use the following method:
+For PDF files, each page will be processed individually, and a separate Markdown file will be generated for each page. If you wish to perform cross-page table merging, reconstruct multi-level headings, or merge multi-page results, you can achieve this using the following method:
 
 ```python
-from pathlib import Path
 from paddleocr import PaddleOCRVL
 
 input_file = "./your_pdf_file.pdf"
-output_path = Path("./output")
 
 pipeline = PaddleOCRVL()
+
 output = pipeline.predict(input=input_file)
 
-markdown_list = []
-markdown_images = []
+pages_res = list(output)
 
+output = pipeline.restructure_pages(pages_res)
+# output = pipeline.restructure_pages(pages_res, merge_tables=True) # Merge tables across pages
+# output = pipeline.restructure_pages(pages_res, merge_tables=True, relevel_titles=True) # Merge tables across pages and reconstruct multi-level titles
+# output = pipeline.restructure_pages(pages_res, merge_tables=True, relevel_titles=True, concatenate_pages=True) # Merge tables across pages, reconstruct multi-level titles, and merge multiple pages
 for res in output:
-    md_info = res.markdown
-    markdown_list.append(md_info)
-    markdown_images.append(md_info.get("markdown_images", {}))
+    res.print() ## Print the structured prediction output
+    res.save_to_json(save_path="output") ## Save the current image's structured result in JSON format
+    res.save_to_markdown(save_path="output") ## Save the current image's result in Markdown format
+```
 
-markdown_texts = pipeline.concatenate_markdown_pages(markdown_list)
+If you need to process multiple files, **it is recommended to pass the directory path containing the files or a list of file paths to the `predict` method** to maximize processing efficiency. For example:
 
-mkd_file_path = output_path / f"{Path(input_file).stem}.md"
-mkd_file_path.parent.mkdir(parents=True, exist_ok=True)
-
-with open(mkd_file_path, "w", encoding="utf-8") as f:
-    f.write(markdown_texts)
-
-for item in markdown_images:
-    if item:
-        for path, image in item.items():
-            file_path = output_path / path
-            file_path.parent.mkdir(parents=True, exist_ok=True)
-            image.save(file_path)
+```python
+# The `imgs` directory contains multiple images to be processed: file1.png, file2.png, file3.png
+# Pass the directory path
+output = pipeline.predict("imgs")
+# Or pass a list of file paths
+output = pipeline.predict(["imgs/file1.png", "imgs/file2.png", "imgs/file3.png"])
+# Both of the above methods are more efficient than the following approach:
+# for file in ["imgs/file1.png", "imgs/file2.png", "imgs/file3.png"]:
+#     output = pipeline.predict(file)
 ```
 
 **Note:**
 
-- In the example code, the parameters `use_doc_orientation_classify` and  `use_doc_unwarping` are all set to `False` by default. These indicate that document orientation classification and document image unwarping are disabled. You can manually set them to `True` if needed.
 
 The above Python script performs the following steps:
 
-<details><summary>(1) Instantiate the production line object. Specific parameter descriptions are as follows:</summary>
+<details><summary>(1) Instantiate the pipeline object. Specific parameter descriptions are as follows:</summary>
 <table>
 <thead>
 <tr>
@@ -484,197 +740,290 @@ The above Python script performs the following steps:
 </thead>
 <tbody>
 <tr>
+  <td><code>pipeline_version</code></td>
+  <td>
+    <b>Meaning:</b> Specifies the pipeline version.<br/>
+    <b>Description:</b> The currently available values are <code>"v1"</code> and <code>"v1.5"</code>.
+  </td>
+  <td><code>str</code></td>
+  <td>"v1.5"</td>
+</tr>
+<tr>
 <td><code>layout_detection_model_name</code></td>
-<td>Name of the layout area detection and ranking model. If set to <code>None</code>, the default model of the production line will be used.</td>
+<td><b>Meaning:</b>Name of the layout area detection and ranking model. <br/>
+<b>Description:</b>
+If set to <code>None</code>, the default model of the production line will be used.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>layout_detection_model_dir</code></td>
-<td>Directory path of the layout area detection and ranking model. If set to <code>None</code>, the official model will be downloaded.</td>
+<td><b>Meaning:</b>Directory path of the layout area detection and ranking model. <br/>
+<b>Description:</b>
+If set to <code>None</code>, the official model will be downloaded.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>layout_threshold</code></td>
-<td>Score threshold for the layout model.
+<td><b>Meaning:</b>Score threshold for the layout model. <br/>
+<b>Description:</b>
 <ul>
 <li><b>float</b>: Any floating-point number between <code>0-1</code>;</li>
 <li><b>dict</b>: <code>{0:0.1}</code> The key is the class ID, and the value is the threshold for that class;</li>
-<li><b>None</b>: If set to <code>None</code>, the parameter value initialized by the production line will be used.</li>
+<li><b>None</b>: If set to <code>None</code>, the parameter value initialized by the pipeline will be used.</li>
 </ul>
 <td><code>float|dict|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>layout_nms</code></td>
-<td>Whether to use post-processing NMS for layout detection. If set to <code>None</code>, the parameter value initialized by the production line will be used.</td>
+<td><b>Meaning:</b>Whether to use post-processing NMS for layout detection. <br/>
+<b>Description:</b>
+If set to <code>None</code>, the parameter value initialized by the production line will be used.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>layout_unclip_ratio</code></td>
 <td>
-Expansion coefficient for the detection box of the layout area detection model.
+<b>Meaning:</b>Expansion coefficient for the detection box of the layout area detection model. <br/>
+<b>Description:</b>
 <ul>
 <li><b>float</b>: Any floating-point number greater than <code>0</code></li>
 <li><b>Tuple[float,float]</b>: The respective expansion coefficients in the horizontal and vertical directions;</li>
 <li><b>dict</b>: where the key of the dict is of <b>int</b> type, representing <code>cls_id</code>, and the value is of</code>tuple <code>type, such as</code>{0: (1.1, 2.0)}, indicating that the center of the detection box for class 0 output by the model remains unchanged, with the width expanded by 1.1 times and the height expanded by 2.0 times;</li>
-<li><b>None</b>: If set to <code>None</code>, the parameter value initialized by the production line will be used.</li>
+<li><b>None</b>: If set to <code>None</code>, the parameter value initialized by the pipeline will be used.</li>
 </ul>
 <td><code>float|Tuple[float,float]|dict|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>layout_merge_bboxes_mode</code><ul>
-<td>Merging mode for the detection boxes output by the model in layout detection.
+<td><b>Meaning:</b>Merging mode for the detection boxes output by the model in layout detection. <br/>
+<b>Description:</b>
 <ul>
 <li><b>large</b> when set to large, it means that among the detection boxes output by the model, for overlapping and contained boxes, only the outermost largest box is retained, and the overlapping inner boxes are deleted;</li>
 <li><b>small</b>, when set to small, it means that among the detection boxes output by the model, for overlapping and contained boxes, only the innermost contained small box is retained, and the overlapping outer boxes are deleted;</li>
 <li><b>union</b>,no filtering is performed on the boxes, and both inner and outer boxes are retained;</li></ul>
-If not set, the initialized parameter value will be used.
+If set to <code>None</code>, the initialized parameter value will be used.
 </td>
 <td><code>str|dict|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>vl_rec_model_name</code></td>
-<td>Name of the multimodal recognition model. If not set, the default model will be used.</td>
+<td><b>Meaning:</b>Name of the multimodal recognition model.<br/>
+<b>Description:</b> If set to <code>None</code>, the default model will be used.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>vl_rec_model_dir</code></td>
-<td>Directory path of the multimodal recognition model. If not set, the official model will be downloaded.</td>
+<td><b>Meaning:</b>Directory path of the multimodal recognition model.<br/>
+<b>Description:</b> If set to <code>None</code>, the official model will be downloaded.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>vl_rec_backend</code></td>
-<td>Inference backend used by the multimodal recognition model.</td>
+<td><b>Meaning:</b>Inference backend used by the multimodal recognition model.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>vl_rec_server_url</code></td>
-<td>If the multimodal recognition model uses an inference service, this parameter is used to specify the server URL.</td>
+<td><b>Meaning:</b>If the multimodal recognition model uses an inference service, this parameter is used to specify the server URL.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>vl_rec_max_concurrency</code></td>
-<td>If the multimodal recognition model uses an inference service, this parameter is used to specify the maximum number of concurrent requests.</td>
+<td><b>Meaning:</b>If the multimodal recognition model uses an inference service, this parameter is used to specify the maximum number of concurrent requests.</td>
+<td><code>int|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>vl_rec_api_model_name</code></td>
+<td><b>Meaning:</b>If the multimodal recognition model uses an inference service, this parameter is used to specify the model name of the service.</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>vl_rec_api_key</code></td>
+<td><b>Meaning:</b>If the multimodal recognition model uses an inference service, this parameter is used to specify the API key of the service.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>doc_orientation_classify_model_name</code></td>
-<td>Name of the document orientation classification model. If not set, the initialized default value will be used.</td>
+<td><b>Meaning:</b>Name of the document orientation classification model. <br/>
+<b>Description:</b>
+If set to <code>None</code>, the initialized default value will be used.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>doc_orientation_classify_model_dir</code></td>
-<td>Directory path of the document orientation classification model. If not set, the official model will be downloaded.</td>
+<td><b>Meaning:</b>Directory path of the document orientation classification model. <br/>
+<b>Description:</b>
+If set to <code>None</code>, the official model will be downloaded.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>doc_unwarping_model_name</code></td>
-<td>Name of the text image rectification model. If not set, the initialized default value will be used.</td>
+<td><b>Meaning:</b>Name of the text image rectification model. <br/>
+<b>Description:</b>
+If set to <code>None</code>, the initialized default value will be used.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>doc_unwarping_model_dir</code></td>
-<td>Directory path of the text image rectification model. If not set, the official model will be downloaded.</td>
+<td><b>Meaning:</b>Directory path of the text image rectification model. <br/>
+<b>Description:</b>
+If set to <code>None</code>, the official model will be downloaded.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
-<td>Whether to load and use the document orientation classification module. If not set, the initialized default value will be used, which is initialized to<code>False</code>.</td>
+<td><b>Meaning:</b>Whether to load and use the document orientation classification module. <br/>
+<b>Description:</b>
+If set to <code>None</code>, the initialized default value will be used, which is initialized to<code>False</code>.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
-<td>Whether to load and use the text image rectification module. If not set, the initialized default value will be used, which is initialized to <code>False.</td>
+<td><b>Meaning:</b>Whether to load and use the text image rectification module. <br/>
+<b>Description:</b>
+If set to <code>None</code>, the initialized default value will be used, which is initialized to <code>False</code>.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_layout_detection</code></td>
-<td>Whether to load and use the layout area detection and ranking module. If not set, the initialized default value will be used, which is initialized to <code>True</code>.</td>
+<td><b>Meaning:</b>Whether to load and use the layout area detection and ranking module. <br/>
+<b>Description:</b>
+If set to <code>None</code>, the initialized default value will be used, which is initialized to <code>True</code>.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_chart_recognition</code></td>
-<td>Whether to use the chart parsing function. If not set, the initialized default value will be used, which is initialized to <code>False</code>.</td>
+<td><b>Meaning:</b>Whether to use the chart parsing function. <br/>
+<b>Description:</b>
+If set to <code>None</code>, the initialized default value will be used, which is initialized to <code>False</code>.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
+<td><code>use_seal_recognition</code></td>
+<td><b>Meaning:</b>Whether to use the seal recognition function.<br/>
+<b>Description:</b> If set to <code>None</code>, the initialized default value will be used, which is initialized to <code>False</code>.</td>
+<td><code>bool|None</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>use_ocr_for_image_block</code></td>
+<td><b>Meaning:</b>Whether to perform OCR on text within image blocks.<br/>
+<b>Description:</b> If set to <code>None</code>, the initialized default value will be used, which is initialized to <code>False</code>.</td>
+<td><code>bool|None</code></td>
+<td></td>
+</tr>
+<tr>
 <td><code>format_block_content</code></td>
-<td>Controls whether to format the <code>block_content</code> content within as Markdown. If not set, the initialized default value will be used, which defaults to initialization as<code>False</code>.</td>
+<td><b>Meaning:</b>Controls whether to format the <code>block_content</code> content within as Markdown. <br/>
+<b>Description:</b>
+If set to <code>None</code>, the initialized default value will be used, which defaults to initialization as<code>False</code>.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 <td></td>
 </tr>
 <tr>
+<td><code>merge_layout_blocks</code></td>
+<td><b>Meaning:</b>Control whether to merge the layout detection boxes for cross-column or staggered top and bottom columns.<br/>
+<b>Description:</b> If set to <code>None</code>, the initialized default value will be used, which defaults to initialization as<code>True</code>.</td>
+<td><code>bool|None</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>markdown_ignore_labels</code></td>
+<td><b>Meaning:</b>Layout labels that need to be ignored in Markdown.<br/>
+<b>Description:</b> If set to <code>None</code>, the initialized default value will be used, which defaults to initialization as <code>['number','footnote','header','header_image','footer','footer_image','aside_text']</code>.</td>
+<td><code>list|None</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>use_queues</code></td>
+<td><b>Meaning:</b>Used to control whether to enable internal queues.<br/>
+<b>Description:</b> When set to <code>True</code>, data loading (such as rendering PDF pages as images), layout detection model processing, and VLM inference will be executed asynchronously in separate threads, with data passed through queues, thereby improving efficiency. This approach is particularly efficient for PDF documents with many pages or directories containing a large number of images or PDF files. If set to <code>None</code>, the initialized default value will be used, which defaults to initialization as <code>True</code>.</td>
+<td><code>bool|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
 <td><code>device</code></td>
-<td>The device used for inference. Supports specifying specific card numbers:<ul>
+<td><b>Meaning:</b>The device used for inference.<br/>
+<b>Description:</b> 
+Supports specifying specific card numbers:<ul>
 <li><b>CPU</b>: For example,<code>cpu</code> indicates using the CPU for inference;</li>
 <li><b>GPU</b>: For example,<code>gpu:0</code> indicates using the first GPU for inference;</li>
 <li><b>NPU</b>: For example,<code>npu:0</code> indicates using the first NPU for inference;</li>
 <li><b>XPU</b>: For example,<code>xpu:0</code> indicates using the first XPU for inference;</li>
 <li><b>MLU</b>: For example,<code>mlu:0</code> indicates using the first MLU for inference;</li>
 <li><b>DCU</b>: For example,<code>dcu:0</code> indicates using the first DCU for inference;</li>
+<li><b>MetaX GPU</b>: For example,<code>metax_gpu:0</code> indicates using the first MetaX GPU for inference;</li>
+<li><b>Iluvatar GPU</b>: For example,<code>iluvatar_gpu:0</code> indicates using the first Iluvatar GPU for inference;</li>
 </ul>If not set, the initialized default value will be used. During initialization, the local GPU device 0 will be used preferentially. If it is not available, the CPU device will be used.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>enable_hpi</code></td>
-<td>Whether to enable high-performance inference.</td>
+<td><b>Meaning:</b>Whether to enable high-performance inference.</td>
 <td><code>bool</code></td>
 <td><code>False</code></td>
 </tr>
 <tr>
 <td><code>use_tensorrt</code></td>
-<td>Whether to enable the TensorRT subgraph engine of Paddle Inference. If the model does not support acceleration via TensorRT, acceleration will not be used even if this flag is set.<br/>For PaddlePaddle version with CUDA 11.8, the compatible TensorRT version is 8.x (x&amp;gt;=6). It is recommended to install TensorRT 8.6.1.6.<br/>
+<td><b>Meaning:</b>Whether to enable the TensorRT subgraph engine of Paddle Inference.<br/>
+<b>Description:</b> 
+If the model does not support acceleration via TensorRT, acceleration will not be used even if this flag is set.<br/>For PaddlePaddle version with CUDA 11.8, the compatible TensorRT version is 8.x (x&amp;gt;=6). It is recommended to install TensorRT 8.6.1.6.<br/>
 </td>
 <td><code>bool</code></td>
 <td><code>False</code></td>
 </tr>
 <tr>
 <td><code>precision</code></td>
-<td>Computational precision, such as fp32, fp16.</td>
+<td><b>Meaning:</b>Computational precision, such as fp32, fp16.</td>
 <td><code>str</code></td>
 <td><code>"fp32"</code></td>
 </tr>
 <tr>
 <td><code>enable_mkldnn</code></td>
-<td>Whether to enable MKL-DNN accelerated inference. If MKL-DNN is not available or the model does not support acceleration via MKL-DNN, acceleration will not be used even if this flag is set.</td>
+<td><b>Meaning:</b>Whether to enable MKL-DNN accelerated inference.<br/> 
+<b>Description:</b> 
+If MKL-DNN is not available or the model does not support acceleration via MKL-DNN, acceleration will not be used even if this flag is set.</td>
 <td><code>bool</code></td>
 <td><code>True</code></td>
 </tr>
 <tr>
 <td><code>mkldnn_cache_capacity</code></td>
-<td>MKL-DNN cache capacity.</td>
+<td><b>Meaning:</b>MKL-DNN cache capacity.</td>
 <td><code>int</code></td>
 <td><code>10</code></td>
 </tr>
 <tr>
 <td><code>cpu_threads</code></td>
-<td>The number of threads used for inference on the CPU.</td>
+<td><b>Meaning:</b>The number of threads used for inference on the CPU.</td>
 <td><code>int</code></td>
 <td><code>8</code></td>
 </tr>
 <tr>
 <td><code>paddlex_config</code></td>
-<td>The file path for PaddleX production line configuration.</td>
+<td><b>Meaning:</b>The file path for PaddleX pipeline configuration.</td>
 <td><code>str</code></td>
 <td><code>None</code></td>
 <td></td>
@@ -683,7 +1032,7 @@ If not set, the initialized parameter value will be used.
 </table>
 </details>
 
-<details><summary>(2) Call the <code>predict()</code>method of the PaddleOCR-VL production line object for inference prediction. This method will return a list of results. Additionally, the production line also provides the <code>predict_iter()</code>Method. The two are completely consistent in terms of parameter acceptance and result return. The difference lies in that <code>predict_iter()</code>returns a <code>generator</code>, which can process and obtain prediction results step by step. It is suitable for scenarios involving large datasets or where memory conservation is desired. You can choose either of these two methods based on actual needs. Below are the parameters of the <code>predict()</code>method and their descriptions:</summary>
+<details><summary>(2) Call the <code>predict()</code>method of the PaddleOCR-VL pipeline object for inference prediction. This method will return a list of results. Additionally, the pipeline also provides the <code>predict_iter()</code>Method. The two are completely consistent in terms of parameter acceptance and result return. The difference lies in that <code>predict_iter()</code>returns a <code>generator</code>, which can process and obtain prediction results step by step. It is suitable for scenarios involving large datasets or where memory conservation is desired. You can choose either of these two methods based on actual needs. Below are the parameters of the <code>predict()</code>method and their descriptions:</summary>
 <table>
 <thead>
 <tr>
@@ -696,7 +1045,9 @@ If not set, the initialized parameter value will be used.
 <tr>
 <tr>
 <td><code>input</code></td>
-<td>Data to be predicted, supporting multiple input types. Required.<ul>
+<td><b>Meaning:</b>Data to be predicted, supporting multiple input types. Required.<br/>
+<b>Description:</b> 
+<ul>
 <li><b>Python Var</b>: such as <code>numpy.ndarray</code> representing image data</li>
 <li><b>str</b>: such as the local path of an image file or PDF file: <code>/root/data/img.jpg</code>;<b>such as a URL link</b>, such as the network URL of an image file or PDF file:<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/demo_paper.png">Example</a>;<b>such as a local directory</b>, which should contain the images to be predicted, such as the local path: <code>/root/data/</code>(Currently, prediction for directories containing PDF files is not supported. PDF files need to be specified with a specific file path)</li>
 <li><b>list</b>: List elements should be of the aforementioned data types, such as <code>[numpy.ndarray, numpy.ndarray]</code>, <code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>, <code>["/root/data1", "/root/data2"].</code></li>
@@ -707,103 +1058,242 @@ If not set, the initialized parameter value will be used.
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
-<td>Whether to use the document orientation classification module during inference. Setting it to <code>None</code> means using the instantiation parameter; otherwise, this parameter takes precedence.</td>
+<td><b>Meaning:</b>Whether to use the document orientation classification module during inference. <br/>
+<b>Description:</b> 
+Setting it to <code>None</code> means using the instantiation parameter; otherwise, this parameter takes precedence.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
-<td>Whether to use the text image rectification module during inference. Setting it to <code>None</code> means using the instantiation parameter; otherwise, this parameter takes precedence.</td>
+<td><b>Meaning:</b>Whether to use the text image rectification module during inference. <br/>
+<b>Description:</b> 
+Setting it to <code>None</code> means using the instantiation parameter; otherwise, this parameter takes precedence.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_layout_detection</code></td>
-<td>Whether to use the layout region detection and sorting module during inference. Setting it to <code>None</code> means using the instantiation parameter; otherwise, this parameter takes precedence.</td>
+<td><b>Meaning:</b>Whether to use the layout region detection and sorting module during inference.<br/>
+<b>Description:</b> 
+Setting it to <code>None</code> means using the instantiation parameter; otherwise, this parameter takes precedence.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_chart_recognition</code></td>
-<td>Whether to use the chart parsing module during inference. Setting it to <code>None</code> means using the instantiation parameter; otherwise, this parameter takes precedence.</td>
+<td><b>Meaning:</b>Whether to use the chart parsing function. Setting it to <code>None</code> means using the instantiation parameter; otherwise, this parameter takes precedence.</td>
+<td><code>bool|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>use_seal_recognition</code></td>
+<td><b>Meaning:</b>Whether to use the seal recognition function. Setting it to <code>None</code> means using the instantiation parameter; otherwise, this parameter takes precedence.</td>
+<td><code>bool|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>use_ocr_for_image_block</code></td>
+<td><b>Meaning:</b>Whether to perform OCR on text within image blocks. Setting it to <code>None</code> means using the instantiation parameter; otherwise, this parameter takes precedence.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>layout_threshold</code></td>
-<td>The parameter meaning is basically the same as the instantiation parameter. Setting it to <code>None</code> means using the instantiation parameter; otherwise, this parameter takes precedence.</td>
+<td><b>Meaning:</b>The parameter meaning is basically the same as the instantiation parameter. <br/>
+<b>Description:</b> 
+Setting it to <code>None</code> means using the instantiation parameter; otherwise, this parameter takes precedence.</td>
 <td><code>float|dict|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>layout_nms</code></td>
-<td>The parameter meaning is basically the same as the instantiation parameter. Setting it to <code>None</code> means using the instantiation parameter; otherwise, this parameter takes precedence.</td>
+<td><b>Meaning:</b>The parameter meaning is basically the same as the instantiation parameter. <br/>
+<b>Description:</b> 
+Setting it to <code>None</code> means using the instantiation parameter; otherwise, this parameter takes precedence.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>layout_unclip_ratio</code></td>
-<td>The parameter meaning is basically the same as the instantiation parameter. Setting it to <code>None</code> means using the instantiation parameter; otherwise, this parameter takes precedence.</td>
+<td><b>Meaning:</b>The parameter meaning is basically the same as the instantiation parameter. <br/>
+<b>Description:</b> 
+Setting it to <code>None</code> means using the instantiation parameter; otherwise, this parameter takes precedence.</td>
 <td><code>float|Tuple[float,float]|dict|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>layout_merge_bboxes_mode</code></td>
-<td>The parameter meaning is basically the same as the instantiation parameter. Setting it to <code>None</code> means using the instantiation parameter; otherwise, this parameter takes precedence.</td>
+<td><b>Meaning:</b>The parameter meaning is basically the same as the instantiation parameter. <br/>
+<b>Description:</b> 
+Setting it to <code>None</code> means using the instantiation parameter; otherwise, this parameter takes precedence.</td>
 <td><code>str|dict|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
+  <td><code>layout_shape_mode</code></td>
+  <td>
+    <b>Meaning:</b>Specifies the geometric representation mode for layout detection results. It defines how the boundaries of detected regions (e.g., text blocks, images, tables) are calculated and displayed.<br/>
+    <b>Description:</b> Value descriptions:
+    <ul>
+      <li>
+        <b>rect (rectangle)</b>:
+        Outputs an axis-aligned bounding box (including x1, y1, x2, y2).
+        Suitable for standard horizontally aligned layouts.
+      </li>
+      <li>
+        <b>quad (quadrilateral)</b>:
+        Outputs an arbitrary quadrilateral composed of four vertices.
+        Suitable for regions with skew or perspective distortion.
+      </li>
+      <li>
+        <b>poly (polygon)</b>:
+        Outputs a closed contour composed of multiple coordinate points.
+        Suitable for irregularly shaped or curved layout elements,
+        offering the highest precision.
+      </li>
+      <li>
+        <b>auto (automatic)</b>:
+        The system automatically selects the most appropriate shape
+        representation based on the complexity and confidence of the
+        detected targets.
+      </li>
+    </ul>
+  </td>
+  <td><code>str</code></td>
+  <td>"auto"</td>
+</tr>
+<tr>
 <td><code>use_queues</code></td>
-<td>Used to control whether to enable internal queues. When set to <code>True</code>, data loading (such as rendering PDF pages as images), layout detection model processing, and VLM inference will be executed asynchronously in separate threads, with data passed through queues, thereby improving efficiency. This approach is particularly efficient for PDF documents with many pages or directories containing a large number of images or PDF files.</td>
+<td><b>Meaning:</b>The parameter meaning is basically the same as the instantiation parameter.<br/>
+<b>Description:</b> Setting it to <code>None</code> means using the instantiation parameter; otherwise, this parameter takes precedence.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>prompt_label</code></td>
-<td>The prompt type setting for the VL model, which takes effect only when <code>use_layout_detection=False</code>. The fillable parameters are <code>ocr</code>、<code>formula</code>、<code>table</code> and <code>chart</code>.</td>
+<td><b>Meaning:</b>The prompt type setting for the VL model, which takes effect only when <code>use_layout_detection=False</code>.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>format_block_content</code></td>
-<td>The parameter meaning is basically the same as the instantiation parameter. Setting it to <code>None</code> means using the instantiation parameter; otherwise, this parameter takes precedence.</td>
+<td><b>Meaning:</b>The parameter meaning is basically the same as the instantiation parameter. <br/>
+<b>Description:</b> 
+Setting it to <code>None</code> means using the instantiation parameter; otherwise, this parameter takes precedence.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>repetition_penalty</code></td>
-<td>The repetition penalty parameter used for VL model sampling.</td>
+<td><b>Meaning:</b>The repetition penalty parameter used for VL model sampling.</td>
 <td><code>float|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>temperature</code></td>
-<td>Temperature parameter used for VL model sampling.</td>
+<td><b>Meaning:</b>Temperature parameter used for VL model sampling.</td>
 <td><code>float|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>top_p</code></td>
-<td>Top-p parameter used for VL model sampling.</td>
+<td><b>Meaning:</b>Top-p parameter used for VL model sampling.</td>
 <td><code>float|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>min_pixels</code></td>
-<td>The minimum number of pixels allowed when the VL model preprocesses images.</td>
+<td><b>Meaning:</b>The minimum number of pixels allowed when the VL model preprocesses images.</td>
 <td><code>int|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>max_pixels</code></td>
-<td>The maximum number of pixels allowed when the VL model preprocesses images.</td>
+<td><b>Meaning:</b>The maximum number of pixels allowed when the VL model preprocesses images.</td>
 <td><code>int|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>max_new_tokens</code></td>
+<td><b>Meaning:</b>The maximum number of tokens generated by the VL model.</td>
+<td><code>int|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>merge_layout_blocks</code></td>
+<td><b>Meaning:</b>Control whether to merge the layout detection boxes for cross-column or staggered top and bottom columns.</td>
+<td><code>bool|None</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>markdown_ignore_labels</code></td>
+<td><b>Meaning:</b>Layout labels that need to be ignored in Markdown.</td>
+<td><code>list|None</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>vlm_extra_args</code></td>
+<td><b>Meaning:</b>Additional configuration parameters for the VLM. The currently supported custom parameters are as follows:
+<ul>
+  <li><code>ocr_min_pixels</code>: Minimum resolution for OCR</li>
+  <li><code>ocr_max_pixels</code>: Maximum resolution for OCR</li>
+  <li><code>table_min_pixels</code>: Minimum resolution for tables</li>
+  <li><code>table_max_pixels</code>: Maximum resolution for tables</li>
+  <li><code>chart_min_pixels</code>: Minimum resolution for charts</li>
+  <li><code>chart_max_pixels</code>: Maximum resolution for charts</li>
+  <li><code>formula_min_pixels</code>: Minimum resolution for formulas</li>
+  <li><code>formula_max_pixels</code>: Maximum resolution for formulas</li>
+  <li><code>seal_min_pixels</code>: Minimum resolution for seals</li>
+  <li><code>seal_max_pixels</code>: Maximum resolution for seals</li>
+</ul></td>
+<td><code>dict|None</code></td>
 <td><code>None</code></td>
 </tr>
 </table>
 </details>
-<details><summary>(3) Process the prediction results: The prediction result for each sample is a corresponding Result object, supporting operations such as printing, saving as an image, and saving as a <code>json</code> file:</summary>
+
+<details><summary>(3) Invoke the <code>restructure_pages()</code> method of the PaddleOCR-VL object to reconstruct pages from the multi-page results list of inference predictions. This method will return a reconstructed multi-page result or a merged single-page result. Below are the parameters of the <code>restructure_pages()</code> method and their descriptions:</summary>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Type</th>
+<th>Default Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>res_list</code></td>
+<td><b>Meaning:</b> The list of results predicted from a multi-page PDF inference.</td>
+<td><code>list|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>merge_tables</code></td>
+<td><b>Meaning:</b> Controls whether to merge tables across pages.</td>
+<td><code>Bool</code></td>
+<td><code>True</code></td>
+</tr>
+<tr>
+<td><code>relevel_titles</code></td>
+<td><b>Meaning:</b> Controls whether to perform multi-level table grading.</td>
+<td><code>Bool</code></td>
+<td><code>True</code></td>
+</tr>
+<tr>
+<td><code>concatenate_pages</code></td>
+<td><b>Meaning:</b> Controls whether to concatenate multi-page results into one page.</td>
+<td><code>Bool</code></td>
+<td><code>False</code></td>
+</tr>
+</tbody>
+</table>
+</details>
+
+
+<details><summary>(4) Process the prediction results: The prediction result for each sample is a corresponding Result object, supporting operations such as printing, saving as an image, and saving as a <code>json</code> file:</summary>
 <table>
 <thead>
 <tr>
@@ -909,11 +1399,18 @@ If not set, the initialized parameter value will be used.
 
     - `page_index`: `(Union[int, None])` If the input is a PDF file, it indicates the current page number of the PDF; otherwise, it is `None`.
 
+    - `page_count`: `(Union[int, None])` If the input is a PDF file, it indicates the total number of pages in the PDF; otherwise, it is `None`.
+
+    - `width`: `(int)` The width of the original input image.
+
+    - `height`: `(int)` The height of the original input image.
+
     - `model_settings`: `(Dict[str, bool])` Model parameters required for configuring PaddleOCR-VL.
         - `use_doc_preprocessor`: `(bool)` Controls whether to enable the document preprocessing sub-pipeline.
         - `use_layout_detection`: `(bool)` Controls whether to enable the layout detection module.
         - `use_chart_recognition`: `(bool)` Controls whether to enable the chart recognition function.
         - `format_block_content`: `(bool)` Controls whether to save the formatted markdown content in `JSON`.
+        - `markdown_ignore_labels`: `(List[str])` Labels of layout regions that need to be ignored in Markdown
 
     - `doc_preprocessor_res`: `(Dict[str, Union[List[float], str]])` A dictionary of document preprocessing results, which exists only when `use_doc_preprocessor=True`.
         - `input_path`: `(str)` The image path accepted by the document preprocessing sub-pipeline. When the input is a `numpy.ndarray`, it is saved as `None`; here, it is `None`.
@@ -957,10 +1454,11 @@ If not set, the initialized parameter value will be used.
         - `block_order` `(int)` The order of the layout region, used to display the layout reading order. For non-sorted parts, the default value is `None`.
 
 
-- Calling the `save_to_img()` method will save the visualization results to the specified `save_path`. If a directory is specified, visualized images for layout region detection, global OCR, layout reading order, etc., will be saved. If a file is specified, it will be saved directly to that file. (Production lines typically contain many result images, so it is not recommended to directly specify a specific file path, as multiple images will be overwritten, retaining only the last one.)
+- Calling the `save_to_img()` method will save the visualization results to the specified `save_path`. If a directory is specified, visualized images for layout region detection, global OCR, layout reading order, etc., will be saved. If a file is specified, it will be saved directly to that file. (Pipelines typically contain many result images, so it is not recommended to directly specify a specific file path, as multiple images will be overwritten, retaining only the last one.)
 - Calling the `save_to_markdown()` method will save the converted Markdown file to the specified `save_path`. The saved file path will be `save_path/{your_img_basename}.md`. If the input is a PDF file, it is recommended to directly specify a directory; otherwise, multiple markdown files will be overwritten.
 
-Additionally, it also supports obtaining visualized images and prediction results with results through attributes, as follows:<table>
+<li>Additionally, it also supports obtaining visualized images and prediction results with results through attributes, as follows:
+<table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -989,25 +1487,74 @@ Additionally, it also supports obtaining visualized images and prediction result
 </tbody>
 </table>
 
-- The prediction result obtained through the `json` attribute is data of dict type, with relevant content consistent with that saved by calling the `save_to_json()` method.
-- The prediction result returned by the `img` attribute is data of dict type. The keys are `layout_det_res`, `overall_ocr_res`, `text_paragraphs_ocr_res`, `formula_res_region1`, `table_cell_img`, and `seal_res_region1`, with corresponding values being `Image.Image` objects: used to display visualized images of layout region detection, OCR, OCR text paragraphs, formulas, tables, and seal results, respectively. If optional modules are not used, the dict only contains `layout_det_res`.
-- The prediction result returned by the `markdown` attribute is data of dict type. The keys are `markdown_texts`, `markdown_images`, and `page_continuation_flags`, with corresponding values being markdown text, images displayed in Markdown (`Image.Image` objects), and a bool tuple used to identify whether the first element on the current page is the start of a paragraph and whether the last element is the end of a paragraph, respectively.</details>
+<ul>
+  <li>The prediction result obtained through the <code>json</code> attribute is data of dict type, with relevant content consistent with that saved by calling the <code>save_to_json()</code> method.</li>
+  <li>The prediction result returned by the <code>img</code> attribute is data of dict type. The keys are <code>layout_det_res</code>, <code>overall_ocr_res</code>, <code>text_paragraphs_ocr_res</code>, <code>formula_res_region1</code>, <code>table_cell_img</code>, and <code>seal_res_region1</code>, with corresponding values being <code>Image.Image</code> objects: used to display visualized images of layout region detection, OCR, OCR text paragraphs, formulas, tables, and seal results, respectively. If optional modules are not used, the dict only contains <code>layout_det_res</code>.</li>
+  <li>The prediction result returned by the <code>markdown</code> attribute is data of dict type. The keys are <code>markdown_texts</code>, <code>markdown_images</code>, and <code>page_continuation_flags</code>, with corresponding values being markdown text, images displayed in Markdown (<code>Image.Image</code> objects), and a bool tuple used to identify whether the first element on the current page is the start of a paragraph and whether the last element is the end of a paragraph, respectively.</li>
+</ul>
+</li>
+</details>
 
 ## 3. Enhancing VLM Inference Performance Using Inference Acceleration Frameworks
 
-The inference performance under default configurations is not fully optimized and may not meet actual production requirements. This step primarily introduces how to use the vLLM and SGLang inference acceleration frameworks to enhance the inference performance of PaddleOCR-VL.
+The inference performance under default configurations is not fully optimized and may not meet actual production requirements. This step primarily introduces how to use the vLLM, SGLang and FastDeploy inference acceleration frameworks to enhance the inference performance of PaddleOCR-VL.
 
 ### 3.1 Launching the VLM Inference Service
 
 There are two methods to launch the VLM inference service; choose either one:
 
-- Method 1: Launch the service using the official Docker image.
+- Method 1: Launch the service using the official Docker image. Currently supported:
+    - FastDeploy
+    - vLLM
 
-- Method 2: Launch the service by manually installing dependencies via the PaddleOCR CLI.
+- Method 2: Launch the service by manually installing dependencies via the PaddleOCR CLI. Currently supported:
+    - FastDeploy
+    - vLLM
+    - SGLang
+
+- Method 3: Launch service directly using inference acceleration frameworks. Currently supported:
+    - FastDeploy
+    - vLLM
+    - MLX-VLM
+    - llama.cpp
+
+**We strongly recommend using the Docker image to minimize potential environment-related issues.**
+
+In addition, cloud platforms such as [SiliconFlow](https://siliconflow.cn/) and [Novita AI](https://novita.ai/models-console/model-detail/paddlepaddle-paddleocr-vl) also provide managed services. If you choose to use such services, you can skip this section and directly read [3.2 Client Usage Methods](#32-client-usage-methods).
 
 #### 3.1.1 Method 1: Using Docker Image
 
-PaddleOCR provides a Docker image (approximately 13 GB in size) for quickly launching the vLLM inference service. Use the following command to launch the service (requires Docker version >= 19.03, a machine equipped with a GPU, and NVIDIA drivers supporting CUDA 12.6 or higher):
+PaddleOCR provides Docker images for quickly launching vLLM or FastDeploy inference services. You can use the following commands to start the services (requires Docker version >= 19.03, a machine equipped with a GPU, and NVIDIA drivers supporting CUDA 12.6 or later):
+
+=== "Launch vLLM Service"
+
+    ```shell
+    docker run \
+        -it \
+        --rm \
+        --gpus all \
+        --network host \
+        ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-nvidia-gpu \
+        paddleocr genai_server --model_name PaddleOCR-VL-1.5-0.9B --host 0.0.0.0 --port 8118 --backend vllm
+    ```
+
+    If you wish to start the service in an environment without internet access, replace `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-nvidia-gpu` (image size approximately 13 GB) in the above command with the offline version image `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-nvidia-gpu-offline` (image size approximately 15 GB).
+
+=== "Launch FastDeploy Service"
+
+    ```shell
+    docker run \
+        -it \
+        --rm \
+        --gpus all \
+        --network host \
+        ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-fastdeploy-server:latest-nvidia-gpu \
+        paddleocr genai_server --model_name PaddleOCR-VL-1.5-0.9B --host 0.0.0.0 --port 8118 --backend fastdeploy
+    ```
+
+    If you wish to start the service in an environment without internet access, replace `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-fastdeploy-server:latest-nvidia-gpu` (image size approximately 43 GB) in the above command with the offline version image `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-fastdeploy-server:latest-nvidia-gpu-offline` (image size approximately 45 GB).
+
+When starting the vLLM or FastDeploy inference service, we provide a set of default parameter settings. If you have additional requirements for adjusting parameters such as GPU memory usage, you can configure more parameters yourself. Please refer to [3.3.1 Server-side Parameter Adjustment](#331-server-side-parameter-adjustment) to create a configuration file, then mount this file into the container, and specify the configuration file using `backend_config` in the command to start the service. Taking vLLM as an example:
 
 ```shell
 docker run \
@@ -1015,46 +1562,45 @@ docker run \
     --rm \
     --gpus all \
     --network host \
-    ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest \
-    paddleocr genai_server --model_name PaddleOCR-VL-0.9B --host 0.0.0.0 --port 8118 --backend vllm
+    -v vllm_config.yml:/tmp/vllm_config.yml \  
+    ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-nvidia-gpu \
+    paddleocr genai_server --model_name PaddleOCR-VL-1.5-0.9B --host 0.0.0.0 --port 8118 --backend vllm --backend_config /tmp/vllm_config.yml
 ```
 
-More parameters can be passed when launching the vLLM inference service; refer to the next subsection for supported parameters.
-
-If you wish to launch the service in an environment without internet access, replace `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest` in the above command with the offline version image `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-offline`. The offline image is approximately 15 GB in size.
+> TIP:
+> Images with the `latest-xxx` tag correspond to the latest version of PaddleOCR. If you want to use a specific version of the PaddleOCR image, you can replace `latest` in the tag with the desired version number: `paddleocr<major>.<minor>`.
+> For example:
+> `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:paddleocr3.3-nvidia-gpu-offline`
 
 #### 3.1.2 Method 2: Installation and Usage via PaddleOCR CLI
 
-Since inference acceleration frameworks may have dependency conflicts with the PaddlePaddle framework, it is recommended to install them in a virtual environment. Taking vLLM as an example:
+**The PaddleOCR CLI has already resolved complex version compatibility issues. Instead of spending time studying framework documentation, you can install the necessary environment with a single command.**
+
+Due to potential dependency conflicts between inference acceleration frameworks and PaddlePaddle, it is recommended to install them in a virtual environment:
 
 ```shell
-# If there is an active virtual environment currently, deactivate it first using `deactivate`
+# If a virtual environment is currently activated, deactivate it first using `deactivate`
 # Create a virtual environment
 python -m venv .venv_vlm
 # Activate the environment
 source .venv_vlm/bin/activate
-# Install PaddleOCR
-python -m pip install "paddleocr[doc-parser]"
-# Install dependencies for the inference acceleration service
-paddleocr install_genai_server_deps vllm
 ```
 
-Usage of the `paddleocr install_genai_server_deps` command:
+vLLM and SGLang depend on FlashAttention, and installing FlashAttention may require CUDA compilation tools such as `nvcc`. If these tools are not available in your environment (for example, when using the `paddleocr-vl` image), you can obtain a prebuilt FlashAttention package (version 2.8.2 required) from [this repository](https://github.com/mjun0812/flash-attention-prebuild-wheels), install it first, and then proceed with subsequent commands. For example, in the `paddleocr-vl` image, run `python -m pip install https://github.com/mjun0812/flash-attention-prebuild-wheels/releases/download/v0.3.14/flash_attn-2.8.2+cu128torch2.8-cp310-cp310-linux_x86_64.whl`. This step is not required for FastDeploy.
+
+Install PaddleOCR and the dependencies of inference acceleration services, using vLLM as an example:
 
 ```shell
-paddleocr install_genai_server_deps <inference acceleration framework name>
+# Install PaddleOCR
+python -m pip install "paddleocr[doc-parser]"
+# Install inference acceleration service dependencies
+paddleocr install_genai_server_deps vllm
 ```
-
-Currently supported framework names are `vllm` and `sglang`, corresponding to vLLM and SGLang, respectively.
-
-The vLLM and SGLang installed via `paddleocr install_genai_server_deps` are both **CUDA 12.6** versions; ensure that your local NVIDIA drivers are consistent with or higher than this version.
-
-> The `paddleocr install_genai_server_deps` command may require CUDA compilation tools such as nvcc during execution. If these tools are not available in your environment (e.g., when using the `paddleocr-vl` image), you can obtain a precompiled version of FlashAttention from [this repository](https://github.com/mjun0812/flash-attention-prebuild-wheels). Install the precompiled package before executing subsequent commands. For example, if you are in the `paddleocr-vl` image, execute `python -m pip install https://github.com/mjun0812/flash-attention-prebuild-wheels/releases/download/v0.3.14/flash_attn-2.8.2+cu128torch2.8-cp310-cp310-linux_x86_64.whl`.
 
 After installation, you can launch the service using the `paddleocr genai_server` command:
 
 ```shell
-paddleocr genai_server --model_name PaddleOCR-VL-0.9B --backend vllm --port 8118
+paddleocr genai_server --model_name PaddleOCR-VL-1.5-0.9B --backend vllm --port 8118
 ```
 
 The parameters supported by this command are as follows:
@@ -1068,24 +1614,115 @@ The parameters supported by this command are as follows:
 | `--backend`        | Backend name, i.e., the name of the inference acceleration framework used; options are `vllm` or `sglang` |
 | `--backend_config` | Can specify a YAML file containing backend configurations      |
 
+#### 3.1.3 Launch Service Directly Using Inference Acceleration Frameworks
+
+**If you need to install a custom version of an inference framework and launch the service natively, please refer to the following guidelines. Please note that when launching natively, the pre-configured performance tuning parameters provided by PaddleOCR will not be applied.**
+
+- FastDeploy: [Refer to this document](https://paddlepaddle.github.io/FastDeploy/best_practices/PaddleOCR-VL-0.9B/)
+- vLLM: [Refer to this document](https://docs.vllm.ai/projects/recipes/en/latest/PaddlePaddle/PaddleOCR-VL.html)
+- MLX-VLM: [Refer to this document](./PaddleOCR-VL-Apple-Silicon.en.md)
+- llama.cpp:
+    1. Install llama.cpp by referring to the `Quick start` section in the [llama.cpp github](https://github.com/ggml-org/llama.cpp).
+    2. Download the model files in gguf format: [megemini/PaddleOCR-VL-1.5-GGUF](https://modelscope.cn/models/megemini/PaddleOCR-VL-1.5-GGUF/files) or [megemini/PaddleOCR-VL-GGUF](https://modelscope.cn/models/megemini/PaddleOCR-VL-GGUF/files).
+    3. Execute the following command to start the inference service. For an introduction to the parameters, please refer to [LLaMA.cpp HTTP Server](https://github.com/ggml-org/llama.cpp/blob/master/tools/server/README.md):
+
+        ```shell
+        ./build/bin/llama-server \
+          -m /path/to/PaddleOCR-VL-1.5-GGUF.gguf \
+          --mmproj /path/to/PaddleOCR-VL-1.5-GGUF-mmproj.gguf  \
+          --port 8111  \
+          --host 0.0.0.0 \
+          --temp 0
+        ```
+
 ### 3.2 Client Usage Methods
 
-After launching the VLM inference service, the client can call the service through PaddleOCR.
+After launching the VLM inference service, the client can call the service through PaddleOCR. **Please note that because the client needs to call the layout detection model, it is still recommended to run the client on GPU or other acceleration devices to achieve more stable and efficient performance. Please refer to Section 1 for the client-side environment configuration. The configuration described in Section 3.1 applies only to starting the service and is not applicable to the client.**
 
 #### 3.2.1 CLI Invocation
 
-Specify the backend type (`vllm-server` or `sglang-server`) using `--vl_rec_backend` and the service address using `--vl_rec_server_url`, for example:
+Specify the backend type (`vllm-server`, `sglang-server`, `fastdeploy-server`, `mlx-vlm-server` or `llama-cpp-server`) using `--vl_rec_backend` and the service address using `--vl_rec_server_url`, for example:
 
 ```shell
-paddleocr doc_parser --input paddleocr_vl_demo.png --vl_rec_backend vllm-server --vl_rec_server_url http://127.0.0.1:8118/v1
+paddleocr doc_parser --input paddleocr_vl_demo.png --vl_rec_backend vllm-server --vl_rec_server_url http://localhost:8118/v1
+```
+
+In addition, you can specify the model name used by the service via `--vl_rec_api_model_name`, and specify the API key used for authentication via `--vl_rec_api_key`. Examples are as follows:
+
+Using a service started with the default parameters of `vllm serve`:
+
+```shell
+paddleocr doc_parser \
+    --input paddleocr_vl_demo.png \
+    --vl_rec_backend vllm-server \
+    --vl_rec_server_url http://localhost:8000/v1 \
+    --vl_rec_api_model_name 'PaddlePaddle/PaddleOCR-VL-1.5'
+```
+
+SiliconFlow platform:
+
+```shell
+paddleocr doc_parser \
+    --input paddleocr_vl_demo.png \
+    --vl_rec_backend vllm-server \
+    --vl_rec_server_url https://api.siliconflow.cn/v1 \
+    --vl_rec_api_model_name 'PaddlePaddle/PaddleOCR-VL-1.5' \
+    --vl_rec_api_key xxxxxx
+```
+
+Novita AI platform (currently only PaddleOCR-VL-0.9B is supported, i.e., the v1 model):
+
+```shell
+paddleocr doc_parser \
+    --input paddleocr_vl_demo.png \
+    --pipeline_version v1 \
+    --vl_rec_backend vllm-server \
+    --vl_rec_server_url https://api.novita.ai/openai \
+    --vl_rec_api_model_name 'paddlepaddle/paddleocr-vl' \
+    --vl_rec_api_key xxxxxx
 ```
 
 #### 3.2.2 Python API Invocation
 
-Pass the `vl_rec_backend` and `vl_rec_server_url` parameters when creating a `PaddleOCRVL` object:
+When creating a `PaddleOCRVL` object, specify the backend type (`vllm-server`, `sglang-server`, `fastdeploy-server`, `mlx-vlm-server` or `llama-cpp-server`) using `vl_rec_backend` and the service address using `vl_rec_server_url`, for example:
 
 ```python
-pipeline = PaddleOCRVL(vl_rec_backend="vllm-server", vl_rec_server_url="http://127.0.0.1:8118/v1")
+pipeline = PaddleOCRVL(vl_rec_backend="vllm-server", vl_rec_server_url="http://localhost:8118/v1")
+```
+
+In addition, you can specify the model name used by the service via `vl_rec_api_model_name`, and specify the API key used for authentication via `vl_rec_api_key`.
+
+Using a service started with the default parameters of `vllm serve`:
+
+```python
+pipeline = PaddleOCRVL(
+    vl_rec_backend="vllm-server", 
+    vl_rec_server_url="http://localhost:8000/v1",
+    vl_rec_api_model_name="PaddlePaddle/PaddleOCR-VL-1.5",
+)
+```
+
+SiliconFlow platform (currently only PaddleOCR-VL-0.9B is supported, i.e., the v1 model):
+
+```python
+pipeline = PaddleOCRVL(
+    vl_rec_backend="vllm-server", 
+    vl_rec_server_url="https://api.siliconflow.cn/v1",
+    vl_rec_api_model_name="PaddlePaddle/PaddleOCR-VL-1.5",
+    vl_rec_api_key="xxxxxx",
+)
+```
+
+Novita AI platform (currently only PaddleOCR-VL-0.9B is supported, i.e., the v1 model):
+
+```python
+pipeline = PaddleOCRVL(
+    pipeline_version="v1",
+    vl_rec_backend="vllm-server", 
+    vl_rec_server_url="https://api.novita.ai/openai",
+    vl_rec_api_model_name="paddlepaddle/paddleocr-vl",
+    vl_rec_api_key="xxxxxx",
+)
 ```
 
 ### 3.3 Performance Tuning
@@ -1098,6 +1735,7 @@ Different inference acceleration frameworks support different parameters. Refer 
 
 - [vLLM Official Parameter Tuning Guide](https://docs.vllm.ai/en/latest/configuration/optimization.html)
 - [SGLang Hyperparameter Tuning Documentation](https://docs.sglang.ai/advanced_features/hyperparameter_tuning.html)
+- [FastDeploy Best Practices](https://paddlepaddle.github.io/FastDeploy/best_practices/PaddleOCR-VL-0.9B/)
 
 The PaddleOCR VLM inference service supports parameter tuning through configuration files. The following example shows how to adjust the `gpu-memory-utilization` and `max-num-seqs` parameters for the vLLM server:
 
@@ -1111,13 +1749,13 @@ The PaddleOCR VLM inference service supports parameter tuning through configurat
 2. Specify the configuration file path when starting the service, for example, using the `paddleocr genai_server` command:
 
    ```shell
-   paddleocr genai_server --model_name PaddleOCR-VL-0.9B --backend vllm --backend_config vllm_config.yaml
+   paddleocr genai_server --model_name PaddleOCR-VL-1.5-0.9B --backend vllm --backend_config vllm_config.yaml
    ```
 
 If using a shell that supports process substitution (like Bash), you can also pass configuration items directly without creating a configuration file:
 
 ```bash
-paddleocr genai_server --model_name PaddleOCR-VL-0.9B --backend vllm --backend_config <(echo -e 'gpu-memory-utilization: 0.3\nmax-num-seqs: 128')
+paddleocr genai_server --model_name PaddleOCR-VL-1.5-0.9B --backend vllm --backend_config <(echo -e 'gpu-memory-utilization: 0.3\nmax-num-seqs: 128')
 ```
 
 #### 3.3.2 Client-Side Parameter Adjustment
@@ -1136,7 +1774,10 @@ The following configurations are for scenarios with a 1:1 client-to-VLM inferenc
 **NVIDIA RTX 3060**
 
 - **Server-Side**
-  - vLLM: `gpu-memory-utilization=0.8`
+    - vLLM: `gpu-memory-utilization: 0.7`
+    - FastDeploy: 
+        - `gpu-memory-utilization: 0.7`
+        - `max-concurrency: 2048`
 
 ## 4. Service Deployment
 
@@ -1144,13 +1785,13 @@ This step mainly introduces how to deploy PaddleOCR-VL as a service and invoke i
 
 - Method 1: Deploy using Docker Compose (recommended).
 
-- Method 2: Manually install dependencies for deployment.
+- Method 2: Manual Deployment.
 
-Note that the PaddleOCR-VL service described in this section differs from the VLM inference service in the previous section: the latter is responsible for only one part of the complete process (i.e., VLM inference) and is called as an underlying service by the former.
+> Note that the PaddleOCR-VL service described in this section differs from the VLM inference service in the previous section: the latter is responsible for only one part of the complete process (i.e., VLM inference) and is called as an underlying service by the former. In addition, the PaddleOCR-VL service started according to the instructions in this section can handle only one request at a time. We will later provide instructions on how to start the service with support for concurrent requests.
 
 ### 4.1 Method 1: Deploy Using Docker Compose (Recommended)
 
-You can obtain the Compose file and the environment variables configuration file from [here](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/compose.yaml) and [here](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/.env), respectively, and download them to your local machine. Then, in the directory where the files were just downloaded, execute the following command to start the server, which will listen on port **8080** by default:
+You can obtain the Compose file and the environment variables configuration file from [here](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/accelerators/gpu/compose.yaml) and [here](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/accelerators/gpu/.env), respectively, and download them to your local machine. Then, in the directory where the files were just downloaded, execute the following command to start the server, which will listen on port **8080** by default:
 
 ```shell
 # Must be executed in the directory containing the compose.yaml and .env files
@@ -1166,13 +1807,107 @@ paddleocr-vl-api             | INFO:     Application startup complete.
 paddleocr-vl-api             | INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
 ```
 
-This method accelerates VLM inference using the vLLM framework and is more suitable for production environment deployment. It requires the machine to be equipped with a GPU and NVIDIA drivers supporting CUDA 12.6 or higher.
+This solution accelerates VLM inference based on frameworks like vLLM, making it more suitable for production environment deployment. However, it requires the machine to be equipped with a GPU and the NVIDIA driver to support CUDA 12.6 or higher.
 
 Additionally, after starting the server using this method, no internet connection is required except for pulling the image. For offline environment deployment, you can first pull the images involved in the Compose file on an online machine, export and transfer them to the offline machine for import, and then start the service in the offline environment.
 
-If you need to adjust production-related configurations (such as model path, batch size, deployment device, etc.), refer to Section 4.4.
+Docker Compose starts two containers in sequence by reading the configurations in the `.env` and `compose.yaml` files, running the underlying VLM inference service and the PaddleOCR-VL service (Pipeline) respectively.
 
-### 4.2 Method 2: Manually Install Dependencies for Deployment
+The meanings of each environment variable contained in the `.env` file are as follows:
+
+- `API_IMAGE_TAG_SUFFIX`: The tag suffix of the image used to start the pipeline service. The default is `latest-nvidia-gpu-offline`, indicating the use of the latest offline GPU image. To use an image corresponding to a specific version of PaddleOCR, replace `latest` with the desired version `paddleocr<major>.<minor>`, for example `paddleocr3.3-nvidia-gpu-offline`.
+- `VLM_BACKEND`: The VLM inference backend, currently supporting `vllm` and `fastdeploy`. The default is `vllm`.
+- `VLM_IMAGE_TAG_SUFFIX`: The tag suffix of the image used to start the VLM inference service. The default is `latest-nvidia-gpu-offline`, indicating the use of the latest offline GPU image. If you want to use a non-offline version of the image, you can remove the `-offline` suffix. To use an image corresponding to a specific version of PaddleOCR, replace `latest` with the desired version `paddleocr<major>.<minor>`, for example `paddleocr3.3-nvidia-gpu-offline`.
+
+You can meet custom requirements by modifying `.env` and `compose.yaml`, for example:
+
+<details>
+<summary>1. Change the port of the PaddleOCR-VL service</summary>
+
+Edit <code>paddleocr-vl-api.ports</code> in the <code>compose.yaml</code> file to change the port. For example, if you need to change the service port to 8111, make the following modifications:
+
+```diff
+  paddleocr-vl-api:
+    ...
+    ports:
+-     - 8080:8080
++     - 8111:8080
+    ...
+```
+
+</details>
+
+<details>
+<summary>2. Specify the GPU used by the PaddleOCR-VL service</summary>
+
+Edit <code>device_ids</code> in the <code>compose.yaml</code> file to change the GPU used. For example, if you need to use GPU card 1 for deployment, make the following modifications:
+
+```diff
+  paddleocr-vl-api:
+    ...
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+-             device_ids: ["0"]
++             device_ids: ["1"]
+              capabilities: [gpu]
+    ...
+  paddleocr-vlm-server:
+    ...
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+-             device_ids: ["0"]
++             device_ids: ["1"]
+              capabilities: [gpu]
+    ...
+```
+
+</details>
+
+<details>
+<summary>3. Adjust VLM server-side configuration</summary>
+
+If you want to adjust the VLM server-side configuration, please refer to <a href="#331-server-side-parameter-adjustment">3.3.1 Server-side Parameter Adjustment</a> to generate a configuration file.
+
+After generating the configuration file, add the following <code>paddleocr-vlm-server.volumes</code> and <code>paddleocr-vlm-server.command</code> fields to your <code>compose.yaml</code>. Please replace <code>/path/to/your_config.yaml</code> with your actual configuration file path.
+
+```yaml
+  paddleocr-vlm-server:
+    ...
+    volumes: /path/to/your_config.yaml:/home/paddleocr/vlm_server_config.yaml
+    command: paddleocr genai_server --model_name PaddleOCR-VL-1.5-0.9B --host 0.0.0.0 --port 8118 --backend vllm --backend_config /home/paddleocr/vlm_server_config.yaml
+    ...
+```
+
+</details>
+
+<details>
+<summary>4. Change the VLM inference backend</summary>
+
+Modify <code>VLM_BACKEND</code> in the <code>.env</code> file, for example, to change the VLM inference backend to <code>fastdeploy</code>:
+
+```diff
+  API_IMAGE_TAG_SUFFIX=latest-nvidia-gpu-offline
+- VLM_BACKEND=vllm
++ VLM_BACKEND=fastdeploy
+  VLM_IMAGE_TAG_SUFFIX=latest-nvidia-gpu-offline
+```
+
+</details>
+
+<details>
+<summary>5. Adjust pipeline configurations (such as model path, batch size, deployment device, etc.)</summary>
+
+Refer to section <a href="#44-pipeline-configuration-adjustment-instructions">4.4 Pipeline Configuration Adjustment Instructions</a> in this document.
+
+</details>
+
+### 4.2 Method 2: Manual Deployment
 
 Execute the following command to install the service deployment plugin via the PaddleX CLI:
 
@@ -1327,9 +2062,7 @@ Below are the API reference and examples of multi-language service invocation:
 <tr>
 <td><code>file</code></td>
 <td><code>string</code></td>
-<td>The URL of an image file or PDF file accessible to the server, or the Base64-encoded result of the content of the aforementioned file types. By default, for PDF files with more than 10 pages, only the first 10 pages will be processed.<br/>To remove the page limit, add the following configuration to the production line configuration file:<pre> <code>Serving:
-  extra:
-    max_num_input_imgs: null</code></pre>
+<td>The URL of an image file or PDF file accessible to the server, or the Base64-encoded result of the content of the aforementioned file types.
 </td>
 <td>Yes</td>
 </tr>
@@ -1364,6 +2097,18 @@ Below are the API reference and examples of multi-language service invocation:
 <td>No</td>
 </tr>
 <tr>
+<td><code>useSealRecognition</code></td>
+<td><code>boolean</code>|<code>null</code></td>
+<td>Please refer to the description of the <code>use_seal_recognition</code> parameter in the <code>predict</code> method of the PaddleOCR-VL object.</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>useOcrForImageBlock</code></td>
+<td><code>boolean</code>|<code>null</code></td>
+<td>Please refer to the description of the <code>use_ocr_for_image_block</code> parameter in the <code>predict</code> method of the PaddleOCR-VL object.</td>
+<td>No</td>
+</tr>
+<tr>
 <td><code>layoutThreshold</code></td>
 <td><code>number</code>|<code>object</code>|<code>null</code></td>
 <td>Please refer to the description of the <code>layout_threshold</code> parameter in the <code>predict</code> method of the PaddleOCR-VL object.</td>
@@ -1385,6 +2130,12 @@ Below are the API reference and examples of multi-language service invocation:
 <td><code>layoutMergeBboxesMode</code></td>
 <td><code>string</code>|<code>object</code>|<code>null</code></td>
 <td>Please refer to the description of the <code>layout_merge_bboxes_mode</code> parameter in the <code>predict</code> method of the PaddleOCR-VL object.</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>layoutShapeMode</code></td>
+<td><code>string</code></td>
+<td>Please refer to the description of the <code>layout_shape_mode</code> parameter in the <code>predict</code> method of the PaddleOCR-VL object.</td>
 <td>No</td>
 </tr>
 <tr>
@@ -1430,6 +2181,30 @@ Below are the API reference and examples of multi-language service invocation:
 <td>No</td>
 </tr>
 <tr>
+<td><code>maxNewTokens</code></td>
+<td><code>number</code>|<code>null</code></td>
+<td>Please refer to the description of the <code>max_new_tokens</code> parameter in the <code>predict</code> method of the PaddleOCR-VL object.</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>mergeLayoutBlocks</code></td>
+<td><code>boolean</code>|<code>null</code></td>
+<td>Please refer to the description of the <code>merge_layout_blocks</code> parameter in the <code>predict</code> method of the PaddleOCR-VL object.</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>markdownIgnoreLabels</code></td>
+<td><code>array</code>|<code>null</code></td>
+<td>Please refer to the description of the <code>markdown_ignore_labels</code> parameter in the <code>predict</code> method of the PaddleOCR-VL object.</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>vlmExtraArgs</code></td>
+<td><code>object</code>|<code>null</code></td>
+<td>Please refer to the description of the <code>vlm_extra_args</code> parameter in the <code>predict</code> method of the PaddleOCR-VL object.</td>
+<td>No</td>
+</tr>
+<tr>
 <td><code>prettifyMarkdown</code></td>
 <td><code>boolean</code></td>
 <td>Whether to output beautified Markdown text. The default is <code>true</code>.</td>
@@ -1439,6 +2214,24 @@ Below are the API reference and examples of multi-language service invocation:
 <td><code>showFormulaNumber</code></td>
 <td><code>boolean</code></td>
 <td>Whether to include formula numbers in the output Markdown text. The default is <code>false</code>.</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>restructurePages</code></td>
+<td><code>boolean</code></td>
+<td>Whether to restructure results across multiple pages. The default is <code>false</code>.</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>mergeTables</code></td>
+<td><code>boolean</code></td>
+<td>Please refer to the description of the <code>merge_tables</code> parameter in the <code>restructure_pages</code> method of the PaddleOCR-VL object. Valid only when <code>restructurePages</code> is <code>true</code>.</td>
+<td>No</td>
+</tr>
+<tr>
+<td><code>relevelTitles</code></td>
+<td><code>boolean</code></td>
+<td>Please refer to the description of the <code>relevel_titles</code> parameter in the <code>restructure_pages</code> method of the PaddleOCR-VL object. Valid only when <code>restructurePages</code> is <code>true</code>.</td>
 <td>No</td>
 </tr>
 <tr>
@@ -1532,18 +2325,111 @@ Below are the API reference and examples of multi-language service invocation:
 <td><code>object</code></td>
 <td>Key-value pairs of relative paths to Markdown images and Base64-encoded images.</td>
 </tr>
+</tbody>
+</table>
+<ul>
+  <li><b><code>restructurePages</code></b></li>
+</ul>
+<p>Restructure results across multiple pages.</p>
+<p><code>POST /restructure-pages</code></p>
+
+<ul>
+  <li>The request body has the following properties:</li>
+</ul>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Required</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>pages</code></td>
+      <td><code>array</code></td>
+      <td>An array of pages.</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+    <td><code>mergeTables</code></td>
+    <td><code>boolean</code></td>
+    <td>Please refer to the description of the <code>merge_tables</code> parameter in the <code>restructure_pages</code> method of the PaddleOCR-VL object.</td>
+    <td>No</td>
+    </tr>
+    <tr>
+    <td><code>relevelTitles</code></td>
+    <td><code>boolean</code></td>
+    <td>Please refer to the description of the <code>relevel_titles</code> parameter in the <code>restructure_pages</code> method of the PaddleOCR-VL object.</td>
+    <td>No</td>
+    </tr>
+    <tr>
+    <td><code>concatenatePages</code></td>
+    <td><code>boolean</code></td>
+    <td>Please refer to the description of the <code>concatenate_pages</code> parameter in the <code>restructure_pages</code> method of the PaddleOCR-VL object.</td>
+    <td>No</td>
+    </tr>
+    <tr>
+    <td><code>prettifyMarkdown</code></td>
+    <td><code>boolean</code></td>
+    <td>Whether to output beautified Markdown text. The default is <code>true</code>.</td>
+    <td>No</td>
+    </tr>
+    <tr>
+    <td><code>showFormulaNumber</code></td>
+    <td><code>boolean</code></td>
+    <td>Whether to include formula numbers in the output Markdown text. The default is <code>false</code>.</td>
+    <td>No</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Each element in <code>pages</code> is an <code>object</code> with the following properties:</p>
+<table>
+<thead>
 <tr>
-<td><code>isStart</code></td>
-<td><code>boolean</code></td>
-<td>Whether the first element on the current page is the start of a paragraph.</td>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>prunedResult</code></td>
+<td><code>object</code></td>
+<td>The <code>prunedResult</code> object returned by the <code>infer</code> operation.</td>
 </tr>
 <tr>
-<td><code>isEnd</code></td>
-<td><code>boolean</code></td>
-<td>Whether the last element on the current page is the end of a paragraph.</td>
+<td><code>markdownImages</code></td>
+<td><code>object</code>|<code>null</code></td>
+<td>The <code>images</code> property of the <code>markdown</code> object returned by the <code>infer</code> operation.</td>
 </tr>
 </tbody>
-</table></details>
+</table>
+
+<ul>
+  <li>When the request is processed successfully, the <code>result</code> field in the response body has the following properties:</li>
+</ul>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>layoutParsingResults</code></td>
+      <td><code>array</code></td>
+      <td>The restructured layout parsing results. For the fields that every element contains, please refer to the description of the result returned by the <code>infer</code> operation (excluding visualization result images and intermediate images).</td>
+    </tr>
+  </tbody>
+</table>
+</details>
 <details><summary>Multi-Language Service Invocation Examples</summary>
 <details>
 <summary>Python</summary>
@@ -1553,7 +2439,7 @@ import base64
 import requests
 import pathlib
 
-API_URL = "http://localhost:8080/layout-parsing" # Service URL
+BASE_URL = "http://localhost:8080"
 
 image_path = "./demo.jpg"
 
@@ -1567,28 +2453,39 @@ payload = {
     "fileType": 1, # File type, 1 indicates an image file
 }
 
-# Call the API
-response = requests.post(API_URL, json=payload)
+response = requests.post(BASE_URL + "/layout-parsing", json=payload)
+assert response.status_code == 200, (response.status_code, response.text)
 
-# Process the returned data from the interface
-assert response.status_code == 200
 result = response.json()["result"]
+pages = []
 for i, res in enumerate(result["layoutParsingResults"]):
-    print(res["prunedResult"])
-    md_dir = pathlib.Path(f"markdown_{i}")
-    md_dir.mkdir(exist_ok=True)
-    (md_dir / "doc.md").write_text(res["markdown"]["text"])
-    for img_path, img in res["markdown"]["images"].items():
-        img_path = md_dir / img_path
-        img_path.parent.mkdir(parents=True, exist_ok=True)
-        img_path.write_bytes(base64.b64decode(img))
-    print(f"Markdown document saved at {md_dir / 'doc.md'}")
+    pages.append({"prunedResult": res["prunedResult"], "markdownImages": res["markdown"].get("images")})
     for img_name, img in res["outputImages"].items():
         img_path = f"{img_name}_{i}.jpg"
         pathlib.Path(img_path).parent.mkdir(exist_ok=True)
         with open(img_path, "wb") as f:
             f.write(base64.b64decode(img))
         print(f"Output image saved at {img_path}")
+
+payload = {
+    "pages": pages,
+    "concatenatePages": True,
+}
+
+response = requests.post(BASE_URL + "/restructure-pages", json=payload)
+assert response.status_code == 200, (response.status_code, response.text)
+
+result = response.json()["result"]
+res = result["layoutParsingResults"][0]
+print(res["prunedResult"])
+md_dir = pathlib.Path("markdown")
+md_dir.mkdir(exist_ok=True)
+(md_dir / "doc.md").write_text(res["markdown"]["text"])
+for img_path, img in res["markdown"]["images"].items():
+    img_path = md_dir / img_path
+    img_path.parent.mkdir(parents=True, exist_ok=True)
+    img_path.write_bytes(base64.b64decode(img))
+print(f"Markdown document saved at {md_dir / 'doc.md'}")
 </code></pre></details>
 
 <details><summary>C++</summary>
@@ -2069,17 +2966,29 @@ foreach ($result as $i => $item) {
 </code></pre></details>
 </details>
 
-### 4.4 Production Configuration Adjustment Instructions
+### 4.4 Pipeline Configuration Adjustment Instructions
 
-> If you do not need to adjust production configurations, you can ignore this section.
+> NOTE:
+> If you do not need to adjust pipeline configurations, you can ignore this section.
 
 Adjusting the PaddleOCR-VL configuration for service deployment involves only three steps:
 
-1. Generate the configuration file
+1. Obtain the configuration file
 2. Modify the configuration file
 3. Apply the configuration file
 
-#### 4.4.1 Generate the Configuration File
+#### 4.4.1 Obtain the Configuration File
+
+**If you are deploying using Docker Compose:**
+
+Download the corresponding pipeline configuration file based on the backend you are using:
+
+- vLLM: [pipeline_config_vllm.yaml](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/pipeline_config_vllm.yaml)
+- FastDeploy: [pipeline_config_fastdeploy.yaml](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/pipeline_config_fastdeploy.yaml)
+
+**If you are deploying by manually installing dependencies:**
+
+Execute the following command to generate the pipeline configuration file:
 
 ```shell
 paddlex --get_pipeline_config PaddleOCR-VL
@@ -2089,23 +2998,25 @@ paddlex --get_pipeline_config PaddleOCR-VL
 
 **Enhance VLM Inference Performance Using Acceleration Frameworks**
 
-To improve VLM inference performance using acceleration frameworks such as vLLM (refer to Section 2 for detailed instructions on starting the VLM inference service), modify the `VLRecognition.genai_config.backend` and `VLRecognition.genai_config.server_url` fields in the production configuration file, as shown below:
+To improve VLM inference performance using acceleration frameworks such as vLLM (refer to Section 2 for detailed instructions on starting the VLM inference service), modify the `VLRecognition.genai_config.backend` and `VLRecognition.genai_config.server_url` fields in the pipeline configuration file, as shown below:
 
 ```yaml
 VLRecognition:
   ...
   genai_config:
     backend: vllm-server
-    server_url: http://127.0.0.1:8118/v1
+    server_url: http://localhost:8118/v1
 ```
+
+The Docker Compose solution already uses an acceleration framework by default.
 
 **Enable Document Image Preprocessing Functionality**
 
-The service started with default configurations does not support document preprocessing. If a client attempts to invoke this functionality, an error message will be returned. To enable document preprocessing, set `use_doc_preprocessor` to `True` in the production configuration file and start the service using the modified configuration file.
+The service started with default configurations does not support document preprocessing. If a client attempts to invoke this functionality, an error message will be returned. To enable document preprocessing, set `use_doc_preprocessor` to `True` in the pipeline configuration file and start the service using the modified configuration file.
 
 **Disable Result Visualization Functionality**
 
-The service returns visualized results by default, which introduces additional overhead. To disable this functionality, add the following configuration to the production configuration file:
+The service returns visualized results by default, which introduces additional overhead. To disable this functionality, add the following configuration to the pipeline configuration file (`Serving` is a top-level field):
 
 ```yaml
 Serving:
@@ -2116,7 +3027,7 @@ Additionally, you can set the `visualize` field to `false` in the request body t
 
 **Configure Return of Image URLs**
 
-For visualized result images and images included in Markdown, the service returns them in Base64 encoding by default. To return images as URLs instead, add the following configuration to the production configuration file:
+For visualized result images and images included in Markdown, the service returns them in Base64 encoding by default. To return images as URLs instead, add the following configuration to the pipeline configuration file (`Serving` is a top-level field):
 
 ```yaml
 Serving:
@@ -2129,6 +3040,7 @@ Serving:
       sk: xxx
       key_prefix: deploy
     return_img_urls: True
+    url_expires_in: 3600
 ```
 
 Currently, storing generated images in Baidu Intelligent Cloud Object Storage (BOS) and returning URLs is supported. The parameters are described as follows:
@@ -2139,33 +3051,47 @@ Currently, storing generated images in Baidu Intelligent Cloud Object Storage (B
 - `bucket_name`: Storage bucket name (required).
 - `key_prefix`: Unified prefix for object keys.
 - `connection_timeout_in_mills`: Request timeout in milliseconds.
+- `url_expires_in`: URL validity period (in seconds). `-1` indicates it never expires.
 
 For more information on obtaining AK/SK and other details, refer to the [Baidu Intelligent Cloud Official Documentation](https://cloud.baidu.com/doc/BOS/index.html).
 
-**Modify PDF Parsing Page Limit**
+**Limit the Number of PDF Pages Parsed**
 
-For performance considerations, the service processes only the first 10 pages of received PDF files by default. To adjust the page limit, add the following configuration to the production configuration file:
+By default, the service processes the entire PDF file. In production environments, if a PDF contains too many pages, it may affect system stability, leading to processing timeouts or excessive resource usage. To ensure stable service operation, it is recommended to set a reasonable page limit based on actual needs. You can add the following configuration to the production configuration file (`Serving` is the top-level field):
 
 ```yaml
 Serving:
   extra:
-    max_num_input_imgs: <new page limit, e.g., 100>
+    max_num_input_imgs: <page limit, e.g., 100>
 ```
 
-Set `max_num_input_imgs` to `null` to remove the page limit.
+When `max_num_input_imgs` is set to `null`, there will be no limit on the number of PDF pages.
 
 #### 4.4.3 Apply the Configuration File
 
 **If you deployed using Docker Compose**:
 
-Overwrite the custom production configuration file to `/home/paddleocr/pipeline_config.yaml` in the `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl` container (or the corresponding container).
+**If you are deploying using Docker Compose:**
 
-**If you deployed by manually installing dependencies**:
+Set the `services.paddleocr-vl-api.volumes` field in the Compose file to mount the pipeline configuration file to the `/home/paddleocr` directory. For example:
 
-Specify the `--pipeline` parameter as the path to the custom configuration file.
+```yaml
+services:
+  paddleocr-vl-api:
+    ...
+    volumes:
+      - pipeline_config_vllm.yaml:/home/paddleocr/pipeline_config_vllm.yaml
+...
+```
+
+> In a production environment, you can also build the image yourself and package the configuration file into the image.
+
+**If you are deploying by manually installing dependencies:**
+
+When starting the service, specify the `--pipeline` parameter as the path to your custom configuration file.
 
 ## 5. Model Fine-Tuning
 
-If you find that PaddleOCR-VL does not meet accuracy expectations in specific business scenarios, we recommend using the [ERNIEKit suite](https://github.com/PaddlePaddle/ERNIE/tree/release/v1.4) to perform supervised fine-tuning (SFT) on the PaddleOCR-VL-0.9B model. For detailed instructions, refer to the [ERNIEKit Official Documentation](https://github.com/PaddlePaddle/ERNIE/blob/release/v1.4/docs/paddleocr_vl_sft.md).
+If you find that PaddleOCR-VL does not meet accuracy expectations in specific business scenarios, we recommend using the [ERNIEKit suite](https://github.com/PaddlePaddle/ERNIE/tree/release/v1.4) to perform supervised fine-tuning (SFT) on the VLM (e.g. PaddleOCR-VL-0.9B). For detailed instructions, refer to the [ERNIEKit Official Documentation](https://github.com/PaddlePaddle/ERNIE/blob/release/v1.4/docs/paddleocr_vl_sft.md).
 
 > Currently, fine-tuning of layout detection and ranking models is not supported.

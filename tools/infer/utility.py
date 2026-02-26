@@ -42,6 +42,7 @@ def init_args():
     parser.add_argument("--use_xpu", type=str2bool, default=False)
     parser.add_argument("--use_npu", type=str2bool, default=False)
     parser.add_argument("--use_mlu", type=str2bool, default=False)
+    parser.add_argument("--use_metax_gpu", type=str2bool, default=False)
     parser.add_argument(
         "--use_gcu",
         type=str2bool,
@@ -347,6 +348,14 @@ def create_predictor(args, mode, logger):
             config.enable_custom_device("npu")
         elif args.use_mlu:
             config.enable_custom_device("mlu")
+        elif args.use_metax_gpu:
+            if args.precision == "fp16":
+                config.enable_custom_device(
+                    "metax_gpu", 0, paddle.inference.PrecisionType.Half
+                )
+
+            else:
+                config.enable_custom_device("metax_gpu")
         elif args.use_xpu:
             config.enable_xpu(10 * 1024 * 1024)
         elif args.use_gcu:  # for Enflame GCU(General Compute Unit)
