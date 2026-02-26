@@ -1481,7 +1481,7 @@ output = pipeline.predict(["imgs/file1.png", "imgs/file2.png", "imgs/file3.png"]
     - vLLM
     - SGLang
 
-- 方法三：直接使用推理加速框架启动服务，但此方法无法应用 PaddleOCR 预置的性能调优参数，目前支持：
+- 方法三：直接使用推理加速框架启动服务（此方法无法应用 PaddleOCR 预置的性能调优参数），目前支持：
     - FastDeploy
     - vLLM
     - MLX-VLM

@@ -1512,7 +1512,7 @@ There are three methods to launch the VLM inference service; choose either one:
     - vLLM
     - SGLang
 
-- Method 3: Launch service directly using inference acceleration frameworks, but the pre-configured performance tuning parameters provided by PaddleOCR will not be applied. Currently supported:
+- Method 3: Launch service directly using inference acceleration frameworks (the pre-configured performance tuning parameters provided by PaddleOCR will not be applied). Currently supported:
     - FastDeploy
     - vLLM
     - MLX-VLM
