@@ -918,7 +918,14 @@ class PaddleOCRVLHandler(_LayoutParsingHandler):
             )
 
     def _create_local_engine(self) -> Any:
+        if self._pipeline == "PaddleOCR-VL":
+            pipeline_version = "v1"
+        elif self._pipeline == "PaddleOCR-VL-1.5":
+            pipeline_version = "v1.5"
+        else:
+            raise RuntimeError(f"Unknown pipeline {repr(self._pipeline)}")
         return PaddleOCRVL(
+            pipeline_version=pipeline_version,
             paddlex_config=self._pipeline_config,
             device=self._device,
         )
@@ -926,7 +933,12 @@ class PaddleOCRVLHandler(_LayoutParsingHandler):
     def _transform_service_kwargs(self, kwargs: Dict[str, Any]) -> Dict[str, Any]:
         kwargs = super()._transform_service_kwargs(kwargs)
         if self._ppocr_source == "qianfan":
-            kwargs["model"] = "paddleocr-vl-0.9b"
+            if self._pipeline == "PaddleOCR-VL":
+                kwargs["model"] = "paddleocr-vl-0.9b"
+            else:
+                raise RuntimeError(
+                    f"Unknown or unsupported pipeline {repr(self._pipeline)}"
+                )
         return kwargs
 
 
@@ -934,6 +946,7 @@ _PIPELINE_HANDLERS: Dict[str, Type[PipelineHandler]] = {
     "OCR": OCRHandler,
     "PP-StructureV3": PPStructureV3Handler,
     "PaddleOCR-VL": PaddleOCRVLHandler,
+    "PaddleOCR-VL-1.5": PaddleOCRVLHandler,
 }
 
 
