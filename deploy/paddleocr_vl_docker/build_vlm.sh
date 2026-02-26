@@ -172,8 +172,8 @@ if [ ! -f "${dockerfile}" ]; then
     exit 1
 fi
 
-dockerfile_hash="$(sha256sum "${dockerfile}" | cut -c1-12)"
-image_version="${paddleocr_version}-${paddlex_version}-${dockerfile_hash}"
+revision="$(git rev-parse --short HEAD)"
+image_version="${revision}-ppocr${paddleocr_version}-pdx${paddlex_version}"
 
 # Image name
 base_image_name="paddleocr-genai-${backend}-server"
@@ -197,9 +197,8 @@ build_args=(
     '--build-arg' "http_proxy=${http_proxy:-}"
     '--build-arg' "https_proxy=${https_proxy:-}"
     '--build-arg' "no_proxy=${no_proxy:-}"
-    '--label' "org.opencontainers.image.version.paddleocr=${paddleocr_version}"
-    '--label' "org.opencontainers.image.version.paddlex=${paddlex_version}"
-    '--label' "org.opencontainers.image.version.dockerfile.sha=${dockerfile_hash}"
+    '--label' "org.opencontainers.image.version=${image_version}"
+    '--label' "org.opencontainers.image.revision=${revision}"
     '.'
 )
 

@@ -5,6 +5,9 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONDONTWRITEBYTECODE=1
 
+ENV PIP_BREAK_SYSTEM_PACKAGES=1
+RUN ln -s /usr/bin/python3 /usr/bin/python
+
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         fontconfig \
@@ -24,8 +27,8 @@ ARG PADDLEX_VERSION=">=3.4.0,<3.5"
 RUN --mount=type=cache,target=/root/.cache/pip \
     python -m pip install "paddleocr[doc-parser]${PADDLEOCR_VERSION}" "paddlex[serving]${PADDLEX_VERSION}"
 
-RUN groupadd -g 1000 paddleocr \
-    && useradd -m -s /bin/bash -u 1000 -g 1000 paddleocr
+RUN groupadd -g 1001 paddleocr \
+    && useradd -m -s /bin/bash -u 1001 -g 1001 paddleocr
 ENV HOME=/home/paddleocr
 WORKDIR /home/paddleocr
 
