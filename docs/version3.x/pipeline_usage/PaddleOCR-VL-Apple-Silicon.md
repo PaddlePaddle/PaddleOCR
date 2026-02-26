@@ -45,10 +45,10 @@ python -m pip install -U "paddleocr[doc-parser]"
 
 ### 3.1 启动 VLM 推理服务
 
-安装 MLX-VLM 推理框架：
+安装 MLX-VLM 推理框架（v0.3.11以上版本）：
 
 ```shell
-python -m pip install -U mlx-vlm
+python -m pip install "mlx-vlm>=0.3.11"
 ```
 
 启动 MLX-VLM 推理服务：

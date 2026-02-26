@@ -1501,7 +1501,7 @@ The inference performance under default configurations is not fully optimized an
 
 ### 3.1 Launching the VLM Inference Service
 
-There are two methods to launch the VLM inference service; choose either one:
+There are three methods to launch the VLM inference service; choose either one:
 
 - Method 1: Launch the service using the official Docker image. Currently supported:
     - FastDeploy
@@ -1512,7 +1512,7 @@ There are two methods to launch the VLM inference service; choose either one:
     - vLLM
     - SGLang
 
-- Method 3: Launch service directly using inference acceleration frameworks. Currently supported:
+- Method 3: Launch service directly using inference acceleration frameworks (the pre-configured performance tuning parameters provided by PaddleOCR will not be applied). Currently supported:
     - FastDeploy
     - vLLM
     - MLX-VLM

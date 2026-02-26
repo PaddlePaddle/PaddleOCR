@@ -45,10 +45,10 @@ The inference performance under default configurations is not fully optimized an
 
 ### 3.1 Starting the VLM Inference Service
 
-Install the MLX-VLM inference framework:
+Install the MLX-VLM inference framework (v0.3.11 or later):
 
 ```shell
-python -m pip install -U mlx-vlm
+python -m pip install "mlx-vlm>=0.3.11"
 ```
 
 Start the MLX-VLM inference service:
