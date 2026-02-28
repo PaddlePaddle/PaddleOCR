@@ -29,10 +29,12 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
 
 3. **希望将 PaddleOCR-VL 部署为 API 服务**：
 
-    如果您想将 PaddleOCR-VL 部署为一个网络服务（API），这样其他设备或应用程序无需配置环境，仅通过一个特定的网址就可以来访问和调用它，我们提供两种方式：
+    您可以将 PaddleOCR-VL 部署为一个网络服务（API），这样客户端应用程序无需配置环境，仅通过一个特定的网址就可以调用 PaddleOCR-VL 的能力。在对并发处理能力没有特别要求的情况下，可以选择以下两种方案之一：
 
     - 使用 Docker Compose 部署（一键启动，推荐使用）：请阅读 [4.1 方法一：使用 Docker Compose 部署](#41-方法一使用-docker-compose-部署推荐使用) 和 [4.3 客户端调用方式](#43-客户端调用方式)，或其他硬件文档中的对应章节。
-    - 进行手动部署：请阅读 [1. 环境准备](#1-环境准备)、 [4.2 方法二：手动部署](#42-方法二手动部署) 和 [4.3 客户端调用方式](#43-客户端调用方式)，或其他硬件文档中的对应章节。
+    - 手动部署：请阅读 [1. 环境准备](#1-环境准备)、 [4.2 方法二：手动部署](#42-方法二手动部署) 和 [4.3 客户端调用方式](#43-客户端调用方式)，或其他硬件文档中的对应章节。
+
+    如需支持并发请求处理，请参考[高性能服务化部署方案](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/hps/README.md)。
 
 4. **希望对 PaddleOCR-VL 进行微调以适配特定业务**：
 
@@ -1470,7 +1472,7 @@ output = pipeline.predict(["imgs/file1.png", "imgs/file2.png", "imgs/file3.png"]
 
 ### 3.1 启动 VLM 推理服务
 
-启动 VLM 推理服务有以下两种方式，任选一种即可：
+启动 VLM 推理服务有以下三种方式，任选一种即可：
 
 - 方法一：使用官方 Docker 镜像启动服务，目前支持：
     - FastDeploy
@@ -1481,7 +1483,7 @@ output = pipeline.predict(["imgs/file1.png", "imgs/file2.png", "imgs/file3.png"]
     - vLLM
     - SGLang
 
-- 方法三：直接使用推理加速框架启动服务，目前支持：
+- 方法三：直接使用推理加速框架启动服务（此方法无法应用 PaddleOCR 预置的性能调优参数），目前支持：
     - FastDeploy
     - vLLM
     - MLX-VLM
@@ -1774,13 +1776,15 @@ PaddleOCR 会将来自单张或多张输入图像中的子图分组并对服务�
 
 ## 4. 服务化部署
 
-此步骤主要介绍如何将 PaddleOCR-VL 部署为服务并调用，有以下两种方式，任选一种即可：
+此步骤主要介绍如何将 PaddleOCR-VL 部署为服务并调用。如果不要求服务具备并发处理请求的能力，可选择以下两种方式中的任一种：
 
 - 方法一：使用 Docker Compose 部署（推荐使用）。
 
 - 方法二：手动部署。
 
-> 请注意，本节所介绍 PaddleOCR-VL 服务与上一节中的 VLM 推理服务有所区别：后者仅负责完整流程中的一个环节（即 VLM 推理），并作为前者的底层服务被调用。此外，根据本节所述方式启动的 PaddleOCR-VL 服务一次仅能处理一个请求，后续我们将补充说明支持并发调用的服务启动方式。
+上述两种方式一次仅能处理一个请求，如需支持并发请求，请参考[高性能服务化部署方案](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/hps/README.md)。
+
+> 请注意，本节所介绍 PaddleOCR-VL 服务与上一节中的 VLM 推理服务有所区别：后者仅负责完整流程中的一个环节（即 VLM 推理），并作为前者的底层服务被调用。
 
 ### 4.1 方法一：使用 Docker Compose 部署（推荐使用）
 

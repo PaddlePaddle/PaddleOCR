@@ -29,10 +29,12 @@ For some inference hardware, you may need to refer to other usage tutorials we p
 
 3. **Want to deploy PaddleOCR-VL as an API service**:
 
-    If you want to deploy PaddleOCR-VL as a web service (API) so that other devices or applications can access and call it through a specific URL without configuring the environment, we offer two methods:
+    You can deploy PaddleOCR-VL as a web service (API), allowing client applications to invoke PaddleOCR-VL's capabilities through a specific URL without configuring the environment. If concurrent request processing is not required, choose either of the following two methods:
 
     - Deployment using Docker Compose (one-click start, recommended): Please read [4.1 Method 1: Deploy Using Docker Compose](#41-method-1-deploy-using-docker-compose-recommended) and [4.3 Client-Side Invocation](#43-client-side-invocation), or the corresponding chapters in documentation for other hardware.
     - Manual deployment: Please read [1. Environment Preparation](#1-environment-preparation), [4.2 Method 2: Manual Deployment](#42-method-2-manual-deployment), and [4.3 Client-Side Invocation](#43-client-side-invocation), or the corresponding chapters in documentation for other hardware.
+
+    For concurrent request processing, please refer to the [High-Performance Service Deployment solution](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/hps/README_en.md).
 
 4. **Want to fine-tune PaddleOCR-VL to adapt to specific business needs**:
 
@@ -1501,7 +1503,7 @@ The inference performance under default configurations is not fully optimized an
 
 ### 3.1 Launching the VLM Inference Service
 
-There are two methods to launch the VLM inference service; choose either one:
+There are three methods to launch the VLM inference service; choose either one:
 
 - Method 1: Launch the service using the official Docker image. Currently supported:
     - FastDeploy
@@ -1512,7 +1514,7 @@ There are two methods to launch the VLM inference service; choose either one:
     - vLLM
     - SGLang
 
-- Method 3: Launch service directly using inference acceleration frameworks. Currently supported:
+- Method 3: Launch service directly using inference acceleration frameworks (the pre-configured performance tuning parameters provided by PaddleOCR will not be applied). Currently supported:
     - FastDeploy
     - vLLM
     - MLX-VLM
@@ -1793,13 +1795,15 @@ The following configurations are for scenarios with a 1:1 client-to-VLM inferenc
 
 ## 4. Service Deployment
 
-This step mainly introduces how to deploy PaddleOCR-VL as a service and invoke it. There are two methods; choose either one:
+This step mainly introduces how to deploy PaddleOCR-VL as a service and invoke it. If concurrent request processing is not required, choose either of the following two methods:
 
 - Method 1: Deploy using Docker Compose (recommended).
 
 - Method 2: Manual Deployment.
 
-> Note that the PaddleOCR-VL service described in this section differs from the VLM inference service in the previous section: the latter is responsible for only one part of the complete process (i.e., VLM inference) and is called as an underlying service by the former. In addition, the PaddleOCR-VL service started according to the instructions in this section can handle only one request at a time. We will later provide instructions on how to start the service with support for concurrent requests.
+Both methods can handle only one request at a time. If you need concurrent request processing, please refer to the [High-Performance Service Deployment solution](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/hps/README_en.md).
+
+> Note that the PaddleOCR-VL service described in this section differs from the VLM inference service in the previous section: the latter is responsible for only one part of the complete process (i.e., VLM inference) and is called as an underlying service by the former.
 
 ### 4.1 Method 1: Deploy Using Docker Compose (Recommended)
 
