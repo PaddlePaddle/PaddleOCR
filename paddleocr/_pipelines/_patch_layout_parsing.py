@@ -113,16 +113,12 @@ def apply_patches():
         import paddlex.inference.pipelines.layout_parsing.utils as lp_utils
         import paddlex.inference.pipelines.layout_parsing.pipeline_v2 as lp_pipeline
     except ImportError:
-        logger.debug(
-            "paddlex layout parsing modules not available; skipping patches"
-        )
+        logger.debug("paddlex layout parsing modules not available; skipping patches")
         return
 
     # Patch the utils module
     lp_utils.calculate_overlap_ratio = _fixed_calculate_overlap_ratio
-    lp_utils.calculate_minimum_enclosing_bbox = (
-        _fixed_calculate_minimum_enclosing_bbox
-    )
+    lp_utils.calculate_minimum_enclosing_bbox = _fixed_calculate_minimum_enclosing_bbox
 
     # Also patch the references imported directly into pipeline_v2, since
     # Python binds names at import time
