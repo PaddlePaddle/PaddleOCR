@@ -11,13 +11,13 @@ PaddleOCR-VL is an advanced and efficient document parsing model designed specif
 <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr_vl_1_5/paddleocr-vl-1.5_metrics.png"/>
 
 > INFO:
-> PaddleOCR provides a unified interface for the PaddleOCR-VL model series to facilitate quick setup and usage. Unless otherwise specified, the term "PaddleOCR-VL" in subsequent sections and related environment configuration documentation refers to the PaddleOCR-VL model series (e.g., PaddleOCR-VL-1.5). References specific to the PaddleOCR-VL v1 version will be explicitly noted.
+> PaddleOCR provides a unified interface for the PaddleOCR-VL model series to facilitate quick setup and usage. Unless otherwise specified, the term "PaddleOCR-VL" in subsequent sections and related usage tutorials refers to the PaddleOCR-VL model series (e.g., PaddleOCR-VL-1.5). References specific to the PaddleOCR-VL v1 version will be explicitly noted.
 
 ## Process Guide
 
 Before starting, please refer to the next section for information on the inference device support provided by PaddleOCR-VL to **determine if your device meets the operational requirements.** If your device meets the requirements, please select the relevant section to read based on your needs.
 
-For some inference hardware, you may need to refer to other environment configuration documents we provide, but the process remains the same and does not affect your reading of the following process guide:
+For some inference hardware, you may need to refer to other usage tutorials we provide, but the process remains the same and does not affect your reading of the following process guide:
 
 1. **Want to quickly experience PaddleOCR-VL**:
 
@@ -29,10 +29,12 @@ For some inference hardware, you may need to refer to other environment configur
 
 3. **Want to deploy PaddleOCR-VL as an API service**:
 
-    If you want to deploy PaddleOCR-VL as a web service (API) so that other devices or applications can access and call it through a specific URL without configuring the environment, we offer two methods:
+    You can deploy PaddleOCR-VL as a web service (API), allowing client applications to invoke PaddleOCR-VL's capabilities through a specific URL without configuring the environment. If concurrent request processing is not required, choose either of the following two methods:
 
     - Deployment using Docker Compose (one-click start, recommended): Please read [4.1 Method 1: Deploy Using Docker Compose](#41-method-1-deploy-using-docker-compose-recommended) and [4.3 Client-Side Invocation](#43-client-side-invocation), or the corresponding chapters in documentation for other hardware.
     - Manual deployment: Please read [1. Environment Preparation](#1-environment-preparation), [4.2 Method 2: Manual Deployment](#42-method-2-manual-deployment), and [4.3 Client-Side Invocation](#43-client-side-invocation), or the corresponding chapters in documentation for other hardware.
+
+    For concurrent request processing, please refer to the [High-Performance Service Deployment solution](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/hps/README_en.md).
 
 4. **Want to fine-tune PaddleOCR-VL to adapt to specific business needs**:
 
@@ -40,15 +42,15 @@ For some inference hardware, you may need to refer to other environment configur
 
 ## Inference Device Support for PaddleOCR-VL
 
-Currently, PaddleOCR-VL offers five inference methods, with varying levels of support for different inference devices. Please confirm that your inference device meets the requirements in the table below before proceeding with PaddleOCR-VL deployment:
+Currently, PaddleOCR-VL offers six inference methods, with varying levels of support for different inference devices. Please confirm that your inference device meets the requirements in the table below before proceeding with PaddleOCR-VL deployment:
 
 <table border="1">
 <thead>
   <tr>
     <th>Inference Method</th>
     <th>NVIDIA GPU</th>
-    <th>KUNLUNXIN XPU</th>
-    <th>HYGON DCU</th>
+    <th>Kunlunxin XPU</th>
+    <th>Hygon DCU</th>
     <th>MetaX GPU</th>
     <th>Iluvatar GPU</th>
     <th>Huawei Ascend NPU</th>
@@ -76,8 +78,8 @@ Currently, PaddleOCR-VL offers five inference methods, with varying levels of su
     <td>🚧</td>
     <td>🚧</td>
     <td>✅</td>
-    <td>❌</td>
-    <td>❌</td>
+    <td>-</td>
+    <td>-</td>
   </tr>
   <tr style="text-align: center;">
     <td>PaddlePaddle + SGLang</td>
@@ -87,8 +89,8 @@ Currently, PaddleOCR-VL offers five inference methods, with varying levels of su
     <td>🚧</td>
     <td>🚧</td>
     <td>🚧</td>
-    <td>❌</td>
-    <td>❌</td>
+    <td>-</td>
+    <td>-</td>
   </tr>
   <tr style="text-align: center;">
     <td>PaddlePaddle + FastDeploy</td>
@@ -98,19 +100,30 @@ Currently, PaddleOCR-VL offers five inference methods, with varying levels of su
     <td>✅</td>
     <td>✅</td>
     <td>🚧</td>
-    <td>❌</td>
-    <td>❌</td>
+    <td>-</td>
+    <td>-</td>
   </tr>
   <tr style="text-align: center;">
     <td>PaddlePaddle + MLX-VLM</td>
-    <td>❌</td>
-    <td>❌</td>
-    <td>❌</td>
-    <td>❌</td>
-    <td>❌</td>
-    <td>❌</td>
-    <td>❌</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
     <td>✅</td>
+  </tr>
+  <tr style="text-align: center;">
+    <td>PaddlePaddle + llama.cpp</td>
+    <td>✅</td>
+    <td>🚧</td>
+    <td>🚧</td>
+    <td>🚧</td>
+    <td>🚧</td>
+    <td>🚧</td>
+    <td>✅</td>
+    <td>🚧</td>
   </tr>
 </tbody>
 </table>
@@ -129,21 +142,21 @@ Currently, PaddleOCR-VL offers five inference methods, with varying levels of su
 > - vLLM compatibility note: Although vLLM can be launched on NVIDIA GPUs with CC 7.x such as T4/V100, timeout or OOM issues may occur, and its use is not recommended.
 > - vLLM, SGLang, and FastDeploy cannot run natively on Windows. Please use the Docker images we provide.
 
-Since different hardware requires different dependencies, if your hardware meets the requirements in the table above, please refer to the following table for the corresponding tutorial to configure your environment:
+Since different hardware requires different dependencies, if your hardware meets the requirements in the table above, please refer to the following table for the corresponding usage tutorial:
 
-| Hardware Type  | Environment Configuration Tutorial                                                                                           |
+| Hardware Type  | Usage Tutorial                                                                                           |
 |----------------|------------------------------------------------------------------------------------------------------------------------------|
-| x64 CPU        | This tutorial                                                                                                                |
-| NVIDIA GPU     | - NVIDIA Blackwell architecture GPU (e.g., RTX 50 series) refer to [PaddleOCR-VL NVIDIA Blackwell Architecture GPU Environment Configuration Tutorial](./PaddleOCR-VL-NVIDIA-Blackwell.en.md) <br/> - Other NVIDIA GPUs refer to this tutorial |
-| KUNLUNXIN XPU  | [PaddleOCR-VL KUNLUNXIN XPU Environment Configuration Tutorial](./PaddleOCR-VL-KUNLUNXIN-XPU.en.md)                                              |
-| HYGON DCU      | [PaddleOCR-VL HYGON DCU Environment Configuration Tutorial](./PaddleOCR-VL-HYGON-DCU.en.md)                                              |
-| MetaX GPU      | [PaddleOCR-VL MetaX GPU Environment Configuration Tutorial](./PaddleOCR-VL-MetaX-GPU.en.md)                                              |
-| Iluvatar GPU        | [PaddleOCR-VL Iluvatar GPU Environment Configuration Tutorial](./PaddleOCR-VL-Iluvatar-GPU.en.md) |
-| Huawei Ascend NPU        | [PaddleOCR-VL Huawei Ascend NPU Environment Configuration Tutorial](./PaddleOCR-VL-Huawei-Ascend-NPU.en.md) |
-| Apple Silicon        | [PaddleOCR-VL Apple Silicon Environment Configuration Tutorial](./PaddleOCR-VL-Apple-Silicon.en.md) |
+| x64 CPU        | This tutorial (Dependencies must be installed manually for now)                                                                                                                |
+| NVIDIA GPU     | - NVIDIA Blackwell architecture GPU (e.g., RTX 50 series) refer to [PaddleOCR-VL NVIDIA Blackwell Architecture GPU Usage Tutorial](./PaddleOCR-VL-NVIDIA-Blackwell.en.md) <br/> - Other NVIDIA GPUs refer to this tutorial |
+| Kunlunxin XPU  | [PaddleOCR-VL Kunlunxin XPU Usage Tutorial](./PaddleOCR-VL-Kunlunxin-XPU.en.md)                                              |
+| Hygon DCU      | [PaddleOCR-VL Hygon DCU Usage Tutorial](./PaddleOCR-VL-Hygon-DCU.en.md)                                              |
+| MetaX GPU      | [PaddleOCR-VL MetaX GPU Usage Tutorial](./PaddleOCR-VL-MetaX-GPU.en.md)                                              |
+| Iluvatar GPU        | [PaddleOCR-VL Iluvatar GPU Usage Tutorial](./PaddleOCR-VL-Iluvatar-GPU.en.md) |
+| Huawei Ascend NPU        | [PaddleOCR-VL Huawei Ascend NPU Usage Tutorial](./PaddleOCR-VL-Huawei-Ascend-NPU.en.md) |
+| Apple Silicon        | [PaddleOCR-VL Apple Silicon Usage Tutorial](./PaddleOCR-VL-Apple-Silicon.en.md) |
 
 > TIP:
-> For example, if you are using an RTX 50 series GPU that meets the device requirements for both PaddlePaddle and vLLM inference methods, please refer to the [PaddleOCR-VL NVIDIA Blackwell Architecture GPU Environment Configuration Tutorial](./PaddleOCR-VL-NVIDIA-Blackwell.en.md) to complete the environment configuration before using PaddleOCR-VL.
+> For example, if you are using an RTX 50 series GPU that meets the device requirements for both PaddlePaddle and vLLM inference methods, please refer to the [PaddleOCR-VL NVIDIA Blackwell Architecture GPU Usage Tutorial](./PaddleOCR-VL-NVIDIA-Blackwell.en.md) to learn about relevant configurations and usage.
 
 ## 1. Environment Preparation
 
@@ -218,7 +231,7 @@ python -m pip install -U "paddleocr[doc-parser]"
 
 PaddleOCR-VL supports two usage methods: CLI command line and Python API. The CLI command line method is simpler and suitable for quickly verifying functionality, while the Python API method is more flexible and suitable for integration into existing projects.
 
-> TIP:
+> IMPORTANT:
 > The methods introduced in this section are primarily for rapid validation. Their inference speed, memory usage, and stability may not meet the requirements of a production environment. **If deployment to a production environment is needed, we strongly recommend using a dedicated inference acceleration framework**. For specific methods, please refer to the next section.
 
 ### 2.1 Command Line Usage
@@ -229,10 +242,10 @@ Run a single command to quickly test the PaddleOCR-VL ：
 # NVIDIA GPU
 paddleocr doc_parser -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/paddleocr_vl_demo.png
 
-# KUNLUNXIN XPU
+# Kunlunxin XPU
 paddleocr doc_parser -i ./paddleocr_vl_demo.png --device xpu
 
-# HYGON DCU
+# Hygon DCU
 paddleocr doc_parser -i ./paddleocr_vl_demo.png --device dcu
 
 # MetaX GPU
@@ -654,9 +667,9 @@ from paddleocr import PaddleOCRVL
 
 # NVIDIA GPU
 pipeline = PaddleOCRVL()
-# KUNLUNXIN XPU
+# Kunlunxin XPU
 # pipeline = PaddleOCRVL(device="xpu")
-# HYGON DCU
+# Hygon DCU
 # pipeline = PaddleOCRVL(device="dcu")
 # MetaX GPU
 # pipeline = PaddleOCRVL(device="metax_gpu")
@@ -690,9 +703,9 @@ output = pipeline.predict(input=input_file)
 pages_res = list(output)
 
 output = pipeline.restructure_pages(pages_res)
-# output = pipeline.restructure_pages(pages_res, merge_table=True) # Merge tables across pages
-# output = pipeline.restructure_pages(pages_res, merge_table=True, relevel_titles=True) # Merge tables across pages and reconstruct multi-level titles
-# output = pipeline.restructure_pages(pages_res, merge_table=True, relevel_titles=True, merge_pages=True) # Merge tables across pages, reconstruct multi-level titles, and merge multiple pages
+# output = pipeline.restructure_pages(pages_res, merge_tables=True) # Merge tables across pages
+# output = pipeline.restructure_pages(pages_res, merge_tables=True, relevel_titles=True) # Merge tables across pages and reconstruct multi-level titles
+# output = pipeline.restructure_pages(pages_res, merge_tables=True, relevel_titles=True, concatenate_pages=True) # Merge tables across pages, reconstruct multi-level titles, and merge multiple pages
 for res in output:
     res.print() ## Print the structured prediction output
     res.save_to_json(save_path="output") ## Save the current image's structured result in JSON format
@@ -1490,11 +1503,22 @@ The inference performance under default configurations is not fully optimized an
 
 ### 3.1 Launching the VLM Inference Service
 
-There are two methods to launch the VLM inference service; choose either one:
+There are three methods to launch the VLM inference service; choose either one:
 
-- Method 1: Launch the service using the official Docker image.
+- Method 1: Launch the service using the official Docker image. Currently supported:
+    - FastDeploy
+    - vLLM
 
-- Method 2: Launch the service by manually installing dependencies via the PaddleOCR CLI.
+- Method 2: Launch the service by manually installing dependencies via the PaddleOCR CLI. Currently supported:
+    - FastDeploy
+    - vLLM
+    - SGLang
+
+- Method 3: Launch service directly using inference acceleration frameworks (the pre-configured performance tuning parameters provided by PaddleOCR will not be applied). Currently supported:
+    - FastDeploy
+    - vLLM
+    - MLX-VLM
+    - llama.cpp
 
 **We strongly recommend using the Docker image to minimize potential environment-related issues.**
 
@@ -1552,6 +1576,8 @@ docker run \
 
 #### 3.1.2 Method 2: Installation and Usage via PaddleOCR CLI
 
+**The PaddleOCR CLI has already resolved complex version compatibility issues. Instead of spending time studying framework documentation, you can install the necessary environment with a single command.**
+
 Due to potential dependency conflicts between inference acceleration frameworks and PaddlePaddle, it is recommended to install them in a virtual environment:
 
 ```shell
@@ -1590,13 +1616,34 @@ The parameters supported by this command are as follows:
 | `--backend`        | Backend name, i.e., the name of the inference acceleration framework used; options are `vllm` or `sglang` |
 | `--backend_config` | Can specify a YAML file containing backend configurations      |
 
+#### 3.1.3 Launch Service Directly Using Inference Acceleration Frameworks
+
+**If you need to install a custom version of an inference framework and launch the service natively, please refer to the following guidelines. Please note that when launching natively, the pre-configured performance tuning parameters provided by PaddleOCR will not be applied.**
+
+- FastDeploy: [Refer to this document](https://paddlepaddle.github.io/FastDeploy/best_practices/PaddleOCR-VL-0.9B/)
+- vLLM: [Refer to this document](https://docs.vllm.ai/projects/recipes/en/latest/PaddlePaddle/PaddleOCR-VL.html)
+- MLX-VLM: [Refer to this document](./PaddleOCR-VL-Apple-Silicon.en.md)
+- llama.cpp:
+    1. Install llama.cpp by referring to the `Quick start` section in the [llama.cpp github](https://github.com/ggml-org/llama.cpp).
+    2. Download the model files in gguf format: [megemini/PaddleOCR-VL-1.5-GGUF](https://modelscope.cn/models/megemini/PaddleOCR-VL-1.5-GGUF/files) or [megemini/PaddleOCR-VL-GGUF](https://modelscope.cn/models/megemini/PaddleOCR-VL-GGUF/files).
+    3. Execute the following command to start the inference service. For an introduction to the parameters, please refer to [LLaMA.cpp HTTP Server](https://github.com/ggml-org/llama.cpp/blob/master/tools/server/README.md):
+
+        ```shell
+        ./build/bin/llama-server \
+          -m /path/to/PaddleOCR-VL-1.5-GGUF.gguf \
+          --mmproj /path/to/PaddleOCR-VL-1.5-GGUF-mmproj.gguf  \
+          --port 8111  \
+          --host 0.0.0.0 \
+          --temp 0
+        ```
+
 ### 3.2 Client Usage Methods
 
 After launching the VLM inference service, the client can call the service through PaddleOCR. **Please note that because the client needs to call the layout detection model, it is still recommended to run the client on GPU or other acceleration devices to achieve more stable and efficient performance. Please refer to Section 1 for the client-side environment configuration. The configuration described in Section 3.1 applies only to starting the service and is not applicable to the client.**
 
 #### 3.2.1 CLI Invocation
 
-Specify the backend type (`vllm-server` or `sglang-server`) using `--vl_rec_backend` and the service address using `--vl_rec_server_url`, for example:
+Specify the backend type (`vllm-server`, `sglang-server`, `fastdeploy-server`, `mlx-vlm-server` or `llama-cpp-server`) using `--vl_rec_backend` and the service address using `--vl_rec_server_url`, for example:
 
 ```shell
 paddleocr doc_parser --input paddleocr_vl_demo.png --vl_rec_backend vllm-server --vl_rec_server_url http://localhost:8118/v1
@@ -1614,15 +1661,14 @@ paddleocr doc_parser \
     --vl_rec_api_model_name 'PaddlePaddle/PaddleOCR-VL-1.5'
 ```
 
-SiliconFlow platform (currently only PaddleOCR-VL-0.9B is supported, i.e., the v1 model):
+SiliconFlow platform:
 
 ```shell
 paddleocr doc_parser \
     --input paddleocr_vl_demo.png \
-    --pipeline_version v1 \
     --vl_rec_backend vllm-server \
     --vl_rec_server_url https://api.siliconflow.cn/v1 \
-    --vl_rec_api_model_name 'PaddlePaddle/PaddleOCR-VL' \
+    --vl_rec_api_model_name 'PaddlePaddle/PaddleOCR-VL-1.5' \
     --vl_rec_api_key xxxxxx
 ```
 
@@ -1640,7 +1686,7 @@ paddleocr doc_parser \
 
 #### 3.2.2 Python API Invocation
 
-When creating a `PaddleOCRVL` object, pass the `vl_rec_backend` and `vl_rec_server_url` parameters to specify the backend type and the service endpoint, respectively:
+When creating a `PaddleOCRVL` object, specify the backend type (`vllm-server`, `sglang-server`, `fastdeploy-server`, `mlx-vlm-server` or `llama-cpp-server`) using `vl_rec_backend` and the service address using `vl_rec_server_url`, for example:
 
 ```python
 pipeline = PaddleOCRVL(vl_rec_backend="vllm-server", vl_rec_server_url="http://localhost:8118/v1")
@@ -1662,10 +1708,9 @@ SiliconFlow platform (currently only PaddleOCR-VL-0.9B is supported, i.e., the v
 
 ```python
 pipeline = PaddleOCRVL(
-    pipeline_version="v1",
     vl_rec_backend="vllm-server", 
     vl_rec_server_url="https://api.siliconflow.cn/v1",
-    vl_rec_api_model_name="PaddlePaddle/PaddleOCR-VL",
+    vl_rec_api_model_name="PaddlePaddle/PaddleOCR-VL-1.5",
     vl_rec_api_key="xxxxxx",
 )
 ```
@@ -1738,13 +1783,15 @@ The following configurations are for scenarios with a 1:1 client-to-VLM inferenc
 
 ## 4. Service Deployment
 
-This step mainly introduces how to deploy PaddleOCR-VL as a service and invoke it. There are two methods; choose either one:
+This step mainly introduces how to deploy PaddleOCR-VL as a service and invoke it. If concurrent request processing is not required, choose either of the following two methods:
 
 - Method 1: Deploy using Docker Compose (recommended).
 
 - Method 2: Manual Deployment.
 
-> Note that the PaddleOCR-VL service described in this section differs from the VLM inference service in the previous section: the latter is responsible for only one part of the complete process (i.e., VLM inference) and is called as an underlying service by the former. In addition, the PaddleOCR-VL service started according to the instructions in this section can handle only one request at a time. We will later provide instructions on how to start the service with support for concurrent requests.
+Both methods can handle only one request at a time. If you need concurrent request processing, please refer to the [High-Performance Service Deployment solution](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/hps/README_en.md).
+
+> Note that the PaddleOCR-VL service described in this section differs from the VLM inference service in the previous section: the latter is responsible for only one part of the complete process (i.e., VLM inference) and is called as an underlying service by the former.
 
 ### 4.1 Method 1: Deploy Using Docker Compose (Recommended)
 
@@ -2019,9 +2066,7 @@ Below are the API reference and examples of multi-language service invocation:
 <tr>
 <td><code>file</code></td>
 <td><code>string</code></td>
-<td>The URL of an image file or PDF file accessible to the server, or the Base64-encoded result of the content of the aforementioned file types. By default, for PDF files with more than 10 pages, only the first 10 pages will be processed.<br/>To remove the page limit, add the following configuration to the pipeline configuration file:<pre> <code>Serving:
-  extra:
-    max_num_input_imgs: null</code></pre>
+<td>The URL of an image file or PDF file accessible to the server, or the Base64-encoded result of the content of the aforementioned file types.
 </td>
 <td>Yes</td>
 </tr>
@@ -2999,6 +3044,7 @@ Serving:
       sk: xxx
       key_prefix: deploy
     return_img_urls: True
+    url_expires_in: 3600
 ```
 
 Currently, storing generated images in Baidu Intelligent Cloud Object Storage (BOS) and returning URLs is supported. The parameters are described as follows:
@@ -3009,20 +3055,21 @@ Currently, storing generated images in Baidu Intelligent Cloud Object Storage (B
 - `bucket_name`: Storage bucket name (required).
 - `key_prefix`: Unified prefix for object keys.
 - `connection_timeout_in_mills`: Request timeout in milliseconds.
+- `url_expires_in`: URL validity period (in seconds). `-1` indicates it never expires.
 
 For more information on obtaining AK/SK and other details, refer to the [Baidu Intelligent Cloud Official Documentation](https://cloud.baidu.com/doc/BOS/index.html).
 
-**Modify PDF Parsing Page Limit**
+**Limit the Number of PDF Pages Parsed**
 
-For performance considerations, the service processes only the first 10 pages of received PDF files by default. To adjust the page limit, add the following configuration to the pipeline configuration file (`Serving` is a top-level field):
+By default, the service processes the entire PDF file. In production environments, if a PDF contains too many pages, it may affect system stability, leading to processing timeouts or excessive resource usage. To ensure stable service operation, it is recommended to set a reasonable page limit based on actual needs. You can add the following configuration to the production configuration file (`Serving` is the top-level field):
 
 ```yaml
 Serving:
   extra:
-    max_num_input_imgs: <new page limit, e.g., 100>
+    max_num_input_imgs: <page limit, e.g., 100>
 ```
 
-Set `max_num_input_imgs` to `null` to remove the page limit.
+When `max_num_input_imgs` is set to `null`, there will be no limit on the number of PDF pages.
 
 #### 4.4.3 Apply the Configuration File
 

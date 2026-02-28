@@ -211,7 +211,7 @@ $ helm repo update
 # 安装云上飞桨组件
 $ helm install pdc paddlecloud/paddlecloud --set tags.all-dep=true --namespace paddlecloud --create-namespace
 
-# 检查所有云上飞桨组件是否成功启动，命名空间下的所有Pod都为Runing状态则安装成功。
+# 检查所有云上飞桨组件是否成功启动，命名空间下的所有Pod都为Running状态则安装成功。
 $ kubectl get pods -n paddlecloud
 NAME                                                 READY   STATUS    RESTARTS   AGE
 pdc-hostpath-5b6bd6787d-bxvxg                        1/1     Running   0          10h
