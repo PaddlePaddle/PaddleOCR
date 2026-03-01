@@ -52,9 +52,7 @@ Raw fields may vary by model version and endpoint.
   "result": {
     "layoutParsingResults": [
       {
-        "prunedResult": {
-          "...": "layout elements with position/content/confidence information"
-        },
+        "prunedResult": { ... },  // layout elements with position/content/confidence information
         "markdown": {
           "text": "Full page content in markdown/HTML format",
           "images": {
