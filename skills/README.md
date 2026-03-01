@@ -25,7 +25,7 @@ python skills/paddleocr-doc-parsing/scripts/smoke_test.py
 
 ## API Access
 
-Get API credentials from Paddle AI Studio: <https://paddleocr.com>
+Get API credentials from the PaddleOCR official website: <https://www.paddleocr.com>
 
 ## License
 

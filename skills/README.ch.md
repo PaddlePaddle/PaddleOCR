@@ -25,7 +25,7 @@ python skills/paddleocr-doc-parsing/scripts/smoke_test.py
 
 ## API 获取
 
-请在 Paddle AI Studio 获取 API 信息：<https://paddleocr.com>
+请在 PaddleOCR 官网获取 API 信息：<https://www.paddleocr.com>
 
 ## 许可证
 
