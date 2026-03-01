@@ -29,8 +29,8 @@ python skills/paddleocr-doc-parsing/scripts/smoke_test.py
 
 ## 许可证
 
-MIT License
+[Apache License 2.0](../LICENSE)
 
 ## 仓库
 
-- Source: <https://github.com/Aidenwu0209/PaddleOCR-Skills>
+- Source: <https://github.com/PaddlePaddle/PaddleOCR/tree/main/skills>

@@ -29,8 +29,8 @@ Get API credentials from Paddle AI Studio: <https://paddleocr.com>
 
 ## License
 
-MIT License
+[Apache License 2.0](../LICENSE)
 
 ## Repository
 
-- Source: <https://github.com/Aidenwu0209/PaddleOCR-Skills>
+- Source: <https://github.com/PaddlePaddle/PaddleOCR/tree/main/skills>
