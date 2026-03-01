@@ -10,10 +10,10 @@ description: >
 ## When to Use This Skill
 
 Invoke this skill in the following situations:
-- Extract text from images (screenshots, photos, scans, charts)
-- Read text from PDFs or document images
-- Parse structured text content (invoices, receipts, forms, tables)
-- Extract text from URLs or local files pointing to images/PDFs
+- Extract text from images (screenshots, photos, scans)
+- Extract text from PDFs or document images
+- Extract text and positions from structured documents (invoices, receipts, forms, tables)
+- Extract text from URLs or local files that point to images/PDFs
 
 Do not use this skill in the following situations:
 - Plain text files that can be read directly with the Read tool
