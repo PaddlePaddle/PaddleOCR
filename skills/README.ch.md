@@ -1,0 +1,36 @@
+﻿# PaddleOCR Skills（中文）
+
+本目录提供 PaddleOCR 云端 API 的 Agent Skills。
+
+## 技能列表
+
+- `paddleocr-text-recognition`：图片/PDF 文本识别。
+- `paddleocr-doc-parsing`：版面感知文档解析。
+
+## 快速开始
+
+1. 安装对应 skill 的依赖。
+2. 通过脚本配置 API 凭证。
+3. 运行冒烟测试：
+
+```bash
+python skills/paddleocr-text-recognition/scripts/smoke_test.py
+python skills/paddleocr-doc-parsing/scripts/smoke_test.py
+```
+
+## 文档入口
+
+- 文本识别：`skills/paddleocr-text-recognition/SKILL.md`
+- 文档解析：`skills/paddleocr-doc-parsing/SKILL.md`
+
+## API 获取
+
+请在 Paddle AI Studio 获取 API 信息：<https://paddleocr.com>
+
+## 许可证
+
+MIT License
+
+## 仓库
+
+- Source: <https://github.com/Aidenwu0209/PaddleOCR-Skills>
