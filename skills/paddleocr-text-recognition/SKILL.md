@@ -95,17 +95,17 @@ I found some text in the image. Here's a preview:
 
 ### Usage Examples
 
-**URL OCR**:
+**Example 1: URL OCR**:
 ```bash
 python scripts/ocr_caller.py --file-url "https://example.com/invoice.jpg" --pretty
 ```
 
-**Local File OCR**:
+**Example 2: Local File OCR**:
 ```bash
 python scripts/ocr_caller.py --file-path "./document.pdf" --pretty
 ```
 
-**OCR With Explicit File Type**:
+**Example 3: OCR With Explicit File Type**:
 ```bash
 python scripts/ocr_caller.py --file-url "https://example.com/input" --file-type 1 --pretty
 ```
