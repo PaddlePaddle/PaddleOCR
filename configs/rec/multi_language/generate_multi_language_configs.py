@@ -17,7 +17,7 @@ from argparse import ArgumentParser, RawDescriptionHelpFormatter
 import os.path
 import logging
 
-logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger("ppocr")
 
 support_list = {
     "it": "italian",
@@ -281,27 +281,27 @@ if __name__ == "__main__":
 
     with open(save_file_path, "w") as f:
         yaml.dump(dict(global_config), f, default_flow_style=False, sort_keys=False)
-    logging.info("Project path is          :{}".format(project_path))
-    logging.info(
+    logger.info("Project path is          :{}".format(project_path))
+    logger.info(
         "Train list path set to   :{}".format(
             global_config["Train"]["dataset"]["label_file_list"][0]
         )
     )
-    logging.info(
+    logger.info(
         "Eval list path set to    :{}".format(
             global_config["Eval"]["dataset"]["label_file_list"][0]
         )
     )
-    logging.info(
+    logger.info(
         "Dataset root path set to :{}".format(
             global_config["Eval"]["dataset"]["data_dir"]
         )
     )
-    logging.info(
+    logger.info(
         "Dict path set to         :{}".format(
             global_config["Global"]["character_dict_path"]
         )
     )
-    logging.info(
+    logger.info(
         "Config file set to       :configs/rec/multi_language/{}".format(save_file_path)
     )

@@ -93,7 +93,7 @@ Currently, only **manual deployment** is supported. Please refer to **Section 4.
 
 ### 4.3 Client Invocation Methods
 
-Please refer to [PaddleOCR-VL Usage Tutorial - 4.3 Client Invocation Methods](./PaddleOCR-VL.en.md#43-client-invocation-methods).
+Please refer to [PaddleOCR-VL Usage Tutorial - 4.3 Client Invocation Methods](./PaddleOCR-VL.en.md#43-client-side-invocation).
 
 ### 4.4 Pipeline Configuration Adjustment Instructions
 

@@ -101,4 +101,4 @@ result = pipeline.predict(...)
 1. 对于部分模型，在首次执行高性能推理时，可能需要花费较长时间完成推理引擎的构建。推理引擎相关信息将在第一次构建完成后被缓存在模型目录，后续可复用缓存中的内容以提升初始化速度。
 2. 目前，由于使用的不是静态图格式模型、存在不支持算子等原因，部分模型可能无法获得推理加速。
 3. 在进行高性能推理时，PaddleOCR 会自动处理模型格式的转换，并尽可能选择最优的推理后端。同时，PaddleOCR 也支持用户指定 ONNX 模型。有关如何飞桨静态图模型转换为 ONNX 格式，可参考 [获取 ONNX 模型](./obtaining_onnx_models.md)。
-4. PaddleOCR 的高性能推理能力依托于 PaddleX 及其高性能推理插件。通过传入自定义 PaddleX 产线配置文件，可以对推理后端等进行配置。请参考 [使用 PaddleX 产线配置文件](../paddleocr_and_paddlex.md#3-使用-paddlex-产线配置文件) 和 [PaddleX 高性能推理指南](https://paddlepaddle.github.io/PaddleX/latest/pipeline_deploy/high_performance_inference.html#22) 了解如何调整高性能推理配置。
+4. PaddleOCR 的高性能推理能力依托于 PaddleX 及其高性能推理插件。通过传入自定义 PaddleX 产线配置文件，可以对推理后端等进行配置。请参考 [使用 PaddleX 产线配置文件](../paddleocr_and_paddlex.md#3-paddlex) 和 [PaddleX 高性能推理指南](https://paddlepaddle.github.io/PaddleX/latest/pipeline_deploy/high_performance_inference.html#22) 了解如何调整高性能推理配置。
