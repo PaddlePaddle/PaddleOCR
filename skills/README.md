@@ -10,7 +10,11 @@ This directory contains AI agent skills for PaddleOCR official APIs.
 ## Quick Start
 
 1. Install dependencies for the skill you use.
-2. Configure API credentials with the skill scripts.
+2. Copy `.env.example` to `.env` and fill in your API credentials:
+   ```bash
+   cp skills/.env.example skills/.env
+   ```
+   Or configure interactively: `python skills/paddleocr-text-recognition/scripts/configure.py`
 3. Run smoke tests:
 
 ```bash
