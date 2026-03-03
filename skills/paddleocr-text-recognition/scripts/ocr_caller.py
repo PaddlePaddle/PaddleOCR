@@ -90,6 +90,9 @@ Configuration:
         file_path=args.file_path,
         file_url=args.file_url,
         file_type=args.file_type,
+        useDocUnwarping=False,
+        useDocOrientationClassify=False,
+        visualize=False,
     )
 
     # Format output
