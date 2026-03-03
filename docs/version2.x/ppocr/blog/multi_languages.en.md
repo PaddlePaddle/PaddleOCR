@@ -13,7 +13,7 @@ typora-copy-images-to: images
 
 PaddleOCR aims to create a rich, leading, and practical OCR tool library, which not only provides
 Chinese and English models in general scenarios, but also provides models specifically trained
-in English scenarios. And multilingual models covering [80 languages](#language_abbreviations).
+in English scenarios. And multilingual models covering [80 languages](#5-support-languages-and-abbreviations).
 
 Among them, the English model supports the detection and recognition of uppercase and lowercase
 letters and common punctuation, and the recognition of space characters is optimized:
@@ -70,7 +70,7 @@ paddleocr -h
 - Whole image prediction (detection + recognition)
 
 PaddleOCR currently supports 80 languages, which can be specified by the --lang parameter.
-The supported languages are listed in the [table](#language_abbreviations).
+The supported languages are listed in the [table](#5-support-languages-and-abbreviations).
 
 ``` bash
 paddleocr --image_dir doc/imgs_en/254.jpg --lang=en

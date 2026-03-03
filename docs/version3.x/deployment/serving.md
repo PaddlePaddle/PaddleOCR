@@ -4,7 +4,7 @@ comments: true
 
 # 服务化部署
 
-服务化部署是实际生产环境中常见的一种部署形式。通过将推理功能封装为服务，客户端可以通过网络请求来访问这些服务，以获取推理结果。**客户端代码可以由不同的编程语言编写，而不必与服务端代码保持一致。** PaddleOCR 推荐用户使用 [PaddleX](https://github.com/PaddlePaddle/PaddleX) 进行服务化部署。请阅读 [PaddleOCR 与 PaddleX 的区别与联系](../paddleocr_and_paddlex.md#1-paddleocr-与-paddlex-的区别与联系) 了解 PaddleOCR 与 PaddleX 的关系。
+服务化部署是实际生产环境中常见的一种部署形式。通过将推理功能封装为服务，客户端可以通过网络请求来访问这些服务，以获取推理结果。**客户端代码可以由不同的编程语言编写，而不必与服务端代码保持一致。** PaddleOCR 推荐用户使用 [PaddleX](https://github.com/PaddlePaddle/PaddleX) 进行服务化部署。请阅读 [PaddleOCR 与 PaddleX 的区别与联系](../paddleocr_and_paddlex.md#1-paddleocr-paddlex) 了解 PaddleOCR 与 PaddleX 的关系。
 
 PaddleX 提供以下服务化部署方案：
 
@@ -91,6 +91,6 @@ PaddleOCR 产线使用教程中的 <b>“开发集成/部署”</b> 部分提供
 
 ## 2. 高稳定性服务化部署
 
-请参考 [PaddleX 服务化部署指南](https://paddlepaddle.github.io/PaddleX/latest/pipeline_deploy/serving.html#2)。在 [使用 PaddleX 产线配置文件](../paddleocr_and_paddlex.md#3-使用-paddlex-产线配置文件) 中，可以了解关于 PaddleX 产线配置文件的更多信息。
+请参考 [PaddleX 服务化部署指南](https://paddlepaddle.github.io/PaddleX/latest/pipeline_deploy/serving.html#2)。在 [使用 PaddleX 产线配置文件](../paddleocr_and_paddlex.md#3-paddlex) 中，可以了解关于 PaddleX 产线配置文件的更多信息。
 
 需要说明的是，由于缺乏细粒度优化等原因，当前 PaddleOCR 提供的高稳定性服务化部署方案在性能上可能不及 2.x 版本基于 PaddleServing 的方案；但该新方案已对飞桨 3.0 框架提供了全面支持，我们也将持续优化，后续考虑推出性能更优的部署方案。

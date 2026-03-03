@@ -5,7 +5,7 @@ comments: true
 # 一、PP-OCRv5多语种文字识别介绍
 
 
-[PP-OCRv5](./PP-OCRv5.md) 是 PP-OCR 系列的最新一代文字识别解决方案，专注于多场景、多语种的文字识别任务。在文字类型支持方面，默认配置的识别模型可准确识别简体中文、中文拼音、繁体中文、英文和日文这五大主流文字类型。同时，PP-OCRv5还提供了覆盖106种语言的多语种文字识别能力，包括韩文、西班牙文、法文、葡萄牙文、德文、意大利文、俄罗斯文、泰文、希腊文等（具体支持语种及缩写详见[第四节](#四-支持语种及缩写)）。相较于前代 PP-OCRv3 版本，PP-OCRv5 在多语言文字识别准确率上实现了超过30%的提升。
+[PP-OCRv5](./PP-OCRv5.md) 是 PP-OCR 系列的最新一代文字识别解决方案，专注于多场景、多语种的文字识别任务。在文字类型支持方面，默认配置的识别模型可准确识别简体中文、中文拼音、繁体中文、英文和日文这五大主流文字类型。同时，PP-OCRv5还提供了覆盖106种语言的多语种文字识别能力，包括韩文、西班牙文、法文、葡萄牙文、德文、意大利文、俄罗斯文、泰文、希腊文等（具体支持语种及缩写详见[第四节](#_3)）。相较于前代 PP-OCRv3 版本，PP-OCRv5 在多语言文字识别准确率上实现了超过30%的提升。
 
 <div align="center">
   <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/pipelines/ocr/french_0_res.jpg" alt="法文识别结" width="500"/>
@@ -87,7 +87,7 @@ paddleocr ocr -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_im
     --save_path ./output \
     --device gpu:0 
 ```
-上述命令行的其他参数说明请参考通用 OCR 产线的[命令行使用方式](../../pipeline_usage/OCR.md#21-命令行方式), 运行后结果会被打印到终端上：
+上述命令行的其他参数说明请参考通用 OCR 产线的[命令行使用方式](../../pipeline_usage/OCR.md#21), 运行后结果会被打印到终端上：
 
 ```bash
 {'res': {'input_path': '/root/.paddlex/predict_input/general_ocr_french01.png', 'page_index': None, 'model_settings': {'use_doc_preprocessor': True, 'use_textline_orientation': False}, 'doc_preprocessor_res': {'input_path': None, 'page_index': None, 'model_settings': {'use_doc_orientation_classify': False, 'use_doc_unwarping': False}, 'angle': -1}, 'dt_polys': array([[[119,  23],
@@ -133,7 +133,7 @@ for res in result:
     res.save_to_img("output")
     res.save_to_json("output")
 ```
-更过关于 `PaddleOCR` 类参数的说明参考通用 OCR 产线的[脚本方式集成](../../pipeline_usage/OCR.md#22-python脚本方式集成)。
+更过关于 `PaddleOCR` 类参数的说明参考通用 OCR 产线的[脚本方式集成](../../pipeline_usage/OCR.md#22-python)。
 
 
 ## 三、指标对比

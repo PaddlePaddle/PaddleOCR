@@ -8,15 +8,15 @@ comments: true
     - [Environment Preparation](#environment-preparation)
     - [Deployment Steps](#deployment-steps)
 - [Code Introduction](#code-introduction)
-- [Project Explanation](#project-explanation)
+- [Project Explanation](#engineering-details)
 - [Advanced Usage](#advanced-usage)
-    - [Update Prediction Library](#update-prediction-library) 
-    - [Convert NB Model](#convert-nb-model) 
-    - [Update Model, Label File, and Prediction Image](#update-model-label-file-and-prediction-image)
-        - [Update Model](#update-model)
-        - [Update Label File](#update-label-file)
-        - [Update Prediction Image](#update-prediction-image)
-    - [Update Input/Output Preprocessing](#update-inputoutput-preprocessing)
+    - [Update Prediction Library](#updating-the-prediction-library)
+    - [Convert NB Model](#converting-nb-models)
+    - [Update Model, Label File, and Prediction Image](#updating-models-label-files-and-prediction-images)
+        - [Update Model](#updating-models)
+        - [Update Label File](#updating-label-files)
+        - [Update Prediction Image](#updating-prediction-images)
+    - [Update Input/Output Preprocessing](#updating-inputoutput-preprocessing)
 
 This guide mainly introduces how to run the PaddleX on-device deployment demo for OCR text recognition on an Android shell.
 

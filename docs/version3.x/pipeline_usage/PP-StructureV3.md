@@ -1617,7 +1617,7 @@ paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --device gpu
        [ 13, ..., 777]], dtype=int16)}}}
 </code></pre></details>
 
-运行结果参数说明可以参考[2.2 Python脚本方式集成](#222-python脚本方式集成)中的结果解释。
+运行结果参数说明可以参考[2.2 Python脚本方式集成](#22-python)中的结果解释。
 
 <b>注：</b>由于产线的默认模型较大，推理速度可能较慢，您可以参考第一节的模型列表，替换推理速度更快的模型。
 
@@ -2790,7 +2790,7 @@ for item in markdown_images:
 
 如果产线可以达到您对产线推理速度和精度的要求，您可以直接进行开发集成/部署。
 
-若您需要将产线直接应用在您的Python项目中，可以参考 [2.2 Python脚本方式](#22-python脚本方式集成)中的示例代码。
+若您需要将产线直接应用在您的Python项目中，可以参考 [2.2 Python脚本方式](#22-python)中的示例代码。
 
 此外，PaddleOCR 也提供了其他两种部署方式，详细说明如下：
 
