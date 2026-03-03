@@ -10,11 +10,11 @@
 ## 快速开始
 
 1. 安装对应 skill 的依赖。
-2. 复制 `.env.example` 为 `.env` 并填入 API 凭证：
+2. 通过脚本交互式配置 API 凭证：
    ```bash
-   cp skills/.env.example skills/.env
+   python skills/paddleocr-text-recognition/scripts/configure.py
    ```
-   也可通过脚本交互式配置：`python skills/paddleocr-text-recognition/scripts/configure.py`
+   或手动复制 `.env.example` 为 `.env` 并填入凭证：`cp skills/.env.example skills/.env`
 3. 运行冒烟测试：
 
 ```bash
