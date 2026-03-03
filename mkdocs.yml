@@ -218,10 +218,12 @@ plugins:
         #   build: false
         #   fixed_link: "https://github.com/PaddlePaddle/PaddleOCR/discussions/13374"
   - git-committers:
+      enabled: !ENV [ENABLE_GIT_PLUGINS, true]
       repository: PaddlePaddle/PaddleOCR
       branch: main
       token: !!python/object/apply:os.getenv ["MKDOCS_GIT_COMMITTERS_APIKEY"]
   - git-revision-date-localized:
+      enabled: !ENV [ENABLE_GIT_PLUGINS, true]
       enable_creation_date: true
       timezone: Asia/Shanghai
       type: iso_datetime
