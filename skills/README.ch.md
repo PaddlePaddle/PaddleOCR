@@ -1,6 +1,6 @@
-﻿# PaddleOCR Skills（中文）
+# PaddleOCR Skills
 
-本目录提供 PaddleOCR 云端 API 的 Agent Skills。
+本目录提供 PaddleOCR 官方 API 的 Agent Skills。
 
 ## 技能列表
 
@@ -30,7 +30,3 @@ python skills/paddleocr-doc-parsing/scripts/smoke_test.py
 ## 许可证
 
 [Apache License 2.0](../LICENSE)
-
-## 仓库
-
-- Source: <https://github.com/PaddlePaddle/PaddleOCR/tree/main/skills>

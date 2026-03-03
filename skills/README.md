@@ -1,6 +1,6 @@
-﻿# PaddleOCR Skills
+# PaddleOCR Skills
 
-This directory contains AI agent skills for PaddleOCR cloud APIs.
+This directory contains AI agent skills for PaddleOCR official APIs.
 
 ## Included Skills
 
@@ -30,7 +30,3 @@ Get API credentials from the PaddleOCR official website: <https://www.paddleocr.
 ## License
 
 [Apache License 2.0](../LICENSE)
-
-## Repository
-
-- Source: <https://github.com/PaddlePaddle/PaddleOCR/tree/main/skills>
