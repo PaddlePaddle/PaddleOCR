@@ -1,8 +1,8 @@
-# PaddleOCR-VL High-Performance Service Deployment
+# PaddleOCR-VL-1.5 High-Performance Service Deployment
 
 [简体中文](README.md)
 
-This directory provides a high-performance service deployment solution for PaddleOCR-VL with concurrent request processing support.
+This directory provides a high-performance service deployment solution for PaddleOCR-VL-1.5 with concurrent request processing support.
 
 > This solution currently only supports NVIDIA GPUs. Support for other inference devices is still being developed.
 

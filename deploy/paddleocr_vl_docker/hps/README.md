@@ -1,8 +1,8 @@
-# PaddleOCR-VL 高性能服务化部署
+# PaddleOCR-VL-1.5 高性能服务化部署
 
 [English](README_en.md)
 
-本目录提供一套支持并发请求处理的 PaddleOCR-VL 高性能服务化部署方案。
+本目录提供一套支持并发请求处理的 PaddleOCR-VL-1.5 高性能服务化部署方案。
 
 > 本方案目前暂时只支持 NVIDIA GPU，对其他推理设备的支持仍在完善中。
 
