@@ -495,7 +495,14 @@ class GoTImgDecode:
         data = (data - min_val) / (max_val - min_val) * 255
         gray = 255 * (data < 200).astype(np.uint8)
         coords = cv2.findNonZero(gray)  # Find all non-zero points (text)
+        if coords is None:
+            return img
         a, b, w, h = cv2.boundingRect(coords)  # Find minimum spanning bounding box
+        if w == 0 or h == 0:
+            return img
+        # Avoid extreme aspect ratios that cause errors in downstream processing
+        if max(w, h) / min(w, h) > 200:
+            return img
         return img.crop((a, b, w + a, h + b))
 
     def get_dimensions(self, img):
@@ -595,7 +602,14 @@ class UniMERNetImgDecode:
         data = (data - min_val) / (max_val - min_val) * 255
         gray = 255 * (data < 200).astype(np.uint8)
         coords = cv2.findNonZero(gray)  # Find all non-zero points (text)
+        if coords is None:
+            return img
         a, b, w, h = cv2.boundingRect(coords)  # Find minimum spanning bounding box
+        if w == 0 or h == 0:
+            return img
+        # Avoid extreme aspect ratios that cause errors in downstream processing
+        if max(w, h) / min(w, h) > 200:
+            return img
         return img.crop((a, b, w + a, h + b))
 
     def get_dimensions(self, img):
@@ -720,7 +734,14 @@ class UniMERNetResize:
         gray = 255 * (data < 200).astype(np.uint8)
 
         coords = cv2.findNonZero(gray)  # Find all non-zero points (text)
+        if coords is None:
+            return img
         a, b, w, h = cv2.boundingRect(coords)  # Find minimum spanning bounding box
+        if w == 0 or h == 0:
+            return img
+        # Avoid extreme aspect ratios that cause errors in downstream processing
+        if max(w, h) / min(w, h) > 200:
+            return img
         return img.crop((a, b, w + a, h + b))
 
     def get_dimensions(self, img):

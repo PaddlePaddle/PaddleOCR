@@ -100,7 +100,7 @@ paddleocr ocr -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_im
     --save_path ./output \
     --device gpu:0 
 ```
-For explanations of the other command-line parameters, please refer to the [Command Line Usage](../../pipeline_usage/OCR.md#21-command-line-usage) section of the general OCR pipeline documentation. After running, the results will be displayed in the terminal:
+For explanations of the other command-line parameters, please refer to the [Command Line Usage](../../pipeline_usage/OCR.en.md#21-command-line) section of the general OCR pipeline documentation. After running, the results will be displayed in the terminal:
 
 ```bash
 {'res': {'input_path': '/root/.paddlex/predict_input/general_ocr_french01.png', 'page_index': None, 'model_settings': {'use_doc_preprocessor': True, 'use_textline_orientation': False}, 'doc_preprocessor_res': {'input_path': None, 'page_index': None, 'model_settings': {'use_doc_orientation_classify': False, 'use_doc_unwarping': False}, 'angle': -1}, 'dt_polys': array([[[119,  23],
@@ -146,7 +146,7 @@ for res in result:
     res.save_to_img("output")
     res.save_to_json("output")
 ```
-For more details on the `PaddleOCR` class parameters, please refer to the [Python Scripting Integration](../../pipeline_usage/OCR.md#22-python-scripting-integration) section of the general OCR pipeline documentation.
+For more details on the `PaddleOCR` class parameters, please refer to the [Python Scripting Integration](../../pipeline_usage/OCR.en.md#22-python-script-integration) section of the general OCR pipeline documentation.
 
 
 ## 3. Performance Comparison

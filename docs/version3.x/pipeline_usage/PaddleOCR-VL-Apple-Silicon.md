@@ -37,7 +37,7 @@ python -m pip install -U "paddleocr[doc-parser]"
 
 ## 2. 快速开始
 
-请参考[PaddleOCR-VL 使用教程 - 2. 快速开始](./PaddleOCR-VL.md#2-快速开始)。
+请参考[PaddleOCR-VL 使用教程 - 2. 快速开始](./PaddleOCR-VL.md#2)。
 
 ## 3. 使用推理加速框架提升 VLM 推理性能
 
@@ -45,10 +45,10 @@ python -m pip install -U "paddleocr[doc-parser]"
 
 ### 3.1 启动 VLM 推理服务
 
-安装 MLX-VLM 推理框架：
+安装 MLX-VLM 推理框架（v0.3.11以上版本）：
 
 ```shell
-python -m pip install -U mlx-vlm
+python -m pip install "mlx-vlm>=0.3.11"
 ```
 
 启动 MLX-VLM 推理服务：
@@ -85,7 +85,7 @@ pipeline = PaddleOCRVL(
 
 ### 3.3 性能调优
 
-请参考[PaddleOCR-VL 使用教程 - 3.3 性能调优](./PaddleOCR-VL.md#33-性能调优)。
+请参考[PaddleOCR-VL 使用教程 - 3.3 性能调优](./PaddleOCR-VL.md#33)。
 
 ## 4. 服务化部署
 
@@ -97,12 +97,12 @@ pipeline = PaddleOCRVL(
 
 ### 4.2 客户端调用方式
 
-请参考[PaddleOCR-VL 使用教程 - 4.3 客户端调用方式](./PaddleOCR-VL.md#43-客户端调用方式)。
+请参考[PaddleOCR-VL 使用教程 - 4.3 客户端调用方式](./PaddleOCR-VL.md#43)。
 
 ### 4.3 产线配置调整说明
 
-请参考[PaddleOCR-VL 使用教程 - 4.4 产线配置调整说明](./PaddleOCR-VL.md#44-产线配置调整说明)。
+请参考[PaddleOCR-VL 使用教程 - 4.4 产线配置调整说明](./PaddleOCR-VL.md#44)。
 
 ## 5. 模型微调
 
-请参考[PaddleOCR-VL 使用教程 - 5. 模型微调](./PaddleOCR-VL.md#5-模型微调)。
+请参考[PaddleOCR-VL 使用教程 - 5. 模型微调](./PaddleOCR-VL.md#5)。

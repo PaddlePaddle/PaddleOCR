@@ -102,7 +102,7 @@ Paddle-Lite 提供了多种策略来自动优化原始的模型，其中包括�
 | PP-OCRv3(slim) | 蒸馏版超轻量中文OCR移动端模型 | 5.9M     | [下载地址](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_slim_infer.nb) | [下载地址](https://paddleocr.bj.bcebos.com/PP-OCRv2/lite/ch_ppocr_mobile_v2.0_cls_slim_opt.nb)  | [下载地址](https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_slim_infer.nb) | v2.10           |
 
 
-如果直接使用上述表格中的模型进行部署，可略过下述步骤，直接阅读 [2.2节](#2.2与手机联调)。
+如果直接使用上述表格中的模型进行部署，可略过下述步骤，直接阅读 [2.2节](#22)。
 
 如果要部署的模型不在上述表格中，则需要按照如下步骤获得优化后的模型。
 
