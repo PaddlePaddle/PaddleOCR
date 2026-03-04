@@ -164,6 +164,7 @@ def _make_api_request(api_url: str, token: str, params: dict) -> dict:
     headers = {
         "Authorization": f"token {token}",
         "Content-Type": "application/json",
+        "Client-Platform": "official-skill",
     }
 
     timeout = float(os.getenv("PADDLEOCR_DOC_PARSING_TIMEOUT", str(DEFAULT_TIMEOUT)))
