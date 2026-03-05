@@ -1,6 +1,6 @@
 # PaddleOCR Skills
 
-本目录提供面向新手的 PaddleOCR 官方 API Agent Skills。只看本文档即可完成安装、配置与首跑。
+本目录提供 PaddleOCR 官方 API 的 Agent Skills。
 
 ## 技能列表
 
@@ -54,26 +54,26 @@
 
 ### 文本识别（`paddleocr-text-recognition`）
 
-可直接复制发送：
-```bash
-Extract all text from this file: https://example.com/invoice.jpg
+示例提示词：
+```text
+提取这个文件中的全部文本：https://example.com/invoice.jpg
 ```
 
-或：
-```bash
-Extract all text from local file C:\docs\invoice.pdf
+备选提示词：
+```text
+提取本地文件 C:\docs\invoice.pdf 中的全部文本。
 ```
 
 ### 文档解析（`paddleocr-doc-parsing`）
 
-可直接复制发送：
-```bash
-Parse this PDF and return the main body plus all tables in structured format: https://example.com/report.pdf
+示例提示词：
+```text
+解析这个 PDF，并返回主体内容和全部表格（结构化输出）：https://example.com/report.pdf
 ```
 
-或：
-```bash
-Parse local file C:\docs\report.pdf and return complete structured output.
+备选提示词：
+```text
+解析本地文件 C:\docs\report.pdf，并返回完整结构化结果。
 ```
 
 ## 验证与排错

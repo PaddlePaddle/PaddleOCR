@@ -1,6 +1,6 @@
 # PaddleOCR Skills
 
-Beginner-friendly agent skills for PaddleOCR official APIs. Follow this document to install, configure, and run them end-to-end.
+This directory contains agent skills for PaddleOCR official APIs.
 
 ## Included Skills
 
@@ -54,25 +54,25 @@ You can use URL inputs or local file paths in your chat requests.
 
 ### Text Recognition (`paddleocr-text-recognition`)
 
-Copy and send:
-```bash
+Example prompt:
+```text
 Extract all text from this file: https://example.com/invoice.jpg
 ```
 
-Or:
-```bash
+Alternative prompt:
+```text
 Extract all text from local file C:\docs\invoice.pdf
 ```
 
 ### Document Parsing (`paddleocr-doc-parsing`)
 
-Copy and send:
-```bash
+Example prompt:
+```text
 Parse this PDF and return the main body plus all tables in structured format: https://example.com/report.pdf
 ```
 
-Or:
-```bash
+Alternative prompt:
+```text
 Parse local file C:\docs\report.pdf and return complete structured output.
 ```
 
