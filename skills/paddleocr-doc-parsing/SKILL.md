@@ -43,30 +43,29 @@ If the script execution fails (API not configured, network error, etc.):
 
 1. **Execute document parsing**:
    ```bash
-   python scripts/vl_caller.py --file-url "URL provided by user"
+   python scripts/vl_caller.py --file-url "URL provided by user" --output tmp/paddleocr-doc-parsing/result.json --pretty
    ```
    Or for local files:
    ```bash
-   python scripts/vl_caller.py --file-path "file path"
+   python scripts/vl_caller.py --file-path "file path" --output tmp/paddleocr-doc-parsing/result.json --pretty
    ```
 
    **Optional: explicitly set file type**:
    ```bash
-   python scripts/vl_caller.py --file-url "URL provided by user" --file-type 0
+   python scripts/vl_caller.py --file-url "URL provided by user" --file-type 0 --output tmp/paddleocr-doc-parsing/result.json --pretty
    ```
    - `--file-type 0`: PDF
    - `--file-type 1`: image
    - If omitted, the service can infer file type from input.
 
-   **Save result to file** (recommended):
-   ```bash
-   python scripts/vl_caller.py --file-url "URL" --output result.json --pretty
-   ```
-   - The script will display: `Result saved to: /absolute/path/to/result.json`
-   - This message appears on stderr, the JSON is saved to the file
-   - **Tell the user the file path** shown in the message
+   **Default behavior (MANDATORY): save raw JSON to file**:
+   - Default output path: `tmp/paddleocr-doc-parsing/result.json` (overwrites previous result)
+   - The script prints absolute saved path on stderr: `Result saved to: /absolute/path/...`
+   - With `--output`, JSON is written to file and stdout no longer carries the JSON payload
+   - After execution, read and parse the saved JSON file before responding
+   - On success, always tell the user the saved file path and that full raw JSON is available there
 
-2. **The script returns COMPLETE JSON** with all document content:
+2. **The saved output file contains COMPLETE JSON** with all document content:
    - Headers, footers, page numbers
    - Main text content
    - Tables with structure
@@ -80,7 +79,7 @@ If the script execution fails (API not configured, network error, etc.):
    - Supported file types depend on the model and endpoint configuration.
    - Always follow the file type constraints documented by your endpoint API.
 
-3. **Extract what the user needs** from stable contract fields based on their request:
+3. **Extract what the user needs** from the saved output JSON using stable contract fields:
    - Top-level `text`
    - `result[n].markdown`
    - `result[n].prunedResult`
@@ -89,7 +88,7 @@ If the script execution fails (API not configured, network error, etc.):
 
 **CRITICAL**: You must display the COMPLETE extracted content to the user based on their needs.
 
-- The script returns ALL document content in a structured format
+- The saved output JSON contains ALL document content in a structured format
 - **Display the full content requested by the user**, do NOT truncate or summarize
 - If user asks for "all text", show the entire `text` field
 - If user asks for "tables", show ALL tables in the document
@@ -126,7 +125,7 @@ Agent: "I found a document with multiple sections. Here's the beginning:
 
 ### Understanding the JSON Response
 
-The script returns a JSON envelope wrapping the raw API result:
+The saved output file contains a JSON envelope wrapping the raw API result:
 
 ```json
 {
@@ -143,12 +142,15 @@ The script returns a JSON envelope wrapping the raw API result:
 - `result[n].prunedResult` - structured parsing output for each page (layout/content/confidence and related metadata)
 - `result[n].markdown` — full rendered page output in markdown/HTML
 
+> Raw result location (default): `tmp/paddleocr-doc-parsing/result.json`
+
 ### Usage Examples
 
 **Example 1: Extract Full Document Text**
 ```bash
 python scripts/vl_caller.py \
   --file-url "https://example.com/paper.pdf" \
+  --output tmp/paddleocr-doc-parsing/result.json \
   --pretty
 ```
 
@@ -160,6 +162,7 @@ Then use:
 ```bash
 python scripts/vl_caller.py \
   --file-path "./financial_report.pdf" \
+  --output tmp/paddleocr-doc-parsing/result.json \
   --pretty
 ```
 
@@ -171,6 +174,7 @@ Then use:
 ```bash
 python scripts/vl_caller.py \
   --file-url "URL" \
+  --output tmp/paddleocr-doc-parsing/result.json \
   --pretty
 ```
 

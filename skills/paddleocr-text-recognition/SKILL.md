@@ -49,19 +49,21 @@ If the script execution fails (API not configured, network error, etc.):
 
 2. **Execute OCR**:
    ```bash
-   python scripts/ocr_caller.py --file-url "URL provided by user" --pretty
+   python scripts/ocr_caller.py --file-url "URL provided by user" --output tmp/paddleocr-text-recognition/result.json --pretty
    ```
    Or for local files:
    ```bash
-   python scripts/ocr_caller.py --file-path "file path" --pretty
+   python scripts/ocr_caller.py --file-path "file path" --output tmp/paddleocr-text-recognition/result.json --pretty
    ```
 
-   **Save result to file** (recommended):
-   ```bash
-   python scripts/ocr_caller.py --file-url "URL" --output result.json --pretty
-   ```
+   **Default behavior (MANDATORY): save raw JSON to file**:
+   - Default output path: `tmp/paddleocr-text-recognition/result.json` (overwrites previous result)
+   - The script prints absolute saved path on stderr: `Result saved to: /absolute/path/...`
+   - With `--output`, JSON is written to file and stdout no longer carries the JSON payload
+   - After execution, read and parse the saved JSON file before responding
 
 3. **Parse JSON response**:
+   - Load JSON from the saved file path shown by the script
    - Check the `ok` field: `true` means success, `false` means error
    - Extract text: `text` field contains all recognized text
    - Handle errors: If `ok` is false, display `error.message`
@@ -69,12 +71,13 @@ If the script execution fails (API not configured, network error, etc.):
 4. **Present results to user**:
    - Display extracted text in a readable format
    - If the text is empty, the image may contain no text
+   - On success, always tell the user the saved file path and that full raw JSON is available there
 
 ### IMPORTANT: Complete Output Display
 
 **CRITICAL**: Always display the COMPLETE recognized text to the user. Do NOT truncate or summarize the OCR results.
 
-- The script returns the full JSON with complete text content in `text` field
+- The saved JSON file contains complete output, including full text in `text` field
 - **You MUST display the entire `text` content to the user**, no matter how long it is
 - Do NOT use phrases like "Here's a summary" or "The text begins with..."
 - Do NOT truncate with "..." unless the text truly exceeds reasonable display limits
@@ -97,22 +100,22 @@ I found some text in the image. Here's a preview:
 
 **Example 1: URL OCR**:
 ```bash
-python scripts/ocr_caller.py --file-url "https://example.com/invoice.jpg" --pretty
+python scripts/ocr_caller.py --file-url "https://example.com/invoice.jpg" --output tmp/paddleocr-text-recognition/result.json --pretty
 ```
 
 **Example 2: Local File OCR**:
 ```bash
-python scripts/ocr_caller.py --file-path "./document.pdf" --pretty
+python scripts/ocr_caller.py --file-path "./document.pdf" --output tmp/paddleocr-text-recognition/result.json --pretty
 ```
 
 **Example 3: OCR With Explicit File Type**:
 ```bash
-python scripts/ocr_caller.py --file-url "https://example.com/input" --file-type 1 --pretty
+python scripts/ocr_caller.py --file-url "https://example.com/input" --file-type 1 --output tmp/paddleocr-text-recognition/result.json --pretty
 ```
 
 ### Understanding the Output
 
-The script outputs JSON structure as follows:
+The saved output file contains JSON structure as follows:
 ```json
 {
   "ok": true,
@@ -127,6 +130,8 @@ The script outputs JSON structure as follows:
 - `text`: Complete recognized text
 - `result`: Raw API response (for debugging)
 - `error`: Error details if `ok` is false
+
+> Raw result location (default): `tmp/paddleocr-text-recognition/result.json`
 
 ### First-Time Configuration
 
