@@ -11,15 +11,16 @@ This directory contains agent skills for PaddleOCR official APIs.
 
 - `paddleocr-doc-parsing`: `PP-StructureV3`, `PaddleOCR-VL`, `PaddleOCR-VL-1.5`
 - `paddleocr-text-recognition`: `PP-OCRv5`
-- Note: actual model capabilities and supported file formats depend on the configured API endpoint.
 
-## Quick Start (npx)
+## Quick Start
+
+This workflow requires Node.js, `npm`, and `npx`. If `npx` is unavailable, install Node.js first.
 
 1. List installable skills from this repository:
    ```bash
    npx skills add PaddlePaddle/PaddleOCR --list
    ```
-2. Install skills globally:
+2. Install skills globally. The examples below install both skills; install only the one you need if applicable:
    ```bash
    npx skills add PaddlePaddle/PaddleOCR -g --skill paddleocr-text-recognition -y
    npx skills add PaddlePaddle/PaddleOCR -g --skill paddleocr-doc-parsing -y
@@ -28,14 +29,14 @@ This directory contains agent skills for PaddleOCR official APIs.
    ```bash
    npx skills list -g
    ```
-4. Install Python dependencies right after installation:
+4. Install Python dependencies:
    ```bash
    python -m pip install -r ~/.agents/skills/paddleocr-text-recognition/scripts/requirements.txt
    python -m pip install -r ~/.agents/skills/paddleocr-doc-parsing/scripts/requirements.txt
    # Optional: required only when using document file optimization
    python -m pip install -r ~/.agents/skills/paddleocr-doc-parsing/scripts/requirements-optimize.txt
    ```
-   On Windows, use equivalent paths under `$HOME\\.agents\\skills\\...`.
+   If using Windows PowerShell, use equivalent paths under `$HOME\\.agents\\skills\\...`.
 5. Configure API credentials interactively:
    ```bash
    python ~/.agents/skills/paddleocr-text-recognition/scripts/configure.py
@@ -48,37 +49,37 @@ This directory contains agent skills for PaddleOCR official APIs.
    python ~/.agents/skills/paddleocr-doc-parsing/scripts/smoke_test.py
    ```
 
-## How to Use in Chat
+## Using in AI Apps (for example, Claude Code)
 
-You can use URL inputs or local file paths in your chat requests.
+Describe the OCR or document parsing task in natural language and provide a file URL or local path so the AI app can invoke the skill.
 
-### Text Recognition (`paddleocr-text-recognition`)
+### paddleocr-text-recognition
 
-Example prompt:
+URL example:
 ```text
 Extract all text from this file: https://example.com/invoice.jpg
 ```
 
-Alternative prompt:
+Local file example:
 ```text
 Extract all text from local file C:\docs\invoice.pdf
 ```
 
-### Document Parsing (`paddleocr-doc-parsing`)
+### paddleocr-doc-parsing
 
-Example prompt:
+URL example:
 ```text
 Parse this PDF and return the main body plus all tables in structured format: https://example.com/report.pdf
 ```
 
-Alternative prompt:
+Local file example:
 ```text
 Parse local file C:\docs\report.pdf and return complete structured output.
 ```
 
 ## Verification & Troubleshooting
 
-- Skill not installed: run `npx skills list -g` to confirm both skills are present.
+- Skill not installed: run `npx skills list -g` to confirm the required skill is present.
 - Missing dependencies: rerun `python -m pip install -r ...` for the corresponding skill.
 - Configuration errors: rerun the corresponding `configure.py` script.
 - API URL and access token source: <https://www.paddleocr.com>
