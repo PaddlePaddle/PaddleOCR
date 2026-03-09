@@ -27,6 +27,9 @@ import argparse
 import io
 import json
 import sys
+import tempfile
+import uuid
+from datetime import datetime
 from pathlib import Path
 
 # Fix Windows console encoding
@@ -40,23 +43,42 @@ sys.path.insert(0, str(Path(__file__).parent))
 from lib import ocr
 
 
+def get_default_output_path():
+    """Build a unique result path under the OS temp directory."""
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
+    short_id = uuid.uuid4().hex[:8]
+    return (
+        Path(tempfile.gettempdir())
+        / "paddleocr"
+        / "text-recognition"
+        / "results"
+        / f"result_{timestamp}_{short_id}.json"
+    )
+
+
+def resolve_output_path(output_arg):
+    if output_arg:
+        return Path(output_arg).expanduser().resolve()
+    return get_default_output_path().resolve()
+
+
 def main():
     parser = argparse.ArgumentParser(
         description="PaddleOCR Text Recognition - OCR images/PDFs",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-  # OCR from URL
+  # OCR from URL (result is auto-saved to the system temp directory)
   python scripts/paddleocr-text-recognition/ocr_caller.py --file-url "https://example.com/image.png"
 
-  # OCR local file
+  # OCR local file (result is auto-saved to the system temp directory)
   python scripts/paddleocr-text-recognition/ocr_caller.py --file-path "./document.pdf" --pretty
 
   # OCR with explicit file type override
   python scripts/paddleocr-text-recognition/ocr_caller.py --file-url "URL" --file-type 1 --pretty
 
-  # Save result to file
-  python scripts/paddleocr-text-recognition/ocr_caller.py --file-url "URL" --output result.json
+  # Save result to a custom file path
+  python scripts/paddleocr-text-recognition/ocr_caller.py --file-url "URL" --output "./result.json" --pretty
 
 Configuration:
   Run: python scripts/paddleocr-text-recognition/configure.py
@@ -77,10 +99,13 @@ Configuration:
         help="Optional file type override (0=PDF, 1=Image)",
     )
     parser.add_argument(
-        "--pretty", action="store_true", help="Pretty-print JSON output"
+        "--pretty", action="store_true", help="Pretty-print saved JSON"
     )
     parser.add_argument(
-        "--output", "-o", metavar="FILE", help="Save result to JSON file"
+        "--output",
+        "-o",
+        metavar="FILE",
+        help="Save result to JSON file (default: auto-save to system temp directory)",
     )
 
     args = parser.parse_args()
@@ -99,20 +124,16 @@ Configuration:
     indent = 2 if args.pretty else None
     json_output = json.dumps(result, indent=indent, ensure_ascii=False)
 
-    # Save to file or print
-    if args.output:
-        try:
-            output_path = Path(args.output).resolve()
-            output_path.parent.mkdir(parents=True, exist_ok=True)
-            output_path.write_text(json_output, encoding="utf-8")
-            print(f"Result saved to: {output_path}", file=sys.stderr)
-        except (PermissionError, OSError) as e:
-            print(f"Error: Cannot write to {args.output}: {e}", file=sys.stderr)
-            sys.exit(5)
-    else:
-        print(json_output)
-        if result["ok"]:
-            print("\nTip: Use --output result.json to save the result", file=sys.stderr)
+    output_path = resolve_output_path(args.output)
+
+    # Save to file
+    try:
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path.write_text(json_output, encoding="utf-8")
+        print(f"Result saved to: {output_path}", file=sys.stderr)
+    except (PermissionError, OSError) as e:
+        print(f"Error: Cannot write to {output_path}: {e}", file=sys.stderr)
+        sys.exit(5)
 
     # Exit code based on result
     sys.exit(0 if result["ok"] else 1)

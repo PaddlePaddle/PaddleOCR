@@ -2,6 +2,8 @@
 
 This document defines the output envelope returned by `ocr_caller.py`.
 
+By default, `ocr_caller.py` saves the JSON envelope to a unique file under the system temp directory and prints the absolute saved path to `stderr`. Use `--output` only when you need a custom destination.
+
 ## Output Envelope
 
 `ocr_caller.py` wraps provider response in a stable structure:
@@ -90,15 +92,15 @@ Raw fields may vary by model version and endpoint.
 ## Command Examples
 
 ```bash
-# OCR from URL
+# OCR from URL (result auto-saves to the system temp directory)
 python scripts/paddleocr-text-recognition/ocr_caller.py --file-url "URL" --pretty
 
-# OCR local file
+# OCR local file (result auto-saves to the system temp directory)
 python scripts/paddleocr-text-recognition/ocr_caller.py --file-path "doc.pdf" --pretty
 
 # OCR with explicit file type
 python scripts/paddleocr-text-recognition/ocr_caller.py --file-url "URL" --file-type 1 --pretty
 
-# Save result to file
-python scripts/paddleocr-text-recognition/ocr_caller.py --file-url "URL" --output result.json
+# Save result to a custom file path
+python scripts/paddleocr-text-recognition/ocr_caller.py --file-url "URL" --output "./result.json" --pretty
 ```

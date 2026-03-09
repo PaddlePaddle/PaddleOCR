@@ -160,6 +160,9 @@ def main():
     print(
         '  python skills/paddleocr-text-recognition/scripts/ocr_caller.py --file-path "image.png" --pretty'
     )
+    print(
+        "  Results are auto-saved to the system temp directory; the caller prints the saved path."
+    )
 
     return 0
 

@@ -160,6 +160,9 @@ def main():
     print(
         '  python skills/paddleocr-doc-parsing/scripts/vl_caller.py --file-path "doc.pdf"'
     )
+    print(
+        "  Results are auto-saved to the system temp directory; the caller prints the saved path."
+    )
 
     return 0
 

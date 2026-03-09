@@ -2,6 +2,8 @@
 
 This document defines the output envelope returned by `vl_caller.py`.
 
+By default, `vl_caller.py` saves the JSON envelope to a unique file under the system temp directory and prints the absolute saved path to `stderr`. Use `--output` only when you need a custom destination.
+
 ## Output Envelope
 
 `vl_caller.py` wraps provider response in a stable structure:
@@ -84,12 +86,12 @@ Raw fields may vary by model version and endpoint.
 ## Command Examples
 
 ```bash
-# Parse document from URL
+# Parse document from URL (result auto-saves to the system temp directory)
 python scripts/paddleocr-doc-parsing/vl_caller.py --file-url "URL" --pretty
 
-# Parse local file
+# Parse local file (result auto-saves to the system temp directory)
 python scripts/paddleocr-doc-parsing/vl_caller.py --file-path "doc.pdf" --pretty
 
-# Save result to file
-python scripts/paddleocr-doc-parsing/vl_caller.py --file-url "URL" --output result.json
+# Save result to a custom file path
+python scripts/paddleocr-doc-parsing/vl_caller.py --file-url "URL" --output "./result.json" --pretty
 ```

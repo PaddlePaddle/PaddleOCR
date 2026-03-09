@@ -49,17 +49,19 @@ If the script execution fails (API not configured, network error, etc.):
 
 2. **Execute OCR**:
    ```bash
-   python scripts/ocr_caller.py --file-url "URL provided by user" --output tmp/paddleocr-text-recognition/result.json --pretty
+   python scripts/ocr_caller.py --file-url "URL provided by user" --pretty
    ```
    Or for local files:
    ```bash
-   python scripts/ocr_caller.py --file-path "file path" --output tmp/paddleocr-text-recognition/result.json --pretty
+   python scripts/ocr_caller.py --file-path "file path" --pretty
    ```
 
-   **Default behavior (MANDATORY): save raw JSON to file**:
-   - Default output path: `tmp/paddleocr-text-recognition/result.json` (overwrites previous result)
-   - The script prints absolute saved path on stderr: `Result saved to: /absolute/path/...`
-   - With `--output`, JSON is written to file and stdout no longer carries the JSON payload
+   **Default behavior: save raw JSON to a temp file**:
+   - If `--output` is omitted, the script saves automatically under the system temp directory
+   - Default path pattern: `<system-temp>/paddleocr/text-recognition/results/result_<timestamp>_<id>.json`
+   - If `--output` is provided, it overrides the default temp-file destination
+   - The script prints the absolute saved path on stderr: `Result saved to: /absolute/path/...`
+   - JSON is written to file and stdout no longer carries the JSON payload
    - After execution, read and parse the saved JSON file before responding
 
 3. **Parse JSON response**:
@@ -100,17 +102,17 @@ I found some text in the image. Here's a preview:
 
 **Example 1: URL OCR**:
 ```bash
-python scripts/ocr_caller.py --file-url "https://example.com/invoice.jpg" --output tmp/paddleocr-text-recognition/result.json --pretty
+python scripts/ocr_caller.py --file-url "https://example.com/invoice.jpg" --pretty
 ```
 
 **Example 2: Local File OCR**:
 ```bash
-python scripts/ocr_caller.py --file-path "./document.pdf" --output tmp/paddleocr-text-recognition/result.json --pretty
+python scripts/ocr_caller.py --file-path "./document.pdf" --pretty
 ```
 
 **Example 3: OCR With Explicit File Type**:
 ```bash
-python scripts/ocr_caller.py --file-url "https://example.com/input" --file-type 1 --output tmp/paddleocr-text-recognition/result.json --pretty
+python scripts/ocr_caller.py --file-url "https://example.com/input" --file-type 1 --pretty
 ```
 
 ### Understanding the Output
@@ -131,7 +133,7 @@ The saved output file contains JSON structure as follows:
 - `result`: Raw API response (for debugging)
 - `error`: Error details if `ok` is false
 
-> Raw result location (default): `tmp/paddleocr-text-recognition/result.json`
+> Raw result location (default): the temp-file path printed by the script on stderr
 
 ### First-Time Configuration
 
