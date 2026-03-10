@@ -71,7 +71,7 @@ python -c "import paddle; print(paddle.__version__)"
 如果已安装成功，将输出以下内容：
 
 ```bash
-3.0.0
+3.2.0
 ```
 
 ## 1.3 Windows 系统适配 NVIDIA 50 系显卡的 PaddlePaddle wheel 包安装
