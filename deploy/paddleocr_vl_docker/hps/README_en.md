@@ -15,8 +15,8 @@ Client → FastAPI Gateway → Triton Server → vLLM Server
 | Component       | Description                                                           |
 |-----------------|-----------------------------------------------------------------------|
 | FastAPI Gateway | Unified access point, simplified client calls, concurrency control    |
-| Triton Server   | Model management, dynamic batching, inference scheduling              |
-| vLLM Server     | Continuous batching, VLM inference                                    |
+| Triton Server   | Layout detection model (PP-DocLayoutV3) and pipeline orchestration; model management, dynamic batching, inference scheduling |
+| vLLM Server     | VLM (PaddleOCR-VL-1.5), continuous batching inference                |
 
 **Triton Models:**
 
@@ -157,6 +157,28 @@ Each Uvicorn worker is an independent process with its own event loop:
 ### Triton Dynamic Batching
 
 Triton automatically batches requests to improve inference device utilization. The maximum batch size is controlled by the `max_batch_size` parameter in the model configuration file (default: 8), located at `config.pbtxt` under each model directory in the model repository (e.g., `model_repo/layout-parsing/config.pbtxt`).
+
+### Triton Instance Count
+
+The number of parallel inference instances for each Triton model is configured via the `instance_group` section in `config.pbtxt` (default: 1). Increasing the instance count improves parallelism but consumes more device resources.
+
+```
+# model_repo/layout-parsing/config.pbtxt
+instance_group [
+  {
+      count: 1       # Number of instances; increase for higher parallelism
+      kind: KIND_GPU
+      gpus: [ 0 ]
+  }
+]
+```
+
+There is a trade-off between instance count and dynamic batching:
+
+- **Single instance (`count: 1`)**: Dynamic batching combines multiple requests into one batch for parallel execution, but all requests in the same batch must wait for the slowest one to finish before results are returned, which may increase latency for faster requests. Additionally, a single instance can only process one batch at a time — subsequent requests must queue until the current batch completes. Best suited for scenarios with limited GPU memory or uniform request processing times
+- **Multiple instances (`count: 2+`)**: Multiple instances can process different batches simultaneously, allowing more requests to be handled concurrently. This reduces queuing time and improves latency for individual requests. Note that within each instance, dynamic batching behavior still applies (requests in the same batch start and finish together). Each additional instance consumes an extra copy of the layout detection model's GPU memory, increases the load on the VLM inference service, and uses more CPU and system memory. Adjust based on the available resources of your inference device
+
+Non-inference models (e.g., `restructure-pages`) run on CPU and can have their instance count increased based on available CPU cores.
 
 ## Troubleshooting and Resolution
 
