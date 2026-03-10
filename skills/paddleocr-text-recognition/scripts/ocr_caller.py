@@ -80,6 +80,8 @@ Examples:
   # Save result to a custom file path
   python scripts/paddleocr-text-recognition/ocr_caller.py --file-url "URL" --output "./result.json" --pretty
 
+  # Print JSON to stdout without saving a file
+  python scripts/paddleocr-text-recognition/ocr_caller.py --file-url "URL" --stdout --pretty
 Configuration:
   Run: python scripts/paddleocr-text-recognition/configure.py
   Or set in .env: PADDLEOCR_OCR_API_URL, PADDLEOCR_ACCESS_TOKEN
@@ -99,13 +101,19 @@ Configuration:
         help="Optional file type override (0=PDF, 1=Image)",
     )
     parser.add_argument(
-        "--pretty", action="store_true", help="Pretty-print saved JSON"
+        "--pretty", action="store_true", help="Pretty-print JSON output"
     )
-    parser.add_argument(
+    output_group = parser.add_mutually_exclusive_group()
+    output_group.add_argument(
         "--output",
         "-o",
         metavar="FILE",
         help="Save result to JSON file (default: auto-save to system temp directory)",
+    )
+    output_group.add_argument(
+        "--stdout",
+        action="store_true",
+        help="Print JSON to stdout instead of saving to a file",
     )
 
     args = parser.parse_args()
@@ -124,16 +132,19 @@ Configuration:
     indent = 2 if args.pretty else None
     json_output = json.dumps(result, indent=indent, ensure_ascii=False)
 
-    output_path = resolve_output_path(args.output)
+    if args.stdout:
+        print(json_output)
+    else:
+        output_path = resolve_output_path(args.output)
 
-    # Save to file
-    try:
-        output_path.parent.mkdir(parents=True, exist_ok=True)
-        output_path.write_text(json_output, encoding="utf-8")
-        print(f"Result saved to: {output_path}", file=sys.stderr)
-    except (PermissionError, OSError) as e:
-        print(f"Error: Cannot write to {output_path}: {e}", file=sys.stderr)
-        sys.exit(5)
+        # Save to file
+        try:
+            output_path.parent.mkdir(parents=True, exist_ok=True)
+            output_path.write_text(json_output, encoding="utf-8")
+            print(f"Result saved to: {output_path}", file=sys.stderr)
+        except (PermissionError, OSError) as e:
+            print(f"Error: Cannot write to {output_path}: {e}", file=sys.stderr)
+            sys.exit(5)
 
     # Exit code based on result
     sys.exit(0 if result["ok"] else 1)

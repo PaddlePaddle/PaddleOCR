@@ -62,12 +62,13 @@ If the script execution fails (API not configured, network error, etc.):
    - If `--output` is omitted, the script saves automatically under the system temp directory
    - Default path pattern: `<system-temp>/paddleocr/doc-parsing/results/result_<timestamp>_<id>.json`
    - If `--output` is provided, it overrides the default temp-file destination
-   - The script prints the absolute saved path on stderr: `Result saved to: /absolute/path/...`
-   - JSON is written to file and stdout no longer carries the JSON payload
-   - After execution, read and parse the saved JSON file before responding
-   - On success, always tell the user the saved file path and that full raw JSON is available there
+   - If `--stdout` is provided, JSON is printed to stdout and no file is saved
+   - In save mode, the script prints the absolute saved path on stderr: `Result saved to: /absolute/path/...`
+   - In default/custom save mode, read and parse the saved JSON file before responding
+   - In save mode, always tell the user the saved file path and that full raw JSON is available there
+   - Use `--stdout` only when you explicitly want to skip file persistence
 
-2. **The saved output file contains COMPLETE JSON** with all document content:
+2. **The output JSON contains COMPLETE content** with all document data:
    - Headers, footers, page numbers
    - Main text content
    - Tables with structure
@@ -81,7 +82,7 @@ If the script execution fails (API not configured, network error, etc.):
    - Supported file types depend on the model and endpoint configuration.
    - Always follow the file type constraints documented by your endpoint API.
 
-3. **Extract what the user needs** from the saved output JSON using these fields:
+3. **Extract what the user needs** from the output JSON using these fields:
    - Top-level `text`
    - `result[n].markdown`
    - `result[n].prunedResult`
@@ -90,8 +91,8 @@ If the script execution fails (API not configured, network error, etc.):
 
 **CRITICAL**: You must display the COMPLETE extracted content to the user based on their needs.
 
-- The saved output JSON contains ALL document content in a structured format
-- The raw provider result can be inspected in the saved JSON file
+- The output JSON contains ALL document content in a structured format
+- In save mode, the raw provider result can be inspected in the saved JSON file
 - **Display the full content requested by the user**, do NOT truncate or summarize
 - If user asks for "all text", show the entire `text` field
 - If user asks for "tables", show ALL tables in the document
@@ -128,7 +129,7 @@ Agent: "I found a document with multiple sections. Here's the beginning:
 
 ### Understanding the JSON Response
 
-The saved output file contains a JSON envelope wrapping the raw API result:
+The output JSON uses an envelope wrapping the raw API result:
 
 ```json
 {
@@ -175,6 +176,14 @@ Then use:
 ```bash
 python scripts/vl_caller.py \
   --file-url "URL" \
+  --pretty
+```
+
+**Example 4: Print JSON Without Saving**
+```bash
+python scripts/vl_caller.py \
+  --file-url "URL" \
+  --stdout \
   --pretty
 ```
 
