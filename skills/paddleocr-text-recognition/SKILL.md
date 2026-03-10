@@ -3,7 +3,6 @@ name: paddleocr-text-recognition
 description: >
   Use this skill when users need to extract text from images, PDFs, or documents. Supports URLs and local files.
   Returns structured JSON containing recognized text.
-version: 0.1.0
 metadata:
   openclaw:
     requires:

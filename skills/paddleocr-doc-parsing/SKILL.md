@@ -4,7 +4,6 @@ description: >
   Advanced document parsing with PaddleOCR. Returns complete document
   structure including text, tables, formulas, charts, and layout information. The AI agent extracts
   relevant content based on user needs.
-version: 0.1.0
 metadata:
   openclaw:
     requires:
