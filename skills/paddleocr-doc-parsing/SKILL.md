@@ -307,4 +307,3 @@ python scripts/smoke_test.py
 ```
 
 This tests configuration and optionally API connectivity.
-
