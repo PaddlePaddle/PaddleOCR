@@ -85,7 +85,7 @@ Examples:
 Configuration:
   Preferred when the skill is installed: set environment variables in your shell, host application, or runtime environment:
     PADDLEOCR_OCR_API_URL, PADDLEOCR_ACCESS_TOKEN
-    Optional: PADDLEOCR_TIMEOUT
+    Optional: PADDLEOCR_OCR_TIMEOUT
   For repository-local setup:
     python scripts/configure.py
   or use a local .env file loaded by the skills runtime

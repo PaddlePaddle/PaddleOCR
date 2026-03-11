@@ -156,7 +156,7 @@ def _make_api_request(api_url: str, token: str, params: dict) -> dict:
         "Client-Platform": "official-skill",
     }
 
-    timeout = float(os.getenv("PADDLEOCR_TIMEOUT", str(DEFAULT_TIMEOUT)))
+    timeout = float(os.getenv("PADDLEOCR_OCR_TIMEOUT", str(DEFAULT_TIMEOUT)))
 
     try:
         with httpx.Client(timeout=timeout) as client:

@@ -22,7 +22,7 @@ Do not use this skill in the following situations:
 
 ## How to Use This Skill
 
-**MANDATORY RESTRICTIONS - DO NOT VIOLATE**
+**⛔ MANDATORY RESTRICTIONS - DO NOT VIOLATE ⛔**
 
 1. **ONLY use PaddleOCR Text Recognition API** - Execute the script `python scripts/ocr_caller.py`
 2. **NEVER read images directly** - Do NOT read images yourself
@@ -160,7 +160,7 @@ CONFIG_ERROR: PADDLEOCR_OCR_API_URL not configured. Get your API at: https://pad
    Configure these values in the host application, runtime environment, or another appropriate config file:
    - PADDLEOCR_OCR_API_URL
    - PADDLEOCR_ACCESS_TOKEN
-   - Optional: PADDLEOCR_TIMEOUT
+   - Optional: PADDLEOCR_OCR_TIMEOUT
    ```
 
 3. **If the user provides credentials in chat** (accept any reasonable format):

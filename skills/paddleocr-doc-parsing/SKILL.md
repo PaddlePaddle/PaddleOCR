@@ -10,7 +10,7 @@ description: >
 
 ## When to Use This Skill
 
-✅ **Use Document Parsing for**:
+**Use Document Parsing for**:
 - Documents with tables (invoices, financial reports, spreadsheets)
 - Documents with mathematical formulas (academic papers, scientific documents)
 - Documents with charts and diagrams
@@ -18,7 +18,7 @@ description: >
 - Complex document structures requiring layout analysis
 - Any document requiring structured understanding
 
-❌ **Use Text Recognition instead for**:
+**Use Text Recognition instead for**:
 - Simple text-only extraction
 - Quick OCR tasks where speed is critical
 - Screenshots or simple images with clear text
@@ -99,11 +99,11 @@ If the script execution fails (API not configured, network error, etc.):
 - If user asks for "main content", filter out headers/footers but show ALL body text
 
 **What this means**:
-- ✅ **DO**: Display complete text, all tables, all formulas as requested
-- ✅ **DO**: Present content using these fields: top-level `text`, `result[n].markdown`, and `result[n].prunedResult`
-- ❌ **DON'T**: Truncate with "..." unless content is excessively long (>10,000 chars)
-- ❌ **DON'T**: Summarize or provide excerpts when user asks for full content
-- ❌ **DON'T**: Say "Here's a preview" when user expects complete output
+- **DO**: Display complete text, all tables, all formulas as requested
+- **DO**: Present content using these fields: top-level `text`, `result[n].markdown`, and `result[n].prunedResult`
+- **DON'T**: Truncate with "..." unless content is excessively long (>10,000 chars)
+- **DON'T**: Summarize or provide excerpts when user asks for full content
+- **DON'T**: Say "Here's a preview" when user expects complete output
 
 **Example - Correct**:
 ```
@@ -120,7 +120,7 @@ Document Statistics:
 Quality: Excellent (confidence: 0.92)
 ```
 
-**Example - Incorrect** ❌:
+**Example - Incorrect**:
 ```
 User: "Extract all the text"
 Agent: "I found a document with multiple sections. Here's the beginning:
@@ -172,14 +172,7 @@ Then use:
 - `result[n].prunedResult` for structured parsing data (layout/content/confidence)
 - `result[n].markdown` for rendered page content
 
-**Example 3: Return Complete Parsing Output**
-```bash
-python scripts/vl_caller.py \
-  --file-url "URL" \
-  --pretty
-```
-
-**Example 4: Print JSON Without Saving**
+**Example 3: Print JSON Without Saving**
 ```bash
 python scripts/vl_caller.py \
   --file-url "URL" \
@@ -287,10 +280,9 @@ error: Unsupported file format
 
 ## Reference Documentation
 
-For in-depth understanding of the PaddleOCR Document Parsing system, refer to:
 - `references/output_schema.md` - Output format specification
 
-> **Note**: Model version and capabilities are determined by your API endpoint (PADDLEOCR_DOC_PARSING_API_URL).
+> **Note**: Model version and capabilities are determined by your API endpoint (`PADDLEOCR_DOC_PARSING_API_URL`).
 
 Load these reference documents into context when:
 - Debugging complex parsing issues

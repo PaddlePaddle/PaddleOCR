@@ -54,7 +54,7 @@ Option B: create a local .env file from the template:
   cp .env.example .env
   PADDLEOCR_OCR_API_URL=https://your-api-url.paddleocr.com/ocr
   PADDLEOCR_ACCESS_TOKEN=your_token_here
-  PADDLEOCR_TIMEOUT=120  # optional
+  PADDLEOCR_OCR_TIMEOUT=120  # optional
 
 If the skill is installed under a host application directory (for example, `~/.claude/skills`), do not run `configure.py` or create a local `.env` file there. Use the host application's environment-variable configuration instead.
 
