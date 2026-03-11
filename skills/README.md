@@ -25,7 +25,15 @@ This directory contains AI agent skills for PaddleOCR official APIs.
 
 ## Quick Start
 
+The examples below cover both skills. Run only the commands for the skill you need.
+
 1. Install dependencies for the skill you use.
+   ```bash
+   python -m pip install -r paddleocr-text-recognition/scripts/requirements.txt
+   python -m pip install -r paddleocr-doc-parsing/scripts/requirements.txt
+   # Optional: required only when using document file optimization
+   python -m pip install -r paddleocr-doc-parsing/scripts/requirements-optimize.txt
+   ```
 2. Configure API credentials using one of the following options.
 
    Option A: run the helper script for the skill you want to test.
@@ -77,10 +85,10 @@ Parse local file C:\docs\report.pdf and return complete structured output.
 
 ## Verification & Troubleshooting
 
-- Missing dependencies: rerun the corresponding `python -m pip install -r ...` command.
+- Missing dependencies: rerun the dependency installation command for the relevant file, such as `paddleocr-text-recognition/scripts/requirements.txt`, `paddleocr-doc-parsing/scripts/requirements.txt`, or `paddleocr-doc-parsing/scripts/requirements-optimize.txt`.
 - Configuration issues: first check whether the required environment variables are available in the host application or runtime environment.
 - For repository-local smoke tests, you can rerun the corresponding `configure.py` script or update the local `.env` file.
-- API URL and access token source: <https://www.paddleocr.com>
+- For direct PaddleOCR API access, see: <https://www.paddleocr.com>
 
 ## Documentation
 
@@ -89,7 +97,7 @@ Parse local file C:\docs\report.pdf and return complete structured output.
 
 ## API Access
 
-Get API credentials from the PaddleOCR official website: <https://www.paddleocr.com>
+For direct PaddleOCR API access, see: <https://www.paddleocr.com>
 
 ## License
 
