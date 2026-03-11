@@ -4,6 +4,18 @@ description: >
   Advanced document parsing with PaddleOCR. Returns complete document
   structure including text, tables, formulas, charts, and layout information. The AI agent extracts
   relevant content based on user needs.
+metadata:
+  openclaw:
+    requires:
+      env:
+        - PADDLEOCR_DOC_PARSING_API_URL
+        - PADDLEOCR_ACCESS_TOKEN
+        - PADDLEOCR_DOC_PARSING_TIMEOUT
+      bins:
+        - python
+    primaryEnv: PADDLEOCR_ACCESS_TOKEN
+    emoji: "📄"
+    homepage: https://github.com/PaddlePaddle/PaddleOCR/tree/main/skills/paddleocr-doc-parsing
 ---
 
 # PaddleOCR Document Parsing Skill

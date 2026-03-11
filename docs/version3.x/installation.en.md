@@ -71,7 +71,7 @@ python -c "import paddle; print(paddle.__version__)"
 If the installation is successful, the following content will be output:
 
 ```bash
-3.0.0
+3.2.0
 ```
 
 ## 1.3 Installation of PaddlePaddle Wheel Package for Windows with NVIDIA 50 Series GPUs

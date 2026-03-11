@@ -3,6 +3,18 @@ name: paddleocr-text-recognition
 description: >
   Use this skill when users need to extract text from images, PDFs, or documents. Supports URLs and local files.
   Returns structured JSON containing recognized text.
+metadata:
+  openclaw:
+    requires:
+      env:
+        - PADDLEOCR_OCR_API_URL
+        - PADDLEOCR_ACCESS_TOKEN
+        - PADDLEOCR_TIMEOUT
+      bins:
+        - python
+    primaryEnv: PADDLEOCR_ACCESS_TOKEN
+    emoji: "🔤"
+    homepage: https://github.com/PaddlePaddle/PaddleOCR/tree/main/skills/paddleocr-text-recognition
 ---
 
 # PaddleOCR Text Recognition Skill
