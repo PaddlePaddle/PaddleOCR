@@ -18,30 +18,38 @@ This directory contains AI agent skills for PaddleOCR official APIs.
 
 - `python` and `pip` must be available in `PATH`.
 - The local helper examples assume a shell environment that can run commands such as `cp`.
-- If you are running inside an AI app, prefer that app's own secrets or environment-variable configuration mechanism.
+- If a skill is installed under a host application directory, follow that host application's environment-variable configuration best practices instead of creating local config files there.
 
 ## Quick Start
 
+Run the following commands from the `skills/` directory.
+
 1. Install dependencies for the skill you use.
-2. Preferred: set the required environment variables in your shell, host application, or secret manager. If your runtime already injects them, the scripts use them directly.
-3. For local debugging and smoke tests, you can use the helper scripts or the shared local fallback file:
+2. Configure API credentials using one of the following options.
+
+   Option A: run the helper script for the skill you want to test.
    ```bash
-   python skills/paddleocr-text-recognition/scripts/configure.py
-   python skills/paddleocr-doc-parsing/scripts/configure.py
-   cp skills/.env.example skills/.env
+   python paddleocr-text-recognition/scripts/configure.py
+   python paddleocr-doc-parsing/scripts/configure.py
    ```
-   Then fill in `skills/.env` as needed. `skills/.env` is a shared local fallback, not the recommended production configuration method.
-4. Run smoke tests:
+
+   Option B: create a local `.env` file from the `.env.example` template and fill in the required variables.
+   ```bash
+   cp .env.example .env
+   ```
+
+   If the skill is installed under a host application directory (for example, `~/.claude/skills`), do not run `configure.py` or create `.env` there. Follow the host application's environment-variable configuration best practices instead.
+3. Run the smoke test for the skill you want to verify:
 
 ```bash
-python skills/paddleocr-text-recognition/scripts/smoke_test.py
-python skills/paddleocr-doc-parsing/scripts/smoke_test.py
+python paddleocr-text-recognition/scripts/smoke_test.py
+python paddleocr-doc-parsing/scripts/smoke_test.py
 ```
 
 ## Documentation
 
-- Text recognition: `skills/paddleocr-text-recognition/SKILL.md`
-- Doc parsing: `skills/paddleocr-doc-parsing/SKILL.md`
+- Text recognition: `paddleocr-text-recognition/SKILL.md`
+- Doc parsing: `paddleocr-doc-parsing/SKILL.md`
 
 ## API Access
 

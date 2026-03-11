@@ -19,8 +19,8 @@ Smoke Test for PaddleOCR Text Recognition
 Verifies configuration and API connectivity.
 
 Usage:
-    python skills/paddleocr-text-recognition/scripts/smoke_test.py
-    python skills/paddleocr-text-recognition/scripts/smoke_test.py --skip-api-test
+    python paddleocr-text-recognition/scripts/smoke_test.py
+    python paddleocr-text-recognition/scripts/smoke_test.py --skip-api-test
 """
 
 import argparse
@@ -45,16 +45,18 @@ HOW TO GET YOUR API CREDENTIALS
 4. Copy the API URL from the example request
 5. Copy your access token from the same API setup page
 
-Preferred: set environment variables in your shell, host application, or secret manager:
+To run this repository smoke test from the `skills/` directory, configure credentials using one of the following options:
+
+Option A: run the helper script for this skill:
+  python paddleocr-text-recognition/scripts/configure.py
+
+Option B: create a local .env file from the template:
+  cp .env.example .env
   PADDLEOCR_OCR_API_URL=https://your-api-url.paddleocr.com/ocr
   PADDLEOCR_ACCESS_TOKEN=your_token_here
   PADDLEOCR_TIMEOUT=120  # optional
 
-For local debugging only:
-  python skills/paddleocr-text-recognition/scripts/configure.py
-
-Or use the shared local fallback file in this repo:
-  cp skills/.env.example skills/.env
+If the skill is installed under a host application directory (for example, `~/.claude/skills`), do not run `configure.py` or create a local `.env` file there. Use the host application's environment-variable configuration instead.
 
 ============================================================
 """
@@ -159,10 +161,10 @@ def main():
     print("=" * 60)
     print("\nNext steps:")
     print(
-        '  python skills/paddleocr-text-recognition/scripts/ocr_caller.py --file-url "URL" --pretty'
+        '  python paddleocr-text-recognition/scripts/ocr_caller.py --file-url "URL" --pretty'
     )
     print(
-        '  python skills/paddleocr-text-recognition/scripts/ocr_caller.py --file-path "image.png" --pretty'
+        '  python paddleocr-text-recognition/scripts/ocr_caller.py --file-path "image.png" --pretty'
     )
     print(
         "  Results are auto-saved to the system temp directory; the caller prints the saved path."

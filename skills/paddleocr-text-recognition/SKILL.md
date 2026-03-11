@@ -177,8 +177,7 @@ CONFIG_ERROR: PADDLEOCR_OCR_API_URL not configured. Get your API at: https://pad
 
 5. **Ask the user to confirm the environment is configured**:
    - Wait for the user to confirm these values have been set in their host application, runtime environment, or appropriate config file
-   - Do not run `configure.py` by default
-   - Do not create or modify `skills/.env` by default
+   - For security reasons, do not run `configure.py` or create a local `.env` file by default if the skill is installed under a host application directory (for example, `~/.claude/skills`)
 
 6. **Retry only after confirmation**:
    - Once the user confirms the environment variables are available, retry the original OCR task
