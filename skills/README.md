@@ -14,6 +14,12 @@ This directory contains AI agent skills for PaddleOCR official APIs.
 - `paddleocr-doc-parsing`: `PADDLEOCR_DOC_PARSING_API_URL`, `PADDLEOCR_ACCESS_TOKEN`
   Optional: `PADDLEOCR_DOC_PARSING_TIMEOUT`
 
+## Prerequisites
+
+- `python` and `pip` must be available in `PATH`.
+- The local helper examples assume a shell environment that can run commands such as `cp`.
+- If you are running inside an AI app, prefer that app's own secrets or environment-variable configuration mechanism.
+
 ## Quick Start
 
 1. Install dependencies for the skill you use.

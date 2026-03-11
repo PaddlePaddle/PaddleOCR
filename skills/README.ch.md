@@ -14,6 +14,12 @@
 - `paddleocr-doc-parsing`：`PADDLEOCR_DOC_PARSING_API_URL`、`PADDLEOCR_ACCESS_TOKEN`
   可选：`PADDLEOCR_DOC_PARSING_TIMEOUT`
 
+## 前置条件
+
+- 需要本机已安装并可直接调用 `python`、`pip`。
+- 本地辅助命令示例默认 shell 环境可执行 `cp` 等基础命令。
+- 如果运行在 AI 应用中，优先使用该应用自身的 secrets 或环境变量配置机制。
+
 ## 快速开始
 
 1. 安装对应 skill 的依赖。
