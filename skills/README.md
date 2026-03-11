@@ -1,6 +1,6 @@
 # PaddleOCR Skills
 
-This directory contains AI agent skills for PaddleOCR official APIs.
+These skills let AI apps call PaddleOCR official APIs for OCR text extraction from images/PDFs and layout-aware document parsing.
 
 ## Included Skills
 
@@ -19,13 +19,25 @@ This directory contains AI agent skills for PaddleOCR official APIs.
 - `paddleocr-doc-parsing`: `PADDLEOCR_DOC_PARSING_API_URL`, `PADDLEOCR_ACCESS_TOKEN`
   Optional: `PADDLEOCR_DOC_PARSING_TIMEOUT`
 
-## Prerequisites
+## Install in AI Apps
+
+1. Follow the installation mechanism supported by your AI app.
+   - Claude Code skills: <https://code.claude.com/docs/en/skills>
+   - Claude custom skills: <https://claude.com/docs/skills/overview>
+   - Cursor rules / AGENTS.md: <https://docs.cursor.com/context/rules> and <https://docs.cursor.com/en/cli/using>
+2. You can also install these skills through the `skills` CLI:
+   ```bash
+   npx skills add PaddlePaddle/PaddleOCR -g --skill paddleocr-text-recognition -y
+   npx skills add PaddlePaddle/PaddleOCR -g --skill paddleocr-doc-parsing -y
+   ```
+
+   Note: this repository is relatively large. On slower networks or devices, `npx skills add` may hit the current 60-second clone timeout. If that happens, prefer the app-native installation flow above.
+
+## Repository-Local Smoke Test
 
 - Python 3.8+ must be installed, and `python` and `pip` must be available in `PATH`.
-
-## Quick Start
-
-The examples below cover both skills. Run only the commands for the skill you need.
+- Run the following commands from the `skills/` directory.
+- The examples below cover both skills. Run only the commands for the skill you need.
 
 1. Install dependencies for the skill you use.
    ```bash
@@ -88,7 +100,6 @@ Parse local file C:\docs\report.pdf and return complete structured output.
 - Missing dependencies: rerun the dependency installation command for the relevant file, such as `paddleocr-text-recognition/scripts/requirements.txt`, `paddleocr-doc-parsing/scripts/requirements.txt`, or `paddleocr-doc-parsing/scripts/requirements-optimize.txt`.
 - Configuration issues: first check whether the required environment variables are available in the host application or runtime environment.
 - For repository-local smoke tests, you can rerun the corresponding `configure.py` script or update the local `.env` file.
-- For direct PaddleOCR API access, see: <https://www.paddleocr.com>
 
 ## Documentation
 
@@ -97,7 +108,7 @@ Parse local file C:\docs\report.pdf and return complete structured output.
 
 ## API Access
 
-For direct PaddleOCR API access, see: <https://www.paddleocr.com>
+Get API credentials from the PaddleOCR official website: <https://www.paddleocr.com>
 
 ## License
 
