@@ -167,19 +167,21 @@ CONFIG_ERROR: PADDLEOCR_OCR_API_URL not configured. Get your API at: https://pad
 
 1. **Show the exact error message** to the user (including the URL).
 
-2. **Explain which environment variables are required**:
-   ```
-   Configure these values in the host application, runtime environment, or another appropriate config file:
-   - PADDLEOCR_OCR_API_URL
-   - PADDLEOCR_ACCESS_TOKEN
-   - Optional: PADDLEOCR_OCR_TIMEOUT
-   ```
+2. **Guide the user to configure securely**:
+   - Recommend configuring through the host application's standard method (e.g., settings file, environment variable UI) rather than pasting credentials in chat.
+   - List the required environment variables:
+     ```
+     - PADDLEOCR_OCR_API_URL
+     - PADDLEOCR_ACCESS_TOKEN
+     - Optional: PADDLEOCR_OCR_TIMEOUT
+     ```
 
-3. **If the user provides credentials in chat** (accept any reasonable format):
+3. **If the user provides credentials in chat anyway** (accept any reasonable format):
    - `PADDLEOCR_OCR_API_URL=https://xxx.paddleocr.com/ocr, PADDLEOCR_ACCESS_TOKEN=abc123...`
    - `Here's my API: https://xxx and token: abc123`
    - Copy-pasted code format
    - Any other reasonable format
+   - **Security note**: Warn the user that credentials shared in chat may be stored in conversation history. Recommend setting them through the host application's configuration instead when possible.
 
 4. **Parse and validate the values**:
    - Extract `PADDLEOCR_OCR_API_URL` (look for URLs with `paddleocr.com` or similar)

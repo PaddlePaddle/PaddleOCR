@@ -66,7 +66,7 @@ After installation, configure the required environment variables so the skills c
 | `paddleocr-text-recognition` | `PADDLEOCR_OCR_API_URL` (API URL), `PADDLEOCR_ACCESS_TOKEN` (access token) | `PADDLEOCR_OCR_TIMEOUT` (timeout) |
 | `paddleocr-doc-parsing` | `PADDLEOCR_DOC_PARSING_API_URL` (API URL), `PADDLEOCR_ACCESS_TOKEN` (access token) | `PADDLEOCR_DOC_PARSING_TIMEOUT` (timeout) |
 
-You can ask the AI in natural language (e.g., "I need to configure paddleocr-text-recognition skill"), or configure manually. Below are manual configuration methods for some AI apps:
+Below are configuration methods for some AI apps:
 
 - **Claude Code**: add an `env` field to `.claude/settings.local.json` in your project:
 

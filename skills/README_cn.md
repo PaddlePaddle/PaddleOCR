@@ -66,7 +66,7 @@ git clone https://github.com/PaddlePaddle/PaddleOCR.git
 | `paddleocr-text-recognition` | `PADDLEOCR_OCR_API_URL`（API URL）、`PADDLEOCR_ACCESS_TOKEN`（access token） | `PADDLEOCR_OCR_TIMEOUT`（超时时间） |
 | `paddleocr-doc-parsing` | `PADDLEOCR_DOC_PARSING_API_URL`（API URL）、`PADDLEOCR_ACCESS_TOKEN`（access token） | `PADDLEOCR_DOC_PARSING_TIMEOUT`（超时时间） |
 
-可以直接用自然语言告诉 AI（例如：”我需要配置 paddleocr-text-recognition skill”），也可以手动配置。以下是部分 AI 应用的手动配置方式：
+以下是部分 AI 应用的配置方式：
 
 - **Claude Code**：在项目的 `.claude/settings.local.json` 中添加 `env` 字段：
 
