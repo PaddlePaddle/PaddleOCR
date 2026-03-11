@@ -9,7 +9,7 @@ metadata:
       env:
         - PADDLEOCR_OCR_API_URL
         - PADDLEOCR_ACCESS_TOKEN
-        - PADDLEOCR_TIMEOUT
+        - PADDLEOCR_OCR_TIMEOUT
       bins:
         - python
     primaryEnv: PADDLEOCR_ACCESS_TOKEN
