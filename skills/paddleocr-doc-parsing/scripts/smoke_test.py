@@ -45,7 +45,7 @@ HOW TO GET YOUR API CREDENTIALS
 4. In Example Code, copy the API URL value
 5. In Example Code, copy the Access Token value
 
-To run this repository smoke test from the `skills/` directory, configure credentials using one of the following options:
+To run smoke test, configure credentials using one of the following options:
 
 Option A: run the helper script for this skill:
   python paddleocr-doc-parsing/scripts/configure.py
