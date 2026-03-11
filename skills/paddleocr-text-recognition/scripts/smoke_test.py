@@ -45,7 +45,7 @@ HOW TO GET YOUR API CREDENTIALS
 4. Copy the API URL from the example request
 5. Copy your access token from the same API setup page
 
-To run smoke test, configure credentials using one of the following options:
+If the skill is not installed, configure credentials using one of the following options:
 
 Option A: run the helper script for this skill:
   python paddleocr-text-recognition/scripts/configure.py
