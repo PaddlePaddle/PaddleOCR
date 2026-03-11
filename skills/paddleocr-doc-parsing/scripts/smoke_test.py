@@ -45,12 +45,16 @@ HOW TO GET YOUR API CREDENTIALS
 4. In Example Code, copy the API URL value
 5. In Example Code, copy the Access Token value
 
-Then configure:
-  python skills/paddleocr-doc-parsing/scripts/configure.py
-
-Or manually create .env file in project root:
+Preferred: set environment variables in your shell, host application, or secret manager:
   PADDLEOCR_DOC_PARSING_API_URL=https://your-api-url.paddleocr.com/layout-parsing
   PADDLEOCR_ACCESS_TOKEN=your_token_here
+  PADDLEOCR_DOC_PARSING_TIMEOUT=600  # optional
+
+For local debugging only:
+  python skills/paddleocr-doc-parsing/scripts/configure.py
+
+Or use the shared local fallback file in this repo:
+  cp skills/.env.example skills/.env
 
 ============================================================
 """

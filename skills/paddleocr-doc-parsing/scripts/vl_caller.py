@@ -81,8 +81,13 @@ Examples:
   # Print JSON to stdout without saving a file
   python scripts/paddleocr-doc-parsing/vl_caller.py --file-url "URL" --stdout --pretty
 Configuration:
-  Run: python scripts/paddleocr-doc-parsing/configure.py
-  Or set in .env: PADDLEOCR_DOC_PARSING_API_URL, PADDLEOCR_ACCESS_TOKEN
+  Preferred: set environment variables in your shell, host application, or secret manager:
+    PADDLEOCR_DOC_PARSING_API_URL, PADDLEOCR_ACCESS_TOKEN
+    Optional: PADDLEOCR_DOC_PARSING_TIMEOUT
+  For local debugging only:
+    python scripts/configure.py
+  Or use the shared local fallback file loaded by the skills runtime:
+    skills/.env
         """,
     )
 

@@ -45,12 +45,16 @@ HOW TO GET YOUR API CREDENTIALS
 4. Copy the API URL from the example request
 5. Copy your access token from the same API setup page
 
-Then configure:
-  python skills/paddleocr-text-recognition/scripts/configure.py
-
-Or manually create .env file in project root:
+Preferred: set environment variables in your shell, host application, or secret manager:
   PADDLEOCR_OCR_API_URL=https://your-api-url.paddleocr.com/ocr
   PADDLEOCR_ACCESS_TOKEN=your_token_here
+  PADDLEOCR_TIMEOUT=120  # optional
+
+For local debugging only:
+  python skills/paddleocr-text-recognition/scripts/configure.py
+
+Or use the shared local fallback file in this repo:
+  cp skills/.env.example skills/.env
 
 ============================================================
 """

@@ -7,15 +7,25 @@
 - `paddleocr-text-recognition`：图片/PDF 文本识别。
 - `paddleocr-doc-parsing`：版面感知文档解析。
 
+## 所需环境变量
+
+- `paddleocr-text-recognition`：`PADDLEOCR_OCR_API_URL`、`PADDLEOCR_ACCESS_TOKEN`
+  可选：`PADDLEOCR_TIMEOUT`
+- `paddleocr-doc-parsing`：`PADDLEOCR_DOC_PARSING_API_URL`、`PADDLEOCR_ACCESS_TOKEN`
+  可选：`PADDLEOCR_DOC_PARSING_TIMEOUT`
+
 ## 快速开始
 
 1. 安装对应 skill 的依赖。
-2. 通过脚本交互式配置 API 凭证：
+2. 推荐先在 shell、宿主应用或 secret manager 中设置所需环境变量。如果运行环境已经注入这些值，脚本会直接使用。
+3. 本地调试和 smoke test 时，可以使用辅助脚本或共享的本地兜底文件：
    ```bash
    python skills/paddleocr-text-recognition/scripts/configure.py
+   python skills/paddleocr-doc-parsing/scripts/configure.py
+   cp skills/.env.example skills/.env
    ```
-   或手动复制 `.env.example` 为 `.env` 并填入凭证：`cp skills/.env.example skills/.env`
-3. 运行冒烟测试：
+   然后按需填写 `skills/.env`。`skills/.env` 只是共享的本地兜底配置，不建议作为生产环境的默认配置方式。
+4. 运行冒烟测试：
 
 ```bash
 python skills/paddleocr-text-recognition/scripts/smoke_test.py

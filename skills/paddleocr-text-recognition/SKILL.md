@@ -153,36 +153,35 @@ CONFIG_ERROR: PADDLEOCR_OCR_API_URL not configured. Get your API at: https://pad
 
 **Configuration workflow**:
 
-1. **Show the exact error message** to user (including the URL)
+1. **Show the exact error message** to the user (including the URL).
 
-2. **Tell user to provide credentials**:
+2. **Explain which environment variables are required**:
    ```
-   Please visit the URL above to get your PADDLEOCR_OCR_API_URL and PADDLEOCR_ACCESS_TOKEN.
-   Once you have them, send them to me and I'll configure it automatically.
+   Configure these values in the host application, runtime environment, or another appropriate config file:
+   - PADDLEOCR_OCR_API_URL
+   - PADDLEOCR_ACCESS_TOKEN
+   - Optional: PADDLEOCR_TIMEOUT
    ```
 
-3. **When user provides credentials** (accept any format):
+3. **If the user provides credentials in chat** (accept any reasonable format):
    - `PADDLEOCR_OCR_API_URL=https://xxx.paddleocr.com/ocr, PADDLEOCR_ACCESS_TOKEN=abc123...`
    - `Here's my API: https://xxx and token: abc123`
    - Copy-pasted code format
    - Any other reasonable format
 
-4. **Parse credentials from user's message**:
-   - Extract PADDLEOCR_OCR_API_URL value (look for URLs with paddleocr.com or similar)
-   - Extract PADDLEOCR_ACCESS_TOKEN value (long alphanumeric string, usually 40+ chars)
+4. **Parse and validate the values**:
+   - Extract `PADDLEOCR_OCR_API_URL` (look for URLs with `paddleocr.com` or similar)
+   - Confirm `PADDLEOCR_OCR_API_URL` is a full endpoint ending with `/ocr`
+   - Extract `PADDLEOCR_ACCESS_TOKEN` (long alphanumeric string, usually 40+ chars)
+   - Tell the user exactly which environment variables to set
 
-5. **Configure automatically**:
-   ```bash
-   python scripts/configure.py --api-url "PARSED_URL" --token "PARSED_TOKEN"
-   ```
+5. **Ask the user to confirm the environment is configured**:
+   - Wait for the user to confirm these values have been set in their host application, runtime environment, or appropriate config file
+   - Do not run `configure.py` by default
+   - Do not create or modify `skills/.env` by default
 
-6. **If configuration succeeds**:
-   - Inform user: "Configuration complete! Running OCR now..."
-   - Retry the original OCR task
-
-7. **If configuration fails**:
-   - Show the error
-   - Ask user to verify the credentials
+6. **Retry only after confirmation**:
+   - Once the user confirms the environment variables are available, retry the original OCR task
 
 ### Error Handling
 
