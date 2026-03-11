@@ -7,6 +7,11 @@
 - `paddleocr-text-recognition`：图片/PDF 文本识别。
 - `paddleocr-doc-parsing`：版面感知文档解析。
 
+## 支持模型
+
+- `paddleocr-doc-parsing`：`PP-StructureV3`、`PaddleOCR-VL`、`PaddleOCR-VL-1.5`
+- `paddleocr-text-recognition`：`PP-OCRv5`
+
 ## 所需环境变量
 
 - `paddleocr-text-recognition`：`PADDLEOCR_OCR_API_URL`、`PADDLEOCR_ACCESS_TOKEN`
@@ -45,6 +50,41 @@
 python paddleocr-text-recognition/scripts/smoke_test.py
 python paddleocr-doc-parsing/scripts/smoke_test.py
 ```
+
+## 在 AI 应用（如 Claude Code）中如何使用
+
+可以直接用自然语言描述 OCR 或文档解析需求，并附上文件 URL 或本地路径，让 AI 应用调用对应 skill。
+
+### paddleocr-text-recognition
+
+URL 示例：
+```text
+提取这个文件中的全部文本：https://example.com/invoice.jpg
+```
+
+本地文件示例：
+```text
+提取本地文件 C:\docs\invoice.pdf 中的全部文本。
+```
+
+### paddleocr-doc-parsing
+
+URL 示例：
+```text
+解析这个 PDF，并返回主体内容和全部表格（结构化输出）：https://example.com/report.pdf
+```
+
+本地文件示例：
+```text
+解析本地文件 C:\docs\report.pdf，并返回完整结构化结果。
+```
+
+## 验证与排错
+
+- 缺依赖报错：重新执行对应的 `python -m pip install -r ...` 命令。
+- 配置问题：优先检查宿主应用或当前运行环境中是否已正确设置所需环境变量。
+- 对于仓库内的冒烟测试，可以重跑对应的 `configure.py`，或更新本地 `.env` 文件。
+- API 地址与 token 获取入口：<https://www.paddleocr.com>
 
 ## 文档入口
 

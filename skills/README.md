@@ -7,6 +7,11 @@ This directory contains AI agent skills for PaddleOCR official APIs.
 - `paddleocr-text-recognition`: OCR text extraction for images/PDFs.
 - `paddleocr-doc-parsing`: document parsing for layout-aware extraction.
 
+## Supported Models
+
+- `paddleocr-doc-parsing`: `PP-StructureV3`, `PaddleOCR-VL`, `PaddleOCR-VL-1.5`
+- `paddleocr-text-recognition`: `PP-OCRv5`
+
 ## Required Environment Variables
 
 - `paddleocr-text-recognition`: `PADDLEOCR_OCR_API_URL`, `PADDLEOCR_ACCESS_TOKEN`
@@ -45,6 +50,41 @@ Run the following commands from the `skills/` directory.
 python paddleocr-text-recognition/scripts/smoke_test.py
 python paddleocr-doc-parsing/scripts/smoke_test.py
 ```
+
+## Using in AI Apps (for example, Claude Code)
+
+Describe the OCR or document parsing task in natural language and provide a file URL or local path so the AI app can invoke the skill.
+
+### paddleocr-text-recognition
+
+URL example:
+```text
+Extract all text from this file: https://example.com/invoice.jpg
+```
+
+Local file example:
+```text
+Extract all text from local file C:\docs\invoice.pdf
+```
+
+### paddleocr-doc-parsing
+
+URL example:
+```text
+Parse this PDF and return the main body plus all tables in structured format: https://example.com/report.pdf
+```
+
+Local file example:
+```text
+Parse local file C:\docs\report.pdf and return complete structured output.
+```
+
+## Verification & Troubleshooting
+
+- Missing dependencies: rerun the corresponding `python -m pip install -r ...` command.
+- Configuration issues: first check whether the required environment variables are available in the host application or runtime environment.
+- For repository-local smoke tests, you can rerun the corresponding `configure.py` script or update the local `.env` file.
+- API URL and access token source: <https://www.paddleocr.com>
 
 ## Documentation
 
