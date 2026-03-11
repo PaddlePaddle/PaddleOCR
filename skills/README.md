@@ -21,13 +21,9 @@ This directory contains AI agent skills for PaddleOCR official APIs.
 
 ## Prerequisites
 
-- `python` and `pip` must be available in `PATH`.
-- The local helper examples assume a shell environment that can run commands such as `cp`.
-- If a skill is installed under a host application directory, follow that host application's environment-variable configuration best practices instead of creating local config files there.
+- Python 3.8+ must be installed, and `python` and `pip` must be available in `PATH`.
 
 ## Quick Start
-
-Run the following commands from the `skills/` directory.
 
 1. Install dependencies for the skill you use.
 2. Configure API credentials using one of the following options.
