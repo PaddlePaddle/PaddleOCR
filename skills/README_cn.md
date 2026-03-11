@@ -63,8 +63,8 @@ git clone https://github.com/PaddlePaddle/PaddleOCR.git
 
 | Skill | 必填 | 可选 |
 | --- | --- | --- |
-| `paddleocr-text-recognition` | `PADDLEOCR_OCR_API_URL`（API URL）、`PADDLEOCR_ACCESS_TOKEN`（access token） | `PADDLEOCR_OCR_TIMEOUT`（超时时间） |
-| `paddleocr-doc-parsing` | `PADDLEOCR_DOC_PARSING_API_URL`（API URL）、`PADDLEOCR_ACCESS_TOKEN`（access token） | `PADDLEOCR_DOC_PARSING_TIMEOUT`（超时时间） |
+| `paddleocr-text-recognition` | `PADDLEOCR_OCR_API_URL`（API URL）、`PADDLEOCR_ACCESS_TOKEN`（access token） | `PADDLEOCR_OCR_TIMEOUT`（API 请求超时时间） |
+| `paddleocr-doc-parsing` | `PADDLEOCR_DOC_PARSING_API_URL`（API URL）、`PADDLEOCR_ACCESS_TOKEN`（access token） | `PADDLEOCR_DOC_PARSING_TIMEOUT`（API 请求超时时间） |
 
 以下是部分 AI 应用的配置方式：
 
