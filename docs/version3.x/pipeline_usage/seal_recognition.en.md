@@ -1676,7 +1676,7 @@ If set to <code>None</code>, the instantiation value is used; otherwise, this pa
 ## 3. Development Integration/Deployment
 If the pipeline meets your requirements for inference speed and accuracy, you can proceed directly with development integration/deployment.
 
-If you need to integrate the pipeline into your Python project, you can refer to the example code in [2.2 Python Script Method](#22-python脚本方式集成).
+If you need to integrate the pipeline into your Python project, you can refer to the example code in [2.2 Python Script Method](#22-python-script-integration).
 
 In addition, PaddleOCR also provides three other deployment methods, which are detailed as follows:
 

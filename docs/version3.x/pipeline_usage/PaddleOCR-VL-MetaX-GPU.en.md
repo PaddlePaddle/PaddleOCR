@@ -117,7 +117,7 @@ docker run -it \
 
 ### 3.2 Client Usage Method
 
-Please refer to [PaddleOCR-VL Usage Tutorial - 3.2 Client Usage Method](./PaddleOCR-VL.en.md#32-client-usage-method).
+Please refer to [PaddleOCR-VL Usage Tutorial - 3.2 Client Usage Method](./PaddleOCR-VL.en.md#32-client-usage-methods).
 
 ### 3.3 Performance Tuning
 
@@ -205,7 +205,7 @@ Edit <code>environment</code> in the <code>compose.yaml</code> file to change th
 <details>
 <summary>3. Adjust VLM server-side configuration</summary>
 
-If you want to adjust the VLM server configuration, refer to <a href="./PaddleOCR-VL.en.md#331-server-parameter-adjustment">3.3.1 Server Parameter Adjustment</a> to generate a configuration file.
+If you want to adjust the VLM server configuration, refer to <a href="./PaddleOCR-VL.en.md#331-server-side-parameter-adjustment">3.3.1 Server Parameter Adjustment</a> to generate a configuration file.
 
 After generating the configuration file, add the following <code>paddleocr-vlm-server.volumes</code> and <code>paddleocr-vlm-server.command</code> fields to your <code>compose.yaml</code>. Replace <code>/path/to/your_config.yaml</code> with your actual configuration file path.
 
@@ -228,7 +228,7 @@ Refer to the <a href="./PaddleOCR-VL.en.md#44-pipeline-configuration-adjustment-
 
 ### 4.2 Client Invocation Method
 
-Please refer to [PaddleOCR-VL Usage Tutorial - 4.3 Client Invocation Method](./PaddleOCR-VL.en.md#43-client-invocation-method).
+Please refer to [PaddleOCR-VL Usage Tutorial - 4.3 Client Invocation Method](./PaddleOCR-VL.en.md#43-client-side-invocation).
 
 ### 4.3 Pipeline Configuration Adjustment Instructions
 

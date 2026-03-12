@@ -2,8 +2,8 @@
 
 ## Table of Contents
 
-- [1. Instructions](#1.-instructions)
-- [2. Usage Examples](#2.-usage-examples)
+- [1. Instructions](#1-instructions)
+- [2. Usage Examples](#2-usage-examples)
 
 ## 1. Instructions
 

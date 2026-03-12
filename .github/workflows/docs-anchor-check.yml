@@ -1,0 +1,36 @@
+name: Docs Anchor Link Check
+
+on:
+  pull_request:
+    paths:
+      - 'docs/**'
+      - 'mkdocs.yml'
+      - 'mkdocs-ci.yml'
+      - 'overrides/**'
+
+jobs:
+  check-anchor-links:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 1
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.x'
+
+      - uses: actions/cache@v5
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-mkdocs-${{ hashFiles('mkdocs.yml') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-mkdocs-
+
+      - name: Install dependencies
+        run: pip install mike mkdocs-material jieba mkdocs-git-revision-date-localized-plugin mkdocs-git-committers-plugin-2 mkdocs-static-i18n markdown-callouts
+
+      - name: Check for broken anchor links
+        env:
+          ENABLE_GIT_PLUGINS: 'false'
+        run: mkdocs build -f mkdocs-ci.yml

@@ -1,0 +1,68 @@
+services:
+  paddleocr-vl-api:
+    build:
+      context: .
+      dockerfile: gateway.Dockerfile
+    container_name: paddleocr-vl-api
+    ports:
+      - 8080:8080
+    depends_on:
+      paddleocr-vl-tritonserver:
+        condition: service_healthy
+    environment:
+      - HPS_TRITON_URL=paddleocr-vl-tritonserver:8001
+      - HPS_VLM_URL=${HPS_VLM_URL:-http://paddleocr-vlm-server:8080}
+      - HPS_MAX_CONCURRENT_INFERENCE_REQUESTS=${HPS_MAX_CONCURRENT_INFERENCE_REQUESTS:-16}
+      - HPS_MAX_CONCURRENT_NON_INFERENCE_REQUESTS=${HPS_MAX_CONCURRENT_NON_INFERENCE_REQUESTS:-64}
+      - HPS_INFERENCE_TIMEOUT=${HPS_INFERENCE_TIMEOUT:-600}
+      - HPS_LOG_LEVEL=${HPS_LOG_LEVEL:-INFO}
+      - UVICORN_WORKERS=${UVICORN_WORKERS:-4}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8080/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  paddleocr-vl-tritonserver:
+    build:
+      context: .
+      dockerfile: tritonserver.Dockerfile
+    container_name: paddleocr-vl-tritonserver
+    depends_on:
+      paddleocr-vlm-server:
+        condition: service_healthy
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: ["${DEVICE_ID:-0}"]
+              capabilities: [gpu]
+    shm_size: 4gb
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8000/v2/health/ready || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 60s
+
+  paddleocr-vlm-server:
+    image: ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-nvidia-gpu
+    container_name: paddleocr-vlm-server
+    command: paddleocr genai_server --model_name PaddleOCR-VL-1.5-0.9B --host 0.0.0.0 --port 8080 --backend vllm
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: ["${DEVICE_ID:-0}"]
+              capabilities: [gpu]
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8080/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 300s

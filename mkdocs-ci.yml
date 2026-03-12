@@ -1,0 +1,10 @@
+INHERIT: mkdocs.yml
+
+strict: true
+
+validation:
+  links:
+    anchors: warn
+    not_found: info
+    absolute_links: info
+    unrecognized_links: info

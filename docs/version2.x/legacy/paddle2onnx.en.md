@@ -42,7 +42,7 @@ Paddle2ONNX supports converting models in the PaddlePaddle format to the ONNX fo
 
 ### Get Paddle Static Graph Models
 
-There are two ways to obtain Paddle static graph models: download the prediction models provided by PaddleOCR in the [model list](../ppocr/model_list.en.md); or refer to the [Model Export Instructions](./python_infer.en.md#inference) to convert trained weights into inference models.
+There are two ways to obtain Paddle static graph models: download the prediction models provided by PaddleOCR in the [model list](../ppocr/model_list.en.md); or refer to the [Model Export Instructions](./python_infer.en.md) to convert trained weights into inference models.
 
 Using the PP-OCR series English detection, recognition, and classification models as examples:
 
