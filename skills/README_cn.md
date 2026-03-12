@@ -72,10 +72,10 @@ git clone https://github.com/PaddlePaddle/PaddleOCR.git
 
   ```json
   {
-    “env”: {
-      “PADDLEOCR_ACCESS_TOKEN”: “<ACCESS_TOKEN>”,
-      “PADDLEOCR_OCR_API_URL”: “<OCR_API_URL>”,
-      “PADDLEOCR_DOC_PARSING_API_URL”: “<DOC_PARSING_API_URL>”
+    "env": {
+      "PADDLEOCR_ACCESS_TOKEN": "<ACCESS_TOKEN>",
+      "PADDLEOCR_OCR_API_URL": "<OCR_API_URL>",
+      "PADDLEOCR_DOC_PARSING_API_URL": "<DOC_PARSING_API_URL>"
     }
   }
   ```
@@ -84,28 +84,26 @@ git clone https://github.com/PaddlePaddle/PaddleOCR.git
 
   ```json
   {
-    “skills”: {
-      “entries”: {
-        “paddleocr-text-recognition”: {
-          “enabled”: true,
-          “apiKey”: “<ACCESS_TOKEN>”,
-          “env”: {
-            “PADDLEOCR_OCR_API_URL”: “<OCR_API_URL>”
+    "skills": {
+      "entries": {
+        "paddleocr-text-recognition": {
+          "enabled": true,
+          "env": {
+            "PADDLEOCR_OCR_API_URL": "<OCR_API_URL>",
+            "PADDLEOCR_ACCESS_TOKEN": "<ACCESS_TOKEN>"
           }
         },
-        “paddleocr-doc-parsing”: {
-          “enabled”: true,
-          “apiKey”: “<ACCESS_TOKEN>”,
-          “env”: {
-            “PADDLEOCR_DOC_PARSING_API_URL”: “<DOC_PARSING_API_URL>”
+        "paddleocr-doc-parsing": {
+          "enabled": true,
+          "env": {
+            "PADDLEOCR_DOC_PARSING_API_URL": "<DOC_PARSING_API_URL>",
+            "PADDLEOCR_ACCESS_TOKEN": "<ACCESS_TOKEN>"
           }
         }
       }
     }
   }
   ```
-
-  请注意这种方式可能在配置文件中明文存储 access token。更安全的方式是通过 OpenClaw onboarding wizard 或者 dashboard 配置。
 
 ### 使用示例
 
@@ -158,7 +156,7 @@ git clone https://github.com/PaddlePaddle/PaddleOCR.git
 
 2. 配置环境变量（需要配置的变量参见[配置环境变量](#配置环境变量)一节），可选择以下任一方式：
 
-   **方式 A**：运行交互式配置脚本。
+   **方式 A**：运行配置脚本。
 
    ```shell
    python paddleocr-text-recognition/scripts/configure.py

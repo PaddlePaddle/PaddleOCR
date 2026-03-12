@@ -88,24 +88,22 @@ Below are configuration methods for some AI apps:
       "entries": {
         "paddleocr-text-recognition": {
           "enabled": true,
-          "apiKey": "<ACCESS_TOKEN>",
           "env": {
-            "PADDLEOCR_OCR_API_URL": "<OCR_API_URL>"
+            "PADDLEOCR_OCR_API_URL": "<OCR_API_URL>",
+            "PADDLEOCR_ACCESS_TOKEN": "<ACCESS_TOKEN>"
           }
         },
         "paddleocr-doc-parsing": {
           "enabled": true,
-          "apiKey": "<ACCESS_TOKEN>",
           "env": {
-            "PADDLEOCR_DOC_PARSING_API_URL": "<DOC_PARSING_API_URL>"
+            "PADDLEOCR_DOC_PARSING_API_URL": "<DOC_PARSING_API_URL>",
+            "PADDLEOCR_ACCESS_TOKEN": "<ACCESS_TOKEN>"
           }
         }
       }
     }
   }
   ```
-
-  Please note that this approach may store the access token in plain text in the configuration file. A more secure way is to configure it through the OpenClaw onboarding wizard or the dashboard.
 
 ### Usage Examples
 
@@ -158,7 +156,7 @@ Make sure your working directory is the directory containing this file.
 
 2. Configure environment variables (see [Configure Environment Variables](#configure-environment-variables) for the list of variables). Choose one of the following methods:
 
-   **Option A**: run the interactive configuration script.
+   **Option A**: run the configuration script.
 
    ```shell
    python paddleocr-text-recognition/scripts/configure.py
