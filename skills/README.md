@@ -105,6 +105,8 @@ Below are configuration methods for some AI apps:
   }
   ```
 
+  Please note that this approach may store the access token in plain text in the configuration file. A more secure way is to configure it through the OpenClaw onboarding wizard or the dashboard.
+
 ### Usage Examples
 
 After configuration, describe the OCR or document parsing task in natural language and provide a file URL or local path so the AI app can invoke the corresponding skill.

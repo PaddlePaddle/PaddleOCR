@@ -105,6 +105,8 @@ git clone https://github.com/PaddlePaddle/PaddleOCR.git
   }
   ```
 
+  请注意这种方式可能在配置文件中明文存储 access token。更安全的方式是通过 OpenClaw onboarding wizard 或者 dashboard 配置。
+
 ### 使用示例
 
 配置完成后，可以直接用自然语言描述 OCR 或文档解析需求，并附上文件 URL 或本地路径，让 AI 应用调用对应 skill。以下是部分提示词示例：
