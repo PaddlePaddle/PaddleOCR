@@ -12,7 +12,7 @@
 [![arXiv](https://img.shields.io/badge/PaddleOCR_3.0-Technical%20Report-b31b1b.svg?logo=arXiv)](https://arxiv.org/pdf/2507.05595)
 [![arXiv](https://img.shields.io/badge/PaddleOCR--VL-Technical%20Report-b31b1b.svg?logo=arXiv)](https://arxiv.org/abs/2510.14528)
 
-[![PyPI Downloads](https://static.pepy.tech/badge/paddleocr/month)](https://pepy.tech/projectsproject/paddleocr)
+[![PyPI Downloads](https://static.pepy.tech/badge/paddleocr/month)](https://pepy.tech/projects/paddleocr)
 [![PyPI Downloads](https://static.pepy.tech/badge/paddleocr)](https://pepy.tech/projects/paddleocr)
 [![Used by](https://img.shields.io/badge/Used%20by-6k%2B%20repositories-blue)](https://github.com/PaddlePaddle/PaddleOCR/network/dependents)
 [![PyPI version](https://img.shields.io/pypi/v/paddleocr)](https://pypi.org/project/paddleocr/)
