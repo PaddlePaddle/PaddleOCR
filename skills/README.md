@@ -16,6 +16,8 @@ This directory contains official PaddleOCR Agent Skills. They integrate with AI 
 
 ## Using in AI Apps
 
+> The instructions below cover both skills. Install and configure only the skill(s) you need.
+
 ### Install to AI Apps
 
 #### Option 1: Install via `skills` CLI
@@ -141,7 +143,7 @@ Parse local file C:\docs\report.pdf and return complete structured output.
 
 This section describes how to run smoke tests locally to verify that the skills work correctly.
 
-> The examples below cover both skills. Run only the commands for the skill you need.
+> The examples below cover both skills. Run only the commands for the skill(s) you need.
 
 Make sure your working directory is the directory containing this file.
 
@@ -154,19 +156,12 @@ Make sure your working directory is the directory containing this file.
    python -m pip install -r paddleocr-doc-parsing/scripts/requirements-optimize.txt
    ```
 
-2. Configure environment variables (see [Configure Environment Variables](#configure-environment-variables) for the list of variables). Choose one of the following methods:
-
-   **Option A**: run the configuration script.
+2. Configure environment variables (see [Configure Environment Variables](#configure-environment-variables) for the list of variables).
 
    ```shell
-   python paddleocr-text-recognition/scripts/configure.py
-   python paddleocr-doc-parsing/scripts/configure.py
-   ```
-
-   **Option B**: create a local `.env` file from the `.env.example` template and fill in the required variables.
-
-   ```shell
-   cp .env.example .env
+   export PADDLEOCR_OCR_API_URL="<OCR_API_URL>"
+   export PADDLEOCR_ACCESS_TOKEN="<ACCESS_TOKEN>"
+   export PADDLEOCR_DOC_PARSING_API_URL="<DOC_PARSING_API_URL>"
    ```
 
 3. Run the smoke test scripts.

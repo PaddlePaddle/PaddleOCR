@@ -45,18 +45,10 @@ HOW TO GET YOUR API CREDENTIALS
 4. In Example Code, copy the API URL value
 5. In Example Code, copy the Access Token value
 
-If the skill is not installed, configure credentials using one of the following options:
-
-Option A: run the helper script for this skill:
-  python paddleocr-doc-parsing/scripts/configure.py
-
-Option B: create a local .env file from the template:
-  cp .env.example .env
-  PADDLEOCR_DOC_PARSING_API_URL=https://your-api-url.paddleocr.com/layout-parsing
-  PADDLEOCR_ACCESS_TOKEN=your_token_here
-  PADDLEOCR_DOC_PARSING_TIMEOUT=600  # optional
-
-If the skill is installed under a host application directory (for example, `~/.claude/skills`), do not run `configure.py` or create a local `.env` file there. Use the host application's environment-variable configuration instead.
+Set environment variables:
+  export PADDLEOCR_DOC_PARSING_API_URL=https://your-api-url.paddleocr.com/layout-parsing
+  export PADDLEOCR_ACCESS_TOKEN=your_token_here
+  export PADDLEOCR_DOC_PARSING_TIMEOUT=600  # optional
 
 ============================================================
 """
@@ -89,17 +81,7 @@ def main():
     except ImportError:
         print("  X httpx not installed")
         print("\nPlease install dependencies:")
-        print("  pip install httpx python-dotenv")
-        return 1
-
-    try:
-        from dotenv import load_dotenv
-
-        print("  + python-dotenv: installed")
-    except ImportError:
-        print("  X python-dotenv not installed")
-        print("\nPlease install dependencies:")
-        print("  pip install httpx python-dotenv")
+        print("  pip install httpx")
         return 1
 
     # Check configuration

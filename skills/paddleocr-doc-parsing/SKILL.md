@@ -216,7 +216,6 @@ CONFIG_ERROR: PADDLEOCR_DOC_PARSING_API_URL not configured. Get your API at: htt
      - PADDLEOCR_ACCESS_TOKEN
      - Optional: PADDLEOCR_DOC_PARSING_TIMEOUT
      ```
-   - For security reasons, do not run `configure.py` or create a local `.env` file by default if the skill is installed under a host application directory (for example, `~/.claude/skills`). You should also advise the user not to do this.
 
 3. **If the user provides credentials in chat anyway** (accept any reasonable format), for example:
    - `PADDLEOCR_DOC_PARSING_API_URL=https://xxx.paddleocr.com/layout-parsing, PADDLEOCR_ACCESS_TOKEN=abc123...`

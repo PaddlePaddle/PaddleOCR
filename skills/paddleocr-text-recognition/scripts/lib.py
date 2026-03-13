@@ -43,28 +43,9 @@ IMAGE_EXTENSIONS = (".png", ".jpg", ".jpeg", ".bmp", ".tiff", ".tif", ".webp")
 # Environment
 # =============================================================================
 
-_env_loaded = False
-
-
-def _load_env():
-    """Load .env file if available."""
-    global _env_loaded
-    if _env_loaded:
-        return
-    try:
-        from dotenv import load_dotenv
-
-        env_file = Path(__file__).parent.parent.parent / ".env"
-        if env_file.exists():
-            load_dotenv(env_file)
-    except ImportError:
-        pass
-    _env_loaded = True
-
 
 def _get_env(key: str) -> str:
     """Get environment variable."""
-    _load_env()
     return os.getenv(key, "").strip()
 
 
