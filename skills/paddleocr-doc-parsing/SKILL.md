@@ -1,9 +1,6 @@
 ---
 name: paddleocr-doc-parsing
-description: >
-  Advanced document parsing with PaddleOCR. Returns complete document
-  structure including text, tables, formulas, charts, and layout information. The AI agent extracts
-  relevant content based on user needs.
+description: Complex document parsing with PaddleOCR. Intelligently converts complex PDFs and document images into Markdown and JSON files that preserve the original structure.
 metadata:
   openclaw:
     requires:
