@@ -32,6 +32,20 @@ metadata:
 - Quick OCR tasks where speed is critical
 - Screenshots or simple images with clear text
 
+## Installation
+
+Install Python dependencies before using this skill. From the skill directory (`skills/paddleocr-doc-parsing`):
+
+```bash
+pip install -r scripts/requirements.txt
+```
+
+**Optional** — for document optimization and `split_pdf.py` (page extraction):
+
+```bash
+pip install -r scripts/requirements-optimize.txt
+```
+
 ## How to Use This Skill
 
 **⛔ MANDATORY RESTRICTIONS - DO NOT VIOLATE ⛔**
@@ -194,8 +208,6 @@ Then return:
 - `result[n].prunedResult` and `result[n].markdown` when user needs complete structured page data
 
 ### First-Time Configuration
-
-You can generally assume that the required environment variables have already been configured. Only when a parsing task fails should you analyze the error message to determine whether it is caused by a configuration issue. If it is indeed a configuration problem, you should notify the user to fix it.
 
 **When API is not configured**:
 

@@ -30,6 +30,14 @@ Do not use this skill in the following situations:
 - Code files or markdown documents
 - Tasks that do not involve image-to-text conversion
 
+## Installation
+
+Install Python dependencies before using this skill. From the skill directory (`skills/paddleocr-text-recognition`):
+
+```bash
+pip install -r scripts/requirements.txt
+```
+
 ## How to Use This Skill
 
 **⛔ MANDATORY RESTRICTIONS - DO NOT VIOLATE ⛔**
@@ -153,8 +161,6 @@ The output JSON structure is as follows:
 > Raw result location (default): the temp-file path printed by the script on stderr
 
 ### First-Time Configuration
-
-You can generally assume that the required environment variables have already been configured. Only when an OCR task fails should you analyze the error message to determine whether it is caused by a configuration issue. If it is indeed a configuration problem, you should notify the user to fix it.
 
 **When API is not configured**:
 
