@@ -1,0 +1,35 @@
+# Docker Compose for testing PaddleOCR on Linux aarch64 (ARM64)
+#
+# Usage:
+#   docker compose up --build aarch64-test     # Build & run aarch64 test
+#   docker compose run --rm aarch64 python     # Interactive Python shell
+#
+# On Apple Silicon (M1/M2/M3), Docker Desktop runs linux/arm64 natively.
+# On x86_64 hosts, QEMU emulation is used (slower but functional).
+
+services:
+  # Run the automated aarch64 test suite
+  aarch64-test:
+    build:
+      context: .
+      dockerfile: deploy/docker/aarch64/Dockerfile
+    platform: linux/arm64
+    volumes:
+      # Cache downloaded models across runs
+      - paddleocr-models:/root/.paddlex
+    command: ["python", "test_aarch64.py"]
+
+  # Interactive aarch64 shell for debugging
+  aarch64:
+    build:
+      context: .
+      dockerfile: deploy/docker/aarch64/Dockerfile
+    platform: linux/arm64
+    volumes:
+      - paddleocr-models:/root/.paddlex
+    stdin_open: true
+    tty: true
+    entrypoint: /bin/bash
+
+volumes:
+  paddleocr-models:

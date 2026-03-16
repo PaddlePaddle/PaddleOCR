@@ -1,0 +1,16 @@
+.git
+.github
+__pycache__
+*.pyc
+*.egg-info
+dist
+build
+.tox
+.mypy_cache
+.pytest_cache
+*.so
+*.o
+doc/_build
+docs/_build
+*.tar.gz
+*.whl

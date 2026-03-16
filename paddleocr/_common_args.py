@@ -12,6 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import os
+import platform
+import sys
+
 from paddlex.inference import PaddlePredictorOption
 from paddlex.utils.device import get_default_device, parse_device
 
@@ -26,6 +30,52 @@ from ._constants import (
     DEFAULT_USE_CINN,
 )
 from ._utils.cli import str2bool
+from ._utils.logging import logger
+
+
+def _is_linux_aarch64():
+    """Detect Linux on ARM64 (aarch64) architecture."""
+    return sys.platform == "linux" and platform.machine() in ("aarch64", "arm64")
+
+
+_AARCH64_HPI_AVAILABLE = None
+
+
+def _check_aarch64_hpi_deps():
+    """Check whether HPI dependencies for aarch64 are available.
+
+    Requires ultra_infer (built from source for aarch64), onnxruntime,
+    and paddle2onnx.
+    """
+    global _AARCH64_HPI_AVAILABLE
+    if _AARCH64_HPI_AVAILABLE is not None:
+        return _AARCH64_HPI_AVAILABLE
+    try:
+        import importlib.util
+
+        if importlib.util.find_spec("ultra_infer") is None:
+            _AARCH64_HPI_AVAILABLE = False
+            return _AARCH64_HPI_AVAILABLE
+
+        import onnxruntime  # noqa: F401
+        import paddle2onnx  # noqa: F401
+
+        _AARCH64_HPI_AVAILABLE = True
+    except ImportError:
+        _AARCH64_HPI_AVAILABLE = False
+    return _AARCH64_HPI_AVAILABLE
+
+
+def _apply_aarch64_env_flags():
+    """Set PaddlePaddle environment flags to work around aarch64 SIGSEGV bugs.
+
+    Pre-built PaddlePaddle aarch64 wheels have ABI issues that cause SIGSEGV
+    in the PIR model loader (std::filesystem::path destructor corruption).
+    Disabling PIR in the executor prevents that crash.
+    See: https://github.com/PaddlePaddle/PaddleOCR/issues/17590
+    """
+    os.environ.setdefault("FLAGS_enable_pir_in_executor", "0")
+    os.environ.setdefault("FLAGS_enable_pir_api", "0")
 
 
 def parse_common_args(kwargs, *, default_enable_hpi):
@@ -63,9 +113,40 @@ def prepare_common_init_args(model_name, common_args):
         device = get_default_device()
     device_type, _ = parse_device(device)
 
+    is_aarch64 = _is_linux_aarch64()
+
     init_kwargs = {}
     init_kwargs["device"] = device
-    init_kwargs["use_hpip"] = common_args["enable_hpi"]
+
+    # On Linux aarch64, pre-built PaddlePaddle wheels have ABI issues that
+    # cause SIGSEGV during both model loading and inference. The workaround:
+    #   1. Disable PIR (fixes model loading crash)
+    #   2. Enable HPI with ONNX Runtime (bypasses broken native inference)
+    # Requires: ultra-infer built for aarch64 + onnxruntime + paddle2onnx
+    # See: https://github.com/PaddlePaddle/PaddleOCR/issues/17590
+    #      https://github.com/PaddlePaddle/PaddleOCR/issues/16685
+    use_hpip = common_args["enable_hpi"]
+    if is_aarch64 and device_type == "cpu":
+        _apply_aarch64_env_flags()
+
+        if use_hpip is None or use_hpip is False:
+            if _check_aarch64_hpi_deps():
+                use_hpip = True
+                logger.warning(
+                    "Linux aarch64 detected: enabling High-Performance "
+                    "Inference (ONNX Runtime) to work around PaddlePaddle "
+                    "aarch64 SIGSEGV."
+                )
+            else:
+                logger.warning(
+                    "Linux aarch64 detected: PaddlePaddle pre-built wheels "
+                    "may crash with SIGSEGV on this platform. Install "
+                    "'ultra-infer' (built for aarch64), 'onnxruntime', and "
+                    "'paddle2onnx' to enable the ONNX Runtime workaround "
+                    "via enable_hpi=True."
+                )
+
+    init_kwargs["use_hpip"] = use_hpip
 
     pp_option = PaddlePredictorOption()
     if device_type == "gpu":
@@ -81,6 +162,9 @@ def prepare_common_init_args(model_name, common_args):
             pp_option.run_mode = "paddle"
     elif device_type == "cpu":
         enable_mkldnn = common_args["enable_mkldnn"]
+        # MKL-DNN (oneDNN) is x86-only; force-disable on aarch64
+        if is_aarch64 and enable_mkldnn:
+            enable_mkldnn = False
         if enable_mkldnn:
             pp_option.mkldnn_cache_capacity = common_args["mkldnn_cache_capacity"]
         else:
