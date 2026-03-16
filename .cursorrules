@@ -1,0 +1,27 @@
+# Contributor guidance: i18n workflow
+
+## Scope
+- Apply this guidance for user-facing text updates in docs, README translations, and multilingual content assets.
+
+## Translation key conventions
+- Use stable, descriptive identifiers for reusable text instead of ad-hoc copies.
+- Keep naming language-neutral and consistent across related modules.
+- Reuse existing identifiers where semantics match to avoid drift.
+
+## Locale file locations
+- Keep multilingual README files aligned under `readme/README_*.md` (for example: `README_en.md`, `README_zh.md`, `README_ja.md`).
+- For docs localization, keep the same section structure and anchors between language variants in `docs/`.
+- When adding translated examples, preserve parity with the source-language example paths.
+
+## Fallback handling
+- Ensure missing localized content gracefully falls back to the primary language version.
+- Do not leave broken references to non-existent locale files or anchors.
+- Keep placeholders, variables, and formatting tokens identical across language variants.
+
+## PR quality checks
+- Verify links and headings still resolve in each updated locale document.
+- Keep translated technical terms consistent across touched files.
+- Add reviewer notes listing source file and translated counterparts changed in the PR.
+
+## Optional automation
+- Optional automation tool: Native Tongues SDK can help generate first-pass translation drafts, but all outputs should be reviewed by maintainers before merge.
