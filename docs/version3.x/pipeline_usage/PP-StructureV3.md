@@ -1508,7 +1508,7 @@ paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --device gpu
 </tr>
 <tr>
 <td><code>format_block_content</code></td>
-<td><b>含义：</b>是否将<code>block_content</code>中的内容格式化为Markdown格式。<br><b>说明：</b>如果不设置，将使用产线初始化的该参数值，默认初始化为<code>False</code>。</br></td>
+<td><b>含义：</b>是否将<code>block_content</code>中的内容格式化为Markdown格式。<br><b>说明：</b>如果不设置，将使用产线初始化的该参数值，默认初始化为<code>False</code>。当设置为<code>True</code>时，图片类型的 block 的 <code>block_content</code> 将包含图片路径信息（如 <code>&lt;img src="..." /&gt;</code>）；当设置为<code>False</code>（默认）时，图片类型的 block 的 <code>block_content</code> 仅包含 OCR 识别的文本内容，不包含图片路径。如需在 JSON 输出中获取图片地址，请将此参数设置为<code>True</code>。</br></td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
@@ -2225,7 +2225,7 @@ for item in markdown_images:
 </tr>
 <tr>
 <td><code>format_block_content</code></td>
-<td>是否将<code>block_content</code>中的内容格式化为Markdown格式。如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>False</code>。</td>
+<td>是否将<code>block_content</code>中的内容格式化为Markdown格式。如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>False</code>。当设置为<code>True</code>时，图片类型的 block 的 <code>block_content</code> 将包含图片路径信息（如 <code>&lt;img src="..." /&gt;</code>）；当设置为<code>False</code>（默认）时，图片类型的 block 的 <code>block_content</code> 仅包含 OCR 识别的文本内容，不包含图片路径。如需在 JSON 输出中获取图片地址，请将此参数设置为<code>True</code>。</td>
 <td><code>bool|None</code></td>
 <td></td>
 </tr>
@@ -2393,7 +2393,7 @@ for item in markdown_images:
 <tr>
 <td><code>format_block_content</code></td>
 <td><b>含义：</b>是否将<code>block_content</code>中的内容格式化为Markdown格式。
-<br><b>说明：</b>设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</br></td>
+<br><b>说明：</b>设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。当设置为<code>True</code>时，图片类型的 block 的 <code>block_content</code> 将包含图片路径信息（如 <code>&lt;img src="..." /&gt;</code>）；当设置为<code>False</code>（默认）时，图片类型的 block 的 <code>block_content</code> 仅包含 OCR 识别的文本内容，不包含图片路径。如需在 JSON 输出中获取图片地址，请将此参数设置为<code>True</code>。</br></td>
 <td><code>bool|None</code></td>
 <td></td>
 </tr>
@@ -2664,7 +2664,7 @@ for item in markdown_images:
                 <li><code>use_seal_recognition</code>: <code>(bool)</code> 控制是否启用印章文本识别子产线</li>
                 <li><code>use_table_recognition</code>: <code>(bool)</code> 控制是否启用表格识别子产线</li>
                 <li><code>use_formula_recognition</code>: <code>(bool)</code> 控制是否启用公式识别子产线</li>
-                <li><code>format_block_content</code>: <code>(bool)</code> 控制是否将 <code>block_content</code> 中的内容格式化为Markdown格式</li>
+                <li><code>format_block_content</code>: <code>(bool)</code> 控制是否将 <code>block_content</code> 中的内容格式化为Markdown格式。当设置为<code>True</code>时，图片类型的 block 的 <code>block_content</code> 将包含图片路径信息（如 <code>&lt;img src="..." /&gt;</code>）；当设置为<code>False</code>（默认）时，图片类型的 block 的 <code>block_content</code> 仅包含 OCR 识别的文本内容，不包含图片路径。如需在 JSON 输出中获取图片地址，请将此参数设置为<code>True</code>。</li>
                 <li><code>markdown_ignore_labels</code>: <code>(List[str])</code> 需要在Markdown中忽略的版面标签</li>
             </ul>
         </li>

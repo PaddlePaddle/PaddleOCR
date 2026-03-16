@@ -484,7 +484,7 @@ If not set, the initialized default value will be used, which is initialized to 
 <td><code>format_block_content</code></td>
 <td><b>Meaning:</b>Controls whether to format the <code>block_content</code> content within as Markdown. <br/>
 <b>Description:</b>
-If not set, the initialized default value will be used, which defaults to initialization as<code>False</code>.</td>
+If not set, the initialized default value will be used, which defaults to initialization as<code>False</code>. When set to <code>True</code>, the <code>block_content</code> of image-type blocks will contain image path information (e.g., <code>&lt;img src="..." /&gt;</code>). When set to <code>False</code> (default), the <code>block_content</code> of image-type blocks will only contain OCR-recognized text content without image paths. To include image paths in JSON output, set this parameter to <code>True</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
@@ -939,7 +939,7 @@ If set to <code>None</code>, the initialized default value will be used, which i
 <td><code>format_block_content</code></td>
 <td><b>Meaning:</b>Controls whether to format the <code>block_content</code> content within as Markdown. <br/>
 <b>Description:</b>
-If set to <code>None</code>, the initialized default value will be used, which defaults to initialization as<code>False</code>.</td>
+If set to <code>None</code>, the initialized default value will be used, which defaults to initialization as<code>False</code>. When set to <code>True</code>, the <code>block_content</code> of image-type blocks will contain image path information (e.g., <code>&lt;img src="..." /&gt;</code>). When set to <code>False</code> (default), the <code>block_content</code> of image-type blocks will only contain OCR-recognized text content without image paths. To include image paths in JSON output, set this parameter to <code>True</code>.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 <td></td>
@@ -1181,8 +1181,8 @@ Setting it to <code>None</code> means using the instantiation parameter; otherwi
 <tr>
 <td><code>format_block_content</code></td>
 <td><b>Meaning:</b>The parameter meaning is basically the same as the instantiation parameter. <br/>
-<b>Description:</b> 
-Setting it to <code>None</code> means using the instantiation parameter; otherwise, this parameter takes precedence.</td>
+<b>Description:</b>
+Setting it to <code>None</code> means using the instantiation parameter; otherwise, this parameter takes precedence. When set to <code>True</code>, the <code>block_content</code> of image-type blocks will contain image path information (e.g., <code>&lt;img src="..." /&gt;</code>). When set to <code>False</code> (default), the <code>block_content</code> of image-type blocks will only contain OCR-recognized text content without image paths. To include image paths in JSON output, set this parameter to <code>True</code>.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -1411,7 +1411,7 @@ Setting it to <code>None</code> means using the instantiation parameter; otherwi
         - `use_doc_preprocessor`: `(bool)` Controls whether to enable the document preprocessing sub-pipeline.
         - `use_layout_detection`: `(bool)` Controls whether to enable the layout detection module.
         - `use_chart_recognition`: `(bool)` Controls whether to enable the chart recognition function.
-        - `format_block_content`: `(bool)` Controls whether to save the formatted markdown content in `JSON`.
+        - `format_block_content`: `(bool)` Controls whether to save the formatted markdown content in `JSON`. When set to `True`, the `block_content` of image-type blocks will contain image path information (e.g., `<img src="..." />`). When set to `False` (default), the `block_content` of image-type blocks will only contain OCR-recognized text content without image paths. To include image paths in JSON output, set this parameter to `True`.
         - `markdown_ignore_labels`: `(List[str])` Labels of layout regions that need to be ignored in Markdown
 
     - `doc_preprocessor_res`: `(Dict[str, Union[List[float], str]])` A dictionary of document preprocessing results, which exists only when `use_doc_preprocessor=True`.
@@ -1438,7 +1438,7 @@ Setting it to <code>None</code> means using the instantiation parameter; otherwi
         - `use_doc_preprocessor`: `(bool)` Controls whether to enable the document preprocessing sub-pipeline.
         - `use_layout_detection`: `(bool)` Controls whether to enable the layout detection module.
         - `use_chart_recognition`: `(bool)` Controls whether to enable the chart recognition function.
-        - `format_block_content`: `(bool)` Controls whether to save the formatted markdown content in `JSON`.
+        - `format_block_content`: `(bool)` Controls whether to save the formatted markdown content in `JSON`. When set to `True`, the `block_content` of image-type blocks will contain image path information (e.g., `<img src="..." />`). When set to `False` (default), the `block_content` of image-type blocks will only contain OCR-recognized text content without image paths. To include image paths in JSON output, set this parameter to `True`.
 
     - `doc_preprocessor_res`: `(Dict[str, Union[List[float], str]])` A dictionary of document preprocessing results, which exists only when `use_doc_preprocessor=True`.
         - `input_path`: `(str)` The image path accepted by the document preprocessing sub-pipeline. When the input is a `numpy.ndarray`, it is saved as `None`; here, it is `None`.

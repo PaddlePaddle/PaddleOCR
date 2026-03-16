@@ -1536,7 +1536,7 @@ If not set, the default is <code>True</code>.</td>
 <tr>
 <td><code>format_block_content</code></td>
 <td><b>Meaning:</b>Whether to format the content in <code>block_content</code> as Markdown.<br/>
-<b>Description:</b> If not set, the initialized default value will be used, which is <code>False</code> by default.</td>
+<b>Description:</b> If not set, the initialized default value will be used, which is <code>False</code> by default. When set to <code>True</code>, the <code>block_content</code> of image-type blocks will contain image path information (e.g., <code>&lt;img src="..." /&gt;</code>). When set to <code>False</code> (default), the <code>block_content</code> of image-type blocks will only contain OCR-recognized text content without image paths. To include image paths in JSON output, set this parameter to <code>True</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
@@ -2302,7 +2302,7 @@ If set to <code>None</code>, the default value is <code>True</code>.</td>
 <tr>
 <td><code>format_block_content</code></td>
 <td><b>Meaning:</b>Whether to format the content in <code>block_content</code> as Markdown.<br/>
-<b>Description:</b> If set to <code>None</code>, the default value is <code>False</code>.</td>
+<b>Description:</b> If set to <code>None</code>, the default value is <code>False</code>. When set to <code>True</code>, the <code>block_content</code> of image-type blocks will contain image path information (e.g., <code>&lt;img src="..." /&gt;</code>). When set to <code>False</code> (default), the <code>block_content</code> of image-type blocks will only contain OCR-recognized text content without image paths. To include image paths in JSON output, set this parameter to <code>True</code>.</td>
 <td><code>bool|None</code></td>
 <td></td>
 </tr>
@@ -2480,7 +2480,7 @@ If set to <code>None</code>, the instantiation value is used; otherwise, this pa
 </tr>
 <tr>
 <td><code>format_block_content</code></td>
-<td>Whether to format the content in <code>block_content</code> as Markdown. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence.</td>
+<td>Whether to format the content in <code>block_content</code> as Markdown. If set to <code>None</code>, the instantiation value is used; otherwise, this parameter takes precedence. When set to <code>True</code>, the <code>block_content</code> of image-type blocks will contain image path information (e.g., <code>&lt;img src="..." /&gt;</code>). When set to <code>False</code> (default), the <code>block_content</code> of image-type blocks will only contain OCR-recognized text content without image paths. To include image paths in JSON output, set this parameter to <code>True</code>.</td>
 <td><code>bool|None</code></td>
 <td></td>
 </tr>
@@ -2778,7 +2778,7 @@ If enabled, the cell detection model will not be used, and only the table struct
             <li><code>use_seal_recognition</code>: <code>(bool)</code> Whether to enable seal text recognition sub-pipeline</li>
             <li><code>use_table_recognition</code>: <code>(bool)</code> Whether to enable table recognition sub-pipeline</li>
             <li><code>use_formula_recognition</code>: <code>(bool)</code> Whether to enable formula recognition sub-pipeline</li>
-            <li><code>format_block_content</code>: <code>(bool)</code> Controls whether to format the <code>block_content</code> into Markdown format</li>
+            <li><code>format_block_content</code>: <code>(bool)</code> Controls whether to format the <code>block_content</code> into Markdown format. When set to <code>True</code>, the <code>block_content</code> of image-type blocks will contain image path information (e.g., <code>&lt;img src="..." /&gt;</code>). When set to <code>False</code> (default), the <code>block_content</code> of image-type blocks will only contain OCR-recognized text content without image paths. To include image paths in JSON output, set this parameter to <code>True</code>.</li>
             <li><code>markdown_ignore_labels</code>: <code>(List[str])</code> Labels of layout regions that need to be ignored in Markdown</li>
         </ul>
     </li>

@@ -474,7 +474,7 @@ paddleocr doc_parser -i ./paddleocr_vl_demo.png --use_layout_detection False
 <tr>
 <td><code>format_block_content</code></td>
 <td><b>含义：</b>控制是否将 <code>block_content</code> 中的内容格式化为Markdown格式。<br/>
-<b>说明：</b>如果不设置，将使用初始化的默认值，默认初始化为<code>False</code>。</td>
+<b>说明：</b>如果不设置，将使用初始化的默认值，默认初始化为<code>False</code>。当设置为<code>True</code>时，图片类型的 block 的 <code>block_content</code> 将包含图片路径信息（如 <code>&lt;img src="..." /&gt;</code>）；当设置为<code>False</code>（默认）时，图片类型的 block 的 <code>block_content</code> 仅包含 OCR 识别的文本内容，不包含图片路径。如需在 JSON 输出中获取图片地址，请将此参数设置为<code>True</code>。</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
@@ -909,7 +909,7 @@ output = pipeline.predict(["imgs/file1.png", "imgs/file2.png", "imgs/file3.png"]
 <tr>
 <td><code>format_block_content</code></td>
 <td><b>含义：</b>控制是否将 <code>block_content</code> 中的内容格式化为Markdown格式。<br/>
-<b>说明：</b>如果设置为<code>None</code>，将使用初始化的默认值，默认初始化为<code>False</code>。</td>
+<b>说明：</b>如果设置为<code>None</code>，将使用初始化的默认值，默认初始化为<code>False</code>。当设置为<code>True</code>时，图片类型的 block 的 <code>block_content</code> 将包含图片路径信息（如 <code>&lt;img src="..." /&gt;</code>）；当设置为<code>False</code>（默认）时，图片类型的 block 的 <code>block_content</code> 仅包含 OCR 识别的文本内容，不包含图片路径。如需在 JSON 输出中获取图片地址，请将此参数设置为<code>True</code>。</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -1142,7 +1142,7 @@ output = pipeline.predict(["imgs/file1.png", "imgs/file2.png", "imgs/file3.png"]
 <td><code>format_block_content</code></td>
 <td><b>含义：</b>参数含义与实例化参数基本相同。<br/>
 <b>说明：</b>
-设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。当设置为<code>True</code>时，图片类型的 block 的 <code>block_content</code> 将包含图片路径信息（如 <code>&lt;img src="..." /&gt;</code>）；当设置为<code>False</code>（默认）时，图片类型的 block 的 <code>block_content</code> 仅包含 OCR 识别的文本内容，不包含图片路径。如需在 JSON 输出中获取图片地址，请将此参数设置为<code>True</code>。</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -1363,7 +1363,7 @@ output = pipeline.predict(["imgs/file1.png", "imgs/file2.png", "imgs/file3.png"]
           <li><code>use_doc_preprocessor</code>: <code>(bool)</code> 控制是否启用文档预处理子产线</li>
           <li><code>use_layout_detection</code>: <code>(bool)</code> 控制是否启用版面检测模块</li>
           <li><code>use_chart_recognition</code>: <code>(bool)</code> 控制是否开启图表识别功能</li>
-          <li><code>format_block_content</code>: <code>(bool)</code> 控制是否在<code>JSON</code>中保存格式化后的markdown内容</li>
+          <li><code>format_block_content</code>: <code>(bool)</code> 控制是否在<code>JSON</code>中保存格式化后的markdown内容。当设置为<code>True</code>时，图片类型的 block 的 <code>block_content</code> 将包含图片路径信息（如 <code>&lt;img src="..." /&gt;</code>）；当设置为<code>False</code>（默认）时，图片类型的 block 的 <code>block_content</code> 仅包含 OCR 识别的文本内容，不包含图片路径。如需在 JSON 输出中获取图片地址，请将此参数设置为<code>True</code>。</li>
         </ol>
       </li>
       <li><code>doc_preprocessor_res</code>: <code>(Dict[str, Union[str, Dict[str, bool], int]])</code> 文档预处理子产线的输出结果。仅当<code>use_doc_preprocessor=True</code>时存在
@@ -1399,7 +1399,7 @@ output = pipeline.predict(["imgs/file1.png", "imgs/file2.png", "imgs/file3.png"]
           <li><code>use_doc_preprocessor</code>: <code>(bool)</code> 控制是否启用文档预处理子产线</li>
           <li><code>use_layout_detection</code>: <code>(bool)</code> 控制是否启用版面检测模块</li>
           <li><code>use_chart_recognition</code>: <code>(bool)</code> 控制是否开启图表识别功能</li>
-          <li><code>format_block_content</code>: <code>(bool)</code> 控制是否在<code>JSON</code>中保存格式化后的markdown内容</li>
+          <li><code>format_block_content</code>: <code>(bool)</code> 控制是否在<code>JSON</code>中保存格式化后的markdown内容。当设置为<code>True</code>时，图片类型的 block 的 <code>block_content</code> 将包含图片路径信息（如 <code>&lt;img src="..." /&gt;</code>）；当设置为<code>False</code>（默认）时，图片类型的 block 的 <code>block_content</code> 仅包含 OCR 识别的文本内容，不包含图片路径。如需在 JSON 输出中获取图片地址，请将此参数设置为<code>True</code>。</li>
         </ol>
       </li>
       <li><code>doc_preprocessor_res</code>: <code>(Dict[str, Union[str, Dict[str, bool], int]])</code> 文档预处理子产线的输出结果。仅当<code>use_doc_preprocessor=True</code>时存在
