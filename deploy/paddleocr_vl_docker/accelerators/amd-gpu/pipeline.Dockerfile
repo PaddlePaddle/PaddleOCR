@@ -9,6 +9,7 @@ ENV PIP_BREAK_SYSTEM_PACKAGES=1
 RUN ln -s /usr/bin/python3 /usr/bin/python
 
 RUN apt-get update \
+    && apt-get install -y --no-install-recommends miopen-hip-dev rocrand-dev rocblas-dev \
     && apt-get install -y --no-install-recommends \
         fontconfig \
         fonts-dejavu-core \
