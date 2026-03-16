@@ -6,7 +6,7 @@
 - [2. Getting Started](#2-getting-started)
     - [2.1 Compile Prediction Demo](#21-compile-prediction-demo)
     - [2.2 Prepare Models](#22-prepare-models)
-    - [2.3 Run Prediction Demo](#23-run-prediction-demo)
+    - [2.3 Run Prediction Demo](#23-run-the-prediction-demo)
     - [2.4 C++ API Integration](#24-c-api-integration)
 - [3. Extended Features](#3-extended-features)
     - [3.1 Multilingual Text Recognition](#31-multilingual-text-recognition)

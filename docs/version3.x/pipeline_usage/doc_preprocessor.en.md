@@ -620,7 +620,7 @@ The following are the parameters and their descriptions of the <code>predict()</
 
 If the pipeline meets your requirements for inference speed and accuracy, you can proceed directly to development integration/deployment.
 
-If you need to apply the pipeline directly to your Python project, you can refer to the example code in [2.2 Python Script Integration](#22-python脚本方式集成).
+If you need to apply the pipeline directly to your Python project, you can refer to the example code in [2.2 Python Script Integration](#22-integration-via-python-script).
 
 In addition, PaddleOCR also provides two other deployment methods, which are detailed as follows:
 

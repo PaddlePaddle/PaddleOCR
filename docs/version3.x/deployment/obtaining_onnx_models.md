@@ -4,7 +4,7 @@ comments: true
 
 # 获取 ONNX 模型
 
-PaddleOCR 提供了丰富的预训练模型，这些模型均采用飞桨的静态图格式进行存储。若需在部署阶段使用 ONNX 格式的模型，可借助 PaddleX 提供的 Paddle2ONNX 插件进行转换。关于 PaddleX 及其与 PaddleOCR 之间的关系，请参考 [PaddleOCR 与 PaddleX 的区别与联系](../paddleocr_and_paddlex.md#1-paddleocr-与-paddlex-的区别与联系)。
+PaddleOCR 提供了丰富的预训练模型，这些模型均采用飞桨的静态图格式进行存储。若需在部署阶段使用 ONNX 格式的模型，可借助 PaddleX 提供的 Paddle2ONNX 插件进行转换。关于 PaddleX 及其与 PaddleOCR 之间的关系，请参考 [PaddleOCR 与 PaddleX 的区别与联系](../paddleocr_and_paddlex.md#1-paddleocr-paddlex)。
 
 首先，执行如下命令，通过 PaddleX CLI 安装 PaddleX 的 Paddle2ONNX 插件：
 

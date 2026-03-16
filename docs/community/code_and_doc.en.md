@@ -129,7 +129,7 @@ PaddleOCR welcomes you to actively contribute code to repo. Here are some basic 
 
 ### 3.2 PaddleOCR Code Submission Process And Specification
 
-If you are familiar with Git use, you can jump directly to [Some Conventions For Submitting Code in 3.2.10](#Some_conventions_for_submitting_code)
+If you are familiar with Git use, you can jump directly to [Some Conventions For Submitting Code in 3.2.10](#3210-some-conventions-for-submitting-code)
 
 #### 3.2.1 Create Your `Remote Repo`
 
