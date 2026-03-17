@@ -174,20 +174,16 @@ CONFIG_ERROR: PADDLEOCR_OCR_API_URL not configured. Get your API at: https://pad
 1. **Show the exact error message** to the user (including the URL).
 
 2. **Guide the user to configure securely**:
-   - Recommend configuring through the host application's standard method (e.g., settings file, environment variable UI) rather than pasting credentials in chat.
-   - List the required environment variables:
-     ```
-     - PADDLEOCR_OCR_API_URL
-     - PADDLEOCR_ACCESS_TOKEN
-     - Optional: PADDLEOCR_OCR_TIMEOUT
-     ```
+   - Instruct the user to visit the [PaddleOCR website](https://www.paddleocr.com), click **API**, select the model you need, then copy the `API_URL` and `Token`. They correspond to the API URL (`PADDLEOCR_OCR_API_URL`) and access token (`PADDLEOCR_ACCESS_TOKEN`) used for authentication. Supported model: `PP-OCRv5`.
+   - Optionally, ask the user to configure the request timeout via `PADDLEOCR_OCR_TIMEOUT`.
+   - Recommend configuring through the host application's standard method (e.g., settings file, environment variable UI) rather than pasting credentials in chat. For example, in OpenClaw, environment variables can be set in `~/.openclaw/openclaw.json`.
 
 3. **If the user provides credentials in chat anyway** (accept any reasonable format), for example:
    - `PADDLEOCR_OCR_API_URL=https://xxx.paddleocr.com/ocr, PADDLEOCR_ACCESS_TOKEN=abc123...`
    - `Here's my API: https://xxx and token: abc123`
    - Copy-pasted code format
-   - Any other reasonable format
-   - **Security note**: Warn the user that credentials shared in chat may be stored in conversation history. Recommend setting them through the host application's configuration instead when possible.
+   
+   Warn the user that credentials shared in chat may be stored in conversation history. Recommend setting them through the host application's configuration instead when possible.
 
    Then parse and validate the values:
    - Extract `PADDLEOCR_OCR_API_URL` (look for URLs with `paddleocr.com` or similar)
