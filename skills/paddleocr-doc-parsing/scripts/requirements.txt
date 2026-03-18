@@ -2,6 +2,3 @@
 
 # HTTP client
 httpx>=0.24.0
-
-# Environment variables
-python-dotenv>=1.0.0

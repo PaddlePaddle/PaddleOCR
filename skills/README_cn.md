@@ -16,6 +16,8 @@
 
 ## 在 AI 应用中使用
 
+> 以下说明涵盖两个 skill。只需安装并配置你需要的 skill 即可。
+
 ### 安装到 AI 应用
 
 #### 方式一：通过 `skills` CLI 安装
@@ -72,10 +74,10 @@ git clone https://github.com/PaddlePaddle/PaddleOCR.git
 
   ```json
   {
-    “env”: {
-      “PADDLEOCR_ACCESS_TOKEN”: “<ACCESS_TOKEN>”,
-      “PADDLEOCR_OCR_API_URL”: “<OCR_API_URL>”,
-      “PADDLEOCR_DOC_PARSING_API_URL”: “<DOC_PARSING_API_URL>”
+    "env": {
+      "PADDLEOCR_ACCESS_TOKEN": "<ACCESS_TOKEN>",
+      "PADDLEOCR_OCR_API_URL": "<OCR_API_URL>",
+      "PADDLEOCR_DOC_PARSING_API_URL": "<DOC_PARSING_API_URL>"
     }
   }
   ```
@@ -84,28 +86,26 @@ git clone https://github.com/PaddlePaddle/PaddleOCR.git
 
   ```json
   {
-    “skills”: {
-      “entries”: {
-        “paddleocr-text-recognition”: {
-          “enabled”: true,
-          “apiKey”: “<ACCESS_TOKEN>”,
-          “env”: {
-            “PADDLEOCR_OCR_API_URL”: “<OCR_API_URL>”
+    "skills": {
+      "entries": {
+        "paddleocr-text-recognition": {
+          "enabled": true,
+          "env": {
+            "PADDLEOCR_OCR_API_URL": "<OCR_API_URL>",
+            "PADDLEOCR_ACCESS_TOKEN": "<ACCESS_TOKEN>"
           }
         },
-        “paddleocr-doc-parsing”: {
-          “enabled”: true,
-          “apiKey”: “<ACCESS_TOKEN>”,
-          “env”: {
-            “PADDLEOCR_DOC_PARSING_API_URL”: “<DOC_PARSING_API_URL>”
+        "paddleocr-doc-parsing": {
+          "enabled": true,
+          "env": {
+            "PADDLEOCR_DOC_PARSING_API_URL": "<DOC_PARSING_API_URL>",
+            "PADDLEOCR_ACCESS_TOKEN": "<ACCESS_TOKEN>"
           }
         }
       }
     }
   }
   ```
-
-  请注意这种方式可能在配置文件中明文存储 access token。更安全的方式是通过 OpenClaw onboarding wizard 或者 dashboard 配置。
 
 ### 使用示例
 
@@ -156,19 +156,12 @@ git clone https://github.com/PaddlePaddle/PaddleOCR.git
    python -m pip install -r paddleocr-doc-parsing/scripts/requirements-optimize.txt
    ```
 
-2. 配置环境变量（需要配置的变量参见[配置环境变量](#配置环境变量)一节），可选择以下任一方式：
-
-   **方式 A**：运行交互式配置脚本。
+2. 配置环境变量（需要配置的变量参见[配置环境变量](#配置环境变量)一节）。
 
    ```shell
-   python paddleocr-text-recognition/scripts/configure.py
-   python paddleocr-doc-parsing/scripts/configure.py
-   ```
-
-   **方式 B**：由 `.env.example` 模板文件创建本地 `.env` 文件，并填写所需变量。
-
-   ```shell
-   cp .env.example .env
+   export PADDLEOCR_OCR_API_URL="<OCR_API_URL>"
+   export PADDLEOCR_ACCESS_TOKEN="<ACCESS_TOKEN>"
+   export PADDLEOCR_DOC_PARSING_API_URL="<DOC_PARSING_API_URL>"
    ```
 
 3. 运行冒烟测试脚本。
