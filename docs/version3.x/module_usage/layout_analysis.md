@@ -11,23 +11,30 @@ comments: true
 
 ## 二、支持模型列表
 
-该模块目前仅支持 PP-DocLayoutV2 一个模型。模型结构上，PP-DocLayoutV2 是在版面检测模型 [PP-DocLayout_plus-L](./layout_detection.md)（基于 RT-DETR-L 模型） 的基础上级联一个含 6 层 Transformer 层的轻量级指针网络（Pointer network）组成，原先 PP-DocLayout_plus-L 部分继续用于版面检测，识别文档图像中的不同元素（如文字、图表、图像、公式、段落、摘要、参考文献等），将其归类为预定义的类别并确定这些区域在文档中的位置。检测到的边界框和类别标签作为后续的指针网络的输入来对版面元素进行排序从而得到正确的阅读顺序。
+该模块目前支持 PP-DocLayoutV2 和 PP-DocLayoutV3 两个模型。
 
-<div align="center">
-<img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr_vl/methods/PP-DocLayoutV2.png" width="600"/>
+### PP-DocLayoutV2
+
+PP-DocLayoutV2 是在版面检测模型 [PP-DocLayout_plus-L](./layout_detection.md)（基于 RT-DETR-L 模型） 的基础上级联一个含 6 层 Transformer 层的轻量级指针网络（Pointer network）组成，原先 PP-DocLayout_plus-L 部分继续用于版面检测，识别文档图像中的不同元素（如文字、图表、图像、公式、段落、摘要、参考文献等），将其归类为预定义的类别并确定这些区域在文档中的位置。检测到的边界框和类别标签作为后续的指针网络的输入来对版面元素进行排序从而得到正确的阅读顺序。
+
+<div align=”center”>
+<img src=”https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr_vl/methods/PP-DocLayoutV2.png” width=”600”/>
 </div>
 
-具体如上图所示，PP-DocLayoutV2 对来自 RT-DETR 检出的目标利用绝对二维位置编码和类别标签进行嵌入表示。此外，指针网络的注意力机制融合了 Relation-DETR中的几何偏置机制，以显式地建模元素之间的成对几何关系。成对关系头（pairwise relation head）将元素表示线性投影为查询（query）向量和键（key）向量，然后计算双线性相似度以生成成对的 logits，最终得到一个表示每对元素之间相对顺序的 N×N 矩阵。最后，一种确定性的“胜者累积”（win-accumulation）解码算法会为检测到的版面元素恢复出一个拓扑一致的阅读顺序。
+具体如上图所示，PP-DocLayoutV2 对来自 RT-DETR 检出的目标利用绝对二维位置编码和类别标签进行嵌入表示。此外，指针网络的注意力机制融合了 Relation-DETR中的几何偏置机制，以显式地建模元素之间的成对几何关系。成对关系头（pairwise relation head）将元素表示线性投影为查询（query）向量和键（key）向量，然后计算双线性相似度以生成成对的 logits，最终得到一个表示每对元素之间相对顺序的 N×N 矩阵。最后，一种确定性的”胜者累积”（win-accumulation）解码算法会为检测到的版面元素恢复出一个拓扑一致的阅读顺序。
 
-下表仅给出 PP-DocLayoutV2 的版面检测精度。该精度指标的评估数据集是自建的版面区域检测数据集，包含了中英文论文、杂志、报纸、研报、PPT、试卷、课本等 1000 张文档类型图片，包含 25 类常见的版面元素：文档标题、段落标题、文本、竖排文本、页码、摘要、目录、参考文献、脚注、图像脚注、页眉、页脚、页眉图像、页脚图像、算法、行内公式、行间公式、公式编号、图像、表格、图和表标题（图标题、表格标题和图表标题）、印章、图表、侧栏文本和参考文献内容。
+### PP-DocLayoutV3
+
+PP-DocLayoutV3 是一个以 PPHGNetV2-L 为骨干网络的 DETR 架构版面分析模型，在版面区域检测的基础上，进一步引入了**实例分割**与**阅读顺序预测**能力。模型可端到端地学习文档元素的阅读顺序关系，在识别各类版面元素并输出边界框的同时，也输出每个区域的精确轮廓掩码（mask）和阅读顺序编号（read_order）。
+
+下表给出 PP-DocLayoutV2 和 PP-DocLayoutV3 的版面检测精度。该精度指标的评估数据集是自建的版面区域检测数据集，包含了中英文论文、杂志、报纸、研报、PPT、试卷、课本等 1000 张文档类型图片，包含 25 类常见的版面元素：文档标题、段落标题、文本、竖排文本、页码、摘要、目录、参考文献、脚注、图像脚注、页眉、页脚、页眉图像、页脚图像、算法、行内公式、行间公式、公式编号、图像、表格、图和表标题（图标题、表格标题和图表标题）、印章、图表、侧栏文本和参考文献内容。
 
 <table>
 <thead>
 <tr>
 <th>模型</th><th>模型下载链接</th>
 <th>mAP(0.5)（%）</th>
-<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
-<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
+<th>GPU推理耗时（ms）<br/>[A100 GPU]</th>
 <th>模型存储大小（MB）</th>
 <th>介绍</th>
 </tr>
@@ -35,12 +42,19 @@ comments: true
 <tbody>
 <tr>
 <td>PP-DocLayoutV2</td>
-<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayoutV2_infer.tar">推理模型</a></td>
+<td><a href=”https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayoutV2_infer.tar”>推理模型</a></td>
 <td>81.4</td>
-<td> - </td>
 <td> - </td>
 <td>203.8</td>
 <td>自研的版面分析模型在包含中英文论文、多栏杂志、报纸、PPT、合同、书本、试卷、研报、古籍、日文文档、竖版文字文档等场景的自建数据集训练的更高精度版面区域定位和版面阅读顺序恢复模型</td>
+</tr>
+<tr>
+<td>PP-DocLayoutV3</td>
+<td><a href=”https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0b2/PP-DocLayoutV3_infer.tar”>推理模型</a></td>
+<td> - </td>
+<td>23.77</td>
+<td>126</td>
+<td>基于DETR在包含中英文论文、多栏杂志、报纸、PPT、合同、书本、试卷、研报等场景的自建数据集上训练的版面分析模型，支持25类版面元素的实例分割及阅读顺序预测</td>
 </tr>
 <tr>
 </tbody>
@@ -51,7 +65,11 @@ comments: true
 
 > ❗ 在快速开始前，请先安装 PaddleOCR 的 wheel 包，详细请参考 [安装教程](../installation.md)。
 
-您可以将版面区域检测模块中的模型推理集成到您的项目中。运行以下代码前，请您下载[示例图片](https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/layout.jpg)到本地。
+您可以将版面分析模块中的模型推理集成到您的项目中。
+
+### PP-DocLayoutV2
+
+运行以下代码前，请您下载[示例图片](https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/layout.jpg)到本地。
 
 ```python
 from paddleocr import LayoutDetection
@@ -82,6 +100,33 @@ for res in output:
         <li><code>coordinate</code>：目标框坐标，一个浮点数列表，格式为<code>[xmin, ymin, xmax, ymax]</code></li>
     </ol>
 </li>
+</ul>
+
+### PP-DocLayoutV3
+
+运行以下代码前，请您下载[示例图片](https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/layout_analysis_demo.jpg)到本地。
+
+```python
+from paddleocr import LayoutDetection
+
+model = LayoutDetection(model_name="PP-DocLayoutV3")
+output = model.predict("layout_analysis_demo.jpg", batch_size=1)
+for res in output:
+    res.print()
+    res.save_to_img(save_path="./output/")
+    res.save_to_json(save_path="./output/res.json")
+```
+
+运行后，得到的结果为（示例）：
+
+```bash
+{'res': {'input_path': 'layout_analysis_demo.jpg', 'page_index': None, 'boxes': [{'cls_id': 22, 'label': 'text', 'score': 0.9823, 'coordinate': [33.5, 349.4, 363.6, 615.0], 'mask': [[34.0, 350.0, 363.0, 350.0, 363.0, 615.0, 34.0, 615.0]], 'read_order': 0}, {'cls_id': 17, 'label': 'paragraph_title', 'score': 0.9651, 'coordinate': [35.1, 627.2, 188.2, 643.7], 'mask': [[35.0, 627.0, 188.0, 627.0, 188.0, 644.0, 35.0, 644.0]], 'read_order': 1}]}}
+```
+
+相比 PP-DocLayoutV2，PP-DocLayoutV3 的每条预测结果额外包含：
+<ul>
+<li><code>mask</code>：实例分割轮廓掩码，格式为多边形顶点坐标列表，每个多边形表示为<code>[[x1, y1, x2, y2, ...]]</code></li>
+<li><code>read_order</code>：该版面元素在文档中的阅读顺序编号，从 0 开始的非负整数，同一图像内各元素的编号构成连续整数序列</li>
 </ul>
 
 
@@ -363,7 +408,7 @@ for res in output:
 </tr>
 <tr>
 <td><code>save_to_img()</code></td>
-<td>将结果保存为图像格式的文件</td>
+<td>将结果保存为图像格式的文件（对于 PP-DocLayoutV3，可视化图像中包含实例分割掩码与阅读顺序编号）</td>
 <td><code>save_path</code></td>
 <td><code>str</code></td>
 <td>保存的文件路径，当为目录时，保存文件命名与输入文件类型命名一致</td>
@@ -386,6 +431,6 @@ for res in output:
 </tr>
 <tr>
 <td rowspan="1"><code>img</code></td>
-<td rowspan="1">获取格式为<code>dict</code>的可视化图像</td>
+<td rowspan="1">获取格式为<code>dict</code>的可视化图像（对于 PP-DocLayoutV3，图像中标注了各区域的类别、置信度、实例分割掩码及阅读顺序编号）</td>
 </tr>
 </table>
