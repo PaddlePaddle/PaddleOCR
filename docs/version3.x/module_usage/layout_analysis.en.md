@@ -20,11 +20,11 @@ Layout analysis is a crucial component in document parsing systems. Its goal is 
 
 ## 2. Supported Model List
 
+This module currently supports two models: PP-DocLayoutV2 and PP-DocLayoutV3.
 
+### PP-DocLayoutV2
 
-Currently, this module only supports the PP-DocLayoutV2 model. Structurally, PP-DocLayoutV2 is based on the layout detection model [PP-DocLayout_plus-L](./layout_detection.en.md) (built upon the RT-DETR-L model) and cascades a lightweight pointer network with 6 Transformer layers. The PP-DocLayout_plus-L component continues to perform layout detection, identifying different elements in document images (such as text, charts, images, formulas, paragraphs, abstracts, references, etc.), classifying them into predefined categories, and determining their positions within the document. The detected bounding boxes and class labels are then fed into the subsequent pointer network to sort the layout elements and obtain the correct reading order.
-
-
+PP-DocLayoutV2 is based on the layout detection model [PP-DocLayout_plus-L](./layout_detection.en.md) (built upon the RT-DETR-L model) and cascades a lightweight pointer network with 6 Transformer layers. The PP-DocLayout_plus-L component continues to perform layout detection, identifying different elements in document images (such as text, charts, images, formulas, paragraphs, abstracts, references, etc.), classifying them into predefined categories, and determining their positions within the document. The detected bounding boxes and class labels are then fed into the subsequent pointer network to sort the layout elements and obtain the correct reading order.
 
 <div align="center">
 
@@ -32,15 +32,13 @@ Currently, this module only supports the PP-DocLayoutV2 model. Structurally, PP-
 
 </div>
 
-
-
 As shown in the figure above, PP-DocLayoutV2 embeds the targets detected by RT-DETR using absolute 2D positional encoding and class labels. Additionally, the pointer network’s attention mechanism incorporates the geometric bias mechanism from Relation-DETR to explicitly model pairwise geometric relationships between elements. The pairwise relation head linearly projects element representations into query and key vectors, then computes bilinear similarities to generate pairwise logits, ultimately producing an N×N matrix representing the relative order between every pair of elements. Finally, a deterministic "win-accumulation" decoding algorithm restores a topologically consistent reading order for the detected layout elements.
 
+### PP-DocLayoutV3
 
+PP-DocLayoutV3 is a layout analysis model based on the DETR architecture with PPHGNetV2-L as the backbone. Building on layout region detection, it further introduces **instance segmentation** and **reading order prediction** capabilities. The model can end-to-end learn the reading order relationships of document elements, outputting bounding boxes as well as precise contour masks and reading order indices for each region.
 
-The following table only presents the layout detection accuracy of PP-DocLayoutV2. The evaluation dataset is a self-built layout region detection dataset, containing 1,000 images of various document types such as Chinese and English papers, magazines, newspapers, research reports, PPTs, exam papers, textbooks, etc., and covering 25 common layout element categories: document title, section header, text, vertical text, page number, abstract, table of contents, references, footnote, image caption, header, footer, header image, footer image, algorithm, inline formula, display formula, formula number, image, table, figure title (figure title, table title, chart title), seal, chart, aside text, and reference content.
-
-
+The following table presents the layout detection accuracy of both PP-DocLayoutV2 and PP-DocLayoutV3. The evaluation dataset is a self-built layout region detection dataset, containing 1,000 images of various document types such as Chinese and English papers, magazines, newspapers, research reports, PPTs, exam papers, textbooks, etc., and covering 25 common layout element categories: document title, section header, text, vertical text, page number, abstract, table of contents, references, footnote, image caption, header, footer, header image, footer image, algorithm, inline formula, display formula, formula number, image, table, figure title (figure title, table title, chart title), seal, chart, aside text, and reference content.
 
 <table>
 
@@ -52,9 +50,7 @@ The following table only presents the layout detection accuracy of PP-DocLayoutV
 
 <th>mAP(0.5) (%)</th>
 
-<th>GPU Inference Time (ms)<br/>[Standard / High-Performance Mode]</th>
-
-<th>CPU Inference Time (ms)<br/>[Standard / High-Performance Mode]</th>
+<th>GPU Inference Time (ms)<br/>[A100 GPU]</th>
 
 <th>Model Size (MB)</th>
 
@@ -76,11 +72,25 @@ The following table only presents the layout detection accuracy of PP-DocLayoutV
 
 <td> - </td>
 
-<td> - </td>
-
 <td>203.8</td>
 
 <td>In-house layout analysis model trained on a diverse self-built dataset including Chinese and English academic papers, multi-column magazines, newspapers, PPTs, contracts, books, exam papers, research reports, ancient books, Japanese documents, and vertical text documents. Provides high-precision layout region localization and reading order recovery.</td>
+
+</tr>
+
+<tr>
+
+<td>PP-DocLayoutV3</td>
+
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0b2/PP-DocLayoutV3_infer.tar">Inference Model</a></td>
+
+<td> - </td>
+
+<td>23.77</td>
+
+<td>126</td>
+
+<td>Layout analysis model based on DETR, trained on a self-built dataset covering Chinese and English academic papers, multi-column magazines, newspapers, PPTs, contracts, books, exam papers, and research reports. Supports instance segmentation and reading order prediction for 25 layout element categories.</td>
 
 </tr>
 
@@ -98,7 +108,11 @@ The following table only presents the layout detection accuracy of PP-DocLayoutV
 
 <b>Note: </b>The official models would be download from HuggingFace by default. If can't access to HuggingFace, please set the environment variable <code>PADDLE_PDX_MODEL_SOURCE="BOS"</code> to change the model source to BOS. In the future, more model sources will be supported.
 
-You can also integrate the model inference from the layout area detection module into your project. Before running the following code, please download [Example Image](https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/layout.jpg) Go to the local area.
+You can integrate the model inference from the layout analysis module into your project.
+
+### PP-DocLayoutV2
+
+Before running the following code, please download the [Example Image](https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/layout.jpg) to your local directory.
 
 ```python
 from paddleocr import LayoutDetection
@@ -129,6 +143,33 @@ The meanings of the parameters are as follows:
         <li><code>coordinate</code>：Coordinates of the bounding box, a list of floats in the format <code>[xmin, ymin, xmax, ymax]</code></li>
     </ol>
 </li>
+</ul>
+
+### PP-DocLayoutV3
+
+Before running the following code, please download the [Example Image](https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/layout_analysis_demo.jpg) to your local directory.
+
+```python
+from paddleocr import LayoutDetection
+
+model = LayoutDetection(model_name="PP-DocLayoutV3")
+output = model.predict("layout_analysis_demo.jpg", batch_size=1)
+for res in output:
+    res.print()
+    res.save_to_img(save_path="./output/")
+    res.save_to_json(save_path="./output/res.json")
+```
+
+After running, the result obtained is (example):
+
+```bash
+{'res': {'input_path': 'layout_analysis_demo.jpg', 'page_index': None, 'boxes': [{'cls_id': 22, 'label': 'text', 'score': 0.9823, 'coordinate': [33.5, 349.4, 363.6, 615.0], 'mask': [[34.0, 350.0, 363.0, 350.0, 363.0, 615.0, 34.0, 615.0]], 'read_order': 0}, {'cls_id': 17, 'label': 'paragraph_title', 'score': 0.9651, 'coordinate': [35.1, 627.2, 188.2, 643.7], 'mask': [[35.0, 627.0, 188.0, 627.0, 188.0, 644.0, 35.0, 644.0]], 'read_order': 1}]}}
+```
+
+Compared with PP-DocLayoutV2, each prediction result in PP-DocLayoutV3 additionally contains:
+<ul>
+<li><code>mask</code>: Instance segmentation contour mask, represented as a list of polygon vertex coordinates, where each polygon is in the format <code>[[x1, y1, x2, y2, ...]]</code>.</li>
+<li><code>read_order</code>: Reading order index of the layout element within the document, a non-negative integer starting from 0. The indices of all elements in a single image form a consecutive integer sequence.</li>
 </ul>
 
 
@@ -417,7 +458,7 @@ If set to <code>None</code>, the instantiation value is used; otherwise, this pa
 </tr>
 <tr>
 <td><code>save_to_img()</code></td>
-<td>Save the results as an image format file</td>
+<td>Save the results as an image format file (for PP-DocLayoutV3, the visualization includes instance segmentation masks and reading order indices)</td>
 <td><code>save_path</code></td>
 <td><code>str</code></td>
 <td>The saved file path, when it is a directory, the name of the saved file is consistent with the name of the input file type</td>
@@ -441,6 +482,6 @@ If set to <code>None</code>, the instantiation value is used; otherwise, this pa
 </tr>
 <tr>
 <td rowspan="1"><code>img</code></td>
-<td rowspan="1">Get the visualized image in <code>dict</code> format</td>
+<td rowspan="1">Get the visualized image in <code>dict</code> format (for PP-DocLayoutV3, the image annotates each region's category, confidence, instance segmentation mask, and reading order index)</td>
 </tr>
 </table>
