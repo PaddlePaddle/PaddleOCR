@@ -1,6 +1,11 @@
 ---
 name: paddleocr-doc-parsing
-description: Complex document parsing with PaddleOCR. Intelligently converts complex PDFs and document images into Markdown and JSON files that preserve the original structure.
+description: >-
+  Get structured Markdown/JSON from PDFs and document images using PaddleOCR—tables,
+  formulas as LaTeX, figures, seals, charts, headers/footers, multi-column layout and reading order.
+  Trigger terms: 文档解析, 版面分析, 版面还原, 表格提取, 公式识别, 多栏排版, 扫描件结构化,
+  发票, 财报, 复杂 PDF, PDF转Markdown, 图表, 阅读顺序; reading order, formula, LaTeX,
+  layout parsing, structure extraction, PP-StructureV3, PaddleOCR-VL.
 metadata:
   openclaw:
     requires:
@@ -18,6 +23,8 @@ metadata:
 # PaddleOCR Document Parsing Skill
 
 ## When to Use This Skill
+
+**Trigger keywords (routing)**: Bilingual trigger terms (Chinese and English) are listed in the YAML `description` above—use that field for discovery and routing.
 
 **Use Document Parsing for**:
 - Documents with tables (invoices, financial reports, spreadsheets)

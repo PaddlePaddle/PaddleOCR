@@ -1,6 +1,10 @@
 ---
 name: paddleocr-text-recognition
-description: Extracts text (with locations) from images and PDF documents using PaddleOCR.
+description: >-
+  Extracts full recognized text plus line/box locations from images
+  and PDFs using PaddleOCR. Trigger terms: OCR, 文字识别, 图片转文字, 截图识字, 提取图中文字, 扫描识字, 识字,
+  纯文字, plain text extraction, 坐标, 检测框, bbox, bounding box, image to text, screenshot,
+  photo scan, recognize text.
 metadata:
   openclaw:
     requires:
@@ -19,10 +23,11 @@ metadata:
 
 ## When to Use This Skill
 
+**Trigger keywords (routing)**: Bilingual trigger terms (Chinese and English) are listed in the YAML `description` above—use that field for discovery and routing.
+
 Invoke this skill in the following situations:
 - Extract text from images (screenshots, photos, scans)
-- Extract text from PDFs or document images
-- Extract text and positions from structured documents (invoices, receipts, forms, tables)
+- Extract text from PDFs or document images when the goal is **line/box-level text**, not recovering table grids, formulas, or full reading-order layout
 - Extract text from URLs or local files that point to images/PDFs
 
 Do not use this skill in the following situations:
