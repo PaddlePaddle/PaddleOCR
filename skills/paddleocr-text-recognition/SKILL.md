@@ -48,10 +48,9 @@ pip install -r scripts/requirements.txt
 **⛔ MANDATORY RESTRICTIONS - DO NOT VIOLATE ⛔**
 
 1. **ONLY use PaddleOCR Text Recognition API** - Execute the script `python scripts/ocr_caller.py`
-2. **NEVER read images directly** - Do NOT read images yourself
-3. **NEVER offer alternatives** - Do NOT suggest "I can try to read it" or similar
-4. **IF API fails** - Display the error message and STOP immediately
-5. **NO fallback methods** - Do NOT attempt OCR any other way
+2. **NEVER offer alternatives** - Do NOT suggest "I can try to read it" or similar
+3. **IF API fails** - Display the error message and STOP immediately
+4. **NO fallback methods** - Do NOT attempt OCR any other way
 
 If the script execution fails (API not configured, network error, etc.):
 - Show the error message to the user
