@@ -95,7 +95,7 @@ describe("OCR shared option resolution", () => {
           }
         }
       })
-    ).toThrow(/must define both "SubModules\.TextDetection" and "SubModules\.TextRecognition"/i);
+    ).toThrow(/must define both "SubModules.TextDetection" and "SubModules.TextRecognition"/i);
   });
 
   it("clones the default OCR config deeply", () => {
@@ -115,6 +115,6 @@ describe("OCR shared option resolution", () => {
 
     expect(() =>
       validateLoadedModelName("Detection", "PP-OCRv5_mobile_det", "Global:\n  model_name: other")
-    ).toThrow(/requested model_name is \"PP-OCRv5_mobile_det\"/i);
+    ).toThrow(/requested model_name is "PP-OCRv5_mobile_det"/i);
   });
 });
