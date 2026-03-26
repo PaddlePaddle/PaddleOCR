@@ -1,5 +1,5 @@
 {
-  "name": "ppocr_demo",
+  "name": "demo",
   "private": true,
   "version": "0.1.0",
   "type": "module",
@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "onnxruntime-web": "^1.22.0",
-    "paddleocr-js": "file:../../packages/paddleocr-js"
+    "paddleocr-js": "file:../../packages/core"
   },
   "devDependencies": {
     "vite": "^6.2.2"

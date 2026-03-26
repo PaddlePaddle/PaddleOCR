@@ -1,5 +1,5 @@
 {
-  "name": "paddleocr-js-monorepo",
+  "name": "paddleocr-js-workspace",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -8,12 +8,11 @@
     "apps/*"
   ],
   "scripts": {
-    "dev:ppocr": "npm run dev --workspace ppocr_demo --",
+    "dev:demo": "npm run dev --workspace apps/demo --",
     "build": "npm run build --workspaces --if-present",
-    "build:ppocr": "npm run build --workspace ppocr_demo",
-    "build:lib": "npm run build --workspace paddleocr-js",
-    "preview:ppocr": "npm run preview --workspace ppocr_demo --",
-    "prepare": "husky",
+    "build:demo": "npm run build --workspace apps/demo",
+    "build:sdk": "npm run build --workspace packages/core",
+    "preview:demo": "npm run preview --workspace apps/demo --",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test": "vitest run",
