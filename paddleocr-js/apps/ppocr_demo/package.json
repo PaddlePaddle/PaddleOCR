@@ -1,0 +1,18 @@
+{
+  "name": "ppocr_demo",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "onnxruntime-web": "^1.22.0",
+    "paddleocr-js": "file:../../packages/paddleocr-js"
+  },
+  "devDependencies": {
+    "vite": "^6.2.2"
+  }
+}

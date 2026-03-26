@@ -1,0 +1,47 @@
+{
+  "name": "paddleocr-js-monorepo",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "dev:ppocr": "npm run dev --workspace ppocr_demo --",
+    "build": "npm run build --workspaces --if-present",
+    "build:ppocr": "npm run build --workspace ppocr_demo",
+    "build:lib": "npm run build --workspace paddleocr-js",
+    "preview:ppocr": "npm run preview --workspace ppocr_demo --",
+    "prepare": "husky",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "test:watch": "vitest",
+    "format": "prettier . --write",
+    "format:check": "prettier . --check",
+    "check": "npm run lint && npm run test && npm run build"
+  },
+  "devDependencies": {
+    "@vitest/coverage-v8": "^3.2.4",
+    "@changesets/cli": "^2.29.7",
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.0.2",
+    "globals": "^17.4.0",
+    "husky": "^9.1.7",
+    "jsdom": "^26.1.0",
+    "lint-staged": "^16.3.2",
+    "prettier": "^3.8.1",
+    "vitest": "^3.2.4"
+  },
+  "lint-staged": {
+    "*.{js,mjs,cjs}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,html,css,yml,yaml}": [
+      "prettier --write"
+    ]
+  }
+}

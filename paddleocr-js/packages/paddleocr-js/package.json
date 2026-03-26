@@ -1,0 +1,24 @@
+{
+  "name": "paddleocr-js",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "./src/index.js",
+  "module": "./src/index.js",
+  "exports": {
+    ".": "./src/index.js"
+  },
+  "files": [
+    "src",
+    "README.md"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "build": "node --input-type=module -e \"await import('./src/index.js')\""
+  },
+  "dependencies": {
+    "@techstark/opencv-js": "^4.10.0-release.1",
+    "clipper-lib": "^6.4.2",
+    "js-yaml": "^4.1.0",
+    "onnxruntime-web": "^1.22.0"
+  }
+}
