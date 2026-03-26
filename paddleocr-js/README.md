@@ -1,12 +1,10 @@
 # PaddleOCR.js
 
+English | [简体中文](README_cn.md)
+
 Official browser OCR SDK and demo for PaddleOCR.
 
-This directory is a **Node workspace subproject** inside the [PaddleOCR](https://github.com/PaddlePaddle/PaddleOCR) repository. Run all `npm` commands below from `paddleocr-js/` (the subproject root), not from the PaddleOCR repository root.
-
-**Source:** [github.com/PaddlePaddle/PaddleOCR/tree/main/paddleocr-js](https://github.com/PaddlePaddle/PaddleOCR/tree/main/paddleocr-js)
-
-## Workspace layout
+## Project structure
 
 | Path | Role |
 |------|------|

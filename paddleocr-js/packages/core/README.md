@@ -1,8 +1,8 @@
 # PaddleOCR.js SDK
 
-`paddleocr-js` is the browser SDK package for running PaddleOCR pipelines in the frontend.
+English | [简体中文](README_cn.md)
 
-This package’s sources live in the PaddleOCR monorepo under **`paddleocr-js/packages/core/`** (directory name `core`, npm name `paddleocr-js`). Browse or file issues against [PaddleOCR on GitHub](https://github.com/PaddlePaddle/PaddleOCR): [source tree](https://github.com/PaddlePaddle/PaddleOCR/tree/main/paddleocr-js/packages/core).
+`paddleocr-js` is the browser SDK package for running PaddleOCR pipelines in the frontend.
 
 ## Install
 

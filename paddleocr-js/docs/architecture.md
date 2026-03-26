@@ -1,8 +1,8 @@
 # Architecture
 
-## Subproject structure
+## Project structure
 
-The `paddleocr-js` folder is an npm workspace with two main roles:
+The `paddleocr-js` folder has two main parts:
 
 - `packages/core`: the browser PaddleOCR SDK (published on npm as `paddleocr-js`)
 - `apps/demo`: a demo application for PP-OCR that consumes the SDK
@@ -59,4 +59,4 @@ The SDK owns OCR runtime setup and inference orchestration. The host application
 - worker-capable bundler/runtime support when `worker: true` is used
 - application UI, status messaging, and visualization
 
-In this subproject, the `apps/` directory contains such host applications.
+Here, the `apps/` directory contains such host applications.

@@ -1,10 +1,6 @@
 # Monorepo conventions
 
-`paddleocr-js` is a workspace-based Node subproject inside the [PaddleOCR](https://github.com/PaddlePaddle/PaddleOCR) repository. **In this document, “project root” means `paddleocr-js/`, not the PaddleOCR repository root.**
-
 ## Command execution
-
-Run `npm install`, `npm run build`, `npm run test`, and `npm run check` from **`paddleocr-js/`**.
 
 When you only want one workspace, use root-level workspace commands with explicit paths:
 

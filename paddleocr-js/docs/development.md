@@ -1,7 +1,5 @@
 # Development
 
-All commands below assume your current working directory is the subproject root **`paddleocr-js/`** inside a clone of [PaddleOCR](https://github.com/PaddlePaddle/PaddleOCR).
-
 ## Install
 
 ```bash
@@ -10,7 +8,7 @@ npm install
 
 ## Common commands
 
-Root workspace scripts:
+Commands from the `paddleocr-js/` root:
 
 ```bash
 npm run build
