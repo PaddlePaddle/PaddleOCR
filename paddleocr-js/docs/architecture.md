@@ -1,15 +1,15 @@
 # Architecture
 
-## Repository Structure
+## Subproject structure
 
-This repository is an npm workspace monorepo with two main roles:
+The `paddleocr-js` folder is an npm workspace with two main roles:
 
-- `packages/paddleocr-js`: the browser PaddleOCR SDK
-- `apps/ppocr_demo`: a demo application for PP-OCR that consumes the SDK
+- `packages/core`: the browser PaddleOCR SDK (published on npm as `paddleocr-js`)
+- `apps/demo`: a demo application for PP-OCR that consumes the SDK
 
-## `paddleocr-js` Package Structure
+## SDK package layout (`packages/core`)
 
-Inside `packages/paddleocr-js`, the SDK is organized into shared layers plus pipeline-specific
+Inside `packages/core`, the SDK is organized into shared layers plus pipeline-specific
 implementations:
 
 - `src/runtime`: runtime initialization and execution backend setup
@@ -27,7 +27,7 @@ The current high-level pipeline entry point is `PaddleOCR.create()`. It coordina
 4. inference session creation
 5. OCR pipeline execution
 
-## Worker Execution Model
+## Worker execution model
 
 `PaddleOCR.create()` supports 2 execution modes:
 
@@ -50,7 +50,7 @@ Input handling is split by environment:
 
 Worker mode uses the package worker path and explicitly disables ONNX Runtime Web wasm proxy internally. This avoids stacking two worker layers and keeps the package responsible for the concurrency model.
 
-## Application Responsibilities
+## Application responsibilities
 
 The SDK owns OCR runtime setup and inference orchestration. The host application still owns:
 
@@ -59,4 +59,4 @@ The SDK owns OCR runtime setup and inference orchestration. The host application
 - worker-capable bundler/runtime support when `worker: true` is used
 - application UI, status messaging, and visualization
 
-In this repository, the `apps/` directory contains such host applications.
+In this subproject, the `apps/` directory contains such host applications.

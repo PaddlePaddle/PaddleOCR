@@ -1,14 +1,16 @@
 # Development
 
+All commands below assume your current working directory is the subproject root **`paddleocr-js/`** inside a clone of [PaddleOCR](https://github.com/PaddlePaddle/PaddleOCR).
+
 ## Install
 
 ```bash
 npm install
 ```
 
-## Common Commands
+## Common commands
 
-Repository-level commands:
+Root workspace scripts:
 
 ```bash
 npm run build
@@ -17,20 +19,20 @@ npm run test
 npm run check
 ```
 
-Current demo app:
+Demo app (Vite dev server):
 
 ```bash
-npm run dev:ppocr
+npm run dev:demo
 ```
 
-Single workspace examples:
+Single-workspace examples:
 
 ```bash
-npm run build --workspace paddleocr-js
-npm run build --workspace ppocr_demo
+npm run build --workspace packages/core
+npm run build --workspace apps/demo
 ```
 
-## Testing Strategy
+## Testing strategy
 
 - unit tests for config parsing, registry behavior, and cache behavior
 - lightweight jsdom checks for the demo shell

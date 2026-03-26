@@ -1,7 +1,17 @@
 {
   "name": "paddleocr-js",
   "version": "0.1.0",
+  "description": "Browser SDK for PaddleOCR (ONNX Runtime Web + OpenCV.js)",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/PaddlePaddle/PaddleOCR.git",
+    "directory": "paddleocr-js/packages/core"
+  },
+  "homepage": "https://github.com/PaddlePaddle/PaddleOCR/tree/main/paddleocr-js",
+  "bugs": {
+    "url": "https://github.com/PaddlePaddle/PaddleOCR/issues"
+  },
   "main": "./src/index.js",
   "module": "./src/index.js",
   "exports": {

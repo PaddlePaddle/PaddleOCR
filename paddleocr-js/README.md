@@ -2,19 +2,26 @@
 
 Official browser OCR SDK and demo for PaddleOCR.
 
-## Workspace
+This directory is a **Node workspace subproject** inside the [PaddleOCR](https://github.com/PaddlePaddle/PaddleOCR) repository. Run all `npm` commands below from `paddleocr-js/` (the subproject root), not from the PaddleOCR repository root.
 
-- `packages/paddleocr-js`: browser SDK
-- `apps/ppocr_demo`: Vite demo app built on top of the SDK
+**Source:** [github.com/PaddlePaddle/PaddleOCR/tree/main/paddleocr-js](https://github.com/PaddlePaddle/PaddleOCR/tree/main/paddleocr-js)
 
-## Quick Start
+## Workspace layout
+
+| Path | Role |
+|------|------|
+| `packages/core/` | Browser SDK sources; published to npm as **`paddleocr-js`** |
+| `apps/demo/` | Vite demo app that depends on the SDK |
+
+## Quick start
 
 ```bash
+cd paddleocr-js
 npm install
-npm run dev:ppocr
+npm run dev:demo
 ```
 
-Useful commands:
+Other useful commands (still from `paddleocr-js/`):
 
 ```bash
 npm run build
@@ -22,18 +29,22 @@ npm run test
 npm run check
 ```
 
-## Docs
+Workspace-scoped examples:
 
-- `docs/architecture.md`
-- `docs/development.md`
-- `docs/monorepo.md`
-- `docs/release.md`
+```bash
+npm run build --workspace packages/core
+npm run build --workspace apps/demo
+```
+
+## Documentation
+
+- [`docs/architecture.md`](docs/architecture.md)
+- [`docs/development.md`](docs/development.md)
+- [`docs/monorepo.md`](docs/monorepo.md)
+- [`docs/release.md`](docs/release.md)
+- SDK-focused reference: [`packages/core/README.md`](packages/core/README.md)
 
 ## Acknowledgements
 
 - [ONNX Runtime Web](https://onnxruntime.ai/) for browser-side ONNX inference
 - [OpenCV.js](https://opencv.org/) for browser-side image processing
-
-## Notes
-
-- If Husky hooks are not active after cloning, run `npm run prepare`.

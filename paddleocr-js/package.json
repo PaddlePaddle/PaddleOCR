@@ -3,6 +3,15 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/PaddlePaddle/PaddleOCR.git",
+    "directory": "paddleocr-js"
+  },
+  "homepage": "https://github.com/PaddlePaddle/PaddleOCR/tree/main/paddleocr-js",
+  "bugs": {
+    "url": "https://github.com/PaddlePaddle/PaddleOCR/issues"
+  },
   "workspaces": [
     "packages/*",
     "apps/*"

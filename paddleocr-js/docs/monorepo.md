@@ -1,28 +1,33 @@
-# Monorepo Conventions
+# Monorepo conventions
 
-## Command Execution
+`paddleocr-js` is a workspace-based Node subproject inside the [PaddleOCR](https://github.com/PaddlePaddle/PaddleOCR) repository. **In this document, “project root” means `paddleocr-js/`, not the PaddleOCR repository root.**
 
-Run `npm install`, `npm run build`, `npm run test`, and `npm run check` from the repository root.
+## Command execution
 
-When you only want one workspace, prefer root-level workspace commands such as:
+Run `npm install`, `npm run build`, `npm run test`, and `npm run check` from **`paddleocr-js/`**.
+
+When you only want one workspace, use root-level workspace commands with explicit paths:
 
 ```bash
-npm run build --workspace paddleocr-js
-npm run dev --workspace ppocr_demo
+npm run build --workspace packages/core
+npm run dev --workspace apps/demo
 ```
 
-## Workspace Roles
+(You can also use workspace package names where unambiguous, e.g. `npm run dev --workspace demo`.)
 
-- `packages/*`: reusable packages and future publishable SDK modules
-- `apps/*`: private applications such as demos, playgrounds, benchmarks, or docs sites
+## Workspace roles
 
-## Versioning
+- `packages/*`: reusable packages; the SDK lives under `packages/core` but keeps the **npm package name** `paddleocr-js`
+- `apps/*`: private applications such as demos (`apps/demo`); not published to npm as products
 
-- `packages/paddleocr-js` is the publishable package
-- `apps/ppocr_demo` is a private app and not treated as an npm release target
-- Future publishable packages should use Changesets
+## Versioning and naming
 
-## Linting and Tests
+- **Directory:** `packages/core` — SDK source and publish manifest for the public package
+- **npm package name:** `paddleocr-js` — what consumers `npm install` and import in code
+- **Directory:** `apps/demo` — private demo, not an npm release target
+- future publishable packages should use [Changesets](https://github.com/changesets/changesets)
+
+## Linting and tests
 
 - `packages/**` are linted with browser-oriented globals for SDK source files
 - `apps/**` are linted with browser-oriented globals
