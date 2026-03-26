@@ -27,6 +27,11 @@ jobs:
               - '**.txt'
               - '**.yml'
               - '**.yaml'
+              - 'paddleocr-js/**'
+              - 'langchain-paddleocr/**'
+              - 'skills/**'
+              - 'mcp_server/**'
+              - 'deploy/**'
 
   test-pr:
     runs-on: ubuntu-latest
