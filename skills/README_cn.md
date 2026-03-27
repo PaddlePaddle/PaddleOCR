@@ -34,6 +34,7 @@ npx skills add PaddlePaddle/PaddleOCR -g --skill paddleocr-doc-parsing -y
 > ```shell
 > git clone https://github.com/PaddlePaddle/PaddleOCR.git
 > npx skills add ./PaddleOCR/skills/paddleocr-text-recognition
+> npx skills add ./PaddleOCR/skills/paddleocr-doc-parsing
 > ```
 
 #### 方式二：通过 `clawhub` 安装（OpenClaw）
@@ -65,8 +66,8 @@ git clone https://github.com/PaddlePaddle/PaddleOCR.git
 
 | Skill | 必填 | 可选 |
 | --- | --- | --- |
-| `paddleocr-text-recognition` | `PADDLEOCR_OCR_API_URL`（API URL）、`PADDLEOCR_ACCESS_TOKEN`（access token） | `PADDLEOCR_OCR_TIMEOUT`（API 请求超时时间） |
-| `paddleocr-doc-parsing` | `PADDLEOCR_DOC_PARSING_API_URL`（API URL）、`PADDLEOCR_ACCESS_TOKEN`（access token） | `PADDLEOCR_DOC_PARSING_TIMEOUT`（API 请求超时时间） |
+| `paddleocr-text-recognition` | `PADDLEOCR_OCR_API_URL`（完整端点 URL，须以 `/ocr` 结尾）、`PADDLEOCR_ACCESS_TOKEN`（access token） | `PADDLEOCR_OCR_TIMEOUT`（API 请求超时时间） |
+| `paddleocr-doc-parsing` | `PADDLEOCR_DOC_PARSING_API_URL`（完整端点 URL，须以 `/layout-parsing` 结尾）、`PADDLEOCR_ACCESS_TOKEN`（access token） | `PADDLEOCR_DOC_PARSING_TIMEOUT`（API 请求超时时间） |
 
 以下是部分 AI 应用的配置方式：
 

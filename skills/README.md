@@ -34,6 +34,7 @@ npx skills add PaddlePaddle/PaddleOCR -g --skill paddleocr-doc-parsing -y
 > ```shell
 > git clone https://github.com/PaddlePaddle/PaddleOCR.git
 > npx skills add ./PaddleOCR/skills/paddleocr-text-recognition
+> npx skills add ./PaddleOCR/skills/paddleocr-doc-parsing
 > ```
 
 #### Option 2: Install via `clawhub` (OpenClaw)
@@ -65,8 +66,8 @@ After installation, configure the required environment variables so the skills c
 
 | Skill | Required | Optional |
 | --- | --- | --- |
-| `paddleocr-text-recognition` | `PADDLEOCR_OCR_API_URL` (API URL), `PADDLEOCR_ACCESS_TOKEN` (access token) | `PADDLEOCR_OCR_TIMEOUT` (API request timeout) |
-| `paddleocr-doc-parsing` | `PADDLEOCR_DOC_PARSING_API_URL` (API URL), `PADDLEOCR_ACCESS_TOKEN` (access token) | `PADDLEOCR_DOC_PARSING_TIMEOUT` (API request timeout) |
+| `paddleocr-text-recognition` | `PADDLEOCR_OCR_API_URL` (full endpoint URL ending with `/ocr`), `PADDLEOCR_ACCESS_TOKEN` (access token) | `PADDLEOCR_OCR_TIMEOUT` (API request timeout) |
+| `paddleocr-doc-parsing` | `PADDLEOCR_DOC_PARSING_API_URL` (full endpoint URL ending with `/layout-parsing`), `PADDLEOCR_ACCESS_TOKEN` (access token) | `PADDLEOCR_DOC_PARSING_TIMEOUT` (API request timeout) |
 
 Below are configuration methods for some AI apps:
 
