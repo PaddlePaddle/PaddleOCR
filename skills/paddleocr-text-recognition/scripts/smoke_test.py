@@ -40,7 +40,7 @@ HOW TO GET YOUR API CREDENTIALS
 ============================================================
 
 1. Visit: https://paddleocr.com
-2. Log in with your Baidu account
+2. Sign in to your account
 3. Open your model's API call example page
 4. Copy the API URL from the example request
 5. Copy your access token from the same API setup page

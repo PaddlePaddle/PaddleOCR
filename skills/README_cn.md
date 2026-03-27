@@ -9,7 +9,7 @@
 
 ## 准备工作
 
-1. 请确保执行 skill 的设备安装有 Python 3.8 或以上版本。
+1. 请确保执行 skill 的设备安装有 Python 3.9 或以上版本。
 2. Skill 底层依赖于 PaddleOCR 官方 API，因此需要配置相关凭证才能使用。可以在 [PaddleOCR 官网](https://www.paddleocr.com) 点击 **API**，选择需要用到的算法，然后复制 `API_URL` 和 `Token`，它们分别对应服务的 API URL 和用户鉴权使用的 access token。各 skill 支持的算法如下：
    - `paddleocr-text-recognition`：`PP-OCRv5`
    - `paddleocr-doc-parsing`：`PP-StructureV3`、`PaddleOCR-VL`、`PaddleOCR-VL-1.5`
@@ -150,10 +150,10 @@ git clone https://github.com/PaddlePaddle/PaddleOCR.git
 1. 安装依赖库。
 
    ```shell
-   python -m pip install -r paddleocr-text-recognition/scripts/requirements.txt
-   python -m pip install -r paddleocr-doc-parsing/scripts/requirements.txt
+   python -m pip install -r paddleocr-text-recognition/requirements.txt
+   python -m pip install -r paddleocr-doc-parsing/requirements.txt
    # 可选依赖，仅在优化文档文件大小时需要
-   python -m pip install -r paddleocr-doc-parsing/scripts/requirements-optimize.txt
+   python -m pip install -r paddleocr-doc-parsing/requirements-optimize.txt
    ```
 
 2. 配置环境变量（需要配置的变量参见[配置环境变量](#配置环境变量)一节）。
