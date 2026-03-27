@@ -13,7 +13,6 @@ metadata:
       env:
         - PADDLEOCR_DOC_PARSING_API_URL
         - PADDLEOCR_ACCESS_TOKEN
-        - PADDLEOCR_DOC_PARSING_TIMEOUT
       bins:
         - python
     primaryEnv: PADDLEOCR_ACCESS_TOKEN
@@ -28,6 +27,7 @@ metadata:
 **Trigger keywords (routing)**: Bilingual trigger terms (Chinese and English) are listed in the YAML `description` above—use that field for discovery and routing.
 
 **Use Document Parsing for**:
+
 - Documents with tables (invoices, financial reports, spreadsheets)
 - Documents with mathematical formulas (academic papers, scientific documents)
 - Documents with charts and diagrams
@@ -36,6 +36,7 @@ metadata:
 - Any document requiring structured understanding
 
 **Use Text Recognition instead for**:
+
 - Simple text-only extraction
 - Quick OCR tasks where speed is critical
 - Screenshots or simple images with clear text
@@ -45,13 +46,13 @@ metadata:
 Install Python dependencies before using this skill. From the skill directory (`skills/paddleocr-doc-parsing`):
 
 ```bash
-pip install -r scripts/requirements.txt
+pip install -r requirements.txt
 ```
 
 **Optional** — for document optimization and `split_pdf.py` (page extraction):
 
 ```bash
-pip install -r scripts/requirements-optimize.txt
+pip install -r requirements-optimize.txt
 ```
 
 ## How to Use This Skill
@@ -65,6 +66,7 @@ pip install -r scripts/requirements-optimize.txt
 5. **NO fallback methods** - Do NOT attempt document parsing any other way
 
 If the script execution fails (API not configured, network error, etc.):
+
 - Show the error message to the user
 - Do NOT offer to help using your vision capabilities
 - Do NOT ask "Would you like me to try parsing it?"
@@ -73,18 +75,23 @@ If the script execution fails (API not configured, network error, etc.):
 ### Basic Workflow
 
 1. **Execute document parsing**:
+
    ```bash
    python scripts/vl_caller.py --file-url "URL provided by user" --pretty
    ```
+
    Or for local files:
+
    ```bash
    python scripts/vl_caller.py --file-path "file path" --pretty
    ```
 
    **Optional: explicitly set file type**:
+
    ```bash
    python scripts/vl_caller.py --file-url "URL provided by user" --file-type 0 --pretty
    ```
+
    - `--file-type 0`: PDF
    - `--file-type 1`: image
    - If omitted, the service can infer file type from input.
@@ -130,6 +137,7 @@ If the script execution fails (API not configured, network error, etc.):
 - If user asks for "main content", filter out headers/footers but show ALL body text
 
 **What this means**:
+
 - **DO**: Display complete text, all tables, all formulas as requested
 - **DO**: Present content using these fields: top-level `text`, `result[n].markdown`, and `result[n].prunedResult`
 - **DON'T**: Truncate with "..." unless content is excessively long (>10,000 chars)
@@ -137,6 +145,7 @@ If the script execution fails (API not configured, network error, etc.):
 - **DON'T**: Say "Here's a preview" when user expects complete output
 
 **Example - Correct**:
+
 ```
 User: "Extract all the text from this document"
 Agent: I've parsed the complete document. Here's all the extracted text:
@@ -152,6 +161,7 @@ Quality: Excellent (confidence: 0.92)
 ```
 
 **Example - Incorrect**:
+
 ```
 User: "Extract all the text"
 Agent: "I found a document with multiple sections. Here's the beginning:
@@ -172,6 +182,7 @@ The output JSON uses an envelope wrapping the raw API result:
 ```
 
 **Key fields**:
+
 - `text` — extracted markdown text from all pages (use this for quick text display)
 - `result` - raw provider response object
 - `result[n].prunedResult` - structured parsing output for each page (layout/content/confidence and related metadata)
@@ -182,6 +193,7 @@ The output JSON uses an envelope wrapping the raw API result:
 ### Usage Examples
 
 **Example 1: Extract Full Document Text**
+
 ```bash
 python scripts/vl_caller.py \
   --file-url "https://example.com/paper.pdf" \
@@ -189,10 +201,12 @@ python scripts/vl_caller.py \
 ```
 
 Then use:
+
 - Top-level `text` for quick full-text output
 - `result[n].markdown` when page-level output is needed
 
 **Example 2: Extract Structured Page Data**
+
 ```bash
 python scripts/vl_caller.py \
   --file-path "./financial_report.pdf" \
@@ -200,10 +214,12 @@ python scripts/vl_caller.py \
 ```
 
 Then use:
+
 - `result[n].prunedResult` for structured parsing data (layout/content/confidence)
 - `result[n].markdown` for rendered page content
 
 **Example 3: Print JSON Without Saving**
+
 ```bash
 python scripts/vl_caller.py \
   --file-url "URL" \
@@ -212,6 +228,7 @@ python scripts/vl_caller.py \
 ```
 
 Then return:
+
 - Full `text` when user asks for full document content
 - `result[n].prunedResult` and `result[n].markdown` when user needs complete structured page data
 
@@ -220,6 +237,7 @@ Then return:
 **When API is not configured**:
 
 The error will show:
+
 ```
 CONFIG_ERROR: PADDLEOCR_DOC_PARSING_API_URL not configured. Get your API at: https://paddleocr.com
 ```
@@ -237,7 +255,7 @@ CONFIG_ERROR: PADDLEOCR_DOC_PARSING_API_URL not configured. Get your API at: htt
    - `PADDLEOCR_DOC_PARSING_API_URL=https://xxx.paddleocr.com/layout-parsing, PADDLEOCR_ACCESS_TOKEN=abc123...`
    - `Here's my API: https://xxx and token: abc123`
    - Copy-pasted code format
-   
+
    Warn the user that credentials shared in chat may be stored in conversation history. Recommend setting them through the host application's configuration instead when possible.
 
    Then parse and validate the values:
@@ -257,13 +275,17 @@ There is no file size limit for the API. For PDFs, the maximum is 100 pages per 
 **Tips for large files**:
 
 #### Use URL for Large Local Files (Recommended)
+
 For very large local files, prefer `--file-url` over `--file-path` to avoid base64 encoding overhead:
+
 ```bash
 python scripts/vl_caller.py --file-url "https://your-server.com/large_file.pdf"
 ```
 
 #### Process Specific Pages (PDF Only)
+
 If you only need certain pages from a large PDF, extract them first:
+
 ```bash
 # Extract pages 1-5
 python scripts/split_pdf.py large.pdf pages_1_5.pdf --pages "1-5"
@@ -278,21 +300,27 @@ python scripts/vl_caller.py --file-path "pages_1_5.pdf"
 ### Error Handling
 
 **Authentication failed (403)**:
+
 ```
 error: Authentication failed
 ```
+
 → Token is invalid, reconfigure with correct credentials
 
 **API quota exceeded (429)**:
+
 ```
 error: API quota exceeded
 ```
+
 → Daily API quota exhausted, inform user to wait or upgrade
 
 **Unsupported format**:
+
 ```
 error: Unsupported file format
 ```
+
 → File format not supported, convert to PDF/PNG/JPG
 
 ## Important Notes
@@ -309,6 +337,7 @@ error: Unsupported file format
 > **Note**: Model version and capabilities are determined by your API endpoint (`PADDLEOCR_DOC_PARSING_API_URL`).
 
 Load these reference documents into context when:
+
 - Debugging complex parsing issues
 - Need to understand output format
 - Working with provider API details
@@ -316,6 +345,7 @@ Load these reference documents into context when:
 ## Testing the Skill
 
 To verify the skill is working properly:
+
 ```bash
 python scripts/smoke_test.py
 ```

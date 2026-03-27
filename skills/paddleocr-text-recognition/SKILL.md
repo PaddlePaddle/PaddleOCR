@@ -14,7 +14,6 @@ metadata:
       env:
         - PADDLEOCR_OCR_API_URL
         - PADDLEOCR_ACCESS_TOKEN
-        - PADDLEOCR_OCR_TIMEOUT
       bins:
         - python
     primaryEnv: PADDLEOCR_ACCESS_TOKEN
@@ -29,11 +28,13 @@ metadata:
 **Trigger keywords (routing)**: Bilingual trigger terms (Chinese and English) are listed in the YAML `description` above—use that field for discovery and routing.
 
 Invoke this skill in the following situations:
+
 - Extract text from images (screenshots, photos, scans)
 - Extract text from PDFs or document images when the goal is **line/box-level text**, not recovering table grids, formulas, or full reading-order layout
 - Extract text from URLs or local files that point to images/PDFs
 
 Do not use this skill in the following situations:
+
 - Plain text files that can be read directly with the Read tool
 - Code files or markdown documents
 - Tasks that do not involve image-to-text conversion
@@ -43,7 +44,7 @@ Do not use this skill in the following situations:
 Install Python dependencies before using this skill. From the skill directory (`skills/paddleocr-text-recognition`):
 
 ```bash
-pip install -r scripts/requirements.txt
+pip install -r requirements.txt
 ```
 
 ## How to Use This Skill
@@ -56,6 +57,7 @@ pip install -r scripts/requirements.txt
 4. **NO fallback methods** - Do NOT attempt OCR any other way
 
 If the script execution fails (API not configured, network error, etc.):
+
 - Show the error message to the user
 - Do NOT offer to help using your vision capabilities
 - Do NOT ask "Would you like me to try reading it?"
@@ -73,10 +75,13 @@ If the script execution fails (API not configured, network error, etc.):
    - Follow the official endpoint/API documentation for the exact supported formats.
 
 2. **Execute OCR**:
+
    ```bash
    python scripts/ocr_caller.py --file-url "URL provided by user" --pretty
    ```
+
    Or for local files:
+
    ```bash
    python scripts/ocr_caller.py --file-path "file path" --pretty
    ```
@@ -113,6 +118,7 @@ If the script execution fails (API not configured, network error, etc.):
 - The user expects to see ALL the recognized text, not a preview or excerpt
 
 **Correct approach**:
+
 ```
 I've extracted the text from the image. Here's the complete content:
 
@@ -120,6 +126,7 @@ I've extracted the text from the image. Here's the complete content:
 ```
 
 **Incorrect approach**:
+
 ```
 I found some text in the image. Here's a preview:
 "The quick brown fox..." (truncated)
@@ -128,21 +135,25 @@ I found some text in the image. Here's a preview:
 ### Usage Examples
 
 **Example 1: URL OCR**:
+
 ```bash
 python scripts/ocr_caller.py --file-url "https://example.com/invoice.jpg" --pretty
 ```
 
 **Example 2: Local File OCR**:
+
 ```bash
 python scripts/ocr_caller.py --file-path "./document.pdf" --pretty
 ```
 
 **Example 3: OCR With Explicit File Type**:
+
 ```bash
 python scripts/ocr_caller.py --file-url "https://example.com/input" --file-type 1 --pretty
 ```
 
 **Example 4: Print JSON Without Saving**:
+
 ```bash
 python scripts/ocr_caller.py --file-url "https://example.com/input" --stdout --pretty
 ```
@@ -150,6 +161,7 @@ python scripts/ocr_caller.py --file-url "https://example.com/input" --stdout --p
 ### Understanding the Output
 
 The output JSON structure is as follows:
+
 ```json
 {
   "ok": true,
@@ -160,6 +172,7 @@ The output JSON structure is as follows:
 ```
 
 **Key fields**:
+
 - `ok`: `true` for success, `false` for error
 - `text`: Complete recognized text
 - `result`: Raw API response (for debugging)
@@ -172,6 +185,7 @@ The output JSON structure is as follows:
 **When API is not configured**:
 
 The error will show:
+
 ```
 CONFIG_ERROR: PADDLEOCR_OCR_API_URL not configured. Get your API at: https://paddleocr.com
 ```
@@ -189,7 +203,7 @@ CONFIG_ERROR: PADDLEOCR_OCR_API_URL not configured. Get your API at: https://pad
    - `PADDLEOCR_OCR_API_URL=https://xxx.paddleocr.com/ocr, PADDLEOCR_ACCESS_TOKEN=abc123...`
    - `Here's my API: https://xxx and token: abc123`
    - Copy-pasted code format
-   
+
    Warn the user that credentials shared in chat may be stored in conversation history. Recommend setting them through the host application's configuration instead when possible.
 
    Then parse and validate the values:
@@ -205,30 +219,37 @@ CONFIG_ERROR: PADDLEOCR_OCR_API_URL not configured. Get your API at: https://pad
 ### Error Handling
 
 **Authentication failed**:
+
 ```
 API_ERROR: Authentication failed (403). Check your token.
 ```
+
 - Token is invalid, reconfigure with correct credentials
 
 **Quota exceeded**:
+
 ```
 API_ERROR: API rate limit exceeded (429)
 ```
+
 - Daily API quota exhausted, inform user to wait or upgrade
 
 **No text detected**:
+
 - `text` field is empty
 - Image may be blank, corrupted, or contain no text
 
 ### Tips for Better Results
 
 If recognition quality is poor, suggest:
+
 - Check if the image is clear and contains text
 - Provide a higher resolution image if possible
 
 ## Reference Documentation
 
 For in-depth understanding of the OCR system, refer to:
+
 - `references/output_schema.md` - Output format specification
 
 > **Note**: Model version, capabilities, and supported file formats are determined by your API endpoint (`PADDLEOCR_OCR_API_URL`) and its official API documentation.
@@ -236,6 +257,7 @@ For in-depth understanding of the OCR system, refer to:
 ## Testing the Skill
 
 To verify the skill is working properly:
+
 ```bash
 python scripts/smoke_test.py
 ```
