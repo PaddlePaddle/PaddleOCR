@@ -171,3 +171,5 @@ git clone https://github.com/PaddlePaddle/PaddleOCR.git
    python paddleocr-text-recognition/scripts/smoke_test.py
    python paddleocr-doc-parsing/scripts/smoke_test.py
    ```
+
+   使用 `--skip-api-test` 可只做配置检查（不发网络请求）。使用 `--test-url "https://..."` 可指定自定义测试用文档/图片 URL。

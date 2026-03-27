@@ -171,3 +171,5 @@ Make sure your working directory is the directory containing this file.
    python paddleocr-text-recognition/scripts/smoke_test.py
    python paddleocr-doc-parsing/scripts/smoke_test.py
    ```
+
+   Use `--skip-api-test` to verify configuration only (no network call). Use `--test-url "https://..."` to override the default sample document/image URL.
