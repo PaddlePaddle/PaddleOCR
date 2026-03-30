@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import {
   normalizeOcrPipelineConfig,
   parseOcrPipelineConfigText
-} from "../src/pipelines/ocr/config.js";
+} from "../src/pipelines/ocr/config";
 
 describe("OCR pipeline config branches", () => {
   it("rejects non-object YAML payloads and invalid input types", () => {

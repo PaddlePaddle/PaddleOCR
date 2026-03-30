@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { ensureServedFromHttp, sourcePayloadToMat } from "../src/platform/worker.js";
+import { ensureServedFromHttp, sourcePayloadToMat } from "../src/platform/worker";
 
 class FakeMat {
   constructor(rows, cols) {

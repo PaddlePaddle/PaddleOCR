@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { getOcrRuntimeParams } from "../src/pipelines/ocr/runtime-params.js";
+import { getOcrRuntimeParams } from "../src/pipelines/ocr/runtime-params";
 
 /** Fixture: det/rec model config shapes used only by these tests. */
 const SAMPLE_MODEL_CONFIG = {

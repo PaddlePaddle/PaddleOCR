@@ -20,16 +20,16 @@ const OcrPipelineRunner = vi.fn(function MockOcrPipelineRunner(options) {
   this.dispose = dispose;
 });
 
-vi.mock("../src/worker/entry.js", () => ({
+vi.mock("../src/worker/entry", () => ({
   attachWorkerMessageHandler
 }));
 
-vi.mock("../src/platform/worker.js", () => ({
+vi.mock("../src/platform/worker", () => ({
   sourcePayloadToMat,
   ensureServedFromHttp
 }));
 
-vi.mock("../src/pipelines/ocr/core.js", () => ({
+vi.mock("../src/pipelines/ocr/core", () => ({
   OcrPipelineRunner
 }));
 
@@ -40,7 +40,7 @@ afterEach(() => {
 });
 
 async function loadWorkerEntry() {
-  await import("../src/pipelines/ocr/worker-entry.js");
+  await import("../src/pipelines/ocr/worker-entry");
   expect(typeof capturedHandler).toBe("function");
 }
 

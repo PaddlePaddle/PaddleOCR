@@ -8,7 +8,7 @@ import {
   isTransportRequest,
   isTransportResponse,
   serializeError
-} from "../src/worker/protocol.js";
+} from "../src/worker/protocol";
 
 describe("worker transport protocol", () => {
   it("creates transport requests with the expected wire format", () => {

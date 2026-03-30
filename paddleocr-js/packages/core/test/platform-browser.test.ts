@@ -5,7 +5,7 @@ import {
   sourceToImageBitmap,
   sourceToMat,
   sourceToWorkerPayload
-} from "../src/platform/browser.js";
+} from "../src/platform/browser";
 
 class FakeImageBitmap {
   constructor(width = 10, height = 20) {

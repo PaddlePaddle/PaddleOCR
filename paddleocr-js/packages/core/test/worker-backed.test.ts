@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 
 const sourceToWorkerPayload = vi.fn();
 
-vi.mock("../src/platform/browser.js", () => ({
+vi.mock("../src/platform/browser", () => ({
   sourceToWorkerPayload
 }));
 
@@ -24,7 +24,7 @@ function createWorkerBackedOptions(overrides = {}) {
 
 describe("worker-backed OCR adapter", () => {
   it("initializes once and forces wasm proxy off in worker mode", async () => {
-    const { WorkerBackedPaddleOCR } = await import("../src/pipelines/ocr/worker-backed.js");
+    const { WorkerBackedPaddleOCR } = await import("../src/pipelines/ocr/worker-backed");
     const transportClient = {
       request: vi.fn().mockResolvedValue({
         summary: { backend: "wasm" },
@@ -60,7 +60,7 @@ describe("worker-backed OCR adapter", () => {
   });
 
   it("predicts through the worker transport using transferable payloads", async () => {
-    const { WorkerBackedPaddleOCR } = await import("../src/pipelines/ocr/worker-backed.js");
+    const { WorkerBackedPaddleOCR } = await import("../src/pipelines/ocr/worker-backed");
     const transferables = [{ id: "bitmap" }];
     const transportClient = {
       request: vi
@@ -99,7 +99,7 @@ describe("worker-backed OCR adapter", () => {
   });
 
   it("disposes the transport after initialization failures and allows retrying", async () => {
-    const { WorkerBackedPaddleOCR } = await import("../src/pipelines/ocr/worker-backed.js");
+    const { WorkerBackedPaddleOCR } = await import("../src/pipelines/ocr/worker-backed");
     const transportClient = {
       request: vi
         .fn()
@@ -122,7 +122,7 @@ describe("worker-backed OCR adapter", () => {
   });
 
   it("swallows dispose request failures and rejects use after disposal", async () => {
-    const { WorkerBackedPaddleOCR } = await import("../src/pipelines/ocr/worker-backed.js");
+    const { WorkerBackedPaddleOCR } = await import("../src/pipelines/ocr/worker-backed");
     const transportClient = {
       request: vi.fn().mockRejectedValue(new Error("worker already gone")),
       dispose: vi.fn()

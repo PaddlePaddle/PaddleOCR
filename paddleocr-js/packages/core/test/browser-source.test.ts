@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { sourceToMat } from "../src/platform/browser.js";
+import { sourceToMat } from "../src/platform/browser";
 
 class FakeMat {
   constructor(rows, cols) {

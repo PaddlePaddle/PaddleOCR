@@ -6,7 +6,7 @@ async function loadOrtModule(mockedOrt = { env: { wasm: {} } }) {
     __esModule: true,
     ...mockedOrt
   }));
-  return import("../src/runtime/ort.js");
+  return import("../src/runtime/ort");
 }
 
 afterEach(() => {

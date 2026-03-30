@@ -5,7 +5,7 @@ import {
   readAssetArrayBuffer,
   readAssetText,
   summarizeAssetResult
-} from "../src/resources/cache.js";
+} from "../src/resources/cache";
 
 afterEach(() => {
   vi.unstubAllGlobals();

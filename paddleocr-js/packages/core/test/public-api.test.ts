@@ -6,7 +6,7 @@ vi.mock("@techstark/opencv-js", () => ({
   }
 }));
 
-import { PaddleOCR, normalizeOcrPipelineConfig, parseOcrPipelineConfigText } from "paddleocr-js";
+import { PaddleOCR, normalizeOcrPipelineConfig, parseOcrPipelineConfigText } from "../src/index";
 
 describe("public pipeline exports", () => {
   it("exports PaddleOCR", () => {

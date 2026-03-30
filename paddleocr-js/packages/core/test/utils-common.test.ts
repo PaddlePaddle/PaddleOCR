@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 
-import { clamp, deepClone, distance2, formatMs, nowMs, withTimeout } from "../src/utils/common.js";
+import { clamp, deepClone, distance2, formatMs, nowMs, withTimeout } from "../src/utils/common";
 
 describe("utils/common", () => {
   it("reads the current high-resolution timestamp", () => {

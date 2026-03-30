@@ -6,7 +6,7 @@ import {
   resolvePaddleOCROptions,
   resolveWorkerOptions,
   validateLoadedModelName
-} from "../src/pipelines/ocr/shared.js";
+} from "../src/pipelines/ocr/shared";
 
 describe("OCR shared option resolution", () => {
   it("normalizes runtime options and reuses the same backend fallback", () => {

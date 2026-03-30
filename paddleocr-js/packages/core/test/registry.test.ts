@@ -4,7 +4,7 @@ import {
   DEFAULT_MODEL_ASSETS,
   normalizeAssetDescriptor,
   normalizeAssets
-} from "../src/resources/registry.js";
+} from "../src/resources/registry";
 
 describe("asset normalization", () => {
   it("resolves built-in model asset references", () => {

@@ -11,8 +11,8 @@ import {
   assertStandardModelResourceSlot,
   getStandardModelEntryPath,
   loadStandardModelAsset
-} from "../src/resources/standard-model.js";
-import { assertStandardModelResources as assertStandardModelResourcesFromIndex } from "../src/resources/index.js";
+} from "../src/resources/standard-model";
+import { assertStandardModelResources as assertStandardModelResourcesFromIndex } from "../src/resources/index";
 
 describe("standard model protocol", () => {
   it("provides standard entry names", () => {

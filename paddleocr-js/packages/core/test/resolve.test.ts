@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 
-import { loadStandardModelAsset } from "../src/resources/standard-model.js";
-import { createTar } from "./tar-fixture.js";
+import { loadStandardModelAsset } from "../src/resources/standard-model";
+import { createTar } from "./tar-fixture";
 
 describe("standard model asset resolution", () => {
   it("resolves standard model tar assets", async () => {

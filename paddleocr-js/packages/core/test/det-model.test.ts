@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { createMockOrtTensorClass } from "./helpers/mock-ort-tensor.js";
+import { createMockOrtTensorClass } from "./helpers/mock-ort-tensor";
 
 const assertStandardModelResources = vi.fn();
 const createSession = vi.fn();
@@ -15,22 +15,22 @@ const parseScaleValue = vi.fn();
 const toBgrFloatCHWFromBgr = vi.fn();
 const unclip = vi.fn();
 
-vi.mock("../src/resources/standard-model.js", () => ({
+vi.mock("../src/resources/standard-model", () => ({
   assertStandardModelResources
 }));
 
-vi.mock("../src/runtime/ort.js", () => ({
+vi.mock("../src/runtime/ort", () => ({
   createSession,
   getProviderCandidates,
   releaseSessions
 }));
 
-vi.mock("../src/utils/common.js", () => ({
+vi.mock("../src/utils/common", () => ({
   clamp,
   withTimeout
 }));
 
-vi.mock("../src/models/common.js", () => ({
+vi.mock("../src/models/common", () => ({
   boxScoreFast,
   getMiniBoxFromPoints,
   getTransformOp,
@@ -46,7 +46,7 @@ afterEach(() => {
 });
 
 async function loadDetModule() {
-  return import("../src/models/det.js");
+  return import("../src/models/det");
 }
 
 function createSourceMat(channels, cols = 100, rows = 50) {

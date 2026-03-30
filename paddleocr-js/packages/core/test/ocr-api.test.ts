@@ -6,12 +6,12 @@ vi.mock("@techstark/opencv-js", () => ({
   }
 }));
 
-import { PaddleOCR, normalizeOcrPipelineConfig, parseOcrPipelineConfigText } from "../src/index.js";
-import { extractInferenceModelName } from "../src/models/common.js";
-import { DEFAULT_OCR_PIPELINE_CONFIG_TEXT } from "../src/pipelines/ocr/default-config.js";
-import { normalizeRuntimeOptions } from "../src/pipelines/ocr/shared.js";
-import { getOcrRuntimeParams } from "../src/pipelines/ocr/runtime-params.js";
-import { DEFAULT_MODEL_ASSETS } from "../src/resources/registry.js";
+import { PaddleOCR, normalizeOcrPipelineConfig, parseOcrPipelineConfigText } from "../src/index";
+import { extractInferenceModelName } from "../src/models/common";
+import { DEFAULT_OCR_PIPELINE_CONFIG_TEXT } from "../src/pipelines/ocr/default-config";
+import { normalizeRuntimeOptions } from "../src/pipelines/ocr/shared";
+import { getOcrRuntimeParams } from "../src/pipelines/ocr/runtime-params";
+import { DEFAULT_MODEL_ASSETS } from "../src/resources/registry";
 
 const CREATE_WITHOUT_INIT = Object.freeze({
   initialize: false

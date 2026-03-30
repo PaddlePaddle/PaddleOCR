@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
-import { extractTarEntries, pickTarEntry } from "../src/resources/tar.js";
-import { createTar } from "./tar-fixture.js";
+import { extractTarEntries, pickTarEntry } from "../src/resources/tar";
+import { createTar } from "./tar-fixture";
 
 describe("tar helpers", () => {
   it("extracts nested inference files from a tar archive", () => {

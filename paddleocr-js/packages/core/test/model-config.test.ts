@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { parseDetModelConfigText, parseRecModelConfigText } from "../src/models/index.js";
+import { parseDetModelConfigText, parseRecModelConfigText } from "../src/models/index";
 
 const detConfig = `
 PreProcess:

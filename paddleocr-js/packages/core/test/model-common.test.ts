@@ -9,7 +9,7 @@ import {
   parseScaleValue,
   toBgrFloatCHWFromBgr,
   unclip
-} from "../src/models/common.js";
+} from "../src/models/common";
 
 describe("model common helpers", () => {
   it("parses inference config text into plain objects", () => {

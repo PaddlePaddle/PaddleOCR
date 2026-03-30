@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 
-import { attachWorkerMessageHandler } from "../src/worker/entry.js";
+import { attachWorkerMessageHandler } from "../src/worker/entry";
 
 function createWorkerScope() {
   return {

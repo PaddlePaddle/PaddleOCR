@@ -11,33 +11,33 @@ const getOcrRuntimeParams = vi.fn();
 const cloneDefaultOcrConfig = vi.fn();
 const validateLoadedModelName = vi.fn();
 
-vi.mock("../src/resources/index.js", () => ({
+vi.mock("../src/resources/index", () => ({
   loadStandardModelAsset
 }));
 
-vi.mock("../src/models/index.js", () => ({
+vi.mock("../src/models/index", () => ({
   createDetModel,
   createRecModel,
   cropByPoly
 }));
 
-vi.mock("../src/runtime/opencv.js", () => ({
+vi.mock("../src/runtime/opencv", () => ({
   initOpenCvRuntime
 }));
 
-vi.mock("../src/runtime/ort.js", () => ({
+vi.mock("../src/runtime/ort", () => ({
   initOrtRuntime
 }));
 
-vi.mock("../src/utils/common.js", () => ({
+vi.mock("../src/utils/common", () => ({
   nowMs
 }));
 
-vi.mock("../src/pipelines/ocr/runtime-params.js", () => ({
+vi.mock("../src/pipelines/ocr/runtime-params", () => ({
   getOcrRuntimeParams
 }));
 
-vi.mock("../src/pipelines/ocr/shared.js", () => ({
+vi.mock("../src/pipelines/ocr/shared", () => ({
   cloneDefaultOcrConfig,
   validateLoadedModelName
 }));
@@ -69,7 +69,7 @@ function mockEmptyDefaultOcrConfig() {
 }
 
 async function loadCoreModule() {
-  return import("../src/pipelines/ocr/core.js");
+  return import("../src/pipelines/ocr/core");
 }
 
 describe("OCR pipeline core", () => {

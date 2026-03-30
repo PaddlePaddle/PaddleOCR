@@ -6,8 +6,8 @@ vi.mock("@techstark/opencv-js", () => ({
   }
 }));
 
-import * as publicPipelines from "../src/pipelines/index.js";
-import * as ocrPipeline from "../src/pipelines/ocr/index.js";
+import * as publicPipelines from "../src/pipelines/index";
+import * as ocrPipeline from "../src/pipelines/ocr/index";
 
 describe("pipeline entrypoints", () => {
   it("re-exports OCR pipeline APIs from the pipelines index", () => {

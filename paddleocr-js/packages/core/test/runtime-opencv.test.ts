@@ -6,7 +6,7 @@ async function loadOpenCvModule(mockedDefault) {
     __esModule: true,
     default: mockedDefault
   }));
-  return import("../src/runtime/opencv.js");
+  return import("../src/runtime/opencv");
 }
 
 afterEach(() => {
@@ -54,7 +54,7 @@ describe("runtime/opencv", () => {
   it("re-exports initOpenCvRuntime from the runtime index", async () => {
     const cv = { Mat() {} };
     const runtimeModule = await loadOpenCvModule(cv);
-    const runtimeIndex = await import("../src/runtime/index.js");
+    const runtimeIndex = await import("../src/runtime/index");
 
     expect(runtimeIndex.initOpenCvRuntime).toBe(runtimeModule.initOpenCvRuntime);
   });
