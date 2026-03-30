@@ -690,6 +690,9 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://padd
 
 ```bash
 paddleocr pp_doctranslation -i vehicle_certificate-1.png --target_language en --qianfan_api_key your_api_key
+
+# 使用 MiniMax 开放平台作为大语言模型
+paddleocr pp_doctranslation -i vehicle_certificate-1.png --target_language en --minimax_api_key your_minimax_api_key
 ```
 
 <details><summary><b>命令行支持更多参数设置，点击展开以查看命令行参数的详细说明</b></summary>
@@ -1265,6 +1268,12 @@ paddleocr pp_doctranslation -i vehicle_certificate-1.png --target_language en --
 <td></td>
 </tr>
 <tr>
+<td><code>minimax_api_key</code></td>
+<td><b>含义：</b><a href="https://platform.minimaxi.com/">MiniMax 开放平台</a> 的 API key。设置后将使用 MiniMax（MiniMax-M2.7，204K 上下文）作为大语言模型，替代千帆平台。也可通过 <code>MINIMAX_API_KEY</code> 环境变量设置。</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
 <td><code>device</code></td>
 <td><b>含义：</b>用于推理的设备。<br/>
 <b>含义：</b>
@@ -1365,6 +1374,10 @@ chat_bot_config = {
     "api_type": "openai",
     "api_key": "api_key",  # your api_key
 }
+
+# 也可以使用 MiniMax 开放平台作为大语言模型：
+# from paddleocr._pipelines.llm_config import get_minimax_chat_bot_config
+# chat_bot_config = get_minimax_chat_bot_config()  # 读取 MINIMAX_API_KEY 环境变量
 
 if input_path.lower().endswith(".md"):
     # 读取markdown文档，支持传入目录和以 .md 为后缀的 url 链接

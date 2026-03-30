@@ -861,7 +861,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://padd
 
 **请注意，如果在执行过程中遇到程序失去响应、程序异常退出、内存资源耗尽、推理速度极慢等问题，请尝试参考文档调整配置，例如关闭不需要使用的功能或使用更轻量的模型。**
 
-在进行模型推理之前，首先需要准备大语言模型的 api_key，PP-ChatOCRv4 支持在[百度云千帆平台](https://console.bce.baidu.com/qianfan/ais/console/onlineService)或者本地部署的标准 OpenAI 接口大模型服务。如果使用百度云千帆平台，可以参考[认证鉴权](https://cloud.baidu.com/doc/qianfan-api/s/ym9chdsy5) 获取 api_key。如果使用本地部署的大模型服务，可以参考[PaddleNLP大模型部署文档](https://github.com/PaddlePaddle/PaddleNLP/tree/develop/llm)进行大模型部署对话接口部署和向量化接口部署，并填写对应的 base_url 和 api_key 即可。如果需要使用多模态大模型进行数据融合，可以参考[PaddleMIX模型文档](https://github.com/PaddlePaddle/PaddleMIX/tree/develop/paddlemix/examples/ppdocbee2)中的OpenAI服务部署进行多模态大模型部署，并填写对应的 base_url 和 api_key 即可。
+在进行模型推理之前，首先需要准备大语言模型的 api_key，PP-ChatOCRv4 支持在[百度云千帆平台](https://console.bce.baidu.com/qianfan/ais/console/onlineService)、[MiniMax 开放平台](https://platform.minimaxi.com/)或者本地部署的标准 OpenAI 接口大模型服务。如果使用百度云千帆平台，可以参考[认证鉴权](https://cloud.baidu.com/doc/qianfan-api/s/ym9chdsy5) 获取 api_key。如果使用 MiniMax 开放平台，可以在 [MiniMax 开放平台](https://platform.minimaxi.com/) 获取 API key，并通过 `--minimax_api_key` 或 `MINIMAX_API_KEY` 环境变量传入。如果使用本地部署的大模型服务，可以参考[PaddleNLP大模型部署文档](https://github.com/PaddlePaddle/PaddleNLP/tree/develop/llm)进行大模型部署对话接口部署和向量化接口部署，并填写对应的 base_url 和 api_key 即可。如果需要使用多模态大模型进行数据融合，可以参考[PaddleMIX模型文档](https://github.com/PaddlePaddle/PaddleMIX/tree/develop/paddlemix/examples/ppdocbee2)中的OpenAI服务部署进行多模态大模型部署，并填写对应的 base_url 和 api_key 即可。
 
 **注:** 如果因本地环境限制无法在本地部署多模态大模型，可以将代码中的含有“mllm”变量的行注释掉，仅使用大语言模型完成信息抽取。
 
@@ -871,6 +871,9 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://padd
 
 ```bash
 paddleocr pp_chatocrv4_doc -i vehicle_certificate-1.png -k 驾驶室准乘人数 --qianfan_api_key your_api_key
+
+# 使用 MiniMax 开放平台作为大语言模型
+paddleocr pp_chatocrv4_doc -i vehicle_certificate-1.png -k 驾驶室准乘人数 --minimax_api_key your_minimax_api_key
 
 # 通过 --invoke_mllm 和 --pp_docbee_base_url 使用多模态大模型
 paddleocr pp_chatocrv4_doc -i vehicle_certificate-1.png -k 驾驶室准乘人数 --qianfan_api_key your_api_key --invoke_mllm True --pp_docbee_base_url http://127.0.0.1:8080/
@@ -1239,6 +1242,12 @@ paddleocr pp_chatocrv4_doc -i vehicle_certificate-1.png -k 驾驶室准乘人数
 <td></td>
 </tr>
 <tr>
+<td><code>minimax_api_key</code></td>
+<td><b>含义：</b><a href="https://platform.minimaxi.com/">MiniMax 开放平台</a> 的 API key。设置后将使用 MiniMax（MiniMax-M2.7，204K 上下文）作为大语言模型，替代千帆平台。也可通过 <code>MINIMAX_API_KEY</code> 环境变量设置。</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
 <td><code>device</code></td>
 <td><b>含义：</b>用于推理的设备。<br/>
 <b>说明：</b>支持指定具体卡号：
@@ -1331,6 +1340,18 @@ chat_bot_config = {
     "api_type": "openai",
     "api_key": "api_key",  # your api_key
 }
+
+# 也可以使用 MiniMax 开放平台作为大语言模型：
+# from paddleocr._pipelines.llm_config import get_minimax_chat_bot_config
+# chat_bot_config = get_minimax_chat_bot_config()  # 读取 MINIMAX_API_KEY 环境变量
+# 或手动配置：
+# chat_bot_config = {
+#     "module_name": "chat_bot",
+#     "model_name": "MiniMax-M2.7",  # 204K 上下文窗口
+#     "base_url": "https://api.minimax.io/v1",
+#     "api_type": "openai",
+#     "api_key": "your_minimax_api_key",
+# }
 
 retriever_config = {
     "module_name": "retriever",

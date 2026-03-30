@@ -971,7 +971,7 @@ Before using the PP-ChatOCRv4-doc pipeline locally, ensure you have completed th
 
 Please note: If you encounter issues such as the program becoming unresponsive, unexpected program termination, running out of memory resources, or extremely slow inference during execution, please try adjusting the configuration according to the documentation, such as disabling unnecessary features or using lighter-weight models.
 
-Before performing model inference, you first need to prepare the API key for the large language model. PP-ChatOCRv4 supports large model services on the [Baidu Cloud Qianfan Platform](https://console.bce.baidu.com/qianfan/ais/console/onlineService) or the locally deployed standard OpenAI interface. If using the Baidu Cloud Qianfan Platform, refer to [Authentication and Authorization](https://cloud.baidu.com/doc/qianfan-api/s/ym9chdsy5) to obtain the API key. If using a locally deployed large model service, refer to the [PaddleNLP Large Model Deployment Documentation](https://github.com/PaddlePaddle/PaddleNLP/tree/develop/llm) for deployment of the dialogue interface and vectorization interface for large models, and fill in the corresponding `base_url` and `api_key`. If you need to use a multimodal large model for data fusion, refer to the OpenAI service deployment in the [PaddleMIX Model Documentation](https://github.com/PaddlePaddle/PaddleMIX/tree/develop/paddlemix/examples/ppdocbee2) for multimodal large model deployment, and fill in the corresponding `base_url` and `api_key`.
+Before performing model inference, you first need to prepare the API key for the large language model. PP-ChatOCRv4 supports large model services on the [Baidu Cloud Qianfan Platform](https://console.bce.baidu.com/qianfan/ais/console/onlineService), [MiniMax Cloud](https://www.minimax.io/), or the locally deployed standard OpenAI interface. If using the Baidu Cloud Qianfan Platform, refer to [Authentication and Authorization](https://cloud.baidu.com/doc/qianfan-api/s/ym9chdsy5) to obtain the API key. If using MiniMax Cloud, obtain an API key from [MiniMax Platform](https://platform.minimaxi.com/) and pass it via `--minimax_api_key` or the `MINIMAX_API_KEY` environment variable. If using a locally deployed large model service, refer to the [PaddleNLP Large Model Deployment Documentation](https://github.com/PaddlePaddle/PaddleNLP/tree/develop/llm) for deployment of the dialogue interface and vectorization interface for large models, and fill in the corresponding `base_url` and `api_key`. If you need to use a multimodal large model for data fusion, refer to the OpenAI service deployment in the [PaddleMIX Model Documentation](https://github.com/PaddlePaddle/PaddleMIX/tree/develop/paddlemix/examples/ppdocbee2) for multimodal large model deployment, and fill in the corresponding `base_url` and `api_key`.
 
 **Note**: If local deployment of a multimodal large model is restricted due to the local environment, you can comment out the lines containing the `mllm` variable in the code and only use the large language model for information extraction.
 
@@ -982,6 +982,9 @@ After updating the configuration file, you can complete quick inference using ju
 
 ```bash
 paddleocr pp_chatocrv4_doc -i vehicle_certificate-1.png -k 驾驶室准乘人数 --qianfan_api_key your_api_key
+
+# Use MiniMax Cloud as the LLM provider
+paddleocr pp_chatocrv4_doc -i vehicle_certificate-1.png -k 驾驶室准乘人数 --minimax_api_key your_minimax_api_key
 
 # 通过 --invoke_mllm 和 --pp_docbee_base_url 使用多模态大模型
 paddleocr pp_chatocrv4_doc -i vehicle_certificate-1.png -k 驾驶室准乘人数 --qianfan_api_key your_api_key --invoke_mllm True --pp_docbee_base_url http://127.0.0.1:8080/
@@ -1381,6 +1384,12 @@ Any float > <code>0</code></li>
 <td></td>
 </tr>
 <tr>
+<td><code>minimax_api_key</code></td>
+<td><b>Meaning:</b>API key for <a href="https://platform.minimaxi.com/">MiniMax Cloud</a>. When set, uses MiniMax (MiniMax-M2.7, 204K context) as the LLM provider instead of Qianfan. Can also be set via the <code>MINIMAX_API_KEY</code> environment variable.</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
 <td><code>device</code></td>
 <td><b>Meaning:</b>The device used for inference.<br/>
 <b>Description:</b> 
@@ -1478,6 +1487,18 @@ chat_bot_config = {
     "api_type": "openai",
     "api_key": "api_key",  # your api_key
 }
+
+# Alternatively, use MiniMax Cloud as the LLM provider:
+# from paddleocr._pipelines.llm_config import get_minimax_chat_bot_config
+# chat_bot_config = get_minimax_chat_bot_config()  # reads MINIMAX_API_KEY env var
+# Or configure manually:
+# chat_bot_config = {
+#     "module_name": "chat_bot",
+#     "model_name": "MiniMax-M2.7",  # 204K context window
+#     "base_url": "https://api.minimax.io/v1",
+#     "api_type": "openai",
+#     "api_key": "your_minimax_api_key",
+# }
 
 retriever_config = {
     "module_name": "retriever",
