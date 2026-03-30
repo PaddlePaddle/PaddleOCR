@@ -6,8 +6,8 @@ export {
   createDetModelSession,
   cropByPoly,
   parseDetModelConfigText,
-  runDetModel
-} from "./det.js";
+  runDetModel,
+} from "./det";
 export {
   DEFAULT_REC_MODEL_PARSE_FALLBACKS,
   DEFAULT_REC_RUNTIME_LIMITS,
@@ -16,5 +16,5 @@ export {
   createRecModelSession,
   parseRecModelConfigText,
   prepareRecSample,
-  runRecModel
-} from "./rec.js";
+  runRecModel,
+} from "./rec";

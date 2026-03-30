@@ -1,4 +1,4 @@
-function readString(bytes, start, length) {
+function readString(bytes: Uint8Array, start: number, length: number): string {
   let output = "";
   for (let index = start; index < start + length; index += 1) {
     const value = bytes[index];
@@ -8,23 +8,23 @@ function readString(bytes, start, length) {
   return output.replace(/\0.*$/, "").trim();
 }
 
-function readOctal(bytes, start, length) {
+function readOctal(bytes: Uint8Array, start: number, length: number): number {
   const raw = readString(bytes, start, length).replace(/\0/g, "").trim();
   return raw ? Number.parseInt(raw, 8) : 0;
 }
 
-function isEmptyBlock(bytes, offset) {
+function isEmptyBlock(bytes: Uint8Array, offset: number): boolean {
   for (let index = offset; index < offset + 512; index += 1) {
     if (bytes[index] !== 0) return false;
   }
   return true;
 }
 
-function normalizeEntryName(name) {
+function normalizeEntryName(name: string): string {
   return name.replace(/^\.?\//, "");
 }
 
-function isMetadataEntry(name) {
+function isMetadataEntry(name: string): boolean {
   const segments = normalizeEntryName(name).split("/");
   const baseName = segments[segments.length - 1] || "";
   return (
@@ -32,9 +32,9 @@ function isMetadataEntry(name) {
   );
 }
 
-export function extractTarEntries(buffer) {
+export function extractTarEntries(buffer: ArrayBuffer | Uint8Array): Map<string, Uint8Array> {
   const bytes = buffer instanceof Uint8Array ? buffer : new Uint8Array(buffer);
-  const entries = new Map();
+  const entries = new Map<string, Uint8Array>();
   let offset = 0;
 
   while (offset + 512 <= bytes.length) {
@@ -58,10 +58,10 @@ export function extractTarEntries(buffer) {
   return entries;
 }
 
-export function pickTarEntry(entries, targetName) {
+export function pickTarEntry(entries: Map<string, Uint8Array>, targetName: string): Uint8Array {
   const normalizedTarget = normalizeEntryName(targetName);
   if (entries.has(normalizedTarget)) {
-    return entries.get(normalizedTarget);
+    return entries.get(normalizedTarget)!;
   }
 
   for (const [name, value] of entries) {

@@ -1,68 +1,116 @@
-import { assertStandardModelResources } from "../resources/standard-model.js";
-import { createSession, getProviderCandidates, releaseSessions } from "../runtime/ort.js";
-import { clamp, withTimeout } from "../utils/common.js";
+import type { OpenCv, Mat } from "@techstark/opencv-js";
+import type { InferenceSession, Tensor } from "onnxruntime-web";
+
+import { assertStandardModelResources } from "../resources/standard-model";
+import { createSession, getProviderCandidates, releaseSessions } from "../runtime/ort";
+import type { OrtModule, WebGpuState, SessionState } from "../runtime/ort";
+import { clamp, withTimeout } from "../utils/common";
 import {
   getTransformOp,
   parseInferenceConfigText,
   parseScaleValue,
-  toBgrFloatCHWFromBgr
-} from "./common.js";
+  toBgrFloatCHWFromBgr,
+} from "./common";
+import type { Point2D, NormalizeConfig } from "./common";
 
-export const DEFAULT_REC_MODEL_PARSE_FALLBACKS = Object.freeze({
+export interface RecModelConfig {
+  imageShape: number[];
+  scoreThresh: number;
+  normalize: NormalizeConfig;
+  charDict: string[];
+  maxBatch: number;
+  maxWidth: number;
+}
+
+export interface RecSample {
+  originalIndex: number;
+  poly: Point2D[];
+  width: number;
+  chw: Float32Array;
+}
+
+export interface RecResult {
+  originalIndex: number;
+  poly: Point2D[];
+  text: string;
+  score: number;
+}
+
+export interface RecModel {
+  kind: "rec";
+  config: RecModelConfig;
+  charDict: string[];
+  readonly provider: string;
+  prepareSample(ctx: { cv: OpenCv; cropMat: Mat; poly: Point2D[]; originalIndex: number }): RecSample;
+  recognize(samples: RecSample[]): Promise<RecResult[]>;
+  dispose(): Promise<void>;
+}
+
+export const DEFAULT_REC_MODEL_PARSE_FALLBACKS: Readonly<Pick<RecModelConfig, "imageShape" | "scoreThresh" | "normalize" | "charDict">> = Object.freeze({
   imageShape: [3, 48, 320],
   scoreThresh: 0.1,
   normalize: {
     mean: [0.5, 0.5, 0.5],
     std: [0.5, 0.5, 0.5],
-    scale: 1 / 255
+    scale: 1 / 255,
   },
-  charDict: []
+  charDict: [],
 });
 
 export const DEFAULT_REC_RUNTIME_LIMITS = Object.freeze({
   maxBatch: 6,
-  maxWidth: 3200
+  maxWidth: 3200,
 });
 
-export const DEFAULT_REC_MODEL_CONFIG = Object.freeze({
+export const DEFAULT_REC_MODEL_CONFIG: Readonly<RecModelConfig> = Object.freeze({
   ...DEFAULT_REC_MODEL_PARSE_FALLBACKS,
   maxBatch: DEFAULT_REC_RUNTIME_LIMITS.maxBatch,
-  maxWidth: DEFAULT_REC_RUNTIME_LIMITS.maxWidth
+  maxWidth: DEFAULT_REC_RUNTIME_LIMITS.maxWidth,
 });
 
-export function parseRecModelConfigText(text) {
+export function parseRecModelConfigText(text: string): RecModelConfig {
   const parsed = parseInferenceConfigText(text);
-  const resize = getTransformOp(parsed?.PreProcess?.transform_ops, "RecResizeImg");
-  const normalize = getTransformOp(parsed?.PreProcess?.transform_ops, "NormalizeImage");
-  const postprocess = parsed?.PostProcess || {};
+  const preProcess = parsed?.PreProcess as Record<string, unknown> | undefined;
+  const transformOps = preProcess?.transform_ops as Array<Record<string, unknown>> | undefined;
+  const resize = getTransformOp(transformOps, "RecResizeImg");
+  const normalize = getTransformOp(transformOps, "NormalizeImage");
+  const postprocess = (parsed?.PostProcess || {}) as Record<string, unknown>;
   const baseCharDict = postprocess?.character_dict;
   if (!Array.isArray(baseCharDict) || baseCharDict.length === 0) {
     throw new Error("No valid character_dict found in rec inference.yml");
   }
 
   return {
-    imageShape: resize?.image_shape || DEFAULT_REC_MODEL_PARSE_FALLBACKS.imageShape,
+    imageShape: (resize?.image_shape as number[]) || DEFAULT_REC_MODEL_PARSE_FALLBACKS.imageShape,
     maxBatch: Number(DEFAULT_REC_RUNTIME_LIMITS.maxBatch),
     maxWidth: Number(DEFAULT_REC_RUNTIME_LIMITS.maxWidth),
     scoreThresh: DEFAULT_REC_MODEL_PARSE_FALLBACKS.scoreThresh,
     normalize: normalize
       ? {
-          mean: normalize.mean || DEFAULT_REC_MODEL_PARSE_FALLBACKS.normalize.mean,
-          std: normalize.std || DEFAULT_REC_MODEL_PARSE_FALLBACKS.normalize.std,
-          scale: parseScaleValue(normalize.scale, DEFAULT_REC_MODEL_PARSE_FALLBACKS.normalize.scale)
+          mean: (normalize.mean as number[]) || DEFAULT_REC_MODEL_PARSE_FALLBACKS.normalize.mean,
+          std: (normalize.std as number[]) || DEFAULT_REC_MODEL_PARSE_FALLBACKS.normalize.std,
+          scale: parseScaleValue(normalize.scale, DEFAULT_REC_MODEL_PARSE_FALLBACKS.normalize.scale),
         }
       : { ...DEFAULT_REC_MODEL_PARSE_FALLBACKS.normalize },
-    charDict: [...baseCharDict, " "]
+    charDict: [...(baseCharDict as string[]), " "],
   };
 }
 
-export async function createRecModel({ ort, modelBytes, configText, backend, webgpuState }) {
+interface CreateRecModelArgs {
+  ort: OrtModule;
+  modelBytes: Uint8Array;
+  configText: string;
+  backend: string;
+  webgpuState: WebGpuState;
+}
+
+export async function createRecModel({ ort, modelBytes, configText, backend, webgpuState }: CreateRecModelArgs): Promise<RecModel> {
   assertStandardModelResources("Recognition", {
     model: modelBytes,
-    config: configText
+    config: configText,
   });
   const config = parseRecModelConfigText(configText);
-  let sessionState = await createRecModelSession(ort, modelBytes, backend, webgpuState);
+  let sessionState: SessionState | null = await createRecModelSession(ort, modelBytes, backend, webgpuState);
 
   return {
     kind: "rec",
@@ -83,28 +131,38 @@ export async function createRecModel({ ort, modelBytes, configText, backend, web
           ort,
           session: sessionState.session,
           config,
-          charDict: config.charDict
+          charDict: config.charDict,
         },
-        samples
+        samples,
       );
     },
     async dispose() {
       await releaseSessions(sessionState?.session);
       sessionState = null;
-    }
+    },
   };
 }
 
-export async function createRecModelSession(ort, modelBytes, backend, webgpuState) {
+export async function createRecModelSession(
+  ort: OrtModule,
+  modelBytes: Uint8Array,
+  backend: string,
+  webgpuState: WebGpuState,
+): Promise<SessionState> {
   const providerCandidates = getProviderCandidates(backend, webgpuState);
   return withTimeout(
     createSession(ort, modelBytes, providerCandidates),
     60000,
-    "Recognition model"
+    "Recognition model",
   );
 }
 
-export function prepareRecSample(context, cropMat, poly, originalIndex) {
+export function prepareRecSample(
+  context: { cv: OpenCv; config: RecModelConfig },
+  cropMat: Mat,
+  poly: Point2D[],
+  originalIndex: number,
+): RecSample {
   const { cv, config } = context;
   const [channels, targetH, baseW] = config.imageShape;
   const maxW = Number(config.maxWidth);
@@ -143,7 +201,19 @@ export function prepareRecSample(context, cropMat, poly, originalIndex) {
   return { originalIndex, poly, width: recW, chw };
 }
 
-function createBatchTensor(ort, samples, maxW, targetH) {
+interface RecRunContext {
+  ort: OrtModule;
+  session: InferenceSession;
+  config: RecModelConfig;
+  charDict: string[];
+}
+
+function createBatchTensor(
+  ort: OrtModule,
+  samples: RecSample[],
+  maxW: number,
+  targetH: number,
+): Tensor {
   const batch = samples.length;
   const out = new Float32Array(batch * 3 * targetH * maxW);
   const dstPerChannel = targetH * maxW;
@@ -164,10 +234,16 @@ function createBatchTensor(ort, samples, maxW, targetH) {
   return new ort.Tensor("float32", out, [batch, 3, targetH, maxW]);
 }
 
-function decodeCTCSample(data, offset, timeSteps, classes, charDict) {
+function decodeCTCSample(
+  data: Float32Array,
+  offset: number,
+  timeSteps: number,
+  classes: number,
+  charDict: string[],
+): { text: string; score: number } {
   let prevIdx = -1;
   let text = "";
-  const probs = [];
+  const probs: number[] = [];
   for (let step = 0; step < timeSteps; step += 1) {
     let maxIdx = 0;
     let maxVal = -Infinity;
@@ -192,13 +268,13 @@ function decodeCTCSample(data, offset, timeSteps, classes, charDict) {
   return { text, score };
 }
 
-export async function runRecModel(context, samples) {
+export async function runRecModel(context: RecRunContext, samples: RecSample[]): Promise<RecResult[]> {
   const { ort, session, config, charDict } = context;
   const recInputName = session.inputNames[0];
   const batchSize = Number(config.maxBatch);
   const targetH = Number(config.imageShape[1]);
   const ordered = samples.slice().sort((a, b) => a.width - b.width);
-  const results = [];
+  const results: RecResult[] = [];
 
   for (let start = 0; start < ordered.length; start += batchSize) {
     const batch = ordered.slice(start, start + batchSize);
@@ -214,13 +290,14 @@ export async function runRecModel(context, samples) {
     const timeSteps = dims[1];
     const classes = dims[2];
     const stride = timeSteps * classes;
+    const outputData = output.data as Float32Array;
     for (let index = 0; index < sampleCount; index += 1) {
-      const decoded = decodeCTCSample(output.data, index * stride, timeSteps, classes, charDict);
+      const decoded = decodeCTCSample(outputData, index * stride, timeSteps, classes, charDict);
       results.push({
         originalIndex: batch[index].originalIndex,
         poly: batch[index].poly,
         text: decoded.text,
-        score: decoded.score
+        score: decoded.score,
       });
     }
   }

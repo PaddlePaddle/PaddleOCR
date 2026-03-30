@@ -1,12 +1,22 @@
-export const DEFAULT_MODEL_ASSETS = {
+export interface AssetDescriptor {
+  id: string;
+  url: string;
+  kind: "file" | "tar";
+  version?: string;
+  entries?: Record<string, string>;
+}
+
+export type ModelAssetsMap = Record<string, AssetDescriptor>;
+
+export const DEFAULT_MODEL_ASSETS: ModelAssetsMap = {
   "PP-OCRv5_mobile_det": {
     id: "pp-ocrv5-mobile-det-tar",
     kind: "tar",
     url: "https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv5_mobile_det_onnx.tar",
     entries: {
       model: "inference.onnx",
-      config: "inference.yml"
-    }
+      config: "inference.yml",
+    },
   },
   "PP-OCRv5_mobile_rec": {
     id: "pp-ocrv5-mobile-rec-tar",
@@ -14,20 +24,20 @@ export const DEFAULT_MODEL_ASSETS = {
     url: "https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv5_mobile_rec_onnx.tar",
     entries: {
       model: "inference.onnx",
-      config: "inference.yml"
-    }
-  }
+      config: "inference.yml",
+    },
+  },
 };
 
-function isAssetDescriptor(asset) {
+function isAssetDescriptor(asset: unknown): asset is Record<string, unknown> {
   return Boolean(asset && typeof asset === "object" && !Array.isArray(asset));
 }
 
-function isNonEmptyString(value) {
+function isNonEmptyString(value: unknown): value is string {
   return typeof value === "string" && value.length > 0;
 }
 
-export function normalizeAssetDescriptor(assetName, asset) {
+export function normalizeAssetDescriptor(assetName: string, asset: unknown): AssetDescriptor {
   if (!isAssetDescriptor(asset)) {
     throw new Error(`Asset "${assetName}" must be an object.`);
   }
@@ -35,7 +45,7 @@ export function normalizeAssetDescriptor(assetName, asset) {
     throw new Error(`Asset "${assetName}" must define both id and url.`);
   }
 
-  const kind = asset.kind || "file";
+  const kind = (asset.kind as string) || "file";
   if (kind !== "file" && kind !== "tar") {
     throw new Error(`Asset "${assetName}" has unsupported kind "${kind}".`);
   }
@@ -45,7 +55,9 @@ export function normalizeAssetDescriptor(assetName, asset) {
   if (
     kind === "tar" &&
     asset.entries &&
-    Object.values(asset.entries).some((entryPath) => !isNonEmptyString(entryPath))
+    Object.values(asset.entries as Record<string, unknown>).some(
+      (entryPath) => !isNonEmptyString(entryPath),
+    )
   ) {
     throw new Error(`Tar asset "${assetName}" must map entries to file paths.`);
   }
@@ -53,10 +65,14 @@ export function normalizeAssetDescriptor(assetName, asset) {
     throw new Error(`Asset "${assetName}" must use a non-empty version string.`);
   }
 
-  return { ...asset, kind };
+  return { ...(asset as Record<string, unknown>), kind } as unknown as AssetDescriptor;
 }
 
-function resolveAssetReference(assetName, asset, modelAssets) {
+function resolveAssetReference(
+  assetName: string,
+  asset: unknown,
+  modelAssets: ModelAssetsMap,
+): AssetDescriptor {
   if (isNonEmptyString(asset)) {
     const resolvedAsset = modelAssets[asset];
     if (!resolvedAsset) {
@@ -68,19 +84,20 @@ function resolveAssetReference(assetName, asset, modelAssets) {
   return normalizeAssetDescriptor(assetName, asset);
 }
 
-export function normalizeAssets(assets, modelAssets = DEFAULT_MODEL_ASSETS) {
+export function normalizeAssets(
+  assets: Record<string, unknown> | undefined,
+  modelAssets: ModelAssetsMap = DEFAULT_MODEL_ASSETS,
+): Record<string, AssetDescriptor> {
   const assetEntries = Object.entries(assets || {});
 
   if (assetEntries.length === 0) {
     throw new Error("Assets must define at least one asset.");
   }
 
-  const normalizedAssets = Object.fromEntries(
+  return Object.fromEntries(
     assetEntries.map(([assetName, asset]) => [
       assetName,
-      resolveAssetReference(assetName, asset, modelAssets)
-    ])
+      resolveAssetReference(assetName, asset, modelAssets),
+    ]),
   );
-
-  return normalizedAssets;
 }

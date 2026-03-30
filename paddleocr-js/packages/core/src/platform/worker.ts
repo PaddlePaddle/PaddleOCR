@@ -1,6 +1,13 @@
-import { ensureServedFromHttp } from "./browser.js";
+import type { OpenCv, Mat } from "@techstark/opencv-js";
+import type { SourceMatResult } from "./browser";
+import { ensureServedFromHttp } from "./browser";
 
-function imageBitmapToImageData(imageBitmap) {
+export interface WorkerSourcePayload {
+  kind: string;
+  imageBitmap: ImageBitmap;
+}
+
+function imageBitmapToImageData(imageBitmap: ImageBitmap): ImageData {
   if (typeof OffscreenCanvas !== "function") {
     throw new Error("Worker mode requires OffscreenCanvas support in this browser.");
   }
@@ -13,11 +20,14 @@ function imageBitmapToImageData(imageBitmap) {
   return ctx.getImageData(0, 0, imageBitmap.width, imageBitmap.height);
 }
 
-function imageDataToMat(cv, imageData) {
+function imageDataToMat(cv: OpenCv, imageData: ImageData): Mat {
   return cv.matFromArray(imageData.height, imageData.width, cv.CV_8UC4, imageData.data);
 }
 
-export async function sourcePayloadToMat(cv, source) {
+export async function sourcePayloadToMat(
+  cv: OpenCv,
+  source: WorkerSourcePayload | Mat,
+): Promise<SourceMatResult> {
   if (typeof cv?.Mat === "function" && source instanceof cv.Mat) {
     return {
       width: source.cols,
@@ -25,16 +35,17 @@ export async function sourcePayloadToMat(cv, source) {
       mat: source.clone(),
       dispose() {
         this.mat.delete();
-      }
+      },
     };
   }
 
+  const payload = source as WorkerSourcePayload;
   if (
-    source?.kind === "imageBitmap" &&
+    payload?.kind === "imageBitmap" &&
     typeof ImageBitmap !== "undefined" &&
-    source.imageBitmap instanceof ImageBitmap
+    payload.imageBitmap instanceof ImageBitmap
   ) {
-    const imageData = imageBitmapToImageData(source.imageBitmap);
+    const imageData = imageBitmapToImageData(payload.imageBitmap);
     const mat = imageDataToMat(cv, imageData);
     return {
       width: imageData.width,
@@ -42,8 +53,8 @@ export async function sourcePayloadToMat(cv, source) {
       mat,
       dispose() {
         mat.delete();
-        source.imageBitmap.close?.();
-      }
+        payload.imageBitmap.close?.();
+      },
     };
   }
 
