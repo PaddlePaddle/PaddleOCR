@@ -10,7 +10,7 @@
 ## 准备工作
 
 1. 请确保执行 skill 的设备安装有 Python 3.9 或以上版本。
-2. Skill 底层依赖于 PaddleOCR 官方 API，因此需要配置相关凭证才能使用。可以在 [PaddleOCR 官网](https://www.paddleocr.com) 点击 **API**，选择需要用到的算法，然后复制 `API_URL` 和 `Token`，它们分别对应服务的 API URL 和用户鉴权使用的 access token。各 skill 支持的算法如下：
+2. Skill 底层依赖于 PaddleOCR 官方 API，因此需要配置相关凭证才能使用。可以在 [PaddleOCR 官网](https://www.paddleocr.com) 点击 **API**，选择需要用到的模型，选择语言（对于文字识别模型），然后复制 `API_URL` 和 `Token`，它们分别对应服务的 API URL 和用户鉴权使用的 access token。各 skill 支持的模型如下：
    - `paddleocr-text-recognition`：`PP-OCRv5`
    - `paddleocr-doc-parsing`：`PP-StructureV3`、`PaddleOCR-VL`、`PaddleOCR-VL-1.5`
 

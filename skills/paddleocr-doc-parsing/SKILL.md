@@ -65,10 +65,6 @@ pip install -r requirements-optimize.txt
    - User provides URL: Use the `--file-url` parameter
    - User provides local file path: Use the `--file-path` parameter
 
-   **Input type note**:
-   - Supported file types depend on the model and endpoint configuration.
-   - Always follow the file type constraints documented by your endpoint API.
-
 2. **Execute document parsing**:
 
    ```bash

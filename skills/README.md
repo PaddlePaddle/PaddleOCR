@@ -10,7 +10,7 @@ This directory contains official PaddleOCR Agent Skills. They integrate with AI 
 ## Prerequisites
 
 1. Python 3.9 or later must be installed on the device that runs the skill.
-2. These skills depend on PaddleOCR official APIs and require API credentials. Visit the [PaddleOCR website](https://www.paddleocr.com), click **API**, select the model you need, then copy the `API_URL` and `Token`. They correspond to the API URL and access token used for authentication. Supported models per skill:
+2. These skills depend on PaddleOCR official APIs and require API credentials. Visit the [PaddleOCR website](https://www.paddleocr.com), click **API**, select the model you need, select the language for the text recognition model, then copy the `API_URL` and `Token`. They correspond to the API URL and access token used for authentication. Supported model per skill:
    - `paddleocr-text-recognition`: `PP-OCRv5`
    - `paddleocr-doc-parsing`: `PP-StructureV3`, `PaddleOCR-VL`, `PaddleOCR-VL-1.5`
 
