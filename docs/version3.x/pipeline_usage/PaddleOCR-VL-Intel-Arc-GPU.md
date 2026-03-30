@@ -2,11 +2,11 @@
 comments: true
 ---
 
-# PaddleOCR-VL Intel GPU 使用教程
+# PaddleOCR-VL Intel Arc GPU 使用教程
 
-本教程是 PaddleOCR-VL 在 Intel GPU 上的使用指南，涵盖了从环境准备到服务化部署的完整流程。
+本教程是 PaddleOCR-VL 在 Intel Arc GPU 上的使用指南，涵盖了从环境准备到服务化部署的完整流程。
 
-目前 PaddleOCR-VL 已在 TODO 上完成精度、速度验证；鉴于硬件环境的多样性，其他 Intel GPU 的兼容性尚未验证。我们诚挚欢迎社区用户在不同硬件上进行测试并反馈您的运行结果。
+目前 PaddleOCR-VL 已在 Intel Arc B60 Pro 上完成精度、速度验证；鉴于硬件环境的多样性，其他 Intel Arc GPU 的兼容性尚未验证。我们诚挚欢迎社区用户在不同硬件上进行测试并反馈您的运行结果。
 
 ## 1. 环境准备
 
@@ -64,7 +64,7 @@ python -m pip install -U "paddleocr[doc-parser]"
 
 ## 2. 快速开始
 
-请参考 [PaddleOCR-VL 使用教程 - 2. 快速开始](./PaddleOCR-VL.md#2-快速开始)。
+Intel Arc GPU 暂时不支持使用 PaddlePaddle 推理方式推理，请参考使用下一节使用 vLLM 推理加速框架推理。
 
 ## 3. 使用推理加速框架提升 VLM 推理性能
 
