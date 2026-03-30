@@ -3,6 +3,15 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
+  "keywords": [
+    "paddleocr",
+    "ocr-demo",
+    "browser-ocr",
+    "vite"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -10,7 +19,7 @@
   },
   "dependencies": {
     "onnxruntime-web": "^1.22.0",
-    "paddleocr-js": "file:../../packages/core"
+    "paddleocr-js": "*"
   },
   "devDependencies": {
     "vite": "^6.2.2"

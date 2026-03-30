@@ -12,6 +12,16 @@
   "bugs": {
     "url": "https://github.com/PaddlePaddle/PaddleOCR/issues"
   },
+  "keywords": [
+    "paddleocr",
+    "ocr",
+    "monorepo",
+    "browser-ocr",
+    "typescript"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
   "workspaces": [
     "packages/*",
     "apps/*"
@@ -24,6 +34,7 @@
     "preview:demo": "npm run preview --workspace apps/demo --",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
+    "typecheck": "npm run typecheck --workspaces --if-present",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
     "test:watch": "vitest",
@@ -32,23 +43,24 @@
     "check": "npm run lint && npm run test && npm run build"
   },
   "devDependencies": {
-    "@vitest/coverage-v8": "^3.2.4",
     "@changesets/cli": "^2.29.7",
     "@eslint/js": "^10.0.1",
+    "@vitest/coverage-v8": "^3.2.4",
     "eslint": "^10.0.2",
     "globals": "^17.4.0",
     "husky": "^9.1.7",
     "jsdom": "^26.1.0",
     "lint-staged": "^16.3.2",
     "prettier": "^3.8.1",
+    "typescript-eslint": "^8.57.2",
     "vitest": "^3.2.4"
   },
   "lint-staged": {
-    "*.{js,mjs,cjs}": [
+    "*.{js,ts}": [
       "eslint --fix",
       "prettier --write"
     ],
-    "*.{json,md,html,css,yml,yaml}": [
+    "*.{json,md,html,css,yaml,yml}": [
       "prettier --write"
     ]
   }

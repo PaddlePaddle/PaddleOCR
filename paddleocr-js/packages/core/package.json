@@ -1,7 +1,7 @@
 {
   "name": "paddleocr-js",
   "version": "0.1.0",
-  "description": "Browser SDK for PaddleOCR (ONNX Runtime Web + OpenCV.js)",
+  "description": "Browser-based OCR SDK powered by PaddleOCR, ONNX Runtime Web and OpenCV.js",
   "type": "module",
   "repository": {
     "type": "git",
@@ -12,23 +12,55 @@
   "bugs": {
     "url": "https://github.com/PaddlePaddle/PaddleOCR/issues"
   },
-  "main": "./src/index.js",
-  "module": "./src/index.js",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "browser": "./dist/index.umd.js",
+  "types": "./dist/index.d.ts",
   "exports": {
-    ".": "./src/index.js"
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts"
+    }
   },
   "files": [
-    "src",
+    "dist",
     "README.md"
   ],
   "sideEffects": false,
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "ocr",
+    "paddleocr",
+    "paddle",
+    "text-recognition",
+    "text-detection",
+    "onnx",
+    "onnxruntime",
+    "opencv",
+    "browser-ocr",
+    "wasm",
+    "webgpu",
+    "deep-learning",
+    "machine-learning",
+    "computer-vision"
+  ],
   "scripts": {
-    "build": "node --input-type=module -e \"await import('./src/index.js')\""
+    "build": "vite build",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@techstark/opencv-js": "^4.10.0-release.1",
     "clipper-lib": "^6.4.2",
     "js-yaml": "^4.1.0",
     "onnxruntime-web": "^1.22.0"
+  },
+  "devDependencies": {
+    "@types/js-yaml": "^4.0.9",
+    "typescript": "^5.9.3",
+    "vite": "^6.4.1",
+    "vite-plugin-dts": "^4.5.4"
   }
 }

@@ -1,43 +1,27 @@
-import js from "@eslint/js";
+import eslint from "@eslint/js";
+import tseslint from "typescript-eslint";
 import globals from "globals";
 
-export default [
+export default tseslint.config(
   {
-    ignores: ["**/dist/**", "**/node_modules/**", "coverage/**", ".cache/**"]
+    ignores: ["**/dist", "**/node_modules", "**/coverage", "**/.cache"],
   },
-  js.configs.recommended,
+  eslint.configs.recommended,
   {
-    files: ["packages/**/*.js"],
+    files: ["packages/**/*.ts"],
+    extends: [...tseslint.configs.strictTypeChecked],
     languageOptions: {
-      sourceType: "module",
-      globals: {
-        ...globals.browser
-      }
+      globals: { ...globals.browser },
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
+      },
     },
-    rules: {
-      "no-unused-vars": ["warn", { argsIgnorePattern: "^_" }]
-    }
   },
   {
-    files: ["apps/**/*.js"],
+    files: ["apps/**/*.js", "*.config.{js,ts}", "packages/**/*.config.*"],
     languageOptions: {
-      sourceType: "module",
-      globals: {
-        ...globals.browser
-      }
+      globals: { ...globals.browser, ...globals.node },
     },
-    rules: {
-      "no-unused-vars": ["warn", { argsIgnorePattern: "^_" }]
-    }
   },
-  {
-    files: ["**/*.test.js", "vitest.config.js", "eslint.config.js", "**/*.config.js"],
-    languageOptions: {
-      sourceType: "module",
-      globals: {
-        ...globals.browser,
-        ...globals.node
-      }
-    }
-  }
-];
+);
