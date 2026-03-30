@@ -1,29 +1,30 @@
-import { attachWorkerMessageHandler } from "../../worker/entry.js";
-import { sourcePayloadToMat, ensureServedFromHttp } from "../../platform/worker.js";
-import { OcrPipelineRunner } from "./core.js";
+import { attachWorkerMessageHandler } from "../../worker/entry";
+import { sourcePayloadToMat, ensureServedFromHttp } from "../../platform/worker";
+import type { OcrPipelineRunnerOptions } from "./core";
+import { OcrPipelineRunner } from "./core";
 
 function createPaddleOCRWorkerMessageHandler() {
-  let ocr = null;
+  let ocr: OcrPipelineRunner | null = null;
 
-  async function handleInit(payload) {
+  async function handleInit(payload: Record<string, unknown>) {
     await ocr?.dispose();
     ocr = new OcrPipelineRunner({
-      ...payload.options,
+      ...(payload.options as OcrPipelineRunnerOptions),
       ensureServedFromHttp,
-      sourceToMat: sourcePayloadToMat
+      sourceToMat: sourcePayloadToMat,
     });
     const summary = await ocr.initialize();
     return {
       summary,
-      modelConfig: ocr.getModelConfig()
+      modelConfig: ocr.getModelConfig(),
     };
   }
 
-  async function handlePredict(payload) {
+  async function handlePredict(payload: Record<string, unknown>) {
     if (!ocr) {
       throw new Error("OCR worker is not initialized.");
     }
-    return ocr.predict(payload.source, payload.params);
+    return ocr.predict(payload.source, payload.params as Record<string, unknown>);
   }
 
   async function handleDispose() {
@@ -32,7 +33,7 @@ function createPaddleOCRWorkerMessageHandler() {
     return {};
   }
 
-  return async function handleMessage(type, payload) {
+  return async function handleMessage(type: string, payload: Record<string, unknown>) {
     switch (type) {
       case "init":
         return handleInit(payload);

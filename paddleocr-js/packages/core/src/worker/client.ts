@@ -1,7 +1,23 @@
-import { createTransportRequest, deserializeError, isTransportResponse } from "./protocol.js";
+import type { TransportResponse } from "./protocol";
+import { createTransportRequest, deserializeError, isTransportResponse } from "./protocol";
+
+interface PendingRequest {
+  resolve: (value: unknown) => void;
+  reject: (reason: unknown) => void;
+}
+
+export interface WorkerOptions {
+  createWorker?: () => Worker;
+}
 
 export class WorkerTransportClient {
-  constructor(workerOptions = {}) {
+  private workerOptions: WorkerOptions;
+  private worker: Worker | null;
+  private pending: Map<number, PendingRequest>;
+  private nextRequestId: number;
+  private disposed: boolean;
+
+  constructor(workerOptions: WorkerOptions = {}) {
     this.workerOptions = workerOptions;
     this.worker = null;
     this.pending = new Map();
@@ -9,13 +25,13 @@ export class WorkerTransportClient {
     this.disposed = false;
   }
 
-  ensureActive() {
+  ensureActive(): void {
     if (this.disposed) {
       throw new Error("Worker transport client has been disposed.");
     }
   }
 
-  ensureWorker() {
+  ensureWorker(): Worker {
     this.ensureActive();
     if (this.worker) {
       return this.worker;
@@ -26,8 +42,8 @@ export class WorkerTransportClient {
       throw new Error("Worker transport client requires a createWorker() factory.");
     }
     const worker = workerFactory();
-    worker.onmessage = (event) => {
-      const message = event.data;
+    worker.onmessage = (event: MessageEvent) => {
+      const message = event.data as unknown;
       if (!isTransportResponse(message)) return;
       const pending = this.pending.get(message.requestId);
       if (!pending) return;
@@ -38,7 +54,7 @@ export class WorkerTransportClient {
         pending.reject(deserializeError(message.error));
       }
     };
-    worker.onerror = (event) => {
+    worker.onerror = (event: ErrorEvent) => {
       const error = new Error(event.message || "OCR worker failed.");
       for (const pending of this.pending.values()) {
         pending.reject(error);
@@ -49,7 +65,7 @@ export class WorkerTransportClient {
     return worker;
   }
 
-  request(type, payload, transferables = []) {
+  request(type: string, payload: unknown, transferables: Transferable[] = []): Promise<unknown> {
     const worker = this.ensureWorker();
     const requestId = this.nextRequestId;
     this.nextRequestId += 1;
@@ -60,7 +76,7 @@ export class WorkerTransportClient {
     });
   }
 
-  disposeWorker() {
+  disposeWorker(): void {
     if (!this.worker) {
       return;
     }
@@ -68,7 +84,7 @@ export class WorkerTransportClient {
     this.worker = null;
   }
 
-  async dispose() {
+  async dispose(): Promise<void> {
     if (this.disposed) {
       return;
     }
@@ -81,6 +97,6 @@ export class WorkerTransportClient {
   }
 }
 
-export function createWorkerTransportClient(workerOptions) {
+export function createWorkerTransportClient(workerOptions: WorkerOptions): WorkerTransportClient {
   return new WorkerTransportClient(workerOptions);
 }
