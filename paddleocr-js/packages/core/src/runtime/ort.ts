@@ -1,6 +1,33 @@
-let ortModulePromise = null;
+export type OrtModule = typeof import("onnxruntime-web");
 
-async function loadOrtModule() {
+export interface WebGpuState {
+  available: boolean;
+  reason: string;
+}
+
+export interface OrtRuntimeOptions {
+  backend?: "webgpu" | "wasm" | "auto" | string;
+  wasmPaths?: string;
+  numThreads?: number;
+  simd?: boolean;
+  proxy?: boolean;
+  disableWasmProxy?: boolean;
+}
+
+export interface OrtRuntimeResult {
+  ort: OrtModule;
+  webgpuState: WebGpuState;
+  backend: string;
+}
+
+export interface SessionState {
+  session: import("onnxruntime-web").InferenceSession;
+  provider: string;
+}
+
+let ortModulePromise: Promise<OrtModule> | null = null;
+
+async function loadOrtModule(): Promise<OrtModule> {
   if (ortModulePromise) {
     return ortModulePromise;
   }
@@ -8,11 +35,11 @@ async function loadOrtModule() {
   return ortModulePromise;
 }
 
-export async function detectWebGpuAvailability() {
-  if (!globalThis.navigator?.gpu?.requestAdapter) {
+export async function detectWebGpuAvailability(): Promise<WebGpuState> {
+  if (!(globalThis.navigator as Navigator | undefined)?.gpu?.requestAdapter) {
     return {
       available: false,
-      reason: "navigator.gpu is unavailable in this browser."
+      reason: "navigator.gpu is unavailable in this browser.",
     };
   }
   try {
@@ -20,22 +47,22 @@ export async function detectWebGpuAvailability() {
     if (!adapter) {
       return {
         available: false,
-        reason: "The browser did not return a WebGPU adapter."
+        reason: "The browser did not return a WebGPU adapter.",
       };
     }
     return {
       available: true,
-      reason: ""
+      reason: "",
     };
-  } catch (err) {
+  } catch (err: unknown) {
     return {
       available: false,
-      reason: err?.message || "Failed to request a WebGPU adapter."
+      reason: (err as Error)?.message || "Failed to request a WebGPU adapter.",
     };
   }
 }
 
-export function getProviderCandidates(backend, webgpuState) {
+export function getProviderCandidates(backend: string, webgpuState: WebGpuState): string[][] {
   if (backend === "webgpu") {
     if (!webgpuState.available) {
       throw new Error(`WebGPU is unavailable: ${webgpuState.reason}`);
@@ -48,7 +75,7 @@ export function getProviderCandidates(backend, webgpuState) {
   return webgpuState.available ? [["webgpu"], ["wasm"]] : [["wasm"]];
 }
 
-function applyOrtEnvironmentOptions(ort, runtimeOptions) {
+function applyOrtEnvironmentOptions(ort: OrtModule, runtimeOptions: OrtRuntimeOptions): void {
   const wasmOptions = ort?.env?.wasm;
   if (!wasmOptions) return;
 
@@ -69,7 +96,7 @@ function applyOrtEnvironmentOptions(ort, runtimeOptions) {
   }
 }
 
-export async function initOrtRuntime(runtimeOptions = {}) {
+export async function initOrtRuntime(runtimeOptions: OrtRuntimeOptions | string = {}): Promise<OrtRuntimeResult> {
   const backend =
     typeof runtimeOptions === "string"
       ? runtimeOptions
@@ -78,35 +105,43 @@ export async function initOrtRuntime(runtimeOptions = {}) {
         : "auto";
   const webgpuState = await detectWebGpuAvailability();
   const ort = await loadOrtModule();
-  applyOrtEnvironmentOptions(ort, runtimeOptions);
+  if (typeof runtimeOptions !== "string") {
+    applyOrtEnvironmentOptions(ort, runtimeOptions);
+  }
   return {
     ort,
     webgpuState,
-    backend
+    backend,
   };
 }
 
-export async function createSession(ort, modelBytes, providerCandidates) {
-  let lastErr = null;
+export async function createSession(
+  ort: OrtModule,
+  modelBytes: Uint8Array,
+  providerCandidates: string[][],
+): Promise<SessionState> {
+  let lastErr: unknown = null;
   for (const executionProviders of providerCandidates) {
     try {
       const session = await ort.InferenceSession.create(modelBytes, {
         executionProviders,
-        graphOptimizationLevel: "all"
+        graphOptimizationLevel: "all",
       });
       return { session, provider: executionProviders[0] };
-    } catch (err) {
+    } catch (err: unknown) {
       lastErr = err;
     }
   }
   throw lastErr || new Error("Failed to create ONNX session.");
 }
 
-export async function releaseSessions(...sessions) {
+export async function releaseSessions(
+  ...sessions: Array<import("onnxruntime-web").InferenceSession | null | undefined>
+): Promise<void> {
   await Promise.all(
     sessions.map(async (session) => {
       if (!session?.release) return;
       await session.release();
-    })
+    }),
   );
 }
