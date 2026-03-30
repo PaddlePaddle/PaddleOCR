@@ -8,6 +8,9 @@ export default defineConfig({
       rollupTypes: true,
     }),
   ],
+  worker: {
+    format: 'es',
+  },
   build: {
     lib: {
       entry: resolve(__dirname, 'src/index.ts'),
