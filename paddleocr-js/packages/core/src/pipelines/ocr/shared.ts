@@ -30,7 +30,7 @@ export interface NormalizedRuntimeOptions {
 
 export interface WorkerResolvedOptions {
   enabled: boolean;
-  createWorker: (() => Worker) | null;
+  createWorker?: (() => Worker) | null;
 }
 
 export const DEFAULT_OCR_CONFIG: OcrModelConfig = {
@@ -372,14 +372,12 @@ export function resolveWorkerOptions(workerOption: unknown): WorkerResolvedOptio
   if (!workerOption) {
     return {
       enabled: false,
-      createWorker: null,
     };
   }
 
   if (workerOption === true) {
     return {
       enabled: true,
-      createWorker: null,
     };
   }
 
@@ -388,7 +386,7 @@ export function resolveWorkerOptions(workerOption: unknown): WorkerResolvedOptio
     return {
       enabled: true,
       createWorker:
-        typeof opts.createWorker === "function" ? (opts.createWorker as () => Worker) : null,
+        typeof opts.createWorker === "function" ? (opts.createWorker as () => Worker) : undefined,
     };
   }
 

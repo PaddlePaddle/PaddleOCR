@@ -26,15 +26,16 @@ function imageDataToMat(cv: OpenCv, imageData: ImageData): Mat {
 
 export async function sourcePayloadToMat(
   cv: OpenCv,
-  source: WorkerSourcePayload | Mat,
+  source: unknown,
 ): Promise<SourceMatResult> {
   if (typeof cv?.Mat === "function" && source instanceof cv.Mat) {
+    const cloned = source.clone();
     return {
       width: source.cols,
       height: source.rows,
-      mat: source.clone(),
+      mat: cloned,
       dispose() {
-        this.mat.delete();
+        cloned.delete();
       },
     };
   }

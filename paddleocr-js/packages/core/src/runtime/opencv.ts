@@ -1,4 +1,4 @@
-import type { OpenCv, CvModule } from "@techstark/opencv-js";
+import type { OpenCv } from "@techstark/opencv-js";
 import cvModule from "@techstark/opencv-js";
 
 let cachedCvPromise: Promise<{ cv: OpenCv }> | null = null;
@@ -8,7 +8,7 @@ async function getOpenCv(): Promise<{ cv: OpenCv }> {
   if (cvModule instanceof Promise) {
     cv = await cvModule;
   } else {
-    const mod = cvModule as CvModule;
+    const mod = cvModule as OpenCv & { onRuntimeInitialized?: () => void };
     if (mod.Mat) {
       cv = mod;
     } else {

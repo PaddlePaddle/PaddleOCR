@@ -70,14 +70,15 @@ export function bitmapToSourceMat(
   };
 }
 
-export async function sourceToMat(cv: OpenCv, source: ImageSource | Mat): Promise<SourceMatResult> {
+export async function sourceToMat(cv: OpenCv, source: unknown): Promise<SourceMatResult> {
   if (typeof cv?.Mat === "function" && source instanceof cv.Mat) {
+    const cloned = source.clone();
     return {
       width: source.cols,
       height: source.rows,
-      mat: source.clone(),
+      mat: cloned,
       dispose() {
-        this.mat.delete();
+        cloned.delete();
       },
     };
   }

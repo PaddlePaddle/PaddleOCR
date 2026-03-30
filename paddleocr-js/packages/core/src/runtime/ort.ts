@@ -35,15 +35,20 @@ async function loadOrtModule(): Promise<OrtModule> {
   return ortModulePromise;
 }
 
+interface GpuLike {
+  requestAdapter(): Promise<unknown>;
+}
+
 export async function detectWebGpuAvailability(): Promise<WebGpuState> {
-  if (!(globalThis.navigator as Navigator | undefined)?.gpu?.requestAdapter) {
+  const gpu = (globalThis.navigator as Navigator & { gpu?: GpuLike } | undefined)?.gpu;
+  if (!gpu?.requestAdapter) {
     return {
       available: false,
       reason: "navigator.gpu is unavailable in this browser.",
     };
   }
   try {
-    const adapter = await globalThis.navigator.gpu.requestAdapter();
+    const adapter = await gpu.requestAdapter();
     if (!adapter) {
       return {
         available: false,

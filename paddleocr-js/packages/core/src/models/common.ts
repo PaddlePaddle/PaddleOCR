@@ -52,9 +52,9 @@ export function parseScaleValue(rawScale: unknown, fallback: number): number {
 }
 
 export function getTransformOp(
-  transformOps: Array<Record<string, YamlValue>> | undefined,
+  transformOps: Array<Record<string, unknown>> | undefined,
   opName: string,
-): YamlObject | null {
+): Record<string, unknown> | null {
   for (const op of transformOps || []) {
     if (Object.prototype.hasOwnProperty.call(op, opName)) {
       return op[opName] as YamlObject;

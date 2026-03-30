@@ -107,7 +107,7 @@ declare module "@techstark/opencv-js" {
     ROTATE_90_COUNTERCLOCKWISE: number;
   }
 
-  type CvModule = OpenCv & { onRuntimeInitialized?: () => void };
+  export type CvModule = OpenCv & { onRuntimeInitialized?: () => void };
 
   const cv: CvModule | Promise<CvModule>;
   export default cv;
