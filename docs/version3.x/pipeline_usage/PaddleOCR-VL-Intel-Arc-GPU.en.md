@@ -70,7 +70,7 @@ python -m pip install -U "paddleocr[doc-parser]"
 
 ## 2. Quick Start
 
-Please refer to [PaddleOCR-VL Usage Tutorial - 2. Quick Start](./PaddleOCR-VL.en.md#2-quick-start).
+The Intel Arc GPU currently does not support inference using the `PaddlePaddle` inference method. Please refer to the next section on using the `vLLM` inference acceleration framework for inference.
 
 ## 3. Improving Inference Performance with VLM Inference Services
 
