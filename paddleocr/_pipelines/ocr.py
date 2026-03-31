@@ -672,7 +672,7 @@ class PaddleOCRCLISubcommandExecutor(PipelineCLISubcommandExecutor):
             subparser.add_argument(
                 "--" + name,
                 action=DeprecatedOptionAction,
-                type=str,
+                type=deprecated_arg_types[name],
                 help=f"[Deprecated] Please use `--{new_name}` instead.",
             )
 

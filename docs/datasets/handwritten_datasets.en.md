@@ -7,8 +7,8 @@ comments: true
 
 Here we have sorted out the commonly used handwritten OCR dataset datasets, which are being updated continuously. We welcome you to contribute datasets ~
 
-- [Institute of automation, Chinese Academy of Sciences - handwritten Chinese dataset](#Institute of automation, Chinese Academy of Sciences - handwritten Chinese dataset)
-- [NIST handwritten single character dataset - English](#NIST handwritten single character dataset - English)
+- [Institute of automation, Chinese Academy of Sciences - handwritten Chinese dataset](#institute-of-automation-chinese-academy-of-sciences-handwritten-chinese-dataset)
+- [NIST handwritten single character dataset - English](#nist-handwritten-single-character-dataset-englishnist-handprinted-forms-and-characters-database)
 
 ## Institute of automation, Chinese Academy of Sciences - handwritten Chinese dataset
 

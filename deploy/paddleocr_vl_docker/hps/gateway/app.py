@@ -129,8 +129,8 @@ async def _lifespan(app: fastapi.FastAPI):
 
 
 app = fastapi.FastAPI(
-    title="PaddleOCR-VL HPS Gateway",
-    description="High Performance Server Gateway for PaddleOCR-VL",
+    title="PaddleOCR-VL-1.5 HPS Gateway",
+    description="High Performance Server Gateway for PaddleOCR-VL-1.5",
     version="1.0.0",
     lifespan=_lifespan,
 )

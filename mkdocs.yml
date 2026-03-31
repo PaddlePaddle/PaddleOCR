@@ -172,7 +172,7 @@ plugins:
             基于Python预测引擎推理: Python Inference
             基于C++预测引擎推理: CPP Inference
             Visual Studio 2019 Community CMake 编译指南: Visual Studio 2019 Community CMake Compilation Guide
-            服务化部署: Sever Deployment
+            服务化部署: Server Deployment
             端侧部署: On-Device Deployment
             Android部署: Android Deployment
             Paddle2ONNX模型转化与预测: Paddle2ONNX
@@ -220,10 +220,12 @@ plugins:
         #   build: false
         #   fixed_link: "https://github.com/PaddlePaddle/PaddleOCR/discussions/13374"
   - git-committers:
+      enabled: !ENV [ENABLE_GIT_PLUGINS, true]
       repository: PaddlePaddle/PaddleOCR
       branch: main
       token: !!python/object/apply:os.getenv ["MKDOCS_GIT_COMMITTERS_APIKEY"]
   - git-revision-date-localized:
+      enabled: !ENV [ENABLE_GIT_PLUGINS, true]
       enable_creation_date: true
       timezone: Asia/Shanghai
       type: iso_datetime

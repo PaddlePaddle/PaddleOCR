@@ -52,11 +52,6 @@ class SASTPostProcess(object):
         self.expand_scale = expand_scale
         self.tcl_map_thresh = tcl_map_thresh
 
-        # c++ la-nms is faster, but only support python 3.5
-        self.is_python35 = False
-        if sys.version_info.major == 3 and sys.version_info.minor == 5:
-            self.is_python35 = True
-
     def point_pair2poly(self, point_pair_list):
         """
         Transfer vertical point_pairs into poly point in clockwise.
@@ -144,15 +139,7 @@ class SASTPostProcess(object):
         return np.sum(edge) / 2.0
 
     def nms(self, dets):
-        if self.is_python35:
-            from ppocr.utils.utility import check_install
-
-            check_install("lanms", "lanms-nova")
-            import lanms
-
-            dets = lanms.merge_quadrangle_n9(dets, self.nms_thresh)
-        else:
-            dets = nms_locality(dets, self.nms_thresh)
+        dets = nms_locality(dets, self.nms_thresh)
         return dets
 
     def cluster_by_quads_tco(self, tcl_map, tcl_map_thresh, quads, tco_map):

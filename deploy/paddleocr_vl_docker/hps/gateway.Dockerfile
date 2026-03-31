@@ -2,7 +2,7 @@ FROM python:3.10-slim
 
 # Install system dependencies
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends curl libgl1 \
+    && apt-get install -y --no-install-recommends curl libgl1 libglib2.0-0 \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
@@ -11,7 +11,7 @@ WORKDIR /app
 COPY gateway .
 
 # Install Python dependencies
-RUN --mount=type=bind,source=paddlex_hps_PaddleOCR-VL_sdk/client,target=/tmp/sdk \
+RUN --mount=type=bind,source=paddlex_hps_PaddleOCR-VL-1.5_sdk/client,target=/tmp/sdk \
     python -m pip install --no-cache-dir -r requirements.txt \
     && python -m pip install --no-cache-dir -r /tmp/sdk/requirements.txt \
     && python -m pip install --no-cache-dir /tmp/sdk/paddlex_hps_client-*.whl

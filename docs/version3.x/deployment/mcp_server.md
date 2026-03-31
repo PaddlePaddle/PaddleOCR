@@ -75,16 +75,16 @@ comments: true
 
 ### 目录
 
-- [目录](#目录)
-- [1. 安装](#1-安装)
-- [2. 在 Claude for Desktop 中使用](#2-在-claude-for-desktop-中使用)
-    - [2.1 快速开始](#21-快速开始)
-    - [2.2 MCP 主机配置说明](#22-mcp-主机配置说明)
-    - [2.3 工作模式说明](#23-工作模式说明)
-    - [2.4 使用 `uvx`](#24-使用-uvx)
-- [3. 运行服务器](#3-运行服务器)
-- [4. 参数说明](#4-参数说明)
-- [5. 已知局限性](#5-已知局限性)
+- [目录](#_3)
+- [1. 安装](#1)
+- [2. 在 Claude for Desktop 中使用](#2-claude-for-desktop)
+    - [2.1 快速开始](#21)
+    - [2.2 MCP 主机配置说明](#22-mcp)
+    - [2.3 工作模式说明](#23)
+    - [2.4 使用 `uvx`](#24-uvx)
+- [3. 运行服务器](#3)
+- [4. 参数说明](#4)
+- [5. 已知局限性](#5)
 
 ## 1. 安装
 
@@ -94,7 +94,7 @@ comments: true
 - 对于本地 Python 库模式，也可以考虑选择安装相应的可选依赖：
   - `paddleocr-mcp[local]`：包含 PaddleOCR（不包含飞桨框架）。
   - `paddleocr-mcp[local-cpu]`：在 `local` 基础上额外包含 CPU 版本的飞桨框架。
-- PaddleOCR 也支持通过 `uvx` 等方式免安装运行服务器。详情请参考 [2. 在 Claude for Desktop 中使用](#2-在-claude-for-desktop-中使用) 中的说明。
+- PaddleOCR 也支持通过 `uvx` 等方式免安装运行服务器。详情请参考 [2. 在 Claude for Desktop 中使用](#2-claude-for-desktop) 中的说明。
 
 使用 pip 安装 `paddleocr-mcp` 库的命令如下：
 
@@ -131,7 +131,7 @@ paddleocr_mcp --help
 
 1. **安装 `paddleocr-mcp`**
 
-    请参考 [1. 安装](#1-安装)。
+    请参考 [1. 安装](#1)。
 
 2. **获取服务基础 URL 与星河社区访问令牌**
 
@@ -183,8 +183,8 @@ paddleocr_mcp --help
 在 Claude for Desktop 的配置文件中，您需要定义 MCP 服务器的启动方式。关键字段如下：
 
 - `command`：`paddleocr_mcp`（如果可执行文件可在 `PATH` 中找到）或绝对路径。
-- `args`：可配置命令行参数，如 `["--verbose"]`。详见 [4. 参数说明](#4-参数说明)。
-- `env`：可配置环境变量。详见 [4. 参数说明](#4-参数说明)。
+- `args`：可配置命令行参数，如 `["--verbose"]`。详见 [4. 参数说明](#4)。
+- `env`：可配置环境变量。详见 [4. 参数说明](#4)。
 
 ### 2.3 工作模式说明
 
@@ -254,7 +254,7 @@ paddleocr_mcp --help
 
 #### 模式二：PaddleOCR 官方服务
 
-请参考 [2.1 快速开始](#21-快速开始)。
+请参考 [2.1 快速开始](#21)。
 
 对于文字识别以外的任务，请在 PaddleOCR 官网获取任务对应的服务基础 URL，并正确设置 `PADDLEOCR_MCP_PIPELINE` 与 `PADDLEOCR_MCP_SERVER_URL`（参数说明详见第 4 节）。
 
@@ -368,7 +368,7 @@ PaddleOCR 也支持通过 `uvx` 启动 MCP 服务器。这种方式不需要手�
   }
   ```
 
-  如需了解本地模式的依赖、性能调优及产线配置，请参考 [模式一：本地 Python 库](#模式一本地-python-库) 部分。
+  如需了解本地模式的依赖、性能调优及产线配置，请参考 [模式一：本地 Python 库](#python) 部分。
 
   由于使用了不一样的启动方式，配置文件中 `command` 和 `args` 的设置都与前文介绍的方式存在不同，但 MCP 服务本身支持的命令行参数与环境变量（如 `PADDLEOCR_MCP_SERVER_URL`）仍然可以以相同的方式设置。
 
@@ -395,7 +395,7 @@ paddleocr_mcp --pipeline PP-StructureV3 --ppocr_source local
 paddleocr_mcp --pipeline OCR --ppocr_source self_hosted --server_url http://127.0.0.1:8080 --http
 ```
 
-在 [4. 参数说明](#4-参数说明) 中可以了解 PaddleOCR MCP 服务器支持的全部参数。
+在 [4. 参数说明](#4) 中可以了解 PaddleOCR MCP 服务器支持的全部参数。
 
 ## 4. 参数说明
 

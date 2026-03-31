@@ -2599,7 +2599,7 @@ When enabled, the cell detection model is not used, only the table structure rec
 
 If the pipeline can meet your requirements for inference speed and accuracy, you can proceed directly with development integration/deployment.
 
-If you need to directly apply the pipeline in your Python project, you can refer to the sample code in [2.2 Python Script Approach](#22-python脚本方式集成).
+If you need to directly apply the pipeline in your Python project, you can refer to the sample code in [2.2 Python Script Approach](#22-integration-via-python-script).
 
 In addition, PaddleOCR also offers two other deployment methods, detailed as follows:
 

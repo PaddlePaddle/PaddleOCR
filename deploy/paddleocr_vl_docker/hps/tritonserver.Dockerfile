@@ -13,7 +13,7 @@ RUN apt-get update \
 RUN pip install --no-cache-dir paddlex>=3.4.0 || true
 
 WORKDIR /app
-COPY paddlex_hps_PaddleOCR-VL_sdk/server .
+COPY paddlex_hps_PaddleOCR-VL-1.5_sdk/server .
 
 ARG DEVICE_TYPE
 ENV PADDLEX_HPS_DEVICE_TYPE=${DEVICE_TYPE}
