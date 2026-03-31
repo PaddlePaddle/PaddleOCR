@@ -3,7 +3,7 @@ import type { SourceMatResult } from "./browser";
 import { ensureServedFromHttp } from "./browser";
 
 export interface WorkerSourcePayload {
-  kind: string;
+  kind: "imageBitmap";
   imageBitmap: ImageBitmap;
 }
 

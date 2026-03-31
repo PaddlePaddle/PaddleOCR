@@ -15,7 +15,7 @@ import {
   unclip,
 } from "./common";
 import type { Point2D, NormalizeConfig, DetBox } from "./common";
-import type { OcrRuntimeParams } from "../pipelines/ocr/runtime-params";
+import type { LimitType, OcrRuntimeParams } from "../pipelines/ocr/runtime-params";
 
 export interface DetPostprocessConfig {
   thresh: number;
@@ -179,7 +179,7 @@ export function preprocessDet(context: DetContext, sourceMat: Mat, params: OcrRu
   const srcW = sourceMat.cols;
   const srcH = sourceMat.rows;
   const limitSideLen = Math.max(32, params.text_det_limit_side_len || config.resizeLong);
-  const limitType = params.text_det_limit_type === "min" ? "min" : "max";
+  const limitType: LimitType = params.text_det_limit_type === "min" ? "min" : "max";
   const maxSideLimit = Math.max(32, params.text_det_max_side_limit || config.maxSideLimit);
   let scale = 1.0;
   if (limitType === "max") {

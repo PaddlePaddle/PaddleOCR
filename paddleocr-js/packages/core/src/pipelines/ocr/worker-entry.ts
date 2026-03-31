@@ -2,6 +2,7 @@ import { attachWorkerMessageHandler } from "../../worker/entry";
 import { sourcePayloadToMat, ensureServedFromHttp } from "../../platform/worker";
 import type { OcrPipelineRunnerOptions } from "./core";
 import { OcrPipelineRunner } from "./core";
+import type { OcrRuntimeParamsInput } from "./runtime-params";
 
 function createPaddleOCRWorkerMessageHandler() {
   let ocr: OcrPipelineRunner | null = null;
@@ -24,7 +25,7 @@ function createPaddleOCRWorkerMessageHandler() {
     if (!ocr) {
       throw new Error("OCR worker is not initialized.");
     }
-    return ocr.predict(payload.source, payload.params as Record<string, unknown>);
+    return ocr.predict(payload.source, (payload.params || {}) as OcrRuntimeParamsInput);
   }
 
   async function handleDispose() {

@@ -65,7 +65,15 @@ export function normalizeAssetDescriptor(assetName: string, asset: unknown): Ass
     throw new Error(`Asset "${assetName}" must use a non-empty version string.`);
   }
 
-  return { ...asset, kind } as unknown as AssetDescriptor;
+  return {
+    id: asset.id as string,
+    url: asset.url as string,
+    kind,
+    ...(asset.version !== undefined ? { version: asset.version as string } : {}),
+    ...(kind === "tar" && asset.entries
+      ? { entries: asset.entries as Record<string, string> }
+      : {}),
+  };
 }
 
 function resolveAssetReference(

@@ -1,10 +1,10 @@
 import { sourceToWorkerPayload } from "../../platform/browser";
 import { createWorkerTransportClient } from "../../worker/client";
 import type { WorkerTransportClient, WorkerOptions } from "../../worker/client";
-import type { OcrModelConfig } from "./runtime-params";
+import type { OcrModelConfig, OcrRuntimeParamsInput } from "./runtime-params";
 import type { InitializationSummary, OcrResult, OcrPipelineRunnerOptions } from "./core";
 import { cloneDefaultOcrConfig } from "./shared";
-import type { NormalizedPipelineConfig } from "./config";
+import type { NormalizedPipelineConfig, PipelineRuntimeDefaults } from "./config";
 import type { AssetDescriptor } from "../../resources/registry";
 
 function createDefaultWorker(): Worker {
@@ -18,7 +18,7 @@ function createDefaultWorker(): Worker {
 
 export class WorkerBackedPaddleOCR {
   private options: OcrPipelineRunnerOptions;
-  private runtimeDefaults: Record<string, unknown>;
+  private runtimeDefaults: PipelineRuntimeDefaults;
   private assets: Record<string, AssetDescriptor>;
   private modelSelection: Record<string, string | null> | null;
   private pipelineConfig: NormalizedPipelineConfig | null;
@@ -86,7 +86,7 @@ export class WorkerBackedPaddleOCR {
     return this.modelConfig;
   }
 
-  async predict(source: unknown, params: Record<string, unknown> = {}): Promise<OcrResult> {
+  async predict(source: unknown, params: OcrRuntimeParamsInput = {}): Promise<OcrResult> {
     this.ensureActive();
     await this.initialize();
     const { payload, transferables } = await sourceToWorkerPayload(source as Parameters<typeof sourceToWorkerPayload>[0]);

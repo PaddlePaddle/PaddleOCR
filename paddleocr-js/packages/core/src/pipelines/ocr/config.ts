@@ -2,6 +2,7 @@ import yaml from "js-yaml";
 
 import type { AssetDescriptor } from "../../resources/registry";
 import { normalizeAssetDescriptor } from "../../resources/registry";
+import type { LimitType } from "./runtime-params";
 
 const SUPPORTED_PIPELINE_NAME = "OCR";
 
@@ -22,7 +23,7 @@ export interface PipelineModelSelection {
 
 export interface PipelineRuntimeDefaults {
   text_det_limit_side_len?: number;
-  text_det_limit_type?: string;
+  text_det_limit_type?: LimitType;
   text_det_max_side_limit?: number;
   text_det_thresh?: number;
   text_det_box_thresh?: number;
@@ -160,7 +161,7 @@ export function normalizeOcrPipelineConfig(input: unknown): NormalizedPipelineCo
     },
     runtimeDefaults: {
       text_det_limit_side_len: toFiniteNumber(textDetection.limit_side_len),
-      text_det_limit_type: (textDetection.limit_type as string) || undefined,
+      text_det_limit_type: (textDetection.limit_type as LimitType | undefined) || undefined,
       text_det_max_side_limit: toFiniteNumber(textDetection.max_side_limit),
       text_det_thresh: toFiniteNumber(textDetection.thresh),
       text_det_box_thresh: toFiniteNumber(textDetection.box_thresh),

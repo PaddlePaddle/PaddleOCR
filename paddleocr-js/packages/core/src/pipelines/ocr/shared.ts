@@ -18,8 +18,10 @@ export interface ResolvedOcrOptions {
   runtime: NormalizedRuntimeOptions;
 }
 
+export type ResolvedBackend = "webgpu" | "wasm" | "auto";
+
 export interface NormalizedRuntimeOptions {
-  backend: string;
+  backend: ResolvedBackend;
   wasmPaths?: string;
   numThreads?: number;
   simd?: boolean;
@@ -39,7 +41,7 @@ export const DEFAULT_OCR_CONFIG: OcrModelConfig = {
 interface ModelRole {
   assetKey: string;
   modelRole: string;
-  selectionKey: string;
+  selectionKey: keyof PipelineModelSelection;
   nameAliases: string[];
   assetAliases: string[];
   nameLabel: string;
@@ -136,12 +138,12 @@ function getSelectedModelName(
   baseSelection: PipelineModelSelection | null,
   configSelection: PipelineModelSelection | null,
   explicitSelection: Record<string, string | null> | null,
-  selectionKey: string,
+  selectionKey: keyof PipelineModelSelection,
 ): string | null {
   return (
     explicitSelection?.[selectionKey] ??
-    (configSelection as Record<string, string | null> | null)?.[selectionKey] ??
-    (baseSelection as Record<string, string | null> | null)?.[selectionKey] ??
+    configSelection?.[selectionKey] ??
+    baseSelection?.[selectionKey] ??
     null
   );
 }
@@ -177,7 +179,7 @@ export function validateLoadedModelName(modelRole: string, expectedModelName: st
 function resolveSelectedAsset(
   assetRole: string,
   modelRole: string,
-  selectionKey: string,
+  selectionKey: keyof PipelineModelSelection,
   baseSelection: PipelineModelSelection | null,
   configSelection: PipelineModelSelection | null,
   explicitSelection: Record<string, string | null> | null,
@@ -196,11 +198,11 @@ function resolveSelectedAsset(
   if (configAsset) {
     return configAsset;
   }
-  const configModelName = (configSelection as Record<string, string | null> | null)?.[selectionKey];
+  const configModelName = configSelection?.[selectionKey];
   if (configModelName) {
     return resolveModelAssetByName(modelRole, configModelName);
   }
-  const baseModelName = (baseSelection as Record<string, string | null> | null)?.[selectionKey];
+  const baseModelName = baseSelection?.[selectionKey];
   if (baseModelName) {
     return resolveModelAssetByName(modelRole, baseModelName);
   }
@@ -347,11 +349,13 @@ function resolveConstructionOptions(options: Record<string, unknown> = {}): Cons
   };
 }
 
+function resolveBackend(raw: string | undefined): ResolvedBackend {
+  if (raw === "webgpu" || raw === "wasm") return raw;
+  return "auto";
+}
+
 export function normalizeRuntimeOptions(runtimeOptions: OrtRuntimeOptions = {}): NormalizedRuntimeOptions {
-  const backend =
-    runtimeOptions.backend === "webgpu" || runtimeOptions.backend === "wasm"
-      ? runtimeOptions.backend
-      : "auto";
+  const backend = resolveBackend(runtimeOptions.backend);
 
   return {
     backend,

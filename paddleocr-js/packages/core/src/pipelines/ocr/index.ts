@@ -6,12 +6,36 @@ import { resolvePaddleOCROptions, resolveWorkerOptions } from "./shared";
 import { createWorkerBackedPaddleOCR } from "./worker-backed";
 import type { WorkerBackedPaddleOCR } from "./worker-backed";
 import type { OrtRuntimeOptions } from "../../runtime/ort";
+import type { AssetDescriptor } from "../../resources/registry";
 
-export interface PaddleOCRCreateOptions extends Record<string, unknown> {
+export interface PaddleOCRCreateOptions {
   worker?: boolean | { createWorker?: () => Worker };
   fetch?: typeof fetch;
   initialize?: boolean;
   runtime?: OrtRuntimeOptions;
+
+  lang?: string;
+  ocrVersion?: string;
+  ocr_version?: string;
+
+  pipelineConfig?: unknown;
+  pipelineConfigText?: string;
+  pipeline?: unknown;
+  unsupportedBehavior?: "warn" | "ignore" | "error";
+
+  textDetectionModelName?: string;
+  text_detection_model_name?: string;
+  textRecognitionModelName?: string;
+  text_recognition_model_name?: string;
+
+  textDetectionModelAsset?: AssetDescriptor;
+  textDetectionModelDir?: AssetDescriptor;
+  text_detection_model_dir?: AssetDescriptor;
+  textRecognitionModelAsset?: AssetDescriptor;
+  textRecognitionModelDir?: AssetDescriptor;
+  text_recognition_model_dir?: AssetDescriptor;
+
+  [key: string]: unknown;
 }
 
 export class PaddleOCR extends OcrPipelineRunner {
@@ -49,10 +73,7 @@ export class PaddleOCR extends OcrPipelineRunner {
     pipelineConfig: unknown,
     options: PaddleOCRCreateOptions = {},
   ): Promise<PaddleOCR | WorkerBackedPaddleOCR> {
-    return PaddleOCR.create({
-      ...options,
-      pipelineConfig,
-    } as PaddleOCRCreateOptions);
+    return PaddleOCR.create({ ...options, pipelineConfig });
   }
 }
 

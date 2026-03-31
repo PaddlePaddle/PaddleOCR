@@ -18,6 +18,7 @@ export type {
 } from "../models/rec";
 
 export type {
+  LimitType,
   OcrRuntimeParams,
   OcrRuntimeParamsInput,
   OcrModelConfig,
@@ -40,6 +41,7 @@ export type {
 } from "../pipelines/ocr/config";
 
 export type {
+  ResolvedBackend,
   ResolvedOcrOptions,
   NormalizedRuntimeOptions,
   WorkerResolvedOptions,

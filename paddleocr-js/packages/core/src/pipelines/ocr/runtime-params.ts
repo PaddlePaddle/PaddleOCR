@@ -6,9 +6,11 @@ export interface OcrModelConfig {
   rec: RecModelConfig;
 }
 
+export type LimitType = "min" | "max";
+
 export interface OcrRuntimeParams {
   text_det_limit_side_len: number;
-  text_det_limit_type: string;
+  text_det_limit_type: LimitType;
   text_det_max_side_limit: number;
   text_det_thresh: number;
   text_det_box_thresh: number;
@@ -19,8 +21,8 @@ export interface OcrRuntimeParams {
 export interface OcrRuntimeParamsInput {
   text_det_limit_side_len?: number;
   textDetLimitSideLen?: number;
-  text_det_limit_type?: string;
-  textDetLimitType?: string;
+  text_det_limit_type?: LimitType;
+  textDetLimitType?: LimitType;
   text_det_max_side_limit?: number;
   textDetMaxSideLimit?: number;
   text_det_thresh?: number;
@@ -61,7 +63,7 @@ export function getOcrRuntimeParams(
         params.text_det_limit_type,
         params.textDetLimitType,
         defaults.text_det_limit_type,
-      ) || "max",
+      ) ?? "max",
     text_det_max_side_limit: Number(
       firstDefined(
         params.text_det_max_side_limit,

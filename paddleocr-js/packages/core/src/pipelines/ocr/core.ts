@@ -10,7 +10,7 @@ import { initOpenCvRuntime } from "../../runtime/opencv";
 import { initOrtRuntime } from "../../runtime/ort";
 import type { OrtModule, WebGpuState, OrtRuntimeOptions } from "../../runtime/ort";
 import { nowMs } from "../../utils/common";
-import type { OcrModelConfig, OcrRuntimeParams } from "./runtime-params";
+import type { OcrModelConfig, OcrRuntimeParams, OcrRuntimeParamsInput } from "./runtime-params";
 import { getOcrRuntimeParams } from "./runtime-params";
 import type { NormalizedPipelineConfig, PipelineRuntimeDefaults } from "./config";
 import { cloneDefaultOcrConfig, validateLoadedModelName } from "./shared";
@@ -193,7 +193,7 @@ export class OcrPipelineRunner {
     return this.modelConfig;
   }
 
-  async predict(source: unknown, params: Record<string, unknown> = {}): Promise<OcrResult> {
+  async predict(source: unknown, params: OcrRuntimeParamsInput = {}): Promise<OcrResult> {
     if (!this.sourceToMat) {
       throw new Error("PaddleOCR source adapter is not configured.");
     }
@@ -260,7 +260,7 @@ export class OcrPipelineRunner {
           recognizedCount: items.length,
         },
         runtime: {
-          requestedBackend: (this.options.runtime as NormalizedRuntimeOptions | undefined)?.backend || "auto",
+          requestedBackend: (this.options.runtime as NormalizedRuntimeOptions | undefined)?.backend ?? "auto",
           detProvider: detModel.provider,
           recProvider: recModel.provider,
           webgpuAvailable: this.webgpuState.available,
