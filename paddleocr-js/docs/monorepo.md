@@ -29,4 +29,4 @@ npm run dev --workspace apps/demo
 
 - `packages/**/src/**/*.ts` and `packages/**/test/**/*.ts` are linted with `strictTypeChecked` TypeScript rules and browser-oriented globals
 - `apps/**/src/**/*.ts` also uses `strictTypeChecked` TypeScript rules with browser-oriented globals
-- `apps/**/*.js` and config files (`*.config.*`) are linted with basic ESLint rules and both Node and browser globals
+- `apps/**/*.js`, root config files (`*.config.{js,ts}`), and package config files (`packages/**/*.config.*`) are linted with basic ESLint rules and both Node and browser globals
