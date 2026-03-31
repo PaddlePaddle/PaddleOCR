@@ -12,7 +12,7 @@ This tutorial is a guide for using PaddleOCR-VL on Intel Arc GPU covering the co
 PaddleOCR-VL has been verified for accuracy and speed on the Intel Arc B60 Pro. However, due to hardware diversity, compatibility with other Intel Arc GPUs has not yet been confirmed. We welcome the community to test on different hardware setups and share your results.
 
 > TIP:
-> Before reading this hardware-specific tutorial, we recommend first reading the [Process Guide](./PaddleOCR-VL.en.md) in the main [PaddleOCR-VL Usage Tutorial](./PaddleOCR-VL.en.md) to determine which chapters apply to your goal, and then returning here to read the corresponding sections.
+> Before reading this hardware-specific tutorial, we recommend first reading the [Process Guide](./PaddleOCR-VL.en.md#process-guide) in the main [PaddleOCR-VL Usage Tutorial](./PaddleOCR-VL.en.md) to determine which chapters apply to your goal, and then returning here to read the corresponding sections.
 
 ## 1. Environment Preparation
 
@@ -70,7 +70,7 @@ python -m pip install -U "paddleocr[doc-parser]"
 
 ## 2. Quick Start
 
-Please refer to [PaddleOCR-VL Usage Tutorial - 2. Quick Start](./PaddleOCR-VL.en.md#2).
+Please refer to [PaddleOCR-VL Usage Tutorial - 2. Quick Start](./PaddleOCR-VL.en.md#2-quick-start).
 
 ## 3. Improving Inference Performance with VLM Inference Services
 
@@ -93,7 +93,7 @@ docker run -it \
 
 If you wish to start the service in an environment without internet access, replace `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-intel-gpu` (image size approximately 30 GB) in the above command with the offline version image `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-intel-gpu-offline` (image size approximately 32 GB).
 
-When launching the vLLM inference service, we provide a set of default parameter settings. If you need to adjust parameters such as GPU memory usage, you can configure additional parameters yourself. Please refer to [3.3.1 Server-side Parameter Adjustment](./PaddleOCR-VL.en.md#331) to create a configuration file, then mount the file into the container and specify the configuration file using `backend_config` in the command to start the service, for example:
+When launching the vLLM inference service, we provide a set of default parameter settings. If you need to adjust parameters such as GPU memory usage, you can configure additional parameters yourself. Please refer to [3.3.1 Server-side Parameter Adjustment](./PaddleOCR-VL.en.md#331-server-side-parameter-adjustment) to create a configuration file, then mount the file into the container and specify the configuration file using `backend_config` in the command to start the service, for example:
 
 ```shell
 docker run -it \
@@ -113,11 +113,11 @@ docker run -it \
 
 ### 3.2 Client Usage Method
 
-For client-side invocation methods, please refer to [PaddleOCR-VL Usage Tutorial - 3.2 Client Usage Methods](./PaddleOCR-VL.en.md#32).
+For client-side invocation methods, please refer to [PaddleOCR-VL Usage Tutorial - 3.2 Client Usage Methods](./PaddleOCR-VL.en.md#32-client-usage-methods).
 
 ### 3.3 Performance Tuning
 
-Please refer to [PaddleOCR-VL Usage Tutorial - 3.3 Performance Tuning](./PaddleOCR-VL.en.md#33).
+Please refer to [PaddleOCR-VL Usage Tutorial - 3.3 Performance Tuning](./PaddleOCR-VL.en.md#33-performance-tuning).
 
 ## 4. Service Deployment
 
@@ -201,7 +201,7 @@ Edit <code>environment</code> in the <code>compose.yaml</code> file to change th
 <details>
 <summary>3. Adjust VLM server-side configuration</summary>
 
-If you want to adjust the VLM server configuration, refer to <a href="./PaddleOCR-VL.en.md#331">3.3.1 Server-side Parameter Adjustment</a> to generate a configuration file.
+If you want to adjust the VLM server configuration, refer to <a href="./PaddleOCR-VL.en.md#331-server-side-parameter-adjustment">3.3.1 Server-side Parameter Adjustment</a> to generate a configuration file.
 
 After generating the configuration file, add the following <code>paddleocr-vlm-server.volumes</code> and <code>paddleocr-vlm-server.command</code> fields to your <code>compose.yaml</code>. Replace <code>/path/to/your_config.yaml</code> with your actual configuration file path.
 
@@ -218,18 +218,18 @@ After generating the configuration file, add the following <code>paddleocr-vlm-s
 <details>
 <summary>4. Adjust pipeline-related configurations (such as model path, batch size, deployment device, etc.)</summary>
 
-Refer to the <a href="./PaddleOCR-VL.en.md#44">4.4 Pipeline Configuration Adjustment Instructions</a> section.
+Refer to the <a href="./PaddleOCR-VL.en.md#44-pipeline-configuration-adjustment-instructions">4.4 Pipeline Configuration Adjustment Instructions</a> section.
 
 </details>
 
 ### 4.2 Client Invocation Method
 
-Please refer to [PaddleOCR-VL Usage Tutorial - 4.3 Client-Side Invocation](./PaddleOCR-VL.en.md#43).
+Please refer to [PaddleOCR-VL Usage Tutorial - 4.3 Client-Side Invocation](./PaddleOCR-VL.en.md#43-client-side-invocation).
 
 ### 4.3 Pipeline Configuration Adjustment Instructions
 
-Please refer to [PaddleOCR-VL Usage Tutorial - 4.4 Pipeline Configuration Adjustment Instructions](./PaddleOCR-VL.en.md#44).
+Please refer to [PaddleOCR-VL Usage Tutorial - 4.4 Pipeline Configuration Adjustment Instructions](./PaddleOCR-VL.en.md#44-pipeline-configuration-adjustment-instructions).
 
 ## 5. Model Fine-Tuning
 
-Please refer to [PaddleOCR-VL Usage Tutorial - 5. Model Fine-Tuning](./PaddleOCR-VL.en.md#5).
+Please refer to [PaddleOCR-VL Usage Tutorial - 5. Model Fine-Tuning](./PaddleOCR-VL.en.md#5-model-fine-tuning).
