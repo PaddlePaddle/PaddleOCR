@@ -20,7 +20,7 @@
     "typescript"
   ],
   "engines": {
-    "node": ">=18"
+    "node": ">=20.11"
   },
   "workspaces": [
     "packages/*",

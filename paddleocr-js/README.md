@@ -14,7 +14,6 @@ Official browser OCR SDK and demo for PaddleOCR.
 ## Quick start
 
 ```bash
-cd paddleocr-js
 npm install
 npm run dev:demo
 ```

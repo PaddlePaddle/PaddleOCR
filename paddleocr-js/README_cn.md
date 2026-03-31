@@ -14,7 +14,6 @@ PaddleOCR 官方浏览器 OCR SDK 与演示应用。
 ## 快速开始
 
 ```bash
-cd paddleocr-js
 npm install
 npm run dev:demo
 ```
