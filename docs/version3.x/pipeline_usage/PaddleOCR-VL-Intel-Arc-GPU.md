@@ -4,9 +4,15 @@ comments: true
 
 # PaddleOCR-VL Intel Arc GPU 使用教程
 
+> INFO:
+> 除非另有说明，本教程中提到的 “PaddleOCR-VL” 均指 PaddleOCR-VL 系列模型（如 PaddleOCR-VL-1.5 等）；若特指 PaddleOCR-VL v1 版本，将另行明确标注。
+
 本教程是 PaddleOCR-VL 在 Intel Arc GPU 上的使用指南，涵盖了从环境准备到服务化部署的完整流程。
 
 目前 PaddleOCR-VL 已在 Intel Arc B60 Pro 上完成精度、速度验证；鉴于硬件环境的多样性，其他 Intel Arc GPU 的兼容性尚未验证。我们诚挚欢迎社区用户在不同硬件上进行测试并反馈您的运行结果。
+
+> TIP:
+> 建议先阅读 [PaddleOCR-VL 使用教程](./PaddleOCR-VL.md) 中的 [流程导览](./PaddleOCR-VL.md#流程导览)，根据您的使用目标确认应阅读哪些章节；再回到当前硬件教程阅读对应章节。
 
 ## 1. 环境准备
 
@@ -33,7 +39,7 @@ docker run -it \
 # 在容器中调用 PaddleOCR CLI 或 Python API
 ```
 
-如果您希望在无法连接互联网的环境中启动服务，请将上述命令中的 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-intel-gpu`（镜像的大小约为 TODO GB）更换为离线版本镜像 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-intel-gpu-offline`（镜像的大小约为 TODO GB）。
+如果您希望在无法连接互联网的环境中启动服务，请将上述命令中的 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-intel-gpu`（镜像的大小约为 31 GB）更换为离线版本镜像 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-intel-gpu-offline`（镜像的大小约为 33 GB）。
 
 > TIP:
 > 标签后缀为 `latest-xxx` 的镜像对应 PaddleOCR 的最新版本。如果希望使用特定版本的 PaddleOCR 镜像，可以将标签中的 `latest` 替换为对应版本号：`paddleocr<major>.<minor>`。
@@ -66,9 +72,9 @@ python -m pip install -U "paddleocr[doc-parser]"
 
 Intel Arc GPU 暂时不支持使用 PaddlePaddle 推理方式推理，请参考使用下一节使用 vLLM 推理加速框架推理。
 
-## 3. 使用推理加速框架提升 VLM 推理性能
+## 3. 使用 VLM 推理服务提升推理性能
 
-此步骤主要介绍如何使用 vLLM 推理加速框架来提升 PaddleOCR-VL 的推理性能。
+默认配置下的推理性能未经过充分优化，可能无法满足实际生产需求。此步骤主要介绍如何通过 VLM 推理服务提升 PaddleOCR-VL 的推理性能。在当前硬件文档中，示例使用 vLLM 作为 VLM 推理服务后端。
 
 ### 3.1 启动 VLM 推理服务
 
@@ -85,7 +91,7 @@ docker run -it \
   paddleocr genai_server --model_name PaddleOCR-VL-1.5-0.9B --host 0.0.0.0 --port 8118 --backend vllm
 ```
 
-如果您希望在无法连接互联网的环境中启动服务，请将上述命令中的 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-intel-gpu`（镜像的大小约为 TODO GB）更换为离线版本镜像 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-intel-gpu-offline`（镜像的大小约为 TODO GB）。
+如果您希望在无法连接互联网的环境中启动服务，请将上述命令中的 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-intel-gpu`（镜像的大小约为 30 GB）更换为离线版本镜像 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-intel-gpu-offline`（镜像的大小约为 32 GB）。
 
 启动 vLLM 推理服务时，我们提供了一套默认参数设置。如果您有调整显存占用等更多参数的需求，可以自行配置更多参数。请参考 [3.3.1 服务端参数调整](./PaddleOCR-VL.md#331-服务端参数调整) 创建配置文件，然后将该文件挂载到容器中，并在启动服务的命令中使用 `backend_config` 指定配置文件，例如：
 
@@ -107,7 +113,7 @@ docker run -it \
 
 ### 3.2 客户端使用方法
 
-请参考[PaddleOCR-VL 使用教程 - 3.2 客户端使用方法](./PaddleOCR-VL.md#32-客户端使用方法)。
+客户端调用方式请参考 [PaddleOCR-VL 使用教程 - 3.2 客户端使用方法](./PaddleOCR-VL.md#32-客户端使用方法)。
 
 ### 3.3 性能调优
 
@@ -170,20 +176,20 @@ Docker Compose 通过读取 `.env` 和 `compose.yaml` 文件中配置，先后�
 </details>
 
 <details>
-<summary>2. 指定 PaddleOCR-VL 服务所使用的 TODO</summary>
+<summary>2. 指定 PaddleOCR-VL 服务所使用的 GPU</summary>
 
-编辑 <code>compose.yaml</code> 文件中的 <code>environment</code> 来更改所使用的 TODO。例如，如果您需要使用卡 1 进行部署，可以进行以下修改：
+编辑 <code>compose.yaml</code> 文件中的 <code>environment</code> 来更改所使用的 GPU。例如，如果您需要使用卡 1 进行部署，可以进行以下修改：
 
 ```diff
   paddleocr-vl-api:
     ...
     environment:
-+     - TODO: 1
++     - XPU_AFFINITY_MASK: 1
     ...
   paddleocr-vlm-server:
     ...
     environment:
-+     - TODO: 1
++     - XPU_AFFINITY_MASK: 1
     ...
 ```
 
