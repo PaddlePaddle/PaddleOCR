@@ -1,4 +1,3 @@
-import type { TransportResponse } from "./protocol";
 import { createTransportRequest, deserializeError, isTransportResponse } from "./protocol";
 
 interface PendingRequest {
@@ -84,7 +83,7 @@ export class WorkerTransportClient {
     this.worker = null;
   }
 
-  async dispose(): Promise<void> {
+  dispose(): void {
     if (this.disposed) {
       return;
     }

@@ -66,7 +66,7 @@ export function assertStandardModelResourceSlot(kind: string, slot: string, valu
 }
 
 export function assertStandardModelResources(kind: string, resources: Record<string, unknown>): void {
-  for (const [slot, value] of Object.entries(resources || {})) {
+  for (const [slot, value] of Object.entries(resources)) {
     assertStandardModelResourceSlot(kind, slot, value);
   }
 }

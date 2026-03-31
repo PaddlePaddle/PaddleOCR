@@ -22,7 +22,7 @@ export function withTimeout<T>(promise: Promise<T>, ms: number, label: string): 
     const timer = setTimeout(() => {
       if (settled) return;
       settled = true;
-      reject(new Error(`${label} timed out after ${ms / 1000}s`));
+      reject(new Error(`${label} timed out after ${String(ms / 1000)}s`));
     }, ms);
 
     promise
@@ -36,6 +36,7 @@ export function withTimeout<T>(promise: Promise<T>, ms: number, label: string): 
         if (settled) return;
         settled = true;
         clearTimeout(timer);
+        // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors -- propagating upstream rejection
         reject(err);
       });
   });

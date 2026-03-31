@@ -20,7 +20,7 @@ export interface WorkerPayloadResult {
 }
 
 export function ensureServedFromHttp(): void {
-  if (globalThis.location?.protocol === "file:") {
+  if (globalThis.location.protocol === "file:") {
     throw new Error("PaddleOCR.js requires an HTTP(S) origin so model assets can be fetched.");
   }
 }
@@ -39,7 +39,9 @@ export async function sourceToImageBitmap(source: ImageSource): Promise<ImageBit
     const canvas = document.createElement("canvas");
     canvas.width = source.width;
     canvas.height = source.height;
-    canvas.getContext("2d")!.putImageData(source, 0, 0);
+    const ctx = canvas.getContext("2d");
+    if (!ctx) throw new Error("Failed to create a 2D canvas context.");
+    ctx.putImageData(source, 0, 0);
     return createImageBitmap(canvas);
   }
   if (hasDomConstructor("HTMLImageElement") && source instanceof HTMLImageElement) {
@@ -62,7 +64,8 @@ export function bitmapToSourceMat(
   const canvas = document.createElement("canvas");
   canvas.width = imageBitmap.width;
   canvas.height = imageBitmap.height;
-  const ctx = canvas.getContext("2d", { willReadFrequently: true })!;
+  const ctx = canvas.getContext("2d", { willReadFrequently: true });
+  if (!ctx) throw new Error("Failed to create a 2D canvas context.");
   ctx.drawImage(imageBitmap, 0, 0);
   return {
     canvas,
@@ -71,7 +74,7 @@ export function bitmapToSourceMat(
 }
 
 export async function sourceToMat(cv: OpenCv, source: unknown): Promise<SourceMatResult> {
-  if (typeof cv?.Mat === "function" && source instanceof cv.Mat) {
+  if (typeof cv.Mat === "function" && source instanceof cv.Mat) {
     const cloned = source.clone();
     return {
       width: source.cols,
@@ -91,7 +94,7 @@ export async function sourceToMat(cv: OpenCv, source: unknown): Promise<SourceMa
     mat: sourceImage.mat,
     dispose() {
       sourceImage.mat.delete();
-      imageBitmap.close?.();
+      imageBitmap.close();
     },
   };
 }

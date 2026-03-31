@@ -69,7 +69,7 @@ export async function fetchResourceAsset(
 
   const response = await fetchImpl(asset.url);
   if (!response.ok) {
-    throw new Error(`Failed to download ${asset.id}: HTTP ${response.status}`);
+    throw new Error(`Failed to download ${asset.id}: HTTP ${String(response.status)}`);
   }
   await storeCachedResponse(cacheKey, response);
   return {

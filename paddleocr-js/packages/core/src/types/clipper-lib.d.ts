@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 declare module "clipper-lib" {
   interface IntPoint {
     X: number;

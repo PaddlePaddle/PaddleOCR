@@ -1,15 +1,13 @@
-import type { AssetDescriptor, ModelAssetsMap } from "../../resources/registry";
+import type { AssetDescriptor } from "../../resources/registry";
 import { DEFAULT_MODEL_ASSETS } from "../../resources/registry";
 import { DEFAULT_DET_MODEL_CONFIG } from "../../models/det";
-import type { DetModelConfig } from "../../models/det";
 import { DEFAULT_REC_MODEL_CONFIG } from "../../models/rec";
-import type { RecModelConfig } from "../../models/rec";
 import { extractInferenceModelName } from "../../models/common";
 import { deepClone } from "../../utils/common";
 import type { NormalizedPipelineConfig, PipelineModelSelection, PipelineRuntimeDefaults } from "./config";
 import { normalizeOcrPipelineConfig } from "./config";
 import { DEFAULT_OCR_PIPELINE_CONFIG_TEXT } from "./default-config";
-import type { OcrModelConfig, OcrRuntimeParams } from "./runtime-params";
+import type { OcrModelConfig } from "./runtime-params";
 import type { OrtRuntimeOptions } from "../../runtime/ort";
 
 export interface ResolvedOcrOptions {
@@ -130,12 +128,8 @@ function emitPipelineWarnings(warnings: string[], behavior: "warn" | "ignore" | 
   }
 }
 
-function resolveModelAssetByName(modelRole: string, modelName: string): AssetDescriptor {
-  const asset = DEFAULT_MODEL_ASSETS[modelName];
-  if (!asset) {
-    throw new Error(`Unsupported ${modelRole} model_name "${modelName}".`);
-  }
-  return asset;
+function resolveModelAssetByName(_modelRole: string, modelName: string): AssetDescriptor {
+  return DEFAULT_MODEL_ASSETS[modelName];
 }
 
 function getSelectedModelName(
@@ -145,7 +139,7 @@ function getSelectedModelName(
   selectionKey: string,
 ): string | null {
   return (
-    (explicitSelection?.[selectionKey] as string | null | undefined) ??
+    explicitSelection?.[selectionKey] ??
     (configSelection as Record<string, string | null> | null)?.[selectionKey] ??
     (baseSelection as Record<string, string | null> | null)?.[selectionKey] ??
     null

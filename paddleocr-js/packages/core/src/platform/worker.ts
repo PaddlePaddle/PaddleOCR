@@ -24,11 +24,11 @@ function imageDataToMat(cv: OpenCv, imageData: ImageData): Mat {
   return cv.matFromArray(imageData.height, imageData.width, cv.CV_8UC4, imageData.data);
 }
 
-export async function sourcePayloadToMat(
+export function sourcePayloadToMat(
   cv: OpenCv,
   source: unknown,
-): Promise<SourceMatResult> {
-  if (typeof cv?.Mat === "function" && source instanceof cv.Mat) {
+): SourceMatResult {
+  if (typeof cv.Mat === "function" && source instanceof cv.Mat) {
     const cloned = source.clone();
     return {
       width: source.cols,
@@ -42,7 +42,7 @@ export async function sourcePayloadToMat(
 
   const payload = source as WorkerSourcePayload;
   if (
-    payload?.kind === "imageBitmap" &&
+    payload.kind === "imageBitmap" &&
     typeof ImageBitmap !== "undefined" &&
     payload.imageBitmap instanceof ImageBitmap
   ) {
@@ -54,7 +54,7 @@ export async function sourcePayloadToMat(
       mat,
       dispose() {
         mat.delete();
-        payload.imageBitmap.close?.();
+        payload.imageBitmap.close();
       },
     };
   }

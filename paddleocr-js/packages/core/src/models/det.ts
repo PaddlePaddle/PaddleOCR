@@ -81,32 +81,32 @@ export const DEFAULT_DET_MODEL_CONFIG: Readonly<DetModelConfig> = Object.freeze(
 
 export function parseDetModelConfigText(text: string): DetModelConfig {
   const parsed = parseInferenceConfigText(text);
-  const preProcess = parsed?.PreProcess as Record<string, unknown> | undefined;
+  const preProcess = parsed.PreProcess as Record<string, unknown> | undefined;
   const transformOps = preProcess?.transform_ops as Array<Record<string, unknown>> | undefined;
   const resize = getTransformOp(transformOps, "DetResizeForTest");
   const normalize = getTransformOp(transformOps, "NormalizeImage");
-  const postprocess = (parsed?.PostProcess || {}) as Record<string, unknown>;
+  const postprocess = (parsed.PostProcess || {}) as Record<string, unknown>;
 
   return {
     resizeLong: Number(resize?.resize_long ?? DEFAULT_DET_MODEL_PARSE_FALLBACKS.resizeLong),
     normalize: {
-      mean: (normalize?.mean as number[]) || DEFAULT_DET_MODEL_PARSE_FALLBACKS.normalize.mean,
-      std: (normalize?.std as number[]) || DEFAULT_DET_MODEL_PARSE_FALLBACKS.normalize.std,
+      mean: (normalize?.mean as number[] | undefined) ?? DEFAULT_DET_MODEL_PARSE_FALLBACKS.normalize.mean,
+      std: (normalize?.std as number[] | undefined) ?? DEFAULT_DET_MODEL_PARSE_FALLBACKS.normalize.std,
       scale: parseScaleValue(normalize?.scale, DEFAULT_DET_MODEL_PARSE_FALLBACKS.normalize.scale),
     },
     postprocess: {
-      thresh: Number(postprocess?.thresh ?? DEFAULT_DET_MODEL_PARSE_FALLBACKS.postprocess.thresh),
+      thresh: Number(postprocess.thresh ?? DEFAULT_DET_MODEL_PARSE_FALLBACKS.postprocess.thresh),
       boxThresh: Number(
-        postprocess?.box_thresh ?? DEFAULT_DET_MODEL_PARSE_FALLBACKS.postprocess.boxThresh,
+        postprocess.box_thresh ?? DEFAULT_DET_MODEL_PARSE_FALLBACKS.postprocess.boxThresh,
       ),
       maxCandidates: Number(
-        postprocess?.max_candidates ?? DEFAULT_DET_MODEL_PARSE_FALLBACKS.postprocess.maxCandidates,
+        postprocess.max_candidates ?? DEFAULT_DET_MODEL_PARSE_FALLBACKS.postprocess.maxCandidates,
       ),
       unclipRatio: Number(
-        postprocess?.unclip_ratio ?? DEFAULT_DET_MODEL_PARSE_FALLBACKS.postprocess.unclipRatio,
+        postprocess.unclip_ratio ?? DEFAULT_DET_MODEL_PARSE_FALLBACKS.postprocess.unclipRatio,
       ),
     },
-    maxSideLimit: Number(DEFAULT_DET_RUNTIME_LIMITS.maxSideLimit),
+    maxSideLimit: DEFAULT_DET_RUNTIME_LIMITS.maxSideLimit,
   };
 }
 
@@ -178,9 +178,9 @@ export function preprocessDet(context: DetContext, sourceMat: Mat, params: OcrRu
   const { cv, ort, config } = context;
   const srcW = sourceMat.cols;
   const srcH = sourceMat.rows;
-  const limitSideLen = Math.max(32, Number(params.text_det_limit_side_len || config.resizeLong));
+  const limitSideLen = Math.max(32, params.text_det_limit_side_len || config.resizeLong);
   const limitType = params.text_det_limit_type === "min" ? "min" : "max";
-  const maxSideLimit = Math.max(32, Number(params.text_det_max_side_limit || config.maxSideLimit));
+  const maxSideLimit = Math.max(32, params.text_det_max_side_limit || config.maxSideLimit);
   let scale = 1.0;
   if (limitType === "max") {
     const maxSide = Math.max(srcW, srcH);
@@ -245,7 +245,7 @@ export async function runDetModel(
   const prep = preprocessDet({ cv, ort, config }, sourceMat, params);
   const inputName = session.inputNames[0];
   const outputMap = await session.run({ [inputName]: prep.tensor });
-  const output = outputMap[session.outputNames[0]] as Tensor;
+  const output = outputMap[session.outputNames[0]];
   return {
     output,
     prep,

@@ -1,10 +1,10 @@
-import type { OpenCv, Mat } from "@techstark/opencv-js";
+import type { OpenCv } from "@techstark/opencv-js";
 import type { AssetDescriptor } from "../../resources/registry";
 import type { AssetDownloadSummary } from "../../resources/cache";
 import { loadStandardModelAsset } from "../../resources/index";
 import { createDetModel, createRecModel, cropByPoly } from "../../models/index";
-import type { DetModel, DetModelConfig } from "../../models/det";
-import type { RecModel, RecModelConfig, RecResult } from "../../models/rec";
+import type { DetModel } from "../../models/det";
+import type { RecModel } from "../../models/rec";
 import type { Point2D } from "../../models/common";
 import { initOpenCvRuntime } from "../../runtime/opencv";
 import { initOrtRuntime } from "../../runtime/ort";
@@ -14,7 +14,7 @@ import type { OcrModelConfig, OcrRuntimeParams } from "./runtime-params";
 import { getOcrRuntimeParams } from "./runtime-params";
 import type { NormalizedPipelineConfig, PipelineRuntimeDefaults } from "./config";
 import { cloneDefaultOcrConfig, validateLoadedModelName } from "./shared";
-import type { NormalizedRuntimeOptions, WorkerResolvedOptions } from "./shared";
+import type { NormalizedRuntimeOptions } from "./shared";
 import type { SourceMatResult } from "../../platform/browser";
 
 export interface OcrResultItem {
@@ -59,7 +59,7 @@ export interface InitializationSummary {
   pipelineConfigWarnings: string[];
 }
 
-export type SourceToMatFn = (cv: OpenCv, source: unknown) => Promise<SourceMatResult>;
+export type SourceToMatFn = (cv: OpenCv, source: unknown) => SourceMatResult | Promise<SourceMatResult>;
 type EnsureServedFromHttpFn = () => void;
 
 export interface OcrPipelineRunnerOptions {
@@ -78,7 +78,6 @@ function noopEnsureServedFromHttp(): void {}
 function getResolvedAssets(assets: Record<string, AssetDescriptor> | undefined): { det: AssetDescriptor; rec: AssetDescriptor } {
   if (
     !assets?.det ||
-    !assets?.rec ||
     typeof assets.det !== "object" ||
     typeof assets.rec !== "object"
   ) {
@@ -202,13 +201,20 @@ export class OcrPipelineRunner {
       await this.initialize();
     }
 
-    const sourceImage = await this.sourceToMat(this.cv!, source);
+    const cv = this.cv;
+    const detModel = this.detModel;
+    const recModel = this.recModel;
+    if (!cv || !detModel || !recModel) {
+      throw new Error("Initialization did not complete. Call initialize() first.");
+    }
+
+    const sourceImage = await this.sourceToMat(cv, source);
     const totalStart = nowMs();
     try {
       const runtimeParams = getOcrRuntimeParams(this.modelConfig, this.runtimeDefaults, params);
       const detStart = nowMs();
-      const detResult = await this.detModel!.detect({
-        cv: this.cv!,
+      const detResult = await detModel.detect({
+        cv,
         sourceMat: sourceImage.mat,
         params: runtimeParams,
       });
@@ -218,10 +224,10 @@ export class OcrPipelineRunner {
       const recPrepStart = nowMs();
       const samples = [];
       for (let index = 0; index < detBoxes.length; index += 1) {
-        const crop = cropByPoly(this.cv!, sourceImage.mat, detBoxes[index].poly);
+        const crop = cropByPoly(cv, sourceImage.mat, detBoxes[index].poly);
         samples.push(
-          this.recModel!.prepareSample({
-            cv: this.cv!,
+          recModel.prepareSample({
+            cv,
             cropMat: crop,
             poly: detBoxes[index].poly,
             originalIndex: index,
@@ -232,7 +238,7 @@ export class OcrPipelineRunner {
       const recPrepElapsed = nowMs() - recPrepStart;
 
       const recStart = nowMs();
-      const recRaw = await this.recModel!.recognize(samples);
+      const recRaw = await recModel.recognize(samples);
       const recElapsed = nowMs() - recStart;
 
       const items = recRaw
@@ -254,9 +260,9 @@ export class OcrPipelineRunner {
           recognizedCount: items.length,
         },
         runtime: {
-          requestedBackend: (this.options.runtime as NormalizedRuntimeOptions)?.backend || "auto",
-          detProvider: this.detModel!.provider,
-          recProvider: this.recModel!.provider,
+          requestedBackend: (this.options.runtime as NormalizedRuntimeOptions | undefined)?.backend || "auto",
+          detProvider: detModel.provider,
+          recProvider: recModel.provider,
           webgpuAvailable: this.webgpuState.available,
         },
       };

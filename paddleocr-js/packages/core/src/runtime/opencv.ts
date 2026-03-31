@@ -8,14 +8,14 @@ async function getOpenCv(): Promise<{ cv: OpenCv }> {
   if (cvModule instanceof Promise) {
     cv = await cvModule;
   } else {
-    const mod = cvModule as OpenCv & { onRuntimeInitialized?: () => void };
+    const mod = cvModule as { Mat?: unknown; onRuntimeInitialized?: () => void };
     if (mod.Mat) {
-      cv = mod;
+      cv = cvModule as OpenCv;
     } else {
       await new Promise<void>((resolve) => {
-        mod.onRuntimeInitialized = () => resolve();
+        mod.onRuntimeInitialized = () => { resolve(); };
       });
-      cv = mod;
+      cv = cvModule as OpenCv;
     }
   }
   return { cv };
@@ -23,7 +23,7 @@ async function getOpenCv(): Promise<{ cv: OpenCv }> {
 
 export async function initOpenCvRuntime(): Promise<{ cv: OpenCv }> {
   if (!cachedCvPromise) {
-    cachedCvPromise = getOpenCv().catch((error) => {
+    cachedCvPromise = getOpenCv().catch((error: unknown) => {
       cachedCvPromise = null;
       throw error;
     });

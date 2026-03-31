@@ -6,7 +6,7 @@ export interface WebGpuState {
 }
 
 export interface OrtRuntimeOptions {
-  backend?: "webgpu" | "wasm" | "auto" | string;
+  backend?: "webgpu" | "wasm" | "auto" | (string & {});
   wasmPaths?: string;
   numThreads?: number;
   simd?: boolean;
@@ -62,7 +62,7 @@ export async function detectWebGpuAvailability(): Promise<WebGpuState> {
   } catch (err: unknown) {
     return {
       available: false,
-      reason: (err as Error)?.message || "Failed to request a WebGPU adapter.",
+      reason: err instanceof Error ? err.message : "Failed to request a WebGPU adapter.",
     };
   }
 }
@@ -81,8 +81,7 @@ export function getProviderCandidates(backend: string, webgpuState: WebGpuState)
 }
 
 function applyOrtEnvironmentOptions(ort: OrtModule, runtimeOptions: OrtRuntimeOptions): void {
-  const wasmOptions = ort?.env?.wasm;
-  if (!wasmOptions) return;
+  const wasmOptions = ort.env.wasm;
 
   if (runtimeOptions.wasmPaths !== undefined) {
     wasmOptions.wasmPaths = runtimeOptions.wasmPaths;
@@ -137,7 +136,7 @@ export async function createSession(
       lastErr = err;
     }
   }
-  throw lastErr || new Error("Failed to create ONNX session.");
+  throw lastErr instanceof Error ? lastErr : new Error("Failed to create ONNX session.");
 }
 
 export async function releaseSessions(

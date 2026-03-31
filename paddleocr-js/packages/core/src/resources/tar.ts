@@ -60,8 +60,9 @@ export function extractTarEntries(buffer: ArrayBuffer | Uint8Array): Map<string,
 
 export function pickTarEntry(entries: Map<string, Uint8Array>, targetName: string): Uint8Array {
   const normalizedTarget = normalizeEntryName(targetName);
-  if (entries.has(normalizedTarget)) {
-    return entries.get(normalizedTarget)!;
+  const entry = entries.get(normalizedTarget);
+  if (entry) {
+    return entry;
   }
 
   for (const [name, value] of entries) {

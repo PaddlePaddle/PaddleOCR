@@ -62,11 +62,21 @@ export function createTransportError(requestId: number, error: unknown): Transpo
 }
 
 export function isTransportRequest(message: unknown): message is TransportRequest {
-  return (message as TransportRequest)?.kind === REQUEST_KIND;
+  return (
+    typeof message === "object" &&
+    message !== null &&
+    "kind" in message &&
+    message.kind === REQUEST_KIND
+  );
 }
 
 export function isTransportResponse(message: unknown): message is TransportResponse {
-  return (message as TransportResponse)?.kind === RESPONSE_KIND;
+  return (
+    typeof message === "object" &&
+    message !== null &&
+    "kind" in message &&
+    message.kind === RESPONSE_KIND
+  );
 }
 
 export function serializeError(error: unknown): SerializedError {

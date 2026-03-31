@@ -178,7 +178,7 @@ function chooseMaxAreaPath(paths: ClipperPoint[][]): ClipperPoint[] | null {
   let best: ClipperPoint[] | null = null;
   let bestArea = 0;
   for (const path of paths) {
-    if (!path || path.length < 4) continue;
+    if (path.length < 4) continue;
     const poly: Point2D[] = path.map((pt) => [pt.X, pt.Y]);
     const area = polygonArea(poly);
     if (area > bestArea) {

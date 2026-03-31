@@ -114,7 +114,7 @@ describe("worker transport client", () => {
 
     await expect(pending).rejects.toThrow("Worker transport client has been disposed.");
     expect(worker.terminated).toBe(true);
-    await expect(client.dispose()).resolves.toBeUndefined();
+    expect(() => client.dispose()).not.toThrow();
     expect(() => client.ensureActive()).toThrow(/has been disposed/i);
   });
 
@@ -124,12 +124,12 @@ describe("worker transport client", () => {
     expect(() => client.ensureWorker()).toThrow(/requires a createWorker\(\) factory/i);
   });
 
-  it("allows disposing before a worker has ever been created", async () => {
+  it("allows disposing before a worker has ever been created", () => {
     const client = new WorkerTransportClient({
       createWorker: () => new MockWorker()
     });
 
     expect(() => client.disposeWorker()).not.toThrow();
-    await expect(client.dispose()).resolves.toBeUndefined();
+    expect(() => client.dispose()).not.toThrow();
   });
 });

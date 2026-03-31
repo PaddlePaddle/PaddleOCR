@@ -11,17 +11,19 @@ export function attachWorkerMessageHandler(
   handleMessage: MessageHandler,
   workerScope: WorkerLikeScope = self as unknown as WorkerLikeScope,
 ): void {
-  workerScope.onmessage = async (event: MessageEvent) => {
+  workerScope.onmessage = (event: MessageEvent) => {
     const message = event.data as unknown;
     if (!isTransportRequest(message)) {
       return;
     }
 
-    try {
-      const payload = await handleMessage(message.type, (message.payload || {}) as Record<string, unknown>);
-      workerScope.postMessage(createTransportSuccess(message.requestId, payload));
-    } catch (error: unknown) {
-      workerScope.postMessage(createTransportError(message.requestId, error));
-    }
+    void (async () => {
+      try {
+        const payload = await handleMessage(message.type, (message.payload || {}) as Record<string, unknown>);
+        workerScope.postMessage(createTransportSuccess(message.requestId, payload));
+      } catch (error: unknown) {
+        workerScope.postMessage(createTransportError(message.requestId, error));
+      }
+    })();
   };
 }

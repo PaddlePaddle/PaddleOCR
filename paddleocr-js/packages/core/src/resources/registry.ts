@@ -65,7 +65,7 @@ export function normalizeAssetDescriptor(assetName: string, asset: unknown): Ass
     throw new Error(`Asset "${assetName}" must use a non-empty version string.`);
   }
 
-  return { ...(asset as Record<string, unknown>), kind } as unknown as AssetDescriptor;
+  return { ...asset, kind } as unknown as AssetDescriptor;
 }
 
 function resolveAssetReference(
@@ -75,6 +75,7 @@ function resolveAssetReference(
 ): AssetDescriptor {
   if (isNonEmptyString(asset)) {
     const resolvedAsset = modelAssets[asset];
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- runtime guard for missing Record key
     if (!resolvedAsset) {
       throw new Error(`Asset "${assetName}" references unknown model asset "${asset}".`);
     }

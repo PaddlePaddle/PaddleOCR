@@ -95,7 +95,7 @@ function getModuleAsset(
 }
 
 export function parseOcrPipelineConfigText(text: string): YamlObject {
-  return parsePipelineConfigInput(text) as YamlObject;
+  return parsePipelineConfigInput(text);
 }
 
 export function normalizeOcrPipelineConfig(input: unknown): NormalizedPipelineConfig {
@@ -110,8 +110,8 @@ export function normalizeOcrPipelineConfig(input: unknown): NormalizedPipelineCo
 
   const warnings: string[] = [];
   const subModules = isPlainObject(config.SubModules) ? config.SubModules : {};
-  const textDetection = isPlainObject(subModules.TextDetection) ? (subModules.TextDetection as YamlObject) : null;
-  const textRecognition = isPlainObject(subModules.TextRecognition) ? (subModules.TextRecognition as YamlObject) : null;
+  const textDetection = isPlainObject(subModules.TextDetection) ? subModules.TextDetection : null;
+  const textRecognition = isPlainObject(subModules.TextRecognition) ? subModules.TextRecognition : null;
 
   if (!textDetection || !textRecognition) {
     throw new Error(
@@ -123,7 +123,7 @@ export function normalizeOcrPipelineConfig(input: unknown): NormalizedPipelineCo
   const useTextlineOrientation = Boolean(config.use_textline_orientation);
   const subPipelines = config.SubPipelines as YamlObject | undefined;
   const docPreprocessor = isPlainObject(subPipelines?.DocPreprocessor)
-    ? subPipelines!.DocPreprocessor
+    ? subPipelines.DocPreprocessor
     : null;
   const textLineOrientation = isPlainObject(subModules.TextLineOrientation)
     ? subModules.TextLineOrientation
@@ -136,7 +136,7 @@ export function normalizeOcrPipelineConfig(input: unknown): NormalizedPipelineCo
     addFeatureWarning(warnings, "TextLineOrientation", "config will be ignored for now");
   }
   if (config.text_type && config.text_type !== "general") {
-    warnings.push(`text_type "${config.text_type}" is not used by PaddleOCR.js yet.`);
+    warnings.push(`text_type ${JSON.stringify(config.text_type)} is not used by PaddleOCR.js yet.`);
   }
 
   const detAsset = getModuleAsset("det", "SubModules.TextDetection", textDetection);

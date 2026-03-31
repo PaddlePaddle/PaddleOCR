@@ -70,25 +70,25 @@ export const DEFAULT_REC_MODEL_CONFIG: Readonly<RecModelConfig> = Object.freeze(
 
 export function parseRecModelConfigText(text: string): RecModelConfig {
   const parsed = parseInferenceConfigText(text);
-  const preProcess = parsed?.PreProcess as Record<string, unknown> | undefined;
+  const preProcess = parsed.PreProcess as Record<string, unknown> | undefined;
   const transformOps = preProcess?.transform_ops as Array<Record<string, unknown>> | undefined;
   const resize = getTransformOp(transformOps, "RecResizeImg");
   const normalize = getTransformOp(transformOps, "NormalizeImage");
-  const postprocess = (parsed?.PostProcess || {}) as Record<string, unknown>;
-  const baseCharDict = postprocess?.character_dict;
+  const postprocess = (parsed.PostProcess || {}) as Record<string, unknown>;
+  const baseCharDict = postprocess.character_dict;
   if (!Array.isArray(baseCharDict) || baseCharDict.length === 0) {
     throw new Error("No valid character_dict found in rec inference.yml");
   }
 
   return {
-    imageShape: (resize?.image_shape as number[]) || DEFAULT_REC_MODEL_PARSE_FALLBACKS.imageShape,
-    maxBatch: Number(DEFAULT_REC_RUNTIME_LIMITS.maxBatch),
-    maxWidth: Number(DEFAULT_REC_RUNTIME_LIMITS.maxWidth),
+    imageShape: (resize?.image_shape as number[] | undefined) ?? DEFAULT_REC_MODEL_PARSE_FALLBACKS.imageShape,
+    maxBatch: DEFAULT_REC_RUNTIME_LIMITS.maxBatch,
+    maxWidth: DEFAULT_REC_RUNTIME_LIMITS.maxWidth,
     scoreThresh: DEFAULT_REC_MODEL_PARSE_FALLBACKS.scoreThresh,
     normalize: normalize
       ? {
-          mean: (normalize.mean as number[]) || DEFAULT_REC_MODEL_PARSE_FALLBACKS.normalize.mean,
-          std: (normalize.std as number[]) || DEFAULT_REC_MODEL_PARSE_FALLBACKS.normalize.std,
+          mean: (normalize.mean as number[] | undefined) ?? DEFAULT_REC_MODEL_PARSE_FALLBACKS.normalize.mean,
+          std: (normalize.std as number[] | undefined) ?? DEFAULT_REC_MODEL_PARSE_FALLBACKS.normalize.std,
           scale: parseScaleValue(normalize.scale, DEFAULT_REC_MODEL_PARSE_FALLBACKS.normalize.scale),
         }
       : { ...DEFAULT_REC_MODEL_PARSE_FALLBACKS.normalize },
@@ -165,11 +165,11 @@ export function prepareRecSample(
 ): RecSample {
   const { cv, config } = context;
   const [channels, targetH, baseW] = config.imageShape;
-  const maxW = Number(config.maxWidth);
+  const maxW = config.maxWidth;
   const srcW = cropMat.cols;
   const srcH = cropMat.rows;
   if (channels !== 3) {
-    throw new Error(`Unexpected recognition channels: ${channels}`);
+    throw new Error(`Unexpected recognition channels: ${String(channels)}`);
   }
   const ratio = srcW / Math.max(1, srcH);
   const maxWhRatio = Math.max(baseW / Math.max(1, targetH), ratio);
@@ -271,8 +271,8 @@ function decodeCTCSample(
 export async function runRecModel(context: RecRunContext, samples: RecSample[]): Promise<RecResult[]> {
   const { ort, session, config, charDict } = context;
   const recInputName = session.inputNames[0];
-  const batchSize = Number(config.maxBatch);
-  const targetH = Number(config.imageShape[1]);
+  const batchSize = config.maxBatch;
+  const targetH = config.imageShape[1];
   const ordered = samples.slice().sort((a, b) => a.width - b.width);
   const results: RecResult[] = [];
 

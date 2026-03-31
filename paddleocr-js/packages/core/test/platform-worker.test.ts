@@ -105,15 +105,15 @@ describe("platform/worker", () => {
     expect(imageBitmap.close).toHaveBeenCalledTimes(1);
   });
 
-  it("rejects imageBitmap payloads when OffscreenCanvas is unavailable", async () => {
+  it("rejects imageBitmap payloads when OffscreenCanvas is unavailable", () => {
     vi.stubGlobal("ImageBitmap", FakeImageBitmap);
 
-    await expect(
+    expect(() =>
       sourcePayloadToMat({ Mat: FakeMat }, { kind: "imageBitmap", imageBitmap: new FakeImageBitmap() })
-    ).rejects.toThrow(/requires OffscreenCanvas support/i);
+    ).toThrow(/requires OffscreenCanvas support/i);
   });
 
-  it("rejects imageBitmap payloads when the canvas context cannot be created", async () => {
+  it("rejects imageBitmap payloads when the canvas context cannot be created", () => {
     vi.stubGlobal("ImageBitmap", FakeImageBitmap);
     vi.stubGlobal(
       "OffscreenCanvas",
@@ -124,13 +124,13 @@ describe("platform/worker", () => {
       }
     );
 
-    await expect(
+    expect(() =>
       sourcePayloadToMat({ Mat: FakeMat }, { kind: "imageBitmap", imageBitmap: new FakeImageBitmap() })
-    ).rejects.toThrow(/Failed to create a 2D canvas context/i);
+    ).toThrow(/Failed to create a 2D canvas context/i);
   });
 
-  it("rejects unsupported worker payloads", async () => {
-    await expect(sourcePayloadToMat({ Mat: FakeMat }, { kind: "other" })).rejects.toThrow(
+  it("rejects unsupported worker payloads", () => {
+    expect(() => sourcePayloadToMat({ Mat: FakeMat }, { kind: "other" })).toThrow(
       /Unsupported worker image source payload/i
     );
   });
