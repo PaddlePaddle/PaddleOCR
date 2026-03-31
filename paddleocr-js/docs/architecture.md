@@ -38,8 +38,8 @@ The runtime flow for worker mode is:
 
 1. `PaddleOCR.create({ worker: true })` resolves OCR options and creates a `WorkerBackedPaddleOCR`
 2. `WorkerBackedPaddleOCR` sends `init/predict/dispose` requests through `WorkerTransportClient`
-3. the OCR pipeline layer owns the default worker factory and points it at `src/pipelines/ocr/worker-entry.js`
-4. `src/pipelines/ocr/worker-entry.js` binds the generic worker bootstrap in `src/worker/entry.js` to the OCR-specific worker handler
+3. the OCR pipeline layer owns the default worker factory and points it at `src/pipelines/ocr/worker-entry.ts`
+4. `src/pipelines/ocr/worker-entry.ts` binds the generic worker bootstrap in `src/worker/entry.ts` to the OCR-specific worker handler
 5. `OcrPipelineRunner` runs OpenCV.js, ONNX Runtime Web, model loading, detection, and recognition inside the worker
 6. results and errors are serialized back to the main thread
 

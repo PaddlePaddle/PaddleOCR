@@ -24,6 +24,7 @@ npm run dev:demo
 ```bash
 npm run build
 npm run test
+npm run typecheck
 npm run check
 ```
 
@@ -39,7 +40,6 @@ npm run build --workspace apps/demo
 - [`docs/architecture.md`](docs/architecture.md)
 - [`docs/development.md`](docs/development.md)
 - [`docs/monorepo.md`](docs/monorepo.md)
-- [`docs/release.md`](docs/release.md)
 - 面向 SDK 的参考文档：[`packages/core/README_cn.md`](packages/core/README_cn.md)
 
 ## 致谢

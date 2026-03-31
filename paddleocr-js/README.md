@@ -24,6 +24,7 @@ Other useful commands (still from `paddleocr-js/`):
 ```bash
 npm run build
 npm run test
+npm run typecheck
 npm run check
 ```
 
@@ -39,7 +40,6 @@ npm run build --workspace apps/demo
 - [`docs/architecture.md`](docs/architecture.md)
 - [`docs/development.md`](docs/development.md)
 - [`docs/monorepo.md`](docs/monorepo.md)
-- [`docs/release.md`](docs/release.md)
 - SDK-focused reference: [`packages/core/README.md`](packages/core/README.md)
 
 ## Acknowledgements
