@@ -37,9 +37,9 @@ describe("platform/worker", () => {
     expect(() => ensureServedFromHttp()).toThrow(/requires an HTTP\(S\) origin/i);
   });
 
-  it("accepts cv.Mat payloads by cloning them", async () => {
+  it("accepts cv.Mat payloads by cloning them", () => {
     const source = new FakeMat(32, 64);
-    const loaded = await sourcePayloadToMat({ Mat: FakeMat }, source);
+    const loaded = sourcePayloadToMat({ Mat: FakeMat } as any, source);
 
     expect(loaded.width).toBe(64);
     expect(loaded.height).toBe(32);
@@ -51,7 +51,7 @@ describe("platform/worker", () => {
     expect(source.deleted).toBe(false);
   });
 
-  it("converts imageBitmap payloads into cv mats", async () => {
+  it("converts imageBitmap payloads into cv mats", () => {
     const imageBitmap = new FakeImageBitmap(20, 10);
     const getImageData = vi.fn(() => ({
       width: 20,
@@ -84,12 +84,12 @@ describe("platform/worker", () => {
       }
     );
 
-    const loaded = await sourcePayloadToMat(
+    const loaded = sourcePayloadToMat(
       {
         Mat: FakeMat,
         CV_8UC4: "rgba",
         matFromArray: vi.fn(() => mat)
-      },
+      } as any,
       {
         kind: "imageBitmap",
         imageBitmap
@@ -109,7 +109,7 @@ describe("platform/worker", () => {
     vi.stubGlobal("ImageBitmap", FakeImageBitmap);
 
     expect(() =>
-      sourcePayloadToMat({ Mat: FakeMat }, { kind: "imageBitmap", imageBitmap: new FakeImageBitmap() })
+      sourcePayloadToMat({ Mat: FakeMat } as any, { kind: "imageBitmap", imageBitmap: new FakeImageBitmap() })
     ).toThrow(/requires OffscreenCanvas support/i);
   });
 
@@ -125,12 +125,12 @@ describe("platform/worker", () => {
     );
 
     expect(() =>
-      sourcePayloadToMat({ Mat: FakeMat }, { kind: "imageBitmap", imageBitmap: new FakeImageBitmap() })
+      sourcePayloadToMat({ Mat: FakeMat } as any, { kind: "imageBitmap", imageBitmap: new FakeImageBitmap() })
     ).toThrow(/Failed to create a 2D canvas context/i);
   });
 
   it("rejects unsupported worker payloads", () => {
-    expect(() => sourcePayloadToMat({ Mat: FakeMat }, { kind: "other" })).toThrow(
+    expect(() => sourcePayloadToMat({ Mat: FakeMat } as any, { kind: "other" })).toThrow(
       /Unsupported worker image source payload/i
     );
   });

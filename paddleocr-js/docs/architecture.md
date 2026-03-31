@@ -50,6 +50,21 @@ Input handling is split by environment:
 
 Worker mode uses the package worker path and explicitly disables ONNX Runtime Web wasm proxy internally. This avoids stacking two worker layers and keeps the package responsible for the concurrency model.
 
+ONNX Runtime Web requires WASM binaries at runtime. `runtime.wasmPaths` is a unified configuration that applies to both execution modes — setting it once controls where WASM is loaded in both main-thread and worker contexts:
+
+```ts
+PaddleOCR.create({
+  runtime: { wasmPaths: '/assets/' }
+})
+```
+
+When `wasmPaths` is set, both modes fetch WASM from the specified path. When it is not set, each mode falls back differently:
+
+- main-thread mode: ORT resolves WASM through the consumer's bundler (the bundler copies `.wasm` files from `node_modules/onnxruntime-web/dist/` into the build output and rewrites the URLs automatically)
+- worker mode: the SDK falls back to a CDN URL pinned to the ORT version installed at SDK build time, and emits a console warning recommending the consumer set `wasmPaths`
+
+Setting `wasmPaths` explicitly is recommended for worker mode to ensure version consistency between the two modes.
+
 ## Application responsibilities
 
 The SDK owns OCR runtime setup and inference orchestration. The host application still owns:

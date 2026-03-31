@@ -110,7 +110,7 @@ describe("worker transport client", () => {
     });
 
     const pending = client.request("predict", {});
-    await client.dispose();
+    client.dispose();
 
     await expect(pending).rejects.toThrow("Worker transport client has been disposed.");
     expect(worker.terminated).toBe(true);

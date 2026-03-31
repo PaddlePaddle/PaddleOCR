@@ -24,6 +24,16 @@ function imageDataToMat(cv: OpenCv, imageData: ImageData): Mat {
   return cv.matFromArray(imageData.height, imageData.width, cv.CV_8UC4, imageData.data);
 }
 
+function isWorkerSourcePayload(source: unknown): source is WorkerSourcePayload {
+  if (typeof source !== "object" || source === null) return false;
+  const candidate = source as Record<string, unknown>;
+  return (
+    candidate["kind"] === "imageBitmap" &&
+    typeof ImageBitmap !== "undefined" &&
+    candidate["imageBitmap"] instanceof ImageBitmap
+  );
+}
+
 export function sourcePayloadToMat(
   cv: OpenCv,
   source: unknown,
@@ -40,13 +50,8 @@ export function sourcePayloadToMat(
     };
   }
 
-  const payload = source as WorkerSourcePayload;
-  if (
-    payload.kind === "imageBitmap" &&
-    typeof ImageBitmap !== "undefined" &&
-    payload.imageBitmap instanceof ImageBitmap
-  ) {
-    const imageData = imageBitmapToImageData(payload.imageBitmap);
+  if (isWorkerSourcePayload(source)) {
+    const imageData = imageBitmapToImageData(source.imageBitmap);
     const mat = imageDataToMat(cv, imageData);
     return {
       width: imageData.width,
@@ -54,7 +59,7 @@ export function sourcePayloadToMat(
       mat,
       dispose() {
         mat.delete();
-        payload.imageBitmap.close();
+        source.imageBitmap.close();
       },
     };
   }

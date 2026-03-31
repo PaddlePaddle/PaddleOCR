@@ -1,0 +1,13 @@
+{
+  "extends": "./packages/core/tsconfig.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    "noEmit": true
+  },
+  "include": [
+    "packages/**/src/**/*.ts",
+    "packages/**/test/**/*.ts",
+    "apps/**/src/**/*.ts"
+  ],
+  "exclude": ["node_modules", "dist"]
+}

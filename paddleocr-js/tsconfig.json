@@ -1,6 +1,7 @@
 {
   "files": [],
   "references": [
-    { "path": "packages/core" }
+    { "path": "packages/core" },
+    { "path": "apps/demo" }
   ]
 }

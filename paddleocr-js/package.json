@@ -28,7 +28,7 @@
   ],
   "scripts": {
     "dev:demo": "npm run dev --workspace apps/demo --",
-    "build": "npm run build --workspaces --if-present",
+    "build": "npm run build:sdk && npm run build:demo",
     "build:demo": "npm run build --workspace apps/demo",
     "build:sdk": "npm run build --workspace packages/core",
     "preview:demo": "npm run preview --workspace apps/demo --",
@@ -40,7 +40,11 @@
     "test:watch": "vitest",
     "format": "prettier . --write",
     "format:check": "prettier . --check",
-    "check": "npm run lint && npm run test && npm run build"
+    "clean": "rm -rf packages/*/dist apps/*/dist",
+    "check": "npm run format:check && npm run lint && npm run build:sdk && npm run typecheck && npm run test && npm run build:demo",
+    "changeset": "changeset",
+    "version": "changeset version",
+    "release": "npm run build:sdk && changeset publish"
   },
   "devDependencies": {
     "@changesets/cli": "^2.29.7",

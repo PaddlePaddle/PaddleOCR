@@ -66,10 +66,10 @@ export function normalizeAssetDescriptor(assetName: string, asset: unknown): Ass
   }
 
   return {
-    id: asset.id as string,
-    url: asset.url as string,
+    id: asset.id,
+    url: asset.url,
     kind,
-    ...(asset.version !== undefined ? { version: asset.version as string } : {}),
+    ...(asset.version !== undefined ? { version: asset.version } : {}),
     ...(kind === "tar" && asset.entries
       ? { entries: asset.entries as Record<string, string> }
       : {}),

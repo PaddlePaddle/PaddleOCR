@@ -16,15 +16,17 @@ npm run dev --workspace apps/demo
 - `packages/*`: reusable packages; the SDK lives under `packages/core` but keeps the **npm package name** `paddleocr-js`
 - `apps/*`: private applications such as demos (`apps/demo`); not published to npm as products
 
-## Versioning and naming
+## Versioning and release
 
 - **Directory:** `packages/core` — SDK source and publish manifest for the public package
 - **npm package name:** `paddleocr-js` — what consumers `npm install` and import in code
 - **Directory:** `apps/demo` — private demo, not an npm release target
-- future publishable packages should use [Changesets](https://github.com/changesets/changesets)
+- Changesets manages versioning; the demo package is ignored in `.changeset/config.json`
+- `npm run release` builds the SDK and publishes via `changeset publish`
+- `packages/core` has a `prepublishOnly` script that auto-builds before `npm publish` / `npm pack`
 
 ## Linting and tests
 
-- `packages/**` are linted with browser-oriented globals for SDK source files
-- `apps/**` are linted with browser-oriented globals
-- test files and config files are allowed to use both Node and browser globals where needed
+- `packages/**/src/**/*.ts` and `packages/**/test/**/*.ts` are linted with `strictTypeChecked` TypeScript rules and browser-oriented globals
+- `apps/**/src/**/*.ts` also uses `strictTypeChecked` TypeScript rules with browser-oriented globals
+- `apps/**/*.js` and config files (`*.config.*`) are linted with basic ESLint rules and both Node and browser globals

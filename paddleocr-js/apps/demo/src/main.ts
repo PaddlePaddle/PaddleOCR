@@ -1,4 +1,7 @@
 import { PaddleOCR } from "paddleocr-js";
+import type { OcrResult, OcrResultItem, Point2D } from "paddleocr-js";
+
+type OcrEngine = Awaited<ReturnType<typeof PaddleOCR.create>>;
 
 const ORT_WASM_PATHS = "https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/";
 const DEFAULT_RUNTIME_PARAMS = Object.freeze({
@@ -8,46 +11,58 @@ const DEFAULT_RUNTIME_PARAMS = Object.freeze({
   textRecScoreThresh: 0.1
 });
 
-function getDemoThreadCount() {
+function getDemoThreadCount(): number {
   return self.crossOriginIsolated
     ? Math.min(4, Math.max(1, (navigator.hardwareConcurrency || 2) - 1))
     : 1;
 }
 
 const ui = {
-  runtimeBackend: document.getElementById("runtimeBackend"),
-  detThresh: document.getElementById("detThresh"),
-  boxThresh: document.getElementById("boxThresh"),
-  unclipRatio: document.getElementById("unclipRatio"),
-  recScoreThresh: document.getElementById("recScoreThresh"),
-  imageInput: document.getElementById("imageInput"),
-  chooseImageBtn: document.getElementById("chooseImageBtn"),
-  reinitializeBtn: document.getElementById("reinitializeBtn"),
-  runBtn: document.getElementById("runBtn"),
-  status: document.getElementById("status"),
-  metrics: document.getElementById("metrics"),
-  results: document.getElementById("results"),
-  canvas: document.getElementById("canvas")
+  runtimeBackend: document.getElementById("runtimeBackend") as HTMLSelectElement,
+  detThresh: document.getElementById("detThresh") as HTMLInputElement,
+  boxThresh: document.getElementById("boxThresh") as HTMLInputElement,
+  unclipRatio: document.getElementById("unclipRatio") as HTMLInputElement,
+  recScoreThresh: document.getElementById("recScoreThresh") as HTMLInputElement,
+  imageInput: document.getElementById("imageInput") as HTMLInputElement,
+  chooseImageBtn: document.getElementById("chooseImageBtn") as HTMLButtonElement,
+  reinitializeBtn: document.getElementById("reinitializeBtn") as HTMLButtonElement,
+  runBtn: document.getElementById("runBtn") as HTMLButtonElement,
+  status: document.getElementById("status") as HTMLElement,
+  metrics: document.getElementById("metrics") as HTMLPreElement,
+  results: document.getElementById("results") as HTMLOListElement,
+  canvas: document.getElementById("canvas") as HTMLCanvasElement
 };
 
-const canvasCtx = ui.canvas.getContext("2d");
+function requireContext2D(canvas: HTMLCanvasElement): CanvasRenderingContext2D {
+  const ctx = canvas.getContext("2d");
+  if (!ctx) throw new Error("Failed to create canvas 2D context.");
+  return ctx;
+}
 
-const state = {
+const canvasCtx = requireContext2D(ui.canvas);
+
+interface AppState {
+  imageFile: File | null;
+  previewBitmap: ImageBitmap | null;
+  ocr: OcrEngine | null;
+}
+
+const state: AppState = {
   imageFile: null,
   previewBitmap: null,
   ocr: null
 };
 
-function setStatus(text, isError = false) {
+function setStatus(text: string, isError = false): void {
   ui.status.textContent = text;
   ui.status.style.color = isError ? "#b91c1c" : "";
 }
 
-function formatMs(value) {
+function formatMs(value: number): string {
   return `${value.toFixed(1)} ms`;
 }
 
-function deterministicColor(idx) {
+function deterministicColor(idx: number): [number, number, number] {
   let seed = (idx + 1) * 1103515245 + 12345;
   seed >>>= 0;
   const r = (seed >> 16) & 0xff;
@@ -58,7 +73,7 @@ function deterministicColor(idx) {
   return [r, g, b];
 }
 
-function drawPolygonPath(ctx, poly) {
+function drawPolygonPath(ctx: CanvasRenderingContext2D, poly: Point2D[]): void {
   ctx.beginPath();
   ctx.moveTo(poly[0][0], poly[0][1]);
   for (let index = 1; index < poly.length; index += 1) {
@@ -67,7 +82,7 @@ function drawPolygonPath(ctx, poly) {
   ctx.closePath();
 }
 
-function drawPreview(bitmap, items = []) {
+function drawPreview(bitmap: ImageBitmap, items: OcrResultItem[] = []): void {
   ui.canvas.width = bitmap.width;
   ui.canvas.height = bitmap.height;
   canvasCtx.clearRect(0, 0, ui.canvas.width, ui.canvas.height);
@@ -77,8 +92,8 @@ function drawPreview(bitmap, items = []) {
     const [r, g, b] = deterministicColor(index);
     canvasCtx.save();
     canvasCtx.lineWidth = 2;
-    canvasCtx.strokeStyle = `rgb(${r}, ${g}, ${b})`;
-    canvasCtx.fillStyle = `rgba(${r}, ${g}, ${b}, 0.22)`;
+    canvasCtx.strokeStyle = `rgb(${String(r)}, ${String(g)}, ${String(b)})`;
+    canvasCtx.fillStyle = `rgba(${String(r)}, ${String(g)}, ${String(b)}, 0.22)`;
     drawPolygonPath(canvasCtx, item.poly);
     canvasCtx.fill();
     canvasCtx.stroke();
@@ -86,7 +101,7 @@ function drawPreview(bitmap, items = []) {
   });
 }
 
-function renderResults(items) {
+function renderResults(items: OcrResultItem[]): void {
   ui.results.innerHTML = "";
   items.forEach((item) => {
     const li = document.createElement("li");
@@ -97,14 +112,14 @@ function renderResults(items) {
 
 function getRuntimeOptions() {
   return {
-    backend: ui.runtimeBackend.value,
+    backend: ui.runtimeBackend.value as "auto" | "webgpu" | "wasm",
     wasmPaths: ORT_WASM_PATHS,
     numThreads: getDemoThreadCount(),
     simd: true
   };
 }
 
-async function initializeOcrEngine() {
+async function initializeOcrEngine(): Promise<void> {
   if (state.ocr) {
     await state.ocr.dispose();
   }
@@ -122,25 +137,25 @@ async function initializeOcrEngine() {
     `webgpu available: ${summary.webgpuAvailable ? "yes" : "no"}`,
     `provider(det): ${summary.detProvider}`,
     `provider(rec): ${summary.recProvider}`,
-    `assets: ${summary.assets.length}`,
-    `cache hits: ${summary.cacheHits}`,
-    `cache misses: ${summary.cacheMisses}`
+    `assets: ${String(summary.assets.length)}`,
+    `cache hits: ${String(summary.cacheHits)}`,
+    `cache misses: ${String(summary.cacheMisses)}`
   ].join("\n");
-  setStatus(`OCR engine initialized (${summary.cacheHits} cache hits).`);
+  setStatus(`OCR engine initialized (${String(summary.cacheHits)} cache hits).`);
   ui.runBtn.disabled = !state.imageFile;
 }
 
-async function handleImageSelection(file) {
+async function handleImageSelection(file: File | undefined): Promise<void> {
   if (!file) return;
   state.imageFile = file;
-  state.previewBitmap?.close?.();
+  state.previewBitmap?.close();
   state.previewBitmap = await createImageBitmap(file);
   drawPreview(state.previewBitmap);
   ui.runBtn.disabled = !state.ocr;
   setStatus(`Image selected: ${file.name}`);
 }
 
-async function runOcr() {
+async function runOcr(): Promise<void> {
   if (!state.ocr || !state.imageFile) {
     setStatus("Wait for OCR engine initialization to finish, then choose an image.", true);
     return;
@@ -148,7 +163,7 @@ async function runOcr() {
 
   try {
     setStatus("Running OCR...");
-    const result = await state.ocr.predict(state.imageFile, {
+    const result: OcrResult = await state.ocr.predict(state.imageFile, {
       textDetThresh: Number(ui.detThresh.value),
       textDetBoxThresh: Number(ui.boxThresh.value),
       textDetUnclipRatio: Number(ui.unclipRatio.value),
@@ -167,33 +182,36 @@ async function runOcr() {
       `rec prep: ${formatMs(result.metrics.recPrepMs)}`,
       `rec infer: ${formatMs(result.metrics.recInferMs)}`,
       `total: ${formatMs(result.metrics.totalMs)}`,
-      `detected boxes: ${result.metrics.detectedBoxes}`,
-      `recognized lines: ${result.metrics.recognizedCount}`
+      `detected boxes: ${String(result.metrics.detectedBoxes)}`,
+      `recognized lines: ${String(result.metrics.recognizedCount)}`
     ].join("\n");
-    setStatus(`OCR complete: ${result.metrics.recognizedCount} text lines recognized.`);
-  } catch (err) {
+    setStatus(`OCR complete: ${String(result.metrics.recognizedCount)} text lines recognized.`);
+  } catch (err: unknown) {
     console.error(err);
-    setStatus(`OCR failed: ${err.message}`, true);
+    const message = err instanceof Error ? err.message : String(err);
+    setStatus(`OCR failed: ${message}`, true);
   }
 }
 
-ui.imageInput.addEventListener("change", async (event) => {
-  await handleImageSelection(event.target.files?.[0]);
+ui.imageInput.addEventListener("change", (event: Event) => {
+  const target = event.target as HTMLInputElement;
+  void handleImageSelection(target.files?.[0]);
 });
 
 ui.chooseImageBtn.addEventListener("click", () => {
   ui.imageInput.click();
 });
 
-async function reinitializeOcrEngine() {
+async function reinitializeOcrEngine(): Promise<void> {
   try {
     ui.reinitializeBtn.disabled = true;
     ui.runBtn.disabled = true;
     setStatus("Initializing OCR engine...");
     await initializeOcrEngine();
-  } catch (err) {
+  } catch (err: unknown) {
     console.error(err);
-    setStatus(`OCR engine initialization failed: ${err.message}`, true);
+    const message = err instanceof Error ? err.message : String(err);
+    setStatus(`OCR engine initialization failed: ${message}`, true);
     ui.runBtn.disabled = true;
   } finally {
     ui.reinitializeBtn.disabled = false;
@@ -204,9 +222,9 @@ ui.detThresh.value = String(DEFAULT_RUNTIME_PARAMS.textDetThresh);
 ui.boxThresh.value = String(DEFAULT_RUNTIME_PARAMS.textDetBoxThresh);
 ui.unclipRatio.value = String(DEFAULT_RUNTIME_PARAMS.textDetUnclipRatio);
 ui.recScoreThresh.value = String(DEFAULT_RUNTIME_PARAMS.textRecScoreThresh);
-ui.reinitializeBtn.addEventListener("click", reinitializeOcrEngine);
-ui.runtimeBackend.addEventListener("change", reinitializeOcrEngine);
+ui.reinitializeBtn.addEventListener("click", () => void reinitializeOcrEngine());
+ui.runtimeBackend.addEventListener("change", () => void reinitializeOcrEngine());
 
-ui.runBtn.addEventListener("click", runOcr);
+ui.runBtn.addEventListener("click", () => void runOcr());
 
 void reinitializeOcrEngine();

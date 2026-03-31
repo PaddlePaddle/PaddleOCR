@@ -2,6 +2,8 @@
   "name": "paddleocr-js",
   "version": "0.1.0",
   "description": "Browser-based OCR SDK powered by PaddleOCR, ONNX Runtime Web and OpenCV.js",
+  "license": "Apache-2.0",
+  "author": "PaddlePaddle Authors",
   "type": "module",
   "repository": {
     "type": "git",
@@ -14,7 +16,9 @@
   },
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
-  "browser": "./dist/index.umd.js",
+  "browser": "./dist/index.mjs",
+  "unpkg": "./dist/index.umd.js",
+  "jsdelivr": "./dist/index.umd.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
@@ -49,7 +53,8 @@
   ],
   "scripts": {
     "build": "vite build",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run build"
   },
   "dependencies": {
     "@techstark/opencv-js": "^4.10.0-release.1",

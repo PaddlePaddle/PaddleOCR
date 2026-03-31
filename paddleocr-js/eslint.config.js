@@ -8,15 +8,36 @@ export default tseslint.config(
   },
   eslint.configs.recommended,
   {
-    files: ["packages/**/src/**/*.ts", "packages/**/test/**/*.ts"],
+    files: ["packages/**/src/**/*.ts", "apps/**/src/**/*.ts"],
     extends: [...tseslint.configs.strictTypeChecked],
     languageOptions: {
       globals: { ...globals.browser },
       parserOptions: {
-        projectService: true,
+        project: "./tsconfig.eslint.json",
         tsconfigRootDir: import.meta.dirname,
       },
     },
+  },
+  {
+    files: ["packages/**/test/**/*.ts"],
+    extends: [...tseslint.configs.recommendedTypeChecked],
+    languageOptions: {
+      globals: { ...globals.browser, ...globals.node },
+      parserOptions: {
+        project: "./tsconfig.eslint.json",
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
+    rules: {
+      "@typescript-eslint/no-unsafe-assignment": "off",
+      "@typescript-eslint/no-unsafe-argument": "off",
+      "@typescript-eslint/no-unsafe-member-access": "off",
+      "@typescript-eslint/no-unsafe-call": "off",
+      "@typescript-eslint/no-unsafe-return": "off",
+      "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/require-await": "off",
+      "@typescript-eslint/no-extraneous-class": "off"
+    }
   },
   {
     files: ["apps/**/*.js", "*.config.{js,ts}", "packages/**/*.config.*"],

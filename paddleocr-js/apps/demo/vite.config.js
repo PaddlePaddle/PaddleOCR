@@ -1,11 +1,11 @@
 import { resolve } from "node:path";
 import { defineConfig } from "vite";
 
-export default defineConfig({
+export default defineConfig(({ command }) => ({
   resolve: {
-    alias: {
-      "paddleocr-js": resolve(__dirname, "../../packages/core/src/index.ts"),
-    },
+    alias: command === 'serve' ? {
+      "paddleocr-js": resolve(__dirname, "../../packages/core/src/index.ts")
+    } : {}
   },
   worker: {
     format: "es"
@@ -22,4 +22,4 @@ export default defineConfig({
       "Cross-Origin-Embedder-Policy": "credentialless"
     }
   }
-});
+}));

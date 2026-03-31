@@ -15,13 +15,14 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "onnxruntime-web": "^1.22.0",
     "paddleocr-js": "*"
   },
   "devDependencies": {
-    "vite": "^6.2.2"
+    "typescript": "^5.9.3",
+    "vite": "^6.4.1"
   }
 }
