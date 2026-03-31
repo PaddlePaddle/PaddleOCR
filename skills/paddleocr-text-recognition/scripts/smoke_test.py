@@ -45,18 +45,10 @@ HOW TO GET YOUR API CREDENTIALS
 4. Copy the API URL from the example request
 5. Copy your access token from the same API setup page
 
-If the skill is not installed, configure credentials using one of the following options:
-
-Option A: run the helper script for this skill:
-  python paddleocr-text-recognition/scripts/configure.py
-
-Option B: create a local .env file from the template:
-  cp .env.example .env
-  PADDLEOCR_OCR_API_URL=https://your-api-url.paddleocr.com/ocr
-  PADDLEOCR_ACCESS_TOKEN=your_token_here
-  PADDLEOCR_OCR_TIMEOUT=120  # optional
-
-If the skill is installed under a host application directory (for example, `~/.claude/skills`), do not run `configure.py` or create a local `.env` file there. Use the host application's environment-variable configuration instead.
+Set environment variables:
+  export PADDLEOCR_OCR_API_URL=https://your-api-url.paddleocr.com/ocr
+  export PADDLEOCR_ACCESS_TOKEN=your_token_here
+  export PADDLEOCR_OCR_TIMEOUT=120  # optional
 
 ============================================================
 """
@@ -89,17 +81,7 @@ def main():
     except ImportError:
         print("  X httpx not installed")
         print("\nPlease install dependencies:")
-        print("  pip install httpx python-dotenv")
-        return 1
-
-    try:
-        from dotenv import load_dotenv
-
-        print("  + python-dotenv: installed")
-    except ImportError:
-        print("  X python-dotenv not installed")
-        print("\nPlease install dependencies:")
-        print("  pip install httpx python-dotenv")
+        print("  pip install httpx")
         return 1
 
     # Check configuration

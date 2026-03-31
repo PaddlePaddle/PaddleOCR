@@ -8,7 +8,7 @@ import os
 import glob
 import cv2
 import yaml
-from typing import Mapping
+from collections.abc import Mapping
 import matplotlib.pyplot as plt
 import numpy as np
 

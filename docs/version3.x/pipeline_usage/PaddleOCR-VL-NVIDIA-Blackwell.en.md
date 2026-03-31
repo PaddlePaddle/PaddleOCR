@@ -52,7 +52,7 @@ If you wish to use PaddleOCR-VL in an offline environment, replace `ccr-2vdh3abv
 
 ### 1.2 Method 2: Manually Install PaddlePaddle and PaddleOCR
 
-If Docker is not an option, you can manually install PaddlePaddle and PaddleOCR. Python version 3.8–3.12 is required.
+If Docker is not an option, you can manually install PaddlePaddle and PaddleOCR. Python version 3.8–3.13 is required.
 
 **We strongly recommend installing PaddleOCR-VL in a virtual environment to avoid dependency conflicts.** For example, create a virtual environment using Python's standard venv library:
 

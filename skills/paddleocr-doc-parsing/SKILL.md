@@ -1,9 +1,6 @@
 ---
 name: paddleocr-doc-parsing
-description: >
-  Advanced document parsing with PaddleOCR. Returns complete document
-  structure including text, tables, formulas, charts, and layout information. The AI agent extracts
-  relevant content based on user needs.
+description: Complex document parsing with PaddleOCR. Intelligently converts complex PDFs and document images into Markdown and JSON files that preserve the original structure.
 metadata:
   openclaw:
     requires:
@@ -198,11 +195,13 @@ Then return:
 
 ### First-Time Configuration
 
+You can generally assume that the required environment variables have already been configured. Only when a parsing task fails should you analyze the error message to determine whether it is caused by a configuration issue. If it is indeed a configuration problem, you should notify the user to fix it.
+
 **When API is not configured**:
 
 The error will show:
 ```
-PADDLEOCR_DOC_PARSING_API_URL not configured. Get your API at: https://paddleocr.com
+CONFIG_ERROR: PADDLEOCR_DOC_PARSING_API_URL not configured. Get your API at: https://paddleocr.com
 ```
 
 **Configuration workflow**:
@@ -218,27 +217,22 @@ PADDLEOCR_DOC_PARSING_API_URL not configured. Get your API at: https://paddleocr
      - Optional: PADDLEOCR_DOC_PARSING_TIMEOUT
      ```
 
-3. **If the user provides credentials in chat anyway** (accept any reasonable format):
+3. **If the user provides credentials in chat anyway** (accept any reasonable format), for example:
    - `PADDLEOCR_DOC_PARSING_API_URL=https://xxx.paddleocr.com/layout-parsing, PADDLEOCR_ACCESS_TOKEN=abc123...`
    - `Here's my API: https://xxx and token: abc123`
    - Copy-pasted code format
    - Any other reasonable format
    - **Security note**: Warn the user that credentials shared in chat may be stored in conversation history. Recommend setting them through the host application's configuration instead when possible.
 
-4. **Parse and validate the values**:
+   Then parse and validate the values:
    - Extract `PADDLEOCR_DOC_PARSING_API_URL` (look for URLs with `paddleocr.com` or similar)
    - Confirm `PADDLEOCR_DOC_PARSING_API_URL` is a full endpoint ending with `/layout-parsing`
    - Extract `PADDLEOCR_ACCESS_TOKEN` (long alphanumeric string, usually 40+ chars)
-   - Tell the user exactly which environment variables to set
 
-5. **Ask the user to confirm the environment is configured**:
-   - Wait for the user to confirm these values have been set in their host application, runtime environment, or appropriate config file
-   - For security reasons, do not run `configure.py` or create a local `.env` file by default if the skill is installed under a host application directory (for example, `~/.claude/skills`)
+4. **Ask the user to confirm the environment is configured**.
 
-6. **Retry only after confirmation**:
+5. **Retry only after confirmation**:
    - Once the user confirms the environment variables are available, retry the original parsing task
-
-**IMPORTANT**: The error message format is STRICT and must be shown exactly as provided by the script. Do not modify or paraphrase it.
 
 ### Handling Large Files
 

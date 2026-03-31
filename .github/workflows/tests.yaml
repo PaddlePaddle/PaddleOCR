@@ -32,22 +32,25 @@ jobs:
     runs-on: ubuntu-latest
     needs: detect-changes
     if: needs.detect-changes.outputs.docs_only != 'true'
+    strategy:
+      matrix:
+        python-version: ["3.8", "3.9", "3.13"]
 
     steps:
     - uses: actions/checkout@v6
-    - name: Set up Python 3.10
+    - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v6
       with:
-        python-version: "3.10"
+        python-version: ${{ matrix.python-version }}
 
     - name: Cache dependencies
       uses: actions/cache@v5
       with:
         path: |
           ~/.cache/pip
-          ~/.local/lib/python3.10/site-packages
+          ~/.local/lib/python${{ matrix.python-version }}/site-packages
           ~/.paddleocr/
-        key: ${{ runner.os }}-dependencies-${{ hashFiles('**/requirements.txt', 'pyproject.toml') }}
+        key: ${{ runner.os }}-dependencies-${{ matrix.python-version }}-${{ hashFiles('**/requirements.txt', 'pyproject.toml') }}
         restore-keys: |
           ${{ runner.os }}-dependencies-
 
@@ -56,7 +59,11 @@ jobs:
         python -m pip install --upgrade pip
         pip install pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-        python -m pip install paddlepaddle==3.2.0 -i https://www.paddlepaddle.org.cn/packages/stable/cpu/
+        if [[ "${{ matrix.python-version }}" == "3.8" ]]; then
+          python -m pip install paddlepaddle==3.2.0 -i https://www.paddlepaddle.org.cn/packages/stable/cpu/
+        else
+          python -m pip install paddlepaddle==3.3.0 -i https://www.paddlepaddle.org.cn/packages/stable/cpu/
+        fi
         python -m pip install -e '.[all]' 'paddlex@git+https://github.com/PaddlePaddle/PaddleX.git@develop'
     - name: Test with pytest
       run: |
