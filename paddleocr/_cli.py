@@ -165,6 +165,77 @@ def _register_genai_server_command(subparsers):
     subparser.set_defaults(executor=_run_genai_server)
 
 
+def _register_doc2md_command(subparsers):
+    """注册 doc2md 子命令"""
+
+    def _execute_doc2md(args):
+        if args.formats:
+            from ._doc2md import supported_formats
+
+            fmts = supported_formats()
+            print("支持的格式: " + ", ".join(f".{f}" for f in fmts))
+            return
+
+        from ._doc2md import convert
+        import time
+
+        input_path = args.input
+        output = args.output
+        quiet = args.quiet
+
+        t1 = time.time()
+        try:
+            result = convert(input_path, output=output)
+        except Exception as e:
+            logger.error(f"转换失败: {e}")
+            sys.exit(1)
+
+        elapsed = (time.time() - t1) * 1000
+        if not quiet:
+            logger.info(f"转换完成，耗时 {elapsed:.0f} ms")
+
+        if output:
+            if not quiet:
+                logger.info(f"已保存到: {output}")
+                if result.images:
+                    from pathlib import Path
+
+                    logger.info(f"图片已保存到: {Path(output).parent / 'images'}/")
+        else:
+            print(result.markdown)
+
+    subparser = subparsers.add_parser(
+        "doc2md",
+        help="将办公文档（docx/xlsx/pptx）转换为 Markdown",
+    )
+    subparser.add_argument(
+        "-i",
+        "--input",
+        type=str,
+        default=None,
+        help="输入文件路径（支持 .docx/.xlsx/.pptx）",
+    )
+    subparser.add_argument(
+        "-o",
+        "--output",
+        type=str,
+        default=None,
+        help="输出 Markdown 文件路径（不指定则输出到 stdout）",
+    )
+    subparser.add_argument(
+        "-q",
+        "--quiet",
+        action="store_true",
+        help="静默模式",
+    )
+    subparser.add_argument(
+        "--formats",
+        action="store_true",
+        help="列出支持的格式并退出",
+    )
+    subparser.set_defaults(executor=_execute_doc2md)
+
+
 def _get_parser():
     parser = argparse.ArgumentParser(prog="paddleocr")
     parser.add_argument(
@@ -176,6 +247,7 @@ def _get_parser():
     _register_install_hpi_deps_command(subparsers)
     _register_install_genai_server_deps_command(subparsers)
     _register_genai_server_command(subparsers)
+    _register_doc2md_command(subparsers)
     return parser
 
 

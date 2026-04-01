@@ -41,6 +41,9 @@ from ._pipelines import (
     SealRecognition,
     TableRecognitionPipelineV2,
 )
+from ._doc2md import convert as doc2md_convert
+from ._doc2md import convert_bytes as doc2md_convert_bytes
+from ._doc2md import supported_formats as doc2md_supported_formats
 from ._utils.logging import logger
 from ._version import version as __version__
 
@@ -69,6 +72,9 @@ __all__ = [
     "PPStructureV3",
     "SealRecognition",
     "TableRecognitionPipelineV2",
+    "doc2md_convert",
+    "doc2md_convert_bytes",
+    "doc2md_supported_formats",
     "logger",
     "__version__",
 ]
