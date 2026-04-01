@@ -42,7 +42,7 @@ English | [简体中文](./readme/README_cn.md) | [繁體中文](./readme/README
 * **Production-Ready Efficiency**: Achieve commercial-grade accuracy with an ultra-small footprint. Outperforms numerous closed-source solutions in public benchmarks while remaining resource-efficient for edge/cloud deployment.
 
 ### 🔍 Universal Text Recognition (Scene OCR)
-> *The global gold standard for high-speed, multilingual text spotting.*
+> *The global gold standard for high-speed, multi-lingual text spotting.*
 
 * **100+ Languages Supported**: Native recognition for a vast global library. Our **PP-OCRv5** single-model solution elegantly handles multilingual mixed documents (Chinese, English, Japanese, Pinyin, etc.).
 * **Complex Element Mastery**: Beyond standard text recognition, we support **natural scene text spotting** across a wide range of environments, including IDs, street views, books, and industrial components
