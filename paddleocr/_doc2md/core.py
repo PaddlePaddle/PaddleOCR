@@ -48,7 +48,7 @@ def convert(
     if output:
         output_path = Path(output)
         output_path.parent.mkdir(parents=True, exist_ok=True)
-        output_path.write_text(result.markdown, encoding="utf-8-sig")
+        output_path.write_text(result.markdown, encoding="utf-8")
         if result.images:
             images_dir = output_path.parent / "images"
             images_dir.mkdir(exist_ok=True)

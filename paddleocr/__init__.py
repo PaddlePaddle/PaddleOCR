@@ -41,11 +41,30 @@ from ._pipelines import (
     SealRecognition,
     TableRecognitionPipelineV2,
 )
-from ._doc2md import convert as doc2md_convert
-from ._doc2md import convert_bytes as doc2md_convert_bytes
-from ._doc2md import supported_formats as doc2md_supported_formats
 from ._utils.logging import logger
 from ._version import version as __version__
+
+
+def doc2md_convert(source, **kwargs):
+    """Convert an office document to Markdown. See paddleocr._doc2md.convert."""
+    from ._doc2md import convert
+
+    return convert(source, **kwargs)
+
+
+def doc2md_convert_bytes(data, filename, **kwargs):
+    """Convert raw bytes to Markdown. See paddleocr._doc2md.convert_bytes."""
+    from ._doc2md import convert_bytes
+
+    return convert_bytes(data, filename, **kwargs)
+
+
+def doc2md_supported_formats():
+    """Return supported file extensions. See paddleocr._doc2md.supported_formats."""
+    from ._doc2md import supported_formats
+
+    return supported_formats()
+
 
 __all__ = [
     "benchmark",

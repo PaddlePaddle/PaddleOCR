@@ -63,10 +63,9 @@ def _detect_heading_level(para, body_font_size: float) -> int:
     return 0
 
 
-def _runs_to_markdown(runs) -> str:
-    """Convert a list of runs to Markdown inline text, merging adjacent runs with identical formatting."""
-    # Merge adjacent runs that share the same bold/italic state
-    merged: list[tuple[bool, bool, str]] = []  # (bold, italic, text)
+def _merge_runs(runs) -> list:
+    """Merge adjacent runs with identical bold/italic state. Returns [(bold, italic, text)]."""
+    merged: list[tuple[bool, bool, str]] = []
     for run in runs:
         if not run.text:
             continue
@@ -76,9 +75,13 @@ def _runs_to_markdown(runs) -> str:
             merged[-1] = (bold, italic, merged[-1][2] + run.text)
         else:
             merged.append((bold, italic, run.text))
+    return merged
 
+
+def _runs_to_markdown(runs) -> str:
+    """Convert a list of runs to Markdown inline text, merging adjacent runs with identical formatting."""
     parts = []
-    for bold, italic, text in merged:
+    for bold, italic, text in _merge_runs(runs):
         if bold or italic:
             # CommonMark: marker characters must not be surrounded by spaces
             leading = len(text) - len(text.lstrip())
@@ -109,19 +112,8 @@ def _runs_to_markdown(runs) -> str:
 
 def _runs_to_html(runs) -> str:
     """Convert a list of runs to HTML inline text."""
-    merged: list[tuple[bool, bool, str]] = []
-    for run in runs:
-        if not run.text:
-            continue
-        bold = bool(run.bold)
-        italic = bool(run.italic)
-        if merged and merged[-1][0] == bold and merged[-1][1] == italic:
-            merged[-1] = (bold, italic, merged[-1][2] + run.text)
-        else:
-            merged.append((bold, italic, run.text))
-
     parts = []
-    for bold, italic, text in merged:
+    for bold, italic, text in _merge_runs(runs):
         if bold:
             text = f"<b>{text}</b>"
         if italic:

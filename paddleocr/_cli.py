@@ -166,72 +166,73 @@ def _register_genai_server_command(subparsers):
 
 
 def _register_doc2md_command(subparsers):
-    """注册 doc2md 子命令"""
+    """Register the doc2md subcommand."""
 
     def _execute_doc2md(args):
         if args.formats:
             from ._doc2md import supported_formats
 
             fmts = supported_formats()
-            print("支持的格式: " + ", ".join(f".{f}" for f in fmts))
+            print("Supported formats: " + ", ".join(f".{f}" for f in fmts))
             return
 
-        from ._doc2md import convert
-        import time
+        if not args.input:
+            logger.error("--input is required when --formats is not set")
+            sys.exit(2)
 
-        input_path = args.input
+        from ._doc2md import convert
+        from pathlib import Path
+
         output = args.output
         quiet = args.quiet
 
         t1 = time.time()
         try:
-            result = convert(input_path, output=output)
+            result = convert(args.input, output=output)
         except Exception as e:
-            logger.error(f"转换失败: {e}")
+            logger.error(f"Conversion failed: {e}")
             sys.exit(1)
 
         elapsed = (time.time() - t1) * 1000
         if not quiet:
-            logger.info(f"转换完成，耗时 {elapsed:.0f} ms")
+            logger.info(f"Conversion done in {elapsed:.0f} ms")
 
         if output:
             if not quiet:
-                logger.info(f"已保存到: {output}")
+                logger.info(f"Saved to: {output}")
                 if result.images:
-                    from pathlib import Path
-
-                    logger.info(f"图片已保存到: {Path(output).parent / 'images'}/")
+                    logger.info(f"Images saved to: {Path(output).parent / 'images'}/")
         else:
             print(result.markdown)
 
     subparser = subparsers.add_parser(
         "doc2md",
-        help="将办公文档（docx/xlsx/pptx）转换为 Markdown",
+        help="Convert office documents (docx/xlsx/pptx) to Markdown",
     )
     subparser.add_argument(
         "-i",
         "--input",
         type=str,
         default=None,
-        help="输入文件路径（支持 .docx/.xlsx/.pptx）",
+        help="Input file path (.docx/.xlsx/.pptx)",
     )
     subparser.add_argument(
         "-o",
         "--output",
         type=str,
         default=None,
-        help="输出 Markdown 文件路径（不指定则输出到 stdout）",
+        help="Output Markdown file path (prints to stdout if omitted)",
     )
     subparser.add_argument(
         "-q",
         "--quiet",
         action="store_true",
-        help="静默模式",
+        help="Suppress informational output",
     )
     subparser.add_argument(
         "--formats",
         action="store_true",
-        help="列出支持的格式并退出",
+        help="List supported formats and exit",
     )
     subparser.set_defaults(executor=_execute_doc2md)
 
