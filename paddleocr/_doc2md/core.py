@@ -3,7 +3,6 @@ from typing import Union, Optional
 
 from .base import ConvertResult
 from .registry import default_registry
-from .exceptions import ConversionError
 
 # Trigger registration of all built-in converters
 from . import converters  # noqa: F401
@@ -41,9 +40,9 @@ def convert(
     try:
         result = converter.convert_file(file_path, **kwargs)
     except Exception as e:
-        if isinstance(e, (FileNotFoundError, ConversionError)):
+        if isinstance(e, (FileNotFoundError, ValueError, RuntimeError)):
             raise
-        raise ConversionError(f"Failed to convert {file_path.name}: {e}") from e
+        raise RuntimeError(f"Failed to convert {file_path.name}: {e}") from e
 
     if output:
         output_path = Path(output)

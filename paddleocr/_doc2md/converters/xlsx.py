@@ -3,7 +3,6 @@ from pathlib import Path
 from typing import Optional
 
 from ..base import BaseConverter, ConvertResult
-from ..exceptions import ConversionError
 from ..registry import default_registry
 
 
@@ -92,7 +91,7 @@ class XlsxConverter(BaseConverter):
                 TwoCellAnchor,
             )
         except ImportError:
-            raise ConversionError(
+            raise RuntimeError(
                 "XLSX conversion requires openpyxl: pip install paddleocr[doc2md]"
             )
 

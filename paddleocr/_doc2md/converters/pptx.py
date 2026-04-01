@@ -1,7 +1,6 @@
 from pathlib import Path
 
 from ..base import BaseConverter, ConvertResult
-from ..exceptions import ConversionError
 from ..registry import default_registry
 
 
@@ -17,7 +16,7 @@ class PptxConverter(BaseConverter):
             from pptx import Presentation
             from pptx.shapes.picture import Picture  # noqa: F401
         except ImportError:
-            raise ConversionError(
+            raise RuntimeError(
                 "PPTX conversion requires python-pptx: pip install paddleocr[doc2md]"
             )
 

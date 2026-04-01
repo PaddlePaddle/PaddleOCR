@@ -3,7 +3,6 @@ from collections import Counter
 from pathlib import Path
 
 from ..base import BaseConverter, ConvertResult
-from ..exceptions import ConversionError
 from ..registry import default_registry
 
 # Regex patterns for Chinese numbered headings
@@ -330,7 +329,7 @@ def _convert_body(doc) -> tuple:
         from docx.table import Table
         from docx.text.paragraph import Paragraph
     except ImportError:
-        raise ConversionError(
+        raise RuntimeError(
             "DOCX conversion requires python-docx: pip install paddleocr[doc2md]"
         )
 
@@ -459,7 +458,7 @@ class DocxConverter(BaseConverter):
         try:
             from docx import Document
         except ImportError:
-            raise ConversionError(
+            raise RuntimeError(
                 "DOCX conversion requires python-docx: pip install paddleocr[doc2md]"
             )
 

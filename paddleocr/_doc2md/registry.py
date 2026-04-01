@@ -3,7 +3,6 @@ from pathlib import Path
 from typing import Type
 
 from .base import BaseConverter
-from .exceptions import UnsupportedFormatError
 
 
 class ConverterRegistry:
@@ -32,9 +31,7 @@ class ConverterRegistry:
             return self._mime_map[mime_type]()
 
         supported = ", ".join(f".{e}" for e in sorted(self._ext_map.keys()))
-        raise UnsupportedFormatError(
-            f"Unsupported format: .{ext}\nSupported formats: {supported}"
-        )
+        raise ValueError(f"Unsupported format: .{ext}\nSupported formats: {supported}")
 
     def supported_extensions(self) -> list[str]:
         return sorted(self._ext_map.keys())
