@@ -118,6 +118,8 @@ plugins:
             PaddleOCR-VL 天数 GPU 使用教程: PaddleOCR-VL Iluvatar GPU Usage Tutorial
             PaddleOCR-VL 华为昇腾 NPU 使用教程: PaddleOCR-VL Huawei Ascend NPU Usage Tutorial
             PaddleOCR-VL Apple Silicon 使用教程: PaddleOCR-VL Apple Silicon Usage Tutorial
+            PaddleOCR-VL AMD GPU 使用教程: PaddleOCR-VL AMD GPU Usage Tutorial
+            PaddleOCR-VL Intel Arc GPU 使用教程: PaddleOCR-VL Intel Arc GPU Usage Tutorial
             推理部署: Model Deploy
             高性能推理: High-Performance Inference
             打包PaddleOCR项目: Package PaddleOCR Projects
@@ -316,6 +318,8 @@ nav:
     - PaddleOCR-VL 天数 GPU 使用教程: version3.x/pipeline_usage/PaddleOCR-VL-Iluvatar-GPU.md
     - PaddleOCR-VL 华为昇腾 NPU 使用教程: version3.x/pipeline_usage/PaddleOCR-VL-Huawei-Ascend-NPU.md
     - PaddleOCR-VL Apple Silicon 使用教程: version3.x/pipeline_usage/PaddleOCR-VL-Apple-Silicon.md
+    - PaddleOCR-VL AMD GPU 使用教程: version3.x/pipeline_usage/PaddleOCR-VL-AMD-GPU.md
+    - PaddleOCR-VL Intel Arc GPU 使用教程: version3.x/pipeline_usage/PaddleOCR-VL-Intel-Arc-GPU.md
   - 推理部署:
     - 高性能推理: version3.x/deployment/high_performance_inference.md
     - 获取ONNX模型: version3.x/deployment/obtaining_onnx_models.md
