@@ -52,13 +52,6 @@ def doc2md_convert(source, **kwargs):
     return convert(source, **kwargs)
 
 
-def doc2md_convert_bytes(data, filename, **kwargs):
-    """Convert raw bytes to Markdown. See paddleocr._doc2md.convert_bytes."""
-    from ._doc2md import convert_bytes
-
-    return convert_bytes(data, filename, **kwargs)
-
-
 def doc2md_supported_formats():
     """Return supported file extensions. See paddleocr._doc2md.supported_formats."""
     from ._doc2md import supported_formats
@@ -92,7 +85,6 @@ __all__ = [
     "SealRecognition",
     "TableRecognitionPipelineV2",
     "doc2md_convert",
-    "doc2md_convert_bytes",
     "doc2md_supported_formats",
     "logger",
     "__version__",

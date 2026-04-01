@@ -58,19 +58,6 @@ def convert(
     return result
 
 
-def convert_bytes(data: bytes, filename: str, **kwargs) -> ConvertResult:
-    """
-    Convert from raw bytes (e.g. web upload scenarios).
-
-    Args:
-        data: Raw file bytes.
-        filename: Original filename used to determine the format.
-    """
-    fake_path = Path(filename)
-    converter = default_registry.get_converter(fake_path)
-    return converter.convert_bytes(data, original_filename=filename, **kwargs)
-
-
 def supported_formats() -> list[str]:
     """Return a list of supported file extensions."""
     return default_registry.supported_extensions()
