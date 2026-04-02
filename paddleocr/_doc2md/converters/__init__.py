@@ -11,6 +11,6 @@ _converter_modules = [
 for _mod in _converter_modules:
     try:
         importlib.import_module(f".{_mod}", package=__name__)
-    except Exception:
+    except ImportError:
         # Silently skip missing optional dependencies; users will get a clear error on actual use
         pass
