@@ -8,7 +8,7 @@ PaddleOCR 官方浏览器 OCR SDK 与演示应用。
 
 | 路径 | 作用 |
 |------|------|
-| `packages/core/` | 浏览器 SDK 源码；发布到 npm 时的包名为 **`paddleocr-js`** |
+| `packages/core/` | 浏览器 SDK 源码；发布到 npm 时的包名为 **`@paddleocr/paddleocr-js`** |
 | `apps/demo/` | 依赖该 SDK 的 Vite 演示应用 |
 
 ## 快速开始

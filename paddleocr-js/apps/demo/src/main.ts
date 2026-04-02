@@ -1,5 +1,5 @@
-import { PaddleOCR } from "paddleocr-js";
-import type { OcrResult, OcrResultItem, Point2D } from "paddleocr-js";
+import { PaddleOCR } from "@paddleocr/paddleocr-js";
+import type { OcrResult, OcrResultItem, Point2D } from "@paddleocr/paddleocr-js";
 
 type OcrEngine = Awaited<ReturnType<typeof PaddleOCR.create>>;
 

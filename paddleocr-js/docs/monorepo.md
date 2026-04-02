@@ -13,13 +13,13 @@ npm run dev --workspace apps/demo
 
 ## Workspace roles
 
-- `packages/*`: reusable packages; the SDK lives under `packages/core` but keeps the **npm package name** `paddleocr-js`
+- `packages/*`: reusable packages; the SDK lives under `packages/core` but keeps the **npm package name** `@paddleocr/paddleocr-js`
 - `apps/*`: private applications such as demos (`apps/demo`); not published to npm as products
 
 ## Versioning and release
 
 - **Directory:** `packages/core` — SDK source and publish manifest for the public package
-- **npm package name:** `paddleocr-js` — what consumers `npm install` and import in code
+- **npm package name:** `@paddleocr/paddleocr-js` — what consumers `npm install` and import in code
 - **Directory:** `apps/demo` — private demo, not an npm release target
 - Changesets manages versioning; the demo package is ignored in `.changeset/config.json`
 - `npm run release` builds the SDK and publishes via `changeset publish`

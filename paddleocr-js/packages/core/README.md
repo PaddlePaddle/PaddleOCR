@@ -2,18 +2,18 @@
 
 English | [简体中文](README_cn.md)
 
-`paddleocr-js` is the browser SDK package for running PaddleOCR pipelines in the frontend.
+`@paddleocr/paddleocr-js` is the browser SDK package for running PaddleOCR pipelines in the frontend.
 
 ## Install
 
 ```bash
-npm install paddleocr-js
+npm install @paddleocr/paddleocr-js
 ```
 
 ## Quick Start
 
 ```js
-import { PaddleOCR } from "paddleocr-js";
+import { PaddleOCR } from "@paddleocr/paddleocr-js";
 
 const ocr = await PaddleOCR.create({
   lang: "ch",
@@ -85,7 +85,7 @@ await PaddleOCR.create({
 ### 2. Pipeline config
 
 ```js
-import { PaddleOCR } from "paddleocr-js";
+import { PaddleOCR } from "@paddleocr/paddleocr-js";
 
 const pipelineConfig = `
 pipeline_name: OCR
@@ -126,7 +126,7 @@ In worker mode (see next section), `cv.Mat` is not transferable and is therefore
 You can run the OCR pipeline inside a dedicated Worker while keeping the same high-level API:
 
 ```js
-import { PaddleOCR } from "paddleocr-js";
+import { PaddleOCR } from "@paddleocr/paddleocr-js";
 
 const ocr = await PaddleOCR.create({
   lang: "ch",

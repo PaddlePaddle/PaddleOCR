@@ -4,7 +4,7 @@
 
 The `paddleocr-js` folder has two main parts:
 
-- `packages/core`: the browser PaddleOCR SDK (published on npm as `paddleocr-js`)
+- `packages/core`: the browser PaddleOCR SDK (published on npm as `@paddleocr/paddleocr-js`)
 - `apps/demo`: a demo application for PP-OCR that consumes the SDK
 
 ## SDK package layout (`packages/core`)

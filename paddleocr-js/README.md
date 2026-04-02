@@ -8,7 +8,7 @@ Official browser OCR SDK and demo for PaddleOCR.
 
 | Path | Role |
 |------|------|
-| `packages/core/` | Browser SDK sources; published to npm as **`paddleocr-js`** |
+| `packages/core/` | Browser SDK sources; published to npm as **`@paddleocr/paddleocr-js`** |
 | `apps/demo/` | Vite demo app that depends on the SDK |
 
 ## Quick start

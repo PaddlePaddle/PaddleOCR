@@ -1,5 +1,5 @@
 {
-  "name": "paddleocr-js",
+  "name": "@paddleocr/paddleocr-js",
   "version": "0.1.0",
   "description": "Browser-based OCR SDK powered by PaddleOCR, ONNX Runtime Web and OpenCV.js",
   "license": "Apache-2.0",
@@ -13,6 +13,9 @@
   "homepage": "https://github.com/PaddlePaddle/PaddleOCR/tree/main/paddleocr-js",
   "bugs": {
     "url": "https://github.com/PaddlePaddle/PaddleOCR/issues"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
@@ -66,6 +69,6 @@
     "@types/js-yaml": "^4.0.9",
     "typescript": "^5.9.3",
     "vite": "^6.4.1",
-    "vite-plugin-dts": "^4.5.4"
+    "vite-plugin-dts": "^1.0.5"
   }
 }

@@ -2,18 +2,18 @@
 
 [English](README.md) | 简体中文
 
-`paddleocr-js` 是在前端运行 PaddleOCR 产线的浏览器 SDK 包。
+`@paddleocr/paddleocr-js` 是在前端运行 PaddleOCR 产线的浏览器 SDK 包。
 
 ## 安装
 
 ```bash
-npm install paddleocr-js
+npm install @paddleocr/paddleocr-js
 ```
 
 ## 快速开始
 
 ```js
-import { PaddleOCR } from "paddleocr-js";
+import { PaddleOCR } from "@paddleocr/paddleocr-js";
 
 const ocr = await PaddleOCR.create({
   lang: "ch",
@@ -85,7 +85,7 @@ await PaddleOCR.create({
 ### 2. 产线配置
 
 ```js
-import { PaddleOCR } from "paddleocr-js";
+import { PaddleOCR } from "@paddleocr/paddleocr-js";
 
 const pipelineConfig = `
 pipeline_name: OCR
@@ -126,7 +126,7 @@ const ocr = await PaddleOCR.fromPipelineConfig(pipelineConfig);
 你可以在专用 Worker 中运行 OCR 产线，同时保持相同的高层 API：
 
 ```js
-import { PaddleOCR } from "paddleocr-js";
+import { PaddleOCR } from "@paddleocr/paddleocr-js";
 
 const ocr = await PaddleOCR.create({
   lang: "ch",

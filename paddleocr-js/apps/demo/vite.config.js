@@ -4,7 +4,7 @@ import { defineConfig } from "vite";
 export default defineConfig(({ command }) => ({
   resolve: {
     alias: command === 'serve' ? {
-      "paddleocr-js": resolve(__dirname, "../../packages/core/src/index.ts")
+      "@paddleocr/paddleocr-js": resolve(__dirname, "../../packages/core/src/index.ts")
     } : {}
   },
   worker: {

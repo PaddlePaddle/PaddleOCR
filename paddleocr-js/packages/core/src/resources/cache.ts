@@ -17,7 +17,7 @@ export interface AssetDownloadSummary {
   bytes: number;
 }
 
-const CACHE_NAME = "paddleocr-js-model-cache";
+const CACHE_NAME = "paddleocr-paddleocr-js-model-cache";
 const memoryCache = new Map<string, Response>();
 
 function getCacheKey(asset: ResourceAsset): string {
