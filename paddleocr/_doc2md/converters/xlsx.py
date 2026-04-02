@@ -77,10 +77,9 @@ def _find_data_bounds(ws, image_map, max_rows=None):
 
 @default_registry.register
 class XlsxConverter(BaseConverter):
-    supported_extensions = ["xlsx", "xls"]
+    supported_extensions = ["xlsx"]
     supported_mimetypes = [
         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-        "application/vnd.ms-excel",
     ]
 
     def convert_file(self, file_path: Path, **kwargs) -> ConvertResult:
