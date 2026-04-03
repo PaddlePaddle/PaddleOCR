@@ -17,6 +17,11 @@ from ..base import BaseConverter, ConvertResult
 from ..registry import default_registry
 
 
+def _escape_md_url(url: str) -> str:
+    """Escape parentheses in URL for Markdown link syntax."""
+    return url.replace("(", "%28").replace(")", "%29")
+
+
 @default_registry.register
 class PptxConverter(BaseConverter):
     supported_extensions = ["pptx"]
@@ -160,7 +165,20 @@ class PptxConverter(BaseConverter):
         # 5. TextFrame
         if shape.has_text_frame:
             for paragraph in shape.text_frame.paragraphs:
-                text = paragraph.text.strip()
+                parts = []
+                for run in paragraph.runs:
+                    t = run.text
+                    if not t:
+                        continue
+                    try:
+                        url = run.hyperlink.address
+                    except Exception:
+                        url = None
+                    if url:
+                        parts.append(f"[{t}]({_escape_md_url(url)})")
+                    else:
+                        parts.append(t)
+                text = "".join(parts).strip()
                 if not text:
                     continue
                 level = paragraph.level
@@ -276,7 +294,23 @@ class PptxConverter(BaseConverter):
                         except (KeyError, AttributeError):
                             pass
 
-                text = cell.text.strip().replace("\n", "<br>")
+                cell_text_parts = []
+                for para in cell.text_frame.paragraphs:
+                    run_parts = []
+                    for run in para.runs:
+                        t = run.text or ""
+                        if not t:
+                            continue
+                        try:
+                            url = run.hyperlink.address
+                        except Exception:
+                            url = None
+                        if url:
+                            run_parts.append(f'<a href="{url}">{t}</a>')
+                        else:
+                            run_parts.append(t)
+                    cell_text_parts.append("".join(run_parts))
+                text = "<br>".join(p for p in cell_text_parts if p.strip())
                 if text:
                     content_parts.append(text)
                 cell_html = "<br>".join(content_parts) if content_parts else ""

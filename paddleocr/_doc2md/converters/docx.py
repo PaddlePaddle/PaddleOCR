@@ -22,6 +22,18 @@ from ..registry import default_registry
 _RE_H2 = re.compile(r"^[一二三四五六七八九十百千]+[、．.]")
 _RE_H3 = re.compile(r"^（[一二三四五六七八九十百千]+）")
 
+# Regex for field-code hyperlink instruction
+_RE_FIELD_HYPERLINK = re.compile(r'HYPERLINK\s+"([^"]+)"')
+
+# Word XML namespace
+_W_NS = "http://schemas.openxmlformats.org/wordprocessingml/2006/main"
+_W = "{" + _W_NS + "}"
+
+
+def _escape_md_url(url: str) -> str:
+    """Escape parentheses in URL for Markdown link syntax."""
+    return url.replace("(", "%28").replace(")", "%29")
+
 
 def _get_body_font_size(doc) -> float:
     """Return the most common font size in the document (used as body size). Defaults to 16.0."""
@@ -75,25 +87,130 @@ def _detect_heading_level(para, body_font_size: float) -> int:
     return 0
 
 
-def _merge_runs(runs) -> list:
-    """Merge adjacent runs with identical bold/italic state. Returns [(bold, italic, text)]."""
-    merged: list[tuple[bool, bool, str]] = []
-    for run in runs:
-        if not run.text:
+def _parse_field_hyperlinks(para) -> dict:
+    """Parse w:fldChar field-code hyperlinks in a paragraph.
+
+    Returns {id(run_element): url} for runs that are display text of a HYPERLINK field.
+    Handles nested fields (e.g. PAGEREF inside a hyperlink result phase) via depth counter.
+    """
+    field_urls: dict[int, str] = {}
+    phase = None  # None | "instr" | "result"
+    field_url = None
+    nest_depth = 0  # depth of nested fields inside result phase
+
+    for child in para._element:
+        tag = child.tag.split("}")[-1] if "}" in child.tag else child.tag
+        if tag != "r":
             continue
-        bold = bool(run.bold)
-        italic = bool(run.italic)
-        if merged and merged[-1][0] == bold and merged[-1][1] == italic:
-            merged[-1] = (bold, italic, merged[-1][2] + run.text)
+        fld_char = child.find(f"{_W}fldChar")
+        if fld_char is not None:
+            fld_type = fld_char.get(f"{_W}fldCharType")
+            if fld_type == "begin":
+                if phase == "result":
+                    # Nested field (e.g. PAGEREF), increase depth and skip
+                    nest_depth += 1
+                else:
+                    phase = "instr"
+                    field_url = None
+            elif fld_type == "separate":
+                if nest_depth == 0:
+                    phase = "result"
+            elif fld_type == "end":
+                if nest_depth > 0:
+                    nest_depth -= 1
+                else:
+                    phase = None
+                    field_url = None
+            continue
+
+        instr_elem = child.find(f"{_W}instrText")
+        if instr_elem is not None and phase == "instr" and nest_depth == 0:
+            if instr_elem.text:
+                m = _RE_FIELD_HYPERLINK.search(instr_elem.text)
+                if m:
+                    field_url = m.group(1)
+            continue
+
+        if phase == "result" and nest_depth == 0 and field_url:
+            t_elem = child.find(f"{_W}t")
+            if t_elem is not None and t_elem.text:
+                field_urls[id(child)] = field_url
+
+    return field_urls
+
+
+def _iter_paragraph_items(para) -> list:
+    """Extract (bold, italic, text, url) tuples from a paragraph in document order.
+
+    Handles python-docx Hyperlink objects and w:fldChar field-code hyperlinks.
+    Silently degrades to plain text on error.
+    """
+    try:
+        from docx.text.hyperlink import Hyperlink
+    except ImportError:
+        return [(bool(r.bold), bool(r.italic), r.text, "") for r in para.runs if r.text]
+
+    try:
+        field_urls = _parse_field_hyperlinks(para)
+    except Exception:
+        field_urls = {}
+
+    items = []
+    try:
+        content_iter = para.iter_inner_content()
+    except Exception:
+        return [(bool(r.bold), bool(r.italic), r.text, "") for r in para.runs if r.text]
+
+    for element in content_iter:
+        try:
+            if isinstance(element, Hyperlink):
+                try:
+                    url = element.url or ""
+                except (KeyError, AttributeError):
+                    url = ""
+                for run in element.runs:
+                    if not run.text:
+                        continue
+                    items.append((bool(run.bold), bool(run.italic), run.text, url))
+                # Fallback: hyperlink with no runs but has text
+                if not element.runs and element.text:
+                    items.append((False, False, element.text, url))
+            else:
+                # Plain Run
+                if not element.text:
+                    continue
+                url = field_urls.get(id(element._element), "")
+                items.append(
+                    (bool(element.bold), bool(element.italic), element.text, url)
+                )
+        except Exception:
+            continue
+
+    return items
+
+
+def _merge_runs(items) -> list:
+    """Merge adjacent items with identical (bold, italic, url). Returns [(bold, italic, text, url)]."""
+    merged: list[tuple[bool, bool, str, str]] = []
+    for bold, italic, text, url in items:
+        if not text:
+            continue
+        if (
+            merged
+            and merged[-1][0] == bold
+            and merged[-1][1] == italic
+            and merged[-1][3] == url
+        ):
+            merged[-1] = (bold, italic, merged[-1][2] + text, url)
         else:
-            merged.append((bold, italic, run.text))
+            merged.append((bold, italic, text, url))
     return merged
 
 
-def _runs_to_markdown(runs) -> str:
-    """Convert a list of runs to Markdown inline text, merging adjacent runs with identical formatting."""
+def _runs_to_markdown(items) -> str:
+    """Convert paragraph items to Markdown inline text, merging adjacent items with identical formatting."""
     parts = []
-    for bold, italic, text in _merge_runs(runs):
+    for bold, italic, text, url in _merge_runs(items):
         if bold or italic:
             # CommonMark: marker characters must not be surrounded by spaces
             leading = len(text) - len(text.lstrip())
@@ -109,6 +226,8 @@ def _runs_to_markdown(runs) -> str:
                 elif italic:
                     inner = f"*{inner}*"
                 text = prefix + inner + suffix
+        if url:
+            text = f"[{text}]({_escape_md_url(url)})"
         parts.append(text)
     # Prevent bold/italic markers from merging with adjacent alphanumeric text (CommonMark requirement)
     result = []
@@ -122,14 +241,16 @@ def _runs_to_markdown(runs) -> str:
     return "".join(result)
 
 
-def _runs_to_html(runs) -> str:
-    """Convert a list of runs to HTML inline text."""
+def _runs_to_html(items) -> str:
+    """Convert paragraph items to HTML inline text."""
     parts = []
-    for bold, italic, text in _merge_runs(runs):
+    for bold, italic, text, url in _merge_runs(items):
         if bold:
             text = f"<b>{text}</b>"
         if italic:
             text = f"<i>{text}</i>"
+        if url:
+            text = f'<a href="{url}">{text}</a>'
         parts.append(text)
     return "".join(parts)
 
@@ -210,7 +331,10 @@ def _table_to_html(
                         )
                     else:
                         content_parts.append(f'<img src="images/{filename}">')
-                para_html = _runs_to_html(para.runs).strip() or para.text.strip()
+                para_html = (
+                    _runs_to_html(_iter_paragraph_items(para)).strip()
+                    or para.text.strip()
+                )
                 if para_html:
                     content_parts.append(para_html)
             cell_html = "<br>".join(content_parts) if content_parts else ""
@@ -402,7 +526,7 @@ def _convert_body(doc) -> tuple:
             flush_code_buf()
 
             level = _detect_heading_level(para, body_font_size)
-            inline = _runs_to_markdown(para.runs) or text
+            inline = _runs_to_markdown(_iter_paragraph_items(para)) or text
 
             if level > 0:
                 # Strip outer **...** wrapping that headings may have inherited

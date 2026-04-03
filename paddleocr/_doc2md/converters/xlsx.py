@@ -185,6 +185,14 @@ class XlsxConverter(BaseConverter):
                     # Cell text
                     value = cell.value
                     text = str(value) if value is not None else ""
+                    # Hyperlink wrapping
+                    if text:
+                        try:
+                            hl = cell.hyperlink
+                            if hl and hl.target:
+                                text = f'<a href="{hl.target}">{text}</a>'
+                        except Exception:
+                            pass
 
                     # Floating images
                     cell_images = image_map.get((row_idx - 1, col_idx - 1), [])
