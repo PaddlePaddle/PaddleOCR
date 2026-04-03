@@ -140,15 +140,27 @@ def _parse_field_hyperlinks(para) -> dict:
 
 
 def _iter_paragraph_items(para) -> list:
-    """Extract (bold, italic, text, url) tuples from a paragraph in document order.
+    """Extract (bold, italic, underline, strikethrough, text, url) tuples from a paragraph in document order.
 
     Handles python-docx Hyperlink objects and w:fldChar field-code hyperlinks.
     Silently degrades to plain text on error.
+    Note: underline is forced to False inside Hyperlink runs to avoid Word's default hyperlink underline style.
     """
     try:
         from docx.text.hyperlink import Hyperlink
     except ImportError:
-        return [(bool(r.bold), bool(r.italic), r.text, "") for r in para.runs if r.text]
+        return [
+            (
+                bool(r.bold),
+                bool(r.italic),
+                bool(r.underline),
+                bool(r.font.strike),
+                r.text,
+                "",
+            )
+            for r in para.runs
+            if r.text
+        ]
 
     try:
         field_urls = _parse_field_hyperlinks(para)
@@ -159,7 +171,18 @@ def _iter_paragraph_items(para) -> list:
     try:
         content_iter = para.iter_inner_content()
     except Exception:
-        return [(bool(r.bold), bool(r.italic), r.text, "") for r in para.runs if r.text]
+        return [
+            (
+                bool(r.bold),
+                bool(r.italic),
+                bool(r.underline),
+                bool(r.font.strike),
+                r.text,
+                "",
+            )
+            for r in para.runs
+            if r.text
+        ]
 
     for element in content_iter:
         try:
@@ -171,17 +194,34 @@ def _iter_paragraph_items(para) -> list:
                 for run in element.runs:
                     if not run.text:
                         continue
-                    items.append((bool(run.bold), bool(run.italic), run.text, url))
+                    # Force underline=False: Word's Hyperlink style adds underline by default
+                    items.append(
+                        (
+                            bool(run.bold),
+                            bool(run.italic),
+                            False,
+                            bool(run.font.strike),
+                            run.text,
+                            url,
+                        )
+                    )
                 # Fallback: hyperlink with no runs but has text
                 if not element.runs and element.text:
-                    items.append((False, False, element.text, url))
+                    items.append((False, False, False, False, element.text, url))
             else:
                 # Plain Run
                 if not element.text:
                     continue
                 url = field_urls.get(id(element._element), "")
                 items.append(
-                    (bool(element.bold), bool(element.italic), element.text, url)
+                    (
+                        bool(element.bold),
+                        bool(element.italic),
+                        bool(element.underline),
+                        bool(element.font.strike),
+                        element.text,
+                        url,
+                    )
                 )
         except Exception:
             continue
@@ -190,28 +230,40 @@ def _iter_paragraph_items(para) -> list:
 
 
 def _merge_runs(items) -> list:
-    """Merge adjacent items with identical (bold, italic, url). Returns [(bold, italic, text, url)]."""
-    merged: list[tuple[bool, bool, str, str]] = []
-    for bold, italic, text, url in items:
+    """Merge adjacent items with identical (bold, italic, underline, strikethrough, url).
+
+    Returns [(bold, italic, underline, strikethrough, text, url)].
+    """
+    merged: list[tuple[bool, bool, bool, bool, str, str]] = []
+    for bold, italic, underline, strikethrough, text, url in items:
         if not text:
             continue
         if (
             merged
             and merged[-1][0] == bold
             and merged[-1][1] == italic
-            and merged[-1][3] == url
+            and merged[-1][2] == underline
+            and merged[-1][3] == strikethrough
+            and merged[-1][5] == url
         ):
-            merged[-1] = (bold, italic, merged[-1][2] + text, url)
+            merged[-1] = (
+                bold,
+                italic,
+                underline,
+                strikethrough,
+                merged[-1][4] + text,
+                url,
+            )
         else:
-            merged.append((bold, italic, text, url))
+            merged.append((bold, italic, underline, strikethrough, text, url))
     return merged
 
 
 def _runs_to_markdown(items) -> str:
     """Convert paragraph items to Markdown inline text, merging adjacent items with identical formatting."""
     parts = []
-    for bold, italic, text, url in _merge_runs(items):
-        if bold or italic:
+    for bold, italic, underline, strikethrough, text, url in _merge_runs(items):
+        if bold or italic or underline or strikethrough:
             # CommonMark: marker characters must not be surrounded by spaces
             leading = len(text) - len(text.lstrip())
             trailing = len(text) - len(text.rstrip())
@@ -219,23 +271,30 @@ def _runs_to_markdown(items) -> str:
             suffix = text[len(text) - trailing :] if trailing else ""
             inner = text.strip()
             if inner:
+                # Apply strikethrough first (innermost)
+                if strikethrough:
+                    inner = f"~~{inner}~~"
+                # Apply bold/italic
                 if bold and italic:
                     inner = f"***{inner}***"
                 elif bold:
                     inner = f"**{inner}**"
                 elif italic:
                     inner = f"*{inner}*"
+                # Apply underline last (outermost)
+                if underline:
+                    inner = f"<u>{inner}</u>"
                 text = prefix + inner + suffix
         if url:
             text = f"[{text}]({_escape_md_url(url)})"
         parts.append(text)
-    # Prevent bold/italic markers from merging with adjacent alphanumeric text (CommonMark requirement)
+    # Prevent bold/italic/strikethrough markers from merging with adjacent alphanumeric text (CommonMark requirement)
     result = []
     for i, part in enumerate(parts):
         if i > 0 and result:
             prev = result[-1]
             # Previous part ends with closing marker and current part starts with alphanumeric
-            if prev.endswith(("**", "*")) and part and part[0].isalnum():
+            if prev.endswith(("**", "*", "~~")) and part and part[0].isalnum():
                 result.append("\u200b")
         result.append(part)
     return "".join(result)
@@ -244,11 +303,15 @@ def _runs_to_markdown(items) -> str:
 def _runs_to_html(items) -> str:
     """Convert paragraph items to HTML inline text."""
     parts = []
-    for bold, italic, text, url in _merge_runs(items):
+    for bold, italic, underline, strikethrough, text, url in _merge_runs(items):
         if bold:
             text = f"<b>{text}</b>"
         if italic:
             text = f"<i>{text}</i>"
+        if underline:
+            text = f"<u>{text}</u>"
+        if strikethrough:
+            text = f"<del>{text}</del>"
         if url:
             text = f'<a href="{url}">{text}</a>'
         parts.append(text)

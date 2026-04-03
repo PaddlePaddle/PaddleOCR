@@ -16,6 +16,22 @@ from pathlib import Path
 from ..base import BaseConverter, ConvertResult
 from ..registry import default_registry
 
+# pptx XML namespace for DrawingML run properties
+_A_STRIKE = "{http://schemas.openxmlformats.org/drawingml/2006/main}strike"
+_A_RPR = "{http://schemas.openxmlformats.org/drawingml/2006/main}rPr"
+
+
+def _pptx_run_strike(run) -> bool:
+    """Return True if the run has strikethrough (sngStrike or dblStrike) set in XML."""
+    try:
+        rPr = run._r.find(_A_RPR)
+        if rPr is not None:
+            val = rPr.get(_A_STRIKE)
+            return val in ("sngStrike", "dblStrike")
+    except Exception:
+        pass
+    return False
+
 
 def _escape_md_url(url: str) -> str:
     """Escape parentheses in URL for Markdown link syntax."""
@@ -174,6 +190,31 @@ class PptxConverter(BaseConverter):
                         url = run.hyperlink.address
                     except Exception:
                         url = None
+
+                    bold = bool(run.font.bold)
+                    italic = bool(run.font.italic)
+                    underline = bool(run.font.underline) and not url
+                    strikethrough = _pptx_run_strike(run)
+
+                    if bold or italic or underline or strikethrough:
+                        leading = len(t) - len(t.lstrip())
+                        trailing = len(t) - len(t.rstrip())
+                        prefix = t[:leading] if leading else ""
+                        suffix = t[len(t) - trailing :] if trailing else ""
+                        inner = t.strip()
+                        if inner:
+                            if strikethrough:
+                                inner = f"~~{inner}~~"
+                            if bold and italic:
+                                inner = f"***{inner}***"
+                            elif bold:
+                                inner = f"**{inner}**"
+                            elif italic:
+                                inner = f"*{inner}*"
+                            if underline:
+                                inner = f"<u>{inner}</u>"
+                            t = prefix + inner + suffix
+
                     if url:
                         parts.append(f"[{t}]({_escape_md_url(url)})")
                     else:
@@ -305,6 +346,21 @@ class PptxConverter(BaseConverter):
                             url = run.hyperlink.address
                         except Exception:
                             url = None
+
+                        bold = bool(run.font.bold)
+                        italic = bool(run.font.italic)
+                        underline = bool(run.font.underline) and not url
+                        strikethrough = bool(run.font.strike)
+
+                        if bold:
+                            t = f"<b>{t}</b>"
+                        if italic:
+                            t = f"<i>{t}</i>"
+                        if underline:
+                            t = f"<u>{t}</u>"
+                        if strikethrough:
+                            t = f"<del>{t}</del>"
+
                         if url:
                             run_parts.append(f'<a href="{url}">{t}</a>')
                         else:

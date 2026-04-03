@@ -185,6 +185,20 @@ class XlsxConverter(BaseConverter):
                     # Cell text
                     value = cell.value
                     text = str(value) if value is not None else ""
+                    # Cell-level font formatting (bold/italic/underline/strikethrough)
+                    if text:
+                        try:
+                            font = cell.font
+                            if font.bold:
+                                text = f"<b>{text}</b>"
+                            if font.italic:
+                                text = f"<i>{text}</i>"
+                            if font.underline:
+                                text = f"<u>{text}</u>"
+                            if font.strike:
+                                text = f"<del>{text}</del>"
+                        except Exception:
+                            pass
                     # Hyperlink wrapping
                     if text:
                         try:
