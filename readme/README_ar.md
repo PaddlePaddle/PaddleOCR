@@ -1,568 +1,273 @@
-<div align="center">
-    <p>
-        <img width="100%" src="../docs/images/Banner.png" alt="PaddleOCR Banner">
-    </p>
 
-<!-- language -->
-<p>
+
+<div align="center">
+  <p>
+      <img width="800" src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/paddleocr/README/Banner.png" alt="تاريخ النجوم">
+  </p>
+
+
+
+<h3>مجموعة أدوات التعرف الضوئي على الحروف (OCR) الرائدة عالمياً ومحرك الذكاء الاصطناعي للمستندات</h3>
 
 [English](../README.md) | [简体中文](./README_cn.md) | [繁體中文](./README_tcn.md) | [日本語](./README_ja.md) | [한국어](./README_ko.md) | [Français](./README_fr.md) | [Русский](./README_ru.md) | [Español](./README_es.md) | العربية
 
 <!-- icon -->
 
-[![stars](https://img.shields.io/github/stars/PaddlePaddle/PaddleOCR?color=ccf)](https://github.com/PaddlePaddle/PaddleOCR)
-[![Downloads](https://img.shields.io/pypi/dm/paddleocr)](https://pypi.org/project/PaddleOCR/)
-![python](https://img.shields.io/badge/python-3.8～3.13-aff.svg)
+[![تنزيلات PyPI](https://static.pepy.tech/badge/paddleocr)](https://pepy.tech/projects/paddleocr)
+[![مُستخدَم بواسطة](https://img.shields.io/badge/Used%20by-6k%2B%20repositories-blue)](https://github.com/PaddlePaddle/PaddleOCR/network/dependents)
+![python](https://img.shields.io/badge/python-3.8~3.12-aff.svg)
 ![os](https://img.shields.io/badge/os-linux%2C%20win%2C%20mac-pink.svg)
 ![hardware](https://img.shields.io/badge/hardware-cpu%2C%20gpu%2C%20xpu%2C%20npu-yellow.svg)
 
+[![AI Studio](https://img.shields.io/badge/PaddleOCR-_Offiical_Website-1927BA?logo=data:image/png;base64,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&labelColor=white)](https://www.paddleocr.com)
+[![اسأل DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/PaddlePaddle/PaddleOCR)
+[![الرخصة](https://img.shields.io/badge/license-Apache_2.0-green)](../LICENSE)
 
-[![AI Studio](https://img.shields.io/badge/PP_OCRv5-AI_Studio-green)](https://aistudio.baidu.com/community/app/91660/webUI)
-[![AI Studio](https://img.shields.io/badge/PP_StructureV3-AI_Studio-green)](https://aistudio.baidu.com/community/app/518494/webUI)
-[![AI Studio](https://img.shields.io/badge/PP_ChatOCRv4-AI_Studio-green)](https://aistudio.baidu.com/community/app/518493/webUI)
-
-</p>
 </div>
 
-<div dir="rtl">
 
-## 🚀 مقدمة
-منذ إصداره الأولي، حظي PaddleOCR بتقدير واسع النطاق في الأوساط الأكاديمية والصناعية والبحثية، بفضل خوارزمياته المتطورة وأدائه المثبت في تطبيقات العالم الحقيقي. وهو يدعم بالفعل مشاريع مفتوحة المصدر شهيرة مثل Umi-OCR، و OmniParser، و MinerU، و RAGFlow، مما يجعله مجموعة أدوات التعرف الضوئي على الحروف المفضلة للمطورين في جميع أنحاء العالم.
 
-في 20 مايو 2025، كشف فريق PaddlePaddle عن PaddleOCR 3.0، المتوافق تمامًا مع الإصدار الرسمي لإطار العمل **PaddlePaddle 3.0**. يعزز هذا التحديث **دقة التعرف على النصوص**، ويضيف دعمًا لـ **التعرف على أنواع نصوص متعددة** و **التعرف على الكتابة اليدوية**، ويلبي الطلب المتزايد من التطبيقات القائمة على النماذج الكبيرة على **التحليل عالي الدقة للمستندات المعقدة**. عند دمجه مع **ERNIE 4.5**، فإنه يعزز بشكل كبير دقة استخراج المعلومات الرئيسية. كما يقدم PaddleOCR 3.0 دعمًا لمسرعات الذكاء الاصطناعي الصينية غير المتجانسة مثل **Kunlunxin** و **Ascend**. للحصول على وثائق الاستخدام الكاملة، يرجى الرجوع إلى [وثائق PaddleOCR 3.0](https://paddlepaddle.github.io/PaddleOCR/latest/en/index.html).
 
-##### ثلاث ميزات رئيسية جديدة في PaddleOCR 3.0:
-نموذج التعرف على النصوص في جميع السيناريوهات [PP-OCRv5](../docs/version3.x/algorithm/PP-OCRv5/PP-OCRv5.en.md): نموذج واحد يعالج خمسة أنواع مختلفة من النصوص بالإضافة إلى الكتابة اليدوية المعقدة. زادت دقة التعرف الإجمالية بمقدار 13 نقطة مئوية عن الجيل السابق. [تجربة مباشرة](https://aistudio.baidu.com/community/app/91660/webUI)
 
-حل تحليل المستندات العام [PP-StructureV3](../docs/version3.x/algorithm/PP-StructureV3/PP-StructureV3.en.md): يقدم تحليلًا عالي الدقة لملفات PDF متعددة التخطيطات والسيناريوهات، متفوقًا على العديد من الحلول المفتوحة والمغلقة المصدر في المعايير العامة. [تجربة مباشرة](https://aistudio.baidu.com/community/app/518494/webUI)
 
-حل فهم المستندات الذكي [PP-ChatOCRv4](../docs/version3.x/algorithm/PP-ChatOCRv4/PP-ChatOCRv4.en.md): مدعوم أصلاً بنموذج **ERNIE 4.5**، ويحقق دقة أعلى بنسبة 15 نقطة مئوية من سابقه. [تجربة مباشرة](https://aistudio.baidu.com/community/app/518493/webUI)
+**يحوّل PaddleOCR المستندات والصور إلى بيانات منظمة جاهزة للنماذج اللغوية الكبيرة (JSON/Markdown) بدقة رائدة في المجال. بأكثر من 70 ألف نجمة وثقة مشاريع رائدة مثل Dify وRAGFlow وCherry Studio، يُعد PaddleOCR الأساس المتين لبناء تطبيقات RAG والتطبيقات الوكيلية الذكية.**
 
-بالإضافة إلى توفير مكتبة نماذج متميزة، يقدم PaddleOCR 3.0 أيضًا أدوات سهلة الاستخدام تغطي تدريب النماذج والاستدلال ونشر الخدمات، حتى يتمكن المطورون من إدخال تطبيقات الذكاء الاصطناعي إلى الإنتاج بسرعة.
+
+## 🚀 الميزات الرئيسية
+
+### 📄 تحليل ذكي للمستندات (جاهز للنماذج اللغوية الكبيرة)
+> *تحويل المرئيات المعقدة إلى بيانات منظمة لعصر النماذج اللغوية الكبيرة.*
+
+* **نموذج رؤية-لغة رائد للمستندات**: يتميز بنموذج **PaddleOCR-VL-1.5 (0.9B)**، النموذج خفيف الحجم الرائد في المجال للرؤية واللغة لتحليل المستندات. يتفوق في تحليل المستندات المعقدة عبر 5 تحديات رئيسية من "العالم الواقعي": **التشوه، المسح الضوئي، تصوير الشاشة، الإضاءة، والمستندات المائلة**، مع مخرجات منظمة بصيغ **Markdown** و**JSON**.
+* **تحويل مدرك للبنية**: بدعم من **PP-StructureV3**، يتم تحويل ملفات PDF والصور المعقدة بسلاسة إلى **Markdown** أو **JSON**. على عكس نماذج سلسلة PaddleOCR-VL، يوفر معلومات إحداثية أدق تشمل إحداثيات خلايا الجداول وإحداثيات النصوص وغيرها.
+* **كفاءة جاهزة للإنتاج**: تحقيق دقة بمستوى تجاري مع حجم صغير للغاية. يتفوق على العديد من الحلول المغلقة المصدر في المعايير المرجعية العامة مع الحفاظ على كفاءة استخدام الموارد للنشر على الأجهزة الطرفية والسحابية.
+
+### 🔍 التعرف الشامل على النصوص (OCR للمشاهد)
+> *المعيار الذهبي العالمي للكشف السريع عن النصوص متعددة اللغات.*
+
+* **دعم أكثر من 100 لغة**: تعرف أصلي على مكتبة عالمية واسعة من اللغات. حل **PP-OCRv5** بنموذج واحد يتعامل بأناقة مع المستندات متعددة اللغات المختلطة (الصينية، الإنجليزية، اليابانية، البينيين، وغيرها).
+* **إتقان العناصر المعقدة**: بالإضافة إلى التعرف القياسي على النصوص، ندعم **الكشف عن النصوص في المشاهد الطبيعية** عبر مجموعة واسعة من البيئات، بما في ذلك بطاقات الهوية، ومشاهد الشوارع، والكتب، والمكونات الصناعية.
+* **قفزة في الأداء**: يقدم PP-OCRv5 **تحسيناً بنسبة 13% في الدقة** مقارنة بالإصدارات السابقة، مع الحفاظ على "الكفاءة القصوى" التي اشتهر بها PaddleOCR.
 
 <div align="center">
   <p>
-      <img width="100%" src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/paddleocr/README/Arch.jpg" alt="PaddleOCR Architecture">
+      <img width="100%" src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/paddleocr/README/Arch.jpg" alt="هندسة PaddleOCR">
   </p>
 </div>
 
-**ملاحظة خاصة**: يقدم PaddleOCR 3.x العديد من التغييرات الكبيرة في الواجهات. **من المرجح أن الشيفرة القديمة المبنية على PaddleOCR 2.x غير متوافقة مع PaddleOCR 3.x**. يرجى التأكد من أن الوثائق التي تقرأها تتوافق مع إصدار PaddleOCR الذي تستخدمه. [تشرح هذه الوثيقة](https://paddlepaddle.github.io/PaddleOCR/latest/en/update/upgrade_notes.html) أسباب الترقية والتغييرات الرئيسية من PaddleOCR 2.x إلى 3.x.
+### 🛠️ منظومة مُركّزة على المطورين
+* **تكامل سلس**: الخيار الأمثل لمنظومة الوكلاء الذكيين — متكامل بعمق مع **Dify وRAGFlow وPathway وCherry Studio**.
+* **حلقة بيانات النماذج اللغوية الكبيرة**: خط أنابيب كامل لبناء مجموعات بيانات عالية الجودة، يوفر "محرك بيانات" مستداماً لضبط النماذج اللغوية الكبيرة.
+* **نشر بنقرة واحدة**: دعم لمختلف منصات العتاد (وحدات معالجة الرسومات NVIDIA، معالجات Intel، وحدات Kunlunxin XPU، ومسرّعات الذكاء الاصطناعي المتنوعة).
+
 
 ## 📣 آخر التحديثات
 
-<h4 dir="rtl"><strong>2025.08.21: إصدار <bdi dir="ltr">PaddleOCR 3.2.0</bdi>، يتضمن:</strong></h4>
-<ul dir="rtl">
-  <li><strong>تحديثات النماذج الرئيسية:</strong>
-    <ul dir="rtl">
-      <li>
-        تمت إضافة ميزات التدريب والاستدلال والنشر لنماذج التعرف <bdi dir="ltr">PP-OCRv5</bdi> للغات الإنجليزية والتايلاندية واليونانية.
-        <br>
-        <bdi dir="ltr">النموذج الإنجليزي</bdi> حقق زيادة بنسبة 11% في الدقة مقارنة بالإصدار السابق من <bdi dir="ltr">PP-OCRv5</bdi> في سيناريوهات اللغة الإنجليزية. 
-        <bdi dir="ltr">النموذج التايلاندي</bdi> حقق دقة بنسبة 82.68%،
-        و<bdi dir="ltr">النموذج اليوناني</bdi> حقق دقة بنسبة 89.28%.
-      </li>
-    </ul>
-  </li>
-  <li><strong>تحسين إمكانيات النشر:</strong>
-    <ul dir="rtl">
-      <li>
-        <bdi dir="ltr">دعم كامل لإصداري PaddlePaddle 3.1.0 و 3.1.1.</bdi>
-      </li>
-      <li>
-        <bdi dir="ltr">إعادة هيكلة كاملة لحل النشر المحلي بلغة C++، متوافق مع Linux و Windows، ليحقق نفس الوظائف والدقة كما في إصدار Python.</bdi>
-      </li>
-      <li>
-        <bdi dir="ltr">دعم CUDA 12</bdi> للاستدلال عالي الأداء، مع خيار استخدام <bdi dir="ltr">Paddle Inference</bdi> أو <bdi dir="ltr">ONNX Runtime</bdi>.
-      </li>
-      <li>
-        <bdi dir="ltr">إتاحة الشيفرة المصدرية بالكامل</bdi> لحل النشر كخدمة عالية الاستقرار، مما يمكن المستخدمين من تخصيص صور Docker أو SDK حسب احتياجاتهم.
-      </li>
-      <li>
-        يدعم حل النشر كخدمة عالية الاستقرار أيضاً استدعاءات HTTP يدوياً، مما يسمح للعملاء بالنشر بأي لغة.
-      </li>
-    </ul>
-  </li>
-  <li><strong>دعم مؤشرات الأداء:</strong>
-    <ul dir="rtl">
-      <li>
-        <bdi dir="ltr">توفير وظيفة مؤشرات أداء مفصلة</bdi> عبر سلسلة الإنتاج بالكامل، لقياس زمن الاستدلال من البداية للنهاية وأزمنة تنفيذ الطبقات والوحدات المختلفة، لتسهيل تحليل الأداء.
-      </li>
-      <li>
-        <bdi dir="ltr">توفر الوثائق القيم المرجعية (زمن الاستدلال، استهلاك الذاكرة، إلخ) على أهم منصات العتاد</bdi> لمساعدة المستخدمين في اتخاذ قرارات النشر.
-      </li>
-    </ul>
-  </li>
-  <li><strong>تصحيح الأخطاء:</strong>
-    <ul dir="rtl">
-      <li>
-        تم حل مشكلة عدم حفظ السجلات أثناء تدريب النموذج.
-      </li>
-      <li>
-        <bdi dir="ltr">تكييف جزء زيادة البيانات لنموذج المعادلات مع إصدار albumentations الجديد</bdi> وحل تحذير التعليق المحتمل عند استخدام tokenizers في تعدد العمليات.
-      </li>
-      <li>
-        <bdi dir="ltr">تصحيح عدم تطابق بعض الإشارات مثل use_chart_parsing في ملف إعدادات PP-StructureV3 مقارنة بإصدارات أخرى.</bdi>
-      </li>
-    </ul>
-  </li>
-  <li><strong>تحديثات أخرى:</strong>
-    <ul dir="rtl">
-      <li>
-        <bdi dir="ltr">فصل التبعيات الأساسية عن الاختيارية؛ وظائف التعرف الأساسية تتطلب فقط الحد الأدنى من التبعيات، بينما يمكن تثبيت ميزات إضافية مثل تحليل الوثائق أو استخراج المعلومات حسب الحاجة.</bdi>
-      </li>
-      <li>
-        <bdi dir="ltr">دعم وحدات معالجة الرسومات NVIDIA السلسلة 50 في بيئة Windows، يرجى مراجعة <a href="../docs/version3.x/installation.en.md">دليل التثبيت</a> لاختيار إصدار Paddle المناسب.</bdi>
-      </li>
-      <li>
-        <bdi dir="ltr">نماذج سلسلة PP-OCR تدعم الآن إرجاع إحداثيات كل حرف.</bdi>
-      </li>
-      <li>
-        تمت إضافة مصادر تحميل النماذج مثل AIStudio وModelScope، مع إمكانية الاختيار بينها.
-      </li>
-      <li>
-        دعم الاستدلال لوحدة تحويل الرسومات إلى جداول <bdi dir="ltr">PP-Chart2Table</bdi>.
-      </li>
-      <li>
-        <bdi dir="ltr">تحسين بعض الأوصاف في الوثائق لتعزيز سهولة الاستخدام.</bdi>
-      </li>
-    </ul>
-  </li>
-</ul>
+### 🔥 [2026.01.29] إصدار PaddleOCR v3.4.0: عصر تحليل المستندات غير المنتظمة
+* **PaddleOCR-VL-1.5 (نموذج VLM رائد بحجم 0.9B)**: نموذجنا الرائد الأحدث لتحليل المستندات متاح الآن!
+    * **دقة 94.5% على OmniDocBench**: يتفوق على النماذج الكبيرة العامة الرائدة ومحللات المستندات المتخصصة.
+    * **متانة في العالم الواقعي**: أول من يقدم خوارزمية **PP-DocLayoutV3** لتحديد موقع الأشكال غير المنتظمة، مع إتقان 5 سيناريوهات صعبة: *الميل، التشوه، المسح الضوئي، الإضاءة، وتصوير الشاشة*.
+    * **توسيع القدرات**: يدعم الآن **التعرف على الأختام**، و**الكشف عن النصوص**، ويتوسع ليشمل **111 لغة** (بما في ذلك الخط التبتي الصيني والبنغالية).
+    * **إتقان المستندات الطويلة**: يدعم الدمج التلقائي للجداول عبر الصفحات وتحديد العناوين الهرمية.
+    * **جرّبه الآن**: متاح على [HuggingFace](https://huggingface.co/PaddlePaddle/PaddleOCR-VL-1.5) أو [موقعنا الرسمي](https://www.paddleocr.com).
 
-<h4 dir="rtl"><strong>2025.08.15: إصدار <bdi dir="ltr">PaddleOCR 3.1.1</bdi>، يتضمن:</strong></h4>
-<ul dir="rtl">
-  <li><strong>تصحيح الأخطاء:</strong>
-    <ul dir="rtl">
-      <li>
-        تمت إضافة الطرق الناقصة <bdi dir="ltr">save_vector</bdi>، <bdi dir="ltr">save_visual_info_list</bdi>، <bdi dir="ltr">load_vector</bdi>، و<bdi dir="ltr">load_visual_info_list</bdi> إلى فئة <bdi dir="ltr">PP-ChatOCRv4</bdi>.
-      </li>
-      <li>
-        تمت إضافة المعاملات الناقصة <bdi dir="ltr">glossary</bdi> و<bdi dir="ltr">llm_request_interval</bdi> إلى دالة <bdi dir="ltr">translate</bdi> في فئة <bdi dir="ltr">PPDocTranslation</bdi>.
-      </li>
-    </ul>
-  </li>
-  <li><strong>تحسين الوثائق:</strong>
-    <ul dir="rtl">
-      <li>تمت إضافة عرض توضيحي إلى وثائق <bdi dir="ltr">MCP</bdi>.</li>
-      <li>تمت إضافة توضيحات حول إصدارات <bdi dir="ltr">PaddlePaddle</bdi> و<bdi dir="ltr">PaddleOCR</bdi> المستخدمة في اختبارات مؤشرات الأداء.</li>
-      <li>تم تصحيح الأخطاء والنواقص في وثائق خط إنتاج ترجمة المستندات.</li>
-    </ul>
-  </li>
-  <li><strong>أخرى:</strong>
-    <ul dir="rtl">
-      <li>
-        تعديل تبعيات خادم <bdi dir="ltr">MCP</bdi>: تم استخدام مكتبة <bdi dir="ltr">puremagic</bdi> (بايثون فقط) بدلاً من <bdi dir="ltr">python-magic</bdi> لتقليل مشاكل التثبيت.
-      </li>
-      <li>
-        إعادة اختبار مؤشرات أداء <bdi dir="ltr">PP-OCRv5</bdi> باستخدام إصدار <bdi dir="ltr">PaddleOCR 3.1.0</bdi> وتحديث الوثائق.
-      </li>
-    </ul>
-  </li>
-</ul>
+<details>
+<summary><strong>2025.10.16: إصدار PaddleOCR 3.3.0</strong></summary>
 
-<h4 dir="rtl">🔥🔥<strong>2025.06.29: إصدار <bdi dir="ltr">PaddleOCR 3.1.0</bdi>، يتضمن:</strong></h4>
-<ul dir="rtl">
-  <li><strong>النماذج وخطوط الأنابيب الرئيسية:</strong>
-    <ul dir="rtl">
-      <li>
-        <strong>تمت إضافة نموذج التعرف على النصوص متعدد اللغات <bdi dir="ltr">PP-OCRv5</bdi></strong>، والذي يدعم تدريب واستدلال نماذج التعرف على النصوص في 37 لغة، بما في ذلك الفرنسية، الإسبانية، البرتغالية، الروسية، الكورية وغيرها. <strong>تحسنت الدقة المتوسطة بنسبة تزيد عن 30%.</strong>
-        <a href="https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/algorithm/PP-OCRv5/PP-OCRv5_multi_languages.html">التفاصيل</a>
-      </li>
-      <li>
-        تم ترقية نموذج <bdi dir="ltr">PP-Chart2Table</bdi> في <bdi dir="ltr">PP-StructureV3</bdi>، مما عزز أكثر من إمكانية تحويل المخططات إلى جداول. في مجموعات التقييم الداخلية، ارتفع المقياس (<bdi dir="ltr">RMS-F1</bdi>) بمقدار <strong>9.36 نقطة مئوية (71.24% → 80.60%)</strong>.
-      </li>
-      <li>
-        تم إطلاق خط أنابيب ترجمة المستندات الجديد <bdi dir="ltr">PP-DocTranslation</bdi>، المبني على <bdi dir="ltr">PP-StructureV3</bdi> و <bdi dir="ltr">ERNIE 4.5</bdi>، ويدعم ترجمة مستندات <bdi dir="ltr">Markdown</bdi>، ومستندات <bdi dir="ltr">PDF</bdi> ذات التنسيقات المعقدة وصور المستندات، مع حفظ النتائج كمستندات <bdi dir="ltr">Markdown</bdi>.
-        <a href="https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/pipeline_usage/PP-DocTranslation.html">التفاصيل</a>
-      </li>
-    </ul>
-  </li>
-  <li><strong>دعم MCP:</strong><a href="https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/mcp_server.html">التفاصيل</a>
-    <ul dir="rtl">
-      <li>
-        <strong>يدعم خطوط أنابيب OCR و PP-StructureV3.</strong>
-      </li>
-      <li>
-        يدعم ثلاثة أوضاع عمل: مكتبة Python المحلية، خدمة السحابة المجتمعية AIStudio، وخدمة الاستضافة الذاتية.
-      </li>
-      <li>
-        يدعم استدعاء الخدمات المحلية عبر stdio والخدمات البعيدة عبر Streamable HTTP.
-      </li>
-    </ul>
-  </li>
-  <li><strong>تحسين الوثائق:</strong>
-    <ul dir="rtl">
-      <li>تم تحسين الشروحات في بعض الأدلة للمستخدمين لتوفير تجربة قراءة أكثر سلاسة.</li>
-    </ul>
-  </li>
-</ul>
+- إصدار PaddleOCR-VL:
+    - **تقديم النموذج**:
+        - **PaddleOCR-VL** هو نموذج رائد وموفر للموارد مصمم خصيصاً لتحليل المستندات. مكونه الأساسي هو PaddleOCR-VL-0.9B، وهو نموذج رؤية-لغة (VLM) صغير الحجم لكنه قوي يدمج مشفر بصري ديناميكي الدقة بأسلوب NaViT مع النموذج اللغوي ERNIE-4.5-0.3B لتمكين التعرف الدقيق على العناصر. **يدعم هذا النموذج المبتكر 109 لغات بكفاءة ويتفوق في التعرف على العناصر المعقدة (مثل النصوص والجداول والصيغ الرياضية والرسوم البيانية)، مع الحفاظ على الحد الأدنى من استهلاك الموارد**. من خلال التقييمات الشاملة على المعايير المرجعية العامة المستخدمة على نطاق واسع والمعايير الداخلية، يحقق PaddleOCR-VL أداءً رائداً في كل من تحليل المستندات على مستوى الصفحة والتعرف على العناصر. يتفوق بشكل كبير على الحلول الحالية، ويُظهر تنافسية قوية أمام نماذج VLM الرائدة، ويقدم سرعات استدلال عالية. هذه المزايا تجعله مناسباً جداً للنشر العملي في السيناريوهات الواقعية. تم إصدار النموذج على [HuggingFace](https://huggingface.co/PaddlePaddle/PaddleOCR-VL). نرحب بالجميع لتنزيله واستخدامه! يمكن العثور على مزيد من المعلومات في [PaddleOCR-VL](https://www.paddleocr.ai/latest/version3.x/algorithm/PaddleOCR-VL/PaddleOCR-VL.html).
+
+    - **الميزات الأساسية**:
+        - **بنية VLM صغيرة لكنها قوية**: نقدم نموذج رؤية-لغة مبتكراً مصمماً خصيصاً للاستدلال الموفر للموارد، يحقق أداءً متميزاً في التعرف على العناصر. من خلال دمج مشفر بصري ديناميكي عالي الدقة بأسلوب NaViT مع النموذج اللغوي خفيف الحجم ERNIE-4.5-0.3B، نعزز بشكل كبير قدرات التعرف وكفاءة فك التشفير. يحافظ هذا الدمج على دقة عالية مع تقليل المتطلبات الحسابية، مما يجعله مناسباً تماماً لتطبيقات معالجة المستندات الفعالة والعملية.
+        - **أداء رائد في تحليل المستندات**: يحقق PaddleOCR-VL أداءً رائداً في كل من تحليل المستندات على مستوى الصفحة والتعرف على العناصر. يتفوق بشكل كبير على الحلول القائمة على خطوط الأنابيب ويُظهر تنافسية قوية أمام نماذج الرؤية-اللغة (VLMs) الرائدة في تحليل المستندات. علاوة على ذلك، يتفوق في التعرف على عناصر المستندات المعقدة، مثل النصوص والجداول والصيغ الرياضية والرسوم البيانية، مما يجعله مناسباً لمجموعة واسعة من أنواع المحتوى الصعبة، بما في ذلك النصوص المكتوبة بخط اليد والمستندات التاريخية. وهذا يجعله متعدد الاستخدامات ومناسباً لمجموعة واسعة من أنواع المستندات والسيناريوهات.
+        - **دعم متعدد اللغات**: يدعم PaddleOCR-VL 109 لغات، تغطي اللغات العالمية الرئيسية، بما في ذلك على سبيل المثال لا الحصر الصينية والإنجليزية واليابانية واللاتينية والكورية، بالإضافة إلى لغات ذات خطوط وبنى مختلفة مثل الروسية (الخط السيريلي) والعربية والهندية (خط ديفاناغاري) والتايلاندية. تعزز هذه التغطية اللغوية الواسعة بشكل كبير من قابلية تطبيق نظامنا في سيناريوهات معالجة المستندات متعددة اللغات والعالمية.
+
+- إصدار نموذج التعرف متعدد اللغات PP-OCRv5:
+    - تحسين دقة وتغطية التعرف على الخط اللاتيني؛ إضافة دعم للأنظمة الكتابية السيريلية والعربية والديفاناغارية والتيلوغية والتاميلية وغيرها، مع تغطية التعرف على 109 لغات. يحتوي النموذج على 2 مليون معامل فقط، وقد زادت دقة بعض النماذج بأكثر من 40% مقارنة بالجيل السابق.
+
+</details>
 
 
 <details>
-    <summary dir="rtl"><strong>سجل التحديثات</strong></summary>
+<summary><strong>2025.08.21: إصدار PaddleOCR 3.2.0</strong></summary>
 
+- **إضافات نموذجية مهمة:**
+    - تقديم التدريب والاستدلال والنشر لنماذج التعرف PP-OCRv5 باللغات الإنجليزية والتايلاندية واليونانية. **يقدم نموذج PP-OCRv5 الإنجليزي تحسيناً بنسبة 11% في السيناريوهات الإنجليزية مقارنة بنموذج PP-OCRv5 الرئيسي، مع تحقيق نماذج التعرف التايلاندي واليوناني دقة 82.68% و89.28% على التوالي.**
 
-<h4 dir="rtl">🔥🔥<strong>2025.06.26: إصدار <bdi dir="ltr">PaddleOCR 3.0.3</bdi>، يتضمن:</strong></h4>
-<ul dir="rtl">
-  <li> تصحيح خلل: تم حل المشكلة التي لم يكن فيها معلمة <code>enable_mkldnn</code> فعّالة، واستعادة السلوك الافتراضي باستخدام MKL-DNN للاستدلال بوحدة المعالجة المركزية.</li>
-</ul>
+- **ترقيات قدرات النشر:**
+    - **دعم كامل لإصداري إطار عمل PaddlePaddle 3.1.0 و3.1.1.**
+    - **ترقية شاملة لحل النشر المحلي بلغة C++ لـ PP-OCRv5، يدعم الآن كلاً من Linux وWindows، مع تكافؤ الميزات ودقة مطابقة لتنفيذ Python.**
+    - **يدعم الاستدلال عالي الأداء الآن CUDA 12، ويمكن إجراء الاستدلال باستخدام واجهة Paddle Inference أو ONNX Runtime.**
+    - **حل النشر الخدمي عالي الاستقرار أصبح الآن مفتوح المصدر بالكامل، مما يتيح للمستخدمين تخصيص صور Docker وحزم SDK حسب الحاجة.**
+    - يدعم حل النشر الخدمي عالي الاستقرار أيضاً الاستدعاء عبر طلبات HTTP المُنشأة يدوياً، مما يتيح تطوير الشيفرة البرمجية من جانب العميل بأي لغة برمجة.
 
-<h4 dir="rtl">🔥🔥<strong>2025.06.19: إصدار <bdi dir="ltr">PaddleOCR 3.0.2</bdi>، يتضمن:</strong></h4>
-<ul dir="rtl">
-  <li><strong>ميزات جديدة:</strong>
-    <ul dir="rtl">
-      <li>تم تغيير مصدر التنزيل الافتراضي من <bdi dir="ltr"><code>BOS</code></bdi> إلى <bdi dir="ltr"><code>HuggingFace</code></bdi>. يمكن للمستخدمين أيضًا تغيير متغير البيئة <bdi dir="ltr"><code>PADDLE_PDX_MODEL_SOURCE</code></bdi> إلى <bdi dir="ltr"><code>BOS</code></bdi> لإعادة تعيين مصدر تنزيل النموذج إلى <bdi dir="ltr">Baidu Object Storage (BOS)</bdi>.</li>
-      <li>تمت إضافة أمثلة استدعاء الخدمة لست لغات — <bdi dir="ltr">C++</bdi>, <bdi dir="ltr">Java</bdi>, <bdi dir="ltr">Go</bdi>, <bdi dir="ltr">C#</bdi>, <bdi dir="ltr">Node.js</bdi>, و <bdi dir="ltr">PHP</bdi> — لخطوط الأنابيب مثل <bdi dir="ltr">PP-OCRv5</bdi>, <bdi dir="ltr">PP-StructureV3</bdi>, و <bdi dir="ltr">PP-ChatOCRv4</bdi>.</li>
-      <li>تحسين خوارزمية فرز تقسيم التخطيط في خط أنابيب <bdi dir="ltr">PP-StructureV3</bdi>، مما يعزز منطق الفرز للتخطيطات العمودية المعقدة لتقديم نتائج أفضل.</li>
-      <li>تحسين منطق اختيار النموذج: عند تحديد لغة وعدم تحديد إصدار النموذج، سيقوم النظام تلقائيًا بتحديد أحدث إصدار للنموذج يدعم تلك اللغة.</li>
-      <li>تعيين حد أعلى افتراضي لحجم ذاكرة التخزين المؤقت لـ <bdi dir="ltr">MKL-DNN</bdi> لمنع النمو غير المحدود، مع السماح للمستخدمين أيضًا بتكوين سعة ذاكرة التخزين المؤقت.</li>
-      <li>تحديث التكوينات الافتراضية للاستدلال عالي الأداء لدعم تسريع <bdi dir="ltr">Paddle MKL-DNN</bdi> وتحسين منطق الاختيار التلقائي للتكوين لخيارات أكثر ذكاءً.</li>
-      <li>تعديل منطق الحصول على الجهاز الافتراضي لمراعاة الدعم الفعلي لأجهزة الحوسبة بواسطة إطار عمل <bdi dir="ltr">Paddle</bdi> المثبت، مما يجعل سلوك البرنامج أكثر بديهية.</li>
-      <li>إضافة مثال <bdi dir="ltr">Android</bdi> لـ <bdi dir="ltr">PP-OCRv5</bdi>. <a href="https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/on_device_deployment.html">التفاصيل</a>.</li>
-    </ul>
-  </li>
-  <li><strong>إصلاحات الأخطاء:</strong>
-    <ul dir="rtl">
-      <li>إصلاح مشكلة عدم تفعيل بعض معلمات <bdi dir="ltr">CLI</bdi> في <bdi dir="ltr">PP-StructureV3</bdi>.</li>
-      <li>حل مشكلة حيث لا تعمل <bdi dir="ltr"><code>export_paddlex_config_to_yaml</code></bdi> بشكل صحيح في بعض الحالات.</li>
-      <li>تصحيح التناقض بين السلوك الفعلي لـ <bdi dir="ltr"><code>save_path</code></bdi> ووصفه في الوثائق.</li>
-      <li>إصلاح أخطاء تعدد الخيوط المحتملة عند استخدام <bdi dir="ltr">MKL-DNN</bdi> في نشر الخدمة الأساسية.</li>
-      <li>تصحيح أخطاء ترتيب القنوات في المعالجة المسبقة للصور لنموذج <bdi dir="ltr">Latex-OCR</bdi>.</li>
-      <li>إصلاح أخطاء ترتيب القنوات في حفظ الصور المرئية داخل وحدة التعرف على النص.</li>
-      <li>حل أخطاء ترتيب القنوات في نتائج الجداول المرئية داخل خط أنابيب <bdi dir="ltr">PP-StructureV3</bdi>.</li>
-      <li>إصلاح مشكلة تجاوز السعة في حساب <bdi dir="ltr"><code>overlap_ratio</code></bdi> في ظروف خاصة للغاية في خط أنابيب <bdi dir="ltr">PP-StructureV3</bdi>.</li>
-    </ul>
-  </li>
-  <li><strong>تحسينات على الوثائق:</strong>
-    <ul dir="rtl">
-      <li>تحديث وصف المعلمة <bdi dir="ltr"><code>enable_mkldnn</code></bdi> في الوثائق لتعكس بدقة السلوك الفعلي للبرنامج.</li>
-      <li>إصلاح الأخطاء في الوثائق المتعلقة بمعلمات <bdi dir="ltr"><code>lang</code></bdi> و <bdi dir="ltr"><code>ocr_version</code></bdi>.</li>
-      <li>إضافة تعليمات لتصدير ملفات تكوين خط الإنتاج عبر <bdi dir="ltr">CLI</bdi>.</li>
-      <li>إصلاح الأعمدة المفقودة في جدول بيانات أداء <bdi dir="ltr">PP-OCRv5</bdi>.</li>
-      <li>تحسين مقاييس الأداء لـ <bdi dir="ltr">PP-StructureV3</bdi> عبر تكوينات مختلفة.</li>
-    </ul>
-  </li>
-  <li><strong>أخرى:</strong>
-    <ul dir="rtl">
-      <li>تخفيف قيود الإصدار على التبعيات مثل <bdi dir="ltr">numpy</bdi> و <bdi dir="ltr">pandas</bdi>، واستعادة الدعم لـ <bdi dir="ltr">Python 3.12</bdi>.</li>
-    </ul>
-  </li>
-</ul>
+- **دعم المعايير المرجعية:**
+    - **تدعم جميع خطوط الإنتاج الآن قياس الأداء الدقيق، مما يتيح قياس زمن الاستدلال الشامل بالإضافة إلى بيانات زمن الاستجابة لكل طبقة ووحدة للمساعدة في تحليل الأداء. [إليك](docs/version3.x/pipeline_usage/instructions/benchmark.en.md) كيفية إعداد واستخدام ميزة قياس الأداء.**
+    - **تم تحديث الوثائق لتشمل المقاييس الرئيسية للتكوينات الشائعة الاستخدام على العتاد الرئيسي، مثل زمن الاستجابة واستخدام الذاكرة، لتوفير مراجع النشر للمستخدمين.**
 
+- **إصلاح الأخطاء:**
+    - حل مشكلة فشل حفظ السجلات أثناء تدريب النموذج.
+    - ترقية مكون تعزيز البيانات لنماذج الصيغ الرياضية للتوافق مع الإصدارات الأحدث من مكتبة albumentations، وإصلاح تحذيرات الجمود عند استخدام حزمة tokenizers في سيناريوهات متعددة العمليات.
+    - إصلاح التناقضات في سلوكيات المفاتيح (مثل `use_chart_parsing`) في ملفات تكوين PP-StructureV3 مقارنة بخطوط الأنابيب الأخرى.
 
-<h4 dir="rtl"><strong>🔥🔥 2025.06.05: إصدار <bdi dir="ltr">PaddleOCR 3.0.1</bdi>، يتضمن:</strong></h4>
-<ul dir="rtl">
- <li><strong>تحسين بعض النماذج وتكويناتها:</strong>
-    <ol dir="rtl">
-      <li>تحديث تكوين النموذج الافتراضي لـ <bdi dir="ltr">PP-OCRv5</bdi>، وتغيير كل من الكشف والتعرف من <bdi dir="ltr"><code>mobile</code></bdi> إلى <bdi dir="ltr"><code>server</code></bdi>. لتحسين الأداء الافتراضي في معظم السيناريوهات، تم تغيير المعلمة <bdi dir="ltr"><code>limit_side_len</code></bdi> في التكوين من 736 إلى 64.</li>
-      <li>إضافة نموذج جديد لتصنيف اتجاه أسطر النص <bdi dir="ltr"><code>PP-LCNet_x1_0_textline_ori</code></bdi> بدقة 99.42%. تم تحديث مصنف اتجاه أسطر النص الافتراضي لخطوط أنابيب <bdi dir="ltr">OCR</bdi> و <bdi dir="ltr">PP-StructureV3</bdi> و <bdi dir="ltr">PP-ChatOCRv4</bdi> إلى هذا النموذج.</li>
-      <li>تحسين نموذج تصنيف اتجاه أسطر النص <bdi dir="ltr"><code>PP-LCNet_x0_25_textline_ori</code></bdi>، مما أدى إلى تحسين الدقة بمقدار 3.3 نقطة مئوية لتصل إلى الدقة الحالية البالغة 98.85%.</li>
-    </ol>
-      <li><strong>تحسينات وإصلاحات لبعض المشكلات في الإصدار 3.0.0، <a href="https://paddlepaddle.github.io/PaddleOCR/latest/en/update/update.html">التفاصيل</a></strong></li>
-</ul>
-
-🔥🔥2025.05.20: الإصدار الرسمي لـ **PaddleOCR v3.0**، بما في ذلك:
-<h4 dir="rtl"><bdi dir="ltr">PP-OCRv5</bdi>: نموذج التعرف على النصوص عالي الدقة لجميع السيناريوهات – نص فوري من الصور/PDF.</h4>
-<ol dir="rtl">
-  <li>🌐 دعم نموذج واحد **لخمسة** أنواع من النصوص - معالجة سلسة **للصينية المبسطة والصينية التقليدية وبينين الصينية المبسطة والإنجليزية** و**اليابانية** ضمن نموذج واحد.</li>
-  <li>✍️ تحسين **التعرف على الكتابة اليدوية**: أداء أفضل بشكل ملحوظ في النصوص المتصلة المعقدة والكتابة اليدوية غير القياسية.</li>
-  <li>🎯 **زيادة في الدقة بمقدار 13 نقطة** عن <bdi dir="ltr">PP-OCRv4</bdi>، مما يحقق أداءً على أحدث طراز في مجموعة متنوعة من سيناريوهات العالم الحقيقي.</li>
-</ol>
-
-####  <h4 dir="rtl"><bdi dir="ltr">PP-StructureV3</bdi>: تحليل المستندات للأغراض العامة – أطلق العنان لتحليل الصور/PDFs بأحدث التقنيات لسيناريوهات العالم الحقيقي!</h4>
-<ol dir="rtl">
-  <li>🧮 **تحليل PDF عالي الدقة متعدد السيناريوهات**، يتصدر كلاً من الحلول المفتوحة والمغلقة المصدر على معيار <bdi dir="ltr">OmniDocBench</bdi>.</li>
-  <li>🧠 تشمل القدرات المتخصصة **التعرف على الأختام**، **تحويل المخططات إلى جداول**، **التعرف على الجداول التي تحتوي على صيغ/صور متداخلة**، **تحليل المستندات ذات النصوص العمودية**، و**تحليل هياكل الجداول المعقدة**.</li>
-</ol>
-
-#### <h4 dir="rtl"><bdi dir="ltr">PP-ChatOCRv4</bdi>: فهم المستندات الذكي – استخرج المعلومات الأساسية، وليس فقط النصوص من الصور/PDFs.</h4>
-<ol dir="rtl">
-  <li>🔥 **زيادة في الدقة بمقدار 15 نقطة** في استخراج المعلومات الأساسية من ملفات <bdi dir="ltr">PDF/PNG/JPG</bdi> مقارنة بالجيل السابق.</li>
-  <li>💻 دعم أصلي لـ <bdi dir="ltr">ERNIE 4.5</bdi>، مع التوافق مع عمليات نشر النماذج الكبيرة عبر <bdi dir="ltr">PaddleNLP</bdi> و <bdi dir="ltr">Ollama</bdi> و <bdi dir="ltr">vLLM</bdi> والمزيد.</li>
-  <li>🤝 دمج <a href="https://github.com/PaddlePaddle/PaddleMIX/tree/develop/paddlemix/examples/ppdocbee2" dir="ltr">PP-DocBee2</a>، مما يتيح استخراج وفهم النصوص المطبوعة والمخطوطة والأختام والجداول والمخططات والعناصر الشائعة الأخرى في المستندات المعقدة.</li>
-</ol>
-
-<p align="right">[<a href="https://paddlepaddle.github.io/PaddleOCR/latest/en/update/update.html">سجل التحديثات</a>]</p>
-
-</details>
-
-## ⚡ التشغيل السريع
-### 1. تشغيل العرض التوضيحي عبر الإنترنت
-[![AI Studio](https://img.shields.io/badge/PP_OCRv5-AI_Studio-green)](https://aistudio.baidu.com/community/app/91660/webUI)
-[![AI Studio](https://img.shields.io/badge/PP_StructureV3-AI_Studio-green)](https://aistudio.baidu.com/community/app/518494/webUI)
-[![AI Studio](https://img.shields.io/badge/PP_ChatOCRv4-AI_Studio-green)](https://aistudio.baidu.com/community/app/518493/webUI)
-
-
-
-### 2. التثبيت
-
-قم بتثبيت PaddlePaddle بالرجوع إلى [دليل التثبيت](https://www.paddlepaddle.org.cn/en/install/quick?docurl=/documentation/docs/en/develop/install/pip/linux-pip_en.html)، وبعد ذلك، قم بتثبيت مجموعة أدوات PaddleOCR.
-
-
-<div style="text-align: left;">
-
-```bash
-# إذا كنت تريد فقط استخدام ميزة التعرف الأساسي على النصوص (ترجع إحداثيات النص ومحتواه)، بما في ذلك سلسلة PP-OCR
-python -m pip install paddleocr
-# إذا كنت تريد استخدام جميع الميزات مثل تحليل المستندات، فهم المستندات، ترجمة المستندات، استخراج المعلومات الرئيسية، وما إلى ذلك
-# python -m pip install "paddleocr[all]"
-```
-
-بدءًا من الإصدار 3.2.0، بالإضافة إلى مجموعة التبعيات `all` المذكورة أعلاه، تدعم PaddleOCR أيضًا تثبيت بعض الميزات الاختيارية جزئيًا عن طريق تحديد مجموعات تبعيات أخرى. جميع مجموعات التبعيات التي توفرها PaddleOCR موضحة في الجدول التالي:
-
-| اسم مجموعة التبعيات   | الوظيفة المقابلة |
-| -                     | -               |
-| `doc-parser`          | تحليل المستندات: يمكن استخدامه لاستخراج عناصر التخطيط مثل الجداول، الصيغ، الأختام، الصور، وغيرها من المستندات؛ ويشمل نماذج مثل PP-StructureV3 وPaddleOCR-VL. |
-| `ie`                  | استخراج المعلومات: يمكن استخدامها لاستخراج المعلومات الرئيسية مثل الأسماء، التواريخ، العناوين، المبالغ، إلخ من المستندات؛ تشمل نماذج مثل PP-ChatOCRv4 |
-| `trans`               | ترجمة المستندات: يمكن استخدامها لترجمة المستندات من لغة إلى أخرى؛ تشمل نماذج مثل PP-DocTranslation |
-| `all`                 | جميع الميزات الكاملة      |
-
-</div>
-
-### 3. تشغيل الاستدلال عبر واجهة سطر الأوامر (CLI)
-
-<div style="text-align: left !important;">
-
-```bash
-# Run PP-OCRv5 inference
-paddleocr ocr -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_002.png --use_doc_orientation_classify False --use_doc_unwarping False --use_textline_orientation False  
-
-# Run PP-StructureV3 inference
-paddleocr pp_structurev3 -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/pp_structure_v3_demo.png --use_doc_orientation_classify False --use_doc_unwarping False
-
-# Get the Qianfan API Key at first, and then run PP-ChatOCRv4 inference
-paddleocr pp_chatocrv4_doc -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/vehicle_certificate-1.png -k 驾驶室准乘人数 --qianfan_api_key your_api_key --use_doc_orientation_classify False --use_doc_unwarping False 
-
-# Get more information about "paddleocr ocr"
-paddleocr ocr --help
-```
-
-</div>
-
-### 4. تشغيل الاستدلال عبر واجهة برمجة التطبيقات (API)
-
-<details dir="ltr" open>
-  <summary dir="rtl"><strong>4.1 مثال PP-OCRv5</strong></summary>
-
-```python
-from paddleocr import PaddleOCR
-ocr = PaddleOCR(
-    use_doc_orientation_classify=False,
-    use_doc_unwarping=False,
-    use_textline_orientation=False)
-
-result = ocr.predict(
-    input="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_002.png")
-
-for res in result:
-    res.print()
-    res.save_to_img("output")
-    res.save_to_json("output")
-```
-
-</details>
-
-<details>
-   <summary dir="rtl"><strong>4.2 مثال PP-StructureV3</strong></summary>
-
-```python
-from pathlib import Path
-from paddleocr import PPStructureV3
-
-pipeline = PPStructureV3(
-    use_doc_orientation_classify=False,
-    use_doc_unwarping=False
-)
-
-# للصور
-output = pipeline.predict(
-    input="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/pp_structure_v3_demo.png",
-)
-
-# عرض النتائج وحفظها بصيغة JSON
-for res in output:
-    res.print() 
-    res.save_to_json(save_path="output") 
-    res.save_to_markdown(save_path="output")           
-```
-
-</details>
-
-<details>
-   <summary dir="rtl"><strong>4.3 مثال PP-ChatOCRv4</strong></summary>
-
-```python
-from paddleocr import PPChatOCRv4Doc
-
-chat_bot_config = {
-    "module_name": "chat_bot",
-    "model_name": "ernie-3.5-8k",
-    "base_url": "https://qianfan.baidubce.com/v2",
-    "api_type": "openai",
-    "api_key": "api_key",  # your api_key
-}
-
-retriever_config = {
-    "module_name": "retriever",
-    "model_name": "embedding-v1",
-    "base_url": "https://qianfan.baidubce.com/v2",
-    "api_type": "qianfan",
-    "api_key": "api_key",  # your api_key
-}
-
-pipeline = PPChatOCRv4Doc(
-    use_doc_orientation_classify=False,
-    use_doc_unwarping=False
-)
-
-visual_predict_res = pipeline.visual_predict(
-    input="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/vehicle_certificate-1.png",
-    use_common_ocr=True,
-    use_seal_recognition=True,
-    use_table_recognition=True,
-)
-
-mllm_predict_info = None
-use_mllm = False
-# إذا تم استخدام نموذج كبير متعدد الوسائط، فيجب بدء خدمة mllm المحلية. يمكنك الرجوع إلى الوثائق: https://github.com/PaddlePaddle/PaddleX/blob/release/3.0/docs/pipeline_usage/tutorials/vlm_pipelines/doc_understanding.en.md لتنفيذ النشر وتحديث تكوين mllm_chat_bot_config.
-if use_mllm:
-    mllm_chat_bot_config = {
-        "module_name": "chat_bot",
-        "model_name": "PP-DocBee",
-        "base_url": "http://127.0.0.1:8080/",  # your local mllm service url
-        "api_type": "openai",
-        "api_key": "api_key",  # your api_key
-    }
-
-    mllm_predict_res = pipeline.mllm_pred(
-        input="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/vehicle_certificate-1.png",
-        key_list=["驾驶室准乘人数"],
-        mllm_chat_bot_config=mllm_chat_bot_config,
-    )
-    mllm_predict_info = mllm_predict_res["mllm_res"]
-
-visual_info_list = []
-for res in visual_predict_res:
-    visual_info_list.append(res["visual_info"])
-    layout_parsing_result = res["layout_parsing_result"]
-
-vector_info = pipeline.build_vector(
-    visual_info_list, flag_save_bytes_vector=True, retriever_config=retriever_config
-)
-chat_result = pipeline.chat(
-    key_list=["驾驶室准乘人数"],
-    visual_info=visual_info_list,
-    vector_info=vector_info,
-    mllm_predict_info=mllm_predict_info,
-    chat_bot_config=chat_bot_config,
-    retriever_config=retriever_config,
-)
-print(chat_result)
-```
+- **تحسينات أخرى:**
+    - **فصل التبعيات الأساسية والاختيارية. التبعيات الأساسية الدنيا فقط مطلوبة للتعرف الأساسي على النصوص؛ يمكن تثبيت التبعيات الإضافية لتحليل المستندات واستخراج المعلومات حسب الحاجة.**
+    - **تمكين دعم بطاقات الرسومات NVIDIA RTX من سلسلة 50 على Windows؛ يمكن للمستخدمين الرجوع إلى [دليل التثبيت](docs/version3.x/installation.en.md) لإصدارات إطار PaddlePaddle المقابلة.**
+    - **تدعم نماذج سلسلة PP-OCR الآن إرجاع إحداثيات الأحرف المفردة.**
+    - إضافة مصادر تنزيل النماذج من AIStudio وModelScope وغيرها، مما يتيح للمستخدمين تحديد مصدر تنزيل النماذج.
+    - إضافة دعم تحويل الرسوم البيانية إلى جداول عبر وحدة PP-Chart2Table.
+    - تحسين أوصاف الوثائق لتعزيز قابلية الاستخدام.
 </details>
 
 
-## مسرّعات الذكاء الاصطناعي الصينية غير المتجانسة
-<ul dir="rtl">
-  <li><a href="https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/other_devices_support/paddlepaddle_install_NPU.html">Huawei Ascend</a></li>
-  <li><a href="https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/other_devices_support/paddlepaddle_install_XPU.html">Kunlunxin</a></li>
-</ul>
+[سجل التحديثات](https://paddlepaddle.github.io/PaddleOCR/latest/en/update/update.html)
 
-## ⛰️ دروس متقدمة
-- [درس PP-OCRv5 التعليمي](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/pipeline_usage/OCR.html)
-- [درس PP-StructureV3 التعليمي](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/pipeline_usage/PP-StructureV3.html)
-- [درس PP-ChatOCRv4 التعليمي](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/pipeline_usage/PP-ChatOCRv4.html)
-
-## 🔄 نظرة سريعة على نتائج التنفيذ
+</details>
 
 
-<p align="center">
-    <img width="100%" src="../docs/images/demo.gif" alt="PP-OCRv5 Demo">
-</p>
+## 🚀 بداية سريعة
 
+### الخطوة 1: جرّب عبر الإنترنت
+يوفر الموقع الرسمي لـ PaddleOCR **مركز تجربة** تفاعلي و**واجهات برمجة التطبيقات (APIs)** — لا حاجة لأي إعداد، فقط انقر لتجربة الخدمة.
 
+👉 [زيارة الموقع الرسمي](https://www.paddleocr.com)
 
-<p align="center">
-    <img width="100%" src="../docs/images/blue_v3.gif" alt="PP-StructureV3 Demo">
-</p>
+### الخطوة 2: النشر المحلي
+للاستخدام المحلي، يُرجى الرجوع إلى الوثائق التالية بناءً على احتياجاتك:
 
-## 🌟 لا تفوت أحدث الأخبار
+- **سلسلة PP-OCR**: انظر [وثائق PP-OCR](https://www.paddleocr.ai/latest/en/version3.x/pipeline_usage/OCR.html)
+- **سلسلة PaddleOCR-VL**: انظر [وثائق PaddleOCR-VL](https://www.paddleocr.ai/latest/en/version3.x/pipeline_usage/PaddleOCR-VL.html)
+- **PP-StructureV3**: انظر [وثائق PP-StructureV3](https://www.paddleocr.ai/latest/en/version3.x/pipeline_usage/PP-StructureV3.html)
+- **المزيد من القدرات**: انظر [وثائق المزيد من القدرات](https://www.paddleocr.ai/latest/en/version3.x/pipeline_usage/pipeline_overview.html)
 
-⭐ **ضع نجمة لهذا المستودع لتكون على اطلاع دائم بأحدث التحديثات والإصدارات الجديدة المثيرة، بما في ذلك ميزات التعرف الضوئي على الحروف (OCR) وتحليل المستندات القوية!** ⭐
-
-<div align="center">
-  <p>
-       <img width="1200" src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/paddleocr/README/star_paddleocr.en.gif" alt="Star-Project">
-  </p>
-</div>
 
 ## 🧩 المزيد من الميزات
 
 - تحويل النماذج إلى صيغة ONNX: [الحصول على نماذج ONNX](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/obtaining_onnx_models.html).
-- تسريع الاستدلال باستخدام محركات مثل OpenVINO و ONNX Runtime و TensorRT، أو إجراء الاستدلال باستخدام نماذج صيغة ONNX: [الاستدلال عالي الأداء](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/high_performance_inference.html).
-- تسريع الاستدلال باستخدام تعدد وحدات معالجة الرسوميات والعمليات المتعددة: [الاستدلال المتوازي للخطوط الإنتاجية](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/pipeline_usage/instructions/parallel_inference.html).
-- دمج PaddleOCR في التطبيقات المكتوبة بلغات مثل ++C و#C وJava وغيرها: [الخدمة](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/serving.html).
+- تسريع الاستدلال باستخدام محركات مثل OpenVINO وONNX Runtime وTensorRT، أو إجراء الاستدلال باستخدام نماذج بصيغة ONNX: [الاستدلال عالي الأداء](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/high_performance_inference.html).
+- تسريع الاستدلال باستخدام وحدات GPU متعددة وعمليات متعددة: [الاستدلال المتوازي لخطوط الأنابيب](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/pipeline_usage/instructions/parallel_inference.html).
+- دمج PaddleOCR في تطبيقات مكتوبة بلغات C++ وC# وJava وغيرها: [الخدمة](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/serving.html).
+
+## 🔄 نظرة سريعة على نتائج التنفيذ
+
+### PP-OCRv5
+
+<div align="center">
+  <p>
+       <img width="100%" src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/paddleocr/README/PP-OCRv5_demo.gif" alt="عرض توضيحي لـ PP-OCRv5">
+  </p>
+</div>
+
+
+
+### PP-StructureV3
+
+<div align="center">
+  <p>
+      <img width="100%" src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/paddleocr/README/PP-StructureV3_demo.gif" alt="عرض توضيحي لـ PP-StructureV3">
+  </p>
+</div>
+
+### PaddleOCR-VL
+
+<div align="center">
+  <p>
+      <img width="100%" src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/paddleocr/README/PaddleOCR-VL_demo.gif" alt="عرض توضيحي لـ PaddleOCR-VL">
+  </p>
+</div>
+
+
+## ✨ تابعنا
+
+⭐ **قم بتمييز هذا المستودع بنجمة لمتابعة التحديثات والإصدارات الجديدة المثيرة، بما في ذلك إمكانيات التعرف الضوئي على الحروف وتحليل المستندات القوية!** ⭐
+
+<div align="center">
+  <p>
+       <img width="1200" src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/paddleocr/README/star_paddleocr2.en.gif" alt="تمييز المشروع بنجمة">
+  </p>
+</div>
+
 
 ## 👩‍👩‍👧‍👦 المجتمع
+
+<div align="center">
 
 | حساب PaddlePaddle الرسمي على WeChat | انضم إلى مجموعة النقاش التقني |
 | :---: | :---: |
 | <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr/README/qrcode_for_paddlepaddle_official_account.jpg" width="150"> | <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr/README/qr_code_for_the_questionnaire.jpg" width="150"> |
+</div>
 
 
-## 😃 مشاريع رائعة تستخدم PaddleOCR
-لم يكن PaddleOCR ليصل إلى ما هو عليه اليوم بدون مجتمعه المذهل! 💗 شكرًا جزيلاً لجميع شركائنا القدامى، والمتعاونين الجدد، وكل من صب شغفه في PaddleOCR - سواء ذكرنا اسمك أم لا. دعمكم يشعل نارنا!
+## 😃 مشاريع رائعة تستفيد من PaddleOCR
+لم يكن PaddleOCR ليصل إلى ما هو عليه اليوم لولا مجتمعه المذهل! 💗 شكر جزيل لجميع شركائنا القدامى والمتعاونين الجدد وكل من بذل شغفه في PaddleOCR — سواء ذكرنا اسمه أم لا. دعمكم هو وقود حماسنا!
+
+<div align="center">
 
 | اسم المشروع | الوصف |
 | ------------ | ----------- |
-| [RAGFlow](https://github.com/infiniflow/ragflow) <a href="https://github.com/infiniflow/ragflow"><img src="https://img.shields.io/github/stars/infiniflow/ragflow"></a>|محرك RAG يعتمد على فهم عميق للوثائق.|
-| [pathway](https://github.com/pathwaycom/pathway) <a href="https://github.com/pathwaycom/pathway"><img src="https://img.shields.io/github/stars/pathwaycom/pathway"></a>|إطار عمل ETL بلغة بايثون لمعالجة التدفق، التحليل الفوري، خطوط أنابيب LLM وRAG.|
-| [MinerU](https://github.com/opendatalab/MinerU) <a href="https://github.com/opendatalab/MinerU"><img src="https://img.shields.io/github/stars/opendatalab/MinerU"></a>|أداة تحويل المستندات متعددة الأنواع إلى Markdown|
-| [Umi-OCR](https://github.com/hiroi-sora/Umi-OCR) <a href="https://github.com/hiroi-sora/Umi-OCR"><img src="https://img.shields.io/github/stars/hiroi-sora/Umi-OCR"></a>|برنامج OCR مجاني ومفتوح المصدر للعمل دفعة واحدة دون اتصال بالإنترنت.|
-| [cherry-studio](https://github.com/CherryHQ/cherry-studio) <a href="https://github.com/CherryHQ/cherry-studio"><img src="https://img.shields.io/github/stars/CherryHQ/cherry-studio"></a>|عميل سطح مكتب يدعم عدة مزودي LLM.|
-| [OmniParser](https://github.com/microsoft/OmniParser)<a href="https://github.com/microsoft/OmniParser"><img src="https://img.shields.io/github/stars/microsoft/OmniParser"></a> |أداة OmniParser: أداة تحليل الشاشة لوكيل واجهة المستخدم الرسومية المستند إلى الرؤية البحتة.|
-| [QAnything](https://github.com/netease-youdao/QAnything)<a href="https://github.com/netease-youdao/QAnything"><img src="https://img.shields.io/github/stars/netease-youdao/QAnything"></a> |نظام سؤال وجواب يعتمد على أي شيء.|
-| [PDF-Extract-Kit](https://github.com/opendatalab/PDF-Extract-Kit) <a href="https://github.com/opendatalab/PDF-Extract-Kit"><img src="https://img.shields.io/github/stars/opendatalab/PDF-Extract-Kit"></a>|مجموعة أدوات قوية مفتوحة المصدر مصممة لاستخراج محتوى عالي الجودة بكفاءة من مستندات PDF المعقدة والمتنوعة.|
-| [Dango-Translator](https://github.com/PantsuDango/Dango-Translator)<a href="https://github.com/PantsuDango/Dango-Translator"><img src="https://img.shields.io/github/stars/PantsuDango/Dango-Translator"></a> |يتعرف على النص على الشاشة، ويترجمه ويعرض نتائج الترجمة في الوقت الفعلي.|
-| [تعرف على المزيد من المشاريع](../awesome_projects.md) | [مشاريع أخرى تعتمد على PaddleOCR](../awesome_projects.md)|
+| [Dify](https://github.com/langgenius/dify) <a href="https://github.com/langgenius/dify"><img src="https://img.shields.io/github/stars/langgenius/dify"></a>|منصة جاهزة للإنتاج لتطوير سير العمل الوكيلي.|
+| [RAGFlow](https://github.com/infiniflow/ragflow) <a href="https://github.com/infiniflow/ragflow"><img src="https://img.shields.io/github/stars/infiniflow/ragflow"></a>|محرك RAG قائم على الفهم العميق للمستندات.|
+| [pathway](https://github.com/pathwaycom/pathway) <a href="https://github.com/pathwaycom/pathway"><img src="https://img.shields.io/github/stars/pathwaycom/pathway"></a>|إطار عمل Python ETL لمعالجة التدفقات والتحليلات الآنية وخطوط أنابيب النماذج اللغوية الكبيرة وRAG.|
+| [MinerU](https://github.com/opendatalab/MinerU) <a href="https://github.com/opendatalab/MinerU"><img src="https://img.shields.io/github/stars/opendatalab/MinerU"></a>|أداة تحويل المستندات متعددة الأنواع إلى Markdown.|
+| [Umi-OCR](https://github.com/hiroi-sora/Umi-OCR) <a href="https://github.com/hiroi-sora/Umi-OCR"><img src="https://img.shields.io/github/stars/hiroi-sora/Umi-OCR"></a>|برنامج OCR مجاني، مفتوح المصدر، للمعالجة الدفعية دون اتصال بالإنترنت.|
+| [cherry-studio](https://github.com/CherryHQ/cherry-studio) <a href="https://github.com/CherryHQ/cherry-studio"><img src="https://img.shields.io/github/stars/CherryHQ/cherry-studio"></a>|تطبيق سطح مكتب يدعم مزودي نماذج لغوية كبيرة متعددين.|
+| [haystack](https://github.com/deepset-ai/haystack)<a href="https://github.com/deepset-ai/haystack"><img src="https://img.shields.io/github/stars/deepset-ai/haystack"></a> |إطار عمل لتنظيم الذكاء الاصطناعي لبناء تطبيقات نماذج لغوية كبيرة قابلة للتخصيص وجاهزة للإنتاج.|
+| [OmniParser](https://github.com/microsoft/OmniParser)<a href="https://github.com/microsoft/OmniParser"><img src="https://img.shields.io/github/stars/microsoft/OmniParser"></a> |OmniParser: أداة تحليل الشاشة لوكيل واجهة المستخدم الرسومية القائم على الرؤية البحتة.|
+| [QAnything](https://github.com/netease-youdao/QAnything)<a href="https://github.com/netease-youdao/QAnything"><img src="https://img.shields.io/github/stars/netease-youdao/QAnything"></a> |الأسئلة والأجوبة المبنية على أي شيء.|
+| [تعرّف على المزيد من المشاريع](./awesome_projects.md) | [المزيد من المشاريع المبنية على PaddleOCR](./awesome_projects.md)|
+</div>
 
 ## 👩‍👩‍👧‍👦 المساهمون
 
+<div align="center">
 <a href="https://github.com/PaddlePaddle/PaddleOCR/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=PaddlePaddle/PaddleOCR&max=400&columns=20"  width="800"/>
 </a>
-
-
-## 🌟 نجمة
-
-[![Star History Chart](https://api.star-history.com/svg?repos=PaddlePaddle/PaddleOCR&type=Date)](https://star-history.com/#PaddlePaddle/PaddleOCR&Date)
-
-
-## 📄 الترخيص
-هذا المشروع مرخص بموجب [ترخيص Apache 2.0](LICENSE).
-
 </div>
 
-## 🎓 الاستشهاد الأكاديمي
+## 🌟 النجوم
+
+<div align="center">
+  <p>
+      <img width="800" src="https://api.star-history.com/svg?repos=PaddlePaddle/PaddleOCR&type=Date" alt="تاريخ النجوم">
+  </p>
+</div>
+
+
+## 📄 الرخصة
+هذا المشروع مُصدر بموجب [رخصة Apache 2.0](LICENSE).
+
+## 🎓 الاستشهاد
 
 ```bibtex
 @misc{cui2025paddleocr30technicalreport,
-      title={PaddleOCR 3.0 Technical Report}, 
+      title={PaddleOCR 3.0 Technical Report},
       author={Cheng Cui and Ting Sun and Manhui Lin and Tingquan Gao and Yubo Zhang and Jiaxuan Liu and Xueqing Wang and Zelun Zhang and Changda Zhou and Hongen Liu and Yue Zhang and Wenyu Lv and Kui Huang and Yichao Zhang and Jing Zhang and Jun Zhang and Yi Liu and Dianhai Yu and Yanjun Ma},
       year={2025},
       eprint={2507.05595},
       archivePrefix={arXiv},
       primaryClass={cs.CV},
-      url={https://arxiv.org/abs/2507.05595}, 
+      url={https://arxiv.org/abs/2507.05595},
 }
 
 @misc{cui2025paddleocrvlboostingmultilingualdocument,
-      title={PaddleOCR-VL: Boosting Multilingual Document Parsing via a 0.9B Ultra-Compact Vision-Language Model}, 
+      title={PaddleOCR-VL: Boosting Multilingual Document Parsing via a 0.9B Ultra-Compact Vision-Language Model},
       author={Cheng Cui and Ting Sun and Suyin Liang and Tingquan Gao and Zelun Zhang and Jiaxuan Liu and Xueqing Wang and Changda Zhou and Hongen Liu and Manhui Lin and Yue Zhang and Yubo Zhang and Handong Zheng and Jing Zhang and Jun Zhang and Yi Liu and Dianhai Yu and Yanjun Ma},
       year={2025},
       eprint={2510.14528},
       archivePrefix={arXiv},
       primaryClass={cs.CV},
-      url={https://arxiv.org/abs/2510.14528}, 
+      url={https://arxiv.org/abs/2510.14528},
+}
+
+@misc{cui2026paddleocrvl15multitask09bvlm,
+      title={PaddleOCR-VL-1.5: Towards a Multi-Task 0.9B VLM for Robust In-the-Wild Document Parsing},
+      author={Cheng Cui and Ting Sun and Suyin Liang and Tingquan Gao and Zelun Zhang and Jiaxuan Liu and Xueqing Wang and Changda Zhou and Hongen Liu and Manhui Lin and Yue Zhang and Yubo Zhang and Yi Liu and Dianhai Yu and Yanjun Ma},
+      year={2026},
+      eprint={2601.21957},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV},
+      url={https://arxiv.org/abs/2601.21957},
 }
 ```

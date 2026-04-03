@@ -27,7 +27,7 @@ services:
       test: ["CMD-SHELL", "curl -f http://localhost:8080/health || exit 1"]
     volumes:
       - /opt/hyhal/:/opt/hyhal/:ro
-    shm_size: 64G
+    shm_size: 64g
 
   paddleocr-vlm-server:
     image: ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-${VLM_BACKEND}-server:${VLM_IMAGE_TAG_SUFFIX}
@@ -50,4 +50,4 @@ services:
       start_period: 300s
     volumes:
       - /opt/hyhal/:/opt/hyhal/:ro
-    shm_size: 64G
+    shm_size: 64g

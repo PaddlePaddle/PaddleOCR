@@ -14,6 +14,7 @@ services:
             - driver: nvidia
               device_ids: ["0"]
               capabilities: [gpu]
+    shm_size: 64g
     # TODO: Allow using a regular user
     user: root
     restart: unless-stopped
@@ -33,6 +34,7 @@ services:
             - driver: nvidia
               device_ids: ["0"]
               capabilities: [gpu]
+    shm_size: 64g
     # TODO: Allow using a regular user
     user: root
     restart: unless-stopped
