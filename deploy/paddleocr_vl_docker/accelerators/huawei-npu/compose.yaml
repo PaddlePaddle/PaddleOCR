@@ -19,7 +19,7 @@ services:
       - /usr/local/bin/npu-smi:/usr/local/bin/npu-smi
       - /usr/local/dcmi:/usr/local/dcmi
     privileged: true
-    shm_size: 64G
+    shm_size: 64g
 
   paddleocr-vlm-server:
     image: ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-${VLM_BACKEND}-server:${VLM_IMAGE_TAG_SUFFIX}
@@ -34,4 +34,4 @@ services:
       - /usr/local/bin/npu-smi:/usr/local/bin/npu-smi
       - /usr/local/dcmi:/usr/local/dcmi
     privileged: true
-    shm_size: 64G
+    shm_size: 64g

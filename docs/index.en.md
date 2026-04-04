@@ -36,9 +36,9 @@ You can use it online on the [PaddleOCR official website](https://www.paddleocr.
 - **PP-ChatOCRv4 — Intelligent Information Extraction**  
   Natively integrates ERNIE 4.5 to **precisely extract key information** from massive documents, with 15% accuracy improvement over previous generation. Makes documents "**understand**" your questions and provide accurate answers.
 
-> [!TIP]
+> 💡 Tips
 > 
-> On October 24, 2025, the PaddleOCR official website Beta version was launched, offering a more convenient online experience and large-scale PDF file parsing, as well as free API and MCP services. For more details, please visit the [PaddleOCR official website](https://www.paddleocr.com).
+> PaddleOCR's free API now supports up to **20,000** pages of document parsing per day, enabling large-scale PDF file processing, along with MCP and Skills services. For more details, please visit [PaddleOCR Official Website](https://www.paddleocr.com).
 
 In addition to providing an outstanding model library, PaddleOCR 3.0 also offers user-friendly tools covering model training, inference, and service deployment, so developers can rapidly bring AI applications to production.
 
@@ -82,10 +82,34 @@ You can [Quick Start](./quick_start.en.md) directly, find comprehensive document
   </p>
 </div>
 
-## 👩‍👩‍👧‍👦 Community
-* The [PaddleOCR Best Practice Projects](https://aistudio.baidu.com/activitydetail/1503019405) call for submissions is now open!
-📅 **August 5, 2025 – October 30, 2025**. Share your scenario-based PaddleOCR applications and shine in the global developer community! 
-* 👫 Join the [PaddlePaddle Community](https://github.com/PaddlePaddle/community), where you can engage with [paddlepaddle developers](https://www.paddlepaddle.org.cn/developercommunity), researchers, and enthusiasts from around the world.
-* 🎓 Learn from experts through workshops, tutorials, and Q&A sessions [hosted by the AI Studio](https://aistudio.baidu.com/learn/center).
-* 🏆 Participate in [hackathons, challenges, and competitions](https://aistudio.baidu.com/competition) to showcase your skills and win exciting prizes.
-* 📣 Stay updated with the latest news, announcements, and events by following our [Twitter](https://x.com/PaddlePaddle) and [WeChat](https://mp.weixin.qq.com/s/vYj1ZDcAfJ1lu_DzlOKgtQ)).
+## 👩‍👩‍👧‍👦 PaddleOCR OCEAN Ecosystem Alliance
+
+The lead in single-point technology is just the beginning — the prosperity of the ecosystem is where long-term value truly lies. To better serve global developers and industry scenarios with OCR and document intelligence technologies, we are officially launching the **PaddleOCR OCEAN Ecosystem Alliance**.
+
+The alliance name **OCEAN** embodies five core pillars:
+
+* **O**pen Source – Open source as the foundation
+* **C**ommunity – Community-driven
+* **E**cosystem – Shared ecosystem success
+* **A**pplication – Real-world application
+* **N**etwork – Networked collaboration
+
+**Positioning**: An ecosystem alliance centered on open-source co-building, open to global upstream and downstream partners in OCR and document intelligence. The alliance involves no commercial exclusivity and does not interfere with partners' independent business decisions. It focuses on technical collaboration, community engagement, and mutual influence expansion. Guided by the core principles of openness, symbiosis, and shared success, it brings together developers, platform providers, and application builders to jointly advance the full-chain application of OCR technology and ecosystem prosperity. The alliance is committed to achieving dual growth in full-chain application scale and the number of derivative projects, enabling developers and users worldwide to share in the dividends of OCR technology advancement.
+
+**Join Us: Walk into the Deep End with Like-Minded Partners**
+
+The PaddleOCR OCEAN Ecosystem Alliance is open to global partners across the OCR and document intelligence value chain. We firmly believe: **the value of an ecosystem lies not in quantity, but in quality.**
+
+We look forward to welcoming partners who:
+
+* **Genuinely embrace the open-source spirit** and are willing to co-build and share with an open mindset
+* **Have the willingness and capability to contribute consistently** — whether through code, use case scenarios, or platform integration
+* **Are committed to growing together with the alliance** — not chasing short-term traffic, but cultivating long-term value
+
+**The alliance is not a hall of fame — it is a rallying call for those who take action.**
+
+We will carefully evaluate every application, giving priority to partners who have already taken action within the PaddleOCR ecosystem or have a clear co-building plan in place. We do not pursue being "large and all-encompassing." Instead, we seek to work hand in hand with truly like-minded organizations and individuals, diving deep into the frontiers of OCR together.
+
+If you resonate with the above vision, we welcome you to reach out through the following channel:
+
+* Send an email to paddleocr@baidu.com with a brief introduction of your collaboration with PaddleOCR or your co-building plan.
