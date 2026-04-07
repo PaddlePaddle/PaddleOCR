@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 02-03-PLAN.md
-last_updated: "2026-04-07T07:26:10.088Z"
+stopped_at: Completed 04-01-PLAN.md
+last_updated: "2026-04-07T09:44:27.711Z"
 last_activity: 2026-04-07
 progress:
   total_phases: 6
-  completed_phases: 3
-  total_plans: 8
-  completed_plans: 8
-  percent: 0
+  completed_phases: 1
+  total_plans: 4
+  completed_plans: 6
+  percent: 100
 ---
 
 # Project State
@@ -21,16 +21,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-03)
 
 **Core value:** Developers can see PP-OCRv5 text detection and recognition running on an iOS device with clear, understandable code they can adapt for their own apps.
-**Current focus:** Phase 03 — text-recognition
+**Current focus:** Phase 04 — pipeline-orchestration-validation
 
 ## Current Position
 
 Phase: 4
-Plan: Not started
-Status: Executing Phase 03
+Plan: 1 of 3 complete
+Status: Executing Phase 04
 Last activity: 2026-04-07
 
-Progress: [░░░░░░░░░░] 0%
+Progress: [██████████] 100%
 
 ## Performance Metrics
 
@@ -56,6 +56,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 01 P02 | 5min | 3 tasks | 6 files |
 | Phase 02 P01 | 5min | 2 tasks | 4 files |
 | Phase 02 P03 | 3min | 2 tasks | 3 files |
+| Phase 04 P01 | 6min | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -80,6 +81,7 @@ Recent decisions affecting current work:
 - [Phase 02]: RecResizeImg added to TransformOp enum proactively for Phase 3 reuse
 - [Phase 02]: DetectionEngine is a class (not actor) -- delegates concurrency to ORTSessionManager actor
 - [Phase 02]: PostProcessConfig bridged to DBPostProcessConfigurable via extension conformance
+- [Phase 04]: Pure Swift perspective warp via DLT + bilinear backward mapping instead of vImage/Accelerate -- faithful to OpenCV reference
 
 ### Pending Todos
 
@@ -93,6 +95,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-07T04:05:45.527Z
-Stopped at: Completed 02-03-PLAN.md
+Last session: 2026-04-07T09:44:27.709Z
+Stopped at: Completed 04-01-PLAN.md
 Resume file: None

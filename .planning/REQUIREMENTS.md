@@ -89,8 +89,8 @@ Fetch via: `gh api repos/Bobholamovic/PaddleX/contents/{path}?ref=feat/transform
 ### OCR Pipeline
 
 - [ ] **PIPE-01**: End-to-end pipeline orchestrates: detect -> sort boxes -> crop -> recognize — ported from PaddleX `pipelines/ocr/pipeline.py`
-- [ ] **PIPE-02**: Box sorting follows reading order — matching `SortQuadBoxes` logic in PaddleX pipeline (top-to-bottom, left-to-right with y-threshold of 10px)
-- [ ] **PIPE-03**: Crop uses perspective transform — matching `CropByPolys.get_minarea_rect_crop()` in PaddleX (minAreaRect -> sortCorners -> warpPerspective -> rot90 for tall-narrow boxes)
+- [x] **PIPE-02**: Box sorting follows reading order — matching `SortQuadBoxes` logic in PaddleX pipeline (top-to-bottom, left-to-right with y-threshold of 10px)
+- [x] **PIPE-03**: Crop uses perspective transform — matching `CropByPolys.get_minarea_rect_crop()` in PaddleX (minAreaRect -> sortCorners -> warpPerspective -> rot90 for tall-narrow boxes)
 - [ ] **PIPE-04**: Pipeline runs on background thread, UI remains responsive
 - [ ] **PIPE-05**: Pipeline results match the Python/PaddleX reference implementation — verified by VALID-01/02
 
@@ -175,8 +175,8 @@ Fetch via: `gh api repos/Bobholamovic/PaddleX/contents/{path}?ref=feat/transform
 | POST-03 | Phase 3 | Complete |
 | POST-04 | Phase 3 | Complete |
 | PIPE-01 | Phase 4 | Pending |
-| PIPE-02 | Phase 4 | Pending |
-| PIPE-03 | Phase 4 | Pending |
+| PIPE-02 | Phase 4 | Complete |
+| PIPE-03 | Phase 4 | Complete |
 | PIPE-04 | Phase 4 | Pending |
 | PIPE-05 | Phase 4 | Pending |
 | VALID-01 | Phase 4 | Pending |
