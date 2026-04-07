@@ -1,0 +1,8 @@
+platform :ios, '16.0'
+
+target 'PaddleOCRDemo' do
+  use_frameworks!
+
+  # ONNX Runtime with ObjC API — includes CoreML EP + XNNPACK EP pre-built
+  pod 'onnxruntime-objc', '~> 1.24'
+end

@@ -1,0 +1,53 @@
+Global:
+  model_name: PP-OCRv5_mobile_det
+Hpi:
+  backend_configs:
+    paddle_infer:
+      trt_dynamic_shapes: &id001
+        x:
+        - - 1
+          - 3
+          - 32
+          - 32
+        - - 1
+          - 3
+          - 736
+          - 736
+        - - 1
+          - 3
+          - 4000
+          - 4000
+    tensorrt:
+      dynamic_shapes: *id001
+PreProcess:
+  transform_ops:
+  - DecodeImage:
+      channel_first: false
+      img_mode: BGR
+  - DetLabelEncode: null
+  - DetResizeForTest:
+      resize_long: 960
+  - NormalizeImage:
+      mean:
+      - 0.485
+      - 0.456
+      - 0.406
+      order: hwc
+      scale: 1./255.
+      std:
+      - 0.229
+      - 0.224
+      - 0.225
+  - ToCHWImage: null
+  - KeepKeys:
+      keep_keys:
+      - image
+      - shape
+      - polys
+      - ignore_tags
+PostProcess:
+  name: DBPostProcess
+  thresh: 0.3
+  box_thresh: 0.6
+  max_candidates: 1000
+  unclip_ratio: 1.5

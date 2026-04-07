@@ -1,0 +1,14 @@
+# CocoaPods
+PaddleOCRDemo/Pods/
+PaddleOCRDemo/Podfile.lock
+
+# Xcode
+PaddleOCRDemo/PaddleOCRDemo.xcworkspace/xcuserdata/
+PaddleOCRDemo/PaddleOCRDemo.xcodeproj/xcuserdata/
+PaddleOCRDemo/PaddleOCRDemo.xcodeproj/project.xcworkspace/xcuserdata/
+*.xcuserstate
+DerivedData/
+build/
+
+# Model files (large binaries — tracked via Git LFS or downloaded separately)
+PaddleOCRDemo/PaddleOCRDemo/Models/**/*.onnx
