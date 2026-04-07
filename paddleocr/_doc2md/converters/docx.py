@@ -464,6 +464,10 @@ def _runs_to_markdown(items) -> str:
                 if underline:
                     inner = f"<u>{inner}</u>"
                 text = prefix + inner + suffix
+            elif underline and text:
+                # Pure whitespace + underline = fill-in line (e.g. "作者姓名：___")
+                # Replace spaces with NBSP so Markdown renderers preserve width
+                text = "<u>" + "\u00a0" * len(text) + "</u>"
         if url:
             text = f"[{text}]({_escape_md_url(url)})"
         parts.append(text)
