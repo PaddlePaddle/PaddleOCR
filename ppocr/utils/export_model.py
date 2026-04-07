@@ -354,13 +354,13 @@ def dynamic_to_static(model, arch_config, logger, input_shape=None):
             ],
         )
 
-    if (
-        arch_config["model_type"] != "sr"
-        and arch_config["Backbone"]["name"] == "PPLCNetV3"
-    ):
-        # for rep lcnetv3
+    if arch_config["model_type"] != "sr" and arch_config["Backbone"]["name"] in [
+        "PPLCNetV3",
+        "PPLCNetV4",
+    ]:
+        # for rep lcnetv3/v4
         for layer in model.sublayers():
-            if hasattr(layer, "rep") and not getattr(layer, "is_repped"):
+            if hasattr(layer, "rep") and not getattr(layer, "is_repped", False):
                 layer.rep()
     return model
 
