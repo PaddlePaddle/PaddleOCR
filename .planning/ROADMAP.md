@@ -62,7 +62,7 @@ Plans:
 Plans:
 - [ ] 03-01-PLAN.md — ORTSessionManager runRecognition + RecPreprocessor (OCRResizeNormImg preprocessing)
 - [ ] 03-02-PLAN.md — CTCDecoder (CTC label decode with 18,385-class dictionary) + RecognitionEngine orchestration
-- [ ] 03-03-PLAN.md — Gap closure: fix CTCDecoder missing ASCII space in character dictionary (18,384 -> 18,385)
+- [ ] 03-03-PLAN.md — Gap closure: fix CTCDecoder missing ASCII space in character dictionary (18,384 -> 18,385) [DONE]
 
 ### Phase 4: Pipeline Orchestration & Validation
 **Goal**: The complete OCR pipeline (detect -> sort -> crop -> recognize) runs end-to-end, is fully driven by inference.yml configuration with zero hardcoded parameters, and produces numerically exact results validated against the Python reference
