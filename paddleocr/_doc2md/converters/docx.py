@@ -392,7 +392,7 @@ def _iter_paragraph_items(para) -> list:
                 if seg:
                     expanded.append((bold, italic, underline, strikethrough, seg, url))
                 if j < len(segments) - 1:
-                    expanded.append((False, False, False, False, "<br>", ""))
+                    expanded.append((False, False, False, False, "<br>\n", ""))
         return expanded
 
     try:
@@ -1126,6 +1126,8 @@ def _convert_body(doc, *, extract_textboxes=True) -> tuple:
                 clean = inline.strip()
                 if clean.startswith("**") and clean.endswith("**"):
                     clean = clean[2:-2]
+                # Heading lines cannot span multiple source lines; revert <br>\n → <br>
+                clean = clean.replace("<br>\n", "<br>")
                 if prev_was_list:
                     lines.append("")
                 prev_was_list = False
@@ -1149,7 +1151,8 @@ def _convert_body(doc, *, extract_textboxes=True) -> tuple:
                     if not prev_was_list and lines and lines[-1] != "":
                         lines.append("")
                     prev_was_list = True
-                    lines.append(prefix + inline)
+                    # List item continuation lines need indentation; revert <br>\n → <br>
+                    lines.append(prefix + inline.replace("<br>\n", "<br>"))
                 else:
                     if prev_was_list:
                         lines.append("")

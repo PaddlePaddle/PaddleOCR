@@ -316,7 +316,7 @@ class PptxConverter(BaseConverter):
                                     )
                                 )
                             if j < len(segments) - 1:
-                                parts.append("<br>")
+                                parts.append("<br>\n")
                     else:
                         parts.append(
                             _format_segment(
@@ -328,6 +328,8 @@ class PptxConverter(BaseConverter):
                     continue
                 level = paragraph.level
                 indent = "  " * level
+                # List item continuation lines need indentation; revert <br>\n → <br>
+                text = text.replace("<br>\n", "<br>")
                 slide_parts.append(f"{indent}- {text}")
 
     def _chart_to_md(self, chart) -> str:
