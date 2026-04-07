@@ -96,13 +96,42 @@ actor ORTSessionManager {
         guard let session = detSession else {
             throw ORTSessionManagerError.sessionCreationFailed("Detection session not loaded")
         }
+        return try runInference(session: session, modelName: "det", inputData: inputData, shape: shape)
+    }
 
+    /// Run recognition inference with preprocessed input data.
+    ///
+    /// The recognition model accepts dynamic-width input: shape `[1, 3, 48, W]`
+    /// where W varies per image depending on the aspect ratio of the cropped text region.
+    ///
+    /// - Parameters:
+    ///   - inputData: Float32 array in CHW layout, shape matching `shape`.
+    ///   - shape: Tensor shape, e.g. [1, 3, 48, 320].
+    /// - Returns: Dictionary mapping output name to (data as [Float], shape as [Int]).
+    func runRecognition(inputData: [Float], shape: [Int]) async throws -> [String: (data: [Float], shape: [Int])] {
+        guard let session = recSession else {
+            throw ORTSessionManagerError.sessionCreationFailed("Recognition session not loaded")
+        }
+        return try runInference(session: session, modelName: "rec", inputData: inputData, shape: shape)
+    }
+
+    /// Shared inference logic used by both detection and recognition.
+    ///
+    /// Discovers input/output names at runtime, creates a float32 tensor from the
+    /// provided data and shape, runs the session, extracts output arrays, and
+    /// validates that no output contains NaN values.
+    private func runInference(
+        session: ORTSession,
+        modelName: String,
+        inputData: [Float],
+        shape: [Int]
+    ) throws -> [String: (data: [Float], shape: [Int])] {
         let inputNames = try session.inputNames()
         let outputNamesList = try session.outputNames()
         let outputNamesSet = Set(outputNamesList)
 
         guard let firstInputName = inputNames.first else {
-            throw ORTSessionManagerError.inferenceFailed("det: no input names found")
+            throw ORTSessionManagerError.inferenceFailed("\(modelName): no input names found")
         }
 
         // Create ORT tensor from input data
