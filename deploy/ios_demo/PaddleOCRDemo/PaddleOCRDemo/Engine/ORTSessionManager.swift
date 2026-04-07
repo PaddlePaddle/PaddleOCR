@@ -86,6 +86,65 @@ actor ORTSessionManager {
         )
     }
 
+    /// Run detection inference with real preprocessed input data.
+    ///
+    /// - Parameters:
+    ///   - inputData: Float32 array in CHW layout, shape matching `shape`.
+    ///   - shape: Tensor shape, e.g. [1, 3, 896, 960].
+    /// - Returns: Dictionary mapping output name to (data as [Float], shape as [Int]).
+    func runDetection(inputData: [Float], shape: [Int]) async throws -> [String: (data: [Float], shape: [Int])] {
+        guard let session = detSession else {
+            throw ORTSessionManagerError.sessionCreationFailed("Detection session not loaded")
+        }
+
+        let inputNames = try session.inputNames()
+        let outputNamesList = try session.outputNames()
+        let outputNamesSet = Set(outputNamesList)
+
+        guard let firstInputName = inputNames.first else {
+            throw ORTSessionManagerError.inferenceFailed("det: no input names found")
+        }
+
+        // Create ORT tensor from input data
+        let nsShape = shape.map { NSNumber(value: $0) }
+        var data = inputData
+        let tensorData = NSMutableData(
+            bytes: &data,
+            length: inputData.count * MemoryLayout<Float>.stride
+        )
+        let inputTensor = try ORTValue(
+            tensorData: tensorData,
+            elementType: .float,
+            shape: nsShape
+        )
+
+        let inputs: [String: ORTValue] = [firstInputName: inputTensor]
+        let outputs = try session.run(
+            withInputs: inputs,
+            outputNames: outputNamesSet,
+            runOptions: nil
+        )
+
+        // Extract output tensors as Float arrays
+        var result: [String: (data: [Float], shape: [Int])] = [:]
+        for (name, value) in outputs {
+            let info = try value.tensorTypeAndShapeInfo()
+            let outputShape = info.shape.map { $0.intValue }
+            let outputData = try value.tensorData() as Data
+            let floats: [Float] = outputData.withUnsafeBytes { buffer in
+                Array(buffer.bindMemory(to: Float.self))
+            }
+
+            if floats.contains(where: \.isNaN) {
+                throw ORTSessionManagerError.outputContainsNaN(name)
+            }
+
+            result[name] = (data: floats, shape: outputShape)
+        }
+
+        return result
+    }
+
     private func runDummyInference(
         session: ORTSession,
         modelName: String,
