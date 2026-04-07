@@ -29,10 +29,181 @@ _RE_FIELD_HYPERLINK = re.compile(r'HYPERLINK\s+"([^"]+)"')
 _W_NS = "http://schemas.openxmlformats.org/wordprocessingml/2006/main"
 _W = "{" + _W_NS + "}"
 
+# OMML math namespace
+_M_NS = "http://schemas.openxmlformats.org/officeDocument/2006/math"
+_M = "{" + _M_NS + "}"
+
 
 def _escape_md_url(url: str) -> str:
     """Escape parentheses in URL for Markdown link syntax."""
     return url.replace("(", "%28").replace(")", "%29")
+
+
+def _convert_omath(omath_element) -> str:
+    """Convert an m:oMath lxml element to LaTeX string. Returns empty string on failure."""
+    try:
+        from ..math.omml import oMath2Latex
+
+        return str(oMath2Latex(omath_element)).strip()
+    except Exception:
+        return ""
+
+
+def _paragraph_has_math(para) -> bool:
+    """Check if paragraph XML contains OMML math elements."""
+    return para._element.find(f".//{_M}oMath") is not None
+
+
+def _paragraph_math_to_markdown(para) -> str:
+    """Convert a paragraph containing OMML math to Markdown.
+
+    Handles mixed content: text runs, hyperlinks, inline math (m:oMath),
+    and display math (m:oMathPara).
+    """
+    text_items = []
+    parts = []
+
+    def flush_text():
+        if text_items:
+            md = _runs_to_markdown(text_items)
+            if md:
+                parts.append(md)
+            text_items.clear()
+
+    for child in para._element:
+        tag = child.tag
+        local = tag.split("}")[-1] if "}" in tag else tag
+
+        if tag == f"{_M}oMathPara":
+            flush_text()
+            # Find inner m:oMath elements
+            for omath in child.findall(f"{_M}oMath"):
+                latex = _convert_omath(omath)
+                if latex:
+                    parts.append(f"$$\n{latex}\n$$")
+        elif tag == f"{_M}oMath":
+            flush_text()
+            latex = _convert_omath(child)
+            if latex:
+                parts.append(f"${latex}$")
+        elif local == "r":
+            # Plain run
+            try:
+                from docx.text.run import Run
+
+                run = Run(child, para)
+                if run.text:
+                    text_items.append(
+                        (
+                            bool(run.bold),
+                            bool(run.italic),
+                            bool(run.underline),
+                            bool(run.font.strike),
+                            run.text,
+                            "",
+                        )
+                    )
+            except Exception:
+                pass
+        elif local == "hyperlink":
+            try:
+                from docx.text.hyperlink import Hyperlink
+
+                hl = Hyperlink(child, para)
+                try:
+                    url = hl.url or ""
+                except (KeyError, AttributeError):
+                    url = ""
+                for run in hl.runs:
+                    if run.text:
+                        text_items.append(
+                            (
+                                bool(run.bold),
+                                bool(run.italic),
+                                False,
+                                bool(run.font.strike),
+                                run.text,
+                                url,
+                            )
+                        )
+            except Exception:
+                pass
+
+    flush_text()
+    return "".join(parts)
+
+
+def _paragraph_math_to_html(para) -> str:
+    """Convert a paragraph containing OMML math to HTML inline text."""
+    text_items = []
+    parts = []
+
+    def flush_text():
+        if text_items:
+            html = _runs_to_html(text_items)
+            if html:
+                parts.append(html)
+            text_items.clear()
+
+    for child in para._element:
+        tag = child.tag
+        local = tag.split("}")[-1] if "}" in tag else tag
+
+        if tag == f"{_M}oMathPara":
+            flush_text()
+            for omath in child.findall(f"{_M}oMath"):
+                latex = _convert_omath(omath)
+                if latex:
+                    parts.append(f"$$\n{latex}\n$$")
+        elif tag == f"{_M}oMath":
+            flush_text()
+            latex = _convert_omath(child)
+            if latex:
+                parts.append(f"${latex}$")
+        elif local == "r":
+            try:
+                from docx.text.run import Run
+
+                run = Run(child, para)
+                if run.text:
+                    text_items.append(
+                        (
+                            bool(run.bold),
+                            bool(run.italic),
+                            bool(run.underline),
+                            bool(run.font.strike),
+                            run.text,
+                            "",
+                        )
+                    )
+            except Exception:
+                pass
+        elif local == "hyperlink":
+            try:
+                from docx.text.hyperlink import Hyperlink
+
+                hl = Hyperlink(child, para)
+                try:
+                    url = hl.url or ""
+                except (KeyError, AttributeError):
+                    url = ""
+                for run in hl.runs:
+                    if run.text:
+                        text_items.append(
+                            (
+                                bool(run.bold),
+                                bool(run.italic),
+                                False,
+                                bool(run.font.strike),
+                                run.text,
+                                url,
+                            )
+                        )
+            except Exception:
+                pass
+
+    flush_text()
+    return "".join(parts)
 
 
 def _get_body_font_size(doc) -> float:
@@ -395,7 +566,9 @@ def _table_to_html(
                     else:
                         content_parts.append(f'<img src="images/{filename}">')
                 para_html = (
-                    _runs_to_html(_iter_paragraph_items(para)).strip()
+                    _paragraph_math_to_html(para).strip()
+                    if _paragraph_has_math(para)
+                    else _runs_to_html(_iter_paragraph_items(para)).strip()
                     or para.text.strip()
                 )
                 if para_html:
@@ -572,6 +745,20 @@ def _convert_body(doc) -> tuple:
                 lines.append("")
 
             text = para.text.strip()
+
+            # Math formula detection — must check before skipping empty-text paragraphs
+            # (pure formula paragraphs have para.text == "")
+            if _paragraph_has_math(para):
+                flush_code_buf()
+                if prev_was_list:
+                    lines.append("")
+                prev_was_list = False
+                math_md = _paragraph_math_to_markdown(para)
+                if math_md:
+                    lines.append(math_md)
+                    lines.append("")
+                continue
+
             if not text:
                 if not img_list:
                     if code_buf:
