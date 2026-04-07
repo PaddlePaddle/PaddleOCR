@@ -57,6 +57,60 @@ def _convert_omath(omath_element) -> str:
         return ""
 
 
+def _effective_bold(run, para) -> bool:
+    """Resolve effective bold: run-level > character style > paragraph style."""
+    b = run.bold
+    if b is not None:
+        return b
+    try:
+        if run.style and run.style.font.bold is not None:
+            return run.style.font.bold
+    except Exception:
+        pass
+    try:
+        if para.style and para.style.font.bold is not None:
+            return para.style.font.bold
+    except Exception:
+        pass
+    return False
+
+
+def _effective_italic(run, para) -> bool:
+    """Resolve effective italic: run-level > character style > paragraph style."""
+    i = run.italic
+    if i is not None:
+        return i
+    try:
+        if run.style and run.style.font.italic is not None:
+            return run.style.font.italic
+    except Exception:
+        pass
+    try:
+        if para.style and para.style.font.italic is not None:
+            return para.style.font.italic
+    except Exception:
+        pass
+    return False
+
+
+def _effective_underline(run, para) -> bool:
+    """Resolve effective underline: run-level > character style > paragraph style."""
+    u = run.underline
+    if u is not None:
+        return bool(u)
+    try:
+        if run.style and run.style.font.underline is not None:
+            return bool(run.style.font.underline)
+    except Exception:
+        pass
+    try:
+        if para.style and para.style.font.underline is not None:
+            return bool(para.style.font.underline)
+    except Exception:
+        pass
+    return False
+
+
 def _paragraph_has_math(para) -> bool:
     """Check if paragraph XML contains OMML math elements."""
     return para._element.find(f".//{_M}oMath") is not None
@@ -103,9 +157,9 @@ def _paragraph_math_to_markdown(para) -> str:
                 if run.text:
                     text_items.append(
                         (
-                            bool(run.bold),
-                            bool(run.italic),
-                            bool(run.underline),
+                            _effective_bold(run, para),
+                            _effective_italic(run, para),
+                            _effective_underline(run, para),
                             bool(run.font.strike),
                             run.text,
                             "",
@@ -126,8 +180,8 @@ def _paragraph_math_to_markdown(para) -> str:
                     if run.text:
                         text_items.append(
                             (
-                                bool(run.bold),
-                                bool(run.italic),
+                                _effective_bold(run, para),
+                                _effective_italic(run, para),
                                 False,
                                 bool(run.font.strike),
                                 run.text,
@@ -176,9 +230,9 @@ def _paragraph_math_to_html(para) -> str:
                 if run.text:
                     text_items.append(
                         (
-                            bool(run.bold),
-                            bool(run.italic),
-                            bool(run.underline),
+                            _effective_bold(run, para),
+                            _effective_italic(run, para),
+                            _effective_underline(run, para),
                             bool(run.font.strike),
                             run.text,
                             "",
@@ -199,8 +253,8 @@ def _paragraph_math_to_html(para) -> str:
                     if run.text:
                         text_items.append(
                             (
-                                bool(run.bold),
-                                bool(run.italic),
+                                _effective_bold(run, para),
+                                _effective_italic(run, para),
                                 False,
                                 bool(run.font.strike),
                                 run.text,
@@ -330,9 +384,9 @@ def _iter_paragraph_items(para) -> list:
     except ImportError:
         return [
             (
-                bool(r.bold),
-                bool(r.italic),
-                bool(r.underline),
+                _effective_bold(r, para),
+                _effective_italic(r, para),
+                _effective_underline(r, para),
                 bool(r.font.strike),
                 r.text,
                 "",
@@ -352,9 +406,9 @@ def _iter_paragraph_items(para) -> list:
     except Exception:
         return [
             (
-                bool(r.bold),
-                bool(r.italic),
-                bool(r.underline),
+                _effective_bold(r, para),
+                _effective_italic(r, para),
+                _effective_underline(r, para),
                 bool(r.font.strike),
                 r.text,
                 "",
@@ -376,8 +430,8 @@ def _iter_paragraph_items(para) -> list:
                     # Force underline=False: Word's Hyperlink style adds underline by default
                     items.append(
                         (
-                            bool(run.bold),
-                            bool(run.italic),
+                            _effective_bold(run, para),
+                            _effective_italic(run, para),
                             False,
                             bool(run.font.strike),
                             run.text,
@@ -394,9 +448,9 @@ def _iter_paragraph_items(para) -> list:
                 url = field_urls.get(id(element._element), "")
                 items.append(
                     (
-                        bool(element.bold),
-                        bool(element.italic),
-                        bool(element.underline),
+                        _effective_bold(element, para),
+                        _effective_italic(element, para),
+                        _effective_underline(element, para),
                         bool(element.font.strike),
                         element.text,
                         url,
