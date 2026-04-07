@@ -18,6 +18,7 @@
 		A1000020 /* ClipperOffset.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000020 /* ClipperOffset.swift */; };
 		A1000021 /* DBPostProcess.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000021 /* DBPostProcess.swift */; };
 		A1000030 /* DetectionEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000030 /* DetectionEngine.swift */; };
+		A1000040 /* RecPreprocessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000040 /* RecPreprocessor.swift */; };
 		A1000010 /* PaddleOCRDemoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000010 /* PaddleOCRDemoTests.swift */; };
 		A1000011 /* ORTSessionManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000014 /* ORTSessionManagerTests.swift */; };
 		F9888FA77A2AF8AF45B50193 /* Pods_PaddleOCRDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D0FFA11A4E43E5BD0F80219 /* Pods_PaddleOCRDemo.framework */; };
@@ -54,6 +55,7 @@
 		A2000020 /* ClipperOffset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipperOffset.swift; sourceTree = "<group>"; };
 		A2000021 /* DBPostProcess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBPostProcess.swift; sourceTree = "<group>"; };
 		A2000030 /* DetectionEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetectionEngine.swift; sourceTree = "<group>"; };
+		A2000040 /* RecPreprocessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecPreprocessor.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -162,6 +164,7 @@
 				A2000011 /* ModelConfig.swift */,
 				A2000012 /* ORTSessionManager.swift */,
 				A2000016 /* Preprocessing.swift */,
+				A2000040 /* RecPreprocessor.swift */,
 			);
 			path = Engine;
 			sourceTree = "<group>";
@@ -319,6 +322,7 @@
 				A1000006 /* AppViewModel.swift in Sources */,
 				A1000007 /* InferenceConfig.swift in Sources */,
 				A1000008 /* Preprocessing.swift in Sources */,
+				A1000040 /* RecPreprocessor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
