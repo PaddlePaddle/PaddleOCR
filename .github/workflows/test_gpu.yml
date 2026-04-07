@@ -35,7 +35,7 @@ jobs:
           fi
 
           git fetch origin "${{ github.base_ref }}" --depth=1
-          changed_files="$(git diff --name-only "origin/${{ github.base_ref }}"...HEAD)"
+          changed_files="$(git diff --name-only "origin/${{ github.base_ref }}"..HEAD)"
 
           if [ -z "$changed_files" ]; then
             echo "skip_gpu=false" >> "$GITHUB_OUTPUT"
