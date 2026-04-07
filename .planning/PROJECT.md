@@ -20,7 +20,7 @@ Developers can see PP-OCRv5 text detection and recognition running on an iOS dev
 ### Active
 
 - [ ] iOS app that runs PP-OCRv5 text detection on device
-- [ ] iOS app that runs PP-OCRv5 text recognition on device
+- ✓ iOS app that runs PP-OCRv5 text recognition on device — Validated in Phase 3: Text Recognition (RecPreprocessor + CTCDecoder + RecognitionEngine)
 - [ ] End-to-end OCR pipeline (detect → crop → recognize) on iOS
 - [ ] Image picker to select photos from album and run OCR
 - [ ] Visual display of detection results (bounding boxes + recognized text)
@@ -65,6 +65,8 @@ Developers can see PP-OCRv5 text detection and recognition running on an iOS dev
 | UIKit vs SwiftUI | SwiftUI + iOS 16+ target | Validated in Phase 1 |
 | Preprocessing approach | Pure Swift (Accelerate/vImage), no OpenCV | Validated in Phase 2 |
 | Polygon clipping | Pure Swift Clipper port, no external dependency | Validated in Phase 2 |
+| CTC decoding approach | Greedy CTC decode with 18,385-class dictionary from inference.yml | Validated in Phase 3 |
+| Recognition preprocessing | OCRResizeNormImg with config-driven params, pure Swift CoreGraphics | Validated in Phase 3 |
 
 ## Evolution
 
@@ -84,4 +86,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-07 after Phase 2 completion*
+*Last updated: 2026-04-07 after Phase 3 completion*
