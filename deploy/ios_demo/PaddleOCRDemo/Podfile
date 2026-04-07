@@ -5,4 +5,7 @@ target 'PaddleOCRDemo' do
 
   # ONNX Runtime with ObjC API — includes CoreML EP + XNNPACK EP pre-built
   pod 'onnxruntime-objc', '~> 1.24'
+
+  # YAML parsing for inference.yml config files
+  pod 'Yams', '~> 5.0'
 end
