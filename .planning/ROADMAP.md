@@ -56,9 +56,13 @@ Plans:
 **Requirements**: PREP-04, PREP-05, POST-03, POST-04
 **Success Criteria** (what must be TRUE):
   1. Recognition preprocessing implements OCRResizeNormImg with aspect-ratio-aware resize to fixed height, variable width, and correct normalization formula as specified in inference.yml
-  2. CTC decoding correctly performs argmax, blank removal, consecutive duplicate removal, and character dictionary mapping using the PP-OCRv5 dictionary (18,384 characters)
+  2. CTC decoding correctly performs argmax, blank removal, consecutive duplicate removal, and character dictionary mapping using the PP-OCRv5 dictionary (18,385 classes: blank + 18,383 dict + space)
   3. Given a reference cropped text image, the recognition module outputs the correct text string and confidence score matching the Python/PaddleX reference
-**Plans**: TBD
+**Plans:** 3 plans
+Plans:
+- [ ] 03-01-PLAN.md — ORTSessionManager runRecognition + RecPreprocessor (OCRResizeNormImg preprocessing)
+- [ ] 03-02-PLAN.md — CTCDecoder (CTC label decode with 18,385-class dictionary) + RecognitionEngine orchestration
+- [ ] 03-03-PLAN.md — Gap closure: fix CTCDecoder missing ASCII space in character dictionary (18,384 -> 18,385)
 
 ### Phase 4: Pipeline Orchestration & Validation
 **Goal**: The complete OCR pipeline (detect -> sort -> crop -> recognize) runs end-to-end, is fully driven by inference.yml configuration with zero hardcoded parameters, and produces numerically exact results validated against the Python reference
@@ -105,7 +109,7 @@ Note: Phases 2 and 3 can be developed in parallel (both depend only on Phase 1).
 |-------|----------------|--------|-----------|
 | 1. Inference Engine Foundation | 0/2 | Planning complete | - |
 | 2. Text Detection | 3/3 | Human verification needed | - |
-| 3. Text Recognition | 2/2 | Complete | 2026-04-07 |
+| 3. Text Recognition | 2/3 | Gap closure planned | - |
 | 4. Pipeline Orchestration & Validation | 0/0 | Not started | - |
 | 5. User Interface | 0/0 | Not started | - |
 | 6. Documentation | 0/0 | Not started | - |
