@@ -294,6 +294,10 @@ class PptxConverter(BaseConverter):
                             if underline:
                                 inner = f"<u>{inner}</u>"
                             t = prefix + inner + suffix
+                        elif underline and t:
+                            # Pure whitespace + underline = fill-in line
+                            # Replace spaces with NBSP so Markdown renderers preserve width
+                            t = "<u>" + "\u00a0" * len(t) + "</u>"
 
                     if url:
                         parts.append(f"[{t}]({_escape_md_url(url)})")
