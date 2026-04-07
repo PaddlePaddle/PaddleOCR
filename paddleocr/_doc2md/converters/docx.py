@@ -693,7 +693,16 @@ def _table_to_html(
                     pass
             cell_html = "<br>".join(content_parts) if content_parts else ""
 
-            tag = "th" if i == 0 else "td"
+            is_header = False
+            trPr = table.rows[i]._tr.find(f"{_W}trPr")
+            if trPr is not None:
+                tbl_header = trPr.find(f"{_W}tblHeader")
+                if tbl_header is not None:
+                    val = tbl_header.get(f"{_W}val")
+                    is_header = val is None or val.lower() not in ("false", "0", "off")
+            if not is_header and i == 0 and nrows > 1:
+                is_header = True  # fallback: 多行表格首行视为表头
+            tag = "th" if is_header else "td"
             attrs = ""
             if colspan > 1:
                 attrs += f' colspan="{colspan}"'
