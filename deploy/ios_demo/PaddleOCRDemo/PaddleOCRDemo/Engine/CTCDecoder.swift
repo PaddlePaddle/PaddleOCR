@@ -39,10 +39,13 @@ struct RecognitionResult {
 /// 6. Confidence = mean of probabilities at selected positions
 ///
 /// The character dictionary is loaded from inference.yml's PostProcess.character_dict.
-/// A "blank" token is prepended at index 0 (matching PaddleOCR's `add_special_char`).
+/// An ASCII space is appended (matching PaddleX `use_space_char=True` default),
+/// then a "blank" token is prepended at index 0 (matching `add_special_char`).
 struct CTCDecoder {
-    /// Full character list with blank at index 0.
-    /// character[0] = "blank", character[1..] = dict characters.
+    /// Full character list: 18,385 elements matching PaddleX CTCLabelDecode.
+    /// Index 0 = "blank" (CTC blank token, always ignored during decode)
+    /// Index 1..18383 = dict characters from inference.yml
+    /// Index 18384 = " " (ASCII space, appended per use_space_char=True default)
     private let characters: [String]
 
     /// The blank token index (always 0 for CTC).
@@ -59,9 +62,14 @@ struct CTCDecoder {
             throw CTCDecoderError.emptyDictionary
         }
 
-        // Prepend blank token at index 0, matching Python's add_special_char
+        // Build character list matching PaddleX BaseRecLabelDecode.__init__:
+        // 1. Start with 18,383 chars from inference.yml character_dict
+        // 2. Append " " (ASCII space) for use_space_char=True (PaddleX default)
+        // 3. Prepend "blank" at index 0 (CTC blank token)
+        // Result: ["blank", ...18,383 dict chars..., " "] = 18,385 total
         var chars = ["blank"]
         chars.append(contentsOf: dict)
+        chars.append(" ")
         self.characters = chars
     }
 
