@@ -75,8 +75,8 @@ Fetch via: `gh api repos/Bobholamovic/PaddleX/contents/{path}?ref=feat/transform
 - [x] **PREP-01**: Detection preprocessing implements `DetResizeForTest` — ported from `ppocr/data/imaug/operators.py` and verified against PaddleX `processors.py`
 - [x] **PREP-02**: Detection preprocessing implements `NormalizeImage` — ported from `ppocr/data/imaug/operators.py`, params read from inference.yml
 - [x] **PREP-03**: Detection preprocessing handles RGB channel order and HWC->CHW layout conversion
-- [ ] **PREP-04**: Recognition preprocessing implements `OCRReisizeNormImg` — ported from PaddleX `text_recognition/processors.py`, params read from inference.yml
-- [ ] **PREP-05**: Recognition preprocessing implements its normalization (`pixel/255`, then `(x-0.5)/0.5`) as specified in inference.yml
+- [x] **PREP-04**: Recognition preprocessing implements `OCRReisizeNormImg` — ported from PaddleX `text_recognition/processors.py`, params read from inference.yml
+- [x] **PREP-05**: Recognition preprocessing implements its normalization (`pixel/255`, then `(x-0.5)/0.5`) as specified in inference.yml
 - [x] **PREP-06**: All preprocessing uses pure Swift (Accelerate/vImage), no OpenCV dependency
 
 ### Postprocessing
@@ -167,8 +167,8 @@ Fetch via: `gh api repos/Bobholamovic/PaddleX/contents/{path}?ref=feat/transform
 | PREP-01 | Phase 2 | Complete |
 | PREP-02 | Phase 2 | Complete |
 | PREP-03 | Phase 2 | Complete |
-| PREP-04 | Phase 3 | Pending |
-| PREP-05 | Phase 3 | Pending |
+| PREP-04 | Phase 3 | Complete |
+| PREP-05 | Phase 3 | Complete |
 | PREP-06 | Phase 2 | Complete |
 | POST-01 | Phase 2 | Complete |
 | POST-02 | Phase 2 | Complete |
