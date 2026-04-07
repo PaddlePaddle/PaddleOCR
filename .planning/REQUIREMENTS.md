@@ -83,8 +83,8 @@ Fetch via: `gh api repos/Bobholamovic/PaddleX/contents/{path}?ref=feat/transform
 
 - [x] **POST-01**: Detection postprocessing implements `DBPostProcess` — ported from `ppocr/postprocess/db_postprocess.py` and verified against PaddleX `processors.py`
 - [x] **POST-02**: DB post-process supports polygon clipping (Clipper algorithm equivalent in Swift) — matching pyclipper `JT_ROUND, ET_CLOSEDPOLYGON` behavior
-- [ ] **POST-03**: Recognition postprocessing implements `CTCLabelDecode` — ported from `ppocr/postprocess/rec_postprocess.py`, character dict loaded from inference.yml
-- [ ] **POST-04**: Recognition confidence is computed as mean of selected token probabilities
+- [x] **POST-03**: Recognition postprocessing implements `CTCLabelDecode` — ported from `ppocr/postprocess/rec_postprocess.py`, character dict loaded from inference.yml
+- [x] **POST-04**: Recognition confidence is computed as mean of selected token probabilities
 
 ### OCR Pipeline
 
@@ -172,8 +172,8 @@ Fetch via: `gh api repos/Bobholamovic/PaddleX/contents/{path}?ref=feat/transform
 | PREP-06 | Phase 2 | Complete |
 | POST-01 | Phase 2 | Complete |
 | POST-02 | Phase 2 | Complete |
-| POST-03 | Phase 3 | Pending |
-| POST-04 | Phase 3 | Pending |
+| POST-03 | Phase 3 | Complete |
+| POST-04 | Phase 3 | Complete |
 | PIPE-01 | Phase 4 | Pending |
 | PIPE-02 | Phase 4 | Pending |
 | PIPE-03 | Phase 4 | Pending |
