@@ -47,8 +47,8 @@ Plans:
 **Plans:** 3 plans
 Plans:
 - [x] 02-01-PLAN.md — InferenceConfig YAML parser (Yams) + pure-Swift preprocessing operators (DetResizeForTest, NormalizeImage, ToCHWImage)
-- [ ] 02-02-PLAN.md — ClipperOffset pure-Swift port + DBPostProcess (threshold, contours, minAreaRect, scoring, expansion)
-- [ ] 02-03-PLAN.md — DetectionEngine integration wiring preprocessing + ORT inference + postprocessing
+- [x] 02-02-PLAN.md — ClipperOffset pure-Swift port + DBPostProcess (threshold, contours, minAreaRect, scoring, expansion)
+- [x] 02-03-PLAN.md — DetectionEngine integration wiring preprocessing + ORT inference + postprocessing
 
 ### Phase 3: Text Recognition
 **Goal**: Given a cropped text region image, the recognition module produces the correct text string and confidence score, exactly matching the Python reference implementation
@@ -104,7 +104,7 @@ Note: Phases 2 and 3 can be developed in parallel (both depend only on Phase 1).
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Inference Engine Foundation | 0/2 | Planning complete | - |
-| 2. Text Detection | 0/3 | Planning complete | - |
+| 2. Text Detection | 3/3 | Human verification needed | - |
 | 3. Text Recognition | 0/0 | Not started | - |
 | 4. Pipeline Orchestration & Validation | 0/0 | Not started | - |
 | 5. User Interface | 0/0 | Not started | - |
