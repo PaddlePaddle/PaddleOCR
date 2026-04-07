@@ -20,6 +20,7 @@
 		A1000030 /* DetectionEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000030 /* DetectionEngine.swift */; };
 		A1000040 /* RecPreprocessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000040 /* RecPreprocessor.swift */; };
 		A1000050 /* CTCDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000050 /* CTCDecoder.swift */; };
+		A1000060 /* RecognitionEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000060 /* RecognitionEngine.swift */; };
 		A1000010 /* PaddleOCRDemoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000010 /* PaddleOCRDemoTests.swift */; };
 		A1000011 /* ORTSessionManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000014 /* ORTSessionManagerTests.swift */; };
 		F9888FA77A2AF8AF45B50193 /* Pods_PaddleOCRDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D0FFA11A4E43E5BD0F80219 /* Pods_PaddleOCRDemo.framework */; };
@@ -58,6 +59,7 @@
 		A2000030 /* DetectionEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetectionEngine.swift; sourceTree = "<group>"; };
 		A2000040 /* RecPreprocessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecPreprocessor.swift; sourceTree = "<group>"; };
 		A2000050 /* CTCDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CTCDecoder.swift; sourceTree = "<group>"; };
+		A2000060 /* RecognitionEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecognitionEngine.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -168,6 +170,7 @@
 				A2000012 /* ORTSessionManager.swift */,
 				A2000016 /* Preprocessing.swift */,
 				A2000040 /* RecPreprocessor.swift */,
+				A2000060 /* RecognitionEngine.swift */,
 			);
 			path = Engine;
 			sourceTree = "<group>";
@@ -327,6 +330,7 @@
 				A1000008 /* Preprocessing.swift in Sources */,
 				A1000040 /* RecPreprocessor.swift in Sources */,
 				A1000050 /* CTCDecoder.swift in Sources */,
+				A1000060 /* RecognitionEngine.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
