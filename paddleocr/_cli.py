@@ -190,6 +190,8 @@ def _register_doc2md_command(subparsers):
         converter_kwargs = {}
         if args.no_textboxes:
             converter_kwargs["extract_textboxes"] = False
+        if args.no_headers_footers:
+            converter_kwargs["extract_headers_footers"] = False
         if args.sheet_name is not None:
             converter_kwargs["sheet_name"] = args.sheet_name
         if args.max_rows is not None:
@@ -248,6 +250,11 @@ def _register_doc2md_command(subparsers):
         "--no-textboxes",
         action="store_true",
         help="[docx] Skip text box content extraction",
+    )
+    subparser.add_argument(
+        "--no-headers-footers",
+        action="store_true",
+        help="[docx] Skip header and footer content extraction",
     )
     # xlsx options
     subparser.add_argument(

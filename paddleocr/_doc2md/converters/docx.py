@@ -1101,6 +1101,85 @@ def _convert_body(doc, *, extract_textboxes=True) -> tuple:
     return "\n".join(lines), images
 
 
+def _extract_headers_footers(doc) -> tuple:
+    """Extract header and footer text from all document sections.
+
+    Returns (header_lines: list[str], footer_lines: list[str]).
+    Deduplicates content and filters out page-number-only text.
+    """
+
+    def _collect_from_parts(parts, seen: set) -> list:
+        results = []
+        for part in parts:
+            try:
+                if part.is_linked_to_previous:
+                    continue
+                texts = []
+                for para in part.paragraphs:
+                    try:
+                        items = list(_iter_paragraph_items(para))
+                        inline = _runs_to_markdown(items)
+                        if not inline:
+                            inline = para.text.strip()
+                        if inline:
+                            texts.append(inline)
+                    except Exception:
+                        pass
+                text = " ".join(texts)
+                # 过滤：跳过空文本、纯数字（页码）、重复内容
+                if text and not text.strip().isdigit() and text not in seen:
+                    seen.add(text)
+                    results.append(text)
+            except Exception:
+                pass
+        return results
+
+    header_lines = []
+    footer_lines = []
+    seen_headers: set = set()
+    seen_footers: set = set()
+
+    # 检查文档是否启用奇偶页不同
+    try:
+        odd_even = doc.settings.odd_and_even_pages_header_footer
+    except Exception:
+        odd_even = False
+
+    for section in doc.sections:
+        try:
+            # 收集 headers
+            hdrs = [section.header]
+            if odd_even:
+                try:
+                    hdrs.append(section.even_page_header)
+                except Exception:
+                    pass
+            try:
+                if section.different_first_page_header_footer:
+                    hdrs.append(section.first_page_header)
+            except Exception:
+                pass
+            header_lines.extend(_collect_from_parts(hdrs, seen_headers))
+
+            # 收集 footers
+            ftrs = [section.footer]
+            if odd_even:
+                try:
+                    ftrs.append(section.even_page_footer)
+                except Exception:
+                    pass
+            try:
+                if section.different_first_page_header_footer:
+                    ftrs.append(section.first_page_footer)
+            except Exception:
+                pass
+            footer_lines.extend(_collect_from_parts(ftrs, seen_footers))
+        except Exception:
+            pass
+
+    return header_lines, footer_lines
+
+
 @default_registry.register
 class DocxConverter(BaseConverter):
     supported_extensions = ["docx"]
@@ -1117,8 +1196,22 @@ class DocxConverter(BaseConverter):
             )
 
         extract_textboxes = kwargs.pop("extract_textboxes", True)
+        extract_headers_footers = kwargs.pop("extract_headers_footers", True)
         doc = Document(str(file_path))
         md_text, images = _convert_body(doc, extract_textboxes=extract_textboxes)
+
+        if extract_headers_footers:
+            header_lines, footer_lines = _extract_headers_footers(doc)
+            parts = []
+            if header_lines:
+                parts.append("\n\n".join(header_lines))
+                parts.append("")
+            parts.append(md_text)
+            if footer_lines:
+                parts.append("")
+                parts.append("---")
+                parts.append("\n\n".join(footer_lines))
+            md_text = "\n".join(parts)
 
         return ConvertResult(
             markdown=md_text,
