@@ -74,7 +74,11 @@ Plans:
   3. A validation script compares iOS pipeline output against Python reference output for test images, and detection polygons, recognized text, and confidence scores match exactly
   4. Pipeline runs on a background thread -- the UI thread remains responsive during inference
   5. Box sorting follows reading order (top-to-bottom, left-to-right with y-threshold) and perspective crop handles tall-narrow boxes with rotation, matching PaddleX behavior
-**Plans**: TBD
+**Plans:** 3 plans
+Plans:
+- [ ] 04-01-PLAN.md — BoxSorter (reading-order sort) + PerspectiveCrop (4-point perspective transform with tall-narrow rotation)
+- [ ] 04-02-PLAN.md — Python validation scripts (generate_reference.py + validate.py for iOS vs PaddleX comparison)
+- [ ] 04-03-PLAN.md — OCREngine pipeline orchestrator + ValidationExport JSON serializer
 
 ### Phase 5: User Interface
 **Goal**: Users interact with a clean SwiftUI application to select images, run OCR, and see visualized results with bounding boxes, recognized text, confidence scores, and timing metrics
@@ -110,6 +114,6 @@ Note: Phases 2 and 3 can be developed in parallel (both depend only on Phase 1).
 | 1. Inference Engine Foundation | 0/2 | Planning complete | - |
 | 2. Text Detection | 3/3 | Human verification needed | - |
 | 3. Text Recognition | 2/3 | Gap closure planned | - |
-| 4. Pipeline Orchestration & Validation | 0/0 | Not started | - |
+| 4. Pipeline Orchestration & Validation | 0/3 | Planning complete | - |
 | 5. User Interface | 0/0 | Not started | - |
 | 6. Documentation | 0/0 | Not started | - |
