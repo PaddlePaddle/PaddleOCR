@@ -276,33 +276,53 @@ class PptxConverter(BaseConverter):
                     underline = bool(run.font.underline) and not url
                     strikethrough = _pptx_run_strike(run)
 
-                    if bold or italic or underline or strikethrough:
-                        leading = len(t) - len(t.lstrip())
-                        trailing = len(t) - len(t.rstrip())
-                        prefix = t[:leading] if leading else ""
-                        suffix = t[len(t) - trailing :] if trailing else ""
-                        inner = t.strip()
-                        if inner:
-                            if strikethrough:
-                                inner = f"~~{inner}~~"
-                            if bold and italic:
-                                inner = f"***{inner}***"
-                            elif bold:
-                                inner = f"**{inner}**"
-                            elif italic:
-                                inner = f"*{inner}*"
-                            if underline:
-                                inner = f"<u>{inner}</u>"
-                            t = prefix + inner + suffix
-                        elif underline and t:
-                            # Pure whitespace + underline = fill-in line
-                            # Replace spaces with NBSP so Markdown renderers preserve width
-                            t = "<u>" + "\u00a0" * len(t) + "</u>"
+                    def _format_segment(
+                        seg, bold, italic, underline, strikethrough, url
+                    ):
+                        t = seg
+                        if bold or italic or underline or strikethrough:
+                            leading = len(t) - len(t.lstrip())
+                            trailing = len(t) - len(t.rstrip())
+                            prefix = t[:leading] if leading else ""
+                            suffix = t[len(t) - trailing :] if trailing else ""
+                            inner = t.strip()
+                            if inner:
+                                if strikethrough:
+                                    inner = f"~~{inner}~~"
+                                if bold and italic:
+                                    inner = f"***{inner}***"
+                                elif bold:
+                                    inner = f"**{inner}**"
+                                elif italic:
+                                    inner = f"*{inner}*"
+                                if underline:
+                                    inner = f"<u>{inner}</u>"
+                                t = prefix + inner + suffix
+                            elif underline and t:
+                                # Pure whitespace + underline = fill-in line
+                                # Replace spaces with NBSP so Markdown renderers preserve width
+                                t = "<u>" + "\u00a0" * len(t) + "</u>"
+                        if url:
+                            return f"[{t}]({_escape_md_url(url)})"
+                        return t
 
-                    if url:
-                        parts.append(f"[{t}]({_escape_md_url(url)})")
+                    if "\n" in t:
+                        segments = t.split("\n")
+                        for j, seg in enumerate(segments):
+                            if seg:
+                                parts.append(
+                                    _format_segment(
+                                        seg, bold, italic, underline, strikethrough, url
+                                    )
+                                )
+                            if j < len(segments) - 1:
+                                parts.append("<br>")
                     else:
-                        parts.append(t)
+                        parts.append(
+                            _format_segment(
+                                t, bold, italic, underline, strikethrough, url
+                            )
+                        )
                 text = "".join(parts).strip()
                 if not text:
                     continue

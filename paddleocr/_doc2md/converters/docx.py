@@ -379,21 +379,39 @@ def _iter_paragraph_items(para) -> list:
     Silently degrades to plain text on error.
     Note: underline is forced to False inside Hyperlink runs to avoid Word's default hyperlink underline style.
     """
+
+    def _split_breaks(items):
+        """Expand items containing \\n (from <w:br/> soft line breaks) into per-line items with <br> separators."""
+        expanded = []
+        for bold, italic, underline, strikethrough, text, url in items:
+            if "\n" not in text:
+                expanded.append((bold, italic, underline, strikethrough, text, url))
+                continue
+            segments = text.split("\n")
+            for j, seg in enumerate(segments):
+                if seg:
+                    expanded.append((bold, italic, underline, strikethrough, seg, url))
+                if j < len(segments) - 1:
+                    expanded.append((False, False, False, False, "<br>", ""))
+        return expanded
+
     try:
         from docx.text.hyperlink import Hyperlink
     except ImportError:
-        return [
-            (
-                _effective_bold(r, para),
-                _effective_italic(r, para),
-                _effective_underline(r, para),
-                bool(r.font.strike),
-                r.text,
-                "",
-            )
-            for r in para.runs
-            if r.text
-        ]
+        return _split_breaks(
+            [
+                (
+                    _effective_bold(r, para),
+                    _effective_italic(r, para),
+                    _effective_underline(r, para),
+                    bool(r.font.strike),
+                    r.text,
+                    "",
+                )
+                for r in para.runs
+                if r.text
+            ]
+        )
 
     try:
         field_urls = _parse_field_hyperlinks(para)
@@ -404,18 +422,20 @@ def _iter_paragraph_items(para) -> list:
     try:
         content_iter = para.iter_inner_content()
     except Exception:
-        return [
-            (
-                _effective_bold(r, para),
-                _effective_italic(r, para),
-                _effective_underline(r, para),
-                bool(r.font.strike),
-                r.text,
-                "",
-            )
-            for r in para.runs
-            if r.text
-        ]
+        return _split_breaks(
+            [
+                (
+                    _effective_bold(r, para),
+                    _effective_italic(r, para),
+                    _effective_underline(r, para),
+                    bool(r.font.strike),
+                    r.text,
+                    "",
+                )
+                for r in para.runs
+                if r.text
+            ]
+        )
 
     for element in content_iter:
         try:
@@ -459,7 +479,7 @@ def _iter_paragraph_items(para) -> list:
         except Exception:
             continue
 
-    return items
+    return _split_breaks(items)
 
 
 def _merge_runs(items) -> list:
