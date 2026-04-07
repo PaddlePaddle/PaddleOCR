@@ -489,6 +489,99 @@ def _runs_to_html(items) -> str:
     return "".join(parts)
 
 
+# Regex for TOC style names (e.g. "toc 1", "TOC 2", "TOC3")
+_RE_TOC_STYLE = re.compile(r"(?i)^toc\s*(\d+)$")
+
+# Flat TOC styles with no level concept (e.g. figure/table of contents)
+_TOC_FLAT_STYLES = {"table of figures"}
+
+# Regex for PAGEREF anchor in field instructions
+_RE_PAGEREF = re.compile(r"PAGEREF\s+(_Toc\w+)")
+
+
+def _is_toc_paragraph(para):
+    """Return TOC level (1-9) if paragraph uses a TOC style, else None."""
+    style_name = (para.style.name if para.style else "").strip()
+    m = _RE_TOC_STYLE.match(style_name)
+    if m:
+        return int(m.group(1))
+    if style_name.lower() in _TOC_FLAT_STYLES:
+        return 1
+    return None
+
+
+def _extract_toc_text(para) -> str:
+    """Extract display text from a TOC paragraph, stripping trailing page numbers."""
+    text = para.text
+    # Remove trailing page number: split on last tab, discard if it's a pure number
+    if "\t" in text:
+        before_tab, _, after_tab = text.rpartition("\t")
+        if after_tab.strip().isdigit():
+            text = before_tab
+    return text.strip()
+
+
+def _extract_toc_anchor(para_element):
+    """Extract anchor name from a TOC paragraph element.
+
+    Priority:
+    1. w:hyperlink[@w:anchor] attribute
+    2. PAGEREF _TocXXXX in w:instrText
+    """
+    # Check for w:hyperlink with anchor attribute
+    for hl in para_element.findall(f".//{_W}hyperlink"):
+        anchor = hl.get(f"{_W}anchor")
+        if anchor and anchor.startswith("_Toc"):
+            return anchor
+
+    # Fall back to PAGEREF field instruction
+    for instr in para_element.findall(f".//{_W}instrText"):
+        if instr.text:
+            m = _RE_PAGEREF.search(instr.text)
+            if m:
+                return m.group(1)
+    return None
+
+
+def _toc_entries_to_markdown(entries: list) -> str:
+    """Convert list of (text, anchor, level) TOC entries to Markdown list."""
+    lines = []
+    for text, anchor, level in entries:
+        indent = "  " * (level - 1)
+        if anchor:
+            lines.append(f"{indent}- [{text}](#{anchor})")
+        else:
+            lines.append(f"{indent}- {text}")
+    return "\n".join(lines)
+
+
+def _extract_heading_toc_bookmarks(para_element):
+    """Return all _Toc bookmark names found in a paragraph element.
+
+    A heading may carry multiple _Toc bookmarks from repeated TOC updates
+    (each update inserts a new bookmark without removing old ones).  Returning
+    all of them ensures that TOC entries from any generation can link here.
+    """
+    names = []
+    for bm in para_element.findall(f".//{_W}bookmarkStart"):
+        name = bm.get(f"{_W}name", "")
+        if name.startswith("_Toc"):
+            names.append(name)
+    return names
+
+
+def _flatten_body(body):
+    """Yield body children, expanding sdt elements into their sdtContent children."""
+    for child in body:
+        tag = child.tag.split("}")[-1] if "}" in child.tag else child.tag
+        if tag == "sdt":
+            sdt_content = child.find(f"{_W}sdtContent")
+            if sdt_content is not None:
+                yield from _flatten_body(sdt_content)
+        else:
+            yield child
+
+
 _CODE_FONTS = {
     "Courier New",
     "Courier",
@@ -713,6 +806,7 @@ def _convert_body(doc) -> tuple:
     images: dict = {}
     image_counter = [0]  # wrapped in list so inner functions can mutate it
     code_buf: list[str] = []  # buffer for consecutive code paragraphs
+    toc_buf: list[tuple] = []  # buffer for consecutive TOC paragraphs
     ol_counters: dict[str, int] = {}  # key = "{numId}-{ilvl}", value = current index
     prev_was_list = False
 
@@ -725,11 +819,32 @@ def _convert_body(doc) -> tuple:
             lines.append("")
             code_buf.clear()
 
-    for child in doc.element.body:
+    def flush_toc_buf():
+        """Flush the TOC buffer as a Markdown list."""
+        if toc_buf:
+            if lines and lines[-1] != "":
+                lines.append("")
+            lines.append(_toc_entries_to_markdown(toc_buf))
+            lines.append("")
+            toc_buf.clear()
+
+    for child in _flatten_body(doc.element.body):
         tag = child.tag.split("}")[-1]
 
         if tag == "p":
             para = Paragraph(child, doc)
+
+            # TOC paragraph detection — before image extraction and other processing
+            toc_level = _is_toc_paragraph(para)
+            if toc_level is not None:
+                toc_text = _extract_toc_text(para)
+                if toc_text:
+                    toc_anchor = _extract_toc_anchor(child)
+                    toc_buf.append((toc_text, toc_anchor, toc_level))
+                continue
+
+            # Non-TOC paragraph: flush any buffered TOC entries
+            flush_toc_buf()
 
             # Extract images first
             img_list = _extract_images_from_paragraph(para, doc, image_counter)
@@ -760,6 +875,12 @@ def _convert_body(doc) -> tuple:
                 continue
 
             if not text:
+                # Emit any _Toc bookmark anchors even for empty paragraphs.
+                # Headings whose visible text comes from list numbering (not w:t
+                # runs) have para.text == "" but still carry _Toc bookmarks that
+                # TOC entries link to.
+                for toc_bm in _extract_heading_toc_bookmarks(child):
+                    lines.append(f'<a id="{toc_bm}"></a>')
                 if not img_list:
                     if code_buf:
                         code_buf.append("")  # preserve blank lines inside code blocks
@@ -786,6 +907,10 @@ def _convert_body(doc) -> tuple:
                 if prev_was_list:
                     lines.append("")
                 prev_was_list = False
+                # Add _Toc bookmark anchors if present (makes TOC links jumpable).
+                # A heading may have multiple _Toc bookmarks from repeated TOC updates.
+                for toc_bm in _extract_heading_toc_bookmarks(child):
+                    lines.append(f'<a id="{toc_bm}"></a>')
                 lines.append(f"{'#' * level} {clean}")
                 lines.append("")
             else:
@@ -809,11 +934,15 @@ def _convert_body(doc) -> tuple:
                     prev_was_list = False
                     # Reset ordered list counters when a list is interrupted
                     ol_counters.clear()
+                    # Add _Toc bookmark anchors for non-heading paragraphs (e.g. Caption)
+                    for toc_bm in _extract_heading_toc_bookmarks(child):
+                        lines.append(f'<a id="{toc_bm}"></a>')
                     lines.append(inline)
                     lines.append("")
 
         elif tag == "tbl":
             flush_code_buf()
+            flush_toc_buf()
             if prev_was_list:
                 lines.append("")
             prev_was_list = False
@@ -828,6 +957,7 @@ def _convert_body(doc) -> tuple:
 
     # Strip trailing blank lines
     flush_code_buf()
+    flush_toc_buf()
     while lines and lines[-1] == "":
         lines.pop()
 
