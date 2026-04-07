@@ -14,6 +14,7 @@
 		A1000005 /* ORTSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000012 /* ORTSessionManager.swift */; };
 		A1000006 /* AppViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000013 /* AppViewModel.swift */; };
 		A1000007 /* ClipperOffset.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000015 /* ClipperOffset.swift */; };
+		A1000008 /* DBPostProcess.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000016 /* DBPostProcess.swift */; };
 		A1000010 /* PaddleOCRDemoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000010 /* PaddleOCRDemoTests.swift */; };
 		A1000011 /* ORTSessionManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000014 /* ORTSessionManagerTests.swift */; };
 		F9888FA77A2AF8AF45B50193 /* Pods_PaddleOCRDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D0FFA11A4E43E5BD0F80219 /* Pods_PaddleOCRDemo.framework */; };
@@ -46,6 +47,7 @@
 		A2000013 /* AppViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppViewModel.swift; sourceTree = "<group>"; };
 		A2000014 /* ORTSessionManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ORTSessionManagerTests.swift; sourceTree = "<group>"; };
 		A2000015 /* ClipperOffset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipperOffset.swift; sourceTree = "<group>"; };
+		A2000016 /* DBPostProcess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBPostProcess.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -148,6 +150,7 @@
 			isa = PBXGroup;
 			children = (
 				A2000015 /* ClipperOffset.swift */,
+				A2000016 /* DBPostProcess.swift */,
 				A2000011 /* ModelConfig.swift */,
 				A2000012 /* ORTSessionManager.swift */,
 			);
@@ -282,6 +285,7 @@
 				A1000001 /* PaddleOCRDemoApp.swift in Sources */,
 				A1000002 /* ContentView.swift in Sources */,
 				A1000007 /* ClipperOffset.swift in Sources */,
+				A1000008 /* DBPostProcess.swift in Sources */,
 				A1000004 /* ModelConfig.swift in Sources */,
 				A1000005 /* ORTSessionManager.swift in Sources */,
 				A1000006 /* AppViewModel.swift in Sources */,
