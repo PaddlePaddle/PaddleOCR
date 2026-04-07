@@ -28,6 +28,8 @@ Developers can see PP-OCRv5 text detection and recognition running on an iOS dev
 - [ ] README with build instructions, architecture explanation, and integration guide
 - [ ] Pre/post-processing logic matching the Python reference implementation
 
+- ✓ Pre/post-processing logic matching the Python reference implementation — Validated in Phase 2: Text Detection (config-driven preprocessing + DB postprocessing in pure Swift)
+
 ### Out of Scope
 
 - PaddleLite integration — PaddleLite is no longer maintained
@@ -59,8 +61,10 @@ Developers can see PP-OCRv5 text detection and recognition running on an iOS dev
 |----------|-----------|---------|
 | Replace `deploy/ios_demo/` instead of creating new folder | Existing folder is just a placeholder README, no real code to preserve | — Pending |
 | Exclude PaddleLite | No longer maintained by Baidu | — Pending |
-| Inference framework | Research needed — ONNX Runtime vs CoreML vs others | — Pending |
-| UIKit vs SwiftUI | Research will recommend based on compatibility | — Pending |
+| Inference framework | ONNX Runtime + CoreML EP chosen | Validated in Phase 1 |
+| UIKit vs SwiftUI | SwiftUI + iOS 16+ target | Validated in Phase 1 |
+| Preprocessing approach | Pure Swift (Accelerate/vImage), no OpenCV | Validated in Phase 2 |
+| Polygon clipping | Pure Swift Clipper port, no external dependency | Validated in Phase 2 |
 
 ## Evolution
 
@@ -80,4 +84,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-03 after initialization*
+*Last updated: 2026-04-07 after Phase 2 completion*
