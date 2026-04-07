@@ -186,9 +186,18 @@ def _register_doc2md_command(subparsers):
         output = args.output
         quiet = args.quiet
 
+        # Build converter kwargs from CLI args
+        converter_kwargs = {}
+        if args.no_textboxes:
+            converter_kwargs["extract_textboxes"] = False
+        if args.sheet_name is not None:
+            converter_kwargs["sheet_name"] = args.sheet_name
+        if args.max_rows is not None:
+            converter_kwargs["max_rows"] = args.max_rows
+
         t1 = time.time()
         try:
-            result = convert(args.input, output=output)
+            result = convert(args.input, output=output, **converter_kwargs)
         except Exception as e:
             logger.error(f"Conversion failed: {e}")
             sys.exit(1)
@@ -233,6 +242,25 @@ def _register_doc2md_command(subparsers):
         "--formats",
         action="store_true",
         help="List supported formats and exit",
+    )
+    # docx options
+    subparser.add_argument(
+        "--no-textboxes",
+        action="store_true",
+        help="[docx] Skip text box content extraction",
+    )
+    # xlsx options
+    subparser.add_argument(
+        "--sheet-name",
+        type=str,
+        default=None,
+        help="[xlsx] Convert only the specified sheet (by name)",
+    )
+    subparser.add_argument(
+        "--max-rows",
+        type=int,
+        default=None,
+        help="[xlsx] Maximum number of rows to convert per sheet",
     )
     subparser.set_defaults(executor=_execute_doc2md)
 

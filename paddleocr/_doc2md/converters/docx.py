@@ -33,6 +33,14 @@ _W = "{" + _W_NS + "}"
 _M_NS = "http://schemas.openxmlformats.org/officeDocument/2006/math"
 _M = "{" + _M_NS + "}"
 
+# Markup Compatibility namespace (mc:AlternateContent)
+_MC_NS = "http://schemas.openxmlformats.org/markup-compatibility/2006"
+_MC = "{" + _MC_NS + "}"
+
+# WordprocessingShape namespace (wps:txbx)
+_WPS_NS = "http://schemas.microsoft.com/office/word/2010/wordprocessingShape"
+_WPS = "{" + _WPS_NS + "}"
+
 
 def _escape_md_url(url: str) -> str:
     """Escape parentheses in URL for Markdown link syntax."""
@@ -666,6 +674,19 @@ def _table_to_html(
                 )
                 if para_html:
                     content_parts.append(para_html)
+                # Extract text box content from table cell paragraph
+                try:
+                    tb_groups = _extract_textbox_paragraphs(para._element)
+                    for tb_paras in tb_groups:
+                        for tb_p in tb_paras:
+                            tb_t_elems = tb_p.findall(f".//{_W}t")
+                            tb_text = "".join(
+                                t.text for t in tb_t_elems if t.text
+                            ).strip()
+                            if tb_text:
+                                content_parts.append(f"[{tb_text}]")
+                except Exception:
+                    pass
             cell_html = "<br>".join(content_parts) if content_parts else ""
 
             tag = "th" if i == 0 else "td"
@@ -726,6 +747,96 @@ def _extract_images_from_paragraph(para, doc, image_counter: list) -> list:
         except (KeyError, AttributeError):
             pass
     return results
+
+
+def _extract_textbox_paragraphs(element) -> list:
+    """Extract paragraphs from text boxes embedded in a body element.
+
+    Text boxes appear as mc:AlternateContent > mc:Choice > wps:txbx > w:txbxContent > w:p.
+    Only mc:Choice is used to avoid duplicating VML fallback content.
+
+    Returns list of lists of w:p elements, one list per non-empty text box.
+    """
+    try:
+        result = []
+        for alt_content in element.iter(f"{_MC}AlternateContent"):
+            choice = alt_content.find(f"{_MC}Choice")
+            if choice is None:
+                continue
+            for txbx in choice.iter(f"{_WPS}txbx"):
+                txbx_content = txbx.find(f"{_W}txbxContent")
+                if txbx_content is None:
+                    continue
+                paras = txbx_content.findall(f"{_W}p")
+                if not paras:
+                    continue
+                # Skip boxes where all paragraphs are empty
+                has_text = any(
+                    p.find(f".//{_W}t") is not None
+                    and any(t.text for t in p.findall(f".//{_W}t") if t.text)
+                    for p in paras
+                )
+                if has_text:
+                    result.append(paras)
+        return result
+    except Exception:
+        return []
+
+
+def _textbox_paragraphs_to_markdown(
+    textbox_groups, doc, body_font_size, image_counter, images, content_width
+) -> list:
+    """Convert text box paragraph groups to blockquote Markdown lines.
+
+    Returns a list of strings (lines) to append to the main output.
+    """
+    try:
+        from docx.text.paragraph import Paragraph
+    except ImportError:
+        return []
+
+    output_lines = []
+    for group_idx, para_elements in enumerate(textbox_groups):
+        group_lines = []
+        for p_elem in para_elements:
+            try:
+                para = Paragraph(p_elem, doc)
+
+                # Handle images in text box
+                img_list = _extract_images_from_paragraph(para, doc, image_counter)
+                for filename, img_bytes, cx_emu in img_list:
+                    rel_path = f"images/{filename}"
+                    images[rel_path] = img_bytes
+                    if cx_emu and content_width:
+                        pct = min(round(cx_emu / content_width * 100), 100)
+                        group_lines.append(
+                            f'> <img src="images/{filename}" width="{pct}%">'
+                        )
+                    else:
+                        group_lines.append(f'> <img src="images/{filename}">')
+
+                # Handle math formulas
+                if _paragraph_has_math(para):
+                    math_md = _paragraph_math_to_markdown(para)
+                    if math_md:
+                        group_lines.append(f"> {math_md}")
+                    continue
+
+                # Plain inline text (no heading/list/code detection for text boxes)
+                inline = _runs_to_markdown(_iter_paragraph_items(para))
+                if not inline:
+                    inline = para.text.strip()
+                if inline:
+                    group_lines.append(f"> {inline}")
+            except Exception:
+                continue
+
+        if group_lines:
+            if output_lines:
+                output_lines.append("")
+            output_lines.extend(group_lines)
+
+    return output_lines
 
 
 def _build_numbering_map(doc) -> dict:
@@ -789,7 +900,7 @@ def _get_list_info(para, numbering_map) -> tuple | None:
     return (list_type, ilvl, num_id)
 
 
-def _convert_body(doc) -> tuple:
+def _convert_body(doc, *, extract_textboxes=True) -> tuple:
     """Traverse body elements in order and produce Markdown. Returns (markdown_str, images_dict)."""
     try:
         from docx.table import Table
@@ -846,6 +957,27 @@ def _convert_body(doc) -> tuple:
             # Non-TOC paragraph: flush any buffered TOC entries
             flush_toc_buf()
 
+            # Extract text box content for this paragraph element
+            pending_textbox_lines = []
+            if extract_textboxes:
+                tb_groups = _extract_textbox_paragraphs(child)
+                if tb_groups:
+                    pending_textbox_lines = _textbox_paragraphs_to_markdown(
+                        tb_groups,
+                        doc,
+                        body_font_size,
+                        image_counter,
+                        images,
+                        content_width,
+                    )
+
+            def _flush_textbox():
+                if pending_textbox_lines:
+                    if lines and lines[-1] != "":
+                        lines.append("")
+                    lines.extend(pending_textbox_lines)
+                    lines.append("")
+
             # Extract images first
             img_list = _extract_images_from_paragraph(para, doc, image_counter)
             for filename, img_bytes, cx_emu in img_list:
@@ -872,6 +1004,7 @@ def _convert_body(doc) -> tuple:
                 if math_md:
                     lines.append(math_md)
                     lines.append("")
+                _flush_textbox()
                 continue
 
             if not text:
@@ -881,7 +1014,8 @@ def _convert_body(doc) -> tuple:
                 # TOC entries link to.
                 for toc_bm in _extract_heading_toc_bookmarks(child):
                     lines.append(f'<a id="{toc_bm}"></a>')
-                if not img_list:
+                _flush_textbox()
+                if not img_list and not pending_textbox_lines:
                     if code_buf:
                         code_buf.append("")  # preserve blank lines inside code blocks
                     elif lines and lines[-1] != "":
@@ -891,6 +1025,7 @@ def _convert_body(doc) -> tuple:
             # Code paragraph: buffer it without heading/inline formatting
             if _is_code_paragraph(para):
                 code_buf.append(para.text)
+                _flush_textbox()
                 continue
 
             # Non-code paragraph: flush any buffered code first
@@ -940,6 +1075,8 @@ def _convert_body(doc) -> tuple:
                     lines.append(inline)
                     lines.append("")
 
+            _flush_textbox()
+
         elif tag == "tbl":
             flush_code_buf()
             flush_toc_buf()
@@ -979,8 +1116,9 @@ class DocxConverter(BaseConverter):
                 "DOCX conversion requires python-docx: pip install paddleocr[doc2md]"
             )
 
-        doc = Document(file_path)
-        md_text, images = _convert_body(doc)
+        extract_textboxes = kwargs.pop("extract_textboxes", True)
+        doc = Document(str(file_path))
+        md_text, images = _convert_body(doc, extract_textboxes=extract_textboxes)
 
         return ConvertResult(
             markdown=md_text,
