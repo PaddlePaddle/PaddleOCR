@@ -20,9 +20,6 @@ import SwiftUI
 /// This view acts as a state router: it renders the appropriate sub-view
 /// for each `AppState` case and wires up the PhotosPicker + sample image
 /// selection to the view model's processing pipeline.
-///
-/// Plan 02 will replace the placeholder results view with proper
-/// ResultImageView, ResultsListView, TimingView, and ErrorView components.
 struct ContentView: View {
     @StateObject private var viewModel = OCRViewModel()
     @State private var selectedItem: PhotosPickerItem?
@@ -144,45 +141,24 @@ struct ContentView: View {
         }
     }
 
-    // MARK: - Results (placeholder -- Plan 02 replaces with proper visualization)
+    // MARK: - Results
 
     private func resultsView(result: OCRPipelineResult, image: UIImage) -> some View {
-        VStack(spacing: 16) {
-            // Image display (no polygon overlay yet -- Plan 02)
-            Image(uiImage: image)
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(maxHeight: 400)
-                .clipShape(RoundedRectangle(cornerRadius: 12))
+        VStack(spacing: 24) {
+            // Image with polygon overlays
+            ResultImageView(image: image, results: result.results)
 
-            // Results heading
-            Text("Results (\(result.results.count))")
-                .font(.headline)
-                .frame(maxWidth: .infinity, alignment: .leading)
+            // Timing breakdown card
+            TimingView(result: result)
 
-            // Timing summary
-            Text("Detection: \(ms(result.detectionTime)) ms | Recognition: \(ms(result.recognitionTime)) ms | Total: \(ms(result.totalTime)) ms")
-                .font(.caption)
-                .foregroundColor(Color(.secondaryLabel))
-                .frame(maxWidth: .infinity, alignment: .leading)
+            // Results list with copy button
+            ResultsListView(
+                results: result.results,
+                copiedFeedback: viewModel.copiedFeedback,
+                onCopy: { viewModel.copyResultsToClipboard() }
+            )
 
-            // Text results list
-            if result.results.isEmpty {
-                Text("No text detected.")
-                    .font(.body)
-                    .foregroundColor(Color(.secondaryLabel))
-                    .padding(.vertical, 8)
-            } else {
-                VStack(alignment: .leading, spacing: 6) {
-                    ForEach(Array(result.results.enumerated()), id: \.offset) { idx, item in
-                        Text("\(idx + 1). \(item.text) -- \(String(format: "%.1f%%", item.confidence * 100))")
-                            .font(.body)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                    }
-                }
-            }
-
-            // Image picker at bottom for selecting a new image
+            // Image picker for selecting a new image
             ImagePickerSection(
                 selectedItem: $selectedItem,
                 sampleImageNames: viewModel.sampleImageNames,
@@ -196,28 +172,12 @@ struct ContentView: View {
     // MARK: - Error
 
     private func errorView(error: AppError) -> some View {
-        VStack(spacing: 12) {
-            Image(systemName: "exclamationmark.triangle.fill")
-                .font(.system(size: 48))
-                .foregroundColor(.red)
-
-            Text(errorHeading(for: error))
-                .font(.headline)
-
-            Text(error.localizedDescription ?? "An unknown error occurred.")
-                .font(.body)
-                .foregroundColor(Color(.secondaryLabel))
-                .multilineTextAlignment(.center)
-
-            Button {
+        VStack(spacing: 24) {
+            ErrorView(error: error, onRetry: {
                 Task { await viewModel.retry() }
-            } label: {
-                Label("Retry", systemImage: "arrow.clockwise")
-            }
-            .buttonStyle(.borderedProminent)
-            .padding(.top, 4)
+            })
 
-            // If not a model error, let user try a different image
+            // If not a model error, show image picker so user can try different image
             if !error.isModelError {
                 ImagePickerSection(
                     selectedItem: $selectedItem,
@@ -232,14 +192,6 @@ struct ContentView: View {
     }
 
     // MARK: - Helpers
-
-    private func errorHeading(for error: AppError) -> String {
-        switch error {
-        case .modelLoadFailed: return "Model Loading Failed"
-        case .inferenceFailed: return "OCR Failed"
-        case .imageLoadFailed: return "Image Error"
-        }
-    }
 
     private func ms(_ t: TimeInterval) -> String {
         String(format: "%.0f", t * 1000)
