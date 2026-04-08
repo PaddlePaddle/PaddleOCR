@@ -61,9 +61,10 @@ def _extract_math_from_paragraph(para_element) -> list:
                 results.append(latex)
     # Direct m:oMathPara / m:oMath not wrapped in a14:m
     for omath_para in para_element.findall(f".//{_M}oMathPara"):
+        parent = omath_para.getparent()
+        if parent is not None and parent.tag == f"{_A14}m":
+            continue  # already handled above (oMathPara is inside a14:m)
         for omath in omath_para.findall(f"{_M}oMath"):
-            if omath.getparent() is not None and omath.getparent().tag == f"{_A14}m":
-                continue  # already handled above
             latex = _convert_omath(omath)
             if latex:
                 results.append(latex)
