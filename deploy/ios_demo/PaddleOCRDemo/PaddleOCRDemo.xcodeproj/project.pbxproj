@@ -28,6 +28,10 @@
 		A1000080 /* OCRViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000080 /* OCRViewModel.swift */; };
 		A1000090 /* ImagePickerSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000090 /* ImagePickerSection.swift */; };
 		A1000091 /* SampleImages in Resources */ = {isa = PBXBuildFile; fileRef = A2000091 /* SampleImages */; };
+		A10000A0 /* ResultImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000A0 /* ResultImageView.swift */; };
+		A10000A1 /* TimingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000A1 /* TimingView.swift */; };
+		A10000A2 /* ResultsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000A2 /* ResultsListView.swift */; };
+		A10000A3 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000A3 /* ErrorView.swift */; };
 		A1000010 /* PaddleOCRDemoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000010 /* PaddleOCRDemoTests.swift */; };
 		A1000011 /* ORTSessionManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000014 /* ORTSessionManagerTests.swift */; };
 		F9888FA77A2AF8AF45B50193 /* Pods_PaddleOCRDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D0FFA11A4E43E5BD0F80219 /* Pods_PaddleOCRDemo.framework */; };
@@ -74,6 +78,10 @@
 		A2000080 /* OCRViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCRViewModel.swift; sourceTree = "<group>"; };
 		A2000090 /* ImagePickerSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerSection.swift; sourceTree = "<group>"; };
 		A2000091 /* SampleImages */ = {isa = PBXFileReference; lastKnownFileType = folder; path = SampleImages; sourceTree = "<group>"; };
+		A20000A0 /* ResultImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultImageView.swift; sourceTree = "<group>"; };
+		A20000A1 /* TimingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimingView.swift; sourceTree = "<group>"; };
+		A20000A2 /* ResultsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsListView.swift; sourceTree = "<group>"; };
+		A20000A3 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -207,7 +215,11 @@
 		A7000009 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				A20000A3 /* ErrorView.swift */,
 				A2000090 /* ImagePickerSection.swift */,
+				A20000A0 /* ResultImageView.swift */,
+				A20000A2 /* ResultsListView.swift */,
+				A20000A1 /* TimingView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -375,6 +387,8 @@
 				A1000073 /* ValidationExport.swift in Sources */,
 				A1000080 /* OCRViewModel.swift in Sources */,
 				A1000090 /* ImagePickerSection.swift in Sources */,
+				A10000A0 /* ResultImageView.swift in Sources */,
+				A10000A1 /* TimingView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
