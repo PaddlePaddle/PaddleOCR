@@ -138,7 +138,7 @@ export function drawTextPanel(
     if (isVertical) {
       // Vertical text: render characters one-by-one, stacked vertically
       ctx.textBaseline = "top";
-      const chars = [...item.text];
+      const chars = Array.from(item.text);
       const charCount = Math.max(1, chars.length);
       let fontSize = Math.max(8, Math.floor(bounds.width * 0.8));
 
