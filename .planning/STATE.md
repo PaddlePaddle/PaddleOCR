@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 04-01-PLAN.md, 04-02-PLAN.md
-last_updated: "2026-04-07T09:44:27.711Z"
-last_activity: 2026-04-07
+stopped_at: Completed 04-03-PLAN.md
+last_updated: "2026-04-08T02:25:49.451Z"
+last_activity: 2026-04-08
 progress:
   total_phases: 6
-  completed_phases: 1
+  completed_phases: 2
   total_plans: 4
-  completed_plans: 6
+  completed_plans: 8
   percent: 100
 ---
 
@@ -26,9 +26,9 @@ See: .planning/PROJECT.md (updated 2026-04-03)
 ## Current Position
 
 Phase: 4
-Plan: 1 of 3 complete
-Status: Executing Phase 04
-Last activity: 2026-04-07
+Plan: 2 of 3 complete
+Status: Ready to execute
+Last activity: 2026-04-08
 
 Progress: [██████████] 100%
 
@@ -58,6 +58,7 @@ Progress: [██████████] 100%
 | Phase 02 P03 | 3min | 2 tasks | 3 files |
 | Phase 04 P01 | 6min | 2 tasks | 2 files |
 | Phase 04 P02 | 4min | 2 tasks | 5 files |
+| Phase 04 P03 | 2min | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -85,6 +86,9 @@ Recent decisions affecting current work:
 - [Phase 04]: Pure Swift perspective warp via DLT + bilinear backward mapping instead of vImage/Accelerate -- faithful to OpenCV reference
 - [Phase 04]: Confidence tolerance 1e-4 for ARM vs x86 float differences in validation
 - [Phase 04]: JSON validation schema: {image, box_count, boxes: [{polygon, text, confidence}]} shared between Python and iOS
+- [Phase 04]: OCREngine is a class (not actor) -- delegates concurrency to ORTSessionManager actor
+- [Phase 04]: Sequential recognition per box (not parallel) -- ORT sessions not designed for concurrent use
+- [Phase 04]: ValidationExport uses JSONSerialization with sortedKeys for deterministic diffs
 
 ### Pending Todos
 
@@ -98,6 +102,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-07T09:44:27.709Z
-Stopped at: Completed 04-01-PLAN.md, 04-02-PLAN.md
+Last session: 2026-04-08T02:25:49.449Z
+Stopped at: Completed 04-03-PLAN.md
 Resume file: None

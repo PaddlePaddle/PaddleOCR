@@ -65,10 +65,10 @@ Fetch via: `gh api repos/Bobholamovic/PaddleX/contents/{path}?ref=feat/transform
 ### Config-Driven Pipeline
 
 - [x] **CONF-01**: App parses `inference.yml` bundled with each model at runtime using a Swift YAML parser
-- [ ] **CONF-02**: Preprocessing pipeline is built dynamically from `PreProcess.transform_ops` in inference.yml
-- [ ] **CONF-03**: Postprocessing is configured from `PostProcess` params in inference.yml (thresholds, character dict, etc.)
-- [ ] **CONF-04**: Zero hardcoded preprocessing/postprocessing parameters — all behavior driven by model config
-- [ ] **CONF-05**: Switching to a different model (e.g., server det/rec) requires only replacing model files + inference.yml, no code changes
+- [x] **CONF-02**: Preprocessing pipeline is built dynamically from `PreProcess.transform_ops` in inference.yml
+- [x] **CONF-03**: Postprocessing is configured from `PostProcess` params in inference.yml (thresholds, character dict, etc.)
+- [x] **CONF-04**: Zero hardcoded preprocessing/postprocessing parameters — all behavior driven by model config
+- [x] **CONF-05**: Switching to a different model (e.g., server det/rec) requires only replacing model files + inference.yml, no code changes
 
 ### Preprocessing
 
@@ -88,10 +88,10 @@ Fetch via: `gh api repos/Bobholamovic/PaddleX/contents/{path}?ref=feat/transform
 
 ### OCR Pipeline
 
-- [ ] **PIPE-01**: End-to-end pipeline orchestrates: detect -> sort boxes -> crop -> recognize — ported from PaddleX `pipelines/ocr/pipeline.py`
+- [x] **PIPE-01**: End-to-end pipeline orchestrates: detect -> sort boxes -> crop -> recognize — ported from PaddleX `pipelines/ocr/pipeline.py`
 - [x] **PIPE-02**: Box sorting follows reading order — matching `SortQuadBoxes` logic in PaddleX pipeline (top-to-bottom, left-to-right with y-threshold of 10px)
 - [x] **PIPE-03**: Crop uses perspective transform — matching `CropByPolys.get_minarea_rect_crop()` in PaddleX (minAreaRect -> sortCorners -> warpPerspective -> rot90 for tall-narrow boxes)
-- [ ] **PIPE-04**: Pipeline runs on background thread, UI remains responsive
+- [x] **PIPE-04**: Pipeline runs on background thread, UI remains responsive
 - [x] **PIPE-05**: Pipeline results match the Python/PaddleX reference implementation — verified by VALID-01/02
 
 ### Validation
@@ -160,10 +160,10 @@ Fetch via: `gh api repos/Bobholamovic/PaddleX/contents/{path}?ref=feat/transform
 | INFER-04 | Phase 1 | Complete |
 | INFER-05 | Phase 1 | Complete |
 | CONF-01 | Phase 2 | Complete |
-| CONF-02 | Phase 4 | Pending |
-| CONF-03 | Phase 4 | Pending |
-| CONF-04 | Phase 4 | Pending |
-| CONF-05 | Phase 4 | Pending |
+| CONF-02 | Phase 4 | Complete |
+| CONF-03 | Phase 4 | Complete |
+| CONF-04 | Phase 4 | Complete |
+| CONF-05 | Phase 4 | Complete |
 | PREP-01 | Phase 2 | Complete |
 | PREP-02 | Phase 2 | Complete |
 | PREP-03 | Phase 2 | Complete |
@@ -174,10 +174,10 @@ Fetch via: `gh api repos/Bobholamovic/PaddleX/contents/{path}?ref=feat/transform
 | POST-02 | Phase 2 | Complete |
 | POST-03 | Phase 3 | Complete |
 | POST-04 | Phase 3 | Complete |
-| PIPE-01 | Phase 4 | Pending |
+| PIPE-01 | Phase 4 | Complete |
 | PIPE-02 | Phase 4 | Complete |
 | PIPE-03 | Phase 4 | Complete |
-| PIPE-04 | Phase 4 | Pending |
+| PIPE-04 | Phase 4 | Complete |
 | PIPE-05 | Phase 4 | Complete |
 | VALID-01 | Phase 4 | Complete |
 | VALID-02 | Phase 4 | Complete |
