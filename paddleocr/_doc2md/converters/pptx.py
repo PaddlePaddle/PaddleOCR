@@ -463,7 +463,7 @@ class PptxConverter(BaseConverter):
                 series_values.append(vals)
 
             # Build HTML table
-            html_parts = [f"**{chart_type_name}**", "<table>"]
+            html_parts = ["<table>"]
             if title_text:
                 html_parts.append(f"<caption>{title_text}</caption>")
 
