@@ -1,0 +1,133 @@
+// Copyright (c) 2026 PaddlePaddle Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+import type { OcrResultItem } from "../pipelines/ocr/core";
+import type { Point2D } from "../models/common";
+import type { BoxStyleOptions, RgbColor } from "./types";
+import { deterministicColor } from "./color";
+
+const DEFAULT_BG = "#ffffff";
+const OUTLINE_LINE_WIDTH = 1;
+const TEXT_COLOR = "#000000";
+const ROTATION_THRESHOLD_DEG = 5;
+
+/**
+ * Compute the angle (in radians) of the top edge of a quad polygon.
+ * The top edge is defined as poly[0] -> poly[1].
+ */
+function topEdgeAngle(poly: Point2D[]): number {
+  const dx = poly[1][0] - poly[0][0];
+  const dy = poly[1][1] - poly[0][1];
+  return Math.atan2(dy, dx);
+}
+
+/**
+ * Compute the bounding box of a polygon.
+ */
+function polyBounds(poly: Point2D[]): {
+  minX: number;
+  minY: number;
+  maxX: number;
+  maxY: number;
+  width: number;
+  height: number;
+} {
+  let minX = Infinity;
+  let minY = Infinity;
+  let maxX = -Infinity;
+  let maxY = -Infinity;
+  for (const [x, y] of poly) {
+    if (x < minX) minX = x;
+    if (y < minY) minY = y;
+    if (x > maxX) maxX = x;
+    if (y > maxY) maxY = y;
+  }
+  return { minX, minY, maxX, maxY, width: maxX - minX, height: maxY - minY };
+}
+
+function drawPolygonPath(
+  ctx: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D,
+  poly: Point2D[],
+  offsetX: number,
+): void {
+  ctx.beginPath();
+  ctx.moveTo(poly[0][0] + offsetX, poly[0][1]);
+  for (let i = 1; i < poly.length; i += 1) {
+    ctx.lineTo(poly[i][0] + offsetX, poly[i][1]);
+  }
+  ctx.closePath();
+}
+
+/**
+ * Draw the right panel: white background with detection box outlines and
+ * recognized text rendered inside each box.
+ */
+export function drawTextPanel(
+  ctx: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D,
+  offsetX: number,
+  height: number,
+  items: OcrResultItem[],
+  style: BoxStyleOptions,
+  fontFamily: string,
+  background?: string,
+): void {
+  const getColor = style.colorFn ?? deterministicColor;
+  const bg = background ?? DEFAULT_BG;
+
+  // Fill background
+  ctx.save();
+  ctx.fillStyle = bg;
+  ctx.fillRect(offsetX, 0, offsetX, height);
+  ctx.restore();
+
+  for (let i = 0; i < items.length; i += 1) {
+    const item = items[i];
+    const [r, g, b]: RgbColor = getColor(i);
+    const bounds = polyBounds(item.poly);
+    const angle = topEdgeAngle(item.poly);
+    const absDeg = Math.abs(angle * (180 / Math.PI));
+    const needsRotation =
+      absDeg > ROTATION_THRESHOLD_DEG &&
+      absDeg < 180 - ROTATION_THRESHOLD_DEG;
+
+    // Draw box outline
+    ctx.save();
+    ctx.lineWidth = OUTLINE_LINE_WIDTH;
+    ctx.strokeStyle = `rgb(${String(r)}, ${String(g)}, ${String(b)})`;
+    drawPolygonPath(ctx, item.poly, offsetX);
+    ctx.stroke();
+    ctx.restore();
+
+    // Draw text
+    const fontSize = Math.max(12, Math.floor(bounds.height * 0.8));
+    ctx.save();
+    ctx.fillStyle = TEXT_COLOR;
+    ctx.font = `${String(fontSize)}px "${fontFamily}"`;
+    ctx.textBaseline = "middle";
+
+    if (needsRotation) {
+      const cx = bounds.minX + bounds.width / 2 + offsetX;
+      const cy = bounds.minY + bounds.height / 2;
+      ctx.translate(cx, cy);
+      ctx.rotate(angle);
+      ctx.fillText(item.text, -bounds.width / 2, 0);
+    } else {
+      const x = bounds.minX + offsetX + 2;
+      const y = bounds.minY + bounds.height / 2;
+      ctx.fillText(item.text, x, y);
+    }
+
+    ctx.restore();
+  }
+}
