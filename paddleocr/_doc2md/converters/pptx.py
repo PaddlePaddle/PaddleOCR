@@ -89,6 +89,27 @@ def _pptx_run_strike(run) -> bool:
     return False
 
 
+def _pptx_run_script(run) -> str:
+    """Return 'super', 'sub', or '' based on DrawingML baseline attribute.
+
+    baseline > 0  -> superscript, baseline < 0 -> subscript.
+    baseline attribute is on <a:rPr> with no namespace prefix.
+    """
+    try:
+        rPr = run._r.find(_A_RPR)
+        if rPr is not None:
+            val = rPr.get("baseline")
+            if val is not None:
+                n = int(val)
+                if n > 0:
+                    return "super"
+                if n < 0:
+                    return "sub"
+    except Exception:
+        pass
+    return ""
+
+
 def _escape_md_url(url: str) -> str:
     """Escape parentheses in URL for Markdown link syntax."""
     return url.replace("(", "%28").replace(")", "%29")
@@ -275,12 +296,13 @@ class PptxConverter(BaseConverter):
                     italic = bool(run.font.italic)
                     underline = bool(run.font.underline) and not url
                     strikethrough = _pptx_run_strike(run)
+                    script = _pptx_run_script(run)
 
                     def _format_segment(
-                        seg, bold, italic, underline, strikethrough, url
+                        seg, bold, italic, underline, strikethrough, script, url
                     ):
                         t = seg
-                        if bold or italic or underline or strikethrough:
+                        if bold or italic or underline or strikethrough or script:
                             leading = len(t) - len(t.lstrip())
                             trailing = len(t) - len(t.rstrip())
                             prefix = t[:leading] if leading else ""
@@ -297,6 +319,10 @@ class PptxConverter(BaseConverter):
                                     inner = f"*{inner}*"
                                 if underline:
                                     inner = f"<u>{inner}</u>"
+                                if script == "super":
+                                    inner = f"<sup>{inner}</sup>"
+                                elif script == "sub":
+                                    inner = f"<sub>{inner}</sub>"
                                 t = prefix + inner + suffix
                             elif underline and t:
                                 # Pure whitespace + underline = fill-in line
@@ -312,7 +338,13 @@ class PptxConverter(BaseConverter):
                             if seg:
                                 parts.append(
                                     _format_segment(
-                                        seg, bold, italic, underline, strikethrough, url
+                                        seg,
+                                        bold,
+                                        italic,
+                                        underline,
+                                        strikethrough,
+                                        script,
+                                        url,
                                     )
                                 )
                             if j < len(segments) - 1:
@@ -320,7 +352,7 @@ class PptxConverter(BaseConverter):
                     else:
                         parts.append(
                             _format_segment(
-                                t, bold, italic, underline, strikethrough, url
+                                t, bold, italic, underline, strikethrough, script, url
                             )
                         )
                 text = "".join(parts).strip()
@@ -465,6 +497,7 @@ class PptxConverter(BaseConverter):
                         italic = bool(run.font.italic)
                         underline = bool(run.font.underline) and not url
                         strikethrough = bool(run.font.strike)
+                        script = _pptx_run_script(run)
 
                         if bold:
                             t = f"<b>{t}</b>"
@@ -474,6 +507,10 @@ class PptxConverter(BaseConverter):
                             t = f"<u>{t}</u>"
                         if strikethrough:
                             t = f"<del>{t}</del>"
+                        if script == "super":
+                            t = f"<sup>{t}</sup>"
+                        elif script == "sub":
+                            t = f"<sub>{t}</sub>"
 
                         if url:
                             run_parts.append(f'<a href="{url}">{t}</a>')
