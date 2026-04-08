@@ -1,5 +1,6 @@
 import { PaddleOCR } from "@paddleocr/paddleocr-js";
 import type { OcrResult, OcrResultItem, Point2D } from "@paddleocr/paddleocr-js";
+import { OcrVisualizer, deterministicColor } from "@paddleocr/paddleocr-js/viz";
 
 type OcrEngine = Awaited<ReturnType<typeof PaddleOCR.create>>;
 
@@ -27,6 +28,7 @@ const ui = {
   chooseImageBtn: document.getElementById("chooseImageBtn") as HTMLButtonElement,
   reinitializeBtn: document.getElementById("reinitializeBtn") as HTMLButtonElement,
   runBtn: document.getElementById("runBtn") as HTMLButtonElement,
+  downloadBtn: document.getElementById("downloadBtn") as HTMLButtonElement,
   status: document.getElementById("status") as HTMLElement,
   metrics: document.getElementById("metrics") as HTMLPreElement,
   results: document.getElementById("results") as HTMLOListElement,
@@ -44,14 +46,18 @@ const canvasCtx = requireContext2D(ui.canvas);
 interface AppState {
   imageFile: File | null;
   previewBitmap: ImageBitmap | null;
+  lastResult: OcrResult | null;
   ocr: OcrEngine | null;
 }
 
 const state: AppState = {
   imageFile: null,
   previewBitmap: null,
+  lastResult: null,
   ocr: null
 };
+
+const visualizer = new OcrVisualizer();
 
 function setStatus(text: string, isError = false): void {
   ui.status.textContent = text;
@@ -60,17 +66,6 @@ function setStatus(text: string, isError = false): void {
 
 function formatMs(value: number): string {
   return `${value.toFixed(1)} ms`;
-}
-
-function deterministicColor(idx: number): [number, number, number] {
-  let seed = (idx + 1) * 1103515245 + 12345;
-  seed >>>= 0;
-  const r = (seed >> 16) & 0xff;
-  seed = (seed * 1103515245 + 12345) >>> 0;
-  const g = (seed >> 16) & 0xff;
-  seed = (seed * 1103515245 + 12345) >>> 0;
-  const b = (seed >> 16) & 0xff;
-  return [r, g, b];
 }
 
 function drawPolygonPath(ctx: CanvasRenderingContext2D, poly: Point2D[]): void {
@@ -175,6 +170,8 @@ async function runOcr(): Promise<void> {
     }
     drawPreview(state.previewBitmap, result.items);
     renderResults(result.items);
+    state.lastResult = result;
+    ui.downloadBtn.disabled = false;
     ui.metrics.textContent = [
       ui.metrics.textContent,
       "",
@@ -226,5 +223,26 @@ ui.reinitializeBtn.addEventListener("click", () => void reinitializeOcrEngine())
 ui.runtimeBackend.addEventListener("change", () => void reinitializeOcrEngine());
 
 ui.runBtn.addEventListener("click", () => void runOcr());
+
+async function downloadResult(): Promise<void> {
+  if (!state.previewBitmap || !state.lastResult) return;
+  try {
+    setStatus("Generating download...");
+    const blob = await visualizer.toBlob(state.previewBitmap, state.lastResult);
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "ocr_result.png";
+    a.click();
+    URL.revokeObjectURL(url);
+    setStatus("Download started.");
+  } catch (err: unknown) {
+    console.error(err);
+    const message = err instanceof Error ? err.message : String(err);
+    setStatus(`Download failed: ${message}`, true);
+  }
+}
+
+ui.downloadBtn.addEventListener("click", () => void downloadResult());
 
 void reinitializeOcrEngine();

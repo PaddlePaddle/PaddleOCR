@@ -158,6 +158,46 @@ Worker behavior:
 - `ocr.dispose()`
 - `parseOcrPipelineConfigText(text)`
 - `normalizeOcrPipelineConfig(config)`
+- `OcrVisualizer` (from `@paddleocr/paddleocr-js/viz`)
+- `renderOcrToBlob` (from `@paddleocr/paddleocr-js/viz`)
+- `deterministicColor` (from `@paddleocr/paddleocr-js/viz`)
+
+## Visualization
+
+The optional `@paddleocr/paddleocr-js/viz` subpath provides visualization utilities for rendering OCR results as images.
+
+```js
+import { OcrVisualizer } from "@paddleocr/paddleocr-js/viz";
+
+const viz = new OcrVisualizer({
+  font: { family: "Noto Sans SC", source: "/fonts/NotoSansSC-Regular.ttf" }
+});
+await viz.loadFont();
+
+const blob = await viz.toBlob(imageBitmap, result);
+
+// Trigger browser download
+const url = URL.createObjectURL(blob);
+const a = document.createElement("a");
+a.href = url;
+a.download = "ocr_result.png";
+a.click();
+URL.revokeObjectURL(url);
+
+viz.dispose();
+```
+
+A one-shot convenience function is also available:
+
+```js
+import { renderOcrToBlob } from "@paddleocr/paddleocr-js/viz";
+
+const blob = await renderOcrToBlob(imageBitmap, result, {
+  font: { family: "Noto Sans SC", source: "/fonts/NotoSansSC-Regular.ttf" }
+});
+```
+
+The viz module renders a side-by-side composite image: the original image with detection box overlays on the left, and recognized text on the right. Custom fonts can be loaded for CJK text rendering.
 
 ## Package Layout
 
@@ -167,6 +207,7 @@ Worker behavior:
 - `src/platform`: browser and worker source adaptation helpers
 - `src/worker`: worker transport client, protocol, and generic worker bootstrap
 - `src/pipelines/ocr`: OCR config parsing, main-thread/worker-backed pipeline API assembly, default worker entry wiring, and shared execution runner
+- `src/viz`: optional visualization utilities (side-by-side composite images, font management)
 
 ## Runtime Responsibilities
 

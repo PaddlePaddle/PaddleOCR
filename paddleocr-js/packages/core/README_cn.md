@@ -158,6 +158,46 @@ Worker 模式的行为：
 - `ocr.dispose()`
 - `parseOcrPipelineConfigText(text)`
 - `normalizeOcrPipelineConfig(config)`
+- `OcrVisualizer`（来自 `@paddleocr/paddleocr-js/viz`）
+- `renderOcrToBlob`（来自 `@paddleocr/paddleocr-js/viz`）
+- `deterministicColor`（来自 `@paddleocr/paddleocr-js/viz`）
+
+## 可视化
+
+可选的 `@paddleocr/paddleocr-js/viz` 子路径提供了将 OCR 结果渲染为图像的可视化工具。
+
+```js
+import { OcrVisualizer } from "@paddleocr/paddleocr-js/viz";
+
+const viz = new OcrVisualizer({
+  font: { family: "Noto Sans SC", source: "/fonts/NotoSansSC-Regular.ttf" }
+});
+await viz.loadFont();
+
+const blob = await viz.toBlob(imageBitmap, result);
+
+// 触发浏览器下载
+const url = URL.createObjectURL(blob);
+const a = document.createElement("a");
+a.href = url;
+a.download = "ocr_result.png";
+a.click();
+URL.revokeObjectURL(url);
+
+viz.dispose();
+```
+
+也提供了一次性便捷函数：
+
+```js
+import { renderOcrToBlob } from "@paddleocr/paddleocr-js/viz";
+
+const blob = await renderOcrToBlob(imageBitmap, result, {
+  font: { family: "Noto Sans SC", source: "/fonts/NotoSansSC-Regular.ttf" }
+});
+```
+
+viz 模块会渲染一张左右对比的合成图像：左侧为带有检测框叠加的原始图像，右侧为识别出的文字。支持加载自定义字体以正确渲染中日韩等文字。
 
 ## 包结构
 
@@ -167,6 +207,7 @@ Worker 模式的行为：
 - `src/platform`：浏览器与 worker 场景下的源码适配辅助
 - `src/worker`：worker 传输客户端、协议与通用 worker 启动代码
 - `src/pipelines/ocr`：OCR 配置解析、主线程与 worker 双路径产线 API 组装、默认 worker 入口接线以及共享执行器
+- `src/viz`：可选的可视化工具（左右对比合成图像、字体管理）
 
 ## 运行时职责边界
 
