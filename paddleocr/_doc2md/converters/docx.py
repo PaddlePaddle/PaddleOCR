@@ -41,6 +41,10 @@ _MC = "{" + _MC_NS + "}"
 _WPS_NS = "http://schemas.microsoft.com/office/word/2010/wordprocessingShape"
 _WPS = "{" + _WPS_NS + "}"
 
+# Chart namespace
+_C_NS = "http://schemas.openxmlformats.org/drawingml/2006/chart"
+_C = "{" + _C_NS + "}"
+
 
 def _escape_md_url(url: str) -> str:
     """Escape parentheses in URL for Markdown link syntax."""
@@ -111,6 +115,22 @@ def _effective_underline(run, para) -> bool:
     return False
 
 
+def _effective_superscript(run) -> bool:
+    """Return True if run has superscript set (w:vertAlign w:val='superscript')."""
+    try:
+        return bool(run.font.superscript)
+    except Exception:
+        return False
+
+
+def _effective_subscript(run) -> bool:
+    """Return True if run has subscript set (w:vertAlign w:val='subscript')."""
+    try:
+        return bool(run.font.subscript)
+    except Exception:
+        return False
+
+
 def _paragraph_has_math(para) -> bool:
     """Check if paragraph XML contains OMML math elements."""
     return para._element.find(f".//{_M}oMath") is not None
@@ -161,6 +181,8 @@ def _paragraph_math_to_markdown(para) -> str:
                             _effective_italic(run, para),
                             _effective_underline(run, para),
                             bool(run.font.strike),
+                            _effective_superscript(run),
+                            _effective_subscript(run),
                             run.text,
                             "",
                         )
@@ -184,6 +206,8 @@ def _paragraph_math_to_markdown(para) -> str:
                                 _effective_italic(run, para),
                                 False,
                                 bool(run.font.strike),
+                                _effective_superscript(run),
+                                _effective_subscript(run),
                                 run.text,
                                 url,
                             )
@@ -234,6 +258,8 @@ def _paragraph_math_to_html(para) -> str:
                             _effective_italic(run, para),
                             _effective_underline(run, para),
                             bool(run.font.strike),
+                            _effective_superscript(run),
+                            _effective_subscript(run),
                             run.text,
                             "",
                         )
@@ -257,6 +283,8 @@ def _paragraph_math_to_html(para) -> str:
                                 _effective_italic(run, para),
                                 False,
                                 bool(run.font.strike),
+                                _effective_superscript(run),
+                                _effective_subscript(run),
                                 run.text,
                                 url,
                             )
@@ -377,7 +405,7 @@ def _parse_field_hyperlinks(para) -> dict:
 
 
 def _iter_paragraph_items(para) -> list:
-    """Extract (bold, italic, underline, strikethrough, text, url) tuples from a paragraph in document order.
+    """Extract (bold, italic, underline, strikethrough, superscript, subscript, text, url) tuples from a paragraph in document order.
 
     Handles python-docx Hyperlink objects and w:fldChar field-code hyperlinks.
     Silently degrades to plain text on error.
@@ -387,16 +415,49 @@ def _iter_paragraph_items(para) -> list:
     def _split_breaks(items):
         """Expand items containing \\n (from <w:br/> soft line breaks) into per-line items with <br> separators."""
         expanded = []
-        for bold, italic, underline, strikethrough, text, url in items:
+        for (
+            bold,
+            italic,
+            underline,
+            strikethrough,
+            superscript,
+            subscript,
+            text,
+            url,
+        ) in items:
             if "\n" not in text:
-                expanded.append((bold, italic, underline, strikethrough, text, url))
+                expanded.append(
+                    (
+                        bold,
+                        italic,
+                        underline,
+                        strikethrough,
+                        superscript,
+                        subscript,
+                        text,
+                        url,
+                    )
+                )
                 continue
             segments = text.split("\n")
             for j, seg in enumerate(segments):
                 if seg:
-                    expanded.append((bold, italic, underline, strikethrough, seg, url))
+                    expanded.append(
+                        (
+                            bold,
+                            italic,
+                            underline,
+                            strikethrough,
+                            superscript,
+                            subscript,
+                            seg,
+                            url,
+                        )
+                    )
                 if j < len(segments) - 1:
-                    expanded.append((False, False, False, False, "<br>\n", ""))
+                    expanded.append(
+                        (False, False, False, False, False, False, "<br>\n", "")
+                    )
         return expanded
 
     try:
@@ -409,6 +470,8 @@ def _iter_paragraph_items(para) -> list:
                     _effective_italic(r, para),
                     _effective_underline(r, para),
                     bool(r.font.strike),
+                    _effective_superscript(r),
+                    _effective_subscript(r),
                     r.text,
                     "",
                 )
@@ -433,6 +496,8 @@ def _iter_paragraph_items(para) -> list:
                     _effective_italic(r, para),
                     _effective_underline(r, para),
                     bool(r.font.strike),
+                    _effective_superscript(r),
+                    _effective_subscript(r),
                     r.text,
                     "",
                 )
@@ -458,13 +523,17 @@ def _iter_paragraph_items(para) -> list:
                             _effective_italic(run, para),
                             False,
                             bool(run.font.strike),
+                            _effective_superscript(run),
+                            _effective_subscript(run),
                             run.text,
                             url,
                         )
                     )
                 # Fallback: hyperlink with no runs but has text
                 if not element.runs and element.text:
-                    items.append((False, False, False, False, element.text, url))
+                    items.append(
+                        (False, False, False, False, False, False, element.text, url)
+                    )
             else:
                 # Plain Run
                 if not element.text:
@@ -476,6 +545,8 @@ def _iter_paragraph_items(para) -> list:
                         _effective_italic(element, para),
                         _effective_underline(element, para),
                         bool(element.font.strike),
+                        _effective_superscript(element),
+                        _effective_subscript(element),
                         element.text,
                         url,
                     )
@@ -487,12 +558,21 @@ def _iter_paragraph_items(para) -> list:
 
 
 def _merge_runs(items) -> list:
-    """Merge adjacent items with identical (bold, italic, underline, strikethrough, url).
+    """Merge adjacent items with identical (bold, italic, underline, strikethrough, superscript, subscript, url).
 
-    Returns [(bold, italic, underline, strikethrough, text, url)].
+    Returns [(bold, italic, underline, strikethrough, superscript, subscript, text, url)].
     """
-    merged: list[tuple[bool, bool, bool, bool, str, str]] = []
-    for bold, italic, underline, strikethrough, text, url in items:
+    merged: list[tuple[bool, bool, bool, bool, bool, bool, str, str]] = []
+    for (
+        bold,
+        italic,
+        underline,
+        strikethrough,
+        superscript,
+        subscript,
+        text,
+        url,
+    ) in items:
         if not text:
             continue
         if (
@@ -501,26 +581,50 @@ def _merge_runs(items) -> list:
             and merged[-1][1] == italic
             and merged[-1][2] == underline
             and merged[-1][3] == strikethrough
-            and merged[-1][5] == url
+            and merged[-1][4] == superscript
+            and merged[-1][5] == subscript
+            and merged[-1][7] == url
         ):
             merged[-1] = (
                 bold,
                 italic,
                 underline,
                 strikethrough,
-                merged[-1][4] + text,
+                superscript,
+                subscript,
+                merged[-1][6] + text,
                 url,
             )
         else:
-            merged.append((bold, italic, underline, strikethrough, text, url))
+            merged.append(
+                (
+                    bold,
+                    italic,
+                    underline,
+                    strikethrough,
+                    superscript,
+                    subscript,
+                    text,
+                    url,
+                )
+            )
     return merged
 
 
 def _runs_to_markdown(items) -> str:
     """Convert paragraph items to Markdown inline text, merging adjacent items with identical formatting."""
     parts = []
-    for bold, italic, underline, strikethrough, text, url in _merge_runs(items):
-        if bold or italic or underline or strikethrough:
+    for (
+        bold,
+        italic,
+        underline,
+        strikethrough,
+        superscript,
+        subscript,
+        text,
+        url,
+    ) in _merge_runs(items):
+        if bold or italic or underline or strikethrough or superscript or subscript:
             # CommonMark: marker characters must not be surrounded by spaces
             leading = len(text) - len(text.lstrip())
             trailing = len(text) - len(text.rstrip())
@@ -538,9 +642,14 @@ def _runs_to_markdown(items) -> str:
                     inner = f"**{inner}**"
                 elif italic:
                     inner = f"*{inner}*"
-                # Apply underline last (outermost)
+                # Apply underline
                 if underline:
                     inner = f"<u>{inner}</u>"
+                # Apply superscript/subscript (outermost)
+                if superscript:
+                    inner = f"<sup>{inner}</sup>"
+                elif subscript:
+                    inner = f"<sub>{inner}</sub>"
                 text = prefix + inner + suffix
             elif underline and text:
                 # Pure whitespace + underline = fill-in line (e.g. "作者姓名：___")
@@ -564,7 +673,16 @@ def _runs_to_markdown(items) -> str:
 def _runs_to_html(items) -> str:
     """Convert paragraph items to HTML inline text."""
     parts = []
-    for bold, italic, underline, strikethrough, text, url in _merge_runs(items):
+    for (
+        bold,
+        italic,
+        underline,
+        strikethrough,
+        superscript,
+        subscript,
+        text,
+        url,
+    ) in _merge_runs(items):
         if bold:
             text = f"<b>{text}</b>"
         if italic:
@@ -573,6 +691,10 @@ def _runs_to_html(items) -> str:
             text = f"<u>{text}</u>"
         if strikethrough:
             text = f"<del>{text}</del>"
+        if superscript:
+            text = f"<sup>{text}</sup>"
+        if subscript:
+            text = f"<sub>{text}</sub>"
         if url:
             text = f'<a href="{url}">{text}</a>'
         parts.append(text)
@@ -840,6 +962,184 @@ def _extract_images_from_paragraph(para, doc, image_counter: list) -> list:
     return results
 
 
+def _extract_chart_tables(para, doc) -> list:
+    """Extract chart data as HTML tables from drawings in a paragraph."""
+    try:
+        from datetime import datetime, timedelta
+
+        WP_NS = (
+            "{http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing}"
+        )
+        R_NS = "{http://schemas.openxmlformats.org/officeDocument/2006/relationships}"
+        A_NS = "{http://schemas.openxmlformats.org/drawingml/2006/main}"
+
+        results = []
+        containers = para._element.findall(f".//{WP_NS}inline") + para._element.findall(
+            f".//{WP_NS}anchor"
+        )
+
+        for container in containers:
+            chart_ref = container.find(f".//{_C}chart")
+            if chart_ref is None:
+                continue
+            r_id = chart_ref.get(f"{R_NS}id")
+            if not r_id:
+                continue
+            try:
+                rel = doc.part.rels[r_id]
+                chart_part = rel.target_part
+            except (KeyError, AttributeError):
+                continue
+
+            try:
+                import lxml.etree as etree
+
+                chart_root = etree.fromstring(chart_part.blob)
+            except Exception:
+                continue
+
+            # Extract chart title
+            title_text = ""
+            title_el = chart_root.find(f".//{_C}title")
+            if title_el is not None:
+                a_t_els = title_el.findall(f".//{A_NS}t")
+                title_text = "".join((el.text or "") for el in a_t_els).strip()
+
+            # Extract axis titles
+            cat_ax_title = ""
+            for ax_tag in (f"{_C}catAx", f"{_C}dateAx"):
+                ax_el = chart_root.find(f".//{ax_tag}")
+                if ax_el is not None:
+                    t_el = ax_el.find(f"{_C}title")
+                    if t_el is not None:
+                        texts = t_el.findall(f".//{A_NS}t")
+                        cat_ax_title = "".join(el.text or "" for el in texts).strip()
+                        break
+
+            val_ax_title = ""
+            val_ax_el = chart_root.find(f".//{_C}valAx")
+            if val_ax_el is not None:
+                t_el = val_ax_el.find(f"{_C}title")
+                if t_el is not None:
+                    texts = t_el.findall(f".//{A_NS}t")
+                    val_ax_title = "".join(el.text or "" for el in texts).strip()
+
+            # Extract series data
+            series_list = chart_root.findall(f".//{_C}ser")
+            if not series_list:
+                continue
+
+            # Collect categories from first series
+            categories = []
+            cat_is_date = False
+            date_format_code = ""
+            first_ser = series_list[0]
+            cat_el = first_ser.find(f"{_C}cat")
+            if cat_el is not None:
+                str_cache = cat_el.find(f".//{_C}strCache")
+                num_cache = cat_el.find(f".//{_C}numCache")
+                if str_cache is not None:
+                    for pt in str_cache.findall(f"{_C}pt"):
+                        v = pt.find(f"{_C}v")
+                        categories.append(v.text if v is not None else "")
+                elif num_cache is not None:
+                    fmt_el = num_cache.find(f"{_C}formatCode")
+                    if fmt_el is not None:
+                        fc = fmt_el.text or ""
+                        date_format_code = fc
+                        cat_is_date = any(k in fc.lower() for k in ("y", "m", "d"))
+                    for pt in num_cache.findall(f"{_C}pt"):
+                        v = pt.find(f"{_C}v")
+                        if v is not None and v.text:
+                            try:
+                                serial = float(v.text)
+                                if cat_is_date:
+                                    dt = datetime(1899, 12, 30) + timedelta(days=serial)
+                                    categories.append(dt.strftime("%Y-%m-%d"))
+                                else:
+                                    categories.append(v.text)
+                            except (ValueError, OverflowError):
+                                categories.append(v.text or "")
+                        else:
+                            categories.append("")
+
+            # Collect series names and values
+            series_names = []
+            series_values = []
+            for ser in series_list:
+                # Series name: val axis title > <c:tx> > ""
+                name = val_ax_title
+                if not name:
+                    tx_el = ser.find(f"{_C}tx")
+                    if tx_el is not None:
+                        str_ref = tx_el.find(f".//{_C}strCache")
+                        if str_ref is not None:
+                            pt = str_ref.find(f"{_C}pt")
+                            if pt is not None:
+                                v = pt.find(f"{_C}v")
+                                name = v.text if v is not None else ""
+                        else:
+                            v = tx_el.find(f"{_C}v")
+                            if v is not None:
+                                name = v.text or ""
+                series_names.append(name)
+
+                # Values
+                vals = []
+                val_el = ser.find(f"{_C}val")
+                if val_el is not None:
+                    num_cache = val_el.find(f".//{_C}numCache")
+                    if num_cache is not None:
+                        pts = {
+                            int(pt.get("idx", 0)): pt
+                            for pt in num_cache.findall(f"{_C}pt")
+                        }
+                        max_idx = max(pts.keys()) if pts else -1
+                        for idx in range(max_idx + 1):
+                            pt = pts.get(idx)
+                            if pt is not None:
+                                v = pt.find(f"{_C}v")
+                                vals.append(v.text if v is not None else "")
+                            else:
+                                vals.append("")
+                series_values.append(vals)
+
+            if not series_names:
+                continue
+
+            # Build HTML table
+            n_rows = max(
+                len(categories),
+                max((len(v) for v in series_values), default=0),
+            )
+            html_parts = ["<table>"]
+            if title_text:
+                html_parts.append(f"<caption>{title_text}</caption>")
+            # Header row — omit <thead> entirely if no header info
+            has_header = cat_ax_title or any(name for name in series_names)
+            if has_header:
+                html_parts.append("<thead><tr>")
+                html_parts.append(f"<th>{cat_ax_title}</th>")
+                for name in series_names:
+                    html_parts.append(f"<th>{name}</th>")
+                html_parts.append("</tr></thead>")
+            # Data rows
+            html_parts.append("<tbody>")
+            for i in range(n_rows):
+                cat = categories[i] if i < len(categories) else ""
+                html_parts.append(f"<tr><td>{cat}</td>")
+                for vals in series_values:
+                    val = vals[i] if i < len(vals) else ""
+                    html_parts.append(f"<td>{val}</td>")
+                html_parts.append("</tr>")
+            html_parts.append("</tbody></table>")
+            results.append("".join(html_parts))
+
+        return results
+    except Exception:
+        return []
+
+
 def _extract_textbox_paragraphs(element) -> list:
     """Extract paragraphs from text boxes embedded in a body element.
 
@@ -1080,6 +1380,13 @@ def _convert_body(doc, *, extract_textboxes=True) -> tuple:
                     lines.append(f'<img src="images/{filename}" width="{pct}%">')
                 else:
                     lines.append(f'<img src="images/{filename}">')
+                lines.append("")
+
+            # Extract chart data tables
+            chart_tables = _extract_chart_tables(para, doc)
+            for chart_html in chart_tables:
+                flush_code_buf()
+                lines.append(chart_html)
                 lines.append("")
 
             text = para.text.strip()
