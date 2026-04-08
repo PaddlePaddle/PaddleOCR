@@ -197,6 +197,11 @@ class XlsxConverter(BaseConverter):
                                 text = f"<u>{text}</u>"
                             if font.strike:
                                 text = f"<del>{text}</del>"
+                            vert_align = font.vertAlign
+                            if vert_align == "superscript":
+                                text = f"<sup>{text}</sup>"
+                            elif vert_align == "subscript":
+                                text = f"<sub>{text}</sub>"
                         except Exception:
                             pass
                     # Hyperlink wrapping
