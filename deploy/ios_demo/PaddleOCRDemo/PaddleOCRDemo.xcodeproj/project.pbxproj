@@ -21,6 +21,11 @@
 		A1000040 /* RecPreprocessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000040 /* RecPreprocessor.swift */; };
 		A1000050 /* CTCDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000050 /* CTCDecoder.swift */; };
 		A1000060 /* RecognitionEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000060 /* RecognitionEngine.swift */; };
+		A1000070 /* OCREngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000070 /* OCREngine.swift */; };
+		A1000071 /* BoxSorter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000071 /* BoxSorter.swift */; };
+		A1000072 /* PerspectiveCrop.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000072 /* PerspectiveCrop.swift */; };
+		A1000073 /* ValidationExport.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000073 /* ValidationExport.swift */; };
+		A1000080 /* OCRViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000080 /* OCRViewModel.swift */; };
 		A1000010 /* PaddleOCRDemoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000010 /* PaddleOCRDemoTests.swift */; };
 		A1000011 /* ORTSessionManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000014 /* ORTSessionManagerTests.swift */; };
 		F9888FA77A2AF8AF45B50193 /* Pods_PaddleOCRDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D0FFA11A4E43E5BD0F80219 /* Pods_PaddleOCRDemo.framework */; };
@@ -60,6 +65,11 @@
 		A2000040 /* RecPreprocessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecPreprocessor.swift; sourceTree = "<group>"; };
 		A2000050 /* CTCDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CTCDecoder.swift; sourceTree = "<group>"; };
 		A2000060 /* RecognitionEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecognitionEngine.swift; sourceTree = "<group>"; };
+		A2000070 /* OCREngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCREngine.swift; sourceTree = "<group>"; };
+		A2000071 /* BoxSorter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoxSorter.swift; sourceTree = "<group>"; };
+		A2000072 /* PerspectiveCrop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerspectiveCrop.swift; sourceTree = "<group>"; };
+		A2000073 /* ValidationExport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationExport.swift; sourceTree = "<group>"; };
+		A2000080 /* OCRViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCRViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -161,16 +171,20 @@
 		A7000007 /* Engine */ = {
 			isa = PBXGroup;
 			children = (
+				A2000071 /* BoxSorter.swift */,
 				A2000020 /* ClipperOffset.swift */,
 				A2000050 /* CTCDecoder.swift */,
 				A2000021 /* DBPostProcess.swift */,
 				A2000030 /* DetectionEngine.swift */,
 				A2000015 /* InferenceConfig.swift */,
 				A2000011 /* ModelConfig.swift */,
+				A2000070 /* OCREngine.swift */,
 				A2000012 /* ORTSessionManager.swift */,
+				A2000072 /* PerspectiveCrop.swift */,
 				A2000016 /* Preprocessing.swift */,
 				A2000040 /* RecPreprocessor.swift */,
 				A2000060 /* RecognitionEngine.swift */,
+				A2000073 /* ValidationExport.swift */,
 			);
 			path = Engine;
 			sourceTree = "<group>";
@@ -179,6 +193,7 @@
 			isa = PBXGroup;
 			children = (
 				A2000013 /* AppViewModel.swift */,
+				A2000080 /* OCRViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -331,6 +346,11 @@
 				A1000040 /* RecPreprocessor.swift in Sources */,
 				A1000050 /* CTCDecoder.swift in Sources */,
 				A1000060 /* RecognitionEngine.swift in Sources */,
+				A1000070 /* OCREngine.swift in Sources */,
+				A1000071 /* BoxSorter.swift in Sources */,
+				A1000072 /* PerspectiveCrop.swift in Sources */,
+				A1000073 /* ValidationExport.swift in Sources */,
+				A1000080 /* OCRViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
