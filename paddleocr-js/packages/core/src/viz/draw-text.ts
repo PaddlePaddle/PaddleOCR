@@ -59,7 +59,7 @@ function polyBounds(poly: Point2D[]): {
 function drawPolygonPath(
   ctx: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D,
   poly: Point2D[],
-  offsetX: number,
+  offsetX: number
 ): void {
   ctx.beginPath();
   ctx.moveTo(poly[0][0] + offsetX, poly[0][1]);
@@ -80,7 +80,7 @@ export function drawTextPanel(
   items: OcrResultItem[],
   style: BoxStyleOptions,
   fontFamily: string,
-  background?: string,
+  background?: string
 ): void {
   const getColor = style.colorFn ?? deterministicColor;
   const bg = background ?? DEFAULT_BG;
@@ -97,9 +97,7 @@ export function drawTextPanel(
     const bounds = polyBounds(item.poly);
     const angle = topEdgeAngle(item.poly);
     const absDeg = Math.abs(angle * (180 / Math.PI));
-    const needsRotation =
-      absDeg > ROTATION_THRESHOLD_DEG &&
-      absDeg < 180 - ROTATION_THRESHOLD_DEG;
+    const needsRotation = absDeg > ROTATION_THRESHOLD_DEG && absDeg < 180 - ROTATION_THRESHOLD_DEG;
 
     // Draw box outline
     ctx.save();

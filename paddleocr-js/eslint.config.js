@@ -4,7 +4,7 @@ import globals from "globals";
 
 export default tseslint.config(
   {
-    ignores: ["**/dist", "**/node_modules", "**/coverage", "**/.cache"],
+    ignores: ["**/dist", "**/node_modules", "**/coverage", "**/.cache"]
   },
   eslint.configs.recommended,
   {
@@ -14,9 +14,9 @@ export default tseslint.config(
       globals: { ...globals.browser },
       parserOptions: {
         project: "./tsconfig.eslint.json",
-        tsconfigRootDir: import.meta.dirname,
-      },
-    },
+        tsconfigRootDir: import.meta.dirname
+      }
+    }
   },
   {
     files: ["packages/**/test/**/*.ts"],
@@ -25,8 +25,8 @@ export default tseslint.config(
       globals: { ...globals.browser, ...globals.node },
       parserOptions: {
         project: "./tsconfig.eslint.json",
-        tsconfigRootDir: import.meta.dirname,
-      },
+        tsconfigRootDir: import.meta.dirname
+      }
     },
     rules: {
       "@typescript-eslint/no-unsafe-assignment": "off",
@@ -36,13 +36,14 @@ export default tseslint.config(
       "@typescript-eslint/no-unsafe-return": "off",
       "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/require-await": "off",
-      "@typescript-eslint/no-extraneous-class": "off"
+      "@typescript-eslint/no-extraneous-class": "off",
+      "@typescript-eslint/unbound-method": "off"
     }
   },
   {
     files: ["apps/**/*.js", "*.config.{js,ts}", "packages/**/*.config.*"],
     languageOptions: {
-      globals: { ...globals.browser, ...globals.node },
-    },
-  },
+      globals: { ...globals.browser, ...globals.node }
+    }
+  }
 );

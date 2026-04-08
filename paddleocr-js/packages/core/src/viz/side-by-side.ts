@@ -42,7 +42,7 @@ export interface SideBySideOptions {
 export function renderSideBySideToCanvas(
   image: DrawableImage,
   result: OcrResult,
-  options: SideBySideOptions,
+  options: SideBySideOptions
 ): OffscreenCanvas | HTMLCanvasElement {
   const w = imageWidth(image);
   const h = imageHeight(image);
@@ -57,7 +57,7 @@ export function renderSideBySideToCanvas(
     result.items,
     options.boxStyle,
     options.fontFamily,
-    options.textPanelBackground,
+    options.textPanelBackground
   );
 
   return canvas;
@@ -69,7 +69,7 @@ export function renderSideBySideToCanvas(
 export async function renderSideBySideToImageBitmap(
   image: DrawableImage,
   result: OcrResult,
-  options: SideBySideOptions,
+  options: SideBySideOptions
 ): Promise<ImageBitmap> {
   const canvas = renderSideBySideToCanvas(image, result, options);
   return createImageBitmap(canvas as ImageBitmapSource);
@@ -81,12 +81,8 @@ export async function renderSideBySideToImageBitmap(
 export async function renderSideBySideToBlob(
   image: DrawableImage,
   result: OcrResult,
-  options: SideBySideOptions,
+  options: SideBySideOptions
 ): Promise<Blob> {
   const canvas = renderSideBySideToCanvas(image, result, options);
-  return canvasToBlob(
-    canvas,
-    `image/${options.outputFormat}`,
-    options.outputQuality,
-  );
+  return canvasToBlob(canvas, `image/${options.outputFormat}`, options.outputQuality);
 }

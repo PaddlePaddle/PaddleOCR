@@ -18,7 +18,7 @@ function createMockCtx() {
     stroke: vi.fn(() => calls.push("stroke")),
     lineWidth: 0,
     strokeStyle: "",
-    fillStyle: "",
+    fillStyle: ""
   } as unknown as CanvasRenderingContext2D & { calls: string[] };
 }
 
@@ -40,7 +40,15 @@ describe("viz/draw-boxes", () => {
     const ctx = createMockCtx();
     const image = { width: 100, height: 50 } as ImageBitmap;
     const items: OcrResultItem[] = [
-      makeItem([[10, 10], [90, 10], [90, 40], [10, 40]], "hello"),
+      makeItem(
+        [
+          [10, 10],
+          [90, 10],
+          [90, 40],
+          [10, 40]
+        ],
+        "hello"
+      )
     ];
 
     drawBoxesPanel(ctx, image, items, {});
@@ -59,7 +67,15 @@ describe("viz/draw-boxes", () => {
     const ctx = createMockCtx();
     const image = { width: 100, height: 50 } as ImageBitmap;
     const items: OcrResultItem[] = [
-      makeItem([[0, 0], [10, 0], [10, 10], [0, 10]], "a"),
+      makeItem(
+        [
+          [0, 0],
+          [10, 0],
+          [10, 10],
+          [0, 10]
+        ],
+        "a"
+      )
     ];
 
     drawBoxesPanel(ctx, image, items, {});
@@ -74,7 +90,15 @@ describe("viz/draw-boxes", () => {
     const ctx = createMockCtx();
     const image = { width: 100, height: 50 } as ImageBitmap;
     const items: OcrResultItem[] = [
-      makeItem([[0, 0], [10, 0], [10, 10], [0, 10]], "a"),
+      makeItem(
+        [
+          [0, 0],
+          [10, 0],
+          [10, 10],
+          [0, 10]
+        ],
+        "a"
+      )
     ];
     const colorFn = vi.fn().mockReturnValue([255, 0, 0]);
 

@@ -15,10 +15,7 @@
 import type { OcrResult } from "../pipelines/ocr/core";
 import type { OcrVisualizerOptions } from "./types";
 import { loadFontFace, removeFontFace } from "./font";
-import {
-  renderSideBySideToImageBitmap,
-  renderSideBySideToBlob,
-} from "./side-by-side";
+import { renderSideBySideToImageBitmap, renderSideBySideToBlob } from "./side-by-side";
 import type { SideBySideOptions } from "./side-by-side";
 
 type DrawableImage = ImageBitmap | HTMLImageElement;
@@ -32,7 +29,7 @@ let fontWarningEmitted = false;
 
 function resolveOptions(
   base: OcrVisualizerOptions,
-  overrides?: Partial<OcrVisualizerOptions>,
+  overrides?: Partial<OcrVisualizerOptions>
 ): SideBySideOptions {
   const merged = overrides ? { ...base, ...overrides } : base;
   return {
@@ -40,7 +37,7 @@ function resolveOptions(
     fontFamily: merged.font?.family ?? DEFAULT_FONT_FAMILY,
     textPanelBackground: merged.textPanelBackground ?? DEFAULT_TEXT_PANEL_BG,
     outputFormat: merged.outputFormat ?? DEFAULT_OUTPUT_FORMAT,
-    outputQuality: merged.outputQuality ?? DEFAULT_OUTPUT_QUALITY,
+    outputQuality: merged.outputQuality ?? DEFAULT_OUTPUT_QUALITY
   };
 }
 
@@ -69,7 +66,7 @@ export class OcrVisualizer {
   async renderSideBySide(
     image: DrawableImage,
     result: OcrResult,
-    overrides?: Partial<OcrVisualizerOptions>,
+    overrides?: Partial<OcrVisualizerOptions>
   ): Promise<ImageBitmap> {
     this.warnIfNoFont();
     const opts = resolveOptions(this.options, overrides);
@@ -82,7 +79,7 @@ export class OcrVisualizer {
   async toBlob(
     image: DrawableImage,
     result: OcrResult,
-    overrides?: Partial<OcrVisualizerOptions>,
+    overrides?: Partial<OcrVisualizerOptions>
   ): Promise<Blob> {
     this.warnIfNoFont();
     const opts = resolveOptions(this.options, overrides);
@@ -104,7 +101,7 @@ export class OcrVisualizer {
       fontWarningEmitted = true;
       console.warn(
         "[paddleocr-js/viz] Font config provided but loadFont() was not called. " +
-          "Text will render with system sans-serif. CJK characters may not display correctly.",
+          "Text will render with system sans-serif. CJK characters may not display correctly."
       );
     }
   }
@@ -117,7 +114,7 @@ export class OcrVisualizer {
 export async function renderOcrToBlob(
   image: DrawableImage,
   result: OcrResult,
-  options?: OcrVisualizerOptions,
+  options?: OcrVisualizerOptions
 ): Promise<Blob> {
   const viz = new OcrVisualizer(options);
   try {

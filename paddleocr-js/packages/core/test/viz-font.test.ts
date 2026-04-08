@@ -9,18 +9,16 @@ describe("viz/font", () => {
   beforeEach(() => {
     mockFontFace = {
       load: vi.fn().mockResolvedValue(undefined),
-      family: "",
+      family: ""
     };
-    (globalThis as Record<string, unknown>).FontFace = vi.fn(
-      (family: string, _source: unknown) => {
-        mockFontFace.family = family;
-        return mockFontFace;
-      },
-    );
+    (globalThis as Record<string, unknown>).FontFace = vi.fn((family: string) => {
+      mockFontFace.family = family;
+      return mockFontFace;
+    });
     if (!document.fonts) {
       Object.defineProperty(document, "fonts", {
         value: { add: vi.fn(), delete: vi.fn() },
-        configurable: true,
+        configurable: true
       });
     } else {
       vi.spyOn(document.fonts, "add").mockImplementation(() => {});
@@ -31,14 +29,14 @@ describe("viz/font", () => {
   it("loads a font from a URL string and adds to document.fonts", async () => {
     const config: FontConfig = {
       family: "TestFont",
-      source: "https://example.com/font.woff2",
+      source: "https://example.com/font.woff2"
     };
 
     const face = await loadFontFace(config);
     expect(globalThis.FontFace).toHaveBeenCalledWith(
       "TestFont",
       "url(https://example.com/font.woff2)",
-      undefined,
+      undefined
     );
     expect(mockFontFace.load).toHaveBeenCalled();
     expect(document.fonts.add).toHaveBeenCalledWith(face);
@@ -48,29 +46,25 @@ describe("viz/font", () => {
     const buffer = new ArrayBuffer(8);
     const config: FontConfig = {
       family: "BufFont",
-      source: buffer,
+      source: buffer
     };
 
     await loadFontFace(config);
-    expect(globalThis.FontFace).toHaveBeenCalledWith(
-      "BufFont",
-      buffer,
-      undefined,
-    );
+    expect(globalThis.FontFace).toHaveBeenCalledWith("BufFont", buffer, undefined);
   });
 
   it("passes descriptors to FontFace constructor", async () => {
     const config: FontConfig = {
       family: "DescFont",
       source: "https://example.com/font.woff2",
-      descriptors: { weight: "bold" },
+      descriptors: { weight: "bold" }
     };
 
     await loadFontFace(config);
     expect(globalThis.FontFace).toHaveBeenCalledWith(
       "DescFont",
       "url(https://example.com/font.woff2)",
-      { weight: "bold" },
+      { weight: "bold" }
     );
   });
 

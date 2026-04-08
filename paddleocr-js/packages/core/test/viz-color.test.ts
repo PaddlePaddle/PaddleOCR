@@ -25,8 +25,7 @@ describe("viz/color", () => {
     const c1 = deterministicColor(1);
     const c2 = deterministicColor(2);
     const allSame =
-      JSON.stringify(c0) === JSON.stringify(c1) &&
-      JSON.stringify(c1) === JSON.stringify(c2);
+      JSON.stringify(c0) === JSON.stringify(c1) && JSON.stringify(c1) === JSON.stringify(c2);
     expect(allSame).toBe(false);
   });
 

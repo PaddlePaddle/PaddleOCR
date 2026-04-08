@@ -15,9 +15,4 @@
 export { OcrVisualizer, renderOcrToBlob } from "./renderer";
 export { deterministicColor } from "./color";
 
-export type {
-  OcrVisualizerOptions,
-  FontConfig,
-  BoxStyleOptions,
-  RgbColor,
-} from "./types";
+export type { OcrVisualizerOptions, FontConfig, BoxStyleOptions, RgbColor } from "./types";

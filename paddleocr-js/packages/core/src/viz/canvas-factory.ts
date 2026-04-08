@@ -33,29 +33,25 @@ export function createCanvas(width: number, height: number): AnyCanvas {
  * Get a 2D rendering context from any canvas type.
  */
 export function getContext2D(
-  canvas: AnyCanvas,
+  canvas: AnyCanvas
 ): CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D {
   const ctx = canvas.getContext("2d");
   if (!ctx) {
     throw new Error("Failed to create 2D rendering context.");
   }
-  return ctx as CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D;
+  return ctx;
 }
 
 /**
  * Convert a canvas to a Blob.
  * Uses convertToBlob() for OffscreenCanvas, toBlob() for HTMLCanvasElement.
  */
-export function canvasToBlob(
-  canvas: AnyCanvas,
-  type: string,
-  quality: number,
-): Promise<Blob> {
+export function canvasToBlob(canvas: AnyCanvas, type: string, quality: number): Promise<Blob> {
   if (canvas instanceof OffscreenCanvas) {
     return canvas.convertToBlob({ type, quality });
   }
   return new Promise<Blob>((resolve, reject) => {
-    (canvas as HTMLCanvasElement).toBlob(
+    canvas.toBlob(
       (blob) => {
         if (blob) {
           resolve(blob);
@@ -64,7 +60,7 @@ export function canvasToBlob(
         }
       },
       type,
-      quality,
+      quality
     );
   });
 }

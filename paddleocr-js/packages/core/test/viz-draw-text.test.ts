@@ -20,7 +20,7 @@ function createMockCtx() {
     strokeStyle: "",
     fillStyle: "",
     font: "",
-    textBaseline: "" as CanvasTextBaseline,
+    textBaseline: "" as CanvasTextBaseline
   } as unknown as CanvasRenderingContext2D;
 }
 
@@ -44,10 +44,10 @@ describe("viz/draw-text", () => {
           [10, 10],
           [90, 10],
           [90, 40],
-          [10, 40],
+          [10, 40]
         ],
-        "hello",
-      ),
+        "hello"
+      )
     ];
 
     drawTextPanel(ctx, 200, 100, items, {}, "sans-serif");
@@ -66,10 +66,10 @@ describe("viz/draw-text", () => {
           [10, 10],
           [90, 10],
           [90, 40],
-          [10, 40],
+          [10, 40]
         ],
-        "hello",
-      ),
+        "hello"
+      )
     ];
 
     drawTextPanel(ctx, 200, 100, items, {}, "sans-serif");

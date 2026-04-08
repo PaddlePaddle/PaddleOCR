@@ -4,18 +4,16 @@ import { describe, expect, it, vi } from "vitest";
 // Mock FontFace and document.fonts before importing
 const mockFontFace = {
   load: vi.fn().mockResolvedValue(undefined),
-  family: "",
+  family: ""
 };
-(globalThis as Record<string, unknown>).FontFace = vi.fn(
-  (family: string, _source: unknown) => {
-    mockFontFace.family = family;
-    return mockFontFace;
-  },
-);
+(globalThis as Record<string, unknown>).FontFace = vi.fn((family: string) => {
+  mockFontFace.family = family;
+  return mockFontFace;
+});
 if (!document.fonts) {
   Object.defineProperty(document, "fonts", {
     value: { add: vi.fn(), delete: vi.fn() },
-    configurable: true,
+    configurable: true
   });
 } else {
   vi.spyOn(document.fonts, "add").mockImplementation(() => {});
@@ -38,7 +36,7 @@ describe("OcrVisualizer", () => {
 
   it("can be constructed with font config", () => {
     const viz = new OcrVisualizer({
-      font: { family: "TestFont", source: "https://example.com/f.woff2" },
+      font: { family: "TestFont", source: "https://example.com/f.woff2" }
     });
     expect(viz).toBeDefined();
     viz.dispose();
@@ -46,7 +44,7 @@ describe("OcrVisualizer", () => {
 
   it("loadFont() loads the font via FontFace API", async () => {
     const viz = new OcrVisualizer({
-      font: { family: "TestFont", source: "https://example.com/f.woff2" },
+      font: { family: "TestFont", source: "https://example.com/f.woff2" }
     });
     await viz.loadFont();
     expect(globalThis.FontFace).toHaveBeenCalled();
@@ -63,7 +61,7 @@ describe("OcrVisualizer", () => {
 
   it("dispose() removes the loaded font", async () => {
     const viz = new OcrVisualizer({
-      font: { family: "TestFont", source: "https://example.com/f.woff2" },
+      font: { family: "TestFont", source: "https://example.com/f.woff2" }
     });
     await viz.loadFont();
     viz.dispose();
@@ -72,7 +70,7 @@ describe("OcrVisualizer", () => {
 
   it("dispose() is safe to call multiple times", async () => {
     const viz = new OcrVisualizer({
-      font: { family: "TestFont", source: "https://example.com/f.woff2" },
+      font: { family: "TestFont", source: "https://example.com/f.woff2" }
     });
     await viz.loadFont();
     viz.dispose();

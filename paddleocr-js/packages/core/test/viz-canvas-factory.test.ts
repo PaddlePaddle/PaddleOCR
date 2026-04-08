@@ -15,13 +15,11 @@ describe("viz/canvas-factory", () => {
 
   it("returns an OffscreenCanvas when available", () => {
     const mockCanvas = { width: 0, height: 0, getContext: vi.fn() };
-    (globalThis as Record<string, unknown>).OffscreenCanvas = vi.fn(
-      (w: number, h: number) => {
-        mockCanvas.width = w;
-        mockCanvas.height = h;
-        return mockCanvas;
-      },
-    );
+    (globalThis as Record<string, unknown>).OffscreenCanvas = vi.fn((w: number, h: number) => {
+      mockCanvas.width = w;
+      mockCanvas.height = h;
+      return mockCanvas;
+    });
 
     const result = createCanvas(100, 200);
     expect(result.width).toBe(100);
@@ -35,11 +33,9 @@ describe("viz/canvas-factory", () => {
     const mockCanvas = {
       width: 0,
       height: 0,
-      getContext: vi.fn(() => mockCtx),
+      getContext: vi.fn(() => mockCtx)
     };
-    vi.spyOn(document, "createElement").mockReturnValue(
-      mockCanvas as unknown as HTMLElement,
-    );
+    vi.spyOn(document, "createElement").mockReturnValue(mockCanvas as unknown as HTMLElement);
 
     const result = createCanvas(300, 400);
     expect(result.width).toBe(300);
