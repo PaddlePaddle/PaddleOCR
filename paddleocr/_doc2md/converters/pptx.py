@@ -261,7 +261,7 @@ class PptxConverter(BaseConverter):
 
         # 3. Chart
         if shape.has_chart:
-            slide_parts.append(self._chart_to_md(shape.chart))
+            slide_parts.append(self._chart_to_html(shape.chart))
             return
 
         # 4. Table
@@ -364,17 +364,23 @@ class PptxConverter(BaseConverter):
                 text = text.replace("<br>\n", "<br>")
                 slide_parts.append(f"{indent}- {text}")
 
-    def _chart_to_md(self, chart) -> str:
-        """Extract chart data as a Markdown table."""
+    def _chart_to_html(self, chart) -> str:
+        """Extract chart data as an HTML table."""
         _CHART_TYPE_NAMES = {
-            1: "Bar Chart",
-            2: "Column Chart",
-            3: "Line Chart",
-            4: "Pie Chart",
-            5: "Area Chart",
-            51: "Doughnut Chart",
-            72: "Scatter Chart",
-            97: "Radar Chart",
+            1: "Area Chart",  # AREA
+            2: "Area Chart",  # AREA_STACKED
+            4: "Line Chart",  # LINE
+            5: "Pie Chart",  # PIE
+            15: "Bubble Chart",  # BUBBLE
+            51: "Column Chart",  # COLUMN_CLUSTERED
+            52: "Column Chart",  # COLUMN_STACKED
+            53: "Column Chart",  # COLUMN_STACKED_100
+            57: "Bar Chart",  # BAR_CLUSTERED
+            58: "Bar Chart",  # BAR_STACKED
+            65: "Line Chart",  # LINE_MARKERS
+            -4120: "Doughnut Chart",  # DOUGHNUT
+            -4151: "Radar Chart",  # RADAR
+            -4169: "Scatter Chart",  # XY_SCATTER
         }
         try:
             chart_type_val = chart.chart_type.value if chart.chart_type else 0
@@ -383,6 +389,38 @@ class PptxConverter(BaseConverter):
             chart_type_name = "Chart"
 
         try:
+            title_text = ""
+            try:
+                title_text = chart.chart_title.text_frame.text.strip()
+            except Exception:
+                pass
+
+            # Extract axis info from OOXML
+            C_NS = "http://schemas.openxmlformats.org/drawingml/2006/chart"
+            _C = "{" + C_NS + "}"
+            _A = "{http://schemas.openxmlformats.org/drawingml/2006/main}"
+            chart_root = chart._element
+
+            cat_ax_title = ""
+            for ax_tag in (f"{_C}catAx", f"{_C}dateAx"):
+                ax_el = chart_root.find(f".//{ax_tag}")
+                if ax_el is not None:
+                    t_el = ax_el.find(f"{_C}title")
+                    if t_el is not None:
+                        texts = t_el.findall(f".//{_A}t")
+                        cat_ax_title = "".join(el.text or "" for el in texts).strip()
+                    break
+
+            has_date_ax = chart_root.find(f".//{_C}dateAx") is not None
+
+            val_ax_title = ""
+            val_ax_el = chart_root.find(f".//{_C}valAx")
+            if val_ax_el is not None:
+                t_el = val_ax_el.find(f"{_C}title")
+                if t_el is not None:
+                    texts = t_el.findall(f".//{_A}t")
+                    val_ax_title = "".join(el.text or "" for el in texts).strip()
+
             plot = chart.plots[0]
             categories = list(plot.categories) if plot.categories else []
             series_list = list(plot.series)
@@ -390,34 +428,72 @@ class PptxConverter(BaseConverter):
             if not series_list:
                 return f"[{chart_type_name}]"
 
-            lines = [f"**{chart_type_name}**", ""]
+            # Convert Excel date serials to YYYY-MM-DD for date axes
+            if has_date_ax and categories:
+                from datetime import datetime, timedelta
 
-            if categories:
-                header = "| |" + "".join(f" {c} |" for c in categories)
-                sep = "|---|" + "---|" * len(categories)
-            else:
-                max_len = max((len(list(s.values)) for s in series_list), default=0)
-                header = "| |" + "".join(f" Item{i+1} |" for i in range(max_len))
-                sep = "|---|" + "---|" * max_len
+                converted = []
+                for c in categories:
+                    try:
+                        dt = datetime(1899, 12, 30) + timedelta(days=float(c))
+                        converted.append(dt.strftime("%Y-%m-%d"))
+                    except (ValueError, TypeError):
+                        converted.append(str(c) if c is not None else "")
+                categories = converted
 
-            lines.append(header)
-            lines.append(sep)
-
+            # Collect series names and values
+            series_names = []
+            series_values = []
             for idx, series in enumerate(series_list):
                 try:
-                    name = series.tx.text if series.tx else f"Series{idx+1}"
+                    name = (
+                        (series.tx.text if series.tx else "")
+                        or val_ax_title
+                        or f"Series{idx+1}"
+                    )
                 except Exception:
-                    name = f"Series{idx+1}"
+                    name = val_ax_title or f"Series{idx+1}"
+                series_names.append(name)
                 try:
-                    values = [
+                    vals = [
                         str(round(v, 4)) if v is not None else "" for v in series.values
                     ]
                 except Exception:
-                    values = []
-                row = f"| {name} |" + "".join(f" {v} |" for v in values)
-                lines.append(row)
+                    vals = []
+                series_values.append(vals)
 
-            return "\n".join(lines)
+            # Build HTML table
+            html_parts = [f"**{chart_type_name}**", "<table>"]
+            if title_text:
+                html_parts.append(f"<caption>{title_text}</caption>")
+
+            has_header = cat_ax_title or any(name for name in series_names)
+            if has_header:
+                html_parts.append("<thead><tr>")
+                html_parts.append(f"<th>{cat_ax_title}</th>")
+                for name in series_names:
+                    html_parts.append(f"<th>{name}</th>")
+                html_parts.append("</tr></thead>")
+
+            html_parts.append("<tbody>")
+            if categories:
+                for i, cat in enumerate(categories):
+                    html_parts.append(f"<tr><td>{cat}</td>")
+                    for vals in series_values:
+                        v = vals[i] if i < len(vals) else ""
+                        html_parts.append(f"<td>{v}</td>")
+                    html_parts.append("</tr>")
+            else:
+                max_len = max((len(v) for v in series_values), default=0)
+                for i in range(max_len):
+                    html_parts.append(f"<tr><td>Item{i+1}</td>")
+                    for vals in series_values:
+                        v = vals[i] if i < len(vals) else ""
+                        html_parts.append(f"<td>{v}</td>")
+                    html_parts.append("</tr>")
+            html_parts.append("</tbody></table>")
+
+            return "\n".join(html_parts)
         except Exception:
             return f"[{chart_type_name}]"
 
