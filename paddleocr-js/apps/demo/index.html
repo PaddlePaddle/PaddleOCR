@@ -103,12 +103,13 @@
       }
 
       canvas {
+        display: none;
+      }
+
+      img#vizImage {
         width: 100%;
         height: auto;
         display: block;
-        border-radius: 12px;
-        border: 1px solid #6665;
-        background: #0001;
       }
 
       pre,
@@ -179,7 +180,6 @@
           <button id="chooseImageBtn">Choose image</button>
           <button id="reinitializeBtn">Reinitialize engine</button>
           <button id="runBtn" disabled>Run OCR</button>
-          <button id="downloadBtn" disabled>Download Result</button>
         </div>
       </section>
 
@@ -189,7 +189,11 @@
         <section class="panel">
           <div style="display: grid; gap: 10px">
             <h2>Visualization</h2>
-            <canvas id="canvas" width="960" height="540"></canvas>
+            <img
+              id="vizImage"
+              alt="OCR visualization"
+              style="width: 100%; border-radius: 12px; border: 1px solid #6665; background: #0001"
+            />
           </div>
         </section>
 

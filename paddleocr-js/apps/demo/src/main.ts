@@ -1,6 +1,6 @@
 import { PaddleOCR } from "@paddleocr/paddleocr-js";
-import type { OcrResult, OcrResultItem, Point2D } from "@paddleocr/paddleocr-js";
-import { OcrVisualizer, deterministicColor } from "@paddleocr/paddleocr-js/viz";
+import type { OcrResult, OcrResultItem } from "@paddleocr/paddleocr-js";
+import { OcrVisualizer } from "@paddleocr/paddleocr-js/viz";
 
 type OcrEngine = Awaited<ReturnType<typeof PaddleOCR.create>>;
 
@@ -28,36 +28,35 @@ const ui = {
   chooseImageBtn: document.getElementById("chooseImageBtn") as HTMLButtonElement,
   reinitializeBtn: document.getElementById("reinitializeBtn") as HTMLButtonElement,
   runBtn: document.getElementById("runBtn") as HTMLButtonElement,
-  downloadBtn: document.getElementById("downloadBtn") as HTMLButtonElement,
   status: document.getElementById("status") as HTMLElement,
   metrics: document.getElementById("metrics") as HTMLPreElement,
   results: document.getElementById("results") as HTMLOListElement,
-  canvas: document.getElementById("canvas") as HTMLCanvasElement
+  vizImage: document.getElementById("vizImage") as HTMLImageElement
 };
-
-function requireContext2D(canvas: HTMLCanvasElement): CanvasRenderingContext2D {
-  const ctx = canvas.getContext("2d");
-  if (!ctx) throw new Error("Failed to create canvas 2D context.");
-  return ctx;
-}
-
-const canvasCtx = requireContext2D(ui.canvas);
 
 interface AppState {
   imageFile: File | null;
   previewBitmap: ImageBitmap | null;
   lastResult: OcrResult | null;
   ocr: OcrEngine | null;
+  vizObjectUrl: string | null;
 }
 
 const state: AppState = {
   imageFile: null,
   previewBitmap: null,
   lastResult: null,
-  ocr: null
+  ocr: null,
+  vizObjectUrl: null
 };
 
-const visualizer = new OcrVisualizer();
+const visualizer = new OcrVisualizer({
+  font: {
+    family: "PingFang SC",
+    source:
+      "https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/fonts/PingFang-SC-Regular.ttf"
+  }
+});
 
 function setStatus(text: string, isError = false): void {
   ui.status.textContent = text;
@@ -68,31 +67,24 @@ function formatMs(value: number): string {
   return `${value.toFixed(1)} ms`;
 }
 
-function drawPolygonPath(ctx: CanvasRenderingContext2D, poly: Point2D[]): void {
-  ctx.beginPath();
-  ctx.moveTo(poly[0][0], poly[0][1]);
-  for (let index = 1; index < poly.length; index += 1) {
-    ctx.lineTo(poly[index][0], poly[index][1]);
+function showVizImage(blob: Blob): void {
+  if (state.vizObjectUrl) {
+    URL.revokeObjectURL(state.vizObjectUrl);
   }
-  ctx.closePath();
+  state.vizObjectUrl = URL.createObjectURL(blob);
+  ui.vizImage.src = state.vizObjectUrl;
 }
 
-function drawPreview(bitmap: ImageBitmap, items: OcrResultItem[] = []): void {
-  ui.canvas.width = bitmap.width;
-  ui.canvas.height = bitmap.height;
-  canvasCtx.clearRect(0, 0, ui.canvas.width, ui.canvas.height);
-  canvasCtx.drawImage(bitmap, 0, 0);
-
-  items.forEach((item, index) => {
-    const [r, g, b] = deterministicColor(index);
-    canvasCtx.save();
-    canvasCtx.lineWidth = 2;
-    canvasCtx.strokeStyle = `rgb(${String(r)}, ${String(g)}, ${String(b)})`;
-    canvasCtx.fillStyle = `rgba(${String(r)}, ${String(g)}, ${String(b)}, 0.22)`;
-    drawPolygonPath(canvasCtx, item.poly);
-    canvasCtx.fill();
-    canvasCtx.stroke();
-    canvasCtx.restore();
+function showPreviewImage(bitmap: ImageBitmap): void {
+  // For pre-OCR preview, draw to an offscreen canvas and display as image
+  const canvas = document.createElement("canvas");
+  canvas.width = bitmap.width;
+  canvas.height = bitmap.height;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return;
+  ctx.drawImage(bitmap, 0, 0);
+  canvas.toBlob((blob) => {
+    if (blob) showVizImage(blob);
   });
 }
 
@@ -145,7 +137,7 @@ async function handleImageSelection(file: File | undefined): Promise<void> {
   state.imageFile = file;
   state.previewBitmap?.close();
   state.previewBitmap = await createImageBitmap(file);
-  drawPreview(state.previewBitmap);
+  showPreviewImage(state.previewBitmap);
   ui.runBtn.disabled = !state.ocr;
   setStatus(`Image selected: ${file.name}`);
 }
@@ -168,10 +160,13 @@ async function runOcr(): Promise<void> {
     if (!state.previewBitmap) {
       state.previewBitmap = await createImageBitmap(state.imageFile);
     }
-    drawPreview(state.previewBitmap, result.items);
+
+    // Render side-by-side visualization using viz module
+    const blob = await visualizer.toBlob(state.previewBitmap, result);
+    showVizImage(blob);
+
     renderResults(result.items);
     state.lastResult = result;
-    ui.downloadBtn.disabled = false;
     ui.metrics.textContent = [
       ui.metrics.textContent,
       "",
@@ -204,6 +199,7 @@ async function reinitializeOcrEngine(): Promise<void> {
     ui.reinitializeBtn.disabled = true;
     ui.runBtn.disabled = true;
     setStatus("Initializing OCR engine...");
+    await visualizer.loadFont();
     await initializeOcrEngine();
   } catch (err: unknown) {
     console.error(err);
@@ -223,26 +219,5 @@ ui.reinitializeBtn.addEventListener("click", () => void reinitializeOcrEngine())
 ui.runtimeBackend.addEventListener("change", () => void reinitializeOcrEngine());
 
 ui.runBtn.addEventListener("click", () => void runOcr());
-
-async function downloadResult(): Promise<void> {
-  if (!state.previewBitmap || !state.lastResult) return;
-  try {
-    setStatus("Generating download...");
-    const blob = await visualizer.toBlob(state.previewBitmap, state.lastResult);
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "ocr_result.png";
-    a.click();
-    URL.revokeObjectURL(url);
-    setStatus("Download started.");
-  } catch (err: unknown) {
-    console.error(err);
-    const message = err instanceof Error ? err.message : String(err);
-    setStatus(`Download failed: ${message}`, true);
-  }
-}
-
-ui.downloadBtn.addEventListener("click", () => void downloadResult());
 
 void reinitializeOcrEngine();
