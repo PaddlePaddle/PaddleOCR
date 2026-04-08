@@ -13,7 +13,8 @@
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "baseUrl": ".",
     "paths": {
-      "@paddleocr/paddleocr-js": ["../../packages/core/src/index.ts"]
+      "@paddleocr/paddleocr-js": ["../../packages/core/src/index.ts"],
+      "@paddleocr/paddleocr-js/viz": ["../../packages/core/src/viz/index.ts"]
     }
   },
   "include": ["src", "../../packages/core/src/types/*.d.ts"]
