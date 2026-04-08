@@ -90,9 +90,9 @@ Plans:
   3. Per-stage timing breakdown is displayed after inference (detection time, recognition time, total time)
   4. User can copy all recognized text to the clipboard with one tap
   5. Loading indicator appears during model initialization and inference, and meaningful error messages appear when inference fails or input is invalid
-**Plans:** 2 plans
+**Plans:** 1/2 plans executed
 Plans:
-- [ ] 05-01-PLAN.md — OCRViewModel state machine, ImagePickerSection (PhotosPicker + samples), ContentView coordinator
+- [x] 05-01-PLAN.md — OCRViewModel state machine, ImagePickerSection (PhotosPicker + samples), ContentView coordinator
 - [ ] 05-02-PLAN.md — ResultImageView (Canvas polygon overlay), TimingView, ResultsListView, ErrorView, human verification
 
 ### Phase 6: Documentation
@@ -117,5 +117,5 @@ Note: Phases 2 and 3 can be developed in parallel (both depend only on Phase 1).
 | 2. Text Detection | 3/3 | Human verification needed | - |
 | 3. Text Recognition | 2/3 | Gap closure planned | - |
 | 4. Pipeline Orchestration & Validation | 3/3 | Complete   | 2026-04-08 |
-| 5. User Interface | 0/2 | Planning complete | - |
+| 5. User Interface | 1/2 | In Progress|  |
 | 6. Documentation | 0/0 | Not started | - |

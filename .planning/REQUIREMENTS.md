@@ -101,14 +101,14 @@ Fetch via: `gh api repos/Bobholamovic/PaddleX/contents/{path}?ref=feat/transform
 
 ### UI
 
-- [ ] **UI-01**: Photo picker allows selecting images from the device photo album
-- [ ] **UI-02**: 3-5 bundled sample images available for quick testing without photo access
+- [x] **UI-01**: Photo picker allows selecting images from the device photo album
+- [x] **UI-02**: 3-5 bundled sample images available for quick testing without photo access
 - [ ] **UI-03**: Detection results shown as bounding box overlays on the source image
 - [ ] **UI-04**: Recognized text displayed with per-result confidence scores
 - [ ] **UI-05**: Per-stage timing breakdown shown (detection time, recognition time, total time)
 - [ ] **UI-06**: Copy recognized text to clipboard
-- [ ] **UI-07**: Loading indicator during model initialization and inference
-- [ ] **UI-08**: Error states displayed for failed inference or invalid input
+- [x] **UI-07**: Loading indicator during model initialization and inference
+- [x] **UI-08**: Error states displayed for failed inference or invalid input
 
 ### Documentation
 
@@ -181,14 +181,14 @@ Fetch via: `gh api repos/Bobholamovic/PaddleX/contents/{path}?ref=feat/transform
 | PIPE-05 | Phase 4 | Complete |
 | VALID-01 | Phase 4 | Complete |
 | VALID-02 | Phase 4 | Complete |
-| UI-01 | Phase 5 | Pending |
-| UI-02 | Phase 5 | Pending |
+| UI-01 | Phase 5 | Complete |
+| UI-02 | Phase 5 | Complete |
 | UI-03 | Phase 5 | Pending |
 | UI-04 | Phase 5 | Pending |
 | UI-05 | Phase 5 | Pending |
 | UI-06 | Phase 5 | Pending |
-| UI-07 | Phase 5 | Pending |
-| UI-08 | Phase 5 | Pending |
+| UI-07 | Phase 5 | Complete |
+| UI-08 | Phase 5 | Complete |
 | DOC-01 | Phase 6 | Pending |
 | DOC-02 | Phase 6 | Pending |
 | DOC-03 | Phase 6 | Pending |
