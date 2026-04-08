@@ -1291,7 +1291,7 @@ def _get_list_info(para, numbering_map) -> tuple | None:
     return (list_type, ilvl, num_id)
 
 
-def _convert_body(doc, *, extract_textboxes=True) -> tuple:
+def _convert_body(doc, *, extract_drawings=True) -> tuple:
     """Traverse body elements in order and produce Markdown. Returns (markdown_str, images_dict)."""
     try:
         from docx.table import Table
@@ -1350,7 +1350,7 @@ def _convert_body(doc, *, extract_textboxes=True) -> tuple:
 
             # Extract text box content for this paragraph element
             pending_textbox_lines = []
-            if extract_textboxes:
+            if extract_drawings:
                 tb_groups = _extract_textbox_paragraphs(child)
                 if tb_groups:
                     pending_textbox_lines = _textbox_paragraphs_to_markdown(
@@ -1596,10 +1596,10 @@ class DocxConverter(BaseConverter):
                 "DOCX conversion requires python-docx: pip install paddleocr[doc2md]"
             )
 
-        extract_textboxes = kwargs.pop("extract_textboxes", True)
+        extract_drawings = kwargs.pop("extract_drawings", True)
         extract_headers_footers = kwargs.pop("extract_headers_footers", True)
         doc = Document(str(file_path))
-        md_text, images = _convert_body(doc, extract_textboxes=extract_textboxes)
+        md_text, images = _convert_body(doc, extract_drawings=extract_drawings)
 
         if extract_headers_footers:
             header_lines, footer_lines = _extract_headers_footers(doc)

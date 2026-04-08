@@ -18,6 +18,119 @@ from typing import Optional
 from ..base import BaseConverter, ConvertResult
 from ..registry import default_registry
 
+# OMML math namespace (same as in DOCX/PPTX)
+_M_NS = "http://schemas.openxmlformats.org/officeDocument/2006/math"
+_M = "{" + _M_NS + "}"
+# DrawingML 2010 extension namespace (OMML wrapped in a14:m)
+_A14 = "{http://schemas.microsoft.com/office/drawing/2010/main}"
+# DrawingML main namespace
+_A = "{http://schemas.openxmlformats.org/drawingml/2006/main}"
+# Markup Compatibility namespace
+_MC = "{http://schemas.openxmlformats.org/markup-compatibility/2006}"
+# OPC relationship type for drawings
+_REL_DRAWING = (
+    "http://schemas.openxmlformats.org/officeDocument/2006/relationships/drawing"
+)
+_REL_NS = "http://schemas.openxmlformats.org/package/2006/relationships"
+
+
+def _convert_omath(omath_element) -> str:
+    """Convert an m:oMath lxml element to LaTeX string. Returns empty string on failure."""
+    try:
+        from ..math.omml import oMath2Latex
+
+        return str(oMath2Latex(omath_element)).strip()
+    except Exception:
+        return ""
+
+
+def _paragraph_has_math(para_element) -> bool:
+    """Check if paragraph XML element contains OMML math (a14:m or m:oMath)."""
+    return (
+        para_element.find(f".//{_A14}m") is not None
+        or para_element.find(f".//{_M}oMath") is not None
+    )
+
+
+def _extract_math_from_paragraph(para_element) -> list:
+    """Extract LaTeX strings from math elements in a paragraph XML element."""
+    results = []
+    # a14:m wraps m:oMathPara or m:oMath
+    for a14m in para_element.findall(f".//{_A14}m"):
+        for omath in a14m.findall(f".//{_M}oMath"):
+            latex = _convert_omath(omath)
+            if latex:
+                results.append(latex)
+        # No oMath inside a14:m? Try the a14:m element itself
+        if not results:
+            latex = _convert_omath(a14m)
+            if latex:
+                results.append(latex)
+    # Direct m:oMathPara / m:oMath not wrapped in a14:m
+    for omath_para in para_element.findall(f".//{_M}oMathPara"):
+        for omath in omath_para.findall(f"{_M}oMath"):
+            if omath.getparent() is not None and omath.getparent().tag == f"{_A14}m":
+                continue  # already handled above
+            latex = _convert_omath(omath)
+            if latex:
+                results.append(latex)
+    for omath in para_element.findall(f".//{_M}oMath"):
+        parent = omath.getparent()
+        if parent is not None and parent.tag in (f"{_A14}m", f"{_M}oMathPara"):
+            continue  # already handled
+        latex = _convert_omath(omath)
+        if latex:
+            results.append(latex)
+    return results
+
+
+def _extract_drawing_math(zip_path: str, sheet_index: int) -> list:
+    """Extract LaTeX formulas from drawing layer of an xlsx sheet via direct zip parsing."""
+    import zipfile
+
+    from lxml import etree
+
+    results = []
+    rels_path = f"xl/worksheets/_rels/sheet{sheet_index + 1}.xml.rels"
+
+    with zipfile.ZipFile(zip_path, "r") as zf:
+        # 读取 rels（sheet 无 drawing 时文件不存在）
+        try:
+            rels_data = zf.read(rels_path)
+        except KeyError:
+            return results
+
+        # 找到 drawing 关系的 Target
+        rels_root = etree.fromstring(rels_data)
+        drawing_targets = []
+        for rel in rels_root.findall(f"{{{_REL_NS}}}Relationship"):
+            if rel.get("Type") == _REL_DRAWING:
+                target = rel.get("Target", "")
+                # "../drawings/drawingX.xml" → "xl/drawings/drawingX.xml"
+                if target.startswith("../"):
+                    target = "xl/" + target[3:]
+                elif not target.startswith("xl/"):
+                    target = "xl/worksheets/" + target
+                drawing_targets.append(target)
+
+        for drawing_path in drawing_targets:
+            try:
+                drawing_data = zf.read(drawing_path)
+                drawing_root = etree.fromstring(drawing_data)
+            except Exception:
+                continue  # 静默跳过损坏或缺失的 drawing
+
+            # 遍历 mc:AlternateContent/mc:Choice 下的 a:p 段落
+            for alt in drawing_root.iter(f"{_MC}AlternateContent"):
+                choice = alt.find(f"{_MC}Choice")
+                if choice is None:
+                    continue
+                for para in choice.iter(f"{_A}p"):
+                    if _paragraph_has_math(para):
+                        results.extend(_extract_math_from_paragraph(para))
+
+    return results
+
 
 def _get_sheet_width_emu(ws, openpyxl_mod) -> int:
     """Return the total column width of the worksheet in EMU. 1 char width ~ 7px, 1px = 9525 EMU."""
@@ -109,6 +222,7 @@ class XlsxConverter(BaseConverter):
 
         sheet_name: Optional[str] = kwargs.get("sheet_name", None)
         max_rows: Optional[int] = kwargs.get("max_rows", None)
+        extract_drawings: bool = kwargs.get("extract_drawings", True)
 
         # read_only=False is required to access merged_cells
         wb = openpyxl.load_workbook(str(file_path), read_only=False, data_only=True)
@@ -245,7 +359,13 @@ class XlsxConverter(BaseConverter):
             html_parts.append("</table>")
 
             table_html = "\n".join(html_parts)
-            sheets_md.append(f"## {sname}\n\n{table_html}")
+
+            sheet_parts = [f"## {sname}\n\n{table_html}"]
+            if extract_drawings:
+                sheet_idx = list(wb.sheetnames).index(sname)
+                for latex in _extract_drawing_math(str(file_path), sheet_idx):
+                    sheet_parts.append(f"\n$$\n{latex}\n$$")
+            sheets_md.append("\n".join(sheet_parts))
 
         wb.close()
 

@@ -188,8 +188,8 @@ def _register_doc2md_command(subparsers):
 
         # Build converter kwargs from CLI args
         converter_kwargs = {}
-        if args.no_textboxes:
-            converter_kwargs["extract_textboxes"] = False
+        if args.no_drawings:
+            converter_kwargs["extract_drawings"] = False
         if args.no_headers_footers:
             converter_kwargs["extract_headers_footers"] = False
         if args.sheet_name is not None:
@@ -247,9 +247,9 @@ def _register_doc2md_command(subparsers):
     )
     # docx options
     subparser.add_argument(
-        "--no-textboxes",
+        "--no-drawings",
         action="store_true",
-        help="[docx] Skip text box content extraction",
+        help="[docx/xlsx] Skip text box / drawing layer content extraction",
     )
     subparser.add_argument(
         "--no-headers-footers",
