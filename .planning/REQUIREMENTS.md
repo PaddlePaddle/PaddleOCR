@@ -92,12 +92,12 @@ Fetch via: `gh api repos/Bobholamovic/PaddleX/contents/{path}?ref=feat/transform
 - [x] **PIPE-02**: Box sorting follows reading order — matching `SortQuadBoxes` logic in PaddleX pipeline (top-to-bottom, left-to-right with y-threshold of 10px)
 - [x] **PIPE-03**: Crop uses perspective transform — matching `CropByPolys.get_minarea_rect_crop()` in PaddleX (minAreaRect -> sortCorners -> warpPerspective -> rot90 for tall-narrow boxes)
 - [ ] **PIPE-04**: Pipeline runs on background thread, UI remains responsive
-- [ ] **PIPE-05**: Pipeline results match the Python/PaddleX reference implementation — verified by VALID-01/02
+- [x] **PIPE-05**: Pipeline results match the Python/PaddleX reference implementation — verified by VALID-01/02
 
 ### Validation
 
-- [ ] **VALID-01**: Developer-facing validation script compares iOS inference output against Python reference output for a set of test images — results must be numerically exact (not approximate)
-- [ ] **VALID-02**: Validation covers both detection (polygon coordinates must match exactly) and recognition (text strings and confidence scores must match exactly)
+- [x] **VALID-01**: Developer-facing validation script compares iOS inference output against Python reference output for a set of test images — results must be numerically exact (not approximate)
+- [x] **VALID-02**: Validation covers both detection (polygon coordinates must match exactly) and recognition (text strings and confidence scores must match exactly)
 
 ### UI
 
@@ -178,9 +178,9 @@ Fetch via: `gh api repos/Bobholamovic/PaddleX/contents/{path}?ref=feat/transform
 | PIPE-02 | Phase 4 | Complete |
 | PIPE-03 | Phase 4 | Complete |
 | PIPE-04 | Phase 4 | Pending |
-| PIPE-05 | Phase 4 | Pending |
-| VALID-01 | Phase 4 | Pending |
-| VALID-02 | Phase 4 | Pending |
+| PIPE-05 | Phase 4 | Complete |
+| VALID-01 | Phase 4 | Complete |
+| VALID-02 | Phase 4 | Complete |
 | UI-01 | Phase 5 | Pending |
 | UI-02 | Phase 5 | Pending |
 | UI-03 | Phase 5 | Pending |

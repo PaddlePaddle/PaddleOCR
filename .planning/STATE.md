@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 04-01-PLAN.md
+stopped_at: Completed 04-01-PLAN.md, 04-02-PLAN.md
 last_updated: "2026-04-07T09:44:27.711Z"
 last_activity: 2026-04-07
 progress:
@@ -57,6 +57,7 @@ Progress: [██████████] 100%
 | Phase 02 P01 | 5min | 2 tasks | 4 files |
 | Phase 02 P03 | 3min | 2 tasks | 3 files |
 | Phase 04 P01 | 6min | 2 tasks | 2 files |
+| Phase 04 P02 | 4min | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -82,6 +83,8 @@ Recent decisions affecting current work:
 - [Phase 02]: DetectionEngine is a class (not actor) -- delegates concurrency to ORTSessionManager actor
 - [Phase 02]: PostProcessConfig bridged to DBPostProcessConfigurable via extension conformance
 - [Phase 04]: Pure Swift perspective warp via DLT + bilinear backward mapping instead of vImage/Accelerate -- faithful to OpenCV reference
+- [Phase 04]: Confidence tolerance 1e-4 for ARM vs x86 float differences in validation
+- [Phase 04]: JSON validation schema: {image, box_count, boxes: [{polygon, text, confidence}]} shared between Python and iOS
 
 ### Pending Todos
 
@@ -96,5 +99,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-04-07T09:44:27.709Z
-Stopped at: Completed 04-01-PLAN.md
+Stopped at: Completed 04-01-PLAN.md, 04-02-PLAN.md
 Resume file: None

@@ -77,7 +77,7 @@ Plans:
 **Plans:** 1/3 plans executed
 Plans:
 - [x] 04-01-PLAN.md — BoxSorter (reading-order sort) + PerspectiveCrop (4-point perspective transform with tall-narrow rotation)
-- [ ] 04-02-PLAN.md — Python validation scripts (generate_reference.py + validate.py for iOS vs PaddleX comparison)
+- [x] 04-02-PLAN.md — Python validation scripts (generate_reference.py + validate.py for iOS vs PaddleX comparison)
 - [ ] 04-03-PLAN.md — OCREngine pipeline orchestrator + ValidationExport JSON serializer
 
 ### Phase 5: User Interface
