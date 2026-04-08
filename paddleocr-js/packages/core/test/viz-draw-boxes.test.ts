@@ -60,7 +60,6 @@ describe("viz/draw-boxes", () => {
     expect(ctx.lineTo).toHaveBeenCalledWith(10, 40);
     expect(ctx.closePath).toHaveBeenCalled();
     expect(ctx.fill).toHaveBeenCalled();
-    expect(ctx.stroke).toHaveBeenCalled();
   });
 
   it("wraps each item draw in save/restore", () => {

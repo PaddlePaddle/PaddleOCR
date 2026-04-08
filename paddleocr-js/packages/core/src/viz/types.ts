@@ -27,7 +27,7 @@ export interface FontConfig {
 export interface BoxStyleOptions {
   /** Box stroke width. Default: 2. */
   lineWidth?: number;
-  /** Fill opacity 0-1. Default: 0.3. */
+  /** Fill opacity 0-1. Default: 0.5. */
   fillOpacity?: number;
   /** Custom color function. Default: deterministic LCG-based colors. */
   colorFn?: (index: number) => RgbColor;

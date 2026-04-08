@@ -21,6 +21,7 @@ const DEFAULT_BG = "#ffffff";
 const OUTLINE_LINE_WIDTH = 1;
 const TEXT_COLOR = "#000000";
 const ROTATION_THRESHOLD_DEG = 5;
+const VERTICAL_LINE_SPACING = 2;
 
 /**
  * Compute the angle (in radians) of the top edge of a quad polygon.
@@ -70,6 +71,26 @@ function drawPolygonPath(
 }
 
 /**
+ * Draw vertical text character-by-character, rendering each character
+ * stacked vertically for CJK and other vertical text layouts.
+ */
+function drawVerticalText(
+  ctx: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D,
+  text: string,
+  x: number,
+  startY: number,
+  fontSize: number,
+  fontFamily: string
+): void {
+  ctx.font = `${String(fontSize)}px "${fontFamily}"`;
+  let y = startY;
+  for (const char of text) {
+    ctx.fillText(char, x, y);
+    y += fontSize + VERTICAL_LINE_SPACING;
+  }
+}
+
+/**
  * Draw the right panel: white background with detection box outlines and
  * recognized text rendered inside each box.
  */
@@ -97,7 +118,11 @@ export function drawTextPanel(
     const bounds = polyBounds(item.poly);
     const angle = topEdgeAngle(item.poly);
     const absDeg = Math.abs(angle * (180 / Math.PI));
-    const needsRotation = absDeg > ROTATION_THRESHOLD_DEG && absDeg < 180 - ROTATION_THRESHOLD_DEG;
+    const needsRotation =
+      absDeg > ROTATION_THRESHOLD_DEG && absDeg < 180 - ROTATION_THRESHOLD_DEG;
+
+    // Detect vertical text: height > 2 * width and height > 30px
+    const isVertical = bounds.height > 2 * bounds.width && bounds.height > 30;
 
     // Draw box outline
     ctx.save();
@@ -108,22 +133,67 @@ export function drawTextPanel(
     ctx.restore();
 
     // Draw text
-    const fontSize = Math.max(12, Math.floor(bounds.height * 0.8));
     ctx.save();
     ctx.fillStyle = TEXT_COLOR;
-    ctx.font = `${String(fontSize)}px "${fontFamily}"`;
-    ctx.textBaseline = "middle";
 
-    if (needsRotation) {
-      const cx = bounds.minX + bounds.width / 2 + offsetX;
-      const cy = bounds.minY + bounds.height / 2;
-      ctx.translate(cx, cy);
-      ctx.rotate(angle);
-      ctx.fillText(item.text, -bounds.width / 2, 0);
+    if (isVertical) {
+      // Vertical text: render characters one-by-one, stacked vertically
+      ctx.textBaseline = "top";
+      const chars = [...item.text];
+      const charCount = Math.max(1, chars.length);
+      let fontSize = Math.max(8, Math.floor(bounds.width * 0.8));
+
+      // Scale down if total character height exceeds box height
+      const totalHeight = charCount * (fontSize + VERTICAL_LINE_SPACING);
+      if (totalHeight > bounds.height) {
+        fontSize = Math.max(
+          8,
+          Math.floor((bounds.height / charCount) * 0.8)
+        );
+      }
+
+      // Ensure each character fits within the box width
+      ctx.font = `${String(fontSize)}px "${fontFamily}"`;
+      const maxCharWidth = Math.max(
+        ...chars.map((c) => ctx.measureText(c).width)
+      );
+      if (maxCharWidth > bounds.width) {
+        fontSize = Math.max(
+          8,
+          Math.floor(fontSize * (bounds.width / maxCharWidth))
+        );
+      }
+
+      const x = bounds.minX + offsetX + (bounds.width - fontSize) / 2;
+      const y = bounds.minY + 2;
+      drawVerticalText(ctx, item.text, x, y, fontSize, fontFamily);
     } else {
-      const x = bounds.minX + offsetX + 2;
-      const y = bounds.minY + bounds.height / 2;
-      ctx.fillText(item.text, x, y);
+      // Horizontal text
+      ctx.textBaseline = "middle";
+      let fontSize = Math.max(12, Math.floor(bounds.height * 0.8));
+      ctx.font = `${String(fontSize)}px "${fontFamily}"`;
+
+      // Shrink font if text is wider than the box
+      const measured = ctx.measureText(item.text);
+      if (measured.width > bounds.width && bounds.width > 0) {
+        fontSize = Math.max(
+          8,
+          Math.floor(fontSize * (bounds.width / measured.width))
+        );
+        ctx.font = `${String(fontSize)}px "${fontFamily}"`;
+      }
+
+      if (needsRotation) {
+        const cx = bounds.minX + bounds.width / 2 + offsetX;
+        const cy = bounds.minY + bounds.height / 2;
+        ctx.translate(cx, cy);
+        ctx.rotate(angle);
+        ctx.fillText(item.text, -bounds.width / 2, 0);
+      } else {
+        const x = bounds.minX + offsetX + 2;
+        const y = bounds.minY + bounds.height / 2;
+        ctx.fillText(item.text, x, y);
+      }
     }
 
     ctx.restore();

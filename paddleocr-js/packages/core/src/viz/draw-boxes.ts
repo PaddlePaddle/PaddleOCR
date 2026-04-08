@@ -17,8 +17,7 @@ import type { Point2D } from "../models/common";
 import type { BoxStyleOptions, RgbColor } from "./types";
 import { deterministicColor } from "./color";
 
-const DEFAULT_LINE_WIDTH = 2;
-const DEFAULT_FILL_OPACITY = 0.3;
+const DEFAULT_FILL_OPACITY = 0.5;
 
 type DrawableImage = ImageBitmap | HTMLImageElement;
 
@@ -35,7 +34,7 @@ function drawPolygonPath(
 }
 
 /**
- * Draw the left panel: source image overlaid with detection box polygons.
+ * Draw the left panel: source image blended with detection box polygon fills.
  */
 export function drawBoxesPanel(
   ctx: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D,
@@ -43,21 +42,21 @@ export function drawBoxesPanel(
   items: OcrResultItem[],
   style: BoxStyleOptions
 ): void {
-  ctx.drawImage(image, 0, 0);
-
-  const lineWidth = style.lineWidth ?? DEFAULT_LINE_WIDTH;
   const fillOpacity = style.fillOpacity ?? DEFAULT_FILL_OPACITY;
   const getColor = style.colorFn ?? deterministicColor;
 
+  // Draw original image
+  ctx.drawImage(image, 0, 0);
+
+  // Draw filled polygons with the specified opacity.
+  // Canvas source-over compositing with alpha gives:
+  //   result = color * alpha + original * (1 - alpha)
   for (let i = 0; i < items.length; i += 1) {
     const [r, g, b]: RgbColor = getColor(i);
     ctx.save();
-    ctx.lineWidth = lineWidth;
-    ctx.strokeStyle = `rgb(${String(r)}, ${String(g)}, ${String(b)})`;
     ctx.fillStyle = `rgba(${String(r)}, ${String(g)}, ${String(b)}, ${String(fillOpacity)})`;
     drawPolygonPath(ctx, items[i].poly);
     ctx.fill();
-    ctx.stroke();
     ctx.restore();
   }
 }

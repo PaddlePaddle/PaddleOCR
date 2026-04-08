@@ -73,6 +73,7 @@ function showVizImage(blob: Blob): void {
   }
   state.vizObjectUrl = URL.createObjectURL(blob);
   ui.vizImage.src = state.vizObjectUrl;
+  ui.vizImage.hidden = false;
 }
 
 function showPreviewImage(bitmap: ImageBitmap): void {

@@ -112,6 +112,10 @@
         display: block;
       }
 
+      img#vizImage[hidden] {
+        display: none;
+      }
+
       pre,
       code {
         font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
@@ -192,6 +196,7 @@
             <img
               id="vizImage"
               alt="OCR visualization"
+              hidden
               style="width: 100%; border-radius: 12px; border: 1px solid #6665; background: #0001"
             />
           </div>

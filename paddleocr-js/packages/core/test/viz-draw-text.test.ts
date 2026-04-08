@@ -13,6 +13,8 @@ function createMockCtx() {
     lineTo: vi.fn(),
     closePath: vi.fn(),
     stroke: vi.fn(),
+    fill: vi.fn(),
+    measureText: vi.fn().mockReturnValue({ width: 50 }),
     fillText: vi.fn(),
     translate: vi.fn(),
     rotate: vi.fn(),
