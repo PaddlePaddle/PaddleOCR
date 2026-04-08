@@ -148,20 +148,6 @@ Worker 模式的行为：
 - 浏览器输入会先在主线程标准化，再传入 worker 执行推理
 - `cv.Mat` 仅支持直接在主线程产线路径中使用
 
-## API
-
-- `PaddleOCR.create(options)`
-- `PaddleOCR.fromPipelineConfig(config, options?)`
-- `ocr.initialize()`
-- `ocr.getInitializationSummary()`
-- `ocr.predict(image, params?)`
-- `ocr.dispose()`
-- `parseOcrPipelineConfigText(text)`
-- `normalizeOcrPipelineConfig(config)`
-- `OcrVisualizer`（来自 `@paddleocr/paddleocr-js/viz`）
-- `renderOcrToBlob`（来自 `@paddleocr/paddleocr-js/viz`）
-- `deterministicColor`（来自 `@paddleocr/paddleocr-js/viz`）
-
 ## 可视化
 
 可选的 `@paddleocr/paddleocr-js/viz` 子路径提供了将 OCR 结果渲染为图像的可视化工具。
@@ -199,6 +185,22 @@ const blob = await renderOcrToBlob(imageBitmap, result, {
 
 viz 模块会渲染一张左右对比的合成图像：左侧为带有检测框叠加的原始图像，右侧为识别出的文字。支持加载自定义字体以正确渲染中日韩等文字。
 
+`deterministicColor(index)` 同样从 viz 子路径导出。它根据数字索引生成稳定的 RGB 颜色，内部用作检测框和文字标签的默认配色函数。当你构建自定义可视化并需要与内置渲染器保持一致的配色时，可以直接调用该函数。
+
+## API
+
+- `PaddleOCR.create(options)`
+- `PaddleOCR.fromPipelineConfig(config, options?)`
+- `ocr.initialize()`
+- `ocr.getInitializationSummary()`
+- `ocr.predict(image, params?)`
+- `ocr.dispose()`
+- `parseOcrPipelineConfigText(text)`
+- `normalizeOcrPipelineConfig(config)`
+- `OcrVisualizer`（来自 `@paddleocr/paddleocr-js/viz`）
+- `renderOcrToBlob`（来自 `@paddleocr/paddleocr-js/viz`）
+- `deterministicColor`（来自 `@paddleocr/paddleocr-js/viz`）
+
 ## 包结构
 
 - `src/runtime`：运行时初始化与执行后端设置
@@ -208,6 +210,8 @@ viz 模块会渲染一张左右对比的合成图像：左侧为带有检测框�
 - `src/worker`：worker 传输客户端、协议与通用 worker 启动代码
 - `src/pipelines/ocr`：OCR 配置解析、主线程与 worker 双路径产线 API 组装、默认 worker 入口接线以及共享执行器
 - `src/viz`：可选的可视化工具（左右对比合成图像、字体管理）
+- `src/types`：外部库的 TypeScript 类型声明（OpenCV.js、clipper-lib）
+- `src/utils`：共享工具函数（计时、深拷贝）
 
 ## 运行时职责边界
 

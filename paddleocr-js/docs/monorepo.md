@@ -27,6 +27,7 @@ npm run dev --workspace apps/demo
 
 ## Linting and tests
 
-- `packages/**/src/**/*.ts` and `packages/**/test/**/*.ts` are linted with `strictTypeChecked` TypeScript rules and browser-oriented globals
+- `packages/**/src/**/*.ts` is linted with `strictTypeChecked` TypeScript rules and browser-oriented globals
+- `packages/**/test/**/*.ts` is linted with the lighter `recommendedTypeChecked` preset (browser + Node globals, with relaxed rules such as `no-unsafe-*` and `no-explicit-any` disabled)
 - `apps/**/src/**/*.ts` also uses `strictTypeChecked` TypeScript rules with browser-oriented globals
 - `apps/**/*.js`, root config files (`*.config.{js,ts}`), and package config files (`packages/**/*.config.*`) are linted with basic ESLint rules and both Node and browser globals

@@ -18,6 +18,9 @@ implementations:
 - `src/platform`: browser and worker helpers for turning user-provided image sources into runtime inputs
 - `src/worker`: worker transport client, protocol, and generic message bootstrap
 - `src/pipelines/ocr`: OCR config parsing, main-thread/worker-backed pipeline assembly, shared execution runner, and OCR-specific worker entry wiring
+- `src/viz`: optional visualization utilities (side-by-side composite rendering, bounding box drawing, font management, deterministic color assignment)
+- `src/types`: TypeScript type declarations for external libraries (OpenCV.js, clipper-lib)
+- `src/utils`: shared utility functions (timing, deep clone)
 
 The current high-level pipeline entry point is `PaddleOCR.create()`. It coordinates:
 
@@ -54,8 +57,8 @@ ONNX Runtime Web requires WASM binaries at runtime. `runtime.wasmPaths` is a uni
 
 ```ts
 PaddleOCR.create({
-  runtime: { wasmPaths: '/assets/' }
-})
+  runtime: { wasmPaths: "/assets/" }
+});
 ```
 
 When `wasmPaths` is set, both modes fetch WASM from the specified path. When it is not set, each mode falls back differently:

@@ -12,31 +12,32 @@
 
 ## File Map
 
-| File | Responsibility |
-|------|----------------|
-| **Create:** `packages/core/src/viz/types.ts` | All shared interfaces: `OcrVisualizerOptions`, `FontConfig`, `BoxStyleOptions`, `RgbColor` |
-| **Create:** `packages/core/src/viz/color.ts` | `deterministicColor(index)` — LCG-based deterministic RGB color generator |
-| **Create:** `packages/core/src/viz/canvas-factory.ts` | `createCanvas(w, h)` — returns `OffscreenCanvas` or falls back to `document.createElement("canvas")` |
-| **Create:** `packages/core/src/viz/font.ts` | `loadFontFace(config)` / `removeFontFace(face)` — FontFace lifecycle helpers |
-| **Create:** `packages/core/src/viz/draw-boxes.ts` | `drawBoxesPanel(ctx, image, items, style)` — draws left panel (source image + detection polygons) |
-| **Create:** `packages/core/src/viz/draw-text.ts` | `drawTextPanel(ctx, offsetX, height, items, style, fontFamily)` — draws right panel (white background + text in boxes) |
-| **Create:** `packages/core/src/viz/side-by-side.ts` | `renderSideBySideToCanvas(canvas, ctx, image, result, options)` — orchestrates left+right panels |
-| **Create:** `packages/core/src/viz/renderer.ts` | `OcrVisualizer` class and `renderOcrToBlob` convenience function |
-| **Create:** `packages/core/src/viz/index.ts` | Public subpath entry — re-exports `OcrVisualizer`, `renderOcrToBlob`, and all types |
-| **Modify:** `packages/core/vite.config.ts` | Add `src/viz/index.ts` as second entry, output `viz.mjs`/`viz.cjs` |
-| **Modify:** `packages/core/package.json` | Add `./viz` to `exports`, add `./dist/viz.*` to `files` |
-| **Create:** `packages/core/test/viz-color.test.ts` | Tests for `deterministicColor` |
-| **Create:** `packages/core/test/viz-canvas-factory.test.ts` | Tests for `createCanvas` |
-| **Create:** `packages/core/test/viz-font.test.ts` | Tests for font load/remove lifecycle |
-| **Create:** `packages/core/test/viz-draw-boxes.test.ts` | Tests for left-panel box drawing |
-| **Create:** `packages/core/test/viz-draw-text.test.ts` | Tests for right-panel text drawing |
-| **Create:** `packages/core/test/viz-renderer.test.ts` | Tests for `OcrVisualizer` and `renderOcrToBlob` |
+| File                                                        | Responsibility                                                                                                         |
+| ----------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| **Create:** `packages/core/src/viz/types.ts`                | All shared interfaces: `OcrVisualizerOptions`, `FontConfig`, `BoxStyleOptions`, `RgbColor`                             |
+| **Create:** `packages/core/src/viz/color.ts`                | `deterministicColor(index)` — LCG-based deterministic RGB color generator                                              |
+| **Create:** `packages/core/src/viz/canvas-factory.ts`       | `createCanvas(w, h)` — returns `OffscreenCanvas` or falls back to `document.createElement("canvas")`                   |
+| **Create:** `packages/core/src/viz/font.ts`                 | `loadFontFace(config)` / `removeFontFace(face)` — FontFace lifecycle helpers                                           |
+| **Create:** `packages/core/src/viz/draw-boxes.ts`           | `drawBoxesPanel(ctx, image, items, style)` — draws left panel (source image + detection polygons)                      |
+| **Create:** `packages/core/src/viz/draw-text.ts`            | `drawTextPanel(ctx, offsetX, height, items, style, fontFamily)` — draws right panel (white background + text in boxes) |
+| **Create:** `packages/core/src/viz/side-by-side.ts`         | `renderSideBySideToCanvas(canvas, ctx, image, result, options)` — orchestrates left+right panels                       |
+| **Create:** `packages/core/src/viz/renderer.ts`             | `OcrVisualizer` class and `renderOcrToBlob` convenience function                                                       |
+| **Create:** `packages/core/src/viz/index.ts`                | Public subpath entry — re-exports `OcrVisualizer`, `renderOcrToBlob`, and all types                                    |
+| **Modify:** `packages/core/vite.config.ts`                  | Add `src/viz/index.ts` as second entry, output `viz.mjs`/`viz.cjs`                                                     |
+| **Modify:** `packages/core/package.json`                    | Add `./viz` to `exports`, add `./dist/viz.*` to `files`                                                                |
+| **Create:** `packages/core/test/viz-color.test.ts`          | Tests for `deterministicColor`                                                                                         |
+| **Create:** `packages/core/test/viz-canvas-factory.test.ts` | Tests for `createCanvas`                                                                                               |
+| **Create:** `packages/core/test/viz-font.test.ts`           | Tests for font load/remove lifecycle                                                                                   |
+| **Create:** `packages/core/test/viz-draw-boxes.test.ts`     | Tests for left-panel box drawing                                                                                       |
+| **Create:** `packages/core/test/viz-draw-text.test.ts`      | Tests for right-panel text drawing                                                                                     |
+| **Create:** `packages/core/test/viz-renderer.test.ts`       | Tests for `OcrVisualizer` and `renderOcrToBlob`                                                                        |
 
 ---
 
 ### Task 1: Types
 
 **Files:**
+
 - Create: `packages/core/src/viz/types.ts`
 
 - [ ] **Step 1: Write the failing test**
@@ -45,12 +46,7 @@ Create `packages/core/test/viz-types.test.ts`:
 
 ```typescript
 import { describe, expect, it } from "vitest";
-import type {
-  FontConfig,
-  BoxStyleOptions,
-  OcrVisualizerOptions,
-  RgbColor,
-} from "../src/viz/types";
+import type { FontConfig, BoxStyleOptions, OcrVisualizerOptions, RgbColor } from "../src/viz/types";
 
 describe("viz/types", () => {
   it("allows constructing a minimal OcrVisualizerOptions", () => {
@@ -61,19 +57,19 @@ describe("viz/types", () => {
   it("allows constructing a full OcrVisualizerOptions", () => {
     const font: FontConfig = {
       family: "Test",
-      source: "https://example.com/font.woff2",
+      source: "https://example.com/font.woff2"
     };
     const boxStyle: BoxStyleOptions = {
       lineWidth: 3,
       fillOpacity: 0.5,
-      colorFn: (i: number): RgbColor => [i, i, i],
+      colorFn: (i: number): RgbColor => [i, i, i]
     };
     const opts: OcrVisualizerOptions = {
       font,
       boxStyle,
       textPanelBackground: "#f0f0f0",
       outputFormat: "jpeg",
-      outputQuality: 0.8,
+      outputQuality: 0.8
     };
     expect(opts.font?.family).toBe("Test");
     expect(opts.boxStyle?.lineWidth).toBe(3);
@@ -142,6 +138,7 @@ cd paddleocr-js && git add packages/core/src/viz/types.ts packages/core/test/viz
 ### Task 2: Deterministic Color Generation
 
 **Files:**
+
 - Create: `packages/core/src/viz/color.ts`
 - Create: `packages/core/test/viz-color.test.ts`
 
@@ -177,7 +174,8 @@ describe("viz/color", () => {
     const c1 = deterministicColor(1);
     const c2 = deterministicColor(2);
     // At least two of three should differ (LCG guarantees this)
-    const allSame = JSON.stringify(c0) === JSON.stringify(c1) && JSON.stringify(c1) === JSON.stringify(c2);
+    const allSame =
+      JSON.stringify(c0) === JSON.stringify(c1) && JSON.stringify(c1) === JSON.stringify(c2);
     expect(allSame).toBe(false);
   });
 
@@ -245,6 +243,7 @@ cd paddleocr-js && git add packages/core/src/viz/color.ts packages/core/test/viz
 ### Task 3: Canvas Factory
 
 **Files:**
+
 - Create: `packages/core/src/viz/canvas-factory.ts`
 - Create: `packages/core/test/viz-canvas-factory.test.ts`
 
@@ -271,13 +270,11 @@ describe("viz/canvas-factory", () => {
   it("returns an OffscreenCanvas when available", () => {
     // jsdom doesn't have OffscreenCanvas, so mock it
     const mockCanvas = { width: 0, height: 0, getContext: vi.fn() };
-    (globalThis as Record<string, unknown>).OffscreenCanvas = vi.fn(
-      (w: number, h: number) => {
-        mockCanvas.width = w;
-        mockCanvas.height = h;
-        return mockCanvas;
-      },
-    );
+    (globalThis as Record<string, unknown>).OffscreenCanvas = vi.fn((w: number, h: number) => {
+      mockCanvas.width = w;
+      mockCanvas.height = h;
+      return mockCanvas;
+    });
 
     const result = createCanvas(100, 200);
     expect(result.width).toBe(100);
@@ -291,11 +288,9 @@ describe("viz/canvas-factory", () => {
     const mockCanvas = {
       width: 0,
       height: 0,
-      getContext: vi.fn(() => mockCtx),
+      getContext: vi.fn(() => mockCtx)
     };
-    vi.spyOn(document, "createElement").mockReturnValue(
-      mockCanvas as unknown as HTMLElement,
-    );
+    vi.spyOn(document, "createElement").mockReturnValue(mockCanvas as unknown as HTMLElement);
 
     const result = createCanvas(300, 400);
     expect(result.width).toBe(300);
@@ -336,7 +331,7 @@ export function createCanvas(width: number, height: number): AnyCanvas {
  * Get a 2D rendering context from any canvas type.
  */
 export function getContext2D(
-  canvas: AnyCanvas,
+  canvas: AnyCanvas
 ): CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D {
   const ctx = canvas.getContext("2d");
   if (!ctx) {
@@ -349,11 +344,7 @@ export function getContext2D(
  * Convert a canvas to a Blob.
  * Uses convertToBlob() for OffscreenCanvas, toBlob() for HTMLCanvasElement.
  */
-export function canvasToBlob(
-  canvas: AnyCanvas,
-  type: string,
-  quality: number,
-): Promise<Blob> {
+export function canvasToBlob(canvas: AnyCanvas, type: string, quality: number): Promise<Blob> {
   if (canvas instanceof OffscreenCanvas) {
     return canvas.convertToBlob({ type, quality });
   }
@@ -367,7 +358,7 @@ export function canvasToBlob(
         }
       },
       type,
-      quality,
+      quality
     );
   });
 }
@@ -389,6 +380,7 @@ cd paddleocr-js && git add packages/core/src/viz/canvas-factory.ts packages/core
 ### Task 4: Font Management
 
 **Files:**
+
 - Create: `packages/core/src/viz/font.ts`
 - Create: `packages/core/test/viz-font.test.ts`
 
@@ -408,20 +400,18 @@ describe("viz/font", () => {
   beforeEach(() => {
     mockFontFace = {
       load: vi.fn().mockResolvedValue(undefined),
-      family: "",
+      family: ""
     };
     originalFontFace = globalThis.FontFace;
-    (globalThis as Record<string, unknown>).FontFace = vi.fn(
-      (family: string, _source: unknown) => {
-        mockFontFace.family = family;
-        return mockFontFace;
-      },
-    );
+    (globalThis as Record<string, unknown>).FontFace = vi.fn((family: string, _source: unknown) => {
+      mockFontFace.family = family;
+      return mockFontFace;
+    });
     // Mock document.fonts
     if (!document.fonts) {
       Object.defineProperty(document, "fonts", {
         value: { add: vi.fn(), delete: vi.fn() },
-        configurable: true,
+        configurable: true
       });
     } else {
       vi.spyOn(document.fonts, "add").mockImplementation(() => {});
@@ -432,14 +422,14 @@ describe("viz/font", () => {
   it("loads a font from a URL string and adds to document.fonts", async () => {
     const config: FontConfig = {
       family: "TestFont",
-      source: "https://example.com/font.woff2",
+      source: "https://example.com/font.woff2"
     };
 
     const face = await loadFontFace(config);
     expect(globalThis.FontFace).toHaveBeenCalledWith(
       "TestFont",
       "url(https://example.com/font.woff2)",
-      undefined,
+      undefined
     );
     expect(mockFontFace.load).toHaveBeenCalled();
     expect(document.fonts.add).toHaveBeenCalledWith(face);
@@ -449,29 +439,25 @@ describe("viz/font", () => {
     const buffer = new ArrayBuffer(8);
     const config: FontConfig = {
       family: "BufFont",
-      source: buffer,
+      source: buffer
     };
 
     await loadFontFace(config);
-    expect(globalThis.FontFace).toHaveBeenCalledWith(
-      "BufFont",
-      buffer,
-      undefined,
-    );
+    expect(globalThis.FontFace).toHaveBeenCalledWith("BufFont", buffer, undefined);
   });
 
   it("passes descriptors to FontFace constructor", async () => {
     const config: FontConfig = {
       family: "DescFont",
       source: "https://example.com/font.woff2",
-      descriptors: { weight: "bold" },
+      descriptors: { weight: "bold" }
     };
 
     await loadFontFace(config);
     expect(globalThis.FontFace).toHaveBeenCalledWith(
       "DescFont",
       "url(https://example.com/font.woff2)",
-      { weight: "bold" },
+      { weight: "bold" }
     );
   });
 
@@ -499,10 +485,7 @@ import type { FontConfig } from "./types";
  * Returns the loaded FontFace instance for later removal.
  */
 export async function loadFontFace(config: FontConfig): Promise<FontFace> {
-  const source =
-    typeof config.source === "string"
-      ? `url(${config.source})`
-      : config.source;
+  const source = typeof config.source === "string" ? `url(${config.source})` : config.source;
 
   const face = new FontFace(config.family, source, config.descriptors);
   await face.load();
@@ -534,6 +517,7 @@ cd paddleocr-js && git add packages/core/src/viz/font.ts packages/core/test/viz-
 ### Task 5: Draw Boxes Panel (Left Side)
 
 **Files:**
+
 - Create: `packages/core/src/viz/draw-boxes.ts`
 - Create: `packages/core/test/viz-draw-boxes.test.ts`
 
@@ -561,7 +545,7 @@ function createMockCtx() {
     stroke: vi.fn(() => calls.push("stroke")),
     lineWidth: 0,
     strokeStyle: "",
-    fillStyle: "",
+    fillStyle: ""
   } as unknown as CanvasRenderingContext2D & { calls: string[] };
 }
 
@@ -583,7 +567,15 @@ describe("viz/draw-boxes", () => {
     const ctx = createMockCtx();
     const image = { width: 100, height: 50 } as ImageBitmap;
     const items: OcrResultItem[] = [
-      makeItem([[10, 10], [90, 10], [90, 40], [10, 40]], "hello"),
+      makeItem(
+        [
+          [10, 10],
+          [90, 10],
+          [90, 40],
+          [10, 40]
+        ],
+        "hello"
+      )
     ];
 
     drawBoxesPanel(ctx, image, items, {});
@@ -602,7 +594,15 @@ describe("viz/draw-boxes", () => {
     const ctx = createMockCtx();
     const image = { width: 100, height: 50 } as ImageBitmap;
     const items: OcrResultItem[] = [
-      makeItem([[0, 0], [10, 0], [10, 10], [0, 10]], "a"),
+      makeItem(
+        [
+          [0, 0],
+          [10, 0],
+          [10, 10],
+          [0, 10]
+        ],
+        "a"
+      )
     ];
 
     drawBoxesPanel(ctx, image, items, {});
@@ -618,7 +618,15 @@ describe("viz/draw-boxes", () => {
     const ctx = createMockCtx();
     const image = { width: 100, height: 50 } as ImageBitmap;
     const items: OcrResultItem[] = [
-      makeItem([[0, 0], [10, 0], [10, 10], [0, 10]], "a"),
+      makeItem(
+        [
+          [0, 0],
+          [10, 0],
+          [10, 10],
+          [0, 10]
+        ],
+        "a"
+      )
     ];
     const colorFn = vi.fn().mockReturnValue([255, 0, 0]);
 
@@ -651,7 +659,7 @@ type DrawableImage = ImageBitmap | HTMLImageElement;
 
 function drawPolygonPath(
   ctx: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D,
-  poly: Point2D[],
+  poly: Point2D[]
 ): void {
   ctx.beginPath();
   ctx.moveTo(poly[0][0], poly[0][1]);
@@ -668,7 +676,7 @@ export function drawBoxesPanel(
   ctx: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D,
   image: DrawableImage,
   items: OcrResultItem[],
-  style: BoxStyleOptions,
+  style: BoxStyleOptions
 ): void {
   ctx.drawImage(image, 0, 0);
 
@@ -706,6 +714,7 @@ cd paddleocr-js && git add packages/core/src/viz/draw-boxes.ts packages/core/tes
 ### Task 6: Draw Text Panel (Right Side)
 
 **Files:**
+
 - Create: `packages/core/src/viz/draw-text.ts`
 - Create: `packages/core/test/viz-draw-text.test.ts`
 
@@ -735,7 +744,7 @@ function createMockCtx() {
     strokeStyle: "",
     fillStyle: "",
     font: "",
-    textBaseline: "" as CanvasTextBaseline,
+    textBaseline: "" as CanvasTextBaseline
   } as unknown as CanvasRenderingContext2D;
 }
 
@@ -753,7 +762,15 @@ describe("viz/draw-text", () => {
   it("draws text for each item", () => {
     const ctx = createMockCtx();
     const items: OcrResultItem[] = [
-      makeItem([[10, 10], [90, 10], [90, 40], [10, 40]], "hello"),
+      makeItem(
+        [
+          [10, 10],
+          [90, 10],
+          [90, 40],
+          [10, 40]
+        ],
+        "hello"
+      )
     ];
 
     drawTextPanel(ctx, 200, 100, items, {}, "sans-serif");
@@ -767,7 +784,15 @@ describe("viz/draw-text", () => {
   it("draws box outlines on the right panel for each item", () => {
     const ctx = createMockCtx();
     const items: OcrResultItem[] = [
-      makeItem([[10, 10], [90, 10], [90, 40], [10, 40]], "hello"),
+      makeItem(
+        [
+          [10, 10],
+          [90, 10],
+          [90, 40],
+          [10, 40]
+        ],
+        "hello"
+      )
     ];
 
     drawTextPanel(ctx, 200, 100, items, {}, "sans-serif");
@@ -844,7 +869,7 @@ function polyBounds(poly: Point2D[]): {
 function drawPolygonPath(
   ctx: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D,
   poly: Point2D[],
-  offsetX: number,
+  offsetX: number
 ): void {
   ctx.beginPath();
   ctx.moveTo(poly[0][0] + offsetX, poly[0][1]);
@@ -865,7 +890,7 @@ export function drawTextPanel(
   items: OcrResultItem[],
   style: BoxStyleOptions,
   fontFamily: string,
-  background?: string,
+  background?: string
 ): void {
   const getColor = style.colorFn ?? deterministicColor;
   const bg = background ?? DEFAULT_BG;
@@ -882,7 +907,7 @@ export function drawTextPanel(
     const bounds = polyBounds(item.poly);
     const angle = topEdgeAngle(item.poly);
     const absDeg = Math.abs(angle * (180 / Math.PI));
-    const needsRotation = absDeg > ROTATION_THRESHOLD_DEG && absDeg < (180 - ROTATION_THRESHOLD_DEG);
+    const needsRotation = absDeg > ROTATION_THRESHOLD_DEG && absDeg < 180 - ROTATION_THRESHOLD_DEG;
 
     // Draw box outline
     ctx.save();
@@ -932,6 +957,7 @@ cd paddleocr-js && git add packages/core/src/viz/draw-text.ts packages/core/test
 ### Task 7: Side-by-Side Composite Assembly
 
 **Files:**
+
 - Create: `packages/core/src/viz/side-by-side.ts`
 
 This file is a thin orchestrator. It does not need its own unit tests — it will be covered by the renderer integration tests in Task 8.
@@ -971,7 +997,7 @@ export interface SideBySideOptions {
 export function renderSideBySideToCanvas(
   image: DrawableImage,
   result: OcrResult,
-  options: SideBySideOptions,
+  options: SideBySideOptions
 ): OffscreenCanvas | HTMLCanvasElement {
   const w = imageWidth(image);
   const h = imageHeight(image);
@@ -986,7 +1012,7 @@ export function renderSideBySideToCanvas(
     result.items,
     options.boxStyle,
     options.fontFamily,
-    options.textPanelBackground,
+    options.textPanelBackground
   );
 
   return canvas;
@@ -998,7 +1024,7 @@ export function renderSideBySideToCanvas(
 export async function renderSideBySideToImageBitmap(
   image: DrawableImage,
   result: OcrResult,
-  options: SideBySideOptions,
+  options: SideBySideOptions
 ): Promise<ImageBitmap> {
   const canvas = renderSideBySideToCanvas(image, result, options);
   return createImageBitmap(canvas as ImageBitmapSource);
@@ -1010,7 +1036,7 @@ export async function renderSideBySideToImageBitmap(
 export async function renderSideBySideToBlob(
   image: DrawableImage,
   result: OcrResult,
-  options: SideBySideOptions,
+  options: SideBySideOptions
 ): Promise<Blob> {
   const canvas = renderSideBySideToCanvas(image, result, options);
   return canvasToBlob(canvas, `image/${options.outputFormat}`, options.outputQuality);
@@ -1033,6 +1059,7 @@ cd paddleocr-js && git add packages/core/src/viz/side-by-side.ts && git commit -
 ### Task 8: OcrVisualizer Class and renderOcrToBlob
 
 **Files:**
+
 - Create: `packages/core/src/viz/renderer.ts`
 - Create: `packages/core/test/viz-renderer.test.ts`
 
@@ -1045,16 +1072,14 @@ import { describe, expect, it, vi, beforeEach } from "vitest";
 
 // Mock FontFace and document.fonts before importing
 const mockFontFace = { load: vi.fn().mockResolvedValue(undefined), family: "" };
-(globalThis as Record<string, unknown>).FontFace = vi.fn(
-  (family: string, _source: unknown) => {
-    mockFontFace.family = family;
-    return mockFontFace;
-  },
-);
+(globalThis as Record<string, unknown>).FontFace = vi.fn((family: string, _source: unknown) => {
+  mockFontFace.family = family;
+  return mockFontFace;
+});
 if (!document.fonts) {
   Object.defineProperty(document, "fonts", {
     value: { add: vi.fn(), delete: vi.fn() },
-    configurable: true,
+    configurable: true
   });
 } else {
   vi.spyOn(document.fonts, "add").mockImplementation(() => {});
@@ -1075,10 +1100,15 @@ function makeMockResult(): OcrResult {
     items: [
       {
         originalIndex: 0,
-        poly: [[10, 10], [90, 10], [90, 40], [10, 40]],
+        poly: [
+          [10, 10],
+          [90, 10],
+          [90, 40],
+          [10, 40]
+        ],
         text: "hello",
-        score: 0.95,
-      },
+        score: 0.95
+      }
     ],
     metrics: {
       detInferMs: 10,
@@ -1086,14 +1116,14 @@ function makeMockResult(): OcrResult {
       recInferMs: 15,
       totalMs: 30,
       detectedBoxes: 1,
-      recognizedCount: 1,
+      recognizedCount: 1
     },
     runtime: {
       requestedBackend: "auto",
       detProvider: "wasm",
       recProvider: "wasm",
-      webgpuAvailable: false,
-    },
+      webgpuAvailable: false
+    }
   };
 }
 
@@ -1106,7 +1136,7 @@ describe("OcrVisualizer", () => {
 
   it("can be constructed with font config", () => {
     const viz = new OcrVisualizer({
-      font: { family: "TestFont", source: "https://example.com/f.woff2" },
+      font: { family: "TestFont", source: "https://example.com/f.woff2" }
     });
     expect(viz).toBeDefined();
     viz.dispose();
@@ -1114,7 +1144,7 @@ describe("OcrVisualizer", () => {
 
   it("loadFont() loads the font via FontFace API", async () => {
     const viz = new OcrVisualizer({
-      font: { family: "TestFont", source: "https://example.com/f.woff2" },
+      font: { family: "TestFont", source: "https://example.com/f.woff2" }
     });
     await viz.loadFont();
     expect(globalThis.FontFace).toHaveBeenCalled();
@@ -1131,7 +1161,7 @@ describe("OcrVisualizer", () => {
 
   it("dispose() removes the loaded font", async () => {
     const viz = new OcrVisualizer({
-      font: { family: "TestFont", source: "https://example.com/f.woff2" },
+      font: { family: "TestFont", source: "https://example.com/f.woff2" }
     });
     await viz.loadFont();
     viz.dispose();
@@ -1140,7 +1170,7 @@ describe("OcrVisualizer", () => {
 
   it("dispose() is safe to call multiple times", async () => {
     const viz = new OcrVisualizer({
-      font: { family: "TestFont", source: "https://example.com/f.woff2" },
+      font: { family: "TestFont", source: "https://example.com/f.woff2" }
     });
     await viz.loadFont();
     viz.dispose();
@@ -1168,10 +1198,7 @@ Create `packages/core/src/viz/renderer.ts`:
 import type { OcrResult } from "../pipelines/ocr/core";
 import type { OcrVisualizerOptions, BoxStyleOptions } from "./types";
 import { loadFontFace, removeFontFace } from "./font";
-import {
-  renderSideBySideToImageBitmap,
-  renderSideBySideToBlob,
-} from "./side-by-side";
+import { renderSideBySideToImageBitmap, renderSideBySideToBlob } from "./side-by-side";
 import type { SideBySideOptions } from "./side-by-side";
 
 type DrawableImage = ImageBitmap | HTMLImageElement;
@@ -1185,7 +1212,7 @@ let fontWarningEmitted = false;
 
 function resolveOptions(
   base: OcrVisualizerOptions,
-  overrides?: Partial<OcrVisualizerOptions>,
+  overrides?: Partial<OcrVisualizerOptions>
 ): SideBySideOptions {
   const merged = overrides ? { ...base, ...overrides } : base;
   return {
@@ -1193,7 +1220,7 @@ function resolveOptions(
     fontFamily: merged.font?.family ?? DEFAULT_FONT_FAMILY,
     textPanelBackground: merged.textPanelBackground ?? DEFAULT_TEXT_PANEL_BG,
     outputFormat: merged.outputFormat ?? DEFAULT_OUTPUT_FORMAT,
-    outputQuality: merged.outputQuality ?? DEFAULT_OUTPUT_QUALITY,
+    outputQuality: merged.outputQuality ?? DEFAULT_OUTPUT_QUALITY
   };
 }
 
@@ -1222,7 +1249,7 @@ export class OcrVisualizer {
   async renderSideBySide(
     image: DrawableImage,
     result: OcrResult,
-    overrides?: Partial<OcrVisualizerOptions>,
+    overrides?: Partial<OcrVisualizerOptions>
   ): Promise<ImageBitmap> {
     this.warnIfNoFont();
     const opts = resolveOptions(this.options, overrides);
@@ -1235,7 +1262,7 @@ export class OcrVisualizer {
   async toBlob(
     image: DrawableImage,
     result: OcrResult,
-    overrides?: Partial<OcrVisualizerOptions>,
+    overrides?: Partial<OcrVisualizerOptions>
   ): Promise<Blob> {
     this.warnIfNoFont();
     const opts = resolveOptions(this.options, overrides);
@@ -1257,7 +1284,7 @@ export class OcrVisualizer {
       fontWarningEmitted = true;
       console.warn(
         "[paddleocr-js/viz] Font config provided but loadFont() was not called. " +
-          "Text will render with system sans-serif. CJK characters may not display correctly.",
+          "Text will render with system sans-serif. CJK characters may not display correctly."
       );
     }
   }
@@ -1270,7 +1297,7 @@ export class OcrVisualizer {
 export async function renderOcrToBlob(
   image: DrawableImage,
   result: OcrResult,
-  options?: OcrVisualizerOptions,
+  options?: OcrVisualizerOptions
 ): Promise<Blob> {
   const viz = new OcrVisualizer(options);
   try {
@@ -1298,6 +1325,7 @@ cd paddleocr-js && git add packages/core/src/viz/renderer.ts packages/core/test/
 ### Task 9: Subpath Entry and Public Exports
 
 **Files:**
+
 - Create: `packages/core/src/viz/index.ts`
 
 - [ ] **Step 1: Write the failing test**
@@ -1309,20 +1337,16 @@ import { describe, expect, it, vi } from "vitest";
 
 // Mock browser APIs needed by the module
 (globalThis as Record<string, unknown>).FontFace = vi.fn(() => ({
-  load: vi.fn().mockResolvedValue(undefined),
+  load: vi.fn().mockResolvedValue(undefined)
 }));
 if (!document.fonts) {
   Object.defineProperty(document, "fonts", {
     value: { add: vi.fn(), delete: vi.fn() },
-    configurable: true,
+    configurable: true
   });
 }
 
-import {
-  OcrVisualizer,
-  renderOcrToBlob,
-  deterministicColor,
-} from "../src/viz/index";
+import { OcrVisualizer, renderOcrToBlob, deterministicColor } from "../src/viz/index";
 
 describe("viz public API", () => {
   it("exports OcrVisualizer as a class", () => {
@@ -1352,12 +1376,7 @@ Create `packages/core/src/viz/index.ts`:
 export { OcrVisualizer, renderOcrToBlob } from "./renderer";
 export { deterministicColor } from "./color";
 
-export type {
-  OcrVisualizerOptions,
-  FontConfig,
-  BoxStyleOptions,
-  RgbColor,
-} from "./types";
+export type { OcrVisualizerOptions, FontConfig, BoxStyleOptions, RgbColor } from "./types";
 ```
 
 - [ ] **Step 4: Run test to verify it passes**
@@ -1376,6 +1395,7 @@ cd paddleocr-js && git add packages/core/src/viz/index.ts packages/core/test/viz
 ### Task 10: Build Configuration (Vite Multi-Entry + package.json)
 
 **Files:**
+
 - Modify: `packages/core/vite.config.ts`
 - Modify: `packages/core/package.json`
 
@@ -1435,6 +1455,7 @@ In `packages/core/package.json`, update the `"exports"` field to:
 Also remove the top-level `"unpkg"` and `"jsdelivr"` fields (they pointed to the UMD build which is no longer generated):
 
 Remove these lines:
+
 ```json
   "unpkg": "./dist/index.umd.js",
   "jsdelivr": "./dist/index.umd.js",
@@ -1446,6 +1467,7 @@ Run: `cd paddleocr-js && npm run build:sdk`
 Expected: Build completes. Output files include `dist/index.mjs`, `dist/index.cjs`, `dist/viz.mjs`, `dist/viz.cjs`, `dist/index.d.ts`, `dist/viz.d.ts`.
 
 Verify:
+
 ```bash
 ls -la paddleocr-js/packages/core/dist/{index,viz}.{mjs,cjs,d.ts}
 ```
@@ -1478,6 +1500,7 @@ Expected: All green. If there are lint/format issues, fix them.
 - [ ] **Step 2: Fix any lint or format issues**
 
 If the check fails due to formatting:
+
 ```bash
 cd paddleocr-js && npm run format && npm run lint:fix
 ```

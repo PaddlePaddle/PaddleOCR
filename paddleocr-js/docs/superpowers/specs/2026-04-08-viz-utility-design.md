@@ -108,14 +108,14 @@ class OcrVisualizer {
   async renderSideBySide(
     image: ImageBitmap | HTMLImageElement,
     result: OcrResult,
-    overrides?: Partial<OcrVisualizerOptions>,
+    overrides?: Partial<OcrVisualizerOptions>
   ): Promise<ImageBitmap>;
 
   /** Render side-by-side composite, return downloadable Blob. */
   async toBlob(
     image: ImageBitmap | HTMLImageElement,
     result: OcrResult,
-    overrides?: Partial<OcrVisualizerOptions>,
+    overrides?: Partial<OcrVisualizerOptions>
   ): Promise<Blob>;
 
   /** Release internal resources. */
@@ -130,7 +130,7 @@ class OcrVisualizer {
 async function renderOcrToBlob(
   image: ImageBitmap | HTMLImageElement,
   result: OcrResult,
-  options?: OcrVisualizerOptions,
+  options?: OcrVisualizerOptions
 ): Promise<Blob>;
 ```
 
@@ -195,6 +195,7 @@ document.fonts.add(face);
 ### Behavior Without Custom Font
 
 If no `FontConfig` is provided, or if `loadFont()` is not called:
+
 - Rendering proceeds with Canvas's default `"sans-serif"` font.
 - A `console.warn()` is emitted once noting that CJK characters may not render correctly.
 - The result is still valid; boxes are drawn correctly, text may show as fallback glyphs.
@@ -232,7 +233,7 @@ import { OcrVisualizer } from "@paddleocr/paddleocr-js/viz";
 
 const ocr = await PaddleOCR.create({ runtime: { wasmPaths: "..." } });
 const viz = new OcrVisualizer({
-  font: { family: "Noto Sans SC", source: "/fonts/NotoSansSC-Regular.ttf" },
+  font: { family: "Noto Sans SC", source: "/fonts/NotoSansSC-Regular.ttf" }
 });
 await viz.loadFont();
 
@@ -260,7 +261,7 @@ import { renderOcrToBlob } from "@paddleocr/paddleocr-js/viz";
 const blob = await renderOcrToBlob(imageBitmap, result, {
   font: { family: "Noto Sans SC", source: "/fonts/NotoSansSC-Regular.ttf" },
   outputFormat: "jpeg",
-  outputQuality: 0.85,
+  outputQuality: 0.85
 });
 ```
 
@@ -277,6 +278,7 @@ const blob = await viz.toBlob(image, result);
 ## Demo Integration
 
 After implementing this module, `apps/demo/src/main.ts` can be updated to:
+
 - Replace `deterministicColor()`, `drawPolygonPath()`, `drawPreview()` with imports from `@paddleocr/paddleocr-js/viz`.
 - Add a "Download Result" button that calls `viz.toBlob()` and triggers a browser download.
 

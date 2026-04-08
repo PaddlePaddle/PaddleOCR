@@ -148,20 +148,6 @@ Worker behavior:
 - Browser inputs are normalized on the main thread and transferred into the worker before inference runs.
 - `cv.Mat` is only supported in the direct main-thread pipeline path.
 
-## API
-
-- `PaddleOCR.create(options)`
-- `PaddleOCR.fromPipelineConfig(config, options?)`
-- `ocr.initialize()`
-- `ocr.getInitializationSummary()`
-- `ocr.predict(image, params?)`
-- `ocr.dispose()`
-- `parseOcrPipelineConfigText(text)`
-- `normalizeOcrPipelineConfig(config)`
-- `OcrVisualizer` (from `@paddleocr/paddleocr-js/viz`)
-- `renderOcrToBlob` (from `@paddleocr/paddleocr-js/viz`)
-- `deterministicColor` (from `@paddleocr/paddleocr-js/viz`)
-
 ## Visualization
 
 The optional `@paddleocr/paddleocr-js/viz` subpath provides visualization utilities for rendering OCR results as images.
@@ -199,6 +185,22 @@ const blob = await renderOcrToBlob(imageBitmap, result, {
 
 The viz module renders a side-by-side composite image: the original image with detection box overlays on the left, and recognized text on the right. Custom fonts can be loaded for CJK text rendering.
 
+`deterministicColor(index)` is also exported from the viz subpath. It maps a numeric index to a stable RGB color and is used internally as the default color function for detection boxes and text labels. You can call it directly when building custom visualizations that need colors consistent with the built-in renderer.
+
+## API
+
+- `PaddleOCR.create(options)`
+- `PaddleOCR.fromPipelineConfig(config, options?)`
+- `ocr.initialize()`
+- `ocr.getInitializationSummary()`
+- `ocr.predict(image, params?)`
+- `ocr.dispose()`
+- `parseOcrPipelineConfigText(text)`
+- `normalizeOcrPipelineConfig(config)`
+- `OcrVisualizer` (from `@paddleocr/paddleocr-js/viz`)
+- `renderOcrToBlob` (from `@paddleocr/paddleocr-js/viz`)
+- `deterministicColor` (from `@paddleocr/paddleocr-js/viz`)
+
 ## Package Layout
 
 - `src/runtime`: runtime initialization and execution backend setup
@@ -208,6 +210,8 @@ The viz module renders a side-by-side composite image: the original image with d
 - `src/worker`: worker transport client, protocol, and generic worker bootstrap
 - `src/pipelines/ocr`: OCR config parsing, main-thread/worker-backed pipeline API assembly, default worker entry wiring, and shared execution runner
 - `src/viz`: optional visualization utilities (side-by-side composite images, font management)
+- `src/types`: TypeScript type declarations for external libraries (OpenCV.js, clipper-lib)
+- `src/utils`: shared utility functions (timing, deep clone)
 
 ## Runtime Responsibilities
 
