@@ -59,7 +59,10 @@ export interface InitializationSummary {
   pipelineConfigWarnings: string[];
 }
 
-export type SourceToMatFn = (cv: OpenCv, source: unknown) => SourceMatResult | Promise<SourceMatResult>;
+export type SourceToMatFn = (
+  cv: OpenCv,
+  source: unknown
+) => SourceMatResult | Promise<SourceMatResult>;
 type EnsureServedFromHttpFn = () => void;
 
 export interface OcrPipelineRunnerOptions {
@@ -75,14 +78,13 @@ export interface OcrPipelineRunnerOptions {
 
 function noopEnsureServedFromHttp(): void {}
 
-function getResolvedAssets(assets: Record<string, AssetDescriptor> | undefined): { det: AssetDescriptor; rec: AssetDescriptor } {
-  if (
-    !assets?.det ||
-    typeof assets.det !== "object" ||
-    typeof assets.rec !== "object"
-  ) {
+function getResolvedAssets(assets: Record<string, AssetDescriptor> | undefined): {
+  det: AssetDescriptor;
+  rec: AssetDescriptor;
+} {
+  if (!assets?.det || typeof assets.det !== "object" || typeof assets.rec !== "object") {
     throw new Error(
-      "PaddleOCRCore requires pre-resolved detection and recognition asset descriptors.",
+      "PaddleOCRCore requires pre-resolved detection and recognition asset descriptors."
     );
   }
   return assets as { det: AssetDescriptor; rec: AssetDescriptor };
@@ -134,17 +136,17 @@ export class OcrPipelineRunner {
     const fetchImpl = this.options.fetch || fetch;
     const loadedAssets = await Promise.all([
       loadStandardModelAsset(assets.det, fetchImpl),
-      loadStandardModelAsset(assets.rec, fetchImpl),
+      loadStandardModelAsset(assets.rec, fetchImpl)
     ]);
     validateLoadedModelName(
       "TextDetection",
       this.modelSelection?.textDetectionModelName,
-      loadedAssets[0].configText,
+      loadedAssets[0].configText
     );
     validateLoadedModelName(
       "TextRecognition",
       this.modelSelection?.textRecognitionModelName,
-      loadedAssets[1].configText,
+      loadedAssets[1].configText
     );
     await this.disposeModelsOnly();
     const [detModel, recModel] = await Promise.all([
@@ -153,21 +155,21 @@ export class OcrPipelineRunner {
         modelBytes: loadedAssets[0].modelBytes,
         configText: loadedAssets[0].configText,
         backend,
-        webgpuState,
+        webgpuState
       }),
       createRecModel({
         ort: this.ort,
         modelBytes: loadedAssets[1].modelBytes,
         configText: loadedAssets[1].configText,
         backend,
-        webgpuState,
-      }),
+        webgpuState
+      })
     ]);
     this.detModel = detModel;
     this.recModel = recModel;
     this.modelConfig = {
       det: this.detModel.config,
-      rec: this.recModel.config,
+      rec: this.recModel.config
     };
 
     const elapsed = nowMs() - start;
@@ -180,7 +182,7 @@ export class OcrPipelineRunner {
       elapsedMs: elapsed,
       cacheHits: loadedAssets.filter((asset) => asset.download.cacheHit).length,
       cacheMisses: loadedAssets.filter((asset) => !asset.download.cacheHit).length,
-      pipelineConfigWarnings: this.pipelineConfig?.warnings || [],
+      pipelineConfigWarnings: this.pipelineConfig?.warnings || []
     };
     return this.lastInitializationSummary;
   }
@@ -216,7 +218,7 @@ export class OcrPipelineRunner {
       const detResult = await detModel.detect({
         cv,
         sourceMat: sourceImage.mat,
-        params: runtimeParams,
+        params: runtimeParams
       });
       const detElapsed = nowMs() - detStart;
       const detBoxes = detResult.boxes;
@@ -230,8 +232,8 @@ export class OcrPipelineRunner {
             cv,
             cropMat: crop,
             poly: detBoxes[index].poly,
-            originalIndex: index,
-          }),
+            originalIndex: index
+          })
         );
         crop.delete();
       }
@@ -248,7 +250,7 @@ export class OcrPipelineRunner {
       return {
         image: {
           width: sourceImage.width,
-          height: sourceImage.height,
+          height: sourceImage.height
         },
         items,
         metrics: {
@@ -257,14 +259,15 @@ export class OcrPipelineRunner {
           recInferMs: recElapsed,
           totalMs: nowMs() - totalStart,
           detectedBoxes: detBoxes.length,
-          recognizedCount: items.length,
+          recognizedCount: items.length
         },
         runtime: {
-          requestedBackend: (this.options.runtime as NormalizedRuntimeOptions | undefined)?.backend ?? "auto",
+          requestedBackend:
+            (this.options.runtime as NormalizedRuntimeOptions | undefined)?.backend ?? "auto",
           detProvider: detModel.provider,
           recProvider: recModel.provider,
-          webgpuAvailable: this.webgpuState.available,
-        },
+          webgpuAvailable: this.webgpuState.available
+        }
       };
     } finally {
       sourceImage.dispose();

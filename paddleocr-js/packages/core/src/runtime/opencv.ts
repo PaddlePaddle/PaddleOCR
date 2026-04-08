@@ -13,7 +13,9 @@ async function getOpenCv(): Promise<{ cv: OpenCv }> {
       cv = cvModule as OpenCv;
     } else {
       await new Promise<void>((resolve) => {
-        mod.onRuntimeInitialized = () => { resolve(); };
+        mod.onRuntimeInitialized = () => {
+          resolve();
+        };
       });
       cv = cvModule as OpenCv;
     }

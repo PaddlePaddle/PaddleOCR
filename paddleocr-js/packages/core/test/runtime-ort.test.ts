@@ -156,9 +156,9 @@ describe("runtime/ort", () => {
       InferenceSession: { create }
     });
 
-    await expect(createSession(mockedOrt, new Uint8Array([1]), [["webgpu"], ["wasm"]])).rejects.toThrow(
-      "wasm failed"
-    );
+    await expect(
+      createSession(mockedOrt, new Uint8Array([1]), [["webgpu"], ["wasm"]])
+    ).rejects.toThrow("wasm failed");
   });
 
   it("releases every session that exposes a release method", async () => {

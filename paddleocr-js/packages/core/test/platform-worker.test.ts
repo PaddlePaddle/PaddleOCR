@@ -109,7 +109,10 @@ describe("platform/worker", () => {
     vi.stubGlobal("ImageBitmap", FakeImageBitmap);
 
     expect(() =>
-      sourcePayloadToMat({ Mat: FakeMat } as any, { kind: "imageBitmap", imageBitmap: new FakeImageBitmap() })
+      sourcePayloadToMat({ Mat: FakeMat } as any, {
+        kind: "imageBitmap",
+        imageBitmap: new FakeImageBitmap()
+      })
     ).toThrow(/requires OffscreenCanvas support/i);
   });
 
@@ -125,7 +128,10 @@ describe("platform/worker", () => {
     );
 
     expect(() =>
-      sourcePayloadToMat({ Mat: FakeMat } as any, { kind: "imageBitmap", imageBitmap: new FakeImageBitmap() })
+      sourcePayloadToMat({ Mat: FakeMat } as any, {
+        kind: "imageBitmap",
+        imageBitmap: new FakeImageBitmap()
+      })
     ).toThrow(/Failed to create a 2D canvas context/i);
   });
 

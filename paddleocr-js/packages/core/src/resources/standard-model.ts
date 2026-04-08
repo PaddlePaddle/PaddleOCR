@@ -5,7 +5,7 @@ import { extractTarEntries, pickTarEntry } from "./tar";
 
 export const STANDARD_MODEL_ENTRY_PATHS: Readonly<Record<string, string>> = Object.freeze({
   model: "inference.onnx",
-  config: "inference.yml",
+  config: "inference.yml"
 });
 
 export interface StandardModelLoadResult {
@@ -24,7 +24,7 @@ function getStandardModelEntry(asset: AssetDescriptor, slot: string): string {
 
 export async function loadStandardModelAsset(
   asset: AssetDescriptor,
-  fetchImpl: typeof fetch = fetch,
+  fetchImpl: typeof fetch = fetch
 ): Promise<StandardModelLoadResult> {
   if (asset.kind !== "tar") {
     throw new Error(`Standard model asset "${asset.id}" must use a tar bundle.`);
@@ -39,7 +39,7 @@ export async function loadStandardModelAsset(
   return {
     modelBytes,
     configText: new TextDecoder().decode(configBytes),
-    download: summarizeAssetResult(asset, downloaded, buffer.byteLength),
+    download: summarizeAssetResult(asset, downloaded, buffer.byteLength)
   };
 }
 
@@ -47,7 +47,7 @@ export function assertStandardModelResourceSlot(kind: string, slot: string, valu
   if (slot === "model") {
     if (!(value instanceof Uint8Array) || value.byteLength === 0) {
       throw new Error(
-        `${kind} model requires a non-empty ${STANDARD_MODEL_ENTRY_PATHS.model} resource.`,
+        `${kind} model requires a non-empty ${STANDARD_MODEL_ENTRY_PATHS.model} resource.`
       );
     }
     return;
@@ -56,7 +56,7 @@ export function assertStandardModelResourceSlot(kind: string, slot: string, valu
   if (slot === "config") {
     if (typeof value !== "string" || value.trim().length === 0) {
       throw new Error(
-        `${kind} model requires a non-empty ${STANDARD_MODEL_ENTRY_PATHS.config} resource.`,
+        `${kind} model requires a non-empty ${STANDARD_MODEL_ENTRY_PATHS.config} resource.`
       );
     }
     return;
@@ -65,7 +65,10 @@ export function assertStandardModelResourceSlot(kind: string, slot: string, valu
   throw new Error(`Unsupported standard model resource slot "${slot}".`);
 }
 
-export function assertStandardModelResources(kind: string, resources: Record<string, unknown>): void {
+export function assertStandardModelResources(
+  kind: string,
+  resources: Record<string, unknown>
+): void {
   for (const [slot, value] of Object.entries(resources)) {
     assertStandardModelResourceSlot(kind, slot, value);
   }

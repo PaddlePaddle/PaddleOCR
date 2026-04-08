@@ -1,9 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import {
-  WorkerTransportClient,
-  createWorkerTransportClient
-} from "../src/worker/client";
+import { WorkerTransportClient, createWorkerTransportClient } from "../src/worker/client";
 import { createTransportSuccess } from "../src/worker/protocol";
 
 class MockWorker {

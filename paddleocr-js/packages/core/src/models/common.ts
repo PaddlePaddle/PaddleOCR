@@ -53,7 +53,7 @@ export function parseScaleValue(rawScale: unknown, fallback: number): number {
 
 export function getTransformOp(
   transformOps: Array<Record<string, unknown>> | undefined,
-  opName: string,
+  opName: string
 ): Record<string, unknown> | null {
   for (const op of transformOps || []) {
     if (Object.prototype.hasOwnProperty.call(op, opName)) {
@@ -91,7 +91,7 @@ export function extractInferenceModelName(configText: string): string | null {
   const parsed = parseInferenceConfigText(configText);
   const preferredCandidates = [
     (parsed.Global as YamlObject | undefined)?.model_name,
-    parsed.model_name,
+    parsed.model_name
   ];
   for (const candidate of preferredCandidates) {
     if (typeof candidate === "string" && candidate.trim()) {
@@ -106,7 +106,7 @@ export function toBgrFloatCHWFromBgr(
   bgr: Uint8Array,
   width: number,
   height: number,
-  normalizeConfig: NormalizeConfig,
+  normalizeConfig: NormalizeConfig
 ): Float32Array {
   const data = new Float32Array(3 * width * height);
   const hw = width * height;

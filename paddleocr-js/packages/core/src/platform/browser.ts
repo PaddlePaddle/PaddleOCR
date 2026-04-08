@@ -59,7 +59,7 @@ async function sourceToClonedImageBitmap(source: ImageSource): Promise<ImageBitm
 
 export function bitmapToSourceMat(
   cv: OpenCv,
-  imageBitmap: ImageBitmap,
+  imageBitmap: ImageBitmap
 ): { canvas: HTMLCanvasElement; mat: Mat } {
   const canvas = document.createElement("canvas");
   canvas.width = imageBitmap.width;
@@ -69,7 +69,7 @@ export function bitmapToSourceMat(
   ctx.drawImage(imageBitmap, 0, 0);
   return {
     canvas,
-    mat: cv.imread(canvas),
+    mat: cv.imread(canvas)
   };
 }
 
@@ -82,7 +82,7 @@ export async function sourceToMat(cv: OpenCv, source: unknown): Promise<SourceMa
       mat: cloned,
       dispose() {
         cloned.delete();
-      },
+      }
     };
   }
 
@@ -95,7 +95,7 @@ export async function sourceToMat(cv: OpenCv, source: unknown): Promise<SourceMa
     dispose() {
       sourceImage.mat.delete();
       imageBitmap.close();
-    },
+    }
   };
 }
 
@@ -107,8 +107,8 @@ export async function sourceToWorkerPayload(source: ImageSource): Promise<Worker
   return {
     payload: {
       kind: "imageBitmap",
-      imageBitmap,
+      imageBitmap
     },
-    transferables: [imageBitmap],
+    transferables: [imageBitmap]
   };
 }

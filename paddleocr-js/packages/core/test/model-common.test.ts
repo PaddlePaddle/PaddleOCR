@@ -43,10 +43,7 @@ describe("model common helpers", () => {
   });
 
   it("converts BGR image data into CHW float tensors", () => {
-    const bgr = new Uint8Array([
-      10, 20, 30,
-      40, 50, 60
-    ]);
+    const bgr = new Uint8Array([10, 20, 30, 40, 50, 60]);
     const result = toBgrFloatCHWFromBgr(bgr, 2, 1, {
       mean: [0, 0, 0],
       std: [1, 1, 1],
@@ -166,16 +163,12 @@ describe("model common helpers", () => {
     };
 
     expect(
-      boxScoreFast(
-        cv,
-        predMat,
-        [
-          [1.2, 2.1],
-          [8.5, 2.4],
-          [8.1, 9.2],
-          [1.4, 9.8]
-        ]
-      )
+      boxScoreFast(cv, predMat, [
+        [1.2, 2.1],
+        [8.5, 2.4],
+        [8.1, 9.2],
+        [1.4, 9.8]
+      ])
     ).toBe(0.75);
   });
 });

@@ -293,13 +293,69 @@ describe("detection model", () => {
     const contours = [contour0, contour1, contour2, contour3, contour4, contour5];
 
     getMiniBoxFromPoints
-      .mockReturnValueOnce({ side: 2, box: [[0, 0], [1, 0], [1, 1], [0, 1]] })
-      .mockReturnValueOnce({ side: 4, box: [[0, 0], [5, 0], [5, 5], [0, 5]] })
-      .mockReturnValueOnce({ side: 4, box: [[0, 0], [5, 0], [5, 5], [0, 5]] })
-      .mockReturnValueOnce({ side: 4, box: [[0, 0], [5, 0], [5, 5], [0, 5]] })
-      .mockReturnValueOnce({ side: 6, box: [[4, 4], [10, 4], [10, 10], [4, 10]] })
-      .mockReturnValueOnce({ side: 4, box: [[20, 0], [26, 0], [26, 6], [20, 6]] })
-      .mockReturnValueOnce({ side: 6, box: [[8, 2], [14, 2], [14, 8], [8, 8]] });
+      .mockReturnValueOnce({
+        side: 2,
+        box: [
+          [0, 0],
+          [1, 0],
+          [1, 1],
+          [0, 1]
+        ]
+      })
+      .mockReturnValueOnce({
+        side: 4,
+        box: [
+          [0, 0],
+          [5, 0],
+          [5, 5],
+          [0, 5]
+        ]
+      })
+      .mockReturnValueOnce({
+        side: 4,
+        box: [
+          [0, 0],
+          [5, 0],
+          [5, 5],
+          [0, 5]
+        ]
+      })
+      .mockReturnValueOnce({
+        side: 4,
+        box: [
+          [0, 0],
+          [5, 0],
+          [5, 5],
+          [0, 5]
+        ]
+      })
+      .mockReturnValueOnce({
+        side: 6,
+        box: [
+          [4, 4],
+          [10, 4],
+          [10, 10],
+          [4, 10]
+        ]
+      })
+      .mockReturnValueOnce({
+        side: 4,
+        box: [
+          [20, 0],
+          [26, 0],
+          [26, 6],
+          [20, 6]
+        ]
+      })
+      .mockReturnValueOnce({
+        side: 6,
+        box: [
+          [8, 2],
+          [14, 2],
+          [14, 8],
+          [8, 8]
+        ]
+      });
     boxScoreFast
       .mockReturnValueOnce(0.1)
       .mockReturnValueOnce(0.9)
@@ -307,8 +363,18 @@ describe("detection model", () => {
       .mockReturnValueOnce(0.95);
     unclip
       .mockReturnValueOnce(null)
-      .mockReturnValueOnce([[4, 4], [10, 4], [10, 10], [4, 10]])
-      .mockReturnValueOnce([[8, 2], [14, 2], [14, 8], [8, 8]]);
+      .mockReturnValueOnce([
+        [4, 4],
+        [10, 4],
+        [10, 10],
+        [4, 10]
+      ])
+      .mockReturnValueOnce([
+        [8, 2],
+        [14, 2],
+        [14, 8],
+        [8, 8]
+      ]);
 
     const pred = { delete: vi.fn() };
     const bitmap = { delete: vi.fn() };
@@ -460,10 +526,31 @@ describe("detection model", () => {
 
     const { runDetModel, cropByPoly } = await loadDetModule();
     getMiniBoxFromPoints
-      .mockReturnValueOnce({ side: 4, box: [[0, 0], [4, 0], [4, 2], [0, 2]] })
-      .mockReturnValueOnce({ side: 6, box: [[0, 0], [5, 0], [5, 3], [0, 3]] });
+      .mockReturnValueOnce({
+        side: 4,
+        box: [
+          [0, 0],
+          [4, 0],
+          [4, 2],
+          [0, 2]
+        ]
+      })
+      .mockReturnValueOnce({
+        side: 6,
+        box: [
+          [0, 0],
+          [5, 0],
+          [5, 3],
+          [0, 3]
+        ]
+      });
     boxScoreFast.mockReturnValue(0.9);
-    unclip.mockReturnValue([[0, 0], [5, 0], [5, 3], [0, 3]]);
+    unclip.mockReturnValue([
+      [0, 0],
+      [5, 0],
+      [5, 3],
+      [0, 3]
+    ]);
 
     const detResult = await runDetModel(
       {
@@ -577,10 +664,31 @@ describe("detection model", () => {
     releaseSessions.mockResolvedValue(undefined);
     toBgrFloatCHWFromBgr.mockReturnValue(new Float32Array(3 * 32 * 64).fill(1));
     getMiniBoxFromPoints
-      .mockReturnValueOnce({ side: 4, box: [[0, 0], [4, 0], [4, 2], [0, 2]] })
-      .mockReturnValueOnce({ side: 6, box: [[0, 0], [5, 0], [5, 3], [0, 3]] });
+      .mockReturnValueOnce({
+        side: 4,
+        box: [
+          [0, 0],
+          [4, 0],
+          [4, 2],
+          [0, 2]
+        ]
+      })
+      .mockReturnValueOnce({
+        side: 6,
+        box: [
+          [0, 0],
+          [5, 0],
+          [5, 3],
+          [0, 3]
+        ]
+      });
     boxScoreFast.mockReturnValue(0.9);
-    unclip.mockReturnValue([[0, 0], [5, 0], [5, 3], [0, 3]]);
+    unclip.mockReturnValue([
+      [0, 0],
+      [5, 0],
+      [5, 3],
+      [0, 3]
+    ]);
 
     const { createDetModel, createDetModelSession } = await loadDetModule();
     const sessionState = await createDetModelSession({}, new Uint8Array([1]), "auto", {

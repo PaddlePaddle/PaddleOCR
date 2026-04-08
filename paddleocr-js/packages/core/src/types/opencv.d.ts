@@ -63,7 +63,7 @@ declare module "@techstark/opencv-js" {
       contours: MatVector,
       hierarchy: Mat,
       mode: number,
-      method: number,
+      method: number
     ): void;
     fillPoly(img: Mat, pts: MatVector, color: Scalar): void;
     mean(src: Mat, mask?: Mat): number[];
@@ -75,7 +75,7 @@ declare module "@techstark/opencv-js" {
       dsize: Size,
       flags?: number,
       borderMode?: number,
-      borderValue?: Scalar,
+      borderValue?: Scalar
     ): void;
     rotate(src: Mat, dst: Mat, rotateCode: number): void;
 

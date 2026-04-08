@@ -33,22 +33,25 @@ export type TransportResponse = TransportSuccessResponse | TransportErrorRespons
 export function createTransportRequest(
   type: string,
   payload: unknown,
-  requestId: number,
+  requestId: number
 ): TransportRequest {
   return {
     kind: REQUEST_KIND,
     type,
     payload,
-    requestId,
+    requestId
   };
 }
 
-export function createTransportSuccess(requestId: number, payload: unknown): TransportSuccessResponse {
+export function createTransportSuccess(
+  requestId: number,
+  payload: unknown
+): TransportSuccessResponse {
   return {
     kind: RESPONSE_KIND,
     status: "success",
     requestId,
-    payload,
+    payload
   };
 }
 
@@ -57,7 +60,7 @@ export function createTransportError(requestId: number, error: unknown): Transpo
     kind: RESPONSE_KIND,
     status: "error",
     requestId,
-    error: serializeError(error),
+    error: serializeError(error)
   };
 }
 
@@ -84,7 +87,7 @@ export function serializeError(error: unknown): SerializedError {
   return {
     name: err?.name || "Error",
     message: err?.message || "Unknown worker error.",
-    stack: err?.stack || "",
+    stack: err?.stack || ""
   };
 }
 

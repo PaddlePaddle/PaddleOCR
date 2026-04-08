@@ -4,7 +4,11 @@ import { DEFAULT_DET_MODEL_CONFIG } from "../../models/det";
 import { DEFAULT_REC_MODEL_CONFIG } from "../../models/rec";
 import { extractInferenceModelName } from "../../models/common";
 import { deepClone } from "../../utils/common";
-import type { NormalizedPipelineConfig, PipelineModelSelection, PipelineRuntimeDefaults } from "./config";
+import type {
+  NormalizedPipelineConfig,
+  PipelineModelSelection,
+  PipelineRuntimeDefaults
+} from "./config";
 import { normalizeOcrPipelineConfig } from "./config";
 import { DEFAULT_OCR_PIPELINE_CONFIG_TEXT } from "./default-config";
 import type { OcrModelConfig } from "./runtime-params";
@@ -35,7 +39,7 @@ export interface WorkerResolvedOptions {
 
 export const DEFAULT_OCR_CONFIG: OcrModelConfig = {
   det: DEFAULT_DET_MODEL_CONFIG,
-  rec: DEFAULT_REC_MODEL_CONFIG,
+  rec: DEFAULT_REC_MODEL_CONFIG
 };
 
 interface ModelRole {
@@ -50,16 +54,16 @@ interface ModelRole {
 }
 
 const DEFAULT_NORMALIZED_PIPELINE_CONFIG = normalizeOcrPipelineConfig(
-  DEFAULT_OCR_PIPELINE_CONFIG_TEXT,
+  DEFAULT_OCR_PIPELINE_CONFIG_TEXT
 );
 const DEFAULT_MODEL_SELECTION: Readonly<PipelineModelSelection> = Object.freeze({
-  ...DEFAULT_NORMALIZED_PIPELINE_CONFIG.modelSelection,
+  ...DEFAULT_NORMALIZED_PIPELINE_CONFIG.modelSelection
 });
 const DEFAULT_RUNTIME_DEFAULTS: Readonly<PipelineRuntimeDefaults> = Object.freeze({
-  ...DEFAULT_NORMALIZED_PIPELINE_CONFIG.runtimeDefaults,
+  ...DEFAULT_NORMALIZED_PIPELINE_CONFIG.runtimeDefaults
 });
 const DEFAULT_LANG_VERSION_MODEL_SELECTION: Readonly<PipelineModelSelection> = Object.freeze({
-  ...DEFAULT_MODEL_SELECTION,
+  ...DEFAULT_MODEL_SELECTION
 });
 const OCR_MODEL_ROLES: Readonly<ModelRole[]> = Object.freeze([
   {
@@ -70,7 +74,7 @@ const OCR_MODEL_ROLES: Readonly<ModelRole[]> = Object.freeze([
     assetAliases: ["textDetectionModelAsset", "text_detection_model_dir", "textDetectionModelDir"],
     nameLabel: "text detection model name",
     assetLabel: "text detection model asset",
-    assetRequirementError: "text_detection_model_dir requires text_detection_model_name.",
+    assetRequirementError: "text_detection_model_dir requires text_detection_model_name."
   },
   {
     assetKey: "rec",
@@ -80,22 +84,26 @@ const OCR_MODEL_ROLES: Readonly<ModelRole[]> = Object.freeze([
     assetAliases: [
       "textRecognitionModelAsset",
       "text_recognition_model_dir",
-      "textRecognitionModelDir",
+      "textRecognitionModelDir"
     ],
     nameLabel: "text recognition model name",
     assetLabel: "text recognition model asset",
-    assetRequirementError: "text_recognition_model_dir requires text_recognition_model_name.",
-  },
+    assetRequirementError: "text_recognition_model_dir requires text_recognition_model_name."
+  }
 ]);
 
 const SUPPORTED_LANG_VERSION_MODELS = new Map<string, Readonly<PipelineModelSelection>>([
   ["ch::PP-OCRv5", DEFAULT_LANG_VERSION_MODEL_SELECTION],
   ["chinese_cht::PP-OCRv5", DEFAULT_LANG_VERSION_MODEL_SELECTION],
   ["en::PP-OCRv5", DEFAULT_LANG_VERSION_MODEL_SELECTION],
-  ["japan::PP-OCRv5", DEFAULT_LANG_VERSION_MODEL_SELECTION],
+  ["japan::PP-OCRv5", DEFAULT_LANG_VERSION_MODEL_SELECTION]
 ]);
 
-function readAliasedOption(options: Record<string, unknown>, aliases: string[], label: string): unknown {
+function readAliasedOption(
+  options: Record<string, unknown>,
+  aliases: string[],
+  label: string
+): unknown {
   let resolved: unknown;
   let hasResolvedValue = false;
 
@@ -138,7 +146,7 @@ function getSelectedModelName(
   baseSelection: PipelineModelSelection | null,
   configSelection: PipelineModelSelection | null,
   explicitSelection: Record<string, string | null> | null,
-  selectionKey: keyof PipelineModelSelection,
+  selectionKey: keyof PipelineModelSelection
 ): string | null {
   return (
     explicitSelection?.[selectionKey] ??
@@ -151,17 +159,21 @@ function getSelectedModelName(
 function createResolvedModelSelection(
   baseSelection: PipelineModelSelection | null,
   configSelection: PipelineModelSelection | null,
-  explicitSelection: Record<string, string | null> | null,
+  explicitSelection: Record<string, string | null> | null
 ): Record<string, string | null> {
   return Object.fromEntries(
     OCR_MODEL_ROLES.map((role) => [
       role.selectionKey,
-      getSelectedModelName(baseSelection, configSelection, explicitSelection, role.selectionKey),
-    ]),
+      getSelectedModelName(baseSelection, configSelection, explicitSelection, role.selectionKey)
+    ])
   );
 }
 
-export function validateLoadedModelName(modelRole: string, expectedModelName: string | null | undefined, configText: string): void {
+export function validateLoadedModelName(
+  modelRole: string,
+  expectedModelName: string | null | undefined,
+  configText: string
+): void {
   if (!expectedModelName) {
     throw new Error(`${modelRole} model selection must define model_name.`);
   }
@@ -171,7 +183,7 @@ export function validateLoadedModelName(modelRole: string, expectedModelName: st
   }
   if (declaredModelName !== expectedModelName) {
     throw new Error(
-      `${modelRole} in inference.yml declares model_name "${declaredModelName}" but requested model_name is "${expectedModelName}".`,
+      `${modelRole} in inference.yml declares model_name "${declaredModelName}" but requested model_name is "${expectedModelName}".`
     );
   }
 }
@@ -184,7 +196,7 @@ function resolveSelectedAsset(
   configSelection: PipelineModelSelection | null,
   explicitSelection: Record<string, string | null> | null,
   configAssets: Partial<Record<string, AssetDescriptor>> | null,
-  explicitAssets: Record<string, AssetDescriptor> | null,
+  explicitAssets: Record<string, AssetDescriptor> | null
 ): AssetDescriptor | null {
   const explicitAsset = explicitAssets?.[assetRole];
   if (explicitAsset) {
@@ -214,7 +226,7 @@ function createOcrAssets(
   configSelection: PipelineModelSelection | null,
   explicitSelection: Record<string, string | null> | null,
   configAssets: Partial<Record<string, AssetDescriptor>> | null,
-  explicitAssets: Record<string, AssetDescriptor> | null,
+  explicitAssets: Record<string, AssetDescriptor> | null
 ): Record<string, AssetDescriptor> {
   const assets = Object.fromEntries(
     OCR_MODEL_ROLES.map((role) => [
@@ -227,9 +239,9 @@ function createOcrAssets(
         configSelection,
         explicitSelection,
         configAssets,
-        explicitAssets,
-      ),
-    ]),
+        explicitAssets
+      )
+    ])
   );
 
   if (Object.values(assets).some((asset) => !asset)) {
@@ -248,8 +260,12 @@ function getExplicitModelSelection(options: Record<string, unknown>): {
   let hasAnyOption = false;
 
   for (const role of OCR_MODEL_ROLES) {
-    const modelName = readAliasedOption(options, role.nameAliases, role.nameLabel) as string | undefined;
-    const asset = readAliasedOption(options, role.assetAliases, role.assetLabel) as AssetDescriptor | undefined;
+    const modelName = readAliasedOption(options, role.nameAliases, role.nameLabel) as
+      | string
+      | undefined;
+    const asset = readAliasedOption(options, role.assetAliases, role.assetLabel) as
+      | AssetDescriptor
+      | undefined;
 
     if (modelName !== undefined) {
       modelSelection[role.selectionKey] = modelName;
@@ -270,15 +286,17 @@ function getExplicitModelSelection(options: Record<string, unknown>): {
 
   return {
     modelSelection,
-    assets,
+    assets
   };
 }
 
 function resolveBaseModelSelection(
   options: Record<string, unknown>,
-  includeDefaultBase = false,
+  includeDefaultBase = false
 ): Readonly<PipelineModelSelection> | null {
-  const ocrVersion = readAliasedOption(options, ["ocrVersion", "ocr_version"], "ocrVersion") as string | undefined;
+  const ocrVersion = readAliasedOption(options, ["ocrVersion", "ocr_version"], "ocrVersion") as
+    | string
+    | undefined;
   if (!options.lang && !ocrVersion) {
     return includeDefaultBase ? DEFAULT_MODEL_SELECTION : null;
   }
@@ -289,7 +307,7 @@ function resolveBaseModelSelection(
 
   if (!modelSelection) {
     throw new Error(
-      `Unsupported lang/ocrVersion combination: lang="${lang}", ocrVersion="${resolvedOcrVersion}".`,
+      `Unsupported lang/ocrVersion combination: lang="${lang}", ocrVersion="${resolvedOcrVersion}".`
     );
   }
   return modelSelection;
@@ -306,7 +324,7 @@ function resolveConstructionOptions(options: Record<string, unknown> = {}): Cons
   const pipelineInput = readAliasedOption(
     options,
     ["pipelineConfigText", "pipelineConfig", "pipeline"],
-    "pipeline config",
+    "pipeline config"
   );
   const normalizedPipelineConfig =
     pipelineInput != null ? normalizeOcrPipelineConfig(pipelineInput) : null;
@@ -321,14 +339,14 @@ function resolveConstructionOptions(options: Record<string, unknown> = {}): Cons
   const modelSelection = createResolvedModelSelection(
     baseSelection,
     configSelection,
-    explicitSelection,
+    explicitSelection
   );
   const assets = createOcrAssets(
     baseSelection,
     configSelection,
     explicitSelection,
     configAssets,
-    explicitAssets,
+    explicitAssets
   );
 
   if (normalizedPipelineConfig) {
@@ -337,7 +355,7 @@ function resolveConstructionOptions(options: Record<string, unknown> = {}): Cons
       assets,
       modelSelection,
       runtimeDefaults: normalizedPipelineConfig.runtimeDefaults,
-      normalizedPipelineConfig,
+      normalizedPipelineConfig
     };
   }
 
@@ -345,7 +363,7 @@ function resolveConstructionOptions(options: Record<string, unknown> = {}): Cons
     assets,
     modelSelection,
     runtimeDefaults: DEFAULT_RUNTIME_DEFAULTS,
-    normalizedPipelineConfig: null,
+    normalizedPipelineConfig: null
   };
 }
 
@@ -354,7 +372,9 @@ function resolveBackend(raw: string | undefined): ResolvedBackend {
   return "auto";
 }
 
-export function normalizeRuntimeOptions(runtimeOptions: OrtRuntimeOptions = {}): NormalizedRuntimeOptions {
+export function normalizeRuntimeOptions(
+  runtimeOptions: OrtRuntimeOptions = {}
+): NormalizedRuntimeOptions {
   const backend = resolveBackend(runtimeOptions.backend);
 
   return {
@@ -362,7 +382,7 @@ export function normalizeRuntimeOptions(runtimeOptions: OrtRuntimeOptions = {}):
     ...(runtimeOptions.wasmPaths !== undefined ? { wasmPaths: runtimeOptions.wasmPaths } : {}),
     ...(runtimeOptions.numThreads !== undefined ? { numThreads: runtimeOptions.numThreads } : {}),
     ...(runtimeOptions.simd !== undefined ? { simd: runtimeOptions.simd } : {}),
-    ...(runtimeOptions.proxy !== undefined ? { proxy: runtimeOptions.proxy } : {}),
+    ...(runtimeOptions.proxy !== undefined ? { proxy: runtimeOptions.proxy } : {})
   };
 }
 
@@ -370,14 +390,14 @@ export function resolveWorkerOptions(workerOption: unknown): WorkerResolvedOptio
   if (!workerOption) {
     return {
       enabled: false,
-      createWorker: null,
+      createWorker: null
     };
   }
 
   if (workerOption === true) {
     return {
       enabled: true,
-      createWorker: null,
+      createWorker: null
     };
   }
 
@@ -386,7 +406,7 @@ export function resolveWorkerOptions(workerOption: unknown): WorkerResolvedOptio
     return {
       enabled: true,
       createWorker:
-        typeof opts.createWorker === "function" ? (opts.createWorker as () => Worker) : null,
+        typeof opts.createWorker === "function" ? (opts.createWorker as () => Worker) : null
     };
   }
 
@@ -400,7 +420,7 @@ export function resolvePaddleOCROptions(options: Record<string, unknown> = {}): 
     modelSelection: resolved.modelSelection,
     runtimeDefaults: resolved.runtimeDefaults,
     pipelineConfig: resolved.normalizedPipelineConfig,
-    runtime: normalizeRuntimeOptions((options.runtime || {}) as OrtRuntimeOptions),
+    runtime: normalizeRuntimeOptions((options.runtime || {}) as OrtRuntimeOptions)
   };
 }
 

@@ -14,7 +14,7 @@ function createDefaultWorker(): Worker {
     throw new Error("worker mode requires Web Worker support in this environment.");
   }
   return new Worker(new URL("./worker-entry.ts", import.meta.url), {
-    type: "module",
+    type: "module"
   });
 }
 
@@ -62,7 +62,7 @@ export class WorkerBackedPaddleOCR {
             "For version consistency between main thread and worker, set runtime.wasmPaths " +
             "to the path where your bundler outputs the onnxruntime-web WASM files " +
             '(e.g. runtime: { wasmPaths: "/assets/" }).',
-          __ORT_WASM_CDN_PREFIX__,
+          __ORT_WASM_CDN_PREFIX__
         );
       }
       const wasmCdnFallback =
@@ -76,12 +76,15 @@ export class WorkerBackedPaddleOCR {
             runtime: {
               ...runtimeOpts,
               ...wasmCdnFallback,
-              disableWasmProxy: true,
-            },
-          },
+              disableWasmProxy: true
+            }
+          }
         })
         .then((rawPayload) => {
-          const payload = rawPayload as { summary: InitializationSummary; modelConfig: OcrModelConfig };
+          const payload = rawPayload as {
+            summary: InitializationSummary;
+            modelConfig: OcrModelConfig;
+          };
           this.lastInitializationSummary = payload.summary;
           this.modelConfig = payload.modelConfig;
           return this.lastInitializationSummary;
@@ -106,14 +109,16 @@ export class WorkerBackedPaddleOCR {
   async predict(source: unknown, params: OcrRuntimeParamsInput = {}): Promise<OcrResult> {
     this.ensureActive();
     await this.initialize();
-    const { payload, transferables } = await sourceToWorkerPayload(source as Parameters<typeof sourceToWorkerPayload>[0]);
+    const { payload, transferables } = await sourceToWorkerPayload(
+      source as Parameters<typeof sourceToWorkerPayload>[0]
+    );
     return this.transportClient.request(
       "predict",
       {
         source: payload,
-        params,
+        params
       },
-      transferables,
+      transferables
     ) as Promise<OcrResult>;
   }
 
@@ -133,11 +138,11 @@ export class WorkerBackedPaddleOCR {
 
 export function createWorkerBackedPaddleOCR(
   options: OcrPipelineRunnerOptions,
-  workerOptions: WorkerOptions = {},
+  workerOptions: WorkerOptions = {}
 ): WorkerBackedPaddleOCR {
   const transportClient = createWorkerTransportClient({
     ...workerOptions,
-    createWorker: workerOptions.createWorker || createDefaultWorker,
+    createWorker: workerOptions.createWorker || createDefaultWorker
   });
   return new WorkerBackedPaddleOCR(options, transportClient);
 }

@@ -55,7 +55,7 @@ async function storeCachedResponse(key: string, response: Response): Promise<voi
 
 export async function fetchResourceAsset(
   asset: ResourceAsset,
-  fetchImpl: typeof fetch = fetch,
+  fetchImpl: typeof fetch = fetch
 ): Promise<AssetFetchResult> {
   const cacheKey = getCacheKey(asset);
   const cachedResponse = await readCachedResponse(cacheKey);
@@ -63,7 +63,7 @@ export async function fetchResourceAsset(
     return {
       cacheHit: true,
       cacheKey,
-      response: cachedResponse,
+      response: cachedResponse
     };
   }
 
@@ -75,7 +75,7 @@ export async function fetchResourceAsset(
   return {
     cacheHit: false,
     cacheKey,
-    response: response.clone(),
+    response: response.clone()
   };
 }
 
@@ -90,12 +90,12 @@ export async function readAssetText(assetResult: AssetFetchResult): Promise<stri
 export function summarizeAssetResult(
   asset: ResourceAsset,
   assetResult: AssetFetchResult,
-  byteLength = 0,
+  byteLength = 0
 ): AssetDownloadSummary {
   return {
     id: asset.id,
     url: asset.url,
     cacheHit: assetResult.cacheHit,
-    bytes: byteLength,
+    bytes: byteLength
   };
 }

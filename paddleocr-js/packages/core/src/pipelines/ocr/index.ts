@@ -43,11 +43,13 @@ export class PaddleOCR extends OcrPipelineRunner {
     super({
       ...options,
       ensureServedFromHttp,
-      sourceToMat,
+      sourceToMat
     });
   }
 
-  static async create(options: PaddleOCRCreateOptions = {}): Promise<PaddleOCR | WorkerBackedPaddleOCR> {
+  static async create(
+    options: PaddleOCRCreateOptions = {}
+  ): Promise<PaddleOCR | WorkerBackedPaddleOCR> {
     const workerOptions = resolveWorkerOptions(options.worker);
     if (workerOptions.enabled && options.fetch) {
       throw new Error("worker mode does not support a custom fetch implementation.");
@@ -56,11 +58,11 @@ export class PaddleOCR extends OcrPipelineRunner {
     const resolvedOptions = resolvePaddleOCROptions(options);
     const instance = workerOptions.enabled
       ? createWorkerBackedPaddleOCR(resolvedOptions, {
-          createWorker: workerOptions.createWorker ?? undefined,
+          createWorker: workerOptions.createWorker ?? undefined
         })
       : new PaddleOCR({
           ...resolvedOptions,
-          fetch: options.fetch,
+          fetch: options.fetch
         });
 
     if (options.initialize !== false) {
@@ -71,7 +73,7 @@ export class PaddleOCR extends OcrPipelineRunner {
 
   static async fromPipelineConfig(
     pipelineConfig: unknown,
-    options: PaddleOCRCreateOptions = {},
+    options: PaddleOCRCreateOptions = {}
   ): Promise<PaddleOCR | WorkerBackedPaddleOCR> {
     return PaddleOCR.create({ ...options, pipelineConfig });
   }

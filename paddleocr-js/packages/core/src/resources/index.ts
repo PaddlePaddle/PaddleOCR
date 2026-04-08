@@ -4,6 +4,6 @@ export {
   assertStandardModelResourceSlot,
   getStandardModelEntryPath,
   loadStandardModelAsset,
-  STANDARD_MODEL_ENTRY_PATHS,
+  STANDARD_MODEL_ENTRY_PATHS
 } from "./standard-model";
 export { extractTarEntries, pickTarEntry } from "./tar";

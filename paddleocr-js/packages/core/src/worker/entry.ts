@@ -9,7 +9,7 @@ interface WorkerLikeScope {
 
 export function attachWorkerMessageHandler(
   handleMessage: MessageHandler,
-  workerScope: WorkerLikeScope = self as unknown as WorkerLikeScope,
+  workerScope: WorkerLikeScope = self as unknown as WorkerLikeScope
 ): void {
   workerScope.onmessage = (event: MessageEvent) => {
     const message = event.data as unknown;
@@ -19,7 +19,10 @@ export function attachWorkerMessageHandler(
 
     void (async () => {
       try {
-        const payload = await handleMessage(message.type, (message.payload || {}) as Record<string, unknown>);
+        const payload = await handleMessage(
+          message.type,
+          (message.payload || {}) as Record<string, unknown>
+        );
         workerScope.postMessage(createTransportSuccess(message.requestId, payload));
       } catch (error: unknown) {
         workerScope.postMessage(createTransportError(message.requestId, error));

@@ -59,7 +59,10 @@ describe("resource cache", () => {
 
   it("uses Cache Storage when available on the web", async () => {
     const persistentResponse = new Response("cached", { status: 200 });
-    const match = vi.fn().mockResolvedValueOnce(null).mockResolvedValueOnce(persistentResponse.clone());
+    const match = vi
+      .fn()
+      .mockResolvedValueOnce(null)
+      .mockResolvedValueOnce(persistentResponse.clone());
     const put = vi.fn().mockResolvedValue(undefined);
     const open = vi.fn().mockResolvedValue({ match, put });
     const fetchImpl = vi.fn(async () => new Response("fresh", { status: 200 }));
@@ -100,7 +103,9 @@ describe("resource cache", () => {
     expect(new Uint8Array(await readAssetArrayBuffer(assetResult))).toEqual(
       new Uint8Array([104, 101, 108, 108, 111])
     );
-    await expect(readAssetText({ response: new Response("text", { status: 200 }) })).resolves.toBe("text");
+    await expect(readAssetText({ response: new Response("text", { status: 200 }) })).resolves.toBe(
+      "text"
+    );
     expect(summarizeAssetResult(asset, { cacheHit: true }, 5)).toEqual({
       id: "broken-asset",
       url: "https://example.com/broken.bin",

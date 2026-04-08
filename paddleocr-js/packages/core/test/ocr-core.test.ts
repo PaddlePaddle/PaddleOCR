@@ -128,8 +128,18 @@ describe("OCR pipeline core", () => {
     expect(initOpenCvRuntime).toHaveBeenCalledTimes(1);
     expect(initOrtRuntime).toHaveBeenCalledWith(AUTO_RUNTIME_OPTIONS);
     expect(loadStandardModelAsset).toHaveBeenCalledTimes(2);
-    expect(validateLoadedModelName).toHaveBeenNthCalledWith(1, "TextDetection", "det-name", "det-config");
-    expect(validateLoadedModelName).toHaveBeenNthCalledWith(2, "TextRecognition", "rec-name", "rec-config");
+    expect(validateLoadedModelName).toHaveBeenNthCalledWith(
+      1,
+      "TextDetection",
+      "det-name",
+      "det-config"
+    );
+    expect(validateLoadedModelName).toHaveBeenNthCalledWith(
+      2,
+      "TextRecognition",
+      "rec-name",
+      "rec-config"
+    );
     expect(createDetModel).toHaveBeenCalledWith({
       ort,
       modelBytes: new Uint8Array([1]),
@@ -179,7 +189,9 @@ describe("OCR pipeline core", () => {
       }
     });
 
-    await expect(runner.initialize()).rejects.toThrow(/requires pre-resolved detection and recognition asset/i);
+    await expect(runner.initialize()).rejects.toThrow(
+      /requires pre-resolved detection and recognition asset/i
+    );
   });
 
   it("predicts OCR results and filters by score threshold", async () => {
@@ -206,8 +218,18 @@ describe("OCR pipeline core", () => {
       provider: "wasm",
       prepareSample: vi
         .fn()
-        .mockReturnValueOnce({ originalIndex: 1, poly: [[2, 2]], width: 40, chw: new Float32Array(1) })
-        .mockReturnValueOnce({ originalIndex: 0, poly: [[1, 1]], width: 20, chw: new Float32Array(1) }),
+        .mockReturnValueOnce({
+          originalIndex: 1,
+          poly: [[2, 2]],
+          width: 40,
+          chw: new Float32Array(1)
+        })
+        .mockReturnValueOnce({
+          originalIndex: 0,
+          poly: [[1, 1]],
+          width: 20,
+          chw: new Float32Array(1)
+        }),
       recognize: vi.fn().mockResolvedValue([
         { originalIndex: 1, poly: [[2, 2]], text: "low", score: 0.4 },
         { originalIndex: 0, poly: [[1, 1]], text: "high", score: 0.95 },
@@ -324,7 +346,9 @@ describe("OCR pipeline core", () => {
 
     const { OcrPipelineRunner } = await loadCoreModule();
     const noSourceRunner = new OcrPipelineRunner({});
-    await expect(noSourceRunner.predict({}, {})).rejects.toThrow(/source adapter is not configured/i);
+    await expect(noSourceRunner.predict({}, {})).rejects.toThrow(
+      /source adapter is not configured/i
+    );
 
     const sourceImage = {
       width: 1,

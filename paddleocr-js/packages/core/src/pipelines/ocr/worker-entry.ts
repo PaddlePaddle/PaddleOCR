@@ -12,12 +12,12 @@ function createPaddleOCRWorkerMessageHandler() {
     ocr = new OcrPipelineRunner({
       ...(payload.options as OcrPipelineRunnerOptions),
       ensureServedFromHttp,
-      sourceToMat: sourcePayloadToMat,
+      sourceToMat: sourcePayloadToMat
     });
     const summary = await ocr.initialize();
     return {
       summary,
-      modelConfig: ocr.getModelConfig(),
+      modelConfig: ocr.getModelConfig()
     };
   }
 

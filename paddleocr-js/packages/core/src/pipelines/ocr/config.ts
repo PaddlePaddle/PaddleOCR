@@ -61,7 +61,7 @@ function parsePipelineConfigInput(input: unknown): YamlObject {
 
 function addFeatureWarning(warnings: string[], featureName: string, reason?: string): void {
   warnings.push(
-    `${featureName} is not yet supported in PaddleOCR.js${reason ? `: ${reason}` : ""}.`,
+    `${featureName} is not yet supported in PaddleOCR.js${reason ? `: ${reason}` : ""}.`
   );
 }
 
@@ -72,7 +72,7 @@ function getModuleModelName(moduleConfig: YamlObject | null): string | null {
 function validateModuleAsset(modulePath: string, modelName: string | null): void {
   if (!modelName) {
     throw new Error(
-      `${modulePath}.model_name must be provided when ${modulePath}.model_dir is set.`,
+      `${modulePath}.model_name must be provided when ${modulePath}.model_dir is set.`
     );
   }
 }
@@ -80,7 +80,7 @@ function validateModuleAsset(modulePath: string, modelName: string | null): void
 function getModuleAsset(
   assetName: string,
   modulePath: string,
-  moduleConfig: YamlObject | null,
+  moduleConfig: YamlObject | null
 ): AssetDescriptor | null {
   if (moduleConfig?.model_dir == null) {
     return null;
@@ -91,7 +91,7 @@ function getModuleAsset(
     return asset;
   }
   throw new Error(
-    `${modulePath}.model_dir must be null or an asset descriptor object in browser usage.`,
+    `${modulePath}.model_dir must be null or an asset descriptor object in browser usage.`
   );
 }
 
@@ -105,18 +105,20 @@ export function normalizeOcrPipelineConfig(input: unknown): NormalizedPipelineCo
 
   if (pipelineName !== SUPPORTED_PIPELINE_NAME) {
     throw new Error(
-      `Unsupported pipeline_name "${pipelineName}". PaddleOCR.js currently supports only "${SUPPORTED_PIPELINE_NAME}".`,
+      `Unsupported pipeline_name "${pipelineName}". PaddleOCR.js currently supports only "${SUPPORTED_PIPELINE_NAME}".`
     );
   }
 
   const warnings: string[] = [];
   const subModules = isPlainObject(config.SubModules) ? config.SubModules : {};
   const textDetection = isPlainObject(subModules.TextDetection) ? subModules.TextDetection : null;
-  const textRecognition = isPlainObject(subModules.TextRecognition) ? subModules.TextRecognition : null;
+  const textRecognition = isPlainObject(subModules.TextRecognition)
+    ? subModules.TextRecognition
+    : null;
 
   if (!textDetection || !textRecognition) {
     throw new Error(
-      'OCR pipeline config must define both "SubModules.TextDetection" and "SubModules.TextRecognition".',
+      'OCR pipeline config must define both "SubModules.TextDetection" and "SubModules.TextRecognition".'
     );
   }
 
@@ -149,15 +151,15 @@ export function normalizeOcrPipelineConfig(input: unknown): NormalizedPipelineCo
     warnings,
     unsupportedFeatures: [
       ...(useDocPreprocessor || docPreprocessor ? ["DocPreprocessor"] : []),
-      ...(useTextlineOrientation || textLineOrientation ? ["TextLineOrientation"] : []),
+      ...(useTextlineOrientation || textLineOrientation ? ["TextLineOrientation"] : [])
     ],
     modelSelection: {
       textDetectionModelName: getModuleModelName(textDetection),
-      textRecognitionModelName: getModuleModelName(textRecognition),
+      textRecognitionModelName: getModuleModelName(textRecognition)
     },
     assets: {
       ...(detAsset ? { det: detAsset } : {}),
-      ...(recAsset ? { rec: recAsset } : {}),
+      ...(recAsset ? { rec: recAsset } : {})
     },
     runtimeDefaults: {
       text_det_limit_side_len: toFiniteNumber(textDetection.limit_side_len),
@@ -166,7 +168,7 @@ export function normalizeOcrPipelineConfig(input: unknown): NormalizedPipelineCo
       text_det_thresh: toFiniteNumber(textDetection.thresh),
       text_det_box_thresh: toFiniteNumber(textDetection.box_thresh),
       text_det_unclip_ratio: toFiniteNumber(textDetection.unclip_ratio),
-      text_rec_score_thresh: toFiniteNumber(textRecognition.score_thresh),
-    },
+      text_rec_score_thresh: toFiniteNumber(textRecognition.score_thresh)
+    }
   };
 }

@@ -80,21 +80,23 @@ describe("worker-backed OCR adapter", () => {
       transferables
     });
 
-    const ocr = new WorkerBackedPaddleOCR(
-      createWorkerBackedOptions(),
-      transportClient
-    );
+    const ocr = new WorkerBackedPaddleOCR(createWorkerBackedOptions(), transportClient);
 
     const result = await ocr.predict({ kind: "source" }, { text_rec_score_thresh: 0.5 });
 
     expect(sourceToWorkerPayload).toHaveBeenCalledWith({ kind: "source" });
-    expect(transportClient.request).toHaveBeenNthCalledWith(2, "predict", {
-      source: {
-        kind: "imageBitmap",
-        imageBitmap: transferables[0]
+    expect(transportClient.request).toHaveBeenNthCalledWith(
+      2,
+      "predict",
+      {
+        source: {
+          kind: "imageBitmap",
+          imageBitmap: transferables[0]
+        },
+        params: { text_rec_score_thresh: 0.5 }
       },
-      params: { text_rec_score_thresh: 0.5 }
-    }, transferables);
+      transferables
+    );
     expect(result).toEqual({ text: "hello" });
   });
 
@@ -111,10 +113,7 @@ describe("worker-backed OCR adapter", () => {
       dispose: vi.fn()
     };
 
-    const ocr = new WorkerBackedPaddleOCR(
-      createWorkerBackedOptions(),
-      transportClient
-    );
+    const ocr = new WorkerBackedPaddleOCR(createWorkerBackedOptions(), transportClient);
 
     await expect(ocr.initialize()).rejects.toThrow("init failed");
     expect(transportClient.dispose).toHaveBeenCalledTimes(1);
@@ -128,10 +127,7 @@ describe("worker-backed OCR adapter", () => {
       dispose: vi.fn()
     };
 
-    const ocr = new WorkerBackedPaddleOCR(
-      createWorkerBackedOptions(),
-      transportClient
-    );
+    const ocr = new WorkerBackedPaddleOCR(createWorkerBackedOptions(), transportClient);
 
     await expect(ocr.dispose()).resolves.toBeUndefined();
     expect(transportClient.request).toHaveBeenCalledWith("dispose", {});

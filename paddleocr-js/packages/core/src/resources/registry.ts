@@ -15,8 +15,8 @@ export const DEFAULT_MODEL_ASSETS: ModelAssetsMap = {
     url: "https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv5_mobile_det_onnx.tar",
     entries: {
       model: "inference.onnx",
-      config: "inference.yml",
-    },
+      config: "inference.yml"
+    }
   },
   "PP-OCRv5_mobile_rec": {
     id: "pp-ocrv5-mobile-rec-tar",
@@ -24,9 +24,9 @@ export const DEFAULT_MODEL_ASSETS: ModelAssetsMap = {
     url: "https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv5_mobile_rec_onnx.tar",
     entries: {
       model: "inference.onnx",
-      config: "inference.yml",
-    },
-  },
+      config: "inference.yml"
+    }
+  }
 };
 
 function isAssetDescriptor(asset: unknown): asset is Record<string, unknown> {
@@ -56,7 +56,7 @@ export function normalizeAssetDescriptor(assetName: string, asset: unknown): Ass
     kind === "tar" &&
     asset.entries &&
     Object.values(asset.entries as Record<string, unknown>).some(
-      (entryPath) => !isNonEmptyString(entryPath),
+      (entryPath) => !isNonEmptyString(entryPath)
     )
   ) {
     throw new Error(`Tar asset "${assetName}" must map entries to file paths.`);
@@ -70,16 +70,14 @@ export function normalizeAssetDescriptor(assetName: string, asset: unknown): Ass
     url: asset.url,
     kind,
     ...(asset.version !== undefined ? { version: asset.version } : {}),
-    ...(kind === "tar" && asset.entries
-      ? { entries: asset.entries as Record<string, string> }
-      : {}),
+    ...(kind === "tar" && asset.entries ? { entries: asset.entries as Record<string, string> } : {})
   };
 }
 
 function resolveAssetReference(
   assetName: string,
   asset: unknown,
-  modelAssets: ModelAssetsMap,
+  modelAssets: ModelAssetsMap
 ): AssetDescriptor {
   if (isNonEmptyString(asset)) {
     const resolvedAsset = modelAssets[asset];
@@ -95,7 +93,7 @@ function resolveAssetReference(
 
 export function normalizeAssets(
   assets: Record<string, unknown> | undefined,
-  modelAssets: ModelAssetsMap = DEFAULT_MODEL_ASSETS,
+  modelAssets: ModelAssetsMap = DEFAULT_MODEL_ASSETS
 ): Record<string, AssetDescriptor> {
   const assetEntries = Object.entries(assets || {});
 
@@ -106,7 +104,7 @@ export function normalizeAssets(
   return Object.fromEntries(
     assetEntries.map(([assetName, asset]) => [
       assetName,
-      resolveAssetReference(assetName, asset, modelAssets),
-    ]),
+      resolveAssetReference(assetName, asset, modelAssets)
+    ])
   );
 }

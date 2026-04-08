@@ -24,7 +24,7 @@ type DrawableImage = ImageBitmap | HTMLImageElement;
 
 function drawPolygonPath(
   ctx: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D,
-  poly: Point2D[],
+  poly: Point2D[]
 ): void {
   ctx.beginPath();
   ctx.moveTo(poly[0][0], poly[0][1]);
@@ -41,7 +41,7 @@ export function drawBoxesPanel(
   ctx: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D,
   image: DrawableImage,
   items: OcrResultItem[],
-  style: BoxStyleOptions,
+  style: BoxStyleOptions
 ): void {
   ctx.drawImage(image, 0, 0);
 

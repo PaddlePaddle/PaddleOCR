@@ -58,7 +58,9 @@ describe("OCR shared option resolution", () => {
   });
 
   it("rejects unsupported worker option types", () => {
-    expect(() => resolveWorkerOptions("yes")).toThrow(/worker must be a boolean or an options object/i);
+    expect(() => resolveWorkerOptions("yes")).toThrow(
+      /worker must be a boolean or an options object/i
+    );
   });
 
   it("returns runtime, assets, and model selection for explicit model names", () => {
@@ -110,7 +112,11 @@ describe("OCR shared option resolution", () => {
 
   it("validates loaded model names against inference.yml", () => {
     expect(() =>
-      validateLoadedModelName("Detection", "PP-OCRv5_mobile_det", "Global:\n  model_name: PP-OCRv5_mobile_det")
+      validateLoadedModelName(
+        "Detection",
+        "PP-OCRv5_mobile_det",
+        "Global:\n  model_name: PP-OCRv5_mobile_det"
+      )
     ).not.toThrow();
 
     expect(() =>

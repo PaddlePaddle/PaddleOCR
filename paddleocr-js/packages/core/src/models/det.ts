@@ -12,7 +12,7 @@ import {
   parseInferenceConfigText,
   parseScaleValue,
   toBgrFloatCHWFromBgr,
-  unclip,
+  unclip
 } from "./common";
 import type { Point2D, NormalizeConfig, DetBox } from "./common";
 import type { LimitType, OcrRuntimeParams } from "../pipelines/ocr/runtime-params";
@@ -55,28 +55,29 @@ export interface DetResult {
 
 const DET_BOX_MIN_SIZE = 3;
 
-export const DEFAULT_DET_MODEL_PARSE_FALLBACKS: Readonly<Omit<DetModelConfig, "maxSideLimit">> = Object.freeze({
-  resizeLong: 960,
-  normalize: {
-    mean: [0.485, 0.456, 0.406],
-    std: [0.229, 0.224, 0.225],
-    scale: 1 / 255,
-  },
-  postprocess: {
-    thresh: 0.3,
-    boxThresh: 0.6,
-    maxCandidates: 1000,
-    unclipRatio: 1.5,
-  },
-});
+export const DEFAULT_DET_MODEL_PARSE_FALLBACKS: Readonly<Omit<DetModelConfig, "maxSideLimit">> =
+  Object.freeze({
+    resizeLong: 960,
+    normalize: {
+      mean: [0.485, 0.456, 0.406],
+      std: [0.229, 0.224, 0.225],
+      scale: 1 / 255
+    },
+    postprocess: {
+      thresh: 0.3,
+      boxThresh: 0.6,
+      maxCandidates: 1000,
+      unclipRatio: 1.5
+    }
+  });
 
 export const DEFAULT_DET_RUNTIME_LIMITS = Object.freeze({
-  maxSideLimit: 4000,
+  maxSideLimit: 4000
 });
 
 export const DEFAULT_DET_MODEL_CONFIG: Readonly<DetModelConfig> = Object.freeze({
   ...DEFAULT_DET_MODEL_PARSE_FALLBACKS,
-  maxSideLimit: DEFAULT_DET_RUNTIME_LIMITS.maxSideLimit,
+  maxSideLimit: DEFAULT_DET_RUNTIME_LIMITS.maxSideLimit
 });
 
 export function parseDetModelConfigText(text: string): DetModelConfig {
@@ -90,23 +91,26 @@ export function parseDetModelConfigText(text: string): DetModelConfig {
   return {
     resizeLong: Number(resize?.resize_long ?? DEFAULT_DET_MODEL_PARSE_FALLBACKS.resizeLong),
     normalize: {
-      mean: (normalize?.mean as number[] | undefined) ?? DEFAULT_DET_MODEL_PARSE_FALLBACKS.normalize.mean,
-      std: (normalize?.std as number[] | undefined) ?? DEFAULT_DET_MODEL_PARSE_FALLBACKS.normalize.std,
-      scale: parseScaleValue(normalize?.scale, DEFAULT_DET_MODEL_PARSE_FALLBACKS.normalize.scale),
+      mean:
+        (normalize?.mean as number[] | undefined) ??
+        DEFAULT_DET_MODEL_PARSE_FALLBACKS.normalize.mean,
+      std:
+        (normalize?.std as number[] | undefined) ?? DEFAULT_DET_MODEL_PARSE_FALLBACKS.normalize.std,
+      scale: parseScaleValue(normalize?.scale, DEFAULT_DET_MODEL_PARSE_FALLBACKS.normalize.scale)
     },
     postprocess: {
       thresh: Number(postprocess.thresh ?? DEFAULT_DET_MODEL_PARSE_FALLBACKS.postprocess.thresh),
       boxThresh: Number(
-        postprocess.box_thresh ?? DEFAULT_DET_MODEL_PARSE_FALLBACKS.postprocess.boxThresh,
+        postprocess.box_thresh ?? DEFAULT_DET_MODEL_PARSE_FALLBACKS.postprocess.boxThresh
       ),
       maxCandidates: Number(
-        postprocess.max_candidates ?? DEFAULT_DET_MODEL_PARSE_FALLBACKS.postprocess.maxCandidates,
+        postprocess.max_candidates ?? DEFAULT_DET_MODEL_PARSE_FALLBACKS.postprocess.maxCandidates
       ),
       unclipRatio: Number(
-        postprocess.unclip_ratio ?? DEFAULT_DET_MODEL_PARSE_FALLBACKS.postprocess.unclipRatio,
-      ),
+        postprocess.unclip_ratio ?? DEFAULT_DET_MODEL_PARSE_FALLBACKS.postprocess.unclipRatio
+      )
     },
-    maxSideLimit: DEFAULT_DET_RUNTIME_LIMITS.maxSideLimit,
+    maxSideLimit: DEFAULT_DET_RUNTIME_LIMITS.maxSideLimit
   };
 }
 
@@ -118,13 +122,24 @@ interface CreateDetModelArgs {
   webgpuState: WebGpuState;
 }
 
-export async function createDetModel({ ort, modelBytes, configText, backend, webgpuState }: CreateDetModelArgs): Promise<DetModel> {
+export async function createDetModel({
+  ort,
+  modelBytes,
+  configText,
+  backend,
+  webgpuState
+}: CreateDetModelArgs): Promise<DetModel> {
   assertStandardModelResources("Detection", {
     model: modelBytes,
-    config: configText,
+    config: configText
   });
   const config = parseDetModelConfigText(configText);
-  let sessionState: SessionState | null = await createDetModelSession(ort, modelBytes, backend, webgpuState);
+  let sessionState: SessionState | null = await createDetModelSession(
+    ort,
+    modelBytes,
+    backend,
+    webgpuState
+  );
 
   return {
     kind: "det",
@@ -141,16 +156,16 @@ export async function createDetModel({ ort, modelBytes, configText, backend, web
           cv,
           ort,
           config,
-          session: sessionState.session,
+          session: sessionState.session
         },
         sourceMat,
-        params,
+        params
       );
     },
     async dispose() {
       await releaseSessions(sessionState?.session);
       sessionState = null;
-    },
+    }
   };
 }
 
@@ -158,7 +173,7 @@ export async function createDetModelSession(
   ort: OrtModule,
   modelBytes: Uint8Array,
   backend: string,
-  webgpuState: WebGpuState,
+  webgpuState: WebGpuState
 ): Promise<SessionState> {
   const providerCandidates = getProviderCandidates(backend, webgpuState);
   return withTimeout(createSession(ort, modelBytes, providerCandidates), 60000, "Detection model");
@@ -174,7 +189,11 @@ interface DetRunContext extends DetContext {
   session: InferenceSession;
 }
 
-export function preprocessDet(context: DetContext, sourceMat: Mat, params: OcrRuntimeParams): DetPreprocessResult {
+export function preprocessDet(
+  context: DetContext,
+  sourceMat: Mat,
+  params: OcrRuntimeParams
+): DetPreprocessResult {
   const { cv, ort, config } = context;
   const srcW = sourceMat.cols;
   const srcH = sourceMat.rows;
@@ -224,7 +243,7 @@ export function preprocessDet(context: DetContext, sourceMat: Mat, params: OcrRu
     srcW,
     srcH,
     dstW,
-    dstH,
+    dstH
   };
 }
 
@@ -239,7 +258,7 @@ function getDetMap(outputTensor: Tensor): { data: Float32Array; h: number; w: nu
 export async function runDetModel(
   context: DetRunContext,
   sourceMat: Mat,
-  params: OcrRuntimeParams,
+  params: OcrRuntimeParams
 ): Promise<DetResult> {
   const { cv, ort, config, session } = context;
   const prep = preprocessDet({ cv, ort, config }, sourceMat, params);
@@ -255,8 +274,8 @@ export async function runDetModel(
       prep,
       params.text_det_thresh,
       params.text_det_box_thresh,
-      params.text_det_unclip_ratio,
-    ),
+      params.text_det_unclip_ratio
+    )
   };
 }
 
@@ -266,7 +285,7 @@ export function dbPostprocess(
   meta: DetPreprocessResult,
   detThresh: number,
   boxThresh: number,
-  unclipRatio: number,
+  unclipRatio: number
 ): DetBox[] {
   const { cv, config } = context;
   const { data, h, w } = getDetMap(detOutput);
@@ -315,7 +334,7 @@ export function dbPostprocess(
 
     const poly: Point2D[] = miniUnclip.box.map((point) => [
       clamp(Math.round((point[0] * meta.srcW) / Math.max(1, w)), 0, meta.srcW),
-      clamp(Math.round((point[1] * meta.srcH) / Math.max(1, h)), 0, meta.srcH),
+      clamp(Math.round((point[1] * meta.srcH) / Math.max(1, h)), 0, meta.srcH)
     ]);
     boxes.push({ poly, score });
     contour.delete();
@@ -362,7 +381,7 @@ export function cropByPoly(cv: OpenCv, srcMat: Mat, poly: Point2D[]): Mat {
     ordered[2][0],
     ordered[2][1],
     ordered[3][0],
-    ordered[3][1],
+    ordered[3][1]
   ]);
   const dstTri = cv.matFromArray(4, 1, cv.CV_32FC2, [0, 0, cropW, 0, cropW, cropH, 0, cropH]);
   const transform = cv.getPerspectiveTransform(srcTri, dstTri);
@@ -374,7 +393,7 @@ export function cropByPoly(cv: OpenCv, srcMat: Mat, poly: Point2D[]): Mat {
     new cv.Size(cropW, cropH),
     cv.INTER_CUBIC,
     cv.BORDER_REPLICATE,
-    new cv.Scalar(),
+    new cv.Scalar()
   );
   srcTri.delete();
   dstTri.delete();

@@ -19,10 +19,7 @@ import type { FontConfig } from "./types";
  * Returns the loaded FontFace instance for later removal.
  */
 export async function loadFontFace(config: FontConfig): Promise<FontFace> {
-  const source =
-    typeof config.source === "string"
-      ? `url(${config.source})`
-      : config.source;
+  const source = typeof config.source === "string" ? `url(${config.source})` : config.source;
 
   const face = new FontFace(config.family, source, config.descriptors);
   await face.load();

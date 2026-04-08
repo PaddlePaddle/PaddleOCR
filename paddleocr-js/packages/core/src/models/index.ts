@@ -6,7 +6,7 @@ export {
   createDetModelSession,
   cropByPoly,
   parseDetModelConfigText,
-  runDetModel,
+  runDetModel
 } from "./det";
 export {
   DEFAULT_REC_MODEL_PARSE_FALLBACKS,
@@ -16,5 +16,5 @@ export {
   createRecModelSession,
   parseRecModelConfigText,
   prepareRecSample,
-  runRecModel,
+  runRecModel
 } from "./rec";

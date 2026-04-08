@@ -34,10 +34,7 @@ function isWorkerSourcePayload(source: unknown): source is WorkerSourcePayload {
   );
 }
 
-export function sourcePayloadToMat(
-  cv: OpenCv,
-  source: unknown,
-): SourceMatResult {
+export function sourcePayloadToMat(cv: OpenCv, source: unknown): SourceMatResult {
   if (typeof cv.Mat === "function" && source instanceof cv.Mat) {
     const cloned = source.clone();
     return {
@@ -46,7 +43,7 @@ export function sourcePayloadToMat(
       mat: cloned,
       dispose() {
         cloned.delete();
-      },
+      }
     };
   }
 
@@ -60,7 +57,7 @@ export function sourcePayloadToMat(
       dispose() {
         mat.delete();
         source.imageBitmap.close();
-      },
+      }
     };
   }
 

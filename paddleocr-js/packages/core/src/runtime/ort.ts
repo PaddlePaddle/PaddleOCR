@@ -40,11 +40,11 @@ interface GpuLike {
 }
 
 export async function detectWebGpuAvailability(): Promise<WebGpuState> {
-  const gpu = (globalThis.navigator as Navigator & { gpu?: GpuLike } | undefined)?.gpu;
+  const gpu = (globalThis.navigator as (Navigator & { gpu?: GpuLike }) | undefined)?.gpu;
   if (!gpu?.requestAdapter) {
     return {
       available: false,
-      reason: "navigator.gpu is unavailable in this browser.",
+      reason: "navigator.gpu is unavailable in this browser."
     };
   }
   try {
@@ -52,17 +52,17 @@ export async function detectWebGpuAvailability(): Promise<WebGpuState> {
     if (!adapter) {
       return {
         available: false,
-        reason: "The browser did not return a WebGPU adapter.",
+        reason: "The browser did not return a WebGPU adapter."
       };
     }
     return {
       available: true,
-      reason: "",
+      reason: ""
     };
   } catch (err: unknown) {
     return {
       available: false,
-      reason: err instanceof Error ? err.message : "Failed to request a WebGPU adapter.",
+      reason: err instanceof Error ? err.message : "Failed to request a WebGPU adapter."
     };
   }
 }
@@ -100,7 +100,9 @@ function applyOrtEnvironmentOptions(ort: OrtModule, runtimeOptions: OrtRuntimeOp
   }
 }
 
-export async function initOrtRuntime(runtimeOptions: OrtRuntimeOptions | string = {}): Promise<OrtRuntimeResult> {
+export async function initOrtRuntime(
+  runtimeOptions: OrtRuntimeOptions | string = {}
+): Promise<OrtRuntimeResult> {
   const backend =
     typeof runtimeOptions === "string"
       ? runtimeOptions
@@ -115,21 +117,21 @@ export async function initOrtRuntime(runtimeOptions: OrtRuntimeOptions | string 
   return {
     ort,
     webgpuState,
-    backend,
+    backend
   };
 }
 
 export async function createSession(
   ort: OrtModule,
   modelBytes: Uint8Array,
-  providerCandidates: string[][],
+  providerCandidates: string[][]
 ): Promise<SessionState> {
   let lastErr: unknown = null;
   for (const executionProviders of providerCandidates) {
     try {
       const session = await ort.InferenceSession.create(modelBytes, {
         executionProviders,
-        graphOptimizationLevel: "all",
+        graphOptimizationLevel: "all"
       });
       return { session, provider: executionProviders[0] };
     } catch (err: unknown) {
@@ -146,6 +148,6 @@ export async function releaseSessions(
     sessions.map(async (session) => {
       if (!session?.release) return;
       await session.release();
-    }),
+    })
   );
 }
