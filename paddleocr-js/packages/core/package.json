@@ -20,14 +20,17 @@
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
   "browser": "./dist/index.mjs",
-  "unpkg": "./dist/index.umd.js",
-  "jsdelivr": "./dist/index.umd.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs",
       "require": "./dist/index.cjs"
+    },
+    "./viz": {
+      "types": "./dist/viz/index.d.ts",
+      "import": "./dist/viz.mjs",
+      "require": "./dist/viz.cjs"
     }
   },
   "files": [

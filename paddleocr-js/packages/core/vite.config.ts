@@ -67,7 +67,7 @@ function libraryWorkerPlugin() {
 export default defineConfig({
   plugins: [
     dts({
-      rollupTypes: true,
+      rollupTypes: false,
     }),
     libraryWorkerPlugin(),
   ],
@@ -86,13 +86,15 @@ export default defineConfig({
   },
   build: {
     lib: {
-      entry: resolve(__dirname, 'src/index.ts'),
+      entry: {
+        index: resolve(__dirname, 'src/index.ts'),
+        viz: resolve(__dirname, 'src/viz/index.ts'),
+      },
       name: 'paddleocr',
-      formats: ['es', 'cjs', 'umd'],
-      fileName: (format) => {
-        if (format === 'es') return 'index.mjs'
-        if (format === 'cjs') return 'index.cjs'
-        return 'index.umd.js'
+      formats: ['es', 'cjs'],
+      fileName: (format, entryName) => {
+        const ext = format === 'es' ? 'mjs' : 'cjs'
+        return `${entryName}.${ext}`
       },
     },
     rollupOptions: {
