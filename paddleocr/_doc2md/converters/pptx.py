@@ -137,22 +137,11 @@ class PptxConverter(BaseConverter):
         image_counter = [0]
         slide_width = prs.slide_width
 
-        for slide_num, slide in enumerate(prs.slides, 1):
+        for slide in prs.slides:
             slide_parts = []
-
-            # Extract slide title
-            title_text = ""
-            if slide.shapes.title and slide.shapes.title.text.strip():
-                title_text = slide.shapes.title.text.strip()
-            slide_parts.append(
-                f"## Slide {slide_num}" + (f": {title_text}" if title_text else "")
-            )
 
             # Process all shapes
             for shape in slide.shapes:
-                # Skip the title shape (already handled above)
-                if shape == slide.shapes.title:
-                    continue
                 self._process_shape(
                     shape, slide_parts, images, image_counter, slide_width, slide.part
                 )
