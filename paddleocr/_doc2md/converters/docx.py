@@ -290,6 +290,10 @@ def _detect_heading_level(para, body_font_size: float) -> int:
             return int(style_name.split()[-1])
         except ValueError:
             return 1
+    if style_name == "Title":
+        return 1
+    if style_name == "Subtitle":
+        return 2
 
     text = para.text.strip()
     if not text:
