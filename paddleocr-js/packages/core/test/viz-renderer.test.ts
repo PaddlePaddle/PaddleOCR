@@ -25,7 +25,7 @@ if (!document.fonts) {
   .fn()
   .mockResolvedValue({ width: 200, height: 100, close: vi.fn() });
 
-import { OcrVisualizer, renderOcrToBlob } from "../src/viz/renderer";
+import { OcrVisualizer, renderOcrToBlob } from "../src/viz/ocr/renderer";
 
 describe("OcrVisualizer", () => {
   it("can be constructed with no options", () => {
@@ -42,37 +42,8 @@ describe("OcrVisualizer", () => {
     viz.dispose();
   });
 
-  it("loadFont() loads the font via FontFace API", async () => {
-    const viz = new OcrVisualizer({
-      font: { family: "TestFont", source: "https://example.com/f.woff2" }
-    });
-    await viz.loadFont();
-    expect(globalThis.FontFace).toHaveBeenCalled();
-    expect(document.fonts.add).toHaveBeenCalled();
-    viz.dispose();
-  });
-
-  it("loadFont() is a no-op when no font config", async () => {
+  it("dispose() is safe to call multiple times", () => {
     const viz = new OcrVisualizer();
-    // Should not throw
-    await viz.loadFont();
-    viz.dispose();
-  });
-
-  it("dispose() removes the loaded font", async () => {
-    const viz = new OcrVisualizer({
-      font: { family: "TestFont", source: "https://example.com/f.woff2" }
-    });
-    await viz.loadFont();
-    viz.dispose();
-    expect(document.fonts.delete).toHaveBeenCalled();
-  });
-
-  it("dispose() is safe to call multiple times", async () => {
-    const viz = new OcrVisualizer({
-      font: { family: "TestFont", source: "https://example.com/f.woff2" }
-    });
-    await viz.loadFont();
     viz.dispose();
     viz.dispose(); // should not throw
   });

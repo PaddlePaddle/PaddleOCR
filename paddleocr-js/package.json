@@ -42,12 +42,9 @@
     "format:check": "prettier . --check",
     "clean": "rm -rf packages/*/dist apps/*/dist",
     "check": "npm run format:check && npm run lint && npm run build:sdk && npm run typecheck && npm run test && npm run build:demo",
-    "changeset": "changeset",
-    "version": "changeset version",
-    "release": "npm run build:sdk && changeset publish"
+    "release": "npm run build:sdk && npm publish --workspace packages/core"
   },
   "devDependencies": {
-    "@changesets/cli": "^2.29.7",
     "@eslint/js": "^10.0.1",
     "@vitest/coverage-v8": "^3.2.4",
     "eslint": "^10.0.2",

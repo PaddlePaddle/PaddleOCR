@@ -158,7 +158,6 @@ import { OcrVisualizer } from "@paddleocr/paddleocr-js/viz";
 const viz = new OcrVisualizer({
   font: { family: "Noto Sans SC", source: "/fonts/NotoSansSC-Regular.ttf" }
 });
-await viz.loadFont();
 
 const blob = await viz.toBlob(imageBitmap, result);
 

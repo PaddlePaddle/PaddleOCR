@@ -1,21 +1,8 @@
-// Copyright (c) 2026 PaddlePaddle Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-import type { OcrResultItem } from "../pipelines/ocr/core";
-import type { Point2D } from "../models/common";
-import type { BoxStyleOptions, RgbColor } from "./types";
-import { deterministicColor } from "./color";
+import type { OcrResultItem } from "../../pipelines/ocr/core";
+import type { Point2D } from "../../models/common";
+import type { RgbColor } from "../types";
+import type { BoxStyleOptions } from "./types";
+import { deterministicColor } from "../color";
 
 const DEFAULT_FILL_OPACITY = 0.5;
 
@@ -33,9 +20,6 @@ function drawPolygonPath(
   ctx.closePath();
 }
 
-/**
- * Draw the left panel: source image blended with detection box polygon fills.
- */
 export function drawBoxesPanel(
   ctx: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D,
   image: DrawableImage,

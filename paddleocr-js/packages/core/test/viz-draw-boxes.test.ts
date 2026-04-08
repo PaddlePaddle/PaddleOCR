@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { drawBoxesPanel } from "../src/viz/draw-boxes";
+import { drawBoxesPanel } from "../src/viz/ocr/draw-boxes";
 import type { OcrResultItem } from "../src/pipelines/ocr/core";
 import type { Point2D } from "../src/models/common";
 

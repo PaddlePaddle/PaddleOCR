@@ -19,6 +19,7 @@ function getDemoThreadCount(): number {
 }
 
 const ui = {
+  modelVariant: document.getElementById("modelVariant") as HTMLSelectElement,
   runtimeBackend: document.getElementById("runtimeBackend") as HTMLSelectElement,
   detThresh: document.getElementById("detThresh") as HTMLInputElement,
   boxThresh: document.getElementById("boxThresh") as HTMLInputElement,
@@ -112,14 +113,19 @@ async function initializeOcrEngine(): Promise<void> {
     await state.ocr.dispose();
   }
 
+  const variant = ui.modelVariant.value;
+
   state.ocr = await PaddleOCR.create({
     initialize: false,
     worker: true,
+    textDetectionModelName: `${variant}_det`,
+    textRecognitionModelName: `${variant}_rec`,
     runtime: getRuntimeOptions()
   });
 
   const summary = await state.ocr.initialize();
   ui.metrics.textContent = [
+    `model: ${variant}`,
     `initialize: ${formatMs(summary.elapsedMs)}`,
     `backend(requested): ${summary.backend}`,
     `webgpu available: ${summary.webgpuAvailable ? "yes" : "no"}`,
@@ -129,7 +135,6 @@ async function initializeOcrEngine(): Promise<void> {
     `cache hits: ${String(summary.cacheHits)}`,
     `cache misses: ${String(summary.cacheMisses)}`
   ].join("\n");
-  setStatus(`OCR engine initialized (${String(summary.cacheHits)} cache hits).`);
   ui.runBtn.disabled = !state.imageFile;
 }
 
@@ -195,17 +200,30 @@ ui.chooseImageBtn.addEventListener("click", () => {
   ui.imageInput.click();
 });
 
-async function reinitializeOcrEngine(): Promise<void> {
+async function initialize(): Promise<void> {
   try {
     ui.reinitializeBtn.disabled = true;
     ui.runBtn.disabled = true;
-    setStatus("Initializing OCR engine...");
-    await visualizer.loadFont();
+
+    setStatus("Initializing...");
     await initializeOcrEngine();
+
+    setStatus("Loading visualization font...");
+    try {
+      await visualizer.loadFont();
+    } catch (fontErr: unknown) {
+      console.warn("Font load failed, using system font:", fontErr);
+      setStatus("Ready (visualization will use system font).");
+      ui.runBtn.disabled = !state.imageFile;
+      return;
+    }
+
+    setStatus("Ready.");
+    ui.runBtn.disabled = !state.imageFile;
   } catch (err: unknown) {
     console.error(err);
     const message = err instanceof Error ? err.message : String(err);
-    setStatus(`OCR engine initialization failed: ${message}`, true);
+    setStatus(`Initialization failed: ${message}`, true);
     ui.runBtn.disabled = true;
   } finally {
     ui.reinitializeBtn.disabled = false;
@@ -216,9 +234,10 @@ ui.detThresh.value = String(DEFAULT_RUNTIME_PARAMS.textDetThresh);
 ui.boxThresh.value = String(DEFAULT_RUNTIME_PARAMS.textDetBoxThresh);
 ui.unclipRatio.value = String(DEFAULT_RUNTIME_PARAMS.textDetUnclipRatio);
 ui.recScoreThresh.value = String(DEFAULT_RUNTIME_PARAMS.textRecScoreThresh);
-ui.reinitializeBtn.addEventListener("click", () => void reinitializeOcrEngine());
-ui.runtimeBackend.addEventListener("change", () => void reinitializeOcrEngine());
+ui.reinitializeBtn.addEventListener("click", () => void initialize());
+ui.modelVariant.addEventListener("change", () => void initialize());
+ui.runtimeBackend.addEventListener("change", () => void initialize());
 
 ui.runBtn.addEventListener("click", () => void runOcr());
 
-void reinitializeOcrEngine();
+void initialize();

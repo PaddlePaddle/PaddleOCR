@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import type { FontConfig, BoxStyleOptions, OcrVisualizerOptions, RgbColor } from "../src/viz/types";
+import type { FontConfig, RgbColor } from "../src/viz/types";
+import type { BoxStyleOptions, OcrVisualizerOptions } from "../src/viz/ocr/types";
 
 describe("viz/types", () => {
   it("allows constructing a minimal OcrVisualizerOptions", () => {

@@ -1,21 +1,8 @@
-// Copyright (c) 2026 PaddlePaddle Authors. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-import type { OcrResultItem } from "../pipelines/ocr/core";
-import type { Point2D } from "../models/common";
-import type { BoxStyleOptions, RgbColor } from "./types";
-import { deterministicColor } from "./color";
+import type { OcrResultItem } from "../../pipelines/ocr/core";
+import type { Point2D } from "../../models/common";
+import type { RgbColor } from "../types";
+import type { BoxStyleOptions } from "./types";
+import { deterministicColor } from "../color";
 
 const DEFAULT_BG = "#ffffff";
 const OUTLINE_LINE_WIDTH = 1;
@@ -23,19 +10,12 @@ const TEXT_COLOR = "#000000";
 const ROTATION_THRESHOLD_DEG = 5;
 const VERTICAL_LINE_SPACING = 2;
 
-/**
- * Compute the angle (in radians) of the top edge of a quad polygon.
- * The top edge is defined as poly[0] -> poly[1].
- */
 function topEdgeAngle(poly: Point2D[]): number {
   const dx = poly[1][0] - poly[0][0];
   const dy = poly[1][1] - poly[0][1];
   return Math.atan2(dy, dx);
 }
 
-/**
- * Compute the bounding box of a polygon.
- */
 function polyBounds(poly: Point2D[]): {
   minX: number;
   minY: number;
@@ -70,10 +50,6 @@ function drawPolygonPath(
   ctx.closePath();
 }
 
-/**
- * Draw vertical text character-by-character, rendering each character
- * stacked vertically for CJK and other vertical text layouts.
- */
 function drawVerticalText(
   ctx: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D,
   text: string,
@@ -90,10 +66,6 @@ function drawVerticalText(
   }
 }
 
-/**
- * Draw the right panel: white background with detection box outlines and
- * recognized text rendered inside each box.
- */
 export function drawTextPanel(
   ctx: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D,
   offsetX: number,

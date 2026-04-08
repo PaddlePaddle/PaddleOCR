@@ -155,6 +155,14 @@
       <section class="panel">
         <div class="panel-grid">
           <label>
+            Model
+            <select id="modelVariant">
+              <option value="PP-OCRv5_mobile">PP-OCRv5 mobile</option>
+              <option value="PP-OCRv6_small">PP-OCRv6 small</option>
+              <option value="PP-OCRv6_tiny">PP-OCRv6 tiny</option>
+            </select>
+          </label>
+          <label>
             Runtime backend
             <select id="runtimeBackend">
               <option value="auto">auto</option>
@@ -182,12 +190,12 @@
         <div class="button-row" style="margin-top: 12px">
           <input id="imageInput" type="file" accept="image/*" hidden />
           <button id="chooseImageBtn">Choose image</button>
-          <button id="reinitializeBtn">Reinitialize engine</button>
+          <button id="reinitializeBtn">Reinitialize</button>
           <button id="runBtn" disabled>Run OCR</button>
         </div>
       </section>
 
-      <div id="status">Initializing runtime and OCR engine...</div>
+      <div id="status">Initializing...</div>
 
       <section class="content-grid">
         <section class="panel">
