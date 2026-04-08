@@ -118,8 +118,7 @@ export function drawTextPanel(
     const bounds = polyBounds(item.poly);
     const angle = topEdgeAngle(item.poly);
     const absDeg = Math.abs(angle * (180 / Math.PI));
-    const needsRotation =
-      absDeg > ROTATION_THRESHOLD_DEG && absDeg < 180 - ROTATION_THRESHOLD_DEG;
+    const needsRotation = absDeg > ROTATION_THRESHOLD_DEG && absDeg < 180 - ROTATION_THRESHOLD_DEG;
 
     // Detect vertical text: height > 2 * width and height > 30px
     const isVertical = bounds.height > 2 * bounds.width && bounds.height > 30;
@@ -146,22 +145,14 @@ export function drawTextPanel(
       // Scale down if total character height exceeds box height
       const totalHeight = charCount * (fontSize + VERTICAL_LINE_SPACING);
       if (totalHeight > bounds.height) {
-        fontSize = Math.max(
-          8,
-          Math.floor((bounds.height / charCount) * 0.8)
-        );
+        fontSize = Math.max(8, Math.floor((bounds.height / charCount) * 0.8));
       }
 
       // Ensure each character fits within the box width
       ctx.font = `${String(fontSize)}px "${fontFamily}"`;
-      const maxCharWidth = Math.max(
-        ...chars.map((c) => ctx.measureText(c).width)
-      );
+      const maxCharWidth = Math.max(...chars.map((c) => ctx.measureText(c).width));
       if (maxCharWidth > bounds.width) {
-        fontSize = Math.max(
-          8,
-          Math.floor(fontSize * (bounds.width / maxCharWidth))
-        );
+        fontSize = Math.max(8, Math.floor(fontSize * (bounds.width / maxCharWidth)));
       }
 
       const x = bounds.minX + offsetX + (bounds.width - fontSize) / 2;
@@ -176,10 +167,7 @@ export function drawTextPanel(
       // Shrink font if text is wider than the box
       const measured = ctx.measureText(item.text);
       if (measured.width > bounds.width && bounds.width > 0) {
-        fontSize = Math.max(
-          8,
-          Math.floor(fontSize * (bounds.width / measured.width))
-        );
+        fontSize = Math.max(8, Math.floor(fontSize * (bounds.width / measured.width)));
         ctx.font = `${String(fontSize)}px "${fontFamily}"`;
       }
 

@@ -203,15 +203,18 @@ viz 模块会渲染一张左右对比的合成图像：左侧为带有检测框�
 
 ## 包结构
 
-- `src/runtime`：运行时初始化与执行后端设置
-- `src/resources`：模型资源注册表、下载与缓存、tar 解析、资源解析
-- `src/models`：可复用模型模块
-- `src/platform`：浏览器与 worker 场景下的源码适配辅助
-- `src/worker`：worker 传输客户端、协议与通用 worker 启动代码
-- `src/pipelines/ocr`：OCR 配置解析、主线程与 worker 双路径产线 API 组装、默认 worker 入口接线以及共享执行器
-- `src/viz`：可选的可视化工具（左右对比合成图像、字体管理）
-- `src/types`：外部库的 TypeScript 类型声明（OpenCV.js、clipper-lib）
-- `src/utils`：共享工具函数（计时、深拷贝）
+```
+src/
+├── runtime/       — 推理运行时初始化
+├── resources/     — 模型与资源管理
+├── models/        — 模型接线
+├── platform/      — 浏览器/worker 输入适配
+├── worker/        — worker 传输层
+├── pipelines/     — 产线实现
+├── viz/           — 可视化（可选）
+├── types/         — 外部库类型声明
+└── utils/         — 共享工具
+```
 
 ## 运行时职责边界
 

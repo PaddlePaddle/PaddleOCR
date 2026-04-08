@@ -9,18 +9,18 @@ The `paddleocr-js` folder has two main parts:
 
 ## SDK package layout (`packages/core`)
 
-Inside `packages/core`, the SDK is organized into shared layers plus pipeline-specific
-implementations:
-
-- `src/runtime`: runtime initialization and execution backend setup
-- `src/resources`: model registry, browser cache, tar parsing, and asset resolution
-- `src/models`: model wiring plus preprocessing/postprocessing helpers
-- `src/platform`: browser and worker helpers for turning user-provided image sources into runtime inputs
-- `src/worker`: worker transport client, protocol, and generic message bootstrap
-- `src/pipelines/ocr`: OCR config parsing, main-thread/worker-backed pipeline assembly, shared execution runner, and OCR-specific worker entry wiring
-- `src/viz`: optional visualization utilities (side-by-side composite rendering, bounding box drawing, font management, deterministic color assignment)
-- `src/types`: TypeScript type declarations for external libraries (OpenCV.js, clipper-lib)
-- `src/utils`: shared utility functions (timing, deep clone)
+```
+src/
+├── runtime/       — inference runtime setup
+├── resources/     — model & asset management
+├── models/        — model wiring
+├── platform/      — browser/worker input adaptation
+├── worker/        — worker transport layer
+├── pipelines/     — pipeline implementations
+├── viz/           — visualization (optional)
+├── types/         — external type declarations
+└── utils/         — shared utilities
+```
 
 The current high-level pipeline entry point is `PaddleOCR.create()`. It coordinates:
 

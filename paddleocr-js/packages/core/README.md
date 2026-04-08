@@ -203,15 +203,18 @@ The viz module renders a side-by-side composite image: the original image with d
 
 ## Package Layout
 
-- `src/runtime`: runtime initialization and execution backend setup
-- `src/resources`: model asset registry, download/cache, tar parsing, and asset resolution
-- `src/models`: reusable model modules
-- `src/platform`: browser and worker source adaptation helpers
-- `src/worker`: worker transport client, protocol, and generic worker bootstrap
-- `src/pipelines/ocr`: OCR config parsing, main-thread/worker-backed pipeline API assembly, default worker entry wiring, and shared execution runner
-- `src/viz`: optional visualization utilities (side-by-side composite images, font management)
-- `src/types`: TypeScript type declarations for external libraries (OpenCV.js, clipper-lib)
-- `src/utils`: shared utility functions (timing, deep clone)
+```
+src/
+├── runtime/       — inference runtime setup
+├── resources/     — model & asset management
+├── models/        — model wiring
+├── platform/      — browser/worker input adaptation
+├── worker/        — worker transport layer
+├── pipelines/     — pipeline implementations
+├── viz/           — visualization (optional)
+├── types/         — external type declarations
+└── utils/         — shared utilities
+```
 
 ## Runtime Responsibilities
 
