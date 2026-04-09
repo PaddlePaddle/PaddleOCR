@@ -4,8 +4,7 @@ export {
   DEFAULT_DET_MODEL_CONFIG,
   createDetModel,
   createDetModelSession,
-  parseDetModelConfigText,
-  runDetModel
+  parseDetModelConfigText
 } from "./det";
 export {
   DEFAULT_REC_MODEL_PARSE_FALLBACKS,
@@ -13,7 +12,5 @@ export {
   DEFAULT_REC_MODEL_CONFIG,
   createRecModel,
   createRecModelSession,
-  parseRecModelConfigText,
-  prepareRecSample,
-  runRecModel
+  parseRecModelConfigText
 } from "./rec";

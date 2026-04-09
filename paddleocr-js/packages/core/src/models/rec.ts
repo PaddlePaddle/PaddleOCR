@@ -11,7 +11,7 @@ import {
   parseScaleValue,
   toBgrFloatCHWFromBgr
 } from "./common";
-import type { Point2D, NormalizeConfig } from "./common";
+import type { NormalizeConfig } from "./common";
 
 export interface RecModelConfig {
   imageShape: number[];
@@ -22,33 +22,28 @@ export interface RecModelConfig {
   maxWidth: number;
 }
 
-export interface RecSample {
-  originalIndex: number;
-  poly: Point2D[];
-  width: number;
-  chw: Float32Array;
+export interface RecRuntimeOverrides {
+  maxBatch?: number;
 }
 
 export interface RecResult {
-  originalIndex: number;
-  poly: Point2D[];
   text: string;
   score: number;
 }
 
 export interface RecModel {
-  kind: "rec";
-  config: RecModelConfig;
-  charDict: string[];
+  readonly kind: "rec";
+  readonly config: RecModelConfig;
+  readonly charDict: string[];
   readonly provider: string;
-  prepareSample(ctx: {
-    cv: OpenCv;
-    cropMat: Mat;
-    poly: Point2D[];
-    originalIndex: number;
-  }): RecSample;
-  recognize(samples: RecSample[]): Promise<RecResult[]>;
+  predict(cv: OpenCv, mats: Mat[], overrides?: RecRuntimeOverrides): Promise<RecResult[]>;
   dispose(): Promise<void>;
+}
+
+interface RecSample {
+  inputIndex: number;
+  width: number;
+  chw: Float32Array;
 }
 
 export const DEFAULT_REC_MODEL_PARSE_FALLBACKS: Readonly<
@@ -116,6 +111,19 @@ interface CreateRecModelArgs {
   webgpuState: WebGpuState;
 }
 
+interface InternalRecParams {
+  maxBatch: number;
+}
+
+function resolveRecParams(
+  config: RecModelConfig,
+  overrides?: RecRuntimeOverrides
+): InternalRecParams {
+  return {
+    maxBatch: overrides?.maxBatch ?? config.maxBatch
+  };
+}
+
 export async function createRecModel({
   ort,
   modelBytes,
@@ -142,21 +150,24 @@ export async function createRecModel({
     get provider() {
       return sessionState?.provider || "";
     },
-    prepareSample({ cv, cropMat, poly, originalIndex }) {
-      return prepareRecSample({ cv, config }, cropMat, poly, originalIndex);
-    },
-    async recognize(samples) {
+    async predict(cv, mats, overrides) {
       if (!sessionState?.session) {
         throw new Error("Recognition model session is not initialized.");
       }
-      return runRecModel(
+      const params = resolveRecParams(config, overrides);
+      const samples: RecSample[] = [];
+      for (let i = 0; i < mats.length; i += 1) {
+        samples.push(prepareRecSampleFromMat({ cv, config }, mats[i], i));
+      }
+      return runRecInference(
         {
           ort,
           session: sessionState.session,
           config,
           charDict: config.charDict
         },
-        samples
+        samples,
+        params
       );
     },
     async dispose() {
@@ -180,11 +191,10 @@ export async function createRecModelSession(
   );
 }
 
-export function prepareRecSample(
+function prepareRecSampleFromMat(
   context: { cv: OpenCv; config: RecModelConfig },
   cropMat: Mat,
-  poly: Point2D[],
-  originalIndex: number
+  inputIndex: number
 ): RecSample {
   const { cv, config } = context;
   const [channels, targetH, baseW] = config.imageShape;
@@ -221,7 +231,7 @@ export function prepareRecSample(
   }
   bgr.delete();
   resized.delete();
-  return { originalIndex, poly, width: recW, chw };
+  return { inputIndex, width: recW, chw };
 }
 
 interface RecRunContext {
@@ -291,16 +301,17 @@ function decodeCTCSample(
   return { text, score };
 }
 
-export async function runRecModel(
+async function runRecInference(
   context: RecRunContext,
-  samples: RecSample[]
+  samples: RecSample[],
+  params: InternalRecParams
 ): Promise<RecResult[]> {
   const { ort, session, config, charDict } = context;
   const recInputName = session.inputNames[0];
-  const batchSize = config.maxBatch;
+  const batchSize = params.maxBatch;
   const targetH = config.imageShape[1];
   const ordered = samples.slice().sort((a, b) => a.width - b.width);
-  const results: RecResult[] = [];
+  const decoded: Array<{ inputIndex: number; text: string; score: number }> = [];
 
   for (let start = 0; start < ordered.length; start += batchSize) {
     const batch = ordered.slice(start, start + batchSize);
@@ -318,15 +329,15 @@ export async function runRecModel(
     const stride = timeSteps * classes;
     const outputData = output.data as Float32Array;
     for (let index = 0; index < sampleCount; index += 1) {
-      const decoded = decodeCTCSample(outputData, index * stride, timeSteps, classes, charDict);
-      results.push({
-        originalIndex: batch[index].originalIndex,
-        poly: batch[index].poly,
-        text: decoded.text,
-        score: decoded.score
+      const result = decodeCTCSample(outputData, index * stride, timeSteps, classes, charDict);
+      decoded.push({
+        inputIndex: batch[index].inputIndex,
+        text: result.text,
+        score: result.score
       });
     }
   }
 
-  return results;
+  decoded.sort((a, b) => a.inputIndex - b.inputIndex);
+  return decoded.map(({ text, score }) => ({ text, score }));
 }
