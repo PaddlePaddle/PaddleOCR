@@ -4,8 +4,6 @@ import type { WorkerTransportClient, WorkerOptions } from "../../worker/client";
 import type { OcrModelConfig, OcrRuntimeParamsInput } from "./runtime-params";
 import type { InitializationSummary, OcrResult, OcrPipelineRunnerOptions } from "./core";
 import { cloneDefaultOcrConfig } from "./shared";
-import type { NormalizedPipelineConfig, PipelineRuntimeDefaults } from "./config";
-import type { ModelAsset } from "../../resources/model-asset";
 
 declare const __ORT_WASM_CDN_PREFIX__: string | undefined;
 
@@ -20,10 +18,6 @@ function createDefaultWorker(): Worker {
 
 export class WorkerBackedPaddleOCR {
   private options: OcrPipelineRunnerOptions;
-  private runtimeDefaults: PipelineRuntimeDefaults;
-  private assets: Record<string, ModelAsset>;
-  private modelSelection: Record<string, string | null> | null;
-  private pipelineConfig: NormalizedPipelineConfig | null;
   private lastInitializationSummary: InitializationSummary | null;
   private modelConfig: OcrModelConfig;
   private transportClient: WorkerTransportClient;
@@ -32,10 +26,6 @@ export class WorkerBackedPaddleOCR {
 
   constructor(options: OcrPipelineRunnerOptions, transportClient: WorkerTransportClient) {
     this.options = options;
-    this.runtimeDefaults = { ...(options.runtimeDefaults || {}) };
-    this.assets = options.assets;
-    this.modelSelection = options.modelSelection || null;
-    this.pipelineConfig = options.pipelineConfig || null;
     this.lastInitializationSummary = null;
     this.modelConfig = cloneDefaultOcrConfig();
     this.transportClient = transportClient;
@@ -106,20 +96,25 @@ export class WorkerBackedPaddleOCR {
     return this.modelConfig;
   }
 
-  async predict(source: unknown, params: OcrRuntimeParamsInput = {}): Promise<OcrResult> {
+  async predict(input: unknown, params: OcrRuntimeParamsInput = {}): Promise<OcrResult[]> {
     this.ensureActive();
     await this.initialize();
-    const { payload, transferables } = await sourceToWorkerPayload(
-      source as Parameters<typeof sourceToWorkerPayload>[0]
+    const sources: unknown[] = Array.isArray(input) ? input : [input];
+    const payloads: Array<{ payload: unknown; transferables: Transferable[] }> = await Promise.all(
+      sources.map((source) =>
+        sourceToWorkerPayload(source as Parameters<typeof sourceToWorkerPayload>[0])
+      )
     );
+    const combinedPayloads = payloads.map((p) => p.payload);
+    const combinedTransferables = payloads.flatMap((p) => p.transferables);
     return this.transportClient.request(
       "predict",
       {
-        source: payload,
+        sources: combinedPayloads,
         params
       },
-      transferables
-    ) as Promise<OcrResult>;
+      combinedTransferables
+    ) as Promise<OcrResult[]>;
   }
 
   async dispose(): Promise<void> {

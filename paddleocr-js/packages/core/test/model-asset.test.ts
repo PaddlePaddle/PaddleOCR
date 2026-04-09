@@ -60,9 +60,7 @@ describe("model resource validation", () => {
   });
 
   it("rejects missing model config resources", () => {
-    expect(() => assertModelResourceSlot("Recognition", "config", "")).toThrow(
-      /inference\.yml/i
-    );
+    expect(() => assertModelResourceSlot("Recognition", "config", "")).toThrow(/inference\.yml/i);
   });
 
   it("supports validating multiple model resources together", () => {

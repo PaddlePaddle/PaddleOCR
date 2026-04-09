@@ -17,7 +17,10 @@ vi.mock("../src/resources/index", () => ({
 
 vi.mock("../src/models/index", () => ({
   createDetModel,
-  createRecModel,
+  createRecModel
+}));
+
+vi.mock("../src/pipelines/ocr/crop", () => ({
   cropByPoly
 }));
 
@@ -50,12 +53,6 @@ afterEach(() => {
 const AUTO_RUNTIME_OPTIONS = Object.freeze({
   backend: "auto"
 });
-
-function createCrop() {
-  return {
-    delete: vi.fn()
-  };
-}
 
 function createResolvedAssets() {
   return {
@@ -145,14 +142,16 @@ describe("OCR pipeline core", () => {
       modelBytes: new Uint8Array([1]),
       configText: "det-config",
       backend: AUTO_RUNTIME_OPTIONS.backend,
-      webgpuState: { available: true, reason: "" }
+      webgpuState: { available: true, reason: "" },
+      batchSize: 1
     });
     expect(createRecModel).toHaveBeenCalledWith({
       ort,
       modelBytes: new Uint8Array([2]),
       configText: "rec-config",
       backend: AUTO_RUNTIME_OPTIONS.backend,
-      webgpuState: { available: true, reason: "" }
+      webgpuState: { available: true, reason: "" },
+      batchSize: 1
     });
     expect(summary).toEqual({
       backend: AUTO_RUNTIME_OPTIONS.backend,
@@ -197,51 +196,37 @@ describe("OCR pipeline core", () => {
 
   it("predicts OCR results and filters by score threshold", async () => {
     const cv = { name: "cv" };
-    const sourceMat = {
-      delete: vi.fn()
-    };
+    const sourceMat = { delete: vi.fn() };
     const sourceImage = {
       width: 640,
       height: 480,
       mat: sourceMat,
       dispose: vi.fn()
     };
-    const cropA = createCrop();
-    const cropB = createCrop();
+    const cropA = { delete: vi.fn() };
+    const cropB = { delete: vi.fn() };
     const detModel = {
       provider: "wasm",
-      detect: vi.fn().mockResolvedValue({
-        boxes: [{ poly: [[1, 1]] }, { poly: [[2, 2]] }]
-      }),
+      predict: vi
+        .fn()
+        .mockResolvedValue([
+          { boxes: [{ poly: [[1, 1]] }, { poly: [[2, 2]] }], srcW: 640, srcH: 480 }
+        ]),
       dispose: vi.fn()
     };
     const recModel = {
       provider: "wasm",
-      prepareSample: vi
-        .fn()
-        .mockReturnValueOnce({
-          originalIndex: 1,
-          poly: [[2, 2]],
-          width: 40,
-          chw: new Float32Array(1)
-        })
-        .mockReturnValueOnce({
-          originalIndex: 0,
-          poly: [[1, 1]],
-          width: 20,
-          chw: new Float32Array(1)
-        }),
-      recognize: vi.fn().mockResolvedValue([
-        { originalIndex: 1, poly: [[2, 2]], text: "low", score: 0.4 },
-        { originalIndex: 0, poly: [[1, 1]], text: "high", score: 0.95 },
-        { originalIndex: 2, poly: [[3, 3]], text: "", score: 0.99 }
+      predict: vi.fn().mockResolvedValue([
+        { text: "high", score: 0.95 },
+        { text: "low", score: 0.4 }
       ]),
       dispose: vi.fn()
     };
 
     mockEmptyDefaultOcrConfig();
     getOcrRuntimeParams.mockReturnValue({
-      text_rec_score_thresh: 0.5
+      det: {},
+      pipeline: { scoreThresh: 0.5 }
     });
     cropByPoly.mockReturnValueOnce(cropA).mockReturnValueOnce(cropB);
     nowMs
@@ -255,9 +240,7 @@ describe("OCR pipeline core", () => {
     const { OcrPipelineRunner } = await loadCoreModule();
     const runner = new OcrPipelineRunner({
       runtime: AUTO_RUNTIME_OPTIONS,
-      runtimeDefaults: {
-        text_det_limit_side_len: 64
-      },
+      runtimeDefaults: { text_det_limit_side_len: 64 },
       sourceToMat: vi.fn().mockResolvedValue(sourceImage)
     });
     runner.cv = cv;
@@ -274,22 +257,16 @@ describe("OCR pipeline core", () => {
       { text_det_limit_side_len: 64 },
       { text_rec_score_thresh: 0.8 }
     );
-    expect(detModel.detect).toHaveBeenCalledWith({
-      cv,
-      sourceMat,
-      params: { text_rec_score_thresh: 0.5 }
-    });
+    expect(detModel.predict).toHaveBeenCalledWith(cv, [sourceMat], {});
     expect(cropByPoly).toHaveBeenNthCalledWith(1, cv, sourceMat, [[1, 1]]);
     expect(cropByPoly).toHaveBeenNthCalledWith(2, cv, sourceMat, [[2, 2]]);
+    expect(recModel.predict).toHaveBeenCalledWith(cv, [cropA, cropB]);
     expect(cropA.delete).toHaveBeenCalledTimes(1);
     expect(cropB.delete).toHaveBeenCalledTimes(1);
     expect(sourceImage.dispose).toHaveBeenCalledTimes(1);
-    expect(result).toEqual({
-      image: {
-        width: 640,
-        height: 480
-      },
-      items: [{ originalIndex: 0, poly: [[1, 1]], text: "high", score: 0.95 }],
+    expect(result).toEqual([{
+      image: { width: 640, height: 480 },
+      items: [{ poly: [[1, 1]], text: "high", score: 0.95 }],
       metrics: {
         detMs: 10,
         recMs: 20,
@@ -303,19 +280,18 @@ describe("OCR pipeline core", () => {
         recProvider: "wasm",
         webgpuAvailable: false
       }
-    });
+    }]);
   });
 
   it("auto-initializes on predict and rejects when source adapter is missing", async () => {
     const detModel = {
       provider: "wasm",
-      detect: vi.fn().mockResolvedValue({ boxes: [] }),
+      predict: vi.fn().mockResolvedValue([{ boxes: [], srcW: 1, srcH: 1 }]),
       dispose: vi.fn()
     };
     const recModel = {
       provider: "wasm",
-      prepareSample: vi.fn(),
-      recognize: vi.fn().mockResolvedValue([]),
+      predict: vi.fn().mockResolvedValue([]),
       dispose: vi.fn()
     };
 
@@ -340,7 +316,10 @@ describe("OCR pipeline core", () => {
       });
     createDetModel.mockResolvedValue(detModel);
     createRecModel.mockResolvedValue(recModel);
-    getOcrRuntimeParams.mockReturnValue({ text_rec_score_thresh: 0 });
+    getOcrRuntimeParams.mockReturnValue({
+      det: {},
+      pipeline: { scoreThresh: 0 }
+    });
 
     const { OcrPipelineRunner } = await loadCoreModule();
     const noSourceRunner = new OcrPipelineRunner({});
@@ -362,7 +341,7 @@ describe("OCR pipeline core", () => {
     const result = await runner.predict({}, {});
 
     expect(initOpenCvRuntime).toHaveBeenCalled();
-    expect(result.items).toEqual([]);
+    expect(result[0].items).toEqual([]);
     expect(sourceImage.dispose).toHaveBeenCalledTimes(1);
   });
 

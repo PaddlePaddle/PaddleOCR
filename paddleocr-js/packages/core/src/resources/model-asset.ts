@@ -96,18 +96,14 @@ export function getModelEntryPath(slot: string): string | null {
 export function assertModelResourceSlot(kind: string, slot: string, value: unknown): void {
   if (slot === "model") {
     if (!(value instanceof Uint8Array) || value.byteLength === 0) {
-      throw new Error(
-        `${kind} model requires a non-empty ${MODEL_ENTRY_PATHS.model} resource.`
-      );
+      throw new Error(`${kind} model requires a non-empty ${MODEL_ENTRY_PATHS.model} resource.`);
     }
     return;
   }
 
   if (slot === "config") {
     if (typeof value !== "string" || value.trim().length === 0) {
-      throw new Error(
-        `${kind} model requires a non-empty ${MODEL_ENTRY_PATHS.config} resource.`
-      );
+      throw new Error(`${kind} model requires a non-empty ${MODEL_ENTRY_PATHS.config} resource.`);
     }
     return;
   }
@@ -115,10 +111,7 @@ export function assertModelResourceSlot(kind: string, slot: string, value: unkno
   throw new Error(`Unsupported model resource slot "${slot}".`);
 }
 
-export function assertModelResources(
-  kind: string,
-  resources: Record<string, unknown>
-): void {
+export function assertModelResources(kind: string, resources: Record<string, unknown>): void {
   for (const [slot, value] of Object.entries(resources)) {
     assertModelResourceSlot(kind, slot, value);
   }

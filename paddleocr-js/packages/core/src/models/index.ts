@@ -1,6 +1,5 @@
 export {
   DEFAULT_DET_MODEL_PARSE_FALLBACKS,
-  DEFAULT_DET_RUNTIME_LIMITS,
   DEFAULT_DET_MODEL_CONFIG,
   createDetModel,
   createDetModelSession,
@@ -14,3 +13,4 @@ export {
   createRecModelSession,
   parseRecModelConfigText
 } from "./rec";
+export type { RecRuntimeOverrides } from "./rec";

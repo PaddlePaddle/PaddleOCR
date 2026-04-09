@@ -9,7 +9,8 @@ import type {
   PipelineModelSelection,
   PipelineRuntimeDefaults
 } from "./config";
-import { normalizeOcrPipelineConfig } from "./config";
+import { normalizeOcrPipelineConfig, parseInputShape, toFiniteNumber } from "./config";
+import type { LimitType } from "./runtime-params";
 import { DEFAULT_OCR_PIPELINE_CONFIG_TEXT } from "./default-config";
 import type { OcrModelConfig } from "./runtime-params";
 import type { OrtRuntimeOptions } from "../../runtime/ort";
@@ -121,6 +122,127 @@ function readAliasedOption(
   }
 
   return hasResolvedValue ? resolved : undefined;
+}
+
+function isLimitType(value: unknown): value is LimitType {
+  return value === "min" || value === "max";
+}
+
+function overlayPipelineRuntimeDefaults(
+  base: PipelineRuntimeDefaults,
+  explicit: Partial<PipelineRuntimeDefaults>
+): PipelineRuntimeDefaults {
+  const next: Record<string, unknown> = { ...base };
+  for (const key of Object.keys(explicit) as Array<keyof PipelineRuntimeDefaults>) {
+    const value = explicit[key];
+    if (value === undefined) continue;
+    next[key as string] = value as unknown;
+  }
+  return next as PipelineRuntimeDefaults;
+}
+
+function readExplicitPipelineRuntimeDefaults(
+  options: Record<string, unknown>
+): Partial<PipelineRuntimeDefaults> {
+  const out: Partial<PipelineRuntimeDefaults> = {};
+
+  const limitSide = readAliasedOption(options, ["text_det_limit_side_len", "textDetLimitSideLen"], "text_det_limit_side_len");
+  if (limitSide !== undefined) {
+    const n = toFiniteNumber(limitSide);
+    if (n !== undefined) out.text_det_limit_side_len = n;
+  }
+
+  const limitType = readAliasedOption(options, ["text_det_limit_type", "textDetLimitType"], "text_det_limit_type");
+  if (limitType !== undefined && isLimitType(limitType)) {
+    out.text_det_limit_type = limitType;
+  }
+
+  const maxSide = readAliasedOption(options, ["text_det_max_side_limit", "textDetMaxSideLimit"], "text_det_max_side_limit");
+  if (maxSide !== undefined) {
+    const n = toFiniteNumber(maxSide);
+    if (n !== undefined) out.text_det_max_side_limit = n;
+  }
+
+  const detThresh = readAliasedOption(options, ["text_det_thresh", "textDetThresh"], "text_det_thresh");
+  if (detThresh !== undefined) {
+    const n = toFiniteNumber(detThresh);
+    if (n !== undefined) out.text_det_thresh = n;
+  }
+
+  const boxThresh = readAliasedOption(options, ["text_det_box_thresh", "textDetBoxThresh"], "text_det_box_thresh");
+  if (boxThresh !== undefined) {
+    const n = toFiniteNumber(boxThresh);
+    if (n !== undefined) out.text_det_box_thresh = n;
+  }
+
+  const unclip = readAliasedOption(options, ["text_det_unclip_ratio", "textDetUnclipRatio"], "text_det_unclip_ratio");
+  if (unclip !== undefined) {
+    const n = toFiniteNumber(unclip);
+    if (n !== undefined) out.text_det_unclip_ratio = n;
+  }
+
+  const detShape = readAliasedOption(options, ["text_det_input_shape", "textDetInputShape"], "text_det_input_shape");
+  if (detShape !== undefined && Array.isArray(detShape)) {
+    const parsed = parseInputShape(detShape);
+    if (parsed) out.text_det_input_shape = parsed;
+  }
+
+  const recScore = readAliasedOption(options, ["text_rec_score_thresh", "textRecScoreThresh"], "text_rec_score_thresh");
+  if (recScore !== undefined) {
+    const n = toFiniteNumber(recScore);
+    if (n !== undefined) out.text_rec_score_thresh = n;
+  }
+
+  const recShape = readAliasedOption(options, ["text_rec_input_shape", "textRecInputShape"], "text_rec_input_shape");
+  if (recShape !== undefined && Array.isArray(recShape)) {
+    const parsed = parseInputShape(recShape);
+    if (parsed) out.text_rec_input_shape = parsed;
+  }
+
+  return out;
+}
+
+function toBatchSizeOption(value: unknown): number | undefined {
+  const n = toFiniteNumber(value);
+  return n !== undefined && n >= 1 ? Math.floor(n) : undefined;
+}
+
+function readExplicitBatchSizes(options: Record<string, unknown>): {
+  det: number | undefined;
+  rec: number | undefined;
+  pipeline: number | undefined;
+} {
+  return {
+    det: toBatchSizeOption(
+      readAliasedOption(options, ["textDetectionBatchSize", "text_detection_batch_size"], "textDetectionBatchSize")
+    ),
+    rec: toBatchSizeOption(
+      readAliasedOption(options, ["textRecognitionBatchSize", "text_recognition_batch_size"], "textRecognitionBatchSize")
+    ),
+    pipeline: toBatchSizeOption(
+      readAliasedOption(options, ["pipelineBatchSize", "pipeline_batch_size", "batch_size"], "pipelineBatchSize")
+    )
+  };
+}
+
+function mergeNormalizedPipelineConfigWithExplicit(
+  normalized: NormalizedPipelineConfig,
+  options: Record<string, unknown>
+): NormalizedPipelineConfig {
+  const explicitRuntime = readExplicitPipelineRuntimeDefaults(options);
+  const explicitBatch = readExplicitBatchSizes(options);
+  const merged = deepClone(normalized);
+  merged.runtimeDefaults = overlayPipelineRuntimeDefaults(merged.runtimeDefaults, explicitRuntime);
+  if (explicitBatch.det !== undefined) {
+    merged.textDetectionBatchSize = explicitBatch.det;
+  }
+  if (explicitBatch.rec !== undefined) {
+    merged.textRecognitionBatchSize = explicitBatch.rec;
+  }
+  if (explicitBatch.pipeline !== undefined) {
+    merged.pipelineBatchSize = explicitBatch.pipeline;
+  }
+  return merged;
 }
 
 function resolveWarningBehavior(value: unknown): "warn" | "ignore" | "error" {
@@ -326,11 +448,7 @@ interface ConstructionResult {
 }
 
 function resolveConstructionOptions(options: Record<string, unknown> = {}): ConstructionResult {
-  const pipelineInput = readAliasedOption(
-    options,
-    ["pipelineConfigText", "pipelineConfig", "pipeline"],
-    "pipeline config"
-  );
+  const pipelineInput = options.pipelineConfig;
   const normalizedPipelineConfig =
     pipelineInput != null ? normalizeOcrPipelineConfig(pipelineInput) : null;
   const warningBehavior = resolveWarningBehavior(options.unsupportedBehavior);
@@ -356,11 +474,12 @@ function resolveConstructionOptions(options: Record<string, unknown> = {}): Cons
 
   if (normalizedPipelineConfig) {
     emitPipelineWarnings(warnings, warningBehavior);
+    const merged = mergeNormalizedPipelineConfigWithExplicit(normalizedPipelineConfig, options);
     return {
       assets,
       modelSelection,
-      runtimeDefaults: normalizedPipelineConfig.runtimeDefaults,
-      normalizedPipelineConfig
+      runtimeDefaults: merged.runtimeDefaults,
+      normalizedPipelineConfig: merged
     };
   }
 
@@ -420,6 +539,7 @@ export function resolveWorkerOptions(workerOption: unknown): WorkerResolvedOptio
 
 export function resolvePaddleOCROptions(options: Record<string, unknown> = {}): ResolvedOcrOptions {
   const resolved = resolveConstructionOptions(options);
+
   return {
     assets: resolved.assets,
     modelSelection: resolved.modelSelection,

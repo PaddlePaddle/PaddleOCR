@@ -89,10 +89,12 @@ describe("worker-backed OCR adapter", () => {
       2,
       "predict",
       {
-        source: {
-          kind: "imageBitmap",
-          imageBitmap: transferables[0]
-        },
+        sources: [
+          {
+            kind: "imageBitmap",
+            imageBitmap: transferables[0]
+          }
+        ],
         params: { text_rec_score_thresh: 0.5 }
       },
       transferables

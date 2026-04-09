@@ -1,5 +1,5 @@
 import type { DetModelConfig, DetRuntimeOverrides, LimitType } from "../../models/det";
-import type { RecModelConfig, RecRuntimeOverrides } from "../../models/rec";
+import type { RecModelConfig } from "../../models/rec";
 
 export type { LimitType };
 
@@ -10,7 +10,6 @@ export interface OcrModelConfig {
 
 export interface ResolvedOcrParams {
   det: DetRuntimeOverrides;
-  rec: RecRuntimeOverrides;
   pipeline: { scoreThresh: number };
 }
 
@@ -58,21 +57,24 @@ export function getOcrRuntimeParams(
           params.text_det_limit_side_len,
           params.textDetLimitSideLen,
           defaults.text_det_limit_side_len,
-          defaults.textDetLimitSideLen
+          defaults.textDetLimitSideLen,
+          config.det.resizeLong
         )
       ),
       limitType: firstDefined(
         params.text_det_limit_type,
         params.textDetLimitType,
         defaults.text_det_limit_type,
-        defaults.textDetLimitType
+        defaults.textDetLimitType,
+        config.det.limitType
       ),
       maxSideLimit: toNumberOrUndefined(
         firstDefined(
           params.text_det_max_side_limit,
           params.textDetMaxSideLimit,
           defaults.text_det_max_side_limit,
-          defaults.textDetMaxSideLimit
+          defaults.textDetMaxSideLimit,
+          config.det.maxSideLimit
         )
       ),
       thresh: toNumberOrUndefined(
@@ -100,7 +102,6 @@ export function getOcrRuntimeParams(
         )
       )
     },
-    rec: {},
     pipeline: {
       scoreThresh: Number(
         firstDefined(

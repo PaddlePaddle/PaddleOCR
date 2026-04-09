@@ -4,7 +4,7 @@ import type { InferenceSession, Tensor } from "onnxruntime-web";
 import { assertModelResources } from "../resources/model-asset";
 import { createSession, getProviderCandidates, releaseSessions } from "../runtime/ort";
 import type { OrtModule, WebGpuState, SessionState } from "../runtime/ort";
-import { clamp, withTimeout } from "../utils/common";
+import { clamp, resolveRuntimeBatchSize, withTimeout } from "../utils/common";
 import {
   boxScoreFast,
   getMiniBoxFromPoints,
@@ -19,6 +19,7 @@ import type { Point2D, NormalizeConfig, DetBox } from "./common";
 export type LimitType = "min" | "max";
 
 export interface DetRuntimeOverrides {
+  batchSize?: number;
   thresh?: number;
   boxThresh?: number;
   unclipRatio?: number;
@@ -36,9 +37,10 @@ export interface DetPostprocessConfig {
 
 export interface DetModelConfig {
   resizeLong: number;
+  limitType: LimitType;
+  maxSideLimit: number;
   normalize: NormalizeConfig;
   postprocess: DetPostprocessConfig;
-  maxSideLimit: number;
 }
 
 export interface DetModel {
@@ -78,32 +80,41 @@ interface InternalDetResult {
   boxes: DetBox[];
 }
 
+interface InternalDetBatchItem {
+  prep: DetPreprocessResult;
+  boxes: DetBox[];
+}
+
 const DET_BOX_MIN_SIZE = 3;
 
-export const DEFAULT_DET_MODEL_PARSE_FALLBACKS: Readonly<Omit<DetModelConfig, "maxSideLimit">> =
-  Object.freeze({
-    resizeLong: 960,
-    normalize: {
-      mean: [0.485, 0.456, 0.406],
-      std: [0.229, 0.224, 0.225],
-      scale: 1 / 255
-    },
-    postprocess: {
-      thresh: 0.3,
-      boxThresh: 0.6,
-      maxCandidates: 1000,
-      unclipRatio: 1.5
-    }
-  });
-
-export const DEFAULT_DET_RUNTIME_LIMITS = Object.freeze({
-  maxSideLimit: 4000
+export const DEFAULT_DET_MODEL_PARSE_FALLBACKS: Readonly<DetModelConfig> = Object.freeze({
+  resizeLong: 960,
+  limitType: "max",
+  maxSideLimit: 4000,
+  normalize: {
+    mean: [0.485, 0.456, 0.406],
+    std: [0.229, 0.224, 0.225],
+    scale: 1 / 255
+  },
+  postprocess: {
+    thresh: 0.3,
+    boxThresh: 0.6,
+    maxCandidates: 1000,
+    unclipRatio: 1.5
+  }
 });
 
 export const DEFAULT_DET_MODEL_CONFIG: Readonly<DetModelConfig> = Object.freeze({
-  ...DEFAULT_DET_MODEL_PARSE_FALLBACKS,
-  maxSideLimit: DEFAULT_DET_RUNTIME_LIMITS.maxSideLimit
+  ...DEFAULT_DET_MODEL_PARSE_FALLBACKS
 });
+
+function parseDetLimitType(raw: unknown): LimitType {
+  const v = typeof raw === "string" ? raw.trim().toLowerCase() : "";
+  if (v === "min" || v === "max") {
+    return v;
+  }
+  return DEFAULT_DET_MODEL_PARSE_FALLBACKS.limitType;
+}
 
 export function parseDetModelConfigText(text: string): DetModelConfig {
   const parsed = parseInferenceConfigText(text);
@@ -113,8 +124,17 @@ export function parseDetModelConfigText(text: string): DetModelConfig {
   const normalize = getTransformOp(transformOps, "NormalizeImage");
   const postprocess = (parsed.PostProcess || {}) as Record<string, unknown>;
 
+  const maxSideRaw = resize?.max_side_limit;
+  const maxSideLimit = Number(maxSideRaw);
+  const maxSide =
+    Number.isFinite(maxSideLimit) && maxSideLimit > 0
+      ? maxSideLimit
+      : DEFAULT_DET_MODEL_PARSE_FALLBACKS.maxSideLimit;
+
   return {
     resizeLong: Number(resize?.resize_long ?? DEFAULT_DET_MODEL_PARSE_FALLBACKS.resizeLong),
+    limitType: parseDetLimitType(resize?.limit_type),
+    maxSideLimit: maxSide,
     normalize: {
       mean:
         (normalize?.mean as number[] | undefined) ??
@@ -134,8 +154,7 @@ export function parseDetModelConfigText(text: string): DetModelConfig {
       unclipRatio: Number(
         postprocess.unclip_ratio ?? DEFAULT_DET_MODEL_PARSE_FALLBACKS.postprocess.unclipRatio
       )
-    },
-    maxSideLimit: DEFAULT_DET_RUNTIME_LIMITS.maxSideLimit
+    }
   };
 }
 
@@ -145,19 +164,20 @@ interface CreateDetModelArgs {
   configText: string;
   backend: string;
   webgpuState: WebGpuState;
+  batchSize?: number;
 }
 
 function resolveDetParams(
-  config: DetModelConfig,
+  defaults: InternalDetParams,
   overrides?: DetRuntimeOverrides
 ): InternalDetParams {
   return {
-    limitSideLen: overrides?.limitSideLen ?? config.resizeLong,
-    limitType: overrides?.limitType ?? "max",
-    maxSideLimit: overrides?.maxSideLimit ?? config.maxSideLimit,
-    thresh: overrides?.thresh ?? config.postprocess.thresh,
-    boxThresh: overrides?.boxThresh ?? config.postprocess.boxThresh,
-    unclipRatio: overrides?.unclipRatio ?? config.postprocess.unclipRatio
+    limitSideLen: overrides?.limitSideLen ?? defaults.limitSideLen,
+    limitType: overrides?.limitType ?? defaults.limitType,
+    maxSideLimit: overrides?.maxSideLimit ?? defaults.maxSideLimit,
+    thresh: overrides?.thresh ?? defaults.thresh,
+    boxThresh: overrides?.boxThresh ?? defaults.boxThresh,
+    unclipRatio: overrides?.unclipRatio ?? defaults.unclipRatio
   };
 }
 
@@ -166,13 +186,23 @@ export async function createDetModel({
   modelBytes,
   configText,
   backend,
-  webgpuState
+  webgpuState,
+  batchSize: batchSizeArg
 }: CreateDetModelArgs): Promise<DetModel> {
   assertModelResources("Detection", {
     model: modelBytes,
     config: configText
   });
   const config = parseDetModelConfigText(configText);
+  const defaultBatchSize = Math.max(1, batchSizeArg ?? 1);
+  const defaultParams: InternalDetParams = {
+    limitSideLen: config.resizeLong,
+    limitType: config.limitType,
+    maxSideLimit: config.maxSideLimit,
+    thresh: config.postprocess.thresh,
+    boxThresh: config.postprocess.boxThresh,
+    unclipRatio: config.postprocess.unclipRatio
+  };
   let sessionState: SessionState | null = await createDetModelSession(
     ort,
     modelBytes,
@@ -190,23 +220,25 @@ export async function createDetModel({
       if (!sessionState?.session) {
         throw new Error("Detection model session is not initialized.");
       }
+      const params = resolveDetParams(defaultParams, overrides);
+      const batchSize = resolveRuntimeBatchSize(overrides?.batchSize, defaultBatchSize);
       const results: DetResult[] = [];
-      for (const mat of mats) {
-        const internal = await runDetModel(
-          {
-            cv,
-            ort,
-            config,
-            session: sessionState.session
-          },
-          mat,
-          resolveDetParams(config, overrides)
-        );
-        results.push({
-          boxes: internal.boxes,
-          srcW: internal.prep.srcW,
-          srcH: internal.prep.srcH
-        });
+      const runCtx: DetRunContext = {
+        cv,
+        ort,
+        config,
+        session: sessionState.session
+      };
+      for (let i = 0; i < mats.length; i += batchSize) {
+        const chunk = mats.slice(i, i + batchSize);
+        const internals = await runDetBatchInference(runCtx, chunk, params);
+        for (const internal of internals) {
+          results.push({
+            boxes: internal.boxes,
+            srcW: internal.prep.srcW,
+            srcH: internal.prep.srcH
+          });
+        }
       }
       return results;
     },
@@ -303,31 +335,119 @@ function getDetMap(outputTensor: Tensor): { data: Float32Array; h: number; w: nu
   throw new Error(`Unexpected det output dims: [${dims.join(", ")}]`);
 }
 
-async function runDetModel(
+function createBatchDetTensor(
+  ort: OrtModule,
+  preps: DetPreprocessResult[],
+  maxH: number,
+  maxW: number
+): Tensor {
+  const batch = preps.length;
+  const plane = 3 * maxH * maxW;
+  const out = new Float32Array(batch * plane);
+  for (let i = 0; i < batch; i += 1) {
+    const prep = preps[i];
+    const chw = prep.tensor.data as Float32Array;
+    const { dstH, dstW } = prep;
+    const base = i * plane;
+    for (let c = 0; c < 3; c += 1) {
+      const srcChannelBase = c * dstH * dstW;
+      const dstChannelBase = base + c * maxH * maxW;
+      for (let y = 0; y < dstH; y += 1) {
+        const srcRow = srcChannelBase + y * dstW;
+        const dstRow = dstChannelBase + y * maxW;
+        out.set(chw.subarray(srcRow, srcRow + dstW), dstRow);
+      }
+    }
+  }
+  return new ort.Tensor("float32", out, [batch, 3, maxH, maxW]);
+}
+
+function batchDetOutputPlaneOffset(dims: readonly number[], batchIndex: number): number {
+  const tail = dims.slice(1).reduce((a, b) => a * b, 1);
+  return batchIndex * tail;
+}
+
+function detFeatureCropDims(
+  dstH: number,
+  dstW: number,
+  maxH: number,
+  maxW: number,
+  ohFull: number,
+  owFull: number
+): { cropOh: number; cropOw: number } {
+  const cropOh = Math.max(1, Math.min(ohFull, Math.round((ohFull * dstH) / maxH)));
+  const cropOw = Math.max(1, Math.min(owFull, Math.round((owFull * dstW) / maxW)));
+  return { cropOh, cropOw };
+}
+
+function sliceBatchedDetOutputPlane(
+  ort: OrtModule,
+  fullOutput: Tensor,
+  batchIndex: number,
+  cropOh: number,
+  cropOw: number,
+  ohFull: number,
+  owFull: number
+): Tensor {
+  const data = fullOutput.data as Float32Array;
+  const dims = fullOutput.dims;
+  const base = batchDetOutputPlaneOffset(dims, batchIndex);
+  const out = new Float32Array(cropOh * cropOw);
+  for (let r = 0; r < cropOh; r += 1) {
+    const rowStart = base + r * owFull;
+    out.set(data.subarray(rowStart, rowStart + cropOw), r * cropOw);
+  }
+  return new ort.Tensor("float32", out, [1, 1, cropOh, cropOw]);
+}
+
+async function runDetBatchInference(
   context: DetRunContext,
-  sourceMat: Mat,
+  mats: Mat[],
   params: InternalDetParams
-): Promise<InternalDetResult> {
+): Promise<InternalDetBatchItem[]> {
   const { cv, ort, config, session } = context;
-  const prep = preprocessDet({ cv, ort, config }, sourceMat, params);
+  const preps = mats.map((mat) => preprocessDet({ cv, ort, config }, mat, params));
+  const maxH = Math.max(...preps.map((p) => p.dstH));
+  const maxW = Math.max(...preps.map((p) => p.dstW));
   const inputName = session.inputNames[0];
-  const outputMap = await session.run({ [inputName]: prep.tensor });
-  const output = outputMap[session.outputNames[0]];
-  return {
-    output,
-    prep,
-    boxes: dbPostprocess(
+  const batchTensor = createBatchDetTensor(ort, preps, maxH, maxW);
+  const outputMap = await session.run({ [inputName]: batchTensor });
+  const fullOutput = outputMap[session.outputNames[0]];
+  const od = fullOutput.dims;
+  if (od.length !== 3 && od.length !== 4) {
+    throw new Error(`Unexpected det output dims: [${od.join(", ")}]`);
+  }
+  const ohFull = od.length === 4 ? od[2] : od[1];
+  const owFull = od.length === 4 ? od[3] : od[2];
+  const nOut =
+    od.length === 4
+      ? od[0]
+      : mats.length === 1
+        ? 1
+        : od[0];
+  if (nOut !== mats.length) {
+    throw new Error(`Detection batch output N=${String(nOut)} does not match input batch ${String(mats.length)}`);
+  }
+
+  const items: InternalDetBatchItem[] = [];
+  for (let i = 0; i < mats.length; i += 1) {
+    const prep = preps[i];
+    const { cropOh, cropOw } = detFeatureCropDims(prep.dstH, prep.dstW, maxH, maxW, ohFull, owFull);
+    const planeTensor = sliceBatchedDetOutputPlane(ort, fullOutput, i, cropOh, cropOw, ohFull, owFull);
+    const boxes = postprocessDet(
       { cv, config },
-      output,
+      planeTensor,
       prep,
       params.thresh,
       params.boxThresh,
       params.unclipRatio
-    )
-  };
+    );
+    items.push({ prep, boxes });
+  }
+  return items;
 }
 
-function dbPostprocess(
+function postprocessDet(
   context: { cv: OpenCv; config: DetModelConfig },
   detOutput: Tensor,
   meta: DetPreprocessResult,

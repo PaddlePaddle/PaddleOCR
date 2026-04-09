@@ -7,6 +7,7 @@ import { createWorkerBackedPaddleOCR } from "./worker-backed";
 import type { WorkerBackedPaddleOCR } from "./worker-backed";
 import type { OrtRuntimeOptions } from "../../runtime/ort";
 import type { ModelAsset } from "../../resources/model-asset";
+import type { LimitType } from "./runtime-params";
 
 export interface PaddleOCRCreateOptions {
   worker?: boolean | { createWorker?: () => Worker };
@@ -14,14 +15,12 @@ export interface PaddleOCRCreateOptions {
   initialize?: boolean;
   runtime?: OrtRuntimeOptions;
 
+  pipelineConfig?: unknown;
+  unsupportedBehavior?: "warn" | "ignore" | "error";
+
   lang?: string;
   ocrVersion?: string;
   ocr_version?: string;
-
-  pipelineConfig?: unknown;
-  pipelineConfigText?: string;
-  pipeline?: unknown;
-  unsupportedBehavior?: "warn" | "ignore" | "error";
 
   textDetectionModelName?: string;
   text_detection_model_name?: string;
@@ -34,6 +33,27 @@ export interface PaddleOCRCreateOptions {
   textRecognitionModelAsset?: ModelAsset;
   textRecognitionModelDir?: ModelAsset;
   text_recognition_model_dir?: ModelAsset;
+
+  textDetectionBatchSize?: number;
+  text_detection_batch_size?: number;
+  textRecognitionBatchSize?: number;
+  text_recognition_batch_size?: number;
+  batch_size?: number;
+
+  textDetLimitSideLen?: number;
+  text_det_limit_side_len?: number;
+  textDetLimitType?: LimitType;
+  text_det_limit_type?: LimitType;
+  textDetMaxSideLimit?: number;
+  text_det_max_side_limit?: number;
+  textDetThresh?: number;
+  text_det_thresh?: number;
+  textDetBoxThresh?: number;
+  text_det_box_thresh?: number;
+  textDetUnclipRatio?: number;
+  text_det_unclip_ratio?: number;
+  textRecScoreThresh?: number;
+  text_rec_score_thresh?: number;
 
   [key: string]: unknown;
 }
@@ -69,13 +89,6 @@ export class PaddleOCR extends OcrPipelineRunner {
       await instance.initialize();
     }
     return instance;
-  }
-
-  static async fromPipelineConfig(
-    pipelineConfig: unknown,
-    options: PaddleOCRCreateOptions = {}
-  ): Promise<PaddleOCR | WorkerBackedPaddleOCR> {
-    return PaddleOCR.create({ ...options, pipelineConfig });
   }
 }
 

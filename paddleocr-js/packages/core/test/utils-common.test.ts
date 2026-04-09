@@ -1,6 +1,14 @@
 import { describe, expect, it, vi } from "vitest";
 
-import { clamp, deepClone, distance2, formatMs, nowMs, withTimeout } from "../src/utils/common";
+import {
+  clamp,
+  deepClone,
+  distance2,
+  formatMs,
+  nowMs,
+  resolveRuntimeBatchSize,
+  withTimeout
+} from "../src/utils/common";
 
 describe("utils/common", () => {
   it("reads the current high-resolution timestamp", () => {
@@ -23,6 +31,17 @@ describe("utils/common", () => {
 
   it("formats millisecond durations with one decimal place", () => {
     expect(formatMs(12.34)).toBe("12.3 ms");
+  });
+
+  it("resolveRuntimeBatchSize uses default when override is undefined", () => {
+    expect(resolveRuntimeBatchSize(undefined, 4)).toBe(4);
+  });
+
+  it("resolveRuntimeBatchSize coerces numeric strings and enforces a minimum of 1", () => {
+    expect(resolveRuntimeBatchSize("3", 1)).toBe(3);
+    expect(resolveRuntimeBatchSize(0, 2)).toBe(1);
+    expect(resolveRuntimeBatchSize(-1, 2)).toBe(1);
+    expect(resolveRuntimeBatchSize(Number.NaN, 2)).toBe(1);
   });
 
   it("resolves before the timeout when the promise settles in time", async () => {

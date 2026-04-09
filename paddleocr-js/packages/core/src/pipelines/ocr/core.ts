@@ -1,4 +1,4 @@
-import type { OpenCv } from "@techstark/opencv-js";
+import type { OpenCv, Mat } from "@techstark/opencv-js";
 import type { ModelAsset, ModelLoadSummary } from "../../resources/model-asset";
 import { loadModelAsset } from "../../resources/index";
 import { createDetModel, createRecModel } from "../../models/index";
@@ -145,20 +145,25 @@ export class OcrPipelineRunner {
       loadedAssets[1].configText
     );
     await this.disposeModelsOnly();
+    const detBatchSize = this.pipelineConfig?.textDetectionBatchSize ?? 1;
+    const recBatchSize = this.pipelineConfig?.textRecognitionBatchSize ?? 1;
+
     const [detModel, recModel] = await Promise.all([
       createDetModel({
         ort: this.ort,
         modelBytes: loadedAssets[0].modelBytes,
         configText: loadedAssets[0].configText,
         backend,
-        webgpuState
+        webgpuState,
+        batchSize: detBatchSize
       }),
       createRecModel({
         ort: this.ort,
         modelBytes: loadedAssets[1].modelBytes,
         configText: loadedAssets[1].configText,
         backend,
-        webgpuState
+        webgpuState,
+        batchSize: recBatchSize
       })
     ]);
     this.detModel = detModel;
@@ -189,7 +194,7 @@ export class OcrPipelineRunner {
     return this.modelConfig;
   }
 
-  async predict(source: unknown, params: OcrRuntimeParamsInput = {}): Promise<OcrResult> {
+  async predict(input: unknown, params: OcrRuntimeParamsInput = {}): Promise<OcrResult[]> {
     if (!this.sourceToMat) {
       throw new Error("PaddleOCR source adapter is not configured.");
     }
@@ -204,32 +209,60 @@ export class OcrPipelineRunner {
       throw new Error("Initialization did not complete. Call initialize() first.");
     }
 
-    const sourceImage = await this.sourceToMat(cv, source);
+    const sources = Array.isArray(input) ? input : [input];
+    const sourceImages = await Promise.all(
+      sources.map((source) => this.sourceToMat!(cv, source))
+    );
+
     const totalStart = nowMs();
     try {
       const resolved = getOcrRuntimeParams(this.modelConfig, this.runtimeDefaults, params);
 
       const detStart = nowMs();
-      const detResults = await detModel.predict(cv, [sourceImage.mat], resolved.det);
+      const detResults = await detModel.predict(
+        cv,
+        sourceImages.map((s) => s.mat),
+        resolved.det
+      );
       const detElapsed = nowMs() - detStart;
-      const detBoxes = detResults[0]?.boxes ?? [];
 
       const recStart = nowMs();
-      const cropMats = detBoxes.map((box) => cropByPoly(cv, sourceImage.mat, box.poly));
-      try {
-        const recResults = await recModel.predict(cv, cropMats, resolved.rec);
+      const perImageItems: OcrResultItem[][] = [];
 
-        const items: OcrResultItem[] = [];
-        for (let i = 0; i < recResults.length; i += 1) {
-          const rec = recResults[i];
-          if (rec.text && rec.score >= resolved.pipeline.scoreThresh) {
-            items.push({
-              poly: detBoxes[i].poly,
-              text: rec.text,
-              score: rec.score
-            });
+      for (let imgIdx = 0; imgIdx < detResults.length; imgIdx += 1) {
+        const detBoxes = detResults[imgIdx]?.boxes ?? [];
+        const cropMats: Mat[] = [];
+        for (let boxIdx = 0; boxIdx < detBoxes.length; boxIdx += 1) {
+          cropMats.push(cropByPoly(cv, sourceImages[imgIdx].mat, detBoxes[boxIdx].poly));
+        }
+
+        try {
+          const recResults = cropMats.length ? await recModel.predict(cv, cropMats) : [];
+          const items: OcrResultItem[] = [];
+          for (let boxIdx = 0; boxIdx < recResults.length; boxIdx += 1) {
+            const rec = recResults[boxIdx];
+            if (rec.text && rec.score >= resolved.pipeline.scoreThresh) {
+              items.push({
+                poly: detBoxes[boxIdx].poly,
+                text: rec.text,
+                score: rec.score
+              });
+            }
+          }
+          perImageItems.push(items);
+        } finally {
+          for (const mat of cropMats) {
+            mat.delete();
           }
         }
+      }
+
+      const recElapsed = nowMs() - recStart;
+      const totalElapsed = nowMs() - totalStart;
+
+      const results: OcrResult[] = sourceImages.map((sourceImage, imgIdx) => {
+        const detBoxes = detResults[imgIdx]?.boxes ?? [];
+        const items = perImageItems[imgIdx] ?? [];
 
         return {
           image: {
@@ -239,8 +272,8 @@ export class OcrPipelineRunner {
           items,
           metrics: {
             detMs: detElapsed,
-            recMs: nowMs() - recStart,
-            totalMs: nowMs() - totalStart,
+            recMs: recElapsed,
+            totalMs: totalElapsed,
             detectedBoxes: detBoxes.length,
             recognizedCount: items.length
           },
@@ -252,13 +285,13 @@ export class OcrPipelineRunner {
             webgpuAvailable: this.webgpuState.available
           }
         };
-      } finally {
-        for (const mat of cropMats) {
-          mat.delete();
-        }
-      }
+      });
+
+      return results;
     } finally {
-      sourceImage.dispose();
+      for (const sourceImage of sourceImages) {
+        sourceImage.dispose();
+      }
     }
   }
 

@@ -154,12 +154,12 @@ async function runOcr(): Promise<void> {
 
   try {
     setStatus("Running OCR...");
-    const result: OcrResult = await state.ocr.predict(state.imageFile, {
+    const result: OcrResult = (await state.ocr.predict(state.imageFile, {
       textDetThresh: Number(ui.detThresh.value),
       textDetBoxThresh: Number(ui.boxThresh.value),
       textDetUnclipRatio: Number(ui.unclipRatio.value),
       textRecScoreThresh: Number(ui.recScoreThresh.value)
-    });
+    }))[0];
 
     if (!state.previewBitmap) {
       state.previewBitmap = await createImageBitmap(state.imageFile);
@@ -174,9 +174,8 @@ async function runOcr(): Promise<void> {
     ui.metrics.textContent = [
       ui.metrics.textContent,
       "",
-      `det infer: ${formatMs(result.metrics.detInferMs)}`,
-      `rec prep: ${formatMs(result.metrics.recPrepMs)}`,
-      `rec infer: ${formatMs(result.metrics.recInferMs)}`,
+      `det: ${formatMs(result.metrics.detMs)}`,
+      `rec: ${formatMs(result.metrics.recMs)}`,
       `total: ${formatMs(result.metrics.totalMs)}`,
       `detected boxes: ${String(result.metrics.detectedBoxes)}`,
       `recognized lines: ${String(result.metrics.recognizedCount)}`

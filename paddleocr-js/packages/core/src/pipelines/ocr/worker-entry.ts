@@ -25,7 +25,8 @@ function createPaddleOCRWorkerMessageHandler() {
     if (!ocr) {
       throw new Error("OCR worker is not initialized.");
     }
-    return ocr.predict(payload.source, (payload.params || {}) as OcrRuntimeParamsInput);
+    const sources = payload.sources;
+    return ocr.predict(sources, (payload.params || {}) as OcrRuntimeParamsInput);
   }
 
   async function handleDispose() {

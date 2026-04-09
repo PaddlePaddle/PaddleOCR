@@ -101,9 +101,12 @@ describe("OCR worker entry bootstrap", () => {
     await capturedHandler("init", { options: {} });
 
     await expect(
-      capturedHandler("predict", { source: { kind: "imageBitmap" }, params: { limit: 1 } })
+      capturedHandler("predict", {
+        sources: [{ kind: "imageBitmap" }],
+        params: { limit: 1 }
+      })
     ).resolves.toEqual({ items: [] });
-    expect(predict).toHaveBeenCalledWith({ kind: "imageBitmap" }, { limit: 1 });
+    expect(predict).toHaveBeenCalledWith([{ kind: "imageBitmap" }], { limit: 1 });
 
     await expect(capturedHandler("dispose", {})).resolves.toEqual({});
     expect(dispose).toHaveBeenCalledTimes(1);
@@ -112,7 +115,7 @@ describe("OCR worker entry bootstrap", () => {
   it("rejects predict before initialization and unknown request types", async () => {
     await loadWorkerEntry();
 
-    await expect(capturedHandler("predict", { source: {}, params: {} })).rejects.toThrow(
+    await expect(capturedHandler("predict", { sources: [{}], params: {} })).rejects.toThrow(
       /not initialized/i
     );
     await expect(capturedHandler("other", {})).rejects.toThrow(/Unsupported worker request type/i);

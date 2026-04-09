@@ -25,10 +25,14 @@ vi.mock("../src/runtime/ort", () => ({
   releaseSessions
 }));
 
-vi.mock("../src/utils/common", () => ({
-  clamp,
-  withTimeout
-}));
+vi.mock("../src/utils/common", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("../src/utils/common")>();
+  return {
+    ...actual,
+    clamp,
+    withTimeout
+  };
+});
 
 vi.mock("../src/models/common", () => ({
   boxScoreFast,
@@ -49,52 +53,7 @@ async function loadDetModule() {
   return import("../src/models/det");
 }
 
-function createSourceMat(channels, cols = 100, rows = 50) {
-  return {
-    cols,
-    rows,
-    channels: () => channels
-  };
-}
-
-/** OpenCV-like facade for `preprocessDet` branch tests (resize/cvtColor only). */
-function createPreprocessCvFixture() {
-  return {
-    Mat: class Mat {
-      constructor() {
-        this._channels = 3;
-        this.data = new Uint8Array(1);
-      }
-      channels() {
-        return this._channels;
-      }
-      copyTo(target) {
-        target._channels = 3;
-        target.data = this.data;
-      }
-      delete() {}
-    },
-    Size: class Size {
-      constructor(width, height) {
-        this.width = width;
-        this.height = height;
-      }
-    },
-    INTER_LINEAR: "linear",
-    COLOR_RGBA2BGR: "rgba",
-    COLOR_GRAY2BGR: "gray",
-    resize: vi.fn((src, dst, size) => {
-      dst._channels = src.channels();
-      dst.data = new Uint8Array(size.width * size.height * 3);
-    }),
-    cvtColor: vi.fn((src, dst) => {
-      dst._channels = 3;
-      dst.data = src.data;
-    })
-  };
-}
-
-/** CV facade for `createDetModel().detect()` integration-style test (preprocess + dbPostprocess). */
+/** CV facade for `createDetModel().predict()` integration-style test (preprocess + postprocessDet). */
 function createDetModelIntegrationCv() {
   return {
     Mat: class Mat {
@@ -164,13 +123,11 @@ describe("detection model", () => {
       .mockReturnValueOnce({ mean: [0.1], std: [0.9], scale: "1./2." });
     parseScaleValue.mockReturnValue(0.5);
 
-    const {
-      DEFAULT_DET_MODEL_PARSE_FALLBACKS,
-      DEFAULT_DET_RUNTIME_LIMITS,
-      parseDetModelConfigText
-    } = await loadDetModule();
+    const { DEFAULT_DET_MODEL_PARSE_FALLBACKS, parseDetModelConfigText } = await loadDetModule();
     expect(parseDetModelConfigText("config")).toEqual({
       resizeLong: 736,
+      limitType: "max",
+      maxSideLimit: 4000,
       normalize: {
         mean: [0.1],
         std: [0.9],
@@ -181,8 +138,7 @@ describe("detection model", () => {
         boxThresh: 0.55,
         maxCandidates: 200,
         unclipRatio: 1.8
-      },
-      maxSideLimit: DEFAULT_DET_RUNTIME_LIMITS.maxSideLimit
+      }
     });
 
     parseInferenceConfigText.mockReturnValue({});
@@ -191,6 +147,8 @@ describe("detection model", () => {
 
     expect(parseDetModelConfigText("fallback")).toEqual({
       resizeLong: DEFAULT_DET_MODEL_PARSE_FALLBACKS.resizeLong,
+      limitType: DEFAULT_DET_MODEL_PARSE_FALLBACKS.limitType,
+      maxSideLimit: DEFAULT_DET_MODEL_PARSE_FALLBACKS.maxSideLimit,
       normalize: {
         mean: DEFAULT_DET_MODEL_PARSE_FALLBACKS.normalize.mean,
         std: DEFAULT_DET_MODEL_PARSE_FALLBACKS.normalize.std,
@@ -201,253 +159,43 @@ describe("detection model", () => {
         boxThresh: DEFAULT_DET_MODEL_PARSE_FALLBACKS.postprocess.boxThresh,
         maxCandidates: DEFAULT_DET_MODEL_PARSE_FALLBACKS.postprocess.maxCandidates,
         unclipRatio: DEFAULT_DET_MODEL_PARSE_FALLBACKS.postprocess.unclipRatio
-      },
-      maxSideLimit: DEFAULT_DET_RUNTIME_LIMITS.maxSideLimit
-    });
-  });
-
-  it("preprocesses detection inputs across max/min and color conversion branches", async () => {
-    clamp.mockImplementation((value, min, max) => Math.max(min, Math.min(max, value)));
-    toBgrFloatCHWFromBgr.mockImplementation((data, width, height) => {
-      const out = new Float32Array(3 * width * height);
-      out.fill(1);
-      return out;
-    });
-
-    const { preprocessDet } = await loadDetModule();
-
-    const ort = {
-      Tensor: createMockOrtTensorClass()
-    };
-
-    const cvMax = createPreprocessCvFixture();
-    const maxResult = preprocessDet(
-      {
-        cv: cvMax,
-        ort,
-        config: {
-          resizeLong: 64,
-          maxSideLimit: 128,
-          normalize: {}
-        }
-      },
-      createSourceMat(3, 100, 50),
-      {}
-    );
-    expect(maxResult.dstW).toBe(64);
-    expect(maxResult.dstH).toBe(32);
-    expect(cvMax.cvtColor).not.toHaveBeenCalled();
-
-    const cvMin = createPreprocessCvFixture();
-    const minResult = preprocessDet(
-      {
-        cv: cvMin,
-        ort,
-        config: {
-          resizeLong: 64,
-          maxSideLimit: 96,
-          normalize: {}
-        }
-      },
-      createSourceMat(4, 16, 8),
-      {
-        text_det_limit_type: "min",
-        text_det_limit_side_len: 64
       }
-    );
-    expect(minResult.dstW).toBe(96);
-    expect(minResult.dstH).toBe(64);
-    expect(cvMin.cvtColor).toHaveBeenCalled();
-
-    const cvGray = createPreprocessCvFixture();
-    preprocessDet(
-      {
-        cv: cvGray,
-        ort,
-        config: {
-          resizeLong: 64,
-          maxSideLimit: 96,
-          normalize: {}
-        }
-      },
-      createSourceMat(1, 16, 16),
-      {}
-    );
-    expect(cvGray.cvtColor).toHaveBeenCalled();
-  });
-
-  it("postprocesses detection outputs and filters contour candidates", async () => {
-    clamp.mockImplementation((value, min, max) => Math.max(min, Math.min(max, value)));
-
-    const makeContour = (rows, values) => ({
-      rows,
-      data32S: values,
-      delete: vi.fn()
     });
-    const contour0 = makeContour(3, []);
-    const contour1 = makeContour(4, [0, 0, 5, 0, 5, 5, 0, 5]);
-    const contour2 = makeContour(4, [1, 1, 6, 1, 6, 6, 1, 6]);
-    const contour3 = makeContour(4, [2, 2, 7, 2, 7, 7, 2, 7]);
-    const contour4 = makeContour(4, [3, 3, 8, 3, 8, 8, 3, 8]);
-    const contour5 = makeContour(4, [4, 4, 9, 4, 9, 9, 4, 9]);
-    const contours = [contour0, contour1, contour2, contour3, contour4, contour5];
-
-    getMiniBoxFromPoints
-      .mockReturnValueOnce({
-        side: 2,
-        box: [
-          [0, 0],
-          [1, 0],
-          [1, 1],
-          [0, 1]
-        ]
-      })
-      .mockReturnValueOnce({
-        side: 4,
-        box: [
-          [0, 0],
-          [5, 0],
-          [5, 5],
-          [0, 5]
-        ]
-      })
-      .mockReturnValueOnce({
-        side: 4,
-        box: [
-          [0, 0],
-          [5, 0],
-          [5, 5],
-          [0, 5]
-        ]
-      })
-      .mockReturnValueOnce({
-        side: 4,
-        box: [
-          [0, 0],
-          [5, 0],
-          [5, 5],
-          [0, 5]
-        ]
-      })
-      .mockReturnValueOnce({
-        side: 6,
-        box: [
-          [4, 4],
-          [10, 4],
-          [10, 10],
-          [4, 10]
-        ]
-      })
-      .mockReturnValueOnce({
-        side: 4,
-        box: [
-          [20, 0],
-          [26, 0],
-          [26, 6],
-          [20, 6]
-        ]
-      })
-      .mockReturnValueOnce({
-        side: 6,
-        box: [
-          [8, 2],
-          [14, 2],
-          [14, 8],
-          [8, 8]
-        ]
-      });
-    boxScoreFast
-      .mockReturnValueOnce(0.1)
-      .mockReturnValueOnce(0.9)
-      .mockReturnValueOnce(0.9)
-      .mockReturnValueOnce(0.95);
-    unclip
-      .mockReturnValueOnce(null)
-      .mockReturnValueOnce([
-        [4, 4],
-        [10, 4],
-        [10, 10],
-        [4, 10]
-      ])
-      .mockReturnValueOnce([
-        [8, 2],
-        [14, 2],
-        [14, 8],
-        [8, 8]
-      ]);
-
-    const pred = { delete: vi.fn() };
-    const bitmap = { delete: vi.fn() };
-    const cv = {
-      CV_32FC1: "float",
-      CV_8UC1: "mask",
-      RETR_LIST: "list",
-      CHAIN_APPROX_SIMPLE: "chain",
-      Mat: class Mat {
-        delete() {}
-      },
-      MatVector: class MatVector {
-        size() {
-          return contours.length;
-        }
-        get(index) {
-          return contours[index];
-        }
-        delete() {}
-      },
-      matFromArray: vi
-        .fn()
-        .mockImplementationOnce(() => pred)
-        .mockImplementationOnce(() => bitmap),
-      findContours: vi.fn()
-    };
-
-    const { dbPostprocess } = await loadDetModule();
-    const boxes = dbPostprocess(
-      {
-        cv,
-        config: {
-          postprocess: {
-            maxCandidates: 10
-          }
-        }
-      },
-      {
-        dims: [1, 1, 10, 20],
-        data: new Float32Array(200).fill(0.9)
-      },
-      {
-        srcW: 200,
-        srcH: 100
-      },
-      0.3,
-      0.5,
-      1.5
-    );
-
-    expect(boxes).toHaveLength(2);
-    expect(boxes.map((box) => box.score)).toEqual([0.95, 0.9]);
-    expect(contour0.delete).toHaveBeenCalled();
-    expect(contour5.delete).toHaveBeenCalled();
-    expect(pred.delete).toHaveBeenCalled();
-    expect(bitmap.delete).toHaveBeenCalled();
   });
 
   it("runs detection models and crops rotated boxes", async () => {
+    const { cropByPoly } = await import("../src/pipelines/ocr/crop");
+    parseInferenceConfigText.mockReturnValue({
+      PreProcess: { transform_ops: [] },
+      PostProcess: { max_candidates: "10" }
+    });
+    getTransformOp.mockImplementation((_ops, id) => {
+      if (id === "DetResizeForTest") return { resize_long: 64 };
+      return null;
+    });
+    parseScaleValue.mockReturnValue(1 / 255);
+    clamp.mockImplementation((value, min, max) => Math.max(min, Math.min(max, value)));
+    getProviderCandidates.mockReturnValue([["wasm"]]);
+
     const tensorCalls = [];
     const ort = {
       Tensor: createMockOrtTensorClass(tensorCalls)
     };
+    const sessionRun = vi.fn().mockResolvedValue({
+      output: {
+        dims: [1, 1, 4, 8],
+        data: new Float32Array(32).fill(0.9)
+      }
+    });
     const session = {
       inputNames: ["input"],
       outputNames: ["output"],
-      run: vi.fn().mockResolvedValue({
-        output: {
-          dims: [1, 1, 4, 8],
-          data: new Float32Array(32).fill(0.9)
-        }
-      })
+      run: sessionRun
     };
+    createSession.mockResolvedValue({
+      session,
+      provider: "wasm"
+    });
     toBgrFloatCHWFromBgr.mockReturnValue(new Float32Array(3 * 32 * 64).fill(1));
 
     const makeCv = () => {
@@ -524,7 +272,7 @@ describe("detection model", () => {
     };
     const cv = makeCv();
 
-    const { runDetModel, cropByPoly } = await loadDetModule();
+    const { createDetModel } = await loadDetModule();
     getMiniBoxFromPoints
       .mockReturnValueOnce({
         side: 4,
@@ -552,33 +300,33 @@ describe("detection model", () => {
       [0, 3]
     ]);
 
-    const detResult = await runDetModel(
+    const model = await createDetModel({
+      ort,
+      modelBytes: new Uint8Array([1]),
+      configText: "det-crop",
+      backend: "auto",
+      webgpuState: { available: false, reason: "" }
+    });
+    const [detResult] = await model.predict(
+      cv,
+      [
+        {
+          cols: 64,
+          rows: 32,
+          channels: () => 3
+        }
+      ],
       {
-        cv,
-        ort,
-        config: {
-          resizeLong: 64,
-          maxSideLimit: 96,
-          normalize: {},
-          postprocess: {
-            maxCandidates: 10
-          }
-        },
-        session
-      },
-      {
-        cols: 64,
-        rows: 32,
-        channels: () => 3
-      },
-      {
-        text_det_thresh: 0.3,
-        text_det_box_thresh: 0.5,
-        text_det_unclip_ratio: 1.5
+        thresh: 0.3,
+        boxThresh: 0.5,
+        unclipRatio: 1.5,
+        limitSideLen: 64,
+        limitType: "max",
+        maxSideLimit: 96
       }
     );
 
-    expect(session.run).toHaveBeenCalledTimes(1);
+    expect(sessionRun).toHaveBeenCalledTimes(1);
     expect(tensorCalls[0]).toEqual({ type: "float32", dims: [1, 3, 32, 64], size: 6144 });
     expect(detResult.boxes).toEqual([
       {
@@ -636,6 +384,125 @@ describe("detection model", () => {
     const rotatedCrop = cropByPoly(cropCv, { id: "src" }, [[0, 0]]);
     expect(cropCv.rotate).toHaveBeenCalled();
     expect(rotatedCrop).toBe(cropRotated);
+  });
+
+  it("runs batched detection when batchSize > 1 (one session.run per chunk)", async () => {
+    parseInferenceConfigText.mockReturnValue({
+      PreProcess: { transform_ops: [] },
+      PostProcess: { max_candidates: "10" }
+    });
+    getTransformOp.mockImplementation((_ops, id) => {
+      if (id === "DetResizeForTest") return { resize_long: 64 };
+      return null;
+    });
+    parseScaleValue.mockReturnValue(1 / 255);
+    clamp.mockImplementation((value, min, max) => Math.max(min, Math.min(max, value)));
+    getProviderCandidates.mockReturnValue([["wasm"]]);
+
+    const tensorCalls = [];
+    const ort = {
+      Tensor: createMockOrtTensorClass(tensorCalls)
+    };
+    const sessionRun = vi.fn().mockResolvedValue({
+      output: {
+        dims: [2, 1, 4, 8],
+        data: new Float32Array(64).fill(0.1)
+      }
+    });
+    const session = {
+      inputNames: ["input"],
+      outputNames: ["output"],
+      run: sessionRun
+    };
+    createSession.mockResolvedValue({
+      session,
+      provider: "wasm"
+    });
+    toBgrFloatCHWFromBgr.mockReturnValue(new Float32Array(3 * 32 * 64).fill(1));
+
+    const pred = { delete: vi.fn() };
+    const bitmap = { delete: vi.fn() };
+    const warped = {
+      rows: 20,
+      cols: 10,
+      delete: vi.fn()
+    };
+    const cv = {
+      warped,
+      Mat: class Mat {
+        constructor() {
+          return warped;
+        }
+      },
+      Size: class Size {
+        constructor(width, height) {
+          this.width = width;
+          this.height = height;
+        }
+      },
+      Scalar: class Scalar {},
+      INTER_LINEAR: "linear",
+      INTER_CUBIC: "cubic",
+      BORDER_REPLICATE: "replicate",
+      COLOR_RGBA2BGR: "rgba",
+      COLOR_GRAY2BGR: "gray",
+      ROTATE_90_COUNTERCLOCKWISE: "ccw",
+      CV_32FC1: "float1",
+      CV_8UC1: "mask1",
+      CV_32FC2: "float",
+      RETR_LIST: "list",
+      CHAIN_APPROX_SIMPLE: "chain",
+      resize: vi.fn((src, dst, size) => {
+        dst.data = new Uint8Array(size.width * size.height * 3);
+        dst.channels = () => 3;
+        dst.copyTo = vi.fn();
+        dst.delete = vi.fn();
+      }),
+      cvtColor: vi.fn(),
+      matFromArray: vi
+        .fn()
+        .mockImplementationOnce(() => pred)
+        .mockImplementationOnce(() => bitmap)
+        .mockImplementationOnce(() => pred)
+        .mockImplementationOnce(() => bitmap),
+      MatVector: class MatVector {
+        size() {
+          return 0;
+        }
+        delete() {}
+      },
+      findContours: vi.fn(),
+      getPerspectiveTransform: vi.fn(() => ({ delete: vi.fn() })),
+      warpPerspective: vi.fn(),
+      rotate: vi.fn()
+    };
+
+    const { createDetModel } = await loadDetModule();
+    const model = await createDetModel({
+      ort,
+      modelBytes: new Uint8Array([1]),
+      configText: "det-batch",
+      backend: "auto",
+      webgpuState: { available: false, reason: "" },
+      batchSize: 2
+    });
+
+    const mat = { cols: 64, rows: 32, channels: () => 3 };
+    const results = await model.predict(cv, [mat, mat], {
+      thresh: 0.3,
+      boxThresh: 0.5,
+      unclipRatio: 1.5,
+      limitSideLen: 64,
+      limitType: "max",
+      maxSideLimit: 96
+    });
+
+    expect(sessionRun).toHaveBeenCalledTimes(1);
+    const batchInput = tensorCalls.find((t) => t.dims[0] === 2);
+    expect(batchInput).toEqual({ type: "float32", dims: [2, 3, 32, 64], size: 12288 });
+    expect(results).toHaveLength(2);
+    expect(results[0].srcW).toBe(64);
+    expect(results[1].srcW).toBe(64);
   });
 
   it("creates, uses, and disposes detection models through runtime wrappers", async () => {
@@ -713,29 +580,29 @@ describe("detection model", () => {
     expect(model.kind).toBe("det");
     expect(model.provider).toBe("wasm");
     await expect(
-      model.detect({
-        cv: createDetModelIntegrationCv(),
-        sourceMat: {
-          cols: 64,
-          rows: 32,
-          channels: () => 3
-        },
-        params: {
-          text_det_thresh: 0.3,
-          text_det_box_thresh: 0.5,
-          text_det_unclip_ratio: 1.5
+      model.predict(
+        createDetModelIntegrationCv(),
+        [
+          {
+            cols: 64,
+            rows: 32,
+            channels: () => 3
+          }
+        ],
+        {
+          thresh: 0.3,
+          boxThresh: 0.5,
+          unclipRatio: 1.5
         }
-      })
-    ).resolves.toMatchObject({
-      output: expect.any(Object)
-    });
+      )
+    ).resolves.toMatchObject([
+      {
+        boxes: expect.any(Array),
+        srcW: 64,
+        srcH: 32
+      }
+    ]);
     await expect(model.dispose()).resolves.toBeUndefined();
-    await expect(
-      model.detect({
-        cv: {},
-        sourceMat: {},
-        params: {}
-      })
-    ).rejects.toThrow(/session is not initialized/i);
+    await expect(model.predict({}, [{}], {})).rejects.toThrow(/session is not initialized/i);
   });
 });

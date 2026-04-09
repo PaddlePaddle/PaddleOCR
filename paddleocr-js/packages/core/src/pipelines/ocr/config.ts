@@ -14,6 +14,9 @@ export interface NormalizedPipelineConfig {
   modelSelection: PipelineModelSelection;
   assets: Partial<Record<string, ModelAsset>>;
   runtimeDefaults: PipelineRuntimeDefaults;
+  pipelineBatchSize: number;
+  textDetectionBatchSize: number;
+  textRecognitionBatchSize: number;
 }
 
 export interface PipelineModelSelection {
@@ -37,12 +40,25 @@ function isPlainObject(value: unknown): value is YamlObject {
   return Boolean(value) && typeof value === "object" && !Array.isArray(value);
 }
 
-function toFiniteNumber(value: unknown): number | undefined {
+export function toFiniteNumber(value: unknown): number | undefined {
   if (value === null || value === undefined || value === "") {
     return undefined;
   }
   const normalized = Number(value);
   return Number.isFinite(normalized) ? normalized : undefined;
+}
+
+export function parseInputShape(value: unknown): number[] | undefined {
+  if (!Array.isArray(value) || value.length === 0) {
+    return undefined;
+  }
+  const nums = value.map((v) => toFiniteNumber(v)).filter((n): n is number => n !== undefined);
+  return nums.length === value.length ? nums : undefined;
+}
+
+function batchSizeOrOne(value: unknown): number {
+  const n = toFiniteNumber(value);
+  return n !== undefined && n >= 1 ? n : 1;
 }
 
 function parsePipelineConfigInput(input: unknown): YamlObject {
@@ -145,6 +161,10 @@ export function normalizeOcrPipelineConfig(input: unknown): NormalizedPipelineCo
   const detAsset = getModuleAsset("det", "SubModules.TextDetection", textDetection);
   const recAsset = getModuleAsset("rec", "SubModules.TextRecognition", textRecognition);
 
+  const pipelineBatchSize = batchSizeOrOne(config.batch_size);
+  const textDetectionBatchSize = batchSizeOrOne(textDetection.batch_size);
+  const textRecognitionBatchSizeFromModule = batchSizeOrOne(textRecognition.batch_size);
+
   return {
     pipelineName,
     raw: config,
@@ -169,6 +189,9 @@ export function normalizeOcrPipelineConfig(input: unknown): NormalizedPipelineCo
       text_det_box_thresh: toFiniteNumber(textDetection.box_thresh),
       text_det_unclip_ratio: toFiniteNumber(textDetection.unclip_ratio),
       text_rec_score_thresh: toFiniteNumber(textRecognition.score_thresh)
-    }
+    },
+    pipelineBatchSize,
+    textDetectionBatchSize,
+    textRecognitionBatchSize: textRecognitionBatchSizeFromModule
   };
 }

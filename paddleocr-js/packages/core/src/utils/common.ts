@@ -42,6 +42,25 @@ export function withTimeout<T>(promise: Promise<T>, ms: number, label: string): 
   });
 }
 
+export function resolveRuntimeBatchSize(override: unknown, defaultBatchSize: number): number {
+  const rawBatch = override ?? defaultBatchSize;
+  const coercedBatch =
+    typeof rawBatch === "number"
+      ? rawBatch
+      : typeof rawBatch === "string"
+        ? Number.parseInt(rawBatch, 10)
+        : Number.NaN;
+  return Math.max(1, Number.isFinite(coercedBatch) ? coercedBatch : 1);
+}
+
+export function chunkArray<T>(items: T[], size: number): T[][] {
+  const chunks: T[][] = [];
+  for (let i = 0; i < items.length; i += size) {
+    chunks.push(items.slice(i, i + size));
+  }
+  return chunks;
+}
+
 export function deepClone<T>(value: T): T {
   return structuredClone(value);
 }

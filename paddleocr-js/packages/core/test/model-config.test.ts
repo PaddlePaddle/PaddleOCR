@@ -7,6 +7,8 @@ PreProcess:
   transform_ops:
     - DetResizeForTest:
         resize_long: 736
+        limit_type: max
+        max_side_limit: 4500
     - NormalizeImage:
         mean: [0.1, 0.2, 0.3]
         std: [0.9, 0.8, 0.7]
@@ -39,6 +41,8 @@ describe("model config parsers", () => {
     const config = parseDetModelConfigText(detConfig);
 
     expect(config.resizeLong).toBe(736);
+    expect(config.limitType).toBe("max");
+    expect(config.maxSideLimit).toBe(4500);
     expect(config.postprocess.thresh).toBe(0.22);
     expect(config.postprocess.boxThresh).toBe(0.55);
   });

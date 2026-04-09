@@ -249,6 +249,44 @@ describe("PaddleOCR high-level API", () => {
     warn.mockRestore();
   });
 
+  it("lets direct constructor runtime options override pipelineConfig", async () => {
+    const ocr = await PaddleOCR.fromPipelineConfig(pipelineConfigText, {
+      text_det_limit_side_len: 200,
+      text_rec_score_thresh: 0.42,
+      ...IGNORE_UNSUPPORTED
+    });
+
+    expect(ocr.runtimeDefaults.text_det_limit_side_len).toBe(200);
+    expect(ocr.runtimeDefaults.text_rec_score_thresh).toBe(0.42);
+    expect(ocr.pipelineConfig?.runtimeDefaults.text_det_limit_side_len).toBe(200);
+    expect(ocr.pipelineConfig?.runtimeDefaults.text_rec_score_thresh).toBe(0.42);
+  });
+
+  it("lets direct batch sizes override pipelineConfig", async () => {
+    const ocr = await PaddleOCR.fromPipelineConfig(pipelineConfigText, {
+      textRecognitionBatchSize: 2,
+      text_detection_batch_size: 3,
+      ...IGNORE_UNSUPPORTED
+    });
+
+    expect(ocr.options.textRecognitionBatchSize).toBe(2);
+    expect(ocr.options.textDetectionBatchSize).toBe(3);
+    expect(ocr.pipelineConfig?.textRecognitionBatchSize).toBe(2);
+    expect(ocr.pipelineConfig?.textDetectionBatchSize).toBe(3);
+  });
+
+  it("applies textRecognitionBatchSize without pipelineConfig", async () => {
+    const ocr = await PaddleOCR.create({
+      lang: "ch",
+      ocrVersion: "PP-OCRv5",
+      text_recognition_batch_size: 4,
+      ...CREATE_WITHOUT_INIT
+    });
+
+    expect(ocr.options.textRecognitionBatchSize).toBe(4);
+    expect(ocr.pipelineConfig).toBeNull();
+  });
+
   it("can turn unsupported pipeline warnings into errors", async () => {
     await expect(
       PaddleOCR.fromPipelineConfig(pipelineConfigText, {
@@ -391,7 +429,13 @@ describe("OCR runtime parameter normalization", () => {
       {
         det: {
           resizeLong: 960,
+          limitType: "max",
           maxSideLimit: 4000,
+          normalize: {
+            mean: [0.485, 0.456, 0.406],
+            std: [0.229, 0.224, 0.225],
+            scale: 1 / 255
+          },
           postprocess: {
             thresh: 0.3,
             boxThresh: 0.6,
@@ -413,11 +457,11 @@ describe("OCR runtime parameter normalization", () => {
       }
     );
 
-    expect(params.text_det_limit_type).toBe("min");
-    expect(params.text_det_thresh).toBe(0.4);
-    expect(params.text_det_box_thresh).toBe(0.7);
-    expect(params.text_det_unclip_ratio).toBe(2);
-    expect(params.text_rec_score_thresh).toBe(0.2);
+    expect(params.det.limitType).toBe("min");
+    expect(params.det.thresh).toBe(0.4);
+    expect(params.det.boxThresh).toBe(0.7);
+    expect(params.det.unclipRatio).toBe(2);
+    expect(params.pipeline.scoreThresh).toBe(0.2);
   });
 });
 
