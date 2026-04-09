@@ -15,7 +15,17 @@ import {
   unclip
 } from "./common";
 import type { Point2D, NormalizeConfig, DetBox } from "./common";
-import type { LimitType, OcrRuntimeParams } from "../pipelines/ocr/runtime-params";
+
+export type LimitType = "min" | "max";
+
+export interface DetRuntimeOverrides {
+  thresh?: number;
+  boxThresh?: number;
+  unclipRatio?: number;
+  limitSideLen?: number;
+  limitType?: LimitType;
+  maxSideLimit?: number;
+}
 
 export interface DetPostprocessConfig {
   thresh: number;
@@ -32,14 +42,14 @@ export interface DetModelConfig {
 }
 
 export interface DetModel {
-  kind: "det";
-  config: DetModelConfig;
+  readonly kind: "det";
+  readonly config: DetModelConfig;
   readonly provider: string;
-  detect(ctx: { cv: OpenCv; sourceMat: Mat; params: OcrRuntimeParams }): Promise<DetResult>;
+  predict(cv: OpenCv, mats: Mat[], overrides?: DetRuntimeOverrides): Promise<DetResult[]>;
   dispose(): Promise<void>;
 }
 
-export interface DetPreprocessResult {
+interface DetPreprocessResult {
   tensor: Tensor;
   srcW: number;
   srcH: number;
@@ -48,6 +58,21 @@ export interface DetPreprocessResult {
 }
 
 export interface DetResult {
+  boxes: DetBox[];
+  srcW: number;
+  srcH: number;
+}
+
+interface InternalDetParams {
+  limitSideLen: number;
+  limitType: LimitType;
+  maxSideLimit: number;
+  thresh: number;
+  boxThresh: number;
+  unclipRatio: number;
+}
+
+interface InternalDetResult {
   output: Tensor;
   prep: DetPreprocessResult;
   boxes: DetBox[];
@@ -122,6 +147,20 @@ interface CreateDetModelArgs {
   webgpuState: WebGpuState;
 }
 
+function resolveDetParams(
+  config: DetModelConfig,
+  overrides?: DetRuntimeOverrides
+): InternalDetParams {
+  return {
+    limitSideLen: overrides?.limitSideLen ?? config.resizeLong,
+    limitType: overrides?.limitType ?? "max",
+    maxSideLimit: overrides?.maxSideLimit ?? config.maxSideLimit,
+    thresh: overrides?.thresh ?? config.postprocess.thresh,
+    boxThresh: overrides?.boxThresh ?? config.postprocess.boxThresh,
+    unclipRatio: overrides?.unclipRatio ?? config.postprocess.unclipRatio
+  };
+}
+
 export async function createDetModel({
   ort,
   modelBytes,
@@ -147,20 +186,29 @@ export async function createDetModel({
     get provider() {
       return sessionState?.provider || "";
     },
-    async detect({ cv, sourceMat, params }) {
+    async predict(cv, mats, overrides) {
       if (!sessionState?.session) {
         throw new Error("Detection model session is not initialized.");
       }
-      return runDetModel(
-        {
-          cv,
-          ort,
-          config,
-          session: sessionState.session
-        },
-        sourceMat,
-        params
-      );
+      const results: DetResult[] = [];
+      for (const mat of mats) {
+        const internal = await runDetModel(
+          {
+            cv,
+            ort,
+            config,
+            session: sessionState.session
+          },
+          mat,
+          resolveDetParams(config, overrides)
+        );
+        results.push({
+          boxes: internal.boxes,
+          srcW: internal.prep.srcW,
+          srcH: internal.prep.srcH
+        });
+      }
+      return results;
     },
     async dispose() {
       await releaseSessions(sessionState?.session);
@@ -189,17 +237,17 @@ interface DetRunContext extends DetContext {
   session: InferenceSession;
 }
 
-export function preprocessDet(
+function preprocessDet(
   context: DetContext,
   sourceMat: Mat,
-  params: OcrRuntimeParams
+  params: InternalDetParams
 ): DetPreprocessResult {
   const { cv, ort, config } = context;
   const srcW = sourceMat.cols;
   const srcH = sourceMat.rows;
-  const limitSideLen = Math.max(32, params.text_det_limit_side_len || config.resizeLong);
-  const limitType: LimitType = params.text_det_limit_type === "min" ? "min" : "max";
-  const maxSideLimit = Math.max(32, params.text_det_max_side_limit || config.maxSideLimit);
+  const limitSideLen = Math.max(32, params.limitSideLen);
+  const limitType: LimitType = params.limitType;
+  const maxSideLimit = Math.max(32, params.maxSideLimit);
   let scale = 1.0;
   if (limitType === "max") {
     const maxSide = Math.max(srcW, srcH);
@@ -255,11 +303,11 @@ function getDetMap(outputTensor: Tensor): { data: Float32Array; h: number; w: nu
   throw new Error(`Unexpected det output dims: [${dims.join(", ")}]`);
 }
 
-export async function runDetModel(
+async function runDetModel(
   context: DetRunContext,
   sourceMat: Mat,
-  params: OcrRuntimeParams
-): Promise<DetResult> {
+  params: InternalDetParams
+): Promise<InternalDetResult> {
   const { cv, ort, config, session } = context;
   const prep = preprocessDet({ cv, ort, config }, sourceMat, params);
   const inputName = session.inputNames[0];
@@ -272,14 +320,14 @@ export async function runDetModel(
       { cv, config },
       output,
       prep,
-      params.text_det_thresh,
-      params.text_det_box_thresh,
-      params.text_det_unclip_ratio
+      params.thresh,
+      params.boxThresh,
+      params.unclipRatio
     )
   };
 }
 
-export function dbPostprocess(
+function dbPostprocess(
   context: { cv: OpenCv; config: DetModelConfig },
   detOutput: Tensor,
   meta: DetPreprocessResult,
@@ -363,4 +411,3 @@ export function dbPostprocess(
 
   return boxes;
 }
-

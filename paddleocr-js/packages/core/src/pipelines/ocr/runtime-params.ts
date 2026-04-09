@@ -1,12 +1,13 @@
 import type { DetModelConfig } from "../../models/det";
+import type { LimitType } from "../../models/det";
 import type { RecModelConfig } from "../../models/rec";
+
+export type { LimitType };
 
 export interface OcrModelConfig {
   det: DetModelConfig;
   rec: RecModelConfig;
 }
-
-export type LimitType = "min" | "max";
 
 export interface OcrRuntimeParams {
   text_det_limit_side_len: number;
