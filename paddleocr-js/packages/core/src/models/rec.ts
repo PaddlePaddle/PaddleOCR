@@ -171,10 +171,7 @@ export async function createRecModelSession(
   );
 }
 
-function preprocess(
-  context: { cv: OpenCv; config: RecModelConfig },
-  mats: Mat[]
-): RecSample[] {
+function preprocess(context: { cv: OpenCv; config: RecModelConfig }, mats: Mat[]): RecSample[] {
   const samples: RecSample[] = [];
   for (let i = 0; i < mats.length; i += 1) {
     samples.push(preprocessSample(context, mats[i], i));
@@ -289,10 +286,7 @@ function decodeCTCSample(
   return { text, score };
 }
 
-function postprocess(
-  output: Tensor,
-  charDict: string[]
-): Array<{ text: string; score: number }> {
+function postprocess(output: Tensor, charDict: string[]): Array<{ text: string; score: number }> {
   const dims = output.dims;
   if (dims.length !== 3) {
     throw new Error(`Unexpected rec output dims: [${dims.join(", ")}]`);

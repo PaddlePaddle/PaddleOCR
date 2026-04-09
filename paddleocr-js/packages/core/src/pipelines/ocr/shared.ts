@@ -313,12 +313,7 @@ function createResolvedModelSelection(
   return Object.fromEntries(
     OCR_MODEL_ROLES.map((role) => [
       role.selectionKey,
-      getSelectedModelName(
-        baseSelection,
-        configSelection,
-        explicitSelection,
-        role.selectionKey
-      )
+      getSelectedModelName(baseSelection, configSelection, explicitSelection, role.selectionKey)
     ])
   ) as unknown as PipelineModelSelection;
 }
@@ -467,7 +462,9 @@ function resolveBaseModelSelection(
   return modelSelection;
 }
 
-function resolveConstructionOptions(options: Record<string, unknown> = {}): NormalizedPipelineConfig {
+function resolveConstructionOptions(
+  options: Record<string, unknown> = {}
+): NormalizedPipelineConfig {
   const pipelineInput = options.pipelineConfig;
   const userPipelineConfig =
     pipelineInput != null ? normalizeOcrPipelineConfig(pipelineInput) : null;
