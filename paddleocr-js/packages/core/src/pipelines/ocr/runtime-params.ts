@@ -1,6 +1,5 @@
-import type { DetModelConfig } from "../../models/det";
-import type { LimitType } from "../../models/det";
-import type { RecModelConfig } from "../../models/rec";
+import type { DetModelConfig, DetRuntimeOverrides, LimitType } from "../../models/det";
+import type { RecModelConfig, RecRuntimeOverrides } from "../../models/rec";
 
 export type { LimitType };
 
@@ -9,14 +8,10 @@ export interface OcrModelConfig {
   rec: RecModelConfig;
 }
 
-export interface OcrRuntimeParams {
-  text_det_limit_side_len: number;
-  text_det_limit_type: LimitType;
-  text_det_max_side_limit: number;
-  text_det_thresh: number;
-  text_det_box_thresh: number;
-  text_det_unclip_ratio: number;
-  text_rec_score_thresh: number;
+export interface ResolvedOcrParams {
+  det: DetRuntimeOverrides;
+  rec: RecRuntimeOverrides;
+  pipeline: { scoreThresh: number };
 }
 
 export interface OcrRuntimeParamsInput {
@@ -45,65 +40,77 @@ function firstDefined<T>(...values: Array<T | undefined | null>): T | undefined 
   return undefined;
 }
 
+function toNumberOrUndefined(value: unknown): number | undefined {
+  if (value === undefined || value === null) return undefined;
+  const num = Number(value);
+  return Number.isFinite(num) ? num : undefined;
+}
+
 export function getOcrRuntimeParams(
   config: OcrModelConfig,
-  defaults: Partial<OcrRuntimeParams> = {},
+  defaults: Partial<OcrRuntimeParamsInput> = {},
   params: OcrRuntimeParamsInput = {}
-): OcrRuntimeParams {
+): ResolvedOcrParams {
   return {
-    text_det_limit_side_len: Number(
-      firstDefined(
-        params.text_det_limit_side_len,
-        params.textDetLimitSideLen,
-        defaults.text_det_limit_side_len,
-        config.det.resizeLong
-      )
-    ),
-    text_det_limit_type:
-      firstDefined(
+    det: {
+      limitSideLen: toNumberOrUndefined(
+        firstDefined(
+          params.text_det_limit_side_len,
+          params.textDetLimitSideLen,
+          defaults.text_det_limit_side_len,
+          defaults.textDetLimitSideLen
+        )
+      ),
+      limitType: firstDefined(
         params.text_det_limit_type,
         params.textDetLimitType,
-        defaults.text_det_limit_type
-      ) ?? "max",
-    text_det_max_side_limit: Number(
-      firstDefined(
-        params.text_det_max_side_limit,
-        params.textDetMaxSideLimit,
-        defaults.text_det_max_side_limit,
-        config.det.maxSideLimit
+        defaults.text_det_limit_type,
+        defaults.textDetLimitType
+      ),
+      maxSideLimit: toNumberOrUndefined(
+        firstDefined(
+          params.text_det_max_side_limit,
+          params.textDetMaxSideLimit,
+          defaults.text_det_max_side_limit,
+          defaults.textDetMaxSideLimit
+        )
+      ),
+      thresh: toNumberOrUndefined(
+        firstDefined(
+          params.text_det_thresh,
+          params.textDetThresh,
+          defaults.text_det_thresh,
+          defaults.textDetThresh
+        )
+      ),
+      boxThresh: toNumberOrUndefined(
+        firstDefined(
+          params.text_det_box_thresh,
+          params.textDetBoxThresh,
+          defaults.text_det_box_thresh,
+          defaults.textDetBoxThresh
+        )
+      ),
+      unclipRatio: toNumberOrUndefined(
+        firstDefined(
+          params.text_det_unclip_ratio,
+          params.textDetUnclipRatio,
+          defaults.text_det_unclip_ratio,
+          defaults.textDetUnclipRatio
+        )
       )
-    ),
-    text_det_thresh: Number(
-      firstDefined(
-        params.text_det_thresh,
-        params.textDetThresh,
-        defaults.text_det_thresh,
-        config.det.postprocess.thresh
+    },
+    rec: {},
+    pipeline: {
+      scoreThresh: Number(
+        firstDefined(
+          params.text_rec_score_thresh,
+          params.textRecScoreThresh,
+          defaults.text_rec_score_thresh,
+          defaults.textRecScoreThresh,
+          config.rec.scoreThresh
+        )
       )
-    ),
-    text_det_box_thresh: Number(
-      firstDefined(
-        params.text_det_box_thresh,
-        params.textDetBoxThresh,
-        defaults.text_det_box_thresh,
-        config.det.postprocess.boxThresh
-      )
-    ),
-    text_det_unclip_ratio: Number(
-      firstDefined(
-        params.text_det_unclip_ratio,
-        params.textDetUnclipRatio,
-        defaults.text_det_unclip_ratio,
-        config.det.postprocess.unclipRatio
-      )
-    ),
-    text_rec_score_thresh: Number(
-      firstDefined(
-        params.text_rec_score_thresh,
-        params.textRecScoreThresh,
-        defaults.text_rec_score_thresh,
-        config.rec.scoreThresh
-      )
-    )
+    }
   };
 }
