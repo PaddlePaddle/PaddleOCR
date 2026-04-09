@@ -53,8 +53,7 @@ export const DEFAULT_REC_MODEL_PARSE_FALLBACKS: Readonly<
   scoreThresh: 0
 });
 
-export const DEFAULT_REC_RUNTIME_LIMITS = Object.freeze({
-});
+export const DEFAULT_REC_RUNTIME_LIMITS = Object.freeze({});
 
 const MAX_REC_WIDTH = 3200;
 

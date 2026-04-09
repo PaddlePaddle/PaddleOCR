@@ -264,23 +264,25 @@ describe("OCR pipeline core", () => {
     expect(cropA.delete).toHaveBeenCalledTimes(1);
     expect(cropB.delete).toHaveBeenCalledTimes(1);
     expect(sourceImage.dispose).toHaveBeenCalledTimes(1);
-    expect(result).toEqual([{
-      image: { width: 640, height: 480 },
-      items: [{ poly: [[1, 1]], text: "high", score: 0.95 }],
-      metrics: {
-        detMs: 10,
-        recMs: 20,
-        totalMs: 60,
-        detectedBoxes: 2,
-        recognizedCount: 1
-      },
-      runtime: {
-        requestedBackend: AUTO_RUNTIME_OPTIONS.backend,
-        detProvider: "wasm",
-        recProvider: "wasm",
-        webgpuAvailable: false
+    expect(result).toEqual([
+      {
+        image: { width: 640, height: 480 },
+        items: [{ poly: [[1, 1]], text: "high", score: 0.95 }],
+        metrics: {
+          detMs: 10,
+          recMs: 20,
+          totalMs: 60,
+          detectedBoxes: 2,
+          recognizedCount: 1
+        },
+        runtime: {
+          requestedBackend: AUTO_RUNTIME_OPTIONS.backend,
+          detProvider: "wasm",
+          recProvider: "wasm",
+          webgpuAvailable: false
+        }
       }
-    }]);
+    ]);
   });
 
   it("auto-initializes on predict and rejects when source adapter is missing", async () => {

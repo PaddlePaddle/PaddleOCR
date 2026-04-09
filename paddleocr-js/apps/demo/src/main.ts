@@ -154,12 +154,14 @@ async function runOcr(): Promise<void> {
 
   try {
     setStatus("Running OCR...");
-    const result: OcrResult = (await state.ocr.predict(state.imageFile, {
-      textDetThresh: Number(ui.detThresh.value),
-      textDetBoxThresh: Number(ui.boxThresh.value),
-      textDetUnclipRatio: Number(ui.unclipRatio.value),
-      textRecScoreThresh: Number(ui.recScoreThresh.value)
-    }))[0];
+    const result: OcrResult = (
+      await state.ocr.predict(state.imageFile, {
+        textDetThresh: Number(ui.detThresh.value),
+        textDetBoxThresh: Number(ui.boxThresh.value),
+        textDetUnclipRatio: Number(ui.unclipRatio.value),
+        textRecScoreThresh: Number(ui.recScoreThresh.value)
+      })
+    )[0];
 
     if (!state.previewBitmap) {
       state.previewBitmap = await createImageBitmap(state.imageFile);

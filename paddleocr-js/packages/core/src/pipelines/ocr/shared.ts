@@ -146,54 +146,90 @@ function readExplicitPipelineRuntimeDefaults(
 ): Partial<PipelineRuntimeDefaults> {
   const out: Partial<PipelineRuntimeDefaults> = {};
 
-  const limitSide = readAliasedOption(options, ["text_det_limit_side_len", "textDetLimitSideLen"], "text_det_limit_side_len");
+  const limitSide = readAliasedOption(
+    options,
+    ["text_det_limit_side_len", "textDetLimitSideLen"],
+    "text_det_limit_side_len"
+  );
   if (limitSide !== undefined) {
     const n = toFiniteNumber(limitSide);
     if (n !== undefined) out.text_det_limit_side_len = n;
   }
 
-  const limitType = readAliasedOption(options, ["text_det_limit_type", "textDetLimitType"], "text_det_limit_type");
+  const limitType = readAliasedOption(
+    options,
+    ["text_det_limit_type", "textDetLimitType"],
+    "text_det_limit_type"
+  );
   if (limitType !== undefined && isLimitType(limitType)) {
     out.text_det_limit_type = limitType;
   }
 
-  const maxSide = readAliasedOption(options, ["text_det_max_side_limit", "textDetMaxSideLimit"], "text_det_max_side_limit");
+  const maxSide = readAliasedOption(
+    options,
+    ["text_det_max_side_limit", "textDetMaxSideLimit"],
+    "text_det_max_side_limit"
+  );
   if (maxSide !== undefined) {
     const n = toFiniteNumber(maxSide);
     if (n !== undefined) out.text_det_max_side_limit = n;
   }
 
-  const detThresh = readAliasedOption(options, ["text_det_thresh", "textDetThresh"], "text_det_thresh");
+  const detThresh = readAliasedOption(
+    options,
+    ["text_det_thresh", "textDetThresh"],
+    "text_det_thresh"
+  );
   if (detThresh !== undefined) {
     const n = toFiniteNumber(detThresh);
     if (n !== undefined) out.text_det_thresh = n;
   }
 
-  const boxThresh = readAliasedOption(options, ["text_det_box_thresh", "textDetBoxThresh"], "text_det_box_thresh");
+  const boxThresh = readAliasedOption(
+    options,
+    ["text_det_box_thresh", "textDetBoxThresh"],
+    "text_det_box_thresh"
+  );
   if (boxThresh !== undefined) {
     const n = toFiniteNumber(boxThresh);
     if (n !== undefined) out.text_det_box_thresh = n;
   }
 
-  const unclip = readAliasedOption(options, ["text_det_unclip_ratio", "textDetUnclipRatio"], "text_det_unclip_ratio");
+  const unclip = readAliasedOption(
+    options,
+    ["text_det_unclip_ratio", "textDetUnclipRatio"],
+    "text_det_unclip_ratio"
+  );
   if (unclip !== undefined) {
     const n = toFiniteNumber(unclip);
     if (n !== undefined) out.text_det_unclip_ratio = n;
   }
 
-  const detShape = readAliasedOption(options, ["text_det_input_shape", "textDetInputShape"], "text_det_input_shape");
+  const detShape = readAliasedOption(
+    options,
+    ["text_det_input_shape", "textDetInputShape"],
+    "text_det_input_shape"
+  );
   if (detShape !== undefined && Array.isArray(detShape)) {
     const parsed = parseInputShape(detShape);
     if (parsed) out.text_det_input_shape = parsed;
   }
 
-  const recScore = readAliasedOption(options, ["text_rec_score_thresh", "textRecScoreThresh"], "text_rec_score_thresh");
+  const recScore = readAliasedOption(
+    options,
+    ["text_rec_score_thresh", "textRecScoreThresh"],
+    "text_rec_score_thresh"
+  );
   if (recScore !== undefined) {
     const n = toFiniteNumber(recScore);
     if (n !== undefined) out.text_rec_score_thresh = n;
   }
 
-  const recShape = readAliasedOption(options, ["text_rec_input_shape", "textRecInputShape"], "text_rec_input_shape");
+  const recShape = readAliasedOption(
+    options,
+    ["text_rec_input_shape", "textRecInputShape"],
+    "text_rec_input_shape"
+  );
   if (recShape !== undefined && Array.isArray(recShape)) {
     const parsed = parseInputShape(recShape);
     if (parsed) out.text_rec_input_shape = parsed;
@@ -214,13 +250,25 @@ function readExplicitBatchSizes(options: Record<string, unknown>): {
 } {
   return {
     det: toBatchSizeOption(
-      readAliasedOption(options, ["textDetectionBatchSize", "text_detection_batch_size"], "textDetectionBatchSize")
+      readAliasedOption(
+        options,
+        ["textDetectionBatchSize", "text_detection_batch_size"],
+        "textDetectionBatchSize"
+      )
     ),
     rec: toBatchSizeOption(
-      readAliasedOption(options, ["textRecognitionBatchSize", "text_recognition_batch_size"], "textRecognitionBatchSize")
+      readAliasedOption(
+        options,
+        ["textRecognitionBatchSize", "text_recognition_batch_size"],
+        "textRecognitionBatchSize"
+      )
     ),
     pipeline: toBatchSizeOption(
-      readAliasedOption(options, ["pipelineBatchSize", "pipeline_batch_size", "batch_size"], "pipelineBatchSize")
+      readAliasedOption(
+        options,
+        ["pipelineBatchSize", "pipeline_batch_size", "batch_size"],
+        "pipelineBatchSize"
+      )
     )
   };
 }

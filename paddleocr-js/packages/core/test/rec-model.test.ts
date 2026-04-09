@@ -121,10 +121,7 @@ describe("recognition model", () => {
       .mockReturnValueOnce({ mean: [0.1], std: [0.9], scale: "1./2." });
     parseScaleValue.mockReturnValue(0.5);
 
-    const {
-      DEFAULT_REC_MODEL_PARSE_FALLBACKS,
-      parseRecModelConfigText
-    } = await loadRecModule();
+    const { DEFAULT_REC_MODEL_PARSE_FALLBACKS, parseRecModelConfigText } = await loadRecModule();
     expect(parseRecModelConfigText("config")).toEqual({
       imageShape: [3, 32, 160],
       scoreThresh: DEFAULT_REC_MODEL_PARSE_FALLBACKS.scoreThresh,
@@ -137,7 +134,9 @@ describe("recognition model", () => {
     });
     getTransformOp.mockReturnValue(undefined);
 
-    expect(() => parseRecModelConfigText("invalid")).toThrow(/RecResizeImg\.image_shape is required/i);
+    expect(() => parseRecModelConfigText("invalid")).toThrow(
+      /RecResizeImg\.image_shape is required/i
+    );
   });
 
   it("runs recognition batches through predict and decodes CTC output", async () => {
@@ -376,14 +375,12 @@ describe("recognition model", () => {
       for (let i = 0; i < out.length; i += 1) out[i] = 1;
       return out;
     });
-    await expect(model.predict(cvFixture, [createMat(3, 8, 4)])).resolves.toSatisfy(
-      (results) => {
-        expect(results).toHaveLength(1);
-        expect(results[0]).toMatchObject({ text: "A" });
-        expect(results[0].score).toBeCloseTo(0.9, 5);
-        return true;
-      }
-    );
+    await expect(model.predict(cvFixture, [createMat(3, 8, 4)])).resolves.toSatisfy((results) => {
+      expect(results).toHaveLength(1);
+      expect(results[0]).toMatchObject({ text: "A" });
+      expect(results[0].score).toBeCloseTo(0.9, 5);
+      return true;
+    });
     await expect(model.dispose()).resolves.toBeUndefined();
     expect(released.at(-1)).toBeTruthy();
     await expect(model.predict(cvFixture, [createMat(3, 8, 4)])).rejects.toThrow(

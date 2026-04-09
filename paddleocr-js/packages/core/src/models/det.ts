@@ -419,21 +419,26 @@ async function runDetBatchInference(
   }
   const ohFull = od.length === 4 ? od[2] : od[1];
   const owFull = od.length === 4 ? od[3] : od[2];
-  const nOut =
-    od.length === 4
-      ? od[0]
-      : mats.length === 1
-        ? 1
-        : od[0];
+  const nOut = od.length === 4 ? od[0] : mats.length === 1 ? 1 : od[0];
   if (nOut !== mats.length) {
-    throw new Error(`Detection batch output N=${String(nOut)} does not match input batch ${String(mats.length)}`);
+    throw new Error(
+      `Detection batch output N=${String(nOut)} does not match input batch ${String(mats.length)}`
+    );
   }
 
   const items: InternalDetBatchItem[] = [];
   for (let i = 0; i < mats.length; i += 1) {
     const prep = preps[i];
     const { cropOh, cropOw } = detFeatureCropDims(prep.dstH, prep.dstW, maxH, maxW, ohFull, owFull);
-    const planeTensor = sliceBatchedDetOutputPlane(ort, fullOutput, i, cropOh, cropOw, ohFull, owFull);
+    const planeTensor = sliceBatchedDetOutputPlane(
+      ort,
+      fullOutput,
+      i,
+      cropOh,
+      cropOw,
+      ohFull,
+      owFull
+    );
     const boxes = postprocessDet(
       { cv, config },
       planeTensor,

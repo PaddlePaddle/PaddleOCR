@@ -210,9 +210,7 @@ export class OcrPipelineRunner {
     }
 
     const sources = Array.isArray(input) ? input : [input];
-    const sourceImages = await Promise.all(
-      sources.map((source) => this.sourceToMat!(cv, source))
-    );
+    const sourceImages = await Promise.all(sources.map((source) => this.sourceToMat!(cv, source)));
 
     const totalStart = nowMs();
     try {
