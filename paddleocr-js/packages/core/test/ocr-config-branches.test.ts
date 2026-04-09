@@ -43,13 +43,7 @@ describe("OCR pipeline config branches", () => {
         TextDetection: {
           model_name: "custom_det",
           model_dir: {
-            id: "det",
-            url: "/det.tar",
-            kind: "tar",
-            entries: {
-              model: "model.onnx",
-              config: "config.yml"
-            }
+            url: "/det.tar"
           },
           limit_side_len: "",
           max_side_limit: null
@@ -63,8 +57,7 @@ describe("OCR pipeline config branches", () => {
     });
 
     expect(normalized.assets.det).toMatchObject({
-      id: "det",
-      kind: "tar"
+      url: "/det.tar"
     });
     expect(normalized.runtimeDefaults.text_det_limit_side_len).toBeUndefined();
     expect(normalized.runtimeDefaults.text_det_max_side_limit).toBeUndefined();
@@ -78,7 +71,6 @@ describe("OCR pipeline config branches", () => {
         SubModules: {
           TextDetection: {
             model_dir: {
-              id: "det",
               url: "/det.tar"
             }
           },

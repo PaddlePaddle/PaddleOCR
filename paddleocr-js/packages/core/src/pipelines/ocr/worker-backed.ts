@@ -5,7 +5,7 @@ import type { OcrModelConfig, OcrRuntimeParamsInput } from "./runtime-params";
 import type { InitializationSummary, OcrResult, OcrPipelineRunnerOptions } from "./core";
 import { cloneDefaultOcrConfig } from "./shared";
 import type { NormalizedPipelineConfig, PipelineRuntimeDefaults } from "./config";
-import type { AssetDescriptor } from "../../resources/registry";
+import type { ModelAsset } from "../../resources/model-asset";
 
 declare const __ORT_WASM_CDN_PREFIX__: string | undefined;
 
@@ -21,7 +21,7 @@ function createDefaultWorker(): Worker {
 export class WorkerBackedPaddleOCR {
   private options: OcrPipelineRunnerOptions;
   private runtimeDefaults: PipelineRuntimeDefaults;
-  private assets: Record<string, AssetDescriptor>;
+  private assets: Record<string, ModelAsset>;
   private modelSelection: Record<string, string | null> | null;
   private pipelineConfig: NormalizedPipelineConfig | null;
   private lastInitializationSummary: InitializationSummary | null;

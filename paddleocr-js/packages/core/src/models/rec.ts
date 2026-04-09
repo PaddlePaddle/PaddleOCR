@@ -1,7 +1,7 @@
 import type { OpenCv, Mat } from "@techstark/opencv-js";
 import type { InferenceSession, Tensor } from "onnxruntime-web";
 
-import { assertStandardModelResources } from "../resources/standard-model";
+import { assertStandardModelResources } from "../resources/model-asset";
 import { createSession, getProviderCandidates, releaseSessions } from "../runtime/ort";
 import type { OrtModule, WebGpuState, SessionState } from "../runtime/ort";
 import { clamp, withTimeout } from "../utils/common";

@@ -45,9 +45,7 @@ export type {
   WorkerResolvedOptions
 } from "./pipelines/ocr/shared";
 
-export type { AssetDescriptor, ModelAssetsMap } from "./resources/registry";
-
-export type { ResourceAsset, AssetFetchResult, AssetDownloadSummary } from "./resources/cache";
+export type { ModelAsset, ModelAssetsMap } from "./resources/model-asset";
 
 export type { WebGpuState, OrtRuntimeOptions } from "./runtime/ort";
 

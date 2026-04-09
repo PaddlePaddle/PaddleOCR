@@ -44,9 +44,7 @@ export type {
 
 export type { PaddleOCRCreateOptions } from "../pipelines/ocr/index";
 
-export type { AssetDescriptor, ModelAssetsMap } from "../resources/registry";
-
-export type { ResourceAsset, AssetFetchResult, AssetDownloadSummary } from "../resources/cache";
+export type { ModelAsset, ModelAssetsMap } from "../resources/model-asset";
 
 export type {
   OrtModule,

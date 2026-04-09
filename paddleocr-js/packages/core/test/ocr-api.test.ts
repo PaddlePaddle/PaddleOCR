@@ -11,7 +11,6 @@ import { extractInferenceModelName } from "../src/models/common";
 import { DEFAULT_OCR_PIPELINE_CONFIG_TEXT } from "../src/pipelines/ocr/default-config";
 import { normalizeRuntimeOptions } from "../src/pipelines/ocr/shared";
 import { getOcrRuntimeParams } from "../src/pipelines/ocr/runtime-params";
-import { DEFAULT_MODEL_ASSETS } from "../src/resources/registry";
 
 const CREATE_WITHOUT_INIT = Object.freeze({
   initialize: false
@@ -21,9 +20,6 @@ const IGNORE_UNSUPPORTED = Object.freeze({
   initialize: false,
   unsupportedBehavior: "ignore"
 });
-
-const DEFAULT_DET_ASSET_ID = DEFAULT_MODEL_ASSETS["PP-OCRv5_mobile_det"].id;
-const DEFAULT_REC_ASSET_ID = DEFAULT_MODEL_ASSETS["PP-OCRv5_mobile_rec"].id;
 
 const pipelineConfigText = `
 pipeline_name: OCR
@@ -46,23 +42,11 @@ SubModules:
 `;
 
 const customDetAsset = {
-  id: "custom-det",
-  kind: "tar",
-  url: "https://example.com/custom-det.tar",
-  entries: {
-    model: "inference.onnx",
-    config: "inference.yml"
-  }
+  url: "https://example.com/custom-det.tar"
 };
 
 const customRecAsset = {
-  id: "custom-rec",
-  kind: "tar",
-  url: "https://example.com/custom-rec.tar",
-  entries: {
-    model: "inference.onnx",
-    config: "inference.yml"
-  }
+  url: "https://example.com/custom-rec.tar"
 };
 
 class MockWorker {
@@ -90,8 +74,8 @@ class MockWorker {
 }
 
 function expectDefaultModelAssets(ocr) {
-  expect(ocr.options.assets.det.id).toBe(DEFAULT_DET_ASSET_ID);
-  expect(ocr.options.assets.rec.id).toBe(DEFAULT_REC_ASSET_ID);
+  expect(ocr.options.assets.det.url).toMatch(/PP-OCRv5_mobile_det/);
+  expect(ocr.options.assets.rec.url).toMatch(/PP-OCRv5_mobile_rec/);
 }
 
 describe("PaddleOCR high-level API", () => {
@@ -126,8 +110,8 @@ describe("PaddleOCR high-level API", () => {
 
     expect(normalized.modelSelection.textDetectionModelName).toBe("custom_det");
     expect(normalized.modelSelection.textRecognitionModelName).toBe("custom_rec");
-    expect(normalized.assets.det.id).toBe("custom-det");
-    expect(normalized.assets.rec.id).toBe("custom-rec");
+    expect(normalized.assets.det.url).toBe("https://example.com/custom-det.tar");
+    expect(normalized.assets.rec.url).toBe("https://example.com/custom-rec.tar");
   });
 
   it("creates an OCR instance from lang and ocrVersion", async () => {
@@ -153,7 +137,7 @@ describe("PaddleOCR high-level API", () => {
     expect(typeof ocr.initialize).toBe("function");
     expect(typeof ocr.predict).toBe("function");
     expect(typeof ocr.dispose).toBe("function");
-    expect(ocr.options.assets.det.id).toBe(DEFAULT_DET_ASSET_ID);
+    expect(ocr.options.assets.det.url).toMatch(/PP-OCRv5_mobile_det/);
     expect(ocr.options.runtime.backend).toBe(defaultRuntime.backend);
   });
 
@@ -161,11 +145,11 @@ describe("PaddleOCR high-level API", () => {
     const defaultPipeline = normalizeOcrPipelineConfig(DEFAULT_OCR_PIPELINE_CONFIG_TEXT);
     const ocr = await PaddleOCR.create(CREATE_WITHOUT_INIT);
 
-    expect(ocr.options.assets.det.id).toBe(
-      DEFAULT_MODEL_ASSETS[defaultPipeline.modelSelection.textDetectionModelName].id
+    expect(ocr.options.assets.det.url).toMatch(
+      new RegExp(defaultPipeline.modelSelection.textDetectionModelName)
     );
-    expect(ocr.options.assets.rec.id).toBe(
-      DEFAULT_MODEL_ASSETS[defaultPipeline.modelSelection.textRecognitionModelName].id
+    expect(ocr.options.assets.rec.url).toMatch(
+      new RegExp(defaultPipeline.modelSelection.textRecognitionModelName)
     );
     expect(ocr.runtimeDefaults).toMatchObject(defaultPipeline.runtimeDefaults);
   });
@@ -207,8 +191,8 @@ describe("PaddleOCR high-level API", () => {
       ...IGNORE_UNSUPPORTED
     });
 
-    expect(ocr.options.assets.det.id).toBe("custom-det");
-    expect(ocr.options.assets.rec.id).toBe("custom-rec");
+    expect(ocr.options.assets.det.url).toBe("https://example.com/custom-det.tar");
+    expect(ocr.options.assets.rec.url).toBe("https://example.com/custom-rec.tar");
   });
 
   it("allows overriding only one side with a custom model asset", async () => {
@@ -218,8 +202,8 @@ describe("PaddleOCR high-level API", () => {
       ...IGNORE_UNSUPPORTED
     });
 
-    expect(ocr.options.assets.det.id).toBe("custom-det");
-    expect(ocr.options.assets.rec.id).toBe(DEFAULT_REC_ASSET_ID);
+    expect(ocr.options.assets.det.url).toBe("https://example.com/custom-det.tar");
+    expect(ocr.options.assets.rec.url).toMatch(/PP-OCRv5_mobile_rec/);
   });
 
   it("lets explicit model names override pipeline config model assets", async () => {
@@ -313,7 +297,7 @@ describe("PaddleOCR high-level API", () => {
       ...CREATE_WITHOUT_INIT
     });
 
-    expect(ocr.options.assets.det.id).toBe("custom-det");
+    expect(ocr.options.assets.det.url).toBe("https://example.com/custom-det.tar");
   });
 
   it("initializes worker mode through the same API surface", async () => {
@@ -331,8 +315,6 @@ describe("PaddleOCR high-level API", () => {
               recProvider: "wasm",
               assets: [],
               elapsedMs: 12,
-              cacheHits: 0,
-              cacheMisses: 2,
               pipelineConfigWarnings: []
             },
             modelConfig: {

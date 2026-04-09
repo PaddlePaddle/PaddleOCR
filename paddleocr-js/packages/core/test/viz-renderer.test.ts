@@ -1,4 +1,3 @@
-// @vitest-environment jsdom
 import { describe, expect, it, vi } from "vitest";
 
 // Mock FontFace and document.fonts before importing

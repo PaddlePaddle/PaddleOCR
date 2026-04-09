@@ -1,7 +1,6 @@
 import type { OpenCv } from "@techstark/opencv-js";
-import type { AssetDescriptor } from "../../resources/registry";
-import type { AssetDownloadSummary } from "../../resources/cache";
-import { loadStandardModelAsset } from "../../resources/index";
+import type { ModelAsset, ModelLoadSummary } from "../../resources/model-asset";
+import { loadModelAsset } from "../../resources/index";
 import { createDetModel, createRecModel, cropByPoly } from "../../models/index";
 import type { DetModel } from "../../models/det";
 import type { RecModel } from "../../models/rec";
@@ -52,10 +51,8 @@ export interface InitializationSummary {
   webgpuAvailable: boolean;
   detProvider: string;
   recProvider: string;
-  assets: AssetDownloadSummary[];
+  assets: ModelLoadSummary[];
   elapsedMs: number;
-  cacheHits: number;
-  cacheMisses: number;
   pipelineConfigWarnings: string[];
 }
 
@@ -66,7 +63,7 @@ export type SourceToMatFn = (
 type EnsureServedFromHttpFn = () => void;
 
 export interface OcrPipelineRunnerOptions {
-  assets: Record<string, AssetDescriptor>;
+  assets: Record<string, ModelAsset>;
   modelSelection?: Record<string, string | null> | null;
   pipelineConfig?: NormalizedPipelineConfig | null;
   runtimeDefaults?: PipelineRuntimeDefaults;
@@ -78,16 +75,16 @@ export interface OcrPipelineRunnerOptions {
 
 function noopEnsureServedFromHttp(): void {}
 
-function getResolvedAssets(assets: Record<string, AssetDescriptor> | undefined): {
-  det: AssetDescriptor;
-  rec: AssetDescriptor;
+function getResolvedAssets(assets: Record<string, ModelAsset> | undefined): {
+  det: ModelAsset;
+  rec: ModelAsset;
 } {
   if (!assets?.det || typeof assets.det !== "object" || typeof assets.rec !== "object") {
     throw new Error(
       "PaddleOCRCore requires pre-resolved detection and recognition asset descriptors."
     );
   }
-  return assets as { det: AssetDescriptor; rec: AssetDescriptor };
+  return assets as { det: ModelAsset; rec: ModelAsset };
 }
 
 export class OcrPipelineRunner {
@@ -99,7 +96,7 @@ export class OcrPipelineRunner {
   protected detModel: DetModel | null;
   protected recModel: RecModel | null;
   protected webgpuState: WebGpuState;
-  protected assets: Record<string, AssetDescriptor>;
+  protected assets: Record<string, ModelAsset>;
   protected modelSelection: Record<string, string | null> | null;
   protected pipelineConfig: NormalizedPipelineConfig | null;
   protected lastInitializationSummary: InitializationSummary | null;
@@ -135,8 +132,8 @@ export class OcrPipelineRunner {
     const assets = getResolvedAssets(this.assets);
     const fetchImpl = this.options.fetch || fetch;
     const loadedAssets = await Promise.all([
-      loadStandardModelAsset(assets.det, fetchImpl),
-      loadStandardModelAsset(assets.rec, fetchImpl)
+      loadModelAsset(assets.det, fetchImpl),
+      loadModelAsset(assets.rec, fetchImpl)
     ]);
     validateLoadedModelName(
       "TextDetection",
@@ -180,8 +177,6 @@ export class OcrPipelineRunner {
       recProvider: this.recModel.provider,
       assets: loadedAssets.map((asset) => asset.download),
       elapsedMs: elapsed,
-      cacheHits: loadedAssets.filter((asset) => asset.download.cacheHit).length,
-      cacheMisses: loadedAssets.filter((asset) => !asset.download.cacheHit).length,
       pipelineConfigWarnings: this.pipelineConfig?.warnings || []
     };
     return this.lastInitializationSummary;

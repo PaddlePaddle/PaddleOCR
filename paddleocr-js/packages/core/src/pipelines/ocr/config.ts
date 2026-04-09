@@ -1,7 +1,7 @@
 import yaml from "js-yaml";
 
-import type { AssetDescriptor } from "../../resources/registry";
-import { normalizeAssetDescriptor } from "../../resources/registry";
+import type { ModelAsset } from "../../resources/model-asset";
+import { normalizeModelAsset } from "../../resources/model-asset";
 import type { LimitType } from "./runtime-params";
 
 const SUPPORTED_PIPELINE_NAME = "OCR";
@@ -12,7 +12,7 @@ export interface NormalizedPipelineConfig {
   warnings: string[];
   unsupportedFeatures: string[];
   modelSelection: PipelineModelSelection;
-  assets: Partial<Record<string, AssetDescriptor>>;
+  assets: Partial<Record<string, ModelAsset>>;
   runtimeDefaults: PipelineRuntimeDefaults;
 }
 
@@ -81,12 +81,12 @@ function getModuleAsset(
   assetName: string,
   modulePath: string,
   moduleConfig: YamlObject | null
-): AssetDescriptor | null {
+): ModelAsset | null {
   if (moduleConfig?.model_dir == null) {
     return null;
   }
   if (isPlainObject(moduleConfig.model_dir)) {
-    const asset = normalizeAssetDescriptor(assetName, moduleConfig.model_dir);
+    const asset = normalizeModelAsset(assetName, moduleConfig.model_dir);
     validateModuleAsset(modulePath, getModuleModelName(moduleConfig));
     return asset;
   }

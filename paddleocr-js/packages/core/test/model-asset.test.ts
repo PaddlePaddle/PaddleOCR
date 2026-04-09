@@ -1,34 +1,56 @@
-import { describe, expect, it, vi } from "vitest";
-
-vi.mock("@techstark/opencv-js", () => ({
-  default: {
-    Mat() {}
-  }
-}));
+import { describe, expect, it } from "vitest";
 
 import {
-  assertStandardModelResources,
-  assertStandardModelResourceSlot,
+  normalizeModelAsset,
+  normalizeAssets,
   getStandardModelEntryPath,
-  loadStandardModelAsset
-} from "../src/resources/standard-model";
-import { assertStandardModelResources as assertStandardModelResourcesFromIndex } from "../src/resources/index";
+  assertStandardModelResourceSlot,
+  assertStandardModelResources
+} from "../src/resources/model-asset";
+
+describe("model asset normalization", () => {
+  it("resolves built-in model asset references", () => {
+    const assets = normalizeAssets({
+      det: "PP-OCRv5_mobile_det",
+      rec: "PP-OCRv5_mobile_rec"
+    });
+    expect(assets.det.url).toMatch(/\.tar$/);
+  });
+
+  it("normalizes a single model asset directly", () => {
+    const asset = normalizeModelAsset("det", {
+      url: "/det.tar"
+    });
+
+    expect(asset.url).toBe("/det.tar");
+  });
+
+  it("rejects invalid assets", () => {
+    expect(() =>
+      normalizeAssets({
+        encoder: {}
+      })
+    ).toThrow(/must define url/i);
+  });
+
+  it("rejects non-object asset descriptors", () => {
+    expect(() => normalizeModelAsset("det", null)).toThrow(/must be an object/i);
+  });
+
+  it("rejects unknown model asset references", () => {
+    expect(() =>
+      normalizeAssets({
+        det: "missing_model"
+      })
+    ).toThrow(/unknown model asset/i);
+  });
+});
 
 describe("standard model protocol", () => {
   it("provides standard entry names", () => {
     expect(getStandardModelEntryPath("model")).toBe("inference.onnx");
     expect(getStandardModelEntryPath("config")).toBe("inference.yml");
     expect(getStandardModelEntryPath("other")).toBe(null);
-  });
-
-  it("rejects non-tar standard model assets", async () => {
-    await expect(
-      loadStandardModelAsset({
-        id: "det",
-        kind: "file",
-        url: "/det.onnx"
-      })
-    ).rejects.toThrow(/tar bundle/i);
   });
 
   it("rejects missing standard model binary resources", () => {
@@ -61,9 +83,5 @@ describe("standard model protocol", () => {
         labels: "abc"
       })
     ).toThrow(/Unsupported standard model resource slot/i);
-  });
-
-  it("re-exports standard model resource validation helpers", () => {
-    expect(assertStandardModelResourcesFromIndex).toBe(assertStandardModelResources);
   });
 });

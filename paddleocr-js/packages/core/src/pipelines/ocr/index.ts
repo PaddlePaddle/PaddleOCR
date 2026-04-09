@@ -6,7 +6,7 @@ import { resolvePaddleOCROptions, resolveWorkerOptions } from "./shared";
 import { createWorkerBackedPaddleOCR } from "./worker-backed";
 import type { WorkerBackedPaddleOCR } from "./worker-backed";
 import type { OrtRuntimeOptions } from "../../runtime/ort";
-import type { AssetDescriptor } from "../../resources/registry";
+import type { ModelAsset } from "../../resources/model-asset";
 
 export interface PaddleOCRCreateOptions {
   worker?: boolean | { createWorker?: () => Worker };
@@ -28,12 +28,12 @@ export interface PaddleOCRCreateOptions {
   textRecognitionModelName?: string;
   text_recognition_model_name?: string;
 
-  textDetectionModelAsset?: AssetDescriptor;
-  textDetectionModelDir?: AssetDescriptor;
-  text_detection_model_dir?: AssetDescriptor;
-  textRecognitionModelAsset?: AssetDescriptor;
-  textRecognitionModelDir?: AssetDescriptor;
-  text_recognition_model_dir?: AssetDescriptor;
+  textDetectionModelAsset?: ModelAsset;
+  textDetectionModelDir?: ModelAsset;
+  text_detection_model_dir?: ModelAsset;
+  textRecognitionModelAsset?: ModelAsset;
+  textRecognitionModelDir?: ModelAsset;
+  text_recognition_model_dir?: ModelAsset;
 
   [key: string]: unknown;
 }

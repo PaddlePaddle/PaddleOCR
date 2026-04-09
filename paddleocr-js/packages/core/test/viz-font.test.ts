@@ -1,4 +1,3 @@
-// @vitest-environment jsdom
 import { describe, expect, it, vi, beforeEach } from "vitest";
 import { loadFontFace, removeFontFace } from "../src/viz/font";
 import type { FontConfig } from "../src/viz/types";

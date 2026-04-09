@@ -12,7 +12,7 @@ const parseInferenceConfigText = vi.fn();
 const parseScaleValue = vi.fn();
 const toBgrFloatCHWFromBgr = vi.fn();
 
-vi.mock("../src/resources/standard-model", () => ({
+vi.mock("../src/resources/model-asset", () => ({
   assertStandardModelResources
 }));
 

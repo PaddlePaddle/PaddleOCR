@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-const loadStandardModelAsset = vi.fn();
+const loadModelAsset = vi.fn();
 const createDetModel = vi.fn();
 const createRecModel = vi.fn();
 const cropByPoly = vi.fn();
@@ -12,7 +12,7 @@ const cloneDefaultOcrConfig = vi.fn();
 const validateLoadedModelName = vi.fn();
 
 vi.mock("../src/resources/index", () => ({
-  loadStandardModelAsset
+  loadModelAsset
 }));
 
 vi.mock("../src/models/index", () => ({
@@ -59,8 +59,8 @@ function createCrop() {
 
 function createResolvedAssets() {
   return {
-    det: { id: "det" },
-    rec: { id: "rec" }
+    det: { url: "/det.tar" },
+    rec: { url: "/rec.tar" }
   };
 }
 
@@ -90,16 +90,16 @@ describe("OCR pipeline core", () => {
       webgpuState: { available: true, reason: "" },
       backend: "auto"
     });
-    loadStandardModelAsset
+    loadModelAsset
       .mockResolvedValueOnce({
         modelBytes: new Uint8Array([1]),
         configText: "det-config",
-        download: { cacheHit: true }
+        download: { url: "/det.tar", bytes: 100 }
       })
       .mockResolvedValueOnce({
         modelBytes: new Uint8Array([2]),
         configText: "rec-config",
-        download: { cacheHit: false }
+        download: { url: "/rec.tar", bytes: 200 }
       });
     createDetModel.mockResolvedValue(detModel);
     createRecModel.mockResolvedValue(recModel);
@@ -127,7 +127,7 @@ describe("OCR pipeline core", () => {
     expect(ensureServedFromHttp).toHaveBeenCalledTimes(1);
     expect(initOpenCvRuntime).toHaveBeenCalledTimes(1);
     expect(initOrtRuntime).toHaveBeenCalledWith(AUTO_RUNTIME_OPTIONS);
-    expect(loadStandardModelAsset).toHaveBeenCalledTimes(2);
+    expect(loadModelAsset).toHaveBeenCalledTimes(2);
     expect(validateLoadedModelName).toHaveBeenNthCalledWith(
       1,
       "TextDetection",
@@ -159,10 +159,11 @@ describe("OCR pipeline core", () => {
       webgpuAvailable: true,
       detProvider: "wasm",
       recProvider: "webgpu",
-      assets: [{ cacheHit: true }, { cacheHit: false }],
+      assets: [
+        { url: "/det.tar", bytes: 100 },
+        { url: "/rec.tar", bytes: 200 }
+      ],
       elapsedMs: 45,
-      cacheHits: 1,
-      cacheMisses: 1,
       pipelineConfigWarnings: ["warning"]
     });
     expect(runner.getInitializationSummary()).toEqual(summary);
@@ -329,16 +330,16 @@ describe("OCR pipeline core", () => {
       webgpuState: { available: false, reason: "" },
       backend: "wasm"
     });
-    loadStandardModelAsset
+    loadModelAsset
       .mockResolvedValueOnce({
         modelBytes: new Uint8Array([1]),
         configText: "det-config",
-        download: { cacheHit: false }
+        download: { url: "/det.tar", bytes: 100 }
       })
       .mockResolvedValueOnce({
         modelBytes: new Uint8Array([2]),
         configText: "rec-config",
-        download: { cacheHit: false }
+        download: { url: "/rec.tar", bytes: 200 }
       });
     createDetModel.mockResolvedValue(detModel);
     createRecModel.mockResolvedValue(recModel);

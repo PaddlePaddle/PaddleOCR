@@ -1,5 +1,5 @@
-import type { AssetDescriptor } from "../../resources/registry";
-import { DEFAULT_MODEL_ASSETS } from "../../resources/registry";
+import type { ModelAsset } from "../../resources/model-asset";
+import { DEFAULT_MODEL_ASSETS } from "../../resources/model-asset";
 import { DEFAULT_DET_MODEL_CONFIG } from "../../models/det";
 import { DEFAULT_REC_MODEL_CONFIG } from "../../models/rec";
 import { extractInferenceModelName } from "../../models/common";
@@ -15,7 +15,7 @@ import type { OcrModelConfig } from "./runtime-params";
 import type { OrtRuntimeOptions } from "../../runtime/ort";
 
 export interface ResolvedOcrOptions {
-  assets: Record<string, AssetDescriptor>;
+  assets: Record<string, ModelAsset>;
   modelSelection: Record<string, string | null>;
   runtimeDefaults: PipelineRuntimeDefaults;
   pipelineConfig: NormalizedPipelineConfig | null;
@@ -138,8 +138,13 @@ function emitPipelineWarnings(warnings: string[], behavior: "warn" | "ignore" | 
   }
 }
 
-function resolveModelAssetByName(_modelRole: string, modelName: string): AssetDescriptor {
-  return DEFAULT_MODEL_ASSETS[modelName];
+function resolveModelAssetByName(_modelRole: string, modelName: string): ModelAsset {
+  const asset = DEFAULT_MODEL_ASSETS[modelName];
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- runtime guard for missing Record key
+  if (!asset) {
+    throw new Error(`Unknown model asset "${modelName}".`);
+  }
+  return { url: asset.url };
 }
 
 function getSelectedModelName(
@@ -195,9 +200,9 @@ function resolveSelectedAsset(
   baseSelection: PipelineModelSelection | null,
   configSelection: PipelineModelSelection | null,
   explicitSelection: Record<string, string | null> | null,
-  configAssets: Partial<Record<string, AssetDescriptor>> | null,
-  explicitAssets: Record<string, AssetDescriptor> | null
-): AssetDescriptor | null {
+  configAssets: Partial<Record<string, ModelAsset>> | null,
+  explicitAssets: Record<string, ModelAsset> | null
+): ModelAsset | null {
   const explicitAsset = explicitAssets?.[assetRole];
   if (explicitAsset) {
     return explicitAsset;
@@ -225,9 +230,9 @@ function createOcrAssets(
   baseSelection: PipelineModelSelection | null,
   configSelection: PipelineModelSelection | null,
   explicitSelection: Record<string, string | null> | null,
-  configAssets: Partial<Record<string, AssetDescriptor>> | null,
-  explicitAssets: Record<string, AssetDescriptor> | null
-): Record<string, AssetDescriptor> {
+  configAssets: Partial<Record<string, ModelAsset>> | null,
+  explicitAssets: Record<string, ModelAsset> | null
+): Record<string, ModelAsset> {
   const assets = Object.fromEntries(
     OCR_MODEL_ROLES.map((role) => [
       role.assetKey,
@@ -248,15 +253,15 @@ function createOcrAssets(
     throw new Error("OCR model selection must define both detection and recognition models.");
   }
 
-  return assets as Record<string, AssetDescriptor>;
+  return assets as Record<string, ModelAsset>;
 }
 
 function getExplicitModelSelection(options: Record<string, unknown>): {
   modelSelection: Record<string, string | null>;
-  assets: Record<string, AssetDescriptor>;
+  assets: Record<string, ModelAsset>;
 } | null {
   const modelSelection: Record<string, string | null> = {};
-  const assets: Record<string, AssetDescriptor> = {};
+  const assets: Record<string, ModelAsset> = {};
   let hasAnyOption = false;
 
   for (const role of OCR_MODEL_ROLES) {
@@ -264,7 +269,7 @@ function getExplicitModelSelection(options: Record<string, unknown>): {
       | string
       | undefined;
     const asset = readAliasedOption(options, role.assetAliases, role.assetLabel) as
-      | AssetDescriptor
+      | ModelAsset
       | undefined;
 
     if (modelName !== undefined) {
@@ -314,7 +319,7 @@ function resolveBaseModelSelection(
 }
 
 interface ConstructionResult {
-  assets: Record<string, AssetDescriptor>;
+  assets: Record<string, ModelAsset>;
   modelSelection: Record<string, string | null>;
   runtimeDefaults: PipelineRuntimeDefaults;
   normalizedPipelineConfig: NormalizedPipelineConfig | null;

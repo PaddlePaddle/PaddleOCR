@@ -131,9 +131,7 @@ async function initializeOcrEngine(): Promise<void> {
     `webgpu available: ${summary.webgpuAvailable ? "yes" : "no"}`,
     `provider(det): ${summary.detProvider}`,
     `provider(rec): ${summary.recProvider}`,
-    `assets: ${String(summary.assets.length)}`,
-    `cache hits: ${String(summary.cacheHits)}`,
-    `cache misses: ${String(summary.cacheMisses)}`
+    `assets: ${String(summary.assets.length)}`
   ].join("\n");
   ui.runBtn.disabled = !state.imageFile;
 }

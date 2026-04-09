@@ -53,31 +53,17 @@ await PaddleOCR.create({
 });
 ```
 
-在浏览器场景下，也可以通过资源描述对象，以直接参数方式传入自定义模型文件：
+也可以通过模型资源描述对象，以直接参数方式传入自定义模型文件：
 
 ```js
 await PaddleOCR.create({
   textDetectionModelName: "my_det_model",
   textDetectionModelAsset: {
-    id: "my-det-model",
-    version: "2026-03-18",
-    kind: "tar",
-    url: "https://example.com/models/my_det_model.tar",
-    entries: {
-      model: "inference.onnx",
-      config: "inference.yml"
-    }
+    url: "https://example.com/models/my_det_model.tar"
   },
   textRecognitionModelName: "my_rec_model",
   textRecognitionModelAsset: {
-    id: "my-rec-model",
-    version: "2026-03-18",
-    kind: "tar",
-    url: "https://example.com/models/my_rec_model.tar",
-    entries: {
-      model: "inference.onnx",
-      config: "inference.yml"
-    }
+    url: "https://example.com/models/my_rec_model.tar"
   }
 });
 ```
@@ -222,7 +208,3 @@ SDK 内部负责管理 OpenCV.js 和 ONNX Runtime。宿主应用仍需负责运�
 - 启用多线程 WASM 或 WebGPU 时所需的 COOP/COEP 响应头
 - ONNX Runtime Web 的环境选项，例如 wasm 资源托管路径、线程数和 SIMD 开关
 - 当使用 `worker: true` 时，能够产出并加载 module worker 的构建工具或运行时配置
-
-## 浏览器缓存
-
-当浏览器支持 Cache Storage 时，资源文件会缓存到浏览器中；对于未暴露 Cache API 的环境，则回退为内存缓存。

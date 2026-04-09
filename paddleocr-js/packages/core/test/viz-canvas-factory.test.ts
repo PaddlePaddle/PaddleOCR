@@ -1,4 +1,3 @@
-// @vitest-environment jsdom
 import { describe, expect, it, vi, afterEach } from "vitest";
 import { createCanvas } from "../src/viz/canvas-factory";
 

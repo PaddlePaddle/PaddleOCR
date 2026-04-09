@@ -26,7 +26,7 @@ The current high-level pipeline entry point is `PaddleOCR.create()`. It coordina
 
 1. runtime initialization
 2. execution backend selection
-3. model download and cache lookup
+3. model download
 4. inference session creation
 5. OCR pipeline execution
 

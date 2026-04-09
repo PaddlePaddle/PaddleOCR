@@ -61,6 +61,6 @@ The demo app uses a Vite alias during development (`npm run dev`) to build direc
 
 ## Testing strategy
 
-- unit tests for config parsing, registry behavior, and cache behavior
+- unit tests for config parsing and registry behavior
 - lightweight jsdom checks for browser platform helpers
 - no large real-model inference in CI by default

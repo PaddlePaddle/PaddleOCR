@@ -1,4 +1,3 @@
-// @vitest-environment jsdom
 import { describe, expect, it, vi } from "vitest";
 
 // Mock browser APIs needed by the module

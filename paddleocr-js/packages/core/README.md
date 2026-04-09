@@ -53,31 +53,17 @@ await PaddleOCR.create({
 });
 ```
 
-For browser usage, custom model files are also passed through direct parameters using asset descriptors:
+Custom model files are also passed through direct parameters using model asset descriptors:
 
 ```js
 await PaddleOCR.create({
   textDetectionModelName: "my_det_model",
   textDetectionModelAsset: {
-    id: "my-det-model",
-    version: "2026-03-18",
-    kind: "tar",
-    url: "https://example.com/models/my_det_model.tar",
-    entries: {
-      model: "inference.onnx",
-      config: "inference.yml"
-    }
+    url: "https://example.com/models/my_det_model.tar"
   },
   textRecognitionModelName: "my_rec_model",
   textRecognitionModelAsset: {
-    id: "my-rec-model",
-    version: "2026-03-18",
-    kind: "tar",
-    url: "https://example.com/models/my_rec_model.tar",
-    entries: {
-      model: "inference.onnx",
-      config: "inference.yml"
-    }
+    url: "https://example.com/models/my_rec_model.tar"
   }
 });
 ```
@@ -222,7 +208,3 @@ The SDK manages OpenCV.js and ONNX Runtime internally. The host application is s
 - COOP/COEP headers when enabling threaded WASM or WebGPU
 - ONNX Runtime Web environment options such as wasm asset hosting paths, thread counts, and SIMD flags
 - a bundler/runtime setup that can emit and load module workers when `worker: true` is used
-
-## Browser Cache
-
-Asset files are cached in the browser when Cache Storage is available, with an in-memory fallback for environments that do not expose the Cache API.

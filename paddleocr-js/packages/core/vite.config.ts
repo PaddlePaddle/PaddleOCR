@@ -87,11 +87,8 @@ export default defineConfig({
         viz: resolve(__dirname, "src/viz/index.ts")
       },
       name: "paddleocr",
-      formats: ["es", "cjs"],
-      fileName: (format, entryName) => {
-        const ext = format === "es" ? "mjs" : "cjs";
-        return `${entryName}.${ext}`;
-      }
+      formats: ["es"],
+      fileName: (_format, entryName) => `${entryName}.mjs`
     },
     rollupOptions: {
       external: ["onnxruntime-web", "@techstark/opencv-js", "clipper-lib", "js-yaml"],

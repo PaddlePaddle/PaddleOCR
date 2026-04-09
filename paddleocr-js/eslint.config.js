@@ -22,7 +22,7 @@ export default tseslint.config(
     files: ["packages/**/test/**/*.ts"],
     extends: [...tseslint.configs.recommendedTypeChecked],
     languageOptions: {
-      globals: { ...globals.browser, ...globals.node },
+      globals: { ...globals.browser },
       parserOptions: {
         project: "./tsconfig.eslint.json",
         tsconfigRootDir: import.meta.dirname

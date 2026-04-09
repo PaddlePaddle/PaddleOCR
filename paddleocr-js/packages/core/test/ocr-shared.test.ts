@@ -77,8 +77,8 @@ describe("OCR shared option resolution", () => {
       backend: "webgpu",
       proxy: true
     });
-    expect(options.assets.det.id).toBe("pp-ocrv5-mobile-det-tar");
-    expect(options.assets.rec.id).toBe("pp-ocrv5-mobile-rec-tar");
+    expect(options.assets.det.url).toMatch(/PP-OCRv5_mobile_det.*\.tar$/);
+    expect(options.assets.rec.url).toMatch(/PP-OCRv5_mobile_rec.*\.tar$/);
     expect(options.modelSelection).toEqual({
       textDetectionModelName: "PP-OCRv5_mobile_det",
       textRecognitionModelName: "PP-OCRv5_mobile_rec"
