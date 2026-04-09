@@ -7,16 +7,16 @@ export type {
   DetPostprocessConfig,
   DetModel,
   DetResult,
-  DetPreprocessResult
+  DetRuntimeOverrides,
+  LimitType
 } from "../models/det";
 
-export type { RecModelConfig, RecModel, RecSample, RecResult } from "../models/rec";
+export type { RecModelConfig, RecModel, RecResult, RecRuntimeOverrides } from "../models/rec";
 
 export type {
-  LimitType,
-  OcrRuntimeParams,
   OcrRuntimeParamsInput,
-  OcrModelConfig
+  OcrModelConfig,
+  ResolvedOcrParams
 } from "../pipelines/ocr/runtime-params";
 
 export type {

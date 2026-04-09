@@ -10,7 +10,7 @@ import { initOpenCvRuntime } from "../../runtime/opencv";
 import { initOrtRuntime } from "../../runtime/ort";
 import type { OrtModule, WebGpuState, OrtRuntimeOptions } from "../../runtime/ort";
 import { nowMs } from "../../utils/common";
-import type { OcrModelConfig, OcrRuntimeParams, OcrRuntimeParamsInput } from "./runtime-params";
+import type { OcrModelConfig, OcrRuntimeParamsInput } from "./runtime-params";
 import { getOcrRuntimeParams } from "./runtime-params";
 import type { NormalizedPipelineConfig, PipelineRuntimeDefaults } from "./config";
 import { cloneDefaultOcrConfig, validateLoadedModelName } from "./shared";
@@ -18,7 +18,6 @@ import type { NormalizedRuntimeOptions } from "./shared";
 import type { SourceMatResult } from "../../platform/browser";
 
 export interface OcrResultItem {
-  originalIndex: number;
   poly: Point2D[];
   text: string;
   score: number;
@@ -90,7 +89,7 @@ function getResolvedAssets(assets: Record<string, ModelAsset> | undefined): {
 export class OcrPipelineRunner {
   protected options: OcrPipelineRunnerOptions;
   protected modelConfig: OcrModelConfig;
-  protected runtimeDefaults: Partial<OcrRuntimeParams>;
+  protected runtimeDefaults: Partial<OcrRuntimeParamsInput>;
   protected cv: OpenCv | null;
   protected ort: OrtModule | null;
   protected detModel: DetModel | null;
@@ -208,59 +207,56 @@ export class OcrPipelineRunner {
     const sourceImage = await this.sourceToMat(cv, source);
     const totalStart = nowMs();
     try {
-      const runtimeParams = getOcrRuntimeParams(this.modelConfig, this.runtimeDefaults, params);
+      const resolved = getOcrRuntimeParams(this.modelConfig, this.runtimeDefaults, params);
+
       const detStart = nowMs();
-      const detResult = await detModel.detect({
-        cv,
-        sourceMat: sourceImage.mat,
-        params: runtimeParams
-      });
+      const detResults = await detModel.predict(cv, [sourceImage.mat], resolved.det);
       const detElapsed = nowMs() - detStart;
-      const detBoxes = detResult.boxes;
+      const detBoxes = detResults[0]?.boxes ?? [];
 
       const recStart = nowMs();
-      const samples = [];
-      for (let index = 0; index < detBoxes.length; index += 1) {
-        const crop = cropByPoly(cv, sourceImage.mat, detBoxes[index].poly);
-        samples.push(
-          recModel.prepareSample({
-            cv,
-            cropMat: crop,
-            poly: detBoxes[index].poly,
-            originalIndex: index
-          })
-        );
-        crop.delete();
-      }
+      const cropMats = detBoxes.map((box) => cropByPoly(cv, sourceImage.mat, box.poly));
+      try {
+        const recResults = await recModel.predict(cv, cropMats, resolved.rec);
 
-      const recRaw = await recModel.recognize(samples);
-      const recElapsed = nowMs() - recStart;
-
-      const items = recRaw
-        .filter((item) => item.text && item.score >= runtimeParams.text_rec_score_thresh)
-        .sort((a, b) => a.originalIndex - b.originalIndex);
-
-      return {
-        image: {
-          width: sourceImage.width,
-          height: sourceImage.height
-        },
-        items,
-        metrics: {
-          detMs: detElapsed,
-          recMs: recElapsed,
-          totalMs: nowMs() - totalStart,
-          detectedBoxes: detBoxes.length,
-          recognizedCount: items.length
-        },
-        runtime: {
-          requestedBackend:
-            (this.options.runtime as NormalizedRuntimeOptions | undefined)?.backend ?? "auto",
-          detProvider: detModel.provider,
-          recProvider: recModel.provider,
-          webgpuAvailable: this.webgpuState.available
+        const items: OcrResultItem[] = [];
+        for (let i = 0; i < recResults.length; i += 1) {
+          const rec = recResults[i];
+          if (rec.text && rec.score >= resolved.pipeline.scoreThresh) {
+            items.push({
+              poly: detBoxes[i].poly,
+              text: rec.text,
+              score: rec.score
+            });
+          }
         }
-      };
+
+        return {
+          image: {
+            width: sourceImage.width,
+            height: sourceImage.height
+          },
+          items,
+          metrics: {
+            detMs: detElapsed,
+            recMs: nowMs() - recStart,
+            totalMs: nowMs() - totalStart,
+            detectedBoxes: detBoxes.length,
+            recognizedCount: items.length
+          },
+          runtime: {
+            requestedBackend:
+              (this.options.runtime as NormalizedRuntimeOptions | undefined)?.backend ?? "auto",
+            detProvider: detModel.provider,
+            recProvider: recModel.provider,
+            webgpuAvailable: this.webgpuState.available
+          }
+        };
+      } finally {
+        for (const mat of cropMats) {
+          mat.delete();
+        }
+      }
     } finally {
       sourceImage.dispose();
     }
