@@ -9,23 +9,20 @@ import type {
   PipelineModelSelection,
   PipelineRuntimeDefaults
 } from "./config";
-import { normalizeOcrPipelineConfig, parseInputShape, toFiniteNumber } from "./config";
+import { normalizeOcrPipelineConfig, toFiniteNumber } from "./config";
 import type { LimitType } from "./runtime-params";
 import { DEFAULT_OCR_PIPELINE_CONFIG_TEXT } from "./default-config";
 import type { OcrModelConfig } from "./runtime-params";
-import type { OrtRuntimeOptions } from "../../runtime/ort";
+import type { OrtOptions } from "../../runtime/ort";
 
 export interface ResolvedOcrOptions {
-  assets: Record<string, ModelAsset>;
-  modelSelection: Record<string, string | null>;
-  runtimeDefaults: PipelineRuntimeDefaults;
-  pipelineConfig: NormalizedPipelineConfig | null;
-  runtime: NormalizedRuntimeOptions;
+  pipelineConfig: NormalizedPipelineConfig;
+  ortOptions: NormalizedOrtOptions;
 }
 
 export type ResolvedBackend = "webgpu" | "wasm" | "auto";
 
-export interface NormalizedRuntimeOptions {
+export interface NormalizedOrtOptions {
   backend: ResolvedBackend;
   wasmPaths?: string;
   numThreads?: number;
@@ -59,9 +56,6 @@ const DEFAULT_NORMALIZED_PIPELINE_CONFIG = normalizeOcrPipelineConfig(
 );
 const DEFAULT_MODEL_SELECTION: Readonly<PipelineModelSelection> = Object.freeze({
   ...DEFAULT_NORMALIZED_PIPELINE_CONFIG.modelSelection
-});
-const DEFAULT_RUNTIME_DEFAULTS: Readonly<PipelineRuntimeDefaults> = Object.freeze({
-  ...DEFAULT_NORMALIZED_PIPELINE_CONFIG.runtimeDefaults
 });
 const DEFAULT_LANG_VERSION_MODEL_SELECTION: Readonly<PipelineModelSelection> = Object.freeze({
   ...DEFAULT_MODEL_SELECTION
@@ -205,16 +199,6 @@ function readExplicitPipelineRuntimeDefaults(
     if (n !== undefined) out.text_det_unclip_ratio = n;
   }
 
-  const detShape = readAliasedOption(
-    options,
-    ["text_det_input_shape", "textDetInputShape"],
-    "text_det_input_shape"
-  );
-  if (detShape !== undefined && Array.isArray(detShape)) {
-    const parsed = parseInputShape(detShape);
-    if (parsed) out.text_det_input_shape = parsed;
-  }
-
   const recScore = readAliasedOption(
     options,
     ["text_rec_score_thresh", "textRecScoreThresh"],
@@ -223,16 +207,6 @@ function readExplicitPipelineRuntimeDefaults(
   if (recScore !== undefined) {
     const n = toFiniteNumber(recScore);
     if (n !== undefined) out.text_rec_score_thresh = n;
-  }
-
-  const recShape = readAliasedOption(
-    options,
-    ["text_rec_input_shape", "textRecInputShape"],
-    "text_rec_input_shape"
-  );
-  if (recShape !== undefined && Array.isArray(recShape)) {
-    const parsed = parseInputShape(recShape);
-    if (parsed) out.text_rec_input_shape = parsed;
   }
 
   return out;
@@ -335,13 +309,18 @@ function createResolvedModelSelection(
   baseSelection: PipelineModelSelection | null,
   configSelection: PipelineModelSelection | null,
   explicitSelection: Record<string, string | null> | null
-): Record<string, string | null> {
+): PipelineModelSelection {
   return Object.fromEntries(
     OCR_MODEL_ROLES.map((role) => [
       role.selectionKey,
-      getSelectedModelName(baseSelection, configSelection, explicitSelection, role.selectionKey)
+      getSelectedModelName(
+        baseSelection,
+        configSelection,
+        explicitSelection,
+        role.selectionKey
+      )
     ])
-  );
+  ) as unknown as PipelineModelSelection;
 }
 
 export function validateLoadedModelName(
@@ -488,26 +467,19 @@ function resolveBaseModelSelection(
   return modelSelection;
 }
 
-interface ConstructionResult {
-  assets: Record<string, ModelAsset>;
-  modelSelection: Record<string, string | null>;
-  runtimeDefaults: PipelineRuntimeDefaults;
-  normalizedPipelineConfig: NormalizedPipelineConfig | null;
-}
-
-function resolveConstructionOptions(options: Record<string, unknown> = {}): ConstructionResult {
+function resolveConstructionOptions(options: Record<string, unknown> = {}): NormalizedPipelineConfig {
   const pipelineInput = options.pipelineConfig;
-  const normalizedPipelineConfig =
+  const userPipelineConfig =
     pipelineInput != null ? normalizeOcrPipelineConfig(pipelineInput) : null;
   const warningBehavior = resolveWarningBehavior(options.unsupportedBehavior);
-  const warnings = normalizedPipelineConfig?.warnings || [];
-  const baseSelection = resolveBaseModelSelection(options, !normalizedPipelineConfig);
-  const configSelection = normalizedPipelineConfig?.modelSelection || null;
-  const configAssets = normalizedPipelineConfig?.assets || null;
+  const warnings = userPipelineConfig?.warnings || [];
+  const baseSelection = resolveBaseModelSelection(options, !userPipelineConfig);
+  const configSelection = userPipelineConfig?.modelSelection || null;
+  const configAssets = userPipelineConfig?.assets || null;
   const explicitOptions = getExplicitModelSelection(options);
   const explicitSelection = explicitOptions?.modelSelection || null;
   const explicitAssets = explicitOptions?.assets || null;
-  const modelSelection = createResolvedModelSelection(
+  const resolvedModelSelection = createResolvedModelSelection(
     baseSelection,
     configSelection,
     explicitSelection
@@ -520,23 +492,14 @@ function resolveConstructionOptions(options: Record<string, unknown> = {}): Cons
     explicitAssets
   );
 
-  if (normalizedPipelineConfig) {
+  const baseNormalized = userPipelineConfig ?? DEFAULT_NORMALIZED_PIPELINE_CONFIG;
+  if (userPipelineConfig) {
     emitPipelineWarnings(warnings, warningBehavior);
-    const merged = mergeNormalizedPipelineConfigWithExplicit(normalizedPipelineConfig, options);
-    return {
-      assets,
-      modelSelection,
-      runtimeDefaults: merged.runtimeDefaults,
-      normalizedPipelineConfig: merged
-    };
   }
-
-  return {
-    assets,
-    modelSelection,
-    runtimeDefaults: DEFAULT_RUNTIME_DEFAULTS,
-    normalizedPipelineConfig: null
-  };
+  const merged = mergeNormalizedPipelineConfigWithExplicit(baseNormalized, options);
+  merged.modelSelection = resolvedModelSelection;
+  merged.assets = { ...assets };
+  return merged;
 }
 
 function resolveBackend(raw: string | undefined): ResolvedBackend {
@@ -544,17 +507,15 @@ function resolveBackend(raw: string | undefined): ResolvedBackend {
   return "auto";
 }
 
-export function normalizeRuntimeOptions(
-  runtimeOptions: OrtRuntimeOptions = {}
-): NormalizedRuntimeOptions {
-  const backend = resolveBackend(runtimeOptions.backend);
+export function normalizeOrtOptions(ortOptions: OrtOptions = {}): NormalizedOrtOptions {
+  const backend = resolveBackend(ortOptions.backend);
 
   return {
     backend,
-    ...(runtimeOptions.wasmPaths !== undefined ? { wasmPaths: runtimeOptions.wasmPaths } : {}),
-    ...(runtimeOptions.numThreads !== undefined ? { numThreads: runtimeOptions.numThreads } : {}),
-    ...(runtimeOptions.simd !== undefined ? { simd: runtimeOptions.simd } : {}),
-    ...(runtimeOptions.proxy !== undefined ? { proxy: runtimeOptions.proxy } : {})
+    ...(ortOptions.wasmPaths !== undefined ? { wasmPaths: ortOptions.wasmPaths } : {}),
+    ...(ortOptions.numThreads !== undefined ? { numThreads: ortOptions.numThreads } : {}),
+    ...(ortOptions.simd !== undefined ? { simd: ortOptions.simd } : {}),
+    ...(ortOptions.proxy !== undefined ? { proxy: ortOptions.proxy } : {})
   };
 }
 
@@ -586,14 +547,9 @@ export function resolveWorkerOptions(workerOption: unknown): WorkerResolvedOptio
 }
 
 export function resolvePaddleOCROptions(options: Record<string, unknown> = {}): ResolvedOcrOptions {
-  const resolved = resolveConstructionOptions(options);
-
   return {
-    assets: resolved.assets,
-    modelSelection: resolved.modelSelection,
-    runtimeDefaults: resolved.runtimeDefaults,
-    pipelineConfig: resolved.normalizedPipelineConfig,
-    runtime: normalizeRuntimeOptions((options.runtime || {}) as OrtRuntimeOptions)
+    pipelineConfig: resolveConstructionOptions(options),
+    ortOptions: normalizeOrtOptions((options.ortOptions || {}) as OrtOptions)
   };
 }
 

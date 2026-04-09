@@ -1,11 +1,12 @@
 import type { OpenCv, Mat } from "@techstark/opencv-js";
-import type { InferenceSession, Tensor } from "onnxruntime-web";
+import type { Tensor } from "onnxruntime-web";
 
 import { assertModelResources } from "../resources/model-asset";
 import { createSession, getProviderCandidates, releaseSessions } from "../runtime/ort";
 import type { OrtModule, WebGpuState, SessionState } from "../runtime/ort";
 import { chunkArray, clamp, resolveRuntimeBatchSize, withTimeout } from "../utils/common";
 import { getTransformOp, parseInferenceConfigText, toBgrFloatCHWFromBgr } from "./common";
+import { runInference } from "./infer";
 import type { NormalizeConfig } from "./common";
 
 export interface RecModelConfig {
@@ -127,20 +128,27 @@ export async function createRecModel({
         throw new Error("Recognition model session is not initialized.");
       }
       const batchSize = resolveRuntimeBatchSize(overrides?.batchSize, defaultBatchSize);
-      const samples: RecSample[] = [];
-      for (let i = 0; i < mats.length; i += 1) {
-        samples.push(preprocessRec({ cv, config }, mats[i], i));
+      const ctx = { cv, config };
+      const samples = preprocess(ctx, mats);
+      const charDict = config.charDict;
+      const ordered = samples.slice().sort((a, b) => a.width - b.width);
+      const decoded: Array<{ inputIndex: number; text: string; score: number }> = [];
+      const targetH = config.imageShape[1];
+
+      for (const batch of chunkArray(ordered, batchSize)) {
+        const inputTensor = packRecBatchTensor(ort, batch, targetH);
+        const output = await runInference(sessionState.session, inputTensor);
+        const batchResults = postprocess(output, charDict);
+        for (let index = 0; index < batchResults.length; index += 1) {
+          decoded.push({
+            inputIndex: batch[index].inputIndex,
+            ...batchResults[index]
+          });
+        }
       }
-      return runRecInference(
-        {
-          ort,
-          session: sessionState.session,
-          config,
-          charDict: config.charDict
-        },
-        samples,
-        batchSize
-      );
+
+      decoded.sort((a, b) => a.inputIndex - b.inputIndex);
+      return decoded.map(({ text, score }) => ({ text, score }));
     },
     async dispose() {
       await releaseSessions(sessionState?.session);
@@ -163,7 +171,18 @@ export async function createRecModelSession(
   );
 }
 
-function preprocessRec(
+function preprocess(
+  context: { cv: OpenCv; config: RecModelConfig },
+  mats: Mat[]
+): RecSample[] {
+  const samples: RecSample[] = [];
+  for (let i = 0; i < mats.length; i += 1) {
+    samples.push(preprocessSample(context, mats[i], i));
+  }
+  return samples;
+}
+
+function preprocessSample(
   context: { cv: OpenCv; config: RecModelConfig },
   cropMat: Mat,
   inputIndex: number
@@ -205,13 +224,6 @@ function preprocessRec(
   return { inputIndex, width: recW, chw };
 }
 
-interface RecRunContext {
-  ort: OrtModule;
-  session: InferenceSession;
-  config: RecModelConfig;
-  charDict: string[];
-}
-
 function createBatchTensor(
   ort: OrtModule,
   samples: RecSample[],
@@ -236,6 +248,11 @@ function createBatchTensor(
     }
   }
   return new ort.Tensor("float32", out, [batch, 3, targetH, maxW]);
+}
+
+function packRecBatchTensor(ort: OrtModule, samples: RecSample[], targetH: number): Tensor {
+  const maxW = samples.reduce((acc, sample) => Math.max(acc, sample.width), 1);
+  return createBatchTensor(ort, samples, maxW, targetH);
 }
 
 function decodeCTCSample(
@@ -272,56 +289,22 @@ function decodeCTCSample(
   return { text, score };
 }
 
-function postprocessRec(
-  outputData: Float32Array,
-  sampleCount: number,
-  timeSteps: number,
-  classes: number,
+function postprocess(
+  output: Tensor,
   charDict: string[]
 ): Array<{ text: string; score: number }> {
+  const dims = output.dims;
+  if (dims.length !== 3) {
+    throw new Error(`Unexpected rec output dims: [${dims.join(", ")}]`);
+  }
+  const sampleCount = dims[0];
+  const timeSteps = dims[1];
+  const classes = dims[2];
+  const data = output.data as Float32Array;
   const stride = timeSteps * classes;
   const results: Array<{ text: string; score: number }> = [];
   for (let index = 0; index < sampleCount; index += 1) {
-    results.push(decodeCTCSample(outputData, index * stride, timeSteps, classes, charDict));
+    results.push(decodeCTCSample(data, index * stride, timeSteps, classes, charDict));
   }
   return results;
-}
-
-async function runRecInference(
-  context: RecRunContext,
-  samples: RecSample[],
-  batchSize: number
-): Promise<RecResult[]> {
-  const { ort, session, config, charDict } = context;
-  const recInputName = session.inputNames[0];
-  const targetH = config.imageShape[1];
-  const ordered = samples.slice().sort((a, b) => a.width - b.width);
-  const decoded: Array<{ inputIndex: number; text: string; score: number }> = [];
-
-  for (const batch of chunkArray(ordered, batchSize)) {
-    const maxW = batch.reduce((acc, sample) => Math.max(acc, sample.width), 1);
-    const tensor = createBatchTensor(ort, batch, maxW, targetH);
-    const outputMap = await session.run({ [recInputName]: tensor });
-    const output = outputMap[session.outputNames[0]];
-    const dims = output.dims;
-    if (dims.length !== 3) {
-      throw new Error(`Unexpected rec output dims: [${dims.join(", ")}]`);
-    }
-    const batchResults = postprocessRec(
-      output.data as Float32Array,
-      dims[0],
-      dims[1],
-      dims[2],
-      charDict
-    );
-    for (let index = 0; index < batchResults.length; index += 1) {
-      decoded.push({
-        inputIndex: batch[index].inputIndex,
-        ...batchResults[index]
-      });
-    }
-  }
-
-  decoded.sort((a, b) => a.inputIndex - b.inputIndex);
-  return decoded.map(({ text, score }) => ({ text, score }));
 }

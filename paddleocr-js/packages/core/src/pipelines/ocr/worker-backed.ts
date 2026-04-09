@@ -45,26 +45,26 @@ export class WorkerBackedPaddleOCR {
       return this.lastInitializationSummary;
     }
     if (!this.initPromise) {
-      const runtimeOpts = (this.options.runtime || {}) as Record<string, unknown>;
-      if (runtimeOpts["wasmPaths"] === undefined && typeof __ORT_WASM_CDN_PREFIX__ === "string") {
+      const ortOpts = (this.options.ortOptions || {}) as Record<string, unknown>;
+      if (ortOpts["wasmPaths"] === undefined && typeof __ORT_WASM_CDN_PREFIX__ === "string") {
         console.warn(
-          "[PaddleOCR.js] Worker mode: runtime.wasmPaths is not set — falling back to CDN (%s). " +
-            "For version consistency between main thread and worker, set runtime.wasmPaths " +
+          "[PaddleOCR.js] Worker mode: ortOptions.wasmPaths is not set — falling back to CDN (%s). " +
+            "For version consistency between main thread and worker, set ortOptions.wasmPaths " +
             "to the path where your bundler outputs the onnxruntime-web WASM files " +
-            '(e.g. runtime: { wasmPaths: "/assets/" }).',
+            '(e.g. ortOptions: { wasmPaths: "/assets/" }).',
           __ORT_WASM_CDN_PREFIX__
         );
       }
       const wasmCdnFallback =
-        runtimeOpts["wasmPaths"] === undefined && typeof __ORT_WASM_CDN_PREFIX__ === "string"
+        ortOpts["wasmPaths"] === undefined && typeof __ORT_WASM_CDN_PREFIX__ === "string"
           ? { wasmPaths: __ORT_WASM_CDN_PREFIX__ }
           : {};
       this.initPromise = this.transportClient
         .request("init", {
           options: {
             ...this.options,
-            runtime: {
-              ...runtimeOpts,
+            ortOptions: {
+              ...ortOpts,
               ...wasmCdnFallback,
               disableWasmProxy: true
             }

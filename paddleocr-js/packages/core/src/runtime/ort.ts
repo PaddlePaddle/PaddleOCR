@@ -5,7 +5,7 @@ export interface WebGpuState {
   reason: string;
 }
 
-export interface OrtRuntimeOptions {
+export interface OrtOptions {
   backend?: "webgpu" | "wasm" | "auto" | (string & {});
   wasmPaths?: string;
   numThreads?: number;
@@ -80,39 +80,39 @@ export function getProviderCandidates(backend: string, webgpuState: WebGpuState)
   return webgpuState.available ? [["webgpu"], ["wasm"]] : [["wasm"]];
 }
 
-function applyOrtEnvironmentOptions(ort: OrtModule, runtimeOptions: OrtRuntimeOptions): void {
+function applyOrtEnvironmentOptions(ort: OrtModule, ortOptions: OrtOptions): void {
   const wasmOptions = ort.env.wasm;
 
-  if (runtimeOptions.wasmPaths !== undefined) {
-    wasmOptions.wasmPaths = runtimeOptions.wasmPaths;
+  if (ortOptions.wasmPaths !== undefined) {
+    wasmOptions.wasmPaths = ortOptions.wasmPaths;
   }
-  if (runtimeOptions.numThreads !== undefined) {
-    wasmOptions.numThreads = runtimeOptions.numThreads;
+  if (ortOptions.numThreads !== undefined) {
+    wasmOptions.numThreads = ortOptions.numThreads;
   }
-  if (runtimeOptions.simd !== undefined) {
-    wasmOptions.simd = runtimeOptions.simd;
+  if (ortOptions.simd !== undefined) {
+    wasmOptions.simd = ortOptions.simd;
   }
-  if (runtimeOptions.proxy !== undefined) {
-    wasmOptions.proxy = runtimeOptions.proxy;
+  if (ortOptions.proxy !== undefined) {
+    wasmOptions.proxy = ortOptions.proxy;
   }
-  if (runtimeOptions.disableWasmProxy) {
+  if (ortOptions.disableWasmProxy) {
     wasmOptions.proxy = false;
   }
 }
 
 export async function initOrtRuntime(
-  runtimeOptions: OrtRuntimeOptions | string = {}
+  ortOptions: OrtOptions | string = {}
 ): Promise<OrtRuntimeResult> {
   const backend =
-    typeof runtimeOptions === "string"
-      ? runtimeOptions
-      : runtimeOptions.backend === "webgpu" || runtimeOptions.backend === "wasm"
-        ? runtimeOptions.backend
+    typeof ortOptions === "string"
+      ? ortOptions
+      : ortOptions.backend === "webgpu" || ortOptions.backend === "wasm"
+        ? ortOptions.backend
         : "auto";
   const webgpuState = await detectWebGpuAvailability();
   const ort = await loadOrtModule();
-  if (typeof runtimeOptions !== "string") {
-    applyOrtEnvironmentOptions(ort, runtimeOptions);
+  if (typeof ortOptions !== "string") {
+    applyOrtEnvironmentOptions(ort, ortOptions);
   }
   return {
     ort,

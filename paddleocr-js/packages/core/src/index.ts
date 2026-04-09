@@ -41,13 +41,13 @@ export type {
 export type {
   ResolvedBackend,
   ResolvedOcrOptions,
-  NormalizedRuntimeOptions,
+  NormalizedOrtOptions,
   WorkerResolvedOptions
 } from "./pipelines/ocr/shared";
 
 export type { ModelAsset, ModelAssetsMap } from "./resources/model-asset";
 
-export type { WebGpuState, OrtRuntimeOptions } from "./runtime/ort";
+export type { WebGpuState, OrtOptions } from "./runtime/ort";
 
 export type { ImageSource, SourceMatResult } from "./platform/browser";
 

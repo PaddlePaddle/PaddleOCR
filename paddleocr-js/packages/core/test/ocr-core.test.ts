@@ -61,6 +61,25 @@ function createResolvedAssets() {
   };
 }
 
+function minimalPipelineConfig(overrides: Record<string, unknown> = {}) {
+  return {
+    pipelineName: "OCR",
+    raw: {},
+    warnings: [] as string[],
+    unsupportedFeatures: [] as string[],
+    modelSelection: {
+      textDetectionModelName: "det-name",
+      textRecognitionModelName: "rec-name"
+    },
+    assets: createResolvedAssets(),
+    runtimeDefaults: {} as Record<string, unknown>,
+    pipelineBatchSize: 1,
+    textDetectionBatchSize: 1,
+    textRecognitionBatchSize: 1,
+    ...overrides
+  };
+}
+
 function mockEmptyDefaultOcrConfig() {
   cloneDefaultOcrConfig.mockReturnValue({ det: {}, rec: {} });
 }
@@ -104,18 +123,10 @@ describe("OCR pipeline core", () => {
     const { OcrPipelineRunner } = await loadCoreModule();
     const ensureServedFromHttp = vi.fn();
     const runner = new OcrPipelineRunner({
-      assets: {
-        det: { id: "det" },
-        rec: { id: "rec" }
-      },
-      modelSelection: {
-        textDetectionModelName: "det-name",
-        textRecognitionModelName: "rec-name"
-      },
-      pipelineConfig: {
+      pipelineConfig: minimalPipelineConfig({
         warnings: ["warning"]
-      },
-      runtime: AUTO_RUNTIME_OPTIONS,
+      }),
+      ortOptions: AUTO_RUNTIME_OPTIONS,
       ensureServedFromHttp
     });
 
@@ -183,10 +194,12 @@ describe("OCR pipeline core", () => {
 
     const { OcrPipelineRunner } = await loadCoreModule();
     const runner = new OcrPipelineRunner({
-      assets: {
-        det: null,
-        rec: { id: "rec" }
-      }
+      pipelineConfig: minimalPipelineConfig({
+        assets: {
+          det: null,
+          rec: { id: "rec" }
+        }
+      })
     });
 
     await expect(runner.initialize()).rejects.toThrow(
@@ -239,8 +252,10 @@ describe("OCR pipeline core", () => {
 
     const { OcrPipelineRunner } = await loadCoreModule();
     const runner = new OcrPipelineRunner({
-      runtime: AUTO_RUNTIME_OPTIONS,
-      runtimeDefaults: { text_det_limit_side_len: 64 },
+      pipelineConfig: minimalPipelineConfig({
+        runtimeDefaults: { text_det_limit_side_len: 64 }
+      }),
+      ortOptions: AUTO_RUNTIME_OPTIONS,
       sourceToMat: vi.fn().mockResolvedValue(sourceImage)
     });
     runner.cv = cv;
@@ -324,7 +339,9 @@ describe("OCR pipeline core", () => {
     });
 
     const { OcrPipelineRunner } = await loadCoreModule();
-    const noSourceRunner = new OcrPipelineRunner({});
+    const noSourceRunner = new OcrPipelineRunner({
+      pipelineConfig: minimalPipelineConfig()
+    });
     await expect(noSourceRunner.predict({}, {})).rejects.toThrow(
       /source adapter is not configured/i
     );
@@ -336,7 +353,7 @@ describe("OCR pipeline core", () => {
       dispose: vi.fn()
     };
     const runner = new OcrPipelineRunner({
-      assets: createResolvedAssets(),
+      pipelineConfig: minimalPipelineConfig(),
       sourceToMat: vi.fn().mockResolvedValue(sourceImage)
     });
 
@@ -353,7 +370,9 @@ describe("OCR pipeline core", () => {
     const recDispose = vi.fn().mockResolvedValue(undefined);
 
     const { OcrPipelineRunner } = await loadCoreModule();
-    const runner = new OcrPipelineRunner({});
+    const runner = new OcrPipelineRunner({
+      pipelineConfig: minimalPipelineConfig()
+    });
     runner.detModel = { dispose: detDispose };
     runner.recModel = { dispose: recDispose };
 

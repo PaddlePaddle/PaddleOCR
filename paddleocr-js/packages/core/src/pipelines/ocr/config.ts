@@ -48,14 +48,6 @@ export function toFiniteNumber(value: unknown): number | undefined {
   return Number.isFinite(normalized) ? normalized : undefined;
 }
 
-export function parseInputShape(value: unknown): number[] | undefined {
-  if (!Array.isArray(value) || value.length === 0) {
-    return undefined;
-  }
-  const nums = value.map((v) => toFiniteNumber(v)).filter((n): n is number => n !== undefined);
-  return nums.length === value.length ? nums : undefined;
-}
-
 function batchSizeOrOne(value: unknown): number {
   const n = toFiniteNumber(value);
   return n !== undefined && n >= 1 ? n : 1;

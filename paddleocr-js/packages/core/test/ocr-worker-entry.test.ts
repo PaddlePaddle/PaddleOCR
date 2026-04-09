@@ -47,6 +47,25 @@ async function loadWorkerEntry() {
 const WASM_INIT_SUMMARY = Object.freeze({ backend: "wasm" });
 const EMPTY_MODEL_CONFIG = Object.freeze({ det: {}, rec: {} });
 
+const WORKER_TEST_PIPELINE = Object.freeze({
+  pipelineName: "OCR",
+  raw: {},
+  warnings: [] as string[],
+  unsupportedFeatures: [] as string[],
+  modelSelection: {
+    textDetectionModelName: "d",
+    textRecognitionModelName: "r"
+  },
+  assets: {
+    det: { url: "/d" },
+    rec: { url: "/r" }
+  },
+  runtimeDefaults: {},
+  pipelineBatchSize: 1,
+  textDetectionBatchSize: 1,
+  textRecognitionBatchSize: 1
+});
+
 function setupResolvedInitAndModelConfig() {
   initialize.mockResolvedValue(WASM_INIT_SUMMARY);
   getModelConfig.mockReturnValue(EMPTY_MODEL_CONFIG);
@@ -66,12 +85,14 @@ describe("OCR worker entry bootstrap", () => {
     await loadWorkerEntry();
     const result = await capturedHandler("init", {
       options: {
-        runtime: { backend: "wasm" }
+        pipelineConfig: WORKER_TEST_PIPELINE,
+        ortOptions: { backend: "wasm" }
       }
     });
 
     expect(OcrPipelineRunner).toHaveBeenCalledWith({
-      runtime: { backend: "wasm" },
+      pipelineConfig: WORKER_TEST_PIPELINE,
+      ortOptions: { backend: "wasm" },
       ensureServedFromHttp,
       sourceToMat: sourcePayloadToMat
     });
@@ -85,8 +106,8 @@ describe("OCR worker entry bootstrap", () => {
     setupResolvedInitAndModelConfig();
 
     await loadWorkerEntry();
-    await capturedHandler("init", { options: { id: 1 } });
-    await capturedHandler("init", { options: { id: 2 } });
+    await capturedHandler("init", { options: { pipelineConfig: WORKER_TEST_PIPELINE, id: 1 } });
+    await capturedHandler("init", { options: { pipelineConfig: WORKER_TEST_PIPELINE, id: 2 } });
 
     expect(dispose).toHaveBeenCalledTimes(1);
     expect(OcrPipelineRunner).toHaveBeenCalledTimes(2);
@@ -98,7 +119,7 @@ describe("OCR worker entry bootstrap", () => {
     dispose.mockResolvedValue(undefined);
 
     await loadWorkerEntry();
-    await capturedHandler("init", { options: {} });
+    await capturedHandler("init", { options: { pipelineConfig: WORKER_TEST_PIPELINE } });
 
     await expect(
       capturedHandler("predict", {

@@ -8,13 +8,13 @@ import type { Point2D } from "../../models/common";
 import { cropByPoly } from "./crop";
 import { initOpenCvRuntime } from "../../runtime/opencv";
 import { initOrtRuntime } from "../../runtime/ort";
-import type { OrtModule, WebGpuState, OrtRuntimeOptions } from "../../runtime/ort";
+import type { OrtModule, WebGpuState, OrtOptions } from "../../runtime/ort";
 import { nowMs } from "../../utils/common";
 import type { OcrModelConfig, OcrRuntimeParamsInput } from "./runtime-params";
 import { getOcrRuntimeParams } from "./runtime-params";
-import type { NormalizedPipelineConfig, PipelineRuntimeDefaults } from "./config";
+import type { NormalizedPipelineConfig } from "./config";
 import { cloneDefaultOcrConfig, validateLoadedModelName } from "./shared";
-import type { NormalizedRuntimeOptions } from "./shared";
+import type { NormalizedOrtOptions } from "./shared";
 import type { SourceMatResult } from "../../platform/browser";
 
 export interface OcrResultItem {
@@ -62,11 +62,8 @@ export type SourceToMatFn = (
 type EnsureServedFromHttpFn = () => void;
 
 export interface OcrPipelineRunnerOptions {
-  assets: Record<string, ModelAsset>;
-  modelSelection?: Record<string, string | null> | null;
-  pipelineConfig?: NormalizedPipelineConfig | null;
-  runtimeDefaults?: PipelineRuntimeDefaults;
-  runtime?: OrtRuntimeOptions | NormalizedRuntimeOptions;
+  pipelineConfig: NormalizedPipelineConfig;
+  ortOptions?: OrtOptions | NormalizedOrtOptions;
   fetch?: typeof fetch;
   ensureServedFromHttp?: EnsureServedFromHttpFn;
   sourceToMat?: SourceToMatFn;
@@ -74,16 +71,18 @@ export interface OcrPipelineRunnerOptions {
 
 function noopEnsureServedFromHttp(): void {}
 
-function getResolvedAssets(assets: Record<string, ModelAsset> | undefined): {
+function getResolvedAssets(assets: Partial<Record<string, ModelAsset>> | undefined): {
   det: ModelAsset;
   rec: ModelAsset;
 } {
-  if (!assets?.det || typeof assets.det !== "object" || typeof assets.rec !== "object") {
+  const det = assets?.det;
+  const rec = assets?.rec;
+  if (!det || typeof det !== "object" || !rec || typeof rec !== "object") {
     throw new Error(
       "PaddleOCRCore requires pre-resolved detection and recognition asset descriptors."
     );
   }
-  return assets as { det: ModelAsset; rec: ModelAsset };
+  return { det, rec };
 }
 
 export class OcrPipelineRunner {
@@ -95,9 +94,7 @@ export class OcrPipelineRunner {
   protected detModel: DetModel | null;
   protected recModel: RecModel | null;
   protected webgpuState: WebGpuState;
-  protected assets: Record<string, ModelAsset>;
-  protected modelSelection: Record<string, string | null> | null;
-  protected pipelineConfig: NormalizedPipelineConfig | null;
+  protected pipelineConfig: NormalizedPipelineConfig;
   protected lastInitializationSummary: InitializationSummary | null;
   private ensureServedFromHttp: EnsureServedFromHttpFn;
   private sourceToMat: SourceToMatFn | undefined;
@@ -105,15 +102,13 @@ export class OcrPipelineRunner {
   constructor(options: OcrPipelineRunnerOptions) {
     this.options = options;
     this.modelConfig = cloneDefaultOcrConfig();
-    this.runtimeDefaults = { ...(options.runtimeDefaults || {}) };
+    this.pipelineConfig = options.pipelineConfig;
+    this.runtimeDefaults = { ...options.pipelineConfig.runtimeDefaults };
     this.cv = null;
     this.ort = null;
     this.detModel = null;
     this.recModel = null;
     this.webgpuState = { available: false, reason: "" };
-    this.assets = options.assets;
-    this.modelSelection = options.modelSelection || null;
-    this.pipelineConfig = options.pipelineConfig || null;
     this.lastInitializationSummary = null;
     this.ensureServedFromHttp = options.ensureServedFromHttp || noopEnsureServedFromHttp;
     this.sourceToMat = options.sourceToMat;
@@ -124,11 +119,11 @@ export class OcrPipelineRunner {
     const start = nowMs();
     const { cv } = await initOpenCvRuntime();
     this.cv = cv;
-    const { ort, webgpuState, backend } = await initOrtRuntime(this.options.runtime || {});
+    const { ort, webgpuState, backend } = await initOrtRuntime(this.options.ortOptions || {});
     this.ort = ort;
     this.webgpuState = webgpuState;
 
-    const assets = getResolvedAssets(this.assets);
+    const assets = getResolvedAssets(this.pipelineConfig.assets);
     const fetchImpl = this.options.fetch || fetch;
     const loadedAssets = await Promise.all([
       loadModelAsset(assets.det, fetchImpl),
@@ -136,17 +131,17 @@ export class OcrPipelineRunner {
     ]);
     validateLoadedModelName(
       "TextDetection",
-      this.modelSelection?.textDetectionModelName,
+      this.pipelineConfig.modelSelection.textDetectionModelName,
       loadedAssets[0].configText
     );
     validateLoadedModelName(
       "TextRecognition",
-      this.modelSelection?.textRecognitionModelName,
+      this.pipelineConfig.modelSelection.textRecognitionModelName,
       loadedAssets[1].configText
     );
     await this.disposeModelsOnly();
-    const detBatchSize = this.pipelineConfig?.textDetectionBatchSize ?? 1;
-    const recBatchSize = this.pipelineConfig?.textRecognitionBatchSize ?? 1;
+    const detBatchSize = this.pipelineConfig.textDetectionBatchSize;
+    const recBatchSize = this.pipelineConfig.textRecognitionBatchSize;
 
     const [detModel, recModel] = await Promise.all([
       createDetModel({
@@ -181,7 +176,7 @@ export class OcrPipelineRunner {
       recProvider: this.recModel.provider,
       assets: loadedAssets.map((asset) => asset.download),
       elapsedMs: elapsed,
-      pipelineConfigWarnings: this.pipelineConfig?.warnings || []
+      pipelineConfigWarnings: this.pipelineConfig.warnings
     };
     return this.lastInitializationSummary;
   }
@@ -210,7 +205,10 @@ export class OcrPipelineRunner {
     }
 
     const sources = Array.isArray(input) ? input : [input];
-    const sourceImages = await Promise.all(sources.map((source) => this.sourceToMat!(cv, source)));
+    const sourceToMat = this.sourceToMat;
+    const sourceImages = await Promise.all(
+      sources.map((source) => Promise.resolve(sourceToMat(cv, source)))
+    );
 
     const totalStart = nowMs();
     try {
@@ -277,7 +275,7 @@ export class OcrPipelineRunner {
           },
           runtime: {
             requestedBackend:
-              (this.options.runtime as NormalizedRuntimeOptions | undefined)?.backend ?? "auto",
+              (this.options.ortOptions as NormalizedOrtOptions | undefined)?.backend ?? "auto",
             detProvider: detModel.provider,
             recProvider: recModel.provider,
             webgpuAvailable: this.webgpuState.available

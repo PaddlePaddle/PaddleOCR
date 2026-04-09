@@ -10,15 +10,36 @@ afterEach(() => {
   vi.clearAllMocks();
 });
 
-function createWorkerBackedOptions(overrides = {}) {
+function basePipelineConfig() {
   return {
+    pipelineName: "OCR",
+    raw: {},
+    warnings: [] as string[],
+    unsupportedFeatures: [] as string[],
+    modelSelection: {
+      textDetectionModelName: "PP-OCRv5_mobile_det",
+      textRecognitionModelName: "PP-OCRv5_mobile_rec"
+    },
     assets: {
       det: { id: "det" },
       rec: { id: "rec" }
     },
-    runtimeDefaults: {},
-    runtime: {},
-    ...overrides
+    runtimeDefaults: {} as Record<string, unknown>,
+    pipelineBatchSize: 1,
+    textDetectionBatchSize: 1,
+    textRecognitionBatchSize: 1
+  };
+}
+
+function createWorkerBackedOptions(overrides: Record<string, unknown> = {}) {
+  const { pipelineConfig: pipelineOverrides, ...rest } = overrides;
+  return {
+    pipelineConfig: {
+      ...basePipelineConfig(),
+      ...(pipelineOverrides as object)
+    },
+    ortOptions: {},
+    ...rest
   };
 }
 
@@ -35,8 +56,8 @@ describe("worker-backed OCR adapter", () => {
 
     const ocr = new WorkerBackedPaddleOCR(
       createWorkerBackedOptions({
-        runtimeDefaults: { text_det_limit_side_len: 64 },
-        runtime: { proxy: true }
+        pipelineConfig: { runtimeDefaults: { text_det_limit_side_len: 64 } },
+        ortOptions: { proxy: true }
       }),
       transportClient
     );
@@ -49,7 +70,7 @@ describe("worker-backed OCR adapter", () => {
     expect(transportClient.request).toHaveBeenCalledTimes(1);
     expect(transportClient.request).toHaveBeenCalledWith("init", {
       options: expect.objectContaining({
-        runtime: {
+        ortOptions: {
           proxy: true,
           disableWasmProxy: true
         }

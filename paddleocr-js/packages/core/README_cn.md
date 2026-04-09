@@ -18,7 +18,7 @@ import { PaddleOCR } from "@paddleocr/paddleocr-js";
 const ocr = await PaddleOCR.create({
   lang: "ch",
   ocrVersion: "PP-OCRv5",
-  runtime: {
+  ortOptions: {
     backend: "auto"
   }
 });
@@ -82,7 +82,7 @@ SubModules:
     model_name: PP-OCRv5_mobile_rec
 `;
 
-const ocr = await PaddleOCR.fromPipelineConfig(pipelineConfig);
+const ocr = await PaddleOCR.create({ pipelineConfig });
 ```
 
 `pipelineConfig` 可以是 YAML 文本，也可以是解析后的对象。
@@ -118,7 +118,7 @@ const ocr = await PaddleOCR.create({
   lang: "ch",
   ocrVersion: "PP-OCRv5",
   worker: true,
-  runtime: {
+  ortOptions: {
     backend: "wasm",
     wasmPaths: "https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/",
     numThreads: 2,
@@ -175,7 +175,6 @@ viz 模块会渲染一张左右对比的合成图像：左侧为带有检测框�
 ## API
 
 - `PaddleOCR.create(options)`
-- `PaddleOCR.fromPipelineConfig(config, options?)`
 - `ocr.initialize()`
 - `ocr.getInitializationSummary()`
 - `ocr.predict(image, params?)`

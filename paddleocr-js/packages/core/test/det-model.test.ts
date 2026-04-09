@@ -53,7 +53,7 @@ async function loadDetModule() {
   return import("../src/models/det");
 }
 
-/** CV facade for `createDetModel().predict()` integration-style test (preprocess + postprocessDet). */
+/** CV facade for `createDetModel().predict()` integration-style test (preprocess → infer → postprocess). */
 function createDetModelIntegrationCv() {
   return {
     Mat: class Mat {

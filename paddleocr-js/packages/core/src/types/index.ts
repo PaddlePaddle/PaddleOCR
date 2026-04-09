@@ -38,7 +38,7 @@ export type {
 export type {
   ResolvedBackend,
   ResolvedOcrOptions,
-  NormalizedRuntimeOptions,
+  NormalizedOrtOptions,
   WorkerResolvedOptions
 } from "../pipelines/ocr/shared";
 
@@ -49,7 +49,7 @@ export type { ModelAsset, ModelAssetsMap } from "../resources/model-asset";
 export type {
   OrtModule,
   WebGpuState,
-  OrtRuntimeOptions,
+  OrtOptions,
   OrtRuntimeResult,
   SessionState
 } from "../runtime/ort";

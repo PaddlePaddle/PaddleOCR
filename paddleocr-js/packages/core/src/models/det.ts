@@ -4,7 +4,8 @@ import type { InferenceSession, Tensor } from "onnxruntime-web";
 import { assertModelResources } from "../resources/model-asset";
 import { createSession, getProviderCandidates, releaseSessions } from "../runtime/ort";
 import type { OrtModule, WebGpuState, SessionState } from "../runtime/ort";
-import { clamp, resolveRuntimeBatchSize, withTimeout } from "../utils/common";
+import { chunkArray, clamp, resolveRuntimeBatchSize, withTimeout } from "../utils/common";
+import { runInference } from "./infer";
 import {
   boxScoreFast,
   getMiniBoxFromPoints,
@@ -72,12 +73,6 @@ interface InternalDetParams {
   thresh: number;
   boxThresh: number;
   unclipRatio: number;
-}
-
-interface InternalDetResult {
-  output: Tensor;
-  prep: DetPreprocessResult;
-  boxes: DetBox[];
 }
 
 interface InternalDetBatchItem {
@@ -229,9 +224,11 @@ export async function createDetModel({
         config,
         session: sessionState.session
       };
-      for (let i = 0; i < mats.length; i += batchSize) {
-        const chunk = mats.slice(i, i + batchSize);
-        const internals = await runDetBatchInference(runCtx, chunk, params);
+      for (const chunk of chunkArray(mats, batchSize)) {
+        const preps = preprocess({ cv, ort, config }, chunk, params);
+        const inputTensor = packDetBatchTensor(ort, preps);
+        const fullOutput = await runInference(sessionState.session, inputTensor);
+        const internals = postprocess(runCtx, fullOutput, preps, params);
         for (const internal of internals) {
           results.push({
             boxes: internal.boxes,
@@ -269,7 +266,15 @@ interface DetRunContext extends DetContext {
   session: InferenceSession;
 }
 
-function preprocessDet(
+function preprocess(
+  context: DetContext,
+  mats: Mat[],
+  params: InternalDetParams
+): DetPreprocessResult[] {
+  return mats.map((mat) => preprocessSample(context, mat, params));
+}
+
+function preprocessSample(
   context: DetContext,
   sourceMat: Mat,
   params: InternalDetParams
@@ -362,6 +367,12 @@ function createBatchDetTensor(
   return new ort.Tensor("float32", out, [batch, 3, maxH, maxW]);
 }
 
+function packDetBatchTensor(ort: OrtModule, preps: DetPreprocessResult[]): Tensor {
+  const maxH = Math.max(...preps.map((p) => p.dstH));
+  const maxW = Math.max(...preps.map((p) => p.dstW));
+  return createBatchDetTensor(ort, preps, maxH, maxW);
+}
+
 function batchDetOutputPlaneOffset(dims: readonly number[], batchIndex: number): number {
   const tail = dims.slice(1).reduce((a, b) => a * b, 1);
   return batchIndex * tail;
@@ -400,34 +411,31 @@ function sliceBatchedDetOutputPlane(
   return new ort.Tensor("float32", out, [1, 1, cropOh, cropOw]);
 }
 
-async function runDetBatchInference(
+function postprocess(
   context: DetRunContext,
-  mats: Mat[],
+  fullOutput: Tensor,
+  preps: DetPreprocessResult[],
   params: InternalDetParams
-): Promise<InternalDetBatchItem[]> {
-  const { cv, ort, config, session } = context;
-  const preps = mats.map((mat) => preprocessDet({ cv, ort, config }, mat, params));
-  const maxH = Math.max(...preps.map((p) => p.dstH));
-  const maxW = Math.max(...preps.map((p) => p.dstW));
-  const inputName = session.inputNames[0];
-  const batchTensor = createBatchDetTensor(ort, preps, maxH, maxW);
-  const outputMap = await session.run({ [inputName]: batchTensor });
-  const fullOutput = outputMap[session.outputNames[0]];
+): InternalDetBatchItem[] {
+  const { cv, ort, config } = context;
   const od = fullOutput.dims;
   if (od.length !== 3 && od.length !== 4) {
     throw new Error(`Unexpected det output dims: [${od.join(", ")}]`);
   }
   const ohFull = od.length === 4 ? od[2] : od[1];
   const owFull = od.length === 4 ? od[3] : od[2];
-  const nOut = od.length === 4 ? od[0] : mats.length === 1 ? 1 : od[0];
-  if (nOut !== mats.length) {
+  const nOut = od.length === 4 ? od[0] : preps.length === 1 ? 1 : od[0];
+  if (nOut !== preps.length) {
     throw new Error(
-      `Detection batch output N=${String(nOut)} does not match input batch ${String(mats.length)}`
+      `Detection batch output N=${String(nOut)} does not match input batch ${String(preps.length)}`
     );
   }
 
+  const maxH = Math.max(...preps.map((p) => p.dstH));
+  const maxW = Math.max(...preps.map((p) => p.dstW));
+
   const items: InternalDetBatchItem[] = [];
-  for (let i = 0; i < mats.length; i += 1) {
+  for (let i = 0; i < preps.length; i += 1) {
     const prep = preps[i];
     const { cropOh, cropOw } = detFeatureCropDims(prep.dstH, prep.dstW, maxH, maxW, ohFull, owFull);
     const planeTensor = sliceBatchedDetOutputPlane(
@@ -439,7 +447,7 @@ async function runDetBatchInference(
       ohFull,
       owFull
     );
-    const boxes = postprocessDet(
+    const boxes = decodeDetOutput(
       { cv, config },
       planeTensor,
       prep,
@@ -452,7 +460,7 @@ async function runDetBatchInference(
   return items;
 }
 
-function postprocessDet(
+function decodeDetOutput(
   context: { cv: OpenCv; config: DetModelConfig },
   detOutput: Tensor,
   meta: DetPreprocessResult,

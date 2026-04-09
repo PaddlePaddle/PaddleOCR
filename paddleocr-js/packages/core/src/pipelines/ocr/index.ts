@@ -5,7 +5,7 @@ import { OcrPipelineRunner } from "./core";
 import { resolvePaddleOCROptions, resolveWorkerOptions } from "./shared";
 import { createWorkerBackedPaddleOCR } from "./worker-backed";
 import type { WorkerBackedPaddleOCR } from "./worker-backed";
-import type { OrtRuntimeOptions } from "../../runtime/ort";
+import type { OrtOptions } from "../../runtime/ort";
 import type { ModelAsset } from "../../resources/model-asset";
 import type { LimitType } from "./runtime-params";
 
@@ -13,7 +13,7 @@ export interface PaddleOCRCreateOptions {
   worker?: boolean | { createWorker?: () => Worker };
   fetch?: typeof fetch;
   initialize?: boolean;
-  runtime?: OrtRuntimeOptions;
+  ortOptions?: OrtOptions;
 
   pipelineConfig?: unknown;
   unsupportedBehavior?: "warn" | "ignore" | "error";

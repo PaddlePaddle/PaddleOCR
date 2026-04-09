@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import {
   cloneDefaultOcrConfig,
-  normalizeRuntimeOptions,
+  normalizeOrtOptions,
   resolvePaddleOCROptions,
   resolveWorkerOptions,
   validateLoadedModelName
@@ -10,17 +10,17 @@ import {
 
 describe("OCR shared option resolution", () => {
   it("normalizes runtime options and reuses the same backend fallback", () => {
-    const defaultRuntime = normalizeRuntimeOptions();
+    const defaultOrt = normalizeOrtOptions();
 
-    expect(defaultRuntime).toMatchObject({
+    expect(defaultOrt).toMatchObject({
       backend: expect.any(String)
     });
-    expect(normalizeRuntimeOptions({ backend: "invalid", proxy: true })).toEqual({
-      backend: defaultRuntime.backend,
+    expect(normalizeOrtOptions({ backend: "invalid", proxy: true })).toEqual({
+      backend: defaultOrt.backend,
       proxy: true
     });
     expect(
-      normalizeRuntimeOptions({
+      normalizeOrtOptions({
         backend: "wasm",
         wasmPaths: "/wasm/",
         numThreads: 2,
@@ -67,19 +67,19 @@ describe("OCR shared option resolution", () => {
     const options = resolvePaddleOCROptions({
       text_detection_model_name: "PP-OCRv5_mobile_det",
       text_recognition_model_name: "PP-OCRv5_mobile_rec",
-      runtime: {
+      ortOptions: {
         backend: "webgpu",
         proxy: true
       }
     });
 
-    expect(options.runtime).toEqual({
+    expect(options.ortOptions).toEqual({
       backend: "webgpu",
       proxy: true
     });
-    expect(options.assets.det.url).toMatch(/PP-OCRv5_mobile_det.*\.tar$/);
-    expect(options.assets.rec.url).toMatch(/PP-OCRv5_mobile_rec.*\.tar$/);
-    expect(options.modelSelection).toEqual({
+    expect(options.pipelineConfig.assets.det?.url).toMatch(/PP-OCRv5_mobile_det.*\.tar$/);
+    expect(options.pipelineConfig.assets.rec?.url).toMatch(/PP-OCRv5_mobile_rec.*\.tar$/);
+    expect(options.pipelineConfig.modelSelection).toEqual({
       textDetectionModelName: "PP-OCRv5_mobile_det",
       textRecognitionModelName: "PP-OCRv5_mobile_rec"
     });

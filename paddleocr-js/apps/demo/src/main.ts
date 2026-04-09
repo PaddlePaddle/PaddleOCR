@@ -120,7 +120,7 @@ async function initializeOcrEngine(): Promise<void> {
     worker: true,
     textDetectionModelName: `${variant}_det`,
     textRecognitionModelName: `${variant}_rec`,
-    runtime: getRuntimeOptions()
+    ortOptions: getRuntimeOptions()
   });
 
   const summary = await state.ocr.initialize();

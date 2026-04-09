@@ -9,7 +9,7 @@ vi.mock("@techstark/opencv-js", () => ({
 import { PaddleOCR, normalizeOcrPipelineConfig, parseOcrPipelineConfigText } from "../src/index";
 import { extractInferenceModelName } from "../src/models/common";
 import { DEFAULT_OCR_PIPELINE_CONFIG_TEXT } from "../src/pipelines/ocr/default-config";
-import { normalizeRuntimeOptions } from "../src/pipelines/ocr/shared";
+import { normalizeOrtOptions } from "../src/pipelines/ocr/shared";
 import { getOcrRuntimeParams } from "../src/pipelines/ocr/runtime-params";
 
 const CREATE_WITHOUT_INIT = Object.freeze({
@@ -74,8 +74,8 @@ class MockWorker {
 }
 
 function expectDefaultModelAssets(ocr) {
-  expect(ocr.options.assets.det.url).toMatch(/PP-OCRv5_mobile_det/);
-  expect(ocr.options.assets.rec.url).toMatch(/PP-OCRv5_mobile_rec/);
+  expect(ocr.options.pipelineConfig.assets.det?.url).toMatch(/PP-OCRv5_mobile_det/);
+  expect(ocr.options.pipelineConfig.assets.rec?.url).toMatch(/PP-OCRv5_mobile_rec/);
 }
 
 describe("PaddleOCR high-level API", () => {
@@ -126,7 +126,7 @@ describe("PaddleOCR high-level API", () => {
   });
 
   it("keeps the same create API when worker mode is enabled", async () => {
-    const defaultRuntime = normalizeRuntimeOptions();
+    const defaultOrt = normalizeOrtOptions();
     const ocr = await PaddleOCR.create({
       lang: "ch",
       ocrVersion: "PP-OCRv5",
@@ -137,21 +137,21 @@ describe("PaddleOCR high-level API", () => {
     expect(typeof ocr.initialize).toBe("function");
     expect(typeof ocr.predict).toBe("function");
     expect(typeof ocr.dispose).toBe("function");
-    expect(ocr.options.assets.det.url).toMatch(/PP-OCRv5_mobile_det/);
-    expect(ocr.options.runtime.backend).toBe(defaultRuntime.backend);
+    expect(ocr.options.pipelineConfig.assets.det?.url).toMatch(/PP-OCRv5_mobile_det/);
+    expect(ocr.options.ortOptions.backend).toBe(defaultOrt.backend);
   });
 
   it("uses the package OCR.yaml defaults when no pipeline config is passed", async () => {
     const defaultPipeline = normalizeOcrPipelineConfig(DEFAULT_OCR_PIPELINE_CONFIG_TEXT);
     const ocr = await PaddleOCR.create(CREATE_WITHOUT_INIT);
 
-    expect(ocr.options.assets.det.url).toMatch(
+    expect(ocr.options.pipelineConfig.assets.det?.url).toMatch(
       new RegExp(defaultPipeline.modelSelection.textDetectionModelName)
     );
-    expect(ocr.options.assets.rec.url).toMatch(
+    expect(ocr.options.pipelineConfig.assets.rec?.url).toMatch(
       new RegExp(defaultPipeline.modelSelection.textRecognitionModelName)
     );
-    expect(ocr.runtimeDefaults).toMatchObject(defaultPipeline.runtimeDefaults);
+    expect(ocr.pipelineConfig.runtimeDefaults).toMatchObject(defaultPipeline.runtimeDefaults);
   });
 
   it("maps English PP-OCRv5 selection to the mobile model set", async () => {
@@ -175,15 +175,19 @@ describe("PaddleOCR high-level API", () => {
   });
 
   it("creates an OCR instance from pipeline config model names", async () => {
-    const ocr = await PaddleOCR.fromPipelineConfig(pipelineConfigText, IGNORE_UNSUPPORTED);
+    const ocr = await PaddleOCR.create({
+      pipelineConfig: pipelineConfigText,
+      ...IGNORE_UNSUPPORTED
+    });
 
     expectDefaultModelAssets(ocr);
-    expect(ocr.runtimeDefaults.text_det_limit_type).toBe("min");
-    expect(ocr.runtimeDefaults.text_rec_score_thresh).toBe(0);
+    expect(ocr.pipelineConfig.runtimeDefaults.text_det_limit_type).toBe("min");
+    expect(ocr.pipelineConfig.runtimeDefaults.text_rec_score_thresh).toBe(0);
   });
 
   it("lets explicit model assets override pipeline config model names", async () => {
-    const ocr = await PaddleOCR.fromPipelineConfig(pipelineConfigText, {
+    const ocr = await PaddleOCR.create({
+      pipelineConfig: pipelineConfigText,
       text_detection_model_name: "custom_det",
       textDetectionModelAsset: customDetAsset,
       text_recognition_model_name: "custom_rec",
@@ -191,24 +195,25 @@ describe("PaddleOCR high-level API", () => {
       ...IGNORE_UNSUPPORTED
     });
 
-    expect(ocr.options.assets.det.url).toBe("https://example.com/custom-det.tar");
-    expect(ocr.options.assets.rec.url).toBe("https://example.com/custom-rec.tar");
+    expect(ocr.options.pipelineConfig.assets.det?.url).toBe("https://example.com/custom-det.tar");
+    expect(ocr.options.pipelineConfig.assets.rec?.url).toBe("https://example.com/custom-rec.tar");
   });
 
   it("allows overriding only one side with a custom model asset", async () => {
-    const ocr = await PaddleOCR.fromPipelineConfig(pipelineConfigText, {
+    const ocr = await PaddleOCR.create({
+      pipelineConfig: pipelineConfigText,
       text_detection_model_name: "custom_det",
       textDetectionModelAsset: customDetAsset,
       ...IGNORE_UNSUPPORTED
     });
 
-    expect(ocr.options.assets.det.url).toBe("https://example.com/custom-det.tar");
-    expect(ocr.options.assets.rec.url).toMatch(/PP-OCRv5_mobile_rec/);
+    expect(ocr.options.pipelineConfig.assets.det?.url).toBe("https://example.com/custom-det.tar");
+    expect(ocr.options.pipelineConfig.assets.rec?.url).toMatch(/PP-OCRv5_mobile_rec/);
   });
 
   it("lets explicit model names override pipeline config model assets", async () => {
-    const ocr = await PaddleOCR.fromPipelineConfig(
-      {
+    const ocr = await PaddleOCR.create({
+      pipelineConfig: {
         pipeline_name: "OCR",
         SubModules: {
           TextDetection: {
@@ -221,12 +226,10 @@ describe("PaddleOCR high-level API", () => {
           }
         }
       },
-      {
-        text_detection_model_name: "PP-OCRv5_mobile_det",
-        text_recognition_model_name: "PP-OCRv5_mobile_rec",
-        ...CREATE_WITHOUT_INIT
-      }
-    );
+      text_detection_model_name: "PP-OCRv5_mobile_det",
+      text_recognition_model_name: "PP-OCRv5_mobile_rec",
+      ...CREATE_WITHOUT_INIT
+    });
 
     expectDefaultModelAssets(ocr);
   });
@@ -243,39 +246,37 @@ describe("PaddleOCR high-level API", () => {
 
   it("warns about unsupported pipeline features by default", async () => {
     const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
-    await PaddleOCR.fromPipelineConfig(pipelineConfigText, { ...CREATE_WITHOUT_INIT });
+    await PaddleOCR.create({ pipelineConfig: pipelineConfigText, ...CREATE_WITHOUT_INIT });
 
     expect(warn).toHaveBeenCalled();
     warn.mockRestore();
   });
 
   it("lets direct constructor runtime options override pipelineConfig", async () => {
-    const ocr = await PaddleOCR.fromPipelineConfig(pipelineConfigText, {
+    const ocr = await PaddleOCR.create({
+      pipelineConfig: pipelineConfigText,
       text_det_limit_side_len: 200,
       text_rec_score_thresh: 0.42,
       ...IGNORE_UNSUPPORTED
     });
 
-    expect(ocr.runtimeDefaults.text_det_limit_side_len).toBe(200);
-    expect(ocr.runtimeDefaults.text_rec_score_thresh).toBe(0.42);
-    expect(ocr.pipelineConfig?.runtimeDefaults.text_det_limit_side_len).toBe(200);
-    expect(ocr.pipelineConfig?.runtimeDefaults.text_rec_score_thresh).toBe(0.42);
+    expect(ocr.pipelineConfig.runtimeDefaults.text_det_limit_side_len).toBe(200);
+    expect(ocr.pipelineConfig.runtimeDefaults.text_rec_score_thresh).toBe(0.42);
   });
 
   it("lets direct batch sizes override pipelineConfig", async () => {
-    const ocr = await PaddleOCR.fromPipelineConfig(pipelineConfigText, {
+    const ocr = await PaddleOCR.create({
+      pipelineConfig: pipelineConfigText,
       textRecognitionBatchSize: 2,
       text_detection_batch_size: 3,
       ...IGNORE_UNSUPPORTED
     });
 
-    expect(ocr.options.textRecognitionBatchSize).toBe(2);
-    expect(ocr.options.textDetectionBatchSize).toBe(3);
-    expect(ocr.pipelineConfig?.textRecognitionBatchSize).toBe(2);
-    expect(ocr.pipelineConfig?.textDetectionBatchSize).toBe(3);
+    expect(ocr.pipelineConfig.textRecognitionBatchSize).toBe(2);
+    expect(ocr.pipelineConfig.textDetectionBatchSize).toBe(3);
   });
 
-  it("applies textRecognitionBatchSize without pipelineConfig", async () => {
+  it("applies textRecognitionBatchSize without user pipelineConfig", async () => {
     const ocr = await PaddleOCR.create({
       lang: "ch",
       ocrVersion: "PP-OCRv5",
@@ -283,13 +284,13 @@ describe("PaddleOCR high-level API", () => {
       ...CREATE_WITHOUT_INIT
     });
 
-    expect(ocr.options.textRecognitionBatchSize).toBe(4);
-    expect(ocr.pipelineConfig).toBeNull();
+    expect(ocr.pipelineConfig.textRecognitionBatchSize).toBe(4);
   });
 
   it("can turn unsupported pipeline warnings into errors", async () => {
     await expect(
-      PaddleOCR.fromPipelineConfig(pipelineConfigText, {
+      PaddleOCR.create({
+        pipelineConfig: pipelineConfigText,
         ...CREATE_WITHOUT_INIT,
         unsupportedBehavior: "error"
       })
@@ -335,7 +336,7 @@ describe("PaddleOCR high-level API", () => {
       ...CREATE_WITHOUT_INIT
     });
 
-    expect(ocr.options.assets.det.url).toBe("https://example.com/custom-det.tar");
+    expect(ocr.options.pipelineConfig.assets.det?.url).toBe("https://example.com/custom-det.tar");
   });
 
   it("initializes worker mode through the same API surface", async () => {
@@ -376,7 +377,7 @@ describe("PaddleOCR high-level API", () => {
       worker: {
         createWorker: () => worker
       },
-      runtime: {
+      ortOptions: {
         backend: "wasm",
         proxy: true
       },
@@ -387,8 +388,8 @@ describe("PaddleOCR high-level API", () => {
 
     expect(summary.backend).toBe("wasm");
     expect(worker.messages[0].type).toBe("init");
-    expect(worker.messages[0].payload.options.runtime.backend).toBe("wasm");
-    expect(worker.messages[0].payload.options.runtime.disableWasmProxy).toBe(true);
+    expect(worker.messages[0].payload.options.ortOptions.backend).toBe("wasm");
+    expect(worker.messages[0].payload.options.ortOptions.disableWasmProxy).toBe(true);
     expect(ocr.getModelConfig().det.resizeLong).toBe(960);
 
     await ocr.dispose();

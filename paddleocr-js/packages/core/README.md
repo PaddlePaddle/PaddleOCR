@@ -18,7 +18,7 @@ import { PaddleOCR } from "@paddleocr/paddleocr-js";
 const ocr = await PaddleOCR.create({
   lang: "ch",
   ocrVersion: "PP-OCRv5",
-  runtime: {
+  ortOptions: {
     backend: "auto"
   }
 });
@@ -82,7 +82,7 @@ SubModules:
     model_name: PP-OCRv5_mobile_rec
 `;
 
-const ocr = await PaddleOCR.fromPipelineConfig(pipelineConfig);
+const ocr = await PaddleOCR.create({ pipelineConfig });
 ```
 
 `pipelineConfig` can be either YAML text or a parsed object.
@@ -118,7 +118,7 @@ const ocr = await PaddleOCR.create({
   lang: "ch",
   ocrVersion: "PP-OCRv5",
   worker: true,
-  runtime: {
+  ortOptions: {
     backend: "wasm",
     wasmPaths: "https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/",
     numThreads: 2,
@@ -175,7 +175,6 @@ The viz module renders a side-by-side composite image: the original image with d
 ## API
 
 - `PaddleOCR.create(options)`
-- `PaddleOCR.fromPipelineConfig(config, options?)`
 - `ocr.initialize()`
 - `ocr.getInitializationSummary()`
 - `ocr.predict(image, params?)`
