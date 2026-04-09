@@ -28,4 +28,16 @@ describe("public pipeline exports", () => {
     expect(typeof ocr.predict).toBe("function");
     expect(typeof ocr.dispose).toBe("function");
   });
+
+  it("resolves ortOptions on the instance (create-time ORT settings)", async () => {
+    const ocr = await PaddleOCR.create({
+      lang: "ch",
+      ocrVersion: "PP-OCRv5",
+      initialize: false,
+      ortOptions: { backend: "wasm", wasmPaths: "/dist/" }
+    });
+
+    expect(ocr.options.ortOptions.backend).toBe("wasm");
+    expect(ocr.options.ortOptions.wasmPaths).toBe("/dist/");
+  });
 });

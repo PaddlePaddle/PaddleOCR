@@ -16,7 +16,6 @@ const chunkArray = vi.fn((items, size) => {
 });
 const getTransformOp = vi.fn();
 const parseInferenceConfigText = vi.fn();
-const parseScaleValue = vi.fn();
 const toBgrFloatCHWFromBgr = vi.fn();
 
 vi.mock("../src/resources/model-asset", () => ({
@@ -42,7 +41,6 @@ vi.mock("../src/utils/common", async (importOriginal) => {
 vi.mock("../src/models/common", () => ({
   getTransformOp,
   parseInferenceConfigText,
-  parseScaleValue,
   toBgrFloatCHWFromBgr
 }));
 
@@ -66,8 +64,8 @@ function createMat(channels, cols = 20, rows = 10) {
   };
 }
 
-/** OpenCV-like facade for `createRecModel().predict()` sample preparation. */
-function createPrepareRecSampleCvFixture() {
+/** Minimal OpenCV-like `cv` used by `createRecModel().predict()` → internal `preprocessSample`. */
+function createRecPredictCvStub() {
   return {
     Mat: class Mat {
       constructor() {
@@ -116,10 +114,7 @@ describe("recognition model", () => {
         character_dict: ["a", "b"]
       }
     });
-    getTransformOp
-      .mockReturnValueOnce({ image_shape: [3, 32, 160] })
-      .mockReturnValueOnce({ mean: [0.1], std: [0.9], scale: "1./2." });
-    parseScaleValue.mockReturnValue(0.5);
+    getTransformOp.mockReturnValueOnce({ image_shape: [3, 32, 160] });
 
     const { DEFAULT_REC_MODEL_PARSE_FALLBACKS, parseRecModelConfigText } = await loadRecModule();
     expect(parseRecModelConfigText("config")).toEqual({
@@ -148,7 +143,6 @@ describe("recognition model", () => {
       if (id === "RecResizeImg") return { image_shape: [3, 4, 8] };
       return null;
     });
-    parseScaleValue.mockReturnValue(1 / 255);
     clamp.mockImplementation((value, min, max) => Math.max(min, Math.min(max, value)));
 
     const tensorCalls = [];
@@ -191,7 +185,7 @@ describe("recognition model", () => {
       batchSize: 2
     });
 
-    const cvFixture = createPrepareRecSampleCvFixture();
+    const cvFixture = createRecPredictCvStub();
     toBgrFloatCHWFromBgr.mockImplementation((data, width, height) => {
       const out = new Float32Array(3 * width * height);
       for (let i = 0; i < out.length; i += 1) out[i] = i + 1;
@@ -223,7 +217,6 @@ describe("recognition model", () => {
       if (id === "RecResizeImg") return { image_shape: [3, 4, 8] };
       return null;
     });
-    parseScaleValue.mockReturnValue(1 / 255);
     clamp.mockImplementation((value, min, max) => Math.max(min, Math.min(max, value)));
 
     const ctcRow = new Float32Array([0.1, 0.9, 0.2, 0.1, 0.2, 0.1, 0.8, 0.1, 0.8, 0.1, 0.1, 0.0]);
@@ -254,7 +247,7 @@ describe("recognition model", () => {
       batchSize: 6
     });
 
-    const cvFixture = createPrepareRecSampleCvFixture();
+    const cvFixture = createRecPredictCvStub();
     toBgrFloatCHWFromBgr.mockImplementation((data, width, height) => {
       const out = new Float32Array(3 * width * height);
       for (let i = 0; i < out.length; i += 1) out[i] = i + 1;
@@ -275,7 +268,6 @@ describe("recognition model", () => {
       if (id === "RecResizeImg") return { image_shape: [3, 4, 8] };
       return null;
     });
-    parseScaleValue.mockReturnValue(1 / 255);
     getProviderCandidates.mockReturnValue([["wasm"]]);
     createSession.mockResolvedValue({
       session: {
@@ -301,7 +293,7 @@ describe("recognition model", () => {
       backend: "auto",
       webgpuState: { available: false, reason: "" }
     });
-    const cvFixture = createPrepareRecSampleCvFixture();
+    const cvFixture = createRecPredictCvStub();
     toBgrFloatCHWFromBgr.mockImplementation((data, width, height) => {
       const out = new Float32Array(3 * width * height);
       out.fill(1);
@@ -369,7 +361,7 @@ describe("recognition model", () => {
     expect(model.provider).toBe("wasm");
     expect(model.config.charDict).toEqual(["A", " "]);
 
-    const cvFixture = createPrepareRecSampleCvFixture();
+    const cvFixture = createRecPredictCvStub();
     toBgrFloatCHWFromBgr.mockImplementation((data, width, height) => {
       const out = new Float32Array(3 * width * height);
       for (let i = 0; i < out.length; i += 1) out[i] = 1;

@@ -115,7 +115,26 @@ describe("OCR worker entry bootstrap", () => {
 
   it("routes predict and dispose requests through the active runner", async () => {
     setupResolvedInitAndModelConfig();
-    predict.mockResolvedValue({ items: [] });
+    const predictPayload = [
+      {
+        image: { width: 1, height: 1 },
+        items: [],
+        metrics: {
+          detMs: 0,
+          recMs: 0,
+          totalMs: 0,
+          detectedBoxes: 0,
+          recognizedCount: 0
+        },
+        runtime: {
+          requestedBackend: "auto",
+          detProvider: "wasm",
+          recProvider: "wasm",
+          webgpuAvailable: false
+        }
+      }
+    ];
+    predict.mockResolvedValue(predictPayload);
     dispose.mockResolvedValue(undefined);
 
     await loadWorkerEntry();
@@ -126,7 +145,7 @@ describe("OCR worker entry bootstrap", () => {
         sources: [{ kind: "imageBitmap" }],
         params: { limit: 1 }
       })
-    ).resolves.toEqual({ items: [] });
+    ).resolves.toEqual(predictPayload);
     expect(predict).toHaveBeenCalledWith([{ kind: "imageBitmap" }], { limit: 1 });
 
     await expect(capturedHandler("dispose", {})).resolves.toEqual({});

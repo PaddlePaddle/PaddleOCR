@@ -252,7 +252,7 @@ describe("PaddleOCR high-level API", () => {
     warn.mockRestore();
   });
 
-  it("lets direct constructor runtime options override pipelineConfig", async () => {
+  it("lets direct pipeline runtime parameters override pipelineConfig defaults", async () => {
     const ocr = await PaddleOCR.create({
       pipelineConfig: pipelineConfigText,
       text_det_limit_side_len: 200,

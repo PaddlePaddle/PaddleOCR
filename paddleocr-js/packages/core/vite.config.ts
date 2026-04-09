@@ -10,25 +10,23 @@ const ortVersion = JSON.parse(
   readFileSync(join(ortPackageDir, "..", "package.json"), "utf-8")
 ).version;
 
-/**
- * Post-process library output for npm compatibility.
- *
- * 1. Rewrite Vite's worker URL references so downstream bundlers handle them
- *    correctly (relative paths + split new Worker(new URL()) pattern).
- *
- * 2. Strip ORT's base64-encoded WASM data URIs from the worker asset.
- *    Vite converts ORT's `new URL('./ort-wasm-*.wasm', import.meta.url)`
- *    references into `data:application/wasm;base64,...` data URIs, inflating
- *    the worker by ~50 MB.  The SDK provides a CDN-based fallback for
- *    `ort.env.wasm.wasmPaths`, so the embedded binaries are never loaded.
- *    Only `data:application/wasm` URIs are stripped — OpenCV.js embeds its
- *    WASM via Emscripten as `data:application/octet-stream` and must be kept
- *    since there is no equivalent fallback for it.
- *
- *    The stripping must run here (main build generateBundle), not in
- *    worker.rollupOptions.plugins, because Vite injects the data URIs as a
- *    post-processing step after the worker's own Rollup pipeline finishes.
- */
+// Post-process library output for npm compatibility.
+//
+// 1. Rewrite Vite's worker URL references so downstream bundlers handle them
+//    correctly (relative paths + split new Worker(new URL()) pattern).
+//
+// 2. Strip ORT's base64-encoded WASM data URIs from the worker asset.
+//    Vite converts ORT's `new URL('./ort-wasm-*.wasm', import.meta.url)`
+//    references into `data:application/wasm;base64,...` data URIs, inflating
+//    the worker by ~50 MB.  The SDK provides a CDN-based fallback for
+//    `ort.env.wasm.wasmPaths`, so the embedded binaries are never loaded.
+//    Only `data:application/wasm` URIs are stripped — OpenCV.js embeds its
+//    WASM via Emscripten as `data:application/octet-stream` and must be kept
+//    since there is no equivalent fallback for it.
+//
+//    The stripping must run here (main build generateBundle), not in
+//    worker.rollupOptions.plugins, because Vite injects the data URIs as a
+//    post-processing step after the worker's own Rollup pipeline finishes.
 function libraryWorkerPlugin() {
   const ortWasmDataUriPattern = /data:application\/wasm;base64,[A-Za-z0-9+/=]+/g;
 

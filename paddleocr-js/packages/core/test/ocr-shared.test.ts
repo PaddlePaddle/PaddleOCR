@@ -9,7 +9,7 @@ import {
 } from "../src/pipelines/ocr/shared";
 
 describe("OCR shared option resolution", () => {
-  it("normalizes runtime options and reuses the same backend fallback", () => {
+  it("normalizes ORT options and reuses the same backend fallback", () => {
     const defaultOrt = normalizeOrtOptions();
 
     expect(defaultOrt).toMatchObject({
@@ -63,7 +63,7 @@ describe("OCR shared option resolution", () => {
     );
   });
 
-  it("returns runtime, assets, and model selection for explicit model names", () => {
+  it("returns ortOptions, assets, and model selection for explicit model names", () => {
     const options = resolvePaddleOCROptions({
       text_detection_model_name: "PP-OCRv5_mobile_det",
       text_recognition_model_name: "PP-OCRv5_mobile_rec",
@@ -110,17 +110,21 @@ describe("OCR shared option resolution", () => {
     expect(freshClone.det.postprocess.thresh).not.toBe(0.99);
   });
 
-  it("validates loaded model names against inference.yml", () => {
+  it("validates loaded model names against inference.yml (roles match pipeline initialize)", () => {
     expect(() =>
       validateLoadedModelName(
-        "Detection",
+        "TextDetection",
         "PP-OCRv5_mobile_det",
         "Global:\n  model_name: PP-OCRv5_mobile_det"
       )
     ).not.toThrow();
 
     expect(() =>
-      validateLoadedModelName("Detection", "PP-OCRv5_mobile_det", "Global:\n  model_name: other")
+      validateLoadedModelName(
+        "TextDetection",
+        "PP-OCRv5_mobile_det",
+        "Global:\n  model_name: other"
+      )
     ).toThrow(/requested model_name is "PP-OCRv5_mobile_det"/i);
   });
 });

@@ -9,7 +9,7 @@ import { cropByPoly } from "./crop";
 import { initOpenCvRuntime } from "../../runtime/opencv";
 import { initOrtRuntime } from "../../runtime/ort";
 import type { OrtModule, WebGpuState, OrtOptions } from "../../runtime/ort";
-import { nowMs } from "../../utils/common";
+import { chunkArray, nowMs } from "../../utils/common";
 import type { OcrModelConfig, OcrRuntimeParamsInput } from "./runtime-params";
 import { getOcrRuntimeParams } from "./runtime-params";
 import type { NormalizedPipelineConfig } from "./config";
@@ -206,89 +206,111 @@ export class OcrPipelineRunner {
 
     const sources = Array.isArray(input) ? input : [input];
     const sourceToMat = this.sourceToMat;
-    const sourceImages = await Promise.all(
-      sources.map((source) => Promise.resolve(sourceToMat(cv, source)))
-    );
+    const pipelineBatchSize = Math.max(1, Math.floor(this.pipelineConfig.pipelineBatchSize) || 1);
+    const sourceBatches = chunkArray(sources, pipelineBatchSize);
 
     const totalStart = nowMs();
-    try {
-      const resolved = getOcrRuntimeParams(this.modelConfig, this.runtimeDefaults, params);
+    const resolved = getOcrRuntimeParams(this.modelConfig, this.runtimeDefaults, params);
 
-      const detStart = nowMs();
-      const detResults = await detModel.predict(
-        cv,
-        sourceImages.map((s) => s.mat),
-        resolved.det
+    let sumDetMs = 0;
+    let sumRecMs = 0;
+    const partials: Array<{
+      image: { width: number; height: number };
+      items: OcrResultItem[];
+      detectedBoxes: number;
+      recognizedCount: number;
+    }> = [];
+
+    for (const batchSources of sourceBatches) {
+      const sourceImages = await Promise.all(
+        batchSources.map((source) => Promise.resolve(sourceToMat(cv, source)))
       );
-      const detElapsed = nowMs() - detStart;
+      try {
+        const detStart = nowMs();
+        const detResults = await detModel.predict(
+          cv,
+          sourceImages.map((s) => s.mat),
+          resolved.det
+        );
+        sumDetMs += nowMs() - detStart;
 
-      const recStart = nowMs();
-      const perImageItems: OcrResultItem[][] = [];
+        const recStart = nowMs();
+        const perImageItems: OcrResultItem[][] = [];
 
-      for (let imgIdx = 0; imgIdx < detResults.length; imgIdx += 1) {
-        const detBoxes = detResults[imgIdx]?.boxes ?? [];
-        const cropMats: Mat[] = [];
-        for (let boxIdx = 0; boxIdx < detBoxes.length; boxIdx += 1) {
-          cropMats.push(cropByPoly(cv, sourceImages[imgIdx].mat, detBoxes[boxIdx].poly));
-        }
+        for (let imgIdx = 0; imgIdx < detResults.length; imgIdx += 1) {
+          const detBoxes = detResults[imgIdx]?.boxes ?? [];
+          const cropMats: Mat[] = [];
+          for (let boxIdx = 0; boxIdx < detBoxes.length; boxIdx += 1) {
+            cropMats.push(cropByPoly(cv, sourceImages[imgIdx].mat, detBoxes[boxIdx].poly));
+          }
 
-        try {
-          const recResults = cropMats.length ? await recModel.predict(cv, cropMats) : [];
-          const items: OcrResultItem[] = [];
-          for (let boxIdx = 0; boxIdx < recResults.length; boxIdx += 1) {
-            const rec = recResults[boxIdx];
-            if (rec.text && rec.score >= resolved.pipeline.scoreThresh) {
-              items.push({
-                poly: detBoxes[boxIdx].poly,
-                text: rec.text,
-                score: rec.score
-              });
+          try {
+            const recResults = cropMats.length ? await recModel.predict(cv, cropMats) : [];
+            const items: OcrResultItem[] = [];
+            for (let boxIdx = 0; boxIdx < recResults.length; boxIdx += 1) {
+              const rec = recResults[boxIdx];
+              if (rec.text && rec.score >= resolved.pipeline.scoreThresh) {
+                items.push({
+                  poly: detBoxes[boxIdx].poly,
+                  text: rec.text,
+                  score: rec.score
+                });
+              }
+            }
+            perImageItems.push(items);
+          } finally {
+            for (const mat of cropMats) {
+              mat.delete();
             }
           }
-          perImageItems.push(items);
-        } finally {
-          for (const mat of cropMats) {
-            mat.delete();
-          }
         }
-      }
 
-      const recElapsed = nowMs() - recStart;
-      const totalElapsed = nowMs() - totalStart;
+        sumRecMs += nowMs() - recStart;
 
-      const results: OcrResult[] = sourceImages.map((sourceImage, imgIdx) => {
-        const detBoxes = detResults[imgIdx]?.boxes ?? [];
-        const items = perImageItems[imgIdx] ?? [];
-
-        return {
-          image: {
-            width: sourceImage.width,
-            height: sourceImage.height
-          },
-          items,
-          metrics: {
-            detMs: detElapsed,
-            recMs: recElapsed,
-            totalMs: totalElapsed,
+        for (let i = 0; i < sourceImages.length; i += 1) {
+          const sourceImage = sourceImages[i];
+          const detBoxes = detResults[i]?.boxes ?? [];
+          const items = perImageItems[i] ?? [];
+          partials.push({
+            image: {
+              width: sourceImage.width,
+              height: sourceImage.height
+            },
+            items,
             detectedBoxes: detBoxes.length,
             recognizedCount: items.length
-          },
-          runtime: {
-            requestedBackend:
-              (this.options.ortOptions as NormalizedOrtOptions | undefined)?.backend ?? "auto",
-            detProvider: detModel.provider,
-            recProvider: recModel.provider,
-            webgpuAvailable: this.webgpuState.available
-          }
-        };
-      });
-
-      return results;
-    } finally {
-      for (const sourceImage of sourceImages) {
-        sourceImage.dispose();
+          });
+        }
+      } finally {
+        for (const sourceImage of sourceImages) {
+          sourceImage.dispose();
+        }
       }
     }
+
+    const totalElapsed = nowMs() - totalStart;
+    const requestedBackend =
+      (this.options.ortOptions as NormalizedOrtOptions | undefined)?.backend ?? "auto";
+
+    return partials.map(
+      (p): OcrResult => ({
+        image: p.image,
+        items: p.items,
+        metrics: {
+          detMs: sumDetMs,
+          recMs: sumRecMs,
+          totalMs: totalElapsed,
+          detectedBoxes: p.detectedBoxes,
+          recognizedCount: p.recognizedCount
+        },
+        runtime: {
+          requestedBackend,
+          detProvider: detModel.provider,
+          recProvider: recModel.provider,
+          webgpuAvailable: this.webgpuState.available
+        }
+      })
+    );
   }
 
   async disposeModelsOnly(): Promise<void> {

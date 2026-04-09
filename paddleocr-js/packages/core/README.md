@@ -23,9 +23,11 @@ const ocr = await PaddleOCR.create({
   }
 });
 
-const result = await ocr.predict(fileOrBlob);
+const [result] = await ocr.predict(fileOrBlob);
 console.log(result.items);
 ```
+
+`predict` resolves to an **array** of `OcrResult` (one per input image). A single `Blob` / `File` still produces a one-element array—use destructuring or `results[0]`.
 
 ## Construction Options
 
@@ -33,9 +35,9 @@ There are two main construction styles:
 
 ### 1. Direct parameters
 
-You can directly specify model selection parameters in `PaddleOCR.create()`.
+Pass parameters to `PaddleOCR.create({ ... })` to **select models**, or **configure** inference batch size, ORT options, and other settings unrelated to model selection.
 
-Use `lang + ocrVersion`:
+**Model selection** — `lang` + `ocrVersion`:
 
 ```js
 await PaddleOCR.create({
@@ -44,7 +46,7 @@ await PaddleOCR.create({
 });
 ```
 
-Or use explicit model names:
+**Model selection** — explicit model names:
 
 ```js
 await PaddleOCR.create({
@@ -53,7 +55,7 @@ await PaddleOCR.create({
 });
 ```
 
-Custom model files are also passed through direct parameters using model asset descriptors:
+**Custom models** — asset descriptors:
 
 ```js
 await PaddleOCR.create({
@@ -68,6 +70,21 @@ await PaddleOCR.create({
 });
 ```
 
+**Not model selection** — batch size and ORT options:
+
+```js
+await PaddleOCR.create({
+  lang: "ch",
+  ocrVersion: "PP-OCRv5",
+  textDetectionBatchSize: 2,
+  textRecognitionBatchSize: 8,
+  ortOptions: {
+    backend: "wasm",
+    wasmPaths: "/assets/"
+  }
+});
+```
+
 ### 2. Pipeline config
 
 ```js
@@ -78,8 +95,10 @@ pipeline_name: OCR
 SubModules:
   TextDetection:
     model_name: PP-OCRv5_mobile_det
+    batch_size: 2
   TextRecognition:
     model_name: PP-OCRv5_mobile_rec
+    batch_size: 6
 `;
 
 const ocr = await PaddleOCR.create({ pipelineConfig });
@@ -91,9 +110,11 @@ If direct parameters and `pipelineConfig` are both provided, direct parameters t
 
 All OCR model `inference.yml` files must define `model_name`, and PaddleOCR.js validates that value against the selected model name during initialization.
 
-## Prediction Params
+## Prediction
 
-`ocr.predict(image, params?)` accepts both camelCase names and PaddleOCR-style snake_case names:
+### Params
+
+`ocr.predict(image | images[], params?)` accepts both camelCase names and PaddleOCR-style snake_case names:
 
 - `textDetLimitSideLen` or `text_det_limit_side_len`
 - `textDetLimitType` or `text_det_limit_type`
@@ -103,9 +124,18 @@ All OCR model `inference.yml` files must define `model_name`, and PaddleOCR.js v
 - `textDetUnclipRatio` or `text_det_unclip_ratio`
 - `textRecScoreThresh` or `text_rec_score_thresh`
 
-Supported `image` inputs include `Blob`, `ImageBitmap`, `ImageData`, `HTMLCanvasElement`, `HTMLImageElement`, and `cv.Mat`.
+Supported `image` inputs include `Blob`, `ImageBitmap`, `ImageData`, `HTMLCanvasElement`, `HTMLImageElement`, and `cv.Mat`. Pass an array of these to run detection and recognition on multiple images in one call.
 
 In worker mode (see next section), `cv.Mat` is not transferable and is therefore not supported as a worker input.
+
+### Return value
+
+Resolves to `Promise<OcrResult[]>`. Each `OcrResult` contains:
+
+- `image`: `{ width, height }` for that source
+- `items`: recognized lines (`poly`, `text`, `score`)
+- `metrics`: `detMs`, `recMs`, `totalMs`, `detectedBoxes`, `recognizedCount` — box and line counts are per image; `detMs`, `recMs`, and `totalMs` cover the **entire** `predict()` call (so they are identical on every element when you pass multiple images)
+- `runtime`: requested backend and provider metadata
 
 ## Worker Mode
 
@@ -168,7 +198,7 @@ const blob = await renderOcrToBlob(imageBitmap, result, {
 });
 ```
 
-The viz module renders a side-by-side composite image: the original image with detection box overlays on the left, and recognized text on the right. Custom fonts can be loaded for CJK text rendering.
+The viz module renders a side-by-side composite image: the original image with detection box overlays on the left, and recognized text on the right. Custom fonts can be loaded for CJK text rendering. Visualization requires a **single** `OcrResult` (for one image, take the first element of the array returned by `predict`, e.g. `const [result] = await ocr.predict(image)`).
 
 `deterministicColor(index)` is also exported from the viz subpath. It maps a numeric index to a stable RGB color and is used internally as the default color function for detection boxes and text labels. You can call it directly when building custom visualizations that need colors consistent with the built-in renderer.
 
@@ -177,7 +207,7 @@ The viz module renders a side-by-side composite image: the original image with d
 - `PaddleOCR.create(options)`
 - `ocr.initialize()`
 - `ocr.getInitializationSummary()`
-- `ocr.predict(image, params?)`
+- `ocr.predict(image | images[], params?)` → `Promise<OcrResult[]>`
 - `ocr.dispose()`
 - `parseOcrPipelineConfigText(text)`
 - `normalizeOcrPipelineConfig(config)`

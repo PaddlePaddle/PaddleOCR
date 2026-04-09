@@ -1,16 +1,18 @@
 import { describe, expect, it } from "vitest";
 
-import { DEFAULT_DET_MODEL_CONFIG } from "../src/models/index";
+import { DEFAULT_DET_MODEL_CONFIG, DEFAULT_REC_MODEL_CONFIG } from "../src/models/index";
+import type { OcrModelConfig } from "../src/pipelines/ocr/runtime-params";
 import { getOcrRuntimeParams } from "../src/pipelines/ocr/runtime-params";
 
-/** Fixture: det/rec model config shapes used only by these tests. */
-const SAMPLE_MODEL_CONFIG = {
+/** Fixture: full `OcrModelConfig` shapes (same as pipeline `getModelConfig()` after init). */
+const SAMPLE_MODEL_CONFIG: OcrModelConfig = {
   det: {
     ...DEFAULT_DET_MODEL_CONFIG,
     resizeLong: 960,
     maxSideLimit: 3200
   },
   rec: {
+    ...DEFAULT_REC_MODEL_CONFIG,
     scoreThresh: 0.2
   }
 };

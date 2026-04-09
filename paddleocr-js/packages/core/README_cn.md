@@ -23,9 +23,11 @@ const ocr = await PaddleOCR.create({
   }
 });
 
-const result = await ocr.predict(fileOrBlob);
+const [result] = await ocr.predict(fileOrBlob);
 console.log(result.items);
 ```
+
+`predict` 返回 **`OcrResult` 组成的数组**（每张输入图像对应一项）。传入单个 `Blob` / `File` 时也会得到长度为 1 的数组，请使用解构或 `results[0]` 取值。
 
 ## 构造方式
 
@@ -33,9 +35,9 @@ console.log(result.items);
 
 ### 1. 直接参数
 
-你可以在 `PaddleOCR.create()` 中直接指定模型选择参数。
+可通过向 `PaddleOCR.create({ ... })` 传入参数来**选择模型**，或**配置**推理 batch size、ORT 选项等与模型选择无关的选项。
 
-使用 `lang + ocrVersion`：
+**模型选择 — `lang` + `ocrVersion`：**
 
 ```js
 await PaddleOCR.create({
@@ -44,7 +46,7 @@ await PaddleOCR.create({
 });
 ```
 
-或者显式指定模型名：
+**模型选择 — 显式模型名：**
 
 ```js
 await PaddleOCR.create({
@@ -53,7 +55,7 @@ await PaddleOCR.create({
 });
 ```
 
-也可以通过模型资源描述对象，以直接参数方式传入自定义模型文件：
+**自定义模型** — 资源描述：
 
 ```js
 await PaddleOCR.create({
@@ -68,6 +70,21 @@ await PaddleOCR.create({
 });
 ```
 
+**非「选模型」参数** — batch size 与 ORT 选项：
+
+```js
+await PaddleOCR.create({
+  lang: "ch",
+  ocrVersion: "PP-OCRv5",
+  textDetectionBatchSize: 2,
+  textRecognitionBatchSize: 8,
+  ortOptions: {
+    backend: "wasm",
+    wasmPaths: "/assets/"
+  }
+});
+```
+
 ### 2. 产线配置
 
 ```js
@@ -78,8 +95,10 @@ pipeline_name: OCR
 SubModules:
   TextDetection:
     model_name: PP-OCRv5_mobile_det
+    batch_size: 2
   TextRecognition:
     model_name: PP-OCRv5_mobile_rec
+    batch_size: 6
 `;
 
 const ocr = await PaddleOCR.create({ pipelineConfig });
@@ -91,9 +110,11 @@ const ocr = await PaddleOCR.create({ pipelineConfig });
 
 所有 OCR 模型的 `inference.yml` 都必须定义 `model_name`，PaddleOCR.js 会在初始化阶段校验该值是否与所选模型名一致。
 
-## 预测参数
+## 预测
 
-`ocr.predict(image, params?)` 同时接受 camelCase 命名和 PaddleOCR 风格的 snake_case 命名：
+### 参数
+
+`ocr.predict(image | images[], params?)` 同时接受 camelCase 命名和 PaddleOCR 风格的 snake_case 命名：
 
 - `textDetLimitSideLen` 或 `text_det_limit_side_len`
 - `textDetLimitType` 或 `text_det_limit_type`
@@ -103,9 +124,18 @@ const ocr = await PaddleOCR.create({ pipelineConfig });
 - `textDetUnclipRatio` 或 `text_det_unclip_ratio`
 - `textRecScoreThresh` 或 `text_rec_score_thresh`
 
-支持的 `image` 输入包括 `Blob`、`ImageBitmap`、`ImageData`、`HTMLCanvasElement`、`HTMLImageElement` 和 `cv.Mat`。
+支持的 `image` 输入包括 `Blob`、`ImageBitmap`、`ImageData`、`HTMLCanvasElement`、`HTMLImageElement` 和 `cv.Mat`。传入上述类型的数组可在一次调用中对多张图像做检测与识别。
 
 在 worker 模式下（见下一节），`cv.Mat` 无法传输，因此不能作为 worker 输入。
+
+### 返回值
+
+返回 `Promise<OcrResult[]>`。每个 `OcrResult` 包含：
+
+- `image`：该图源的尺寸 `{ width, height }`
+- `items`：识别行（`poly`、`text`、`score`）
+- `metrics`：`detMs`、`recMs`、`totalMs`、`detectedBoxes`、`recognizedCount` — 检测框与文本行数为**每张图**统计；`detMs`、`recMs`、`totalMs` 表示**整次** `predict()` 调用的耗时（传入多图时，数组中每一项上的这三个值相同）
+- `runtime`：请求的后端与各阶段 Provider 等元数据
 
 ## Worker 模式
 
@@ -168,7 +198,7 @@ const blob = await renderOcrToBlob(imageBitmap, result, {
 });
 ```
 
-viz 模块会渲染一张左右对比的合成图像：左侧为带有检测框叠加的原始图像，右侧为识别出的文字。支持加载自定义字体以正确渲染中日韩等文字。
+viz 模块会渲染一张左右对比的合成图像：左侧为带有检测框叠加的原始图像，右侧为识别出的文字。支持加载自定义字体以正确渲染中日韩等文字。可视化需传入**单个** `OcrResult`（单张图时取 `predict` 返回数组的首项，例如 `const [result] = await ocr.predict(image)`）。
 
 `deterministicColor(index)` 同样从 viz 子路径导出。它根据数字索引生成稳定的 RGB 颜色，内部用作检测框和文字标签的默认配色函数。当你构建自定义可视化并需要与内置渲染器保持一致的配色时，可以直接调用该函数。
 
@@ -177,7 +207,7 @@ viz 模块会渲染一张左右对比的合成图像：左侧为带有检测框�
 - `PaddleOCR.create(options)`
 - `ocr.initialize()`
 - `ocr.getInitializationSummary()`
-- `ocr.predict(image, params?)`
+- `ocr.predict(image | images[], params?)` → `Promise<OcrResult[]>`
 - `ocr.dispose()`
 - `parseOcrPipelineConfigText(text)`
 - `normalizeOcrPipelineConfig(config)`

@@ -40,6 +40,7 @@ interface AppState {
   previewBitmap: ImageBitmap | null;
   lastResult: OcrResult | null;
   ocr: OcrEngine | null;
+  ocrReady: boolean;
   vizObjectUrl: string | null;
 }
 
@@ -48,8 +49,13 @@ const state: AppState = {
   previewBitmap: null,
   lastResult: null,
   ocr: null,
+  ocrReady: false,
   vizObjectUrl: null
 };
+
+function updateRunButtonState(): void {
+  ui.runBtn.disabled = !state.imageFile || !state.ocrReady;
+}
 
 const visualizer = new OcrVisualizer({
   font: {
@@ -109,6 +115,9 @@ function getRuntimeOptions() {
 }
 
 async function initializeOcrEngine(): Promise<void> {
+  state.ocrReady = false;
+  updateRunButtonState();
+
   if (state.ocr) {
     await state.ocr.dispose();
   }
@@ -117,13 +126,14 @@ async function initializeOcrEngine(): Promise<void> {
 
   state.ocr = await PaddleOCR.create({
     initialize: false,
-    worker: true,
+    worker: false,
     textDetectionModelName: `${variant}_det`,
     textRecognitionModelName: `${variant}_rec`,
     ortOptions: getRuntimeOptions()
   });
 
   const summary = await state.ocr.initialize();
+  state.ocrReady = true;
   ui.metrics.textContent = [
     `model: ${variant}`,
     `initialize: ${formatMs(summary.elapsedMs)}`,
@@ -133,7 +143,7 @@ async function initializeOcrEngine(): Promise<void> {
     `provider(rec): ${summary.recProvider}`,
     `assets: ${String(summary.assets.length)}`
   ].join("\n");
-  ui.runBtn.disabled = !state.imageFile;
+  updateRunButtonState();
 }
 
 async function handleImageSelection(file: File | undefined): Promise<void> {
@@ -142,12 +152,12 @@ async function handleImageSelection(file: File | undefined): Promise<void> {
   state.previewBitmap?.close();
   state.previewBitmap = await createImageBitmap(file);
   showPreviewImage(state.previewBitmap);
-  ui.runBtn.disabled = !state.ocr;
+  updateRunButtonState();
   setStatus(`Image selected: ${file.name}`);
 }
 
 async function runOcr(): Promise<void> {
-  if (!state.ocr || !state.imageFile) {
+  if (!state.ocrReady || !state.ocr || !state.imageFile) {
     setStatus("Wait for OCR engine initialization to finish, then choose an image.", true);
     return;
   }
@@ -202,7 +212,8 @@ ui.chooseImageBtn.addEventListener("click", () => {
 async function initialize(): Promise<void> {
   try {
     ui.reinitializeBtn.disabled = true;
-    ui.runBtn.disabled = true;
+    state.ocrReady = false;
+    updateRunButtonState();
 
     setStatus("Initializing...");
     await initializeOcrEngine();
@@ -213,17 +224,18 @@ async function initialize(): Promise<void> {
     } catch (fontErr: unknown) {
       console.warn("Font load failed, using system font:", fontErr);
       setStatus("Ready (visualization will use system font).");
-      ui.runBtn.disabled = !state.imageFile;
+      updateRunButtonState();
       return;
     }
 
     setStatus("Ready.");
-    ui.runBtn.disabled = !state.imageFile;
+    updateRunButtonState();
   } catch (err: unknown) {
     console.error(err);
     const message = err instanceof Error ? err.message : String(err);
     setStatus(`Initialization failed: ${message}`, true);
-    ui.runBtn.disabled = true;
+    state.ocrReady = false;
+    updateRunButtonState();
   } finally {
     ui.reinitializeBtn.disabled = false;
   }

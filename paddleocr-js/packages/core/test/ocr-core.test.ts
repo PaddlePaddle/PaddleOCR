@@ -32,9 +32,13 @@ vi.mock("../src/runtime/ort", () => ({
   initOrtRuntime
 }));
 
-vi.mock("../src/utils/common", () => ({
-  nowMs
-}));
+vi.mock("../src/utils/common", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("../src/utils/common")>();
+  return {
+    ...actual,
+    nowMs
+  };
+});
 
 vi.mock("../src/pipelines/ocr/runtime-params", () => ({
   getOcrRuntimeParams
@@ -50,7 +54,7 @@ afterEach(() => {
   vi.clearAllMocks();
 });
 
-const AUTO_RUNTIME_OPTIONS = Object.freeze({
+const AUTO_ORT_OPTIONS = Object.freeze({
   backend: "auto"
 });
 
@@ -89,7 +93,7 @@ async function loadCoreModule() {
 }
 
 describe("OCR pipeline core", () => {
-  it("initializes runtimes, loads assets, and creates models", async () => {
+  it("initializes OpenCV and ORT, loads assets, and creates models", async () => {
     const cv = { name: "cv" };
     const ort = { name: "ort" };
     const detModel = { config: { det: true }, provider: "wasm", dispose: vi.fn() };
@@ -126,7 +130,7 @@ describe("OCR pipeline core", () => {
       pipelineConfig: minimalPipelineConfig({
         warnings: ["warning"]
       }),
-      ortOptions: AUTO_RUNTIME_OPTIONS,
+      ortOptions: AUTO_ORT_OPTIONS,
       ensureServedFromHttp
     });
 
@@ -134,7 +138,7 @@ describe("OCR pipeline core", () => {
 
     expect(ensureServedFromHttp).toHaveBeenCalledTimes(1);
     expect(initOpenCvRuntime).toHaveBeenCalledTimes(1);
-    expect(initOrtRuntime).toHaveBeenCalledWith(AUTO_RUNTIME_OPTIONS);
+    expect(initOrtRuntime).toHaveBeenCalledWith(AUTO_ORT_OPTIONS);
     expect(loadModelAsset).toHaveBeenCalledTimes(2);
     expect(validateLoadedModelName).toHaveBeenNthCalledWith(
       1,
@@ -152,7 +156,7 @@ describe("OCR pipeline core", () => {
       ort,
       modelBytes: new Uint8Array([1]),
       configText: "det-config",
-      backend: AUTO_RUNTIME_OPTIONS.backend,
+      backend: AUTO_ORT_OPTIONS.backend,
       webgpuState: { available: true, reason: "" },
       batchSize: 1
     });
@@ -160,12 +164,12 @@ describe("OCR pipeline core", () => {
       ort,
       modelBytes: new Uint8Array([2]),
       configText: "rec-config",
-      backend: AUTO_RUNTIME_OPTIONS.backend,
+      backend: AUTO_ORT_OPTIONS.backend,
       webgpuState: { available: true, reason: "" },
       batchSize: 1
     });
     expect(summary).toEqual({
-      backend: AUTO_RUNTIME_OPTIONS.backend,
+      backend: AUTO_ORT_OPTIONS.backend,
       webgpuAvailable: true,
       detProvider: "wasm",
       recProvider: "webgpu",
@@ -255,7 +259,7 @@ describe("OCR pipeline core", () => {
       pipelineConfig: minimalPipelineConfig({
         runtimeDefaults: { text_det_limit_side_len: 64 }
       }),
-      ortOptions: AUTO_RUNTIME_OPTIONS,
+      ortOptions: AUTO_ORT_OPTIONS,
       sourceToMat: vi.fn().mockResolvedValue(sourceImage)
     });
     runner.cv = cv;
@@ -291,13 +295,136 @@ describe("OCR pipeline core", () => {
           recognizedCount: 1
         },
         runtime: {
-          requestedBackend: AUTO_RUNTIME_OPTIONS.backend,
+          requestedBackend: AUTO_ORT_OPTIONS.backend,
           detProvider: "wasm",
           recProvider: "wasm",
           webgpuAvailable: false
         }
       }
     ]);
+  });
+
+  it("returns one OCR result per source when predict receives an array of inputs", async () => {
+    const cv = { name: "cv" };
+    const mat1 = { delete: vi.fn() };
+    const mat2 = { delete: vi.fn() };
+    const dispose1 = vi.fn();
+    const dispose2 = vi.fn();
+    const sourceImage1 = { width: 100, height: 100, mat: mat1, dispose: dispose1 };
+    const sourceImage2 = { width: 200, height: 200, mat: mat2, dispose: dispose2 };
+    const crop1 = { delete: vi.fn() };
+    const crop2 = { delete: vi.fn() };
+    const detModel = {
+      provider: "wasm",
+      predict: vi
+        .fn()
+        .mockResolvedValueOnce([{ boxes: [{ poly: [[1, 1]] }], srcW: 100, srcH: 100 }])
+        .mockResolvedValueOnce([{ boxes: [{ poly: [[2, 2]] }], srcW: 200, srcH: 200 }]),
+      dispose: vi.fn()
+    };
+    const recModel = {
+      provider: "wasm",
+      predict: vi
+        .fn()
+        .mockResolvedValueOnce([{ text: "a", score: 1 }])
+        .mockResolvedValueOnce([{ text: "b", score: 1 }]),
+      dispose: vi.fn()
+    };
+
+    mockEmptyDefaultOcrConfig();
+    getOcrRuntimeParams.mockReturnValue({
+      det: {},
+      pipeline: { scoreThresh: 0 }
+    });
+    cropByPoly.mockReturnValueOnce(crop1).mockReturnValueOnce(crop2);
+    nowMs.mockReturnValue(0);
+
+    const { OcrPipelineRunner } = await loadCoreModule();
+    const runner = new OcrPipelineRunner({
+      pipelineConfig: minimalPipelineConfig(),
+      ortOptions: AUTO_ORT_OPTIONS,
+      sourceToMat: vi.fn().mockResolvedValueOnce(sourceImage1).mockResolvedValueOnce(sourceImage2)
+    });
+    runner.cv = cv;
+    runner.ort = { name: "ort" };
+    runner.detModel = detModel;
+    runner.recModel = recModel;
+    runner.webgpuState = { available: false, reason: "" };
+    runner.modelConfig = { det: { conf: true }, rec: { conf: true } };
+
+    const results = await runner.predict([{ kind: "a" }, { kind: "b" }], {});
+
+    expect(detModel.predict).toHaveBeenCalledTimes(2);
+    expect(detModel.predict).toHaveBeenNthCalledWith(1, cv, [mat1], {});
+    expect(detModel.predict).toHaveBeenNthCalledWith(2, cv, [mat2], {});
+    expect(recModel.predict).toHaveBeenNthCalledWith(1, cv, [crop1]);
+    expect(recModel.predict).toHaveBeenNthCalledWith(2, cv, [crop2]);
+    expect(results).toHaveLength(2);
+    expect(results[0].image).toEqual({ width: 100, height: 100 });
+    expect(results[0].items[0].text).toBe("a");
+    expect(results[1].image).toEqual({ width: 200, height: 200 });
+    expect(results[1].items[0].text).toBe("b");
+    expect(dispose1).toHaveBeenCalledTimes(1);
+    expect(dispose2).toHaveBeenCalledTimes(1);
+  });
+
+  it("passes multiple sources to det in one pipeline batch when pipelineBatchSize > 1", async () => {
+    const cv = { name: "cv" };
+    const mat1 = { delete: vi.fn() };
+    const mat2 = { delete: vi.fn() };
+    const dispose1 = vi.fn();
+    const dispose2 = vi.fn();
+    const sourceImage1 = { width: 100, height: 100, mat: mat1, dispose: dispose1 };
+    const sourceImage2 = { width: 200, height: 200, mat: mat2, dispose: dispose2 };
+    const crop1 = { delete: vi.fn() };
+    const crop2 = { delete: vi.fn() };
+    const detModel = {
+      provider: "wasm",
+      predict: vi.fn().mockResolvedValue([
+        { boxes: [{ poly: [[1, 1]] }], srcW: 100, srcH: 100 },
+        { boxes: [{ poly: [[2, 2]] }], srcW: 200, srcH: 200 }
+      ]),
+      dispose: vi.fn()
+    };
+    const recModel = {
+      provider: "wasm",
+      predict: vi
+        .fn()
+        .mockResolvedValueOnce([{ text: "a", score: 1 }])
+        .mockResolvedValueOnce([{ text: "b", score: 1 }]),
+      dispose: vi.fn()
+    };
+
+    mockEmptyDefaultOcrConfig();
+    getOcrRuntimeParams.mockReturnValue({
+      det: {},
+      pipeline: { scoreThresh: 0 }
+    });
+    cropByPoly.mockReturnValueOnce(crop1).mockReturnValueOnce(crop2);
+    nowMs.mockReturnValue(0);
+
+    const { OcrPipelineRunner } = await loadCoreModule();
+    const runner = new OcrPipelineRunner({
+      pipelineConfig: minimalPipelineConfig({ pipelineBatchSize: 2 }),
+      ortOptions: AUTO_ORT_OPTIONS,
+      sourceToMat: vi.fn().mockResolvedValueOnce(sourceImage1).mockResolvedValueOnce(sourceImage2)
+    });
+    runner.cv = cv;
+    runner.ort = { name: "ort" };
+    runner.detModel = detModel;
+    runner.recModel = recModel;
+    runner.webgpuState = { available: false, reason: "" };
+    runner.modelConfig = { det: { conf: true }, rec: { conf: true } };
+
+    const results = await runner.predict([{ kind: "a" }, { kind: "b" }], {});
+
+    expect(detModel.predict).toHaveBeenCalledTimes(1);
+    expect(detModel.predict).toHaveBeenCalledWith(cv, [mat1, mat2], {});
+    expect(recModel.predict).toHaveBeenNthCalledWith(1, cv, [crop1]);
+    expect(recModel.predict).toHaveBeenNthCalledWith(2, cv, [crop2]);
+    expect(results).toHaveLength(2);
+    expect(dispose1).toHaveBeenCalledTimes(1);
+    expect(dispose2).toHaveBeenCalledTimes(1);
   });
 
   it("auto-initializes on predict and rejects when source adapter is missing", async () => {

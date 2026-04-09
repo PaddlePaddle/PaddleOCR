@@ -44,18 +44,16 @@ Both the SDK (`packages/core`) and the demo app (`apps/demo`) are written in Typ
 
 The SDK builds with Vite library mode (`npm run build` in `packages/core`). Output in `dist/`:
 
-- `index.mjs` — ESM
-- `index.cjs` — CJS
+- `index.mjs` — ESM entry
 - `index.d.ts` — type declarations
 - `viz.mjs` — ESM (viz subpath)
-- `viz.cjs` — CJS (viz subpath)
 - `assets/worker-entry-*.js` — self-contained worker bundle (OpenCV.js + ORT JS runtime)
 
 A custom Vite plugin (`libraryWorkerPlugin`) post-processes the build output for npm compatibility:
 
 1. Rewrites absolute worker asset paths to relative, so the file resolves from the SDK module's location rather than the web origin.
 2. Splits the `new Worker(new URL(STRING, import.meta.url))` pattern into a URL variable + Worker construction. This lets downstream bundlers' asset-URL plugins copy the worker file, while preventing their worker-detection plugins from trying to re-bundle it.
-3. Strips base64-encoded WASM binaries that Vite inlines into the worker asset. In worker mode, ORT loads WASM at runtime via `ort.env.wasm.wasmPaths` (set by the consumer, or falling back to a CDN URL pinned to the installed ORT version). This reduces the worker file from ~50 MB to ~1.2 MB.
+3. Strips base64-encoded WASM binaries that Vite inlines into the worker asset. In worker mode, ORT loads WASM at runtime via `ort.env.wasm.wasmPaths` (set by the consumer, or falling back to a CDN URL pinned to the installed ORT version). This significantly reduces the size of the worker file.
 
 The demo app uses a Vite alias during development (`npm run dev`) to build directly from core's TypeScript source, enabling instant HMR. During production builds (`npm run build`), it consumes the SDK's pre-built `dist/` via workspace linking — the downstream-compatible worker URL pattern allows Vite to correctly copy the worker asset into the demo's output.
 
