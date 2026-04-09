@@ -4,7 +4,7 @@ import { loadModelAsset } from "../src/resources/model-asset";
 import { createTar } from "./tar-fixture";
 
 describe("model asset loading", () => {
-  it("resolves standard model tar assets", async () => {
+  it("resolves model tar assets", async () => {
     const asset = {
       url: "/det.tar"
     };

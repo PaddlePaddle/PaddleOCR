@@ -1,7 +1,7 @@
 import type { OpenCv, Mat } from "@techstark/opencv-js";
 import type { InferenceSession, Tensor } from "onnxruntime-web";
 
-import { assertStandardModelResources } from "../resources/model-asset";
+import { assertModelResources } from "../resources/model-asset";
 import { createSession, getProviderCandidates, releaseSessions } from "../runtime/ort";
 import type { OrtModule, WebGpuState, SessionState } from "../runtime/ort";
 import { clamp, withTimeout } from "../utils/common";
@@ -123,7 +123,7 @@ export async function createRecModel({
   backend,
   webgpuState
 }: CreateRecModelArgs): Promise<RecModel> {
-  assertStandardModelResources("Recognition", {
+  assertModelResources("Recognition", {
     model: modelBytes,
     config: configText
   });

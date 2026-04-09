@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { createMockOrtTensorClass } from "./helpers/mock-ort-tensor";
 
-const assertStandardModelResources = vi.fn();
+const assertModelResources = vi.fn();
 const createSession = vi.fn();
 const getProviderCandidates = vi.fn();
 const releaseSessions = vi.fn();
@@ -13,7 +13,7 @@ const parseScaleValue = vi.fn();
 const toBgrFloatCHWFromBgr = vi.fn();
 
 vi.mock("../src/resources/model-asset", () => ({
-  assertStandardModelResources
+  assertModelResources
 }));
 
 vi.mock("../src/runtime/ort", () => ({
@@ -339,7 +339,7 @@ describe("recognition model", () => {
       webgpuState: { available: false, reason: "" }
     });
 
-    expect(assertStandardModelResources).toHaveBeenCalled();
+    expect(assertModelResources).toHaveBeenCalled();
     expect(model.kind).toBe("rec");
     expect(model.provider).toBe("wasm");
     expect(model.charDict).toEqual(["A", " "]);

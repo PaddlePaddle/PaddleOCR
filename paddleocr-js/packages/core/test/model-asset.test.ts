@@ -3,9 +3,9 @@ import { describe, expect, it } from "vitest";
 import {
   normalizeModelAsset,
   normalizeAssets,
-  getStandardModelEntryPath,
-  assertStandardModelResourceSlot,
-  assertStandardModelResources
+  getModelEntryPath,
+  assertModelResourceSlot,
+  assertModelResources
 } from "../src/resources/model-asset";
 
 describe("model asset normalization", () => {
@@ -46,42 +46,42 @@ describe("model asset normalization", () => {
   });
 });
 
-describe("standard model protocol", () => {
+describe("model resource validation", () => {
   it("provides standard entry names", () => {
-    expect(getStandardModelEntryPath("model")).toBe("inference.onnx");
-    expect(getStandardModelEntryPath("config")).toBe("inference.yml");
-    expect(getStandardModelEntryPath("other")).toBe(null);
+    expect(getModelEntryPath("model")).toBe("inference.onnx");
+    expect(getModelEntryPath("config")).toBe("inference.yml");
+    expect(getModelEntryPath("other")).toBe(null);
   });
 
-  it("rejects missing standard model binary resources", () => {
-    expect(() => assertStandardModelResourceSlot("Detection", "model", new Uint8Array())).toThrow(
+  it("rejects missing model binary resources", () => {
+    expect(() => assertModelResourceSlot("Detection", "model", new Uint8Array())).toThrow(
       /inference\.onnx/i
     );
   });
 
-  it("rejects missing standard model config resources", () => {
-    expect(() => assertStandardModelResourceSlot("Recognition", "config", "")).toThrow(
+  it("rejects missing model config resources", () => {
+    expect(() => assertModelResourceSlot("Recognition", "config", "")).toThrow(
       /inference\.yml/i
     );
   });
 
-  it("supports validating multiple standard model resources together", () => {
+  it("supports validating multiple model resources together", () => {
     expect(() =>
-      assertStandardModelResources("Detection", {
+      assertModelResources("Detection", {
         model: new Uint8Array([1]),
         config: "Global:\n  model_name: det"
       })
     ).not.toThrow();
   });
 
-  it("rejects unsupported standard model resource slots", () => {
-    expect(() => assertStandardModelResourceSlot("Detection", "labels", "abc")).toThrow(
-      /Unsupported standard model resource slot/i
+  it("rejects unsupported model resource slots", () => {
+    expect(() => assertModelResourceSlot("Detection", "labels", "abc")).toThrow(
+      /Unsupported model resource slot/i
     );
     expect(() =>
-      assertStandardModelResources("Detection", {
+      assertModelResources("Detection", {
         labels: "abc"
       })
-    ).toThrow(/Unsupported standard model resource slot/i);
+    ).toThrow(/Unsupported model resource slot/i);
   });
 });

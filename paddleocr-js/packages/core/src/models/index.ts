@@ -4,7 +4,6 @@ export {
   DEFAULT_DET_MODEL_CONFIG,
   createDetModel,
   createDetModelSession,
-  cropByPoly,
   parseDetModelConfigText,
   runDetModel
 } from "./det";

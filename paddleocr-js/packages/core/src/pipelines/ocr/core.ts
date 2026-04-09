@@ -1,10 +1,11 @@
 import type { OpenCv } from "@techstark/opencv-js";
 import type { ModelAsset, ModelLoadSummary } from "../../resources/model-asset";
 import { loadModelAsset } from "../../resources/index";
-import { createDetModel, createRecModel, cropByPoly } from "../../models/index";
+import { createDetModel, createRecModel } from "../../models/index";
 import type { DetModel } from "../../models/det";
 import type { RecModel } from "../../models/rec";
 import type { Point2D } from "../../models/common";
+import { cropByPoly } from "./crop";
 import { initOpenCvRuntime } from "../../runtime/opencv";
 import { initOrtRuntime } from "../../runtime/ort";
 import type { OrtModule, WebGpuState, OrtRuntimeOptions } from "../../runtime/ort";
@@ -24,9 +25,8 @@ export interface OcrResultItem {
 }
 
 export interface OcrResultMetrics {
-  detInferMs: number;
-  recPrepMs: number;
-  recInferMs: number;
+  detMs: number;
+  recMs: number;
   totalMs: number;
   detectedBoxes: number;
   recognizedCount: number;
@@ -218,7 +218,7 @@ export class OcrPipelineRunner {
       const detElapsed = nowMs() - detStart;
       const detBoxes = detResult.boxes;
 
-      const recPrepStart = nowMs();
+      const recStart = nowMs();
       const samples = [];
       for (let index = 0; index < detBoxes.length; index += 1) {
         const crop = cropByPoly(cv, sourceImage.mat, detBoxes[index].poly);
@@ -232,9 +232,7 @@ export class OcrPipelineRunner {
         );
         crop.delete();
       }
-      const recPrepElapsed = nowMs() - recPrepStart;
 
-      const recStart = nowMs();
       const recRaw = await recModel.recognize(samples);
       const recElapsed = nowMs() - recStart;
 
@@ -249,9 +247,8 @@ export class OcrPipelineRunner {
         },
         items,
         metrics: {
-          detInferMs: detElapsed,
-          recPrepMs: recPrepElapsed,
-          recInferMs: recElapsed,
+          detMs: detElapsed,
+          recMs: recElapsed,
           totalMs: nowMs() - totalStart,
           detectedBoxes: detBoxes.length,
           recognizedCount: items.length

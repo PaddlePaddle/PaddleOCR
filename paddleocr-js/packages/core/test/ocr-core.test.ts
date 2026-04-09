@@ -250,9 +250,7 @@ describe("OCR pipeline core", () => {
       .mockReturnValueOnce(30)
       .mockReturnValueOnce(40)
       .mockReturnValueOnce(60)
-      .mockReturnValueOnce(70)
-      .mockReturnValueOnce(90)
-      .mockReturnValueOnce(100);
+      .mockReturnValueOnce(70);
 
     const { OcrPipelineRunner } = await loadCoreModule();
     const runner = new OcrPipelineRunner({
@@ -293,10 +291,9 @@ describe("OCR pipeline core", () => {
       },
       items: [{ originalIndex: 0, poly: [[1, 1]], text: "high", score: 0.95 }],
       metrics: {
-        detInferMs: 10,
-        recPrepMs: 20,
-        recInferMs: 20,
-        totalMs: 90,
+        detMs: 10,
+        recMs: 20,
+        totalMs: 60,
         detectedBoxes: 2,
         recognizedCount: 1
       },

@@ -25,7 +25,7 @@ export const DEFAULT_MODEL_ASSETS: ModelAssetsMap = {
   }
 };
 
-export const STANDARD_MODEL_ENTRY_PATHS: Readonly<Record<string, string>> = Object.freeze({
+export const MODEL_ENTRY_PATHS: Readonly<Record<string, string>> = Object.freeze({
   model: "inference.onnx",
   config: "inference.yml"
 });
@@ -89,15 +89,15 @@ export function normalizeAssets(
 
 // --- Model loading ---
 
-export function getStandardModelEntryPath(slot: string): string | null {
-  return STANDARD_MODEL_ENTRY_PATHS[slot] || null;
+export function getModelEntryPath(slot: string): string | null {
+  return MODEL_ENTRY_PATHS[slot] || null;
 }
 
-export function assertStandardModelResourceSlot(kind: string, slot: string, value: unknown): void {
+export function assertModelResourceSlot(kind: string, slot: string, value: unknown): void {
   if (slot === "model") {
     if (!(value instanceof Uint8Array) || value.byteLength === 0) {
       throw new Error(
-        `${kind} model requires a non-empty ${STANDARD_MODEL_ENTRY_PATHS.model} resource.`
+        `${kind} model requires a non-empty ${MODEL_ENTRY_PATHS.model} resource.`
       );
     }
     return;
@@ -106,21 +106,21 @@ export function assertStandardModelResourceSlot(kind: string, slot: string, valu
   if (slot === "config") {
     if (typeof value !== "string" || value.trim().length === 0) {
       throw new Error(
-        `${kind} model requires a non-empty ${STANDARD_MODEL_ENTRY_PATHS.config} resource.`
+        `${kind} model requires a non-empty ${MODEL_ENTRY_PATHS.config} resource.`
       );
     }
     return;
   }
 
-  throw new Error(`Unsupported standard model resource slot "${slot}".`);
+  throw new Error(`Unsupported model resource slot "${slot}".`);
 }
 
-export function assertStandardModelResources(
+export function assertModelResources(
   kind: string,
   resources: Record<string, unknown>
 ): void {
   for (const [slot, value] of Object.entries(resources)) {
-    assertStandardModelResourceSlot(kind, slot, value);
+    assertModelResourceSlot(kind, slot, value);
   }
 }
 
@@ -138,8 +138,8 @@ export async function loadModelAsset(
   }
   const buffer = await response.arrayBuffer();
   const entries = extractTarEntries(buffer);
-  const modelBytes = pickTarEntry(entries, STANDARD_MODEL_ENTRY_PATHS.model);
-  const configBytes = pickTarEntry(entries, STANDARD_MODEL_ENTRY_PATHS.config);
+  const modelBytes = pickTarEntry(entries, MODEL_ENTRY_PATHS.model);
+  const configBytes = pickTarEntry(entries, MODEL_ENTRY_PATHS.config);
 
   return {
     modelBytes,
