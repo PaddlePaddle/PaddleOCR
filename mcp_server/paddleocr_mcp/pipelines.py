@@ -140,6 +140,8 @@ class PipelineHandler(abc.ABC):
         aistudio_access_token: Optional[str],
         qianfan_api_key: Optional[str],
         timeout: Optional[int],
+        use_doc_orientation_classify: bool = False,
+        use_doc_unwarping: bool = False,
     ) -> None:
         """Initialize the pipeline handler.
 
@@ -152,6 +154,8 @@ class PipelineHandler(abc.ABC):
             aistudio_access_token: AI Studio access token.
             qianfan_api_key: Qianfan API key.
             timeout: Read timeout in seconds for HTTP requests.
+            use_doc_orientation_classify: Enable document orientation classification.
+            use_doc_unwarping: Enable document unwarping.
         """
         self._pipeline = pipeline
         if ppocr_source == "local":
@@ -167,6 +171,8 @@ class PipelineHandler(abc.ABC):
         self._aistudio_access_token = aistudio_access_token
         self._qianfan_api_key = qianfan_api_key
         self._timeout = timeout or 60
+        self._use_doc_orientation_classify = use_doc_orientation_classify
+        self._use_doc_unwarping = use_doc_unwarping
 
         if self._mode == "local":
             if not LOCAL_OCR_AVAILABLE:
@@ -559,14 +565,14 @@ class OCRHandler(SimpleInferencePipelineHandler):
 
     def _transform_local_kwargs(self, kwargs: Dict[str, Any]) -> Dict[str, Any]:
         return {
-            "use_doc_unwarping": False,
-            "use_doc_orientation_classify": False,
+            "use_doc_unwarping": self._use_doc_unwarping,
+            "use_doc_orientation_classify": self._use_doc_orientation_classify,
         }
 
     def _transform_service_kwargs(self, kwargs: Dict[str, Any]) -> Dict[str, Any]:
         return {
-            "useDocUnwarping": False,
-            "useDocOrientationClassify": False,
+            "useDocUnwarping": self._use_doc_unwarping,
+            "useDocOrientationClassify": self._use_doc_orientation_classify,
         }
 
     async def _parse_local_result(self, local_result: Dict, ctx: Context) -> Dict:
@@ -668,14 +674,14 @@ class _LayoutParsingHandler(SimpleInferencePipelineHandler):
 
     def _transform_local_kwargs(self, kwargs: Dict[str, Any]) -> Dict[str, Any]:
         return {
-            "use_doc_unwarping": False,
-            "use_doc_orientation_classify": False,
+            "use_doc_unwarping": self._use_doc_unwarping,
+            "use_doc_orientation_classify": self._use_doc_orientation_classify,
         }
 
     def _transform_service_kwargs(self, kwargs: Dict[str, Any]) -> Dict[str, Any]:
         return {
-            "useDocUnwarping": False,
-            "useDocOrientationClassify": False,
+            "useDocUnwarping": self._use_doc_unwarping,
+            "useDocOrientationClassify": self._use_doc_orientation_classify,
         }
 
     async def _parse_local_result(self, local_result: Dict, ctx: Context) -> Dict:
