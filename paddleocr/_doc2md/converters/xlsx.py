@@ -16,13 +16,13 @@ from pathlib import Path
 from typing import Optional
 
 from ..base import BaseConverter, ConvertResult
+from ..math import (
+    convert_omath as _convert_omath,
+    extract_math_from_paragraph as _extract_math_from_paragraph,
+    paragraph_has_math as _paragraph_has_math,
+)
 from ..registry import default_registry
 
-# OMML math namespace (same as in DOCX/PPTX)
-_M_NS = "http://schemas.openxmlformats.org/officeDocument/2006/math"
-_M = "{" + _M_NS + "}"
-# DrawingML 2010 extension namespace (OMML wrapped in a14:m)
-_A14 = "{http://schemas.microsoft.com/office/drawing/2010/main}"
 # DrawingML main namespace
 _A = "{http://schemas.openxmlformats.org/drawingml/2006/main}"
 # Markup Compatibility namespace
@@ -32,57 +32,6 @@ _REL_DRAWING = (
     "http://schemas.openxmlformats.org/officeDocument/2006/relationships/drawing"
 )
 _REL_NS = "http://schemas.openxmlformats.org/package/2006/relationships"
-
-
-def _convert_omath(omath_element) -> str:
-    """Convert an m:oMath lxml element to LaTeX string. Returns empty string on failure."""
-    try:
-        from ..math.omml import oMath2Latex
-
-        return str(oMath2Latex(omath_element)).strip()
-    except Exception:
-        return ""
-
-
-def _paragraph_has_math(para_element) -> bool:
-    """Check if paragraph XML element contains OMML math (a14:m or m:oMath)."""
-    return (
-        para_element.find(f".//{_A14}m") is not None
-        or para_element.find(f".//{_M}oMath") is not None
-    )
-
-
-def _extract_math_from_paragraph(para_element) -> list:
-    """Extract LaTeX strings from math elements in a paragraph XML element."""
-    results = []
-    # a14:m wraps m:oMathPara or m:oMath
-    for a14m in para_element.findall(f".//{_A14}m"):
-        for omath in a14m.findall(f".//{_M}oMath"):
-            latex = _convert_omath(omath)
-            if latex:
-                results.append(latex)
-        # No oMath inside a14:m? Try the a14:m element itself
-        if not results:
-            latex = _convert_omath(a14m)
-            if latex:
-                results.append(latex)
-    # Direct m:oMathPara / m:oMath not wrapped in a14:m
-    for omath_para in para_element.findall(f".//{_M}oMathPara"):
-        parent = omath_para.getparent()
-        if parent is not None and parent.tag == f"{_A14}m":
-            continue  # already handled above (oMathPara is inside a14:m)
-        for omath in omath_para.findall(f"{_M}oMath"):
-            latex = _convert_omath(omath)
-            if latex:
-                results.append(latex)
-    for omath in para_element.findall(f".//{_M}oMath"):
-        parent = omath.getparent()
-        if parent is not None and parent.tag in (f"{_A14}m", f"{_M}oMathPara"):
-            continue  # already handled
-        latex = _convert_omath(omath)
-        if latex:
-            results.append(latex)
-    return results
 
 
 def _extract_drawing_math(zip_path: str, sheet_index: int) -> list:
