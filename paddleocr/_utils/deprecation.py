@@ -15,6 +15,7 @@
 import argparse
 import sys
 import warnings
+from typing import Any, Optional, Sequence, Union
 
 from typing_extensions import deprecated as deprecated
 
@@ -24,7 +25,13 @@ class CLIDeprecationWarning(DeprecationWarning):
 
 
 class DeprecatedOptionAction(argparse.Action):
-    def __call__(self, parser, namespace, values, option_string=None):
+    def __call__(
+        self,
+        parser: argparse.ArgumentParser,
+        namespace: argparse.Namespace,
+        values: Optional[Union[str, Sequence[Any]]],
+        option_string: Optional[str] = None,
+    ) -> None:
         assert option_string
         warnings.warn(
             f"The option `{option_string}` has been deprecated and will be removed in the future. Please refer to the documentation for more details.",
@@ -33,7 +40,7 @@ class DeprecatedOptionAction(argparse.Action):
         setattr(namespace, self.dest, values)
 
 
-def warn_deprecated_param(name, new_name=None):
+def warn_deprecated_param(name: str, new_name: Optional[str] = None) -> None:
     msg = (
         f"The parameter `{name}` has been deprecated and will be removed in the future."
     )

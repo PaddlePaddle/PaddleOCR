@@ -12,8 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from typing import Any, Dict, Optional
 
-def create_config_from_structure(structure, *, unset=None, config=None):
+
+def create_config_from_structure(
+    structure: Dict[str, Any],
+    *,
+    unset: Any = None,
+    config: Optional[Dict[str, Any]] = None,
+) -> Dict[str, Any]:
     if config is None:
         config = {}
     for k, v in structure.items():

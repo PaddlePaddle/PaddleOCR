@@ -13,6 +13,8 @@
 # limitations under the License.
 
 import abc
+import argparse
+from typing import Any, Dict, Optional, Type
 
 from .._utils.cli import (
     add_simple_inference_args,
@@ -26,20 +28,20 @@ class ImageClassification(PaddleXPredictorWrapper):
     def __init__(
         self,
         *,
-        topk=None,
-        **kwargs,
-    ):
+        topk: Optional[int] = None,
+        **kwargs: Any,
+    ) -> None:
         self._extra_init_args = {
             "topk": topk,
         }
         super().__init__(**kwargs)
 
-    def _get_extra_paddlex_predictor_init_args(self):
+    def _get_extra_paddlex_predictor_init_args(self) -> Dict[str, Any]:
         return self._extra_init_args
 
 
 class ImageClassificationSubcommandExecutor(PredictorCLISubcommandExecutor):
-    def _update_subparser(self, subparser):
+    def _update_subparser(self, subparser: argparse.ArgumentParser) -> None:
         add_simple_inference_args(subparser)
 
         subparser.add_argument(
@@ -50,9 +52,9 @@ class ImageClassificationSubcommandExecutor(PredictorCLISubcommandExecutor):
 
     @property
     @abc.abstractmethod
-    def wrapper_cls(self):
+    def wrapper_cls(self) -> Type[PaddleXPredictorWrapper]:
         raise NotImplementedError
 
-    def execute_with_args(self, args):
+    def execute_with_args(self, args: argparse.Namespace) -> None:
         params = get_subcommand_args(args)
         perform_simple_inference(self.wrapper_cls, params)

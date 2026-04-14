@@ -13,6 +13,8 @@
 # limitations under the License.
 
 import abc
+import argparse
+from typing import Any, Dict, Optional, Union
 
 import yaml
 from paddlex import create_pipeline
@@ -27,10 +29,10 @@ from .._common_args import (
     prepare_common_init_args,
 )
 
-_DEFAULT_ENABLE_HPI = None
+_DEFAULT_ENABLE_HPI: Optional[bool] = None
 
 
-def _merge_dicts(d1, d2):
+def _merge_dicts(d1: Dict[str, Any], d2: Dict[str, Any]) -> Dict[str, Any]:
     res = d1.copy()
     for k, v in d2.items():
         if k in res and isinstance(res[k], dict) and isinstance(v, dict):
@@ -40,7 +42,7 @@ def _merge_dicts(d1, d2):
     return res
 
 
-def _to_builtin(obj):
+def _to_builtin(obj: Any) -> Any:
     if isinstance(obj, AttrDict):
         return {k: _to_builtin(v) for k, v in obj.items()}
     elif isinstance(obj, dict):
@@ -55,9 +57,9 @@ class PaddleXPipelineWrapper(metaclass=abc.ABCMeta):
     def __init__(
         self,
         *,
-        paddlex_config=None,
-        **common_args,
-    ):
+        paddlex_config: Optional[Union[str, Dict[str, Any]]] = None,
+        **common_args: Any,
+    ) -> None:
         super().__init__()
         self._paddlex_config = paddlex_config
         self._common_args = parse_common_args(
@@ -68,26 +70,26 @@ class PaddleXPipelineWrapper(metaclass=abc.ABCMeta):
 
     @property
     @abc.abstractmethod
-    def _paddlex_pipeline_name(self):
+    def _paddlex_pipeline_name(self) -> str:
         raise NotImplementedError
 
-    def export_paddlex_config_to_yaml(self, yaml_path):
+    def export_paddlex_config_to_yaml(self, yaml_path: str) -> None:
         with open(yaml_path, "w", encoding="utf-8") as f:
             config = _to_builtin(self._merged_paddlex_config)
             yaml.safe_dump(config, f)
 
-    def close(self):
+    def close(self) -> None:
         self.paddlex_pipeline.close()
 
     @classmethod
     @abc.abstractmethod
-    def get_cli_subcommand_executor(cls):
+    def get_cli_subcommand_executor(cls) -> CLISubcommandExecutor:
         raise NotImplementedError
 
-    def _get_paddlex_config_overrides(self):
+    def _get_paddlex_config_overrides(self) -> Dict[str, Any]:
         return {}
 
-    def _get_merged_paddlex_config(self):
+    def _get_merged_paddlex_config(self) -> Dict[str, Any]:
         if self._paddlex_config is None:
             config = load_pipeline_config(self._paddlex_pipeline_name)
         elif isinstance(self._paddlex_config, str):
@@ -99,7 +101,7 @@ class PaddleXPipelineWrapper(metaclass=abc.ABCMeta):
 
         return _merge_dicts(config, overrides)
 
-    def _create_paddlex_pipeline(self):
+    def _create_paddlex_pipeline(self) -> Any:
         kwargs = prepare_common_init_args(None, self._common_args)
         try:
             return create_pipeline(config=self._merged_paddlex_config, **kwargs)
@@ -112,10 +114,12 @@ class PaddleXPipelineWrapper(metaclass=abc.ABCMeta):
 class PipelineCLISubcommandExecutor(CLISubcommandExecutor):
     @property
     @abc.abstractmethod
-    def subparser_name(self):
+    def subparser_name(self) -> str:
         raise NotImplementedError
 
-    def add_subparser(self, subparsers):
+    def add_subparser(
+        self, subparsers: argparse._SubParsersAction
+    ) -> argparse.ArgumentParser:
         subparser = subparsers.add_parser(name=self.subparser_name)
         self._update_subparser(subparser)
         add_common_cli_opts(
@@ -131,5 +135,5 @@ class PipelineCLISubcommandExecutor(CLISubcommandExecutor):
         return subparser
 
     @abc.abstractmethod
-    def _update_subparser(self, subparser):
+    def _update_subparser(self, subparser: argparse.ArgumentParser) -> None:
         raise NotImplementedError

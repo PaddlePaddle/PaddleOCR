@@ -12,6 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import argparse
+from typing import Any
+
+from .._abstract import CLISubcommandExecutor
 from .._utils.cli import (
     add_simple_inference_args,
     get_subcommand_args,
@@ -23,11 +27,11 @@ from ._text_detection import TextDetectionMixin, TextDetectionSubcommandExecutor
 
 class SealTextDetection(TextDetectionMixin, PaddleXPredictorWrapper):
     @property
-    def default_model_name(self):
+    def default_model_name(self) -> str:
         return "PP-OCRv4_mobile_seal_det"
 
     @classmethod
-    def get_cli_subcommand_executor(cls):
+    def get_cli_subcommand_executor(cls) -> CLISubcommandExecutor:
         return SealTextDetectionSubcommandExecutor()
 
 
@@ -35,13 +39,13 @@ class SealTextDetectionSubcommandExecutor(
     TextDetectionSubcommandExecutorMixin, PredictorCLISubcommandExecutor
 ):
     @property
-    def subparser_name(self):
+    def subparser_name(self) -> str:
         return "seal_text_detection"
 
-    def _update_subparser(self, subparser):
+    def _update_subparser(self, subparser: argparse.ArgumentParser) -> None:
         add_simple_inference_args(subparser)
         self._add_text_detection_args(subparser)
 
-    def execute_with_args(self, args):
+    def execute_with_args(self, args: argparse.Namespace) -> None:
         params = get_subcommand_args(args)
         perform_simple_inference(SealTextDetection, params)

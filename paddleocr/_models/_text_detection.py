@@ -12,22 +12,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import argparse
+from typing import Any, Dict, Optional
+
 
 class TextDetectionMixin:
     def __init__(
         self,
         *,
-        limit_side_len=None,
-        limit_type=None,
-        thresh=None,
-        box_thresh=None,
-        unclip_ratio=None,
-        input_shape=None,
-        **kwargs,
-    ):
+        limit_side_len: Optional[int] = None,
+        limit_type: Optional[str] = None,
+        max_side_limit: Optional[int] = None,
+        thresh: Optional[float] = None,
+        box_thresh: Optional[float] = None,
+        unclip_ratio: Optional[float] = None,
+        input_shape: Optional[tuple] = None,
+        **kwargs: Any,
+    ) -> None:
         self._extra_init_args = {
             "limit_side_len": limit_side_len,
             "limit_type": limit_type,
+            "max_side_limit": max_side_limit,
             "thresh": thresh,
             "box_thresh": box_thresh,
             "unclip_ratio": unclip_ratio,
@@ -35,12 +40,12 @@ class TextDetectionMixin:
         }
         super().__init__(**kwargs)
 
-    def _get_extra_paddlex_predictor_init_args(self):
+    def _get_extra_paddlex_predictor_init_args(self) -> Dict[str, Any]:
         return self._extra_init_args
 
 
 class TextDetectionSubcommandExecutorMixin:
-    def _add_text_detection_args(self, subparser):
+    def _add_text_detection_args(self, subparser: argparse.ArgumentParser) -> None:
         subparser.add_argument(
             "--limit_side_len",
             type=int,
@@ -50,6 +55,11 @@ class TextDetectionSubcommandExecutorMixin:
             "--limit_type",
             type=str,
             help="This determines how the side length limit is applied to the input image before feeding it into the model.",
+        )
+        subparser.add_argument(
+            "--max_side_limit",
+            type=int,
+            help="Maximum side length limit for the input image.",
         )
         subparser.add_argument(
             "--thresh",

@@ -1,3 +1,5 @@
+from typing import List, Optional
+
 # Copyright (c) 2025 PaddlePaddle Authors. All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,11 +14,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-DEFAULT_DEVICE = None
-DEFAULT_USE_TENSORRT = False
-DEFAULT_PRECISION = "fp32"
-DEFAULT_ENABLE_MKLDNN = True
-DEFAULT_MKLDNN_CACHE_CAPACITY = 10
-DEFAULT_CPU_THREADS = 10
-SUPPORTED_PRECISION_LIST = ["fp32", "fp16"]
-DEFAULT_USE_CINN = False
+DEFAULT_DEVICE: Optional[str] = None
+DEFAULT_USE_TENSORRT: bool = False
+DEFAULT_PRECISION: str = "fp32"
+DEFAULT_ENABLE_MKLDNN: bool = True
+DEFAULT_MKLDNN_CACHE_CAPACITY: int = 10
+DEFAULT_CPU_THREADS: int = 10
+SUPPORTED_PRECISION_LIST: List[str] = ["fp32", "fp16"]
+DEFAULT_USE_CINN: bool = False

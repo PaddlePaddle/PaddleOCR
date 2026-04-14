@@ -13,6 +13,8 @@
 # limitations under the License.
 
 import abc
+import argparse
+from typing import Any, Dict, Iterator, List, Optional
 
 from paddlex import create_predictor
 from paddlex.utils.deps import DependencyError
@@ -23,18 +25,19 @@ from .._common_args import (
     parse_common_args,
     prepare_common_init_args,
 )
+from .._types import PredictResult
 
-_DEFAULT_ENABLE_HPI = False
+_DEFAULT_ENABLE_HPI: bool = False
 
 
 class PaddleXPredictorWrapper(metaclass=abc.ABCMeta):
     def __init__(
         self,
         *,
-        model_name=None,
-        model_dir=None,
-        **common_args,
-    ):
+        model_name: Optional[str] = None,
+        model_dir: Optional[str] = None,
+        **common_args: Any,
+    ) -> None:
         super().__init__()
         self._model_name = (
             model_name if model_name is not None else self.default_model_name
@@ -47,28 +50,28 @@ class PaddleXPredictorWrapper(metaclass=abc.ABCMeta):
 
     @property
     @abc.abstractmethod
-    def default_model_name(self):
+    def default_model_name(self) -> str:
         raise NotImplementedError
 
-    def predict_iter(self, *args, **kwargs):
+    def predict_iter(self, *args: Any, **kwargs: Any) -> Iterator[PredictResult]:
         return self.paddlex_predictor.predict(*args, **kwargs)
 
-    def predict(self, *args, **kwargs):
+    def predict(self, *args: Any, **kwargs: Any) -> List[PredictResult]:
         result = list(self.predict_iter(*args, **kwargs))
         return result
 
-    def close(self):
+    def close(self) -> None:
         self.paddlex_predictor.close()
 
     @classmethod
     @abc.abstractmethod
-    def get_cli_subcommand_executor(cls):
+    def get_cli_subcommand_executor(cls) -> CLISubcommandExecutor:
         raise NotImplementedError
 
-    def _get_extra_paddlex_predictor_init_args(self):
+    def _get_extra_paddlex_predictor_init_args(self) -> Dict[str, Any]:
         return {}
 
-    def _create_paddlex_predictor(self):
+    def _create_paddlex_predictor(self) -> Any:
         kwargs = prepare_common_init_args(self._model_name, self._common_args)
         kwargs = {**self._get_extra_paddlex_predictor_init_args(), **kwargs}
         # Should we check model names?
@@ -85,10 +88,12 @@ class PaddleXPredictorWrapper(metaclass=abc.ABCMeta):
 class PredictorCLISubcommandExecutor(CLISubcommandExecutor):
     @property
     @abc.abstractmethod
-    def subparser_name(self):
+    def subparser_name(self) -> str:
         raise NotImplementedError
 
-    def add_subparser(self, subparsers):
+    def add_subparser(
+        self, subparsers: argparse._SubParsersAction
+    ) -> argparse.ArgumentParser:
         subparser = subparsers.add_parser(name=self.subparser_name)
         self._update_subparser(subparser)
         subparser.add_argument("--model_name", type=str, help="Name of the model.")
@@ -103,5 +108,5 @@ class PredictorCLISubcommandExecutor(CLISubcommandExecutor):
         return subparser
 
     @abc.abstractmethod
-    def _update_subparser(self, subparser):
+    def _update_subparser(self, subparser: argparse.ArgumentParser) -> None:
         raise NotImplementedError

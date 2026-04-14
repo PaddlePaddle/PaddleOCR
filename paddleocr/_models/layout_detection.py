@@ -12,6 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from typing import Type
+
+from .._abstract import CLISubcommandExecutor
+from .base import PaddleXPredictorWrapper
 from ._object_detection import (
     ObjectDetection,
     ObjectDetectionSubcommandExecutor,
@@ -20,19 +24,19 @@ from ._object_detection import (
 
 class LayoutDetection(ObjectDetection):
     @property
-    def default_model_name(self):
+    def default_model_name(self) -> str:
         return "PP-DocLayout_plus-L"
 
     @classmethod
-    def get_cli_subcommand_executor(cls):
+    def get_cli_subcommand_executor(cls) -> CLISubcommandExecutor:
         return LayoutDetectionSubcommandExecutor()
 
 
 class LayoutDetectionSubcommandExecutor(ObjectDetectionSubcommandExecutor):
     @property
-    def subparser_name(self):
+    def subparser_name(self) -> str:
         return "layout_detection"
 
     @property
-    def wrapper_cls(self):
+    def wrapper_cls(self) -> Type[PaddleXPredictorWrapper]:
         return LayoutDetection

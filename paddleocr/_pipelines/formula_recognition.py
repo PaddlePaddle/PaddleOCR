@@ -12,6 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import argparse
+from typing import Any, Dict, Iterator, List, Optional, Tuple, Union
+
+from .._abstract import CLISubcommandExecutor
+from .._types import InputType, LayoutDetResult, PredictResult
 from .._utils.cli import (
     add_simple_inference_args,
     get_subcommand_args,
@@ -25,27 +30,27 @@ from .utils import create_config_from_structure
 class FormulaRecognitionPipeline(PaddleXPipelineWrapper):
     def __init__(
         self,
-        doc_orientation_classify_model_name=None,
-        doc_orientation_classify_model_dir=None,
-        doc_orientation_classify_batch_size=None,
-        doc_unwarping_model_name=None,
-        doc_unwarping_model_dir=None,
-        doc_unwarping_batch_size=None,
-        use_doc_orientation_classify=None,
-        use_doc_unwarping=None,
-        layout_detection_model_name=None,
-        layout_detection_model_dir=None,
-        layout_threshold=None,
-        layout_nms=None,
-        layout_unclip_ratio=None,
-        layout_merge_bboxes_mode=None,
-        layout_detection_batch_size=None,
-        use_layout_detection=None,
-        formula_recognition_model_name=None,
-        formula_recognition_model_dir=None,
-        formula_recognition_batch_size=None,
-        **kwargs,
-    ):
+        doc_orientation_classify_model_name: Optional[str] = None,
+        doc_orientation_classify_model_dir: Optional[str] = None,
+        doc_orientation_classify_batch_size: Optional[int] = None,
+        doc_unwarping_model_name: Optional[str] = None,
+        doc_unwarping_model_dir: Optional[str] = None,
+        doc_unwarping_batch_size: Optional[int] = None,
+        use_doc_orientation_classify: Optional[bool] = None,
+        use_doc_unwarping: Optional[bool] = None,
+        layout_detection_model_name: Optional[str] = None,
+        layout_detection_model_dir: Optional[str] = None,
+        layout_threshold: Optional[Union[float, dict]] = None,
+        layout_nms: Optional[bool] = None,
+        layout_unclip_ratio: Optional[Union[float, Tuple[float, float]]] = None,
+        layout_merge_bboxes_mode: Optional[str] = None,
+        layout_detection_batch_size: Optional[int] = None,
+        use_layout_detection: Optional[bool] = None,
+        formula_recognition_model_name: Optional[str] = None,
+        formula_recognition_model_dir: Optional[str] = None,
+        formula_recognition_batch_size: Optional[int] = None,
+        **kwargs: Any,
+    ) -> None:
         params = locals().copy()
         params.pop("self")
         params.pop("kwargs")
@@ -54,23 +59,23 @@ class FormulaRecognitionPipeline(PaddleXPipelineWrapper):
         super().__init__(**kwargs)
 
     @property
-    def _paddlex_pipeline_name(self):
+    def _paddlex_pipeline_name(self) -> str:
         return "formula_recognition"
 
     def predict_iter(
         self,
-        input,
+        input: InputType,
         *,
-        use_layout_detection=None,
-        use_doc_orientation_classify=None,
-        use_doc_unwarping=None,
-        layout_det_res=None,
-        layout_threshold=None,
-        layout_nms=None,
-        layout_unclip_ratio=None,
-        layout_merge_bboxes_mode=None,
-        **kwargs,
-    ):
+        use_layout_detection: Optional[bool] = None,
+        use_doc_orientation_classify: Optional[bool] = None,
+        use_doc_unwarping: Optional[bool] = None,
+        layout_det_res: LayoutDetResult = None,
+        layout_threshold: Optional[Union[float, dict]] = None,
+        layout_nms: Optional[bool] = None,
+        layout_unclip_ratio: Optional[Union[float, Tuple[float, float]]] = None,
+        layout_merge_bboxes_mode: Optional[str] = None,
+        **kwargs: Any,
+    ) -> Iterator[PredictResult]:
         return self.paddlex_pipeline.predict(
             input,
             use_layout_detection=use_layout_detection,
@@ -86,18 +91,18 @@ class FormulaRecognitionPipeline(PaddleXPipelineWrapper):
 
     def predict(
         self,
-        input,
+        input: InputType,
         *,
-        use_layout_detection=None,
-        use_doc_orientation_classify=None,
-        use_doc_unwarping=None,
-        layout_det_res=None,
-        layout_threshold=None,
-        layout_nms=None,
-        layout_unclip_ratio=None,
-        layout_merge_bboxes_mode=None,
-        **kwargs,
-    ):
+        use_layout_detection: Optional[bool] = None,
+        use_doc_orientation_classify: Optional[bool] = None,
+        use_doc_unwarping: Optional[bool] = None,
+        layout_det_res: LayoutDetResult = None,
+        layout_threshold: Optional[Union[float, dict]] = None,
+        layout_nms: Optional[bool] = None,
+        layout_unclip_ratio: Optional[Union[float, Tuple[float, float]]] = None,
+        layout_merge_bboxes_mode: Optional[str] = None,
+        **kwargs: Any,
+    ) -> List[PredictResult]:
         return list(
             self.predict_iter(
                 input,
@@ -114,10 +119,10 @@ class FormulaRecognitionPipeline(PaddleXPipelineWrapper):
         )
 
     @classmethod
-    def get_cli_subcommand_executor(cls):
+    def get_cli_subcommand_executor(cls) -> CLISubcommandExecutor:
         return FormulaRecognitionPipelineCLISubcommandExecutor()
 
-    def _get_paddlex_config_overrides(self):
+    def _get_paddlex_config_overrides(self) -> Dict[str, Any]:
         STRUCTURE = {
             "use_layout_detection": self._params["use_layout_detection"],
             "SubModules.LayoutDetection.model_name": self._params[
@@ -178,10 +183,10 @@ class FormulaRecognitionPipeline(PaddleXPipelineWrapper):
 
 class FormulaRecognitionPipelineCLISubcommandExecutor(PipelineCLISubcommandExecutor):
     @property
-    def subparser_name(self):
+    def subparser_name(self) -> str:
         return "formula_recognition_pipeline"
 
-    def _update_subparser(self, subparser):
+    def _update_subparser(self, subparser: argparse.ArgumentParser) -> None:
         add_simple_inference_args(subparser)
 
         subparser.add_argument(
@@ -280,6 +285,6 @@ class FormulaRecognitionPipelineCLISubcommandExecutor(PipelineCLISubcommandExecu
             help="Batch size for formula recognition.",
         )
 
-    def execute_with_args(self, args):
+    def execute_with_args(self, args: argparse.Namespace) -> None:
         params = get_subcommand_args(args)
         perform_simple_inference(FormulaRecognitionPipeline, params)

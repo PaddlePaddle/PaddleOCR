@@ -12,23 +12,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import argparse
 import time
+from typing import Any, Dict, Optional, Set
 
 from .logging import logger
 
 
-def str2bool(v, /):
+def str2bool(v: str, /) -> bool:
     return v.lower() in ("true", "yes", "t", "y", "1")
 
 
-def get_subcommand_args(args):
-    args = vars(args).copy()
-    args.pop("subcommand")
-    args.pop("executor")
-    return args
+def get_subcommand_args(args: argparse.Namespace) -> Dict[str, Any]:
+    args_dict = vars(args).copy()
+    args_dict.pop("subcommand")
+    args_dict.pop("executor")
+    return args_dict
 
 
-def add_simple_inference_args(subparser, *, input_help=None):
+def add_simple_inference_args(
+    subparser: argparse.ArgumentParser, *, input_help: Optional[str] = None
+) -> None:
     if input_help is None:
         input_help = "Input path or URL."
     subparser.add_argument(
@@ -45,14 +49,18 @@ def add_simple_inference_args(subparser, *, input_help=None):
     )
 
 
-def perform_simple_inference(wrapper_cls, params, predict_param_names=None):
+def perform_simple_inference(
+    wrapper_cls: type,
+    params: Dict[str, Any],
+    predict_param_names: Optional[Set[str]] = None,
+) -> None:
     params = params.copy()
 
     input_ = params.pop("input")
     save_path = params.pop("save_path")
 
     if predict_param_names is not None:
-        predict_params = {}
+        predict_params: Dict[str, Any] = {}
         for name in predict_param_names:
             predict_params[name] = params.pop(name)
     else:

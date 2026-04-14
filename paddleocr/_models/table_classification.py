@@ -12,6 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from typing import Type
+
+from .._abstract import CLISubcommandExecutor
+from .base import PaddleXPredictorWrapper
 from ._image_classification import (
     ImageClassification,
     ImageClassificationSubcommandExecutor,
@@ -20,19 +24,19 @@ from ._image_classification import (
 
 class TableClassification(ImageClassification):
     @property
-    def default_model_name(self):
+    def default_model_name(self) -> str:
         return "PP-LCNet_x1_0_table_cls"
 
     @classmethod
-    def get_cli_subcommand_executor(cls):
+    def get_cli_subcommand_executor(cls) -> CLISubcommandExecutor:
         return TableClassificationSubcommandExecutor()
 
 
 class TableClassificationSubcommandExecutor(ImageClassificationSubcommandExecutor):
     @property
-    def subparser_name(self):
+    def subparser_name(self) -> str:
         return "table_classification"
 
     @property
-    def wrapper_cls(self):
+    def wrapper_cls(self) -> Type[PaddleXPredictorWrapper]:
         return TableClassification

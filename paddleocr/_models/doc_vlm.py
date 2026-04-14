@@ -12,7 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import argparse
+from typing import Type
+
+from .._abstract import CLISubcommandExecutor
 from .._utils.cli import add_simple_inference_args
+from .base import PaddleXPredictorWrapper
 from ._doc_vlm import (
     BaseDocVLM,
     BaseDocVLMSubcommandExecutor,
@@ -21,24 +26,24 @@ from ._doc_vlm import (
 
 class DocVLM(BaseDocVLM):
     @property
-    def default_model_name(self):
+    def default_model_name(self) -> str:
         return "PP-DocBee2-3B"
 
     @classmethod
-    def get_cli_subcommand_executor(cls):
+    def get_cli_subcommand_executor(cls) -> CLISubcommandExecutor:
         return DocVLMSubcommandExecutor()
 
 
 class DocVLMSubcommandExecutor(BaseDocVLMSubcommandExecutor):
     @property
-    def subparser_name(self):
+    def subparser_name(self) -> str:
         return "doc_vlm"
 
     @property
-    def wrapper_cls(self):
+    def wrapper_cls(self) -> Type[PaddleXPredictorWrapper]:
         return DocVLM
 
-    def _update_subparser(self, subparser):
+    def _update_subparser(self, subparser: argparse.ArgumentParser) -> None:
         add_simple_inference_args(
             subparser,
             input_help='Input dict, e.g. `{"image": "https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/medal_table.png", "query": "Recognize this table"}`.',

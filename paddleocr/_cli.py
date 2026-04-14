@@ -19,6 +19,7 @@ import sys
 import time
 import warnings
 from threading import Thread
+from typing import Any
 
 import requests
 
@@ -54,7 +55,7 @@ from ._utils.deprecation import CLIDeprecationWarning
 from ._utils.logging import logger
 
 
-def _register_pipelines(subparsers):
+def _register_pipelines(subparsers: argparse._SubParsersAction) -> None:
     for cls in [
         DocPreprocessor,
         DocUnderstanding,
@@ -67,12 +68,12 @@ def _register_pipelines(subparsers):
         SealRecognition,
         TableRecognitionPipelineV2,
     ]:
-        subcommand_executor = cls.get_cli_subcommand_executor()
+        subcommand_executor = cls.get_cli_subcommand_executor()  # type: ignore[attr-defined]
         subparser = subcommand_executor.add_subparser(subparsers)
         subparser.set_defaults(executor=subcommand_executor.execute_with_args)
 
 
-def _register_models(subparsers):
+def _register_models(subparsers: argparse._SubParsersAction) -> None:
     for cls in [
         ChartParsing,
         DocImgOrientationClassification,
@@ -88,13 +89,13 @@ def _register_models(subparsers):
         TextLineOrientationClassification,
         TextRecognition,
     ]:
-        subcommand_executor = cls.get_cli_subcommand_executor()
+        subcommand_executor = cls.get_cli_subcommand_executor()  # type: ignore[attr-defined]
         subparser = subcommand_executor.add_subparser(subparsers)
         subparser.set_defaults(executor=subcommand_executor.execute_with_args)
 
 
-def _register_install_hpi_deps_command(subparsers):
-    def _install_hpi_deps(args):
+def _register_install_hpi_deps_command(subparsers: argparse._SubParsersAction) -> None:
+    def _install_hpi_deps(args: argparse.Namespace) -> None:
         hpip = f"hpi-{args.variant}"
         try:
             subprocess.check_call(["paddlex", "--install", hpip])
@@ -107,8 +108,10 @@ def _register_install_hpi_deps_command(subparsers):
     subparser.set_defaults(executor=_install_hpi_deps)
 
 
-def _register_install_genai_server_deps_command(subparsers):
-    def _install_genai_server_deps(args):
+def _register_install_genai_server_deps_command(
+    subparsers: argparse._SubParsersAction,
+) -> None:
+    def _install_genai_server_deps(args: argparse.Namespace) -> None:
         try:
             subprocess.check_call(
                 ["paddlex", "--install", f"genai-{args.variant}-server"]
@@ -123,14 +126,14 @@ def _register_install_genai_server_deps_command(subparsers):
     subparser.set_defaults(executor=_install_genai_server_deps)
 
 
-def _register_genai_server_command(subparsers):
+def _register_genai_server_command(subparsers: argparse._SubParsersAction) -> None:
     # TODO: Register the subparser whether the plugin is installed or not
     try:
         from paddlex.inference.genai.server import get_arg_parser, run_genai_server
     except RuntimeError:
         return
 
-    def _show_prompt_when_server_is_running(host, port, backend):
+    def _show_prompt_when_server_is_running(host: str, port: int, backend: str) -> None:
         if host == "0.0.0.0":
             host = "localhost"
         while True:
@@ -147,7 +150,7 @@ def _register_genai_server_command(subparsers):
     2. Make HTTP requests directly, or using the OpenAI client library."""
         logger.info(prompt)
 
-    def _run_genai_server(args):
+    def _run_genai_server(args: argparse.Namespace) -> None:
         Thread(
             target=_show_prompt_when_server_is_running,
             args=(args.host, args.port, args.backend),
@@ -165,7 +168,7 @@ def _register_genai_server_command(subparsers):
     subparser.set_defaults(executor=_run_genai_server)
 
 
-def _get_parser():
+def _get_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="paddleocr")
     parser.add_argument(
         "-v", "--version", action="version", version=f"%(prog)s {version}"
@@ -179,11 +182,11 @@ def _get_parser():
     return parser
 
 
-def _execute(args):
+def _execute(args: argparse.Namespace) -> None:
     args.executor(args)
 
 
-def main():
+def main() -> None:
     logger.setLevel(logging.INFO)
     warnings.filterwarnings("default", category=CLIDeprecationWarning)
     parser = _get_parser()

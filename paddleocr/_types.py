@@ -12,18 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import abc
-import argparse
-from typing import Any
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Sequence, Union
 
+import numpy as np
 
-class CLISubcommandExecutor(metaclass=abc.ABCMeta):
-    @abc.abstractmethod
-    def add_subparser(
-        self, subparsers: argparse._SubParsersAction
-    ) -> argparse.ArgumentParser:
-        raise NotImplementedError
+if TYPE_CHECKING:
+    from paddlex.inference.models.object_detection.result import DetResult
 
-    @abc.abstractmethod
-    def execute_with_args(self, args: argparse.Namespace) -> None:
-        raise NotImplementedError
+# Input types accepted by PaddleX: str (file path, URL) or np.ndarray
+ImageInput = Union[str, np.ndarray]
+InputType = Union[ImageInput, Sequence[ImageInput]]
+
+# Prediction result (Phase 3 will refine with TypedDict)
+PredictResult = Dict[str, Any]
+
+# Layout detection result accepted by PaddleX pipelines
+LayoutDetResult = Optional[Union["DetResult", List["DetResult"]]]

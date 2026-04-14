@@ -12,6 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from typing import Type
+
+from .._abstract import CLISubcommandExecutor
+from .base import PaddleXPredictorWrapper
 from ._object_detection import (
     ObjectDetection,
     ObjectDetectionSubcommandExecutor,
@@ -20,19 +24,19 @@ from ._object_detection import (
 
 class TableCellsDetection(ObjectDetection):
     @property
-    def default_model_name(self):
+    def default_model_name(self) -> str:
         return "RT-DETR-L_wired_table_cell_det"
 
     @classmethod
-    def get_cli_subcommand_executor(cls):
+    def get_cli_subcommand_executor(cls) -> CLISubcommandExecutor:
         return TableCellsDetectionSubcommandExecutor()
 
 
 class TableCellsDetectionSubcommandExecutor(ObjectDetectionSubcommandExecutor):
     @property
-    def subparser_name(self):
+    def subparser_name(self) -> str:
         return "table_cells_detection"
 
     @property
-    def wrapper_cls(self):
+    def wrapper_cls(self) -> Type[PaddleXPredictorWrapper]:
         return TableCellsDetection

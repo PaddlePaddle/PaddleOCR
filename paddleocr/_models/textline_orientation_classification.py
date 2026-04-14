@@ -12,6 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from typing import Type
+
+from .._abstract import CLISubcommandExecutor
+from .base import PaddleXPredictorWrapper
 from ._image_classification import (
     ImageClassification,
     ImageClassificationSubcommandExecutor,
@@ -20,11 +24,11 @@ from ._image_classification import (
 
 class TextLineOrientationClassification(ImageClassification):
     @property
-    def default_model_name(self):
+    def default_model_name(self) -> str:
         return "PP-LCNet_x0_25_textline_ori"
 
     @classmethod
-    def get_cli_subcommand_executor(cls):
+    def get_cli_subcommand_executor(cls) -> CLISubcommandExecutor:
         return TextLineOrientationClassificationSubcommandExecutor()
 
 
@@ -32,9 +36,9 @@ class TextLineOrientationClassificationSubcommandExecutor(
     ImageClassificationSubcommandExecutor
 ):
     @property
-    def subparser_name(self):
+    def subparser_name(self) -> str:
         return "textline_orientation_classification"
 
     @property
-    def wrapper_cls(self):
+    def wrapper_cls(self) -> Type[PaddleXPredictorWrapper]:
         return TextLineOrientationClassification

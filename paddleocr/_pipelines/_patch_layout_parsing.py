@@ -24,6 +24,7 @@ See: https://github.com/PaddlePaddle/PaddleOCR/issues/17503
 """
 
 import logging
+from typing import List, Sequence, Union
 
 import numpy as np
 
@@ -32,7 +33,9 @@ logger = logging.getLogger(__name__)
 _patched = False
 
 
-def _fixed_calculate_overlap_ratio(bbox1, bbox2, mode="union"):
+def _fixed_calculate_overlap_ratio(
+    bbox1: Sequence[float], bbox2: Sequence[float], mode: str = "union"
+) -> float:
     """
     Calculate the overlap ratio between two bounding boxes.
 
@@ -73,7 +76,9 @@ def _fixed_calculate_overlap_ratio(bbox1, bbox2, mode="union"):
     return inter_area / ref_area
 
 
-def _fixed_calculate_minimum_enclosing_bbox(bboxes):
+def _fixed_calculate_minimum_enclosing_bbox(
+    bboxes: Union[List[Sequence[float]], np.ndarray],
+) -> np.ndarray:
     """
     Calculate the minimum enclosing bounding box for a list of bounding boxes.
 
@@ -90,15 +95,15 @@ def _fixed_calculate_minimum_enclosing_bbox(bboxes):
 
     bboxes_array = np.array(bboxes)
 
-    min_x = np.min(bboxes_array[:, 0])
-    min_y = np.min(bboxes_array[:, 1])
-    max_x = np.max(bboxes_array[:, 2])
-    max_y = np.max(bboxes_array[:, 3])
+    min_x: np.floating = np.min(bboxes_array[:, 0])
+    min_y: np.floating = np.min(bboxes_array[:, 1])
+    max_x: np.floating = np.max(bboxes_array[:, 2])
+    max_y: np.floating = np.max(bboxes_array[:, 3])
 
     return np.array([min_x, min_y, max_x, max_y])
 
 
-def apply_patches():
+def apply_patches() -> None:
     """
     Apply patches to paddlex layout parsing utilities to fix integer overflow
     and empty bounding box errors.

@@ -18,7 +18,7 @@ import sys
 from ._cli import main
 
 
-def console_entry() -> int:
+def console_entry() -> None:
     # See https://docs.python.org/3/library/signal.html#note-on-sigpipe
     try:
         # Flush output here to force SIGPIPE to be triggered while inside this

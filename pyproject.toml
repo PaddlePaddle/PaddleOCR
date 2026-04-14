@@ -79,3 +79,14 @@ markers = [
     "resource_intensive: mark a test as resource intensive"
 ]
 addopts = "-m 'not resource_intensive'"
+
+[tool.mypy]
+python_version = "3.9"
+packages = ["paddleocr"]
+warn_return_any = false
+warn_unused_configs = true
+disallow_untyped_defs = true
+
+[[tool.mypy.overrides]]
+module = ["paddlex.*", "paddle.*", "yaml.*", "requests.*", "PIL.*"]
+ignore_missing_imports = true

@@ -16,12 +16,12 @@ import logging
 
 from .._env import DISABLE_AUTO_LOGGING_CONFIG
 
-LOGGER_NAME = "paddleocr"
+LOGGER_NAME: str = "paddleocr"
 
-logger = logging.getLogger(LOGGER_NAME)
+logger: logging.Logger = logging.getLogger(LOGGER_NAME)
 
 
-def _set_up_logger():
+def _set_up_logger() -> None:
     if DISABLE_AUTO_LOGGING_CONFIG:
         return
 
