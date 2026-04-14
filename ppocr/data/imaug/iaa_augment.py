@@ -156,7 +156,18 @@ class AugmenterBuilder(object):
             elif isinstance(rotate, (int, float)):
                 rotate = (float(rotate), float(rotate))
             augmenter_args["rotate"] = rotate
-            augmenter_args["p"] = 1.0
+            # Set fit_output=True to expand canvas when rotating to prevent content loss
+            # Use BORDER_CONSTANT with value 0 (black padding) for clean borders
+            if "p" not in augmenter_args:
+                augmenter_args["p"] = 1.0
+            if "fit_output" not in augmenter_args:
+                augmenter_args["fit_output"] = True
+            if "border_mode" not in augmenter_args:
+                import cv2
+
+                augmenter_args["border_mode"] = cv2.BORDER_CONSTANT
+            if "value" not in augmenter_args:
+                augmenter_args["value"] = 0
             return augmenter_args
         else:
             # For other augmenters, ensure 'p' probability is specified

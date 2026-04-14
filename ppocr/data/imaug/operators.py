@@ -299,6 +299,13 @@ class DetResizeForTest(object):
             raise Exception("not support limit type, image ")
         resize_h = int(h * ratio)
         resize_w = int(w * ratio)
+        if max(resize_h, resize_w) > 4000:
+            print(
+                f"Resized image size ({resize_h}x{resize_w}) exceeds max_side_limit of {4000}. "
+                f"Resizing to fit within limit."
+            )
+            ratio = float(4000) / max(resize_h, resize_w)
+            resize_h, resize_w = int(resize_h * ratio), int(resize_w * ratio)
 
         resize_h = max(int(round(resize_h / 32) * 32), 32)
         resize_w = max(int(round(resize_w / 32) * 32), 32)

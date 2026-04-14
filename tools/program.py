@@ -217,6 +217,7 @@ def train(
     amp_custom_black_list=[],
     amp_custom_white_list=[],
     amp_dtype="float16",
+    wd_scheduler=None,
 ):
     cal_metric_during_train = config["Global"].get("cal_metric_during_train", False)
     calc_epoch_interval = config["Global"].get("calc_epoch_interval", 1)
@@ -448,12 +449,17 @@ def train(
             if not isinstance(lr_scheduler, float):
                 lr_scheduler.step()
 
+            if wd_scheduler is not None:
+                wd_scheduler.step()
+
             # logger and visualdl
             stats = {
                 k: float(v) if v.shape == [] else v.numpy().mean()
                 for k, v in loss.items()
             }
             stats["lr"] = lr
+            if wd_scheduler is not None:
+                stats["wd"] = wd_scheduler.get_wd()
             train_stats.update(stats)
 
             if log_writer is not None and dist.get_rank() == 0:

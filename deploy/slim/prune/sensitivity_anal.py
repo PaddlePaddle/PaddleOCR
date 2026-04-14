@@ -95,7 +95,7 @@ def main(config, device, logger, vdl_writer):
     loss_class = build_loss(config["Loss"])
 
     # build optim
-    optimizer, lr_scheduler = build_optimizer(
+    optimizer, lr_scheduler, _wd_scheduler = build_optimizer(
         config["Optimizer"],
         epochs=config["Global"]["epoch_num"],
         step_each_epoch=len(train_dataloader),
