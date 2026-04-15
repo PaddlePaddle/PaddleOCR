@@ -22,8 +22,10 @@ from .._utils.cli import (
 from .base import PaddleXPipelineWrapper, PipelineCLISubcommandExecutor
 from .utils import create_config_from_structure
 from ._patch_layout_parsing import apply_patches as _apply_layout_parsing_patches
+from ._patch_table_markdown import apply_patches as _apply_table_markdown_patches
 
 _apply_layout_parsing_patches()
+_apply_table_markdown_patches()
 
 _SUPPORTED_OCR_VERSIONS = ["PP-OCRv3", "PP-OCRv4", "PP-OCRv5"]
 
