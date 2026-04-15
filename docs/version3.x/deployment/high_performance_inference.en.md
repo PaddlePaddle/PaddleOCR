@@ -16,6 +16,8 @@ This document primarily introduces the installation and usage methods for high-p
 
 ### 1.1 Install High-Performance Inference Dependencies
 
+The high-performance inference functionality depends on the PaddlePaddle framework, so before proceeding to the subsequent steps, you need to ensure that PaddlePaddle is installed in your environment.
+
 Install the dependencies required for high-performance inference using the PaddleOCR CLI:
 
 ```bash

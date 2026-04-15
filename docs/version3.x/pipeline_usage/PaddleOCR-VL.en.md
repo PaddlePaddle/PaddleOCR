@@ -2446,6 +2446,12 @@ Below are the API reference and examples of multi-language service invocation:
 <td>No</td>
 </tr>
 <tr>
+<td><code>outputFormats</code></td>
+<td><code>array</code> | <code>null</code></td>
+<td>Optional. List of extra document formats to return. By default, no extra formats are returned. Currently only <code>"docx"</code> is supported.</td>
+<td>No</td>
+</tr>
+<tr>
 <td><code>visualize</code></td>
 <td><code>boolean</code>|<code>null</code></td>
 <td>Whether to return visualization result images and intermediate images during the processing.<ul style="margin: 0 0 0 1em; padding-left: 0em;">
@@ -2484,13 +2490,13 @@ Below are the API reference and examples of multi-language service invocation:
 </tr>
 </tbody>
 </table>
-<p>Each element in<code>layoutParsingResults</code> is an <code>object</code> with the following attributes:</p>
+<p>Each element in <code>layoutParsingResults</code> is an <code>object</code> with the following attributes:</p>
 <table>
 <thead>
 <tr>
-<th>Meaning</th>
 <th>Name</th>
 <th>Type</th>
+<th>Meaning</th>
 </tr>
 </thead>
 <tbody>
@@ -2514,9 +2520,14 @@ Below are the API reference and examples of multi-language service invocation:
 <td><code>string</code>|<code>null</code></td>
 <td>Input image. The image is in JPEG format and encoded using Base64.</td>
 </tr>
+<tr>
+<td><code>exports</code></td>
+<td><code>object</code> | <code>null</code></td>
+<td>Optional additional exports. Present only when <code>outputFormats</code> is set. Example: <code>{"docx": {"content": "..."}}</code>, where <code>content</code> is the Base64-encoded file content.</td>
+</tr>
 </tbody>
 </table>
-<p><code>markdown</code>is an <code>object</code>with the following properties:</p>
+<p><code>markdown</code> is an <code>object</code> with the following properties:</p>
 <table>
 <thead>
 <tr>
@@ -2592,6 +2603,12 @@ Below are the API reference and examples of multi-language service invocation:
     <td><code>showFormulaNumber</code></td>
     <td><code>boolean</code></td>
     <td>Whether to include formula numbers in the output Markdown text. The default is <code>false</code>.</td>
+    <td>No</td>
+    </tr>
+    <tr>
+    <td><code>outputFormats</code></td>
+    <td><code>array</code> | <code>null</code></td>
+    <td>Optional extra export formats; same meaning as <code>outputFormats</code> on <code>infer</code>. Only <code>"docx"</code> is supported.</td>
     <td>No</td>
     </tr>
   </tbody>

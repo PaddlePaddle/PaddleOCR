@@ -2998,6 +2998,12 @@ Below are the API references for basic serving and examples of multi-language se
 <td>No</td>
 </tr>
 <tr>
+<td><code>outputFormats</code></td>
+<td><code>array</code> | <code>null</code></td>
+<td>Optional. Additional export formats; currently only <code>"docx"</code> is supported.</td>
+<td>No</td>
+</tr>
+<tr>
 <td><code>visualize</code></td>
 <td><code>boolean</code> | <code>null</code></td>
 <td>Whether to return visualization result images and intermediate images during processing.
@@ -3031,12 +3037,12 @@ By default, images will not be returned; the <code>visualize</code> parameter in
 <tr>
 <td><code>layoutParsingResults</code></td>
 <td><code>array</code></td>
-<td>Layout parsing results. The array length is 1 (for image input) or equals the actual number of processed pages (for PDF input). For PDF input, each element corresponds to the result of each processed page in order.</td>
+<td>Layout parsing results. The array length is 1 (for image input) or the number of document pages actually processed (for PDF input). For PDF input, each element in the array is the result of each processed page, in order.</td>
 </tr>
 <tr>
 <td><code>dataInfo</code></td>
 <td><code>object</code></td>
-<td>Input data information.</td>
+<td>Metadata about the input data.</td>
 </tr>
 </tbody>
 </table>
@@ -3070,6 +3076,11 @@ By default, images will not be returned; the <code>visualize</code> parameter in
 <td><code>string</code> | <code>null</code></td>
 <td>Input image. JPEG format, Base64 encoded.</td>
 </tr>
+<tr>
+<td><code>exports</code></td>
+<td><code>object</code> | <code>null</code></td>
+<td>Optional additional exports such as <code>docx</code>, present only when <code>outputFormats</code> is requested. The <code>content</code> field is Base64-encoded file bytes.</td>
+</tr>
 </tbody>
 </table>
 <p><code>markdown</code> is an <code>object</code> with the following properties:</p>
@@ -3090,17 +3101,17 @@ By default, images will not be returned; the <code>visualize</code> parameter in
 <tr>
 <td><code>images</code></td>
 <td><code>object</code></td>
-<td>Key-value pairs of Markdown image relative paths and Base64 encoded images.</td>
+<td>Mapping from relative Markdown image paths to Base64-encoded image data.</td>
 </tr>
 <tr>
 <td><code>isStart</code></td>
 <td><code>boolean</code></td>
-<td>Whether the first element on the current page is the start of a paragraph.</td>
+<td>Whether the first element on the current page starts a paragraph.</td>
 </tr>
 <tr>
 <td><code>isEnd</code></td>
 <td><code>boolean</code></td>
-<td>Whether the last element on the current page is the end of a paragraph.</td>
+<td>Whether the last element on the current page ends a paragraph.</td>
 </tr>
 </tbody>
 </table>
@@ -3227,7 +3238,7 @@ By default, images will not be returned; the <code>visualize</code> parameter in
 <tr>
 <td><code>markdown</code></td>
 <td><code>object</code></td>
-<td>Markdown result. Object definition is consistent with the <code>markdown</code> returned by the <code>analyzeImages</code> operation.</td>
+<td>Markdown result; same shape as <code>markdown</code> returned by <code>analyzeImages</code>.</td>
 </tr>
 </tbody>
 </table>

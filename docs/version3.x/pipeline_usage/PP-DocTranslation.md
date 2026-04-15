@@ -2879,7 +2879,7 @@ PP-DocTranslation 预测的流程、API 说明、产出说明如下：
 </tr>
 <tr>
 <td><code>layoutThreshold</code></td>
-<td><code>number</code> | <code>object</code> | </code><code>null</code></td>
+<td><code>number</code> | <code>object</code> | <code>null</code></td>
 <td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>layout_threshold</code> 参数相关说明。</td>
 <td>否</td>
 </tr>
@@ -2977,19 +2977,19 @@ PP-DocTranslation 预测的流程、API 说明、产出说明如下：
 <td><code>useWiredTableCellsTransToHtml</code></td>
 <td><code>boolean</code></td>
 <td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>use_wired_table_cells_trans_to_html</code> 参数相关说明。</td>
-<td>No</td>
+<td>否</td>
 </tr>
 <tr>
 <td><code>useWirelessTableCellsTransToHtml</code></td>
 <td><code>boolean</code></td>
 <td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>use_wireless_table_cells_trans_to_html</code> 参数相关说明。</td>
-<td>No</td>
+<td>否</td>
 </tr>
 <tr>
 <td><code>useTableOrientationClassify</code></td>
 <td><code>boolean</code></td>
 <td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>use_table_orientation_classify</code> 参数相关说明。</td>
-<td>No</td>
+<td>否</td>
 </tr>
 <tr>
 <td><code>useOcrResultsWithTableCells</code></td>
@@ -3007,6 +3007,12 @@ PP-DocTranslation 预测的流程、API 说明、产出说明如下：
 <td><code>useE2eWirelessTableRecModel</code></td>
 <td><code>boolean</code></td>
 <td>请参阅产线对象中 <code>visual_predict</code> 方法的 <code>use_e2e_wireless_table_rec_model</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>outputFormats</code></td>
+<td><code>array</code> | <code>null</code></td>
+<td>可选。附加导出格式列表；当前仅支持 <code>"docx"</code>。</td>
 <td>否</td>
 </tr>
 <tr>
@@ -3082,6 +3088,11 @@ PP-DocTranslation 预测的流程、API 说明、产出说明如下：
 <td><code>inputImage</code></td>
 <td><code>string</code> | <code>null</code></td>
 <td>输入图像。图像为JPEG格式，使用Base64编码。</td>
+</tr>
+<tr>
+<td><code>exports</code></td>
+<td><code>object</code> | <code>null</code></td>
+<td>可选的 <code>docx</code> 等附加导出，仅当请求 <code>outputFormats</code> 时出现。其中 <code>content</code> 为文件内容的Base64编码。</td>
 </tr>
 </tbody>
 </table>

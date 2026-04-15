@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from paddlex.inference import PaddlePredictorOption
 from paddlex.utils.device import get_default_device, parse_device
 
 from ._constants import (
@@ -74,6 +73,31 @@ def parse_common_args(kwargs, *, default_enable_hpi):
     return kwargs
 
 
+def _build_paddle_static_engine_config(common_args, device_type):
+    cfg = {}
+    if device_type == "gpu":
+        if common_args["use_pptrt"]:
+            if common_args["pptrt_precision"] == "fp32":
+                cfg["run_mode"] = "trt_fp32"
+            else:
+                assert common_args["pptrt_precision"] == "fp16", common_args[
+                    "pptrt_precision"
+                ]
+                cfg["run_mode"] = "trt_fp16"
+        else:
+            cfg["run_mode"] = "paddle"
+    elif device_type == "cpu":
+        if common_args["enable_mkldnn"]:
+            cfg["mkldnn_cache_capacity"] = common_args["mkldnn_cache_capacity"]
+        else:
+            cfg["run_mode"] = "paddle"
+        cfg["cpu_threads"] = common_args["cpu_threads"]
+    else:
+        cfg["run_mode"] = "paddle"
+    cfg["enable_cinn"] = common_args["enable_cinn"]
+    return cfg
+
+
 def prepare_common_init_args(model_name, common_args):
     device = common_args["device"]
     if device is None:
@@ -83,32 +107,20 @@ def prepare_common_init_args(model_name, common_args):
     init_kwargs = {}
     init_kwargs["device"] = device
     init_kwargs["engine"] = common_args["engine"]
-    init_kwargs["engine_config"] = common_args["engine_config"]
     init_kwargs["use_hpip"] = common_args["enable_hpi"]
 
-    pp_option = PaddlePredictorOption()
-    if device_type == "gpu":
-        if common_args["use_pptrt"]:
-            if common_args["pptrt_precision"] == "fp32":
-                pp_option.run_mode = "trt_fp32"
-            else:
-                assert common_args["pptrt_precision"] == "fp16", common_args[
-                    "pptrt_precision"
-                ]
-                pp_option.run_mode = "trt_fp16"
-        else:
-            pp_option.run_mode = "paddle"
-    elif device_type == "cpu":
-        enable_mkldnn = common_args["enable_mkldnn"]
-        if enable_mkldnn:
-            pp_option.mkldnn_cache_capacity = common_args["mkldnn_cache_capacity"]
-        else:
-            pp_option.run_mode = "paddle"
-        pp_option.cpu_threads = common_args["cpu_threads"]
+    user_engine_config = common_args["engine_config"]
+    engine = common_args["engine"]
+    built = _build_paddle_static_engine_config(common_args, device_type)
+
+    if user_engine_config is not None:
+        init_kwargs["engine_config"] = user_engine_config
+    elif engine == "paddle_static":
+        init_kwargs["engine_config"] = built
+    elif engine in (None, "paddle"):
+        init_kwargs["engine_config"] = {"paddle_static": built}
     else:
-        pp_option.run_mode = "paddle"
-    pp_option.enable_cinn = common_args["enable_cinn"]
-    init_kwargs["pp_option"] = pp_option
+        init_kwargs["engine_config"] = None
 
     return init_kwargs
 
