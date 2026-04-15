@@ -49,12 +49,13 @@ def generate_reference(images_dir: str, output_dir: str) -> None:
     # Initialize with PP-OCRv5 mobile models -- must match the models
     # bundled in the iOS demo exactly.
     ocr = PaddleOCR(
-        text_detection_model_name="PP-OCRv6_small_det",
-        text_recognition_model_name="PP-OCRv6_small_rec",
+        text_detection_model_name="PP-OCRv5_mobile_det",
+        text_detection_model_dir="Models/det",
+        text_recognition_model_name="PP-OCRv5_mobile_rec",
+        text_recognition_model_dir="Models/rec",
         use_doc_orientation_classify=False,
         use_doc_unwarping=False,
         use_textline_orientation=False,
-        engine="onnxruntime",
     )
 
     images_path = Path(images_dir)
@@ -141,19 +142,13 @@ def main():
     )
     parser.add_argument(
         "--images-dir",
-        default="deploy/ios_demo/Validation/test_images",
-        help=(
-            "Directory containing test images "
-            "(default: deploy/ios_demo/Validation/test_images)"
-        ),
+        default="test_images",
+        help=("Directory containing test images " "(default: test_images)"),
     )
     parser.add_argument(
         "--output-dir",
-        default="deploy/ios_demo/Validation/reference",
-        help=(
-            "Directory for reference JSON output "
-            "(default: deploy/ios_demo/Validation/reference)"
-        ),
+        default="reference",
+        help=("Directory for reference JSON output " "(default: reference)"),
     )
     args = parser.parse_args()
     generate_reference(args.images_dir, args.output_dir)
