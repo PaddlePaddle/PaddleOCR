@@ -4,6 +4,9 @@ comments: true
 
 # PaddleOCR-VL Apple Silicon Usage Tutorial
 
+> INFO:
+> Unless otherwise specified, the term "PaddleOCR-VL" in this tutorial refers to the PaddleOCR-VL model series (e.g., PaddleOCR-VL-1.5). References specific to the PaddleOCR-VL v1 version will be explicitly noted.
+
 This tutorial is a guide for using PaddleOCR-VL on Apple Silicon, covering the complete workflow from environment preparation to service deployment.
 
 Apple Silicon include, but are not limited to:
@@ -14,6 +17,9 @@ Apple Silicon include, but are not limited to:
 - Apple M4
 
 PaddleOCR-VL has been verified for accuracy and speed on the Apple M4. However, due to hardware diversity, compatibility with other Apple Silicon has not yet been confirmed. We welcome the community to test on different hardware setups and share your results.
+
+> TIP:
+> Before reading this hardware-specific tutorial, we recommend first reading the [Process Guide](./PaddleOCR-VL.en.md#process-guide) in the main [PaddleOCR-VL Usage Tutorial](./PaddleOCR-VL.en.md) to determine which chapters apply to your goal, and then returning here to read the corresponding sections.
 
 ## 1. Environment Preparation
 
@@ -39,9 +45,9 @@ python -m pip install -U "paddleocr[doc-parser]"
 
 Please refer to [PaddleOCR-VL Usage Tutorial - 2. Quick Start](./PaddleOCR-VL.en.md#2-quick-start).
 
-## 3. Improving VLM Inference Performance Using Inference Acceleration Frameworks
+## 3. Improving Inference Performance with VLM Inference Services
 
-The inference performance under default configurations is not fully optimized and may not meet actual production requirements. This step mainly introduces how to use the MLX-VLM inference acceleration framework to improve the inference performance of PaddleOCR-VL.
+The inference performance under default configurations is not fully optimized and may not meet actual production requirements. This section introduces how to improve PaddleOCR-VL inference performance through a VLM inference service. In this hardware-specific guide, the examples use MLX-VLM as the backend for the VLM inference service.
 
 ### 3.1 Starting the VLM Inference Service
 
@@ -58,6 +64,8 @@ mlx_vlm.server --port 8111
 ```
 
 ### 3.2 Client Usage Method
+
+The following invocation methods apply to an already launched MLX-VLM inference service.
 
 #### 3.2.1 Command Line Usage
 

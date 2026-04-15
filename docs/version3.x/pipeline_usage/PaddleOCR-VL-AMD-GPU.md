@@ -12,7 +12,7 @@ comments: true
 目前 PaddleOCR-VL 已在 AMD MI300X 上完成精度、速度验证；鉴于硬件环境的多样性，其他 AMD GPU 的兼容性尚未验证。我们诚挚欢迎社区用户在不同硬件上进行测试并反馈您的运行结果。
 
 > TIP:
-> 建议先阅读 [PaddleOCR-VL 使用教程](./PaddleOCR-VL.md) 中的 [流程导览](./PaddleOCR-VL.md)，根据您的使用目标确认应阅读哪些章节；再回到当前硬件教程阅读对应章节。
+> 建议先阅读 [PaddleOCR-VL 使用教程](./PaddleOCR-VL.md) 中的 [流程导览](./PaddleOCR-VL.md#流程导览)，根据您的使用目标确认应阅读哪些章节；再回到当前硬件教程阅读对应章节。
 
 ## 1. 环境准备
 
@@ -48,7 +48,7 @@ docker run -it \
 
 ### 1.2 方法二：手动安装 PaddlePaddle 和 PaddleOCR
 
-如果您无法使用 Docker，也可以手动安装 PaddlePaddle 和 PaddleOCR。要求 Python 版本为 3.8–3.12。
+如果您无法使用 Docker，也可以手动安装 PaddlePaddle 和 PaddleOCR。要求 Python 版本为 3.8–3.13。
 
 **我们强烈推荐您在虚拟环境中安装 PaddleOCR-VL，以避免发生依赖冲突。** 例如，使用 Python venv 标准库创建虚拟环境：
 
@@ -145,7 +145,7 @@ docker run -it \
     paddleocr-vl-api             | INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
     ```
 
-此方式基于 FastDeploy 框架对 VLM 推理进行加速，更适合生产环境部署。
+此方式基于 vLLM 框架对 VLM 推理进行加速，更适合生产环境部署。
 
 此外，使用此方式启动服务器后，除拉取镜像外，无需连接互联网。如需在离线环境中部署，可先在联网机器上拉取 Compose 文件中涉及的镜像，导出并传输至离线机器中导入，即可在离线环境下启动服务。
 

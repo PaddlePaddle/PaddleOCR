@@ -332,6 +332,7 @@ nav:
       - 通用 OCR 产线 C++ 本地部署 - Linux: version3.x/deployment/cpp/OCR.md
       - 通用 OCR 产线 C++ 本地部署 - Windows: version3.x/deployment/cpp/OCR_windows.md
     - Benchmark: version3.x/pipeline_usage/instructions/benchmark.md
+    - 推理引擎与配置说明: version3.x/inference_engine.md
 
   - 模块列表:
     - 模块概述: version3.x/module_usage/module_overview.md

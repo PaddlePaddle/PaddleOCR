@@ -692,6 +692,16 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://padd
 paddleocr pp_doctranslation -i vehicle_certificate-1.png --target_language en --qianfan_api_key your_api_key
 ```
 
+上述命令使用飞桨框架作为默认推理引擎，请在运行前确保相关依赖已经安装。
+
+如果使用 `transformers` 作为推理引擎，可参考如下命令：
+
+```bash
+# 使用 transformers 引擎进行推理
+paddleocr pp_doctranslation -i vehicle_certificate-1.png --target_language en --qianfan_api_key your_api_key \
+    --engine transformers
+```
+
 <details><summary><b>命令行支持更多参数设置，点击展开以查看命令行参数的详细说明</b></summary>
 <table>
 <thead>
@@ -1284,10 +1294,16 @@ paddleocr pp_doctranslation -i vehicle_certificate-1.png --target_language en --
 <td></td>
 </tr>
 <tr>
+<td><code>engine</code></td>
+<td><b>含义：</b>推理引擎。<br><b>说明：</b>支持 <code>paddle</code>、<code>paddle_static</code>、<code>paddle_dynamic</code>、<code>transformers</code>。详细说明、取值、兼容性规则与示例请参见 <a href="../inference_engine.md">推理引擎与配置说明</a>。</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
 <td><code>enable_hpi</code></td>
 <td><b>含义：</b>是否启用高性能推理。</td>
 <td><code>bool</code></td>
-<td><code>False</code></td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_tensorrt</code></td>
@@ -1301,7 +1317,7 @@ paddleocr pp_doctranslation -i vehicle_certificate-1.png --target_language en --
 </tr>
 <tr>
 <td><code>precision</code></td>
-<td><b>含义：</b>计算精度，如 fp32、fp16。</td>
+<td><b>含义：</b>计算精度，如 <code>fp32</code>、<code>fp16</code>。</td>
 <td><code>str</code></td>
 <td><code>fp32</code></td>
 </tr>
@@ -1326,7 +1342,7 @@ paddleocr pp_doctranslation -i vehicle_certificate-1.png --target_language en --
 <td><code>cpu_threads</code></td>
 <td><b>含义：</b>在 CPU 上进行推理时使用的线程数。</td>
 <td><code>int</code></td>
-<td><code>8</code></td>
+<td><code>10</code></td>
 </tr>
 <tr>
 <td><code>paddlex_config</code></td>
@@ -1334,6 +1350,7 @@ paddleocr pp_doctranslation -i vehicle_certificate-1.png --target_language en --
 <td><code>str</code></td>
 <td></td>
 </tr>
+
 </tbody>
 </table>
 </details>
@@ -1350,6 +1367,71 @@ from paddleocr import PPDocTranslation
 
 # 创建翻译产线
 pipeline = PPDocTranslation()
+
+# 文档路径
+input_path = "document_sample.pdf"
+
+# 输出目录
+output_path = "./output"
+
+# 大模型配置
+chat_bot_config = {
+    "module_name": "chat_bot",
+    "model_name": "ernie-3.5-8k",
+    "base_url": "https://qianfan.baidubce.com/v2",
+    "api_type": "openai",
+    "api_key": "api_key",  # your api_key
+}
+
+if input_path.lower().endswith(".md"):
+    # 读取markdown文档，支持传入目录和以 .md 为后缀的 url 链接
+    ori_md_info_list = pipeline.load_from_markdown(input_path)
+else:
+    # 使用 PP-StructureV3 对 PDF/图片 文档进行版面解析，获取markdown信息
+    visual_predict_res = pipeline.visual_predict(
+        input_path,
+        use_doc_orientation_classify=False,
+        use_doc_unwarping=False,
+        use_common_ocr=True,
+        use_seal_recognition=True,
+        use_table_recognition=True,
+    )
+
+    ori_md_info_list = []
+    for res in visual_predict_res:
+        layout_parsing_result = res["layout_parsing_result"]
+        ori_md_info_list.append(layout_parsing_result.markdown)
+        layout_parsing_result.save_to_img(output_path)
+        layout_parsing_result.save_to_markdown(output_path)
+
+    # 将多页文档的 markdown 信息拼接成一个 markdown 文件，可将合并后的 markdown 原文保存
+    if input_path.lower().endswith(".pdf"):
+        ori_md_info = pipeline.concatenate_markdown_pages(ori_md_info_list)
+        ori_md_info.save_to_markdown(output_path)
+
+# 执行文档翻译（目标语言：英文）
+tgt_md_info_list = pipeline.translate(
+    ori_md_info_list=ori_md_info_list,
+    target_language="en",
+    chunk_size=5000,
+    chat_bot_config=chat_bot_config,
+)
+# 保存翻译结果
+for tgt_md_info in tgt_md_info_list:
+    tgt_md_info.save_to_markdown(output_path)
+```
+
+上述代码使用飞桨框架作为默认推理引擎，请在运行前确保相关依赖已经安装。
+
+如果使用 `transformers` 作为推理引擎，可参考如下代码：
+
+```python
+from paddleocr import PPDocTranslation
+
+# 创建翻译产线
+pipeline = PPDocTranslation(
+    engine="transformers",
+)
 
 # 文档路径
 input_path = "document_sample.pdf"
@@ -2019,10 +2101,23 @@ PP-DocTranslation 预测的流程、API 说明、产出说明如下：
 <td><code>None</code></td>
 </tr>
 <tr>
+<td><code>engine</code></td>
+<td><b>含义：</b>推理引擎。<br><b>说明：</b>支持 <code>paddle</code>、<code>paddle_static</code>、<code>paddle_dynamic</code>、<code>transformers</code>。详细说明、取值、兼容性规则与示例请参见 <a href="../inference_engine.md">推理引擎与配置说明</a>。</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>engine_config</code></td>
+<td><b>含义：</b>推理引擎配置。<br><b>说明：</b>推荐与 <code>engine</code> 搭配使用。详细字段、兼容性规则与示例请参见 <a href="../inference_engine.md">推理引擎与配置说明</a>。</td>
+<td><code>dict|None</code></td>
+<td><code>None</code></td>
+</tr>
+
+<tr>
 <td><code>enable_hpi</code></td>
 <td><b>含义：</b>是否启用高性能推理。</td>
 <td><code>bool</code></td>
-<td><code>False</code></td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_tensorrt</code></td>
@@ -2036,7 +2131,7 @@ PP-DocTranslation 预测的流程、API 说明、产出说明如下：
 </tr>
 <tr>
 <td><code>precision</code></td>
-<td><b>含义：</b>计算精度，如 fp32、fp16。</td>
+<td><b>含义：</b>计算精度，如 <code>"fp32"</code>、<code>"fp16"</code>。</td>
 <td><code>str</code></td>
 <td><code>"fp32"</code></td>
 </tr>
@@ -2061,7 +2156,7 @@ PP-DocTranslation 预测的流程、API 说明、产出说明如下：
 <td><code>cpu_threads</code></td>
 <td><b>含义：</b>在 CPU 上进行推理时使用的线程数。</td>
 <td><code>int</code></td>
-<td><code>8</code></td>
+<td><code>10</code></td>
 </tr>
 <tr>
 <td><code>paddlex_config</code></td>
@@ -2069,6 +2164,7 @@ PP-DocTranslation 预测的流程、API 说明、产出说明如下：
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
+
 </tbody>
 </table>
 

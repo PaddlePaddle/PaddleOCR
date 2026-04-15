@@ -4,9 +4,15 @@ comments: true
 
 # PaddleOCR-VL Kunlunxin XPU Usage Tutorial
 
+> INFO:
+> Unless otherwise specified, the term "PaddleOCR-VL" in this tutorial refers to the PaddleOCR-VL model series (e.g., PaddleOCR-VL-1.5). References specific to the PaddleOCR-VL v1 version will be explicitly noted.
+
 This tutorial is a guide for using PaddleOCR-VL on Kunlunxin XPU, covering the complete workflow from environment preparation to service deployment.
 
 PaddleOCR-VL has been verified for accuracy and speed on the Kunlunxin P800. However, due to hardware diversity, compatibility with other Kunlunxin XPUs has not yet been confirmed. We welcome the community to test on different hardware setups and share your results.
+
+> TIP:
+> Before reading this hardware-specific tutorial, we recommend first reading the [Process Guide](./PaddleOCR-VL.en.md#process-guide) in the main [PaddleOCR-VL Usage Tutorial](./PaddleOCR-VL.en.md) to determine which chapters apply to your goal, and then returning here to read the corresponding sections.
 
 ## 1. Environment Preparation
 
@@ -67,9 +73,9 @@ python -m pip install -U "paddleocr[doc-parser]"
 
 Please refer to [PaddleOCR-VL Usage Tutorial - 2. Quick Start](./PaddleOCR-VL.en.md#2-quick-start), making sure to specify `device='xpu'`.
 
-## 3. Enhancing VLM Inference Performance Using Inference Acceleration Framework
+## 3. Improving Inference Performance with VLM Inference Services
 
-The inference performance under default configurations is not fully optimized and may not meet actual production requirements. This step mainly introduces how to use the FastDeploy inference acceleration framework to enhance the inference performance of PaddleOCR-VL.
+The inference performance under default configurations is not fully optimized and may not meet actual production requirements. This section introduces how to improve PaddleOCR-VL inference performance through a VLM inference service. In this hardware-specific guide, the examples use FastDeploy as the backend for the VLM inference service.
 
 ### 3.1 Starting the VLM Inference Service
 
@@ -110,7 +116,7 @@ docker run \
 
 ### 3.2 Client Usage Method
 
-Please refer to [PaddleOCR-VL Usage Tutorial - 3.2 Client Usage Method](./PaddleOCR-VL.en.md#32-client-usage-methods).
+For client-side invocation methods, please refer to [PaddleOCR-VL Usage Tutorial - 3.2 Client Usage Methods](./PaddleOCR-VL.en.md#32-client-usage-methods). If you run the client on this hardware, make sure to specify `device="xpu"`.
 
 ### 3.3 Performance Tuning
 

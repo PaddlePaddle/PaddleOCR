@@ -27,10 +27,19 @@ from ._constants import (
 )
 from ._utils.cli import str2bool
 
+SUPPORTED_INFERENCE_ENGINE_LIST = [
+    "paddle",
+    "paddle_static",
+    "paddle_dynamic",
+    "transformers",
+]
+
 
 def parse_common_args(kwargs, *, default_enable_hpi):
     default_vals = {
         "device": DEFAULT_DEVICE,
+        "engine": None,
+        "engine_config": None,
         "enable_hpi": default_enable_hpi,
         "use_tensorrt": DEFAULT_USE_TENSORRT,
         "precision": DEFAULT_PRECISION,
@@ -45,6 +54,14 @@ def parse_common_args(kwargs, *, default_enable_hpi):
         raise ValueError(f"Unknown argument: {name}")
 
     kwargs = {**default_vals, **kwargs}
+
+    if (
+        kwargs["engine"] is not None
+        and kwargs["engine"] not in SUPPORTED_INFERENCE_ENGINE_LIST
+    ):
+        raise ValueError(
+            f"Invalid engine: {kwargs['engine']}. Supported values are: {SUPPORTED_INFERENCE_ENGINE_LIST}."
+        )
 
     if kwargs["precision"] not in SUPPORTED_PRECISION_LIST:
         raise ValueError(
@@ -65,6 +82,8 @@ def prepare_common_init_args(model_name, common_args):
 
     init_kwargs = {}
     init_kwargs["device"] = device
+    init_kwargs["engine"] = common_args["engine"]
+    init_kwargs["engine_config"] = common_args["engine_config"]
     init_kwargs["use_hpip"] = common_args["enable_hpi"]
 
     pp_option = PaddlePredictorOption()
@@ -104,6 +123,12 @@ def add_common_cli_opts(parser, *, default_enable_hpi, allow_multiple_devices):
         type=str,
         default=DEFAULT_DEVICE,
         help=help_,
+    )
+    parser.add_argument(
+        "--engine",
+        type=str,
+        choices=SUPPORTED_INFERENCE_ENGINE_LIST,
+        help="Inference engine to use. For CLI, engine-specific configuration should be set in the PaddleX YAML config file.",
     )
     parser.add_argument(
         "--enable_hpi",

@@ -34,6 +34,7 @@ The version correspondence between PaddleOCR, PaddleX, and the PaddlePaddle fram
 | `3.2.x` | `>= 3.2.0, < 3.3.0` | `>= 3.0.0` |
 | `3.3.x` | `>= 3.3.0, < 3.4.0` | `>= 3.0.0` |
 | `3.4.x` | `>= 3.4.0, < 3.5.0` | `>= 3.0.0` |
+| `3.5.x` | `>= 3.5.0, < 3.6.0` | `>= 3.0.0` |
 
 ## 2. Correspondence Between PaddleOCR Pipelines and PaddleX Pipeline Registration Names
 

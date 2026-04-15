@@ -61,10 +61,10 @@ issues = "https://github.com/PaddlePaddle/PaddleOCR/issues"
 paddleocr = "paddleocr.__main__:console_entry"
 
 [project.optional-dependencies]
-doc-parser = ["paddlex[ocr,genai-client]>=3.4.0,<3.5.0"]
-ie = ["paddlex[ie]>=3.4.0,<3.5.0"]
-trans = ["paddlex[trans]>=3.4.0,<3.5.0"]
-all = ["paddlex[ocr,genai-client,ie,trans]>=3.4.0,<3.5.0"]
+doc-parser = ["paddlex[ocr,genai-client]>=3.5.0,<3.6.0"]
+ie = ["paddlex[ie]>=3.5.0,<3.6.0"]
+trans = ["paddlex[trans]>=3.5.0,<3.6.0"]
+all = ["paddlex[ocr,genai-client,ie,trans]>=3.5.0,<3.6.0"]
 
 [tool.setuptools.packages.find]
 where = ["."]

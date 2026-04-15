@@ -5,6 +5,7 @@ comments: true
 # PaddleOCR Multi-Devices Usage Guide
 
 This document focuses on the usage guide of PaddleX for Huawei Ascend NPU and Kunlun XPU hardware platforms.
+This document mainly introduces installation and usage with PaddlePaddle. If you plan to use another inference engine, please follow that engine's official documentation for environment setup and installation.
 
 ## 1、Installation
 

@@ -4,9 +4,15 @@ comments: true
 
 # PaddleOCR-VL 海光 DCU 使用教程
 
+> INFO:
+> 除非另有说明，本教程中提到的 “PaddleOCR-VL” 均指 PaddleOCR-VL 系列模型（如 PaddleOCR-VL-1.5 等）；若特指 PaddleOCR-VL v1 版本，将另行明确标注。
+
 本教程是 PaddleOCR-VL 在海光 DCU 上的使用指南，涵盖了从环境准备到服务化部署的完整流程。
 
 目前 PaddleOCR-VL 已在海光 K100AI 上完成精度、速度验证；鉴于硬件环境的多样性，其他海光 DCU 的兼容性尚未验证。我们诚挚欢迎社区用户在不同硬件上进行测试并反馈您的运行结果。
+
+> TIP:
+> 建议先阅读 [PaddleOCR-VL 使用教程](./PaddleOCR-VL.md) 中的 [流程导览](./PaddleOCR-VL.md#流程导览)，根据您的使用目标确认应阅读哪些章节；再回到当前硬件教程阅读对应章节。
 
 ## 1. 环境准备
 
@@ -74,9 +80,9 @@ python -m pip install -U "paddleocr[doc-parser]"
 
 请参考[PaddleOCR-VL 使用教程 - 2. 快速开始](./PaddleOCR-VL.md#2)，注意需要指定 `device="dcu"`。
 
-## 3. 使用推理加速框架提升 VLM 推理性能
+## 3. 使用 VLM 推理服务提升推理性能
 
-默认配置下的推理性能未经过充分优化，可能无法满足实际生产需求。此步骤主要介绍如何使用 vLLM 推理加速框架来提升 PaddleOCR-VL 的推理性能。
+默认配置下的推理性能未经过充分优化，可能无法满足实际生产需求。此步骤主要介绍如何通过 VLM 推理服务提升 PaddleOCR-VL 的推理性能。在当前硬件文档中，示例使用 vLLM 作为 VLM 推理服务后端。
 
 ### 3.1 启动 VLM 推理服务
 
@@ -128,7 +134,7 @@ docker run -it \
 
 ### 3.2 客户端使用方法
 
-请参考 [PaddleOCR-VL 使用教程 - 3.2 客户端使用方法](./PaddleOCR-VL.md#32)。
+客户端调用方式请参考 [PaddleOCR-VL 使用教程 - 3.2 客户端使用方法](./PaddleOCR-VL.md#32)。如需在当前硬件上运行客户端，请注意指定 `device="dcu"`。
 
 ### 3.3 性能调优
 

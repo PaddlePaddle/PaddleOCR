@@ -132,6 +132,7 @@ PaddleOCR官方网站提供交互式**体验中心**和**APIs**——无需设�
 👉 [访问官方网站](https://www.paddleocr.com)
 
 ### 步骤 2: 本地部署
+
 对于本地使用,请根据您的需求参考以下文档:
 
 - **PP-OCR系列**：查看[PP-OCR文档](https://www.paddleocr.ai/latest/version3.x/pipeline_usage/OCR.html)

@@ -5,6 +5,7 @@ comments: true
 # Kunlun XPU PaddlePaddle Installation Tutorial
 
 Currently, PaddleOCR supports Kunlun R200/R300 and other chips. Considering environmental differences, we recommend using the <b>Kunlun XPU development image officially released by PaddlePaddle</b>, which is pre-installed with the Kunlun basic runtime environment library (XRE).
+This guide mainly introduces installation and usage with PaddlePaddle. If you want to use a different inference engine, please follow that engine's official installation and configuration documentation.
 
 ## 1. Docker Environment Preparation
 Pull the image. This image is only for the development environment and does not include a pre-compiled PaddlePaddle installation package.

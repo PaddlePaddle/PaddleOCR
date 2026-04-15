@@ -5,6 +5,7 @@ comments: true
 # Ascend NPU PaddlePaddle Installation Tutorial
 
 Currently, PaddleOCR supports the Ascend 910B chip (more models are under support. If you have a related need for other models, please submit an issue to inform us). The Ascend driver version is 23.0.3. Considering the differences in environments, we recommend using the <b>Ascend development image provided by PaddlePaddle</b> to complete the environment preparation.
+This guide mainly introduces installation and usage with PaddlePaddle. If you want to use a different inference engine, please follow that engine's official installation and configuration documentation.
 
 ## 1. Docker Environment Preparation
 * Pull the image. This image is only for the development environment and does not contain a pre-compiled PaddlePaddle installation package. The image has CANN-8.0.0, the Ascend operator library, installed by default.
