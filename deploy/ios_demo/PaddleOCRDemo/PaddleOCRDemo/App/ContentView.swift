@@ -39,7 +39,7 @@ struct ContentView: View {
         .task {
             await viewModel.loadModels()
         }
-        .onChange(of: selectedItem) { _, newItem in
+        .onChange(of: selectedItem) { newItem in
             guard let item = newItem else { return }
             Task {
                 guard let data = try? await item.loadTransferable(type: Data.self),

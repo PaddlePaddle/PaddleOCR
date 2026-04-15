@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1540"
-   version = "1.7">
+   LastUpgradeVersion = "2640"
+   version = "1.8">
    <BuildAction
       parallelizeBuildables = "YES"
       buildImplicitDependencies = "YES">
@@ -53,7 +53,8 @@
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
       <BuildableProductRunnable
-         reuseRunningArtifactsWhenBuildingTests = "YES">
+         reuseRunningArtifactsWhenBuildingTests = "YES"
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A4000001"
@@ -70,7 +71,8 @@
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
       <BuildableProductRunnable
-         reuseRunningArtifactsWhenBuildingTests = "YES">
+         reuseRunningArtifactsWhenBuildingTests = "YES"
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A4000001"

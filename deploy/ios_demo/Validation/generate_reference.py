@@ -49,11 +49,12 @@ def generate_reference(images_dir: str, output_dir: str) -> None:
     # Initialize with PP-OCRv5 mobile models -- must match the models
     # bundled in the iOS demo exactly.
     ocr = PaddleOCR(
-        text_detection_model_name="PP-OCRv5_mobile_det",
-        text_recognition_model_name="PP-OCRv5_mobile_rec",
+        text_detection_model_name="PP-OCRv6_small_det",
+        text_recognition_model_name="PP-OCRv6_small_rec",
         use_doc_orientation_classify=False,
         use_doc_unwarping=False,
         use_textline_orientation=False,
+        engine="onnxruntime",
     )
 
     images_path = Path(images_dir)

@@ -59,7 +59,7 @@ enum OCREngineError: LocalizedError {
 ///
 /// Composes `DetectionEngine`, `BoxSorter`, `PerspectiveCrop`, and `RecognitionEngine`
 /// into a single `run(CGImage)` call. All preprocessing and postprocessing parameters
-/// are config-driven via each engine's inference.yml.
+/// are config-driven via each engine's model config file.
 ///
 /// The pipeline runs entirely via async/await. Since `DetectionEngine` and
 /// `RecognitionEngine` delegate to `ORTSessionManager` (a Swift actor), all ORT
@@ -82,10 +82,10 @@ class OCREngine {
     /// Initialize with an existing ORTSessionManager (models must already be loaded).
     ///
     /// Creates both DetectionEngine and RecognitionEngine, each loading their
-    /// own inference.yml for config-driven preprocessing and postprocessing.
+    /// own model config files for config-driven preprocessing and postprocessing.
     ///
     /// - Parameter sessionManager: A loaded ORTSessionManager.
-    /// - Throws: If either engine's inference.yml cannot be loaded.
+    /// - Throws: If either engine's model config cannot be loaded.
     init(sessionManager: ORTSessionManager) throws {
         self.detectionEngine = try DetectionEngine(sessionManager: sessionManager)
         self.recognitionEngine = try RecognitionEngine(sessionManager: sessionManager)
@@ -93,7 +93,7 @@ class OCREngine {
 
     /// Run the complete OCR pipeline on an image.
     ///
-    /// Flow (matching PaddleX `_OCRPipeline.predict()`):
+    /// End-to-end OCR flow (detect → sort → crop → recognize):
     /// 1. **Detect**: Run detection to get bounding polygons
     /// 2. **Sort**: Sort boxes in reading order (top-to-bottom, left-to-right)
     /// 3. **Crop + Recognize**: For each sorted box, perspective-crop the region

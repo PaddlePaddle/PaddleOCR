@@ -1,4 +1,4 @@
-// Copyright (c) 2025 PaddlePaddle Authors. All Rights Reserved.
+// Copyright (c) 2026 PaddlePaddle Authors. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,8 +20,7 @@ import CoreGraphics
 /// A detected text region with its bounding quadrilateral and confidence score.
 struct DetectionBox {
     /// Four corner points of the bounding quadrilateral, each as [x, y].
-    /// Order: top-left, top-right, bottom-right, bottom-left (sorted by the
-    /// `getMiniBoxes` algorithm matching the Python reference).
+    /// Order: top-left, top-right, bottom-right, bottom-left (`getMiniBoxes` / min-area rect).
     let points: [[Int32]]
 
     /// Confidence score from `boxScoreFast` (mean probability in the box region).
@@ -45,11 +44,11 @@ protocol DBPostProcessConfigurable {
 /// DB (Differentiable Binarization) text detection postprocessor.
 ///
 /// Implements the full pipeline from raw model output probability map to
-/// bounding polygons, matching the Python reference in `ppocr/postprocess/db_postprocess.py`.
+/// bounding polygons (threshold → contours → min-area quads → score filter → unclip → scale).
 ///
 /// Pipeline: threshold -> contours -> minAreaRect -> score filter -> Clipper expand -> scale
 ///
-/// All parameters are read from configuration (with defaults matching inference.yml).
+/// All parameters are read from configuration.
 struct DBPostProcessor {
 
     /// Binary threshold for the probability map (pixels above this are foreground).
@@ -67,7 +66,7 @@ struct DBPostProcessor {
     /// Minimum side length of a bounding box to be kept (pixels in probability map space).
     let minSize: Float = 3.0
 
-    /// Score computation mode. Only "fast" is implemented (same as Python default).
+    /// Score mode: only `"fast"` is implemented (`"slow"` is not supported).
     let scoreMode: String = "fast"
 
     // MARK: - Initializers
@@ -198,8 +197,8 @@ struct DBPostProcessor {
 
 // MARK: - Internal Point Type
 
-/// Float 2D point for internal geometry computations.
-private struct FloatPoint {
+/// Float 2D point for `DBPostProcessor` geometry helpers.
+internal struct FloatPoint {
     var x: Float
     var y: Float
 }
@@ -210,14 +209,11 @@ extension DBPostProcessor {
 
     /// Find contours in a binary mask using the Suzuki-Abe border following algorithm.
     ///
-    /// Equivalent to `cv2.findContours(mask * 255, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)`.
+    /// Retrieves all contours as independent chains (no parent/child hierarchy) with
+    /// simple polygon compression on each chain.
     ///
-    /// RETR_LIST: Retrieves all contours without establishing hierarchy.
-    /// CHAIN_APPROX_SIMPLE: Compresses horizontal, vertical, and diagonal segments,
-    /// leaving only their endpoints.
-    ///
-    /// Reference: Suzuki, S. and Abe, K., "Topological structural analysis of digitized
-    /// binary images by border following." CVGIP, 30(1):32-46, 1985.
+    /// Suzuki, S. and Abe, K., "Topological structural analysis of digitized binary images
+    /// by border following." CVGIP, 30(1):32-46, 1985.
     func findContours(binaryMask: [UInt8], width: Int, height: Int) -> [[FloatPoint]] {
         // Work with a copy padded by 1 pixel on each side (filled with 0)
         let paddedW = width + 2
@@ -237,7 +233,6 @@ extension DBPostProcessor {
         var nbd = 1 // current border sequential number
 
         for y in 1..<(paddedH - 1) {
-            var lnbd = 1
             for x in 1..<(paddedW - 1) {
                 let idx = y * paddedW + x
                 let pixel = image[idx]
@@ -274,10 +269,6 @@ extension DBPostProcessor {
                             contours.append(simplified)
                         }
                     }
-                }
-
-                if image[idx] != 0 && image[idx] != 1 {
-                    lnbd = abs(image[idx])
                 }
             }
         }
@@ -328,48 +319,52 @@ extension DBPostProcessor {
         var cy = startY
         var searchDir = firstNeighborDir
 
-        repeat {
+        // Worst-case boundary length is O(width*height) for noisy masks; cap avoids infinite loops
+        // if termination or neighbor scanning is wrong.
+        let maxContourPoints = max(256, width * height)
+
+        while contour.count < maxContourPoints {
             contour.append((cx, cy))
 
-            // Find next border point: scan clockwise from (searchDir + 5) % 8
-            // (i.e., start scanning from 3 positions before the direction we came from)
+            // Find next border point: scan clockwise from (searchDir + 6) % 8 (Moore neighbor).
             var found = false
-            let scanStart = (searchDir + 6) % 8  // Turn 90 degrees CW past direction we came from
+            let scanStart = (searchDir + 6) % 8
 
             for i in 0..<8 {
                 let dir = (scanStart + i) % 8
                 let nx = cx + dx[dir]
                 let ny = cy + dy[dir]
-                if nx >= 0 && nx < width && ny >= 0 && ny < height {
-                    if image[ny * width + nx] != 0 {
-                        // Mark the current pixel based on the preceding pixel
-                        let prevDir = (dir + 7) % 8
-                        let px = cx + dx[prevDir]
-                        let py = cy + dy[prevDir]
-                        if px >= 0 && px < width && py >= 0 && py < height && image[py * width + px] == 0 {
-                            image[cy * width + cx] = -nbd
-                        } else if image[cy * width + cx] == 1 {
-                            image[cy * width + cx] = nbd
-                        }
+                guard nx >= 0, nx < width, ny >= 0, ny < height else { continue }
+                guard image[ny * width + nx] != 0 else { continue }
 
-                        cx = nx
-                        cy = ny
-                        searchDir = dir
-                        found = true
-                        break
-                    }
+                // Mark the current pixel based on the preceding pixel (Suzuki-Abe-style labels).
+                let prevDir = (dir + 7) % 8
+                let px = cx + dx[prevDir]
+                let py = cy + dy[prevDir]
+                if px >= 0, px < width, py >= 0, py < height, image[py * width + px] == 0 {
+                    image[cy * width + cx] = -nbd
+                } else if image[cy * width + cx] == 1 {
+                    image[cy * width + cx] = nbd
                 }
-            }
 
-            if !found {
-                // Isolated point within border
-                image[cy * width + cx] = -nbd
+                // Closed the contour: next pixel is the start pixel (do not append start again).
+                if nx == startX, ny == startY, contour.count >= 2 {
+                    return contour
+                }
+
+                cx = nx
+                cy = ny
+                searchDir = dir
+                found = true
                 break
             }
 
-        } while !(cx == startX && cy == startY && searchDir == firstNeighborDir)
+            if !found {
+                image[cy * width + cx] = -nbd
+                return contour
+            }
+        }
 
-        // Limit contour length to avoid pathological cases
         return contour
     }
 
@@ -422,10 +417,7 @@ extension DBPostProcessor {
 
     /// Compute the minimum area bounding rectangle of a contour.
     ///
-    /// Equivalent to `cv2.minAreaRect(contour)` followed by `cv2.boxPoints()` and
-    /// the sorting logic in `get_mini_boxes()`.
-    ///
-    /// Returns the 4 sorted corner points and the minimum side length,
+    /// Returns four corners in reading order (TL, TR, BR, BL) and the shorter side length,
     /// or nil if the contour is degenerate.
     func getMiniBoxes(contour: [FloatPoint]) -> (box: [FloatPoint], minSide: Float)? {
         guard contour.count >= 2 else { return nil }
@@ -441,10 +433,10 @@ extension DBPostProcessor {
         // Get 4 corner points of the rotated rectangle
         var corners = boxPoints(rect)
 
-        // Sort corners by x-coordinate (matching Python's sorted by x)
+        // Sort corners by x (then y), then assign TL/TR/BR/BL.
         corners.sort { $0.x < $1.x || ($0.x == $1.x && $0.y < $1.y) }
 
-        // Assign indices matching Python's get_mini_boxes logic
+        // Index the four sorted corners into TL, TR, BR, BL
         let index1: Int
         let index4: Int
         if corners[1].y > corners[0].y {
@@ -548,8 +540,7 @@ extension DBPostProcessor {
         return (bestCenter, bestSize, bestAngle)
     }
 
-    /// Compute the 4 corner points of a rotated rectangle.
-    /// Equivalent to `cv2.boxPoints(rect)`.
+    /// The four corners of a rotated rectangle around its center.
     private func boxPoints(_ rect: (center: CGPoint, size: CGSize, angle: Float)) -> [FloatPoint] {
         let angle = rect.angle * Float.pi / 180
         let cosA = cosf(angle)
@@ -573,8 +564,7 @@ extension DBPostProcessor {
     func convexHull(_ points: [FloatPoint]) -> [FloatPoint] {
         guard points.count >= 3 else { return points }
 
-        var sorted = points.sorted { $0.x < $1.x || ($0.x == $1.x && $0.y < $1.y) }
-        let n = sorted.count
+        let sorted = points.sorted { $0.x < $1.x || ($0.x == $1.x && $0.y < $1.y) }
 
         // Build lower hull
         var lower: [FloatPoint] = []
@@ -614,9 +604,8 @@ extension DBPostProcessor {
 
     /// Compute the mean probability score within a box region of the probability map.
     ///
-    /// Equivalent to Python's `box_score_fast`: computes axis-aligned bounding box of the
-    /// 4 points, creates a polygon mask via scanline fill, then computes the mean of the
-    /// probability map values within the masked region.
+    /// Mean probability inside the quad: tight axis-aligned bounds, polygon mask by scanline fill,
+    /// then average of map values inside the mask.
     func boxScoreFast(
         pred: [Float],
         predWidth: Int,
@@ -650,7 +639,7 @@ extension DBPostProcessor {
         let maskH = ymax - ymin + 1
 
         // Create polygon mask shifted to local coordinates
-        var shiftedBox: [[Int]] = box.map { [Int(($0[0] - Float(xmin)).rounded()), Int(($0[1] - Float(ymin)).rounded())] }
+        let shiftedBox: [[Int]] = box.map { [Int(($0[0] - Float(xmin)).rounded()), Int(($0[1] - Float(ymin)).rounded())] }
 
         var mask = [UInt8](repeating: 0, count: maskW * maskH)
         fillPoly(mask: &mask, width: maskW, height: maskH, polygon: shiftedBox, value: 1)
@@ -672,9 +661,7 @@ extension DBPostProcessor {
         return count > 0 ? sum / count : 0
     }
 
-    /// Fill a polygon in a mask using scanline fill algorithm.
-    ///
-    /// Equivalent to `cv2.fillPoly(mask, [polygon], value)`.
+    /// Fill a polygon in a mask using scanline fill.
     func fillPoly(mask: inout [UInt8], width: Int, height: Int, polygon: [[Int]], value: UInt8) {
         guard polygon.count >= 3 else { return }
 

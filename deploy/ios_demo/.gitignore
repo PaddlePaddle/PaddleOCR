@@ -10,5 +10,14 @@ PaddleOCRDemo/PaddleOCRDemo.xcodeproj/project.xcworkspace/xcuserdata/
 DerivedData/
 build/
 
-# Model files (large binaries — tracked via Git LFS or downloaded separately)
-PaddleOCRDemo/PaddleOCRDemo/Models/**/*.onnx
+# fetch_ios_demo_assets.sh cache (downloaded model .tar)
+.fetch_ios_demo_assets_work/
+.download_models_work/
+
+# Demo sample PNG — downloaded by fetch_ios_demo_assets.sh; not tracked in git.
+PaddleOCRDemo/PaddleOCRDemo/Resources/SampleImages/*.png
+
+# Models — ignore all files under Models/; track only `.gitkeep` so det/, rec/, … stay in the tree
+PaddleOCRDemo/PaddleOCRDemo/Models/**
+!PaddleOCRDemo/PaddleOCRDemo/Models/*/
+!PaddleOCRDemo/PaddleOCRDemo/Models/*/.gitkeep

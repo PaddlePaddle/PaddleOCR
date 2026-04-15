@@ -1,4 +1,4 @@
-// Copyright (c) 2025 PaddlePaddle Authors. All Rights Reserved.
+// Copyright (c) 2026 PaddlePaddle Authors. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -267,7 +267,6 @@ class ClipperOffset {
 
     private func offsetPoint(_ j: Int, path: [IntPoint], joinType: JoinType, count: Int) {
         let prevIdx = (j + count - 1) % count
-        let nextIdx = (j + 1) % count
 
         // sinA = cross product of normals (determines convexity)
         sinA = normals[prevIdx].x * normals[j].y - normals[j].x * normals[prevIdx].y
@@ -323,7 +322,7 @@ class ClipperOffset {
 
         // Angle between the two edge normals
         let angle = atan2(sinA, cosA)
-        var steps = max(Int((stepsPerRadian * abs(angle)).rounded()), 1)
+        let steps = max(Int((stepsPerRadian * abs(angle)).rounded()), 1)
 
         let px = Double(path[j].x)
         let py = Double(path[j].y)

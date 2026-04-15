@@ -1,3 +1,17 @@
+// Copyright (c) 2026 PaddlePaddle Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 import Foundation
 import Yams
 
@@ -13,16 +27,16 @@ enum InferenceConfigError: LocalizedError {
         case .fileNotFound(let path):
             return "Inference config file not found: \(path)"
         case .parseError(let detail):
-            return "Failed to parse inference config: \(detail)"
+            return "Failed to parse model config: \(detail)"
         case .missingField(let field):
-            return "Missing required field in inference config: \(field)"
+            return "Missing required field in model config: \(field)"
         }
     }
 }
 
 // MARK: - Transform Operations
 
-/// Represents a single preprocessing transform operation parsed from inference.yml.
+/// Represents a single preprocessing transform operation parsed from the model config file.
 /// Each case carries associated parameters read from the YAML config.
 enum TransformOp {
     case detResizeForTest(resizeLong: Int)
@@ -55,9 +69,9 @@ struct InferenceConfig {
 
     // MARK: - Loading
 
-    /// Loads and parses an inference.yml file into a typed InferenceConfig.
+    /// Loads and parses a model config file into a typed InferenceConfig.
     ///
-    /// - Parameter yamlPath: Absolute filesystem path to the inference.yml file.
+    /// - Parameter yamlPath: Absolute filesystem path to the YAML model config file.
     /// - Returns: A fully parsed InferenceConfig with typed transform operations.
     static func load(from yamlPath: String) throws -> InferenceConfig {
         guard FileManager.default.fileExists(atPath: yamlPath) else {

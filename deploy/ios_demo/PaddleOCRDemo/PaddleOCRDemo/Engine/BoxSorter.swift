@@ -19,13 +19,13 @@ import Foundation
 /// Sorts detection boxes in natural reading order: top-to-bottom, then
 /// left-to-right within the same text line.
 ///
-/// Ported from PaddleX `SortQuadBoxes.__call__()` in
-/// `paddlex/inference/pipelines/components/common/sort_boxes.py`.
+/// Uses the same two-pass sort as the reference OCR pipeline (primary key: top-left
+/// y then x; insertion pass with a fixed y-gap threshold).
 struct BoxSorter {
 
     /// Y-coordinate threshold for same-line detection. Boxes whose top-left y
     /// coordinates differ by less than this value are considered on the same line
-    /// and sorted left-to-right. Matches PaddleX hardcoded value of 10.
+    /// and sorted left-to-right. Reference value: 10 pixels.
     static let yThreshold: Int32 = 10
 
     /// Sort detection boxes in reading order: top-to-bottom, then left-to-right
@@ -43,7 +43,6 @@ struct BoxSorter {
         guard boxes.count > 1 else { return boxes }
 
         // Step 1: Sort by top-left point -- first by y, then by x
-        // Matches Python: sorted(dt_boxes, key=lambda x: (x[0][1], x[0][0]))
         var sorted = boxes.sorted { a, b in
             let ay = a.points[0][1], ax = a.points[0][0]
             let by = b.points[0][1], bx = b.points[0][0]
@@ -52,7 +51,6 @@ struct BoxSorter {
         }
 
         // Step 2: Backward insertion sort for same-line boxes
-        // Matches Python: for i in range(num_boxes - 1): for j in range(i, -1, -1): ...
         for i in 0..<(sorted.count - 1) {
             var j = i
             while j >= 0 {

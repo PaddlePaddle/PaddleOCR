@@ -90,9 +90,8 @@ class OCRViewModel: ObservableObject {
     private var sessionManager: ORTSessionManager?
     private var ocrEngine: OCREngine?
 
-    /// Names of sample images bundled in Resources/SampleImages/.
-    /// Loaded at runtime via Bundle.main path lookup.
-    let sampleImageNames: [String] = ["sample_english", "sample_chinese", "sample_multiline"]
+    /// Name of the demo sample in Resources/SampleImages (from `fetch_ios_demo_assets.sh`).
+    let sampleImageNames: [String] = ["general_ocr_002"]
 
     // MARK: - Lifecycle
 
@@ -137,7 +136,7 @@ class OCRViewModel: ObservableObject {
 
     /// Load a bundled sample image by name and run OCR on it.
     func selectSampleImage(named name: String) async {
-        guard let path = Bundle.main.path(forResource: name, ofType: "jpg", inDirectory: "SampleImages"),
+        guard let path = Bundle.main.path(forResource: name, ofType: "png", inDirectory: "SampleImages"),
               let uiImage = UIImage(contentsOfFile: path) else {
             state = .error(.imageLoadFailed)
             return

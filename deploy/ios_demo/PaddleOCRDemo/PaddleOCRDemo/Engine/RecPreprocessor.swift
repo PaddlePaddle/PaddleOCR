@@ -1,3 +1,17 @@
+// Copyright (c) 2026 PaddlePaddle Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 import CoreGraphics
 import Foundation
 
@@ -36,14 +50,14 @@ struct RecPreprocessResult {
 
 // MARK: - RecPreprocessor
 
-/// Implements OCRResizeNormImg for recognition preprocessing, ported from
-/// PaddleX `text_recognition/processors.py`.
+/// Recognition resize + normalize + pad: dynamic width, fixed height, scale to [-1, 1],
+/// CHW layout, right-pad to target width.
 ///
 /// All shape parameters are read from InferenceConfig at initialization time.
 /// Image manipulation uses CoreGraphics -- no OpenCV.
 ///
 /// Algorithm:
-/// 1. Compute target width from aspect ratio (ceil to match Python math.ceil)
+/// 1. Compute target width from aspect ratio (ceil to match reference `math.ceil`)
 /// 2. Resize to (resized_w, imgH) using bilinear interpolation
 /// 3. Normalize with recognition formula: pixel / 127.5 - 1.0 (maps [0,255] to [-1,1])
 /// 4. HWC -> CHW transpose
@@ -51,16 +65,16 @@ struct RecPreprocessResult {
 struct RecPreprocessor {
     /// Number of channels (always 3 for RGB).
     private let imgC: Int
-    /// Target height from inference.yml RecResizeImg.image_shape (e.g., 48).
+    /// Target height from config RecResizeImg.image_shape (e.g., 48).
     private let imgH: Int
-    /// Default width from inference.yml RecResizeImg.image_shape (e.g., 320).
+    /// Default width from config RecResizeImg.image_shape (e.g., 320).
     private let imgW: Int
     /// Absolute maximum width cap to prevent excessive memory usage.
     private let maxImgW: Int = 3200
 
     /// Creates a RecPreprocessor by extracting image_shape from the RecResizeImg transform op.
     ///
-    /// - Parameter config: A parsed InferenceConfig from the recognition model's inference.yml.
+    /// - Parameter config: A parsed InferenceConfig from the recognition model's config file.
     /// - Throws: `RecPreprocessorError.configMissing` if RecResizeImg with image_shape is absent.
     init(config: InferenceConfig) throws {
         var foundImageShape: [Int]?
@@ -100,15 +114,15 @@ struct RecPreprocessor {
         // Step 0: Extract RGB pixel bytes from CGImage
         let pixelBytes = try extractRGBPixels(from: image, width: originalW, height: originalH)
 
-        // Step 1: Compute target dimensions (matching Python resize() + resize_norm_img())
+        // Step 1: Compute target dimensions (same as reference `resize` + `resize_norm_img`)
         let whRatio = Float(originalW) / Float(originalH)
-        var maxWhRatio = max(Float(imgW) / Float(imgH), whRatio)
+        let maxWhRatio = max(Float(imgW) / Float(imgH), whRatio)
         var targetW = Int(Float(imgH) * maxWhRatio)
         if targetW > maxImgW {
             targetW = maxImgW
         }
 
-        // Step 2: Compute resized width (matching Python resize_norm_img())
+        // Step 2: Compute resized width (same as reference `resize_norm_img`)
         let ratio = Float(originalW) / Float(originalH)
         let resizedW: Int
         if targetW > maxImgW {
@@ -246,7 +260,7 @@ struct RecPreprocessor {
     /// Equivalent to pixel / 127.5 - 1.0, mapping [0, 255] -> [-1.0, 1.0].
     ///
     /// This is NOT the same as detection normalization (which uses ImageNet mean/std).
-    /// The recognition normalization is fixed and not parameterized from inference.yml.
+    /// The recognition normalization is fixed and not parameterized from model config.
     private func normalizePixels(_ pixels: [UInt8], width: Int, height: Int) -> [Float] {
         let count = width * height * 3
         var result = [Float](repeating: 0, count: count)

@@ -14,7 +14,7 @@
 
 import Foundation
 
-/// Exports OCR pipeline results as JSON for validation against the Python reference.
+/// Exports OCR pipeline results as JSON for validation against the bundled reference output.
 ///
 /// The JSON schema matches `deploy/ios_demo/Validation/validate.py`:
 /// ```json

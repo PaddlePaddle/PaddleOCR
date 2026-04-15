@@ -1,4 +1,4 @@
-// Copyright (c) 2025 PaddlePaddle Authors. All Rights Reserved.
+// Copyright (c) 2026 PaddlePaddle Authors. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -63,7 +63,7 @@ enum DetectionEngineError: LocalizedError {
 ///
 /// This is the integration layer that composes `DetPreprocessor`, `ORTSessionManager`, and
 /// `DBPostProcessor` into a single callable unit. All preprocessing and postprocessing parameters
-/// are read from the detection model's `inference.yml` at initialization time.
+/// are read from the detection model config file at initialization time.
 ///
 /// Usage:
 /// ```swift
@@ -79,15 +79,15 @@ class DetectionEngine {
 
     /// Initialize with an existing ORTSessionManager (models must already be loaded).
     ///
-    /// Loads `inference.yml` from the detection model bundle path to configure
+    /// Loads the detection model config file from the bundle to configure
     /// the preprocessor and postprocessor.
     ///
     /// - Parameter sessionManager: A loaded ORTSessionManager with detection model ready.
-    /// - Throws: If inference.yml cannot be loaded or required config fields are missing.
+    /// - Throws: If the model config cannot be loaded or required fields are missing.
     init(sessionManager: ORTSessionManager) throws {
         self.sessionManager = sessionManager
 
-        // Load inference.yml for detection model
+        // Load detection model config
         let modelConfig = try ModelConfig.detection()
         self.config = try InferenceConfig.load(from: modelConfig.configPath)
 

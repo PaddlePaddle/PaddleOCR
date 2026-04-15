@@ -29,7 +29,7 @@ struct ErrorView: View {
                 .font(.title2)
                 .fontWeight(.semibold)
 
-            Text(error.localizedDescription ?? "An unknown error occurred.")
+            Text(error.localizedDescription)
                 .font(.body)
                 .foregroundColor(Color(.secondaryLabel))
                 .multilineTextAlignment(.center)

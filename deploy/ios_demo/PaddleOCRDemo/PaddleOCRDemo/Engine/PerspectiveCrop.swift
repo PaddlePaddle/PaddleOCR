@@ -42,9 +42,8 @@ enum PerspectiveCropError: LocalizedError {
 /// Crops a text region from the source image using a 4-point perspective transform,
 /// then rotates 90 degrees CCW if the result is tall-narrow (height/width >= 1.5).
 ///
-/// Ported from PaddleX `CropByPolys.get_rotate_crop_image()` in
-/// `paddlex/inference/pipelines/components/common/crop_image_regions.py`
-/// and `tools/infer/utility.py::get_rotate_crop_image`.
+/// Mirrors the quad crop path used by the reference OCR inference stack (minimum-area
+/// rectangle ordering, perspective warp with replicate borders, tall-narrow rotation).
 ///
 /// The implementation is pure Swift using CoreGraphics -- no OpenCV dependency.
 /// It performs:
@@ -69,9 +68,7 @@ struct PerspectiveCrop {
 
         let srcPts = polygon.map { (Float($0[0]), Float($0[1])) }
 
-        // Compute output dimensions from polygon edge lengths
-        // Matches Python: int(max(norm(p0-p1), norm(p2-p3))) for width
-        //                  int(max(norm(p0-p3), norm(p1-p2))) for height
+        // Compute output dimensions from polygon edge lengths (max opposite edge lengths).
         let cropWidth = Int(max(
             distance(srcPts[0], srcPts[1]),
             distance(srcPts[2], srcPts[3])
@@ -129,7 +126,7 @@ struct PerspectiveCrop {
         // Create CGImage from output pixels
         var cropImage = try createCGImage(from: outputPixels, width: cropWidth, height: cropHeight)
 
-        // Rotate 90 degrees CCW if tall-narrow (matching np.rot90)
+        // Rotate 90 degrees CCW if tall-narrow (same rule as reference OpenCV `rot90`).
         if Float(cropHeight) / Float(cropWidth) >= 1.5 {
             cropImage = try rotateCCW90(cropImage)
         }
@@ -143,7 +140,6 @@ struct PerspectiveCrop {
 private extension PerspectiveCrop {
 
     /// Euclidean distance between two 2D points.
-    /// Matches `np.linalg.norm(p0 - p1)`.
     static func distance(_ a: (Float, Float), _ b: (Float, Float)) -> Float {
         let dx = b.0 - a.0
         let dy = b.1 - a.1
@@ -453,7 +449,7 @@ private extension PerspectiveCrop {
 
 private extension PerspectiveCrop {
 
-    /// Rotate a CGImage 90 degrees counter-clockwise, matching `np.rot90(img)`.
+    /// Rotate a CGImage 90 degrees counter-clockwise (one quarter-turn CCW).
     ///
     /// Creates a new CGContext with swapped dimensions, applies a rotation transform,
     /// and draws the original image.

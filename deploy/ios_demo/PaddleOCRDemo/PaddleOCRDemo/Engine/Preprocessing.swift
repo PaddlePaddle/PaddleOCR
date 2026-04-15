@@ -1,3 +1,17 @@
+// Copyright (c) 2026 PaddlePaddle Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 import Accelerate
 import CoreGraphics
 import Foundation
@@ -41,7 +55,7 @@ struct PreprocessResult {
 
 // MARK: - DetPreprocessor
 
-/// Implements the detection preprocessing pipeline from inference.yml:
+/// Implements the detection preprocessing pipeline described by the model config file:
 /// DetResizeForTest -> NormalizeImage -> ToCHWImage.
 ///
 /// All parameters are read from InferenceConfig at initialization time.
@@ -55,7 +69,7 @@ struct DetPreprocessor {
 
     /// Creates a DetPreprocessor by extracting transform parameters from the given config.
     ///
-    /// - Parameter config: A parsed InferenceConfig from the detection model's inference.yml.
+    /// - Parameter config: A parsed InferenceConfig from the detection model config file.
     /// - Throws: `DetPreprocessorError.configMissing` if required transform ops are absent.
     init(config: InferenceConfig) throws {
         var foundResizeLong: Int?
@@ -185,7 +199,7 @@ struct DetPreprocessor {
 
     // MARK: - Step 1: Image Padding
 
-    /// Pads a small image to at least 32x32 with zero-fill, matching Python's image_padding.
+    /// Pads a small image to at least 32x32 with zero-fill (same as reference `image_padding`).
     private func padImage(_ pixels: [UInt8], fromW: Int, fromH: Int, toW: Int, toH: Int) -> [UInt8] {
         var padded = [UInt8](repeating: 0, count: toH * toW * 3)
         for y in 0..<fromH {
@@ -202,7 +216,7 @@ struct DetPreprocessor {
 
     // MARK: - Step 2: DetResizeForTest
 
-    /// Computes the target resize dimensions matching Python's resize_image_type2.
+    /// Computes the target resize dimensions for `resize_image_type2` in the reference det resize.
     ///
     /// 1. Scale so the longest side equals `resizeLong`
     /// 2. Ceil both dimensions to the nearest multiple of 128
@@ -296,7 +310,7 @@ struct DetPreprocessor {
     /// Applies NormalizeImage: `(pixel_float32 * scale - mean) / std` per channel.
     /// Input: UInt8 RGB pixels in HWC layout. Output: Float32 RGB in HWC layout.
     ///
-    /// The normalization order from inference.yml is "hwc", meaning mean/std are applied
+    /// The normalization order from the model config is "hwc", meaning mean/std are applied
     /// in HWC layout (per-pixel, per-channel).
     private func normalizePixels(_ pixels: [UInt8], width: Int, height: Int) -> [Float] {
         let pixelCount = width * height

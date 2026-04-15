@@ -1,3 +1,17 @@
+// Copyright (c) 2026 PaddlePaddle Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 import CoreGraphics
 import Foundation
 
@@ -44,7 +58,7 @@ enum RecognitionEngineError: LocalizedError {
 ///
 /// This is the integration layer that composes `RecPreprocessor`, `ORTSessionManager`,
 /// and `CTCDecoder` into a single callable unit. All preprocessing parameters are read
-/// from the recognition model's `inference.yml` at initialization time.
+/// from the recognition model config file at initialization time.
 ///
 /// Usage:
 /// ```swift
@@ -59,15 +73,15 @@ class RecognitionEngine {
 
     /// Initialize with an existing ORTSessionManager (models must already be loaded).
     ///
-    /// Loads `inference.yml` from the recognition model bundle path to configure
+    /// Loads the recognition model config file from the bundle to configure
     /// the preprocessor and CTC decoder.
     ///
     /// - Parameter sessionManager: A loaded ORTSessionManager with recognition model ready.
-    /// - Throws: If inference.yml cannot be loaded or required config fields are missing.
+    /// - Throws: If the model config cannot be loaded or required fields are missing.
     init(sessionManager: ORTSessionManager) throws {
         self.sessionManager = sessionManager
 
-        // Load inference.yml for recognition model
+        // Load recognition model config
         let modelConfig = try ModelConfig.recognition()
         let config = try InferenceConfig.load(from: modelConfig.configPath)
 

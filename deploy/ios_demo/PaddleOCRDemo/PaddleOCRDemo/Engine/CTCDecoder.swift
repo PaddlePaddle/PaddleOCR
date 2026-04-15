@@ -1,3 +1,17 @@
+// Copyright (c) 2026 PaddlePaddle Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 import Foundation
 
 // MARK: - Errors
@@ -28,7 +42,7 @@ struct RecognitionResult {
 
 // MARK: - CTCDecoder
 
-/// Implements CTCLabelDecode, ported from `ppocr/postprocess/rec_postprocess.py`.
+/// CTC label decoding for recognition output
 ///
 /// The CTC (Connectionist Temporal Classification) decoding algorithm:
 /// 1. Argmax across the class dimension to get per-timestep predicted indices
@@ -38,14 +52,7 @@ struct RecognitionResult {
 /// 5. Map remaining indices to characters via the dictionary
 /// 6. Confidence = mean of probabilities at selected positions
 ///
-/// The character dictionary is loaded from inference.yml's PostProcess.character_dict.
-/// An ASCII space is appended (matching PaddleX `use_space_char=True` default),
-/// then a "blank" token is prepended at index 0 (matching `add_special_char`).
 struct CTCDecoder {
-    /// Full character list: 18,385 elements matching PaddleX CTCLabelDecode.
-    /// Index 0 = "blank" (CTC blank token, always ignored during decode)
-    /// Index 1..18383 = dict characters from inference.yml
-    /// Index 18384 = " " (ASCII space, appended per use_space_char=True default)
     private let characters: [String]
 
     /// The blank token index (always 0 for CTC).
@@ -55,18 +62,14 @@ struct CTCDecoder {
     ///
     /// Reads the character_dict from PostProcess config and prepends the blank token.
     ///
-    /// - Parameter config: A parsed InferenceConfig from the recognition model's inference.yml.
+    /// - Parameter config: A parsed InferenceConfig from the recognition model's config file.
     /// - Throws: `CTCDecoderError.emptyDictionary` if no character dict is found.
     init(config: InferenceConfig) throws {
         guard let dict = config.postProcess.characterDict, !dict.isEmpty else {
             throw CTCDecoderError.emptyDictionary
         }
 
-        // Build character list matching PaddleX BaseRecLabelDecode.__init__:
-        // 1. Start with 18,383 chars from inference.yml character_dict
-        // 2. Append " " (ASCII space) for use_space_char=True (PaddleX default)
-        // 3. Prepend "blank" at index 0 (CTC blank token)
-        // Result: ["blank", ...18,383 dict chars..., " "] = 18,385 total
+        // Build character list: dict from config, trailing space (default-on), blank at index 0.
         var chars = ["blank"]
         chars.append(contentsOf: dict)
         chars.append(" ")
@@ -116,8 +119,7 @@ struct CTCDecoder {
         // - Remove consecutive duplicates (keep first of each run)
         // - Remove blank tokens (index 0)
         //
-        // Matches Python: selection[1:] = indices[1:] != indices[:-1]
-        //                 selection &= indices != blank
+        // Drop consecutive duplicate indices, then drop blank (0).
         var selection = [Bool](repeating: true, count: timesteps)
 
         // Remove consecutive duplicates
@@ -152,7 +154,7 @@ struct CTCDecoder {
         let text = charList.joined()
 
         // Step 6: Compute mean confidence
-        // Matches Python: np.mean(conf_list) or [0] if empty
+        // Mean probability over kept timesteps; 0 if none kept.
         let confidence: Float
         if confList.isEmpty {
             confidence = 0
