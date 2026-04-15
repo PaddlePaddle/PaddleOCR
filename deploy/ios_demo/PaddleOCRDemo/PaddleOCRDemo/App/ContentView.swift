@@ -15,11 +15,7 @@
 import PhotosUI
 import SwiftUI
 
-/// Root view that coordinates all UI states based on `OCRViewModel.state`.
-///
-/// This view acts as a state router: it renders the appropriate sub-view
-/// for each `AppState` case and wires up the PhotosPicker + sample image
-/// selection to the view model's processing pipeline.
+/// Root view: routes `AppState` and lays out **input (parameters + image)** vs **output (preview + text)** clearly.
 struct ContentView: View {
     @StateObject private var viewModel = OCRViewModel()
     @State private var selectedItem: PhotosPickerItem?
@@ -27,12 +23,13 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack(spacing: 24) {
+                VStack(spacing: 0) {
                     contentForState
                 }
-                .padding(.horizontal, 16)
-                .padding(.vertical, 16)
+                .padding(.horizontal, 20)
+                .padding(.vertical, 20)
             }
+            .background(Color(.systemGroupedBackground))
             .navigationTitle("PaddleOCR Demo")
             .navigationBarTitleDisplayMode(.inline)
         }
@@ -47,7 +44,7 @@ struct ContentView: View {
                     viewModel.state = .error(.imageLoadFailed)
                     return
                 }
-                selectedItem = nil // Reset for re-selection
+                selectedItem = nil
                 await viewModel.processImage(uiImage)
             }
         }
@@ -74,111 +71,55 @@ struct ContentView: View {
     // MARK: - Loading Models
 
     private var loadingModelsView: some View {
-        VStack(spacing: 12) {
+        VStack(spacing: 16) {
             ProgressView()
-                .scaleEffect(1.5)
-                .padding(.bottom, 4)
-            Text("Loading Models")
-                .font(.title2)
-                .fontWeight(.semibold)
-            Text("Preparing detection and recognition models...")
-                .font(.body)
-                .foregroundColor(Color(.secondaryLabel))
+                .scaleEffect(1.3)
+                .tint(.accentColor)
+            Text("Loading models")
+                .font(.title3.weight(.semibold))
+            Text("Preparing detection and recognition…")
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
         }
         .frame(maxWidth: .infinity)
-        .padding(.top, 80)
+        .padding(.top, 72)
+        .padding(.bottom, 40)
     }
 
     // MARK: - Ready
 
     private var readyView: some View {
-        VStack(spacing: 16) {
-            Image(systemName: "checkmark.circle.fill")
-                .font(.system(size: 36))
-                .foregroundColor(.green)
-            Text("Models Ready")
-                .font(.headline)
-            Text("Select a photo or tap a sample image to start.")
-                .font(.subheadline)
-                .foregroundColor(Color(.secondaryLabel))
-                .multilineTextAlignment(.center)
-
-            ImagePickerSection(
-                selectedItem: $selectedItem,
-                sampleImageNames: viewModel.sampleImageNames,
-                onSampleSelected: { name in
-                    Task { await viewModel.selectSampleImage(named: name) }
+        VStack(spacing: 22) {
+            statusPill(icon: "checkmark.circle.fill", tint: .green) {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("Ready")
+                        .font(.title3.weight(.semibold))
+                    Text("Set parameters, then choose a photo or open a sample.")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                        .fixedSize(horizontal: false, vertical: true)
                 }
-            )
-        }
-        .padding(.top, 40)
-    }
-
-    // MARK: - Processing
-
-    private func processingView(image: UIImage) -> some View {
-        VStack(spacing: 16) {
-            ZStack {
-                Image(uiImage: image)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(maxHeight: 400)
-                    .clipShape(RoundedRectangle(cornerRadius: 12))
-
-                // Overlay spinner
-                VStack(spacing: 8) {
-                    ProgressView()
-                        .scaleEffect(1.5)
-                        .tint(.white)
-                    Text("Running OCR...")
-                        .font(.headline)
-                        .foregroundColor(.white)
-                }
-                .padding(24)
-                .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 12))
             }
-        }
-    }
 
-    // MARK: - Results
-
-    private func resultsView(result: OCRPipelineResult, image: UIImage) -> some View {
-        VStack(spacing: 24) {
-            // Image with polygon overlays
-            ResultImageView(image: image, results: result.results)
-
-            // Timing breakdown card
-            TimingView(result: result)
-
-            // Results list with copy button
-            ResultsListView(
-                results: result.results,
-                copiedFeedback: viewModel.copiedFeedback,
-                onCopy: { viewModel.copyResultsToClipboard() }
-            )
-
-            // Image picker for selecting a new image
-            ImagePickerSection(
-                selectedItem: $selectedItem,
-                sampleImageNames: viewModel.sampleImageNames,
-                onSampleSelected: { name in
-                    Task { await viewModel.selectSampleImage(named: name) }
+            VStack(alignment: .leading, spacing: 10) {
+                DemoSectionHeader(
+                    title: "Parameters",
+                    subtitle: "These apply to the next OCR run."
+                )
+                DemoCard {
+                    OCRParametersPanel(
+                        params: $viewModel.runtimeParams,
+                        baseline: viewModel.thresholdBaseline ?? .fallbackForUI
+                    )
                 }
-            )
-        }
-    }
+            }
 
-    // MARK: - Error
-
-    private func errorView(error: AppError) -> some View {
-        VStack(spacing: 24) {
-            ErrorView(error: error, onRetry: {
-                Task { await viewModel.retry() }
-            })
-
-            // If not a model error, show image picker so user can try different image
-            if !error.isModelError {
+            VStack(alignment: .leading, spacing: 10) {
+                DemoSectionHeader(
+                    title: "Image",
+                    subtitle: "Primary action: choose from your library."
+                )
                 ImagePickerSection(
                     selectedItem: $selectedItem,
                     sampleImageNames: viewModel.sampleImageNames,
@@ -188,12 +129,155 @@ struct ContentView: View {
                 )
             }
         }
-        .padding(.top, 40)
     }
 
-    // MARK: - Helpers
+    // MARK: - Processing
 
-    private func ms(_ t: TimeInterval) -> String {
-        String(format: "%.0f", t * 1000)
+    private func processingView(image: UIImage) -> some View {
+        VStack(alignment: .leading, spacing: 16) {
+            Text("Running OCR")
+                .font(.title3.weight(.semibold))
+            Text("Hold on — detection and recognition are in progress.")
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+
+            ZStack {
+                Image(uiImage: image)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(maxHeight: 360)
+                    .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+
+                RoundedRectangle(cornerRadius: 14, style: .continuous)
+                    .fill(.ultraThinMaterial)
+
+                VStack(spacing: 10) {
+                    ProgressView()
+                        .scaleEffect(1.25)
+                        .tint(.accentColor)
+                    Text("Working…")
+                        .font(.headline)
+                }
+            }
+            .frame(maxWidth: .infinity)
+        }
+    }
+
+    // MARK: - Results
+
+    private func resultsView(result: OCRPipelineResult, image: UIImage) -> some View {
+        VStack(spacing: 22) {
+            // —— Output zone: what you see —
+            VStack(alignment: .leading, spacing: 10) {
+                DemoSectionHeader(
+                    title: "Preview",
+                    subtitle: "Green overlay shows each detected text region."
+                )
+                DemoCard {
+                    ResultImageView(image: image, results: result.results)
+                        .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+                }
+            }
+
+            TimingView(result: result)
+                .padding(.vertical, 4)
+
+            // —— Control zone: tune & repeat on same image —
+            VStack(alignment: .leading, spacing: 10) {
+                DemoSectionHeader(
+                    title: "Parameters",
+                    subtitle: "Adjust, then re-run without picking a new photo."
+                )
+                DemoCard {
+                    OCRParametersPanel(
+                        params: $viewModel.runtimeParams,
+                        baseline: viewModel.thresholdBaseline ?? .fallbackForUI
+                    )
+                }
+            }
+
+            Button {
+                Task { await viewModel.rerunOCR() }
+            } label: {
+                Label("Re-run OCR on this image", systemImage: "arrow.clockwise.circle.fill")
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 4)
+            }
+            .buttonStyle(.bordered)
+            .controlSize(.large)
+
+            // —— Text output —
+            VStack(alignment: .leading, spacing: 10) {
+                DemoSectionHeader(title: "Results", subtitle: nil)
+                DemoCard {
+                    ResultsListView(
+                        results: result.results,
+                        copiedFeedback: viewModel.copiedFeedback,
+                        onCopy: { viewModel.copyResultsToClipboard() }
+                    )
+                }
+            }
+
+            VStack(alignment: .leading, spacing: 10) {
+                DemoSectionHeader(
+                    title: "New image",
+                    subtitle: "Same controls as before — choose photo or try a sample."
+                )
+                ImagePickerSection(
+                    selectedItem: $selectedItem,
+                    sampleImageNames: viewModel.sampleImageNames,
+                    onSampleSelected: { name in
+                        Task { await viewModel.selectSampleImage(named: name) }
+                    }
+                )
+            }
+        }
+    }
+
+    // MARK: - Error
+
+    private func errorView(error: AppError) -> some View {
+        VStack(spacing: 22) {
+            ErrorView(error: error, onRetry: {
+                Task { await viewModel.retry() }
+            })
+
+            if !error.isModelError {
+                VStack(alignment: .leading, spacing: 10) {
+                    DemoSectionHeader(title: "Try another image", subtitle: nil)
+                    ImagePickerSection(
+                        selectedItem: $selectedItem,
+                        sampleImageNames: viewModel.sampleImageNames,
+                        onSampleSelected: { name in
+                            Task { await viewModel.selectSampleImage(named: name) }
+                        }
+                    )
+                }
+            }
+        }
+        .padding(.top, 24)
+    }
+
+    // MARK: - Small chrome
+
+    private func statusPill<Content: View>(icon: String, tint: Color, @ViewBuilder content: () -> Content) -> some View {
+        HStack(alignment: .top, spacing: 14) {
+            Image(systemName: icon)
+                .font(.system(size: 28))
+                .foregroundStyle(tint)
+                .symbolRenderingMode(.hierarchical)
+            content()
+                .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .padding(16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background {
+            RoundedRectangle(cornerRadius: 14, style: .continuous)
+                .fill(Color(.secondarySystemGroupedBackground))
+        }
+        .overlay {
+            RoundedRectangle(cornerRadius: 14, style: .continuous)
+                .strokeBorder(Color(.separator).opacity(0.35), lineWidth: 0.5)
+        }
     }
 }

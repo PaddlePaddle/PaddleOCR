@@ -34,6 +34,9 @@
 		A10000A1 /* TimingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000A1 /* TimingView.swift */; };
 		A10000A2 /* ResultsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000A2 /* ResultsListView.swift */; };
 		A10000A3 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000A3 /* ErrorView.swift */; };
+		A10000B0 /* OCRRuntimeParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000B0 /* OCRRuntimeParams.swift */; };
+		A10000B1 /* OCRParametersPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000B1 /* OCRParametersPanel.swift */; };
+		A10000B2 /* DemoChrome.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000B2 /* DemoChrome.swift */; };
 		F9888FA77A2AF8AF45B50193 /* Pods_PaddleOCRDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D0FFA11A4E43E5BD0F80219 /* Pods_PaddleOCRDemo.framework */; };
 /* End PBXBuildFile section */
 
@@ -82,6 +85,9 @@
 		A20000A1 /* TimingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimingView.swift; sourceTree = "<group>"; };
 		A20000A2 /* ResultsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsListView.swift; sourceTree = "<group>"; };
 		A20000A3 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
+		A20000B0 /* OCRRuntimeParams.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCRRuntimeParams.swift; sourceTree = "<group>"; };
+		A20000B1 /* OCRParametersPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCRParametersPanel.swift; sourceTree = "<group>"; };
+		A20000B2 /* DemoChrome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoChrome.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -157,6 +163,7 @@
 		A7000004 /* App */ = {
 			isa = PBXGroup;
 			children = (
+				A20000B2 /* DemoChrome.swift */,
 				A2000001 /* PaddleOCRDemoApp.swift */,
 				A2000002 /* ContentView.swift */,
 			);
@@ -192,6 +199,7 @@
 				A2000015 /* InferenceConfig.swift */,
 				A2000011 /* ModelConfig.swift */,
 				A2000070 /* OCREngine.swift */,
+				A20000B0 /* OCRRuntimeParams.swift */,
 				A2000012 /* ORTSessionManager.swift */,
 				A2000072 /* PerspectiveCrop.swift */,
 				A2000016 /* Preprocessing.swift */,
@@ -216,6 +224,7 @@
 			children = (
 				A20000A3 /* ErrorView.swift */,
 				A2000090 /* ImagePickerSection.swift */,
+				A20000B1 /* OCRParametersPanel.swift */,
 				A20000A0 /* ResultImageView.swift */,
 				A20000A2 /* ResultsListView.swift */,
 				A20000A1 /* TimingView.swift */,
@@ -368,6 +377,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A1000001 /* PaddleOCRDemoApp.swift in Sources */,
+				A10000B2 /* DemoChrome.swift in Sources */,
 				A1000002 /* ContentView.swift in Sources */,
 				A1000020 /* ClipperOffset.swift in Sources */,
 				A1000021 /* DBPostProcess.swift in Sources */,
@@ -381,11 +391,13 @@
 				A1000050 /* CTCDecoder.swift in Sources */,
 				A1000060 /* RecognitionEngine.swift in Sources */,
 				A1000070 /* OCREngine.swift in Sources */,
+				A10000B0 /* OCRRuntimeParams.swift in Sources */,
 				A1000071 /* BoxSorter.swift in Sources */,
 				A1000072 /* PerspectiveCrop.swift in Sources */,
 				A1000073 /* ValidationExport.swift in Sources */,
 				A1000080 /* OCRViewModel.swift in Sources */,
 				A1000090 /* ImagePickerSection.swift in Sources */,
+				A10000B1 /* OCRParametersPanel.swift in Sources */,
 				A10000A0 /* ResultImageView.swift in Sources */,
 				A10000A1 /* TimingView.swift in Sources */,
 				A10000A2 /* ResultsListView.swift in Sources */,

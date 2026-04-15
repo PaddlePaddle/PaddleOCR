@@ -14,36 +14,41 @@
 
 import SwiftUI
 
-/// Displays per-stage timing breakdown as a horizontal 3-column card.
+/// Compact per-stage timing chips (fits the “output” section below the preview).
 struct TimingView: View {
     let result: OCRPipelineResult
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            Text("Performance")
-                .font(.headline)
-
-            HStack {
-                timingColumn("Detection", result.detectionTime)
-                Spacer()
-                timingColumn("Recognition", result.recognitionTime)
-                Spacer()
-                timingColumn("Total", result.totalTime)
-            }
+        HStack(spacing: 10) {
+            chip(title: "Detect", ms: result.detectionTime)
+            chip(title: "Recognize", ms: result.recognitionTime)
+            chip(title: "Total", ms: result.totalTime, emphasized: true)
         }
-        .padding(16)
-        .background(Color(.secondarySystemBackground))
-        .cornerRadius(8)
+        .frame(maxWidth: .infinity)
     }
 
-    private func timingColumn(_ label: String, _ time: TimeInterval) -> some View {
-        VStack(spacing: 4) {
-            Text(String(format: "%.0f ms", time * 1000))
-                .font(.system(.body, design: .monospaced))
-                .fontWeight(.semibold)
-            Text(label)
-                .font(.caption)
-                .foregroundColor(Color(.secondaryLabel))
+    private func chip(title: String, ms: TimeInterval, emphasized: Bool = false) -> some View {
+        VStack(spacing: 6) {
+            Text(title)
+                .font(.caption2.weight(.semibold))
+                .foregroundStyle(.secondary)
+            Text(String(format: "%.0f", ms * 1000))
+                .font(.system(.body, design: .rounded).weight(emphasized ? .semibold : .regular))
+                .monospacedDigit()
+            Text("ms")
+                .font(.caption2)
+                .foregroundStyle(.tertiary)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 12)
+        .padding(.horizontal, 8)
+        .background {
+            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                .fill(emphasized ? Color.accentColor.opacity(0.12) : Color(.tertiarySystemFill))
+        }
+        .overlay {
+            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                .strokeBorder(Color(.separator).opacity(0.25), lineWidth: 0.5)
         }
     }
 }

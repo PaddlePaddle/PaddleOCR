@@ -14,67 +14,85 @@
 
 import SwiftUI
 
-/// Displays the list of recognized text results with confidence scores and a "Copy All" button.
+/// Recognized lines + copy action (intended to sit inside `DemoCard` from the parent).
 struct ResultsListView: View {
     let results: [OCRResult]
     let copiedFeedback: Bool
     let onCopy: () -> Void
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            // Header row: "Results (N)" + Copy All button
-            HStack {
-                Text("Results (\(results.count))")
+        VStack(alignment: .leading, spacing: 0) {
+            HStack(alignment: .firstTextBaseline) {
+                Text("Recognized text")
                     .font(.headline)
                 Spacer()
                 Button(action: onCopy) {
                     Label(
-                        copiedFeedback ? "Copied!" : "Copy All",
-                        systemImage: "doc.on.doc"
+                        copiedFeedback ? "Copied" : "Copy all",
+                        systemImage: copiedFeedback ? "checkmark.circle.fill" : "doc.on.doc"
                     )
+                    .labelStyle(.titleAndIcon)
                 }
+                .font(.subheadline.weight(.medium))
                 .buttonStyle(.bordered)
+                .controlSize(.small)
                 .disabled(results.isEmpty)
             }
+            .padding(.bottom, 12)
 
             if results.isEmpty {
-                // Empty state: no text detected (informational, not error)
-                VStack(spacing: 8) {
-                    Image(systemName: "text.magnifyingglass")
-                        .font(.system(size: 36))
-                        .foregroundColor(Color(.secondaryLabel))
-                    Text("No Text Detected")
-                        .font(.headline)
-                    Text("No text was found in this image. Try a different image with visible text.")
-                        .font(.subheadline)
-                        .foregroundColor(Color(.secondaryLabel))
-                        .multilineTextAlignment(.center)
-                }
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 16)
+                emptyState
             } else {
-                // Results list
-                VStack(alignment: .leading, spacing: 8) {
+                VStack(alignment: .leading, spacing: 0) {
                     ForEach(Array(results.enumerated()), id: \.offset) { index, result in
-                        HStack(alignment: .top) {
-                            Text("\(index + 1).")
-                                .font(.subheadline)
-                                .foregroundColor(Color(.secondaryLabel))
-                                .frame(width: 28, alignment: .trailing)
-
-                            Text(result.text)
-                                .font(.body)
-                                .lineLimit(3)
-
-                            Spacer()
-
-                            Text(String(format: "%.1f%%", result.confidence * 100))
-                                .font(.subheadline)
-                                .foregroundColor(Color(.secondaryLabel))
+                        resultRow(index: index, result: result)
+                        if index < results.count - 1 {
+                            Divider()
+                                .padding(.vertical, 10)
                         }
                     }
                 }
             }
+        }
+    }
+
+    private var emptyState: some View {
+        VStack(spacing: 12) {
+            Image(systemName: "text.magnifyingglass")
+                .font(.system(size: 32))
+                .foregroundStyle(.secondary)
+                .symbolRenderingMode(.hierarchical)
+            Text("No text to show")
+                .font(.subheadline.weight(.semibold))
+            Text("Try lowering thresholds or use an image with clearer text.")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 20)
+    }
+
+    private func resultRow(index: Int, result: OCRResult) -> some View {
+        HStack(alignment: .top, spacing: 12) {
+            Text("\(index + 1)")
+                .font(.caption.weight(.bold))
+                .foregroundStyle(.secondary)
+                .frame(width: 22, height: 22)
+                .background(Color(.tertiarySystemFill), in: Circle())
+
+            Text(result.text)
+                .font(.body)
+                .foregroundStyle(.primary)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .lineLimit(5)
+
+            Text(String(format: "%.0f%%", result.confidence * 100))
+                .font(.caption.monospacedDigit())
+                .foregroundStyle(.secondary)
+                .padding(.horizontal, 6)
+                .padding(.vertical, 2)
+                .background(Color(.tertiarySystemFill), in: Capsule())
         }
     }
 }

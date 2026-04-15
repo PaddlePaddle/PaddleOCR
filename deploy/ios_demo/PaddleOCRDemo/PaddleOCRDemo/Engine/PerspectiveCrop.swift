@@ -154,8 +154,6 @@ private extension PerspectiveCrop {
     /// Compute the 3x3 perspective transform matrix from 4 source points to 4 destination points
     /// using the Direct Linear Transform (DLT) algorithm.
     ///
-    /// Matches `cv2.getPerspectiveTransform(src, dst)`.
-    ///
     /// The homography H maps source points to destination points:
     ///   w * [u, v, 1]^T = H * [x, y, 1]^T
     ///

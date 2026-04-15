@@ -60,7 +60,7 @@ struct CTCDecoder {
 
     /// Creates a CTCDecoder from a recognition model's InferenceConfig.
     ///
-    /// Reads the character_dict from PostProcess config and prepends the blank token.
+    /// Reads `character_dict` from the model config file and prepends the blank token.
     ///
     /// - Parameter config: A parsed InferenceConfig from the recognition model's config file.
     /// - Throws: `CTCDecoderError.emptyDictionary` if no character dict is found.

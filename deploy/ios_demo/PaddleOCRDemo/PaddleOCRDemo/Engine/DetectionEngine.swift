@@ -74,8 +74,7 @@ enum DetectionEngineError: LocalizedError {
 class DetectionEngine {
     private let sessionManager: ORTSessionManager
     private let preprocessor: DetPreprocessor
-    private let postprocessor: DBPostProcessor
-    private let config: InferenceConfig
+    private(set) var modelConfig: InferenceConfig
 
     /// Initialize with an existing ORTSessionManager (models must already be loaded).
     ///
@@ -88,21 +87,33 @@ class DetectionEngine {
         self.sessionManager = sessionManager
 
         // Load detection model config
-        let modelConfig = try ModelConfig.detection()
-        self.config = try InferenceConfig.load(from: modelConfig.configPath)
+        let detPaths = try ModelConfig.detection()
+        let cfg = try InferenceConfig.load(from: detPaths.configPath)
+        self.modelConfig = cfg
+        self.preprocessor = try DetPreprocessor(config: cfg)
+    }
 
-        // Initialize preprocessor and postprocessor from config
-        self.preprocessor = try DetPreprocessor(config: config)
-        self.postprocessor = DBPostProcessor(config: config.postProcess)
+    private func makePostProcessor(runtime: OCRRuntimeParams) -> DBPostProcessor {
+        let pp = modelConfig.postProcess
+        // When the model config file omits a key, use the same defaults as the packaged OCR demo (general text).
+        return DBPostProcessor(
+            thresh: runtime.textDetThresh ?? pp.thresh ?? 0.3,
+            boxThresh: runtime.textDetBoxThresh ?? pp.boxThresh ?? 0.6,
+            maxCandidates: pp.maxCandidates ?? 1000,
+            unclipRatio: runtime.textDetUnclipRatio ?? pp.unclipRatio ?? OCRDefaultThresholds.textDetUnclipRatio
+        )
     }
 
     /// Run detection on a CGImage, returning bounding polygons with confidence scores.
     ///
     /// Pipeline: DetResizeForTest -> NormalizeImage -> ToCHW -> ORT inference -> DBPostProcess
     ///
-    /// - Parameter image: The input image to detect text regions in.
+    /// - Parameters:
+    ///   - image: The input image to detect text regions in.
+    ///   - runtimeParams: DB thresholds and unclip ratio.
     /// - Returns: A `DetectionResult` with boxes and per-stage timing metrics.
-    func detect(_ image: CGImage) async throws -> DetectionResult {
+    func detect(_ image: CGImage, runtimeParams: OCRRuntimeParams = .noOverrides) async throws -> DetectionResult {
+        let postprocessor = makePostProcessor(runtime: runtimeParams)
         // Step 1: Preprocess
         let preprocessStart = CFAbsoluteTimeGetCurrent()
         let preprocessed = try preprocessor.preprocess(image)

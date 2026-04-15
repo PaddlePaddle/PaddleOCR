@@ -57,7 +57,7 @@ struct RecPreprocessResult {
 /// Image manipulation uses CoreGraphics -- no OpenCV.
 ///
 /// Algorithm:
-/// 1. Compute target width from aspect ratio (ceil to match reference `math.ceil`)
+/// 1. Compute target width from aspect ratio
 /// 2. Resize to (resized_w, imgH) using bilinear interpolation
 /// 3. Normalize with recognition formula: pixel / 127.5 - 1.0 (maps [0,255] to [-1,1])
 /// 4. HWC -> CHW transpose
@@ -193,7 +193,6 @@ struct RecPreprocessor {
     // MARK: - Step 3: Resize
 
     /// Resizes an RGB pixel buffer using bilinear interpolation via CoreGraphics.
-    /// This matches cv2.resize() with INTER_LINEAR (the default).
     private func resizeImage(
         _ pixels: [UInt8], srcW: Int, srcH: Int, dstW: Int, dstH: Int
     ) -> [UInt8] {

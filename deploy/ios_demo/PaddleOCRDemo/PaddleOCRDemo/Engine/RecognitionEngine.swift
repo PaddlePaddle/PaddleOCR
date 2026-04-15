@@ -70,6 +70,7 @@ class RecognitionEngine {
     private let sessionManager: ORTSessionManager
     private let preprocessor: RecPreprocessor
     private let decoder: CTCDecoder
+    private(set) var modelConfig: InferenceConfig
 
     /// Initialize with an existing ORTSessionManager (models must already be loaded).
     ///
@@ -81,13 +82,12 @@ class RecognitionEngine {
     init(sessionManager: ORTSessionManager) throws {
         self.sessionManager = sessionManager
 
-        // Load recognition model config
-        let modelConfig = try ModelConfig.recognition()
-        let config = try InferenceConfig.load(from: modelConfig.configPath)
+        let recPaths = try ModelConfig.recognition()
+        let cfg = try InferenceConfig.load(from: recPaths.configPath)
+        self.modelConfig = cfg
 
-        // Initialize preprocessor and decoder from config
-        self.preprocessor = try RecPreprocessor(config: config)
-        self.decoder = try CTCDecoder(config: config)
+        self.preprocessor = try RecPreprocessor(config: cfg)
+        self.decoder = try CTCDecoder(config: cfg)
     }
 
     /// Run recognition on a cropped text region CGImage, returning decoded text with confidence.

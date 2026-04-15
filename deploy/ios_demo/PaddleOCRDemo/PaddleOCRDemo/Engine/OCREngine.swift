@@ -70,7 +70,7 @@ enum OCREngineError: LocalizedError {
 /// let manager = ORTSessionManager()
 /// try await manager.loadModels()
 /// let engine = try OCREngine(sessionManager: manager)
-/// let result = try await engine.run(cgImage)
+/// let result = try await engine.run(cgImage, params: .noOverrides)
 /// for item in result.results {
 ///     print("\(item.text) (\(item.confidence))")
 /// }
@@ -91,6 +91,10 @@ class OCREngine {
         self.recognitionEngine = try RecognitionEngine(sessionManager: sessionManager)
     }
 
+    func baselineRuntimeDefaults() -> ResolvedOCRRuntimeParams {
+        ResolvedOCRRuntimeParams.fromDetectionModelConfig(detectionEngine.modelConfig)
+    }
+
     /// Run the complete OCR pipeline on an image.
     ///
     /// End-to-end OCR flow (detect → sort → crop → recognize):
@@ -99,13 +103,17 @@ class OCREngine {
     /// 3. **Crop + Recognize**: For each sorted box, perspective-crop the region
     ///    from the original image, then run recognition on the crop
     ///
-    /// - Parameter image: The input CGImage to process.
+    /// - Parameters:
+    ///   - image: The input `CGImage` to process.
+    ///   - params: Optional threshold overrides. Detection values merge with the detection model config file, then built-in defaults where a key is absent. The recognition score floor is an end-to-end filter only (not part of the recognition model config); see `OCRDefaultThresholds`.
     /// - Returns: `OCRPipelineResult` with all results and timing.
-    func run(_ image: CGImage) async throws -> OCRPipelineResult {
+    func run(_ image: CGImage, params: OCRRuntimeParams = .noOverrides) async throws -> OCRPipelineResult {
         let pipelineStart = CFAbsoluteTimeGetCurrent()
 
+        let resolved = params.resolved(det: detectionEngine.modelConfig)
+
         // Step 1: Detect text regions
-        let detResult = try await detectionEngine.detect(image)
+        let detResult = try await detectionEngine.detect(image, runtimeParams: params)
 
         // Step 2: Sort boxes in reading order
         let sortedBoxes = BoxSorter.sortInReadingOrder(detResult.boxes)
@@ -126,6 +134,10 @@ class OCREngine {
             // Recognize text in cropped image
             let recResult = try await recognitionEngine.recognize(croppedImage)
             totalRecTime += recResult.totalTime
+
+            if recResult.confidence < resolved.textRecScoreThresh {
+                continue
+            }
 
             ocrResults.append(OCRResult(
                 polygon: box.points,

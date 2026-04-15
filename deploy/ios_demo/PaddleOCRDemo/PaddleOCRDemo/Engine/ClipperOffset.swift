@@ -171,8 +171,7 @@ class ClipperOffset {
     /// Convenience method that offsets a single closed polygon using JT_ROUND + ET_CLOSEDPOLYGON.
     ///
     /// This is the exact combination used by DBPostProcess's `unclip()` method.
-    /// Accepts float coordinates (as `CGPoint`), converts to integer internally
-    /// (matching pyclipper's default behavior of rounding to nearest integer),
+    /// Accepts float coordinates (as `CGPoint`), converts to integer internally,
     /// computes the offset, and returns the result as float coordinates.
     ///
     /// - Parameters:
@@ -182,7 +181,7 @@ class ClipperOffset {
     static func offsetPolygon(_ polygon: [CGPoint], distance: Double) -> [[CGPoint]] {
         let clipper = ClipperOffset()
 
-        // Convert CGPoint to IntPoint (round to nearest integer, matching pyclipper)
+        // Convert CGPoint to IntPoint (round to nearest integer)
         let intPath = polygon.map { IntPoint(x: Int64($0.x.rounded()), y: Int64($0.y.rounded())) }
 
         clipper.addPath(intPath, joinType: .jtRound, endType: .etClosedPolygon)

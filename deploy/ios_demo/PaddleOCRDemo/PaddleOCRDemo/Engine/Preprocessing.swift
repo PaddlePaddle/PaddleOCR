@@ -244,7 +244,6 @@ struct DetPreprocessor {
     }
 
     /// Resizes an RGB pixel buffer using bilinear interpolation via CoreGraphics.
-    /// This matches cv2.resize() with INTER_LINEAR (the default).
     private func resizeImage(
         _ pixels: [UInt8], srcW: Int, srcH: Int, dstW: Int, dstH: Int
     ) -> [UInt8] {

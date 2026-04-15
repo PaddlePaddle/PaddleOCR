@@ -37,7 +37,7 @@ enum InferenceConfigError: LocalizedError {
 // MARK: - Transform Operations
 
 /// Represents a single preprocessing transform operation parsed from the model config file.
-/// Each case carries associated parameters read from the YAML config.
+/// Each case carries associated parameters read from the model config file.
 enum TransformOp {
     case detResizeForTest(resizeLong: Int)
     case normalizeImage(scale: Float, mean: [Float], std: [Float], order: String)
@@ -58,7 +58,6 @@ struct PostProcessConfig {
     let boxThresh: Float?
     let maxCandidates: Int?
     let unclipRatio: Float?
-    let characterDictPath: String?
     let characterDict: [String]?
 }
 
@@ -69,23 +68,23 @@ struct InferenceConfig {
 
     // MARK: - Loading
 
-    /// Loads and parses a model config file into a typed InferenceConfig.
+    /// Loads and parses a model config file into a typed `InferenceConfig`.
     ///
-    /// - Parameter yamlPath: Absolute filesystem path to the YAML model config file.
-    /// - Returns: A fully parsed InferenceConfig with typed transform operations.
-    static func load(from yamlPath: String) throws -> InferenceConfig {
-        guard FileManager.default.fileExists(atPath: yamlPath) else {
-            throw InferenceConfigError.fileNotFound(yamlPath)
+    /// - Parameter path: Absolute filesystem path to the model config file.
+    /// - Returns: A fully parsed `InferenceConfig` with typed transform operations.
+    static func load(from path: String) throws -> InferenceConfig {
+        guard FileManager.default.fileExists(atPath: path) else {
+            throw InferenceConfigError.fileNotFound(path)
         }
 
-        let yamlString: String
+        let configFileText: String
         do {
-            yamlString = try String(contentsOfFile: yamlPath, encoding: .utf8)
+            configFileText = try String(contentsOfFile: path, encoding: .utf8)
         } catch {
             throw InferenceConfigError.parseError("Cannot read file: \(error.localizedDescription)")
         }
 
-        guard let root = try Yams.load(yaml: yamlString) as? [String: Any] else {
+        guard let root = try Yams.load(yaml: configFileText) as? [String: Any] else {
             throw InferenceConfigError.parseError("Root element is not a dictionary")
         }
 
@@ -206,7 +205,6 @@ struct InferenceConfig {
         let boxThresh = (dict["box_thresh"] as? Double).map { Float($0) }
         let maxCandidates = dict["max_candidates"] as? Int
         let unclipRatio = (dict["unclip_ratio"] as? Double).map { Float($0) }
-        let characterDictPath = dict["character_dict_path"] as? String
         let characterDict = (dict["character_dict"] as? [Any])?.compactMap { $0 as? String }
 
         return PostProcessConfig(
@@ -215,7 +213,6 @@ struct InferenceConfig {
             boxThresh: boxThresh,
             maxCandidates: maxCandidates,
             unclipRatio: unclipRatio,
-            characterDictPath: characterDictPath,
             characterDict: characterDict
         )
     }

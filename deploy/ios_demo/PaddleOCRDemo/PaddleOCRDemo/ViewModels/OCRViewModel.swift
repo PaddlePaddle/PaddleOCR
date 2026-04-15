@@ -86,9 +86,13 @@ enum AppError: Equatable, LocalizedError {
 class OCRViewModel: ObservableObject {
     @Published var state: AppState = .loadingModels
     @Published var copiedFeedback: Bool = false
+    @Published var runtimeParams = OCRRuntimeParams.noOverrides
+    @Published private(set) var thresholdBaseline: ResolvedOCRRuntimeParams?
 
     private var sessionManager: ORTSessionManager?
     private var ocrEngine: OCREngine?
+    /// Last image run through OCR (normalized orientation), for **Re-run OCR** without re-picking.
+    private var lastNormalizedImage: UIImage?
 
     /// Name of the demo sample in Resources/SampleImages (from `fetch_ios_demo_assets.sh`).
     let sampleImageNames: [String] = ["general_ocr_002"]
@@ -107,6 +111,7 @@ class OCRViewModel: ObservableObject {
             let engine = try OCREngine(sessionManager: manager)
             self.sessionManager = manager
             self.ocrEngine = engine
+            self.thresholdBaseline = engine.baselineRuntimeDefaults()
             state = .ready
         } catch {
             state = .error(.modelLoadFailed(error.localizedDescription))
@@ -121,17 +126,25 @@ class OCRViewModel: ObservableObject {
     /// then delegates to `OCREngine.run(_:)`.
     func processImage(_ uiImage: UIImage) async {
         let normalized = normalizeOrientation(uiImage)
+        lastNormalizedImage = normalized
         state = .processing(normalized)
         guard let cgImage = normalized.cgImage else {
             state = .error(.imageLoadFailed)
             return
         }
         do {
-            let result = try await ocrEngine!.run(cgImage)
+            let result = try await ocrEngine!.run(cgImage, params: runtimeParams)
             state = .results(result, normalized)
         } catch {
+            lastNormalizedImage = nil
             state = .error(.inferenceFailed(error.localizedDescription))
         }
+    }
+
+    /// Runs OCR again on the **last image** using the current `runtimeParams` (e.g. after tuning sliders).
+    func rerunOCR() async {
+        guard let image = lastNormalizedImage else { return }
+        await processImage(image)
     }
 
     /// Load a bundled sample image by name and run OCR on it.
@@ -172,6 +185,7 @@ class OCRViewModel: ObservableObject {
 
     /// Return to the ready state (e.g. after viewing results, user wants to pick a new image).
     func reset() {
+        lastNormalizedImage = nil
         state = .ready
     }
 }
