@@ -23,14 +23,55 @@ python3 generate_reference.py
 
 Outputs reference JSON files to `reference/`.
 
-### Step 3: Run iOS pipeline
+### Step 3: Run iOS pipeline and collect JSON
 
-Run the iOS app on the same test images and export results as JSON to
-`ios_output/`.  Each file should match the reference filename (e.g.,
-`test_001.json` for `test_001.jpg`).
+You need JSON files in `ios_output/` that match the reference layout (same
+basename as `reference/`, e.g. `test_001.json` for `test_001.jpg`). The app
+includes `ValidationExport` (`ValidationExport.swift`), which writes the
+correct schema under the app **Documents** directory — but **there is no
+export button in the UI yet**, so you wire it locally for validation runs.
 
-The iOS app provides a "Validation Export" feature that writes JSON files
-in the expected schema.
+**3a — Same images as `test_images/`**
+
+- Copy the same files onto the device/simulator (e.g. add them to the Xcode
+  bundle for debug, or sync via Photos). Run OCR on each image so the
+  pipeline produces a result.
+
+**3b — Call `ValidationExport.writeJSON` after a successful run**
+
+In your checkout, after OCR succeeds (e.g. in `OCRViewModel` right after
+`state = .results(result, …)`), call:
+
+```swift
+try? ValidationExport.writeJSON(
+    result: result,
+    imageName: "test_001.jpg"   // must match the basename used in reference JSON / test_images
+)
+```
+
+Use the **exact** filename string that `generate_reference.py` uses for the
+`"image"` field (same as the file in `test_images/`, e.g. `foo.jpg`).
+
+**3c — Copy JSON from the simulator/device to `ios_output/`**
+
+- **Simulator:** JSON is written to  
+  `Documents/validation_output/<stem>.json`.  
+  From a terminal (with the simulator running and the app launched once):
+
+  ```bash
+  DATA="$(xcrun simctl get_app_container booted com.paddleocr.demo data)"
+  open "$DATA"
+  ```
+
+  Then open **Documents → validation_output**, copy each `*.json` into  
+  `deploy/ios_demo/Validation/ios_output/` (create the folder if needed).
+
+- **Device:** Use Xcode **Window → Devices and Simulators** → select the app
+  → **Download Container…** (or use Files / sharing), then copy the same
+  `validation_output` JSON files into `ios_output/` on your Mac.
+
+**Naming:** Output files are `<stem>.json` (e.g. `test_001.jpg` →
+`test_001.json`), matching `reference/` and what `validate.py` expects.
 
 ### Step 4: Validate
 
