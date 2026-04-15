@@ -82,7 +82,8 @@ export function getOcrRuntimeParams(
           params.text_det_thresh,
           params.textDetThresh,
           defaults.text_det_thresh,
-          defaults.textDetThresh
+          defaults.textDetThresh,
+          config.det.postprocess.thresh
         )
       ),
       boxThresh: toNumberOrUndefined(
@@ -90,7 +91,8 @@ export function getOcrRuntimeParams(
           params.text_det_box_thresh,
           params.textDetBoxThresh,
           defaults.text_det_box_thresh,
-          defaults.textDetBoxThresh
+          defaults.textDetBoxThresh,
+          config.det.postprocess.boxThresh
         )
       ),
       unclipRatio: toNumberOrUndefined(
@@ -98,7 +100,8 @@ export function getOcrRuntimeParams(
           params.text_det_unclip_ratio,
           params.textDetUnclipRatio,
           defaults.text_det_unclip_ratio,
-          defaults.textDetUnclipRatio
+          defaults.textDetUnclipRatio,
+          config.det.postprocess.unclipRatio
         )
       )
     },
@@ -109,7 +112,7 @@ export function getOcrRuntimeParams(
           params.textRecScoreThresh,
           defaults.text_rec_score_thresh,
           defaults.textRecScoreThresh,
-          config.rec.scoreThresh
+          0
         )
       )
     }

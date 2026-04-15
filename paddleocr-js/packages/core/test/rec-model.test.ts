@@ -119,7 +119,6 @@ describe("recognition model", () => {
     const { DEFAULT_REC_MODEL_PARSE_FALLBACKS, parseRecModelConfigText } = await loadRecModule();
     expect(parseRecModelConfigText("config")).toEqual({
       imageShape: [3, 32, 160],
-      scoreThresh: DEFAULT_REC_MODEL_PARSE_FALLBACKS.scoreThresh,
       charDict: ["a", "b", " "]
     });
 

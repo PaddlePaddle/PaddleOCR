@@ -12,7 +12,6 @@ import type { NormalizeConfig } from "./common";
 export interface RecModelConfig {
   imageShape: number[];
   charDict: string[];
-  scoreThresh: number;
 }
 
 export interface RecResult {
@@ -47,11 +46,10 @@ const REC_NORMALIZE: Readonly<NormalizeConfig> = Object.freeze({
 });
 
 export const DEFAULT_REC_MODEL_PARSE_FALLBACKS: Readonly<
-  Pick<RecModelConfig, "imageShape" | "charDict" | "scoreThresh">
+  Pick<RecModelConfig, "imageShape" | "charDict">
 > = Object.freeze({
   imageShape: [3, 48, 320],
-  charDict: [],
-  scoreThresh: 0
+  charDict: []
 });
 
 export const DEFAULT_REC_RUNTIME_LIMITS = Object.freeze({});
@@ -82,8 +80,7 @@ export function parseRecModelConfigText(text: string): RecModelConfig {
 
   return {
     imageShape,
-    charDict,
-    scoreThresh: 0
+    charDict
   };
 }
 

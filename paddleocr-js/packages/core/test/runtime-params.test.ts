@@ -12,8 +12,7 @@ const SAMPLE_MODEL_CONFIG: OcrModelConfig = {
     maxSideLimit: 3200
   },
   rec: {
-    ...DEFAULT_REC_MODEL_CONFIG,
-    scoreThresh: 0.2
+    ...DEFAULT_REC_MODEL_CONFIG
   }
 };
 
@@ -94,11 +93,11 @@ describe("OCR runtime params", () => {
         limitSideLen: SAMPLE_MODEL_CONFIG.det.resizeLong,
         limitType: SAMPLE_MODEL_CONFIG.det.limitType,
         maxSideLimit: SAMPLE_MODEL_CONFIG.det.maxSideLimit,
-        thresh: undefined,
-        boxThresh: undefined,
-        unclipRatio: undefined
+        thresh: SAMPLE_MODEL_CONFIG.det.postprocess.thresh,
+        boxThresh: SAMPLE_MODEL_CONFIG.det.postprocess.boxThresh,
+        unclipRatio: SAMPLE_MODEL_CONFIG.det.postprocess.unclipRatio
       },
-      pipeline: { scoreThresh: SAMPLE_MODEL_CONFIG.rec.scoreThresh }
+      pipeline: { scoreThresh: 0 }
     });
   });
 });

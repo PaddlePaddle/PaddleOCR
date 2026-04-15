@@ -95,7 +95,7 @@ export const DEFAULT_DET_MODEL_PARSE_FALLBACKS: Readonly<DetModelConfig> = Objec
     thresh: 0.3,
     boxThresh: 0.6,
     maxCandidates: 1000,
-    unclipRatio: 1.5
+    unclipRatio: 2.0
   }
 });
 

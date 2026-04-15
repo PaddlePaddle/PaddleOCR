@@ -444,7 +444,8 @@ describe("OCR runtime parameter normalization", () => {
           }
         },
         rec: {
-          scoreThresh: 0.1
+          charDict: [],
+          imageShape: [3, 48, 320]
         }
       },
       {

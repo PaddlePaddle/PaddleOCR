@@ -53,6 +53,24 @@ function batchSizeOrOne(value: unknown): number {
   return n !== undefined && n >= 1 ? n : 1;
 }
 
+function applyGeneralPipelineRuntimeDefaults(
+  textType: string,
+  runtimeDefaults: PipelineRuntimeDefaults
+): PipelineRuntimeDefaults {
+  if (textType !== "general") {
+    return runtimeDefaults;
+  }
+  return {
+    text_det_limit_side_len: runtimeDefaults.text_det_limit_side_len ?? 960,
+    text_det_limit_type: runtimeDefaults.text_det_limit_type ?? "max",
+    text_det_max_side_limit: runtimeDefaults.text_det_max_side_limit ?? 4000,
+    text_det_thresh: runtimeDefaults.text_det_thresh ?? 0.3,
+    text_det_box_thresh: runtimeDefaults.text_det_box_thresh ?? 0.6,
+    text_det_unclip_ratio: runtimeDefaults.text_det_unclip_ratio ?? 2.0,
+    text_rec_score_thresh: runtimeDefaults.text_rec_score_thresh ?? 0
+  };
+}
+
 function parsePipelineConfigInput(input: unknown): YamlObject {
   if (typeof input === "string") {
     const parsed = yaml.load(input);
@@ -146,6 +164,11 @@ export function normalizeOcrPipelineConfig(input: unknown): NormalizedPipelineCo
   if (useTextlineOrientation || textLineOrientation) {
     addFeatureWarning(warnings, "TextLineOrientation", "config will be ignored for now");
   }
+  const textType =
+    typeof config.text_type === "string" && config.text_type.length > 0
+      ? config.text_type
+      : "general";
+
   if (config.text_type && config.text_type !== "general") {
     warnings.push(`text_type ${JSON.stringify(config.text_type)} is not used by PaddleOCR.js yet.`);
   }
@@ -173,7 +196,7 @@ export function normalizeOcrPipelineConfig(input: unknown): NormalizedPipelineCo
       ...(detAsset ? { det: detAsset } : {}),
       ...(recAsset ? { rec: recAsset } : {})
     },
-    runtimeDefaults: {
+    runtimeDefaults: applyGeneralPipelineRuntimeDefaults(textType, {
       text_det_limit_side_len: toFiniteNumber(textDetection.limit_side_len),
       text_det_limit_type: (textDetection.limit_type as LimitType | undefined) || undefined,
       text_det_max_side_limit: toFiniteNumber(textDetection.max_side_limit),
@@ -181,7 +204,7 @@ export function normalizeOcrPipelineConfig(input: unknown): NormalizedPipelineCo
       text_det_box_thresh: toFiniteNumber(textDetection.box_thresh),
       text_det_unclip_ratio: toFiniteNumber(textDetection.unclip_ratio),
       text_rec_score_thresh: toFiniteNumber(textRecognition.score_thresh)
-    },
+    }),
     pipelineBatchSize,
     textDetectionBatchSize,
     textRecognitionBatchSize: textRecognitionBatchSizeFromModule
