@@ -17,6 +17,7 @@ import SwiftUI
 /// Sliders for detection / recognition runtime parameters (content only; wrap with `DemoCard` in parent).
 struct OCRParametersPanel: View {
     @Binding var params: OCRRuntimeParams
+    @Binding var inferenceBackend: ORTInferenceBackend
     let resolvedBaseline: ResolvedOCRRuntimeParams
 
     var body: some View {
@@ -31,6 +32,20 @@ struct OCRParametersPanel: View {
                 .font(.subheadline.weight(.medium))
             }
             .padding(.bottom, 4)
+
+            groupTitle("Inference engine")
+            VStack(alignment: .leading, spacing: 6) {
+                Text("Core ML or XNNPACK only — reloads models when changed")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                Picker("Inference engine", selection: $inferenceBackend) {
+                    ForEach(ORTInferenceBackend.allCases) { backend in
+                        Text(backend.displayTitle).tag(backend)
+                    }
+                }
+                .pickerStyle(.segmented)
+            }
+            .padding(.bottom, 14)
 
             groupTitle("Detection")
             paramRow(

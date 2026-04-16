@@ -86,6 +86,8 @@ class OCRViewModel: ObservableObject {
     @Published var state: AppState = .loadingModels
     @Published var copiedFeedback: Bool = false
     @Published var runtimeParams = OCRRuntimeParams.noOverrides
+    /// ONNX Runtime EP chain (requires ``loadModels()`` to take effect).
+    @Published var inferenceBackend: ORTInferenceBackend = .coreMLOnly
     @Published private(set) var resolvedRuntimeBaseline: ResolvedOCRRuntimeParams?
 
     private var sessionManager: ORTSessionManager?
@@ -111,7 +113,7 @@ class OCRViewModel: ObservableObject {
         state = .loadingModels
         do {
             let manager = ORTSessionManager()
-            try await manager.loadModels()
+            try await manager.loadModels(backend: inferenceBackend)
             let engine = try OCREngine(sessionManager: manager)
             self.sessionManager = manager
             self.ocrEngine = engine

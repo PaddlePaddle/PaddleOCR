@@ -19,7 +19,7 @@ final class ORTSessionManagerTests: XCTestCase {
 
     func testLoadModels() async throws {
         let manager = ORTSessionManager()
-        try await manager.loadModels()
+        try await manager.loadModels(backend: .coreMLOnly)
     }
 
     func testModelConfigResolution() throws {

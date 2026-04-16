@@ -14,10 +14,28 @@
 
 import Foundation
 
+/// ONNX Runtime execution provider for mobile: Core ML only or XNNPACK only.
+enum ORTInferenceBackend: String, CaseIterable, Identifiable, Sendable {
+    /// Core ML execution provider only (ANE/GPU). Default on Apple devices.
+    case coreMLOnly
+    /// XNNPACK (CPU) only.
+    case xnnpackOnly
+
+    var id: String { rawValue }
+
+    var displayTitle: String {
+        switch self {
+        case .coreMLOnly: return "Core ML"
+        case .xnnpackOnly: return "XNNPACK"
+        }
+    }
+}
+
 enum ORTSessionManagerError: LocalizedError {
     case modelNotFound(String)
     case sessionCreationFailed(String)
     case inferenceFailed(String)
+    case inputTensorElementCountMismatch(expected: Int, actual: Int, modelName: String)
     case outputContainsNaN(String)
 
     var errorDescription: String? {
@@ -25,6 +43,8 @@ enum ORTSessionManagerError: LocalizedError {
         case .modelNotFound(let name): return "Model not found: \(name)"
         case .sessionCreationFailed(let detail): return "Session creation failed: \(detail)"
         case .inferenceFailed(let detail): return "Inference failed: \(detail)"
+        case .inputTensorElementCountMismatch(let expected, let actual, let modelName):
+            return "\(modelName): input tensor size mismatch (expected \(expected) floats, got \(actual))"
         case .outputContainsNaN(let name): return "Output tensor '\(name)' contains NaN values"
         }
     }
@@ -36,9 +56,9 @@ actor ORTSessionManager {
     private var recSession: ORTSession?
 
     /// Load both models. Creates one ORTEnv (per ORT docs: one per process),
-    /// configures CoreML EP -> XNNPACK EP fallback chain,
+    /// configures execution providers per ``ORTInferenceBackend``,
     /// and creates sessions for detection and recognition models.
-    func loadModels() async throws {
+    func loadModels(backend: ORTInferenceBackend = .coreMLOnly) async throws {
         // 1. Create environment (one per process)
         let env = try ORTEnv(loggingLevel: .warning)
         self.env = env
@@ -47,19 +67,20 @@ actor ORTSessionManager {
         let options = try ORTSessionOptions()
         try options.setGraphOptimizationLevel(.all)
 
-        // 3. CoreML EP (device default)
-        let coremlOptions = ORTCoreMLExecutionProviderOptions()
-        try options.appendCoreMLExecutionProvider(with: coremlOptions)
+        switch backend {
+        case .coreMLOnly:
+            let coremlOptions = ORTCoreMLExecutionProviderOptions()
+            try options.appendCoreMLExecutionProvider(with: coremlOptions)
+        case .xnnpackOnly:
+            let xnnpackOptions = ORTXnnpackExecutionProviderOptions()
+            try options.appendXnnpackExecutionProvider(with: xnnpackOptions)
+        }
 
-        // 4. XNNPACK EP (CPU fallback)
-        let xnnpackOptions = ORTXnnpackExecutionProviderOptions()
-        try options.appendXnnpackExecutionProvider(with: xnnpackOptions)
-
-        // 5. Load detection model
+        // 3. Load detection model
         let detConfig = try ModelConfig.detection()
         detSession = try ORTSession(env: env, modelPath: detConfig.modelPath, sessionOptions: options)
 
-        // 6. Load recognition model (reuse same options)
+        // 4. Load recognition model (reuse same options)
         let recConfig = try ModelConfig.recognition()
         recSession = try ORTSession(env: env, modelPath: recConfig.modelPath, sessionOptions: options)
     }
@@ -110,6 +131,15 @@ actor ORTSessionManager {
 
         guard let firstInputName = inputNames.first else {
             throw ORTSessionManagerError.inferenceFailed("\(modelName): no input names found")
+        }
+
+        let expectedElements = shape.reduce(1, *)
+        guard expectedElements == inputData.count else {
+            throw ORTSessionManagerError.inputTensorElementCountMismatch(
+                expected: expectedElements,
+                actual: inputData.count,
+                modelName: modelName
+            )
         }
 
         // Create ORT tensor from input data

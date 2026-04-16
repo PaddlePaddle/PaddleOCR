@@ -36,6 +36,9 @@ struct ContentView: View {
         .task {
             await viewModel.loadModels()
         }
+        .onChange(of: viewModel.inferenceBackend) { _ in
+            Task { await viewModel.loadModels() }
+        }
         .onChange(of: selectedItem) { newItem in
             guard let item = newItem else { return }
             Task {
@@ -110,6 +113,7 @@ struct ContentView: View {
                 DemoCard {
                     OCRParametersPanel(
                         params: $viewModel.runtimeParams,
+                        inferenceBackend: $viewModel.inferenceBackend,
                         resolvedBaseline: viewModel.resolvedRuntimeBaseline ?? .fallbackForUI
                     )
                 }
@@ -191,6 +195,7 @@ struct ContentView: View {
                 DemoCard {
                     OCRParametersPanel(
                         params: $viewModel.runtimeParams,
+                        inferenceBackend: $viewModel.inferenceBackend,
                         resolvedBaseline: viewModel.resolvedRuntimeBaseline ?? .fallbackForUI
                     )
                 }

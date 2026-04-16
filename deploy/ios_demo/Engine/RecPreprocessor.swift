@@ -136,6 +136,10 @@ struct RecPreprocessor {
             resizedW = Int(ceil(Float(imgH) * ratio))
         }
 
+        // Dynamic width aligned to 8px. PP-OCRv6_small rec can hit XNNPACK crashes (e.g. in reduce/softmax
+        // micro-kernels) on arbitrary widths when CoreML does not cover the full graph; padding to 8 helps.
+        targetW = min(max(roundUpToMultipleOf(targetW, 8), resizedW), maxImgW)
+
         // Step 3: OpenCV `INTER_LINEAR` resize on 3-channel row-major data.
         let resizedPixels = resizeWithOpenCV(pixelBytes, srcW: originalW, srcH: originalH, dstW: resizedW, dstH: imgH)
 
@@ -293,4 +297,9 @@ struct RecPreprocessor {
 
         return padded
     }
+}
+
+private func roundUpToMultipleOf(_ value: Int, _ multiple: Int) -> Int {
+    guard multiple > 0 else { return value }
+    return (value + multiple - 1) / multiple * multiple
 }
