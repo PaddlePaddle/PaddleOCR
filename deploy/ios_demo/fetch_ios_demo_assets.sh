@@ -22,9 +22,9 @@ ALLOWED_VARIANTS=(PP-OCRv6_small PP-OCRv6_tiny)
 DEFAULT_VARIANT="PP-OCRv6_small"
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-DEST_DET="${SCRIPT_DIR}/PaddleOCRDemo/PaddleOCRDemo/Models/det"
-DEST_REC="${SCRIPT_DIR}/PaddleOCRDemo/PaddleOCRDemo/Models/rec"
-DEST_SAMPLES="${SCRIPT_DIR}/PaddleOCRDemo/PaddleOCRDemo/Resources/SampleImages"
+DEST_DET="${SCRIPT_DIR}/Models/det"
+DEST_REC="${SCRIPT_DIR}/Models/rec"
+DEST_SAMPLES="${SCRIPT_DIR}/Resources/SampleImages"
 WORKDIR="${SCRIPT_DIR}/.fetch_ios_demo_assets_work"
 
 run_models=1
@@ -96,7 +96,7 @@ if [[ "${run_models}" -eq 1 ]]; then
   DET_TAR="${variant}_det_onnx.tar"
   REC_TAR="${variant}_rec_onnx.tar"
 
-  mkdir -p "${WORKDIR}" "${DEST_DET}" "${DEST_REC}"
+  mkdir -p "${WORKDIR}"
 
   fetch() {
     local name="$1"
@@ -115,13 +115,14 @@ if [[ "${run_models}" -eq 1 ]]; then
     tar -xf "${tar_path}" -C "${WORKDIR}"
   }
 
-  install_bundle() {
+  install_extracted_dir() {
     local src_dir="$1"
     local dest_dir="$2"
-    [[ -f "${src_dir}/inference.onnx" ]] || die "missing ${src_dir}/inference.onnx"
-    [[ -f "${src_dir}/inference.yml" ]] || die "missing config file in ${src_dir}"
-    cp -f "${src_dir}/inference.onnx" "${dest_dir}/model.onnx"
-    cp -f "${src_dir}/inference.yml" "${dest_dir}/inference.yml"
+    local label="$3"
+    [[ -d "${src_dir}" ]] || die "expected directory ${src_dir} (${label})"
+    mkdir -p "$(dirname "${dest_dir}")"
+    rm -rf "${dest_dir}"
+    mv "${src_dir}" "${dest_dir}"
   }
 
   echo "=== ONNX models (variant: ${variant}) ==="
@@ -134,17 +135,13 @@ if [[ "${run_models}" -eq 1 ]]; then
 
   DET_SRC="${WORKDIR}/$(basename "${DET_TAR}" .tar)"
   REC_SRC="${WORKDIR}/$(basename "${REC_TAR}" .tar)"
-  [[ -d "${DET_SRC}" ]] || die "expected directory ${DET_SRC} after extracting ${DET_TAR}"
-  [[ -d "${REC_SRC}" ]] || die "expected directory ${REC_SRC} after extracting ${REC_TAR}"
 
-  install_bundle "${DET_SRC}" "${DEST_DET}"
-  install_bundle "${REC_SRC}" "${DEST_REC}"
+  install_extracted_dir "${DET_SRC}" "${DEST_DET}" "det"
+  install_extracted_dir "${REC_SRC}" "${DEST_REC}" "rec"
 
   echo "Installed:"
-  echo "  ${DEST_DET}/model.onnx"
-  echo "  ${DEST_DET}/inference.yml"
-  echo "  ${DEST_REC}/model.onnx"
-  echo "  ${DEST_REC}/inference.yml"
+  echo "  ${DEST_DET}"
+  echo "  ${DEST_REC}"
   echo ""
 fi
 

@@ -1,11 +1,11 @@
 # CocoaPods
-PaddleOCRDemo/Pods/
-PaddleOCRDemo/Podfile.lock
+Pods/
+Podfile.lock
 
 # Xcode
-PaddleOCRDemo/PaddleOCRDemo.xcworkspace/xcuserdata/
-PaddleOCRDemo/PaddleOCRDemo.xcodeproj/xcuserdata/
-PaddleOCRDemo/PaddleOCRDemo.xcodeproj/project.xcworkspace/xcuserdata/
+PaddleOCRDemo.xcworkspace/xcuserdata/
+PaddleOCRDemo.xcodeproj/xcuserdata/
+PaddleOCRDemo.xcodeproj/project.xcworkspace/xcuserdata/
 *.xcuserstate
 DerivedData/
 build/
@@ -15,9 +15,9 @@ build/
 .download_models_work/
 
 # Demo sample PNG — downloaded by fetch_ios_demo_assets.sh; not tracked in git.
-PaddleOCRDemo/PaddleOCRDemo/Resources/SampleImages/*.png
+Resources/SampleImages/*.png
 
 # Models — ignore all files under Models/; track only `.gitkeep` so det/, rec/, … stay in the tree
-PaddleOCRDemo/PaddleOCRDemo/Models/**
-!PaddleOCRDemo/PaddleOCRDemo/Models/*/
-!PaddleOCRDemo/PaddleOCRDemo/Models/*/.gitkeep
+Models/**
+!Models/*/
+!Models/*/.gitkeep
