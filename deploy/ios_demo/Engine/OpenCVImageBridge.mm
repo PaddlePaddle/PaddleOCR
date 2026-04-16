@@ -170,7 +170,7 @@
 
     int w = (int)width;
     int h = (int)height;
-    // Clamp ROI to bitmap bounds (same bounds as common DB box-score implementations).
+    // Clamp ROI to bitmap bounds before masking and mean (avoids out-of-range reads).
     int xmin = std::max(0, std::min((int)std::floor(xminF), w - 1));
     int xmax = std::max(0, std::min((int)std::ceil(xmaxF), w - 1));
     int ymin = std::max(0, std::min((int)std::floor(yminF), h - 1));

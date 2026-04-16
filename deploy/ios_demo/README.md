@@ -1,6 +1,6 @@
 # iOS Demo
 
-SwiftUI demo that runs text detection and recognition on device using exported ONNX models and [ONNX Runtime Objective-C API](https://onnxruntime.ai/docs/tutorials/mobile/) (CoreML + XNNPACK execution providers).
+SwiftUI demo that runs OCR on device using exported ONNX models and [ONNX Runtime Objective-C API](https://onnxruntime.ai/docs/tutorials/mobile/) (CoreML + XNNPACK execution providers).
 
 ## Third-party licenses
 

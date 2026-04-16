@@ -23,7 +23,7 @@
         return @[];
     }
     using namespace ClipperLib;
-    // Default miter limit / arc tolerance used by common DB unclip wrappers.
+    // Default miter limit and arc tolerance for ClipperOffset (round join).
     ClipperOffset co(2.0, 0.25);
     Path path;
     path.reserve(points.count);

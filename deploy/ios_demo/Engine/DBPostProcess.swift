@@ -27,28 +27,15 @@ struct DetectionBox {
     let score: Float
 }
 
-// MARK: - PostProcessConfig Protocol
-
-/// Minimal protocol for postprocessing configuration.
-/// Plan 02-01 will provide the concrete `PostProcessConfig` struct.
-/// This protocol ensures DBPostProcessor can be initialized from it.
-protocol DBPostProcessConfigurable {
-    var thresh: Float? { get }
-    var boxThresh: Float? { get }
-    var maxCandidates: Int? { get }
-    var unclipRatio: Float? { get }
-}
-
 // MARK: - DBPostProcessor
 
 /// DB (Differentiable Binarization) text detection postprocessor.
 ///
-/// Implements the full pipeline from raw model output probability map to
+/// Maps raw model output probability map to
 /// bounding polygons (threshold → contours → min-area quads → score filter → unclip → scale).
 ///
-/// Pipeline: threshold → contours → min-area quads → box score → polygon offset (unclip) → scale to original size.
+/// Steps: threshold → contours → min-area quads → box score → polygon offset (unclip) → scale to original size.
 ///
-/// All parameters are read from configuration.
 struct DBPostProcessor {
 
     /// Binary threshold for the probability map (pixels above this are foreground).
@@ -79,12 +66,12 @@ struct DBPostProcessor {
         self.unclipRatio = unclipRatio
     }
 
-    /// Initialize from a configuration object (PostProcessConfig from InferenceConfig).
-    init(config: DBPostProcessConfigurable) {
-        self.thresh = config.thresh ?? 0.3
-        self.boxThresh = config.boxThresh ?? 0.6
-        self.maxCandidates = config.maxCandidates ?? 1000
-        self.unclipRatio = config.unclipRatio ?? 1.5
+    /// Initialize from a parsed ``PostProcessConfig`.
+    init(config: PostProcessConfig) {
+        self.thresh = config.thresh
+        self.boxThresh = config.boxThresh
+        self.maxCandidates = config.maxCandidates
+        self.unclipRatio = config.unclipRatio
     }
 
     // MARK: - Public API

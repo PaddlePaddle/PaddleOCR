@@ -14,10 +14,10 @@
 
 import SwiftUI
 
-/// Sliders for DB detection + recognition score threshold (content only; wrap with `DemoCard` in parent).
+/// Sliders for detection / recognition runtime parameters (content only; wrap with `DemoCard` in parent).
 struct OCRParametersPanel: View {
     @Binding var params: OCRRuntimeParams
-    let baseline: ResolvedOCRRuntimeParams
+    let resolvedBaseline: ResolvedOCRRuntimeParams
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -37,19 +37,36 @@ struct OCRParametersPanel: View {
                 title: "Map threshold",
                 caption: "Binarization on the detector heatmap",
                 range: 0.05...0.95,
-                value: overrideBinding(\.textDetThresh, fallback: baseline.textDetThresh)
+                value: floatOverrideBinding(\.textDetThresh, fallback: resolvedBaseline.textDetThresh)
             )
             paramRow(
                 title: "Box score threshold",
                 caption: "Minimum score to keep a box",
                 range: 0.1...0.95,
-                value: overrideBinding(\.textDetBoxThresh, fallback: baseline.textDetBoxThresh)
+                value: floatOverrideBinding(\.textDetBoxThresh, fallback: resolvedBaseline.textDetBoxThresh)
             )
             paramRow(
                 title: "Unclip ratio",
                 caption: "Expand recovered polygons",
                 range: 0.5...3.0,
-                value: overrideBinding(\.textDetUnclipRatio, fallback: baseline.textDetUnclipRatio)
+                value: floatOverrideBinding(\.textDetUnclipRatio, fallback: resolvedBaseline.textDetUnclipRatio)
+            )
+
+            groupTitle("Resize")
+            intParamRow(
+                title: "Limit side length",
+                caption: "Side length limit for detection resize",
+                range: 32...2048,
+                value: intOverrideBinding(\.textDetLimitSideLen, fallback: resolvedBaseline.textDetLimitSideLen)
+            )
+            limitTypeRow(
+                selection: stringOverrideBinding(\.textDetLimitType, fallback: resolvedBaseline.textDetLimitType)
+            )
+            intParamRow(
+                title: "Max side length cap",
+                caption: "After limit-side resize, caps the longer side if it is still above this",
+                range: 500...8000,
+                value: intOverrideBinding(\.textDetMaxSideLimit, fallback: resolvedBaseline.textDetMaxSideLimit)
             )
 
             Divider()
@@ -60,15 +77,43 @@ struct OCRParametersPanel: View {
                 title: "Line confidence",
                 caption: "Discard lines below this score",
                 range: 0...1,
-                value: overrideBinding(\.textRecScoreThresh, fallback: baseline.textRecScoreThresh)
+                value: floatOverrideBinding(\.textRecScoreThresh, fallback: resolvedBaseline.textRecScoreThresh)
             )
         }
     }
 
-    private func overrideBinding(
+    private func floatOverrideBinding(
         _ keyPath: WritableKeyPath<OCRRuntimeParams, Float?>,
         fallback: Float
     ) -> Binding<Float> {
+        Binding(
+            get: { params[keyPath: keyPath] ?? fallback },
+            set: { newValue in
+                var next = params
+                next[keyPath: keyPath] = newValue
+                params = next
+            }
+        )
+    }
+
+    private func intOverrideBinding(
+        _ keyPath: WritableKeyPath<OCRRuntimeParams, Int?>,
+        fallback: Int
+    ) -> Binding<Int> {
+        Binding(
+            get: { params[keyPath: keyPath] ?? fallback },
+            set: { newValue in
+                var next = params
+                next[keyPath: keyPath] = newValue
+                params = next
+            }
+        )
+    }
+
+    private func stringOverrideBinding(
+        _ keyPath: WritableKeyPath<OCRRuntimeParams, String?>,
+        fallback: String
+    ) -> Binding<String> {
         Binding(
             get: { params[keyPath: keyPath] ?? fallback },
             set: { newValue in
@@ -117,6 +162,60 @@ struct OCRParametersPanel: View {
                 in: Double(range.lowerBound)...Double(range.upperBound)
             )
             .tint(Color.accentColor)
+        }
+        .padding(.bottom, 14)
+    }
+
+    private func intParamRow(
+        title: String,
+        caption: String,
+        range: ClosedRange<Int>,
+        value: Binding<Int>
+    ) -> some View {
+        VStack(alignment: .leading, spacing: 6) {
+            HStack(alignment: .firstTextBaseline) {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(title)
+                        .font(.subheadline)
+                    Text(caption)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+                Spacer()
+                Text("\(value.wrappedValue)")
+                    .font(.caption.monospacedDigit())
+                    .foregroundStyle(.secondary)
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 4)
+                    .background(Color(.tertiarySystemFill), in: Capsule())
+            }
+            Slider(
+                value: Binding(
+                    get: { Double(value.wrappedValue) },
+                    set: { value.wrappedValue = Int($0.rounded()) }
+                ),
+                in: Double(range.lowerBound)...Double(range.upperBound),
+                step: 1
+            )
+            .tint(Color.accentColor)
+        }
+        .padding(.bottom, 14)
+    }
+
+    private func limitTypeRow(selection: Binding<String>) -> some View {
+        VStack(alignment: .leading, spacing: 6) {
+            VStack(alignment: .leading, spacing: 2) {
+                Text("Limit type")
+                    .font(.subheadline)
+                Text("min: shortest side ≥ limit length; max: longest side ≤ limit length")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+            Picker("Limit type", selection: selection) {
+                Text("min").tag("min")
+                Text("max").tag("max")
+            }
+            .pickerStyle(.segmented)
         }
         .padding(.bottom, 14)
     }

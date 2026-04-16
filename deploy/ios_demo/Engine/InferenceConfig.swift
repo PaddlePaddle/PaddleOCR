@@ -57,13 +57,10 @@ enum InferenceImageChannelOrder: Equatable, Sendable {
 }
 
 /// Parameters for `DetResizeForTest` from the model config file.
-/// Keys such as `limit_type` / `max_side_limit` are only set when present in the model config (missing keys stay unset).
-/// `resize_long` is folded into merged `limit_side_len` in `OCRPipelineDefaults.effectiveDetResize` (limit-side path, not the long-edge-only stride path).
 struct DetResizeParams: Equatable {
-    var limitSideLen: Int?
-    var limitType: String?
-    var maxSideLimit: Int?
-    var resizeLong: Int?
+    var limitSideLen: Int
+    var limitType: String
+    var maxSideLimit: Int
 }
 
 /// Represents a single preprocessing transform operation parsed from the model config file.
@@ -86,10 +83,10 @@ struct PreProcessConfig {
 
 struct PostProcessConfig {
     let name: String
-    let thresh: Float?
-    let boxThresh: Float?
-    let maxCandidates: Int?
-    let unclipRatio: Float?
+    let thresh: Float
+    let boxThresh: Float
+    let maxCandidates: Int
+    let unclipRatio: Float
     let characterDict: [String]?
 }
 
@@ -152,6 +149,22 @@ struct InferenceConfig {
 extension InferenceConfig {
     // MARK: - Private Parsing Helpers
 
+    private enum ParseDefaults {
+        static let postThresh: Float = 0.3
+        static let postBoxThresh: Float = 0.6
+        static let postMaxCandidates: Int = 1000
+        static let postUnclipRatio: Float = 2.0
+        static let detResizeLimitSideLen: Int = 960
+        static let detResizeLimitType: String = "max"
+        static let detResizeMaxSideLimit: Int = 4000
+    }
+
+    private static let defaultDetResizeParams = DetResizeParams(
+        limitSideLen: ParseDefaults.detResizeLimitSideLen,
+        limitType: ParseDefaults.detResizeLimitType,
+        maxSideLimit: ParseDefaults.detResizeMaxSideLimit
+    )
+
     /// Parses a single transform operation dictionary (one key = op name, value = params or null).
     private static func parseTransformOp(_ dict: [String: Any?]) -> TransformOp {
         guard let opName = dict.keys.first else {
@@ -166,16 +179,19 @@ extension InferenceConfig {
 
         case "DetResizeForTest":
             let params = dict[opName] as? [String: Any] ?? [:]
-            let limitSideLen = optionalIntValue(params["limit_side_len"])
-            let resizeLong = optionalIntValue(params["resize_long"])
-            let maxSideLimit = intValueForKeyIfPresent(params, key: "max_side_limit")
-            let limitType = stringValueForKeyIfPresent(params, key: "limit_type")
+            let limitSideLen =
+                optionalIntValue(params["resize_long"])
+                ?? optionalIntValue(params["limit_side_len"])
+                ?? ParseDefaults.detResizeLimitSideLen
+            let limitType = params["limit_type"] as? String ?? ParseDefaults.detResizeLimitType
+            let maxSideLimit =
+                intValueForKeyIfPresent(params, key: "max_side_limit")
+                ?? ParseDefaults.detResizeMaxSideLimit
             return .detResizeForTest(
                 DetResizeParams(
                     limitSideLen: limitSideLen,
                     limitType: limitType,
-                    maxSideLimit: maxSideLimit,
-                    resizeLong: resizeLong
+                    maxSideLimit: maxSideLimit
                 )
             )
 
@@ -220,11 +236,8 @@ extension InferenceConfig {
             if parts.count == 2,
                let numerator = Double(parts[0].trimmingCharacters(in: .init(charactersIn: "."))),
                let denominator = Double(parts[1].trimmingCharacters(in: .init(charactersIn: "."))) {
-                // "1." -> 1.0, "255." -> 255.0
-                // Handle edge cases: "1./255." -> numerator=1.0, denominator=255.0
                 return Float(numerator / denominator)
             }
-            // Fallback: try parsing the parts as-is (e.g. "1.0/255.0")
             let rawParts = s.split(separator: "/")
             if rawParts.count == 2,
                let num = Double(rawParts[0]),
@@ -232,7 +245,6 @@ extension InferenceConfig {
                 return Float(num / den)
             }
         }
-        // Try direct parse
         if let val = Double(s) {
             return Float(val)
         }
@@ -250,10 +262,10 @@ extension InferenceConfig {
 
     private static func parsePostProcess(_ dict: [String: Any]) -> PostProcessConfig {
         let name = dict["name"] as? String ?? "Unknown"
-        let thresh = (dict["thresh"] as? Double).map { Float($0) }
-        let boxThresh = (dict["box_thresh"] as? Double).map { Float($0) }
-        let maxCandidates = dict["max_candidates"] as? Int
-        let unclipRatio = (dict["unclip_ratio"] as? Double).map { Float($0) }
+        let thresh = (dict["thresh"] as? Double).map { Float($0) } ?? ParseDefaults.postThresh
+        let boxThresh = (dict["box_thresh"] as? Double).map { Float($0) } ?? ParseDefaults.postBoxThresh
+        let maxCandidates = dict["max_candidates"] as? Int ?? ParseDefaults.postMaxCandidates
+        let unclipRatio = (dict["unclip_ratio"] as? Double).map { Float($0) } ?? ParseDefaults.postUnclipRatio
         let characterDict = (dict["character_dict"] as? [Any])?.compactMap { $0 as? String }
 
         return PostProcessConfig(
@@ -296,122 +308,15 @@ extension InferenceConfig {
         return nil
     }
 
+    var detResizeForMerge: DetResizeParams {
+        detResizeFromModel ?? Self.defaultDetResizeParams
+    }
+
     /// First `DecodeImage` entry in `transform_ops` and its `img_mode` (BGR or RGB). If absent, **BGR**.
     var decodeImageChannelOrder: InferenceImageChannelOrder {
         for op in preProcess.transformOps {
             if case .decodeImage(let order) = op { return order }
         }
         return .bgr
-    }
-}
-
-// MARK: - OCR runtime thresholds
-
-/// Final-tier detection postprocess defaults when the model config file omits keys.
-enum OCRDefaultThresholds {
-    static let textDetThresh: Float = 0.3
-    static let textDetBoxThresh: Float = 0.6
-    static let textDetUnclipRatio: Float = 2.0
-}
-
-struct OCRRuntimeParams: Equatable, Sendable {
-    var textDetThresh: Float?
-    var textDetBoxThresh: Float?
-    var textDetUnclipRatio: Float?
-    var textRecScoreThresh: Float?
-    /// Limit-side resize (`nil` → use `OCRPipelineDefaults`).
-    var textDetLimitSideLen: Int?
-    var textDetLimitType: String?
-    var textDetMaxSideLimit: Int?
-    /// When set, use long-edge + stride resize instead of limit-side (overrides limit-side fields).
-    var textDetResizeLong: Int?
-    /// DB postprocess candidate cap (`nil` → merge from app defaults then model config).
-    var textDetMaxCandidates: Int?
-
-    static let noOverrides = OCRRuntimeParams(
-        textDetThresh: nil,
-        textDetBoxThresh: nil,
-        textDetUnclipRatio: nil,
-        textRecScoreThresh: nil,
-        textDetLimitSideLen: nil,
-        textDetLimitType: nil,
-        textDetMaxSideLimit: nil,
-        textDetResizeLong: nil,
-        textDetMaxCandidates: nil
-    )
-}
-
-struct ResolvedOCRRuntimeParams: Equatable, Sendable {
-    var textDetThresh: Float
-    var textDetBoxThresh: Float
-    var textDetUnclipRatio: Float
-    var textRecScoreThresh: Float
-    var textDetLimitSideLen: Int
-    var textDetLimitType: String
-    var textDetMaxSideLimit: Int
-    var textDetResizeLong: Int?
-
-    init(
-        textDetThresh: Float,
-        textDetBoxThresh: Float,
-        textDetUnclipRatio: Float,
-        textRecScoreThresh: Float,
-        textDetLimitSideLen: Int,
-        textDetLimitType: String,
-        textDetMaxSideLimit: Int,
-        textDetResizeLong: Int?
-    ) {
-        self.textDetThresh = textDetThresh
-        self.textDetBoxThresh = textDetBoxThresh
-        self.textDetUnclipRatio = textDetUnclipRatio
-        self.textRecScoreThresh = textRecScoreThresh
-        self.textDetLimitSideLen = textDetLimitSideLen
-        self.textDetLimitType = textDetLimitType
-        self.textDetMaxSideLimit = textDetMaxSideLimit
-        self.textDetResizeLong = textDetResizeLong
-    }
-
-    static let fallbackForUI = ResolvedOCRRuntimeParams(
-        textDetThresh: OCRPipelineDefaults.textDetThresh,
-        textDetBoxThresh: OCRPipelineDefaults.textDetBoxThresh,
-        textDetUnclipRatio: OCRPipelineDefaults.textDetUnclipRatio,
-        textRecScoreThresh: OCRPipelineDefaults.textRecScoreThresh,
-        textDetLimitSideLen: OCRPipelineDefaults.textDetLimitSideLen,
-        textDetLimitType: OCRPipelineDefaults.textDetLimitType,
-        textDetMaxSideLimit: OCRPipelineDefaults.textDetMaxSideLimit,
-        textDetResizeLong: nil
-    )
-}
-
-extension OCRRuntimeParams {
-    func resolved(det: InferenceConfig) -> ResolvedOCRRuntimeParams {
-        let base = ResolvedOCRRuntimeParams.fromPipelineAndInference(det)
-        return ResolvedOCRRuntimeParams(
-            textDetThresh: textDetThresh ?? base.textDetThresh,
-            textDetBoxThresh: textDetBoxThresh ?? base.textDetBoxThresh,
-            textDetUnclipRatio: textDetUnclipRatio ?? base.textDetUnclipRatio,
-            textRecScoreThresh: textRecScoreThresh ?? base.textRecScoreThresh,
-            textDetLimitSideLen: textDetLimitSideLen ?? base.textDetLimitSideLen,
-            textDetLimitType: textDetLimitType ?? base.textDetLimitType,
-            textDetMaxSideLimit: textDetMaxSideLimit ?? base.textDetMaxSideLimit,
-            textDetResizeLong: textDetResizeLong ?? base.textDetResizeLong
-        )
-    }
-}
-
-extension ResolvedOCRRuntimeParams {
-    static func fromPipelineAndInference(_ det: InferenceConfig) -> ResolvedOCRRuntimeParams {
-        let eff = OCRPipelineDefaults.effectiveDetResize(inference: det, runtime: .noOverrides)
-        let post = OCRPipelineDefaults.effectiveDetPostprocess(inference: det, runtime: .noOverrides)
-        return ResolvedOCRRuntimeParams(
-            textDetThresh: post.thresh,
-            textDetBoxThresh: post.boxThresh,
-            textDetUnclipRatio: post.unclipRatio,
-            textRecScoreThresh: OCRPipelineDefaults.textRecScoreThresh,
-            textDetLimitSideLen: eff.limitSideLen ?? OCRPipelineDefaults.textDetLimitSideLen,
-            textDetLimitType: eff.limitType ?? OCRPipelineDefaults.textDetLimitType,
-            textDetMaxSideLimit: eff.maxSideLimit ?? OCRPipelineDefaults.textDetMaxSideLimit,
-            textDetResizeLong: eff.resizeLong
-        )
     }
 }

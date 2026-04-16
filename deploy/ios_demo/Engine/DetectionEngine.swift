@@ -15,14 +15,9 @@
 import CoreGraphics
 import Foundation
 
-// MARK: - PostProcessConfig Conformance
-
-/// Bridge PostProcessConfig to DBPostProcessConfigurable so it can initialize DBPostProcessor.
-extension PostProcessConfig: DBPostProcessConfigurable {}
-
 // MARK: - Detection Result
 
-/// The result of running the full detection pipeline on an image.
+/// The result of running text detection on an image.
 ///
 /// Contains the detected text boxes and per-stage timing metrics for performance analysis.
 struct DetectionResult {
@@ -56,11 +51,10 @@ enum DetectionEngineError: LocalizedError {
 
 // MARK: - DetectionEngine
 
-/// Orchestrates the complete text detection pipeline: CGImage -> preprocess -> ORT inference -> postprocess.
+/// Orchestrates text detection: CGImage → preprocess → ORT inference → postprocess.
 ///
 /// This is the integration layer that composes `DetPreprocessor`, `ORTSessionManager`, and
-/// `DBPostProcessor` into a single callable unit. All preprocessing and postprocessing parameters
-/// are read from the detection model config file at initialization time.
+/// `DBPostProcessor` into a single callable unit.
 ///
 /// Usage:
 /// ```swift
@@ -90,36 +84,35 @@ class DetectionEngine {
         self.preprocessor = try DetPreprocessor(config: cfg)
     }
 
-    private func makePostProcessor(runtime: OCRRuntimeParams) -> DBPostProcessor {
-        let e = OCRPipelineDefaults.effectiveDetPostprocess(inference: modelConfig, runtime: runtime)
-        return DBPostProcessor(
-            thresh: e.thresh,
-            boxThresh: e.boxThresh,
-            maxCandidates: e.maxCandidates,
-            unclipRatio: e.unclipRatio
+    private func makePostProcessor(effective: EffectiveOCRParams) -> DBPostProcessor {
+        DBPostProcessor(
+            thresh: effective.detThresh,
+            boxThresh: effective.detBoxThresh,
+            maxCandidates: modelConfig.postProcess.maxCandidates,
+            unclipRatio: effective.detUnclipRatio
         )
     }
 
     /// Run detection on a CGImage, returning bounding polygons with confidence scores.
     ///
-    /// Pipeline: DetResizeForTest -> NormalizeImage -> ToCHW -> ORT inference -> DBPostProcess
+    /// Steps: DetResizeForTest → NormalizeImage → ToCHW → ORT inference → DBPostProcess
     ///
     /// - Parameters:
     ///   - image: The input image to detect text regions in.
-    ///   - runtimeParams: DB thresholds and unclip ratio.
+    ///   - runtimeParams: Detection postprocess / resize overrides (see ``OCRRuntimeParams``).
     /// - Returns: A `DetectionResult` with boxes and per-stage timing metrics.
     func detect(_ image: CGImage, runtimeParams: OCRRuntimeParams = .noOverrides) async throws -> DetectionResult {
-        let detResize = OCRPipelineDefaults.effectiveDetResize(inference: modelConfig, runtime: runtimeParams)
-        return try await detect(runtimeParams: runtimeParams) {
-            try preprocessor.preprocess(image, detResize: detResize)
+        let eff = OCRParameterResolver.effective(modelConfig: modelConfig, runtime: runtimeParams)
+        return try await detect(effective: eff) {
+            try preprocessor.preprocess(image, detResize: eff.detResize)
         }
     }
 
     private func detect(
-        runtimeParams: OCRRuntimeParams,
+        effective: EffectiveOCRParams,
         preprocess: () throws -> PreprocessResult
     ) async throws -> DetectionResult {
-        let postprocessor = makePostProcessor(runtime: runtimeParams)
+        let postprocessor = makePostProcessor(effective: effective)
         // Step 1: Preprocess
         let preprocessStart = CFAbsoluteTimeGetCurrent()
         let preprocessed = try preprocess()

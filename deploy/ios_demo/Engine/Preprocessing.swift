@@ -54,11 +54,9 @@ struct PreprocessResult {
 
 // MARK: - DetPreprocessor
 
-/// Implements the detection preprocessing pipeline: **DetResizeForTest** (merged runtime → `OCRPipelineDefaults` → model config → defaults; see `effectiveDetResize`) ->
+/// Implements detection preprocessing: **DetResizeForTest** →
 /// **NormalizeImage** (from the model config file) -> **ToCHWImage**.
 ///
-/// `DetResizeForTest` in the model config is **not** the sole source of resize geometry: `detResize` passed into
-/// `preprocess` comes from `OCRPipelineDefaults.effectiveDetResize(inference:runtime:)` (`resize_long` from the model config is folded into merged `limit_side_len` on the limit-side path, not the long-edge-only stride path).
 /// Rasterization uses CoreGraphics; resize/pad use OpenCV (`INTER_LINEAR`, `copyMakeBorder`).
 /// HWC channel order follows `DecodeImage.img_mode` (`InferenceConfig.decodeImageChannelOrder`).
 struct DetPreprocessor {
@@ -106,17 +104,11 @@ struct DetPreprocessor {
     }
 
     private static func resizeRule(from params: DetResizeParams) throws -> ResizeRule {
-        if let ls = params.limitSideLen {
-            return .limitSide(
-                len: ls,
-                limitType: params.limitType ?? "min",
-                maxSideLimit: params.maxSideLimit ?? 4000
-            )
-        }
-        if let rl = params.resizeLong {
-            return .longEdge(resizeLong: rl)
-        }
-        throw DetPreprocessorError.configMissing("DetResizeForTest with limit_side_len or resize_long")
+        .limitSide(
+            len: params.limitSideLen,
+            limitType: params.limitType,
+            maxSideLimit: params.maxSideLimit
+        )
     }
 
     /// Rasterizes ``CGImage`` to HWC uint8 (`BGR` or `RGB` per `DecodeImage.img_mode`).

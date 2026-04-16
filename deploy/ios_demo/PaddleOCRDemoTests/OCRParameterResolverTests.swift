@@ -15,34 +15,10 @@
 import XCTest
 @testable import PaddleOCRDemo
 
-/// Verifies four-tier merge: runtime → `OCRPipelineDefaults` → model config file → final-tier defaults.
-final class OCRPipelineDefaultsMergeTests: XCTestCase {
+/// Verifies ``OCRParameterResolver``
+final class OCRParameterResolverTests: XCTestCase {
 
-    func testEffectiveDetResizeUsesPipelineLimit64NotModelResizeLong960() throws {
-        let dir = FileManager.default.temporaryDirectory
-        let url = dir.appendingPathComponent("merge_test_det_resize_\(UUID().uuidString).yaml")
-        let yaml = """
-        Global:
-          model_name: PP-OCRv5_mobile_det
-        PreProcess:
-          transform_ops:
-          - DetResizeForTest:
-              resize_long: 960
-        PostProcess:
-          name: DBPostProcess
-        """
-        try yaml.write(to: url, atomically: true, encoding: .utf8)
-        defer { try? FileManager.default.removeItem(at: url) }
-
-        let det = try InferenceConfig.load(from: url.path)
-        let eff = OCRPipelineDefaults.effectiveDetResize(inference: det, runtime: .noOverrides)
-        XCTAssertEqual(eff.limitSideLen, 64)
-        XCTAssertEqual(eff.limitType, "min")
-        XCTAssertEqual(eff.maxSideLimit, 4000)
-        XCTAssertNil(eff.resizeLong)
-    }
-
-    func testDetResizeParseOmittedLimitTypeAndMaxSideYieldNil() throws {
+    func testDetResizeMergePrefersAppDefaultsOverModelWhenUINil() throws {
         let dir = FileManager.default.temporaryDirectory
         let url = dir.appendingPathComponent("merge_test_det_\(UUID().uuidString).yaml")
         let yaml = """
@@ -61,16 +37,15 @@ final class OCRPipelineDefaultsMergeTests: XCTestCase {
         let det = try InferenceConfig.load(from: url.path)
         let m = det.detResizeFromModel
         XCTAssertNotNil(m)
-        XCTAssertNil(m?.limitType)
-        XCTAssertNil(m?.maxSideLimit)
-        XCTAssertEqual(m?.resizeLong, 960)
+        XCTAssertEqual(m?.limitSideLen, 960)
 
-        let eff = OCRPipelineDefaults.effectiveDetResize(inference: det, runtime: .noOverrides)
-        XCTAssertEqual(eff.limitSideLen, 64)
-        XCTAssertEqual(eff.limitType, "min")
+        let eff = OCRParameterResolver.effective(modelConfig: det, runtime: .noOverrides)
+        let app = OCRParameterResolver.textDetLimitSideLenAppDefault
+        XCTAssertEqual(eff.detResize.limitSideLen, app)
+        XCTAssertEqual(eff.mergedLimitSideLen, app)
     }
 
-    func testEffectiveDetPostprocessFourTierChain() throws {
+    func testEffectiveDetPostprocessMergesThresholdsOnly() throws {
         let dir = FileManager.default.temporaryDirectory
         let url = dir.appendingPathComponent("merge_test_post_\(UUID().uuidString).yaml")
         let yaml = """
@@ -91,11 +66,11 @@ final class OCRPipelineDefaultsMergeTests: XCTestCase {
         defer { try? FileManager.default.removeItem(at: url) }
 
         let det = try InferenceConfig.load(from: url.path)
-        let post = OCRPipelineDefaults.effectiveDetPostprocess(inference: det, runtime: .noOverrides)
-        XCTAssertEqual(post.thresh, 0.3, accuracy: 0.0001)
-        XCTAssertEqual(post.boxThresh, 0.6, accuracy: 0.0001)
-        XCTAssertEqual(post.unclipRatio, 1.5, accuracy: 0.0001)
-        XCTAssertEqual(post.maxCandidates, 1000)
+        let post = OCRParameterResolver.effective(modelConfig: det, runtime: .noOverrides)
+        XCTAssertEqual(post.detThresh, 0.3, accuracy: 0.0001)
+        XCTAssertEqual(post.detBoxThresh, 0.6, accuracy: 0.0001)
+        XCTAssertEqual(post.detUnclipRatio, 1.5, accuracy: 0.0001)
+        XCTAssertEqual(det.postProcess.maxCandidates, 7)
     }
 
     func testDecodeImageImgModeParsedAsRGB() throws {

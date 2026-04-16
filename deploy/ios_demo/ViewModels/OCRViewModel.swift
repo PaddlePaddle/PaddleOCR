@@ -24,14 +24,14 @@ enum AppState: Equatable {
     case loadingModels
     /// Models are loaded and ready; waiting for the user to select an image.
     case ready
-    /// An image is being processed through the OCR pipeline.
+    /// An image is being processed by OCR.
     case processing(UIImage)
     /// OCR completed successfully with results and the processed image.
-    case results(OCRPipelineResult, UIImage)
+    case results(OCRRunResult, UIImage)
     /// An error occurred during model loading or inference.
     case error(AppError)
 
-    // OCRPipelineResult is not Equatable, so we implement manually.
+    // OCRRunResult is not Equatable, so we implement manually.
     // `.results` always returns false to force SwiftUI re-render on new results.
     static func == (lhs: AppState, rhs: AppState) -> Bool {
         switch (lhs, rhs) {
@@ -87,7 +87,7 @@ class OCRViewModel: ObservableObject {
     @Published var state: AppState = .loadingModels
     @Published var copiedFeedback: Bool = false
     @Published var runtimeParams = OCRRuntimeParams.noOverrides
-    @Published private(set) var thresholdBaseline: ResolvedOCRRuntimeParams?
+    @Published private(set) var resolvedRuntimeBaseline: ResolvedOCRRuntimeParams?
 
     private var sessionManager: ORTSessionManager?
     private var ocrEngine: OCREngine?
@@ -102,7 +102,7 @@ class OCRViewModel: ObservableObject {
     /// Load ORT models from the app bundle.
     ///
     /// Creates an `ORTSessionManager`, loads both detection and recognition models,
-    /// then creates the `OCREngine` that composes the full pipeline.
+    /// then creates the `OCREngine` for end-to-end OCR.
     func loadModels() async {
         state = .loadingModels
         do {
@@ -111,7 +111,7 @@ class OCRViewModel: ObservableObject {
             let engine = try OCREngine(sessionManager: manager)
             self.sessionManager = manager
             self.ocrEngine = engine
-            self.thresholdBaseline = engine.baselineRuntimeDefaults()
+            self.resolvedRuntimeBaseline = engine.baselineRuntimeDefaults()
             state = .ready
         } catch {
             state = .error(.modelLoadFailed(error.localizedDescription))
@@ -120,7 +120,7 @@ class OCRViewModel: ObservableObject {
 
     // MARK: - Image Processing
 
-    /// Run the full OCR pipeline on a user-selected image.
+    /// Run full OCR on a user-selected image.
     ///
     /// Normalizes orientation first (camera photos often have EXIF rotation),
     /// then delegates to `OCREngine.run(_:)`.
@@ -147,14 +147,14 @@ class OCRViewModel: ObservableObject {
         await processImage(image)
     }
 
-    /// Load a bundled sample image by name and run OCR on it (`cv::imread` via ``PDBOpenCVImageBridge``).
+    /// Load a bundled sample image by name and run OCR on it.
     func selectSampleImage(named name: String) async {
         guard let path = Bundle.main.path(forResource: name, ofType: "png", inDirectory: "SampleImages") else {
             state = .error(.imageLoadFailed)
             return
         }
         do {
-            guard let uiFromFile = PDBOpenCVImageBridge.colorUIImage(fromFilePath: path) else {
+            guard let uiFromFile = UIImage(contentsOfFile: path) else {
                 state = .error(.imageLoadFailed)
                 return
             }

@@ -17,7 +17,7 @@ import Foundation
 
 // MARK: - Recognition Engine Result
 
-/// The result of running the full recognition pipeline on a cropped text image.
+/// The result of running text recognition on a cropped text image.
 ///
 /// Contains the decoded text, confidence score, and per-stage timing metrics.
 struct RecognitionEngineResult {
@@ -53,8 +53,8 @@ enum RecognitionEngineError: LocalizedError {
 
 // MARK: - RecognitionEngine
 
-/// Orchestrates the complete text recognition pipeline:
-/// CGImage -> RecPreprocessor -> ORT inference -> CTCDecoder.
+/// Orchestrates text recognition:
+/// CGImage → RecPreprocessor → ORT inference → CTCDecoder.
 ///
 /// This is the integration layer that composes `RecPreprocessor`, `ORTSessionManager`,
 /// and `CTCDecoder` into a single callable unit. All preprocessing parameters are read
@@ -92,7 +92,7 @@ class RecognitionEngine {
 
     /// Run recognition on a cropped text region CGImage, returning decoded text with confidence.
     ///
-    /// Pipeline: RecPreprocessor -> ORT inference -> CTCDecoder
+    /// Steps: RecPreprocessor → ORT inference → CTCDecoder
     ///
     /// - Parameter image: A cropped text region image.
     /// - Returns: A `RecognitionEngineResult` with text, confidence, and per-stage timing.

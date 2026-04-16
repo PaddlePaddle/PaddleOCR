@@ -16,7 +16,7 @@ import SwiftUI
 
 /// Compact per-stage timing chips (fits the “output” section below the preview).
 struct TimingView: View {
-    let result: OCRPipelineResult
+    let result: OCRRunResult
 
     var body: some View {
         HStack(spacing: 10) {

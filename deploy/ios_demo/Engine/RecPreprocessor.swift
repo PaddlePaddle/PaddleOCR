@@ -102,7 +102,7 @@ struct RecPreprocessor {
 
     /// Runs recognition preprocessing on a `CGImage`.
     ///
-    /// Pipeline: extract pixels -> compute dimensions -> resize -> normalize -> HWC-to-CHW -> pad
+    /// Steps: extract pixels → compute dimensions → resize → normalize → HWC-to-CHW → pad
     ///
     /// - Parameter image: The input image (typically a cropped text region).
     /// - Returns: A `RecPreprocessResult` with the float32 CHW tensor and metadata.

@@ -15,7 +15,7 @@
 import CoreGraphics
 import Foundation
 
-// MARK: - OCR Pipeline Result Types
+// MARK: - OCR run result types
 
 /// A single OCR result: one detected text region with its recognized text.
 struct OCRResult {
@@ -28,15 +28,15 @@ struct OCRResult {
     let confidence: Float
 }
 
-/// Complete pipeline result with per-stage timing.
-struct OCRPipelineResult {
+/// Result of one full OCR run on an image, with per-stage timing.
+struct OCRRunResult {
     /// All detected and recognized text regions, in reading order.
     let results: [OCRResult]
     /// Total time spent in the detection stage (preprocess + inference + postprocess).
     let detectionTime: TimeInterval
     /// Total time spent recognizing all text regions (sum of all recognition calls).
     let recognitionTime: TimeInterval
-    /// Wall-clock time for the entire pipeline (detect + sort + crop + recognize).
+    /// Wall-clock time for the entire run (detect + sort + crop + recognize).
     let totalTime: TimeInterval
 }
 
@@ -55,13 +55,12 @@ enum OCREngineError: LocalizedError {
 
 // MARK: - OCREngine
 
-/// End-to-end OCR pipeline: detect -> sort -> crop -> recognize.
+/// End-to-end OCR: detect → sort → crop → recognize.
 ///
 /// Composes `DetectionEngine`, `BoxSorter`, `QuadTextCrop`, and `RecognitionEngine`
-/// into a single `run(CGImage)` call. All preprocessing and postprocessing parameters
-/// are config-driven via each engine's model config file.
+/// into a single `run(CGImage)` call.
 ///
-/// The pipeline runs entirely via async/await. Since `DetectionEngine` and
+/// Runs entirely via async/await. Since `DetectionEngine` and
 /// `RecognitionEngine` delegate to `ORTSessionManager` (a Swift actor), all ORT
 /// calls are off the main thread.
 ///
@@ -81,8 +80,7 @@ class OCREngine {
 
     /// Initialize with an existing ORTSessionManager (models must already be loaded).
     ///
-    /// Creates both DetectionEngine and RecognitionEngine, each loading their
-    /// own model config files for config-driven preprocessing and postprocessing.
+    /// Creates both DetectionEngine and RecognitionEngine.
     ///
     /// - Parameter sessionManager: A loaded ORTSessionManager.
     /// - Throws: If either engine's model config cannot be loaded.
@@ -92,10 +90,10 @@ class OCREngine {
     }
 
     func baselineRuntimeDefaults() -> ResolvedOCRRuntimeParams {
-        ResolvedOCRRuntimeParams.fromPipelineAndInference(detectionEngine.modelConfig)
+        ResolvedOCRRuntimeParams.fromModelConfig(detectionEngine.modelConfig)
     }
 
-    /// Run the complete OCR pipeline on an image.
+    /// Run full OCR on an image.
     ///
     /// End-to-end OCR flow (detect → sort → crop → recognize):
     /// 1. **Detect**: Run detection to get bounding polygons
@@ -105,13 +103,12 @@ class OCREngine {
     ///
     /// - Parameters:
     ///   - image: The input `CGImage` to process.
-    ///   - params: Optional threshold overrides. Detection thresholds merge **UI → app defaults → model `PostProcess`**
-    ///     from the detection model config file; see `OCRPipelineDefaults`.
-    /// - Returns: `OCRPipelineResult` with all results and timing.
-    func run(_ image: CGImage, params: OCRRuntimeParams = .noOverrides) async throws -> OCRPipelineResult {
-        let pipelineStart = CFAbsoluteTimeGetCurrent()
+    ///   - params: Optional runtime parameter overrides (see ``OCRRuntimeParams``).
+    /// - Returns: `OCRRunResult` with all line results and timing.
+    func run(_ image: CGImage, params: OCRRuntimeParams = .noOverrides) async throws -> OCRRunResult {
+        let runStart = CFAbsoluteTimeGetCurrent()
 
-        let resolved = params.resolved(det: detectionEngine.modelConfig)
+        let resolved = params.resolved(detectionEngine.modelConfig)
 
         let detResult = try await detectionEngine.detect(image, runtimeParams: params)
         let sortedBoxes = BoxSorter.sortInReadingOrder(detResult.boxes)
@@ -121,9 +118,9 @@ class OCREngine {
             resolved: resolved
         )
 
-        let totalTime = CFAbsoluteTimeGetCurrent() - pipelineStart
+        let totalTime = CFAbsoluteTimeGetCurrent() - runStart
 
-        return OCRPipelineResult(
+        return OCRRunResult(
             results: ocrResults,
             detectionTime: detResult.totalTime,
             recognitionTime: totalRecTime,

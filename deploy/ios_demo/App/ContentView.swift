@@ -110,7 +110,7 @@ struct ContentView: View {
                 DemoCard {
                     OCRParametersPanel(
                         params: $viewModel.runtimeParams,
-                        baseline: viewModel.thresholdBaseline ?? .fallbackForUI
+                        resolvedBaseline: viewModel.resolvedRuntimeBaseline ?? .fallbackForUI
                     )
                 }
             }
@@ -165,7 +165,7 @@ struct ContentView: View {
 
     // MARK: - Results
 
-    private func resultsView(result: OCRPipelineResult, image: UIImage) -> some View {
+    private func resultsView(result: OCRRunResult, image: UIImage) -> some View {
         VStack(spacing: 22) {
             // —— Output zone: what you see —
             VStack(alignment: .leading, spacing: 10) {
@@ -191,7 +191,7 @@ struct ContentView: View {
                 DemoCard {
                     OCRParametersPanel(
                         params: $viewModel.runtimeParams,
-                        baseline: viewModel.thresholdBaseline ?? .fallbackForUI
+                        resolvedBaseline: viewModel.resolvedRuntimeBaseline ?? .fallbackForUI
                     )
                 }
             }
