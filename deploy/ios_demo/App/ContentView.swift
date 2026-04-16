@@ -41,7 +41,7 @@ struct ContentView: View {
             Task {
                 guard let data = try? await item.loadTransferable(type: Data.self),
                       let uiImage = UIImage(data: data) else {
-                    viewModel.state = .error(.imageLoadFailed)
+                    viewModel.reportImageLoadFailed()
                     return
                 }
                 selectedItem = nil
@@ -61,7 +61,7 @@ struct ContentView: View {
             readyView
         case .processing(let image):
             processingView(image: image)
-        case .results(let result, let image):
+        case .results(let result, let image, _):
             resultsView(result: result, image: image)
         case .error(let error):
             errorView(error: error)

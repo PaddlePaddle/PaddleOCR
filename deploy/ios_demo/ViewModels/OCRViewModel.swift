@@ -27,18 +27,17 @@ enum AppState: Equatable {
     /// An image is being processed by OCR.
     case processing(UIImage)
     /// OCR completed successfully with results and the processed image.
-    case results(OCRRunResult, UIImage)
+    /// `runId` distinguishes successive successful runs for ``Equatable`` without requiring ``OCRRunResult`` to conform.
+    case results(OCRRunResult, UIImage, runId: UUID)
     /// An error occurred during model loading or inference.
     case error(AppError)
 
-    // OCRRunResult is not Equatable, so we implement manually.
-    // `.results` always returns false to force SwiftUI re-render on new results.
     static func == (lhs: AppState, rhs: AppState) -> Bool {
         switch (lhs, rhs) {
         case (.loadingModels, .loadingModels): return true
         case (.ready, .ready): return true
         case (.processing, .processing): return true
-        case (.results, .results): return false
+        case (.results(_, _, let runIdL), .results(_, _, let runIdR)): return runIdL == runIdR
         case (.error(let a), .error(let b)): return a == b
         default: return false
         }
@@ -97,6 +96,11 @@ class OCRViewModel: ObservableObject {
     /// Name of the demo sample in Resources/SampleImages (from `fetch_ios_demo_assets.sh`).
     let sampleImageNames: [String] = ["general_ocr_002"]
 
+    /// Photo picker or file load produced unusable image data.
+    func reportImageLoadFailed() {
+        state = .error(.imageLoadFailed)
+    }
+
     // MARK: - Lifecycle
 
     /// Load ORT models from the app bundle.
@@ -132,9 +136,13 @@ class OCRViewModel: ObservableObject {
             state = .error(.imageLoadFailed)
             return
         }
+        guard let engine = ocrEngine else {
+            state = .error(.modelLoadFailed("OCR engine is not ready."))
+            return
+        }
         do {
-            let result = try await ocrEngine!.run(cgImage, params: runtimeParams)
-            state = .results(result, normalized)
+            let result = try await engine.run(cgImage, params: runtimeParams)
+            state = .results(result, normalized, runId: UUID())
         } catch {
             lastNormalizedImage = nil
             state = .error(.inferenceFailed(error.localizedDescription))
@@ -165,8 +173,12 @@ class OCRViewModel: ObservableObject {
                 state = .error(.imageLoadFailed)
                 return
             }
-            let result = try await ocrEngine!.run(cgImage, params: runtimeParams)
-            state = .results(result, normalized)
+            guard let engine = ocrEngine else {
+                state = .error(.modelLoadFailed("OCR engine is not ready."))
+                return
+            }
+            let result = try await engine.run(cgImage, params: runtimeParams)
+            state = .results(result, normalized, runId: UUID())
         } catch {
             lastNormalizedImage = nil
             state = .error(.inferenceFailed(error.localizedDescription))
@@ -177,7 +189,7 @@ class OCRViewModel: ObservableObject {
 
     /// Copy all recognized text to the system clipboard, with brief visual feedback.
     func copyResultsToClipboard() {
-        guard case .results(let result, _) = state else { return }
+        guard case .results(let result, _, _) = state else { return }
         let allText = result.results.map(\.text).joined(separator: "\n")
         UIPasteboard.general.string = allText
         copiedFeedback = true
@@ -214,9 +226,10 @@ class OCRViewModel: ObservableObject {
 /// CoreGraphics ignores EXIF orientation, so we must flatten it before OCR processing.
 private func normalizeOrientation(_ image: UIImage) -> UIImage {
     guard image.imageOrientation != .up else { return image }
-    UIGraphicsBeginImageContextWithOptions(image.size, false, image.scale)
-    image.draw(in: CGRect(origin: .zero, size: image.size))
-    let normalized = UIGraphicsGetImageFromCurrentImageContext()!
-    UIGraphicsEndImageContext()
-    return normalized
+    let format = UIGraphicsImageRendererFormat()
+    format.scale = image.scale
+    let renderer = UIGraphicsImageRenderer(size: image.size, format: format)
+    return renderer.image { _ in
+        image.draw(in: CGRect(origin: .zero, size: image.size))
+    }
 }
