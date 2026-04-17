@@ -30,7 +30,8 @@ NS_ASSUME_NONNULL_BEGIN
                srcWidth:(NSInteger)srcWidth
               srcHeight:(NSInteger)srcHeight
                dstWidth:(NSInteger)dstWidth
-              dstHeight:(NSInteger)dstHeight NS_SWIFT_NAME(resizeRGBU8(_:srcWidth:srcHeight:dstWidth:dstHeight:));
+              dstHeight:(NSInteger)dstHeight
+    NS_SWIFT_NAME(resizeRGBU8(_:srcWidth:srcHeight:dstWidth:dstHeight:));
 
 /// Pad RGB image to `padWidth` x `padHeight` with zeros on bottom/right.
 + (NSData *)padRGBU8:(NSData *)data

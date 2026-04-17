@@ -22,9 +22,10 @@ ALLOWED_VARIANTS=(PP-OCRv6_small PP-OCRv6_tiny)
 DEFAULT_VARIANT="PP-OCRv6_small"
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-DEST_DET="${SCRIPT_DIR}/Models/det"
-DEST_REC="${SCRIPT_DIR}/Models/rec"
-DEST_SAMPLES="${SCRIPT_DIR}/Resources/SampleImages"
+# ONNX bundles and sample images live under PaddleOCRDemo/ (Xcode app sources and bundle resources).
+DEST_DET="${SCRIPT_DIR}/PaddleOCRDemo/Models/det"
+DEST_REC="${SCRIPT_DIR}/PaddleOCRDemo/Models/rec"
+DEST_SAMPLES="${SCRIPT_DIR}/PaddleOCRDemo/Resources/SampleImages"
 WORKDIR="${SCRIPT_DIR}/.fetch_ios_demo_assets_work"
 
 run_models=1
@@ -160,4 +161,4 @@ if [[ "${run_samples}" -eq 1 ]]; then
 fi
 
 echo "Done."
-echo "Ensure Xcode copies Models/ and Resources/SampleImages/ into the app target (folder references / Copy Bundle Resources)."
+echo "Ensure Xcode copies PaddleOCRDemo/Models/ and PaddleOCRDemo/Resources/SampleImages/ into the app target (folder references / Copy Bundle Resources)."

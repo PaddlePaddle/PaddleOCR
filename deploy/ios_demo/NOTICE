@@ -9,9 +9,9 @@ in this tree:
 Clipper / polyclipping (polygon clipping and offsetting)
 --------------------------------------------------------------------------------------------
   • Upstream: polyclipping clipper 6.4.2 (Angus Johnson)  
-  • Bundled:   `ThirdParty/Clipper1/` (clipper.cpp, clipper.hpp)  
+  • Bundled:   `PaddleOCRDemo/ThirdParty/Clipper1/` (clipper.cpp, clipper.hpp)  
   • SPDX:      BSL-1.0 (Boost Software License 1.0)  
-  • Full text: `ThirdParty/Clipper1/LICENSE`  
+  • Full text: `PaddleOCRDemo/ThirdParty/Clipper1/LICENSE`  
 
 CocoaPods dependencies (onnxruntime-objc, OpenCV, Yams, etc.)
 -------------------------------------------------------------

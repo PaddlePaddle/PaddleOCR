@@ -164,7 +164,7 @@
 				A700000D /* ThirdParty */,
 				A2000006 /* Models */,
 			);
-			path = .;
+			path = PaddleOCRDemo;
 			sourceTree = "<group>";
 		};
 		A7000003 /* Products */ = {
@@ -623,7 +623,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 76MLN428C9;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Supporting/Info.plist;
+				INFOPLIST_FILE = PaddleOCRDemo/Supporting/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -644,13 +644,13 @@
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "Supporting/PaddleOCRDemo-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "PaddleOCRDemo/Supporting/PaddleOCRDemo-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)/Engine",
-					"$(SRCROOT)/ThirdParty/Clipper1",
+					"$(SRCROOT)/PaddleOCRDemo/Engine",
+					"$(SRCROOT)/PaddleOCRDemo/ThirdParty/Clipper1",
 				);
 			};
 			name = Debug;
@@ -665,7 +665,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 76MLN428C9;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Supporting/Info.plist;
+				INFOPLIST_FILE = PaddleOCRDemo/Supporting/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -686,13 +686,13 @@
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "Supporting/PaddleOCRDemo-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "PaddleOCRDemo/Supporting/PaddleOCRDemo-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)/Engine",
-					"$(SRCROOT)/ThirdParty/Clipper1",
+					"$(SRCROOT)/PaddleOCRDemo/Engine",
+					"$(SRCROOT)/PaddleOCRDemo/ThirdParty/Clipper1",
 				);
 			};
 			name = Release;
