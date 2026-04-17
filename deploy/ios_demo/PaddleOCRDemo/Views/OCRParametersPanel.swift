@@ -47,7 +47,24 @@ struct OCRParametersPanel: View {
             }
             .padding(.bottom, 14)
 
-            groupTitle("Detection")
+            groupTitle("Detection preprocess")
+            intParamRow(
+                title: "Limit side length",
+                caption: "Side length limit for detection resize",
+                range: 32...2048,
+                value: intOverrideBinding(\.textDetLimitSideLen, fallback: resolvedBaseline.textDetLimitSideLen)
+            )
+            limitTypeRow(
+                selection: stringOverrideBinding(\.textDetLimitType, fallback: resolvedBaseline.textDetLimitType)
+            )
+            intParamRow(
+                title: "Max side length cap",
+                caption: "After limit-side resize, caps the longer side if it is still above this",
+                range: 500...8000,
+                value: intOverrideBinding(\.textDetMaxSideLimit, fallback: resolvedBaseline.textDetMaxSideLimit)
+            )
+
+            groupTitle("Detection postprocess")
             paramRow(
                 title: "Map threshold",
                 caption: "Binarization on the detector heatmap",
@@ -67,23 +84,6 @@ struct OCRParametersPanel: View {
                 value: floatOverrideBinding(\.textDetUnclipRatio, fallback: resolvedBaseline.textDetUnclipRatio)
             )
 
-            groupTitle("Resize")
-            intParamRow(
-                title: "Limit side length",
-                caption: "Side length limit for detection resize",
-                range: 32...2048,
-                value: intOverrideBinding(\.textDetLimitSideLen, fallback: resolvedBaseline.textDetLimitSideLen)
-            )
-            limitTypeRow(
-                selection: stringOverrideBinding(\.textDetLimitType, fallback: resolvedBaseline.textDetLimitType)
-            )
-            intParamRow(
-                title: "Max side length cap",
-                caption: "After limit-side resize, caps the longer side if it is still above this",
-                range: 500...8000,
-                value: intOverrideBinding(\.textDetMaxSideLimit, fallback: resolvedBaseline.textDetMaxSideLimit)
-            )
-
             Divider()
                 .padding(.vertical, 12)
 
@@ -93,6 +93,12 @@ struct OCRParametersPanel: View {
                 caption: "Discard lines below this score",
                 range: 0...1,
                 value: floatOverrideBinding(\.textRecScoreThresh, fallback: resolvedBaseline.textRecScoreThresh)
+            )
+            intParamRow(
+                title: "Recognition batch size",
+                caption: "Number of text lines per recognition run",
+                range: 1...32,
+                value: intOverrideBinding(\.textRecBatchSize, fallback: resolvedBaseline.textRecBatchSize)
             )
         }
     }

@@ -17,62 +17,74 @@ import Foundation
 // MARK: - Runtime (UI) parameters
 
 struct OCRRuntimeParams: Equatable, Sendable {
-    var textDetThresh: Float?
-    var textDetBoxThresh: Float?
-    var textDetUnclipRatio: Float?
-    var textRecScoreThresh: Float?
+    // Detection — preprocess
     var textDetLimitSideLen: Int?
     var textDetLimitType: String?
     var textDetMaxSideLimit: Int?
+    // Detection — postprocess
+    var textDetThresh: Float?
+    var textDetBoxThresh: Float?
+    var textDetUnclipRatio: Float?
+    // Recognition
+    var textRecScoreThresh: Float?
+    var textRecBatchSize: Int?
 
     static let noOverrides = OCRRuntimeParams(
+        textDetLimitSideLen: nil,
+        textDetLimitType: nil,
+        textDetMaxSideLimit: nil,
         textDetThresh: nil,
         textDetBoxThresh: nil,
         textDetUnclipRatio: nil,
         textRecScoreThresh: nil,
-        textDetLimitSideLen: nil,
-        textDetLimitType: nil,
-        textDetMaxSideLimit: nil
+        textRecBatchSize: nil
     )
 }
 
 // MARK: - Resolved parameters (for UI baseline & filtering)
 
 struct ResolvedOCRRuntimeParams: Equatable, Sendable {
-    var textDetThresh: Float
-    var textDetBoxThresh: Float
-    var textDetUnclipRatio: Float
-    var textRecScoreThresh: Float
+    // Detection — preprocess
     var textDetLimitSideLen: Int
     var textDetLimitType: String
     var textDetMaxSideLimit: Int
+    // Detection — postprocess
+    var textDetThresh: Float
+    var textDetBoxThresh: Float
+    var textDetUnclipRatio: Float
+    // Recognition
+    var textRecScoreThresh: Float
+    var textRecBatchSize: Int
 
     init(
+        textDetLimitSideLen: Int,
+        textDetLimitType: String,
+        textDetMaxSideLimit: Int,
         textDetThresh: Float,
         textDetBoxThresh: Float,
         textDetUnclipRatio: Float,
         textRecScoreThresh: Float,
-        textDetLimitSideLen: Int,
-        textDetLimitType: String,
-        textDetMaxSideLimit: Int,
+        textRecBatchSize: Int,
     ) {
+        self.textDetLimitSideLen = textDetLimitSideLen
+        self.textDetLimitType = textDetLimitType
+        self.textDetMaxSideLimit = textDetMaxSideLimit
         self.textDetThresh = textDetThresh
         self.textDetBoxThresh = textDetBoxThresh
         self.textDetUnclipRatio = textDetUnclipRatio
         self.textRecScoreThresh = textRecScoreThresh
-        self.textDetLimitSideLen = textDetLimitSideLen
-        self.textDetLimitType = textDetLimitType
-        self.textDetMaxSideLimit = textDetMaxSideLimit
+        self.textRecBatchSize = textRecBatchSize
     }
 
     static let fallbackForUI = ResolvedOCRRuntimeParams(
+        textDetLimitSideLen: OCRParameterResolver.textDetLimitSideLenAppDefault,
+        textDetLimitType: OCRParameterResolver.textDetLimitTypeAppDefault,
+        textDetMaxSideLimit: OCRParameterResolver.textDetMaxSideLimitAppDefault,
         textDetThresh: OCRParameterResolver.textDetThreshAppDefault,
         textDetBoxThresh: OCRParameterResolver.textDetBoxThreshAppDefault,
         textDetUnclipRatio: OCRParameterResolver.textDetUnclipRatioAppDefault,
         textRecScoreThresh: OCRParameterResolver.textRecScoreThreshAppDefault,
-        textDetLimitSideLen: OCRParameterResolver.textDetLimitSideLenAppDefault,
-        textDetLimitType: OCRParameterResolver.textDetLimitTypeAppDefault,
-        textDetMaxSideLimit: OCRParameterResolver.textDetMaxSideLimitAppDefault
+        textRecBatchSize: OCRParameterResolver.textRecBatchSizeAppDefault
     )
 }
 
@@ -80,13 +92,14 @@ extension OCRRuntimeParams {
     func resolved(_ modelConfig: InferenceConfig) -> ResolvedOCRRuntimeParams {
         let base = ResolvedOCRRuntimeParams.fromModelConfig(modelConfig)
         return ResolvedOCRRuntimeParams(
+            textDetLimitSideLen: textDetLimitSideLen ?? base.textDetLimitSideLen,
+            textDetLimitType: textDetLimitType ?? base.textDetLimitType,
+            textDetMaxSideLimit: textDetMaxSideLimit ?? base.textDetMaxSideLimit,
             textDetThresh: textDetThresh ?? base.textDetThresh,
             textDetBoxThresh: textDetBoxThresh ?? base.textDetBoxThresh,
             textDetUnclipRatio: textDetUnclipRatio ?? base.textDetUnclipRatio,
             textRecScoreThresh: textRecScoreThresh ?? base.textRecScoreThresh,
-            textDetLimitSideLen: textDetLimitSideLen ?? base.textDetLimitSideLen,
-            textDetLimitType: textDetLimitType ?? base.textDetLimitType,
-            textDetMaxSideLimit: textDetMaxSideLimit ?? base.textDetMaxSideLimit
+            textRecBatchSize: textRecBatchSize ?? base.textRecBatchSize
         )
     }
 }
@@ -96,13 +109,14 @@ extension ResolvedOCRRuntimeParams {
     static func fromModelConfig(_ modelConfig: InferenceConfig) -> ResolvedOCRRuntimeParams {
         let o = OCRParameterResolver.effective(modelConfig: modelConfig, runtime: .noOverrides)
         return ResolvedOCRRuntimeParams(
+            textDetLimitSideLen: o.mergedLimitSideLen,
+            textDetLimitType: o.mergedLimitType,
+            textDetMaxSideLimit: o.mergedMaxSideLimit,
             textDetThresh: o.detThresh,
             textDetBoxThresh: o.detBoxThresh,
             textDetUnclipRatio: o.detUnclipRatio,
             textRecScoreThresh: o.recScoreThresh,
-            textDetLimitSideLen: o.mergedLimitSideLen,
-            textDetLimitType: o.mergedLimitType,
-            textDetMaxSideLimit: o.mergedMaxSideLimit
+            textRecBatchSize: o.textRecBatchSize
         )
     }
 }
@@ -110,14 +124,18 @@ extension ResolvedOCRRuntimeParams {
 // MARK: - Effective parameters (single merge pass)
 
 struct EffectiveOCRParams: Equatable, Sendable {
-    var detThresh: Float
-    var detBoxThresh: Float
-    var detUnclipRatio: Float
-    var recScoreThresh: Float
+    // Detection — preprocess
     var detResize: DetResizeParams
     var mergedLimitSideLen: Int
     var mergedLimitType: String
     var mergedMaxSideLimit: Int
+    // Detection — postprocess
+    var detThresh: Float
+    var detBoxThresh: Float
+    var detUnclipRatio: Float
+    // Recognition
+    var recScoreThresh: Float
+    var textRecBatchSize: Int
 }
 
 // MARK: - Resolver
@@ -126,13 +144,17 @@ enum OCRParameterResolver {
 
     // MARK: App tier
 
-    static let textDetThreshAppDefault: Float = 0.3
-    static let textDetBoxThreshAppDefault: Float = 0.6
-    static let textDetUnclipRatioAppDefault: Float = 1.5
-    static let textRecScoreThreshAppDefault: Float = 0.0
+    // Detection — preprocess
     static let textDetLimitSideLenAppDefault: Int = 64
     static let textDetLimitTypeAppDefault: String = "min"
     static let textDetMaxSideLimitAppDefault: Int = 4000
+    // Detection — postprocess
+    static let textDetThreshAppDefault: Float = 0.3
+    static let textDetBoxThreshAppDefault: Float = 0.6
+    static let textDetUnclipRatioAppDefault: Float = 1.5
+    // Recognition
+    static let textRecScoreThreshAppDefault: Float = 0.0
+    static let textRecBatchSizeAppDefault: Int = 6
 
     // MARK: Merge helpers
 
@@ -179,6 +201,9 @@ enum OCRParameterResolver {
     /// Merges ``OCRRuntimeParams`` with app-tier defaults (UI → app). The `modelConfig` argument is
     /// unused at this moment.
     static func effective(modelConfig _: InferenceConfig, runtime: OCRRuntimeParams) -> EffectiveOCRParams {
+        let detResize = limitSideParams(runtime: runtime)
+        let merged = mergedLimitSideFields(runtime: runtime)
+
         let detThresh = mergeFloat(
             ui: runtime.textDetThresh,
             app: Self.textDetThreshAppDefault
@@ -191,20 +216,23 @@ enum OCRParameterResolver {
             ui: runtime.textDetUnclipRatio,
             app: Self.textDetUnclipRatioAppDefault
         )
-        let recScoreThresh = runtime.textRecScoreThresh ?? Self.textRecScoreThreshAppDefault
 
-        let detResize = limitSideParams(runtime: runtime)
-        let merged = mergedLimitSideFields(runtime: runtime)
+        let recScoreThresh = runtime.textRecScoreThresh ?? Self.textRecScoreThreshAppDefault
+        let textRecBatchSize = mergeInt(
+            ui: runtime.textRecBatchSize,
+            app: Self.textRecBatchSizeAppDefault
+        )
 
         return EffectiveOCRParams(
+            detResize: detResize,
+            mergedLimitSideLen: merged.sideLen,
+            mergedLimitType: merged.limitType,
+            mergedMaxSideLimit: merged.maxSide,
             detThresh: detThresh,
             detBoxThresh: detBoxThresh,
             detUnclipRatio: detUnclipRatio,
             recScoreThresh: recScoreThresh,
-            detResize: detResize,
-            mergedLimitSideLen: merged.sideLen,
-            mergedLimitType: merged.limitType,
-            mergedMaxSideLimit: merged.maxSide
+            textRecBatchSize: textRecBatchSize
         )
     }
 }

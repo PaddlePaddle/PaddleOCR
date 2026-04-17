@@ -48,6 +48,12 @@ struct RecPreprocessResult {
     let resizedWidth: Int
 }
 
+/// Batched recognition input: N × C × H × W with a common width after padding.
+struct RecBatchPreprocessResult {
+    let tensorData: [Float]
+    let tensorShape: [Int]
+}
+
 // MARK: - RecPreprocessor
 
 /// Recognition resize + normalize + pad: dynamic width, fixed height, scale to [-1, 1],
@@ -56,12 +62,8 @@ struct RecPreprocessResult {
 /// Recognition resize, per-channel normalization, HWC→CHW, and width padding.
 /// `DecodeImage.img_mode` is applied via `InferenceConfig.decodeImageChannelOrder`. Resize uses OpenCV `INTER_LINEAR`.
 ///
-/// Algorithm:
-/// 1. Compute target width from aspect ratio.
-/// 2. Resize `(resized_w, imgH)` with OpenCV.
-/// 3. Normalize HWC `/255`, `-0.5`, `/0.5`.
-/// 4. HWC → CHW; plane 0 is the first channel in memory (B or R depending on `img_mode`).
-/// 5. Right-pad with zeros to target width.
+/// Set environment variable `PADDLEOCR_REC_ALIGN_WIDTH_TO_8` to `1`, `true`, or `yes` to round the
+/// canvas width up to a multiple of 8 (off by default).
 struct RecPreprocessor {
     /// Channel count from `RecResizeImg.image_shape` (3).
     private let imgC: Int
@@ -114,51 +116,133 @@ struct RecPreprocessor {
             throw RecPreprocessorError.invalidImage
         }
 
-        // Step 0: HWC (BGR or RGB per `DecodeImage.img_mode`).
         let pixelBytes = try extractHWCPixels(from: image, width: originalW, height: originalH, order: channelOrder)
-
-        // Step 1: Target canvas width from aspect ratio and `image_shape`.
-        let whRatio = Float(originalW) / Float(originalH)
-        let maxWhRatio = max(Float(imgW) / Float(imgH), whRatio)
-        var targetW = Int(Float(imgH) * maxWhRatio)
-        if targetW > maxImgW {
-            targetW = maxImgW
-        }
-
-        // Step 2: Content width after resize (before right-padding).
-        let ratio = Float(originalW) / Float(originalH)
-        let resizedW: Int
-        if targetW > maxImgW {
-            resizedW = maxImgW
-        } else if Int(ceil(Float(imgH) * ratio)) > targetW {
-            resizedW = targetW
-        } else {
-            resizedW = Int(ceil(Float(imgH) * ratio))
-        }
-
-        // Dynamic width aligned to 8px. PP-OCRv6_small rec can hit XNNPACK crashes (e.g. in reduce/softmax
-        // micro-kernels) on arbitrary widths when CoreML does not cover the full graph; padding to 8 helps.
-        targetW = min(max(roundUpToMultipleOf(targetW, 8), resizedW), maxImgW)
-
-        // Step 3: OpenCV `INTER_LINEAR` resize on 3-channel row-major data.
-        let resizedPixels = resizeWithOpenCV(pixelBytes, srcW: originalW, srcH: originalH, dstW: resizedW, dstH: imgH)
-
-        // Step 4: Normalize with recognition formula: pixel/255.0, subtract 0.5, divide by 0.5
-        // Equivalent to: pixel / 127.5 - 1.0, mapping [0, 255] to [-1.0, 1.0]
-        let normalizedHWC = normalizePixels(resizedPixels, width: resizedW, height: imgH)
-
-        // Step 5: HWC [H,W,3] -> CHW [3,H,W]
-        let chwData = hwcToCHW(normalizedHWC, width: resizedW, height: imgH)
-
-        // Step 6: Right-pad with zeros to targetW
-        let paddedData = padToTargetWidth(chwData, contentWidth: resizedW, targetWidth: targetW, height: imgH, channels: imgC)
+        let (paddedData, canvasW, resizedW) = try lineResizeNormalizeCHW(
+            pixelBytes: pixelBytes,
+            originalW: originalW,
+            originalH: originalH,
+            alignCanvasTo8: Self.isRecognitionCanvasWidthAlignedTo8Enabled()
+        )
 
         return RecPreprocessResult(
             tensorData: paddedData,
-            tensorShape: [1, imgC, imgH, targetW],
+            tensorShape: [1, imgC, imgH, canvasW],
             originalSize: (width: originalW, height: originalH),
             resizedWidth: resizedW
         )
+    }
+
+    /// Builds a batched tensor: each line is resized and padded to its canvas width, then all rows
+    /// are padded on the right to the maximum canvas width in the batch (shape `[N, C, H, W]`).
+    func preprocessBatch(_ images: [CGImage]) throws -> RecBatchPreprocessResult {
+        guard !images.isEmpty else {
+            throw RecPreprocessorError.invalidImage
+        }
+
+        let align8 = Self.isRecognitionCanvasWidthAlignedTo8Enabled()
+        var rowCHW: [[Float]] = []
+        var canvasWidths: [Int] = []
+
+        for image in images {
+            let originalW = image.width
+            let originalH = image.height
+            guard originalW > 0, originalH > 0 else {
+                throw RecPreprocessorError.invalidImage
+            }
+            let pixelBytes = try extractHWCPixels(from: image, width: originalW, height: originalH, order: channelOrder)
+            let (chw, canvasW, _) = try lineResizeNormalizeCHW(
+                pixelBytes: pixelBytes,
+                originalW: originalW,
+                originalH: originalH,
+                alignCanvasTo8: align8
+            )
+            rowCHW.append(chw)
+            canvasWidths.append(canvasW)
+        }
+
+        guard let maxCanvasW = canvasWidths.max() else {
+            throw RecPreprocessorError.invalidImage
+        }
+
+        let n = rowCHW.count
+        let channelSize = imgH * maxCanvasW
+        var flat = [Float](repeating: 0, count: n * imgC * channelSize)
+
+        for (b, row) in rowCHW.enumerated() {
+            let w = canvasWidths[b]
+            let paddedRow: [Float]
+            if w == maxCanvasW {
+                paddedRow = row
+            } else {
+                let contentW = w
+                paddedRow = padToTargetWidth(
+                    row,
+                    contentWidth: contentW,
+                    targetWidth: maxCanvasW,
+                    height: imgH,
+                    channels: imgC
+                )
+            }
+            let batchOffset = b * imgC * channelSize
+            for i in 0..<paddedRow.count {
+                flat[batchOffset + i] = paddedRow[i]
+            }
+        }
+
+        return RecBatchPreprocessResult(
+            tensorData: flat,
+            tensorShape: [n, imgC, imgH, maxCanvasW]
+        )
+    }
+
+    /// When `PADDLEOCR_REC_ALIGN_WIDTH_TO_8` is set to a truthy value, the canvas width is rounded up to a multiple of 8.
+    private static func isRecognitionCanvasWidthAlignedTo8Enabled() -> Bool {
+        let v = ProcessInfo.processInfo.environment["PADDLEOCR_REC_ALIGN_WIDTH_TO_8"]?.lowercased()
+        return v == "1" || v == "true" || v == "yes"
+    }
+
+    /// One text line: HWC uint8 → resize → normalize → CHW, padded to the computed canvas width.
+    private func lineResizeNormalizeCHW(
+        pixelBytes: [UInt8],
+        originalW: Int,
+        originalH: Int,
+        alignCanvasTo8: Bool
+    ) throws -> (chw: [Float], canvasW: Int, resizedW: Int) {
+        let w = originalW
+        let h = originalH
+        let whRatio = Float(w) / Float(h)
+        let defaultRatio = Float(imgW) / Float(imgH)
+        let maxWhRatio = max(defaultRatio, whRatio)
+        var canvasW = Int(Float(imgH) * maxWhRatio)
+        let resizedW: Int
+
+        if canvasW > maxImgW {
+            canvasW = maxImgW
+            resizedW = maxImgW
+        } else {
+            let ratio = Float(w) / Float(h)
+            if Int(ceil(Float(imgH) * ratio)) > canvasW {
+                resizedW = canvasW
+            } else {
+                resizedW = Int(ceil(Float(imgH) * ratio))
+            }
+        }
+
+        if alignCanvasTo8 {
+            canvasW = min(max(roundUpToMultipleOf(canvasW, 8), resizedW), maxImgW)
+        }
+
+        let resizedPixels = resizeWithOpenCV(pixelBytes, srcW: w, srcH: h, dstW: resizedW, dstH: imgH)
+        let normalizedHWC = normalizePixels(resizedPixels, width: resizedW, height: imgH)
+        let chwData = hwcToCHW(normalizedHWC, width: resizedW, height: imgH)
+        let paddedData = padToTargetWidth(
+            chwData,
+            contentWidth: resizedW,
+            targetWidth: canvasW,
+            height: imgH,
+            channels: imgC
+        )
+        return (paddedData, canvasW, resizedW)
     }
 
     // MARK: - Step 0: Pixel extraction (BGR / RGB)
@@ -207,7 +291,7 @@ struct RecPreprocessor {
         return out
     }
 
-    // MARK: - Step 3: Resize (OpenCV)
+    // MARK: - Resize (OpenCV)
 
     private func resizeWithOpenCV(
         _ pixels: [UInt8], srcW: Int, srcH: Int, dstW: Int, dstH: Int
@@ -225,13 +309,9 @@ struct RecPreprocessor {
         return [UInt8](out)
     }
 
-    // MARK: - Step 4: NormalizeImage (Recognition Formula)
+    // MARK: - Normalize (recognition)
 
-    /// Applies recognition normalization: pixel / 255.0, then (x - 0.5) / 0.5.
-    /// Equivalent to pixel / 127.5 - 1.0, mapping [0, 255] -> [-1.0, 1.0].
-    ///
-    /// This is NOT the same as detection normalization (which uses ImageNet mean/std).
-    /// The recognition normalization is fixed and not parameterized from model config.
+    /// Maps pixel values from [0, 255] to [-1, 1] via `pixel / 127.5 - 1.0`.
     private func normalizePixels(_ pixels: [UInt8], width: Int, height: Int) -> [Float] {
         let count = width * height * 3
         var result = [Float](repeating: 0, count: count)
@@ -243,7 +323,7 @@ struct RecPreprocessor {
         return result
     }
 
-    // MARK: - Step 5: HWC → CHW
+    // MARK: - HWC → CHW
 
     private func hwcToCHW(_ hwcData: [Float], width: Int, height: Int) -> [Float] {
         let channelSize = height * width
@@ -262,13 +342,9 @@ struct RecPreprocessor {
         return chwData
     }
 
-    // MARK: - Step 6: Zero-Padding
+    // MARK: - Zero-Padding
 
     /// Right-pads a CHW tensor from contentWidth to targetWidth with zeros.
-    ///
-    /// The input CHW data has shape [channels, height, contentWidth].
-    /// The output has shape [channels, height, targetWidth] with zeros filling
-    /// columns contentWidth..<targetWidth.
     private func padToTargetWidth(
         _ chwData: [Float],
         contentWidth: Int,
@@ -288,7 +364,6 @@ struct RecPreprocessor {
             for y in 0..<height {
                 let srcOffset = c * sourceChannelSize + y * contentWidth
                 let dstOffset = c * targetChannelSize + y * targetWidth
-                // Copy contentWidth floats per row, leaving the rest as zeros
                 for x in 0..<contentWidth {
                     padded[dstOffset + x] = chwData[srcOffset + x]
                 }

@@ -169,4 +169,31 @@ struct CTCDecoder {
 
         return RecognitionResult(text: text, confidence: confidence)
     }
+
+    /// Decodes a batched output tensor with shape `[N, T, C]`.
+    func decodeBatch(outputData: [Float], outputShape: [Int]) throws -> [RecognitionResult] {
+        guard outputShape.count == 3 else {
+            throw CTCDecoderError.invalidOutputShape(outputShape)
+        }
+        let batchCount = outputShape[0]
+        let timesteps = outputShape[1]
+        let numClasses = outputShape[2]
+        guard batchCount >= 1, timesteps >= 1, numClasses >= 1 else {
+            throw CTCDecoderError.invalidOutputShape(outputShape)
+        }
+        let rowElements = timesteps * numClasses
+        let expected = batchCount * rowElements
+        guard outputData.count == expected else {
+            throw CTCDecoderError.invalidOutputShape(outputShape)
+        }
+        var results: [RecognitionResult] = []
+        results.reserveCapacity(batchCount)
+        for b in 0..<batchCount {
+            let start = b * rowElements
+            let slice = Array(outputData[start..<(start + rowElements)])
+            let one = try decode(outputData: slice, outputShape: [1, timesteps, numClasses])
+            results.append(one)
+        }
+        return results
+    }
 }

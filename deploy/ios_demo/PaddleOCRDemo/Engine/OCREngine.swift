@@ -44,11 +44,14 @@ struct OCRRunResult {
 
 enum OCREngineError: LocalizedError {
     case quadTextCropFailed(boxIndex: Int, underlying: Error)
+    case recognitionBatchSizeMismatch(expected: Int, actual: Int)
 
     var errorDescription: String? {
         switch self {
         case .quadTextCropFailed(let idx, let err):
             return "Quad text crop failed for box \(idx): \(err.localizedDescription)"
+        case .recognitionBatchSizeMismatch(let expected, let actual):
+            return "Recognition returned \(actual) results but \(expected) crops were sent"
         }
     }
 }
@@ -98,8 +101,8 @@ class OCREngine {
     /// End-to-end OCR flow (detect → sort → crop → recognize):
     /// 1. **Detect**: Run detection to get bounding polygons
     /// 2. **Sort**: Sort boxes in reading order (top-to-bottom, left-to-right)
-    /// 3. **Crop + Recognize**: For each sorted box, crop the text region (quad path)
-    ///    from the original image, then run recognition on the crop
+    /// 3. **Crop + Recognize**: Crop each region, order crops by ascending width/height for batched
+    ///    recognition, then map results back to reading order
     ///
     /// - Parameters:
     ///   - image: The input `CGImage` to process.
@@ -133,8 +136,15 @@ class OCREngine {
         sourceImage: CGImage,
         resolved: ResolvedOCRRuntimeParams
     ) async throws -> ([OCRResult], TimeInterval) {
-        var ocrResults: [OCRResult] = []
-        var totalRecTime: TimeInterval = 0
+        struct LineCrop {
+            let lineIndex: Int
+            let aspectRatio: Float
+            let crop: CGImage
+            let polygon: [[Int32]]
+        }
+
+        var lines: [LineCrop] = []
+        lines.reserveCapacity(sortedBoxes.count)
 
         for (index, box) in sortedBoxes.enumerated() {
             let croppedImage: CGImage
@@ -143,16 +153,47 @@ class OCREngine {
             } catch {
                 throw OCREngineError.quadTextCropFailed(boxIndex: index, underlying: error)
             }
+            let h = max(croppedImage.height, 1)
+            let aspect = Float(croppedImage.width) / Float(h)
+            lines.append(LineCrop(lineIndex: index, aspectRatio: aspect, crop: croppedImage, polygon: box.points))
+        }
 
-            let recResult = try await recognitionEngine.recognize(croppedImage)
+        let sortedForInference = lines.sorted { a, b in
+            if a.aspectRatio != b.aspectRatio {
+                return a.aspectRatio < b.aspectRatio
+            }
+            return a.lineIndex < b.lineIndex
+        }
+
+        let batchSize = max(1, resolved.textRecBatchSize)
+        var perLine: [RecognitionEngineResult?] = Array(repeating: nil, count: lines.count)
+
+        var chunkStart = 0
+        while chunkStart < sortedForInference.count {
+            let chunkEnd = min(chunkStart + batchSize, sortedForInference.count)
+            let chunk = Array(sortedForInference[chunkStart..<chunkEnd])
+            let crops = chunk.map(\.crop)
+            let recBatch = try await recognitionEngine.recognizeBatch(crops)
+            guard recBatch.count == chunk.count else {
+                throw OCREngineError.recognitionBatchSizeMismatch(expected: chunk.count, actual: recBatch.count)
+            }
+            for (i, item) in chunk.enumerated() {
+                perLine[item.lineIndex] = recBatch[i]
+            }
+            chunkStart = chunkEnd
+        }
+
+        var ocrResults: [OCRResult] = []
+        var totalRecTime: TimeInterval = 0
+
+        for line in lines {
+            guard let recResult = perLine[line.lineIndex] else { continue }
             totalRecTime += recResult.totalTime
-
             if recResult.confidence < resolved.textRecScoreThresh {
                 continue
             }
-
             ocrResults.append(OCRResult(
-                polygon: box.points,
+                polygon: line.polygon,
                 text: recResult.text,
                 confidence: recResult.confidence
             ))

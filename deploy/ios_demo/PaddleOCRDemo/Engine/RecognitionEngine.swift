@@ -40,13 +40,16 @@ struct RecognitionEngineResult {
 enum RecognitionEngineError: LocalizedError {
     case noOutputTensor
     case unexpectedOutputShape([Int])
+    case batchOutputCountMismatch(expectedBatch: Int, shape: [Int])
 
     var errorDescription: String? {
         switch self {
         case .noOutputTensor:
             return "Recognition model produced no output tensor"
         case .unexpectedOutputShape(let shape):
-            return "Unexpected recognition output shape: \(shape), expected [1, T, C]"
+            return "Unexpected recognition output shape: \(shape), expected [1, T, C] or [N, T, C]"
+        case .batchOutputCountMismatch(let expectedBatch, let shape):
+            return "Recognition batch size mismatch: expected batch dimension \(expectedBatch), got shape \(shape)"
         }
     }
 }
@@ -97,46 +100,63 @@ class RecognitionEngine {
     /// - Parameter image: A cropped text region image.
     /// - Returns: A `RecognitionEngineResult` with text, confidence, and per-stage timing.
     func recognize(_ image: CGImage) async throws -> RecognitionEngineResult {
-        // Step 1: Preprocess
+        let batch = try await recognizeBatch([image])
+        guard let first = batch.first else {
+            throw RecognitionEngineError.noOutputTensor
+        }
+        return first
+    }
+
+    /// Runs recognition on multiple cropped lines in one batched inference call.
+    ///
+    /// - Parameter images: Cropped text regions in inference order (caller controls ordering).
+    /// - Returns: One result per input image, same order.
+    func recognizeBatch(_ images: [CGImage]) async throws -> [RecognitionEngineResult] {
+        guard !images.isEmpty else { return [] }
+
         let preprocessStart = CFAbsoluteTimeGetCurrent()
-        let preprocessed = try preprocessor.preprocess(image)
+        let batchPreprocessed = try preprocessor.preprocessBatch(images)
         let preprocessTime = CFAbsoluteTimeGetCurrent() - preprocessStart
 
-        // Step 2: Run ORT inference
         let inferenceStart = CFAbsoluteTimeGetCurrent()
         let outputs = try await sessionManager.runRecognition(
-            inputData: preprocessed.tensorData,
-            shape: preprocessed.tensorShape
+            inputData: batchPreprocessed.tensorData,
+            shape: batchPreprocessed.tensorShape
         )
         let inferenceTime = CFAbsoluteTimeGetCurrent() - inferenceStart
 
-        // Step 3: Extract output tensor
-        // The rec model outputs a single tensor with shape [1, T, C]
-        // where T = timesteps (sequence length), C = vocabulary size
         guard let firstOutput = outputs.values.first else {
             throw RecognitionEngineError.noOutputTensor
         }
         let outputData = firstOutput.data
         let outputShape = firstOutput.shape
 
-        guard outputShape.count == 3 else {
+        guard outputShape.count == 3, outputShape[0] == images.count else {
+            if outputShape.count == 3 {
+                throw RecognitionEngineError.batchOutputCountMismatch(expectedBatch: images.count, shape: outputShape)
+            }
             throw RecognitionEngineError.unexpectedOutputShape(outputShape)
         }
 
-        // Step 4: CTC Decode
         let postprocessStart = CFAbsoluteTimeGetCurrent()
-        let decoded = try decoder.decode(outputData: outputData, outputShape: outputShape)
+        let decoded = try decoder.decodeBatch(outputData: outputData, outputShape: outputShape)
         let postprocessTime = CFAbsoluteTimeGetCurrent() - postprocessStart
 
-        let totalTime = preprocessTime + inferenceTime + postprocessTime
+        let n = Double(images.count)
+        let preprocessPer = preprocessTime / n
+        let inferencePer = inferenceTime / n
+        let postPer = postprocessTime / n
+        let totalPer = (preprocessTime + inferenceTime + postprocessTime) / n
 
-        return RecognitionEngineResult(
-            text: decoded.text,
-            confidence: decoded.confidence,
-            preprocessTime: preprocessTime,
-            inferenceTime: inferenceTime,
-            postprocessTime: postprocessTime,
-            totalTime: totalTime
-        )
+        return decoded.map { d in
+            RecognitionEngineResult(
+                text: d.text,
+                confidence: d.confidence,
+                preprocessTime: preprocessPer,
+                inferenceTime: inferencePer,
+                postprocessTime: postPer,
+                totalTime: totalPer
+            )
+        }
     }
 }

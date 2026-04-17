@@ -100,12 +100,12 @@ actor ORTSessionManager {
 
     /// Run recognition inference with preprocessed input data.
     ///
-    /// The recognition model accepts dynamic-width input: shape `[1, 3, 48, W]`
-    /// where W varies per image depending on the aspect ratio of the cropped text region.
+    /// The recognition model accepts dynamic batch and width: shape `[N, 3, H, W]` with `N ≥ 1`,
+    /// fixed `H` (e.g. 48), and `W` shared after padding within each batch. A single line uses `N = 1`.
     ///
     /// - Parameters:
-    ///   - inputData: Float32 array in CHW layout; length must equal the product of `shape`.
-    ///   - shape: Tensor shape, e.g. [1, 3, 48, 320].
+    ///   - inputData: Float32 row-major tensor; length must equal the product of `shape`.
+    ///   - shape: e.g. `[1, 3, 48, 320]` or `[6, 3, 48, 640]` for a batch of six lines.
     /// - Returns: Dictionary mapping output name to (data as [Float], shape as [Int]).
     func runRecognition(inputData: [Float], shape: [Int]) async throws -> [String: (data: [Float], shape: [Int])] {
         guard let session = recSession else {
