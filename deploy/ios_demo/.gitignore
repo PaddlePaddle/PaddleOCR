@@ -9,14 +9,16 @@ PaddleOCRDemo.xcodeproj/project.xcworkspace/xcuserdata/
 DerivedData/
 build/
 
-# fetch_ios_demo_assets.sh cache (downloaded model .tar)
+# fetch_ios_demo_assets.sh download cache (.tar etc.)
 .fetch_ios_demo_assets_work/
-.download_models_work/
 
-# Demo sample PNG — downloaded by fetch_ios_demo_assets.sh; not tracked in git.
+# Demo sample images
 PaddleOCRDemo/Resources/SampleImages/*.png
 
 # Models — ignore all files under Models/; track only `.gitkeep` so det/, rec/, … stay in the tree
 PaddleOCRDemo/Models/**
 !PaddleOCRDemo/Models/*/
 !PaddleOCRDemo/Models/*/.gitkeep
+
+# Local validation reports
+out/

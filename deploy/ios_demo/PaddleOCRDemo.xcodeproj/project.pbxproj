@@ -39,6 +39,7 @@
 		A10000A3 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000A3 /* ErrorView.swift */; };
 		A10000A4 /* OCRParametersPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000A4 /* OCRParametersPanel.swift */; };
 		A10000B3 /* OCRParameterResolverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000B3 /* OCRParameterResolverTests.swift */; };
+		A10000C5 /* OCRBenchmarkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000C5 /* OCRBenchmarkTests.swift */; };
 		A10000B1 /* OCRParameterResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000B1 /* OCRParameterResolver.swift */; };
 		F9888FA77A2AF8AF45B50193 /* Pods_PaddleOCRDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D0FFA11A4E43E5BD0F80219 /* Pods_PaddleOCRDemo.framework */; };
 /* End PBXBuildFile section */
@@ -97,6 +98,7 @@
 		A20000A3 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
 		A20000A4 /* OCRParametersPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCRParametersPanel.swift; sourceTree = "<group>"; };
 		A20000B3 /* OCRParameterResolverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCRParameterResolverTests.swift; sourceTree = "<group>"; };
+		A20000C5 /* OCRBenchmarkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCRBenchmarkTests.swift; sourceTree = "<group>"; };
 		A20000B1 /* OCRParameterResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCRParameterResolver.swift; sourceTree = "<group>"; };
 		A20000C0 /* DemoSectionChrome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoSectionChrome.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -191,6 +193,7 @@
 			children = (
 				A2000014 /* ORTSessionManagerTests.swift */,
 				A20000B3 /* OCRParameterResolverTests.swift */,
+				A20000C5 /* OCRBenchmarkTests.swift */,
 			);
 			path = PaddleOCRDemoTests;
 			sourceTree = "<group>";
@@ -480,6 +483,7 @@
 			files = (
 				A1000011 /* ORTSessionManagerTests.swift in Sources */,
 				A10000B3 /* OCRParameterResolverTests.swift in Sources */,
+				A10000C5 /* OCRBenchmarkTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

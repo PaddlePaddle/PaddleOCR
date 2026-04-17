@@ -34,10 +34,24 @@ struct OCRRunResult {
     let results: [OCRResult]
     /// Total time spent in the detection stage (preprocess + inference + postprocess).
     let detectionTime: TimeInterval
-    /// Total time spent recognizing all text regions (sum of all recognition calls).
+    /// Seconds in detection preprocessing (resize, normalize, HWC-to-CHW).
+    let detectionPreprocessTime: TimeInterval
+    /// Seconds in detection ONNX inference.
+    let detectionInferenceTime: TimeInterval
+    /// Seconds in detection postprocessing (DB map, contours, polygons).
+    let detectionPostprocessTime: TimeInterval
+    /// Total time spent recognizing all text regions (sum of per-line totals).
     let recognitionTime: TimeInterval
+    /// Sum of recognition preprocess time across all lines (batched work split per line).
+    let recognitionPreprocessTime: TimeInterval
+    /// Sum of recognition inference time across all lines.
+    let recognitionInferenceTime: TimeInterval
+    /// Sum of recognition postprocess (CTC decode) time across all lines.
+    let recognitionPostprocessTime: TimeInterval
     /// Wall-clock time for the entire run (detect + sort + crop + recognize).
     let totalTime: TimeInterval
+    /// Time not attributed to detection or recognition totals.
+    let pipelineOverheadTime: TimeInterval
 }
 
 // MARK: - OCR Engine Errors
@@ -115,27 +129,43 @@ class OCREngine {
 
         let detResult = try await detectionEngine.detect(image, runtimeParams: params)
         let sortedBoxes = BoxSorter.sortInReadingOrder(detResult.boxes)
-        let (ocrResults, totalRecTime) = try await recognizeSortedBoxes(
+        let (ocrResults, recTiming) = try await recognizeSortedBoxes(
             sortedBoxes,
             sourceImage: image,
             resolved: resolved
         )
 
         let totalTime = CFAbsoluteTimeGetCurrent() - runStart
+        let overhead = totalTime - detResult.totalTime - recTiming.total
 
         return OCRRunResult(
             results: ocrResults,
             detectionTime: detResult.totalTime,
-            recognitionTime: totalRecTime,
-            totalTime: totalTime
+            detectionPreprocessTime: detResult.preprocessTime,
+            detectionInferenceTime: detResult.inferenceTime,
+            detectionPostprocessTime: detResult.postprocessTime,
+            recognitionTime: recTiming.total,
+            recognitionPreprocessTime: recTiming.preprocess,
+            recognitionInferenceTime: recTiming.inference,
+            recognitionPostprocessTime: recTiming.postprocess,
+            totalTime: totalTime,
+            pipelineOverheadTime: max(0, overhead)
         )
+    }
+
+    /// Aggregated recognition timing across all lines (sums of per-line split batch times).
+    private struct RecognitionTimingAggregate {
+        let preprocess: TimeInterval
+        let inference: TimeInterval
+        let postprocess: TimeInterval
+        let total: TimeInterval
     }
 
     private func recognizeSortedBoxes(
         _ sortedBoxes: [DetectionBox],
         sourceImage: CGImage,
         resolved: ResolvedOCRRuntimeParams
-    ) async throws -> ([OCRResult], TimeInterval) {
+    ) async throws -> ([OCRResult], RecognitionTimingAggregate) {
         struct LineCrop {
             let lineIndex: Int
             let aspectRatio: Float
@@ -185,10 +215,16 @@ class OCREngine {
 
         var ocrResults: [OCRResult] = []
         var totalRecTime: TimeInterval = 0
+        var totalRecPre: TimeInterval = 0
+        var totalRecInf: TimeInterval = 0
+        var totalRecPost: TimeInterval = 0
 
         for line in lines {
             guard let recResult = perLine[line.lineIndex] else { continue }
             totalRecTime += recResult.totalTime
+            totalRecPre += recResult.preprocessTime
+            totalRecInf += recResult.inferenceTime
+            totalRecPost += recResult.postprocessTime
             if recResult.confidence < resolved.textRecScoreThresh {
                 continue
             }
@@ -199,6 +235,12 @@ class OCREngine {
             ))
         }
 
-        return (ocrResults, totalRecTime)
+        let aggregate = RecognitionTimingAggregate(
+            preprocess: totalRecPre,
+            inference: totalRecInf,
+            postprocess: totalRecPost,
+            total: totalRecTime
+        )
+        return (ocrResults, aggregate)
     }
 }

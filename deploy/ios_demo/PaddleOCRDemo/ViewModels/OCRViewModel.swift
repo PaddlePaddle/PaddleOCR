@@ -95,7 +95,7 @@ class OCRViewModel: ObservableObject {
     /// Last image run through OCR (normalized orientation), for **Re-run OCR** without re-picking.
     private var lastNormalizedImage: UIImage?
 
-    /// Name of the demo sample in Resources/SampleImages (from `fetch_ios_demo_assets.sh`).
+    /// Name of the demo sample in Resources/SampleImages.
     let sampleImageNames: [String] = ["general_ocr_002"]
 
     /// Photo picker or file load produced unusable image data.
