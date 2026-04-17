@@ -8,6 +8,7 @@ import importlib.util
 import sys
 import types
 
+
 def _import_patch_module():
     """Import _patch_table_markdown without triggering paddleocr.__init__."""
     spec = importlib.util.spec_from_file_location(
@@ -159,10 +160,7 @@ class TestFixedGetHtmlResult:
             ['<b><pause milliseconds="5000"/></b>'],
             _minimal_table_structure(),
         )
-        assert (
-            "<td><b>&lt;pause milliseconds=&quot;5000&quot;/&gt;</b></td>"
-            in result
-        )
+        assert "<td><b>&lt;pause milliseconds=&quot;5000&quot;/&gt;</b></td>" in result
 
 
 class TestApplyPatches:

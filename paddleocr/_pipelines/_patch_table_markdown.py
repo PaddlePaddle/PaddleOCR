@@ -115,7 +115,9 @@ def apply_patches():
         import paddlex.inference.pipelines.table_recognition.table_recognition_post_processing as post_processing
         import paddlex.inference.pipelines.table_recognition.table_recognition_post_processing_v2 as post_processing_v2
     except ImportError:
-        logger.debug("paddlex table recognition modules not available; skipping patches")
+        logger.debug(
+            "paddlex table recognition modules not available; skipping patches"
+        )
         return
 
     post_processing.get_html_result = _fixed_get_html_result
