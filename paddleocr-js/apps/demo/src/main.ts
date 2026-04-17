@@ -19,7 +19,7 @@ function getDemoThreadCount(): number {
 }
 
 const ui = {
-  modelVariant: document.getElementById("modelVariant") as HTMLSelectElement,
+  modelPreset: document.getElementById("modelPreset") as HTMLSelectElement,
   runtimeBackend: document.getElementById("runtimeBackend") as HTMLSelectElement,
   detThresh: document.getElementById("detThresh") as HTMLInputElement,
   boxThresh: document.getElementById("boxThresh") as HTMLInputElement,
@@ -122,20 +122,20 @@ async function initializeOcrEngine(): Promise<void> {
     await state.ocr.dispose();
   }
 
-  const variant = ui.modelVariant.value;
+  const preset = ui.modelPreset.value;
 
   state.ocr = await PaddleOCR.create({
     initialize: false,
     worker: false,
-    textDetectionModelName: `${variant}_det`,
-    textRecognitionModelName: `${variant}_rec`,
+    textDetectionModelName: `${preset}_det`,
+    textRecognitionModelName: `${preset}_rec`,
     ortOptions: getRuntimeOptions()
   });
 
   const summary = await state.ocr.initialize();
   state.ocrReady = true;
   ui.metrics.textContent = [
-    `model: ${variant}`,
+    `model: ${preset}`,
     `initialize: ${formatMs(summary.elapsedMs)}`,
     `backend(requested): ${summary.backend}`,
     `webgpu available: ${summary.webgpuAvailable ? "yes" : "no"}`,
@@ -246,7 +246,7 @@ ui.boxThresh.value = String(DEFAULT_RUNTIME_PARAMS.textDetBoxThresh);
 ui.unclipRatio.value = String(DEFAULT_RUNTIME_PARAMS.textDetUnclipRatio);
 ui.recScoreThresh.value = String(DEFAULT_RUNTIME_PARAMS.textRecScoreThresh);
 ui.reinitializeBtn.addEventListener("click", () => void initialize());
-ui.modelVariant.addEventListener("change", () => void initialize());
+ui.modelPreset.addEventListener("change", () => void initialize());
 ui.runtimeBackend.addEventListener("change", () => void initialize());
 
 ui.runBtn.addEventListener("click", () => void runOcr());
