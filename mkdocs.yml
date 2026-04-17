@@ -122,10 +122,11 @@ plugins:
             PaddleOCR-VL Intel Arc GPU 使用教程: PaddleOCR-VL Intel Arc GPU Usage Tutorial
             推理部署: Model Deploy
             高性能推理: High-Performance Inference
-            打包PaddleOCR项目: Package PaddleOCR Projects
+            打包 PaddleOCR 项目: Package PaddleOCR Projects
             获取ONNX模型: Obtaining ONNX Models
             端侧部署: On-Device Deployment
-            服务化部署: Serving Deployment
+            服务化部署: Serving
+            浏览器端部署: Browser Deployment
             模块列表: Module List
             文档图像方向分类模块: Document Image Orientation Classification Module
             文档类视觉语言模型模块: Document Visual Language Model Module
@@ -325,8 +326,9 @@ nav:
     - 获取ONNX模型: version3.x/deployment/obtaining_onnx_models.md
     - 端侧部署: version3.x/deployment/on_device_deployment.md
     - 服务化部署: version3.x/deployment/serving.md
+    - 浏览器端部署: version3.x/deployment/browser.md
     - MCP 服务器: version3.x/deployment/mcp_server.md
-    - 打包PaddleOCR项目: version3.x/deployment/packaging.md
+    - 打包 PaddleOCR 项目: version3.x/deployment/packaging.md
     - 产线并行推理: version3.x/pipeline_usage/instructions/parallel_inference.md
     - C++ 本地部署:
       - 通用 OCR 产线 C++ 本地部署 - Linux: version3.x/deployment/cpp/OCR.md
