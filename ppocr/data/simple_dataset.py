@@ -76,8 +76,14 @@ class SimpleDataSet(Dataset):
         random.shuffle(self.data_lines)
         return
 
-    def reset_data_lines(self, seed=None):
-        """Lightweight reset: resample and reshuffle without rebuilding DataLoader."""
+    def reset_data_lines(self, seed=None, epoch=None):
+        """Lightweight reset: resample, reshuffle, and update epoch-dependent ops.
+
+        Args:
+            seed: Random seed for data sampling and shuffling.
+            epoch: Current training epoch for adaptive shrink_ratio.
+                   If None, falls back to seed for backward compatibility.
+        """
         self.seed = seed
         self.data_lines = self.get_image_info_list(
             self.label_file_list, self.ratio_list
@@ -85,7 +91,7 @@ class SimpleDataSet(Dataset):
         self.data_idx_order_list = list(range(len(self.data_lines)))
         if self.mode == "train" and self.do_shuffle:
             self.shuffle_data_random()
-        self._update_epoch_in_ops(seed)
+        self._update_epoch_in_ops(epoch if epoch is not None else seed)
 
     def set_epoch_as_seed(self, seed, dataset_config):
         if self.mode == "train":
@@ -99,14 +105,14 @@ class SimpleDataSet(Dataset):
             except Exception:
                 return
 
-    def _update_epoch_in_ops(self, seed):
+    def _update_epoch_in_ops(self, epoch):
         """Update shrink_ratio in MakeBorderMap/MakeShrinkMap ops for the new epoch."""
         if self.mode != "train":
             return
         from ppocr.data.imaug.make_border_map import MakeBorderMap
         from ppocr.data.imaug.make_shrink_map import MakeShrinkMap
 
-        epoch = seed if seed is not None else 0
+        epoch = epoch if epoch is not None else 0
         for op in self.ops:
             if isinstance(op, (MakeBorderMap, MakeShrinkMap)):
                 if hasattr(op, "_base_shrink_ratio") and hasattr(

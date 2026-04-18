@@ -318,7 +318,7 @@ def train(
 
     for epoch in range(start_epoch, epoch_num + 1):
         if train_dataloader.dataset.need_reset:
-            train_dataloader.dataset.reset_data_lines(seed=epoch)
+            train_dataloader.dataset.reset_data_lines(seed=epoch, epoch=epoch)
             max_iter = (
                 len(train_dataloader) - 1
                 if platform.system() == "Windows"

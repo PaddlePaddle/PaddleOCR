@@ -43,7 +43,7 @@ import tools.naive_sync_bn as naive_sync_bn
 dist.get_world_size()
 
 
-def main(config, device, logger, vdl_writer, seed):
+def main(config, device, logger, vdl_writer):
     # init dist environment
     if config["Global"]["distributed"]:
         dist.init_parallel_env()
@@ -51,8 +51,13 @@ def main(config, device, logger, vdl_writer, seed):
     global_config = config["Global"]
 
     # build dataloader
+    # NOTE: Do NOT pass seed here. The seed parameter in build_dataloader is used
+    # as epoch number by set_epoch_as_seed (for adaptive shrink_ratio), not as
+    # random seed. First construction should use epoch=0 (i.e., seed=None).
+    # The epoch loop in program.train() handles subsequent updates via
+    # reset_data_lines(seed=epoch).
     set_signal_handlers()
-    train_dataloader = build_dataloader(config, "Train", device, logger, seed)
+    train_dataloader = build_dataloader(config, "Train", device, logger)
     if len(train_dataloader) == 0:
         logger.error(
             "No Images in train dataset, please ensure\n"
@@ -62,7 +67,7 @@ def main(config, device, logger, vdl_writer, seed):
         return
 
     if config["Eval"]:
-        valid_dataloader = build_dataloader(config, "Eval", device, logger, seed)
+        valid_dataloader = build_dataloader(config, "Eval", device, logger)
     else:
         valid_dataloader = None
     step_pre_epoch = len(train_dataloader)
@@ -292,5 +297,5 @@ if __name__ == "__main__":
     config, device, logger, vdl_writer = program.preprocess(is_train=True)
     seed = config["Global"]["seed"] if "seed" in config["Global"] else 1024
     set_seed(seed)
-    main(config, device, logger, vdl_writer, seed)
+    main(config, device, logger, vdl_writer)
     # test_reader(config, device, logger)
