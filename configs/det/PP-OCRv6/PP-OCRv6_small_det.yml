@@ -31,6 +31,7 @@ Architecture:
   Neck:
     name: UniRepLKFPN
     out_channels: 96
+    dilated_kernel_size: 7
     shortcut: true
   Head:
     name: DBHead
@@ -40,7 +41,6 @@ Architecture:
 
 Loss:
   name: DBLoss
-  balance_loss: true
   main_loss_type: DiceBCELoss
   alpha: 5
   beta: 10

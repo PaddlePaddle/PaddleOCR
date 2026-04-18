@@ -40,7 +40,6 @@ Architecture:
 
 Loss:
   name: DBLoss
-  balance_loss: true
   main_loss_type: DiceBCELoss
   alpha: 5
   beta: 10

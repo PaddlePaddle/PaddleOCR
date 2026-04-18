@@ -218,6 +218,7 @@ def train(
     amp_custom_white_list=[],
     amp_dtype="float16",
     wd_scheduler=None,
+    ema=None,
 ):
     cal_metric_during_train = config["Global"].get("cal_metric_during_train", False)
     calc_epoch_interval = config["Global"].get("calc_epoch_interval", 1)
@@ -317,9 +318,7 @@ def train(
 
     for epoch in range(start_epoch, epoch_num + 1):
         if train_dataloader.dataset.need_reset:
-            train_dataloader = build_dataloader(
-                config, "Train", device, logger, seed=epoch
-            )
+            train_dataloader.dataset.reset_data_lines(seed=epoch)
             max_iter = (
                 len(train_dataloader) - 1
                 if platform.system() == "Windows"
@@ -393,6 +392,9 @@ def train(
                 optimizer.step()
 
             optimizer.clear_grad()
+
+            if ema is not None:
+                ema.update(model)
 
             if (
                 cal_metric_during_train and epoch % calc_epoch_interval == 0
@@ -517,6 +519,11 @@ def train(
                         max_average_window=15625,
                     )
                     Model_Average.apply()
+                # Apply EMA weights for eval and save
+                _ema_train_state = None
+                if ema is not None:
+                    _ema_train_state = copy.deepcopy(model.state_dict())
+                    model.set_state_dict(ema.apply())
                 cur_metric = eval(
                     model,
                     valid_dataloader,
@@ -567,6 +574,8 @@ def train(
                         config,
                         is_best=True,
                         prefix=prefix,
+                        ema=ema,
+                        train_state=_ema_train_state,
                         save_model_info=model_info,
                         best_model_dict=best_model_dict,
                         epoch=epoch,
@@ -594,9 +603,18 @@ def train(
                         is_best=True, prefix="best_accuracy", metadata=best_model_dict
                     )
 
+                # Restore training weights after eval/save
+                if _ema_train_state is not None:
+                    model.set_state_dict(_ema_train_state)
+
             reader_start = time.time()
         if dist.get_rank() == 0:
             prefix = "latest"
+            # Apply EMA weights for save
+            _ema_train_state_latest = None
+            if ema is not None:
+                _ema_train_state_latest = copy.deepcopy(model.state_dict())
+                model.set_state_dict(ema.apply())
             if uniform_output_enabled:
                 export(config, model, os.path.join(save_model_dir, prefix, "inference"))
                 gc.collect()
@@ -615,17 +633,27 @@ def train(
                 config,
                 is_best=False,
                 prefix=prefix,
+                ema=ema,
+                train_state=_ema_train_state_latest,
                 save_model_info=model_info,
                 best_model_dict=best_model_dict,
                 epoch=epoch,
                 global_step=global_step,
             )
+            # Restore training weights
+            if _ema_train_state_latest is not None:
+                model.set_state_dict(_ema_train_state_latest)
 
             if log_writer is not None:
                 log_writer.log_model(is_best=False, prefix="latest")
 
         if dist.get_rank() == 0 and epoch > 0 and epoch % save_epoch_step == 0:
             prefix = "iter_epoch_{}".format(epoch)
+            # Apply EMA weights for save
+            _ema_train_state_iter = None
+            if ema is not None:
+                _ema_train_state_iter = copy.deepcopy(model.state_dict())
+                model.set_state_dict(ema.apply())
             if uniform_output_enabled:
                 export(config, model, os.path.join(save_model_dir, prefix, "inference"))
                 gc.collect()
@@ -644,12 +672,17 @@ def train(
                 config,
                 is_best=False,
                 prefix=prefix,
+                ema=ema,
+                train_state=_ema_train_state_iter,
                 save_model_info=model_info,
                 best_model_dict=best_model_dict,
                 epoch=epoch,
                 global_step=global_step,
                 done_flag=epoch == config["Global"]["epoch_num"],
             )
+            # Restore training weights
+            if _ema_train_state_iter is not None:
+                model.set_state_dict(_ema_train_state_iter)
             if log_writer is not None:
                 log_writer.log_model(
                     is_best=False, prefix="iter_epoch_{}".format(epoch)

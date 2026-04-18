@@ -41,6 +41,8 @@ class MakeBorderMap(object):
         self.thresh_min = thresh_min
         self.thresh_max = thresh_max
         if "total_epoch" in kwargs and "epoch" in kwargs and kwargs["epoch"] != "None":
+            self._base_shrink_ratio = shrink_ratio
+            self._total_epoch = kwargs["total_epoch"]
             self.shrink_ratio = self.shrink_ratio + 0.2 * kwargs["epoch"] / float(
                 kwargs["total_epoch"]
             )

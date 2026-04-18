@@ -39,6 +39,8 @@ class SimpleDataSet(Dataset):
         ratio_list = dataset_config.get("ratio_list", 1.0)
         if isinstance(ratio_list, (float, int)):
             ratio_list = [float(ratio_list)] * int(data_source_num)
+        self.label_file_list = label_file_list
+        self.ratio_list = ratio_list
 
         assert (
             len(ratio_list) == data_source_num
@@ -74,6 +76,17 @@ class SimpleDataSet(Dataset):
         random.shuffle(self.data_lines)
         return
 
+    def reset_data_lines(self, seed=None):
+        """Lightweight reset: resample and reshuffle without rebuilding DataLoader."""
+        self.seed = seed
+        self.data_lines = self.get_image_info_list(
+            self.label_file_list, self.ratio_list
+        )
+        self.data_idx_order_list = list(range(len(self.data_lines)))
+        if self.mode == "train" and self.do_shuffle:
+            self.shuffle_data_random()
+        self._update_epoch_in_ops(seed)
+
     def set_epoch_as_seed(self, seed, dataset_config):
         if self.mode == "train":
             try:
@@ -85,6 +98,24 @@ class SimpleDataSet(Dataset):
                 ] = (seed if seed is not None else 0)
             except Exception:
                 return
+
+    def _update_epoch_in_ops(self, seed):
+        """Update shrink_ratio in MakeBorderMap/MakeShrinkMap ops for the new epoch."""
+        if self.mode != "train":
+            return
+        from ppocr.data.imaug.make_border_map import MakeBorderMap
+        from ppocr.data.imaug.make_shrink_map import MakeShrinkMap
+
+        epoch = seed if seed is not None else 0
+        for op in self.ops:
+            if isinstance(op, (MakeBorderMap, MakeShrinkMap)):
+                if hasattr(op, "_base_shrink_ratio") and hasattr(
+                    op, "_total_epoch"
+                ):
+                    op.shrink_ratio = (
+                        op._base_shrink_ratio
+                        + 0.2 * epoch / float(op._total_epoch)
+                    )
 
     def _try_parse_filename_list(self, file_name):
         # multiple images -> one gt label

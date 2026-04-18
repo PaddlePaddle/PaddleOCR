@@ -211,9 +211,30 @@ def main(config, device, logger, vdl_writer, seed):
     else:
         scaler = None
 
+    # build EMA (after AMP decorate, before load_model)
+    ema = None
+    if config["Global"].get("use_ema", False):
+        from ppocr.utils.ema import ModelEMA
+
+        ema = ModelEMA(
+            model,
+            decay=config["Global"].get("ema_decay", 0.9998),
+            gamma=config["Global"].get("ema_gamma", 2000),
+            ema_decay_type=config["Global"].get("ema_decay_type", "threshold"),
+            ema_filter_no_grad=config["Global"].get("ema_filter_no_grad", False),
+        )
+        logger.info(
+            "EMA enabled: decay={}, gamma={}, type={}, filter_no_grad={}".format(
+                ema.decay,
+                ema.gamma,
+                ema.ema_decay_type,
+                config["Global"].get("ema_filter_no_grad", False),
+            )
+        )
+
     # load pretrain model
     pre_best_model_dict = load_model(
-        config, model, optimizer, config["Architecture"]["model_type"]
+        config, model, optimizer, config["Architecture"]["model_type"], ema=ema
     )
 
     if config["Global"]["distributed"]:
@@ -243,6 +264,7 @@ def main(config, device, logger, vdl_writer, seed):
         amp_custom_white_list,
         amp_dtype,
         wd_scheduler=wd_scheduler,
+        ema=ema,
     )
 
 
