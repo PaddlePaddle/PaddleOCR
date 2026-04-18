@@ -158,8 +158,6 @@ class AugmenterBuilder(object):
             augmenter_args["rotate"] = rotate
             # Set fit_output=True to expand canvas when rotating to prevent content loss
             # Use BORDER_CONSTANT with value 0 (black padding) for clean borders
-            if "p" not in augmenter_args:
-                augmenter_args["p"] = 1.0
             if "fit_output" not in augmenter_args:
                 augmenter_args["fit_output"] = True
             if "border_mode" not in augmenter_args:

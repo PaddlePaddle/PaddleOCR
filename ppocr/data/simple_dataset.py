@@ -51,6 +51,7 @@ class SimpleDataSet(Dataset):
         self.data_idx_order_list = list(range(len(self.data_lines)))
         if self.mode == "train" and self.do_shuffle:
             self.shuffle_data_random()
+        self.set_epoch_as_seed(seed, dataset_config)
         self.ops = create_operators(dataset_config["transforms"], global_config)
         self.ext_op_transform_idx = dataset_config.get("ext_op_transform_idx", 2)
         self.need_reset = True in [x < 1 for x in ratio_list]
@@ -72,6 +73,18 @@ class SimpleDataSet(Dataset):
         random.seed(self.seed)
         random.shuffle(self.data_lines)
         return
+
+    def set_epoch_as_seed(self, seed, dataset_config):
+        if self.mode == "train":
+            try:
+                dataset_config["transforms"][5]["MakeBorderMap"][
+                    "epoch"
+                ] = (seed if seed is not None else 0)
+                dataset_config["transforms"][6]["MakeShrinkMap"][
+                    "epoch"
+                ] = (seed if seed is not None else 0)
+            except Exception:
+                return
 
     def _try_parse_filename_list(self, file_name):
         # multiple images -> one gt label
