@@ -66,18 +66,6 @@ SCR_TO_LATEX = {
 }
 
 
-def load(stream):
-    tree = ET.parse(stream)
-    for omath in tree.findall(OMML_NS + "oMath"):
-        yield oMath2Latex(omath)
-
-
-def load_string(string):
-    root = ET.fromstring(string)
-    for omath in root.findall(OMML_NS + "oMath"):
-        yield oMath2Latex(omath)
-
-
 def escape_latex(strs):
     last = None
     new_chr = []
@@ -166,9 +154,6 @@ class Pr(Tag2Method):
     def __str__(self):
         return self.text
 
-    def __unicode__(self):
-        return self.__str__(self)
-
     def __getattr__(self, name):
         return self.__innerdict.get(name, None)
 
@@ -202,27 +187,28 @@ class oMath2Latex(Tag2Method):
 
     __direct_tags = ("box", "sSub", "sSup", "sSubSup", "num", "den", "deg", "e")
 
+    _encoder = None  # cached UnicodeToLatexEncoder instance (class-level)
+
     def __init__(self, element):
-        # Delayed import: pylatexenc is an optional dependency
-        try:
-            from pylatexenc.latexencode import UnicodeToLatexEncoder
-        except ImportError:
-            raise RuntimeError(
-                "pylatexenc is required for math formula conversion. "
-                "Install it with: pip install pylatexenc"
+        if oMath2Latex._encoder is None:
+            # Delayed import: pylatexenc is an optional dependency
+            try:
+                from pylatexenc.latexencode import UnicodeToLatexEncoder
+            except ImportError:
+                raise RuntimeError(
+                    "pylatexenc is required for math formula conversion. "
+                    "Install it with: pip install pylatexenc"
+                )
+            oMath2Latex._encoder = UnicodeToLatexEncoder(
+                replacement_latex_protection="braces-all",
+                unknown_char_policy="keep",
+                unknown_char_warning=False,
             )
-        self.u = UnicodeToLatexEncoder(
-            replacement_latex_protection="braces-all",
-            unknown_char_policy="keep",
-            unknown_char_warning=False,
-        )
+        self.u = oMath2Latex._encoder
         self._latex = self.process_children(element)
 
     def __str__(self):
         return self.latex.replace("  ", " ")
-
-    def __unicode__(self):
-        return self.__str__(self)
 
     def process_unknow(self, elm, stag):
         if stag in self.__direct_tags:
@@ -271,11 +257,6 @@ class oMath2Latex(Tag2Method):
             right=null if not e_val else escape_latex(e_val),
         )
         return delim
-
-    def do_spre(self, elm):
-        """
-        the Pre-Sub-Superscript object -- Not support yet
-        """
 
     def do_sub(self, elm):
         text = self.process_children(elm)

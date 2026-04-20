@@ -45,12 +45,14 @@ def extract_math_from_paragraph(para_element) -> list:
     results = []
     # a14:m wraps m:oMathPara or m:oMath
     for a14m in para_element.findall(f".//{_A14}m"):
+        found_omath = False
         for omath in a14m.findall(f".//{_M}oMath"):
             latex = convert_omath(omath)
             if latex:
                 results.append(latex)
-        # No oMath inside a14:m? Try the a14:m element itself
-        if not results:
+                found_omath = True
+        # No oMath inside this a14:m? Try the a14:m element itself
+        if not found_omath:
             latex = convert_omath(a14m)
             if latex:
                 results.append(latex)

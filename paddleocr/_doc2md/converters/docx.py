@@ -43,6 +43,13 @@ _WPS = "{" + _WPS_NS + "}"
 _C_NS = "http://schemas.openxmlformats.org/drawingml/2006/chart"
 _C = "{" + _C_NS + "}"
 
+# WordprocessingDrawing namespace (wp:inline, wp:anchor)
+_WPD = "{http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing}"
+# DrawingML main namespace
+_A = "{http://schemas.openxmlformats.org/drawingml/2006/main}"
+# OPC relationships namespace
+_R = "{http://schemas.openxmlformats.org/officeDocument/2006/relationships}"
+
 
 def _escape_md_url(url: str) -> str:
     """Escape parentheses in URL for Markdown link syntax."""
@@ -132,6 +139,9 @@ def _iter_math_paragraph_parts(para) -> list:
     - ("display_math", latex_str) — a display math block ($$...$$)
     - ("inline_math", latex_str) — an inline math expression ($...$)
     """
+    from docx.text.run import Run
+    from docx.text.hyperlink import Hyperlink
+
     text_items = []
     parts = []
 
@@ -157,8 +167,6 @@ def _iter_math_paragraph_parts(para) -> list:
                 parts.append(("inline_math", latex))
         elif local == "r":
             try:
-                from docx.text.run import Run
-
                 run = Run(child, para)
                 if run.text:
                     text_items.append(
@@ -177,8 +185,6 @@ def _iter_math_paragraph_parts(para) -> list:
                 pass
         elif local == "hyperlink":
             try:
-                from docx.text.hyperlink import Hyperlink
-
                 hl = Hyperlink(child, para)
                 try:
                     url = hl.url or ""
@@ -870,22 +876,18 @@ _MIME_TO_EXT = {
 
 def _extract_images_from_paragraph(para, doc, image_counter: list) -> list:
     """Extract images from a paragraph. Returns [(filename, bytes, cx_emu)] where cx_emu is 0 if unknown."""
-    WP_NS = "{http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing}"
-    A_NS = "{http://schemas.openxmlformats.org/drawingml/2006/main}"
-    R_NS = "{http://schemas.openxmlformats.org/officeDocument/2006/relationships}"
-
     results = []
-    containers = para._element.findall(f".//{WP_NS}inline") + para._element.findall(
-        f".//{WP_NS}anchor"
+    containers = para._element.findall(f".//{_WPD}inline") + para._element.findall(
+        f".//{_WPD}anchor"
     )
     for container in containers:
-        extent = container.find(f"{WP_NS}extent")
+        extent = container.find(f"{_WPD}extent")
         cx_emu = int(extent.get("cx", 0)) if extent is not None else 0
 
-        blip = container.find(f".//{A_NS}blip")
+        blip = container.find(f".//{_A}blip")
         if blip is None:
             continue
-        r_embed = blip.get(f"{R_NS}embed")
+        r_embed = blip.get(f"{_R}embed")
         if not r_embed:
             continue
         try:
@@ -906,22 +908,16 @@ def _extract_chart_tables(para, doc) -> list:
     try:
         from datetime import datetime, timedelta
 
-        WP_NS = (
-            "{http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing}"
-        )
-        R_NS = "{http://schemas.openxmlformats.org/officeDocument/2006/relationships}"
-        A_NS = "{http://schemas.openxmlformats.org/drawingml/2006/main}"
-
         results = []
-        containers = para._element.findall(f".//{WP_NS}inline") + para._element.findall(
-            f".//{WP_NS}anchor"
+        containers = para._element.findall(f".//{_WPD}inline") + para._element.findall(
+            f".//{_WPD}anchor"
         )
 
         for container in containers:
             chart_ref = container.find(f".//{_C}chart")
             if chart_ref is None:
                 continue
-            r_id = chart_ref.get(f"{R_NS}id")
+            r_id = chart_ref.get(f"{_R}id")
             if not r_id:
                 continue
             try:
@@ -941,7 +937,7 @@ def _extract_chart_tables(para, doc) -> list:
             title_text = ""
             title_el = chart_root.find(f".//{_C}title")
             if title_el is not None:
-                a_t_els = title_el.findall(f".//{A_NS}t")
+                a_t_els = title_el.findall(f".//{_A}t")
                 title_text = "".join((el.text or "") for el in a_t_els).strip()
 
             # Extract axis titles
@@ -951,7 +947,7 @@ def _extract_chart_tables(para, doc) -> list:
                 if ax_el is not None:
                     t_el = ax_el.find(f"{_C}title")
                     if t_el is not None:
-                        texts = t_el.findall(f".//{A_NS}t")
+                        texts = t_el.findall(f".//{_A}t")
                         cat_ax_title = "".join(el.text or "" for el in texts).strip()
                         break
 
@@ -960,7 +956,7 @@ def _extract_chart_tables(para, doc) -> list:
             if val_ax_el is not None:
                 t_el = val_ax_el.find(f"{_C}title")
                 if t_el is not None:
-                    texts = t_el.findall(f".//{A_NS}t")
+                    texts = t_el.findall(f".//{_A}t")
                     val_ax_title = "".join(el.text or "" for el in texts).strip()
 
             # Extract series data
@@ -1171,7 +1167,6 @@ def _textbox_paragraphs_to_markdown(
 
 def _build_numbering_map(doc) -> dict:
     """Parse numbering.xml and return {numId: {ilvl: numFmt}} mapping."""
-    WP = "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}"
     numbering_map = {}
     try:
         numbering_part = doc.part.numbering_part
@@ -1181,24 +1176,24 @@ def _build_numbering_map(doc) -> dict:
 
     # Build abstractNumId -> {ilvl: numFmt}
     abstract = {}
-    for abs_num in numbering_elem.findall(f"{WP}abstractNum"):
-        abs_id = abs_num.get(f"{WP}abstractNumId")
+    for abs_num in numbering_elem.findall(f"{_W}abstractNum"):
+        abs_id = abs_num.get(f"{_W}abstractNumId")
         levels = {}
-        for lvl in abs_num.findall(f"{WP}lvl"):
-            ilvl = int(lvl.get(f"{WP}ilvl", "0"))
-            fmt_elem = lvl.find(f"{WP}numFmt")
+        for lvl in abs_num.findall(f"{_W}lvl"):
+            ilvl = int(lvl.get(f"{_W}ilvl", "0"))
+            fmt_elem = lvl.find(f"{_W}numFmt")
             fmt = (
-                fmt_elem.get(f"{WP}val", "bullet") if fmt_elem is not None else "bullet"
+                fmt_elem.get(f"{_W}val", "bullet") if fmt_elem is not None else "bullet"
             )
             levels[ilvl] = fmt
         abstract[abs_id] = levels
 
     # Map numId -> abstractNumId
-    for num in numbering_elem.findall(f"{WP}num"):
-        num_id = num.get(f"{WP}numId")
-        abs_ref = num.find(f"{WP}abstractNumId")
+    for num in numbering_elem.findall(f"{_W}num"):
+        num_id = num.get(f"{_W}numId")
+        abs_ref = num.find(f"{_W}abstractNumId")
         if abs_ref is not None:
-            abs_id = abs_ref.get(f"{WP}val")
+            abs_id = abs_ref.get(f"{_W}val")
             if abs_id in abstract:
                 numbering_map[num_id] = abstract[abs_id]
     return numbering_map
@@ -1206,19 +1201,18 @@ def _build_numbering_map(doc) -> dict:
 
 def _get_list_info(para, numbering_map) -> tuple | None:
     """Return (list_type, ilvl, num_id) or None. list_type: 'bullet' | 'ordered'"""
-    WP = "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}"
-    pPr = para._element.find(f"{WP}pPr")
+    pPr = para._element.find(f"{_W}pPr")
     if pPr is None:
         return None
-    numPr = pPr.find(f"{WP}numPr")
+    numPr = pPr.find(f"{_W}numPr")
     if numPr is None:
         return None
-    numId_elem = numPr.find(f"{WP}numId")
-    ilvl_elem = numPr.find(f"{WP}ilvl")
+    numId_elem = numPr.find(f"{_W}numId")
+    ilvl_elem = numPr.find(f"{_W}ilvl")
     if numId_elem is None:
         return None
-    num_id = numId_elem.get(f"{WP}val")
-    ilvl = int(ilvl_elem.get(f"{WP}val", "0")) if ilvl_elem is not None else 0
+    num_id = numId_elem.get(f"{_W}val")
+    ilvl = int(ilvl_elem.get(f"{_W}val", "0")) if ilvl_elem is not None else 0
     if num_id not in numbering_map:
         return None
     fmt = numbering_map[num_id].get(ilvl, "bullet")

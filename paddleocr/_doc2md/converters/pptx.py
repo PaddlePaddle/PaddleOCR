@@ -15,15 +15,45 @@ from pathlib import Path
 
 from ..base import BaseConverter, ConvertResult
 from ..math import (
-    convert_omath as _convert_omath,
     extract_math_from_paragraph as _extract_math_from_paragraph,
     paragraph_has_math as _paragraph_has_math,
 )
 from ..registry import default_registry
 
 # pptx XML namespace for DrawingML run properties
-_A_STRIKE = "{http://schemas.openxmlformats.org/drawingml/2006/main}strike"
-_A_RPR = "{http://schemas.openxmlformats.org/drawingml/2006/main}rPr"
+_A_NS = "http://schemas.openxmlformats.org/drawingml/2006/main"
+_A = "{" + _A_NS + "}"
+_A_STRIKE = f"{_A}strike"
+_A_RPR = f"{_A}rPr"
+_A_P = f"{_A}p"
+
+# Markup Compatibility namespace
+_MC_NS = "http://schemas.openxmlformats.org/markup-compatibility/2006"
+_MC = "{" + _MC_NS + "}"
+_MC_CHOICE = f"{_MC}Choice"
+_MC_ALT = f"{_MC}AlternateContent"
+
+# Chart namespace
+_C_NS = "http://schemas.openxmlformats.org/drawingml/2006/chart"
+_C = "{" + _C_NS + "}"
+
+# Chart type name lookup (used in _chart_to_html)
+_CHART_TYPE_NAMES = {
+    1: "Area Chart",  # AREA
+    2: "Area Chart",  # AREA_STACKED
+    4: "Line Chart",  # LINE
+    5: "Pie Chart",  # PIE
+    15: "Bubble Chart",  # BUBBLE
+    51: "Column Chart",  # COLUMN_CLUSTERED
+    52: "Column Chart",  # COLUMN_STACKED
+    53: "Column Chart",  # COLUMN_STACKED_100
+    57: "Bar Chart",  # BAR_CLUSTERED
+    58: "Bar Chart",  # BAR_STACKED
+    65: "Line Chart",  # LINE_MARKERS
+    -4120: "Doughnut Chart",  # DOUGHNUT
+    -4151: "Radar Chart",  # RADAR
+    -4169: "Scatter Chart",  # XY_SCATTER
+}
 
 
 def _pptx_run_strike(run) -> bool:
@@ -64,6 +94,63 @@ def _escape_md_url(url: str) -> str:
     return url.replace("(", "%28").replace(")", "%29")
 
 
+def _classify_part(part: str) -> str:
+    """Classify a slide content part for grouping (heading/html/list/blockquote/other)."""
+    s = part.lstrip()
+    if s.startswith("##"):
+        return "heading"
+    if s.startswith("<"):
+        return "html"
+    if s.startswith("- "):
+        return "list"
+    if s.startswith(">"):
+        return "blockquote"
+    return "other"
+
+
+def _format_run_segment(
+    seg: str,
+    bold: bool,
+    italic: bool,
+    underline: bool,
+    strikethrough: bool,
+    script: str,
+    url: str,
+) -> str:
+    """Apply Markdown/HTML inline formatting to a text segment."""
+    t = seg
+    if bold or italic or underline or strikethrough or script:
+        leading = len(t) - len(t.lstrip())
+        trailing = len(t) - len(t.rstrip())
+        prefix = t[:leading] if leading else ""
+        suffix = t[len(t) - trailing :] if trailing else ""
+        inner = t.strip()
+        if inner:
+            if strikethrough:
+                inner = f"~~{inner}~~"
+            if bold and italic:
+                inner = f"***{inner}***"
+            elif bold:
+                inner = f"**{inner}**"
+            elif italic:
+                inner = f"*{inner}*"
+            if underline:
+                inner = f"<u>{inner}</u>"
+            if script == "super":
+                inner = f"<sup>{inner}</sup>"
+            elif script == "sub":
+                inner = f"<sub>{inner}</sub>"
+            t = prefix + inner + suffix
+        elif underline and t:
+            # Pure whitespace + underline = fill-in line
+            # Replace spaces with NBSP so Markdown renderers preserve width
+            t = "<u>" + "\u00a0" * len(t) + "</u>"
+    if url:
+        escaped_url = _escape_md_url(url)
+        t = f"[{t}]({escaped_url})"
+    return t
+
+
 @default_registry.register
 class PptxConverter(BaseConverter):
     supported_extensions = ["pptx"]
@@ -74,17 +161,23 @@ class PptxConverter(BaseConverter):
     def convert_file(self, file_path: Path, **kwargs) -> ConvertResult:
         try:
             from pptx import Presentation
-            from pptx.shapes.picture import Picture  # noqa: F401
+            from pptx.shapes.picture import Picture
         except ImportError:
             raise RuntimeError(
                 "PPTX conversion requires python-pptx: pip install paddleocr[doc2md]"
             )
+        try:
+            from pptx.enum.shapes import MSO_SHAPE_TYPE
+        except ImportError:
+            MSO_SHAPE_TYPE = None  # type: ignore[assignment]
 
         prs = Presentation(str(file_path))
         slides_md = []
         images: dict = {}
         image_counter = [0]
         slide_width = prs.slide_width
+        self._Picture = Picture
+        self._MSO_SHAPE_TYPE = MSO_SHAPE_TYPE
 
         for slide in prs.slides:
             slide_parts = []
@@ -97,15 +190,12 @@ class PptxConverter(BaseConverter):
 
             # Handle math formulas inside mc:AlternateContent elements
             # (python-pptx doesn't expose these as Shape objects)
-            _MC_NS = "http://schemas.openxmlformats.org/markup-compatibility/2006"
-            for alt_content in slide._element.iter(f"{{{_MC_NS}}}AlternateContent"):
+            for alt_content in slide._element.iter(_MC_ALT):
                 # Only look at mc:Choice (the preferred rendering path)
-                choice = alt_content.find(f"{{{_MC_NS}}}Choice")
+                choice = alt_content.find(_MC_CHOICE)
                 if choice is None:
                     continue
-                for para_elem in choice.iter(
-                    "{http://schemas.openxmlformats.org/drawingml/2006/main}p"
-                ):
+                for para_elem in choice.iter(_A_P):
                     if _paragraph_has_math(para_elem):
                         math_items = _extract_math_from_paragraph(para_elem)
                         for latex in math_items:
@@ -119,22 +209,10 @@ class PptxConverter(BaseConverter):
 
             # Group parts by content type and separate groups with blank lines
             # to prevent HTML blocks from consuming adjacent list items
-            def _classify(part: str) -> str:
-                s = part.lstrip()
-                if s.startswith("##"):
-                    return "heading"
-                if s.startswith("<"):
-                    return "html"
-                if s.startswith("- ") or s.lstrip().startswith("- "):
-                    return "list"
-                if s.startswith(">"):
-                    return "blockquote"
-                return "other"
-
             groups: list[list[str]] = []
             for part in slide_parts:
-                kind = _classify(part)
-                if groups and _classify(groups[-1][0]) == kind:
+                kind = _classify_part(part)
+                if groups and _classify_part(groups[-1][0]) == kind:
                     groups[-1].append(part)
                 else:
                     groups.append([part])
@@ -156,13 +234,8 @@ class PptxConverter(BaseConverter):
         self, shape, slide_parts, images, image_counter, slide_width, slide_part
     ):
         """Recursively process a shape: Picture, GroupShape, Chart, Table, or TextFrame."""
-        from pptx.shapes.picture import Picture
-        from pptx.util import Emu  # noqa: F401
-
-        try:
-            from pptx.enum.shapes import MSO_SHAPE_TYPE
-        except ImportError:
-            MSO_SHAPE_TYPE = None
+        Picture = self._Picture
+        MSO_SHAPE_TYPE = self._MSO_SHAPE_TYPE
 
         # 1. Picture
         if isinstance(shape, Picture):
@@ -236,46 +309,12 @@ class PptxConverter(BaseConverter):
                     strikethrough = _pptx_run_strike(run)
                     script = _pptx_run_script(run)
 
-                    def _format_segment(
-                        seg, bold, italic, underline, strikethrough, script, url
-                    ):
-                        t = seg
-                        if bold or italic or underline or strikethrough or script:
-                            leading = len(t) - len(t.lstrip())
-                            trailing = len(t) - len(t.rstrip())
-                            prefix = t[:leading] if leading else ""
-                            suffix = t[len(t) - trailing :] if trailing else ""
-                            inner = t.strip()
-                            if inner:
-                                if strikethrough:
-                                    inner = f"~~{inner}~~"
-                                if bold and italic:
-                                    inner = f"***{inner}***"
-                                elif bold:
-                                    inner = f"**{inner}**"
-                                elif italic:
-                                    inner = f"*{inner}*"
-                                if underline:
-                                    inner = f"<u>{inner}</u>"
-                                if script == "super":
-                                    inner = f"<sup>{inner}</sup>"
-                                elif script == "sub":
-                                    inner = f"<sub>{inner}</sub>"
-                                t = prefix + inner + suffix
-                            elif underline and t:
-                                # Pure whitespace + underline = fill-in line
-                                # Replace spaces with NBSP so Markdown renderers preserve width
-                                t = "<u>" + "\u00a0" * len(t) + "</u>"
-                        if url:
-                            return f"[{t}]({_escape_md_url(url)})"
-                        return t
-
                     if "\n" in t:
                         segments = t.split("\n")
                         for j, seg in enumerate(segments):
                             if seg:
                                 parts.append(
-                                    _format_segment(
+                                    _format_run_segment(
                                         seg,
                                         bold,
                                         italic,
@@ -289,7 +328,7 @@ class PptxConverter(BaseConverter):
                                 parts.append("<br>\n")
                     else:
                         parts.append(
-                            _format_segment(
+                            _format_run_segment(
                                 t, bold, italic, underline, strikethrough, script, url
                             )
                         )
@@ -304,22 +343,6 @@ class PptxConverter(BaseConverter):
 
     def _chart_to_html(self, chart) -> str:
         """Extract chart data as an HTML table."""
-        _CHART_TYPE_NAMES = {
-            1: "Area Chart",  # AREA
-            2: "Area Chart",  # AREA_STACKED
-            4: "Line Chart",  # LINE
-            5: "Pie Chart",  # PIE
-            15: "Bubble Chart",  # BUBBLE
-            51: "Column Chart",  # COLUMN_CLUSTERED
-            52: "Column Chart",  # COLUMN_STACKED
-            53: "Column Chart",  # COLUMN_STACKED_100
-            57: "Bar Chart",  # BAR_CLUSTERED
-            58: "Bar Chart",  # BAR_STACKED
-            65: "Line Chart",  # LINE_MARKERS
-            -4120: "Doughnut Chart",  # DOUGHNUT
-            -4151: "Radar Chart",  # RADAR
-            -4169: "Scatter Chart",  # XY_SCATTER
-        }
         try:
             chart_type_val = chart.chart_type.value if chart.chart_type else 0
             chart_type_name = _CHART_TYPE_NAMES.get(chart_type_val, "Chart")
@@ -334,9 +357,6 @@ class PptxConverter(BaseConverter):
                 pass
 
             # Extract axis info from OOXML
-            C_NS = "http://schemas.openxmlformats.org/drawingml/2006/chart"
-            _C = "{" + C_NS + "}"
-            _A = "{http://schemas.openxmlformats.org/drawingml/2006/main}"
             chart_root = chart._element
 
             cat_ax_title = ""
