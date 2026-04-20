@@ -27,6 +27,9 @@ _RE_H3 = re.compile(r"^（[一二三四五六七八九十百千]+）")
 # Regex for field-code hyperlink instruction
 _RE_FIELD_HYPERLINK = re.compile(r'HYPERLINK\s+"([^"]+)"')
 
+# Regex for page-number-only footer/header text (e.g. "第  页", "共 页", "- 3 -", "Page of")
+_RE_PAGE_ONLY = re.compile(r"^[\s第页共of\d\-/|·]*$", re.IGNORECASE)
+
 # Word XML namespace
 _W_NS = "http://schemas.openxmlformats.org/wordprocessingml/2006/main"
 _W = "{" + _W_NS + "}"
@@ -451,6 +454,11 @@ def _iter_paragraph_items(para) -> list:
             ]
         )
 
+    # Field state machine: track fldChar begin/separate/end for non-hyperlink fields
+    _field_active = False
+    _field_phase = None  # "instr" | "result" | None
+    _field_nest = 0
+
     for element in content_iter:
         try:
             if isinstance(element, Hyperlink):
@@ -480,6 +488,31 @@ def _iter_paragraph_items(para) -> list:
                         (False, False, False, False, False, False, element.text, url)
                     )
             else:
+                # Plain Run — check for fldChar control elements first
+                fld_char = element._element.find(_W + "fldChar")
+                if fld_char is not None:
+                    fld_type = fld_char.get(_W + "fldCharType")
+                    if fld_type == "begin":
+                        if _field_phase == "result":
+                            _field_nest += 1
+                        else:
+                            _field_active = True
+                            _field_phase = "instr"
+                    elif fld_type == "separate":
+                        if _field_nest == 0:
+                            _field_phase = "result"
+                    elif fld_type == "end":
+                        if _field_nest > 0:
+                            _field_nest -= 1
+                        else:
+                            _field_active = False
+                            _field_phase = None
+                    continue
+
+                instr_elem = element._element.find(_W + "instrText")
+                if instr_elem is not None and _field_active and _field_phase == "instr":
+                    continue  # Skip instrText run (field instruction)
+
                 # Plain Run
                 if not element.text:
                     continue
@@ -1462,8 +1495,14 @@ def _extract_headers_footers(doc) -> tuple:
                     except Exception:
                         pass
                 text = " ".join(texts)
-                # Filter: skip empty text, pure digits (page numbers), and duplicates
-                if text and not text.strip().isdigit() and text not in seen:
+                # Filter: skip empty text, pure digits (page numbers),
+                # page-number patterns (e.g. "第  页", "第6页", "共 页"), and duplicates
+                if (
+                    text
+                    and not text.strip().isdigit()
+                    and not _RE_PAGE_ONLY.match(text.strip())
+                    and text not in seen
+                ):
                     seen.add(text)
                     results.append(text)
             except Exception:
