@@ -77,7 +77,6 @@ class SimpleDataSet(Dataset):
 
         self.set_epoch_as_seed(seed, dataset_config)
         self.ops = create_operators(dataset_config["transforms"], global_config)
-        self._setup_shared_epoch_in_ops()
         self.ext_op_transform_idx = dataset_config.get("ext_op_transform_idx", 2)
 
     # ------------------------------------------------------------------ #
@@ -183,17 +182,6 @@ class SimpleDataSet(Dataset):
     #  shrink_ratio epoch tracking
     # ------------------------------------------------------------------ #
 
-    def _setup_shared_epoch_in_ops(self):
-        """Pass shared epoch Value to ops that need dynamic shrink_ratio."""
-        if self.mode != "train":
-            return
-        from ppocr.data.imaug.make_border_map import MakeBorderMap
-        from ppocr.data.imaug.make_shrink_map import MakeShrinkMap
-        for op in self.ops:
-            if isinstance(op, (MakeBorderMap, MakeShrinkMap)):
-                if hasattr(op, '_base_shrink_ratio'):
-                    op._shared_epoch = self._shared_epoch
-
     def set_epoch_as_seed(self, seed, dataset_config):
         if self.mode == "train":
             try:
@@ -205,24 +193,6 @@ class SimpleDataSet(Dataset):
                 ] = seed if seed is not None else 0
             except Exception:
                 return
-
-    def _update_epoch_in_ops(self, epoch):
-        """Update shrink_ratio in MakeBorderMap/MakeShrinkMap ops for the new epoch."""
-        if self.mode != "train":
-            return
-        from ppocr.data.imaug.make_border_map import MakeBorderMap
-        from ppocr.data.imaug.make_shrink_map import MakeShrinkMap
-
-        epoch = epoch if epoch is not None else 0
-        for op in self.ops:
-            if isinstance(op, (MakeBorderMap, MakeShrinkMap)):
-                if hasattr(op, "_base_shrink_ratio") and hasattr(
-                    op, "_total_epoch"
-                ):
-                    op.shrink_ratio = (
-                        op._base_shrink_ratio
-                        + 0.2 * epoch / float(op._total_epoch)
-                    )
 
     # ------------------------------------------------------------------ #
     #  Data access
@@ -302,6 +272,7 @@ class SimpleDataSet(Dataset):
                 data["image"] = img
             data["ext_data"] = self.get_ext_data()
             data["filename"] = data["img_path"]
+            data["epoch"] = self._shared_epoch.value
             outs = transform(data, self.ops)
         except:
             self.logger.error(
