@@ -1,27 +1,19 @@
-#!/usr/bin/env python3
-# Copyright (c) 2025 PaddlePaddle Authors. All Rights Reserved.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 """
 PaddleOCR Text Recognition Caller
 
 Simple CLI wrapper for the PaddleOCR text recognition library.
 
 Usage:
-    python scripts/paddleocr-text-recognition/ocr_caller.py --file-url "URL"
-    python scripts/paddleocr-text-recognition/ocr_caller.py --file-path "image.png" --pretty
+    uv run scripts/ocr_caller.py --file-url "URL"
+    uv run scripts/ocr_caller.py --file-path "image.png" --pretty
 """
+
+# /// script
+# requires-python = ">=3.9"
+# dependencies = [
+#   "httpx>=0.24.0",
+# ]
+# ///
 
 import argparse
 import io
@@ -31,6 +23,7 @@ import tempfile
 import uuid
 from datetime import datetime
 from pathlib import Path
+from typing import Optional
 
 # Fix Windows console encoding
 if sys.platform == "win32":
@@ -43,7 +36,7 @@ sys.path.insert(0, str(Path(__file__).parent))
 from lib import ocr
 
 
-def get_default_output_path():
+def get_default_output_path() -> Path:
     """Build a unique result path under the OS temp directory."""
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
     short_id = uuid.uuid4().hex[:8]
@@ -56,39 +49,44 @@ def get_default_output_path():
     )
 
 
-def resolve_output_path(output_arg):
+def resolve_output_path(output_arg: Optional[str]) -> Path:
     if output_arg:
         return Path(output_arg).expanduser().resolve()
     return get_default_output_path().resolve()
 
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser(
         description="PaddleOCR Text Recognition - OCR images/PDFs",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
   # OCR from URL (result is auto-saved to the system temp directory)
-  python scripts/paddleocr-text-recognition/ocr_caller.py --file-url "https://example.com/image.png"
+  uv run scripts/ocr_caller.py --file-url "https://example.com/image.png"
 
   # OCR local file (result is auto-saved to the system temp directory)
-  python scripts/paddleocr-text-recognition/ocr_caller.py --file-path "./document.pdf" --pretty
+  uv run scripts/ocr_caller.py --file-path "./document.pdf" --pretty
 
   # OCR with explicit file type override
-  python scripts/paddleocr-text-recognition/ocr_caller.py --file-url "URL" --file-type 1 --pretty
+  uv run scripts/ocr_caller.py --file-url "URL" --file-type 1 --pretty
 
   # Save result to a custom file path
-  python scripts/paddleocr-text-recognition/ocr_caller.py --file-url "URL" --output "./result.json" --pretty
+  uv run scripts/ocr_caller.py --file-url "URL" --output "./result.json" --pretty
 
   # Print JSON to stdout without saving a file
-  python scripts/paddleocr-text-recognition/ocr_caller.py --file-url "URL" --stdout --pretty
+  uv run scripts/ocr_caller.py --file-url "URL" --stdout --pretty
+
+Exit codes:
+  0   Success (ok=true in JSON output)
+  1   OCR or API error (ok=false in JSON output; see error.code and error.message)
+  5   Cannot write result to output file
+
 Configuration:
   Set environment variables: PADDLEOCR_OCR_API_URL, PADDLEOCR_ACCESS_TOKEN
   Optional: PADDLEOCR_OCR_TIMEOUT
         """,
     )
 
-    # Input (mutually exclusive, required)
     input_group = parser.add_mutually_exclusive_group(required=True)
     input_group.add_argument("--file-url", help="URL to image or PDF")
     input_group.add_argument("--file-path", help="Local path to image or PDF")
@@ -118,17 +116,16 @@ Configuration:
 
     args = parser.parse_args()
 
-    # Run OCR
+    # Unwarping and orientation classification are off to cover common scenarios
+    # with faster response times.
     result = ocr(
         file_path=args.file_path,
         file_url=args.file_url,
         file_type=args.file_type,
         useDocUnwarping=False,
         useDocOrientationClassify=False,
-        visualize=False,
     )
 
-    # Format output
     indent = 2 if args.pretty else None
     json_output = json.dumps(result, indent=indent, ensure_ascii=False)
 
@@ -137,7 +134,6 @@ Configuration:
     else:
         output_path = resolve_output_path(args.output)
 
-        # Save to file
         try:
             output_path.parent.mkdir(parents=True, exist_ok=True)
             output_path.write_text(json_output, encoding="utf-8")
@@ -146,8 +142,7 @@ Configuration:
             print(f"Error: Cannot write to {output_path}: {e}", file=sys.stderr)
             sys.exit(5)
 
-    # Exit code based on result
-    sys.exit(0 if result["ok"] else 1)
+    sys.exit(0 if result.get("ok") else 1)
 
 
 if __name__ == "__main__":

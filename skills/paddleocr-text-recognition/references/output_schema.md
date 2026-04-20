@@ -33,11 +33,11 @@ On error:
 
 ## Error Codes
 
-| Code | Description |
-|------|-------------|
-| `INPUT_ERROR` | Invalid input (missing file, unsupported format, invalid file type) |
-| `CONFIG_ERROR` | API not configured |
-| `API_ERROR` | API call failed (auth, timeout, service error, or invalid response schema) |
+| Code           | Description                                                                 |
+| -------------- | --------------------------------------------------------------------------- |
+| `INPUT_ERROR`  | Invalid or unusable input (arguments, file source, format, types). |
+| `CONFIG_ERROR` | Missing or invalid API / client configuration.       |
+| `API_ERROR`    | Request or response handling failed (network, HTTP, body parsing, schema). |
 
 ## Raw Result Notes
 
@@ -76,34 +76,36 @@ Raw fields may vary by model version and endpoint.
 
 ## Stable Fields for Downstream Use
 
-- `result[n].prunedResult`  
+Paths are relative to the output envelope root.
+
+- `result.result.ocrResults[n].prunedResult`  
   Structured OCR data for page `n`.
 
-- `result[n].prunedResult.rec_texts`  
+- `result.result.ocrResults[n].prunedResult.rec_texts`  
   Recognized text lines for page `n`.
 
-- `result[n].prunedResult.rec_scores`  
+- `result.result.ocrResults[n].prunedResult.rec_scores`  
   Confidence scores for recognized text lines.
 
 ## Text Extraction
 
-`ocr_caller.py` extracts top-level `text` from `result.ocrResults[n].prunedResult.rec_texts`, joins lines with `\n`, and joins pages with `\n\n`.
+`ocr_caller.py` extracts top-level `text` from `result.result.ocrResults[n].prunedResult.rec_texts`, joins lines with `\n`, and joins pages with `\n\n`.
 
 ## Command Examples
 
 ```bash
 # OCR from URL (result auto-saves to the system temp directory)
-python scripts/paddleocr-text-recognition/ocr_caller.py --file-url "URL" --pretty
+uv run scripts/ocr_caller.py --file-url "URL" --pretty
 
 # OCR local file (result auto-saves to the system temp directory)
-python scripts/paddleocr-text-recognition/ocr_caller.py --file-path "doc.pdf" --pretty
+uv run scripts/ocr_caller.py --file-path "doc.pdf" --pretty
 
 # OCR with explicit file type
-python scripts/paddleocr-text-recognition/ocr_caller.py --file-url "URL" --file-type 1 --pretty
+uv run scripts/ocr_caller.py --file-url "URL" --file-type 1 --pretty
 
 # Save result to a custom file path
-python scripts/paddleocr-text-recognition/ocr_caller.py --file-url "URL" --output "./result.json" --pretty
+uv run scripts/ocr_caller.py --file-url "URL" --output "./result.json" --pretty
 
 # Print JSON to stdout without saving a file
-python scripts/paddleocr-text-recognition/ocr_caller.py --file-url "URL" --stdout --pretty
+uv run scripts/ocr_caller.py --file-url "URL" --stdout --pretty
 ```

@@ -9,8 +9,8 @@ This directory contains official PaddleOCR Agent Skills. They integrate with AI 
 
 ## Prerequisites
 
-1. Python 3.8 or later must be installed on the device that runs the skill.
-2. These skills depend on PaddleOCR official APIs and require API credentials. Visit the [PaddleOCR website](https://www.paddleocr.com), click **API**, select the model you need, then copy the `API_URL` and `Token`. They correspond to the API URL and access token used for authentication. Supported models per skill:
+1. Python 3.9 or later and [uv](https://docs.astral.sh/uv/) must be installed on the device that runs the skill. Scripts declare dependencies inline ([PEP 723](https://peps.python.org/pep-0723/)); `uv run` resolves them automatically.
+2. These skills depend on PaddleOCR official APIs and require API credentials. Visit the [PaddleOCR website](https://www.paddleocr.com), click **API**, select the model you need, select the language for the text recognition model, then copy the `API_URL` and `Token`. They correspond to the API URL and access token used for authentication. Supported model per skill:
    - `paddleocr-text-recognition`: `PP-OCRv5`
    - `paddleocr-doc-parsing`: `PP-StructureV3`, `PaddleOCR-VL`, `PaddleOCR-VL-1.5`
 
@@ -34,6 +34,7 @@ npx skills add PaddlePaddle/PaddleOCR -g --skill paddleocr-doc-parsing -y
 > ```shell
 > git clone https://github.com/PaddlePaddle/PaddleOCR.git
 > npx skills add ./PaddleOCR/skills/paddleocr-text-recognition
+> npx skills add ./PaddleOCR/skills/paddleocr-doc-parsing
 > ```
 
 #### Option 2: Install via `clawhub` (OpenClaw)
@@ -65,8 +66,8 @@ After installation, configure the required environment variables so the skills c
 
 | Skill | Required | Optional |
 | --- | --- | --- |
-| `paddleocr-text-recognition` | `PADDLEOCR_OCR_API_URL` (API URL), `PADDLEOCR_ACCESS_TOKEN` (access token) | `PADDLEOCR_OCR_TIMEOUT` (API request timeout) |
-| `paddleocr-doc-parsing` | `PADDLEOCR_DOC_PARSING_API_URL` (API URL), `PADDLEOCR_ACCESS_TOKEN` (access token) | `PADDLEOCR_DOC_PARSING_TIMEOUT` (API request timeout) |
+| `paddleocr-text-recognition` | `PADDLEOCR_OCR_API_URL` (full endpoint URL ending with `/ocr`), `PADDLEOCR_ACCESS_TOKEN` (access token) | `PADDLEOCR_OCR_TIMEOUT` (API request timeout) |
+| `paddleocr-doc-parsing` | `PADDLEOCR_DOC_PARSING_API_URL` (full endpoint URL ending with `/layout-parsing`), `PADDLEOCR_ACCESS_TOKEN` (access token) | `PADDLEOCR_DOC_PARSING_TIMEOUT` (API request timeout) |
 
 Below are configuration methods for some AI apps:
 
@@ -145,18 +146,9 @@ This section describes how to run smoke tests locally to verify that the skills 
 
 > The examples below cover both skills. Run only the commands for the skill(s) you need.
 
-Make sure your working directory is the directory containing this file.
+Make sure your working directory is the directory containing this file. All scripts declare their dependencies inline ([PEP 723](https://peps.python.org/pep-0723/)), so [uv](https://docs.astral.sh/uv/) resolves them automatically — no separate install step is needed.
 
-1. Install dependencies.
-
-   ```shell
-   python -m pip install -r paddleocr-text-recognition/scripts/requirements.txt
-   python -m pip install -r paddleocr-doc-parsing/scripts/requirements.txt
-   # Optional: required only when using document file optimization
-   python -m pip install -r paddleocr-doc-parsing/scripts/requirements-optimize.txt
-   ```
-
-2. Configure environment variables (see [Configure Environment Variables](#configure-environment-variables) for the list of variables).
+1. Configure environment variables (see [Configure Environment Variables](#configure-environment-variables) for the list of variables).
 
    ```shell
    export PADDLEOCR_OCR_API_URL="<OCR_API_URL>"
@@ -164,9 +156,11 @@ Make sure your working directory is the directory containing this file.
    export PADDLEOCR_DOC_PARSING_API_URL="<DOC_PARSING_API_URL>"
    ```
 
-3. Run the smoke test scripts.
+2. Run the smoke test scripts.
 
    ```shell
-   python paddleocr-text-recognition/scripts/smoke_test.py
-   python paddleocr-doc-parsing/scripts/smoke_test.py
+   cd paddleocr-text-recognition && uv run scripts/smoke_test.py && cd ..
+   cd paddleocr-doc-parsing && uv run scripts/smoke_test.py && cd ..
    ```
+
+   Use `--skip-api-test` to verify configuration only (no network call). Use `--test-url "https://..."` to override the default sample document/image URL.

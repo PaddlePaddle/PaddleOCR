@@ -1,27 +1,20 @@
-#!/usr/bin/env python3
-# Copyright (c) 2025 PaddlePaddle Authors. All Rights Reserved.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 """
 Smoke Test for PaddleOCR Document Parsing Skill
 
 Verifies configuration and API connectivity.
 
 Usage:
-    python paddleocr-doc-parsing/scripts/smoke_test.py
-    python paddleocr-doc-parsing/scripts/smoke_test.py --skip-api-test
+    uv run scripts/smoke_test.py
+    uv run scripts/smoke_test.py --skip-api-test
+    uv run scripts/smoke_test.py --test-url "https://example.com/test.pdf"
 """
+
+# /// script
+# requires-python = ">=3.9"
+# dependencies = [
+#   "httpx>=0.24.0",
+# ]
+# ///
 
 import argparse
 import sys
@@ -31,10 +24,12 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 
 
-def print_config_guide():
+def print_config_guide() -> None:
     """Print friendly configuration guide."""
+    from lib import DEFAULT_TIMEOUT
+
     print(
-        """
+        f"""
 ============================================================
 HOW TO GET YOUR API CREDENTIALS
 ============================================================
@@ -48,14 +43,14 @@ HOW TO GET YOUR API CREDENTIALS
 Set environment variables:
   export PADDLEOCR_DOC_PARSING_API_URL=https://your-api-url.paddleocr.com/layout-parsing
   export PADDLEOCR_ACCESS_TOKEN=your_token_here
-  export PADDLEOCR_DOC_PARSING_TIMEOUT=600  # optional
+  export PADDLEOCR_DOC_PARSING_TIMEOUT={DEFAULT_TIMEOUT}  # optional
 
 ============================================================
 """
     )
 
 
-def main():
+def main() -> int:
     parser = argparse.ArgumentParser(
         description="PaddleOCR Document Parsing smoke test"
     )
@@ -71,7 +66,6 @@ def main():
     print("PaddleOCR Document Parsing - Smoke Test")
     print("=" * 60)
 
-    # Check dependencies first
     print("\n[1/3] Checking dependencies...")
 
     try:
@@ -80,11 +74,12 @@ def main():
         print(f"  + httpx: {httpx.__version__}")
     except ImportError:
         print("  X httpx not installed")
-        print("\nPlease install dependencies:")
+        print("\nRun this script with uv to auto-resolve dependencies:")
+        print("  uv run scripts/smoke_test.py")
+        print("\nOr install manually:")
         print("  pip install httpx")
         return 1
 
-    # Check configuration
     print("\n[2/3] Checking configuration...")
 
     from lib import get_config
@@ -99,7 +94,6 @@ def main():
         print_config_guide()
         return 1
 
-    # Test API connectivity
     if args.skip_api_test:
         print("\n[3/3] Skipping API connectivity test (--skip-api-test)")
         print("\n" + "=" * 60)
@@ -109,7 +103,6 @@ def main():
 
     print("\n[3/3] Testing API connectivity...")
 
-    # Use provided test URL or default
     test_url = (
         args.test_url
         or "https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/pp_structure_v3_demo.png"
@@ -120,7 +113,7 @@ def main():
 
     result = parse_document(file_url=test_url)
 
-    if not result["ok"]:
+    if not result.get("ok"):
         error = result.get("error", {})
         print(f"\n  X API call failed: {error.get('message')}")
         if "Authentication" in error.get("message", ""):
@@ -132,7 +125,6 @@ def main():
 
     print("  + API call successful!")
 
-    # Show results
     text = result.get("text", "")
     if text:
         preview = text[:200].replace("\n", " ")
@@ -144,8 +136,8 @@ def main():
     print("Smoke Test PASSED")
     print("=" * 60)
     print("\nNext steps:")
-    print('  python paddleocr-doc-parsing/scripts/vl_caller.py --file-url "URL"')
-    print('  python paddleocr-doc-parsing/scripts/vl_caller.py --file-path "doc.pdf"')
+    print('  uv run scripts/layout_caller.py --file-url "URL" --pretty')
+    print('  uv run scripts/layout_caller.py --file-path "doc.pdf" --pretty')
     print(
         "  Results are auto-saved to the system temp directory; the caller prints the saved path."
     )
