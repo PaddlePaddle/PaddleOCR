@@ -45,13 +45,13 @@ def _extract_drawing_math(zf, sheet_index: int) -> list:
     results = []
     rels_path = f"xl/worksheets/_rels/sheet{sheet_index + 1}.xml.rels"
 
-    # 读取 rels（sheet 无 drawing 时文件不存在）
+    # Read rels (file may not exist if sheet has no drawing)
     try:
         rels_data = zf.read(rels_path)
     except KeyError:
         return results
 
-    # 找到 drawing 关系的 Target
+    # Find drawing relationship targets
     rels_root = etree.fromstring(rels_data)
     drawing_targets = []
     for rel in rels_root.findall(f"{{{_REL_NS}}}Relationship"):
@@ -69,9 +69,9 @@ def _extract_drawing_math(zf, sheet_index: int) -> list:
             drawing_data = zf.read(drawing_path)
             drawing_root = etree.fromstring(drawing_data)
         except Exception:
-            continue  # 静默跳过损坏或缺失的 drawing
+            continue  # silently skip corrupted or missing drawing
 
-        # 遍历 mc:AlternateContent/mc:Choice 下的 a:p 段落
+        # Iterate over a:p paragraphs under mc:AlternateContent/mc:Choice
         for alt in drawing_root.iter(f"{_MC}AlternateContent"):
             choice = alt.find(f"{_MC}Choice")
             if choice is None:

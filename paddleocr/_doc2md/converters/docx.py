@@ -846,7 +846,9 @@ def _table_to_html(
                     val = tbl_header.get(f"{_W}val")
                     is_header = val is None or val.lower() not in ("false", "0", "off")
             if not is_header and i == 0 and nrows > 1:
-                is_header = True  # fallback: 多行表格首行视为表头
+                is_header = (
+                    True  # fallback: treat first row as header in multi-row tables
+                )
             tag = "th" if is_header else "td"
             attrs = ""
             if colspan > 1:
@@ -1460,7 +1462,7 @@ def _extract_headers_footers(doc) -> tuple:
                     except Exception:
                         pass
                 text = " ".join(texts)
-                # 过滤：跳过空文本、纯数字（页码）、重复内容
+                # Filter: skip empty text, pure digits (page numbers), and duplicates
                 if text and not text.strip().isdigit() and text not in seen:
                     seen.add(text)
                     results.append(text)
@@ -1473,7 +1475,7 @@ def _extract_headers_footers(doc) -> tuple:
     seen_headers: set = set()
     seen_footers: set = set()
 
-    # 检查文档是否启用奇偶页不同
+    # Check if the document uses different odd/even page headers/footers
     try:
         odd_even = doc.settings.odd_and_even_pages_header_footer
     except Exception:
@@ -1481,7 +1483,7 @@ def _extract_headers_footers(doc) -> tuple:
 
     for section in doc.sections:
         try:
-            # 收集 headers
+            # Collect headers
             hdrs = [section.header]
             if odd_even:
                 try:
@@ -1495,7 +1497,7 @@ def _extract_headers_footers(doc) -> tuple:
                 pass
             header_lines.extend(_collect_from_parts(hdrs, seen_headers))
 
-            # 收集 footers
+            # Collect footers
             ftrs = [section.footer]
             if odd_even:
                 try:
