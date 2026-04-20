@@ -40,7 +40,9 @@ You can use it online on the [PaddleOCR official website](https://www.paddleocr.
 > 
 > PaddleOCR's free API now supports up to **20,000** pages of document parsing per day, enabling large-scale PDF file processing, along with MCP and Skills services. For more details, please visit [PaddleOCR Official Website](https://www.paddleocr.com).
 
-In addition to providing an outstanding model library, PaddleOCR 3.0 also offers user-friendly tools covering model training, inference, and service deployment, so developers can rapidly bring AI applications to production.
+In addition to its strong model library, PaddleOCR 3.0 also provides easy-to-use tools covering model training, inference, and serving, helping developers bring AI applications into production more efficiently.
+
+**In addition, PaddleOCR provides official [Agent Skills](./version3.x/deployment/skills.en.md) for invoking text recognition, document parsing, and related capabilities in Skills-enabled AI apps.**
 
 <div align="center">
   <p>

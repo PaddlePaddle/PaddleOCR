@@ -21,7 +21,6 @@ PaddleOCR-VL-1.5 创新性地支持了文档元素的异形框定位，使得 Pa
 
 您可以在 [PaddleOCR官网](https://www.paddleocr.com) 在线使用或者调用该模型的API。
 
-
 **PaddleOCR 3.x 核心特色能力：**
 
 
@@ -41,7 +40,10 @@ PaddleOCR-VL-1.5 创新性地支持了文档元素的异形框定位，使得 Pa
 > 
 > PaddleOCR 官网免费 API 调用现已将每日文档解析上限提升至 20,000 页，支持大批量 PDF 文件解析，同时提供 MCP 及 Skills 服务。更多详情请参见 [PaddleOCR 官网](https://www.paddleocr.com)。
 
-PaddleOCR 3.0除了提供优秀的模型库外，还提供好学易用的工具，覆盖模型训练、推理和服务化部署，方便开发者快速落地AI应用。
+PaddleOCR 3.0 除了提供优秀的模型库外，还提供覆盖模型训练、推理和服务化部署等环节的易用工具，方便开发者快速落地 AI 应用。
+
+**此外，PaddleOCR 还提供官方 [Agent Skills](./version3.x/deployment/skills.md)，便于在支持 Skills 的 AI 应用中调用文字识别、文档解析等能力。**
+
 <div align="center">
   <p>
     <a href="https://paddlepaddle.github.io/PaddleOCR/latest/index.html" target="_blank">

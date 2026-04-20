@@ -190,6 +190,7 @@ plugins:
             通用 OCR 产线 C++ 本地部署 - Windows: C++ Local Deployment for General OCR Pipeline - Windows
             C++ 本地部署: C++ Local Deployment
             MCP 服务器: MCP Server
+            Agent Skills: Agent Skills
             产线并行推理: Parallel Inference for Pipelines
         # - locale: ja
         #   name: 日本語
@@ -326,6 +327,7 @@ nav:
     - 端侧部署: version3.x/deployment/on_device_deployment.md
     - 服务化部署: version3.x/deployment/serving.md
     - MCP 服务器: version3.x/deployment/mcp_server.md
+    - Agent Skills: version3.x/deployment/skills.md
     - 打包PaddleOCR项目: version3.x/deployment/packaging.md
     - 产线并行推理: version3.x/pipeline_usage/instructions/parallel_inference.md
     - C++ 本地部署:

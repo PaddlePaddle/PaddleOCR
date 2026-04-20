@@ -62,13 +62,23 @@ English | [简体中文](./readme/README_cn.md) | [繁體中文](./readme/README
 
 ## 📣 Recent updates
 
-### 🔥 [2026.01.29] PaddleOCR v3.4.0 Released: The Era of Irregular Document Parsing
+### 🔥 PaddleOCR v3.5.0 Released: More Flexible Inference and Richer Document Output
+* **Flexible inference backends**: Seamlessly switch between Paddle static graph, Paddle dynamic graph, or Transformers. PaddleOCR is now deeply integrated with the Hugging Face ecosystem, and 20 major models support Transformers as the inference backend.
+* **Office documents to Markdown**: Convert common document formats such as Word, Excel, and PowerPoint into Markdown.
+* **DOCX export for parsed results**: The `PaddleOCR-VL` series, `PP-StructureV3`, and `PP-DocTranslation` now support exporting parsed results to DOCX for convenient viewing and editing in Microsoft Word.
+* **Official browser inference SDK**: Released `PaddleOCR.js`, the official browser inference SDK that supports running `PP-OCRv5` directly in the browser.
+
+<details>
+<summary><strong>2026.01.29: Release of PaddleOCR 3.4.0</strong></summary>
+
 * **PaddleOCR-VL-1.5 (SOTA 0.9B VLM)**: Our latest flagship model for document parsing is now live!
     * **94.5% Accuracy on OmniDocBench**: Surpassing top-tier general large models and specialized document parsers.
     * **Real-World Robustness**: First to introduce the **PP-DocLayoutV3** algorithm for irregular shape positioning, mastering 5 tough scenarios: *Skew, Warping, Scanning, Illumination, and Screen Photography*.
     * **Capability Expansion**: Now supports **Seal Recognition**, **Text Spotting**, and expands to **111 languages** (including China’s Tibetan script and Bengali).
     * **Long Document Mastery**: Supports automatic cross-page table merging and hierarchical heading identification.
     * **Try it now**: Available on [HuggingFace](https://huggingface.co/PaddlePaddle/PaddleOCR-VL-1.5) or our [Official Website](https://www.paddleocr.com).
+
+</details>
 
 <details>
 <summary><strong>2025.10.16: Release of PaddleOCR 3.3.0</strong></summary>

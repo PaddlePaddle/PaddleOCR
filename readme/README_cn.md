@@ -61,6 +61,12 @@
 
 ## 📣 最新动态
 
+### 🔥 PaddleOCR v3.5.0 发布：推理后端更灵活，文档输出更丰富
+* **推理后端灵活切换**：支持在飞桨静态图、飞桨动态图和 Transformers 之间无缝切换。深度适配 Hugging Face 生态，20 个主要模型支持以 Transformers 作为推理后端。
+* **常见文档格式转 Markdown**：支持将 Word、Excel、Powerpoint 等常见文档格式转换为 Markdown。
+* **解析结果导出 DOCX**：`PaddleOCR-VL` 系列、`PP-StructureV3` 和 `PP-DocTranslation` 现已支持将解析结果导出为 DOCX，便于在 Microsoft Word 中查看和编辑。
+* **官方浏览器推理 SDK**：发布官方浏览器推理 SDK `PaddleOCR.js`，支持在浏览器中运行 `PP-OCRv5`。
+
 ### 🔥 [2026.01.29] PaddleOCR v3.4.0 发布：异型文档解析新标杆
 * **PaddleOCR-VL-1.5 (SOTA 0.9B VLM)**：
     * **OmniDocBench 94.5%准确率**：超越顶级通用大模型和专业文档解析模型。
