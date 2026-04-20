@@ -61,13 +61,22 @@
 
 ## 📣 Mises à jour récentes
 
-### 🔥 [2026.01.29] PaddleOCR v3.4.0 publié : L'ère de l'analyse de documents irréguliers
+### 🔥 PaddleOCR v3.5.0 publié : des backends d'inférence plus flexibles et des sorties documentaires plus riches
+* **Backends d'inférence plus flexibles** : basculez en toute transparence entre les graphes statiques Paddle, les graphes dynamiques Paddle et Transformers. PaddleOCR est désormais profondément intégré à l'écosystème Hugging Face, et 20 modèles majeurs prennent en charge Transformers comme backend d'inférence.
+* **Conversion des documents bureautiques en Markdown** : conversion des formats courants comme Word, Excel et PowerPoint vers Markdown.
+* **Export DOCX des résultats d'analyse** : les séries `PaddleOCR-VL`, `PP-StructureV3` et `PP-DocTranslation` prennent désormais en charge l'export des résultats d'analyse au format DOCX pour une consultation et une édition pratiques dans Microsoft Word.
+* **SDK officiel d'inférence dans le navigateur** : sortie du SDK officiel d'inférence dans le navigateur `PaddleOCR.js`, qui permet d'exécuter `PP-OCRv5` directement dans le navigateur.
+
+<details>
+<summary><strong>2026.01.29 : Publication de PaddleOCR 3.4.0</strong></summary>
 * **PaddleOCR-VL-1.5 (VLM 0,9 milliard de paramètres, état de l'art)** : Notre dernier modèle phare pour l'analyse de documents est désormais disponible !
     * **94,5 % de précision sur OmniDocBench** : Surpasse les grands modèles généralistes de premier rang et les analyseurs de documents spécialisés.
     * **Robustesse dans le monde réel** : Premier à introduire l'algorithme **PP-DocLayoutV3** pour le positionnement de formes irrégulières, maîtrisant 5 scénarios difficiles : *Inclinaison, Déformation, Numérisation, Éclairage et Photographie d'écran*.
     * **Extension des capacités** : Prend désormais en charge la **Reconnaissance de sceaux**, la **Détection de texte**, et s'étend à **111 langues** (incluant le tibétain et le bengali).
     * **Maîtrise des longs documents** : Prend en charge la fusion automatique de tableaux sur plusieurs pages et l'identification hiérarchique des titres.
     * **Essayez-le maintenant** : Disponible sur [HuggingFace](https://huggingface.co/PaddlePaddle/PaddleOCR-VL-1.5) ou sur notre [Site officiel](https://www.paddleocr.com).
+
+</details>
 
 <details>
 <summary><strong>2025.10.16 : Publication de PaddleOCR 3.3.0</strong></summary>

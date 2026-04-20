@@ -61,13 +61,22 @@
 
 ## 📣 Actualizaciones recientes
 
-### 🔥 [2026.01.29] Lanzamiento de PaddleOCR v3.4.0: La era del análisis de documentos irregulares
+### 🔥 PaddleOCR v3.5.0: backends de inferencia más flexibles y salida documental más rica
+* **Backends de inferencia más flexibles**: cambia sin problemas entre grafo estático de Paddle, grafo dinámico de Paddle y Transformers. PaddleOCR está ahora profundamente integrado con el ecosistema de Hugging Face, y 20 modelos principales admiten Transformers como backend de inferencia.
+* **Documentos de Office a Markdown**: convierte formatos de documentos comunes como Word, Excel y PowerPoint a Markdown.
+* **Exportación de resultados a DOCX**: las series `PaddleOCR-VL`, `PP-StructureV3` y `PP-DocTranslation` ahora admiten exportar los resultados de análisis a DOCX para verlos y editarlos cómodamente en Microsoft Word.
+* **SDK oficial de inferencia en navegador**: se lanzó `PaddleOCR.js`, el SDK oficial de inferencia en navegador, que permite ejecutar `PP-OCRv5` directamente en el navegador.
+
+<details>
+<summary><strong>2026.01.29: Lanzamiento de PaddleOCR 3.4.0</strong></summary>
 * **PaddleOCR-VL-1.5 (SOTA 0,9B VLM)**: ¡Nuestro último modelo insignia para el análisis de documentos ya está disponible!
     * **94,5% de precisión en OmniDocBench**: Superando a los mejores modelos generales de gran escala y a los analizadores de documentos especializados.
     * **Robustez en el mundo real**: El primero en introducir el algoritmo **PP-DocLayoutV3** para el posicionamiento de formas irregulares, dominando 5 escenarios difíciles: *inclinación, deformación, escaneo, iluminación y fotografía de pantalla*.
     * **Expansión de capacidades**: Ahora admite **reconocimiento de sellos**, **detección de texto** y se expande a **111 idiomas** (incluyendo el tibetano de China y el bengalí).
     * **Dominio de documentos largos**: Admite la fusión automática de tablas entre páginas e identificación jerárquica de encabezados.
     * **Pruébalo ahora**: Disponible en [HuggingFace](https://huggingface.co/PaddlePaddle/PaddleOCR-VL-1.5) o en nuestro [Sitio web oficial](https://www.paddleocr.com).
+
+</details>
 
 <details>
 <summary><strong>2025.10.16: Lanzamiento de PaddleOCR 3.3.0</strong></summary>

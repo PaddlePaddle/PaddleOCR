@@ -62,13 +62,22 @@
 
 ## 📣 最新情報
 
-### 🔥 [2026.01.29] PaddleOCR v3.4.0リリース：非定型ドキュメント解析の新時代
+### 🔥 PaddleOCR v3.5.0 リリース：より柔軟な推論バックエンドと、より充実したドキュメント出力
+* **柔軟な推論バックエンド**: Paddleの静的グラフ、動的グラフ、Transformersをシームレスに切り替え可能。Hugging Face エコシステムに深く対応し、主要20モデルがTransformersを推論バックエンドとしてサポート。
+* **Office文書をMarkdownに変換**: Word、Excel、PowerPoint などの一般的な文書形式を Markdown に変換可能。
+* **解析結果の DOCX 出力**: `PaddleOCR-VL` シリーズ、`PP-StructureV3`、`PP-DocTranslation` で、解析結果を DOCX として出力できるようになり、Microsoft Word での閲覧・編集が容易に。
+* **公式ブラウザ推論 SDK**: 公式ブラウザ推論 SDK `PaddleOCR.js` を公開し、ブラウザ上で `PP-OCRv5` を実行可能。
+
+<details>
+<summary><strong>2026.01.29: PaddleOCR 3.4.0リリース</strong></summary>
 * **PaddleOCR-VL-1.5（最先端の0.9B VLM）**: ドキュメント解析のための最新フラッグシップモデルが公開されました！
     * **OmniDocBenchで94.5%の精度**: トップクラスの汎用大規模モデルや専門ドキュメントパーサーを凌駕。
     * **実環境でのロバスト性**: 非定型形状位置決定のための**PP-DocLayoutV3**アルゴリズムを初めて導入し、*傾き、歪み、スキャン、照明、画面撮影*の5つの困難なシナリオに対応。
     * **機能拡張**: **印鑑認識**、**テキスト検出**をサポートし、**111言語**（中国のチベット文字やベンガル文字を含む）に対応拡大。
     * **長文ドキュメントへの対応**: ページをまたがるテーブルの自動結合および階層的な見出し識別をサポート。
     * **今すぐ試す**: [HuggingFace](https://huggingface.co/PaddlePaddle/PaddleOCR-VL-1.5)または[公式ウェブサイト](https://www.paddleocr.com)で利用可能です。
+
+</details>
 
 <details>
 <summary><strong>2025.10.16: PaddleOCR 3.3.0リリース</strong></summary>
