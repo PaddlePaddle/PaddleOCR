@@ -111,7 +111,7 @@ Document to Markdown (doc2md) is a lightweight Office document conversion featur
 
 ## 2. Quick Start
 
-Before using doc2md, make sure you have completed the PaddleOCR base installation as described in the [installation guide](../installation.en.md), then install the doc2md optional dependencies:
+Before using doc2md, make sure you have completed the PaddleOCR base installation as described in the [installation guide](./installation.en.md), then install the doc2md optional dependencies:
 
 ```bash
 pip install "paddleocr[doc2md]"

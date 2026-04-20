@@ -111,7 +111,7 @@ comments: true
 
 ## 2. 快速开始
 
-在使用 doc2md 功能前，请确保已按照[安装教程](../installation.md)完成 PaddleOCR 基础安装，然后安装 doc2md 可选依赖：
+在使用 doc2md 功能前，请确保已按照[安装教程](./installation.md)完成 PaddleOCR 基础安装，然后安装 doc2md 可选依赖：
 
 ```bash
 pip install "paddleocr[doc2md]"
