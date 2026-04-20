@@ -703,6 +703,7 @@ for res in output:
     res.print() ## Print the structured prediction output
     res.save_to_json(save_path="output") ## Save the current image's structured result in JSON format
     res.save_to_markdown(save_path="output") ## Save the current image's result in Markdown format
+    res.save_to_word(save_path="output") ## Save the current image's result in Word format
 ```
 
 For PDF files, each page will be processed individually, and a separate Markdown file will be generated for each page. If you wish to perform cross-page table merging, reconstruct multi-level headings, or merge multi-page results, you can achieve this using the following method:
@@ -1403,6 +1404,14 @@ Setting it to <code>None</code> means using the instantiation parameter; otherwi
 <tr>
 <td><code>save_to_xlsx()</code></td>
 <td>Save the tables in the file as xlsx format files</td>
+<td><code>save_path</code></td>
+<td><code>str</code></td>
+<td>The file path for saving, supporting directory or file paths.</td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>save_to_word()</code></td>
+<td>Save the layout parsing results as a Word (.docx) format file</td>
 <td><code>save_path</code></td>
 <td><code>str</code></td>
 <td>The file path for saving, supporting directory or file paths.</td>
