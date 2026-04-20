@@ -1,0 +1,14 @@
+{
+  "extends": "./packages/core/tsconfig.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    "noEmit": true,
+    "baseUrl": ".",
+    "paths": {
+      "@paddleocr/paddleocr-js": ["./packages/core/src/index.ts"],
+      "@paddleocr/paddleocr-js/viz": ["./packages/core/src/viz/index.ts"]
+    }
+  },
+  "include": ["packages/**/src/**/*.ts", "packages/**/test/**/*.ts", "apps/**/src/**/*.ts"],
+  "exclude": ["node_modules", "dist"]
+}
