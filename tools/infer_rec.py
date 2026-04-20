@@ -120,7 +120,7 @@ def main():
             elif config["Architecture"]["algorithm"] == "SAR":
                 op[op_name]["keep_keys"] = ["image", "valid_ratio"]
             elif config["Architecture"]["algorithm"] == "RobustScanner":
-                op[op_name]["keep_keys"] = ["image", "valid_ratio", "word_positons"]
+                op[op_name]["keep_keys"] = ["image", "valid_ratio", "word_positions"]
             else:
                 op[op_name]["keep_keys"] = ["image"]
         transforms.append(op)
@@ -171,10 +171,10 @@ def main():
                 img_metas = [paddle.to_tensor(valid_ratio)]
             if config["Architecture"]["algorithm"] == "RobustScanner":
                 valid_ratio = np.expand_dims(batch[1], axis=0)
-                word_positons = np.expand_dims(batch[2], axis=0)
+                word_positions = np.expand_dims(batch[2], axis=0)
                 img_metas = [
                     paddle.to_tensor(valid_ratio),
-                    paddle.to_tensor(word_positons),
+                    paddle.to_tensor(word_positions),
                 ]
             if config["Architecture"]["algorithm"] == "CAN":
                 image_mask = paddle.ones(

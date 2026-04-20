@@ -1639,6 +1639,7 @@ for res in output:
     res.print() ## 打印预测的结构化输出
     res.save_to_json(save_path="output") ## 保存当前图像的结构化json结果
     res.save_to_markdown(save_path="output") ## 保存当前图像的markdown格式的结果
+    res.save_to_word(save_path="output") ## 保存当前图像的Word格式的结果
 ```
 
 如果是 PDF 文件，会将 PDF 的每一页单独处理，每一页的 Markdown 文件也会对应单独的结果。如果希望整个 PDF 文件转换为 Markdown 文件，建议使用以下的方式运行：
@@ -2614,6 +2615,14 @@ for item in markdown_images:
 <td><code>save_path</code></td>
 <td><code>str</code></td>
 <td>保存的文件路径，支持目录或文件路径。</td>
+<td>无</td>
+</tr>
+<tr>
+<td><code>save_to_word()</code></td>
+<td>将版面解析结果保存为Word (.docx) 格式的文件</td>
+<td><code>save_path</code></td>
+<td><code>str</code></td>
+<td>保存的文件路径，支持目录或文件路径</td>
 <td>无</td>
 </tr>
 <tr>

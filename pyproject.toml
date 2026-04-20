@@ -25,6 +25,8 @@ keywords = [
     "pp-structure",
     "document-parsing",
     "pdf2markdown",
+    "doc2markdown",
+    "docx2markdown",
     "kie",
     "pp-chatocr",
     "document-translation",
@@ -36,6 +38,12 @@ classifiers = [
     "Operating System :: OS Independent",
     "Natural Language :: Chinese (Simplified)",
     "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Topic :: Utilities",
 ]
 dependencies = [
@@ -58,7 +66,8 @@ paddleocr = "paddleocr.__main__:console_entry"
 doc-parser = ["paddlex[ocr,genai-client]>=3.4.0,<3.5.0"]
 ie = ["paddlex[ie]>=3.4.0,<3.5.0"]
 trans = ["paddlex[trans]>=3.4.0,<3.5.0"]
-all = ["paddlex[ocr,genai-client,ie,trans]>=3.4.0,<3.5.0"]
+doc2md = ["python-docx>=0.8.11", "python-pptx>=0.6.21", "openpyxl>=3.0.0", "pylatexenc>=2.10,<3"]
+all = ["paddlex[ocr,genai-client,ie,trans]>=3.4.0,<3.5.0", "python-docx>=0.8.11", "python-pptx>=0.6.21", "openpyxl>=3.0.0"]
 
 [tool.setuptools.packages.find]
 where = ["."]

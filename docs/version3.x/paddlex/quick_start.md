@@ -17,7 +17,7 @@ hide:
 
 ### 🛠️ 安装
 
-> ❗在安装 PaddleX 之前，请确保您已具备基本的 **Python 运行环境**（注：目前支持 Python 3.8 至 Python 3.12）。PaddleX 3.2 版本依赖的 PaddlePaddle 版本为 3.0.0 以上版本。
+> ❗在安装 PaddleX 之前，请确保您已具备基本的 **Python 运行环境**（注：目前支持 Python 3.8 至 Python 3.13）。PaddleX 3.2 版本依赖的 PaddlePaddle 版本为 3.0.0 以上版本。
 
 * **安装 PaddlePaddle**
 ```bash

@@ -1670,6 +1670,7 @@ for res in output:
     res.print() ## Print the structured prediction output
     res.save_to_json(save_path="output") ## Save the current image's structured result in JSON format
     res.save_to_markdown(save_path="output") ## Save the current image's result in Markdown format
+    res.save_to_word(save_path="output") ## Save the current image's result in Word format
 ```
 
 For PDF files, each page will be processed individually and generate a separate Markdown file. If you want to convert the entire PDF to a single Markdown file, use the following method:
@@ -2725,6 +2726,14 @@ If enabled, the cell detection model will not be used, and only the table struct
 <tr>
 <td><code>save_to_img()</code></td>
 <td>Save intermediate visualization results as PNG image files</td>
+<td><code>save_path</code></td>
+<td><code>str</code></td>
+<td>Path to save the file, supports directory or file path.</td>
+<td>None</td>
+</tr>
+<tr>
+<td><code>save_to_word()</code></td>
+<td>Save the layout parsing results as a Word (.docx) format file</td>
 <td><code>save_path</code></td>
 <td><code>str</code></td>
 <td>Path to save the file, supports directory or file path.</td>

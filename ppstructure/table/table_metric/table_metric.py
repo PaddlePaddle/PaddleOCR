@@ -123,7 +123,7 @@ class TEDS(object):
         self.__tokens__.append("<%s>" % node.tag)
         if node.text is not None:
             self.__tokens__ += list(node.text)
-        for n in node.getchildren():
+        for n in node:
             self.tokenize(n)
         if node.tag != "unk":
             self.__tokens__.append("</%s>" % node.tag)
@@ -152,7 +152,7 @@ class TEDS(object):
         if parent is not None:
             parent.children.append(new_node)
         if node.tag != "td":
-            for n in node.getchildren():
+            for n in node:
                 self.load_html_tree(n, new_node)
         if parent is None:
             return new_node

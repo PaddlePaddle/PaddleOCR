@@ -56,6 +56,8 @@ Currently, PaddleOCR-VL offers six inference methods, with varying levels of sup
     <th>Huawei Ascend NPU</th>
     <th>x64 CPU</th>
     <th>Apple Silicon</th>
+    <th>AMD GPU</th>
+    <th>Intel Arc GPU</th>
   </tr>
 </thead>
 <tbody>
@@ -69,6 +71,8 @@ Currently, PaddleOCR-VL offers six inference methods, with varying levels of sup
     <td>🚧</td>
     <td>✅</td>
     <td>✅</td>
+    <td>✅</td>
+    <td>✅</td>
   </tr>
   <tr style="text-align: center;">
     <td>PaddlePaddle + vLLM</td>
@@ -80,6 +84,8 @@ Currently, PaddleOCR-VL offers six inference methods, with varying levels of sup
     <td>✅</td>
     <td>-</td>
     <td>-</td>
+    <td>✅</td>
+    <td>✅</td>
   </tr>
   <tr style="text-align: center;">
     <td>PaddlePaddle + SGLang</td>
@@ -91,6 +97,8 @@ Currently, PaddleOCR-VL offers six inference methods, with varying levels of sup
     <td>🚧</td>
     <td>-</td>
     <td>-</td>
+    <td>🚧</td>
+    <td>🚧</td>
   </tr>
   <tr style="text-align: center;">
     <td>PaddlePaddle + FastDeploy</td>
@@ -102,6 +110,8 @@ Currently, PaddleOCR-VL offers six inference methods, with varying levels of sup
     <td>🚧</td>
     <td>-</td>
     <td>-</td>
+    <td>🚧</td>
+    <td>🚧</td>
   </tr>
   <tr style="text-align: center;">
     <td>PaddlePaddle + MLX-VLM</td>
@@ -113,6 +123,8 @@ Currently, PaddleOCR-VL offers six inference methods, with varying levels of sup
     <td>-</td>
     <td>-</td>
     <td>✅</td>
+    <td>-</td>
+    <td>-</td>
   </tr>
   <tr style="text-align: center;">
     <td>PaddlePaddle + llama.cpp</td>
@@ -123,6 +135,8 @@ Currently, PaddleOCR-VL offers six inference methods, with varying levels of sup
     <td>🚧</td>
     <td>🚧</td>
     <td>✅</td>
+    <td>🚧</td>
+    <td>🚧</td>
     <td>🚧</td>
   </tr>
 </tbody>
@@ -154,6 +168,8 @@ Since different hardware requires different dependencies, if your hardware meets
 | Iluvatar GPU        | [PaddleOCR-VL Iluvatar GPU Usage Tutorial](./PaddleOCR-VL-Iluvatar-GPU.en.md) |
 | Huawei Ascend NPU        | [PaddleOCR-VL Huawei Ascend NPU Usage Tutorial](./PaddleOCR-VL-Huawei-Ascend-NPU.en.md) |
 | Apple Silicon        | [PaddleOCR-VL Apple Silicon Usage Tutorial](./PaddleOCR-VL-Apple-Silicon.en.md) |
+| AMD GPU         | [PaddleOCR-VL AMD GPU Usage Tutorial](./PaddleOCR-VL-AMD-GPU.en.md) |
+| Intel Arc GPU        | [PaddleOCR-VL Intel Arc GPU Usage Tutorial](./PaddleOCR-VL-Intel-Arc-GPU.en.md) |
 
 > TIP:
 > For example, if you are using an RTX 50 series GPU that meets the device requirements for both PaddlePaddle and vLLM inference methods, please refer to the [PaddleOCR-VL NVIDIA Blackwell Architecture GPU Usage Tutorial](./PaddleOCR-VL-NVIDIA-Blackwell.en.md) to learn about relevant configurations and usage.
@@ -205,7 +221,7 @@ docker load -i paddleocr-vl-latest-nvidia-gpu-offline.tar
 
 ### 1.2 Method 2: Manually Install PaddlePaddle and PaddleOCR
 
-If you cannot use Docker, you can manually install PaddlePaddle and PaddleOCR. The required Python version is 3.8–3.12.
+If you cannot use Docker, you can manually install PaddlePaddle and PaddleOCR. The required Python version is 3.8–3.13.
 
 **We strongly recommend installing PaddleOCR-VL in a virtual environment to avoid dependency conflicts.** For example, use the Python venv standard library to create a virtual environment:
 
@@ -687,6 +703,7 @@ for res in output:
     res.print() ## Print the structured prediction output
     res.save_to_json(save_path="output") ## Save the current image's structured result in JSON format
     res.save_to_markdown(save_path="output") ## Save the current image's result in Markdown format
+    res.save_to_word(save_path="output") ## Save the current image's result in Word format
 ```
 
 For PDF files, each page will be processed individually, and a separate Markdown file will be generated for each page. If you wish to perform cross-page table merging, reconstruct multi-level headings, or merge multi-page results, you can achieve this using the following method:
@@ -1392,6 +1409,14 @@ Setting it to <code>None</code> means using the instantiation parameter; otherwi
 <td>The file path for saving, supporting directory or file paths.</td>
 <td><code>None</code></td>
 </tr>
+<tr>
+<td><code>save_to_word()</code></td>
+<td>Save the layout parsing results as a Word (.docx) format file</td>
+<td><code>save_path</code></td>
+<td><code>str</code></td>
+<td>The file path for saving, supporting directory or file paths.</td>
+<td><code>None</code></td>
+</tr>
 </tr>
 </table>
 
@@ -1729,7 +1754,7 @@ pipeline = PaddleOCRVL(
 
 ### 3.3 Performance Tuning
 
-The default configurations are optimized for single NVIDIA A100 GPUs with exclusive client access and may not be suitable for other environments. If users encounter performance issues in actual use, the following optimization methods can be attempted.
+The default configuration cannot guarantee optimal performance in all environments. If users encounter performance issues in actual use, the following optimization methods can be attempted.
 
 #### 3.3.1 Server-Side Parameter Adjustment
 

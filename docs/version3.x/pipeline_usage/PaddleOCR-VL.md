@@ -56,6 +56,8 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
     <th>华为昇腾 NPU</th>
     <th>x64 CPU</th>
     <th>Apple Silicon</th>
+    <th>AMD GPU</th>
+    <th>Intel Arc GPU</th>
   </tr>
 </thead>
 <tbody>
@@ -69,6 +71,8 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
     <td>🚧</td>
     <td>✅</td>
     <td>✅</td>
+    <td>✅</td>
+    <td>✅</td>
   </tr>
   <tr style="text-align: center;">
     <td>PaddlePaddle + vLLM</td>
@@ -80,6 +84,8 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
     <td>✅</td>
     <td>-</td>
     <td>-</td>
+    <td>✅</td>
+    <td>✅</td>
   </tr>
   <tr style="text-align: center;">
     <td>PaddlePaddle + SGLang</td>
@@ -91,6 +97,8 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
     <td>🚧</td>
     <td>-</td>
     <td>-</td>
+    <td>🚧</td>
+    <td>🚧</td>
   </tr>
   <tr style="text-align: center;">
     <td>PaddlePaddle + FastDeploy</td>
@@ -102,6 +110,8 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
     <td>🚧</td>
     <td>-</td>
     <td>-</td>
+    <td>🚧</td>
+    <td>🚧</td>
   </tr>
   <tr style="text-align: center;">
     <td>PaddlePaddle + MLX-VLM</td>
@@ -113,6 +123,8 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
     <td>-</td>
     <td>-</td>
     <td>✅</td>
+    <td>-</td>
+    <td>-</td>
   </tr>
   <tr style="text-align: center;">
     <td>PaddlePaddle + llama.cpp</td>
@@ -123,6 +135,8 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
     <td>🚧</td>
     <td>🚧</td>
     <td>✅</td>
+    <td>🚧</td>
+    <td>🚧</td>
     <td>🚧</td>
   </tr>
 </tbody>
@@ -154,6 +168,8 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
 | 天数 GPU        | [PaddleOCR-VL 天数 GPU 使用教程](./PaddleOCR-VL-Iluvatar-GPU.md) |
 | 华为昇腾 NPU        | [PaddleOCR-VL 华为昇腾 NPU 使用教程](./PaddleOCR-VL-Huawei-Ascend-NPU.md) |
 | Apple Silicon        | [PaddleOCR-VL Apple Silicon 使用教程](./PaddleOCR-VL-Apple-Silicon.md) |
+| AMD GPU         | [PaddleOCR-VL AMD GPU 使用教程](./PaddleOCR-VL-AMD-GPU.md) |
+| Intel Arc GPU        | [PaddleOCR-VL Intel Arc GPU 使用教程](./PaddleOCR-VL-Intel-Arc-GPU.md) |
 
 > TIP:
 > 例如您使用的是 RTX 50 系 GPU，满足 PaddlePaddle 和 vLLM 推理方式的设备要求，请参考 [PaddleOCR-VL NVIDIA Blackwell 架构 GPU 使用教程](./PaddleOCR-VL-NVIDIA-Blackwell.md) 了解相关配置和用法。
@@ -205,7 +221,7 @@ docker load -i paddleocr-vl-latest-nvidia-gpu-offline.tar
 
 ### 1.2 方法二：手动安装 PaddlePaddle 和 PaddleOCR
 
-如果您无法使用 Docker，也可以手动安装 PaddlePaddle 和 PaddleOCR。要求 Python 版本为 3.8–3.12。
+如果您无法使用 Docker，也可以手动安装 PaddlePaddle 和 PaddleOCR。要求 Python 版本为 3.8–3.13。
 
 **我们强烈推荐您在虚拟环境中安装 PaddleOCR-VL，以避免发生依赖冲突。** 例如，使用 Python venv 标准库创建虚拟环境：
 
@@ -665,6 +681,7 @@ for res in output:
     res.print() ## 打印预测的结构化输出
     res.save_to_json(save_path="output") ## 保存当前图像的结构化json结果
     res.save_to_markdown(save_path="output") ## 保存当前图像的markdown格式的结果
+    res.save_to_word(save_path="output") ## 保存当前图像的Word格式的结果
 ```
 
 如果是 PDF 文件，会将 PDF 的每一页单独处理，每一页的 Markdown 文件也会对应单独的结果。如果您希望对多页的推理结果进行跨页表格合并、重建多级标题和合并多页结果等需求，可以通过如下方式实现：
@@ -1351,6 +1368,14 @@ output = pipeline.predict(["imgs/file1.png", "imgs/file2.png", "imgs/file3.png"]
 <td>保存的文件路径，支持目录或文件路径。</td>
 <td>无</td>
 </tr>
+<tr>
+<td><code>save_to_word()</code></td>
+<td>将版面解析结果保存为Word (.docx) 格式的文件</td>
+<td><code>save_path</code></td>
+<td><code>str</code></td>
+<td>保存的文件路径，支持目录或文件路径</td>
+<td>无</td>
+</tr>
 </table>
 
 <ul>
@@ -1710,7 +1735,7 @@ pipeline = PaddleOCRVL(
 
 ### 3.3 性能调优
 
-默认配置是在单张 NVIDIA A100 上进行调优的，并假设客户端独占服务，因此可能不适用于其他环境。如果用户在实际使用中遇到性能问题，可以尝试以下优化方法。
+默认配置无法保证在所有环境中取得最优性能。如果用户在实际使用中遇到性能问题，可以尝试以下优化方法。
 
 #### 3.3.1 服务端参数调整
 

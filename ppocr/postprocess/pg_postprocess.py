@@ -45,11 +45,6 @@ class PGPostProcess(object):
         self.mode = mode
         self.point_gather_mode = point_gather_mode
 
-        # c++ la-nms is faster, but only support python 3.5
-        self.is_python35 = False
-        if sys.version_info.major == 3 and sys.version_info.minor == 5:
-            self.is_python35 = True
-
     def __call__(self, outs_dict, shape_list):
         post = PGNet_PostProcess(
             self.character_dict_path,

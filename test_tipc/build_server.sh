@@ -37,8 +37,8 @@ git submodule update --init --recursive
 python -m pip install -r python/requirements.txt
 
 
-export PYTHON_INCLUDE_DIR=$(python -c "from distutils.sysconfig import get_python_inc; print(get_python_inc())")
-export PYTHON_LIBRARIES=$(python -c "import distutils.sysconfig as sysconfig; print(sysconfig.get_config_var('LIBDIR'))")
+export PYTHON_INCLUDE_DIR=$(python -c "import sysconfig; print(sysconfig.get_path('include'))")
+export PYTHON_LIBRARIES=$(python -c "import sysconfig; print(sysconfig.get_config_var('LIBDIR'))")
 export PYTHON_EXECUTABLE=`which python`
 
 export CUDA_PATH='/usr/local/cuda'
