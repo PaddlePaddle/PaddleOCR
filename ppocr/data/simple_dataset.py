@@ -18,6 +18,7 @@ import os
 import json
 import random
 import traceback
+import multiprocessing
 from paddle.io import Dataset
 from .imaug import transform, create_operators
 from paddle import get_device
@@ -48,15 +49,89 @@ class SimpleDataSet(Dataset):
         self.data_dir = dataset_config["data_dir"]
         self.do_shuffle = loader_config["shuffle"]
         self.seed = seed
-        logger.info("Initialize indexes of datasets:%s" % label_file_list)
-        self.data_lines = self.get_image_info_list(label_file_list, ratio_list)
-        self.data_idx_order_list = list(range(len(self.data_lines)))
-        if self.mode == "train" and self.do_shuffle:
-            self.shuffle_data_random()
+        self.need_reset = True in [x < 1 for x in ratio_list]
+
+        logger.info("Initialize indexs of datasets:%s" % label_file_list)
+
+        if self.need_reset:
+            # Pre-load all lines once (immutable, never re-read from disk).
+            # Per-epoch ratio sampling is done via _index_map (virtual idx -> global idx).
+            self._all_lines, self.file_boundaries = self._load_all_lines(label_file_list)
+            self._index_map = self._generate_index_map(seed)
+            self._cached_epoch = seed if seed is not None else 0
+            # data_lines / data_idx_order_list kept for API compat but NOT used in __getitem__
+            self.data_lines = self._all_lines
+            self.data_idx_order_list = list(range(len(self._index_map)))
+        else:
+            self._all_lines = None
+            self._index_map = None
+            self._cached_epoch = None
+            self.file_boundaries = None
+            self.data_lines = self.get_image_info_list(label_file_list, ratio_list)
+            self.data_idx_order_list = list(range(len(self.data_lines)))
+            if self.mode == "train" and self.do_shuffle:
+                self.shuffle_data_random()
+
+        # Shared epoch value: workers read this via shared memory to detect epoch changes
+        self._shared_epoch = multiprocessing.Value('i', seed if seed is not None else 0)
+
         self.set_epoch_as_seed(seed, dataset_config)
         self.ops = create_operators(dataset_config["transforms"], global_config)
+        self._setup_shared_epoch_in_ops()
         self.ext_op_transform_idx = dataset_config.get("ext_op_transform_idx", 2)
-        self.need_reset = True in [x < 1 for x in ratio_list]
+
+    # ------------------------------------------------------------------ #
+    #  Data loading helpers
+    # ------------------------------------------------------------------ #
+
+    def _load_all_lines(self, file_list):
+        """Read all label files once. Returns (all_lines, file_boundaries)."""
+        if isinstance(file_list, str):
+            file_list = [file_list]
+        all_lines = []
+        boundaries = [0]
+        for f in file_list:
+            with open(f, "rb") as fh:
+                lines = fh.readlines()
+                all_lines.extend(lines)
+                boundaries.append(len(all_lines))
+        return all_lines, boundaries
+
+    def _generate_index_map(self, seed):
+        """Generate virtual-index -> global-index mapping.
+
+        Replicates the EXACT sampling logic of original get_image_info_list +
+        shuffle_data_random: for each file, random.seed(seed) then
+        random.sample to pick indices, then random.seed(seed) + shuffle.
+
+        Since random.sample(population, k) with the same seed selects the
+        same POSITIONS regardless of population type, sampling from
+        range(start, end) yields the same positions as from lines[start:end].
+        """
+        sampled = []
+        for i in range(len(self.ratio_list)):
+            start = self.file_boundaries[i]
+            end = self.file_boundaries[i + 1]
+            file_size = end - start
+            count = round(file_size * self.ratio_list[i])
+            if self.mode == "train" or self.ratio_list[i] < 1.0:
+                random.seed(seed)
+                sampled.extend(random.sample(range(start, end), count))
+            else:
+                sampled.extend(range(start, end))
+        if self.mode == "train" and self.do_shuffle:
+            random.seed(seed)
+            random.shuffle(sampled)
+        return sampled
+
+    def _ensure_index_map(self):
+        """Lazily rebuild _index_map when worker detects epoch change via shared memory."""
+        if self._all_lines is None:
+            return
+        current_epoch = self._shared_epoch.value
+        if current_epoch != self._cached_epoch:
+            self._index_map = self._generate_index_map(current_epoch)
+            self._cached_epoch = current_epoch
 
     def get_image_info_list(self, file_list, ratio_list):
         if isinstance(file_list, str):
@@ -76,32 +151,58 @@ class SimpleDataSet(Dataset):
         random.shuffle(self.data_lines)
         return
 
-    def reset_data_lines(self, seed=None, epoch=None):
-        """Lightweight reset: resample, reshuffle, and update epoch-dependent ops.
+    # ------------------------------------------------------------------ #
+    #  Epoch update (called from main process each epoch)
+    # ------------------------------------------------------------------ #
 
-        Args:
-            seed: Random seed for data sampling and shuffling.
-            epoch: Current training epoch for adaptive shrink_ratio.
-                   If None, falls back to seed for backward compatibility.
+    def reset_data_lines(self, seed=None, epoch=None):
+        """Signal new epoch to persistent workers via shared memory.
+
+        Workers lazily rebuild their _index_map on next __getitem__ call.
+        No disk I/O, no dataloader reconstruction.
         """
         self.seed = seed
-        self.data_lines = self.get_image_info_list(
-            self.label_file_list, self.ratio_list
-        )
-        self.data_idx_order_list = list(range(len(self.data_lines)))
-        if self.mode == "train" and self.do_shuffle:
-            self.shuffle_data_random()
-        self._update_epoch_in_ops(epoch if epoch is not None else seed)
+        epoch_val = epoch if epoch is not None else (seed if seed is not None else 0)
+        self._shared_epoch.value = int(epoch_val)
+
+        if self._all_lines is not None:
+            # Update main-process index_map (used by len() and batch_sampler)
+            self._index_map = self._generate_index_map(seed)
+            self._cached_epoch = int(epoch_val)
+            self.data_idx_order_list = list(range(len(self._index_map)))
+        else:
+            # Fallback for non-ratio cases
+            self.data_lines = self.get_image_info_list(
+                self.label_file_list, self.ratio_list
+            )
+            self.data_idx_order_list = list(range(len(self.data_lines)))
+            if self.mode == "train" and self.do_shuffle:
+                self.shuffle_data_random()
+
+    # ------------------------------------------------------------------ #
+    #  shrink_ratio epoch tracking
+    # ------------------------------------------------------------------ #
+
+    def _setup_shared_epoch_in_ops(self):
+        """Pass shared epoch Value to ops that need dynamic shrink_ratio."""
+        if self.mode != "train":
+            return
+        from ppocr.data.imaug.make_border_map import MakeBorderMap
+        from ppocr.data.imaug.make_shrink_map import MakeShrinkMap
+        for op in self.ops:
+            if isinstance(op, (MakeBorderMap, MakeShrinkMap)):
+                if hasattr(op, '_base_shrink_ratio'):
+                    op._shared_epoch = self._shared_epoch
 
     def set_epoch_as_seed(self, seed, dataset_config):
         if self.mode == "train":
             try:
                 dataset_config["transforms"][5]["MakeBorderMap"][
                     "epoch"
-                ] = (seed if seed is not None else 0)
+                ] = seed if seed is not None else 0
                 dataset_config["transforms"][6]["MakeShrinkMap"][
                     "epoch"
-                ] = (seed if seed is not None else 0)
+                ] = seed if seed is not None else 0
             except Exception:
                 return
 
@@ -123,6 +224,10 @@ class SimpleDataSet(Dataset):
                         + 0.2 * epoch / float(op._total_epoch)
                     )
 
+    # ------------------------------------------------------------------ #
+    #  Data access
+    # ------------------------------------------------------------------ #
+
     def _try_parse_filename_list(self, file_name):
         # multiple images -> one gt label
         if len(file_name) > 0 and file_name[0] == "[":
@@ -143,8 +248,15 @@ class SimpleDataSet(Dataset):
         ext_data = []
 
         while len(ext_data) < ext_data_num:
-            file_idx = self.data_idx_order_list[np.random.randint(self.__len__())]
-            data_line = self.data_lines[file_idx]
+            if self._index_map is not None:
+                # Sample from current epoch's subset (same as original)
+                self._ensure_index_map()
+                rand_virtual = np.random.randint(len(self._index_map))
+                file_idx = self._index_map[rand_virtual]
+                data_line = self._all_lines[file_idx]
+            else:
+                file_idx = self.data_idx_order_list[np.random.randint(self.__len__())]
+                data_line = self.data_lines[file_idx]
             data_line = data_line.decode("utf-8")
             substr = data_line.strip("\n").split(self.delimiter)
             file_name = substr[0]
@@ -168,8 +280,13 @@ class SimpleDataSet(Dataset):
         return ext_data
 
     def __getitem__(self, idx):
-        file_idx = self.data_idx_order_list[idx]
-        data_line = self.data_lines[file_idx]
+        if self._index_map is not None:
+            self._ensure_index_map()
+            file_idx = self._index_map[idx]
+            data_line = self._all_lines[file_idx]
+        else:
+            file_idx = self.data_idx_order_list[idx]
+            data_line = self.data_lines[file_idx]
         try:
             data_line = data_line.decode("utf-8")
             substr = data_line.strip("\n").split(self.delimiter)
@@ -204,6 +321,8 @@ class SimpleDataSet(Dataset):
         return outs
 
     def __len__(self):
+        if self._index_map is not None:
+            return len(self._index_map)
         return len(self.data_idx_order_list)
 
 

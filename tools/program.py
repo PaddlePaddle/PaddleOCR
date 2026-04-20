@@ -318,12 +318,17 @@ def train(
 
     for epoch in range(start_epoch, epoch_num + 1):
         if train_dataloader.dataset.need_reset:
+            # Update index mapping + shared epoch (no disk I/O, no worker restart)
             train_dataloader.dataset.reset_data_lines(seed=epoch, epoch=epoch)
             max_iter = (
                 len(train_dataloader) - 1
                 if platform.system() == "Windows"
                 else len(train_dataloader)
             )
+            # Match original behavior: fresh DistributedBatchSampler always
+            # starts with self.epoch=0 for its internal np shuffle seed
+            if hasattr(train_dataloader.batch_sampler, 'set_epoch'):
+                train_dataloader.batch_sampler.set_epoch(0)
 
         for idx, batch in enumerate(train_dataloader):
             model.train()
@@ -687,6 +692,10 @@ def train(
                 log_writer.log_model(
                     is_best=False, prefix="iter_epoch_{}".format(epoch)
                 )
+
+        # Reset reader_start so next epoch's first batch doesn't include
+        # save_model time in avg_reader_cost
+        reader_start = time.time()
 
     best_str = "best metric, {}".format(
         ", ".join(["{}: {}".format(k, v) for k, v in best_model_dict.items()])
