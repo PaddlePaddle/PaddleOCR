@@ -13,8 +13,6 @@ PaddleOCR 官方浏览器 OCR SDK 与演示应用。
 
 ## 本地开发与演示
 
-在 **`paddleocr-js/`** 目录下：
-
 ```bash
 npm install
 npm run dev:demo

@@ -13,8 +13,6 @@ Official browser OCR SDK and demo for PaddleOCR.
 
 ## Local development and demo
 
-From **`paddleocr-js/`**:
-
 ```bash
 npm install
 npm run dev:demo
