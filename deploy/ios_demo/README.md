@@ -85,9 +85,9 @@ python3 Scripts/ocr_reference_run.py \
 
 **`--image`** may be any path to a test image (the example uses a sample from the asset script); use that **same** file in the iOS step when comparing.
 
-**`--ios-models-root`** defaults to **`PaddleOCRDemo/Models`**. Override it if your ONNX tree lives elsewhere.
+**`--ios-models-root`** defaults to **`PaddleOCRDemo/Models`**.
 
-**2) iOS JSON export** — run **`OCRBenchmarkTests`** / **`testOCRExportJSONSchema`** on a device or simulator with models bundled. Export schema matches the reference (`schema_version`, `source`, `items[]` with `polygon`, `text`, `score`).
+**2) iOS JSON export** — run **`OCRBenchmarkTests`** / **`testOCRExportJSONSchema`** on a device or simulator with models bundled. Export schema matches the reference.
 
 Environment variables (scheme → **Arguments → Environment Variables** or `xcodebuild`):
 
