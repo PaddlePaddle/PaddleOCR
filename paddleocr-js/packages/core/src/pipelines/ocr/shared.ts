@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2026 PaddlePaddle Authors. All Rights Reserved.
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 import type { ModelAsset } from "../../resources/model-asset";
 import { DEFAULT_MODEL_ASSETS } from "../../resources/model-asset";
 import { DEFAULT_DET_MODEL_CONFIG } from "../../models/det";

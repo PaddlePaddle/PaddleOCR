@@ -11,14 +11,16 @@ Official browser OCR SDK and demo for PaddleOCR.
 | `packages/core/` | Browser SDK sources; published to npm as **`@paddleocr/paddleocr-js`** |
 | `apps/demo/`     | Vite demo app that depends on the SDK                                  |
 
-## Quick start
+## Local development and demo
+
+From **`paddleocr-js/`**:
 
 ```bash
 npm install
 npm run dev:demo
 ```
 
-Other useful commands (still from `paddleocr-js/`):
+Other common commands:
 
 ```bash
 npm run build
@@ -36,10 +38,12 @@ npm run build --workspace apps/demo
 
 ## Documentation
 
-- [`docs/architecture.md`](docs/architecture.md)
-- [`docs/development.md`](docs/development.md)
-- [`docs/monorepo.md`](docs/monorepo.md)
-- SDK-focused reference: [`packages/core/README.md`](packages/core/README.md)
+| Topic | Link |
+|-------|------|
+| Architecture | [architecture.md](docs/architecture.md) |
+| Development | [development.md](docs/development.md) |
+| Monorepo conventions | [monorepo.md](docs/monorepo.md) |
+| SDK package README | [packages/core/README.md](packages/core/README.md) |
 
 ## Acknowledgements
 

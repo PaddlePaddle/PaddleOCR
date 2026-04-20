@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2026 PaddlePaddle Authors. All Rights Reserved.
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 type AnyCanvas = OffscreenCanvas | HTMLCanvasElement;
 
 export function createCanvas(width: number, height: number): AnyCanvas {

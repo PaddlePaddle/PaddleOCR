@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2026 PaddlePaddle Authors. All Rights Reserved.
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 function readString(bytes: Uint8Array, start: number, length: number): string {
   let output = "";
   for (let index = start; index < start + length; index += 1) {

@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2026 PaddlePaddle Authors. All Rights Reserved.
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 export type { ModelAsset, ModelAssetsMap, ModelLoadResult, ModelLoadSummary } from "./model-asset";
 export {
   DEFAULT_MODEL_ASSETS,

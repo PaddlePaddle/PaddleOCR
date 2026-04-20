@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2026 PaddlePaddle Authors. All Rights Reserved.
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 export type { OpenCv, Mat, MatVector, Size, Rect, Scalar, RotatedRect } from "@techstark/opencv-js";
 
 export type { Point2D, NormalizeConfig, DetBox, MiniBox } from "../models/common";

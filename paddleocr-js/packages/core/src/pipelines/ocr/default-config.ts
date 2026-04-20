@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2026 PaddlePaddle Authors. All Rights Reserved.
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 export const DEFAULT_OCR_PIPELINE_CONFIG_TEXT = `
 pipeline_name: OCR
 

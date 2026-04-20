@@ -35,7 +35,7 @@ There are two main construction styles:
 
 ### 1. Direct parameters
 
-Pass parameters to `PaddleOCR.create({ ... })` to **select models**, or **configure** inference batch size, ORT options, and other settings unrelated to model selection.
+With direct parameters, you can specify models and configure inference batch sizes, ORT options, and other runtime settings.
 
 **Model selection** — `lang` + `ocrVersion`:
 
@@ -55,7 +55,7 @@ await PaddleOCR.create({
 });
 ```
 
-**Custom models** — asset descriptors:
+**Custom models** — provide model names and asset URLs for detection and recognition:
 
 ```js
 await PaddleOCR.create({
@@ -70,7 +70,15 @@ await PaddleOCR.create({
 });
 ```
 
-**Not model selection** — batch size and ORT options:
+**Custom model archive format and validation:**
+
+- The downloaded bytes must be an **uncompressed ustar `.tar`**. The SDK does **not** gunzip **`.tar.gz`**; gzip-compressed payloads will usually fail to parse.
+- The tar must contain **`inference.onnx`** and **`inference.yml`** (optionally under a subdirectory; matched by basename).
+- **`inference.yml`** must define **`model_name`**, and it must match `textDetectionModelName` / `textRecognitionModelName`. This is checked during initialization after load.
+
+Failures surface as **`Error`** during initialization (HTTP errors, missing tar entries, empty resources, missing/mismatched `model_name`, incomplete model config, ONNX session errors)—not silent fallbacks.
+
+**Batch sizes, ORT options, and other runtime settings:**
 
 ```js
 await PaddleOCR.create({
@@ -107,8 +115,6 @@ const ocr = await PaddleOCR.create({ pipelineConfig });
 `pipelineConfig` can be either YAML text or a parsed object.
 
 If direct parameters and `pipelineConfig` are both provided, direct parameters take precedence.
-
-All OCR model `inference.yml` files must define `model_name`, and PaddleOCR.js validates that value against the selected model name during initialization.
 
 ## Prediction
 

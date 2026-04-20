@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2026 PaddlePaddle Authors. All Rights Reserved.
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 import yaml from "js-yaml";
 import ClipperLib from "clipper-lib";
 import type { OpenCv, Mat } from "@techstark/opencv-js";

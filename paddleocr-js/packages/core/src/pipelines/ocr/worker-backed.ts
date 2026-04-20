@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2026 PaddlePaddle Authors. All Rights Reserved.
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 import { sourceToWorkerPayload } from "../../platform/browser";
 import { createWorkerTransportClient } from "../../worker/client";
 import type { WorkerTransportClient, WorkerOptions } from "../../worker/client";

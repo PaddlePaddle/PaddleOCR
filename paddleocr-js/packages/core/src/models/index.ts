@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2026 PaddlePaddle Authors. All Rights Reserved.
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 export {
   DEFAULT_DET_MODEL_PARSE_FALLBACKS,
   DEFAULT_DET_MODEL_CONFIG,

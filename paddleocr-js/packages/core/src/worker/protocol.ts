@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2026 PaddlePaddle Authors. All Rights Reserved.
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 const REQUEST_KIND = "worker-transport-request";
 const RESPONSE_KIND = "worker-transport-response";
 

@@ -1,5 +1,7 @@
 # Development
 
+English | [简体中文](development_cn.md)
+
 ## Install
 
 ```bash

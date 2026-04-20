@@ -11,14 +11,16 @@ PaddleOCR 官方浏览器 OCR SDK 与演示应用。
 | `packages/core/` | 浏览器 SDK 源码；发布到 npm 时的包名为 **`@paddleocr/paddleocr-js`** |
 | `apps/demo/`     | 依赖该 SDK 的 Vite 演示应用                                          |
 
-## 快速开始
+## 本地开发与演示
+
+在 **`paddleocr-js/`** 目录下：
 
 ```bash
 npm install
 npm run dev:demo
 ```
 
-其他常用命令（同样需要在 `paddleocr-js/` 下执行）：
+其他常用命令：
 
 ```bash
 npm run build
@@ -27,7 +29,7 @@ npm run typecheck
 npm run check
 ```
 
-按 workspace 作用域执行的示例：
+按 workspace 作用域：
 
 ```bash
 npm run build --workspace packages/core
@@ -36,10 +38,12 @@ npm run build --workspace apps/demo
 
 ## 文档
 
-- [`docs/architecture.md`](docs/architecture.md)
-- [`docs/development.md`](docs/development.md)
-- [`docs/monorepo.md`](docs/monorepo.md)
-- 面向 SDK 的参考文档：[`packages/core/README_cn.md`](packages/core/README_cn.md)
+| 说明 | 链接 |
+|------|------|
+| 架构说明 | [architecture_cn.md](docs/architecture_cn.md) |
+| 开发指南 | [development_cn.md](docs/development_cn.md) |
+| Monorepo 约定 | [monorepo_cn.md](docs/monorepo_cn.md) |
+| SDK 包 README | [packages/core/README_cn.md](packages/core/README_cn.md) |
 
 ## 致谢
 

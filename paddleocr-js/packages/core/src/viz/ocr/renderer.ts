@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2026 PaddlePaddle Authors. All Rights Reserved.
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 import type { OcrResult } from "../../pipelines/ocr/core";
 import type { OcrVisualizerOptions } from "./types";
 import { loadFontFace, removeFontFace } from "../font";

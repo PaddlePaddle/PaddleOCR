@@ -1,5 +1,7 @@
 # Monorepo conventions
 
+English | [简体中文](monorepo_cn.md)
+
 ## Command execution
 
 When you only want one workspace, use root-level workspace commands with explicit paths:

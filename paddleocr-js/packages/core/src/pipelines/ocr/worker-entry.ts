@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2026 PaddlePaddle Authors. All Rights Reserved.
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 import { attachWorkerMessageHandler } from "../../worker/entry";
 import { sourcePayloadToMat, ensureServedFromHttp } from "../../platform/worker";
 import type { OcrPipelineRunnerOptions } from "./core";

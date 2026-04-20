@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2026 PaddlePaddle Authors. All Rights Reserved.
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 import { createTransportError, createTransportSuccess, isTransportRequest } from "./protocol";
 
 export type MessageHandler = (type: string, payload: Record<string, unknown>) => Promise<unknown>;

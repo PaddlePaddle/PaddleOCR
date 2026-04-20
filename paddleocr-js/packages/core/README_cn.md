@@ -35,7 +35,7 @@ console.log(result.items);
 
 ### 1. 直接参数
 
-可通过向 `PaddleOCR.create({ ... })` 传入参数来**选择模型**，或**配置**推理 batch size、ORT 选项等与模型选择无关的选项。
+可通过直接参数指定模型，也可配置推理 batch size、ORT 选项等运行参数。
 
 **模型选择 — `lang` + `ocrVersion`：**
 
@@ -55,7 +55,7 @@ await PaddleOCR.create({
 });
 ```
 
-**自定义模型** — 资源描述：
+**自定义模型** — 为检测 / 识别分别指定模型名与资源地址：
 
 ```js
 await PaddleOCR.create({
@@ -70,7 +70,15 @@ await PaddleOCR.create({
 });
 ```
 
-**非「选模型」参数** — batch size 与 ORT 选项：
+**自定义模型包格式与校验行为：**
+
+- 资源需为 **未压缩的标准 tar**（`.tar`）。SDK 按字节解析 tar，**不对 gzip 压缩包解压**；若 URL 指向 `.tar.gz` 等，通常会解析失败并报错。
+- tar 内必须包含 **`inference.onnx`** 与 **`inference.yml`**（可在子目录中，按文件名匹配）。
+- `inference.yml` 必须能解析出 **`model_name`**，且须与 `textDetectionModelName` / `textRecognitionModelName` **一致**；在 `initialize` 加载模型后会校验。
+
+不满足时通常在初始化阶段以 **`Error`** 失败（下载失败、tar 中缺少条目、空资源、`model_name` 缺失或不匹配、模型配置不完整、ONNX 会话创建失败等），不会静默忽略。
+
+**batch size、ORT 选项等运行参数：**
 
 ```js
 await PaddleOCR.create({
@@ -107,8 +115,6 @@ const ocr = await PaddleOCR.create({ pipelineConfig });
 `pipelineConfig` 可以是 YAML 文本，也可以是解析后的对象。
 
 如果同时提供直接参数和 `pipelineConfig`，则以直接参数为准。
-
-所有 OCR 模型的 `inference.yml` 都必须定义 `model_name`，PaddleOCR.js 会在初始化阶段校验该值是否与所选模型名一致。
 
 ## 预测
 

@@ -1,5 +1,7 @@
 # Architecture
 
+English | [简体中文](architecture_cn.md)
+
 ## Project structure
 
 The `paddleocr-js` folder has two main parts:

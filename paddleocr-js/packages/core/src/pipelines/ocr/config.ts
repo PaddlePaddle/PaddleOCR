@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2026 PaddlePaddle Authors. All Rights Reserved.
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 import yaml from "js-yaml";
 
 import type { ModelAsset } from "../../resources/model-asset";
