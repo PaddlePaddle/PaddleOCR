@@ -1069,8 +1069,9 @@ paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --device gpu
 
 ```bash
 # 使用 transformers 引擎进行推理
+# 部分模型尚在支持中，推理时需关闭公式识别功能并更换无线表格结构识别模型，请使用以下命令：
 paddleocr pp_structurev3 -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/pp_structure_v3_demo.png \
-    --engine transformers
+    --engine transformers --use_formula_recognition False --wireless_table_structure_recognition_model_name SLANeXt_wireless
 ```
 
 <details><summary><b>命令行支持更多参数设置，点击展开以查看命令行参数的详细说明</b></summary>
@@ -1549,7 +1550,7 @@ paddleocr pp_structurev3 -i https://paddle-model-ecology.bj.bcebos.com/paddlex/i
 </tr>
 <tr>
 <td><code>engine</code></td>
-<td><b>含义：</b>推理引擎。<br><b>说明：</b>支持 <code>paddle</code>、<code>paddle_static</code>、<code>paddle_dynamic</code>、<code>transformers</code>。详细说明、取值、兼容性规则与示例请参见 <a href="../inference_engine.md">推理引擎与配置说明</a>。</td>
+<td><b>含义：</b>推理引擎。<br><b>说明：</b>支持 <code>None</code>（默认值）、<code>paddle</code>、<code>paddle_static</code>、<code>paddle_dynamic</code>、<code>transformers</code>。保持为默认值 <code>None</code> 时，PaddleOCR 保留旧版本的行为，在大多数配置下等价于 <code>paddle</code>。详细说明、取值、兼容性规则与示例请参见 <a href="../inference_engine.md">推理引擎与配置说明</a>。</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -1667,8 +1668,11 @@ for res in output:
 ```python
 from paddleocr import PPStructureV3
 
+# 部分模型尚在支持中，推理时需关闭公式识别功能并更换无线表格结构识别模型，请使用以下代码：
 pipeline = PPStructureV3(
     engine="transformers",
+    use_formula_recognition=False,
+    wireless_table_structure_recognition_model_name="SLANeXt_wireless",
 )
 # pipeline = PPStructureV3(lang="en") # 将 lang 参数设置为使用英文文本识别模型。对于其他支持的语言，请参阅第5节：附录部分。默认配置为中英文模型。
 # pipeline = PPStructureV3(use_doc_orientation_classify=True) # 通过 use_doc_orientation_classify 指定是否使用文档方向分类模型
@@ -2297,7 +2301,7 @@ for item in markdown_images:
 </tr>
 <tr>
 <td><code>engine</code></td>
-<td><b>含义：</b>推理引擎。<br><b>说明：</b>支持 <code>paddle</code>、<code>paddle_static</code>、<code>paddle_dynamic</code>、<code>transformers</code>。详细说明、取值、兼容性规则与示例请参见 <a href="../inference_engine.md">推理引擎与配置说明</a>。</td>
+<td><b>含义：</b>推理引擎。<br><b>说明：</b>支持 <code>None</code>（默认值）、<code>paddle</code>、<code>paddle_static</code>、<code>paddle_dynamic</code>、<code>transformers</code>。保持为默认值 <code>None</code> 时，PaddleOCR 保留旧版本的行为，在大多数配置下等价于 <code>paddle</code>。详细说明、取值、兼容性规则与示例请参见 <a href="../inference_engine.md">推理引擎与配置说明</a>。</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>

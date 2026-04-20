@@ -148,6 +148,7 @@ for res in output:
     res.save_to_json("./output/res.json")
 ```
 
+训练后的模型如果想使用 `paddle_dynamic` 或 `transformers` 引擎，请参考后文 [推理引擎](#五推理引擎) 中的 [权重转换](#52-权重转换) 部分将模型由 `pdparams` 格式通过 PaddleX 转换为 `safetensors` 格式。
 
 运行后，得到的结果为：
 
@@ -207,7 +208,7 @@ for res in output:
 </tr>
 <tr>
 <td><code>engine</code></td>
-<td><b>含义：</b>推理引擎。<br><b>说明：</b>支持 <code>paddle</code>、<code>paddle_static</code>、<code>paddle_dynamic</code>、<code>transformers</code>。详细说明、取值、兼容性规则与示例请参见 <a href="../inference_engine.md">推理引擎与配置说明</a>。</td>
+<td><b>含义：</b>推理引擎。<br><b>说明：</b>支持 <code>None</code>（默认值）、<code>paddle</code>、<code>paddle_static</code>、<code>paddle_dynamic</code>、<code>transformers</code>。保持为默认值 <code>None</code> 时，PaddleOCR 保留旧版本的行为，在大多数配置下等价于 <code>paddle</code>。详细说明、取值、兼容性规则与示例请参见 <a href="../inference_engine.md">推理引擎与配置说明</a>。</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -391,3 +392,91 @@ for res in output:
 ## 四、二次开发
 
 由于 PaddleOCR 并不直接提供文本行方向分类的训练，因此，如果需要训练文档图像方向分类模型，可以参考 [PaddleX 文本行方向分类二次开发](https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/textline_orientation_classification.html#_5)部分进行训练。训练后的模型可以无缝集成到 PaddleOCR 的 API 中进行推理。
+
+训练后的模型如果想使用 `paddle_dynamic` 或 `transformers` 引擎，请参考后文 [推理引擎](#五推理引擎) 中的 [权重转换](#52-权重转换) 部分将模型由 `pdparams` 格式通过 PaddleX 转换为 `safetensors` 格式。
+
+## 五、推理引擎 {#五推理引擎}
+
+关于推理引擎的详细说明、取值、兼容性规则与示例请参见 <a href="../inference_engine.md">推理引擎与配置说明</a>。
+
+### 5.1 速度数据
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>model</th>
+            <th>engine</th>
+            <th>Preprocessing (ms)</th>
+            <th>Inference (ms)</th>
+            <th>PostProcessing (ms)</th>
+            <th>End-to-End (ms)</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td rowspan="3">PP-LCNet_x0_25_textline_ori</td>
+            <td>paddle_static</td>
+            <td>0.30</td>
+            <td>2.89</td>
+            <td>0.06</td>
+            <td>3.34</td>
+        </tr>
+        <tr>
+            <td>paddle_dynamic</td>
+            <td>0.28</td>
+            <td>6.52</td>
+            <td>0.08</td>
+            <td>6.98</td>
+        </tr>
+        <tr>
+            <td>transformers</td>
+            <td>1.30</td>
+            <td>3.76</td>
+            <td>0.15</td>
+            <td>5.36</td>
+        </tr>
+        <tr>
+            <td rowspan="3">PP-LCNet_x1_0_textline_ori</td>
+            <td>paddle_static</td>
+            <td>0.33</td>
+            <td>3.20</td>
+            <td>0.06</td>
+            <td>3.69</td>
+        </tr>
+        <tr>
+            <td>paddle_dynamic</td>
+            <td>0.29</td>
+            <td>7.60</td>
+            <td>0.07</td>
+            <td>8.06</td>
+        </tr>
+        <tr>
+            <td>transformers</td>
+            <td>1.28</td>
+            <td>3.47</td>
+            <td>0.14</td>
+            <td>5.04</td>
+        </tr>
+    </tbody>
+</table>
+
+<strong>测试环境说明:</strong>
+<ul>
+    <li><strong>测试数据：</strong>[示例图片](https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/textline_rot180_demo.jpg)</li>
+    <li><strong>硬件配置：</strong>
+        <ul>
+            <li>GPU：NVIDIA A100 40G</li>
+            <li>CPU：Intel(R) Xeon(R) Gold 6248 CPU @ 2.50GHz</li>
+        </ul>
+    </li>
+    <li><strong>软件环境：</strong>
+        <ul>
+            <li>Ubuntu 22.04 / CUDA 12.6 / cuDNN 9.5</li>
+            <li>paddlepaddle 3.2.1 / paddleocr 3.5 / transformers 5.4.0 / torch 2.10</li>
+        </ul>
+    </li>
+</ul>
+
+### 5.2 权重转换 {#52-权重转换}
+
+使用推理引擎时，系统会自动下载官方预训练模型。若需使用自训练模型配合 `paddle_dynamic` 或 `transformers` 引擎，请参考 [PaddleX 文本行方向分类模块权重转换](https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/textline_orientation_classification.html#442) 部分，将 `pdparams` 格式通过 PaddleX 转换为 `safetensors` 格式，即可无缝集成到 PaddleOCR 的 API 中进行推理。

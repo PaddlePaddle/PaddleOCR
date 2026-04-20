@@ -132,7 +132,7 @@ docker run \
 
 #### 3.1.2 Method 2: Installation and Usage via PaddleOCR CLI
 
-Due to potential dependency conflicts between inference acceleration frameworks and PaddlePaddle, it is recommended to install them in a virtual environment:
+Since inference acceleration frameworks may conflict with packages already installed in the current environment, it is recommended to install them in a virtual environment:
 
 ```shell
 # If a virtual environment is currently activated, deactivate it first using `deactivate`
@@ -160,6 +160,9 @@ paddleocr install_genai_server_deps <inference acceleration framework name>
 ```
 
 Currently supported framework names are `vllm` and `sglang`, corresponding to vLLM and SGLang, respectively.
+
+> WARNING:
+> The transformers library versions required by vLLM, SGLang and Transformers engine are currently incompatible, so Transformers engine cannot be installed together with vLLM or SGLang in the same environment. If using Transformers + vLLM or Transformers + SGLang inference, please deploy the layout detection model and VLM service in different environments.
 
 After installation, you can start the service using the `paddleocr genai_server` command:
 

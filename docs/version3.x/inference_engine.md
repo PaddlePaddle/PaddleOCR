@@ -51,7 +51,7 @@ python -m pip install transformers
 
 | 取值 | 含义 | 说明 |
 | - | - | - |
-| `None` | 不显式指定引擎 | 自动确定推理引擎。大多数情况下会使用飞桨框架推理。 |
+| `None` | 不显式指定引擎 | 自动确定推理引擎。保持 PaddleOCR 3.4 的行为，大多数情况下会使用飞桨框架推理。 |
 | `paddle` | 飞桨框架统一入口 | 自动选择 `paddle_static` 或 `paddle_dynamic`。 |
 | `paddle_static` | 静态图推理 | 使用飞桨静态图推理。 |
 | `paddle_dynamic` | 飞桨动态图推理 | 使用飞桨动态图推理。 |
@@ -113,7 +113,7 @@ python -m pip install transformers
 
 - 对于产线，命令行参数或 Python API 初始化参数中传入的 `engine`、`engine_config`，优先级高于产线配置文件中的同名字段；
 - 在产线配置文件中，顶层 `engine`、`engine_config` 会作为全局配置，子模块或子产线中的 `engine`、`engine_config` 可覆盖上层配置；
-- 关于产线配置文件中更完整的优先级、覆盖和调用规则，建议参考 PaddleX 文档：[PaddleX产线Python脚本使用说明](https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/instructions/pipeline_python_API.html)。
+- 关于产线配置文件中更完整的优先级、覆盖和调用规则，建议参考 PaddleX 文档：[PaddleX 产线 Python 脚本使用说明](https://paddlepaddle.github.io/PaddleX/latest/pipeline_usage/instructions/pipeline_python_API.html)。
 
 ### 4.4 兼容性规则
 
@@ -167,7 +167,7 @@ paddleocr ocr -i general_ocr_001.png --engine paddle_static
 
 ### 5.5 产线（Python API）：为某个模块单独配置推理引擎
 
-如需为产线中的某一个模块单独指定 `engine`、`engine_config`，可先导出配置文件，修改对应模块配置后，再通过加载配置文件。配置文件的导出、编辑与加载方式可参见 [使用 PaddleX 产线配置文件](./paddleocr_and_paddlex.md#3-使用-paddlex-产线配置文件)。示例如下：
+如需为产线中的某一个模块单独指定 `engine`、`engine_config`，可先导出配置文件，修改对应模块配置后，再通过加载配置文件。配置文件的导出、编辑与加载方式可参见 [使用 PaddleX 产线配置文件](./paddleocr_and_paddlex.md#3-paddlex)。示例如下：
 
 首先，导出产线配置文件：
 

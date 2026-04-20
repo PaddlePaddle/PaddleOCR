@@ -1268,7 +1268,7 @@ paddleocr pp_chatocrv4_doc -i vehicle_certificate-1.png -k 驾驶室准乘人数
 </tr>
 <tr>
 <td><code>engine</code></td>
-<td><b>含义：</b>推理引擎。<br><b>说明：</b>支持 <code>paddle</code>、<code>paddle_static</code>、<code>paddle_dynamic</code>、<code>transformers</code>。详细说明、取值、兼容性规则与示例请参见 <a href="../inference_engine.md">推理引擎与配置说明</a>。</td>
+<td><b>含义：</b>推理引擎。<br><b>说明：</b>支持 <code>None</code>（默认值）、<code>paddle</code>、<code>paddle_static</code>、<code>paddle_dynamic</code>、<code>transformers</code>。保持为默认值 <code>None</code> 时，PaddleOCR 保留旧版本的行为，在大多数配置下等价于 <code>paddle</code>。详细说明、取值、兼容性规则与示例请参见 <a href="../inference_engine.md">推理引擎与配置说明</a>。</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -1909,7 +1909,7 @@ PP-ChatOCRv4 预测的流程、API说明、产出说明如下：
 </tr>
 <tr>
 <td><code>engine</code></td>
-<td><b>含义：</b>推理引擎。<br><b>说明：</b>支持 <code>paddle</code>、<code>paddle_static</code>、<code>paddle_dynamic</code>、<code>transformers</code>。详细说明、取值、兼容性规则与示例请参见 <a href="../inference_engine.md">推理引擎与配置说明</a>。</td>
+<td><b>含义：</b>推理引擎。<br><b>说明：</b>支持 <code>None</code>（默认值）、<code>paddle</code>、<code>paddle_static</code>、<code>paddle_dynamic</code>、<code>transformers</code>。保持为默认值 <code>None</code> 时，PaddleOCR 保留旧版本的行为，在大多数配置下等价于 <code>paddle</code>。详细说明、取值、兼容性规则与示例请参见 <a href="../inference_engine.md">推理引擎与配置说明</a>。</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>

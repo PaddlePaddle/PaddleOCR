@@ -153,6 +153,7 @@ for res in output:
     res.save_to_json("./output/res.json")
 ```
 
+训练后的模型如果想使用 `paddle_dynamic` 或 `transformers` 引擎，请参考后文 [推理引擎](#五推理引擎) 中的 [权重转换](#52-权重转换) 部分将模型由 `pdparams` 格式通过 PaddleX 转换为 `safetensors` 格式。
 
 运行后，得到的结果为：
 
@@ -208,7 +209,7 @@ for res in output:
 </tr>
 <tr>
 <td><code>engine</code></td>
-<td><b>含义：</b>推理引擎。<br><b>说明：</b>支持 <code>paddle</code>、<code>paddle_static</code>、<code>paddle_dynamic</code>、<code>transformers</code>。详细说明、取值、兼容性规则与示例请参见 <a href="../inference_engine.md">推理引擎与配置说明</a>。</td>
+<td><b>含义：</b>推理引擎。<br><b>说明：</b>支持 <code>None</code>（默认值）、<code>paddle</code>、<code>paddle_static</code>、<code>paddle_dynamic</code>、<code>transformers</code>。保持为默认值 <code>None</code> 时，PaddleOCR 保留旧版本的行为，在大多数配置下等价于 <code>paddle</code>。详细说明、取值、兼容性规则与示例请参见 <a href="../inference_engine.md">推理引擎与配置说明</a>。</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -454,4 +455,92 @@ python3 -m paddle.distributed.launch --gpus '0,1,2,3' tools/train.py \
  ```
 至此，二次开发完成，该静态图模型可以直接集成到 PaddleOCR 的 API 中。
 
-## 五、FAQ
+训练后的模型如果想使用 `paddle_dynamic` 或 `transformers` 引擎，请参考后文 [推理引擎](#五推理引擎) 中的 [权重转换](#52-权重转换) 部分将模型由 `pdparams` 格式通过 PaddleX 转换为 `safetensors` 格式。
+
+## 五、推理引擎 {#五推理引擎}
+
+关于推理引擎的详细说明、取值、兼容性规则与示例请参见 <a href="../inference_engine.md">推理引擎与配置说明</a>。
+
+### 5.1 速度数据
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>model</th>
+            <th>engine</th>
+            <th>Preprocessing (ms)</th>
+            <th>Inference (ms)</th>
+            <th>PostProcessing (ms)</th>
+            <th>End-to-End (ms)</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td rowspan="3">SLANeXt_wired</td>
+            <td>paddle_static</td>
+            <td>1.50</td>
+            <td>30.91</td>
+            <td>0.23</td>
+            <td>32.77</td>
+        </tr>
+        <tr>
+            <td>paddle_dynamic</td>
+            <td>1.71</td>
+            <td>57.44</td>
+            <td>0.91</td>
+            <td>60.23</td>
+        </tr>
+        <tr>
+            <td>transformers</td>
+            <td>4.03</td>
+            <td>45.14</td>
+            <td>0.74</td>
+            <td>51.12</td>
+        </tr>
+        <tr>
+            <td rowspan="3">SLANeXt_wireless</td>
+            <td>paddle_static</td>
+            <td>1.67</td>
+            <td>30.49</td>
+            <td>0.22</td>
+            <td>32.51</td>
+        </tr>
+        <tr>
+            <td>paddle_dynamic</td>
+            <td>1.68</td>
+            <td>57.24</td>
+            <td>0.96</td>
+            <td>60.05</td>
+        </tr>
+        <tr>
+            <td>transformers</td>
+            <td>4.30</td>
+            <td>45.51</td>
+            <td>0.75</td>
+            <td>51.76</td>
+        </tr>
+    </tbody>
+</table>
+
+<strong>测试环境说明:</strong>
+<ul>
+    <li><strong>测试数据：</strong>[示例图片](https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/table_recognition.jpg)</li>
+    <li><strong>硬件配置：</strong>
+        <ul>
+            <li>GPU：NVIDIA A100 40G</li>
+            <li>CPU：Intel(R) Xeon(R) Gold 6248 CPU @ 2.50GHz</li>
+        </ul>
+    </li>
+    <li><strong>软件环境：</strong>
+        <ul>
+            <li>Ubuntu 22.04 / CUDA 12.6 / cuDNN 9.5</li>
+            <li>paddlepaddle 3.2.1 / paddleocr 3.5 / transformers 5.4.0 / torch 2.10</li>
+        </ul>
+    </li>
+</ul>
+
+### 5.2 权重转换 {#52-权重转换}
+
+使用推理引擎时，系统会自动下载官方预训练模型。若需使用自训练模型配合 `paddle_dynamic` 或 `transformers` 引擎，请参考 [PaddleX 表格结构识别模块权重转换](https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/table_structure_recognition.html#442) 部分，将 `pdparams` 格式通过 PaddleX 转换为 `safetensors` 格式，即可无缝集成到 PaddleOCR 的 API 中进行推理。
+
+## 六、FAQ

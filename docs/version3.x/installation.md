@@ -54,7 +54,7 @@ python -m pip install "paddleocr@git+https://github.com/PaddlePaddle/PaddleOCR.g
 git clone https://github.com/PaddlePaddle/PaddleOCR
 
 # （可选）切换到指定分支
-git checkout release/3.2
+git checkout release/3.5
 
 # 如果因为网络问题无法克隆成功，也可选择使用码云上的仓库：
 git clone https://gitee.com/paddlepaddle/PaddleOCR

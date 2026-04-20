@@ -136,7 +136,6 @@ for res in output:
     res.save_to_json(save_path="./output/res.json")
 ```
 
-
 运行后，得到的结果为：
 
 ```bash
@@ -193,7 +192,7 @@ for res in output:
 </tr>
 <tr>
 <td><code>engine</code></td>
-<td><b>含义：</b>推理引擎。<br><b>说明：</b>支持 <code>paddle</code>、<code>paddle_static</code>、<code>paddle_dynamic</code>、<code>transformers</code>。详细说明、取值、兼容性规则与示例请参见 <a href="../inference_engine.md">推理引擎与配置说明</a>。</td>
+<td><b>含义：</b>推理引擎。<br><b>说明：</b>支持 <code>None</code>（默认值）、<code>paddle</code>、<code>paddle_static</code>、<code>paddle_dynamic</code>、<code>transformers</code>。保持为默认值 <code>None</code> 时，PaddleOCR 保留旧版本的行为，在大多数配置下等价于 <code>paddle</code>。详细说明、取值、兼容性规则与示例请参见 <a href="../inference_engine.md">推理引擎与配置说明</a>。</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -377,4 +376,64 @@ for res in output:
 
 当前模块暂时不支持微调训练，仅支持推理集成。关于该模块的微调训练，计划在未来支持。
 
-## 五、FAQ
+## 五、推理引擎
+
+关于推理引擎的详细说明、取值、兼容性规则与示例请参见 <a href="../inference_engine.md">推理引擎与配置说明</a>。
+
+### 5.1 速度数据
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>model</th>
+            <th>engine</th>
+            <th>Preprocessing (ms)</th>
+            <th>Inference (ms)</th>
+            <th>PostProcessing (ms)</th>
+            <th>End-to-End (ms)</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td rowspan="3">UVDoc</td>
+            <td>paddle_static</td>
+            <td>14.96</td>
+            <td>18.60</td>
+            <td>1.93</td>
+            <td>36.66</td>
+        </tr>
+        <tr>
+            <td>paddle_dynamic</td>
+            <td>10.90</td>
+            <td>27.59</td>
+            <td>1.96</td>
+            <td>40.94</td>
+        </tr>
+        <tr>
+            <td>transformers</td>
+            <td>13.54</td>
+            <td>6.74</td>
+            <td>0.91</td>
+            <td>33.07</td>
+        </tr>
+    </tbody>
+</table>
+
+<strong>测试环境说明:</strong>
+<ul>
+    <li><strong>测试数据：</strong>[示例图片](https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/doc_test.jpg)</li>
+    <li><strong>硬件配置：</strong>
+        <ul>
+            <li>GPU：NVIDIA A100 40G</li>
+            <li>CPU：Intel(R) Xeon(R) Gold 6248 CPU @ 2.50GHz</li>
+        </ul>
+    </li>
+    <li><strong>软件环境：</strong>
+        <ul>
+            <li>Ubuntu 22.04 / CUDA 12.6 / cuDNN 9.5</li>
+            <li>paddlepaddle 3.2.1 / paddleocr 3.5 / transformers 5.4.0 / torch 2.10</li>
+        </ul>
+    </li>
+</ul>
+
+## 六、FAQ

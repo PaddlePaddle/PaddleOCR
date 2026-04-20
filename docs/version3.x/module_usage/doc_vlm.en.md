@@ -140,7 +140,7 @@ By default, GPU 0 is used if available; otherwise, CPU is used.
 </tr>
 <tr>
 <td><code>engine</code></td>
-<td><b>Meaning:</b> Inference engine.<br/><b>Description:</b> Supports <code>paddle</code> and <code>paddle_dynamic</code>. For detailed descriptions, supported values, compatibility rules, and examples, see <a href="../inference_engine.en.md">Inference Engine and Configuration</a>.</td>
+<td><b>Meaning:</b> Inference engine.<br/><b>Description:</b> Supports <code>None</code> (the default), <code>paddle</code>, and <code>paddle_dynamic</code>. When left as <code>None</code>, PaddleOCR preserves the behavior of earlier versions, which in most configurations is equivalent to <code>paddle</code>. For detailed descriptions, supported values, compatibility rules, and examples, see <a href="../inference_engine.en.md">Inference Engine and Configuration</a>.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>

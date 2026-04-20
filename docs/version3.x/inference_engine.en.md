@@ -6,7 +6,7 @@ comments: true
 
 PaddleOCR 3.5 introduces a unified inference-engine configuration mechanism: use `engine` to select the underlying inference engine, and use `engine_config` to pass engine-specific settings. This mechanism applies to both individual models and pipelines.
 
-If `engine` is not explicitly specified, the default behavior remains the same as in earlier versions: except for a few scenarios such as high-performance inference and generative AI client request features, PaddleOCR uses the Paddle framework for inference in most cases. If `engine` is explicitly specified, initialization follows the selected engine first.
+If `engine` is not explicitly specified, the default behavior remains the same as in earlier versions: except for a few scenarios such as high-performance inference and generative AI client request features, PaddleOCR uses the PaddlePaddle framework for inference in most cases. If `engine` is explicitly specified, initialization follows the selected engine first.
 
 ## 1. What Is an Inference Engine
 
@@ -19,7 +19,7 @@ In PaddleOCR, an inference engine refers to the underlying runtime used to execu
 
 | Engine category | `engine` values | Description |
 | - | - | - |
-| PaddlePaddle framework | `paddle`, `paddle_static`, `paddle_dynamic` | Runs on the Paddle framework. |
+| PaddlePaddle framework | `paddle`, `paddle_static`, `paddle_dynamic` | Runs on the PaddlePaddle framework. |
 | Transformers | `transformers` | Runs on Hugging Face Transformers. |
 
 - `paddle`: The unified entry point for the PaddlePaddle framework. It selects `paddle_static` or `paddle_dynamic` according to the model type and files in the model directory. If both are available, `paddle_static` is preferred.
@@ -51,7 +51,7 @@ In many cases, you also need to install the underlying inference framework. For 
 
 | Value | Meaning | Description |
 | - | - | - |
-| `None` | No explicit engine specified | Automatically determines the inference engine. In most cases, PaddlePaddle will be used. |
+| `None` | No explicit engine specified | Automatically determines the inference engine. Keep the behavior of PaddleOCR 3.4; in most cases, the PaddlePaddle framework will be used for inference. |
 | `paddle` | Unified PaddlePaddle framework entry | Automatically selects `paddle_static` or `paddle_dynamic`. |
 | `paddle_static` | Static-graph inference | Uses Paddle static-graph inference. |
 | `paddle_dynamic` | Dynamic-graph inference | Uses Paddle dynamic-graph inference. |

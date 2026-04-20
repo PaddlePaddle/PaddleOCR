@@ -2,6 +2,9 @@
 
 set -euo pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "${SCRIPT_DIR}/pip_version_arg.sh"
+
 device_type='nvidia-gpu'
 backend='vllm'
 build_for_offline='false'
@@ -20,8 +23,8 @@ Options:
   --device-type <type>      Device type (nvidia-gpu|nvidia-gpu-sm120|hygon-dcu|kunlunxin-xpu|metax-gpu|iluvatar-gpu|huawei-npu|intel-gpu|amd-gpu) [default: ${device_type}]
   --backend <backend>       Backend type (vllm|fastdeploy) [default: ${backend}]
   --offline                 Build offline version
-  --ppocr-version <ver>     PaddleOCR version [default: ${paddleocr_version}]
-  --pdx-version <ver>       PaddleX version [default: ${paddlex_version}]
+  --ppocr-version <spec>    PaddleOCR version or URL [default: ${paddleocr_version}]
+  --pdx-version <spec>      PaddleX version or URL [default: ${paddlex_version}]
   --platform <platform>     Build platform [default: ${platform}]
   --action <action>         Post-build action: load|push|tar|none [default: ${action}]
                             load: Load to local Docker
@@ -36,6 +39,7 @@ Examples:
   $0 --device-type nvidia-gpu --backend vllm --action push
   $0 --platform linux/amd64,linux/arm64 --action push
   $0 --action tar --platform linux/amd64
+  $0 --ppocr-version https://github.com/PaddlePaddle/PaddleOCR/archive/main.zip
 EOF
 }
 
@@ -151,6 +155,9 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
+paddleocr_pip_suffix="$(pip_build_arg_suffix "${paddleocr_version}")"
+paddlex_pip_suffix="$(pip_build_arg_suffix "${paddlex_version}")"
+
 # Validate platform compatibility for load action
 if [[ "${action}" == 'load' ]] && [[ "${platform}" == *','* ]]; then
     echo "Error: Cannot use --action load with multiple platforms" >&2
@@ -173,7 +180,7 @@ if [ ! -f "${dockerfile}" ]; then
 fi
 
 revision="$(git rev-parse --short HEAD)"
-image_version="${revision}-ppocr${paddleocr_version}-pdx${paddlex_version}"
+image_version="${revision}-ppocr$(version_tag_label "${paddleocr_version}")-pdx$(version_tag_label "${paddlex_version}")"
 
 # Image name
 base_image_name="paddleocr-genai-${backend}-server"
@@ -181,7 +188,7 @@ base_image_name="paddleocr-genai-${backend}-server"
 # Main tags
 main_tag="${registry}/${base_image_name}:${tag_suffix}"
 version_tag="${registry}/${base_image_name}:${tag_suffix/latest/${image_version}}"
-paddleocr_version_tag="${registry}/${base_image_name}:${tag_suffix/latest/paddleocr${paddleocr_version%.*}}"
+paddleocr_version_tag="${registry}/${base_image_name}:${tag_suffix/latest/paddleocr$(version_tag_label "${paddleocr_version}")}"
 
 # Build arguments array
 build_args=(
@@ -191,8 +198,8 @@ build_args=(
     '-t' "${version_tag}"
     '-t' "${paddleocr_version_tag}"
     '--build-arg' "BUILD_FOR_OFFLINE=${build_for_offline}"
-    '--build-arg' "PADDLEOCR_VERSION===${paddleocr_version}"
-    '--build-arg' "PADDLEX_VERSION===${paddlex_version}"
+    '--build-arg' "PADDLEOCR_VERSION=${paddleocr_pip_suffix}"
+    '--build-arg' "PADDLEX_VERSION=${paddlex_pip_suffix}"
     '--build-arg' "BACKEND=${backend}"
     '--build-arg' "http_proxy=${http_proxy:-}"
     '--build-arg' "https_proxy=${https_proxy:-}"

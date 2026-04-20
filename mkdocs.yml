@@ -120,7 +120,7 @@ plugins:
             PaddleOCR-VL Apple Silicon 使用教程: PaddleOCR-VL Apple Silicon Usage Tutorial
             PaddleOCR-VL AMD GPU 使用教程: PaddleOCR-VL AMD GPU Usage Tutorial
             PaddleOCR-VL Intel Arc GPU 使用教程: PaddleOCR-VL Intel Arc GPU Usage Tutorial
-            推理部署: Model Deploy
+            推理部署: Inference and Deployment
             高性能推理: High-Performance Inference
             打包PaddleOCR项目: Package PaddleOCR Projects
             获取ONNX模型: Obtaining ONNX Models
@@ -148,6 +148,8 @@ plugins:
             通用表格识别v2产线: General Table Recognition v2 Pipeline
             图表解析模块: Chart Parsing Module
             PaddleOCR-VL产线: PaddleOCR-VL Pipeline
+            PP-DocTranslation产线: PP-DocTranslation Pipeline
+            推理引擎与配置说明: Inference Engine and Configuration
             多硬件使用: Multi-Devices Usage
             PaddleOCR 多硬件使用指南: PaddleOCR Multi-Devices Usage Guide
             昇腾 NPU 飞桨安装教程: Ascend NPU PaddlePaddle Installation Tutorial

@@ -117,6 +117,8 @@ PaddleOCR-VL currently provides multiple inference methods, and the supported in
     <td>🚧</td>
     <td>✅</td>
     <td>🚧</td>
+    <td>🚧</td>
+    <td>🚧</td>
   </tr>
   <tr style="text-align: center;">
     <td>PaddlePaddle + vLLM</td>
@@ -193,6 +195,8 @@ PaddleOCR-VL currently provides multiple inference methods, and the supported in
     <td>🚧</td>
     <td>-</td>
     <td>-</td>
+    <td>🚧</td>
+    <td>🚧</td>
   </tr>
   <tr style="text-align: center;">
     <td>Transformers + SGLang</td>
@@ -204,6 +208,8 @@ PaddleOCR-VL currently provides multiple inference methods, and the supported in
     <td>🚧</td>
     <td>-</td>
     <td>-</td>
+    <td>🚧</td>
+    <td>🚧</td>
   </tr>
   <tr style="text-align: center;">
     <td>Transformers + FastDeploy</td>
@@ -215,6 +221,8 @@ PaddleOCR-VL currently provides multiple inference methods, and the supported in
     <td>🚧</td>
     <td>-</td>
     <td>-</td>
+    <td>🚧</td>
+    <td>🚧</td>
   </tr>
   <tr style="text-align: center;">
     <td>Transformers + MLX-VLM</td>
@@ -225,7 +233,9 @@ PaddleOCR-VL currently provides multiple inference methods, and the supported in
     <td>-</td>
     <td>-</td>
     <td>-</td>
-    <td>🚧</td>
+    <td>✅</td>
+    <td>-</td>
+    <td>-</td>
   </tr>
   <tr style="text-align: center;">
     <td>Transformers + llama.cpp</td>
@@ -236,6 +246,8 @@ PaddleOCR-VL currently provides multiple inference methods, and the supported in
     <td>🚧</td>
     <td>🚧</td>
     <td>✅</td>
+    <td>🚧</td>
+    <td>🚧</td>
     <td>🚧</td>
   </tr>
 </tbody>
@@ -255,6 +267,7 @@ PaddleOCR-VL currently provides multiple inference methods, and the supported in
 > >  - Common GPUs with CC ≥ 8 include RTX 30/40/50 series and A10/A100, etc. For more models, refer to [CUDA GPU Compute Capability](https://developer.nvidia.com/cuda-gpus)
 > - vLLM compatibility note: Although vLLM can be launched on NVIDIA GPUs with CC 7.x such as T4/V100, timeout or OOM issues may occur, and its use is not recommended.
 > - vLLM, SGLang, and FastDeploy cannot run natively on Windows. Please use the Docker images we provide.
+> - Due to dependency conflicts between different libraries, when using mixed inference methods like Transformers + vLLM, it is recommended to deploy the layout detection model and VLM service in different environments.
 
 ## 1. Environment Preparation
 
@@ -298,10 +311,10 @@ docker load -i paddleocr-vl-latest-nvidia-gpu-offline.tar
 # After that, you can use `docker run` to start the container on the offline machine
 ```
 
-The image comes preinstalled with the PaddlePaddle framework and does not include any other inference engines.
+The image comes preinstalled with the PaddlePaddle framework and does not include any other inference engines. If you want to use other inference engines, it is recommended to install them manually using Method 2 (it is not recommended to install them in an environment where the PaddlePaddle framework is preinstalled).
 
 > TIP:
-> Images with the `latest-xxx` tag correspond to the latest version of PaddleOCR. If you want to use a specific version of the PaddleOCR image, you can replace `latest` in the tag with the desired version number: `paddleocr<major>.<minor>`.
+> Images with the `latest-xxx` tag correspond to the latest version. If you want to use a specific version of the image, you can replace `latest` in the tag with the desired PaddleOCR version number: `paddleocr<major>.<minor>`.
 > For example:
 > `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:paddleocr3.3-nvidia-gpu-offline`
 
@@ -728,7 +741,7 @@ Supports specifying specific card numbers:<ul>
 </tr>
 <tr>
 <td><code>engine</code></td>
-<td><b>Meaning:</b> Inference engine.<br/><b>Description:</b> Supports <code>paddle</code>, <code>paddle_static</code>, <code>paddle_dynamic</code>, and <code>transformers</code>. For detailed descriptions, supported values, compatibility rules, and examples, see <a href="../inference_engine.en.md">Inference Engine and Configuration</a>.</td>
+<td><b>Meaning:</b> Inference engine.<br/><b>Description:</b> Supports <code>None</code> (the default), <code>paddle</code>, <code>paddle_static</code>, <code>paddle_dynamic</code>, and <code>transformers</code>. When left as <code>None</code>, PaddleOCR preserves the behavior of earlier versions, which in most configurations is equivalent to <code>paddle</code>. For detailed descriptions, supported values, compatibility rules, and examples, see <a href="../inference_engine.en.md">Inference Engine and Configuration</a>.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -736,7 +749,7 @@ Supports specifying specific card numbers:<ul>
 <td><code>enable_hpi</code></td>
 <td><b>Meaning:</b> Whether to enable high-performance inference.</td>
 <td><code>bool</code></td>
-<td></td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_tensorrt</code></td>
@@ -1157,7 +1170,7 @@ Supports specifying specific card numbers:<ul>
 </tr>
 <tr>
 <td><code>engine</code></td>
-<td><b>Meaning:</b> Inference engine.<br/><b>Description:</b> Supports <code>paddle</code>, <code>paddle_static</code>, <code>paddle_dynamic</code>, and <code>transformers</code>. For detailed descriptions, supported values, compatibility rules, and examples, see <a href="../inference_engine.en.md">Inference Engine and Configuration</a>.</td>
+<td><b>Meaning:</b> Inference engine.<br/><b>Description:</b> Supports <code>None</code> (the default), <code>paddle</code>, <code>paddle_static</code>, <code>paddle_dynamic</code>, and <code>transformers</code>. When left as <code>None</code>, PaddleOCR preserves the behavior of earlier versions, which in most configurations is equivalent to <code>paddle</code>. For detailed descriptions, supported values, compatibility rules, and examples, see <a href="../inference_engine.en.md">Inference Engine and Configuration</a>.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -1796,6 +1809,9 @@ paddleocr install_genai_server_deps <inference-acceleration-framework-name>
 Currently supported framework names are `vllm`, `sglang`, and `fastdeploy`, corresponding to vLLM, SGLang, and FastDeploy, respectively.
 
 Both vLLM and SGLang installed through `paddleocr install_genai_server_deps` are **CUDA 12.6** versions. Please ensure that your local NVIDIA driver supports this version or a later one.
+
+> WARNING:
+> The transformers library versions required by vLLM, SGLang and Transformers engine are currently incompatible, so Transformers engine and vLLM cannot be installed together with vLLM or SGLang in the same environment. If using Transformers + vLLM or Transformers + SGLang inference, please deploy the layout detection model and VLM service in different environments.
 
 After installation, you can launch the service using the `paddleocr genai_server` command:
 

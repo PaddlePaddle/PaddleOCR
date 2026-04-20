@@ -868,7 +868,7 @@ paddleocr table_recognition_v2 -i ./table_recognition_v2.jpg --use_doc_unwarping
 paddleocr table_recognition_v2 -i ./table_recognition_v2.jpg --device gpu
 ```
 
-The examples above use the Paddle inference engine by default. To run them, first install PaddlePaddle by following [Paddle Framework Installation](../paddlepaddle_installation.en.md).
+The examples above use the Paddle inference engine by default. To run them, first install PaddlePaddle by following [PaddlePaddle Framework Installation](../paddlepaddle_installation.en.md).
 
 To run inference with the `transformers` engine, first install the required dependencies by following [Inference Engine and Configuration](../inference_engine.en.md):
 
@@ -1179,7 +1179,7 @@ Supports specifying a specific card number:
 </tr>
 <tr>
 <td><code>engine</code></td>
-<td><b>Meaning:</b> Inference engine.<br/><b>Description:</b> Supports <code>paddle</code>, <code>paddle_static</code>, <code>paddle_dynamic</code>, and <code>transformers</code>. For detailed descriptions, supported values, compatibility rules, and examples, see <a href="../inference_engine.en.md">Inference Engine and Configuration</a>.</td>
+<td><b>Meaning:</b> Inference engine.<br/><b>Description:</b> Supports <code>None</code> (the default), <code>paddle</code>, <code>paddle_static</code>, <code>paddle_dynamic</code>, and <code>transformers</code>. When left as <code>None</code>, PaddleOCR preserves the behavior of earlier versions, which in most configurations is equivalent to <code>paddle</code>. For detailed descriptions, supported values, compatibility rules, and examples, see <a href="../inference_engine.en.md">Inference Engine and Configuration</a>.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
@@ -1303,7 +1303,7 @@ for res in output:
     res.save_to_json("./output/")
 ```
 
-The example above uses the Paddle inference engine by default. To run it, first install PaddlePaddle by following [Paddle Framework Installation](../paddlepaddle_installation.en.md).
+The example above uses the Paddle inference engine by default. To run it, first install PaddlePaddle by following [PaddlePaddle Framework Installation](../paddlepaddle_installation.en.md).
 
 To run inference with the `transformers` engine, first install the required dependencies by following [Inference Engine and Configuration](../inference_engine.en.md):
 

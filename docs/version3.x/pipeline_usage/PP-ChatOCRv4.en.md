@@ -987,7 +987,7 @@ paddleocr pp_chatocrv4_doc -i vehicle_certificate-1.png -k 驾驶室准乘人数
 paddleocr pp_chatocrv4_doc -i vehicle_certificate-1.png -k 驾驶室准乘人数 --qianfan_api_key your_api_key --invoke_mllm True --pp_docbee_base_url http://127.0.0.1:8080/
 ```
 
-The examples above use the Paddle inference engine by default. To run them, first install PaddlePaddle by following [Paddle Framework Installation](../paddlepaddle_installation.en.md).
+The examples above use the Paddle inference engine by default. To run them, first install PaddlePaddle by following [PaddlePaddle Framework Installation](../paddlepaddle_installation.en.md).
 
 To run inference with the `transformers` engine, first install the required dependencies by following [Inference Engine and Configuration](../inference_engine.en.md):
 
@@ -1411,7 +1411,7 @@ You can specify a particular card number:
 </tr>
 <tr>
 <td><code>engine</code></td>
-<td><b>Meaning:</b> Inference engine.<br/><b>Description:</b> Supports <code>paddle</code>, <code>paddle_static</code>, <code>paddle_dynamic</code>, and <code>transformers</code>. For detailed descriptions, supported values, compatibility rules, and examples, see <a href="../inference_engine.en.md">Inference Engine and Configuration</a>.</td>
+<td><b>Meaning:</b> Inference engine.<br/><b>Description:</b> Supports <code>None</code> (the default), <code>paddle</code>, <code>paddle_static</code>, <code>paddle_dynamic</code>, and <code>transformers</code>. When left as <code>None</code>, PaddleOCR preserves the behavior of earlier versions, which in most configurations is equivalent to <code>paddle</code>. For detailed descriptions, supported values, compatibility rules, and examples, see <a href="../inference_engine.en.md">Inference Engine and Configuration</a>.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -1532,12 +1532,12 @@ vector_info = pipeline.build_vector(
 )
 mllm_predict_res = pipeline.mllm_pred(
     input="vehicle_certificate-1.png",
-    key_list=["Cab Seating Capacity"], # Translated: 驾驶室准乘人数
+    key_list=["驾驶室准乘人数"],
     mllm_chat_bot_config=mllm_chat_bot_config,
 )
 mllm_predict_info = mllm_predict_res["mllm_res"]
 chat_result = pipeline.chat(
-    key_list=["Cab Seating Capacity"], # Translated: 驾驶室准乘人数
+    key_list=["驾驶室准乘人数"],
     visual_info=visual_info_list,
     vector_info=vector_info,
     mllm_predict_info=mllm_predict_info,
@@ -1548,7 +1548,7 @@ print(chat_result)
 
 ```
 
-The example above uses the Paddle inference engine by default. To run it, first install PaddlePaddle by following [Paddle Framework Installation](../paddlepaddle_installation.en.md).
+The example above uses the Paddle inference engine by default. To run it, first install PaddlePaddle by following [PaddlePaddle Framework Installation](../paddlepaddle_installation.en.md).
 
 To run inference with the `transformers` engine, first install the required dependencies by following [Inference Engine and Configuration](../inference_engine.en.md):
 
@@ -1602,12 +1602,12 @@ vector_info = pipeline.build_vector(
 )
 mllm_predict_res = pipeline.mllm_pred(
     input="vehicle_certificate-1.png",
-    key_list=["Cab Seating Capacity"], # Translated: 驾驶室准乘人数
+    key_list=["驾驶室准乘人数"],
     mllm_chat_bot_config=mllm_chat_bot_config,
 )
 mllm_predict_info = mllm_predict_res["mllm_res"]
 chat_result = pipeline.chat(
-    key_list=["Cab Seating Capacity"], # Translated: 驾驶室准乘人数
+    key_list=["驾驶室准乘人数"],
     visual_info=visual_info_list,
     vector_info=vector_info,
     mllm_predict_info=mllm_predict_info,
@@ -2076,7 +2076,7 @@ Supports specifying a specific card number:
 </tr>
 <tr>
 <td><code>engine</code></td>
-<td><b>Meaning:</b> Inference engine.<br/><b>Description:</b> Supports <code>paddle</code>, <code>paddle_static</code>, <code>paddle_dynamic</code>, and <code>transformers</code>. For detailed descriptions, supported values, compatibility rules, and examples, see <a href="../inference_engine.en.md">Inference Engine and Configuration</a>.</td>
+<td><b>Meaning:</b> Inference engine.<br/><b>Description:</b> Supports <code>None</code> (the default), <code>paddle</code>, <code>paddle_static</code>, <code>paddle_dynamic</code>, and <code>transformers</code>. When left as <code>None</code>, PaddleOCR preserves the behavior of earlier versions, which in most configurations is equivalent to <code>paddle</code>. For detailed descriptions, supported values, compatibility rules, and examples, see <a href="../inference_engine.en.md">Inference Engine and Configuration</a>.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>

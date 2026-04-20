@@ -23,7 +23,7 @@ docker run --name paddleocr -v $PWD:/paddle --shm-size=8G --network=host -it ccr
 # GPU version, requires driver version >= 450.80.02 (Linux) or >= 452.39 (Windows)
 docker run --gpus all --name paddleocr -v $PWD:/paddle --shm-size=8G --network=host -it ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddle:3.0.0-gpu-cuda11.8-cudnn8.9-trt8.6 /bin/bash
 
-# GPU version, requires driver version >= 545.23.06 (Linux) or >= 545.84 (Windows)
+# GPU version, requires driver version >= 550.54.14 (Linux) or >= 550.54.14 (Windows)
 docker run --gpus all --name paddleocr -v $PWD:/paddle --shm-size=8G --network=host -it ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddle:3.0.0-gpu-cuda12.6-cudnn9.5-trt10.5 /bin/bash
 ```
 

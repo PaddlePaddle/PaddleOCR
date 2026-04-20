@@ -8,7 +8,7 @@ comments: true
 
 ### 1.1 Install the Inference Engine
 
-PaddleOCR 3.5 introduces a unified inference-engine configuration concept. At the backend, it supports different inference engines such as the Paddle framework and Transformers. If you want to run pipeline/model inference, refer to [Inference Engine and Configuration](./inference_engine.en.md) to install the required inference engine. If you only want to use features other than PaddleOCR inference, you can skip this step.
+PaddleOCR 3.5 introduces a unified inference-engine configuration concept. At the backend, it supports different inference engines such as the PaddlePaddle framework and Transformers. If you want to run pipeline/model inference, refer to [Inference Engine and Configuration](./inference_engine.en.md) to install the required inference engine. If you only want to use features other than PaddleOCR inference, you can skip this step.
 
 ### 1.2 Install the PaddleOCR Inference Package
 
@@ -49,7 +49,7 @@ The general OCR pipeline (such as PP-OCRv3/v4/v5) and the document image preproc
 
 If you want to perform development tasks such as model training and export, you need to install the training dependencies. It is allowed to install both the inference package and the training dependencies in the same environment. No environment isolation is required.
 
-Training and export workflows depend on the Paddle framework. First complete the PaddlePaddle installation by following [Paddle Framework Installation](./paddlepaddle_installation.en.md).
+Training and export workflows depend on the PaddlePaddle framework. First complete the PaddlePaddle installation by following [PaddlePaddle Framework Installation](./paddlepaddle_installation.en.md).
 
 To perform model training, exporting, and similar tasks, clone the repository to your local machine:
 
@@ -58,7 +58,7 @@ To perform model training, exporting, and similar tasks, clone the repository to
 git clone https://github.com/PaddlePaddle/PaddleOCR
 
 # (Optional) Switch to a specific branch
-git checkout release/3.2
+git checkout release/3.5
 
 # If cloning fails because of network issues, you can also use the Gitee repository:
 git clone https://gitee.com/paddlepaddle/PaddleOCR

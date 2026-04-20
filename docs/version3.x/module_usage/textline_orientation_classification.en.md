@@ -118,6 +118,8 @@ for res in output:
     res.save_to_json("./output/res.json")
 ```
 
+If you want to use the trained model with the `paddle_dynamic` or `transformers` engine, refer to the [Weight Conversion](#52-weight-conversion) section in the [Inference Engine](#5-inference-engine) section below to convert the model from the `pdparams` format to the `safetensors` format using PaddleX.
+
 After running, the result obtained is:
 
 ```bash
@@ -177,7 +179,7 @@ By default, GPU 0 is used if available; otherwise, CPU is used.
 </tr>
 <tr>
 <td><code>engine</code></td>
-<td><b>Meaning:</b> Inference engine.<br/><b>Description:</b> Supports <code>paddle</code>, <code>paddle_static</code>, <code>paddle_dynamic</code>, and <code>transformers</code>. For detailed descriptions, supported values, compatibility rules, and examples, see <a href="../inference_engine.en.md">Inference Engine and Configuration</a>.</td>
+<td><b>Meaning:</b> Inference engine.<br/><b>Description:</b> Supports <code>None</code> (the default), <code>paddle</code>, <code>paddle_static</code>, <code>paddle_dynamic</code>, and <code>transformers</code>. When left as <code>None</code>, PaddleOCR preserves the behavior of earlier versions, which in most configurations is equivalent to <code>paddle</code>. For detailed descriptions, supported values, compatibility rules, and examples, see <a href="../inference_engine.en.md">Inference Engine and Configuration</a>.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -403,3 +405,91 @@ Supporting multiple input types</td>
 ## 4. Custom Development  
 
 Since PaddleOCR does not natively support training for text line orientation classification, refer to [PaddleX's Custom Development Guide](https://paddlepaddle.github.io/PaddleX/latest/en/module_usage/tutorials/ocr_modules/textline_orientation_classification.html#iv-custom-development) for training. Trained models can seamlessly integrate into PaddleOCR's API for inference.
+
+If you want to use the `paddle_dynamic` or `transformers` engine with the trained model, please refer to the [Weight Conversion](#52-weight-conversion) section in [Inference Engine](#5-inference-engine) later in this document to convert the model from the `pdparams` format to the `safetensors` format using PaddleX.
+
+## 5. Inference Engine
+
+For detailed descriptions, values, compatibility rules, and examples of the inference engine, please refer to <a href="../inference_engine.en.md">Inference Engine and Configuration Description</a>.
+
+### 5.1 Speed Data
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>model</th>
+            <th>engine</th>
+            <th>Preprocessing (ms)</th>
+            <th>Inference (ms)</th>
+            <th>PostProcessing (ms)</th>
+            <th>End-to-End (ms)</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td rowspan="3">PP-LCNet_x0_25_textline_ori</td>
+            <td>paddle_static</td>
+            <td>0.30</td>
+            <td>2.89</td>
+            <td>0.06</td>
+            <td>3.34</td>
+        </tr>
+        <tr>
+            <td>paddle_dynamic</td>
+            <td>0.28</td>
+            <td>6.52</td>
+            <td>0.08</td>
+            <td>6.98</td>
+        </tr>
+        <tr>
+            <td>transformers</td>
+            <td>1.30</td>
+            <td>3.76</td>
+            <td>0.15</td>
+            <td>5.36</td>
+        </tr>
+        <tr>
+            <td rowspan="3">PP-LCNet_x1_0_textline_ori</td>
+            <td>paddle_static</td>
+            <td>0.33</td>
+            <td>3.20</td>
+            <td>0.06</td>
+            <td>3.69</td>
+        </tr>
+        <tr>
+            <td>paddle_dynamic</td>
+            <td>0.29</td>
+            <td>7.60</td>
+            <td>0.07</td>
+            <td>8.06</td>
+        </tr>
+        <tr>
+            <td>transformers</td>
+            <td>1.28</td>
+            <td>3.47</td>
+            <td>0.14</td>
+            <td>5.04</td>
+        </tr>
+    </tbody>
+</table>
+
+<strong>Test Environment Description:</strong>
+<ul>
+    <li><strong>Test Data:</strong> [Sample Image](https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/textline_rot180_demo.jpg)</li>
+    <li><strong>Hardware Configuration:</strong>
+        <ul>
+            <li>GPU: NVIDIA A100 40G</li>
+            <li>CPU: Intel(R) Xeon(R) Gold 6248 CPU @ 2.50GHz</li>
+        </ul>
+    </li>
+    <li><strong>Software Environment:</strong>
+        <ul>
+            <li>Ubuntu 22.04 / CUDA 12.6 / cuDNN 9.5</li>
+            <li>paddlepaddle 3.2.1 / paddleocr 3.5 / transformers 5.4.0 / torch 2.10</li>
+        </ul>
+    </li>
+</ul>
+
+### 5.2 Weight Conversion
+
+When using the inference engine, the system will automatically download the official pre-trained model. If you need to use a self-trained model with the `paddle_dynamic` or `transformers` engine, please refer to the [PaddleX Text Line Orientation Classification Module Weight Conversion](https://paddlepaddle.github.io/PaddleX/latest/en/module_usage/tutorials/ocr_modules/textline_orientation_classification.html#442) section to convert the model from the `pdparams` format to the `safetensors` format using PaddleX. This allows seamless integration into the PaddleOCR API for inference.

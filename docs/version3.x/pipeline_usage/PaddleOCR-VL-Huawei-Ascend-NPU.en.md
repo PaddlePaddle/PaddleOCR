@@ -7,7 +7,7 @@ comments: true
 > INFO:
 > Unless otherwise specified, the term "PaddleOCR-VL" in this tutorial refers to the PaddleOCR-VL model series (e.g., PaddleOCR-VL-1.5). References specific to the PaddleOCR-VL v1 version will be explicitly noted.
 
-This tutorial is a guide for using PaddleOCR-VL on Huawei Ascend NPU covering the complete workflow from environment preparation to service deployment.
+This tutorial is a guide for using PaddleOCR-VL on Huawei Ascend NPU, covering the complete workflow from environment preparation to service deployment.
 
 PaddleOCR-VL has been verified for accuracy and speed on the Huawei Ascend 910B. However, due to hardware diversity, compatibility with other Huawei Ascend NPUs has not yet been confirmed. We welcome the community to test on different hardware setups and share your results.
 
