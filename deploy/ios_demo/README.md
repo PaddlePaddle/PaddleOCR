@@ -56,89 +56,41 @@ Build the **PaddleOCRDemo** scheme. Ensure **`PaddleOCRDemo/Models/`** and **`Pa
 
 ## Validation
 
-Validation covers two independent tracks:
-
-1. **Accuracy (quality)** — same image and ONNX semantics on **Python** (`engine="onnxruntime"`, no doc preprocessor modules) and **iOS**, then compare JSON with IoU + character error rate.
-2. **On-device runtime performance** — **latency** (timing summaries in JSON / report) and **memory** (physical footprint: load state + per-inference samples).
-
-You can run either track alone, or both. To archive results in one place, use **`Scripts/generate_validation_report.py`** (see below).
-
-Shared Python extras:
+One command runs the full validation pipeline on a physical iPhone or simulator:
 
 ```bash
-python3 -m pip install -r Scripts/requirements-validation.txt
+./Scripts/run_validation.sh                           # default simulator (iPhone 16)
+./Scripts/run_validation.sh --simulator 'iPhone 17'   # specific simulator
+./Scripts/run_validation.sh --udid <device-udid>      # connected real device
+./Scripts/run_validation.sh --udid <udid> --image /path/to/photo.png   # ad-hoc image
 ```
 
-### Accuracy validation
+Prerequisites:
 
-**1) Python reference JSON**:
+- `./Scripts/fetch_ios_demo_assets.sh` has populated `PaddleOCRDemo/Models/`
+  **and** `PaddleOCRDemoTests/Fixtures/` (both are filled by the same script;
+  the default validation fixture is `general_ocr_002.png`).
+- PaddleOCR (with ONNX Runtime engine) is installed for the reference step:
+  `pip install -r Scripts/requirements-validation.txt`.
+- Xcode 16 or later (validation uses `xcresulttool get test-results`, introduced in 16.0).
 
-Run **`./Scripts/fetch_ios_demo_assets.sh`** first (see [One-time asset setup](#one-time-asset-setup)) so **`PaddleOCRDemo/Models/`** exists for the default **`--ios-models-root`**. Install PaddleOCR with the ONNX Runtime engine, then run:
+The runner produces the following under `out/`:
 
-```bash
-python3 Scripts/ocr_reference_run.py \
-  --image PaddleOCRDemo/Resources/SampleImages/general_ocr_002.png \
-  --output /tmp/ref.json \
-  --device cpu \
-  --align-ios-defaults
-```
+| Artifact | Producer | Purpose |
+|---|---|---|
+| `ref.json` | `ocr_reference_run.py` | Python reference OCR |
+| `result.xcresult` | `xcodebuild test` | iOS test run |
+| `ios-ocr-export.json`, `on-device-performance.json` | `extract_xcresult_attachments.py` | iOS outputs pulled from `.xcresult` |
+| `compare-summary.json` | `compare_ocr_json.py` | Accuracy verdict |
+| `run-status.json` | `run_validation.sh` | Per-step outcomes |
+| `validation-report.md` | `generate_validation_report.py` | Human-readable report |
 
-**`--image`** may be any path to a test image (the example uses a sample from the asset script); use that **same** file in the iOS step when comparing.
+The script exits `0` on PASS (all steps OK, compare under thresholds), non-zero on FAIL or ERROR. The report is always written, including on failure; check the `**Overall:**` line at the top.
 
-**`--ios-models-root`** defaults to **`PaddleOCRDemo/Models`**.
+### Running individual steps manually
 
-**2) iOS JSON export** — run **`OCRBenchmarkTests`** / **`testOCRExportJSONSchema`** on a device or simulator with models bundled. Export schema matches the reference.
+The underlying scripts remain independently invokable — see `./Scripts/<script>.py --help`. Tests read fixtures from the test bundle and write outputs via `XCTAttachment`; `run_validation.sh` orchestrates the full flow.
 
-Environment variables (scheme → **Arguments → Environment Variables** or `xcodebuild`):
+### Running the benchmark tests directly from Xcode
 
-| Variable | Meaning |
-|----------|---------|
-| `PADDLEOCR_VALIDATION_IMAGE_PATH` | **Required.** Absolute path to the test image (PNG or JPEG); must be the **same file** as the Python `--image` argument so results are comparable. |
-| `PADDLEOCR_VALIDATION_EXPORT_JSON` | Optional. Absolute path to write JSON from `testOCRExportJSONSchema` (for `compare_ocr_json.py`). If unset, the test still runs but does not write a file. |
-
-**3) Compare** — write a JSON summary for the validation report:
-
-```bash
-python3 Scripts/compare_ocr_json.py /tmp/ref.json /tmp/ios.json \
-  --iou-threshold 0.5 \
-  --cer-threshold 0.08 \
-  --json-summary-out /tmp/compare-summary.json
-```
-
-Exit code **`0`** means **PASS**; non-zero means thresholds were exceeded.
-
-### On-device runtime performance
-
-Run **`OCRBenchmarkTests`** / **`testOCRBenchmarkTimings`** on a **physical device** (recommended). After warmup, the test records **runtime performance** in two parts:
-
-- **Latency**: mean / stdev / p90 (ms) for each timing field in the exported JSON .
-- **Memory (resource footprint)**: `task_vm_info` **physical footprint** (`phys_footprint`) — aligned with Xcode’s Memory gauge — sampled before session setup, after model loading, and immediately before/after each measured inference. **Peak** = max of those samples per iteration; **mean** = mean of post-inference samples. This does **not** replace Instruments for allocator spikes inside native code; it gives repeatable regression numbers for load + steady inference.
-
-Prefer **Release** and avoid the debugger when recording.
-
-Environment variables:
-
-| Variable | Default | Meaning |
-|----------|---------|---------|
-| `PADDLEOCR_VALIDATION_IMAGE_PATH` | — | **Required.** Absolute path to the image (PNG or JPEG) to run OCR on. |
-| `PADDLEOCR_VALIDATION_WARMUP_ITERATIONS` | `3` | Non-negative integer. Warmup runs (excluded from timing and memory stats). |
-| `PADDLEOCR_VALIDATION_MEASURED_ITERATIONS` | `10` | Non-negative integer. Measured runs for timing stats and inference memory stats. |
-| `PADDLEOCR_VALIDATION_ON_DEVICE_PERFORMANCE_JSON_PATH` | — | Optional. If set, writes the full JSON (timing + memory + `thermalState`) to this path for `Scripts/generate_validation_report.py`. |
-
-### Validation report
-
-After you have optional inputs from the **accuracy** and/or **on-device** steps, merge them into a single Markdown file:
-
-| Input | Produced by |
-|-------|-------------|
-| `--compare-summary` | `compare_ocr_json.py`, with `--json-summary-out` to capture the same JSON as stdout (includes `pass`) |
-| `--on-device-performance-json` | `testOCRBenchmarkTimings`, when `PADDLEOCR_VALIDATION_ON_DEVICE_PERFORMANCE_JSON_PATH` is set |
-
-Either flag may be omitted; missing sections appear as short placeholders in the report. **App Store / download size** is not part of this report — use Xcode’s **App Thinning Size Report** or **App Store Connect** ([Reducing your app’s size](https://developer.apple.com/documentation/xcode/reducing-your-app-s-size)).
-
-```bash
-python3 Scripts/generate_validation_report.py \
-  --compare-summary /tmp/compare-summary.json \
-  --on-device-performance-json /tmp/on-device-performance.json \
-  --output out/validation-report.md
-```
+Set `PADDLEOCR_VALIDATION_IMAGE_NAME=<filename>` on the `PaddleOCRDemo` scheme (Test → Arguments → Environment Variables) to a file committed under `PaddleOCRDemoTests/Fixtures/` (e.g. `table.jpg`). Then Cmd-U.

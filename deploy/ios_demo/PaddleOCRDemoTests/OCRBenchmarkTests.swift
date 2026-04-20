@@ -20,63 +20,14 @@ import XCTest
 
 import UIKit
 
-// MARK: - JSON export schema
-
-private struct OCRExportPayload: Codable {
-    var schemaVersion: Int = 1
-    var source: String
-    var items: [OCRExportItem]
-}
-
-private struct OCRExportItem: Codable {
-    var polygon: [[Int]]
-    var text: String
-    var score: Double?
-}
-
-/// Timing + memory + light runtime context from `testOCRBenchmarkTimings`.
-private struct OCRDeviceBenchmarkPayload: Codable {
-    var schemaVersion: Int = 1
-    var warmupIterations: Int
-    var measuredIterations: Int
-    var totalTimeMs: TimingSummary
-    var detectionTimeMs: TimingSummary
-    var detectionPreprocessTimeMs: TimingSummary
-    var detectionInferenceTimeMs: TimingSummary
-    var detectionPostprocessTimeMs: TimingSummary
-    var recognitionTimeMs: TimingSummary
-    var recognitionPreprocessTimeMs: TimingSummary
-    var recognitionInferenceTimeMs: TimingSummary
-    var recognitionPostprocessTimeMs: TimingSummary
-    var pipelineOverheadTimeMs: TimingSummary
-    /// `task_vm_info.phys_footprint` before session manager creation (baseline process).
-    var memoryFootprintBeforeLoadBytes: UInt64?
-    /// Footprint immediately after `loadModels` completes.
-    var memoryFootprintAfterLoadBytes: UInt64
-    /// Max `phys_footprint` observed immediately before or after each measured inference.
-    var memoryInferencePeakBytes: UInt64
-    /// Arithmetic mean of `phys_footprint` sampled immediately after each measured inference.
-    var memoryInferenceMeanBytes: UInt64
-    var memoryInferenceSampleCount: Int
-    /// `ProcessInfo.ThermalState` raw description (e.g. nominal / fair / serious / critical).
-    var thermalState: String?
-}
-
-private struct TimingSummary: Codable {
-    var mean: Double
-    var stdev: Double
-    var p90: Double
-}
-
 // MARK: - Tests
 
 final class OCRBenchmarkTests: XCTestCase {
 
-    /// Required environment variable: absolute path to an image file (PNG/JPEG).
-    private static let imagePathEnvKey = "PADDLEOCR_VALIDATION_IMAGE_PATH"
-
-    /// Optional path to write JSON export (for `compare_ocr_json.py`). When unset, skips file write.
-    private static let exportPathEnvKey = "PADDLEOCR_VALIDATION_EXPORT_JSON"
+    /// Required env: full file name of an image in the test bundle's Fixtures/ (e.g. "table.jpg").
+    /// Set manually in a Scheme when running from Xcode; set by `run_validation.sh`
+    /// via `TEST_RUNNER_PADDLEOCR_VALIDATION_IMAGE_NAME` otherwise.
+    private static let imageNameEnvKey = "PADDLEOCR_VALIDATION_IMAGE_NAME"
 
     /// Optional non-negative int; default `3`. Used only by `testOCRBenchmarkTimings`.
     private static let warmupIterationsEnvKey = "PADDLEOCR_VALIDATION_WARMUP_ITERATIONS"
@@ -84,11 +35,8 @@ final class OCRBenchmarkTests: XCTestCase {
     /// Optional non-negative int; default `10`. Used only by `testOCRBenchmarkTimings`.
     private static let measuredIterationsEnvKey = "PADDLEOCR_VALIDATION_MEASURED_ITERATIONS"
 
-    /// Optional path to write on-device runtime performance JSON (timing + memory) for `generate_validation_report.py`.
-    private static let onDevicePerformanceJsonEnvKey = "PADDLEOCR_VALIDATION_ON_DEVICE_PERFORMANCE_JSON_PATH"
-
     func testOCRExportJSONSchema() async throws {
-        let cgImage = try loadBenchmarkCGImage()
+        let cgImage = try resolveValidationImage()
         let manager = ORTSessionManager()
         try await manager.loadModels(backend: .coreMLOnly)
         let engine = try OCREngine(sessionManager: manager)
@@ -105,18 +53,15 @@ final class OCRBenchmarkTests: XCTestCase {
             }
         )
 
-        let data = try JSONEncoder().encode(payload)
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = [.sortedKeys]
+        let data = try encoder.encode(payload)
         _ = try JSONDecoder().decode(OCRExportPayload.self, from: data)
-
-        if let path = ProcessInfo.processInfo.environment[Self.exportPathEnvKey],
-           !path.isEmpty {
-            let url = URL(fileURLWithPath: path)
-            try data.write(to: url, options: .atomic)
-        }
+        attachJSON(data, artifact: .iOSExport)
     }
 
     func testOCRBenchmarkTimings() async throws {
-        let cgImage = try loadBenchmarkCGImage()
+        let cgImage = try resolveValidationImage()
         let memoryBeforeLoad = physicalFootprintBytes()
         let manager = ORTSessionManager()
         try await manager.loadModels(backend: .coreMLOnly)
@@ -206,45 +151,65 @@ final class OCRBenchmarkTests: XCTestCase {
         let json = String(data: encoded, encoding: .utf8) ?? ""
         XCTAssertFalse(json.isEmpty, "on-device performance stats should encode")
 
-        if let raw = ProcessInfo.processInfo.environment[Self.onDevicePerformanceJsonEnvKey]?.trimmingCharacters(
-            in: .whitespacesAndNewlines
-        ), !raw.isEmpty {
-            try encoded.write(to: URL(fileURLWithPath: raw), options: .atomic)
-        }
-
-        // Attach for Xcode test reports
-        XCTContext.runActivity(named: "OCR on-device runtime performance (timing + memory)") { activity in
-            let attachment = XCTAttachment(string: json)
-            attachment.lifetime = .keepAlways
-            activity.add(attachment)
-        }
+        attachJSON(encoded, artifact: .onDevicePerformance)
     }
 
     // MARK: - Helpers
 
-    private func loadBenchmarkCGImage() throws -> CGImage {
-        let trimmed =
-            ProcessInfo.processInfo.environment[Self.imagePathEnvKey]?.trimmingCharacters(in: .whitespacesAndNewlines)
-            ?? ""
-        guard !trimmed.isEmpty else {
+    private func resolveValidationImage() throws -> CGImage {
+        let raw =
+            ProcessInfo.processInfo.environment[Self.imageNameEnvKey]?
+                .trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        guard !raw.isEmpty else {
             throw NSError(
                 domain: "OCRBenchmarkTests",
                 code: 1,
                 userInfo: [
                     NSLocalizedDescriptionKey:
-                        "Set PADDLEOCR_VALIDATION_IMAGE_PATH to an absolute path of a test image (PNG or JPEG).",
+                        "Set PADDLEOCR_VALIDATION_IMAGE_NAME to a file name under PaddleOCRDemoTests/Fixtures/ (e.g. \"table.jpg\"), or run ./Scripts/run_validation.sh which sets TEST_RUNNER_PADDLEOCR_VALIDATION_IMAGE_NAME for you.",
                 ]
             )
         }
-        guard let ui = UIImage(contentsOfFile: trimmed),
-              let cg = normalizeOrientation(ui).cgImage else {
+        let ext = (raw as NSString).pathExtension
+        let stem = (raw as NSString).deletingPathExtension
+        guard !stem.isEmpty, !ext.isEmpty else {
             throw NSError(
                 domain: "OCRBenchmarkTests",
                 code: 2,
-                userInfo: [NSLocalizedDescriptionKey: "Could not load image at path: \(trimmed)"]
+                userInfo: [
+                    NSLocalizedDescriptionKey:
+                        "Invalid PADDLEOCR_VALIDATION_IMAGE_NAME: expected <stem>.<ext>, got \"\(raw)\".",
+                ]
+            )
+        }
+        let bundle = Bundle(for: Self.self)
+        guard let url = bundle.url(forResource: stem, withExtension: ext, subdirectory: "Fixtures") else {
+            throw NSError(
+                domain: "OCRBenchmarkTests",
+                code: 3,
+                userInfo: [
+                    NSLocalizedDescriptionKey:
+                        "Image \"\(raw)\" not found in test bundle Fixtures/. Ensure it is committed under PaddleOCRDemoTests/Fixtures/ or run via ./Scripts/run_validation.sh --image <path>.",
+                ]
+            )
+        }
+        guard let ui = UIImage(contentsOfFile: url.path),
+              let cg = normalizeOrientation(ui).cgImage
+        else {
+            throw NSError(
+                domain: "OCRBenchmarkTests",
+                code: 4,
+                userInfo: [NSLocalizedDescriptionKey: "Could not decode image at \(url.path)."]
             )
         }
         return cg
+    }
+
+    private func attachJSON(_ data: Data, artifact: ValidationArtifact) {
+        let attachment = XCTAttachment(data: data, uniformTypeIdentifier: "public.json")
+        attachment.name = artifact.rawValue
+        attachment.lifetime = .keepAlways
+        add(attachment)
     }
 
     /// Parses a non-negative integer from the environment, or returns `defaultValue` when unset/blank.

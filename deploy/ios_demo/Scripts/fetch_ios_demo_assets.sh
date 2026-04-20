@@ -13,52 +13,79 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# Fetch ONNX models and demo sample images.
+# Fetch ONNX models, demo sample images, and validation fixtures for the iOS
+# demo.
 #
 # Requires: bash, curl, tar
-#
-# Usage (from project root):
-#   ./Scripts/fetch_ios_demo_assets.sh
-#   ./Scripts/fetch_ios_demo_assets.sh PP-OCRv6_small
-#   ./Scripts/fetch_ios_demo_assets.sh --models-only
-#   ./Scripts/fetch_ios_demo_assets.sh --samples-only
-#
-# Help:
-#   ./Scripts/fetch_ios_demo_assets.sh --help
 
 set -euo pipefail
 
-BASE_URL="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0"
-SAMPLE_IMAGE_URL="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_002.png"
-SAMPLE_IMAGE_FILE="general_ocr_002.png"
-
-ALLOWED_PRESETS=(PP-OCRv6_small PP-OCRv6_tiny)
-DEFAULT_PRESET="PP-OCRv6_small"
-
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 IOS_DEMO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
-# ONNX bundles and sample images live under PaddleOCRDemo/ (Xcode app sources and bundle resources).
+
+# -------- Models (App bundle; ONNX for detection + recognition) --------
+BASE_URL="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0"
+ALLOWED_PRESETS=(PP-OCRv6_small PP-OCRv6_tiny)
+DEFAULT_PRESET="PP-OCRv6_small"
 DEST_DET="${IOS_DEMO_ROOT}/PaddleOCRDemo/Models/det"
 DEST_REC="${IOS_DEMO_ROOT}/PaddleOCRDemo/Models/rec"
+
+# -------- Demo sample images (App bundle; shown in the UI image picker) --------
+SAMPLE_IMAGE_URL="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_002.png"
+SAMPLE_IMAGE_FILE="general_ocr_002.png"
 DEST_SAMPLES="${IOS_DEMO_ROOT}/PaddleOCRDemo/Resources/SampleImages"
+
+# -------- Validation fixtures (test bundle; input to Scripts/run_validation.sh) --------
+FIXTURE_IMAGE_URL="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_002.png"
+FIXTURE_IMAGE_FILE="general_ocr_002.png"
+DEST_FIXTURES="${IOS_DEMO_ROOT}/PaddleOCRDemoTests/Fixtures"
+
 WORKDIR="${IOS_DEMO_ROOT}/.fetch_ios_demo_assets_work"
+
+usage() {
+  cat <<EOF
+Usage: ./Scripts/fetch_ios_demo_assets.sh [OPTIONS] [preset]
+
+Installs three independent asset groups for the iOS demo:
+  - Models:     ONNX detection + recognition bundles (App bundle)
+  - Samples:    UI demo images shown in the image picker (App bundle)
+  - Fixtures:   validation inputs consumed by Scripts/run_validation.sh (test bundle)
+
+Options:
+  --models-only       Install models only
+  --samples-only      Install demo sample images only
+  --fixtures-only     Install validation fixtures only
+  -h, --help          Show this help
+
+Positional:
+  preset              Model preset; one of: ${ALLOWED_PRESETS[*]} (default: ${DEFAULT_PRESET})
+EOF
+}
 
 run_models=1
 run_samples=1
+run_fixtures=1
 preset="${DEFAULT_PRESET}"
 args=()
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --models-only)
       run_samples=0
+      run_fixtures=0
       shift
       ;;
     --samples-only)
       run_models=0
+      run_fixtures=0
+      shift
+      ;;
+    --fixtures-only)
+      run_models=0
+      run_samples=0
       shift
       ;;
     -h|--help)
-      sed -n '1,18p' "$0"
+      usage
       exit 0
       ;;
     -*)
@@ -80,8 +107,8 @@ if [[ ${#args[@]} -eq 1 ]]; then
   preset="${args[0]}"
 fi
 
-if [[ "${run_models}" -eq 0 && "${run_samples}" -eq 0 ]]; then
-  echo "error: nothing to do (both models and samples skipped)" >&2
+if [[ "${run_models}" -eq 0 && "${run_samples}" -eq 0 && "${run_fixtures}" -eq 0 ]]; then
+  echo "error: nothing to do (all target groups skipped)" >&2
   exit 1
 fi
 
@@ -164,16 +191,31 @@ fi
 if [[ "${run_samples}" -eq 1 ]]; then
   echo "=== Demo sample image ==="
   mkdir -p "${DEST_SAMPLES}"
-  local_path="${DEST_SAMPLES}/${SAMPLE_IMAGE_FILE}"
-  if [[ -f "${local_path}" ]]; then
-    echo "Sample already present: ${local_path}"
+  sample_path="${DEST_SAMPLES}/${SAMPLE_IMAGE_FILE}"
+  if [[ -f "${sample_path}" ]]; then
+    echo "Sample already present: ${sample_path}"
   else
     echo "Downloading ${SAMPLE_IMAGE_URL}"
-    curl -fL --retry 3 --retry-delay 2 -o "${local_path}" "${SAMPLE_IMAGE_URL}"
-    echo "Installed ${local_path}"
+    curl -fL --retry 3 --retry-delay 2 -o "${sample_path}" "${SAMPLE_IMAGE_URL}"
+    echo "Installed ${sample_path}"
+  fi
+  echo ""
+fi
+
+if [[ "${run_fixtures}" -eq 1 ]]; then
+  echo "=== Validation fixture ==="
+  mkdir -p "${DEST_FIXTURES}"
+  fixture_path="${DEST_FIXTURES}/${FIXTURE_IMAGE_FILE}"
+  if [[ -f "${fixture_path}" ]]; then
+    echo "Fixture already present: ${fixture_path}"
+  else
+    echo "Downloading ${FIXTURE_IMAGE_URL}"
+    curl -fL --retry 3 --retry-delay 2 -o "${fixture_path}" "${FIXTURE_IMAGE_URL}"
+    echo "Installed ${fixture_path}"
   fi
   echo ""
 fi
 
 echo "Done."
-echo "Ensure Xcode copies PaddleOCRDemo/Models/ and PaddleOCRDemo/Resources/SampleImages/ into the app target (folder references / Copy Bundle Resources)."
+echo "Ensure Xcode copies PaddleOCRDemo/Models/ and PaddleOCRDemo/Resources/SampleImages/ into the app target,"
+echo "and PaddleOCRDemoTests/Fixtures/ into the test target (folder references / Copy Bundle Resources)."
