@@ -38,12 +38,9 @@ class MakeShrinkMap(object):
     def __init__(self, min_text_size=8, shrink_ratio=0.4, **kwargs):
         self.min_text_size = min_text_size
         self.shrink_ratio = shrink_ratio
-        if "total_epoch" in kwargs and "epoch" in kwargs and kwargs["epoch"] != "None":
+        if "total_epoch" in kwargs:
             self._base_shrink_ratio = shrink_ratio
             self._total_epoch = kwargs["total_epoch"]
-            self.shrink_ratio = self.shrink_ratio + 0.2 * kwargs["epoch"] / float(
-                kwargs["total_epoch"]
-            )
 
     def __call__(self, data):
         image = data["image"]
