@@ -49,20 +49,26 @@ class MakeBorderMap(object):
         text_polys = data["polys"]
         ignore_tags = data["ignore_tags"]
 
+        shrink_ratio = self.shrink_ratio
+        if "epoch" in data and hasattr(self, "_base_shrink_ratio"):
+            shrink_ratio = self._base_shrink_ratio + 0.2 * data["epoch"] / float(self._total_epoch)
+
         canvas = np.zeros(img.shape[:2], dtype=np.float32)
         mask = np.zeros(img.shape[:2], dtype=np.float32)
 
         for i in range(len(text_polys)):
             if ignore_tags[i]:
                 continue
-            self.draw_border_map(text_polys[i], canvas, mask=mask)
+            self.draw_border_map(text_polys[i], canvas, mask=mask, shrink_ratio=shrink_ratio)
         canvas = canvas * (self.thresh_max - self.thresh_min) + self.thresh_min
 
         data["threshold_map"] = canvas
         data["threshold_mask"] = mask
         return data
 
-    def draw_border_map(self, polygon, canvas, mask):
+    def draw_border_map(self, polygon, canvas, mask, shrink_ratio=None):
+        if shrink_ratio is None:
+            shrink_ratio = self.shrink_ratio
         polygon = np.array(polygon)
         assert polygon.ndim == 2
         assert polygon.shape[1] == 2
@@ -70,9 +76,6 @@ class MakeBorderMap(object):
         polygon_shape = Polygon(polygon)
         if polygon_shape.area <= 0:
             return
-        shrink_ratio = self.shrink_ratio
-        if "epoch" in data and hasattr(self, "_base_shrink_ratio"):
-            shrink_ratio = self._base_shrink_ratio + 0.2 * data["epoch"] / float(self._total_epoch)
         distance = (
             polygon_shape.area
             * (1 - np.power(shrink_ratio, 2))
