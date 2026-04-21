@@ -39,10 +39,14 @@
 		A10000A3 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000A3 /* ErrorView.swift */; };
 		A10000A4 /* OCRParametersPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000A4 /* OCRParametersPanel.swift */; };
 		A10000B3 /* OCRParameterResolverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000B3 /* OCRParameterResolverTests.swift */; };
-		A10000C5 /* OCRBenchmarkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000C5 /* OCRBenchmarkTests.swift */; };
+		A10000C5 /* OCRValidationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000C5 /* OCRValidationTests.swift */; };
 		A10000C6 /* ValidationPayloads.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000C6 /* ValidationPayloads.swift */; };
+		A10000D3 /* ValidationFixtures.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000D3 /* ValidationFixtures.swift */; };
 		A10000C7 /* Fixtures in Resources */ = {isa = PBXBuildFile; fileRef = A20000C7 /* Fixtures */; };
 		A10000B1 /* OCRParameterResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000B1 /* OCRParameterResolver.swift */; };
+		A10000D0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A20000D0 /* Assets.xcassets */; };
+		A10000D1 /* Bundle+BundledImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000D1 /* Bundle+BundledImage.swift */; };
+		A10000D2 /* DemoAssets.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000D2 /* DemoAssets.swift */; };
 		F9888FA77A2AF8AF45B50193 /* Pods_PaddleOCRDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D0FFA11A4E43E5BD0F80219 /* Pods_PaddleOCRDemo.framework */; };
 /* End PBXBuildFile section */
 
@@ -100,11 +104,15 @@
 		A20000A3 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
 		A20000A4 /* OCRParametersPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCRParametersPanel.swift; sourceTree = "<group>"; };
 		A20000B3 /* OCRParameterResolverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCRParameterResolverTests.swift; sourceTree = "<group>"; };
-		A20000C5 /* OCRBenchmarkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCRBenchmarkTests.swift; sourceTree = "<group>"; };
+		A20000C5 /* OCRValidationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCRValidationTests.swift; sourceTree = "<group>"; };
 		A20000C6 /* ValidationPayloads.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationPayloads.swift; sourceTree = "<group>"; };
+		A20000D3 /* ValidationFixtures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationFixtures.swift; sourceTree = "<group>"; };
 		A20000C7 /* Fixtures */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Fixtures; sourceTree = "<group>"; };
 		A20000B1 /* OCRParameterResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCRParameterResolver.swift; sourceTree = "<group>"; };
 		A20000C0 /* DemoSectionChrome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoSectionChrome.swift; sourceTree = "<group>"; };
+		A20000D0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A20000D1 /* Bundle+BundledImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+BundledImage.swift"; sourceTree = "<group>"; };
+		A20000D2 /* DemoAssets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoAssets.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -185,6 +193,8 @@
 		A7000004 /* App */ = {
 			isa = PBXGroup;
 			children = (
+				A20000D1 /* Bundle+BundledImage.swift */,
+				A20000D2 /* DemoAssets.swift */,
 				A2000001 /* PaddleOCRDemoApp.swift */,
 				A2000002 /* ContentView.swift */,
 				A20000C0 /* DemoSectionChrome.swift */,
@@ -197,8 +207,9 @@
 			children = (
 				A2000014 /* ORTSessionManagerTests.swift */,
 				A20000B3 /* OCRParameterResolverTests.swift */,
-				A20000C5 /* OCRBenchmarkTests.swift */,
+				A20000C5 /* OCRValidationTests.swift */,
 				A20000C6 /* ValidationPayloads.swift */,
+				A20000D3 /* ValidationFixtures.swift */,
 				A20000C7 /* Fixtures */,
 			);
 			path = PaddleOCRDemoTests;
@@ -280,6 +291,7 @@
 		A7000010 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				A20000D0 /* Assets.xcassets */,
 				A2000091 /* SampleImages */,
 			);
 			path = Resources;
@@ -369,6 +381,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A10000D0 /* Assets.xcassets in Resources */,
 				A1000003 /* Models in Resources */,
 				A1000091 /* SampleImages in Resources */,
 			);
@@ -454,6 +467,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				A1000001 /* PaddleOCRDemoApp.swift in Sources */,
+				A10000D1 /* Bundle+BundledImage.swift in Sources */,
+				A10000D2 /* DemoAssets.swift in Sources */,
 				A1000002 /* ContentView.swift in Sources */,
 				A10000C0 /* DemoSectionChrome.swift in Sources */,
 				A1000021 /* DBPostProcess.swift in Sources */,
@@ -490,8 +505,9 @@
 			files = (
 				A1000011 /* ORTSessionManagerTests.swift in Sources */,
 				A10000B3 /* OCRParameterResolverTests.swift in Sources */,
-				A10000C5 /* OCRBenchmarkTests.swift in Sources */,
+				A10000C5 /* OCRValidationTests.swift in Sources */,
 				A10000C6 /* ValidationPayloads.swift in Sources */,
+				A10000D3 /* ValidationFixtures.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -58,8 +58,7 @@ struct ImagePickerSection: View {
 
     @ViewBuilder
     private func sampleThumbnail(named name: String) -> some View {
-        // Load from SampleImages/ folder reference in bundle
-        if let path = Bundle.main.path(forResource: name, ofType: "png", inDirectory: "SampleImages"),
+        if let path = Bundle.main.path(forBundledImageNamed: name, subdirectory: "SampleImages"),
            let uiImage = UIImage(contentsOfFile: path) {
             Image(uiImage: uiImage)
                 .resizable()

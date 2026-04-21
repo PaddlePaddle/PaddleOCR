@@ -15,8 +15,13 @@
 
 """Compare two OCR JSON files (reference vs device) using polygon IoU + CER.
 
+Default thresholds (see argparse defaults) target a stricter CI gate than a loose
+0.5 IoU baseline: tighter box alignment, ~95% char-level headroom on mean CER,
+and limited reference-side misses.
+
 Example:
-  python compare_ocr_json.py ref.json ios.json --iou-threshold 0.5 --cer-threshold 0.08
+  python compare_ocr_json.py ref.json ios.json \\
+    --iou-threshold 0.65 --cer-threshold 0.05 --max-unmatched-ratio 0.1
 """
 
 from __future__ import annotations
@@ -136,25 +141,28 @@ def main(argv: Sequence[str] | None = None) -> int:
     )
     parser.add_argument("hypothesis", type=Path, help="Device / second JSON")
     parser.add_argument(
-        "--iou-threshold", type=float, default=0.5, help="Min IoU to pair boxes"
+        "--iou-threshold",
+        type=float,
+        default=0.65,
+        help="Min IoU to pair quadrilateral boxes (stricter than common 0.5 VOC-style cutoff)",
     )
     parser.add_argument(
         "--cer-threshold",
         type=float,
-        default=0.08,
-        help="Fail if mean CER exceeds this (matched pairs only)",
+        default=0.05,
+        help="Fail if mean CER on matched pairs exceeds this (e.g. 0.05 ≈ 95%% char accuracy headroom)",
     )
     parser.add_argument(
         "--max-unmatched-ratio",
         type=float,
-        default=0.2,
-        help="Fail if unmatched ref / len(ref) exceeds this",
+        default=0.1,
+        help="Fail if unmatched ref lines / len(ref) exceeds this",
     )
     parser.add_argument(
         "--json-summary-out",
         type=Path,
         default=None,
-        help="Write the same JSON as stdout (including pass) to this path for generate_validation_report.py",
+        help="Write the same JSON as stdout to this path (PASS or FAIL) for generate_validation_report.py",
     )
     args = parser.parse_args(list(argv) if argv is not None else None)
 
@@ -184,6 +192,8 @@ def main(argv: Sequence[str] | None = None) -> int:
         "unmatched_reference_ratio": unmatched_ratio,
         "mean_cer_matched": mean_cer,
         "iou_threshold": args.iou_threshold,
+        "cer_threshold": args.cer_threshold,
+        "max_unmatched_ratio": args.max_unmatched_ratio,
     }
     failed = False
     if mean_cer > args.cer_threshold:

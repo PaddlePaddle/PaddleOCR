@@ -95,8 +95,8 @@ class OCRViewModel: ObservableObject {
     /// Last image run through OCR (normalized orientation), for **Re-run OCR** without re-picking.
     private var lastNormalizedImage: UIImage?
 
-    /// Name of the demo sample in Resources/SampleImages.
-    let sampleImageNames: [String] = ["general_ocr_002"]
+    /// Bundled sample resource names (stem or `stem.ext`) for ``selectSampleImage(named:)``.
+    let sampleImageNames: [String] = [DemoAssets.defaultSampleImageStem]
 
     /// Photo picker or file load produced unusable image data.
     func reportImageLoadFailed() {
@@ -159,7 +159,7 @@ class OCRViewModel: ObservableObject {
 
     /// Load a bundled sample image by name and run OCR on it.
     func selectSampleImage(named name: String) async {
-        guard let path = Bundle.main.path(forResource: name, ofType: "png", inDirectory: "SampleImages") else {
+        guard let path = Bundle.main.path(forBundledImageNamed: name, subdirectory: "SampleImages") else {
             state = .error(.imageLoadFailed)
             return
         }

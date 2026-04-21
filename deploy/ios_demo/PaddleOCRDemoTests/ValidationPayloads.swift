@@ -12,11 +12,7 @@
 
 import Foundation
 
-/// Named JSON attachments emitted by validation tests.
-///
-/// `rawValue` is the file name used as the `XCTAttachment.name`; `run_validation.sh`
-/// passes these same strings to `extract_xcresult_attachments.py` to pull the
-/// payload back out of the `.xcresult`.
+/// Names for JSON written as `XCTAttachment`s; keep in sync with whatever exports attachments from test results.
 enum ValidationArtifact: String {
     case iOSExport = "ios-ocr-export.json"
     case onDevicePerformance = "on-device-performance.json"

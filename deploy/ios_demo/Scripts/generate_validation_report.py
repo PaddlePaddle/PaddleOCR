@@ -116,11 +116,30 @@ def _run_status_section(status: Dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
-def _warning_banner(overall: str) -> str:
+def _stale_data_banner(overall: str) -> str:
     return (
         f"> ⚠ This run ended with status **{overall}**; the numbers below may be partial or stale. "
         "Do not use them as a baseline.\n"
     )
+
+
+def _accuracy_section_banner(overall: Optional[str]) -> str:
+    if overall == "FAIL":
+        return (
+            "> **FAIL:** Accuracy thresholds were not met. "
+            "The **Accuracy validation** section reflects this run’s measurements.\n"
+        )
+    if overall and overall != "PASS":
+        return _stale_data_banner(overall)
+    return ""
+
+
+def _performance_section_banner(overall: Optional[str]) -> str:
+    if overall == "FAIL":
+        return ""
+    if overall and overall != "PASS":
+        return _stale_data_banner(overall)
+    return ""
 
 
 # ---------- timing + memory (on-device performance) ----------
@@ -291,12 +310,13 @@ def generate_report(
         parts.append(_run_status_section(status))
         parts.append("")
 
-    banner = _warning_banner(overall) if overall and overall != "PASS" else ""
+    acc_banner = _accuracy_section_banner(overall)
+    perf_banner = _performance_section_banner(overall)
 
     parts.append("## Accuracy validation")
     parts.append("")
-    if banner:
-        parts.append(banner)
+    if acc_banner:
+        parts.append(acc_banner)
     if compare_data is not None:
         parts.append(_compare_section(compare_data))
     else:
@@ -309,8 +329,8 @@ def generate_report(
 
     parts.append("## On-device runtime performance")
     parts.append("")
-    if banner:
-        parts.append(banner)
+    if perf_banner:
+        parts.append(perf_banner)
     if perf_data is not None:
         parts.append(_on_device_section(perf_data))
     else:

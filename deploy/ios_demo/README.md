@@ -6,12 +6,6 @@ SwiftUI demo that runs OCR on device using exported ONNX models and [ONNX Runtim
 
 All app sources, bundled resources, and third-party **source** vendored for this demo live under **`PaddleOCRDemo/`**. Unit tests are in **`PaddleOCRDemoTests/`** next to the Xcode project. The project root also contains `Podfile`, **`Scripts/`**, `README.md`, and `NOTICE`.
 
-> **Paths in this README** assume your shell’s working directory is the **project root** (the folder that contains `Podfile` and `Scripts/`). If you use a checkout of the full PaddleOCR repository, that folder is **`deploy/ios_demo/`**.
-
-## Third-party licenses
-
-Bundled **Clipper** (polyclipping 6.4.2) is under the [Boost Software License 1.0](https://www.boost.org/LICENSE_1_0.txt); see `NOTICE` and `PaddleOCRDemo/ThirdParty/Clipper1/LICENSE`. CocoaPods pods are governed by their respective licenses (see `Podfile.lock` after `pod install`).
-
 ## Prerequisites
 
 - macOS with Xcode (iOS 16+)
@@ -24,25 +18,18 @@ From the **project root**:
 
 ```bash
 pod install
-./Scripts/fetch_ios_demo_assets.sh
+./Scripts/fetch_ios_demo_models.sh
 ```
 
-`Scripts/fetch_ios_demo_assets.sh` downloads ONNX bundles into **`PaddleOCRDemo/Models/`** and fetches demo images into **`PaddleOCRDemo/Resources/SampleImages/`**. Intermediate `.tar` caches are stored under **`.fetch_ios_demo_assets_work/`** at the project root.
+`Scripts/fetch_ios_demo_models.sh` downloads ONNX bundles into **`PaddleOCRDemo/Models/`**. Intermediate `.tar` caches are stored under **`.fetch_ios_demo_models_work/`** at the project root.
 
-Optionally, pass the **model preset** (bundle name such as `PP-OCRv6_small`) as a positional argument after any options:
+Optionally, pass the **model preset** (bundle name such as `PP-OCRv6_small`) as a positional argument:
 
 ```bash
-./Scripts/fetch_ios_demo_assets.sh PP-OCRv6_small
+./Scripts/fetch_ios_demo_models.sh PP-OCRv6_small
 ```
 
 Currently, the supported model presets are `PP-OCRv6_small` and `PP-OCRv6_tiny`. The default preset is `PP-OCRv6_small`.
-
-Flags:
-
-| Flag | Meaning |
-|------|---------|
-| `--models-only` | ONNX models only |
-| `--samples-only` | Sample image only |
 
 ## Open in Xcode
 
@@ -52,45 +39,89 @@ open PaddleOCRDemo.xcworkspace
 
 If you use CocoaPods, run `pod install` in the project root first so the workspace is generated next to the `Podfile`.
 
-Build the **PaddleOCRDemo** scheme. Ensure **`PaddleOCRDemo/Models/`** and **`PaddleOCRDemo/Resources/SampleImages/`** are included via folder references / **Copy Bundle Resources** (as in the checked-in project).
+Build the **PaddleOCRDemo** scheme. Ensure **`PaddleOCRDemo/Models/`** and **`PaddleOCRDemo/Resources/SampleImages/`** are included in the app target via folder references / **Copy Bundle Resources**, and **`PaddleOCRDemoTests/Fixtures/`** in the test target (as in the checked-in project). The built-in picker sample is **`general_ocr_002.jpg`**.
 
 ## Validation
 
-One command runs the full validation pipeline on a physical iPhone or simulator:
+**Validation** means the **automated check pipeline** for this demo: run a reference OCR, run the same image through the iOS tests, compare the text output to tolerances, and write a short report. In one pass you get:
 
-```bash
-./Scripts/run_validation.sh                           # default simulator (iPhone 16)
-./Scripts/run_validation.sh --simulator 'iPhone 17'   # specific simulator
-./Scripts/run_validation.sh --udid <device-udid>      # connected real device
-./Scripts/run_validation.sh --udid <udid> --image /path/to/photo.png   # ad-hoc image
-```
+1. **Does the app match the reference?** The pipeline compares iOS recognition to a Python PaddleOCR run on the **same** photo and models, using fixed accuracy thresholds.
+2. **How fast is it on device?** The same test bundle also **times** full OCR runs and records rough **memory** figures so you can track regressions—without using the Python step for that part.
 
-Prerequisites:
+So “validation” is an umbrella for both **accuracy gating** and **on-device performance sampling**; the artifact table below lists which output file serves which role.
 
-- `./Scripts/fetch_ios_demo_assets.sh` has populated `PaddleOCRDemo/Models/`
-  **and** `PaddleOCRDemoTests/Fixtures/` (both are filled by the same script;
-  the default validation fixture is `general_ocr_002.png`).
-- PaddleOCR (with ONNX Runtime engine) is installed for the reference step:
-  `pip install -r Scripts/requirements-validation.txt`.
+### Prerequisites
+
+Complete [One-time asset setup](#one-time-asset-setup) first. For validation specifically you also need:
+
+- PaddleOCR (with ONNX Runtime engine) for the reference step: `pip install -r Scripts/requirements-validation.txt`.
 - Xcode 16 or later (validation uses `xcresulttool get test-results`, introduced in 16.0).
 
-The runner produces the following under `out/`:
+### Full pipeline
+
+From the project root, **`./Scripts/run_validation.sh`** drives: Python reference OCR → Xcode tests on a simulator or device → extract result attachments → compare accuracy → generate a report.
+
+**Configuring the run:** prefer **`run_validation.sh`** flags (below). **`resolve-image`** picks the file: **`--image`**, **`--fixture`** / **`PADDLEOCR_VALIDATION_IMAGE_NAME`**, or—with none of those set—**exactly one** non-`local-*` image under **`PaddleOCRDemoTests/Fixtures/`** (a typical clone is only **`ios_ocr_validation_reference.jpg`**; zero or multiple candidates → **`--fixture`** or **`--image`**). **`PADDLEOCR_VALIDATION_IMAGE_NAME`** is always passed to the test runner as that basename so it matches **`ref.json`**. **Other** knobs (warmup, measured iterations, inference backend, etc.) are forwarded to [Test runner environment variables](#test-runner-environment-variables) **only when** you set them via a flag or **`PADDLEOCR_VALIDATION_*`**; **flags win over env** when both apply.
+
+| Intent | Flags |
+| --- | --- |
+| Image from an arbitrary path | `--image <path>` (copied into `Fixtures/` as `local-*` for this run) |
+| Image already under `PaddleOCRDemoTests/Fixtures/` | `--fixture <name>` (stem or `stem.ext`) |
+| Benchmark intensity | `--warmup <n>`, `--measured-iterations <n>` |
+| ONNX Runtime EP | `--inference-backend CORE_ML` or `XNNPACK` |
+
+```bash
+./Scripts/run_validation.sh                                              # default simulator (iPhone 16)
+./Scripts/run_validation.sh --simulator 'iPhone 17'
+./Scripts/run_validation.sh --udid <device-udid>
+./Scripts/run_validation.sh --udid <udid> --image /path/to/photo.png
+./Scripts/run_validation.sh --fixture ios_ocr_validation_reference --warmup 2 --measured-iterations 20
+PADDLEOCR_VALIDATION_MEASURED_ITERATIONS=30 ./Scripts/run_validation.sh --warmup 0
+```
+
+After compare **completes**, the script overwrites **`out/compare-summary.json`**, **`out/run-status.json`**, and **`out/validation-report.md`**. If the pipeline **errors** earlier, those files are **not** updated for this run (any existing copies are from a previous attempt).
+
+Outputs under **`out/`**:
 
 | Artifact | Producer | Purpose |
 |---|---|---|
 | `ref.json` | `ocr_reference_run.py` | Python reference OCR |
 | `result.xcresult` | `xcodebuild test` | iOS test run |
-| `ios-ocr-export.json`, `on-device-performance.json` | `extract_xcresult_attachments.py` | iOS outputs pulled from `.xcresult` |
-| `compare-summary.json` | `compare_ocr_json.py` | Accuracy verdict |
+| `ios-ocr-export.json` | `extract_xcresult_attachments.py` | iOS **accuracy** payload (polygons + text) from tests |
+| `on-device-performance.json` | `extract_xcresult_attachments.py` | iOS **performance** stats from tests |
+| `compare-summary.json` | `compare_ocr_json.py` | **Accuracy** metrics vs thresholds (`pass`) |
 | `run-status.json` | `run_validation.sh` | Per-step outcomes |
 | `validation-report.md` | `generate_validation_report.py` | Human-readable report |
 
-The script exits `0` on PASS (all steps OK, compare under thresholds), non-zero on FAIL or ERROR. The report is always written, including on failure; check the `**Overall:**` line at the top.
+Exit **`0`** on **PASS**; non-zero on **FAIL** (thresholds not met) or **ERROR** (halted before a finished compare). Use the script’s stderr/stdout and **`logs/`** after **ERROR**.
 
-### Running individual steps manually
+### Test runner environment variables
 
-The underlying scripts remain independently invokable — see `./Scripts/<script>.py --help`. Tests read fixtures from the test bundle and write outputs via `XCTAttachment`; `run_validation.sh` orchestrates the full flow.
+The validation **tests** read settings through variables named **`PADDLEOCR_VALIDATION_*`**. They apply to the **test runner process**, not your interactive shell unless you forward them (see table).
 
-### Running the benchmark tests directly from Xcode
+| How you launch tests | What to configure |
+| --- | --- |
+| **Xcode** | Scheme **PaddleOCRDemo** → **Test** (not Run) → **Arguments** → **Environment Variables**. Use the names below **as-is** (`PADDLEOCR_VALIDATION_…`). |
+| **`xcodebuild test`** | Set **`TEST_RUNNER_` + the same name** (e.g. `TEST_RUNNER_PADDLEOCR_VALIDATION_IMAGE_NAME=…`). `xcodebuild` injects them into the test runner and strips the prefix so the test still reads **`PADDLEOCR_VALIDATION_…`**. |
+| **`run_validation.sh`** | Calls `xcodebuild` with these set for you. You may export `PADDLEOCR_VALIDATION_*` in the shell first; **script flags override env** when both apply to the same setting. |
 
-Set `PADDLEOCR_VALIDATION_IMAGE_NAME=<filename>` on the `PaddleOCRDemo` scheme (Test → Arguments → Environment Variables) to a file committed under `PaddleOCRDemoTests/Fixtures/` (e.g. `table.jpg`). Then Cmd-U.
+| Variable | If unset | Role |
+| --- | --- | --- |
+| `PADDLEOCR_VALIDATION_IMAGE_NAME` | Defaults to **`ios_ocr_validation_reference`**. Set explicitly to use another bundled image. | Bundled test image: **stem** or **`stem.ext`** under **`Fixtures/`**. |
+| `PADDLEOCR_VALIDATION_WARMUP_ITERATIONS` | **3** | Untimed full OCR runs before timing (warm caches / JIT). Used only by the **performance** test. |
+| `PADDLEOCR_VALIDATION_MEASURED_ITERATIONS` | **10** | Timed runs. Used only by the **performance** test. |
+| `PADDLEOCR_VALIDATION_INFERENCE_BACKEND` | **CORE_ML** | ONNX Runtime EP for **`OCRValidationTests`**: **`CORE_ML`** or **`XNNPACK`**. |
+
+Non-negative integers for the two iteration variables.
+
+### XCTest only (without the Python pipeline)
+
+**Read this subsection when** you run or debug the **`PaddleOCRDemoTests`** target directly (**Cmd-U** in Xcode, or **`xcodebuild test`**).
+
+**What it is for:** class **`OCRValidationTests`** produces (1) an OCR JSON attachment for **accuracy** checks, and (2) **`on-device-performance.json`**-style timing and memory stats from repeated runs.
+
+**Environment variables:** set **`PADDLEOCR_VALIDATION_*`** as documented in [Test runner environment variables](#test-runner-environment-variables) (Xcode vs `TEST_RUNNER_` vs `run_validation.sh`).
+
+## Third-party licenses
+
+Bundled **Clipper** (polyclipping 6.4.2) is under the [Boost Software License 1.0](https://www.boost.org/LICENSE_1_0.txt); see `NOTICE` and `PaddleOCRDemo/ThirdParty/Clipper1/LICENSE`. CocoaPods pods are governed by their respective licenses (see `Podfile.lock` after `pod install`).

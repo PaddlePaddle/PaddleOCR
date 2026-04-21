@@ -154,7 +154,7 @@ enum OCRParameterResolver {
     static let textDetUnclipRatioAppDefault: Float = 1.5
     // Recognition
     static let textRecScoreThreshAppDefault: Float = 0.0
-    static let textRecBatchSizeAppDefault: Int = 6
+    static let textRecBatchSizeAppDefault: Int = 1
 
     // MARK: Merge helpers
 

@@ -15,7 +15,34 @@
 
 """Extract named XCTAttachments from an .xcresult bundle into files.
 
-Requires Xcode 16+ (uses the non-legacy `xcresulttool` subcommands).
+Uses `xcrun xcresulttool` only. Prerequisites are probed against the **currently
+selected** Xcode (`xcode-select`): see `_check_xcresulttool_capability`.
+
+**Discovery (documented CLI behavior)**
+
+- ``xcresulttool get test-results tests`` — “Get all tests from test report.”
+  (``xcrun xcresulttool help get test-results tests``). We walk Test Case nodes
+  and read each ``nodeIdentifierURL`` as ``--test-id``.
+
+- ``xcresulttool get test-results activities`` — “Get the activity trees for the
+  specified test.” (``help get test-results activities``). Attachment records
+  (``name``, ``payloadId``) are taken from activity trees under ``testRuns``.
+
+- ``xcresulttool export attachments`` — “An additional manifest.json file will be
+  generated… contains a list of attachment details for each test.”
+  (``help export attachments``). We resolve on-disk filenames via
+  ``exportedFileName`` / ``suggestedHumanReadableName`` in that manifest when
+  present.
+
+**Logical filename matching (repo heuristic, not from Apple help)**
+
+We match ``--name`` to each activities record’s ``name`` by **exact string**, or
+by **stem + underscore-suffixed** basename before the extension. Adjust
+``_matches_wanted_attachment`` if your tests use different attachment titles.
+
+If ``activities`` yields no attachments, we fall back to walking the ``tests``
+JSON for ``attachments`` on nodes (empty after the activities pass in some
+bundles).
 """
 
 from __future__ import annotations
@@ -27,7 +54,9 @@ import subprocess
 import sys
 import tempfile
 from pathlib import Path
-from typing import Dict, List, Tuple
+from typing import Any, List, Optional, Set, Tuple
+
+AttachmentRow = Tuple[str, str, str]  # stored_name, test_id_url, payload_id
 
 
 def _die(what: str, where: str, next_step: str, code: int = 1) -> int:
@@ -42,36 +71,20 @@ def _run(cmd: List[str]) -> subprocess.CompletedProcess:
 
 
 def _check_xcresulttool_capability() -> None:
-    """Capability probe: `xcrun xcresulttool help get` must mention `test-results`.
-
-    Using a capability check instead of a version number; `xcresulttool version`
-    is a build number in Xcode 15/16 and doesn't parse as semver.
-    """
+    """Require `xcrun xcresulttool help get` to list `test-results` (command exists)."""
     r = _run(["xcrun", "xcresulttool", "help", "get"])
     text = (r.stdout + r.stderr).decode(errors="replace")
     if "test-results" not in text:
         raise SystemExit(
             _die(
-                "`xcrun xcresulttool get test-results` not available; Xcode 16+ required.",
+                "`xcrun xcresulttool help get` has no `test-results` subcommand in this Xcode.",
                 "xcrun xcresulttool help get",
-                "Install Xcode 16+ or select it with `xcode-select -s /Applications/Xcode.app`.",
+                "Install a newer Xcode or `xcode-select` a toolchain that ships this subcommand.",
             )
         )
 
 
-def _walk_attachments(node: dict, acc: List[Tuple[str, str, str]]) -> None:
-    """Append (name, testIdentifier, payloadId) for every attachment in `node` and its children."""
-    identifier = node.get("identifier") or ""
-    for att in node.get("attachments") or []:
-        name = att.get("name")
-        pid = att.get("payloadId")
-        if isinstance(name, str) and isinstance(pid, str):
-            acc.append((name, identifier, pid))
-    for child in node.get("children") or []:
-        _walk_attachments(child, acc)
-
-
-def _enumerate(result_path: Path) -> List[Tuple[str, str, str]]:
+def _load_tests_json(result_path: Path) -> dict:
     r = _run(
         [
             "xcrun",
@@ -94,7 +107,7 @@ def _enumerate(result_path: Path) -> List[Tuple[str, str, str]]:
             )
         )
     try:
-        parsed = json.loads(r.stdout or b"{}")
+        return json.loads(r.stdout or b"{}")
     except json.JSONDecodeError as e:
         raise SystemExit(
             _die(
@@ -103,14 +116,149 @@ def _enumerate(result_path: Path) -> List[Tuple[str, str, str]]:
                 "Re-run xcodebuild test to regenerate the .xcresult.",
             )
         )
-    acc: List[Tuple[str, str, str]] = []
-    for top in parsed.get("testNodes") or []:
-        _walk_attachments(top, acc)
+
+
+def _collect_test_case_urls(node: dict) -> List[str]:
+    urls: List[str] = []
+    if node.get("nodeType") == "Test Case":
+        u = node.get("nodeIdentifierURL")
+        if isinstance(u, str) and u.startswith("test://"):
+            urls.append(u)
+    for ch in node.get("children") or []:
+        urls.extend(_collect_test_case_urls(ch))
+    return urls
+
+
+def _walk_activity_tree(act: dict, acc: List[AttachmentRow], test_url: str) -> None:
+    for att in act.get("attachments") or []:
+        name = att.get("name")
+        pid = att.get("payloadId")
+        if isinstance(name, str) and isinstance(pid, str):
+            acc.append((name, test_url, pid))
+    for ch in act.get("childActivities") or []:
+        _walk_activity_tree(ch, acc, test_url)
+
+
+def _attachments_from_activities(
+    result_path: Path, test_url: str
+) -> List[AttachmentRow]:
+    r = _run(
+        [
+            "xcrun",
+            "xcresulttool",
+            "get",
+            "test-results",
+            "activities",
+            "--path",
+            str(result_path),
+            "--test-id",
+            test_url,
+            "--format",
+            "json",
+        ]
+    )
+    if r.returncode != 0:
+        return []
+    try:
+        parsed = json.loads(r.stdout or b"{}")
+    except json.JSONDecodeError:
+        return []
+    acc: List[AttachmentRow] = []
+    for tr in parsed.get("testRuns") or []:
+        for act in tr.get("activities") or []:
+            _walk_activity_tree(act, acc, test_url)
     return acc
 
 
+def _walk_attachments_legacy(node: dict, acc: List[AttachmentRow]) -> None:
+    """Fallback: walk ``tests`` JSON for ``attachments`` on nodes (used if activities path is empty)."""
+    identifier = node.get("identifier") or node.get("nodeIdentifierURL") or ""
+    for att in node.get("attachments") or []:
+        name = att.get("name")
+        pid = att.get("payloadId")
+        if isinstance(name, str) and isinstance(pid, str):
+            acc.append((name, str(identifier), pid))
+    for child in node.get("children") or []:
+        _walk_attachments_legacy(child, acc)
+
+
+def _enumerate(result_path: Path) -> List[AttachmentRow]:
+    parsed = _load_tests_json(result_path)
+    acc: List[AttachmentRow] = []
+    urls: List[str] = []
+    for top in parsed.get("testNodes") or []:
+        urls.extend(_collect_test_case_urls(top))
+    for url in urls:
+        acc.extend(_attachments_from_activities(result_path, url))
+    if acc:
+        return acc
+    for top in parsed.get("testNodes") or []:
+        _walk_attachments_legacy(top, acc)
+    return acc
+
+
+def _matches_wanted_attachment(stored: str, wanted: str) -> bool:
+    if stored == wanted:
+        return True
+    stem = Path(wanted).stem
+    suffix = Path(wanted).suffix if Path(wanted).suffix else ".json"
+    return stored.startswith(stem + "_") and stored.endswith(suffix)
+
+
+def _pick_exported_file(
+    td_path: Path, wanted_out_name: str, stored_name: str
+) -> Optional[Path]:
+    """Pick the exported file using ``manifest.json`` when `xcresulttool export` writes it (see ``help export``)."""
+    manifest_path = td_path / "manifest.json"
+    if manifest_path.is_file():
+        try:
+            raw: Any = json.loads(manifest_path.read_text(encoding="utf-8"))
+        except json.JSONDecodeError:
+            raw = []
+        blocks: List[dict] = raw if isinstance(raw, list) else []
+        for block in blocks:
+            for att in block.get("attachments") or []:
+                if not isinstance(att, dict):
+                    continue
+                sug = att.get("suggestedHumanReadableName") or ""
+                fn = att.get("exportedFileName")
+                if not isinstance(fn, str):
+                    continue
+                candidate = td_path / fn
+                if not candidate.is_file():
+                    continue
+                if sug == stored_name or _matches_wanted_attachment(
+                    sug, wanted_out_name
+                ):
+                    return candidate
+
+    direct = td_path / stored_name
+    if direct.is_file():
+        return direct
+
+    for p in sorted(td_path.iterdir()):
+        if not p.is_file() or p.name == "manifest.json":
+            continue
+        if _matches_wanted_attachment(p.name, wanted_out_name):
+            return p
+
+    orphans = [
+        p
+        for p in td_path.iterdir()
+        if p.is_file() and p.suffix == ".json" and p.name != "manifest.json"
+    ]
+    if len(orphans) == 1:
+        return orphans[0]
+
+    return None
+
+
 def _export_one(
-    result_path: Path, test_identifier: str, wanted_name: str, out_path: Path
+    result_path: Path,
+    test_identifier: str,
+    wanted_out_name: str,
+    stored_name: str,
+    out_path: Path,
 ) -> None:
     with tempfile.TemporaryDirectory() as td:
         r = _run(
@@ -135,19 +283,16 @@ def _export_one(
                     "Inspect stderr above.",
                 )
             )
-        src = Path(td) / wanted_name
-        if not src.is_file():
-            # Export may use alternate filenames; try first matching file by suffix.
-            matches = [p for p in Path(td).iterdir() if p.name == wanted_name]
-            if not matches:
-                raise SystemExit(
-                    _die(
-                        f"Exported attachment missing: {wanted_name}.",
-                        f"export dir: {td}",
-                        "Upgrade Xcode, or rename attachment in test code to match.",
-                    )
+        td_path = Path(td)
+        src = _pick_exported_file(td_path, wanted_out_name, stored_name)
+        if src is None or not src.is_file():
+            raise SystemExit(
+                _die(
+                    f"Could not resolve exported file (wanted {wanted_out_name!r}, stored {stored_name!r}).",
+                    f"export dir: {td}",
+                    "Check `manifest.json` and `xcresulttool export attachments` stderr.",
                 )
-            src = matches[0]
+            )
         out_path.parent.mkdir(parents=True, exist_ok=True)
         shutil.move(str(src), str(out_path))
 
@@ -183,31 +328,30 @@ def main(argv: List[str] | None = None) -> int:
 
     attachments = _enumerate(args.result)
 
-    grouped: Dict[str, List[Tuple[str, str]]] = {}
-    for name, test_id, pid in attachments:
-        grouped.setdefault(name, []).append((test_id, pid))
-
     errors = 0
     for wanted in args.name:
-        hits = grouped.get(wanted, [])
-        if len(hits) == 0:
-            _die(
+        hits = [
+            (tid, sn)
+            for sn, tid, _pid in attachments
+            if _matches_wanted_attachment(sn, wanted)
+        ]
+        uniq: Set[Tuple[str, str]] = set(hits)
+        if len(uniq) == 0:
+            errors += _die(
                 f"Attachment not found: {wanted}.",
                 str(args.result),
-                "Test likely failed to attach; inspect xcodebuild output.",
+                "Confirm the test run attached JSON and inspect `get test-results activities` / `export attachments` for this bundle.",
             )
-            errors += 1
             continue
-        if len(hits) > 1:
-            _die(
-                f"Attachment name collision: {wanted} appears {len(hits)} times.",
+        if len(uniq) > 1:
+            errors += _die(
+                f"Attachment name collision: {wanted} matches {len(uniq)} exports.",
                 str(args.result),
-                "Ensure ValidationArtifact names are unique across tests.",
+                "Ensure attachment base names are unique across tests.",
             )
-            errors += 1
             continue
-        test_id, _pid = hits[0]
-        _export_one(args.result, test_id, wanted, args.out_dir / wanted)
+        test_id, stored = next(iter(uniq))
+        _export_one(args.result, test_id, wanted, stored, args.out_dir / wanted)
 
     return 1 if errors else 0
 

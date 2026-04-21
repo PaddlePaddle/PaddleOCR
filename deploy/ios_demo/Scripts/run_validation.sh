@@ -13,23 +13,32 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# End-to-end validation runner for the iOS demo.
+# End-to-end validation runner for the iOS demo (accuracy gate + perf capture).
 #
 # Pipeline: preflight → resolve-image → ref-gen → resolve-destination →
 #           xcodebuild-test → extract-attachments → compare → report
 #
-# Requires: bash 3.2+ (macOS default), xcodebuild, xcrun, python3.
+# Exit code reflects the accuracy comparison step only. Performance output is for the report, not pass/fail.
+#
+# Requires: bash 3.2+, xcodebuild, xcrun, python3.
 
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 IOS_DEMO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
+# Fixtures/: images shipped for validation; `local-*` entries come from --image; auto-pick ignores `local-*`.
 FIXTURES_DIR="${IOS_DEMO_ROOT}/PaddleOCRDemoTests/Fixtures"
 DEFAULT_SIMULATOR="iPhone 16"
+# xcodebuild -only-testing target (override via ONLY_TESTING_SCOPE without editing this file).
+ONLY_TESTING_SCOPE="${ONLY_TESTING_SCOPE:-PaddleOCRDemoTests/OCRValidationTests}"
 
 UDID=""
 SIMULATOR=""
 IMAGE=""
+FIXTURE_ARG=""
+WARMUP_CLI=""
+MEASURED_CLI=""
+INFERENCE_CLI=""
 SKIP_REF_GEN=0
 OUT_DIR="${IOS_DEMO_ROOT}/out"
 CLEAN=0
@@ -42,11 +51,28 @@ Options:
   --udid <id>           Real-device UDID (preferred real-device path)
   --simulator <name>    Simulator name (default: ${DEFAULT_SIMULATOR})
   --image <path>        Ad-hoc validation image; copied as Fixtures/local-<basename>.
-                        Without this, Fixtures/ must contain exactly one non-local-* file.
+                        Without --image/--fixture, see image selection below.
+  --fixture <name>      Use a file already under PaddleOCRDemoTests/Fixtures/ (stem or
+                        file name, e.g. ios_ocr_validation_reference or .jpg). Useful when
+                        several fixtures exist.
+  --warmup <n>          Benchmark warmup iterations (non-negative int).
+  --measured-iterations <n>  Timed benchmark iterations.
+  --inference-backend <NAME>  ONNX Runtime EP for tests: CORE_ML or XNNPACK.
   --skip-ref-gen        Reuse existing <out-dir>/ref.json
   --out-dir <dir>       Output directory (default: out/)
   --clean               Delete Fixtures/local-* and <out-dir>/* before running
   -h, --help            Show help
+
+Environment (optional; CLI wins when both are set):
+  PADDLEOCR_VALIDATION_IMAGE_NAME   Select which bundled fixture to use (same as --fixture)
+  PADDLEOCR_VALIDATION_WARMUP_ITERATIONS
+  PADDLEOCR_VALIDATION_MEASURED_ITERATIONS
+  PADDLEOCR_VALIDATION_INFERENCE_BACKEND   CORE_ML or XNNPACK
+  ONLY_TESTING_SCOPE                Optional; passed to xcodebuild -only-testing (narrow test subset)
+
+Image selection when --image is not used:
+  1) --fixture <name>, if given, else PADDLEOCR_VALIDATION_IMAGE_NAME, if set
+  2) otherwise exactly one non-local-* file in Fixtures/
 EOF
 }
 
@@ -62,6 +88,10 @@ while [[ $# -gt 0 ]]; do
     --udid) UDID="$2"; shift 2 ;;
     --simulator) SIMULATOR="$2"; shift 2 ;;
     --image) IMAGE="$2"; shift 2 ;;
+    --fixture) FIXTURE_ARG="$2"; shift 2 ;;
+    --warmup) WARMUP_CLI="$2"; shift 2 ;;
+    --measured-iterations) MEASURED_CLI="$2"; shift 2 ;;
+    --inference-backend) INFERENCE_CLI="$2"; shift 2 ;;
     --skip-ref-gen) SKIP_REF_GEN=1; shift ;;
     --out-dir) OUT_DIR="$2"; shift 2 ;;
     --clean) CLEAN=1; shift ;;
@@ -70,12 +100,46 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
+# Fixture label: --fixture overrides PADDLEOCR_VALIDATION_IMAGE_NAME.
+EXPLICIT_FIXTURE="${FIXTURE_ARG:-${PADDLEOCR_VALIDATION_IMAGE_NAME:-}}"
+
+# Warmup / measured: CLI over env; forward to xcodebuild only when non-empty.
+WARMUP_MERGED="${WARMUP_CLI:-${PADDLEOCR_VALIDATION_WARMUP_ITERATIONS:-}}"
+MEASURED_MERGED="${MEASURED_CLI:-${PADDLEOCR_VALIDATION_MEASURED_ITERATIONS:-}}"
+if [[ -n "${WARMUP_MERGED}" ]]; then
+  [[ "${WARMUP_MERGED}" =~ ^[0-9]+$ ]] \
+    || die "Invalid --warmup / PADDLEOCR_VALIDATION_WARMUP_ITERATIONS: ${WARMUP_MERGED}" "argument parsing" "Use a non-negative integer."
+fi
+if [[ -n "${MEASURED_MERGED}" ]]; then
+  [[ "${MEASURED_MERGED}" =~ ^[0-9]+$ ]] \
+    || die "Invalid --measured-iterations / PADDLEOCR_VALIDATION_MEASURED_ITERATIONS: ${MEASURED_MERGED}" "argument parsing" "Use a non-negative integer."
+fi
+
+# Inference EP: CORE_ML or XNNPACK; forward when set (flag or env).
+INFERENCE_MERGED="${INFERENCE_CLI:-${PADDLEOCR_VALIDATION_INFERENCE_BACKEND:-}}"
+INFERENCE_CANON=""
+if [[ -n "${INFERENCE_MERGED}" ]]; then
+  case "${INFERENCE_MERGED}" in
+    coreMLOnly) INFERENCE_CANON="CORE_ML" ;;
+    xnnpackOnly) INFERENCE_CANON="XNNPACK" ;;
+    *)
+      _inf_lc="$(printf '%s' "${INFERENCE_MERGED}" | tr '[:upper:]' '[:lower:]')"
+      case "${_inf_lc}" in
+        core_ml) INFERENCE_CANON="CORE_ML" ;;
+        xnnpack) INFERENCE_CANON="XNNPACK" ;;
+        *)
+          die "Invalid --inference-backend / PADDLEOCR_VALIDATION_INFERENCE_BACKEND: ${INFERENCE_MERGED}" "argument parsing" "Use CORE_ML or XNNPACK (Swift: coreMLOnly / xnnpackOnly)."
+          ;;
+      esac
+      ;;
+  esac
+fi
+
 LOGS_DIR="${OUT_DIR}/logs"
 STATUS_PATH="${OUT_DIR}/run-status.json"
 REPORT_PATH="${OUT_DIR}/validation-report.md"
 
 mkdir -p "${OUT_DIR}" "${LOGS_DIR}"
-rm -f "${REPORT_PATH}"
 
 if [[ "${CLEAN}" -eq 1 ]]; then
   rm -f "${FIXTURES_DIR}"/local-*
@@ -222,28 +286,23 @@ finish() {
   local overall
   if [[ "${HALTED}" -eq 1 ]]; then
     overall="ERROR"
+  elif [[ "${COMPARE_EXIT}" -ne 0 ]]; then
+    overall="FAIL"
+    exit_code="${COMPARE_EXIT}"
   else
-    if [[ "${COMPARE_EXIT}" -ne 0 ]]; then
-      overall="FAIL"
-      exit_code="${COMPARE_EXIT}"
-    else
-      overall="PASS"
-      exit_code=0
-    fi
-  fi
-  write_status_json "${overall}" "${exit_code}" || true
-  if [[ "$(step_status_get report)" != "ok" ]]; then
-    python3 "${SCRIPT_DIR}/generate_validation_report.py" \
-      --compare-summary "${OUT_DIR}/compare-summary.json" \
-      --on-device-performance-json "${OUT_DIR}/on-device-performance.json" \
-      --run-status "${STATUS_PATH}" \
-      --output "${REPORT_PATH}" >/dev/null 2>&1 || true
+    overall="PASS"
+    exit_code=0
   fi
   printf "\n===== SUMMARY =====\n"
   printf "Overall:   %s\n" "${overall}"
   printf "Exit code: %s\n" "${exit_code}"
-  printf "Status:    %s\n" "${STATUS_PATH}"
-  printf "Report:    %s\n" "${REPORT_PATH}"
+  if [[ "${overall}" == "PASS" || "${overall}" == "FAIL" ]]; then
+    printf "Status:    %s\n" "${STATUS_PATH}"
+    printf "Report:    %s\n" "${REPORT_PATH}"
+    printf "Compare:   %s\n" "${OUT_DIR}/compare-summary.json"
+  else
+    printf "ERROR: See full logs in %s\n" "${LOGS_DIR}"
+  fi
   exit "${exit_code}"
 }
 trap finish EXIT
@@ -271,9 +330,9 @@ run_step() {
 # ---------- Step: preflight ----------
 preflight_impl() {
   [[ -f "${IOS_DEMO_ROOT}/PaddleOCRDemo/Models/det/inference.yml" ]] \
-    || { echo "Models/det/inference.yml missing; run ./Scripts/fetch_ios_demo_assets.sh" >&2; return 1; }
+    || { echo "Models/det/inference.yml missing; run ./Scripts/fetch_ios_demo_models.sh" >&2; return 1; }
   [[ -f "${IOS_DEMO_ROOT}/PaddleOCRDemo/Models/rec/inference.yml" ]] \
-    || { echo "Models/rec/inference.yml missing; run ./Scripts/fetch_ios_demo_assets.sh" >&2; return 1; }
+    || { echo "Models/rec/inference.yml missing; run ./Scripts/fetch_ios_demo_models.sh" >&2; return 1; }
   command -v xcodebuild >/dev/null || { echo "xcodebuild not in PATH" >&2; return 1; }
   command -v xcrun >/dev/null || { echo "xcrun not in PATH" >&2; return 1; }
   command -v python3 >/dev/null || { echo "python3 not in PATH" >&2; return 1; }
@@ -295,6 +354,30 @@ resolve_image_impl() {
     echo "Copied override image to ${FIXTURES_DIR}/${IMAGE_NAME}"
     return 0
   fi
+  if [[ -n "${EXPLICIT_FIXTURE}" ]]; then
+    local name cand
+    name="${EXPLICIT_FIXTURE}"
+    cand=""
+    if [[ -f "${FIXTURES_DIR}/${name}" ]]; then
+      cand="${FIXTURES_DIR}/${name}"
+    else
+      # stem without extension: try common image extensions
+      if [[ "$name" != *.* ]]; then
+        for ext in jpg jpeg png heic webp; do
+          if [[ -f "${FIXTURES_DIR}/${name}.${ext}" ]]; then
+            cand="${FIXTURES_DIR}/${name}.${ext}"
+            break
+          fi
+        done
+      fi
+    fi
+    [[ -n "$cand" ]] || { echo "Fixture not found for --fixture / PADDLEOCR_VALIDATION_IMAGE_NAME: ${name}" >&2; return 1; }
+    IMAGE_NAME="$(basename "$cand")"
+    IMAGE_SRC="$cand"
+    IMAGE_SOURCE="fixture"
+    echo "Using fixture (explicit): ${IMAGE_NAME}"
+    return 0
+  fi
   local found=()
   while IFS= read -r -d '' f; do
     local b; b="$(basename "$f")"
@@ -305,7 +388,7 @@ resolve_image_impl() {
   done < <(find "${FIXTURES_DIR}" -mindepth 1 -maxdepth 1 -type f -print0)
   if [[ ${#found[@]} -eq 0 ]]; then
     echo "No fixture in ${FIXTURES_DIR}/ and no --image provided." >&2
-    echo "Run ./Scripts/fetch_ios_demo_assets.sh to populate the default fixture, or pass --image <path>." >&2
+    echo "Put exactly one fixture image in PaddleOCRDemoTests/Fixtures/, or pass --image <path>." >&2
     return 1
   fi
   if [[ ${#found[@]} -gt 1 ]]; then
@@ -315,7 +398,7 @@ resolve_image_impl() {
   fi
   IMAGE_NAME="${found[0]}"
   IMAGE_SRC="${FIXTURES_DIR}/${IMAGE_NAME}"
-  IMAGE_SOURCE="fetched"
+  IMAGE_SOURCE="fixture"
   echo "Using fixture: ${IMAGE_NAME}"
 }
 run_step resolve-image resolve_image_impl || { mark_remaining_skipped "resolve-image failed: ${HALT_REASON}"; exit 1; }
@@ -352,14 +435,19 @@ run_step resolve-destination resolve_destination_impl || { mark_remaining_skippe
 # ---------- Step: xcodebuild-test ----------
 xcodebuild_test_impl() {
   rm -rf "${OUT_DIR}/result.xcresult"
-  env \
-    TEST_RUNNER_PADDLEOCR_VALIDATION_IMAGE_NAME="${IMAGE_NAME}" \
-    xcodebuild test \
+  echo "xcodebuild: validation image name=${IMAGE_NAME} warmup=${WARMUP_MERGED:-} measured=${MEASURED_MERGED:-} inference=${INFERENCE_CANON:-default}"
+  local runenv=(
+    env "TEST_RUNNER_PADDLEOCR_VALIDATION_IMAGE_NAME=${IMAGE_NAME}"
+  )
+  [[ -n "${WARMUP_MERGED}" ]] && runenv+=("TEST_RUNNER_PADDLEOCR_VALIDATION_WARMUP_ITERATIONS=${WARMUP_MERGED}")
+  [[ -n "${MEASURED_MERGED}" ]] && runenv+=("TEST_RUNNER_PADDLEOCR_VALIDATION_MEASURED_ITERATIONS=${MEASURED_MERGED}")
+  [[ -n "${INFERENCE_CANON}" ]] && runenv+=("TEST_RUNNER_PADDLEOCR_VALIDATION_INFERENCE_BACKEND=${INFERENCE_CANON}")
+  "${runenv[@]}" xcodebuild test \
     -workspace "${IOS_DEMO_ROOT}/PaddleOCRDemo.xcworkspace" \
     -scheme PaddleOCRDemo \
     -destination "${DEST}" \
     -resultBundlePath "${OUT_DIR}/result.xcresult" \
-    -only-testing:PaddleOCRDemoTests/OCRBenchmarkTests
+    -only-testing:"${ONLY_TESTING_SCOPE}"
 }
 run_step xcodebuild-test xcodebuild_test_impl || { mark_remaining_skipped "xcodebuild-test failed: ${HALT_REASON}"; exit 1; }
 
@@ -378,8 +466,9 @@ compare_impl() {
   python3 "${SCRIPT_DIR}/compare_ocr_json.py" \
     "${OUT_DIR}/ref.json" \
     "${OUT_DIR}/ios-ocr-export.json" \
-    --iou-threshold 0.5 \
-    --cer-threshold 0.08 \
+    --iou-threshold 0.65 \
+    --cer-threshold 0.05 \
+    --max-unmatched-ratio 0.1 \
     --json-summary-out "${OUT_DIR}/compare-summary.json"
 }
 step_status_set compare running
@@ -393,20 +482,17 @@ if (compare_impl) >"${LOGS_DIR}/compare.log" 2>&1; then
 else
   COMPARE_EXIT=$?
   _end="$(now_ms)"; _dur=$((_end - _start))
-  step_status_set compare ok       # compare ran; verdict is a separate signal
+  step_status_set compare fail
   step_duration_set compare "$_dur"
   step_exit_set compare "$COMPARE_EXIT"
+  step_reason_set compare "accuracy thresholds not met (see logs/compare.log)"
   step_log_set compare "logs/compare.log"
-  echo "  -> OK but compare exited ${COMPARE_EXIT} (FAIL verdict)"
+  echo "  -> Compare exited ${COMPARE_EXIT} (FAIL verdict)"
 fi
 
-# ---------- Step: report ----------
-write_status_json "$(
-  if [[ "${HALTED}" -eq 1 ]]; then echo ERROR;
-  elif [[ "${COMPARE_EXIT}" -ne 0 ]]; then echo FAIL;
-  else echo PASS; fi
-)" "${COMPARE_EXIT}"
-
+# ---------- Step: report (after compare; PASS and FAIL both get artifacts) ----------
+# First pass captures report step timing; write_status_json persists final step state;
+# second pass refreshes the Markdown so **Overall** and the step table match this run.
 report_impl() {
   python3 "${SCRIPT_DIR}/generate_validation_report.py" \
     --compare-summary "${OUT_DIR}/compare-summary.json" \
@@ -414,4 +500,20 @@ report_impl() {
     --run-status "${STATUS_PATH}" \
     --output "${REPORT_PATH}"
 }
-run_step report report_impl || true
+report_refresh() {
+  python3 "${SCRIPT_DIR}/generate_validation_report.py" \
+    --compare-summary "${OUT_DIR}/compare-summary.json" \
+    --on-device-performance-json "${OUT_DIR}/on-device-performance.json" \
+    --run-status "${STATUS_PATH}" \
+    --output "${REPORT_PATH}"
+}
+if [[ "${COMPARE_EXIT}" -eq 0 ]]; then
+  run_step report report_impl || true
+  write_status_json "PASS" 0
+else
+  run_step report report_impl || true
+  write_status_json "FAIL" "${COMPARE_EXIT}"
+fi
+report_refresh || true
+
+exit "${COMPARE_EXIT}"

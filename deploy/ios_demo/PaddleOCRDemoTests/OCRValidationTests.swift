@@ -22,23 +22,25 @@ import UIKit
 
 // MARK: - Tests
 
-final class OCRBenchmarkTests: XCTestCase {
+final class OCRValidationTests: XCTestCase {
 
-    /// Required env: full file name of an image in the test bundle's Fixtures/ (e.g. "table.jpg").
-    /// Set manually in a Scheme when running from Xcode; set by `run_validation.sh`
-    /// via `TEST_RUNNER_PADDLEOCR_VALIDATION_IMAGE_NAME` otherwise.
+    /// `PADDLEOCR_VALIDATION_IMAGE_NAME`: bundled image stem or `stem.ext` (optional).
     private static let imageNameEnvKey = "PADDLEOCR_VALIDATION_IMAGE_NAME"
 
-    /// Optional non-negative int; default `3`. Used only by `testOCRBenchmarkTimings`.
+    /// Optional non-negative int; default `3`. Used only by `testOnDevicePerformanceMetrics`.
     private static let warmupIterationsEnvKey = "PADDLEOCR_VALIDATION_WARMUP_ITERATIONS"
 
-    /// Optional non-negative int; default `10`. Used only by `testOCRBenchmarkTimings`.
+    /// Optional non-negative int; default `10`. Used only by `testOnDevicePerformanceMetrics`.
     private static let measuredIterationsEnvKey = "PADDLEOCR_VALIDATION_MEASURED_ITERATIONS"
+
+    /// `CORE_ML` (default) or `XNNPACK` — ONNX Runtime EP for validation runs.
+    private static let inferenceBackendEnvKey = "PADDLEOCR_VALIDATION_INFERENCE_BACKEND"
 
     func testOCRExportJSONSchema() async throws {
         let cgImage = try resolveValidationImage()
+        let backend = try resolveInferenceBackend()
         let manager = ORTSessionManager()
-        try await manager.loadModels(backend: .coreMLOnly)
+        try await manager.loadModels(backend: backend)
         let engine = try OCREngine(sessionManager: manager)
         let run = try await engine.run(cgImage, params: .noOverrides)
 
@@ -60,11 +62,12 @@ final class OCRBenchmarkTests: XCTestCase {
         attachJSON(data, artifact: .iOSExport)
     }
 
-    func testOCRBenchmarkTimings() async throws {
+    func testOnDevicePerformanceMetrics() async throws {
         let cgImage = try resolveValidationImage()
         let memoryBeforeLoad = physicalFootprintBytes()
+        let backend = try resolveInferenceBackend()
         let manager = ORTSessionManager()
-        try await manager.loadModels(backend: .coreMLOnly)
+        try await manager.loadModels(backend: backend)
         let memoryAfterLoad = physicalFootprintBytes()
         let engine = try OCREngine(sessionManager: manager)
 
@@ -156,48 +159,57 @@ final class OCRBenchmarkTests: XCTestCase {
 
     // MARK: - Helpers
 
-    private func resolveValidationImage() throws -> CGImage {
+    private func resolveInferenceBackend() throws -> ORTInferenceBackend {
         let raw =
+            ProcessInfo.processInfo.environment[Self.inferenceBackendEnvKey]?
+                .trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        if raw.isEmpty {
+            return .coreMLOnly
+        }
+        if let exact = ORTInferenceBackend(rawValue: raw) {
+            return exact
+        }
+        switch raw.lowercased() {
+        case "core_ml":
+            return .coreMLOnly
+        case "xnnpack":
+            return .xnnpackOnly
+        default:
+            throw NSError(
+                domain: "OCRValidationTests",
+                code: 5,
+                userInfo: [
+                    NSLocalizedDescriptionKey:
+                        "Invalid \(Self.inferenceBackendEnvKey): \"\(raw)\". "
+                        + "Use CORE_ML (default), XNNPACK, or Swift raw values \(ORTInferenceBackend.coreMLOnly.rawValue) / "
+                        + "\(ORTInferenceBackend.xnnpackOnly.rawValue). See README.",
+                ]
+            )
+        }
+    }
+
+    private func resolveValidationImage() throws -> CGImage {
+        let envRaw =
             ProcessInfo.processInfo.environment[Self.imageNameEnvKey]?
                 .trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
-        guard !raw.isEmpty else {
-            throw NSError(
-                domain: "OCRBenchmarkTests",
-                code: 1,
-                userInfo: [
-                    NSLocalizedDescriptionKey:
-                        "Set PADDLEOCR_VALIDATION_IMAGE_NAME to a file name under PaddleOCRDemoTests/Fixtures/ (e.g. \"table.jpg\"), or run ./Scripts/run_validation.sh which sets TEST_RUNNER_PADDLEOCR_VALIDATION_IMAGE_NAME for you.",
-                ]
-            )
-        }
-        let ext = (raw as NSString).pathExtension
-        let stem = (raw as NSString).deletingPathExtension
-        guard !stem.isEmpty, !ext.isEmpty else {
-            throw NSError(
-                domain: "OCRBenchmarkTests",
-                code: 2,
-                userInfo: [
-                    NSLocalizedDescriptionKey:
-                        "Invalid PADDLEOCR_VALIDATION_IMAGE_NAME: expected <stem>.<ext>, got \"\(raw)\".",
-                ]
-            )
-        }
+        let raw = envRaw.isEmpty ? ValidationFixtures.defaultReferenceImageStem : envRaw
         let bundle = Bundle(for: Self.self)
-        guard let url = bundle.url(forResource: stem, withExtension: ext, subdirectory: "Fixtures") else {
+        guard let path = bundle.path(forBundledImageNamed: raw, subdirectory: "Fixtures") else {
             throw NSError(
-                domain: "OCRBenchmarkTests",
+                domain: "OCRValidationTests",
                 code: 3,
                 userInfo: [
                     NSLocalizedDescriptionKey:
-                        "Image \"\(raw)\" not found in test bundle Fixtures/. Ensure it is committed under PaddleOCRDemoTests/Fixtures/ or run via ./Scripts/run_validation.sh --image <path>.",
+                        "Image \"\(raw)\" not found in the test bundle. Check the name and that the file is included in the test target resources (e.g. \"\(ValidationFixtures.defaultReferenceImageStem)\"). See README.",
                 ]
             )
         }
+        let url = URL(fileURLWithPath: path)
         guard let ui = UIImage(contentsOfFile: url.path),
               let cg = normalizeOrientation(ui).cgImage
         else {
             throw NSError(
-                domain: "OCRBenchmarkTests",
+                domain: "OCRValidationTests",
                 code: 4,
                 userInfo: [NSLocalizedDescriptionKey: "Could not decode image at \(url.path)."]
             )
@@ -221,7 +233,7 @@ final class OCRBenchmarkTests: XCTestCase {
         }
         guard let n = Int(raw), n >= 0 else {
             throw NSError(
-                domain: "OCRBenchmarkTests",
+                domain: "OCRValidationTests",
                 code: 3,
                 userInfo: [
                     NSLocalizedDescriptionKey:

@@ -1,2 +1,2 @@
-*
-!.gitignore
+# Ad-hoc copies from ./Scripts/run_validation.sh --image (local-*); not committed.
+local-*
