@@ -44,6 +44,21 @@ from ._pipelines import (
 from ._utils.logging import logger
 from ._version import version as __version__
 
+
+def doc2md_convert(source, **kwargs):
+    """Convert an office document to Markdown. See paddleocr._doc2md.convert."""
+    from ._doc2md import convert
+
+    return convert(source, **kwargs)
+
+
+def doc2md_supported_formats():
+    """Return supported file extensions. See paddleocr._doc2md.supported_formats."""
+    from ._doc2md import supported_formats
+
+    return supported_formats()
+
+
 __all__ = [
     "benchmark",
     "ChartParsing",
@@ -69,6 +84,8 @@ __all__ = [
     "PPStructureV3",
     "SealRecognition",
     "TableRecognitionPipelineV2",
+    "doc2md_convert",
+    "doc2md_supported_formats",
     "logger",
     "__version__",
 ]

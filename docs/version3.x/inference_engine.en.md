@@ -38,7 +38,7 @@ When using the PaddlePaddle framework for inference, you need to install PaddleP
 When using Transformers as the inference engine, you need to install Hugging Face Transformers. Example command:
 
 ```bash
-python -m pip install transformers
+python -m pip install "transformers>=5.4.0"
 ```
 
 In many cases, you also need to install the underlying inference framework. For details, see the [Transformers official documentation](https://huggingface.co/docs/transformers/installation).

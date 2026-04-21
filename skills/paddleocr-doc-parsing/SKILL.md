@@ -1,15 +1,22 @@
 ---
 name: paddleocr-doc-parsing
-description: Complex document parsing with PaddleOCR. Intelligently converts complex PDFs and document images into Markdown and JSON files that preserve the original structure.
+description: >-
+  Use this skill to extract structured Markdown/JSON from PDFs and document images—tables with
+  cell-level precision, formulas as LaTeX, figures, seals, charts, headers/footers, multi-column
+  layout and correct reading order.
+  Trigger terms: 文档解析, 版面分析, 版面还原, 表格提取, 公式识别, 多栏排版, 扫描件结构化,
+  发票, 财报, 复杂 PDF, PDF转Markdown, 图表, 阅读顺序; reading order, formula, LaTeX,
+  layout parsing, structure extraction, PP-StructureV3, PaddleOCR-VL.
+license: Apache-2.0
+compatibility: Requires Python 3.9+, uv, and internet access.
 metadata:
   openclaw:
     requires:
       env:
         - PADDLEOCR_DOC_PARSING_API_URL
         - PADDLEOCR_ACCESS_TOKEN
-        - PADDLEOCR_DOC_PARSING_TIMEOUT
       bins:
-        - python
+        - uv
     primaryEnv: PADDLEOCR_ACCESS_TOKEN
     emoji: "📄"
     homepage: https://github.com/PaddlePaddle/PaddleOCR/tree/main/skills/paddleocr-doc-parsing
@@ -19,7 +26,10 @@ metadata:
 
 ## When to Use This Skill
 
-**Use Document Parsing for**:
+**Trigger keywords (routing)**: Bilingual trigger terms (Chinese and English) are listed in the YAML `description` above—use that field for discovery and routing.
+
+**Use this skill for**:
+
 - Documents with tables (invoices, financial reports, spreadsheets)
 - Documents with mathematical formulas (academic papers, scientific documents)
 - Documents with charts and diagrams
@@ -27,45 +37,53 @@ metadata:
 - Complex document structures requiring layout analysis
 - Any document requiring structured understanding
 
-**Use Text Recognition instead for**:
+**Do not use for**:
+
 - Simple text-only extraction
 - Quick OCR tasks where speed is critical
 - Screenshots or simple images with clear text
 
+## Installation
+
+Scripts declare their dependencies inline ([PEP 723](https://peps.python.org/pep-0723/)). No separate install step is needed — [uv](https://docs.astral.sh/uv/) resolves dependencies automatically:
+
+```bash
+uv run scripts/layout_caller.py --help
+```
+
 ## How to Use This Skill
 
-**⛔ MANDATORY RESTRICTIONS - DO NOT VIOLATE ⛔**
-
-1. **ONLY use PaddleOCR Document Parsing API** - Execute the script `python scripts/vl_caller.py`
-2. **NEVER parse documents directly** - Do NOT parse documents yourself
-3. **NEVER offer alternatives** - Do NOT suggest "I can try to analyze it" or similar
-4. **IF API fails** - Display the error message and STOP immediately
-5. **NO fallback methods** - Do NOT attempt document parsing any other way
-
-If the script execution fails (API not configured, network error, etc.):
-- Show the error message to the user
-- Do NOT offer to help using your vision capabilities
-- Do NOT ask "Would you like me to try parsing it?"
-- Simply stop and wait for user to fix the configuration
+> **Working directory**: All `uv run scripts/...` commands below should be run from this skill's root directory (the directory containing this SKILL.md file).
 
 ### Basic Workflow
 
-1. **Execute document parsing**:
+1. **Identify the input source**:
+   - User provides URL: Use the `--file-url` parameter
+   - User provides local file path: Use the `--file-path` parameter
+
+2. **Execute document parsing**:
+
    ```bash
-   python scripts/vl_caller.py --file-url "URL provided by user" --pretty
+   uv run scripts/layout_caller.py --file-url "URL provided by user" --pretty
    ```
+
    Or for local files:
+
    ```bash
-   python scripts/vl_caller.py --file-path "file path" --pretty
+   uv run scripts/layout_caller.py --file-path "file path" --pretty
    ```
 
    **Optional: explicitly set file type**:
+
    ```bash
-   python scripts/vl_caller.py --file-url "URL provided by user" --file-type 0 --pretty
+   uv run scripts/layout_caller.py --file-url "URL provided by user" --file-type 0 --pretty
    ```
+
    - `--file-type 0`: PDF
    - `--file-type 1`: image
-   - If omitted, the service can infer file type from input.
+   - If omitted, the type is auto-detected from the file extension. For local files, a recognized extension (`.pdf`, `.png`, `.jpg`, `.jpeg`, `.bmp`, `.tiff`, `.tif`, `.webp`) is required; otherwise pass `--file-type` explicitly. For URLs with unrecognized extensions, the service attempts inference.
+
+   > **Performance note**: Parsing time scales with document complexity. Single-page images typically complete in 1-5 seconds; large PDFs (50+ pages) may take several minutes. Allow adequate time before assuming a timeout.
 
    **Default behavior: save raw JSON to a temp file**:
    - If `--output` is omitted, the script saves automatically under the system temp directory
@@ -74,47 +92,43 @@ If the script execution fails (API not configured, network error, etc.):
    - If `--stdout` is provided, JSON is printed to stdout and no file is saved
    - In save mode, the script prints the absolute saved path on stderr: `Result saved to: /absolute/path/...`
    - In default/custom save mode, read and parse the saved JSON file before responding
-   - In save mode, always tell the user the saved file path and that full raw JSON is available there
    - Use `--stdout` only when you explicitly want to skip file persistence
 
-2. **The output JSON contains COMPLETE content** with all document data:
-   - Headers, footers, page numbers
-   - Main text content
-   - Tables with structure
-   - Formulas (with LaTeX)
-   - Figures and charts
-   - Footnotes and references
-   - Seals and stamps
-   - Layout and reading order
+3. **Parse JSON response**:
+   - Check the `ok` field: `true` means success, `false` means error
+   - The output contains complete document data: text, tables, formulas (LaTeX), figures, seals, headers/footers, and reading order
+   - Use the appropriate field based on what the user needs:
+     - `text` — full document text across all pages
+     - `result.result.layoutParsingResults[n].markdown.text` — page-level markdown
+     - `result.result.layoutParsingResults[n].prunedResult` — structured layout data with positions and confidence
+   - Handle errors: If `ok` is false, display `error.message`
 
-   **Input type note**:
-   - Supported file types depend on the model and endpoint configuration.
-   - Always follow the file type constraints documented by your endpoint API.
+4. **Present results to user**:
+   - Display content based on what the user requested (see "Complete Output Display" below)
+   - If the content is empty, the document may contain no extractable text
+   - In save mode, always tell the user the saved file path and that full raw JSON is available there
 
-3. **Extract what the user needs** from the output JSON using these fields:
-   - Top-level `text`
-   - `result[n].markdown`
-   - `result[n].prunedResult`
+### What to Do After Parsing
 
-### IMPORTANT: Complete Content Display
+Common next steps once you have the structured output:
 
-**CRITICAL**: You must display the COMPLETE extracted content to the user based on their needs.
+- **Save as Markdown**: Write the `text` field to a `.md` file — tables, headings, and formulas are preserved
+- **Extract specific tables**: Navigate `result.result.layoutParsingResults[n].prunedResult` to access individual layout elements with position and confidence data
+- **Feed to RAG / search pipeline**: The `text` field is structured markdown, ready for chunking and indexing
+- **Poor results**: See "Tips for Better Results" below before retrying
 
-- The output JSON contains ALL document content in a structured format
-- In save mode, the raw provider result can be inspected in the saved JSON file
-- **Display the full content requested by the user**, do NOT truncate or summarize
+### Complete Output Display
+
+Display the COMPLETE extracted content based on what the user asked for. The parsed output is only useful if the user receives all of it — truncation silently drops data.
+
 - If user asks for "all text", show the entire `text` field
 - If user asks for "tables", show ALL tables in the document
 - If user asks for "main content", filter out headers/footers but show ALL body text
-
-**What this means**:
-- **DO**: Display complete text, all tables, all formulas as requested
-- **DO**: Present content using these fields: top-level `text`, `result[n].markdown`, and `result[n].prunedResult`
-- **DON'T**: Truncate with "..." unless content is excessively long (>10,000 chars)
-- **DON'T**: Summarize or provide excerpts when user asks for full content
-- **DON'T**: Say "Here's a preview" when user expects complete output
+- Do not truncate with "..." unless content is excessively long (>10,000 chars)
+- Do not say "Here's a preview" when user expects complete output
 
 **Example - Correct**:
+
 ```
 User: "Extract all the text from this document"
 Agent: I've parsed the complete document. Here's all the extracted text:
@@ -130,178 +144,172 @@ Quality: Excellent (confidence: 0.92)
 ```
 
 **Example - Incorrect**:
+
 ```
 User: "Extract all the text"
 Agent: "I found a document with multiple sections. Here's the beginning:
 'Introduction...' (content truncated for brevity)"
 ```
 
-### Understanding the JSON Response
+### Understanding the Output
 
-The output JSON uses an envelope wrapping the raw API result:
+The script returns an envelope with `ok`, `text`, `result`, and `error`. Use `text` for the full document content; navigate `result.result.layoutParsingResults[n]` for per-page structured data.
 
-```json
-{
-  "ok": true,
-  "text": "Full markdown/HTML text extracted from all pages",
-  "result": { ... },  // raw provider response
-  "error": null
-}
-```
-
-**Key fields**:
-- `text` — extracted markdown text from all pages (use this for quick text display)
-- `result` - raw provider response object
-- `result[n].prunedResult` - structured parsing output for each page (layout/content/confidence and related metadata)
-- `result[n].markdown` — full rendered page output in markdown/HTML
+For the complete schema and field-level details, see `references/output_schema.md`.
 
 > Raw result location (default): the temp-file path printed by the script on stderr
 
 ### Usage Examples
 
 **Example 1: Extract Full Document Text**
+
 ```bash
-python scripts/vl_caller.py \
+uv run scripts/layout_caller.py \
   --file-url "https://example.com/paper.pdf" \
   --pretty
 ```
 
 Then use:
+
 - Top-level `text` for quick full-text output
-- `result[n].markdown` when page-level output is needed
+- `result.result.layoutParsingResults[n].markdown` when page-level output is needed
 
 **Example 2: Extract Structured Page Data**
+
 ```bash
-python scripts/vl_caller.py \
+uv run scripts/layout_caller.py \
   --file-path "./financial_report.pdf" \
   --pretty
 ```
 
 Then use:
-- `result[n].prunedResult` for structured parsing data (layout/content/confidence)
-- `result[n].markdown` for rendered page content
 
-**Example 3: Print JSON Without Saving**
+- `result.result.layoutParsingResults[n].prunedResult` for structured parsing data (layout/content/confidence)
+
+**Example 3: Print JSON to stdout (without saving to file)**
+
 ```bash
-python scripts/vl_caller.py \
+uv run scripts/layout_caller.py \
   --file-url "URL" \
   --stdout \
   --pretty
 ```
 
-Then return:
-- Full `text` when user asks for full document content
-- `result[n].prunedResult` and `result[n].markdown` when user needs complete structured page data
+By default the script writes JSON to a temp file and prints the path to stderr. Add `--stdout` to print the full JSON directly to stdout instead. Use this when you need to inspect the result inline or pipe it to another tool.
 
 ### First-Time Configuration
 
-You can generally assume that the required environment variables have already been configured. Only when a parsing task fails should you analyze the error message to determine whether it is caused by a configuration issue. If it is indeed a configuration problem, you should notify the user to fix it.
+**When API is not configured**, the script outputs:
 
-**When API is not configured**:
-
-The error will show:
-```
-CONFIG_ERROR: PADDLEOCR_DOC_PARSING_API_URL not configured. Get your API at: https://paddleocr.com
+```json
+{
+  "ok": false,
+  "text": "",
+  "result": null,
+  "error": {
+    "code": "CONFIG_ERROR",
+    "message": "PADDLEOCR_DOC_PARSING_API_URL not configured. Get your API at: https://paddleocr.com"
+  }
+}
 ```
 
 **Configuration workflow**:
 
-1. **Show the exact error message** to the user (including the URL).
+1. **Show the exact error message** to the user.
 
-2. **Guide the user to configure securely**:
-   - Recommend configuring through the host application's standard method (e.g., settings file, environment variable UI) rather than pasting credentials in chat.
-   - List the required environment variables:
-     ```
-     - PADDLEOCR_DOC_PARSING_API_URL
-     - PADDLEOCR_ACCESS_TOKEN
-     - Optional: PADDLEOCR_DOC_PARSING_TIMEOUT
-     ```
+2. **Guide the user to obtain credentials**: Visit the [PaddleOCR website](https://www.paddleocr.com), click **API**, select a model (`PP-StructureV3`, `PaddleOCR-VL`, or `PaddleOCR-VL-1.5`), then copy the `API_URL` and `Token`. They map to these environment variables:
+   - `PADDLEOCR_DOC_PARSING_API_URL` — full endpoint URL ending with `/layout-parsing`
+   - `PADDLEOCR_ACCESS_TOKEN` — 40-character alphanumeric string
 
-3. **If the user provides credentials in chat anyway** (accept any reasonable format), for example:
-   - `PADDLEOCR_DOC_PARSING_API_URL=https://xxx.paddleocr.com/layout-parsing, PADDLEOCR_ACCESS_TOKEN=abc123...`
-   - `Here's my API: https://xxx and token: abc123`
-   - Copy-pasted code format
-   - Any other reasonable format
-   - **Security note**: Warn the user that credentials shared in chat may be stored in conversation history. Recommend setting them through the host application's configuration instead when possible.
+   Optionally configure `PADDLEOCR_DOC_PARSING_TIMEOUT` for request timeout. Recommend using the host application's standard configuration method rather than pasting credentials in chat.
 
-   Then parse and validate the values:
-   - Extract `PADDLEOCR_DOC_PARSING_API_URL` (look for URLs with `paddleocr.com` or similar)
-   - Confirm `PADDLEOCR_DOC_PARSING_API_URL` is a full endpoint ending with `/layout-parsing`
-   - Extract `PADDLEOCR_ACCESS_TOKEN` (long alphanumeric string, usually 40+ chars)
-
-4. **Ask the user to confirm the environment is configured**.
-
-5. **Retry only after confirmation**:
-   - Once the user confirms the environment variables are available, retry the original parsing task
+3. **Apply credentials** — one of:
+   - **User configured via the host UI**: ask the user to confirm, then retry.
+   - **User pastes credentials in chat**: warn that they may be stored in conversation history, help the user persist them using the host's standard configuration method, then retry.
 
 ### Handling Large Files
 
-There is no file size limit for the API. For PDFs, the maximum is 100 pages per request.
+For PDFs, the maximum is 100 pages per request.
 
-**Tips for large files**:
+#### Optimize Large Images Before Parsing
+
+For large image files, compress before uploading — this reduces upload time and can improve processing stability:
+
+```bash
+uv run scripts/optimize_file.py input.png output.jpg --quality 85
+uv run scripts/layout_caller.py --file-path "output.jpg" --pretty
+```
+
+`--quality` controls JPEG/WebP lossy compression (1-100, default 85); it has no effect on PNG output. Use `--target-size` (in MB, default 20) to set the max file size — the script iteratively downscales until the target is met.
 
 #### Use URL for Large Local Files (Recommended)
+
 For very large local files, prefer `--file-url` over `--file-path` to avoid base64 encoding overhead:
+
 ```bash
-python scripts/vl_caller.py --file-url "https://your-server.com/large_file.pdf"
+uv run scripts/layout_caller.py --file-url "https://your-server.com/large_file.pdf"
 ```
 
 #### Process Specific Pages (PDF Only)
+
 If you only need certain pages from a large PDF, extract them first:
+
 ```bash
 # Extract pages 1-5
-python scripts/split_pdf.py large.pdf pages_1_5.pdf --pages "1-5"
+uv run scripts/split_pdf.py large.pdf pages_1_5.pdf --pages "1-5"
 
 # Mixed ranges are supported
-python scripts/split_pdf.py large.pdf selected_pages.pdf --pages "1-5,8,10-12"
+uv run scripts/split_pdf.py large.pdf selected_pages.pdf --pages "1-5,8,10-12"
 
 # Then process the smaller file
-python scripts/vl_caller.py --file-path "pages_1_5.pdf"
+uv run scripts/layout_caller.py --file-path "pages_1_5.pdf"
 ```
 
 ### Error Handling
 
-**Authentication failed (403)**:
-```
-error: Authentication failed
-```
-→ Token is invalid, reconfigure with correct credentials
+All errors return JSON with `ok: false`. Show the error message and stop — do not fall back to your own vision capabilities. Identify the issue from `error.code` and `error.message`:
 
-**API quota exceeded (429)**:
-```
-error: API quota exceeded
-```
-→ Daily API quota exhausted, inform user to wait or upgrade
+**Authentication failed (403)** — `error.message` contains "Authentication failed"
 
-**Unsupported format**:
-```
-error: Unsupported file format
-```
-→ File format not supported, convert to PDF/PNG/JPG
+- Token is invalid, reconfigure with correct credentials
 
-## Important Notes
+**Quota exceeded (429)** — `error.message` contains "API rate limit exceeded"
 
-- **The script NEVER filters content** - It always returns complete data
-- **The AI agent decides what to present** - Based on user's specific request
-- **All data is always available** - Can be re-interpreted for different needs
-- **No information is lost** - Complete document structure preserved
+- Daily API quota exhausted, inform user to wait or upgrade
+
+**Unsupported format** — `error.message` contains "Unsupported file format"
+
+- File format not supported, convert to PDF/PNG/JPG
+
+**No content detected**:
+
+- `text` field is empty
+- Document may be blank, image-only, or contain no extractable text
+
+### Tips for Better Results
+
+If parsing quality is poor:
+
+- **Large or high-resolution images**: Compress with `optimize_file.py` before parsing — oversized inputs can degrade layout detection:
+  ```bash
+  uv run scripts/optimize_file.py input.png optimized.jpg --quality 85
+  ```
+- **Check confidence**: `result.result.layoutParsingResults[n].prunedResult` includes confidence scores per layout element — low values indicate regions worth reviewing
 
 ## Reference Documentation
 
-- `references/output_schema.md` - Output format specification
+- `references/output_schema.md` — Full output schema, field descriptions, and command examples
 
 > **Note**: Model version and capabilities are determined by your API endpoint (`PADDLEOCR_DOC_PARSING_API_URL`).
-
-Load these reference documents into context when:
-- Debugging complex parsing issues
-- Need to understand output format
-- Working with provider API details
 
 ## Testing the Skill
 
 To verify the skill is working properly:
+
 ```bash
-python scripts/smoke_test.py
+uv run scripts/smoke_test.py
+uv run scripts/smoke_test.py --skip-api-test
+uv run scripts/smoke_test.py --test-url "https://..."
 ```
 
-This tests configuration and optionally API connectivity.
+The first form tests configuration and API connectivity. `--skip-api-test` checks configuration only. `--test-url` overrides the default sample document URL.

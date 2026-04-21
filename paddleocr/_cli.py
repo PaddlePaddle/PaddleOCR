@@ -165,6 +165,113 @@ def _register_genai_server_command(subparsers):
     subparser.set_defaults(executor=_run_genai_server)
 
 
+def _register_doc2md_command(subparsers):
+    """Register the doc2md subcommand."""
+
+    def _execute_doc2md(args):
+        if args.formats:
+            from ._doc2md import supported_formats
+
+            fmts = supported_formats()
+            print("Supported formats: " + ", ".join(f".{f}" for f in fmts))
+            return
+
+        if not args.input:
+            logger.error("--input is required when --formats is not set")
+            sys.exit(2)
+
+        from ._doc2md import convert
+        from pathlib import Path
+
+        output = args.output
+        quiet = args.quiet
+
+        # Build converter kwargs from CLI args
+        converter_kwargs = {}
+        if args.no_drawings:
+            converter_kwargs["extract_drawings"] = False
+        if args.no_headers_footers:
+            converter_kwargs["extract_headers_footers"] = False
+        if args.sheet_name is not None:
+            converter_kwargs["sheet_name"] = args.sheet_name
+        if args.max_rows is not None:
+            converter_kwargs["max_rows"] = args.max_rows
+
+        t1 = time.time()
+        try:
+            result = convert(args.input, output=output, **converter_kwargs)
+        except Exception as e:
+            logger.error(f"Conversion failed: {e}")
+            sys.exit(1)
+
+        elapsed = (time.time() - t1) * 1000
+        if not quiet:
+            logger.info(f"Conversion done in {elapsed:.0f} ms")
+
+        if output:
+            if not quiet:
+                logger.info(f"Saved to: {output}")
+                if result.images:
+                    logger.info(f"Images saved to: {Path(output).parent / 'images'}/")
+        else:
+            print(result.markdown)
+
+    subparser = subparsers.add_parser(
+        "doc2md",
+        help="Convert office documents (docx/xlsx/pptx) to Markdown",
+    )
+    subparser.add_argument(
+        "-i",
+        "--input",
+        type=str,
+        default=None,
+        help="Input file path (.docx/.xlsx/.pptx)",
+    )
+    subparser.add_argument(
+        "-o",
+        "--output",
+        type=str,
+        default=None,
+        help="Output Markdown file path (prints to stdout if omitted)",
+    )
+    subparser.add_argument(
+        "-q",
+        "--quiet",
+        action="store_true",
+        help="Suppress informational output",
+    )
+    subparser.add_argument(
+        "--formats",
+        action="store_true",
+        help="List supported formats and exit",
+    )
+    # docx options
+    subparser.add_argument(
+        "--no-drawings",
+        action="store_true",
+        help="[docx/xlsx] Skip text box / drawing layer content extraction",
+    )
+    subparser.add_argument(
+        "--no-headers-footers",
+        action="store_true",
+        help="[docx] Skip header and footer content extraction",
+    )
+    # xlsx options
+    subparser.add_argument(
+        "--sheet-name",
+        type=str,
+        default=None,
+        help="[xlsx] Convert only the specified sheet (by name)",
+    )
+    subparser.add_argument(
+        "--max-rows",
+        type=int,
+        default=None,
+        help="[xlsx] Maximum number of rows to convert per sheet",
+    )
+    subparser.set_defaults(executor=_execute_doc2md)
+
+
 def _get_parser():
     parser = argparse.ArgumentParser(prog="paddleocr")
     parser.add_argument(
@@ -176,6 +283,7 @@ def _get_parser():
     _register_install_hpi_deps_command(subparsers)
     _register_install_genai_server_deps_command(subparsers)
     _register_genai_server_command(subparsers)
+    _register_doc2md_command(subparsers)
     return parser
 
 

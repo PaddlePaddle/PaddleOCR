@@ -23,6 +23,7 @@ OCR（光学字符识别，Optical Character Recognition）是一种将图像中
 在本产线中，您可以根据下方的基准测试数据选择使用的模型。
 
 > 推理耗时仅包含模型推理耗时，不包含前后处理耗时。
+> 在带有 [常规模式 / 高性能模式] 标记的推理耗时列中，`常规模式` 对应本地推理引擎 `paddle_static`。
 
 <details>
 <summary><b>文档图像方向分类模块（可选）：</b></summary>
@@ -662,7 +663,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://padd
               <li><strong>软件环境：</strong>
                   <ul>
                       <li>Ubuntu 20.04 / CUDA 11.8 / cuDNN 8.9 / TensorRT 8.6.1.6</li>
-                      <li>paddlepaddle 3.0.0 / paddleocr 3.0.3</li>
+                      <li>paddlepaddle-gpu 3.0.0 / paddleocr 3.0.3</li>
                   </ul>
               </li>
           </ul>
@@ -684,7 +685,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://padd
             <td>常规模式</td>
             <td>FP32精度 / 无TRT加速</td>
             <td>FP32精度 / 8线程</td>
-            <td>PaddleInference</td>
+            <td><code>paddle_static</code></td>
         </tr>
         <tr>
             <td>高性能模式</td>
@@ -702,7 +703,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://padd
 
 ## 2. 快速开始
 
-在本地使用通用OCR产线前，请先根据所选推理引擎安装对应依赖，再安装 PaddleOCR 推理包。完整安装说明请参考[安装教程](../installation.md)。安装完成后，即可在本地使用命令行体验或 Python 集成。
+在本地使用通用 OCR 产线前，请先根据所选推理引擎安装对应依赖，再安装 `paddleocr` Python 包。完整安装说明请参考[安装教程](../installation.md)。安装完成后，即可在本地使用命令行体验或 Python 集成。
 
 **请注意，如果在执行过程中遇到程序失去响应、程序异常退出、内存资源耗尽、推理速度极慢等问题，请尝试参考文档调整配置，例如关闭不需要使用的功能或使用更轻量的模型。**
 
@@ -710,10 +711,10 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://padd
 
 #### 2.0.1 安装推理引擎
 
-- 如需使用 Paddle 推理引擎，请参考[飞桨框架安装说明](../paddlepaddle_installation.md)安装 PaddlePaddle。
+- 如需使用本地推理引擎 `paddle_static`，请参考[飞桨框架安装说明](../paddlepaddle_installation.md)安装 PaddlePaddle。
 - 如需使用 `transformers` 推理引擎，请参考[推理引擎文档](../inference_engine.md)安装相关依赖。
 
-#### 2.0.2 安装推理库
+#### 2.0.2 安装 paddleocr
 
 ```bash
 # 安装基础版本（仅包含OCR功能）
@@ -730,7 +731,7 @@ pip install "paddleocr[all]"
 import paddleocr
 print(f"PaddleOCR版本: {paddleocr.__version__}")
 
-# 若使用 Paddle 推理引擎，可继续验证 PaddlePaddle 与 GPU 是否可用
+# 若使用本地推理引擎 paddle_static，可继续验证 PaddlePaddle 与 GPU 是否可用
 import paddle
 print(f"Paddle版本: {paddle.__version__}")
 print(f"GPU可用: {paddle.is_compiled_with_cuda()}")
@@ -756,7 +757,7 @@ pip install paddleocr
 # 检查CUDA版本
 nvidia-smi
 
-# 使用 Paddle 推理引擎时，安装对应版本的 PaddlePaddle
+# 使用本地推理引擎 paddle_static 时，安装对应版本的 PaddlePaddle
 pip install paddlepaddle-gpu==3.0.0 -f https://www.paddlepaddle.org.cn/whl/linux/mkl/avx/stable.html
 ```
 
@@ -784,9 +785,9 @@ paddleocr ocr -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_im
 paddleocr ocr -i ./general_ocr_002.png --ocr_version PP-OCRv4
 ```
 
-上述命令使用飞桨框架作为默认推理引擎，请在运行前确保相关依赖已经安装。
+上述命令默认使用本地推理引擎 `paddle_static`。如需运行，请先参考[飞桨框架安装说明](../paddlepaddle_installation.md)安装 PaddlePaddle。
 
-如果使用 `transformers` 作为推理引擎，可参考如下命令：
+如果选择 `transformers` 作为推理引擎，请先参考[推理引擎文档](../inference_engine.md)完成 Transformers 环境配置，然后执行如下命令：
 
 ```bash
 # 使用 transformers 引擎进行推理
@@ -798,6 +799,8 @@ paddleocr ocr -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_im
     --device gpu:0 \
     --engine transformers
 ```
+
+在大多数场景下，默认的 `paddle_static` 推理引擎通常具备更好的推理性能，建议优先使用。
 
 <!-- Luxorion-12修改：表格参数描述 -->
 
@@ -1223,9 +1226,9 @@ for res in result:
     res.save_to_json("output")
 ```
 
-上述代码使用飞桨框架作为默认推理引擎，请在运行前确保相关依赖已经安装。
+上述代码默认使用本地推理引擎 `paddle_static`。如需运行，请先参考[飞桨框架安装说明](../paddlepaddle_installation.md)安装 PaddlePaddle。
 
-如果使用 `transformers` 作为推理引擎，可参考如下代码：
+如果选择 `transformers` 作为推理引擎，请先参考[推理引擎文档](../inference_engine.md)完成 Transformers 环境配置，然后执行如下代码：
 
 ```python
 from paddleocr import PaddleOCR
@@ -1237,7 +1240,7 @@ ocr = PaddleOCR(
     engine="transformers",
 )
 # ocr = PaddleOCR(lang="en", engine="transformers") # 通过 lang 参数来使用英文模型
-# ocr = PaddleOCR(ocr_version="PP-OCRv4", engine="transformers") # 通过 ocr_version 参数来使用 PP-OCR 其他版本
+# ocr = PaddleOCR(ocr_version="PP-OCRv4") # 通过 ocr_version 参数来使用 PP-OCR 其他版本
 # ocr = PaddleOCR(device="gpu", engine="transformers") # 通过 device 参数使得在模型推理时使用 GPU
 # ocr = PaddleOCR(
 #     text_detection_model_name="PP-OCRv5_server_det",
@@ -1253,6 +1256,8 @@ for res in result:
     res.save_to_img("output")
     res.save_to_json("output")
 ```
+
+在大多数场景下，默认的 `paddle_static` 推理引擎通常具备更好的推理性能，建议优先使用。
 <!-- Luxorion-12 修改：表格参数说明-->
 在上述 Python 脚本中，执行了如下几个步骤：
 

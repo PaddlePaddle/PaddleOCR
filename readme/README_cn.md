@@ -61,13 +61,22 @@
 
 ## 📣 最新动态
 
-### 🔥 [2026.01.29] PaddleOCR v3.4.0 发布：异型文档解析新标杆
+### 🔥 PaddleOCR v3.5.0 发布：推理后端更灵活，文档输出更丰富
+* **推理后端灵活切换**：支持在飞桨静态图、飞桨动态图和 Transformers 之间无缝切换。深度适配 Hugging Face 生态，20 个主要模型支持以 Transformers 作为推理后端。
+* **常见文档格式转 Markdown**：支持将 Word、Excel、Powerpoint 等常见文档格式转换为 Markdown。
+* **解析结果导出 DOCX**：`PaddleOCR-VL` 系列、`PP-StructureV3` 和 `PP-DocTranslation` 现已支持将解析结果导出为 DOCX，便于在 Microsoft Word 中查看和编辑。
+* **官方浏览器推理 SDK**：发布官方浏览器推理 SDK `PaddleOCR.js`，支持在浏览器中运行 `PP-OCRv5`。
+
+<details>
+<summary><strong>2026.01.29: PaddleOCR 3.4.0 发布</strong></summary>
 * **PaddleOCR-VL-1.5 (SOTA 0.9B VLM)**：
     * **OmniDocBench 94.5%准确率**：超越顶级通用大模型和专业文档解析模型。
     * **现实5大场景文档解析的SOTA性能**：首次引入**PP-DocLayoutV3**算法进行异形框定位，可以解决5种真实场景: 倾斜、弯曲、扫描、光线变化和屏幕拍照。
     * **能力拓展**：增加**印章识别**、**文本行检测/识别**，并扩展至**111种语言**(包括中国的藏文和孟加拉语)。
     * **长文档跨页解析**：支持自动跨页表格合并和分层标题识别。
     * **立即试用**：可在[HuggingFace](https://huggingface.co/PaddlePaddle/PaddleOCR-VL-1.5)或[PaddleOCR 官方网站](https://www.paddleocr.com)使用。
+
+</details>
 
 <details>
 <summary><strong>2025.10.16: PaddleOCR 3.3.0 发布</strong></summary>

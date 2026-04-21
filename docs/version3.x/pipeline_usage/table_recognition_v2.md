@@ -28,6 +28,7 @@ comments: true
 在本产线中，您可以根据下方的基准测试数据选择使用的模型。
 
 > 推理耗时仅包含模型推理耗时，不包含前后处理耗时。
+> 在带有 [常规模式 / 高性能模式] 标记的推理耗时列中，`常规模式` 对应本地推理引擎 `paddle_static`。
 
 <details>
 <summary> <b>表格结构识别模块模型：</b></summary>
@@ -808,7 +809,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://padd
               <li><strong>软件环境：</strong>
                   <ul>
                       <li>Ubuntu 20.04 / CUDA 11.8 / cuDNN 8.9 / TensorRT 8.6.1.6</li>
-                      <li>paddlepaddle 3.0.0 / paddleocr 3.0.3</li>
+                      <li>paddlepaddle-gpu 3.0.0 / paddleocr 3.0.3</li>
                   </ul>
               </li>
           </ul>
@@ -830,7 +831,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://padd
             <td>常规模式</td>
             <td>FP32精度 / 无TRT加速</td>
             <td>FP32精度 / 8线程</td>
-            <td>PaddleInference</td>
+            <td><code>paddle_static</code></td>
         </tr>
         <tr>
             <td>高性能模式</td>
@@ -870,15 +871,17 @@ paddleocr table_recognition_v2 -i ./table_recognition_v2.jpg --use_doc_unwarping
 paddleocr table_recognition_v2 -i ./table_recognition_v2.jpg --device gpu
 ```
 
-上述命令使用飞桨框架作为默认推理引擎，请在运行前确保相关依赖已经安装。
+上述命令默认使用本地推理引擎 `paddle_static`。如需运行，请先参考[飞桨框架安装说明](../paddlepaddle_installation.md)安装 PaddlePaddle。
 
-如果使用 `transformers` 作为推理引擎，可参考如下命令：
+如果选择 `transformers` 作为推理引擎，请先参考[推理引擎文档](../inference_engine.md)完成 Transformers 环境配置，然后执行如下命令：
 
 ```bash
 # 使用 transformers 引擎进行推理
 paddleocr table_recognition_v2 -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/table_recognition_v2.jpg \
     --engine transformers
 ```
+
+在大多数场景下，默认的 `paddle_static` 推理引擎通常具备更好的推理性能，建议优先使用。
 
 <details><summary><b>命令行支持更多参数设置，点击展开以查看命令行参数的详细说明</b></summary>
 <table>
@@ -1313,9 +1316,9 @@ for res in output:
     res.save_to_json("./output/")
 ```
 
-上述代码使用飞桨框架作为默认推理引擎，请在运行前确保相关依赖已经安装。
+上述代码默认使用本地推理引擎 `paddle_static`。如需运行，请先参考[飞桨框架安装说明](../paddlepaddle_installation.md)安装 PaddlePaddle。
 
-如果使用 `transformers` 作为推理引擎，可参考如下代码：
+如果选择 `transformers` 作为推理引擎，请先参考[推理引擎文档](../inference_engine.md)完成 Transformers 环境配置，然后执行如下代码：
 
 ```python
 from paddleocr import TableRecognitionPipelineV2
@@ -1334,6 +1337,8 @@ for res in output:
     res.save_to_html("./output/")
     res.save_to_json("./output/")
 ```
+
+在大多数场景下，默认的 `paddle_static` 推理引擎通常具备更好的推理性能，建议优先使用。
 
 在上述 Python 脚本中，执行了如下几个步骤：
 

@@ -1,17 +1,3 @@
-# Copyright (c) 2025 PaddlePaddle Authors. All Rights Reserved.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 """
 PaddleOCR Document Parsing Library
 
@@ -20,10 +6,11 @@ Simple document parsing API wrapper for PaddleOCR.
 
 import base64
 import logging
+import math
 import os
 from pathlib import Path
 from typing import Any, Optional
-from urllib.parse import urlparse, unquote
+from urllib.parse import unquote, urlparse
 
 import httpx
 
@@ -45,17 +32,53 @@ IMAGE_EXTENSIONS = (".png", ".jpg", ".jpeg", ".bmp", ".tiff", ".tif", ".webp")
 # =============================================================================
 
 
-def _get_env(key: str, *fallback_keys: str) -> str:
-    """Get environment variable with fallback keys."""
-    value = os.getenv(key, "").strip()
-    if value:
-        return value
-    for fallback in fallback_keys:
-        value = os.getenv(fallback, "").strip()
-        if value:
-            logger.debug(f"Using fallback env var: {fallback}")
-            return value
-    return ""
+def _get_env(key: str) -> str:
+    """Get environment variable, defaulting to empty string with whitespace stripped."""
+    return os.getenv(key, "").strip()
+
+
+def _http_timeout_from_env(env_key: str, default_seconds: float) -> float:
+    """
+    Read HTTP client timeout in seconds from the environment.
+
+    Returns a positive finite float. If the variable is missing, empty,
+    unparsable, non-finite, or not greater than zero, logs a warning and uses the
+    default_seconds argument value.
+    """
+    raw = os.getenv(env_key)
+    if raw is None:
+        return float(default_seconds)
+    stripped = raw.strip()
+    if not stripped:
+        return float(default_seconds)
+    try:
+        timeout = float(stripped)
+    except (ValueError, TypeError):
+        logger.warning(
+            "Invalid %s value %r; using default %ss",
+            env_key,
+            raw,
+            default_seconds,
+        )
+        return float(default_seconds)
+    if not math.isfinite(timeout) or timeout <= 0:
+        logger.warning(
+            "%s must be a finite number > 0 (got %r); using default %ss",
+            env_key,
+            raw,
+            default_seconds,
+        )
+        return float(default_seconds)
+    return timeout
+
+
+def _resolve_api_url(api_url: str, env_var: str) -> str:
+    """Require https; allow host-only values by prepending https://."""
+    if api_url.startswith("http://"):
+        raise ValueError(f"{env_var} must use https://; http:// is not allowed.")
+    if not api_url.startswith("https://"):
+        return f"https://{api_url}"
+    return api_url
 
 
 def get_config() -> tuple[str, str]:
@@ -66,7 +89,8 @@ def get_config() -> tuple[str, str]:
         tuple of (api_url, token)
 
     Raises:
-        ValueError: If not configured
+        ValueError: If required env vars are missing, API URL uses http://,
+            or URL path doesn't end with /layout-parsing
     """
     api_url = _get_env("PADDLEOCR_DOC_PARSING_API_URL")
     token = _get_env("PADDLEOCR_ACCESS_TOKEN")
@@ -80,9 +104,7 @@ def get_config() -> tuple[str, str]:
             f"PADDLEOCR_ACCESS_TOKEN not configured. Get your API at: {API_GUIDE_URL}"
         )
 
-    # Normalize URL
-    if not api_url.startswith(("http://", "https://")):
-        api_url = f"https://{api_url}"
+    api_url = _resolve_api_url(api_url, "PADDLEOCR_DOC_PARSING_API_URL")
     api_path = urlparse(api_url).path.rstrip("/")
     if not api_path.endswith("/layout-parsing"):
         raise ValueError(
@@ -118,6 +140,8 @@ def _load_file_as_base64(file_path: str) -> str:
     path = Path(file_path)
     if not path.exists():
         raise FileNotFoundError(f"File not found: {file_path}")
+    if path.stat().st_size == 0:
+        raise ValueError(f"File is empty (0 bytes): {file_path}")
 
     return base64.b64encode(path.read_bytes()).decode("utf-8")
 
@@ -127,7 +151,9 @@ def _load_file_as_base64(file_path: str) -> str:
 # =============================================================================
 
 
-def _make_api_request(api_url: str, token: str, params: dict) -> dict:
+def _make_api_request(
+    api_url: str, token: str, params: dict[str, Any]
+) -> dict[str, Any]:
     """
     Make PaddleOCR document parsing API request.
 
@@ -148,17 +174,24 @@ def _make_api_request(api_url: str, token: str, params: dict) -> dict:
         "Client-Platform": "official-skill",
     }
 
-    timeout = float(os.getenv("PADDLEOCR_DOC_PARSING_TIMEOUT", str(DEFAULT_TIMEOUT)))
+    timeout = _http_timeout_from_env(
+        "PADDLEOCR_DOC_PARSING_TIMEOUT", float(DEFAULT_TIMEOUT)
+    )
 
     try:
         with httpx.Client(timeout=timeout) as client:
-            resp = client.post(api_url, json=params, headers=headers)
+            try:
+                resp = client.post(api_url, json=params, headers=headers)
+            except TypeError as e:
+                raise RuntimeError(
+                    "Request parameters cannot be JSON-encoded; use only JSON-serializable "
+                    f"option values ({e})"
+                ) from e
     except httpx.TimeoutException:
         raise RuntimeError(f"API request timed out after {timeout}s")
     except httpx.RequestError as e:
         raise RuntimeError(f"API request failed: {e}")
 
-    # Handle HTTP errors
     if resp.status_code != 200:
         error_detail = ""
         try:
@@ -182,15 +215,19 @@ def _make_api_request(api_url: str, token: str, params: dict) -> dict:
         else:
             raise RuntimeError(f"API error ({resp.status_code}): {error_detail}")
 
-    # Parse response
     try:
         result = resp.json()
     except Exception:
         raise RuntimeError(f"Invalid JSON response: {resp.text[:200]}")
 
-    # Check API-level error
+    if not isinstance(result, dict):
+        raise RuntimeError(
+            f"Unexpected JSON shape (expected object): {resp.text[:200]}"
+        )
+
     if result.get("errorCode", 0) != 0:
-        raise RuntimeError(f"API error: {result.get('errorMsg', 'Unknown error')}")
+        msg = result.get("errorMsg", "Unknown error")
+        raise RuntimeError(f"API error: {msg}")
 
     return result
 
@@ -204,14 +241,14 @@ def parse_document(
     file_path: Optional[str] = None,
     file_url: Optional[str] = None,
     file_type: Optional[int] = None,
-    **options,
+    **options: Any,
 ) -> dict[str, Any]:
     """
     Parse document with PaddleOCR.
 
     Args:
-        file_path: Local file path
-        file_url: URL to file
+        file_path: Local file path (mutually exclusive with file_url)
+        file_url: URL to file (mutually exclusive with file_path)
         file_type: Optional file type override (0=PDF, 1=Image)
         **options: Additional API options
 
@@ -230,13 +267,23 @@ def parse_document(
             "error": {"code": "...", "message": "..."}
         }
     """
-    # Validate input
-    if not file_path and not file_url:
+    if file_path is not None and not isinstance(file_path, str):
+        return _error("INPUT_ERROR", "file_path must be a string or None")
+    if file_url is not None and not isinstance(file_url, str):
+        return _error("INPUT_ERROR", "file_url must be a string or None")
+
+    fp = file_path.strip() if file_path else ""
+    fu = file_url.strip() if file_url else ""
+    if fp and fu:
+        return _error(
+            "INPUT_ERROR",
+            "Provide only one of file_path or file_url, not both",
+        )
+    if not fp and not fu:
         return _error("INPUT_ERROR", "file_path or file_url required")
     if file_type is not None and file_type not in (FILE_TYPE_PDF, FILE_TYPE_IMAGE):
         return _error("INPUT_ERROR", "file_type must be 0 (PDF) or 1 (Image)")
 
-    # Get config
     try:
         api_url, token = get_config()
     except ValueError as e:
@@ -245,33 +292,40 @@ def parse_document(
     # Build request params
     try:
         resolved_file_type: Optional[int] = None
-        if file_url:
-            params = {"file": file_url}
-            resolved_file_type = file_type
+        if fu:
+            params = {"file": fu}
+            if file_type is not None:
+                resolved_file_type = file_type
+            else:
+                try:
+                    resolved_file_type = _detect_file_type(fu)
+                except ValueError:
+                    resolved_file_type = None
         else:
             resolved_file_type = (
-                file_type if file_type is not None else _detect_file_type(file_path)
+                file_type if file_type is not None else _detect_file_type(fp)
             )
             params = {
-                "file": _load_file_as_base64(file_path),
+                "file": _load_file_as_base64(fp),
             }
 
+        params["visualize"] = (
+            False  # reduce response payload; callers can override via options
+        )
         params.update(options)
         if resolved_file_type is not None:
             params["fileType"] = resolved_file_type
-        elif file_url:
+        else:
             params.pop("fileType", None)
 
-    except (ValueError, FileNotFoundError) as e:
+    except (ValueError, OSError, MemoryError) as e:
         return _error("INPUT_ERROR", str(e))
 
-    # Call API
     try:
         result = _make_api_request(api_url, token, params)
     except RuntimeError as e:
         return _error("API_ERROR", str(e))
 
-    # Extract text
     try:
         text = _extract_text(result)
     except ValueError as e:
@@ -285,47 +339,45 @@ def parse_document(
     }
 
 
-def _extract_text(result) -> str:
+def _extract_text(result: dict[str, Any]) -> str:
     """Extract text from document parsing result."""
     if not isinstance(result, dict):
-        raise ValueError(
-            "Invalid response schema: top-level response must be an object"
-        )
+        raise ValueError("Invalid API response: top-level response must be an object")
 
     raw_result = result.get("result")
     if not isinstance(raw_result, dict):
-        raise ValueError("Invalid response schema: missing result object")
+        raise ValueError("Invalid API response: missing 'result' object")
 
     pages = raw_result.get("layoutParsingResults")
     if not isinstance(pages, list):
         raise ValueError(
-            "Invalid response schema: result.layoutParsingResults must be an array"
+            "Invalid API response: result.layoutParsingResults must be an array"
         )
 
     texts = []
     for i, page in enumerate(pages):
         if not isinstance(page, dict):
             raise ValueError(
-                f"Invalid response schema: result.layoutParsingResults[{i}] must be an object"
+                f"Invalid API response: result.layoutParsingResults[{i}] must be an object"
             )
 
         markdown = page.get("markdown")
         if not isinstance(markdown, dict):
             raise ValueError(
-                f"Invalid response schema: result.layoutParsingResults[{i}].markdown must be an object"
+                f"Invalid API response: result.layoutParsingResults[{i}].markdown must be an object"
             )
 
         text = markdown.get("text")
         if not isinstance(text, str):
             raise ValueError(
-                f"Invalid response schema: result.layoutParsingResults[{i}].markdown.text must be a string"
+                f"Invalid API response: result.layoutParsingResults[{i}].markdown.text must be a string"
             )
         texts.append(text)
 
     return "\n\n".join(texts)
 
 
-def _error(code: str, message: str) -> dict:
+def _error(code: str, message: str) -> dict[str, Any]:
     """Create error response."""
     return {
         "ok": False,

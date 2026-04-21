@@ -1,15 +1,22 @@
 ---
 name: paddleocr-text-recognition
-description: Extracts text (with locations) from images and PDF documents using PaddleOCR.
+description: >-
+  Use this skill whenever the user wants text extracted from images, photos, scans, screenshots,
+  or scanned PDFs. Returns exact machine-readable strings with line-level text and optional bbox
+  coordinates. Strong accuracy for CJK, small print, and handwritten text.
+  Trigger terms: OCR, 文字识别, 图片转文字, 截图识字, 提取图中文字, 扫描识字, 识字, 纯文字,
+  plain text extraction, 坐标, 检测框, bbox, bounding box, image to text, screenshot, photo scan,
+  recognize text.
+license: Apache-2.0
+compatibility: Requires Python 3.9+, uv, and internet access.
 metadata:
   openclaw:
     requires:
       env:
         - PADDLEOCR_OCR_API_URL
         - PADDLEOCR_ACCESS_TOKEN
-        - PADDLEOCR_OCR_TIMEOUT
       bins:
-        - python
+        - uv
     primaryEnv: PADDLEOCR_ACCESS_TOKEN
     emoji: "🔤"
     homepage: https://github.com/PaddlePaddle/PaddleOCR/tree/main/skills/paddleocr-text-recognition
@@ -19,52 +26,51 @@ metadata:
 
 ## When to Use This Skill
 
-Invoke this skill in the following situations:
+**Trigger keywords (routing)**: Bilingual trigger terms (Chinese and English) are listed in the YAML `description` above—use that field for discovery and routing.
+
+**Use this skill for**:
+
 - Extract text from images (screenshots, photos, scans)
-- Extract text from PDFs or document images
-- Extract text and positions from structured documents (invoices, receipts, forms, tables)
+- Extract text from PDFs or document images when the goal is **line/box-level text**, not recovering table grids, formulas, or full reading-order layout
 - Extract text from URLs or local files that point to images/PDFs
 
-Do not use this skill in the following situations:
-- Plain text files that can be read directly with the Read tool
-- Code files or markdown documents
+**Do not use for**:
+
+- Plain text files, code files, or markdown documents that can be read directly as text
+- Documents with tables, formulas, charts, or complex layouts — use Document Parsing instead
 - Tasks that do not involve image-to-text conversion
+
+## Installation
+
+Scripts declare their dependencies inline ([PEP 723](https://peps.python.org/pep-0723/)). No separate install step is needed — [uv](https://docs.astral.sh/uv/) resolves dependencies automatically:
+
+```bash
+uv run scripts/ocr_caller.py --help
+```
 
 ## How to Use This Skill
 
-**⛔ MANDATORY RESTRICTIONS - DO NOT VIOLATE ⛔**
-
-1. **ONLY use PaddleOCR Text Recognition API** - Execute the script `python scripts/ocr_caller.py`
-2. **NEVER read images directly** - Do NOT read images yourself
-3. **NEVER offer alternatives** - Do NOT suggest "I can try to read it" or similar
-4. **IF API fails** - Display the error message and STOP immediately
-5. **NO fallback methods** - Do NOT attempt OCR any other way
-
-If the script execution fails (API not configured, network error, etc.):
-- Show the error message to the user
-- Do NOT offer to help using your vision capabilities
-- Do NOT ask "Would you like me to try reading it?"
-- Simply stop and wait for user to fix the configuration
+> **Working directory**: All `uv run scripts/...` commands below should be run from this skill's root directory (the directory containing this SKILL.md file).
 
 ### Basic Workflow
 
 1. **Identify the input source**:
    - User provides URL: Use the `--file-url` parameter
    - User provides local file path: Use the `--file-path` parameter
-   - User uploads image: Save it first, then use `--file-path`
-
-   **Input type note**:
-   - Supported file types depend on the model and endpoint configuration.
-   - Follow the official endpoint/API documentation for the exact supported formats.
 
 2. **Execute OCR**:
+
    ```bash
-   python scripts/ocr_caller.py --file-url "URL provided by user" --pretty
+   uv run scripts/ocr_caller.py --file-url "URL provided by user" --pretty
    ```
+
    Or for local files:
+
    ```bash
-   python scripts/ocr_caller.py --file-path "file path" --pretty
+   uv run scripts/ocr_caller.py --file-path "file path" --pretty
    ```
+
+   > **Performance note**: Parsing time scales with document complexity. Single-page images typically complete in 1-3 seconds; large PDFs (50+ pages) may take several minutes. Allow adequate time before assuming a timeout.
 
    **Default behavior: save raw JSON to a temp file**:
    - If `--output` is omitted, the script saves automatically under the system temp directory
@@ -87,148 +93,151 @@ If the script execution fails (API not configured, network error, etc.):
    - If the text is empty, the image may contain no text
    - In save mode, always tell the user the saved file path and that full raw JSON is available there
 
-### IMPORTANT: Complete Output Display
+### What to Do After Extraction
 
-**CRITICAL**: Always display the COMPLETE recognized text to the user. Do NOT truncate or summarize the OCR results.
+Common next steps once you have the recognized text:
 
-- The output JSON contains complete output, including full text in `text` field
-- **You MUST display the entire `text` content to the user**, no matter how long it is
-- Do NOT use phrases like "Here's a summary" or "The text begins with..."
-- Do NOT truncate with "..." unless the text truly exceeds reasonable display limits
-- The user expects to see ALL the recognized text, not a preview or excerpt
+- **Save to file**: Write the `text` field to a `.txt` or `.md` file
+- **Search the content**: Search the saved output file for keywords
+- **Feed to another pipeline**: The `text` field is clean plain text, ready for downstream processing
+- **Poor results**: See "Tips for Better Results" below before retrying
 
-**Correct approach**:
+### Complete Output Display
+
+Always display the COMPLETE recognized text to the user. The user typically needs the full content for downstream use — truncation silently loses data they may not notice is missing.
+
+- Display the entire `text` field, no matter how long
+- Do not use phrases like "Here's a summary" or "The text begins with..."
+- Do not truncate with "..." unless the text truly exceeds reasonable display limits (>10,000 chars)
+
+**Example - Correct**:
+
 ```
-I've extracted the text from the image. Here's the complete content:
+User: "Extract the text from this image"
+Agent: I've extracted the text from the image. Here's the complete content:
 
 [Display the entire text here]
 ```
 
-**Incorrect approach**:
+**Example - Incorrect**:
+
 ```
-I found some text in the image. Here's a preview:
+User: "Extract the text from this image"
+Agent: I found some text in the image. Here's a preview:
 "The quick brown fox..." (truncated)
-```
-
-### Usage Examples
-
-**Example 1: URL OCR**:
-```bash
-python scripts/ocr_caller.py --file-url "https://example.com/invoice.jpg" --pretty
-```
-
-**Example 2: Local File OCR**:
-```bash
-python scripts/ocr_caller.py --file-path "./document.pdf" --pretty
-```
-
-**Example 3: OCR With Explicit File Type**:
-```bash
-python scripts/ocr_caller.py --file-url "https://example.com/input" --file-type 1 --pretty
-```
-
-**Example 4: Print JSON Without Saving**:
-```bash
-python scripts/ocr_caller.py --file-url "https://example.com/input" --stdout --pretty
 ```
 
 ### Understanding the Output
 
-The output JSON structure is as follows:
-```json
-{
-  "ok": true,
-  "text": "All recognized text here...",
-  "result": { ... },
-  "error": null
-}
-```
+The script returns a JSON envelope with `ok`, `text`, `result`, and `error` fields. Use `text` for the recognized content; `result` contains the raw API response for debugging.
 
-**Key fields**:
-- `ok`: `true` for success, `false` for error
-- `text`: Complete recognized text
-- `result`: Raw API response (for debugging)
-- `error`: Error details if `ok` is false
+For the full schema and field-level details, see `references/output_schema.md`.
 
 > Raw result location (default): the temp-file path printed by the script on stderr
 
+### Usage Examples
+
+**Example 1: URL OCR**
+
+```bash
+uv run scripts/ocr_caller.py --file-url "https://example.com/invoice.jpg" --pretty
+```
+
+**Example 2: Local File OCR**
+
+```bash
+uv run scripts/ocr_caller.py --file-path "./document.pdf" --pretty
+```
+
+**Example 3: OCR With Explicit File Type**
+
+```bash
+uv run scripts/ocr_caller.py --file-url "https://example.com/input" --file-type 1 --pretty
+```
+
+- `--file-type 0`: PDF
+- `--file-type 1`: image
+- If omitted, the type is auto-detected from the file extension. For local files, a recognized extension (`.pdf`, `.png`, `.jpg`, `.jpeg`, `.bmp`, `.tiff`, `.tif`, `.webp`) is required; otherwise pass `--file-type` explicitly. For URLs with unrecognized extensions, the service attempts inference.
+
+**Example 4: Print JSON Without Saving**
+
+```bash
+uv run scripts/ocr_caller.py --file-url "https://example.com/input" --stdout --pretty
+```
+
 ### First-Time Configuration
 
-You can generally assume that the required environment variables have already been configured. Only when an OCR task fails should you analyze the error message to determine whether it is caused by a configuration issue. If it is indeed a configuration problem, you should notify the user to fix it.
+**When API is not configured**, the script outputs:
 
-**When API is not configured**:
-
-The error will show:
-```
-CONFIG_ERROR: PADDLEOCR_OCR_API_URL not configured. Get your API at: https://paddleocr.com
+```json
+{
+  "ok": false,
+  "text": "",
+  "result": null,
+  "error": {
+    "code": "CONFIG_ERROR",
+    "message": "PADDLEOCR_OCR_API_URL not configured. Get your API at: https://paddleocr.com"
+  }
+}
 ```
 
 **Configuration workflow**:
 
-1. **Show the exact error message** to the user (including the URL).
+1. **Show the exact error message** to the user.
 
-2. **Guide the user to configure securely**:
-   - Recommend configuring through the host application's standard method (e.g., settings file, environment variable UI) rather than pasting credentials in chat.
-   - List the required environment variables:
-     ```
-     - PADDLEOCR_OCR_API_URL
-     - PADDLEOCR_ACCESS_TOKEN
-     - Optional: PADDLEOCR_OCR_TIMEOUT
-     ```
+2. **Guide the user to obtain credentials**: Visit the [PaddleOCR website](https://www.paddleocr.com), click **API**, select the `PP-OCRv5` model, select the language, then copy the `API_URL` and `Token`. They map to these environment variables:
+   - `PADDLEOCR_OCR_API_URL` — full endpoint URL ending with `/ocr`
+   - `PADDLEOCR_ACCESS_TOKEN` — 40-character alphanumeric string
 
-3. **If the user provides credentials in chat anyway** (accept any reasonable format), for example:
-   - `PADDLEOCR_OCR_API_URL=https://xxx.paddleocr.com/ocr, PADDLEOCR_ACCESS_TOKEN=abc123...`
-   - `Here's my API: https://xxx and token: abc123`
-   - Copy-pasted code format
-   - Any other reasonable format
-   - **Security note**: Warn the user that credentials shared in chat may be stored in conversation history. Recommend setting them through the host application's configuration instead when possible.
+   Optionally configure `PADDLEOCR_OCR_TIMEOUT` for request timeout. Recommend using the host application's standard configuration method rather than pasting credentials in chat.
 
-   Then parse and validate the values:
-   - Extract `PADDLEOCR_OCR_API_URL` (look for URLs with `paddleocr.com` or similar)
-   - Confirm `PADDLEOCR_OCR_API_URL` is a full endpoint ending with `/ocr`
-   - Extract `PADDLEOCR_ACCESS_TOKEN` (long alphanumeric string, usually 40+ chars)
-
-4. **Ask the user to confirm the environment is configured**.
-
-5. **Retry only after confirmation**:
-   - Once the user confirms the environment variables are available, retry the original OCR task
+3. **Apply credentials** — one of:
+   - **User configured via the host UI**: ask the user to confirm, then retry.
+   - **User pastes credentials in chat**: warn that they may be stored in conversation history, help the user persist them using the host's standard configuration method, then retry.
 
 ### Error Handling
 
-**Authentication failed**:
-```
-API_ERROR: Authentication failed (403). Check your token.
-```
+All errors return JSON with `ok: false`. Show the error message and stop — do not fall back to your own vision capabilities. Identify the issue from `error.code` and `error.message`:
+
+**Authentication failed (403)** — `error.message` contains "Authentication failed"
+
 - Token is invalid, reconfigure with correct credentials
 
-**Quota exceeded**:
-```
-API_ERROR: API rate limit exceeded (429)
-```
+**Quota exceeded (429)** — `error.message` contains "API rate limit exceeded"
+
 - Daily API quota exhausted, inform user to wait or upgrade
 
+**Unsupported format** — `error.message` contains "Unsupported file format"
+
+- File format not supported, convert to PDF/PNG/JPG
+
 **No text detected**:
+
 - `text` field is empty
 - Image may be blank, corrupted, or contain no text
 
 ### Tips for Better Results
 
-If recognition quality is poor, suggest:
-- Check if the image is clear and contains text
-- Provide a higher resolution image if possible
+If recognition quality is poor:
+
+- **Low resolution**: Provide a higher resolution image (≥300 DPI works well for most printed text)
+- **Noisy background**: A cleaner scan or screenshot typically yields better results than a phone photo
+- **Check confidence**: The raw JSON (`result.result.ocrResults[n].prunedResult.rec_scores`) shows per-line confidence scores — low values identify uncertain regions worth reviewing
 
 ## Reference Documentation
 
-For in-depth understanding of the OCR system, refer to:
-- `references/output_schema.md` - Output format specification
+- `references/output_schema.md` — Full output schema, field descriptions, and command examples
 
 > **Note**: Model version, capabilities, and supported file formats are determined by your API endpoint (`PADDLEOCR_OCR_API_URL`) and its official API documentation.
 
 ## Testing the Skill
 
 To verify the skill is working properly:
+
 ```bash
-python scripts/smoke_test.py
+uv run scripts/smoke_test.py
+uv run scripts/smoke_test.py --skip-api-test
+uv run scripts/smoke_test.py --test-url "https://..."
 ```
 
-This tests configuration and API connectivity.
+The first form tests configuration and API connectivity. `--skip-api-test` checks configuration only. `--test-url` overrides the default sample image URL.

@@ -122,10 +122,11 @@ plugins:
             PaddleOCR-VL Intel Arc GPU 使用教程: PaddleOCR-VL Intel Arc GPU Usage Tutorial
             推理部署: Inference and Deployment
             高性能推理: High-Performance Inference
-            打包PaddleOCR项目: Package PaddleOCR Projects
+            打包 PaddleOCR 项目: Package PaddleOCR Projects
             获取ONNX模型: Obtaining ONNX Models
             端侧部署: On-Device Deployment
-            服务化部署: Serving Deployment
+            服务化部署: Serving
+            浏览器端部署: Browser Deployment
             模块列表: Module List
             文档图像方向分类模块: Document Image Orientation Classification Module
             文档类视觉语言模型模块: Document Visual Language Model Module
@@ -185,13 +186,14 @@ plugins:
             社区: Community
             社区贡献: Community Contribution
             附录: Appendix
-            配置 PaddleOCR 推理包日志系统: Configure the logging system for the PaddleOCR inference package
+            配置 paddleocr 包日志系统: Configure logging for the paddleocr Python package
             模块概述: Module Overview
             产线概述: Pipeline Overview
             通用 OCR 产线 C++ 本地部署 - Linux: C++ Local Deployment for General OCR Pipeline - Linux
             通用 OCR 产线 C++ 本地部署 - Windows: C++ Local Deployment for General OCR Pipeline - Windows
             C++ 本地部署: C++ Local Deployment
             MCP 服务器: MCP Server
+            Agent Skills: Agent Skills
             产线并行推理: Parallel Inference for Pipelines
         # - locale: ja
         #   name: 日本語
@@ -327,8 +329,10 @@ nav:
     - 获取ONNX模型: version3.x/deployment/obtaining_onnx_models.md
     - 端侧部署: version3.x/deployment/on_device_deployment.md
     - 服务化部署: version3.x/deployment/serving.md
+    - 浏览器端部署: version3.x/deployment/browser.md
     - MCP 服务器: version3.x/deployment/mcp_server.md
-    - 打包PaddleOCR项目: version3.x/deployment/packaging.md
+    - Agent Skills: version3.x/deployment/skills.md
+    - 打包 PaddleOCR 项目: version3.x/deployment/packaging.md
     - 产线并行推理: version3.x/pipeline_usage/instructions/parallel_inference.md
     - C++ 本地部署:
       - 通用 OCR 产线 C++ 本地部署 - Linux: version3.x/deployment/cpp/OCR.md
@@ -367,7 +371,7 @@ nav:
   - 其他说明:
     - PaddleOCR 与 PaddleX: version3.x/paddleocr_and_paddlex.md
     - PaddleOCR 3.x 升级说明: update/upgrade_notes.md
-    - 配置 PaddleOCR 推理包日志系统: version3.x/logging.md
+    - 配置 paddleocr 包日志系统: version3.x/logging.md
 
   - 低代码全流程开发:
       - 概述: version3.x/paddlex/overview.md

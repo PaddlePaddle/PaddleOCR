@@ -22,6 +22,7 @@ The seal text recognition pipeline is used to recognize the text content of seal
 In this pipeline, you can choose the model to use based on the benchmark data below.
 
 > The inference time only includes the model inference time and does not include the time for pre- or post-processing.
+> In the inference time columns labeled [Regular Mode / High-Performance Mode], the Regular Mode values correspond to the local `paddle_static` inference engine.
 
 <details>
 <summary> <b>Layout Region Detection Module (Optional):</b></summary>
@@ -662,7 +663,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
               <li><strong>Software Environment:</strong>
                   <ul>
                       <li>Ubuntu 20.04 / CUDA 11.8 / cuDNN 8.9 / TensorRT 8.6.1.6</li>
-                      <li>paddlepaddle 3.0.0 / paddleocr 3.0.3</li>
+                      <li>paddlepaddle-gpu 3.0.0 / paddleocr 3.0.3</li>
                   </ul>
               </li>
           </ul>
@@ -684,7 +685,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
             <td>Regular Mode</td>
             <td>FP32 Precision / No TRT Acceleration</td>
             <td>FP32 Precision / 8 Threads</td>
-            <td>PaddleInference</td>
+            <td><code>paddle_static</code></td>
         </tr>
         <tr>
             <td>High-Performance Mode</td>
@@ -719,9 +720,9 @@ paddleocr seal_recognition -i https://paddle-model-ecology.bj.bcebos.com/paddlex
 paddleocr seal_recognition -i ./seal_text_det.png --device gpu
 ```
 
-The examples above use the Paddle inference engine by default. To run them, first install PaddlePaddle by following [PaddlePaddle Framework Installation](../paddlepaddle_installation.en.md).
+The examples above use the local `paddle_static` inference engine by default. To run them, first install PaddlePaddle by following [PaddlePaddle Framework Installation](../paddlepaddle_installation.en.md).
 
-To run inference with the `transformers` engine, first install the required dependencies by following [Inference Engine and Configuration](../inference_engine.en.md):
+If you choose `transformers` as the inference engine, make sure the Transformers environment is configured by following [Inference Engine and Configuration](../inference_engine.en.md), and then run the following command:
 
 ```bash
 # Use the transformers engine for inference
@@ -730,6 +731,8 @@ paddleocr seal_recognition -i https://paddle-model-ecology.bj.bcebos.com/paddlex
     --use_doc_unwarping False \
     --engine transformers
 ```
+
+In most scenarios, the default `paddle_static` inference engine delivers better inference performance and is the recommended first choice.
 
 <details><summary><b>The command line supports more parameter settings. Click to expand for detailed explanations of command line parameters.</b></summary>
 <table>
@@ -1096,9 +1099,9 @@ for res in output:
     res.save_to_json("./output/")
 ```
 
-The example above uses the Paddle inference engine by default. To run it, first install PaddlePaddle by following [PaddlePaddle Framework Installation](../paddlepaddle_installation.en.md).
+The example above uses the local `paddle_static` inference engine by default. To run it, first install PaddlePaddle by following [PaddlePaddle Framework Installation](../paddlepaddle_installation.en.md).
 
-To run inference with the `transformers` engine, first install the required dependencies by following [Inference Engine and Configuration](../inference_engine.en.md):
+If you choose `transformers` as the inference engine, make sure the Transformers environment is configured by following [Inference Engine and Configuration](../inference_engine.en.md), and then run the following code:
 
 ```python
 from paddleocr import SealRecognition
@@ -1113,6 +1116,8 @@ for res in output:
     res.save_to_img("./output/")
     res.save_to_json("./output/")
 ```
+
+In most scenarios, the default `paddle_static` inference engine delivers better inference performance and is the recommended first choice.
 
 In the above Python script, the following steps were executed:
 

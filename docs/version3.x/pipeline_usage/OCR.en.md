@@ -23,6 +23,7 @@ The general OCR pipeline is used to solve text recognition tasks by extracting t
 In this pipeline, you can select models based on the benchmark test data provided below.
 
 > The inference time only includes the model inference time and does not include the time for pre- or post-processing.
+> In the inference time columns labeled [Standard Mode / High-Performance Mode], the Standard Mode values correspond to the local `paddle_static` inference engine.
 
 <details>
 <summary><b>Document Image Orientation Classification Module (Optional):</b></summary>
@@ -656,7 +657,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
               <li><strong>Software Environment:</strong>
                   <ul>
                       <li>Ubuntu 20.04 / CUDA 11.8 / cuDNN 8.9 / TensorRT 8.6.1.6</li>
-                      <li>paddlepaddle 3.0.0 / paddleocr 3.0.3</li>
+                      <li>paddlepaddle-gpu 3.0.0 / paddleocr 3.0.3</li>
                   </ul>
               </li>
           </ul>
@@ -678,7 +679,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
            <td>Standard Mode</td>
            <td>FP32 Precision / No TRT Acceleration</td>
            <td>FP32 Precision / 8 Threads</td>
-           <td>PaddleInference</td>
+           <td><code>paddle_static</code></td>
        </tr>
        <tr>
            <td>High-Performance Mode</td>
@@ -696,11 +697,16 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">Inference Model</a>/<a href="https://p
 
 ## 2. Quick Start  
 
-Before using the general OCR pipeline locally, ensure you have installed the wheel package by following the [Installation Guide](../installation.en.md). After that, install the dependencies required by your chosen execution mode, and then you can try the pipeline through the command line or Python integration.  
+Before using the general OCR pipeline locally, install the dependencies for your chosen inference engine first, then install the `paddleocr` package. See the [Installation Guide](../installation.en.md) for the full procedure. After installation, you can use the command line or Python integration.
 
 ### 2.0 Environment Preparation
 
-#### 2.0.1 Install PaddleOCR
+#### 2.0.1 Install the inference engine
+
+- If you use the local `paddle_static` inference engine, install PaddlePaddle by following [PaddlePaddle Framework Installation](../paddlepaddle_installation.en.md).
+- If you use the `transformers` inference engine, install the required dependencies by following [Inference Engine and Configuration](../inference_engine.en.md).
+
+#### 2.0.2 Install paddleocr
 
 ```bash
 # Install the basic package (OCR only)
@@ -710,11 +716,6 @@ pip install paddleocr
 pip install "paddleocr[all]"
 ```
 
-#### 2.0.2 Install Dependencies by Execution Mode
-
-- If you use the Paddle inference engine, install PaddlePaddle by following [PaddlePaddle Framework Installation](../paddlepaddle_installation.en.md).
-- If you use the `transformers` inference engine, install the required dependencies by following [Inference Engine and Configuration](../inference_engine.en.md).
-
 #### 2.0.3 Environment Verification
 
 ```python
@@ -722,7 +723,7 @@ pip install "paddleocr[all]"
 import paddleocr
 print(f"PaddleOCR version: {paddleocr.__version__}")
 
-# If you use the Paddle inference engine, you can further verify PaddlePaddle and GPU availability
+# If you use the local paddle_static inference engine, you can further verify PaddlePaddle and GPU availability
 import paddle
 print(f"Paddle version: {paddle.__version__}")
 print(f"GPU available: {paddle.is_compiled_with_cuda()}")
@@ -754,9 +755,9 @@ paddleocr ocr -i ./general_ocr_002.png --ocr_version PP-OCRv4
 
 ```
 
-The examples above use the Paddle inference engine by default. To run them, first install PaddlePaddle by following [PaddlePaddle Framework Installation](../paddlepaddle_installation.en.md).
+The examples above use the local `paddle_static` inference engine by default. To run them, first install PaddlePaddle by following [PaddlePaddle Framework Installation](../paddlepaddle_installation.en.md).
 
-To run inference with the `transformers` engine, first install the required dependencies by following [Inference Engine and Configuration](../inference_engine.en.md):
+If you choose `transformers` as the inference engine, make sure the Transformers environment is configured by following [Inference Engine and Configuration](../inference_engine.en.md), and then run the following command:
 
 ```bash
 # Use the transformers engine for inference
@@ -768,6 +769,8 @@ paddleocr ocr -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_im
     --device gpu:0 \
     --engine transformers
 ```
+
+In most scenarios, the default `paddle_static` inference engine delivers better inference performance and is the recommended first choice.
 
 <details><summary><b>Command line supports more parameter settings. Click to expand for detailed instructions on command line parameters.</b></summary>
 <table>
@@ -2542,9 +2545,9 @@ pipeline = PaddleOCR(text_detection_model_dir="./your_det_model_path")
 
 ```
 
-The example above uses the Paddle inference engine by default. To run it, first install PaddlePaddle by following [PaddlePaddle Framework Installation](../paddlepaddle_installation.en.md).
+The example above uses the local `paddle_static` inference engine by default. To run it, first install PaddlePaddle by following [PaddlePaddle Framework Installation](../paddlepaddle_installation.en.md).
 
-To run inference with the `transformers` engine, first install the required dependencies by following [Inference Engine and Configuration](../inference_engine.en.md):
+If you choose `transformers` as the inference engine, make sure the Transformers environment is configured by following [Inference Engine and Configuration](../inference_engine.en.md), and then run the following code:
 
 ```python
 from paddleocr import PaddleOCR
@@ -2572,6 +2575,8 @@ for res in result:
     res.save_to_img("output")
     res.save_to_json("output")
 ```
+
+In most scenarios, the default `paddle_static` inference engine delivers better inference performance and is the recommended first choice.
 
 #### 4.2.2 Specify the local model path through the configuration file
 

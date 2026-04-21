@@ -62,13 +62,22 @@
 
 ## 📣 최근 업데이트
 
-### 🔥 [2026.01.29] PaddleOCR v3.4.0 출시: 비정형 문서 파싱의 시대
+### 🔥 PaddleOCR v3.5.0 출시: 더 유연한 추론 백엔드와 더 풍부한 문서 출력
+* **유연한 추론 백엔드 전환**: Paddle 정적 그래프, Paddle 동적 그래프, Transformers 사이를 원활하게 전환할 수 있습니다. Hugging Face 생태계에 깊이 통합되었으며, 주요 20개 모델이 Transformers를 추론 백엔드로 지원합니다.
+* **Office 문서를 Markdown으로 변환**: Word, Excel, PowerPoint 등 일반적인 문서 형식을 Markdown으로 변환할 수 있습니다.
+* **분석 결과 DOCX 내보내기**: `PaddleOCR-VL` 시리즈, `PP-StructureV3`, `PP-DocTranslation`이 이제 분석 결과를 DOCX로 내보내 Microsoft Word에서 편리하게 확인하고 편집할 수 있습니다.
+* **공식 브라우저 추론 SDK**: 공식 브라우저 추론 SDK `PaddleOCR.js`를 출시하여 브라우저에서 `PP-OCRv5`를 실행할 수 있습니다.
+
+<details>
+<summary><strong>2026.01.29: PaddleOCR 3.4.0 출시</strong></summary>
 * **PaddleOCR-VL-1.5 (최첨단 0.9B VLM)**: 문서 파싱을 위한 최신 플래그십 모델이 출시되었습니다!
     * **OmniDocBench에서 94.5% 정확도**: 최상위 범용 대규모 모델 및 전문 문서 파서를 능가합니다.
     * **실제 환경 강건성**: 비정형 형태 위치 지정을 위한 **PP-DocLayoutV3** 알고리즘을 최초 도입하여 *기울기, 왜곡, 스캔, 조명, 화면 촬영*이라는 5가지 까다로운 시나리오를 정복합니다.
     * **기능 확장**: **인감 인식**, **텍스트 탐지**를 지원하며, **111개 언어**(중국 티베트 문자 및 벵골어 포함)로 확장되었습니다.
     * **장문서 처리**: 자동 교차 페이지 표 병합 및 계층적 제목 식별을 지원합니다.
     * **지금 사용해 보세요**: [HuggingFace](https://huggingface.co/PaddlePaddle/PaddleOCR-VL-1.5) 또는 [공식 웹사이트](https://www.paddleocr.com)에서 이용 가능합니다.
+
+</details>
 
 <details>
 <summary><strong>2025.10.16: PaddleOCR 3.3.0 출시</strong></summary>

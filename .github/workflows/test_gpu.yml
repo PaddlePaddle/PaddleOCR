@@ -22,23 +22,42 @@ jobs:
   detect-changes:
     runs-on: ubuntu-latest
     outputs:
-      docs_only: ${{ steps.filter.outputs.docs_only }}
+      skip_gpu: ${{ steps.compute_skip.outputs.skip_gpu }}
     steps:
       - uses: actions/checkout@v6
-      - id: filter
-        uses: dorny/paths-filter@de90cc6fb38fc0963ad72b210f1f284cd68cea36 # v3
-        with:
-          filters: |
-            docs_only:
-              - '**.md'
-              - '**.txt'
-              - '**.yml'
-              - '**.yaml'
+      - id: compute_skip
+        name: Compute skip_gpu (PR-only); push/workflow_dispatch always run GPU
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" != "pull_request" ]; then
+            echo "skip_gpu=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          git fetch origin "${{ github.base_ref }}" --depth=1
+          changed_files="$(git diff --name-only "origin/${{ github.base_ref }}"..HEAD)"
+
+          if [ -z "$changed_files" ]; then
+            echo "skip_gpu=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          skip_gpu=true
+          while IFS= read -r file; do
+            [ -z "$file" ] && continue
+            if [[ "$file" == paddleocr-js/* ]] || [[ "$file" == langchain-paddleocr/* ]] || [[ "$file" == skills/* ]] || [[ "$file" == mcp_server/* ]] || [[ "$file" == deploy/* ]] || [[ "$file" == *.md ]] || [[ "$file" == *.txt ]] || [[ "$file" == *.yml ]] || [[ "$file" == *.yaml ]]; then
+              continue
+            fi
+            skip_gpu=false
+            break
+          done <<< "$changed_files"
+
+          echo "skip_gpu=$skip_gpu" >> "$GITHUB_OUTPUT"
 
   test-pr-gpu:
     runs-on: [self-hosted, GPU-2Card-OCR]
     needs: detect-changes
-    if: needs.detect-changes.outputs.docs_only != 'true'
+    if: needs.detect-changes.outputs.skip_gpu != 'true'
     steps:
       - name: run test
         env:

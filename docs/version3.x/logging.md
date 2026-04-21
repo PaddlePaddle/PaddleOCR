@@ -4,7 +4,7 @@ comments: true
 
 # 日志
 
-本文档主要介绍如何配置 PaddleOCR 推理包的日志系统。需要注意的是，PaddleOCR 推理包与训练脚本使用的是不同的日志系统，本文档不涉及训练脚本所使用的日志系统的配置方法。
+本文档主要介绍如何配置通过 PyPI 安装的 `paddleocr` 包的日志系统。需要注意的是，`paddleocr` 与训练脚本使用的是不同的日志系统，本文档不涉及训练脚本所使用的日志系统的配置方法。
 
 PaddleOCR 构建了一个基于 Python [`logging` 标准库](https://docs.python.org/zh-cn/3/library/logging.html#module-logging) 的集中式日志系统。换言之，PaddleOCR 使用唯一的日志记录器（logger），可通过 `paddleocr.logger` 访问和配置。
 

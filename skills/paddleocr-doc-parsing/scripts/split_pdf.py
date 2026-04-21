@@ -1,24 +1,16 @@
-#!/usr/bin/env python3
-# Copyright (c) 2025 PaddlePaddle Authors. All Rights Reserved.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 """
 Split a PDF by page ranges.
 
 Usage:
-    python scripts/split_pdf.py input.pdf output.pdf --pages "1-5,8,10-12"
+    uv run scripts/split_pdf.py input.pdf output.pdf --pages "1-5,8,10-12"
 """
+
+# /// script
+# requires-python = ">=3.9"
+# dependencies = [
+#   "pypdfium2>=4.0.0",
+# ]
+# ///
 
 import argparse
 import sys
@@ -66,12 +58,9 @@ def parse_pages(pages_spec: str, total_pages: int) -> list[int]:
     return selected_pages
 
 
-def split_pdf(input_path: Path, output_path: Path, pages_spec: str):
+def split_pdf(input_path: Path, output_path: Path, pages_spec: str) -> tuple[int, int]:
     """Create a new PDF containing selected pages from the input PDF."""
-    try:
-        import pypdfium2 as pdfium
-    except ImportError:
-        raise RuntimeError("pypdfium2 is required. Install with: pip install pypdfium2")
+    import pypdfium2 as pdfium
 
     source_pdf = pdfium.PdfDocument(str(input_path))
     try:
@@ -117,7 +106,7 @@ def main() -> int:
 
     try:
         total_pages, kept_pages = split_pdf(input_path, output_path, args.pages)
-    except (ValueError, RuntimeError) as e:
+    except Exception as e:
         print(f"ERROR: {e}")
         return 1
 

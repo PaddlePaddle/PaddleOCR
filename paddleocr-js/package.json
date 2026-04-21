@@ -1,0 +1,68 @@
+{
+  "name": "paddleocr-js-workspace",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/PaddlePaddle/PaddleOCR.git",
+    "directory": "paddleocr-js"
+  },
+  "homepage": "https://github.com/PaddlePaddle/PaddleOCR/tree/main/paddleocr-js",
+  "bugs": {
+    "url": "https://github.com/PaddlePaddle/PaddleOCR/issues"
+  },
+  "keywords": [
+    "paddleocr",
+    "ocr",
+    "monorepo",
+    "browser-ocr",
+    "typescript"
+  ],
+  "engines": {
+    "node": ">=20.11"
+  },
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "dev:demo": "npm run dev --workspace apps/demo --",
+    "build": "npm run build:sdk && npm run build:demo",
+    "build:demo": "npm run build --workspace apps/demo",
+    "build:sdk": "npm run build --workspace packages/core",
+    "preview:demo": "npm run preview --workspace apps/demo --",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "test:watch": "vitest",
+    "format": "prettier . --write",
+    "format:check": "prettier . --check",
+    "clean": "rm -rf packages/*/dist apps/*/dist",
+    "check": "npm run format:check && npm run lint && npm run build:sdk && npm run typecheck && npm run test && npm run build:demo",
+    "release": "npm run build:sdk && npm publish --workspace packages/core"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@vitest/coverage-v8": "^3.2.4",
+    "eslint": "^10.0.2",
+    "globals": "^17.4.0",
+    "husky": "^9.1.7",
+    "jsdom": "^26.1.0",
+    "lint-staged": "^16.3.2",
+    "prettier": "^3.8.1",
+    "typescript-eslint": "^8.57.2",
+    "vitest": "^3.2.4"
+  },
+  "lint-staged": {
+    "*.{js,ts}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,html,css,yaml,yml}": [
+      "prettier --write"
+    ]
+  }
+}

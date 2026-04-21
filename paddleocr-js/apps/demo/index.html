@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>PaddleOCR.js</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      }
+
+      body {
+        margin: 0;
+        padding: 20px;
+        max-width: 1440px;
+        margin-inline: auto;
+        background: color-mix(in srgb, Canvas 96%, #2563eb 4%);
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin: 0;
+      }
+
+      .layout {
+        display: grid;
+        gap: 16px;
+      }
+
+      .hero {
+        display: grid;
+        gap: 8px;
+      }
+
+      .hero p {
+        max-width: 880px;
+        opacity: 0.78;
+      }
+
+      .panel {
+        border: 1px solid color-mix(in srgb, CanvasText 12%, transparent);
+        border-radius: 16px;
+        background: color-mix(in srgb, Canvas 93%, #fff 7%);
+        padding: 16px;
+        box-shadow: 0 10px 30px #00000010;
+      }
+
+      .panel-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 12px;
+      }
+
+      label {
+        display: grid;
+        gap: 6px;
+        font-size: 14px;
+      }
+
+      input,
+      select,
+      button,
+      textarea {
+        border-radius: 10px;
+        border: 1px solid #6665;
+        padding: 9px 12px;
+        font: inherit;
+        background: color-mix(in srgb, Canvas 94%, #000 6%);
+      }
+
+      textarea {
+        min-height: 88px;
+        resize: vertical;
+      }
+
+      button {
+        cursor: pointer;
+        background: color-mix(in srgb, Canvas 86%, #2563eb 14%);
+      }
+
+      .button-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      #status {
+        min-height: 1.4em;
+        padding: 10px 12px;
+        border-radius: 12px;
+        border: 1px solid color-mix(in srgb, CanvasText 10%, transparent);
+        background: color-mix(in srgb, Canvas 94%, #22c55e 6%);
+      }
+
+      .content-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.5fr) minmax(320px, 420px);
+        gap: 16px;
+        align-items: start;
+      }
+
+      canvas {
+        display: none;
+      }
+
+      img#vizImage {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+
+      img#vizImage[hidden] {
+        display: none;
+      }
+
+      pre,
+      code {
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      }
+
+      #metrics {
+        white-space: pre-wrap;
+        line-height: 1.55;
+        font-size: 13px;
+      }
+
+      #results {
+        margin: 0;
+        padding-left: 18px;
+        display: grid;
+        gap: 8px;
+      }
+
+      .muted {
+        opacity: 0.72;
+        font-size: 13px;
+      }
+
+      @media (max-width: 980px) {
+        .content-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="layout">
+      <header class="hero">
+        <h1>PaddleOCR.js</h1>
+      </header>
+
+      <section class="panel">
+        <div class="panel-grid">
+          <label>
+            Model
+            <select id="modelPreset">
+              <option value="PP-OCRv5_mobile">PP-OCRv5 mobile</option>
+            </select>
+          </label>
+          <label>
+            Runtime backend
+            <select id="runtimeBackend">
+              <option value="auto">auto</option>
+              <option value="webgpu">webgpu</option>
+              <option value="wasm">wasm</option>
+            </select>
+          </label>
+          <label>
+            Detection threshold
+            <input id="detThresh" type="number" step="0.05" min="0" max="1" value="0.3" />
+          </label>
+          <label>
+            Box threshold
+            <input id="boxThresh" type="number" step="0.05" min="0" max="1" value="0.6" />
+          </label>
+          <label>
+            Unclip ratio
+            <input id="unclipRatio" type="number" step="0.1" min="0" value="1.5" />
+          </label>
+          <label>
+            Recognition threshold
+            <input id="recScoreThresh" type="number" step="0.05" min="0" max="1" value="0.1" />
+          </label>
+        </div>
+        <div class="button-row" style="margin-top: 12px">
+          <input id="imageInput" type="file" accept="image/*" hidden />
+          <button id="chooseImageBtn">Choose image</button>
+          <button id="reinitializeBtn">Reinitialize</button>
+          <button id="runBtn" disabled>Run OCR</button>
+        </div>
+      </section>
+
+      <div id="status">Initializing...</div>
+
+      <section class="content-grid">
+        <section class="panel">
+          <div style="display: grid; gap: 10px">
+            <h2>Visualization</h2>
+            <img
+              id="vizImage"
+              alt="OCR visualization"
+              hidden
+              style="width: 100%; border-radius: 12px; border: 1px solid #6665; background: #0001"
+            />
+          </div>
+        </section>
+
+        <div style="display: grid; gap: 16px">
+          <section class="panel">
+            <h3>Metrics</h3>
+            <pre id="metrics">No runs yet</pre>
+          </section>
+          <section class="panel">
+            <h3>Recognition results</h3>
+            <ol id="results"></ol>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <script type="module" src="./src/main.ts"></script>
+  </body>
+</html>

@@ -4,7 +4,7 @@ comments: true
 
 # Logging
 
-This document mainly introduces how to configure the logging system for the PaddleOCR inference package. It's important to note that PaddleOCR's inference package uses a different logging system than the training scripts, and this document does not cover the configuration of the logging system used in the training scripts.
+This document explains how to configure logging for the `paddleocr` Python package. The `paddleocr` package uses a different logging system than training scripts, and this document does not cover training-script logging configuration.
 
 PaddleOCR has built a centralized logging system based on Python's [`logging` standard library](https://docs.python.org/3/library/logging.html#module-logging). In other words, PaddleOCR uses a single logger, which can be accessed and configured via `paddleocr.logger`.
 

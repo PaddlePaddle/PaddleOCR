@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "strict": true,
+    "noEmit": true,
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "baseUrl": ".",
+    "paths": {
+      "@paddleocr/paddleocr-js": ["../../packages/core/src/index.ts"],
+      "@paddleocr/paddleocr-js/viz": ["../../packages/core/src/viz/index.ts"]
+    }
+  },
+  "include": ["src", "../../packages/core/src/types/*.d.ts"]
+}

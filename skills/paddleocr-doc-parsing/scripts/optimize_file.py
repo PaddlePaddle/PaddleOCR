@@ -1,19 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-# Copyright (c) 2025 PaddlePaddle Authors. All Rights Reserved.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 """
 File Optimizer for PaddleOCR Document Parsing
 
@@ -21,45 +5,69 @@ Compresses and optimizes large files to meet size requirements.
 Supports image files only.
 
 Usage:
-    python scripts/optimize_file.py input.png output.png --quality 85
+    uv run scripts/optimize_file.py input.png output.png
+    uv run scripts/optimize_file.py input.png output.jpg --quality 70
 """
 
+# /// script
+# requires-python = ">=3.9"
+# dependencies = [
+#   "Pillow>=10.0.0",
+# ]
+# ///
+
 import argparse
+import math
 import sys
 from pathlib import Path
 
+DEFAULT_QUALITY = 85
+DEFAULT_TARGET_SIZE_MB = 20
+SUPPORTED_EXTENSIONS = (".png", ".jpg", ".jpeg", ".bmp", ".tiff", ".tif", ".webp")
+SUPPORTED_FORMATS_DISPLAY = ", ".join(
+    e.lstrip(".").upper() for e in SUPPORTED_EXTENSIONS
+)
+
+
+def _arg_quality(value: str) -> int:
+    q = int(value)
+    if q < 1 or q > 100:
+        raise argparse.ArgumentTypeError("quality must be between 1 and 100 inclusive")
+    return q
+
+
+def _arg_positive_mb(value: str) -> float:
+    v = float(value)
+    if not math.isfinite(v) or v <= 0:
+        raise argparse.ArgumentTypeError(
+            "target size must be a finite number greater than 0"
+        )
+    return v
+
 
 def optimize_image(
-    input_path: Path, output_path: Path, quality: int = 85, max_size_mb: float = 20
-):
-    """
-    Optimize image file by reducing quality and/or resolution
+    input_path: Path,
+    output_path: Path,
+    quality: int = DEFAULT_QUALITY,
+    max_size_mb: float = DEFAULT_TARGET_SIZE_MB,
+) -> None:
+    """Optimize image file by reducing quality and/or resolution."""
+    from PIL import Image
 
-    Args:
-        input_path: Input image path
-        output_path: Output image path
-        quality: JPEG quality (1-100, lower = smaller file)
-        max_size_mb: Target max size in MB
-    """
-    try:
-        from PIL import Image
-    except ImportError:
-        print("ERROR: Pillow not installed")
-        print("Install with: pip install Pillow")
-        sys.exit(1)
+    if input_path.stat().st_size == 0:
+        raise ValueError("Input file is empty (0 bytes); nothing to optimize")
 
     print(f"Optimizing image: {input_path}")
 
-    # Open image
     img = Image.open(input_path)
     original_size = input_path.stat().st_size / 1024 / 1024
 
     print(f"Original size: {original_size:.2f}MB")
     print(f"Original dimensions: {img.size[0]}x{img.size[1]}")
 
-    # Convert RGBA to RGB if needed (for JPEG)
-    if img.mode in ("RGBA", "LA", "P"):
-        # Create white background
+    is_jpeg = output_path.suffix.lower() in (".jpg", ".jpeg")
+
+    if is_jpeg and img.mode in ("RGBA", "LA", "P"):
         background = Image.new("RGB", img.size, (255, 255, 255))
         if img.mode == "P":
             img = img.convert("RGBA")
@@ -68,36 +76,37 @@ def optimize_image(
         )
         img = background
 
-    # Determine output format
-    output_format = output_path.suffix.lower()
-    if output_format in [".jpg", ".jpeg"]:
-        save_format = "JPEG"
-    elif output_format == ".png":
-        save_format = "PNG"
-    else:
-        save_format = "JPEG"
-        output_path = output_path.with_suffix(".jpg")
+    save_kwargs = {"optimize": True}
+    if is_jpeg or output_path.suffix.lower() == ".webp":
+        save_kwargs["quality"] = quality
 
-    # Try saving with specified quality
-    img.save(output_path, format=save_format, quality=quality, optimize=True)
-    new_size = output_path.stat().st_size / 1024 / 1024
+    def _save(image):
+        image.save(output_path, **save_kwargs)
+        return output_path.stat().st_size / 1024 / 1024
 
-    # If still too large, reduce resolution
+    new_size = _save(img)
+
     scale_factor = 0.9
-    while new_size > max_size_mb and scale_factor > 0.3:
+    while new_size > max_size_mb and scale_factor >= 0.4:
         new_width = int(img.size[0] * scale_factor)
         new_height = int(img.size[1] * scale_factor)
+        if new_width < 1 or new_height < 1:
+            print(
+                f"Cannot shrink to valid dimensions at scale {scale_factor:.2f} "
+                f"(would be {new_width}x{new_height}); stopping resize loop."
+            )
+            break
 
         print(f"Resizing to {new_width}x{new_height} (scale: {scale_factor:.2f})")
 
         resized = img.resize((new_width, new_height), Image.Resampling.LANCZOS)
-        resized.save(output_path, format=save_format, quality=quality, optimize=True)
-        new_size = output_path.stat().st_size / 1024 / 1024
+        new_size = _save(resized)
 
         scale_factor -= 0.1
 
     print(f"Optimized size: {new_size:.2f}MB")
-    print(f"Reduction: {((original_size - new_size) / original_size * 100):.1f}%")
+    pct = (original_size - new_size) / original_size * 100
+    print(f"Reduction: {pct:.1f}%")
 
     if new_size > max_size_mb:
         print(f"\nWARNING: File still larger than {max_size_mb}MB")
@@ -107,33 +116,36 @@ def optimize_image(
         print("  - Use a smaller or resized image")
 
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser(
         description="Optimize files for PaddleOCR document parsing",
         formatter_class=argparse.RawDescriptionHelpFormatter,
-        epilog="""
+        epilog=f"""
 Examples:
-  # Optimize image with default quality (85)
-  python scripts/optimize_file.py input.png output.png
+  # Optimize image with default quality
+  uv run scripts/optimize_file.py input.png output.png
 
   # Optimize with specific quality
-  python scripts/optimize_file.py input.jpg output.jpg --quality 70
+  uv run scripts/optimize_file.py input.jpg output.jpg --quality 70
 
 Supported formats:
-  - Images: PNG, JPG, JPEG, BMP, TIFF, TIF
+  - Images: {SUPPORTED_FORMATS_DISPLAY}
         """,
     )
 
     parser.add_argument("input", help="Input file path")
     parser.add_argument("output", help="Output file path")
     parser.add_argument(
-        "--quality", type=int, default=85, help="JPEG quality (1-100, default: 85)"
+        "--quality",
+        type=_arg_quality,
+        default=DEFAULT_QUALITY,
+        help="JPEG/WebP quality (1-100, default: %(default)s)",
     )
     parser.add_argument(
         "--target-size",
-        type=float,
-        default=20,
-        help="Target maximum size in MB (default: 20)",
+        type=_arg_positive_mb,
+        default=DEFAULT_TARGET_SIZE_MB,
+        help="Target maximum size in MB (default: %(default)s)",
     )
 
     args = parser.parse_args()
@@ -141,24 +153,26 @@ Supported formats:
     input_path = Path(args.input)
     output_path = Path(args.output)
 
-    # Validate input
     if not input_path.exists():
         print(f"ERROR: Input file not found: {input_path}")
         sys.exit(1)
 
-    # Determine file type
     ext = input_path.suffix.lower()
 
-    if ext in [".png", ".jpg", ".jpeg", ".bmp", ".tiff", ".tif"]:
-        optimize_image(input_path, output_path, args.quality, args.target_size)
+    if ext in SUPPORTED_EXTENSIONS:
+        try:
+            optimize_image(input_path, output_path, args.quality, args.target_size)
+        except Exception as e:
+            print(f"ERROR: {e}")
+            sys.exit(1)
     else:
         print(f"ERROR: Unsupported file format: {ext}")
-        print("Supported: PNG, JPG, JPEG, BMP, TIFF, TIF")
+        print(f"Supported: {SUPPORTED_FORMATS_DISPLAY}")
         sys.exit(1)
 
     print(f"\nOptimized file saved to: {output_path}")
     print("\nYou can now process with:")
-    print(f'  python scripts/vl_caller.py --file-path "{output_path}" --pretty')
+    print(f'  uv run scripts/layout_caller.py --file-path "{output_path}" --pretty')
 
 
 if __name__ == "__main__":
