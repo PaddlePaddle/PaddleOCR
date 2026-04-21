@@ -22,8 +22,8 @@ theme:
     - content.code.copy
     - content.tabs.link
     - content.footnote.tooltips
-    - content.action.edit
-    - content.action.view
+    - content.action.edit #修改源代码
+    - content.action.view  #查看源代码
     - navigation.expand  # 默认打开所有的字节
     - navigation.tabs # 顶级索引被作为tab
     - navigation.tabs.sticky # tab始终可见

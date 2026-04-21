@@ -2,7 +2,7 @@
 comments: true
 ---
 
-# 文档类视觉语言模型模块使用教程
+# 文档类视觉语言模型模块使用教程 
 
 ## 一、概述
 
@@ -12,33 +12,54 @@ comments: true
 
 > 推理耗时仅包含模型推理耗时，不包含前后处理耗时。
 
-<table>
-<tr>
-<th>模型</th><th>模型下载链接</th>
-<th>模型存储大小（GB）</th>
-<th>模型总分</th>
-<th>介绍</th>
-</tr>
-<tr>
-<td>PP-DocBee-2B</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocBee-2B_infer.tar">推理模型</a></td>
-<td>4.2</td>
-<td>765</td>
-<td rowspan="2">PP-DocBee 是飞桨团队自研的一款专注于文档理解的多模态大模型，在中文文档理解任务上具有卓越表现。该模型通过近 500 万条文档理解类多模态数据集进行微调优化，各种数据集包括了通用VQA类、OCR类、图表类、text-rich文档类、数学和复杂推理类、合成数据类、纯文本数据等，并设置了不同训练数据配比。在学术界权威的几个英文文档理解评测榜单上，PP-DocBee基本都达到了同参数量级别模型的SOTA。在内部业务中文场景类的指标上，PP-DocBee也高于目前的热门开源和闭源模型。</td>
-</tr>
-<tr>
-<td>PP-DocBee-7B</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocBee-7B_infer.tar">推理模型</a></td>
-<td>15.8</td>
-<td>-</td>
-</tr>
-<tr>
-<td>PP-DocBee2-3B</td><td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocBee2-3B_infer.tar">推理模型</a></td>
-<td>7.6</td>
-<td>852</td>
-<td>PP-DocBee2 是飞桨团队自研的一款专注于文档理解的多模态大模型，在PP-DocBee的基础上进一步优化了基础模型，并引入了新的数据优化方案，提高了数据质量，使用自研数据合成策略生成的少量的47万数据便使得PP-DocBee2在中文文档理解任务上表现更佳。在内部业务中文场景类的指标上，PP-DocBee2相较于PP-DocBee提升了约11.4%，同时也高于目前的同规模热门开源和闭源模型。</td>
-</tr>
-</table>
+###  PP-DocBee-2B
+**模型类型：** 推理模型 | **模型存储大小：** 4.2 GB  
+**模型介绍：**  
+PP-DocBee 是飞桨团队自研的一款专注于文档理解的多模态大模型，在中文文档理解任务上具有卓越表现。该模型通过近 500 万条文档理解类多模态数据集进行微调优化，各种数据集包括了通用VQA类、OCR类、图表类、text-rich文档类、数学和复杂推理类、合成数据类、纯文本数据等，并设置了不同训练数据配比。在学术界权威的几个英文文档理解评测榜单上，PP-DocBee基本都达到了同参数量级别模型的SOTA。
 
-<b>注：以上模型总分为内部评估集模型测试结果，内部评估集所有图像分辨率 (height, width) 为 (1680,1204)，共1196条数据，包括了财报、法律法规、理工科论文、说明书、文科论文、合同、研报等场景，暂时未有计划公开。</b>
+**性能指标：**
+| 指标名称 | 模型总分 |
+| :--- | :--- |
+| **内部评估** | 765 |
+
+**下载链接：**  
+|  推理模型 |
+|:---: |
+|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocBee-2B_infer.tar),[AI Studio](https://aistudio.baidu.com/modelsdetail/31934  ),[Hugging Face](https://huggingface.co/PaddlePaddle/PP-DocBee-2B  ),[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PP-DocBee-2B  )  |
+
+---
+
+### PP-DocBee-7B
+**模型类型：** 推理模型 | **模型存储大小：** 15.8 GB  
+**模型介绍：**  
+PP-DocBee 是飞桨团队自研的一款专注于文档理解的多模态大模型，在中文文档理解任务上具有卓越表现。该模型通过近 500 万条文档理解类多模态数据集进行微调优化，各种数据集包括了通用VQA类、OCR类、图表类、text-rich文档类、数学和复杂推理类、合成数据类、纯文本数据等，并设置了不同训练数据配比。在学术界权威的几个英文文档理解评测榜单上，PP-DocBee基本都达到了同参数量级别模型的SOTA。
+
+**下载链接：**  
+|  推理模型 |
+|:---: |
+|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocBee-7B_infer.tar),[AI Studio](https://aistudio.baidu.com/modelsdetail/31868  ),[Hugging Face](https://huggingface.co/PaddlePaddle/PP-DocBee-7B  ),[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PP-DocBee-7B  )  |
+
+---
+
+###  PP-DocBee2-3B
+**模型类型：** 推理模型 | **模型存储大小：** 7.6 GB  
+**模型介绍：**  
+PP-DocBee2 是飞桨团队自研的一款专注于文档理解的多模态大模型，在PP-DocBee的基础上进一步优化了基础模型，并引入了新的数据优化方案，提高了数据质量，使用自研数据合成策略生成的少量的47万数据便使得PP-DocBee2在中文文档理解任务上表现更佳。在内部业务中文场景类的指标上，PP-DocBee2相较于PP-DocBee提升了约11.4%，同时也高于目前的同规模热门开源和闭源模型。
+
+**性能指标：**
+| 指标名称 | 模型总分 |
+| :--- | :--- |
+| **内部评估** | 852 |
+
+**下载链接：**  
+|  推理模型 |
+|:---: |
+|[BOS源](https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocBee2-3B_infer.tar),[AI Studio](https://aistudio.baidu.com/modelsdetail/31901  ),[Hugging Face](https://huggingface.co/PaddlePaddle/PP-DocBee2-3B  ),[ModelScope](https://www.modelscope.cn/models/PaddlePaddle/PP-DocBee2-3B  )  |
+
+---
+
+###  评估说明
+**注：** 以上模型总分为内部评估集模型测试结果，内部评估集所有图像分辨率 (height, width) 为 (1680,1204)，共1196条数据，包括了财报、法律法规、理工科论文、说明书、文科论文、合同、研报等场景，暂时未有计划公开。
 
 
 
