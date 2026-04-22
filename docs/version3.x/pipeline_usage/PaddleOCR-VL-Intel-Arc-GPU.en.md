@@ -17,8 +17,8 @@ Use this guide for the workflows below.
 
 | Goal | Support on this hardware | Read this section |
 | --- | --- | --- |
-| Local direct inference | Supported | Read Section 1. Environment Preparation and Section 2. Quick Start. |
-| Client + VLM inference service | Supported | Complete local direct inference first, then read Section 3. Improving Inference Performance with VLM Inference Services. |
+| Local direct inference | Not currently supported with local PaddlePaddle inference on this hardware | Read Section 2. Quick Start to review the limitation, then continue to Section 3 for the supported hardware-accelerated path. |
+| Client + VLM inference service | Supported | Start with Section 1. Environment Preparation, then read Section 3. Improving Inference Performance with VLM Inference Services. |
 | Full API service | Supported with Docker Compose deployment | Read Section 4.1 first, then continue with the Section 4.2 client invocation section and the Section 4.3 pipeline configuration section. |
 | Model fine-tuning | Supported | Read Section 5. Model Fine-Tuning. |
 

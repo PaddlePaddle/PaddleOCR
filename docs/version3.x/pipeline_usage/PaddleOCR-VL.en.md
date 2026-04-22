@@ -78,7 +78,7 @@ PaddleOCR-VL currently provides multiple inference methods, and the supported in
     <td>✅</td>
     <td>✅</td>
     <td>✅</td>
-    <td>✅</td>
+    <td>🚧</td>
   </tr>
   <tr style="text-align: center;">
     <td>Transformers</td>

@@ -76,7 +76,7 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
     <td>✅</td>
     <td>✅</td>
     <td>✅</td>
-    <td>✅</td>
+    <td>🚧</td>
   </tr>
   <tr style="text-align: center;">
     <td>Transformers</td>
