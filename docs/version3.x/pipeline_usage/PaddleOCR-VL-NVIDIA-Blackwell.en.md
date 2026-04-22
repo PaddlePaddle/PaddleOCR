@@ -21,8 +21,18 @@ PaddleOCR-VL has been verified for accuracy and speed on the RTX 5070. However, 
 
 Before starting the tutorial, **please ensure that your NVIDIA driver supports CUDA 12.9 or higher**.
 
-> TIP:
-> Before reading this hardware-specific tutorial, we recommend first reading the [Process Guide](./PaddleOCR-VL.en.md#process-guide) in the main [PaddleOCR-VL Usage Tutorial](./PaddleOCR-VL.en.md) to determine which chapters apply to your goal, and then returning here to read the corresponding sections.
+## Workflow Guide for This Hardware
+
+Use this guide for the workflows below.
+
+| Goal | Support on this hardware | Read this section |
+| --- | --- | --- |
+| Local direct inference | Supported | Read Section 1. Environment Preparation and Section 2. Quick Start. |
+| Client + VLM inference service | Supported | Complete local direct inference first, then read Section 3. Improving Inference Performance with VLM Inference Services. |
+| Full API service | Supported with Docker Compose or manual deployment | Read Section 4.1 for Docker Compose, or Section 4.2 for manual deployment, then continue with the Section 4.3 client invocation section and the Section 4.4 pipeline configuration section. |
+| Model fine-tuning | Supported | Read Section 5. Model Fine-Tuning. |
+
+If you only need to confirm which inference engine combinations are available on this hardware, refer to the support matrix in the main [PaddleOCR-VL Usage Tutorial](./PaddleOCR-VL.en.md#inference-device-support-for-paddleocr-vl).
 
 ## 1. Environment Preparation
 

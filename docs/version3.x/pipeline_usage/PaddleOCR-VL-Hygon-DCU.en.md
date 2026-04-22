@@ -11,8 +11,18 @@ This tutorial is a guide for using PaddleOCR-VL on Hygon DCU, covering the compl
 
 PaddleOCR-VL has been verified for accuracy and speed on the Hygon K100AI. However, due to hardware diversity, compatibility with other Hygon DCUs has not yet been confirmed. We welcome the community to test on different hardware setups and share your results.
 
-> TIP:
-> Before reading this hardware-specific tutorial, we recommend first reading the [Process Guide](./PaddleOCR-VL.en.md#process-guide) in the main [PaddleOCR-VL Usage Tutorial](./PaddleOCR-VL.en.md) to determine which chapters apply to your goal, and then returning here to read the corresponding sections.
+## Workflow Guide for This Hardware
+
+Use this guide for the workflows below.
+
+| Goal | Support on this hardware | Read this section |
+| --- | --- | --- |
+| Local direct inference | Supported | Read Section 1. Environment Preparation and Section 2. Quick Start. |
+| Client + VLM inference service | Supported | Complete local direct inference first, then read Section 3. Improving Inference Performance with VLM Inference Services. |
+| Full API service | Supported with Docker Compose deployment | Read Section 4.1 first, then continue with the Section 4.2 client invocation section and the Section 4.3 pipeline configuration section. |
+| Model fine-tuning | Supported | Read Section 5. Model Fine-Tuning. |
+
+If you only need to confirm which inference engine combinations are available on this hardware, refer to the support matrix in the main [PaddleOCR-VL Usage Tutorial](./PaddleOCR-VL.en.md#inference-device-support-for-paddleocr-vl).
 
 ## 1. Environment Preparation
 
