@@ -19,7 +19,19 @@
 - [x] The main-guide support matrix, support truth table, and Ascend/Intel hardware workflow tables all agree that Huawei Ascend NPU and Intel Arc GPU do not currently support local PaddlePaddle direct inference
 - Evidence:
   - The artifact-consistency `rg` validation preserved the expected Apple manual-only route, the Blackwell Docker Compose or manual route, and the compose-based full-API routes in the relevant hardware guides.
-  - `PaddleOCR-VL.en.md` marks PaddlePaddle as `🚧` for Huawei Ascend NPU and Intel Arc GPU in the support matrix, the support truth table records local direct inference as not supported on those hardware paths, and both hardware workflow tables route readers from that limitation to the supported client + VLM service path in Section 3.
+  - English revalidation: `docs/version3.x/pipeline_usage/PaddleOCR-VL.en.md` marks PaddlePaddle as `🚧` for Huawei Ascend NPU and Intel Arc GPU in the support matrix, while `docs/version3.x/pipeline_usage/PaddleOCR-VL-Huawei-Ascend-NPU.en.md` and `docs/version3.x/pipeline_usage/PaddleOCR-VL-Intel-Arc-GPU.en.md` both say `Not currently supported with local PaddlePaddle inference on this hardware` and route the supported path to Section 3.
+  - Chinese revalidation: `docs/version3.x/pipeline_usage/PaddleOCR-VL.md` marks PaddlePaddle as `🚧` for `华为昇腾 NPU` and `Intel Arc GPU` in the support matrix, while `docs/version3.x/pipeline_usage/PaddleOCR-VL-Huawei-Ascend-NPU.md` and `docs/version3.x/pipeline_usage/PaddleOCR-VL-Intel-Arc-GPU.md` both say `当前不支持通过本地 PaddlePaddle 推理方式在本硬件上运行` and route the supported path to Section 3.
+  - `docs/superpowers/plans/2026-04-22-paddleocr-vl-doc-ia-support-truth-table.md` still records both hardware paths as not supporting local PaddlePaddle direct inference, so the artifact remains aligned with all six bilingual doc pages above.
+
+## Navigation and link sanity
+
+- [x] New main-guide hardware entry links were rechecked in English and Chinese
+- [x] Hardware-guide links back to the main support matrix were rechecked in English and Chinese
+- [x] Apple Silicon manual-deployment handoff to the main guide was rechecked in English and Chinese
+- Evidence:
+  - `docs/version3.x/pipeline_usage/PaddleOCR-VL.en.md` and `docs/version3.x/pipeline_usage/PaddleOCR-VL.md` still expose the new hardware entry tables with sibling-guide links for Blackwell, Apple Silicon, Kunlunxin XPU, Hygon DCU, MetaX GPU, Iluvatar GPU, Huawei Ascend NPU, AMD GPU, and Intel Arc GPU.
+  - The support-matrix destination headings are still present as `## Inference Device Support for PaddleOCR-VL` in `docs/version3.x/pipeline_usage/PaddleOCR-VL.en.md` and `## PaddleOCR-VL 对推理设备的支持情况` in `docs/version3.x/pipeline_usage/PaddleOCR-VL.md`, and the Apple/Ascend/Intel hardware guides in both languages still link back to those main-guide support-matrix anchors.
+  - `docs/version3.x/pipeline_usage/PaddleOCR-VL-Apple-Silicon.en.md` still hands manual-deployment readers to `docs/version3.x/pipeline_usage/PaddleOCR-VL.en.md` Section `4.2 Method 2: Manual Deployment`, and `docs/version3.x/pipeline_usage/PaddleOCR-VL-Apple-Silicon.md` still hands them to `docs/version3.x/pipeline_usage/PaddleOCR-VL.md` Section `4.2 方法二：手动部署`; both target sections are still present in the main guides.
 
 ## Walkthrough checks
 
