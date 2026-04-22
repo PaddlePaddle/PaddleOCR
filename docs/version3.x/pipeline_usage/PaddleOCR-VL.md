@@ -11,61 +11,38 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
 
 **2026年1月29日，我们发布了PaddleOCR-VL-1.5。PaddleOCR-VL-1.5不仅以94.5%精度大幅刷新了评测集OmniDocBench v1.5，更创新性地支持了异形框定位，使得PaddleOCR-VL-1.5 在扫描、倾斜、弯折、屏幕拍摄及复杂光照等真实场景中均表现优异。此外，模型还新增了印章识别与文本检测识别能力，关键指标持续领跑。**
 
-## 流程导览 {#流程导览}
+## 从这里开始
 
-在进入具体章节前，建议先完成两个判断：
+请先根据硬件选择对应教程。
 
-1. 你当前所使用的硬件平台适合继续阅读本教程，还是切换到对应硬件教程中的同一章节；
-2. 你的目标是本地直接推理、客户端结合 VLM 推理服务、部署完整 API 服务，还是模型微调。
+| 硬件 | 阅读哪篇教程 |
+| --- | --- |
+| x64 CPU | 继续阅读本教程。请使用第 1.2 节的手动安装路径；仅适用于 NVIDIA GPU 的 Docker 步骤不适用。 |
+| 除 Blackwell 之外的 NVIDIA GPU | 继续阅读本教程。 |
+| NVIDIA Blackwell GPU | 阅读 [PaddleOCR-VL NVIDIA Blackwell 架构 GPU 使用教程](./PaddleOCR-VL-NVIDIA-Blackwell.md)。 |
+| Apple Silicon | 阅读 [PaddleOCR-VL Apple Silicon 使用教程](./PaddleOCR-VL-Apple-Silicon.md)。 |
+| 昆仑芯 XPU | 阅读 [PaddleOCR-VL 昆仑芯 XPU 使用教程](./PaddleOCR-VL-Kunlunxin-XPU.md)。 |
+| 海光 DCU | 阅读 [PaddleOCR-VL 海光 DCU 使用教程](./PaddleOCR-VL-Hygon-DCU.md)。 |
+| 沐曦 GPU | 阅读 [PaddleOCR-VL 沐曦 GPU 使用教程](./PaddleOCR-VL-MetaX-GPU.md)。 |
+| 天数 GPU | 阅读 [PaddleOCR-VL 天数 GPU 使用教程](./PaddleOCR-VL-Iluvatar-GPU.md)。 |
+| 华为昇腾 NPU | 阅读 [PaddleOCR-VL 华为昇腾 NPU 使用教程](./PaddleOCR-VL-Huawei-Ascend-NPU.md)。 |
+| AMD GPU | 阅读 [PaddleOCR-VL AMD GPU 使用教程](./PaddleOCR-VL-AMD-GPU.md)。 |
+| Intel Arc GPU | 阅读 [PaddleOCR-VL Intel Arc GPU 使用教程](./PaddleOCR-VL-Intel-Arc-GPU.md)。 |
 
-```mermaid
-flowchart TD
-  startNode["开始"]
-  startNode --> platformType{"硬件平台类型"}
-  platformType -->|"x64 CPU / 其他 NVIDIA GPU"| mainDoc["继续阅读本教程"]
-  platformType -->|"NVIDIA Blackwell"| blackwellDoc["先看本导览，再看 Blackwell 教程对应章节"]
-  platformType -->|"其他支持的硬件平台"| hardwareDoc["先看本导览，再看对应硬件教程章节"]
-  mainDoc --> supportMatrix{"是否先确认支持的推理方式？"}
-  blackwellDoc --> supportMatrix
-  hardwareDoc --> supportMatrix
-  supportMatrix -->|"是"| supportSection["阅读下一节：PaddleOCR-VL 对推理设备的支持情况"]
-  supportMatrix -->|"否"| usageGoal{"使用目标"}
-  supportSection --> usageGoal
-  usageGoal -->|"本地直接推理"| localRun["阅读 1. 环境准备 和 2. 快速开始"]
-  usageGoal -->|"客户端 + VLM 推理服务"| vlmService["先完成本地直接推理，再读第 3 节"]
-  usageGoal -->|"部署完整 API 服务"| apiMode{"部署方式"}
-  apiMode -->|"Docker Compose"| composePath["阅读 4.1 和 4.3"]
-  apiMode -->|"手动部署"| manualPath["阅读 1. 环境准备、4.2 和 4.3"]
-  usageGoal -->|"模型微调"| fineTune["阅读 5. 模型微调"]
-```
+如果你只是想先确认某种推理引擎组合是否支持当前硬件，请先阅读下方的 [PaddleOCR-VL 对推理设备的支持情况](#paddleocr-vl-对推理设备的支持情况)。
 
-- **平台路径**：
-  - x64 CPU 与多数英伟达 GPU 可直接阅读本教程。
-  - RTX 50 系等 Blackwell 架构 GPU，建议结合 [PaddleOCR-VL NVIDIA Blackwell 架构 GPU 使用教程](./PaddleOCR-VL-NVIDIA-Blackwell.md) 的对应章节阅读。
-  - 其他支持的硬件平台，如 Apple Silicon、昆仑芯 XPU、海光 DCU、沐曦 GPU、天数 GPU、华为昇腾 NPU、AMD GPU、Intel Arc GPU 等，建议结合对应硬件教程中的同一章节阅读（缺少对应教程的硬件平台暂不支持）。
-- **是否先看支持矩阵**：如果你需要先确认当前硬件平台支持哪些推理方式，例如本地飞桨框架（`paddle_static` 或 `paddle_dynamic`）或 `transformers`，请先阅读下一节“PaddleOCR-VL 对推理设备的支持情况”。
-- **各路径含义**：
-  - **本地直接推理**：适合通过 PaddleOCR CLI 或 Python API 在本机直接调用 PaddleOCR-VL。
-  - **客户端 + VLM 推理服务**：适合将 VLM 环节交给专用推理服务处理。第 3 节启动的是 VLM 推理服务，不是 PaddleOCR-VL 的完整 API 服务；版面检测等其他环节仍在客户端执行。
-  - **部署完整 API 服务**：适合将 PaddleOCR-VL 的完整能力封装为 HTTP 服务。其中，Docker Compose 路径采用“飞桨框架（`paddle_static` / `paddle_dynamic`）+ VLM 推理服务”的组合；手动部署默认使用飞桨框架，也可切换到 `transformers`，或配置为“版面检测推理方式 + VLM 推理服务”的组合。
-  - **并发处理**：如需支持并发请求处理，请参考[高性能服务化部署方案](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/hps/README.md)。
-  - **模型微调**：如果你发现 PaddleOCR-VL 在特定业务场景中的精度表现未达预期，请阅读 [5. 模型微调](#5) 或其他硬件文档中的对应章节。
+## 本教程支持的使用目标
 
+本教程是 x64 CPU 用户和除 Blackwell 之外的 NVIDIA GPU 用户的默认路径。
 
-各硬件对应的使用教程：
+| 目标 | 在本教程中的支持情况 | 从哪里开始阅读 |
+| --- | --- | --- |
+| 本地直接推理 | 支持。x64 CPU 用户应使用第 1.2 节的手动安装路径。 | 阅读第 1 节“环境准备”和第 2 节“快速开始”。 |
+| 客户端 + VLM 推理服务 | 支持。不同硬件可用的 backend 组合不同，如需确认具体组合，请先查看支持矩阵。 | 先完成本地直接推理，再阅读第 3 节“使用 VLM 推理服务提升推理性能”。 |
+| 完整 API 服务 | 支持。x64 CPU 用户应使用手动部署路径；除 Blackwell 之外的 NVIDIA GPU 用户可使用 Docker Compose 或手动部署。 | 阅读第 4 节“服务化部署”。如需 Docker Compose，阅读第 4.1 节；如需手动部署，阅读第 4.2 节。 |
+| 模型微调 | 支持。 | 阅读第 5 节“模型微调”。 |
 
-| 硬件类型         | 使用教程 |
-|-----------------|--------------------------------------------------|
-| x64 CPU         | 本教程（当前仅支持手动安装依赖） |
-| 英伟达 GPU      | - NVIDIA Blackwell 架构 GPU（如RTX 50 系）参考 [PaddleOCR-VL NVIDIA Blackwell 架构 GPU 使用教程](./PaddleOCR-VL-NVIDIA-Blackwell.md) <br/> - 其他英伟达 GPU 参考本教程 |
-| 昆仑芯 XPU      | [PaddleOCR-VL 昆仑芯 XPU 使用教程](./PaddleOCR-VL-Kunlunxin-XPU.md) |
-| 海光 DCU        | [PaddleOCR-VL 海光 DCU 使用教程](./PaddleOCR-VL-Hygon-DCU.md) |
-| 沐曦 GPU        | [PaddleOCR-VL 沐曦 GPU 使用教程](./PaddleOCR-VL-MetaX-GPU.md) |
-| 天数 GPU        | [PaddleOCR-VL 天数 GPU 使用教程](./PaddleOCR-VL-Iluvatar-GPU.md) |
-| 华为昇腾 NPU        | [PaddleOCR-VL 华为昇腾 NPU 使用教程](./PaddleOCR-VL-Huawei-Ascend-NPU.md) |
-| Apple Silicon        | [PaddleOCR-VL Apple Silicon 使用教程](./PaddleOCR-VL-Apple-Silicon.md) |
-| AMD GPU         | [PaddleOCR-VL AMD GPU 使用教程](./PaddleOCR-VL-AMD-GPU.md) |
-| Intel Arc GPU        | [PaddleOCR-VL Intel Arc GPU 使用教程](./PaddleOCR-VL-Intel-Arc-GPU.md) |
+如需支持更高并发，请参考[高性能服务化部署方案](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/hps/README.md)。
 
 ## PaddleOCR-VL 对推理设备的支持情况
 
@@ -99,7 +76,7 @@ flowchart TD
     <td>✅</td>
     <td>✅</td>
     <td>✅</td>
-    <td>✅</td>
+    <td>🚧</td>
   </tr>
   <tr style="text-align: center;">
     <td>Transformers</td>
