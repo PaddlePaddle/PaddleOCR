@@ -13,48 +13,43 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
 
 ## 流程导览 {#流程导览}
 
-您可以先根据自己的目标选择阅读路径，再结合硬件类型确认应阅读本教程，还是对应硬件教程中的相同章节。
+在进入具体章节前，建议先完成两个判断：
 
-在开始前，建议先确认您的设备类型：
+1. 你当前所使用的硬件平台适合继续阅读本教程，还是切换到对应硬件教程中的同一章节；
+2. 你的目标是本地直接推理、客户端结合 VLM 推理服务、部署完整 API 服务，还是模型微调。
 
-- **x64 CPU**：可直接阅读本教程。
-- **英伟达 GPU**：
-    - 如果是 **RTX 50 系等 Blackwell 架构 GPU**，建议先继续阅读本节流程导览，确定使用目标；随后再参考 [PaddleOCR-VL NVIDIA Blackwell 架构 GPU 使用教程](./PaddleOCR-VL-NVIDIA-Blackwell.md) 中对应的章节。
-    - 其他英伟达 GPU 可直接阅读本教程。
-- **Apple Silicon、昆仑芯 XPU、海光 DCU、沐曦 GPU、天数 GPU、华为昇腾 NPU**：建议先继续阅读本节流程导览，确定使用目标；随后再参考对应硬件教程中的相同章节。
+```mermaid
+flowchart TD
+  startNode["开始"]
+  startNode --> platformType{"硬件平台类型"}
+  platformType -->|"x64 CPU / 其他 NVIDIA GPU"| mainDoc["继续阅读本教程"]
+  platformType -->|"NVIDIA Blackwell"| blackwellDoc["先看本导览，再看 Blackwell 教程对应章节"]
+  platformType -->|"其他支持的硬件平台"| hardwareDoc["先看本导览，再看对应硬件教程章节"]
+  mainDoc --> supportMatrix{"是否先确认支持的推理方式？"}
+  blackwellDoc --> supportMatrix
+  hardwareDoc --> supportMatrix
+  supportMatrix -->|"是"| supportSection["阅读下一节：PaddleOCR-VL 对推理设备的支持情况"]
+  supportMatrix -->|"否"| usageGoal{"使用目标"}
+  supportSection --> usageGoal
+  usageGoal -->|"本地直接推理"| localRun["阅读 1. 环境准备 和 2. 快速开始"]
+  usageGoal -->|"客户端 + VLM 推理服务"| vlmService["先完成本地直接推理，再读第 3 节"]
+  usageGoal -->|"部署完整 API 服务"| apiMode{"部署方式"}
+  apiMode -->|"Docker Compose"| composePath["阅读 4.1 和 4.3"]
+  apiMode -->|"手动部署"| manualPath["阅读 1. 环境准备、4.2 和 4.3"]
+  usageGoal -->|"模型微调"| fineTune["阅读 5. 模型微调"]
+```
 
-在按照上述路径直接阅读后续章节之前，如果您需要确认 PaddleOCR-VL 在当前硬件环境下支持哪些推理方式（例如使用 PaddlePaddle 框架作为推理引擎），请继续阅读下一节“PaddleOCR-VL 对推理设备的支持情况”。
-
-确认上述信息后，再按使用目标选择路径：
-
-1. **本地直接推理（快速体验 / 脚本集成）**：
-
-    适用于在本机通过 PaddleOCR CLI 或 Python API 直接调用 PaddleOCR-VL。
-    这一类通常对应本地推理引擎方式，如 PaddlePaddle 或 Transformers。
-
-    请阅读 [1. 环境准备](#1) 和 [2. 快速开始](#2)，或其他硬件文档中的对应章节。
-
-2. **客户端结合 VLM 推理服务（性能优先）**：
-
-    适用于将 VLM 环节交给专用推理服务处理，以提升性能。您既可以自建基于 `vLLM`、`SGLang`、`FastDeploy`、`MLX-VLM`、`llama.cpp` 等后端的 VLM 推理服务，也可以直接使用兼容的托管服务。
-    这一类通常对应“版面检测推理方式 + VLM 推理服务”的组合。
-
-    建议先按上一条完成本地直接推理的基本跑通，再继续阅读 [3. 使用 VLM 推理服务提升推理性能](#3-vlm) 或其他硬件文档中的对应章节。
-
-    需要特别注意的是，**第 3 节启动的是 VLM 推理服务，而不是 PaddleOCR-VL 的完整 API 服务**；版面检测等其他环节仍在客户端执行。
-
-3. **部署完整 API 服务**：
-
-    适用于将 PaddleOCR-VL 的完整能力封装为网络服务，客户端仅通过 HTTP 接口即可完成调用。与上一条不同，这里部署的是可直接对外提供完整 PaddleOCR-VL 能力的 API 服务，而不是仅负责 VLM 推理的后端服务。在对并发处理能力没有特别要求的情况下，可以选择以下两种方案之一：
-
-    - 使用 Docker Compose 部署（一键启动，推荐使用）：采用“PaddlePaddle + VLM 推理服务”的推理方式，底层 VLM 服务使用推理加速框架。请阅读 [4.1 方法一：使用 Docker Compose 部署](#41-docker-compose) 和 [4.3 客户端调用方式](#43)，或其他硬件文档中的对应章节。
-    - 手动部署：默认采用 PaddlePaddle 推理方式，也可切换到 Transformers，或者通过配置 VLM 推理服务实现“版面检测推理方式 + VLM 推理服务”组合。请阅读 [1. 环境准备](#1)、[4.2 方法二：手动部署](#42) 和 [4.3 客户端调用方式](#43)，或其他硬件文档中的对应章节。
-
-    如需支持并发请求处理，请参考[高性能服务化部署方案](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/hps/README.md)。
-
-4. **模型微调**：
-
-    如果您发现 PaddleOCR-VL 在特定业务场景中的精度表现未达预期，请阅读 [5. 模型微调](#5) 或其他硬件文档中的对应章节。
+- **平台路径**：
+  - x64 CPU 与多数英伟达 GPU 可直接阅读本教程。
+  - RTX 50 系等 Blackwell 架构 GPU，建议结合 [PaddleOCR-VL NVIDIA Blackwell 架构 GPU 使用教程](./PaddleOCR-VL-NVIDIA-Blackwell.md) 的对应章节阅读。
+  - 其他支持的硬件平台，如 Apple Silicon、昆仑芯 XPU、海光 DCU、沐曦 GPU、天数 GPU、华为昇腾 NPU、AMD GPU、Intel Arc GPU 等，建议结合对应硬件教程中的同一章节阅读（缺少对应教程的硬件平台暂不支持）。
+- **是否先看支持矩阵**：如果你需要先确认当前硬件平台支持哪些推理方式，例如本地飞桨框架（`paddle_static` 或 `paddle_dynamic`）或 `transformers`，请先阅读下一节“PaddleOCR-VL 对推理设备的支持情况”。
+- **各路径含义**：
+  - **本地直接推理**：适合通过 PaddleOCR CLI 或 Python API 在本机直接调用 PaddleOCR-VL。
+  - **客户端 + VLM 推理服务**：适合将 VLM 环节交给专用推理服务处理。第 3 节启动的是 VLM 推理服务，不是 PaddleOCR-VL 的完整 API 服务；版面检测等其他环节仍在客户端执行。
+  - **部署完整 API 服务**：适合将 PaddleOCR-VL 的完整能力封装为 HTTP 服务。其中，Docker Compose 路径采用“飞桨框架（`paddle_static` / `paddle_dynamic`）+ VLM 推理服务”的组合；手动部署默认使用飞桨框架，也可切换到 `transformers`，或配置为“版面检测推理方式 + VLM 推理服务”的组合。
+  - **并发处理**：如需支持并发请求处理，请参考[高性能服务化部署方案](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/hps/README.md)。
+  - **模型微调**：如果你发现 PaddleOCR-VL 在特定业务场景中的精度表现未达预期，请阅读 [5. 模型微调](#5) 或其他硬件文档中的对应章节。
 
 
 各硬件对应的使用教程：
@@ -253,7 +248,7 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
 </table>
 
 <details><summary>推理方式说明</summary>
-“PaddlePaddle” 表示版面检测模型与 VLM 均使用飞桨框架推理，PaddleOCR CLI 与 Python API 默认使用这种推理方式；“Transformers” 表示版面检测模型与 VLM 均通过 Transformers 引擎推理；其余推理方式遵循 “版面检测模型推理方式 + VLM 推理方式” 的格式，如“PaddlePaddle + vLLM”是指版面检测模型使用 PaddlePaddle 推理，VLM 使用 vLLM 推理。
+“PaddlePaddle” 表示版面检测模型与 VLM 均使用本地飞桨框架推理；在实际执行时，各模块会根据模型形态解析为 `paddle_static` 或 `paddle_dynamic`。“Transformers” 表示版面检测模型与 VLM 均通过 `transformers` 引擎推理；其余推理方式遵循 “版面检测模型推理方式 + VLM 推理方式” 的格式，如“PaddlePaddle + vLLM”是指版面检测模型使用本地飞桨框架，VLM 使用 vLLM 推理。
 </details>
 
 > TIP:
@@ -356,7 +351,7 @@ python -m pip install -U "paddleocr[doc-parser]"
 
 此步骤主要介绍如何使用 PaddleOCR-VL，包括如何通过 CLI 命令行方式和 Python API 方式进行使用。
 
-PaddleOCR-VL 支持 CLI 命令行方式和 Python API 两种使用方式，其中 CLI 命令行方式更简单，适合快速验证功能，而 Python API 方式更灵活，适合集成到现有项目中。下文示例默认使用飞桨框架推理；如需切换到 `transformers` 引擎，可在 CLI 中追加 `--engine transformers`，或在 Python API 初始化时传入 `engine="transformers"`。
+PaddleOCR-VL 支持 CLI 命令行方式和 Python API 两种使用方式，其中 CLI 命令行方式更简单，适合快速验证功能，而 Python API 方式更灵活，适合集成到现有项目中。下文示例默认使用本地飞桨框架；在实际执行时，各模块会根据模型形态解析为 `paddle_static` 或 `paddle_dynamic`。如需切换到 `transformers` 引擎，可在 CLI 中追加 `--engine transformers`，或在 Python API 初始化时传入 `engine="transformers"`。
 
 > IMPORTANT:
 > 本节所介绍的方法主要用于快速验证，其推理速度、显存占用及稳定性表现未必能满足生产环境的要求。**若需部署至生产环境，我们强烈建议使用专门的 VLM 推理服务**，具体方法请参考下一节。

@@ -15,48 +15,43 @@ PaddleOCR-VL is an advanced and efficient document parsing model designed specif
 
 ## Process Guide
 
-You can first choose a reading path based on your goal, and then confirm whether you should continue with this tutorial or switch to the corresponding hardware-specific tutorial for the same chapter.
+Before jumping into later sections, make two decisions first:
 
-Before getting started, we recommend first identifying your device type:
+1. Decide whether your current hardware platform should follow this tutorial directly or the matching chapter in the corresponding hardware tutorial.
+2. Decide whether your goal is local direct inference, a client plus VLM inference service, a full API service, or model fine-tuning.
 
-- **x64 CPU**: You can read this tutorial directly.
-- **NVIDIA GPU**:
-    - If you are using a **Blackwell-architecture GPU** such as the RTX 50 series, we recommend first continuing with this process guide to determine your goal, and then referring to the corresponding chapters in the [PaddleOCR-VL NVIDIA Blackwell Architecture GPU Usage Tutorial](./PaddleOCR-VL-NVIDIA-Blackwell.en.md).
-    - For other NVIDIA GPUs, you can read this tutorial directly.
-- **Apple Silicon, Kunlunxin XPU, Hygon DCU, MetaX GPU, Iluvatar GPU, and Huawei Ascend NPU**: We recommend first continuing with this process guide to determine your goal, and then referring to the corresponding chapters in the dedicated tutorial for your hardware.
+```mermaid
+flowchart TD
+  startNode["Start"]
+  startNode --> platformType{"Hardware platform"}
+  platformType -->|"x64 CPU / Other NVIDIA GPU"| mainDoc["Continue with this tutorial"]
+  platformType -->|"NVIDIA Blackwell"| blackwellDoc["Read this guide first, then the matching Blackwell chapter"]
+  platformType -->|"Other supported hardware platforms"| hardwareDoc["Read this guide first, then the matching hardware tutorial chapter"]
+  mainDoc --> supportMatrix{"Need to confirm supported inference methods first?"}
+  blackwellDoc --> supportMatrix
+  hardwareDoc --> supportMatrix
+  supportMatrix -->|"Yes"| supportSection["Read the next section: Inference Device Support for PaddleOCR-VL"]
+  supportMatrix -->|"No"| usageGoal{"Goal"}
+  supportSection --> usageGoal
+  usageGoal -->|"Local direct inference"| localRun["Read 1. Environment Preparation and 2. Quick Start"]
+  usageGoal -->|"Client + VLM service"| vlmService["Complete local direct inference first, then read Section 3"]
+  usageGoal -->|"Full API service"| apiMode{"Deployment mode"}
+  apiMode -->|"Docker Compose"| composePath["Read 4.1 and 4.3"]
+  apiMode -->|"Manual deployment"| manualPath["Read 1. Environment Preparation, 4.2, and 4.3"]
+  usageGoal -->|"Model fine-tuning"| fineTune["Read 5. Model Fine-tuning"]
+```
 
-Before proceeding directly to the following sections along the path described above, if you need to confirm which inference methods PaddleOCR-VL supports in your current hardware environment (for example, using the PaddlePaddle framework as the inference engine), please continue to the next section, “Inference Device Support for PaddleOCR-VL”.
-
-After confirming the above, choose your reading path based on your goal:
-
-1. **Local Direct Inference (Quick Experience / Script Integration)**:
-
-    Suitable for directly calling PaddleOCR-VL on the local machine through the PaddleOCR CLI or Python API.
-    This category usually corresponds to local inference engine methods such as PaddlePaddle or Transformers.
-
-    Please read [1. Environment Preparation](#1-environment-preparation) and [2. Quick Start](#2-quick-start), or the corresponding chapters in the hardware-specific tutorial.
-
-2. **Client with a VLM Inference Service (Performance-Focused)**:
-
-    Suitable for offloading only the VLM stage to a dedicated inference service for better performance. You can either deploy your own VLM inference service based on backends such as `vLLM`, `SGLang`, `FastDeploy`, `MLX-VLM`, and `llama.cpp`, or directly use a compatible managed service.
-    This category usually corresponds to combinations of "Layout Detection Inference Method + VLM Inference Service".
-
-    It is recommended to first complete the basic local direct inference flow described in the previous item, and then continue with [3. Improving Inference Performance with VLM Inference Services](#3-vlm) or the corresponding chapters in the hardware-specific tutorial.
-
-    Note that **Section 3 launches a VLM inference service, not the full PaddleOCR-VL API service**. Other stages such as layout detection are still executed on the client side.
-
-3. **Deploy the Full API Service**:
-
-    Suitable for packaging the full PaddleOCR-VL capability as a web service so that the client only needs to call it through an HTTP interface. Unlike the previous option, what is deployed here is an API service that directly exposes the complete PaddleOCR-VL capability, rather than a backend service that is only responsible for VLM inference. If you do not have special requirements for concurrent request processing, choose either of the following:
-
-    - Deployment using Docker Compose (one-click startup, recommended): this uses the "PaddlePaddle + VLM Inference Service" inference method, where the underlying VLM service uses an inference acceleration framework. Please read [4.1 Method 1: Deploy Using Docker Compose](#41-method-1-deploy-using-docker-compose-recommended) and [4.3 Client-Side Invocation](#43-client-side-invocation), or the corresponding chapters in the hardware-specific tutorial.
-    - Manual deployment: by default, this uses PaddlePaddle inference. You can also switch to Transformers, or configure a VLM inference service to form a "Layout Detection Inference Method + VLM Inference Service" combination. Please read [1. Environment Preparation](#1-environment-preparation), [4.2 Method 2: Manual Deployment](#42-method-2-manual-deployment), and [4.3 Client-Side Invocation](#43-client-side-invocation), or the corresponding chapters in the hardware-specific tutorial.
-
-    For concurrent request processing, please refer to the [High-Performance Service Deployment solution](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/hps/README_en.md).
-
-4. **Model Fine-tuning**:
-
-    If you find that the accuracy of PaddleOCR-VL in specific business scenarios does not meet expectations, please read [5. Model Fine-tuning](#5-model-fine-tuning) or the corresponding chapters in the hardware-specific tutorial.
+- **Platform path**:
+  - x64 CPU and most NVIDIA GPUs can follow this tutorial directly.
+  - For Blackwell GPUs such as the RTX 50 series, read the matching chapter in the [PaddleOCR-VL NVIDIA Blackwell Architecture GPU Usage Tutorial](./PaddleOCR-VL-NVIDIA-Blackwell.en.md) together with this guide.
+  - For other supported hardware platforms, such as Apple Silicon, Kunlunxin XPU, Hygon DCU, MetaX GPU, Iluvatar GPU, Huawei Ascend NPU, AMD GPU, and Intel Arc GPU, read the corresponding hardware tutorial together with this guide. Hardware platforms without a dedicated tutorial are not currently supported.
+- **Whether to check the support matrix first**: If you need to confirm which inference methods are supported on your current hardware platform, such as local PaddlePaddle (`paddle_static` or `paddle_dynamic`) or `transformers`, read the next section, “Inference Device Support for PaddleOCR-VL”, before continuing.
+- **What each path means**:
+  - **Local Direct Inference**: Best for calling PaddleOCR-VL directly on the local machine through the PaddleOCR CLI or Python API.
+  - **Client + VLM Inference Service**: Best for offloading only the VLM stage to a dedicated inference service. Section 3 launches a VLM inference service, not the full PaddleOCR-VL API service; other stages such as layout detection still run on the client side.
+  - **Full API Service**: Best for packaging the full PaddleOCR-VL capability as an HTTP service. The Docker Compose path uses a combination of local PaddlePaddle (`paddle_static` / `paddle_dynamic`) plus a VLM inference service. Manual deployment uses PaddlePaddle by default, and can also be switched to `transformers`, or configured as a “Layout Detection Inference Method + VLM Inference Service” combination.
+  - **Concurrent request handling**: For higher concurrency, refer to the [High-Performance Service Deployment solution](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/hps/README_en.md).
+  - **Model Fine-tuning**: If PaddleOCR-VL accuracy is still not sufficient for your scenario, continue with [5. Model Fine-tuning](#5-model-fine-tuning) or the matching chapter in the corresponding hardware tutorial.
 
 Hardware-specific usage tutorials:
 
@@ -254,7 +249,7 @@ PaddleOCR-VL currently provides multiple inference methods, and the supported in
 </table>
 
 <details><summary>Explanation of Inference Method</summary>
-"PaddlePaddle" indicates that both the layout detection model and the VLM use the PaddlePaddle framework for inference. This is the default mode for the PaddleOCR CLI and Python API. "Transformers" indicates that both the layout detection model and the VLM use the Transformers engine for inference. Other inference methods follow the format "Layout Detection Model Inference Method + VLM Inference Method". For example, "PaddlePaddle + vLLM" means that the layout detection model uses PaddlePaddle for inference, while the VLM uses vLLM.
+"PaddlePaddle" indicates that both the layout detection model and the VLM use local PaddlePaddle. During execution, each module resolves to `paddle_static` or `paddle_dynamic` based on the model form. "Transformers" indicates that both the layout detection model and the VLM use the `transformers` engine for inference. Other inference methods follow the format "Layout Detection Model Inference Method + VLM Inference Method". For example, "PaddlePaddle + vLLM" means that the layout detection model uses local PaddlePaddle, while the VLM uses vLLM.
 </details>
 
 > TIP:
@@ -357,7 +352,7 @@ python -m pip install -U "paddleocr[doc-parser]"
 
 This section introduces how to use PaddleOCR-VL through the CLI and Python API.
 
-PaddleOCR-VL supports both CLI and Python API usage. The CLI method is simpler and suitable for quick verification, while the Python API is more flexible and suitable for integration into existing projects. The examples below use PaddlePaddle inference by default. To switch to the `transformers` engine, append `--engine transformers` in the CLI, or pass `engine="transformers"` when initializing the Python API.
+PaddleOCR-VL supports both CLI and Python API usage. The CLI method is simpler and suitable for quick verification, while the Python API is more flexible and suitable for integration into existing projects. The examples below use local PaddlePaddle by default, with each module resolving to `paddle_static` or `paddle_dynamic` as appropriate. To switch to the `transformers` engine, append `--engine transformers` in the CLI, or pass `engine="transformers"` when initializing the Python API.
 
 > IMPORTANT:
 > The methods introduced in this section are primarily for rapid validation. Their inference speed, memory usage, and stability may not meet the requirements of a production environment. **If deployment to a production environment is needed, we strongly recommend using a dedicated VLM inference service**. For specific methods, please refer to the next section.
