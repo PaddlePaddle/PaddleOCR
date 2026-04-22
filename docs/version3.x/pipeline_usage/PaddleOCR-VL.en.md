@@ -13,60 +13,38 @@ PaddleOCR-VL is an advanced and efficient document parsing model designed specif
 
 <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr_vl_1_5/paddleocr-vl-1.5_metrics.png"/>
 
-## Process Guide
+## Start Here
 
-Before jumping into later sections, make two decisions first:
+Choose the guide that matches your hardware first.
 
-1. Decide whether your current hardware platform should follow this tutorial directly or the matching chapter in the corresponding hardware tutorial.
-2. Decide whether your goal is local direct inference, a client plus VLM inference service, a full API service, or model fine-tuning.
+| Hardware | Read this guide |
+| --- | --- |
+| x64 CPU | Continue with this tutorial. Use the manual installation path in Section 1.2; the NVIDIA-only Docker steps do not apply. |
+| NVIDIA GPU (except Blackwell) | Continue with this tutorial. |
+| NVIDIA Blackwell GPU | Read [PaddleOCR-VL NVIDIA Blackwell-Architecture GPUs Usage Tutorial](./PaddleOCR-VL-NVIDIA-Blackwell.en.md). |
+| Apple Silicon | Read [PaddleOCR-VL Apple Silicon Usage Tutorial](./PaddleOCR-VL-Apple-Silicon.en.md). |
+| Kunlunxin XPU | Read [PaddleOCR-VL Kunlunxin XPU Usage Tutorial](./PaddleOCR-VL-Kunlunxin-XPU.en.md). |
+| Hygon DCU | Read [PaddleOCR-VL Hygon DCU Usage Tutorial](./PaddleOCR-VL-Hygon-DCU.en.md). |
+| MetaX GPU | Read [PaddleOCR-VL MetaX GPU Usage Tutorial](./PaddleOCR-VL-MetaX-GPU.en.md). |
+| Iluvatar GPU | Read [PaddleOCR-VL Iluvatar GPU Usage Tutorial](./PaddleOCR-VL-Iluvatar-GPU.en.md). |
+| Huawei Ascend NPU | Read [PaddleOCR-VL Huawei Ascend NPU Usage Tutorial](./PaddleOCR-VL-Huawei-Ascend-NPU.en.md). |
+| AMD GPU | Read [PaddleOCR-VL AMD GPU Usage Tutorial](./PaddleOCR-VL-AMD-GPU.en.md). |
+| Intel Arc GPU | Read [PaddleOCR-VL Intel Arc GPU Usage Tutorial](./PaddleOCR-VL-Intel-Arc-GPU.en.md). |
 
-```mermaid
-flowchart TD
-  startNode["Start"]
-  startNode --> platformType{"Hardware platform"}
-  platformType -->|"x64 CPU / Other NVIDIA GPU"| mainDoc["Continue with this tutorial"]
-  platformType -->|"NVIDIA Blackwell"| blackwellDoc["Read this guide first, then the matching Blackwell chapter"]
-  platformType -->|"Other supported hardware platforms"| hardwareDoc["Read this guide first, then the matching hardware tutorial chapter"]
-  mainDoc --> supportMatrix{"Need to confirm supported inference methods first?"}
-  blackwellDoc --> supportMatrix
-  hardwareDoc --> supportMatrix
-  supportMatrix -->|"Yes"| supportSection["Read the next section: Inference Device Support for PaddleOCR-VL"]
-  supportMatrix -->|"No"| usageGoal{"Goal"}
-  supportSection --> usageGoal
-  usageGoal -->|"Local direct inference"| localRun["Read 1. Environment Preparation and 2. Quick Start"]
-  usageGoal -->|"Client + VLM service"| vlmService["Complete local direct inference first, then read Section 3"]
-  usageGoal -->|"Full API service"| apiMode{"Deployment mode"}
-  apiMode -->|"Docker Compose"| composePath["Read 4.1 and 4.3"]
-  apiMode -->|"Manual deployment"| manualPath["Read 1. Environment Preparation, 4.2, and 4.3"]
-  usageGoal -->|"Model fine-tuning"| fineTune["Read 5. Model Fine-tuning"]
-```
+If you only need to confirm whether a specific inference engine combination is available on your hardware, read [Inference Device Support for PaddleOCR-VL](#inference-device-support-for-paddleocr-vl) before continuing.
 
-- **Platform path**:
-  - x64 CPU and most NVIDIA GPUs can follow this tutorial directly.
-  - For Blackwell GPUs such as the RTX 50 series, read the matching chapter in the [PaddleOCR-VL NVIDIA Blackwell Architecture GPU Usage Tutorial](./PaddleOCR-VL-NVIDIA-Blackwell.en.md) together with this guide.
-  - For other supported hardware platforms, such as Apple Silicon, Kunlunxin XPU, Hygon DCU, MetaX GPU, Iluvatar GPU, Huawei Ascend NPU, AMD GPU, and Intel Arc GPU, read the corresponding hardware tutorial together with this guide. Hardware platforms without a dedicated tutorial are not currently supported.
-- **Whether to check the support matrix first**: If you need to confirm which inference methods are supported on your current hardware platform, such as local PaddlePaddle (`paddle_static` or `paddle_dynamic`) or `transformers`, read the next section, “Inference Device Support for PaddleOCR-VL”, before continuing.
-- **What each path means**:
-  - **Local Direct Inference**: Best for calling PaddleOCR-VL directly on the local machine through the PaddleOCR CLI or Python API.
-  - **Client + VLM Inference Service**: Best for offloading only the VLM stage to a dedicated inference service. Section 3 launches a VLM inference service, not the full PaddleOCR-VL API service; other stages such as layout detection still run on the client side.
-  - **Full API Service**: Best for packaging the full PaddleOCR-VL capability as an HTTP service. The Docker Compose path uses a combination of local PaddlePaddle (`paddle_static` / `paddle_dynamic`) plus a VLM inference service. Manual deployment uses PaddlePaddle by default, and can also be switched to `transformers`, or configured as a “Layout Detection Inference Method + VLM Inference Service” combination.
-  - **Concurrent request handling**: For higher concurrency, refer to the [High-Performance Service Deployment solution](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/hps/README_en.md).
-  - **Model Fine-tuning**: If PaddleOCR-VL accuracy is still not sufficient for your scenario, continue with [5. Model Fine-tuning](#5-model-fine-tuning) or the matching chapter in the corresponding hardware tutorial.
+## Workflow Guide for This Tutorial
 
-Hardware-specific usage tutorials:
+This tutorial is the default path for x64 CPU users and NVIDIA GPU users other than Blackwell.
 
-| Hardware Type  | Usage Tutorial |
-|----------------|----------------|
-| x64 CPU        | This tutorial (currently supports manual dependency installation only) |
-| NVIDIA GPU     | - NVIDIA Blackwell architecture GPUs (such as the RTX 50 series): [PaddleOCR-VL NVIDIA Blackwell Architecture GPU Usage Tutorial](./PaddleOCR-VL-NVIDIA-Blackwell.en.md) <br/> - Other NVIDIA GPUs: this tutorial |
-| Kunlunxin XPU  | [PaddleOCR-VL Kunlunxin XPU Usage Tutorial](./PaddleOCR-VL-Kunlunxin-XPU.en.md) |
-| Hygon DCU      | [PaddleOCR-VL Hygon DCU Usage Tutorial](./PaddleOCR-VL-Hygon-DCU.en.md) |
-| MetaX GPU      | [PaddleOCR-VL MetaX GPU Usage Tutorial](./PaddleOCR-VL-MetaX-GPU.en.md) |
-| Iluvatar GPU   | [PaddleOCR-VL Iluvatar GPU Usage Tutorial](./PaddleOCR-VL-Iluvatar-GPU.en.md) |
-| Huawei Ascend NPU | [PaddleOCR-VL Huawei Ascend NPU Usage Tutorial](./PaddleOCR-VL-Huawei-Ascend-NPU.en.md) |
-| Apple Silicon  | [PaddleOCR-VL Apple Silicon Usage Tutorial](./PaddleOCR-VL-Apple-Silicon.en.md) |
-| AMD GPU         | [PaddleOCR-VL AMD GPU Usage Tutorial](./PaddleOCR-VL-AMD-GPU.en.md) |
-| Intel Arc GPU        | [PaddleOCR-VL Intel Arc GPU Usage Tutorial](./PaddleOCR-VL-Intel-Arc-GPU.en.md) |
+| Goal | Availability in this tutorial | Read this section |
+| --- | --- | --- |
+| Local direct inference | Supported. x64 CPU users should use the manual installation path in Section 1.2. | Read Section 1. Environment Preparation and Section 2. Quick Start. |
+| Client + VLM inference service | Supported. Backend availability differs by hardware, so check the support matrix first if you need to confirm a specific combination. | Complete local direct inference first, then read Section 3. Improving Inference Performance with VLM Inference Services. |
+| Full API service | Supported. x64 CPU users should use the manual deployment path; non-Blackwell NVIDIA GPU users can use Docker Compose or manual deployment. | Read Section 4. Service Deployment. Use Section 4.1 for Docker Compose, or Section 4.2 for manual deployment. |
+| Model fine-tuning | Supported. | Read Section 5. Model Fine-Tuning. |
+
+For higher concurrency, refer to the [High-Performance Service Deployment solution](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/hps/README_en.md).
 
 ## Inference Device Support for PaddleOCR-VL
 
