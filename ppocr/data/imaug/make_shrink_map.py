@@ -59,6 +59,9 @@ class MakeShrinkMap(object):
                 cv2.fillPoly(mask, polygon.astype(np.int32)[np.newaxis, :, :], 0)
                 ignore_tags[i] = True
             else:
+                if np.isnan(polygon).any():
+                    ignore_tags[i] = True
+                    continue
                 polygon_shape = Polygon(polygon)
                 subject = [tuple(l) for l in polygon]
                 padding = pyclipper.PyclipperOffset()

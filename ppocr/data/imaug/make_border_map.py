@@ -73,6 +73,8 @@ class MakeBorderMap(object):
         assert polygon.ndim == 2
         assert polygon.shape[1] == 2
 
+        if np.isnan(polygon).any():
+            return
         polygon_shape = Polygon(polygon)
         if polygon_shape.area <= 0:
             return
