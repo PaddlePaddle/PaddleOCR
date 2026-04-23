@@ -21,6 +21,7 @@ jobs:
       - id: filter
         uses: dorny/paths-filter@de90cc6fb38fc0963ad72b210f1f284cd68cea36 # v3
         with:
+          predicate-quantifier: every
           filters: |
             docs_only:
               - '**.md'
@@ -64,12 +65,30 @@ jobs:
         python -m pip install --upgrade pip
         pip install pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        # On py3.8 several paddlex transitive deps require py3.9+, so only
+        # paddleocr[doc2md] is installable. See installation.md for the
+        # supported extras-by-Python-version matrix.
         if [[ "${{ matrix.python-version }}" == "3.8" ]]; then
           python -m pip install paddlepaddle==3.0.0 -i https://www.paddlepaddle.org.cn/packages/stable/cpu/
+          PADDLEOCR_EXTRAS="[doc2md]"
         else
-          python -m pip install paddlepaddle==3.3.0 -i https://www.paddlepaddle.org.cn/packages/stable/cpu/
+          python -m pip install paddlepaddle==3.1.0 -i https://www.paddlepaddle.org.cn/packages/stable/cpu/
+          PADDLEOCR_EXTRAS="[all]"
         fi
-        python -m pip install -e '.[all]' 'paddlex@git+https://github.com/PaddlePaddle/PaddleX.git@develop'
+        PADDLEX_SERIES=$(grep -oE 'paddlex\[[^]]+\]>=[0-9]+\.[0-9]+' pyproject.toml | head -1 | grep -oE '[0-9]+\.[0-9]+')
+        if [ -z "$PADDLEX_SERIES" ]; then
+          echo "Failed to determine PaddleX version requirement from pyproject.toml" >&2
+          exit 1
+        fi
+        PADDLEX_BRANCH="release/${PADDLEX_SERIES}"
+        echo "Installing PaddleX from branch: ${PADDLEX_BRANCH}"
+        python -m pip install -e ".${PADDLEOCR_EXTRAS}" "paddlex@git+https://github.com/PaddlePaddle/PaddleX.git@${PADDLEX_BRANCH}"
+        python -c "import paddlex; print(f'Installed paddlex version: {paddlex.__version__}')"
     - name: Test with pytest
       run: |
-        pytest --verbose tests/
+        # Skip py38_incompatible tests on py3.8.
+        if [[ "${{ matrix.python-version }}" == "3.8" ]]; then
+          pytest --verbose tests/ -m "not resource_intensive and not py38_incompatible"
+        else
+          pytest --verbose tests/
+        fi

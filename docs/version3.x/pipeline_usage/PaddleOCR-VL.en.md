@@ -320,7 +320,7 @@ The image comes preinstalled with the PaddlePaddle framework and does not includ
 
 ### 1.2 Method 2: Manually Install the Inference Engine and PaddleOCR
 
-If you cannot use Docker, you can manually install PaddlePaddle and PaddleOCR. The required Python version is 3.8–3.13.
+If you cannot use Docker, you can manually install PaddlePaddle and PaddleOCR. The required Python version is 3.9–3.13.
 
 **We strongly recommend installing PaddleOCR-VL in a virtual environment to avoid dependency conflicts.** For example, use the Python venv standard library to create a virtual environment:
 
