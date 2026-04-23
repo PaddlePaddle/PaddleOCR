@@ -1,0 +1,5 @@
+# Keep onnx and onnxruntime within a range that works together (avoids IR / schema skew on older CPU wheels).
+# For best parity with the app, install a onnxruntime major version close to onnxruntime-objc in the Podfile.
+numpy>=1.20
+onnx>=1.16,<1.21
+onnxruntime>=1.18

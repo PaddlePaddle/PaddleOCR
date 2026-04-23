@@ -31,6 +31,41 @@ Optionally, pass the **model preset** (bundle name such as `PP-OCRv6_small`) as 
 
 Currently, the supported model presets are `PP-OCRv6_small` and `PP-OCRv6_tiny`. The default preset is `PP-OCRv6_small`.
 
+## Quantize ONNX models on the host (optional)
+
+To build **INT8** variants using [ONNX Runtime quantization](https://onnxruntime.ai/docs/performance/model-optimizations/quantization.html), ensure that Python 3.8 or newer is installed in your host environment.
+
+First, install the required Python dependencies:
+
+```bash
+python3 -m pip install -r Scripts/requirements-onnx-quantize.txt
+```
+
+Next, run the quantization script:
+
+```bash
+python3 Scripts/quantize_onnx_model.py \
+  --input-model-dir PaddleOCRDemo/Models/det \
+  --output-model-dir /path/to/det_quant \
+  --mode dynamic
+```
+
+* **`--mode dynamic`**
+  Uses `quantize_dynamic`, which performs weight-only quantization and does **not** require a calibration dataset.
+
+* **`--mode static`**
+  Uses `quantize_static` (QDQ format). This mode **requires** a calibration dataset specified via `--calib-data-dir`.
+
+  * The calibration directory should contain **float32 `.npy` files**, with **one file per sample**.
+  * Each tensor must match the shape of the model’s **single input** (note: in this demo, both `det` and `rec` models have one input).
+  * You can choose calibration methods such as *MinMax*, *Entropy*, or others supported by your installed `onnxruntime` version via `--calibration-method`.
+
+For additional options and details, run:
+
+```bash
+python3 Scripts/quantize_onnx_model.py --help
+```
+
 ## Open in Xcode
 
 ```bash
@@ -54,7 +89,7 @@ So “validation” is an umbrella for both **accuracy gating** and **on-device 
 
 Complete [One-time asset setup](#one-time-asset-setup) first. For validation specifically you also need:
 
-- PaddleOCR (with ONNX Runtime engine) for the reference step: `pip install -r Scripts/requirements-validation.txt`.
+- PaddleOCR (with ONNX Runtime engine) for the reference step: `python3 -m pip install -r Scripts/requirements-validation.txt`.
 - Xcode 16 or later (validation uses `xcresulttool get test-results`, introduced in 16.0).
 
 ### Full pipeline
