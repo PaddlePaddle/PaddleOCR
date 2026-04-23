@@ -601,13 +601,11 @@ paddleocr doc_parser -i ./paddleocr_vl_demo.png --engine transformers --save_pat
 
 运行结果会被打印到终端上，默认配置的 PaddleOCR-VL 的运行结果如下：
 
-👉点击展开
-
-```
-
+<details><summary> 👉点击展开</summary>
+<pre>
+<code>
 {'res': {'input_path': 'paddleocr_vl_demo.png', 'page_index': None, 'model_settings': {'use_doc_preprocessor': False, 'use_layout_detection': True, 'use_chart_recognition': False, 'format_block_content': False}, 'layout_det_res': {'input_path': None, 'page_index': None, 'boxes': [{'cls_id': 6, 'label': 'doc_title', 'score': 0.9636914134025574, 'coordinate': [np.float32(131.31366), np.float32(36.450516), np.float32(1384.522), np.float32(127.984665)]}, {'cls_id': 22, 'label': 'text', 'score': 0.9281806349754333, 'coordinate': [np.float32(585.39465), np.float32(158.438), np.float32(930.2184), np.float32(182.57469)]}, {'cls_id': 22, 'label': 'text', 'score': 0.9840355515480042, 'coordinate': [np.float32(9.023666), np.float32(200.86115), np.float32(361.41583), np.float32(343.8828)]}, {'cls_id': 14, 'label': 'image', 'score': 0.9871416091918945, 'coordinate': [np.float32(775.50574), np.float32(200.66502), np.float32(1503.3807), np.float32(684.9304)]}, {'cls_id': 22, 'label': 'text', 'score': 0.9801855087280273, 'coordinate': [np.float32(9.532196), np.float32(344.90594), np.float32(361.4413), np.float32(440.8244)]}, {'cls_id': 17, 'label': 'paragraph_title', 'score': 0.9708921313285828, 'coordinate': [np.float32(28.040405), np.float32(455.87976), np.float32(341.7215), np.float32(520.7117)]}, {'cls_id': 24, 'label': 'vision_footnote', 'score': 0.9002962708473206, 'coordinate': [np.float32(809.0692), np.float32(703.70044), np.float32(1488.3016), np.float32(750.5238)]}, {'cls_id': 22, 'label': 'text', 'score': 0.9825374484062195, 'coordinate': [np.float32(8.896561), np.float32(536.54895), np.float32(361.05237), np.float32(655.8058)]}, {'cls_id': 22, 'label': 'text', 'score': 0.9822263717651367, 'coordinate': [np.float32(8.971573), np.float32(657.4949), np.float32(362.01715), np.float32(774.625)]}, {'cls_id': 22, 'label': 'text', 'score': 0.9767460823059082, 'coordinate': [np.float32(9.407074), np.float32(776.5216), np.float32(361.31067), np.float32(846.82874)]}, {'cls_id': 22, 'label': 'text', 'score': 0.9868153929710388, 'coordinate': [np.float32(8.669495), np.float32(848.2543), np.float32(361.64703), np.float32(1062.8568)]}, {'cls_id': 22, 'label': 'text', 'score': 0.9826608300209045, 'coordinate': [np.float32(8.8025055), np.float32(1063.8615), np.float32(361.46588), np.float32(1182.8524)]}, {'cls_id': 22, 'label': 'text', 'score': 0.982555627822876, 'coordinate': [np.float32(8.820602), np.float32(1184.4663), np.float32(361.66394), np.float32(1302.4507)]}, {'cls_id': 22, 'label': 'text', 'score': 0.9584776759147644, 'coordinate': [np.float32(9.170288), np.float32(1304.2161), np.float32(361.48898), np.float32(1351.7483)]}, {'cls_id': 22, 'label': 'text', 'score': 0.9782056212425232, 'coordinate': [np.float32(389.1618), np.float32(200.38202), np.float32(742.7591), np.float32(295.65146)]}, {'cls_id': 22, 'label': 'text', 'score': 0.9844875931739807, 'coordinate': [np.float32(388.73303), np.float32(297.18463), np.float32(744.00024), np.float32(441.3034)]}, {'cls_id': 17, 'label': 'paragraph_title', 'score': 0.9680547714233398, 'coordinate': [np.float32(409.39468), np.float32(455.89386), np.float32(721.7174), np.float32(520.9387)]}, {'cls_id': 22, 'label': 'text', 'score': 0.9741666913032532, 'coordinate': [np.float32(389.71606), np.float32(536.8138), np.float32(742.7112), np.float32(608.00165)]}, {'cls_id': 22, 'label': 'text', 'score': 0.9840384721755981, 'coordinate': [np.float32(389.30988), np.float32(609.39636), np.float32(743.09247), np.float32(750.3231)]}, {'cls_id': 22, 'label': 'text', 'score': 0.9845995306968689, 'coordinate': [np.float32(389.13272), np.float32(751.7772), np.float32(743.058), np.float32(894.8815)]}, {'cls_id': 22, 'label': 'text', 'score': 0.984852135181427, 'coordinate': [np.float32(388.83267), np.float32(896.0371), np.float32(743.58215), np.float32(1038.7345)]}, {'cls_id': 22, 'label': 'text', 'score': 0.9804865717887878, 'coordinate': [np.float32(389.08478), np.float32(1039.9119), np.float32(742.7585), np.float32(1134.4897)]}, {'cls_id': 22, 'label': 'text', 'score': 0.986461341381073, 'coordinate': [np.float32(388.52643), np.float32(1135.8137), np.float32(743.451), np.float32(1352.0085)]}, {'cls_id': 22, 'label': 'text', 'score': 0.9869391918182373, 'coordinate': [np.float32(769.8341), np.float32(775.66235), np.float32(1124.9813), np.float32(1063.207)]}, {'cls_id': 22, 'label': 'text', 'score': 0.9822869896888733, 'coordinate': [np.float32(770.30383), np.float32(1063.938), np.float32(1124.8295), np.float32(1184.2192)]}, {'cls_id': 17, 'label': 'paragraph_title', 'score': 0.9689218997955322, 'coordinate': [np.float32(791.3042), np.float32(1199.3169), np.float32(1104.4521), np.float32(1264.6985)]}, {'cls_id': 22, 'label': 'text', 'score': 0.9713128209114075, 'coordinate': [np.float32(770.4253), np.float32(1279.6072), np.float32(1124.6917), np.float32(1351.8672)]}, {'cls_id': 22, 'label': 'text', 'score': 0.9236552119255066, 'coordinate': [np.float32(1153.9058), np.float32(775.5814), np.float32(1334.0654), np.float32(798.1581)]}, {'cls_id': 22, 'label': 'text', 'score': 0.9857938885688782, 'coordinate': [np.float32(1151.5197), np.float32(799.28015), np.float32(1506.3619), np.float32(991.1156)]}, {'cls_id': 22, 'label': 'text', 'score': 0.9820687174797058, 'coordinate': [np.float32(1151.5686), np.float32(991.91095), np.float32(1506.6023), np.float32(1110.8875)]}, {'cls_id': 22, 'label': 'text', 'score': 0.9866049885749817, 'coordinate': [np.float32(1151.6919), np.float32(1112.1301), np.float32(1507.1611), np.float32(1351.9504)]}]}}}
-
-```
+</code></pre></details>
 
 运行结果及保存接口的详细说明可参考 [2.2 Python脚本方式集成](#22-python) 中的结果解释。
 
@@ -1373,64 +1371,114 @@ output = pipeline.predict(["imgs/file1.png", "imgs/file2.png", "imgs/file3.png"]
 </table>
 
 <ul>
-- 调用`print()` 方法会将结果打印到终端，打印到终端的内容解释如下：
-  1. `input_path`: `(str)` 待预测图像的输入路径
-  2. `page_index`: `(Union[int, None])` 如果输入是PDF文件，则表示当前是PDF的第几页，否则为 `None`
-  3. `model_settings`: `(Dict[str, bool])` 配置产线所需的模型参数
-    1. `use_doc_preprocessor`: `(bool)` 控制是否启用文档预处理子产线
-    2. `use_layout_detection`: `(bool)` 控制是否启用版面检测模块
-    3. `use_chart_recognition`: `(bool)` 控制是否开启图表识别功能
-    4. `format_block_content`: `(bool)` 控制是否在`JSON`中保存格式化后的markdown内容
-  4. `doc_preprocessor_res`: `(Dict[str, Union[str, Dict[str, bool], int]])` 文档预处理子产线的输出结果。仅当`use_doc_preprocessor=True`时存在
-    1. `input_path`: `(str)` 文档预处理子接受的图像路径，当输入为`numpy.ndarray`时，保存为`None`，此处为`None`
-    2. `page_index`: `None` 此处的输入为`numpy.ndarray`时，所以值为`None`
-    3. `model_settings`: `(Dict[str, bool])` 文档预处理子的模型配置参数
-      - `use_doc_orientation_classify`: `(bool)` 控制是否启用文档方向分类
-      - `use_doc_unwarping`: `(bool)` 控制是否启用文本图像扭曲矫正子模块
-    4. `angle`: `(int)` 文档图像方向分类子模块的预测结果，启用时返回实际角度值
-  5. `parsing_res_list`: `(List[Dict])` 解析结果的列表，每个元素为一个字典，列表顺序为解析后的阅读顺序。
-    1. `block_bbox`: `(np.ndarray)` 版面区域的边界框。
-    2. `block_label`: `(str)` 版面区域的标签，例如`text`、`table`等
-    3. `block_content`: `(str)` 内容为版面区域内的内容。
-    4. `block_id`: `(int)` 版面区域的索引，用于显示版面排序结果。
-    5. `block_order`: `(int)` 版面区域的顺序，用于显示版面阅读顺序，对于非排序部分，默认值为 `None`。
-- 调用`save_to_json()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_res.json`；如果指定为文件，则直接保存到该文件中。由于 JSON 文件不支持保存 numpy 数组，因此会将其中的`numpy.array`类型转换为列表形式。JSON 中的字段内容如下：
-  1. `input_path`: `(str)` 待预测图像的输入路径
-  2. `page_index`: `(Union[int, None])` 如果输入是PDF文件，则表示当前是PDF的第几页，否则为 `None`
-  3. `model_settings`: `(Dict[str, bool])` 配置产线所需的模型参数
-    1. `use_doc_preprocessor`: `(bool)` 控制是否启用文档预处理子产线
-    2. `use_layout_detection`: `(bool)` 控制是否启用版面检测模块
-    3. `use_chart_recognition`: `(bool)` 控制是否开启图表识别功能
-    4. `format_block_content`: `(bool)` 控制是否在`JSON`中保存格式化后的markdown内容
-  4. `doc_preprocessor_res`: `(Dict[str, Union[str, Dict[str, bool], int]])` 文档预处理子产线的输出结果。仅当`use_doc_preprocessor=True`时存在
-    1. `input_path`: `(str)` 文档预处理子接受的图像路径，当输入为`numpy.ndarray`时，保存为`None`，此处为`None`
-    2. `page_index`: `None` 此处的输入为`numpy.ndarray`时，所以值为`None`
-    3. `model_settings`: `(Dict[str, bool])` 文档预处理子的模型配置参数
-      - `use_doc_orientation_classify`: `(bool)` 控制是否启用文档方向分类
-      - `use_doc_unwarping`: `(bool)` 控制是否启用文本图像扭曲矫正子模块
-    4. `angle`: `(int)` 文档图像方向分类子模块的预测结果，启用时返回实际角度值
-  5. `parsing_res_list`: `(List[Dict])` 解析结果的列表，每个元素为一个字典，列表顺序为解析后的阅读顺序。
-    1. `block_bbox`: `(np.ndarray)` 版面区域的边界框。
-    2. `block_label`: `(str)` 版面区域的标签，例如`text`、`table`等
-    3. `block_content`: `(str)` 内容为版面区域内的内容。
-    4. `block_id`: `(int)` 版面区域的索引，用于显示版面排序结果。
-    5. `block_order`: `(int)` 版面区域的顺序，用于显示版面阅读顺序，对于非排序部分，默认值为 `None`。
-- 调用`save_to_img()` 方法会将可视化结果保存到指定的`save_path`中，如果指定为目录，则会将版面区域检测可视化图像、全局OCR可视化图像、版面阅读顺序可视化图像等内容保存；如果指定为文件，则直接保存到该文件中。
-- 调用`save_to_markdown()` 方法会将转化后的 Markdown 文件保存到指定的`save_path`中，保存的文件路径为`save_path/{your_img_basename}.md`。如果输入是 PDF 文件，建议直接指定目录，否则多个 Markdown 文件会被覆盖。
-- 此外，也支持通过属性获取带结果的可视化图像和预测结果，具体如下：
 
-  | 属性         | 属性说明                       |
-  | ---------- | -------------------------- |
-  | `json`     | 获取预测的 `json` 格式的结果         |
-  | `img`      | 获取格式为 `dict` 的可视化图像        |
-  | `markdown` | 获取格式为 `dict` 的 markdown 结果 |
+  <li>调用<code>print()</code> 方法会将结果打印到终端，打印到终端的内容解释如下：
+    <ol start="1" type="1">
+      <li><code>input_path</code>: <code>(str)</code> 待预测图像的输入路径</li>
+      <li><code>page_index</code>: <code>(Union[int, None])</code> 如果输入是PDF文件，则表示当前是PDF的第几页，否则为 <code>None</code></li>
+      <li><code>model_settings</code>: <code>(Dict[str, bool])</code> 配置产线所需的模型参数
+        <ol>
+          <li><code>use_doc_preprocessor</code>: <code>(bool)</code> 控制是否启用文档预处理子产线</li>
+          <li><code>use_layout_detection</code>: <code>(bool)</code> 控制是否启用版面检测模块</li>
+          <li><code>use_chart_recognition</code>: <code>(bool)</code> 控制是否开启图表识别功能</li>
+          <li><code>format_block_content</code>: <code>(bool)</code> 控制是否在<code>JSON</code>中保存格式化后的markdown内容</li>
+        </ol>
+      </li>
+      <li><code>doc_preprocessor_res</code>: <code>(Dict[str, Union[str, Dict[str, bool], int]])</code> 文档预处理子产线的输出结果。仅当<code>use_doc_preprocessor=True</code>时存在
+        <ol>
+          <li><code>input_path</code>: <code>(str)</code> 文档预处理子接受的图像路径，当输入为<code>numpy.ndarray</code>时，保存为<code>None</code>，此处为<code>None</code></li>
+          <li><code>page_index</code>: <code>None</code> 此处的输入为<code>numpy.ndarray</code>时，所以值为<code>None</code></li>
+          <li><code>model_settings</code>: <code>(Dict[str, bool])</code> 文档预处理子的模型配置参数
+            <ul>
+              <li><code>use_doc_orientation_classify</code>: <code>(bool)</code> 控制是否启用文档方向分类</li>
+              <li><code>use_doc_unwarping</code>: <code>(bool)</code> 控制是否启用文本图像扭曲矫正子模块</li>
+            </ul>
+          </li>
+          <li><code>angle</code>: <code>(int)</code> 文档图像方向分类子模块的预测结果，启用时返回实际角度值</li>
+        </ol>
+      </li>
+      <li><code>parsing_res_list</code>: <code>(List[Dict])</code> 解析结果的列表，每个元素为一个字典，列表顺序为解析后的阅读顺序。
+        <ol>
+          <li><code>block_bbox</code>: <code>(np.ndarray)</code> 版面区域的边界框。</li>
+          <li><code>block_label</code>: <code>(str)</code> 版面区域的标签，例如<code>text</code>、<code>table</code>等</li>
+          <li><code>block_content</code>: <code>(str)</code> 内容为版面区域内的内容。</li>
+          <li><code>block_id</code>: <code>(int)</code> 版面区域的索引，用于显示版面排序结果。</li>
+          <li><code>block_order</code>: <code>(int)</code> 版面区域的顺序，用于显示版面阅读顺序，对于非排序部分，默认值为 <code>None</code>。</li>
+        </ol>
+      </li>
+    </ol>
+  </li>
+  <li>调用<code>save_to_json()</code> 方法会将上述内容保存到指定的<code>save_path</code>中，如果指定为目录，则保存的路径为<code>save_path/{your_img_basename}_res.json</code>；如果指定为文件，则直接保存到该文件中。由于 JSON 文件不支持保存 numpy 数组，因此会将其中的<code>numpy.array</code>类型转换为列表形式。JSON 中的字段内容如下：
+    <ol start="1" type="1">
+      <li><code>input_path</code>: <code>(str)</code> 待预测图像的输入路径</li>
+      <li><code>page_index</code>: <code>(Union[int, None])</code> 如果输入是PDF文件，则表示当前是PDF的第几页，否则为 <code>None</code></li>
+      <li><code>model_settings</code>: <code>(Dict[str, bool])</code> 配置产线所需的模型参数
+        <ol>
+          <li><code>use_doc_preprocessor</code>: <code>(bool)</code> 控制是否启用文档预处理子产线</li>
+          <li><code>use_layout_detection</code>: <code>(bool)</code> 控制是否启用版面检测模块</li>
+          <li><code>use_chart_recognition</code>: <code>(bool)</code> 控制是否开启图表识别功能</li>
+          <li><code>format_block_content</code>: <code>(bool)</code> 控制是否在<code>JSON</code>中保存格式化后的markdown内容</li>
+        </ol>
+      </li>
+      <li><code>doc_preprocessor_res</code>: <code>(Dict[str, Union[str, Dict[str, bool], int]])</code> 文档预处理子产线的输出结果。仅当<code>use_doc_preprocessor=True</code>时存在
+        <ol>
+          <li><code>input_path</code>: <code>(str)</code> 文档预处理子接受的图像路径，当输入为<code>numpy.ndarray</code>时，保存为<code>None</code>，此处为<code>None</code></li>
+          <li><code>page_index</code>: <code>None</code> 此处的输入为<code>numpy.ndarray</code>时，所以值为<code>None</code></li>
+          <li><code>model_settings</code>: <code>(Dict[str, bool])</code> 文档预处理子的模型配置参数
+            <ul>
+              <li><code>use_doc_orientation_classify</code>: <code>(bool)</code> 控制是否启用文档方向分类</li>
+              <li><code>use_doc_unwarping</code>: <code>(bool)</code> 控制是否启用文本图像扭曲矫正子模块</li>
+            </ul>
+          </li>
+          <li><code>angle</code>: <code>(int)</code> 文档图像方向分类子模块的预测结果，启用时返回实际角度值</li>
+        </ol>
+      </li>
+      <li><code>parsing_res_list</code>: <code>(List[Dict])</code> 解析结果的列表，每个元素为一个字典，列表顺序为解析后的阅读顺序。
+        <ol>
+          <li><code>block_bbox</code>: <code>(np.ndarray)</code> 版面区域的边界框。</li>
+          <li><code>block_label</code>: <code>(str)</code> 版面区域的标签，例如<code>text</code>、<code>table</code>等</li>
+          <li><code>block_content</code>: <code>(str)</code> 内容为版面区域内的内容。</li>
+          <li><code>block_id</code>: <code>(int)</code> 版面区域的索引，用于显示版面排序结果。</li>
+          <li><code>block_order</code>: <code>(int)</code> 版面区域的顺序，用于显示版面阅读顺序，对于非排序部分，默认值为 <code>None</code>。</li>
+        </ol>
+      </li>
+    </ol>
+  </li>
+  <li>调用<code>save_to_img()</code> 方法会将可视化结果保存到指定的<code>save_path</code>中，如果指定为目录，则会将版面区域检测可视化图像、全局OCR可视化图像、版面阅读顺序可视化图像等内容保存；如果指定为文件，则直接保存到该文件中。</li>
+  <li>调用<code>save_to_markdown()</code> 方法会将转化后的 Markdown 文件保存到指定的<code>save_path</code>中，保存的文件路径为<code>save_path/{your_img_basename}.md</code>。如果输入是 PDF 文件，建议直接指定目录，否则多个 Markdown 文件会被覆盖。</li>
+  <li>此外，也支持通过属性获取带结果的可视化图像和预测结果，具体如下：
+    <table>
+      <thead>
+        <tr>
+          <th>属性</th>
+          <th>属性说明</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>json</code></td>
+          <td>获取预测的 <code>json</code> 格式的结果</td>
+        </tr>
+        <tr>
+          <td><code>img</code></td>
+          <td>获取格式为 <code>dict</code> 的可视化图像</td>
+        </tr>
+        <tr>
+          <td><code>markdown</code></td>
+          <td>获取格式为 <code>dict</code> 的 markdown 结果</td>
+        </tr>
+      </tbody>
+    </table>
+    <ul>
+      <li><code>json</code> 属性获取的预测结果为 dict 类型的数据，相关内容与调用 <code>save_to_json()</code> 方法保存的内容一致。</li>
+      <li><code>img</code> 属性返回的预测结果是一个 dict 类型的数据。其中，键分别为 <code>ocr_res_img</code> 和 <code>preprocessed_img</code>，对应的值是两个 <code>Image.Image</code> 对象：一个用于显示 OCR 结果的可视化图像，另一个用于展示图像预处理的可视化图像。如果没有使用图像预处理子模块，则 dict 中只包含 <code>ocr_res_img</code>。</li>
+      <li><code>markdown</code> 属性获取的预测结果为 dict 类型的数据，相关内容与调用 <code>save_to_markdown()</code> 方法保存的内容一致。</li>
+    </ul>
+  </li>
+</ul>
+</details>
 
-  - `json` 属性获取的预测结果为 dict 类型的数据，相关内容与调用 `save_to_json()` 方法保存的内容一致。
-  - `img` 属性返回的预测结果是一个 dict 类型的数据。其中，键分别为 `ocr_res_img` 和 `preprocessed_img`，对应的值是两个 `Image.Image` 对象：一个用于显示 OCR 结果的可视化图像，另一个用于展示图像预处理的可视化图像。如果没有使用图像预处理子模块，则 dict 中只包含 `ocr_res_img`。
-  - `markdown` 属性获取的预测结果为 dict 类型的数据，相关内容与调用 `save_to_markdown()` 方法保存的内容一致。
-
-
-
+<a id="3-vlm"></a>
 ## 3. 使用 VLM 推理服务提升推理性能
 
 只使用 PaddlePaddle 或 Transformers 通常无法得到最优的推理性能。此步骤主要介绍如何通过 VLM 推理服务提升 PaddleOCR-VL 的推理性能。您既可以自行部署基于 vLLM、SGLang、FastDeploy、MLX-VLM、llama.cpp 等后端的 VLM 推理服务，也可以直接使用兼容的托管服务。这一节对应“版面检测推理方式 + VLM 推理服务”类组合，其核心思路是：**客户端继续负责版面检测等完整流程中的其他环节，仅将 VLM 推理交给专用服务处理。**
@@ -1443,17 +1491,19 @@ output = pipeline.predict(["imgs/file1.png", "imgs/file2.png", "imgs/file3.png"]
 启动 VLM 推理服务有以下三种方式，任选一种即可：
 
 - 方法一：使用官方 Docker 镜像启动服务，目前支持：
-  - FastDeploy
-  - vLLM
+    - FastDeploy
+    - vLLM
+
 - 方法二：通过 PaddleOCR CLI 手动安装依赖后启动服务，目前支持：
-  - FastDeploy
-  - vLLM
-  - SGLang
+    - FastDeploy
+    - vLLM
+    - SGLang
+
 - 方法三：直接使用推理加速框架启动服务（此方法无法应用 PaddleOCR 预置的性能调优参数），目前支持：
-  - FastDeploy
-  - vLLM
-  - MLX-VLM
-  - llama.cpp
+    - FastDeploy
+    - vLLM
+    - MLX-VLM
+    - llama.cpp
 
 **我们强烈推荐采用 Docker 镜像的方式，以最大程度减少可能出现的环境问题。**
 
@@ -1465,32 +1515,30 @@ PaddleOCR 提供了 Docker 镜像，用于快速启动 vLLM 或 FastDeploy 推�
 
 === "启动 vLLM 服务"
 
-```
-```shell
-docker run \
-    -it \
-    --rm \
-    --gpus all \
-    --network host \
-    ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-nvidia-gpu \
-    paddleocr genai_server --model_name PaddleOCR-VL-1.5-0.9B --host 0.0.0.0 --port 8118 --backend vllm
-```
+    ```shell
+    docker run \
+        -it \
+        --rm \
+        --gpus all \
+        --network host \
+        ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-nvidia-gpu \
+        paddleocr genai_server --model_name PaddleOCR-VL-1.5-0.9B --host 0.0.0.0 --port 8118 --backend vllm
+    ```
 
 如果您希望在无法连接互联网的环境中启动服务，请将上述命令中的 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-nvidia-gpu`（镜像大小约为 13 GB）更换为离线版本镜像 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-nvidia-gpu-offline`（镜像大小约为 15 GB）。
 ```
 
 === "启动 FastDeploy 服务"
 
-```
-```shell
-docker run \
-    -it \
-    --rm \
-    --gpus all \
-    --network host \
-    ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-fastdeploy-server:latest-nvidia-gpu \
-    paddleocr genai_server --model_name PaddleOCR-VL-1.5-0.9B --host 0.0.0.0 --port 8118 --backend fastdeploy
-```
+    ```shell
+    docker run \
+        -it \
+        --rm \
+        --gpus all \
+        --network host \
+        ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-fastdeploy-server:latest-nvidia-gpu \
+        paddleocr genai_server --model_name PaddleOCR-VL-1.5-0.9B --host 0.0.0.0 --port 8118 --backend fastdeploy
+    ```
 
 如果您希望在无法连接互联网的环境中启动服务，请将上述命令中的 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-fastdeploy-server:latest-nvidia-gpu`（镜像大小约为 43 GB）更换为离线版本镜像 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-fastdeploy-server:latest-nvidia-gpu-offline`（镜像大小约为 45 GB）。
 ```
@@ -1582,9 +1630,18 @@ paddleocr genai_server --model_name PaddleOCR-VL-1.5-0.9B --backend vllm --port 
 - vLLM：[参考此文档](https://docs.vllm.ai/projects/recipes/en/latest/PaddlePaddle/PaddleOCR-VL.html)
 - MLX-VLM：[参考此文档](./PaddleOCR-VL-Apple-Silicon.md)
 - llama.cpp：
-  1. 参考 [llama.cpp github](https://github.com/ggml-org/llama.cpp) 中的 `Quick start` 安装 llama.cpp。
-  2. 下载 gguf 格式的模型文件：[PaddlePaddle/PaddleOCR-VL-1.5-GGUF](https://huggingface.co/PaddlePaddle/PaddleOCR-VL-1.5-GGUF)。
-  3. 执行以下命令启动推理服务，参数介绍可参考 [LLaMA.cpp HTTP Server](https://github.com/ggml-org/llama.cpp/blob/master/tools/server/README.md)：
+    1. 参考 [llama.cpp github](https://github.com/ggml-org/llama.cpp) 中的 `Quick start` 安装 llama.cpp。
+    2. 下载 gguf 格式的模型文件：[PaddlePaddle/PaddleOCR-VL-1.5-GGUF](https://huggingface.co/PaddlePaddle/PaddleOCR-VL-1.5-GGUF)。
+    3. 执行以下命令启动推理服务，参数介绍可参考 [LLaMA.cpp HTTP Server](https://github.com/ggml-org/llama.cpp/blob/master/tools/server/README.md)：
+
+        ```shell
+        ./build/bin/llama-server \
+          -m /path/to/PaddleOCR-VL-1.5-GGUF.gguf \
+          --mmproj /path/to/PaddleOCR-VL-1.5-GGUF-mmproj.gguf  \
+          --port 8111  \
+          --host 0.0.0.0 \
+          --temp 0
+        ```
 
 ### 3.2 客户端使用方法
 
@@ -1691,14 +1748,17 @@ pipeline = PaddleOCRVL(
 PaddleOCR VLM 推理服务支持通过配置文件进行调参。以下示例展示如何调整 vLLM 服务器的 `gpu-memory-utilization` 和 `max-num-seqs` 参数：
 
 1. 创建 YAML 文件 `vllm_config.yaml`，内容如下：
-  ```yaml
+
+   ```yaml
    gpu-memory-utilization: 0.3
    max-num-seqs: 128
-  ```
+   ```
+
 2. 启动服务时指定配置文件路径，例如使用 `paddleocr genai_server` 命令：
-  ```shell
+
+   ```shell
    paddleocr genai_server --model_name PaddleOCR-VL-1.5-0.9B --backend vllm --backend_config vllm_config.yaml
-  ```
+   ```
 
 如果使用支持进程替换（process substitution）的 shell（如 Bash），也可以无需创建配置文件，直接在启动服务时传入配置项：
 
@@ -1722,10 +1782,10 @@ PaddleOCR 会将来自单张或多张输入图像中的子图分组并对服务�
 **NVIDIA RTX 3060**
 
 - **服务端**
-  - vLLM：`gpu-memory-utilization: 0.7`
-  - FastDeploy：
-    - `gpu-memory-utilization: 0.7`
-    - `max-concurrency: 2048`
+    - vLLM：`gpu-memory-utilization: 0.7`
+    - FastDeploy：
+        - `gpu-memory-utilization: 0.7`
+        - `max-concurrency: 2048`
 
 ## 4. 服务化部署
 
@@ -1775,9 +1835,10 @@ Docker Compose 通过读取 `.env` 和 `compose.yaml` 文件中配置，先后�
 
 您可以通过修改 `.env` 和 `compose.yaml` 来满足自定义需求，例如：
 
-1. 更改 PaddleOCR-VL 服务的端口
+<details>
+<summary>1. 更改 PaddleOCR-VL 服务的端口</summary>
 
-编辑 `compose.yaml` 文件中的 `paddleocr-vl-api.ports` 来更改端口。例如，如果您需要将服务端口更换为 8111，可以进行以下修改：
+编辑 <code>compose.yaml</code> 文件中的 <code>paddleocr-vl-api.ports</code> 来更改端口。例如，如果您需要将服务端口更换为 8111，可以进行以下修改：
 
 ```diff
   paddleocr-vl-api:
@@ -1788,9 +1849,12 @@ Docker Compose 通过读取 `.env` 和 `compose.yaml` 文件中配置，先后�
     ...
 ```
 
+</details>
 
+<details>
+<summary>2. 指定 PaddleOCR-VL 服务所使用的 GPU</summary>
 
-2. 指定 PaddleOCR-VL 服务所使用的 GPU
+编辑 <code>compose.yaml</code> 文件中的 <code>device_ids</code> 来更改所使用的 GPU。例如，如果您需要使用卡 1 进行部署，可以进行以下修改：
 
 编辑 `compose.yaml` 文件中的 `device_ids` 来更改所使用的 GPU。例如，如果您需要使用卡 1 进行部署，可以进行以下修改：
 
@@ -1819,13 +1883,14 @@ Docker Compose 通过读取 `.env` 和 `compose.yaml` 文件中配置，先后�
     ...
 ```
 
+</details>
 
+<details>
+<summary>3. 调整 VLM 服务端配置</summary>
 
-3. 调整 VLM 服务端配置
+若您想调整 VLM 服务端的配置，可以参考 <a href="#331">3.3.1 服务端参数调整</a> 生成配置文件。
 
-若您想调整 VLM 服务端的配置，可以参考 [3.3.1 服务端参数调整](#331) 生成配置文件。
-
-生成配置文件后，将以下的 `paddleocr-vlm-server.volumes` 和 `paddleocr-vlm-server.command` 字段增加到您的 `compose.yaml` 中。请将 `/path/to/your_config.yaml` 替换为您的实际配置文件路径。
+生成配置文件后，将以下的 <code>paddleocr-vlm-server.volumes</code> 和 <code>paddleocr-vlm-server.command</code> 字段增加到您的 <code>compose.yaml</code> 中。请将 <code>/path/to/your_config.yaml</code> 替换为您的实际配置文件路径。
 
 ```yaml
   paddleocr-vlm-server:
@@ -1836,9 +1901,12 @@ Docker Compose 通过读取 `.env` 和 `compose.yaml` 文件中配置，先后�
     ...
 ```
 
+</details>
 
+<details>
+<summary>4. 更改 VLM 推理后端</summary>
 
-4. 更改 VLM 推理后端
+修改 <code>.env</code> 文件中的 <code>VLM_BACKEND</code>，例如将 VLM 推理后端修改为 <code>fastdeploy</code>：
 
 修改 `.env` 文件中的 `VLM_BACKEND`，例如将 VLM 推理后端修改为 `fastdeploy`：
 
@@ -1849,13 +1917,14 @@ Docker Compose 通过读取 `.env` 和 `compose.yaml` 文件中配置，先后�
   VLM_IMAGE_TAG_SUFFIX=latest-nvidia-gpu-offline
 ```
 
+</details>
 
+<details>
+<summary>5. 调整产线相关配置（如模型路径、批处理大小、部署设备等）</summary>
 
-5. 调整产线相关配置（如模型路径、批处理大小、部署设备等）
+参考本文中 <a href="#44">4.4 产线配置调整说明</a> 小节。
 
-参考本文中 [4.4 产线配置调整说明](#44) 小节。
-
-
+</details>
 
 ### 4.2 方法二：手动部署
 
