@@ -235,60 +235,369 @@ paddleocr doc_parser -i ./paddleocr_vl_demo.png --use_layout_detection False --s
 paddleocr doc_parser -i ./paddleocr_vl_demo.png --engine transformers --save_path ./output
 ```
 
-**命令行支持更多参数设置，点击展开以查看命令行参数的详细说明**
+<details><summary><b>命令行支持更多参数设置，点击展开以查看命令行参数的详细说明</b></summary>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>参数说明</th>
+<th>参数类型</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>input</code></td>
+<td><b>含义：</b>待预测数据，必填。<br/>
+<b>说明：</b>如图像文件或者PDF文件的本地路径：<code>/root/data/img.jpg</code>；<br/>
+<b>如URL链接</b>，如图像文件或PDF文件的网络URL：<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/demo_paper.png">示例</a>；<br/>
+<b>如本地目录</b>，该目录下需包含待预测图像，如本地路径：<code>/root/data/</code>(当前不支持目录中包含PDF文件的预测，PDF文件需要指定到具体文件路径)。
+</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>save_path</code></td>
+<td><b>含义：</b>指定推理结果文件保存的路径。<br/>
+<b>说明：</b>如果不设置，推理结果将不会保存到本地。</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>pipeline_version</code></td>
+<td><b>含义：</b>指定产线版本。<br/>
+<b>说明：</b>当前可选值为<code>"v1"</code>和<code>"v1.5"</code>。</td>
+<td><code>str</code></td>
+<td>"v1.5"</td>
+</tr>
+<tr>
+<td><code>layout_detection_model_name</code></td>
+<td><b>含义：</b>版面区域检测排序模型名称。<br/>
+<b>说明：</b>如果不设置，将会使用默认模型。</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>layout_detection_model_dir</code></td>
+<td><b>含义：</b>版面区域检测排序模型的目录路径。<br/>
+<b>说明：</b>如果不设置，将会下载官方模型。</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>layout_threshold</code></td>
+<td><b>含义：</b>版面模型得分阈值。<br/>
+<b>说明：</b><code>0-1</code> 之间的任意浮点数。<br/>
+如果不设置，将使用初始化的默认值。
+</td>
+<td><code>float</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>layout_nms</code></td>
+<td><b>含义：</b>版面检测是否使用后处理NMS。<br/>
+<b>说明：</b>如果不设置，将使用初始化的默认值。</td>
+<td><code>bool</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>layout_unclip_ratio</code></td>
+<td><b>含义：</b>版面区域检测模型检测框的扩张系数。<br/>
+<b>说明：</b>任意大于 <code>0</code>  浮点数。<br/>
+如果不设置，将使用初始化的默认值
+</td>
+<td><code>float</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>layout_merge_bboxes_mode</code></td>
+<td><b>含义：</b>版面检测中模型输出的检测框的合并处理模式。<br/>
+<b>说明：</b>
+<ul>
+<li><b>large</b>，设置为large时，表示在模型输出的检测框中，对于互相重叠包含的检测框，只保留外部最大的框，删除重叠的内部框；</li>
+<li><b>small</b>，设置为small，表示在模型输出的检测框中，对于互相重叠包含的检测框，只保留内部被包含的小框，删除重叠的外部框；</li>
+<li><b>union</b>，不进行框的过滤处理，内外框都保留；</li>
+</ul>
+如果不设置，将使用初始化的参数值。
+</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>vl_rec_model_name</code></td>
+<td><b>含义：</b>多模态识别模型名称。<br/>
+<b>说明：</b>如果不设置，将会使用默认模型。</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>vl_rec_model_dir</code></td>
+<td><b>含义：</b>多模态识别模型目录路径。<br/>
+<b>说明：</b>如果不设置，将会下载官方模型。</td>
+<td><code>str</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>vl_rec_backend</code></td>
+<td><b>含义：</b>多模态识别模型使用的推理后端。</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>vl_rec_server_url</code></td>
+<td><b>含义：</b>如果多模态识别模型使用推理服务，该参数用于指定服务器URL。</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>vl_rec_max_concurrency</code></td>
+<td><b>含义：</b>如果多模态识别模型使用推理服务，该参数用于指定最大并发请求数。</td>
+<td><code>int</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>vl_rec_api_model_name</code></td>
+<td><b>含义：</b>如果多模态识别模型使用推理服务，该参数用于指定服务的模型名称。</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>vl_rec_api_key</code></td>
+<td><b>含义：</b>如果多模态识别模型使用推理服务，该参数用于指定服务的 API key。</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>doc_orientation_classify_model_name</code></td>
+<td><b>含义：</b>文档方向分类模型的名称。<br/>
+<b>说明：</b>如果不设置，将使用初始化的默认值。</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>doc_orientation_classify_model_dir</code></td>
+<td><b>含义：</b>文档方向分类模型的目录路径。<br/>
+<b>说明：</b>如果不设置，将会下载官方模型。</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>doc_unwarping_model_name</code></td>
+<td><b>含义：</b>文本图像矫正模型的名称。<br/>
+<b>说明：</b>如果不设置，将使用初始化的默认值。</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>doc_unwarping_model_dir</code></td>
+<td><b>含义：</b>文本图像矫正模型的目录路径。<br/>
+<b>说明：</b>如果不设置，将会下载官方模型。</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>use_doc_orientation_classify</code></td>
+<td><b>含义：</b>是否加载并使用文档方向分类模块。<br/>
+<b>说明：</b>如果不设置，将使用初始化的默认值，默认初始化为<code>False</code>。</td>
+<td><code>bool</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>use_doc_unwarping</code></td>
+<td><b>含义：</b>是否加载并使用文本图像矫正模块。<br/>
+<b>说明：</b>如果不设置，将使用初始化的默认值，默认初始化为<code>False</code>。</td>
+<td><code>bool</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>use_layout_detection</code></td>
+<td><b>含义：</b>是否加载并使用版面区域检测排序模块。<br/>
+<b>说明：</b>如果不设置，将使用初始化的默认值，默认初始化为<code>True</code>。</td>
+<td><code>bool</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>use_chart_recognition</code></td>
+<td><b>含义：</b>是否使用图表解析功能。<br/>
+<b>说明：</b>如果不设置，将使用初始化的默认值，默认初始化为<code>False</code>。</td>
+<td><code>bool</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>use_seal_recognition</code></td>
+<td><b>含义：</b>是否使用印章识别功能。<br/>
+<b>说明：</b>如果不设置，将使用初始化的默认值，默认初始化为<code>False</code>。</td>
+<td><code>bool</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>use_ocr_for_image_block</code></td>
+<td><b>含义：</b>是否对图片中的文字进行识别。<br/>
+<b>说明：</b>如果不设置，将使用初始化的默认值，默认初始化为<code>False</code>。</td>
+<td><code>bool</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>format_block_content</code></td>
+<td><b>含义：</b>控制是否将 <code>block_content</code> 中的内容格式化为Markdown格式。<br/>
+<b>说明：</b>如果不设置，将使用初始化的默认值，默认初始化为<code>False</code>。</td>
+<td><code>bool</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>merge_layout_blocks</code></td>
+<td><b>含义：</b>控制是否对跨栏或上下交错分栏的版面检测框进行合并。<br/>
+<b>说明：</b>如果不设置，将使用初始化的默认值，默认初始化为<code>True</code>。</td>
+<td><code>bool</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>markdown_ignore_labels</code></td>
+<td><b>含义：</b>需要在Markdown中忽略的版面标签。<br/>
+<b>说明：</b>如果不设置，将使用初始化的默认值，默认初始化为<code>['number','footnote','header','header_image','footer','footer_image','aside_text']</code>。</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>layout_shape_mode</code></td>
+<td><b>含义：</b>用于指定版面检测结果的几何形状表示模式。该参数决定了检测区域（如文本块、图片、表格等）边界的计算方式及展示形态。<br/>
+<b>说明：</b>取值说明：
+    <ul>
+    <li><b>rect (矩形)</b>: 输出水平正向的边界框（包含 x1, y1, x2, y2）。适用于标准的水平排版版面。</li>
+    <li><b>quad (四边形)</b>: 输出由四个顶点组成的任意四边形。适用于存在倾斜、透视变形的区域。</li>
+    <li><b>poly (多边形)</b>: 输出由多个坐标点组成的闭合轮廓。适用于形状不规则或具有弧度的版面元素，精度最高。</li>
+    <li><b>auto (自动)</b>: 系统根据检测目标的复杂程度和置信度，自动选择最合适的形状表达方式。</li>
+    </ul>
+</td>
+<td><code>str</code></td>
+<td>"auto"</td>
+</tr>
+<tr>
+<td><code>use_queues</code></td>
+<td><b>含义：</b>用于控制是否启用内部队列。<br/>
+<b>说明：</b>当设置为 <code>True</code> 时，数据加载（如将 PDF 页面渲染为图像）、版面检测模型处理以及 VLM 推理将分别在独立线程中异步执行，通过队列传递数据，从而提升效率。对于页数较多的 PDF 文档，或是包含大量图像或 PDF 文件的目录，这种方式尤其高效。如果不设置，将使用初始化的默认值，默认初始化为<code>True</code>。</td>
+<td><code>bool</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>prompt_label</code></td>
+<td><b>含义：</b>VL模型的 prompt 类型设置。<br/>
+<b>说明：</b>当且仅当 <code>use_layout_detection=False</code> 时生效。</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>repetition_penalty</code></td>
+<td><b>含义：</b>VL模型采样使用的重复惩罚参数。</td>
+<td><code>float</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>temperature</code></td>
+<td><b>含义：</b>VL模型采样使用的温度参数。</td>
+<td><code>float</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>top_p</code></td>
+<td><b>含义：</b>VL模型采样使用的top-p参数。</td>
+<td><code>float</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>min_pixels</code></td>
+<td><b>含义：</b>VL模型预处理图像时允许的最小像素数。</td>
+<td><code>int</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>max_pixels</code></td>
+<td><b>含义：</b>VL模型预处理图像时允许的最大像素数。</td>
+<td><code>int</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>device</code></td>
+<td><b>含义：</b>用于推理的设备。<br/>
+<b>说明：</b>
+支持指定具体卡号：
+<ul>
+<li><b>CPU</b>：如 <code>cpu</code> 表示使用 CPU 进行推理；</li>
+<li><b>GPU</b>：如 <code>gpu:0</code> 表示使用第 1 块 GPU 进行推理；</li>
+<li><b>NPU</b>：如 <code>npu:0</code> 表示使用第 1 块 NPU 进行推理；</li>
+<li><b>XPU</b>：如 <code>xpu:0</code> 表示使用第 1 块 XPU 进行推理；</li>
+<li><b>MLU</b>：如 <code>mlu:0</code> 表示使用第 1 块 MLU 进行推理；</li>
+<li><b>DCU</b>：如 <code>dcu:0</code> 表示使用第 1 块 DCU 进行推理；</li>
+<li><b>沐曦 GPU</b>：如 <code>metax_gpu:0</code> 表示使用第 1 块沐曦 GPU 进行推理；</li>
+<li><b>天数 GPU</b>：如 <code>iluvatar_gpu:0</code> 表示使用第 1 块天数 GPU 进行推理；</li>
+</ul>
+如果不设置，将使用初始化的默认值，初始化时，会优先使用本地的 GPU 0号设备，如果没有，则使用 CPU 设备。
+</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>engine</code></td>
+<td><b>含义：</b>推理引擎。<br><b>说明：</b>支持 <code>None</code>（默认值）、<code>paddle</code>、<code>paddle_static</code>、<code>paddle_dynamic</code>、<code>transformers</code>。保持为默认值 <code>None</code> 时，PaddleOCR 保留旧版本的行为，在大多数配置下等价于 <code>paddle</code>。详细说明、取值、兼容性规则与示例请参见 <a href="../inference_engine.md">推理引擎与配置说明</a>。</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>enable_hpi</code></td>
+<td><b>含义：</b>是否启用高性能推理。</td>
+<td><code>bool</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>use_tensorrt</code></td>
+<td><b>含义：</b>是否启用 Paddle Inference 的 TensorRT 子图引擎。<br/>
+<b>说明：</b>
+如果模型不支持通过 TensorRT 加速，即使设置了此标志，也不会使用加速。<br/>
+对于 CUDA 11.8 版本的飞桨，兼容的 TensorRT 版本为 8.x（x>=6），建议安装 TensorRT 8.6.1.6。<br/>
+</td>
+<td><code>bool</code></td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td><code>precision</code></td>
+<td><b>含义：</b>计算精度，如 <code>fp32</code>、<code>fp16</code>。</td>
+<td><code>str</code></td>
+<td><code>fp32</code></td>
+</tr>
+<tr>
+<td><code>enable_mkldnn</code></td>
+<td><b>含义：</b>是否启用 MKL-DNN 加速推理。<br/>
+<b>说明：</b>
+如果 MKL-DNN 不可用或模型不支持通过 MKL-DNN 加速，即使设置了此标志，也不会使用加速。
+</td>
+<td><code>bool</code></td>
+<td><code>True</code></td>
+</tr>
+<tr>
+<td><code>mkldnn_cache_capacity</code></td>
+<td>
+<b>含义：</b>MKL-DNN 缓存容量。
+</td>
+<td><code>int</code></td>
+<td><code>10</code></td>
+</tr>
+<tr>
+<td><code>cpu_threads</code></td>
+<td><b>含义：</b>在 CPU 上进行推理时使用的线程数。</td>
+<td><code>int</code></td>
+<td><code>10</code></td>
+</tr>
+<tr>
+<td><code>paddlex_config</code></td>
+<td><b>含义：</b>PaddleX产线配置文件路径。</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
 
-
-| 参数                                    | 参数说明                                                                                                                                                                                                                                                                                                                                                                                                                                   | 参数类型       | 默认值     |     |
-| ------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- | ------- | --- |
-| `input`                               | **含义：**待预测数据，必填。 **说明：**如图像文件或者PDF文件的本地路径：`/root/data/img.jpg`； **如URL链接**，如图像文件或PDF文件的网络URL：[示例](https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/demo_paper.png)； **如本地目录**，该目录下需包含待预测图像，如本地路径：`/root/data/`(当前不支持目录中包含PDF文件的预测，PDF文件需要指定到具体文件路径)。                                                                                                                                                                 | `str`      |         |     |
-| `save_path`                           | **含义：**指定推理结果文件保存的路径。 **说明：**如果不设置，推理结果将不会保存到本地。                                                                                                                                                                                                                                                                                                                                                                                       | `str`      |         |     |
-| `pipeline_version`                    | **含义：**指定产线版本。 **说明：**当前可选值为`"v1"`和`"v1.5"`。                                                                                                                                                                                                                                                                                                                                                                                           | `str`      | "v1.5"  |     |
-| `layout_detection_model_name`         | **含义：**版面区域检测排序模型名称。 **说明：**如果不设置，将会使用默认模型。                                                                                                                                                                                                                                                                                                                                                                                            | `str`      |         |     |
-| `layout_detection_model_dir`          | **含义：**版面区域检测排序模型的目录路径。 **说明：**如果不设置，将会下载官方模型。                                                                                                                                                                                                                                                                                                                                                                                         | `str`      |         |     |
-| `layout_threshold`                    | **含义：**版面模型得分阈值。 **说明：**`0-1` 之间的任意浮点数。 如果不设置，将使用初始化的默认值。                                                                                                                                                                                                                                                                                                                                                                              | `float`    |         |     |
-| `layout_nms`                          | **含义：**版面检测是否使用后处理NMS。 **说明：**如果不设置，将使用初始化的默认值。                                                                                                                                                                                                                                                                                                                                                                                        | `bool`     |         |     |
-| `layout_unclip_ratio`                 | **含义：**版面区域检测模型检测框的扩张系数。 **说明：**任意大于 `0` 浮点数。 如果不设置，将使用初始化的默认值                                                                                                                                                                                                                                                                                                                                                                         | `float`    |         |     |
-| `layout_merge_bboxes_mode`            | **含义：**版面检测中模型输出的检测框的合并处理模式。 **说明：**- **large**，设置为large时，表示在模型输出的检测框中，对于互相重叠包含的检测框，只保留外部最大的框，删除重叠的内部框；- **small**，设置为small，表示在模型输出的检测框中，对于互相重叠包含的检测框，只保留内部被包含的小框，删除重叠的外部框；- **union**，不进行框的过滤处理，内外框都保留； 如果不设置，将使用初始化的参数值。                                                                                                                                                                                                           | `str`      |         |     |
-| `vl_rec_model_name`                   | **含义：**多模态识别模型名称。 **说明：**如果不设置，将会使用默认模型。                                                                                                                                                                                                                                                                                                                                                                                               | `str`      |         |     |
-| `vl_rec_model_dir`                    | **含义：**多模态识别模型目录路径。 **说明：**如果不设置，将会下载官方模型。                                                                                                                                                                                                                                                                                                                                                                                             | `str`      |         |     |
-| `vl_rec_backend`                      | **含义：**多模态识别模型使用的推理后端。                                                                                                                                                                                                                                                                                                                                                                                                                 | `str`      |         |     |
-| `vl_rec_server_url`                   | **含义：**如果多模态识别模型使用推理服务，该参数用于指定服务器URL。                                                                                                                                                                                                                                                                                                                                                                                                  | `str`      |         |     |
-| `vl_rec_max_concurrency`              | **含义：**如果多模态识别模型使用推理服务，该参数用于指定最大并发请求数。                                                                                                                                                                                                                                                                                                                                                                                                 | `int`      |         |     |
-| `vl_rec_api_model_name`               | **含义：**如果多模态识别模型使用推理服务，该参数用于指定服务的模型名称。                                                                                                                                                                                                                                                                                                                                                                                                 | `str`      |         |     |
-| `vl_rec_api_key`                      | **含义：**如果多模态识别模型使用推理服务，该参数用于指定服务的 API key。                                                                                                                                                                                                                                                                                                                                                                                             | `str`      |         |     |
-| `doc_orientation_classify_model_name` | **含义：**文档方向分类模型的名称。 **说明：**如果不设置，将使用初始化的默认值。                                                                                                                                                                                                                                                                                                                                                                                           | `str`      |         |     |
-| `doc_orientation_classify_model_dir`  | **含义：**文档方向分类模型的目录路径。 **说明：**如果不设置，将会下载官方模型。                                                                                                                                                                                                                                                                                                                                                                                           | `str`      |         |     |
-| `doc_unwarping_model_name`            | **含义：**文本图像矫正模型的名称。 **说明：**如果不设置，将使用初始化的默认值。                                                                                                                                                                                                                                                                                                                                                                                           | `str`      |         |     |
-| `doc_unwarping_model_dir`             | **含义：**文本图像矫正模型的目录路径。 **说明：**如果不设置，将会下载官方模型。                                                                                                                                                                                                                                                                                                                                                                                           | `str`      |         |     |
-| `use_doc_orientation_classify`        | **含义：**是否加载并使用文档方向分类模块。 **说明：**如果不设置，将使用初始化的默认值，默认初始化为`False`。                                                                                                                                                                                                                                                                                                                                                                         | `bool`     |         |     |
-| `use_doc_unwarping`                   | **含义：**是否加载并使用文本图像矫正模块。 **说明：**如果不设置，将使用初始化的默认值，默认初始化为`False`。                                                                                                                                                                                                                                                                                                                                                                         | `bool`     |         |     |
-| `use_layout_detection`                | **含义：**是否加载并使用版面区域检测排序模块。 **说明：**如果不设置，将使用初始化的默认值，默认初始化为`True`。                                                                                                                                                                                                                                                                                                                                                                        | `bool`     |         |     |
-| `use_chart_recognition`               | **含义：**是否使用图表解析功能。 **说明：**如果不设置，将使用初始化的默认值，默认初始化为`False`。                                                                                                                                                                                                                                                                                                                                                                              | `bool`     |         |     |
-| `use_seal_recognition`                | **含义：**是否使用印章识别功能。 **说明：**如果不设置，将使用初始化的默认值，默认初始化为`False`。                                                                                                                                                                                                                                                                                                                                                                              | `bool`     |         |     |
-| `use_ocr_for_image_block`             | **含义：**是否对图片中的文字进行识别。 **说明：**如果不设置，将使用初始化的默认值，默认初始化为`False`。                                                                                                                                                                                                                                                                                                                                                                           | `bool`     |         |     |
-| `format_block_content`                | **含义：**控制是否将 `block_content` 中的内容格式化为Markdown格式。 **说明：**如果不设置，将使用初始化的默认值，默认初始化为`False`。                                                                                                                                                                                                                                                                                                                                                | `bool`     |         |     |
-| `merge_layout_blocks`                 | **含义：**控制是否对跨栏或上下交错分栏的版面检测框进行合并。 **说明：**如果不设置，将使用初始化的默认值，默认初始化为`True`。                                                                                                                                                                                                                                                                                                                                                                 | `bool`     |         |     |
-| `markdown_ignore_labels`              | **含义：**需要在Markdown中忽略的版面标签。 **说明：**如果不设置，将使用初始化的默认值，默认初始化为`['number','footnote','header','header_image','footer','footer_image','aside_text']`。                                                                                                                                                                                                                                                                                        | `str`      |         |     |
-| `layout_shape_mode`                   | **含义：**用于指定版面检测结果的几何形状表示模式。该参数决定了检测区域（如文本块、图片、表格等）边界的计算方式及展示形态。 **说明：**取值说明：- **rect (矩形)**: 输出水平正向的边界框（包含 x1, y1, x2, y2）。适用于标准的水平排版版面。- **quad (四边形)**: 输出由四个顶点组成的任意四边形。适用于存在倾斜、透视变形的区域。- **poly (多边形)**: 输出由多个坐标点组成的闭合轮廓。适用于形状不规则或具有弧度的版面元素，精度最高。- **auto (自动)**: 系统根据检测目标的复杂程度和置信度，自动选择最合适的形状表达方式。                                                                                                                                | `str`      | "auto"  |     |
-| `use_queues`                          | **含义：**用于控制是否启用内部队列。 **说明：**当设置为 `True` 时，数据加载（如将 PDF 页面渲染为图像）、版面检测模型处理以及 VLM 推理将分别在独立线程中异步执行，通过队列传递数据，从而提升效率。对于页数较多的 PDF 文档，或是包含大量图像或 PDF 文件的目录，这种方式尤其高效。如果不设置，将使用初始化的默认值，默认初始化为`True`。                                                                                                                                                                                                                                               | `bool`     |         |     |
-| `prompt_label`                        | **含义：**VL模型的 prompt 类型设置。 **说明：**当且仅当 `use_layout_detection=False` 时生效。                                                                                                                                                                                                                                                                                                                                                                | `str`      |         |     |
-| `repetition_penalty`                  | **含义：**VL模型采样使用的重复惩罚参数。                                                                                                                                                                                                                                                                                                                                                                                                                | `float`    |         |     |
-| `temperature`                         | **含义：**VL模型采样使用的温度参数。                                                                                                                                                                                                                                                                                                                                                                                                                  | `float`    |         |     |
-| `top_p`                               | **含义：**VL模型采样使用的top-p参数。                                                                                                                                                                                                                                                                                                                                                                                                               | `float`    |         |     |
-| `min_pixels`                          | **含义：**VL模型预处理图像时允许的最小像素数。                                                                                                                                                                                                                                                                                                                                                                                                             | `int`      |         |     |
-| `max_pixels`                          | **含义：**VL模型预处理图像时允许的最大像素数。                                                                                                                                                                                                                                                                                                                                                                                                             | `int`      |         |     |
-| `device`                              | **含义：**用于推理的设备。 **说明：** 支持指定具体卡号：- **CPU**：如 `cpu` 表示使用 CPU 进行推理；- **GPU**：如 `gpu:0` 表示使用第 1 块 GPU 进行推理；- **NPU**：如 `npu:0` 表示使用第 1 块 NPU 进行推理；- **XPU**：如 `xpu:0` 表示使用第 1 块 XPU 进行推理；- **MLU**：如 `mlu:0` 表示使用第 1 块 MLU 进行推理；- **DCU**：如 `dcu:0` 表示使用第 1 块 DCU 进行推理；- **沐曦 GPU**：如 `metax_gpu:0` 表示使用第 1 块沐曦 GPU 进行推理；- **天数 GPU**：如 `iluvatar_gpu:0` 表示使用第 1 块天数 GPU 进行推理； 如果不设置，将使用初始化的默认值，初始化时，会优先使用本地的 GPU 0号设备，如果没有，则使用 CPU 设备。 | `str`      |         |     |
-| `engine`                              | **含义：**推理引擎。 **说明：**支持 `None`（默认值）、`paddle`、`paddle_static`、`paddle_dynamic`、`transformers`。保持为默认值 `None` 时，PaddleOCR 保留旧版本的行为，在大多数配置下等价于 `paddle`。详细说明、取值、兼容性规则与示例请参见 [推理引擎与配置说明](../inference_engine.md)。                                                                                                                                                                                                                            | `str|None` | `None`  |     |
-| `enable_hpi`                          | **含义：**是否启用高性能推理。                                                                                                                                                                                                                                                                                                                                                                                                                      | `bool`     |         |     |
-| `use_tensorrt`                        | **含义：**是否启用 Paddle Inference 的 TensorRT 子图引擎。 **说明：** 如果模型不支持通过 TensorRT 加速，即使设置了此标志，也不会使用加速。 对于 CUDA 11.8 版本的飞桨，兼容的 TensorRT 版本为 8.x（x>=6），建议安装 TensorRT 8.6.1.6。                                                                                                                                                                                                                                                                     | `bool`     | `False` |     |
-| `precision`                           | **含义：**计算精度，如 `fp32`、`fp16`。                                                                                                                                                                                                                                                                                                                                                                                                           | `str`      | `fp32`  |     |
-| `enable_mkldnn`                       | **含义：**是否启用 MKL-DNN 加速推理。 **说明：** 如果 MKL-DNN 不可用或模型不支持通过 MKL-DNN 加速，即使设置了此标志，也不会使用加速。                                                                                                                                                                                                                                                                                                                                                  | `bool`     | `True`  |     |
-| `mkldnn_cache_capacity`               | **含义：**MKL-DNN 缓存容量。                                                                                                                                                                                                                                                                                                                                                                                                                   | `int`      | `10`    |     |
-| `cpu_threads`                         | **含义：**在 CPU 上进行推理时使用的线程数。                                                                                                                                                                                                                                                                                                                                                                                                             | `int`      | `10`    |     |
-| `paddlex_config`                      | **含义：**PaddleX产线配置文件路径。                                                                                                                                                                                                                                                                                                                                                                                                                | `str`      |         |     |
-
-
-
+</tbody>
+</table>
+</details>
 
 运行结果会被打印到终端上，默认配置的 PaddleOCR-VL 的运行结果如下：
 
@@ -408,115 +717,662 @@ output = pipeline.predict(["imgs/file1.png", "imgs/file2.png", "imgs/file3.png"]
 
 在上述 Python 脚本中，执行了如下几个步骤：
 
-（1）实例化对象，具体参数说明如下：
+<details><summary>（1）实例化对象，具体参数说明如下：</summary>
 
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>参数说明</th>
+<th>参数类型</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pipeline_version</code></td>
+<td><b>含义：</b>指定产线版本。<br/>
+<b>说明：</b>当前可选值为<code>"v1"</code>和<code>"v1.5"</code>。</td>
+<td><code>str</code></td>
+<td>"v1.5"</td>
+</tr>
+<tr>
+<td><code>layout_detection_model_name</code></td>
+<td><b>含义：</b>版面区域检测排序模型名称。<br/>
+<b>说明：</b>如果设置为<code>None</code>，将会使用默认模型。</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>layout_detection_model_dir</code></td>
+<td><b>含义：</b>版面区域检测排序模型的目录路径。<br/>
+<b>说明：</b>如果设置为<code>None</code>，将会下载官方模型。</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>layout_threshold</code></td>
+<td><b>含义：</b>版面模型得分阈值。<br/>
+<b>说明：</b>
+<ul>
+<li><b>float</b>：<code>0-1</code> 之间的任意浮点数；</li>
+<li><b>dict</b>： <code>{0:0.1}</code> key为类别ID，value为该类别的阈值；</li>
+<li><b>None</b>：如果设置为<code>None</code>，将使用初始化的默认值。</li>
+</ul>
+</td>
+<td><code>float|dict|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>layout_nms</code></td>
+<td><b>含义：</b>版面检测是否使用后处理NMS。<br/>
+<b>说明：</b>如果设置为<code>None</code>，将使用初始化的默认值。</td>
+<td><code>bool|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>layout_unclip_ratio</code></td>
+<td><b>含义：</b>版面区域检测模型检测框的扩张系数。<br/>
+<b>说明：</b>
+<ul>
+<li><b>float</b>：任意大于 <code>0</code>  浮点数；</li>
+<li><b>Tuple[float,float]</b>：在横纵两个方向各自的扩张系数；</li>
+<li><b>dict</b>，dict的key为<b>int</b>类型，代表<code>cls_id</code>, value为<b>tuple</b>类型，如<code>{0: (1.1, 2.0)}</code>，表示将模型输出的第0类别检测框中心不变，宽度扩张1.1倍，高度扩张2.0倍；</li>
+<li><b>None</b>：如果设置为<code>None</code>，将使用初始化的默认值。</li>
+</ul>
+</td>
+<td><code>float|Tuple[float,float]|dict|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>layout_merge_bboxes_mode</code></td>
+<td><b>含义：</b>版面区域检测的重叠框过滤方式。<br/>
+<b>说明：</b>
+<ul>
+<li><b>str</b>：<code>large</code>，<code>small</code>，<code>union</code>，分别表示重叠框过滤时选择保留大框，小框还是同时保留；</li>
+<li><b>dict</b>： dict的key为<b>int</b>类型，代表<code>cls_id</code>，value为<b>str</b>类型，如<code>{0: "large", 2: "small"}</code>，表示对第0类别检测框使用large模式，对第2类别检测框使用small模式；</li>
+<li><b>None</b>：如果设置为<code>None</code>，将使用初始化的默认值。</li>
+</ul>
+</td>
+<td><code>str|dict|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>vl_rec_model_name</code></td>
+<td><b>含义：</b>多模态识别模型名称。<br/>
+<b>说明：</b>如果设置为<code>None</code>，将会使用默认模型。</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>vl_rec_model_dir</code></td>
+<td><b>含义：</b>多模态识别模型目录路径。<br/>
+<b>说明：</b>如果设置为<code>None</code>，将会下载官方模型。</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>vl_rec_backend</code></td>
+<td><b>含义：</b>多模态识别模型使用的推理后端。</td>
+<td><code>int|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>vl_rec_server_url</code></td>
+<td><b>含义：</b>如果多模态识别模型使用推理服务，该参数用于指定服务器URL。</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>vl_rec_max_concurrency</code></td>
+<td><b>含义：</b>如果多模态识别模型使用推理服务，该参数用于指定最大并发请求数。</td>
+<td><code>int|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>vl_rec_api_model_name</code></td>
+<td><b>含义：</b>如果多模态识别模型使用推理服务，该参数用于指定服务的模型名称。</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>vl_rec_api_key</code></td>
+<td><b>含义：</b>如果多模态识别模型使用推理服务，该参数用于指定服务的 API key。</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>doc_orientation_classify_model_name</code></td>
+<td><b>含义：</b>文档方向分类模型的名称。<br/>
+<b>说明：</b>如果设置为<code>None</code>，将会使用默认模型。</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>doc_orientation_classify_model_dir</code></td>
+<td><b>含义：</b>文档方向分类模型的目录路径。<br/>
+<b>说明：</b>如果设置为<code>None</code>，将会下载官方模型。</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>doc_unwarping_model_name</code></td>
+<td><b>含义：</b>文本图像矫正模型的名称。<br/>
+<b>说明：</b>如果设置为<code>None</code>，将会使用默认模型。</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>doc_unwarping_model_dir</code></td>
+<td><b>含义：</b>文本图像矫正模型的目录路径。<br/>
+<b>说明：</b>如果设置为<code>None</code>，将会下载官方模型。</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>use_doc_orientation_classify</code></td>
+<td><b>含义：</b>是否加载并使用文档方向分类模块。<br/>
+<b>说明：</b>如果设置为<code>None</code>，将使用初始化的默认值，默认初始化为<code>False</code>。</td>
+<td><code>bool|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>use_doc_unwarping</code></td>
+<td><b>含义：</b>是否加载并使用文本图像矫正模块。<br/>
+<b>说明：</b>如果设置为<code>None</code>，将使用初始化的默认值，默认初始化为<code>False</code>。</td>
+<td><code>bool|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>use_layout_detection</code></td>
+<td><b>含义：</b>是否加载并使用版面区域检测排序模块。<br/>
+<b>说明：</b>如果设置为<code>None</code>，将使用初始化的默认值，默认初始化为<code>True</code>。</td>
+<td><code>bool|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>use_chart_recognition</code></td>
+<td><b>含义：</b>是否使用图表解析功能。<br/>
+<b>说明：</b>如果设置为<code>None</code>，将使用初始化的默认值，默认初始化为<code>False</code>。</td>
+<td><code>bool|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>use_seal_recognition</code></td>
+<td><b>含义：</b>是否使用印章识别功能。<br/>
+<b>说明：</b>如果设置为<code>None</code>，将使用初始化的默认值，默认初始化为<code>False</code>。</td>
+<td><code>bool|None</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>use_ocr_for_image_block</code></td>
+<td><b>含义：</b>是否对图片中的文字进行识别。<br/>
+<b>说明：</b>如果设置为<code>None</code>，将使用初始化的默认值，默认初始化为<code>False</code>。</td>
+<td><code>bool|None</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>format_block_content</code></td>
+<td><b>含义：</b>控制是否将 <code>block_content</code> 中的内容格式化为Markdown格式。<br/>
+<b>说明：</b>如果设置为<code>None</code>，将使用初始化的默认值，默认初始化为<code>False</code>。</td>
+<td><code>bool|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>merge_layout_blocks</code></td>
+<td><b>含义：</b>控制是否对跨栏或上下交错分栏的版面检测框进行合并。<br/>
+<b>说明：</b>如果设置为<code>None</code>，将使用初始化的默认值，默认初始化为<code>True</code>。</td>
+<td><code>bool|None</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>markdown_ignore_labels</code></td>
+<td><b>含义：</b>需要在Markdown中忽略的版面标签。<br/>
+<b>说明：</b>如果设置为<code>None</code>，将使用初始化的默认值，默认初始化为<code>['number','footnote','header','header_image','footer','footer_image','aside_text']</code>。</td>
+<td><code>list|None</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>use_queues</code></td>
+<td><b>含义：</b>用于控制是否启用内部队列。<br/>
+<b>说明：</b>当设置为 <code>True</code> 时，数据加载（如将 PDF 页面渲染为图像）、版面检测模型处理以及 VLM 推理将分别在独立线程中异步执行，通过队列传递数据，从而提升效率。对于页数较多的 PDF 文档，或是包含大量图像或 PDF 文件的目录，这种方式尤其高效。如果设置为<code>None</code>，将使用初始化的默认值，默认初始化为<code>True</code>。</td>
+<td><code>bool|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>device</code></td>
+<td><b>含义：</b>用于推理的设备。<br/>
+<b>说明：</b>支持指定具体卡号：
+<ul>
+<li><b>CPU</b>：如 <code>cpu</code> 表示使用 CPU 进行推理；</li>
+<li><b>GPU</b>：如 <code>gpu:0</code> 表示使用第 1 块 GPU 进行推理；</li>
+<li><b>NPU</b>：如 <code>npu:0</code> 表示使用第 1 块 NPU 进行推理；</li>
+<li><b>XPU</b>：如 <code>xpu:0</code> 表示使用第 1 块 XPU 进行推理；</li>
+<li><b>MLU</b>：如 <code>mlu:0</code> 表示使用第 1 块 MLU 进行推理；</li>
+<li><b>DCU</b>：如 <code>dcu:0</code> 表示使用第 1 块 DCU 进行推理；</li>
+<li><b>沐曦 GPU</b>：如 <code>metax_gpu:0</code> 表示使用第 1 块沐曦 GPU 进行推理；</li>
+<li><b>天数 GPU</b>：如 <code>iluvatar_gpu:0</code> 表示使用第 1 块天数 GPU 进行推理；</li>
+<li><b>None</b>：如果设置为<code>None</code>，初始化时，会优先使用本地的 GPU 0号设备，如果没有，则使用 CPU 设备。</li>
+</ul>
+</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>engine</code></td>
+<td><b>含义：</b>推理引擎。<br><b>说明：</b>支持 <code>None</code>（默认值）、<code>paddle</code>、<code>paddle_static</code>、<code>paddle_dynamic</code>、<code>transformers</code>。保持为默认值 <code>None</code> 时，PaddleOCR 保留旧版本的行为，在大多数配置下等价于 <code>paddle</code>。详细说明、取值、兼容性规则与示例请参见 <a href="../inference_engine.md">推理引擎与配置说明</a>。</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>engine_config</code></td>
+<td><b>含义：</b>推理引擎配置。<br><b>说明：</b>推荐与 <code>engine</code> 搭配使用。详细字段、兼容性规则与示例请参见 <a href="../inference_engine.md">推理引擎与配置说明</a>。</td>
+<td><code>dict|None</code></td>
+<td><code>None</code></td>
+</tr>
 
-| 参数                                    | 参数说明                                                                                                                                                                                                                                                                                                                                                                                                                                      | 参数类型                                 | 默认值    |
-| ------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------ | ------ |
-| `pipeline_version`                    | **含义：**指定产线版本。 **说明：**当前可选值为`"v1"`和`"v1.5"`。                                                                                                                                                                                                                                                                                                                                                                                              | `str`                                | "v1.5" |
-| `layout_detection_model_name`         | **含义：**版面区域检测排序模型名称。 **说明：**如果设置为`None`，将会使用默认模型。                                                                                                                                                                                                                                                                                                                                                                                         | `str|None`                           | `None` |
-| `layout_detection_model_dir`          | **含义：**版面区域检测排序模型的目录路径。 **说明：**如果设置为`None`，将会下载官方模型。                                                                                                                                                                                                                                                                                                                                                                                      | `str|None`                           | `None` |
-| `layout_threshold`                    | **含义：**版面模型得分阈值。 **说明：**- **float**：`0-1` 之间的任意浮点数；- **dict**： `{0:0.1}` key为类别ID，value为该类别的阈值；- **None**：如果设置为`None`，将使用初始化的默认值。                                                                                                                                                                                                                                                                                                        | `float|dict|None`                    | `None` |
-| `layout_nms`                          | **含义：**版面检测是否使用后处理NMS。 **说明：**如果设置为`None`，将使用初始化的默认值。                                                                                                                                                                                                                                                                                                                                                                                     | `bool|None`                          | `None` |
-| `layout_unclip_ratio`                 | **含义：**版面区域检测模型检测框的扩张系数。 **说明：**- **float**：任意大于 `0` 浮点数；- **Tuple[float,float]**：在横纵两个方向各自的扩张系数；- **dict**，dict的key为**int**类型，代表`cls_id`, value为**tuple**类型，如`{0: (1.1, 2.0)}`，表示将模型输出的第0类别检测框中心不变，宽度扩张1.1倍，高度扩张2.0倍；- **None**：如果设置为`None`，将使用初始化的默认值。                                                                                                                                                                                 | `float|Tuple[float,float]|dict|None` | `None` |
-| `layout_merge_bboxes_mode`            | **含义：**版面区域检测的重叠框过滤方式。 **说明：**- **str**：`large`，`small`，`union`，分别表示重叠框过滤时选择保留大框，小框还是同时保留；- **dict**： dict的key为**int**类型，代表`cls_id`，value为**str**类型，如`{0: "large", 2: "small"}`，表示对第0类别检测框使用large模式，对第2类别检测框使用small模式；- **None**：如果设置为`None`，将使用初始化的默认值。                                                                                                                                                                                 | `str|dict|None`                      | `None` |
-| `vl_rec_model_name`                   | **含义：**多模态识别模型名称。 **说明：**如果设置为`None`，将会使用默认模型。                                                                                                                                                                                                                                                                                                                                                                                            | `str|None`                           | `None` |
-| `vl_rec_model_dir`                    | **含义：**多模态识别模型目录路径。 **说明：**如果设置为`None`，将会下载官方模型。                                                                                                                                                                                                                                                                                                                                                                                          | `str|None`                           | `None` |
-| `vl_rec_backend`                      | **含义：**多模态识别模型使用的推理后端。                                                                                                                                                                                                                                                                                                                                                                                                                    | `int|None`                           | `None` |
-| `vl_rec_server_url`                   | **含义：**如果多模态识别模型使用推理服务，该参数用于指定服务器URL。                                                                                                                                                                                                                                                                                                                                                                                                     | `str|None`                           | `None` |
-| `vl_rec_max_concurrency`              | **含义：**如果多模态识别模型使用推理服务，该参数用于指定最大并发请求数。                                                                                                                                                                                                                                                                                                                                                                                                    | `int|None`                           | `None` |
-| `vl_rec_api_model_name`               | **含义：**如果多模态识别模型使用推理服务，该参数用于指定服务的模型名称。                                                                                                                                                                                                                                                                                                                                                                                                    | `str|None`                           | `None` |
-| `vl_rec_api_key`                      | **含义：**如果多模态识别模型使用推理服务，该参数用于指定服务的 API key。                                                                                                                                                                                                                                                                                                                                                                                                | `str|None`                           | `None` |
-| `doc_orientation_classify_model_name` | **含义：**文档方向分类模型的名称。 **说明：**如果设置为`None`，将会使用默认模型。                                                                                                                                                                                                                                                                                                                                                                                          | `str|None`                           | `None` |
-| `doc_orientation_classify_model_dir`  | **含义：**文档方向分类模型的目录路径。 **说明：**如果设置为`None`，将会下载官方模型。                                                                                                                                                                                                                                                                                                                                                                                        | `str|None`                           | `None` |
-| `doc_unwarping_model_name`            | **含义：**文本图像矫正模型的名称。 **说明：**如果设置为`None`，将会使用默认模型。                                                                                                                                                                                                                                                                                                                                                                                          | `str|None`                           | `None` |
-| `doc_unwarping_model_dir`             | **含义：**文本图像矫正模型的目录路径。 **说明：**如果设置为`None`，将会下载官方模型。                                                                                                                                                                                                                                                                                                                                                                                        | `str|None`                           | `None` |
-| `use_doc_orientation_classify`        | **含义：**是否加载并使用文档方向分类模块。 **说明：**如果设置为`None`，将使用初始化的默认值，默认初始化为`False`。                                                                                                                                                                                                                                                                                                                                                                      | `bool|None`                          | `None` |
-| `use_doc_unwarping`                   | **含义：**是否加载并使用文本图像矫正模块。 **说明：**如果设置为`None`，将使用初始化的默认值，默认初始化为`False`。                                                                                                                                                                                                                                                                                                                                                                      | `bool|None`                          | `None` |
-| `use_layout_detection`                | **含义：**是否加载并使用版面区域检测排序模块。 **说明：**如果设置为`None`，将使用初始化的默认值，默认初始化为`True`。                                                                                                                                                                                                                                                                                                                                                                     | `bool|None`                          | `None` |
-| `use_chart_recognition`               | **含义：**是否使用图表解析功能。 **说明：**如果设置为`None`，将使用初始化的默认值，默认初始化为`False`。                                                                                                                                                                                                                                                                                                                                                                           | `bool|None`                          | `None` |
-| `use_seal_recognition`                | **含义：**是否使用印章识别功能。 **说明：**如果设置为`None`，将使用初始化的默认值，默认初始化为`False`。                                                                                                                                                                                                                                                                                                                                                                           | `bool|None`                          |        |
-| `use_ocr_for_image_block`             | **含义：**是否对图片中的文字进行识别。 **说明：**如果设置为`None`，将使用初始化的默认值，默认初始化为`False`。                                                                                                                                                                                                                                                                                                                                                                        | `bool|None`                          |        |
-| `format_block_content`                | **含义：**控制是否将 `block_content` 中的内容格式化为Markdown格式。 **说明：**如果设置为`None`，将使用初始化的默认值，默认初始化为`False`。                                                                                                                                                                                                                                                                                                                                             | `bool|None`                          | `None` |
-| `merge_layout_blocks`                 | **含义：**控制是否对跨栏或上下交错分栏的版面检测框进行合并。 **说明：**如果设置为`None`，将使用初始化的默认值，默认初始化为`True`。                                                                                                                                                                                                                                                                                                                                                              | `bool|None`                          |        |
-| `markdown_ignore_labels`              | **含义：**需要在Markdown中忽略的版面标签。 **说明：**如果设置为`None`，将使用初始化的默认值，默认初始化为`['number','footnote','header','header_image','footer','footer_image','aside_text']`。                                                                                                                                                                                                                                                                                     | `list|None`                          |        |
-| `use_queues`                          | **含义：**用于控制是否启用内部队列。 **说明：**当设置为 `True` 时，数据加载（如将 PDF 页面渲染为图像）、版面检测模型处理以及 VLM 推理将分别在独立线程中异步执行，通过队列传递数据，从而提升效率。对于页数较多的 PDF 文档，或是包含大量图像或 PDF 文件的目录，这种方式尤其高效。如果设置为`None`，将使用初始化的默认值，默认初始化为`True`。                                                                                                                                                                                                                                            | `bool|None`                          | `None` |
-| `device`                              | **含义：**用于推理的设备。 **说明：**支持指定具体卡号：- **CPU**：如 `cpu` 表示使用 CPU 进行推理；- **GPU**：如 `gpu:0` 表示使用第 1 块 GPU 进行推理；- **NPU**：如 `npu:0` 表示使用第 1 块 NPU 进行推理；- **XPU**：如 `xpu:0` 表示使用第 1 块 XPU 进行推理；- **MLU**：如 `mlu:0` 表示使用第 1 块 MLU 进行推理；- **DCU**：如 `dcu:0` 表示使用第 1 块 DCU 进行推理；- **沐曦 GPU**：如 `metax_gpu:0` 表示使用第 1 块沐曦 GPU 进行推理；- **天数 GPU**：如 `iluvatar_gpu:0` 表示使用第 1 块天数 GPU 进行推理；- **None**：如果设置为`None`，初始化时，会优先使用本地的 GPU 0号设备，如果没有，则使用 CPU 设备。 | `str|None`                           | `None` |
-| `engine`                              | **含义：**推理引擎。 **说明：**支持 `None`（默认值）、`paddle`、`paddle_static`、`paddle_dynamic`、`transformers`。保持为默认值 `None` 时，PaddleOCR 保留旧版本的行为，在大多数配置下等价于 `paddle`。详细说明、取值、兼容性规则与示例请参见 [推理引擎与配置说明](../inference_engine.md)。                                                                                                                                                                                                                               | `str|None`                           | `None` |
-| `engine_config`                       | **含义：**推理引擎配置。 **说明：**推荐与 `engine` 搭配使用。详细字段、兼容性规则与示例请参见 [推理引擎与配置说明](../inference_engine.md)。                                                                                                                                                                                                                                                                                                                                             | `dict|None`                          | `None` |
+<tr>
+<td><code>enable_hpi</code></td>
+<td><b>含义：</b>是否启用高性能推理。</td>
+<td><code>bool</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>use_tensorrt</code></td>
+<td><b>含义：</b>是否启用 Paddle Inference 的 TensorRT 子图引擎。<br/>
+<b>说明：</b>
+如果模型不支持通过 TensorRT 加速，即使设置了此标志，也不会使用加速。<br/>
+对于 CUDA 11.8 版本的飞桨，兼容的 TensorRT 版本为 8.x（x>=6），建议安装 TensorRT 8.6.1.6。<br/>
+</td>
+<td><code>bool</code></td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td><code>precision</code></td>
+<td><b>含义：</b>计算精度，如 <code>"fp32"</code>、<code>"fp16"</code>。</td>
+<td><code>str</code></td>
+<td><code>"fp32"</code></td>
+</tr>
+<tr>
+<td><code>enable_mkldnn</code></td>
+<td><b>含义：</b>是否启用 MKL-DNN 加速推理。<br/>
+<b>说明：</b>
+如果 MKL-DNN 不可用或模型不支持通过 MKL-DNN 加速，即使设置了此标志，也不会使用加速。
+</td>
+<td><code>bool</code></td>
+<td><code>True</code></td>
+</tr>
+<tr>
+<td><code>mkldnn_cache_capacity</code></td>
+<td>
+<b>含义：</b>MKL-DNN 缓存容量。
+</td>
+<td><code>int</code></td>
+<td><code>10</code></td>
+</tr>
+<tr>
+<td><code>cpu_threads</code></td>
+<td><b>含义：</b>在 CPU 上进行推理时使用的线程数。</td>
+<td><code>int</code></td>
+<td><code>10</code></td>
+</tr>
+<tr>
+<td><code>paddlex_config</code></td>
+<td><b>含义：</b>PaddleX产线配置文件路径。</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
+</tr>
 
+</tbody>
+</table>
 
-`enable_hpi`**含义：**是否启用高性能推理。 `boolNoneuse_tensorrt`**含义：**是否启用 Paddle Inference 的 TensorRT 子图引擎。  
-**说明：** 如果模型不支持通过 TensorRT 加速，即使设置了此标志，也不会使用加速。  
-对于 CUDA 11.8 版本的飞桨，兼容的 TensorRT 版本为 8.x（x>=6），建议安装 TensorRT 8.6.1.6。  
-`boolFalseprecision`**含义：**计算精度，如 `"fp32"`、`"fp16"`。 `str"fp32"enable_mkldnn`**含义：**是否启用 MKL-DNN 加速推理。  
-**说明：** 如果 MKL-DNN 不可用或模型不支持通过 MKL-DNN 加速，即使设置了此标志，也不会使用加速。 `boolTruemkldnn_cache_capacity` **含义：**MKL-DNN 缓存容量。 `int10cpu_threads`**含义：**在 CPU 上进行推理时使用的线程数。 `int10paddlex_config`**含义：**PaddleX产线配置文件路径。 `str|NoneNone`
+</details>
 
+<details><summary>（2）调用 PaddleOCR-VL 对象的 <code>predict()</code> 方法进行推理预测，该方法会返回一个结果列表。另外，PaddleOCR-VL 还提供了 <code>predict_iter()</code> 方法。两者在参数接受和结果返回方面是完全一致的，区别在于 <code>predict_iter()</code> 返回的是一个 <code>generator</code>，能够逐步处理和获取预测结果，适合处理大型数据集或希望节省内存的场景。可以根据实际需求选择使用这两种方法中的任意一种。以下是 <code>predict()</code> 方法的参数及其说明：</summary>
 
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>参数说明</th>
+<th>参数类型</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tr>
+<td><code>input</code></td>
+<td><b>含义：</b>待预测数据，支持多种输入类型，必填。<br/>
+<b>说明：</b>
+<ul>
+<li><b>Python Var</b>：如 <code>numpy.ndarray</code> 表示的图像数据</li>
+<li><b>str</b>：如图像文件或者PDF文件的本地路径：<code>/root/data/img.jpg</code>；<b>如URL链接</b>，如图像文件或PDF文件的网络URL：<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/demo_paper.png">示例</a>；<b>如本地目录</b>，该目录下需包含待预测图像，如本地路径：<code>/root/data/</code>(当前不支持目录中包含PDF文件的预测，PDF文件需要指定到具体文件路径)</li>
+<li><b>list</b>：列表元素需为上述类型数据，如<code>[numpy.ndarray, numpy.ndarray]</code>，<code>["/root/data/img1.jpg", "/root/data/img2.jpg"]</code>，<code>["/root/data1", "/root/data2"]。</code></li>
+</ul>
+</td>
+<td><code>Python Var|str|list</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>use_doc_orientation_classify</code></td>
+<td><b>含义：</b>是否在推理时使用文档方向分类模块。<br/>
+<b>说明：</b>
+设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td><code>bool|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>use_doc_unwarping</code></td>
+<td><b>含义：</b>是否在推理时使用文本图像矫正模块。<br/>
+<b>说明：</b>
+设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td><code>bool|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>use_layout_detection</code></td>
+<td><b>含义：</b>是否在推理时使用版面区域检测排序模块。<br/>
+<b>说明：</b>
+设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td><code>bool|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>use_chart_recognition</code></td>
+<td><b>含义：</b>是否使用图表解析功能。<br/>
+<b>说明：</b>设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td><code>bool|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>use_seal_recognition</code></td>
+<td><b>含义：</b>是否使用印章识别功能。<br/>
+<b>说明：</b>设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td><code>bool|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>use_ocr_for_image_block</code></td>
+<td><b>含义：</b>是否对图片中的文字进行识别。<br/>
+<b>说明：</b>设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td><code>bool|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>layout_threshold</code></td>
+<td><b>含义：</b>参数含义与实例化参数基本相同。<br/>
+<b>说明：</b>
+设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td><code>float|dict|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>layout_nms</code></td>
+<td><b>含义：</b>参数含义与实例化参数基本相同。<br/>
+<b>说明：</b>
+设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td><code>bool|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>layout_unclip_ratio</code></td>
+<td><b>含义：</b>参数含义与实例化参数基本相同。<br/>
+<b>说明：</b>
+设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td><code>float|Tuple[float,float]|dict|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>layout_merge_bboxes_mode</code></td>
+<td><b>含义：</b>参数含义与实例化参数基本相同。<br/>
+<b>说明：</b>
+设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td><code>str|dict|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>layout_shape_mode</code></td>
+<td><b>含义：</b>用于指定版面检测结果的几何形状表示模式。该参数决定了检测区域（如文本块、图片、表格等）边界的计算方式及展示形态。<br/>
+<b>说明：</b>取值说明：
+    <ul>
+    <li><b>rect (矩形)</b>: 输出水平正向的边界框（包含 x1, y1, x2, y2）。适用于标准的水平排版版面。</li>
+    <li><b>quad (四边形)</b>: 输出由四个顶点组成的任意四边形。适用于存在倾斜、透视变形的区域。</li>
+    <li><b>poly (多边形)</b>: 输出由多个坐标点组成的闭合轮廓。适用于形状不规则或具有弧度的版面元素，精度最高。</li>
+    <li><b>auto (自动)</b>: 系统根据检测目标的复杂程度和置信度，自动选择最合适的形状表达方式。</li>
+    </ul>
+</td>
+<td><code>str</code></td>
+<td>"auto"</td>
+</tr>
+<tr>
+<td><code>use_queues</code></td>
+<td>参数含义与实例化参数基本相同。设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td><code>bool|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>prompt_label</code></td>
+<td><b>含义：</b>VL模型的 prompt 类型设置。<br/>
+<b>说明：</b>
+当且仅当 <code>use_layout_detection=False</code> 时生效。可填写参数为 <code>ocr</code>、<code>formula</code>、<code>table</code> 、<code>seal</code>、<code>chart</code>和 <code>spotting</code>。</td>
+<td><code>str|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>format_block_content</code></td>
+<td><b>含义：</b>参数含义与实例化参数基本相同。<br/>
+<b>说明：</b>
+设置为<code>None</code>表示使用实例化参数，否则该参数优先级更高。</td>
+<td><code>bool|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>repetition_penalty</code></td>
+<td><b>含义：</b>VL模型采样使用的重复惩罚参数。</td>
+<td><code>float|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>temperature</code></td>
+<td><b>含义：</b>VL模型采样使用的温度参数。</td>
+<td><code>float|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>top_p</code></td>
+<td><b>含义：</b>VL模型采样使用的top-p参数。</td>
+<td><code>float|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>min_pixels</code></td>
+<td><b>含义：</b>VL模型预处理图像时允许的最小像素数。</td>
+<td><code>int|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>max_pixels</code></td>
+<td><b>含义：</b>VL模型预处理图像时允许的最大像素数。</td>
+<td><code>int|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>max_new_tokens</code></td>
+<td><b>含义：</b>VL模型生成的最大token数。</td>
+<td><code>int|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>merge_layout_blocks</code></td>
+<td><b>含义：</b>控制是否对跨栏或上下交错分栏的版面检测框进行合并。</td>
+<td><code>bool|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>markdown_ignore_labels</code></td>
+<td><b>含义：</b>需要在Markdown中忽略的版面标签。</td>
+<td><code>list|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>vlm_extra_args</code></td>
+<td><b>含义：</b>VLM额外配置参数。<br/>
+<b>说明：</b>目前支持的自定义参数如下：
+<ul>
+  <li><code>ocr_min_pixels</code>：OCR 最小分辨率</li>
+  <li><code>ocr_max_pixels</code>：OCR 最大分辨率</li>
+  <li><code>table_min_pixels</code>：表格最小分辨率</li>
+  <li><code>table_max_pixels</code>：表格最大分辨率</li>
+  <li><code>chart_min_pixels</code>：图表最小分辨率</li>
+  <li><code>chart_max_pixels</code>：图表最大分辨率</li>
+  <li><code>formula_min_pixels</code>：公式最小分辨率</li>
+  <li><code>formula_max_pixels</code>：公式最大分辨率</li>
+  <li><code>seal_min_pixels</code>：印章最小分辨率</li>
+  <li><code>seal_max_pixels</code>：印章最大分辨率</li>
+</ul>
+</td>
+<td><code>dict|None</code></td>
+<td><code>None</code></td>
+</tr>
+</table>
+</details>
 
+<details><summary>（3）调用 PaddleOCR-VL 对象的 <code>restructure_pages()</code> 方法对推理预测的多页结果列表进行页面重建，该方法会返回一个重建后的多页结果或合并后的单页结果。以下是 <code>restructure_pages()</code> 方法的参数及其说明：</summary>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>参数说明</th>
+<th>参数类型</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tr>
+<td><code>res_list</code></td>
+<td><b>含义：</b>多页 PDF 推理预测出的结果列表。</td>
+<td><code>list|None</code></td>
+<td><code>None</code></td>
+</tr>
+<tr>
+<td><code>merge_tables</code></td>
+<td><b>含义：</b>控制是否进行跨页表格合并。</td>
+<td><code>Bool</code></td>
+<td><code>True</code></td>
+</tr>
+<tr>
+<td><code>relevel_titles</code></td>
+<td><b>含义：</b>控制是否进行多级表格分级</td>
+<td><code>Bool</code></td>
+<td><code>True</code></td>
+</tr>
+<tr>
+<td><code>concatenate_pages</code></td>
+<td><b>含义：</b>控制是否拼接多页结果为一页</td>
+<td><code>Bool</code></td>
+<td><code>False</code></td>
+</tr>
+</table>
+</details>
 
+<details><summary>（4）对预测结果进行处理：每个样本的预测结果均为对应的Result对象，且支持打印、保存为图片、保存为<code>json</code>文件的操作:</summary>
 
-（2）调用 PaddleOCR-VL 对象的 `predict()` 方法进行推理预测，该方法会返回一个结果列表。另外，PaddleOCR-VL 还提供了 `predict_iter()` 方法。两者在参数接受和结果返回方面是完全一致的，区别在于 `predict_iter()` 返回的是一个 `generator`，能够逐步处理和获取预测结果，适合处理大型数据集或希望节省内存的场景。可以根据实际需求选择使用这两种方法中的任意一种。以下是 `predict()` 方法的参数及其说明：
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>方法说明</th>
+<th>参数</th>
+<th>参数类型</th>
+<th>参数说明</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tr>
+<td rowspan="3"><code>print()</code></td>
+<td rowspan="3">打印结果到终端</td>
+<td><code>format_json</code></td>
+<td><code>bool</code></td>
+<td>是否对输出内容进行使用 <code>JSON</code> 缩进格式化。</td>
+<td><code>True</code></td>
+</tr>
+<tr>
+<td><code>indent</code></td>
+<td><code>int</code></td>
+<td>指定缩进级别，以美化输出的 <code>JSON</code> 数据，使其更具可读性，仅当 <code>format_json</code> 为 <code>True</code> 时有效。</td>
+<td>4</td>
+</tr>
+<tr>
+<td><code>ensure_ascii</code></td>
+<td><code>bool</code></td>
+<td>控制是否将非 <code>ASCII</code> 字符转义为 <code>Unicode</code>。设置为 <code>True</code> 时，所有非 <code>ASCII</code> 字符将被转义；<code>False</code> 则保留原始字符，仅当<code>format_json</code>为<code>True</code>时有效。</td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td rowspan="3"><code>save_to_json()</code></td>
+<td rowspan="3">将结果保存为json格式的文件</td>
+<td><code>save_path</code></td>
+<td><code>str</code></td>
+<td>保存的文件路径，当为目录时，保存文件命名与输入文件类型命名一致。</td>
+<td>无</td>
+</tr>
+<tr>
+<td><code>indent</code></td>
+<td><code>int</code></td>
+<td>指定缩进级别，以美化输出的 <code>JSON</code> 数据，使其更具可读性，仅当 <code>format_json</code> 为 <code>True</code> 时有效。</td>
+<td>4</td>
+</tr>
+<tr>
+<td><code>ensure_ascii</code></td>
+<td><code>bool</code></td>
+<td>控制是否将非 <code>ASCII</code> 字符转义为 <code>Unicode</code>。设置为 <code>True</code> 时，所有非 <code>ASCII</code> 字符将被转义；<code>False</code> 则保留原始字符，仅当<code>format_json</code>为<code>True</code>时有效。</td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td><code>save_to_img()</code></td>
+<td>将中间各个模块的可视化图像保存在png格式的图像</td>
+<td><code>save_path</code></td>
+<td><code>str</code></td>
+<td>保存的文件路径，支持目录或文件路径。</td>
+<td>无</td>
+</tr>
+<tr>
+<td rowspan="3"><code>save_to_markdown()</code></td>
+<td rowspan="3">将图像或者PDF文件中的每一页分别保存为markdown格式的文件</td>
+<td><code>save_path</code></td>
+<td><code>str</code></td>
+<td>保存的文件路径，当为目录时，保存文件命名与输入文件类型命名一致</td>
+<td>无</td>
+</tr>
+<tr>
+<td><code>pretty</code></td>
+<td><code>bool</code></td>
+<td>是否美化 <code>markdown</code> 输出结果，将图表等进行居中操作，使 <code>markdown</code> 渲染后更美观。</td>
+<td>True</td>
+</tr>
+<tr>
+<td><code>show_formula_number</code></td>
+<td><code>bool</code></td>
+<td>控制是否在 <code>markdown</code> 中将保留公式编号。设置为 <code>True</code> 时，保留全部公式编号；<code>False</code> 则仅保留公式</td>
+<td><code>False</code></td>
+</tr>
+<tr>
+<td><code>save_to_html()</code></td>
+<td>将文件中的表格保存为html格式的文件</td>
+<td><code>save_path</code></td>
+<td><code>str</code></td>
+<td>保存的文件路径，支持目录或文件路径。</td>
+<td>无</td>
+</tr>
+<tr>
+<td><code>save_to_xlsx()</code></td>
+<td>将文件中的表格保存为xlsx格式的文件</td>
+<td><code>save_path</code></td>
+<td><code>str</code></td>
+<td>保存的文件路径，支持目录或文件路径。</td>
+<td>无</td>
+</tr>
+</table>
 
-
-| 参数                             | 参数说明                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | 参数类型                                 | 默认值    |
-| ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------ | ------ |
-| `input`                        | **含义：**待预测数据，支持多种输入类型，必填。 **说明：**- **Python Var**：如 `numpy.ndarray` 表示的图像数据- **str**：如图像文件或者PDF文件的本地路径：`/root/data/img.jpg`；**如URL链接**，如图像文件或PDF文件的网络URL：[示例](https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/demo_paper.png)；**如本地目录**，该目录下需包含待预测图像，如本地路径：`/root/data/`(当前不支持目录中包含PDF文件的预测，PDF文件需要指定到具体文件路径)- **list**：列表元素需为上述类型数据，如`[numpy.ndarray, numpy.ndarray]`，`["/root/data/img1.jpg", "/root/data/img2.jpg"]`，`["/root/data1", "/root/data2"]。` | `Python Var|str|list`                |        |
-| `use_doc_orientation_classify` | **含义：**是否在推理时使用文档方向分类模块。 **说明：** 设置为`None`表示使用实例化参数，否则该参数优先级更高。                                                                                                                                                                                                                                                                                                                                                                                                               | `bool|None`                          | `None` |
-| `use_doc_unwarping`            | **含义：**是否在推理时使用文本图像矫正模块。 **说明：** 设置为`None`表示使用实例化参数，否则该参数优先级更高。                                                                                                                                                                                                                                                                                                                                                                                                               | `bool|None`                          | `None` |
-| `use_layout_detection`         | **含义：**是否在推理时使用版面区域检测排序模块。 **说明：** 设置为`None`表示使用实例化参数，否则该参数优先级更高。                                                                                                                                                                                                                                                                                                                                                                                                             | `bool|None`                          | `None` |
-| `use_chart_recognition`        | **含义：**是否使用图表解析功能。 **说明：**设置为`None`表示使用实例化参数，否则该参数优先级更高。                                                                                                                                                                                                                                                                                                                                                                                                                      | `bool|None`                          | `None` |
-| `use_seal_recognition`         | **含义：**是否使用印章识别功能。 **说明：**设置为`None`表示使用实例化参数，否则该参数优先级更高。                                                                                                                                                                                                                                                                                                                                                                                                                      | `bool|None`                          | `None` |
-| `use_ocr_for_image_block`      | **含义：**是否对图片中的文字进行识别。 **说明：**设置为`None`表示使用实例化参数，否则该参数优先级更高。                                                                                                                                                                                                                                                                                                                                                                                                                   | `bool|None`                          | `None` |
-| `layout_threshold`             | **含义：**参数含义与实例化参数基本相同。 **说明：** 设置为`None`表示使用实例化参数，否则该参数优先级更高。                                                                                                                                                                                                                                                                                                                                                                                                                 | `float|dict|None`                    | `None` |
-| `layout_nms`                   | **含义：**参数含义与实例化参数基本相同。 **说明：** 设置为`None`表示使用实例化参数，否则该参数优先级更高。                                                                                                                                                                                                                                                                                                                                                                                                                 | `bool|None`                          | `None` |
-| `layout_unclip_ratio`          | **含义：**参数含义与实例化参数基本相同。 **说明：** 设置为`None`表示使用实例化参数，否则该参数优先级更高。                                                                                                                                                                                                                                                                                                                                                                                                                 | `float|Tuple[float,float]|dict|None` | `None` |
-| `layout_merge_bboxes_mode`     | **含义：**参数含义与实例化参数基本相同。 **说明：** 设置为`None`表示使用实例化参数，否则该参数优先级更高。                                                                                                                                                                                                                                                                                                                                                                                                                 | `str|dict|None`                      | `None` |
-| `layout_shape_mode`            | **含义：**用于指定版面检测结果的几何形状表示模式。该参数决定了检测区域（如文本块、图片、表格等）边界的计算方式及展示形态。 **说明：**取值说明：- **rect (矩形)**: 输出水平正向的边界框（包含 x1, y1, x2, y2）。适用于标准的水平排版版面。- **quad (四边形)**: 输出由四个顶点组成的任意四边形。适用于存在倾斜、透视变形的区域。- **poly (多边形)**: 输出由多个坐标点组成的闭合轮廓。适用于形状不规则或具有弧度的版面元素，精度最高。- **auto (自动)**: 系统根据检测目标的复杂程度和置信度，自动选择最合适的形状表达方式。                                                                                                                                                                       | `str`                                | "auto" |
-| `use_queues`                   | 参数含义与实例化参数基本相同。设置为`None`表示使用实例化参数，否则该参数优先级更高。                                                                                                                                                                                                                                                                                                                                                                                                                                 | `bool|None`                          | `None` |
-| `prompt_label`                 | **含义：**VL模型的 prompt 类型设置。 **说明：** 当且仅当 `use_layout_detection=False` 时生效。可填写参数为 `ocr`、`formula`、`table` 、`seal`、`chart`和 `spotting`。                                                                                                                                                                                                                                                                                                                                           | `str|None`                           | `None` |
-| `format_block_content`         | **含义：**参数含义与实例化参数基本相同。 **说明：** 设置为`None`表示使用实例化参数，否则该参数优先级更高。                                                                                                                                                                                                                                                                                                                                                                                                                 | `bool|None`                          | `None` |
-| `repetition_penalty`           | **含义：**VL模型采样使用的重复惩罚参数。                                                                                                                                                                                                                                                                                                                                                                                                                                                       | `float|None`                         | `None` |
-| `temperature`                  | **含义：**VL模型采样使用的温度参数。                                                                                                                                                                                                                                                                                                                                                                                                                                                         | `float|None`                         | `None` |
-| `top_p`                        | **含义：**VL模型采样使用的top-p参数。                                                                                                                                                                                                                                                                                                                                                                                                                                                      | `float|None`                         | `None` |
-| `min_pixels`                   | **含义：**VL模型预处理图像时允许的最小像素数。                                                                                                                                                                                                                                                                                                                                                                                                                                                    | `int|None`                           | `None` |
-| `max_pixels`                   | **含义：**VL模型预处理图像时允许的最大像素数。                                                                                                                                                                                                                                                                                                                                                                                                                                                    | `int|None`                           | `None` |
-| `max_new_tokens`               | **含义：**VL模型生成的最大token数。                                                                                                                                                                                                                                                                                                                                                                                                                                                       | `int|None`                           | `None` |
-| `merge_layout_blocks`          | **含义：**控制是否对跨栏或上下交错分栏的版面检测框进行合并。                                                                                                                                                                                                                                                                                                                                                                                                                                              | `bool|None`                          | `None` |
-| `markdown_ignore_labels`       | **含义：**需要在Markdown中忽略的版面标签。                                                                                                                                                                                                                                                                                                                                                                                                                                                   | `list|None`                          | `None` |
-| `vlm_extra_args`               | **含义：**VLM额外配置参数。 **说明：**目前支持的自定义参数如下：- `ocr_min_pixels`：OCR 最小分辨率- `ocr_max_pixels`：OCR 最大分辨率- `table_min_pixels`：表格最小分辨率- `table_max_pixels`：表格最大分辨率- `chart_min_pixels`：图表最小分辨率- `chart_max_pixels`：图表最大分辨率- `formula_min_pixels`：公式最小分辨率- `formula_max_pixels`：公式最大分辨率- `seal_min_pixels`：印章最小分辨率- `seal_max_pixels`：印章最大分辨率                                                                                                                                             | `dict|None`                          | `None` |
-
-
-（3）调用 PaddleOCR-VL 对象的 `restructure_pages()` 方法对推理预测的多页结果列表进行页面重建，该方法会返回一个重建后的多页结果或合并后的单页结果。以下是 `restructure_pages()` 方法的参数及其说明：
-
-
-| 参数                  | 参数说明                      | 参数类型        | 默认值     |
-| ------------------- | ------------------------- | ----------- | ------- |
-| `res_list`          | **含义：**多页 PDF 推理预测出的结果列表。 | `list|None` | `None`  |
-| `merge_tables`      | **含义：**控制是否进行跨页表格合并。      | `Bool`      | `True`  |
-| `relevel_titles`    | **含义：**控制是否进行多级表格分级       | `Bool`      | `True`  |
-| `concatenate_pages` | **含义：**控制是否拼接多页结果为一页      | `Bool`      | `False` |
-
-
-（4）对预测结果进行处理：每个样本的预测结果均为对应的Result对象，且支持打印、保存为图片、保存为`json`文件的操作:
-
-
-| 方法                    | 方法说明                              | 参数                                                                                                        | 参数类型    | 参数说明                             | 默认值    |
-| --------------------- | --------------------------------- | --------------------------------------------------------------------------------------------------------- | ------- | -------------------------------- | ------ |
-| `print()`             | 打印结果到终端                           | `format_json`                                                                                             | `bool`  | 是否对输出内容进行使用 `JSON` 缩进格式化。        | `True` |
-| `indent`              | `int`                             | 指定缩进级别，以美化输出的 `JSON` 数据，使其更具可读性，仅当 `format_json` 为 `True` 时有效。                                            | 4       |                                  |        |
-| `ensure_ascii`        | `bool`                            | 控制是否将非 `ASCII` 字符转义为 `Unicode`。设置为 `True` 时，所有非 `ASCII` 字符将被转义；`False` 则保留原始字符，仅当`format_json`为`True`时有效。 | `False` |                                  |        |
-| `save_to_json()`      | 将结果保存为json格式的文件                   | `save_path`                                                                                               | `str`   | 保存的文件路径，当为目录时，保存文件命名与输入文件类型命名一致。 | 无      |
-| `indent`              | `int`                             | 指定缩进级别，以美化输出的 `JSON` 数据，使其更具可读性，仅当 `format_json` 为 `True` 时有效。                                            | 4       |                                  |        |
-| `ensure_ascii`        | `bool`                            | 控制是否将非 `ASCII` 字符转义为 `Unicode`。设置为 `True` 时，所有非 `ASCII` 字符将被转义；`False` 则保留原始字符，仅当`format_json`为`True`时有效。 | `False` |                                  |        |
-| `save_to_img()`       | 将中间各个模块的可视化图像保存在png格式的图像          | `save_path`                                                                                               | `str`   | 保存的文件路径，支持目录或文件路径。               | 无      |
-| `save_to_markdown()`  | 将图像或者PDF文件中的每一页分别保存为markdown格式的文件 | `save_path`                                                                                               | `str`   | 保存的文件路径，当为目录时，保存文件命名与输入文件类型命名一致  | 无      |
-| `pretty`              | `bool`                            | 是否美化 `markdown` 输出结果，将图表等进行居中操作，使 `markdown` 渲染后更美观。                                                      | True    |                                  |        |
-| `show_formula_number` | `bool`                            | 控制是否在 `markdown` 中将保留公式编号。设置为 `True` 时，保留全部公式编号；`False` 则仅保留公式                                            | `False` |                                  |        |
-| `save_to_html()`      | 将文件中的表格保存为html格式的文件               | `save_path`                                                                                               | `str`   | 保存的文件路径，支持目录或文件路径。               | 无      |
-| `save_to_xlsx()`      | 将文件中的表格保存为xlsx格式的文件               | `save_path`                                                                                               | `str`   | 保存的文件路径，支持目录或文件路径。               | 无      |
-
-
+<ul>
 - 调用`print()` 方法会将结果打印到终端，打印到终端的内容解释如下：
   1. `input_path`: `(str)` 待预测图像的输入路径
   2. `page_index`: `(Union[int, None])` 如果输入是PDF文件，则表示当前是PDF的第几页，否则为 `None`
@@ -1051,150 +1907,485 @@ INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
 
 以下是服务化部署的 API 参考与多语言服务调用示例：
 
-API 参考
+<details><summary>API 参考</summary>
+<p>对于服务提供的主要操作：</p>
+<ul>
+<li>HTTP请求方法为POST。</li>
+<li>请求体和响应体均为JSON数据（JSON对象）。</li>
+<li>当请求处理成功时，响应状态码为<code>200</code>，响应体的属性如下：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>类型</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>logId</code></td>
+<td><code>string</code></td>
+<td>请求的UUID。</td>
+</tr>
+<tr>
+<td><code>errorCode</code></td>
+<td><code>integer</code></td>
+<td>错误码。固定为<code>0</code>。</td>
+</tr>
+<tr>
+<td><code>errorMsg</code></td>
+<td><code>string</code></td>
+<td>错误说明。固定为<code>"Success"</code>。</td>
+</tr>
+<tr>
+<td><code>result</code></td>
+<td><code>object</code></td>
+<td>操作结果。</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>当请求处理未成功时，响应体的属性如下：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>类型</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>logId</code></td>
+<td><code>string</code></td>
+<td>请求的UUID。</td>
+</tr>
+<tr>
+<td><code>errorCode</code></td>
+<td><code>integer</code></td>
+<td>错误码。与响应状态码相同。</td>
+</tr>
+<tr>
+<td><code>errorMsg</code></td>
+<td><code>string</code></td>
+<td>错误说明。</td>
+</tr>
+</tbody>
+</table>
+<p>服务提供的主要操作如下：</p>
+<ul>
+<li><b><code>infer</code></b></li>
+</ul>
+<p>进行版面解析。</p>
+<p><code>POST /layout-parsing</code></p>
+<ul>
+<li>请求体的属性如下：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>类型</th>
+<th>含义</th>
+<th>是否必填</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>file</code></td>
+<td><code>string</code></td>
+<td>服务器可访问的图像文件或PDF文件的URL，或上述类型文件内容的Base64编码结果。
+</td>
+<td>是</td>
+</tr>
+<tr>
+<td><code>fileType</code></td>
+<td><code>integer</code>｜<code>null</code></td>
+<td>文件类型。<code>0</code>表示PDF文件，<code>1</code>表示图像文件。若请求体无此属性，则将根据URL推断文件类型。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>useDocOrientationClassify</code></td>
+<td><code>boolean</code> | <code>null</code></td>
+<td>请参阅产线对象中 <code>predict</code> 方法的 <code>use_doc_orientation_classify</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>useDocUnwarping</code></td>
+<td><code>boolean</code> | <code>null</code></td>
+<td>请参阅PaddleOCR-VL对象中 <code>predict</code> 方法的 <code>use_doc_unwarping</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>useLayoutDetection</code></td>
+<td><code>boolean</code> | <code>null</code></td>
+<td>请参阅PaddleOCR-VL对象中 <code>predict</code> 方法的 <code>use_layout_detection</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>useChartRecognition</code></td>
+<td><code>boolean</code> | <code>null</code></td>
+<td>请参阅PaddleOCR-VL对象中 <code>predict</code> 方法的 <code>use_chart_recognition</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>useSealRecognition</code></td>
+<td><code>boolean</code> | <code>null</code></td>
+<td>请参阅PaddleOCR-VL对象中 <code>predict</code> 方法的 <code>use_seal_recognition</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>useOcrForImageBlock</code></td>
+<td><code>boolean</code> | <code>null</code></td>
+<td>请参阅PaddleOCR-VL对象中 <code>predict</code> 方法的 <code>use_ocr_for_image_block</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>layoutThreshold</code></td>
+<td><code>number</code> | <code>object</code> | <code>null</code></td>
+<td>请参阅PaddleOCR-VL对象中 <code>predict</code> 方法的 <code>layout_threshold</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>layoutNms</code></td>
+<td><code>boolean</code> | <code>null</code></td>
+<td>请参阅PaddleOCR-VL对象中 <code>predict</code> 方法的 <code>layout_nms</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>layoutUnclipRatio</code></td>
+<td><code>number</code> | <code>array</code> | <code>object</code> | <code>null</code></td>
+<td>请参阅PaddleOCR-VL对象中 <code>predict</code> 方法的 <code>layout_unclip_ratio</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>layoutMergeBboxesMode</code></td>
+<td><code>string</code> | <code>object</code> | <code>null</code></td>
+<td>请参阅PaddleOCR-VL对象中 <code>predict</code> 方法的 <code>layout_merge_bboxes_mode</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>layoutShapeMode</code></td>
+<td><code>string</code></td>
+<td>请参阅PaddleOCR-VL对象中 <code>predict</code> 方法的 <code>layout_shape_mode</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>promptLabel</code></td>
+<td><code>string</code> | <code>null</code></td>
+<td>请参阅PaddleOCR-VL对象中 <code>predict</code> 方法的 <code>prompt_label</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>formatBlockContent</code></td>
+<td><code>boolean</code> | <code>null</code></td>
+<td>请参阅PaddleOCR-VL对象中 <code>predict</code> 方法的 <code>format_block_content</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>repetitionPenalty</code></td>
+<td><code>number</code> | <code>null</code></td>
+<td>请参阅PaddleOCR-VL对象中 <code>predict</code> 方法的 <code>repetition_penalty</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>temperature</code></td>
+<td><code>number</code> | <code>null</code></td>
+<td>请参阅PaddleOCR-VL对象中 <code>predict</code> 方法的 <code>temperature</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>topP</code></td>
+<td><code>number</code> | <code>null</code></td>
+<td>请参阅PaddleOCR-VL对象中 <code>predict</code> 方法的 <code>top_p</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>minPixels</code></td>
+<td><code>number</code> | <code>null</code></td>
+<td>请参阅PaddleOCR-VL对象中 <code>predict</code> 方法的 <code>min_pixels</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>maxPixels</code></td>
+<td><code>number</code> | <code>null</code></td>
+<td>请参阅PaddleOCR-VL对象中 <code>predict</code> 方法的 <code>max_pixels</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>maxNewTokens</code></td>
+<td><code>number</code> | <code>null</code></td>
+<td>请参阅PaddleOCR-VL对象中 <code>predict</code> 方法的 <code>max_new_tokens</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>mergeLayoutBlocks</code></td>
+<td><code>boolean</code> | <code>null</code></td>
+<td>请参阅PaddleOCR-VL对象中 <code>predict</code> 方法的 <code>merge_layout_blocks</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>markdownIgnoreLabels</code></td>
+<td><code>array</code> | <code>null</code></td>
+<td>请参阅PaddleOCR-VL对象中 <code>predict</code> 方法的 <code>markdown_ignore_labels</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>vlmExtraArgs</code></td>
+<td><code>object</code> | <code>null</code></td>
+<td>请参阅PaddleOCR-VL对象中 <code>predict</code> 方法的 <code>vlm_extra_args</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>prettifyMarkdown</code></td>
+<td><code>boolean</code></td>
+<td>是否输出美化后的 Markdown 文本。默认为 <code>true</code>。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>showFormulaNumber</code></td>
+<td><code>boolean</code></td>
+<td>输出的 Markdown 文本中是否包含公式编号。默认为 <code>false</code>。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>restructurePages</code></td>
+<td><code>boolean</code></td>
+<td>是否重构多页结果。默认为 <code>false</code>。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>mergeTables</code></td>
+<td><code>boolean</code></td>
+<td>请参阅PaddleOCR-VL对象中 <code>restructure_pages</code> 方法的 <code>merge_tables</code> 参数相关说明。仅当<code>restructurePages</code>为<code>true</code>时生效。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>relevelTitles</code></td>
+<td><code>boolean</code></td>
+<td>请参阅PaddleOCR-VL对象中 <code>restructure_pages</code> 方法的 <code>relevel_titles</code> 参数相关说明。仅当<code>restructurePages</code>为<code>true</code>时生效。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>outputFormats</code></td>
+<td><code>array</code> | <code>null</code></td>
+<td>可选。需要额外返回的文档格式列表。默认不返回任何附加格式。当前仅支持 <code>"docx"</code>。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>visualize</code></td>
+<td><code>boolean</code> | <code>null</code></td>
+<td>是否返回可视化结果图以及处理过程中的中间图像等。
+<ul style="margin: 0 0 0 1em; padding-left: 0em;">
+<li>传入 <code>true</code>：返回图像。</li>
+<li>传入 <code>false</code>：不返回图像。</li>
+<li>若请求体中未提供该参数或传入 <code>null</code>：遵循配置文件<code>Serving.visualize</code> 的设置。</li>
+</ul>
+<br/>例如，在配置文件中添加如下字段：<br/>
+<pre><code>Serving:
+  visualize: False
+</code></pre>
+将默认不返回图像，通过请求体中的<code>visualize</code>参数可以覆盖默认行为。如果请求体和配置文件中均未设置（或请求体传入<code>null</code>、配置文件中未设置），则默认返回图像。
+</td>
+<td>否</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>请求处理成功时，响应体的<code>result</code>具有如下属性：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>类型</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>layoutParsingResults</code></td>
+<td><code>array</code></td>
+<td>版面解析结果。数组长度为1（对于图像输入）或实际处理的文档页数（对于PDF输入）。对于PDF输入，数组中的每个元素依次表示PDF文件中实际处理的每一页的结果。</td>
+</tr>
+<tr>
+<td><code>dataInfo</code></td>
+<td><code>object</code></td>
+<td>输入数据信息。</td>
+</tr>
+</tbody>
+</table>
+<p><code>layoutParsingResults</code>中的每个元素为一个<code>object</code>，具有如下属性：</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>类型</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>prunedResult</code></td>
+<td><code>object</code></td>
+<td>对象的 <code>predict</code> 方法生成结果的 JSON 表示中 <code>res</code> 字段的简化版本，其中去除了 <code>input_path</code> 和 <code>page_index</code> 字段。</td>
+</tr>
+<tr>
+<td><code>markdown</code></td>
+<td><code>object</code></td>
+<td>Markdown结果。</td>
+</tr>
+<tr>
+<td><code>outputImages</code></td>
+<td><code>object</code> | <code>null</code></td>
+<td>参见预测结果的 <code>img</code> 属性说明。图像为JPEG格式，使用Base64编码。</td>
+</tr>
+<tr>
+<td><code>inputImage</code></td>
+<td><code>string</code> | <code>null</code></td>
+<td>输入图像。图像为JPEG格式，使用Base64编码。</td>
+</tr>
+<tr>
+<td><code>exports</code></td>
+<td><code>object</code> | <code>null</code></td>
+<td>可选的附加导出结果。仅当请求体中包含 <code>outputFormats</code> 且列出相应格式时出现。例如 <code>{"docx": {"content": "..."}}</code>，其中 <code>content</code> 为文件内容的Base64编码。</td>
+</tr>
+</tbody>
+</table>
+<p><code>markdown</code>为一个<code>object</code>，具有如下属性：</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>类型</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>text</code></td>
+<td><code>string</code></td>
+<td>Markdown文本。</td>
+</tr>
+<tr>
+<td><code>images</code></td>
+<td><code>object</code></td>
+<td>Markdown图片相对路径和Base64编码图像的键值对。</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><b><code>restructurePages</code></b></li>
+</ul>
+<p>重构多页结果。</p>
+<p><code>POST /restructure-pages</code></p>
+<ul>
+<li>请求体的属性如下：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>类型</th>
+<th>含义</th>
+<th>是否必填</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pages</code></td>
+<td><code>array</code></td>
+<td>页面数组。
+</td>
+<td>是</td>
+</tr>
+<tr>
+<td><code>mergeTables</code></td>
+<td><code>boolean</code></td>
+<td>请参阅PaddleOCR-VL对象中 <code>restructure_pages</code> 方法的 <code>merge_tables</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>relevelTitles</code></td>
+<td><code>boolean</code></td>
+<td>请参阅PaddleOCR-VL对象中 <code>restructure_pages</code> 方法的 <code>relevel_titles</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>concatenatePages</code></td>
+<td><code>boolean</code></td>
+<td>请参阅PaddleOCR-VL对象中 <code>restructure_pages</code> 方法的 <code>concatenate_pages</code> 参数相关说明。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>prettifyMarkdown</code></td>
+<td><code>boolean</code></td>
+<td>是否输出美化后的 Markdown 文本。默认为 <code>true</code>。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>showFormulaNumber</code></td>
+<td><code>boolean</code></td>
+<td>输出的 Markdown 文本中是否包含公式编号。默认为 <code>false</code>。</td>
+<td>否</td>
+</tr>
+<tr>
+<td><code>outputFormats</code></td>
+<td><code>array</code> | <code>null</code></td>
+<td>可选。附加导出格式，含义与 <code>infer</code> 中的 <code>outputFormats</code> 相同。当前仅支持 <code>"docx"</code>。</td>
+<td>否</td>
+</tr>
+</tbody>
+</table>
+<p><code>pages</code>中的每个元素为一个<code>object</code>，具有如下属性：</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>类型</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>prunedResult</code></td>
+<td><code>object</code></td>
+<td>对应<code>infer</code>操作返回的<code>prunedResult</code>对象。</td>
+</tr>
+<tr>
+<td><code>markdownImages</code></td>
+<td><code>object</code>|<code>null</code></td>
+<td>对应<code>infer</code>操作返回的<code>markdown</code>对象的<code>images</code>属性。</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>请求处理成功时，响应体的<code>result</code>具有如下属性：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>类型</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>layoutParsingResults</code></td>
+<td><code>array</code></td>
+<td>重构后的版面解析结果。其中每个元素包含的字段请参见对 <code>infer</code> 操作返回结果的说明（不含可视化结果图和中间图像）。</td>
+</tr>
+</tbody>
+</table>
+</details>
+<details><summary>多语言调用服务示例</summary>
+<details>
+<summary>Python</summary>
 
-对于服务提供的主要操作：
-
-- HTTP请求方法为POST。
-- 请求体和响应体均为JSON数据（JSON对象）。
-- 当请求处理成功时，响应状态码为`200`，响应体的属性如下：
-
-
-| 名称          | 类型        | 含义                   |
-| ----------- | --------- | -------------------- |
-| `logId`     | `string`  | 请求的UUID。             |
-| `errorCode` | `integer` | 错误码。固定为`0`。          |
-| `errorMsg`  | `string`  | 错误说明。固定为`"Success"`。 |
-| `result`    | `object`  | 操作结果。                |
-
-
-- 当请求处理未成功时，响应体的属性如下：
-
-
-| 名称          | 类型        | 含义            |
-| ----------- | --------- | ------------- |
-| `logId`     | `string`  | 请求的UUID。      |
-| `errorCode` | `integer` | 错误码。与响应状态码相同。 |
-| `errorMsg`  | `string`  | 错误说明。         |
-
-
-服务提供的主要操作如下：
-
-- `infer`
-
-进行版面解析。
-
-`POST /layout-parsing`
-
-- 请求体的属性如下：
-
-
-| 名称                          | 类型                                     | 含义                                                                                                                                                                                                                                                       | 是否必填 |
-| --------------------------- | -------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---- |
-| `file`                      | `string`                               | 服务器可访问的图像文件或PDF文件的URL，或上述类型文件内容的Base64编码结果。                                                                                                                                                                                                              | 是    |
-| `fileType`                  | `integer`｜`null`                       | 文件类型。`0`表示PDF文件，`1`表示图像文件。若请求体无此属性，则将根据URL推断文件类型。                                                                                                                                                                                                        | 否    |
-| `useDocOrientationClassify` | `boolean` | `null`                     | 请参阅产线对象中 `predict` 方法的 `use_doc_orientation_classify` 参数相关说明。                                                                                                                                                                                            | 否    |
-| `useDocUnwarping`           | `boolean` | `null`                     | 请参阅PaddleOCR-VL对象中 `predict` 方法的 `use_doc_unwarping` 参数相关说明。                                                                                                                                                                                             | 否    |
-| `useLayoutDetection`        | `boolean` | `null`                     | 请参阅PaddleOCR-VL对象中 `predict` 方法的 `use_layout_detection` 参数相关说明。                                                                                                                                                                                          | 否    |
-| `useChartRecognition`       | `boolean` | `null`                     | 请参阅PaddleOCR-VL对象中 `predict` 方法的 `use_chart_recognition` 参数相关说明。                                                                                                                                                                                         | 否    |
-| `useSealRecognition`        | `boolean` | `null`                     | 请参阅PaddleOCR-VL对象中 `predict` 方法的 `use_seal_recognition` 参数相关说明。                                                                                                                                                                                          | 否    |
-| `useOcrForImageBlock`       | `boolean` | `null`                     | 请参阅PaddleOCR-VL对象中 `predict` 方法的 `use_ocr_for_image_block` 参数相关说明。                                                                                                                                                                                       | 否    |
-| `layoutThreshold`           | `number` | `object` | `null`           | 请参阅PaddleOCR-VL对象中 `predict` 方法的 `layout_threshold` 参数相关说明。                                                                                                                                                                                              | 否    |
-| `layoutNms`                 | `boolean` | `null`                     | 请参阅PaddleOCR-VL对象中 `predict` 方法的 `layout_nms` 参数相关说明。                                                                                                                                                                                                    | 否    |
-| `layoutUnclipRatio`         | `number` | `array` | `object` | `null` | 请参阅PaddleOCR-VL对象中 `predict` 方法的 `layout_unclip_ratio` 参数相关说明。                                                                                                                                                                                           | 否    |
-| `layoutMergeBboxesMode`     | `string` | `object` | `null`           | 请参阅PaddleOCR-VL对象中 `predict` 方法的 `layout_merge_bboxes_mode` 参数相关说明。                                                                                                                                                                                      | 否    |
-| `layoutShapeMode`           | `string`                               | 请参阅PaddleOCR-VL对象中 `predict` 方法的 `layout_shape_mode` 参数相关说明。                                                                                                                                                                                             | 否    |
-| `promptLabel`               | `string` | `null`                      | 请参阅PaddleOCR-VL对象中 `predict` 方法的 `prompt_label` 参数相关说明。                                                                                                                                                                                                  | 否    |
-| `formatBlockContent`        | `boolean` | `null`                     | 请参阅PaddleOCR-VL对象中 `predict` 方法的 `format_block_content` 参数相关说明。                                                                                                                                                                                          | 否    |
-| `repetitionPenalty`         | `number` | `null`                      | 请参阅PaddleOCR-VL对象中 `predict` 方法的 `repetition_penalty` 参数相关说明。                                                                                                                                                                                            | 否    |
-| `temperature`               | `number` | `null`                      | 请参阅PaddleOCR-VL对象中 `predict` 方法的 `temperature` 参数相关说明。                                                                                                                                                                                                   | 否    |
-| `topP`                      | `number` | `null`                      | 请参阅PaddleOCR-VL对象中 `predict` 方法的 `top_p` 参数相关说明。                                                                                                                                                                                                         | 否    |
-| `minPixels`                 | `number` | `null`                      | 请参阅PaddleOCR-VL对象中 `predict` 方法的 `min_pixels` 参数相关说明。                                                                                                                                                                                                    | 否    |
-| `maxPixels`                 | `number` | `null`                      | 请参阅PaddleOCR-VL对象中 `predict` 方法的 `max_pixels` 参数相关说明。                                                                                                                                                                                                    | 否    |
-| `maxNewTokens`              | `number` | `null`                      | 请参阅PaddleOCR-VL对象中 `predict` 方法的 `max_new_tokens` 参数相关说明。                                                                                                                                                                                                | 否    |
-| `mergeLayoutBlocks`         | `boolean` | `null`                     | 请参阅PaddleOCR-VL对象中 `predict` 方法的 `merge_layout_blocks` 参数相关说明。                                                                                                                                                                                           | 否    |
-| `markdownIgnoreLabels`      | `array` | `null`                       | 请参阅PaddleOCR-VL对象中 `predict` 方法的 `markdown_ignore_labels` 参数相关说明。                                                                                                                                                                                        | 否    |
-| `vlmExtraArgs`              | `object` | `null`                      | 请参阅PaddleOCR-VL对象中 `predict` 方法的 `vlm_extra_args` 参数相关说明。                                                                                                                                                                                                | 否    |
-| `prettifyMarkdown`          | `boolean`                              | 是否输出美化后的 Markdown 文本。默认为 `true`。                                                                                                                                                                                                                         | 否    |
-| `showFormulaNumber`         | `boolean`                              | 输出的 Markdown 文本中是否包含公式编号。默认为 `false`。                                                                                                                                                                                                                    | 否    |
-| `restructurePages`          | `boolean`                              | 是否重构多页结果。默认为 `false`。                                                                                                                                                                                                                                    | 否    |
-| `mergeTables`               | `boolean`                              | 请参阅PaddleOCR-VL对象中 `restructure_pages` 方法的 `merge_tables` 参数相关说明。仅当`restructurePages`为`true`时生效。                                                                                                                                                         | 否    |
-| `relevelTitles`             | `boolean`                              | 请参阅PaddleOCR-VL对象中 `restructure_pages` 方法的 `relevel_titles` 参数相关说明。仅当`restructurePages`为`true`时生效。                                                                                                                                                       | 否    |
-| `outputFormats`             | `array` | `null`                       | 可选。需要额外返回的文档格式列表。默认不返回任何附加格式。当前仅支持 `"docx"`。                                                                                                                                                                                                             | 否    |
-| `visualize`                 | `boolean` | `null`                     | 是否返回可视化结果图以及处理过程中的中间图像等。- 传入 `true`：返回图像。- 传入 `false`：不返回图像。- 若请求体中未提供该参数或传入 `null`：遵循配置文件`Serving.visualize` 的设置。 例如，在配置文件中添加如下字段： Serving: visualize: False  将默认不返回图像，通过请求体中的`visualize`参数可以覆盖默认行为。如果请求体和配置文件中均未设置（或请求体传入`null`、配置文件中未设置），则默认返回图像。 | 否    |
-
-
-- 请求处理成功时，响应体的`result`具有如下属性：
-
-
-| 名称                     | 类型       | 含义                                                                              |
-| ---------------------- | -------- | ------------------------------------------------------------------------------- |
-| `layoutParsingResults` | `array`  | 版面解析结果。数组长度为1（对于图像输入）或实际处理的文档页数（对于PDF输入）。对于PDF输入，数组中的每个元素依次表示PDF文件中实际处理的每一页的结果。 |
-| `dataInfo`             | `object` | 输入数据信息。                                                                         |
-
-
-`layoutParsingResults`中的每个元素为一个`object`，具有如下属性：
-
-
-| 名称             | 类型                | 含义                                                                                                           |
-| -------------- | ----------------- | ------------------------------------------------------------------------------------------------------------ |
-| `prunedResult` | `object`          | 对象的 `predict` 方法生成结果的 JSON 表示中 `res` 字段的简化版本，其中去除了 `input_path` 和 `page_index` 字段。                           |
-| `markdown`     | `object`          | Markdown结果。                                                                                                  |
-| `outputImages` | `object` | `null` | 参见预测结果的 `img` 属性说明。图像为JPEG格式，使用Base64编码。                                                                     |
-| `inputImage`   | `string` | `null` | 输入图像。图像为JPEG格式，使用Base64编码。                                                                                   |
-| `exports`      | `object` | `null` | 可选的附加导出结果。仅当请求体中包含 `outputFormats` 且列出相应格式时出现。例如 `{"docx": {"content": "..."}}`，其中 `content` 为文件内容的Base64编码。 |
-
-
-`markdown`为一个`object`，具有如下属性：
-
-
-| 名称       | 类型       | 含义                             |
-| -------- | -------- | ------------------------------ |
-| `text`   | `string` | Markdown文本。                    |
-| `images` | `object` | Markdown图片相对路径和Base64编码图像的键值对。 |
-
-
-- `restructurePages`
-
-重构多页结果。
-
-`POST /restructure-pages`
-
-- 请求体的属性如下：
-
-
-| 名称                  | 类型               | 含义                                                                     | 是否必填 |
-| ------------------- | ---------------- | ---------------------------------------------------------------------- | ---- |
-| `pages`             | `array`          | 页面数组。                                                                  | 是    |
-| `mergeTables`       | `boolean`        | 请参阅PaddleOCR-VL对象中 `restructure_pages` 方法的 `merge_tables` 参数相关说明。      | 否    |
-| `relevelTitles`     | `boolean`        | 请参阅PaddleOCR-VL对象中 `restructure_pages` 方法的 `relevel_titles` 参数相关说明。    | 否    |
-| `concatenatePages`  | `boolean`        | 请参阅PaddleOCR-VL对象中 `restructure_pages` 方法的 `concatenate_pages` 参数相关说明。 | 否    |
-| `prettifyMarkdown`  | `boolean`        | 是否输出美化后的 Markdown 文本。默认为 `true`。                                       | 否    |
-| `showFormulaNumber` | `boolean`        | 输出的 Markdown 文本中是否包含公式编号。默认为 `false`。                                  | 否    |
-| `outputFormats`     | `array` | `null` | 可选。附加导出格式，含义与 `infer` 中的 `outputFormats` 相同。当前仅支持 `"docx"`。            | 否    |
-
-
-`pages`中的每个元素为一个`object`，具有如下属性：
-
-
-| 名称               | 类型              | 含义                                     |
-| ---------------- | --------------- | -------------------------------------- |
-| `prunedResult`   | `object`        | 对应`infer`操作返回的`prunedResult`对象。        |
-| `markdownImages` | `object`|`null` | 对应`infer`操作返回的`markdown`对象的`images`属性。 |
-
-
-- 请求处理成功时，响应体的`result`具有如下属性：
-
-
-| 名称                     | 类型      | 含义                                                           |
-| ---------------------- | ------- | ------------------------------------------------------------ |
-| `layoutParsingResults` | `array` | 重构后的版面解析结果。其中每个元素包含的字段请参见对 `infer` 操作返回结果的说明（不含可视化结果图和中间图像）。 |
-
-
-多语言调用服务示例Python
-
-```python
-
+<pre><code class="language-python">
 import base64
 import requests
 import pathlib
@@ -1246,17 +2437,15 @@ for img_path, img in res["markdown"]["images"].items():
     img_path.parent.mkdir(parents=True, exist_ok=True)
     img_path.write_bytes(base64.b64decode(img))
 print(f"Markdown document saved at {md_dir / 'doc.md'}")
+</code></pre></details>
 
-```
+<details><summary>C++</summary>
 
-C++
-
-```cpp
-#include 
-#include 
-#include 
-#include 
-#include 
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;filesystem&gt;
+#include &lt;fstream&gt;
+#include &lt;vector&gt;
+#include &lt;string&gt;
 #include "cpp-httplib/httplib.h" // https://github.com/Huiyicc/cpp-httplib
 #include "nlohmann/json.hpp" // https://github.com/nlohmann/json
 #include "base64.hpp" // https://github.com/tobiaslocker/base64
@@ -1276,13 +2465,13 @@ int main() {
 
     std::streamsize size = file.tellg();
     file.seekg(0, std::ios::beg);
-    std::vector buffer(size);
+    std::vector<char> buffer(size);
     if (!file.read(buffer.data(), size)) {
         std::cerr << "Error reading file." << std::endl;
         return 1;
     }
 
-    std::string bufferStr(buffer.data(), static_cast(size));
+    std::string bufferStr(buffer.data(), static_cast<size_t>(size));
     std::string encodedFile = base64::to_base64(bufferStr);
 
     nlohmann::json jsonObj;
@@ -1317,7 +2506,7 @@ int main() {
                         fs::create_directories(parentDir);
                     }
 
-                    std::string decodedImage = base64::from_base64(imgBase64.get());
+                    std::string decodedImage = base64::from_base64(imgBase64.get<std::string>());
 
                     std::ofstream outFile(outputPath, std::ios::binary);
                     if (outFile.is_open()) {
@@ -1341,13 +2530,11 @@ int main() {
 
     return 0;
 }
+</code></pre></details>
 
-```
+<details><summary>Java</summary>
 
-Java
-
-```java
-import okhttp3.*;
+<pre><code class="language-java">import okhttp3.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -1425,13 +2612,11 @@ public class Main {
         }
     }
 }
+</code></pre></details>
 
-```
+<details><summary>Go</summary>
 
-Go
-
-```go
-package main
+<pre><code class="language-go">package main
 
 import (
     "bytes"
@@ -1565,13 +2750,11 @@ func main() {
         }
     }
 }
+</code></pre></details>
 
-```
+<details><summary>C#</summary>
 
-C#
-
-```csharp
-using System;
+<pre><code class="language-csharp">using System;
 using System.IO;
 using System.Net.Http;
 using System.Text;
@@ -1636,13 +2819,11 @@ class Program
         }
     }
 }
+</code></pre></details>
 
-```
+<details><summary>Node.js</summary>
 
-Node.js
-
-```js
-const axios = require('axios');
+<pre><code class="language-js">const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
 
@@ -1689,13 +2870,17 @@ axios.post(API_URL, payload)
   .catch(error => {
     console.error('Error during API request:', error.message || error);
   });
+</code></pre></details>
 
-```
+<details><summary>PHP</summary>
 
-PHP
+<pre><code class="language-php">&lt;?php
 
-```php
- $image_data, "fileType" => 1);
+$API_URL = "http://localhost:8080/layout-parsing";
+$image_path = "./demo.jpg";
+
+$image_data = base64_encode(file_get_contents($image_path));
+$payload = array("file" => $image_data, "fileType" => 1);
 
 $ch = curl_init($API_URL);
 curl_setopt($ch, CURLOPT_POST, true);
@@ -1728,11 +2913,9 @@ foreach ($result as $i => $item) {
         echo "No outputImages found for item $i\n";
     }
 }
-?>
-
-```
-
-
+?&gt;
+</code></pre></details>
+</details>
 
 ### 4.4 产线配置调整说明
 
