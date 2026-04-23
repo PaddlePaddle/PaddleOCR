@@ -1371,7 +1371,6 @@ output = pipeline.predict(["imgs/file1.png", "imgs/file2.png", "imgs/file3.png"]
 </table>
 
 <ul>
-
   <li>调用<code>print()</code> 方法会将结果打印到终端，打印到终端的内容解释如下：
     <ol start="1" type="1">
       <li><code>input_path</code>: <code>(str)</code> 待预测图像的输入路径</li>
@@ -1856,8 +1855,6 @@ Docker Compose 通过读取 `.env` 和 `compose.yaml` 文件中配置，先后�
 
 编辑 <code>compose.yaml</code> 文件中的 <code>device_ids</code> 来更改所使用的 GPU。例如，如果您需要使用卡 1 进行部署，可以进行以下修改：
 
-编辑 `compose.yaml` 文件中的 `device_ids` 来更改所使用的 GPU。例如，如果您需要使用卡 1 进行部署，可以进行以下修改：
-
 ```diff
   paddleocr-vl-api:
     ...
@@ -1907,8 +1904,6 @@ Docker Compose 通过读取 `.env` 和 `compose.yaml` 文件中配置，先后�
 <summary>4. 更改 VLM 推理后端</summary>
 
 修改 <code>.env</code> 文件中的 <code>VLM_BACKEND</code>，例如将 VLM 推理后端修改为 <code>fastdeploy</code>：
-
-修改 `.env` 文件中的 `VLM_BACKEND`，例如将 VLM 推理后端修改为 `fastdeploy`：
 
 ```diff
   API_IMAGE_TAG_SUFFIX=latest-nvidia-gpu-offline
