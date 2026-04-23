@@ -60,10 +60,25 @@ python3 Scripts/quantize_onnx_model.py \
   * Each tensor must match the shape of the model’s **single input** (note: in this demo, both `det` and `rec` models have one input).
   * You can choose calibration methods such as *MinMax*, *Entropy*, or others supported by your installed `onnxruntime` version via `--calibration-method`.
 
+**Building calibration `.npy` files (optional):** use **`Scripts/build_onnx_calib_npy.py`** to turn a folder of images into tensors with the **same preprocessing** PaddleX uses for ONNX inference (`paddlex.create_predictor`, `engine="onnxruntime"`). This matches what static quantization expects more reliably than hand-rolled numpy.
+
+* Install [PaddleX](https://github.com/PaddlePaddle/PaddleX) in the same environment (e.g. `pip install -e /path/to/PaddleX` or set `PYTHONPATH` to a checkout that contains the `paddlex` package). You also need common deps (PyYAML, OpenCV, NumPy, `onnxruntime`—overlap with the quantize requirements is fine).
+* **Detection** (`--task det`): one `.npy` per image; shapes follow the det config (e.g. `resize_long` in `inference.yml`). **Recognition** (`--task rec`): one `.npy` per image after rec resize/normalize; by default that is **one tensor per file** (e.g. full-page or line image). For the tightest rec calibration, prefer **text-line** crops; whole-page images are still usable for many calibration ranges.
+* From the iOS demo project root:
+
+  ```bash
+  python3 Scripts/build_onnx_calib_npy.py --task det \
+    --model-dir PaddleOCRDemo/Models/det \
+    --image-dir /path/to/your/images \
+    --output-dir /path/to/calib_npy
+  # then: python3 Scripts/quantize_onnx_model.py ... --mode static --calib-data-dir /path/to/calib_npy
+  ```
+
 For additional options and details, run:
 
 ```bash
 python3 Scripts/quantize_onnx_model.py --help
+python3 Scripts/build_onnx_calib_npy.py --help
 ```
 
 ## Open in Xcode
