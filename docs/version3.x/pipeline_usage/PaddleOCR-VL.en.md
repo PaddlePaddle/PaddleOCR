@@ -31,24 +31,10 @@ Choose the guide that matches your hardware first.
 | AMD GPU | Read [PaddleOCR-VL AMD GPU Usage Tutorial](./PaddleOCR-VL-AMD-GPU.en.md). |
 | Intel Arc GPU | Read [PaddleOCR-VL Intel Arc GPU Usage Tutorial](./PaddleOCR-VL-Intel-Arc-GPU.en.md). |
 
-If you only need to confirm whether a specific inference engine combination is available on your hardware, read [Inference Device Support for PaddleOCR-VL](#inference-device-support-for-paddleocr-vl) before continuing.
+If you just want to first confirm which hardware PaddleOCR-VL can be deployed on, or which inference methods are supported by specific hardware, read the [PaddleOCR-VL Inference Method and Hardware Support Matrix](#inference-device-support-for-paddleocr-vl) before continuing.
 
-## Workflow Guide for This Tutorial
+## PaddleOCR-VL Inference Method and Hardware Support Matrix {#inference-device-support-for-paddleocr-vl}
 
-This tutorial is the default path for x64 CPU users and NVIDIA GPU users other than Blackwell.
-
-| Goal | Availability in this tutorial | Read this section |
-| --- | --- | --- |
-| Local direct inference | Supported. x64 CPU users should use the manual installation path in Section 1.2. | Read Section 1. Environment Preparation and Section 2. Quick Start. |
-| Client + VLM inference service | Supported. Backend availability differs by hardware, so check the support matrix first if you need to confirm a specific combination. | Complete local direct inference first, then read Section 3. Improving Inference Performance with VLM Inference Services. |
-| Full API service | Supported. x64 CPU users should use the manual deployment path; non-Blackwell NVIDIA GPU users can use Docker Compose or manual deployment. | Read Section 4. Service Deployment. Use Section 4.1 for Docker Compose, or Section 4.2 for manual deployment. |
-| Model fine-tuning | Supported. | Read Section 5. Model Fine-Tuning. |
-
-For higher concurrency, refer to the [High-Performance Service Deployment solution](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/hps/README_en.md).
-
-## Inference Device Support for PaddleOCR-VL
-
-PaddleOCR-VL currently provides multiple inference methods, and the supported inference devices are not exactly the same. Please confirm that your inference device meets the requirements in the table below before deploying PaddleOCR-VL:
 
 <table border="1">
 <thead>
@@ -101,8 +87,8 @@ PaddleOCR-VL currently provides multiple inference methods, and the supported in
     <td>🚧</td>
     <td>🚧</td>
     <td>✅</td>
-    <td>-</td>
-    <td>-</td>
+    <td>❌</td>
+    <td>❌</td>
     <td>✅</td>
     <td>✅</td>
   </tr>
@@ -114,8 +100,8 @@ PaddleOCR-VL currently provides multiple inference methods, and the supported in
     <td>🚧</td>
     <td>🚧</td>
     <td>🚧</td>
-    <td>-</td>
-    <td>-</td>
+    <td>❌</td>
+    <td>❌</td>
     <td>🚧</td>
     <td>🚧</td>
   </tr>
@@ -127,23 +113,23 @@ PaddleOCR-VL currently provides multiple inference methods, and the supported in
     <td>✅</td>
     <td>✅</td>
     <td>🚧</td>
-    <td>-</td>
-    <td>-</td>
+    <td>❌</td>
+    <td>❌</td>
     <td>🚧</td>
     <td>🚧</td>
   </tr>
   <tr style="text-align: center;">
     <td>PaddlePaddle + MLX-VLM</td>
-    <td>-</td>
-    <td>-</td>
-    <td>-</td>
-    <td>-</td>
-    <td>-</td>
-    <td>-</td>
-    <td>-</td>
+    <td>❌</td>
+    <td>❌</td>
+    <td>❌</td>
+    <td>❌</td>
+    <td>❌</td>
+    <td>❌</td>
+    <td>❌</td>
     <td>✅</td>
-    <td>-</td>
-    <td>-</td>
+    <td>❌</td>
+    <td>❌</td>
   </tr>
   <tr style="text-align: center;">
     <td>PaddlePaddle + llama.cpp</td>
@@ -166,8 +152,8 @@ PaddleOCR-VL currently provides multiple inference methods, and the supported in
     <td>🚧</td>
     <td>🚧</td>
     <td>🚧</td>
-    <td>-</td>
-    <td>-</td>
+    <td>❌</td>
+    <td>❌</td>
     <td>🚧</td>
     <td>🚧</td>
   </tr>
@@ -179,8 +165,8 @@ PaddleOCR-VL currently provides multiple inference methods, and the supported in
     <td>🚧</td>
     <td>🚧</td>
     <td>🚧</td>
-    <td>-</td>
-    <td>-</td>
+    <td>❌</td>
+    <td>❌</td>
     <td>🚧</td>
     <td>🚧</td>
   </tr>
@@ -192,23 +178,23 @@ PaddleOCR-VL currently provides multiple inference methods, and the supported in
     <td>🚧</td>
     <td>🚧</td>
     <td>🚧</td>
-    <td>-</td>
-    <td>-</td>
+    <td>❌</td>
+    <td>❌</td>
     <td>🚧</td>
     <td>🚧</td>
   </tr>
   <tr style="text-align: center;">
     <td>Transformers + MLX-VLM</td>
-    <td>-</td>
-    <td>-</td>
-    <td>-</td>
-    <td>-</td>
-    <td>-</td>
-    <td>-</td>
-    <td>-</td>
+    <td>❌</td>
+    <td>❌</td>
+    <td>❌</td>
+    <td>❌</td>
+    <td>❌</td>
+    <td>❌</td>
+    <td>❌</td>
     <td>✅</td>
-    <td>-</td>
-    <td>-</td>
+    <td>❌</td>
+    <td>❌</td>
   </tr>
   <tr style="text-align: center;">
     <td>Transformers + llama.cpp</td>
@@ -226,21 +212,42 @@ PaddleOCR-VL currently provides multiple inference methods, and the supported in
 </tbody>
 </table>
 
-<details><summary>Explanation of Inference Method</summary>
-"PaddlePaddle" indicates that both the layout detection model and the VLM use local PaddlePaddle. During execution, each module resolves to `paddle_static` or `paddle_dynamic` based on the model form. "Transformers" indicates that both the layout detection model and the VLM use the `transformers` engine for inference. Other inference methods follow the format "Layout Detection Model Inference Method + VLM Inference Method". For example, "PaddlePaddle + vLLM" means that the layout detection model uses local PaddlePaddle, while the VLM uses vLLM.
-</details>
+**Status Legend**
 
-> TIP:
-> - When using NVIDIA GPU for inference, ensure that the Compute Capability (CC) and CUDA version meet the requirements:
-> >  - PaddlePaddle: CC ≥ 7.0, CUDA ≥ 11.8
-> >  - Transformers: CC ≥ 7.0, CUDA ≥ 11.8
-> >  - vLLM: CC ≥ 8.0, CUDA ≥ 12.6
-> >  - SGLang: 8.0 ≤ CC < 12.0, CUDA ≥ 12.6
-> >  - FastDeploy: 8.0 ≤ CC < 12.0, CUDA ≥ 12.6
-> >  - Common GPUs with CC ≥ 8 include RTX 30/40/50 series and A10/A100, etc. For more models, refer to [CUDA GPU Compute Capability](https://developer.nvidia.com/cuda-gpus)
-> - vLLM compatibility note: Although vLLM can be launched on NVIDIA GPUs with CC 7.x such as T4/V100, timeout or OOM issues may occur, and its use is not recommended.
-> - vLLM, SGLang, and FastDeploy cannot run natively on Windows. Please use the Docker images we provide.
-> - Due to dependency conflicts between different libraries, when using mixed inference methods like Transformers + vLLM, it is recommended to deploy the layout detection model and VLM service in different environments.
+- `✅`: Supported.
+- `🚧`: In progress or pending further verification.
+- `❌`: Not currently supported or not applicable.
+
+**Inference Method Notes**
+
+`PaddlePaddle` means that both the layout detection model and the VLM use local PaddlePaddle inference. In practice, each module is resolved to `paddle_static` or `paddle_dynamic` depending on the model form. `Transformers` means that both the layout detection model and the VLM use the `transformers` engine. The remaining methods follow the format `layout detection model inference method + VLM inference method`; for example, `PaddlePaddle + vLLM` means the layout detection model uses local PaddlePaddle inference while the VLM uses vLLM inference.
+
+**Additional Notes for Interpreting the Matrix**
+
+- vLLM, SGLang, and FastDeploy cannot run natively on Windows. Please use our Docker images.
+- Due to dependency conflicts between different libraries, mixed inference methods such as Transformers + vLLM usually require deploying the layout detection model and the VLM service in separate environments.
+
+## Environment Requirements
+
+- When using NVIDIA GPUs for inference, ensure that the Compute Capability (CC) and CUDA version meet the requirements:
+  - PaddlePaddle: CC ≥ 7.0, CUDA ≥ 11.8
+  - Transformers: CC ≥ 7.0, CUDA ≥ 11.8
+  - vLLM: CC ≥ 8.0, CUDA ≥ 12.6
+  - SGLang: 8.0 ≤ CC < 12.0, CUDA ≥ 12.6
+  - FastDeploy: 8.0 ≤ CC < 12.0, CUDA ≥ 12.6
+  - Common GPUs with CC ≥ 8 include the RTX 30/40/50 series and A10/A100. See [CUDA GPU Compute Capability](https://developer.nvidia.com/cuda-gpus) for more models.
+- Although vLLM can start on NVIDIA GPUs with CC 7.x, such as T4/V100, it is prone to timeouts or OOM and is therefore not recommended.
+
+## Workflow Guide for This Tutorial
+
+This tutorial is the default path for x64 CPU users and NVIDIA GPU users other than Blackwell.
+
+| Goal | Availability in this tutorial | Read this section |
+| --- | --- | --- |
+| Local direct inference | Supported. x64 CPU users should use the manual installation path in Section 1.2. | Read Section 1. Environment Preparation and Section 2. Quick Start. |
+| Client + VLM inference service | Supported. Different hardware platforms support different inference methods, so check the inference method and hardware support matrix first if you need to confirm a specific method. | Complete local direct inference first, then read Section 3. Improving Inference Performance with VLM Inference Services. |
+| Full API service | Supported. x64 CPU users should use the manual deployment path; non-Blackwell NVIDIA GPU users can use Docker Compose or manual deployment. | Read Section 4. Service Deployment. Use Section 4.1 for Docker Compose, or Section 4.2 for manual deployment. For higher concurrency, refer to the [High-Performance Service Deployment solution](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/hps/README_en.md). |
+| Model fine-tuning | Supported. | Read Section 5. Model Fine-Tuning. |
 
 ## 1. Environment Preparation
 
@@ -287,9 +294,12 @@ docker load -i paddleocr-vl-latest-nvidia-gpu-offline.tar
 The image comes preinstalled with the PaddlePaddle framework and does not include any other inference engines. If you want to use other inference engines, it is recommended to install them manually using Method 2 (it is not recommended to install them in an environment where the PaddlePaddle framework is preinstalled).
 
 > TIP:
-> Images with the `latest-xxx` tag correspond to the latest version. If you want to use a specific version of the image, you can replace `latest` in the tag with the desired PaddleOCR version number: `paddleocr<major>.<minor>`.
+> Images with the `latest-xxx` tag correspond to the latest version.
+> If the corresponding `latest` image already exists locally and you want the newest features or fixes, we recommend running `docker pull` again before using it.
+> If you want to use a specific version of the image, you can replace `latest` in the tag with the desired PaddleOCR version number: `paddleocr<major>.<minor>`.
 > For example:
 > `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:paddleocr3.3-nvidia-gpu-offline`
+
 
 ### 1.2 Method 2: Manually Install the Inference Engine and PaddleOCR
 
@@ -1685,6 +1695,9 @@ Using only PaddlePaddle or Transformers usually does not provide optimal inferen
 > IMPORTANT:
 > The services launched according to this section are responsible only for the VLM inference stage in the PaddleOCR-VL workflow and do not provide a complete end-to-end document parsing API. It is strongly discouraged to directly call such services through plain HTTP requests or OpenAI clients to process document images. If you need to deploy a service with the full PaddleOCR-VL capability, please refer to the service deployment section later in this document.
 
+> TIP:
+> The default recommended vLLM / FastDeploy / SGLang routes in this section are only suitable for hardware that meets the corresponding CC/CUDA requirements. For NVIDIA GPUs with CC 7.x, such as T4/V100, do not follow the default recommended route directly. Review the matrix above and choose an available backend based on the support status.
+
 There are three methods to launch the VLM inference service; choose either one:
 
 - Method 1: Launch the service using the official Docker image. Currently supported:
@@ -1754,9 +1767,12 @@ docker run \
 Here, `vllm_config.yml` refers to a local configuration file path on the host machine. The example assumes that you created this file in the current working directory. If the file is located elsewhere, replace it with the actual absolute or relative path.
 
 > TIP:
-> Images with the `latest-xxx` tag correspond to the latest version of PaddleOCR. If you want to use a specific version of the PaddleOCR image, you can replace `latest` in the tag with the desired version number: `paddleocr<major>.<minor>`.
+> Images with the `latest-xxx` tag correspond to the latest version.
+> If the corresponding `latest` image already exists locally and you want the newest features or fixes, we recommend running `docker pull` again before using it.
+> If you want to use an image corresponding to a specific PaddleOCR version, you can replace `latest` in the tag with the desired version number: `paddleocr<major>.<minor>`.
 > For example:
 > `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:paddleocr3.3-nvidia-gpu-offline`
+
 
 #### 3.1.2 Method 2: Installation and Usage via PaddleOCR CLI
 
@@ -1988,9 +2004,13 @@ This step mainly introduces how to deploy PaddleOCR-VL as a service and invoke i
 
 Both methods can handle only one request at a time. If you need concurrent request processing, please refer to the [High-Performance Service Deployment solution](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/hps/README_en.md).
 
-> Note that the PaddleOCR-VL service described in this section differs from the VLM inference service in the previous section: the latter is responsible for only one part of the complete process (i.e., VLM inference) and is called as an underlying service by the former.
+> IMPORTANT:
+> The PaddleOCR-VL service introduced in this section differs from the VLM inference service in the previous section: the latter is responsible for only one part of the complete process (i.e., VLM inference) and is called as an underlying service by the former.
 
 ### 4.1 Method 1: Deploy Using Docker Compose (Recommended)
+
+> TIP:
+> The default Docker Compose solution in this section is only suitable for NVIDIA GPUs that meet the corresponding CC/CUDA requirements, and uses vLLM or FastDeploy as the underlying VLM backend. For CC 7.x devices such as T4/V100, do not follow this default route directly. Instead, read Section 4.2 and combine it with the matrix above to choose an available inference method.
 
 You can obtain the Compose file and the environment variables configuration file from [here](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/accelerators/gpu/compose.yaml) and [here](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/accelerators/gpu/.env), respectively, and download them to your local machine. Then, in the directory where the files were just downloaded, execute the following command to start the server, which will listen on port **8080** by default:
 
@@ -1998,6 +2018,10 @@ You can obtain the Compose file and the environment variables configuration file
 # Must be executed in the directory containing the compose.yaml and .env files
 docker compose up
 ```
+
+> TIP:
+> The image tags used by `compose.yaml` are usually controlled by `API_IMAGE_TAG_SUFFIX` and `VLM_IMAGE_TAG_SUFFIX` in `.env`, and default to tags such as `latest-nvidia-gpu-offline`. To make sure you pull the newest `latest` images, run `docker compose pull` in the current directory before `docker compose up`.
+> To use an image corresponding to a specific PaddleOCR version, replace `latest` in these variables with `paddleocr<major>.<minor>`, for example `paddleocr3.3-nvidia-gpu-offline`.
 
 After startup, you will see output similar to the following:
 
