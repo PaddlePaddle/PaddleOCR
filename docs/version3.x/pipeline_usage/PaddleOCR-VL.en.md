@@ -246,7 +246,7 @@ This tutorial is the default path for x64 CPU users and NVIDIA GPU users other t
 | --- | --- | --- |
 | Local direct inference | Supported. x64 CPU users should use the manual installation path in Section 1.2. | Read Section 1. Environment Preparation and Section 2. Quick Start. |
 | Client + VLM inference service | Supported. Different hardware platforms support different inference methods, so check the inference method and hardware support matrix first if you need to confirm a specific method. | Complete local direct inference first, then read Section 3. Improving Inference Performance with VLM Inference Services. |
-| Full API service | Supported. x64 CPU users should use the manual deployment path; non-Blackwell NVIDIA GPU users can use Docker Compose or manual deployment. | Read Section 4. Service Deployment. Use Section 4.1 for Docker Compose, or Section 4.2 for manual deployment. For higher concurrency, refer to the [High-Performance Service Deployment solution](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/hps/README_en.md). |
+| Full API service | Supported. x64 CPU users should use the manual deployment path; non-Blackwell NVIDIA GPU users can use Docker Compose or manual deployment. | Read Section 4. Service Deployment: use Section 4.1 for Docker Compose, or Section 4.2 for manual deployment (complete Section 1. Environment Preparation first). For higher concurrency, refer to the [High-Performance Service Deployment solution](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/hps/README_en.md). |
 | Model fine-tuning | Supported. | Read Section 5. Model Fine-Tuning. |
 
 ## 1. Environment Preparation
@@ -2134,6 +2134,9 @@ Refer to section <a href="#44-pipeline-configuration-adjustment-instructions">4.
 </details>
 
 ### 4.2 Method 2: Manual Deployment
+
+> IMPORTANT:
+> Before following this section, complete the PaddleOCR runtime environment setup in Section 1.
 
 Execute the following command to install the service deployment plugin via the PaddleX CLI:
 

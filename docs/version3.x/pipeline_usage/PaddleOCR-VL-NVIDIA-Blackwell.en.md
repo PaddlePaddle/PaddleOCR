@@ -29,7 +29,7 @@ Use this guide for the workflows below.
 | --- | --- | --- |
 | Local direct inference | Supported | Read Section 1. Environment Preparation and Section 2. Quick Start. |
 | Client + VLM inference service | Supported | Complete local direct inference first, then read Section 3. Improving Inference Performance with VLM Inference Services. |
-| Full API service | Supported with Docker Compose or manual deployment | Read Section 4.1 for Docker Compose, or Section 4.2 for manual deployment, then continue with the Section 4.3 client invocation section and the Section 4.4 pipeline configuration section. |
+| Full API service | Supported with Docker Compose or manual deployment | Use Section 4.1 for Docker Compose, or Section 4.2 for manual deployment (complete Section 1. Environment Preparation first), then continue with the Section 4.3 client invocation section and the Section 4.4 pipeline configuration section. |
 | Model fine-tuning | Supported | Read Section 5. Model Fine-Tuning. |
 
 If you only need to confirm which inference methods are available on this hardware, refer to the [PaddleOCR-VL Inference Method and Hardware Support Matrix](./PaddleOCR-VL.en.md#inference-device-support-for-paddleocr-vl) in the main guide.
@@ -227,7 +227,7 @@ Please refer to [PaddleOCR-VL Usage Tutorial - 3.3 Performance Tuning](./PaddleO
 | Deployment method | Status | Notes |
 | --- | --- | --- |
 | Docker Compose deployment | Supported with steps in this guide | Continue with Section 4.1. |
-| Manual deployment | Supported; steps are in the main guide | Continue with Section 4.2, then follow the shared manual deployment guidance in the main guide. |
+| Manual deployment | Supported; steps are in the main guide | Complete Section 1. Environment Preparation first, then continue with Section 4.2 and follow the shared manual deployment guidance in the main guide. |
 
 This section mainly introduces how to deploy PaddleOCR-VL as a service and invoke it. There are two methods available; choose one:
 
@@ -352,7 +352,7 @@ Refer to the <a href="./PaddleOCR-VL.en.md#44-pipeline-configuration-adjustment-
 
 ### 4.2 Method 2: Manually Deployment
 
-Please refer to [PaddleOCR-VL Usage Tutorial - 4.2 Method 2: Manual Deployment](./PaddleOCR-VL.en.md#42-method-2-manual-deployment).
+Please complete Section 1. Environment Preparation first, then refer to [PaddleOCR-VL Usage Tutorial - 4.2 Method 2: Manual Deployment](./PaddleOCR-VL.en.md#42-method-2-manual-deployment).
 
 ### 4.3 Client Invocation Methods
 

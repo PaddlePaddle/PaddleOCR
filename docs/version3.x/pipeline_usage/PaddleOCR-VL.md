@@ -89,7 +89,7 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
 | -------------- | ----------------------------------------------------------------------------- | ------------------------------------------------------------ |
 | 本地直接推理         | 支持。x64 CPU 用户应使用第 1.2 节的手动安装路径。                                               | 阅读第 1 节“环境准备”和第 2 节“快速开始”。                                   |
 | 客户端 + VLM 推理服务 | 支持。不同硬件平台支持的推理方式不完全相同，如需确认某种具体推理方式，请先查看推理方式与硬件支持矩阵。                                | 先完成本地直接推理，再阅读第 3 节“使用 VLM 推理服务提升推理性能”。                       |
-| 完整 API 服务      | 支持。x64 CPU 用户应使用手动部署路径；除 Blackwell 之外的 NVIDIA GPU 用户可使用 Docker Compose 或手动部署。 | 阅读第 4 节“服务化部署”。如需 Docker Compose，阅读第 4.1 节；如需手动部署，阅读第 4.2 节。如需支持更高并发，请参考[高性能服务化部署方案](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/hps/README.md)。 |
+| 完整 API 服务      | 支持。x64 CPU 用户应使用手动部署路径；除 Blackwell 之外的 NVIDIA GPU 用户可使用 Docker Compose 或手动部署。 | 阅读第 4 节“服务化部署”：如需 Docker Compose，阅读第 4.1 节；如需手动部署，先完成第 1 节“环境准备”，然后阅读第 4.2 节。如需支持更高并发，请参考[高性能服务化部署方案](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/hps/README.md)。 |
 | 模型微调           | 支持。                                                                           | 阅读第 5 节“模型微调”。                                               |
 
 ## 1. 环境准备
@@ -1924,6 +1924,9 @@ Docker Compose 通过读取 `.env` 和 `compose.yaml` 文件中配置，先后�
 </details>
 
 ### 4.2 方法二：手动部署
+
+> IMPORTANT:
+> 执行本节前，请先按第 1 节完成 PaddleOCR 运行环境准备。
 
 执行以下命令，通过 PaddleX CLI 安装服务化部署插件：
 

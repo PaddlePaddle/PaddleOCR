@@ -26,7 +26,7 @@ Use this guide for the workflows below.
 | --- | --- | --- |
 | Local direct inference | Supported | Read Section 1. Environment Preparation and Section 2. Quick Start. |
 | Client + VLM inference service | Supported | Complete local direct inference first, then read Section 3. Improving Inference Performance with VLM Inference Services. |
-| Full API service | Supported with manual deployment only | Read Section 4.1 Manual Deployment first, then continue with Section 4.2 Client Invocation Methods and Section 4.3 Pipeline Configuration Adjustment Instructions. |
+| Full API service | Supported with manual deployment only | Complete Section 1. Environment Preparation first, then read Section 4.1 Manual Deployment; after that, continue with Section 4.2 Client Invocation Methods and Section 4.3 Pipeline Configuration Adjustment Instructions. |
 | Model fine-tuning | Supported | Read Section 5. Model Fine-Tuning. |
 
 If you only need to confirm which inference methods are available on this hardware, refer to the [PaddleOCR-VL Inference Method and Hardware Support Matrix](./PaddleOCR-VL.en.md#inference-device-support-for-paddleocr-vl) in the main guide.
@@ -127,13 +127,11 @@ Please refer to [PaddleOCR-VL Usage Tutorial - 3.3 Performance Tuning](./PaddleO
 | Deployment method | Status | Notes |
 | --- | --- | --- |
 | Docker Compose deployment | Not currently supported | This hardware currently supports only the manual deployment path. |
-| Manual deployment | Supported; steps are in the main guide | Continue with Section 4.1, then follow the shared manual deployment guidance in the main guide. |
-
-Currently, only **manual deployment** is supported.
+| Manual deployment | Supported; steps are in the main guide | Complete Section 1. Environment Preparation first, then continue with Section 4.1 and follow the shared manual deployment guidance in the main guide. |
 
 ### 4.1 Manual Deployment
 
-Please refer to [PaddleOCR-VL Usage Tutorial - 4.2 Method 2: Manual Deployment](./PaddleOCR-VL.en.md#42-method-2-manual-deployment).
+Please complete Section 1. Environment Preparation first, then refer to [PaddleOCR-VL Usage Tutorial - 4.2 Method 2: Manual Deployment](./PaddleOCR-VL.en.md#42-method-2-manual-deployment).
 
 ### 4.2 Client Invocation Methods {#43-client-invocation-methods}
 
