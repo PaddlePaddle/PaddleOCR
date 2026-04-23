@@ -37,7 +37,7 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
 
 
 
-| 推理方式                      | 英伟达 GPU | 昆仑芯 XPU | 海光 DCU | 沐曦 GPU | 天数 GPU | 华为昇腾 NPU | x64 CPU | Apple Silicon | AMD GPU | Intel Arc GPU |
+| 推理方式                      | NVIDIA GPU | 昆仑芯 XPU | 海光 DCU | 沐曦 GPU | 天数 GPU | 华为昇腾 NPU | x64 CPU | Apple Silicon | AMD GPU | Intel Arc GPU |
 | ------------------------- | ------- | ------- | ------ | ------ | ------ | -------- | ------- | ------------- | ------- | ------------- |
 | PaddlePaddle              | ✅       | ✅       | ✅      | ✅      | ✅      | 🚧       | ✅       | ✅             | ✅       | 🚧            |
 | Transformers              | ✅       | 🚧      | 🚧     | 🚧     | 🚧     | 🚧       | ✅       | 🚧            | 🚧      | 🚧            |
@@ -69,7 +69,7 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
 
 ## 环境要求
 
-使用英伟达 GPU 推理时，需要注意 Compute Capability（简称 CC）和 CUDA 版本（简称 CUDA）是否满足要求：
+使用 NVIDIA GPU 推理时，需要注意 Compute Capability（简称 CC）和 CUDA 版本（简称 CUDA）是否满足要求：
 
 - PaddlePaddle：CC ≥ 7.0，CUDA ≥ 11.8
 - Transformers：CC ≥ 7.0，CUDA ≥ 11.8
@@ -161,7 +161,7 @@ source .venv_paddleocr/bin/activate
 - 使用 PaddlePaddle 推理时：请安装 3.2.1 及以上版本的 PaddlePaddle。常见安装方式如下（**注意不允许同时安装 CPU 和 GPU 版本的 PaddlePaddle**）：
 
 ```shell
-# 英伟达 GPU（以 CUDA 12.6 为例）
+# NVIDIA GPU（以 CUDA 12.6 为例）
 python -m pip install paddlepaddle-gpu==3.2.1 -i https://www.paddlepaddle.org.cn/packages/stable/cu126/
 
 # x64 CPU
@@ -200,7 +200,7 @@ curl -L -o paddleocr_vl_demo.png https://paddle-model-ecology.bj.bcebos.com/padd
 下面给出一组可直接复制的示例命令。建议首次体验时附加 `--save_path ./output`，便于在当前目录下查看保存结果：
 
 ```shell
-# 英伟达 GPU
+# NVIDIA GPU
 paddleocr doc_parser -i ./paddleocr_vl_demo.png --save_path ./output
 
 # 昆仑芯 XPU
@@ -624,7 +624,7 @@ from paddleocr import PaddleOCRVL
 output_dir = Path("./output")
 output_dir.mkdir(parents=True, exist_ok=True)
 
-# 英伟达 GPU
+# NVIDIA GPU
 pipeline = PaddleOCRVL()
 # 昆仑芯 XPU
 # pipeline = PaddleOCRVL(device="xpu")
@@ -1511,7 +1511,7 @@ output = pipeline.predict(["imgs/file1.png", "imgs/file2.png", "imgs/file3.png"]
 
 #### 3.1.1 方法一：使用 Docker 镜像
 
-PaddleOCR 提供了 Docker 镜像，用于快速启动 vLLM 或 FastDeploy 推理服务。可使用以下命令启动服务（要求 Docker 版本 >= 19.03，机器装配有 GPU 且英伟达驱动支持 CUDA 12.6 或以上版本）：
+PaddleOCR 提供了 Docker 镜像，用于快速启动 vLLM 或 FastDeploy 推理服务。可使用以下命令启动服务（要求 Docker 版本 >= 19.03，机器装配有 GPU 且NVIDIA驱动支持 CUDA 12.6 或以上版本）：
 
 === "启动 vLLM 服务"
 
@@ -1598,7 +1598,7 @@ paddleocr install_genai_server_deps <推理加速框架名称>
 
 当前支持的框架名称为 `vllm`、`sglang` 和 `fastdeploy`，分别对应 vLLM、SGLang 和 FastDeploy。
 
-通过 `paddleocr install_genai_server_deps` 安装的 vLLM 与 SGLang 均为 **CUDA 12.6** 版本，请确保本地英伟达驱动与此版本一致或更高。
+通过 `paddleocr install_genai_server_deps` 安装的 vLLM 与 SGLang 均为 **CUDA 12.6** 版本，请确保本地 NVIDIA 驱动与此版本一致或更高。
 
 > WARNING:
 > 目前 vLLM 和 SGLang 与 Transformers 引擎所需的 transformers 库版本存在冲突，因此同一环境中无法同时安装 Transformers 引擎与 vLLM 或 SGLang。如果使用 Transformers + vLLM 或 Transformers + SGLang 的推理方式，请将版面检测模型和 VLM 服务部署在不同环境中。
@@ -1822,7 +1822,7 @@ paddleocr-vl-api             | INFO:     Application startup complete.
 paddleocr-vl-api             | INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
 ```
 
-此方式基于 vLLM 等框架对 VLM 推理进行加速，更适合生产环境部署，但要求机器配备 GPU，并且英伟达驱动程序支持 CUDA 12.6 或以上版本。
+此方式基于 vLLM 等框架对 VLM 推理进行加速，更适合生产环境部署，但要求机器配备 GPU，并且NVIDIA驱动程序支持 CUDA 12.6 或以上版本。
 
 此外，使用此方式启动服务器后，除拉取镜像外，无需连接互联网。如需在离线环境中部署，可先在联网机器上拉取 Compose 文件中涉及的镜像，导出并传输至离线机器中导入，即可在离线环境下启动服务。
 
