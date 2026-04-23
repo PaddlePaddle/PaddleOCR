@@ -99,6 +99,7 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
 在本教程中，有以下两种环境准备方式：
 
 - 方法一：使用官方 Docker 镜像（仅适用于 NVIDIA GPU）。
+
 - 方法二：手动安装推理引擎和 PaddleOCR（x64 CPU 和 NVIDIA GPU 均可使用）。
 
 **我们强烈推荐采用 Docker 镜像的方式，以最大程度减少可能出现的环境问题。**
@@ -1524,7 +1525,7 @@ PaddleOCR 提供了 Docker 镜像，用于快速启动 vLLM 或 FastDeploy 推�
         paddleocr genai_server --model_name PaddleOCR-VL-1.5-0.9B --host 0.0.0.0 --port 8118 --backend vllm
     ```
 
-如果您希望在无法连接互联网的环境中启动服务，请将上述命令中的 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-nvidia-gpu`（镜像大小约为 13 GB）更换为离线版本镜像 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-nvidia-gpu-offline`（镜像大小约为 15 GB）。
+    如果您希望在无法连接互联网的环境中启动服务，请将上述命令中的 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-nvidia-gpu`（镜像大小约为 13 GB）更换为离线版本镜像 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-nvidia-gpu-offline`（镜像大小约为 15 GB）。
 ```
 
 === "启动 FastDeploy 服务"
@@ -1791,6 +1792,7 @@ PaddleOCR 会将来自单张或多张输入图像中的子图分组并对服务�
 此步骤主要介绍如何将 PaddleOCR-VL 部署为服务并调用。如果不要求服务具备并发处理请求的能力，可选择以下两种方式中的任一种：
 
 - 方法一：使用 Docker Compose 部署（推荐使用）。
+
 - 方法二：手动部署。
 
 上述两种方式一次仅能处理一个请求，如需支持并发请求，请参考[高性能服务化部署方案](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/hps/README.md)。
