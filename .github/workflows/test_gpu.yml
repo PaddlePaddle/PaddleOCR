@@ -89,12 +89,22 @@ jobs:
             ln -s $(which python${py_version}) run_env/python3
             ln -s $(which pip${py_version}) run_env/pip
             export PATH=$PWD/run_env:${PATH}
-            
+
+            git config --global --add safe.directory /workspace
+
             python -m pip install paddlepaddle-gpu==3.1.0 -i https://www.paddlepaddle.org.cn/packages/stable/cu118/
             python -c "import paddle; paddle.version.show()"
             python -m pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
             python -m pip install pytest
             if [ -f requirements.txt ]; then python -m pip install -r requirements.txt; fi
-            python -m pip install -e ".[all]"
+            PADDLEX_SERIES=$(grep -oE "paddlex\[[^]]+\]>=[0-9]+\.[0-9]+" pyproject.toml | head -1 | grep -oE "[0-9]+\.[0-9]+")
+            if [ -z "$PADDLEX_SERIES" ]; then
+              echo "Failed to determine PaddleX version requirement from pyproject.toml" >&2
+              exit 1
+            fi
+            PADDLEX_BRANCH="release/${PADDLEX_SERIES}"
+            echo "Installing PaddleX from branch: ${PADDLEX_BRANCH}"
+            python -m pip install -e ".[all]" "paddlex@git+https://github.com/PaddlePaddle/PaddleX.git@${PADDLEX_BRANCH}"
+            python -c "import paddlex; print(f\"Installed paddlex version: {paddlex.__version__}\")"
             python -m pytest --verbose tests/
             '

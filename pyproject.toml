@@ -79,6 +79,7 @@ version_scheme = 'release-branch-semver'
 
 [tool.pytest.ini_options]
 markers = [
-    "resource_intensive: mark a test as resource intensive"
+    "resource_intensive: mark a test as resource intensive",
+    "py38_incompatible: test requires extras or deps that need Python 3.9+"
 ]
 addopts = "-m 'not resource_intensive'"

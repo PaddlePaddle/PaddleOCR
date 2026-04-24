@@ -1,5 +1,7 @@
 import pytest
 
+pytestmark = pytest.mark.py38_incompatible
+
 from paddleocr import PPStructureV3
 from ..testing_utils import (
     TEST_DATA_DIR,
