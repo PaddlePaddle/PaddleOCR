@@ -45,7 +45,7 @@ CLEAN=0
 
 usage() {
   cat <<EOF
-Usage: ./Scripts/run_validation.sh [OPTIONS]
+Usage: ./scripts/run_validation.sh [OPTIONS]
 
 Options:
   --udid <id>           Real-device UDID (preferred real-device path)
@@ -57,7 +57,7 @@ Options:
                         several fixtures exist.
   --warmup <n>          Benchmark warmup iterations (non-negative int).
   --measured-iterations <n>  Timed benchmark iterations.
-  --inference-backend <NAME>  ONNX Runtime EP for tests: CORE_ML or XNNPACK.
+  --inference-backend <NAME>  ONNX Runtime EP for tests: CORE_ML, XNNPACK, or CPU.
   --skip-ref-gen        Reuse existing <out-dir>/ref.json
   --out-dir <dir>       Output directory (default: out/)
   --clean               Delete Fixtures/local-* and <out-dir>/* before running
@@ -67,7 +67,7 @@ Environment (optional; CLI wins when both are set):
   PADDLEOCR_VALIDATION_IMAGE_NAME   Select which bundled fixture to use (same as --fixture)
   PADDLEOCR_VALIDATION_WARMUP_ITERATIONS
   PADDLEOCR_VALIDATION_MEASURED_ITERATIONS
-  PADDLEOCR_VALIDATION_INFERENCE_BACKEND   CORE_ML or XNNPACK
+  PADDLEOCR_VALIDATION_INFERENCE_BACKEND   CORE_ML, XNNPACK, or CPU
   ONLY_TESTING_SCOPE                Optional; passed to xcodebuild -only-testing (narrow test subset)
 
 Image selection when --image is not used:
@@ -115,20 +115,22 @@ if [[ -n "${MEASURED_MERGED}" ]]; then
     || die "Invalid --measured-iterations / PADDLEOCR_VALIDATION_MEASURED_ITERATIONS: ${MEASURED_MERGED}" "argument parsing" "Use a non-negative integer."
 fi
 
-# Inference EP: CORE_ML or XNNPACK; forward when set (flag or env).
+# Inference EP: CORE_ML, XNNPACK, or CPU; forward when set (flag or env).
 INFERENCE_MERGED="${INFERENCE_CLI:-${PADDLEOCR_VALIDATION_INFERENCE_BACKEND:-}}"
 INFERENCE_CANON=""
 if [[ -n "${INFERENCE_MERGED}" ]]; then
   case "${INFERENCE_MERGED}" in
     coreMLOnly) INFERENCE_CANON="CORE_ML" ;;
     xnnpackOnly) INFERENCE_CANON="XNNPACK" ;;
+    cpuOnly) INFERENCE_CANON="CPU" ;;
     *)
       _inf_lc="$(printf '%s' "${INFERENCE_MERGED}" | tr '[:upper:]' '[:lower:]')"
       case "${_inf_lc}" in
         core_ml) INFERENCE_CANON="CORE_ML" ;;
         xnnpack) INFERENCE_CANON="XNNPACK" ;;
+        cpu) INFERENCE_CANON="CPU" ;;
         *)
-          die "Invalid --inference-backend / PADDLEOCR_VALIDATION_INFERENCE_BACKEND: ${INFERENCE_MERGED}" "argument parsing" "Use CORE_ML or XNNPACK (Swift: coreMLOnly / xnnpackOnly)."
+          die "Invalid --inference-backend / PADDLEOCR_VALIDATION_INFERENCE_BACKEND: ${INFERENCE_MERGED}" "argument parsing" "Use CORE_ML, XNNPACK, or CPU (Swift: coreMLOnly / xnnpackOnly / cpuOnly)."
           ;;
       esac
       ;;
@@ -330,9 +332,9 @@ run_step() {
 # ---------- Step: preflight ----------
 preflight_impl() {
   [[ -f "${IOS_DEMO_ROOT}/PaddleOCRDemo/Models/det/inference.yml" ]] \
-    || { echo "Models/det/inference.yml missing; run ./Scripts/fetch_ios_demo_models.sh" >&2; return 1; }
+    || { echo "Models/det/inference.yml missing; run ./scripts/fetch_ios_demo_models.sh" >&2; return 1; }
   [[ -f "${IOS_DEMO_ROOT}/PaddleOCRDemo/Models/rec/inference.yml" ]] \
-    || { echo "Models/rec/inference.yml missing; run ./Scripts/fetch_ios_demo_models.sh" >&2; return 1; }
+    || { echo "Models/rec/inference.yml missing; run ./scripts/fetch_ios_demo_models.sh" >&2; return 1; }
   command -v xcodebuild >/dev/null || { echo "xcodebuild not in PATH" >&2; return 1; }
   command -v xcrun >/dev/null || { echo "xcrun not in PATH" >&2; return 1; }
   command -v python3 >/dev/null || { echo "python3 not in PATH" >&2; return 1; }

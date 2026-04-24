@@ -14,8 +14,9 @@
 
 import Foundation
 
-/// Resolves exported ONNX models and their **model config files** in the app bundle (`Models/det`, `Models/rec`).
+/// Resolves exported ONNX or ORT-format models and their **model config files** in the app bundle (`Models/det`, `Models/rec`).
 /// Resource lookup uses the conventional shared basename for the weight file and the model config file in each folder.
+/// Weights: prefers `inference*.ort` in the model directory (see ``bundledOrtPath``), otherwise `inference.onnx`.
 struct ModelConfig {
     let modelPath: String
     let configPath: String
@@ -30,10 +31,50 @@ struct ModelConfig {
         return cfg.modelName
     }
 
-    static func detection() throws -> ModelConfig {
-        guard let modelPath = Bundle.main.path(forResource: "inference", ofType: "onnx", inDirectory: "Models/det") else {
-            throw ModelConfigError.modelNotFound("det/inference.onnx")
+    /// Bundled model weights: any `inference*.ort` in the subdirectory (``ortBundledFileMatchOrder``), else `inference.onnx`.
+    ///
+    /// ONNX Runtime’s `convert_onnx_models_to_ort` may emit `inference.with_runtime_opt.ort` instead of `inference.ort`
+    /// when using Runtime optimization style; the bundle cannot resolve that with `forResource: "inference"`.
+    private static let ortResourceStems: [String] = [
+        "inference",
+        "inference.with_runtime_opt",
+    ]
+
+    private static func bundledOrtPath(inDirectory directory: String) -> String? {
+        for stem in ortResourceStems {
+            if let p = Bundle.main.path(forResource: stem, ofType: "ort", inDirectory: directory) {
+                return p
+            }
         }
+        // Other ORT export suffixes (e.g. non-default optim levels): one `inference*.ort` in the folder.
+        guard let urls = Bundle.main.urls(forResourcesWithExtension: "ort", subdirectory: directory) else {
+            return nil
+        }
+        let matches = urls.filter { url in
+            let c = url.lastPathComponent
+            return c.hasPrefix("inference") && c.hasSuffix(".ort")
+        }
+        guard !matches.isEmpty else { return nil }
+        if matches.count == 1 { return matches[0].path }
+        // If multiple, prefer lexicographic first (deterministic); avoid shipping several exports in one dir.
+        return matches.sorted { $0.lastPathComponent < $1.lastPathComponent }.first?.path
+    }
+
+    private static func bundledWeightsPath(inDirectory directory: String, notFoundMessage: String) throws -> String {
+        if let ort = bundledOrtPath(inDirectory: directory) {
+            return ort
+        }
+        if let onnx = Bundle.main.path(forResource: "inference", ofType: "onnx", inDirectory: directory) {
+            return onnx
+        }
+        throw ModelConfigError.modelNotFound(notFoundMessage)
+    }
+
+    static func detection() throws -> ModelConfig {
+        let modelPath = try Self.bundledWeightsPath(
+            inDirectory: "Models/det",
+            notFoundMessage: "det/inference.ort or det/inference.onnx"
+        )
         guard let configPath = Bundle.main.path(forResource: "inference", ofType: "yml", inDirectory: "Models/det") else {
             throw ModelConfigError.modelNotFound("det model config file")
         }
@@ -42,9 +83,10 @@ struct ModelConfig {
     }
 
     static func recognition() throws -> ModelConfig {
-        guard let modelPath = Bundle.main.path(forResource: "inference", ofType: "onnx", inDirectory: "Models/rec") else {
-            throw ModelConfigError.modelNotFound("rec/inference.onnx")
-        }
+        let modelPath = try Self.bundledWeightsPath(
+            inDirectory: "Models/rec",
+            notFoundMessage: "rec/inference.ort or rec/inference.onnx"
+        )
         guard let configPath = Bundle.main.path(forResource: "inference", ofType: "yml", inDirectory: "Models/rec") else {
             throw ModelConfigError.modelNotFound("rec model config file")
         }

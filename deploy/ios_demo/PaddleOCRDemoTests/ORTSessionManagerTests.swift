@@ -22,6 +22,11 @@ final class ORTSessionManagerTests: XCTestCase {
         try await manager.loadModels(backend: .coreMLOnly)
     }
 
+    func testLoadModelsCPU() async throws {
+        let manager = ORTSessionManager()
+        try await manager.loadModels(backend: .cpuOnly)
+    }
+
     func testModelConfigResolution() throws {
         do {
             let detConfig = try ModelConfig.detection()

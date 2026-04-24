@@ -41,52 +41,11 @@ import tempfile
 from pathlib import Path
 from typing import Any
 
+_script_dir = Path(__file__).resolve().parent
+if str(_script_dir) not in sys.path:
+    sys.path.insert(0, str(_script_dir))
 
-def _die(msg: str) -> None:
-    print(f"error: {msg}", file=sys.stderr)
-    raise SystemExit(1)
-
-
-def _user_input_names(model_path: Path) -> list[str]:
-    import onnx
-
-    m = onnx.load(str(model_path), load_external_data=True)
-    init = {t.name for t in m.graph.initializer}
-    return [i.name for i in m.graph.input if i.name not in init]
-
-
-def _build_npy_dir_reader(model_path: Path, data_dir: Path) -> Any:
-    from onnxruntime.quantization import CalibrationDataReader
-
-    class NpyDirectoryDataReader(CalibrationDataReader):
-        def __init__(self) -> None:
-            names = _user_input_names(model_path)
-            if len(names) != 1:
-                _die(
-                    "this tool supports models with exactly one graph input for static "
-                    f"quantization; found {len(names)}: {names}"
-                )
-            self._input_name = names[0]
-            files = sorted(data_dir.glob("*.npy"))
-            if not files:
-                _die(f"no .npy files under {data_dir}")
-            self._it = iter(files)
-
-        def get_next(self) -> Any:
-            import numpy as np
-
-            try:
-                path = next(self._it)
-            except StopIteration:
-                return None
-            arr = np.load(str(path))
-            if not isinstance(arr, np.ndarray):
-                _die(f"expected ndarray in {path}, got {type(arr)}")
-            if arr.dtype != np.float32:
-                arr = arr.astype(np.float32, copy=False)
-            return {self._input_name: arr}
-
-    return NpyDirectoryDataReader()
+from utils import build_npy_dir_reader, die
 
 
 def _same_file(a: Path, b: Path) -> bool:
@@ -94,6 +53,67 @@ def _same_file(a: Path, b: Path) -> bool:
         return a.resolve() == b.resolve()
     except OSError:
         return False
+
+
+def _run_ort_quant_pre_process(src_onnx: Path, work_dir: Path) -> Path:
+    """Run ORT *quant_pre_process*; write a new ONNX with ``onnx.quant.pre_process`` metadata.
+
+    Tries, in order: default → ``skip_symbolic_shape`` (some det/NMS graphs fail symbolic infer)
+    → also ``skip_optimization`` (last resort). Removes any failed output before retrying.
+    """
+    try:
+        from onnxruntime.quantization import quant_pre_process
+    except ImportError as e:
+        die(
+            f"onnxruntime.quantization.quant_pre_process is required for --ort-preprocess: {e}"
+        )
+
+    fd, raw = tempfile.mkstemp(
+        suffix=".pre.onnx",
+        prefix="inference.ort_",
+        dir=str(work_dir),
+    )
+    os.close(fd)
+    out = Path(raw)
+
+    attempts: list[tuple[str, dict[str, bool]]] = [
+        (
+            "(full symbolic + ORT optimize)",
+            {"skip_symbolic_shape": False, "skip_optimization": False},
+        ),
+        (
+            "(skip symbolic shape, keep ORT optimize)",
+            {"skip_symbolic_shape": True, "skip_optimization": False},
+        ),
+        (
+            "(skip symbolic shape, skip ORT graph optimization)",
+            {"skip_symbolic_shape": True, "skip_optimization": True},
+        ),
+    ]
+    last_err: Exception | None = None
+    for label, kwargs in attempts:
+        out.unlink(missing_ok=True)
+        try:
+            quant_pre_process(
+                input_model=str(src_onnx),
+                output_model_path=str(out),
+                **kwargs,
+            )
+        except Exception as e:
+            last_err = e
+            continue
+        if label != attempts[0][0]:
+            print(
+                f"warning: ORT quant_pre_process succeeded with {label}.",
+                file=sys.stderr,
+            )
+        return out
+
+    out.unlink(missing_ok=True)
+    die(
+        f"ORT quant_pre_process failed after {len(attempts)} attempt(s). Last error: {last_err!r}. "
+        "You can try again with --no-ort-preprocess to quantize the original model only."
+    )
 
 
 def _quantize_dynamic(src_onnx: Path, dst_onnx: Path, per_channel: bool) -> None:
@@ -121,11 +141,11 @@ def _quantize_static(
         quantize_static,
     )
 
-    reader = _build_npy_dir_reader(src_onnx, calib_dir)
+    reader = build_npy_dir_reader(src_onnx, calib_dir)
     try:
         method = getattr(CalibrationMethod, calibrate_method_name)
     except AttributeError:
-        _die(
+        die(
             f"unknown calibration method {calibrate_method_name!r}; "
             f"valid names: {', '.join(CalibrationMethod.__members__)}"
         )
@@ -141,6 +161,40 @@ def _quantize_static(
     )
 
 
+def _default_domain_onnx_opset(m: Any) -> int:
+    """Max declared opset for default / ``ai.onnx`` imports."""
+    v = 0
+    for oi in m.opset_import:
+        dom = oi.domain or ""
+        if dom in ("", "ai.onnx"):
+            v = max(v, int(oi.version))
+    return v
+
+
+def _try_onnx_opset_via_version_converter(path: Path, target_opset: int) -> str:
+    import onnx
+    from onnx import version_converter
+
+    m = onnx.load(str(path), load_external_data=True)
+    cur = _default_domain_onnx_opset(m)
+    if cur >= target_opset:
+        return "skipped_already_ge_target"
+    try:
+        m2 = version_converter.convert_version(m, target_opset)
+    except Exception as e:
+        print(
+            f"warning: onnx.version_converter.convert_version(..., {target_opset}) failed: {e!r}. "
+            "Full checker may still fail. Try a newer `onnx`, or use --no-verify if ORT loads the model.",
+            file=sys.stderr,
+        )
+        return "convert_failed"
+    try:
+        onnx.save(m2, str(path))
+    except Exception as e:
+        die(f"failed to write ONNX after version conversion: {e}")
+    return "converted"
+
+
 def _verify_onnx_file(path: Path) -> None:
     """Validate the output with the ONNX checker (avoids ORT IR / build skew in the host venv)."""
     import onnx
@@ -149,7 +203,7 @@ def _verify_onnx_file(path: Path) -> None:
     try:
         onnx.checker.check_model(m, full_check=True)
     except Exception as e:
-        _die(f"output model failed ONNX checker validation: {e}")
+        die(f"output model failed ONNX checker validation: {e}")
 
 
 def _atomic_replace(src: Path, dst: Path) -> None:
@@ -198,79 +252,128 @@ def main() -> None:
         action="store_true",
         help="Skip ONNX checker validation of the output model after quantization.",
     )
+    p.add_argument(
+        "--ort-preprocess",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help=(
+            "Before quantize_static / quantize_dynamic, run ORT quant_pre_process (shape infer + "
+            "optional graph optimization) and attach onnx.quant metadata."
+        ),
+    )
+    p.add_argument(
+        "--onnx-opset-convert",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help=(
+            "After ORT writes the output, run onnx.version_converter when the graph's declared "
+            "default-domain opset is below --onnx-target-opset. Use --no-onnx-opset-convert to keep "
+            "raw ORT output."
+        ),
+    )
+    p.add_argument(
+        "--onnx-target-opset",
+        type=int,
+        default=13,
+        metavar="N",
+        help=(
+            "Target ONNX opset for --onnx-opset-convert (default: 13). Ignored when conversion is off."
+        ),
+    )
     args = p.parse_args()
 
     if args.mode == "static" and args.calib_data_dir is None:
-        _die("static mode requires --calib-data-dir")
+        die("static mode requires --calib-data-dir")
     if args.mode == "dynamic" and args.calib_data_dir is not None:
         print("warning: --calib-data-dir is ignored for dynamic mode", file=sys.stderr)
+    if args.onnx_target_opset < 1:
+        die("--onnx-target-opset must be >= 1")
 
     input_model_dir: Path = args.input_model_dir
     output_model_dir: Path = args.output_model_dir
     if not input_model_dir.is_dir():
-        _die(f"input directory does not exist: {input_model_dir}")
+        die(f"input directory does not exist: {input_model_dir}")
 
     src_onnx = input_model_dir / "inference.onnx"
     src_yml = input_model_dir / "inference.yml"
     if not src_onnx.is_file():
-        _die(f"missing {src_onnx}")
+        die(f"missing {src_onnx}")
     if not src_yml.is_file():
-        _die(f"missing {src_yml} (expected alongside inference.onnx)")
+        die(f"missing {src_yml} (expected alongside inference.onnx)")
 
     out_onnx = output_model_dir / "inference.onnx"
     in_place = _same_file(input_model_dir, output_model_dir)
     if not in_place:
         output_model_dir.mkdir(parents=True, exist_ok=True)
 
-    if in_place:
-        fd, tmp_name = tempfile.mkstemp(
-            prefix="inference.onnx.",
-            suffix=".tmp",
-            dir=str(input_model_dir),
-        )
-        os.close(fd)
-        tmp_path = Path(tmp_name)
-        try:
-            if args.mode == "dynamic":
-                _quantize_dynamic(src_onnx, tmp_path, per_channel=args.per_channel)
-            else:
-                assert args.calib_data_dir is not None
-                _quantize_static(
-                    src_onnx,
-                    tmp_path,
-                    args.calib_data_dir,
-                    per_channel=args.per_channel,
-                    calibrate_method_name=args.calibration_method,
-                )
-            _atomic_replace(tmp_path, out_onnx)
-        finally:
-            if tmp_path.is_file() and not _same_file(tmp_path, out_onnx):
-                try:
-                    tmp_path.unlink()
-                except OSError:
-                    pass
-    else:
-        try:
-            if args.mode == "dynamic":
-                _quantize_dynamic(src_onnx, out_onnx, per_channel=args.per_channel)
-            else:
-                assert args.calib_data_dir is not None
-                _quantize_static(
-                    src_onnx,
-                    out_onnx,
-                    args.calib_data_dir,
-                    per_channel=args.per_channel,
-                    calibrate_method_name=args.calibration_method,
-                )
-            shutil.copy2(src_yml, output_model_dir / "inference.yml")
-        except Exception:
-            if out_onnx.is_file():
-                try:
-                    out_onnx.unlink()
-                except OSError:
-                    pass
-            raise
+    pre_onnx: Path | None = None
+    if args.ort_preprocess:
+        pre_onnx = _run_ort_quant_pre_process(src_onnx, input_model_dir)
+    quant_src = pre_onnx if pre_onnx is not None else src_onnx
 
+    try:
+        if in_place:
+            fd, tmp_name = tempfile.mkstemp(
+                prefix="inference.onnx.",
+                suffix=".tmp",
+                dir=str(input_model_dir),
+            )
+            os.close(fd)
+            tmp_path = Path(tmp_name)
+            try:
+                if args.mode == "dynamic":
+                    _quantize_dynamic(quant_src, tmp_path, per_channel=args.per_channel)
+                else:
+                    assert args.calib_data_dir is not None
+                    _quantize_static(
+                        quant_src,
+                        tmp_path,
+                        args.calib_data_dir,
+                        per_channel=args.per_channel,
+                        calibrate_method_name=args.calibration_method,
+                    )
+                _atomic_replace(tmp_path, out_onnx)
+            finally:
+                if tmp_path.is_file() and not _same_file(tmp_path, out_onnx):
+                    try:
+                        tmp_path.unlink()
+                    except OSError:
+                        pass
+        else:
+            try:
+                if args.mode == "dynamic":
+                    _quantize_dynamic(quant_src, out_onnx, per_channel=args.per_channel)
+                else:
+                    assert args.calib_data_dir is not None
+                    _quantize_static(
+                        quant_src,
+                        out_onnx,
+                        args.calib_data_dir,
+                        per_channel=args.per_channel,
+                        calibrate_method_name=args.calibration_method,
+                    )
+                shutil.copy2(src_yml, output_model_dir / "inference.yml")
+            except Exception:
+                if out_onnx.is_file():
+                    try:
+                        out_onnx.unlink()
+                    except OSError:
+                        pass
+                raise
+    finally:
+        if pre_onnx is not None and pre_onnx.is_file():
+            try:
+                pre_onnx.unlink()
+            except OSError:
+                pass
+
+    if args.onnx_opset_convert:
+        st = _try_onnx_opset_via_version_converter(out_onnx, args.onnx_target_opset)
+        if st == "converted":
+            print(
+                f"note: applied onnx.version_converter to opset {args.onnx_target_opset}.",
+                file=sys.stderr,
+            )
     if not args.no_verify:
         _verify_onnx_file(out_onnx)
 

@@ -4,7 +4,7 @@ SwiftUI demo that runs OCR on device using exported ONNX models and [ONNX Runtim
 
 ## Layout
 
-All app sources, bundled resources, and third-party **source** vendored for this demo live under **`PaddleOCRDemo/`**. Unit tests are in **`PaddleOCRDemoTests/`** next to the Xcode project. The project root also contains `Podfile`, **`Scripts/`**, `README.md`, and `NOTICE`.
+All app sources, bundled resources, and third-party **source** vendored for this demo live under **`PaddleOCRDemo/`**. Unit tests are in **`PaddleOCRDemoTests/`** next to the Xcode project. The project root also contains `Podfile`, **`scripts/`**, `README.md`, and `NOTICE`.
 
 ## Prerequisites
 
@@ -18,15 +18,15 @@ From the **project root**:
 
 ```bash
 pod install
-./Scripts/fetch_ios_demo_models.sh
+./scripts/fetch_ios_demo_models.sh
 ```
 
-`Scripts/fetch_ios_demo_models.sh` downloads ONNX bundles into **`PaddleOCRDemo/Models/`**. Intermediate `.tar` caches are stored under **`.fetch_ios_demo_models_work/`** at the project root.
+`scripts/fetch_ios_demo_models.sh` downloads ONNX bundles into **`PaddleOCRDemo/Models/`**. Intermediate `.tar` caches are stored under **`.fetch_ios_demo_models_work/`** at the project root.
 
 Optionally, pass the **model preset** (bundle name such as `PP-OCRv6_small`) as a positional argument:
 
 ```bash
-./Scripts/fetch_ios_demo_models.sh PP-OCRv6_small
+./scripts/fetch_ios_demo_models.sh PP-OCRv6_small
 ```
 
 Currently, the supported model presets are `PP-OCRv6_small` and `PP-OCRv6_tiny`. The default preset is `PP-OCRv6_small`.
@@ -38,13 +38,13 @@ To build **INT8** variants using [ONNX Runtime quantization](https://onnxruntime
 First, install the required Python dependencies:
 
 ```bash
-python3 -m pip install -r Scripts/requirements-onnx-quantize.txt
+python3 -m pip install -r requirements-onnx-quantize.txt
 ```
 
 Next, run the quantization script:
 
 ```bash
-python3 Scripts/quantize_onnx_model.py \
+python3 scripts/quantize_onnx_model.py \
   --input-model-dir PaddleOCRDemo/Models/det \
   --output-model-dir /path/to/det_quant \
   --mode dynamic
@@ -60,25 +60,82 @@ python3 Scripts/quantize_onnx_model.py \
   * Each tensor must match the shape of the model’s **single input** (note: in this demo, both `det` and `rec` models have one input).
   * You can choose calibration methods such as *MinMax*, *Entropy*, or others supported by your installed `onnxruntime` version via `--calibration-method`.
 
-**Building calibration `.npy` files (optional):** use **`Scripts/build_onnx_calib_npy.py`** to turn a folder of images into tensors with the **same preprocessing** PaddleX uses for ONNX inference (`paddlex.create_predictor`, `engine="onnxruntime"`). This matches what static quantization expects more reliably than hand-rolled numpy.
+**Building calibration `.npy` files (optional):** use **`scripts/build_onnx_calib_npy.py`** to turn a folder of images into tensors.
 
-* Install [PaddleX](https://github.com/PaddlePaddle/PaddleX) in the same environment (e.g. `pip install -e /path/to/PaddleX` or set `PYTHONPATH` to a checkout that contains the `paddlex` package). You also need common deps (PyYAML, OpenCV, NumPy, `onnxruntime`—overlap with the quantize requirements is fine).
-* **Detection** (`--task det`): one `.npy` per image; shapes follow the det config (e.g. `resize_long` in `inference.yml`). **Recognition** (`--task rec`): one `.npy` per image after rec resize/normalize; by default that is **one tensor per file** (e.g. full-page or line image). For the tightest rec calibration, prefer **text-line** crops; whole-page images are still usable for many calibration ranges.
-* From the iOS demo project root:
+1. **Dependencies** (host Python):
 
-  ```bash
-  python3 Scripts/build_onnx_calib_npy.py --task det \
-    --model-dir PaddleOCRDemo/Models/det \
-    --image-dir /path/to/your/images \
-    --output-dir /path/to/calib_npy
-  # then: python3 Scripts/quantize_onnx_model.py ... --mode static --calib-data-dir /path/to/calib_npy
-  ```
+   ```bash
+   python3 -m pip install -r requirements-build-calib.txt
+   ```
 
-For additional options and details, run:
+2. **Run the build script**:
+
+   | Flag | Role |
+   | --- | --- |
+   | `--task` | `det` = detection model, `rec` = recognition model (must match `--model-dir`). |
+   | `--model-dir` | Model directory (e.g. `PaddleOCRDemo/Models/det` or `.../rec`). |
+   | `--image-dir` | Images to calibrate on (`.png` / `.jpg` / …). |
+   | `--output-dir` | Where to write `.npy` files (created if missing). |
+   | `--device` | Optional; e.g. `cpu` (default) or `gpu:0`. |
+   | `--det-model-dir` | **Recognition only:** detection model directory. If set, each *full page* in `--image-dir` is run through det; every detected text line is rotated-cropped and written as a separate rec tensor (`…_box000.npy`, …), instead of one tensor per file. |
+   | `--max-crops-per-image` | With `--det-model-dir`, limit how many boxes per page are used (default `0` = no cap). |
+
+   For **detection** calibration, one `.npy` is produced per input image:
+
+   ```bash
+   python3 scripts/build_onnx_calib_npy.py --task det \
+     --model-dir PaddleOCRDemo/Models/det \
+     --image-dir /path/to/your/images \
+     --output-dir /path/to/calib_npy
+   ```
+
+   For **recognition** calibration, you can either use **per-line** crops (if you have them) or pass **full pages** and point at the **det** model so line crops are generated automatically:
+
+   ```bash
+   python3 scripts/build_onnx_calib_npy.py --task rec \
+     --model-dir PaddleOCRDemo/Models/rec \
+     --det-model-dir PaddleOCRDemo/Models/det \
+     --image-dir /path/to/full_page_images \
+     --output-dir /path/to/calib_rec_crops
+   ```
+
+3. **Then static quantize** using that directory:
+
+   ```bash
+   python3 scripts/quantize_onnx_model.py \
+     --input-model-dir PaddleOCRDemo/Models/det \
+     --output-model-dir /path/to/det_int8 \
+     --mode static \
+     --calib-data-dir /path/to/calib_npy
+   ```
+
+4. **(Optional) QDQ debug**  
+   For the same [ORT debugging story](https://github.com/microsoft/onnxruntime-inference-examples/blob/main/quantization/image_classification/cpu/ReadMe.md#debugging) as the upstream *run_qdq_debug* flow: compare a **float** ONNX to your **QDQ** output using the same `.npy` inputs as calibration. This uses ORT’s `qdq_loss_debug` helpers (weight + activation SQNR).  
+   * `--float-model` should be the same float graph you fed into `quantize_onnx_model.py` (if you use default `--ort-preprocess`, that means the [pre-processed](https://raw.githubusercontent.com/microsoft/onnxruntime-inference-examples/main/quantization/image_classification/cpu/ReadMe.md#pre-processing) `inference.onnx` in float form—save a copy before quant if you do not have it, or re-run pre-process once).  
+
+   ```bash
+   python3 scripts/debug_onnx_qdq.py \
+     --float-model /path/to/float_for_quant.onnx \
+     --qdq-model /path/to/det_int8/inference.onnx \
+     --calib-data-dir /path/to/calib_npy \
+     --json-report /tmp/qdq_debug.json
+   ```
+
+## Convert to ORT model format (optional)
+
+To produce [ORT format](https://onnxruntime.ai/docs/performance/model-optimizations/ort-format-models.html) weights, install the Python dependencies for the converter, then run the converter:
 
 ```bash
-python3 Scripts/quantize_onnx_model.py --help
-python3 Scripts/build_onnx_calib_npy.py --help
+python3 -m pip install -r requirements-onnx-convert-ort.txt
+./scripts/convert_onnx_to_ort.sh
+```
+
+By default, conversion writes `inference*.ort` next to each `inference.onnx` under `PaddleOCRDemo/Models/`, so both formats sit in the same tree and the bundle can grow. The demo loads `inference*.ort` when present, so you do not need to ship ONNX in the bundle. To keep only one weight file in the app, you can either manually delete the `inference.onnx` files, or use the `--out-dir` option to generate `inference*.ort` models in a separate directory. These generated models can then replace the originals in `PaddleOCRDemo/Models/`. Use **`--input-dir`** to point at any ONNX tree on the host; it defaults to `PaddleOCRDemo/Models` when omitted.
+
+Place this script’s options first (`--input-dir`, `--out-dir`), then any ORT converter flags. The script inserts `--` before the model path internally so options like `--optimization_style` (which accept multiple values) are not misparsed. Example:
+
+```bash
+./scripts/convert_onnx_to_ort.sh --out-dir ./out/ort_bundles --optimization_style Runtime
 ```
 
 ## Open in Xcode
@@ -104,12 +161,12 @@ So “validation” is an umbrella for both **accuracy gating** and **on-device 
 
 Complete [One-time asset setup](#one-time-asset-setup) first. For validation specifically you also need:
 
-- PaddleOCR (with ONNX Runtime engine) for the reference step: `python3 -m pip install -r Scripts/requirements-validation.txt`.
+- PaddleOCR (with ONNX Runtime engine) for the reference step: `python3 -m pip install -r requirements-validation.txt`.
 - Xcode 16 or later (validation uses `xcresulttool get test-results`, introduced in 16.0).
 
 ### Full pipeline
 
-From the project root, **`./Scripts/run_validation.sh`** drives: Python reference OCR → Xcode tests on a simulator or device → extract result attachments → compare accuracy → generate a report.
+From the project root, **`./scripts/run_validation.sh`** drives: Python reference OCR → Xcode tests on a simulator or device → extract result attachments → compare accuracy → generate a report.
 
 **Configuring the run:** prefer **`run_validation.sh`** flags (below). **`resolve-image`** picks the file: **`--image`**, **`--fixture`** / **`PADDLEOCR_VALIDATION_IMAGE_NAME`**, or—with none of those set—**exactly one** non-`local-*` image under **`PaddleOCRDemoTests/Fixtures/`** (a typical clone is only **`ios_ocr_validation_reference.jpg`**; zero or multiple candidates → **`--fixture`** or **`--image`**). **`PADDLEOCR_VALIDATION_IMAGE_NAME`** is always passed to the test runner as that basename so it matches **`ref.json`**. **Other** knobs (warmup, measured iterations, inference backend, etc.) are forwarded to [Test runner environment variables](#test-runner-environment-variables) **only when** you set them via a flag or **`PADDLEOCR_VALIDATION_*`**; **flags win over env** when both apply.
 
@@ -118,15 +175,15 @@ From the project root, **`./Scripts/run_validation.sh`** drives: Python referenc
 | Image from an arbitrary path | `--image <path>` (copied into `Fixtures/` as `local-*` for this run) |
 | Image already under `PaddleOCRDemoTests/Fixtures/` | `--fixture <name>` (stem or `stem.ext`) |
 | Benchmark intensity | `--warmup <n>`, `--measured-iterations <n>` |
-| ONNX Runtime EP | `--inference-backend CORE_ML` or `XNNPACK` |
+| ONNX Runtime EP | `--inference-backend CORE_ML`, `XNNPACK`, or `CPU` |
 
 ```bash
-./Scripts/run_validation.sh                                              # default simulator (iPhone 16)
-./Scripts/run_validation.sh --simulator 'iPhone 17'
-./Scripts/run_validation.sh --udid <device-udid>
-./Scripts/run_validation.sh --udid <udid> --image /path/to/photo.png
-./Scripts/run_validation.sh --fixture ios_ocr_validation_reference --warmup 2 --measured-iterations 20
-PADDLEOCR_VALIDATION_MEASURED_ITERATIONS=30 ./Scripts/run_validation.sh --warmup 0
+./scripts/run_validation.sh                                              # default simulator (iPhone 16)
+./scripts/run_validation.sh --simulator 'iPhone 17'
+./scripts/run_validation.sh --udid <device-udid>
+./scripts/run_validation.sh --udid <udid> --image /path/to/photo.png
+./scripts/run_validation.sh --fixture ios_ocr_validation_reference --warmup 2 --measured-iterations 20
+PADDLEOCR_VALIDATION_MEASURED_ITERATIONS=30 ./scripts/run_validation.sh --warmup 0
 ```
 
 After compare **completes**, the script overwrites **`out/compare-summary.json`**, **`out/run-status.json`**, and **`out/validation-report.md`**. If the pipeline **errors** earlier, those files are **not** updated for this run (any existing copies are from a previous attempt).
@@ -160,7 +217,7 @@ The validation **tests** read settings through variables named **`PADDLEOCR_VALI
 | `PADDLEOCR_VALIDATION_IMAGE_NAME` | Defaults to **`ios_ocr_validation_reference`**. Set explicitly to use another bundled image. | Bundled test image: **stem** or **`stem.ext`** under **`Fixtures/`**. |
 | `PADDLEOCR_VALIDATION_WARMUP_ITERATIONS` | **3** | Untimed full OCR runs before timing (warm caches / JIT). Used only by the **performance** test. |
 | `PADDLEOCR_VALIDATION_MEASURED_ITERATIONS` | **10** | Timed runs. Used only by the **performance** test. |
-| `PADDLEOCR_VALIDATION_INFERENCE_BACKEND` | **CORE_ML** | ONNX Runtime EP for **`OCRValidationTests`**: **`CORE_ML`** or **`XNNPACK`**. |
+| `PADDLEOCR_VALIDATION_INFERENCE_BACKEND` | **CORE_ML** | ONNX Runtime EP for **`OCRValidationTests`**: **`CORE_ML`**, **`XNNPACK`**, or **`CPU`** (plain CPU execution provider; not XNNPACK). |
 
 Non-negative integers for the two iteration variables.
 

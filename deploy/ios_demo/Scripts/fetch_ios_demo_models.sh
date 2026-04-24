@@ -32,7 +32,7 @@ WORKDIR="${IOS_DEMO_ROOT}/.fetch_ios_demo_models_work"
 
 usage() {
   cat <<EOF
-Usage: ./Scripts/fetch_ios_demo_models.sh [-h|--help] [preset]
+Usage: ./scripts/fetch_ios_demo_models.sh [-h|--help] [preset]
 
 Downloads ONNX bundles into:
   ${DEST_DET}

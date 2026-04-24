@@ -174,6 +174,8 @@ final class OCRValidationTests: XCTestCase {
             return .coreMLOnly
         case "xnnpack":
             return .xnnpackOnly
+        case "cpu":
+            return .cpuOnly
         default:
             throw NSError(
                 domain: "OCRValidationTests",
@@ -181,8 +183,10 @@ final class OCRValidationTests: XCTestCase {
                 userInfo: [
                     NSLocalizedDescriptionKey:
                         "Invalid \(Self.inferenceBackendEnvKey): \"\(raw)\". "
-                        + "Use CORE_ML (default), XNNPACK, or Swift raw values \(ORTInferenceBackend.coreMLOnly.rawValue) / "
-                        + "\(ORTInferenceBackend.xnnpackOnly.rawValue). See README.",
+                        + "Use CORE_ML (default), XNNPACK, CPU, or Swift raw values "
+                        + "\(ORTInferenceBackend.coreMLOnly.rawValue) / "
+                        + "\(ORTInferenceBackend.xnnpackOnly.rawValue) / "
+                        + "\(ORTInferenceBackend.cpuOnly.rawValue). See README.",
                 ]
             )
         }

@@ -14,12 +14,14 @@
 
 import Foundation
 
-/// ONNX Runtime execution provider for mobile: Core ML only or XNNPACK only.
+/// ONNX Runtime execution provider selection for this demo.
 enum ORTInferenceBackend: String, CaseIterable, Identifiable, Sendable {
     /// Core ML execution provider only (ANE/GPU). Default on Apple devices.
     case coreMLOnly
     /// XNNPACK (CPU) only.
     case xnnpackOnly
+    /// Built-in CPU execution provider only (no Core ML, no XNNPACK).
+    case cpuOnly
 
     var id: String { rawValue }
 
@@ -27,6 +29,7 @@ enum ORTInferenceBackend: String, CaseIterable, Identifiable, Sendable {
         switch self {
         case .coreMLOnly: return "Core ML"
         case .xnnpackOnly: return "XNNPACK"
+        case .cpuOnly: return "CPU"
         }
     }
 }
@@ -74,6 +77,9 @@ actor ORTSessionManager {
         case .xnnpackOnly:
             let xnnpackOptions = ORTXnnpackExecutionProviderOptions()
             try options.appendXnnpackExecutionProvider(with: xnnpackOptions)
+        case .cpuOnly:
+            // Default ORT session uses the built-in CPU EP when no other EP is registered.
+            break
         }
 
         // 3. Load detection model

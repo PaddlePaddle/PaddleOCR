@@ -35,7 +35,7 @@ struct OCRParametersPanel: View {
 
             groupTitle("Inference engine")
             VStack(alignment: .leading, spacing: 6) {
-                Text("Core ML or XNNPACK only — reloads models when changed")
+                Text("Core ML, XNNPACK, or built-in CPU — reloads models when changed")
                     .font(.caption)
                     .foregroundStyle(.secondary)
                 Picker("Inference engine", selection: $inferenceBackend) {
