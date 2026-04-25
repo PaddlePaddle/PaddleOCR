@@ -125,7 +125,9 @@ def test_latexocr_dataset_accepts_basic_dict_payload(tmp_path, latexocr_config):
     payload_path = Path(latexocr_config["Train"]["dataset"]["data"])
     payload_path.write_bytes(pickle.dumps({(32, 32): [("eq", "img.png")]}))
 
-    dataset = module.LaTeXOCRDataSet(latexocr_config, "Train", logger=types.SimpleNamespace())
+    dataset = module.LaTeXOCRDataSet(
+        latexocr_config, "Train", logger=types.SimpleNamespace()
+    )
 
     assert dataset.size == 1
     assert dataset.data == {(32, 32): [("eq", "img.png")]}
