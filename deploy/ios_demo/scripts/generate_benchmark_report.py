@@ -13,12 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Merge optional validation JSONs into a local Markdown report.
+"""Merge optional benchmark JSONs into a local Markdown report.
 
 Inputs:
-    --compare-summary        JSON from compare_ocr_json.py
+    --accuracy-summary       Optional JSON from compare_ocr_json.py
     --on-device-performance-json   JSON attachment "on-device-performance.json"
-    --run-status             JSON from run_validation.sh
+    --run-status             JSON from run_benchmark.sh
     --xctest-metrics-json    JSON from extract_xctest_metrics.py
 
 All inputs are optional; missing sections render placeholders.
@@ -83,6 +83,128 @@ def _fmt_duration_ms(raw: Any) -> str:
     return f"{ms / 1000:.2f} s"
 
 
+def _fmt_ms(raw: Any) -> str:
+    try:
+        return f"{float(raw):.4f} ms"
+    except (TypeError, ValueError):
+        return "—"
+
+
+def _fmt_shape(raw: Any) -> str:
+    if isinstance(raw, list) and raw:
+        return "`[" + ", ".join(str(x) for x in raw) + "]`"
+    return "—"
+
+
+def _truthy(value: Any) -> bool:
+    if isinstance(value, bool):
+        return value
+    if value is None:
+        return False
+    return str(value).strip().lower() in {"1", "true", "yes", "on"}
+
+
+def _benchmark_value(
+    status: Dict[str, Any],
+    perf_data: Optional[Dict[str, Any]],
+    key: str,
+) -> Any:
+    benchmark = (
+        status.get("benchmark") if isinstance(status.get("benchmark"), dict) else {}
+    )
+    if key in benchmark:
+        return benchmark.get(key)
+    if isinstance(perf_data, dict):
+        return perf_data.get(key)
+    return None
+
+
+def _benchmark_warnings(
+    status: Dict[str, Any],
+    perf_data: Optional[Dict[str, Any]],
+) -> List[str]:
+    warnings: List[str] = []
+    build = _benchmark_value(status, perf_data, "buildConfiguration")
+    is_sim = _benchmark_value(status, perf_data, "isSimulator")
+    profiling = _benchmark_value(status, perf_data, "ortProfilingEnabled")
+    if build and str(build) != "Release":
+        warnings.append(f"build configuration is `{build}`, not `Release`")
+    if _truthy(is_sim):
+        warnings.append("destination is simulator")
+    if _truthy(profiling):
+        warnings.append("ORT profiling is enabled")
+    return warnings
+
+
+def _benchmark_metadata_markdown(
+    status: Dict[str, Any],
+    perf_data: Optional[Dict[str, Any]],
+) -> str:
+    rows: List[str] = ["| Metric | Value |", "|--------|-------|"]
+    for key, label in [
+        ("buildConfiguration", "Build configuration"),
+        ("deviceModel", "Device model"),
+        ("osVersion", "OS version"),
+        ("isSimulator", "Simulator"),
+        ("inferenceBackend", "Inference backend"),
+        ("modelPreset", "Model preset"),
+        ("ortProfilingEnabled", "ORT profiling"),
+    ]:
+        value = _benchmark_value(status, perf_data, key)
+        if value is None:
+            continue
+        rows.append(f"| {label} | `{value}` |")
+    warnings = _benchmark_warnings(status, perf_data)
+    if warnings:
+        rows.append("")
+        rows.append(
+            "> Not publishable: "
+            + "; ".join(warnings)
+            + ". Only Release runs on a real device with ORT profiling disabled should be used as publishable latency numbers."
+        )
+    else:
+        rows.append("")
+        rows.append(
+            "> Publishable baseline: Release run on a real device with ORT profiling disabled."
+        )
+    return "\n".join(rows)
+
+
+def _model_artifacts_markdown(status: Dict[str, Any]) -> str:
+    benchmark = (
+        status.get("benchmark") if isinstance(status.get("benchmark"), dict) else {}
+    )
+    model_files = (
+        benchmark.get("modelFiles")
+        if isinstance(benchmark.get("modelFiles"), dict)
+        else {}
+    )
+    det = (
+        model_files.get("detection")
+        if isinstance(model_files.get("detection"), dict)
+        else {}
+    )
+    rec = (
+        model_files.get("recognition")
+        if isinstance(model_files.get("recognition"), dict)
+        else {}
+    )
+    rows = ["| Artifact | Format | Size |", "|----------|--------|------|"]
+    rows.append(
+        f"| Detection model | `{det.get('format') or '—'}` | {_fmt_bytes(det.get('sizeBytes'))} |"
+    )
+    rows.append(
+        f"| Recognition model | `{rec.get('format') or '—'}` | {_fmt_bytes(rec.get('sizeBytes'))} |"
+    )
+    rows.append(
+        f"| Total model weights | — | {_fmt_bytes(model_files.get('totalSizeBytes'))} |"
+    )
+    rows.append(
+        f"| App executable | — | {_fmt_bytes(benchmark.get('appBinarySizeBytes'))} |"
+    )
+    return "\n".join(rows)
+
+
 # ---------- run-status ----------
 
 
@@ -97,6 +219,16 @@ def _run_status_section(status: Dict[str, Any]) -> str:
     dest = status.get("destination")
     if dest:
         lines.append(f"- **Destination:** `{dest}`")
+    benchmark = (
+        status.get("benchmark") if isinstance(status.get("benchmark"), dict) else {}
+    )
+    if benchmark:
+        if build := benchmark.get("buildConfiguration"):
+            lines.append(f"- **Build configuration:** `{build}`")
+        if backend := benchmark.get("inferenceBackend"):
+            lines.append(f"- **Inference backend:** `{backend}`")
+        if scope := benchmark.get("testingScope"):
+            lines.append(f"- **Testing scope:** `{scope}`")
     started = status.get("runStartedAt")
     finished = status.get("runFinishedAt")
     if started and finished:
@@ -119,26 +251,13 @@ def _run_status_section(status: Dict[str, Any]) -> str:
 
 def _stale_data_banner(overall: str) -> str:
     return (
-        f"> ⚠ This run ended with status **{overall}**; the numbers below may be partial or stale. "
+        f"> This run ended with status **{overall}**; the numbers below may be partial or stale. "
         "Do not use them as a baseline.\n"
     )
 
 
-def _accuracy_section_banner(overall: Optional[str]) -> str:
-    if overall == "FAIL":
-        return (
-            "> **FAIL:** Accuracy thresholds were not met. "
-            "The **Accuracy validation** section reflects this run’s measurements.\n"
-        )
-    if overall and overall != "PASS":
-        return _stale_data_banner(overall)
-    return ""
-
-
 def _performance_section_banner(overall: Optional[str]) -> str:
-    if overall == "FAIL":
-        return ""
-    if overall and overall != "PASS":
+    if overall and overall != "COMPLETED":
         return _stale_data_banner(overall)
     return ""
 
@@ -149,15 +268,15 @@ def _performance_section_banner(overall: Optional[str]) -> str:
 def _timing_markdown(data: Dict[str, Any]) -> str:
     lines = ["| Metric | mean | stdev | p90 |", "|--------|------|-------|-----|"]
     for key, label in [
-        ("totalTimeMs", "total (ms)"),
-        ("detectionTimeMs", "detection total (ms)"),
-        ("detectionPreprocessTimeMs", "detection preprocess (ms)"),
-        ("detectionInferenceTimeMs", "detection inference (ms)"),
-        ("detectionPostprocessTimeMs", "detection postprocess (ms)"),
-        ("recognitionTimeMs", "recognition total (ms)"),
-        ("recognitionPreprocessTimeMs", "recognition preprocess (ms)"),
-        ("recognitionInferenceTimeMs", "recognition inference (ms)"),
-        ("recognitionPostprocessTimeMs", "recognition postprocess (ms)"),
+        ("totalTimeMs", "Full OCR latency (ms)"),
+        ("detectionTimeMs", "Detection stage latency (ms)"),
+        ("detectionPreprocessTimeMs", "Detection preprocess latency (ms)"),
+        ("detectionInferenceTimeMs", "Detection inference segment latency (ms)"),
+        ("detectionPostprocessTimeMs", "Detection postprocess latency (ms)"),
+        ("recognitionTimeMs", "Recognition stage latency (ms)"),
+        ("recognitionPreprocessTimeMs", "Recognition preprocess latency (ms)"),
+        ("recognitionInferenceTimeMs", "Recognition inference segment latency (ms)"),
+        ("recognitionPostprocessTimeMs", "Recognition postprocess latency (ms)"),
     ]:
         block = data.get(key)
         if not isinstance(block, dict):
@@ -173,7 +292,7 @@ def _timing_markdown(data: Dict[str, Any]) -> str:
     ovh = data.get("pipelineOverheadTimeMs")
     if isinstance(ovh, dict):
         lines.append(
-            "| pipeline overhead (ms) | {mean:.4f} | {stdev:.4f} | {p90:.4f} |".format(
+            "| Pipeline overhead latency (ms) | {mean:.4f} | {stdev:.4f} | {p90:.4f} |".format(
                 mean=float(ovh.get("mean", 0)),
                 stdev=float(ovh.get("stdev", 0)),
                 p90=float(ovh.get("p90", 0)),
@@ -184,12 +303,55 @@ def _timing_markdown(data: Dict[str, Any]) -> str:
     if w is not None or m is not None:
         lines.append("")
         lines.append(f"Warmup iterations: `{w}` · Measured iterations: `{m}`")
+    lines.append("")
+    lines.append(
+        "*Inference segment latency includes the tensor input/output handling required by the ORT wrapper, "
+        "`session.run`, output reads, and validation. It is not pure kernel latency or isolated `session.run` latency.*"
+    )
 
     per_line_extra = _recognition_per_line_markdown(data)
     if per_line_extra:
         lines.append("")
         lines.append(per_line_extra)
     return "\n".join(lines)
+
+
+def _input_profile_markdown(data: Dict[str, Any]) -> str:
+    dist = (
+        data.get("inputShapeDistribution")
+        if isinstance(data.get("inputShapeDistribution"), dict)
+        else {}
+    )
+    rows = [
+        "| Model | Input tensor shape | Count |",
+        "|-------|--------------------|-------|",
+    ]
+    for model_key, label in [
+        ("detection", "Detection"),
+        ("recognition", "Recognition"),
+    ]:
+        samples = dist.get(model_key)
+        if not isinstance(samples, list) or not samples:
+            rows.append(f"| {label} | — | `0` |")
+            continue
+        for sample in samples:
+            if not isinstance(sample, dict):
+                continue
+            rows.append(
+                f"| {label} | {_fmt_shape(sample.get('shape'))} | `{sample.get('count', '—')}` |"
+            )
+    rows.append("")
+    rows.append("| Metric | Value |")
+    rows.append("|--------|-------|")
+    rows.append(
+        f"| First measured run line count | `{data.get('firstMeasuredLineCount', '—')}` |"
+    )
+    rows.append(f"| Cold model load time | {_fmt_ms(data.get('coldLoadTimeMs'))} |")
+    rows.append("")
+    rows.append(
+        "*Input tensor shape counts are counted per model invocation in the measured loop.*"
+    )
+    return "\n".join(rows)
 
 
 def _recognition_per_line_markdown(data: Dict[str, Any]) -> str:
@@ -205,10 +367,10 @@ def _recognition_per_line_markdown(data: Dict[str, Any]) -> str:
         "|------------------------------------|------|------|-------|-----|",
     ]
     for key, label in [
-        ("preprocessMs", "rec preprocess / line, pooled (ms)"),
-        ("inferenceMs", "rec inference / line, pooled (ms)"),
-        ("postprocessMs", "rec postprocess / line, pooled (ms)"),
-        ("totalMs", "rec total / line, pooled (ms)"),
+        ("preprocessMs", "Per-line recognition preprocess pooled (ms)"),
+        ("inferenceMs", "Per-line recognition inference segment pooled (ms)"),
+        ("postprocessMs", "Per-line recognition postprocess pooled (ms)"),
+        ("totalMs", "Per-line recognition total pooled (ms)"),
     ]:
         if not isinstance(pooled, dict):
             break
@@ -229,10 +391,10 @@ def _recognition_per_line_markdown(data: Dict[str, Any]) -> str:
             )
         )
     if any_pooled:
-        out.append("#### Per-line recognition (ms)")
+        out.append("#### Per-line Recognition Latency (ms)")
         out.append("")
         out.append(
-            "*Pooled* merges every det line on every **measured** full-image run."
+            "*Pooled* merges every detected line from every measured full-image run."
         )
         out.append("")
         out.extend(pooled_lines)
@@ -245,6 +407,8 @@ def _fmt_metric_number(value: Any, unit: str) -> str:
         number = float(value)
     except (TypeError, ValueError):
         return "—"
+    if unit.lower() == "kb":
+        return f"{number / 1024:.2f} MB"
     if "byte" in unit.lower():
         return _fmt_bytes(int(number))
     if abs(number) >= 1000:
@@ -315,7 +479,6 @@ def _memory_markdown(
         rows.append(f"| Thermal state | `{ts}` |")
     rows.append("")
     rows.append(
-        "*Memory benchmark rows come from `XCTMemoryMetric` exported via `xcresulttool get test-results metrics`. "
         "`physical memory delta` is a per-iteration net change, so negative values mean memory was released during that measured block. "
         "`task_vm_info.phys_footprint` rows are diagnostic snapshots before and after model loading, not continuous peak measurements.*"
     )
@@ -325,15 +488,28 @@ def _memory_markdown(
 def _on_device_section(
     data: Dict[str, Any],
     xctest_metrics: Optional[Dict[str, Any]],
+    status: Optional[Dict[str, Any]] = None,
 ) -> str:
     parts: List[str] = []
     ver = data.get("schemaVersion")
     if ver is not None:
         parts.append(f"Schema version: `{ver}`")
         parts.append("")
+    parts.append("### Benchmark metadata")
+    parts.append("")
+    parts.append(_benchmark_metadata_markdown(status or {}, data))
+    parts.append("")
     parts.append(
-        "*Latency and memory are both **runtime performance** attributes of the same on-device run.*"
+        "*Latency and memory are both runtime performance attributes, but they are sampled by separate benchmark paths.*"
     )
+    parts.append("")
+    parts.append("### Model and app artifacts")
+    parts.append("")
+    parts.append(_model_artifacts_markdown(status or {}))
+    parts.append("")
+    parts.append("### Input profile")
+    parts.append("")
+    parts.append(_input_profile_markdown(data))
     parts.append("")
     parts.append("### Latency")
     parts.append("")
@@ -364,6 +540,36 @@ def _compare_section(data: Dict[str, Any]) -> str:
     )
 
 
+def _accuracy_section(
+    summary_data: Optional[Dict[str, Any]],
+    run_status: Dict[str, Any],
+) -> str:
+    accuracy = (
+        run_status.get("accuracy")
+        if isinstance(run_status.get("accuracy"), dict)
+        else {}
+    )
+    enabled = bool(accuracy.get("enabled")) or summary_data is not None
+    if not enabled:
+        return ""
+
+    parts: List[str] = ["## Accuracy check", ""]
+    status = str(accuracy.get("status") or "").upper()
+    reason = accuracy.get("reason")
+    if status:
+        parts.append(f"Precheck status: **{status}**")
+        if reason:
+            parts.append("")
+            parts.append(f"> {reason}")
+        parts.append("")
+    parts.append("")
+    if summary_data is not None:
+        parts.append(_compare_section(summary_data))
+    elif enabled:
+        parts.append("*No accuracy summary JSON was produced.*")
+    return "\n".join(parts)
+
+
 # ---------- driver ----------
 
 
@@ -385,7 +591,7 @@ def generate_report(
     *,
     out_path: Path,
     on_device_performance_json: Optional[Path],
-    compare_summary: Optional[Path],
+    accuracy_summary: Optional[Path],
     run_status: Optional[Path],
     xctest_metrics_json: Optional[Path],
 ) -> None:
@@ -395,9 +601,9 @@ def generate_report(
 
     overall = (status.get("overall") or "").upper() or None
 
-    compare_data = (
-        _load_json(compare_summary)
-        if compare_summary and compare_summary.is_file()
+    accuracy_data = (
+        _load_json(accuracy_summary)
+        if accuracy_summary and accuracy_summary.is_file()
         else None
     )
     perf_data = (
@@ -411,7 +617,7 @@ def generate_report(
         else None
     )
 
-    head_lines: List[str] = ["# iOS demo — validation report", ""]
+    head_lines: List[str] = ["# iOS demo — benchmark report", ""]
     if overall:
         head_lines.append(f"**Overall:** {overall}")
         head_lines.append("")
@@ -422,32 +628,22 @@ def generate_report(
         parts.append(_run_status_section(status))
         parts.append("")
 
-    acc_banner = _accuracy_section_banner(overall)
     perf_banner = _performance_section_banner(overall)
 
-    parts.append("## Accuracy validation")
-    parts.append("")
-    if acc_banner:
-        parts.append(acc_banner)
-    if compare_data is not None:
-        parts.append(_compare_section(compare_data))
-    else:
-        parts.append(
-            _placeholder_from_status(status, "compare")
-            if status
-            else "*No compare summary provided.*"
-        )
-    parts.append("")
+    accuracy_section = _accuracy_section(accuracy_data, status)
+    if accuracy_section:
+        parts.append(accuracy_section)
+        parts.append("")
 
     parts.append("## On-device runtime performance")
     parts.append("")
     if perf_banner:
         parts.append(perf_banner)
     if perf_data is not None:
-        parts.append(_on_device_section(perf_data, xctest_metrics_data))
+        parts.append(_on_device_section(perf_data, xctest_metrics_data, status))
     else:
         parts.append(
-            _placeholder_from_status(status, "extract-attachments")
+            _placeholder_from_status(status, "extract-artifacts")
             if status
             else "*No performance JSON provided.*"
         )
@@ -465,7 +661,7 @@ def generate_report(
     if g := _git_short():
         parts.append(f"- **Git (short):** `{g}`")
     parts.append("")
-    parts.append("*Generated by `scripts/generate_validation_report.py`.*")
+    parts.append("*Generated by `scripts/generate_benchmark_report.py`.*")
 
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text("\n".join(parts), encoding="utf-8")
@@ -476,10 +672,10 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     root = Path(__file__).resolve().parent.parent
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
-        "--output", type=Path, default=root / "out" / "validation-report.md"
+        "--output", type=Path, default=root / "out" / "benchmark-report.md"
     )
     parser.add_argument("--on-device-performance-json", type=Path, default=None)
-    parser.add_argument("--compare-summary", type=Path, default=None)
+    parser.add_argument("--accuracy-summary", type=Path, default=None)
     parser.add_argument("--run-status", type=Path, default=None)
     parser.add_argument("--xctest-metrics-json", type=Path, default=None)
     args = parser.parse_args(list(argv) if argv is not None else None)
@@ -487,7 +683,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     generate_report(
         out_path=args.output.resolve(),
         on_device_performance_json=args.on_device_performance_json,
-        compare_summary=args.compare_summary,
+        accuracy_summary=args.accuracy_summary,
         run_status=args.run_status,
         xctest_metrics_json=args.xctest_metrics_json,
     )

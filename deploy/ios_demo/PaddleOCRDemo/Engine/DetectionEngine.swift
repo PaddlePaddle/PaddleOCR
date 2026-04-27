@@ -31,6 +31,8 @@ struct DetectionResult {
     let postprocessTime: TimeInterval
     /// Total detection time (preprocess + inference + postprocess).
     let totalTime: TimeInterval
+    /// Detection model input tensor shape, e.g. [1, 3, H, W].
+    let inputTensorShape: [Int]
 }
 
 // MARK: - Detection Engine Errors
@@ -159,7 +161,8 @@ class DetectionEngine {
             preprocessTime: preprocessTime,
             inferenceTime: inferenceTime,
             postprocessTime: postprocessTime,
-            totalTime: totalTime
+            totalTime: totalTime,
+            inputTensorShape: preprocessed.tensorShape
         )
     }
 }

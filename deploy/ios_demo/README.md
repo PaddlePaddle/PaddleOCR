@@ -148,88 +148,96 @@ If you use CocoaPods, run `pod install` in the project root first so the workspa
 
 Build the **PaddleOCRDemo** scheme. Ensure **`PaddleOCRDemo/Models/`** and **`PaddleOCRDemo/Resources/SampleImages/`** are included in the app target via folder references / **Copy Bundle Resources**, and **`PaddleOCRDemoTests/Fixtures/`** in the test target (as in the checked-in project). The built-in picker sample is **`general_ocr_002.jpg`**.
 
-## Validation
+## Benchmark
 
-**Validation** means the **automated check pipeline** for this demo: run a reference OCR, run the same image through the iOS tests, compare the text output to tolerances, and write a short report. In one pass you get:
-
-1. **Does the app match the reference?** The pipeline compares iOS recognition to a Python PaddleOCR run on the **same** photo and models, using fixed accuracy thresholds.
-2. **How fast is it on device?** The same test bundle also **times** full OCR runs and records rough **memory** figures so you can track regressions—without using the Python step for that part.
-
-So “validation” is an umbrella for both **accuracy gating** and **on-device performance sampling**; the artifact table below lists which output file serves which role.
+This demo provides a benchmark pipeline for measuring on-device OCR latency and memory.
 
 ### Prerequisites
 
-Complete [One-time asset setup](#one-time-asset-setup) first. For validation specifically you also need:
+Complete [One-time asset setup](#one-time-asset-setup) first. For benchmark runs you also need:
 
-- PaddleOCR (with ONNX Runtime engine) for the reference step: `python3 -m pip install -r requirements-validation.txt`.
-- Xcode 16 or later (validation uses `xcresulttool get test-results`, introduced in 16.0).
+- Xcode 16 or later (the benchmark extractor uses `xcresulttool get test-results`, introduced in 16.0).
+- Optional accuracy precheck: PaddleOCR (with ONNX Runtime engine) for reference generation, and `python3 -m pip install -r requirements-accuracy.txt` for additional dependencies.
 
 ### Full pipeline
 
-From the project root, **`./scripts/run_validation.sh`** drives: Python reference OCR → Xcode tests on a simulator or device → extract result attachments → compare accuracy → generate a report.
+From the project root, use **`./scripts/run_benchmark.sh`**. This is the supported entry point for benchmark runs. The script resolves the input image, optionally runs an accuracy precheck, runs the XCTest benchmark on a simulator or device, extracts result artifacts, and writes the Markdown report.
 
-**Configuring the run:** prefer **`run_validation.sh`** flags (below). **`resolve-image`** picks the file: **`--image`**, **`--fixture`** / **`PADDLEOCR_VALIDATION_IMAGE_NAME`**, or—with none of those set—**exactly one** non-`local-*` image under **`PaddleOCRDemoTests/Fixtures/`** (a typical clone is only **`ios_ocr_validation_reference.jpg`**; zero or multiple candidates → **`--fixture`** or **`--image`**). **`PADDLEOCR_VALIDATION_IMAGE_NAME`** is always passed to the test runner as that basename so it matches **`ref.json`**. **Other** knobs (warmup, measured iterations, inference backend, etc.) are forwarded to [Test runner environment variables](#test-runner-environment-variables) **only when** you set them via a flag or **`PADDLEOCR_VALIDATION_*`**; **flags win over env** when both apply.
+The script always invokes `xcodebuild test` with `-configuration Release`.
+
+**Configuring the run:** prefer script flags. `--image` copies an arbitrary image into the test fixtures for this run. `--fixture` selects an existing file under `PaddleOCRDemoTests/Fixtures/`. If neither is set, the script requires exactly one non-`local-*` image under `PaddleOCRDemoTests/Fixtures/` (a typical setup has one benchmark image such as `ios_ocr_benchmark_reference.jpg`).
 
 | Intent | Flags |
 | --- | --- |
+| Destination | `--udid <id>` for a real device, or `--simulator <name>` |
 | Image from an arbitrary path | `--image <path>` (copied into `Fixtures/` as `local-*` for this run) |
 | Image already under `PaddleOCRDemoTests/Fixtures/` | `--fixture <name>` (stem or `stem.ext`) |
 | Benchmark intensity | `--warmup <n>`, `--measured-iterations <n>` |
 | ONNX Runtime EP | `--inference-backend CORE_ML`, `XNNPACK`, or `CPU` |
+| Optional accuracy precheck | `--accuracy-check`, optionally `--accuracy-reference-json <path>` |
+| Gate benchmark on accuracy `FAIL` | `--accuracy-check --stop-on-accuracy-failure` |
+| Output directory | `--out-dir <dir>` (default: `out/`) |
+| Clean previous artifacts | `--clean` (removes `Fixtures/local-*` and prior artifacts under the output directory) |
 
 ```bash
-./scripts/run_validation.sh                                              # default simulator (iPhone 16)
-./scripts/run_validation.sh --simulator 'iPhone 17'
-./scripts/run_validation.sh --udid <device-udid>
-./scripts/run_validation.sh --udid <udid> --image /path/to/photo.png
-./scripts/run_validation.sh --fixture ios_ocr_validation_reference --warmup 2 --measured-iterations 20
-PADDLEOCR_VALIDATION_MEASURED_ITERATIONS=30 ./scripts/run_validation.sh --warmup 0
+./scripts/run_benchmark.sh --udid <device-udid> --warmup 5 --measured-iterations 30
+./scripts/run_benchmark.sh --udid <udid> --image /path/to/photo.png --inference-backend CPU
+./scripts/run_benchmark.sh --fixture ios_ocr_benchmark_reference --warmup 2 --measured-iterations 20
+./scripts/run_benchmark.sh
+PADDLEOCR_BENCHMARK_MEASURED_ITERATIONS=30 ./scripts/run_benchmark.sh --warmup 0
+./scripts/run_benchmark.sh --accuracy-check --udid <device-udid> --measured-iterations 30
+./scripts/run_benchmark.sh --accuracy-check --stop-on-accuracy-failure --udid <device-udid>
+./scripts/run_benchmark.sh --out-dir ./benchmark-out --measured-iterations 30
 ```
 
-After compare **completes**, the script overwrites **`out/compare-summary.json`**, **`out/run-status.json`**, and **`out/validation-report.md`**. If the pipeline **errors** earlier, those files are **not** updated for this run (any existing copies are from a previous attempt).
+`--accuracy-check` runs before the benchmark in a separate XCTest invocation. Its result is reported as an accuracy precheck (`PASS`, `FAIL`, or `ERROR`). By default, `FAIL` records an accuracy mismatch but continues to the benchmark, while `ERROR` stops the pipeline because the precheck infrastructure did not produce a trustworthy result. Add `--stop-on-accuracy-failure` when you also want `FAIL` to skip the benchmark tests and return a non-zero exit code.
 
-Outputs under **`out/`**:
+`PADDLEOCR_BENCHMARK_ORT_PROFILING=1` enables ONNX Runtime session profiling attachments (`ort_profile_detection`, `ort_profile_recognition`). Profiling changes runtime behavior and should be captured in a separate run from clean latency measurements.
+
+The script writes artifacts under the output directory (`out/` by default, configurable via `--out-dir`). After the benchmark **completes**, it overwrites `run-status.json`, `on-device-performance.json`, `xctest-memory-metrics.json`, and `benchmark-report.md` there. If the benchmark pipeline **errors** earlier, those files may be missing or partial for this run (any existing copies are from a previous attempt).
+
+The report includes model input tensor shape distributions, first measured run line count, inferred model preset, actual model format (`onnx` or `ort`), det/rec/total model weight sizes, app executable size when it can be resolved from Xcode build settings, cold model load time, measured latency, memory, etc. Shape distribution counts are counted per model invocation inside the measured loop: detection contributes one shape per full OCR run, while recognition contributes one shape per recognition batch.
+
+Outputs under the configured output directory:
 
 | Artifact | Producer | Purpose |
 |---|---|---|
-| `ref.json` | `ocr_reference_run.py` | Python reference OCR |
-| `result.xcresult` | `xcodebuild test` | iOS test run |
-| `ios-ocr-export.json` | `extract_xcresult_attachments.py` | iOS **accuracy** payload (polygons + text) from tests |
-| `on-device-performance.json` | `extract_xcresult_attachments.py` | iOS **performance** stats from tests |
-| `xctest-memory-metrics.json` | `extract_xctest_metrics.py` | XCTest **memory** metrics from `XCTMemoryMetric` |
-| `compare-summary.json` | `compare_ocr_json.py` | **Accuracy** metrics vs thresholds (`pass`) |
-| `run-status.json` | `run_validation.sh` | Per-step outcomes |
-| `validation-report.md` | `generate_validation_report.py` | Human-readable report |
+| `accuracy-reference.json` | `ocr_reference_run.py` | Optional generated reference JSON, unless `--accuracy-reference-json` is provided |
+| `accuracy-result.xcresult` | `xcodebuild test` | Optional accuracy precheck XCTest run |
+| `ios-ocr-export.json` | `extract_xcresult_attachments.py` | Optional iOS accuracy payload extracted from the accuracy precheck |
+| `accuracy-summary.json` | `compare_ocr_json.py` | Optional accuracy precheck summary |
+| `latency-result.xcresult` | `xcodebuild test` | Latency benchmark XCTest run |
+| `memory-result.xcresult` | `xcodebuild test` | Memory benchmark XCTest run |
+| `on-device-performance.json` | `extract_xcresult_attachments.py` | iOS latency stats extracted from `latency-result.xcresult` |
+| `ort_profile_detection`, `ort_profile_recognition` | `extract_xcresult_attachments.py` | Optional ONNX Runtime **profiling** JSON from the latency benchmark run |
+| `xctest-memory-metrics.json` | `extract_xctest_metrics.py` | XCTest memory metrics, normally extracted from `memory-result.xcresult` |
+| `logs/*.log` | `run_benchmark.sh` | Per-step command logs, especially useful after failures |
+| `run-status.json` | `run_benchmark.sh` | Per-step outcomes and benchmark metadata |
+| `benchmark-report.md` | `generate_benchmark_report.py` | Human-readable report |
 
-Exit **`0`** on **PASS**; non-zero on **FAIL** (thresholds not met) or **ERROR** (halted before a finished compare). Use the script’s stderr/stdout and **`logs/`** after **ERROR**.
+Exit **`0`** when the benchmark pipeline reaches **`COMPLETED`**; non-zero on benchmark pipeline **`ERROR`**. Optional accuracy precheck `FAIL` is recorded in `run-status.json` and `benchmark-report.md` and changes the exit code only when `--stop-on-accuracy-failure` is set. Accuracy precheck `ERROR` always stops the pipeline.
 
-### Test runner environment variables
+### Advanced: XCTest Environment
 
-The validation **tests** read settings through variables named **`PADDLEOCR_VALIDATION_*`**. They apply to the **test runner process**, not your interactive shell unless you forward them (see table).
+Most users should use `run_benchmark.sh` flags instead of setting XCTest environment variables directly. This section is only for debugging the `PaddleOCRDemoTests` target from Xcode or a custom `xcodebuild test` command.
+
+The benchmark tests read settings through variables named **`PADDLEOCR_BENCHMARK_*`**. These variables apply to the XCTest runner process, not automatically to your interactive shell.
 
 | How you launch tests | What to configure |
 | --- | --- |
-| **Xcode** | Scheme **PaddleOCRDemo** → **Test** (not Run) → **Arguments** → **Environment Variables**. Use the names below **as-is** (`PADDLEOCR_VALIDATION_…`). |
-| **`xcodebuild test`** | Set **`TEST_RUNNER_` + the same name** (e.g. `TEST_RUNNER_PADDLEOCR_VALIDATION_IMAGE_NAME=…`). `xcodebuild` injects them into the test runner and strips the prefix so the test still reads **`PADDLEOCR_VALIDATION_…`**. |
-| **`run_validation.sh`** | Calls `xcodebuild` with these set for you. You may export `PADDLEOCR_VALIDATION_*` in the shell first; **script flags override env** when both apply to the same setting. |
+| **Xcode** | Scheme **PaddleOCRDemo** → **Test** (not Run) → **Arguments** → **Environment Variables**. Use the names below **as-is** (`PADDLEOCR_BENCHMARK_…`). |
+| **Custom `xcodebuild test`** | Set **`TEST_RUNNER_` + the same name** (e.g. `TEST_RUNNER_PADDLEOCR_BENCHMARK_IMAGE_NAME=…`). `xcodebuild` injects them into the test runner and strips the prefix so the test still reads **`PADDLEOCR_BENCHMARK_…`**. |
 
 | Variable | If unset | Role |
 | --- | --- | --- |
-| `PADDLEOCR_VALIDATION_IMAGE_NAME` | Defaults to **`ios_ocr_validation_reference`**. Set explicitly to use another bundled image. | Bundled test image: **stem** or **`stem.ext`** under **`Fixtures/`**. |
-| `PADDLEOCR_VALIDATION_WARMUP_ITERATIONS` | **3** | Untimed full OCR runs before timing (warm caches / JIT). Used only by the **performance** test. |
-| `PADDLEOCR_VALIDATION_MEASURED_ITERATIONS` | **10** | Timed runs. Used only by the **performance** test. |
-| `PADDLEOCR_VALIDATION_INFERENCE_BACKEND` | **CORE_ML** | ONNX Runtime EP for **`OCRValidationTests`**: **`CORE_ML`**, **`XNNPACK`**, or **`CPU`** (plain CPU execution provider; not XNNPACK). |
-| `PADDLEOCR_VALIDATION_ONLY_TESTING_SCOPE` | `PaddleOCRDemoTests/OCRValidationTests` | `run_validation.sh` only: value passed to `xcodebuild -only-testing`. |
+| `PADDLEOCR_BENCHMARK_IMAGE_NAME` | Defaults to **`ios_ocr_benchmark_reference`**. Set explicitly to use another bundled image. | Bundled test image: **stem** or **`stem.ext`** under **`Fixtures/`**. |
+| `PADDLEOCR_BENCHMARK_WARMUP_ITERATIONS` | **3** | Untimed full OCR runs before timing (warm caches / JIT). Used by latency and memory benchmark tests. |
+| `PADDLEOCR_BENCHMARK_MEASURED_ITERATIONS` | **10** | Timed runs. Used by latency and memory benchmark tests. |
+| `PADDLEOCR_BENCHMARK_INFERENCE_BACKEND` | **CORE_ML** | ONNX Runtime EP for **`OCRBenchmarkTests`**: **`CORE_ML`**, **`XNNPACK`**, or **`CPU`**. |
+| `PADDLEOCR_BENCHMARK_ORT_PROFILING` | (unset) | Set to **`1`**, **`true`**, **`yes`**, or **`on`** to enable ONNX Runtime **session profiling** (JSON attachments). Profiling **distorts** wall-clock timings; use a separate run for clean latency. |
+| `PADDLEOCR_BENCHMARK_ONLY_TESTING_SCOPE` | latency + memory benchmark tests | `run_benchmark.sh` only: comma-separated values passed to repeated `xcodebuild -only-testing` flags. |
 
 Non-negative integers for the two iteration variables.
-
-### XCTest only (without the Python pipeline)
-
-**Read this subsection when** you run or debug the **`PaddleOCRDemoTests`** target directly (**Cmd-U** in Xcode, or **`xcodebuild test`**).
-
-**What it is for:** class **`OCRValidationTests`** produces (1) an OCR JSON attachment for **accuracy** checks, (2) **`on-device-performance.json`**-style timing and memory stats from repeated runs, and (3) `XCTMemoryMetric` samples exported from the `.xcresult`.
-
-**Environment variables:** set **`PADDLEOCR_VALIDATION_*`** as documented in [Test runner environment variables](#test-runner-environment-variables) (Xcode vs `TEST_RUNNER_` vs `run_validation.sh`).
 
 ## Third-party licenses
 

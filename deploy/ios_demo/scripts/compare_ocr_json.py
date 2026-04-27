@@ -162,7 +162,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         "--json-summary-out",
         type=Path,
         default=None,
-        help="Write the same JSON as stdout to this path (PASS or FAIL) for generate_validation_report.py",
+        help="Write the same JSON as stdout to this path (PASS or FAIL) for generate_benchmark_report.py",
     )
     args = parser.parse_args(list(argv) if argv is not None else None)
 

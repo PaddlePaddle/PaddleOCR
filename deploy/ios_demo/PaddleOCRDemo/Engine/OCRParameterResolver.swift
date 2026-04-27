@@ -26,8 +26,8 @@ struct OCRRuntimeParams: Equatable, Sendable {
     var textDetBoxThresh: Float?
     var textDetUnclipRatio: Float?
     // Recognition
-    var textRecScoreThresh: Float?
     var textRecBatchSize: Int?
+    var textRecScoreThresh: Float?
 
     static let noOverrides = OCRRuntimeParams(
         textDetLimitSideLen: nil,
@@ -36,8 +36,8 @@ struct OCRRuntimeParams: Equatable, Sendable {
         textDetThresh: nil,
         textDetBoxThresh: nil,
         textDetUnclipRatio: nil,
-        textRecScoreThresh: nil,
-        textRecBatchSize: nil
+        textRecBatchSize: nil,
+        textRecScoreThresh: nil
     )
 }
 
@@ -53,8 +53,8 @@ struct ResolvedOCRRuntimeParams: Equatable, Sendable {
     var textDetBoxThresh: Float
     var textDetUnclipRatio: Float
     // Recognition
-    var textRecScoreThresh: Float
     var textRecBatchSize: Int
+    var textRecScoreThresh: Float
 
     init(
         textDetLimitSideLen: Int,
@@ -63,8 +63,8 @@ struct ResolvedOCRRuntimeParams: Equatable, Sendable {
         textDetThresh: Float,
         textDetBoxThresh: Float,
         textDetUnclipRatio: Float,
-        textRecScoreThresh: Float,
         textRecBatchSize: Int,
+        textRecScoreThresh: Float,
     ) {
         self.textDetLimitSideLen = textDetLimitSideLen
         self.textDetLimitType = textDetLimitType
@@ -72,8 +72,8 @@ struct ResolvedOCRRuntimeParams: Equatable, Sendable {
         self.textDetThresh = textDetThresh
         self.textDetBoxThresh = textDetBoxThresh
         self.textDetUnclipRatio = textDetUnclipRatio
-        self.textRecScoreThresh = textRecScoreThresh
         self.textRecBatchSize = textRecBatchSize
+        self.textRecScoreThresh = textRecScoreThresh
     }
 
     static let fallbackForUI = ResolvedOCRRuntimeParams(
@@ -83,8 +83,8 @@ struct ResolvedOCRRuntimeParams: Equatable, Sendable {
         textDetThresh: OCRParameterResolver.textDetThreshAppDefault,
         textDetBoxThresh: OCRParameterResolver.textDetBoxThreshAppDefault,
         textDetUnclipRatio: OCRParameterResolver.textDetUnclipRatioAppDefault,
-        textRecScoreThresh: OCRParameterResolver.textRecScoreThreshAppDefault,
-        textRecBatchSize: OCRParameterResolver.textRecBatchSizeAppDefault
+        textRecBatchSize: OCRParameterResolver.textRecBatchSizeAppDefault,
+        textRecScoreThresh: OCRParameterResolver.textRecScoreThreshAppDefault
     )
 }
 
@@ -98,8 +98,8 @@ extension OCRRuntimeParams {
             textDetThresh: textDetThresh ?? base.textDetThresh,
             textDetBoxThresh: textDetBoxThresh ?? base.textDetBoxThresh,
             textDetUnclipRatio: textDetUnclipRatio ?? base.textDetUnclipRatio,
-            textRecScoreThresh: textRecScoreThresh ?? base.textRecScoreThresh,
-            textRecBatchSize: textRecBatchSize ?? base.textRecBatchSize
+            textRecBatchSize: textRecBatchSize ?? base.textRecBatchSize,
+            textRecScoreThresh: textRecScoreThresh ?? base.textRecScoreThresh
         )
     }
 }
@@ -115,8 +115,8 @@ extension ResolvedOCRRuntimeParams {
             textDetThresh: o.detThresh,
             textDetBoxThresh: o.detBoxThresh,
             textDetUnclipRatio: o.detUnclipRatio,
-            textRecScoreThresh: o.recScoreThresh,
-            textRecBatchSize: o.textRecBatchSize
+            textRecBatchSize: o.textRecBatchSize,
+            textRecScoreThresh: o.recScoreThresh
         )
     }
 }
@@ -134,8 +134,8 @@ struct EffectiveOCRParams: Equatable, Sendable {
     var detBoxThresh: Float
     var detUnclipRatio: Float
     // Recognition
-    var recScoreThresh: Float
     var textRecBatchSize: Int
+    var recScoreThresh: Float
 }
 
 // MARK: - Resolver
@@ -153,8 +153,8 @@ enum OCRParameterResolver {
     static let textDetBoxThreshAppDefault: Float = 0.6
     static let textDetUnclipRatioAppDefault: Float = 1.5
     // Recognition
-    static let textRecScoreThreshAppDefault: Float = 0.0
     static let textRecBatchSizeAppDefault: Int = 1
+    static let textRecScoreThreshAppDefault: Float = 0.0
 
     // MARK: Merge helpers
 
@@ -217,11 +217,11 @@ enum OCRParameterResolver {
             app: Self.textDetUnclipRatioAppDefault
         )
 
-        let recScoreThresh = runtime.textRecScoreThresh ?? Self.textRecScoreThreshAppDefault
         let textRecBatchSize = mergeInt(
             ui: runtime.textRecBatchSize,
             app: Self.textRecBatchSizeAppDefault
         )
+        let recScoreThresh = runtime.textRecScoreThresh ?? Self.textRecScoreThreshAppDefault
 
         return EffectiveOCRParams(
             detResize: detResize,
@@ -231,8 +231,8 @@ enum OCRParameterResolver {
             detThresh: detThresh,
             detBoxThresh: detBoxThresh,
             detUnclipRatio: detUnclipRatio,
-            recScoreThresh: recScoreThresh,
-            textRecBatchSize: textRecBatchSize
+            textRecBatchSize: textRecBatchSize,
+            recScoreThresh: recScoreThresh
         )
     }
 }

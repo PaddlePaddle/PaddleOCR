@@ -15,6 +15,7 @@
 #ifndef BridgingHeader_h
 #define BridgingHeader_h
 
+#import "ORTProfilingBridge.h"
 #import "OpenCVDBBridge.h"
 #import "OpenCVImageBridge.h"
 #import "PDBPolygonOffsetBridge.h"

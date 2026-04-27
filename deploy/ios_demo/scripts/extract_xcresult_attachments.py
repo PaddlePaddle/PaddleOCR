@@ -312,10 +312,18 @@ def main(argv: List[str] | None = None) -> int:
         "--name",
         action="append",
         default=[],
-        required=True,
-        help="Attachment name to extract (may be repeated).",
+        help="Attachment name to extract (may be repeated). Fails the run if missing.",
+    )
+    parser.add_argument(
+        "--optional-name",
+        action="append",
+        default=[],
+        dest="optional_name",
+        help="Like --name, but a missing attachment is skipped with a message (exit still 0).",
     )
     args = parser.parse_args(argv)
+    if not args.name and not args.optional_name:
+        parser.error("at least one of --name or --optional-name is required")
 
     _check_xcresulttool_capability()
 
@@ -329,7 +337,9 @@ def main(argv: List[str] | None = None) -> int:
     attachments = _enumerate(args.result)
 
     errors = 0
-    for wanted in args.name:
+
+    def _extract_wanted(wanted: str, optional: bool) -> None:
+        nonlocal errors
         hits = [
             (tid, sn)
             for sn, tid, _pid in attachments
@@ -337,21 +347,31 @@ def main(argv: List[str] | None = None) -> int:
         ]
         uniq: Set[Tuple[str, str]] = set(hits)
         if len(uniq) == 0:
+            if optional:
+                sys.stderr.write(
+                    f"[extract_xcresult_attachments] optional attachment not found, skipping: {wanted!r}\n"
+                )
+                return
             errors += _die(
                 f"Attachment not found: {wanted}.",
                 str(args.result),
                 "Confirm the test run attached JSON and inspect `get test-results activities` / `export attachments` for this bundle.",
             )
-            continue
+            return
         if len(uniq) > 1:
             errors += _die(
                 f"Attachment name collision: {wanted} matches {len(uniq)} exports.",
                 str(args.result),
                 "Ensure attachment base names are unique across tests.",
             )
-            continue
+            return
         test_id, stored = next(iter(uniq))
         _export_one(args.result, test_id, wanted, stored, args.out_dir / wanted)
+
+    for wanted in args.name:
+        _extract_wanted(wanted, optional=False)
+    for wanted in args.optional_name:
+        _extract_wanted(wanted, optional=True)
 
     return 1 if errors else 0
 

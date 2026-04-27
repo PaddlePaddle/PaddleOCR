@@ -53,6 +53,35 @@ struct ContentView: View {
         }
     }
 
+    // MARK: - Settings sections
+
+    private var inferenceEngineSection: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            DemoSectionHeader(
+                title: "Inference engine",
+                subtitle: "ONNX Runtime execution providers. Changing this reloads loaded models."
+            )
+            DemoCard {
+                InferenceEnginePanel(inferenceBackend: $viewModel.inferenceBackend)
+            }
+        }
+    }
+
+    private func ocrParametersSection(subtitle: String) -> some View {
+        VStack(alignment: .leading, spacing: 10) {
+            DemoSectionHeader(
+                title: "OCR parameters",
+                subtitle: subtitle
+            )
+            DemoCard {
+                OCRParametersPanel(
+                    params: $viewModel.runtimeParams,
+                    resolvedBaseline: viewModel.resolvedRuntimeBaseline ?? .fallbackForUI
+                )
+            }
+        }
+    }
+
     // MARK: - State Router
 
     @ViewBuilder
@@ -105,19 +134,11 @@ struct ContentView: View {
                 }
             }
 
-            VStack(alignment: .leading, spacing: 10) {
-                DemoSectionHeader(
-                    title: "Parameters",
-                    subtitle: "These apply to the next OCR run."
-                )
-                DemoCard {
-                    OCRParametersPanel(
-                        params: $viewModel.runtimeParams,
-                        inferenceBackend: $viewModel.inferenceBackend,
-                        resolvedBaseline: viewModel.resolvedRuntimeBaseline ?? .fallbackForUI
-                    )
-                }
-            }
+            inferenceEngineSection
+
+            ocrParametersSection(
+                subtitle: "These apply to the next OCR run."
+            )
 
             VStack(alignment: .leading, spacing: 10) {
                 DemoSectionHeader(
@@ -187,19 +208,11 @@ struct ContentView: View {
                 .padding(.vertical, 4)
 
             // —— Control zone: tune & repeat on same image —
-            VStack(alignment: .leading, spacing: 10) {
-                DemoSectionHeader(
-                    title: "Parameters",
-                    subtitle: "Adjust, then re-run without picking a new photo."
-                )
-                DemoCard {
-                    OCRParametersPanel(
-                        params: $viewModel.runtimeParams,
-                        inferenceBackend: $viewModel.inferenceBackend,
-                        resolvedBaseline: viewModel.resolvedRuntimeBaseline ?? .fallbackForUI
-                    )
-                }
-            }
+            inferenceEngineSection
+
+            ocrParametersSection(
+                subtitle: "Adjust, then re-run without picking a new photo."
+            )
 
             Button {
                 Task { await viewModel.rerunOCR() }

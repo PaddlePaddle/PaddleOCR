@@ -40,6 +40,7 @@ enum ORTSessionManagerError: LocalizedError {
     case inferenceFailed(String)
     case inputTensorElementCountMismatch(expected: Int, actual: Int, modelName: String)
     case outputContainsNaN(String)
+    case ortProfilingFailed(String)
 
     var errorDescription: String? {
         switch self {
@@ -49,27 +50,102 @@ enum ORTSessionManagerError: LocalizedError {
         case .inputTensorElementCountMismatch(let expected, let actual, let modelName):
             return "\(modelName): input tensor size mismatch (expected \(expected) floats, got \(actual))"
         case .outputContainsNaN(let name): return "Output tensor '\(name)' contains NaN values"
+        case .ortProfilingFailed(let detail): return "ONNX Runtime profiling: \(detail)"
         }
     }
 }
 
+/// File URLs of ONNX Runtime JSON profiles after ``ORTSessionManager/finalizeORTProfiling()`` (separate file per sub-model).
+struct ORTProfilingOutput: Sendable {
+    var detectionProfileJSON: URL
+    var recognitionProfileJSON: URL
+}
+
 actor ORTSessionManager {
+    private struct SessionIONames {
+        let inputName: String
+        let outputNames: Set<String>
+    }
+
     private var env: ORTEnv?
     private var detSession: ORTSession?
     private var recSession: ORTSession?
+    private var detIO: SessionIONames?
+    private var recIO: SessionIONames?
+    private var ortProfilingPendingFinalize: Bool = false
 
     /// Load both models. Creates one ORTEnv (per ORT docs: one per process),
     /// configures execution providers per ``ORTInferenceBackend``,
     /// and creates sessions for detection and recognition models.
-    func loadModels(backend: ORTInferenceBackend = .coreMLOnly) async throws {
-        // 1. Create environment (one per process)
+    ///
+    /// - Parameter ortProfiling: When `true`, enables ONNX Runtime session profiling (written as JSON on finalize).
+    ///   Profiling adds overhead; do not treat wall-clock times from the same run as a clean latency benchmark.
+    func loadModels(backend: ORTInferenceBackend = .coreMLOnly, ortProfiling: Bool = false) async throws {
         let env = try ORTEnv(loggingLevel: .warning)
         self.env = env
+        ortProfilingPendingFinalize = ortProfiling
 
-        // 2. Configure session options
+        let detConfig = try ModelConfig.detection()
+        let recConfig = try ModelConfig.recognition()
+
+        if ortProfiling {
+            let baseDir = try ortProfilingDirectoryURL()
+            let detPrefix = baseDir.appendingPathComponent("paddle_ort_det", isDirectory: false).path
+            let recPrefix = baseDir.appendingPathComponent("paddle_ort_rec", isDirectory: false).path
+            let detOptions = try makeSessionOptions(backend: backend, ortProfilePathPrefix: detPrefix)
+            let recOptions = try makeSessionOptions(backend: backend, ortProfilePathPrefix: recPrefix)
+            detSession = try ORTSession(env: env, modelPath: detConfig.modelPath, sessionOptions: detOptions)
+            recSession = try ORTSession(env: env, modelPath: recConfig.modelPath, sessionOptions: recOptions)
+        } else {
+            let options = try makeSessionOptions(backend: backend, ortProfilePathPrefix: nil)
+            detSession = try ORTSession(env: env, modelPath: detConfig.modelPath, sessionOptions: options)
+            recSession = try ORTSession(env: env, modelPath: recConfig.modelPath, sessionOptions: options)
+        }
+        if let detSession {
+            detIO = try makeSessionIONames(session: detSession, modelName: "det")
+        }
+        if let recSession {
+            recIO = try makeSessionIONames(session: recSession, modelName: "rec")
+        }
+    }
+
+    /// Flushes ORT profiling and returns the JSON file paths. Call once after the last inference when
+    /// ``loadModels(ortProfiling:)`` was `true`. Safe to call when profiling was disabled (returns `nil`).
+    func finalizeORTProfiling() throws -> ORTProfilingOutput? {
+        guard ortProfilingPendingFinalize else { return nil }
+        ortProfilingPendingFinalize = false
+        guard let det = detSession, let rec = recSession else {
+            throw ORTSessionManagerError.sessionCreationFailed("Cannot finalize ORT profiling: session missing")
+        }
+        let detPath = try ORTProfilingBridge.endProfiling(session: det)
+        let recPath = try ORTProfilingBridge.endProfiling(session: rec)
+        if detPath.isEmpty || recPath.isEmpty {
+            throw ORTSessionManagerError.ortProfilingFailed("EndProfiling returned an empty path")
+        }
+        return ORTProfilingOutput(
+            detectionProfileJSON: URL(fileURLWithPath: detPath),
+            recognitionProfileJSON: URL(fileURLWithPath: recPath)
+        )
+    }
+
+    private func ortProfilingDirectoryURL() throws -> URL {
+        let base = try FileManager.default.url(
+            for: .cachesDirectory,
+            in: .userDomainMask,
+            appropriateFor: nil,
+            create: true
+        )
+        let dir = base.appendingPathComponent("PaddleOCRORTProfiling", isDirectory: true)
+        try FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
+        return dir
+    }
+
+    private func makeSessionOptions(backend: ORTInferenceBackend, ortProfilePathPrefix: String?) throws -> ORTSessionOptions {
         let options = try ORTSessionOptions()
         try options.setGraphOptimizationLevel(.all)
-
+        if let prefix = ortProfilePathPrefix {
+            try ORTProfilingBridge.enableProfiling(sessionOptions: options, pathPrefix: prefix)
+        }
         switch backend {
         case .coreMLOnly:
             let coremlOptions = ORTCoreMLExecutionProviderOptions()
@@ -78,17 +154,18 @@ actor ORTSessionManager {
             let xnnpackOptions = ORTXnnpackExecutionProviderOptions()
             try options.appendXnnpackExecutionProvider(with: xnnpackOptions)
         case .cpuOnly:
-            // Default ORT session uses the built-in CPU EP when no other EP is registered.
             break
         }
+        return options
+    }
 
-        // 3. Load detection model
-        let detConfig = try ModelConfig.detection()
-        detSession = try ORTSession(env: env, modelPath: detConfig.modelPath, sessionOptions: options)
-
-        // 4. Load recognition model (reuse same options)
-        let recConfig = try ModelConfig.recognition()
-        recSession = try ORTSession(env: env, modelPath: recConfig.modelPath, sessionOptions: options)
+    private func makeSessionIONames(session: ORTSession, modelName: String) throws -> SessionIONames {
+        let inputNames = try session.inputNames()
+        let outputNamesList = try session.outputNames()
+        guard let firstInputName = inputNames.first else {
+            throw ORTSessionManagerError.inferenceFailed("\(modelName): no input names found")
+        }
+        return SessionIONames(inputName: firstInputName, outputNames: Set(outputNamesList))
     }
 
     /// Run detection inference with real preprocessed input data.
@@ -101,7 +178,10 @@ actor ORTSessionManager {
         guard let session = detSession else {
             throw ORTSessionManagerError.sessionCreationFailed("Detection session not loaded")
         }
-        return try runInference(session: session, modelName: "det", inputData: inputData, shape: shape)
+        guard let io = detIO else {
+            throw ORTSessionManagerError.sessionCreationFailed("Detection session IO names not loaded")
+        }
+        return try runInference(session: session, io: io, modelName: "det", inputData: inputData, shape: shape)
     }
 
     /// Run recognition inference with preprocessed input data.
@@ -117,7 +197,10 @@ actor ORTSessionManager {
         guard let session = recSession else {
             throw ORTSessionManagerError.sessionCreationFailed("Recognition session not loaded")
         }
-        return try runInference(session: session, modelName: "rec", inputData: inputData, shape: shape)
+        guard let io = recIO else {
+            throw ORTSessionManagerError.sessionCreationFailed("Recognition session IO names not loaded")
+        }
+        return try runInference(session: session, io: io, modelName: "rec", inputData: inputData, shape: shape)
     }
 
     /// Shared inference logic used by both detection and recognition.
@@ -127,18 +210,11 @@ actor ORTSessionManager {
     /// validates that no output contains NaN values.
     private func runInference(
         session: ORTSession,
+        io: SessionIONames,
         modelName: String,
         inputData: [Float],
         shape: [Int]
     ) throws -> [String: (data: [Float], shape: [Int])] {
-        let inputNames = try session.inputNames()
-        let outputNamesList = try session.outputNames()
-        let outputNamesSet = Set(outputNamesList)
-
-        guard let firstInputName = inputNames.first else {
-            throw ORTSessionManagerError.inferenceFailed("\(modelName): no input names found")
-        }
-
         let expectedElements = shape.reduce(1, *)
         guard expectedElements == inputData.count else {
             throw ORTSessionManagerError.inputTensorElementCountMismatch(
@@ -161,10 +237,10 @@ actor ORTSessionManager {
             shape: nsShape
         )
 
-        let inputs: [String: ORTValue] = [firstInputName: inputTensor]
+        let inputs: [String: ORTValue] = [io.inputName: inputTensor]
         let outputs = try session.run(
             withInputs: inputs,
-            outputNames: outputNamesSet,
+            outputNames: io.outputNames,
             runOptions: nil
         )
 

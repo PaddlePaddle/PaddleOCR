@@ -17,35 +17,18 @@ import SwiftUI
 /// Sliders for detection / recognition runtime parameters (content only; wrap with `DemoCard` in parent).
 struct OCRParametersPanel: View {
     @Binding var params: OCRRuntimeParams
-    @Binding var inferenceBackend: ORTInferenceBackend
     let resolvedBaseline: ResolvedOCRRuntimeParams
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             HStack(alignment: .firstTextBaseline) {
-                Text("Parameters")
-                    .font(.headline)
                 Spacer()
-                Button("Reset") {
+                Button("Reset to defaults") {
                     params = .noOverrides
                 }
                 .font(.subheadline.weight(.medium))
             }
-            .padding(.bottom, 4)
-
-            groupTitle("Inference engine")
-            VStack(alignment: .leading, spacing: 6) {
-                Text("Core ML, XNNPACK, or built-in CPU — reloads models when changed")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                Picker("Inference engine", selection: $inferenceBackend) {
-                    ForEach(ORTInferenceBackend.allCases) { backend in
-                        Text(backend.displayTitle).tag(backend)
-                    }
-                }
-                .pickerStyle(.segmented)
-            }
-            .padding(.bottom, 14)
+            .padding(.bottom, 8)
 
             groupTitle("Detection preprocess")
             intParamRow(
@@ -88,17 +71,17 @@ struct OCRParametersPanel: View {
                 .padding(.vertical, 12)
 
             groupTitle("Recognition")
-            paramRow(
-                title: "Line confidence",
-                caption: "Discard lines below this score",
-                range: 0...1,
-                value: floatOverrideBinding(\.textRecScoreThresh, fallback: resolvedBaseline.textRecScoreThresh)
-            )
             intParamRow(
                 title: "Recognition batch size",
                 caption: "Number of text lines per recognition run",
                 range: 1...32,
                 value: intOverrideBinding(\.textRecBatchSize, fallback: resolvedBaseline.textRecBatchSize)
+            )
+            paramRow(
+                title: "Line confidence",
+                caption: "Discard lines below this score",
+                range: 0...1,
+                value: floatOverrideBinding(\.textRecScoreThresh, fallback: resolvedBaseline.textRecScoreThresh)
             )
         }
     }

@@ -15,7 +15,7 @@ import Foundation
 @testable import PaddleOCRDemo
 
 /// Names for JSON written as `XCTAttachment`s; keep in sync with whatever exports attachments from test results.
-enum ValidationArtifact: String {
+enum BenchmarkArtifact: String {
     case iOSExport = "ios-ocr-export.json"
     case onDevicePerformance = "on-device-performance.json"
 }
@@ -55,10 +55,29 @@ struct RecognitionPerLineBlock: Codable {
     var pooled: RecognitionPerLinePooledMs
 }
 
+struct BenchmarkTensorShapeSample: Codable {
+    var shape: [Int]
+    var count: Int
+}
+
+struct BenchmarkInputShapeDistribution: Codable {
+    var detection: [BenchmarkTensorShapeSample]
+    var recognition: [BenchmarkTensorShapeSample]
+}
+
 struct OCRDeviceBenchmarkPayload: Codable {
     var schemaVersion: Int = 1
+    var buildConfiguration: String
+    var deviceModel: String
+    var osVersion: String
+    var isSimulator: Bool
+    var inferenceBackend: String
+    var ortProfilingEnabled: Bool
     var warmupIterations: Int
     var measuredIterations: Int
+    var inputShapeDistribution: BenchmarkInputShapeDistribution
+    var firstMeasuredLineCount: Int
+    var coldLoadTimeMs: Double
     var totalTimeMs: TimingSummary
     var detectionTimeMs: TimingSummary
     var detectionPreprocessTimeMs: TimingSummary

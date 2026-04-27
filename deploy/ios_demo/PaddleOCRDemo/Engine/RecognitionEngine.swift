@@ -33,6 +33,8 @@ struct RecognitionEngineResult {
     let postprocessTime: TimeInterval
     /// Total recognition time (preprocess + inference + postprocess).
     let totalTime: TimeInterval
+    /// Recognition model input tensor shape for the batch this line belonged to.
+    let inputTensorShape: [Int]
 }
 
 // MARK: - Recognition Engine Errors
@@ -155,7 +157,8 @@ class RecognitionEngine {
                 preprocessTime: preprocessPer,
                 inferenceTime: inferencePer,
                 postprocessTime: postPer,
-                totalTime: totalPer
+                totalTime: totalPer,
+                inputTensorShape: batchPreprocessed.tensorShape
             )
         }
     }

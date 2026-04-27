@@ -54,6 +54,10 @@ struct OCRRunResult {
     let pipelineOverheadTime: TimeInterval
     /// Number of text lines from detection sent through recognition.
     let recognitionLineCount: Int
+    /// Detection model input tensor shape for this OCR run, e.g. [1, 3, H, W].
+    let detectionInputTensorShape: [Int]
+    /// Recognition model input tensor shapes for each non-empty recognition batch.
+    let recognitionInputTensorShapes: [[Int]]
     /// Per-line recognition ONNX inference times in **seconds**.
     let lineRecognitionInferenceTimes: [TimeInterval]
     /// Per-line recognition preprocess times in **seconds**.
@@ -159,6 +163,8 @@ class OCREngine {
             totalTime: totalTime,
             pipelineOverheadTime: max(0, overhead),
             recognitionLineCount: perLine.count,
+            detectionInputTensorShape: detResult.inputTensorShape,
+            recognitionInputTensorShapes: perLine.inputTensorShapes,
             lineRecognitionInferenceTimes: perLine.inference,
             lineRecognitionPreprocessTimes: perLine.preprocess,
             lineRecognitionPostprocessTimes: perLine.postprocess
@@ -176,6 +182,7 @@ class OCREngine {
     /// Per-line rec timings
     private struct PerLineRecognitionTimes {
         let count: Int
+        let inputTensorShapes: [[Int]]
         let inference: [TimeInterval]
         let preprocess: [TimeInterval]
         let postprocess: [TimeInterval]
@@ -217,6 +224,7 @@ class OCREngine {
 
         let batchSize = max(1, resolved.textRecBatchSize)
         var perLine: [RecognitionEngineResult?] = Array(repeating: nil, count: lines.count)
+        var batchInputShapes: [[Int]] = []
 
         var chunkStart = 0
         while chunkStart < sortedForInference.count {
@@ -226,6 +234,9 @@ class OCREngine {
             let recBatch = try await recognitionEngine.recognizeBatch(crops)
             guard recBatch.count == chunk.count else {
                 throw OCREngineError.recognitionBatchSizeMismatch(expected: chunk.count, actual: recBatch.count)
+            }
+            if let first = recBatch.first {
+                batchInputShapes.append(first.inputTensorShape)
             }
             for (i, item) in chunk.enumerated() {
                 perLine[item.lineIndex] = recBatch[i]
@@ -272,6 +283,7 @@ class OCREngine {
         )
         let perLineOut = PerLineRecognitionTimes(
             count: lines.count,
+            inputTensorShapes: batchInputShapes,
             inference: lineInf,
             preprocess: linePre,
             postprocess: linePost

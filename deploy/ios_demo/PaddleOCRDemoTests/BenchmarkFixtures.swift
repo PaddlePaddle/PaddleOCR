@@ -14,9 +14,9 @@
 
 import Foundation
 
-/// Default bundled image file names for validation and benchmark tests.
-enum ValidationFixtures {
-    static let defaultReferenceImageStem: String = "ios_ocr_validation_reference"
+/// Default bundled image file names for benchmark tests.
+enum BenchmarkFixtures {
+    static let defaultReferenceImageStem: String = "ios_ocr_benchmark_reference"
     static let defaultReferenceImageFileExtension: String = "jpg"
 
     static var defaultReferenceImageFileName: String {
