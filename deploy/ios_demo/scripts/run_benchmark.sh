@@ -42,6 +42,7 @@ FIXTURE_ARG=""
 WARMUP_CLI=""
 MEASURED_CLI=""
 INFERENCE_CLI=""
+ORT_PROFILING_CLI=0
 ACCURACY_CHECK=0
 ACCURACY_STOP_ON_FAILURE=0
 ACCURACY_REFERENCE_JSON=""
@@ -62,7 +63,8 @@ Options:
                         several fixtures exist.
   --warmup <n>          Benchmark warmup iterations (non-negative int).
   --measured-iterations <n>  Timed benchmark iterations.
-  --inference-backend <NAME>  ONNX Runtime EP for tests: CORE_ML, XNNPACK, or CPU.
+  --inference-backend <NAME>  ONNX Runtime EP for tests: CPU, XNNPACK, or CORE_ML.
+  --ort-profiling       Enable ONNX Runtime session profiling.
   --accuracy-check      Run an accuracy precheck before benchmark tests.
   --stop-on-accuracy-failure
                         With --accuracy-check, treat accuracy FAIL as blocking.
@@ -78,7 +80,7 @@ Environment (optional; CLI wins when both are set):
   PADDLEOCR_BENCHMARK_IMAGE_NAME   Select which bundled fixture to use (same as --fixture)
   PADDLEOCR_BENCHMARK_WARMUP_ITERATIONS
   PADDLEOCR_BENCHMARK_MEASURED_ITERATIONS
-  PADDLEOCR_BENCHMARK_INFERENCE_BACKEND   CORE_ML, XNNPACK, or CPU
+  PADDLEOCR_BENCHMARK_INFERENCE_BACKEND   CPU, XNNPACK, or CORE_ML
   PADDLEOCR_BENCHMARK_ORT_PROFILING   Set to 1/true/yes/on to emit ORT JSON profiles
   PADDLEOCR_BENCHMARK_ONLY_TESTING_SCOPE   Optional comma-separated xcodebuild -only-testing scopes.
 
@@ -104,6 +106,7 @@ while [[ $# -gt 0 ]]; do
     --warmup) WARMUP_CLI="$2"; shift 2 ;;
     --measured-iterations) MEASURED_CLI="$2"; shift 2 ;;
     --inference-backend) INFERENCE_CLI="$2"; shift 2 ;;
+    --ort-profiling) ORT_PROFILING_CLI=1; shift ;;
     --accuracy-check) ACCURACY_CHECK=1; shift ;;
     --stop-on-accuracy-failure) ACCURACY_STOP_ON_FAILURE=1; shift ;;
     --accuracy-reference-json) ACCURACY_REFERENCE_JSON="$2"; shift 2 ;;
@@ -141,26 +144,25 @@ if [[ -n "${MEASURED_MERGED}" ]]; then
     || die "Invalid --measured-iterations / PADDLEOCR_BENCHMARK_MEASURED_ITERATIONS: ${MEASURED_MERGED}" "argument parsing" "Use a non-negative integer."
 fi
 
-# Inference EP: CORE_ML, XNNPACK, or CPU; forward when set (flag or env).
+# Inference EP: CPU, XNNPACK, or CORE_ML; forward when set (flag or env).
 INFERENCE_MERGED="${INFERENCE_CLI:-${PADDLEOCR_BENCHMARK_INFERENCE_BACKEND:-}}"
 INFERENCE_CANON=""
 if [[ -n "${INFERENCE_MERGED}" ]]; then
-  case "${INFERENCE_MERGED}" in
-    coreMLOnly) INFERENCE_CANON="CORE_ML" ;;
-    xnnpackOnly) INFERENCE_CANON="XNNPACK" ;;
-    cpuOnly) INFERENCE_CANON="CPU" ;;
+  _inf_lc="$(printf '%s' "${INFERENCE_MERGED}" | tr '[:upper:]' '[:lower:]')"
+  case "${_inf_lc}" in
+    core_ml) INFERENCE_CANON="CORE_ML" ;;
+    xnnpack) INFERENCE_CANON="XNNPACK" ;;
+    cpu) INFERENCE_CANON="CPU" ;;
     *)
-      _inf_lc="$(printf '%s' "${INFERENCE_MERGED}" | tr '[:upper:]' '[:lower:]')"
-      case "${_inf_lc}" in
-        core_ml) INFERENCE_CANON="CORE_ML" ;;
-        xnnpack) INFERENCE_CANON="XNNPACK" ;;
-        cpu) INFERENCE_CANON="CPU" ;;
-        *)
-          die "Invalid --inference-backend / PADDLEOCR_BENCHMARK_INFERENCE_BACKEND: ${INFERENCE_MERGED}" "argument parsing" "Use CORE_ML, XNNPACK, or CPU (Swift: coreMLOnly / xnnpackOnly / cpuOnly)."
-          ;;
-      esac
+      die "Invalid --inference-backend / PADDLEOCR_BENCHMARK_INFERENCE_BACKEND: ${INFERENCE_MERGED}" "argument parsing" "Use CPU, XNNPACK, or CORE_ML (Swift raw: cpu, xnnpack, core_ml)."
       ;;
   esac
+fi
+
+if [[ "${ORT_PROFILING_CLI}" -eq 1 ]]; then
+  ORT_PROFILING_MERGED="1"
+else
+  ORT_PROFILING_MERGED="${PADDLEOCR_BENCHMARK_ORT_PROFILING:-}"
 fi
 
 LOGS_DIR="${OUT_DIR}/logs"
@@ -395,9 +397,9 @@ write_status_json() {
   finished="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
   python3 - "$STATUS_PATH" "$overall" "$exit_code" "$RUN_STARTED" "$finished" \
     "$IMAGE_NAME" "$IMAGE_SOURCE" "$DEST" "$BUILD_CONFIGURATION" "$TESTING_SCOPE" \
-    "$IS_SIMULATOR" "${INFERENCE_CANON:-CORE_ML}" "${WARMUP_MERGED:-}" "${MEASURED_MERGED:-}" \
+    "$IS_SIMULATOR" "${INFERENCE_CANON:-CPU}" "${WARMUP_MERGED:-}" "${MEASURED_MERGED:-}" \
     "$MODEL_PRESET" "$DET_MODEL_FORMAT" "$DET_MODEL_SIZE_BYTES" "$REC_MODEL_FORMAT" "$REC_MODEL_SIZE_BYTES" "$TOTAL_MODEL_SIZE_BYTES" "$APP_BINARY_SIZE_BYTES" \
-    "${PADDLEOCR_BENCHMARK_ORT_PROFILING:-}" "$ACCURACY_CHECK" "$ACCURACY_STATUS" \
+    "${ORT_PROFILING_MERGED:-}" "$ACCURACY_CHECK" "$ACCURACY_STATUS" \
     "$ACCURACY_STOP_ON_FAILURE" "$ACCURACY_REFERENCE_USED" "$ACCURACY_IOS_EXPORT_PATH" "$ACCURACY_SUMMARY_USED" "$ACCURACY_REASON" \
     "${#STEP_NAMES[@]}" \
     "${STEP_NAMES[@]}" \
@@ -781,7 +783,7 @@ xcodebuild_test_impl() {
   rm -rf "${LATENCY_RESULT_PATH}"
   rm -rf "${MEMORY_RESULT_PATH}"
   rm -f "${XCTEST_METRICS_PATH}"
-  echo "xcodebuild: configuration=${BUILD_CONFIGURATION} benchmark image name=${IMAGE_NAME} warmup=${WARMUP_MERGED:-} measured=${MEASURED_MERGED:-} inference=${INFERENCE_CANON:-default} scope=${TESTING_SCOPE}"
+  echo "xcodebuild: configuration=${BUILD_CONFIGURATION} benchmark image name=${IMAGE_NAME} warmup=${WARMUP_MERGED:-} measured=${MEASURED_MERGED:-} inference=${INFERENCE_CANON:-default} ort_profiling=${ORT_PROFILING_MERGED:+on} scope=${TESTING_SCOPE}"
   local runenv=(
     env "TEST_RUNNER_PADDLEOCR_BENCHMARK_IMAGE_NAME=${IMAGE_NAME}"
     "TEST_RUNNER_PADDLEOCR_BENCHMARK_BUILD_CONFIGURATION=${BUILD_CONFIGURATION}"
@@ -789,7 +791,7 @@ xcodebuild_test_impl() {
   [[ -n "${WARMUP_MERGED}" ]] && runenv+=("TEST_RUNNER_PADDLEOCR_BENCHMARK_WARMUP_ITERATIONS=${WARMUP_MERGED}")
   [[ -n "${MEASURED_MERGED}" ]] && runenv+=("TEST_RUNNER_PADDLEOCR_BENCHMARK_MEASURED_ITERATIONS=${MEASURED_MERGED}")
   [[ -n "${INFERENCE_CANON}" ]] && runenv+=("TEST_RUNNER_PADDLEOCR_BENCHMARK_INFERENCE_BACKEND=${INFERENCE_CANON}")
-  [[ -n "${PADDLEOCR_BENCHMARK_ORT_PROFILING:-}" ]] && runenv+=("TEST_RUNNER_PADDLEOCR_BENCHMARK_ORT_PROFILING=${PADDLEOCR_BENCHMARK_ORT_PROFILING}")
+  [[ -n "${ORT_PROFILING_MERGED:-}" ]] && runenv+=("TEST_RUNNER_PADDLEOCR_BENCHMARK_ORT_PROFILING=${ORT_PROFILING_MERGED}")
   local scopes=() scope result_path
   IFS=',' read -r -a scopes <<< "${TESTING_SCOPE}"
   for scope in "${scopes[@]}"; do

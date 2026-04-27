@@ -87,7 +87,7 @@ class OCRViewModel: ObservableObject {
     @Published var copiedFeedback: Bool = false
     @Published var runtimeParams = OCRRuntimeParams.noOverrides
     /// ONNX Runtime EP chain (requires ``loadModels()`` to take effect).
-    @Published var inferenceBackend: ORTInferenceBackend = .coreMLOnly
+    @Published var inferenceBackend: ORTInferenceBackend = .cpu
     @Published private(set) var resolvedRuntimeBaseline: ResolvedOCRRuntimeParams?
 
     private var sessionManager: ORTSessionManager?

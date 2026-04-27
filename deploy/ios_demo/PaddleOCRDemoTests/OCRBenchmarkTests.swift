@@ -34,7 +34,7 @@ final class OCRBenchmarkTests: XCTestCase {
     /// Optional non-negative int; default `10`. Used only by `testOnDevicePerformanceMetrics`.
     private static let measuredIterationsEnvKey = "PADDLEOCR_BENCHMARK_MEASURED_ITERATIONS"
 
-    /// `CORE_ML` (default) or `XNNPACK` — ONNX Runtime EP for benchmark runs.
+    /// `CPU` (default), `XNNPACK`, or `CORE_ML` — ONNX Runtime EP for benchmark runs.
     private static let inferenceBackendEnvKey = "PADDLEOCR_BENCHMARK_INFERENCE_BACKEND"
 
     /// `1` / `true` / `yes` / `on` enables ONNX Runtime JSON profiling (see ``ORTSessionManager/finalizeORTProfiling()``).
@@ -363,18 +363,18 @@ final class OCRBenchmarkTests: XCTestCase {
             ProcessInfo.processInfo.environment[Self.inferenceBackendEnvKey]?
                 .trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
         if raw.isEmpty {
-            return .coreMLOnly
+            return .cpu
         }
         if let exact = ORTInferenceBackend(rawValue: raw) {
             return exact
         }
         switch raw.lowercased() {
         case "core_ml":
-            return .coreMLOnly
+            return .coreML
         case "xnnpack":
-            return .xnnpackOnly
+            return .xnnpack
         case "cpu":
-            return .cpuOnly
+            return .cpu
         default:
             throw NSError(
                 domain: "OCRBenchmarkTests",
@@ -382,10 +382,10 @@ final class OCRBenchmarkTests: XCTestCase {
                 userInfo: [
                     NSLocalizedDescriptionKey:
                         "Invalid \(Self.inferenceBackendEnvKey): \"\(raw)\". "
-                        + "Use CORE_ML (default), XNNPACK, CPU, or Swift raw values "
-                        + "\(ORTInferenceBackend.coreMLOnly.rawValue) / "
-                        + "\(ORTInferenceBackend.xnnpackOnly.rawValue) / "
-                        + "\(ORTInferenceBackend.cpuOnly.rawValue). See README.",
+                        + "Use CPU (default), XNNPACK, CORE_ML, or Swift raw values "
+                        + "\(ORTInferenceBackend.cpu.rawValue) / "
+                        + "\(ORTInferenceBackend.xnnpack.rawValue) / "
+                        + "\(ORTInferenceBackend.coreML.rawValue).",
                 ]
             )
         }
@@ -403,7 +403,7 @@ final class OCRBenchmarkTests: XCTestCase {
                 code: 3,
                 userInfo: [
                     NSLocalizedDescriptionKey:
-                        "Image \"\(raw)\" not found in the test bundle. Check the name and that the file is included in the test target resources (e.g. \"\(BenchmarkFixtures.defaultReferenceImageStem)\"). See README.",
+                        "Image \"\(raw)\" not found in the test bundle. Check the name and that the file is included in the test target resources (e.g. \"\(BenchmarkFixtures.defaultReferenceImageStem)\").",
                 ]
             )
         }

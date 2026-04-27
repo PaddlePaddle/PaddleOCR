@@ -19,7 +19,7 @@ struct InferenceEnginePanel: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Core ML, XNNPACK, or built-in CPU — changing this reloads the loaded models.")
+            Text("CPU (baseline), XNNPACK, or Core ML — changing this reloads models. ORT may still use CPU for some ops.")
                 .font(.caption)
                 .foregroundStyle(.secondary)
             Picker("Inference engine", selection: $inferenceBackend) {

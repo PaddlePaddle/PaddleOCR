@@ -16,20 +16,20 @@ import Foundation
 
 /// ONNX Runtime execution provider selection for this demo.
 enum ORTInferenceBackend: String, CaseIterable, Identifiable, Sendable {
-    /// Core ML execution provider only (ANE/GPU). Default on Apple devices.
-    case coreMLOnly
-    /// XNNPACK (CPU) only.
-    case xnnpackOnly
-    /// Built-in CPU execution provider only (no Core ML, no XNNPACK).
-    case cpuOnly
+    /// Default CPU execution. Default for this demo.
+    case cpu = "cpu"
+    /// Registers the XNNPACK EP; nodes it cannot run still use the CPU EP.
+    case xnnpack = "xnnpack"
+    /// Registers the Core ML EP; remaining subgraphs use other registered EPs (commonly CPU).
+    case coreML = "core_ml"
 
     var id: String { rawValue }
 
     var displayTitle: String {
         switch self {
-        case .coreMLOnly: return "Core ML"
-        case .xnnpackOnly: return "XNNPACK"
-        case .cpuOnly: return "CPU"
+        case .cpu: return "CPU"
+        case .xnnpack: return "XNNPACK"
+        case .coreML: return "Core ML"
         }
     }
 }
@@ -80,7 +80,7 @@ actor ORTSessionManager {
     ///
     /// - Parameter ortProfiling: When `true`, enables ONNX Runtime session profiling (written as JSON on finalize).
     ///   Profiling adds overhead; do not treat wall-clock times from the same run as a clean latency benchmark.
-    func loadModels(backend: ORTInferenceBackend = .coreMLOnly, ortProfiling: Bool = false) async throws {
+    func loadModels(backend: ORTInferenceBackend = .cpu, ortProfiling: Bool = false) async throws {
         let env = try ORTEnv(loggingLevel: .warning)
         self.env = env
         ortProfilingPendingFinalize = ortProfiling
@@ -147,14 +147,14 @@ actor ORTSessionManager {
             try ORTProfilingBridge.enableProfiling(sessionOptions: options, pathPrefix: prefix)
         }
         switch backend {
-        case .coreMLOnly:
-            let coremlOptions = ORTCoreMLExecutionProviderOptions()
-            try options.appendCoreMLExecutionProvider(with: coremlOptions)
-        case .xnnpackOnly:
+        case .cpu:
+            break
+        case .xnnpack:
             let xnnpackOptions = ORTXnnpackExecutionProviderOptions()
             try options.appendXnnpackExecutionProvider(with: xnnpackOptions)
-        case .cpuOnly:
-            break
+        case .coreML:
+            let coremlOptions = ORTCoreMLExecutionProviderOptions()
+            try options.appendCoreMLExecutionProvider(with: coremlOptions)
         }
         return options
     }

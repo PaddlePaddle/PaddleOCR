@@ -148,6 +148,8 @@ If you use CocoaPods, run `pod install` in the project root first so the workspa
 
 Build the **PaddleOCRDemo** scheme. Ensure **`PaddleOCRDemo/Models/`** and **`PaddleOCRDemo/Resources/SampleImages/`** are included in the app target via folder references / **Copy Bundle Resources**, and **`PaddleOCRDemoTests/Fixtures/`** in the test target (as in the checked-in project). The built-in picker sample is **`general_ocr_002.jpg`**.
 
+**Inference engine (ONNX Runtime):** The **CPU** / **XNNPACK** / **Core ML** control registers which *additional* execution providers are enabled on the session. ONNX Runtime can still run parts of the graph on the default **CPU** execution provider when an accelerator EP does not implement an operator. Choosing **CPU** does not register XNNPACK or Core ML. JSON payloads use raw strings `cpu`, `xnnpack`, and `core_ml`.
+
 ## Benchmark
 
 This demo provides a benchmark pipeline for measuring on-device OCR latency and memory.
@@ -173,7 +175,8 @@ The script always invokes `xcodebuild test` with `-configuration Release`.
 | Image from an arbitrary path | `--image <path>` (copied into `Fixtures/` as `local-*` for this run) |
 | Image already under `PaddleOCRDemoTests/Fixtures/` | `--fixture <name>` (stem or `stem.ext`) |
 | Benchmark intensity | `--warmup <n>`, `--measured-iterations <n>` |
-| ONNX Runtime EP | `--inference-backend CORE_ML`, `XNNPACK`, or `CPU` |
+| ONNX Runtime EP | `--inference-backend CPU`, `XNNPACK`, or `CORE_ML` |
+| ONNX Runtime profiling JSON | `--ort-profiling` |
 | Optional accuracy precheck | `--accuracy-check`, optionally `--accuracy-reference-json <path>` |
 | Gate benchmark on accuracy `FAIL` | `--accuracy-check --stop-on-accuracy-failure` |
 | Output directory | `--out-dir <dir>` (default: `out/`) |
@@ -188,11 +191,12 @@ PADDLEOCR_BENCHMARK_MEASURED_ITERATIONS=30 ./scripts/run_benchmark.sh --warmup 0
 ./scripts/run_benchmark.sh --accuracy-check --udid <device-udid> --measured-iterations 30
 ./scripts/run_benchmark.sh --accuracy-check --stop-on-accuracy-failure --udid <device-udid>
 ./scripts/run_benchmark.sh --out-dir ./benchmark-out --measured-iterations 30
+./scripts/run_benchmark.sh --udid <device-udid> --ort-profiling
 ```
 
 `--accuracy-check` runs before the benchmark in a separate XCTest invocation. Its result is reported as an accuracy precheck (`PASS`, `FAIL`, or `ERROR`). By default, `FAIL` records an accuracy mismatch but continues to the benchmark, while `ERROR` stops the pipeline because the precheck infrastructure did not produce a trustworthy result. Add `--stop-on-accuracy-failure` when you also want `FAIL` to skip the benchmark tests and return a non-zero exit code.
 
-`PADDLEOCR_BENCHMARK_ORT_PROFILING=1` enables ONNX Runtime session profiling attachments (`ort_profile_detection`, `ort_profile_recognition`). Profiling changes runtime behavior and should be captured in a separate run from clean latency measurements.
+**ORT session profiling** (attachments `ort_profile_detection`, `ort_profile_recognition`): use `--ort-profiling`. Profiling changes runtime behavior; capture it in a **separate** run from clean latency measurements.
 
 The script writes artifacts under the output directory (`out/` by default, configurable via `--out-dir`). After the benchmark **completes**, it overwrites `run-status.json`, `on-device-performance.json`, `xctest-memory-metrics.json`, and `benchmark-report.md` there. If the benchmark pipeline **errors** earlier, those files may be missing or partial for this run (any existing copies are from a previous attempt).
 
@@ -233,8 +237,8 @@ The benchmark tests read settings through variables named **`PADDLEOCR_BENCHMARK
 | `PADDLEOCR_BENCHMARK_IMAGE_NAME` | Defaults to **`ios_ocr_benchmark_reference`**. Set explicitly to use another bundled image. | Bundled test image: **stem** or **`stem.ext`** under **`Fixtures/`**. |
 | `PADDLEOCR_BENCHMARK_WARMUP_ITERATIONS` | **3** | Untimed full OCR runs before timing (warm caches / JIT). Used by latency and memory benchmark tests. |
 | `PADDLEOCR_BENCHMARK_MEASURED_ITERATIONS` | **10** | Timed runs. Used by latency and memory benchmark tests. |
-| `PADDLEOCR_BENCHMARK_INFERENCE_BACKEND` | **CORE_ML** | ONNX Runtime EP for **`OCRBenchmarkTests`**: **`CORE_ML`**, **`XNNPACK`**, or **`CPU`**. |
-| `PADDLEOCR_BENCHMARK_ORT_PROFILING` | (unset) | Set to **`1`**, **`true`**, **`yes`**, or **`on`** to enable ONNX Runtime **session profiling** (JSON attachments). Profiling **distorts** wall-clock timings; use a separate run for clean latency. |
+| `PADDLEOCR_BENCHMARK_INFERENCE_BACKEND` | **CPU** | ONNX Runtime EP for **`OCRBenchmarkTests`**: **`CPU`**, **`XNNPACK`**, or **`CORE_ML`**. |
+| `PADDLEOCR_BENCHMARK_ORT_PROFILING` | (unset) | Enable ORT **session profiling** (`1` / `true` / `yes` / `on`). |
 | `PADDLEOCR_BENCHMARK_ONLY_TESTING_SCOPE` | latency + memory benchmark tests | `run_benchmark.sh` only: comma-separated values passed to repeated `xcodebuild -only-testing` flags. |
 
 Non-negative integers for the two iteration variables.
