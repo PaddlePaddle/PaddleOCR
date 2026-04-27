@@ -68,6 +68,9 @@ The inference performance under default configurations is not fully optimized an
 
 ### 3.1 Starting the VLM Inference Service
 
+> IMPORTANT:
+> The service started according to this section is responsible only for the VLM inference stage in the PaddleOCR-VL workflow. It does not provide a complete end-to-end document parsing API. We strongly recommend that you do not call this service directly via HTTP requests or OpenAI clients to process document images. If you need to deploy a service with the full PaddleOCR-VL capabilities, refer to the service deployment section later in this document.
+
 **Launch Methods Supported on This Hardware**
 
 | Launch method | Status | Notes |

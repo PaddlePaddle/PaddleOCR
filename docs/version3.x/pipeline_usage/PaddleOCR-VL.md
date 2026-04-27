@@ -11,10 +11,15 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
 
 **2026年1月29日，我们发布了PaddleOCR-VL-1.5。PaddleOCR-VL-1.5不仅以94.5%精度大幅刷新了评测集OmniDocBench v1.5，更创新性地支持了异形框定位，使得PaddleOCR-VL-1.5 在扫描、倾斜、弯折、屏幕拍摄及复杂光照等真实场景中均表现优异。此外，模型还新增了印章识别与文本检测识别能力，关键指标持续领跑。**
 
+PaddleOCR-VL 整体由版面检测模型、VLM、后处理 3 个核心部分组成。下图展示了一个简化的流程：
+
+在该流程中，版面检测模型以整图作为输入，定位图像中的各类版面元素（例如表格、公式）；随后，一系列包含单个版面元素的子图被裁剪出来，并送入 VLM，生成对应的识别结果（例如 Markdown 文本）；最后，系统通过后处理将各元素结果拼接为整幅图像的完整解析结果。因此，**若需使用 PaddleOCR-VL 的完整能力，必须采用版面检测模型、VLM 与后处理串联的完整流程，而不能仅单独使用 VLM**。后文会多次涉及相关概念，请注意区分完整的 PaddleOCR-VL 流程与其中的 VLM 组件。以 PaddleOCR-VL v1 为例，版面检测模型为 PP-DocLayoutV2，VLM 为 PaddleOCR-VL-0.9B。需要特别说明的是，“PaddleOCR-VL-0.9B” 并不是 PaddleOCR-VL 的一个模型变种，而是 PaddleOCR-VL v1 完整流程中的 VLM 组件；这与常见 LLM / VLM 的命名习惯不同，例如 Qwen2-72B 通常表示 Qwen2 系列下的一个具体模型变体。
+
+**如果在使用过程中出现无法复现论文或 PaddleOCR 官网精度、模型输出大量幻觉文本等问题，首先应确认当前使用的是完整的 PaddleOCR-VL 流程，而不是仅使用其中的 VLM 组件。** 例如，直接通过 Transformers 本地执行 PaddleOCR-VL-0.9B 模型，或直接请求 vLLM / SGLang / FastDeploy 服务，都不等同于运行完整的 PaddleOCR-VL 流程。
+
 ## 从这里开始
 
 请先根据硬件选择对应教程。
-
 
 | 硬件                         | 阅读哪篇教程                                                                              |
 | -------------------------- | ----------------------------------------------------------------------------------- |
@@ -30,12 +35,9 @@ PaddleOCR-VL 是一款先进、高效的文档解析模型，专为文档中的�
 | AMD GPU                    | 阅读 [PaddleOCR-VL AMD GPU 使用教程](./PaddleOCR-VL-AMD-GPU.md)。                          |
 | Intel Arc GPU              | 阅读 [PaddleOCR-VL Intel Arc GPU 使用教程](./PaddleOCR-VL-Intel-Arc-GPU.md)。              |
 
-
 如果你只是想先确认 PaddleOCR-VL 支持在哪些硬件上部署，或是特定硬件支持哪些推理方式，请先阅读下方的 [PaddleOCR-VL 推理方式与硬件支持矩阵](#paddleocr-vl-对推理设备的支持情况)。
 
 ## PaddleOCR-VL 推理方式与硬件支持矩阵 {#paddleocr-vl-对推理设备的支持情况}
-
-
 
 | 推理方式                      | NVIDIA GPU | 昆仑芯 XPU | 海光 DCU | 沐曦 GPU | 天数 GPU | 华为昇腾 NPU | x64 CPU | Apple Silicon | AMD GPU | Intel Arc GPU |
 | ------------------------- | ------- | ------- | ------ | ------ | ------ | -------- | ------- | ------------- | ------- | ------------- |
@@ -608,11 +610,11 @@ paddleocr doc_parser -i ./paddleocr_vl_demo.png --engine transformers --save_pat
 {'res': {'input_path': 'paddleocr_vl_demo.png', 'page_index': None, 'model_settings': {'use_doc_preprocessor': False, 'use_layout_detection': True, 'use_chart_recognition': False, 'format_block_content': False}, 'layout_det_res': {'input_path': None, 'page_index': None, 'boxes': [{'cls_id': 6, 'label': 'doc_title', 'score': 0.9636914134025574, 'coordinate': [np.float32(131.31366), np.float32(36.450516), np.float32(1384.522), np.float32(127.984665)]}, {'cls_id': 22, 'label': 'text', 'score': 0.9281806349754333, 'coordinate': [np.float32(585.39465), np.float32(158.438), np.float32(930.2184), np.float32(182.57469)]}, {'cls_id': 22, 'label': 'text', 'score': 0.9840355515480042, 'coordinate': [np.float32(9.023666), np.float32(200.86115), np.float32(361.41583), np.float32(343.8828)]}, {'cls_id': 14, 'label': 'image', 'score': 0.9871416091918945, 'coordinate': [np.float32(775.50574), np.float32(200.66502), np.float32(1503.3807), np.float32(684.9304)]}, {'cls_id': 22, 'label': 'text', 'score': 0.9801855087280273, 'coordinate': [np.float32(9.532196), np.float32(344.90594), np.float32(361.4413), np.float32(440.8244)]}, {'cls_id': 17, 'label': 'paragraph_title', 'score': 0.9708921313285828, 'coordinate': [np.float32(28.040405), np.float32(455.87976), np.float32(341.7215), np.float32(520.7117)]}, {'cls_id': 24, 'label': 'vision_footnote', 'score': 0.9002962708473206, 'coordinate': [np.float32(809.0692), np.float32(703.70044), np.float32(1488.3016), np.float32(750.5238)]}, {'cls_id': 22, 'label': 'text', 'score': 0.9825374484062195, 'coordinate': [np.float32(8.896561), np.float32(536.54895), np.float32(361.05237), np.float32(655.8058)]}, {'cls_id': 22, 'label': 'text', 'score': 0.9822263717651367, 'coordinate': [np.float32(8.971573), np.float32(657.4949), np.float32(362.01715), np.float32(774.625)]}, {'cls_id': 22, 'label': 'text', 'score': 0.9767460823059082, 'coordinate': [np.float32(9.407074), np.float32(776.5216), np.float32(361.31067), np.float32(846.82874)]}, {'cls_id': 22, 'label': 'text', 'score': 0.9868153929710388, 'coordinate': [np.float32(8.669495), np.float32(848.2543), np.float32(361.64703), np.float32(1062.8568)]}, {'cls_id': 22, 'label': 'text', 'score': 0.9826608300209045, 'coordinate': [np.float32(8.8025055), np.float32(1063.8615), np.float32(361.46588), np.float32(1182.8524)]}, {'cls_id': 22, 'label': 'text', 'score': 0.982555627822876, 'coordinate': [np.float32(8.820602), np.float32(1184.4663), np.float32(361.66394), np.float32(1302.4507)]}, {'cls_id': 22, 'label': 'text', 'score': 0.9584776759147644, 'coordinate': [np.float32(9.170288), np.float32(1304.2161), np.float32(361.48898), np.float32(1351.7483)]}, {'cls_id': 22, 'label': 'text', 'score': 0.9782056212425232, 'coordinate': [np.float32(389.1618), np.float32(200.38202), np.float32(742.7591), np.float32(295.65146)]}, {'cls_id': 22, 'label': 'text', 'score': 0.9844875931739807, 'coordinate': [np.float32(388.73303), np.float32(297.18463), np.float32(744.00024), np.float32(441.3034)]}, {'cls_id': 17, 'label': 'paragraph_title', 'score': 0.9680547714233398, 'coordinate': [np.float32(409.39468), np.float32(455.89386), np.float32(721.7174), np.float32(520.9387)]}, {'cls_id': 22, 'label': 'text', 'score': 0.9741666913032532, 'coordinate': [np.float32(389.71606), np.float32(536.8138), np.float32(742.7112), np.float32(608.00165)]}, {'cls_id': 22, 'label': 'text', 'score': 0.9840384721755981, 'coordinate': [np.float32(389.30988), np.float32(609.39636), np.float32(743.09247), np.float32(750.3231)]}, {'cls_id': 22, 'label': 'text', 'score': 0.9845995306968689, 'coordinate': [np.float32(389.13272), np.float32(751.7772), np.float32(743.058), np.float32(894.8815)]}, {'cls_id': 22, 'label': 'text', 'score': 0.984852135181427, 'coordinate': [np.float32(388.83267), np.float32(896.0371), np.float32(743.58215), np.float32(1038.7345)]}, {'cls_id': 22, 'label': 'text', 'score': 0.9804865717887878, 'coordinate': [np.float32(389.08478), np.float32(1039.9119), np.float32(742.7585), np.float32(1134.4897)]}, {'cls_id': 22, 'label': 'text', 'score': 0.986461341381073, 'coordinate': [np.float32(388.52643), np.float32(1135.8137), np.float32(743.451), np.float32(1352.0085)]}, {'cls_id': 22, 'label': 'text', 'score': 0.9869391918182373, 'coordinate': [np.float32(769.8341), np.float32(775.66235), np.float32(1124.9813), np.float32(1063.207)]}, {'cls_id': 22, 'label': 'text', 'score': 0.9822869896888733, 'coordinate': [np.float32(770.30383), np.float32(1063.938), np.float32(1124.8295), np.float32(1184.2192)]}, {'cls_id': 17, 'label': 'paragraph_title', 'score': 0.9689218997955322, 'coordinate': [np.float32(791.3042), np.float32(1199.3169), np.float32(1104.4521), np.float32(1264.6985)]}, {'cls_id': 22, 'label': 'text', 'score': 0.9713128209114075, 'coordinate': [np.float32(770.4253), np.float32(1279.6072), np.float32(1124.6917), np.float32(1351.8672)]}, {'cls_id': 22, 'label': 'text', 'score': 0.9236552119255066, 'coordinate': [np.float32(1153.9058), np.float32(775.5814), np.float32(1334.0654), np.float32(798.1581)]}, {'cls_id': 22, 'label': 'text', 'score': 0.9857938885688782, 'coordinate': [np.float32(1151.5197), np.float32(799.28015), np.float32(1506.3619), np.float32(991.1156)]}, {'cls_id': 22, 'label': 'text', 'score': 0.9820687174797058, 'coordinate': [np.float32(1151.5686), np.float32(991.91095), np.float32(1506.6023), np.float32(1110.8875)]}, {'cls_id': 22, 'label': 'text', 'score': 0.9866049885749817, 'coordinate': [np.float32(1151.6919), np.float32(1112.1301), np.float32(1507.1611), np.float32(1351.9504)]}]}}}
 </code></pre></details>
 
-运行结果及保存接口的详细说明可参考 [2.2 Python脚本方式集成](#22-python) 中的结果解释。
+运行结果及保存接口的详细说明可参考 [2.2 Python 脚本方式集成](#22-python) 中的结果解释。
 
 **注：**由于 PaddleOCR-VL 的默认模型较大，推理速度可能较慢，建议实际推理使用 [3. 使用 VLM 推理服务提升推理性能](#3-vlm) 方式进行快速推理。
 
-### 2.2 Python脚本方式集成
+### 2.2 Python 脚本方式集成
 
 命令行方式是为了快速体验查看效果，一般来说，在项目中，往往需要通过代码集成。您可以通过几行代码即可完成 PaddleOCR-VL 的快速推理：
 

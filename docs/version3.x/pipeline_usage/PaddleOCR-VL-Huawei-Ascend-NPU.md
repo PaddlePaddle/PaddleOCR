@@ -101,6 +101,9 @@ python -m pip install -U "paddleocr[doc-parser]"
 
 ### 3.1 启动 VLM 推理服务
 
+> IMPORTANT:
+> 按照本节说明启动的服务仅负责 PaddleOCR-VL 流程中的 VLM 推理环节，不提供完整的端到端文档解析 API。强烈不建议直接通过 HTTP 请求或使用 OpenAI 客户端调用该服务处理文档图像。若您需要部署具备 PaddleOCR-VL 完整能力的服务，请参考后文的服务化部署部分。
+
 **当前硬件支持的启动方式**
 
 | 启动方式 | 状态 | 说明 |
