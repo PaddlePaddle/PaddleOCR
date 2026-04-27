@@ -52,6 +52,14 @@ struct OCRRunResult {
     let totalTime: TimeInterval
     /// Time not attributed to detection or recognition totals.
     let pipelineOverheadTime: TimeInterval
+    /// Number of text lines from detection sent through recognition.
+    let recognitionLineCount: Int
+    /// Per-line recognition ONNX inference times in **seconds**.
+    let lineRecognitionInferenceTimes: [TimeInterval]
+    /// Per-line recognition preprocess times in **seconds**.
+    let lineRecognitionPreprocessTimes: [TimeInterval]
+    /// Per-line recognition postprocess times in **seconds**.
+    let lineRecognitionPostprocessTimes: [TimeInterval]
 }
 
 // MARK: - OCR Engine Errors
@@ -129,7 +137,7 @@ class OCREngine {
 
         let detResult = try await detectionEngine.detect(image, runtimeParams: params)
         let sortedBoxes = BoxSorter.sortInReadingOrder(detResult.boxes)
-        let (ocrResults, recTiming) = try await recognizeSortedBoxes(
+        let (ocrResults, recTiming, perLine) = try await recognizeSortedBoxes(
             sortedBoxes,
             sourceImage: image,
             resolved: resolved
@@ -149,7 +157,11 @@ class OCREngine {
             recognitionInferenceTime: recTiming.inference,
             recognitionPostprocessTime: recTiming.postprocess,
             totalTime: totalTime,
-            pipelineOverheadTime: max(0, overhead)
+            pipelineOverheadTime: max(0, overhead),
+            recognitionLineCount: perLine.count,
+            lineRecognitionInferenceTimes: perLine.inference,
+            lineRecognitionPreprocessTimes: perLine.preprocess,
+            lineRecognitionPostprocessTimes: perLine.postprocess
         )
     }
 
@@ -161,11 +173,19 @@ class OCREngine {
         let total: TimeInterval
     }
 
+    /// Per-line rec timings
+    private struct PerLineRecognitionTimes {
+        let count: Int
+        let inference: [TimeInterval]
+        let preprocess: [TimeInterval]
+        let postprocess: [TimeInterval]
+    }
+
     private func recognizeSortedBoxes(
         _ sortedBoxes: [DetectionBox],
         sourceImage: CGImage,
         resolved: ResolvedOCRRuntimeParams
-    ) async throws -> ([OCRResult], RecognitionTimingAggregate) {
+    ) async throws -> ([OCRResult], RecognitionTimingAggregate, PerLineRecognitionTimes) {
         struct LineCrop {
             let lineIndex: Int
             let aspectRatio: Float
@@ -218,9 +238,18 @@ class OCREngine {
         var totalRecPre: TimeInterval = 0
         var totalRecInf: TimeInterval = 0
         var totalRecPost: TimeInterval = 0
+        var lineInf: [TimeInterval] = []
+        var linePre: [TimeInterval] = []
+        var linePost: [TimeInterval] = []
+        lineInf.reserveCapacity(lines.count)
+        linePre.reserveCapacity(lines.count)
+        linePost.reserveCapacity(lines.count)
 
         for line in lines {
             guard let recResult = perLine[line.lineIndex] else { continue }
+            linePre.append(recResult.preprocessTime)
+            lineInf.append(recResult.inferenceTime)
+            linePost.append(recResult.postprocessTime)
             totalRecTime += recResult.totalTime
             totalRecPre += recResult.preprocessTime
             totalRecInf += recResult.inferenceTime
@@ -241,6 +270,12 @@ class OCREngine {
             postprocess: totalRecPost,
             total: totalRecTime
         )
-        return (ocrResults, aggregate)
+        let perLineOut = PerLineRecognitionTimes(
+            count: lines.count,
+            inference: lineInf,
+            preprocess: linePre,
+            postprocess: linePost
+        )
+        return (ocrResults, aggregate, perLineOut)
     }
 }

@@ -19,6 +19,7 @@ Inputs:
     --compare-summary        JSON from compare_ocr_json.py
     --on-device-performance-json   JSON attachment "on-device-performance.json"
     --run-status             JSON from run_validation.sh
+    --xctest-metrics-json    JSON from extract_xctest_metrics.py
 
 All inputs are optional; missing sections render placeholders.
 """
@@ -147,7 +148,7 @@ def _performance_section_banner(overall: Optional[str]) -> str:
 
 def _timing_markdown(data: Dict[str, Any]) -> str:
     lines = ["| Metric | mean | stdev | p90 |", "|--------|------|-------|-----|"]
-    rows = [
+    for key, label in [
         ("totalTimeMs", "total (ms)"),
         ("detectionTimeMs", "detection total (ms)"),
         ("detectionPreprocessTimeMs", "detection preprocess (ms)"),
@@ -157,9 +158,7 @@ def _timing_markdown(data: Dict[str, Any]) -> str:
         ("recognitionPreprocessTimeMs", "recognition preprocess (ms)"),
         ("recognitionInferenceTimeMs", "recognition inference (ms)"),
         ("recognitionPostprocessTimeMs", "recognition postprocess (ms)"),
-        ("pipelineOverheadTimeMs", "pipeline overhead (ms)"),
-    ]
-    for key, label in rows:
+    ]:
         block = data.get(key)
         if not isinstance(block, dict):
             continue
@@ -171,55 +170,162 @@ def _timing_markdown(data: Dict[str, Any]) -> str:
                 p90=float(block.get("p90", 0)),
             )
         )
+    ovh = data.get("pipelineOverheadTimeMs")
+    if isinstance(ovh, dict):
+        lines.append(
+            "| pipeline overhead (ms) | {mean:.4f} | {stdev:.4f} | {p90:.4f} |".format(
+                mean=float(ovh.get("mean", 0)),
+                stdev=float(ovh.get("stdev", 0)),
+                p90=float(ovh.get("p90", 0)),
+            )
+        )
     w = data.get("warmupIterations")
     m = data.get("measuredIterations")
     if w is not None or m is not None:
         lines.append("")
         lines.append(f"Warmup iterations: `{w}` · Measured iterations: `{m}`")
+
+    per_line_extra = _recognition_per_line_markdown(data)
+    if per_line_extra:
+        lines.append("")
+        lines.append(per_line_extra)
     return "\n".join(lines)
 
 
-def _memory_markdown(data: Dict[str, Any]) -> str:
-    if (
-        data.get("memoryFootprintAfterLoadBytes") is None
-        and data.get("memoryInferencePeakBytes") is None
-    ):
+def _recognition_per_line_markdown(data: Dict[str, Any]) -> str:
+    """Renders pooled `recognitionPerLine` samples."""
+    pl = data.get("recognitionPerLine")
+    if not isinstance(pl, dict):
+        return ""
+    out: List[str] = []
+    pooled = pl.get("pooled")
+    any_pooled = False
+    pooled_lines: List[str] = [
+        "| Pooled (all lines × measured runs) | count | mean | stdev | p90 |",
+        "|------------------------------------|------|------|-------|-----|",
+    ]
+    for key, label in [
+        ("preprocessMs", "rec preprocess / line, pooled (ms)"),
+        ("inferenceMs", "rec inference / line, pooled (ms)"),
+        ("postprocessMs", "rec postprocess / line, pooled (ms)"),
+        ("totalMs", "rec total / line, pooled (ms)"),
+    ]:
+        if not isinstance(pooled, dict):
+            break
+        b = pooled.get(key)
+        if not isinstance(b, dict):
+            continue
+        c = pooled.get("count") or b.get("count")
+        if c is None or c == 0:
+            continue
+        any_pooled = True
+        pooled_lines.append(
+            "| {label} | {c} | {me:.4f} | {sd:.4f} | {p90:.4f} |".format(
+                label=label,
+                c=int(c),
+                me=float(b.get("mean", 0)),
+                sd=float(b.get("stdev", 0)),
+                p90=float(b.get("p90", 0)),
+            )
+        )
+    if any_pooled:
+        out.append("#### Per-line recognition (ms)")
+        out.append("")
+        out.append(
+            "*Pooled* merges every det line on every **measured** full-image run."
+        )
+        out.append("")
+        out.extend(pooled_lines)
+
+    return "\n".join(out) if out else ""
+
+
+def _fmt_metric_number(value: Any, unit: str) -> str:
+    try:
+        number = float(value)
+    except (TypeError, ValueError):
+        return "—"
+    if "byte" in unit.lower():
+        return _fmt_bytes(int(number))
+    if abs(number) >= 1000:
+        text = f"{number:.0f}"
+    else:
+        text = f"{number:.4f}".rstrip("0").rstrip(".")
+    return f"{text} {unit}".rstrip()
+
+
+def _xctest_memory_rows(xctest_metrics: Optional[Dict[str, Any]]) -> List[str]:
+    rows: List[str] = []
+    metrics = (
+        xctest_metrics.get("metrics") if isinstance(xctest_metrics, dict) else None
+    )
+    if not isinstance(metrics, list) or not metrics:
+        rows.append("| XCTest memory metric | `not available` |")
+        return rows
+    for metric in metrics:
+        if not isinstance(metric, dict):
+            continue
+        summary = (
+            metric.get("summary") if isinstance(metric.get("summary"), dict) else {}
+        )
+        unit = str(metric.get("unitOfMeasurement") or "")
+        raw_label = str(
+            metric.get("displayName") or metric.get("identifier") or "memory"
+        )
+        label = {
+            "Memory Physical": "physical memory delta",
+            "Memory Peak Physical": "physical memory peak",
+        }.get(raw_label, raw_label)
+        test_id = metric.get("testIdentifier")
+        prefix = f"XCTest {label}"
+        if test_id:
+            prefix += f" ({test_id})"
+        rows.append(f"| {prefix} count | `{int(summary.get('count', 0))}` |")
+        rows.append(
+            f"| {prefix} min | {_fmt_metric_number(summary.get('min'), unit)} |"
+        )
+        rows.append(
+            f"| {prefix} max | {_fmt_metric_number(summary.get('max'), unit)} |"
+        )
+        rows.append(
+            f"| {prefix} mean | {_fmt_metric_number(summary.get('mean'), unit)} |"
+        )
+    return rows
+
+
+def _memory_markdown(
+    data: Dict[str, Any],
+    xctest_metrics: Optional[Dict[str, Any]],
+) -> str:
+    if data.get("memoryFootprintAfterLoadBytes") is None and xctest_metrics is None:
         return ""
     rows = [
         "| Metric | Value |",
         "|--------|-------|",
     ]
+    rows.extend(_xctest_memory_rows(xctest_metrics))
     before = data.get("memoryFootprintBeforeLoadBytes")
     if before is not None:
         rows.append(f"| Footprint before load | {_fmt_bytes(int(before))} |")
     after = data.get("memoryFootprintAfterLoadBytes")
     if after is not None:
         rows.append(f"| Footprint after model load | {_fmt_bytes(int(after))} |")
-    peak = data.get("memoryInferencePeakBytes")
-    if peak is not None:
-        rows.append(
-            f"| Inference peak (max sample before/after each measured run) | {_fmt_bytes(int(peak))} |"
-        )
-    mean = data.get("memoryInferenceMeanBytes")
-    if mean is not None:
-        rows.append(
-            f"| Inference mean (mean footprint after each measured run) | {_fmt_bytes(int(mean))} |"
-        )
-    n = data.get("memoryInferenceSampleCount")
-    if n is not None:
-        rows.append(f"| Inference memory samples | `{n}` |")
     ts = data.get("thermalState")
     if ts is not None:
         rows.append(f"| Thermal state | `{ts}` |")
     rows.append("")
     rows.append(
-        "*Memory uses `task_vm_info.phys_footprint` (see Xcode Memory gauge). "
-        "Peak is sampled around each inference, not a continuous trace; use Instruments for mid-call spikes.*"
+        "*Memory benchmark rows come from `XCTMemoryMetric` exported via `xcresulttool get test-results metrics`. "
+        "`physical memory delta` is a per-iteration net change, so negative values mean memory was released during that measured block. "
+        "`task_vm_info.phys_footprint` rows are diagnostic snapshots before and after model loading, not continuous peak measurements.*"
     )
     return "\n".join(rows)
 
 
-def _on_device_section(data: Dict[str, Any]) -> str:
+def _on_device_section(
+    data: Dict[str, Any],
+    xctest_metrics: Optional[Dict[str, Any]],
+) -> str:
     parts: List[str] = []
     ver = data.get("schemaVersion")
     if ver is not None:
@@ -232,7 +338,7 @@ def _on_device_section(data: Dict[str, Any]) -> str:
     parts.append("### Latency")
     parts.append("")
     parts.append(_timing_markdown(data))
-    mem = _memory_markdown(data)
+    mem = _memory_markdown(data, xctest_metrics)
     if mem:
         parts.append("")
         parts.append("### Memory (resource footprint)")
@@ -281,6 +387,7 @@ def generate_report(
     on_device_performance_json: Optional[Path],
     compare_summary: Optional[Path],
     run_status: Optional[Path],
+    xctest_metrics_json: Optional[Path],
 ) -> None:
     status: Dict[str, Any] = {}
     if run_status and run_status.is_file():
@@ -296,6 +403,11 @@ def generate_report(
     perf_data = (
         _load_json(on_device_performance_json)
         if on_device_performance_json and on_device_performance_json.is_file()
+        else None
+    )
+    xctest_metrics_data = (
+        _load_json(xctest_metrics_json)
+        if xctest_metrics_json and xctest_metrics_json.is_file()
         else None
     )
 
@@ -332,7 +444,7 @@ def generate_report(
     if perf_banner:
         parts.append(perf_banner)
     if perf_data is not None:
-        parts.append(_on_device_section(perf_data))
+        parts.append(_on_device_section(perf_data, xctest_metrics_data))
     else:
         parts.append(
             _placeholder_from_status(status, "extract-attachments")
@@ -369,6 +481,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     parser.add_argument("--on-device-performance-json", type=Path, default=None)
     parser.add_argument("--compare-summary", type=Path, default=None)
     parser.add_argument("--run-status", type=Path, default=None)
+    parser.add_argument("--xctest-metrics-json", type=Path, default=None)
     args = parser.parse_args(list(argv) if argv is not None else None)
 
     generate_report(
@@ -376,6 +489,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         on_device_performance_json=args.on_device_performance_json,
         compare_summary=args.compare_summary,
         run_status=args.run_status,
+        xctest_metrics_json=args.xctest_metrics_json,
     )
     return 0
 

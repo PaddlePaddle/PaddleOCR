@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import Darwin
+import Foundation
 
 import XCTest
 
@@ -72,11 +73,34 @@ final class OCRValidationTests: XCTestCase {
         let engine = try OCREngine(sessionManager: manager)
 
         let warmup = try parseNonNegativeIntEnv(Self.warmupIterationsEnvKey, defaultValue: 3)
-        let iterations = try parseNonNegativeIntEnv(Self.measuredIterationsEnvKey, defaultValue: 10)
+        let iterations = max(try parseNonNegativeIntEnv(Self.measuredIterationsEnvKey, defaultValue: 10), 1)
 
         for _ in 0..<warmup {
             _ = try await engine.run(cgImage, params: .noOverrides)
         }
+        var measuredError: Error?
+        var observedRuns: [OCRRunResult] = []
+        observedRuns.reserveCapacity(iterations)
+
+        let options = XCTMeasureOptions()
+        options.iterationCount = iterations
+        measure(metrics: [XCTMemoryMetric()], options: options) {
+            guard measuredError == nil else { return }
+            do {
+                let run = try waitForAsync {
+                    try await engine.run(cgImage, params: .noOverrides)
+                }
+                observedRuns.append(run)
+            } catch {
+                measuredError = error
+            }
+        }
+        if let measuredError {
+            throw measuredError
+        }
+        let measuredRuns = Array(observedRuns.suffix(iterations))
+        XCTAssertEqual(measuredRuns.count, iterations, "XCTest should execute at least the configured measured iterations")
+
         var totals: [Double] = []
         var dets: [Double] = []
         var detPre: [Double] = []
@@ -98,16 +122,12 @@ final class OCRValidationTests: XCTestCase {
         recPost.reserveCapacity(iterations)
         overheads.reserveCapacity(iterations)
 
-        var inferencePeak: UInt64 = 0
-        var inferenceAfterSamples: [UInt64] = []
-        inferenceAfterSamples.reserveCapacity(iterations)
+        var lineInferenceMsPooled: [Double] = []
+        var linePreprocessMsPooled: [Double] = []
+        var linePostprocessMsPooled: [Double] = []
+        var lineTotalMsPooled: [Double] = []
 
-        for _ in 0..<iterations {
-            let beforeRun = physicalFootprintBytes()
-            let run = try await engine.run(cgImage, params: .noOverrides)
-            let afterRun = physicalFootprintBytes()
-            inferencePeak = max(inferencePeak, max(beforeRun, afterRun))
-            inferenceAfterSamples.append(afterRun)
+        for run in measuredRuns {
             totals.append(run.totalTime * 1000)
             dets.append(run.detectionTime * 1000)
             detPre.append(run.detectionPreprocessTime * 1000)
@@ -118,13 +138,32 @@ final class OCRValidationTests: XCTestCase {
             recInf.append(run.recognitionInferenceTime * 1000)
             recPost.append(run.recognitionPostprocessTime * 1000)
             overheads.append(run.pipelineOverheadTime * 1000)
+
+            let n = run.recognitionLineCount
+            if n > 0 {
+                let infMs = run.lineRecognitionInferenceTimes.map { $0 * 1000.0 }
+                let preMs = run.lineRecognitionPreprocessTimes.map { $0 * 1000.0 }
+                let postMs = run.lineRecognitionPostprocessTimes.map { $0 * 1000.0 }
+                lineInferenceMsPooled.append(contentsOf: infMs)
+                linePreprocessMsPooled.append(contentsOf: preMs)
+                linePostprocessMsPooled.append(contentsOf: postMs)
+                for i in 0..<n {
+                    lineTotalMsPooled.append(preMs[i] + infMs[i] + postMs[i])
+                }
+            }
         }
 
-        let meanInference: UInt64 = {
-            guard !inferenceAfterSamples.isEmpty else { return 0 }
-            let sum = inferenceAfterSamples.reduce(0, +)
-            return sum / UInt64(inferenceAfterSamples.count)
-        }()
+        let perLine: RecognitionPerLineBlock? = lineInferenceMsPooled.isEmpty
+            ? nil
+            : RecognitionPerLineBlock(
+                pooled: RecognitionPerLinePooledMs(
+                    count: lineInferenceMsPooled.count,
+                    inferenceMs: summarizeMs(lineInferenceMsPooled),
+                    preprocessMs: summarizeMs(linePreprocessMsPooled),
+                    postprocessMs: summarizeMs(linePostprocessMsPooled),
+                    totalMs: summarizeMs(lineTotalMsPooled)
+                )
+            )
 
         let stats = OCRDeviceBenchmarkPayload(
             schemaVersion: 1,
@@ -139,12 +178,10 @@ final class OCRValidationTests: XCTestCase {
             recognitionPreprocessTimeMs: summarizeMs(recPre),
             recognitionInferenceTimeMs: summarizeMs(recInf),
             recognitionPostprocessTimeMs: summarizeMs(recPost),
+            recognitionPerLine: perLine,
             pipelineOverheadTimeMs: summarizeMs(overheads),
             memoryFootprintBeforeLoadBytes: memoryBeforeLoad,
             memoryFootprintAfterLoadBytes: memoryAfterLoad,
-            memoryInferencePeakBytes: inferencePeak,
-            memoryInferenceMeanBytes: meanInference,
-            memoryInferenceSampleCount: inferenceAfterSamples.count,
             thermalState: String(describing: ProcessInfo.processInfo.thermalState)
         )
 
@@ -226,6 +263,41 @@ final class OCRValidationTests: XCTestCase {
         attachment.name = artifact.rawValue
         attachment.lifetime = .keepAlways
         add(attachment)
+    }
+
+    private func waitForAsync<T>(_ operation: @escaping () async throws -> T) throws -> T {
+        let semaphore = DispatchSemaphore(value: 0)
+        let lock = NSLock()
+        var capturedResult: Result<T, Error>?
+        Task {
+            do {
+                let value = try await operation()
+                lock.lock()
+                capturedResult = .success(value)
+                lock.unlock()
+            } catch {
+                lock.lock()
+                capturedResult = .failure(error)
+                lock.unlock()
+            }
+            semaphore.signal()
+        }
+        semaphore.wait()
+        lock.lock()
+        let result = capturedResult
+        lock.unlock()
+        switch result {
+        case .success(let value):
+            return value
+        case .failure(let error):
+            throw error
+        case .none:
+            throw NSError(
+                domain: "OCRValidationTests",
+                code: 6,
+                userInfo: [NSLocalizedDescriptionKey: "Async operation completed without a result."]
+            )
+        }
     }
 
     /// Parses a non-negative integer from the environment, or returns `defaultValue` when unset/blank.

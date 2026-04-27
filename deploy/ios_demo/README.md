@@ -196,6 +196,7 @@ Outputs under **`out/`**:
 | `result.xcresult` | `xcodebuild test` | iOS test run |
 | `ios-ocr-export.json` | `extract_xcresult_attachments.py` | iOS **accuracy** payload (polygons + text) from tests |
 | `on-device-performance.json` | `extract_xcresult_attachments.py` | iOS **performance** stats from tests |
+| `xctest-memory-metrics.json` | `extract_xctest_metrics.py` | XCTest **memory** metrics from `XCTMemoryMetric` |
 | `compare-summary.json` | `compare_ocr_json.py` | **Accuracy** metrics vs thresholds (`pass`) |
 | `run-status.json` | `run_validation.sh` | Per-step outcomes |
 | `validation-report.md` | `generate_validation_report.py` | Human-readable report |
@@ -218,6 +219,7 @@ The validation **tests** read settings through variables named **`PADDLEOCR_VALI
 | `PADDLEOCR_VALIDATION_WARMUP_ITERATIONS` | **3** | Untimed full OCR runs before timing (warm caches / JIT). Used only by the **performance** test. |
 | `PADDLEOCR_VALIDATION_MEASURED_ITERATIONS` | **10** | Timed runs. Used only by the **performance** test. |
 | `PADDLEOCR_VALIDATION_INFERENCE_BACKEND` | **CORE_ML** | ONNX Runtime EP for **`OCRValidationTests`**: **`CORE_ML`**, **`XNNPACK`**, or **`CPU`** (plain CPU execution provider; not XNNPACK). |
+| `PADDLEOCR_VALIDATION_ONLY_TESTING_SCOPE` | `PaddleOCRDemoTests/OCRValidationTests` | `run_validation.sh` only: value passed to `xcodebuild -only-testing`. |
 
 Non-negative integers for the two iteration variables.
 
@@ -225,7 +227,7 @@ Non-negative integers for the two iteration variables.
 
 **Read this subsection when** you run or debug the **`PaddleOCRDemoTests`** target directly (**Cmd-U** in Xcode, or **`xcodebuild test`**).
 
-**What it is for:** class **`OCRValidationTests`** produces (1) an OCR JSON attachment for **accuracy** checks, and (2) **`on-device-performance.json`**-style timing and memory stats from repeated runs.
+**What it is for:** class **`OCRValidationTests`** produces (1) an OCR JSON attachment for **accuracy** checks, (2) **`on-device-performance.json`**-style timing and memory stats from repeated runs, and (3) `XCTMemoryMetric` samples exported from the `.xcresult`.
 
 **Environment variables:** set **`PADDLEOCR_VALIDATION_*`** as documented in [Test runner environment variables](#test-runner-environment-variables) (Xcode vs `TEST_RUNNER_` vs `run_validation.sh`).
 

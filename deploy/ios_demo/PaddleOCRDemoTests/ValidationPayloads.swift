@@ -12,6 +12,8 @@
 
 import Foundation
 
+@testable import PaddleOCRDemo
+
 /// Names for JSON written as `XCTAttachment`s; keep in sync with whatever exports attachments from test results.
 enum ValidationArtifact: String {
     case iOSExport = "ios-ocr-export.json"
@@ -40,8 +42,20 @@ struct TimingSummary: Codable {
     var p90: Double
 }
 
+/// Pooled: one sample per det line per measured run (all lines concatenated, ms).
+struct RecognitionPerLinePooledMs: Codable {
+    var count: Int
+    var inferenceMs: TimingSummary
+    var preprocessMs: TimingSummary
+    var postprocessMs: TimingSummary
+    var totalMs: TimingSummary
+}
+
+struct RecognitionPerLineBlock: Codable {
+    var pooled: RecognitionPerLinePooledMs
+}
+
 struct OCRDeviceBenchmarkPayload: Codable {
-    /// Bumped when the JSON shape changes; pre-release builds keep this at `1`.
     var schemaVersion: Int = 1
     var warmupIterations: Int
     var measuredIterations: Int
@@ -54,11 +68,9 @@ struct OCRDeviceBenchmarkPayload: Codable {
     var recognitionPreprocessTimeMs: TimingSummary
     var recognitionInferenceTimeMs: TimingSummary
     var recognitionPostprocessTimeMs: TimingSummary
+    var recognitionPerLine: RecognitionPerLineBlock?
     var pipelineOverheadTimeMs: TimingSummary
     var memoryFootprintBeforeLoadBytes: UInt64?
     var memoryFootprintAfterLoadBytes: UInt64
-    var memoryInferencePeakBytes: UInt64
-    var memoryInferenceMeanBytes: UInt64
-    var memoryInferenceSampleCount: Int
     var thermalState: String?
 }

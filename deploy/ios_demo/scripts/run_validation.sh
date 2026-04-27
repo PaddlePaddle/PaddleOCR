@@ -13,12 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# End-to-end validation runner for the iOS demo (accuracy gate + perf capture).
+# End-to-end validation runner for the iOS demo.
 #
 # Pipeline: preflight → resolve-image → ref-gen → resolve-destination →
 #           xcodebuild-test → extract-attachments → compare → report
-#
-# Exit code reflects the accuracy comparison step only. Performance output is for the report, not pass/fail.
 #
 # Requires: bash 3.2+, xcodebuild, xcrun, python3.
 
@@ -29,8 +27,8 @@ IOS_DEMO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 # Fixtures/: images shipped for validation; `local-*` entries come from --image; auto-pick ignores `local-*`.
 FIXTURES_DIR="${IOS_DEMO_ROOT}/PaddleOCRDemoTests/Fixtures"
 DEFAULT_SIMULATOR="iPhone 16"
-# xcodebuild -only-testing target (override via ONLY_TESTING_SCOPE without editing this file).
-ONLY_TESTING_SCOPE="${ONLY_TESTING_SCOPE:-PaddleOCRDemoTests/OCRValidationTests}"
+# xcodebuild -only-testing target.
+TESTING_SCOPE="${PADDLEOCR_VALIDATION_ONLY_TESTING_SCOPE:-PaddleOCRDemoTests/OCRValidationTests}"
 
 UDID=""
 SIMULATOR=""
@@ -68,7 +66,7 @@ Environment (optional; CLI wins when both are set):
   PADDLEOCR_VALIDATION_WARMUP_ITERATIONS
   PADDLEOCR_VALIDATION_MEASURED_ITERATIONS
   PADDLEOCR_VALIDATION_INFERENCE_BACKEND   CORE_ML, XNNPACK, or CPU
-  ONLY_TESTING_SCOPE                Optional; passed to xcodebuild -only-testing (narrow test subset)
+  PADDLEOCR_VALIDATION_ONLY_TESTING_SCOPE   Optional; passed to xcodebuild -only-testing.
 
 Image selection when --image is not used:
   1) --fixture <name>, if given, else PADDLEOCR_VALIDATION_IMAGE_NAME, if set
@@ -140,6 +138,7 @@ fi
 LOGS_DIR="${OUT_DIR}/logs"
 STATUS_PATH="${OUT_DIR}/run-status.json"
 REPORT_PATH="${OUT_DIR}/validation-report.md"
+XCTEST_METRICS_PATH="${OUT_DIR}/xctest-memory-metrics.json"
 
 mkdir -p "${OUT_DIR}" "${LOGS_DIR}"
 
@@ -437,6 +436,7 @@ run_step resolve-destination resolve_destination_impl || { mark_remaining_skippe
 # ---------- Step: xcodebuild-test ----------
 xcodebuild_test_impl() {
   rm -rf "${OUT_DIR}/result.xcresult"
+  rm -f "${XCTEST_METRICS_PATH}"
   echo "xcodebuild: validation image name=${IMAGE_NAME} warmup=${WARMUP_MERGED:-} measured=${MEASURED_MERGED:-} inference=${INFERENCE_CANON:-default}"
   local runenv=(
     env "TEST_RUNNER_PADDLEOCR_VALIDATION_IMAGE_NAME=${IMAGE_NAME}"
@@ -444,12 +444,15 @@ xcodebuild_test_impl() {
   [[ -n "${WARMUP_MERGED}" ]] && runenv+=("TEST_RUNNER_PADDLEOCR_VALIDATION_WARMUP_ITERATIONS=${WARMUP_MERGED}")
   [[ -n "${MEASURED_MERGED}" ]] && runenv+=("TEST_RUNNER_PADDLEOCR_VALIDATION_MEASURED_ITERATIONS=${MEASURED_MERGED}")
   [[ -n "${INFERENCE_CANON}" ]] && runenv+=("TEST_RUNNER_PADDLEOCR_VALIDATION_INFERENCE_BACKEND=${INFERENCE_CANON}")
-  "${runenv[@]}" xcodebuild test \
-    -workspace "${IOS_DEMO_ROOT}/PaddleOCRDemo.xcworkspace" \
-    -scheme PaddleOCRDemo \
-    -destination "${DEST}" \
-    -resultBundlePath "${OUT_DIR}/result.xcresult" \
-    -only-testing:"${ONLY_TESTING_SCOPE}"
+  local xcode_cmd=(
+    xcodebuild test
+    -workspace "${IOS_DEMO_ROOT}/PaddleOCRDemo.xcworkspace"
+    -scheme PaddleOCRDemo
+    -destination "${DEST}"
+    -resultBundlePath "${OUT_DIR}/result.xcresult"
+    -only-testing:"${TESTING_SCOPE}"
+  )
+  "${runenv[@]}" "${xcode_cmd[@]}"
 }
 run_step xcodebuild-test xcodebuild_test_impl || { mark_remaining_skipped "xcodebuild-test failed: ${HALT_REASON}"; exit 1; }
 
@@ -460,6 +463,9 @@ extract_attachments_impl() {
     --out-dir "${OUT_DIR}" \
     --name ios-ocr-export.json \
     --name on-device-performance.json
+  python3 "${SCRIPT_DIR}/extract_xctest_metrics.py" \
+    --result "${OUT_DIR}/result.xcresult" \
+    --output "${XCTEST_METRICS_PATH}"
 }
 run_step extract-attachments extract_attachments_impl || { mark_remaining_skipped "extract-attachments failed: ${HALT_REASON}"; exit 1; }
 
@@ -500,6 +506,7 @@ report_impl() {
     --compare-summary "${OUT_DIR}/compare-summary.json" \
     --on-device-performance-json "${OUT_DIR}/on-device-performance.json" \
     --run-status "${STATUS_PATH}" \
+    --xctest-metrics-json "${XCTEST_METRICS_PATH}" \
     --output "${REPORT_PATH}"
 }
 report_refresh() {
@@ -507,6 +514,7 @@ report_refresh() {
     --compare-summary "${OUT_DIR}/compare-summary.json" \
     --on-device-performance-json "${OUT_DIR}/on-device-performance.json" \
     --run-status "${STATUS_PATH}" \
+    --xctest-metrics-json "${XCTEST_METRICS_PATH}" \
     --output "${REPORT_PATH}"
 }
 if [[ "${COMPARE_EXIT}" -eq 0 ]]; then
