@@ -10,30 +10,35 @@ import pytest
 REPO_ROOT = Path(__file__).resolve().parents[1]
 
 
-def _stub_module(name, **attrs):
+def _stub_module(monkeypatch, name, **attrs):
     module = types.ModuleType(name)
     for key, value in attrs.items():
         setattr(module, key, value)
-    sys.modules[name] = module
+    monkeypatch.setitem(sys.modules, name, module)
     return module
 
 
-def _load_lmdb_dataset_module(lmdb_open):
-    _stub_module("cv2")
-    _stub_module("numpy", random=types.SimpleNamespace(randint=lambda upper: 0))
-    _stub_module("lmdb", open=lmdb_open)
-    _stub_module("PIL")
-    _stub_module("PIL.Image")
+def _load_lmdb_dataset_module(monkeypatch, lmdb_open):
+    _stub_module(monkeypatch, "cv2")
+    _stub_module(
+        monkeypatch, "numpy", random=types.SimpleNamespace(randint=lambda upper: 0)
+    )
+    _stub_module(monkeypatch, "lmdb", open=lmdb_open)
+    _stub_module(monkeypatch, "PIL")
+    _stub_module(monkeypatch, "PIL.Image")
 
-    paddle_module = _stub_module("paddle")
-    paddle_io_module = _stub_module("paddle.io", Dataset=type("Dataset", (), {}))
+    paddle_module = _stub_module(monkeypatch, "paddle")
+    paddle_io_module = _stub_module(
+        monkeypatch, "paddle.io", Dataset=type("Dataset", (), {})
+    )
     paddle_module.io = paddle_io_module
 
-    ppocr_module = _stub_module("ppocr")
-    ppocr_data_module = _stub_module("ppocr.data")
+    ppocr_module = _stub_module(monkeypatch, "ppocr")
+    ppocr_data_module = _stub_module(monkeypatch, "ppocr.data")
     ppocr_data_module.__path__ = []
     ppocr_module.data = ppocr_data_module
     _stub_module(
+        monkeypatch,
         "ppocr.data.imaug",
         transform=lambda data, ops: data,
         create_operators=lambda *args, **kwargs: [],
@@ -43,7 +48,7 @@ def _load_lmdb_dataset_module(lmdb_open):
         "ppocr.data.lmdb_dataset", REPO_ROOT / "ppocr" / "data" / "lmdb_dataset.py"
     )
     module = importlib.util.module_from_spec(spec)
-    sys.modules["ppocr.data.lmdb_dataset"] = module
+    monkeypatch.setitem(sys.modules, "ppocr.data.lmdb_dataset", module)
     spec.loader.exec_module(module)
     return module
 
@@ -77,8 +82,10 @@ def _cleanup_marker():
     marker.unlink(missing_ok=True)
 
 
-def test_tablemaster_sample_info_rejects_pickle_rce_payload():
-    module = _load_lmdb_dataset_module(lmdb_open=lambda *args, **kwargs: None)
+def test_tablemaster_sample_info_rejects_pickle_rce_payload(monkeypatch):
+    module = _load_lmdb_dataset_module(
+        monkeypatch, lmdb_open=lambda *args, **kwargs: None
+    )
     payload = pickle.dumps(_Exploit())
     txn = _Txn({b"1": payload})
     dataset = module.LMDBDataSetTableMaster.__new__(module.LMDBDataSetTableMaster)
@@ -87,8 +94,10 @@ def test_tablemaster_sample_info_rejects_pickle_rce_payload():
     assert not Path("/tmp/paddleocr_lmdb_pickle_test").exists()
 
 
-def test_tablemaster_sample_info_accepts_expected_basic_pickle_data():
-    module = _load_lmdb_dataset_module(lmdb_open=lambda *args, **kwargs: None)
+def test_tablemaster_sample_info_accepts_expected_basic_pickle_data(monkeypatch):
+    module = _load_lmdb_dataset_module(
+        monkeypatch, lmdb_open=lambda *args, **kwargs: None
+    )
     safe_payload = pickle.dumps(("sample.png", b"img-bytes", "raw-name\ntext\n1,2,3,4"))
     txn = _Txn({b"1": safe_payload})
     dataset = module.LMDBDataSetTableMaster.__new__(module.LMDBDataSetTableMaster)
@@ -101,10 +110,12 @@ def test_tablemaster_sample_info_accepts_expected_basic_pickle_data():
     assert sample["cells"] == [{"bbox": [1, 2, 3, 4], "tokens": ["1", "2"]}]
 
 
-def test_tablemaster_length_metadata_rejects_pickle_rce_payload():
+def test_tablemaster_length_metadata_rejects_pickle_rce_payload(monkeypatch):
     payload = pickle.dumps(_Exploit())
     txn = _Txn({b"__len__": payload})
-    module = _load_lmdb_dataset_module(lmdb_open=lambda *args, **kwargs: _Env(txn))
+    module = _load_lmdb_dataset_module(
+        monkeypatch, lmdb_open=lambda *args, **kwargs: _Env(txn)
+    )
     dataset = module.LMDBDataSetTableMaster.__new__(module.LMDBDataSetTableMaster)
 
     with pytest.raises(pickle.UnpicklingError):
@@ -113,9 +124,11 @@ def test_tablemaster_length_metadata_rejects_pickle_rce_payload():
     assert not Path("/tmp/paddleocr_lmdb_pickle_test").exists()
 
 
-def test_tablemaster_length_metadata_accepts_expected_integer_pickle():
+def test_tablemaster_length_metadata_accepts_expected_integer_pickle(monkeypatch):
     txn = _Txn({b"__len__": pickle.dumps(7)})
-    module = _load_lmdb_dataset_module(lmdb_open=lambda *args, **kwargs: _Env(txn))
+    module = _load_lmdb_dataset_module(
+        monkeypatch, lmdb_open=lambda *args, **kwargs: _Env(txn)
+    )
     dataset = module.LMDBDataSetTableMaster.__new__(module.LMDBDataSetTableMaster)
 
     lmdb_sets = dataset.load_hierarchical_lmdb_dataset("/tmp/ignored")
