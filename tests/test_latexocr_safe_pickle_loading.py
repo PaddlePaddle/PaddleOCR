@@ -9,23 +9,11 @@ import numpy as np
 import pytest
 
 
-def _load_latexocr_module():
+def _load_latexocr_module(monkeypatch):
     module_name = "ppocr.data.latexocr_dataset"
     module_path = (
         Path(__file__).resolve().parents[1] / "ppocr" / "data" / "latexocr_dataset.py"
     )
-
-    for name in [
-        module_name,
-        "ppocr.data.imaug.label_ops",
-        "ppocr.data.imaug",
-        "ppocr.data",
-        "ppocr",
-        "paddle.io",
-        "paddle",
-        "cv2",
-    ]:
-        sys.modules.pop(name, None)
 
     ppocr_pkg = types.ModuleType("ppocr")
     ppocr_pkg.__path__ = []
@@ -54,22 +42,21 @@ def _load_latexocr_module():
     paddle_mod.arange = lambda n: list(range(n))
     paddle_mod.randperm = lambda n: list(range(n))
 
-    sys.modules.update(
-        {
-            "ppocr": ppocr_pkg,
-            "ppocr.data": data_pkg,
-            "ppocr.data.imaug": imaug_pkg,
-            "ppocr.data.imaug.label_ops": label_ops_mod,
-            "paddle": paddle_mod,
-            "paddle.io": paddle_io_mod,
-            "cv2": types.ModuleType("cv2"),
-        }
-    )
+    for name, module in {
+        "ppocr": ppocr_pkg,
+        "ppocr.data": data_pkg,
+        "ppocr.data.imaug": imaug_pkg,
+        "ppocr.data.imaug.label_ops": label_ops_mod,
+        "paddle": paddle_mod,
+        "paddle.io": paddle_io_mod,
+        "cv2": types.ModuleType("cv2"),
+    }.items():
+        monkeypatch.setitem(sys.modules, name, module)
 
     spec = importlib.util.spec_from_file_location(module_name, module_path)
     module = importlib.util.module_from_spec(spec)
     assert spec.loader is not None
-    sys.modules[module_name] = module
+    monkeypatch.setitem(sys.modules, module_name, module)
     spec.loader.exec_module(module)
     return module
 
@@ -108,8 +95,10 @@ def latexocr_config(tmp_path):
     }
 
 
-def test_latexocr_dataset_rejects_executable_pickle_payload(tmp_path, latexocr_config):
-    module = _load_latexocr_module()
+def test_latexocr_dataset_rejects_executable_pickle_payload(
+    tmp_path, latexocr_config, monkeypatch
+):
+    module = _load_latexocr_module(monkeypatch)
     marker_path = tmp_path / "marker.txt"
     payload_path = Path(latexocr_config["Train"]["dataset"]["data"])
     payload_path.write_bytes(pickle.dumps(_Payload(marker_path)))
@@ -120,8 +109,10 @@ def test_latexocr_dataset_rejects_executable_pickle_payload(tmp_path, latexocr_c
     assert not marker_path.exists()
 
 
-def test_latexocr_dataset_accepts_basic_dict_payload(tmp_path, latexocr_config):
-    module = _load_latexocr_module()
+def test_latexocr_dataset_accepts_basic_dict_payload(
+    tmp_path, latexocr_config, monkeypatch
+):
+    module = _load_latexocr_module(monkeypatch)
     payload_path = Path(latexocr_config["Train"]["dataset"]["data"])
     payload_path.write_bytes(pickle.dumps({(32, 32): [("eq", "img.png")]}))
 
