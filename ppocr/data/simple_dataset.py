@@ -19,9 +19,142 @@ import json
 import random
 import traceback
 import multiprocessing
+import urllib.request
+import threading
+import concurrent.futures
+from collections import OrderedDict
 from paddle.io import Dataset
 from .imaug import transform, create_operators
 from paddle import get_device
+
+# ------------------------------------------------------------------ #
+#  Per-worker-process URL prefetch cache
+#
+#  Each DataLoader worker is a forked process with its own copy of
+#  these globals.  The thread pool and LRU cache are therefore
+#  completely independent across workers — no cross-process locking
+#  needed, and memory usage is bounded per worker.
+#
+#  Memory budget (per worker):
+#    _URL_CACHE_MAX × avg_image_size  ≈  200 × 270 KB  ≈  54 MB
+#  With num_workers=4 the total extra footprint is ~216 MB.
+#
+#  How prefetch works:
+#    _ensure_index_map() fires inside the worker when an epoch changes.
+#    It calls _prefetch_epoch_urls(), which scans the new _index_map,
+#    picks the first _URL_PREFETCH_SUBMIT URL entries (epoch order ≈
+#    access order), and submits them to the background thread pool.
+#    _load_image_bytes() checks the cache / in-flight future before
+#    falling back to a synchronous download.
+# ------------------------------------------------------------------ #
+
+_URL_CACHE_MAX      = 200   # max cached images per worker
+_URL_PREFETCH_SUBMIT = 200  # URL items submitted to thread pool per epoch
+
+# LRU cache: url -> bytes
+_url_cache: "OrderedDict[str, bytes]" = OrderedDict()
+_url_cache_lock = threading.Lock()
+
+# In-flight futures: url -> Future
+_url_futures: "dict[str, concurrent.futures.Future]" = {}
+_url_futures_lock = threading.Lock()
+
+# Lazily created per-process thread pool
+_url_executor: "concurrent.futures.ThreadPoolExecutor | None" = None
+_url_executor_lock = threading.Lock()
+
+
+def _get_url_executor():
+    global _url_executor
+    if _url_executor is None:
+        with _url_executor_lock:
+            if _url_executor is None:
+                _url_executor = concurrent.futures.ThreadPoolExecutor(
+                    max_workers=4,
+                    thread_name_prefix="url_prefetch",
+                )
+    return _url_executor
+
+
+def _download_url_bytes(url):
+    """Download *url*, store in LRU cache, remove from futures dict.
+    The futures entry is always cleaned up (success or failure) so that
+    a failed URL can be retried on the next access.
+    """
+    try:
+        with urllib.request.urlopen(url, timeout=30) as resp:
+            data = resp.read()
+    except Exception:
+        with _url_futures_lock:
+            _url_futures.pop(url, None)
+        raise
+    with _url_cache_lock:
+        if url not in _url_cache:
+            if len(_url_cache) >= _URL_CACHE_MAX:
+                _url_cache.popitem(last=False)   # evict LRU entry
+            _url_cache[url] = data
+        else:
+            _url_cache.move_to_end(url)
+    with _url_futures_lock:
+        _url_futures.pop(url, None)
+    return data
+
+
+def _submit_url_prefetch(url):
+    """Submit a background download for *url* if not already cached/in-flight."""
+    with _url_cache_lock:
+        if url in _url_cache:
+            return
+    with _url_futures_lock:
+        if url in _url_futures:
+            return
+        future = _get_url_executor().submit(_download_url_bytes, url)
+        _url_futures[url] = future
+
+
+def _prefetch_epoch_urls(index_map, all_lines, delimiter):
+    """Scan *index_map* and submit the first _URL_PREFETCH_SUBMIT URL
+    items for background download.  Called inside worker processes."""
+    submitted = 0
+    for file_idx in index_map:
+        if submitted >= _URL_PREFETCH_SUBMIT:
+            break
+        try:
+            line = all_lines[file_idx].decode("utf-8")
+            fname = line.strip("\n").split(delimiter)[0]
+            if fname and fname[0] == "[":        # JSON list — skip
+                continue
+            if fname.startswith("http://") or fname.startswith("https://"):
+                _submit_url_prefetch(fname)
+                submitted += 1
+        except Exception:
+            pass
+
+
+def _load_image_bytes(img_path):
+    """Return raw image bytes.  For URLs checks prefetch cache/future first."""
+    if img_path.startswith("http://") or img_path.startswith("https://"):
+        # 1. Cache hit — return immediately
+        with _url_cache_lock:
+            if img_path in _url_cache:
+                _url_cache.move_to_end(img_path)
+                return _url_cache[img_path]
+        # 2. In-flight future — wait for background download to finish
+        with _url_futures_lock:
+            future = _url_futures.get(img_path)
+        if future is not None:
+            return future.result(timeout=60)
+        # 3. Cold miss — download synchronously (also fills cache)
+        return _download_url_bytes(img_path)
+    with open(img_path, "rb") as f:
+        return f.read()
+
+
+def _img_path_exists(img_path):
+    """Return True if the image source is accessible (local file exists or URL)."""
+    if img_path.startswith("http://") or img_path.startswith("https://"):
+        return True
+    return os.path.exists(img_path)
 
 
 class SimpleDataSet(Dataset):
@@ -123,13 +256,22 @@ class SimpleDataSet(Dataset):
         return sampled
 
     def _ensure_index_map(self):
-        """Lazily rebuild _index_map when worker detects epoch change via shared memory."""
+        """Lazily rebuild _index_map when worker detects epoch change via shared memory.
+        Also triggers URL prefetch on first call (epoch 0) and on every epoch change.
+        """
         if self._all_lines is None:
             return
         current_epoch = self._shared_epoch.value
-        if current_epoch != self._cached_epoch:
+        epoch_changed = current_epoch != self._cached_epoch
+        first_call = not getattr(self, "_url_prefetch_initialized", False)
+
+        if epoch_changed:
             self._index_map = self._generate_index_map(current_epoch)
             self._cached_epoch = current_epoch
+
+        if epoch_changed or first_call:
+            self._url_prefetch_initialized = True
+            _prefetch_epoch_urls(self._index_map, self._all_lines, self.delimiter)
 
     def get_image_info_list(self, file_list, ratio_list):
         if isinstance(file_list, str):
@@ -215,13 +357,18 @@ class SimpleDataSet(Dataset):
             file_name = substr[0]
             file_name = self._try_parse_filename_list(file_name)
             label = substr[1]
-            img_path = os.path.join(self.data_dir, file_name)
+            img_path = (
+                file_name
+                if file_name.startswith("http://") or file_name.startswith("https://")
+                else os.path.join(self.data_dir, file_name)
+            )
             data = {"img_path": img_path, "label": label}
-            if not os.path.exists(img_path):
+            if not _img_path_exists(img_path):
                 continue
-            with open(data["img_path"], "rb") as f:
-                img = f.read()
-                data["image"] = img
+            try:
+                data["image"] = _load_image_bytes(img_path)
+            except Exception:
+                continue
             data = transform(data, load_data_ops)
 
             if data is None:
@@ -246,13 +393,15 @@ class SimpleDataSet(Dataset):
             file_name = substr[0]
             file_name = self._try_parse_filename_list(file_name)
             label = substr[1]
-            img_path = os.path.join(self.data_dir, file_name)
+            img_path = (
+                file_name
+                if file_name.startswith("http://") or file_name.startswith("https://")
+                else os.path.join(self.data_dir, file_name)
+            )
             data = {"img_path": img_path, "label": label}
-            if not os.path.exists(img_path):
+            if not _img_path_exists(img_path):
                 raise Exception("{} does not exist!".format(img_path))
-            with open(data["img_path"], "rb") as f:
-                img = f.read()
-                data["image"] = img
+            data["image"] = _load_image_bytes(img_path)
             data["ext_data"] = self.get_ext_data()
             data["filename"] = data["img_path"]
             data["epoch"] = self._shared_epoch.value
@@ -353,13 +502,15 @@ class MultiScaleDataSet(SimpleDataSet):
             file_name = substr[0]
             file_name = self._try_parse_filename_list(file_name)
             label = substr[1]
-            img_path = os.path.join(self.data_dir, file_name)
+            img_path = (
+                file_name
+                if file_name.startswith("http://") or file_name.startswith("https://")
+                else os.path.join(self.data_dir, file_name)
+            )
             data = {"img_path": img_path, "label": label}
-            if not os.path.exists(img_path):
+            if not _img_path_exists(img_path):
                 raise Exception("{} does not exist!".format(img_path))
-            with open(data["img_path"], "rb") as f:
-                img = f.read()
-                data["image"] = img
+            data["image"] = _load_image_bytes(img_path)
             data["ext_data"] = self.get_ext_data()
             outs = transform(data, self.ops[:-1])
             if outs is not None:

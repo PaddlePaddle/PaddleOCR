@@ -60,7 +60,7 @@ Optimizer:
     warmup_epoch: 2
   regularizer:
     name: L2
-    factor: 1e-06
+    factor: 5.0e-05
 
 PostProcess:
   name: DBPostProcess
@@ -93,14 +93,15 @@ Train:
             p: 0.5
         - type: Affine
           args:
+            p: 0.5
             rotate:
-            - -10
-            - 10
+            - -25
+            - 25
         - type: Resize
           args:
             size:
             - 0.5
-            - 3
+            - 2
     - EastRandomCropData:
         size:
         - 640

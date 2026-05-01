@@ -40,7 +40,6 @@ Architecture:
 
 Loss:
   name: DBLoss
-  balance_loss: true
   main_loss_type: DiceBCELoss
   alpha: 5
   beta: 10
@@ -60,7 +59,7 @@ Optimizer:
     warmup_epoch: 2
   regularizer:
     name: L2
-    factor: 1e-6
+    factor: 1.0e-6
 
 PostProcess:
   name: DBPostProcess
@@ -93,14 +92,15 @@ Train:
             p: 0.5
         - type: Affine
           args:
+            p: 0.5
             rotate:
-            - -10
-            - 10
+            - -25
+            - 25
         - type: Resize
           args:
             size:
             - 0.5
-            - 3
+            - 2
     - EastRandomCropData:
         size:
         - 640
