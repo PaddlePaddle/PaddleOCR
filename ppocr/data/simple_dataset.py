@@ -20,6 +20,7 @@ import random
 import traceback
 import multiprocessing
 import urllib.request
+import urllib.parse
 import threading
 import concurrent.futures
 from collections import OrderedDict
@@ -76,13 +77,24 @@ def _get_url_executor():
     return _url_executor
 
 
+def _encode_url(url):
+    """Percent-encode non-ASCII characters in the URL path so that
+    urllib can handle URLs containing CJK or other non-ASCII filenames.
+    Scheme, netloc, query and fragment are left untouched.
+    """
+    parts = urllib.parse.urlparse(url)
+    encoded_path = urllib.parse.quote(parts.path, safe="/:@!$&'()*+,;=")
+    return urllib.parse.urlunparse(parts._replace(path=encoded_path))
+
+
 def _download_url_bytes(url):
     """Download *url*, store in LRU cache, remove from futures dict.
     The futures entry is always cleaned up (success or failure) so that
     a failed URL can be retried on the next access.
     """
+    encoded = _encode_url(url)
     try:
-        with urllib.request.urlopen(url, timeout=30) as resp:
+        with urllib.request.urlopen(encoded, timeout=30) as resp:
             data = resp.read()
     except Exception:
         with _url_futures_lock:
