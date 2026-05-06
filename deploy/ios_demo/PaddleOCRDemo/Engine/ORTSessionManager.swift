@@ -61,6 +61,18 @@ struct ORTProfilingOutput: Sendable {
     var recognitionProfileJSON: URL
 }
 
+/// Tuning options for ORT session creation.
+struct ORTSessionTuningOptions: Sendable {
+    /// Session-level intra-op thread count. 0 = ORT default (auto).
+    var intraOpThreads: Int = 0
+    /// XNNPACK EP thread count. 0 = ORT default.
+    var xnnpackThreads: Int = 0
+    /// CoreML EP flags: enableOnSubgraphs, createMLProgram, staticInputShapes, cpuOnly, cpuAndGPU, aneOnly.
+    var coreMLFlags: Set<String> = []
+
+    static let `default` = ORTSessionTuningOptions()
+}
+
 actor ORTSessionManager {
     private struct SessionIONames {
         let inputName: String
@@ -80,7 +92,8 @@ actor ORTSessionManager {
     ///
     /// - Parameter ortProfiling: When `true`, enables ONNX Runtime session profiling (written as JSON on finalize).
     ///   Profiling adds overhead; do not treat wall-clock times from the same run as a clean latency benchmark.
-    func loadModels(backend: ORTInferenceBackend = .cpu, ortProfiling: Bool = false) async throws {
+    /// - Parameter tuning: Session tuning options (threads, EP flags). Default reads from environment.
+    func loadModels(backend: ORTInferenceBackend = .cpu, ortProfiling: Bool = false, tuning: ORTSessionTuningOptions = .default) async throws {
         let env = try ORTEnv(loggingLevel: .warning)
         self.env = env
         ortProfilingPendingFinalize = ortProfiling
@@ -92,12 +105,12 @@ actor ORTSessionManager {
             let baseDir = try ortProfilingDirectoryURL()
             let detPrefix = baseDir.appendingPathComponent("paddle_ort_det", isDirectory: false).path
             let recPrefix = baseDir.appendingPathComponent("paddle_ort_rec", isDirectory: false).path
-            let detOptions = try makeSessionOptions(backend: backend, ortProfilePathPrefix: detPrefix)
-            let recOptions = try makeSessionOptions(backend: backend, ortProfilePathPrefix: recPrefix)
+            let detOptions = try makeSessionOptions(backend: backend, ortProfilePathPrefix: detPrefix, tuning: tuning)
+            let recOptions = try makeSessionOptions(backend: backend, ortProfilePathPrefix: recPrefix, tuning: tuning)
             detSession = try ORTSession(env: env, modelPath: detConfig.modelPath, sessionOptions: detOptions)
             recSession = try ORTSession(env: env, modelPath: recConfig.modelPath, sessionOptions: recOptions)
         } else {
-            let options = try makeSessionOptions(backend: backend, ortProfilePathPrefix: nil)
+            let options = try makeSessionOptions(backend: backend, ortProfilePathPrefix: nil, tuning: tuning)
             detSession = try ORTSession(env: env, modelPath: detConfig.modelPath, sessionOptions: options)
             recSession = try ORTSession(env: env, modelPath: recConfig.modelPath, sessionOptions: options)
         }
@@ -140,9 +153,12 @@ actor ORTSessionManager {
         return dir
     }
 
-    private func makeSessionOptions(backend: ORTInferenceBackend, ortProfilePathPrefix: String?) throws -> ORTSessionOptions {
+    private func makeSessionOptions(backend: ORTInferenceBackend, ortProfilePathPrefix: String?, tuning: ORTSessionTuningOptions) throws -> ORTSessionOptions {
         let options = try ORTSessionOptions()
         try options.setGraphOptimizationLevel(.all)
+        if tuning.intraOpThreads > 0 {
+            try options.setIntraOpNumThreads(Int32(tuning.intraOpThreads))
+        }
         if let prefix = ortProfilePathPrefix {
             try ORTProfilingBridge.enableProfiling(sessionOptions: options, pathPrefix: prefix)
         }
@@ -151,9 +167,19 @@ actor ORTSessionManager {
             break
         case .xnnpack:
             let xnnpackOptions = ORTXnnpackExecutionProviderOptions()
+            if tuning.xnnpackThreads > 0 {
+                xnnpackOptions.intra_op_num_threads = Int32(tuning.xnnpackThreads)
+            }
             try options.appendXnnpackExecutionProvider(with: xnnpackOptions)
         case .coreML:
             let coremlOptions = ORTCoreMLExecutionProviderOptions()
+            let flags = tuning.coreMLFlags
+            if flags.contains("enableOnSubgraphs") { coremlOptions.enableOnSubgraphs = true }
+            if flags.contains("createMLProgram") { coremlOptions.createMLProgram = true }
+            if flags.contains("staticInputShapes") { coremlOptions.onlyAllowStaticInputShapes = true }
+            if flags.contains("cpuOnly") { coremlOptions.useCPUOnly = true }
+            if flags.contains("cpuAndGPU") { coremlOptions.useCPUAndGPU = true }
+            if flags.contains("aneOnly") { coremlOptions.onlyEnableForDevicesWithANE = true }
             try options.appendCoreMLExecutionProvider(with: coremlOptions)
         }
         return options

@@ -8,7 +8,7 @@ All app sources, bundled resources, and third-party **source** vendored for this
 
 ## Prerequisites
 
-- macOS with Xcode (iOS 16+)
+- macOS with Xcode 16.0+ (deployment target iOS 16+)
 - CocoaPods (`gem install cocoapods` or Homebrew)
 - `curl`, `tar`
 
@@ -140,6 +140,8 @@ Place this script’s options first (`--input-dir`, `--out-dir`), then any ORT c
 
 ## Open in Xcode
 
+Requires **Xcode 16.0 or later** (iOS 16+ deployment target).
+
 ```bash
 open PaddleOCRDemo.xcworkspace
 ```
@@ -159,6 +161,7 @@ This demo provides a benchmark pipeline for measuring on-device OCR latency and 
 Complete [One-time asset setup](#one-time-asset-setup) first. For benchmark runs you also need:
 
 - Xcode 16 or later (the benchmark extractor uses `xcresulttool get test-results`, introduced in 16.0).
+- **Code signing (real device only):** `xcodebuild` requires a valid Apple Development certificate and provisioning profile to deploy to a physical device. The easiest way to set this up is to open `PaddleOCRDemo.xcworkspace` in Xcode once, select your Development Team under *Signing & Capabilities*, and let Xcode automatically manage provisioning. After that, all subsequent `xcodebuild` invocations (including the benchmark script) will use the cached profile — you do not need to open Xcode again. On first deploy, the device will also refuse to launch the app until you trust the developer certificate: go to **Settings → General → VPN & Device Management → your Developer App certificate → Trust**. This is a one-time step per device. Simulator runs do not require signing.
 - Optional accuracy precheck: PaddleOCR (with ONNX Runtime engine) for reference generation, and `python3 -m pip install -r requirements-accuracy.txt` for additional dependencies.
 
 ### Full pipeline

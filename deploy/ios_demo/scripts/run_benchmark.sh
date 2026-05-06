@@ -42,6 +42,10 @@ FIXTURE_ARG=""
 WARMUP_CLI=""
 MEASURED_CLI=""
 INFERENCE_CLI=""
+THREADS_CLI=""
+XNNPACK_THREADS_CLI=""
+REC_BATCH_SIZE_CLI=""
+COREML_OPTIONS_CLI=""
 ORT_PROFILING_CLI=0
 ACCURACY_CHECK=0
 ACCURACY_STOP_ON_FAILURE=0
@@ -64,6 +68,11 @@ Options:
   --warmup <n>          Benchmark warmup iterations (non-negative int).
   --measured-iterations <n>  Timed benchmark iterations.
   --inference-backend <NAME>  ONNX Runtime EP for tests: CPU, XNNPACK, or CORE_ML.
+  --threads <n>         Session-level intra-op thread count (positive int).
+  --xnnpack-threads <n> XNNPACK EP thread count (positive int).
+  --rec-batch-size <n>  Recognition batch size override (positive int).
+  --coreml-options <flags>  Comma-separated CoreML EP flags: enableOnSubgraphs,
+                        createMLProgram, staticInputShapes, cpuOnly, cpuAndGPU, aneOnly.
   --ort-profiling       Enable ONNX Runtime session profiling.
   --accuracy-check      Run an accuracy precheck before benchmark tests.
   --stop-on-accuracy-failure
@@ -81,6 +90,10 @@ Environment (optional; CLI wins when both are set):
   PADDLEOCR_BENCHMARK_WARMUP_ITERATIONS
   PADDLEOCR_BENCHMARK_MEASURED_ITERATIONS
   PADDLEOCR_BENCHMARK_INFERENCE_BACKEND   CPU, XNNPACK, or CORE_ML
+  PADDLEOCR_BENCHMARK_INTRA_OP_THREADS    Session-level thread count
+  PADDLEOCR_BENCHMARK_XNNPACK_THREADS     XNNPACK EP thread count
+  PADDLEOCR_BENCHMARK_REC_BATCH_SIZE      Recognition batch size
+  PADDLEOCR_BENCHMARK_COREML_OPTIONS      Comma-separated CoreML EP flags
   PADDLEOCR_BENCHMARK_ORT_PROFILING   Set to 1/true/yes/on to emit ORT JSON profiles
   PADDLEOCR_BENCHMARK_ONLY_TESTING_SCOPE   Optional comma-separated xcodebuild -only-testing scopes.
 
@@ -106,6 +119,10 @@ while [[ $# -gt 0 ]]; do
     --warmup) WARMUP_CLI="$2"; shift 2 ;;
     --measured-iterations) MEASURED_CLI="$2"; shift 2 ;;
     --inference-backend) INFERENCE_CLI="$2"; shift 2 ;;
+    --threads) THREADS_CLI="$2"; shift 2 ;;
+    --xnnpack-threads) XNNPACK_THREADS_CLI="$2"; shift 2 ;;
+    --rec-batch-size) REC_BATCH_SIZE_CLI="$2"; shift 2 ;;
+    --coreml-options) COREML_OPTIONS_CLI="$2"; shift 2 ;;
     --ort-profiling) ORT_PROFILING_CLI=1; shift ;;
     --accuracy-check) ACCURACY_CHECK=1; shift ;;
     --stop-on-accuracy-failure) ACCURACY_STOP_ON_FAILURE=1; shift ;;
@@ -157,6 +174,24 @@ if [[ -n "${INFERENCE_MERGED}" ]]; then
       die "Invalid --inference-backend / PADDLEOCR_BENCHMARK_INFERENCE_BACKEND: ${INFERENCE_MERGED}" "argument parsing" "Use CPU, XNNPACK, or CORE_ML (Swift raw: cpu, xnnpack, core_ml)."
       ;;
   esac
+fi
+
+# Tuning parameters.
+THREADS_MERGED="${THREADS_CLI:-${PADDLEOCR_BENCHMARK_INTRA_OP_THREADS:-}}"
+XNNPACK_THREADS_MERGED="${XNNPACK_THREADS_CLI:-${PADDLEOCR_BENCHMARK_XNNPACK_THREADS:-}}"
+REC_BATCH_SIZE_MERGED="${REC_BATCH_SIZE_CLI:-${PADDLEOCR_BENCHMARK_REC_BATCH_SIZE:-}}"
+COREML_OPTIONS_MERGED="${COREML_OPTIONS_CLI:-${PADDLEOCR_BENCHMARK_COREML_OPTIONS:-}}"
+if [[ -n "${THREADS_MERGED}" ]]; then
+  [[ "${THREADS_MERGED}" =~ ^[0-9]+$ && "${THREADS_MERGED}" -gt 0 ]] \
+    || die "Invalid --threads: ${THREADS_MERGED}" "argument parsing" "Use a positive integer."
+fi
+if [[ -n "${XNNPACK_THREADS_MERGED}" ]]; then
+  [[ "${XNNPACK_THREADS_MERGED}" =~ ^[0-9]+$ && "${XNNPACK_THREADS_MERGED}" -gt 0 ]] \
+    || die "Invalid --xnnpack-threads: ${XNNPACK_THREADS_MERGED}" "argument parsing" "Use a positive integer."
+fi
+if [[ -n "${REC_BATCH_SIZE_MERGED}" ]]; then
+  [[ "${REC_BATCH_SIZE_MERGED}" =~ ^[0-9]+$ && "${REC_BATCH_SIZE_MERGED}" -gt 0 ]] \
+    || die "Invalid --rec-batch-size: ${REC_BATCH_SIZE_MERGED}" "argument parsing" "Use a positive integer."
 fi
 
 if [[ "${ORT_PROFILING_CLI}" -eq 1 ]]; then
@@ -792,6 +827,10 @@ xcodebuild_test_impl() {
   [[ -n "${MEASURED_MERGED}" ]] && runenv+=("TEST_RUNNER_PADDLEOCR_BENCHMARK_MEASURED_ITERATIONS=${MEASURED_MERGED}")
   [[ -n "${INFERENCE_CANON}" ]] && runenv+=("TEST_RUNNER_PADDLEOCR_BENCHMARK_INFERENCE_BACKEND=${INFERENCE_CANON}")
   [[ -n "${ORT_PROFILING_MERGED:-}" ]] && runenv+=("TEST_RUNNER_PADDLEOCR_BENCHMARK_ORT_PROFILING=${ORT_PROFILING_MERGED}")
+  [[ -n "${THREADS_MERGED}" ]] && runenv+=("TEST_RUNNER_PADDLEOCR_BENCHMARK_INTRA_OP_THREADS=${THREADS_MERGED}")
+  [[ -n "${XNNPACK_THREADS_MERGED}" ]] && runenv+=("TEST_RUNNER_PADDLEOCR_BENCHMARK_XNNPACK_THREADS=${XNNPACK_THREADS_MERGED}")
+  [[ -n "${REC_BATCH_SIZE_MERGED}" ]] && runenv+=("TEST_RUNNER_PADDLEOCR_BENCHMARK_REC_BATCH_SIZE=${REC_BATCH_SIZE_MERGED}")
+  [[ -n "${COREML_OPTIONS_MERGED}" ]] && runenv+=("TEST_RUNNER_PADDLEOCR_BENCHMARK_COREML_OPTIONS=${COREML_OPTIONS_MERGED}")
   local scopes=() scope result_path
   IFS=',' read -r -a scopes <<< "${TESTING_SCOPE}"
   for scope in "${scopes[@]}"; do

@@ -41,14 +41,18 @@ final class OCRBenchmarkTests: XCTestCase {
     /// When set, on-device performance timings are not representative of a clean latency benchmark.
     private static let ortProfilingEnvKey = "PADDLEOCR_BENCHMARK_ORT_PROFILING"
 
-    /// Forwarded by `run_benchmark.sh`; Release is the only maintained benchmark configuration.
     private static let buildConfigurationEnvKey = "PADDLEOCR_BENCHMARK_BUILD_CONFIGURATION"
+
+    private static let intraOpThreadsEnvKey = "PADDLEOCR_BENCHMARK_INTRA_OP_THREADS"
+    private static let xnnpackThreadsEnvKey = "PADDLEOCR_BENCHMARK_XNNPACK_THREADS"
+    private static let coremlOptionsEnvKey = "PADDLEOCR_BENCHMARK_COREML_OPTIONS"
+    private static let recBatchSizeEnvKey = "PADDLEOCR_BENCHMARK_REC_BATCH_SIZE"
 
     func testOCRExportJSONSchema() async throws {
         let cgImage = try resolveBenchmarkImage()
         let backend = try resolveInferenceBackend()
         let manager = ORTSessionManager()
-        try await manager.loadModels(backend: backend, ortProfiling: resolveORTProfilingEnabled())
+        try await manager.loadModels(backend: backend, ortProfiling: resolveORTProfilingEnabled(), tuning: resolveSessionTuningOptions())
         let engine = try OCREngine(sessionManager: manager)
         let run = try await engine.run(cgImage, params: .noOverrides)
 
@@ -112,8 +116,10 @@ final class OCRBenchmarkTests: XCTestCase {
         var detectionInputShapes: [[Int]] = []
         var recognitionInputShapes: [[Int]] = []
 
+        let benchmarkParams = resolveBenchmarkRuntimeParams()
+
         for index in 0..<iterations {
-            let run = try await context.engine.run(context.cgImage, params: .noOverrides)
+            let run = try await context.engine.run(context.cgImage, params: benchmarkParams)
             if index == 0 {
                 firstMeasuredLineCount = run.recognitionLineCount
             }
@@ -210,7 +216,7 @@ final class OCRBenchmarkTests: XCTestCase {
             guard measuredError == nil else { return }
             do {
                 _ = try waitForAsync {
-                    try await context.engine.run(context.cgImage, params: .noOverrides)
+                    try await context.engine.run(context.cgImage, params: self.resolveBenchmarkRuntimeParams())
                 }
             } catch {
                 measuredError = error
@@ -237,7 +243,7 @@ final class OCRBenchmarkTests: XCTestCase {
         let memoryBeforeLoad = physicalFootprintBytes()
         let manager = ORTSessionManager()
         let loadStart = CFAbsoluteTimeGetCurrent()
-        try await manager.loadModels(backend: backend, ortProfiling: ortProfiling)
+        try await manager.loadModels(backend: backend, ortProfiling: ortProfiling, tuning: resolveSessionTuningOptions())
         let coldLoadTime = CFAbsoluteTimeGetCurrent() - loadStart
         let memoryAfterLoad = physicalFootprintBytes()
         let engine = try OCREngine(sessionManager: manager)
@@ -266,8 +272,9 @@ final class OCRBenchmarkTests: XCTestCase {
     }
 
     private func runWarmup(engine: OCREngine, image: CGImage, iterations: Int) async throws {
+        let params = resolveBenchmarkRuntimeParams()
         for _ in 0..<iterations {
-            _ = try await engine.run(image, params: .noOverrides)
+            _ = try await engine.run(image, params: params)
         }
     }
 
@@ -349,6 +356,21 @@ final class OCRBenchmarkTests: XCTestCase {
         default:
             return false
         }
+    }
+
+    private func resolveSessionTuningOptions() -> ORTSessionTuningOptions {
+        let env = ProcessInfo.processInfo.environment
+        var opts = ORTSessionTuningOptions()
+        if let v = env[Self.intraOpThreadsEnvKey], let n = Int(v), n > 0 {
+            opts.intraOpThreads = n
+        }
+        if let v = env[Self.xnnpackThreadsEnvKey], let n = Int(v), n > 0 {
+            opts.xnnpackThreads = n
+        }
+        if let v = env[Self.coremlOptionsEnvKey], !v.isEmpty {
+            opts.coreMLFlags = Set(v.split(separator: ",").map { String($0).trimmingCharacters(in: .whitespaces) })
+        }
+        return opts
     }
 
     private func attachProfileFile(_ url: URL, name: String) {
@@ -480,6 +502,23 @@ final class OCRBenchmarkTests: XCTestCase {
             )
         }
         return n
+    }
+
+    private func resolveBenchmarkRuntimeParams() -> OCRRuntimeParams {
+        let env = ProcessInfo.processInfo.environment
+        if let v = env[Self.recBatchSizeEnvKey], let n = Int(v), n >= 1 {
+            return OCRRuntimeParams(
+                textDetLimitSideLen: nil,
+                textDetLimitType: nil,
+                textDetMaxSideLimit: nil,
+                textDetThresh: nil,
+                textDetBoxThresh: nil,
+                textDetUnclipRatio: nil,
+                textRecBatchSize: n,
+                textRecScoreThresh: nil
+            )
+        }
+        return .noOverrides
     }
 
     /// Physical memory footprint (bytes) — matches Xcode Memory gauge more closely than RSS alone.
