@@ -130,12 +130,16 @@ python3 -m pip install -r requirements-onnx-convert-ort.txt
 ./scripts/convert_onnx_to_ort.sh
 ```
 
-By default, conversion writes `inference*.ort` next to each `inference.onnx` under `PaddleOCRDemo/Models/`, so both formats sit in the same tree and the bundle can grow. The demo loads `inference*.ort` when present, so you do not need to ship ONNX in the bundle. To keep only one weight file in the app, you can either manually delete the `inference.onnx` files, or use the `--out-dir` option to generate `inference*.ort` models in a separate directory. These generated models can then replace the originals in `PaddleOCRDemo/Models/`. Use **`--input-dir`** to point at any ONNX tree on the host; it defaults to `PaddleOCRDemo/Models` when omitted.
+By default, conversion writes `inference*.ort` next to each `inference.onnx` under `PaddleOCRDemo/Models/`, so both formats sit in the same tree and the bundle can grow. The demo loads `inference*.ort` when present, so you do not need to ship ONNX in the bundle. To keep only one weight file in the app, you can either manually delete the `inference.onnx` files, or use the `--output-dir` option to generate `inference*.ort` models in a separate directory. These generated models can then replace the originals in `PaddleOCRDemo/Models/`. Use **`--input-dir`** to point at any ONNX tree on the host; it defaults to `PaddleOCRDemo/Models` when omitted.
 
-Place this script’s options first (`--input-dir`, `--out-dir`), then any ORT converter flags. The script inserts `--` before the model path internally so options like `--optimization_style` (which accept multiple values) are not misparsed. Example:
+By default this script uses **`--optimization-style Fixed`** (one `.ort` per ONNX file). The raw Python tool defaults to both Fixed and Runtime, which yields `*.ort` and `*.with_runtime_opt.ort`. For Runtime-style ORT files (e.g. Core ML–oriented exports), pass **`--optimization-style Runtime`** as a script option (alias: `--optimization_style`). You can pass both: **`--optimization-style Fixed Runtime`**.
+
+The converter still emits **`required_operators*.config`** for minimal ORT builds; **by default the shell script deletes them** after a successful run. Pass **`--keep-operator-config`** to retain them. They are **not** read at inference time. The iOS demo loads only the **`.ort`** (or `.onnx`) weights.
+
+Example (Runtime conversion to a separate folder):
 
 ```bash
-./scripts/convert_onnx_to_ort.sh --out-dir ./out/ort_bundles --optimization_style Runtime
+./scripts/convert_onnx_to_ort.sh --output-dir ./out/ort_bundles --optimization-style Runtime
 ```
 
 ## Open in Xcode
@@ -150,7 +154,7 @@ If you use CocoaPods, run `pod install` in the project root first so the workspa
 
 Build the **PaddleOCRDemo** scheme. Ensure **`PaddleOCRDemo/Models/`** and **`PaddleOCRDemo/Resources/SampleImages/`** are included in the app target via folder references / **Copy Bundle Resources**, and **`PaddleOCRDemoTests/Fixtures/`** in the test target (as in the checked-in project). The built-in picker sample is **`general_ocr_002.jpg`**.
 
-**Inference engine (ONNX Runtime):** The **CPU** / **XNNPACK** / **Core ML** control registers which *additional* execution providers are enabled on the session. ONNX Runtime can still run parts of the graph on the default **CPU** execution provider when an accelerator EP does not implement an operator. Choosing **CPU** does not register XNNPACK or Core ML. JSON payloads use raw strings `cpu`, `xnnpack`, and `core_ml`.
+**ONNX Runtime (execution provider presets):** The **CPU** / **XNNPACK** / **Core ML** segmented control chooses which ONNX Runtime EP is preferred first when creating the session. ONNX Runtime may still execute some operators on the default **CPU** EP when another EP lacks an implementation. Selecting **CPU** does not register the XNNPACK or Core ML EPs.
 
 ## Benchmark
 
@@ -160,7 +164,6 @@ This demo provides a benchmark pipeline for measuring on-device OCR latency and 
 
 Complete [One-time asset setup](#one-time-asset-setup) first. For benchmark runs you also need:
 
-- Xcode 16 or later (the benchmark extractor uses `xcresulttool get test-results`, introduced in 16.0).
 - **Code signing (real device only):** `xcodebuild` requires a valid Apple Development certificate and provisioning profile to deploy to a physical device. The easiest way to set this up is to open `PaddleOCRDemo.xcworkspace` in Xcode once, select your Development Team under *Signing & Capabilities*, and let Xcode automatically manage provisioning. After that, all subsequent `xcodebuild` invocations (including the benchmark script) will use the cached profile — you do not need to open Xcode again. On first deploy, the device will also refuse to launch the app until you trust the developer certificate: go to **Settings → General → VPN & Device Management → your Developer App certificate → Trust**. This is a one-time step per device. Simulator runs do not require signing.
 - Optional accuracy precheck: PaddleOCR (with ONNX Runtime engine) for reference generation, and `python3 -m pip install -r requirements-accuracy.txt` for additional dependencies.
 
@@ -178,22 +181,23 @@ The script always invokes `xcodebuild test` with `-configuration Release`.
 | Image from an arbitrary path | `--image <path>` (copied into `Fixtures/` as `local-*` for this run) |
 | Image already under `PaddleOCRDemoTests/Fixtures/` | `--fixture <name>` (stem or `stem.ext`) |
 | Benchmark intensity | `--warmup <n>`, `--measured-iterations <n>` |
-| ONNX Runtime EP | `--inference-backend CPU`, `XNNPACK`, or `CORE_ML` |
+| Preferred ONNX Runtime EP | `--ort-execution-provider CPU`, `XNNPACK`, or `CORE_ML` |
 | ONNX Runtime profiling JSON | `--ort-profiling` |
 | Optional accuracy precheck | `--accuracy-check`, optionally `--accuracy-reference-json <path>` |
 | Gate benchmark on accuracy `FAIL` | `--accuracy-check --stop-on-accuracy-failure` |
-| Output directory | `--out-dir <dir>` (default: `out/`) |
+| Output directory | `--output-dir <dir>` (default: `out/`) |
 | Clean previous artifacts | `--clean` (removes `Fixtures/local-*` and prior artifacts under the output directory) |
 
 ```bash
 ./scripts/run_benchmark.sh --udid <device-udid> --warmup 5 --measured-iterations 30
-./scripts/run_benchmark.sh --udid <udid> --image /path/to/photo.png --inference-backend CPU
+./scripts/run_benchmark.sh --udid <udid> --image /path/to/photo.png --ort-execution-provider CPU
 ./scripts/run_benchmark.sh --fixture ios_ocr_benchmark_reference --warmup 2 --measured-iterations 20
 ./scripts/run_benchmark.sh
 PADDLEOCR_BENCHMARK_MEASURED_ITERATIONS=30 ./scripts/run_benchmark.sh --warmup 0
+PADDLEOCR_BENCHMARK_ORT_EXECUTION_PROVIDER=XNNPACK ./scripts/run_benchmark.sh --fixture ios_ocr_benchmark_reference --warmup 1
 ./scripts/run_benchmark.sh --accuracy-check --udid <device-udid> --measured-iterations 30
 ./scripts/run_benchmark.sh --accuracy-check --stop-on-accuracy-failure --udid <device-udid>
-./scripts/run_benchmark.sh --out-dir ./benchmark-out --measured-iterations 30
+./scripts/run_benchmark.sh --output-dir ./benchmark-out --measured-iterations 30
 ./scripts/run_benchmark.sh --udid <device-udid> --ort-profiling
 ```
 
@@ -201,7 +205,7 @@ PADDLEOCR_BENCHMARK_MEASURED_ITERATIONS=30 ./scripts/run_benchmark.sh --warmup 0
 
 **ORT session profiling** (attachments `ort_profile_detection`, `ort_profile_recognition`): use `--ort-profiling`. Profiling changes runtime behavior; capture it in a **separate** run from clean latency measurements.
 
-The script writes artifacts under the output directory (`out/` by default, configurable via `--out-dir`). After the benchmark **completes**, it overwrites `run-status.json`, `on-device-performance.json`, `xctest-memory-metrics.json`, and `benchmark-report.md` there. If the benchmark pipeline **errors** earlier, those files may be missing or partial for this run (any existing copies are from a previous attempt).
+The script writes artifacts under the output directory (`out/` by default, configurable via `--output-dir`). After the benchmark **completes**, it overwrites `run-status.json`, `on-device-performance.json`, `xctest-memory-metrics.json`, and `benchmark-report.md` there. If the benchmark pipeline **errors** earlier, those files may be missing or partial for this run (any existing copies are from a previous attempt).
 
 The report includes model input tensor shape distributions, first measured run line count, inferred model preset, actual model format (`onnx` or `ort`), det/rec/total model weight sizes, app executable size when it can be resolved from Xcode build settings, cold model load time, measured latency, memory, etc. Shape distribution counts are counted per model invocation inside the measured loop: detection contributes one shape per full OCR run, while recognition contributes one shape per recognition batch.
 
@@ -233,14 +237,14 @@ The benchmark tests read settings through variables named **`PADDLEOCR_BENCHMARK
 | How you launch tests | What to configure |
 | --- | --- |
 | **Xcode** | Scheme **PaddleOCRDemo** → **Test** (not Run) → **Arguments** → **Environment Variables**. Use the names below **as-is** (`PADDLEOCR_BENCHMARK_…`). |
-| **Custom `xcodebuild test`** | Set **`TEST_RUNNER_` + the same name** (e.g. `TEST_RUNNER_PADDLEOCR_BENCHMARK_IMAGE_NAME=…`). `xcodebuild` injects them into the test runner and strips the prefix so the test still reads **`PADDLEOCR_BENCHMARK_…`**. |
+| **Custom `xcodebuild test`** | Set **`TEST_RUNNER_` + the same variable name** (e.g. `TEST_RUNNER_PADDLEOCR_BENCHMARK_IMAGE_NAME=…`). `xcodebuild` strips the `TEST_RUNNER_` prefix for the XCTest runner. |
 
 | Variable | If unset | Role |
 | --- | --- | --- |
 | `PADDLEOCR_BENCHMARK_IMAGE_NAME` | Defaults to **`ios_ocr_benchmark_reference`**. Set explicitly to use another bundled image. | Bundled test image: **stem** or **`stem.ext`** under **`Fixtures/`**. |
 | `PADDLEOCR_BENCHMARK_WARMUP_ITERATIONS` | **3** | Untimed full OCR runs before timing (warm caches / JIT). Used by latency and memory benchmark tests. |
 | `PADDLEOCR_BENCHMARK_MEASURED_ITERATIONS` | **10** | Timed runs. Used by latency and memory benchmark tests. |
-| `PADDLEOCR_BENCHMARK_INFERENCE_BACKEND` | **CPU** | ONNX Runtime EP for **`OCRBenchmarkTests`**: **`CPU`**, **`XNNPACK`**, or **`CORE_ML`**. |
+| `PADDLEOCR_BENCHMARK_ORT_EXECUTION_PROVIDER` | **CPU** | Preferred ONNX Runtime preset: **`CPU`**, **`XNNPACK`**, or **`CORE_ML`**. |
 | `PADDLEOCR_BENCHMARK_ORT_PROFILING` | (unset) | Enable ORT **session profiling** (`1` / `true` / `yes` / `on`). |
 | `PADDLEOCR_BENCHMARK_ONLY_TESTING_SCOPE` | latency + memory benchmark tests | `run_benchmark.sh` only: comma-separated values passed to repeated `xcodebuild -only-testing` flags. |
 

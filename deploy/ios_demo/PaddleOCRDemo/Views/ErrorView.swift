@@ -23,7 +23,8 @@ struct ErrorView: View {
         VStack(spacing: 8) {
             Image(systemName: "exclamationmark.triangle.fill")
                 .font(.system(size: 48))
-                .foregroundColor(.red)
+                .symbolRenderingMode(.hierarchical)
+                .foregroundStyle(errorSeverityColor)
 
             Text(errorTitle)
                 .font(.title2)
@@ -31,7 +32,7 @@ struct ErrorView: View {
 
             Text(error.localizedDescription)
                 .font(.body)
-                .foregroundColor(Color(.secondaryLabel))
+                .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
 
             Button(action: onRetry) {
@@ -47,6 +48,13 @@ struct ErrorView: View {
         case .modelLoadFailed: return "Model Loading Failed"
         case .inferenceFailed: return "OCR Failed"
         case .imageLoadFailed: return "Image Error"
+        }
+    }
+
+    private var errorSeverityColor: Color {
+        switch error {
+        case .imageLoadFailed: return Color(.systemOrange)
+        case .modelLoadFailed, .inferenceFailed: return Color(.systemRed)
         }
     }
 }

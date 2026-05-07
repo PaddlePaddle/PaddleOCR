@@ -15,10 +15,27 @@
 import PhotosUI
 import SwiftUI
 
-/// Root view: routes `AppState` and lays out **input (parameters + image)** vs **output (preview + text)** clearly.
+/// Root view: routes `AppState` and lays out **input (photo/sample)** vs **output (preview + text)**; engine tuning lives in ``EngineSettingsSheet``.
 struct ContentView: View {
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @StateObject private var viewModel = OCRViewModel()
     @State private var selectedItem: PhotosPickerItem?
+    @State private var showEngineSettings = false
+
+    private var navigationTitleDisplayMode: NavigationBarItem.TitleDisplayMode {
+        switch viewModel.state {
+        case .ready: return .large
+        case .error(let err) where !err.isModelError: return .large
+        default: return .inline
+        }
+    }
+
+    private var showsAdvancedToolbarItem: Bool {
+        switch viewModel.state {
+        case .loadingModels, .processing: return false
+        case .ready, .results, .error: return true
+        }
+    }
 
     var body: some View {
         NavigationStack {
@@ -31,13 +48,25 @@ struct ContentView: View {
             }
             .background(Color(.systemGroupedBackground))
             .navigationTitle("PaddleOCR Demo")
-            .navigationBarTitleDisplayMode(.inline)
+            .navigationBarTitleDisplayMode(navigationTitleDisplayMode)
+            .toolbar {
+                if showsAdvancedToolbarItem {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button {
+                            showEngineSettings = true
+                        } label: {
+                            Image(systemName: "slider.horizontal.3")
+                        }
+                        .accessibilityLabel("Advanced settings")
+                    }
+                }
+            }
+        }
+        .sheet(isPresented: $showEngineSettings) {
+            EngineSettingsSheet(viewModel: viewModel)
         }
         .task {
             await viewModel.loadModels()
-        }
-        .onChange(of: viewModel.inferenceBackend) { _ in
-            Task { await viewModel.loadModels() }
         }
         .onChange(of: selectedItem) { newItem in
             guard let item = newItem else { return }
@@ -53,32 +82,16 @@ struct ContentView: View {
         }
     }
 
-    // MARK: - Settings sections
-
-    private var inferenceEngineSection: some View {
+    private func imageInputSection(title: String, subtitle: String) -> some View {
         VStack(alignment: .leading, spacing: 10) {
-            DemoSectionHeader(
-                title: "Inference engine",
-                subtitle: "ONNX Runtime execution providers. Changing this reloads loaded models."
+            DemoSectionHeader(title: title, subtitle: subtitle)
+            ImagePickerSection(
+                selectedItem: $selectedItem,
+                sampleImageNames: viewModel.sampleImageNames,
+                onSampleSelected: { name in
+                    Task { await viewModel.selectSampleImage(named: name) }
+                }
             )
-            DemoCard {
-                InferenceEnginePanel(inferenceBackend: $viewModel.inferenceBackend)
-            }
-        }
-    }
-
-    private func ocrParametersSection(subtitle: String) -> some View {
-        VStack(alignment: .leading, spacing: 10) {
-            DemoSectionHeader(
-                title: "OCR parameters",
-                subtitle: subtitle
-            )
-            DemoCard {
-                OCRParametersPanel(
-                    params: $viewModel.runtimeParams,
-                    resolvedBaseline: viewModel.resolvedRuntimeBaseline ?? .fallbackForUI
-                )
-            }
         }
     }
 
@@ -127,32 +140,17 @@ struct ContentView: View {
                 VStack(alignment: .leading, spacing: 4) {
                     Text("Ready")
                         .font(.title3.weight(.semibold))
-                    Text("Set parameters, then choose a photo or open a sample.")
+                    Text("Choose a photo or open a sample. Engine and OCR tuning are under Advanced in the toolbar.")
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
                         .fixedSize(horizontal: false, vertical: true)
                 }
             }
 
-            inferenceEngineSection
-
-            ocrParametersSection(
-                subtitle: "These apply to the next OCR run."
+            imageInputSection(
+                title: "Image",
+                subtitle: "Choose from your library or a bundled sample."
             )
-
-            VStack(alignment: .leading, spacing: 10) {
-                DemoSectionHeader(
-                    title: "Image",
-                    subtitle: "Primary action: choose from your library."
-                )
-                ImagePickerSection(
-                    selectedItem: $selectedItem,
-                    sampleImageNames: viewModel.sampleImageNames,
-                    onSampleSelected: { name in
-                        Task { await viewModel.selectSampleImage(named: name) }
-                    }
-                )
-            }
         }
     }
 
@@ -191,29 +189,51 @@ struct ContentView: View {
     // MARK: - Results
 
     private func resultsView(result: OCRRunResult, image: UIImage) -> some View {
-        VStack(spacing: 22) {
-            // —— Output zone: what you see —
-            VStack(alignment: .leading, spacing: 10) {
-                DemoSectionHeader(
-                    title: "Preview",
-                    subtitle: "Green overlay shows each detected text region."
-                )
-                DemoCard {
-                    ResultImageView(image: image, results: result.results)
-                        .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+        // Only use two columns when explicitly regular (e.g. iPad); treat nil as compact.
+        let isCompact = horizontalSizeClass != .regular
+        return VStack(spacing: 22) {
+            if isCompact {
+                previewBlock(result: result, image: image)
+                TimingView(result: result)
+                    .padding(.vertical, 4)
+            } else {
+                TimingView(result: result)
+                    .padding(.vertical, 4)
+                HStack(alignment: .top, spacing: 16) {
+                    previewBlock(result: result, image: image)
+                        .frame(maxWidth: .infinity)
+                        .layoutPriority(1)
+                    resultsListBlock(result: result)
+                        .frame(minWidth: 280, maxWidth: .infinity)
                 }
             }
 
-            TimingView(result: result)
-                .padding(.vertical, 4)
+            if isCompact {
+                resultsListBlock(result: result)
+            }
 
-            // —— Control zone: tune & repeat on same image —
-            inferenceEngineSection
-
-            ocrParametersSection(
-                subtitle: "Adjust, then re-run without picking a new photo."
+            imageInputSection(
+                title: "New image",
+                subtitle: "Choose another photo or sample. Re-run uses the current image and OCR parameters."
             )
 
+            rerunOCRButton()
+        }
+    }
+
+    @ViewBuilder
+    private func rerunOCRButton() -> some View {
+        if viewModel.hasPendingOcrChanges {
+            Button {
+                Task { await viewModel.rerunOCR() }
+            } label: {
+                Label("Re-run OCR on this image", systemImage: "arrow.clockwise.circle.fill")
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 4)
+            }
+            .buttonStyle(.borderedProminent)
+            .controlSize(.large)
+        } else {
             Button {
                 Task { await viewModel.rerunOCR() }
             } label: {
@@ -223,30 +243,30 @@ struct ContentView: View {
             }
             .buttonStyle(.bordered)
             .controlSize(.large)
+        }
+    }
 
-            // —— Text output —
-            VStack(alignment: .leading, spacing: 10) {
-                DemoSectionHeader(title: "Results", subtitle: nil)
-                DemoCard {
-                    ResultsListView(
-                        results: result.results,
-                        copiedFeedback: viewModel.copiedFeedback,
-                        onCopy: { viewModel.copyResultsToClipboard() }
-                    )
-                }
+    private func previewBlock(result: OCRRunResult, image: UIImage) -> some View {
+        VStack(alignment: .leading, spacing: 10) {
+            DemoSectionHeader(
+                title: "Preview",
+                subtitle: "Accent overlay shows each detected text region."
+            )
+            DemoCard {
+                ResultImageView(image: image, results: result.results)
+                    .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
             }
+        }
+    }
 
-            VStack(alignment: .leading, spacing: 10) {
-                DemoSectionHeader(
-                    title: "New image",
-                    subtitle: "Same controls as before — choose photo or try a sample."
-                )
-                ImagePickerSection(
-                    selectedItem: $selectedItem,
-                    sampleImageNames: viewModel.sampleImageNames,
-                    onSampleSelected: { name in
-                        Task { await viewModel.selectSampleImage(named: name) }
-                    }
+    private func resultsListBlock(result: OCRRunResult) -> some View {
+        VStack(alignment: .leading, spacing: 10) {
+            DemoSectionHeader(title: "Results", subtitle: nil)
+            DemoCard {
+                ResultsListView(
+                    results: result.results,
+                    copiedFeedback: viewModel.copiedFeedback,
+                    onCopy: { viewModel.copyResultsToClipboard() }
                 )
             }
         }

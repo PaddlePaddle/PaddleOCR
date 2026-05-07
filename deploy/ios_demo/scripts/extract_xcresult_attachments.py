@@ -303,7 +303,7 @@ def main(argv: List[str] | None = None) -> int:
         "--result", required=True, type=Path, help="Path to .xcresult bundle."
     )
     parser.add_argument(
-        "--out-dir",
+        "--output-dir",
         required=True,
         type=Path,
         help="Directory to write exported attachments into.",

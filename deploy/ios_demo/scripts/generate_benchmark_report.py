@@ -141,12 +141,14 @@ def _benchmark_metadata_markdown(
     perf_data: Optional[Dict[str, Any]],
 ) -> str:
     rows: List[str] = ["| Metric | Value |", "|--------|-------|"]
+    ep = _benchmark_value(status, perf_data, "ortExecutionProvider")
+    if ep is not None:
+        rows.append(f"| ORT execution provider | `{ep}` |")
     for key, label in [
         ("buildConfiguration", "Build configuration"),
         ("deviceModel", "Device model"),
         ("osVersion", "OS version"),
         ("isSimulator", "Simulator"),
-        ("inferenceBackend", "Inference backend"),
         ("modelPreset", "Model preset"),
         ("ortProfilingEnabled", "ORT profiling"),
     ]:
@@ -225,8 +227,9 @@ def _run_status_section(status: Dict[str, Any]) -> str:
     if benchmark:
         if build := benchmark.get("buildConfiguration"):
             lines.append(f"- **Build configuration:** `{build}`")
-        if backend := benchmark.get("inferenceBackend"):
-            lines.append(f"- **Inference backend:** `{backend}`")
+        ep = benchmark.get("ortExecutionProvider")
+        if ep:
+            lines.append(f"- **ORT execution provider:** `{ep}`")
         if scope := benchmark.get("testingScope"):
             lines.append(f"- **Testing scope:** `{scope}`")
     started = status.get("runStartedAt")

@@ -62,17 +62,10 @@ struct ResultImageView: View {
                         }
                         path.closeSubpath()
 
-                        // Stroke: green at 0.8 opacity, 2pt line width
-                        context.stroke(
-                            path,
-                            with: .color(.green.opacity(0.8)),
-                            lineWidth: 2
-                        )
-                        // Fill: green at 0.1 opacity (subtle highlight)
-                        context.fill(
-                            path,
-                            with: .color(.green.opacity(0.1))
-                        )
+                        let strokeColor = Color.accentColor.opacity(0.9)
+                        let fillColor = Color.accentColor.opacity(0.12)
+                        context.stroke(path, with: .color(strokeColor), lineWidth: 2)
+                        context.fill(path, with: .color(fillColor))
                     }
                 }
             }
@@ -80,5 +73,7 @@ struct ResultImageView: View {
         }
         .aspectRatio(image.size.width / image.size.height, contentMode: .fit)
         .frame(maxHeight: 400)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("Image preview with \(results.count) detected text regions")
     }
 }

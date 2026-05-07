@@ -71,7 +71,7 @@ struct OCRDeviceBenchmarkPayload: Codable {
     var deviceModel: String
     var osVersion: String
     var isSimulator: Bool
-    var inferenceBackend: String
+    var ortExecutionProvider: String
     var ortProfilingEnabled: Bool
     var warmupIterations: Int
     var measuredIterations: Int

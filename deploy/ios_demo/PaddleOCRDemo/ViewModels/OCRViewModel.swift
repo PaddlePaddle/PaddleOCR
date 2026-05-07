@@ -86,17 +86,50 @@ class OCRViewModel: ObservableObject {
     @Published var state: AppState = .loadingModels
     @Published var copiedFeedback: Bool = false
     @Published var runtimeParams = OCRRuntimeParams.noOverrides
-    /// ONNX Runtime EP chain (requires ``loadModels()`` to take effect).
-    @Published var inferenceBackend: ORTInferenceBackend = .cpu
+    /// ONNX Runtime presets and tuning shown in UI (draft). Use **Apply & reload** in Advanced settings to reload sessions (`loadModels()`).
+    @Published var ortPrimaryExecutionProvider: ORTPrimaryExecutionProvider = .cpu
+    @Published var ortSessionTuning = ORTSessionTuningOptions.default
+    /// Snapshot of Ort settings actually used by the loaded ``ocrEngine``.
+    private var ortLoadedPrimaryExecutionProvider: ORTPrimaryExecutionProvider = .cpu
+    private var ortLoadedSessionTuning: ORTSessionTuningOptions = .default
     @Published private(set) var resolvedRuntimeBaseline: ResolvedOCRRuntimeParams?
 
     private var sessionManager: ORTSessionManager?
     private var ocrEngine: OCREngine?
     /// Last image run through OCR (normalized orientation), for **Re-run OCR** without re-picking.
     private var lastNormalizedImage: UIImage?
+    /// OCR runtime parameters used for the last successful run (drives ``hasPendingOcrChanges``).
+    private var lastRunRuntimeParams: OCRRuntimeParams?
 
     /// Bundled sample resource names (stem or `stem.ext`) for ``selectSampleImage(named:)``.
     let sampleImageNames: [String] = [DemoAssets.defaultSampleImageStem]
+
+    /// Draft Ort settings differ from the configuration used by loaded sessions.
+    var hasUnappliedOrtSettings: Bool {
+        ortPrimaryExecutionProvider != ortLoadedPrimaryExecutionProvider
+            || ortSessionTuning != ortLoadedSessionTuning
+    }
+
+    /// `runtimeParams` differs from the last successful OCR run (only meaningful in ``AppState/results``).
+    var hasPendingOcrChanges: Bool {
+        guard case .results = state else { return false }
+        guard let last = lastRunRuntimeParams else { return false }
+        return runtimeParams != last
+    }
+
+    /// When `false`, disable Apply/Revert (reload would conflict with loading or OCR in flight).
+    var allowsOrtApplyControls: Bool {
+        switch state {
+        case .loadingModels, .processing: return false
+        case .ready, .results, .error: return true
+        }
+    }
+
+    /// Restores ONNX Runtime controls to match the currently loaded sessions.
+    func revertOrtDraftToLoaded() {
+        ortPrimaryExecutionProvider = ortLoadedPrimaryExecutionProvider
+        ortSessionTuning = ortLoadedSessionTuning
+    }
 
     /// Photo picker or file load produced unusable image data.
     func reportImageLoadFailed() {
@@ -113,11 +146,13 @@ class OCRViewModel: ObservableObject {
         state = .loadingModels
         do {
             let manager = ORTSessionManager()
-            try await manager.loadModels(backend: inferenceBackend)
+            try await manager.loadModels(executionProvider: ortPrimaryExecutionProvider, tuning: ortSessionTuning)
             let engine = try OCREngine(sessionManager: manager)
             self.sessionManager = manager
             self.ocrEngine = engine
             self.resolvedRuntimeBaseline = engine.baselineRuntimeDefaults()
+            ortLoadedPrimaryExecutionProvider = ortPrimaryExecutionProvider
+            ortLoadedSessionTuning = ortSessionTuning
             state = .ready
         } catch {
             state = .error(.modelLoadFailed(error.localizedDescription))
@@ -144,6 +179,7 @@ class OCRViewModel: ObservableObject {
         }
         do {
             let result = try await engine.run(cgImage, params: runtimeParams)
+            lastRunRuntimeParams = runtimeParams
             state = .results(result, normalized, runId: UUID())
         } catch {
             lastNormalizedImage = nil
@@ -180,6 +216,7 @@ class OCRViewModel: ObservableObject {
                 return
             }
             let result = try await engine.run(cgImage, params: runtimeParams)
+            lastRunRuntimeParams = runtimeParams
             state = .results(result, normalized, runId: UUID())
         } catch {
             lastNormalizedImage = nil
@@ -216,6 +253,7 @@ class OCRViewModel: ObservableObject {
     /// Return to the ready state (e.g. after viewing results, user wants to pick a new image).
     func reset() {
         lastNormalizedImage = nil
+        lastRunRuntimeParams = nil
         state = .ready
     }
 }

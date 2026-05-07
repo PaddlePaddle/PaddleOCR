@@ -14,8 +14,8 @@
 
 import Foundation
 
-/// ONNX Runtime execution provider selection for this demo.
-enum ORTInferenceBackend: String, CaseIterable, Identifiable, Sendable {
+/// Preset for which ONNX Runtime execution provider is registered first on the session chain in this demo.
+enum ORTPrimaryExecutionProvider: String, CaseIterable, Identifiable, Sendable {
     /// Default CPU execution. Default for this demo.
     case cpu = "cpu"
     /// Registers the XNNPACK EP; nodes it cannot run still use the CPU EP.
@@ -30,6 +30,40 @@ enum ORTInferenceBackend: String, CaseIterable, Identifiable, Sendable {
         case .cpu: return "CPU"
         case .xnnpack: return "XNNPACK"
         case .coreML: return "Core ML"
+        }
+    }
+}
+
+enum ORTCoreMLProviderOption: String, CaseIterable, Identifiable, Sendable {
+    case enableOnSubgraphs
+    case createMLProgram
+    case staticInputShapes
+    case cpuOnly
+    case cpuAndGPU
+    case aneOnly
+
+    var id: String { rawValue }
+
+    var displayTitle: String {
+        switch self {
+        case .enableOnSubgraphs: return "Enable on subgraphs"
+        case .createMLProgram: return "Use ML program"
+        case .staticInputShapes: return "Fixed tensor shapes only"
+        case .cpuOnly: return "Core ML CPU only"
+        case .cpuAndGPU: return "Core ML CPU and GPU"
+        case .aneOnly: return "Only on devices with ANE"
+        }
+    }
+
+    var detailCaption: String {
+        switch self {
+        case .enableOnSubgraphs: return "Compile subgraphs independently for Core ML."
+        case .createMLProgram: return "Prefer MLProgram over NeuralNetwork (when supported)."
+        case .staticInputShapes:
+            return "Core ML tries to run only ops whose input tensors have fixed shapes at inference time; parts with varying dimensions typically stay on the CPU EP instead."
+        case .cpuOnly: return "Forces Core ML compute on CPU. Mutually exclusive with CPU and GPU."
+        case .cpuAndGPU: return "Allows Core ML to use CPU and GPU. Mutually exclusive with CPU only."
+        case .aneOnly: return "Only enable Core ML EP on devices that have Apple Neural Engine hardware."
         }
     }
 }
@@ -63,7 +97,7 @@ struct ORTProfilingOutput: Sendable {
 
 /// Tuning options for ORT session creation.
 struct ORTSessionTuningOptions: Sendable {
-    /// Session-level intra-op thread count. 0 = ORT default (auto).
+    /// Session-level intra-op thread count. 0 = ORT default.
     var intraOpThreads: Int = 0
     /// XNNPACK EP thread count. 0 = ORT default.
     var xnnpackThreads: Int = 0
@@ -71,6 +105,20 @@ struct ORTSessionTuningOptions: Sendable {
     var coreMLFlags: Set<String> = []
 
     static let `default` = ORTSessionTuningOptions()
+}
+
+extension ORTSessionTuningOptions: Equatable {}
+
+/// At most one placement-related Core ML EP option is applied. Priority matches
+/// ``OnnxRuntimeSettingsPanel`` when several keys appear (e.g. benchmark env / JSON).
+private func applyCoreMLPlacementFlags(from flags: Set<String>, to coreml: ORTCoreMLExecutionProviderOptions) {
+    if flags.contains(ORTCoreMLProviderOption.cpuOnly.rawValue) {
+        coreml.useCPUOnly = true
+    } else if flags.contains(ORTCoreMLProviderOption.cpuAndGPU.rawValue) {
+        coreml.useCPUAndGPU = true
+    } else if flags.contains(ORTCoreMLProviderOption.aneOnly.rawValue) {
+        coreml.onlyEnableForDevicesWithANE = true
+    }
 }
 
 actor ORTSessionManager {
@@ -87,13 +135,13 @@ actor ORTSessionManager {
     private var ortProfilingPendingFinalize: Bool = false
 
     /// Load both models. Creates one ORTEnv (per ORT docs: one per process),
-    /// configures execution providers per ``ORTInferenceBackend``,
+    /// configures execution providers per ``ORTPrimaryExecutionProvider``,
     /// and creates sessions for detection and recognition models.
     ///
     /// - Parameter ortProfiling: When `true`, enables ONNX Runtime session profiling (written as JSON on finalize).
     ///   Profiling adds overhead; do not treat wall-clock times from the same run as a clean latency benchmark.
     /// - Parameter tuning: Session tuning options (threads, EP flags). Default reads from environment.
-    func loadModels(backend: ORTInferenceBackend = .cpu, ortProfiling: Bool = false, tuning: ORTSessionTuningOptions = .default) async throws {
+    func loadModels(executionProvider: ORTPrimaryExecutionProvider = .cpu, ortProfiling: Bool = false, tuning: ORTSessionTuningOptions = .default) async throws {
         let env = try ORTEnv(loggingLevel: .warning)
         self.env = env
         ortProfilingPendingFinalize = ortProfiling
@@ -105,12 +153,12 @@ actor ORTSessionManager {
             let baseDir = try ortProfilingDirectoryURL()
             let detPrefix = baseDir.appendingPathComponent("paddle_ort_det", isDirectory: false).path
             let recPrefix = baseDir.appendingPathComponent("paddle_ort_rec", isDirectory: false).path
-            let detOptions = try makeSessionOptions(backend: backend, ortProfilePathPrefix: detPrefix, tuning: tuning)
-            let recOptions = try makeSessionOptions(backend: backend, ortProfilePathPrefix: recPrefix, tuning: tuning)
+            let detOptions = try makeSessionOptions(executionProvider: executionProvider, ortProfilePathPrefix: detPrefix, tuning: tuning)
+            let recOptions = try makeSessionOptions(executionProvider: executionProvider, ortProfilePathPrefix: recPrefix, tuning: tuning)
             detSession = try ORTSession(env: env, modelPath: detConfig.modelPath, sessionOptions: detOptions)
             recSession = try ORTSession(env: env, modelPath: recConfig.modelPath, sessionOptions: recOptions)
         } else {
-            let options = try makeSessionOptions(backend: backend, ortProfilePathPrefix: nil, tuning: tuning)
+            let options = try makeSessionOptions(executionProvider: executionProvider, ortProfilePathPrefix: nil, tuning: tuning)
             detSession = try ORTSession(env: env, modelPath: detConfig.modelPath, sessionOptions: options)
             recSession = try ORTSession(env: env, modelPath: recConfig.modelPath, sessionOptions: options)
         }
@@ -153,7 +201,7 @@ actor ORTSessionManager {
         return dir
     }
 
-    private func makeSessionOptions(backend: ORTInferenceBackend, ortProfilePathPrefix: String?, tuning: ORTSessionTuningOptions) throws -> ORTSessionOptions {
+    private func makeSessionOptions(executionProvider: ORTPrimaryExecutionProvider, ortProfilePathPrefix: String?, tuning: ORTSessionTuningOptions) throws -> ORTSessionOptions {
         let options = try ORTSessionOptions()
         try options.setGraphOptimizationLevel(.all)
         if tuning.intraOpThreads > 0 {
@@ -162,7 +210,7 @@ actor ORTSessionManager {
         if let prefix = ortProfilePathPrefix {
             try ORTProfilingBridge.enableProfiling(sessionOptions: options, pathPrefix: prefix)
         }
-        switch backend {
+        switch executionProvider {
         case .cpu:
             break
         case .xnnpack:
@@ -177,9 +225,7 @@ actor ORTSessionManager {
             if flags.contains("enableOnSubgraphs") { coremlOptions.enableOnSubgraphs = true }
             if flags.contains("createMLProgram") { coremlOptions.createMLProgram = true }
             if flags.contains("staticInputShapes") { coremlOptions.onlyAllowStaticInputShapes = true }
-            if flags.contains("cpuOnly") { coremlOptions.useCPUOnly = true }
-            if flags.contains("cpuAndGPU") { coremlOptions.useCPUAndGPU = true }
-            if flags.contains("aneOnly") { coremlOptions.onlyEnableForDevicesWithANE = true }
+            applyCoreMLPlacementFlags(from: flags, to: coremlOptions)
             try options.appendCoreMLExecutionProvider(with: coremlOptions)
         }
         return options

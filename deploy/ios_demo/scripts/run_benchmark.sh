@@ -41,7 +41,7 @@ IMAGE=""
 FIXTURE_ARG=""
 WARMUP_CLI=""
 MEASURED_CLI=""
-INFERENCE_CLI=""
+ORT_EP_CLI=""
 THREADS_CLI=""
 XNNPACK_THREADS_CLI=""
 REC_BATCH_SIZE_CLI=""
@@ -67,7 +67,8 @@ Options:
                         several fixtures exist.
   --warmup <n>          Benchmark warmup iterations (non-negative int).
   --measured-iterations <n>  Timed benchmark iterations.
-  --inference-backend <NAME>  ONNX Runtime EP for tests: CPU, XNNPACK, or CORE_ML.
+  --ort-execution-provider <NAME>  Preferred ONNX Runtime EP preset for tests:
+                        CPU, XNNPACK, or CORE_ML.
   --threads <n>         Session-level intra-op thread count (positive int).
   --xnnpack-threads <n> XNNPACK EP thread count (positive int).
   --rec-batch-size <n>  Recognition batch size override (positive int).
@@ -79,9 +80,9 @@ Options:
                         With --accuracy-check, treat accuracy FAIL as blocking.
   --accuracy-reference-json <path>
                         Existing OCR reference JSON for --accuracy-check. If omitted,
-                        the script generates accuracy-reference.json under --out-dir.
-  --out-dir <dir>       Output directory (default: out/)
-  --clean               Delete Fixtures/local-* and prior non-log artifacts under <out-dir>
+                        the script generates accuracy-reference.json under --output-dir.
+  --output-dir <dir>       Output directory (default: out/)
+  --clean               Delete Fixtures/local-* and prior non-log artifacts under <output-dir>
                         before running.
   -h, --help            Show help
 
@@ -89,7 +90,7 @@ Environment (optional; CLI wins when both are set):
   PADDLEOCR_BENCHMARK_IMAGE_NAME   Select which bundled fixture to use (same as --fixture)
   PADDLEOCR_BENCHMARK_WARMUP_ITERATIONS
   PADDLEOCR_BENCHMARK_MEASURED_ITERATIONS
-  PADDLEOCR_BENCHMARK_INFERENCE_BACKEND   CPU, XNNPACK, or CORE_ML
+  PADDLEOCR_BENCHMARK_ORT_EXECUTION_PROVIDER  CPU, XNNPACK, or CORE_ML
   PADDLEOCR_BENCHMARK_INTRA_OP_THREADS    Session-level thread count
   PADDLEOCR_BENCHMARK_XNNPACK_THREADS     XNNPACK EP thread count
   PADDLEOCR_BENCHMARK_REC_BATCH_SIZE      Recognition batch size
@@ -118,7 +119,7 @@ while [[ $# -gt 0 ]]; do
     --fixture) FIXTURE_ARG="$2"; shift 2 ;;
     --warmup) WARMUP_CLI="$2"; shift 2 ;;
     --measured-iterations) MEASURED_CLI="$2"; shift 2 ;;
-    --inference-backend) INFERENCE_CLI="$2"; shift 2 ;;
+    --ort-execution-provider) ORT_EP_CLI="$2"; shift 2 ;;
     --threads) THREADS_CLI="$2"; shift 2 ;;
     --xnnpack-threads) XNNPACK_THREADS_CLI="$2"; shift 2 ;;
     --rec-batch-size) REC_BATCH_SIZE_CLI="$2"; shift 2 ;;
@@ -127,7 +128,7 @@ while [[ $# -gt 0 ]]; do
     --accuracy-check) ACCURACY_CHECK=1; shift ;;
     --stop-on-accuracy-failure) ACCURACY_STOP_ON_FAILURE=1; shift ;;
     --accuracy-reference-json) ACCURACY_REFERENCE_JSON="$2"; shift 2 ;;
-    --out-dir) OUT_DIR="$2"; shift 2 ;;
+    --output-dir) OUT_DIR="$2"; shift 2 ;;
     --clean) CLEAN=1; shift ;;
     -h|--help) usage; exit 0 ;;
     *) die "Unknown option: $1" "argument parsing" "See --help." ;;
@@ -161,17 +162,17 @@ if [[ -n "${MEASURED_MERGED}" ]]; then
     || die "Invalid --measured-iterations / PADDLEOCR_BENCHMARK_MEASURED_ITERATIONS: ${MEASURED_MERGED}" "argument parsing" "Use a non-negative integer."
 fi
 
-# Inference EP: CPU, XNNPACK, or CORE_ML; forward when set (flag or env).
-INFERENCE_MERGED="${INFERENCE_CLI:-${PADDLEOCR_BENCHMARK_INFERENCE_BACKEND:-}}"
-INFERENCE_CANON=""
-if [[ -n "${INFERENCE_MERGED}" ]]; then
-  _inf_lc="$(printf '%s' "${INFERENCE_MERGED}" | tr '[:upper:]' '[:lower:]')"
-  case "${_inf_lc}" in
-    core_ml) INFERENCE_CANON="CORE_ML" ;;
-    xnnpack) INFERENCE_CANON="XNNPACK" ;;
-    cpu) INFERENCE_CANON="CPU" ;;
+# ORT execution provider preset: CPU, XNNPACK, or CORE_ML; forward when set (flag or env).
+ORT_EP_MERGED="${ORT_EP_CLI:-${PADDLEOCR_BENCHMARK_ORT_EXECUTION_PROVIDER:-}}"
+ORT_EP_CANON=""
+if [[ -n "${ORT_EP_MERGED}" ]]; then
+  _ort_ep_lc="$(printf '%s' "${ORT_EP_MERGED}" | tr '[:upper:]' '[:lower:]')"
+  case "${_ort_ep_lc}" in
+    core_ml) ORT_EP_CANON="CORE_ML" ;;
+    xnnpack) ORT_EP_CANON="XNNPACK" ;;
+    cpu) ORT_EP_CANON="CPU" ;;
     *)
-      die "Invalid --inference-backend / PADDLEOCR_BENCHMARK_INFERENCE_BACKEND: ${INFERENCE_MERGED}" "argument parsing" "Use CPU, XNNPACK, or CORE_ML (Swift raw: cpu, xnnpack, core_ml)."
+      die "Invalid --ort-execution-provider / PADDLEOCR_BENCHMARK_ORT_EXECUTION_PROVIDER: ${ORT_EP_MERGED}" "argument parsing" "Use CPU, XNNPACK, or CORE_ML."
       ;;
   esac
 fi
@@ -432,7 +433,7 @@ write_status_json() {
   finished="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
   python3 - "$STATUS_PATH" "$overall" "$exit_code" "$RUN_STARTED" "$finished" \
     "$IMAGE_NAME" "$IMAGE_SOURCE" "$DEST" "$BUILD_CONFIGURATION" "$TESTING_SCOPE" \
-    "$IS_SIMULATOR" "${INFERENCE_CANON:-CPU}" "${WARMUP_MERGED:-}" "${MEASURED_MERGED:-}" \
+    "$IS_SIMULATOR" "${ORT_EP_CANON:-CPU}" "${WARMUP_MERGED:-}" "${MEASURED_MERGED:-}" \
     "$MODEL_PRESET" "$DET_MODEL_FORMAT" "$DET_MODEL_SIZE_BYTES" "$REC_MODEL_FORMAT" "$REC_MODEL_SIZE_BYTES" "$TOTAL_MODEL_SIZE_BYTES" "$APP_BINARY_SIZE_BYTES" \
     "${ORT_PROFILING_MERGED:-}" "$ACCURACY_CHECK" "$ACCURACY_STATUS" \
     "$ACCURACY_STOP_ON_FAILURE" "$ACCURACY_REFERENCE_USED" "$ACCURACY_IOS_EXPORT_PATH" "$ACCURACY_SUMMARY_USED" "$ACCURACY_REASON" \
@@ -459,7 +460,7 @@ args = sys.argv[1:]
     build_configuration,
     testing_scope,
     is_simulator,
-    inference_backend,
+    ort_ep_preset,
     warmup_iterations,
     measured_iterations,
     model_preset,
@@ -508,7 +509,7 @@ doc = {
         "buildConfiguration": build_configuration,
         "testingScope": testing_scope,
         "isSimulator": is_simulator == "1",
-        "inferenceBackend": inference_backend,
+        "ortExecutionProvider": ort_ep_preset,
         "warmupIterations": int(warmup_iterations) if warmup_iterations else None,
         "measuredIterations": int(measured_iterations) if measured_iterations else None,
         "modelPreset": model_preset or "unknown",
@@ -738,7 +739,9 @@ accuracy_precheck_impl() {
     env "TEST_RUNNER_PADDLEOCR_BENCHMARK_IMAGE_NAME=${IMAGE_NAME}"
     "TEST_RUNNER_PADDLEOCR_BENCHMARK_BUILD_CONFIGURATION=${BUILD_CONFIGURATION}"
   )
-  [[ -n "${INFERENCE_CANON}" ]] && runenv+=("TEST_RUNNER_PADDLEOCR_BENCHMARK_INFERENCE_BACKEND=${INFERENCE_CANON}")
+  if [[ -n "${ORT_EP_CANON}" ]]; then
+    runenv+=("TEST_RUNNER_PADDLEOCR_BENCHMARK_ORT_EXECUTION_PROVIDER=${ORT_EP_CANON}")
+  fi
 
   if ! run_xcodebuild "${runenv[@]}" xcodebuild test \
     -workspace "${IOS_DEMO_ROOT}/PaddleOCRDemo.xcworkspace" \
@@ -756,7 +759,7 @@ accuracy_precheck_impl() {
 
   if ! python3 "${SCRIPT_DIR}/extract_xcresult_attachments.py" \
     --result "${ACCURACY_RESULT_PATH}" \
-    --out-dir "${OUT_DIR}" \
+    --output-dir "${OUT_DIR}" \
     --name ios-ocr-export.json; then
     ACCURACY_STATUS="ERROR"
     ACCURACY_REASON="accuracy attachment extraction failed"
@@ -818,14 +821,16 @@ xcodebuild_test_impl() {
   rm -rf "${LATENCY_RESULT_PATH}"
   rm -rf "${MEMORY_RESULT_PATH}"
   rm -f "${XCTEST_METRICS_PATH}"
-  echo "xcodebuild: configuration=${BUILD_CONFIGURATION} benchmark image name=${IMAGE_NAME} warmup=${WARMUP_MERGED:-} measured=${MEASURED_MERGED:-} inference=${INFERENCE_CANON:-default} ort_profiling=${ORT_PROFILING_MERGED:+on} scope=${TESTING_SCOPE}"
+  echo "xcodebuild: configuration=${BUILD_CONFIGURATION} benchmark image name=${IMAGE_NAME} warmup=${WARMUP_MERGED:-} measured=${MEASURED_MERGED:-} ort_ep=${ORT_EP_CANON:-default} ort_profiling=${ORT_PROFILING_MERGED:+on} scope=${TESTING_SCOPE}"
   local runenv=(
     env "TEST_RUNNER_PADDLEOCR_BENCHMARK_IMAGE_NAME=${IMAGE_NAME}"
     "TEST_RUNNER_PADDLEOCR_BENCHMARK_BUILD_CONFIGURATION=${BUILD_CONFIGURATION}"
   )
   [[ -n "${WARMUP_MERGED}" ]] && runenv+=("TEST_RUNNER_PADDLEOCR_BENCHMARK_WARMUP_ITERATIONS=${WARMUP_MERGED}")
   [[ -n "${MEASURED_MERGED}" ]] && runenv+=("TEST_RUNNER_PADDLEOCR_BENCHMARK_MEASURED_ITERATIONS=${MEASURED_MERGED}")
-  [[ -n "${INFERENCE_CANON}" ]] && runenv+=("TEST_RUNNER_PADDLEOCR_BENCHMARK_INFERENCE_BACKEND=${INFERENCE_CANON}")
+  if [[ -n "${ORT_EP_CANON}" ]]; then
+    runenv+=("TEST_RUNNER_PADDLEOCR_BENCHMARK_ORT_EXECUTION_PROVIDER=${ORT_EP_CANON}")
+  fi
   [[ -n "${ORT_PROFILING_MERGED:-}" ]] && runenv+=("TEST_RUNNER_PADDLEOCR_BENCHMARK_ORT_PROFILING=${ORT_PROFILING_MERGED}")
   [[ -n "${THREADS_MERGED}" ]] && runenv+=("TEST_RUNNER_PADDLEOCR_BENCHMARK_INTRA_OP_THREADS=${THREADS_MERGED}")
   [[ -n "${XNNPACK_THREADS_MERGED}" ]] && runenv+=("TEST_RUNNER_PADDLEOCR_BENCHMARK_XNNPACK_THREADS=${XNNPACK_THREADS_MERGED}")
@@ -863,7 +868,7 @@ extract_artifacts_impl() {
   [[ -d "${metrics_result}" ]] || metrics_result="${LATENCY_RESULT_PATH}"
   python3 "${SCRIPT_DIR}/extract_xcresult_attachments.py" \
     --result "${LATENCY_RESULT_PATH}" \
-    --out-dir "${OUT_DIR}" \
+    --output-dir "${OUT_DIR}" \
     --name on-device-performance.json \
     --optional-name ios-ocr-export.json \
     --optional-name ort_profile_detection \

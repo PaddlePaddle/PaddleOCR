@@ -39,7 +39,8 @@
 		A10000A2 /* ResultsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000A2 /* ResultsListView.swift */; };
 		A10000A3 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000A3 /* ErrorView.swift */; };
 		A10000A4 /* OCRParametersPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000A4 /* OCRParametersPanel.swift */; };
-		A10000A5 /* InferenceEnginePanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000A5 /* InferenceEnginePanel.swift */; };
+		A10000A5 /* OnnxRuntimeSettingsPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000A5 /* OnnxRuntimeSettingsPanel.swift */; };
+		A10000A6 /* EngineSettingsSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000A6 /* EngineSettingsSheet.swift */; };
 		A10000B3 /* OCRParameterResolverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000B3 /* OCRParameterResolverTests.swift */; };
 		A10000C5 /* OCRBenchmarkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000C5 /* OCRBenchmarkTests.swift */; };
 		A10000C6 /* BenchmarkPayloads.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000C6 /* BenchmarkPayloads.swift */; };
@@ -107,7 +108,8 @@
 		A20000A2 /* ResultsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsListView.swift; sourceTree = "<group>"; };
 		A20000A3 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
 		A20000A4 /* OCRParametersPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCRParametersPanel.swift; sourceTree = "<group>"; };
-		A20000A5 /* InferenceEnginePanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InferenceEnginePanel.swift; sourceTree = "<group>"; };
+		A20000A5 /* OnnxRuntimeSettingsPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnnxRuntimeSettingsPanel.swift; sourceTree = "<group>"; };
+		A20000A6 /* EngineSettingsSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EngineSettingsSheet.swift; sourceTree = "<group>"; };
 		A20000B3 /* OCRParameterResolverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCRParameterResolverTests.swift; sourceTree = "<group>"; };
 		A20000C5 /* OCRBenchmarkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCRBenchmarkTests.swift; sourceTree = "<group>"; };
 		A20000C6 /* BenchmarkPayloads.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BenchmarkPayloads.swift; sourceTree = "<group>"; };
@@ -271,8 +273,9 @@
 			children = (
 				A20000A3 /* ErrorView.swift */,
 				A2000090 /* ImagePickerSection.swift */,
-				A20000A5 /* InferenceEnginePanel.swift */,
+				A20000A5 /* OnnxRuntimeSettingsPanel.swift */,
 				A20000A4 /* OCRParametersPanel.swift */,
+				A20000A6 /* EngineSettingsSheet.swift */,
 				A20000A0 /* ResultImageView.swift */,
 				A20000A2 /* ResultsListView.swift */,
 				A20000A1 /* TimingView.swift */,
@@ -504,7 +507,8 @@
 				A10000A1 /* TimingView.swift in Sources */,
 				A10000A2 /* ResultsListView.swift in Sources */,
 				A10000A3 /* ErrorView.swift in Sources */,
-				A10000A5 /* InferenceEnginePanel.swift in Sources */,
+				A10000A5 /* OnnxRuntimeSettingsPanel.swift in Sources */,
+				A10000A6 /* EngineSettingsSheet.swift in Sources */,
 				A10000A4 /* OCRParametersPanel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

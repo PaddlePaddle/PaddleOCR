@@ -34,8 +34,8 @@ final class OCRBenchmarkTests: XCTestCase {
     /// Optional non-negative int; default `10`. Used only by `testOnDevicePerformanceMetrics`.
     private static let measuredIterationsEnvKey = "PADDLEOCR_BENCHMARK_MEASURED_ITERATIONS"
 
-    /// `CPU` (default), `XNNPACK`, or `CORE_ML` — ONNX Runtime EP for benchmark runs.
-    private static let inferenceBackendEnvKey = "PADDLEOCR_BENCHMARK_INFERENCE_BACKEND"
+    /// `CPU` (default), `XNNPACK`, or `CORE_ML` — ONNX Runtime execution provider preset for benchmarks.
+    private static let ortExecutionProviderEnvKey = "PADDLEOCR_BENCHMARK_ORT_EXECUTION_PROVIDER"
 
     /// `1` / `true` / `yes` / `on` enables ONNX Runtime JSON profiling (see ``ORTSessionManager/finalizeORTProfiling()``).
     /// When set, on-device performance timings are not representative of a clean latency benchmark.
@@ -50,9 +50,9 @@ final class OCRBenchmarkTests: XCTestCase {
 
     func testOCRExportJSONSchema() async throws {
         let cgImage = try resolveBenchmarkImage()
-        let backend = try resolveInferenceBackend()
+        let executionProvider = try resolveBenchmarkExecutionProvider()
         let manager = ORTSessionManager()
-        try await manager.loadModels(backend: backend, ortProfiling: resolveORTProfilingEnabled(), tuning: resolveSessionTuningOptions())
+        try await manager.loadModels(executionProvider: executionProvider, ortProfiling: resolveORTProfilingEnabled(), tuning: resolveSessionTuningOptions())
         let engine = try OCREngine(sessionManager: manager)
         let run = try await engine.run(cgImage, params: .noOverrides)
 
@@ -80,9 +80,9 @@ final class OCRBenchmarkTests: XCTestCase {
     }
 
     func testOnDeviceLatencyBenchmark() async throws {
-        let backend = try resolveInferenceBackend()
+        let executionProvider = try resolveBenchmarkExecutionProvider()
         let ortProfiling = resolveORTProfilingEnabled()
-        let context = try await makeBenchmarkContext(backend: backend, ortProfiling: ortProfiling)
+        let context = try await makeBenchmarkContext(executionProvider: executionProvider, ortProfiling: ortProfiling)
         let warmup = try parseNonNegativeIntEnv(Self.warmupIterationsEnvKey, defaultValue: 3)
         let iterations = max(try parseNonNegativeIntEnv(Self.measuredIterationsEnvKey, defaultValue: 10), 1)
         try await runWarmup(engine: context.engine, image: context.cgImage, iterations: warmup)
@@ -162,7 +162,7 @@ final class OCRBenchmarkTests: XCTestCase {
             deviceModel: deviceModelName(),
             osVersion: ProcessInfo.processInfo.operatingSystemVersionString,
             isSimulator: isRunningOnSimulator(),
-            inferenceBackend: backend.rawValue,
+            ortExecutionProvider: executionProvider.rawValue,
             ortProfilingEnabled: ortProfiling,
             warmupIterations: warmup,
             measuredIterations: iterations,
@@ -203,8 +203,8 @@ final class OCRBenchmarkTests: XCTestCase {
     }
 
     func testOnDeviceMemoryBenchmark() async throws {
-        let backend = try resolveInferenceBackend()
-        let context = try await makeBenchmarkContext(backend: backend, ortProfiling: false)
+        let executionProvider = try resolveBenchmarkExecutionProvider()
+        let context = try await makeBenchmarkContext(executionProvider: executionProvider, ortProfiling: false)
         let warmup = try parseNonNegativeIntEnv(Self.warmupIterationsEnvKey, defaultValue: 3)
         let iterations = max(try parseNonNegativeIntEnv(Self.measuredIterationsEnvKey, defaultValue: 10), 1)
         try await runWarmup(engine: context.engine, image: context.cgImage, iterations: warmup)
@@ -238,12 +238,12 @@ final class OCRBenchmarkTests: XCTestCase {
         let coldLoadTime: TimeInterval
     }
 
-    private func makeBenchmarkContext(backend: ORTInferenceBackend, ortProfiling: Bool) async throws -> BenchmarkContext {
+    private func makeBenchmarkContext(executionProvider: ORTPrimaryExecutionProvider, ortProfiling: Bool) async throws -> BenchmarkContext {
         let cgImage = try resolveBenchmarkImage()
         let memoryBeforeLoad = physicalFootprintBytes()
         let manager = ORTSessionManager()
         let loadStart = CFAbsoluteTimeGetCurrent()
-        try await manager.loadModels(backend: backend, ortProfiling: ortProfiling, tuning: resolveSessionTuningOptions())
+        try await manager.loadModels(executionProvider: executionProvider, ortProfiling: ortProfiling, tuning: resolveSessionTuningOptions())
         let coldLoadTime = CFAbsoluteTimeGetCurrent() - loadStart
         let memoryAfterLoad = physicalFootprintBytes()
         let engine = try OCREngine(sessionManager: manager)
@@ -380,14 +380,14 @@ final class OCRBenchmarkTests: XCTestCase {
         add(attachment)
     }
 
-    private func resolveInferenceBackend() throws -> ORTInferenceBackend {
+    private func resolveBenchmarkExecutionProvider() throws -> ORTPrimaryExecutionProvider {
         let raw =
-            ProcessInfo.processInfo.environment[Self.inferenceBackendEnvKey]?
+            ProcessInfo.processInfo.environment[Self.ortExecutionProviderEnvKey]?
                 .trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
         if raw.isEmpty {
             return .cpu
         }
-        if let exact = ORTInferenceBackend(rawValue: raw) {
+        if let exact = ORTPrimaryExecutionProvider(rawValue: raw) {
             return exact
         }
         switch raw.lowercased() {
@@ -403,11 +403,11 @@ final class OCRBenchmarkTests: XCTestCase {
                 code: 5,
                 userInfo: [
                     NSLocalizedDescriptionKey:
-                        "Invalid \(Self.inferenceBackendEnvKey): \"\(raw)\". "
+                        "Invalid \(Self.ortExecutionProviderEnvKey): \"\(raw)\". "
                         + "Use CPU (default), XNNPACK, CORE_ML, or Swift raw values "
-                        + "\(ORTInferenceBackend.cpu.rawValue) / "
-                        + "\(ORTInferenceBackend.xnnpack.rawValue) / "
-                        + "\(ORTInferenceBackend.coreML.rawValue).",
+                        + "\(ORTPrimaryExecutionProvider.cpu.rawValue) / "
+                        + "\(ORTPrimaryExecutionProvider.xnnpack.rawValue) / "
+                        + "\(ORTPrimaryExecutionProvider.coreML.rawValue).",
                 ]
             )
         }

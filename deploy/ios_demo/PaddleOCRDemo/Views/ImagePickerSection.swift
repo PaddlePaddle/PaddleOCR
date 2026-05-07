@@ -23,7 +23,7 @@ struct ImagePickerSection: View {
     let onSampleSelected: (String) -> Void
 
     var body: some View {
-        VStack(spacing: 12) {
+        VStack(alignment: .leading, spacing: 12) {
             // Primary CTA: system photo picker
             PhotosPicker(
                 selection: $selectedItem,
@@ -40,7 +40,7 @@ struct ImagePickerSection: View {
                 VStack(alignment: .leading, spacing: 8) {
                     Text("Or try a sample:")
                         .font(.subheadline)
-                        .foregroundColor(Color(.secondaryLabel))
+                        .foregroundStyle(.secondary)
 
                     HStack(spacing: 8) {
                         ForEach(sampleImageNames, id: \.self) { name in
@@ -49,6 +49,10 @@ struct ImagePickerSection: View {
                             } label: {
                                 sampleThumbnail(named: name)
                             }
+                            .buttonStyle(.plain)
+                            .frame(minWidth: 44, minHeight: 44)
+                            .contentShape(Rectangle())
+                            .accessibilityLabel("Sample image: \(name)")
                         }
                     }
                 }
@@ -72,7 +76,7 @@ struct ImagePickerSection: View {
                 .frame(width: 60, height: 60)
                 .overlay(
                     Image(systemName: "photo")
-                        .foregroundColor(Color(.secondaryLabel))
+                        .foregroundStyle(.secondary)
                 )
         }
     }

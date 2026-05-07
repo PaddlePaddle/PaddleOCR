@@ -21,15 +21,6 @@ struct OCRParametersPanel: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            HStack(alignment: .firstTextBaseline) {
-                Spacer()
-                Button("Reset to defaults") {
-                    params = .noOverrides
-                }
-                .font(.subheadline.weight(.medium))
-            }
-            .padding(.bottom, 8)
-
             groupTitle("Detection preprocess")
             intParamRow(
                 title: "Limit side length",
@@ -83,6 +74,15 @@ struct OCRParametersPanel: View {
                 range: 0...1,
                 value: floatOverrideBinding(\.textRecScoreThresh, fallback: resolvedBaseline.textRecScoreThresh)
             )
+
+            HStack {
+                Spacer()
+                Button("Reset to defaults") {
+                    params = .noOverrides
+                }
+                .font(.subheadline.weight(.medium))
+            }
+            .padding(.top, 4)
         }
     }
 
