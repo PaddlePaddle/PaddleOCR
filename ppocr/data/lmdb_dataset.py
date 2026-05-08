@@ -21,6 +21,8 @@ import string
 import pickle
 from PIL import Image
 
+from .imaug import transform, create_operators
+
 _ALLOWED_PICKLE_GLOBALS = {
     ("builtins", "bytes"),
     ("builtins", "bytearray"),
@@ -49,9 +51,6 @@ def _restricted_pickle_loads(data):
     if data is None:
         raise ValueError("Missing LMDB dataset value")
     return _RestrictedDatasetUnpickler(io.BytesIO(data)).load()
-
-
-from .imaug import transform, create_operators
 
 
 class LMDBDataSet(Dataset):
