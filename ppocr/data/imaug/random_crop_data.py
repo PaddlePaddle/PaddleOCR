@@ -286,10 +286,11 @@ class EastRandomCropData(object):
                     if clipped_char_height < char_height * 0.5:
                         continue
 
-                    # 验证 - 最小边长检查
-                    min_side = get_min_quad_side(clipped_poly)
-                    if min_side < char_height * 0.5:
-                        continue
+                    # 验证 - 最小边长检查（仅针对四边形）
+                    if len(clipped_poly) == 4:
+                        min_side = get_min_quad_side(clipped_poly)
+                        if min_side < char_height * 0.5:
+                            continue
 
                     # 所有验证通过，保存裁剪后的多边形
                     valid_care_data.append((care_idx, clipped_poly))
