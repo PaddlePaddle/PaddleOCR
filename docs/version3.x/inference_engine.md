@@ -37,10 +37,10 @@ PaddleOCR 3.5 引入了统一的推理引擎配置方式：使用 `engine` 选�
 
 ### 3.2 Transformers
 
-当您使用 Transformers 作为推理引擎时，需要安装 Hugging Face Transformers（`>=5.4.0`）。示例命令如下：
+当您使用 Transformers 作为推理引擎时，需要安装 Hugging Face Transformers（`>=5.8.0`）。示例命令如下：
 
 ```bash
-python -m pip install "transformers>=5.4.0"
+python -m pip install "transformers>=5.8.0"
 ```
 
 通常，您还需要安装底层推理框架，详情可参考 [Transformers 官方文档](https://huggingface.co/docs/transformers/installation)。
