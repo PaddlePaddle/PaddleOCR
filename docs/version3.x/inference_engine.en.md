@@ -29,13 +29,15 @@ In PaddleOCR, an inference engine refers to the underlying runtime used to execu
 
 ## 3. Installation by Inference Engine
 
+> Since different inference engines may have conflicting dependencies, it is recommended to install only one inference engine per environment.
+
 ### 3.1 PaddlePaddle framework
 
-When using the PaddlePaddle framework for inference, you need to install PaddlePaddle first. For installation instructions, see [PaddlePaddle Framework Installation](./paddlepaddle_installation.en.md).
+When using the PaddlePaddle framework for inference, install PaddlePaddle first. For installation instructions, see [PaddlePaddle Framework Installation](./paddlepaddle_installation.en.md). For requirements on the PaddlePaddle version, see [here](./paddleocr_and_paddlex.en.md#1-differences-and-connections-between-paddleocr-and-paddlex).
 
 ### 3.2 Transformers
 
-When using Transformers as the inference engine, you need to install Hugging Face Transformers. Example command:
+When using Transformers as the inference engine, you need to install Hugging Face Transformers (`>=5.4.0`). Example command:
 
 ```bash
 python -m pip install "transformers>=5.4.0"

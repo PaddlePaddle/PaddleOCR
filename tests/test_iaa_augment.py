@@ -4,6 +4,13 @@ import pytest
 import numpy as np
 import random
 
+pytestmark = pytest.mark.py38_incompatible
+# py3.8 lmdb wheel exposes an undefined Py_SET_REFCNT symbol and fails to
+# load. Skip collection only on py3.8; on py3.9+ a lmdb import failure is
+# a real regression and must surface rather than be silently skipped.
+if sys.version_info < (3, 9):
+    pytest.importorskip("lmdb")
+
 current_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.abspath(os.path.join(current_dir, "..")))
 

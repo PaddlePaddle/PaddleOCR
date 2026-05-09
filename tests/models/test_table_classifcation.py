@@ -1,5 +1,7 @@
 import pytest
 
+pytestmark = pytest.mark.py38_incompatible
+
 from paddleocr import TableClassification
 from ..testing_utils import TEST_DATA_DIR, check_simple_inference_result
 from .image_classification_common import check_result_item_keys

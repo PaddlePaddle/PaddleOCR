@@ -1,7 +1,8 @@
 shapely
 scikit-image
 pyclipper
-lmdb
+lmdb; python_version >= "3.9"
+lmdb<1.5; python_version < "3.9"
 tqdm
 numpy
 rapidfuzz

@@ -1,0 +1,119 @@
+name: PaddleOCR PR Tests
+
+on:
+  push:
+    branches: ["main", "release/*"]
+  pull_request:
+    branches: ["main", "release/*"]
+    paths-ignore:
+
+
+permissions:
+  contents: read
+
+jobs:
+  detect-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      docs_only: ${{ steps.filter.outputs.docs_only }}
+    steps:
+      - uses: actions/checkout@v6
+      - id: filter
+        uses: dorny/paths-filter@de90cc6fb38fc0963ad72b210f1f284cd68cea36 # v3
+        with:
+          predicate-quantifier: every
+          filters: |
+            docs_only:
+              - '**.md'
+              - '**.txt'
+              - '**.yml'
+              - '**.yaml'
+              - 'paddleocr-js/**'
+              - 'langchain-paddleocr/**'
+              - 'skills/**'
+              - 'mcp_server/**'
+              - 'deploy/**'
+
+  test-pr-python:
+    runs-on: ubuntu-latest
+    needs: detect-changes
+    if: needs.detect-changes.outputs.docs_only != 'true'
+    strategy:
+      matrix:
+        python-version: ["3.8", "3.9", "3.13"]
+
+    steps:
+    - uses: actions/checkout@v6
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v6
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Cache dependencies
+      uses: actions/cache@v5
+      with:
+        path: |
+          ~/.cache/pip
+          ~/.local/lib/python${{ matrix.python-version }}/site-packages
+          ~/.paddleocr/
+        key: ${{ runner.os }}-dependencies-${{ matrix.python-version }}-${{ hashFiles('**/requirements.txt', 'pyproject.toml') }}
+        restore-keys: |
+          ${{ runner.os }}-dependencies-
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pytest
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        # On py3.8 several paddlex transitive deps require py3.9+, so only
+        # paddleocr[doc2md] is installable. See installation.md for the
+        # supported extras-by-Python-version matrix.
+        if [[ "${{ matrix.python-version }}" == "3.8" ]]; then
+          python -m pip install paddlepaddle==3.0.0 -i https://www.paddlepaddle.org.cn/packages/stable/cpu/
+          PADDLEOCR_EXTRAS="[doc2md]"
+        else
+          python -m pip install paddlepaddle==3.1.0 -i https://www.paddlepaddle.org.cn/packages/stable/cpu/
+          PADDLEOCR_EXTRAS="[all]"
+        fi
+        PADDLEX_SERIES=$(grep -oE 'paddlex\[[^]]+\]>=[0-9]+\.[0-9]+' pyproject.toml | head -1 | grep -oE '[0-9]+\.[0-9]+')
+        if [ -z "$PADDLEX_SERIES" ]; then
+          echo "Failed to determine PaddleX version requirement from pyproject.toml" >&2
+          exit 1
+        fi
+        PADDLEX_BRANCH="release/${PADDLEX_SERIES}"
+        echo "Installing PaddleX from branch: ${PADDLEX_BRANCH}"
+        python -m pip install -e ".${PADDLEOCR_EXTRAS}" "paddlex@git+https://github.com/PaddlePaddle/PaddleX.git@${PADDLEX_BRANCH}"
+        python -c "import paddlex; print(f'Installed paddlex version: {paddlex.__version__}')"
+    - name: Test with pytest
+      run: |
+        # Skip py38_incompatible tests on py3.8.
+        if [[ "${{ matrix.python-version }}" == "3.8" ]]; then
+          pytest --verbose tests/ -m "not resource_intensive and not py38_incompatible"
+        else
+          pytest --verbose tests/
+        fi
+
+  # Aggregator: produces a single check named `test-pr` so branch protection
+  # (which requires the literal context `test-pr`) is satisfied. Without this,
+  # the matrix above only emits `test-pr (3.x)` checks and the required
+  # `test-pr` context never reports.
+  test-pr:
+    runs-on: ubuntu-latest
+    needs: [detect-changes, test-pr-python]
+    if: always()
+    steps:
+      - name: Verify required jobs
+        run: |
+          if [ "${{ needs.detect-changes.result }}" != "success" ]; then
+            echo "detect-changes did not succeed: ${{ needs.detect-changes.result }}"
+            exit 1
+          fi
+          if [ "${{ needs.detect-changes.outputs.docs_only }}" = "true" ]; then
+            echo "Docs-only change; skipping python tests."
+            exit 0
+          fi
+          if [ "${{ needs.test-pr-python.result }}" != "success" ]; then
+            echo "test-pr-python concluded with: ${{ needs.test-pr-python.result }}"
+            exit 1
+          fi
+          echo "All python matrix variants passed."

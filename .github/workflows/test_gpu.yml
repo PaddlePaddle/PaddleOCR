@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 env:
   PR_ID: ${{ github.event.pull_request.number }}
-  COMMIT_ID: ${{ github.event.pull_request.head.sha }}
+  COMMIT_ID: ${{ github.event.pull_request.head.sha || github.sha }}
   work_dir: /workspace/PaddleOCR
   PADDLENLP_ROOT: /workspace/PaddleOCR
   TASK: paddleocr-CI-${{ github.event.pull_request.number }}
@@ -45,6 +45,10 @@ jobs:
           skip_gpu=true
           while IFS= read -r file; do
             [ -z "$file" ] && continue
+            if [[ "$file" == ".github/workflows/test_gpu.yml" ]]; then
+              skip_gpu=false
+              break
+            fi
             if [[ "$file" == paddleocr-js/* ]] || [[ "$file" == langchain-paddleocr/* ]] || [[ "$file" == skills/* ]] || [[ "$file" == mcp_server/* ]] || [[ "$file" == deploy/* ]] || [[ "$file" == *.md ]] || [[ "$file" == *.txt ]] || [[ "$file" == *.yml ]] || [[ "$file" == *.yaml ]]; then
               continue
             fi
@@ -54,7 +58,7 @@ jobs:
 
           echo "skip_gpu=$skip_gpu" >> "$GITHUB_OUTPUT"
 
-  test-pr-gpu:
+  test-pr-gpu-impl:
     runs-on: [self-hosted, GPU-2Card-OCR]
     needs: detect-changes
     if: needs.detect-changes.outputs.skip_gpu != 'true'
@@ -70,8 +74,13 @@ jobs:
           cd $work_dir
           git clone --depth=1 https://github.com/PaddlePaddle/PaddleOCR.git -b main
           cd PaddleOCR
-          git fetch origin pull/${PR_ID}/head:ci_build
-          git checkout ci_build
+          if [ -n "${PR_ID}" ]; then
+            git fetch origin pull/${PR_ID}/head:ci_build
+            git checkout ci_build
+          else
+            git fetch --depth=1 origin "${COMMIT_ID}"
+            git checkout "${COMMIT_ID}"
+          fi
           docker run --gpus all --rm -i --name PaddleOCR_CI_$RANDOM \
             --shm-size=128g --net=host \
             -v $PWD:/workspace -w /workspace  \
@@ -89,12 +98,48 @@ jobs:
             ln -s $(which python${py_version}) run_env/python3
             ln -s $(which pip${py_version}) run_env/pip
             export PATH=$PWD/run_env:${PATH}
-            
+
+            git config --global --add safe.directory /workspace
+
             python -m pip install paddlepaddle-gpu==3.1.0 -i https://www.paddlepaddle.org.cn/packages/stable/cu118/
             python -c "import paddle; paddle.version.show()"
             python -m pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
             python -m pip install pytest
             if [ -f requirements.txt ]; then python -m pip install -r requirements.txt; fi
-            python -m pip install -e ".[all]"
+            PADDLEX_SERIES=$(grep -oE "paddlex\[[^]]+\]>=[0-9]+\.[0-9]+" pyproject.toml | head -1 | grep -oE "[0-9]+\.[0-9]+")
+            if [ -z "$PADDLEX_SERIES" ]; then
+              echo "Failed to determine PaddleX version requirement from pyproject.toml" >&2
+              exit 1
+            fi
+            PADDLEX_BRANCH="release/${PADDLEX_SERIES}"
+            echo "Installing PaddleX from branch: ${PADDLEX_BRANCH}"
+            python -m pip install -e ".[all]" "paddlex@git+https://github.com/PaddlePaddle/PaddleX.git@${PADDLEX_BRANCH}"
+            python -c "import paddlex; print(f\"Installed paddlex version: {paddlex.__version__}\")"
             python -m pytest --verbose tests/
             '
+
+  # Aggregator: produces a single check named `test-pr-gpu` so branch
+  # protection (which requires the literal context `test-pr-gpu`) is satisfied
+  # even when the heavy GPU job is skipped (e.g. docs-only changes). Without
+  # this, a SKIPPED conclusion on the GPU job leaves the required check
+  # unsatisfied and blocks merge.
+  test-pr-gpu:
+    runs-on: ubuntu-latest
+    needs: [detect-changes, test-pr-gpu-impl]
+    if: always()
+    steps:
+      - name: Verify required jobs
+        run: |
+          if [ "${{ needs.detect-changes.result }}" != "success" ]; then
+            echo "detect-changes did not succeed: ${{ needs.detect-changes.result }}"
+            exit 1
+          fi
+          if [ "${{ needs.detect-changes.outputs.skip_gpu }}" = "true" ]; then
+            echo "Skip flag set; treating GPU tests as not required for this change."
+            exit 0
+          fi
+          if [ "${{ needs.test-pr-gpu-impl.result }}" != "success" ]; then
+            echo "test-pr-gpu-impl concluded with: ${{ needs.test-pr-gpu-impl.result }}"
+            exit 1
+          fi
+          echo "GPU tests passed."

@@ -29,13 +29,15 @@ PaddleOCR 3.5 引入了统一的推理引擎配置方式：使用 `engine` 选�
 
 ## 3. 各推理引擎安装方式
 
+> 不同推理引擎之间可能存在依赖冲突，建议每个环境仅安装一种推理引擎。
+
 ### 3.1 飞桨框架
 
-当您使用飞桨框架进行推理时，需要先安装飞桨框架。安装方法请参考[飞桨框架安装](./paddlepaddle_installation.md)。
+当您使用飞桨框架进行推理时，需要先安装飞桨框架。安装方法请参考 [飞桨框架安装](./paddlepaddle_installation.md)。PaddleOCR 对飞桨框架的版本要求可以参考 [此处](./paddleocr_and_paddlex.md#1-paddleocr-与-paddlex-的区别与联系)。
 
 ### 3.2 Transformers
 
-当您使用 Transformers 作为推理引擎时，需要安装 Hugging Face Transformers。示例命令如下：
+当您使用 Transformers 作为推理引擎时，需要安装 Hugging Face Transformers（`>=5.4.0`）。示例命令如下：
 
 ```bash
 python -m pip install "transformers>=5.4.0"

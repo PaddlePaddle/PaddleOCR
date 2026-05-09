@@ -11,25 +11,31 @@ PaddleOCR-VL is an advanced and efficient document parsing model designed specif
 
 **On January 29, 2026, we released PaddleOCR-VL-1.5. PaddleOCR-VL-1.5 not only significantly improved the accuracy on the OmniDocBench v1.5 evaluation set to 94.5%, but also innovatively supports irregular-shaped bounding box localization. As a result, PaddleOCR-VL-1.5 demonstrates outstanding performance in real-world scenarios such as Skew, Warping, Screen Photography, Illumination, and Scanning. In addition, the model has added new capabilities for seal (stamp) recognition and text detection and recognition, with key metrics continuing to lead the industry.**
 
-<img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr_vl_1_5/paddleocr-vl-1.5_metrics.png"/>
+PaddleOCR-VL consists of two core stages: layout analysis and VLM-based recognition. The simplified workflow is illustrated as follows:
+
+<img src="https://github.com/cuicheng01/PaddleX_doc_images/blob/5f2c42665e6a97d5726fe553241acd79361159a0/images/paddleocr_vl_1_5/process_step_EN.png"/>
+
+In this pipeline, the first stage is layout analysis: the model takes the entire image as input, detects and localizes various layout elements (e.g., tables and formulas), determines their reading order, and crops the corresponding element-level sub-images based on the detection results. The second stage is VLM-based recognition: each sub-image is independently fed into the VLM to produce its recognition result (e.g., Markdown text), after which all element-level outputs are merged according to the reading order determined in the layout analysis stage to form the complete parsing result of the entire image. Therefore, **to fully leverage the capabilities of PaddleOCR-VL, it is necessary to adopt the complete pipeline that integrates layout analysis and VLM-based recognition, rather than using the VLM component alone.** This distinction will be referenced multiple times in the following sections, so it is important to clearly differentiate between the full PaddleOCR-VL pipeline and its VLM component. Taking PaddleOCR-VL v1 as an example, the layout analysis model is PP-DocLayoutV2, and the VLM component is PaddleOCR-VL-0.9B. It is important to note that “PaddleOCR-VL-0.9B” does not represent a standalone variant of PaddleOCR-VL, but rather refers specifically to the VLM component within the complete PaddleOCR-VL v1 pipeline. This differs from common naming conventions of LLMs/VLMs—for instance, Qwen2-72B typically denotes a specific model variant within the Qwen2 series.
+
+**If issues arise during usage—such as failure to reproduce the performance reported in the paper or on the PaddleOCR official website, or the generation of excessive hallucinated text—the first step is to verify whether the complete PaddleOCR-VL pipeline is being used, rather than only the VLM component.** For example, directly running the PaddleOCR-VL-0.9B model locally via Transformers, or sending requests to services such as vLLM, SGLang, or FastDeploy, is not equivalent to executing the full PaddleOCR-VL pipeline.
 
 ## Start Here
 
 Choose the guide that matches your hardware first.
 
-| Hardware | Read this guide |
-| --- | --- |
-| x64 CPU | Continue with this tutorial. Use the manual installation path in Section 1.2; the NVIDIA-only Docker steps do not apply. |
-| NVIDIA GPU (except Blackwell) | Continue with this tutorial. |
-| NVIDIA Blackwell GPU | Read [PaddleOCR-VL NVIDIA Blackwell-Architecture GPUs Usage Tutorial](./PaddleOCR-VL-NVIDIA-Blackwell.en.md). |
-| Apple Silicon | Read [PaddleOCR-VL Apple Silicon Usage Tutorial](./PaddleOCR-VL-Apple-Silicon.en.md). |
-| Kunlunxin XPU | Read [PaddleOCR-VL Kunlunxin XPU Usage Tutorial](./PaddleOCR-VL-Kunlunxin-XPU.en.md). |
-| Hygon DCU | Read [PaddleOCR-VL Hygon DCU Usage Tutorial](./PaddleOCR-VL-Hygon-DCU.en.md). |
-| MetaX GPU | Read [PaddleOCR-VL MetaX GPU Usage Tutorial](./PaddleOCR-VL-MetaX-GPU.en.md). |
-| Iluvatar GPU | Read [PaddleOCR-VL Iluvatar GPU Usage Tutorial](./PaddleOCR-VL-Iluvatar-GPU.en.md). |
-| Huawei Ascend NPU | Read [PaddleOCR-VL Huawei Ascend NPU Usage Tutorial](./PaddleOCR-VL-Huawei-Ascend-NPU.en.md). |
-| AMD GPU | Read [PaddleOCR-VL AMD GPU Usage Tutorial](./PaddleOCR-VL-AMD-GPU.en.md). |
-| Intel Arc GPU | Read [PaddleOCR-VL Intel Arc GPU Usage Tutorial](./PaddleOCR-VL-Intel-Arc-GPU.en.md). |
+| Hardware                      | Read this guide                                                                                                          |
+| -------------------------------| --------------------------------------------------------------------------------------------------------------------------|
+| x64 CPU                       | Continue with this tutorial. Use the manual installation path in Section 1.2; the NVIDIA-only Docker steps do not apply. |
+| NVIDIA GPU (except Blackwell) | Continue with this tutorial.                                                                                             |
+| NVIDIA Blackwell GPU          | Read [PaddleOCR-VL NVIDIA Blackwell-Architecture GPUs Usage Tutorial](./PaddleOCR-VL-NVIDIA-Blackwell.en.md).            |
+| Apple Silicon                 | Read [PaddleOCR-VL Apple Silicon Usage Tutorial](./PaddleOCR-VL-Apple-Silicon.en.md).                                    |
+| Kunlunxin XPU                 | Read [PaddleOCR-VL Kunlunxin XPU Usage Tutorial](./PaddleOCR-VL-Kunlunxin-XPU.en.md).                                    |
+| Hygon DCU                     | Read [PaddleOCR-VL Hygon DCU Usage Tutorial](./PaddleOCR-VL-Hygon-DCU.en.md).                                            |
+| MetaX GPU                     | Read [PaddleOCR-VL MetaX GPU Usage Tutorial](./PaddleOCR-VL-MetaX-GPU.en.md).                                            |
+| Iluvatar GPU                  | Read [PaddleOCR-VL Iluvatar GPU Usage Tutorial](./PaddleOCR-VL-Iluvatar-GPU.en.md).                                      |
+| Huawei Ascend NPU             | Read [PaddleOCR-VL Huawei Ascend NPU Usage Tutorial](./PaddleOCR-VL-Huawei-Ascend-NPU.en.md).                            |
+| AMD GPU                       | Read [PaddleOCR-VL AMD GPU Usage Tutorial](./PaddleOCR-VL-AMD-GPU.en.md).                                                |
+| Intel Arc GPU                 | Read [PaddleOCR-VL Intel Arc GPU Usage Tutorial](./PaddleOCR-VL-Intel-Arc-GPU.en.md).                                    |
 
 If you just want to first confirm which hardware PaddleOCR-VL can be deployed on, or which inference methods are supported by specific hardware, read the [PaddleOCR-VL Inference Method and Hardware Support Matrix](#inference-device-support-for-paddleocr-vl) before continuing.
 
@@ -220,12 +226,12 @@ If you just want to first confirm which hardware PaddleOCR-VL can be deployed on
 
 **Inference Method Notes**
 
-`PaddlePaddle` means that both the layout detection model and the VLM use local PaddlePaddle inference. In practice, each module is resolved to `paddle_static` or `paddle_dynamic` depending on the model form. `Transformers` means that both the layout detection model and the VLM use the `transformers` engine. The remaining methods follow the format `layout detection model inference method + VLM inference method`; for example, `PaddlePaddle + vLLM` means the layout detection model uses local PaddlePaddle inference while the VLM uses vLLM inference.
+`PaddlePaddle` means that both the layout analysis model and the VLM use local PaddlePaddle inference. In practice, each module is resolved to `paddle_static` or `paddle_dynamic` depending on the model form. `Transformers` means that both the layout analysis model and the VLM use the `transformers` engine. The remaining methods follow the format `layout analysis model inference method + VLM inference method`; for example, `PaddlePaddle + vLLM` means the layout analysis model uses local PaddlePaddle inference while the VLM uses vLLM inference.
 
 **Additional Notes for Interpreting the Matrix**
 
 - vLLM, SGLang, and FastDeploy cannot run natively on Windows. Please use our Docker images.
-- Due to dependency conflicts between different libraries, mixed inference methods such as Transformers + vLLM usually require deploying the layout detection model and the VLM service in separate environments.
+- Due to dependency conflicts between different libraries, mixed inference methods such as Transformers + vLLM usually require deploying the layout analysis model and the VLM service in separate environments.
 
 ## Environment Requirements
 
@@ -303,7 +309,7 @@ The image comes preinstalled with the PaddlePaddle framework and does not includ
 
 ### 1.2 Method 2: Manually Install the Inference Engine and PaddleOCR
 
-If you cannot use Docker, you can manually install PaddlePaddle and PaddleOCR. The required Python version is 3.8–3.13.
+If you cannot use Docker, you can manually install PaddlePaddle and PaddleOCR. This guide documents Python 3.9–3.13 as the verified range.
 
 **We strongly recommend installing PaddleOCR-VL in a virtual environment to avoid dependency conflicts.** For example, use the Python venv standard library to create a virtual environment:
 
@@ -382,7 +388,7 @@ paddleocr doc_parser -i ./paddleocr_vl_demo.png --use_doc_orientation_classify T
 # Use --use_doc_unwarping to enable the document unwarping module
 paddleocr doc_parser -i ./paddleocr_vl_demo.png --use_doc_unwarping True --save_path ./output
 
-# Use --use_layout_detection to disable the layout detection and ordering module
+# Use --use_layout_detection to disable the layout analysis and ordering module
 paddleocr doc_parser -i ./paddleocr_vl_demo.png --use_layout_detection False --save_path ./output
 ```
 
@@ -432,7 +438,7 @@ If not set, the inference results will not be saved locally.</td>
 </tr>
 <tr>
 <td><code>layout_detection_model_name</code></td>
-<td><b>Meaning:</b>Name of the layout area detection and ranking model.<br/>
+<td><b>Meaning:</b>Name of the layout analysis model.<br/>
 <b>Description:</b>
  If not set, the default model of the production line will be used.</td>
 <td><code>str</code></td>
@@ -440,7 +446,7 @@ If not set, the inference results will not be saved locally.</td>
 </tr>
 <tr>
 <td><code>layout_detection_model_dir</code></td>
-<td><b>Meaning:</b>Directory path of the layout area detection and ranking model.<br/> 
+<td><b>Meaning:</b>Directory path of the layout analysis model.<br/> 
 <b>Description:</b> 
 If not set, the official model will be downloaded.</td>
 <td><code>str</code></td>
@@ -456,7 +462,7 @@ Any value between  <code>0-1</code>. If not set, the default value is used, whic
 </tr>
 <tr>
 <td><code>layout_nms</code></td>
-<td><b>Meaning:</b>Whether to use post-processing NMS for layout detection. <br/>
+<td><b>Meaning:</b>Whether to use post-processing NMS for layout analysis. <br/>
 <b>Description:</b> 
 If not set, the initialized default value will be used.</td>
 <td><code>bool</code></td>
@@ -472,7 +478,7 @@ Any floating-point number greater than <code>0</code>. If not set, the initializ
 </tr>
 <tr>
 <td><code>layout_merge_bboxes_mode</code></td>
-<td><b>Meaning:</b>Merging mode for the detection boxes output by the model in layout detection. <br/>
+<td><b>Meaning:</b>Merging mode for the detection boxes output by the model in layout analysis. <br/>
 <b>Description:</b> 
 <ul>
 <li><b>large</b> when set to large, it means that among the detection boxes output by the model, for overlapping and contained boxes, only the outermost largest box is retained, and the overlapping inner boxes are deleted;</li>
@@ -579,7 +585,7 @@ If not set, the initialized default value will be used, which is initialized to 
 </tr>
 <tr>
 <td><code>use_layout_detection</code></td>
-<td><b>Meaning:</b>Whether to load and use the layout area detection and ranking module. <br/>
+<td><b>Meaning:</b>Whether to load and use the layout analysis module. <br/>
 <b>Description:</b>
 If not set, the initialized default value will be used, which is initialized to <code>True</code>.</td>
 <td><code>bool</code></td>
@@ -617,7 +623,7 @@ If not set, the initialized default value will be used, which defaults to initia
 </tr>
 <tr>
 <td><code>merge_layout_blocks</code></td>
-<td><b>Meaning:</b>Control whether to merge the layout detection boxes for cross-column or staggered top and bottom columns.<br/>
+<td><b>Meaning:</b>Control whether to merge the layout analysis boxes for cross-column or staggered top and bottom columns.<br/>
 <b>Description:</b> If not set, the initialized default value will be used, which defaults to initialization as<code>True</code>.</td>
 <td><code>bool</code></td>
 <td></td>
@@ -632,7 +638,7 @@ If not set, the initialized default value will be used, which defaults to initia
 <tr>
   <td><code>layout_shape_mode</code></td>
   <td>
-    <b>Meaning:</b>Specifies the geometric representation mode for layout detection results. It defines how the boundaries of detected regions (e.g., text blocks, images, tables) are calculated and displayed.<br/>
+    <b>Meaning:</b>Specifies the geometric representation mode for layout analysis results. It defines how the boundaries of detected regions (e.g., text blocks, images, tables) are calculated and displayed.<br/>
     <b>Description:</b> Value descriptions:
     <ul>
       <li>
@@ -665,7 +671,7 @@ If not set, the initialized default value will be used, which defaults to initia
 <tr>
 <td><code>use_queues</code></td>
 <td><b>Meaning:</b>Used to control whether to enable internal queues.<br/>
-<b>Description:</b> When set to <code>True</code>, data loading (such as rendering PDF pages as images), layout detection model processing, and VLM inference will be executed asynchronously in separate threads, with data passed through queues, thereby improving efficiency. This approach is particularly efficient for PDF documents with a large number of pages or directories containing a large number of images or PDF files. If not set, the initialized default value will be used, which defaults to initialization as <code>True</code>.</td>
+<b>Description:</b> When set to <code>True</code>, data loading (such as rendering PDF pages as images), layout analysis model processing, and VLM inference will be executed asynchronously in separate threads, with data passed through queues, thereby improving efficiency. This approach is particularly efficient for PDF documents with a large number of pages or directories containing a large number of images or PDF files. If not set, the initialized default value will be used, which defaults to initialization as <code>True</code>.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
@@ -824,7 +830,7 @@ pipeline = PaddleOCRVL()
 
 # pipeline = PaddleOCRVL(use_doc_orientation_classify=True) # Use use_doc_orientation_classify to enable/disable document orientation classification model
 # pipeline = PaddleOCRVL(use_doc_unwarping=True) # Use use_doc_unwarping to enable/disable document unwarping module
-# pipeline = PaddleOCRVL(use_layout_detection=False) # Use use_layout_detection to enable/disable layout detection module
+# pipeline = PaddleOCRVL(use_layout_detection=False) # Use use_layout_detection to enable/disable layout analysis module
 
 output = pipeline.predict("./paddleocr_vl_demo.png")
 for res in output:
@@ -923,7 +929,7 @@ The above Python script performs the following steps:
 </tr>
 <tr>
 <td><code>layout_detection_model_name</code></td>
-<td><b>Meaning:</b>Name of the layout area detection and ranking model. <br/>
+<td><b>Meaning:</b>Name of the layout analysis model. <br/>
 <b>Description:</b>
 If set to <code>None</code>, the default model of the production line will be used.</td>
 <td><code>str|None</code></td>
@@ -931,7 +937,7 @@ If set to <code>None</code>, the default model of the production line will be us
 </tr>
 <tr>
 <td><code>layout_detection_model_dir</code></td>
-<td><b>Meaning:</b>Directory path of the layout area detection and ranking model. <br/>
+<td><b>Meaning:</b>Directory path of the layout analysis model. <br/>
 <b>Description:</b>
 If set to <code>None</code>, the official model will be downloaded.</td>
 <td><code>str|None</code></td>
@@ -951,7 +957,7 @@ If set to <code>None</code>, the official model will be downloaded.</td>
 </tr>
 <tr>
 <td><code>layout_nms</code></td>
-<td><b>Meaning:</b>Whether to use post-processing NMS for layout detection. <br/>
+<td><b>Meaning:</b>Whether to use post-processing NMS for layout analysis. <br/>
 <b>Description:</b>
 If set to <code>None</code>, the parameter value initialized by the production line will be used.</td>
 <td><code>bool|None</code></td>
@@ -973,7 +979,7 @@ If set to <code>None</code>, the parameter value initialized by the production l
 </tr>
 <tr>
 <td><code>layout_merge_bboxes_mode</code><ul>
-<td><b>Meaning:</b>Merging mode for the detection boxes output by the model in layout detection. <br/>
+<td><b>Meaning:</b>Merging mode for the detection boxes output by the model in layout analysis. <br/>
 <b>Description:</b>
 <ul>
 <li><b>large</b> when set to large, it means that among the detection boxes output by the model, for overlapping and contained boxes, only the outermost largest box is retained, and the overlapping inner boxes are deleted;</li>
@@ -1078,7 +1084,7 @@ If set to <code>None</code>, the initialized default value will be used, which i
 </tr>
 <tr>
 <td><code>use_layout_detection</code></td>
-<td><b>Meaning:</b>Whether to load and use the layout area detection and ranking module. <br/>
+<td><b>Meaning:</b>Whether to load and use the layout analysis module. <br/>
 <b>Description:</b>
 If set to <code>None</code>, the initialized default value will be used, which is initialized to <code>True</code>.</td>
 <td><code>bool|None</code></td>
@@ -1117,7 +1123,7 @@ If set to <code>None</code>, the initialized default value will be used, which d
 </tr>
 <tr>
 <td><code>merge_layout_blocks</code></td>
-<td><b>Meaning:</b>Control whether to merge the layout detection boxes for cross-column or staggered top and bottom columns.<br/>
+<td><b>Meaning:</b>Control whether to merge the layout analysis boxes for cross-column or staggered top and bottom columns.<br/>
 <b>Description:</b> If set to <code>None</code>, the initialized default value will be used, which defaults to initialization as<code>True</code>.</td>
 <td><code>bool|None</code></td>
 <td></td>
@@ -1132,7 +1138,7 @@ If set to <code>None</code>, the initialized default value will be used, which d
 <tr>
 <td><code>use_queues</code></td>
 <td><b>Meaning:</b>Used to control whether to enable internal queues.<br/>
-<b>Description:</b> When set to <code>True</code>, data loading (such as rendering PDF pages as images), layout detection model processing, and VLM inference will be executed asynchronously in separate threads, with data passed through queues, thereby improving efficiency. This approach is particularly efficient for PDF documents with many pages or directories containing a large number of images or PDF files. If set to <code>None</code>, the initialized default value will be used, which defaults to initialization as <code>True</code>.</td>
+<b>Description:</b> When set to <code>True</code>, data loading (such as rendering PDF pages as images), layout analysis model processing, and VLM inference will be executed asynchronously in separate threads, with data passed through queues, thereby improving efficiency. This approach is particularly efficient for PDF documents with many pages or directories containing a large number of images or PDF files. If set to <code>None</code>, the initialized default value will be used, which defaults to initialization as <code>True</code>.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -1321,7 +1327,7 @@ Setting it to <code>None</code> means using the instantiation parameter; otherwi
 <tr>
   <td><code>layout_shape_mode</code></td>
   <td>
-    <b>Meaning:</b>Specifies the geometric representation mode for layout detection results. It defines how the boundaries of detected regions (e.g., text blocks, images, tables) are calculated and displayed.<br/>
+    <b>Meaning:</b>Specifies the geometric representation mode for layout analysis results. It defines how the boundaries of detected regions (e.g., text blocks, images, tables) are calculated and displayed.<br/>
     <b>Description:</b> Value descriptions:
     <ul>
       <li>
@@ -1411,7 +1417,7 @@ Setting it to <code>None</code> means using the instantiation parameter; otherwi
 </tr>
 <tr>
 <td><code>merge_layout_blocks</code></td>
-<td><b>Meaning:</b>Control whether to merge the layout detection boxes for cross-column or staggered top and bottom columns.</td>
+<td><b>Meaning:</b>Control whether to merge the layout analysis boxes for cross-column or staggered top and bottom columns.</td>
 <td><code>bool|None</code></td>
 <td></td>
 </tr>
@@ -1603,7 +1609,7 @@ Setting it to <code>None</code> means using the instantiation parameter; otherwi
 
     - `model_settings`: `(Dict[str, bool])` Model parameters required for configuring PaddleOCR-VL.
         - `use_doc_preprocessor`: `(bool)` Controls whether to enable the document preprocessing sub-pipeline.
-        - `use_layout_detection`: `(bool)` Controls whether to enable the layout detection module.
+        - `use_layout_detection`: `(bool)` Controls whether to enable the layout analysis module.
         - `use_chart_recognition`: `(bool)` Controls whether to enable the chart recognition function.
         - `format_block_content`: `(bool)` Controls whether to save the formatted markdown content in `JSON`.
         - `markdown_ignore_labels`: `(List[str])` Labels of layout regions that need to be ignored in Markdown
@@ -1630,7 +1636,7 @@ Setting it to <code>None</code> means using the instantiation parameter; otherwi
     - `model_settings`: `(Dict[str, bool])` Model parameters required for configuring PaddleOCR-VL.
 
         - `use_doc_preprocessor`: `(bool)` Controls whether to enable the document preprocessing sub-pipeline.
-        - `use_layout_detection`: `(bool)` Controls whether to enable the layout detection module.
+        - `use_layout_detection`: `(bool)` Controls whether to enable the layout analysis module.
         - `use_chart_recognition`: `(bool)` Controls whether to enable the chart recognition function.
         - `format_block_content`: `(bool)` Controls whether to save the formatted markdown content in `JSON`.
 
@@ -1688,7 +1694,7 @@ Setting it to <code>None</code> means using the instantiation parameter; otherwi
 <a id="3-vlm"></a>
 ## 3. Improving Inference Performance with VLM Inference Services
 
-Using only PaddlePaddle or Transformers usually does not provide optimal inference performance. This section mainly introduces how to improve PaddleOCR-VL inference performance through VLM inference services. You can either deploy your own VLM inference service based on backends such as vLLM, SGLang, FastDeploy, MLX-VLM, and llama.cpp, or directly use compatible managed services. This section corresponds to combinations of "Layout Detection Inference Method + VLM Inference Service". Its core idea is that **the client continues to handle the other stages in the full workflow, such as layout detection, while only the VLM stage is delegated to a dedicated service**.
+Using only PaddlePaddle or Transformers usually does not provide optimal inference performance. This section mainly introduces how to improve PaddleOCR-VL inference performance through VLM inference services. You can either deploy your own VLM inference service based on backends such as vLLM, SGLang, FastDeploy, MLX-VLM, and llama.cpp, or directly use compatible managed services. This section corresponds to combinations of "layout analysis Inference Method + VLM Inference Service". Its core idea is that **the client continues to handle the other stages in the full workflow, such as layout analysis, while only the VLM stage is delegated to a dedicated service**.
 
 ### 3.1 Launching the VLM Inference Service
 
@@ -1810,7 +1816,7 @@ Currently supported framework names are `vllm`, `sglang`, and `fastdeploy`, corr
 Both vLLM and SGLang installed through `paddleocr install_genai_server_deps` are **CUDA 12.6** versions. Please ensure that your local NVIDIA driver supports this version or a later one.
 
 > WARNING:
-> The transformers library versions required by vLLM, SGLang and Transformers engine are currently incompatible, so Transformers engine and vLLM cannot be installed together with vLLM or SGLang in the same environment. If using Transformers + vLLM or Transformers + SGLang inference, please deploy the layout detection model and VLM service in different environments.
+> The transformers library versions required by vLLM, SGLang and Transformers engine are currently incompatible, so Transformers engine and vLLM cannot be installed together with vLLM or SGLang in the same environment. If using Transformers + vLLM or Transformers + SGLang inference, please deploy the layout analysis model and VLM service in different environments.
 
 After installation, you can launch the service using the `paddleocr genai_server` command:
 
@@ -1852,7 +1858,7 @@ The parameters supported by this command are as follows:
 
 ### 3.2 Client Usage Methods
 
-After launching the VLM inference service, the client can call the service through PaddleOCR. This section applies both to self-hosted VLM inference services launched in 3.1 and to compatible managed services provided by third parties. **Please note that because the client still needs to call the layout detection model and complete the other stages in the workflow, it is still recommended to run the client on GPU or other acceleration devices to achieve more stable and efficient performance. Please refer to Section 1 for the client-side environment configuration. The configuration described in Section 3.1 applies only to starting the service and is not applicable to the client. If you want the client to invoke the full PaddleOCR-VL capability only through an HTTP interface, please directly refer to Section 4, "Service Deployment".**
+After launching the VLM inference service, the client can call the service through PaddleOCR. This section applies both to self-hosted VLM inference services launched in 3.1 and to compatible managed services provided by third parties. **Please note that because the client still needs to call the layout analysis model and complete the other stages in the workflow, it is still recommended to run the client on GPU or other acceleration devices to achieve more stable and efficient performance. Please refer to Section 1 for the client-side environment configuration. The configuration described in Section 3.1 applies only to starting the service and is not applicable to the client. If you want the client to invoke the full PaddleOCR-VL capability only through an HTTP interface, please directly refer to Section 4, "Service Deployment".**
 
 #### 3.2.1 CLI Invocation
 
@@ -3348,4 +3354,4 @@ When starting the service, specify the `--pipeline` parameter as the path to you
 
 If you find that PaddleOCR-VL does not meet accuracy expectations in specific business scenarios, we recommend using the [ERNIEKit suite](https://github.com/PaddlePaddle/ERNIE/tree/release/v1.4) to perform supervised fine-tuning (SFT) on the VLM (e.g. PaddleOCR-VL-0.9B). For detailed instructions, refer to the [ERNIEKit Official Documentation](https://github.com/PaddlePaddle/ERNIE/blob/release/v1.4/docs/paddleocr_vl_sft.md).
 
-> Currently, fine-tuning of layout detection and ranking models is not supported.
+> Currently, fine-tuning of layout analysis and ranking models is not supported.

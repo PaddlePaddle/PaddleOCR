@@ -78,7 +78,7 @@ If you wish to use PaddleOCR-VL in an offline environment, replace `ccr-2vdh3abv
 
 ### 1.2 Method 2: Manually Install PaddlePaddle and PaddleOCR
 
-If Docker is not an option, you can manually install PaddlePaddle and PaddleOCR. Python version 3.8–3.13 is required.
+If Docker is not an option, you can manually install PaddlePaddle and PaddleOCR. This guide documents Python 3.9–3.13 as the verified range.
 
 **We strongly recommend installing PaddleOCR-VL in a virtual environment to avoid dependency conflicts.** For example, create a virtual environment using Python's standard venv library:
 
@@ -196,7 +196,7 @@ paddleocr install_genai_server_deps <inference acceleration framework name>
 Currently supported framework names are `vllm` and `sglang`, corresponding to vLLM and SGLang, respectively.
 
 > WARNING:
-> The transformers library versions required by vLLM, SGLang and Transformers engine are currently incompatible, so Transformers engine cannot be installed together with vLLM or SGLang in the same environment. If using Transformers + vLLM or Transformers + SGLang inference, please deploy the layout detection model and VLM service in different environments.
+> The transformers library versions required by vLLM, SGLang and Transformers engine are currently incompatible, so Transformers engine cannot be installed together with vLLM or SGLang in the same environment. If using Transformers + vLLM or Transformers + SGLang inference, please deploy the layout analysis model and VLM service in different environments.
 
 After installation, you can start the service using the `paddleocr genai_server` command:
 
