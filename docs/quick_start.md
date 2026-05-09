@@ -31,7 +31,7 @@ PaddleOCR 支持通过统一的推理引擎配置选择底层运行时，目前�
     使用 Transformers 推理时，需要安装 Hugging Face Transformers：
 
     ```bash
-    python -m pip install "transformers>=5.4.0"
+    python -m pip install "transformers>=5.8.0"
     ```
 
     通常还需要安装 Transformers 所使用的底层推理框架，详情可参考 [Transformers 官方安装文档](https://huggingface.co/docs/transformers/installation)。

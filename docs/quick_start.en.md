@@ -33,7 +33,7 @@ PaddleOCR supports unified inference-engine configuration, allowing you to choos
     When using Transformers for inference, install Hugging Face Transformers:
 
     ```bash
-    python -m pip install "transformers>=5.4.0"
+    python -m pip install "transformers>=5.8.0"
     ```
 
     In many cases, you also need to install the underlying inference framework used by Transformers. For details, see the [Transformers official installation documentation](https://huggingface.co/docs/transformers/installation).
