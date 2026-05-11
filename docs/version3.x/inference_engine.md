@@ -33,7 +33,7 @@ PaddleOCR 3.5 引入了统一的推理引擎配置方式：使用 `engine` 选�
 
 ### 3.1 飞桨框架
 
-当您使用飞桨框架进行推理时，需要先安装飞桨框架。安装方法请参考 [飞桨框架安装](./paddlepaddle_installation.md)。PaddleOCR 对飞桨框架的版本要求可以参考 [此处](./paddleocr_and_paddlex.md#1-paddleocr-与-paddlex-的区别与联系)。
+当您使用飞桨框架进行推理时，需要先安装飞桨框架。安装方法请参考 [飞桨框架安装](./paddlepaddle_installation.md)。PaddleOCR 对飞桨框架的版本要求可以参考 [此处](./paddleocr_and_paddlex.md#1-paddleocr-paddlex)。
 
 ### 3.2 Transformers
 
