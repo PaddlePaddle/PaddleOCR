@@ -13,7 +13,7 @@ PaddleOCR-VL is an advanced and efficient document parsing model designed specif
 
 PaddleOCR-VL consists of two core stages: layout analysis and VLM-based recognition. The simplified workflow is illustrated as follows:
 
-<img src="https://github.com/cuicheng01/PaddleX_doc_images/blob/5f2c42665e6a97d5726fe553241acd79361159a0/images/paddleocr_vl_1_5/process_step_EN.png"/>
+<img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/5f2c42665e6a97d5726fe553241acd79361159a0/images/paddleocr_vl_1_5/process_step_EN.png"/>
 
 In this pipeline, the first stage is layout analysis: the model takes the entire image as input, detects and localizes various layout elements (e.g., tables and formulas), determines their reading order, and crops the corresponding element-level sub-images based on the detection results. The second stage is VLM-based recognition: each sub-image is independently fed into the VLM to produce its recognition result (e.g., Markdown text), after which all element-level outputs are merged according to the reading order determined in the layout analysis stage to form the complete parsing result of the entire image. Therefore, **to fully leverage the capabilities of PaddleOCR-VL, it is necessary to adopt the complete pipeline that integrates layout analysis and VLM-based recognition, rather than using the VLM component alone.** This distinction will be referenced multiple times in the following sections, so it is important to clearly differentiate between the full PaddleOCR-VL pipeline and its VLM component. Taking PaddleOCR-VL v1 as an example, the layout analysis model is PP-DocLayoutV2, and the VLM component is PaddleOCR-VL-0.9B. It is important to note that “PaddleOCR-VL-0.9B” does not represent a standalone variant of PaddleOCR-VL, but rather refers specifically to the VLM component within the complete PaddleOCR-VL v1 pipeline. This differs from common naming conventions of LLMs/VLMs—for instance, Qwen2-72B typically denotes a specific model variant within the Qwen2 series.
 
@@ -309,7 +309,7 @@ The image comes preinstalled with the PaddlePaddle framework and does not includ
 
 ### 1.2 Method 2: Manually Install the Inference Engine and PaddleOCR
 
-If you cannot use Docker, you can manually install PaddlePaddle and PaddleOCR. This guide documents Python 3.9–3.13 as the verified range.
+If you cannot use Docker, you can manually install PaddlePaddle and PaddleOCR. The required Python version is 3.8–3.13.
 
 **We strongly recommend installing PaddleOCR-VL in a virtual environment to avoid dependency conflicts.** For example, use the Python venv standard library to create a virtual environment:
 
