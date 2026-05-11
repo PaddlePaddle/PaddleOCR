@@ -309,7 +309,7 @@ The image comes preinstalled with the PaddlePaddle framework and does not includ
 
 ### 1.2 Method 2: Manually Install the Inference Engine and PaddleOCR
 
-If you cannot use Docker, you can manually install PaddlePaddle and PaddleOCR. The required Python version is 3.8–3.13.
+If you cannot use Docker, you can manually install PaddlePaddle and PaddleOCR. This guide documents Python 3.9–3.13 as the verified range.
 
 **We strongly recommend installing PaddleOCR-VL in a virtual environment to avoid dependency conflicts.** For example, use the Python venv standard library to create a virtual environment:
 
@@ -2018,7 +2018,7 @@ Both methods can handle only one request at a time. If you need concurrent reque
 > TIP:
 > The default Docker Compose solution in this section is only suitable for NVIDIA GPUs that meet the corresponding CC/CUDA requirements, and uses vLLM or FastDeploy as the underlying VLM backend. For CC 7.x devices such as T4/V100, do not follow this default route directly. Instead, read Section 4.2 and combine it with the matrix above to choose an available inference method.
 
-You can obtain the Compose file and the environment variables configuration file from [here](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/accelerators/gpu/compose.yaml) and [here](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/accelerators/gpu/.env), respectively, and download them to your local machine. Then, in the directory where the files were just downloaded, execute the following command to start the server, which will listen on port **8080** by default:
+You can obtain the Compose file and the environment variables configuration file from [here](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/accelerators/nvidia-gpu/compose.yaml) and [here](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/accelerators/nvidia-gpu/.env), respectively, and download them to your local machine. Then, in the directory where the files were just downloaded, execute the following command to start the server, which will listen on port **8080** by default:
 
 ```shell
 # Must be executed in the directory containing the compose.yaml and .env files
