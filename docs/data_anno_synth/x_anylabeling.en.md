@@ -6,7 +6,7 @@ comments: true
 
 ## Introduction
 
-**PaddleOCR-VL-1.5**'s document parsing and OCR capabilities are now integrated with the [X-AnyLabeling](https://github.com/CVHub520/X-AnyLabeling) annotation platform, which is also the officially recommended annotation tool for the PaddleOCR Global Derivative Model Challenge.
+**PaddleOCR-VL-1.5**'s document parsing and OCR capabilities are now integrated with the [X-AnyLabeling](https://github.com/CVHub520/X-AnyLabeling) annotation platform.
 
 X-AnyLabeling is an industrial-grade all-in-one intelligent annotation platform from CVHub that unifies training, inference, and annotation. Its `PaddleOCR` panel lets developers run layout parsing, text recognition, formula recognition, table recognition, and seal recognition on images and PDFs with PaddleOCR-VL-1.5, then review, edit, copy, and export the results.
 
@@ -109,7 +109,6 @@ In addition to `Document Parsing`, X-AnyLabeling also offers a `JSON` view:
 After reviewing and correcting the results, you can export the annotations for downstream use:
 
 - Building OCR training datasets
-- Preparing data for the PaddleOCR Global Derivative Model Challenge
 - Running model evaluation and error analysis
 - Curating internal document parsing data
 - Feeding business systems for automation

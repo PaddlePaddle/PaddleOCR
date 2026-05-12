@@ -6,7 +6,7 @@ comments: true
 
 ## 简介
 
-**PaddleOCR-VL-1.5** 的文档解析与智能文字识别能力已集成至 [X-AnyLabeling](https://github.com/CVHub520/X-AnyLabeling) 标注平台，X-AnyLabeling 同时是 PaddleOCR 全球衍生模型挑战赛官方推荐标注工具。
+**PaddleOCR-VL-1.5** 的文档解析与智能文字识别能力已集成至 [X-AnyLabeling](https://github.com/CVHub520/X-AnyLabeling) 标注平台。
 
 X-AnyLabeling 是由 CVHub 推出的工业级一体化智能标注平台，打通训练、推理、标注全链路。借助其 `PaddleOCR` 面板，开发者可以基于 PaddleOCR-VL-1.5 对图片和 PDF 进行版面解析、文字识别、公式识别、表格识别和印章识别，并在识别完成后对结果进行复核、编辑、复制和导出。
 
@@ -109,7 +109,6 @@ ${workspace}/xanylabeling_data/paddleocr/api_settings.json
 完成复核和修正后，可以将标注结果导出，用于后续任务，典型用途包括：
 
 - 构建 OCR 训练数据集
-- 准备 PaddleOCR 全球衍生模型挑战赛数据
 - 进行模型评测和误差分析
 - 沉淀企业内部文档解析数据
 - 接入业务系统进行自动化处理
