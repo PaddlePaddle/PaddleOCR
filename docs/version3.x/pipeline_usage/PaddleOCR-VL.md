@@ -1263,7 +1263,7 @@ output = pipeline.predict(["imgs/file1.png", "imgs/file2.png", "imgs/file3.png"]
 </tr>
 <tr>
 <td><code>relevel_titles</code></td>
-<td><b>含义：</b>控制是否进行多级表格分级</td>
+<td><b>含义：</b>控制是否进行多级标题分级</td>
 <td><code>Bool</code></td>
 <td><code>True</code></td>
 </tr>
