@@ -6,11 +6,11 @@ comments: true
 
 ## 简介
 
-[X-AnyLabeling](https://github.com/CVHub520/X-AnyLabeling) 是由 CVHub 推出的工业级一体化智能标注平台，打通训练、推理、标注全链路，内置数百种开箱即用的 SOTA 模型，覆盖检测、分割、跟踪、姿态、OCR、文档解析、可提示概念分割、多模态理解等任务。
+**PaddleOCR-VL-1.5** 的文档解析与智能文字识别能力已集成至 [X-AnyLabeling](https://github.com/CVHub520/X-AnyLabeling) 标注平台，X-AnyLabeling 同时是 PaddleOCR 全球衍生模型挑战赛官方推荐标注工具。
 
-X-AnyLabeling 已集成 PaddleOCR 的文档解析与智能文字识别能力，并适配最新的 **PaddleOCR-VL-1.5**，成为 PaddleOCR 全球衍生模型挑战赛官方推荐标注工具。借助 X-AnyLabeling 提供的 `PaddleOCR` 面板，开发者可以对图片和 PDF 进行版面解析、文字识别、公式识别、表格识别和印章识别，并在识别完成后对结果进行复核、编辑、复制和导出。
+X-AnyLabeling 是由 CVHub 推出的工业级一体化智能标注平台，打通训练、推理、标注全链路。借助其 `PaddleOCR` 面板，开发者可以基于 PaddleOCR-VL-1.5 对图片和 PDF 进行版面解析、文字识别、公式识别、表格识别和印章识别，并在识别完成后对结果进行复核、编辑、复制和导出。
 
-X-AnyLabeling 提供两种接入方式：
+PaddleOCR-VL-1.5 在 X-AnyLabeling 中提供两种接入方式：
 
 - **官方 API（推荐）**：直接调用 PaddleOCR 官方 API，适合快速验证模型效果、低成本体验和轻量开发场景，无需额外部署推理服务。
 - **本地部署**：通过 [X-AnyLabeling-Server](https://github.com/CVHub520/X-AnyLabeling-Server) 自行部署推理服务，适合私有化部署、敏感数据处理和持续性标注任务。
@@ -21,7 +21,7 @@ X-AnyLabeling 提供两种接入方式：
 
 - Release 地址：<https://github.com/CVHub520/X-AnyLabeling/releases>
 
-也可以通过 pip 安装并从源码启动：
+也可以通过 pip 安装：
 
 ```bash
 pip install x-anylabeling
@@ -35,9 +35,10 @@ X-AnyLabeling 客户端默认支持 PaddleOCR 官方 API。首次打开 PaddleOC
 
 获取 `API_KEY` 的方式：
 
-1. 访问 PaddleOCR 官网：<https://aistudio.baidu.com/paddleocr/task>
-2. 进入 **API 调用示例**，切换到 `Async Parse` 标签页，复制 `API_KEY`。
-3. 回到 X-AnyLabeling 的 `PPOCR API Settings`，粘贴密钥并确认即可。
+1. 访问 PaddleOCR 官方网站：<https://www.paddleocr.com>
+2. 点击右上角 **API**，选择 **PaddleOCR-VL-1.5**。
+3. 打开示例代码，复制其中的 `TOKEN`（访问令牌）。
+4. 回到 X-AnyLabeling 的 `PPOCR API Settings`，将其粘贴到 `API_KEY` 字段并确认即可。
 
 `API_KEY` 用于接口鉴权，支持申请每天免费解析数万文档页数。配置会保存在本地：
 

@@ -6,11 +6,11 @@ comments: true
 
 ## Introduction
 
-[X-AnyLabeling](https://github.com/CVHub520/X-AnyLabeling) is an industrial-grade all-in-one intelligent annotation platform from CVHub. It unifies training, inference, and annotation, and ships with hundreds of out-of-the-box SOTA models covering detection, segmentation, tracking, pose estimation, OCR, document parsing, promptable concept segmentation, and multimodal understanding.
+**PaddleOCR-VL-1.5**'s document parsing and OCR capabilities are now integrated with the [X-AnyLabeling](https://github.com/CVHub520/X-AnyLabeling) annotation platform, which is also the officially recommended annotation tool for the PaddleOCR Global Derivative Model Challenge.
 
-X-AnyLabeling integrates PaddleOCR's document parsing and OCR capabilities and supports the latest **PaddleOCR-VL-1.5**. It is the officially recommended annotation tool for the PaddleOCR Global Derivative Model Challenge. The `PaddleOCR` panel in X-AnyLabeling lets developers run layout parsing, text recognition, formula recognition, table recognition, and seal recognition on images and PDFs, then review, edit, copy, and export the results.
+X-AnyLabeling is an industrial-grade all-in-one intelligent annotation platform from CVHub that unifies training, inference, and annotation. Its `PaddleOCR` panel lets developers run layout parsing, text recognition, formula recognition, table recognition, and seal recognition on images and PDFs with PaddleOCR-VL-1.5, then review, edit, copy, and export the results.
 
-Two integration modes are supported:
+PaddleOCR-VL-1.5 is exposed in X-AnyLabeling through two integration modes:
 
 - **Official API (recommended):** call the PaddleOCR official API directly. Best for quickly validating the model, lightweight experimentation, and low-overhead development — no inference service to deploy.
 - **Local deployment:** run inference yourself via [X-AnyLabeling-Server](https://github.com/CVHub520/X-AnyLabeling-Server). Best for private deployments, sensitive data, and sustained annotation workloads.
@@ -35,9 +35,10 @@ The X-AnyLabeling client supports the PaddleOCR official API out of the box. The
 
 To obtain the `API_KEY`:
 
-1. Visit the PaddleOCR website: <https://aistudio.baidu.com/paddleocr/task>
-2. Go to **API examples**, switch to the `Async Parse` tab, and copy the `API_KEY`.
-3. Return to X-AnyLabeling, paste the key into `PPOCR API Settings`, and confirm.
+1. Visit the PaddleOCR website: <https://www.paddleocr.com>
+2. Click **API** in the top-right corner and select **PaddleOCR-VL-1.5**.
+3. Open the example code and copy the `TOKEN` (access token).
+4. Return to X-AnyLabeling, paste it into the `API_KEY` field of `PPOCR API Settings`, and confirm.
 
 The `API_KEY` is used for request authentication, and the official service offers a free quota of tens of thousands of pages per day. The configuration is persisted locally:
 
