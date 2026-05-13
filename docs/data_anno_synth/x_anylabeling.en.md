@@ -29,6 +29,10 @@ pip install x-anylabeling
 
 After launch, open the PaddleOCR panel from the `PaddleOCR` icon in the left toolbar, or with the shortcut `Ctrl+4`.
 
+![Selecting PaddleOCR from the left toolbar](./images/x_anylabeling_open_panel.png)
+
+Once opened, the initial PaddleOCR panel looks like this:
+
 ![Initial PaddleOCR panel](./images/x_anylabeling_panel.png)
 
 ## 2. Configure the PaddleOCR Official API
