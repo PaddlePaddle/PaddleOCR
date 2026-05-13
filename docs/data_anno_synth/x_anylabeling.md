@@ -66,9 +66,12 @@ ${workspace}/xanylabeling_data/paddleocr/api_settings.json
 
 适用的真实场景包括教材页面、论文截图、票据图片、合同扫描件、表格文档、政企材料等。
 
-## 4. 选择 PaddleOCR-VL-1.5 作为解析模型
+## 4. 选择解析模型
 
-在右侧 `Parsing Model` 下拉框中选择 `PaddleOCR-VL-1.5 (API)`，也可以按需选择其他版本的 PaddleOCR 模型。
+在右侧 `Parsing Model` 下拉框中可在 PaddleOCR-VL 系列的不同版本之间切换：
+
+- `PaddleOCR-VL-1.5 (API)`（推荐）：最新版本。
+- `PaddleOCR-VL (API)`：初代版本。
 
 ## 5. 执行 Document Parsing
 

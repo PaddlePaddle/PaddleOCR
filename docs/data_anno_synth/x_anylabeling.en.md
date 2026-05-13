@@ -66,9 +66,12 @@ Supported file types:
 
 Typical real-world inputs include textbook pages, paper screenshots, receipts, scanned contracts, tabular documents, and government/enterprise materials.
 
-## 4. Select PaddleOCR-VL-1.5 as the Parsing Model
+## 4. Choose a Parsing Model
 
-In the right-hand `Parsing Model` dropdown, select `PaddleOCR-VL-1.5 (API)`. Other PaddleOCR variants are also available.
+The `Parsing Model` dropdown on the right lets you switch between versions of the PaddleOCR-VL series:
+
+- `PaddleOCR-VL-1.5 (API)` (recommended): the latest version.
+- `PaddleOCR-VL (API)`: the initial version.
 
 ## 5. Run Document Parsing
 
