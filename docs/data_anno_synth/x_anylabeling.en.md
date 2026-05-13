@@ -160,5 +160,5 @@ Deleting a file from the left-hand list also removes its source file, local JSON
 - X-AnyLabeling repository: <https://github.com/CVHub520/X-AnyLabeling>
 - X-AnyLabeling PaddleOCR panel documentation: <https://github.com/CVHub520/X-AnyLabeling/blob/main/docs/zh_cn/paddle_ocr.md>
 - X-AnyLabeling-Server (local inference): <https://github.com/CVHub520/X-AnyLabeling-Server>
-- PaddleOCR website: <https://aistudio.baidu.com/paddleocr>
+- PaddleOCR website: <https://www.paddleocr.com>
 - PaddleOCR-VL tutorial: [PaddleOCR-VL Tutorial](../version3.x/pipeline_usage/PaddleOCR-VL.md)

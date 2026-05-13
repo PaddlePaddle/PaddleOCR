@@ -160,5 +160,5 @@ ${workspace}/xanylabeling_data/paddleocr/
 - X-AnyLabeling 项目主页：<https://github.com/CVHub520/X-AnyLabeling>
 - X-AnyLabeling PaddleOCR 面板文档：<https://github.com/CVHub520/X-AnyLabeling/blob/main/docs/zh_cn/paddle_ocr.md>
 - X-AnyLabeling-Server（本地推理服务）：<https://github.com/CVHub520/X-AnyLabeling-Server>
-- PaddleOCR 官方网站：<https://aistudio.baidu.com/paddleocr>
+- PaddleOCR 官方网站：<https://www.paddleocr.com>
 - PaddleOCR-VL 使用教程：[PaddleOCR-VL 使用教程](../version3.x/pipeline_usage/PaddleOCR-VL.md)
