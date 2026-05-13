@@ -29,9 +29,13 @@ pip install x-anylabeling
 
 After launch, open the PaddleOCR panel from the `PaddleOCR` icon in the left toolbar, or with the shortcut `Ctrl+4`.
 
+![Initial PaddleOCR panel](./images/x_anylabeling_panel.png)
+
 ## 2. Configure the PaddleOCR Official API
 
 The X-AnyLabeling client supports the PaddleOCR official API out of the box. The first time you open the PaddleOCR panel without API credentials configured, a `PPOCR API Settings` dialog appears automatically. You can reopen it later via the gear button at the top of the right-hand result panel.
+
+![PPOCR API Settings dialog](./images/x_anylabeling_api_settings.png)
 
 To obtain the `API_KEY`:
 
@@ -73,6 +77,8 @@ The `Parsing Model` dropdown on the right lets you switch between versions of th
 - `PaddleOCR-VL-1.5 (API)` (recommended): the latest version.
 - `PaddleOCR-VL (API)`: the initial version.
 
+![Parsing Model dropdown switching between PaddleOCR-VL and PaddleOCR-VL-1.5](./images/x_anylabeling_model_switch.png)
+
 ## 5. Run Document Parsing
 
 Once a model is selected, X-AnyLabeling starts parsing automatically. With PaddleOCR-VL-1.5, the model recognizes and structurizes text, formulas, tables, charts, seals, and other elements.
@@ -86,6 +92,8 @@ The colored dot at the lower-left corner of each left-side file item indicates p
 ## 6. Review Results Against the Source
 
 When parsing finishes, X-AnyLabeling shows a side-by-side view: the original document on the left, PaddleOCR-VL-1.5's parsed result on the right. You can review the text, formulas, table structure, chart information, and seal results block by block:
+
+![Document Parsing side-by-side view](./images/x_anylabeling_document_parsing.png)
 
 - Click any block on either side to highlight the matching block on the other side.
 - Double-click a block on the right, or click its `Correct` button, to enter edit mode.
@@ -106,6 +114,8 @@ In addition to `Document Parsing`, X-AnyLabeling also offers a `JSON` view:
 
 - `Document Parsing` view: card-based display of layout blocks, text, formulas, tables, and images — best for human review.
 - `JSON` view: the full structured result — best for data processing, training-sample construction, evaluation aggregation, and integration with downstream systems.
+
+![JSON view](./images/x_anylabeling_json_view.png)
 
 ## 8. Export Results
 

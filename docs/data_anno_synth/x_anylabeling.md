@@ -29,9 +29,13 @@ pip install x-anylabeling
 
 启动后可以通过左侧工具栏中的 `PaddleOCR` 图标，或使用快捷键 `Ctrl+4` 打开 PaddleOCR 面板。
 
+![PaddleOCR 面板初始界面](./images/x_anylabeling_panel.png)
+
 ## 2. 配置 PaddleOCR 官方 API
 
 X-AnyLabeling 客户端默认支持 PaddleOCR 官方 API。首次打开 PaddleOCR 面板且尚未配置 API 信息时，界面会自动弹出 `PPOCR API Settings` 配置窗口；后续如需修改配置，也可以点击右侧结果面板顶部的齿轮按钮重新打开。
+
+![PPOCR API Settings 配置窗口](./images/x_anylabeling_api_settings.png)
 
 获取 `API_KEY` 的方式：
 
@@ -73,6 +77,8 @@ ${workspace}/xanylabeling_data/paddleocr/api_settings.json
 - `PaddleOCR-VL-1.5 (API)`（推荐）：最新版本。
 - `PaddleOCR-VL (API)`：初代版本。
 
+![Parsing Model 切换 PaddleOCR-VL 与 PaddleOCR-VL-1.5](./images/x_anylabeling_model_switch.png)
+
 ## 5. 执行 Document Parsing
 
 选择模型后，X-AnyLabeling 会自动开始解析。以 PaddleOCR-VL-1.5 为例，模型会对文档中的文本、公式、表格、图表、印章等内容进行识别和结构化处理。
@@ -86,6 +92,8 @@ ${workspace}/xanylabeling_data/paddleocr/api_settings.json
 ## 6. 对照原文档复核解析结果
 
 解析完成后，X-AnyLabeling 会呈现左右对照视图：左侧为原始文档，右侧为 PaddleOCR-VL-1.5 的解析结果。开发者可以逐段检查文字内容、公式表达、表格结构、图表信息和印章结果是否准确，并通过以下操作进行复核：
+
+![Document Parsing 左右对照视图](./images/x_anylabeling_document_parsing.png)
 
 - 单击左侧预览区或右侧结果区中的任意块，可以在两侧快速匹配并高亮对应内容。
 - 双击右侧识别结果中的某个块，或点击该块的 `纠正` 按钮，进入编辑状态。
@@ -106,6 +114,8 @@ ${workspace}/xanylabeling_data/paddleocr/api_settings.json
 
 - `Document Parsing` 视图：以卡片形式展示版面块、文本、公式、表格、图片，适合人工阅读和结果复核。
 - `JSON` 视图：查看完整的结构化结果，适合开发者进行数据处理、训练样本构建、评测结果整理和业务系统集成。
+
+![JSON 视图](./images/x_anylabeling_json_view.png)
 
 ## 8. 导出结果
 
