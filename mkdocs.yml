@@ -151,6 +151,8 @@ plugins:
             PaddleOCR-VL产线: PaddleOCR-VL Pipeline
             PP-DocTranslation产线: PP-DocTranslation Pipeline
             推理引擎与配置说明: Inference Engine and Configuration
+            数据标注: Data Annotation
+            X-AnyLabeling 文档解析: Document Parsing with X-AnyLabeling
             多硬件使用: Multi-Devices Usage
             PaddleOCR 多硬件使用指南: PaddleOCR Multi-Devices Usage Guide
             昇腾 NPU 飞桨安装教程: Ascend NPU PaddlePaddle Installation Tutorial
@@ -364,6 +366,8 @@ nav:
     - 印章文本识别产线: version3.x/pipeline_usage/seal_recognition.md
     - 通用表格识别v2产线: version3.x/pipeline_usage/table_recognition_v2.md
     - PP-DocTranslation产线: version3.x/pipeline_usage/PP-DocTranslation.md
+  - 数据标注:
+    - X-AnyLabeling 文档解析: data_anno_synth/x_anylabeling.md
   - 多硬件使用:
     - PaddleOCR 多硬件使用指南: version3.x/other_devices_support/multi_devices_use_guide.md
     - 昇腾 NPU 飞桨安装教程: version3.x/other_devices_support/paddlepaddle_install_NPU.md
