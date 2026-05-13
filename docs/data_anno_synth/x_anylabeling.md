@@ -2,15 +2,15 @@
 comments: true
 ---
 
-# X-AnyLabeling 文档解析与智能文字识别
+# X-AnyLabeling 文档解析
 
 ## 简介
 
-**PaddleOCR-VL-1.5** 的文档解析与智能文字识别能力已集成至 [X-AnyLabeling](https://github.com/CVHub520/X-AnyLabeling) 标注平台。
+**PaddleOCR-VL** 系列模型的文档解析能力已集成至 [X-AnyLabeling](https://github.com/CVHub520/X-AnyLabeling) 标注平台。
 
-X-AnyLabeling 是由 CVHub 推出的工业级一体化智能标注平台，打通训练、推理、标注全链路。借助其 `PaddleOCR` 面板，开发者可以基于 PaddleOCR-VL-1.5 对图片和 PDF 进行版面解析、文字识别、公式识别、表格识别和印章识别，并在识别完成后对结果进行复核、编辑、复制和导出。
+X-AnyLabeling 是由 CVHub 推出的工业级一体化智能标注平台，打通训练、推理、标注全链路。借助其 `PaddleOCR` 面板，开发者可以基于 PaddleOCR-VL 系列模型对图片和 PDF 进行版面解析、文字识别、公式识别、表格识别和印章识别，并在识别完成后对结果进行复核、编辑、复制和导出。
 
-PaddleOCR-VL-1.5 在 X-AnyLabeling 中提供两种接入方式：
+PaddleOCR-VL 在 X-AnyLabeling 中提供两种接入方式：
 
 - **官方 API（推荐）**：直接调用 PaddleOCR 官方 API，适合快速验证模型效果、低成本体验和轻量开发场景，无需额外部署推理服务。
 - **本地部署**：通过 [X-AnyLabeling-Server](https://github.com/CVHub520/X-AnyLabeling-Server) 自行部署推理服务，适合私有化部署、敏感数据处理和持续性标注任务。
@@ -29,17 +29,17 @@ pip install x-anylabeling
 
 启动后可以通过左侧工具栏中的 `PaddleOCR` 图标，或使用快捷键 `Ctrl+4` 打开 PaddleOCR 面板。
 
-![在左侧工具栏选择 PaddleOCR](./images/x_anylabeling_open_panel.png)
+![在左侧工具栏选择 PaddleOCR](https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/x_anylabeling/open_panel.png)
 
 打开后即可看到 PaddleOCR 面板的初始界面：
 
-![PaddleOCR 面板初始界面](./images/x_anylabeling_panel.png)
+![PaddleOCR 面板初始界面](https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/x_anylabeling/panel.png)
 
 ## 2. 配置 PaddleOCR 官方 API
 
 X-AnyLabeling 客户端默认支持 PaddleOCR 官方 API。首次打开 PaddleOCR 面板且尚未配置 API 信息时，界面会自动弹出 `PPOCR API Settings` 配置窗口；后续如需修改配置，也可以点击右侧结果面板顶部的齿轮按钮重新打开。
 
-![PPOCR API Settings 配置窗口](./images/x_anylabeling_api_settings.png)
+![PPOCR API Settings 配置窗口](https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/x_anylabeling/api_settings.png)
 
 获取 `API_KEY` 的方式：
 
@@ -78,14 +78,14 @@ ${workspace}/xanylabeling_data/paddleocr/api_settings.json
 
 在右侧 `Parsing Model` 下拉框中可在 PaddleOCR-VL 系列的不同版本之间切换：
 
-- `PaddleOCR-VL-1.5 (API)`（推荐）：最新版本。
+- `PaddleOCR-VL-1.5 (API)`（推荐）：在 OmniDocBench v1.5 上达到 94.5% 精度，支持异形框定位，对扫描、倾斜、弯折、屏幕拍摄及复杂光照等场景具备更强鲁棒性，并新增印章识别与文本检测识别能力。
 - `PaddleOCR-VL (API)`：初代版本。
 
-![Parsing Model 切换 PaddleOCR-VL 与 PaddleOCR-VL-1.5](./images/x_anylabeling_model_switch.png)
+![Parsing Model 切换 PaddleOCR-VL 与 PaddleOCR-VL-1.5](https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/x_anylabeling/model_switch.png)
 
 ## 5. 执行 Document Parsing
 
-选择模型后，X-AnyLabeling 会自动开始解析。以 PaddleOCR-VL-1.5 为例，模型会对文档中的文本、公式、表格、图表、印章等内容进行识别和结构化处理。
+选择模型后，X-AnyLabeling 会自动开始解析。模型会对文档中的文本、公式、表格、图表、印章等内容进行识别和结构化处理。
 
 左侧文件项左下角的彩色点表示解析状态：
 
@@ -95,9 +95,9 @@ ${workspace}/xanylabeling_data/paddleocr/api_settings.json
 
 ## 6. 对照原文档复核解析结果
 
-解析完成后，X-AnyLabeling 会呈现左右对照视图：左侧为原始文档，右侧为 PaddleOCR-VL-1.5 的解析结果。开发者可以逐段检查文字内容、公式表达、表格结构、图表信息和印章结果是否准确，并通过以下操作进行复核：
+解析完成后，X-AnyLabeling 会呈现左右对照视图：左侧为原始文档，右侧为模型的解析结果。开发者可以逐段检查文字内容、公式表达、表格结构、图表信息和印章结果是否准确，并通过以下操作进行复核：
 
-![Document Parsing 左右对照视图](./images/x_anylabeling_document_parsing.png)
+![Document Parsing 左右对照视图](https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/x_anylabeling/document_parsing.png)
 
 - 单击左侧预览区或右侧结果区中的任意块，可以在两侧快速匹配并高亮对应内容。
 - 双击右侧识别结果中的某个块，或点击该块的 `纠正` 按钮，进入编辑状态。
@@ -119,7 +119,7 @@ ${workspace}/xanylabeling_data/paddleocr/api_settings.json
 - `Document Parsing` 视图：以卡片形式展示版面块、文本、公式、表格、图片，适合人工阅读和结果复核。
 - `JSON` 视图：查看完整的结构化结果，适合开发者进行数据处理、训练样本构建、评测结果整理和业务系统集成。
 
-![JSON 视图](./images/x_anylabeling_json_view.png)
+![JSON 视图](https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/x_anylabeling/json_view.png)
 
 ## 8. 导出结果
 
