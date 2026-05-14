@@ -3,7 +3,7 @@ comments: true
 ---
 
 
-# Other Data Synthesis Tools
+# Data Synthesis Tools
 
 In addition to open source data, users can also use synthesis tools to synthesize data.
 There are the commonly used data synthesis tools, which will be continuously updated. Welcome to contribute tools~
