@@ -25,6 +25,7 @@ theme:
     - content.action.edit
     - content.action.view
     - navigation.expand  # 默认打开所有的字节
+    - navigation.sections # 嵌套section渲染为分组标题（不可收起）
     - navigation.tabs # 顶级索引被作为tab
     - navigation.tabs.sticky # tab始终可见
     - navigation.top # 开启顶部导航栏
@@ -151,8 +152,13 @@ plugins:
             PaddleOCR-VL产线: PaddleOCR-VL Pipeline
             PP-DocTranslation产线: PP-DocTranslation Pipeline
             推理引擎与配置说明: Inference Engine and Configuration
+            数据标注与合成&数据集: Data Annotation and Synthesis & Datasets
             数据标注: Data Annotation
             X-AnyLabeling 文档解析: Document Parsing with X-AnyLabeling
+            其它数据标注工具: Other Data Annotation Tools
+            数据合成: Data Synthesis
+            数据合成工具: Data Synthesis Tools
+            数据集: Datasets
             多硬件使用: Multi-Devices Usage
             PaddleOCR 多硬件使用指南: PaddleOCR Multi-Devices Usage Guide
             昇腾 NPU 飞桨安装教程: Ascend NPU PaddlePaddle Installation Tutorial
@@ -162,9 +168,6 @@ plugins:
             PaddleOCR 3.x 升级说明: PaddleOCR 3.x Upgrade Notes
             低代码全流程开发: All-in-One Development
             概述: Overview
-            数据标注与合成&数据集: Data Annotation and Synthesis & Datasets
-            其它数据标注工具: Other data annotation tools
-            其它数据合成工具: Others data synthesis tools
             通用中英文OCR数据集: General Chinese and English OCR dataset
             手写中文OCR数据集: Handwritten Chinese OCR Dataset
             垂类多语言OCR数据集: Vertical multi-language OCR dataset
@@ -366,8 +369,19 @@ nav:
     - 印章文本识别产线: version3.x/pipeline_usage/seal_recognition.md
     - 通用表格识别v2产线: version3.x/pipeline_usage/table_recognition_v2.md
     - PP-DocTranslation产线: version3.x/pipeline_usage/PP-DocTranslation.md
-  - 数据标注:
-    - X-AnyLabeling 文档解析: data_anno_synth/x_anylabeling.md
+  - 数据标注与合成&数据集:
+    - 数据标注:
+      - X-AnyLabeling 文档解析: data_anno_synth/x_anylabeling.md
+      - 其它数据标注工具: data_anno_synth/data_annotation.md
+    - 数据合成:
+      - 数据合成工具: data_anno_synth/data_synthesis.md
+    - 数据集:
+      - 通用中英文OCR数据集: datasets/datasets.md
+      - 手写中文OCR数据集: datasets/handwritten_datasets.md
+      - 垂类多语言OCR数据集: datasets/vertical_and_multilingual_datasets.md
+      - 版面分析数据集: datasets/layout_datasets.md
+      - 表格识别数据集: datasets/table_datasets.md
+      - 关键信息提取数据集: datasets/kie_datasets.md
   - 多硬件使用:
     - PaddleOCR 多硬件使用指南: version3.x/other_devices_support/multi_devices_use_guide.md
     - 昇腾 NPU 飞桨安装教程: version3.x/other_devices_support/paddlepaddle_install_NPU.md
@@ -380,16 +394,6 @@ nav:
   - 低代码全流程开发:
       - 概述: version3.x/paddlex/overview.md
       - 快速开始: version3.x/paddlex/quick_start.md
-  - 数据标注与合成&数据集:
-    - 概述: data_anno_synth/overview.md
-    - 其它数据标注工具: data_anno_synth/data_annotation.md
-    - 其它数据合成工具: data_anno_synth/data_synthesis.md
-    - 通用中英文OCR数据集: datasets/datasets.md
-    - 手写中文OCR数据集: datasets/handwritten_datasets.md
-    - 垂类多语言OCR数据集: datasets/vertical_and_multilingual_datasets.md
-    - 版面分析数据集: datasets/layout_datasets.md
-    - 表格识别数据集: datasets/table_datasets.md
-    - 关键信息提取数据集: datasets/kie_datasets.md
   - 近期更新: update/update.md
   - version2.x:
     - 概述: version2.x/legacy/index.md
