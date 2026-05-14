@@ -2,11 +2,16 @@
 comments: true
 ---
 
-# DATA ANNOTATION TOOLS
+# Other Data Annotation Tools
 
 There are the commonly used data annotation tools, which will be continuously updated. Welcome to contribute tools~
 
-## 1. labelImg
+## 1. PPOCRLabel
+
+- Tool description: PaddleOCR semi-automatic annotation tool
+- Tool address: <https://github.com/PFCCLab/PPOCRLabel/blob/main/README.md>
+
+## 2. labelImg
 
 - Tool description: Rectangular label
 - Tool address:  <https://github.com/tzutalin/labelImg>
@@ -14,7 +19,7 @@ There are the commonly used data annotation tools, which will be continuously up
 
     ![labelimg](./images/labelimg.jpg)
 
-## 2. roLabelImg
+## 3. roLabelImg
 
 - Tool description: Label tool rewritten based on labelImg, supporting rotating rectangular label
 - Tool address:   <https://github.com/cgvict/roLabelImg>
@@ -22,7 +27,7 @@ There are the commonly used data annotation tools, which will be continuously up
 
     ![roLabelImg](./images/roLabelImg.png)
 
-## 3. labelme
+## 4. labelme
 
 - Tool description: Support four points, polygons, circles and other labels
 - Tool address:   <https://github.com/wkentaro/labelme>
