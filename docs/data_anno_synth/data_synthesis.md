@@ -2,10 +2,11 @@
 comments: true
 ---
 
-# 数据合成工具
+# 其它数据合成工具
 
 除了开源数据，用户还可使用合成工具自行合成。这里整理了常用的数据合成工具，持续更新中，欢迎各位小伙伴贡献工具～
 
+- [Style-Text](https://github.com/PFCCLab/StyleText/blob/main/README_ch.md)
 - [text_renderer (old version)](https://github.com/Sanster/text_renderer)
 - [text_renderer (new version)](https://github.com/oh-my-ocr/text_renderer)
 - [SynthText](https://github.com/ankush-me/SynthText)

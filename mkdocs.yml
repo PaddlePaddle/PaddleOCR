@@ -153,6 +153,7 @@ plugins:
             推理引擎与配置说明: Inference Engine and Configuration
             数据标注: Data Annotation
             X-AnyLabeling 文档解析: Document Parsing with X-AnyLabeling
+            其它数据标注工具: Other Data Annotation Tools
             多硬件使用: Multi-Devices Usage
             PaddleOCR 多硬件使用指南: PaddleOCR Multi-Devices Usage Guide
             昇腾 NPU 飞桨安装教程: Ascend NPU PaddlePaddle Installation Tutorial
@@ -162,9 +163,8 @@ plugins:
             PaddleOCR 3.x 升级说明: PaddleOCR 3.x Upgrade Notes
             低代码全流程开发: All-in-One Development
             概述: Overview
-            数据标注与合成&数据集: Data Annotation and Synthesis & Datasets
-            其它数据标注工具: Other data annotation tools
-            其它数据合成工具: Others data synthesis tools
+            数据合成 & 数据集: Data Synthesis & Datasets
+            其它数据合成工具: Other Data Synthesis Tools
             通用中英文OCR数据集: General Chinese and English OCR dataset
             手写中文OCR数据集: Handwritten Chinese OCR Dataset
             垂类多语言OCR数据集: Vertical multi-language OCR dataset
@@ -368,6 +368,7 @@ nav:
     - PP-DocTranslation产线: version3.x/pipeline_usage/PP-DocTranslation.md
   - 数据标注:
     - X-AnyLabeling 文档解析: data_anno_synth/x_anylabeling.md
+    - 其它数据标注工具: data_anno_synth/data_annotation.md
   - 多硬件使用:
     - PaddleOCR 多硬件使用指南: version3.x/other_devices_support/multi_devices_use_guide.md
     - 昇腾 NPU 飞桨安装教程: version3.x/other_devices_support/paddlepaddle_install_NPU.md
@@ -380,9 +381,7 @@ nav:
   - 低代码全流程开发:
       - 概述: version3.x/paddlex/overview.md
       - 快速开始: version3.x/paddlex/quick_start.md
-  - 数据标注与合成&数据集:
-    - 概述: data_anno_synth/overview.md
-    - 其它数据标注工具: data_anno_synth/data_annotation.md
+  - 数据合成 & 数据集:
     - 其它数据合成工具: data_anno_synth/data_synthesis.md
     - 通用中英文OCR数据集: datasets/datasets.md
     - 手写中文OCR数据集: datasets/handwritten_datasets.md
