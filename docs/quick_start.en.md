@@ -6,23 +6,37 @@ hide:
 
 ### Installation
 
-#### 1. Install PaddlePaddle
+#### 1. Install the inference engine
 
-Installation for CPU:
+PaddleOCR supports unified inference-engine configuration, allowing you to choose the underlying runtime. PaddleOCR currently supports PaddlePaddle and Transformers.
 
-```bash
-python -m pip install paddlepaddle==3.2.0 -i https://www.paddlepaddle.org.cn/packages/stable/cpu/
-```
+=== "PaddlePaddle"
 
-Installation for GPU: 
+    Installation for CPU:
 
-Since GPU installation requires specific CUDA versions, the following example is for installing NVIDIA GPU on the Linux platform with CUDA 11.8. For other platforms, please refer to the instructions in the [PaddlePaddle official installation documentation](https://www.paddlepaddle.org.cn/install/quick).
+    ```bash
+    python -m pip install paddlepaddle==3.2.0 -i https://www.paddlepaddle.org.cn/packages/stable/cpu/
+    ```
 
-```bash
-python -m pip install paddlepaddle-gpu==3.2.0 -i https://www.paddlepaddle.org.cn/packages/stable/cu118/
-```
+    Installation for GPU:
 
-**Please note that PaddleOCR 3.x depends on PaddlePaddle version `3.0` or above.**
+    Since GPU installation requires specific CUDA versions, the following example is for installing NVIDIA GPU on the Linux platform with CUDA 11.8. For other platforms, please refer to the instructions in the [PaddlePaddle official installation documentation](https://www.paddlepaddle.org.cn/install/quick).
+
+    ```bash
+    python -m pip install paddlepaddle-gpu==3.2.0 -i https://www.paddlepaddle.org.cn/packages/stable/cu118/
+    ```
+
+    **Please note that when using PaddlePaddle for inference, PaddleOCR 3.x depends on PaddlePaddle version `3.0` or above.**
+
+=== "Transformers"
+
+    When using Transformers for inference, install Hugging Face Transformers:
+
+    ```bash
+    python -m pip install "transformers>=5.8.0"
+    ```
+
+    In many cases, you also need to install the underlying inference framework used by Transformers. For details, see the [Transformers official installation documentation](https://huggingface.co/docs/transformers/installation).
 
 #### 2. Install `paddleocr`
 
@@ -39,25 +53,64 @@ PaddleOCR also supports installing specific features as needed. For details, ple
 === "PP-OCRv5"
 
     ```bash linenums="1"
-    paddleocr ocr -i ./general_ocr_002.png  --use_doc_orientation_classify False --use_doc_unwarping False --use_textline_orientation False
+    # Use PaddlePaddle for inference
+    paddleocr ocr -i ./general_ocr_002.png \
+        --use_doc_orientation_classify False \
+        --use_doc_unwarping False \
+        --use_textline_orientation False \
+        --engine paddle
+    ```
+
+    ```bash linenums="1"
+    # Use Transformers for inference
+    paddleocr ocr -i ./general_ocr_002.png \
+        --use_doc_orientation_classify False \
+        --use_doc_unwarping False \
+        --use_textline_orientation False \
+        --engine transformers
     ```
 
 === "PP-OCRv5 Text Detection Module"
 
     ```bash linenums="1"
-    paddleocr text_detection -i ./general_ocr_001.png
+    # Use PaddlePaddle for inference
+    paddleocr text_detection -i ./general_ocr_001.png --engine paddle
+    ```
+
+    ```bash linenums="1"
+    # Use Transformers for inference
+    paddleocr text_detection -i ./general_ocr_001.png --engine transformers
     ```
 
 === "PP-OCRv5 Text Recognition Module"
 
     ```bash linenums="1"
-    paddleocr text_recognition -i ./general_ocr_rec_001.png
+    # Use PaddlePaddle for inference
+    paddleocr text_recognition -i ./general_ocr_rec_001.png --engine paddle
+    ```
+
+    ```bash linenums="1"
+    # Use Transformers for inference
+    paddleocr text_recognition -i ./general_ocr_rec_001.png --engine transformers
     ```
 
 === "PP-StructureV3"
 
     ```bash linenums="1"
-    paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png  --use_doc_orientation_classify False --use_doc_unwarping False
+    # Use PaddlePaddle for inference
+    paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png \
+        --use_doc_orientation_classify False \
+        --use_doc_unwarping False \
+        --engine paddle
+    ```
+
+    ```bash linenums="1"
+    # Use Transformers for inference
+    # Currently, some models are still being supported, so formula recognition must be disabled and the wireless table structure recognition model must be replaced.
+    paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png \
+        --engine transformers \
+        --use_formula_recognition False \
+        --wireless_table_structure_recognition_model_name SLANeXt_wireless
     ```
 
 ### Python Script Usage
@@ -65,20 +118,32 @@ PaddleOCR also supports installing specific features as needed. For details, ple
 === "PP-OCRv5"
 
     ```python linenums="1"
+    # Use PaddlePaddle for inference
     from paddleocr import PaddleOCR
 
     ocr = PaddleOCR(
-        use_doc_orientation_classify=False, 
-        use_doc_unwarping=False, 
-        use_textline_orientation=False) # text detection + text recognition
-    # ocr = PaddleOCR(use_doc_orientation_classify=True, use_doc_unwarping=True) # text image preprocessing + text detection + textline orientation classification + text recognition
-    # ocr = PaddleOCR(use_doc_orientation_classify=False, use_doc_unwarping=False) # text detection + textline orientation classification + text recognition
-    # ocr = PaddleOCR(
-    #     text_detection_model_name="PP-OCRv5_mobile_det",
-    #     text_recognition_model_name="PP-OCRv5_mobile_rec",
-    #     use_doc_orientation_classify=False,
-    #     use_doc_unwarping=False,
-    #     use_textline_orientation=False) # Switch to PP-OCRv5_mobile models
+        use_doc_orientation_classify=False,
+        use_doc_unwarping=False,
+        use_textline_orientation=False,
+        engine="paddle",
+    )
+    result = ocr.predict("./general_ocr_002.png")
+    for res in result:
+        res.print()
+        res.save_to_img("output")
+        res.save_to_json("output")
+    ```
+
+    ```python linenums="1"
+    # Use Transformers for inference
+    from paddleocr import PaddleOCR
+
+    ocr = PaddleOCR(
+        use_doc_orientation_classify=False,
+        use_doc_unwarping=False,
+        use_textline_orientation=False,
+        engine="transformers",
+    )
     result = ocr.predict("./general_ocr_002.png")
     for res in result:
         res.print()
@@ -113,9 +178,22 @@ PaddleOCR also supports installing specific features as needed. For details, ple
 === "PP-OCRv5 Text Detection Module"
 
     ```python linenums="1"
+    # Use PaddlePaddle for inference
     from paddleocr import TextDetection
 
-    model = TextDetection()
+    model = TextDetection(engine="paddle")
+    output = model.predict("general_ocr_001.png")
+    for res in output:
+        res.print()
+        res.save_to_img(save_path="./output/")
+        res.save_to_json(save_path="./output/res.json")
+    ```
+
+    ```python linenums="1"
+    # Use Transformers for inference
+    from paddleocr import TextDetection
+
+    model = TextDetection(engine="transformers")
     output = model.predict("general_ocr_001.png")
     for res in output:
         res.print()
@@ -138,9 +216,22 @@ PaddleOCR also supports installing specific features as needed. For details, ple
 === "PP-OCRv5 Text Recognition Module"
 
     ```python linenums="1"
+    # Use PaddlePaddle for inference
     from paddleocr import TextRecognition
 
-    model = TextRecognition()
+    model = TextRecognition(engine="paddle")
+    output = model.predict(input="general_ocr_rec_001.png")
+    for res in output:
+        res.print()
+        res.save_to_img(save_path="./output/")
+        res.save_to_json(save_path="./output/res.json")
+    ```
+
+    ```python linenums="1"
+    # Use Transformers for inference
+    from paddleocr import TextRecognition
+
+    model = TextRecognition(engine="transformers")
     output = model.predict(input="general_ocr_rec_001.png")
     for res in output:
         res.print()
@@ -157,11 +248,13 @@ PaddleOCR also supports installing specific features as needed. For details, ple
 === "PP-StructureV3"
 
     ```python linenums="1"
+    # Use PaddlePaddle for inference
     from paddleocr import PPStructureV3
 
     pipeline = PPStructureV3(
         use_doc_orientation_classify=False,
-        use_doc_unwarping=False
+        use_doc_unwarping=False,
+        engine="paddle",
     )
     output = pipeline.predict(
         input="./pp_structure_v3_demo.png")
@@ -171,7 +264,26 @@ PaddleOCR also supports installing specific features as needed. For details, ple
         res.save_to_markdown(save_path="output")
     ```
 
-    Example output:
+    ```python linenums="1"
+    # Use Transformers for inference
+    # Currently, some models are still being supported, so formula recognition must be disabled and the wireless table structure recognition model must be replaced.
+    from paddleocr import PPStructureV3
+
+    pipeline = PPStructureV3(
+        use_doc_orientation_classify=False,
+        use_doc_unwarping=False,
+        use_formula_recognition=False,
+        wireless_table_structure_recognition_model_name="SLANeXt_wireless",
+        engine="transformers",
+    )
+    output = pipeline.predict(input="./pp_structure_v3_demo.png")
+    for res in output:
+        res.print()
+        res.save_to_json(save_path="output")
+        res.save_to_markdown(save_path="output")
+    ```
+
+    PaddlePaddle inference example output:
 
     ```bash
     {'res': {'input_path': './pp_structure_v3_demo.png', 'page_index': None, 'model_settings': {'use_doc_preprocessor': False, 'use_seal_recognition': True, 'use_table_recognition': True, 'use_formula_recognition': True, 'use_chart_recognition': False, 'use_region_detection': True}, 'layout_det_res': {'input_path': None, 'page_index': None, 'boxes': [{'cls_id': 1, 'label': 'image', 'score': 0.9864752888679504, 'coordinate': [774.821, 201.05177, 1502.1008, 685.7733]}, {'cls_id': 2, 'label': 'text', 'score': 0.9859225749969482, 'coordinate': [769.8655, 776.2446, 1121.5986, 1058.417]}, {'cls_id': 2, 'label': 'text', 'score': 0.9857110381126404, 'coordinate': [1151.98, 1112.5356, 1502.7852, 1346.3569]}, {'cls_id': 2, 'label': 'text', 'score': 0.9847239255905151, 'coordinate': [389.0322, 1136.3547, 740.2322, 1345.928]}, {'cls_id': 2, 'label': 'text', 'score': 0.9842492938041687, 'coordinate': [1152.1504, 800.1625, 1502.1265, 986.1522]}, {'cls_id': 2, 'label': 'text', 'score': 0.9840831160545349, 'coordinate': [9.158066, 848.8696, 358.5725, 1057.832]}, {'cls_id': 2, 'label': 'text', 'score': 0.9802583456039429, 'coordinate': [9.335953, 201.10046, 358.31543, 338.78876]}, {'cls_id': 2, 'label': 'text', 'score': 0.9801402688026428, 'coordinate': [389.1556, 297.4113, 740.07556, 435.41647]}, {'cls_id': 2, 'label': 'text', 'score': 0.9793564081192017, 'coordinate': [389.18976, 752.0959, 740.0832, 889.88043]}, {'cls_id': 2, 'label': 'text', 'score': 0.9793409109115601, 'coordinate': [389.02496, 896.34143, 740.7431, 1033.9465]}, {'cls_id': 2, 'label': 'text', 'score': 0.9776486754417419, 'coordinate': [8.950775, 1184.7842, 358.75067, 1297.8755]}, {'cls_id': 2, 'label': 'text', 'score': 0.9773538708686829, 'coordinate': [770.7178, 1064.5714, 1121.2249, 1177.9928]}, {'cls_id': 2, 'label': 'text', 'score': 0.9773064255714417, 'coordinate': [389.38086, 609.7071, 740.0553, 745.3206]}, {'cls_id': 2, 'label': 'text', 'score': 0.9765821099281311, 'coordinate': [1152.0112, 992.296, 1502.4927, 1106.1166]}, {'cls_id': 2, 'label': 'text', 'score': 0.9761461019515991, 'coordinate': [9.46727, 536.993, 358.2047, 651.32025]}, {'cls_id': 2, 'label': 'text', 'score': 0.975399911403656, 'coordinate': [9.353531, 1064.3059, 358.45312, 1177.8347]}, {'cls_id': 2, 'label': 'text', 'score': 0.9730532169342041, 'coordinate': [9.932312, 345.36237, 358.03476, 435.1646]}, {'cls_id': 2, 'label': 'text', 'score': 0.9722575545310974, 'coordinate': [388.91736, 200.93637, 740.00793, 290.80692]}, {'cls_id': 2, 'label': 'text', 'score': 0.9710633158683777, 'coordinate': [389.39496, 1040.3186, 740.0091, 1129.7168]}, {'cls_id': 2, 'label': 'text', 'score': 0.9696939587593079, 'coordinate': [9.6145935, 658.1123, 359.06088, 770.0288]}, {'cls_id': 2, 'label': 'text', 'score': 0.9664146900177002, 'coordinate': [770.235, 1280.4562, 1122.0927, 1346.4742]}, {'cls_id': 2, 'label': 'text', 'score': 0.9597565531730652, 'coordinate': [389.66678, 537.5609, 740.06274, 603.17725]}, {'cls_id': 2, 'label': 'text', 'score': 0.9594324827194214, 'coordinate': [10.162949, 776.86414, 359.08307, 842.1771]}, {'cls_id': 2, 'label': 'text', 'score': 0.9484634399414062, 'coordinate': [10.402863, 1304.7743, 358.9441, 1346.3749]}, {'cls_id': 0, 'label': 'paragraph_title', 'score': 0.9476125240325928, 'coordinate': [28.159409, 456.7627, 339.5631, 514.9665]}, {'cls_id': 0, 'label': 'paragraph_title', 'score': 0.9427680969238281, 'coordinate': [790.6992, 1200.3663, 1102.3799, 1259.1647]}, {'cls_id': 0, 'label': 'paragraph_title', 'score': 0.9424256682395935, 'coordinate': [409.02832, 456.6831, 718.8154, 515.5757]}, {'cls_id': 10, 'label': 'doc_title', 'score': 0.9376171827316284, 'coordinate': [133.77905, 36.8844, 1379.6667, 123.46869]}, {'cls_id': 2, 'label': 'text', 'score': 0.9020252823829651, 'coordinate': [584.9165, 159.1416, 927.22876, 179.01605]}, {'cls_id': 2, 'label': 'text', 'score': 0.895164430141449, 'coordinate': [1154.3364, 776.74646, 1331.8564, 794.2301]}, {'cls_id': 6, 'label': 'figure_title', 'score': 0.7892374396324158, 'coordinate': [808.9641, 704.2555, 1484.0623, 747.2296]}]}, 'overall_ocr_res': {'input_path': None, 'page_index': None, 'model_settings': {'use_doc_preprocessor': False, 'use_textline_orientation': False}, 'dt_polys': array([[[ 129,   42],
