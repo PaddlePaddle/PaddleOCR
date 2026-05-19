@@ -278,18 +278,18 @@ class EastRandomCropData(object):
 
                     # 验证裁剪后的多边形 - 面积检查
                     clipped_area = cv2.contourArea(clipped_poly.astype(np.float32))
-                    if clipped_area < 120:
+                    if clipped_area < 80:
                         continue
 
                     # 验证 - 字符高度检查
                     clipped_char_height = get_min_rotated_rect_side(clipped_poly)
-                    if clipped_char_height < char_height * 0.5:
+                    if clipped_char_height < char_height * 0.35:
                         continue
 
                     # 验证 - 最小边长检查（仅针对四边形）
                     if len(clipped_poly) == 4:
                         min_side = get_min_quad_side(clipped_poly)
-                        if min_side < char_height * 0.5:
+                        if min_side < char_height * 0.35:
                             continue
 
                     # 所有验证通过，保存裁剪后的多边形
