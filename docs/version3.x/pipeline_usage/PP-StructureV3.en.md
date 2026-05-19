@@ -3064,7 +3064,7 @@ Below is the API reference and multi-language service invocation examples for ba
 <tr>
 <td><code>file</code></td>
 <td><code>string</code></td>
-<td>The URL of an image or PDF file accessible by the server, or the Base64-encoded content of the above file types. By default, for PDF files exceeding 10 pages, only the content of the first 10 pages will be processed.<br />
+<td>The URL of image files (including TIFF; multi-page TIFF is processed page by page) or PDF file accessible by the server, or the Base64-encoded content of the above file types. By default, for PDF or multi-page TIFF files exceeding 10 pages, only the first 10 pages will be processed.<br />
 To remove the page limit, please add the following configuration to the pipeline configuration file:
 <pre><code>Serving:
   extra:

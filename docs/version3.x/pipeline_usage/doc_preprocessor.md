@@ -777,7 +777,7 @@ for res in output:
 <tr>
 <td><code>file</code></td>
 <td><code>string</code></td>
-<td>服务器可访问的图像文件或PDF文件的URL，或上述类型文件内容的Base64编码结果。默认对于超过10页的PDF文件，只有前10页的内容会被处理。<br /> 要解除页数限制，请在产线配置文件中添加以下配置：
+<td>服务器可访问的图像文件（含 TIFF，多页时按页处理）或 PDF 文件的 URL，或上述类型文件内容的 Base64 编码结果。默认对于超过 10 页的 PDF 或多页 TIFF，仅处理前 10 页。<br /> 要解除页数限制，请在产线配置文件中添加以下配置：
 <pre><code>Serving:
   extra:
     max_num_input_imgs: null
@@ -788,7 +788,7 @@ for res in output:
 <tr>
 <td><code>fileType</code></td>
 <td><code>integer</code> | <code>null</code></td>
-<td>文件类型。<code>0</code>表示PDF文件，<code>1</code>表示图像文件。若请求体无此属性，则将根据URL推断文件类型。</td>
+<td>文件类型。<code>0</code> 表示 PDF 文件，<code>1</code> 表示图像文件（含 TIFF）。若请求体无此属性，则将根据URL推断文件类型。</td>
 <td>否</td>
 </tr>
 <tr>

@@ -2305,14 +2305,14 @@ Below are the API reference and examples of multi-language service invocation:
 <tr>
 <td><code>file</code></td>
 <td><code>string</code></td>
-<td>The URL of an image file or PDF file accessible to the server, or the Base64-encoded result of the content of the aforementioned file types.
+<td>The URL of image files (including TIFF; multi-page TIFF is processed page by page) or PDF file accessible to the server, or the Base64-encoded result of the content of the aforementioned file types.
 </td>
 <td>Yes</td>
 </tr>
 <tr>
 <td><code>fileType</code></td>
 <td><code>integer</code>|<code>null</code></td>
-<td>File type.<code>0</code> represents a PDF file,<code>1</code> represents an image file. If this property is not present in the request body, the file type will be inferred from the URL.</td>
+<td>File type. <code>0</code> represents a PDF file, <code>1</code> represents an image file (including TIFF). If this property is not present in the request body, the file type will be inferred from the URL.</td>
 <td>No</td>
 </tr>
 <tr>
@@ -3315,9 +3315,9 @@ Currently, storing generated images in Baidu Intelligent Cloud Object Storage (B
 
 For more information on obtaining AK/SK and other details, refer to the [Baidu Intelligent Cloud Official Documentation](https://cloud.baidu.com/doc/BOS/index.html).
 
-**Limit the Number of PDF Pages Parsed**
+**Limit the Number of PDF and Multi-Page TIFF Pages Parsed**
 
-By default, the service processes the entire PDF file. In production environments, if a PDF contains too many pages, it may affect system stability, leading to processing timeouts or excessive resource usage. To ensure stable service operation, it is recommended to set a reasonable page limit based on actual needs. You can add the following configuration to the production configuration file (`Serving` is the top-level field):
+By default, the service processes the entire PDF file. Multi-page TIFF files (`fileType=1`) are expanded page by page before processing. In production environments, if a PDF or multi-page TIFF contains too many pages, it may affect system stability, leading to processing timeouts or excessive resource usage. To ensure stable service operation, it is recommended to set a reasonable page limit based on actual needs. You can add the following configuration to the production configuration file (`Serving` is the top-level field):
 
 ```yaml
 Serving:
@@ -3325,7 +3325,7 @@ Serving:
     max_num_input_imgs: <page limit, e.g., 100>
 ```
 
-When `max_num_input_imgs` is set to `null`, there will be no limit on the number of PDF pages.
+`max_num_input_imgs` caps the maximum number of pages processed for both PDF and multi-page TIFF. When it is set to `null`, there is no page limit for either.
 
 #### 4.4.3 Apply the Configuration File
 

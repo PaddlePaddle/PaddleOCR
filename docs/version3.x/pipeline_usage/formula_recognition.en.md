@@ -1384,7 +1384,7 @@ Below are the API references for basic service-based deployment and multi-langua
 <tr>
 <td><code>file</code></td>
 <td><code>string</code></td>
-<td>The URL of an image or PDF file accessible by the server, or the Base64-encoded content of the file. By default, for PDF files exceeding 10 pages, only the first 10 pages will be processed.<br />
+<td>The URL of image files (including TIFF; multi-page TIFF is processed page by page) or PDF file accessible by the server, or the Base64-encoded content of the file. By default, for PDF or multi-page TIFF files exceeding 10 pages, only the first 10 pages will be processed.<br />
 To remove the page limit, please add the following configuration to the pipeline configuration file:
 <pre><code>Serving:
   extra:
@@ -1396,7 +1396,7 @@ To remove the page limit, please add the following configuration to the pipeline
 <tr>
 <td><code>fileType</code></td>
 <td><code>integer</code> | <code>null</code></td>
-<td>The type of the file. <code>0</code> for PDF files, <code>1</code> for image files. If this attribute is missing, the file type will be inferred from the URL.</td>
+<td>The type of the file. <code>0</code> for PDF files, <code>1</code> for image files (including TIFF). If this attribute is missing, the file type will be inferred from the URL.</td>
 <td>No</td>
 </tr>
 <tr>

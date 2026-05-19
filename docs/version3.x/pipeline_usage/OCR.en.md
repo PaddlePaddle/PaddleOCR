@@ -1912,7 +1912,7 @@ Below are the API reference for basic service deployment and examples of multi-l
 <tr>
 <td><code>file</code></td>
 <td><code>string</code></td>
-<td>A server-accessible URL to an image or PDF file, or the Base64-encoded content of such a file. By default, for PDF files with more than 10 pages, only the first 10 pages are processed.<br /> To remove the page limit, add the following configuration to the pipeline config file:
+<td>A server-accessible URL to image files (including TIFF; multi-page TIFF is processed page by page) or PDF file, or the Base64-encoded content of such a file. By default, for PDF or multi-page TIFF files with more than 10 pages, only the first 10 pages are processed.<br /> To remove the page limit, add the following configuration to the pipeline config file:
 <pre><code>Serving:
   extra:
     max_num_input_imgs: null
@@ -1923,7 +1923,7 @@ Below are the API reference for basic service deployment and examples of multi-l
 <tr>
 <td><code>fileType</code></td>
 <td><code>integer</code> | <code>null</code></td>
-<td>File type. <code>0</code> for PDF, <code>1</code> for image. If omitted, the type is inferred from the URL.</td>
+<td>File type. <code>0</code> for PDF, <code>1</code> for image (including TIFF). If omitted, the type is inferred from the URL.</td>
 <td>No</td>
 </tr>
 <tr>

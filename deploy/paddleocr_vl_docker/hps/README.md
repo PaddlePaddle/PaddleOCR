@@ -102,6 +102,8 @@ export HPS_MAX_CONCURRENT_INFERENCE_REQUESTS=8
 
 请参考 [PaddleOCR-VL 使用教程](https://github.com/PaddlePaddle/PaddleOCR/blob/main/docs/version3.x/pipeline_usage/PaddleOCR-VL.md) 中的客户端调用相关章节。
 
+服务支持 PDF 或图像文件（含 TIFF，多页时按页处理）；多页 TIFF 请使用 `fileType=1`。
+
 ### 健康检查
 
 ```bash

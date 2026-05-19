@@ -775,7 +775,7 @@ Below are the API references for basic service-oriented deployment and examples 
 <tr>
 <td><code>file</code></td>
 <td><code>string</code></td>
-<td>The URL of an image file or PDF file accessible to the server, or the Base64 encoding result of the content of the above types of files. By default, for PDF files with more than 10 pages, only the first 10 pages will be processed.<br /> To remove the page limit, please add the following configuration to the pipeline configuration file:
+<td>The URL of image files (including TIFF; multi-page TIFF is processed page by page) or PDF file accessible to the server, or the Base64 encoding result of the content of the above types of files. By default, for PDF or multi-page TIFF files with more than 10 pages, only the first 10 pages will be processed.<br /> To remove the page limit, please add the following configuration to the pipeline configuration file:
 <pre><code>Serving:
   extra:
     max_num_input_imgs: null

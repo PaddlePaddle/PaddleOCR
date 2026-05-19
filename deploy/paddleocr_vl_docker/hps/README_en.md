@@ -102,6 +102,8 @@ To adjust pipeline configurations (such as model path, batch size, deployment de
 
 Please refer to the Client-Side Invocation section in the [PaddleOCR-VL Usage Tutorial](https://github.com/PaddlePaddle/PaddleOCR/blob/main/docs/version3.x/pipeline_usage/PaddleOCR-VL.en.md).
 
+The service accepts PDF or image files (including TIFF; multi-page TIFF is processed page by page—use `fileType=1`).
+
 ### Health Checks
 
 ```bash
