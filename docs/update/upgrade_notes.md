@@ -76,7 +76,7 @@ PaddleOCR 2.x 提供的 `PPStructure` 在 PaddleOCR 3.x 中已被移除。建议
 
 PaddleOCR 3.x 仍在持续迭代与优化中，目前已知存在以下尚待完善之处：
 
-1. 对 C++ 本地部署的支持尚不完整。
+1. 对 C++ 本地部署的支持尚不完整。具体而言，PaddleOCR 3.x 的新版模型采用 PIR 格式（`inference.json`），通过 Paddle Inference C++ API 进行推理时，尚不支持 TensorRT 子图加速（即 `config.EnableTensorRtEngine()` 不会生效）。如需使用 TensorRT 加速，请使用 Python 高性能推理（HPI）或使用旧版 `.pdmodel` 格式的模型。
 2. 暂未提供性能与 PaddleOCR 2.x 中 PaddleServing 部署方案对齐的高性能服务化部署方案。
 3. 端侧部署目前仅支持部分重点模型，其余模型尚未开放支持。
 

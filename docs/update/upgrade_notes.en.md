@@ -76,7 +76,7 @@ The `PPStructure` provided in PaddleOCR 2.x has been removed in PaddleOCR 3.x. I
 
 PaddleOCR 3.0 is still under active development. Current known limitations include:
 
-1. Incomplete support for native C++ deployment.
+1. Incomplete support for native C++ deployment. Specifically, PaddleOCR 3.x models use the new PIR format (`inference.json`). When using the Paddle Inference C++ API, TensorRT subgraph acceleration is not yet supported (i.e., `config.EnableTensorRtEngine()` has no effect). To use TensorRT acceleration, please use Python high-performance inference (HPI) or use legacy `.pdmodel` format models.
 2. High-performance service-oriented deployment is not yet on par with PaddleServing in 2.x.
 3. On-Device Deployment currently supports only a subset of key models, with broader support pending.
 

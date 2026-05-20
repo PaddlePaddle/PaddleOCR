@@ -975,7 +975,9 @@ sudo apt-get install libfreetype6-dev libharfbuzz-dev
 
 ## 4. FAQ
 
-1. 如果遇到 `Model name mismatch, please input the correct model dir. model dir is xxx, but model name is xxx` 的报错，说明指定的模型名称和传入模型不匹配。比如文本识别模型指定名称是 `PP-OCRv5_server_rec `，但传入模型是 `PP-OCRv5_mobile_rec`。
+1. **C++ 部署暂不支持 TensorRT 加速。** PaddleOCR 3.x 的新版模型采用 PIR 格式（`inference.json`），目前 Paddle Inference C++ API 尚未对 PIR 模型实现 TensorRT 子图优化，因此即使调用 `config.EnableTensorRtEngine()` 也不会触发 TensorRT 加速。如需使用 TensorRT，请使用 Python [高性能推理（HPI）](../high_performance_inference.md)。
+
+2. 如果遇到 `Model name mismatch, please input the correct model dir. model dir is xxx, but model name is xxx` 的报错，说明指定的模型名称和传入模型不匹配。比如文本识别模型指定名称是 `PP-OCRv5_server_rec `，但传入模型是 `PP-OCRv5_mobile_rec`。
 解决：需要调整模型名称或传入的模型。例如上述例子，可以使用 `--text_recognition_model_name PP-OCRv5_mobile_rec` 指定和传入模型匹配的模型名称。
 
-2. 在 Windows 的控制台中输出出现乱码，原因可能是 Windows 控制台的字符编码是 GBK，请设置为 UTF-8 编码。
+3. 在 Windows 的控制台中输出出现乱码，原因可能是 Windows 控制台的字符编码是 GBK，请设置为 UTF-8 编码。

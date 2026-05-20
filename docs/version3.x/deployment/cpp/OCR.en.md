@@ -980,7 +980,9 @@ After compiling and running the prediction demo, you should see visualized text 
 
 ## 4. FAQ
 
-1. If you encounter the error `Model name mismatch, please input the correct model dir. model dir is xxx, but model name is xxx`, it means the specified model name doesn't match the provided model. For example, if the text recognition model expects `PP-OCRv5_server_rec` but you provided `PP-OCRv5_mobile_rec`.
+1. **C++ deployment does not currently support TensorRT acceleration.** PaddleOCR 3.x models use the new PIR format (`inference.json`). The Paddle Inference C++ API does not yet support TensorRT subgraph optimization for PIR models, so calling `config.EnableTensorRtEngine()` will have no effect. To use TensorRT acceleration, please use Python [High-Performance Inference (HPI)](../high_performance_inference.en.md).
+
+2. If you encounter the error `Model name mismatch, please input the correct model dir. model dir is xxx, but model name is xxx`, it means the specified model name doesn't match the provided model. For example, if the text recognition model expects `PP-OCRv5_server_rec` but you provided `PP-OCRv5_mobile_rec`.
 Solution: Adjust either the model name or the provided model. In the example above, you can specify `--text_recognition_model_name PP-OCRv5_mobile_rec` to match the provided model.
 
-2. If you see garbled text in the Windows console, it may be due to the console's default character encoding (GBK). Change it to UTF-8 encoding.
+3. If you see garbled text in the Windows console, it may be due to the console's default character encoding (GBK). Change it to UTF-8 encoding.
