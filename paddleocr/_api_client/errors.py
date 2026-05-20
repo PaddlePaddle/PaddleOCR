@@ -1,4 +1,4 @@
-# Copyright (c) 2025 PaddlePaddle Authors. All Rights Reserved.
+# Copyright (c) 2026 PaddlePaddle Authors. All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
 # limitations under the License.
 
 
-class PaddleOCRError(Exception):
+class PaddleOCRAPIError(Exception):
     """Base exception for PaddleOCR API SDK."""
 
     def __init__(self, message: str):
@@ -21,15 +21,15 @@ class PaddleOCRError(Exception):
         super().__init__(message)
 
 
-class AuthError(PaddleOCRError):
+class AuthError(PaddleOCRAPIError):
     """Token missing, invalid, or expired (HTTP 401/403)."""
 
 
-class InvalidRequestError(PaddleOCRError):
+class InvalidRequestError(PaddleOCRAPIError):
     """Invalid parameters (HTTP 400)."""
 
 
-class APIError(PaddleOCRError):
+class APIError(PaddleOCRAPIError):
     """Non-2xx response from the API server."""
 
     def __init__(self, status_code: int, message: str):
@@ -37,7 +37,7 @@ class APIError(PaddleOCRError):
         super().__init__(f"HTTP {status_code}: {message}")
 
 
-class JobFailedError(PaddleOCRError):
+class JobFailedError(PaddleOCRAPIError):
     """Job execution failed on the server side."""
 
     def __init__(self, job_id: str, error_msg: str):
@@ -46,7 +46,7 @@ class JobFailedError(PaddleOCRError):
         super().__init__(f"Job {job_id} failed: {error_msg}")
 
 
-class TimeoutError(PaddleOCRError):
+class TimeoutError(PaddleOCRAPIError):
     """Polling timed out waiting for job completion."""
 
     def __init__(self, job_id: str, elapsed: float):
@@ -57,13 +57,5 @@ class TimeoutError(PaddleOCRError):
         )
 
 
-class NetworkError(PaddleOCRError):
+class NetworkError(PaddleOCRAPIError):
     """Network connection failure."""
-
-
-class FileNotFoundError(PaddleOCRError):
-    """Local file does not exist."""
-
-    def __init__(self, path: str):
-        self.path = path
-        super().__init__(f"File not found: {path}")

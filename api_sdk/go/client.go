@@ -1,4 +1,4 @@
-// Copyright (c) 2025 PaddlePaddle Authors. All Rights Reserved.
+// Copyright (c) 2026 PaddlePaddle Authors. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -39,7 +39,7 @@ func NewClient(opts ...ClientOption) (*Client, error) {
 		c.token = os.Getenv("PADDLE_OCR_TOKEN")
 	}
 	if c.token == "" {
-		return nil, &AuthError{PaddleOCRError{Message: "Token is required. Set PADDLE_OCR_TOKEN or use WithToken()."}}
+		return nil, &AuthError{PaddleOCRAPIError{Message: "Token is required. Set PADDLE_OCR_TOKEN or use WithToken()."}}
 	}
 	if c.httpClient == nil {
 		c.httpClient = &http.Client{Timeout: c.timeout}

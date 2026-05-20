@@ -1,4 +1,4 @@
-// Copyright (c) 2025 PaddlePaddle Authors. All Rights Reserved.
+// Copyright (c) 2026 PaddlePaddle Authors. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,12 +23,36 @@ export interface OCROptions {
   useDocOrientationClassify?: boolean;
   useDocUnwarping?: boolean;
   useTextlineOrientation?: boolean;
+  textDetLimitSideLen?: number;
+  textDetLimitType?: string;
+  textDetThresh?: number;
+  textDetBoxThresh?: number;
+  textDetUnclipRatio?: number;
+  textRecScoreThresh?: number;
+  visualize?: boolean;
 }
 
 export interface DocParsingOptions {
   useDocOrientationClassify?: boolean;
   useDocUnwarping?: boolean;
+  useTextlineOrientation?: boolean;
+  useSealRecognition?: boolean;
+  useTableRecognition?: boolean;
+  useFormulaRecognition?: boolean;
   useChartRecognition?: boolean;
+  useRegionDetection?: boolean;
+  useLayoutDetection?: boolean;
+  layoutThreshold?: number | Record<string, number>;
+  layoutNms?: boolean;
+  layoutUnclipRatio?: number | number[] | Record<string, number>;
+  layoutMergeBboxesMode?: string;
+  textDetLimitSideLen?: number;
+  textDetLimitType?: string;
+  textDetThresh?: number;
+  textDetBoxThresh?: number;
+  textDetUnclipRatio?: number;
+  textRecScoreThresh?: number;
+  visualize?: boolean;
 }
 
 export interface OCRRequest {

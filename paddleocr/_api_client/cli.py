@@ -1,4 +1,4 @@
-# Copyright (c) 2025 PaddlePaddle Authors. All Rights Reserved.
+# Copyright (c) 2026 PaddlePaddle Authors. All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -36,7 +36,8 @@ def register_api_command(subparsers):
         "--model",
         type=str,
         default=None,
-        help="Model name (required for doc_parsing): PP-StructureV3, PaddleOCR-VL, PaddleOCR-VL-1.5",
+        choices=[m.value for m in Model],
+        help="Model name. Defaults to PP-OCRv5 for ocr task.",
     )
     subparser.add_argument(
         "--file_url",
@@ -97,6 +98,8 @@ def _execute_api(args):
         sys.exit(1)
 
     try:
+        model = _resolve_model(args.model) if args.model else None
+
         if args.model_type == "ocr":
             options = OCROptions(
                 use_doc_orientation_classify=args.use_doc_orientation_classify,
@@ -110,13 +113,8 @@ def _execute_api(args):
             )
             output = _ocr_result_to_dict(result)
         else:
-            if not args.model:
-                print(
-                    "Error: --model is required for doc_parsing",
-                    file=sys.stderr,
-                )
-                sys.exit(1)
-            model = _resolve_model(args.model)
+            if model is None:
+                model = Model.PP_STRUCTURE_V3
             options = DocParsingOptions(
                 use_doc_orientation_classify=args.use_doc_orientation_classify,
                 use_doc_unwarping=args.use_doc_unwarping,
@@ -147,19 +145,15 @@ def _execute_api(args):
 
 
 def _resolve_model(model_str: str) -> Model:
-    mapping = {
-        "PP-StructureV3": Model.PP_STRUCTURE_V3,
-        "PaddleOCR-VL": Model.PADDLE_OCR_VL,
-        "PaddleOCR-VL-1.5": Model.PADDLE_OCR_VL_15,
-    }
-    if model_str not in mapping:
+    try:
+        return Model(model_str)
+    except ValueError:
         print(
             f"Error: Unknown model '{model_str}'. "
-            f"Choose from: {', '.join(mapping.keys())}",
+            f"Choose from: {', '.join(m.value for m in Model)}",
             file=sys.stderr,
         )
         sys.exit(1)
-    return mapping[model_str]
 
 
 def _ocr_result_to_dict(result) -> dict:

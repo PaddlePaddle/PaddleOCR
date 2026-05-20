@@ -47,14 +47,13 @@ from ._api_client import (
     DocParsingOptions,
     Model,
     OCROptions,
-    PaddleOCRError,
+    PaddleOCRAPIError,
     AuthError,
     InvalidRequestError,
     APIError,
     JobFailedError,
     TimeoutError as OCRTimeoutError,
     NetworkError,
-    FileNotFoundError as OCRFileNotFoundError,
 )
 from ._utils.logging import logger
 from ._version import version as __version__
@@ -106,14 +105,13 @@ __all__ = [
     "TableRecognitionPipelineV2",
     "doc2md_convert",
     "doc2md_supported_formats",
-    "PaddleOCRError",
+    "PaddleOCRAPIError",
     "AuthError",
     "InvalidRequestError",
     "APIError",
     "JobFailedError",
     "OCRTimeoutError",
     "NetworkError",
-    "OCRFileNotFoundError",
     "logger",
     "__version__",
 ]

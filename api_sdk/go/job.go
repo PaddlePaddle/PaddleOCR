@@ -1,4 +1,4 @@
-// Copyright (c) 2025 PaddlePaddle Authors. All Rights Reserved.
+// Copyright (c) 2026 PaddlePaddle Authors. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -74,14 +74,14 @@ func (c *Client) submitURL(model, fileURL string, payload interface{}) (string, 
 
 	req, err := http.NewRequest("POST", c.baseURL, bytes.NewReader(jsonBody))
 	if err != nil {
-		return "", &NetworkError{PaddleOCRError{Message: err.Error()}}
+		return "", &NetworkError{PaddleOCRAPIError{Message: err.Error()}}
 	}
 	req.Header.Set("Authorization", "bearer "+c.token)
 	req.Header.Set("Content-Type", "application/json")
 
 	resp, err := c.httpClient.Do(req)
 	if err != nil {
-		return "", &NetworkError{PaddleOCRError{Message: err.Error()}}
+		return "", &NetworkError{PaddleOCRAPIError{Message: err.Error()}}
 	}
 	defer resp.Body.Close()
 
@@ -102,7 +102,7 @@ func (c *Client) submitURL(model, fileURL string, payload interface{}) (string, 
 
 func (c *Client) submitFile(model, filePath string, payload interface{}) (string, error) {
 	if _, err := os.Stat(filePath); os.IsNotExist(err) {
-		return "", &FileNotFoundError{Path: filePath, PaddleOCRError: PaddleOCRError{Message: "File not found: " + filePath}}
+		return "", &FileNotFoundError{Path: filePath, PaddleOCRAPIError: PaddleOCRAPIError{Message: "File not found: " + filePath}}
 	}
 
 	var buf bytes.Buffer
@@ -129,14 +129,14 @@ func (c *Client) submitFile(model, filePath string, payload interface{}) (string
 
 	req, err := http.NewRequest("POST", c.baseURL, &buf)
 	if err != nil {
-		return "", &NetworkError{PaddleOCRError{Message: err.Error()}}
+		return "", &NetworkError{PaddleOCRAPIError{Message: err.Error()}}
 	}
 	req.Header.Set("Authorization", "bearer "+c.token)
 	req.Header.Set("Content-Type", w.FormDataContentType())
 
 	resp, err := c.httpClient.Do(req)
 	if err != nil {
-		return "", &NetworkError{PaddleOCRError{Message: err.Error()}}
+		return "", &NetworkError{PaddleOCRAPIError{Message: err.Error()}}
 	}
 	defer resp.Body.Close()
 
@@ -158,13 +158,13 @@ func (c *Client) submitFile(model, filePath string, payload interface{}) (string
 func (c *Client) getJobStatus(jobID string) (*jobStatusResponse, error) {
 	req, err := http.NewRequest("GET", c.baseURL+"/"+jobID, nil)
 	if err != nil {
-		return nil, &NetworkError{PaddleOCRError{Message: err.Error()}}
+		return nil, &NetworkError{PaddleOCRAPIError{Message: err.Error()}}
 	}
 	req.Header.Set("Authorization", "bearer "+c.token)
 
 	resp, err := c.httpClient.Do(req)
 	if err != nil {
-		return nil, &NetworkError{PaddleOCRError{Message: err.Error()}}
+		return nil, &NetworkError{PaddleOCRAPIError{Message: err.Error()}}
 	}
 	defer resp.Body.Close()
 
@@ -186,7 +186,7 @@ func (c *Client) getJobStatus(jobID string) (*jobStatusResponse, error) {
 func (c *Client) fetchJSONL(url string) ([]map[string]interface{}, error) {
 	resp, err := c.httpClient.Get(url)
 	if err != nil {
-		return nil, &NetworkError{PaddleOCRError{Message: err.Error()}}
+		return nil, &NetworkError{PaddleOCRAPIError{Message: err.Error()}}
 	}
 	defer resp.Body.Close()
 
@@ -238,7 +238,7 @@ func (c *Client) pollUntilDone(ctx context.Context, jobID string) ([]map[string]
 			return nil, &JobFailedError{
 				JobID:          jobID,
 				ErrorMsg:       status.ErrorMsg,
-				PaddleOCRError: PaddleOCRError{Message: status.ErrorMsg},
+				PaddleOCRAPIError: PaddleOCRAPIError{Message: status.ErrorMsg},
 			}
 		}
 
@@ -252,7 +252,7 @@ func (c *Client) pollUntilDone(ctx context.Context, jobID string) ([]map[string]
 	return nil, &TimeoutError{
 		JobID:          jobID,
 		Elapsed:        elapsed.Seconds(),
-		PaddleOCRError: PaddleOCRError{Message: fmt.Sprintf("Timed out after %.1fs", elapsed.Seconds())},
+		PaddleOCRAPIError: PaddleOCRAPIError{Message: fmt.Sprintf("Timed out after %.1fs", elapsed.Seconds())},
 	}
 }
 
@@ -265,10 +265,10 @@ func raiseForResponse(resp *http.Response) error {
 
 	switch {
 	case resp.StatusCode == 401 || resp.StatusCode == 403:
-		return &AuthError{PaddleOCRError{Message: "Authentication failed: " + msg}}
+		return &AuthError{PaddleOCRAPIError{Message: "Authentication failed: " + msg}}
 	case resp.StatusCode == 400:
-		return &InvalidRequestError{PaddleOCRError{Message: "Bad request: " + msg}}
+		return &InvalidRequestError{PaddleOCRAPIError{Message: "Bad request: " + msg}}
 	default:
-		return &APIError{StatusCode: resp.StatusCode, PaddleOCRError: PaddleOCRError{Message: msg}}
+		return &APIError{StatusCode: resp.StatusCode, PaddleOCRAPIError: PaddleOCRAPIError{Message: msg}}
 	}
 }

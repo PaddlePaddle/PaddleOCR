@@ -1,4 +1,4 @@
-// Copyright (c) 2025 PaddlePaddle Authors. All Rights Reserved.
+// Copyright (c) 2026 PaddlePaddle Authors. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -88,11 +88,8 @@ export class PaddleOCRClient {
     return this.http.submitFile(model, req.filePath!, payload);
   }
 
-  private defaultPayload(model: string): object {
-    if (model === Model.PPOCRv5) {
-      return { useDocOrientationClassify: false, useDocUnwarping: false, useTextlineOrientation: false };
-    }
-    return { useDocOrientationClassify: false, useDocUnwarping: false, useChartRecognition: false };
+  private defaultPayload(_model: string): object {
+    return {};
   }
 
   private parseOCRResult(jobId: string, jsonlData: any[]): OCRResult {

@@ -1,4 +1,4 @@
-// Copyright (c) 2025 PaddlePaddle Authors. All Rights Reserved.
+// Copyright (c) 2026 PaddlePaddle Authors. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,25 +16,25 @@ package paddleocr
 
 import "fmt"
 
-type PaddleOCRError struct {
+type PaddleOCRAPIError struct {
 	Message string
 }
 
-func (e *PaddleOCRError) Error() string {
+func (e *PaddleOCRAPIError) Error() string {
 	return e.Message
 }
 
 type AuthError struct {
-	PaddleOCRError
+	PaddleOCRAPIError
 }
 
 type InvalidRequestError struct {
-	PaddleOCRError
+	PaddleOCRAPIError
 }
 
 type APIError struct {
 	StatusCode int
-	PaddleOCRError
+	PaddleOCRAPIError
 }
 
 func (e *APIError) Error() string {
@@ -44,7 +44,7 @@ func (e *APIError) Error() string {
 type JobFailedError struct {
 	JobID    string
 	ErrorMsg string
-	PaddleOCRError
+	PaddleOCRAPIError
 }
 
 func (e *JobFailedError) Error() string {
@@ -54,7 +54,7 @@ func (e *JobFailedError) Error() string {
 type TimeoutError struct {
 	JobID   string
 	Elapsed float64
-	PaddleOCRError
+	PaddleOCRAPIError
 }
 
 func (e *TimeoutError) Error() string {
@@ -62,12 +62,12 @@ func (e *TimeoutError) Error() string {
 }
 
 type NetworkError struct {
-	PaddleOCRError
+	PaddleOCRAPIError
 }
 
 type FileNotFoundError struct {
 	Path string
-	PaddleOCRError
+	PaddleOCRAPIError
 }
 
 func (e *FileNotFoundError) Error() string {

@@ -1,4 +1,4 @@
-// Copyright (c) 2025 PaddlePaddle Authors. All Rights Reserved.
+// Copyright (c) 2026 PaddlePaddle Authors. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,28 +12,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export class PaddleOCRError extends Error {
+export class PaddleOCRAPIError extends Error {
   constructor(message: string) {
     super(message);
-    this.name = "PaddleOCRError";
+    this.name = "PaddleOCRAPIError";
   }
 }
 
-export class AuthError extends PaddleOCRError {
+export class AuthError extends PaddleOCRAPIError {
   constructor(message: string) {
     super(message);
     this.name = "AuthError";
   }
 }
 
-export class InvalidRequestError extends PaddleOCRError {
+export class InvalidRequestError extends PaddleOCRAPIError {
   constructor(message: string) {
     super(message);
     this.name = "InvalidRequestError";
   }
 }
 
-export class APIError extends PaddleOCRError {
+export class APIError extends PaddleOCRAPIError {
   statusCode: number;
   constructor(statusCode: number, message: string) {
     super(`HTTP ${statusCode}: ${message}`);
@@ -42,7 +42,7 @@ export class APIError extends PaddleOCRError {
   }
 }
 
-export class JobFailedError extends PaddleOCRError {
+export class JobFailedError extends PaddleOCRAPIError {
   jobId: string;
   errorMsg: string;
   constructor(jobId: string, errorMsg: string) {
@@ -53,7 +53,7 @@ export class JobFailedError extends PaddleOCRError {
   }
 }
 
-export class TimeoutError extends PaddleOCRError {
+export class TimeoutError extends PaddleOCRAPIError {
   jobId: string;
   elapsed: number;
   constructor(jobId: string, elapsed: number) {
@@ -64,14 +64,14 @@ export class TimeoutError extends PaddleOCRError {
   }
 }
 
-export class NetworkError extends PaddleOCRError {
+export class NetworkError extends PaddleOCRAPIError {
   constructor(message: string) {
     super(message);
     this.name = "NetworkError";
   }
 }
 
-export class FileNotFoundError extends PaddleOCRError {
+export class FileNotFoundError extends PaddleOCRAPIError {
   path: string;
   constructor(path: string) {
     super(`File not found: ${path}`);
