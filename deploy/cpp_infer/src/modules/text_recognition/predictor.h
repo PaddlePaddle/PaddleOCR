@@ -26,6 +26,7 @@ struct TextRecPredictorResult {
   std::string rec_text = "";
   float rec_score = 0.0;
   std::string vis_font = "";
+  CTCLabelDecodeResult ctc_result;
 };
 
 struct TextRecPredictorParams {
@@ -41,6 +42,7 @@ struct TextRecPredictorParams {
   int cpu_threads = 8;
   int batch_size = 1;
   absl::optional<std::vector<int>> input_shape = absl::nullopt;
+  absl::optional<bool> return_word_box = absl::nullopt;
 };
 
 class TextRecPredictor : public BasePredictor {
@@ -66,4 +68,5 @@ private:
   std::unique_ptr<PaddleInfer> infer_ptr_;
   TextRecPredictorParams params_;
   int input_index_ = 0;
+  std::vector<int> rec_image_shape_ = {};
 };

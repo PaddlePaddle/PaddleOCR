@@ -36,7 +36,11 @@ TextRecPredictor::TextRecPredictor(const TextRecPredictorParams &params)
 absl::Status TextRecPredictor::Build() {
   const auto &pre_params = config_.PreProcessOpInfo();
   Register<ReadImage>("Read", "BGR"); //******
-  Register<OCRReisizeNormImg>("ReisizeNorm", params_.input_shape);
+  rec_image_shape_ =
+      YamlConfig::SmartParseVector(pre_params.at("RecResizeImg.image_shape"))
+          .vec_int;
+  Register<OCRResizeNormImg>("ReisizeNorm", params_.input_shape,
+                             rec_image_shape_);
   Register<ToBatchUniform>("ToBatch");
   infer_ptr_ = CreateStaticInfer();
   const auto &post_params = config_.PostProcessOpInfo();
@@ -60,6 +64,19 @@ TextRecPredictor::Process(std::vector<cv::Mat> &batch_data) {
     exit(-1);
   }
 
+  std::vector<float> width_list;
+  for (const auto &img : batch_read.value()) {
+    double ratio = static_cast<float>(img.cols) / static_cast<float>(img.rows);
+    width_list.push_back(ratio);
+  }
+
+  std::vector<int> indices(width_list.size());
+  for (int i = 0; i < indices.size(); ++i)
+    indices[i] = i;
+
+  std::sort(indices.begin(), indices.end(),
+            [&](int a, int b) { return width_list[a] < width_list[b]; });
+
   auto batch_resize_norm = pre_op_.at("ReisizeNorm")->Apply(batch_read.value());
   if (!batch_resize_norm.ok()) {
     INFOE(batch_resize_norm.status().ToString().c_str());
@@ -77,8 +94,26 @@ TextRecPredictor::Process(std::vector<cv::Mat> &batch_data) {
     exit(-1);
   }
 
-  auto ctc_result =
-      post_op_.at("CTCLabelDecode")->Apply(batch_infer.value()[0]);
+  int batch_num = batch_sampler_ptr_->BatchSize();
+  int img_num = batch_data.size();
+
+  int imgC = rec_image_shape_[0];
+  int imgH = rec_image_shape_[1];
+  int imgW = rec_image_shape_[2];
+  float max_wh_ratio = static_cast<float>(imgW) / static_cast<float>(imgH);
+  int end_img_no = std::min(img_num, batch_num);
+  std::vector<float> wh_ratio_list = {};
+  for (int ino = 0; ino < end_img_no; ino++) {
+    int h = batch_read.value()[indices[ino]].size[0];
+    int w = batch_read.value()[indices[ino]].size[1];
+    float wh_ratio = static_cast<float>(w) / static_cast<float>(h);
+    max_wh_ratio = std::max(max_wh_ratio, wh_ratio);
+    wh_ratio_list.push_back(wh_ratio);
+  }
+  auto ctc_result = post_op_.at("CTCLabelDecode")
+                        ->Apply(batch_infer.value()[0],
+                                params_.return_word_box.value_or(false),
+                                wh_ratio_list, max_wh_ratio);
 
   if (!ctc_result.ok()) {
     INFOE(ctc_result.status().ToString().c_str());
@@ -94,8 +129,9 @@ TextRecPredictor::Process(std::vector<cv::Mat> &batch_data) {
       predictor_result.input_path = input_path_[input_index_];
     }
     predictor_result.input_image = origin_image[i];
-    predictor_result.rec_text = ctc_result.value()[i].first;
-    predictor_result.rec_score = ctc_result.value()[i].second;
+    predictor_result.rec_text = ctc_result.value()[i].sentence.first;
+    predictor_result.rec_score = ctc_result.value()[i].sentence.second;
+    predictor_result.ctc_result = ctc_result.value()[i];
     predictor_result.vis_font = params_.vis_font_dir.value_or("");
     predictor_result_vec_.push_back(predictor_result);
     base_cv_result_ptr_vec.push_back(

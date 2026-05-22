@@ -114,6 +114,13 @@ void YamlConfig::Init() {
       pre_process_op_info_["CropImage.size"] = info.second;
     } else if (info.first.find("ToCHWImage") != std::string::npos) {
       pre_process_op_info_["ToCHWImage"] = info.second;
+    } else if (info.first.find("RecResizeImg.image_shape") !=
+               std::string::npos) {
+      size_t pos = info.first.find("RecResizeImg.image_shape");
+      size_t after = pos + std::string("RecResizeImg.image_shape").size();
+      if (info.first[after] != '[') {
+        pre_process_op_info_["RecResizeImg.image_shape"] = info.second;
+      }
     } else if (info.first.find("KeepKeys.keep_keys") != std::string::npos) {
       pre_process_op_info_["KeepKeys.keep_keys"] = info.second;
     } else if (info.first.find("PostProcess.name") != std::string::npos) {

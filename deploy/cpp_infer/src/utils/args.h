@@ -41,6 +41,7 @@ DECLARE_string(text_det_unclip_ratio);
 DECLARE_string(text_det_input_shape);
 DECLARE_string(text_rec_score_thresh);
 DECLARE_string(text_rec_input_shape);
+DECLARE_string(return_word_box);
 DECLARE_string(lang);
 DECLARE_string(ocr_version);
 DECLARE_string(device);

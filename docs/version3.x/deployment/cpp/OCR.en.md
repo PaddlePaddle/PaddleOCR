@@ -604,6 +604,12 @@ Any floating-point number greater than <code>0</code>. If not set, it will use t
 <td><code>str</code></td>
 <td>""</td>
 </tr>
+<tr>
+<td><code>return_word_box</code></td>
+<td>Whether to return the bounding box of a single character. If not set, it will use the default value initialized by the pipeline, which is initialized to <code>false</code> by default.</td>
+<td><code>bool</code></td>
+<td><code>false</code></td>
+</tr>
 </tbody>
 </table>
 
