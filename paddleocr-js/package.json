@@ -64,5 +64,8 @@
     "*.{json,md,html,css,yaml,yml}": [
       "prettier --write"
     ]
+  },
+  "dependencies": {
+    "protobufjs": "^7.5.5"
   }
 }
