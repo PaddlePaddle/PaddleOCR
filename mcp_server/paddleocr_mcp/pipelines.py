@@ -140,8 +140,6 @@ class PipelineHandler(abc.ABC):
         aistudio_access_token: Optional[str],
         qianfan_api_key: Optional[str],
         timeout: Optional[int],
-        use_doc_orientation_classify: bool = False,
-        use_doc_unwarping: bool = False,
     ) -> None:
         """Initialize the pipeline handler.
 
@@ -154,8 +152,6 @@ class PipelineHandler(abc.ABC):
             aistudio_access_token: AI Studio access token.
             qianfan_api_key: Qianfan API key.
             timeout: Read timeout in seconds for HTTP requests.
-            use_doc_orientation_classify: Enable document orientation classification.
-            use_doc_unwarping: Enable document unwarping.
         """
         self._pipeline = pipeline
         if ppocr_source == "local":
@@ -171,8 +167,6 @@ class PipelineHandler(abc.ABC):
         self._aistudio_access_token = aistudio_access_token
         self._qianfan_api_key = qianfan_api_key
         self._timeout = timeout or 60
-        self._use_doc_orientation_classify = use_doc_orientation_classify
-        self._use_doc_unwarping = use_doc_unwarping
 
         if self._mode == "local":
             if not LOCAL_OCR_AVAILABLE:
@@ -534,6 +528,8 @@ class OCRHandler(SimpleInferencePipelineHandler):
             input_data: str,
             output_mode: OutputMode = "simple",
             file_type: Optional[str] = None,
+            use_doc_unwarping: bool = False,
+            use_doc_orientation_classify: bool = False,
             *,
             ctx: Context,
         ) -> Union[str, List[Union[TextContent, ImageContent]]]:
@@ -548,11 +544,22 @@ class OCRHandler(SimpleInferencePipelineHandler):
                     - "image": For image files
                     - "pdf": For PDF documents
                     - None: For unknown file types
+                use_doc_unwarping: Whether to enable document unwarping for this request. Useful for photographed, warped, or low-quality scanned documents.
+                use_doc_orientation_classify: Whether to enable document orientation classification for this request. Useful for rotated documents.
             """
             await ctx.info(
                 f"--- OCR tool received `input_data`: {get_str_with_max_len(input_data, 50)} ---"
             )
-            return await self.process(input_data, output_mode, ctx, file_type)
+            return await self.process(
+                input_data,
+                output_mode,
+                ctx,
+                file_type,
+                infer_kwargs={
+                    "use_doc_unwarping": use_doc_unwarping,
+                    "use_doc_orientation_classify": use_doc_orientation_classify,
+                },
+            )
 
     def _create_local_engine(self) -> Any:
         return PaddleOCR(
@@ -565,14 +572,18 @@ class OCRHandler(SimpleInferencePipelineHandler):
 
     def _transform_local_kwargs(self, kwargs: Dict[str, Any]) -> Dict[str, Any]:
         return {
-            "use_doc_unwarping": self._use_doc_unwarping,
-            "use_doc_orientation_classify": self._use_doc_orientation_classify,
+            "use_doc_unwarping": kwargs.get("use_doc_unwarping", False),
+            "use_doc_orientation_classify": kwargs.get(
+                "use_doc_orientation_classify", False
+            ),
         }
 
     def _transform_service_kwargs(self, kwargs: Dict[str, Any]) -> Dict[str, Any]:
         return {
-            "useDocUnwarping": self._use_doc_unwarping,
-            "useDocOrientationClassify": self._use_doc_orientation_classify,
+            "useDocUnwarping": kwargs.get("use_doc_unwarping", False),
+            "useDocOrientationClassify": kwargs.get(
+                "use_doc_orientation_classify", False
+            ),
         }
 
     async def _parse_local_result(self, local_result: Dict, ctx: Context) -> Dict:
@@ -674,14 +685,18 @@ class _LayoutParsingHandler(SimpleInferencePipelineHandler):
 
     def _transform_local_kwargs(self, kwargs: Dict[str, Any]) -> Dict[str, Any]:
         return {
-            "use_doc_unwarping": self._use_doc_unwarping,
-            "use_doc_orientation_classify": self._use_doc_orientation_classify,
+            "use_doc_unwarping": kwargs.get("use_doc_unwarping", False),
+            "use_doc_orientation_classify": kwargs.get(
+                "use_doc_orientation_classify", False
+            ),
         }
 
     def _transform_service_kwargs(self, kwargs: Dict[str, Any]) -> Dict[str, Any]:
         return {
-            "useDocUnwarping": self._use_doc_unwarping,
-            "useDocOrientationClassify": self._use_doc_orientation_classify,
+            "useDocUnwarping": kwargs.get("use_doc_unwarping", False),
+            "useDocOrientationClassify": kwargs.get(
+                "use_doc_orientation_classify", False
+            ),
         }
 
     async def _parse_local_result(self, local_result: Dict, ctx: Context) -> Dict:
@@ -854,6 +869,8 @@ class PPStructureV3Handler(_LayoutParsingHandler):
             output_mode: OutputMode = "simple",
             file_type: Optional[str] = None,
             return_images: bool = True,
+            use_doc_unwarping: bool = False,
+            use_doc_orientation_classify: bool = False,
             *,
             ctx: Context,
         ) -> Union[str, List[Union[TextContent, ImageContent]]]:
@@ -869,12 +886,18 @@ class PPStructureV3Handler(_LayoutParsingHandler):
                     - "pdf": For PDF documents
                     - None: For unknown file types
                 return_images: Whether to return the images extracted from the document.
+                use_doc_unwarping: Whether to enable document unwarping for this request. Useful for photographed, warped, or low-quality scanned documents.
+                use_doc_orientation_classify: Whether to enable document orientation classification for this request. Useful for rotated documents.
             """
             return await self.process(
                 input_data,
                 output_mode,
                 ctx,
                 file_type,
+                infer_kwargs={
+                    "use_doc_unwarping": use_doc_unwarping,
+                    "use_doc_orientation_classify": use_doc_orientation_classify,
+                },
                 format_kwargs={"return_images": return_images},
             )
 
@@ -899,6 +922,8 @@ class PaddleOCRVLHandler(_LayoutParsingHandler):
             output_mode: OutputMode = "simple",
             file_type: Optional[str] = None,
             return_images: bool = True,
+            use_doc_unwarping: bool = False,
+            use_doc_orientation_classify: bool = False,
             *,
             ctx: Context,
         ) -> Union[str, List[Union[TextContent, ImageContent]]]:
@@ -914,12 +939,18 @@ class PaddleOCRVLHandler(_LayoutParsingHandler):
                     - "pdf": For PDF documents
                     - None: For unknown file types
                 return_images: Whether to return the images extracted from the document.
+                use_doc_unwarping: Whether to enable document unwarping for this request. Useful for photographed, warped, or low-quality scanned documents.
+                use_doc_orientation_classify: Whether to enable document orientation classification for this request. Useful for rotated documents.
             """
             return await self.process(
                 input_data,
                 output_mode,
                 ctx,
                 file_type,
+                infer_kwargs={
+                    "use_doc_unwarping": use_doc_unwarping,
+                    "use_doc_orientation_classify": use_doc_orientation_classify,
+                },
                 format_kwargs={"return_images": return_images},
             )
 

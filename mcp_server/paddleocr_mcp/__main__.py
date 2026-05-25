@@ -97,21 +97,6 @@ def _parse_args() -> argparse.Namespace:
         help="HTTP read timeout in seconds for API requests to the underlying server.",
     )
 
-    # Document preprocessing options
-    parser.add_argument(
-        "--use_doc_orientation_classify",
-        action="store_true",
-        default=os.getenv("PADDLEOCR_MCP_USE_DOC_ORIENTATION_CLASSIFY", "").lower()
-        == "true",
-        help="Enable document orientation classification.",
-    )
-    parser.add_argument(
-        "--use_doc_unwarping",
-        action="store_true",
-        default=os.getenv("PADDLEOCR_MCP_USE_DOC_UNWARPING", "").lower() == "true",
-        help="Enable document unwarping.",
-    )
-
     args = parser.parse_args()
     return args
 
@@ -176,8 +161,6 @@ async def async_main() -> None:
             aistudio_access_token=args.aistudio_access_token,
             qianfan_api_key=args.qianfan_api_key,
             timeout=args.timeout,
-            use_doc_orientation_classify=args.use_doc_orientation_classify,
-            use_doc_unwarping=args.use_doc_unwarping,
         )
     except Exception as e:
         print(f"Failed to create the pipeline handler: {e}", file=sys.stderr)
