@@ -1070,9 +1070,7 @@ paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --device gpu
 
 ```bash
 # 使用 transformers 引擎进行推理
-# 部分模型尚在支持中，推理时需关闭公式识别功能并更换无线表格结构识别模型，请使用以下命令：
-paddleocr pp_structurev3 -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/pp_structure_v3_demo.png \
-    --engine transformers --use_formula_recognition False --wireless_table_structure_recognition_model_name SLANeXt_wireless
+paddleocr pp_structurev3 -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/pp_structure_v3_demo.png --engine transformers
 ```
 
 <details><summary><b>命令行支持更多参数设置，点击展开以查看命令行参数的详细说明</b></summary>
@@ -1670,11 +1668,8 @@ for res in output:
 ```python
 from paddleocr import PPStructureV3
 
-# 部分模型尚在支持中，推理时需关闭公式识别功能并更换无线表格结构识别模型，请使用以下代码：
 pipeline = PPStructureV3(
     engine="transformers",
-    use_formula_recognition=False,
-    wireless_table_structure_recognition_model_name="SLANeXt_wireless",
 )
 # pipeline = PPStructureV3(lang="en") # 将 lang 参数设置为使用英文文本识别模型。对于其他支持的语言，请参阅第5节：附录部分。默认配置为中英文模型。
 # pipeline = PPStructureV3(use_doc_orientation_classify=True) # 通过 use_doc_orientation_classify 指定是否使用文档方向分类模型

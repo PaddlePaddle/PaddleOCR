@@ -4,17 +4,13 @@ comments: true
 
 # Installation
 
-## 1. Install the inference engine, PaddleOCR Python package, and optional feature dependencies
+## 1. Install the PaddleOCR Python package and optional dependencies
 
-This section explains how to install the inference engine as needed, the `paddleocr` distribution package, and optional dependency groups by capability domain. This path covers running pretrained pipelines for inference locally, as well as auxiliary features such as document format conversion. **Model training and model export** are covered in Section 2 and are independent of the installation path above.
+This section explains how to install, as needed, the `paddleocr` distribution package, optional dependency groups by capability domain, and the inference engine. This path covers running pretrained pipelines for inference locally, as well as auxiliary features such as document format conversion. **Model training and model export** are covered in Section 2 and are independent of the installation path above.
 
 **Python version requirement**: `paddleocr` itself and the `doc2md` dependency group support Python 3.8 and later. The other optional dependency groups (`doc-parser`, `ie`, `trans`, `all`) require Python 3.9 or later due to upstream dependencies.
 
-### 1.1 Install the inference engine (as needed)
-
-PaddleOCR 3.5 uses a unified inference-engine configuration and can use backends such as PaddlePaddle and Transformers. To actually run model inference, install your chosen inference engine by following [Inference Engine and Configuration](./inference_engine.en.md).
-
-### 1.2 Install paddleocr
+### 1.1 Install paddleocr
 
 Install the latest `paddleocr` from PyPI:
 
@@ -36,7 +32,7 @@ python -m pip install "paddleocr@git+https://github.com/PaddlePaddle/PaddleOCR.g
 # python -m pip install "paddleocr[all]@git+https://github.com/PaddlePaddle/PaddleOCR.git"
 ```
 
-### 1.3 Choose dependency groups by capability
+### 1.2 Choose dependency groups by capability
 
 Besides `all`, you can enable selected optional capabilities by specifying dependency groups. Each group corresponds to a capability domain (document parsing, information extraction, document translation, etc.). The available groups are:
 
@@ -50,13 +46,15 @@ Besides `all`, you can enable selected optional capabilities by specifying depen
 
 The general OCR pipeline and the document image preprocessing pipeline require no extra dependency groups; document parsing, information extraction, document translation, and other capabilities follow the table above. See each pipeline’s documentation for its dependency group. For individual modules, install any dependency group that contains the module to use its basic functionality.
 
+### 1.3 Install the inference engine (as needed)
+
+PaddleOCR 3.5 uses a unified inference-engine configuration and can use backends such as PaddlePaddle and Transformers. To actually run model inference, install your chosen inference engine by following [Inference Engine and Configuration](./inference_engine.en.md).
+
 ## 2. Install training and export dependencies
 
-To train models or export models, install the training-related dependencies separately. This path is a different installation dimension from the `paddleocr` package and optional groups in Section 1; both can coexist in one environment without mandatory isolation.
+To train models or export models, install the training-related dependencies separately. This path is a different installation dimension from the `paddleocr` package and optional groups in Section 1; both can coexist in one environment without mandatory isolation. Training and export depend on the PaddlePaddle framework. First install PaddlePaddle by following [PaddlePaddle Framework Installation](./paddlepaddle_installation.en.md). If another inference engine (such as Transformers) is already installed in the environment, you may encounter dependency conflicts; installing in a clean environment is recommended.
 
 **Python version requirement**: training and model export support Python 3.8 and later.
-
-Training and export depend on the PaddlePaddle framework. Complete PaddlePaddle installation first by following [PaddlePaddle Framework Installation](./paddlepaddle_installation.en.md).
 
 Clone this repository locally, then install the remaining dependencies:
 

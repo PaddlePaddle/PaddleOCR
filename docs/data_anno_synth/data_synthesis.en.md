@@ -3,11 +3,12 @@ comments: true
 ---
 
 
-# DATA SYNTHESIS TOOLS
+# Data Synthesis Tools
 
 In addition to open source data, users can also use synthesis tools to synthesize data.
 There are the commonly used data synthesis tools, which will be continuously updated. Welcome to contribute tools~
 
+* [Style-Text](https://github.com/PFCCLab/StyleText/blob/main/README.md)
 * [text_renderer (old version)](https://github.com/Sanster/text_renderer)
 * [text_renderer (new version)](https://github.com/oh-my-ocr/text_renderer)
 * [SynthText](https://github.com/ankush-me/SynthText)
