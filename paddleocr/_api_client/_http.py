@@ -122,8 +122,9 @@ class HTTPClient:
         return resp.json()["data"]
 
     def fetch_jsonl(self, url: str) -> list:
+        # Result URLs are often pre-signed object storage links; do not send API token.
         try:
-            resp = self._session.get(url, timeout=self._timeout)
+            resp = requests.get(url, timeout=self._timeout)
         except (requests.ConnectionError, requests.Timeout) as e:
             raise NetworkError(f"Connection failed: {e}")
         resp.raise_for_status()

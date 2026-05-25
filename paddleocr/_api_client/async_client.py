@@ -286,12 +286,17 @@ class AsyncAPIClient:
             raise NetworkError(f"Connection failed: {e}")
 
     async def _fetch_jsonl(self, url: str) -> list:
+        # Result URLs are often pre-signed object storage links; do not send API token.
         try:
-            async with self._session.get(url) as resp:
-                await self._raise_for_response(resp)
-                text = await resp.text()
-                lines = text.strip().split("\n")
-                return [json.loads(line) for line in lines if line.strip()]
+            import aiohttp
+
+            timeout = aiohttp.ClientTimeout(total=self._timeout)
+            async with aiohttp.ClientSession(timeout=timeout) as bare_session:
+                async with bare_session.get(url) as resp:
+                    await self._raise_for_response(resp)
+                    text = await resp.text()
+                    lines = text.strip().split("\n")
+                    return [json.loads(line) for line in lines if line.strip()]
         except Exception as e:
             if isinstance(e, (AuthError, InvalidRequestError, APIError)):
                 raise

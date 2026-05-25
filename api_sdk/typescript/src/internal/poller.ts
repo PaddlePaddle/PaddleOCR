@@ -14,6 +14,7 @@
 
 import { JobFailedError, TimeoutError } from "../errors.js";
 import type { JobStatus, Progress } from "../results.js";
+import { throwIfAborted, userAbortReason } from "./abort.js";
 import { HttpClient } from "./http.js";
 
 const INITIAL_INTERVAL = 3000;
@@ -35,9 +36,7 @@ export class Poller {
     let elapsed = 0;
 
     while (elapsed < this.maxWaitTime) {
-      if (signal?.aborted) {
-        throw new Error("Aborted");
-      }
+      throwIfAborted(signal);
 
       await this.sleep(interval, signal);
       elapsed += interval;
@@ -81,10 +80,15 @@ export class Poller {
   private sleep(ms: number, signal?: AbortSignal): Promise<void> {
     return new Promise((resolve, reject) => {
       const timer = setTimeout(resolve, ms);
-      signal?.addEventListener("abort", () => {
-        clearTimeout(timer);
-        reject(new Error("Aborted"));
-      });
+      if (!signal) return;
+      signal.addEventListener(
+        "abort",
+        () => {
+          clearTimeout(timer);
+          reject(userAbortReason(signal));
+        },
+        { once: true },
+      );
     });
   }
 }

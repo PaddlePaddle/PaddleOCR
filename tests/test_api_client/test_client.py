@@ -4,6 +4,7 @@ import unittest
 from unittest.mock import MagicMock, patch
 
 from paddleocr import APIClient, DocParsingOptions, Model, OCROptions
+from paddleocr._api_client._http import HTTPClient
 from paddleocr._api_client.errors import (
     AuthError,
     InvalidRequestError,
@@ -97,11 +98,21 @@ class TestAPIClient(unittest.TestCase):
         jsonl_resp.raise_for_status = lambda: None
 
         mock_session.post.return_value = submit_resp
-        mock_session.get.side_effect = [pending_resp, done_resp, jsonl_resp]
+        mock_session.get.side_effect = [pending_resp, done_resp]
 
-        client = APIClient()
-        with patch("paddleocr._api_client._poller.time.sleep"):
-            result = client.ocr(file_url="http://example.com/test.pdf")
+        jsonl_resp.raise_for_status = lambda: None
+
+        with patch("paddleocr._api_client._http.requests.get") as mock_req_get:
+            mock_req_get.return_value = jsonl_resp
+            client = APIClient()
+            with patch("paddleocr._api_client._poller.time.sleep"):
+                result = client.ocr(file_url="http://example.com/test.pdf")
+
+            mock_req_get.assert_called_once()
+            self.assertNotIn(
+                "Authorization",
+                mock_req_get.call_args.kwargs.get("headers") or {},
+            )
 
         self.assertEqual(result.job_id, "job-123")
         self.assertEqual(len(result.pages), 1)
@@ -143,15 +154,23 @@ class TestAPIClient(unittest.TestCase):
         jsonl_resp.raise_for_status = lambda: None
 
         mock_session.post.return_value = submit_resp
-        mock_session.get.side_effect = [done_resp, jsonl_resp]
+        mock_session.get.side_effect = [done_resp]
 
-        client = APIClient()
-        with patch("paddleocr._api_client._poller.time.sleep"):
-            result = client.doc_parsing(
-                model=Model.PP_STRUCTURE_V3,
-                file_url="http://example.com/doc.pdf",
-                options=DocParsingOptions(use_chart_recognition=True),
-            )
+        jsonl_resp.raise_for_status = lambda: None
+
+        with patch("paddleocr._api_client._http.requests.get") as mock_req_get:
+            mock_req_get.return_value = jsonl_resp
+            client = APIClient()
+            with patch("paddleocr._api_client._poller.time.sleep"):
+                result = client.doc_parsing(
+                    model=Model.PP_STRUCTURE_V3,
+                    file_url="http://example.com/doc.pdf",
+                    options=DocParsingOptions(use_chart_recognition=True),
+                )
+
+            kwargs = mock_req_get.call_args.kwargs
+            hdrs = kwargs.get("headers")
+            self.assertFalse(hdrs and "Authorization" in hdrs)
 
         self.assertEqual(result.job_id, "job-456")
         self.assertEqual(result.pages[0].markdown_text, "# Title")
@@ -221,6 +240,27 @@ class TestAPIClient(unittest.TestCase):
         _, kwargs = mock_session.post.call_args
         self.assertEqual(kwargs["json"]["pageRanges"], "1,3-4")
         self.assertEqual(kwargs["json"]["batchId"], "batch-1")
+
+    @patch("paddleocr._api_client._http.requests.get")
+    def test_fetch_jsonl_uses_get_without_authorization_headers(self, mock_get):
+        line = json.dumps({"result": {"ocrResults": []}})
+        mock_resp = MagicMock()
+        mock_resp.text = line
+        mock_resp.raise_for_status = MagicMock()
+        mock_get.return_value = mock_resp
+
+        hc = HTTPClient(
+            "secret-token",
+            "https://paddleocr.aistudio-app.com/api/v2/ocr/jobs",
+            30.0,
+        )
+
+        hc.fetch_jsonl("https://bucket.example/results/out.jsonl")
+        mock_get.assert_called_once_with(
+            "https://bucket.example/results/out.jsonl", timeout=30.0
+        )
+        kwargs = mock_get.call_args.kwargs
+        self.assertNotIn("headers", kwargs)
 
 
 if __name__ == "__main__":

@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import { APIError, AuthError, InvalidRequestError, NetworkError } from "../errors.js";
+import { userAbortReason } from "./abort.js";
 
 const DEFAULT_BASE_URL = "https://paddleocr.aistudio-app.com/api/v2/ocr/jobs";
 
@@ -135,8 +136,15 @@ export class HttpClient {
         headers,
         signal: abortController.signal,
       });
-    } catch (e: any) {
-      throw new NetworkError(`Connection failed: ${e.message}`);
+    } catch (e: unknown) {
+      if (signal?.aborted) {
+        throw userAbortReason(signal);
+      }
+      if (timeoutController.signal.aborted) {
+        throw new DOMException("The operation timed out.", "TimeoutError");
+      }
+      const message = e instanceof Error ? e.message : String(e);
+      throw new NetworkError(`Connection failed: ${message}`);
     } finally {
       clearTimeout(timeoutID);
       signal?.removeEventListener("abort", abort);

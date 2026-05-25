@@ -32,7 +32,6 @@ const (
 	initialInterval = 3 * time.Second
 	multiplier      = 1.5
 	maxInterval     = 15 * time.Second
-	maxWaitTime     = 600 * time.Second
 )
 
 type apiResponse struct {
@@ -234,7 +233,8 @@ func (c *Client) pollUntilDone(ctx context.Context, jobID string) ([]map[string]
 	interval := initialInterval
 	var elapsed time.Duration
 
-	for elapsed < maxWaitTime {
+	maxPollWait := c.timeout
+	for elapsed < maxPollWait {
 		select {
 		case <-ctx.Done():
 			return nil, ctx.Err()
