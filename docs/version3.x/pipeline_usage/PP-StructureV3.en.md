@@ -3288,6 +3288,12 @@ To remove the page limit, please add the following configuration to the pipeline
 <td>No</td>
 </tr>
 <tr>
+<td><code>returnMarkdownImages</code></td>
+<td><code>boolean</code></td>
+<td>Whether to return the images referenced in the Markdown. Default <code>true</code>; when set to <code>false</code>, <code>markdown.images</code> is <code>null</code> or omitted and the server skips image encoding / URL upload.</td>
+<td>No</td>
+</tr>
+<tr>
 <td><code>outputFormats</code></td>
 <td><code>array</code> | <code>null</code></td>
 <td>Optional list of extra formats to return. Currently only <code>"docx"</code> is supported.</td>
@@ -3339,6 +3345,7 @@ If neither the request body nor the configuration file is set (If <code>visualiz
 </tr>
 </tbody>
 </table>
+<p>Image fields in the element schema below (e.g. <code>outputImages</code>, <code>inputImage</code>, <code>markdown.images</code>) are returned inline as JPEG base64 strings by default; when the server is configured to return URLs, those values become pre-signed URLs while the field types remain unchanged. See the "Returning Images as URLs" section of the <a href="../deployment/serving.en.md">Serving Deployment Guide</a> for configuration.</p>
 <p>Each element in <code>layoutParsingResults</code> is an <code>object</code> with the following attributes:</p>
 <table>
 <thead>
@@ -3393,8 +3400,8 @@ If neither the request body nor the configuration file is set (If <code>visualiz
 </tr>
 <tr>
 <td><code>images</code></td>
-<td><code>object</code></td>
-<td>A key-value pair of relative paths of Markdown images and Base64-encoded images.</td>
+<td><code>object</code> | <code>null</code></td>
+<td>A key-value pair of relative paths of Markdown images and Base64-encoded images. <code>null</code> or omitted when <code>returnMarkdownImages</code> is <code>false</code> in the request.</td>
 </tr>
 <tr>
 <td><code>isStart</code></td>

@@ -94,3 +94,25 @@ PaddleOCR 产线使用教程中的 <b>“开发集成/部署”</b> 部分提供
 请参考 [PaddleX 服务化部署指南](https://paddlepaddle.github.io/PaddleX/latest/pipeline_deploy/serving.html#2)。在 [使用 PaddleX 产线配置文件](../paddleocr_and_paddlex.md#3-paddlex) 中，可以了解关于 PaddleX 产线配置文件的更多信息。
 
 需要说明的是，由于缺乏细粒度优化等原因，当前 PaddleOCR 提供的高稳定性服务化部署方案在性能上可能不及 2.x 版本基于 PaddleServing 的方案；但该新方案已对飞桨 3.0 框架提供了全面支持，我们也将持续优化，后续考虑推出性能更优的部署方案。
+
+## 3. 配置图像 URL 返回
+
+服务默认以 base64 编码内联返回响应中的图像字段（如 `outputImages`、`inputImage`、`markdown.images` 等）。当响应包含较大图像或多页 PDF 时，base64 会显著增加响应体积。可在产线配置文件的 `Serving.extra` 节中配置对象存储，将图像改为以预签名 URL 返回：
+
+```yaml
+Serving:
+  extra:
+    file_storage:
+      type: bos
+      endpoint: <BOS endpoint>
+      ak: <Access Key>
+      sk: <Secret Key>
+      bucket_name: <bucket name>
+    return_img_urls: true
+    url_expires_in: 3600  # 预签名 URL 有效期（秒），-1 表示不过期
+```
+
+- 基础服务化：上述配置写入 `paddlex --serve --pipeline` 指定的产线配置文件。
+- 高稳定性服务化：共用同一组配置项，写入 SDK 内的 `server/pipeline_config.yaml` 后重启容器即可。
+
+当前仅 `bos`（百度对象存储）后端支持 URL 返回；`file_system`、`memory` 后端不支持。完整配置项、注意事项与适用场景参见 [PaddleX 服务化部署指南 - 配置图像 URL 返回](https://paddlepaddle.github.io/PaddleX/latest/pipeline_deploy/serving.html#3)。

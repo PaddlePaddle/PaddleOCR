@@ -2454,6 +2454,12 @@ Below are the API reference and examples of multi-language service invocation:
 <td>No</td>
 </tr>
 <tr>
+<td><code>returnMarkdownImages</code></td>
+<td><code>boolean</code></td>
+<td>Whether to return the images referenced in the Markdown. Default <code>true</code>; when set to <code>false</code>, <code>markdown.images</code> is <code>null</code> or omitted and the server skips image encoding / URL upload.</td>
+<td>No</td>
+</tr>
+<tr>
 <td><code>restructurePages</code></td>
 <td><code>boolean</code></td>
 <td>Whether to restructure results across multiple pages. The default is <code>false</code>.</td>
@@ -2516,6 +2522,7 @@ Below are the API reference and examples of multi-language service invocation:
 </tr>
 </tbody>
 </table>
+<p>Image fields in the element schema below (e.g. <code>outputImages</code>, <code>inputImage</code>, <code>markdown.images</code>) are returned inline as JPEG base64 strings by default; when the server is configured to return URLs, those values become pre-signed URLs while the field types remain unchanged. See the "Returning Images as URLs" section of the <a href="../deployment/serving.en.md">Serving Deployment Guide</a> for configuration.</p>
 <p>Each element in <code>layoutParsingResults</code> is an <code>object</code> with the following attributes:</p>
 <table>
 <thead>
@@ -2570,8 +2577,8 @@ Below are the API reference and examples of multi-language service invocation:
 </tr>
 <tr>
 <td><code>images</code></td>
-<td><code>object</code></td>
-<td>Key-value pairs of relative paths to Markdown images and Base64-encoded images.</td>
+<td><code>object</code> | <code>null</code></td>
+<td>Key-value pairs of relative paths to Markdown images and Base64-encoded images. <code>null</code> or omitted when <code>returnMarkdownImages</code> is <code>false</code> in the request.</td>
 </tr>
 </tbody>
 </table>
@@ -2629,6 +2636,12 @@ Below are the API reference and examples of multi-language service invocation:
     <td><code>showFormulaNumber</code></td>
     <td><code>boolean</code></td>
     <td>Whether to include formula numbers in the output Markdown text. The default is <code>false</code>.</td>
+    <td>No</td>
+    </tr>
+    <tr>
+    <td><code>returnMarkdownImages</code></td>
+    <td><code>boolean</code></td>
+    <td>Whether to return the images referenced in the Markdown (from <code>pages[].markdownImages</code> in the request). Default <code>true</code>; when set to <code>false</code>, <code>markdown.images</code> is <code>null</code> or omitted and the server does not back-fill it.</td>
     <td>No</td>
     </tr>
     <tr>

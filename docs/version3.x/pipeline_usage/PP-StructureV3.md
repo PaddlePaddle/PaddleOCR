@@ -3178,6 +3178,12 @@ for item in markdown_images:
 <td>否</td>
 </tr>
 <tr>
+<td><code>returnMarkdownImages</code></td>
+<td><code>boolean</code></td>
+<td>是否在响应中返回 Markdown 中引用的图片。默认为 <code>true</code>；设为 <code>false</code> 时 <code>markdown.images</code> 为 <code>null</code> 或不出现，且服务端跳过图片编码 / URL 上传。</td>
+<td>否</td>
+</tr>
+<tr>
 <td><code>outputFormats</code></td>
 <td><code>array</code> | <code>null</code></td>
 <td>可选。附加导出格式列表，默认不返回。当前仅支持 <code>"docx"</code>。</td>
@@ -3226,6 +3232,7 @@ for item in markdown_images:
 </tr>
 </tbody>
 </table>
+<p>下表中涉及图像的字段（如 <code>outputImages</code>、<code>inputImage</code>、<code>markdown.images</code>）默认以 JPEG Base64 字符串内联返回；当服务端开启 URL 返回模式时，相应字段的值变为预签名 URL，字段类型保持不变。配置方式参见 <a href="../deployment/serving.md">服务化部署</a>「配置图像 URL 返回」一节。</p>
 <p><code>layoutParsingResults</code>中的每个元素为一个<code>object</code>，具有如下属性：</p>
 <table>
 <thead>
@@ -3280,8 +3287,8 @@ for item in markdown_images:
 </tr>
 <tr>
 <td><code>images</code></td>
-<td><code>object</code></td>
-<td>Markdown图片相对路径和Base64编码图像的键值对。</td>
+<td><code>object</code> | <code>null</code></td>
+<td>Markdown图片相对路径和Base64编码图像的键值对。当请求中 <code>returnMarkdownImages</code> 为 <code>false</code> 时为 <code>null</code> 或不出现。</td>
 </tr>
 <tr>
 <td><code>isStart</code></td>

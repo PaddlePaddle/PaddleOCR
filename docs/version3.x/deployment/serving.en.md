@@ -94,3 +94,25 @@ The <b>"Development Integration/Deployment"</b> section in the PaddleOCR pipelin
 Please refer to the [PaddleX Serving Guide](https://paddlepaddle.github.io/PaddleX/latest/en/pipeline_deploy/serving.html#2). More information about PaddleX pipeline configuration files can be found in [Using PaddleX Pipeline Configuration Files](../paddleocr_and_paddlex.en.md#3-using-paddlex-pipeline-configuration-files).
 
 It should be noted that, due to the lack of fine-grained optimization and other reasons, the current high-stability serving deployment solution provided by PaddleOCR may not match the performance of the 2.x version based on PaddleServing. However, this new solution fully supports the PaddlePaddle 3.0 framework. We will continue to optimize it and consider introducing more performant deployment solutions in the future.
+
+## 3. Returning Images as URLs
+
+By default, the service returns image fields in the response (such as `outputImages`, `inputImage`, `markdown.images`) inline as base64-encoded strings. When the response contains large images or a multi-page PDF, base64 encoding can significantly inflate the payload. You can configure object storage in the `Serving.extra` section of the pipeline configuration file to return images as pre-signed URLs instead:
+
+```yaml
+Serving:
+  extra:
+    file_storage:
+      type: bos
+      endpoint: <BOS endpoint>
+      ak: <Access Key>
+      sk: <Secret Key>
+      bucket_name: <bucket name>
+    return_img_urls: true
+    url_expires_in: 3600  # Lifetime of the pre-signed URL in seconds; -1 means no expiry
+```
+
+- Basic serving: write the configuration to the pipeline config file passed to `paddlex --serve --pipeline`.
+- High-stability serving: the same configuration applies — write it to `server/pipeline_config.yaml` inside the SDK and restart the container.
+
+Currently only the `bos` (Baidu Object Storage) backend supports URL return; `file_system` and `memory` backends do not. For the full configuration reference, notes, and use cases, see [PaddleX Serving Guide - Returning Images as URLs](https://paddlepaddle.github.io/PaddleX/latest/en/pipeline_deploy/serving.html#3).
