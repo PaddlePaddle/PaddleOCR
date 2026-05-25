@@ -58,6 +58,8 @@ export interface DocParsingOptions {
 export interface OCRRequest {
   fileUrl?: string;
   filePath?: string;
+  pageRanges?: string;
+  batchId?: string;
   options?: OCROptions;
 }
 
@@ -65,6 +67,8 @@ export interface DocParsingRequest {
   model: Model;
   fileUrl?: string;
   filePath?: string;
+  pageRanges?: string;
+  batchId?: string;
   options?: DocParsingOptions;
 }
 

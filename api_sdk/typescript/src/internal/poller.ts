@@ -42,11 +42,11 @@ export class Poller {
       await this.sleep(interval, signal);
       elapsed += interval;
 
-      const data = await this.http.getJobStatus(jobId);
+      const data = await this.http.getJobStatus(jobId, signal);
 
       if (data.state === "done") {
         const jsonUrl = data.resultUrl.jsonUrl;
-        return await this.http.fetchJsonl(jsonUrl);
+        return await this.http.fetchJsonl(jsonUrl, signal);
       }
 
       if (data.state === "failed") {
@@ -59,8 +59,8 @@ export class Poller {
     throw new TimeoutError(jobId, elapsed / 1000);
   }
 
-  async getStatus(jobId: string): Promise<JobStatus> {
-    const data = await this.http.getJobStatus(jobId);
+  async getStatus(jobId: string, signal?: AbortSignal): Promise<JobStatus> {
+    const data = await this.http.getJobStatus(jobId, signal);
     let progress: Progress | undefined;
     if (data.extractProgress) {
       progress = {

@@ -64,23 +64,39 @@ def register_api_command(subparsers):
         help="Output JSON file path (prints to stdout if omitted)",
     )
     subparser.add_argument(
+        "--page_ranges",
+        type=str,
+        default=None,
+        help='Page ranges to parse, for example "2,4-6"',
+    )
+    subparser.add_argument(
+        "--batch_id",
+        type=str,
+        default=None,
+        help="Optional batch identifier for querying related jobs",
+    )
+    subparser.add_argument(
         "--use_doc_orientation_classify",
         action="store_true",
+        default=None,
         help="Enable document orientation classification",
     )
     subparser.add_argument(
         "--use_doc_unwarping",
         action="store_true",
+        default=None,
         help="Enable document unwarping",
     )
     subparser.add_argument(
         "--use_textline_orientation",
         action="store_true",
+        default=None,
         help="Enable textline orientation detection (OCR only)",
     )
     subparser.add_argument(
         "--use_chart_recognition",
         action="store_true",
+        default=None,
         help="Enable chart recognition (doc_parsing only)",
     )
     subparser.set_defaults(executor=_execute_api)
@@ -101,6 +117,12 @@ def _execute_api(args):
         model = _resolve_model(args.model) if args.model else None
 
         if args.model_type == "ocr":
+            if model not in (None, Model.PP_OCRV5):
+                print(
+                    f"Error: OCR task only supports {Model.PP_OCRV5.value}.",
+                    file=sys.stderr,
+                )
+                sys.exit(2)
             options = OCROptions(
                 use_doc_orientation_classify=args.use_doc_orientation_classify,
                 use_doc_unwarping=args.use_doc_unwarping,
@@ -110,6 +132,8 @@ def _execute_api(args):
                 file_url=args.file_url,
                 file_path=args.file_path,
                 options=options,
+                page_ranges=args.page_ranges,
+                batch_id=args.batch_id,
             )
             output = _ocr_result_to_dict(result)
         else:
@@ -125,6 +149,8 @@ def _execute_api(args):
                 file_url=args.file_url,
                 file_path=args.file_path,
                 options=options,
+                page_ranges=args.page_ranges,
+                batch_id=args.batch_id,
             )
             output = _doc_parsing_result_to_dict(result)
 

@@ -27,16 +27,14 @@ from .errors import (
 )
 from .models import DocParsingOptions, Model, OCROptions
 from .results import DocParsingResult, Job, JobStatus, OCRResult, Progress
+from ._http import DEFAULT_BASE_URL
 from ._poller import (
     DEFAULT_INITIAL_INTERVAL,
     DEFAULT_MAX_INTERVAL,
-    DEFAULT_MAX_WAIT_TIME,
     DEFAULT_MULTIPLIER,
     parse_doc_parsing_result,
     parse_ocr_result,
 )
-
-DEFAULT_BASE_URL = "https://paddleocr.aistudio-app.com/api/v2/ocr/jobs"
 
 
 class AsyncAPIClient:
@@ -89,8 +87,17 @@ class AsyncAPIClient:
         file_url: Optional[str] = None,
         file_path: Optional[str] = None,
         options: Optional[OCROptions] = None,
+        page_ranges: Optional[str] = None,
+        batch_id: Optional[str] = None,
     ) -> OCRResult:
-        job_id = await self._submit(Model.PP_OCRV5, file_url, file_path, options)
+        job_id = await self._submit(
+            Model.PP_OCRV5,
+            file_url,
+            file_path,
+            options,
+            page_ranges,
+            batch_id,
+        )
         jsonl_data = await self._poll_until_done(job_id)
         return parse_ocr_result(job_id, jsonl_data)
 
@@ -100,8 +107,12 @@ class AsyncAPIClient:
         file_url: Optional[str] = None,
         file_path: Optional[str] = None,
         options: Optional[DocParsingOptions] = None,
+        page_ranges: Optional[str] = None,
+        batch_id: Optional[str] = None,
     ) -> DocParsingResult:
-        job_id = await self._submit(model, file_url, file_path, options)
+        job_id = await self._submit(
+            model, file_url, file_path, options, page_ranges, batch_id
+        )
         jsonl_data = await self._poll_until_done(job_id)
         return parse_doc_parsing_result(job_id, jsonl_data)
 
@@ -110,8 +121,17 @@ class AsyncAPIClient:
         file_url: Optional[str] = None,
         file_path: Optional[str] = None,
         options: Optional[OCROptions] = None,
+        page_ranges: Optional[str] = None,
+        batch_id: Optional[str] = None,
     ) -> Job:
-        job_id = await self._submit(Model.PP_OCRV5, file_url, file_path, options)
+        job_id = await self._submit(
+            Model.PP_OCRV5,
+            file_url,
+            file_path,
+            options,
+            page_ranges,
+            batch_id,
+        )
         return Job(job_id=job_id)
 
     async def submit_doc_parsing(
@@ -120,13 +140,15 @@ class AsyncAPIClient:
         file_url: Optional[str] = None,
         file_path: Optional[str] = None,
         options: Optional[DocParsingOptions] = None,
+        page_ranges: Optional[str] = None,
+        batch_id: Optional[str] = None,
     ) -> Job:
-        job_id = await self._submit(model, file_url, file_path, options)
+        job_id = await self._submit(
+            model, file_url, file_path, options, page_ranges, batch_id
+        )
         return Job(job_id=job_id)
 
-    async def wait_for_result(
-        self, job_id: str
-    ) -> Union[OCRResult, DocParsingResult]:
+    async def wait_for_result(self, job_id: str) -> Union[OCRResult, DocParsingResult]:
         jsonl_data = await self._poll_until_done(job_id)
         first = jsonl_data[0]["result"] if jsonl_data else {}
         if "ocrResults" in first:
@@ -158,25 +180,48 @@ class AsyncAPIClient:
         file_url: Optional[str],
         file_path: Optional[str],
         options,
+        page_ranges: Optional[str],
+        batch_id: Optional[str],
     ) -> str:
         if not file_url and not file_path:
             raise InvalidRequestError("Either file_url or file_path is required.")
         if file_url and file_path:
-            raise InvalidRequestError(
-                "file_url and file_path are mutually exclusive."
-            )
+            raise InvalidRequestError("file_url and file_path are mutually exclusive.")
         await self._ensure_session()
         payload = options.to_payload() if options else self._default_payload(model)
         if file_url:
-            return await self._submit_url(model.value, file_url, payload)
-        return await self._submit_file(model.value, file_path, payload)
+            return await self._submit_url(
+                model.value,
+                file_url,
+                payload,
+                page_ranges=page_ranges,
+                batch_id=batch_id,
+            )
+        return await self._submit_file(
+            model.value,
+            file_path,
+            payload,
+            page_ranges=page_ranges,
+            batch_id=batch_id,
+        )
 
-    async def _submit_url(self, model: str, file_url: str, payload: dict) -> str:
+    async def _submit_url(
+        self,
+        model: str,
+        file_url: str,
+        payload: dict,
+        page_ranges: Optional[str] = None,
+        batch_id: Optional[str] = None,
+    ) -> str:
         body = {
             "fileUrl": file_url,
             "model": model,
             "optionalPayload": payload,
         }
+        if page_ranges is not None:
+            body["pageRanges"] = page_ranges
+        if batch_id is not None:
+            body["batchId"] = batch_id
         try:
             async with self._session.post(
                 self._base_url,
@@ -191,7 +236,14 @@ class AsyncAPIClient:
                 raise
             raise NetworkError(f"Connection failed: {e}")
 
-    async def _submit_file(self, model: str, file_path: str, payload: dict) -> str:
+    async def _submit_file(
+        self,
+        model: str,
+        file_path: str,
+        payload: dict,
+        page_ranges: Optional[str] = None,
+        batch_id: Optional[str] = None,
+    ) -> str:
         if not os.path.exists(file_path):
             raise FileNotFoundError(file_path)
         try:
@@ -200,6 +252,10 @@ class AsyncAPIClient:
             form = aiohttp.FormData()
             form.add_field("model", model)
             form.add_field("optionalPayload", json.dumps(payload))
+            if page_ranges is not None:
+                form.add_field("pageRanges", page_ranges)
+            if batch_id is not None:
+                form.add_field("batchId", batch_id)
             with open(file_path, "rb") as f:
                 file_data = f.read()
             form.add_field(
@@ -212,37 +268,40 @@ class AsyncAPIClient:
                 data = await resp.json()
                 return data["data"]["jobId"]
         except Exception as e:
-            if isinstance(e, (AuthError, InvalidRequestError, APIError, FileNotFoundError)):
+            if isinstance(
+                e, (AuthError, InvalidRequestError, APIError, FileNotFoundError)
+            ):
                 raise
             raise NetworkError(f"Connection failed: {e}")
 
     async def _get_job_status(self, job_id: str) -> dict:
         try:
-            async with self._session.get(
-                f"{self._base_url}/{job_id}"
-            ) as resp:
+            async with self._session.get(f"{self._base_url}/{job_id}") as resp:
                 await self._raise_for_response(resp)
                 data = await resp.json()
                 return data["data"]
         except Exception as e:
-            if isinstance(e, (AuthError, APIError)):
+            if isinstance(e, (AuthError, InvalidRequestError, APIError)):
                 raise
             raise NetworkError(f"Connection failed: {e}")
 
     async def _fetch_jsonl(self, url: str) -> list:
         try:
             async with self._session.get(url) as resp:
+                await self._raise_for_response(resp)
                 text = await resp.text()
                 lines = text.strip().split("\n")
                 return [json.loads(line) for line in lines if line.strip()]
         except Exception as e:
+            if isinstance(e, (AuthError, InvalidRequestError, APIError)):
+                raise
             raise NetworkError(f"Failed to fetch result: {e}")
 
     async def _poll_until_done(self, job_id: str) -> list:
         interval = DEFAULT_INITIAL_INTERVAL
         elapsed = 0.0
 
-        while elapsed < DEFAULT_MAX_WAIT_TIME:
+        while elapsed < self._timeout:
             await asyncio.sleep(interval)
             elapsed += interval
 

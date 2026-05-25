@@ -16,6 +16,20 @@ import { APIError, AuthError, InvalidRequestError, NetworkError } from "../error
 
 const DEFAULT_BASE_URL = "https://paddleocr.aistudio-app.com/api/v2/ocr/jobs";
 
+interface SubmitOptions {
+  pageRanges?: string;
+  batchId?: string;
+  signal?: AbortSignal;
+}
+
+interface APIResponse<T> {
+  data: T;
+}
+
+interface SubmitResponse {
+  jobId: string;
+}
+
 export class HttpClient {
   private baseUrl: string;
   private token: string;
@@ -27,18 +41,24 @@ export class HttpClient {
     this.timeout = timeout;
   }
 
-  async submitUrl(model: string, fileUrl: string, optionalPayload: object): Promise<string> {
-    const body = { fileUrl, model, optionalPayload };
+  async submitUrl(model: string, fileUrl: string, optionalPayload: object, options: SubmitOptions = {}): Promise<string> {
+    const body: Record<string, unknown> = { fileUrl, model, optionalPayload };
+    if (options.pageRanges !== undefined) {
+      body.pageRanges = options.pageRanges;
+    }
+    if (options.batchId !== undefined) {
+      body.batchId = options.batchId;
+    }
     const resp = await this.fetch(this.baseUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
-    });
-    const data = await resp.json();
+    }, options.signal);
+    const data = await resp.json() as APIResponse<SubmitResponse>;
     return data.data.jobId;
   }
 
-  async submitFile(model: string, filePath: string, optionalPayload: object): Promise<string> {
+  async submitFile(model: string, filePath: string, optionalPayload: object, options: SubmitOptions = {}): Promise<string> {
     const fs = await import("fs");
     const path = await import("path");
 
@@ -50,6 +70,12 @@ export class HttpClient {
     const form = new FormData();
     form.append("model", model);
     form.append("optionalPayload", JSON.stringify(optionalPayload));
+    if (options.pageRanges !== undefined) {
+      form.append("pageRanges", options.pageRanges);
+    }
+    if (options.batchId !== undefined) {
+      form.append("batchId", options.batchId);
+    }
 
     const fileBuffer = fs.readFileSync(filePath);
     const blob = new Blob([fileBuffer]);
@@ -58,21 +84,19 @@ export class HttpClient {
     const resp = await this.fetch(this.baseUrl, {
       method: "POST",
       body: form,
-    });
-    const data = await resp.json();
+    }, options.signal);
+    const data = await resp.json() as APIResponse<SubmitResponse>;
     return data.data.jobId;
   }
 
-  async getJobStatus(jobId: string): Promise<any> {
-    const resp = await this.fetch(`${this.baseUrl}/${jobId}`, { method: "GET" });
-    const data = await resp.json();
+  async getJobStatus(jobId: string, signal?: AbortSignal): Promise<any> {
+    const resp = await this.fetch(`${this.baseUrl}/${jobId}`, { method: "GET" }, signal);
+    const data = await resp.json() as APIResponse<any>;
     return data.data;
   }
 
-  async fetchJsonl(url: string): Promise<any[]> {
-    const resp = await fetch(url, {
-      signal: AbortSignal.timeout(this.timeout),
-    });
+  async fetchJsonl(url: string, signal?: AbortSignal): Promise<any[]> {
+    const resp = await this.fetch(url, { method: "GET" }, signal, false);
     const text = await resp.text();
     return text
       .trim()
@@ -81,21 +105,41 @@ export class HttpClient {
       .map((line) => JSON.parse(line));
   }
 
-  private async fetch(url: string, init: RequestInit): Promise<Response> {
+  private async fetch(
+    url: string,
+    init: RequestInit,
+    signal?: AbortSignal,
+    withAuth: boolean = true,
+  ): Promise<Response> {
     const headers: Record<string, string> = {
-      Authorization: `bearer ${this.token}`,
       ...(init.headers as Record<string, string> || {}),
     };
+    if (withAuth) {
+      headers.Authorization = `bearer ${this.token}`;
+    }
 
     let resp: Response;
+    const timeoutController = new AbortController();
+    const timeoutID = setTimeout(() => timeoutController.abort(), this.timeout);
+    const abortController = new AbortController();
+    const abort = () => abortController.abort();
+    timeoutController.signal.addEventListener("abort", abort, { once: true });
+    if (signal?.aborted) {
+      abort();
+    } else {
+      signal?.addEventListener("abort", abort, { once: true });
+    }
     try {
       resp = await fetch(url, {
         ...init,
         headers,
-        signal: AbortSignal.timeout(this.timeout),
+        signal: abortController.signal,
       });
     } catch (e: any) {
       throw new NetworkError(`Connection failed: ${e.message}`);
+    } finally {
+      clearTimeout(timeoutID);
+      signal?.removeEventListener("abort", abort);
     }
 
     if (resp.ok) return resp;

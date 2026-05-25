@@ -54,8 +54,17 @@ class APIClient:
         file_url: Optional[str] = None,
         file_path: Optional[str] = None,
         options: Optional[OCROptions] = None,
+        page_ranges: Optional[str] = None,
+        batch_id: Optional[str] = None,
     ) -> OCRResult:
-        job_id = self._submit(Model.PP_OCRV5, file_url, file_path, options)
+        job_id = self._submit(
+            Model.PP_OCRV5,
+            file_url,
+            file_path,
+            options,
+            page_ranges,
+            batch_id,
+        )
         jsonl_data, _ = self._poller.poll_until_done(job_id)
         return parse_ocr_result(job_id, jsonl_data)
 
@@ -65,8 +74,12 @@ class APIClient:
         file_url: Optional[str] = None,
         file_path: Optional[str] = None,
         options: Optional[DocParsingOptions] = None,
+        page_ranges: Optional[str] = None,
+        batch_id: Optional[str] = None,
     ) -> DocParsingResult:
-        job_id = self._submit(model, file_url, file_path, options)
+        job_id = self._submit(
+            model, file_url, file_path, options, page_ranges, batch_id
+        )
         jsonl_data, _ = self._poller.poll_until_done(job_id)
         return parse_doc_parsing_result(job_id, jsonl_data)
 
@@ -75,8 +88,17 @@ class APIClient:
         file_url: Optional[str] = None,
         file_path: Optional[str] = None,
         options: Optional[OCROptions] = None,
+        page_ranges: Optional[str] = None,
+        batch_id: Optional[str] = None,
     ) -> Job:
-        job_id = self._submit(Model.PP_OCRV5, file_url, file_path, options)
+        job_id = self._submit(
+            Model.PP_OCRV5,
+            file_url,
+            file_path,
+            options,
+            page_ranges,
+            batch_id,
+        )
         return Job(job_id=job_id)
 
     def submit_doc_parsing(
@@ -85,13 +107,15 @@ class APIClient:
         file_url: Optional[str] = None,
         file_path: Optional[str] = None,
         options: Optional[DocParsingOptions] = None,
+        page_ranges: Optional[str] = None,
+        batch_id: Optional[str] = None,
     ) -> Job:
-        job_id = self._submit(model, file_url, file_path, options)
+        job_id = self._submit(
+            model, file_url, file_path, options, page_ranges, batch_id
+        )
         return Job(job_id=job_id)
 
-    def wait_for_result(
-        self, job_id: str
-    ) -> Union[OCRResult, DocParsingResult]:
+    def wait_for_result(self, job_id: str) -> Union[OCRResult, DocParsingResult]:
         jsonl_data, data = self._poller.poll_until_done(job_id)
         return self._parse_result(job_id, jsonl_data)
 
@@ -104,17 +128,29 @@ class APIClient:
         file_url: Optional[str],
         file_path: Optional[str],
         options,
+        page_ranges: Optional[str],
+        batch_id: Optional[str],
     ) -> str:
         if not file_url and not file_path:
             raise InvalidRequestError("Either file_url or file_path is required.")
         if file_url and file_path:
-            raise InvalidRequestError(
-                "file_url and file_path are mutually exclusive."
-            )
+            raise InvalidRequestError("file_url and file_path are mutually exclusive.")
         payload = options.to_payload() if options else self._default_payload(model)
         if file_url:
-            return self._http.submit_url(model.value, file_url, payload)
-        return self._http.submit_file(model.value, file_path, payload)
+            return self._http.submit_url(
+                model.value,
+                file_url,
+                payload,
+                page_ranges=page_ranges,
+                batch_id=batch_id,
+            )
+        return self._http.submit_file(
+            model.value,
+            file_path,
+            payload,
+            page_ranges=page_ranges,
+            batch_id=batch_id,
+        )
 
     def _default_payload(self, model: Model) -> dict:
         if model == Model.PP_OCRV5:

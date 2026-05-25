@@ -38,24 +38,24 @@ export class PaddleOCRClient {
   }
 
   async ocr(req: OCRRequest, options?: { signal?: AbortSignal }): Promise<OCRResult> {
-    const jobId = await this.submit(Model.PPOCRv5, req);
+    const jobId = await this.submit(Model.PPOCRv5, req, options?.signal);
     const jsonlData = await this.poller.pollUntilDone(jobId, options?.signal);
     return this.parseOCRResult(jobId, jsonlData);
   }
 
   async docParsing(req: DocParsingRequest, options?: { signal?: AbortSignal }): Promise<DocParsingResult> {
-    const jobId = await this.submit(req.model, req);
+    const jobId = await this.submit(req.model, req, options?.signal);
     const jsonlData = await this.poller.pollUntilDone(jobId, options?.signal);
     return this.parseDocParsingResult(jobId, jsonlData);
   }
 
-  async submitOcr(req: OCRRequest): Promise<Job> {
-    const jobId = await this.submit(Model.PPOCRv5, req);
+  async submitOcr(req: OCRRequest, options?: { signal?: AbortSignal }): Promise<Job> {
+    const jobId = await this.submit(Model.PPOCRv5, req, options?.signal);
     return { jobId };
   }
 
-  async submitDocParsing(req: DocParsingRequest): Promise<Job> {
-    const jobId = await this.submit(req.model, req);
+  async submitDocParsing(req: DocParsingRequest, options?: { signal?: AbortSignal }): Promise<Job> {
+    const jobId = await this.submit(req.model, req, options?.signal);
     return { jobId };
   }
 
@@ -68,11 +68,15 @@ export class PaddleOCRClient {
     return this.parseDocParsingResult(jobId, jsonlData);
   }
 
-  async getResult(jobId: string): Promise<JobStatus> {
-    return this.poller.getStatus(jobId);
+  async getResult(jobId: string, options?: { signal?: AbortSignal }): Promise<JobStatus> {
+    return this.poller.getStatus(jobId, options?.signal);
   }
 
-  private async submit(model: string, req: { fileUrl?: string; filePath?: string; options?: object }): Promise<string> {
+  private async submit(
+    model: string,
+    req: { fileUrl?: string; filePath?: string; pageRanges?: string; batchId?: string; options?: object },
+    signal?: AbortSignal,
+  ): Promise<string> {
     if (!req.fileUrl && !req.filePath) {
       throw new InvalidRequestError("Either fileUrl or filePath is required.");
     }
@@ -83,9 +87,17 @@ export class PaddleOCRClient {
     const payload = req.options || this.defaultPayload(model);
 
     if (req.fileUrl) {
-      return this.http.submitUrl(model, req.fileUrl, payload);
+      return this.http.submitUrl(model, req.fileUrl, payload, {
+        pageRanges: req.pageRanges,
+        batchId: req.batchId,
+        signal,
+      });
     }
-    return this.http.submitFile(model, req.filePath!, payload);
+    return this.http.submitFile(model, req.filePath!, payload, {
+      pageRanges: req.pageRanges,
+      batchId: req.batchId,
+      signal,
+    });
   }
 
   private defaultPayload(_model: string): object {

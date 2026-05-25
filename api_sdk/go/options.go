@@ -16,7 +16,6 @@ package paddleocr
 
 import (
 	"net/http"
-	"os"
 	"time"
 )
 
@@ -46,4 +45,8 @@ func WithHTTPClient(hc *http.Client) ClientOption {
 	return func(c *Client) {
 		c.httpClient = hc
 	}
+}
+
+func Bool(v bool) *bool {
+	return &v
 }

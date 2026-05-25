@@ -21,7 +21,7 @@ import (
 
 // OCR performs PP-OCRv5 text recognition. Blocks until result is ready.
 func (c *Client) OCR(ctx context.Context, req *OCRRequest) (*OCRResult, error) {
-	jobID, err := c.submit(ctx, PPOCRv5, req.FileURL, req.FilePath, req.Options)
+	jobID, err := c.submit(ctx, PPOCRv5, req.FileURL, req.FilePath, req.Options, req.PageRanges, req.BatchID)
 	if err != nil {
 		return nil, err
 	}
@@ -34,7 +34,7 @@ func (c *Client) OCR(ctx context.Context, req *OCRRequest) (*OCRResult, error) {
 
 // DocParsing performs document layout parsing. Blocks until result is ready.
 func (c *Client) DocParsing(ctx context.Context, req *DocParsingRequest) (*DocParsingResult, error) {
-	jobID, err := c.submit(ctx, req.Model, req.FileURL, req.FilePath, req.Options)
+	jobID, err := c.submit(ctx, req.Model, req.FileURL, req.FilePath, req.Options, req.PageRanges, req.BatchID)
 	if err != nil {
 		return nil, err
 	}
@@ -47,7 +47,7 @@ func (c *Client) DocParsing(ctx context.Context, req *DocParsingRequest) (*DocPa
 
 // SubmitOCR submits an OCR job and returns an Operation for tracking.
 func (c *Client) SubmitOCR(ctx context.Context, req *OCRRequest) (*Operation, error) {
-	jobID, err := c.submit(ctx, PPOCRv5, req.FileURL, req.FilePath, req.Options)
+	jobID, err := c.submit(ctx, PPOCRv5, req.FileURL, req.FilePath, req.Options, req.PageRanges, req.BatchID)
 	if err != nil {
 		return nil, err
 	}
@@ -56,14 +56,14 @@ func (c *Client) SubmitOCR(ctx context.Context, req *OCRRequest) (*Operation, er
 
 // SubmitDocParsing submits a doc parsing job and returns an Operation for tracking.
 func (c *Client) SubmitDocParsing(ctx context.Context, req *DocParsingRequest) (*Operation, error) {
-	jobID, err := c.submit(ctx, req.Model, req.FileURL, req.FilePath, req.Options)
+	jobID, err := c.submit(ctx, req.Model, req.FileURL, req.FilePath, req.Options, req.PageRanges, req.BatchID)
 	if err != nil {
 		return nil, err
 	}
 	return &Operation{client: c, JobID: jobID, model: req.Model}, nil
 }
 
-func (c *Client) submit(ctx context.Context, model, fileURL, filePath string, options interface{}) (string, error) {
+func (c *Client) submit(ctx context.Context, model, fileURL, filePath string, options interface{}, pageRanges, batchID string) (string, error) {
 	if fileURL == "" && filePath == "" {
 		return "", &InvalidRequestError{PaddleOCRAPIError{Message: "Either FileURL or FilePath is required."}}
 	}
@@ -74,9 +74,9 @@ func (c *Client) submit(ctx context.Context, model, fileURL, filePath string, op
 	payload := defaultPayload(model, options)
 
 	if fileURL != "" {
-		return c.submitURL(model, fileURL, payload)
+		return c.submitURL(ctx, model, fileURL, payload, pageRanges, batchID)
 	}
-	return c.submitFile(model, filePath, payload)
+	return c.submitFile(ctx, model, filePath, payload, pageRanges, batchID)
 }
 
 func defaultPayload(model string, options interface{}) interface{} {

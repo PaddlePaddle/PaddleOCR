@@ -34,7 +34,7 @@ func main() {
 	result, err := client.DocParsing(ctx, &paddleocr.DocParsingRequest{
 		Model:    paddleocr.PPStructureV3,
 		FilePath: "./sample.pdf",
-		Options:  &paddleocr.DocParsingOptions{UseChartRecognition: true},
+		Options:  &paddleocr.DocParsingOptions{UseChartRecognition: paddleocr.Bool(true)},
 	})
 	if err != nil {
 		log.Fatal(err)

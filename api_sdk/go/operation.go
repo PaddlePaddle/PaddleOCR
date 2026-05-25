@@ -42,7 +42,7 @@ func (op *Operation) Wait(ctx context.Context) (interface{}, error) {
 // Poll checks the current job status without waiting.
 // Returns the status, whether the job is done, and any error.
 func (op *Operation) Poll(ctx context.Context) (*JobStatus, bool, error) {
-	status, err := op.client.getJobStatus(op.JobID)
+	status, err := op.client.getJobStatus(ctx, op.JobID)
 	if err != nil {
 		return nil, false, err
 	}

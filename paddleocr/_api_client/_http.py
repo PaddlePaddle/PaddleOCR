@@ -51,12 +51,23 @@ class HTTPClient:
         self._session = requests.Session()
         self._session.headers["Authorization"] = f"bearer {token}"
 
-    def submit_url(self, model: str, file_url: str, optional_payload: dict) -> str:
+    def submit_url(
+        self,
+        model: str,
+        file_url: str,
+        optional_payload: dict,
+        page_ranges: Optional[str] = None,
+        batch_id: Optional[str] = None,
+    ) -> str:
         body = {
             "fileUrl": file_url,
             "model": model,
             "optionalPayload": optional_payload,
         }
+        if page_ranges is not None:
+            body["pageRanges"] = page_ranges
+        if batch_id is not None:
+            body["batchId"] = batch_id
         try:
             resp = self._session.post(
                 self._base_url,
@@ -68,13 +79,24 @@ class HTTPClient:
         _raise_for_response(resp)
         return resp.json()["data"]["jobId"]
 
-    def submit_file(self, model: str, file_path: str, optional_payload: dict) -> str:
+    def submit_file(
+        self,
+        model: str,
+        file_path: str,
+        optional_payload: dict,
+        page_ranges: Optional[str] = None,
+        batch_id: Optional[str] = None,
+    ) -> str:
         if not os.path.exists(file_path):
             raise FileNotFoundError(file_path)
         data = {
             "model": model,
             "optionalPayload": json.dumps(optional_payload),
         }
+        if page_ranges is not None:
+            data["pageRanges"] = page_ranges
+        if batch_id is not None:
+            data["batchId"] = batch_id
         try:
             with open(file_path, "rb") as f:
                 resp = self._session.post(

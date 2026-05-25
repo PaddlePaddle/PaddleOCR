@@ -61,18 +61,24 @@ type extractProgress struct {
 	EndTime        string `json:"endTime"`
 }
 
-func (c *Client) submitURL(model, fileURL string, payload interface{}) (string, error) {
+func (c *Client) submitURL(ctx context.Context, model, fileURL string, payload interface{}, pageRanges, batchID string) (string, error) {
 	body := map[string]interface{}{
 		"fileUrl":         fileURL,
 		"model":           model,
 		"optionalPayload": payload,
+	}
+	if pageRanges != "" {
+		body["pageRanges"] = pageRanges
+	}
+	if batchID != "" {
+		body["batchId"] = batchID
 	}
 	jsonBody, err := json.Marshal(body)
 	if err != nil {
 		return "", err
 	}
 
-	req, err := http.NewRequest("POST", c.baseURL, bytes.NewReader(jsonBody))
+	req, err := http.NewRequestWithContext(ctx, "POST", c.baseURL, bytes.NewReader(jsonBody))
 	if err != nil {
 		return "", &NetworkError{PaddleOCRAPIError{Message: err.Error()}}
 	}
@@ -100,7 +106,7 @@ func (c *Client) submitURL(model, fileURL string, payload interface{}) (string, 
 	return sr.JobID, nil
 }
 
-func (c *Client) submitFile(model, filePath string, payload interface{}) (string, error) {
+func (c *Client) submitFile(ctx context.Context, model, filePath string, payload interface{}, pageRanges, batchID string) (string, error) {
 	if _, err := os.Stat(filePath); os.IsNotExist(err) {
 		return "", &FileNotFoundError{Path: filePath, PaddleOCRAPIError: PaddleOCRAPIError{Message: "File not found: " + filePath}}
 	}
@@ -111,6 +117,12 @@ func (c *Client) submitFile(model, filePath string, payload interface{}) (string
 	_ = w.WriteField("model", model)
 	payloadJSON, _ := json.Marshal(payload)
 	_ = w.WriteField("optionalPayload", string(payloadJSON))
+	if pageRanges != "" {
+		_ = w.WriteField("pageRanges", pageRanges)
+	}
+	if batchID != "" {
+		_ = w.WriteField("batchId", batchID)
+	}
 
 	file, err := os.Open(filePath)
 	if err != nil {
@@ -127,7 +139,7 @@ func (c *Client) submitFile(model, filePath string, payload interface{}) (string
 	}
 	w.Close()
 
-	req, err := http.NewRequest("POST", c.baseURL, &buf)
+	req, err := http.NewRequestWithContext(ctx, "POST", c.baseURL, &buf)
 	if err != nil {
 		return "", &NetworkError{PaddleOCRAPIError{Message: err.Error()}}
 	}
@@ -155,8 +167,8 @@ func (c *Client) submitFile(model, filePath string, payload interface{}) (string
 	return sr.JobID, nil
 }
 
-func (c *Client) getJobStatus(jobID string) (*jobStatusResponse, error) {
-	req, err := http.NewRequest("GET", c.baseURL+"/"+jobID, nil)
+func (c *Client) getJobStatus(ctx context.Context, jobID string) (*jobStatusResponse, error) {
+	req, err := http.NewRequestWithContext(ctx, "GET", c.baseURL+"/"+jobID, nil)
 	if err != nil {
 		return nil, &NetworkError{PaddleOCRAPIError{Message: err.Error()}}
 	}
@@ -183,12 +195,19 @@ func (c *Client) getJobStatus(jobID string) (*jobStatusResponse, error) {
 	return &status, nil
 }
 
-func (c *Client) fetchJSONL(url string) ([]map[string]interface{}, error) {
-	resp, err := c.httpClient.Get(url)
+func (c *Client) fetchJSONL(ctx context.Context, url string) ([]map[string]interface{}, error) {
+	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
+	if err != nil {
+		return nil, &NetworkError{PaddleOCRAPIError{Message: err.Error()}}
+	}
+	resp, err := c.httpClient.Do(req)
 	if err != nil {
 		return nil, &NetworkError{PaddleOCRAPIError{Message: err.Error()}}
 	}
 	defer resp.Body.Close()
+	if err := raiseForResponse(resp); err != nil {
+		return nil, err
+	}
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
@@ -223,7 +242,7 @@ func (c *Client) pollUntilDone(ctx context.Context, jobID string) ([]map[string]
 		}
 		elapsed += interval
 
-		status, err := c.getJobStatus(jobID)
+		status, err := c.getJobStatus(ctx, jobID)
 		if err != nil {
 			return nil, err
 		}
@@ -233,11 +252,11 @@ func (c *Client) pollUntilDone(ctx context.Context, jobID string) ([]map[string]
 			if status.ResultURL == nil {
 				return nil, fmt.Errorf("job done but no result URL")
 			}
-			return c.fetchJSONL(status.ResultURL.JSONURL)
+			return c.fetchJSONL(ctx, status.ResultURL.JSONURL)
 		case "failed":
 			return nil, &JobFailedError{
-				JobID:          jobID,
-				ErrorMsg:       status.ErrorMsg,
+				JobID:             jobID,
+				ErrorMsg:          status.ErrorMsg,
 				PaddleOCRAPIError: PaddleOCRAPIError{Message: status.ErrorMsg},
 			}
 		}
@@ -250,8 +269,8 @@ func (c *Client) pollUntilDone(ctx context.Context, jobID string) ([]map[string]
 	}
 
 	return nil, &TimeoutError{
-		JobID:          jobID,
-		Elapsed:        elapsed.Seconds(),
+		JobID:             jobID,
+		Elapsed:           elapsed.Seconds(),
 		PaddleOCRAPIError: PaddleOCRAPIError{Message: fmt.Sprintf("Timed out after %.1fs", elapsed.Seconds())},
 	}
 }

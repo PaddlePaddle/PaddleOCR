@@ -15,10 +15,10 @@
 package paddleocr
 
 const (
-	PPOCRv5        = "PP-OCRv5"
-	PPStructureV3  = "PP-StructureV3"
-	PaddleOCRVL    = "PaddleOCR-VL"
-	PaddleOCRVL15  = "PaddleOCR-VL-1.5"
+	PPOCRv5       = "PP-OCRv5"
+	PPStructureV3 = "PP-StructureV3"
+	PaddleOCRVL   = "PaddleOCR-VL"
+	PaddleOCRVL15 = "PaddleOCR-VL-1.5"
 )
 
 type OCROptions struct {
@@ -35,37 +35,41 @@ type OCROptions struct {
 }
 
 type DocParsingOptions struct {
-	UseDocOrientationClassify *bool        `json:"useDocOrientationClassify,omitempty"`
-	UseDocUnwarping           *bool        `json:"useDocUnwarping,omitempty"`
-	UseTextlineOrientation    *bool        `json:"useTextlineOrientation,omitempty"`
-	UseSealRecognition        *bool        `json:"useSealRecognition,omitempty"`
-	UseTableRecognition       *bool        `json:"useTableRecognition,omitempty"`
-	UseFormulaRecognition     *bool        `json:"useFormulaRecognition,omitempty"`
-	UseChartRecognition       *bool        `json:"useChartRecognition,omitempty"`
-	UseRegionDetection        *bool        `json:"useRegionDetection,omitempty"`
-	UseLayoutDetection        *bool        `json:"useLayoutDetection,omitempty"`
-	LayoutThreshold           interface{}  `json:"layoutThreshold,omitempty"`
-	LayoutNms                 *bool        `json:"layoutNms,omitempty"`
-	LayoutUnclipRatio         interface{}  `json:"layoutUnclipRatio,omitempty"`
-	LayoutMergeBboxesMode     *string      `json:"layoutMergeBboxesMode,omitempty"`
-	TextDetLimitSideLen       *int         `json:"textDetLimitSideLen,omitempty"`
-	TextDetLimitType          *string      `json:"textDetLimitType,omitempty"`
-	TextDetThresh             *float64     `json:"textDetThresh,omitempty"`
-	TextDetBoxThresh          *float64     `json:"textDetBoxThresh,omitempty"`
-	TextDetUnclipRatio        *float64     `json:"textDetUnclipRatio,omitempty"`
-	TextRecScoreThresh        *float64     `json:"textRecScoreThresh,omitempty"`
-	Visualize                 *bool        `json:"visualize,omitempty"`
+	UseDocOrientationClassify *bool       `json:"useDocOrientationClassify,omitempty"`
+	UseDocUnwarping           *bool       `json:"useDocUnwarping,omitempty"`
+	UseTextlineOrientation    *bool       `json:"useTextlineOrientation,omitempty"`
+	UseSealRecognition        *bool       `json:"useSealRecognition,omitempty"`
+	UseTableRecognition       *bool       `json:"useTableRecognition,omitempty"`
+	UseFormulaRecognition     *bool       `json:"useFormulaRecognition,omitempty"`
+	UseChartRecognition       *bool       `json:"useChartRecognition,omitempty"`
+	UseRegionDetection        *bool       `json:"useRegionDetection,omitempty"`
+	UseLayoutDetection        *bool       `json:"useLayoutDetection,omitempty"`
+	LayoutThreshold           interface{} `json:"layoutThreshold,omitempty"`
+	LayoutNms                 *bool       `json:"layoutNms,omitempty"`
+	LayoutUnclipRatio         interface{} `json:"layoutUnclipRatio,omitempty"`
+	LayoutMergeBboxesMode     *string     `json:"layoutMergeBboxesMode,omitempty"`
+	TextDetLimitSideLen       *int        `json:"textDetLimitSideLen,omitempty"`
+	TextDetLimitType          *string     `json:"textDetLimitType,omitempty"`
+	TextDetThresh             *float64    `json:"textDetThresh,omitempty"`
+	TextDetBoxThresh          *float64    `json:"textDetBoxThresh,omitempty"`
+	TextDetUnclipRatio        *float64    `json:"textDetUnclipRatio,omitempty"`
+	TextRecScoreThresh        *float64    `json:"textRecScoreThresh,omitempty"`
+	Visualize                 *bool       `json:"visualize,omitempty"`
 }
 
 type OCRRequest struct {
-	FileURL  string
-	FilePath string
-	Options  *OCROptions
+	FileURL    string
+	FilePath   string
+	PageRanges string
+	BatchID    string
+	Options    *OCROptions
 }
 
 type DocParsingRequest struct {
-	Model    string
-	FileURL  string
-	FilePath string
-	Options  *DocParsingOptions
+	Model      string
+	FileURL    string
+	FilePath   string
+	PageRanges string
+	BatchID    string
+	Options    *DocParsingOptions
 }
