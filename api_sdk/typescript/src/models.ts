@@ -119,7 +119,7 @@ export interface PaddleOCRVLOptions {
 export type DocParsingOptions = PPStructureV3Options | PaddleOCRVLOptions;
 
 export interface OCRRequest {
-  model?: Model;
+  model?: Model | string;
   fileUrl?: string;
   filePath?: string;
   pageRanges?: string;
@@ -128,7 +128,7 @@ export interface OCRRequest {
 }
 
 export interface DocParsingRequest {
-  model?: Model;
+  model?: Model | string;
   fileUrl?: string;
   filePath?: string;
   pageRanges?: string;

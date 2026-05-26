@@ -167,6 +167,28 @@ describe("PaddleOCRClient public contract", () => {
     expect(JSON.parse(String(calls[1].init.body)).model).toBe(Model.PPOCRv5);
   });
 
+  test("submitOcr and submitDocumentParsing accept official model name strings", async () => {
+    const { fetch, calls } = captureFetch([
+      jsonResponse({ data: { jobId: "job-ocr" } }),
+      jsonResponse({ data: { jobId: "job-doc" } }),
+    ]);
+    const client = createClient(fetch);
+
+    const ocrJob = await client.submitOcr({
+      model: "PP-OCRv5",
+      fileUrl: "https://files.example.test/ocr.pdf",
+    });
+    const docJob = await client.submitDocumentParsing({
+      model: "PaddleOCR-VL-1.6",
+      fileUrl: "https://files.example.test/doc.pdf",
+    });
+
+    expect(ocrJob.model).toBe("PP-OCRv5");
+    expect(docJob.model).toBe("PaddleOCR-VL-1.6");
+    expect(JSON.parse(String(calls[0].init.body)).model).toBe("PP-OCRv5");
+    expect(JSON.parse(String(calls[1].init.body)).model).toBe("PaddleOCR-VL-1.6");
+  });
+
   test("model helpers classify current OCR and document parsing models", async () => {
     const mod = await import("../src/index.js");
 
@@ -399,7 +421,7 @@ describe("PaddleOCRClient public contract", () => {
       const client = createClient(fetch);
 
       const saved = await client.saveResource("https://storage.example.test/a/b/c.png", dir);
-      expect(saved).toEqual({ savedPaths: [join(dir, "c.png")] });
+      expect(saved).toBe(join(dir, "c.png"));
       await expect(readFile(join(dir, "c.png"), "utf8")).resolves.toBe("content");
       expect((calls[0].init.headers as Record<string, string>).Authorization).toBeUndefined();
 
@@ -430,9 +452,7 @@ describe("PaddleOCRClient public contract", () => {
 
       const saved = await client.saveOcrResultResources(result, dir);
 
-      expect(saved).toEqual({
-        savedPaths: [join(dir, "ocr-page-1.png"), join(dir, "ocr-page-2.jpg")],
-      });
+      expect(saved).toEqual([join(dir, "ocr-page-1.png"), join(dir, "ocr-page-2.jpg")]);
       await expect(readFile(join(dir, "ocr-page-1.png"), "utf8")).resolves.toBe("page 1");
       await expect(readFile(join(dir, "ocr-page-2.jpg"), "utf8")).resolves.toBe("page 2");
       expect(calls).toHaveLength(2);
@@ -467,9 +487,7 @@ describe("PaddleOCRClient public contract", () => {
 
       const saved = await client.saveDocumentParsingResultResources(result, dir);
 
-      expect(saved).toEqual({
-        savedPaths: [join(dir, "figure 1.png"), join(dir, "rendered-page.jpg")],
-      });
+      expect(saved).toEqual([join(dir, "figure 1.png"), join(dir, "rendered-page.jpg")]);
       await expect(readFile(join(dir, "figure 1.png"), "utf8")).resolves.toBe("markdown image");
       await expect(readFile(join(dir, "rendered-page.jpg"), "utf8")).resolves.toBe("output image");
     } finally {
@@ -499,9 +517,7 @@ describe("PaddleOCRClient public contract", () => {
 
       const saved = await client.saveDocumentParsingResultResources(result, dir);
 
-      expect(saved).toEqual({
-        savedPaths: [join(dir, "alpha.png"), join(dir, "bravo.png"), join(dir, "charlie.png")],
-      });
+      expect(saved).toEqual([join(dir, "alpha.png"), join(dir, "bravo.png"), join(dir, "charlie.png")]);
       expect(calls.map((call) => call.url)).toEqual([
         "https://storage.example.test/alpha",
         "https://storage.example.test/bravo",

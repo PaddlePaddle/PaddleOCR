@@ -74,7 +74,11 @@ client = PaddleOCRClient(
 
 ## 模型选择
 
+表中的 `Model` 枚举是官方 API 模型名字符串的类型安全写法，提交请求时会转换为对应的实际模型名。也可以直接传入官方 API 模型名字符串，例如 `model="PaddleOCR-VL-1.6"`。
+
 | 任务 | 适用接口 | 默认模型 | 可选模型 | 参数类型 |
 | --- | --- | --- | --- | --- |
 | OCR | `ocr`、`submit_ocr`、`wait_ocr_result` | `Model.PP_OCRV5` | `Model.PP_OCRV5` | `OCROptions` |
 | 文档解析 | `parse_document`、`submit_document_parsing`、`wait_document_parsing_result` | `Model.PADDLE_OCR_VL_16` | `Model.PP_STRUCTURE_V3`、`Model.PADDLE_OCR_VL`、`Model.PADDLE_OCR_VL_15`、`Model.PADDLE_OCR_VL_16` | 选择 `PP-StructureV3` 时传入 `PPStructureV3Options`；选择 `PaddleOCR-VL` 系列模型时传入 `PaddleOCRVLOptions`。 |
+
+常用对应关系：`Model.PP_OCRV5` 对应 `PP-OCRv5`，`Model.PP_STRUCTURE_V3` 对应 `PP-StructureV3`，`Model.PADDLE_OCR_VL` 对应 `PaddleOCR-VL`，`Model.PADDLE_OCR_VL_15` 对应 `PaddleOCR-VL-1.5`，`Model.PADDLE_OCR_VL_16` 对应 `PaddleOCR-VL-1.6`。

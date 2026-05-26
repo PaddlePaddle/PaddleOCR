@@ -42,11 +42,18 @@ func (c *Client) SubmitOCR(ctx context.Context, req *OCRRequest) (*Job, error) {
 	if req == nil {
 		return nil, &InvalidRequestError{PaddleOCRAPIError{Message: "OCR request is nil"}}
 	}
-	jobID, err := c.submit(ctx, PPOCRv5, req.FileURL, req.FilePath, req.Options, req.PageRanges, req.BatchID)
+	model := req.Model
+	if model == "" {
+		model = PPOCRv5
+	}
+	if !IsOCRModel(model) {
+		return nil, &InvalidRequestError{PaddleOCRAPIError{Message: "model is not an OCR model: " + model}}
+	}
+	jobID, err := c.submit(ctx, model, req.FileURL, req.FilePath, req.Options, req.PageRanges, req.BatchID)
 	if err != nil {
 		return nil, err
 	}
-	return &Job{JobID: jobID, Model: PPOCRv5, Task: "ocr", PageRanges: req.PageRanges, BatchID: req.BatchID}, nil
+	return &Job{JobID: jobID, Model: model, Task: "ocr", PageRanges: req.PageRanges, BatchID: req.BatchID}, nil
 }
 
 // SubmitDocumentParsing submits a document parsing job and returns job metadata for tracking.

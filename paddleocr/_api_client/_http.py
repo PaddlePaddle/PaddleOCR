@@ -18,10 +18,13 @@ from typing import Any, Dict, Optional
 
 import requests
 
+from ._core import (
+    extract_api_message_from_payload,
+    extract_job_id,
+    raise_for_status,
+    unwrap_api_response,
+)
 from .errors import (
-    APIError,
-    AuthError,
-    InvalidRequestError,
     NetworkError,
     RequestTimeoutError,
     ResponseFormatError,
@@ -34,12 +37,7 @@ DEFAULT_BASE_URL = "https://paddleocr.aistudio-app.com/api/v2/ocr/jobs"
 def _raise_for_response(response: requests.Response) -> None:
     if 200 <= response.status_code < 300:
         return
-    msg = _extract_api_message(response)
-    if response.status_code in (401, 403):
-        raise AuthError(f"Authentication failed: {msg}")
-    if response.status_code == 400:
-        raise InvalidRequestError(f"Bad request: {msg}")
-    raise APIError(response.status_code, msg)
+    raise_for_status(response.status_code, _extract_api_message(response))
 
 
 def _extract_api_message(response: requests.Response) -> str:
@@ -48,15 +46,9 @@ def _extract_api_message(response: requests.Response) -> str:
     except ValueError:
         return response.text
     if isinstance(payload, dict):
-        for key in ("msg", "errorMsg", "message"):
-            value = payload.get(key)
-            if value:
-                return str(value)
-        data = payload.get("data")
-        if isinstance(data, dict):
-            value = data.get("errorMsg")
-            if value:
-                return str(value)
+        msg = extract_api_message_from_payload(payload)
+        if msg:
+            return msg
     return response.text
 
 
@@ -67,27 +59,16 @@ def _response_json(response: requests.Response) -> Dict[str, Any]:
         raise ResponseFormatError(f"Response body is not valid JSON: {e}") from e
     if not isinstance(payload, dict):
         raise ResponseFormatError("Response body must be a JSON object.")
-    code = payload.get("code", 0)
-    if code not in (0, None):
-        raise APIError(response.status_code, _extract_api_message(response))
     return payload
 
 
-def _response_data(payload: Dict[str, Any]) -> Dict[str, Any]:
-    data = payload.get("data")
-    if not isinstance(data, dict):
-        raise ResponseFormatError("Response JSON must contain object field 'data'.")
-    return data
+def _response_data(response: requests.Response) -> Dict[str, Any]:
+    payload = _response_json(response)
+    return unwrap_api_response(payload, response.status_code)
 
 
 def _job_id_from_response(response: requests.Response) -> str:
-    data = _response_data(_response_json(response))
-    job_id = data.get("jobId")
-    if not isinstance(job_id, str) or not job_id:
-        raise ResponseFormatError(
-            "Response data must contain non-empty string 'jobId'."
-        )
-    return job_id
+    return extract_job_id(_response_data(response))
 
 
 class HTTPClient:
@@ -102,7 +83,7 @@ class HTTPClient:
         self._base_url = base_url.rstrip("/")
         self._timeout = timeout
         self._session = requests.Session()
-        self._session.headers["Authorization"] = f"bearer {token}"
+        self._session.headers["Authorization"] = f"Bearer {token}"
         if client_platform:
             self._session.headers["Client-Platform"] = client_platform
 
@@ -184,7 +165,7 @@ class HTTPClient:
         except requests.ConnectionError as e:
             raise NetworkError(f"Connection failed: {e}") from e
         _raise_for_response(resp)
-        return _response_data(_response_json(resp))
+        return _response_data(resp)
 
     def get_batch_status(self, batch_id: str) -> Dict[str, Any]:
         try:
@@ -197,7 +178,7 @@ class HTTPClient:
         except requests.ConnectionError as e:
             raise NetworkError(f"Connection failed: {e}") from e
         _raise_for_response(resp)
-        return _response_data(_response_json(resp))
+        return _response_data(resp)
 
     def fetch_jsonl(self, url: str) -> list:
         # Result URLs are often pre-signed object storage links.

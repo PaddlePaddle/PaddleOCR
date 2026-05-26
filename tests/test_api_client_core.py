@@ -25,6 +25,12 @@ def test_core_resolves_models_and_default_payloads():
     assert default_payload(Model.PP_OCRV5) == OCROptions().to_payload()
     assert default_payload(Model.PADDLE_OCR_VL_16) == PaddleOCRVLOptions().to_payload()
 
+    with pytest.raises(InvalidRequestError):
+        resolve_ocr_model("PP-StructureV3")
+
+    with pytest.raises(InvalidRequestError):
+        resolve_document_model("unknown-model")
+
 
 def test_core_selects_document_options_by_model():
     assert isinstance(

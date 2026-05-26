@@ -18,7 +18,6 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
-	"fmt"
 	"io"
 	"mime/multipart"
 	"net"
@@ -26,13 +25,6 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
-	"time"
-)
-
-const (
-	initialInterval = 3 * time.Second
-	multiplier      = 1.5
-	maxInterval     = 15 * time.Second
 )
 
 type apiResponse struct {
@@ -81,7 +73,7 @@ func (c *Client) submitURL(ctx context.Context, model, fileURL string, payload i
 	if err != nil {
 		return "", &NetworkError{PaddleOCRAPIError{Message: err.Error()}}
 	}
-	req.Header.Set("Authorization", "bearer "+c.token)
+	req.Header.Set("Authorization", "Bearer "+c.token)
 	req.Header.Set("Content-Type", "application/json")
 	c.setClientPlatformHeader(req)
 
@@ -123,7 +115,7 @@ func (c *Client) submitFile(ctx context.Context, model, filePath string, payload
 		return "", &ResponseFormatError{PaddleOCRAPIError{Message: "failed to encode optionalPayload", Cause: err}}
 	}
 	if err := w.WriteField("optionalPayload", string(payloadJSON)); err != nil {
-		return "", err
+		return "", &ResponseFormatError{PaddleOCRAPIError{Message: "failed to prepare multipart body", Cause: err}}
 	}
 	if pageRanges != "" {
 		_ = w.WriteField("pageRanges", pageRanges)
@@ -134,26 +126,26 @@ func (c *Client) submitFile(ctx context.Context, model, filePath string, payload
 
 	file, err := os.Open(filePath)
 	if err != nil {
-		return "", err
+		return "", &FileNotFoundError{Path: filePath, PaddleOCRAPIError: PaddleOCRAPIError{Message: "Failed to open file: " + filePath, Cause: err}}
 	}
 	defer file.Close()
 
 	fw, err := w.CreateFormFile("file", filepath.Base(filePath))
 	if err != nil {
-		return "", err
+		return "", &ResponseFormatError{PaddleOCRAPIError{Message: "failed to prepare multipart body", Cause: err}}
 	}
 	if _, err := io.Copy(fw, file); err != nil {
-		return "", err
+		return "", &NetworkError{PaddleOCRAPIError{Message: "failed to read file content", Cause: err}}
 	}
 	if err := w.Close(); err != nil {
-		return "", err
+		return "", &ResponseFormatError{PaddleOCRAPIError{Message: "failed to finalize multipart body", Cause: err}}
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "POST", c.baseURL, &buf)
 	if err != nil {
 		return "", &NetworkError{PaddleOCRAPIError{Message: err.Error()}}
 	}
-	req.Header.Set("Authorization", "bearer "+c.token)
+	req.Header.Set("Authorization", "Bearer "+c.token)
 	req.Header.Set("Content-Type", w.FormDataContentType())
 	c.setClientPlatformHeader(req)
 
@@ -186,7 +178,7 @@ func (c *Client) getJobStatus(ctx context.Context, jobID string) (*jobStatusResp
 	if err != nil {
 		return nil, &NetworkError{PaddleOCRAPIError{Message: err.Error()}}
 	}
-	req.Header.Set("Authorization", "bearer "+c.token)
+	req.Header.Set("Authorization", "Bearer "+c.token)
 	c.setClientPlatformHeader(req)
 
 	resp, err := c.httpClient.Do(req)
@@ -218,7 +210,7 @@ func (c *Client) getBatchStatus(ctx context.Context, batchID string) (*BatchStat
 	if err != nil {
 		return nil, &NetworkError{PaddleOCRAPIError{Message: err.Error(), Cause: err}}
 	}
-	req.Header.Set("Authorization", "bearer "+c.token)
+	req.Header.Set("Authorization", "Bearer "+c.token)
 	c.setClientPlatformHeader(req)
 
 	resp, err := c.httpClient.Do(req)
@@ -288,69 +280,6 @@ func (c *Client) fetchJSONL(ctx context.Context, url string) ([]map[string]inter
 		results = append(results, obj)
 	}
 	return results, nil
-}
-
-func (c *Client) pollUntilDone(ctx context.Context, jobID string) ([]map[string]interface{}, error) {
-	interval := initialInterval
-	deadline := time.Now().Add(c.pollTimeout)
-	pollCtx, cancel := context.WithDeadline(ctx, deadline)
-	defer cancel()
-
-	for time.Now().Before(deadline) {
-		remaining := time.Until(deadline)
-		if remaining <= 0 {
-			break
-		}
-		if interval > remaining {
-			interval = remaining
-		}
-		timer := time.NewTimer(interval)
-		select {
-		case <-pollCtx.Done():
-			timer.Stop()
-			if ctx.Err() != nil {
-				return nil, ctx.Err()
-			}
-			return nil, &PollTimeoutError{
-				JobID:             jobID,
-				Elapsed:           c.pollTimeout.Seconds(),
-				PaddleOCRAPIError: PaddleOCRAPIError{Message: fmt.Sprintf("Timed out after %.1fs", c.pollTimeout.Seconds())},
-			}
-		case <-timer.C:
-		}
-
-		status, err := c.getJobStatus(pollCtx, jobID)
-		if err != nil {
-			return nil, err
-		}
-
-		switch status.State {
-		case "done":
-			jsonURL := status.ResultURL["jsonUrl"]
-			if jsonURL == "" {
-				return nil, &ResponseFormatError{PaddleOCRAPIError{Message: "done job response is missing resultUrl.jsonUrl"}}
-			}
-			return c.fetchJSONL(pollCtx, jsonURL)
-		case "failed":
-			return nil, &JobFailedError{
-				JobID:             jobID,
-				ErrorMsg:          status.ErrorMsg,
-				PaddleOCRAPIError: PaddleOCRAPIError{Message: status.ErrorMsg},
-			}
-		}
-
-		next := time.Duration(float64(interval) * multiplier)
-		if next > maxInterval {
-			next = maxInterval
-		}
-		interval = next
-	}
-
-	return nil, &PollTimeoutError{
-		JobID:             jobID,
-		Elapsed:           c.pollTimeout.Seconds(),
-		PaddleOCRAPIError: PaddleOCRAPIError{Message: fmt.Sprintf("Timed out after %.1fs", c.pollTimeout.Seconds())},
-	}
 }
 
 func raiseForResponse(resp *http.Response) error {

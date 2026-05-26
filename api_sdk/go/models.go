@@ -118,7 +118,16 @@ type PaddleOCRVLOptions struct {
 	Visualize                 *bool       `json:"visualize,omitempty"`
 }
 
+// DocParsingOptionsProvider marks document parsing option structs.
+type DocParsingOptionsProvider interface {
+	isDocParsingOptions()
+}
+
+func (*PPStructureV3Options) isDocParsingOptions() {}
+func (*PaddleOCRVLOptions) isDocParsingOptions()   {}
+
 type OCRRequest struct {
+	Model      string
 	FileURL    string
 	FilePath   string
 	PageRanges string
@@ -132,6 +141,5 @@ type DocParsingRequest struct {
 	FilePath   string
 	PageRanges string
 	BatchID    string
-	// Options accepts *PPStructureV3Options or *PaddleOCRVLOptions.
-	Options interface{}
+	Options    DocParsingOptionsProvider
 }

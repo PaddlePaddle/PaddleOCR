@@ -65,10 +65,14 @@ client, err := paddleocr.NewClient(
 
 ## Choose Models
 
+The model constants in the table are type-safe aliases for the official API model-name strings. They are serialized to the corresponding model name when the request is submitted. You can also pass the official API model-name string directly, for example `Model: "PaddleOCR-VL-1.6"`.
+
 | Task | Interfaces | Default model | Supported models | Option type |
 | --- | --- | --- | --- | --- |
 | OCR | `OCR`, `SubmitOCR`, `WaitOCRResult` | `PPOCRv5` | `PPOCRv5` | `*OCROptions` |
 | Document parsing | `ParseDocument`, `SubmitDocumentParsing`, `WaitDocumentParsingResult` | `PaddleOCRVL16` | `PPStructureV3`, `PaddleOCRVL`, `PaddleOCRVL15`, `PaddleOCRVL16` | Use `*PPStructureV3Options` with `PPStructureV3`, and `*PaddleOCRVLOptions` with PaddleOCR-VL models. |
+
+Common mappings: `PPOCRv5` maps to `PP-OCRv5`, `PPStructureV3` maps to `PP-StructureV3`, `PaddleOCRVL` maps to `PaddleOCR-VL`, `PaddleOCRVL15` maps to `PaddleOCR-VL-1.5`, and `PaddleOCRVL16` maps to `PaddleOCR-VL-1.6`.
 
 ## Errors And Resource Saving
 

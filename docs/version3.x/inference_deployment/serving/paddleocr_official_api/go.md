@@ -65,10 +65,14 @@ client, err := paddleocr.NewClient(
 
 ## 模型选择
 
+表中的模型常量是官方 API 模型名字符串的类型安全写法，提交请求时会转换为对应的实际模型名。也可以直接传入官方 API 模型名字符串，例如 `Model: "PaddleOCR-VL-1.6"`。
+
 | 任务 | 适用接口 | 默认模型 | 可选模型 | 参数类型 |
 | --- | --- | --- | --- | --- |
 | OCR | `OCR`、`SubmitOCR`、`WaitOCRResult` | `PPOCRv5` | `PPOCRv5` | `*OCROptions` |
 | 文档解析 | `ParseDocument`、`SubmitDocumentParsing`、`WaitDocumentParsingResult` | `PaddleOCRVL16` | `PPStructureV3`、`PaddleOCRVL`、`PaddleOCRVL15`、`PaddleOCRVL16` | 选择 `PPStructureV3` 时传入 `*PPStructureV3Options`；选择 PaddleOCR-VL 系列模型时传入 `*PaddleOCRVLOptions`。 |
+
+常用对应关系：`PPOCRv5` 对应 `PP-OCRv5`，`PPStructureV3` 对应 `PP-StructureV3`，`PaddleOCRVL` 对应 `PaddleOCR-VL`，`PaddleOCRVL15` 对应 `PaddleOCR-VL-1.5`，`PaddleOCRVL16` 对应 `PaddleOCR-VL-1.6`。
 
 ## 错误与资源保存
 

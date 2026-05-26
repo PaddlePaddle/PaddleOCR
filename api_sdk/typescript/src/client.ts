@@ -100,27 +100,24 @@ export class PaddleOCRClient {
     resourceUrl: string,
     destination: string,
     options: SaveResourceOptions = {},
-  ): Promise<{ savedPaths: string[] }> {
-    const savedPath = await this.saveResourceUrl(resourceUrl, destination, options);
-    return { savedPaths: [savedPath] };
+  ): Promise<string> {
+    return this.saveResourceUrl(resourceUrl, destination, options);
   }
 
   async saveOcrResultResources(
     result: OCRResult,
     destination: string,
     options: SaveResourceOptions = {},
-  ): Promise<{ savedPaths: string[] }> {
-    const savedPaths = await this.saveResultResources(result, destination, options);
-    return { savedPaths };
+  ): Promise<string[]> {
+    return this.saveResultResources(result, destination, options);
   }
 
   async saveDocumentParsingResultResources(
     result: DocParsingResult,
     destination: string,
     options: SaveResourceOptions = {},
-  ): Promise<{ savedPaths: string[] }> {
-    const savedPaths = await this.saveResultResources(result, destination, options);
-    return { savedPaths };
+  ): Promise<string[]> {
+    return this.saveResultResources(result, destination, options);
   }
 
   private async saveResourceUrl(resourceUrl: string, destination: string, options: SaveResourceOptions): Promise<string> {
