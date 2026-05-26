@@ -152,10 +152,10 @@ PaddleOCR 공식 웹사이트에서는 별도 설정 없이 클릭 한 번으로
 
 ## 🧩 추가 기능
 
-- 모델을 ONNX 형식으로 변환: [ONNX 모델 획득](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/obtaining_onnx_models.html).
-- OpenVINO, ONNX Runtime, TensorRT 등의 엔진을 사용한 추론 가속 또는 ONNX 형식 모델을 사용한 추론: [고성능 추론](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/high_performance_inference.html).
+- 모델을 ONNX 형식으로 변환: [ONNX 모델 획득](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/inference_deployment/others/obtaining_onnx_models.html).
+- OpenVINO, ONNX Runtime, TensorRT 등의 엔진을 사용한 추론 가속 또는 ONNX 형식 모델을 사용한 추론: [고성능 추론](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/inference_deployment/local_inference/high_performance_inference.html).
 - 다중 GPU 및 다중 프로세스를 사용한 추론 가속: [파이프라인 병렬 추론](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/pipeline_usage/instructions/parallel_inference.html).
-- PaddleOCR를 C++, C#, Java 등으로 작성된 애플리케이션에 통합: [서빙](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/serving.html).
+- PaddleOCR를 C++, C#, Java 등으로 작성된 애플리케이션에 통합: [서빙](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/inference_deployment/serving/serving.html).
 
 ## 🔄 실행 결과 빠른 미리보기
 

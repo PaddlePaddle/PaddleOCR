@@ -9,14 +9,14 @@ TypeScript SDK 面向 Node.js 18 及以上环境，调用 PaddleOCR 官方 API �
 ## 安装与认证
 
 ```bash
-npm install paddleocr-sdk
+npm install @paddleocr/api-sdk
 export PADDLEOCR_ACCESS_TOKEN="your-api-token"
 ```
 
 客户端默认读取 `PADDLEOCR_ACCESS_TOKEN`，也可以传入 `token`：
 
 ```ts
-import { PaddleOCRClient } from "paddleocr-sdk";
+import { PaddleOCRClient } from "@paddleocr/api-sdk";
 
 const client = new PaddleOCRClient({
   token: process.env.PADDLEOCR_ACCESS_TOKEN,
@@ -26,7 +26,7 @@ const client = new PaddleOCRClient({
 ## 快速开始
 
 ```ts
-import { Model, PaddleOCRClient } from "paddleocr-sdk";
+import { Model, PaddleOCRClient } from "@paddleocr/api-sdk";
 
 const client = new PaddleOCRClient();
 const result = await client.ocr({

@@ -159,7 +159,20 @@ describe("PaddleOCRClient public contract", () => {
     expect(mod.isOCRModel(Model.PPStructureV3)).toBe(false);
     expect(mod.isOCRModel("future-unknown-model")).toBe(false);
     expect(mod.isDocumentParsingModel(Model.PaddleOCRVL)).toBe(true);
+    expect(mod.isDocumentParsingModel(Model.PaddleOCRVL16)).toBe(true);
     expect(mod.isDocumentParsingModel(Model.PPOCRv5)).toBe(false);
+  });
+
+  test("submitDocumentParsing defaults to PaddleOCR-VL-1.6", async () => {
+    const { fetch, calls } = captureFetch([jsonResponse({ data: { jobId: "job-doc" } })]);
+    const client = createClient(fetch);
+
+    const job = await client.submitDocumentParsing({
+      fileUrl: "https://files.example.test/doc.pdf",
+    });
+
+    expect(job.model).toBe(Model.PaddleOCRVL16);
+    expect(JSON.parse(String(calls[0].init.body)).model).toBe(Model.PaddleOCRVL16);
   });
 
   test("submitOcr rejects non-OCR models before network calls", async () => {
@@ -365,7 +378,7 @@ describe("PaddleOCRClient public contract", () => {
   });
 
   test("saveResource writes URL downloads without auth and requires overwrite opt-in", async () => {
-    const dir = await mkdtemp(join(tmpdir(), "paddleocr-sdk-"));
+    const dir = await mkdtemp(join(tmpdir(), "paddleocr-api-sdk-"));
     try {
       const { fetch, calls } = captureFetch([textResponse("content"), textResponse("replacement")]);
       const client = createClient(fetch);
@@ -388,7 +401,7 @@ describe("PaddleOCRClient public contract", () => {
   });
 
   test("saveResource saves OCR result image URLs with stable page filenames", async () => {
-    const dir = await mkdtemp(join(tmpdir(), "paddleocr-sdk-"));
+    const dir = await mkdtemp(join(tmpdir(), "paddleocr-api-sdk-"));
     try {
       const { fetch, calls } = captureFetch([textResponse("page 1"), textResponse("page 2")]);
       const client = createClient(fetch);
@@ -418,7 +431,7 @@ describe("PaddleOCRClient public contract", () => {
   });
 
   test("saveResource preserves safe document parsing map keys over opaque URL basenames", async () => {
-    const dir = await mkdtemp(join(tmpdir(), "paddleocr-sdk-"));
+    const dir = await mkdtemp(join(tmpdir(), "paddleocr-api-sdk-"));
     try {
       const { fetch } = captureFetch([textResponse("markdown image"), textResponse("output image")]);
       const client = createClient(fetch);
@@ -450,7 +463,7 @@ describe("PaddleOCRClient public contract", () => {
   });
 
   test("saveResource sorts document parsing map keys for deterministic output", async () => {
-    const dir = await mkdtemp(join(tmpdir(), "paddleocr-sdk-"));
+    const dir = await mkdtemp(join(tmpdir(), "paddleocr-api-sdk-"));
     try {
       const { fetch, calls } = captureFetch([textResponse("alpha"), textResponse("bravo"), textResponse("charlie")]);
       const client = createClient(fetch);
@@ -488,7 +501,7 @@ describe("PaddleOCRClient public contract", () => {
   });
 
   test("saveResource requires overwrite opt-in for bulk result files", async () => {
-    const dir = await mkdtemp(join(tmpdir(), "paddleocr-sdk-"));
+    const dir = await mkdtemp(join(tmpdir(), "paddleocr-api-sdk-"));
     try {
       const result: OCRResult = {
         jobId: "job-ocr",
@@ -516,7 +529,7 @@ describe("PaddleOCRClient public contract", () => {
     ["forward separator", "nested/escape.png"],
     ["backslash separator", "nested\\escape.png"],
   ])("saveResource rejects unsafe document parsing map key: %s", async (_name, unsafeKey) => {
-    const dir = await mkdtemp(join(tmpdir(), "paddleocr-sdk-"));
+    const dir = await mkdtemp(join(tmpdir(), "paddleocr-api-sdk-"));
     try {
       const { fetch } = captureFetch([]);
       const client = createClient(fetch);

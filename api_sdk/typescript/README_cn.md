@@ -1,35 +1,32 @@
 # PaddleOCR TypeScript SDK
 
-English | [简体中文](README_cn.md)
+[English](README.md) | 简体中文
 
-TypeScript client for the PaddleOCR official API. It submits OCR and document
-parsing jobs to hosted PaddleOCR services; it does not perform local OCR
-inference.
+面向 PaddleOCR 官方 API 的 TypeScript 客户端。它会把 OCR 和文档解析任务提交到 PaddleOCR 官方托管服务；不会在本地执行 OCR 推理。
 
-Official user docs:
+正式用户文档：
 
 - [TypeScript SDK](../../docs/version3.x/inference_deployment/serving/paddleocr_official_api/typescript.md)
-- [TypeScript SDK (English)](../../docs/version3.x/inference_deployment/serving/paddleocr_official_api/typescript.en.md)
+- [TypeScript SDK（英文）](../../docs/version3.x/inference_deployment/serving/paddleocr_official_api/typescript.en.md)
 
-## Install
+## 安装
 
 ```bash
 npm install @paddleocr/api-sdk
 ```
 
-This package follows SemVer. Release policy is documented in
-[`../VERSIONING.md`](../VERSIONING.md).
+该包遵循语义化版本，发布策略见 [`../VERSIONING_cn.md`](../VERSIONING_cn.md)。
 
-For local development:
+本地开发：
 
 ```bash
 npm install
 npm run build
 ```
 
-## Minimal Usage
+## 最小示例
 
-Set `PADDLEOCR_ACCESS_TOKEN` or pass `token` to the client:
+设置 `PADDLEOCR_ACCESS_TOKEN`，或在构造客户端时传入 `token`：
 
 ```bash
 export PADDLEOCR_ACCESS_TOKEN="your-api-token"
@@ -47,7 +44,7 @@ const result = await client.ocr({
 console.log(result.jobId, result.pages.length);
 ```
 
-Document parsing defaults to PaddleOCR-VL-1.6:
+文档解析默认使用 PaddleOCR-VL-1.6：
 
 ```ts
 const doc = await client.parseDocument({
@@ -60,7 +57,7 @@ const doc = await client.parseDocument({
 console.log(doc.jobId, doc.pages.length);
 ```
 
-## Build And Test
+## 构建与测试
 
 ```bash
 npm run lint

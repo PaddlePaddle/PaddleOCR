@@ -151,10 +151,10 @@ Pour une utilisation locale, veuillez consulter la documentation suivante en fon
 
 ## 🧩 Plus de fonctionnalités
 
-- Convertir des modèles au format ONNX : [Obtenir des modèles ONNX](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/obtaining_onnx_models.html).
-- Accélérer l'inférence à l'aide de moteurs tels qu'OpenVINO, ONNX Runtime, TensorRT, ou effectuer une inférence à l'aide de modèles au format ONNX : [Inférence haute performance](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/high_performance_inference.html).
+- Convertir des modèles au format ONNX : [Obtenir des modèles ONNX](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/inference_deployment/others/obtaining_onnx_models.html).
+- Accélérer l'inférence à l'aide de moteurs tels qu'OpenVINO, ONNX Runtime, TensorRT, ou effectuer une inférence à l'aide de modèles au format ONNX : [Inférence haute performance](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/inference_deployment/local_inference/high_performance_inference.html).
 - Accélérer l'inférence à l'aide de plusieurs GPU et plusieurs processus : [Inférence parallèle pour les pipelines](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/pipeline_usage/instructions/parallel_inference.html).
-- Intégrer PaddleOCR dans des applications écrites en C++, C#, Java, etc. : [Services](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/serving.html).
+- Intégrer PaddleOCR dans des applications écrites en C++, C#, Java, etc. : [Services](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/inference_deployment/serving/serving.html).
 
 ## 🔄 Aperçu rapide des résultats d'exécution
 

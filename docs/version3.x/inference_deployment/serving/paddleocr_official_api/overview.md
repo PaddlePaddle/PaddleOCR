@@ -6,7 +6,7 @@ comments: true
 
 PaddleOCR 官方 API SDK 是面向 PaddleOCR 官方 API 的客户端封装。它们会把本地文件或文件 URL 提交到官方托管服务，轮询异步任务并解析结果；它们不在本机运行 PaddleOCR 推理，也不会加载本地模型。
 
-目前提供 Python、TypeScript、Go SDK，以及集成在 PaddleOCR CLI 中的 `paddleocr api` 命令。Python SDK 的源码相邻参考位于 `api_sdk/PYTHON.md`，TypeScript 和 Go 参考分别位于 `api_sdk/typescript/README.md` 与 `api_sdk/go/README.md`。本文档站页面是面向用户的官方文档入口。
+目前提供 Python、TypeScript、Go SDK，以及集成在 PaddleOCR CLI 中的 `paddleocr api` 命令。`api_sdk/README.md` 是维护者入口；TypeScript 和 Go 包级参考分别位于 `api_sdk/typescript/README.md` 与 `api_sdk/go/README.md`。本文档站页面是面向用户的官方文档入口。
 
 ## 认证
 

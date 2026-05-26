@@ -1,5 +1,7 @@
 # PaddleOCR official API SDK Contract
 
+English | [简体中文](CONTRACT_cn.md)
+
 This contract defines the first public release surface for the PaddleOCR official API SDKs. Because the current branch APIs are unpublished, implementation teams must rename, reshape, or remove existing draft APIs as needed to match this contract; no backward compatibility is required for unpublished branch APIs.
 
 The SDKs are official API wrappers for PaddleOCR services. They do not run local PaddleOCR inference, load local PaddleOCR models, or provide offline OCR execution.
@@ -28,7 +30,7 @@ Each SDK must expose the following operations with names that are idiomatic but 
 | Get status | `get_status(job_id)` | `getStatus(jobId)` | `GetStatus(ctx, jobID)` | Performs a non-blocking status request only and returns `JobStatus`. |
 | Wait OCR result | `wait_ocr_result(job)` | `waitOcrResult(job)` | `WaitOCRResult(ctx, job)` | Polls an OCR job until completion and returns `OCRResult`. |
 | Wait document parsing result | `wait_document_parsing_result(job)` | `waitDocumentParsingResult(job)` | `WaitDocumentParsingResult(ctx, job)` | Polls a document parsing job until completion and returns `DocParsingResult`. |
-| Resource saving/downloading helper | `save_resource(...)` | `saveResource(...)` | `SaveResource(...)` | Downloads or saves result resources using the SDK's result URL handling rules and overwrite behavior. |
+| Resource saving/downloading helper | Not exposed | `saveResource(...)` | `SaveResource(...)` | Downloads or saves result resources using the SDK's result URL handling rules and overwrite behavior. TypeScript and Go also support result-object bulk saving helpers. |
 
 ## Data Models
 
@@ -56,11 +58,11 @@ OCR APIs must accept a typed model parameter and default to PP-OCRv5:
 - TypeScript: `OCRRequest.model?: Model`, defaulting to `Model.PPOCRv5`.
 - Go: `OCRRequest.Model Model`, defaulting to `PPOCRv5` when zero-valued.
 
-Document parsing APIs must accept a typed model parameter and default to PaddleOCR-VL-1.5:
+Document parsing APIs must accept a typed model parameter and default to PaddleOCR-VL-1.6:
 
-- Python: `parse_document(..., model=Model.PADDLE_OCR_VL_15)` and `submit_document_parsing(..., model=Model.PADDLE_OCR_VL_15)`.
-- TypeScript: `DocParsingRequest.model?: Model`, defaulting to `Model.PaddleOCRVL15`.
-- Go: `DocParsingRequest.Model Model`, defaulting to `PaddleOCRVL15` when zero-valued.
+- Python: `parse_document(..., model=Model.PADDLE_OCR_VL_16)` and `submit_document_parsing(..., model=Model.PADDLE_OCR_VL_16)`.
+- TypeScript: `DocParsingRequest.model?: Model`, defaulting to `Model.PaddleOCRVL16`.
+- Go: `DocParsingRequest.Model Model`, defaulting to `PaddleOCRVL16` when zero-valued.
 
 PP-OCRv5 is the only OCR model supported by this release, but SDK submit/wait
 logic must be model-extensible. Each SDK must centralize model classification in

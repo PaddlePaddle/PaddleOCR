@@ -119,6 +119,7 @@ export interface PaddleOCRVLOptions {
 export type DocParsingOptions = PPStructureV3Options | PaddleOCRVLOptions;
 
 export interface OCRRequest {
+  model?: Model;
   fileUrl?: string;
   filePath?: string;
   pageRanges?: string;
@@ -141,8 +142,10 @@ export interface ClientOptions {
   timeout?: number;
   requestTimeout?: number;
   pollTimeout?: number;
+  fetch?: typeof fetch;
 }
 
 export interface SaveResourceOptions {
   overwrite?: boolean;
+  filename?: string;
 }

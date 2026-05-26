@@ -13,7 +13,7 @@
 // limitations under the License.
 
 export { PaddleOCRClient } from "./client.js";
-export { Model } from "./models.js";
+export { Model, isDocumentParsingModel, isOCRModel, isVLModel } from "./models.js";
 export type {
   ClientOptions,
   DocParsingOptions,

@@ -11,12 +11,18 @@ PaddleOCR 提供轻量级的 [Model Context Protocol（MCP）](https://modelcont
 
 ### 主要功能如下：
 
-- **当前支持的工具**
-    - **OCR**：对图像和 PDF 文件进行文本检测与识别。
-    - **PP-StructureV3**：从图像或 PDF 文件中识别和提取文本块、标题、段落、图片、表格以及其他版面元素，将输入转换为 Markdown 文档。
-    - **PaddleOCR-VL**：使用基于多模态大模型的方案，从图像或 PDF 文件中识别和提取文本块、标题、段落、图片、表格以及其他版面元素，将输入转换为 Markdown 文档。
-    - **PaddleOCR-VL-1.5**：PaddleOCR-VL 的升级版，相较于 PaddleOCR-VL，PaddleOCR-VL-1.5 在速度与准确率上均有提升。
-    - **PaddleOCR-VL-1.6**：PaddleOCR-VL 系列的最新版本，在 PaddleOCR-VL-1.5 的基础上进一步升级了 VLM 组件。
+- **当前支持的产线**
+
+    | 产线 | MCP 工具名称 | 说明 |
+    | --- | --- | --- |
+    | `OCR` | `ocr` | 对图像和 PDF 文件进行文本检测与识别。 |
+    | `PP-StructureV3` | `pp_structurev3` | 从图像或 PDF 文件中识别和提取文本块、标题、段落、图片、表格以及其他版面元素，将输入转换为 Markdown 文档。 |
+    | `PaddleOCR-VL` | `paddleocr_vl` | 使用基于多模态大模型的方案进行版面解析，将输入转换为 Markdown 文档。 |
+    | `PaddleOCR-VL-1.5` | `paddleocr_vl` | PaddleOCR-VL 的升级版，相较于 PaddleOCR-VL，在速度与准确率上均有提升。 |
+    | `PaddleOCR-VL-1.6` | `paddleocr_vl` | PaddleOCR-VL 系列的最新版本，在 PaddleOCR-VL-1.5 的基础上进一步升级了 VLM 组件。 |
+
+    > 每个 MCP 服务器实例对外只暴露一个 MCP 工具。
+
 - **支持运行在如下工作模式**
     - **本地 Python 库**：在本机直接运行 PaddleOCR 产线。此模式对本地环境与计算机性能有一定要求，适用于需要离线使用、对数据隐私有严格要求的场景。
     - **PaddleOCR 官方服务**：调用 [PaddleOCR 官网](https://aistudio.baidu.com/paddleocr) 提供的云服务。此模式适合快速体验功能、快速验证方案等，也适用于零代码开发场景。
@@ -418,6 +424,6 @@ paddleocr_mcp --pipeline OCR --ppocr_source self_hosted --server_url http://127.
 
 ## 5. 已知局限性
 
-- 在本地 Python 库模式下，当前提供的工具无法处理 Base64 编码的 PDF 文档输入。
-- 在本地 Python 库模式下，当前提供的工具不会根据模型提示的 `file_type` 推断文件类型，对于一些复杂 URL 可能处理失败。
+- 在本地 Python 库模式下，对外暴露的 MCP 工具无法处理 Base64 编码的 PDF 文档输入。
+- 在本地 Python 库模式下，对外暴露的 MCP 工具不会根据模型提示的 `file_type` 推断文件类型，对于一些复杂 URL 可能处理失败。
 - 对于 PP-StructureV3 和 PaddleOCR-VL 系列，若输入文件中包含图像，返回结果可能会显著增加 token 使用量。若无需图像内容，可通过提示词明确排除，以降低资源消耗。

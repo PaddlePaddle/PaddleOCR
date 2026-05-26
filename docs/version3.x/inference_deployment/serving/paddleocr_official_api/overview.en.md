@@ -6,7 +6,7 @@ comments: true
 
 The PaddleOCR official API SDKs are client libraries for the PaddleOCR official API. They submit local files or file URLs to hosted PaddleOCR services, poll asynchronous jobs, and parse typed results. They do not run local PaddleOCR inference or load local models.
 
-The current clients include Python, TypeScript, Go, and the `paddleocr api` command in the PaddleOCR CLI. Source-adjacent references live in `api_sdk/PYTHON.md`, `api_sdk/typescript/README.md`, and `api_sdk/go/README.md`; the docs site pages are the official user documentation entry point.
+The current clients include Python, TypeScript, Go, and the `paddleocr api` command in the PaddleOCR CLI. `api_sdk/README.md` is the maintainer entry point; package-level TypeScript and Go references live in `api_sdk/typescript/README.md` and `api_sdk/go/README.md`. The docs site pages are the official user documentation entry point.
 
 ## Authentication
 

@@ -9,6 +9,10 @@
     "declaration": true,
     "strict": true,
     "esModuleInterop": true,
+    "baseUrl": ".",
+    "paths": {
+      "@paddleocr/api-sdk": ["src/index.ts"]
+    },
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   },

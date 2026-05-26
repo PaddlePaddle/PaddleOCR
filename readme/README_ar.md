@@ -153,10 +153,10 @@
 
 ## 🧩 المزيد من الميزات
 
-- تحويل النماذج إلى صيغة ONNX: [الحصول على نماذج ONNX](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/obtaining_onnx_models.html).
-- تسريع الاستدلال باستخدام محركات مثل OpenVINO وONNX Runtime وTensorRT، أو إجراء الاستدلال باستخدام نماذج بصيغة ONNX: [الاستدلال عالي الأداء](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/high_performance_inference.html).
+- تحويل النماذج إلى صيغة ONNX: [الحصول على نماذج ONNX](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/inference_deployment/others/obtaining_onnx_models.html).
+- تسريع الاستدلال باستخدام محركات مثل OpenVINO وONNX Runtime وTensorRT، أو إجراء الاستدلال باستخدام نماذج بصيغة ONNX: [الاستدلال عالي الأداء](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/inference_deployment/local_inference/high_performance_inference.html).
 - تسريع الاستدلال باستخدام وحدات GPU متعددة وعمليات متعددة: [الاستدلال المتوازي لخطوط الأنابيب](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/pipeline_usage/instructions/parallel_inference.html).
-- دمج PaddleOCR في تطبيقات مكتوبة بلغات C++ وC# وJava وغيرها: [الخدمة](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/serving.html).
+- دمج PaddleOCR في تطبيقات مكتوبة بلغات C++ وC# وJava وغيرها: [الخدمة](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/inference_deployment/serving/serving.html).
 
 ## 🔄 نظرة سريعة على نتائج التنفيذ
 

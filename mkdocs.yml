@@ -332,7 +332,6 @@ nav:
   - PaddleOCR-VL:
     - 使用教程: version3.x/pipeline_usage/PaddleOCR-VL.md
     - PaddleOCR-VL-1.5简介: version3.x/algorithm/PaddleOCR-VL/PaddleOCR-VL-1.5.md
-    - PaddleOCR-VL-1.6简介: version3.x/algorithm/PaddleOCR-VL/PaddleOCR-VL-1.6.md
     - PaddleOCR-VL简介: version3.x/algorithm/PaddleOCR-VL/PaddleOCR-VL.md
     - PaddleOCR-VL NVIDIA Blackwell 架构 GPU 使用教程: version3.x/pipeline_usage/PaddleOCR-VL-NVIDIA-Blackwell.md
     - PaddleOCR-VL 昆仑芯 XPU 使用教程: version3.x/pipeline_usage/PaddleOCR-VL-Kunlunxin-XPU.md

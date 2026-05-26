@@ -1,8 +1,8 @@
-# PaddleOCR-VL-1.6 高性能服务化部署
+# PaddleOCR-VL 高性能服务化部署
 
 [English](README_en.md)
 
-本目录提供一套支持并发请求处理的 PaddleOCR-VL-1.6 高性能服务化部署方案。
+本目录提供一套支持并发请求处理的 **PaddleOCR-VL 系列**高性能服务化部署方案，适用于 `PaddleOCR-VL`、`PaddleOCR-VL-1.5`、`PaddleOCR-VL-1.6` 等产线版本。
 
 > 本方案目前暂时只支持 NVIDIA GPU，对其他推理设备的支持仍在完善中。
 
@@ -16,7 +16,7 @@
 | ---------------| ----------------------------------------------------------------------------------|
 | FastAPI 网关　| 统一访问入口、简化客户端调用、并发控制　　　　　　　　　　　　　　　　　　　　　 |
 | Triton 服务器 | 版面分析模型（PP-DocLayoutV3）及产线串联逻辑，负责模型管理、动态批处理、推理调度 |
-| vLLM 服务器　 | VLM（PaddleOCR-VL-1.6），连续批处理推理　　　　　　　　　　　　　　　　　　　　　|
+| vLLM 服务器　 | VLM，连续批处理推理　　　　　　　　　　　　　　　　　　　　|
 
 **Triton 模型：**
 
@@ -45,8 +45,12 @@ cd PaddleOCR/deploy/paddleocr_vl_docker/hps
 2. 准备必要文件：
 
 ```bash
+cp .env.example .env
+# 按需修改 .env 中的 PIPELINE_NAME
 bash prepare.sh
 ```
+
+`prepare.sh` 会根据 `.env` 下载对应 PaddleOCR-VL 版本的 HPS SDK，并写入 Triton 产线配置。
 
 3. 启动服务：
 
@@ -79,6 +83,28 @@ cp .env.example .env
 ```bash
 export HPS_MAX_CONCURRENT_INFERENCE_REQUESTS=8
 ```
+
+#### 产线与 SDK 配置
+
+通过以下变量选择 VL 系列中的具体版本（修改后需重新执行 `prepare.sh` 并重建镜像）：
+
+| 变量 | 默认值 | 说明 |
+|------|--------|------|
+| `PIPELINE_NAME` | `PaddleOCR-VL-1.6` | 产线名称，对应 HPS SDK 包名中的版本标识 |
+| `HPS_SDK_VERSION` | `v3.6` | PaddleX HPS SDK 发布目录 |
+| `HPS_SDK_DIR` | `paddlex_hps_PaddleOCR-VL-1.6_sdk` | 解压后的 SDK 目录，通常遵循 `paddlex_hps_${PIPELINE_NAME}_sdk` |
+
+常见配置示例：
+
+| 目标版本 | `PIPELINE_NAME` | `HPS_SDK_DIR` |
+|----------|-----------------|---------------|
+| PaddleOCR-VL-1.6 | `PaddleOCR-VL-1.6` | `paddlex_hps_PaddleOCR-VL-1.6_sdk` |
+| PaddleOCR-VL-1.5 | `PaddleOCR-VL-1.5` | `paddlex_hps_PaddleOCR-VL-1.5_sdk` |
+| PaddleOCR-VL (v1) | `PaddleOCR-VL` | `paddlex_hps_PaddleOCR-VL_sdk` |
+
+> `prepare.sh` 会以 SDK 自带的 `pipeline_config.yaml` 为基准写入 `pipeline_name`。VLM 名称由该文件中的 `SubModules.VLRecognition.model_name` 自动解析；Triton 与 vLLM 服务均读取同一份配置，无需额外环境变量。
+
+#### 网关与设备
 
 | 变量　　　　　　　　　　　　　　　　　　　　| 默认值　　　　　　　　　　　　　 | 说明　　　　　　　　　　　　　　　　　　|
 | ---------------------------------------------| ----------------------------------| -----------------------------------------|

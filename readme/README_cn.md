@@ -152,10 +152,10 @@ PaddleOCR官方网站提供交互式**体验中心**和**APIs**——无需设�
 
 ## 🧩 更多功能
 
-- 将模型转换为ONNX格式: [获取ONNX模型](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/deployment/obtaining_onnx_models.html)。
-- 使用OpenVINO、ONNX Runtime、TensorRT等引擎加速推理,或使用ONNX格式模型进行推理: [高性能推理](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/deployment/high_performance_inference.html)。
+- 将模型转换为ONNX格式: [获取ONNX模型](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/inference_deployment/others/obtaining_onnx_models.html)。
+- 使用OpenVINO、ONNX Runtime、TensorRT等引擎加速推理,或使用ONNX格式模型进行推理: [高性能推理](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/inference_deployment/local_inference/high_performance_inference.html)。
 - 使用多GPU和多进程加速推理: [流水线并行推理](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/pipeline_usage/instructions/parallel_inference.html)。
-- 将PaddleOCR集成到C++、C#、Java等语言编写的应用程序中: [服务化部署](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/deployment/serving.html)。
+- 将PaddleOCR集成到C++、C#、Java等语言编写的应用程序中: [服务化部署](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/inference_deployment/serving/serving.html)。
 
 ## 🔄 执行结果快速预览
 

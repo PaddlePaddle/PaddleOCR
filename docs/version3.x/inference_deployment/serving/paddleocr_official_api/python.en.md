@@ -66,10 +66,6 @@ The OCR `model` is optional and defaults to `Model.PP_OCRV5`. PP-OCRv5 is the on
 
 All SDK errors inherit from `PaddleOCRAPIError`. Common typed errors include `AuthError`, `InvalidRequestError`, `APIError`, `NetworkError`, `JobFailedError`, `RequestTimeoutError`, `PollTimeoutError`, `ResponseFormatError`, and `ResultParseError`.
 
-
-See `api_sdk/PYTHON.md` for the source-adjacent reference.
-
-
 ## Batch Status
 
 When submitting jobs, pass `batch_id`. Later, use `client.get_batch_status("batch-id")` to inspect each job's state, progress, and result URL in that batch.

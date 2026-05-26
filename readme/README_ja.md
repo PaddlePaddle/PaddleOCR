@@ -152,10 +152,10 @@ PaddleOCR公式ウェブサイトでは、インタラクティブな**体験セ
 
 ## 🧩 その他の機能
 
-- モデルをONNX形式に変換: [ONNXモデルの取得](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/obtaining_onnx_models.html)
-- OpenVINO、ONNX Runtime、TensorRTなどのエンジンを使用した推論高速化、またはONNX形式モデルによる推論: [高性能推論](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/high_performance_inference.html)
+- モデルをONNX形式に変換: [ONNXモデルの取得](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/inference_deployment/others/obtaining_onnx_models.html)
+- OpenVINO、ONNX Runtime、TensorRTなどのエンジンを使用した推論高速化、またはONNX形式モデルによる推論: [高性能推論](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/inference_deployment/local_inference/high_performance_inference.html)
 - マルチGPUおよびマルチプロセスによる推論高速化: [パイプラインの並列推論](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/pipeline_usage/instructions/parallel_inference.html)
-- PaddleOCRをC++、C#、Javaなどで書かれたアプリケーションに統合: [サービスデプロイメント](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/serving.html)
+- PaddleOCRをC++、C#、Javaなどで書かれたアプリケーションに統合: [サービスデプロイメント](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/inference_deployment/serving/serving.html)
 
 ## 🔄 実行結果の概要
 

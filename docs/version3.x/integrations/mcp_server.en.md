@@ -11,12 +11,18 @@ PaddleOCR provides a lightweight [Model Context Protocol (MCP)](https://modelcon
 
 ### Key Features
 
-- **Currently Supported Tools**
-    - **OCR**: Performs text detection and recognition on images and PDF files.
-    - **PP-StructureV3**: Identifies and extracts text blocks, titles, paragraphs, images, tables, and other layout elements from images or PDF files, converting the input into Markdown documents.
-    - **PaddleOCR-VL**: Identifies and extracts text blocks, titles, paragraphs, images, tables, and other layout elements from images or PDF files, converting the input into Markdown documents. A VLM-based approach is used.
-    - **PaddleOCR-VL-1.5**: An upgraded version of PaddleOCR-VL. Compared with PaddleOCR-VL, PaddleOCR-VL-1.5 achieves improvements in both speed and accuracy.
-    - **PaddleOCR-VL-1.6**: The latest version in the PaddleOCR-VL series, further upgrading the VLM component on top of PaddleOCR-VL-1.5.
+- **Currently Supported Pipelines**
+
+    | Pipeline | MCP tool name | Description |
+    | --- | --- | --- |
+    | `OCR` | `ocr` | Performs text detection and recognition on images and PDF files. |
+    | `PP-StructureV3` | `pp_structurev3` | Identifies and extracts text blocks, titles, paragraphs, images, tables, and other layout elements from images or PDF files, converting the input into Markdown documents. |
+    | `PaddleOCR-VL` | `paddleocr_vl` | Performs layout parsing with a VLM-based approach and converts the input into Markdown documents. |
+    | `PaddleOCR-VL-1.5` | `paddleocr_vl` | An upgraded version of PaddleOCR-VL with improvements in both speed and accuracy. |
+    | `PaddleOCR-VL-1.6` | `paddleocr_vl` | The latest version in the PaddleOCR-VL series, further upgrading the VLM component on top of PaddleOCR-VL-1.5. |
+
+    > Each MCP server instance exposes exactly one MCP tool.
+
 - **Supported Working Modes**
     - **Local Python Library**: Runs PaddleOCR pipelines directly on the local machine. This mode requires a suitable local environment and hardware, and is ideal for offline use or privacy-sensitive scenarios.
     - **PaddleOCR Official Service**: Invokes services provided by the [PaddleOCR Official Website](https://aistudio.baidu.com/paddleocr?lang=en). This is suitable for quick testing, prototyping, or no-code scenarios.
@@ -25,7 +31,7 @@ PaddleOCR provides a lightweight [Model Context Protocol (MCP)](https://modelcon
 
 ## Examples:
 
-The following showcases creative use cases built with PaddleOCR MCP server combined with other tools:
+The following showcases creative use cases built with the PaddleOCR MCP server combined with other tools:
 
 ### Demo 1
 
@@ -201,7 +207,7 @@ This section explains how to use the PaddleOCR MCP server within Claude for Desk
             pipeline.export_paddlex_config_to_yaml("PP-StructureV3.yaml")
             ```
 
-        **For PaddleOCR-VL series, it is note recommended to use CPUs for inference.**
+        **For PaddleOCR-VL series, it is not recommended to use CPUs for inference.**
 
       **Important**:
 
@@ -419,12 +425,12 @@ You can control the MCP server via environment variables or CLI arguments.
 | `PADDLEOCR_MCP_DEVICE`                | `--device`                | `str`  | Device for inference (`local` mode only).                          | -                                        | `None`        |
 | `PADDLEOCR_MCP_PIPELINE_CONFIG`       | `--pipeline_config`       | `str`  | Path to pipeline config file (`local` mode only).                     | -                                        | `None`        |
 | -                                     | `--http`                  | `bool` | Use Streamable HTTP instead of stdio (for remote/multi-client use).   | -                                        | `False`       |
-| -                                     | `--host`                  | `str`  | Host for the Stremable HTTP mode.                                                   | -                                        | `"127.0.0.1"` |
+| -                                     | `--host`                  | `str`  | Host for the Streamable HTTP mode.                                                   | -                                        | `"127.0.0.1"` |
 | -                                     | `--port`                  | `int`  | Port for the Streamable HTTP mode.                                                   | -                                        | `8000`        |
 | -                                     | `--verbose`               | `bool` | Enable verbose logging for debugging.                                               | -                                        | `False`       |
 
 ## 5. Known Limitations
 
-- In the local Python library mode, the current tools cannot process PDF document inputs that are Base64 encoded.
-- In the local Python library mode, the current tools do not infer the file type based on the model's `file_type` prompt, and may fail to process some complex URLs.
+- In the local Python library mode, the exposed MCP tool cannot process PDF document inputs that are Base64 encoded.
+- In the local Python library mode, the exposed MCP tool does not infer the file type based on the model's `file_type` prompt, and may fail to process some complex URLs.
 - For the PP-StructureV3 and PaddleOCR-VL series, if the input file contains images, the returned results may significantly increase token usage. If image content is not needed, you can explicitly exclude it through prompts to reduce resource consumption.

@@ -1,28 +1,26 @@
 # PaddleOCR Go SDK
 
-English | [简体中文](README_cn.md)
+[English](README.md) | 简体中文
 
-Go client for the PaddleOCR official API. It submits OCR and document parsing
-jobs to hosted PaddleOCR services; it does not run local PaddleOCR inference or
-load local models.
+面向 PaddleOCR 官方 API 的 Go 客户端。它会把 OCR 和文档解析任务提交到 PaddleOCR 官方托管服务；不会运行本地 PaddleOCR 推理，也不会加载本地模型。
 
-Official user docs:
+正式用户文档：
 
 - [Go SDK](../../docs/version3.x/inference_deployment/serving/paddleocr_official_api/go.md)
-- [Go SDK (English)](../../docs/version3.x/inference_deployment/serving/paddleocr_official_api/go.en.md)
+- [Go SDK（英文）](../../docs/version3.x/inference_deployment/serving/paddleocr_official_api/go.en.md)
 
-## Install
+## 安装
 
 ```bash
 go get github.com/PaddlePaddle/PaddleOCR/api_sdk/go
 ```
 
-Versioned releases use submodule tags such as `api_sdk/go/v0.1.0`. See
-[`../VERSIONING.md`](../VERSIONING.md).
+版本化发布使用 `api_sdk/go/v0.1.0` 这类子目录 module tag。详见
+[`../VERSIONING_cn.md`](../VERSIONING_cn.md)。
 
-## Minimal Usage
+## 最小示例
 
-Set `PADDLEOCR_ACCESS_TOKEN` or pass `WithToken` when constructing the client:
+设置 `PADDLEOCR_ACCESS_TOKEN`，或在构造客户端时传入 `WithToken`：
 
 ```bash
 export PADDLEOCR_ACCESS_TOKEN="your-api-token"
@@ -44,7 +42,7 @@ if err != nil {
 fmt.Println(result.JobID, len(result.Pages))
 ```
 
-Document parsing defaults to PaddleOCR-VL-1.6:
+文档解析默认使用 PaddleOCR-VL-1.6：
 
 ```go
 doc, err := client.ParseDocument(ctx, &paddleocr.DocParsingRequest{
@@ -59,7 +57,7 @@ if err != nil {
 fmt.Println(doc.JobID, len(doc.Pages))
 ```
 
-## Build And Test
+## 构建与测试
 
 ```bash
 go test ./...
@@ -67,4 +65,4 @@ go vet ./...
 go test -race ./...
 ```
 
-`go test -race ./...` is recommended before public release.
+公开发布前建议运行 `go test -race ./...`。

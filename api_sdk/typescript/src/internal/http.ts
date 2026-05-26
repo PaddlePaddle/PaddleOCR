@@ -45,11 +45,18 @@ export class HttpClient {
   private baseUrl: string;
   private token: string;
   private requestTimeout: number;
+  private fetchImpl: typeof fetch;
 
-  constructor(token: string, baseUrl: string = DEFAULT_BASE_URL, requestTimeout: number = 300000) {
+  constructor(
+    token: string,
+    baseUrl: string = DEFAULT_BASE_URL,
+    requestTimeout: number = 300000,
+    fetchImpl: typeof fetch = fetch,
+  ) {
     this.token = token;
     this.baseUrl = baseUrl.replace(/\/+$/, "");
     this.requestTimeout = requestTimeout;
+    this.fetchImpl = fetchImpl;
   }
 
   async submitUrl(model: string, fileUrl: string, optionalPayload: object, options: SubmitOptions = {}): Promise<string> {
@@ -171,7 +178,7 @@ export class HttpClient {
       ...(init.headers as Record<string, string> || {}),
     };
     if (withAuth) {
-      headers.Authorization = `bearer ${this.token}`;
+      headers.Authorization = `Bearer ${this.token}`;
     }
 
     let resp: Response;
@@ -187,7 +194,7 @@ export class HttpClient {
       signal?.addEventListener("abort", abort, { once: true });
     }
     try {
-      resp = await fetch(url, {
+      resp = await this.fetchImpl(url, {
         ...init,
         headers,
         signal: abortController.signal,

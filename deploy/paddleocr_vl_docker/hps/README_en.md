@@ -1,8 +1,8 @@
-# PaddleOCR-VL-1.6 High-Performance Service Deployment
+# PaddleOCR-VL High-Performance Serving
 
 [简体中文](README.md)
 
-This directory provides a high-performance service deployment solution for PaddleOCR-VL-1.6 with concurrent request processing support.
+This directory provides a high-performance service deployment solution for the **PaddleOCR-VL series** with concurrent request processing support. It applies to VL pipeline releases such as `PaddleOCR-VL`, `PaddleOCR-VL-1.5`, and `PaddleOCR-VL-1.6`.
 
 > This solution currently only supports NVIDIA GPUs. Support for other inference devices is still being developed.
 
@@ -15,8 +15,8 @@ Client → FastAPI Gateway → Triton Server → vLLM Server
 | Component       | Description                                                                                                                 |
 | -----------------| -----------------------------------------------------------------------------------------------------------------------------|
 | FastAPI Gateway | Unified access point, simplified client calls, concurrency control                                                          |
-| Triton Server   | layout analysis model (PP-DocLayoutV3) and pipeline orchestration; model management, dynamic batching, inference scheduling |
-| vLLM Server     | VLM (PaddleOCR-VL-1.6), continuous batching inference                                                                       |
+| Triton Server   | Layout analysis model (PP-DocLayoutV3) and pipeline orchestration; model management, dynamic batching, inference scheduling |
+| vLLM Server     | VLM, continuous batching inference                                                                                            |
 
 **Triton Models:**
 
@@ -45,8 +45,12 @@ cd PaddleOCR/deploy/paddleocr_vl_docker/hps
 2. Prepare necessary files:
 
 ```bash
+cp .env.example .env
+# Edit PIPELINE_NAME in .env if needed
 bash prepare.sh
 ```
+
+`prepare.sh` downloads the HPS SDK for the selected PaddleOCR-VL release and writes the Triton pipeline config.
 
 3. Start the services:
 
@@ -79,6 +83,28 @@ You can also set these as environment variables directly instead of using the `.
 ```bash
 export HPS_MAX_CONCURRENT_INFERENCE_REQUESTS=8
 ```
+
+#### Pipeline and SDK Configuration
+
+Use the following variables to choose a release from the VL series. After changing them, rerun `prepare.sh` and rebuild the images:
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `PIPELINE_NAME` | `PaddleOCR-VL-1.6` | Pipeline name; also used in the HPS SDK package name |
+| `HPS_SDK_VERSION` | `v3.6` | PaddleX HPS SDK release directory |
+| `HPS_SDK_DIR` | `paddlex_hps_PaddleOCR-VL-1.6_sdk` | Extracted SDK directory, usually `paddlex_hps_${PIPELINE_NAME}_sdk` |
+
+Common examples:
+
+| Target release | `PIPELINE_NAME` | `HPS_SDK_DIR` |
+|----------------|-----------------|---------------|
+| PaddleOCR-VL-1.6 | `PaddleOCR-VL-1.6` | `paddlex_hps_PaddleOCR-VL-1.6_sdk` |
+| PaddleOCR-VL-1.5 | `PaddleOCR-VL-1.5` | `paddlex_hps_PaddleOCR-VL-1.5_sdk` |
+| PaddleOCR-VL (v1) | `PaddleOCR-VL` | `paddlex_hps_PaddleOCR-VL_sdk` |
+
+> `prepare.sh` writes `pipeline_name` into the SDK-bundled `pipeline_config.yaml`. The VLM name is parsed automatically from `SubModules.VLRecognition.model_name` in that file; both Triton and the vLLM service read the same configuration, with no extra environment variable required.
+
+#### Gateway and Device
 
 | Variable | Default | Description |
 |----------|---------|-------------|

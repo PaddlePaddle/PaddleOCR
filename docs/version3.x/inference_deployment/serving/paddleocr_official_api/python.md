@@ -66,10 +66,6 @@ OCR 的 `model` 可省略，默认是 `Model.PP_OCRV5`。当前 PaddleOCR 官方
 
 所有 SDK 错误都继承自 `PaddleOCRAPIError`，常见类型包括 `AuthError`、`InvalidRequestError`、`APIError`、`NetworkError`、`JobFailedError`、`RequestTimeoutError`、`PollTimeoutError`、`ResponseFormatError` 和 `ResultParseError`。
 
-
-更多源码相邻参考见 `api_sdk/PYTHON.md`。
-
-
 ## 批量任务查询
 
 提交任务时可传入 `batch_id`。之后可使用 `client.get_batch_status("batch-id")` 查询该批次下各任务的状态、进度和结果 URL。

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { PaddleOCRClient, Model } from "paddleocr-sdk";
+import { PaddleOCRClient, Model } from "@paddleocr/api-sdk";
 
 async function main() {
   const client = new PaddleOCRClient();

@@ -9,14 +9,14 @@ The TypeScript SDK targets Node.js 18+ and calls the PaddleOCR official API for 
 ## Install And Authenticate
 
 ```bash
-npm install paddleocr-sdk
+npm install @paddleocr/api-sdk
 export PADDLEOCR_ACCESS_TOKEN="your-api-token"
 ```
 
 The client reads `PADDLEOCR_ACCESS_TOKEN` by default and also accepts `token`:
 
 ```ts
-import { PaddleOCRClient } from "paddleocr-sdk";
+import { PaddleOCRClient } from "@paddleocr/api-sdk";
 
 const client = new PaddleOCRClient({
   token: process.env.PADDLEOCR_ACCESS_TOKEN,
@@ -26,7 +26,7 @@ const client = new PaddleOCRClient({
 ## Quick Start
 
 ```ts
-import { Model, PaddleOCRClient } from "paddleocr-sdk";
+import { Model, PaddleOCRClient } from "@paddleocr/api-sdk";
 
 const client = new PaddleOCRClient();
 const result = await client.ocr({

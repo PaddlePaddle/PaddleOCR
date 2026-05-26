@@ -41,7 +41,7 @@ export class PaddleOCRClient {
     const requestTimeout = options.requestTimeout || options.timeout || 300000;
     const pollTimeout = options.pollTimeout || options.timeout || 600000;
 
-    this.http = new HttpClient(token, baseUrl, requestTimeout);
+    this.http = new HttpClient(token, baseUrl, requestTimeout, options.fetch);
     this.poller = new Poller(this.http, pollTimeout);
   }
 
@@ -56,7 +56,7 @@ export class PaddleOCRClient {
   }
 
   async submitOcr(req: OCRRequest, options?: { signal?: AbortSignal }): Promise<Job> {
-    const model = Model.PPOCRv5;
+    const model = req.model ?? Model.PPOCRv5;
     const jobId = await this.submit(model, "ocr", req, options?.signal);
     return { jobId, model, task: "ocr", pageRanges: req.pageRanges, batchId: req.batchId };
   }
@@ -298,11 +298,16 @@ export class PaddleOCRClient {
 
   private resolveJob(job: Job | string, expectedTask: Job["task"]): Job {
     if (typeof job === "string") {
-      return { jobId: job, model: "", task: expectedTask };
+      return {
+        jobId: job,
+        model: expectedTask === "ocr" ? Model.PPOCRv5 : Model.PaddleOCRVL16,
+        task: expectedTask,
+      };
     }
     if (job.task !== expectedTask) {
       throw new InvalidRequestError(`Job ${job.jobId} is a ${job.task} job, not a ${expectedTask} job.`);
     }
+    this.validateModelForTask(job.model, expectedTask);
     return job;
   }
 

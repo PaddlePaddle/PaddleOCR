@@ -151,10 +151,10 @@
 
 ## 🧩 Дополнительные возможности
 
-- Конвертация моделей в формат ONNX: [Получение моделей ONNX](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/obtaining_onnx_models.html).
-- Ускорение вывода с использованием движков OpenVINO, ONNX Runtime, TensorRT или выполнение вывода с использованием моделей в формате ONNX: [Высокопроизводительный вывод](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/high_performance_inference.html).
+- Конвертация моделей в формат ONNX: [Получение моделей ONNX](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/inference_deployment/others/obtaining_onnx_models.html).
+- Ускорение вывода с использованием движков OpenVINO, ONNX Runtime, TensorRT или выполнение вывода с использованием моделей в формате ONNX: [Высокопроизводительный вывод](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/inference_deployment/local_inference/high_performance_inference.html).
 - Ускорение вывода с использованием нескольких GPU и многопроцессорной обработки: [Параллельный вывод для конвейеров](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/pipeline_usage/instructions/parallel_inference.html).
-- Интеграция PaddleOCR в приложения, написанные на C++, C#, Java и др.: [Сервисное развёртывание](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/serving.html).
+- Интеграция PaddleOCR в приложения, написанные на C++, C#, Java и др.: [Сервисное развёртывание](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/inference_deployment/serving/serving.html).
 
 ## 🔄 Краткий обзор результатов выполнения
 
