@@ -18,7 +18,6 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"sync"
 
 	paddleocr "github.com/PaddlePaddle/PaddleOCR/api_sdk/go"
 )
@@ -31,10 +30,10 @@ func main() {
 	ctx := context.Background()
 
 	// Convenience method (blocks until done)
-	result, err := client.DocParsing(ctx, &paddleocr.DocParsingRequest{
+	result, err := client.ParseDocument(ctx, &paddleocr.DocParsingRequest{
 		Model:    paddleocr.PPStructureV3,
 		FilePath: "./sample.pdf",
-		Options:  &paddleocr.DocParsingOptions{UseChartRecognition: paddleocr.Bool(true)},
+		Options:  &paddleocr.PPStructureV3Options{UseChartRecognition: paddleocr.Bool(true)},
 	})
 	if err != nil {
 		log.Fatal(err)
@@ -43,31 +42,20 @@ func main() {
 		fmt.Printf("Page %d:\n%s\n", i+1, page.MarkdownText)
 	}
 
-	// Manual control with Operation objects
-	op1, _ := client.SubmitOCR(ctx, &paddleocr.OCRRequest{FileURL: "https://example.com/f1.pdf"})
-	op2, _ := client.SubmitDocParsing(ctx, &paddleocr.DocParsingRequest{
+	// Manual control with typed job metadata and typed wait methods.
+	ocrJob, _ := client.SubmitOCR(ctx, &paddleocr.OCRRequest{FileURL: "https://example.com/f1.pdf"})
+	docJob, _ := client.SubmitDocumentParsing(ctx, &paddleocr.DocParsingRequest{
 		Model: paddleocr.PPStructureV3, FilePath: "./sample.pdf",
 	})
 
-	var wg sync.WaitGroup
-	wg.Add(2)
-	go func() {
-		defer wg.Done()
-		r, err := op1.Wait(ctx)
-		if err != nil {
-			log.Printf("op1 error: %v", err)
-			return
-		}
-		fmt.Printf("OCR done: %v\n", r)
-	}()
-	go func() {
-		defer wg.Done()
-		r, err := op2.Wait(ctx)
-		if err != nil {
-			log.Printf("op2 error: %v", err)
-			return
-		}
-		fmt.Printf("DocParsing done: %v\n", r)
-	}()
-	wg.Wait()
+	ocrResult, err := client.WaitOCRResult(ctx, ocrJob.JobID)
+	if err != nil {
+		log.Printf("OCR job error: %v", err)
+	}
+	docResult, err := client.WaitDocumentParsingResult(ctx, docJob.JobID)
+	if err != nil {
+		log.Printf("document parsing job error: %v", err)
+	}
+	fmt.Printf("OCR done: %v\n", ocrResult)
+	fmt.Printf("Document parsing done: %v\n", docResult)
 }

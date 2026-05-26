@@ -10,7 +10,7 @@ comments: true
 
 ## 准备环境
 
-- **根据[PaddleOCR安装文档](../installation.md)完成PaddleOCR安装**
+- **根据[PaddleOCR安装文档](../../installation.md)完成PaddleOCR安装**
 - **安装PyInstaller**
 
 安装PyInstaller：

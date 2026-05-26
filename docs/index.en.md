@@ -19,6 +19,8 @@ Since its initial release, PaddleOCR has gained widespread acclaim across academ
 
 PaddleOCR-VL-1.5 innovatively supports irregular-shaped bounding box localization of document elements, enabling excellent performance in real-world application scenarios such as scanning, skew, warping, screen-photography, and complex illumination, achieving comprehensive SOTA performance. In addition, the model further integrates seal recognition and spotting tasks, with key metrics continuing to lead mainstream models.
 
+**PaddleOCR now supports PaddleOCR-VL-1.6, the latest version in the PaddleOCR-VL series.** PaddleOCR-VL-1.6 further upgrades the VLM component (PaddleOCR-VL-1.6-0.9B) on top of PaddleOCR-VL-1.5 and continues to use PP-DocLayoutV3 for layout analysis.
+
 You can use it online on the [PaddleOCR official website](https://www.paddleocr.com) or call the model API.
 
 
@@ -42,7 +44,7 @@ You can use it online on the [PaddleOCR official website](https://www.paddleocr.
 
 In addition to its strong model library, PaddleOCR 3.0 also provides easy-to-use tools covering model training, inference, and serving, helping developers bring AI applications into production more efficiently.
 
-**In addition, PaddleOCR provides official [Agent Skills](./version3.x/deployment/skills.en.md) for invoking text recognition, document parsing, and related capabilities in Skills-enabled AI apps.**
+**In addition, PaddleOCR provides official [Agent Skills](./version3.x/integrations/skills.en.md) for invoking text recognition, document parsing, and related capabilities in Skills-enabled AI apps.**
 
 <div align="center">
   <p>

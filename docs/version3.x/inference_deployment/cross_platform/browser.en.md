@@ -99,7 +99,7 @@ The SDK downloads `textDetectionModelAsset.url` / `textRecognitionModelAsset.url
 | Required files | The tar must contain **`inference.onnx`** and **`inference.yml`** (they may live in a subdirectory; entries are matched by basename). |
 | `model_name` | **`inference.yml`** must define a **`model_name`** that matches the `textDetectionModelName` / `textRecognitionModelName` you pass to `create`. This is checked after load during initialization. |
 
-If you need to convert Paddle models into the ONNX model files used here, see [Obtaining ONNX models](obtaining_onnx_models.en.md). The standard model files produced by that workflow can then be packaged as a `.tar` following the rules above for use with PaddleOCR.js.
+If you need to convert Paddle models into the ONNX model files used here, see [Obtaining ONNX models](../others/obtaining_onnx_models.en.md). The standard model files produced by that workflow can then be packaged as a `.tar` following the rules above for use with PaddleOCR.js.
 
 If the archive or model files do not meet these rules, initialization typically fails with an **`Error`** that describes the problem, for example: non-2xx download, missing `inference.onnx` / `inference.yml` in the tar, empty resources, missing or mismatched `model_name`, incomplete model config, or ONNX load failure. There is no silent fallback.
 
@@ -124,7 +124,7 @@ SubModules:
 const ocr = await PaddleOCR.create({ pipelineConfig });
 ```
 
-`pipelineConfig` can be YAML text or a parsed object. In the browser, submodule `model_dir` must be **`null` or an asset object** (e.g. `{ url: "..." }`), not a local filesystem path string. If you want to start from a pipeline configuration exported by PaddleOCR / PaddleX, see the "Exporting Pipeline Configuration Files" section in [PaddleOCR and PaddleX](../paddleocr_and_paddlex.en.md); the exported YAML can be used as the basis for `pipelineConfig`, and any `model_dir` entries should then be adapted to browser-side asset objects.
+`pipelineConfig` can be YAML text or a parsed object. In the browser, submodule `model_dir` must be **`null` or an asset object** (e.g. `{ url: "..." }`), not a local filesystem path string. If you want to start from a pipeline configuration exported by PaddleOCR / PaddleX, see the "Exporting Pipeline Configuration Files" section in [PaddleOCR and PaddleX](../../paddleocr_and_paddlex.en.md); the exported YAML can be used as the basis for `pipelineConfig`, and any `model_dir` entries should then be adapted to browser-side asset objects.
 
 If both direct parameters and `pipelineConfig` are provided, **direct parameters take precedence**.
 

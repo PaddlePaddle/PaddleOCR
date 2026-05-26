@@ -922,6 +922,8 @@ class PaddleOCRVLHandler(_LayoutParsingHandler):
             pipeline_version = "v1"
         elif self._pipeline == "PaddleOCR-VL-1.5":
             pipeline_version = "v1.5"
+        elif self._pipeline == "PaddleOCR-VL-1.6":
+            pipeline_version = "v1.6"
         else:
             raise RuntimeError(f"Unknown pipeline {repr(self._pipeline)}")
         return PaddleOCRVL(
@@ -947,6 +949,7 @@ _PIPELINE_HANDLERS: Dict[str, Type[PipelineHandler]] = {
     "PP-StructureV3": PPStructureV3Handler,
     "PaddleOCR-VL": PaddleOCRVLHandler,
     "PaddleOCR-VL-1.5": PaddleOCRVLHandler,
+    "PaddleOCR-VL-1.6": PaddleOCRVLHandler,
 }
 
 

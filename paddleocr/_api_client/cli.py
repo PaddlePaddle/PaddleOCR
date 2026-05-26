@@ -15,8 +15,15 @@
 import json
 import sys
 
-from .client import APIClient
-from .models import DocParsingOptions, Model, OCROptions
+from .client import PaddleOCRClient
+from .models import (
+    Model,
+    OCROptions,
+    PaddleOCRVLOptions,
+    PPStructureV3Options,
+    is_ocr_model,
+    is_vl_model,
+)
 
 
 def register_api_command(subparsers):
@@ -55,7 +62,7 @@ def register_api_command(subparsers):
         "--token",
         type=str,
         default=None,
-        help="API token (or set PADDLE_OCR_TOKEN env variable)",
+        help="API token (or set PADDLEOCR_ACCESS_TOKEN env variable)",
     )
     subparser.add_argument(
         "--output",
@@ -108,7 +115,7 @@ def _execute_api(args):
         kwargs["token"] = args.token
 
     try:
-        client = APIClient(**kwargs)
+        client = PaddleOCRClient(**kwargs)
     except Exception as e:
         print(f"Error: {e}", file=sys.stderr)
         sys.exit(1)
@@ -117,9 +124,9 @@ def _execute_api(args):
         model = _resolve_model(args.model) if args.model else None
 
         if args.model_type == "ocr":
-            if model not in (None, Model.PP_OCRV5):
+            if model is not None and not is_ocr_model(model):
                 print(
-                    f"Error: OCR task only supports {Model.PP_OCRV5.value}.",
+                    f"Error: OCR task does not support {model.value}.",
                     file=sys.stderr,
                 )
                 sys.exit(2)
@@ -134,17 +141,21 @@ def _execute_api(args):
                 options=options,
                 page_ranges=args.page_ranges,
                 batch_id=args.batch_id,
+                model=model or Model.PP_OCRV5,
             )
             output = _ocr_result_to_dict(result)
         else:
             if model is None:
-                model = Model.PP_STRUCTURE_V3
-            options = DocParsingOptions(
+                model = Model.PADDLE_OCR_VL_16
+            options_cls = (
+                PaddleOCRVLOptions if is_vl_model(model) else PPStructureV3Options
+            )
+            options = options_cls(
                 use_doc_orientation_classify=args.use_doc_orientation_classify,
                 use_doc_unwarping=args.use_doc_unwarping,
                 use_chart_recognition=args.use_chart_recognition,
             )
-            result = client.doc_parsing(
+            result = client.parse_document(
                 model=model,
                 file_url=args.file_url,
                 file_path=args.file_path,

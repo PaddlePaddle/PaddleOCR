@@ -10,7 +10,7 @@ This guide applies to packaging PaddleOCR projects using PyInstaller.
 
 ## Preparing the Environment
 
-- **Complete the PaddleOCR installation according to the [PaddleOCR Installation Documentation](../installation.en.md).**
+- **Complete the PaddleOCR installation according to the [PaddleOCR Installation Documentation](../../installation.en.md).**
 - **Install PyInstaller.**
 
 Install PyInstaller:

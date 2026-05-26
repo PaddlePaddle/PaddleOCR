@@ -23,24 +23,71 @@ from .errors import (
     AuthError,
     InvalidRequestError,
     NetworkError,
+    RequestTimeoutError,
+    ResponseFormatError,
+    ResultParseError,
 )
 
 DEFAULT_BASE_URL = "https://paddleocr.aistudio-app.com/api/v2/ocr/jobs"
 
 
 def _raise_for_response(response: requests.Response) -> None:
-    if response.status_code == 200:
+    if 200 <= response.status_code < 300:
         return
-    try:
-        msg = response.json().get("message", response.text)
-    except Exception:
-        msg = response.text
+    msg = _extract_api_message(response)
     if response.status_code in (401, 403):
         raise AuthError(f"Authentication failed: {msg}")
-    elif response.status_code == 400:
+    if response.status_code == 400:
         raise InvalidRequestError(f"Bad request: {msg}")
-    else:
-        raise APIError(response.status_code, msg)
+    raise APIError(response.status_code, msg)
+
+
+def _extract_api_message(response: requests.Response) -> str:
+    try:
+        payload = response.json()
+    except ValueError:
+        return response.text
+    if isinstance(payload, dict):
+        for key in ("msg", "errorMsg", "message"):
+            value = payload.get(key)
+            if value:
+                return str(value)
+        data = payload.get("data")
+        if isinstance(data, dict):
+            value = data.get("errorMsg")
+            if value:
+                return str(value)
+    return response.text
+
+
+def _response_json(response: requests.Response) -> Dict[str, Any]:
+    try:
+        payload = response.json()
+    except ValueError as e:
+        raise ResponseFormatError(f"Response body is not valid JSON: {e}") from e
+    if not isinstance(payload, dict):
+        raise ResponseFormatError("Response body must be a JSON object.")
+    code = payload.get("code", 0)
+    if code not in (0, None):
+        raise APIError(response.status_code, _extract_api_message(response))
+    return payload
+
+
+def _response_data(payload: Dict[str, Any]) -> Dict[str, Any]:
+    data = payload.get("data")
+    if not isinstance(data, dict):
+        raise ResponseFormatError("Response JSON must contain object field 'data'.")
+    return data
+
+
+def _job_id_from_response(response: requests.Response) -> str:
+    data = _response_data(_response_json(response))
+    job_id = data.get("jobId")
+    if not isinstance(job_id, str) or not job_id:
+        raise ResponseFormatError(
+            "Response data must contain non-empty string 'jobId'."
+        )
+    return job_id
 
 
 class HTTPClient:
@@ -74,10 +121,12 @@ class HTTPClient:
                 json=body,
                 timeout=self._timeout,
             )
-        except (requests.ConnectionError, requests.Timeout) as e:
-            raise NetworkError(f"Connection failed: {e}")
+        except requests.Timeout as e:
+            raise RequestTimeoutError(f"Request timed out: {e}") from e
+        except requests.ConnectionError as e:
+            raise NetworkError(f"Connection failed: {e}") from e
         _raise_for_response(resp)
-        return resp.json()["data"]["jobId"]
+        return _job_id_from_response(resp)
 
     def submit_file(
         self,
@@ -105,10 +154,12 @@ class HTTPClient:
                     files={"file": f},
                     timeout=self._timeout,
                 )
-        except (requests.ConnectionError, requests.Timeout) as e:
-            raise NetworkError(f"Connection failed: {e}")
+        except requests.Timeout as e:
+            raise RequestTimeoutError(f"Request timed out: {e}") from e
+        except requests.ConnectionError as e:
+            raise NetworkError(f"Connection failed: {e}") from e
         _raise_for_response(resp)
-        return resp.json()["data"]["jobId"]
+        return _job_id_from_response(resp)
 
     def get_job_status(self, job_id: str) -> Dict[str, Any]:
         try:
@@ -116,25 +167,45 @@ class HTTPClient:
                 f"{self._base_url}/{job_id}",
                 timeout=self._timeout,
             )
-        except (requests.ConnectionError, requests.Timeout) as e:
-            raise NetworkError(f"Connection failed: {e}")
+        except requests.Timeout as e:
+            raise RequestTimeoutError(f"Request timed out: {e}") from e
+        except requests.ConnectionError as e:
+            raise NetworkError(f"Connection failed: {e}") from e
         _raise_for_response(resp)
-        return resp.json()["data"]
+        return _response_data(_response_json(resp))
+
+    def get_batch_status(self, batch_id: str) -> Dict[str, Any]:
+        try:
+            resp = self._session.get(
+                f"{self._base_url}/batch/{batch_id}",
+                timeout=self._timeout,
+            )
+        except requests.Timeout as e:
+            raise RequestTimeoutError(f"Request timed out: {e}") from e
+        except requests.ConnectionError as e:
+            raise NetworkError(f"Connection failed: {e}") from e
+        _raise_for_response(resp)
+        return _response_data(_response_json(resp))
 
     def fetch_jsonl(self, url: str) -> list:
         # Result URLs are often pre-signed object storage links; do not send API token.
         try:
             resp = requests.get(url, timeout=self._timeout)
-        except (requests.ConnectionError, requests.Timeout) as e:
-            raise NetworkError(f"Connection failed: {e}")
-        resp.raise_for_status()
-        lines = resp.text.strip().split("\n")
-        results = []
-        for line in lines:
-            line = line.strip()
-            if line:
-                results.append(json.loads(line))
-        return results
+        except requests.Timeout as e:
+            raise RequestTimeoutError(f"Request timed out: {e}") from e
+        except requests.ConnectionError as e:
+            raise NetworkError(f"Connection failed: {e}") from e
+        try:
+            resp.raise_for_status()
+            lines = resp.text.strip().split("\n")
+            results = []
+            for line in lines:
+                line = line.strip()
+                if line:
+                    results.append(json.loads(line))
+            return results
+        except json.JSONDecodeError as e:
+            raise ResultParseError(f"Malformed JSONL result payload: {e}") from e
 
     def close(self):
         self._session.close()

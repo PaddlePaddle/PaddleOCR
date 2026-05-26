@@ -37,7 +37,7 @@ English | [简体中文](./readme/README_cn.md) | [繁體中文](./readme/README
 ### 📄 Intelligent Document Parsing (LLM-Ready)
 > *Transforming messy visuals into structured data for the LLM era.*
 
-* **SOTA Document VLM**: Featuring **PaddleOCR-VL-1.5 (0.9B)**, the industry's leading lightweight vision-language model for document parsing. It excels in parsing complex documents across 5 major "Real-World" challenges: **Warping, Scanning, Screen Photography, Illumination, and Skewed documents**, with structured outputs in **Markdown** and **JSON** formats.
+* **SOTA Document VLM**: Featuring **PaddleOCR-VL-1.6 (0.9B)**, the latest lightweight vision-language model in the PaddleOCR-VL series for document parsing. It excels in parsing complex documents across 5 major "Real-World" challenges: **Warping, Scanning, Screen Photography, Illumination, and Skewed documents**, with structured outputs in **Markdown** and **JSON** formats.
 * **Structure-Aware Conversion**: Powered by **PP-StructureV3**, seamlessly convert complex PDFs and images into **Markdown** or **JSON**. Unlike the PaddleOCR-VL series models, it provides more fine-grained coordinate information, including table cell coordinates, text coordinates, and more.
 * **Production-Ready Efficiency**: Achieve commercial-grade accuracy with an ultra-small footprint. Outperforms numerous closed-source solutions in public benchmarks while remaining resource-efficient for edge/cloud deployment.
 
@@ -64,6 +64,7 @@ English | [简体中文](./readme/README_cn.md) | [繁體中文](./readme/README
 
 ### 🔥 PaddleOCR v3.5.0 Released: More Flexible Inference and Richer Document Output
 * **Flexible inference backends**: Seamlessly switch between Paddle static graph, Paddle dynamic graph, or Transformers. PaddleOCR is now deeply integrated with the Hugging Face ecosystem, and 20 major models support Transformers as the inference backend.
+* **PaddleOCR-VL-1.6 support**: PaddleOCR now supports PaddleOCR-VL-1.6, the latest version in the PaddleOCR-VL series, across Python API, CLI, MCP, official API SDKs, and Docker deployment.
 * **Office documents to Markdown**: Convert common document formats such as Word, Excel, and PowerPoint into Markdown.
 * **DOCX export for parsed results**: The `PaddleOCR-VL` series, `PP-StructureV3`, and `PP-DocTranslation` now support exporting parsed results to DOCX for convenient viewing and editing in Microsoft Word.
 * **Official browser inference SDK**: Released `PaddleOCR.js`, the official browser inference SDK that supports running `PP-OCRv5` directly in the browser.
@@ -71,7 +72,7 @@ English | [简体中文](./readme/README_cn.md) | [繁體中文](./readme/README
 <details>
 <summary><strong>2026.01.29: Release of PaddleOCR 3.4.0</strong></summary>
 
-* **PaddleOCR-VL-1.5 (SOTA 0.9B VLM)**: Our latest flagship model for document parsing is now live!
+* **PaddleOCR-VL-1.6 (Latest 0.9B VLM)**: Our latest flagship model for document parsing is now live!
     * **94.5% Accuracy on OmniDocBench**: Surpassing top-tier general large models and specialized document parsers.
     * **Real-World Robustness**: First to introduce the **PP-DocLayoutV3** algorithm for irregular shape positioning, mastering 5 tough scenarios: *Skew, Warping, Scanning, Illumination, and Screen Photography*.
     * **Capability Expansion**: Now supports **Seal Recognition**, **Text Spotting**, and expands to **111 languages** (including China’s Tibetan script and Bengali).

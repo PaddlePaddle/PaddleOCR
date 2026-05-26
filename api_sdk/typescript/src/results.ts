@@ -14,7 +14,8 @@
 
 export interface OCRPage {
   prunedResult: unknown;
-  ocrImageUrl: string;
+  ocrImageUrl?: string;
+  raw?: unknown;
 }
 
 export interface DocParsingPage {
@@ -42,11 +43,21 @@ export interface Progress {
 
 export interface Job {
   jobId: string;
+  model: string;
+  task: "ocr" | "document_parsing";
+  pageRanges?: string;
+  batchId?: string;
 }
 
 export interface JobStatus {
   jobId: string;
   state: "pending" | "running" | "done" | "failed";
   progress?: Progress;
+  resultUrl?: Record<string, string>;
   errorMsg?: string;
+}
+
+export interface BatchStatus {
+  batchId: string;
+  jobs: JobStatus[];
 }

@@ -1,8 +1,8 @@
-# PaddleOCR-VL-1.5 High-Performance Service Deployment
+# PaddleOCR-VL-1.6 High-Performance Service Deployment
 
 [简体中文](README.md)
 
-This directory provides a high-performance service deployment solution for PaddleOCR-VL-1.5 with concurrent request processing support.
+This directory provides a high-performance service deployment solution for PaddleOCR-VL-1.6 with concurrent request processing support.
 
 > This solution currently only supports NVIDIA GPUs. Support for other inference devices is still being developed.
 
@@ -16,7 +16,7 @@ Client → FastAPI Gateway → Triton Server → vLLM Server
 | -----------------| -----------------------------------------------------------------------------------------------------------------------------|
 | FastAPI Gateway | Unified access point, simplified client calls, concurrency control                                                          |
 | Triton Server   | layout analysis model (PP-DocLayoutV3) and pipeline orchestration; model management, dynamic batching, inference scheduling |
-| vLLM Server     | VLM (PaddleOCR-VL-1.5), continuous batching inference                                                                       |
+| vLLM Server     | VLM (PaddleOCR-VL-1.6), continuous batching inference                                                                       |
 
 **Triton Models:**
 

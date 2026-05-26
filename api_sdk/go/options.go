@@ -37,7 +37,20 @@ func WithBaseURL(url string) ClientOption {
 
 func WithTimeout(d time.Duration) ClientOption {
 	return func(c *Client) {
-		c.timeout = d
+		c.requestTimeout = d
+		c.pollTimeout = d
+	}
+}
+
+func WithRequestTimeout(d time.Duration) ClientOption {
+	return func(c *Client) {
+		c.requestTimeout = d
+	}
+}
+
+func WithPollTimeout(d time.Duration) ClientOption {
+	return func(c *Client) {
+		c.pollTimeout = d
 	}
 }
 

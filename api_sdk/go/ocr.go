@@ -21,10 +21,54 @@ import (
 
 // OCR performs PP-OCRv5 text recognition. Blocks until result is ready.
 func (c *Client) OCR(ctx context.Context, req *OCRRequest) (*OCRResult, error) {
+	job, err := c.SubmitOCR(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+	return c.WaitOCRResult(ctx, job.JobID)
+}
+
+// ParseDocument performs document parsing. Blocks until result is ready.
+func (c *Client) ParseDocument(ctx context.Context, req *DocParsingRequest) (*DocParsingResult, error) {
+	job, err := c.SubmitDocumentParsing(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+	return c.WaitDocumentParsingResult(ctx, job.JobID)
+}
+
+// SubmitOCR submits an OCR job and returns job metadata for tracking.
+func (c *Client) SubmitOCR(ctx context.Context, req *OCRRequest) (*Job, error) {
+	if req == nil {
+		return nil, &InvalidRequestError{PaddleOCRAPIError{Message: "OCR request is nil"}}
+	}
 	jobID, err := c.submit(ctx, PPOCRv5, req.FileURL, req.FilePath, req.Options, req.PageRanges, req.BatchID)
 	if err != nil {
 		return nil, err
 	}
+	return &Job{JobID: jobID, Model: PPOCRv5, Task: "ocr", PageRanges: req.PageRanges, BatchID: req.BatchID}, nil
+}
+
+// SubmitDocumentParsing submits a document parsing job and returns job metadata for tracking.
+func (c *Client) SubmitDocumentParsing(ctx context.Context, req *DocParsingRequest) (*Job, error) {
+	if req == nil {
+		return nil, &InvalidRequestError{PaddleOCRAPIError{Message: "document parsing request is nil"}}
+	}
+	model := req.Model
+	if model == "" {
+		model = PaddleOCRVL16
+	}
+	if !IsDocumentParsingModel(model) {
+		return nil, &InvalidRequestError{PaddleOCRAPIError{Message: "model is not a document parsing model: " + model}}
+	}
+	jobID, err := c.submit(ctx, model, req.FileURL, req.FilePath, req.Options, req.PageRanges, req.BatchID)
+	if err != nil {
+		return nil, err
+	}
+	return &Job{JobID: jobID, Model: model, Task: "document_parsing", PageRanges: req.PageRanges, BatchID: req.BatchID}, nil
+}
+
+func (c *Client) WaitOCRResult(ctx context.Context, jobID string) (*OCRResult, error) {
 	jsonlData, err := c.pollUntilDone(ctx, jobID)
 	if err != nil {
 		return nil, err
@@ -32,12 +76,7 @@ func (c *Client) OCR(ctx context.Context, req *OCRRequest) (*OCRResult, error) {
 	return parseOCRResult(jobID, jsonlData)
 }
 
-// DocParsing performs document layout parsing. Blocks until result is ready.
-func (c *Client) DocParsing(ctx context.Context, req *DocParsingRequest) (*DocParsingResult, error) {
-	jobID, err := c.submit(ctx, req.Model, req.FileURL, req.FilePath, req.Options, req.PageRanges, req.BatchID)
-	if err != nil {
-		return nil, err
-	}
+func (c *Client) WaitDocumentParsingResult(ctx context.Context, jobID string) (*DocParsingResult, error) {
 	jsonlData, err := c.pollUntilDone(ctx, jobID)
 	if err != nil {
 		return nil, err
@@ -45,22 +84,19 @@ func (c *Client) DocParsing(ctx context.Context, req *DocParsingRequest) (*DocPa
 	return parseDocParsingResult(jobID, jsonlData)
 }
 
-// SubmitOCR submits an OCR job and returns an Operation for tracking.
-func (c *Client) SubmitOCR(ctx context.Context, req *OCRRequest) (*Operation, error) {
-	jobID, err := c.submit(ctx, PPOCRv5, req.FileURL, req.FilePath, req.Options, req.PageRanges, req.BatchID)
+func (c *Client) GetStatus(ctx context.Context, jobID string) (*JobStatus, error) {
+	status, err := c.getJobStatus(ctx, jobID)
 	if err != nil {
 		return nil, err
 	}
-	return &Operation{client: c, JobID: jobID, model: PPOCRv5}, nil
+	return normalizeStatus(jobID, status)
 }
 
-// SubmitDocParsing submits a doc parsing job and returns an Operation for tracking.
-func (c *Client) SubmitDocParsing(ctx context.Context, req *DocParsingRequest) (*Operation, error) {
-	jobID, err := c.submit(ctx, req.Model, req.FileURL, req.FilePath, req.Options, req.PageRanges, req.BatchID)
-	if err != nil {
-		return nil, err
+func (c *Client) GetBatchStatus(ctx context.Context, batchID string) (*BatchStatus, error) {
+	if batchID == "" {
+		return nil, &InvalidRequestError{PaddleOCRAPIError{Message: "batchID is required"}}
 	}
-	return &Operation{client: c, JobID: jobID, model: req.Model}, nil
+	return c.getBatchStatus(ctx, batchID)
 }
 
 func (c *Client) submit(ctx context.Context, model, fileURL, filePath string, options interface{}, pageRanges, batchID string) (string, error) {
@@ -86,7 +122,10 @@ func defaultPayload(model string, options interface{}) interface{} {
 	if model == PPOCRv5 {
 		return &OCROptions{}
 	}
-	return &DocParsingOptions{}
+	if IsVLModel(model) {
+		return &PaddleOCRVLOptions{}
+	}
+	return &PPStructureV3Options{}
 }
 
 func parseOCRResult(jobID string, jsonlData []map[string]interface{}) (*OCRResult, error) {
@@ -94,20 +133,24 @@ func parseOCRResult(jobID string, jsonlData []map[string]interface{}) (*OCRResul
 	for _, lineObj := range jsonlData {
 		resultData, ok := lineObj["result"].(map[string]interface{})
 		if !ok {
-			continue
+			return nil, &ResultParseError{PaddleOCRAPIError{Message: "OCR result item is missing result"}}
 		}
 		ocrResults, ok := resultData["ocrResults"].([]interface{})
 		if !ok {
-			continue
+			return nil, &ResultParseError{PaddleOCRAPIError{Message: "OCR result item is missing ocrResults"}}
 		}
 		for _, item := range ocrResults {
 			itemMap, ok := item.(map[string]interface{})
 			if !ok {
-				continue
+				return nil, &ResultParseError{PaddleOCRAPIError{Message: "OCR result page is malformed"}}
+			}
+			if _, ok := itemMap["prunedResult"]; !ok {
+				return nil, &ResultParseError{PaddleOCRAPIError{Message: "OCR result page is missing prunedResult"}}
 			}
 			page := OCRPage{
 				PrunedResult: itemMap["prunedResult"],
 				OCRImageURL:  getString(itemMap, "ocrImage"),
+				Raw:          itemMap,
 			}
 			result.Pages = append(result.Pages, page)
 		}
@@ -120,18 +163,21 @@ func parseDocParsingResult(jobID string, jsonlData []map[string]interface{}) (*D
 	for _, lineObj := range jsonlData {
 		resultData, ok := lineObj["result"].(map[string]interface{})
 		if !ok {
-			continue
+			return nil, &ResultParseError{PaddleOCRAPIError{Message: "document parsing result item is missing result"}}
 		}
 		lpResults, ok := resultData["layoutParsingResults"].([]interface{})
 		if !ok {
-			continue
+			return nil, &ResultParseError{PaddleOCRAPIError{Message: "document parsing result item is missing layoutParsingResults"}}
 		}
 		for _, item := range lpResults {
 			itemMap, ok := item.(map[string]interface{})
 			if !ok {
-				continue
+				return nil, &ResultParseError{PaddleOCRAPIError{Message: "document parsing result page is malformed"}}
 			}
-			markdown, _ := itemMap["markdown"].(map[string]interface{})
+			markdown, ok := itemMap["markdown"].(map[string]interface{})
+			if !ok || getString(markdown, "text") == "" {
+				return nil, &ResultParseError{PaddleOCRAPIError{Message: "document parsing result page is missing markdown.text"}}
+			}
 			page := DocParsingPage{
 				MarkdownText:   getString(markdown, "text"),
 				MarkdownImages: getStringMap(markdown, "images"),
@@ -174,4 +220,32 @@ func getStringMap(m map[string]interface{}, key string) map[string]string {
 		json.Unmarshal(b, &result)
 		return result
 	}
+}
+
+func normalizeStatus(jobID string, status *jobStatusResponse) (*JobStatus, error) {
+	if status == nil || status.State == "" {
+		return nil, &ResponseFormatError{PaddleOCRAPIError{Message: "status response is missing state"}}
+	}
+	if status.State != "pending" && status.State != "running" && status.State != "done" && status.State != "failed" {
+		return nil, &ResponseFormatError{PaddleOCRAPIError{Message: "unknown job state: " + status.State}}
+	}
+	result := &JobStatus{
+		JobID:     jobID,
+		State:     status.State,
+		ResultURL: status.ResultURL,
+		ErrorMsg:  status.ErrorMsg,
+	}
+	if len(status.ExtractProgress) != 0 && string(status.ExtractProgress) != "null" {
+		var progress extractProgress
+		if err := json.Unmarshal(status.ExtractProgress, &progress); err != nil {
+			return nil, &ResponseFormatError{PaddleOCRAPIError{Message: "status progress is malformed", Cause: err}}
+		}
+		result.Progress = &Progress{
+			TotalPages:     progress.TotalPages,
+			ExtractedPages: progress.ExtractedPages,
+			StartTime:      progress.StartTime,
+			EndTime:        progress.EndTime,
+		}
+	}
+	return result, nil
 }

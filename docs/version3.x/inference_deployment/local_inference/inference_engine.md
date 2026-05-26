@@ -33,7 +33,7 @@ PaddleOCR 3.5 引入了统一的推理引擎配置方式：使用 `engine` 选�
 
 ### 3.1 飞桨框架
 
-当您使用飞桨框架进行推理时，需要先安装飞桨框架。安装方法请参考 [飞桨框架安装](./paddlepaddle_installation.md)。PaddleOCR 对飞桨框架的版本要求可以参考 [此处](./paddleocr_and_paddlex.md#1-paddleocr-paddlex)。
+当您使用飞桨框架进行推理时，需要先安装飞桨框架。安装方法请参考 [飞桨框架安装](../../paddlepaddle_installation.md)。PaddleOCR 对飞桨框架的版本要求可以参考 [此处](../../paddleocr_and_paddlex.md#1-paddleocr-paddlex)。
 
 ### 3.2 Transformers
 
@@ -169,7 +169,7 @@ paddleocr ocr -i general_ocr_001.png --engine paddle_static
 
 ### 5.5 产线（Python API）：为某个模块单独配置推理引擎
 
-如需为产线中的某一个模块单独指定 `engine`、`engine_config`，可先导出配置文件，修改对应模块配置后，再通过加载配置文件。配置文件的导出、编辑与加载方式可参见 [使用 PaddleX 产线配置文件](./paddleocr_and_paddlex.md#3-paddlex)。示例如下：
+如需为产线中的某一个模块单独指定 `engine`、`engine_config`，可先导出配置文件，修改对应模块配置后，再通过加载配置文件。配置文件的导出、编辑与加载方式可参见 [使用 PaddleX 产线配置文件](../../paddleocr_and_paddlex.md#3-paddlex)。示例如下：
 
 首先，导出产线配置文件：
 

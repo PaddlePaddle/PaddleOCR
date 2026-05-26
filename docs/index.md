@@ -19,6 +19,8 @@ PaddleOCR自发布以来凭借学术前沿算法和产业落地实践，受到�
 
 PaddleOCR-VL-1.5 创新性地支持了文档元素的异形框定位，使得 PaddleOCR-VL-1.5 在扫描、倾斜、弯折、屏幕拍摄及复杂光照等真实落地场景中均表现卓越，实现了全面的 SOTA。此外，模型进一步集成了印章识别与文本检测识别任务，关键指标持续领跑主流模型。
 
+**PaddleOCR 现已支持 PaddleOCR-VL-1.6，作为 PaddleOCR-VL 系列的最新版本。** PaddleOCR-VL-1.6 在 PaddleOCR-VL-1.5 的基础上进一步升级了 VLM 组件（PaddleOCR-VL-1.6-0.9B），并继续采用 PP-DocLayoutV3 作为版面分析模型。
+
 您可以在 [PaddleOCR官网](https://www.paddleocr.com) 在线使用或者调用该模型的API。
 
 **PaddleOCR 3.x 核心特色能力：**
@@ -42,7 +44,7 @@ PaddleOCR-VL-1.5 创新性地支持了文档元素的异形框定位，使得 Pa
 
 PaddleOCR 3.0 除了提供优秀的模型库外，还提供覆盖模型训练、推理和服务化部署等环节的易用工具，方便开发者快速落地 AI 应用。
 
-**此外，PaddleOCR 还提供官方 [Agent Skills](./version3.x/deployment/skills.md)，便于在支持 Skills 的 AI 应用中调用文字识别、文档解析等能力。**
+**此外，PaddleOCR 还提供官方 [Agent Skills](./version3.x/integrations/skills.md)，便于在支持 Skills 的 AI 应用中调用文字识别、文档解析等能力。**
 
 <div align="center">
   <p>

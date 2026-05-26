@@ -21,7 +21,7 @@ PaddleOCR provides official Agent Skills that package the routing rules, calling
 Each skill currently supports the following underlying models:
 
 - `paddleocr-text-recognition`: `PP-OCRv5`
-- `paddleocr-doc-parsing`: `PP-StructureV3`, `PaddleOCR-VL`, `PaddleOCR-VL-1.5`
+- `paddleocr-doc-parsing`: `PP-StructureV3`, `PaddleOCR-VL`, `PaddleOCR-VL-1.5`, `PaddleOCR-VL-1.6`
 
 ## Prerequisites
 

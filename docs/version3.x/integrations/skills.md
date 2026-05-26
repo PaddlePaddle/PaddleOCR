@@ -21,7 +21,7 @@ PaddleOCR 提供官方 Agent Skills，将 OCR 与文档解析任务的触发规�
 当前各 Skill 支持的底层模型如下：
 
 - `paddleocr-text-recognition`：`PP-OCRv5`
-- `paddleocr-doc-parsing`：`PP-StructureV3`、`PaddleOCR-VL`、`PaddleOCR-VL-1.5`
+- `paddleocr-doc-parsing`：`PP-StructureV3`、`PaddleOCR-VL`、`PaddleOCR-VL-1.5`、`PaddleOCR-VL-1.6`
 
 ## 安装前准备
 

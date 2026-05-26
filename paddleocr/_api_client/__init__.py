@@ -12,14 +12,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .client import APIClient
-from .async_client import AsyncAPIClient
-from .models import DocParsingOptions, Model, OCROptions
+from .client import PaddleOCRClient
+from .async_client import AsyncPaddleOCRClient
+from .models import (
+    Model,
+    OCROptions,
+    PaddleOCRVLOptions,
+    PPStructureV3Options,
+)
 from .results import (
     DocParsingPage,
     DocParsingResult,
     Job,
     JobStatus,
+    BatchStatus,
     OCRPage,
     OCRResult,
     Progress,
@@ -31,27 +37,35 @@ from .errors import (
     JobFailedError,
     NetworkError,
     PaddleOCRAPIError,
-    TimeoutError,
+    PollTimeoutError,
+    RequestTimeoutError,
+    ResponseFormatError,
+    ResultParseError,
 )
 
 __all__ = [
-    "APIClient",
-    "AsyncAPIClient",
+    "PaddleOCRClient",
+    "AsyncPaddleOCRClient",
     "Model",
     "OCROptions",
-    "DocParsingOptions",
+    "PPStructureV3Options",
+    "PaddleOCRVLOptions",
     "OCRResult",
     "OCRPage",
     "DocParsingResult",
     "DocParsingPage",
     "Job",
     "JobStatus",
+    "BatchStatus",
     "Progress",
     "PaddleOCRAPIError",
     "AuthError",
     "InvalidRequestError",
     "APIError",
     "JobFailedError",
-    "TimeoutError",
+    "RequestTimeoutError",
+    "PollTimeoutError",
+    "ResponseFormatError",
+    "ResultParseError",
     "NetworkError",
 ]

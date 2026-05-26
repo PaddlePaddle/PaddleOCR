@@ -13,13 +13,13 @@
 # limitations under the License.
 
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Literal, Optional
 
 
 @dataclass
 class OCRPage:
     pruned_result: Any
-    ocr_image_url: str
+    ocr_image_url: Optional[str] = None
 
 
 @dataclass
@@ -52,6 +52,8 @@ class Progress:
 @dataclass
 class Job:
     job_id: str
+    model: str
+    task: Literal["ocr", "document_parsing"]
 
 
 @dataclass
@@ -61,3 +63,9 @@ class JobStatus:
     progress: Optional[Progress] = None
     result: Any = None
     error_msg: Optional[str] = None
+
+
+@dataclass
+class BatchStatus:
+    batch_id: str
+    jobs: List[JobStatus] = field(default_factory=list)

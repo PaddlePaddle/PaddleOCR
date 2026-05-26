@@ -44,7 +44,7 @@ X-AnyLabeling 客户端默认支持 PaddleOCR 官方 API。首次打开 PaddleOC
 获取 `API_KEY` 的方式：
 
 1. 访问 PaddleOCR 官方网站：<https://www.paddleocr.com>
-2. 点击右上角 **API**，选择 **PaddleOCR-VL-1.5**。
+2. 点击右上角 **API**，选择 **PaddleOCR-VL-1.6**（或 **PaddleOCR-VL-1.5**、**PaddleOCR-VL**）。
 3. 打开示例代码，复制其中的 `TOKEN`（访问令牌）。
 4. 回到 X-AnyLabeling 的 `PPOCR API Settings`，将其粘贴到 `API_KEY` 字段并确认即可。
 
@@ -58,6 +58,7 @@ ${workspace}/xanylabeling_data/paddleocr/api_settings.json
 
 右侧 `Parsing Model` 下拉框当前支持以下官方 API 选项：
 
+- `PaddleOCR-VL-1.6 (API)`
 - `PaddleOCR-VL-1.5 (API)`
 - `PaddleOCR-VL (API)`
 
@@ -78,7 +79,8 @@ ${workspace}/xanylabeling_data/paddleocr/api_settings.json
 
 在右侧 `Parsing Model` 下拉框中可在 PaddleOCR-VL 系列的不同版本之间切换：
 
-- `PaddleOCR-VL-1.5 (API)`（推荐）：在 OmniDocBench v1.5 上达到 94.5% 精度，支持异形框定位，对扫描、倾斜、弯折、屏幕拍摄及复杂光照等场景具备更强鲁棒性，并新增印章识别与文本检测识别能力。
+- `PaddleOCR-VL-1.6 (API)`（推荐）：PaddleOCR-VL 系列的最新版本，在 PaddleOCR-VL-1.5 的基础上进一步升级了 VLM 组件，继续支持异形框定位、印章识别与文本检测识别等能力。
+- `PaddleOCR-VL-1.5 (API)`：在 OmniDocBench v1.5 上达到 94.5% 精度，支持异形框定位，对扫描、倾斜、弯折、屏幕拍摄及复杂光照等场景具备更强鲁棒性，并新增印章识别与文本检测识别能力。
 - `PaddleOCR-VL (API)`：初代版本。
 
 ![Parsing Model 切换 PaddleOCR-VL 与 PaddleOCR-VL-1.5](https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/x_anylabeling/model_switch.png)

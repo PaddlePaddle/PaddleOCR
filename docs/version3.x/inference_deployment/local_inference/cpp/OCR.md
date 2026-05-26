@@ -296,7 +296,7 @@ sh tools/build.sh
 </table>
 </details>
 
-也可以参考各模块的模型导出章节，如[文本检测模块-模型导出](../../module_usage/text_detection.md#44)，将训练好的模型导出为推理模型。
+也可以参考各模块的模型导出章节，如[文本检测模块-模型导出](../../../module_usage/text_detection.md#44)，将训练好的模型导出为推理模型。
 
 模型的目录结构一般如下所示：
 
@@ -929,7 +929,7 @@ PP-OCRv5 还提供了覆盖 39 种语言的多语种文字识别能力，包括�
 --save_path ./output/
 ```
 
-更多详细说明可参考 [PP-OCRv5多语种文字识别介绍](../../algorithm/PP-OCRv5/PP-OCRv5_multi_languages.md)。
+更多详细说明可参考 [PP-OCRv5多语种文字识别介绍](../../../algorithm/PP-OCRv5/PP-OCRv5_multi_languages.md)。
 
 ### 3.2 可视化文本识别结果
 

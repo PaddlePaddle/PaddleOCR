@@ -5,7 +5,7 @@ comments: true
 # PaddleOCR-VL Usage Tutorial
 
 > INFO:
-> PaddleOCR provides a unified interface for the PaddleOCR-VL model series to facilitate quick setup and usage. Unless otherwise specified, the term "PaddleOCR-VL" in this tutorial and related hardware usage tutorials refers to the PaddleOCR-VL model series (e.g., PaddleOCR-VL-1.5). References specific to the PaddleOCR-VL v1 version will be explicitly noted.
+> PaddleOCR provides a unified interface for the PaddleOCR-VL model series to facilitate quick setup and usage. Unless otherwise specified, the term "PaddleOCR-VL" in this tutorial and related hardware usage tutorials refers to the PaddleOCR-VL model series (e.g., PaddleOCR-VL-1.6). References specific to the PaddleOCR-VL v1 version will be explicitly noted.
 
 PaddleOCR-VL is an advanced and efficient document parsing model designed specifically for element recognition in documents. Taking its initial version (PaddleOCR-VL v1) as an example, its core component is PaddleOCR-VL-0.9B, a compact yet powerful Vision-Language Model (VLM) composed of a NaViT-style dynamic resolution visual encoder and the ERNIE-4.5-0.3B language model, enabling precise element recognition. The model series supports 109 languages and excels in recognizing complex elements (such as text, tables, formulas, and charts) while maintaining extremely low resource consumption. Comprehensive evaluations on widely used public benchmarks and internal benchmarks demonstrate that PaddleOCR-VL achieves SOTA performance in both page-level document parsing and element-level recognition. It significantly outperforms existing Pipeline-based solutions, document parsing multimodal schemes, and advanced general-purpose multimodal large models, while offering faster inference speeds. These advantages make it highly suitable for deployment in real-world scenarios.
 
@@ -431,10 +431,10 @@ If not set, the inference results will not be saved locally.</td>
   <td><code>pipeline_version</code></td>
   <td>
     <b>Meaning:</b> Specifies the pipeline version.<br/>
-    <b>Description:</b> The currently available values are <code>"v1"</code> and <code>"v1.5"</code>.
+    <b>Description:</b> The currently available values are <code>"v1"</code>, <code>"v1.5"</code>, and <code>"v1.6"</code>.
   </td>
   <td><code>str</code></td>
-  <td>"v1.5"</td>
+  <td>"v1.6"</td>
 </tr>
 <tr>
 <td><code>layout_detection_model_name</code></td>
@@ -730,7 +730,7 @@ Supports specifying specific card numbers:<ul>
 </tr>
 <tr>
 <td><code>engine</code></td>
-<td><b>Meaning:</b> Inference engine.<br/><b>Description:</b> Supports <code>None</code> (the default), <code>paddle</code>, <code>paddle_static</code>, <code>paddle_dynamic</code>, and <code>transformers</code>. When left as <code>None</code>, PaddleOCR preserves the behavior of earlier versions, which in most configurations is equivalent to <code>paddle</code>. For detailed descriptions, supported values, compatibility rules, and examples, see <a href="../inference_engine.en.md">Inference Engine and Configuration</a>.</td>
+<td><b>Meaning:</b> Inference engine.<br/><b>Description:</b> Supports <code>None</code> (the default), <code>paddle</code>, <code>paddle_static</code>, <code>paddle_dynamic</code>, and <code>transformers</code>. When left as <code>None</code>, PaddleOCR preserves the behavior of earlier versions, which in most configurations is equivalent to <code>paddle</code>. For detailed descriptions, supported values, compatibility rules, and examples, see <a href="../inference_deployment/local_inference/inference_engine.en.md">Inference Engine and Configuration</a>.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -922,10 +922,10 @@ The above Python script performs the following steps:
   <td><code>pipeline_version</code></td>
   <td>
     <b>Meaning:</b> Specifies the pipeline version.<br/>
-    <b>Description:</b> The currently available values are <code>"v1"</code> and <code>"v1.5"</code>.
+    <b>Description:</b> The currently available values are <code>"v1"</code>, <code>"v1.5"</code>, and <code>"v1.6"</code>.
   </td>
   <td><code>str</code></td>
-  <td>"v1.5"</td>
+  <td>"v1.6"</td>
 </tr>
 <tr>
 <td><code>layout_detection_model_name</code></td>
@@ -1161,13 +1161,13 @@ Supports specifying specific card numbers:<ul>
 </tr>
 <tr>
 <td><code>engine</code></td>
-<td><b>Meaning:</b> Inference engine.<br/><b>Description:</b> Supports <code>None</code> (the default), <code>paddle</code>, <code>paddle_static</code>, <code>paddle_dynamic</code>, and <code>transformers</code>. When left as <code>None</code>, PaddleOCR preserves the behavior of earlier versions, which in most configurations is equivalent to <code>paddle</code>. For detailed descriptions, supported values, compatibility rules, and examples, see <a href="../inference_engine.en.md">Inference Engine and Configuration</a>.</td>
+<td><b>Meaning:</b> Inference engine.<br/><b>Description:</b> Supports <code>None</code> (the default), <code>paddle</code>, <code>paddle_static</code>, <code>paddle_dynamic</code>, and <code>transformers</code>. When left as <code>None</code>, PaddleOCR preserves the behavior of earlier versions, which in most configurations is equivalent to <code>paddle</code>. For detailed descriptions, supported values, compatibility rules, and examples, see <a href="../inference_deployment/local_inference/inference_engine.en.md">Inference Engine and Configuration</a>.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>engine_config</code></td>
-<td><b>Meaning:</b> Inference-engine configuration.<br/><b>Description:</b> Recommended together with <code>engine</code>. For supported fields, compatibility rules, and examples, see <a href="../inference_engine.en.md">Inference Engine and Configuration</a>.</td>
+<td><b>Meaning:</b> Inference-engine configuration.<br/><b>Description:</b> Recommended together with <code>engine</code>. For supported fields, compatibility rules, and examples, see <a href="../inference_deployment/local_inference/inference_engine.en.md">Inference Engine and Configuration</a>.</td>
 <td><code>dict|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -1738,7 +1738,7 @@ PaddleOCR provides Docker images for quickly launching vLLM or FastDeploy infere
         --gpus all \
         --network host \
         ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-nvidia-gpu \
-        paddleocr genai_server --model_name PaddleOCR-VL-1.5-0.9B --host 0.0.0.0 --port 8118 --backend vllm
+        paddleocr genai_server --model_name PaddleOCR-VL-1.6-0.9B --host 0.0.0.0 --port 8118 --backend vllm
     ```
 
     If you wish to start the service in an environment without internet access, replace `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-nvidia-gpu` (image size approximately 13 GB) in the above command with the offline version image `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-nvidia-gpu-offline` (image size approximately 15 GB).
@@ -1752,7 +1752,7 @@ PaddleOCR provides Docker images for quickly launching vLLM or FastDeploy infere
         --gpus all \
         --network host \
         ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-fastdeploy-server:latest-nvidia-gpu \
-        paddleocr genai_server --model_name PaddleOCR-VL-1.5-0.9B --host 0.0.0.0 --port 8118 --backend fastdeploy
+        paddleocr genai_server --model_name PaddleOCR-VL-1.6-0.9B --host 0.0.0.0 --port 8118 --backend fastdeploy
     ```
 
     If you wish to start the service in an environment without internet access, replace `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-fastdeploy-server:latest-nvidia-gpu` (image size approximately 43 GB) in the above command with the offline version image `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-fastdeploy-server:latest-nvidia-gpu-offline` (image size approximately 45 GB).
@@ -1767,7 +1767,7 @@ docker run \
     --network host \
     -v vllm_config.yml:/tmp/vllm_config.yml \
     ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-nvidia-gpu \
-    paddleocr genai_server --model_name PaddleOCR-VL-1.5-0.9B --host 0.0.0.0 --port 8118 --backend vllm --backend_config /tmp/vllm_config.yml
+    paddleocr genai_server --model_name PaddleOCR-VL-1.6-0.9B --host 0.0.0.0 --port 8118 --backend vllm --backend_config /tmp/vllm_config.yml
 ```
 
 Here, `vllm_config.yml` refers to a local configuration file path on the host machine. The example assumes that you created this file in the current working directory. If the file is located elsewhere, replace it with the actual absolute or relative path.
@@ -1821,7 +1821,7 @@ Both vLLM and SGLang installed through `paddleocr install_genai_server_deps` are
 After installation, you can launch the service using the `paddleocr genai_server` command:
 
 ```shell
-paddleocr genai_server --model_name PaddleOCR-VL-1.5-0.9B --backend vllm --port 8118
+paddleocr genai_server --model_name PaddleOCR-VL-1.6-0.9B --backend vllm --port 8118
 ```
 
 The parameters supported by this command are as follows:
@@ -1844,7 +1844,7 @@ The parameters supported by this command are as follows:
 - MLX-VLM: [Refer to this document](./PaddleOCR-VL-Apple-Silicon.en.md)
 - llama.cpp:
     1. Install llama.cpp by referring to the `Quick start` section in the [llama.cpp github](https://github.com/ggml-org/llama.cpp).
-    2. Download the model files in gguf format: [PaddlePaddle/PaddleOCR-VL-1.5-GGUF](https://huggingface.co/PaddlePaddle/PaddleOCR-VL-1.5-GGUF).
+    2. Download the model files in gguf format: [PaddlePaddle/PaddleOCR-VL-1.6-GGUF](https://huggingface.co/PaddlePaddle/PaddleOCR-VL-1.6-GGUF).
     3. Execute the following command to start the inference service. For an introduction to the parameters, please refer to [LLaMA.cpp HTTP Server](https://github.com/ggml-org/llama.cpp/blob/master/tools/server/README.md):
 
         ```shell
@@ -1877,7 +1877,7 @@ paddleocr doc_parser \
     --input paddleocr_vl_demo.png \
     --vl_rec_backend vllm-server \
     --vl_rec_server_url http://localhost:8000/v1 \
-    --vl_rec_api_model_name 'PaddlePaddle/PaddleOCR-VL-1.5'
+    --vl_rec_api_model_name 'PaddlePaddle/PaddleOCR-VL-1.6'
 ```
 
 SiliconFlow platform:
@@ -1887,7 +1887,7 @@ paddleocr doc_parser \
     --input paddleocr_vl_demo.png \
     --vl_rec_backend vllm-server \
     --vl_rec_server_url https://api.siliconflow.cn/v1 \
-    --vl_rec_api_model_name 'PaddlePaddle/PaddleOCR-VL-1.5' \
+    --vl_rec_api_model_name 'PaddlePaddle/PaddleOCR-VL-1.6' \
     --vl_rec_api_key xxxxxx
 ```
 
@@ -1919,7 +1919,7 @@ Using a service started with the default parameters of `vllm serve`:
 pipeline = PaddleOCRVL(
     vl_rec_backend="vllm-server", 
     vl_rec_server_url="http://localhost:8000/v1",
-    vl_rec_api_model_name="PaddlePaddle/PaddleOCR-VL-1.5",
+    vl_rec_api_model_name="PaddlePaddle/PaddleOCR-VL-1.6",
 )
 ```
 
@@ -1929,7 +1929,7 @@ SiliconFlow platform (currently only PaddleOCR-VL-0.9B is supported, i.e., the v
 pipeline = PaddleOCRVL(
     vl_rec_backend="vllm-server", 
     vl_rec_server_url="https://api.siliconflow.cn/v1",
-    vl_rec_api_model_name="PaddlePaddle/PaddleOCR-VL-1.5",
+    vl_rec_api_model_name="PaddlePaddle/PaddleOCR-VL-1.6",
     vl_rec_api_key="xxxxxx",
 )
 ```
@@ -1970,13 +1970,13 @@ The PaddleOCR VLM inference service supports parameter tuning through configurat
 2. Specify the configuration file path when starting the service, for example, using the `paddleocr genai_server` command:
 
    ```shell
-   paddleocr genai_server --model_name PaddleOCR-VL-1.5-0.9B --backend vllm --backend_config vllm_config.yaml
+   paddleocr genai_server --model_name PaddleOCR-VL-1.6-0.9B --backend vllm --backend_config vllm_config.yaml
    ```
 
 If using a shell that supports process substitution (like Bash), you can also pass configuration items directly without creating a configuration file:
 
 ```bash
-paddleocr genai_server --model_name PaddleOCR-VL-1.5-0.9B --backend vllm --backend_config <(echo -e 'gpu-memory-utilization: 0.3\nmax-num-seqs: 128')
+paddleocr genai_server --model_name PaddleOCR-VL-1.6-0.9B --backend vllm --backend_config <(echo -e 'gpu-memory-utilization: 0.3\nmax-num-seqs: 128')
 ```
 
 #### 3.3.2 Client-Side Parameter Adjustment
@@ -2112,7 +2112,7 @@ After generating the configuration file, add the following <code>paddleocr-vlm-s
     ...
     volumes:
       - /path/to/your_config.yaml:/home/paddleocr/vlm_server_config.yaml
-    command: paddleocr genai_server --model_name PaddleOCR-VL-1.5-0.9B --host 0.0.0.0 --port 8118 --backend vllm --backend_config /home/paddleocr/vlm_server_config.yaml
+    command: paddleocr genai_server --model_name PaddleOCR-VL-1.6-0.9B --host 0.0.0.0 --port 8118 --backend vllm --backend_config /home/paddleocr/vlm_server_config.yaml
     ...
 ```
 

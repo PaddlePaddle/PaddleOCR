@@ -33,7 +33,7 @@ In PaddleOCR, an inference engine refers to the underlying runtime used to execu
 
 ### 3.1 PaddlePaddle framework
 
-When using the PaddlePaddle framework for inference, install PaddlePaddle first. For installation instructions, see [PaddlePaddle Framework Installation](./paddlepaddle_installation.en.md). For requirements on the PaddlePaddle version, see [here](./paddleocr_and_paddlex.en.md#1-differences-and-connections-between-paddleocr-and-paddlex).
+When using the PaddlePaddle framework for inference, install PaddlePaddle first. For installation instructions, see [PaddlePaddle Framework Installation](../../paddlepaddle_installation.en.md). For requirements on the PaddlePaddle version, see [here](../../paddleocr_and_paddlex.en.md#1-differences-and-connections-between-paddleocr-and-paddlex).
 
 ### 3.2 Transformers
 
@@ -169,7 +169,7 @@ paddleocr ocr -i general_ocr_001.png --engine paddle_static
 
 ### 5.5 Pipeline (Python API): configure the inference engine for a specific module
 
-If you want to specify `engine` and `engine_config` for a specific module inside a pipeline, you can first export the configuration file, modify the corresponding module configuration, and then load it. For how to export, edit, and load the configuration file, see [Using PaddleX Pipeline Configuration Files](./paddleocr_and_paddlex.en.md#3-using-paddlex-pipeline-configuration-files). Example:
+If you want to specify `engine` and `engine_config` for a specific module inside a pipeline, you can first export the configuration file, modify the corresponding module configuration, and then load it. For how to export, edit, and load the configuration file, see [Using PaddleX Pipeline Configuration Files](../../paddleocr_and_paddlex.en.md#3-using-paddlex-pipeline-configuration-files). Example:
 
 First, export the pipeline configuration file:
 

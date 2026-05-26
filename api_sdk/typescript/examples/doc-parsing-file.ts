@@ -18,7 +18,7 @@ async function main() {
   const client = new PaddleOCRClient();
 
   // Convenience: doc parsing with local file
-  const result = await client.docParsing({
+  const result = await client.parseDocument({
     model: Model.PPStructureV3,
     filePath: "./sample.pdf",
     options: { useChartRecognition: true },
@@ -30,14 +30,14 @@ async function main() {
 
   // Manual control: submit + concurrent wait
   const job1 = await client.submitOcr({ fileUrl: "https://example.com/f1.pdf" });
-  const job2 = await client.submitDocParsing({
+  const job2 = await client.submitDocumentParsing({
     model: Model.PPStructureV3,
     filePath: "./sample.pdf",
   });
 
   const [r1, r2] = await Promise.all([
-    client.waitForResult(job1.jobId),
-    client.waitForResult(job2.jobId),
+    client.waitOcrResult(job1.jobId),
+    client.waitDocumentParsingResult(job2.jobId),
   ]);
 
   console.log("Job1 done:", r1);

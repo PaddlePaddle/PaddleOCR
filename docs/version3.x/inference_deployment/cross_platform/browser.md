@@ -99,7 +99,7 @@ SDK 通过 HTTP(S) 下载 `textDetectionModelAsset.url` / `textRecognitionModelA
 | 必需文件 | tar 内必须包含 **`inference.onnx`** 与 **`inference.yml`**（可在子目录中；按文件名匹配）。 |
 | `model_name` | `inference.yml` 中必须能解析出 **`model_name`**，且须与您在 `create` 中传入的 `textDetectionModelName` / `textRecognitionModelName` **完全一致**。初始化加载模型后会校验。 |
 
-如需从 Paddle 模型转换得到这里使用的 ONNX 模型文件，可参考 [获取 ONNX 模型](obtaining_onnx_models.md)。按该文档转换得到的标准模型文件，可按上述要求打包为 `.tar` 后提供给 PaddleOCR.js 使用。
+如需从 Paddle 模型转换得到这里使用的 ONNX 模型文件，可参考 [获取 ONNX 模型](../others/obtaining_onnx_models.md)。按该文档转换得到的标准模型文件，可按上述要求打包为 `.tar` 后提供给 PaddleOCR.js 使用。
 
 若格式不满足要求，通常会在初始化阶段以 **抛出带明确信息的 `Error`** 失败，例如：下载非 2xx、tar 中找不到 `inference.onnx` / `inference.yml`、资源为空、`model_name` 缺失或与所选名称不一致、模型配置不完整，或 ONNX 无法加载。不会在后台静默失败。
 
@@ -124,7 +124,7 @@ SubModules:
 const ocr = await PaddleOCR.create({ pipelineConfig });
 ```
 
-`pipelineConfig` 可以是 YAML 文本，也可以是已解析的对象。在浏览器中，子模块的 `model_dir` 仅支持 **`null` 或资源描述对象**（形如 `{ url: "..." }`），不支持本地路径字符串。如需基于 PaddleOCR / PaddleX 导出的产线配置作为起点，可参考 [PaddleOCR 与 PaddleX](../paddleocr_and_paddlex.md) 中“导出产线配置文件”一节；导出的 YAML 可作为 `pipelineConfig` 的基础，再按浏览器端要求将其中的 `model_dir` 调整为资源描述对象。
+`pipelineConfig` 可以是 YAML 文本，也可以是已解析的对象。在浏览器中，子模块的 `model_dir` 仅支持 **`null` 或资源描述对象**（形如 `{ url: "..." }`），不支持本地路径字符串。如需基于 PaddleOCR / PaddleX 导出的产线配置作为起点，可参考 [PaddleOCR 与 PaddleX](../../paddleocr_and_paddlex.md) 中“导出产线配置文件”一节；导出的 YAML 可作为 `pipelineConfig` 的基础，再按浏览器端要求将其中的 `model_dir` 调整为资源描述对象。
 
 若同时提供直接参数与 `pipelineConfig`，**以直接参数为准**。
 

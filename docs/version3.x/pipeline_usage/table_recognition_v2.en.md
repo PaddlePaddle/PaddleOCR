@@ -871,7 +871,7 @@ paddleocr table_recognition_v2 -i ./table_recognition_v2.jpg --device gpu
 
 The examples above use the local `paddle_static` inference engine by default. To run them, first install PaddlePaddle by following [PaddlePaddle Framework Installation](../paddlepaddle_installation.en.md).
 
-If you choose `transformers` as the inference engine, make sure the Transformers environment is configured by following [Inference Engine and Configuration](../inference_engine.en.md), and then run the following command:
+If you choose `transformers` as the inference engine, make sure the Transformers environment is configured by following [Inference Engine and Configuration](../inference_deployment/local_inference/inference_engine.en.md), and then run the following command:
 
 ```bash
 # Use the transformers engine for inference
@@ -1182,7 +1182,7 @@ Supports specifying a specific card number:
 </tr>
 <tr>
 <td><code>engine</code></td>
-<td><b>Meaning:</b> Inference engine.<br/><b>Description:</b> Supports <code>None</code> (the default), <code>paddle</code>, <code>paddle_static</code>, <code>paddle_dynamic</code>, and <code>transformers</code>. When left as <code>None</code>, PaddleOCR preserves the behavior of earlier versions, which in most configurations is equivalent to <code>paddle</code>. For detailed descriptions, supported values, compatibility rules, and examples, see <a href="../inference_engine.en.md">Inference Engine and Configuration</a>.</td>
+<td><b>Meaning:</b> Inference engine.<br/><b>Description:</b> Supports <code>None</code> (the default), <code>paddle</code>, <code>paddle_static</code>, <code>paddle_dynamic</code>, and <code>transformers</code>. When left as <code>None</code>, PaddleOCR preserves the behavior of earlier versions, which in most configurations is equivalent to <code>paddle</code>. For detailed descriptions, supported values, compatibility rules, and examples, see <a href="../inference_deployment/local_inference/inference_engine.en.md">Inference Engine and Configuration</a>.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
@@ -1308,7 +1308,7 @@ for res in output:
 
 The example above uses the local `paddle_static` inference engine by default. To run it, first install PaddlePaddle by following [PaddlePaddle Framework Installation](../paddlepaddle_installation.en.md).
 
-If you choose `transformers` as the inference engine, make sure the Transformers environment is configured by following [Inference Engine and Configuration](../inference_engine.en.md), and then run the following code:
+If you choose `transformers` as the inference engine, make sure the Transformers environment is configured by following [Inference Engine and Configuration](../inference_deployment/local_inference/inference_engine.en.md), and then run the following code:
 
 ```python
 from paddleocr import TableRecognitionPipelineV2
@@ -2025,9 +2025,9 @@ If you need to apply the model directly in your Python project, you can refer to
 
 Additionally, PaddleOCR provides two other deployment methods, which are described in detail below:
 
-🚀 High-Performance Inference: In actual production environments, many applications have strict performance criteria (especially response speed) for deployment strategies to ensure efficient system operation and smooth user experience. To address this, PaddleOCR provides high-performance inference capabilities aimed at optimizing model inference and preprocessing to significantly speed up the end-to-end process. For detailed high-performance inference procedures, please refer to [High-Performance Inference](../deployment/high_performance_inference.md).
+🚀 High-Performance Inference: In actual production environments, many applications have strict performance criteria (especially response speed) for deployment strategies to ensure efficient system operation and smooth user experience. To address this, PaddleOCR provides high-performance inference capabilities aimed at optimizing model inference and preprocessing to significantly speed up the end-to-end process. For detailed high-performance inference procedures, please refer to [High-Performance Inference](../inference_deployment/local_inference/high_performance_inference.md).
 
-☁️ Service-Oriented Deployment: Service-oriented deployment is a common form of deployment in actual production environments. By encapsulating inference functions as services, clients can access these services via network requests to obtain inference results. For detailed service-oriented deployment procedures, please refer to [Serving](../deployment/serving.md).
+☁️ Service-Oriented Deployment: Service-oriented deployment is a common form of deployment in actual production environments. By encapsulating inference functions as services, clients can access these services via network requests to obtain inference results. For detailed service-oriented deployment procedures, please refer to [Serving](../inference_deployment/serving/serving.md).
 
 Below is the API reference for basic service-oriented deployment and examples of multilingual service calls:
 

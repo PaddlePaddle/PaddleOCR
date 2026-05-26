@@ -51,6 +51,7 @@ The version correspondence between PaddleOCR, PaddleX, and the PaddlePaddle fram
 | PP-DocTranslation | `PP-DocTranslation` |
 | PaddleOCR-VL | `PaddleOCR-VL` |
 | PaddleOCR-VL-1.5 | `PaddleOCR-VL-1.5` |
+| PaddleOCR-VL-1.6 | `PaddleOCR-VL-1.6` |
 
 ## 3. Using PaddleX Pipeline Configuration Files
 

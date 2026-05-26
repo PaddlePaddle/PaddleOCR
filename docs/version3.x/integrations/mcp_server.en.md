@@ -16,6 +16,7 @@ PaddleOCR provides a lightweight [Model Context Protocol (MCP)](https://modelcon
     - **PP-StructureV3**: Identifies and extracts text blocks, titles, paragraphs, images, tables, and other layout elements from images or PDF files, converting the input into Markdown documents.
     - **PaddleOCR-VL**: Identifies and extracts text blocks, titles, paragraphs, images, tables, and other layout elements from images or PDF files, converting the input into Markdown documents. A VLM-based approach is used.
     - **PaddleOCR-VL-1.5**: An upgraded version of PaddleOCR-VL. Compared with PaddleOCR-VL, PaddleOCR-VL-1.5 achieves improvements in both speed and accuracy.
+    - **PaddleOCR-VL-1.6**: The latest version in the PaddleOCR-VL series, further upgrading the VLM component on top of PaddleOCR-VL-1.5.
 - **Supported Working Modes**
     - **Local Python Library**: Runs PaddleOCR pipelines directly on the local machine. This mode requires a suitable local environment and hardware, and is ideal for offline use or privacy-sensitive scenarios.
     - **PaddleOCR Official Service**: Invokes services provided by the [PaddleOCR Official Website](https://aistudio.baidu.com/paddleocr?lang=en). This is suitable for quick testing, prototyping, or no-code scenarios.
@@ -297,7 +298,7 @@ Configuration example:
 
 #### Mode 4: Self-hosted Service
 
-1. In the environment where you need to run the PaddleOCR inference server, run the inference server as per the [PaddleOCR serving documentation](./serving.en.md).
+1. In the environment where you need to run the PaddleOCR inference server, run the inference server as per the [PaddleOCR serving documentation](../inference_deployment/serving/serving.en.md).
 2. Install `paddleocr-mcp` where the MCP server will run.
 3. Refer to the configuration example below to modify the contents of the `claude_desktop_config.json` file. Set `PADDLEOCR_MCP_SERVER_URL` (e.g., `"http://127.0.0.1:8000"`).
 4. Restart the MCP host.
@@ -410,7 +411,7 @@ You can control the MCP server via environment variables or CLI arguments.
 
 | Environment Variable                          | CLI Argument              | Type   | Description                                                           | Options                                  | Default       |
 | ------------------------------------- | ------------------------- | ------ | --------------------------------------------------------------------- | ---------------------------------------- | ------------- |
-| `PADDLEOCR_MCP_PIPELINE`              | `--pipeline`              | `str`  | Pipeline to run.                                                      | `"OCR"`, `"PP-StructureV3"`, `"PaddleOCR-VL"`, `"PaddleOCR-VL-1.5"`              | `"OCR"`       |
+| `PADDLEOCR_MCP_PIPELINE`              | `--pipeline`              | `str`  | Pipeline to run.                                                      | `"OCR"`, `"PP-StructureV3"`, `"PaddleOCR-VL"`, `"PaddleOCR-VL-1.5"`, `"PaddleOCR-VL-1.6"`              | `"OCR"`       |
 | `PADDLEOCR_MCP_PPOCR_SOURCE`          | `--ppocr_source`          | `str`  | Source of PaddleOCR capabilities.                                     | `"local"` (local Python library), `"aistudio"` (PaddleOCR official service), `"qianfan"` (Qianfan platform service), `"self_hosted"` (self-hosted service) | `"local"`     |
 | `PADDLEOCR_MCP_SERVER_URL`            | `--server_url`            | `str`  | Base URL for the underlying service (required for `aistudio`, `qianfan`, or `self_hosted` modes). | -                                        | `None`        |
 | `PADDLEOCR_MCP_AISTUDIO_ACCESS_TOKEN` | `--aistudio_access_token` | `str`  | AI Studio access token (required for `aistudio` mode).                 | -                                        | `None`        |

@@ -20,8 +20,12 @@ export type {
   DocParsingRequest,
   OCROptions,
   OCRRequest,
+  PaddleOCRVLOptions,
+  PPStructureV3Options,
+  SaveResourceOptions,
 } from "./models.js";
 export type {
+  BatchStatus,
   DocParsingPage,
   DocParsingResult,
   Job,
@@ -38,5 +42,8 @@ export {
   JobFailedError,
   NetworkError,
   PaddleOCRAPIError,
-  TimeoutError,
+  PollTimeoutError,
+  RequestTimeoutError,
+  ResponseFormatError,
+  ResultParseError,
 } from "./errors.js";

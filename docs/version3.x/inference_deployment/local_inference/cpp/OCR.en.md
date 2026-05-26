@@ -299,7 +299,7 @@ PP-OCRv4_server_rec_doc_infer.tar">Inference Model</a></td>
 </table>
 </details>
 
-You can also refer to the model export sections of each module, such as [Text Detection Module - Model Export](../../module_usage/text_detection.en.md#44-model-export), to export the trained models as inference models.
+You can also refer to the model export sections of each module, such as [Text Detection Module - Model Export](../../../module_usage/text_detection.en.md#44-model-export), to export the trained models as inference models.
 
 The directory structure of the models is generally as follows:
 
@@ -934,7 +934,7 @@ Simply pass the corresponding recognition model when using the pipeline or modul
 --save_path ./output/
 ```
 
-For more detailed information, refer to the [Introduction to PP-OCRv5 Multilingual Text Recognition](../../algorithm/PP-OCRv5/PP-OCRv5_multi_languages.en.md).
+For more detailed information, refer to the [Introduction to PP-OCRv5 Multilingual Text Recognition](../../../algorithm/PP-OCRv5/PP-OCRv5_multi_languages.en.md).
 
 ### 3.2 Visualize Text Recognition Results
 

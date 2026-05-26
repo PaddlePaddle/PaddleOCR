@@ -15,8 +15,9 @@
 package paddleocr
 
 type OCRPage struct {
-	PrunedResult interface{} `json:"prunedResult"`
-	OCRImageURL  string      `json:"ocrImageUrl"`
+	PrunedResult interface{}            `json:"prunedResult"`
+	OCRImageURL  string                 `json:"ocrImageUrl,omitempty"`
+	Raw          map[string]interface{} `json:"raw,omitempty"`
 }
 
 type DocParsingPage struct {
@@ -42,9 +43,23 @@ type Progress struct {
 	EndTime        string `json:"endTime,omitempty"`
 }
 
+type Job struct {
+	JobID      string `json:"jobId"`
+	Model      string `json:"model"`
+	Task       string `json:"task"`
+	PageRanges string `json:"pageRanges,omitempty"`
+	BatchID    string `json:"batchId,omitempty"`
+}
+
 type JobStatus struct {
-	JobID    string    `json:"jobId"`
-	State    string    `json:"state"`
-	Progress *Progress `json:"progress,omitempty"`
-	ErrorMsg string    `json:"errorMsg,omitempty"`
+	JobID     string            `json:"jobId"`
+	State     string            `json:"state"`
+	Progress  *Progress         `json:"progress,omitempty"`
+	ResultURL map[string]string `json:"resultUrl,omitempty"`
+	ErrorMsg  string            `json:"errorMsg,omitempty"`
+}
+
+type BatchStatus struct {
+	BatchID string       `json:"batchId"`
+	Jobs    []*JobStatus `json:"jobs"`
 }

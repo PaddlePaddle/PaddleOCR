@@ -12,68 +12,225 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { AuthError, InvalidRequestError } from "./errors.js";
+import { stat, writeFile } from "node:fs/promises";
+import { basename, dirname, extname, join } from "node:path";
+import { AuthError, FileNotFoundError, InvalidRequestError, ResultParseError } from "./errors.js";
 import { HttpClient } from "./internal/http.js";
 import { Poller } from "./internal/poller.js";
-import type { ClientOptions, DocParsingRequest, OCRRequest } from "./models.js";
-import { Model } from "./models.js";
-import type { DocParsingResult, Job, JobStatus, OCRResult } from "./results.js";
+import type { ClientOptions, DocParsingRequest, OCRRequest, SaveResourceOptions } from "./models.js";
+import { isDocumentParsingModel, isOCRModel, Model } from "./models.js";
+import type { BatchStatus, DocParsingResult, Job, JobStatus, OCRResult } from "./results.js";
 
 const DEFAULT_BASE_URL = "https://paddleocr.aistudio-app.com/api/v2/ocr/jobs";
+
+interface ResourceSavePlan {
+  resourceUrl: string;
+  filename: string;
+}
 
 export class PaddleOCRClient {
   private http: HttpClient;
   private poller: Poller;
 
   constructor(options: ClientOptions = {}) {
-    const token = options.token || process.env.PADDLE_OCR_TOKEN || "";
+    const token = options.token || process.env.PADDLEOCR_ACCESS_TOKEN || "";
     if (!token) {
-      throw new AuthError("Token is required. Set PADDLE_OCR_TOKEN or pass token option.");
+      throw new AuthError("Token is required. Set PADDLEOCR_ACCESS_TOKEN or pass token option.");
     }
     const baseUrl = options.baseUrl || DEFAULT_BASE_URL;
-    const timeout = options.timeout || 300000;
+    const requestTimeout = options.requestTimeout || options.timeout || 300000;
+    const pollTimeout = options.pollTimeout || options.timeout || 600000;
 
-    this.http = new HttpClient(token, baseUrl, timeout);
-    this.poller = new Poller(this.http, timeout);
+    this.http = new HttpClient(token, baseUrl, requestTimeout);
+    this.poller = new Poller(this.http, pollTimeout);
   }
 
   async ocr(req: OCRRequest, options?: { signal?: AbortSignal }): Promise<OCRResult> {
-    const jobId = await this.submit(Model.PPOCRv5, req, options?.signal);
-    const jsonlData = await this.poller.pollUntilDone(jobId, options?.signal);
-    return this.parseOCRResult(jobId, jsonlData);
+    const job = await this.submitOcr(req, options);
+    return this.waitOcrResult(job, options);
   }
 
-  async docParsing(req: DocParsingRequest, options?: { signal?: AbortSignal }): Promise<DocParsingResult> {
-    const jobId = await this.submit(req.model, req, options?.signal);
-    const jsonlData = await this.poller.pollUntilDone(jobId, options?.signal);
-    return this.parseDocParsingResult(jobId, jsonlData);
+  async parseDocument(req: DocParsingRequest, options?: { signal?: AbortSignal }): Promise<DocParsingResult> {
+    const job = await this.submitDocumentParsing(req, options);
+    return this.waitDocumentParsingResult(job, options);
   }
 
   async submitOcr(req: OCRRequest, options?: { signal?: AbortSignal }): Promise<Job> {
-    const jobId = await this.submit(Model.PPOCRv5, req, options?.signal);
-    return { jobId };
+    const model = Model.PPOCRv5;
+    const jobId = await this.submit(model, "ocr", req, options?.signal);
+    return { jobId, model, task: "ocr", pageRanges: req.pageRanges, batchId: req.batchId };
   }
 
-  async submitDocParsing(req: DocParsingRequest, options?: { signal?: AbortSignal }): Promise<Job> {
-    const jobId = await this.submit(req.model, req, options?.signal);
-    return { jobId };
-  }
-
-  async waitForResult(jobId: string, options?: { signal?: AbortSignal }): Promise<OCRResult | DocParsingResult> {
-    const jsonlData = await this.poller.pollUntilDone(jobId, options?.signal);
-    const first = jsonlData[0]?.result || {};
-    if ("ocrResults" in first) {
-      return this.parseOCRResult(jobId, jsonlData);
+  async submitDocumentParsing(req: DocParsingRequest, options?: { signal?: AbortSignal }): Promise<Job> {
+    const model = req.model ?? Model.PaddleOCRVL16;
+    if (!isDocumentParsingModel(model)) {
+      throw new InvalidRequestError(`Model ${model} is not a document parsing model.`);
     }
-    return this.parseDocParsingResult(jobId, jsonlData);
+    const jobId = await this.submit(model, "document_parsing", req, options?.signal);
+    return { jobId, model, task: "document_parsing", pageRanges: req.pageRanges, batchId: req.batchId };
   }
 
-  async getResult(jobId: string, options?: { signal?: AbortSignal }): Promise<JobStatus> {
+  async waitOcrResult(job: Job | string, options?: { signal?: AbortSignal }): Promise<OCRResult> {
+    const resolved = this.resolveJob(job, "ocr");
+    const jsonlData = await this.poller.pollUntilDone(resolved.jobId, options?.signal);
+    return this.parseOCRResult(resolved.jobId, jsonlData);
+  }
+
+  async waitDocumentParsingResult(job: Job | string, options?: { signal?: AbortSignal }): Promise<DocParsingResult> {
+    const resolved = this.resolveJob(job, "document_parsing");
+    const jsonlData = await this.poller.pollUntilDone(resolved.jobId, options?.signal);
+    return this.parseDocParsingResult(resolved.jobId, jsonlData);
+  }
+
+  async getStatus(jobId: string, options?: { signal?: AbortSignal }): Promise<JobStatus> {
     return this.poller.getStatus(jobId, options?.signal);
+  }
+
+  async getBatchStatus(batchId: string, options?: { signal?: AbortSignal }): Promise<BatchStatus> {
+    return this.poller.getBatchStatus(batchId, options?.signal);
+  }
+
+  async saveResource(resourceUrl: string, destination: string, options?: SaveResourceOptions): Promise<{ savedPaths: string[] }>;
+  async saveResource(result: OCRResult | DocParsingResult, destination: string, options?: SaveResourceOptions): Promise<{ savedPaths: string[] }>;
+  async saveResource(
+    resource: string | OCRResult | DocParsingResult,
+    destination: string,
+    options: SaveResourceOptions = {},
+  ): Promise<{ savedPaths: string[] }> {
+    if (typeof resource === "string") {
+      const savedPath = await this.saveResourceUrl(resource, destination, options);
+      return { savedPaths: [savedPath] };
+    }
+    const savedPaths = await this.saveResultResources(resource, destination, options);
+    return { savedPaths };
+  }
+
+  private async saveResourceUrl(resourceUrl: string, destination: string, options: SaveResourceOptions): Promise<string> {
+    if (!resourceUrl) {
+      throw new InvalidRequestError("resourceUrl is required.");
+    }
+    let url: URL;
+    try {
+      url = new URL(resourceUrl);
+    } catch (error) {
+      throw new InvalidRequestError(`Invalid resource URL: ${resourceUrl}`, { cause: error });
+    }
+    const target = await this.resolveDestination(url, destination, options);
+    const content = await this.http.fetchResource(resourceUrl);
+    await writeFile(target, Buffer.from(content), { flag: options.overwrite ? "w" : "wx" });
+    return target;
+  }
+
+  private async saveResultResources(
+    result: OCRResult | DocParsingResult,
+    destination: string,
+    options: SaveResourceOptions,
+  ): Promise<string[]> {
+    await this.requireExistingDirectory(destination);
+    const plans = this.collectResultResourcePlans(result);
+    const targets = plans.map((plan) => join(destination, plan.filename));
+    for (const target of targets) {
+      await this.requireWritableTarget(target, options);
+    }
+    this.requireUniqueTargets(targets, options);
+    const savedPaths: string[] = [];
+    for (const [index, plan] of plans.entries()) {
+      await this.saveResourceUrl(plan.resourceUrl, targets[index], options);
+      savedPaths.push(targets[index]);
+    }
+    return savedPaths;
+  }
+
+  private collectResultResourcePlans(result: OCRResult | DocParsingResult): ResourceSavePlan[] {
+    if (isDocParsingResult(result)) {
+      return result.pages.flatMap((page) => [
+        ...this.collectMappedResourcePlans(page.markdownImages),
+        ...this.collectMappedResourcePlans(page.outputImages),
+      ]);
+    }
+    return result.pages.flatMap((page, index) => {
+      if (!page.ocrImageUrl) {
+        return [];
+      }
+      return [{
+        resourceUrl: page.ocrImageUrl,
+        filename: `ocr-page-${index + 1}${resourceExtension(page.ocrImageUrl)}`,
+      }];
+    });
+  }
+
+  private collectMappedResourcePlans(resources: Record<string, string>): ResourceSavePlan[] {
+    return Object.keys(resources)
+      .sort()
+      .map((key) => ({
+        resourceUrl: resources[key],
+        filename: safeMapKeyFilename(key),
+      }));
+  }
+
+  private async requireExistingDirectory(destination: string): Promise<void> {
+    let destinationStat;
+    try {
+      destinationStat = await stat(destination);
+    } catch {
+      throw new FileNotFoundError(destination);
+    }
+    if (!destinationStat.isDirectory()) {
+      throw new InvalidRequestError(`Destination must be an existing directory: ${destination}`);
+    }
+  }
+
+  private async requireWritableTarget(target: string, options: SaveResourceOptions): Promise<void> {
+    try {
+      await stat(target);
+    } catch {
+      return;
+    }
+    if (!options.overwrite) {
+      throw new InvalidRequestError(`Destination already exists: ${target}`);
+    }
+  }
+
+  private requireUniqueTargets(targets: string[], options: SaveResourceOptions): void {
+    if (options.overwrite) {
+      return;
+    }
+    const seen = new Set<string>();
+    for (const target of targets) {
+      if (seen.has(target)) {
+        throw new InvalidRequestError(`Destination already exists: ${target}`);
+      }
+      seen.add(target);
+    }
+  }
+
+  private async resolveDestination(url: URL, destination: string, options: SaveResourceOptions): Promise<string> {
+    let destinationStat;
+    try {
+      destinationStat = await stat(destination);
+    } catch {
+      destinationStat = undefined;
+    }
+    const target = destinationStat?.isDirectory() ? join(destination, safeUrlBasename(url)) : destination;
+    await this.requireWritableTarget(target, options);
+    const parent = dirname(target);
+    try {
+      const parentStat = await stat(parent);
+      if (!parentStat.isDirectory()) {
+        throw new InvalidRequestError(`Destination parent must be a directory: ${parent}`);
+      }
+    } catch (error) {
+      if (error instanceof InvalidRequestError) {
+        throw error;
+      }
+      throw new FileNotFoundError(parent, { cause: error });
+    }
+    return target;
   }
 
   private async submit(
     model: string,
+    task: Job["task"],
     req: { fileUrl?: string; filePath?: string; pageRanges?: string; batchId?: string; options?: object },
     signal?: AbortSignal,
   ): Promise<string> {
@@ -84,7 +241,8 @@ export class PaddleOCRClient {
       throw new InvalidRequestError("fileUrl and filePath are mutually exclusive.");
     }
 
-    const payload = req.options || this.defaultPayload(model);
+    this.validateModelForTask(model, task);
+    const payload = req.options || {};
 
     if (req.fileUrl) {
       return this.http.submitUrl(model, req.fileUrl, payload, {
@@ -100,30 +258,102 @@ export class PaddleOCRClient {
     });
   }
 
-  private defaultPayload(_model: string): object {
-    return {};
-  }
-
-  private parseOCRResult(jobId: string, jsonlData: any[]): OCRResult {
+  private parseOCRResult(jobId: string, jsonlData: unknown[]): OCRResult {
     const pages = jsonlData.flatMap((lineObj) => {
-      const ocrResults = lineObj.result?.ocrResults || [];
-      return ocrResults.map((item: any) => ({
-        prunedResult: item.prunedResult,
-        ocrImageUrl: item.ocrImage,
-      }));
+      if (!isRecord(lineObj) || !isRecord(lineObj.result) || !Array.isArray(lineObj.result.ocrResults)) {
+        throw new ResultParseError("OCR result item is missing result.ocrResults.");
+      }
+      return lineObj.result.ocrResults.map((item) => {
+        if (!isRecord(item) || !("prunedResult" in item)) {
+          throw new ResultParseError("OCR result page is missing prunedResult.");
+        }
+        return {
+          prunedResult: item.prunedResult,
+          ocrImageUrl: typeof item.ocrImage === "string" ? item.ocrImage : undefined,
+          raw: item,
+        };
+      });
     });
     return { jobId, pages };
   }
 
-  private parseDocParsingResult(jobId: string, jsonlData: any[]): DocParsingResult {
+  private parseDocParsingResult(jobId: string, jsonlData: unknown[]): DocParsingResult {
     const pages = jsonlData.flatMap((lineObj) => {
-      const lpResults = lineObj.result?.layoutParsingResults || [];
-      return lpResults.map((item: any) => ({
-        markdownText: item.markdown?.text || "",
-        markdownImages: item.markdown?.images || {},
-        outputImages: item.outputImages || {},
-      }));
+      if (!isRecord(lineObj) || !isRecord(lineObj.result) || !Array.isArray(lineObj.result.layoutParsingResults)) {
+        throw new ResultParseError("Document parsing result item is missing result.layoutParsingResults.");
+      }
+      return lineObj.result.layoutParsingResults.map((item) => {
+        if (!isRecord(item) || !isRecord(item.markdown) || typeof item.markdown.text !== "string") {
+          throw new ResultParseError("Document parsing result page is missing markdown.text.");
+        }
+        return {
+          markdownText: item.markdown.text,
+          markdownImages: isRecord(item.markdown.images) ? stringMap(item.markdown.images) : {},
+          outputImages: isRecord(item.outputImages) ? stringMap(item.outputImages) : {},
+        };
+      });
     });
     return { jobId, pages };
+  }
+
+  private resolveJob(job: Job | string, expectedTask: Job["task"]): Job {
+    if (typeof job === "string") {
+      return { jobId: job, model: "", task: expectedTask };
+    }
+    if (job.task !== expectedTask) {
+      throw new InvalidRequestError(`Job ${job.jobId} is a ${job.task} job, not a ${expectedTask} job.`);
+    }
+    return job;
+  }
+
+  private validateModelForTask(model: string, task: Job["task"]): void {
+    if (task === "ocr" && !isOCRModel(model)) {
+      throw new InvalidRequestError(`Model ${model} is not an OCR model.`);
+    }
+    if (task === "document_parsing" && !isDocumentParsingModel(model)) {
+      throw new InvalidRequestError(`Model ${model} is not a document parsing model.`);
+    }
+  }
+}
+
+function stringMap(value: Record<string, unknown>): Record<string, string> {
+  const result: Record<string, string> = {};
+  for (const [key, val] of Object.entries(value)) {
+    if (typeof val === "string") {
+      result[key] = val;
+    }
+  }
+  return result;
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null;
+}
+
+function isDocParsingResult(result: OCRResult | DocParsingResult): result is DocParsingResult {
+  return result.pages.some((page) => "markdownText" in page);
+}
+
+function safeMapKeyFilename(key: string): string {
+  if (!key || key === "." || key === ".." || key.includes("/") || key.includes("\\") || key.startsWith(".")) {
+    throw new InvalidRequestError(`Unsafe resource filename: ${key}`);
+  }
+  return key;
+}
+
+function safeUrlBasename(url: URL): string {
+  const name = basename(url.pathname) || "resource";
+  if (name === "." || name === "..") {
+    return "resource";
+  }
+  return name;
+}
+
+function resourceExtension(resourceUrl: string): string {
+  try {
+    const url = new URL(resourceUrl);
+    return extname(url.pathname);
+  } catch {
+    return "";
   }
 }

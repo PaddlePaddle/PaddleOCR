@@ -17,6 +17,32 @@ export enum Model {
   PPStructureV3 = "PP-StructureV3",
   PaddleOCRVL = "PaddleOCR-VL",
   PaddleOCRVL15 = "PaddleOCR-VL-1.5",
+  PaddleOCRVL16 = "PaddleOCR-VL-1.6",
+}
+
+const OCR_MODELS = new Set<string>([Model.PPOCRv5]);
+const DOCUMENT_PARSING_MODELS = new Set<string>([
+  Model.PPStructureV3,
+  Model.PaddleOCRVL,
+  Model.PaddleOCRVL15,
+  Model.PaddleOCRVL16,
+]);
+const VL_MODELS = new Set<string>([
+  Model.PaddleOCRVL,
+  Model.PaddleOCRVL15,
+  Model.PaddleOCRVL16,
+]);
+
+export function isOCRModel(model: string): model is Model.PPOCRv5 {
+  return OCR_MODELS.has(model);
+}
+
+export function isDocumentParsingModel(model: string): boolean {
+  return DOCUMENT_PARSING_MODELS.has(model);
+}
+
+export function isVLModel(model: string): boolean {
+  return VL_MODELS.has(model);
 }
 
 export interface OCROptions {
@@ -32,7 +58,7 @@ export interface OCROptions {
   visualize?: boolean;
 }
 
-export interface DocParsingOptions {
+export interface PPStructureV3Options {
   useDocOrientationClassify?: boolean;
   useDocUnwarping?: boolean;
   useTextlineOrientation?: boolean;
@@ -53,7 +79,44 @@ export interface DocParsingOptions {
   textDetUnclipRatio?: number;
   textRecScoreThresh?: number;
   visualize?: boolean;
+  useWiredTableCellsTransToHtml?: boolean;
+  useWirelessTableCellsTransToHtml?: boolean;
+  useTableOrientationClassify?: boolean;
+  useOcrResultsWithTableCells?: boolean;
+  useE2eWiredTableRecModel?: boolean;
+  useE2eWirelessTableRecModel?: boolean;
+  prettifyMarkdown?: boolean;
+  showFormulaNumber?: boolean;
 }
+
+export interface PaddleOCRVLOptions {
+  useDocOrientationClassify?: boolean;
+  useDocUnwarping?: boolean;
+  useLayoutDetection?: boolean;
+  useChartRecognition?: boolean;
+  useSealRecognition?: boolean;
+  layoutThreshold?: number | Record<string, number>;
+  layoutNms?: boolean;
+  layoutUnclipRatio?: number | number[] | Record<string, number>;
+  layoutMergeBboxesMode?: string | Record<string, string>;
+  layoutShapeMode?: "rect" | "quad" | "poly" | "auto";
+  promptLabel?: "ocr" | "formula" | "table" | "chart" | "seal" | "spotting";
+  repetitionPenalty?: number;
+  temperature?: number;
+  topP?: number;
+  minPixels?: number;
+  maxPixels?: number;
+  maxNewTokens?: number;
+  mergeLayoutBlocks?: boolean;
+  prettifyMarkdown?: boolean;
+  showFormulaNumber?: boolean;
+  restructurePages?: boolean;
+  mergeTables?: boolean;
+  relevelTitles?: boolean;
+  visualize?: boolean;
+}
+
+export type DocParsingOptions = PPStructureV3Options | PaddleOCRVLOptions;
 
 export interface OCRRequest {
   fileUrl?: string;
@@ -64,7 +127,7 @@ export interface OCRRequest {
 }
 
 export interface DocParsingRequest {
-  model: Model;
+  model?: Model;
   fileUrl?: string;
   filePath?: string;
   pageRanges?: string;
@@ -76,4 +139,10 @@ export interface ClientOptions {
   token?: string;
   baseUrl?: string;
   timeout?: number;
+  requestTimeout?: number;
+  pollTimeout?: number;
+}
+
+export interface SaveResourceOptions {
+  overwrite?: boolean;
 }

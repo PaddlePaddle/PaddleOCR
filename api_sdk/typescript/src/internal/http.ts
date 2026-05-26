@@ -12,7 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { APIError, AuthError, InvalidRequestError, NetworkError } from "../errors.js";
+import {
+  APIError,
+  AuthError,
+  InvalidRequestError,
+  NetworkError,
+  RequestTimeoutError,
+  ResponseFormatError,
+  ResultParseError,
+} from "../errors.js";
 import { userAbortReason } from "./abort.js";
 
 const DEFAULT_BASE_URL = "https://paddleocr.aistudio-app.com/api/v2/ocr/jobs";
@@ -24,6 +32,8 @@ interface SubmitOptions {
 }
 
 interface APIResponse<T> {
+  code?: number;
+  msg?: string;
   data: T;
 }
 
@@ -34,12 +44,12 @@ interface SubmitResponse {
 export class HttpClient {
   private baseUrl: string;
   private token: string;
-  private timeout: number;
+  private requestTimeout: number;
 
-  constructor(token: string, baseUrl: string = DEFAULT_BASE_URL, timeout: number = 300000) {
+  constructor(token: string, baseUrl: string = DEFAULT_BASE_URL, requestTimeout: number = 300000) {
     this.token = token;
-    this.baseUrl = baseUrl.replace(/\/$/, "");
-    this.timeout = timeout;
+    this.baseUrl = baseUrl.replace(/\/+$/, "");
+    this.requestTimeout = requestTimeout;
   }
 
   async submitUrl(model: string, fileUrl: string, optionalPayload: object, options: SubmitOptions = {}): Promise<string> {
@@ -50,13 +60,12 @@ export class HttpClient {
     if (options.batchId !== undefined) {
       body.batchId = options.batchId;
     }
-    const resp = await this.fetch(this.baseUrl, {
+    const data = await this.fetchJson<SubmitResponse>(this.baseUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
     }, options.signal);
-    const data = await resp.json() as APIResponse<SubmitResponse>;
-    return data.data.jobId;
+    return requireJobId(data);
   }
 
   async submitFile(model: string, filePath: string, optionalPayload: object, options: SubmitOptions = {}): Promise<string> {
@@ -82,28 +91,73 @@ export class HttpClient {
     const blob = new Blob([fileBuffer]);
     form.append("file", blob, path.basename(filePath));
 
-    const resp = await this.fetch(this.baseUrl, {
+    const data = await this.fetchJson<SubmitResponse>(this.baseUrl, {
       method: "POST",
       body: form,
     }, options.signal);
-    const data = await resp.json() as APIResponse<SubmitResponse>;
-    return data.data.jobId;
+    return requireJobId(data);
   }
 
-  async getJobStatus(jobId: string, signal?: AbortSignal): Promise<any> {
-    const resp = await this.fetch(`${this.baseUrl}/${jobId}`, { method: "GET" }, signal);
-    const data = await resp.json() as APIResponse<any>;
-    return data.data;
+  async getJobStatus(jobId: string, signal?: AbortSignal, timeoutMs?: number): Promise<unknown> {
+    return this.fetchJson<unknown>(
+      `${this.baseUrl}/${encodeURIComponent(jobId)}`,
+      { method: "GET" },
+      signal,
+      true,
+      timeoutMs,
+    );
   }
 
-  async fetchJsonl(url: string, signal?: AbortSignal): Promise<any[]> {
-    const resp = await this.fetch(url, { method: "GET" }, signal, false);
+  async getBatchStatus(batchId: string, signal?: AbortSignal, timeoutMs?: number): Promise<unknown> {
+    return this.fetchJson<unknown>(
+      `${this.baseUrl}/batch/${encodeURIComponent(batchId)}`,
+      { method: "GET" },
+      signal,
+      true,
+      timeoutMs,
+    );
+  }
+
+  async fetchJsonl(url: string, signal?: AbortSignal, timeoutMs?: number): Promise<unknown[]> {
+    const resp = await this.fetch(url, { method: "GET" }, signal, false, timeoutMs);
     const text = await resp.text();
-    return text
-      .trim()
-      .split("\n")
-      .filter((line) => line.trim())
-      .map((line) => JSON.parse(line));
+    try {
+      return text
+        .trim()
+        .split("\n")
+        .filter((line) => line.trim())
+        .map((line) => JSON.parse(line) as unknown);
+    } catch (error) {
+      throw new ResultParseError("Failed to parse JSONL result payload.", { cause: error });
+    }
+  }
+
+  async fetchResource(url: string, signal?: AbortSignal, timeoutMs?: number): Promise<ArrayBuffer> {
+    const resp = await this.fetch(url, { method: "GET" }, signal, false, timeoutMs);
+    return resp.arrayBuffer();
+  }
+
+  private async fetchJson<T>(
+    url: string,
+    init: RequestInit,
+    signal?: AbortSignal,
+    withAuth: boolean = true,
+    timeoutMs?: number,
+  ): Promise<T> {
+    const resp = await this.fetch(url, init, signal, withAuth, timeoutMs);
+    let payload: APIResponse<T>;
+    try {
+      payload = await resp.json() as APIResponse<T>;
+    } catch (error) {
+      throw new ResponseFormatError("Expected a JSON response body.", { cause: error });
+    }
+    if (payload.code !== undefined && payload.code !== 0) {
+      throw new APIError(resp.status, payload.msg || "PaddleOCR official API request failed.");
+    }
+    if (!payload || typeof payload !== "object" || !("data" in payload)) {
+      throw new ResponseFormatError("Response body is missing data.");
+    }
+    return payload.data;
   }
 
   private async fetch(
@@ -111,6 +165,7 @@ export class HttpClient {
     init: RequestInit,
     signal?: AbortSignal,
     withAuth: boolean = true,
+    timeoutMs?: number,
   ): Promise<Response> {
     const headers: Record<string, string> = {
       ...(init.headers as Record<string, string> || {}),
@@ -121,7 +176,8 @@ export class HttpClient {
 
     let resp: Response;
     const timeoutController = new AbortController();
-    const timeoutID = setTimeout(() => timeoutController.abort(), this.timeout);
+    const effectiveTimeout = Math.max(0, Math.min(this.requestTimeout, timeoutMs ?? this.requestTimeout));
+    const timeoutID = setTimeout(() => timeoutController.abort(), effectiveTimeout);
     const abortController = new AbortController();
     const abort = () => abortController.abort();
     timeoutController.signal.addEventListener("abort", abort, { once: true });
@@ -141,7 +197,7 @@ export class HttpClient {
         throw userAbortReason(signal);
       }
       if (timeoutController.signal.aborted) {
-        throw new DOMException("The operation timed out.", "TimeoutError");
+        throw new RequestTimeoutError(effectiveTimeout, { cause: e });
       }
       const message = e instanceof Error ? e.message : String(e);
       throw new NetworkError(`Connection failed: ${message}`);
@@ -152,7 +208,13 @@ export class HttpClient {
 
     if (resp.ok) return resp;
 
-    const text = await resp.text();
+    let text = await resp.text();
+    try {
+      const payload = JSON.parse(text) as { msg?: string; message?: string; errorMsg?: string };
+      text = payload.msg || payload.message || payload.errorMsg || text;
+    } catch {
+      // Keep raw response text.
+    }
     if (resp.status === 401 || resp.status === 403) {
       throw new AuthError(`Authentication failed: ${text}`);
     } else if (resp.status === 400) {
@@ -161,4 +223,11 @@ export class HttpClient {
       throw new APIError(resp.status, text);
     }
   }
+}
+
+function requireJobId(data: SubmitResponse): string {
+  if (!data || typeof data.jobId !== "string" || data.jobId.length === 0) {
+    throw new ResponseFormatError("Submit response is missing jobId.");
+  }
+  return data.jobId;
 }

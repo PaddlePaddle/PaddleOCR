@@ -46,15 +46,25 @@ class JobFailedError(PaddleOCRAPIError):
         super().__init__(f"Job {job_id} failed: {error_msg}")
 
 
-class TimeoutError(PaddleOCRAPIError):
+class RequestTimeoutError(PaddleOCRAPIError):
+    """A single HTTP request exceeded the configured timeout."""
+
+
+class PollTimeoutError(PaddleOCRAPIError):
     """Polling timed out waiting for job completion."""
 
     def __init__(self, job_id: str, elapsed: float):
         self.job_id = job_id
         self.elapsed = elapsed
-        super().__init__(
-            f"Timed out after {elapsed:.1f}s waiting for job {job_id}"
-        )
+        super().__init__(f"Timed out after {elapsed:.1f}s waiting for job {job_id}")
+
+
+class ResponseFormatError(PaddleOCRAPIError):
+    """A successful API response did not match the documented schema."""
+
+
+class ResultParseError(PaddleOCRAPIError):
+    """A result JSONL payload could not be parsed as the expected result type."""
 
 
 class NetworkError(PaddleOCRAPIError):

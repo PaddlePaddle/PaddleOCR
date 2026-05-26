@@ -5,7 +5,7 @@ comments: true
 # PaddleOCR-VL Apple Silicon Usage Tutorial
 
 > INFO:
-> Unless otherwise specified, the term "PaddleOCR-VL" in this tutorial refers to the PaddleOCR-VL model series (e.g., PaddleOCR-VL-1.5). References specific to the PaddleOCR-VL v1 version will be explicitly noted.
+> Unless otherwise specified, the term "PaddleOCR-VL" in this tutorial refers to the PaddleOCR-VL model series (e.g., PaddleOCR-VL-1.6). References specific to the PaddleOCR-VL v1 version will be explicitly noted.
 
 This tutorial is a guide for using PaddleOCR-VL on Apple Silicon, covering the complete workflow from environment preparation to service deployment.
 
@@ -104,7 +104,7 @@ paddleocr doc_parser \
   --input paddleocr_vl_demo.png \
   --vl_rec_backend mlx-vlm-server \
   --vl_rec_server_url http://localhost:8111/ \
-  --vl_rec_api_model_name PaddlePaddle/PaddleOCR-VL-1.5
+  --vl_rec_api_model_name PaddlePaddle/PaddleOCR-VL-1.6
 ```
 
 #### 3.2.2 Python Script Integration
@@ -115,7 +115,7 @@ When creating a `PaddleOCRVL` object, specify the backend type via `vl_rec_backe
 pipeline = PaddleOCRVL(
     vl_rec_backend="mlx-vlm-server", 
     vl_rec_server_url="http://localhost:8111/",
-    vl_rec_api_model_name="PaddlePaddle/PaddleOCR-VL-1.5",
+    vl_rec_api_model_name="PaddlePaddle/PaddleOCR-VL-1.6",
 )
 ```
 

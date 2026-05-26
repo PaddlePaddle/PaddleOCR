@@ -16,6 +16,7 @@ PaddleOCR 提供轻量级的 [Model Context Protocol（MCP）](https://modelcont
     - **PP-StructureV3**：从图像或 PDF 文件中识别和提取文本块、标题、段落、图片、表格以及其他版面元素，将输入转换为 Markdown 文档。
     - **PaddleOCR-VL**：使用基于多模态大模型的方案，从图像或 PDF 文件中识别和提取文本块、标题、段落、图片、表格以及其他版面元素，将输入转换为 Markdown 文档。
     - **PaddleOCR-VL-1.5**：PaddleOCR-VL 的升级版，相较于 PaddleOCR-VL，PaddleOCR-VL-1.5 在速度与准确率上均有提升。
+    - **PaddleOCR-VL-1.6**：PaddleOCR-VL 系列的最新版本，在 PaddleOCR-VL-1.5 的基础上进一步升级了 VLM 组件。
 - **支持运行在如下工作模式**
     - **本地 Python 库**：在本机直接运行 PaddleOCR 产线。此模式对本地环境与计算机性能有一定要求，适用于需要离线使用、对数据隐私有严格要求的场景。
     - **PaddleOCR 官方服务**：调用 [PaddleOCR 官网](https://aistudio.baidu.com/paddleocr) 提供的云服务。此模式适合快速体验功能、快速验证方案等，也适用于零代码开发场景。
@@ -290,7 +291,7 @@ paddleocr_mcp --help
 
 #### 模式四：自托管服务
 
-1. 在需要运行 PaddleOCR 推理服务器的环境中，参考 [PaddleOCR 服务化部署文档](./serving.md) 运行推理服务器。
+1. 在需要运行 PaddleOCR 推理服务器的环境中，参考 [PaddleOCR 服务化部署文档](../inference_deployment/serving/serving.md) 运行推理服务器。
 2. 在需要运行 MCP 服务器的环境中安装 `paddleocr-mcp`。
 3. 参考下方的配置示例更改 `claude_desktop_config.json` 文件内容。将您的服务地址填入 `PADDLEOCR_MCP_SERVER_URL` (例如：`"http://127.0.0.1:8000"`)。
 4. 重启 MCP 主机。
@@ -403,7 +404,7 @@ paddleocr_mcp --pipeline OCR --ppocr_source self_hosted --server_url http://127.
 
 | 环境变量 | 命令行参数 | 类型 | 描述 | 可选值 | 默认值 |
 |:---------|:-----------|:-----|:-----|:-------|:-------|
-| `PADDLEOCR_MCP_PIPELINE` | `--pipeline` | `str` | 要运行的产线。 | `"OCR"`，`"PP-StructureV3"`，`"PaddleOCR-VL"`，`"PaddleOCR-VL-1.5"` | `"OCR"` |
+| `PADDLEOCR_MCP_PIPELINE` | `--pipeline` | `str` | 要运行的产线。 | `"OCR"`，`"PP-StructureV3"`，`"PaddleOCR-VL"`，`"PaddleOCR-VL-1.5"`，`"PaddleOCR-VL-1.6"` | `"OCR"` |
 | `PADDLEOCR_MCP_PPOCR_SOURCE` | `--ppocr_source` | `str` | PaddleOCR 能力来源。 | `"local"`（本地 Python 库），`"aistudio"`（PaddleOCR 官方服务），`"qianfan"`（千帆平台服务），`"self_hosted"`（自托管服务） | `"local"` |
 | `PADDLEOCR_MCP_SERVER_URL` | `--server_url` | `str` | 底层服务基础 URL（`aistudio`、`qianfan`、`self_hosted` 模式下必需）。 | - | `None` |
 | `PADDLEOCR_MCP_AISTUDIO_ACCESS_TOKEN` | `--aistudio_access_token` | `str` | AI Studio 访问令牌（`aistudio` 模式下必需）。 | - | `None` |

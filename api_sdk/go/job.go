@@ -21,6 +21,7 @@ import (
 	"fmt"
 	"io"
 	"mime/multipart"
+	"net"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -35,6 +36,8 @@ const (
 )
 
 type apiResponse struct {
+	Code int             `json:"code"`
+	Msg  string          `json:"msg"`
 	Data json.RawMessage `json:"data"`
 }
 
@@ -43,14 +46,11 @@ type submitResponse struct {
 }
 
 type jobStatusResponse struct {
-	State           string          `json:"state"`
-	ExtractProgress json.RawMessage `json:"extractProgress"`
-	ResultURL       *resultURL      `json:"resultUrl"`
-	ErrorMsg        string          `json:"errorMsg"`
-}
-
-type resultURL struct {
-	JSONURL string `json:"jsonUrl"`
+	JobID           string            `json:"jobId"`
+	State           string            `json:"state"`
+	ExtractProgress json.RawMessage   `json:"extractProgress"`
+	ResultURL       map[string]string `json:"resultUrl"`
+	ErrorMsg        string            `json:"errorMsg"`
 }
 
 type extractProgress struct {
@@ -74,7 +74,7 @@ func (c *Client) submitURL(ctx context.Context, model, fileURL string, payload i
 	}
 	jsonBody, err := json.Marshal(body)
 	if err != nil {
-		return "", err
+		return "", &ResponseFormatError{PaddleOCRAPIError{Message: "failed to encode submit request", Cause: err}}
 	}
 
 	req, err := http.NewRequestWithContext(ctx, "POST", c.baseURL, bytes.NewReader(jsonBody))
@@ -86,7 +86,7 @@ func (c *Client) submitURL(ctx context.Context, model, fileURL string, payload i
 
 	resp, err := c.httpClient.Do(req)
 	if err != nil {
-		return "", &NetworkError{PaddleOCRAPIError{Message: err.Error()}}
+		return "", classifyHTTPError(err)
 	}
 	defer resp.Body.Close()
 
@@ -94,13 +94,16 @@ func (c *Client) submitURL(ctx context.Context, model, fileURL string, payload i
 		return "", err
 	}
 
-	var apiResp apiResponse
-	if err := json.NewDecoder(resp.Body).Decode(&apiResp); err != nil {
+	apiResp, err := decodeAPIResponse(resp)
+	if err != nil {
 		return "", err
 	}
 	var sr submitResponse
 	if err := json.Unmarshal(apiResp.Data, &sr); err != nil {
-		return "", err
+		return "", &ResponseFormatError{PaddleOCRAPIError{Message: "submit response is malformed", Cause: err}}
+	}
+	if sr.JobID == "" {
+		return "", &ResponseFormatError{PaddleOCRAPIError{Message: "submit response is missing jobId"}}
 	}
 	return sr.JobID, nil
 }
@@ -114,8 +117,13 @@ func (c *Client) submitFile(ctx context.Context, model, filePath string, payload
 	w := multipart.NewWriter(&buf)
 
 	_ = w.WriteField("model", model)
-	payloadJSON, _ := json.Marshal(payload)
-	_ = w.WriteField("optionalPayload", string(payloadJSON))
+	payloadJSON, err := json.Marshal(payload)
+	if err != nil {
+		return "", &ResponseFormatError{PaddleOCRAPIError{Message: "failed to encode optionalPayload", Cause: err}}
+	}
+	if err := w.WriteField("optionalPayload", string(payloadJSON)); err != nil {
+		return "", err
+	}
 	if pageRanges != "" {
 		_ = w.WriteField("pageRanges", pageRanges)
 	}
@@ -136,7 +144,9 @@ func (c *Client) submitFile(ctx context.Context, model, filePath string, payload
 	if _, err := io.Copy(fw, file); err != nil {
 		return "", err
 	}
-	w.Close()
+	if err := w.Close(); err != nil {
+		return "", err
+	}
 
 	req, err := http.NewRequestWithContext(ctx, "POST", c.baseURL, &buf)
 	if err != nil {
@@ -147,7 +157,7 @@ func (c *Client) submitFile(ctx context.Context, model, filePath string, payload
 
 	resp, err := c.httpClient.Do(req)
 	if err != nil {
-		return "", &NetworkError{PaddleOCRAPIError{Message: err.Error()}}
+		return "", classifyHTTPError(err)
 	}
 	defer resp.Body.Close()
 
@@ -155,13 +165,16 @@ func (c *Client) submitFile(ctx context.Context, model, filePath string, payload
 		return "", err
 	}
 
-	var apiResp apiResponse
-	if err := json.NewDecoder(resp.Body).Decode(&apiResp); err != nil {
+	apiResp, err := decodeAPIResponse(resp)
+	if err != nil {
 		return "", err
 	}
 	var sr submitResponse
 	if err := json.Unmarshal(apiResp.Data, &sr); err != nil {
-		return "", err
+		return "", &ResponseFormatError{PaddleOCRAPIError{Message: "submit response is malformed", Cause: err}}
+	}
+	if sr.JobID == "" {
+		return "", &ResponseFormatError{PaddleOCRAPIError{Message: "submit response is missing jobId"}}
 	}
 	return sr.JobID, nil
 }
@@ -175,7 +188,7 @@ func (c *Client) getJobStatus(ctx context.Context, jobID string) (*jobStatusResp
 
 	resp, err := c.httpClient.Do(req)
 	if err != nil {
-		return nil, &NetworkError{PaddleOCRAPIError{Message: err.Error()}}
+		return nil, classifyHTTPError(err)
 	}
 	defer resp.Body.Close()
 
@@ -183,15 +196,59 @@ func (c *Client) getJobStatus(ctx context.Context, jobID string) (*jobStatusResp
 		return nil, err
 	}
 
-	var apiResp apiResponse
-	if err := json.NewDecoder(resp.Body).Decode(&apiResp); err != nil {
+	apiResp, err := decodeAPIResponse(resp)
+	if err != nil {
 		return nil, err
 	}
 	var status jobStatusResponse
 	if err := json.Unmarshal(apiResp.Data, &status); err != nil {
-		return nil, err
+		return nil, &ResponseFormatError{PaddleOCRAPIError{Message: "status response is malformed", Cause: err}}
+	}
+	if status.State == "" {
+		return nil, &ResponseFormatError{PaddleOCRAPIError{Message: "status response is missing state"}}
 	}
 	return &status, nil
+}
+
+func (c *Client) getBatchStatus(ctx context.Context, batchID string) (*BatchStatus, error) {
+	req, err := http.NewRequestWithContext(ctx, "GET", c.baseURL+"/batch/"+batchID, nil)
+	if err != nil {
+		return nil, &NetworkError{PaddleOCRAPIError{Message: err.Error(), Cause: err}}
+	}
+	req.Header.Set("Authorization", "bearer "+c.token)
+
+	resp, err := c.httpClient.Do(req)
+	if err != nil {
+		return nil, classifyHTTPError(err)
+	}
+	defer resp.Body.Close()
+
+	if err := raiseForResponse(resp); err != nil {
+		return nil, err
+	}
+	apiResp, err := decodeAPIResponse(resp)
+	if err != nil {
+		return nil, err
+	}
+	var payload struct {
+		ExtractResult []jobStatusResponse `json:"extractResult"`
+	}
+	if err := json.Unmarshal(apiResp.Data, &payload); err != nil {
+		return nil, &ResponseFormatError{PaddleOCRAPIError{Message: "batch response is malformed", Cause: err}}
+	}
+	result := &BatchStatus{BatchID: batchID}
+	for _, item := range payload.ExtractResult {
+		jobID := item.JobID
+		if jobID == "" {
+			return nil, &ResponseFormatError{PaddleOCRAPIError{Message: "batch response item is missing jobId"}}
+		}
+		status, err := normalizeStatus(jobID, &item)
+		if err != nil {
+			return nil, err
+		}
+		result.Jobs = append(result.Jobs, status)
+	}
+	return result, nil
 }
 
 func (c *Client) fetchJSONL(ctx context.Context, url string) ([]map[string]interface{}, error) {
@@ -201,7 +258,7 @@ func (c *Client) fetchJSONL(ctx context.Context, url string) ([]map[string]inter
 	}
 	resp, err := c.httpClient.Do(req)
 	if err != nil {
-		return nil, &NetworkError{PaddleOCRAPIError{Message: err.Error()}}
+		return nil, classifyHTTPError(err)
 	}
 	defer resp.Body.Close()
 	if err := raiseForResponse(resp); err != nil {
@@ -222,7 +279,7 @@ func (c *Client) fetchJSONL(ctx context.Context, url string) ([]map[string]inter
 		}
 		var obj map[string]interface{}
 		if err := json.Unmarshal([]byte(line), &obj); err != nil {
-			return nil, err
+			return nil, &ResultParseError{PaddleOCRAPIError{Message: "failed to parse JSONL result payload", Cause: err}}
 		}
 		results = append(results, obj)
 	}
@@ -231,28 +288,45 @@ func (c *Client) fetchJSONL(ctx context.Context, url string) ([]map[string]inter
 
 func (c *Client) pollUntilDone(ctx context.Context, jobID string) ([]map[string]interface{}, error) {
 	interval := initialInterval
-	var elapsed time.Duration
+	deadline := time.Now().Add(c.pollTimeout)
+	pollCtx, cancel := context.WithDeadline(ctx, deadline)
+	defer cancel()
 
-	maxPollWait := c.timeout
-	for elapsed < maxPollWait {
-		select {
-		case <-ctx.Done():
-			return nil, ctx.Err()
-		case <-time.After(interval):
+	for time.Now().Before(deadline) {
+		remaining := time.Until(deadline)
+		if remaining <= 0 {
+			break
 		}
-		elapsed += interval
+		if interval > remaining {
+			interval = remaining
+		}
+		timer := time.NewTimer(interval)
+		select {
+		case <-pollCtx.Done():
+			timer.Stop()
+			if ctx.Err() != nil {
+				return nil, ctx.Err()
+			}
+			return nil, &PollTimeoutError{
+				JobID:             jobID,
+				Elapsed:           c.pollTimeout.Seconds(),
+				PaddleOCRAPIError: PaddleOCRAPIError{Message: fmt.Sprintf("Timed out after %.1fs", c.pollTimeout.Seconds())},
+			}
+		case <-timer.C:
+		}
 
-		status, err := c.getJobStatus(ctx, jobID)
+		status, err := c.getJobStatus(pollCtx, jobID)
 		if err != nil {
 			return nil, err
 		}
 
 		switch status.State {
 		case "done":
-			if status.ResultURL == nil {
-				return nil, fmt.Errorf("job done but no result URL")
+			jsonURL := status.ResultURL["jsonUrl"]
+			if jsonURL == "" {
+				return nil, &ResponseFormatError{PaddleOCRAPIError{Message: "done job response is missing resultUrl.jsonUrl"}}
 			}
-			return c.fetchJSONL(ctx, status.ResultURL.JSONURL)
+			return c.fetchJSONL(pollCtx, jsonURL)
 		case "failed":
 			return nil, &JobFailedError{
 				JobID:             jobID,
@@ -268,15 +342,15 @@ func (c *Client) pollUntilDone(ctx context.Context, jobID string) ([]map[string]
 		interval = next
 	}
 
-	return nil, &TimeoutError{
+	return nil, &PollTimeoutError{
 		JobID:             jobID,
-		Elapsed:           elapsed.Seconds(),
-		PaddleOCRAPIError: PaddleOCRAPIError{Message: fmt.Sprintf("Timed out after %.1fs", elapsed.Seconds())},
+		Elapsed:           c.pollTimeout.Seconds(),
+		PaddleOCRAPIError: PaddleOCRAPIError{Message: fmt.Sprintf("Timed out after %.1fs", c.pollTimeout.Seconds())},
 	}
 }
 
 func raiseForResponse(resp *http.Response) error {
-	if resp.StatusCode == 200 {
+	if resp.StatusCode >= 200 && resp.StatusCode < 300 {
 		return nil
 	}
 	body, _ := io.ReadAll(resp.Body)
@@ -290,4 +364,29 @@ func raiseForResponse(resp *http.Response) error {
 	default:
 		return &APIError{StatusCode: resp.StatusCode, PaddleOCRAPIError: PaddleOCRAPIError{Message: msg}}
 	}
+}
+
+func decodeAPIResponse(resp *http.Response) (*apiResponse, error) {
+	var apiResp apiResponse
+	if err := json.NewDecoder(resp.Body).Decode(&apiResp); err != nil {
+		return nil, &ResponseFormatError{PaddleOCRAPIError{Message: "expected a JSON response body", Cause: err}}
+	}
+	if apiResp.Code != 0 {
+		msg := apiResp.Msg
+		if msg == "" {
+			msg = "PaddleOCR official API request failed"
+		}
+		return nil, &APIError{StatusCode: resp.StatusCode, PaddleOCRAPIError: PaddleOCRAPIError{Message: msg}}
+	}
+	if len(apiResp.Data) == 0 || string(apiResp.Data) == "null" {
+		return nil, &ResponseFormatError{PaddleOCRAPIError{Message: "response body is missing data"}}
+	}
+	return &apiResp, nil
+}
+
+func classifyHTTPError(err error) error {
+	if ne, ok := err.(net.Error); ok && ne.Timeout() {
+		return &RequestTimeoutError{PaddleOCRAPIError: PaddleOCRAPIError{Message: err.Error(), Cause: err}}
+	}
+	return &NetworkError{PaddleOCRAPIError{Message: err.Error(), Cause: err}}
 }
