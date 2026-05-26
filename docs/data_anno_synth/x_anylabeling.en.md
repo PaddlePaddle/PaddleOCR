@@ -44,7 +44,7 @@ The X-AnyLabeling client supports the PaddleOCR official API out of the box. The
 To obtain the `API_KEY`:
 
 1. Visit the PaddleOCR website: <https://www.paddleocr.com>
-2. Click **API** in the top-right corner and select **PaddleOCR-VL-1.6** (or **PaddleOCR-VL-1.5**, **PaddleOCR-VL**).
+2. Click **API** in the top-right corner and select **PaddleOCR-VL-1.5**.
 3. Open the example code and copy the `TOKEN` (access token).
 4. Return to X-AnyLabeling, paste it into the `API_KEY` field of `PPOCR API Settings`, and confirm.
 
@@ -58,7 +58,6 @@ By default, `${workspace}` is the user home directory `~`; if X-AnyLabeling is l
 
 The right-hand `Parsing Model` dropdown currently supports these official API options:
 
-- `PaddleOCR-VL-1.6 (API)`
 - `PaddleOCR-VL-1.5 (API)`
 - `PaddleOCR-VL (API)`
 
@@ -79,8 +78,7 @@ Typical real-world inputs include textbook pages, paper screenshots, receipts, s
 
 The `Parsing Model` dropdown on the right lets you switch between versions of the PaddleOCR-VL series:
 
-- `PaddleOCR-VL-1.6 (API)` (recommended): the latest version in the PaddleOCR-VL series, further upgrading the VLM component on top of PaddleOCR-VL-1.5 while retaining polygon localization, seal recognition, and text spotting capabilities.
-- `PaddleOCR-VL-1.5 (API)`: achieves 94.5% accuracy on OmniDocBench v1.5, supports polygon localization for greater robustness in scanned, tilted, curved, screen-captured, and complex-lighting scenarios, and adds seal recognition plus text detection and recognition capabilities.
+- `PaddleOCR-VL-1.5 (API)` (recommended): achieves 94.5% accuracy on OmniDocBench v1.5, supports polygon localization for greater robustness in scanned, tilted, curved, screen-captured, and complex-lighting scenarios, and adds seal recognition plus text detection and recognition capabilities.
 - `PaddleOCR-VL (API)`: the initial version.
 
 ![Parsing Model dropdown switching between PaddleOCR-VL and PaddleOCR-VL-1.5](https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/x_anylabeling/model_switch.png)

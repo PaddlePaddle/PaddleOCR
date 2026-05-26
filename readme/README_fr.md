@@ -36,7 +36,7 @@
 ### 📄 Analyse intelligente de documents (prêt pour les LLM)
 > *Transformer des visuels désordonnés en données structurées pour l'ère des LLM.*
 
-* **VLM documentaire de pointe** : Avec **PaddleOCR-VL-1.6 (0,9 milliard de paramètres)**, le modèle vision-langage léger de pointe de l'industrie pour l'analyse de documents. Il excelle dans l'analyse de documents complexes face à 5 grands défis du « monde réel » : **Déformation, Numérisation, Photographie d'écran, Éclairage et Documents inclinés**, avec des sorties structurées aux formats **Markdown** et **JSON**.
+* **VLM documentaire de pointe** : Avec **PaddleOCR-VL-1.5 (0,9 milliard de paramètres)**, le modèle vision-langage léger de pointe de l'industrie pour l'analyse de documents. Il excelle dans l'analyse de documents complexes face à 5 grands défis du « monde réel » : **Déformation, Numérisation, Photographie d'écran, Éclairage et Documents inclinés**, avec des sorties structurées aux formats **Markdown** et **JSON**.
 * **Conversion avec conscience de la structure** : Propulsé par **PP-StructureV3**, convertissez sans effort des PDF et images complexes en **Markdown** ou **JSON**. Contrairement aux modèles de la série PaddleOCR-VL, il fournit des informations de coordonnées plus fines, incluant les coordonnées des cellules de tableau, les coordonnées du texte, et bien plus encore.
 * **Efficacité prête pour la production** : Atteignez une précision de niveau commercial avec une empreinte ultra-réduite. Surpasse de nombreuses solutions propriétaires sur les benchmarks publics tout en restant économe en ressources pour le déploiement en périphérie ou dans le cloud.
 
@@ -69,7 +69,7 @@
 
 <details>
 <summary><strong>2026.01.29 : Publication de PaddleOCR 3.4.0</strong></summary>
-* **PaddleOCR-VL-1.6 (Dernier VLM 0,9 milliard de paramètres)** : Notre dernier modèle phare pour l'analyse de documents est désormais disponible !
+* **PaddleOCR-VL-1.5 (VLM 0,9 milliard de paramètres, état de l'art)** : Notre dernier modèle phare pour l'analyse de documents est désormais disponible !
     * **94,5 % de précision sur OmniDocBench** : Surpasse les grands modèles généralistes de premier rang et les analyseurs de documents spécialisés.
     * **Robustesse dans le monde réel** : Premier à introduire l'algorithme **PP-DocLayoutV3** pour le positionnement de formes irrégulières, maîtrisant 5 scénarios difficiles : *Inclinaison, Déformation, Numérisation, Éclairage et Photographie d'écran*.
     * **Extension des capacités** : Prend désormais en charge la **Reconnaissance de sceaux**, la **Détection de texte**, et s'étend à **111 langues** (incluant le tibétain et le bengali).

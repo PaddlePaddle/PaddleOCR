@@ -343,7 +343,6 @@ nav:
     - PaddleOCR-VL AMD GPU 使用教程: version3.x/pipeline_usage/PaddleOCR-VL-AMD-GPU.md
     - PaddleOCR-VL Intel Arc GPU 使用教程: version3.x/pipeline_usage/PaddleOCR-VL-Intel-Arc-GPU.md
   - 推理与部署:
-    - 总览: version3.x/inference_deployment/overview.md
     - 本地推理:
       - 高性能推理: version3.x/inference_deployment/local_inference/high_performance_inference.md
       - 推理引擎与配置说明: version3.x/inference_deployment/local_inference/inference_engine.md

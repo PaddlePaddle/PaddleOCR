@@ -18,7 +18,7 @@ pip install langchain-paddleocr
 
 `PaddleOCRVLLoader` 允许你：
 
-- 使用百度 PaddleOCR-VL 系列模型（例如 PaddleOCR-VL、PaddleOCR-VL-1.5、PaddleOCR-VL-1.6）从 PDF 和图像文件中提取文本和版面布局信息
+- 使用百度 PaddleOCR-VL 系列模型（例如 PaddleOCR-VL、PaddleOCR-VL-1.5）从 PDF 和图像文件中提取文本和版面布局信息
 - 处理来自本地文件或远程 URL 的文档
 
 `PaddleOCRVLLoader` 的基本用法如下：
