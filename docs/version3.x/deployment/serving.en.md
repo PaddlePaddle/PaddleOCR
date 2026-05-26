@@ -95,24 +95,24 @@ Please refer to the [PaddleX Serving Guide](https://paddlepaddle.github.io/Paddl
 
 It should be noted that, due to the lack of fine-grained optimization and other reasons, the current high-stability serving deployment solution provided by PaddleOCR may not match the performance of the 2.x version based on PaddleServing. However, this new solution fully supports the PaddlePaddle 3.0 framework. We will continue to optimize it and consider introducing more performant deployment solutions in the future.
 
-## 3. Returning Images as URLs
+## 3. Returning Response Files as URLs
 
-By default, the service returns image fields in the response (such as `outputImages`, `inputImage`, `markdown.images`) inline as base64-encoded strings. When the response contains large images or a multi-page PDF, base64 encoding can significantly inflate the payload. You can configure object storage in the `Serving.extra` section of the pipeline configuration file to return images as pre-signed URLs instead:
+By default, the service returns image and file fields in the response (e.g. `outputImages`, `inputImage`, `markdown.images`, `exports`) inline as Base64-encoded strings. When the response contains large files or a multi-page PDF, Base64 encoding can significantly inflate the payload. You can configure object storage in the `Serving.extra` section of the pipeline configuration file to return those fields as pre-signed URLs instead:
 
 ```yaml
 Serving:
   extra:
     file_storage:
       type: bos
-      endpoint: <BOS endpoint>
-      ak: <Access Key>
-      sk: <Secret Key>
+      endpoint: <BOS endpoint, e.g. https://bj.bcebos.com>
+      ak: <Baidu Cloud AK>
+      sk: <Baidu Cloud SK>
       bucket_name: <bucket name>
     return_img_urls: true
-    url_expires_in: 3600  # Lifetime of the pre-signed URL in seconds; -1 means no expiry
+    url_expires_in: 3600  # Pre-signed URL lifetime in seconds; -1 means no expiry
 ```
 
 - Basic serving: write the configuration to the pipeline config file passed to `paddlex --serve --pipeline`.
 - High-stability serving: the same configuration applies — write it to `server/pipeline_config.yaml` inside the SDK and restart the container.
 
-Currently only the `bos` (Baidu Object Storage) backend supports URL return; `file_system` and `memory` backends do not. For the full configuration reference, notes, and use cases, see [PaddleX Serving Guide - Returning Images as URLs](https://paddlepaddle.github.io/PaddleX/latest/en/pipeline_deploy/serving.html#3).
+Currently only the `bos` (Baidu Intelligent Cloud object storage) backend supports URL return; `file_system` and `memory` backends do not. The configuration key is historically named `return_img_urls`, but it currently controls every Base64-inlined file field in the response, not just images. For the full configuration reference, notes, and use cases, see [PaddleX Serving Guide - Returning Response Files as URLs](https://paddlepaddle.github.io/PaddleX/latest/en/pipeline_deploy/serving.html#3). See the [Baidu Intelligent Cloud documentation](https://cloud.baidu.com/doc/BOS/index.html) for AK/SK retrieval.
