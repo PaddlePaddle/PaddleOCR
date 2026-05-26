@@ -17,6 +17,14 @@ import json
 import os
 from typing import Any, Dict, List, Optional, Union
 
+from ._core import (
+    default_payload,
+    job_id_for_task,
+    resolve_document_model,
+    resolve_document_options,
+    resolve_ocr_model,
+    validate_input_source,
+)
 from .errors import (
     APIError,
     AuthError,
@@ -32,11 +40,11 @@ from .models import (
     DocParsingOptions,
     Model,
     OCROptions,
-    PaddleOCRVLOptions,
-    PPStructureV3Options,
-    is_document_parsing_model,
-    is_ocr_model,
-    is_vl_model,
+)
+from ._resources import (
+    save_document_parsing_result_resources,
+    save_ocr_result_resources,
+    save_resource,
 )
 from .results import BatchStatus, DocParsingResult, Job, JobStatus, OCRResult, Progress
 from ._http import DEFAULT_BASE_URL
@@ -62,6 +70,7 @@ class AsyncPaddleOCRClient:
         request_timeout: float = 300.0,
         poll_timeout: float = 600.0,
         timeout: Optional[float] = None,
+        client_platform: Optional[str] = None,
     ):
         self._token = token or os.environ.get("PADDLEOCR_ACCESS_TOKEN", "")
         if not self._token:
@@ -74,6 +83,7 @@ class AsyncPaddleOCRClient:
             poll_timeout = timeout
         self._request_timeout = request_timeout
         self._poll_timeout = poll_timeout
+        self._client_platform = client_platform
         self._session = None
 
     async def __aenter__(self):
@@ -93,7 +103,7 @@ class AsyncPaddleOCRClient:
                     "Install it with: pip install aiohttp>=3.8.0"
                 )
             self._session = aiohttp.ClientSession(
-                headers={"Authorization": f"bearer {self._token}"},
+                headers=self._api_headers(),
                 timeout=aiohttp.ClientTimeout(total=self._request_timeout),
             )
 
@@ -101,6 +111,12 @@ class AsyncPaddleOCRClient:
         if self._session:
             await self._session.close()
             self._session = None
+
+    def _api_headers(self) -> dict:
+        headers = {"Authorization": f"bearer {self._token}"}
+        if self._client_platform:
+            headers["Client-Platform"] = self._client_platform
+        return headers
 
     async def ocr(
         self,
@@ -111,7 +127,7 @@ class AsyncPaddleOCRClient:
         batch_id: Optional[str] = None,
         model: Union[Model, str] = Model.PP_OCRV5,
     ) -> OCRResult:
-        model = self._ocr_model(model)
+        model = resolve_ocr_model(model)
         job_id = await self._submit(
             model,
             file_url,
@@ -132,8 +148,8 @@ class AsyncPaddleOCRClient:
         page_ranges: Optional[str] = None,
         batch_id: Optional[str] = None,
     ) -> DocParsingResult:
-        model = self._document_model(model)
-        options = self._document_options(model, options)
+        model = resolve_document_model(model)
+        options = resolve_document_options(model, options)
         job_id = await self._submit(
             model, file_url, file_path, options, page_ranges, batch_id
         )
@@ -149,7 +165,7 @@ class AsyncPaddleOCRClient:
         batch_id: Optional[str] = None,
         model: Union[Model, str] = Model.PP_OCRV5,
     ) -> Job:
-        model = self._ocr_model(model)
+        model = resolve_ocr_model(model)
         job_id = await self._submit(
             model,
             file_url,
@@ -169,8 +185,8 @@ class AsyncPaddleOCRClient:
         page_ranges: Optional[str] = None,
         batch_id: Optional[str] = None,
     ) -> Job:
-        model = self._document_model(model)
-        options = self._document_options(model, options)
+        model = resolve_document_model(model)
+        options = resolve_document_options(model, options)
         job_id = await self._submit(
             model, file_url, file_path, options, page_ranges, batch_id
         )
@@ -201,15 +217,62 @@ class AsyncPaddleOCRClient:
             jobs.append(self._job_status_from_data(job_id, item))
         return BatchStatus(batch_id=batch_id, jobs=jobs)
 
+    async def save_resource(
+        self,
+        resource_url: str,
+        destination: str,
+        *,
+        overwrite: bool = False,
+        filename: Optional[str] = None,
+    ) -> str:
+        return await asyncio.to_thread(
+            save_resource,
+            resource_url,
+            destination,
+            overwrite=overwrite,
+            filename=filename,
+            timeout=self._request_timeout,
+        )
+
+    async def save_ocr_result_resources(
+        self,
+        result: OCRResult,
+        destination: str,
+        *,
+        overwrite: bool = False,
+    ) -> list:
+        return await asyncio.to_thread(
+            save_ocr_result_resources,
+            result,
+            destination,
+            overwrite=overwrite,
+            timeout=self._request_timeout,
+        )
+
+    async def save_document_parsing_result_resources(
+        self,
+        result: DocParsingResult,
+        destination: str,
+        *,
+        overwrite: bool = False,
+    ) -> list:
+        return await asyncio.to_thread(
+            save_document_parsing_result_resources,
+            result,
+            destination,
+            overwrite=overwrite,
+            timeout=self._request_timeout,
+        )
+
     async def wait_ocr_result(self, job: Union[Job, str]) -> OCRResult:
-        job_id = self._job_id_for_task(job, "ocr")
+        job_id = job_id_for_task(job, "ocr")
         jsonl_data = await self._poll_until_done(job_id)
         return parse_ocr_result(job_id, jsonl_data)
 
     async def wait_document_parsing_result(
         self, job: Union[Job, str]
     ) -> DocParsingResult:
-        job_id = self._job_id_for_task(job, "document_parsing")
+        job_id = job_id_for_task(job, "document_parsing")
         jsonl_data = await self._poll_until_done(job_id)
         return parse_doc_parsing_result(job_id, jsonl_data)
 
@@ -222,12 +285,9 @@ class AsyncPaddleOCRClient:
         page_ranges: Optional[str],
         batch_id: Optional[str],
     ) -> str:
-        if not file_url and not file_path:
-            raise InvalidRequestError("Either file_url or file_path is required.")
-        if file_url and file_path:
-            raise InvalidRequestError("file_url and file_path are mutually exclusive.")
+        validate_input_source(file_url, file_path)
         await self._ensure_session()
-        payload = options.to_payload() if options else self._default_payload(model)
+        payload = options.to_payload() if options else default_payload(model)
         if file_url:
             return await self._submit_url(
                 model.value,
@@ -377,7 +437,7 @@ class AsyncPaddleOCRClient:
             raise NetworkError(f"Connection failed: {e}") from e
 
     async def _fetch_jsonl(self, url: str) -> list:
-        # Result URLs are often pre-signed object storage links; do not send API token.
+        # Result URLs are often pre-signed object storage links.
         try:
             import aiohttp
 
@@ -453,65 +513,6 @@ class AsyncPaddleOCRClient:
             raise InvalidRequestError(f"Bad request: {msg}")
         else:
             raise APIError(resp.status, msg)
-
-    def _default_payload(self, model: Model) -> dict:
-        if model == Model.PP_OCRV5:
-            return OCROptions().to_payload()
-        return self._document_options(model, None).to_payload()
-
-    def _ocr_model(self, model: Union[Model, str]) -> Model:
-        resolved = self._model(model)
-        if not is_ocr_model(resolved):
-            raise InvalidRequestError(f"Unsupported OCR model: {model}")
-        return resolved
-
-    def _document_model(self, model: Union[Model, str]) -> Model:
-        resolved = self._model(model)
-        if not is_document_parsing_model(resolved):
-            raise InvalidRequestError(f"Unsupported document parsing model: {model}")
-        return resolved
-
-    def _model(self, model: Union[Model, str]) -> Model:
-        if isinstance(model, Model):
-            return model
-        try:
-            return Model(model)
-        except ValueError as e:
-            raise InvalidRequestError(f"Unsupported model: {model}") from e
-
-    def _document_options(
-        self, model: Model, options: Optional[DocParsingOptions]
-    ) -> DocParsingOptions:
-        if options is not None:
-            if model == Model.PP_STRUCTURE_V3 and not isinstance(
-                options, PPStructureV3Options
-            ):
-                raise InvalidRequestError(
-                    "PP-StructureV3 requires PPStructureV3Options."
-                )
-            if is_vl_model(model) and not isinstance(options, PaddleOCRVLOptions):
-                raise InvalidRequestError(
-                    "PaddleOCR-VL models require PaddleOCRVLOptions."
-                )
-            return options
-        if model == Model.PP_STRUCTURE_V3:
-            return PPStructureV3Options()
-        return PaddleOCRVLOptions()
-
-    def _job_id_for_task(self, job: Union[Job, str], task: str) -> str:
-        if isinstance(job, str):
-            return job
-        if job.task != task:
-            raise InvalidRequestError(
-                f"Job task mismatch: expected {task}, got {job.task}."
-            )
-        if task == "ocr" and not is_ocr_model(job.model):
-            raise InvalidRequestError(f"Job model is not an OCR model: {job.model}.")
-        if task == "document_parsing" and not is_document_parsing_model(job.model):
-            raise InvalidRequestError(
-                f"Job model is not a document parsing model: {job.model}."
-            )
-        return job.job_id
 
     def _job_status_from_data(self, job_id: str, data: dict) -> JobStatus:
         state = self._validate_state(data)

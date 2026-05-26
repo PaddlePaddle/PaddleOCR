@@ -15,18 +15,26 @@
 import os
 from typing import Optional, Union
 
+from ._core import (
+    default_payload,
+    job_id_for_task,
+    resolve_document_model,
+    resolve_document_options,
+    resolve_ocr_model,
+    validate_input_source,
+)
 from ._http import DEFAULT_BASE_URL, HTTPClient
 from ._poller import Poller, parse_doc_parsing_result, parse_ocr_result
-from .errors import AuthError, InvalidRequestError
+from ._resources import (
+    save_document_parsing_result_resources,
+    save_ocr_result_resources,
+    save_resource,
+)
+from .errors import AuthError
 from .models import (
     DocParsingOptions,
     Model,
     OCROptions,
-    PaddleOCRVLOptions,
-    PPStructureV3Options,
-    is_document_parsing_model,
-    is_ocr_model,
-    is_vl_model,
 )
 from .results import BatchStatus, DocParsingResult, Job, JobStatus, OCRResult
 
@@ -43,13 +51,19 @@ class PaddleOCRClient:
         base_url: str = DEFAULT_BASE_URL,
         request_timeout: float = 300.0,
         poll_timeout: float = 600.0,
+        client_platform: Optional[str] = None,
     ):
         self._token = token or os.environ.get("PADDLEOCR_ACCESS_TOKEN", "")
         if not self._token:
             raise AuthError(
                 "Token is required. Set PADDLEOCR_ACCESS_TOKEN or pass token=."
             )
-        self._http = HTTPClient(self._token, base_url, request_timeout)
+        self._http = HTTPClient(
+            self._token,
+            base_url,
+            request_timeout,
+            client_platform=client_platform,
+        )
         self._poller = Poller(self._http, max_wait_time=poll_timeout)
 
     def __enter__(self):
@@ -70,7 +84,7 @@ class PaddleOCRClient:
         batch_id: Optional[str] = None,
         model: Union[Model, str] = Model.PP_OCRV5,
     ) -> OCRResult:
-        model = self._ocr_model(model)
+        model = resolve_ocr_model(model)
         job_id = self._submit(
             model,
             file_url,
@@ -91,8 +105,8 @@ class PaddleOCRClient:
         page_ranges: Optional[str] = None,
         batch_id: Optional[str] = None,
     ) -> DocParsingResult:
-        model = self._document_model(model)
-        options = self._document_options(model, options)
+        model = resolve_document_model(model)
+        options = resolve_document_options(model, options)
         job_id = self._submit(
             model, file_url, file_path, options, page_ranges, batch_id
         )
@@ -108,7 +122,7 @@ class PaddleOCRClient:
         batch_id: Optional[str] = None,
         model: Union[Model, str] = Model.PP_OCRV5,
     ) -> Job:
-        model = self._ocr_model(model)
+        model = resolve_ocr_model(model)
         job_id = self._submit(
             model,
             file_url,
@@ -128,20 +142,20 @@ class PaddleOCRClient:
         page_ranges: Optional[str] = None,
         batch_id: Optional[str] = None,
     ) -> Job:
-        model = self._document_model(model)
-        options = self._document_options(model, options)
+        model = resolve_document_model(model)
+        options = resolve_document_options(model, options)
         job_id = self._submit(
             model, file_url, file_path, options, page_ranges, batch_id
         )
         return Job(job_id=job_id, model=model.value, task="document_parsing")
 
     def wait_ocr_result(self, job: Union[Job, str]) -> OCRResult:
-        job_id = self._job_id_for_task(job, "ocr")
+        job_id = job_id_for_task(job, "ocr")
         jsonl_data, _ = self._poller.poll_until_done(job_id)
         return parse_ocr_result(job_id, jsonl_data)
 
     def wait_document_parsing_result(self, job: Union[Job, str]) -> DocParsingResult:
-        job_id = self._job_id_for_task(job, "document_parsing")
+        job_id = job_id_for_task(job, "document_parsing")
         jsonl_data, _ = self._poller.poll_until_done(job_id)
         return parse_doc_parsing_result(job_id, jsonl_data)
 
@@ -150,6 +164,50 @@ class PaddleOCRClient:
 
     def get_batch_status(self, batch_id: str) -> BatchStatus:
         return self._poller.get_batch_status(batch_id)
+
+    def save_resource(
+        self,
+        resource_url: str,
+        destination: str,
+        *,
+        overwrite: bool = False,
+        filename: Optional[str] = None,
+    ) -> str:
+        return save_resource(
+            resource_url,
+            destination,
+            overwrite=overwrite,
+            filename=filename,
+            timeout=self._http.timeout,
+        )
+
+    def save_ocr_result_resources(
+        self,
+        result: OCRResult,
+        destination: str,
+        *,
+        overwrite: bool = False,
+    ) -> list:
+        return save_ocr_result_resources(
+            result,
+            destination,
+            overwrite=overwrite,
+            timeout=self._http.timeout,
+        )
+
+    def save_document_parsing_result_resources(
+        self,
+        result: DocParsingResult,
+        destination: str,
+        *,
+        overwrite: bool = False,
+    ) -> list:
+        return save_document_parsing_result_resources(
+            result,
+            destination,
+            overwrite=overwrite,
+            timeout=self._http.timeout,
+        )
 
     def _submit(
         self,
@@ -160,11 +218,8 @@ class PaddleOCRClient:
         page_ranges: Optional[str],
         batch_id: Optional[str],
     ) -> str:
-        if not file_url and not file_path:
-            raise InvalidRequestError("Either file_url or file_path is required.")
-        if file_url and file_path:
-            raise InvalidRequestError("file_url and file_path are mutually exclusive.")
-        payload = options.to_payload() if options else self._default_payload(model)
+        validate_input_source(file_url, file_path)
+        payload = options.to_payload() if options else default_payload(model)
         if file_url:
             return self._http.submit_url(
                 model.value,
@@ -180,62 +235,3 @@ class PaddleOCRClient:
             page_ranges=page_ranges,
             batch_id=batch_id,
         )
-
-    def _default_payload(self, model: Model) -> dict:
-        if model == Model.PP_OCRV5:
-            return OCROptions().to_payload()
-        return self._document_options(model, None).to_payload()
-
-    def _ocr_model(self, model: Union[Model, str]) -> Model:
-        resolved = self._model(model)
-        if not is_ocr_model(resolved):
-            raise InvalidRequestError(f"Unsupported OCR model: {model}")
-        return resolved
-
-    def _document_model(self, model: Union[Model, str]) -> Model:
-        resolved = self._model(model)
-        if not is_document_parsing_model(resolved):
-            raise InvalidRequestError(f"Unsupported document parsing model: {model}")
-        return resolved
-
-    def _model(self, model: Union[Model, str]) -> Model:
-        if isinstance(model, Model):
-            return model
-        try:
-            return Model(model)
-        except ValueError as e:
-            raise InvalidRequestError(f"Unsupported model: {model}") from e
-
-    def _document_options(
-        self, model: Model, options: Optional[DocParsingOptions]
-    ) -> DocParsingOptions:
-        if options is not None:
-            if model == Model.PP_STRUCTURE_V3 and not isinstance(
-                options, PPStructureV3Options
-            ):
-                raise InvalidRequestError(
-                    "PP-StructureV3 requires PPStructureV3Options."
-                )
-            if is_vl_model(model) and not isinstance(options, PaddleOCRVLOptions):
-                raise InvalidRequestError(
-                    "PaddleOCR-VL models require PaddleOCRVLOptions."
-                )
-            return options
-        if model == Model.PP_STRUCTURE_V3:
-            return PPStructureV3Options()
-        return PaddleOCRVLOptions()
-
-    def _job_id_for_task(self, job: Union[Job, str], task: str) -> str:
-        if isinstance(job, str):
-            return job
-        if job.task != task:
-            raise InvalidRequestError(
-                f"Job task mismatch: expected {task}, got {job.task}."
-            )
-        if task == "ocr" and not is_ocr_model(job.model):
-            raise InvalidRequestError(f"Job model is not an OCR model: {job.model}.")
-        if task == "document_parsing" and not is_document_parsing_model(job.model):
-            raise InvalidRequestError(
-                f"Job model is not a document parsing model: {job.model}."
-            )
-        return job.job_id

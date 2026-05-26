@@ -46,17 +46,20 @@ export class HttpClient {
   private token: string;
   private requestTimeout: number;
   private fetchImpl: typeof fetch;
+  private clientPlatform?: string;
 
   constructor(
     token: string,
     baseUrl: string = DEFAULT_BASE_URL,
     requestTimeout: number = 300000,
     fetchImpl: typeof fetch = fetch,
+    clientPlatform?: string,
   ) {
     this.token = token;
     this.baseUrl = baseUrl.replace(/\/+$/, "");
     this.requestTimeout = requestTimeout;
     this.fetchImpl = fetchImpl;
+    this.clientPlatform = clientPlatform;
   }
 
   async submitUrl(model: string, fileUrl: string, optionalPayload: object, options: SubmitOptions = {}): Promise<string> {
@@ -179,6 +182,9 @@ export class HttpClient {
     };
     if (withAuth) {
       headers.Authorization = `Bearer ${this.token}`;
+      if (this.clientPlatform) {
+        headers["Client-Platform"] = this.clientPlatform;
+      }
     }
 
     let resp: Response;

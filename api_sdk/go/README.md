@@ -17,15 +17,14 @@ Official user docs:
 go get github.com/PaddlePaddle/PaddleOCR/api_sdk/go
 ```
 
-Versioned releases use submodule tags such as `api_sdk/go/v0.1.0`. See
-[`../VERSIONING.md`](../VERSIONING.md).
+Versioned releases use submodule tags such as `api_sdk/go/v0.1.0`.
 
 ## Minimal Usage
 
 Set `PADDLEOCR_ACCESS_TOKEN` or pass `WithToken` when constructing the client:
 
 ```bash
-export PADDLEOCR_ACCESS_TOKEN="your-api-token"
+export PADDLEOCR_ACCESS_TOKEN="your-access-token"
 ```
 
 ```go

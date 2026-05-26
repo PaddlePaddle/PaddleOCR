@@ -8,9 +8,11 @@ The Go SDK calls the PaddleOCR official API and submits OCR or document parsing 
 
 ## Install And Authenticate
 
+First obtain an access token from the [AI Studio Access Token page](https://aistudio.baidu.com/account/accessToken).
+
 ```bash
 go get github.com/PaddlePaddle/PaddleOCR/api_sdk/go
-export PADDLEOCR_ACCESS_TOKEN="your-api-token"
+export PADDLEOCR_ACCESS_TOKEN="your-access-token"
 ```
 
 `NewClient` reads `PADDLEOCR_ACCESS_TOKEN` by default and also accepts an explicit token through `WithToken`.
@@ -37,7 +39,7 @@ Use `FilePath` for a local file. Pass exactly one of `FileURL` or `FilePath`.
 
 ## Public API
 
-The final Go public methods are:
+Common Go public methods include:
 
 - `OCR(...)`: submit an OCR job, wait for completion, and return an OCR result.
 - `ParseDocument(...)`: submit a document parsing job, wait for completion, and return a document parsing result.
@@ -61,14 +63,15 @@ client, err := paddleocr.NewClient(
 
 `WithRequestTimeout` limits one HTTP request, including submit, status, and resource downloads. `WithPollTimeout` limits the total wait time for `OCR`, `ParseDocument`, `WaitOCRResult`, and `WaitDocumentParsingResult`. Callers can also cancel requests through `context.Context`.
 
-## Model Extensibility
+## Choose Models
 
-The OCR `Model` is optional and defaults to `PPOCRv5`. PP-OCRv5 is the only OCR model exposed by the current PaddleOCR official API release. Document parsing `Model` is optional and defaults to `PaddleOCRVL16`. The SDK validates model categories through `IsOCRModel` and `IsDocumentParsingModel`, so future models can be added centrally.
+| Task | Interfaces | Default model | Supported models | Option type |
+| --- | --- | --- | --- | --- |
+| OCR | `OCR`, `SubmitOCR`, `WaitOCRResult` | `PPOCRv5` | `PPOCRv5` | `*OCROptions` |
+| Document parsing | `ParseDocument`, `SubmitDocumentParsing`, `WaitDocumentParsingResult` | `PaddleOCRVL16` | `PPStructureV3`, `PaddleOCRVL`, `PaddleOCRVL15`, `PaddleOCRVL16` | Use `*PPStructureV3Options` with `PPStructureV3`, and `*PaddleOCRVLOptions` with PaddleOCR-VL models. |
 
 ## Errors And Resource Saving
 
 The Go SDK exposes typed errors compatible with `errors.As`, including `AuthError`, `InvalidRequestError`, `APIError`, `NetworkError`, `JobFailedError`, `RequestTimeoutError`, `PollTimeoutError`, `ResponseFormatError`, and `ResultParseError`.
 
-Resource saving does not overwrite existing files by default and does not send PaddleOCR official API authorization headers to result resource URLs. Result-object bulk saving requires the destination to be an existing directory.
-
-See `api_sdk/go/README.md` for the source-adjacent reference.
+Resource saving supports one resource URL or all resources referenced by a result object. Result-object bulk saving requires the destination to be an existing directory.

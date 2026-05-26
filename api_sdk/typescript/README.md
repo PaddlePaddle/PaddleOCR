@@ -17,8 +17,7 @@ Official user docs:
 npm install @paddleocr/api-sdk
 ```
 
-This package follows SemVer. Release policy is documented in
-[`../VERSIONING.md`](../VERSIONING.md).
+This package follows SemVer and is published as a public scoped npm package.
 
 For local development:
 
@@ -32,7 +31,7 @@ npm run build
 Set `PADDLEOCR_ACCESS_TOKEN` or pass `token` to the client:
 
 ```bash
-export PADDLEOCR_ACCESS_TOKEN="your-api-token"
+export PADDLEOCR_ACCESS_TOKEN="your-access-token"
 ```
 
 ```ts

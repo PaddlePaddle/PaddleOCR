@@ -46,7 +46,7 @@ cd PaddleOCR/deploy/paddleocr_vl_docker/hps
 
 ```bash
 cp .env.example .env
-# 按需修改 .env 中的 PIPELINE_NAME
+# 按需修改 .env 中的 HPS_PIPELINE_NAME
 bash prepare.sh
 ```
 
@@ -90,13 +90,13 @@ export HPS_MAX_CONCURRENT_INFERENCE_REQUESTS=8
 
 | 变量 | 默认值 | 说明 |
 |------|--------|------|
-| `PIPELINE_NAME` | `PaddleOCR-VL-1.6` | 产线名称，对应 HPS SDK 包名中的版本标识 |
+| `HPS_PIPELINE_NAME` | `PaddleOCR-VL-1.6` | 产线名称，对应 HPS SDK 包名中的版本标识 |
 | `HPS_SDK_VERSION` | `v3.6` | PaddleX HPS SDK 发布目录 |
-| `HPS_SDK_DIR` | `paddlex_hps_PaddleOCR-VL-1.6_sdk` | 解压后的 SDK 目录，通常遵循 `paddlex_hps_${PIPELINE_NAME}_sdk` |
+| `HPS_SDK_DIR` | `paddlex_hps_PaddleOCR-VL-1.6_sdk` | 解压后的 SDK 目录，通常遵循 `paddlex_hps_${HPS_PIPELINE_NAME}_sdk` |
 
 常见配置示例：
 
-| 目标版本 | `PIPELINE_NAME` | `HPS_SDK_DIR` |
+| 目标版本 | `HPS_PIPELINE_NAME` | `HPS_SDK_DIR` |
 |----------|-----------------|---------------|
 | PaddleOCR-VL-1.6 | `PaddleOCR-VL-1.6` | `paddlex_hps_PaddleOCR-VL-1.6_sdk` |
 | PaddleOCR-VL-1.5 | `PaddleOCR-VL-1.5` | `paddlex_hps_PaddleOCR-VL-1.5_sdk` |
@@ -115,8 +115,8 @@ export HPS_MAX_CONCURRENT_INFERENCE_REQUESTS=8
 | `HPS_VLM_URL`　　　　　　　　　　　　　　　 | http://paddleocr-vlm-server:8080 | VLM 服务器地址（用于健康检查）　　　　　|
 | `HPS_LOG_LEVEL`　　　　　　　　　　　　　　 | INFO　　　　　　　　　　　　　　 | 日志级别（DEBUG, INFO, WARNING, ERROR） |
 | `HPS_FILTER_HEALTH_ACCESS_LOG`　　　　　　　| true　　　　　　　　　　　　　　 | 是否过滤健康检查的访问日志　　　　　　　|
-| `UVICORN_WORKERS`　　　　　　　　　　　　　 | 4　　　　　　　　　　　　　　　　| 网关 Worker 进程数　　　　　　　　　　　|
-| `DEVICE_ID`　　　　　　　　　　　　　　　　 | 0　　　　　　　　　　　　　　　　| 使用的推理设备 ID　　　　　　　　　　　 |
+| `HPS_UVICORN_WORKERS`　　　　　　　　　　　 | 4　　　　　　　　　　　　　　　　| 网关 Worker 进程数　　　　　　　　　　　|
+| `HPS_DEVICE_ID`　　　　　　　　　　　　　　 | 0　　　　　　　　　　　　　　　　| 使用的推理设备 ID　　　　　　　　　　　 |
 
 ### 产线配置调整
 
@@ -159,7 +159,7 @@ curl http://localhost:8080/health/ready
 # .env
 HPS_MAX_CONCURRENT_INFERENCE_REQUESTS=32
 HPS_MAX_CONCURRENT_NON_INFERENCE_REQUESTS=128
-UVICORN_WORKERS=8
+HPS_UVICORN_WORKERS=8
 ```
 
 **低延迟配置示例：**
@@ -169,7 +169,7 @@ UVICORN_WORKERS=8
 HPS_MAX_CONCURRENT_INFERENCE_REQUESTS=8
 HPS_MAX_CONCURRENT_NON_INFERENCE_REQUESTS=32
 HPS_INFERENCE_TIMEOUT=300
-UVICORN_WORKERS=2
+HPS_UVICORN_WORKERS=2
 ```
 
 ### Worker 进程数

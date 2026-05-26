@@ -15,7 +15,7 @@
 npm install @paddleocr/api-sdk
 ```
 
-该包遵循语义化版本，发布策略见 [`../VERSIONING_cn.md`](../VERSIONING_cn.md)。
+该包遵循语义化版本，并作为公开 scoped npm 包发布。
 
 本地开发：
 
@@ -29,7 +29,7 @@ npm run build
 设置 `PADDLEOCR_ACCESS_TOKEN`，或在构造客户端时传入 `token`：
 
 ```bash
-export PADDLEOCR_ACCESS_TOKEN="your-api-token"
+export PADDLEOCR_ACCESS_TOKEN="your-access-token"
 ```
 
 ```ts

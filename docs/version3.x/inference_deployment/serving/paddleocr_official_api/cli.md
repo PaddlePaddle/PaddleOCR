@@ -4,14 +4,18 @@ comments: true
 
 # PaddleOCR 官方 API CLI
 
-`paddleocr api` 是 PaddleOCR CLI 中调用 PaddleOCR 官方 API 的子命令。它把文件 URL 或本地文件提交到官方托管服务，等待任务完成并输出 JSON；它不运行本地推理。
+`paddleocr api` 是 PaddleOCR CLI 中调用 PaddleOCR 官方 API 的子命令。它把文件 URL 或本地文件提交到官方托管服务，等待任务完成并输出解析结果；它不运行本地推理。
 
-## 认证
+## 安装与认证
+
+先按 [安装 `paddleocr`](../../../installation.md#11-安装-paddleocr) 安装 Python 包。安装 `paddleocr` 本体后即可使用此功能，无需安装额外依赖组。
+
+请先在 [AI Studio Access Token 页面](https://aistudio.baidu.com/account/accessToken) 获取访问令牌。
 
 CLI 默认读取 `PADDLEOCR_ACCESS_TOKEN`：
 
 ```bash
-export PADDLEOCR_ACCESS_TOKEN="your-api-token"
+export PADDLEOCR_ACCESS_TOKEN="your-access-token"
 ```
 
 也可以使用 `--token` 显式传入 token。
@@ -24,17 +28,19 @@ paddleocr api \
   --file_url https://example.com/invoice.pdf
 ```
 
-`--model_type` 必填，可选值为 `ocr` 或 `document_parsing`。`--file_url` 与 `--file_path` 必须二选一。
+`--model_type` 必填，可选值为 `ocr` 或 `doc_parsing`。`--file_url` 与 `--file_path` 必须二选一。
 
 ## 常用参数
 
-- `--model_type`：任务类型，`ocr` 或 `document_parsing`。
-- `--model`：模型名称。OCR 任务默认使用 PP-OCRv5；文档解析任务未指定时默认使用 PaddleOCR-VL-1.6。模型会通过 PaddleOCR 官方 API SDK 的模型分类辅助函数校验。
+- `--model_type`：任务类型，`ocr` 或 `doc_parsing`。
+- `--model`：模型名称。OCR 任务默认使用 PP-OCRv5；文档解析任务未指定时默认使用 PaddleOCR-VL-1.6。
 - `--file_url`：待处理文件 URL。
 - `--file_path`：待上传并处理的本地文件路径。
 - `--request_timeout`：一次 HTTP 请求的超时时间，单位为秒。
 - `--poll_timeout`：等待远端任务完成的总超时时间，单位为秒。
 - `--output`：输出 JSON 文件路径；省略时打印到标准输出。
+- `--save_resources`：保存结果对象引用资源的目录。
+- `--overwrite_resources`：保存资源时覆盖已有文件。
 - `--page_ranges`：页码范围，例如 `2,4-6`。
 - `--use_doc_orientation_classify`、`--use_doc_unwarping`、`--use_textline_orientation`：OCR 相关可选能力。
 - `--use_chart_recognition`：文档解析相关可选能力。
@@ -55,14 +61,22 @@ paddleocr api \
 
 ```bash
 paddleocr api \
-  --model_type document_parsing \
+  --model_type doc_parsing \
   --file_url https://example.com/report.pdf \
   --use_chart_recognition \
+  --save_resources ./doc-assets \
   --output doc-result.json
 ```
 
+## 模型选择
+
+| 任务 | `--model_type` | 默认模型 | 可选模型 |
+| --- | --- | --- | --- |
+| OCR | `ocr` | `PP-OCRv5` | `PP-OCRv5` |
+| 文档解析 | `doc_parsing` | `PaddleOCR-VL-1.6` | `PP-StructureV3`、`PaddleOCR-VL`、`PaddleOCR-VL-1.5`、`PaddleOCR-VL-1.6` |
+
 ## 输出行为
 
-命令成功时输出格式化 JSON。OCR 结果包含 `jobId` 和每页的 `prunedResult`、`ocrImageUrl`；文档解析结果包含 `jobId` 和每页的 `markdownText`、`markdownImages`、`outputImages`。如果指定 `--output`，CLI 写入该文件并打印保存位置；否则直接打印到标准输出。
+命令成功时输出格式化 JSON。OCR 结果包含 `jobId` 和每页的 `prunedResult`、`ocrImageUrl`；文档解析结果包含 `jobId` 和每页的 `markdownText`、`markdownImages`、`outputImages`。如果指定 `--output`，CLI 写入该文件并打印保存位置；否则直接打印到标准输出。指定 `--save_resources` 时，CLI 会把结果对象引用的资源保存到目标目录。
 
 错误会输出到标准错误并返回非零退出码。常见原因包括缺少 `PADDLEOCR_ACCESS_TOKEN`、模型与 `--model_type` 不匹配、请求超时、轮询超时、远端任务失败或响应格式异常。

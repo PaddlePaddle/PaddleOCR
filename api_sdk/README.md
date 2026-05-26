@@ -18,36 +18,24 @@ The official user documentation:
 
 | File | Purpose |
 | --- | --- |
-| [`CONTRACT.md`](CONTRACT.md) | Cross-language public API contract for the first release. |
-| [`VERSIONING.md`](VERSIONING.md) | SemVer, npm package, and Go module tag policy. |
-| [`CHANGELOG.md`](CHANGELOG.md) | Release notes for SDK-visible changes. |
-| [`RELEASE_CHECKLIST.md`](RELEASE_CHECKLIST.md) | Release-readiness commands and manual gates. |
 | [`typescript/README.md`](typescript/README.md) | Package-level README for the TypeScript SDK. |
 | [`go/README.md`](go/README.md) | Package-level README for the Go SDK. |
 
-Python SDK source is part of the main `paddleocr` package at
-[`../paddleocr/_api_client`](../paddleocr/_api_client), so it does not have a
-separate package README in this directory.
+The Python SDK is part of the main `paddleocr` package.
 
 ## Package Locations
 
 | Language | Source location | User docs |
 | --- | --- | --- |
-| Python | [`../paddleocr/_api_client`](../paddleocr/_api_client) | [Python SDK](../docs/version3.x/inference_deployment/serving/paddleocr_official_api/python.md) |
+| Python | [`../paddleocr`](../paddleocr) | [Python SDK](../docs/version3.x/inference_deployment/serving/paddleocr_official_api/python.md) |
 | TypeScript | [`typescript`](typescript) | [TypeScript SDK](../docs/version3.x/inference_deployment/serving/paddleocr_official_api/typescript.md) |
 | Go | [`go`](go) | [Go SDK](../docs/version3.x/inference_deployment/serving/paddleocr_official_api/go.md) |
-
-All SDKs read `PADDLEOCR_ACCESS_TOKEN` by default. OCR defaults to PP-OCRv5;
-document parsing defaults to PaddleOCR-VL-1.6. Keep detailed usage examples in
-the user documentation, not in this directory.
 
 ## Validation
 
 Run these from this directory unless a subdirectory is shown:
 
 ```bash
-python -m pytest ../tests/test_api_client -q
-
 cd typescript
 npm run lint
 npm test
@@ -59,6 +47,3 @@ cd ..
 git -C .. diff --check
 git status --short --ignored=matching -- typescript
 ```
-
-Run the extended checks in [`RELEASE_CHECKLIST.md`](RELEASE_CHECKLIST.md) before
-public release.

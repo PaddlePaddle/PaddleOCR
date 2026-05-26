@@ -83,6 +83,7 @@ func (c *Client) submitURL(ctx context.Context, model, fileURL string, payload i
 	}
 	req.Header.Set("Authorization", "bearer "+c.token)
 	req.Header.Set("Content-Type", "application/json")
+	c.setClientPlatformHeader(req)
 
 	resp, err := c.httpClient.Do(req)
 	if err != nil {
@@ -154,6 +155,7 @@ func (c *Client) submitFile(ctx context.Context, model, filePath string, payload
 	}
 	req.Header.Set("Authorization", "bearer "+c.token)
 	req.Header.Set("Content-Type", w.FormDataContentType())
+	c.setClientPlatformHeader(req)
 
 	resp, err := c.httpClient.Do(req)
 	if err != nil {
@@ -185,6 +187,7 @@ func (c *Client) getJobStatus(ctx context.Context, jobID string) (*jobStatusResp
 		return nil, &NetworkError{PaddleOCRAPIError{Message: err.Error()}}
 	}
 	req.Header.Set("Authorization", "bearer "+c.token)
+	c.setClientPlatformHeader(req)
 
 	resp, err := c.httpClient.Do(req)
 	if err != nil {
@@ -216,6 +219,7 @@ func (c *Client) getBatchStatus(ctx context.Context, batchID string) (*BatchStat
 		return nil, &NetworkError{PaddleOCRAPIError{Message: err.Error(), Cause: err}}
 	}
 	req.Header.Set("Authorization", "bearer "+c.token)
+	c.setClientPlatformHeader(req)
 
 	resp, err := c.httpClient.Do(req)
 	if err != nil {

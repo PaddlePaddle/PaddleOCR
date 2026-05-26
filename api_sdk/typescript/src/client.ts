@@ -41,7 +41,13 @@ export class PaddleOCRClient {
     const requestTimeout = options.requestTimeout || options.timeout || 300000;
     const pollTimeout = options.pollTimeout || options.timeout || 600000;
 
-    this.http = new HttpClient(token, baseUrl, requestTimeout, options.fetch);
+    this.http = new HttpClient(
+      token,
+      baseUrl,
+      requestTimeout,
+      options.fetch,
+      options.clientPlatform,
+    );
     this.poller = new Poller(this.http, pollTimeout);
   }
 
@@ -90,18 +96,30 @@ export class PaddleOCRClient {
     return this.poller.getBatchStatus(batchId, options?.signal);
   }
 
-  async saveResource(resourceUrl: string, destination: string, options?: SaveResourceOptions): Promise<{ savedPaths: string[] }>;
-  async saveResource(result: OCRResult | DocParsingResult, destination: string, options?: SaveResourceOptions): Promise<{ savedPaths: string[] }>;
   async saveResource(
-    resource: string | OCRResult | DocParsingResult,
+    resourceUrl: string,
     destination: string,
     options: SaveResourceOptions = {},
   ): Promise<{ savedPaths: string[] }> {
-    if (typeof resource === "string") {
-      const savedPath = await this.saveResourceUrl(resource, destination, options);
-      return { savedPaths: [savedPath] };
-    }
-    const savedPaths = await this.saveResultResources(resource, destination, options);
+    const savedPath = await this.saveResourceUrl(resourceUrl, destination, options);
+    return { savedPaths: [savedPath] };
+  }
+
+  async saveOcrResultResources(
+    result: OCRResult,
+    destination: string,
+    options: SaveResourceOptions = {},
+  ): Promise<{ savedPaths: string[] }> {
+    const savedPaths = await this.saveResultResources(result, destination, options);
+    return { savedPaths };
+  }
+
+  async saveDocumentParsingResultResources(
+    result: DocParsingResult,
+    destination: string,
+    options: SaveResourceOptions = {},
+  ): Promise<{ savedPaths: string[] }> {
+    const savedPaths = await this.saveResultResources(result, destination, options);
     return { savedPaths };
   }
 

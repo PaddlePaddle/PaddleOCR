@@ -8,9 +8,11 @@ Go SDK 调用 PaddleOCR 官方 API，把 OCR 或文档解析任务提交到官�
 
 ## 安装与认证
 
+请先在 [AI Studio Access Token 页面](https://aistudio.baidu.com/account/accessToken) 获取访问令牌。
+
 ```bash
 go get github.com/PaddlePaddle/PaddleOCR/api_sdk/go
-export PADDLEOCR_ACCESS_TOKEN="your-api-token"
+export PADDLEOCR_ACCESS_TOKEN="your-access-token"
 ```
 
 `NewClient` 默认读取 `PADDLEOCR_ACCESS_TOKEN`，也可以通过 `WithToken` 显式传入 token。
@@ -37,7 +39,7 @@ fmt.Println(result.JobID, len(result.Pages))
 
 ## 公共 API
 
-Go SDK 的最终公共方法包括：
+Go SDK 常用公共方法包括：
 
 - `OCR(...)`：提交 OCR 任务，等待完成并返回 OCR 结果。
 - `ParseDocument(...)`：提交文档解析任务，等待完成并返回文档解析结果。
@@ -61,14 +63,15 @@ client, err := paddleocr.NewClient(
 
 `WithRequestTimeout` 限制一次 HTTP 请求，包括提交、查询状态和下载资源。`WithPollTimeout` 限制 `OCR`、`ParseDocument`、`WaitOCRResult` 与 `WaitDocumentParsingResult` 的总等待时间。调用方也可以通过 `context.Context` 取消请求。
 
-## 模型扩展
+## 模型选择
 
-OCR 的 `Model` 可省略，默认是 `PPOCRv5`。当前 PaddleOCR 官方 API 版本只开放 PP-OCRv5 作为 OCR 模型。文档解析的 `Model` 可省略，默认是 `PaddleOCRVL16`。SDK 通过 `IsOCRModel` 与 `IsDocumentParsingModel` 集中校验模型类型，未来模型可在模型分类处集中添加。
+| 任务 | 适用接口 | 默认模型 | 可选模型 | 参数类型 |
+| --- | --- | --- | --- | --- |
+| OCR | `OCR`、`SubmitOCR`、`WaitOCRResult` | `PPOCRv5` | `PPOCRv5` | `*OCROptions` |
+| 文档解析 | `ParseDocument`、`SubmitDocumentParsing`、`WaitDocumentParsingResult` | `PaddleOCRVL16` | `PPStructureV3`、`PaddleOCRVL`、`PaddleOCRVL15`、`PaddleOCRVL16` | 选择 `PPStructureV3` 时传入 `*PPStructureV3Options`；选择 PaddleOCR-VL 系列模型时传入 `*PaddleOCRVLOptions`。 |
 
 ## 错误与资源保存
 
 Go SDK 暴露可与 `errors.As` 配合使用的类型化错误，覆盖 `AuthError`、`InvalidRequestError`、`APIError`、`NetworkError`、`JobFailedError`、`RequestTimeoutError`、`PollTimeoutError`、`ResponseFormatError` 和 `ResultParseError` 等情况。
 
-资源保存默认不覆盖已有文件，也不会向结果资源 URL 发送 PaddleOCR 官方 API 鉴权头。结果对象批量保存要求目标路径是已存在的目录。
-
-更多源码相邻参考见 `api_sdk/go/README.md`。
+资源保存支持单个资源 URL，也支持保存结果对象中的全部资源。结果对象批量保存要求目标路径是已存在的目录。

@@ -91,12 +91,24 @@ def _job_id_from_response(response: requests.Response) -> str:
 
 
 class HTTPClient:
-    def __init__(self, token: str, base_url: str, timeout: float):
+    def __init__(
+        self,
+        token: str,
+        base_url: str,
+        timeout: float,
+        client_platform: Optional[str] = None,
+    ):
         self._token = token
         self._base_url = base_url.rstrip("/")
         self._timeout = timeout
         self._session = requests.Session()
         self._session.headers["Authorization"] = f"bearer {token}"
+        if client_platform:
+            self._session.headers["Client-Platform"] = client_platform
+
+    @property
+    def timeout(self) -> float:
+        return self._timeout
 
     def submit_url(
         self,
@@ -188,7 +200,7 @@ class HTTPClient:
         return _response_data(_response_json(resp))
 
     def fetch_jsonl(self, url: str) -> list:
-        # Result URLs are often pre-signed object storage links; do not send API token.
+        # Result URLs are often pre-signed object storage links.
         try:
             resp = requests.get(url, timeout=self._timeout)
         except requests.Timeout as e:

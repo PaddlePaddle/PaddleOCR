@@ -91,6 +91,8 @@ describe("PaddleOCRClient public contract", () => {
     expect(client.waitOcrResult).toBeTypeOf("function");
     expect(client.waitDocumentParsingResult).toBeTypeOf("function");
     expect(client.saveResource).toBeTypeOf("function");
+    expect(client.saveOcrResultResources).toBeTypeOf("function");
+    expect(client.saveDocumentParsingResultResources).toBeTypeOf("function");
 
     expect("getResult" in client).toBe(false);
     expect("waitForResult" in client).toBe(false);
@@ -128,6 +130,19 @@ describe("PaddleOCRClient public contract", () => {
       optionalPayload: { visualize: true },
       pageRanges: "1-2",
       batchId: "batch-1",
+    });
+  });
+
+  test("clientPlatform is sent as Client-Platform header on API requests", async () => {
+    const { fetch, calls } = captureFetch([jsonResponse({ data: { jobId: "job-1" } })]);
+    const client = createClient(fetch, { clientPlatform: "my-app" });
+
+    await client.submitOcr({
+      fileUrl: "https://files.example.test/invoice.pdf",
+    });
+
+    expect(calls[0].init.headers).toMatchObject({
+      "Client-Platform": "my-app",
     });
   });
 
@@ -400,7 +415,7 @@ describe("PaddleOCRClient public contract", () => {
     }
   });
 
-  test("saveResource saves OCR result image URLs with stable page filenames", async () => {
+  test("saveOcrResultResources saves OCR result image URLs with stable page filenames", async () => {
     const dir = await mkdtemp(join(tmpdir(), "paddleocr-api-sdk-"));
     try {
       const { fetch, calls } = captureFetch([textResponse("page 1"), textResponse("page 2")]);
@@ -413,7 +428,7 @@ describe("PaddleOCRClient public contract", () => {
         ],
       };
 
-      const saved = await client.saveResource(result, dir);
+      const saved = await client.saveOcrResultResources(result, dir);
 
       expect(saved).toEqual({
         savedPaths: [join(dir, "ocr-page-1.png"), join(dir, "ocr-page-2.jpg")],
@@ -430,7 +445,7 @@ describe("PaddleOCRClient public contract", () => {
     }
   });
 
-  test("saveResource preserves safe document parsing map keys over opaque URL basenames", async () => {
+  test("saveDocumentParsingResultResources preserves safe document parsing map keys over opaque URL basenames", async () => {
     const dir = await mkdtemp(join(tmpdir(), "paddleocr-api-sdk-"));
     try {
       const { fetch } = captureFetch([textResponse("markdown image"), textResponse("output image")]);
@@ -450,7 +465,7 @@ describe("PaddleOCRClient public contract", () => {
         ],
       };
 
-      const saved = await client.saveResource(result, dir);
+      const saved = await client.saveDocumentParsingResultResources(result, dir);
 
       expect(saved).toEqual({
         savedPaths: [join(dir, "figure 1.png"), join(dir, "rendered-page.jpg")],
@@ -462,7 +477,7 @@ describe("PaddleOCRClient public contract", () => {
     }
   });
 
-  test("saveResource sorts document parsing map keys for deterministic output", async () => {
+  test("saveDocumentParsingResultResources sorts document parsing map keys for deterministic output", async () => {
     const dir = await mkdtemp(join(tmpdir(), "paddleocr-api-sdk-"));
     try {
       const { fetch, calls } = captureFetch([textResponse("alpha"), textResponse("bravo"), textResponse("charlie")]);
@@ -482,7 +497,7 @@ describe("PaddleOCRClient public contract", () => {
         ],
       };
 
-      const saved = await client.saveResource(result, dir);
+      const saved = await client.saveDocumentParsingResultResources(result, dir);
 
       expect(saved).toEqual({
         savedPaths: [join(dir, "alpha.png"), join(dir, "bravo.png"), join(dir, "charlie.png")],
@@ -500,7 +515,7 @@ describe("PaddleOCRClient public contract", () => {
     }
   });
 
-  test("saveResource requires overwrite opt-in for bulk result files", async () => {
+  test("saveOcrResultResources requires overwrite opt-in for bulk result files", async () => {
     const dir = await mkdtemp(join(tmpdir(), "paddleocr-api-sdk-"));
     try {
       const result: OCRResult = {
@@ -510,11 +525,11 @@ describe("PaddleOCRClient public contract", () => {
 
       await writeFile(join(dir, "ocr-page-1.png"), "existing");
       const blocked = captureFetch([textResponse("unexpected")]);
-      await expect(createClient(blocked.fetch).saveResource(result, dir)).rejects.toThrow(InvalidRequestError);
+      await expect(createClient(blocked.fetch).saveOcrResultResources(result, dir)).rejects.toThrow(InvalidRequestError);
       expect(blocked.calls).toHaveLength(0);
 
       const replacement = captureFetch([textResponse("replacement")]);
-      await createClient(replacement.fetch).saveResource(result, dir, { overwrite: true });
+      await createClient(replacement.fetch).saveOcrResultResources(result, dir, { overwrite: true });
       await expect(readFile(join(dir, "ocr-page-1.png"), "utf8")).resolves.toBe("replacement");
     } finally {
       await rm(dir, { recursive: true, force: true });
@@ -528,7 +543,7 @@ describe("PaddleOCRClient public contract", () => {
     ["traversal segment", ".."],
     ["forward separator", "nested/escape.png"],
     ["backslash separator", "nested\\escape.png"],
-  ])("saveResource rejects unsafe document parsing map key: %s", async (_name, unsafeKey) => {
+  ])("saveDocumentParsingResultResources rejects unsafe document parsing map key: %s", async (_name, unsafeKey) => {
     const dir = await mkdtemp(join(tmpdir(), "paddleocr-api-sdk-"));
     try {
       const { fetch } = captureFetch([]);
@@ -546,7 +561,7 @@ describe("PaddleOCRClient public contract", () => {
         ],
       };
 
-      await expect(client.saveResource(result, dir)).rejects.toThrow(InvalidRequestError);
+      await expect(client.saveDocumentParsingResultResources(result, dir)).rejects.toThrow(InvalidRequestError);
       expect(fetch).not.toHaveBeenCalled();
     } finally {
       await rm(dir, { recursive: true, force: true });

@@ -19,10 +19,9 @@
 // PP-OCRv5 and ParseDocument for document parsing models such as PPStructureV3.
 // SubmitOCR and SubmitDocumentParsing return an Operation for non-blocking
 // status checks with Poll or typed waits with WaitOCR and WaitDocumentParsing.
-// SaveResource downloads one result resource URL without API authorization
-// headers and refuses to overwrite existing files unless WithOverwrite(true) is
-// passed. SaveOCRResultResources and SaveDocumentParsingResultResources bulk
-// save resources from typed result objects into an existing directory.
+// SaveResource downloads one result resource URL. SaveOCRResultResources and
+// SaveDocumentParsingResultResources save resources from typed result objects
+// into an existing directory.
 //
 // Request timeout and polling timeout are configured separately with
 // WithRequestTimeout and WithPollTimeout. Errors are exposed as typed values,

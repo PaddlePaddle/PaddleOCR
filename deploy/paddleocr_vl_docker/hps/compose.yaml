@@ -18,7 +18,7 @@ services:
       - HPS_MAX_CONCURRENT_NON_INFERENCE_REQUESTS=${HPS_MAX_CONCURRENT_NON_INFERENCE_REQUESTS:-64}
       - HPS_INFERENCE_TIMEOUT=${HPS_INFERENCE_TIMEOUT:-600}
       - HPS_LOG_LEVEL=${HPS_LOG_LEVEL:-INFO}
-      - UVICORN_WORKERS=${UVICORN_WORKERS:-4}
+      - HPS_UVICORN_WORKERS=${HPS_UVICORN_WORKERS:-4}
     restart: unless-stopped
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:8080/health || exit 1"]
@@ -41,7 +41,7 @@ services:
         reservations:
           devices:
             - driver: nvidia
-              device_ids: ["${DEVICE_ID:-0}"]
+              device_ids: ["${HPS_DEVICE_ID:-0}"]
               capabilities: [gpu]
     shm_size: 4gb
     restart: unless-stopped
@@ -64,7 +64,7 @@ services:
         reservations:
           devices:
             - driver: nvidia
-              device_ids: ["${DEVICE_ID:-0}"]
+              device_ids: ["${HPS_DEVICE_ID:-0}"]
               capabilities: [gpu]
     restart: unless-stopped
     healthcheck:

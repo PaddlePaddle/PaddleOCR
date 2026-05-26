@@ -54,6 +54,12 @@ func WithPollTimeout(d time.Duration) ClientOption {
 	}
 }
 
+func WithClientPlatform(clientPlatform string) ClientOption {
+	return func(c *Client) {
+		c.clientPlatform = clientPlatform
+	}
+}
+
 func WithHTTPClient(hc *http.Client) ClientOption {
 	return func(c *Client) {
 		c.httpClient = hc

@@ -142,6 +142,7 @@ export interface ClientOptions {
   timeout?: number;
   requestTimeout?: number;
   pollTimeout?: number;
+  clientPlatform?: string;
   fetch?: typeof fetch;
 }
 

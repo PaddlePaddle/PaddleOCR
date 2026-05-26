@@ -8,9 +8,11 @@ TypeScript SDK 面向 Node.js 18 及以上环境，调用 PaddleOCR 官方 API �
 
 ## 安装与认证
 
+请先在 [AI Studio Access Token 页面](https://aistudio.baidu.com/account/accessToken) 获取访问令牌。
+
 ```bash
 npm install @paddleocr/api-sdk
-export PADDLEOCR_ACCESS_TOKEN="your-api-token"
+export PADDLEOCR_ACCESS_TOKEN="your-access-token"
 ```
 
 客户端默认读取 `PADDLEOCR_ACCESS_TOKEN`，也可以传入 `token`：
@@ -40,7 +42,7 @@ console.log(result.jobId, result.pages.length);
 
 ## 公共 API
 
-TypeScript SDK 的最终公共方法包括：
+TypeScript SDK 常用公共方法包括：
 
 - `ocr(...)`：提交 OCR 任务，等待完成并返回 OCR 结果。
 - `parseDocument(...)`：提交文档解析任务，等待完成并返回文档解析结果。
@@ -49,7 +51,9 @@ TypeScript SDK 的最终公共方法包括：
 - `getStatus(jobId)`：执行一次非阻塞状态查询。
 - `waitOcrResult(job)`：等待 OCR 任务完成并解析结果。
 - `waitDocumentParsingResult(job)`：等待文档解析任务完成并解析结果。
-- `saveResource(resource, destination, options)`：保存单个资源 URL 或结果对象中的资源。
+- `saveResource(resourceUrl, destination, options)`：保存单个资源 URL。
+- `saveOcrResultResources(result, destination, options)`：保存 OCR 结果对象引用的资源。
+- `saveDocumentParsingResultResources(result, destination, options)`：保存文档解析结果对象引用的资源。
 
 ## 超时
 
@@ -62,14 +66,15 @@ const client = new PaddleOCRClient({
 
 `requestTimeout` 限制一次 HTTP 请求，包括提交、查询状态和下载资源。`pollTimeout` 限制 `ocr`、`parseDocument`、`waitOcrResult` 与 `waitDocumentParsingResult` 的总等待时间。公共方法还可以接收 `AbortSignal` 以便上层主动取消。
 
-## 模型扩展
+## 模型选择
 
-OCR 的 `model` 可省略，默认是 `Model.PPOCRv5`。当前 PaddleOCR 官方 API 版本只开放 PP-OCRv5 作为 OCR 模型。文档解析的 `model` 可省略，默认是 `Model.PaddleOCRVL16`。SDK 通过 `isOCRModel` 与 `isDocumentParsingModel` 集中校验模型类型，未来模型可在模型分类处集中添加。
+| 任务 | 适用接口 | 默认模型 | 可选模型 | 参数类型 |
+| --- | --- | --- | --- | --- |
+| OCR | `ocr`、`submitOcr`、`waitOcrResult` | `Model.PPOCRv5` | `Model.PPOCRv5` | `OCROptions` |
+| 文档解析 | `parseDocument`、`submitDocumentParsing`、`waitDocumentParsingResult` | `Model.PaddleOCRVL16` | `Model.PPStructureV3`、`Model.PaddleOCRVL`、`Model.PaddleOCRVL15`、`Model.PaddleOCRVL16` | 选择 `PPStructureV3` 时传入 `PPStructureV3Options`；选择 PaddleOCR-VL 系列模型时传入 `PaddleOCRVLOptions`。 |
 
 ## 错误与资源保存
 
 所有 SDK 错误都继承自 `PaddleOCRAPIError`，常见类型包括 `AuthError`、`InvalidRequestError`、`APIError`、`NetworkError`、`JobFailedError`、`RequestTimeoutError`、`PollTimeoutError`、`ResponseFormatError` 和 `ResultParseError`。
 
-`saveResource` 支持保存单个资源 URL，也支持保存 `OCRResult` 或 `DocParsingResult` 中的全部资源。默认不覆盖已有文件，资源下载也不会向结果资源 URL 发送 PaddleOCR 官方 API 鉴权头。
-
-更多源码相邻参考见 `api_sdk/typescript/README.md`。
+`saveResource` 用于单个资源 URL；如果要保存结果对象中的全部资源，请使用 `saveOcrResultResources` 或 `saveDocumentParsingResultResources`。

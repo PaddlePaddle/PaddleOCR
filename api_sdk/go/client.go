@@ -26,6 +26,7 @@ type Client struct {
 	baseURL        string
 	requestTimeout time.Duration
 	pollTimeout    time.Duration
+	clientPlatform string
 	httpClient     *http.Client
 }
 
@@ -49,4 +50,10 @@ func NewClient(opts ...ClientOption) (*Client, error) {
 	}
 	c.baseURL = strings.TrimRight(c.baseURL, "/")
 	return c, nil
+}
+
+func (c *Client) setClientPlatformHeader(req *http.Request) {
+	if c.clientPlatform != "" {
+		req.Header.Set("Client-Platform", c.clientPlatform)
+	}
 }

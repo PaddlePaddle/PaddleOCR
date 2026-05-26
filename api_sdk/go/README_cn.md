@@ -15,15 +15,14 @@
 go get github.com/PaddlePaddle/PaddleOCR/api_sdk/go
 ```
 
-版本化发布使用 `api_sdk/go/v0.1.0` 这类子目录 module tag。详见
-[`../VERSIONING_cn.md`](../VERSIONING_cn.md)。
+版本化发布使用 `api_sdk/go/v0.1.0` 这类子目录 module tag。
 
 ## 最小示例
 
 设置 `PADDLEOCR_ACCESS_TOKEN`，或在构造客户端时传入 `WithToken`：
 
 ```bash
-export PADDLEOCR_ACCESS_TOKEN="your-api-token"
+export PADDLEOCR_ACCESS_TOKEN="your-access-token"
 ```
 
 ```go

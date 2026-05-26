@@ -8,9 +8,11 @@ The TypeScript SDK targets Node.js 18+ and calls the PaddleOCR official API for 
 
 ## Install And Authenticate
 
+First obtain an access token from the [AI Studio Access Token page](https://aistudio.baidu.com/account/accessToken).
+
 ```bash
 npm install @paddleocr/api-sdk
-export PADDLEOCR_ACCESS_TOKEN="your-api-token"
+export PADDLEOCR_ACCESS_TOKEN="your-access-token"
 ```
 
 The client reads `PADDLEOCR_ACCESS_TOKEN` by default and also accepts `token`:
@@ -40,7 +42,7 @@ Use `filePath` for a local file. Pass exactly one of `fileUrl` or `filePath`.
 
 ## Public API
 
-The final TypeScript public methods are:
+Common TypeScript public methods include:
 
 - `ocr(...)`: submit an OCR job, wait for completion, and return an OCR result.
 - `parseDocument(...)`: submit a document parsing job, wait for completion, and return a document parsing result.
@@ -49,7 +51,9 @@ The final TypeScript public methods are:
 - `getStatus(jobId)`: perform one non-blocking status request.
 - `waitOcrResult(job)`: wait for an OCR job and parse its result.
 - `waitDocumentParsingResult(job)`: wait for a document parsing job and parse its result.
-- `saveResource(resource, destination, options)`: save one resource URL or resources referenced by a result object.
+- `saveResource(resourceUrl, destination, options)`: save one resource URL.
+- `saveOcrResultResources(result, destination, options)`: save resources referenced by an OCR result object.
+- `saveDocumentParsingResultResources(result, destination, options)`: save resources referenced by a document parsing result object.
 
 ## Timeouts
 
@@ -62,14 +66,15 @@ const client = new PaddleOCRClient({
 
 `requestTimeout` limits one HTTP request, including submit, status, and resource downloads. `pollTimeout` limits the total wait time for `ocr`, `parseDocument`, `waitOcrResult`, and `waitDocumentParsingResult`. Public methods can also accept an `AbortSignal` for caller-driven cancellation.
 
-## Model Extensibility
+## Choose Models
 
-The OCR `model` is optional and defaults to `Model.PPOCRv5`. PP-OCRv5 is the only OCR model exposed by the current PaddleOCR official API release. Document parsing `model` is optional and defaults to `Model.PaddleOCRVL16`. The SDK validates model categories through `isOCRModel` and `isDocumentParsingModel`, so future models can be added centrally.
+| Task | Interfaces | Default model | Supported models | Option type |
+| --- | --- | --- | --- | --- |
+| OCR | `ocr`, `submitOcr`, `waitOcrResult` | `Model.PPOCRv5` | `Model.PPOCRv5` | `OCROptions` |
+| Document parsing | `parseDocument`, `submitDocumentParsing`, `waitDocumentParsingResult` | `Model.PaddleOCRVL16` | `Model.PPStructureV3`, `Model.PaddleOCRVL`, `Model.PaddleOCRVL15`, `Model.PaddleOCRVL16` | Use `PPStructureV3Options` with `PPStructureV3`, and `PaddleOCRVLOptions` with PaddleOCR-VL models. |
 
 ## Errors And Resource Saving
 
 All SDK errors inherit from `PaddleOCRAPIError`. Common typed errors include `AuthError`, `InvalidRequestError`, `APIError`, `NetworkError`, `JobFailedError`, `RequestTimeoutError`, `PollTimeoutError`, `ResponseFormatError`, and `ResultParseError`.
 
-`saveResource` can save one resource URL or all resources referenced by an `OCRResult` or `DocParsingResult`. It does not overwrite existing files by default and does not send PaddleOCR official API authorization headers to result resource URLs.
-
-See `api_sdk/typescript/README.md` for the source-adjacent reference.
+Use `saveResource` for one resource URL. To save all resources referenced by a result object, use `saveOcrResultResources` or `saveDocumentParsingResultResources`.

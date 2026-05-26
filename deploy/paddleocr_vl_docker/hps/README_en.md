@@ -46,7 +46,7 @@ cd PaddleOCR/deploy/paddleocr_vl_docker/hps
 
 ```bash
 cp .env.example .env
-# Edit PIPELINE_NAME in .env if needed
+# Edit HPS_PIPELINE_NAME in .env if needed
 bash prepare.sh
 ```
 
@@ -90,13 +90,13 @@ Use the following variables to choose a release from the VL series. After changi
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `PIPELINE_NAME` | `PaddleOCR-VL-1.6` | Pipeline name; also used in the HPS SDK package name |
+| `HPS_PIPELINE_NAME` | `PaddleOCR-VL-1.6` | Pipeline name; also used in the HPS SDK package name |
 | `HPS_SDK_VERSION` | `v3.6` | PaddleX HPS SDK release directory |
-| `HPS_SDK_DIR` | `paddlex_hps_PaddleOCR-VL-1.6_sdk` | Extracted SDK directory, usually `paddlex_hps_${PIPELINE_NAME}_sdk` |
+| `HPS_SDK_DIR` | `paddlex_hps_PaddleOCR-VL-1.6_sdk` | Extracted SDK directory, usually `paddlex_hps_${HPS_PIPELINE_NAME}_sdk` |
 
 Common examples:
 
-| Target release | `PIPELINE_NAME` | `HPS_SDK_DIR` |
+| Target release | `HPS_PIPELINE_NAME` | `HPS_SDK_DIR` |
 |----------------|-----------------|---------------|
 | PaddleOCR-VL-1.6 | `PaddleOCR-VL-1.6` | `paddlex_hps_PaddleOCR-VL-1.6_sdk` |
 | PaddleOCR-VL-1.5 | `PaddleOCR-VL-1.5` | `paddlex_hps_PaddleOCR-VL-1.5_sdk` |
@@ -115,8 +115,8 @@ Common examples:
 | `HPS_VLM_URL` | http://paddleocr-vlm-server:8080 | VLM server URL (for health checks) |
 | `HPS_LOG_LEVEL` | INFO | Log level (DEBUG, INFO, WARNING, ERROR) |
 | `HPS_FILTER_HEALTH_ACCESS_LOG` | true | Whether to filter health check access logs |
-| `UVICORN_WORKERS` | 4 | Number of gateway worker processes |
-| `DEVICE_ID` | 0 | Inference device ID to use |
+| `HPS_UVICORN_WORKERS` | 4 | Number of gateway worker processes |
+| `HPS_DEVICE_ID` | 0 | Inference device ID to use |
 
 ### Pipeline Configuration
 
@@ -159,7 +159,7 @@ The gateway controls concurrency for inference and non-inference operations inde
 # .env
 HPS_MAX_CONCURRENT_INFERENCE_REQUESTS=32
 HPS_MAX_CONCURRENT_NON_INFERENCE_REQUESTS=128
-UVICORN_WORKERS=8
+HPS_UVICORN_WORKERS=8
 ```
 
 **Low-latency configuration example:**
@@ -169,7 +169,7 @@ UVICORN_WORKERS=8
 HPS_MAX_CONCURRENT_INFERENCE_REQUESTS=8
 HPS_MAX_CONCURRENT_NON_INFERENCE_REQUESTS=32
 HPS_INFERENCE_TIMEOUT=300
-UVICORN_WORKERS=2
+HPS_UVICORN_WORKERS=2
 ```
 
 ### Worker Processes

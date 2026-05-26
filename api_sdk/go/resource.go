@@ -40,7 +40,7 @@ func WithOverwrite(overwrite bool) SaveResourceOption {
 	}
 }
 
-// SaveResource downloads a result resource URL without PaddleOCR official API auth headers.
+// SaveResource downloads one result resource URL.
 func (c *Client) SaveResource(ctx context.Context, resourceURL, dest string, opts ...SaveResourceOption) (string, error) {
 	if resourceURL == "" {
 		return "", &InvalidRequestError{PaddleOCRAPIError{Message: "resource URL is required"}}

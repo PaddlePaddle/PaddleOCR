@@ -62,13 +62,42 @@ def register_api_command(subparsers):
         "--token",
         type=str,
         default=None,
-        help="API token (or set PADDLEOCR_ACCESS_TOKEN env variable)",
+        help="Access token (or set PADDLEOCR_ACCESS_TOKEN env variable)",
+    )
+    subparser.add_argument(
+        "--client_platform",
+        type=str,
+        default=None,
+        help="Value for the Client-Platform request header",
     )
     subparser.add_argument(
         "--output",
         type=str,
         default=None,
         help="Output JSON file path (prints to stdout if omitted)",
+    )
+    subparser.add_argument(
+        "--request_timeout",
+        type=float,
+        default=300.0,
+        help="Timeout in seconds for one HTTP request",
+    )
+    subparser.add_argument(
+        "--poll_timeout",
+        type=float,
+        default=600.0,
+        help="Total timeout in seconds while waiting for the remote job",
+    )
+    subparser.add_argument(
+        "--save_resources",
+        type=str,
+        default=None,
+        help="Directory for saving resources referenced by the result",
+    )
+    subparser.add_argument(
+        "--overwrite_resources",
+        action="store_true",
+        help="Overwrite existing files when saving resources",
     )
     subparser.add_argument(
         "--page_ranges",
@@ -113,6 +142,10 @@ def _execute_api(args):
     kwargs = {}
     if args.token:
         kwargs["token"] = args.token
+    kwargs["request_timeout"] = args.request_timeout
+    kwargs["poll_timeout"] = args.poll_timeout
+    if args.client_platform:
+        kwargs["client_platform"] = args.client_platform
 
     try:
         client = PaddleOCRClient(**kwargs)
@@ -144,6 +177,7 @@ def _execute_api(args):
                 model=model or Model.PP_OCRV5,
             )
             output = _ocr_result_to_dict(result)
+            save_resources = client.save_ocr_result_resources
         else:
             if model is None:
                 model = Model.PADDLE_OCR_VL_16
@@ -164,8 +198,20 @@ def _execute_api(args):
                 batch_id=args.batch_id,
             )
             output = _doc_parsing_result_to_dict(result)
+            save_resources = client.save_document_parsing_result_resources
 
         json_str = json.dumps(output, ensure_ascii=False, indent=2)
+
+        if args.save_resources:
+            saved_paths = save_resources(
+                result,
+                args.save_resources,
+                overwrite=args.overwrite_resources,
+            )
+            print(
+                f"Resources saved to: {args.save_resources} ({len(saved_paths)} files)",
+                file=sys.stderr,
+            )
 
         if args.output:
             with open(args.output, "w", encoding="utf-8") as f:
