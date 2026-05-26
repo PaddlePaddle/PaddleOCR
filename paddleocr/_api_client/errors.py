@@ -14,7 +14,7 @@
 
 
 class PaddleOCRAPIError(Exception):
-    """Base exception for PaddleOCR API SDK."""
+    """Base exception for PaddleOCR official API SDK."""
 
     def __init__(self, message: str):
         self.message = message
@@ -46,16 +46,34 @@ class JobFailedError(PaddleOCRAPIError):
         super().__init__(f"Job {job_id} failed: {error_msg}")
 
 
-class TimeoutError(PaddleOCRAPIError):
+class RequestTimeoutError(PaddleOCRAPIError):
+    """A single HTTP request exceeded the configured request timeout."""
+
+
+class PollTimeoutError(PaddleOCRAPIError):
     """Polling timed out waiting for job completion."""
 
     def __init__(self, job_id: str, elapsed: float):
         self.job_id = job_id
         self.elapsed = elapsed
-        super().__init__(
-            f"Timed out after {elapsed:.1f}s waiting for job {job_id}"
-        )
+        super().__init__(f"Timed out after {elapsed:.1f}s waiting for job {job_id}")
 
 
 class NetworkError(PaddleOCRAPIError):
     """Network connection failure."""
+
+
+class FileNotFoundError(PaddleOCRAPIError):
+    """A required local input file or destination parent path does not exist."""
+
+    def __init__(self, path: str):
+        self.path = path
+        super().__init__(f"File not found: {path}")
+
+
+class ResponseFormatError(PaddleOCRAPIError):
+    """A successful API response did not match the expected schema."""
+
+
+class ResultParseError(PaddleOCRAPIError):
+    """A fetched result payload could not be parsed into SDK result models."""

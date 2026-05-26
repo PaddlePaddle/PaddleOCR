@@ -14,6 +14,15 @@
 
 package paddleocr
 
+type JobState string
+
+const (
+	JobStatePending JobState = "pending"
+	JobStateRunning JobState = "running"
+	JobStateDone    JobState = "done"
+	JobStateFailed  JobState = "failed"
+)
+
 type OCRPage struct {
 	PrunedResult interface{} `json:"prunedResult"`
 	OCRImageURL  string      `json:"ocrImageUrl"`
@@ -44,7 +53,9 @@ type Progress struct {
 
 type JobStatus struct {
 	JobID    string    `json:"jobId"`
-	State    string    `json:"state"`
+	State    JobState  `json:"state"`
+	Model    Model     `json:"model"`
+	Task     Task      `json:"task"`
 	Progress *Progress `json:"progress,omitempty"`
 	ErrorMsg string    `json:"errorMsg,omitempty"`
 }

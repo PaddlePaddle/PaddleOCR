@@ -17,32 +17,38 @@ package paddleocr
 import (
 	"net/http"
 	"os"
+	"strings"
 	"time"
 )
 
 type Client struct {
-	token      string
-	baseURL    string
-	timeout    time.Duration
-	httpClient *http.Client
+	token          string
+	baseURL        string
+	requestTimeout time.Duration
+	pollTimeout    time.Duration
+	pollInterval   time.Duration
+	httpClient     *http.Client
 }
 
 func NewClient(opts ...ClientOption) (*Client, error) {
 	c := &Client{
-		baseURL: DefaultBaseURL,
-		timeout: 5 * time.Minute,
+		baseURL:        DefaultBaseURL,
+		requestTimeout: 30 * time.Second,
+		pollTimeout:    5 * time.Minute,
+		pollInterval:   initialInterval,
 	}
 	for _, opt := range opts {
 		opt(c)
 	}
 	if c.token == "" {
-		c.token = os.Getenv("PADDLE_OCR_TOKEN")
+		c.token = os.Getenv("PADDLEOCR_ACCESS_TOKEN")
 	}
 	if c.token == "" {
-		return nil, &AuthError{PaddleOCRAPIError{Message: "Token is required. Set PADDLE_OCR_TOKEN or use WithToken()."}}
+		return nil, &AuthError{PaddleOCRAPIError{Message: "Token is required. Set PADDLEOCR_ACCESS_TOKEN or use WithToken()."}}
 	}
+	c.baseURL = strings.TrimRight(c.baseURL, "/")
 	if c.httpClient == nil {
-		c.httpClient = &http.Client{Timeout: c.timeout}
+		c.httpClient = &http.Client{}
 	}
 	return c, nil
 }

@@ -16,6 +16,7 @@ package main
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"log"
 	"sync"
@@ -31,12 +32,16 @@ func main() {
 	ctx := context.Background()
 
 	// Convenience method (blocks until done)
-	result, err := client.DocParsing(ctx, &paddleocr.DocParsingRequest{
-		Model:    paddleocr.PPStructureV3,
+	result, err := client.ParseDocument(ctx, &paddleocr.DocParsingRequest{
+		Model:    paddleocr.PaddleOCRVL15,
 		FilePath: "./sample.pdf",
 		Options:  &paddleocr.DocParsingOptions{UseChartRecognition: paddleocr.Bool(true)},
 	})
 	if err != nil {
+		var fileErr *paddleocr.FileNotFoundError
+		if errors.As(err, &fileErr) {
+			log.Fatalf("input file missing: %v", fileErr)
+		}
 		log.Fatal(err)
 	}
 	for i, page := range result.Pages {
@@ -44,16 +49,22 @@ func main() {
 	}
 
 	// Manual control with Operation objects
-	op1, _ := client.SubmitOCR(ctx, &paddleocr.OCRRequest{FileURL: "https://example.com/f1.pdf"})
-	op2, _ := client.SubmitDocParsing(ctx, &paddleocr.DocParsingRequest{
-		Model: paddleocr.PPStructureV3, FilePath: "./sample.pdf",
+	op1, err := client.SubmitOCR(ctx, &paddleocr.OCRRequest{FileURL: "https://example.com/f1.pdf"})
+	if err != nil {
+		log.Fatal(err)
+	}
+	op2, err := client.SubmitDocumentParsing(ctx, &paddleocr.DocParsingRequest{
+		Model: paddleocr.PaddleOCRVL15, FilePath: "./sample.pdf",
 	})
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	var wg sync.WaitGroup
 	wg.Add(2)
 	go func() {
 		defer wg.Done()
-		r, err := op1.Wait(ctx)
+		r, err := op1.WaitOCR(ctx)
 		if err != nil {
 			log.Printf("op1 error: %v", err)
 			return
@@ -62,7 +73,7 @@ func main() {
 	}()
 	go func() {
 		defer wg.Done()
-		r, err := op2.Wait(ctx)
+		r, err := op2.WaitDocumentParsing(ctx)
 		if err != nil {
 			log.Printf("op2 error: %v", err)
 			return

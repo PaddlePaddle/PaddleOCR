@@ -14,11 +14,40 @@
 
 package paddleocr
 
+type Model string
+
 const (
-	PPOCRv5       = "PP-OCRv5"
-	PPStructureV3 = "PP-StructureV3"
-	PaddleOCRVL   = "PaddleOCR-VL"
-	PaddleOCRVL15 = "PaddleOCR-VL-1.5"
+	PPOCRv5       Model = "PP-OCRv5"
+	PPStructureV3 Model = "PP-StructureV3"
+	PaddleOCRVL   Model = "PaddleOCR-VL"
+	PaddleOCRVL15 Model = "PaddleOCR-VL-1.5"
+)
+
+// IsOCRModel reports whether model is supported by OCR APIs.
+func IsOCRModel(model Model) bool {
+	switch model {
+	case PPOCRv5:
+		return true
+	default:
+		return false
+	}
+}
+
+// IsDocumentParsingModel reports whether model is supported by document parsing APIs.
+func IsDocumentParsingModel(model Model) bool {
+	switch model {
+	case PPStructureV3, PaddleOCRVL, PaddleOCRVL15:
+		return true
+	default:
+		return false
+	}
+}
+
+type Task string
+
+const (
+	TaskOCR             Task = "ocr"
+	TaskDocumentParsing Task = "document_parsing"
 )
 
 type OCROptions struct {
@@ -58,6 +87,7 @@ type DocParsingOptions struct {
 }
 
 type OCRRequest struct {
+	Model      Model
 	FileURL    string
 	FilePath   string
 	PageRanges string
@@ -66,7 +96,7 @@ type OCRRequest struct {
 }
 
 type DocParsingRequest struct {
-	Model      string
+	Model      Model
 	FileURL    string
 	FilePath   string
 	PageRanges string

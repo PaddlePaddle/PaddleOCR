@@ -24,6 +24,31 @@ class Model(str, Enum):
     PADDLE_OCR_VL_15 = "PaddleOCR-VL-1.5"
 
 
+_OCR_MODELS = frozenset({Model.PP_OCRV5})
+_DOCUMENT_PARSING_MODELS = frozenset(
+    {Model.PP_STRUCTURE_V3, Model.PADDLE_OCR_VL, Model.PADDLE_OCR_VL_15}
+)
+
+
+def _coerce_model(model: Union[Model, str]) -> Optional[Model]:
+    if isinstance(model, Model):
+        return model
+    try:
+        return Model(model)
+    except ValueError:
+        return None
+
+
+def is_ocr_model(model: Union[Model, str]) -> bool:
+    resolved = _coerce_model(model)
+    return resolved in _OCR_MODELS
+
+
+def is_document_parsing_model(model: Union[Model, str]) -> bool:
+    resolved = _coerce_model(model)
+    return resolved in _DOCUMENT_PARSING_MODELS
+
+
 @dataclass
 class OCROptions:
     use_doc_orientation_classify: Optional[bool] = None

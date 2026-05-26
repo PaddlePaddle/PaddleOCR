@@ -13,13 +13,14 @@
 // limitations under the License.
 
 export { PaddleOCRClient } from "./client.js";
-export { Model } from "./models.js";
+export { Model, isDocumentParsingModel, isOCRModel } from "./models.js";
 export type {
   ClientOptions,
   DocParsingOptions,
   DocParsingRequest,
   OCROptions,
   OCRRequest,
+  SaveResourceOptions,
 } from "./models.js";
 export type {
   DocParsingPage,
@@ -38,5 +39,8 @@ export {
   JobFailedError,
   NetworkError,
   PaddleOCRAPIError,
-  TimeoutError,
+  PollTimeoutError,
+  RequestTimeoutError,
+  ResponseFormatError,
+  ResultParseError,
 } from "./errors.js";

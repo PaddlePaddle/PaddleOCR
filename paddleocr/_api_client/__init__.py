@@ -14,7 +14,13 @@
 
 from .client import APIClient
 from .async_client import AsyncAPIClient
-from .models import DocParsingOptions, Model, OCROptions
+from .models import (
+    DocParsingOptions,
+    Model,
+    OCROptions,
+    is_document_parsing_model,
+    is_ocr_model,
+)
 from .results import (
     DocParsingPage,
     DocParsingResult,
@@ -23,15 +29,20 @@ from .results import (
     OCRPage,
     OCRResult,
     Progress,
+    ResourceSaveSummary,
 )
 from .errors import (
     APIError,
     AuthError,
+    FileNotFoundError,
     InvalidRequestError,
     JobFailedError,
     NetworkError,
     PaddleOCRAPIError,
-    TimeoutError,
+    PollTimeoutError,
+    RequestTimeoutError,
+    ResponseFormatError,
+    ResultParseError,
 )
 
 __all__ = [
@@ -40,6 +51,8 @@ __all__ = [
     "Model",
     "OCROptions",
     "DocParsingOptions",
+    "is_ocr_model",
+    "is_document_parsing_model",
     "OCRResult",
     "OCRPage",
     "DocParsingResult",
@@ -47,11 +60,16 @@ __all__ = [
     "Job",
     "JobStatus",
     "Progress",
+    "ResourceSaveSummary",
     "PaddleOCRAPIError",
     "AuthError",
     "InvalidRequestError",
     "APIError",
     "JobFailedError",
-    "TimeoutError",
+    "RequestTimeoutError",
+    "PollTimeoutError",
+    "FileNotFoundError",
+    "ResponseFormatError",
+    "ResultParseError",
     "NetworkError",
 ]

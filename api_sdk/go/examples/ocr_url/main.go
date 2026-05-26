@@ -16,6 +16,7 @@ package main
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"log"
 
@@ -33,6 +34,10 @@ func main() {
 		FileURL: "https://example.com/invoice.pdf",
 	})
 	if err != nil {
+		var authErr *paddleocr.AuthError
+		if errors.As(err, &authErr) {
+			log.Fatalf("authentication failed: %v", authErr)
+		}
 		log.Fatal(err)
 	}
 

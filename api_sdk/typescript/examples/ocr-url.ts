@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { PaddleOCRClient, Model } from "paddleocr-sdk";
+import { APIError, AuthError, PaddleOCRClient } from "paddleocr-sdk";
 
 async function main() {
   const client = new PaddleOCRClient();
@@ -28,4 +28,10 @@ async function main() {
   }
 }
 
-main().catch(console.error);
+main().catch((error: unknown) => {
+  if (error instanceof AuthError || error instanceof APIError) {
+    console.error(`${error.name}: ${error.message}`);
+    return;
+  }
+  console.error(error);
+});

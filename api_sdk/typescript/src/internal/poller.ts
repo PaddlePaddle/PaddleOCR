@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { JobFailedError, TimeoutError } from "../errors.js";
+import { JobFailedError, PollTimeoutError, RequestTimeoutError, ResponseFormatError } from "../errors.js";
 import type { JobStatus, Progress } from "../results.js";
 import { throwIfAborted, userAbortReason } from "./abort.js";
 import { HttpClient } from "./http.js";
@@ -31,50 +31,36 @@ export class Poller {
     this.maxWaitTime = maxWaitTime;
   }
 
-  async pollUntilDone(jobId: string, signal?: AbortSignal): Promise<any[]> {
+  async pollUntilDone(jobId: string, signal?: AbortSignal): Promise<unknown[]> {
     let interval = INITIAL_INTERVAL;
-    let elapsed = 0;
+    const deadline = Date.now() + this.maxWaitTime;
 
-    while (elapsed < this.maxWaitTime) {
+    while (Date.now() < deadline) {
       throwIfAborted(signal);
 
-      await this.sleep(interval, signal);
-      elapsed += interval;
+      const remaining = deadline - Date.now();
+      const data = await this.withPollTimeout(jobId, remaining, () => this.http.getJobStatus(jobId, signal, remaining));
+      const status = normalizeStatus(jobId, data);
 
-      const data = await this.http.getJobStatus(jobId, signal);
-
-      if (data.state === "done") {
-        const jsonUrl = data.resultUrl.jsonUrl;
-        return await this.http.fetchJsonl(jsonUrl, signal);
+      if (status.state === "done") {
+        const jsonUrl = resultJsonUrl(data);
+        const resultRemaining = deadline - Date.now();
+        return await this.withPollTimeout(jobId, resultRemaining, () => this.http.fetchJsonl(jsonUrl, signal, resultRemaining));
       }
 
-      if (data.state === "failed") {
-        throw new JobFailedError(jobId, data.errorMsg || "Unknown error");
+      if (status.state === "failed") {
+        throw new JobFailedError(jobId, status.errorMsg || "Unknown error");
       }
 
+      await this.sleep(Math.min(interval, Math.max(0, deadline - Date.now())), signal);
       interval = Math.min(interval * MULTIPLIER, MAX_INTERVAL);
     }
 
-    throw new TimeoutError(jobId, elapsed / 1000);
+    throw new PollTimeoutError(jobId, this.maxWaitTime);
   }
 
   async getStatus(jobId: string, signal?: AbortSignal): Promise<JobStatus> {
-    const data = await this.http.getJobStatus(jobId, signal);
-    let progress: Progress | undefined;
-    if (data.extractProgress) {
-      progress = {
-        totalPages: data.extractProgress.totalPages || 0,
-        extractedPages: data.extractProgress.extractedPages || 0,
-        startTime: data.extractProgress.startTime,
-        endTime: data.extractProgress.endTime,
-      };
-    }
-    return {
-      jobId,
-      state: data.state,
-      progress,
-      errorMsg: data.errorMsg,
-    };
+    return normalizeStatus(jobId, await this.http.getJobStatus(jobId, signal));
   }
 
   private sleep(ms: number, signal?: AbortSignal): Promise<void> {
@@ -91,4 +77,60 @@ export class Poller {
       );
     });
   }
+
+  private async withPollTimeout<T>(jobId: string, remainingMs: number, operation: () => Promise<T>): Promise<T> {
+    if (remainingMs <= 0) {
+      throw new PollTimeoutError(jobId, this.maxWaitTime);
+    }
+    try {
+      return await operation();
+    } catch (error) {
+      if (error instanceof RequestTimeoutError && error.timeoutMs === remainingMs) {
+        throw new PollTimeoutError(jobId, this.maxWaitTime, { cause: error });
+      }
+      throw error;
+    }
+  }
+}
+
+function normalizeStatus(jobId: string, data: unknown): JobStatus {
+  if (!isRecord(data) || typeof data.state !== "string") {
+    throw new ResponseFormatError("Status response is missing state.");
+  }
+  if (!["pending", "running", "done", "failed"].includes(data.state)) {
+    throw new ResponseFormatError(`Unknown job state: ${data.state}`);
+  }
+
+  return {
+    jobId,
+    state: data.state as JobStatus["state"],
+    progress: normalizeProgress(data.extractProgress),
+    errorMsg: typeof data.errorMsg === "string" ? data.errorMsg : undefined,
+  };
+}
+
+function normalizeProgress(progress: unknown): Progress | undefined {
+  if (progress === undefined || progress === null) {
+    return undefined;
+  }
+  if (!isRecord(progress)) {
+    throw new ResponseFormatError("Status progress must be an object.");
+  }
+  return {
+    totalPages: typeof progress.totalPages === "number" ? progress.totalPages : 0,
+    extractedPages: typeof progress.extractedPages === "number" ? progress.extractedPages : 0,
+    startTime: typeof progress.startTime === "string" ? progress.startTime : undefined,
+    endTime: typeof progress.endTime === "string" ? progress.endTime : undefined,
+  };
+}
+
+function resultJsonUrl(data: unknown): string {
+  if (!isRecord(data) || !isRecord(data.resultUrl) || typeof data.resultUrl.jsonUrl !== "string") {
+    throw new ResponseFormatError("Done job response is missing resultUrl.jsonUrl.");
+  }
+  return data.resultUrl.jsonUrl;
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null;
 }

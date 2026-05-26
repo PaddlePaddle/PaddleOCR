@@ -13,9 +13,15 @@
 # limitations under the License.
 
 import time
-from typing import Any, Dict, List
+from typing import Any
 
-from .errors import JobFailedError, TimeoutError
+from ._http import _validate_result_url, _validate_state
+from .errors import (
+    JobFailedError,
+    PollTimeoutError,
+    ResponseFormatError,
+    ResultParseError,
+)
 from .results import (
     DocParsingPage,
     DocParsingResult,
@@ -49,17 +55,23 @@ class Poller:
 
     def poll_until_done(self, job_id: str) -> Any:
         interval = self._initial_interval
-        elapsed = 0.0
+        start = time.monotonic()
+        deadline = start + self._max_wait_time
 
-        while elapsed < self._max_wait_time:
-            time.sleep(interval)
-            elapsed += interval
+        while True:
+            now = time.monotonic()
+            if now >= deadline:
+                raise PollTimeoutError(job_id, now - start)
 
-            data = self._http.get_job_status(job_id)
-            state = data["state"]
+            data = self._http.get_job_status(job_id, timeout=deadline - now)
+            now = time.monotonic()
+            if now >= deadline:
+                raise PollTimeoutError(job_id, now - start)
+
+            state = _validate_state(data)
 
             if state == "done":
-                json_url = data["resultUrl"]["jsonUrl"]
+                json_url = _validate_result_url(data)
                 jsonl_data = self._http.fetch_jsonl(json_url)
                 return jsonl_data, data
 
@@ -67,15 +79,18 @@ class Poller:
                 error_msg = data.get("errorMsg", "Unknown error")
                 raise JobFailedError(job_id, error_msg)
 
+            remaining = deadline - now
+            time.sleep(min(interval, remaining))
             interval = min(interval * self._multiplier, self._max_interval)
-
-        raise TimeoutError(job_id, elapsed)
 
     def get_status(self, job_id: str) -> JobStatus:
         data = self._http.get_job_status(job_id)
+        state = _validate_state(data)
         progress = None
         ep = data.get("extractProgress")
         if ep:
+            if not isinstance(ep, dict):
+                raise ResponseFormatError("'extractProgress' must be an object.")
             progress = Progress(
                 total_pages=ep.get("totalPages", 0),
                 extracted_pages=ep.get("extractedPages", 0),
@@ -84,37 +99,47 @@ class Poller:
             )
         return JobStatus(
             job_id=job_id,
-            state=data["state"],
+            state=state,
             progress=progress,
             error_msg=data.get("errorMsg"),
         )
 
 
 def parse_ocr_result(job_id: str, jsonl_data: list) -> OCRResult:
-    pages = []
-    for line_obj in jsonl_data:
-        result = line_obj["result"]
-        for item in result["ocrResults"]:
-            pages.append(
-                OCRPage(
-                    pruned_result=item["prunedResult"],
-                    ocr_image_url=item["ocrImage"],
+    try:
+        pages = []
+        for line_obj in jsonl_data:
+            if not isinstance(line_obj, dict):
+                raise TypeError("JSONL item must be an object.")
+            result = line_obj["result"]
+            for item in result["ocrResults"]:
+                pages.append(
+                    OCRPage(
+                        pruned_result=item["prunedResult"],
+                        ocr_image_url=item.get("ocrImage"),
+                    )
                 )
-            )
-    return OCRResult(job_id=job_id, pages=pages)
+        return OCRResult(job_id=job_id, pages=pages)
+    except (KeyError, TypeError) as e:
+        raise ResultParseError(f"Malformed OCR result payload: {e}") from e
 
 
 def parse_doc_parsing_result(job_id: str, jsonl_data: list) -> DocParsingResult:
-    pages = []
-    for line_obj in jsonl_data:
-        result = line_obj["result"]
-        for item in result["layoutParsingResults"]:
-            markdown = item["markdown"]
-            pages.append(
-                DocParsingPage(
-                    markdown_text=markdown["text"],
-                    markdown_images=markdown.get("images", {}),
-                    output_images=item.get("outputImages", {}),
+    try:
+        pages = []
+        for line_obj in jsonl_data:
+            if not isinstance(line_obj, dict):
+                raise TypeError("JSONL item must be an object.")
+            result = line_obj["result"]
+            for item in result["layoutParsingResults"]:
+                markdown = item["markdown"]
+                pages.append(
+                    DocParsingPage(
+                        markdown_text=markdown["text"],
+                        markdown_images=markdown.get("images", {}),
+                        output_images=item.get("outputImages", {}),
+                    )
                 )
-            )
-    return DocParsingResult(job_id=job_id, pages=pages)
+        return DocParsingResult(job_id=job_id, pages=pages)
+    except (KeyError, TypeError) as e:
+        raise ResultParseError(f"Malformed document parsing result payload: {e}") from e

@@ -35,9 +35,15 @@ func WithBaseURL(url string) ClientOption {
 	}
 }
 
-func WithTimeout(d time.Duration) ClientOption {
+func WithRequestTimeout(d time.Duration) ClientOption {
 	return func(c *Client) {
-		c.timeout = d
+		c.requestTimeout = d
+	}
+}
+
+func WithPollTimeout(d time.Duration) ClientOption {
+	return func(c *Client) {
+		c.pollTimeout = d
 	}
 }
 
@@ -49,4 +55,10 @@ func WithHTTPClient(hc *http.Client) ClientOption {
 
 func Bool(v bool) *bool {
 	return &v
+}
+
+func withPollInterval(d time.Duration) ClientOption {
+	return func(c *Client) {
+		c.pollInterval = d
+	}
 }

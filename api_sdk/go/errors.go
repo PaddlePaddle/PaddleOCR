@@ -18,10 +18,18 @@ import "fmt"
 
 type PaddleOCRAPIError struct {
 	Message string
+	Cause   error
 }
 
 func (e *PaddleOCRAPIError) Error() string {
+	if e.Message == "" && e.Cause != nil {
+		return e.Cause.Error()
+	}
 	return e.Message
+}
+
+func (e *PaddleOCRAPIError) Unwrap() error {
+	return e.Cause
 }
 
 type AuthError struct {
@@ -51,13 +59,17 @@ func (e *JobFailedError) Error() string {
 	return fmt.Sprintf("Job %s failed: %s", e.JobID, e.ErrorMsg)
 }
 
-type TimeoutError struct {
+type RequestTimeoutError struct {
+	PaddleOCRAPIError
+}
+
+type PollTimeoutError struct {
 	JobID   string
 	Elapsed float64
 	PaddleOCRAPIError
 }
 
-func (e *TimeoutError) Error() string {
+func (e *PollTimeoutError) Error() string {
 	return fmt.Sprintf("Timed out after %.1fs waiting for job %s", e.Elapsed, e.JobID)
 }
 
@@ -72,4 +84,12 @@ type FileNotFoundError struct {
 
 func (e *FileNotFoundError) Error() string {
 	return fmt.Sprintf("File not found: %s", e.Path)
+}
+
+type ResponseFormatError struct {
+	PaddleOCRAPIError
+}
+
+type ResultParseError struct {
+	PaddleOCRAPIError
 }

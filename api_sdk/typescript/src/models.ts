@@ -19,6 +19,21 @@ export enum Model {
   PaddleOCRVL15 = "PaddleOCR-VL-1.5",
 }
 
+const OCR_MODELS = new Set<string>([Model.PPOCRv5]);
+const DOCUMENT_PARSING_MODELS = new Set<string>([
+  Model.PPStructureV3,
+  Model.PaddleOCRVL,
+  Model.PaddleOCRVL15,
+]);
+
+export function isOCRModel(model: string): model is Model.PPOCRv5 {
+  return OCR_MODELS.has(model);
+}
+
+export function isDocumentParsingModel(model: string): boolean {
+  return DOCUMENT_PARSING_MODELS.has(model);
+}
+
 export interface OCROptions {
   useDocOrientationClassify?: boolean;
   useDocUnwarping?: boolean;
@@ -56,6 +71,7 @@ export interface DocParsingOptions {
 }
 
 export interface OCRRequest {
+  model?: Model;
   fileUrl?: string;
   filePath?: string;
   pageRanges?: string;
@@ -64,7 +80,7 @@ export interface OCRRequest {
 }
 
 export interface DocParsingRequest {
-  model: Model;
+  model?: Model;
   fileUrl?: string;
   filePath?: string;
   pageRanges?: string;
@@ -75,5 +91,12 @@ export interface DocParsingRequest {
 export interface ClientOptions {
   token?: string;
   baseUrl?: string;
-  timeout?: number;
+  requestTimeout?: number;
+  pollTimeout?: number;
+  fetch?: typeof fetch;
+}
+
+export interface SaveResourceOptions {
+  overwrite?: boolean;
+  filename?: string;
 }

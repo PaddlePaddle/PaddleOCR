@@ -14,56 +14,45 @@
 
 package paddleocr
 
-import (
-	"context"
-	"encoding/json"
-)
+import "context"
 
-// Operation represents an in-progress job. Use Wait() to block until done,
-// or Poll() to check status without blocking.
+// Operation represents an accepted asynchronous job bound to the client that
+// submitted it. Its embedded Job carries the task/model metadata needed for
+// typed waits without inspecting result payloads.
 type Operation struct {
+	Job
 	client *Client
-	JobID  string
-	model  string
 }
 
-// Wait blocks until the job completes and returns the parsed result.
-func (op *Operation) Wait(ctx context.Context) (interface{}, error) {
-	jsonlData, err := op.client.pollUntilDone(ctx, op.JobID)
-	if err != nil {
-		return nil, err
+// WaitOCR waits for an OCR operation and parses an OCR result.
+func (op *Operation) WaitOCR(ctx context.Context) (*OCRResult, error) {
+	if op == nil || op.client == nil {
+		return nil, &InvalidRequestError{PaddleOCRAPIError{Message: "operation is nil"}}
 	}
-	if op.model == PPOCRv5 {
-		return parseOCRResult(op.JobID, jsonlData)
-	}
-	return parseDocParsingResult(op.JobID, jsonlData)
+	return op.client.WaitOCRResult(ctx, &op.Job)
 }
 
-// Poll checks the current job status without waiting.
-// Returns the status, whether the job is done, and any error.
+// WaitDocumentParsing waits for a document parsing operation and parses a
+// document parsing result.
+func (op *Operation) WaitDocumentParsing(ctx context.Context) (*DocParsingResult, error) {
+	if op == nil || op.client == nil {
+		return nil, &InvalidRequestError{PaddleOCRAPIError{Message: "operation is nil"}}
+	}
+	return op.client.WaitDocumentParsingResult(ctx, &op.Job)
+}
+
+// Poll checks the current job status without waiting for completion.
 func (op *Operation) Poll(ctx context.Context) (*JobStatus, bool, error) {
+	if op == nil || op.client == nil {
+		return nil, false, &InvalidRequestError{PaddleOCRAPIError{Message: "operation is nil"}}
+	}
 	status, err := op.client.getJobStatus(ctx, op.JobID)
 	if err != nil {
 		return nil, false, err
 	}
-
-	js := &JobStatus{
-		JobID:    op.JobID,
-		State:    status.State,
-		ErrorMsg: status.ErrorMsg,
+	js, err := convertStatus(op.JobID, op.Model, op.Task, status)
+	if err != nil {
+		return nil, false, err
 	}
-
-	if status.ExtractProgress != nil {
-		var ep extractProgress
-		if err := json.Unmarshal(status.ExtractProgress, &ep); err == nil {
-			js.Progress = &Progress{
-				TotalPages:     ep.TotalPages,
-				ExtractedPages: ep.ExtractedPages,
-				StartTime:      ep.StartTime,
-				EndTime:        ep.EndTime,
-			}
-		}
-	}
-
-	return js, status.State == "done", nil
+	return js, js.State == JobStateDone, nil
 }

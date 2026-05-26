@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { PaddleOCRClient, Model } from "paddleocr-sdk";
+import { APIError, AuthError, Model, PaddleOCRClient } from "paddleocr-sdk";
 
 async function main() {
   const client = new PaddleOCRClient();
 
   // Convenience: doc parsing with local file
-  const result = await client.docParsing({
-    model: Model.PPStructureV3,
+  const result = await client.parseDocument({
+    model: Model.PaddleOCRVL15,
     filePath: "./sample.pdf",
     options: { useChartRecognition: true },
   });
@@ -30,18 +30,24 @@ async function main() {
 
   // Manual control: submit + concurrent wait
   const job1 = await client.submitOcr({ fileUrl: "https://example.com/f1.pdf" });
-  const job2 = await client.submitDocParsing({
-    model: Model.PPStructureV3,
+  const job2 = await client.submitDocumentParsing({
+    model: Model.PaddleOCRVL15,
     filePath: "./sample.pdf",
   });
 
   const [r1, r2] = await Promise.all([
-    client.waitForResult(job1.jobId),
-    client.waitForResult(job2.jobId),
+    client.waitOcrResult(job1),
+    client.waitDocumentParsingResult(job2),
   ]);
 
   console.log("Job1 done:", r1);
   console.log("Job2 done:", r2);
 }
 
-main().catch(console.error);
+main().catch((error: unknown) => {
+  if (error instanceof AuthError || error instanceof APIError) {
+    console.error(`${error.name}: ${error.message}`);
+    return;
+  }
+  console.error(error);
+});

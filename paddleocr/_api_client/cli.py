@@ -16,21 +16,27 @@ import json
 import sys
 
 from .client import APIClient
-from .models import DocParsingOptions, Model, OCROptions
+from .models import (
+    DocParsingOptions,
+    Model,
+    OCROptions,
+    is_document_parsing_model,
+    is_ocr_model,
+)
 
 
 def register_api_command(subparsers):
     """Register the 'api' subcommand into paddleocr CLI."""
     subparser = subparsers.add_parser(
         "api",
-        help="Call PaddleOCR cloud API for OCR or document parsing",
+        help="Call PaddleOCR official API for OCR or document parsing",
     )
     subparser.add_argument(
         "--model_type",
         type=str,
         required=True,
-        choices=["ocr", "doc_parsing"],
-        help="Task type: ocr or doc_parsing",
+        choices=["ocr", "document_parsing"],
+        help="Task type: ocr or document_parsing",
     )
     subparser.add_argument(
         "--model",
@@ -55,7 +61,19 @@ def register_api_command(subparsers):
         "--token",
         type=str,
         default=None,
-        help="API token (or set PADDLE_OCR_TOKEN env variable)",
+        help="API token (or set PADDLEOCR_ACCESS_TOKEN env variable)",
+    )
+    subparser.add_argument(
+        "--request_timeout",
+        type=float,
+        default=None,
+        help="Maximum duration in seconds for one HTTP request",
+    )
+    subparser.add_argument(
+        "--poll_timeout",
+        type=float,
+        default=None,
+        help="Maximum total duration in seconds to wait for job completion",
     )
     subparser.add_argument(
         "--output",
@@ -97,7 +115,7 @@ def register_api_command(subparsers):
         "--use_chart_recognition",
         action="store_true",
         default=None,
-        help="Enable chart recognition (doc_parsing only)",
+        help="Enable chart recognition (document_parsing only)",
     )
     subparser.set_defaults(executor=_execute_api)
 
@@ -106,6 +124,37 @@ def _execute_api(args):
     kwargs = {}
     if args.token:
         kwargs["token"] = args.token
+    if args.request_timeout is not None:
+        kwargs["request_timeout"] = args.request_timeout
+    if args.poll_timeout is not None:
+        kwargs["poll_timeout"] = args.poll_timeout
+
+    model = _resolve_model(args.model) if args.model else None
+    if args.model_type == "ocr":
+        if model is not None and not is_ocr_model(model):
+            print(
+                f"Error: OCR task does not support model {model.value}; "
+                "choose an OCR model.",
+                file=sys.stderr,
+            )
+            sys.exit(2)
+    else:
+        if model is None:
+            model = Model.PADDLE_OCR_VL_15
+        elif is_ocr_model(model):
+            print(
+                f"Error: document_parsing task does not support OCR model "
+                f"{model.value}; choose a document parsing model.",
+                file=sys.stderr,
+            )
+            sys.exit(2)
+        elif not is_document_parsing_model(model):
+            print(
+                f"Error: document_parsing task does not support model {model.value}; "
+                "choose a document parsing model.",
+                file=sys.stderr,
+            )
+            sys.exit(2)
 
     try:
         client = APIClient(**kwargs)
@@ -114,15 +163,7 @@ def _execute_api(args):
         sys.exit(1)
 
     try:
-        model = _resolve_model(args.model) if args.model else None
-
         if args.model_type == "ocr":
-            if model not in (None, Model.PP_OCRV5):
-                print(
-                    f"Error: OCR task only supports {Model.PP_OCRV5.value}.",
-                    file=sys.stderr,
-                )
-                sys.exit(2)
             options = OCROptions(
                 use_doc_orientation_classify=args.use_doc_orientation_classify,
                 use_doc_unwarping=args.use_doc_unwarping,
@@ -134,17 +175,16 @@ def _execute_api(args):
                 options=options,
                 page_ranges=args.page_ranges,
                 batch_id=args.batch_id,
+                model=model or Model.PP_OCRV5,
             )
             output = _ocr_result_to_dict(result)
         else:
-            if model is None:
-                model = Model.PP_STRUCTURE_V3
             options = DocParsingOptions(
                 use_doc_orientation_classify=args.use_doc_orientation_classify,
                 use_doc_unwarping=args.use_doc_unwarping,
                 use_chart_recognition=args.use_chart_recognition,
             )
-            result = client.doc_parsing(
+            result = client.parse_document(
                 model=model,
                 file_url=args.file_url,
                 file_path=args.file_path,
@@ -152,7 +192,7 @@ def _execute_api(args):
                 page_ranges=args.page_ranges,
                 batch_id=args.batch_id,
             )
-            output = _doc_parsing_result_to_dict(result)
+            output = _document_parsing_result_to_dict(result)
 
         json_str = json.dumps(output, ensure_ascii=False, indent=2)
 
@@ -195,7 +235,7 @@ def _ocr_result_to_dict(result) -> dict:
     }
 
 
-def _doc_parsing_result_to_dict(result) -> dict:
+def _document_parsing_result_to_dict(result) -> dict:
     return {
         "jobId": result.job_id,
         "pages": [

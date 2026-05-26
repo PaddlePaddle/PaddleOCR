@@ -127,6 +127,12 @@ plugins:
             获取ONNX模型: Obtaining ONNX Models
             端侧部署: On-Device Deployment
             服务化部署: Serving
+            PaddleOCR 官方 API: PaddleOCR official API
+            总览: Overview
+            Python SDK: Python SDK
+            TypeScript SDK: TypeScript SDK
+            Go SDK: Go SDK
+            CLI: CLI
             浏览器端部署: Browser Deployment
             模块列表: Module List
             文档图像方向分类模块: Document Image Orientation Classification Module
@@ -334,6 +340,12 @@ nav:
     - 获取ONNX模型: version3.x/deployment/obtaining_onnx_models.md
     - 端侧部署: version3.x/deployment/on_device_deployment.md
     - 服务化部署: version3.x/deployment/serving.md
+    - PaddleOCR 官方 API:
+      - 总览: version3.x/api_sdk/overview.md
+      - Python SDK: version3.x/api_sdk/python.md
+      - TypeScript SDK: version3.x/api_sdk/typescript.md
+      - Go SDK: version3.x/api_sdk/go.md
+      - CLI: version3.x/api_sdk/cli.md
     - 浏览器端部署: version3.x/deployment/browser.md
     - MCP 服务器: version3.x/deployment/mcp_server.md
     - Agent Skills: version3.x/deployment/skills.md

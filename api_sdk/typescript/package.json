@@ -1,7 +1,7 @@
 {
   "name": "paddleocr-sdk",
   "version": "0.1.0",
-  "description": "PaddleOCR API SDK for Node.js",
+  "description": "PaddleOCR official API SDK for Node.js",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -18,7 +18,9 @@
       }
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsup",
     "test": "vitest run",
@@ -32,6 +34,6 @@
     "@types/node": "^25.9.1",
     "tsup": "^8.0.0",
     "typescript": "^5.3.0",
-    "vitest": "^1.0.0"
+    "vitest": "^4.1.7"
   }
 }
