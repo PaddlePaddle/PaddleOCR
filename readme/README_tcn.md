@@ -35,7 +35,7 @@
 ### 📄 智能文檔解析（面向大模型）
 > *為大模型時代將雜亂的文檔視覺信息轉化為結構化數據。*
 
-* **SOTA 級文檔視覺語言模型 (VLM)**: 業界領先的輕量級文檔解析視覺語言模型 **PaddleOCR-VL-1.5 (0.9B)**。它在五大"真實場景"中表現卓越：**彎曲、掃描、屏幕拍照、複雜光照及傾斜文檔**，並支持以 **Markdown** 和 **JSON** 格式輸出結構化結果。
+* **SOTA 級文檔視覺語言模型 (VLM)**: 業界領先的輕量級文檔解析視覺語言模型 **PaddleOCR-VL-1.6 (0.9B)**。該模型以 96.3% 精度刷新 OmniDocBench v1.6，文本、公式、表格識別全面領先，並在古籍、生僻字、印章、圖表等多場景能力顯著增強，支持以 **Markdown** 和 **JSON** 格式輸出結構化結果。
 * **版面結構分析**：由**PP-StructureV3**驅動，無縫將複雜的PDF和圖像轉換為**Markdown**或**JSON**格式。與PaddleOCR-VL系列模型不同，它提供更細粒度的坐標信息,包括表格單元格坐標、文本坐標等，
 * **生產級高效能**：以極小的模型體積實現商業級別的準確率。在公開基準測試中超越眾多閉源解決方案，同時保持極高的資源利用率，完美適配邊緣計算與雲端部署。
 
@@ -60,15 +60,27 @@
 
 ## 📣 最新動態
 
-### 🔥 PaddleOCR v3.5.0 發布：推理後端更靈活，文檔輸出更豐富
+### 🔥 2026.05.28: PaddleOCR 3.6.0 發布
+- PaddleOCR-VL-1.6核心亮點如下：
+
+    - **全新SOTA精度**：OmniDocBench v1.6 突破96.3%，在OmniDocBench v1.5、Real5-OmniDocBench上同樣刷新SOTA，文本、公式、表格識別全面領先開源與閉源方案。
+    - **能力全面升級**：表格、古籍、生僻字識別大幅提升，印章、spotting、圖表識別等多場景均有顯著增強。
+    - **無縫遷移**：模型結構與PaddleOCR-VL-1.5完全一致，零成本適配，即換即用。
+    - **立即試用**：可在 [HuggingFace](https://huggingface.co/PaddlePaddle/PaddleOCR-VL-1.6) 或 [PaddleOCR 官方網站](https://www.paddleocr.com) 使用。
+
+<details>
+<summary><strong>2026.04.21: PaddleOCR 3.5.0 發布</strong></summary>
+
 * **推理後端靈活切換**：支持在飛槳靜態圖、飛槳動態圖和 Transformers 之間無縫切換。深度適配 Hugging Face 生態，20 個主要模型支持以 Transformers 作為推理後端。
 * **常見文檔格式轉 Markdown**：支持將 Word、Excel、PowerPoint 等常見文檔格式轉換為 Markdown。
 * **解析結果導出 DOCX**：`PaddleOCR-VL` 系列、`PP-StructureV3` 和 `PP-DocTranslation` 現已支持將解析結果導出為 DOCX，便於在 Microsoft Word 中查看和編輯。
 * **官方瀏覽器推理 SDK**：發布官方瀏覽器推理 SDK `PaddleOCR.js`，支持在瀏覽器中運行 `PP-OCRv5`。
 
+</details>
+
 <details>
 <summary><strong>2026.01.29: PaddleOCR 3.4.0 發布</strong></summary>
-* **PaddleOCR-VL-1.5 (SOTA 0.9B VLM)**：我們最新的旗艦文檔解析模型現已上線!
+* PaddleOCR-VL-1.5 (SOTA 0.9B VLM)：我們最新的旗艦文檔解析模型現已上線!
     * **OmniDocBench 94.5%準確率**：超越頂級通用大模型和專業文檔解析模型。
     * **現實5大場景文檔解析的SOTA性能**：首次引入**PP-DocLayoutV3**算法進行不規則形狀定位，掌控5種艱難場景:傾斜、彎曲、掃描、光照和屏幕拍照。
     * **能力拓展**：現已支持**印章識別**、**文本識別**，並擴展至**111種語言**(包括中國的藏文和孟加拉語)。
@@ -128,8 +140,6 @@
 
 
 [歷史日誌](https://paddlepaddle.github.io/PaddleOCR/latest/en/update/update.html)
-
-</details>
 
 
 ## 🚀 快速開始
