@@ -8,7 +8,7 @@ description: >-
   发票, 财报, 复杂 PDF, PDF转Markdown, 图表, 阅读顺序; reading order, formula, LaTeX,
   layout parsing, structure extraction, PP-StructureV3, PaddleOCR-VL.
 license: Apache-2.0
-compatibility: Requires Python 3.9+, uv, and internet access.
+compatibility: Requires uv and internet access.
 metadata:
   openclaw:
     requires:
