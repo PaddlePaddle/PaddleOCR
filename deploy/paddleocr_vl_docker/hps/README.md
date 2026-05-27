@@ -15,7 +15,7 @@
 | 组件　　　　　| 说明　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　 |
 | ---------------| ----------------------------------------------------------------------------------|
 | FastAPI 网关　| 统一访问入口、简化客户端调用、并发控制　　　　　　　　　　　　　　　　　　　　　 |
-| Triton 服务器 | 版面分析模型（PP-DocLayoutV3）及产线串联逻辑，负责模型管理、动态批处理、推理调度 |
+| Triton 服务器 | 版面分析模型（如 PP-DocLayoutV3）及产线串联逻辑，负责模型管理、动态批处理、推理调度 |
 | vLLM 服务器　 | VLM，连续批处理推理　　　　　　　　　　　　　　　　　　　　|
 
 **Triton 模型：**
@@ -86,7 +86,7 @@ export HPS_MAX_CONCURRENT_INFERENCE_REQUESTS=8
 
 #### 产线与 SDK 配置
 
-通过以下变量选择 VL 系列中的具体版本（修改后需重新执行 `prepare.sh` 并重建镜像）：
+通过以下变量选择 PaddleOCR-VL 系列中的具体版本（修改后需重新执行 `prepare.sh` 并重建镜像）：
 
 本方案复用 PaddleX 的[高稳定性服务化部署](https://paddlepaddle.github.io/PaddleX/latest/pipeline_deploy/serving.html#2) SDK 作为 Triton 服务的基础模型仓库与客户端依赖，并在其基础上增加 PaddleOCR-VL 专用的 FastAPI 网关和 vLLM 服务编排。
 
@@ -103,8 +103,6 @@ export HPS_MAX_CONCURRENT_INFERENCE_REQUESTS=8
 | PaddleOCR-VL-1.6 | `PaddleOCR-VL-1.6` | `paddlex_hps_PaddleOCR-VL-1.6_sdk` |
 | PaddleOCR-VL-1.5 | `PaddleOCR-VL-1.5` | `paddlex_hps_PaddleOCR-VL-1.5_sdk` |
 | PaddleOCR-VL (v1) | `PaddleOCR-VL` | `paddlex_hps_PaddleOCR-VL_sdk` |
-
-> `prepare.sh` 会以 SDK 自带的 `pipeline_config.yaml` 为基准写入 `pipeline_name`。VLM 名称由该文件中的 `SubModules.VLRecognition.model_name` 自动解析；Triton 与 vLLM 服务均读取同一份配置，无需额外环境变量。
 
 #### 网关与设备
 

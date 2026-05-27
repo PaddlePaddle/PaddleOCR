@@ -15,7 +15,7 @@ Client → FastAPI Gateway → Triton Server → vLLM Server
 | Component       | Description                                                                                                                 |
 | -----------------| -----------------------------------------------------------------------------------------------------------------------------|
 | FastAPI Gateway | Unified access point, simplified client calls, concurrency control                                                          |
-| Triton Server   | Layout analysis model (PP-DocLayoutV3) and pipeline orchestration; model management, dynamic batching, inference scheduling |
+| Triton Server   | Layout analysis model (such as PP-DocLayoutV3) and pipeline orchestration; model management, dynamic batching, inference scheduling |
 | vLLM Server     | VLM, continuous batching inference                                                                                            |
 
 **Triton Models:**
@@ -86,7 +86,7 @@ export HPS_MAX_CONCURRENT_INFERENCE_REQUESTS=8
 
 #### Pipeline and SDK Configuration
 
-Use the following variables to choose a release from the VL series. After changing them, rerun `prepare.sh` and rebuild the images:
+Use the following variables to choose a release from the PaddleOCR-VL series. After changing them, rerun `prepare.sh` and rebuild the images:
 
 This solution reuses the PaddleX [High-Stability Serving](https://paddlepaddle.github.io/PaddleX/latest/en/pipeline_deploy/serving.html#2-high-stability-serving) SDK as the base Triton model repository and client dependency, and adds a PaddleOCR-VL-specific FastAPI gateway and vLLM service orchestration on top.
 
@@ -103,8 +103,6 @@ Common examples:
 | PaddleOCR-VL-1.6 | `PaddleOCR-VL-1.6` | `paddlex_hps_PaddleOCR-VL-1.6_sdk` |
 | PaddleOCR-VL-1.5 | `PaddleOCR-VL-1.5` | `paddlex_hps_PaddleOCR-VL-1.5_sdk` |
 | PaddleOCR-VL (v1) | `PaddleOCR-VL` | `paddlex_hps_PaddleOCR-VL_sdk` |
-
-> `prepare.sh` writes `pipeline_name` into the SDK-bundled `pipeline_config.yaml`. The VLM name is parsed automatically from `SubModules.VLRecognition.model_name` in that file; both Triton and the vLLM service read the same configuration, with no extra environment variable required.
 
 #### Gateway and Device
 
