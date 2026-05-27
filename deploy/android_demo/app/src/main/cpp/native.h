@@ -122,10 +122,19 @@ inline cv::Mat bitmap_to_cv_mat(JNIEnv *env, jobject bitmap) {
     LOGE("Bitmap format is not RGBA_8888 !");
     return cv::Mat{};
   }
+  if (info.width == 0 || info.height == 0 || info.stride < info.width * 4u) {
+    LOGE("Invalid bitmap dimensions or stride");
+    return cv::Mat{};
+  }
   unsigned char *srcData = NULL;
   AndroidBitmap_lockPixels(env, bitmap, (void **)&srcData);
   cv::Mat mat = cv::Mat::zeros(info.height, info.width, CV_8UC4);
-  memcpy(mat.data, srcData, info.height * info.width * 4);
+  if (!mat.data) {
+    AndroidBitmap_unlockPixels(env, bitmap);
+    return cv::Mat{};
+  }
+  size_t copy_size = (size_t)info.height * info.width * 4;
+  memcpy(mat.data, srcData, copy_size);
   AndroidBitmap_unlockPixels(env, bitmap);
   cv::cvtColor(mat, mat, cv::COLOR_RGBA2BGR);
   /**

@@ -34,7 +34,7 @@ jobs:
               - 'mcp_server/**'
               - 'deploy/**'
 
-  test-pr:
+  test-pr-python:
     runs-on: ubuntu-latest
     needs: detect-changes
     if: needs.detect-changes.outputs.docs_only != 'true'
@@ -92,3 +92,28 @@ jobs:
         else
           pytest --verbose tests/
         fi
+
+  # Aggregator: produces a single check named `test-pr` so branch protection
+  # (which requires the literal context `test-pr`) is satisfied. Without this,
+  # the matrix above only emits `test-pr (3.x)` checks and the required
+  # `test-pr` context never reports.
+  test-pr:
+    runs-on: ubuntu-latest
+    needs: [detect-changes, test-pr-python]
+    if: always()
+    steps:
+      - name: Verify required jobs
+        run: |
+          if [ "${{ needs.detect-changes.result }}" != "success" ]; then
+            echo "detect-changes did not succeed: ${{ needs.detect-changes.result }}"
+            exit 1
+          fi
+          if [ "${{ needs.detect-changes.outputs.docs_only }}" = "true" ]; then
+            echo "Docs-only change; skipping python tests."
+            exit 0
+          fi
+          if [ "${{ needs.test-pr-python.result }}" != "success" ]; then
+            echo "test-pr-python concluded with: ${{ needs.test-pr-python.result }}"
+            exit 1
+          fi
+          echo "All python matrix variants passed."

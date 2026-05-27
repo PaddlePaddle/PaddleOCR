@@ -313,27 +313,27 @@ class PaddleOCRVLCLISubcommandExecutor(PipelineCLISubcommandExecutor):
         subparser.add_argument(
             "--layout_detection_model_name",
             type=str,
-            help="Name of the layout detection model.",
+            help="Name of the layout analysis model.",
         )
         subparser.add_argument(
             "--layout_detection_model_dir",
             type=str,
-            help="Path to the layout detection model directory.",
+            help="Path to the layout analysis model directory.",
         )
         subparser.add_argument(
             "--layout_threshold",
             type=float,
-            help="Score threshold for the layout detection model.",
+            help="Score threshold for the layout analysis model.",
         )
         subparser.add_argument(
             "--layout_nms",
             type=str2bool,
-            help="Whether to use NMS in layout detection.",
+            help="Whether to use NMS in layout analysis.",
         )
         subparser.add_argument(
             "--layout_unclip_ratio",
             type=float,
-            help="Expansion coefficient for layout detection.",
+            help="Expansion coefficient for layout analysis.",
         )
         subparser.add_argument(
             "--layout_merge_bboxes_mode",
@@ -412,7 +412,7 @@ class PaddleOCRVLCLISubcommandExecutor(PipelineCLISubcommandExecutor):
         subparser.add_argument(
             "--use_layout_detection",
             type=str2bool,
-            help="Whether to use layout detection.",
+            help="Whether to use layout analysis.",
         )
         subparser.add_argument(
             "--use_chart_recognition",
