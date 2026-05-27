@@ -39,5 +39,5 @@ test_tipc/web/node_modules/
 .venv/
 .worktrees/
 
-# GSD planning docs (local only)
+# GSD planning docs
 .planning/

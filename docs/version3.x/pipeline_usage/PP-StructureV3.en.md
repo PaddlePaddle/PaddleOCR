@@ -990,9 +990,7 @@ If you choose `transformers` as the inference engine, make sure the Transformers
 
 ```bash
 # Use the transformers engine for inference
-# Some models are still being supported. For inference, please disable formula recognition and replace the wireless table structure recognition model using the following command:
-paddleocr pp_structurev3 -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/pp_structure_v3_demo.png \
-    --engine transformers --use_formula_recognition False --wireless_table_structure_recognition_model_name SLANeXt_wireless
+paddleocr pp_structurev3 -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/pp_structure_v3_demo.png --engine transformers
 ```
 
 <details><summary><b>Command line supports more parameters. Click to expand for detailed parameter descriptions</b></summary>
@@ -1698,36 +1696,8 @@ If you choose `transformers` as the inference engine, make sure the Transformers
 ```python
 from paddleocr import PPStructureV3
 
-# Some models are still being supported. For inference, please disable formula recognition and replace the wireless table structure recognition model using the following code:
 pipeline = PPStructureV3(
     engine="transformers",
-    use_formula_recognition=False,
-    wireless_table_structure_recognition_model_name="SLANeXt_wireless",
-)
-# pipeline = PPStructureV3(lang="en") # Set the lang parameter to use the English text recognition model. For other supported languages, see Section 5: Appendix. By default, both Chinese and English text recognition models are enabled.
-# pipeline = PPStructureV3(use_doc_orientation_classify=True) # Use use_doc_orientation_classify to enable/disable document orientation classification model
-# pipeline = PPStructureV3(use_doc_unwarping=True) # Use use_doc_unwarping to enable/disable document unwarping module
-# pipeline = PPStructureV3(use_textline_orientation=True) # Use use_textline_orientation to enable/disable textline orientation classification model
-# pipeline = PPStructureV3(device="gpu") # Use device to specify GPU for model inference
-output = pipeline.predict("./pp_structure_v3_demo.png")
-for res in output:
-    res.print() ## Print the structured prediction output
-    res.save_to_json(save_path="output") ## Save the current image's structured result in JSON format
-    res.save_to_markdown(save_path="output") ## Save the current image's result in Markdown format
-```
-
-The example above uses the Paddle inference engine by default. To run it, first install PaddlePaddle by following [PaddlePaddle Framework Installation](../paddlepaddle_installation.en.md).
-
-To run inference with the `transformers` engine, first install the required dependencies by following [Inference Engine and Configuration](../inference_engine.en.md):
-
-```python
-from paddleocr import PPStructureV3
-
-# Some models are still being supported. For inference, please disable formula recognition and replace the wireless table structure recognition model using the following code:
-pipeline = PPStructureV3(
-    engine="transformers",
-    use_formula_recognition=False,
-    wireless_table_structure_recognition_model_name="SLANeXt_wireless",
 )
 # pipeline = PPStructureV3(lang="en") # Set the lang parameter to use the English text recognition model. For other supported languages, see Section 5: Appendix. By default, both Chinese and English text recognition models are enabled.
 # pipeline = PPStructureV3(use_doc_orientation_classify=True) # Use use_doc_orientation_classify to enable/disable document orientation classification model

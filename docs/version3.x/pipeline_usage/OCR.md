@@ -1210,7 +1210,7 @@ ocr = PaddleOCR(
     use_textline_orientation=False, # 通过 use_textline_orientation 参数指定不使用文本行方向分类模型
 )
 # ocr = PaddleOCR(lang="en") # 通过 lang 参数来使用英文模型
-# ocr = PaddleOCR(ocr_version="PP-OCRv4", engine="transformers") # 通过 ocr_version 参数来使用 PP-OCR 其他版本
+# ocr = PaddleOCR(ocr_version="PP-OCRv4") # 通过 ocr_version 参数来使用 PP-OCR 其他版本
 # ocr = PaddleOCR(device="gpu") # 通过 device 参数使得在模型推理时使用 GPU
 # ocr = PaddleOCR(
 #     text_detection_model_name="PP-OCRv5_server_det",
@@ -1240,7 +1240,7 @@ ocr = PaddleOCR(
     engine="transformers",
 )
 # ocr = PaddleOCR(lang="en", engine="transformers") # 通过 lang 参数来使用英文模型
-# ocr = PaddleOCR(ocr_version="PP-OCRv4") # 通过 ocr_version 参数来使用 PP-OCR 其他版本
+# ocr = PaddleOCR(ocr_version="PP-OCRv4", engine="transformers") # 通过 ocr_version 参数来使用 PP-OCR 其他版本
 # ocr = PaddleOCR(device="gpu", engine="transformers") # 通过 device 参数使得在模型推理时使用 GPU
 # ocr = PaddleOCR(
 #     text_detection_model_name="PP-OCRv5_server_det",
