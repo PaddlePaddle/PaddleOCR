@@ -50,7 +50,7 @@ cp .env.example .env
 bash prepare.sh
 ```
 
-`prepare.sh` 会根据 `.env` 下载对应 PaddleOCR-VL 版本的 HPS SDK，并写入 Triton 产线配置。
+`prepare.sh` 会根据 `.env` 下载对应 PaddleOCR-VL 版本的高稳定性服务化部署 SDK，并写入 Triton 产线配置。
 
 3. 启动服务：
 
@@ -88,11 +88,13 @@ export HPS_MAX_CONCURRENT_INFERENCE_REQUESTS=8
 
 通过以下变量选择 VL 系列中的具体版本（修改后需重新执行 `prepare.sh` 并重建镜像）：
 
+本方案复用 PaddleX 的[高稳定性服务化部署](https://paddlepaddle.github.io/PaddleX/latest/pipeline_deploy/serving.html#2) SDK 作为 Triton 服务的基础模型仓库与客户端依赖，并在其基础上增加 PaddleOCR-VL 专用的 FastAPI 网关和 vLLM 服务编排。
+
 | 变量 | 默认值 | 说明 |
 |------|--------|------|
-| `HPS_PIPELINE_NAME` | `PaddleOCR-VL-1.6` | 产线名称，对应 HPS SDK 包名中的版本标识 |
-| `HPS_SDK_VERSION` | `v3.6` | PaddleX HPS SDK 发布目录 |
-| `HPS_SDK_DIR` | `paddlex_hps_PaddleOCR-VL-1.6_sdk` | 解压后的 SDK 目录，通常遵循 `paddlex_hps_${HPS_PIPELINE_NAME}_sdk` |
+| `HPS_PIPELINE_NAME` | `PaddleOCR-VL-1.6` | 产线名称 |
+| `HPS_SDK_VERSION` | `v3.6` | PaddleX 高稳定性服务化部署 SDK 发布目录，对应 PaddleX 版本 |
+| `HPS_SDK_DIR` | `paddlex_hps_PaddleOCR-VL-1.6_sdk` | 解压后的 SDK 目录，遵循 `paddlex_hps_${HPS_PIPELINE_NAME}_sdk` |
 
 常见配置示例：
 

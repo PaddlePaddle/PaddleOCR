@@ -50,7 +50,7 @@ cp .env.example .env
 bash prepare.sh
 ```
 
-`prepare.sh` downloads the HPS SDK for the selected PaddleOCR-VL release and writes the Triton pipeline config.
+`prepare.sh` downloads the high-stability serving SDK for the selected PaddleOCR-VL release and writes the Triton pipeline config.
 
 3. Start the services:
 
@@ -88,11 +88,13 @@ export HPS_MAX_CONCURRENT_INFERENCE_REQUESTS=8
 
 Use the following variables to choose a release from the VL series. After changing them, rerun `prepare.sh` and rebuild the images:
 
+This solution reuses the PaddleX [High-Stability Serving](https://paddlepaddle.github.io/PaddleX/latest/en/pipeline_deploy/serving.html#2-high-stability-serving) SDK as the base Triton model repository and client dependency, and adds a PaddleOCR-VL-specific FastAPI gateway and vLLM service orchestration on top.
+
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `HPS_PIPELINE_NAME` | `PaddleOCR-VL-1.6` | Pipeline name; also used in the HPS SDK package name |
-| `HPS_SDK_VERSION` | `v3.6` | PaddleX HPS SDK release directory |
-| `HPS_SDK_DIR` | `paddlex_hps_PaddleOCR-VL-1.6_sdk` | Extracted SDK directory, usually `paddlex_hps_${HPS_PIPELINE_NAME}_sdk` |
+| `HPS_PIPELINE_NAME` | `PaddleOCR-VL-1.6` | Pipeline name |
+| `HPS_SDK_VERSION` | `v3.6` | PaddleX high-stability serving SDK release directory, corresponding to the PaddleX version |
+| `HPS_SDK_DIR` | `paddlex_hps_PaddleOCR-VL-1.6_sdk` | Extracted SDK directory, following `paddlex_hps_${HPS_PIPELINE_NAME}_sdk` |
 
 Common examples:
 

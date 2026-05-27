@@ -7,7 +7,7 @@ comments: true
 > INFO:
 > 除非另有说明，本教程中提到的 “PaddleOCR-VL” 均指 PaddleOCR-VL 系列模型（如 PaddleOCR-VL-1.6 等）；若特指 PaddleOCR-VL v1 版本，将另行明确标注。
 
-本教程是 PaddleOCR-VL 在 NVIDIA Blackwell 架构 GPU 上的使用指南，涵盖了从环境准备到服务化部署的完整流程。
+本教程是 PaddleOCR-VL 在 NVIDIA Blackwell 架构 GPU 上的使用指南，涵盖了从本地运行环境准备到服务化部署的完整流程。
 
 NVIDIA Blackwell 架构 GPU 包括但不限于以下几种：
 
@@ -27,27 +27,27 @@ NVIDIA Blackwell 架构 GPU 包括但不限于以下几种：
 
 | 目标 | 本硬件上的支持情况 | 从哪里开始阅读 |
 | --- | --- | --- |
-| 本地直接推理 | 支持 | 阅读第 1 节“环境准备”和第 2 节“快速开始”。 |
-| 客户端 + VLM 推理服务 | 支持 | 先完成本地直接推理，再阅读第 3 节“使用 VLM 推理服务提升推理性能”。 |
-| 完整 API 服务 | 支持 Docker Compose 和手动部署 | 如需 Docker Compose，阅读第 4.1 节；如需手动部署，先完成第 1 节“环境准备”，然后阅读第 4.2 节；随后继续阅读第 4.3 节客户端调用部分和第 4.4 节产线配置调整部分。 |
+| 本地直接推理 | 支持 | 阅读第 1 节“本地运行环境准备”和第 2 节“快速开始”。 |
+| 客户端 + VLM 推理服务 | 支持 | 先完成本地直接推理，再阅读第 3 节“使用 VLM 推理服务”。 |
+| 完整 API 服务 | 支持 Docker Compose 和手动部署 | 如需 Docker Compose，阅读第 4.1 节；如需手动部署，先完成第 1 节“本地运行环境准备”，然后阅读第 4.2 节；随后继续阅读第 4.3 节客户端调用部分和第 4.4 节产线配置调整部分。 |
 | 模型微调 | 支持 | 阅读第 5 节“模型微调”。 |
 
 如果你只是想先确认本硬件支持哪些推理方式，请参考主教程中的 [PaddleOCR-VL 推理方式与硬件支持矩阵](./PaddleOCR-VL.md#paddleocr-vl-对推理设备的支持情况)。
 
-## 1. 环境准备
+## 1. 本地运行环境准备
 
-**当前硬件支持的环境准备方式**
+**当前硬件支持的本地运行环境准备方式**
 
-| 环境准备方式 | 状态 | 说明 |
+| 本地运行环境准备方式 | 状态 | 说明 |
 | --- | --- | --- |
 | 官方 Docker 镜像 | 支持并提供步骤 | 请继续阅读本节的 1.1。 |
-| 手动安装 PaddlePaddle 和 PaddleOCR | 支持并提供步骤 | 请继续阅读本节的 1.2。 |
+| 手动安装推理引擎和 PaddleOCR | 支持并提供步骤 | 请继续阅读本节的 1.2。 |
 
-此步骤主要介绍如何搭建 PaddleOCR-VL 的运行环境，有以下两种方式，任选一种即可：
+此步骤主要介绍如何搭建 PaddleOCR-VL 的本地运行环境，有以下两种方式，任选一种即可：
 
 - 方法一：使用官方 Docker 镜像。
 
-- 方法二：手动安装 PaddlePaddle 和 PaddleOCR。
+- 方法二：手动安装推理引擎和 PaddleOCR。
 
 **我们强烈推荐采用 Docker 镜像的方式，以最大程度减少可能出现的环境问题。**
 
@@ -75,9 +75,11 @@ docker run \
 > 例如：
 > `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:paddleocr3.3-nvidia-gpu-sm120-offline`
 
-### 1.2 方法二：手动安装 PaddlePaddle 和 PaddleOCR
+### 1.2 方法二：手动安装推理引擎和 PaddleOCR
 
-如果您无法使用 Docker，也可以手动安装 PaddlePaddle 和 PaddleOCR。本文档验证过的 Python 版本范围为 3.9–3.13。
+如果您无法使用 Docker，也可以手动安装推理引擎和 PaddleOCR。本文档验证过的 Python 版本范围为 3.9–3.13。
+
+本教程提供 PaddlePaddle 安装步骤；若需使用 Transformers 等其他推理引擎，请参考 [主教程第 1.2 节](./PaddleOCR-VL.md#12)。
 
 **我们强烈推荐您在虚拟环境中安装 PaddleOCR-VL，以避免发生依赖冲突。** 例如，使用 Python venv 标准库创建虚拟环境：
 
@@ -102,9 +104,9 @@ python -m pip install -U "paddleocr[doc-parser]"
 
 请参考 [PaddleOCR-VL 使用教程 - 2. 快速开始](./PaddleOCR-VL.md#2)。
 
-## 3. 使用 VLM 推理服务提升推理性能
+## 3. 使用 VLM 推理服务
 
-默认配置下的推理性能未经过充分优化，可能无法满足实际生产需求。此步骤主要介绍如何通过 VLM 推理服务提升 PaddleOCR-VL 的推理性能。在当前硬件文档中，示例使用 vLLM 和 SGLang 作为 VLM 推理服务后端。
+本节介绍如何通过 VLM 推理服务接入专用后端。对于当前硬件，这通常用于提升默认配置下的推理性能，以更好满足生产需求。在当前硬件文档中，示例使用 vLLM 和 SGLang 作为 VLM 推理服务后端。
 
 ### 3.1 启动 VLM 推理服务
 
@@ -117,7 +119,7 @@ python -m pip install -U "paddleocr[doc-parser]"
 | --- | --- | --- |
 | 官方 Docker 镜像 | 支持并提供步骤 | 请继续阅读本节的 3.1.1。 |
 | 通过 PaddleOCR CLI 安装依赖后启动 | 支持并提供步骤 | 请继续阅读本节的 3.1.2。 |
-| 直接使用推理加速框架启动 | 当前不支持 | 当前硬件不支持该路径。 |
+| 直接使用推理加速框架启动 | 未验证 | 当前硬件可通过 vLLM 或 SGLang 后端启动 VLM 推理服务，但尚未验证直接使用原生框架启动的路径。 |
 
 启动 VLM 推理服务有以下两种方式，任选一种即可：
 
@@ -150,7 +152,7 @@ docker run \
     --rm \
     --gpus all \
     --network host \
-    -v vllm_config.yml:/tmp/vllm_config.yml \  
+    -v ./vllm_config.yml:/tmp/vllm_config.yml \
     ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-nvidia-gpu-sm120 \
     paddleocr genai_server --model_name PaddleOCR-VL-1.6-0.9B --host 0.0.0.0 --port 8118 --backend vllm --backend_config /tmp/vllm_config.yml
 ```
@@ -228,7 +230,7 @@ paddleocr genai_server --model_name PaddleOCR-VL-1.6-0.9B --backend vllm --port 
 | 部署方式 | 状态 | 说明 |
 | --- | --- | --- |
 | Docker Compose 部署 | 支持并提供步骤 | 请继续阅读本节的 4.1。 |
-| 手动部署 | 支持（步骤见主教程） | 请先完成第 1 节“环境准备”，再继续阅读本节的 4.2，然后参考主教程中的共享手动部署说明。 |
+| 手动部署 | 支持 | 请先完成第 1 节“本地运行环境准备”，再继续阅读本节的 4.2。 |
 
 此步骤主要介绍如何将 PaddleOCR-VL 部署为服务并调用，有以下两种方式，任选一种即可：
 
@@ -351,7 +353,7 @@ Docker Compose 通过读取 `.env` 和 `compose.yaml` 文件中配置，先后�
 
 ### 4.2 方法二：手动部署
 
-请先完成第 1 节“环境准备”，再参考[PaddleOCR-VL 使用教程 - 4.2 方法二：手动部署](./PaddleOCR-VL.md#42)。
+请先完成第 1 节“本地运行环境准备”，再参考[PaddleOCR-VL 使用教程 - 4.2 方法二：手动部署](./PaddleOCR-VL.md#42)。
 
 ### 4.3 客户端调用方式
 

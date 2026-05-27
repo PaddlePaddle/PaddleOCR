@@ -41,7 +41,7 @@ _set_env_value() {
     fi
 }
 
-echo "Preparing HPS SDK for ${HPS_PIPELINE_NAME}"
+echo "Preparing high-stability serving SDK for ${HPS_PIPELINE_NAME}"
 echo "  SDK archive: ${SDK_ARCHIVE}"
 
 wget "${SDK_URL}"
@@ -62,4 +62,4 @@ echo "  VLM name (from pipeline_config.yaml): ${VLM_NAME}"
 _set_env_value "HPS_PIPELINE_NAME" "${HPS_PIPELINE_NAME}"
 _set_env_value "HPS_SDK_DIR" "${HPS_SDK_DIR}"
 
-echo "HPS SDK prepared at ${HPS_SDK_DIR}/"
+echo "High-stability serving SDK prepared at ${HPS_SDK_DIR}/"
