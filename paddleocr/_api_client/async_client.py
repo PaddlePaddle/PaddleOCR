@@ -18,6 +18,8 @@ import json
 import os
 from typing import Optional, Union
 
+import aiohttp
+
 from ._core import (
     default_payload,
     extract_api_message_from_payload,
@@ -56,7 +58,7 @@ from ._resources import (
     save_resource,
 )
 from .results import BatchStatus, DocParsingResult, Job, JobStatus, OCRResult
-from ._http import DEFAULT_BASE_URL
+from ._http import API_PATH, DEFAULT_BASE_URL
 from ._poller import (
     DEFAULT_INITIAL_INTERVAL,
     DEFAULT_MAX_INTERVAL,
@@ -75,7 +77,7 @@ class AsyncPaddleOCRClient:
     def __init__(
         self,
         token: Optional[str] = None,
-        base_url: str = DEFAULT_BASE_URL,
+        base_url: Optional[str] = None,
         request_timeout: float = 300.0,
         poll_timeout: float = 600.0,
         timeout: Optional[float] = None,
@@ -86,7 +88,11 @@ class AsyncPaddleOCRClient:
             raise AuthError(
                 "Token is required. Set PADDLEOCR_ACCESS_TOKEN or pass token=."
             )
-        self._base_url = base_url.rstrip("/")
+        resolved_base_url = (
+            base_url or os.environ.get("PADDLEOCR_BASE_URL") or DEFAULT_BASE_URL
+        )
+        self._base_url = resolved_base_url.rstrip("/")
+        self._jobs_url = f"{self._base_url}{API_PATH}"
         if timeout is not None:
             request_timeout = timeout
             poll_timeout = timeout
@@ -104,13 +110,6 @@ class AsyncPaddleOCRClient:
 
     async def _ensure_session(self):
         if self._session is None:
-            try:
-                import aiohttp
-            except ImportError:
-                raise ImportError(
-                    "aiohttp is required for AsyncPaddleOCRClient. "
-                    "Install it with: pip install aiohttp>=3.8.0"
-                )
             self._session = aiohttp.ClientSession(
                 headers=self._api_headers(),
                 timeout=aiohttp.ClientTimeout(total=self._request_timeout),
@@ -343,7 +342,7 @@ class AsyncPaddleOCRClient:
             body["batchId"] = batch_id
         async with self._request_scope():
             async with self._session.post(
-                self._base_url,
+                self._jobs_url,
                 json=body,
                 headers={"Content-Type": "application/json"},
             ) as resp:
@@ -361,7 +360,6 @@ class AsyncPaddleOCRClient:
     ) -> str:
         if not os.path.exists(file_path):
             raise FileNotFoundError(file_path)
-        import aiohttp
 
         form = aiohttp.FormData()
         form.add_field("model", model)
@@ -378,26 +376,24 @@ class AsyncPaddleOCRClient:
             filename=os.path.basename(file_path),
         )
         async with self._request_scope():
-            async with self._session.post(self._base_url, data=form) as resp:
+            async with self._session.post(self._jobs_url, data=form) as resp:
                 await self._raise_for_response(resp)
                 data = await self._response_data(resp)
                 return extract_job_id(data)
 
     async def _get_job_status(self, job_id: str) -> dict:
         async with self._request_scope():
-            async with self._session.get(f"{self._base_url}/{job_id}") as resp:
+            async with self._session.get(f"{self._jobs_url}/{job_id}") as resp:
                 await self._raise_for_response(resp)
                 return await self._response_data(resp)
 
     async def _get_batch_status(self, batch_id: str) -> dict:
         async with self._request_scope():
-            async with self._session.get(f"{self._base_url}/batch/{batch_id}") as resp:
+            async with self._session.get(f"{self._jobs_url}/batch/{batch_id}") as resp:
                 await self._raise_for_response(resp)
                 return await self._response_data(resp)
 
     async def _fetch_jsonl(self, url: str) -> list:
-        import aiohttp
-
         async with self._request_scope():
             timeout = aiohttp.ClientTimeout(total=self._request_timeout)
             async with aiohttp.ClientSession(timeout=timeout) as bare_session:

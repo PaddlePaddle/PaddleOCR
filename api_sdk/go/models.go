@@ -69,7 +69,6 @@ type PPStructureV3Options struct {
 	UseFormulaRecognition            *bool       `json:"useFormulaRecognition,omitempty"`
 	UseChartRecognition              *bool       `json:"useChartRecognition,omitempty"`
 	UseRegionDetection               *bool       `json:"useRegionDetection,omitempty"`
-	UseLayoutDetection               *bool       `json:"useLayoutDetection,omitempty"`
 	LayoutThreshold                  interface{} `json:"layoutThreshold,omitempty"`
 	LayoutNms                        *bool       `json:"layoutNms,omitempty"`
 	LayoutUnclipRatio                interface{} `json:"layoutUnclipRatio,omitempty"`
@@ -80,7 +79,6 @@ type PPStructureV3Options struct {
 	TextDetBoxThresh                 *float64    `json:"textDetBoxThresh,omitempty"`
 	TextDetUnclipRatio               *float64    `json:"textDetUnclipRatio,omitempty"`
 	TextRecScoreThresh               *float64    `json:"textRecScoreThresh,omitempty"`
-	Visualize                        *bool       `json:"visualize,omitempty"`
 	UseWiredTableCellsTransToHtml    *bool       `json:"useWiredTableCellsTransToHtml,omitempty"`
 	UseWirelessTableCellsTransToHtml *bool       `json:"useWirelessTableCellsTransToHtml,omitempty"`
 	UseTableOrientationClassify      *bool       `json:"useTableOrientationClassify,omitempty"`
@@ -89,6 +87,7 @@ type PPStructureV3Options struct {
 	UseE2eWirelessTableRecModel      *bool       `json:"useE2eWirelessTableRecModel,omitempty"`
 	PrettifyMarkdown                 *bool       `json:"prettifyMarkdown,omitempty"`
 	ShowFormulaNumber                *bool       `json:"showFormulaNumber,omitempty"`
+	Visualize                        *bool       `json:"visualize,omitempty"`
 }
 
 type PaddleOCRVLOptions struct {

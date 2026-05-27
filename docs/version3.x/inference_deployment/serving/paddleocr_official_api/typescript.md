@@ -55,17 +55,6 @@ TypeScript SDK 常用公共方法包括：
 - `saveOcrResultResources(result, destination, options)`：保存 OCR 结果对象引用的资源。
 - `saveDocumentParsingResultResources(result, destination, options)`：保存文档解析结果对象引用的资源。
 
-## 超时
-
-```ts
-const client = new PaddleOCRClient({
-  requestTimeout: 300_000,
-  pollTimeout: 600_000,
-});
-```
-
-`requestTimeout` 限制一次 HTTP 请求，包括提交、查询状态和下载资源。`pollTimeout` 限制 `ocr`、`parseDocument`、`waitOcrResult` 与 `waitDocumentParsingResult` 的总等待时间。公共方法还可以接收 `AbortSignal` 以便上层主动取消。
-
 ## 模型选择
 
 表中的 `Model` 枚举是官方 API 模型名字符串的类型安全写法，提交请求时会转换为对应的实际模型名。也可以直接传入官方 API 模型名字符串，例如 `model: "PaddleOCR-VL-1.6"`。
@@ -77,8 +66,76 @@ const client = new PaddleOCRClient({
 
 常用对应关系：`Model.PPOCRv5` 对应 `PP-OCRv5`，`Model.PPStructureV3` 对应 `PP-StructureV3`，`Model.PaddleOCRVL` 对应 `PaddleOCR-VL`，`Model.PaddleOCRVL15` 对应 `PaddleOCR-VL-1.5`，`Model.PaddleOCRVL16` 对应 `PaddleOCR-VL-1.6`。
 
-## 错误与资源保存
+## 配置与参数
 
-所有 SDK 错误都继承自 `PaddleOCRAPIError`，常见类型包括 `AuthError`、`InvalidRequestError`、`APIError`、`NetworkError`、`JobFailedError`、`RequestTimeoutError`、`PollTimeoutError`、`ResponseFormatError` 和 `ResultParseError`。
+### 客户端配置
 
-`saveResource` 用于单个资源 URL；如果要保存结果对象中的全部资源，请使用 `saveOcrResultResources` 或 `saveDocumentParsingResultResources`。
+```ts
+const client = new PaddleOCRClient({
+  requestTimeout: 300_000,
+  pollTimeout: 600_000,
+});
+```
+
+`requestTimeout` 限制一次 HTTP 请求，包括提交、查询状态和下载资源。`pollTimeout` 限制 `ocr`、`parseDocument`、`waitOcrResult` 与 `waitDocumentParsingResult` 的总等待时间。公共方法还可以接收 `AbortSignal` 以便上层主动取消。
+
+通过环境变量 `PADDLEOCR_BASE_URL` 或 `baseUrl` 参数指定自定义服务地址：
+
+```ts
+const client = new PaddleOCRClient({
+  baseUrl: "https://my-proxy.com/paddle",
+});
+```
+
+通过 `fetch` 选项注入自定义 fetch 实现，适用于需要代理或自定义网络层的场景：
+
+```ts
+const client = new PaddleOCRClient({
+  fetch: myCustomFetch,
+});
+```
+
+### 请求参数
+
+TypeScript SDK 的参数名使用 camelCase，与官方 API 字段名一致。未设置的字段不会发送，使用服务端默认值。完整字段定义见接口源码或「官方 API 参考」。
+
+#### OCROptions（常用字段）
+
+| 字段 | 类型 | 说明 |
+|------|------|------|
+| `useDocOrientationClassify` | boolean | 文档方向分类 |
+| `useDocUnwarping` | boolean | 文档扭曲矫正 |
+| `visualize` | boolean | 是否返回可视化结果图 |
+
+#### PPStructureV3Options（常用字段）
+
+| 字段 | 类型 | 说明 |
+|------|------|------|
+| `useTableRecognition` | boolean | 表格识别 |
+| `useFormulaRecognition` | boolean | 公式识别 |
+| `useChartRecognition` | boolean | 图表识别 |
+| `prettifyMarkdown` | boolean | Markdown 美化 |
+
+#### PaddleOCRVLOptions（常用字段）
+
+| 字段 | 类型 | 说明 |
+|------|------|------|
+| `useLayoutDetection` | boolean | 版面检测 |
+| `useChartRecognition` | boolean | 图表识别 |
+| `temperature` | number | 采样温度 |
+| `prettifyMarkdown` | boolean | Markdown 美化 |
+
+## 错误处理
+
+所有 SDK 错误都继承自 `PaddleOCRAPIError`，常见类型包括 `AuthError`、`InvalidRequestError`、`RateLimitError`、`ServiceUnavailableError`、`APIError`、`NetworkError`、`JobFailedError`、`RequestTimeoutError`、`PollTimeoutError`、`ResponseFormatError` 和 `ResultParseError`。
+
+## 官方 API 参考
+
+- [PP-OCRv5 API](https://ai.baidu.com/ai-doc/AISTUDIO/Kmfl2ycs0)
+- [PP-StructureV3 API](https://ai.baidu.com/ai-doc/AISTUDIO/Fmfz6oh2e)
+- [PaddleOCR-VL API](https://ai.baidu.com/ai-doc/AISTUDIO/2mh4okm66)
+- [PaddleOCR-VL-1.5 API](https://ai.baidu.com/ai-doc/AISTUDIO/Cmkz2m0ma)
+
+## 配额与错误码
+
+- [API 配额规则和错误码说明](https://ai.baidu.com/ai-doc/AISTUDIO/Xmjclapam)

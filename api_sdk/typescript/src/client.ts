@@ -21,7 +21,7 @@ import type { ClientOptions, DocParsingRequest, OCRRequest, SaveResourceOptions 
 import { isDocumentParsingModel, isOCRModel, Model } from "./models.js";
 import type { BatchStatus, DocParsingResult, Job, JobStatus, OCRResult } from "./results.js";
 
-const DEFAULT_BASE_URL = "https://paddleocr.aistudio-app.com/api/v2/ocr/jobs";
+const DEFAULT_BASE_URL = "https://paddleocr.aistudio-app.com";
 
 interface ResourceSavePlan {
   resourceUrl: string;
@@ -37,7 +37,7 @@ export class PaddleOCRClient {
     if (!token) {
       throw new AuthError("Token is required. Set PADDLEOCR_ACCESS_TOKEN or pass token option.");
     }
-    const baseUrl = options.baseUrl || DEFAULT_BASE_URL;
+    const baseUrl = options.baseUrl || process.env.PADDLEOCR_BASE_URL || DEFAULT_BASE_URL;
     const requestTimeout = options.requestTimeout || options.timeout || 300000;
     const pollTimeout = options.pollTimeout || options.timeout || 600000;
 

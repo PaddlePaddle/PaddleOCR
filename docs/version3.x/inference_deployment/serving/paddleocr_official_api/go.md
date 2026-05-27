@@ -52,17 +52,6 @@ Go SDK 常用公共方法包括：
 - `SaveOCRResultResources(...)`：保存 OCR 结果对象引用的资源。
 - `SaveDocumentParsingResultResources(...)`：保存文档解析结果对象引用的资源。
 
-## 超时
-
-```go
-client, err := paddleocr.NewClient(
-	paddleocr.WithRequestTimeout(30*time.Second),
-	paddleocr.WithPollTimeout(5*time.Minute),
-)
-```
-
-`WithRequestTimeout` 限制一次 HTTP 请求，包括提交、查询状态和下载资源。`WithPollTimeout` 限制 `OCR`、`ParseDocument`、`WaitOCRResult` 与 `WaitDocumentParsingResult` 的总等待时间。调用方也可以通过 `context.Context` 取消请求。
-
 ## 模型选择
 
 表中的模型常量是官方 API 模型名字符串的类型安全写法，提交请求时会转换为对应的实际模型名。也可以直接传入官方 API 模型名字符串，例如 `Model: "PaddleOCR-VL-1.6"`。
@@ -74,8 +63,76 @@ client, err := paddleocr.NewClient(
 
 常用对应关系：`PPOCRv5` 对应 `PP-OCRv5`，`PPStructureV3` 对应 `PP-StructureV3`，`PaddleOCRVL` 对应 `PaddleOCR-VL`，`PaddleOCRVL15` 对应 `PaddleOCR-VL-1.5`，`PaddleOCRVL16` 对应 `PaddleOCR-VL-1.6`。
 
-## 错误与资源保存
+## 配置与参数
 
-Go SDK 暴露可与 `errors.As` 配合使用的类型化错误，覆盖 `AuthError`、`InvalidRequestError`、`APIError`、`NetworkError`、`JobFailedError`、`RequestTimeoutError`、`PollTimeoutError`、`ResponseFormatError` 和 `ResultParseError` 等情况。
+### 客户端配置
 
-资源保存支持单个资源 URL，也支持保存结果对象中的全部资源。结果对象批量保存要求目标路径是已存在的目录。
+```go
+client, err := paddleocr.NewClient(
+	paddleocr.WithRequestTimeout(30*time.Second),
+	paddleocr.WithPollTimeout(5*time.Minute),
+)
+```
+
+`WithRequestTimeout` 限制一次 HTTP 请求，包括提交、查询状态和下载资源。`WithPollTimeout` 限制 `OCR`、`ParseDocument`、`WaitOCRResult` 与 `WaitDocumentParsingResult` 的总等待时间。调用方也可以通过 `context.Context` 取消请求。
+
+通过环境变量 `PADDLEOCR_BASE_URL` 或 `WithBaseURL` 指定自定义服务地址：
+
+```go
+client, err := paddleocr.NewClient(
+    paddleocr.WithBaseURL("https://my-proxy.com/paddle"),
+)
+```
+
+通过 `WithHTTPClient` 注入自定义 `*http.Client`，适用于需要代理、自定义 TLS 或重试策略的场景：
+
+```go
+client, err := paddleocr.NewClient(
+    paddleocr.WithHTTPClient(myHTTPClient),
+)
+```
+
+### 请求参数
+
+Go SDK 的 Options 结构体字段使用 PascalCase，序列化时自动转换为 camelCase。指针类型字段传 `nil` 表示不设置。完整字段定义见结构体源码或「官方 API 参考」。
+
+#### OCROptions（常用字段）
+
+| 字段 | 类型 | 说明 |
+|------|------|------|
+| `UseDocOrientationClassify` | *bool | 文档方向分类 |
+| `UseDocUnwarping` | *bool | 文档扭曲矫正 |
+| `Visualize` | *bool | 是否返回可视化结果图 |
+
+#### PPStructureV3Options（常用字段）
+
+| 字段 | 类型 | 说明 |
+|------|------|------|
+| `UseTableRecognition` | *bool | 表格识别 |
+| `UseFormulaRecognition` | *bool | 公式识别 |
+| `UseChartRecognition` | *bool | 图表识别 |
+| `PrettifyMarkdown` | *bool | Markdown 美化 |
+
+#### PaddleOCRVLOptions（常用字段）
+
+| 字段 | 类型 | 说明 |
+|------|------|------|
+| `UseLayoutDetection` | *bool | 版面检测 |
+| `UseChartRecognition` | *bool | 图表识别 |
+| `Temperature` | *float64 | 采样温度 |
+| `PrettifyMarkdown` | *bool | Markdown 美化 |
+
+## 错误处理
+
+Go SDK 暴露可与 `errors.As` 配合使用的类型化错误，覆盖 `AuthError`、`InvalidRequestError`、`RateLimitError`、`ServiceUnavailableError`、`APIError`、`NetworkError`、`JobFailedError`、`RequestTimeoutError`、`PollTimeoutError`、`ResponseFormatError` 和 `ResultParseError` 等情况。
+
+## 官方 API 参考
+
+- [PP-OCRv5 API](https://ai.baidu.com/ai-doc/AISTUDIO/Kmfl2ycs0)
+- [PP-StructureV3 API](https://ai.baidu.com/ai-doc/AISTUDIO/Fmfz6oh2e)
+- [PaddleOCR-VL API](https://ai.baidu.com/ai-doc/AISTUDIO/2mh4okm66)
+- [PaddleOCR-VL-1.5 API](https://ai.baidu.com/ai-doc/AISTUDIO/Cmkz2m0ma)
+
+## 配额与错误码
+
+- [API 配额规则和错误码说明](https://ai.baidu.com/ai-doc/AISTUDIO/Xmjclapam)

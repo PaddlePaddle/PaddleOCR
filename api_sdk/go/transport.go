@@ -69,7 +69,7 @@ func (c *Client) submitURL(ctx context.Context, model, fileURL string, payload i
 		return "", &ResponseFormatError{PaddleOCRAPIError{Message: "failed to encode submit request", Cause: err}}
 	}
 
-	req, err := http.NewRequestWithContext(ctx, "POST", c.baseURL, bytes.NewReader(jsonBody))
+	req, err := http.NewRequestWithContext(ctx, "POST", c.jobsURL, bytes.NewReader(jsonBody))
 	if err != nil {
 		return "", &NetworkError{PaddleOCRAPIError{Message: err.Error()}}
 	}
@@ -141,7 +141,7 @@ func (c *Client) submitFile(ctx context.Context, model, filePath string, payload
 		return "", &ResponseFormatError{PaddleOCRAPIError{Message: "failed to finalize multipart body", Cause: err}}
 	}
 
-	req, err := http.NewRequestWithContext(ctx, "POST", c.baseURL, &buf)
+	req, err := http.NewRequestWithContext(ctx, "POST", c.jobsURL, &buf)
 	if err != nil {
 		return "", &NetworkError{PaddleOCRAPIError{Message: err.Error()}}
 	}
@@ -174,7 +174,7 @@ func (c *Client) submitFile(ctx context.Context, model, filePath string, payload
 }
 
 func (c *Client) getJobStatus(ctx context.Context, jobID string) (*jobStatusResponse, error) {
-	req, err := http.NewRequestWithContext(ctx, "GET", c.baseURL+"/"+jobID, nil)
+	req, err := http.NewRequestWithContext(ctx, "GET", c.jobsURL+"/"+jobID, nil)
 	if err != nil {
 		return nil, &NetworkError{PaddleOCRAPIError{Message: err.Error()}}
 	}
@@ -206,7 +206,7 @@ func (c *Client) getJobStatus(ctx context.Context, jobID string) (*jobStatusResp
 }
 
 func (c *Client) getBatchStatus(ctx context.Context, batchID string) (*BatchStatus, error) {
-	req, err := http.NewRequestWithContext(ctx, "GET", c.baseURL+"/batch/"+batchID, nil)
+	req, err := http.NewRequestWithContext(ctx, "GET", c.jobsURL+"/batch/"+batchID, nil)
 	if err != nil {
 		return nil, &NetworkError{PaddleOCRAPIError{Message: err.Error(), Cause: err}}
 	}
@@ -294,6 +294,10 @@ func raiseForResponse(resp *http.Response) error {
 		return &AuthError{PaddleOCRAPIError{Message: "Authentication failed: " + msg}}
 	case resp.StatusCode == 400:
 		return &InvalidRequestError{PaddleOCRAPIError{Message: "Bad request: " + msg}}
+	case resp.StatusCode == 429:
+		return &RateLimitError{APIError{StatusCode: 429, PaddleOCRAPIError: PaddleOCRAPIError{Message: "Rate limit exceeded: " + msg}}}
+	case resp.StatusCode == 503 || resp.StatusCode == 504:
+		return &ServiceUnavailableError{APIError{StatusCode: resp.StatusCode, PaddleOCRAPIError: PaddleOCRAPIError{Message: "Service unavailable: " + msg}}}
 	default:
 		return &APIError{StatusCode: resp.StatusCode, PaddleOCRAPIError: PaddleOCRAPIError{Message: msg}}
 	}

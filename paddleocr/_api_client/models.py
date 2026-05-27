@@ -93,7 +93,6 @@ class PPStructureV3Options:
     use_formula_recognition: Optional[bool] = None
     use_chart_recognition: Optional[bool] = None
     use_region_detection: Optional[bool] = None
-    use_layout_detection: Optional[bool] = None
     layout_threshold: Optional[Union[float, dict]] = None
     layout_nms: Optional[bool] = None
     layout_unclip_ratio: Optional[Union[float, list, dict]] = None
@@ -104,7 +103,6 @@ class PPStructureV3Options:
     text_det_box_thresh: Optional[float] = None
     text_det_unclip_ratio: Optional[float] = None
     text_rec_score_thresh: Optional[float] = None
-    visualize: Optional[bool] = None
     use_wired_table_cells_trans_to_html: Optional[bool] = None
     use_wireless_table_cells_trans_to_html: Optional[bool] = None
     use_table_orientation_classify: Optional[bool] = None
@@ -113,6 +111,7 @@ class PPStructureV3Options:
     use_e2e_wireless_table_rec_model: Optional[bool] = None
     prettify_markdown: Optional[bool] = None
     show_formula_number: Optional[bool] = None
+    visualize: Optional[bool] = None
 
     def to_payload(self) -> dict:
         return _build_payload(self)

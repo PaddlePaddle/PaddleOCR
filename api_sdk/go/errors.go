@@ -49,6 +49,14 @@ func (e *APIError) Error() string {
 	return fmt.Sprintf("HTTP %d: %s", e.StatusCode, e.Message)
 }
 
+type RateLimitError struct {
+	APIError
+}
+
+type ServiceUnavailableError struct {
+	APIError
+}
+
 type JobFailedError struct {
 	JobID    string
 	ErrorMsg string

@@ -24,6 +24,7 @@ import (
 type Client struct {
 	token          string
 	baseURL        string
+	jobsURL        string
 	requestTimeout time.Duration
 	pollTimeout    time.Duration
 	clientPlatform string
@@ -32,7 +33,6 @@ type Client struct {
 
 func NewClient(opts ...ClientOption) (*Client, error) {
 	c := &Client{
-		baseURL:        strings.TrimRight(DefaultBaseURL, "/"),
 		requestTimeout: 5 * time.Minute,
 		pollTimeout:    10 * time.Minute,
 	}
@@ -45,10 +45,17 @@ func NewClient(opts ...ClientOption) (*Client, error) {
 	if c.token == "" {
 		return nil, &AuthError{PaddleOCRAPIError{Message: "Token is required. Set PADDLEOCR_ACCESS_TOKEN or use WithToken()."}}
 	}
+	if c.baseURL == "" {
+		c.baseURL = os.Getenv("PADDLEOCR_BASE_URL")
+	}
+	if c.baseURL == "" {
+		c.baseURL = DefaultBaseURL
+	}
+	c.baseURL = strings.TrimRight(c.baseURL, "/")
+	c.jobsURL = c.baseURL + apiPath
 	if c.httpClient == nil {
 		c.httpClient = &http.Client{Timeout: c.requestTimeout}
 	}
-	c.baseURL = strings.TrimRight(c.baseURL, "/")
 	return c, nil
 }
 

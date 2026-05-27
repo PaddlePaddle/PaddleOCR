@@ -52,17 +52,6 @@ Common Go public methods include:
 - `SaveOCRResultResources(...)`: save resources referenced by an OCR result object.
 - `SaveDocumentParsingResultResources(...)`: save resources referenced by a document parsing result object.
 
-## Timeouts
-
-```go
-client, err := paddleocr.NewClient(
-	paddleocr.WithRequestTimeout(30*time.Second),
-	paddleocr.WithPollTimeout(5*time.Minute),
-)
-```
-
-`WithRequestTimeout` limits one HTTP request, including submit, status, and resource downloads. `WithPollTimeout` limits the total wait time for `OCR`, `ParseDocument`, `WaitOCRResult`, and `WaitDocumentParsingResult`. Callers can also cancel requests through `context.Context`.
-
 ## Choose Models
 
 The model constants in the table are type-safe aliases for the official API model-name strings. They are serialized to the corresponding model name when the request is submitted. You can also pass the official API model-name string directly, for example `Model: "PaddleOCR-VL-1.6"`.
@@ -74,8 +63,76 @@ The model constants in the table are type-safe aliases for the official API mode
 
 Common mappings: `PPOCRv5` maps to `PP-OCRv5`, `PPStructureV3` maps to `PP-StructureV3`, `PaddleOCRVL` maps to `PaddleOCR-VL`, `PaddleOCRVL15` maps to `PaddleOCR-VL-1.5`, and `PaddleOCRVL16` maps to `PaddleOCR-VL-1.6`.
 
-## Errors And Resource Saving
+## Configuration
 
-The Go SDK exposes typed errors compatible with `errors.As`, including `AuthError`, `InvalidRequestError`, `APIError`, `NetworkError`, `JobFailedError`, `RequestTimeoutError`, `PollTimeoutError`, `ResponseFormatError`, and `ResultParseError`.
+### Client Configuration
 
-Resource saving supports one resource URL or all resources referenced by a result object. Result-object bulk saving requires the destination to be an existing directory.
+```go
+client, err := paddleocr.NewClient(
+	paddleocr.WithRequestTimeout(30*time.Second),
+	paddleocr.WithPollTimeout(5*time.Minute),
+)
+```
+
+`WithRequestTimeout` limits one HTTP request, including submit, status, and resource downloads. `WithPollTimeout` limits the total wait time for `OCR`, `ParseDocument`, `WaitOCRResult`, and `WaitDocumentParsingResult`. Callers can also cancel requests through `context.Context`.
+
+Override the service base URL via the `PADDLEOCR_BASE_URL` environment variable or `WithBaseURL`:
+
+```go
+client, err := paddleocr.NewClient(
+    paddleocr.WithBaseURL("https://my-proxy.com/paddle"),
+)
+```
+
+Inject a custom `*http.Client` via `WithHTTPClient` for proxies, custom TLS, or retry policies:
+
+```go
+client, err := paddleocr.NewClient(
+    paddleocr.WithHTTPClient(myHTTPClient),
+)
+```
+
+### Request Options
+
+Go SDK Options struct fields use PascalCase, serialized to camelCase automatically. Pointer fields set to `nil` are omitted. See the struct source or Official API Reference for complete field definitions.
+
+#### OCROptions (common fields)
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `UseDocOrientationClassify` | *bool | Document orientation classification |
+| `UseDocUnwarping` | *bool | Document unwarping |
+| `Visualize` | *bool | Return visualization images |
+
+#### PPStructureV3Options (common fields)
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `UseTableRecognition` | *bool | Table recognition |
+| `UseFormulaRecognition` | *bool | Formula recognition |
+| `UseChartRecognition` | *bool | Chart recognition |
+| `PrettifyMarkdown` | *bool | Markdown prettification |
+
+#### PaddleOCRVLOptions (common fields)
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `UseLayoutDetection` | *bool | Layout detection |
+| `UseChartRecognition` | *bool | Chart recognition |
+| `Temperature` | *float64 | Sampling temperature |
+| `PrettifyMarkdown` | *bool | Markdown prettification |
+
+## Error Handling
+
+The Go SDK exposes typed errors compatible with `errors.As`, including `AuthError`, `InvalidRequestError`, `RateLimitError`, `ServiceUnavailableError`, `APIError`, `NetworkError`, `JobFailedError`, `RequestTimeoutError`, `PollTimeoutError`, `ResponseFormatError`, and `ResultParseError`.
+
+## Official API Reference
+
+- [PP-OCRv5 API](https://ai.baidu.com/ai-doc/AISTUDIO/Dmh4onssk)
+- [PP-StructureV3 API](https://ai.baidu.com/ai-doc/AISTUDIO/7mfz6dgx9)
+- [PaddleOCR-VL API](https://ai.baidu.com/ai-doc/AISTUDIO/Vmkz2nz1p)
+- [PaddleOCR-VL-1.5 API](https://ai.baidu.com/ai-doc/AISTUDIO/fml7mozw5)
+
+## Quota and Error Codes
+
+- [API Quota Rules and Error Code Description](https://ai.baidu.com/ai-doc/AISTUDIO/pmjcld5qm)

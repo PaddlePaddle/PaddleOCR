@@ -17,13 +17,16 @@ import {
   AuthError,
   InvalidRequestError,
   NetworkError,
+  RateLimitError,
   RequestTimeoutError,
   ResponseFormatError,
   ResultParseError,
+  ServiceUnavailableError,
 } from "../errors.js";
 import { userAbortReason } from "./abort.js";
 
-const DEFAULT_BASE_URL = "https://paddleocr.aistudio-app.com/api/v2/ocr/jobs";
+const DEFAULT_BASE_URL = "https://paddleocr.aistudio-app.com";
+const API_PATH = "/api/v2/ocr/jobs";
 
 interface SubmitOptions {
   pageRanges?: string;
@@ -43,6 +46,7 @@ interface SubmitResponse {
 
 export class HttpClient {
   private baseUrl: string;
+  private jobsUrl: string;
   private token: string;
   private requestTimeout: number;
   private fetchImpl: typeof fetch;
@@ -57,6 +61,7 @@ export class HttpClient {
   ) {
     this.token = token;
     this.baseUrl = baseUrl.replace(/\/+$/, "");
+    this.jobsUrl = `${this.baseUrl}${API_PATH}`;
     this.requestTimeout = requestTimeout;
     this.fetchImpl = fetchImpl;
     this.clientPlatform = clientPlatform;
@@ -70,7 +75,7 @@ export class HttpClient {
     if (options.batchId !== undefined) {
       body.batchId = options.batchId;
     }
-    const data = await this.fetchJson<SubmitResponse>(this.baseUrl, {
+    const data = await this.fetchJson<SubmitResponse>(this.jobsUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
@@ -101,7 +106,7 @@ export class HttpClient {
     const blob = new Blob([fileBuffer]);
     form.append("file", blob, path.basename(filePath));
 
-    const data = await this.fetchJson<SubmitResponse>(this.baseUrl, {
+    const data = await this.fetchJson<SubmitResponse>(this.jobsUrl, {
       method: "POST",
       body: form,
     }, options.signal);
@@ -110,7 +115,7 @@ export class HttpClient {
 
   async getJobStatus(jobId: string, signal?: AbortSignal, timeoutMs?: number): Promise<unknown> {
     return this.fetchJson<unknown>(
-      `${this.baseUrl}/${encodeURIComponent(jobId)}`,
+      `${this.jobsUrl}/${encodeURIComponent(jobId)}`,
       { method: "GET" },
       signal,
       true,
@@ -120,7 +125,7 @@ export class HttpClient {
 
   async getBatchStatus(batchId: string, signal?: AbortSignal, timeoutMs?: number): Promise<unknown> {
     return this.fetchJson<unknown>(
-      `${this.baseUrl}/batch/${encodeURIComponent(batchId)}`,
+      `${this.jobsUrl}/batch/${encodeURIComponent(batchId)}`,
       { method: "GET" },
       signal,
       true,
@@ -232,6 +237,10 @@ export class HttpClient {
       throw new AuthError(`Authentication failed: ${text}`);
     } else if (resp.status === 400) {
       throw new InvalidRequestError(`Bad request: ${text}`);
+    } else if (resp.status === 429) {
+      throw new RateLimitError(`Rate limit exceeded: ${text}`);
+    } else if (resp.status === 503 || resp.status === 504) {
+      throw new ServiceUnavailableError(resp.status, `Service unavailable: ${text}`);
     } else {
       throw new APIError(resp.status, text);
     }

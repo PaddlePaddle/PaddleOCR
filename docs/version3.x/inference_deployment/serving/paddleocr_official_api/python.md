@@ -51,27 +51,6 @@ Python SDK 常用公共方法包括：
 
 异步客户端 `AsyncPaddleOCRClient` 暴露上述任务操作和资源保存方法的异步版本。
 
-## 超时
-
-```python
-client = PaddleOCRClient(
-    request_timeout=300.0,
-    poll_timeout=600.0,
-)
-```
-
-`request_timeout` 限制一次 HTTP 请求，包括提交、查询状态和下载结果资源。`poll_timeout` 限制 `ocr`、`parse_document`、`wait_ocr_result` 和 `wait_document_parsing_result` 的总等待时间。
-
-## 错误与资源保存
-
-所有 SDK 错误都继承自 `PaddleOCRAPIError`，常见类型包括 `AuthError`、`InvalidRequestError`、`APIError`、`NetworkError`、`JobFailedError`、`RequestTimeoutError`、`PollTimeoutError`、`ResponseFormatError` 和 `ResultParseError`。
-
-`save_resource` 用于单个资源 URL；如果要保存结果对象中的全部资源，请使用 `save_ocr_result_resources` 或 `save_document_parsing_result_resources`。
-
-## 批量任务查询
-
-提交任务时可传入 `batch_id`。之后可使用 `client.get_batch_status("batch-id")` 查询该批次下各任务的状态、进度和结果 URL。
-
 ## 模型选择
 
 表中的 `Model` 枚举是官方 API 模型名字符串的类型安全写法，提交请求时会转换为对应的实际模型名。也可以直接传入官方 API 模型名字符串，例如 `model="PaddleOCR-VL-1.6"`。
@@ -82,3 +61,71 @@ client = PaddleOCRClient(
 | 文档解析 | `parse_document`、`submit_document_parsing`、`wait_document_parsing_result` | `Model.PADDLE_OCR_VL_16` | `Model.PP_STRUCTURE_V3`、`Model.PADDLE_OCR_VL`、`Model.PADDLE_OCR_VL_15`、`Model.PADDLE_OCR_VL_16` | 选择 `PP-StructureV3` 时传入 `PPStructureV3Options`；选择 `PaddleOCR-VL` 系列模型时传入 `PaddleOCRVLOptions`。 |
 
 常用对应关系：`Model.PP_OCRV5` 对应 `PP-OCRv5`，`Model.PP_STRUCTURE_V3` 对应 `PP-StructureV3`，`Model.PADDLE_OCR_VL` 对应 `PaddleOCR-VL`，`Model.PADDLE_OCR_VL_15` 对应 `PaddleOCR-VL-1.5`，`Model.PADDLE_OCR_VL_16` 对应 `PaddleOCR-VL-1.6`。
+
+## 配置与参数
+
+### 客户端配置
+
+```python
+client = PaddleOCRClient(
+    request_timeout=300.0,
+    poll_timeout=600.0,
+)
+```
+
+`request_timeout` 限制一次 HTTP 请求，包括提交、查询状态和下载结果资源。`poll_timeout` 限制 `ocr`、`parse_document`、`wait_ocr_result` 和 `wait_document_parsing_result` 的总等待时间。
+
+通过环境变量 `PADDLEOCR_BASE_URL` 或 `base_url` 参数指定自定义服务地址：
+
+```python
+client = PaddleOCRClient(base_url="https://my-proxy.com/paddle")
+```
+
+### 请求参数
+
+SDK 的参数名使用 Python 惯用的 snake_case，提交请求时自动转换为官方 API 的 camelCase。只需传入非 `None` 的字段，未设置的字段使用服务端默认值。完整字段定义见各 Options 类型源码或「官方 API 参考」。
+
+#### OCROptions（常用字段）
+
+| 字段 | 类型 | 说明 |
+|------|------|------|
+| `use_doc_orientation_classify` | bool | 文档方向分类 |
+| `use_doc_unwarping` | bool | 文档扭曲矫正 |
+| `visualize` | bool | 是否返回可视化结果图 |
+
+#### PPStructureV3Options（常用字段）
+
+| 字段 | 类型 | 说明 |
+|------|------|------|
+| `use_table_recognition` | bool | 表格识别 |
+| `use_formula_recognition` | bool | 公式识别 |
+| `use_chart_recognition` | bool | 图表识别 |
+| `prettify_markdown` | bool | Markdown 美化 |
+
+#### PaddleOCRVLOptions（常用字段）
+
+| 字段 | 类型 | 说明 |
+|------|------|------|
+| `use_layout_detection` | bool | 版面检测 |
+| `use_chart_recognition` | bool | 图表识别 |
+| `temperature` | float | 采样温度 |
+| `prettify_markdown` | bool | Markdown 美化 |
+
+## 错误处理
+
+所有 SDK 错误都继承自 `PaddleOCRAPIError`，常见类型包括 `AuthError`、`InvalidRequestError`、`RateLimitError`、`ServiceUnavailableError`、`APIError`、`NetworkError`、`JobFailedError`、`RequestTimeoutError`、`PollTimeoutError`、`ResponseFormatError` 和 `ResultParseError`。
+
+## 批量任务查询
+
+提交任务时可传入 `batch_id`。之后可使用 `client.get_batch_status("batch-id")` 查询该批次下各任务的状态、进度和结果 URL。
+
+## 官方 API 参考
+
+- [PP-OCRv5 API](https://ai.baidu.com/ai-doc/AISTUDIO/Kmfl2ycs0)
+- [PP-StructureV3 API](https://ai.baidu.com/ai-doc/AISTUDIO/Fmfz6oh2e)
+- [PaddleOCR-VL API](https://ai.baidu.com/ai-doc/AISTUDIO/2mh4okm66)
+- [PaddleOCR-VL-1.5 API](https://ai.baidu.com/ai-doc/AISTUDIO/Cmkz2m0ma)
+
+## 配额与错误码
+
+- [API 配额规则和错误码说明](https://ai.baidu.com/ai-doc/AISTUDIO/Xmjclapam)

@@ -19,7 +19,9 @@ import (
 	"time"
 )
 
-const DefaultBaseURL = "https://paddleocr.aistudio-app.com/api/v2/ocr/jobs"
+const DefaultBaseURL = "https://paddleocr.aistudio-app.com"
+
+const apiPath = "/api/v2/ocr/jobs"
 
 type ClientOption func(*Client)
 

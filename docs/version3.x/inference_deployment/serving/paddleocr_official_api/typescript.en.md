@@ -55,17 +55,6 @@ Common TypeScript public methods include:
 - `saveOcrResultResources(result, destination, options)`: save resources referenced by an OCR result object.
 - `saveDocumentParsingResultResources(result, destination, options)`: save resources referenced by a document parsing result object.
 
-## Timeouts
-
-```ts
-const client = new PaddleOCRClient({
-  requestTimeout: 300_000,
-  pollTimeout: 600_000,
-});
-```
-
-`requestTimeout` limits one HTTP request, including submit, status, and resource downloads. `pollTimeout` limits the total wait time for `ocr`, `parseDocument`, `waitOcrResult`, and `waitDocumentParsingResult`. Public methods can also accept an `AbortSignal` for caller-driven cancellation.
-
 ## Choose Models
 
 The `Model` enum values in the table are type-safe aliases for the official API model-name strings. They are serialized to the corresponding model name when the request is submitted. You can also pass the official API model-name string directly, for example `model: "PaddleOCR-VL-1.6"`.
@@ -77,8 +66,76 @@ The `Model` enum values in the table are type-safe aliases for the official API 
 
 Common mappings: `Model.PPOCRv5` maps to `PP-OCRv5`, `Model.PPStructureV3` maps to `PP-StructureV3`, `Model.PaddleOCRVL` maps to `PaddleOCR-VL`, `Model.PaddleOCRVL15` maps to `PaddleOCR-VL-1.5`, and `Model.PaddleOCRVL16` maps to `PaddleOCR-VL-1.6`.
 
-## Errors And Resource Saving
+## Configuration
 
-All SDK errors inherit from `PaddleOCRAPIError`. Common typed errors include `AuthError`, `InvalidRequestError`, `APIError`, `NetworkError`, `JobFailedError`, `RequestTimeoutError`, `PollTimeoutError`, `ResponseFormatError`, and `ResultParseError`.
+### Client Configuration
 
-Use `saveResource` for one resource URL. To save all resources referenced by a result object, use `saveOcrResultResources` or `saveDocumentParsingResultResources`.
+```ts
+const client = new PaddleOCRClient({
+  requestTimeout: 300_000,
+  pollTimeout: 600_000,
+});
+```
+
+`requestTimeout` limits one HTTP request, including submit, status, and resource downloads. `pollTimeout` limits the total wait time for `ocr`, `parseDocument`, `waitOcrResult`, and `waitDocumentParsingResult`. Public methods can also accept an `AbortSignal` for caller-driven cancellation.
+
+Override the service base URL via the `PADDLEOCR_BASE_URL` environment variable or the `baseUrl` option:
+
+```ts
+const client = new PaddleOCRClient({
+  baseUrl: "https://my-proxy.com/paddle",
+});
+```
+
+Inject a custom `fetch` implementation for proxies or custom network layers:
+
+```ts
+const client = new PaddleOCRClient({
+  fetch: myCustomFetch,
+});
+```
+
+### Request Options
+
+TypeScript SDK field names use camelCase, matching the official API directly. Omitted fields are not sent. See the interface source or Official API Reference for complete field definitions.
+
+#### OCROptions (common fields)
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `useDocOrientationClassify` | boolean | Document orientation classification |
+| `useDocUnwarping` | boolean | Document unwarping |
+| `visualize` | boolean | Return visualization images |
+
+#### PPStructureV3Options (common fields)
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `useTableRecognition` | boolean | Table recognition |
+| `useFormulaRecognition` | boolean | Formula recognition |
+| `useChartRecognition` | boolean | Chart recognition |
+| `prettifyMarkdown` | boolean | Markdown prettification |
+
+#### PaddleOCRVLOptions (common fields)
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `useLayoutDetection` | boolean | Layout detection |
+| `useChartRecognition` | boolean | Chart recognition |
+| `temperature` | number | Sampling temperature |
+| `prettifyMarkdown` | boolean | Markdown prettification |
+
+## Error Handling
+
+All SDK errors inherit from `PaddleOCRAPIError`. Common typed errors include `AuthError`, `InvalidRequestError`, `RateLimitError`, `ServiceUnavailableError`, `APIError`, `NetworkError`, `JobFailedError`, `RequestTimeoutError`, `PollTimeoutError`, `ResponseFormatError`, and `ResultParseError`.
+
+## Official API Reference
+
+- [PP-OCRv5 API](https://ai.baidu.com/ai-doc/AISTUDIO/Dmh4onssk)
+- [PP-StructureV3 API](https://ai.baidu.com/ai-doc/AISTUDIO/7mfz6dgx9)
+- [PaddleOCR-VL API](https://ai.baidu.com/ai-doc/AISTUDIO/Vmkz2nz1p)
+- [PaddleOCR-VL-1.5 API](https://ai.baidu.com/ai-doc/AISTUDIO/fml7mozw5)
+
+## Quota and Error Codes
+
+- [API Quota Rules and Error Code Description](https://ai.baidu.com/ai-doc/AISTUDIO/pmjcld5qm)

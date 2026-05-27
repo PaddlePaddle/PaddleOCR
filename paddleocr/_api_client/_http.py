@@ -31,7 +31,8 @@ from .errors import (
     ResultParseError,
 )
 
-DEFAULT_BASE_URL = "https://paddleocr.aistudio-app.com/api/v2/ocr/jobs"
+DEFAULT_BASE_URL = "https://paddleocr.aistudio-app.com"
+API_PATH = "/api/v2/ocr/jobs"
 
 
 def _raise_for_response(response: requests.Response) -> None:
@@ -81,6 +82,7 @@ class HTTPClient:
     ):
         self._token = token
         self._base_url = base_url.rstrip("/")
+        self._jobs_url = f"{self._base_url}{API_PATH}"
         self._timeout = timeout
         self._session = requests.Session()
         self._session.headers["Authorization"] = f"Bearer {token}"
@@ -110,7 +112,7 @@ class HTTPClient:
             body["batchId"] = batch_id
         try:
             resp = self._session.post(
-                self._base_url,
+                self._jobs_url,
                 json=body,
                 timeout=self._timeout,
             )
@@ -142,7 +144,7 @@ class HTTPClient:
         try:
             with open(file_path, "rb") as f:
                 resp = self._session.post(
-                    self._base_url,
+                    self._jobs_url,
                     data=data,
                     files={"file": f},
                     timeout=self._timeout,
@@ -157,7 +159,7 @@ class HTTPClient:
     def get_job_status(self, job_id: str) -> Dict[str, Any]:
         try:
             resp = self._session.get(
-                f"{self._base_url}/{job_id}",
+                f"{self._jobs_url}/{job_id}",
                 timeout=self._timeout,
             )
         except requests.Timeout as e:
@@ -170,7 +172,7 @@ class HTTPClient:
     def get_batch_status(self, batch_id: str) -> Dict[str, Any]:
         try:
             resp = self._session.get(
-                f"{self._base_url}/batch/{batch_id}",
+                f"{self._jobs_url}/batch/{batch_id}",
                 timeout=self._timeout,
             )
         except requests.Timeout as e:

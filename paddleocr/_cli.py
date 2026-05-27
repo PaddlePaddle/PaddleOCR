@@ -283,7 +283,7 @@ def _get_parser():
     parser.add_argument(
         "-v", "--version", action="version", version=f"%(prog)s {version}"
     )
-    subparsers = parser.add_subparsers(dest="subcommand")
+    subparsers = parser.add_subparsers(dest="subcommand", metavar="COMMAND")
     _register_pipelines(subparsers)
     _register_models(subparsers)
     _register_install_hpi_deps_command(subparsers)

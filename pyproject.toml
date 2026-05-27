@@ -50,6 +50,7 @@ dependencies = [
     "paddlex[ocr-core]>=3.6.0,<3.7.0",
     "PyYAML>=6",
     "requests",
+    "aiohttp>=3.8.0",
     "typing-extensions>=4.12",
 ]
 

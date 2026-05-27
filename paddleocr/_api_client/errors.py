@@ -37,6 +37,20 @@ class APIError(PaddleOCRAPIError):
         super().__init__(f"HTTP {status_code}: {message}")
 
 
+class RateLimitError(APIError):
+    """Daily quota exceeded (HTTP 429)."""
+
+    def __init__(self, message: str):
+        super().__init__(429, message)
+
+
+class ServiceUnavailableError(APIError):
+    """Server overloaded or gateway timeout (HTTP 503/504)."""
+
+    def __init__(self, status_code: int, message: str):
+        super().__init__(status_code, message)
+
+
 class JobFailedError(PaddleOCRAPIError):
     """Job execution failed on the server side."""
 

@@ -48,7 +48,7 @@ class PaddleOCRClient:
     def __init__(
         self,
         token: Optional[str] = None,
-        base_url: str = DEFAULT_BASE_URL,
+        base_url: Optional[str] = None,
         request_timeout: float = 300.0,
         poll_timeout: float = 600.0,
         client_platform: Optional[str] = None,
@@ -58,9 +58,12 @@ class PaddleOCRClient:
             raise AuthError(
                 "Token is required. Set PADDLEOCR_ACCESS_TOKEN or pass token=."
             )
+        resolved_base_url = (
+            base_url or os.environ.get("PADDLEOCR_BASE_URL") or DEFAULT_BASE_URL
+        )
         self._http = HTTPClient(
             self._token,
-            base_url,
+            resolved_base_url,
             request_timeout,
             client_platform=client_platform,
         )

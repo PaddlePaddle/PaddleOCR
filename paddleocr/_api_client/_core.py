@@ -14,7 +14,14 @@
 
 from typing import Optional, Union
 
-from .errors import APIError, AuthError, InvalidRequestError, ResponseFormatError
+from .errors import (
+    APIError,
+    AuthError,
+    InvalidRequestError,
+    RateLimitError,
+    ResponseFormatError,
+    ServiceUnavailableError,
+)
 from .models import (
     DocParsingOptions,
     Model,
@@ -145,6 +152,10 @@ def raise_for_status(status_code: int, msg: str) -> None:
         raise AuthError(f"Authentication failed: {msg}")
     if status_code == 400:
         raise InvalidRequestError(f"Bad request: {msg}")
+    if status_code == 429:
+        raise RateLimitError(f"Rate limit exceeded: {msg}")
+    if status_code in (503, 504):
+        raise ServiceUnavailableError(status_code, f"Service unavailable: {msg}")
     raise APIError(status_code, msg)
 
 

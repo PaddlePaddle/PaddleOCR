@@ -43,7 +43,9 @@ export {
   NetworkError,
   PaddleOCRAPIError,
   PollTimeoutError,
+  RateLimitError,
   RequestTimeoutError,
   ResponseFormatError,
   ResultParseError,
+  ServiceUnavailableError,
 } from "./errors.js";

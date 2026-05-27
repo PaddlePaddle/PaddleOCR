@@ -43,6 +43,20 @@ export class APIError extends PaddleOCRAPIError {
   }
 }
 
+export class RateLimitError extends APIError {
+  constructor(message: string, options?: ErrorOptions) {
+    super(429, message, options);
+    this.name = "RateLimitError";
+  }
+}
+
+export class ServiceUnavailableError extends APIError {
+  constructor(statusCode: number, message: string, options?: ErrorOptions) {
+    super(statusCode, message, options);
+    this.name = "ServiceUnavailableError";
+  }
+}
+
 export class JobFailedError extends PaddleOCRAPIError {
   jobId: string;
   errorMsg: string;

@@ -67,7 +67,6 @@ export interface PPStructureV3Options {
   useFormulaRecognition?: boolean;
   useChartRecognition?: boolean;
   useRegionDetection?: boolean;
-  useLayoutDetection?: boolean;
   layoutThreshold?: number | Record<string, number>;
   layoutNms?: boolean;
   layoutUnclipRatio?: number | number[] | Record<string, number>;
@@ -78,7 +77,6 @@ export interface PPStructureV3Options {
   textDetBoxThresh?: number;
   textDetUnclipRatio?: number;
   textRecScoreThresh?: number;
-  visualize?: boolean;
   useWiredTableCellsTransToHtml?: boolean;
   useWirelessTableCellsTransToHtml?: boolean;
   useTableOrientationClassify?: boolean;
@@ -87,6 +85,7 @@ export interface PPStructureV3Options {
   useE2eWirelessTableRecModel?: boolean;
   prettifyMarkdown?: boolean;
   showFormulaNumber?: boolean;
+  visualize?: boolean;
 }
 
 export interface PaddleOCRVLOptions {

@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import argparse
 import json
 import sys
 
@@ -57,6 +58,12 @@ def register_api_command(subparsers):
         type=str,
         default=None,
         help="Local file path to process",
+    )
+    subparser.add_argument(
+        "--base_url",
+        type=str,
+        default=None,
+        help="Base URL of the PaddleOCR API service",
     )
     subparser.add_argument(
         "--token",
@@ -111,29 +118,89 @@ def register_api_command(subparsers):
         default=None,
         help="Optional batch identifier for querying related jobs",
     )
+    # --- Preprocessing ---
     subparser.add_argument(
         "--use_doc_orientation_classify",
-        action="store_true",
+        action=argparse.BooleanOptionalAction,
         default=None,
-        help="Enable document orientation classification",
+        help="Enable/disable document orientation classification",
     )
     subparser.add_argument(
         "--use_doc_unwarping",
-        action="store_true",
+        action=argparse.BooleanOptionalAction,
         default=None,
-        help="Enable document unwarping",
+        help="Enable/disable document unwarping",
     )
+    # --- Text detection ---
     subparser.add_argument(
         "--use_textline_orientation",
-        action="store_true",
+        action=argparse.BooleanOptionalAction,
         default=None,
-        help="Enable textline orientation detection (OCR only)",
+        help="Enable/disable textline orientation detection (OCR only)",
+    )
+    subparser.add_argument(
+        "--text_det_limit_side_len",
+        type=int,
+        default=None,
+        help="Image side length limit for text detection",
+    )
+    subparser.add_argument(
+        "--text_det_limit_type",
+        type=str,
+        default=None,
+        choices=["min", "max"],
+        help="Side length limit type: min or max",
+    )
+    # --- Text recognition ---
+    subparser.add_argument(
+        "--text_rec_score_thresh",
+        type=float,
+        default=None,
+        help="Score threshold for text recognition results",
+    )
+    # --- Layout and feature toggles (doc_parsing only) ---
+    subparser.add_argument(
+        "--use_layout_detection",
+        action=argparse.BooleanOptionalAction,
+        default=None,
+        help="Enable/disable layout detection (doc_parsing only)",
+    )
+    subparser.add_argument(
+        "--use_seal_recognition",
+        action=argparse.BooleanOptionalAction,
+        default=None,
+        help="Enable/disable seal recognition (doc_parsing only)",
+    )
+    subparser.add_argument(
+        "--use_table_recognition",
+        action=argparse.BooleanOptionalAction,
+        default=None,
+        help="Enable/disable table recognition (PP-StructureV3 only)",
+    )
+    subparser.add_argument(
+        "--use_formula_recognition",
+        action=argparse.BooleanOptionalAction,
+        default=None,
+        help="Enable/disable formula recognition (PP-StructureV3 only)",
     )
     subparser.add_argument(
         "--use_chart_recognition",
-        action="store_true",
+        action=argparse.BooleanOptionalAction,
         default=None,
-        help="Enable chart recognition (doc_parsing only)",
+        help="Enable/disable chart recognition (doc_parsing only)",
+    )
+    # --- Output ---
+    subparser.add_argument(
+        "--visualize",
+        action=argparse.BooleanOptionalAction,
+        default=None,
+        help="Enable/disable result visualization images",
+    )
+    subparser.add_argument(
+        "--prettify_markdown",
+        action=argparse.BooleanOptionalAction,
+        default=None,
+        help="Enable/disable markdown prettification (doc_parsing only)",
     )
     subparser.set_defaults(executor=_execute_api)
 
@@ -142,6 +209,8 @@ def _execute_api(args):
     kwargs = {}
     if args.token:
         kwargs["token"] = args.token
+    if args.base_url:
+        kwargs["base_url"] = args.base_url
     kwargs["request_timeout"] = args.request_timeout
     kwargs["poll_timeout"] = args.poll_timeout
     if args.client_platform:
@@ -167,6 +236,10 @@ def _execute_api(args):
                 use_doc_orientation_classify=args.use_doc_orientation_classify,
                 use_doc_unwarping=args.use_doc_unwarping,
                 use_textline_orientation=args.use_textline_orientation,
+                text_det_limit_side_len=args.text_det_limit_side_len,
+                text_det_limit_type=args.text_det_limit_type,
+                text_rec_score_thresh=args.text_rec_score_thresh,
+                visualize=args.visualize,
             )
             result = client.ocr(
                 file_url=args.file_url,
@@ -181,14 +254,32 @@ def _execute_api(args):
         else:
             if model is None:
                 model = Model.PADDLE_OCR_VL_16
-            options_cls = (
-                PaddleOCRVLOptions if is_vl_model(model) else PPStructureV3Options
-            )
-            options = options_cls(
-                use_doc_orientation_classify=args.use_doc_orientation_classify,
-                use_doc_unwarping=args.use_doc_unwarping,
-                use_chart_recognition=args.use_chart_recognition,
-            )
+            if is_vl_model(model):
+                options = PaddleOCRVLOptions(
+                    use_doc_orientation_classify=args.use_doc_orientation_classify,
+                    use_doc_unwarping=args.use_doc_unwarping,
+                    use_chart_recognition=args.use_chart_recognition,
+                    use_seal_recognition=args.use_seal_recognition,
+                    use_layout_detection=args.use_layout_detection,
+                    prettify_markdown=args.prettify_markdown,
+                    visualize=args.visualize,
+                )
+            else:
+                options = PPStructureV3Options(
+                    use_doc_orientation_classify=args.use_doc_orientation_classify,
+                    use_doc_unwarping=args.use_doc_unwarping,
+                    use_textline_orientation=args.use_textline_orientation,
+                    use_chart_recognition=args.use_chart_recognition,
+                    use_seal_recognition=args.use_seal_recognition,
+                    use_table_recognition=args.use_table_recognition,
+                    use_formula_recognition=args.use_formula_recognition,
+                    use_layout_detection=args.use_layout_detection,
+                    text_det_limit_side_len=args.text_det_limit_side_len,
+                    text_det_limit_type=args.text_det_limit_type,
+                    text_rec_score_thresh=args.text_rec_score_thresh,
+                    prettify_markdown=args.prettify_markdown,
+                    visualize=args.visualize,
+                )
             result = client.parse_document(
                 model=model,
                 file_url=args.file_url,

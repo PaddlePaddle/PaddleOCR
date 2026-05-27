@@ -38,9 +38,11 @@ from .errors import (
     NetworkError,
     PaddleOCRAPIError,
     PollTimeoutError,
+    RateLimitError,
     RequestTimeoutError,
     ResponseFormatError,
     ResultParseError,
+    ServiceUnavailableError,
 )
 
 __all__ = [
@@ -62,6 +64,8 @@ __all__ = [
     "AuthError",
     "InvalidRequestError",
     "APIError",
+    "RateLimitError",
+    "ServiceUnavailableError",
     "JobFailedError",
     "RequestTimeoutError",
     "PollTimeoutError",
