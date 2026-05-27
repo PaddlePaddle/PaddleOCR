@@ -105,8 +105,8 @@ Serving:
     file_storage:
       type: bos
       endpoint: <BOS 访问域名，例如 https://bj.bcebos.com>
-      ak: <百度智能云 AK>
-      sk: <百度智能云 SK>
+      ak: xxx
+      sk: xxx
       bucket_name: <存储空间名称>
     return_img_urls: true
     url_expires_in: 3600  # 预签名 URL 有效期（秒），-1 表示不过期

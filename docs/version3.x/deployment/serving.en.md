@@ -105,8 +105,8 @@ Serving:
     file_storage:
       type: bos
       endpoint: <BOS endpoint, e.g. https://bj.bcebos.com>
-      ak: <Baidu Cloud AK>
-      sk: <Baidu Cloud SK>
+      ak: xxx
+      sk: xxx
       bucket_name: <bucket name>
     return_img_urls: true
     url_expires_in: 3600  # Pre-signed URL lifetime in seconds; -1 means no expiry
