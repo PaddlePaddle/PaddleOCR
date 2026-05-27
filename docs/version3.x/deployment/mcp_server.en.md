@@ -84,8 +84,9 @@ Convert images containing formulas and tables to editable csv/Excel format:
     - [2.3 Working Modes Explained](#23-working-modes-explained)
     - [2.4 Using `uvx`](#24-using-uvx)
 - [3. Running the Server](#3-running-the-server)
-- [4. Parameter Reference](#4-parameter-reference)
-- [5. Known Limitations](#5-known-limitations)
+- [4. Tool Parameter Reference](#4-tool-parameter-reference)
+- [5. Server Parameter Reference](#5-server-parameter-reference)
+- [6. Known Limitations](#6-known-limitations)
 
 ## 1. Installation
 
@@ -163,7 +164,7 @@ This section explains how to use the PaddleOCR MCP server within Claude for Desk
 
     **Notes**:
 
-    - `PADDLEOCR_MCP_PIPELINE` should be set to the pipeline name. See Section 4 for more details.
+    - `PADDLEOCR_MCP_PIPELINE` should be set to the pipeline name. See Section 5 for more details.
     - `PADDLEOCR_MCP_PIPELINE_CONFIG` is optional; if not set, the default pipeline configuration will be used. If you need to adjust the configuration, such as changing the model, please refer to the [PaddleOCR documentation](../paddleocr_and_paddlex.md) to export the pipeline configuration file, and set `PADDLEOCR_MCP_PIPELINE_CONFIG` to the absolute path of this configuration file.
 
     - **Inference Performance Tips**:
@@ -215,8 +216,8 @@ This section explains how to use the PaddleOCR MCP server within Claude for Desk
 In the configuration file for Claude for Desktop, you need to define how the MCP server is started. The key fields are as follows:
 
 - `command`: `paddleocr_mcp` (if the executable can be found in the `PATH`) or the absolute path.
-- `args`: Configurable command-line arguments, such as `["--verbose"]`. See [4. Parameter Reference](#4-parameter-reference) for details.
-- `env`: Configurable environment variables. See [4. Parameter Reference](#4-parameter-reference) for details.
+- `args`: Configurable command-line arguments, such as `["--verbose"]`. See [5. Server Parameter Reference](#5-server-parameter-reference) for details.
+- `env`: Configurable environment variables. See [5. Server Parameter Reference](#5-server-parameter-reference) for details.
 
 ### 2.3 Working Modes Explained
 
@@ -257,7 +258,7 @@ Configuration example:
 
 **Notes**:
 
-- `PADDLEOCR_MCP_PIPELINE` should be set to the pipeline name. See Section 4 for more details.
+- `PADDLEOCR_MCP_PIPELINE` should be set to the pipeline name. See Section 5 for more details.
 - Replace `<your-server-url>` with your service base URL.
 - Replace `<your-access-token>` with your access token.
 
@@ -293,7 +294,7 @@ Configuration example:
 
 **Note**:
 
-- `PADDLEOCR_MCP_PIPELINE` should be set to the pipeline name. See Section 4 for more details. The Qianfan platform service currently only supports PP-StructureV3 and PaddleOCR-VL.
+- `PADDLEOCR_MCP_PIPELINE` should be set to the pipeline name. See Section 5 for more details. The Qianfan platform service currently only supports PP-StructureV3 and PaddleOCR-VL.
 
 #### Mode 4: Self-hosted Service
 
@@ -322,7 +323,7 @@ Configuration example:
 
 **Note**:
 
-- `PADDLEOCR_MCP_PIPELINE` should be set to the pipeline name. See Section 4 for more details.
+- `PADDLEOCR_MCP_PIPELINE` should be set to the pipeline name. See Section 5 for more details.
 - Replace `<your-server-url>` with your service’s base URL (e.g., `http://127.0.0.1:8000`).
 
 ### 2.4 Using `uvx`
@@ -402,9 +403,22 @@ paddleocr_mcp --pipeline PP-StructureV3 --ppocr_source local
 paddleocr_mcp --pipeline OCR --ppocr_source self_hosted --server_url http://127.0.0.1:8080 --http
 ```
 
-You can find all the supported parameters of the PaddleOCR MCP server in [4. Parameter Reference](#4-parameter-reference).
+You can find all the supported parameters of the PaddleOCR MCP server in [5. Server Parameter Reference](#5-server-parameter-reference).
 
-## 4. Parameter Reference
+## 4. Tool Parameter Reference
+
+In addition to server startup parameters, MCP tools support per-call parameters so that MCP hosts or agents can adjust processing behavior based on the current input.
+
+The `ocr`, `pp_structurev3`, and `paddleocr_vl` tools all support the following document preprocessing parameters:
+
+| Tool Parameter | Type | Default | Description |
+| -------------- | ---- | ------- | ----------- |
+| `use_doc_unwarping` | `bool` | `False` | Whether to enable document unwarping for this request. This can help with photographed, warped, or low-quality scanned documents. |
+| `use_doc_orientation_classify` | `bool` | `False` | Whether to enable document orientation classification for this request. This can help with documents whose orientation is unknown or rotated. |
+
+Both options default to `False` to preserve the existing behavior. Agents can decide whether to enable these preprocessing capabilities for each tool call instead of fixing them at MCP server startup.
+
+## 5. Server Parameter Reference
 
 You can control the MCP server via environment variables or CLI arguments.
 
@@ -422,7 +436,7 @@ You can control the MCP server via environment variables or CLI arguments.
 | -                                     | `--port`                  | `int`  | Port for the Streamable HTTP mode.                                                   | -                                        | `8000`        |
 | -                                     | `--verbose`               | `bool` | Enable verbose logging for debugging.                                               | -                                        | `False`       |
 
-## 5. Known Limitations
+## 6. Known Limitations
 
 - In the local Python library mode, the current tools cannot process PDF document inputs that are Base64 encoded.
 - In the local Python library mode, the current tools do not infer the file type based on the model's `file_type` prompt, and may fail to process some complex URLs.

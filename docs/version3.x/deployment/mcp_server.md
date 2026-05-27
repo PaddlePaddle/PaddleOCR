@@ -83,8 +83,9 @@ PaddleOCR 提供轻量级的 [Model Context Protocol（MCP）](https://modelcont
     - [2.3 工作模式说明](#23)
     - [2.4 使用 `uvx`](#24-uvx)
 - [3. 运行服务器](#3)
-- [4. 参数说明](#4)
-- [5. 已知局限性](#5)
+- [4. 工具参数说明](#4)
+- [5. 参数说明](#5)
+- [6. 已知局限性](#6)
 
 ## 1. 安装
 
@@ -183,8 +184,8 @@ paddleocr_mcp --help
 在 Claude for Desktop 的配置文件中，您需要定义 MCP 服务器的启动方式。关键字段如下：
 
 - `command`：`paddleocr_mcp`（如果可执行文件可在 `PATH` 中找到）或绝对路径。
-- `args`：可配置命令行参数，如 `["--verbose"]`。详见 [4. 参数说明](#4)。
-- `env`：可配置环境变量。详见 [4. 参数说明](#4)。
+- `args`：可配置命令行参数，如 `["--verbose"]`。详见 [5. 参数说明](#5)。
+- `env`：可配置环境变量。详见 [5. 参数说明](#5)。
 
 ### 2.3 工作模式说明
 
@@ -215,7 +216,7 @@ paddleocr_mcp --help
 
 **说明**：
 
-- `PADDLEOCR_MCP_PIPELINE` 需要被设置为产线名称。详见第 4 节。
+- `PADDLEOCR_MCP_PIPELINE` 需要被设置为产线名称。详见第 5 节。
 - `PADDLEOCR_MCP_PIPELINE_CONFIG` 为可选项，不设置时使用产线默认配置。如需调整配置，例如更换模型，请参考 [PaddleOCR 文档](../paddleocr_and_paddlex.md) 导出产线配置文件，并将 `PADDLEOCR_MCP_PIPELINE_CONFIG` 设置为配置文件的绝对路径。
 - **推理性能提示**：
 
@@ -256,7 +257,7 @@ paddleocr_mcp --help
 
 请参考 [2.1 快速开始](#21)。
 
-对于文字识别以外的任务，请在 PaddleOCR 官网获取任务对应的服务基础 URL，并正确设置 `PADDLEOCR_MCP_PIPELINE` 与 `PADDLEOCR_MCP_SERVER_URL`（参数说明详见第 4 节）。
+对于文字识别以外的任务，请在 PaddleOCR 官网获取任务对应的服务基础 URL，并正确设置 `PADDLEOCR_MCP_PIPELINE` 与 `PADDLEOCR_MCP_SERVER_URL`（参数说明详见第 5 节）。
 
 #### 模式三：千帆平台服务
 
@@ -286,7 +287,7 @@ paddleocr_mcp --help
 
 **说明**：
 
-- `PADDLEOCR_MCP_PIPELINE` 需要被设置为产线名称。详见第 4 节。千帆平台服务目前仅支持 PP-StructureV3 和 PaddleOCR-VL。
+- `PADDLEOCR_MCP_PIPELINE` 需要被设置为产线名称。详见第 5 节。千帆平台服务目前仅支持 PP-StructureV3 和 PaddleOCR-VL。
 
 #### 模式四：自托管服务
 
@@ -315,7 +316,7 @@ paddleocr_mcp --help
 
 **说明**：
 
-- `PADDLEOCR_MCP_PIPELINE` 需要被设置为产线名称。详见第 4 节。
+- `PADDLEOCR_MCP_PIPELINE` 需要被设置为产线名称。详见第 5 节。
 - 将 `<your-server-url>` 替换为底层服务的基础 URL（如：`http://127.0.0.1:8000`）。
 
 ### 2.4 使用 `uvx`
@@ -395,9 +396,22 @@ paddleocr_mcp --pipeline PP-StructureV3 --ppocr_source local
 paddleocr_mcp --pipeline OCR --ppocr_source self_hosted --server_url http://127.0.0.1:8080 --http
 ```
 
-在 [4. 参数说明](#4) 中可以了解 PaddleOCR MCP 服务器支持的全部参数。
+在 [5. 参数说明](#5) 中可以了解 PaddleOCR MCP 服务器支持的全部参数。
 
-## 4. 参数说明
+## 4. 工具参数说明
+
+除服务器启动参数外，MCP 工具还支持在每次调用时传入参数，以便 MCP 主机或智能体根据当前输入动态调整处理方式。
+
+`ocr`、`pp_structurev3` 和 `paddleocr_vl` 工具均支持以下文档预处理参数：
+
+| 工具参数 | 类型 | 默认值 | 描述 |
+|:---------|:-----|:-------|:-----|
+| `use_doc_unwarping` | `bool` | `False` | 是否在本次调用中启用文档图像矫正。对于拍照、弯曲或质量较差的扫描文档可能有帮助。 |
+| `use_doc_orientation_classify` | `bool` | `False` | 是否在本次调用中启用文档方向分类。对于方向不确定或发生旋转的文档可能有帮助。 |
+
+这两个参数默认均为 `False`，以保持原有行为不变。智能体可以根据具体文档情况决定是否在某次工具调用中开启这些预处理能力，而无需在 MCP 服务器启动时固定配置。
+
+## 5. 参数说明
 
 您可以通过环境变量或命令行参数来控制 MCP 服务器的行为。
 
@@ -415,7 +429,7 @@ paddleocr_mcp --pipeline OCR --ppocr_source self_hosted --server_url http://127.
 | - | `--port` | `int` | Streamable HTTP 模式的端口。 | - | `8000` |
 | - | `--verbose` | `bool` | 启用详细日志记录，便于调试。 | - | `False` |
 
-## 5. 已知局限性
+## 6. 已知局限性
 
 - 在本地 Python 库模式下，当前提供的工具无法处理 Base64 编码的 PDF 文档输入。
 - 在本地 Python 库模式下，当前提供的工具不会根据模型提示的 `file_type` 推断文件类型，对于一些复杂 URL 可能处理失败。
