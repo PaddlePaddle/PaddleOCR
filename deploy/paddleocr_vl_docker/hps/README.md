@@ -12,11 +12,11 @@
 客户端 → FastAPI 网关 → Triton 服务器 → vLLM 服务器
 ```
 
-| 组件           | 说明                                   |
-|----------------|----------------------------------------|
-| FastAPI 网关   | 统一访问入口、简化客户端调用、并发控制 |
-| Triton 服务器  | 版面检测模型（PP-DocLayoutV3）及产线串联逻辑，负责模型管理、动态批处理、推理调度 |
-| vLLM 服务器    | VLM（PaddleOCR-VL-1.5），连续批处理推理 |
+| 组件　　　　　| 说明　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　 |
+| ---------------| ----------------------------------------------------------------------------------|
+| FastAPI 网关　| 统一访问入口、简化客户端调用、并发控制　　　　　　　　　　　　　　　　　　　　　 |
+| Triton 服务器 | 版面分析模型（PP-DocLayoutV3）及产线串联逻辑，负责模型管理、动态批处理、推理调度 |
+| vLLM 服务器　 | VLM（PaddleOCR-VL-1.5），连续批处理推理　　　　　　　　　　　　　　　　　　　　　|
 
 **Triton 模型：**
 
@@ -80,17 +80,17 @@ cp .env.example .env
 export HPS_MAX_CONCURRENT_INFERENCE_REQUESTS=8
 ```
 
-| 变量 | 默认值 | 说明 |
-|------|--------|------|
-| `HPS_MAX_CONCURRENT_INFERENCE_REQUESTS` | 16 | 推理操作（版面解析）最大并发请求数 |
-| `HPS_MAX_CONCURRENT_NON_INFERENCE_REQUESTS` | 64 | 非推理操作（多页重组）最大并发请求数 |
-| `HPS_INFERENCE_TIMEOUT` | 600 | 请求超时时间（秒） |
-| `HPS_HEALTH_CHECK_TIMEOUT` | 5 | 健康检查超时时间（秒） |
-| `HPS_VLM_URL` | http://paddleocr-vlm-server:8080 | VLM 服务器地址（用于健康检查） |
-| `HPS_LOG_LEVEL` | INFO | 日志级别（DEBUG, INFO, WARNING, ERROR） |
-| `HPS_FILTER_HEALTH_ACCESS_LOG` | true | 是否过滤健康检查的访问日志 |
-| `UVICORN_WORKERS` | 4 | 网关 Worker 进程数 |
-| `DEVICE_ID` | 0 | 使用的推理设备 ID |
+| 变量　　　　　　　　　　　　　　　　　　　　| 默认值　　　　　　　　　　　　　 | 说明　　　　　　　　　　　　　　　　　　|
+| ---------------------------------------------| ----------------------------------| -----------------------------------------|
+| `HPS_MAX_CONCURRENT_INFERENCE_REQUESTS`　　 | 16　　　　　　　　　　　　　　　 | 推理操作（版面解析）最大并发请求数　　　|
+| `HPS_MAX_CONCURRENT_NON_INFERENCE_REQUESTS` | 64　　　　　　　　　　　　　　　 | 非推理操作（多页重组）最大并发请求数　　|
+| `HPS_INFERENCE_TIMEOUT`　　　　　　　　　　 | 600　　　　　　　　　　　　　　　| 请求超时时间（秒）　　　　　　　　　　　|
+| `HPS_HEALTH_CHECK_TIMEOUT`　　　　　　　　　| 5　　　　　　　　　　　　　　　　| 健康检查超时时间（秒）　　　　　　　　　|
+| `HPS_VLM_URL`　　　　　　　　　　　　　　　 | http://paddleocr-vlm-server:8080 | VLM 服务器地址（用于健康检查）　　　　　|
+| `HPS_LOG_LEVEL`　　　　　　　　　　　　　　 | INFO　　　　　　　　　　　　　　 | 日志级别（DEBUG, INFO, WARNING, ERROR） |
+| `HPS_FILTER_HEALTH_ACCESS_LOG`　　　　　　　| true　　　　　　　　　　　　　　 | 是否过滤健康检查的访问日志　　　　　　　|
+| `UVICORN_WORKERS`　　　　　　　　　　　　　 | 4　　　　　　　　　　　　　　　　| 网关 Worker 进程数　　　　　　　　　　　|
+| `DEVICE_ID`　　　　　　　　　　　　　　　　 | 0　　　　　　　　　　　　　　　　| 使用的推理设备 ID　　　　　　　　　　　 |
 
 ### 产线配置调整
 
@@ -176,7 +176,7 @@ instance_group [
 实例数与动态批处理之间存在权衡：
 
 - **单实例（`count: 1`）**：动态批处理会将多个请求合并为一个批次并行执行，但同批次的请求需等待最慢的那个完成后才能一起返回，可能导致部分请求的时延升高。同时，单实例同一时刻只能处理一个批次，当前批次未完成时后续请求只能排队等待。适合显存有限或请求耗时较均匀的场景
-- **多实例（`count: 2+`）**：多个实例可以同时各自处理不同的批次，能够同时处理更多请求，减少排队等待时间，单个请求的时延也会有所改善。但需注意，同一实例内的批次仍然遵循动态批处理的行为（批内请求一起开始、一起结束）。每增加一个实例会额外占用一份版面检测模型的显存，同时也会增加对 VLM 推理服务的负载以及内存和 CPU 的使用，需根据推理设备的资源情况酌情设置
+- **多实例（`count: 2+`）**：多个实例可以同时各自处理不同的批次，能够同时处理更多请求，减少排队等待时间，单个请求的时延也会有所改善。但需注意，同一实例内的批次仍然遵循动态批处理的行为（批内请求一起开始、一起结束）。每增加一个实例会额外占用一份版面分析模型的显存，同时也会增加对 VLM 推理服务的负载以及内存和 CPU 的使用，需根据推理设备的资源情况酌情设置
 
 非推理模型（如 `restructure-pages`）运行在 CPU 上，可根据 CPU 核数适当增加实例数。
 
