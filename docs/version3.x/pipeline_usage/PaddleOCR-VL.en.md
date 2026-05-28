@@ -1841,13 +1841,13 @@ The parameters supported by this command are as follows:
 - MLX-VLM: [Refer to this document](./PaddleOCR-VL-Apple-Silicon.en.md)
 - llama.cpp:
     1. Install llama.cpp by referring to the `Quick start` section in the [llama.cpp github](https://github.com/ggml-org/llama.cpp).
-    2. Download the model files in gguf format: [PaddlePaddle/PaddleOCR-VL-1.5-GGUF](https://huggingface.co/PaddlePaddle/PaddleOCR-VL-1.5-GGUF). Currently, only the v1.5 model is temporarily supported.
+    2. Download the model files in gguf format: [PaddlePaddle/PaddleOCR-VL-1.6-GGUF](https://huggingface.co/PaddlePaddle/PaddleOCR-VL-1.6-GGUF).
     3. Execute the following command to start the inference service. For an introduction to the parameters, please refer to [LLaMA.cpp HTTP Server](https://github.com/ggml-org/llama.cpp/blob/master/tools/server/README.md):
 
         ```shell
         ./build/bin/llama-server \
-          -m /path/to/PaddleOCR-VL-1.5-GGUF.gguf \
-          --mmproj /path/to/PaddleOCR-VL-1.5-GGUF-mmproj.gguf  \
+          -m /path/to/PaddleOCR-VL-1.6-GGUF.gguf \
+          --mmproj /path/to/PaddleOCR-VL-1.6-GGUF-mmproj.gguf  \
           --port 8111  \
           --host 0.0.0.0 \
           --temp 0

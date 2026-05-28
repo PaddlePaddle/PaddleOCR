@@ -33,17 +33,18 @@ The Python SDK is part of the main `paddleocr` package.
 
 ## Validation
 
-Run these from this directory unless a subdirectory is shown:
+Run these from the PaddleOCR repo root directory:
 
 ```bash
-cd typescript
+# Python
+python -m pytest tests/test_api_client_http.py tests/test_api_client_core.py tests/test_api_client_resources.py
+
+# TypeScript
+cd api_sdk/typescript
 npm run lint
 npm test
 
+# Go
 cd ../go
 go test ./...
-
-cd ..
-git -C .. diff --check
-git status --short --ignored=matching -- typescript
 ```

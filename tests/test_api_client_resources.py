@@ -183,6 +183,7 @@ def test_cli_save_resources_uses_result_specific_helper(tmp_path, monkeypatch, c
     args = argparse.Namespace(
         token="token",
         client_platform=None,
+        base_url=None,
         request_timeout=300.0,
         poll_timeout=600.0,
         model=None,
@@ -198,6 +199,15 @@ def test_cli_save_resources_uses_result_specific_helper(tmp_path, monkeypatch, c
         use_doc_unwarping=None,
         use_textline_orientation=None,
         use_chart_recognition=None,
+        use_seal_recognition=None,
+        use_table_recognition=None,
+        use_formula_recognition=None,
+        use_layout_detection=None,
+        text_det_limit_side_len=None,
+        text_det_limit_type=None,
+        text_rec_score_thresh=None,
+        prettify_markdown=None,
+        visualize=None,
     )
 
     cli._execute_api(args)

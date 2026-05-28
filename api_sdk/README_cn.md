@@ -19,7 +19,7 @@
 | [`typescript/README_cn.md`](typescript/README_cn.md) | TypeScript SDK 的包级 README。 |
 | [`go/README_cn.md`](go/README_cn.md) | Go SDK 的包级 README。 |
 
-Python SDK 是主 `paddleocr` 包的一部分，公共入口由 `paddleocr` 导出；私有实现包不是受支持的导入路径。因此本目录不再维护单独的 Python 包级 README。
+Python SDK 是主 `paddleocr` 包的一部分。
 
 ## 包位置
 
@@ -31,20 +31,18 @@ Python SDK 是主 `paddleocr` 包的一部分，公共入口由 `paddleocr` 导�
 
 ## 验证
 
-除非命令显式切换目录，否则请在本目录执行：
+在 PaddleOCR 仓库根目录执行：
 
 ```bash
-cd typescript
+# Python
+python -m pytest tests/test_api_client_http.py tests/test_api_client_core.py tests/test_api_client_resources.py
+
+# TypeScript
+cd api_sdk/typescript
 npm run lint
 npm test
 
+# Go
 cd ../go
 go test ./...
-
-cd ..
-git -C .. diff --check
-git status --short --ignored=matching -- typescript
 ```
-
-TypeScript SDK 使用 npm 包名 `@paddleocr/api-sdk`。Go 的版本化发布应使用
-`api_sdk/go/v0.1.0` 这类子目录 module tag。

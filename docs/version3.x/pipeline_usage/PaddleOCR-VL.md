@@ -1630,13 +1630,13 @@ paddleocr genai_server --model_name PaddleOCR-VL-1.6-0.9B --backend vllm --port 
 - MLX-VLM：[参考此文档](./PaddleOCR-VL-Apple-Silicon.md)
 - llama.cpp：
     1. 参考 [llama.cpp github](https://github.com/ggml-org/llama.cpp) 中的 `Quick start` 安装 llama.cpp。
-    2. 下载 gguf 格式的模型文件：[PaddlePaddle/PaddleOCR-VL-1.5-GGUF](https://huggingface.co/PaddlePaddle/PaddleOCR-VL-1.5-GGUF)。目前暂时只支持 v1.5 模型。
+    2. 下载 gguf 格式的模型文件：[PaddlePaddle/PaddleOCR-VL-1.6-GGUF](https://huggingface.co/PaddlePaddle/PaddleOCR-VL-1.6-GGUF)。
     3. 执行以下命令启动推理服务，参数介绍可参考 [LLaMA.cpp HTTP Server](https://github.com/ggml-org/llama.cpp/blob/master/tools/server/README.md)：
 
         ```shell
         ./build/bin/llama-server \
-          -m /path/to/PaddleOCR-VL-1.5-GGUF.gguf \
-          --mmproj /path/to/PaddleOCR-VL-1.5-GGUF-mmproj.gguf  \
+          -m /path/to/PaddleOCR-VL-1.6-GGUF.gguf \
+          --mmproj /path/to/PaddleOCR-VL-1.6-GGUF-mmproj.gguf  \
           --port 8111  \
           --host 0.0.0.0 \
           --temp 0

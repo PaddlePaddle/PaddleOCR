@@ -36,7 +36,7 @@ function textResponse(body: string, status = 200): Response {
 function createClient(fetchImpl: typeof fetch, options: Partial<ConstructorParameters<typeof PaddleOCRClient>[0]> = {}) {
   return new PaddleOCRClient({
     token: "test-token",
-    baseUrl: "https://api.example.test/jobs/",
+    baseUrl: "https://api.example.test",
     requestTimeout: 100,
     pollTimeout: 100,
     fetch: fetchImpl,
@@ -73,7 +73,7 @@ describe("PaddleOCRClient public contract", () => {
 
     process.env.PADDLEOCR_ACCESS_TOKEN = "env-token";
     const { fetch } = captureFetch([jsonResponse({ data: { state: "running" } })]);
-    expect(() => new PaddleOCRClient({ baseUrl: "https://api.example.test/jobs", fetch })).not.toThrow();
+    expect(() => new PaddleOCRClient({ baseUrl: "https://api.example.test", fetch })).not.toThrow();
 
     if (previous === undefined) {
       delete process.env.PADDLEOCR_ACCESS_TOKEN;
@@ -118,7 +118,7 @@ describe("PaddleOCRClient public contract", () => {
       pageRanges: "1-2",
       batchId: "batch-1",
     });
-    expect(calls[0].url).toBe("https://api.example.test/jobs");
+    expect(calls[0].url).toBe("https://api.example.test/api/v2/ocr/jobs");
     expect(calls[0].init.method).toBe("POST");
     expect(calls[0].init.headers).toMatchObject({
       Authorization: "Bearer test-token",
@@ -254,16 +254,16 @@ describe("PaddleOCRClient public contract", () => {
       errorMsg: undefined,
     });
     expect(calls).toHaveLength(1);
-    expect(calls[0].url).toBe("https://api.example.test/jobs/job-1");
+    expect(calls[0].url).toBe("https://api.example.test/api/v2/ocr/jobs/job-1");
   });
 
   test("normalizes multiple trailing baseUrl slashes", async () => {
     const { fetch, calls } = captureFetch([jsonResponse({ data: { state: "running" } })]);
-    const client = createClient(fetch, { baseUrl: "https://api.example.test/jobs///" });
+    const client = createClient(fetch, { baseUrl: "https://api.example.test///" });
 
     await client.getStatus("job-1");
 
-    expect(calls[0].url).toBe("https://api.example.test/jobs/job-1");
+    expect(calls[0].url).toBe("https://api.example.test/api/v2/ocr/jobs/job-1");
   });
 
   test("typed wait accepts bare jobId, fetches JSONL without Authorization, and parses OCR results", async () => {
