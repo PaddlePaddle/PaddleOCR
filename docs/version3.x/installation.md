@@ -10,7 +10,7 @@ comments: true
 
 **Python 版本要求**：`paddleocr` 本体与 `doc2md` 依赖组支持 Python 3.8 及以上；其他可选依赖组（`doc-parser`、`ie`、`trans`、`all`）受上游依赖限制，需要 Python 3.9 及以上。
 
-### 1.1 安装 `paddleocr`
+### 1.1 安装 `paddleocr` {#install-paddleocr}
 
 从 PyPI 安装最新版本的 `paddleocr`：
 

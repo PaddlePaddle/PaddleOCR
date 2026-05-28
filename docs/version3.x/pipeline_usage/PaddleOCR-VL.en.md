@@ -309,7 +309,7 @@ The image comes preinstalled with the PaddlePaddle framework and does not includ
 > `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:paddleocr3.3-nvidia-gpu-offline`
 
 
-### 1.2 Method 2: Manually Install the Inference Engine and PaddleOCR
+### 1.2 Method 2: Manually Install the Inference Engine and PaddleOCR {#manual-install-inference-engine-and-paddleocr}
 
 If you cannot use Docker, you can manually install the inference engine and PaddleOCR. This guide documents Python 3.9–3.13 as the verified range.
 

@@ -8,7 +8,7 @@ Python SDK 通过 `paddleocr` 包中的 `PaddleOCRClient` 和 `AsyncPaddleOCRCli
 
 ## 安装与认证
 
-先按 [安装 `paddleocr`](../../../installation.md#11-安装-paddleocr) 安装 Python 包。安装 `paddleocr` 本体后即可使用此功能，无需安装额外依赖组。
+先按 [安装 `paddleocr`](../../../installation.md#install-paddleocr) 安装 Python 包。安装 `paddleocr` 本体后即可使用此功能，无需安装额外依赖组。
 
 请先在 [AI Studio Access Token 页面](https://aistudio.baidu.com/account/accessToken) 获取访问令牌。
 

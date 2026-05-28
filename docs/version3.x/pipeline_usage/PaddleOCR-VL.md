@@ -149,7 +149,7 @@ docker load -i paddleocr-vl-latest-nvidia-gpu-offline.tar
 > 例如：
 > `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:paddleocr3.3-nvidia-gpu-offline`
 
-### 1.2 方法二：手动安装推理引擎和 PaddleOCR
+### 1.2 方法二：手动安装推理引擎和 PaddleOCR {#manual-install-inference-engine-and-paddleocr}
 
 如果您无法使用 Docker，也可以手动安装推理引擎和 PaddleOCR。本文档验证过的 Python 版本范围为 3.9–3.13。
 

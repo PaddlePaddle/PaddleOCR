@@ -79,7 +79,7 @@ docker run \
 
 如果您无法使用 Docker，也可以手动安装推理引擎和 PaddleOCR。本文档验证过的 Python 版本范围为 3.9–3.13。
 
-本教程提供 PaddlePaddle 安装步骤；若需使用 Transformers 等其他推理引擎，请参考 [主教程第 1.2 节](./PaddleOCR-VL.md#12)。
+本教程提供 PaddlePaddle 安装步骤；若需使用 Transformers 等其他推理引擎，请参考 [主教程第 1.2 节](./PaddleOCR-VL.md#manual-install-inference-engine-and-paddleocr)。
 
 **我们强烈推荐您在虚拟环境中安装 PaddleOCR-VL，以避免发生依赖冲突。** 例如，使用 Python venv 标准库创建虚拟环境：
 
