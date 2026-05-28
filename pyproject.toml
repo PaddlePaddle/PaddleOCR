@@ -77,6 +77,7 @@ namespaces = false
 
 [tool.setuptools_scm]
 version_scheme = 'release-branch-semver'
+tag_regex = "^api_sdk/go/v(?P<version>.*)$"
 
 [tool.pytest.ini_options]
 markers = [
