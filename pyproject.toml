@@ -77,7 +77,6 @@ namespaces = false
 
 [tool.setuptools_scm]
 version_scheme = 'release-branch-semver'
-tag_regex = "^v(?P<version>\\d+\\.\\d+\\.\\d+(?:rc\\d+)?(?:\\.post\\d+)?)$"
 git_describe_command = ["git", "describe", "--dirty", "--tags", "--long", "--match", "v[0-9]*"]
 
 [tool.pytest.ini_options]
