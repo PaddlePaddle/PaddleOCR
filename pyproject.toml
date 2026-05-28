@@ -77,7 +77,7 @@ namespaces = false
 
 [tool.setuptools_scm]
 version_scheme = 'release-branch-semver'
-tag_regex = "^v(?P<version>\\d+\\.\\d+\\.\\d+.*)$"
+tag_regex = "^v(?P<version>\\d+\\.\\d+\\.\\d+(?:rc\\d+)?(?:\\.post\\d+)?)$"
 
 [tool.pytest.ini_options]
 markers = [
