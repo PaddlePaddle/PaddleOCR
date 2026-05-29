@@ -63,7 +63,7 @@ The above command will start 3 containers in sequence:
 | Service | Description | Port |
 |---------|-------------|------|
 | `paddleocr-vl-api` | FastAPI gateway (external entry point) | 8080 |
-| `paddleocr-vl-tritonserver` | Triton inference server | 8000 (internal) |
+| `paddleocr-vl-pipeline` | Triton inference server running the pipeline | 8000 (internal) |
 | `paddleocr-vlm-server` | vLLM-based VLM inference service | 8080 (internal) |
 
 > The first startup will automatically download and build images, which takes longer. Subsequent startups will use local images and start faster.
@@ -216,7 +216,7 @@ Check the logs for each service to identify the issue:
 
 ```bash
 docker compose logs paddleocr-vl-api
-docker compose logs paddleocr-vl-tritonserver
+docker compose logs paddleocr-vl-pipeline
 docker compose logs paddleocr-vlm-server
 ```
 

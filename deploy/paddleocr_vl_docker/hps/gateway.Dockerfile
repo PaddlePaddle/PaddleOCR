@@ -19,7 +19,7 @@ RUN --mount=type=bind,source=${HPS_SDK_DIR}/client,target=/tmp/sdk \
     && python -m pip install --no-cache-dir /tmp/sdk/paddlex_hps_client-*.whl
 
 # Configuration via environment variables
-ENV HPS_TRITON_URL=paddleocr-vl-tritonserver:8001
+ENV HPS_TRITON_URL=paddleocr-vl-pipeline:8001
 ENV HPS_MAX_CONCURRENT_INFERENCE_REQUESTS=16
 ENV HPS_MAX_CONCURRENT_NON_INFERENCE_REQUESTS=64
 ENV HPS_INFERENCE_TIMEOUT=600

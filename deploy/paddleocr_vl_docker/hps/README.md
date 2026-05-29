@@ -63,7 +63,7 @@ docker compose up
 | 服务 | 说明 | 端口 |
 |------|------|------|
 | `paddleocr-vl-api` | FastAPI 网关（对外入口） | 8080 |
-| `paddleocr-vl-tritonserver` | Triton 推理服务器 | 8000（内部） |
+| `paddleocr-vl-pipeline` | 运行产线的 Triton 推理服务器 | 8000（内部） |
 | `paddleocr-vlm-server` | 基于 vLLM 的 VLM 推理服务 | 8080（内部） |
 
 > 首次启动会自动下载并构建镜像，耗时较长；从第二次启动起将直接使用本地镜像，启动速度更快。
@@ -216,7 +216,7 @@ instance_group [
 
 ```bash
 docker compose logs paddleocr-vl-api
-docker compose logs paddleocr-vl-tritonserver
+docker compose logs paddleocr-vl-pipeline
 docker compose logs paddleocr-vlm-server
 ```
 
