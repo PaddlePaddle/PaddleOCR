@@ -9,10 +9,10 @@ services:
     ports:
       - 8080:8080
     depends_on:
-      paddleocr-vl-tritonserver:
+      paddleocr-vl-pipeline:
         condition: service_healthy
     environment:
-      - HPS_TRITON_URL=paddleocr-vl-tritonserver:8001
+      - HPS_TRITON_URL=paddleocr-vl-pipeline:8001
       - HPS_VLM_URL=${HPS_VLM_URL:-http://paddleocr-vlm-server:8080}
       - HPS_MAX_CONCURRENT_INFERENCE_REQUESTS=${HPS_MAX_CONCURRENT_INFERENCE_REQUESTS:-16}
       - HPS_MAX_CONCURRENT_NON_INFERENCE_REQUESTS=${HPS_MAX_CONCURRENT_NON_INFERENCE_REQUESTS:-64}
@@ -26,13 +26,15 @@ services:
       timeout: 5s
       retries: 3
 
-  paddleocr-vl-tritonserver:
+  paddleocr-vl-pipeline:
     build:
       context: .
-      dockerfile: tritonserver.Dockerfile
+      dockerfile: pipeline.Dockerfile
       args:
+        BASE_IMAGE: ${HPS_TRITON_BASE_IMAGE:-ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlex/hps:paddlex${HPS_PADDLEX_VERSION:-3.6}-gpu}
+        DEVICE_TYPE: ${HPS_DEVICE_TYPE:-gpu}
         HPS_SDK_DIR: ${HPS_SDK_DIR:-paddlex_hps_PaddleOCR-VL-1.6_sdk}
-    container_name: paddleocr-vl-tritonserver
+    container_name: paddleocr-vl-pipeline
     depends_on:
       paddleocr-vlm-server:
         condition: service_healthy

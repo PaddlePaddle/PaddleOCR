@@ -28,7 +28,7 @@
 ## 环境要求
 
 - x64 CPU
-- NVIDIA GPU，Compute Capability >= 8.0 且 < 12.0
+- NVIDIA GPU，Compute Capability >= 8.0 且 < 10.0
 - NVIDIA 驱动支持 CUDA 12.6
 - Docker >= 19.03
 - Docker Compose >= 2.0
@@ -63,7 +63,7 @@ docker compose up
 | 服务 | 说明 | 端口 |
 |------|------|------|
 | `paddleocr-vl-api` | FastAPI 网关（对外入口） | 8080 |
-| `paddleocr-vl-tritonserver` | Triton 推理服务器 | 8000（内部） |
+| `paddleocr-vl-pipeline` | 运行产线的 Triton 推理服务器 | 8000（内部） |
 | `paddleocr-vlm-server` | 基于 vLLM 的 VLM 推理服务 | 8080（内部） |
 
 > 首次启动会自动下载并构建镜像，耗时较长；从第二次启动起将直接使用本地镜像，启动速度更快。
@@ -93,7 +93,7 @@ export HPS_MAX_CONCURRENT_INFERENCE_REQUESTS=8
 | 变量 | 默认值 | 说明 |
 |------|--------|------|
 | `HPS_PIPELINE_NAME` | `PaddleOCR-VL-1.6` | 产线名称 |
-| `HPS_SDK_VERSION` | `v3.6` | PaddleX 高稳定性服务化部署 SDK 发布目录，对应 PaddleX 版本 |
+| `HPS_PADDLEX_VERSION` | `3.6` | PaddleX 版本（仅填 major.minor，如 `3.6`），同时决定 Triton 基础镜像标签（`paddlex${HPS_PADDLEX_VERSION}-gpu`）和 SDK 发布目录（`v${HPS_PADDLEX_VERSION}`），二者保持一致 |
 | `HPS_SDK_DIR` | `paddlex_hps_PaddleOCR-VL-1.6_sdk` | 解压后的 SDK 目录，遵循 `paddlex_hps_${HPS_PIPELINE_NAME}_sdk` |
 
 常见配置示例：
@@ -216,7 +216,7 @@ instance_group [
 
 ```bash
 docker compose logs paddleocr-vl-api
-docker compose logs paddleocr-vl-tritonserver
+docker compose logs paddleocr-vl-pipeline
 docker compose logs paddleocr-vlm-server
 ```
 

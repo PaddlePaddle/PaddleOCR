@@ -28,7 +28,7 @@ Client → FastAPI Gateway → Triton Server → vLLM Server
 ## Requirements
 
 - x64 CPU
-- NVIDIA GPU, Compute Capability >= 8.0 and < 12.0
+- NVIDIA GPU, Compute Capability >= 8.0 and < 10.0
 - NVIDIA driver supporting CUDA 12.6
 - Docker >= 19.03
 - Docker Compose >= 2.0
@@ -63,7 +63,7 @@ The above command will start 3 containers in sequence:
 | Service | Description | Port |
 |---------|-------------|------|
 | `paddleocr-vl-api` | FastAPI gateway (external entry point) | 8080 |
-| `paddleocr-vl-tritonserver` | Triton inference server | 8000 (internal) |
+| `paddleocr-vl-pipeline` | Triton inference server running the pipeline | 8000 (internal) |
 | `paddleocr-vlm-server` | vLLM-based VLM inference service | 8080 (internal) |
 
 > The first startup will automatically download and build images, which takes longer. Subsequent startups will use local images and start faster.
@@ -93,7 +93,7 @@ This solution reuses the PaddleX [High-Stability Serving](https://paddlepaddle.g
 | Variable | Default | Description |
 |----------|---------|-------------|
 | `HPS_PIPELINE_NAME` | `PaddleOCR-VL-1.6` | Pipeline name |
-| `HPS_SDK_VERSION` | `v3.6` | PaddleX high-stability serving SDK release directory, corresponding to the PaddleX version |
+| `HPS_PADDLEX_VERSION` | `3.6` | PaddleX version (major.minor only, e.g. `3.6`). Drives both the Triton base image tag (`paddlex${HPS_PADDLEX_VERSION}-gpu`) and the SDK release directory (`v${HPS_PADDLEX_VERSION}`), keeping them in sync |
 | `HPS_SDK_DIR` | `paddlex_hps_PaddleOCR-VL-1.6_sdk` | Extracted SDK directory, following `paddlex_hps_${HPS_PIPELINE_NAME}_sdk` |
 
 Common examples:
@@ -216,7 +216,7 @@ Check the logs for each service to identify the issue:
 
 ```bash
 docker compose logs paddleocr-vl-api
-docker compose logs paddleocr-vl-tritonserver
+docker compose logs paddleocr-vl-pipeline
 docker compose logs paddleocr-vlm-server
 ```
 
