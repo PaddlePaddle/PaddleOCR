@@ -2527,7 +2527,7 @@ Below are the API reference and examples of multi-language service invocation:
 </tr>
 </tbody>
 </table>
-<p>Image and file fields in the element schema below (e.g. <code>outputImages</code>, <code>inputImage</code>, <code>markdown.images</code>, <code>exports</code>) are returned inline as Base64 strings by default; when the server is configured to return URLs, those values become pre-signed URLs while the field types remain unchanged. See the "Returning Response Files as URLs" section of the <a href="../inference_deployment/serving/serving.en.md">Serving Deployment Guide</a> for configuration.</p>
+<p>Image and file fields in the element schema below (e.g. <code>outputImages</code>, <code>inputImage</code>, <code>markdown.images</code>, <code>exports</code>) are returned inline as Base64 strings by default; when the server is configured to return URLs, those values become pre-signed URLs while the field types remain unchanged. See the "Returning Binary Content as URLs" section of the <a href="../inference_deployment/serving/serving.en.md">Serving Deployment Guide</a> for configuration.</p>
 <p>Each element in <code>layoutParsingResults</code> is an <code>object</code> with the following attributes:</p>
 <table>
 <thead>
@@ -3297,7 +3297,7 @@ Serving:
 
 Additionally, you can set the `visualize` field to `false` in the request body to disable visualization for a single request.
 
-**Configure Returning Response Files as URLs**
+**Configure Returning Binary Content as URLs**
 
 By default, the service returns the image and file fields in the response (e.g. visualized result images, the input image, images referenced in Markdown, and exported files in `exports`) inline as Base64. To return them as URLs instead, add the following configuration to the pipeline configuration file (`Serving` is a top-level field):
 
