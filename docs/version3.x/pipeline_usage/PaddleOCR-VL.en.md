@@ -3297,9 +3297,9 @@ Serving:
 
 Additionally, you can set the `visualize` field to `false` in the request body to disable visualization for a single request.
 
-**Configure Return of Image URLs**
+**Configure Returning Response Files as URLs**
 
-For visualized result images and images included in Markdown, the service returns them in Base64 encoding by default. To return images as URLs instead, add the following configuration to the pipeline configuration file (`Serving` is a top-level field):
+By default, the service returns the image and file fields in the response (e.g. visualized result images, the input image, images referenced in Markdown, and exported files in `exports`) inline as Base64. To return them as URLs instead, add the following configuration to the pipeline configuration file (`Serving` is a top-level field):
 
 ```yaml
 Serving:
@@ -3315,7 +3315,7 @@ Serving:
     url_expires_in: 3600
 ```
 
-Currently, storing generated images in Baidu Intelligent Cloud Object Storage (BOS) and returning URLs is supported. The parameters are described as follows:
+Currently, storing generated files in Baidu Intelligent Cloud Object Storage (BOS) and returning URLs is supported. The parameters are described as follows:
 
 - `endpoint`: Access domain name (required).
 - `ak`: Baidu Intelligent Cloud Access Key (required).
