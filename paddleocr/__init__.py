@@ -41,6 +41,24 @@ from ._pipelines import (
     SealRecognition,
     TableRecognitionPipelineV2,
 )
+from ._api_client import (
+    AsyncPaddleOCRClient,
+    PaddleOCRClient,
+    PaddleOCRVLOptions,
+    Model,
+    OCROptions,
+    PPStructureV3Options,
+    PaddleOCRAPIError,
+    AuthError,
+    InvalidRequestError,
+    APIError,
+    JobFailedError,
+    PollTimeoutError,
+    RequestTimeoutError,
+    ResponseFormatError,
+    ResultParseError,
+    NetworkError,
+)
 from ._utils.logging import logger
 from ._version import version as __version__
 
@@ -61,6 +79,12 @@ def doc2md_supported_formats():
 
 __all__ = [
     "benchmark",
+    "PaddleOCRClient",
+    "AsyncPaddleOCRClient",
+    "Model",
+    "OCROptions",
+    "PPStructureV3Options",
+    "PaddleOCRVLOptions",
     "ChartParsing",
     "DocImgOrientationClassification",
     "DocVLM",
@@ -86,6 +110,16 @@ __all__ = [
     "TableRecognitionPipelineV2",
     "doc2md_convert",
     "doc2md_supported_formats",
+    "PaddleOCRAPIError",
+    "AuthError",
+    "InvalidRequestError",
+    "APIError",
+    "JobFailedError",
+    "RequestTimeoutError",
+    "PollTimeoutError",
+    "ResponseFormatError",
+    "ResultParseError",
+    "NetworkError",
     "logger",
     "__version__",
 ]

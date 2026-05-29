@@ -1,0 +1,75 @@
+# Copyright (c) 2026 PaddlePaddle Authors. All Rights Reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+from .client import PaddleOCRClient
+from .async_client import AsyncPaddleOCRClient
+from .models import (
+    Model,
+    OCROptions,
+    PaddleOCRVLOptions,
+    PPStructureV3Options,
+)
+from .results import (
+    DocParsingPage,
+    DocParsingResult,
+    Job,
+    JobStatus,
+    BatchStatus,
+    OCRPage,
+    OCRResult,
+    Progress,
+)
+from .errors import (
+    APIError,
+    AuthError,
+    InvalidRequestError,
+    JobFailedError,
+    NetworkError,
+    PaddleOCRAPIError,
+    PollTimeoutError,
+    RateLimitError,
+    RequestTimeoutError,
+    ResponseFormatError,
+    ResultParseError,
+    ServiceUnavailableError,
+)
+
+__all__ = [
+    "PaddleOCRClient",
+    "AsyncPaddleOCRClient",
+    "Model",
+    "OCROptions",
+    "PPStructureV3Options",
+    "PaddleOCRVLOptions",
+    "OCRResult",
+    "OCRPage",
+    "DocParsingResult",
+    "DocParsingPage",
+    "Job",
+    "JobStatus",
+    "BatchStatus",
+    "Progress",
+    "PaddleOCRAPIError",
+    "AuthError",
+    "InvalidRequestError",
+    "APIError",
+    "RateLimitError",
+    "ServiceUnavailableError",
+    "JobFailedError",
+    "RequestTimeoutError",
+    "PollTimeoutError",
+    "ResponseFormatError",
+    "ResultParseError",
+    "NetworkError",
+]

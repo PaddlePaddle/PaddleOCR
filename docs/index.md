@@ -15,9 +15,9 @@ hide:
 
 PaddleOCR自发布以来凭借学术前沿算法和产业落地实践，受到了产学研各方的喜爱，并被广泛应用于众多知名开源项目，例如：Umi-OCR、OmniParser、MinerU、RAGFlow等，已成为广大开发者心中的开源OCR领域的首选工具。2025年5月20日，飞桨团队发布**PaddleOCR 3.0**，全面适配[飞桨框架3.0](https://github.com/PaddlePaddle/Paddle)正式版，进一步**提升文字识别精度**，支持**多文字类型识别**和**手写体识别**，满足大模型应用对**复杂文档高精度解析**的旺盛需求，结合**文心大模型4.5**显著提升关键信息抽取精度，并新增**对昆仑芯、昇腾等国产硬件**的支持。
 
-**2026 年 1 月 29 日，PaddleOCR 开源了先进、高效的文档解析模型 PaddleOCR-VL-1.5。** PaddleOCR-VL-1.5 是 PaddleOCR-VL 系列的全新迭代版本。在全面优化 1.0 版本核心能力的基础上，**该模型在文档解析权威评测集 OmniDocBench v1.5 上斩获了 94.5% 的高精度**，超越了全球的顶尖通用大模型及文档解析专用模型。
+2026 年 1 月 29 日，PaddleOCR 开源了先进、高效的文档解析模型 PaddleOCR-VL-1.5。PaddleOCR-VL-1.5 是 PaddleOCR-VL 系列的全新迭代版本。在全面优化 1.0 版本核心能力的基础上，该模型在文档解析权威评测集 OmniDocBench v1.5 上斩获了 94.5% 的高精度，超越了全球的顶尖通用大模型及文档解析专用模型。PaddleOCR-VL-1.5 创新性地支持了文档元素的异形框定位，使得 PaddleOCR-VL-1.5 在扫描、倾斜、弯折、屏幕拍摄及复杂光照等真实落地场景中均表现卓越，实现了全面的 SOTA。此外，模型进一步集成了印章识别与文本检测识别任务，关键指标持续领跑主流模型。
 
-PaddleOCR-VL-1.5 创新性地支持了文档元素的异形框定位，使得 PaddleOCR-VL-1.5 在扫描、倾斜、弯折、屏幕拍摄及复杂光照等真实落地场景中均表现卓越，实现了全面的 SOTA。此外，模型进一步集成了印章识别与文本检测识别任务，关键指标持续领跑主流模型。
+**2026 年 5 月 28 日，PaddleOCR 开源了 PaddleOCR-VL-1.6，作为 PaddleOCR-VL 系列的最新版本。** PaddleOCR-VL-1.6 以 96.3% 精度再次刷新评测集 OmniDocBench v1.6，并在 OmniDocBench v1.5、Real5-OmniDocBench 上同步达到全新 SOTA，文本、公式、表格识别全面领先开源与闭源方案。此外，模型在古籍、生僻字识别上大幅提升，印章、spotting、图表识别等多场景能力也显著增强。PaddleOCR-VL-1.6 在 PaddleOCR-VL-1.5 的基础上进一步升级了 VLM 组件（PaddleOCR-VL-1.6-0.9B），并继续采用 PP-DocLayoutV3 作为版面分析模型；模型结构与 PaddleOCR-VL-1.5 完全一致，支持零成本无缝迁移。
 
 您可以在 [PaddleOCR官网](https://www.paddleocr.com) 在线使用或者调用该模型的API。
 
@@ -42,7 +42,7 @@ PaddleOCR-VL-1.5 创新性地支持了文档元素的异形框定位，使得 Pa
 
 PaddleOCR 3.0 除了提供优秀的模型库外，还提供覆盖模型训练、推理和服务化部署等环节的易用工具，方便开发者快速落地 AI 应用。
 
-**此外，PaddleOCR 还提供官方 [Agent Skills](./version3.x/deployment/skills.md)，便于在支持 Skills 的 AI 应用中调用文字识别、文档解析等能力。**
+**此外，PaddleOCR 还提供官方 [Agent Skills](./version3.x/integrations/skills.md)，便于在支持 Skills 的 AI 应用中调用文字识别、文档解析等能力。**
 
 <div align="center">
   <p>

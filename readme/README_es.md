@@ -36,7 +36,7 @@
 ### 📄 Análisis inteligente de documentos (listo para LLM)
 > *Transformando contenido visual complejo en datos estructurados para la era de los LLM.*
 
-* **SOTA Document VLM**: Con **PaddleOCR-VL-1.5 (0,9B)**, el modelo de visión y lenguaje ligero líder de la industria para el análisis de documentos. Sobresale en el análisis de documentos complejos en 5 grandes desafíos del "mundo real": **deformación, escaneo, fotografía de pantalla, iluminación y documentos inclinados**, con salidas estructuradas en formatos **Markdown** y **JSON**.
+* **SOTA Document VLM**: Featuring **PaddleOCR-VL-1.6 (0.9B)**, the industry's leading lightweight vision-language model for document parsing. It achieves 96.3% accuracy on OmniDocBench v1.6, leads in text, formula, and table recognition, and shows significantly enhanced capabilities in ancient documents, rare characters, seals, and charts, with structured outputs in **Markdown** and **JSON** formats.
 * **Conversión con reconocimiento de estructura**: Impulsado por **PP-StructureV3**, convierte sin problemas PDFs e imágenes complejas en **Markdown** o **JSON**. A diferencia de los modelos de la serie PaddleOCR-VL, proporciona información de coordenadas más detallada, incluyendo coordenadas de celdas de tablas, coordenadas de texto y más.
 * **Eficiencia lista para producción**: Logra precisión de nivel comercial con una huella ultrapequeña. Supera a numerosas soluciones de código cerrado en benchmarks públicos, manteniéndose eficiente en recursos para despliegue en el borde o en la nube.
 
@@ -61,15 +61,27 @@
 
 ## 📣 Actualizaciones recientes
 
-### 🔥 PaddleOCR v3.5.0: backends de inferencia más flexibles y salida documental más rica
+### 🔥 2026.05.28: Lanzamiento de PaddleOCR 3.6.0
+- Aspectos destacados de PaddleOCR-VL-1.6:
+
+    - **Nueva precisión SOTA**: supera el 96.3% en OmniDocBench v1.6, también establece nuevos SOTA en OmniDocBench v1.5 y Real5-OmniDocBench, liderando soluciones de código abierto y cerrado en reconocimiento de texto, fórmulas y tablas.
+    - **Capacidades ampliamente mejoradas**: mejoras significativas en tablas, documentos antiguos y caracteres raros, con refuerzos notables en reconocimiento de sellos, spotting y análisis de gráficos en múltiples escenarios.
+    - **Migración transparente**: la arquitectura del modelo es totalmente consistente con PaddleOCR-VL-1.5, permitiendo adaptación sin costo — cámbielo y úselo de inmediato.
+    - **Pruébalo ahora**: disponible en [HuggingFace](https://huggingface.co/PaddlePaddle/PaddleOCR-VL-1.6) o en nuestro [sitio web oficial](https://www.paddleocr.com).
+
+<details>
+<summary><strong>2026.04.21: Lanzamiento de PaddleOCR 3.5.0</strong></summary>
+
 * **Backends de inferencia más flexibles**: cambia sin problemas entre grafo estático de Paddle, grafo dinámico de Paddle y Transformers. PaddleOCR está ahora profundamente integrado con el ecosistema de Hugging Face, y 20 modelos principales admiten Transformers como backend de inferencia.
 * **Documentos de Office a Markdown**: convierte formatos de documentos comunes como Word, Excel y PowerPoint a Markdown.
 * **Exportación de resultados a DOCX**: las series `PaddleOCR-VL`, `PP-StructureV3` y `PP-DocTranslation` ahora admiten exportar los resultados de análisis a DOCX para verlos y editarlos cómodamente en Microsoft Word.
 * **SDK oficial de inferencia en navegador**: se lanzó `PaddleOCR.js`, el SDK oficial de inferencia en navegador, que permite ejecutar `PP-OCRv5` directamente en el navegador.
 
+</details>
+
 <details>
 <summary><strong>2026.01.29: Lanzamiento de PaddleOCR 3.4.0</strong></summary>
-* **PaddleOCR-VL-1.5 (SOTA 0,9B VLM)**: ¡Nuestro último modelo insignia para el análisis de documentos ya está disponible!
+* PaddleOCR-VL-1.5 (SOTA 0,9B VLM): ¡Nuestro último modelo insignia para el análisis de documentos ya está disponible!
     * **94,5% de precisión en OmniDocBench**: Superando a los mejores modelos generales de gran escala y a los analizadores de documentos especializados.
     * **Robustez en el mundo real**: El primero en introducir el algoritmo **PP-DocLayoutV3** para el posicionamiento de formas irregulares, dominando 5 escenarios difíciles: *inclinación, deformación, escaneo, iluminación y fotografía de pantalla*.
     * **Expansión de capacidades**: Ahora admite **reconocimiento de sellos**, **detección de texto** y se expande a **111 idiomas** (incluyendo el tibetano de China y el bengalí).
@@ -130,8 +142,6 @@
 
 [Historial de cambios](https://paddlepaddle.github.io/PaddleOCR/latest/en/update/update.html)
 
-</details>
-
 
 ## 🚀 Inicio rápido
 
@@ -151,10 +161,10 @@ Para uso local, consulte la siguiente documentación según sus necesidades:
 
 ## 🧩 Más características
 
-- Convertir modelos al formato ONNX: [Obtención de modelos ONNX](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/obtaining_onnx_models.html).
-- Acelerar la inferencia usando motores como OpenVINO, ONNX Runtime, TensorRT, o realizar inferencia usando modelos en formato ONNX: [Inferencia de alto rendimiento](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/high_performance_inference.html).
+- Convertir modelos al formato ONNX: [Obtención de modelos ONNX](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/inference_deployment/others/obtaining_onnx_models.html).
+- Acelerar la inferencia usando motores como OpenVINO, ONNX Runtime, TensorRT, o realizar inferencia usando modelos en formato ONNX: [Inferencia de alto rendimiento](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/inference_deployment/local_inference/high_performance_inference.html).
 - Acelerar la inferencia usando múltiples GPU y múltiples procesos: [Inferencia paralela para pipelines](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/pipeline_usage/instructions/parallel_inference.html).
-- Integrar PaddleOCR en aplicaciones escritas en C++, C#, Java, etc.: [Serving](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/serving.html).
+- Integrar PaddleOCR en aplicaciones escritas en C++, C#, Java, etc.: [Serving](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/inference_deployment/serving/serving.html).
 
 ## 🔄 Resumen rápido de los resultados de ejecución
 

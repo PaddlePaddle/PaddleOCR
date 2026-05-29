@@ -8,7 +8,7 @@ description: >-
   发票, 财报, 复杂 PDF, PDF转Markdown, 图表, 阅读顺序; reading order, formula, LaTeX,
   layout parsing, structure extraction, PP-StructureV3, PaddleOCR-VL.
 license: Apache-2.0
-compatibility: Requires Python 3.9+, uv, and internet access.
+compatibility: Requires uv and internet access.
 metadata:
   openclaw:
     requires:
@@ -217,7 +217,7 @@ By default the script writes JSON to a temp file and prints the path to stderr. 
 
 1. **Show the exact error message** to the user.
 
-2. **Guide the user to obtain credentials**: Visit the [PaddleOCR website](https://www.paddleocr.com), click **API**, select a model (`PP-StructureV3`, `PaddleOCR-VL`, or `PaddleOCR-VL-1.5`), then copy the `API_URL` and `Token`. They map to these environment variables:
+2. **Guide the user to obtain credentials**: Visit the [PaddleOCR website](https://www.paddleocr.com), click **API**, select a model (`PP-StructureV3`, or `PaddleOCR-VL` series models), then copy the `API_URL` and `Token`. They map to these environment variables:
    - `PADDLEOCR_DOC_PARSING_API_URL` — full endpoint URL ending with `/layout-parsing`
    - `PADDLEOCR_ACCESS_TOKEN` — 40-character alphanumeric string
 

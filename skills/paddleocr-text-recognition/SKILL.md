@@ -8,7 +8,7 @@ description: >-
   plain text extraction, 坐标, 检测框, bbox, bounding box, image to text, screenshot, photo scan,
   recognize text.
 license: Apache-2.0
-compatibility: Requires Python 3.9+, uv, and internet access.
+compatibility: Requires uv and internet access.
 metadata:
   openclaw:
     requires:

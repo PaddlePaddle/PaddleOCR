@@ -32,7 +32,13 @@ def _parse_args() -> argparse.Namespace:
 
     parser.add_argument(
         "--pipeline",
-        choices=["OCR", "PP-StructureV3", "PaddleOCR-VL", "PaddleOCR-VL-1.5"],
+        choices=[
+            "OCR",
+            "PP-StructureV3",
+            "PaddleOCR-VL",
+            "PaddleOCR-VL-1.5",
+            "PaddleOCR-VL-1.6",
+        ],
         default=os.getenv("PADDLEOCR_MCP_PIPELINE", "OCR"),
         help="Pipeline name.",
     )

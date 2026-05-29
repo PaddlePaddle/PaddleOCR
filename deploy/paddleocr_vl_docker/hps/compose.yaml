@@ -3,6 +3,8 @@ services:
     build:
       context: .
       dockerfile: gateway.Dockerfile
+      args:
+        HPS_SDK_DIR: ${HPS_SDK_DIR:-paddlex_hps_PaddleOCR-VL-1.6_sdk}
     container_name: paddleocr-vl-api
     ports:
       - 8080:8080
@@ -16,7 +18,7 @@ services:
       - HPS_MAX_CONCURRENT_NON_INFERENCE_REQUESTS=${HPS_MAX_CONCURRENT_NON_INFERENCE_REQUESTS:-64}
       - HPS_INFERENCE_TIMEOUT=${HPS_INFERENCE_TIMEOUT:-600}
       - HPS_LOG_LEVEL=${HPS_LOG_LEVEL:-INFO}
-      - UVICORN_WORKERS=${UVICORN_WORKERS:-4}
+      - HPS_UVICORN_WORKERS=${HPS_UVICORN_WORKERS:-4}
     restart: unless-stopped
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:8080/health || exit 1"]
@@ -28,6 +30,8 @@ services:
     build:
       context: .
       dockerfile: tritonserver.Dockerfile
+      args:
+        HPS_SDK_DIR: ${HPS_SDK_DIR:-paddlex_hps_PaddleOCR-VL-1.6_sdk}
     container_name: paddleocr-vl-tritonserver
     depends_on:
       paddleocr-vlm-server:
@@ -37,7 +41,7 @@ services:
         reservations:
           devices:
             - driver: nvidia
-              device_ids: ["${DEVICE_ID:-0}"]
+              device_ids: ["${HPS_DEVICE_ID:-0}"]
               capabilities: [gpu]
     shm_size: 4gb
     restart: unless-stopped
@@ -51,13 +55,16 @@ services:
   paddleocr-vlm-server:
     image: ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-nvidia-gpu
     container_name: paddleocr-vlm-server
-    command: paddleocr genai_server --model_name PaddleOCR-VL-1.5-0.9B --host 0.0.0.0 --port 8080 --backend vllm
+    volumes:
+      - ./${HPS_SDK_DIR:-paddlex_hps_PaddleOCR-VL-1.6_sdk}/server/pipeline_config.yaml:/config/pipeline_config.yaml:ro
+      - ./genai_server_entrypoint.sh:/entrypoint.sh:ro
+    command: ["/bin/sh", "/entrypoint.sh"]
     deploy:
       resources:
         reservations:
           devices:
             - driver: nvidia
-              device_ids: ["${DEVICE_ID:-0}"]
+              device_ids: ["${HPS_DEVICE_ID:-0}"]
               capabilities: [gpu]
     restart: unless-stopped
     healthcheck:

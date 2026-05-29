@@ -10,8 +10,10 @@ WORKDIR /app
 # Copy gateway application
 COPY gateway .
 
+ARG HPS_SDK_DIR=paddlex_hps_PaddleOCR-VL-1.6_sdk
+
 # Install Python dependencies
-RUN --mount=type=bind,source=paddlex_hps_PaddleOCR-VL-1.5_sdk/client,target=/tmp/sdk \
+RUN --mount=type=bind,source=${HPS_SDK_DIR}/client,target=/tmp/sdk \
     python -m pip install --no-cache-dir -r requirements.txt \
     && python -m pip install --no-cache-dir -r /tmp/sdk/requirements.txt \
     && python -m pip install --no-cache-dir /tmp/sdk/paddlex_hps_client-*.whl
@@ -22,10 +24,10 @@ ENV HPS_MAX_CONCURRENT_INFERENCE_REQUESTS=16
 ENV HPS_MAX_CONCURRENT_NON_INFERENCE_REQUESTS=64
 ENV HPS_INFERENCE_TIMEOUT=600
 ENV HPS_LOG_LEVEL=INFO
-ENV UVICORN_WORKERS=4
+ENV HPS_UVICORN_WORKERS=4
 
 EXPOSE 8080
 
 # Run with multiple workers for better concurrency
 # Note: Using shell form to allow environment variable expansion
-CMD uvicorn --host 0.0.0.0 --port 8080 --workers ${UVICORN_WORKERS} app:app
+CMD uvicorn --host 0.0.0.0 --port 8080 --workers ${HPS_UVICORN_WORKERS} app:app
