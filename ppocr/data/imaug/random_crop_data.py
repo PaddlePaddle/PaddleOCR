@@ -24,7 +24,7 @@ from __future__ import unicode_literals
 import numpy as np
 import cv2
 import random
-from paddle import get_device
+
 from shapely.geometry import Polygon, box as shapely_box
 from shapely import intersection
 
@@ -156,38 +156,26 @@ def clip_poly_to_rect(poly, x, y, w, h):
         if len(coords) == 4:
             return coords
 
-        # 如果点数大于4，选择原始顶点和边上的交点来构成四边形
+        # 如果点数大于4，用 Douglas-Peucker 算法自适应简化为四边形
+        # 输出点是原坐标子集（不会越界），IoU~0.99 保持形状
         if len(coords) > 4:
-            from itertools import combinations
-            from shapely.geometry import LineString
-
-            # 创建包含所有点的多边形
-            all_polygon = Polygon(coords)
-            # 使用凸包近似为四边形
-            convex_hull = all_polygon.convex_hull
-            # 获取凸包的顶点
-            hull_coords = list(convex_hull.exterior.coords)
-            hull_coords.pop()  # 删除最后一个重复的起点
-
-            if len(hull_coords) > 4:
-                # 如果凸包顶点超过4个，选择距离最远的四个点
-                max_distance = 0
-                best_quad = None
-                for quad in combinations(hull_coords, 4):
-                    distance = sum(
-                        [
-                            LineString([quad[i], quad[(i + 1) % 4]]).length
-                            for i in range(4)
-                        ]
-                    )
-                    if distance > max_distance:
-                        max_distance = distance
-                        best_quad = quad
-                quadrilateral = best_quad
-            else:
-                quadrilateral = hull_coords
-
-            return np.array(quadrilateral)
+            poly_cv = coords.reshape(-1, 1, 2).astype(np.float32)
+            peri = cv2.arcLength(poly_cv, True)
+            if peri < 1e-6:
+                return None
+            lo, hi = 0.0, 0.5
+            best = None
+            for _ in range(50):
+                mid = (lo + hi) / 2
+                approx = cv2.approxPolyDP(poly_cv, mid * peri, True)
+                if len(approx) <= 4:
+                    best = approx
+                    hi = mid
+                else:
+                    lo = mid
+            if best is not None and len(best) >= 3:
+                return best.reshape(-1, 2)
+            return None
 
         return coords
     except Exception as e:
@@ -409,9 +397,13 @@ class EastRandomCropData(object):
                 ignore_tags_crop.append(tag)
                 texts_crop.append(text)
         data["image"] = img
-        data["polys"] = np.array(text_polys_crop)
-        if "iluvatar_gpu" in get_device():
-            data["polys"] = np.array(text_polys_crop).astype(np.float32)
+        # Pad polygons to uniform point count to avoid inhomogeneous array error
+        if text_polys_crop:
+            max_points = max(len(p) for p in text_polys_crop)
+            for i, poly in enumerate(text_polys_crop):
+                if len(poly) < max_points:
+                    text_polys_crop[i] = poly + [poly[-1]] * (max_points - len(poly))
+        data["polys"] = np.array(text_polys_crop, dtype=np.float32)
         data["ignore_tags"] = ignore_tags_crop
         data["texts"] = texts_crop
         return data
