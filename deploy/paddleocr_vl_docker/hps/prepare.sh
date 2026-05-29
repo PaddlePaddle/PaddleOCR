@@ -10,7 +10,11 @@ if [ -f .env ]; then
 fi
 
 HPS_PIPELINE_NAME="${HPS_PIPELINE_NAME:-PaddleOCR-VL-1.6}"
-HPS_SDK_VERSION="${HPS_SDK_VERSION:-v3.6}"
+# PaddleX version (major.minor only, e.g. 3.6) drives both the SDK release
+# directory (here) and the Triton base image tag (compose.yaml), keeping them in
+# sync. HPS_SDK_VERSION may still be set explicitly to override the derivation.
+HPS_PADDLEX_VERSION="${HPS_PADDLEX_VERSION:-3.6}"
+HPS_SDK_VERSION="${HPS_SDK_VERSION:-v${HPS_PADDLEX_VERSION}}"
 HPS_SDK_DIR="${HPS_SDK_DIR:-paddlex_hps_${HPS_PIPELINE_NAME}_sdk}"
 
 SDK_ARCHIVE="${HPS_SDK_DIR}.tar.gz"

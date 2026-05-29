@@ -31,6 +31,10 @@ services:
       context: .
       dockerfile: tritonserver.Dockerfile
       args:
+        # PaddleX version drives the base image tag. Override the whole image
+        # with HPS_TRITON_BASE_IMAGE for CPU/other hardware.
+        BASE_IMAGE: ${HPS_TRITON_BASE_IMAGE:-ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlex/hps:paddlex${HPS_PADDLEX_VERSION:-3.6}-gpu}
+        DEVICE_TYPE: ${HPS_DEVICE_TYPE:-gpu}
         HPS_SDK_DIR: ${HPS_SDK_DIR:-paddlex_hps_PaddleOCR-VL-1.6_sdk}
     container_name: paddleocr-vl-tritonserver
     depends_on:
