@@ -426,7 +426,7 @@ tar -xf rec_ppformulanet_plus_m_train.tar
 
 ### 4.3 模型训练
 
-PaddleOCR对代码进行了模块化，训练 `PP-FormulaNet_plus-M` 识别模型时需要使用 `PP-FormulaNet_plus-M` 的[配置文件](https://github.com/PaddlePaddle/PaddleOCR/blob/main/configs/rec/PP-FormuaNet/PP-FormulaNet_plus-M.yaml)。
+PaddleOCR对代码进行了模块化，训练 `PP-FormulaNet_plus-M` 识别模型时需要使用 `PP-FormulaNet_plus-M` 的[配置文件](https://github.com/PaddlePaddle/PaddleOCR/blob/{{PADDLEOCR_GITHUB_REF}}/configs/rec/PP-FormuaNet/PP-FormulaNet_plus-M.yaml)。
 
 
 训练命令如下：

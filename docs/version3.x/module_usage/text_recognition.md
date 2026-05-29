@@ -864,7 +864,7 @@ wget https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_mode
 
 ### 4.2 模型训练
 
-PaddleOCR 对代码进行了模块化，训练 `PP-OCRv5_server_rec` 识别模型时需要使用 `PP-OCRv5_server_rec` 的[配置文件](https://github.com/PaddlePaddle/PaddleOCR/blob/main/configs/rec/PP-OCRv5/PP-OCRv5_server_rec.yml)。
+PaddleOCR 对代码进行了模块化，训练 `PP-OCRv5_server_rec` 识别模型时需要使用 `PP-OCRv5_server_rec` 的[配置文件](https://github.com/PaddlePaddle/PaddleOCR/blob/{{PADDLEOCR_GITHUB_REF}}/configs/rec/PP-OCRv5/PP-OCRv5_server_rec.yml)。
 
 
 训练命令如下：

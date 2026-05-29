@@ -427,7 +427,7 @@ tar -xf rec_ppformulanet_plus_m_train.tar
 ```
 
 ### 4.3 Model Training
-PaddleOCR is modularized. To train the `PP-FormulaNet_plus-M`  model, you need to use its [config file](https://github.com/PaddlePaddle/PaddleOCR/blob/main/configs/rec/PP-FormuaNet/PP-FormulaNet_plus-M.yaml).
+PaddleOCR is modularized. To train the `PP-FormulaNet_plus-M`  model, you need to use its [config file](https://github.com/PaddlePaddle/PaddleOCR/blob/{{PADDLEOCR_GITHUB_REF}}/configs/rec/PP-FormuaNet/PP-FormulaNet_plus-M.yaml).
 
 Training commands are as follows:
 ```bash

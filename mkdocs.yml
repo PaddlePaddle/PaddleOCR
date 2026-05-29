@@ -9,7 +9,7 @@ repo_url: https://github.com/PaddlePaddle/PaddleOCR
 
 copyright: Copyright &copy; 2024 Maintained by PaddleOCR PMC.
 
-edit_uri: edit/main/docs/
+edit_uri: !ENV [DOCS_EDIT_URI, edit/main/docs/]
 
 theme:
   name: material

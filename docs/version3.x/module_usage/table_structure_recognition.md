@@ -403,7 +403,7 @@ wget https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_mode
 
 ### 4.2 模型训练
 
-PaddleOCR 对代码进行了模块化，训练 `SLANet_plus` 识别模型时需要使用 `SLANet_plus` 的[配置文件](https://github.com/PaddlePaddle/PaddleOCR/blob/main/configs/table/SLANet_plus.yml)。
+PaddleOCR 对代码进行了模块化，训练 `SLANet_plus` 识别模型时需要使用 `SLANet_plus` 的[配置文件](https://github.com/PaddlePaddle/PaddleOCR/blob/{{PADDLEOCR_GITHUB_REF}}/configs/table/SLANet_plus.yml)。
 
 
 训练命令如下：

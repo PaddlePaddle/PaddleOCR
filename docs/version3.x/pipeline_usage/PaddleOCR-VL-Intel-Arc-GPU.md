@@ -170,7 +170,7 @@ docker run -it \
 
 此步骤主要介绍如何使用 Docker Compose 将 PaddleOCR-VL 部署为服务并调用，具体流程如下：
 
-1. 分别从 [此处](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/accelerators/intel-gpu/compose.yaml) 和 [此处](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/accelerators/intel-gpu/.env) 获取 Compose 文件与环境变量配置文件并下载到本地。
+1. 分别从 [此处](https://github.com/PaddlePaddle/PaddleOCR/blob/{{PADDLEOCR_GITHUB_REF}}/deploy/paddleocr_vl_docker/accelerators/intel-gpu/compose.yaml) 和 [此处](https://github.com/PaddlePaddle/PaddleOCR/blob/{{PADDLEOCR_GITHUB_REF}}/deploy/paddleocr_vl_docker/accelerators/intel-gpu/.env) 获取 Compose 文件与环境变量配置文件并下载到本地。
 
 2. 在 `compose.yaml` 和 `.env` 文件所在目录下执行以下命令启动服务器，默认监听 **8080** 端口：
 

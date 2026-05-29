@@ -10,7 +10,7 @@
 
 | 模型        | 骨干网络       |配置文件 | BLEU score  | normed edit distance  |  ExpRate  |下载链接|
 |-----------|------------| ----- |:-----------:|:---------------------:|:---------:| ----- |
-| LaTeX-OCR | Hybrid ViT |[LaTeX_OCR_rec.yaml](https://github.com/PaddlePaddle/PaddleOCR/blob/main/configs/rec/LaTeX_OCR_rec.yaml)|   0.8821    |        0.0823         |  40.01%   |[训练模型](https://paddleocr.bj.bcebos.com/contribution/rec_latex_ocr_train.tar)|
+| LaTeX-OCR | Hybrid ViT |[LaTeX_OCR_rec.yaml](https://github.com/PaddlePaddle/PaddleOCR/blob/{{PADDLEOCR_GITHUB_REF}}/configs/rec/LaTeX_OCR_rec.yaml)|   0.8821    |        0.0823         |  40.01%   |[训练模型](https://paddleocr.bj.bcebos.com/contribution/rec_latex_ocr_train.tar)|
 
 ## 2. 环境配置
 请先参考[《运行环境准备》](../../ppocr/environment.md)配置PaddleOCR运行环境，参考[《项目克隆》](../../ppocr/blog/clone.md)克隆项目代码。
@@ -42,7 +42,7 @@ python ppocr/utils/formula_utils/math_txt2pkl.py --image_dir=train_data/LaTeXOCR
 
 ### 3.2 模型训练
 
-请参考[文本识别训练教程](../../ppocr/model_train/recognition.md)。PaddleOCR对代码进行了模块化，训练`LaTeX-OCR`识别模型时需要**更换配置文件**为`LaTeX-OCR`的[配置文件](https://github.com/PaddlePaddle/PaddleOCR/blob/main/configs/rec/LaTeX_OCR_rec.yaml)。
+请参考[文本识别训练教程](../../ppocr/model_train/recognition.md)。PaddleOCR对代码进行了模块化，训练`LaTeX-OCR`识别模型时需要**更换配置文件**为`LaTeX-OCR`的[配置文件](https://github.com/PaddlePaddle/PaddleOCR/blob/{{PADDLEOCR_GITHUB_REF}}/configs/rec/LaTeX_OCR_rec.yaml)。
 
 #### 启动训练
 

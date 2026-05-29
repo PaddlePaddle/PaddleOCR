@@ -6,7 +6,7 @@ comments: true
 
 PaddleOCR 提供可在浏览器中运行 PP-OCR 产线的浏览器端 OCR SDK **PaddleOCR.js**。您可以将文字检测与识别能力嵌入 Web 应用，在客户端完成推理。
 
-npm 上的包名为 **`@paddleocr/paddleocr-js`**。源码与演示应用位于 GitHub 仓库的 [`paddleocr-js`](https://github.com/PaddlePaddle/PaddleOCR/tree/main/paddleocr-js) 目录。
+npm 上的包名为 **`@paddleocr/paddleocr-js`**。源码与演示应用位于 GitHub 仓库的 [`paddleocr-js`](https://github.com/PaddlePaddle/PaddleOCR/tree/{{PADDLEOCR_GITHUB_REF}}/paddleocr-js) 目录。
 
 ## 安装
 

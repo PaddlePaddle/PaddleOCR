@@ -30,6 +30,9 @@ jobs:
       - name: Install dependencies
         run: pip install mike mkdocs-material jieba mkdocs-git-revision-date-localized-plugin mkdocs-git-committers-plugin-2 mkdocs-static-i18n markdown-callouts
 
+      - name: Resolve docs GitHub source refs
+        run: python tools/resolve_doc_github_refs.py --placeholder '{{PADDLEOCR_GITHUB_REF}}' --source-ref main
+
       - name: Check for broken anchor links
         env:
           ENABLE_GIT_PLUGINS: 'false'
