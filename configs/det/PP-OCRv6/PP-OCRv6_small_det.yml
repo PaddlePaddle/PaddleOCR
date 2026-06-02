@@ -2,16 +2,19 @@ Global:
   model_name: PP-OCRv6_small_det # To use static model for inference.
   debug: false
   use_gpu: true
+  use_ema: true
+  ema_decay: 0.9997
+  ema_decay_type: threshold
   epoch_num: &epoch_num 500
   log_smooth_window: 20
-  print_batch_step: 100
+  print_batch_step: 10
   save_model_dir: ./output/PP-OCRv6_small_det
   save_epoch_step: 10
   eval_batch_step:
   - 0
   - 1500
   cal_metric_during_train: false
-  checkpoints:
+  checkpoints: null
   pretrained_model: null
   save_inference_dir: null
   use_visualdl: false
@@ -36,7 +39,7 @@ Architecture:
   Head:
     name: DBHead
     k: 50
-    fix_nan: True
+    fix_nan: true
     aux_in_channels: 96
 
 Loss:
@@ -60,7 +63,7 @@ Optimizer:
     warmup_epoch: 2
   regularizer:
     name: L2
-    factor: 5.0e-05
+    factor: 1.0e-05
 
 PostProcess:
   name: DBPostProcess
@@ -95,12 +98,12 @@ Train:
           args:
             p: 0.5
             rotate:
-            - -25
-            - 25
+            - -45
+            - 45
         - type: Resize
           args:
             size:
-            - 0.5
+            - 0.3
             - 2
     - EastRandomCropData:
         size:
@@ -154,6 +157,8 @@ Eval:
         channel_first: false
     - DetLabelEncode: null
     - DetResizeForTest:
+        limit_side_len: 4000
+        limit_type: max
     - NormalizeImage:
         scale: 1./255.
         mean:

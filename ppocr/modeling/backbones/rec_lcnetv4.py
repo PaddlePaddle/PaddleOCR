@@ -34,28 +34,6 @@ from paddle.regularizer import L2Decay
 
 NET_CONFIG_DET = {
     "tiny": {
-        # stem(mid=8, out=16)  channels: 16 → 32 → 64 → 160
-        "stem": (8, 16),
-        "blocks_s1": [[3, 16, 16, 1, True], [3, 16, 16, 1, False]],
-        "blocks_s2": [
-            [3, 16, 32, 2, False],
-            [3, 32, 32, 1, True],
-            [3, 32, 32, 1, False],
-        ],
-        "blocks_s3": [
-            [3, 32, 64, 2, False],
-            [3, 64, 64, 1, True],
-            [3, 64, 64, 1, False],
-            [3, 64, 64, 1, True],
-            [3, 64, 64, 1, False],
-        ],
-        "blocks_s4": [
-            [3, 64, 160, 2, False],
-            [3, 160, 160, 1, True],
-            [3, 160, 160, 1, False],
-        ],
-    },
-    "tiny_v2": {
         # stem(mid=16, out=32)  channels: 32 → 48 → 64 → 160
         "stem": (16, 32),
         "blocks_s1": [[3, 32, 32, 1, True], [3, 32, 32, 1, False]],
@@ -99,7 +77,7 @@ NET_CONFIG_DET = {
             [3, 384, 384, 1, False],
         ],
     },
-    "base": {
+    "medium": {
         # stem(mid=64, out=128)  channels: 128 → 256 → 512 → 896
         "stem": (64, 128),
         "blocks_s1": [[3, 128, 128, 1, True], [3, 128, 128, 1, False]],
@@ -542,7 +520,7 @@ class PPLCNetV4(nn.Layer):
     """Unified PPLCNetV4 backbone for text detection and recognition.
 
     Detection (det=True):
-        model_size in {'tiny', 'tiny_v2', 'small', 'base'} — see NET_CONFIG_DET.
+        model_size in {'tiny', 'small', 'medium'} — see NET_CONFIG_DET.
         Returns 4-level feature list [s1_out, s2_out, s3_out, s4_out].
 
     Recognition (det=False):
