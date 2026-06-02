@@ -132,7 +132,6 @@ class TEDS(object):
 
     def load_html_tree(self, node, parent=None):
         """Converts HTML tree to the format required by apted"""
-        global __tokens__
         if node.tag == "td":
             if self.structure_only:
                 cell = []

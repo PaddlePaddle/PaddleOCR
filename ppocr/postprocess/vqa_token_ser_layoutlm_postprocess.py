@@ -112,5 +112,5 @@ class DistillationSerPostProcess(VQASerTokenLayoutLMPostProcess):
             pred = preds[name]
             if self.key is not None:
                 pred = pred[self.key]
-            output[name] = super().__call__(pred, batch=batch, *args, **kwargs)
+            output[name] = super().__call__(pred, batch, *args, **kwargs)
         return output

@@ -367,7 +367,7 @@ class DetectionMTWI2018Evaluator(object):
 
 
 if __name__ == "__main__":
-    evaluator = DetectionICDAR2013Evaluator()
+    evaluator = DetectionMTWI2018Evaluator()
     gts = [
         [
             {

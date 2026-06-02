@@ -254,9 +254,6 @@ class DetectionICDAR2013Evaluator(object):
                 if gtNum not in gtDontCareRectsNum:
                     match, matchesDet = one_to_many_match(gtNum)
                     if match is True:
-                        evaluationLog += "num_overlaps_gt=" + str(
-                            num_overlaps_gt(gtNum)
-                        )
                         gtRectMat[gtNum] = 1
                         recallAccum += (
                             self.mtype_oo_o if len(matchesDet) == 1 else self.mtype_om_o
