@@ -14,10 +14,12 @@
 import asyncio
 import base64
 import io
+import re
 from pathlib import PurePath
 from queue import Queue
 from threading import Thread
 from typing import Any, Callable, Dict, Optional, Union
+from urllib.parse import urlparse
 
 import numpy as np
 import puremagic
@@ -34,21 +36,39 @@ except ImportError:
 
 
 class _EngineWrapper:
-    """Wrapper to run synchronous PaddleOCR engine in async context"""
+    """Wrapper to run synchronous PaddleOCR engine in async context.
+
+    Args:
+        engine: The synchronous PaddleOCR engine instance to wrap.
+    """
 
     def __init__(self, engine: Any) -> None:
         self._engine = engine
         self._queue: Queue = Queue()
         self._closed = False
         self._loop = asyncio.get_running_loop()
-        self._thread = Thread(target=self._worker, daemon=False)
+        self._thread = Thread(target=self._worker)
         self._thread.start()
 
     @property
     def engine(self) -> Any:
+        """Get the wrapped engine instance."""
         return self._engine
 
     async def call(self, func: Callable, *args: Any, **kwargs: Any) -> Any:
+        """Call a function on the wrapped engine asynchronously.
+
+        Args:
+            func: The function to call on the engine.
+            *args: Positional arguments to pass to the function.
+            **kwargs: Keyword arguments to pass to the function.
+
+        Returns:
+            The result of the function call.
+
+        Raises:
+            RuntimeError: If the engine wrapper has been closed.
+        """
         if self._closed:
             raise RuntimeError("Engine wrapper has already been closed")
         fut = self._loop.create_future()
@@ -56,12 +76,14 @@ class _EngineWrapper:
         return await fut
 
     async def close(self) -> None:
+        """Close the engine wrapper and stop the worker thread."""
         if not self._closed:
             self._queue.put(None)
             await self._loop.run_in_executor(None, self._thread.join)
             self._closed = True
 
     def _worker(self) -> None:
+        """Worker thread that processes tasks from the queue."""
         while not self._closed:
             item = self._queue.get()
             if item is None:
@@ -77,7 +99,13 @@ class _EngineWrapper:
 
 
 class LocalExecutor(Executor):
-    """Executor for local PaddleOCR inference"""
+    """Executor for local PaddleOCR inference.
+
+    Args:
+        pipeline: The pipeline type to use (e.g., "OCR", "PP-StructureV3").
+        pipeline_config: Optional path to pipeline configuration file.
+        device: Optional device specification (e.g., "cpu", "gpu:0").
+    """
 
     def __init__(
         self,
@@ -139,6 +167,14 @@ class LocalExecutor(Executor):
             raise ValueError(f"Unknown pipeline: {self._pipeline}")
 
     def _is_file_path(self, s: str) -> bool:
+        """Check if a string is a valid file path.
+
+        Args:
+            s: The string to check.
+
+        Returns:
+            True if the string is a valid file path, False otherwise.
+        """
         try:
             PurePath(s)
             return True
@@ -146,9 +182,16 @@ class LocalExecutor(Executor):
             return False
 
     def _is_url(self, s: str) -> bool:
+        """Check if a string is a valid HTTP/HTTPS URL.
+
+        Args:
+            s: The string to check.
+
+        Returns:
+            True if the string is a valid HTTP/HTTPS URL, False otherwise.
+        """
         if not (s.startswith("http://") or s.startswith("https://")):
             return False
-        from urllib.parse import urlparse
 
         result = urlparse(s)
         return all([result.scheme, result.netloc]) and result.scheme in (
@@ -157,12 +200,26 @@ class LocalExecutor(Executor):
         )
 
     def _is_base64(self, s: str) -> bool:
-        import re
+        """Check if a string is a valid Base64-encoded string.
 
+        Args:
+            s: The string to check.
+
+        Returns:
+            True if the string is valid Base64, False otherwise.
+        """
         pattern = r"^[A-Za-z0-9+/]+={0,2}$"
         return bool(re.fullmatch(pattern, s))
 
     def _infer_file_type_from_bytes(self, data: bytes) -> Optional[str]:
+        """Infer file type from raw bytes using magic numbers.
+
+        Args:
+            data: Raw bytes of the file.
+
+        Returns:
+            The inferred file type ("image" or "pdf"), or None if unknown.
+        """
         mime = puremagic.from_string(data, mime=True)
         if mime.startswith("image/"):
             return "image"
@@ -171,7 +228,17 @@ class LocalExecutor(Executor):
         return None
 
     def _process_input_for_local(self, input_data: str) -> Union[str, np.ndarray]:
-        """Prepare input for local inference"""
+        """Prepare input for local inference.
+
+        Args:
+            input_data: Input string, which can be a file path, URL, or Base64-encoded data.
+
+        Returns:
+            Either a file path/URL string or a numpy array for Base64-decoded images.
+
+        Raises:
+            ValueError: If the input format is invalid or Base64 decoding fails.
+        """
         if self._is_base64(input_data):
             if input_data.startswith("data:"):
                 base64_data = input_data.split(",", 1)[1]
@@ -195,6 +262,21 @@ class LocalExecutor(Executor):
     async def execute(
         self, input_data: str, file_type: Optional[str] = None, **options
     ) -> Dict[str, Any]:
+        """Execute inference on the input data.
+
+        Args:
+            input_data: Input string (file path, URL, or Base64-encoded data).
+            file_type: Unused parameter, kept for API compatibility. The file type
+                       is inferred from the input data.
+            **options: Additional options passed to the inference engine.
+
+        Returns:
+            A dictionary containing the inference results.
+
+        Raises:
+            RuntimeError: If the engine wrapper is not initialized.
+            ValueError: If the input data format is invalid.
+        """
         if not self._engine_wrapper:
             raise RuntimeError("Engine wrapper not initialized")
 
@@ -208,7 +290,14 @@ class LocalExecutor(Executor):
         return self._parse_result(result)
 
     def _parse_result(self, result: Any) -> Dict[str, Any]:
-        """Parse local inference result into unified format"""
+        """Parse local inference result into unified format.
+
+        Args:
+            result: The raw result from the inference engine.
+
+        Returns:
+            A dictionary containing the parsed result in a unified format.
+        """
         if self._pipeline == "OCR":
             return self._parse_ocr_result(result)
         else:

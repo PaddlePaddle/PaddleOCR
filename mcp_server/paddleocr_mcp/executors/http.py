@@ -75,6 +75,57 @@ class HTTPExecutor(Executor):
     def _parse_response(self, response: Dict[str, Any]) -> Dict[str, Any]:
         """Parse response into unified format (subclass implements)"""
 
+    def _parse_ocr_response_http(self, result_data: Dict[str, Any]) -> Dict[str, Any]:
+        """Parse OCR response from HTTP API (shared implementation)"""
+        ocr_results = result_data.get("ocrResults", [])
+        all_texts, all_confidences, text_lines = [], [], []
+
+        for ocr_result in ocr_results:
+            pruned = ocr_result["prunedResult"]
+            texts = pruned["rec_texts"]
+            scores = pruned["rec_scores"]
+            boxes = pruned["rec_boxes"]
+
+            for i, text in enumerate(texts):
+                if text and text.strip():
+                    conf = scores[i] if i < len(scores) else 0
+                    all_texts.append(text.strip())
+                    all_confidences.append(conf)
+                    text_lines.append(
+                        {
+                            "text": text.strip(),
+                            "confidence": round(conf, 3),
+                            "bbox": boxes[i],
+                        }
+                    )
+
+        return {
+            "text": "\n".join(all_texts),
+            "confidence": (
+                sum(all_confidences) / len(all_confidences) if all_confidences else 0
+            ),
+            "text_lines": text_lines,
+        }
+
+    def _parse_layout_response_http(
+        self, result_data: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        """Parse layout response from HTTP API (shared implementation)"""
+        layout_results = result_data.get("layoutParsingResults", [])
+        markdown_parts = []
+        all_images_mapping = {}
+
+        for res in layout_results:
+            markdown_parts.append(res["markdown"]["text"])
+            images = res["markdown"]["images"]
+            all_images_mapping.update(images)
+
+        return {
+            "markdown": "\n".join(markdown_parts),
+            "pages": len(layout_results),
+            "images_mapping": all_images_mapping,
+        }
+
     async def execute(
         self, input_data: str, file_type: Optional[str] = None, **options
     ) -> Dict[str, Any]:

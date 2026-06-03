@@ -37,9 +37,18 @@ from .base import (
 
 
 class AIStudioExecutor(Executor):
-    """Executor for AI Studio official API using AsyncPaddleOCRClient"""
+    """Executor for AI Studio official API using AsyncPaddleOCRClient.
+
+    Supports the following pipelines:
+    - OCR: Text recognition using PP-OCRv5
+    - PP-StructureV3: Document structure analysis and parsing
+    - PaddleOCR-VL: Vision-language model for document understanding
+    - PaddleOCR-VL-1.5: Enhanced vision-language model
+    - PaddleOCR-VL-1.6: Latest vision-language model with improved accuracy
+    """
 
     # Pipeline to SDK Model mapping
+    # Maps pipeline names to their corresponding Model enum values from the SDK
     _PIPELINE_MODEL_MAP = {
         "OCR": Model.PP_OCRV5,
         "PP-StructureV3": Model.PP_STRUCTURE_V3,
@@ -49,7 +58,9 @@ class AIStudioExecutor(Executor):
     }
 
     # Pipeline type classification
+    # OCR pipelines return text recognition results
     _OCR_PIPELINES = {"OCR"}
+    # Document parsing pipelines return structured markdown and image mappings
     _DOC_PARSING_PIPELINES = {
         "PP-StructureV3",
         "PaddleOCR-VL",
@@ -95,8 +106,15 @@ class AIStudioExecutor(Executor):
         """Get Model enum value for the pipeline"""
         return self._PIPELINE_MODEL_MAP[self._pipeline]
 
-    def _resolve_input_source(self, input_data: str):
-        """Resolve input source (URL or file path)"""
+    def _resolve_input_source(self, input_data: str) -> Dict[str, str]:
+        """Resolve input source (URL or file path).
+
+        Args:
+            input_data: Either a URL (http:// or https://) or a local file path.
+
+        Returns:
+            Dict with either 'file_url' key for URLs or 'file_path' key for local paths.
+        """
         if input_data.startswith("http://") or input_data.startswith("https://"):
             return {"file_url": input_data}
         else:
@@ -105,6 +123,7 @@ class AIStudioExecutor(Executor):
     async def execute(
         self, input_data: str, file_type: Optional[str] = None, **options
     ) -> Dict[str, Any]:
+        # Note: file_type is unused for AIStudio executor (parameter kept for base class consistency)
         if not self._client:
             raise RuntimeError("Executor not started")
 
@@ -151,7 +170,17 @@ class AIStudioExecutor(Executor):
             raise ExecutionTimeoutError(f"Request timeout: {e}")
 
     def _parse_ocr_result(self, result) -> Dict[str, Any]:
-        """Parse SDK OCRResult into unified format"""
+        """Parse SDK OCRResult into unified format.
+
+        Args:
+            result: OCRResult object from AsyncPaddleOCRClient containing page results.
+
+        Returns:
+            Dict with keys:
+                - text: Concatenated text from all detected lines
+                - confidence: Average confidence across all lines
+                - text_lines: List of dicts with 'text', 'confidence', and 'bbox' for each line
+        """
         clean_texts, confidences, text_lines = [], [], []
 
         for page_result in result.pages:
@@ -178,7 +207,17 @@ class AIStudioExecutor(Executor):
         }
 
     def _parse_doc_parsing_result(self, result) -> Dict[str, Any]:
-        """Parse SDK DocParsingResult into unified format"""
+        """Parse SDK DocParsingResult into unified format.
+
+        Args:
+            result: DocParsingResult object from AsyncPaddleOCRClient containing page results.
+
+        Returns:
+            Dict with keys:
+                - markdown: Concatenated markdown from all pages
+                - pages: Total number of pages processed
+                - images_mapping: Dict mapping image keys to their URLs across all pages
+        """
         markdown_parts = []
         all_images_mapping = {}
 
