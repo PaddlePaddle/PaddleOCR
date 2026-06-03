@@ -43,19 +43,19 @@ paddleocr api \
 - `--save_resources`：保存结果对象引用资源的目录。
 - `--overwrite_resources`：保存资源时覆盖已有文件。
 - `--page_ranges`：页码范围，例如 `2,4-6`。
-- `--use_doc_orientation_classify` / `--no-use_doc_orientation_classify`：启用或禁用文档方向分类。
-- `--use_doc_unwarping` / `--no-use_doc_unwarping`：启用或禁用文档扭曲矫正。
-- `--use_textline_orientation` / `--no-use_textline_orientation`：启用或禁用文本行方向检测。
+- `--use_doc_orientation_classify`：文档方向分类，`True` 或 `False`。
+- `--use_doc_unwarping`：文档扭曲矫正，`True` 或 `False`。
+- `--use_textline_orientation`：文本行方向检测，`True` 或 `False`。
 - `--text_det_limit_side_len`：文本检测图像边长限制。
 - `--text_det_limit_type`：边长限制类型，`min` 或 `max`。
 - `--text_rec_score_thresh`：文本识别置信度阈值。
-- `--use_layout_detection` / `--no-use_layout_detection`：启用或禁用版面检测。
-- `--use_seal_recognition` / `--no-use_seal_recognition`：启用或禁用印章识别。
-- `--use_table_recognition` / `--no-use_table_recognition`：启用或禁用表格识别。
-- `--use_formula_recognition` / `--no-use_formula_recognition`：启用或禁用公式识别。
-- `--use_chart_recognition` / `--no-use_chart_recognition`：启用或禁用图表识别。
-- `--visualize` / `--no-visualize`：启用或禁用可视化结果图。
-- `--prettify_markdown` / `--no-prettify_markdown`：启用或禁用 markdown 美化。
+- `--use_layout_detection`：版面检测，`True` 或 `False`。
+- `--use_seal_recognition`：印章识别，`True` 或 `False`。
+- `--use_table_recognition`：表格识别，`True` 或 `False`。
+- `--use_formula_recognition`：公式识别，`True` 或 `False`。
+- `--use_chart_recognition`：图表识别，`True` 或 `False`。
+- `--visualize`：可视化结果图，`True` 或 `False`。
+- `--prettify_markdown`：markdown 美化，`True` 或 `False`。
 
 ## OCR 示例
 
@@ -75,7 +75,7 @@ paddleocr api \
 paddleocr api \
   --model_type doc_parsing \
   --file_url https://example.com/report.pdf \
-  --use_chart_recognition \
+  --use_chart_recognition True \
   --save_resources ./doc-assets \
   --output doc-result.json
 ```

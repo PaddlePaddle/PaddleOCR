@@ -10,7 +10,7 @@ PaddleOCR 提供官方 Agent Skills，将 OCR 与文档解析任务的触发规�
 
 | 需求 | 推荐 Skill | 输出 |
 | --- | --- | --- |
-| 只想提取图片或 PDF 中的纯文本 | `paddleocr-text-recognition` | 纯文本 |
+| 只想提取图片或 PDF 中的纯文本 | `paddleocr-text-recognition` | 行级文本及对应边界框和置信度分数 |
 | 需要保留标题、段落、表格、公式等文档结构 | `paddleocr-doc-parsing` | Markdown / 结构化结果 |
 
 ## 包含的 Skills
@@ -150,27 +150,3 @@ Skill 源码位于 `PaddleOCR/skills` 目录。请参考对应 AI 应用的安�
 ```text
 解析本地文件 C:\docs\report.pdf，并返回完整结构化结果。
 ```
-
-## 本地验证
-
-本节介绍如何在本地验证 Skill 配置是否正常。
-
-> 以下示例覆盖两个 Skill。如果只需使用其中一个，只执行对应命令即可。
-
-1. 配置环境变量（见上文 [配置环境变量](#配置环境变量)）。
-
-   ```shell
-   export PADDLEOCR_ACCESS_TOKEN="<ACCESS_TOKEN>"
-   ```
-
-2. 运行测试命令。
-
-   ```shell
-   # OCR 测试
-   paddleocr api --model_type ocr --file_url "https://paddleocr-aistudio-app.bj.bcebos.com/doc_images/doc_img.jpg"
-
-   # 文档解析测试
-   paddleocr api --model_type doc_parsing --file_url "https://paddleocr-aistudio-app.bj.bcebos.com/doc_images/doc_img.jpg"
-   ```
-
-   如需自定义测试 URL，修改 `--file_url` 参数即可。

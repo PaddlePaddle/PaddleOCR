@@ -10,7 +10,7 @@ PaddleOCR provides official Agent Skills that package the routing rules, calling
 
 | Need | Recommended Skill | Output |
 | --- | --- | --- |
-| Extract plain text from images or PDFs | `paddleocr-text-recognition` | Plain text |
+| Extract plain text from images or PDFs | `paddleocr-text-recognition` | line-level text with bounding boxes and confidence scores |
 | Preserve headings, paragraphs, tables, formulas, and layout structure | `paddleocr-doc-parsing` | Markdown / structured output |
 
 ## Included Skills
@@ -150,27 +150,3 @@ Local file example:
 ```text
 Parse local file C:\docs\report.pdf and return complete structured output.
 ```
-
-## Local Verification
-
-This section shows how to verify that the skill configuration works as expected.
-
-> The examples below cover both skills. If you only need one, run only the corresponding commands.
-
-1. Configure environment variables as described in [Configure Environment Variables](#configure-environment-variables).
-
-   ```shell
-   export PADDLEOCR_ACCESS_TOKEN="<ACCESS_TOKEN>"
-   ```
-
-2. Run the test commands.
-
-   ```shell
-   # OCR test
-   paddleocr api --model_type ocr --file_url "https://paddleocr-aistudio-app.bj.bcebos.com/doc_images/doc_img.jpg"
-
-   # Document parsing test
-   paddleocr api --model_type doc_parsing --file_url "https://paddleocr-aistudio-app.bj.bcebos.com/doc_images/doc_img.jpg"
-   ```
-
-   To use a custom test URL, modify the `--file_url` parameter.

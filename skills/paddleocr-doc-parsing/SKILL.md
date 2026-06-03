@@ -18,6 +18,10 @@ metadata:
         - paddleocr
     primaryEnv: PADDLEOCR_ACCESS_TOKEN
     emoji: "📄"
+    install:
+      - kind: uv
+        package: paddleocr
+        bins: [paddleocr]
 ---
 
 # PaddleOCR Document Parsing
@@ -31,28 +35,6 @@ metadata:
 - Documents with charts and diagrams
 - Multi-column layouts (newspapers, magazines, brochures)
 - Complex document structures requiring layout analysis
-
-## Installation
-
-Install PaddleOCR 3.6.0+:
-
-```bash
-pip install "paddleocr>=3.6.0"
-```
-
-## Configuration
-
-Get your access token from [AI Studio](https://aistudio.baidu.com/account/accessToken), then set environment variable:
-
-```bash
-export PADDLEOCR_ACCESS_TOKEN=your_token_here
-```
-
-**Optional**: set custom base URL (defaults to official service):
-
-```bash
-export PADDLEOCR_BASE_URL=https://paddleocr.aistudio-app.com
-```
 
 ## Usage
 
@@ -76,25 +58,22 @@ paddleocr api \
 
 ### With Specific Model
 
-PP-StructureV3 (better for tables and formulas):
+PP-StructureV3:
 
 ```bash
 paddleocr api \
   --model_type doc_parsing \
   --model PP-StructureV3 \
-  --file_path "./report.pdf" \
-  --use_table_recognition \
-  --use_formula_recognition
+  --file_path "./report.pdf"
 ```
 
-PaddleOCR-VL-1.6 (better for general documents, default):
+PaddleOCR-VL-1.6:
 
 ```bash
 paddleocr api \
   --model_type doc_parsing \
   --model PaddleOCR-VL-1.6 \
-  --file_url "https://..." \
-  --use_chart_recognition
+  --file_url "https://..."
 ```
 
 ### Common Options
@@ -113,18 +92,17 @@ paddleocr api \
   --output result.json \
   --save_resources ./resources
 
-# With layout detection
+# With seal recognition
 paddleocr api \
   --model_type doc_parsing \
   --file_path "./document.pdf" \
-  --use_layout_detection \
-  --use_seal_recognition
+  --use_seal_recognition True
 
 # Prettify markdown output
 paddleocr api \
   --model_type doc_parsing \
   --file_path "./document.pdf" \
-  --prettify_markdown
+  --prettify_markdown True
 ```
 
 ### Output Format
@@ -147,8 +125,17 @@ paddleocr api \
 }
 ```
 
+## Important Notes
+
+**Display complete results**: Always show the full extracted content to users. Do not truncate with "..." unless content exceeds 10,000 characters. When multiple pages are processed, summarize if needed but provide complete results when explicitly requested.
+
+**Handle errors gracefully**: When the CLI returns an error, inform the user of the specific issue rather than silently failing. Common errors:
+- Authentication: `PADDLEOCR_ACCESS_TOKEN` invalid or missing
+- Quota: API rate limit exceeded
+- No content detected: Document may be blank or contain no extractable text
+
 ## CLI Reference
 
-For full documentation, see: [PaddleOCR 官方 API CLI](../../docs/version3.x/inference_deployment/serving/paddleocr_official_api/cli.md)
-
 Run `paddleocr api --help` for all options.
+
+For full documentation, see: [PaddleOCR Official Documentation](https://www.paddleocr.ai/latest/en/version3.x/inference_deployment/serving/paddleocr_official_api/cli.html)
