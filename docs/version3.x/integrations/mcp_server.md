@@ -163,7 +163,6 @@ paddleocr_mcp --help
           "env": {
             "PADDLEOCR_MCP_PIPELINE": "OCR",
             "PADDLEOCR_MCP_PPOCR_SOURCE": "aistudio",
-            "PADDLEOCR_MCP_SERVER_URL": "<your-server-url>", 
             "PADDLEOCR_MCP_AISTUDIO_ACCESS_TOKEN": "<your-access-token>"
           }
         }
@@ -173,8 +172,8 @@ paddleocr_mcp --help
 
     **说明**：
 
-    - 将 `<your-server-url>` 替换为上一步获取的服务基础 URL。
     - 将 `<your-access-token>` 替换为您的访问令牌。
+- 如需使用自定义服务地址，可设置 `PADDLEOCR_MCP_BASE_URL` 环境变量。
 
     **注意**：
 
@@ -263,7 +262,7 @@ paddleocr_mcp --help
 
 请参考 [2.1 快速开始](#21)。
 
-对于文字识别以外的任务，请在 PaddleOCR 官网获取任务对应的服务基础 URL，并正确设置 `PADDLEOCR_MCP_PIPELINE` 与 `PADDLEOCR_MCP_SERVER_URL`（参数说明详见第 4 节）。
+对于文字识别以外的任务，请正确设置 `PADDLEOCR_MCP_PIPELINE`（参数说明详见第 4 节）。
 
 #### 模式三：千帆平台服务
 
@@ -412,7 +411,8 @@ paddleocr_mcp --pipeline OCR --ppocr_source self_hosted --server_url http://127.
 |:---------|:-----------|:-----|:-----|:-------|:-------|
 | `PADDLEOCR_MCP_PIPELINE` | `--pipeline` | `str` | 要运行的产线。 | `"OCR"`，`"PP-StructureV3"`，`"PaddleOCR-VL"`，`"PaddleOCR-VL-1.5"`，`"PaddleOCR-VL-1.6"` | `"OCR"` |
 | `PADDLEOCR_MCP_PPOCR_SOURCE` | `--ppocr_source` | `str` | PaddleOCR 能力来源。 | `"local"`（本地 Python 库），`"aistudio"`（PaddleOCR 官方服务），`"qianfan"`（千帆平台服务），`"self_hosted"`（自托管服务） | `"local"` |
-| `PADDLEOCR_MCP_SERVER_URL` | `--server_url` | `str` | 底层服务基础 URL（`aistudio`、`qianfan`、`self_hosted` 模式下必需）。 | - | `None` |
+| `PADDLEOCR_MCP_SERVER_URL` | `--server_url` | `str` | 底层服务基础 URL（`qianfan`、`self_hosted` 模式下必需）。 | - | `None` |
+| `PADDLEOCR_MCP_BASE_URL` | `--base_url` | `str` | 自定义 AI Studio 服务基础 URL（`aistudio` 模式可选）。 | - | `None` |
 | `PADDLEOCR_MCP_AISTUDIO_ACCESS_TOKEN` | `--aistudio_access_token` | `str` | AI Studio 访问令牌（`aistudio` 模式下必需）。 | - | `None` |
 | `PADDLEOCR_MCP_TIMEOUT` | `--timeout` | `int` | 底层服务请求的读取超时时间（秒）。 | - | `60` |
 | `PADDLEOCR_MCP_DEVICE` | `--device` | `str` | 指定运行推理的设备（仅在 `local` 模式下生效）。 | - | `None` |

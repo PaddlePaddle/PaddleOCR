@@ -254,7 +254,6 @@ Configuration example:
       "env": {
         "PADDLEOCR_MCP_PIPELINE": "OCR",
         "PADDLEOCR_MCP_PPOCR_SOURCE": "aistudio",
-        "PADDLEOCR_MCP_SERVER_URL": "<your-server-url>", 
         "PADDLEOCR_MCP_AISTUDIO_ACCESS_TOKEN": "<your-access-token>"
       }
     }
@@ -265,8 +264,8 @@ Configuration example:
 **Notes**:
 
 - `PADDLEOCR_MCP_PIPELINE` should be set to the pipeline name. See Section 4 for more details.
-- Replace `<your-server-url>` with your service base URL.
 - Replace `<your-access-token>` with your access token.
+- If you need to use a custom service address, you can set the `PADDLEOCR_MCP_BASE_URL` environment variable.
 
 **Important**:
 
@@ -419,7 +418,8 @@ You can control the MCP server via environment variables or CLI arguments.
 | ------------------------------------- | ------------------------- | ------ | --------------------------------------------------------------------- | ---------------------------------------- | ------------- |
 | `PADDLEOCR_MCP_PIPELINE`              | `--pipeline`              | `str`  | Pipeline to run.                                                      | `"OCR"`, `"PP-StructureV3"`, `"PaddleOCR-VL"`, `"PaddleOCR-VL-1.5"`, `"PaddleOCR-VL-1.6"`              | `"OCR"`       |
 | `PADDLEOCR_MCP_PPOCR_SOURCE`          | `--ppocr_source`          | `str`  | Source of PaddleOCR capabilities.                                     | `"local"` (local Python library), `"aistudio"` (PaddleOCR official service), `"qianfan"` (Qianfan platform service), `"self_hosted"` (self-hosted service) | `"local"`     |
-| `PADDLEOCR_MCP_SERVER_URL`            | `--server_url`            | `str`  | Base URL for the underlying service (required for `aistudio`, `qianfan`, or `self_hosted` modes). | -                                        | `None`        |
+| `PADDLEOCR_MCP_SERVER_URL`            | `--server_url`            | `str`  | Base URL for the underlying service (required for `qianfan` or `self_hosted` modes). | -                                        | `None`        |
+| `PADDLEOCR_MCP_BASE_URL`             | `--base_url`             | `str`  | Custom AI Studio service base URL (optional for `aistudio` mode). | -                                        | `None`        |
 | `PADDLEOCR_MCP_AISTUDIO_ACCESS_TOKEN` | `--aistudio_access_token` | `str`  | AI Studio access token (required for `aistudio` mode).                 | -                                        | `None`        |
 | `PADDLEOCR_MCP_TIMEOUT`               | `--timeout`               | `int`  | Read timeout for the underlying requests (seconds).                          | -                                        | `60`          |
 | `PADDLEOCR_MCP_DEVICE`                | `--device`                | `str`  | Device for inference (`local` mode only).                          | -                                        | `None`        |
