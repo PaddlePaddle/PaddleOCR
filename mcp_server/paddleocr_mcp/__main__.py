@@ -3,8 +3,7 @@
 # Copyright (c) 2025 PaddlePaddle Authors. All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
+# you may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
@@ -21,7 +20,8 @@ import sys
 
 from fastmcp import FastMCP
 
-from .pipelines import create_pipeline_handler
+from .executors import create_executor
+from .capabilities import create_capability
 
 
 def _parse_args() -> argparse.Namespace:
@@ -48,6 +48,7 @@ def _parse_args() -> argparse.Namespace:
         default=os.getenv("PADDLEOCR_MCP_PPOCR_SOURCE", "local"),
         help="Source of PaddleOCR functionality: local (local library), aistudio (AI Studio service), qianfan (Qianfan service), self_hosted (self-hosted server).",
     )
+
     parser.add_argument(
         "--http",
         action="store_true",
@@ -84,7 +85,7 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--server_url",
         default=os.getenv("PADDLEOCR_MCP_SERVER_URL"),
-        help="Base URL of the underlying server (required in service mode).",
+        help="Base URL of the underlying service (required in qianfan/self_hosted mode).",
     )
     parser.add_argument(
         "--aistudio_access_token",
@@ -95,6 +96,11 @@ def _parse_args() -> argparse.Namespace:
         "--qianfan_api_key",
         default=os.getenv("PADDLEOCR_MCP_QIANFAN_API_KEY"),
         help="Qianfan API key (required for Qianfan).",
+    )
+    parser.add_argument(
+        "--base_url",
+        default=os.getenv("PADDLEOCR_MCP_BASE_URL"),
+        help="Custom base URL for AI Studio (optional).",
     )
     parser.add_argument(
         "--timeout",
@@ -116,7 +122,39 @@ def _validate_args(args: argparse.Namespace) -> None:
         )
         sys.exit(2)
 
-    if args.ppocr_source in ["aistudio", "qianfan", "self_hosted"]:
+    if args.ppocr_source == "aistudio":
+        if not args.aistudio_access_token:
+            print("Error: The AI Studio access token is required.", file=sys.stderr)
+            print(
+                "Please either set `--aistudio_access_token` or set the environment variable "
+                "`PADDLEOCR_MCP_AISTUDIO_ACCESS_TOKEN`.",
+                file=sys.stderr,
+            )
+            sys.exit(2)
+    elif args.ppocr_source == "qianfan":
+        if not args.server_url:
+            print("Error: The server base URL is required.", file=sys.stderr)
+            print(
+                "Please either set `--server_url` or set the environment variable "
+                "`PADDLEOCR_MCP_SERVER_URL`.",
+                file=sys.stderr,
+            )
+            sys.exit(2)
+        if not args.qianfan_api_key:
+            print("Error: The Qianfan API key is required.", file=sys.stderr)
+            print(
+                "Please either set `--qianfan_api_key` or set the environment variable "
+                "`PADDLEOCR_MCP_QIANFAN_API_KEY`.",
+                file=sys.stderr,
+            )
+            sys.exit(2)
+        if args.pipeline not in ("PP-StructureV3", "PaddleOCR-VL"):
+            print(
+                f"{repr(args.pipeline)} is currently not supported when using the {repr(args.ppocr_source)} source.",
+                file=sys.stderr,
+            )
+            sys.exit(2)
+    elif args.ppocr_source == "self_hosted":
         if not args.server_url:
             print("Error: The server base URL is required.", file=sys.stderr)
             print(
@@ -126,58 +164,32 @@ def _validate_args(args: argparse.Namespace) -> None:
             )
             sys.exit(2)
 
-        if args.ppocr_source == "aistudio" and not args.aistudio_access_token:
-            print("Error: The AI Studio access token is required.", file=sys.stderr)
-            print(
-                "Please either set `--aistudio_access_token` or set the environment variable "
-                "`PADDLEOCR_MCP_AISTUDIO_ACCESS_TOKEN`.",
-                file=sys.stderr,
-            )
-            sys.exit(2)
-        elif args.ppocr_source == "qianfan":
-            if not args.qianfan_api_key:
-                print("Error: The Qianfan API key is required.", file=sys.stderr)
-                print(
-                    "Please either set `--qianfan_api_key` or set the environment variable "
-                    "`PADDLEOCR_MCP_QIANFAN_API_KEY`.",
-                    file=sys.stderr,
-                )
-                sys.exit(2)
-            if args.pipeline not in ("PP-StructureV3", "PaddleOCR-VL"):
-                print(
-                    f"{repr(args.pipeline)} is currently not supported when using the {repr(args.ppocr_source)} source.",
-                    file=sys.stderr,
-                )
-                sys.exit(2)
-
 
 async def async_main() -> None:
     """Asynchronous main entry point."""
     args = _parse_args()
-
     _validate_args(args)
 
-    try:
-        pipeline_handler = create_pipeline_handler(
-            args.pipeline,
-            args.ppocr_source,
-            pipeline_config=args.pipeline_config,
-            device=args.device,
-            server_url=args.server_url,
-            aistudio_access_token=args.aistudio_access_token,
-            qianfan_api_key=args.qianfan_api_key,
-            timeout=args.timeout,
-        )
-    except Exception as e:
-        print(f"Failed to create the pipeline handler: {e}", file=sys.stderr)
-        if args.verbose:
-            import traceback
+    # Create executor
+    executor = create_executor(
+        source=args.ppocr_source,
+        pipeline=args.pipeline,
+        token=args.aistudio_access_token,
+        base_url=args.base_url or args.server_url,
+        timeout=args.timeout,
+        api_key=args.qianfan_api_key,
+        pipeline_config=args.pipeline_config,
+        device=args.device,
+    )
 
-            traceback.print_exc(file=sys.stderr)
-        sys.exit(1)
+    # Create capability
+    capability = create_capability(
+        pipeline=args.pipeline,
+        executor=executor,
+    )
 
     try:
-        await pipeline_handler.start()
+        await capability.start()
 
         server_name = f"PaddleOCR {args.pipeline} MCP server"
         mcp = FastMCP(
@@ -185,7 +197,7 @@ async def async_main() -> None:
             mask_error_details=True,
         )
 
-        pipeline_handler.register_tools(mcp)
+        capability.register_tools(mcp)
 
         log_level = "INFO" if args.verbose else "WARNING"
 
@@ -208,7 +220,7 @@ async def async_main() -> None:
         sys.exit(1)
 
     finally:
-        await pipeline_handler.stop()
+        await capability.stop()
 
 
 def main():
