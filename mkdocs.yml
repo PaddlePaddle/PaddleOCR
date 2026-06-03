@@ -9,7 +9,7 @@ repo_url: https://github.com/PaddlePaddle/PaddleOCR
 
 copyright: Copyright &copy; 2024 Maintained by PaddleOCR PMC.
 
-edit_uri: !ENV [DOCS_EDIT_URI, edit/main/docs/]
+edit_uri: edit/main/docs/
 
 theme:
   name: material
@@ -332,6 +332,7 @@ nav:
   - PaddleOCR-VL:
     - 使用教程: version3.x/pipeline_usage/PaddleOCR-VL.md
     - PaddleOCR-VL-1.5简介: version3.x/algorithm/PaddleOCR-VL/PaddleOCR-VL-1.5.md
+    - PaddleOCR-VL-1.6简介: version3.x/algorithm/PaddleOCR-VL/PaddleOCR-VL-1.6.md
     - PaddleOCR-VL简介: version3.x/algorithm/PaddleOCR-VL/PaddleOCR-VL.md
     - PaddleOCR-VL NVIDIA Blackwell 架构 GPU 使用教程: version3.x/pipeline_usage/PaddleOCR-VL-NVIDIA-Blackwell.md
     - PaddleOCR-VL 昆仑芯 XPU 使用教程: version3.x/pipeline_usage/PaddleOCR-VL-Kunlunxin-XPU.md
