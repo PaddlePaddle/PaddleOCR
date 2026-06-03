@@ -223,7 +223,7 @@ async def async_main() -> None:
         await capability.stop()
 
 
-def main():
+def main() -> None:
     """Main entry point."""
     asyncio.run(async_main())
 
