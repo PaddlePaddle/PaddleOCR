@@ -25,7 +25,12 @@ from paddleocr._api_client.errors import (
     ResultParseError,
     ServiceUnavailableError,
 )
-from paddleocr._api_client.models import Model, OCROptions, DocParsingOptions
+from paddleocr._api_client.models import (
+    Model,
+    OCROptions,
+    PPStructureV3Options,
+    PaddleOCRVLOptions,
+)
 
 from .base import (
     AuthenticationError,
@@ -147,12 +152,21 @@ class AIStudioExecutor(Executor):
 
             elif self._pipeline in self._DOC_PARSING_PIPELINES:
                 # Document parsing call
-                doc_options = DocParsingOptions(
-                    use_layout_detection=options.get("use_layout_detection", True),
-                    use_chart_recognition=options.get("use_chart_recognition", True),
-                    temperature=options.get("temperature"),
-                    prettify_markdown=options.get("prettify_markdown", True),
-                )
+                if self._pipeline == "PP-StructureV3":
+                    doc_options = PPStructureV3Options(
+                        use_chart_recognition=options.get(
+                            "use_chart_recognition", True
+                        ),
+                        prettify_markdown=options.get("prettify_markdown", True),
+                    )
+                else:  # PaddleOCR-VL series
+                    doc_options = PaddleOCRVLOptions(
+                        use_layout_detection=options.get("use_layout_detection", True),
+                        use_chart_recognition=options.get(
+                            "use_chart_recognition", True
+                        ),
+                        prettify_markdown=options.get("prettify_markdown", True),
+                    )
                 result = await self._client.parse_document(
                     model=model,
                     **input_source,
@@ -222,9 +236,9 @@ class AIStudioExecutor(Executor):
         all_images_mapping = {}
 
         for page in result.pages:
-            markdown_parts.append(page.markdown)
-            # Process images
-            for img_key, img_url in page.images.items():
+            markdown_parts.append(page.markdown_text)
+            # Process images from markdown_images dict
+            for img_key, img_url in page.markdown_images.items():
                 all_images_mapping[img_key] = img_url
 
         return {
