@@ -19,25 +19,17 @@ from typing import Any, Dict, Optional
 class ExecutorError(RuntimeError):
     """Executor 执行错误基类"""
 
-    pass
-
 
 class AuthenticationError(ExecutorError):
     """认证失败"""
-
-    pass
 
 
 class ResourceUnavailableError(ExecutorError):
     """服务不可用"""
 
-    pass
 
-
-class TimeoutError(ExecutorError):
+class ExecutionTimeoutError(ExecutorError):
     """超时"""
-
-    pass
 
 
 class Executor(abc.ABC):
@@ -57,14 +49,11 @@ class Executor(abc.ABC):
         Returns:
             统一格式的结果字典
         """
-        pass
 
     @abc.abstractmethod
     async def start(self) -> None:
         """初始化资源"""
-        pass
 
     @abc.abstractmethod
     async def stop(self) -> None:
         """清理资源"""
-        pass

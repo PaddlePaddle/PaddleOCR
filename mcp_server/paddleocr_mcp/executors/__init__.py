@@ -17,7 +17,7 @@ from .base import (
     ExecutorError,
     AuthenticationError,
     ResourceUnavailableError,
-    TimeoutError,
+    ExecutionTimeoutError,
 )
 from .http import HTTPExecutor
 from .local import LocalExecutor
@@ -31,7 +31,7 @@ __all__ = [
     "ExecutorError",
     "AuthenticationError",
     "ResourceUnavailableError",
-    "TimeoutError",
+    "ExecutionTimeoutError",
     "HTTPExecutor",
     "LocalExecutor",
     "AIStudioExecutor",
