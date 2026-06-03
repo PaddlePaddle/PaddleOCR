@@ -13,7 +13,7 @@
 # limitations under the License.
 
 import json
-from typing import Any, Dict, List, Union
+from typing import Any, Dict, List, Optional, Union
 
 from fastmcp import Context
 from mcp.types import ImageContent, TextContent
@@ -30,7 +30,7 @@ class OCRCapability(MCPCapability):
         async def _ocr(
             input_data: str,
             output_mode: str = "simple",
-            file_type: str = None,
+            file_type: Optional[str] = None,
             *,
             ctx: Context,
         ) -> Union[str, List[Union[TextContent, ImageContent]]]:

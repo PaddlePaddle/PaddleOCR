@@ -13,7 +13,7 @@
 # limitations under the License.
 
 import abc
-from typing import Any, Dict, List, Union
+from typing import Any, Dict, List, Optional, Union
 
 from fastmcp import Context
 from mcp.types import ImageContent, TextContent
@@ -21,7 +21,7 @@ from mcp.types import ImageContent, TextContent
 from ..executors.base import Executor
 
 
-OutputMode = str  # Literal["simple", "detailed"]
+OutputMode = str  # "simple" or "detailed"
 
 
 class MCPCapability(abc.ABC):
@@ -45,7 +45,6 @@ class MCPCapability(abc.ABC):
         Args:
             mcp: FastMCP instance.
         """
-        pass
 
     @abc.abstractmethod
     def _format_result(
@@ -61,14 +60,13 @@ class MCPCapability(abc.ABC):
         Returns:
             MCP output.
         """
-        pass
 
     async def _process(
         self,
         input_data: str,
         output_mode: str,
         ctx: Context,
-        file_type: str = None,
+        file_type: Optional[str] = None,
         **options,
     ) -> Union[str, List[Union[TextContent, ImageContent]]]:
         """Process input and format output.

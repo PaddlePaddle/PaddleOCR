@@ -14,7 +14,7 @@
 
 import json
 import re
-from typing import Any, Dict, List, Union
+from typing import Any, Dict, List, Optional, Union
 
 from fastmcp import Context
 from mcp.types import ImageContent, TextContent
@@ -42,7 +42,7 @@ class LayoutParsingCapability(MCPCapability):
         async def _layout_parsing(
             input_data: str,
             output_mode: str = "simple",
-            file_type: str = None,
+            file_type: Optional[str] = None,
             return_images: bool = True,
             *,
             ctx: Context,
