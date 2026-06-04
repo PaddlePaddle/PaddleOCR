@@ -97,7 +97,7 @@ PaddleOCR 产线使用教程中的 <b>“开发集成/部署”</b> 部分提供
 
 ## 3. 以 URL 形式返回二进制内容
 
-服务默认以 Base64 编码内联返回响应中的图像与文件字段（如 `outputImages`、`inputImage`、`markdown.images`、`exports` 等）。当响应包含较大文件或多页 PDF 时，Base64 会显著增加响应体积。可在产线配置文件中开启 URL 返回（开关 `return_urls` 为 `Serving` 顶层字段，对象存储相关配置位于 `Serving.extra`），将相应字段改为以预签名 URL 返回：
+基础服务化与高稳定性服务化默认以 Base64 编码内联返回响应中的图像等二进制内容。当响应中包含较大图像或多页 PDF 时，Base64 会显著增加响应体积，可配置服务返回 URL。在产线配置文件的 `Serving` 节中开启（`return_urls` 为顶层字段，对象存储相关配置位于 `Serving.extra`），将相应字段改为以预签名 URL 返回：
 
 ```yaml
 Serving:
@@ -115,4 +115,4 @@ Serving:
 - 基础服务化：上述配置写入 `paddlex --serve --pipeline` 指定的产线配置文件。
 - 高稳定性服务化：共用同一组配置项，写入 SDK 内的 `server/pipeline_config.yaml` 后重启容器即可。
 
-当前仅 `bos`（百度智能云对象存储）后端支持 URL 返回；`file_system`、`memory` 后端不支持。URL 返回由顶层字段 `Serving.return_urls` 控制，作用于响应中所有 Base64 内联文件字段（不仅是图像）；旧配置项 `Serving.extra.return_img_urls` 仍被兼容（启动时给出弃用告警），新配置请改用 `Serving.return_urls`。完整配置项、注意事项与适用场景参见 [PaddleX 服务化部署指南 - 以 URL 形式返回二进制内容](https://paddlepaddle.github.io/PaddleX/latest/pipeline_deploy/serving.html#3)；AK/SK 获取等更多信息，请参考 [百度智能云官方文档](https://cloud.baidu.com/doc/BOS/index.html)。
+当前 URL 返回仅支持 `bos`（百度智能云对象存储）后端。URL 返回由顶层字段 `Serving.return_urls` 控制，作用于响应中所有 Base64 内联文件字段（不仅是图像）。完整配置项、注意事项与适用场景参见 [PaddleX 服务化部署指南 - 以 URL 形式返回二进制内容](https://paddlepaddle.github.io/PaddleX/latest/pipeline_deploy/serving.html#3)；AK/SK 获取等更多信息，请参考 [百度智能云官方文档](https://cloud.baidu.com/doc/BOS/index.html)。

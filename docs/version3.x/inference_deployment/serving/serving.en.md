@@ -97,7 +97,7 @@ It should be noted that, due to the lack of fine-grained optimization and other 
 
 ## 3. Returning Binary Content as URLs
 
-By default, the service returns image and file fields in the response (e.g. `outputImages`, `inputImage`, `markdown.images`, `exports`) inline as Base64-encoded strings. When the response contains large files or a multi-page PDF, Base64 encoding can significantly inflate the payload. You can enable URL return in the pipeline configuration file (the `return_urls` switch is a top-level `Serving` field; object-storage settings live under `Serving.extra`) to return those fields as pre-signed URLs instead:
+By default, both basic serving and high-stability serving return images and other binary content in the response inline as Base64-encoded strings. When the response contains large images or a multi-page PDF, Base64 encoding can significantly inflate the payload; you can configure the service to return URLs instead. Enable it in the `Serving` section of the pipeline configuration file (`return_urls` is a top-level switch; object-storage settings live under `Serving.extra`) to return those fields as pre-signed URLs:
 
 ```yaml
 Serving:
@@ -115,4 +115,4 @@ Serving:
 - Basic serving: write the configuration to the pipeline config file passed to `paddlex --serve --pipeline`.
 - High-stability serving: the same configuration applies — write it to `server/pipeline_config.yaml` inside the SDK and restart the container.
 
-Currently only the `bos` (Baidu Intelligent Cloud object storage) backend supports URL return; `file_system` and `memory` backends do not. URL return is controlled by the top-level `Serving.return_urls` field, which applies to every Base64-inlined file field in the response (not just images); the legacy `Serving.extra.return_img_urls` key is still honored at startup (with a deprecation warning), but new configurations should use `Serving.return_urls`. For the full configuration reference, notes, and use cases, see [PaddleX Serving Guide - Returning Binary Content as URLs](https://paddlepaddle.github.io/PaddleX/latest/en/pipeline_deploy/serving.html#3). See the [Baidu Intelligent Cloud documentation](https://cloud.baidu.com/doc/BOS/index.html) for AK/SK retrieval.
+Currently, URL return is only supported by the `bos` (Baidu Intelligent Cloud object storage) backend. URL return is controlled by the top-level `Serving.return_urls` field, which applies to every Base64-inlined file field in the response (not just images). For the full configuration reference, notes, and use cases, see [PaddleX Serving Guide - Returning Binary Content as URLs](https://paddlepaddle.github.io/PaddleX/latest/en/pipeline_deploy/serving.html#3). See the [Baidu Intelligent Cloud documentation](https://cloud.baidu.com/doc/BOS/index.html) for AK/SK retrieval.

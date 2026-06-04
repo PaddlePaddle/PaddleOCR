@@ -2293,7 +2293,7 @@ INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
 </tr>
 </tbody>
 </table>
-<p>下表中涉及图像或文件的字段（如 <code>outputImages</code>、<code>inputImage</code>、<code>markdown.images</code>、<code>exports</code>）默认以 Base64 字符串内联返回；当服务端开启 URL 返回模式时，相应字段的值变为预签名 URL，字段类型保持不变。配置方式参见 <a href="../inference_deployment/serving/serving.md">服务化部署</a>「以 URL 形式返回二进制内容」一节。</p>
+<p>下表中涉及图像等二进制文件的字段（如 <code>outputImages</code>、<code>inputImage</code>、<code>markdown.images</code>、<code>exports</code>）默认以 Base64 字符串内联返回；当服务端开启 URL 返回模式时，相应字段的值变为预签名 URL，字段类型保持不变。配置方式参见 <a href="../inference_deployment/serving/serving.md">服务化部署</a>「以 URL 形式返回二进制内容」一节。</p>
 <p><code>layoutParsingResults</code>中的每个元素为一个<code>object</code>，具有如下属性：</p>
 <table>
 <thead>
@@ -3061,7 +3061,7 @@ Serving:
 
 **配置以 URL 形式返回二进制内容**
 
-服务默认以 Base64 编码内联返回响应中的图像与文件字段（如可视化结果图、输入图像、Markdown 中引用的图像，以及 `exports` 中的导出文件等）。如需改为以 URL 形式返回，可在产线配置文件中添加如下配置（`Serving` 为顶层字段）：
+服务默认以 Base64 编码内联返回响应中的图像等二进制内容。如需改为以 URL 形式返回，可在产线配置文件中添加如下配置（`Serving` 为顶层字段）：
 
 ```yaml
 Serving:
