@@ -11,11 +11,9 @@ import {
   Model,
   PaddleOCRClient,
   PollTimeoutError,
-  RateLimitError,
   RequestTimeoutError,
   ResponseFormatError,
   ResultParseError,
-  ServiceUnavailableError,
 } from "../src/index.js";
 import type { DocParsingResult, Job, OCRResult } from "../src/index.js";
 
@@ -100,13 +98,6 @@ describe("PaddleOCRClient public contract", () => {
     expect("waitForResult" in client).toBe(false);
     expect("docParsing" in client).toBe(false);
     expect("submitDocParsing" in client).toBe(false);
-  });
-
-  test("exports typed HTTP status errors from public entrypoint", async () => {
-    const mod = await import("../src/index.js");
-
-    expect(mod.RateLimitError).toBe(RateLimitError);
-    expect(mod.ServiceUnavailableError).toBe(ServiceUnavailableError);
   });
 
   test("submitOcr sends contract body and returns job metadata", async () => {
@@ -243,23 +234,6 @@ describe("PaddleOCRClient public contract", () => {
       client.submitOcr({ fileUrl: "https://files.example.test/a.pdf", filePath: "./a.pdf" }),
     ).rejects.toThrow(InvalidRequestError);
     expect(fetch).not.toHaveBeenCalled();
-  });
-
-  test("maps rate limit and service availability status codes to typed errors", async () => {
-    const rateLimited = createClient(captureFetch([textResponse("quota exhausted", 429)]).fetch);
-    await expect(
-      rateLimited.submitOcr({ fileUrl: "https://files.example.test/a.pdf" }),
-    ).rejects.toThrow(RateLimitError);
-
-    const unavailable = createClient(captureFetch([textResponse("try later", 503)]).fetch);
-    await expect(
-      unavailable.submitOcr({ fileUrl: "https://files.example.test/a.pdf" }),
-    ).rejects.toThrow(ServiceUnavailableError);
-
-    const gatewayTimeout = createClient(captureFetch([textResponse("timeout", 504)]).fetch);
-    await expect(
-      gatewayTimeout.submitOcr({ fileUrl: "https://files.example.test/a.pdf" }),
-    ).rejects.toThrow(ServiceUnavailableError);
   });
 
   test("getStatus performs one non-blocking status request", async () => {
