@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Any
+from typing import Any, Dict
 
 
 def snake_to_camel(name: str) -> str:
@@ -26,5 +26,5 @@ def snake_to_camel(name: str) -> str:
     )
 
 
-def snake_keys_to_camel(params: dict[str, Any]) -> dict[str, Any]:
+def snake_keys_to_camel(params: Dict[str, Any]) -> Dict[str, Any]:
     return {snake_to_camel(key): value for key, value in params.items()}
