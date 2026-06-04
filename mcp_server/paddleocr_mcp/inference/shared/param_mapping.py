@@ -1,7 +1,8 @@
 # Copyright (c) 2026 PaddlePaddle Authors. All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
-# you may obtain a copy of the License at
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
@@ -16,7 +17,9 @@ from typing import Any
 
 def snake_to_camel(name: str) -> str:
     components = name.split("_")
-    return components[0] + "".join(component.title() for component in components[1:])
+    return components[0] + "".join(
+        component.capitalize() for component in components[1:]
+    )
 
 
 def convert_params_to_camel(params: dict[str, Any]) -> dict[str, Any]:

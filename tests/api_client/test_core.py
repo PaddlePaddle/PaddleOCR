@@ -1,3 +1,17 @@
+# Copyright (c) 2026 PaddlePaddle Authors. All Rights Reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 import pytest
 
 from paddleocr._api_client._core import (
@@ -15,14 +29,31 @@ from paddleocr._api_client.models import (
     PaddleOCRVLOptions,
     PPStructureV3Options,
 )
+from paddleocr._utils.naming import snake_to_camel
 from paddleocr._api_client.results import Job
+
+
+def test_ppstructurev3_options_to_payload_uses_official_camel_case_keys():
+    assert snake_to_camel("top_p") == "topP"
+    assert snake_to_camel("use_e2e_wired_table_rec_model") == "useE2eWiredTableRecModel"
+
+    options = PPStructureV3Options(
+        use_e2e_wired_table_rec_model=True,
+        text_det_limit_side_len=1280,
+    )
+    assert options.to_payload() == {
+        "useE2eWiredTableRecModel": True,
+        "textDetLimitSideLen": 1280,
+    }
 
 
 def test_core_resolves_models_and_default_payloads():
     assert resolve_ocr_model("PP-OCRv5") is Model.PP_OCRV5
+    assert resolve_ocr_model("PP-OCRv6") is Model.PP_OCRV6
     assert resolve_document_model("PaddleOCR-VL-1.6") is Model.PADDLE_OCR_VL_16
 
     assert default_payload(Model.PP_OCRV5) == OCROptions().to_payload()
+    assert default_payload(Model.PP_OCRV6) == OCROptions().to_payload()
     assert default_payload(Model.PADDLE_OCR_VL_16) == PaddleOCRVLOptions().to_payload()
 
     with pytest.raises(InvalidRequestError):

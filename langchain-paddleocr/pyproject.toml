@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "langchain-paddleocr"
-version = "0.1.1"
+version = "0.1.2"
 description = "An integration package connecting PaddleOCR and LangChain"
 authors = []
 readme = "README.md"

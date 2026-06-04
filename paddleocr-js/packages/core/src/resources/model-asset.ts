@@ -15,6 +15,18 @@ export const DEFAULT_MODEL_ASSETS: ModelAssetsMap = {
   },
   "PP-OCRv5_mobile_rec": {
     url: "https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv5_mobile_rec_onnx.tar"
+  },
+  "PP-OCRv6_tiny_det": {
+    url: "https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv6_tiny_det_onnx.tar"
+  },
+  "PP-OCRv6_tiny_rec": {
+    url: "https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv6_tiny_rec_onnx.tar"
+  },
+  "PP-OCRv6_small_det": {
+    url: "https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv6_small_det_onnx.tar"
+  },
+  "PP-OCRv6_small_rec": {
+    url: "https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv6_small_rec_onnx.tar"
   }
 };
 

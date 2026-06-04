@@ -65,6 +65,10 @@ const DEFAULT_MODEL_SELECTION: Readonly<PipelineModelSelection> = Object.freeze(
 const DEFAULT_LANG_VERSION_MODEL_SELECTION: Readonly<PipelineModelSelection> = Object.freeze({
   ...DEFAULT_MODEL_SELECTION
 });
+const PP_OCRV6_LANG_VERSION_MODEL_SELECTION: Readonly<PipelineModelSelection> = Object.freeze({
+  textDetectionModelName: "PP-OCRv6_small_det",
+  textRecognitionModelName: "PP-OCRv6_small_rec"
+});
 const OCR_MODEL_ROLES: Readonly<ModelRole[]> = Object.freeze([
   {
     assetKey: "det",
@@ -96,7 +100,11 @@ const SUPPORTED_LANG_VERSION_MODELS = new Map<string, Readonly<PipelineModelSele
   ["ch::PP-OCRv5", DEFAULT_LANG_VERSION_MODEL_SELECTION],
   ["chinese_cht::PP-OCRv5", DEFAULT_LANG_VERSION_MODEL_SELECTION],
   ["en::PP-OCRv5", DEFAULT_LANG_VERSION_MODEL_SELECTION],
-  ["japan::PP-OCRv5", DEFAULT_LANG_VERSION_MODEL_SELECTION]
+  ["japan::PP-OCRv5", DEFAULT_LANG_VERSION_MODEL_SELECTION],
+  ["ch::PP-OCRv6", PP_OCRV6_LANG_VERSION_MODEL_SELECTION],
+  ["chinese_cht::PP-OCRv6", PP_OCRV6_LANG_VERSION_MODEL_SELECTION],
+  ["en::PP-OCRv6", PP_OCRV6_LANG_VERSION_MODEL_SELECTION],
+  ["japan::PP-OCRv6", PP_OCRV6_LANG_VERSION_MODEL_SELECTION]
 ]);
 
 function readAliasedOption(

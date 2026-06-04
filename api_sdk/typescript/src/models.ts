@@ -14,13 +14,14 @@
 
 export enum Model {
   PPOCRv5 = "PP-OCRv5",
+  PPOCRv6 = "PP-OCRv6",
   PPStructureV3 = "PP-StructureV3",
   PaddleOCRVL = "PaddleOCR-VL",
   PaddleOCRVL15 = "PaddleOCR-VL-1.5",
   PaddleOCRVL16 = "PaddleOCR-VL-1.6",
 }
 
-const OCR_MODELS = new Set<string>([Model.PPOCRv5]);
+const OCR_MODELS = new Set<string>([Model.PPOCRv5, Model.PPOCRv6]);
 const DOCUMENT_PARSING_MODELS = new Set<string>([
   Model.PPStructureV3,
   Model.PaddleOCRVL,
@@ -33,7 +34,7 @@ const VL_MODELS = new Set<string>([
   Model.PaddleOCRVL16,
 ]);
 
-export function isOCRModel(model: string): model is Model.PPOCRv5 {
+export function isOCRModel(model: string): model is Model.PPOCRv5 | Model.PPOCRv6 {
   return OCR_MODELS.has(model);
 }
 

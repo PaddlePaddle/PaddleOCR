@@ -45,7 +45,7 @@ def register_api_command(subparsers):
         type=str,
         default=None,
         choices=[m.value for m in Model],
-        help="Model name. Defaults to PP-OCRv5 for ocr task.",
+        help="Model name.",
     )
     subparser.add_argument(
         "--file_url",

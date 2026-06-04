@@ -15,8 +15,8 @@
 // Package paddleocr provides a Go client for the PaddleOCR official API.
 //
 // Create a client with NewClient and authenticate with WithToken or the
-// PADDLEOCR_ACCESS_TOKEN environment variable. Use OCR for OCR models such as
-// PP-OCRv5 and ParseDocument for document parsing models such as PPStructureV3.
+// PADDLEOCR_ACCESS_TOKEN environment variable. Use OCR for supported OCR models
+// and ParseDocument for document parsing models.
 // SubmitOCR and SubmitDocumentParsing return an Operation for non-blocking
 // status checks with Poll or typed waits with WaitOCR and WaitDocumentParsing.
 // SaveResource downloads one result resource URL. SaveOCRResultResources and

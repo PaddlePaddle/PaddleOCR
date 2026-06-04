@@ -19,7 +19,6 @@ import (
 	"encoding/json"
 )
 
-// OCR performs PP-OCRv5 text recognition. Blocks until result is ready.
 func (c *Client) OCR(ctx context.Context, req *OCRRequest) (*OCRResult, error) {
 	job, err := c.SubmitOCR(ctx, req)
 	if err != nil {
@@ -126,7 +125,7 @@ func defaultPayload(model string, options interface{}) interface{} {
 	if options != nil {
 		return options
 	}
-	if model == PPOCRv5 {
+	if IsOCRModel(model) {
 		return &OCROptions{}
 	}
 	if IsVLModel(model) {

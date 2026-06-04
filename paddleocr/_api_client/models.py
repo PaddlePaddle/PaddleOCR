@@ -12,22 +12,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from dataclasses import dataclass
+from dataclasses import dataclass, fields
 from enum import Enum
 from typing import Optional, Union
 
+from ._naming import snake_to_camel
 from .errors import InvalidRequestError
 
 
 class Model(str, Enum):
     PP_OCRV5 = "PP-OCRv5"
+    PP_OCRV6 = "PP-OCRv6"
     PP_STRUCTURE_V3 = "PP-StructureV3"
     PADDLE_OCR_VL = "PaddleOCR-VL"
     PADDLE_OCR_VL_15 = "PaddleOCR-VL-1.5"
     PADDLE_OCR_VL_16 = "PaddleOCR-VL-1.6"
 
 
-_OCR_MODELS = frozenset({Model.PP_OCRV5})
+_OCR_MODELS = frozenset({Model.PP_OCRV5, Model.PP_OCRV6})
 _DOCUMENT_PARSING_MODELS = frozenset(
     {
         Model.PP_STRUCTURE_V3,
@@ -152,56 +154,12 @@ class PaddleOCRVLOptions:
 DocParsingOptions = Union[PPStructureV3Options, PaddleOCRVLOptions]
 
 
-_FIELD_NAME_MAP = {
-    "use_doc_orientation_classify": "useDocOrientationClassify",
-    "use_doc_unwarping": "useDocUnwarping",
-    "use_textline_orientation": "useTextlineOrientation",
-    "text_det_limit_side_len": "textDetLimitSideLen",
-    "text_det_limit_type": "textDetLimitType",
-    "text_det_thresh": "textDetThresh",
-    "text_det_box_thresh": "textDetBoxThresh",
-    "text_det_unclip_ratio": "textDetUnclipRatio",
-    "text_rec_score_thresh": "textRecScoreThresh",
-    "visualize": "visualize",
-    "use_seal_recognition": "useSealRecognition",
-    "use_table_recognition": "useTableRecognition",
-    "use_formula_recognition": "useFormulaRecognition",
-    "use_chart_recognition": "useChartRecognition",
-    "use_region_detection": "useRegionDetection",
-    "use_layout_detection": "useLayoutDetection",
-    "layout_threshold": "layoutThreshold",
-    "layout_nms": "layoutNms",
-    "layout_unclip_ratio": "layoutUnclipRatio",
-    "layout_merge_bboxes_mode": "layoutMergeBboxesMode",
-    "layout_shape_mode": "layoutShapeMode",
-    "prompt_label": "promptLabel",
-    "repetition_penalty": "repetitionPenalty",
-    "temperature": "temperature",
-    "top_p": "topP",
-    "min_pixels": "minPixels",
-    "max_pixels": "maxPixels",
-    "max_new_tokens": "maxNewTokens",
-    "merge_layout_blocks": "mergeLayoutBlocks",
-    "prettify_markdown": "prettifyMarkdown",
-    "show_formula_number": "showFormulaNumber",
-    "restructure_pages": "restructurePages",
-    "merge_tables": "mergeTables",
-    "relevel_titles": "relevelTitles",
-    "use_wired_table_cells_trans_to_html": "useWiredTableCellsTransToHtml",
-    "use_wireless_table_cells_trans_to_html": "useWirelessTableCellsTransToHtml",
-    "use_table_orientation_classify": "useTableOrientationClassify",
-    "use_ocr_results_with_table_cells": "useOcrResultsWithTableCells",
-    "use_e2e_wired_table_rec_model": "useE2eWiredTableRecModel",
-    "use_e2e_wireless_table_rec_model": "useE2eWirelessTableRecModel",
-}
-
-
 def _build_payload(options) -> dict:
     payload = {}
-    for field_name, api_name in _FIELD_NAME_MAP.items():
-        value = getattr(options, field_name, None)
+    for field in fields(options):
+        value = getattr(options, field.name)
         if value is not None:
-            payload[api_name] = value
+            payload[snake_to_camel(field.name)] = value
     return payload
 
 

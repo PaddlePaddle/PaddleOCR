@@ -1,3 +1,17 @@
+# Copyright (c) 2026 PaddlePaddle Authors. All Rights Reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 import json
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from threading import Thread
@@ -215,3 +229,36 @@ def test_paddleocr_client_reads_env_token(monkeypatch):
 def test_default_base_url_is_host_only():
     assert "/api/" not in DEFAULT_BASE_URL
     assert DEFAULT_BASE_URL == "https://paddleocr.aistudio-app.com"
+
+
+def test_paddleocr_client_client_platform_header(monkeypatch):
+    class FakeResponse:
+        status_code = 200
+        text = ""
+
+        def json(self):
+            return {"code": 0, "data": {"jobId": "job-1"}}
+
+    class FakeSession:
+        def __init__(self):
+            self.headers = {}
+            self.captured_headers = None
+
+        def post(self, *args, **kwargs):
+            self.captured_headers = dict(self.headers)
+            return FakeResponse()
+
+        def close(self):
+            return None
+
+    fake_session = FakeSession()
+    monkeypatch.setattr(
+        "paddleocr._api_client._http.requests.Session",
+        lambda: fake_session,
+    )
+
+    client = PaddleOCRClient(token="token", client_platform="my-app")
+    job = client.submit_ocr(file_url="https://example.test/input.pdf")
+
+    assert job.job_id == "job-1"
+    assert fake_session.captured_headers["Client-Platform"] == "my-app"

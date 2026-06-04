@@ -16,6 +16,7 @@ package paddleocr
 
 const (
 	PPOCRv5       = "PP-OCRv5"
+	PPOCRv6       = "PP-OCRv6"
 	PPStructureV3 = "PP-StructureV3"
 	PaddleOCRVL   = "PaddleOCR-VL"
 	PaddleOCRVL15 = "PaddleOCR-VL-1.5"
@@ -24,7 +25,7 @@ const (
 
 // IsOCRModel reports whether model is supported by OCR APIs.
 func IsOCRModel(model string) bool {
-	return model == PPOCRv5
+	return model == PPOCRv5 || model == PPOCRv6
 }
 
 // IsDocumentParsingModel reports whether model is supported by document parsing APIs.
