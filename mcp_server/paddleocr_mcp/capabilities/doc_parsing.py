@@ -25,13 +25,14 @@ from .base import MCPCapability
 class DocParsingCapability(MCPCapability):
     """Document parsing MCP capability (e.g., PP-StructureV3, PaddleOCR-VL, etc.)."""
 
-    def __init__(self, executor: Executor, tool_name: str):
+    def __init__(self, executor: Executor, tool_name: str, pipeline: str):
         """
         Args:
             executor: Executor instance.
             tool_name: MCP tool name (e.g., "pp_structurev3", "paddleocr_vl").
+            pipeline: Pipeline name (e.g., "PP-StructureV3", "PaddleOCR-VL").
         """
-        super().__init__(executor)
+        super().__init__(executor, pipeline)
         self._tool_name = tool_name
 
     def register_tools(self, mcp: Any) -> None:

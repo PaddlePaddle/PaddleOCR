@@ -27,10 +27,14 @@ def create_capability(pipeline: str, executor) -> MCPCapability:
         MCPCapability instance.
     """
     if pipeline == "OCR":
-        return OCRCapability(executor)
+        return OCRCapability(executor, pipeline=pipeline)
     elif pipeline == "PP-StructureV3":
-        return DocParsingCapability(executor, tool_name="pp_structurev3")
+        return DocParsingCapability(
+            executor, tool_name="pp_structurev3", pipeline=pipeline
+        )
     elif pipeline in ("PaddleOCR-VL", "PaddleOCR-VL-1.5", "PaddleOCR-VL-1.6"):
-        return DocParsingCapability(executor, tool_name="paddleocr_vl")
+        return DocParsingCapability(
+            executor, tool_name="paddleocr_vl", pipeline=pipeline
+        )
     else:
         raise ValueError(f"Unknown pipeline: {pipeline}")

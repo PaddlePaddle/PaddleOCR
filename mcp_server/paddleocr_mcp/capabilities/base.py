@@ -26,8 +26,9 @@ OutputMode = str  # "simple" or "detailed"
 class MCPCapability(abc.ABC):
     """Abstract base class for MCP capabilities, responsible for tool registration and result formatting."""
 
-    def __init__(self, executor: Executor):
+    def __init__(self, executor: Executor, pipeline: str):
         self._executor = executor
+        self._pipeline = pipeline
 
     async def start(self) -> None:
         """Start the capability."""
@@ -80,5 +81,26 @@ class MCPCapability(abc.ABC):
         Returns:
             Formatted output.
         """
-        result = await self._executor.execute(input_data, file_type, **options)
+        # Default options for all pipelines
+        _defaults = {
+            "use_doc_orientation_classify": False,
+            "use_doc_unwarping": False,
+        }
+
+        # Pipeline-specific defaults
+        if self._pipeline in (
+            "PP-StructureV3",
+            "PaddleOCR-VL",
+            "PaddleOCR-VL-1.5",
+            "PaddleOCR-VL-1.6",
+        ):
+            _defaults["use_chart_recognition"] = True
+
+        if self._pipeline in ("PaddleOCR-VL", "PaddleOCR-VL-1.5", "PaddleOCR-VL-1.6"):
+            _defaults["use_seal_recognition"] = True
+
+        # User options override defaults
+        _defaults.update(options)
+
+        result = await self._executor.execute(input_data, file_type, **_defaults)
         return self._format_result(result, output_mode == "detailed", **options)
