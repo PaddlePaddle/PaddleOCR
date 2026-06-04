@@ -17,7 +17,7 @@ PaddleOCR provides a lightweight [Model Context Protocol (MCP)](https://modelcon
     | --- | --- | --- |
     | `OCR` | `ocr` | Performs text detection and recognition on images and PDF files. |
     | `PP-StructureV3` | `pp_structurev3` | Identifies and extracts text blocks, titles, paragraphs, images, tables, and other layout elements from images or PDF files, converting the input into Markdown documents. |
-    | `PaddleOCR-VL Series` | `paddleocr_vl` | Performs layout parsing with a VLM-based approach and converts the input into Markdown documents. Includes versions such as PaddleOCR-VL, PaddleOCR-VL-1.5, and PaddleOCR-VL-1.6. |
+    | `PaddleOCR-VL Series` | `paddleocr_vl` | Performs layout parsing with a VLM-based approach and converts the input into Markdown documents. Includes versions: PaddleOCR-VL, PaddleOCR-VL-1.5, and PaddleOCR-VL-1.6. |
 
     > Each MCP server instance exposes exactly one MCP tool.
 
