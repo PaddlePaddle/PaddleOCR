@@ -61,8 +61,6 @@ Go SDK 常用公共方法包括：
 | OCR | `OCR`、`SubmitOCR`、`WaitOCRResult` | `PPOCRv5` | `PPOCRv5` | `*OCROptions` |
 | 文档解析 | `ParseDocument`、`SubmitDocumentParsing`、`WaitDocumentParsingResult` | `PaddleOCRVL16` | `PPStructureV3`、`PaddleOCRVL`、`PaddleOCRVL15`、`PaddleOCRVL16` | 选择 `PPStructureV3` 时传入 `*PPStructureV3Options`；选择 PaddleOCR-VL 系列模型时传入 `*PaddleOCRVLOptions`。 |
 
-常用对应关系：`PPOCRv5` 对应 `PP-OCRv5`，`PPStructureV3` 对应 `PP-StructureV3`，`PaddleOCRVL` 对应 `PaddleOCR-VL`，`PaddleOCRVL15` 对应 `PaddleOCR-VL-1.5`，`PaddleOCRVL16` 对应 `PaddleOCR-VL-1.6`。
-
 ## 配置与参数
 
 ### 客户端配置
@@ -94,7 +92,7 @@ client, err := paddleocr.NewClient(
 
 ### 请求参数
 
-Go SDK 的 Options 结构体字段使用 PascalCase，序列化时自动转换为 camelCase。指针类型字段传 `nil` 表示不设置。完整字段定义见结构体源码或「官方 API 参考」。
+Go SDK 的 Options 结构体字段使用 PascalCase，序列化时自动转换为 camelCase。指针类型字段传 `nil` 表示不设置。完整字段定义见结构体源码或官方 API 参考。
 
 #### OCROptions（常用字段）
 

@@ -43,12 +43,7 @@ from .base import (
 class AIStudioExecutor(Executor):
     """Executor for AI Studio official API using AsyncPaddleOCRClient.
 
-    Supports the following pipelines:
-    - OCR: Text recognition using PP-OCRv5
-    - PP-StructureV3: Document structure analysis and parsing
-    - PaddleOCR-VL: Vision-language model for document understanding
-    - PaddleOCR-VL-1.5: Enhanced vision-language model
-    - PaddleOCR-VL-1.6: Latest vision-language model with improved accuracy
+    Supports OCR, PP-StructureV3, and PaddleOCR-VL series pipelines.
     """
 
     # Pipeline to SDK Model mapping

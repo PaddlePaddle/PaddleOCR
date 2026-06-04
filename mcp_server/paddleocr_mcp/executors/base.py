@@ -1,7 +1,7 @@
 # Copyright (c) 2026 PaddlePaddle Authors. All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use a copy of the License at
+# you may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
@@ -16,43 +16,43 @@ from typing import Any, Dict, Optional
 
 
 class ExecutorError(RuntimeError):
-    """Executor 执行错误基类"""
+    """Base class for executor errors."""
 
 
 class AuthenticationError(ExecutorError):
-    """认证失败"""
+    """Authentication failed."""
 
 
 class ResourceUnavailableError(ExecutorError):
-    """服务不可用"""
+    """Service unavailable."""
 
 
 class ExecutionTimeoutError(ExecutorError):
-    """超时"""
+    """Request timeout."""
 
 
 class Executor(abc.ABC):
-    """执行器抽象基类，负责底层推理执行"""
+    """Abstract base class for executors that handle underlying inference execution."""
 
     @abc.abstractmethod
     async def execute(
         self, input_data: str, file_type: Optional[str] = None, **options
     ) -> Dict[str, Any]:
-        """执行推理，返回统一格式的结果
+        """Execute inference and return unified result.
 
         Args:
-            input_data: 输入数据（文件路径、URL 或 base64）
-            file_type: 文件类型（"image" 或 "pdf"）
-            **options: 其他选项
+            input_data: Input data (file path, URL, or base64).
+            file_type: File type ("image" or "pdf").
+            **options: Additional options.
 
         Returns:
-            统一格式的结果字典
+            Unified result dictionary.
         """
 
     @abc.abstractmethod
     async def start(self) -> None:
-        """初始化资源"""
+        """Initialize resources."""
 
     @abc.abstractmethod
     async def stop(self) -> None:
-        """清理资源"""
+        """Clean up resources."""

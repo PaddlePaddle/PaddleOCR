@@ -61,8 +61,6 @@ The model constants in the table are type-safe aliases for the official API mode
 | OCR | `OCR`, `SubmitOCR`, `WaitOCRResult` | `PPOCRv5` | `PPOCRv5` | `*OCROptions` |
 | Document parsing | `ParseDocument`, `SubmitDocumentParsing`, `WaitDocumentParsingResult` | `PaddleOCRVL16` | `PPStructureV3`, `PaddleOCRVL`, `PaddleOCRVL15`, `PaddleOCRVL16` | Use `*PPStructureV3Options` with `PPStructureV3`, and `*PaddleOCRVLOptions` with PaddleOCR-VL models. |
 
-Common mappings: `PPOCRv5` maps to `PP-OCRv5`, `PPStructureV3` maps to `PP-StructureV3`, `PaddleOCRVL` maps to `PaddleOCR-VL`, `PaddleOCRVL15` maps to `PaddleOCR-VL-1.5`, and `PaddleOCRVL16` maps to `PaddleOCR-VL-1.6`.
-
 ## Configuration
 
 ### Client Configuration

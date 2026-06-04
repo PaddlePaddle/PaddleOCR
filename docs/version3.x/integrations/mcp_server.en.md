@@ -17,9 +17,7 @@ PaddleOCR provides a lightweight [Model Context Protocol (MCP)](https://modelcon
     | --- | --- | --- |
     | `OCR` | `ocr` | Performs text detection and recognition on images and PDF files. |
     | `PP-StructureV3` | `pp_structurev3` | Identifies and extracts text blocks, titles, paragraphs, images, tables, and other layout elements from images or PDF files, converting the input into Markdown documents. |
-    | `PaddleOCR-VL` | `paddleocr_vl` | Performs layout parsing with a VLM-based approach and converts the input into Markdown documents. |
-    | `PaddleOCR-VL-1.5` | `paddleocr_vl` | An upgraded version of PaddleOCR-VL with improvements in both speed and accuracy. |
-    | `PaddleOCR-VL-1.6` | `paddleocr_vl` | The latest version in the PaddleOCR-VL series, further upgrading the VLM component on top of PaddleOCR-VL-1.5. |
+    | `PaddleOCR-VL Series` | `paddleocr_vl` | Performs layout parsing with a VLM-based approach and converts the input into Markdown documents. Includes versions such as PaddleOCR-VL, PaddleOCR-VL-1.5, and PaddleOCR-VL-1.6. |
 
     > Each MCP server instance exposes exactly one MCP tool.
 
@@ -416,7 +414,7 @@ You can control the MCP server via environment variables or CLI arguments.
 
 | Environment Variable                          | CLI Argument              | Type   | Description                                                           | Options                                  | Default       |
 | ------------------------------------- | ------------------------- | ------ | --------------------------------------------------------------------- | ---------------------------------------- | ------------- |
-| `PADDLEOCR_MCP_PIPELINE`              | `--pipeline`              | `str`  | Pipeline to run.                                                      | `"OCR"`, `"PP-StructureV3"`, `"PaddleOCR-VL"`, `"PaddleOCR-VL-1.5"`, `"PaddleOCR-VL-1.6"`              | `"OCR"`       |
+| `PADDLEOCR_MCP_PIPELINE`              | `--pipeline`              | `str`  | Pipeline to run.                                                      | `"OCR"`, `"PP-StructureV3"`, `"PaddleOCR-VL"`, `"PaddleOCR-VL-1.5"`, `"PaddleOCR-VL-1.6"`.              | `"OCR"`       |
 | `PADDLEOCR_MCP_PPOCR_SOURCE`          | `--ppocr_source`          | `str`  | Source of PaddleOCR capabilities.                                     | `"local"` (local inference), `"aistudio"` (Official API), `"qianfan"` (Qianfan API), `"self_hosted"` (Self-hosted API) | `"local"`     |
 | `PADDLEOCR_MCP_SERVER_URL`            | `--server_url`            | `str`  | Base URL for the underlying service (required for `qianfan` or `self_hosted` sources). | -                                        | `None`        |
 | `PADDLEOCR_MCP_BASE_URL`             | `--base_url`             | `str`  | Custom AI Studio service base URL (optional for `aistudio` source). | -                                        | `None`        |

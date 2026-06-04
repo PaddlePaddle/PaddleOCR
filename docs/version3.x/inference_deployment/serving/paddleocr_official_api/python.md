@@ -60,8 +60,6 @@ Python SDK 常用公共方法包括：
 | OCR | `ocr`、`submit_ocr`、`wait_ocr_result` | `Model.PP_OCRV5` | `Model.PP_OCRV5` | `OCROptions` |
 | 文档解析 | `parse_document`、`submit_document_parsing`、`wait_document_parsing_result` | `Model.PADDLE_OCR_VL_16` | `Model.PP_STRUCTURE_V3`、`Model.PADDLE_OCR_VL`、`Model.PADDLE_OCR_VL_15`、`Model.PADDLE_OCR_VL_16` | 选择 `PP-StructureV3` 时传入 `PPStructureV3Options`；选择 `PaddleOCR-VL` 系列模型时传入 `PaddleOCRVLOptions`。 |
 
-常用对应关系：`Model.PP_OCRV5` 对应 `PP-OCRv5`，`Model.PP_STRUCTURE_V3` 对应 `PP-StructureV3`，`Model.PADDLE_OCR_VL` 对应 `PaddleOCR-VL`，`Model.PADDLE_OCR_VL_15` 对应 `PaddleOCR-VL-1.5`，`Model.PADDLE_OCR_VL_16` 对应 `PaddleOCR-VL-1.6`。
-
 ## 配置与参数
 
 ### 客户端配置
@@ -83,7 +81,7 @@ client = PaddleOCRClient(base_url="https://my-proxy.com/paddle")
 
 ### 请求参数
 
-SDK 的参数名使用 Python 惯用的 snake_case，提交请求时自动转换为官方 API 的 camelCase。只需传入非 `None` 的字段，未设置的字段使用服务端默认值。完整字段定义见各 Options 类型源码或「官方 API 参考」。
+SDK 的参数名使用 Python 惯用的 snake_case，提交请求时自动转换为官方 API 的 camelCase。只需传入非 `None` 的字段，未设置的字段使用服务端默认值。完整字段定义见各 Options 类型源码或官方 API 参考。
 
 #### OCROptions（常用字段）
 

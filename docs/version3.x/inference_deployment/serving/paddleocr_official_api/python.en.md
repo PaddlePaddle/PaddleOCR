@@ -60,8 +60,6 @@ The `Model` enum values in the table are type-safe aliases for the official API 
 | OCR | `ocr`, `submit_ocr`, `wait_ocr_result` | `Model.PP_OCRV5` | `Model.PP_OCRV5` | `OCROptions` |
 | Document parsing | `parse_document`, `submit_document_parsing`, `wait_document_parsing_result` | `Model.PADDLE_OCR_VL_16` | `Model.PP_STRUCTURE_V3`, `Model.PADDLE_OCR_VL`, `Model.PADDLE_OCR_VL_15`, `Model.PADDLE_OCR_VL_16` | Use `PPStructureV3Options` with `PP-StructureV3`, and `PaddleOCRVLOptions` with PaddleOCR-VL models. |
 
-Common mappings: `Model.PP_OCRV5` maps to `PP-OCRv5`, `Model.PP_STRUCTURE_V3` maps to `PP-StructureV3`, `Model.PADDLE_OCR_VL` maps to `PaddleOCR-VL`, `Model.PADDLE_OCR_VL_15` maps to `PaddleOCR-VL-1.5`, and `Model.PADDLE_OCR_VL_16` maps to `PaddleOCR-VL-1.6`.
-
 ## Configuration
 
 ### Client Configuration
