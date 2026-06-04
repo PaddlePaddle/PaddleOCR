@@ -61,7 +61,7 @@
 
 ## 4. Inference and Deployment Performance
 
-PaddleOCR-VL-1.6 and PaddleOCR-VL-1.5 use exactly the same model architecture design, so they have identical inference speeds. For details about the inference speed of PaddleOCR-VL-1.5, refer to [PaddleOCR-VL-1.5 inference speed](./PaddleOCR-VL-1.5.md#4推理部署性能).
+PaddleOCR-VL-1.6 and PaddleOCR-VL-1.5 use exactly the same model architecture design, so they have identical inference speeds. For details about the inference speed of PaddleOCR-VL-1.5, refer to [PaddleOCR-VL-1.5 inference speed](./PaddleOCR-VL-1.5.md#4-inference-and-deployment-performance).
 
 
 ## 5. Visualization
@@ -144,4 +144,3 @@ PaddleOCR-VL-1.6 and PaddleOCR-VL-1.5 use exactly the same model architecture de
 <div align="center">
 <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr_vl_1_6/comparison/table3.png" width="800"/>
 </div>
-

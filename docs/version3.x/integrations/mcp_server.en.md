@@ -190,7 +190,7 @@ In the configuration file for Claude for Desktop, you need to define how the MCP
 
 You can configure the MCP server according to your requirements to use different inference methods. The operational procedures vary for different methods, which will be explained in detail below.
 
-#### Method 1: Local Inference
+#### Method 1: Local Inference {#method-1-local-inference}
 
 1. Install `paddleocr-mcp` and the local inference dependencies. `paddleocr-mcp` already depends on PaddleOCR; local inference additionally requires the document-parsing dependencies and an inference engine. You can install them manually by referring to the [PaddleOCR installation guide](../installation.en.md), or use the corresponding optional dependencies:
     - `paddleocr-mcp[local]`: includes `paddleocr[doc-parser]>=3.6.0` (without the inference engine).

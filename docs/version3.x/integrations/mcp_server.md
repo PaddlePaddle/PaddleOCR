@@ -191,7 +191,7 @@ PaddleOCR 也支持通过 `uvx` 等方式免安装运行服务器，详情请参
 
 您可以根据需求配置 MCP 服务器，使其使用不同的推理方式。不同推理方式需要的操作流程有所不同，下面将详细介绍。
 
-#### 方式一：本地推理
+#### 方式一：本地推理 {#方式一本地推理}
 
 1. 安装 `paddleocr-mcp` 及本地推理依赖。`paddleocr-mcp` 已默认依赖 PaddleOCR；本地推理还需要文档解析依赖和推理引擎。可以参考 [PaddleOCR 安装文档](../installation.md) 手动安装，也可以使用相应的可选依赖：
     - `paddleocr-mcp[local]`：包含 `paddleocr[doc-parser]>=3.6.0`（不包含推理引擎）。
