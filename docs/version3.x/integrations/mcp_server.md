@@ -19,8 +19,6 @@ PaddleOCR 提供轻量级的 [Model Context Protocol（MCP）](https://modelcont
     | `PP-StructureV3` | `pp_structurev3` | 从图像或 PDF 文件中识别和提取文本块、标题、段落、图片、表格以及其他版面元素，将输入转换为 Markdown 文档。 |
     | `PaddleOCR-VL 系列` | `paddleocr_vl` | 使用基于多模态大模型的方案进行版面解析，将输入转换为 Markdown 文档。包含版本：PaddleOCR-VL、PaddleOCR-VL-1.5、PaddleOCR-VL-1.6。 |
 
-    > 每个 MCP 服务器实例对外只暴露一个 MCP 工具。
-
 - **支持的推理方式**
     - **本地推理**：在本机直接运行 PaddleOCR 产线。此方式对本地环境与计算机性能有一定要求，适用于需要离线使用、对数据隐私有严格要求的场景。
     - **官方 API**：调用 PaddleOCR 官方提供的 API。此方式适合快速体验功能、快速验证方案等，也适用于零代码开发场景。

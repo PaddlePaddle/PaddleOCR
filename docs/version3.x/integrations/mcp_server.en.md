@@ -19,8 +19,6 @@ PaddleOCR provides a lightweight [Model Context Protocol (MCP)](https://modelcon
     | `PP-StructureV3` | `pp_structurev3` | Identifies and extracts text blocks, titles, paragraphs, images, tables, and other layout elements from images or PDF files, converting the input into Markdown documents. |
     | `PaddleOCR-VL Series` | `paddleocr_vl` | Performs layout parsing with a VLM-based approach and converts the input into Markdown documents. Includes versions: PaddleOCR-VL, PaddleOCR-VL-1.5, and PaddleOCR-VL-1.6. |
 
-    > Each MCP server instance exposes exactly one MCP tool.
-
 - **Supported Inference Methods**
     - **Local Inference**: Runs PaddleOCR pipelines directly on the local machine. This method has certain requirements for the local environment and hardware performance, and is suitable for offline use and scenarios with strict data privacy requirements.
     - **Official API**: Invokes the PaddleOCR Official API. This method is suitable for quickly trying out features, validating solutions, and other no-code development scenarios.

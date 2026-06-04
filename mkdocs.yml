@@ -138,7 +138,7 @@ plugins:
             高性能推理: High-Performance Inference
             打包 PaddleOCR 项目: Package PaddleOCR Projects
             获取ONNX模型: Obtaining ONNX Models
-            端侧部署: On-Device Deployment
+            iOS 部署: iOS Deployment
             服务化部署: Serving
             浏览器端部署: Browser Deployment
             模块列表: Module List
@@ -361,7 +361,7 @@ nav:
         - Go SDK: version3.x/inference_deployment/serving/paddleocr_official_api/go.md
         - CLI: version3.x/inference_deployment/serving/paddleocr_official_api/cli.md
     - 跨端部署:
-      - 端侧部署: version3.x/inference_deployment/cross_platform/on_device_deployment.md
+      - iOS 部署: version3.x/inference_deployment/cross_platform/ios_deployment.md
       - 浏览器端部署: version3.x/inference_deployment/cross_platform/browser.md
     - 其它:
       - 获取ONNX模型: version3.x/inference_deployment/others/obtaining_onnx_models.md
