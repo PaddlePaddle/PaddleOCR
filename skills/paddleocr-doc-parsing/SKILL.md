@@ -81,7 +81,7 @@ paddleocr api \
 ```bash
 # Disable preprocessing (faster, for flat/well-oriented images)
 paddleocr api \
-  --model_type ocr \
+  --model_type doc_parsing \
   --file_path "./document.pdf" \
   --use_doc_unwarping False \
   --use_doc_orientation_classify False

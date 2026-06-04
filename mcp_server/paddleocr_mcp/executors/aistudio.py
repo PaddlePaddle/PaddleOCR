@@ -129,14 +129,21 @@ class AIStudioExecutor(Executor):
         model = self._resolve_model()
         input_source = self._resolve_input_source(input_data)
 
+        # Default options - can be overridden by user-provided options
+        _default_doc_orientation_classify = False
+        _default_doc_unwarping = False
+
         try:
             if self._pipeline in self._OCR_PIPELINES:
-                # OCR call - use_default=True lets service-side defaults apply
+                # OCR call
                 ocr_options = OCROptions(
                     use_doc_orientation_classify=options.get(
-                        "use_doc_orientation_classify"
+                        "use_doc_orientation_classify",
+                        _default_doc_orientation_classify,
                     ),
-                    use_doc_unwarping=options.get("use_doc_unwarping"),
+                    use_doc_unwarping=options.get(
+                        "use_doc_unwarping", _default_doc_unwarping
+                    ),
                     visualize=False,  # Always False as MCP tool does not return visualization
                 )
                 result = await self._client.ocr(
@@ -147,25 +154,35 @@ class AIStudioExecutor(Executor):
                 return self._parse_ocr_result(result)
 
             elif self._pipeline in self._DOC_PARSING_PIPELINES:
-                # Document parsing call - use service-side defaults
+                # Document parsing call
                 if self._pipeline == "PP-StructureV3":
                     doc_options = PPStructureV3Options(
-                        use_doc_unwarping=options.get("use_doc_unwarping"),
-                        use_doc_orientation_classify=options.get(
-                            "use_doc_orientation_classify"
+                        use_doc_unwarping=options.get(
+                            "use_doc_unwarping", _default_doc_unwarping
                         ),
-                        use_chart_recognition=options.get("use_chart_recognition"),
+                        use_doc_orientation_classify=options.get(
+                            "use_doc_orientation_classify",
+                            _default_doc_orientation_classify,
+                        ),
+                        use_chart_recognition=options.get(
+                            "use_chart_recognition", True
+                        ),
                         prettify_markdown=options.get("prettify_markdown"),
                     )
                 else:  # PaddleOCR-VL series
                     doc_options = PaddleOCRVLOptions(
-                        use_doc_unwarping=options.get("use_doc_unwarping"),
+                        use_doc_unwarping=options.get(
+                            "use_doc_unwarping", _default_doc_unwarping
+                        ),
                         use_doc_orientation_classify=options.get(
-                            "use_doc_orientation_classify"
+                            "use_doc_orientation_classify",
+                            _default_doc_orientation_classify,
                         ),
                         use_layout_detection=options.get("use_layout_detection"),
-                        use_seal_recognition=options.get("use_seal_recognition"),
-                        use_chart_recognition=options.get("use_chart_recognition"),
+                        use_seal_recognition=options.get("use_seal_recognition", True),
+                        use_chart_recognition=options.get(
+                            "use_chart_recognition", True
+                        ),
                         prettify_markdown=options.get("prettify_markdown"),
                     )
                 result = await self._client.parse_document(
