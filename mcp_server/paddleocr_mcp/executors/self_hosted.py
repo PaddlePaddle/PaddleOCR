@@ -1,4 +1,3 @@
-# mcp_server/paddleocr_mcp/executors/self_hosted.py
 # Copyright (c) 2026 PaddlePaddle Authors. All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -53,4 +52,4 @@ class SelfHostedExecutor(HTTPExecutor):
         if self._pipeline == "OCR":
             return self._parse_ocr_response_http(result_data)
         else:
-            return self._parse_layout_response_http(result_data)
+            return self._parse_doc_parsing_response_http(result_data)

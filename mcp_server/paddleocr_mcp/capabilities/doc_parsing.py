@@ -1,4 +1,3 @@
-# mcp_server/paddleocr_mcp/capabilities/layout.py
 # Copyright (c) 2026 PaddlePaddle Authors. All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,8 +22,8 @@ from ..executors.base import Executor
 from .base import MCPCapability
 
 
-class LayoutParsingCapability(MCPCapability):
-    """Layout parsing MCP capability (PP-StructureV3 / PaddleOCR-VL)."""
+class DocParsingCapability(MCPCapability):
+    """Document parsing MCP capability (PP-StructureV3 / PaddleOCR-VL)."""
 
     def __init__(self, executor: Executor, tool_name: str):
         """
@@ -39,7 +38,7 @@ class LayoutParsingCapability(MCPCapability):
 
     def register_tools(self, mcp: Any) -> None:
         @mcp.tool(self._tool_name)
-        async def _layout_parsing(
+        async def _doc_parsing(
             input_data: str,
             output_mode: str = "simple",
             file_type: Optional[str] = None,
@@ -53,7 +52,7 @@ class LayoutParsingCapability(MCPCapability):
                 input_data: File path, URL, or Base64 string.
                 output_mode: Output mode.
                     - "simple": Clear readable Markdown (default).
-                    - "detailed": JSON format containing layout information.
+                    - "detailed": JSON format containing document structure.
                 file_type: File type (required for URL).
                 return_images: Whether to return extracted images.
             """

@@ -301,7 +301,7 @@ class LocalExecutor(Executor):
         if self._pipeline == "OCR":
             return self._parse_ocr_result(result)
         else:
-            return self._parse_layout_result(result)
+            return self._parse_doc_parsing_result(result)
 
     def _parse_ocr_result(self, result: Any) -> Dict[str, Any]:
         """Parse OCR result"""
@@ -331,7 +331,7 @@ class LocalExecutor(Executor):
             "text_lines": text_lines,
         }
 
-    def _parse_layout_result(self, result: Any) -> Dict[str, Any]:
+    def _parse_doc_parsing_result(self, result: Any) -> Dict[str, Any]:
         """Parse layout parsing result"""
         markdown_parts = []
         all_images_mapping = {}

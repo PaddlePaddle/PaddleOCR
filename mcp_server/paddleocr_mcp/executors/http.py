@@ -1,4 +1,3 @@
-# mcp_server/paddleocr_mcp/executors/http.py
 # Copyright (c) 2026 PaddlePaddle Authors. All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -107,22 +106,22 @@ class HTTPExecutor(Executor):
             "text_lines": text_lines,
         }
 
-    def _parse_layout_response_http(
+    def _parse_doc_parsing_response_http(
         self, result_data: Dict[str, Any]
     ) -> Dict[str, Any]:
-        """Parse layout response from HTTP API (shared implementation)"""
-        layout_results = result_data.get("layoutParsingResults", [])
+        """Parse document parsing response from HTTP API (shared implementation)"""
+        doc_parsing_results = result_data.get("layoutParsingResults", [])
         markdown_parts = []
         all_images_mapping = {}
 
-        for res in layout_results:
+        for res in doc_parsing_results:
             markdown_parts.append(res["markdown"]["text"])
             images = res["markdown"]["images"]
             all_images_mapping.update(images)
 
         return {
             "markdown": "\n".join(markdown_parts),
-            "pages": len(layout_results),
+            "pages": len(doc_parsing_results),
             "images_mapping": all_images_mapping,
         }
 

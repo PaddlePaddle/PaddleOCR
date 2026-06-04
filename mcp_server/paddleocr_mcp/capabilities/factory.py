@@ -1,4 +1,3 @@
-# mcp_server/paddleocr_mcp/capabilities/factory.py
 # Copyright (c) 2026 PaddlePaddle Authors. All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,7 @@
 
 from .base import MCPCapability
 from .ocr import OCRCapability
-from .layout import LayoutParsingCapability
+from .doc_parsing import DocParsingCapability
 
 
 def create_capability(pipeline: str, executor) -> MCPCapability:
@@ -30,8 +29,8 @@ def create_capability(pipeline: str, executor) -> MCPCapability:
     if pipeline == "OCR":
         return OCRCapability(executor)
     elif pipeline == "PP-StructureV3":
-        return LayoutParsingCapability(executor, tool_name="pp_structurev3")
+        return DocParsingCapability(executor, tool_name="pp_structurev3")
     elif pipeline in ("PaddleOCR-VL", "PaddleOCR-VL-1.5", "PaddleOCR-VL-1.6"):
-        return LayoutParsingCapability(executor, tool_name="paddleocr_vl")
+        return DocParsingCapability(executor, tool_name="paddleocr_vl")
     else:
         raise ValueError(f"Unknown pipeline: {pipeline}")
