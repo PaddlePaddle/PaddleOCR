@@ -23,11 +23,11 @@ PaddleOCR provides a lightweight [Model Context Protocol (MCP)](https://modelcon
 
     > Each MCP server instance exposes exactly one MCP tool.
 
-- **Supported Working Modes**
-    - **Local Python Library**: Runs PaddleOCR pipelines directly on the local machine. This mode requires a suitable local environment and hardware, and is ideal for offline use or privacy-sensitive scenarios.
-    - **PaddleOCR Official Service**: Invokes services provided by the [PaddleOCR Official Website](https://aistudio.baidu.com/paddleocr?lang=en). This is suitable for quick testing, prototyping, or no-code scenarios.
-    - **Qianfan Platform Service**: Calls the cloud services provided by Baidu AI Cloud's Qianfan large model platform.
-    - **Self-hosted Service**: Invokes the user's self-hosted PaddleOCR services. This mode offers the advantages of serving and high flexibility. It is suitable for scenarios requiring customized service configurations, as well as those with strict data privacy requirements. **Currently, only the basic serving solution is supported.**
+- **Supported Inference Methods**
+    - **Local Inference**: Runs PaddleOCR pipelines directly on the local machine. This mode requires a suitable local environment and hardware, and is ideal for offline use or privacy-sensitive scenarios.
+    - **Official API**: Invokes the [PaddleOCR Official API](../inference_deployment/serving/paddleocr_official_api/python.en.md). This is suitable for quick testing, prototyping, or no-code scenarios.
+    - **Qianfan API**: Calls the API provided by Baidu AI Cloud's Qianfan large model platform.
+    - **Self-hosted API**: Invokes the user's self-hosted PaddleOCR services. This mode offers the advantages of serving and high flexibility. It is suitable for scenarios requiring customized service configurations, as well as those with strict data privacy requirements. **Currently, only the basic serving solution is supported.**
 
 ## Examples:
 
@@ -88,7 +88,7 @@ Convert images containing formulas and tables to editable csv/Excel format:
 - [2. Using with Claude for Desktop](#2-using-with-claude-for-desktop)
     - [2.1 Quick Start](#21-quick-start)
     - [2.2 MCP Host Configuration Details](#22-mcp-host-configuration-details)
-    - [2.3 Working Modes Explained](#23-working-modes-explained)
+    - [2.3 Inference Methods](#23-inference-methods)
     - [2.4 Using `uvx`](#24-using-uvx)
 - [3. Running the Server](#3-running-the-server)
 - [4. Parameter Reference](#4-parameter-reference)
@@ -98,8 +98,8 @@ Convert images containing formulas and tables to editable csv/Excel format:
 
 This section explains how to install the `paddleocr-mcp` library via pip.
 
-- For the local Python library mode, in addition to installing `paddleocr-mcp`, you also need to install the PaddlePaddle framework and PaddleOCR by referring to the [PaddleOCR installation guide](../installation.en.md).
-- For the local Python library mode, you may also consider installing the corresponding optional dependencies:
+- For Local Inference, in addition to installing `paddleocr-mcp`, you also need to install the PaddlePaddle framework and PaddleOCR by referring to the [PaddleOCR installation guide](../installation.en.md).
+- For Local Inference, you may also consider installing the corresponding optional dependencies:
   - `paddleocr-mcp[local]`: includes PaddleOCR (without the PaddlePaddle framework).
   - `paddleocr-mcp[local-cpu]`: based on `local`, additionally includes the CPU version of the PaddlePaddle framework.
 - PaddleOCR also supports running the server without installation through methods like `uvx`. For details, please refer to the instructions in [2. Using with Claude for Desktop](#2-using-with-claude-for-desktop).
@@ -225,11 +225,11 @@ In the configuration file for Claude for Desktop, you need to define how the MCP
 - `args`: Configurable command-line arguments, such as `["--verbose"]`. See [4. Parameter Reference](#4-parameter-reference) for details.
 - `env`: Configurable environment variables. See [4. Parameter Reference](#4-parameter-reference) for details.
 
-### 2.3 Working Modes Explained
+### 2.3 Inference Methods
 
-You can configure the MCP server according to your requirements to run in different working modes. The operational procedures vary for different modes, which will be explained in detail below.
+You can configure the MCP server according to your requirements to use different inference methods. The operational procedures vary for different methods, which will be explained in detail below.
 
-#### Mode 1: Local Python Library
+#### Method 1: Local Inference
 
 See [2.1 Quick Start](#21-quick-start).
 
@@ -239,8 +239,6 @@ See [2.1 Quick Start](#21-quick-start).
 2. Obtain your access token.
 
     Please first obtain your access token on the [AI Studio Access Token page](https://aistudio.baidu.com/account/accessToken).
-
-    The SDK has the official service access address built-in, so you do not need to configure the URL manually by default. If you need to use a custom service address (such as through a proxy), you can set the `PADDLEOCR_MCP_BASE_URL` environment variable.
 
 3. Refer to the configuration example below to modify the contents of the `claude_desktop_config.json` file.
 4. Restart the MCP host.
@@ -340,7 +338,7 @@ PaddleOCR also supports starting the MCP server via `uvx`. With this approach, m
 1. Install [uv](https://docs.astral.sh/uv/#installation).
 2. Modify `claude_desktop_config.json`. Examples:
 
-  Self-hosted mode:
+  Self-hosted API:
 
     ```json
     {
@@ -362,7 +360,7 @@ PaddleOCR also supports starting the MCP server via `uvx`. With this approach, m
     }
     ```
 
-    Local mode (inference on CPUs, using the `local-cpu` extra):
+    Local Inference (CPU inference, using the `local-cpu` extra):
 
     ```json
     {
@@ -383,7 +381,7 @@ PaddleOCR also supports starting the MCP server via `uvx`. With this approach, m
     }
     ```
 
-    For information on local mode dependencies, performance tuning, and production configuration, please refer to the [3.1 Quick Start](#21-quick-start) section.
+    For information on Local Inference dependencies, performance tuning, and production configuration, please refer to the [2.1 Quick Start](#21-quick-start) section.
 
     Due to the use of a different startup method, the `command` and `args` settings in the configuration file differ from the previously described approach. However, the command-line arguments and environment variables supported by the MCP service (such as `PADDLEOCR_MCP_SERVER_URL`) can still be set in the same way.
 
@@ -400,13 +398,13 @@ paddleocr_mcp --help
 Example commands:
 
 ```bash
-# OCR + PaddleOCR official service + stdio
+# OCR + Official API + stdio
 PADDLEOCR_MCP_AISTUDIO_ACCESS_TOKEN=xxxxxx paddleocr_mcp --pipeline OCR --ppocr_source aistudio --server_url https://xxxxxx.aistudio-hub.baidu.com
 
-# PP-StructureV3 + local Python library + stdio
+# PP-StructureV3 + Local Inference + stdio
 paddleocr_mcp --pipeline PP-StructureV3 --ppocr_source local
 
-# OCR + self-hosted service + Streamable HTTP
+# OCR + Self-hosted API + Streamable HTTP
 paddleocr_mcp --pipeline OCR --ppocr_source self_hosted --server_url http://127.0.0.1:8080 --http
 ```
 
@@ -419,13 +417,13 @@ You can control the MCP server via environment variables or CLI arguments.
 | Environment Variable                          | CLI Argument              | Type   | Description                                                           | Options                                  | Default       |
 | ------------------------------------- | ------------------------- | ------ | --------------------------------------------------------------------- | ---------------------------------------- | ------------- |
 | `PADDLEOCR_MCP_PIPELINE`              | `--pipeline`              | `str`  | Pipeline to run.                                                      | `"OCR"`, `"PP-StructureV3"`, `"PaddleOCR-VL"`, `"PaddleOCR-VL-1.5"`, `"PaddleOCR-VL-1.6"`              | `"OCR"`       |
-| `PADDLEOCR_MCP_PPOCR_SOURCE`          | `--ppocr_source`          | `str`  | Source of PaddleOCR capabilities.                                     | `"local"` (local Python library), `"aistudio"` (PaddleOCR official service), `"qianfan"` (Qianfan platform service), `"self_hosted"` (self-hosted service) | `"local"`     |
-| `PADDLEOCR_MCP_SERVER_URL`            | `--server_url`            | `str`  | Base URL for the underlying service (required for `qianfan` or `self_hosted` modes). | -                                        | `None`        |
-| `PADDLEOCR_MCP_BASE_URL`             | `--base_url`             | `str`  | Custom AI Studio service base URL (optional for `aistudio` mode). | -                                        | `None`        |
-| `PADDLEOCR_MCP_AISTUDIO_ACCESS_TOKEN` | `--aistudio_access_token` | `str`  | AI Studio access token (required for `aistudio` mode).                 | -                                        | `None`        |
+| `PADDLEOCR_MCP_PPOCR_SOURCE`          | `--ppocr_source`          | `str`  | Source of PaddleOCR capabilities.                                     | `"local"` (local inference), `"aistudio"` (Official API), `"qianfan"` (Qianfan API), `"self_hosted"` (Self-hosted API) | `"local"`     |
+| `PADDLEOCR_MCP_SERVER_URL`            | `--server_url`            | `str`  | Base URL for the underlying service (required for `qianfan` or `self_hosted` sources). | -                                        | `None`        |
+| `PADDLEOCR_MCP_BASE_URL`             | `--base_url`             | `str`  | Custom AI Studio service base URL (optional for `aistudio` source). | -                                        | `None`        |
+| `PADDLEOCR_MCP_AISTUDIO_ACCESS_TOKEN` | `--aistudio_access_token` | `str`  | AI Studio access token (required for `aistudio` source).                 | -                                        | `None`        |
 | `PADDLEOCR_MCP_TIMEOUT`               | `--timeout`               | `int`  | Read timeout for the underlying requests (seconds).                          | -                                        | `60`          |
-| `PADDLEOCR_MCP_DEVICE`                | `--device`                | `str`  | Device for inference (`local` mode only).                          | -                                        | `None`        |
-| `PADDLEOCR_MCP_PIPELINE_CONFIG`       | `--pipeline_config`       | `str`  | Path to pipeline config file (`local` mode only).                     | -                                        | `None`        |
+| `PADDLEOCR_MCP_DEVICE`                | `--device`                | `str`  | Device for inference (`local` source only).                          | -                                        | `None`        |
+| `PADDLEOCR_MCP_PIPELINE_CONFIG`       | `--pipeline_config`       | `str`  | Path to pipeline config file (`local` source only).                     | -                                        | `None`        |
 | -                                     | `--http`                  | `bool` | Use Streamable HTTP instead of stdio (for remote/multi-client use).   | -                                        | `False`       |
 | -                                     | `--host`                  | `str`  | Host for the Streamable HTTP mode.                                                   | -                                        | `"127.0.0.1"` |
 | -                                     | `--port`                  | `int`  | Port for the Streamable HTTP mode.                                                   | -                                        | `8000`        |
@@ -433,6 +431,6 @@ You can control the MCP server via environment variables or CLI arguments.
 
 ## 5. Known Limitations
 
-- In the local Python library mode, the exposed MCP tool cannot process PDF document inputs that are Base64 encoded.
-- In the local Python library mode, the exposed MCP tool does not infer the file type based on the model's `file_type` prompt, and may fail to process some complex URLs.
+- In Local Inference mode, the exposed MCP tool cannot process PDF document inputs that are Base64 encoded.
+- In Local Inference mode, the exposed MCP tool does not infer the file type based on the model's `file_type` prompt, and may fail to process some complex URLs.
 - For the PP-StructureV3 and PaddleOCR-VL series, if the input file contains images, the returned results may significantly increase token usage. If image content is not needed, you can explicitly exclude it through prompts to reduce resource consumption.
