@@ -8,7 +8,6 @@ description: >-
   plain text extraction, 坐标, 检测框, bbox, bounding box, image to text, screenshot, photo scan,
   recognize text.
 license: Apache-2.0
-compatibility: Requires paddleocr>=3.6.0
 metadata:
   openclaw:
     requires:
@@ -58,20 +57,15 @@ paddleocr api \
   --file_path "./document.pdf"
 ```
 
-### With Specific Model
-
-PP-OCRv5:
+### Common Options
 
 ```bash
+# With specific model
 paddleocr api \
   --model_type ocr \
   --model PP-OCRv5 \
   --file_path "./report.pdf"
-```
 
-### Common Options
-
-```bash
 # Disable preprocessing (faster, for flat/well-oriented images)
 paddleocr api \
   --model_type ocr \

@@ -11,10 +11,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .base import MCPCapability
-from .factory import create_capability
+from .base import Inference
+from .factory import InferenceFactory, create_inference
 
 __all__ = [
-    "MCPCapability",
-    "create_capability",
+    "Inference",
+    "InferenceFactory",
+    "create_inference",
 ]

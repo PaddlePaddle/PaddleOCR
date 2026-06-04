@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from __future__ import annotations
+
 import argparse
 import asyncio
 import os
@@ -20,14 +22,16 @@ import sys
 
 from fastmcp import FastMCP
 
-from .executors import create_executor
-from .capabilities import create_capability
+from .inference import create_inference
+from .tasks import create_task
+
+_QIANFAN_SUPPORTED_PIPELINES = frozenset({"PP-StructureV3", "PaddleOCR-VL"})
 
 
 def _parse_args() -> argparse.Namespace:
     """Parse command line arguments."""
     parser = argparse.ArgumentParser(
-        description="PaddleOCR MCP server - Supports local library, AI Studio service, and self-hosted servers."
+        description="PaddleOCR MCP server - Supports local inference, AI Studio async API, and HTTP API."
     )
 
     parser.add_argument(
@@ -40,77 +44,85 @@ def _parse_args() -> argparse.Namespace:
             "PaddleOCR-VL-1.6",
         ],
         default=os.getenv("PADDLEOCR_MCP_PIPELINE", "OCR"),
-        help="Pipeline name.",
+        help="Pipeline to run. Env: PADDLEOCR_MCP_PIPELINE.",
     )
     parser.add_argument(
         "--ppocr_source",
         choices=["local", "aistudio", "qianfan", "self_hosted"],
         default=os.getenv("PADDLEOCR_MCP_PPOCR_SOURCE", "local"),
-        help="Source of PaddleOCR functionality: local (local library), aistudio (AI Studio service), qianfan (Qianfan service), self_hosted (self-hosted server).",
+        help="Inference backend. Env: PADDLEOCR_MCP_PPOCR_SOURCE.",
     )
 
     parser.add_argument(
         "--http",
         action="store_true",
-        help="Use HTTP transport instead of STDIO (suitable for remote deployment and multiple clients).",
+        help="Use Streamable HTTP instead of stdio.",
     )
     parser.add_argument(
         "--host",
         default="127.0.0.1",
-        help="Host address for HTTP mode (default: 127.0.0.1).",
+        help="HTTP bind host (with --http). Default: 127.0.0.1.",
     )
     parser.add_argument(
         "--port",
         type=int,
         default=8000,
-        help="Port for HTTP mode (default: 8000).",
+        help="HTTP bind port (with --http). Default: 8000.",
     )
     parser.add_argument(
-        "--verbose", action="store_true", help="Enable verbose logging for debugging."
+        "--verbose",
+        action="store_true",
+        help="Enable verbose logging.",
     )
 
-    # Local mode configuration
     parser.add_argument(
         "--pipeline_config",
         default=os.getenv("PADDLEOCR_MCP_PIPELINE_CONFIG"),
-        help="PaddleOCR pipeline configuration file path (for local mode).",
+        help="Pipeline config file path (local). Env: PADDLEOCR_MCP_PIPELINE_CONFIG.",
     )
     parser.add_argument(
         "--device",
         default=os.getenv("PADDLEOCR_MCP_DEVICE"),
-        help="Device to run inference on.",
+        help="Inference device (local). Env: PADDLEOCR_MCP_DEVICE.",
     )
 
-    # Service mode configuration
     parser.add_argument(
-        "--server_url",
-        default=os.getenv("PADDLEOCR_MCP_SERVER_URL"),
-        help="Base URL of the underlying service (required in qianfan/self_hosted mode).",
+        "--aistudio-base-url",
+        dest="aistudio_base_url",
+        default=os.getenv("PADDLEOCR_MCP_AISTUDIO_BASE_URL"),
+        help="AI Studio API base URL (aistudio). Env: PADDLEOCR_MCP_AISTUDIO_BASE_URL.",
+    )
+    parser.add_argument(
+        "--qianfan-base-url",
+        dest="qianfan_base_url",
+        default=os.getenv("PADDLEOCR_MCP_QIANFAN_BASE_URL")
+        or "https://qianfan.baidubce.com/v2/ocr",
+        help="Qianfan API base URL (qianfan). Env: PADDLEOCR_MCP_QIANFAN_BASE_URL.",
+    )
+    parser.add_argument(
+        "--self-hosted-base-url",
+        dest="self_hosted_base_url",
+        default=os.getenv("PADDLEOCR_MCP_SELF_HOSTED_BASE_URL"),
+        help="Self-hosted service base URL (self_hosted). Env: PADDLEOCR_MCP_SELF_HOSTED_BASE_URL.",
     )
     parser.add_argument(
         "--aistudio_access_token",
         default=os.getenv("PADDLEOCR_MCP_AISTUDIO_ACCESS_TOKEN"),
-        help="AI Studio access token (required for AI Studio).",
+        help="AI Studio access token (aistudio). Env: PADDLEOCR_MCP_AISTUDIO_ACCESS_TOKEN.",
     )
     parser.add_argument(
         "--qianfan_api_key",
         default=os.getenv("PADDLEOCR_MCP_QIANFAN_API_KEY"),
-        help="Qianfan API key (required for Qianfan).",
-    )
-    parser.add_argument(
-        "--base_url",
-        default=os.getenv("PADDLEOCR_MCP_BASE_URL"),
-        help="Custom base URL for AI Studio (optional).",
+        help="Qianfan API key (qianfan). Env: PADDLEOCR_MCP_QIANFAN_API_KEY.",
     )
     parser.add_argument(
         "--timeout",
         type=int,
         default=int(os.getenv("PADDLEOCR_MCP_TIMEOUT", "60")),
-        help="HTTP read timeout in seconds for API requests to the underlying server.",
+        help="Request timeout in seconds. Env: PADDLEOCR_MCP_TIMEOUT.",
     )
 
-    args = parser.parse_args()
-    return args
+    return parser.parse_args()
 
 
 def _validate_args(args: argparse.Namespace) -> None:
@@ -132,11 +144,11 @@ def _validate_args(args: argparse.Namespace) -> None:
             )
             sys.exit(2)
     elif args.ppocr_source == "qianfan":
-        if not args.server_url:
-            print("Error: The server base URL is required.", file=sys.stderr)
+        if args.pipeline not in _QIANFAN_SUPPORTED_PIPELINES:
+            supported = ", ".join(sorted(_QIANFAN_SUPPORTED_PIPELINES))
             print(
-                "Please either set `--server_url` or set the environment variable "
-                "`PADDLEOCR_MCP_SERVER_URL`.",
+                f"Error: Pipeline {args.pipeline!r} is not supported with qianfan source. "
+                f"Supported pipelines: {supported}. ",
                 file=sys.stderr,
             )
             sys.exit(2)
@@ -149,14 +161,54 @@ def _validate_args(args: argparse.Namespace) -> None:
             )
             sys.exit(2)
     elif args.ppocr_source == "self_hosted":
-        if not args.server_url:
-            print("Error: The server base URL is required.", file=sys.stderr)
+        if not args.self_hosted_base_url:
             print(
-                "Please either set `--server_url` or set the environment variable "
-                "`PADDLEOCR_MCP_SERVER_URL`.",
+                "Error: The self-hosted service base URL is required.", file=sys.stderr
+            )
+            print(
+                f"Please set `--self-hosted-base-url` or the environment variable "
+                "`PADDLEOCR_MCP_SELF_HOSTED_BASE_URL`.",
                 file=sys.stderr,
             )
             sys.exit(2)
+
+
+def _create_inference_from_args(args: argparse.Namespace):
+    source = args.ppocr_source
+
+    if source == "local":
+        return create_inference(
+            pipeline=args.pipeline,
+            source=source,
+            config=args.pipeline_config,
+            device=args.device,
+        )
+    elif source == "aistudio":
+        return create_inference(
+            pipeline=args.pipeline,
+            source=source,
+            token=args.aistudio_access_token,
+            base_url=args.aistudio_base_url,
+            request_timeout=float(args.timeout),
+            poll_timeout=float(args.timeout * 10),
+        )
+    elif source == "qianfan":
+        return create_inference(
+            pipeline=args.pipeline,
+            source=source,
+            base_url=args.qianfan_base_url,
+            api_key=args.qianfan_api_key,
+            timeout=args.timeout,
+        )
+    elif source == "self_hosted":
+        return create_inference(
+            pipeline=args.pipeline,
+            source=source,
+            base_url=args.self_hosted_base_url,
+            timeout=args.timeout,
+        )
+    else:
+        raise ValueError(f"Unknown source: {source}")
 
 
 async def async_main() -> None:
@@ -164,26 +216,14 @@ async def async_main() -> None:
     args = _parse_args()
     _validate_args(args)
 
-    # Create executor
-    executor = create_executor(
-        source=args.ppocr_source,
-        pipeline=args.pipeline,
-        token=args.aistudio_access_token,
-        base_url=args.base_url or args.server_url,
-        timeout=args.timeout,
-        api_key=args.qianfan_api_key,
-        pipeline_config=args.pipeline_config,
-        device=args.device,
-    )
-
-    # Create capability
-    capability = create_capability(
-        pipeline=args.pipeline,
-        executor=executor,
-    )
+    # Create inference and manage lifecycle directly
+    inference = _create_inference_from_args(args)
 
     try:
-        await capability.start()
+        await inference.start()
+
+        # Create task (no longer manages lifecycle)
+        task = create_task(args.pipeline, inference)
 
         server_name = f"PaddleOCR {args.pipeline} MCP server"
         mcp = FastMCP(
@@ -191,7 +231,7 @@ async def async_main() -> None:
             mask_error_details=True,
         )
 
-        capability.register_tools(mcp)
+        task.register_tools(mcp)
 
         log_level = "INFO" if args.verbose else "WARNING"
 
@@ -214,7 +254,7 @@ async def async_main() -> None:
         sys.exit(1)
 
     finally:
-        await capability.stop()
+        await inference.stop()
 
 
 def main() -> None:

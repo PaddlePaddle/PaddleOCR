@@ -1,7 +1,7 @@
 # Copyright (c) 2026 PaddlePaddle Authors. All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use a copy of the License at
+# you may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
@@ -11,20 +11,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .base import (
-    AuthenticationError,
-    ExecutionTimeoutError,
-    Executor,
-    ExecutorError,
-    ResourceUnavailableError,
-)
-from .factory import create_executor
+from .base import Task
+from .factory import TaskFactory, create_task
 
-__all__ = [
-    "Executor",
-    "ExecutorError",
-    "AuthenticationError",
-    "ResourceUnavailableError",
-    "ExecutionTimeoutError",
-    "create_executor",
-]
+__all__ = ["Task", "TaskFactory", "create_task"]

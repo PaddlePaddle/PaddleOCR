@@ -9,7 +9,7 @@ comments: true
 
 PaddleOCR provides a lightweight [Model Context Protocol (MCP)](https://modelcontextprotocol.io/introduction) server designed to integrate PaddleOCR’s text recognition, layout parsing, and other capabilities into various large-model applications.
 
-### Key Features
+### Key features include:
 
 - **Currently Supported Pipelines**
 
@@ -22,17 +22,16 @@ PaddleOCR provides a lightweight [Model Context Protocol (MCP)](https://modelcon
     > Each MCP server instance exposes exactly one MCP tool.
 
 - **Supported Inference Methods**
-    - **Local Inference**: Runs PaddleOCR pipelines directly on the local machine. This mode requires a suitable local environment and hardware, and is ideal for offline use or privacy-sensitive scenarios.
-    - **Official API**: Invokes the [PaddleOCR Official API](../inference_deployment/serving/paddleocr_official_api/python.en.md). This is suitable for quick testing, prototyping, or no-code scenarios.
-    - **Qianfan API**: Calls the API provided by Baidu AI Cloud's Qianfan large model platform.
-    - **Self-hosted API**: Invokes the user's self-hosted PaddleOCR services. This mode offers the advantages of serving and high flexibility. It is suitable for scenarios requiring customized service configurations, as well as those with strict data privacy requirements. **Currently, only the basic serving solution is supported.**
+    - **Local Inference**: Runs PaddleOCR pipelines directly on the local machine. This method has certain requirements for the local environment and hardware performance, and is suitable for offline use and scenarios with strict data privacy requirements.
+    - **Official API**: Invokes the PaddleOCR Official API. This method is suitable for quickly trying out features, validating solutions, and other no-code development scenarios.
+    - **Qianfan API**: Calls the API provided by Baidu AI Cloud's Qianfan platform.
+    - **Self-hosted API**: Invokes the user's self-hosted PaddleOCR inference service. This method offers serving advantages and high flexibility, suitable for scenarios requiring customized service configurations, as well as those with strict data privacy requirements. **Currently, only the basic serving solution is supported.**
 
 ## Examples:
 
 The following showcases creative use cases built with the PaddleOCR MCP server combined with other tools:
 
 ### Demo 1
-
 In Claude for Desktop, extract handwritten content from images and save to note-taking software Notion. The PaddleOCR MCP server extracts text, formulas and other information from images while preserving document structure.
 <div align="center">
   <img width="65%" src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/paddleocr/mcp_demo/note_to_notion.gif" alt="note_to_notion">
@@ -44,7 +43,6 @@ In Claude for Desktop, extract handwritten content from images and save to note-
 ---
 
 ### Demo 2
-
 In VSCode, convert handwritten ideas or pseudocode into runnable Python scripts that comply with project coding standards with one click, and upload them to GitHub repositories. The PaddleOCR MCP server extracts explicitly handwritten code from images for subsequent processing.
 
 <div align="center">
@@ -96,28 +94,23 @@ Convert images containing formulas and tables to editable csv/Excel format:
 
 This section explains how to install the `paddleocr-mcp` library via pip.
 
-- For Local Inference, in addition to installing `paddleocr-mcp`, you also need to install the PaddlePaddle framework and PaddleOCR by referring to the [PaddleOCR installation guide](../installation.en.md).
-- For Local Inference, you may also consider installing the corresponding optional dependencies:
-  - `paddleocr-mcp[local]`: includes PaddleOCR (without the PaddlePaddle framework).
-  - `paddleocr-mcp[local-cpu]`: based on `local`, additionally includes the CPU version of the PaddlePaddle framework.
-- PaddleOCR also supports running the server without installation through methods like `uvx`. For details, please refer to the instructions in [2. Using with Claude for Desktop](#2-using-with-claude-for-desktop).
+`paddleocr-mcp` requires Python 3.10 or later.
+`paddleocr-mcp` depends on `paddleocr>=3.6.0` by default, so Official API, Qianfan API, and self-hosted API modes do not require installing PaddleOCR separately. Local inference additionally requires the document-parsing dependencies and an inference engine required to run PaddleOCR pipelines locally; see [Method 1: Local Inference](#method-1-local-inference) for details.
 
-To install `paddleocr-mcp` using pip:
+Install from PyPI:
 
 ```bash
-# Install from PyPI
 pip install -U paddleocr-mcp
+```
 
-# Install from source
+Install from source:
+
+```bash
 git clone https://github.com/PaddlePaddle/PaddleOCR.git
 pip install -e mcp_server
-
-# Install with optional extras (choose ONE of the following if you prefer convenience installs)
-# Install PaddleOCR together with the MCP server (framework not included):
-pip install "paddleocr-mcp[local]"
-# Install PaddleOCR and CPU PaddlePaddle framework together:
-pip install "paddleocr-mcp[local-cpu]"
 ```
+
+For local inference, install the optional extras described in [Method 1: Local Inference](#method-1-local-inference).
 
 To verify successful installation:
 
@@ -125,7 +118,9 @@ To verify successful installation:
 paddleocr_mcp --help
 ```
 
-If the help message is printed, the installation succeeded.
+If help information is printed after running the command above, the installation succeeded.
+
+PaddleOCR also supports running the server without installation through methods like `uvx`; for details, see [2. Using with Claude for Desktop](#2-using-with-claude-for-desktop).
 
 ## 2. Using with Claude for Desktop
 
@@ -133,13 +128,15 @@ This section explains how to use the PaddleOCR MCP server within Claude for Desk
 
 ### 2.1 Quick Start
 
+The following quick start uses **Official API** inference as an example to get you started.
+
 1. **Install `paddleocr-mcp`**
 
-    Refer to [1. Installation](#1-installation). To avoid dependency conflicts, **it is strongly recommended to install in an isolated virtual environment**.
+    Refer to [1. Installation](#1-installation).
 
-2. **Install PaddleOCR**
+2. **Obtain an Access Token**
 
-    Install the PaddlePaddle framework and PaddleOCR, as per the [PaddleOCR installation documentation](../installation.en.md).
+    Obtain your access token from the [AI Studio Access Token page](https://aistudio.baidu.com/account/accessToken).
 
 3. **Add MCP Server Configuration**
 
@@ -149,7 +146,7 @@ This section explains how to use the PaddleOCR MCP server within Claude for Desk
     - **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
     - **Linux**: `~/.config/Claude/claude_desktop_config.json`
 
-    Edit the file as follows:
+    Open the `claude_desktop_config.json` file, adjust the configuration according to the example below, and fill it into `claude_desktop_config.json`.
 
     ```json
     {
@@ -159,7 +156,8 @@ This section explains how to use the PaddleOCR MCP server within Claude for Desk
           "args": [],
           "env": {
             "PADDLEOCR_MCP_PIPELINE": "OCR",
-            "PADDLEOCR_MCP_PPOCR_SOURCE": "local"
+            "PADDLEOCR_MCP_PPOCR_SOURCE": "aistudio",
+            "PADDLEOCR_MCP_AISTUDIO_ACCESS_TOKEN": "<your-access-token>"
           }
         }
       }
@@ -168,48 +166,13 @@ This section explains how to use the PaddleOCR MCP server within Claude for Desk
 
     **Notes**:
 
-    - `PADDLEOCR_MCP_PIPELINE` should be set to the pipeline name. See Section 4 for more details.
-    - `PADDLEOCR_MCP_PIPELINE_CONFIG` is optional; if not set, the default pipeline configuration will be used. If you need to adjust the configuration, such as changing the model, please refer to the [PaddleOCR documentation](../paddleocr_and_paddlex.md) to export the pipeline configuration file, and set `PADDLEOCR_MCP_PIPELINE_CONFIG` to the absolute path of this configuration file.
+    - Replace `<your-access-token>` with your access token.
+    - To use a custom service address, set the `PADDLEOCR_MCP_AISTUDIO_BASE_URL` environment variable.
 
-    - **Inference Performance Tips**:
+    **Important**:
 
-        If you encounter issues such as long inference time or insufficient memory during use, you may consider adjusting the pipeline configuration according to the following recommendations.
-
-        - **OCR Pipeline**: It is recommended to switch to the `mobile` series models. For example, you can modify the pipeline configuration file to use `PP-OCRv5_mobile_det` for detection and `PP-OCRv5_mobile_rec` for recognition.
-
-        - **PP-StructureV3 Pipeline**:
-
-            - Disable unused features, e.g., set `use_formula_recognition` to `False` to disable formula recognition.
-            - Use lightweight models, such as replacing the OCR model with the `mobile` version or switching to a lightweight formula recognition model like PP-FormulaNet-S.
-
-            The following sample code can be used to obtain the pipeline configuration file, in which most optional features of the PP-StructureV3 pipeline are disabled, and some key models are replaced with lightweight versions.
-
-            ```python
-            from paddleocr import PPStructureV3
-
-            pipeline = PPStructureV3(
-                use_doc_orientation_classify=False, # Disable document image orientation classification
-                use_doc_unwarping=False,            # Disable text image unwarping
-                use_textline_orientation=False,     # Disable text line orientation classification
-                use_formula_recognition=False,      # Disable formula recognition
-                use_seal_recognition=False,         # Disable seal text recognition
-                use_table_recognition=False,        # Disable table recognition
-                use_chart_recognition=False,        # Disable chart parsing
-                # Use lightweight models
-                text_detection_model_name="PP-OCRv5_mobile_det",
-                text_recognition_model_name="PP-OCRv5_mobile_rec",
-                layout_detection_model_name="PP-DocLayout-S",
-            )
-
-            # The configuration file is saved to `PP-StructureV3.yaml`
-            pipeline.export_paddlex_config_to_yaml("PP-StructureV3.yaml")
-            ```
-
-        **For PaddleOCR-VL series, it is not recommended to use CPUs for inference.**
-
-      **Important**:
-
-      - If `paddleocr_mcp` is not in your system's `PATH`, set `command` to the absolute path of the executable.
+    - Do not expose your **access token**.
+    - If `paddleocr_mcp` is not in your system's `PATH`, set `command` to the absolute path of the executable.
 
 4. **Restart the MCP Host**
 
@@ -229,17 +192,20 @@ You can configure the MCP server according to your requirements to use different
 
 #### Method 1: Local Inference
 
-See [2.1 Quick Start](#21-quick-start).
+1. Install `paddleocr-mcp` and the local inference dependencies. `paddleocr-mcp` already depends on PaddleOCR; local inference additionally requires the document-parsing dependencies and an inference engine. You can install them manually by referring to the [PaddleOCR installation guide](../installation.en.md), or use the corresponding optional dependencies:
+    - `paddleocr-mcp[local]`: includes `paddleocr[doc-parser]>=3.6.0` (without the inference engine).
+    - `paddleocr-mcp[local-cpu]`: based on `local`, additionally includes the CPU PaddlePaddle inference engine (`paddlepaddle>=3.2.1`).
 
-#### Method 2: Official API
+    ```bash
+    # Install document-parsing dependencies for local inference (inference engine not included):
+    pip install "paddleocr-mcp[local]"
+    # Install the CPU PaddlePaddle framework in addition to local:
+    pip install "paddleocr-mcp[local-cpu]"
+    ```
 
-1. Install `paddleocr-mcp`.
-2. Obtain your access token.
-
-    Please first obtain your access token on the [AI Studio Access Token page](https://aistudio.baidu.com/account/accessToken).
-
-3. Refer to the configuration example below to modify the contents of the `claude_desktop_config.json` file.
-4. Restart the MCP host.
+    To avoid dependency conflicts, **it is strongly recommended to install in an isolated virtual environment**.
+2. Refer to the configuration example below to modify the `claude_desktop_config.json` file.
+3. Restart the MCP host.
 
 Configuration example:
 
@@ -251,8 +217,7 @@ Configuration example:
       "args": [],
       "env": {
         "PADDLEOCR_MCP_PIPELINE": "OCR",
-        "PADDLEOCR_MCP_PPOCR_SOURCE": "aistudio",
-        "PADDLEOCR_MCP_AISTUDIO_ACCESS_TOKEN": "<your-access-token>"
+        "PADDLEOCR_MCP_PPOCR_SOURCE": "local"
       }
     }
   }
@@ -261,19 +226,54 @@ Configuration example:
 
 **Notes**:
 
-- `PADDLEOCR_MCP_PIPELINE` should be set to the pipeline name. See Section 4 for more details.
-- Replace `<your-access-token>` with your access token.
-- If you need to use a custom service address, you can set the `PADDLEOCR_MCP_BASE_URL` environment variable.
+- `PADDLEOCR_MCP_PIPELINE` should be set to the pipeline name. See Section 4 for details.
+- `PADDLEOCR_MCP_PIPELINE_CONFIG` is optional. If not set, the default pipeline configuration is used. To adjust the configuration, such as changing models, refer to the [PaddleOCR documentation](../paddleocr_and_paddlex.md) to export the pipeline configuration file, and set `PADDLEOCR_MCP_PIPELINE_CONFIG` to the absolute path of this file.
+- **Inference Performance Tips**:
 
-**Important**:
+    If you encounter long inference time or insufficient memory, consider adjusting the pipeline configuration:
 
-- Do not expose your access token.
+    - **OCR Pipeline**: It is recommended to switch to the `mobile` series models. For example, use `PP-OCRv5_mobile_det` for detection and `PP-OCRv5_mobile_rec` for recognition.
+    - **PP-StructureV3 Pipeline**:
+
+        - Disable unused features, such as setting `use_formula_recognition` to `False` to disable formula recognition.
+        - Use lightweight models, such as replacing the OCR model with the `mobile` version or switching to a lightweight formula recognition model like PP-FormulaNet-S.
+
+        The following sample code exports a PP-StructureV3 pipeline configuration with most optional features disabled and some key models replaced with lightweight versions.
+
+        ```python
+        from paddleocr import PPStructureV3
+
+        pipeline = PPStructureV3(
+            use_doc_orientation_classify=False, # Disable document image orientation classification
+            use_doc_unwarping=False,            # Disable text image unwarping
+            use_textline_orientation=False,     # Disable text line orientation classification
+            use_formula_recognition=False,      # Disable formula recognition
+            use_seal_recognition=False,         # Disable seal text recognition
+            use_table_recognition=False,        # Disable table recognition
+            use_chart_recognition=False,        # Disable chart parsing
+            # Use lightweight models
+            text_detection_model_name="PP-OCRv5_mobile_det",
+            text_recognition_model_name="PP-OCRv5_mobile_rec",
+            layout_detection_model_name="PP-DocLayout-S",
+        )
+
+        # The configuration file is saved to `PP-StructureV3.yaml`
+        pipeline.export_paddlex_config_to_yaml("PP-StructureV3.yaml")
+        ```
+
+    **For PaddleOCR-VL series, CPU inference is not recommended.**
+
+#### Method 2: Official API
+
+Refer to [2.1 Quick Start](#21-quick-start).
+
+For tasks other than text recognition, set `PADDLEOCR_MCP_PIPELINE` correctly (see Section 4 for parameter details).
 
 #### Method 3: Qianfan API
 
 1. Install `paddleocr-mcp`.
 2. Obtain an API key by referring to the [Qianfan Platform Official Documentation](https://cloud.baidu.com/doc/qianfan-api/s/ym9chdsy5).
-3. Modify the `claude_desktop_config.json` file according to the configuration example below. Set `PADDLEOCR_MCP_QIANFAN_API_KEY` to your Qianfan platform API key.
+3. Refer to the configuration example below to modify the `claude_desktop_config.json` file.
 4. Restart the MCP host.
 
 Configuration example:
@@ -287,7 +287,6 @@ Configuration example:
       "env": {
         "PADDLEOCR_MCP_PIPELINE": "PaddleOCR-VL",
         "PADDLEOCR_MCP_PPOCR_SOURCE": "qianfan",
-        "PADDLEOCR_MCP_SERVER_URL": "https://qianfan.baidubce.com/v2/ocr",
         "PADDLEOCR_MCP_QIANFAN_API_KEY": "<your-api-key>"
       }
     }
@@ -295,15 +294,17 @@ Configuration example:
 }
 ```
 
-**Note**:
+**Notes**:
 
-- `PADDLEOCR_MCP_PIPELINE` should be set to the pipeline name. See Section 4 for more details.
+- `PADDLEOCR_MCP_PIPELINE` should be set to the pipeline name. Qianfan supports only `PP-StructureV3` and `PaddleOCR-VL`.
+- `PADDLEOCR_MCP_QIANFAN_BASE_URL` is the Qianfan API base URL (optional).
+- `PADDLEOCR_MCP_QIANFAN_API_KEY` is your Qianfan API key for authentication.
 
 #### Method 4: Self-hosted API
 
-1. In the environment where you need to run the PaddleOCR inference server, run the inference server as per the [PaddleOCR serving documentation](../inference_deployment/serving/serving.en.md).
-2. Install `paddleocr-mcp` where the MCP server will run.
-3. Refer to the configuration example below to modify the contents of the `claude_desktop_config.json` file. Set `PADDLEOCR_MCP_SERVER_URL` (e.g., `"http://127.0.0.1:8000"`).
+1. In the environment where you need to run the PaddleOCR inference server, refer to the [PaddleOCR serving documentation](../inference_deployment/serving/serving.en.md) to run the inference server.
+2. Install `paddleocr-mcp` in the environment where you need to run the MCP server.
+3. Refer to the configuration example below to modify the `claude_desktop_config.json` file.
 4. Restart the MCP host.
 
 Configuration example:
@@ -317,17 +318,17 @@ Configuration example:
       "env": {
         "PADDLEOCR_MCP_PIPELINE": "OCR",
         "PADDLEOCR_MCP_PPOCR_SOURCE": "self_hosted",
-        "PADDLEOCR_MCP_SERVER_URL": "<your-server-url>"
+        "PADDLEOCR_MCP_SELF_HOSTED_BASE_URL": "<your-server-url>"
       }
     }
   }
 }
 ```
 
-**Note**:
+**Notes**:
 
-- `PADDLEOCR_MCP_PIPELINE` should be set to the pipeline name. See Section 4 for more details.
-- Replace `<your-server-url>` with your service’s base URL (e.g., `http://127.0.0.1:8000`).
+- `PADDLEOCR_MCP_PIPELINE` should be set to the pipeline name. See Section 4 for details.
+- Replace `<your-server-url>` with the underlying service base URL (e.g. `http://127.0.0.1:8080`, **without** path suffixes such as `/ocr` or `/layout-parsing`; MCP appends them by pipeline).
 
 ### 2.4 Using `uvx`
 
@@ -336,58 +337,58 @@ PaddleOCR also supports starting the MCP server via `uvx`. With this approach, m
 1. Install [uv](https://docs.astral.sh/uv/#installation).
 2. Modify `claude_desktop_config.json`. Examples:
 
-  Self-hosted API:
+  Self-hosted API inference example:
 
-    ```json
-    {
-      "mcpServers": {
-        "paddleocr": {
-          "command": "uvx",
-          "args": [
-            "--from",
-            "paddleocr-mcp",
-            "paddleocr_mcp"
-          ],
-          "env": {
-            "PADDLEOCR_MCP_PIPELINE": "OCR",
-            "PADDLEOCR_MCP_PPOCR_SOURCE": "self_hosted",
-            "PADDLEOCR_MCP_SERVER_URL": "<your-server-url>"
-          }
-        }
+  ```json
+  {
+    "mcpServers": {
+     "paddleocr": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "paddleocr-mcp",
+        "paddleocr_mcp"
+      ],
+      "env": {
+        "PADDLEOCR_MCP_PIPELINE": "OCR",
+        "PADDLEOCR_MCP_PPOCR_SOURCE": "self_hosted",
+        "PADDLEOCR_MCP_SELF_HOSTED_BASE_URL": "<your-server-url>"
       }
+     }
     }
-    ```
+  }
+  ```
 
-    Local Inference (CPU inference, using the `local-cpu` extra):
+  Local inference (CPU inference, using the optional `local-cpu` extra) example:
 
-    ```json
-    {
-      "mcpServers": {
-        "paddleocr": {
-          "command": "uvx",
-          "args": [
-            "--from",
-            "paddleocr_mcp[local-cpu]",
-            "paddleocr_mcp"
-          ],
-          "env": {
-            "PADDLEOCR_MCP_PIPELINE": "OCR",
-            "PADDLEOCR_MCP_PPOCR_SOURCE": "local"
-          }
-        }
+  ```json
+  {
+    "mcpServers": {
+     "paddleocr": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "paddleocr-mcp[local-cpu]",
+        "paddleocr_mcp"
+      ],
+      "env": {
+        "PADDLEOCR_MCP_PIPELINE": "OCR",
+        "PADDLEOCR_MCP_PPOCR_SOURCE": "local"
       }
+     }
     }
-    ```
+  }
+  ```
 
-    For information on Local Inference dependencies, performance tuning, and production configuration, please refer to the [2.1 Quick Start](#21-quick-start) section.
+  For local inference dependencies, performance tuning, and pipeline configuration, refer to [Method 1: Local Inference](#method-1-local-inference).
 
-    Due to the use of a different startup method, the `command` and `args` settings in the configuration file differ from the previously described approach. However, the command-line arguments and environment variables supported by the MCP service (such as `PADDLEOCR_MCP_SERVER_URL`) can still be set in the same way.
+  Due to the use of a different startup method, the `command` and `args` settings in the configuration file differ from the previously described approach. However, the command-line arguments and environment variables supported by the MCP service (such as `PADDLEOCR_MCP_SELF_HOSTED_BASE_URL`) can still be set in the same way.
 
 ## 3. Running the Server
 
 In addition to MCP hosts like Claude for Desktop, you can also run the PaddleOCR MCP server via the CLI.
 
-To view help:
+Run the following command to print help information:
 
 ```bash
 paddleocr_mcp --help
@@ -397,38 +398,40 @@ Example commands:
 
 ```bash
 # OCR + Official API + stdio
-PADDLEOCR_MCP_AISTUDIO_ACCESS_TOKEN=xxxxxx paddleocr_mcp --pipeline OCR --ppocr_source aistudio --server_url https://xxxxxx.aistudio-hub.baidu.com
+PADDLEOCR_MCP_AISTUDIO_ACCESS_TOKEN=xxxxxx paddleocr_mcp --pipeline OCR --ppocr_source aistudio
 
 # PP-StructureV3 + Local Inference + stdio
 paddleocr_mcp --pipeline PP-StructureV3 --ppocr_source local
 
 # OCR + Self-hosted API + Streamable HTTP
-paddleocr_mcp --pipeline OCR --ppocr_source self_hosted --server_url http://127.0.0.1:8080 --http
+paddleocr_mcp --pipeline OCR --ppocr_source self_hosted --self-hosted-base-url http://127.0.0.1:8080 --http
 ```
 
-You can find all the supported parameters of the PaddleOCR MCP server in [4. Parameter Reference](#4-parameter-reference).
+See [4. Parameter Reference](#4-parameter-reference) for all parameters supported by the PaddleOCR MCP server.
 
 ## 4. Parameter Reference
 
 You can control the MCP server via environment variables or CLI arguments.
 
-| Environment Variable                          | CLI Argument              | Type   | Description                                                           | Options                                  | Default       |
-| ------------------------------------- | ------------------------- | ------ | --------------------------------------------------------------------- | ---------------------------------------- | ------------- |
-| `PADDLEOCR_MCP_PIPELINE`              | `--pipeline`              | `str`  | Pipeline to run.                                                      | `"OCR"`, `"PP-StructureV3"`, `"PaddleOCR-VL"`, `"PaddleOCR-VL-1.5"`, `"PaddleOCR-VL-1.6"`.              | `"OCR"`       |
-| `PADDLEOCR_MCP_PPOCR_SOURCE`          | `--ppocr_source`          | `str`  | Source of PaddleOCR capabilities.                                     | `"local"` (local inference), `"aistudio"` (Official API), `"qianfan"` (Qianfan API), `"self_hosted"` (Self-hosted API) | `"local"`     |
-| `PADDLEOCR_MCP_SERVER_URL`            | `--server_url`            | `str`  | Base URL for the underlying service (required for `qianfan` or `self_hosted` sources). | -                                        | `None`        |
-| `PADDLEOCR_MCP_BASE_URL`             | `--base_url`             | `str`  | Custom AI Studio service base URL (optional for `aistudio` source). | -                                        | `None`        |
-| `PADDLEOCR_MCP_AISTUDIO_ACCESS_TOKEN` | `--aistudio_access_token` | `str`  | AI Studio access token (required for `aistudio` source).                 | -                                        | `None`        |
-| `PADDLEOCR_MCP_TIMEOUT`               | `--timeout`               | `int`  | Read timeout for the underlying requests (seconds).                          | -                                        | `60`          |
-| `PADDLEOCR_MCP_DEVICE`                | `--device`                | `str`  | Device for inference (`local` source only).                          | -                                        | `None`        |
-| `PADDLEOCR_MCP_PIPELINE_CONFIG`       | `--pipeline_config`       | `str`  | Path to pipeline config file (`local` source only).                     | -                                        | `None`        |
-| -                                     | `--http`                  | `bool` | Use Streamable HTTP instead of stdio (for remote/multi-client use).   | -                                        | `False`       |
-| -                                     | `--host`                  | `str`  | Host for the Streamable HTTP mode.                                                   | -                                        | `"127.0.0.1"` |
-| -                                     | `--port`                  | `int`  | Port for the Streamable HTTP mode.                                                   | -                                        | `8000`        |
-| -                                     | `--verbose`               | `bool` | Enable verbose logging for debugging.                                               | -                                        | `False`       |
+| Environment Variable | CLI Argument | Type | Description | Options | Default |
+|:---------|:-----------|:-----|:-----|:-------|:-------|
+| `PADDLEOCR_MCP_PIPELINE` | `--pipeline` | `str` | Pipeline to run. | `"OCR"`, `"PP-StructureV3"`, `"PaddleOCR-VL"`, `"PaddleOCR-VL-1.5"`, `"PaddleOCR-VL-1.6"` | `"OCR"` |
+| `PADDLEOCR_MCP_PPOCR_SOURCE` | `--ppocr_source` | `str` | Source of PaddleOCR capabilities. | `"local"` (local inference), `"aistudio"` (Official API), `"qianfan"` (Qianfan API), `"self_hosted"` (self-hosted API) | `"local"` |
+| `PADDLEOCR_MCP_AISTUDIO_BASE_URL` | `--aistudio-base-url` | `str` | AI Studio API base URL (optional for `aistudio` source). | - | `None` |
+| `PADDLEOCR_MCP_QIANFAN_BASE_URL` | `--qianfan-base-url` | `str` | Qianfan API base URL (optional for `qianfan` source). | - | `https://qianfan.baidubce.com/v2/ocr` |
+| `PADDLEOCR_MCP_SELF_HOSTED_BASE_URL` | `--self-hosted-base-url` | `str` | Self-hosted PaddleX serve base URL (required for `self_hosted` source). | - | `None` |
+| `PADDLEOCR_MCP_QIANFAN_API_KEY` | `--qianfan_api_key` | `str` | Qianfan API authentication key (required for `qianfan` source). | - | `None` |
+| `PADDLEOCR_MCP_AISTUDIO_ACCESS_TOKEN` | `--aistudio_access_token` | `str` | AI Studio access token (required for `aistudio` source). | - | `None` |
+| `PADDLEOCR_MCP_TIMEOUT` | `--timeout` | `int` | Underlying request timeout in seconds. For `aistudio`, used as the per-request timeout; polling timeout is 10× this value. For `qianfan` and `self_hosted`, used as the HTTP read timeout. | - | `60` |
+| `PADDLEOCR_MCP_DEVICE` | `--device` | `str` | Device for inference (only effective for `local` source). | - | `None` |
+| `PADDLEOCR_MCP_PIPELINE_CONFIG` | `--pipeline_config` | `str` | PaddleOCR pipeline configuration file path (only effective for `local` source). | - | `None` |
+| - | `--http` | `bool` | Use Streamable HTTP transport instead of stdio (for remote deployment and multiple clients). | - | `False` |
+| - | `--host` | `str` | Host address for Streamable HTTP mode. | - | `"127.0.0.1"` |
+| - | `--port` | `int` | Port for Streamable HTTP mode. | - | `8000` |
+| - | `--verbose` | `bool` | Enable verbose logging for debugging. | - | `False` |
 
 ## 5. Known Limitations
 
-- In Local Inference mode, the exposed MCP tool cannot process PDF document inputs that are Base64 encoded.
-- In Local Inference mode, the exposed MCP tool does not infer the file type based on the model's `file_type` prompt, and may fail to process some complex URLs.
+- Under local inference, the exposed MCP tool cannot process PDF document inputs that are Base64 encoded.
+- Under local inference, the exposed MCP tool does not infer file type from the model's `file_type` prompt; some complex URLs may fail to process.
 - For the PP-StructureV3 and PaddleOCR-VL series, if the input file contains images, the returned results may significantly increase token usage. If image content is not needed, you can explicitly exclude it through prompts to reduce resource consumption.

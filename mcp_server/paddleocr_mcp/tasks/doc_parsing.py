@@ -13,47 +13,42 @@
 
 import json
 import re
-from typing import Any, Dict, List, Optional, Union
+from typing import Dict, List, Union
+from typing_extensions import override
 
-from fastmcp import Context
 from mcp.types import ImageContent, TextContent
 
-from .base import MCPCapability
+from ..inference.types import DocParsingResult, InferenceResult
+from .base import Task
 
 
-class BaseDocParsingCapability(MCPCapability):
-    """Base class for document parsing MCP capabilities.
+class DocParsingTask(Task):
+    """Base class for document parsing tasks.
 
-    Provides shared functionality for document parsing pipelines
-    (PP-StructureV3, PaddleOCR-VL, etc.).
+    Provides shared functionality for document parsing tasks.
     """
-
-    def get_default_options(self) -> Dict[str, Any]:
-        """Get default options for document parsing pipelines.
-
-        Returns:
-            Base defaults plus chart recognition enabled.
-        """
-        defaults = super().get_default_options()
-        defaults["use_chart_recognition"] = True
-        return defaults
 
     def _format_result(
         self,
-        result: Dict[str, Any],
+        result: InferenceResult,
         detailed: bool,
         return_images: bool = True,
         **kwargs,
     ) -> Union[str, List[Union[TextContent, ImageContent]]]:
-        if not result["markdown"].strip():
+        if not isinstance(result, DocParsingResult):
+            raise TypeError(
+                f"DocParsingTask expected DocParsingResult, got {type(result).__name__}"
+            )
+
+        if not result.markdown.strip():
             return (
-                "❌ No document content detected"
+                "No document content detected"
                 if not detailed
                 else json.dumps({"error": "No content detected"}, ensure_ascii=False)
             )
 
-        markdown_text = result["markdown"]
-        images_mapping = result.get("images_mapping", {})
+        markdown_text = result.markdown
+        images_mapping = result.images_mapping
 
         if return_images and images_mapping:
             content_list = self._parse_markdown_with_images(
@@ -66,7 +61,7 @@ class BaseDocParsingCapability(MCPCapability):
             content_list.append(
                 TextContent(
                     type="text",
-                    text=f"Pages: {result['pages']}",
+                    text=f"Pages: {result.pages}",
                 )
             )
 
@@ -77,7 +72,6 @@ class BaseDocParsingCapability(MCPCapability):
     def _parse_markdown_with_images(
         self, markdown_text: str, images_mapping: Dict[str, str]
     ) -> List[Union[TextContent, ImageContent]]:
-        """Parse markdown text, return mixed text and image content."""
         if not images_mapping:
             return [TextContent(type="text", text=markdown_text)]
 
@@ -107,3 +101,21 @@ class BaseDocParsingCapability(MCPCapability):
             content_list.append(TextContent(type="text", text=remaining_text))
 
         return content_list or [TextContent(type="text", text=markdown_text)]
+
+
+class PPStructureV3Task(DocParsingTask):
+    """MCP task for PP-StructureV3 document parsing."""
+
+    @property
+    @override
+    def tool_name(self) -> str:
+        return "pp_structurev3"
+
+
+class PaddleOCRVLTask(DocParsingTask):
+    """MCP task for PaddleOCR-VL series document parsing."""
+
+    @property
+    @override
+    def tool_name(self) -> str:
+        return "paddleocr_vl"

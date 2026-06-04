@@ -8,7 +8,6 @@ description: >-
   发票, 财报, 复杂 PDF, PDF转Markdown, 图表, 阅读顺序; reading order, formula, LaTeX,
   layout parsing, structure extraction, PP-StructureV3, PaddleOCR-VL.
 license: Apache-2.0
-compatibility: Requires paddleocr>=3.6.0
 metadata:
   openclaw:
     requires:
@@ -56,29 +55,15 @@ paddleocr api \
   --file_path "./document.pdf"
 ```
 
-### With Specific Model
-
-PP-StructureV3:
+### Common Options
 
 ```bash
+# With specific model
 paddleocr api \
   --model_type doc_parsing \
   --model PP-StructureV3 \
   --file_path "./report.pdf"
-```
 
-PaddleOCR-VL-1.6:
-
-```bash
-paddleocr api \
-  --model_type doc_parsing \
-  --model PaddleOCR-VL-1.6 \
-  --file_url "https://..."
-```
-
-### Common Options
-
-```bash
 # Disable preprocessing (faster, for flat/well-oriented images)
 paddleocr api \
   --model_type doc_parsing \
