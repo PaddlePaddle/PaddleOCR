@@ -131,11 +131,13 @@ class AIStudioExecutor(Executor):
 
         try:
             if self._pipeline in self._OCR_PIPELINES:
-                # OCR call
+                # OCR call - use_default=True lets service-side defaults apply
                 ocr_options = OCROptions(
-                    use_doc_orientation_classify=False,
-                    use_doc_unwarping=False,
-                    visualize=options.get("visualize", False),
+                    use_doc_orientation_classify=options.get(
+                        "use_doc_orientation_classify"
+                    ),
+                    use_doc_unwarping=options.get("use_doc_unwarping"),
+                    visualize=False,  # Always False as MCP tool does not return visualization
                 )
                 result = await self._client.ocr(
                     model=model,
@@ -145,21 +147,26 @@ class AIStudioExecutor(Executor):
                 return self._parse_ocr_result(result)
 
             elif self._pipeline in self._DOC_PARSING_PIPELINES:
-                # Document parsing call
+                # Document parsing call - use service-side defaults
                 if self._pipeline == "PP-StructureV3":
                     doc_options = PPStructureV3Options(
-                        use_chart_recognition=options.get(
-                            "use_chart_recognition", True
+                        use_doc_unwarping=options.get("use_doc_unwarping"),
+                        use_doc_orientation_classify=options.get(
+                            "use_doc_orientation_classify"
                         ),
-                        prettify_markdown=options.get("prettify_markdown", True),
+                        use_chart_recognition=options.get("use_chart_recognition"),
+                        prettify_markdown=options.get("prettify_markdown"),
                     )
                 else:  # PaddleOCR-VL series
                     doc_options = PaddleOCRVLOptions(
-                        use_layout_detection=options.get("use_layout_detection", True),
-                        use_chart_recognition=options.get(
-                            "use_chart_recognition", True
+                        use_doc_unwarping=options.get("use_doc_unwarping"),
+                        use_doc_orientation_classify=options.get(
+                            "use_doc_orientation_classify"
                         ),
-                        prettify_markdown=options.get("prettify_markdown", True),
+                        use_layout_detection=options.get("use_layout_detection"),
+                        use_seal_recognition=options.get("use_seal_recognition"),
+                        use_chart_recognition=options.get("use_chart_recognition"),
+                        prettify_markdown=options.get("prettify_markdown"),
                     )
                 result = await self._client.parse_document(
                     model=model,

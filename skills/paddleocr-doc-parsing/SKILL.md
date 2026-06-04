@@ -79,6 +79,13 @@ paddleocr api \
 ### Common Options
 
 ```bash
+# Disable preprocessing (faster, for flat/well-oriented images)
+paddleocr api \
+  --model_type ocr \
+  --file_path "./document.pdf" \
+  --use_doc_unwarping False \
+  --use_doc_orientation_classify False
+
 # With page ranges
 paddleocr api \
   --model_type doc_parsing \
@@ -91,12 +98,6 @@ paddleocr api \
   --file_url "https://..." \
   --output result.json \
   --save_resources ./resources
-
-# With seal recognition
-paddleocr api \
-  --model_type doc_parsing \
-  --file_path "./document.pdf" \
-  --use_seal_recognition True
 
 # Prettify markdown output
 paddleocr api \
@@ -126,6 +127,17 @@ paddleocr api \
 ```
 
 ## Important Notes
+
+**Preprocessing options**: For flat, well-oriented images (screenshots, properly scanned documents), you can disable preprocessing for faster results:
+
+```bash
+paddleocr api --model_type doc_parsing --file_path "./document.pdf" --use_doc_unwarping False --use_doc_orientation_classify False
+```
+
+Keep preprocessing enabled when:
+- The input is a photo of a curved or folded document
+- The document has significant perspective distortion
+- Orientation is uncertain (rotated 90/180/270 degrees)
 
 **Display complete results**: Always show the full extracted content to users. Do not truncate with "..." unless content exceeds 10,000 characters. When multiple pages are processed, summarize if needed but provide complete results when explicitly requested.
 
