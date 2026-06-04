@@ -28,6 +28,16 @@ class BaseDocParsingCapability(MCPCapability):
     (PP-StructureV3, PaddleOCR-VL, etc.).
     """
 
+    def get_default_options(self) -> Dict[str, Any]:
+        """Get default options for document parsing pipelines.
+
+        Returns:
+            Base defaults plus chart recognition enabled.
+        """
+        defaults = super().get_default_options()
+        defaults["use_chart_recognition"] = True
+        return defaults
+
     def _format_result(
         self,
         result: Dict[str, Any],

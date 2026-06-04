@@ -25,7 +25,7 @@ class PaddleOCRVLCapability(BaseDocParsingCapability):
     Handles PaddleOCR-VL, PaddleOCR-VL-1.5, and PaddleOCR-VL-1.6.
     """
 
-    PIPELINE = "PaddleOCR-VL"
+    PIPELINE: str
 
     def __init__(self, executor, pipeline: str = "PaddleOCR-VL"):
         """Initialize PaddleOCR-VL capability.
@@ -39,6 +39,16 @@ class PaddleOCRVLCapability(BaseDocParsingCapability):
         super().__init__(executor)
         self.PIPELINE = pipeline
         self._tool_name = "paddleocr_vl"
+
+    def get_default_options(self) -> Dict[str, Any]:
+        """Get default options for PaddleOCR-VL series.
+
+        Returns:
+            Base doc parsing defaults plus seal recognition enabled.
+        """
+        defaults = super().get_default_options()
+        defaults["use_seal_recognition"] = True
+        return defaults
 
     def register_tools(self, mcp: Any) -> None:
         @mcp.tool(self._tool_name)

@@ -29,6 +29,12 @@ class MCPCapability(abc.ABC):
     # Subclasses should define their pipeline
     PIPELINE: str
 
+    # Default options for all pipelines (constant, read-only)
+    DEFAULT_OPTIONS = {
+        "use_doc_orientation_classify": False,
+        "use_doc_unwarping": False,
+    }
+
     def __init__(self, executor: Executor):
         self._executor = executor
 
@@ -39,6 +45,14 @@ class MCPCapability(abc.ABC):
     async def stop(self) -> None:
         """Stop the capability."""
         await self._executor.stop()
+
+    def get_default_options(self) -> Dict[str, Any]:
+        """Get default options for this capability.
+
+        Returns:
+            Copy of default options dictionary.
+        """
+        return self.DEFAULT_OPTIONS.copy()
 
     @abc.abstractmethod
     def register_tools(self, mcp: Any) -> None:
@@ -83,24 +97,8 @@ class MCPCapability(abc.ABC):
         Returns:
             Formatted output.
         """
-        # Default options for all pipelines
-        _defaults = {
-            "use_doc_orientation_classify": False,
-            "use_doc_unwarping": False,
-        }
-
-        # Pipeline-specific defaults
-        if self.PIPELINE in (
-            "PP-StructureV3",
-            "PaddleOCR-VL",
-            "PaddleOCR-VL-1.5",
-            "PaddleOCR-VL-1.6",
-        ):
-            _defaults["use_chart_recognition"] = True
-
-        if self.PIPELINE in ("PaddleOCR-VL", "PaddleOCR-VL-1.5", "PaddleOCR-VL-1.6"):
-            _defaults["use_seal_recognition"] = True
-
+        # Get defaults from subclass method
+        _defaults = self.get_default_options()
         # User options override defaults
         _defaults.update(options)
 
