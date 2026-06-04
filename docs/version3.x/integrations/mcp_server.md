@@ -144,8 +144,6 @@ paddleocr_mcp --help
 
     请先在 [AI Studio Access Token 页面](https://aistudio.baidu.com/account/accessToken) 获取访问令牌。
 
-    SDK 内置了官方服务的访问地址，默认情况下无需手动配置 URL。如需使用自定义服务地址（如通过代理访问），可设置 `PADDLEOCR_MCP_BASE_URL` 环境变量。
-
 3. **添加 MCP 服务器配置**
 
     在以下位置之一找到 Claude for Desktop 配置文件：
@@ -182,7 +180,7 @@ paddleocr_mcp --help
     - 请勿泄漏您的 **访问令牌**。
     - 如果 `paddleocr_mcp` 无法在系统 `PATH` 中找到，请将 `command` 设置为可执行文件的绝对路径。
 
-5. **重启 MCP 主机**
+4. **重启 MCP 主机**
 
     重启 Claude for Desktop。新的 `paddleocr` 服务现在应该可以在应用中使用了。
 
@@ -260,13 +258,13 @@ paddleocr_mcp --help
     
     **对于 PaddleOCR-VL 系列，不建议使用 CPU 推理。**
 
-#### 方式二：PaddleOCR 官方服务
+#### 方式二：官方 API
 
 请参考 [2.1 快速开始](#21)。
 
 对于文字识别以外的任务，请正确设置 `PADDLEOCR_MCP_PIPELINE`（参数说明详见第 4 节）。
 
-#### 方式三：千帆平台服务
+#### 方式三：千帆 API
 
 1. 安装 `paddleocr-mcp`。
 2. 参考 [千帆平台官方文档](https://cloud.baidu.com/doc/qianfan-api/s/ym9chdsy5) 获取 API key。
@@ -296,7 +294,7 @@ paddleocr_mcp --help
 
 - `PADDLEOCR_MCP_PIPELINE` 需要被设置为产线名称。详见第 4 节。千帆平台服务目前仅支持 PP-StructureV3 和 PaddleOCR-VL。
 
-#### 方式四：自托管服务
+#### 方式四：自建 API
 
 1. 在需要运行 PaddleOCR 推理服务器的环境中，参考 [PaddleOCR 服务化部署文档](../inference_deployment/serving/serving.md) 运行推理服务器。
 2. 在需要运行 MCP 服务器的环境中安装 `paddleocr-mcp`。
@@ -376,7 +374,7 @@ PaddleOCR 也支持通过 `uvx` 启动 MCP 服务器。这种方式不需要手�
   }
   ```
 
-  如需了解本地模式的依赖、性能调优及产线配置，请参考 [模式一：本地 Python 库](#python) 部分。
+  如需了解本地模式的依赖、性能调优及产线配置，请参考 [方式一：本地推理](#方式一本地推理) 部分。
 
   由于使用了不一样的启动方式，配置文件中 `command` 和 `args` 的设置都与前文介绍的方式存在不同，但 MCP 服务本身支持的命令行参数与环境变量（如 `PADDLEOCR_MCP_SERVER_URL`）仍然可以以相同的方式设置。
 
@@ -393,13 +391,13 @@ paddleocr_mcp --help
 示例命令如下：
 
 ```bash
-# OCR + PaddleOCR 官方服务 + stdio
+# OCR + 官方 API + stdio
 PADDLEOCR_MCP_AISTUDIO_ACCESS_TOKEN=xxxxxx paddleocr_mcp --pipeline OCR --ppocr_source aistudio --server_url https://xxxxxx.aistudio-hub.baidu.com
 
-# PP-StructureV3 + 本地 Python 库 + stdio
+# PP-StructureV3 + 本地推理 + stdio
 paddleocr_mcp --pipeline PP-StructureV3 --ppocr_source local
 
-# OCR + 本地服务 + Streamable HTTP
+# OCR + 自建 API + Streamable HTTP
 paddleocr_mcp --pipeline OCR --ppocr_source self_hosted --server_url http://127.0.0.1:8080 --http
 ```
 
@@ -412,13 +410,13 @@ paddleocr_mcp --pipeline OCR --ppocr_source self_hosted --server_url http://127.
 | 环境变量 | 命令行参数 | 类型 | 描述 | 可选值 | 默认值 |
 |:---------|:-----------|:-----|:-----|:-------|:-------|
 | `PADDLEOCR_MCP_PIPELINE` | `--pipeline` | `str` | 要运行的产线。 | `"OCR"`，`"PP-StructureV3"`，`"PaddleOCR-VL"`，`"PaddleOCR-VL-1.5"`，`"PaddleOCR-VL-1.6"` | `"OCR"` |
-| `PADDLEOCR_MCP_PPOCR_SOURCE` | `--ppocr_source` | `str` | PaddleOCR 能力来源。 | `"local"`（本地 Python 库），`"aistudio"`（PaddleOCR 官方服务），`"qianfan"`（千帆平台服务），`"self_hosted"`（自托管服务） | `"local"` |
-| `PADDLEOCR_MCP_SERVER_URL` | `--server_url` | `str` | 底层服务基础 URL（`qianfan`、`self_hosted` 模式下必需）。 | - | `None` |
-| `PADDLEOCR_MCP_BASE_URL` | `--base_url` | `str` | 自定义 AI Studio 服务基础 URL（`aistudio` 模式可选）。 | - | `None` |
-| `PADDLEOCR_MCP_AISTUDIO_ACCESS_TOKEN` | `--aistudio_access_token` | `str` | AI Studio 访问令牌（`aistudio` 模式下必需）。 | - | `None` |
+- `PADDLEOCR_MCP_PPOCR_SOURCE` | `--ppocr_source` | `str` | PaddleOCR 能力来源。 | `"local"`（本地推理），`"aistudio"`（官方 API），`"qianfan"`（千帆 API），`"self_hosted"`（自建 API） | `"local"` |
+| `PADDLEOCR_MCP_SERVER_URL` | `--server_url` | `str` | 底层服务基础 URL（`qianfan`、`self_hosted` 推理方式下必需）。 | - | `None` |
+| `PADDLEOCR_MCP_BASE_URL` | `--base_url` | `str` | 自定义 AI Studio 服务基础 URL（`aistudio` 推理方式下可选）。 | - | `None` |
+| `PADDLEOCR_MCP_AISTUDIO_ACCESS_TOKEN` | `--aistudio_access_token` | `str` | AI Studio 访问令牌（`aistudio` 推理方式下必需）。 | - | `None` |
 | `PADDLEOCR_MCP_TIMEOUT` | `--timeout` | `int` | 底层服务请求的读取超时时间（秒）。 | - | `60` |
-| `PADDLEOCR_MCP_DEVICE` | `--device` | `str` | 指定运行推理的设备（仅在 `local` 模式下生效）。 | - | `None` |
-| `PADDLEOCR_MCP_PIPELINE_CONFIG` | `--pipeline_config` | `str` | PaddleOCR 产线配置文件路径（仅在 `local` 模式下生效）。 | - | `None` |
+| `PADDLEOCR_MCP_DEVICE` | `--device` | `str` | 指定运行推理的设备（仅在 `local` 推理方式下生效）。 | - | `None` |
+| `PADDLEOCR_MCP_PIPELINE_CONFIG` | `--pipeline_config` | `str` | PaddleOCR 产线配置文件路径（仅在 `local` 推理方式下生效）。 | - | `None` |
 | - | `--http` | `bool` | 使用 Streamable HTTP 传输而非 stdio（适用于远程部署和多客户端）。 | - | `False` |
 | - | `--host` | `str` | Streamable HTTP 模式的主机地址。 | - | `"127.0.0.1"` |
 | - | `--port` | `int` | Streamable HTTP 模式的端口。 | - | `8000` |
@@ -426,6 +424,6 @@ paddleocr_mcp --pipeline OCR --ppocr_source self_hosted --server_url http://127.
 
 ## 5. 已知局限性
 
-- 在本地 Python 库模式下，对外暴露的 MCP 工具无法处理 Base64 编码的 PDF 文档输入。
-- 在本地 Python 库模式下，对外暴露的 MCP 工具不会根据模型提示的 `file_type` 推断文件类型，对于一些复杂 URL 可能处理失败。
+- 在本地推理方式下，对外暴露的 MCP 工具无法处理 Base64 编码的 PDF 文档输入。
+- 在本地推理方式下，对外暴露的 MCP 工具不会根据模型提示的 `file_type` 推断文件类型，对于一些复杂 URL 可能处理失败。
 - 对于 PP-StructureV3 和 PaddleOCR-VL 系列，若输入文件中包含图像，返回结果可能会显著增加 token 使用量。若无需图像内容，可通过提示词明确排除，以降低资源消耗。

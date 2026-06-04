@@ -299,7 +299,7 @@ Configuration example:
 
 **Note**:
 
-- `PADDLEOCR_MCP_PIPELINE` should be set to the pipeline name. See Section 4 for more details. The Qianfan platform service currently only supports PP-StructureV3 and PaddleOCR-VL.
+- `PADDLEOCR_MCP_PIPELINE` should be set to the pipeline name. See Section 4 for more details.
 
 #### Method 4: Self-hosted API
 

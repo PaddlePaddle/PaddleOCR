@@ -148,12 +148,6 @@ def _validate_args(args: argparse.Namespace) -> None:
                 file=sys.stderr,
             )
             sys.exit(2)
-        if args.pipeline not in ("PP-StructureV3", "PaddleOCR-VL"):
-            print(
-                f"{repr(args.pipeline)} is currently not supported when using the {repr(args.ppocr_source)} source.",
-                file=sys.stderr,
-            )
-            sys.exit(2)
     elif args.ppocr_source == "self_hosted":
         if not args.server_url:
             print("Error: The server base URL is required.", file=sys.stderr)
