@@ -187,13 +187,13 @@ By default, GPU 0 is used if available; otherwise, CPU is used.
 </tr>
 <tr>
 <td><code>engine</code></td>
-<td><b>Meaning:</b> Inference engine.<br/><b>Description:</b> Supports <code>None</code> (the default), <code>paddle</code>, <code>paddle_static</code>, <code>paddle_dynamic</code>, and <code>transformers</code>. When left as <code>None</code>, local inference uses the <code>paddle_static</code> engine by default. For detailed descriptions, supported values, compatibility rules, and examples, see <a href="../inference_engine.en.md">Inference Engine and Configuration</a>.</td>
+<td><b>Meaning:</b> Inference engine.<br/><b>Description:</b> Supports <code>None</code> (the default), <code>paddle</code>, <code>paddle_static</code>, <code>paddle_dynamic</code>, and <code>transformers</code>. When left as <code>None</code>, local inference uses the <code>paddle_static</code> engine by default. For detailed descriptions, supported values, compatibility rules, and examples, see <a href="../inference_deployment/local_inference/inference_engine.en.md">Inference Engine and Configuration</a>.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>engine_config</code></td>
-<td><b>Meaning:</b> Inference-engine configuration.<br/><b>Description:</b> Recommended together with <code>engine</code>. For supported fields, compatibility rules, and examples, see <a href="../inference_engine.en.md">Inference Engine and Configuration</a>.</td>
+<td><b>Meaning:</b> Inference-engine configuration.<br/><b>Description:</b> Recommended together with <code>engine</code>. For supported fields, compatibility rules, and examples, see <a href="../inference_deployment/local_inference/inference_engine.en.md">Inference Engine and Configuration</a>.</td>
 <td><code>dict|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -481,7 +481,7 @@ wget https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_mode
 
 ### 4.2 Model Training
 
-PaddleOCR has modularized the code, and when training the `PP-OCRv4_server_seal_det` model, you need to use the [configuration file](https://github.com/PaddlePaddle/PaddleOCR/blob/main/configs/det/PP-OCRv4/PP-OCRv4_server_seal_det.yml) for `PP-OCRv4_server_seal_det`.
+PaddleOCR has modularized the code, and when training the `PP-OCRv4_server_seal_det` model, you need to use the [configuration file](https://github.com/PaddlePaddle/PaddleOCR/blob/{{PADDLEOCR_GITHUB_REF}}/configs/det/PP-OCRv4/PP-OCRv4_server_seal_det.yml) for `PP-OCRv4_server_seal_det`.
 
 The training commands are as follows:
 

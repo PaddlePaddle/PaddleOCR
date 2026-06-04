@@ -1,0 +1,62 @@
+{
+  "name": "@paddleocr/api-sdk",
+  "version": "0.1.0",
+  "description": "TypeScript SDK for the PaddleOCR official API",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "README_cn.md"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/PaddlePaddle/PaddleOCR.git",
+    "directory": "api_sdk/typescript"
+  },
+  "homepage": "https://github.com/PaddlePaddle/PaddleOCR/tree/main/api_sdk/typescript",
+  "bugs": {
+    "url": "https://github.com/PaddlePaddle/PaddleOCR/issues"
+  },
+  "keywords": [
+    "paddleocr",
+    "ocr",
+    "document-parsing",
+    "api-sdk",
+    "typescript",
+    "official-api"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest run",
+    "lint": "tsc --noEmit",
+    "prepublishOnly": "npm run lint && npm run build && npm test"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "@types/node": "^25.9.1",
+    "tsup": "^8.0.0",
+    "typescript": "^5.3.0",
+    "vitest": "^4.1.7"
+  }
+}

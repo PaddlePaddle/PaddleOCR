@@ -11,7 +11,7 @@
 
 ## 详细文档
 
-安装、配置、使用示例和本地验证说明，请参考 [文档](../docs/version3.x/deployment/skills.md)。
+安装、配置、使用示例和本地验证说明，请参考 [文档](../docs/version3.x/integrations/skills.md)。
 
 ## 目录说明
 

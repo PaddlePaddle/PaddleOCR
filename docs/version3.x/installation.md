@@ -10,7 +10,7 @@ comments: true
 
 **Python 版本要求**：`paddleocr` 本体与 `doc2md` 依赖组支持 Python 3.8 及以上；其他可选依赖组（`doc-parser`、`ie`、`trans`、`all` 等）受上游依赖限制，需要 Python 3.9 及以上。
 
-### 1.1 安装 `paddleocr`
+### 1.1 安装 `paddleocr` {#install-paddleocr}
 
 从 PyPI 安装最新版本的 `paddleocr`：
 
@@ -46,7 +46,7 @@ python -m pip install "paddleocr@git+https://github.com/PaddlePaddle/PaddleOCR.g
 
 ### 1.3 安装推理引擎（按需）
 
-PaddleOCR 3.5 采用统一推理引擎配置，底层可对接飞桨、Transformers 等。若要实际执行模型推理，请参考 [推理引擎与配置说明](./inference_engine.md) 安装所选推理引擎。
+PaddleOCR 3.5 采用统一推理引擎配置，底层可对接飞桨、Transformers 等。若要实际执行模型推理，请参考 [推理引擎与配置说明](./inference_deployment/local_inference/inference_engine.md) 安装所选推理引擎。
 
 ## 2. 安装训练与导出依赖
 

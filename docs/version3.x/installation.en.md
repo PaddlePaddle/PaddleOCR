@@ -48,7 +48,7 @@ The general OCR pipeline and the document image preprocessing pipeline require n
 
 ### 1.3 Install the inference engine (as needed)
 
-PaddleOCR 3.5 uses a unified inference-engine configuration and can use backends such as PaddlePaddle and Transformers. To actually run model inference, install your chosen inference engine by following [Inference Engine and Configuration](./inference_engine.en.md).
+PaddleOCR 3.5 uses a unified inference-engine configuration and can use backends such as PaddlePaddle and Transformers. To actually run model inference, install your chosen inference engine by following [Inference Engine and Configuration](./inference_deployment/local_inference/inference_engine.en.md).
 
 ## 2. Install training and export dependencies
 

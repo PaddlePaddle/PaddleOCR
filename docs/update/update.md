@@ -58,7 +58,7 @@ hide:
   - 升级 PP-StructureV3 中的 **PP-Chart2Table 模型**，图表转表能力进一步升级，在内部自建测评集合上指标（RMS-F1）**提升 9.36 个百分点（71.24% -> 80.60%）。**
   - 新增基于 PP-StructureV3 和 ERNIE 4.5 的**文档翻译产线 PP-DocTranslation，支持翻译 Markdown 格式文档、各种复杂版式的 PDF 文档和文档图像，结果保存为 Markdown 格式文档。**[详情](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/pipeline_usage/PP-DocTranslation.html)
 
-- **新增MCP server：**[详情](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/deployment/mcp_server.html)
+- **新增MCP server：**[详情](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/integrations/mcp_server.html)
   - **支持 OCR 和 PP-StructureV3 两种工具；**
   - 支持本地Python库、星河社区云服务、自托管服务三种工作模式；
   - 支持通过 stdio 调用本地服务，通过 Streamable HTTP 调用远程服务。
@@ -79,7 +79,7 @@ hide:
     -  为MKL-DNN缓存大小设置默认上界，防止缓存无限增长。同时，支持用户配置缓存容量。@timminator 
     - 更新高性能推理默认配置，支持Paddle MKL-DNN加速。优化高性能推理自动配置逻辑，支持更智能的配置选择。
     - 调整默认设备获取逻辑，考虑环境中安装的Paddle框架对计算设备的实际支持情况，使程序行为更符合直觉。
-    - 新增PP-OCRv5的Android端示例，[详情](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/deployment/on_device_deployment.html)。
+    - 新增PP-OCRv5的Android端示例，[详情](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/inference_deployment/cross_platform/on_device_deployment.html)。
 
 - **Bug修复：**
     - 修复PP-StructureV3部分CLI参数不生效的问题。

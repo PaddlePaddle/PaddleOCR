@@ -15,6 +15,13 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.x'
+
+      - name: Resolve docs GitHub source refs
+        run: python tools/resolve_doc_github_refs.py --placeholder '{{PADDLEOCR_GITHUB_REF}}' --source-ref main
+
       - name: Link Checker
         id: lychee
         uses: lycheeverse/lychee-action@8646ba30535128ac92d33dfc9133794bfdd9b411 # v2

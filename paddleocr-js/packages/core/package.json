@@ -33,7 +33,8 @@
   },
   "files": [
     "dist",
-    "README.md"
+    "README.md",
+    "README_cn.md"
   ],
   "sideEffects": false,
   "keywords": [
