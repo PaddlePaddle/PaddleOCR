@@ -14,7 +14,7 @@
 
 ## 1. Environment Preparation
 
-- **The source code used in this compilation and runtime section is located in the [PaddleOCR/deploy/cpp_infer](https://github.com/PaddlePaddle/PaddleOCR/tree/main/deploy/cpp_infer) directory.**
+- **The source code used in this compilation and runtime section is located in the [PaddleOCR/deploy/cpp_infer](https://github.com/PaddlePaddle/PaddleOCR/tree/{{PADDLEOCR_GITHUB_REF}}/deploy/cpp_infer) directory.**
 
 - Windows Environment:
     - Visual Studio 2022

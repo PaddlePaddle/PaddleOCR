@@ -6,7 +6,7 @@ comments: true
 
 PaddleOCR provides **PaddleOCR.js**, a browser OCR SDK for running the PP-OCR pipeline in the browser. You can embed text detection and recognition in web apps and run inference on the client.
 
-The npm package is **`@paddleocr/paddleocr-js`**. Source and demo live under [`paddleocr-js`](https://github.com/PaddlePaddle/PaddleOCR/tree/main/paddleocr-js) on GitHub.
+The npm package is **`@paddleocr/paddleocr-js`**. Source and demo live under [`paddleocr-js`](https://github.com/PaddlePaddle/PaddleOCR/tree/{{PADDLEOCR_GITHUB_REF}}/paddleocr-js) on GitHub.
 
 ## Install
 

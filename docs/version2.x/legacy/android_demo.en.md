@@ -9,7 +9,7 @@ hide:
 
 ## 1. Introduction
 
-This document describes the [Android Demo](https://github.com/PaddlePaddle/PaddleOCR/tree/main/deploy/android_demo) for PaddleOCR. The demo currently supports text detection, text direction classification, and text recognition models. It is developed using [PaddleLite v2.10](https://github.com/PaddlePaddle/Paddle-Lite/tree/release/v2.10).
+This document describes the [Android Demo](https://github.com/PaddlePaddle/PaddleOCR/tree/{{PADDLEOCR_GITHUB_REF}}/deploy/android_demo) for PaddleOCR. The demo currently supports text detection, text direction classification, and text recognition models. It is developed using [PaddleLite v2.10](https://github.com/PaddlePaddle/Paddle-Lite/tree/release/v2.10).
 
 ## 2. Recent Updates
 

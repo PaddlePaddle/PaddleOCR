@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import argparse
 import json
 import sys
 
+from .._utils.cli import str2bool
 from .client import PaddleOCRClient
 from .models import (
     Model,
@@ -121,22 +121,22 @@ def register_api_command(subparsers):
     # --- Preprocessing ---
     subparser.add_argument(
         "--use_doc_orientation_classify",
-        action=argparse.BooleanOptionalAction,
+        type=str2bool,
         default=None,
-        help="Enable/disable document orientation classification",
+        help="Enable document orientation classification (True/False)",
     )
     subparser.add_argument(
         "--use_doc_unwarping",
-        action=argparse.BooleanOptionalAction,
+        type=str2bool,
         default=None,
-        help="Enable/disable document unwarping",
+        help="Enable document unwarping (True/False)",
     )
     # --- Text detection ---
     subparser.add_argument(
         "--use_textline_orientation",
-        action=argparse.BooleanOptionalAction,
+        type=str2bool,
         default=None,
-        help="Enable/disable textline orientation detection (OCR only)",
+        help="Enable textline orientation detection for OCR (True/False)",
     )
     subparser.add_argument(
         "--text_det_limit_side_len",
@@ -161,46 +161,46 @@ def register_api_command(subparsers):
     # --- Layout and feature toggles (doc_parsing only) ---
     subparser.add_argument(
         "--use_layout_detection",
-        action=argparse.BooleanOptionalAction,
+        type=str2bool,
         default=None,
-        help="Enable/disable layout detection (doc_parsing only)",
+        help="Enable layout detection for document parsing (True/False)",
     )
     subparser.add_argument(
         "--use_seal_recognition",
-        action=argparse.BooleanOptionalAction,
+        type=str2bool,
         default=None,
-        help="Enable/disable seal recognition (doc_parsing only)",
+        help="Enable seal recognition for document parsing (True/False)",
     )
     subparser.add_argument(
         "--use_table_recognition",
-        action=argparse.BooleanOptionalAction,
+        type=str2bool,
         default=None,
-        help="Enable/disable table recognition (PP-StructureV3 only)",
+        help="Enable table recognition for PP-StructureV3 (True/False)",
     )
     subparser.add_argument(
         "--use_formula_recognition",
-        action=argparse.BooleanOptionalAction,
+        type=str2bool,
         default=None,
-        help="Enable/disable formula recognition (PP-StructureV3 only)",
+        help="Enable formula recognition for PP-StructureV3 (True/False)",
     )
     subparser.add_argument(
         "--use_chart_recognition",
-        action=argparse.BooleanOptionalAction,
+        type=str2bool,
         default=None,
-        help="Enable/disable chart recognition (doc_parsing only)",
+        help="Enable chart recognition for document parsing (True/False)",
     )
     # --- Output ---
     subparser.add_argument(
         "--visualize",
-        action=argparse.BooleanOptionalAction,
+        type=str2bool,
         default=None,
-        help="Enable/disable result visualization images",
+        help="Enable result visualization images (True/False)",
     )
     subparser.add_argument(
         "--prettify_markdown",
-        action=argparse.BooleanOptionalAction,
+        type=str2bool,
         default=None,
-        help="Enable/disable markdown prettification (doc_parsing only)",
+        help="Enable markdown prettification for document parsing (True/False)",
     )
     subparser.set_defaults(executor=_execute_api)
 

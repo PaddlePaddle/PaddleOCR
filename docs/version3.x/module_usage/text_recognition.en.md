@@ -843,7 +843,7 @@ wget https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_mode
 
 ### 4.2 Model Training
 
-PaddleOCR modularizes its code. To train the `PP-OCRv5_server_rec` recognition model, you need to use its [configuration file](https://github.com/PaddlePaddle/PaddleOCR/blob/main/configs/rec/PP-OCRv5/PP-OCRv5_server_rec.yml).
+PaddleOCR modularizes its code. To train the `PP-OCRv5_server_rec` recognition model, you need to use its [configuration file](https://github.com/PaddlePaddle/PaddleOCR/blob/{{PADDLEOCR_GITHUB_REF}}/configs/rec/PP-OCRv5/PP-OCRv5_server_rec.yml).
 
 The training commands are as follows:
 

@@ -10,7 +10,7 @@ PaddleOCR provides official Agent Skills that package the routing rules, calling
 
 | Need | Recommended Skill | Output |
 | --- | --- | --- |
-| Extract plain text from images or PDFs | `paddleocr-text-recognition` | Plain text |
+| Extract plain text from images or PDFs | `paddleocr-text-recognition` | line-level text with bounding boxes and confidence scores |
 | Preserve headings, paragraphs, tables, formulas, and layout structure | `paddleocr-doc-parsing` | Markdown / structured output |
 
 ## Included Skills
@@ -25,9 +25,9 @@ Each skill currently supports the following underlying models:
 
 ## Prerequisites
 
-1. Install Python 3.9 or later and [uv](https://docs.astral.sh/uv/) on the machine that runs the skill.
-2. All scripts declare dependencies inline with [PEP 723](https://peps.python.org/pep-0723/), so `uv run` resolves them automatically.
-3. The skills rely on PaddleOCR official APIs. Visit the [PaddleOCR website](https://www.paddleocr.com), click **API**, choose the model you need, and copy the `API_URL` and `Token`.
+1. Install Python 3.9 or later on the machine that runs the skill.
+2. Install PaddleOCR 3.6.0+: `pip install "paddleocr>=3.6.0"`
+3. Get access token from [AI Studio](https://aistudio.baidu.com/account/accessToken)
 
 ## Install into AI Apps
 
@@ -79,8 +79,10 @@ After installation, configure the required environment variables so the skills c
 
 | Skill | Required | Optional |
 | --- | --- | --- |
-| `paddleocr-text-recognition` | `PADDLEOCR_OCR_API_URL` (full endpoint URL ending with `/ocr`), `PADDLEOCR_ACCESS_TOKEN` (access token) | `PADDLEOCR_OCR_TIMEOUT` (API request timeout) |
-| `paddleocr-doc-parsing` | `PADDLEOCR_DOC_PARSING_API_URL` (full endpoint URL ending with `/layout-parsing`), `PADDLEOCR_ACCESS_TOKEN` (access token) | `PADDLEOCR_DOC_PARSING_TIMEOUT` (API request timeout) |
+| `paddleocr-text-recognition` | `PADDLEOCR_ACCESS_TOKEN` (access token) | `PADDLEOCR_BASE_URL` (API base URL, defaults to official service) |
+| `paddleocr-doc-parsing` | `PADDLEOCR_ACCESS_TOKEN` (access token) | `PADDLEOCR_BASE_URL` (API base URL, defaults to official service) |
+
+Get access token: visit [AI Studio Access Token](https://aistudio.baidu.com/account/accessToken)
 
 Examples for some AI apps:
 
@@ -89,9 +91,7 @@ Examples for some AI apps:
   ```json
   {
     "env": {
-      "PADDLEOCR_ACCESS_TOKEN": "<ACCESS_TOKEN>",
-      "PADDLEOCR_OCR_API_URL": "<OCR_API_URL>",
-      "PADDLEOCR_DOC_PARSING_API_URL": "<DOC_PARSING_API_URL>"
+      "PADDLEOCR_ACCESS_TOKEN": "<ACCESS_TOKEN>"
     }
   }
   ```
@@ -105,14 +105,12 @@ Examples for some AI apps:
         "paddleocr-text-recognition": {
           "enabled": true,
           "env": {
-            "PADDLEOCR_OCR_API_URL": "<OCR_API_URL>",
             "PADDLEOCR_ACCESS_TOKEN": "<ACCESS_TOKEN>"
           }
         },
         "paddleocr-doc-parsing": {
           "enabled": true,
           "env": {
-            "PADDLEOCR_DOC_PARSING_API_URL": "<DOC_PARSING_API_URL>",
             "PADDLEOCR_ACCESS_TOKEN": "<ACCESS_TOKEN>"
           }
         }
@@ -152,28 +150,3 @@ Local file example:
 ```text
 Parse local file C:\docs\report.pdf and return complete structured output.
 ```
-
-## Local Verification
-
-This section shows how to run smoke tests locally to verify that the skill configuration works as expected.
-
-> The examples below cover both skills. If you only need one, run only the corresponding commands.
-
-Before running the commands, make sure your working directory is the directory that contains this document. All scripts declare inline dependencies, so `uv` resolves them automatically.
-
-1. Configure environment variables as described in [Configure Environment Variables](#configure-environment-variables).
-
-   ```shell
-   export PADDLEOCR_OCR_API_URL="<OCR_API_URL>"
-   export PADDLEOCR_ACCESS_TOKEN="<ACCESS_TOKEN>"
-   export PADDLEOCR_DOC_PARSING_API_URL="<DOC_PARSING_API_URL>"
-   ```
-
-2. Run the smoke test scripts.
-
-   ```shell
-   cd paddleocr-text-recognition && uv run scripts/smoke_test.py && cd ..
-   cd paddleocr-doc-parsing && uv run scripts/smoke_test.py && cd ..
-   ```
-
-   Use `--skip-api-test` to verify configuration only without making network requests. Use `--test-url "https://..."` to override the default sample document or image URL.

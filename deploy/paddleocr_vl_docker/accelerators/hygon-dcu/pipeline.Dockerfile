@@ -25,7 +25,8 @@ RUN yum install -y \
     && yum clean all
 
 RUN --mount=type=cache,target=/root/.cache/pip \
-    python -m pip install paddlepaddle-dcu==3.2.1 -i https://www.paddlepaddle.org.cn/packages/stable/dcu/
+    python -m pip install safetensors==0.7.0 \
+    && python -m pip install paddlepaddle-dcu==3.2.1 -i https://www.paddlepaddle.org.cn/packages/stable/dcu/
 
 ARG PADDLEOCR_VERSION=">=3.4.0,<3.5"
 ARG PADDLEX_VERSION=">=3.4.0,<3.5"
