@@ -23,11 +23,11 @@ PaddleOCR 提供轻量级的 [Model Context Protocol（MCP）](https://modelcont
 
     > 每个 MCP 服务器实例对外只暴露一个 MCP 工具。
 
-- **支持运行在如下工作模式**
-    - **本地 Python 库**：在本机直接运行 PaddleOCR 产线。此模式对本地环境与计算机性能有一定要求，适用于需要离线使用、对数据隐私有严格要求的场景。
-    - **PaddleOCR 官方服务**：调用 [PaddleOCR 官网](https://aistudio.baidu.com/paddleocr) 提供的云服务。此模式适合快速体验功能、快速验证方案等，也适用于零代码开发场景。
-    - **千帆平台服务**：调用百度智能云千帆大模型平台提供的云服务。
-    - **自托管服务**：调用用户自托管的 PaddleOCR 服务。此模式具备服务化部署优势及高度灵活性，适用于需要自定义服务配置的场景，同时也适用于对数据隐私有严格要求的场景。**目前暂时只支持基础服务化部署方案。**
+- **支持的推理方式**
+    - **本地推理**：在本机直接运行 PaddleOCR 产线。此模式对本地环境与计算机性能有一定要求，适用于需要离线使用、对数据隐私有严格要求的场景。
+    - **官方 API**：调用 [PaddleOCR 官方 API](../inference_deployment/serving/paddleocr_official_api/python.md)。此模式适合快速体验功能、快速验证方案等，也适用于零代码开发场景。
+    - **千帆 API**：调用百度智能云千帆大模型平台提供的 API。
+    - **自建 API**：调用用户自建的 PaddleOCR 推理服务。此模式具备服务化部署优势及高度灵活性，适用于需要自定义服务配置的场景，同时也适用于对数据隐私有严格要求的场景。**目前暂时只支持基础服务化部署方案。**
 
 ## 示例：
 
@@ -87,7 +87,7 @@ PaddleOCR 提供轻量级的 [Model Context Protocol（MCP）](https://modelcont
 - [2. 在 Claude for Desktop 中使用](#2-claude-for-desktop)
     - [2.1 快速开始](#21)
     - [2.2 MCP 主机配置说明](#22-mcp)
-    - [2.3 工作模式说明](#23)
+    - [2.3 推理方式说明](#23)
     - [2.4 使用 `uvx`](#24-uvx)
 - [3. 运行服务器](#3)
 - [4. 参数说明](#4)
@@ -97,8 +97,8 @@ PaddleOCR 提供轻量级的 [Model Context Protocol（MCP）](https://modelcont
 
 本节将介绍如何通过 pip 安装 `paddleocr-mcp` 库。
 
-- 对于本地 Python 库模式，除了安装 `paddleocr-mcp` 外，还需要参考 [PaddleOCR 安装文档](../installation.md) 安装飞桨框架和 PaddleOCR。
-- 对于本地 Python 库模式，也可以考虑选择安装相应的可选依赖：
+- 对于本地推理，除了安装 `paddleocr-mcp` 外，还需要参考 [PaddleOCR 安装文档](../installation.md) 安装飞桨框架和 PaddleOCR。
+- 对于本地推理，也可以考虑选择安装相应的可选依赖：
   - `paddleocr-mcp[local]`：包含 PaddleOCR（不包含飞桨框架）。
   - `paddleocr-mcp[local-cpu]`：在 `local` 基础上额外包含 CPU 版本的飞桨框架。
 - PaddleOCR 也支持通过 `uvx` 等方式免安装运行服务器。详情请参考 [2. 在 Claude for Desktop 中使用](#2-claude-for-desktop) 中的说明。
@@ -134,15 +134,17 @@ paddleocr_mcp --help
 
 ### 2.1 快速开始
 
-接下来以 **PaddleOCR 官方服务** 工作模式为例，引导您快速上手。
+接下来以 **官方 API** 推理方式为例，引导您快速上手。
 
 1. **安装 `paddleocr-mcp`**
 
     请参考 [1. 安装](#1)。
 
-2. **获取服务基础 URL 与星河社区访问令牌**
+2. **获取访问令牌**
 
-    在 [此页面](https://aistudio.baidu.com/paddleocr/task) 点击左上角的“API”，复制“文字识别（PP-OCRv5）”对应的 `API_URL` 去掉端点末尾（`/ocr`）的部分，即服务的基础 URL（如 `https://xxxxxx.aistudio-app.com`），以及 `TOKEN`，即您的访问令牌。您可能需要注册并登陆飞桨星河社区帐号。
+    请先在 [AI Studio Access Token 页面](https://aistudio.baidu.com/account/accessToken) 获取访问令牌。
+
+    SDK 内置了官方服务的访问地址，默认情况下无需手动配置 URL。如需使用自定义服务地址（如通过代理访问），可设置 `PADDLEOCR_MCP_BASE_URL` 环境变量。
 
 3. **添加 MCP 服务器配置**
 
@@ -192,11 +194,11 @@ paddleocr_mcp --help
 - `args`：可配置命令行参数，如 `["--verbose"]`。详见 [4. 参数说明](#4)。
 - `env`：可配置环境变量。详见 [4. 参数说明](#4)。
 
-### 2.3 工作模式说明
+### 2.3 推理方式说明
 
-您可以根据需求配置 MCP 服务器，使其运行在不同的工作模式。不同工作模式需要的操作流程有所不同，下面将详细介绍。
+您可以根据需求配置 MCP 服务器，使其使用不同的推理方式。不同推理方式需要的操作流程有所不同，下面将详细介绍。
 
-#### 模式一：本地 Python 库
+#### 方式一：本地推理
 
 1. 安装 `paddleocr-mcp`、飞桨框架和 PaddleOCR。对于飞桨框架和 PaddleOCR，可以参考 [PaddleOCR 安装文档](../installation.md) 手动安装，也可以通过 `paddleocr-mcp[local]` 或 `paddleocr-mcp[local-cpu]` 方式于 `paddleocr-mcp` 一同安装。为避免依赖冲突，**强烈建议在独立的虚拟环境中安装**。
 2. 参考下方的配置示例更改 `claude_desktop_config.json` 文件内容。
@@ -258,13 +260,13 @@ paddleocr_mcp --help
     
     **对于 PaddleOCR-VL 系列，不建议使用 CPU 推理。**
 
-#### 模式二：PaddleOCR 官方服务
+#### 方式二：PaddleOCR 官方服务
 
 请参考 [2.1 快速开始](#21)。
 
 对于文字识别以外的任务，请正确设置 `PADDLEOCR_MCP_PIPELINE`（参数说明详见第 4 节）。
 
-#### 模式三：千帆平台服务
+#### 方式三：千帆平台服务
 
 1. 安装 `paddleocr-mcp`。
 2. 参考 [千帆平台官方文档](https://cloud.baidu.com/doc/qianfan-api/s/ym9chdsy5) 获取 API key。
@@ -294,7 +296,7 @@ paddleocr_mcp --help
 
 - `PADDLEOCR_MCP_PIPELINE` 需要被设置为产线名称。详见第 4 节。千帆平台服务目前仅支持 PP-StructureV3 和 PaddleOCR-VL。
 
-#### 模式四：自托管服务
+#### 方式四：自托管服务
 
 1. 在需要运行 PaddleOCR 推理服务器的环境中，参考 [PaddleOCR 服务化部署文档](../inference_deployment/serving/serving.md) 运行推理服务器。
 2. 在需要运行 MCP 服务器的环境中安装 `paddleocr-mcp`。

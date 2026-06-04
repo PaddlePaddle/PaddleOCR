@@ -233,12 +233,14 @@ You can configure the MCP server according to your requirements to run in differ
 
 See [2.1 Quick Start](#21-quick-start).
 
-#### Mode 2: PaddleOCR Official Service
+#### Method 2: Official API
 
 1. Install `paddleocr-mcp`.
-2. Obtain the service base URL and AI Studio Community access token.
+2. Obtain your access token.
 
-    On this page, click "API" in the upper-left corner. Copy the `API_URL` corresponding to "Text Recognition (PP-OCRv5)", and remove the trailing endpoint (`/ocr`) to get the base URL of the service (e.g., `https://xxxxxx.aistudio-app.com`). Also copy the `TOKEN`, which is your access token. You may need to register and log in to your PaddlePaddle AI Studio Community account.
+    Please first obtain your access token on the [AI Studio Access Token page](https://aistudio.baidu.com/account/accessToken).
+
+    The SDK has the official service access address built-in, so you do not need to configure the URL manually by default. If you need to use a custom service address (such as through a proxy), you can set the `PADDLEOCR_MCP_BASE_URL` environment variable.
 
 3. Refer to the configuration example below to modify the contents of the `claude_desktop_config.json` file.
 4. Restart the MCP host.
@@ -271,7 +273,7 @@ Configuration example:
 
 - Do not expose your access token.
 
-#### Mode 3: Qianfan Platform Services
+#### Method 3: Qianfan API
 
 1. Install `paddleocr-mcp`.
 2. Obtain an API key by referring to the [Qianfan Platform Official Documentation](https://cloud.baidu.com/doc/qianfan-api/s/ym9chdsy5).
@@ -301,7 +303,7 @@ Configuration example:
 
 - `PADDLEOCR_MCP_PIPELINE` should be set to the pipeline name. See Section 4 for more details. The Qianfan platform service currently only supports PP-StructureV3 and PaddleOCR-VL.
 
-#### Mode 4: Self-hosted Service
+#### Method 4: Self-hosted API
 
 1. In the environment where you need to run the PaddleOCR inference server, run the inference server as per the [PaddleOCR serving documentation](../inference_deployment/serving/serving.en.md).
 2. Install `paddleocr-mcp` where the MCP server will run.
