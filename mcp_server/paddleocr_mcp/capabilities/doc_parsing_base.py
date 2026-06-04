@@ -18,46 +18,15 @@ from typing import Any, Dict, List, Optional, Union
 from fastmcp import Context
 from mcp.types import ImageContent, TextContent
 
-from ..executors.base import Executor
 from .base import MCPCapability
 
 
-class DocParsingCapability(MCPCapability):
-    """Document parsing MCP capability (e.g., PP-StructureV3, PaddleOCR-VL, etc.)."""
+class BaseDocParsingCapability(MCPCapability):
+    """Base class for document parsing MCP capabilities.
 
-    def __init__(self, executor: Executor, tool_name: str, pipeline: str):
-        """
-        Args:
-            executor: Executor instance.
-            tool_name: MCP tool name (e.g., "pp_structurev3", "paddleocr_vl").
-            pipeline: Pipeline name (e.g., "PP-StructureV3", "PaddleOCR-VL").
-        """
-        super().__init__(executor, pipeline)
-        self._tool_name = tool_name
-
-    def register_tools(self, mcp: Any) -> None:
-        @mcp.tool(self._tool_name)
-        async def _doc_parsing(
-            input_data: str,
-            output_mode: str = "simple",
-            file_type: Optional[str] = None,
-            return_images: bool = True,
-            *,
-            ctx: Context,
-        ) -> Union[str, List[Union[TextContent, ImageContent]]]:
-            """Extract structured Markdown from complex documents.
-
-            Args:
-                input_data: File path, URL, or Base64 string.
-                output_mode: Output mode.
-                    - "simple": Clear readable Markdown (default).
-                    - "detailed": JSON format containing document structure.
-                file_type: File type (required for URL).
-                return_images: Whether to return extracted images.
-            """
-            return await self._process(
-                input_data, output_mode, ctx, file_type, return_images=return_images
-            )
+    Provides shared functionality for document parsing pipelines
+    (PP-StructureV3, PaddleOCR-VL, etc.).
+    """
 
     def _format_result(
         self,

@@ -13,7 +13,8 @@
 
 from .base import MCPCapability
 from .ocr import OCRCapability
-from .doc_parsing import DocParsingCapability
+from .ppstructurev3 import PPStructureV3Capability
+from .paddleocr_vl import PaddleOCRVLCapability
 
 
 def create_capability(pipeline: str, executor) -> MCPCapability:
@@ -27,14 +28,10 @@ def create_capability(pipeline: str, executor) -> MCPCapability:
         MCPCapability instance.
     """
     if pipeline == "OCR":
-        return OCRCapability(executor, pipeline=pipeline)
+        return OCRCapability(executor)
     elif pipeline == "PP-StructureV3":
-        return DocParsingCapability(
-            executor, tool_name="pp_structurev3", pipeline=pipeline
-        )
+        return PPStructureV3Capability(executor)
     elif pipeline in ("PaddleOCR-VL", "PaddleOCR-VL-1.5", "PaddleOCR-VL-1.6"):
-        return DocParsingCapability(
-            executor, tool_name="paddleocr_vl", pipeline=pipeline
-        )
+        return PaddleOCRVLCapability(executor, pipeline=pipeline)
     else:
         raise ValueError(f"Unknown pipeline: {pipeline}")

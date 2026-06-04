@@ -26,9 +26,11 @@ OutputMode = str  # "simple" or "detailed"
 class MCPCapability(abc.ABC):
     """Abstract base class for MCP capabilities, responsible for tool registration and result formatting."""
 
-    def __init__(self, executor: Executor, pipeline: str):
+    # Subclasses should define their pipeline
+    PIPELINE: str
+
+    def __init__(self, executor: Executor):
         self._executor = executor
-        self._pipeline = pipeline
 
     async def start(self) -> None:
         """Start the capability."""
@@ -88,7 +90,7 @@ class MCPCapability(abc.ABC):
         }
 
         # Pipeline-specific defaults
-        if self._pipeline in (
+        if self.PIPELINE in (
             "PP-StructureV3",
             "PaddleOCR-VL",
             "PaddleOCR-VL-1.5",
@@ -96,7 +98,7 @@ class MCPCapability(abc.ABC):
         ):
             _defaults["use_chart_recognition"] = True
 
-        if self._pipeline in ("PaddleOCR-VL", "PaddleOCR-VL-1.5", "PaddleOCR-VL-1.6"):
+        if self.PIPELINE in ("PaddleOCR-VL", "PaddleOCR-VL-1.5", "PaddleOCR-VL-1.6"):
             _defaults["use_seal_recognition"] = True
 
         # User options override defaults

@@ -24,8 +24,7 @@ from .base import MCPCapability
 class OCRCapability(MCPCapability):
     """OCR MCP capability."""
 
-    def __init__(self, executor: Executor, pipeline: str = "OCR"):
-        super().__init__(executor, pipeline)
+    PIPELINE = "OCR"
 
     def register_tools(self, mcp: Any) -> None:
         @mcp.tool("ocr")
