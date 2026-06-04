@@ -29,11 +29,6 @@ except ImportError:
 
 
 class PaddleOCRVLLocalInference(Inference):
-    """PaddleOCR-VL inference using local library.
-
-    Supports multiple versions (v1, v1.5, v1.6) via the version parameter.
-    """
-
     def __init__(
         self,
         config: Optional[str] = None,

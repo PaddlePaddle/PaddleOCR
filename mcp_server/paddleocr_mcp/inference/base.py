@@ -18,8 +18,6 @@ from .types import InferenceRequest, InferenceResult
 
 
 class Inference(abc.ABC):
-    """Complete inference for a specific pipeline type and execution method."""
-
     @abc.abstractmethod
     async def start(self) -> None:
         """Initialize inference resources."""
@@ -35,18 +33,7 @@ class Inference(abc.ABC):
         self,
         request: InferenceRequest,
     ) -> InferenceResult:
-        """Execute inference and return unified result.
-
-        Args:
-            request: Explicit inference input, file type, and runtime parameters.
-
-        Returns:
-            Unified result dictionary.
-
-        Raises:
-            ValueError: If parameters are invalid.
-            InferenceError: If execution fails.
-        """
+        """Run inference for the given request."""
         pass
 
     @abc.abstractmethod

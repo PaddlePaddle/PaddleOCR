@@ -22,8 +22,6 @@ from .base import Task
 
 
 class OCRTask(Task):
-    """MCP task for OCR inference."""
-
     @property
     @override
     def tool_name(self) -> str:

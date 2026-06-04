@@ -26,15 +26,12 @@ ToolReturn = Union[str, List[Union[TextContent, ImageContent]]]
 
 
 class Task(abc.ABC):
-    """MCP tool wrapper for an inference."""
-
     def __init__(self, inference: Inference):
         self._inference = inference
 
     @property
     @abc.abstractmethod
     def tool_name(self) -> str:
-        """Tool name for MCP registration."""
         pass
 
     @abc.abstractmethod

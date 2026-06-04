@@ -25,8 +25,6 @@ from .params import OCR_DEFAULT_PARAMS, OCR_RUNTIME_PARAMS
 
 
 class OCRLocalInference(Inference):
-    """OCR inference using local PaddleOCR library."""
-
     def __init__(self, config: Optional[str] = None, device: Optional[str] = None):
         self._config = config
         self._device = device
@@ -66,7 +64,6 @@ class OCRLocalInference(Inference):
         return OCR_DEFAULT_PARAMS.copy()
 
     def _parse_result(self, result: Any) -> OCRResult:
-        """Parse PaddleOCR local result into unified format."""
         clean_texts, confidences, text_lines = [], [], []
 
         for res in result:

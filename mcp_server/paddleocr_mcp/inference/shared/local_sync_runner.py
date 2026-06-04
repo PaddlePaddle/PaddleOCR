@@ -18,8 +18,6 @@ from typing import Any, Callable
 
 
 class LocalSyncRunner:
-    """Run synchronous local PaddleOCR calls without blocking the event loop."""
-
     def __init__(self, inference: Any) -> None:
         self._inference = inference
         self._queue: Queue = Queue()

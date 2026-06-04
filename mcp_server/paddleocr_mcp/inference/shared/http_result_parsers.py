@@ -17,7 +17,7 @@ from ..types import DocParsingResult, OCRResult, TextLine
 
 
 def parse_ocr_result(result_data: dict[str, Any]) -> OCRResult:
-    """Parse OCR response into the unified OCR result format."""
+    """Parse OCR response payload."""
     ocr_results = result_data.get("ocrResults", [])
     all_texts, all_confidences, text_lines = [], [], []
 
@@ -48,7 +48,7 @@ def parse_ocr_result(result_data: dict[str, Any]) -> OCRResult:
 
 
 def parse_doc_parsing_result(result_data: dict[str, Any]) -> DocParsingResult:
-    """Parse document parsing response into the unified document parsing result format."""
+    """Parse document parsing response payload."""
     doc_parsing_results = result_data.get("layoutParsingResults", [])
     markdown_parts = []
     all_images_mapping = {}

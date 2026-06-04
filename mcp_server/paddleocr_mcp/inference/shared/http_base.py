@@ -24,8 +24,6 @@ from .param_mapping import convert_params_to_camel
 
 
 class HTTPInferenceBase(Inference):
-    """Base class for HTTP-based inference implementations."""
-
     def __init__(
         self,
         base_url: str,

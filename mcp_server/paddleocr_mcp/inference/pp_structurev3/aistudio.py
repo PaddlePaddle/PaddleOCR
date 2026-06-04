@@ -39,8 +39,6 @@ from .params import PP_STRUCTUREV3_DEFAULT_PARAMS, PP_STRUCTUREV3_RUNTIME_PARAMS
 
 
 class PPStructureV3AIStudioInference(Inference):
-    """PP-StructureV3 inference using AI Studio API."""
-
     def __init__(
         self,
         token: str,

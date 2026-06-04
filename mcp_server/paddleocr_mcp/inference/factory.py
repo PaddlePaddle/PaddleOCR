@@ -28,11 +28,6 @@ from .pp_structurev3.self_hosted import PPStructureV3SelfHostedInference
 
 
 class InferenceFactory:
-    """Factory for creating inference instances.
-
-    Uses a registry pattern to support extensibility without modifying factory code.
-    """
-
     _registry: dict[tuple[str, str], Callable[..., Inference]] = {}
 
     @classmethod
@@ -51,19 +46,6 @@ class InferenceFactory:
         source: str,
         **kwargs,
     ) -> Inference:
-        """Create an inference instance.
-
-        Args:
-            pipeline: Pipeline name.
-            source: Execution source.
-            **kwargs: Additional arguments passed to inference constructor.
-
-        Returns:
-            Inference instance.
-
-        Raises:
-            ValueError: If pipeline and source combination is not registered.
-        """
         key = (pipeline, source)
         if key not in cls._registry:
             raise ValueError(
@@ -75,11 +57,6 @@ class InferenceFactory:
 
     @classmethod
     def list_supported(cls) -> set[tuple[str, str]]:
-        """List all supported pipeline and source combinations.
-
-        Returns:
-            Set of (pipeline, source) tuples.
-        """
         return set(cls._registry.keys())
 
 
@@ -128,16 +105,4 @@ def create_inference(
     source: str,
     **kwargs,
 ) -> Inference:
-    """Create an inference instance.
-
-    This is a convenience function that delegates to InferenceFactory.create.
-
-    Args:
-        pipeline: Pipeline name.
-        source: Execution source.
-        **kwargs: Additional arguments passed to inference constructor.
-
-    Returns:
-        Inference instance.
-    """
     return InferenceFactory.create(pipeline, source, **kwargs)

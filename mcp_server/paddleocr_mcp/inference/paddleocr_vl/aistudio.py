@@ -39,11 +39,6 @@ from .params import PADDLEOCR_VL_DEFAULT_PARAMS, PADDLEOCR_VL_RUNTIME_PARAMS
 
 
 class PaddleOCRVLAIStudioInference(Inference):
-    """PaddleOCR-VL inference using AI Studio API.
-
-    Supports multiple versions (v1, v1.5, v1.6) via the version parameter.
-    """
-
     _MODEL_MAP = {
         "v1": Model.PADDLE_OCR_VL,
         "v1.5": Model.PADDLE_OCR_VL_15,

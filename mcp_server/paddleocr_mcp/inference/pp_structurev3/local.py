@@ -29,8 +29,6 @@ except ImportError:
 
 
 class PPStructureV3LocalInference(Inference):
-    """PP-StructureV3 inference using local PaddleOCR library."""
-
     def __init__(self, config: Optional[str] = None, device: Optional[str] = None):
         self._config = config
         self._device = device

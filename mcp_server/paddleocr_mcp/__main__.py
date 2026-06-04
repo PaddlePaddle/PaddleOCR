@@ -30,9 +30,7 @@ _QIANFAN_SUPPORTED_PIPELINES = frozenset({"PP-StructureV3", "PaddleOCR-VL"})
 
 def _parse_args() -> argparse.Namespace:
     """Parse command line arguments."""
-    parser = argparse.ArgumentParser(
-        description="PaddleOCR MCP server - Supports local inference, AI Studio async API, and HTTP API."
-    )
+    parser = argparse.ArgumentParser(description="PaddleOCR MCP server.")
 
     parser.add_argument(
         "--pipeline",
@@ -216,13 +214,11 @@ async def async_main() -> None:
     args = _parse_args()
     _validate_args(args)
 
-    # Create inference and manage lifecycle directly
     inference = _create_inference_from_args(args)
 
     try:
         await inference.start()
 
-        # Create task (no longer manages lifecycle)
         task = create_task(args.pipeline, inference)
 
         server_name = f"PaddleOCR {args.pipeline} MCP server"

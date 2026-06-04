@@ -17,7 +17,7 @@ from typing import Any, Mapping, Optional, Union
 
 @dataclass(frozen=True)
 class InferenceRequest:
-    """Explicit input contract passed from the MCP task layer to inference."""
+    """Inference request payload."""
 
     input_data: str
     file_type: Optional[str] = None
@@ -35,7 +35,7 @@ class TextLine:
 
 @dataclass(frozen=True)
 class OCRResult:
-    """Unified OCR result format."""
+    """OCR result."""
 
     text: str
     confidence: float
@@ -47,7 +47,7 @@ class OCRResult:
 
 @dataclass(frozen=True)
 class DocParsingResult:
-    """Unified document parsing result format."""
+    """Document parsing result."""
 
     markdown: str
     pages: int

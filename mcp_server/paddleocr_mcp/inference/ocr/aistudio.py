@@ -38,8 +38,6 @@ from .params import OCR_DEFAULT_PARAMS, OCR_RUNTIME_PARAMS
 
 
 class OCRAIStudioInference(Inference):
-    """OCR inference using AI Studio API."""
-
     def __init__(
         self,
         token: str,

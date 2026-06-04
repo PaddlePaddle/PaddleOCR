@@ -17,8 +17,6 @@ import httpx
 
 
 class AsyncHTTPClient:
-    """Async HTTP client for PaddleOCR-compatible service APIs."""
-
     def __init__(
         self,
         base_url: str,

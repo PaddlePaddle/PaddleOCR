@@ -23,11 +23,6 @@ from .base import Task
 
 
 class DocParsingTask(Task):
-    """Base class for document parsing tasks.
-
-    Provides shared functionality for document parsing tasks.
-    """
-
     def _format_result(
         self,
         result: InferenceResult,
@@ -104,8 +99,6 @@ class DocParsingTask(Task):
 
 
 class PPStructureV3Task(DocParsingTask):
-    """MCP task for PP-StructureV3 document parsing."""
-
     @property
     @override
     def tool_name(self) -> str:
@@ -113,8 +106,6 @@ class PPStructureV3Task(DocParsingTask):
 
 
 class PaddleOCRVLTask(DocParsingTask):
-    """MCP task for PaddleOCR-VL series document parsing."""
-
     @property
     @override
     def tool_name(self) -> str:

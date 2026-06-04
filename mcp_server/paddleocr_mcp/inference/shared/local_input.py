@@ -20,8 +20,6 @@ from urllib.parse import urlparse
 
 
 class LocalInputProcessor:
-    """Prepare user input for local PaddleOCR inference."""
-
     @staticmethod
     def is_file_path(value: str) -> bool:
         return Path(value).expanduser().exists()
