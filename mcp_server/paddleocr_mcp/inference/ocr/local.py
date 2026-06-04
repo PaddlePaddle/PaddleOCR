@@ -15,18 +15,13 @@ import base64
 import io
 from typing import Any, Optional
 
+from paddleocr import PaddleOCR
+
 from ..base import Inference
 from ..shared.local_sync_runner import LocalSyncRunner
 from ..shared.local_input import LocalInputProcessor
 from ..types import InferenceRequest, OCRResult, TextLine
 from .params import OCR_DEFAULT_PARAMS, OCR_RUNTIME_PARAMS
-
-try:
-    from paddleocr import PaddleOCR
-
-    LOCAL_OCR_AVAILABLE = True
-except ImportError:
-    LOCAL_OCR_AVAILABLE = False
 
 
 class OCRLocalInference(Inference):
@@ -39,8 +34,6 @@ class OCRLocalInference(Inference):
         self._wrapper: Optional[LocalSyncRunner] = None
 
     async def start(self) -> None:
-        if not LOCAL_OCR_AVAILABLE:
-            raise RuntimeError("PaddleOCR is not locally available")
         try:
             self._inference = PaddleOCR(
                 paddlex_config=self._config, device=self._device
