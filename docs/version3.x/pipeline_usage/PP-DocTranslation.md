@@ -1269,7 +1269,7 @@ paddleocr pp_doctranslation -i vehicle_certificate-1.png --target_language en --
 </tr>
 <tr>
 <td><code>minimax_api_key</code></td>
-<td><b>含义：</b><a href="https://platform.minimaxi.com/">MiniMax 开放平台</a> 的 API key。设置后将使用 MiniMax（MiniMax-M2.7，204K 上下文）作为大语言模型，替代千帆平台。也可通过 <code>MINIMAX_API_KEY</code> 环境变量设置。</td>
+<td><b>含义：</b><a href="https://platform.minimaxi.com/">MiniMax 开放平台</a> 的 API key。设置后将使用 MiniMax（MiniMax-M3，512K 上下文，最大输出 128K）作为大语言模型，替代千帆平台。也可通过 <code>MINIMAX_API_KEY</code> 环境变量设置。</td>
 <td><code>str</code></td>
 <td></td>
 </tr>

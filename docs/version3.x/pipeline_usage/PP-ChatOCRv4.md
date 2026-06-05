@@ -1243,7 +1243,7 @@ paddleocr pp_chatocrv4_doc -i vehicle_certificate-1.png -k 驾驶室准乘人数
 </tr>
 <tr>
 <td><code>minimax_api_key</code></td>
-<td><b>含义：</b><a href="https://platform.minimaxi.com/">MiniMax 开放平台</a> 的 API key。设置后将使用 MiniMax（MiniMax-M2.7，204K 上下文）作为大语言模型，替代千帆平台。也可通过 <code>MINIMAX_API_KEY</code> 环境变量设置。</td>
+<td><b>含义：</b><a href="https://platform.minimaxi.com/">MiniMax 开放平台</a> 的 API key。设置后将使用 MiniMax（MiniMax-M3，512K 上下文，最大输出 128K）作为大语言模型，替代千帆平台。也可通过 <code>MINIMAX_API_KEY</code> 环境变量设置。</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
@@ -1347,7 +1347,7 @@ chat_bot_config = {
 # 或手动配置：
 # chat_bot_config = {
 #     "module_name": "chat_bot",
-#     "model_name": "MiniMax-M2.7",  # 204K 上下文窗口
+#     "model_name": "MiniMax-M3",  # 512K 上下文窗口，最大输出 128K
 #     "base_url": "https://api.minimax.io/v1",
 #     "api_type": "openai",
 #     "api_key": "your_minimax_api_key",

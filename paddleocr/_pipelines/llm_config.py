@@ -19,11 +19,12 @@ import os
 
 # MiniMax models and their context window sizes (tokens).
 MINIMAX_MODELS = {
+    "MiniMax-M3": 512_000,
     "MiniMax-M2.7": 204_800,
     "MiniMax-M2.7-highspeed": 204_800,
 }
 
-MINIMAX_DEFAULT_MODEL = "MiniMax-M2.7"
+MINIMAX_DEFAULT_MODEL = "MiniMax-M3"
 MINIMAX_BASE_URL = "https://api.minimax.io/v1"
 
 

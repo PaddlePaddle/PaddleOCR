@@ -1385,7 +1385,7 @@ Any float > <code>0</code></li>
 </tr>
 <tr>
 <td><code>minimax_api_key</code></td>
-<td><b>Meaning:</b>API key for <a href="https://platform.minimaxi.com/">MiniMax Cloud</a>. When set, uses MiniMax (MiniMax-M2.7, 204K context) as the LLM provider instead of Qianfan. Can also be set via the <code>MINIMAX_API_KEY</code> environment variable.</td>
+<td><b>Meaning:</b>API key for <a href="https://platform.minimaxi.com/">MiniMax Cloud</a>. When set, uses MiniMax (MiniMax-M3, 512K context, 128K max output) as the LLM provider instead of Qianfan. Can also be set via the <code>MINIMAX_API_KEY</code> environment variable.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
@@ -1494,7 +1494,7 @@ chat_bot_config = {
 # Or configure manually:
 # chat_bot_config = {
 #     "module_name": "chat_bot",
-#     "model_name": "MiniMax-M2.7",  # 204K context window
+#     "model_name": "MiniMax-M3",  # 512K context window, 128K max output
 #     "base_url": "https://api.minimax.io/v1",
 #     "api_type": "openai",
 #     "api_key": "your_minimax_api_key",

@@ -1248,7 +1248,7 @@ If not set, the pipeline initialized value will be used, default is <code>True</
 </tr>
 <tr>
 <td><code>minimax_api_key</code></td>
-<td><b>Meaning:</b>API key for <a href="https://platform.minimaxi.com/">MiniMax Cloud</a>. When set, uses MiniMax (MiniMax-M2.7, 204K context) as the LLM provider instead of Qianfan. Can also be set via the <code>MINIMAX_API_KEY</code> environment variable.</td>
+<td><b>Meaning:</b>API key for <a href="https://platform.minimaxi.com/">MiniMax Cloud</a>. When set, uses MiniMax (MiniMax-M3, 512K context, 128K max output) as the LLM provider instead of Qianfan. Can also be set via the <code>MINIMAX_API_KEY</code> environment variable.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>

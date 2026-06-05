@@ -93,15 +93,17 @@ class TestGetMinimaxChatBotConfig:
         config = get_minimax_chat_bot_config(api_key="k")
         assert "minimax" in config["base_url"]
 
-    def test_default_model_is_m27(self):
+    def test_default_model_is_m3(self):
         config = get_minimax_chat_bot_config(api_key="k")
-        assert config["model_name"] == "MiniMax-M2.7"
+        assert config["model_name"] == "MiniMax-M3"
 
     def test_minimax_models_registry(self):
+        assert "MiniMax-M3" in MINIMAX_MODELS
         assert "MiniMax-M2.7" in MINIMAX_MODELS
         assert "MiniMax-M2.7-highspeed" in MINIMAX_MODELS
-        for ctx in MINIMAX_MODELS.values():
-            assert ctx == 204_800
+        assert MINIMAX_MODELS["MiniMax-M3"] == 512_000
+        assert MINIMAX_MODELS["MiniMax-M2.7"] == 204_800
+        assert MINIMAX_MODELS["MiniMax-M2.7-highspeed"] == 204_800
 
     def test_config_module_name_is_chat_bot(self):
         config = get_minimax_chat_bot_config(api_key="k")
