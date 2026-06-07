@@ -89,6 +89,11 @@ Train:
         channel_first: false
     - DetLabelEncode: null
     - CopyPaste: null
+    - ColorJitter:
+        brightness: 0.4
+        contrast: 0.4
+        saturation: 0.7
+        hue: 0.1
     - IaaAugment:
         augmenter_args:
         - type: Fliplr
@@ -103,8 +108,15 @@ Train:
         - type: Resize
           args:
             size:
-            - 0.3
+            - 0.1
             - 2
+    - RandomPerspective:
+        prob: 0.3
+        scale: 0.0
+        shear: 20.0
+        perspective: 0.001
+        fit_output: true
+        fill_value: [0, 0, 0]
     - EastRandomCropData:
         size:
         - 640
