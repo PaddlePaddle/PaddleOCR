@@ -23,7 +23,7 @@ from __future__ import print_function
 import paddle
 from paddle import nn
 
-from .det_basic_loss import BalanceLoss, MaskL1Loss, DiceLoss, DiceBCELoss
+from .det_basic_loss import BalanceLoss, MaskL1Loss, DiceLoss, DiceFocalLoss
 
 
 class DBLoss(nn.Layer):
@@ -54,8 +54,8 @@ class DBLoss(nn.Layer):
         self.alpha = alpha
         self.beta = beta
         self.l1_loss = MaskL1Loss(eps=eps)
-        if main_loss_type == "DiceBCELoss":
-            self.bce_loss = DiceBCELoss(
+        if main_loss_type == "DiceFocalLoss":
+            self.bce_loss = DiceFocalLoss(
                 dice_weight=dice_weight,
                 focal_weight=focal_weight,
                 focal_alpha=focal_alpha,

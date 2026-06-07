@@ -43,7 +43,7 @@ Architecture:
 
 Loss:
   name: DBLoss
-  main_loss_type: DiceBCELoss
+  main_loss_type: DiceFocalLoss
   alpha: 5
   beta: 10
   focal_alpha: 0.25
