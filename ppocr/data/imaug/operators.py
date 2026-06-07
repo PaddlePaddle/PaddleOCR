@@ -209,6 +209,7 @@ class DetResizeForTest(object):
         super(DetResizeForTest, self).__init__()
         self.resize_type = 0
         self.keep_ratio = False
+        self.max_side_limit = kwargs.get("max_side_limit", 4000)
         if "image_shape" in kwargs:
             self.image_shape = kwargs["image_shape"]
             self.resize_type = 1
@@ -299,12 +300,12 @@ class DetResizeForTest(object):
             raise Exception("not support limit type, image ")
         resize_h = int(h * ratio)
         resize_w = int(w * ratio)
-        if max(resize_h, resize_w) > 4000:
+        if max(resize_h, resize_w) > self.max_side_limit:
             print(
-                f"Resized image size ({resize_h}x{resize_w}) exceeds max_side_limit of {4000}. "
+                f"Resized image size ({resize_h}x{resize_w}) exceeds max_side_limit of {self.max_side_limit}. "
                 f"Resizing to fit within limit."
             )
-            ratio = float(4000) / max(resize_h, resize_w)
+            ratio = float(self.max_side_limit) / max(resize_h, resize_w)
             resize_h, resize_w = int(resize_h * ratio), int(resize_w * ratio)
 
         resize_h = max(int(round(resize_h / 32) * 32), 32)
