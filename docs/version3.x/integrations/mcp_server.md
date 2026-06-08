@@ -233,7 +233,6 @@ PaddleOCR 也支持通过 `uvx` 等方式免安装运行服务器，详情请参
 
     如果使用过程中出现推理耗时过长、内存不足等问题，可考虑参考如下建议调整产线配置：
 
-    - **OCR 模型**：可通过 `PADDLEOCR_MCP_MODEL=PP-OCRv6` 选择 PP-OCRv6；如需更细粒度控制，可在产线配置文件中将检测和识别模型分别修改为 `PP-OCRv5_mobile_det` 和 `PP-OCRv5_mobile_rec`。
     - **PP-StructureV3 产线**：
     
         - 关闭不需要用到的功能，例如设置 `use_formula_recognition` 为 `False` 以禁用公式识别。
@@ -419,7 +418,7 @@ paddleocr_mcp --model PP-OCRv5 --ppocr_source self_hosted --self-hosted-base-url
 
 | 环境变量 | 命令行参数 | 类型 | 描述 | 可选值 | 默认值 |
 |:---------|:-----------|:-----|:-----|:-------|:-------|
-| `PADDLEOCR_MCP_MODEL` | `--model` | `str` | 要运行的模型。MCP 会根据模型自动选择对应的工具。 | `"PP-OCRv5"`，`"PP-OCRv6"`，`"PP-StructureV3"`，`"PaddleOCR-VL"`，`"PaddleOCR-VL-1.5"`，`"PaddleOCR-VL-1.6"` | `"PP-OCRv5"` |
+| `PADDLEOCR_MCP_MODEL` | `--model` | `str` | 要运行的模型。MCP 会根据模型自动选择对应的工具。 | `"PP-OCRv5"`，`"PP-OCRv6"`，`"PP-StructureV3"`，`"PaddleOCR-VL"`，`"PaddleOCR-VL-1.5"`，`"PaddleOCR-VL-1.6"` | `"PP-OCRv6"` |
 | `PADDLEOCR_MCP_PPOCR_SOURCE` | `--ppocr_source` | `str` | PaddleOCR能力来源。 | `"local"`（本地推理），`"aistudio"`（官方 API），`"qianfan"`（千帆 API），`"self_hosted"`（自建 API） | `"local"` |
 | `PADDLEOCR_MCP_AISTUDIO_BASE_URL` | `--aistudio-base-url` | `str` | AI Studio API 基础 URL（`aistudio` 推理方式下可选）。 | - | `None` |
 | `PADDLEOCR_MCP_QIANFAN_BASE_URL` | `--qianfan-base-url` | `str` | 千帆 API 基础 URL（`qianfan` 推理方式下可选）。 | - | `https://qianfan.baidubce.com/v2/ocr` |

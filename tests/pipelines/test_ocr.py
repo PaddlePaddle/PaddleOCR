@@ -137,3 +137,24 @@ def test_lang_and_ocr_version():
     assert (
         ocr_engine._params["text_recognition_model_name"] == "japan_PP-OCRv3_mobile_rec"
     )
+
+
+def test_pp_ocrv6_model_names():
+    engine = object.__new__(PaddleOCR)
+    for lang in ("ch", "chinese_cht", "en", "japan"):
+        det, rec = engine._get_ocr_model_names(lang, "PP-OCRv6")
+        assert det == "PP-OCRv6_small_det"
+        assert rec == "PP-OCRv6_small_rec"
+    det, rec = engine._get_ocr_model_names("fr", "PP-OCRv6")
+    assert det is None
+    assert rec is None
+
+
+def test_default_ocr_model_names():
+    engine = object.__new__(PaddleOCR)
+    det, rec = engine._get_ocr_model_names("ch", None)
+    assert det == "PP-OCRv6_small_det"
+    assert rec == "PP-OCRv6_small_rec"
+    det, rec = engine._get_ocr_model_names("fr", None)
+    assert det == "PP-OCRv5_server_det"
+    assert rec == "latin_PP-OCRv5_mobile_rec"

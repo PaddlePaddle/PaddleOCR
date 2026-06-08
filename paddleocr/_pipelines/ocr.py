@@ -48,7 +48,7 @@ _DEPRECATED_PARAM_NAME_MAPPING = {
     "cls_batch_num": "textline_orientation_batch_size",
 }
 
-_SUPPORTED_OCR_VERSIONS = ["PP-OCRv3", "PP-OCRv4", "PP-OCRv5"]
+_SUPPORTED_OCR_VERSIONS = ["PP-OCRv3", "PP-OCRv4", "PP-OCRv5", "PP-OCRv6"]
 
 
 # Be comptable with PaddleOCR 2.x interfaces
@@ -424,13 +424,11 @@ class PaddleOCR(PaddleXPipelineWrapper):
             lang = "ch"
 
         if ppocr_version is None:
-            if (
+            if lang in ("ch", "chinese_cht", "en", "japan"):
+                ppocr_version = "PP-OCRv6"
+            elif (
                 lang
                 in [
-                    "ch",
-                    "chinese_cht",
-                    "en",
-                    "japan",
                     "korean",
                     "th",
                     "el",
@@ -480,6 +478,11 @@ class PaddleOCR(PaddleXPipelineWrapper):
             if rec_lang is not None:
                 rec_model_name = f"{rec_lang}_PP-OCRv5_mobile_rec"
             return "PP-OCRv5_server_det", rec_model_name
+
+        elif ppocr_version == "PP-OCRv6":
+            if lang in ("ch", "chinese_cht", "en", "japan"):
+                return "PP-OCRv6_small_det", "PP-OCRv6_small_rec"
+            return None, None
 
         elif ppocr_version == "PP-OCRv4":
             if lang == "ch":

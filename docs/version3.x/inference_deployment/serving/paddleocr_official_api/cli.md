@@ -84,7 +84,7 @@ paddleocr api \
 
 | 任务 | `--model_type` | 默认模型 | 可选模型 |
 | --- | --- | --- | --- |
-| OCR | `ocr` | `PP-OCRv5` | `PP-OCRv5`、`PP-OCRv6` |
+| OCR | `ocr` | `PP-OCRv6` | `PP-OCRv5`、`PP-OCRv6` |
 | 文档解析 | `doc_parsing` | `PaddleOCR-VL-1.6` | `PP-StructureV3`、`PaddleOCR-VL`、`PaddleOCR-VL-1.5`、`PaddleOCR-VL-1.6` |
 
 ## 输出行为

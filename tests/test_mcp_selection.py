@@ -21,7 +21,7 @@ from paddleocr_mcp.selection import (
 )
 
 
-def test_resolve_model_defaults_to_pp_ocrv5():
+def test_resolve_model_defaults_to_default_model():
     model = resolve_model(None, "local")
     assert model == DEFAULT_MODEL
     assert tool_for_model(model) == "ocr"

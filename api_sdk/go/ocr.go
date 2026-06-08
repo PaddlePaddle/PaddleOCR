@@ -43,7 +43,7 @@ func (c *Client) SubmitOCR(ctx context.Context, req *OCRRequest) (*Job, error) {
 	}
 	model := req.Model
 	if model == "" {
-		model = PPOCRv5
+		model = PPOCRv6
 	}
 	if !IsOCRModel(model) {
 		return nil, &InvalidRequestError{PaddleOCRAPIError{Message: "model is not an OCR model: " + model}}

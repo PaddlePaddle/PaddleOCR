@@ -232,7 +232,6 @@ Configuration example:
 
     If you encounter long inference time or insufficient memory, consider adjusting the pipeline configuration:
 
-    - **OCR models**: Use `PADDLEOCR_MCP_MODEL=PP-OCRv6` to select PP-OCRv6. For finer-grained control, set detection and recognition models in the pipeline configuration file, for example `PP-OCRv5_mobile_det` and `PP-OCRv5_mobile_rec`.
     - **PP-StructureV3 Pipeline**:
 
         - Disable unused features, such as setting `use_formula_recognition` to `False` to disable formula recognition.
@@ -418,7 +417,7 @@ You can control the MCP server via environment variables or CLI arguments.
 
 | Environment Variable | CLI Argument | Type | Description | Options | Default |
 |:---------|:-----------|:-----|:-----|:-------|:-------|
-| `PADDLEOCR_MCP_MODEL` | `--model` | `str` | Model to run. MCP selects the tool automatically from the model. | `"PP-OCRv5"`, `"PP-OCRv6"`, `"PP-StructureV3"`, `"PaddleOCR-VL"`, `"PaddleOCR-VL-1.5"`, `"PaddleOCR-VL-1.6"` | `"PP-OCRv5"` |
+| `PADDLEOCR_MCP_MODEL` | `--model` | `str` | Model to run. MCP selects the tool automatically from the model. | `"PP-OCRv5"`, `"PP-OCRv6"`, `"PP-StructureV3"`, `"PaddleOCR-VL"`, `"PaddleOCR-VL-1.5"`, `"PaddleOCR-VL-1.6"` | `"PP-OCRv6"` |
 | `PADDLEOCR_MCP_PPOCR_SOURCE` | `--ppocr_source` | `str` | Source of PaddleOCR capabilities. | `"local"` (local inference), `"aistudio"` (Official API), `"qianfan"` (Qianfan API), `"self_hosted"` (self-hosted API) | `"local"` |
 | `PADDLEOCR_MCP_AISTUDIO_BASE_URL` | `--aistudio-base-url` | `str` | AI Studio API base URL (optional for `aistudio` source). | - | `None` |
 | `PADDLEOCR_MCP_QIANFAN_BASE_URL` | `--qianfan-base-url` | `str` | Qianfan API base URL (optional for `qianfan` source). | - | `https://qianfan.baidubce.com/v2/ocr` |

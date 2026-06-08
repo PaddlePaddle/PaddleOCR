@@ -93,7 +93,7 @@ class AsyncPaddleOCRClient:
         options: Optional[OCROptions] = None,
         page_ranges: Optional[str] = None,
         batch_id: Optional[str] = None,
-        model: Union[Model, str] = Model.PP_OCRV5,
+        model: Union[Model, str] = Model.PP_OCRV6,
     ) -> OCRResult:
         model = resolve_ocr_model(model)
         job_id = await self._submit(
@@ -131,7 +131,7 @@ class AsyncPaddleOCRClient:
         options: Optional[OCROptions] = None,
         page_ranges: Optional[str] = None,
         batch_id: Optional[str] = None,
-        model: Union[Model, str] = Model.PP_OCRV5,
+        model: Union[Model, str] = Model.PP_OCRV6,
     ) -> Job:
         model = resolve_ocr_model(model)
         job_id = await self._submit(

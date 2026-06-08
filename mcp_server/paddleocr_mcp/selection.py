@@ -15,7 +15,7 @@ from __future__ import annotations
 
 from typing import Optional
 
-DEFAULT_MODEL = "PP-OCRv5"
+DEFAULT_MODEL = "PP-OCRv6"
 
 QIANFAN_SUPPORTED_MODELS = frozenset(
     {

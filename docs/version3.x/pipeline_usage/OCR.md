@@ -8,7 +8,7 @@ comments: true
 
 OCR（光学字符识别，Optical Character Recognition）是一种将图像中的文字转换为可编辑文本的技术。它广泛应用于文档数字化、信息提取和数据处理等领域。OCR 可以识别印刷文本、手写文本，甚至某些类型的字体和符号。
 
-通用 OCR 产线用于解决文字识别任务，提取图片中的文字信息以文本形式输出，本产线支持PP-OCRv3、PP-OCRv4、PP-OCRv5模型的使用，其中默认模型为 PaddleOCR3.0 发布的 PP-OCRv5_server 模型，其在多个场景中较 PP-OCRv4_server 提升 13 个百分点。
+通用 OCR 产线用于解决文字识别任务，提取图片中的文字信息以文本形式输出，本产线支持PP-OCRv3、PP-OCRv4、PP-OCRv5、PP-OCRv6模型的使用。
 
 <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/ocr/01.png"/>
 
@@ -149,6 +149,33 @@ OCR（光学字符识别，Optical Character Recognition）是一种将图像中
 <td>PP-OCRv5 的移动端文本检测模型，效率更高，适合在端侧设备部署</td>
 </tr>
 <tr>
+<td>PP-OCRv6_medium_det</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv6_medium_det_infer.tar">推理模型</a></td>
+<td>-</td>
+<td>- / -</td>
+<td>- / -</td>
+<td>-</td>
+<td>PP-OCRv6 的中等规模文本检测模型，精度更高</td>
+</tr>
+<tr>
+<td>PP-OCRv6_small_det</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv6_small_det_infer.tar">推理模型</a></td>
+<td>-</td>
+<td>- / -</td>
+<td>- / -</td>
+<td>-</td>
+<td>PP-OCRv6 的小型文本检测模型</td>
+</tr>
+<tr>
+<td>PP-OCRv6_tiny_det</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv6_tiny_det_infer.tar">推理模型</a></td>
+<td>-</td>
+<td>- / -</td>
+<td>- / -</td>
+<td>-</td>
+<td>PP-OCRv6 的超轻量文本检测模型，适合对体积和速度要求更高的端侧场景</td>
+</tr>
+<tr>
 <td>PP-OCRv4_server_det</td>
 <td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_server_det_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_det_pretrained.pdparams">训练模型</a></td>
 <td>69.2</td>
@@ -199,6 +226,31 @@ PP-OCRv5_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ec
 <td>5.43 / 1.46</td>
 <td>21.20 / 5.32</td>
 <td>16</td>
+</tr>
+<tr>
+<td>PP-OCRv6_medium_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv6_medium_rec_infer.tar">推理模型</a></td>
+<td>-</td>
+<td>- / -</td>
+<td>- / -</td>
+<td>-</td>
+<td rowspan="3">PP-OCRv6_rec 是新一代文本识别模型。该模型致力于以单一模型高效、精准地支持简体中文、繁体中文、英文、日文四种主要语言，以及手写、竖版、拼音、生僻字等复杂文本场景的识别。在保持识别效果的同时，兼顾推理速度和模型鲁棒性，为各种场景下的文档理解提供高效、精准的技术支撑。</td>
+</tr>
+<tr>
+<td>PP-OCRv6_small_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv6_small_rec_infer.tar">推理模型</a></td>
+<td>-</td>
+<td>- / -</td>
+<td>- / -</td>
+<td>-</td>
+</tr>
+<tr>
+<td>PP-OCRv6_tiny_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv6_tiny_rec_infer.tar">推理模型</a></td>
+<td>-</td>
+<td>- / -</td>
+<td>- / -</td>
+<td>-</td>
 </tr>
 <tr>
 <td>PP-OCRv4_server_rec_doc</td>
@@ -773,7 +825,7 @@ os.environ['PADDLE_PDX_MODEL_SOURCE'] = 'BOS'  # 使用百度云存储
 一行命令即可快速体验OCR产线效果。运行以下代码前，请您下载[示例图片](https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_002.png)到本地：
 
 ```bash
-# 默认使用 PP-OCRv5 模型
+# 默认使用 PP-OCRv6 模型
 paddleocr ocr -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_002.png \
     --use_doc_orientation_classify False \
     --use_doc_unwarping False \
@@ -997,6 +1049,7 @@ paddleocr ocr -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_im
 <td><b>含义：</b>OCR 模型版本。
 <br><b>说明：</b>
 <ul>
+<li><b>PP-OCRv6</b>：使用PP-OCRv6系列模型；
 <li><b>PP-OCRv5</b>：使用PP-OCRv5系列模型；
 <li><b>PP-OCRv4</b>：使用PP-OCRv4系列模型；
 <li><b>PP-OCRv3</b>：使用PP-OCRv3系列模型。
@@ -1473,6 +1526,7 @@ for res in result:
 <td><b>含义：</b>OCR 模型版本。
 <br><b>说明：</b>
 <ul>
+<li><b>PP-OCRv6</b>：使用PP-OCRv6系列模型；
 <li><b>PP-OCRv5</b>：使用PP-OCRv5系列模型；
 <li><b>PP-OCRv4</b>：使用PP-OCRv4系列模型；
 <li><b>PP-OCRv3</b>：使用PP-OCRv3系列模型。
@@ -2500,7 +2554,7 @@ foreach ($result as $i => $item) {
 # 通过 --text_detection_model_dir 指定本地模型路径
 paddleocr ocr -i ./general_ocr_002.png --text_detection_model_dir your_det_model_path
 
-# 默认使用 PP-OCRv5_server_det 模型作为默认文本检测模型，如果微调的不是该模型，通过 --text_detection_model_name 修改模型名称
+# 默认使用 PP-OCRv6_small_det 模型作为默认文本检测模型，如果微调的不是该模型，通过 --text_detection_model_name 修改模型名称
 paddleocr ocr -i ./general_ocr_002.png --text_detection_model_name PP-OCRv5_mobile_det --text_detection_model_dir your_v5_mobile_det_model_path
 ```
 
@@ -2513,7 +2567,7 @@ from paddleocr import PaddleOCR
 # 通过 text_detection_model_dir 指定本地模型路径
 pipeline = PaddleOCR(text_detection_model_dir="./your_det_model_path")
 
-# 默认使用 PP-OCRv5_server_det 模型作为默认文本检测模型，如果微调的不是该模型，通过 text_detection_model_name 修改模型名称
+# 默认使用 PP-OCRv6_small_det 模型作为默认文本检测模型，如果微调的不是该模型，通过 text_detection_model_name 修改模型名称
 # pipeline = PaddleOCR(text_detection_model_name="PP-OCRv5_mobile_det", text_detection_model_dir="./your_v5_mobile_det_model_path")
 
 ```
@@ -2546,7 +2600,7 @@ SubModules:
     limit_type: min
     max_side_limit: 4000
     model_dir: null # 替换为微调后的文本测模型权重路径
-    model_name: PP-OCRv5_server_det # 如果微调的模型名称与默认模型名称不同，请一并修改此处
+    model_name: PP-OCRv6_small_det # 如果微调的模型名称与默认模型名称不同，请一并修改此处
     module_name: text_detection
     thresh: 0.3
     unclip_ratio: 1.5
@@ -2558,7 +2612,7 @@ SubModules:
   TextRecognition:
     batch_size: 6
     model_dir: null # 替换为微调后的文本识模型权重路径
-    model_name: PP-OCRv5_server_rec # 如果微调的模型名称与默认模型名称不同，请一并修改此处
+    model_name: PP-OCRv6_small_rec # 如果微调的模型名称与默认模型名称不同，请一并修改此处
     module_name: text_recognition
     score_thresh: 0.0
 ......
@@ -2691,6 +2745,10 @@ pipeline = PaddleOCR(paddlex_config="PaddleOCR.yaml")
     </tr>
   </thead>
   <tbody>
+    <tr>
+      <td><code>PP-OCRv6</code></td>
+      <td><code>ch</code>, <code>chinese_cht</code>, <code>en</code>, <code>japan</code></td>
+    </tr>
     <tr>
       <td><code>PP-OCRv5</code></td>
       <td><code>ch</code>, <code>en</code>, <code>fr</code>, <code>de</code>, <code>japan</code>, <code>korean</code>, <code>chinese_cht</code>, <code>af</code>, <code>it</code>, <code>es</code>, <code>bs</code>, <code>pt</code>, <code>cs</code>, <code>cy</code>, <code>da</code>, <code>et</code>, <code>ga</code>, <code>hr</code>, <code>hu</code>, <code>rslatin</code>, <code>id</code>, <code>oc</code>, <code>is</code>, <code>lt</code>, <code>mi</code>, <code>ms</code>, <code>nl</code>, <code>no</code>, <code>pl</code>, <code>sk</code>, <code>sl</code>, <code>sq</code>, <code>sv</code>, <code>sw</code>, <code>tl</code>, <code>tr</code>, <code>uz</code>, <code>la</code>, <code>ru</code>, <code>be</code>, <code>uk</code>, <code>th</code>, <code>el</code>, <code>az</code>, <code>ku</code>, <code>lv</code>, <code>mt</code>, <code>pi</code>, <code>ro</code>, <code>vi</code>, <code>fi</code>, <code>eu</code>, <code>gl</code>, <code>lb</code>, <code>rm</code>, <code>ca</code>, <code>qu</code>, <code>te</code>, <code>sr</code>, <code>bg</code>, <code>mn</code>, <code>ab</code>, <code>ady</code>, <code>kbd</code>, <code>av</code>, <code>dar</code>, <code>inh</code>, <code>ce</code>, <code>lki</code>, <code>lez</code>, <code>tab</code>, <code>kk</code>, <code>ky</code>, <code>tg</code>, <code>mk</code>, <code>tt</code>, <code>cv</code>, <code>ba</code>, <code>mhr</code>, <code>mo</code>, <code>udm</code>, <code>kv</code>, <code>os</code>, <code>bua</code>, <code>xal</code>, <code>tyv</code>, <code>sah</code>, <code>kaa</code>, <code>ar</code>, <code>fa</code>, <code>ug</code>, <code>ur</code>, <code>ps</code>, <code>ku</code>, <code>sd</code>, <code>bal</code>, <code>hi</code>, <code>mr</code>, <code>ne</code>, <code>bh</code>, <code>mai</code>, <code>ang</code>, <code>bho</code>, <code>mah</code>, <code>sck</code>, <code>new</code>, <code>gom</code>, <code>sa</code>, <code>bgc</code>, <code>ta</code></td>

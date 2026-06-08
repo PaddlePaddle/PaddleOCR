@@ -8,7 +8,7 @@ comments: true
 
 OCR is a technology that converts text from images into editable text. It is widely used in fields such as document digitization, information extraction, and data processing. OCR can recognize printed text, handwritten text, and even certain types of fonts and symbols.
 
-The general OCR pipeline is used to solve text recognition tasks by extracting text information from images and outputting it in text form. This pipeline supports the use of PP-OCRv3, PP-OCRv4, and PP-OCRv5 models, with the default model being the PP-OCRv5_server model released by PaddleOCR 3.0, which improves by 13 percentage points over PP-OCRv4_server in various scenarios.
+The general OCR pipeline is used to solve text recognition tasks by extracting text information from images and outputting it in text form. This pipeline supports the use of PP-OCRv3, PP-OCRv4, PP-OCRv5, and PP-OCRv6 models.
 
 <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/ocr/01.png"/>
 
@@ -148,6 +148,33 @@ In this pipeline, you can select models based on the benchmark test data provide
 <td>PP-OCRv5 mobile-side text detection model with higher efficiency, suitable for deployment on edge devices</td>
 </tr>
 <tr>
+<td>PP-OCRv6_medium_det</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv6_medium_det_infer.tar">Inference Model</a></td>
+<td>-</td>
+<td>- / -</td>
+<td>- / -</td>
+<td>-</td>
+<td>PP-OCRv6 medium text detection model with higher accuracy</td>
+</tr>
+<tr>
+<td>PP-OCRv6_small_det</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv6_small_det_infer.tar">Inference Model</a></td>
+<td>-</td>
+<td>- / -</td>
+<td>- / -</td>
+<td>-</td>
+<td>PP-OCRv6 small text detection model with higher efficiency, suitable for deployment on edge devices</td>
+</tr>
+<tr>
+<td>PP-OCRv6_tiny_det</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv6_tiny_det_infer.tar">Inference Model</a></td>
+<td>-</td>
+<td>- / -</td>
+<td>- / -</td>
+<td>-</td>
+<td>PP-OCRv6 ultra-light text detection model for size- and latency-sensitive edge deployment</td>
+</tr>
+<tr>
 <td>PP-OCRv4_server_det</td>
 <td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv4_server_det_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv4_server_det_pretrained.pdparams">Training Model</a></td>
 <td>69.2</td>
@@ -198,6 +225,31 @@ PP-OCRv5_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model
 <td>5.43 / 1.46</td>
 <td>21.20 / 5.32</td>
 <td>16</td>
+</tr>
+<tr>
+<td>PP-OCRv6_medium_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv6_medium_rec_infer.tar">Inference Model</a></td>
+<td>-</td>
+<td>- / -</td>
+<td>- / -</td>
+<td>-</td>
+<td rowspan="3">PP-OCRv6_rec is a next-generation text recognition model. It aims to efficiently and accurately support the recognition of four major languages—Simplified Chinese, Traditional Chinese, English, and Japanese—as well as complex text scenarios such as handwriting, vertical text, pinyin, and rare characters using a single model. While maintaining recognition performance, it balances inference speed and model robustness, providing efficient and accurate technical support for document understanding in various scenarios.</td>
+</tr>
+<tr>
+<td>PP-OCRv6_small_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv6_small_rec_infer.tar">Inference Model</a></td>
+<td>-</td>
+<td>- / -</td>
+<td>- / -</td>
+<td>-</td>
+</tr>
+<tr>
+<td>PP-OCRv6_tiny_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv6_tiny_rec_infer.tar">Inference Model</a></td>
+<td>-</td>
+<td>- / -</td>
+<td>- / -</td>
+<td>-</td>
 </tr>
 <tr>
 <td>PP-OCRv4_server_rec_doc</td>
@@ -742,7 +794,7 @@ Please note: If you encounter issues such as the program becoming unresponsive, 
 Run a single command to quickly test the OCR pipeline.  Before running the code below, please download the [example image](https://paddle-model-ecology.bj.bcebos.com/paddlex/demo_image/pipelines/general_formula_recognition_001.png) locally:  
 
 ```bash
-# Default: Uses PP-OCRv5 model
+# Default: Uses PP-OCRv6 model
 paddleocr ocr -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_002.png \
     --use_doc_orientation_classify False \
     --use_doc_unwarping False \
@@ -1010,6 +1062,7 @@ The table in the appendix lists all the supported languages.
 <td><b>Meaning:</b>Version of OCR models.<br/>
 <b>Description:</b>
 <ul>
+<li><b>PP-OCRv6</b>: Use PP-OCRv6 series models;
 <li><b>PP-OCRv5</b>: Use PP-OCRv5 series models;
 <li><b>PP-OCRv4</b>: Use PP-OCRv4 series models;
 <li><b>PP-OCRv3</b>: Use PP-OCRv3 series models.</li>
@@ -1493,6 +1546,7 @@ The table in the appendix lists all the supported languages.
 <td><b>Meaning:</b>Version of OCR models. <br/>
 <b>Description:</b>
 <ul>
+<li><b>PP-OCRv6</b>: Use PP-OCRv6 series models;</li>
 <li><b>PP-OCRv5</b>: Use PP-OCRv5 series models;</li>
 <li><b>PP-OCRv4</b>: Use PP-OCRv4 series models;</li>
 <li><b>PP-OCRv3</b>: Use PP-OCRv3 series models.</li>
@@ -2528,7 +2582,7 @@ Command line mode:
 # Specify the local model path via --text_detection_model_dir
 paddleocr ocr -i ./general_ocr_002.png --text_detection_model_dir your_det_model_path
 
-# PP-OCRv5_server_det model is used as the default text detection model. If you do not fine-tune this model, modify the model name by using --text_detection_model_name
+# PP-OCRv6_small_det model is used as the default text detection model. If you do not fine-tune this model, modify the model name by using --text_detection_model_name
 paddleocr ocr -i ./general_ocr_002.png --text_detection_model_name PP-OCRv5_mobile_det --text_detection_model_dir your_v5_mobile_det_model_path
 ```
 
@@ -2541,7 +2595,7 @@ from paddleocr import PaddleOCR
 #  Specify the local model path via text_detection_model_dir
 pipeline = PaddleOCR(text_detection_model_dir="./your_det_model_path")
 
-# PP-OCRv5_server_det model is used as the default text detection model. If you do not fine-tune this model, modify the model name by using text_detection_model_name
+# PP-OCRv6_small_det model is used as the default text detection model. If you do not fine-tune this model, modify the model name by using text_detection_model_name
 # pipeline = PaddleOCR(text_detection_model_name="PP-OCRv5_mobile_det", text_detection_model_dir="./your_v5_mobile_det_model_path")
 
 ```
@@ -2605,7 +2659,7 @@ SubModules:
     limit_type: min
     max_side_limit: 4000  
     model_dir: null # Replace with the path to your fine-tuned text detection model weights  
-    model_name: PP-OCRv5_server_det  # If the name of the fine-tuned model is different from the default model name, please modify it here as well
+    model_name: PP-OCRv6_small_det  # If the name of the fine-tuned model is different from the default model name, please modify it here as well
     module_name: text_detection  
     thresh: 0.3  
     unclip_ratio: 1.5  
@@ -2617,7 +2671,7 @@ SubModules:
   TextRecognition:  
     batch_size: 6  
     model_dir: null # Replace with the path to your fine-tuned text recognition model weights  
-    model_name: PP-OCRv5_server_rec  # If the name of the fine-tuned model is different from the default model name, please modify it here as well
+    model_name: PP-OCRv6_small_rec  # If the name of the fine-tuned model is different from the default model name, please modify it here as well
     module_name: text_recognition  
     score_thresh: 0.0  
 ......  
@@ -2750,6 +2804,10 @@ pipeline = PaddleOCR(paddlex_config="PaddleOCR.yaml")
    </tr>
   </thead>
   <tbody>
+    <tr>
+      <td><code>PP-OCRv6</code></td>
+      <td><code>ch</code>, <code>chinese_cht</code>, <code>en</code>, <code>japan</code></td>
+    </tr>
     <tr>
       <td><code>PP-OCRv5</code></td>
       <td><code>ch</code>, <code>en</code>, <code>fr</code>, <code>de</code>, <code>japan</code>, <code>korean</code>, <code>chinese_cht</code>, <code>af</code>, <code>it</code>, <code>es</code>, <code>bs</code>, <code>pt</code>, <code>cs</code>, <code>cy</code>, <code>da</code>, <code>et</code>, <code>ga</code>, <code>hr</code>, <code>hu</code>, <code>rslatin</code>, <code>id</code>, <code>oc</code>, <code>is</code>, <code>lt</code>, <code>mi</code>, <code>ms</code>, <code>nl</code>, <code>no</code>, <code>pl</code>, <code>sk</code>, <code>sl</code>, <code>sq</code>, <code>sv</code>, <code>sw</code>, <code>tl</code>, <code>tr</code>, <code>uz</code>, <code>la</code>, <code>ru</code>, <code>be</code>, <code>uk</code>, <code>th</code>, <code>el</code>, <code>az</code>, <code>ku</code>, <code>lv</code>, <code>mt</code>, <code>pi</code>, <code>ro</code>, <code>vi</code>, <code>fi</code>, <code>eu</code>, <code>gl</code>, <code>lb</code>, <code>rm</code>, <code>ca</code>, <code>qu</code>, <code>te</code>, <code>sr</code>, <code>bg</code>, <code>mn</code>, <code>ab</code>, <code>ady</code>, <code>kbd</code>, <code>av</code>, <code>dar</code>, <code>inh</code>, <code>ce</code>, <code>lki</code>, <code>lez</code>, <code>tab</code>, <code>kk</code>, <code>ky</code>, <code>tg</code>, <code>mk</code>, <code>tt</code>, <code>cv</code>, <code>ba</code>, <code>mhr</code>, <code>mo</code>, <code>udm</code>, <code>kv</code>, <code>os</code>, <code>bua</code>, <code>xal</code>, <code>tyv</code>, <code>sah</code>, <code>kaa</code>, <code>ar</code>, <code>fa</code>, <code>ug</code>, <code>ur</code>, <code>ps</code>, <code>ku</code>, <code>sd</code>, <code>bal</code>, <code>hi</code>, <code>mr</code>, <code>ne</code>, <code>bh</code>, <code>mai</code>, <code>ang</code>, <code>bho</code>, <code>mah</code>, <code>sck</code>, <code>new</code>, <code>gom</code>, <code>sa</code>, <code>bgc</code>, <code>ta</code></td>

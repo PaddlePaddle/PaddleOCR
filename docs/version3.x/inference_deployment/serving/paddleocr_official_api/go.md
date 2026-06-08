@@ -58,7 +58,7 @@ Go SDK 常用公共方法包括：
 
 | 任务 | 适用接口 | 默认模型 | 可选模型 | 参数类型 |
 | --- | --- | --- | --- | --- |
-| OCR | `OCR`、`SubmitOCR`、`WaitOCRResult` | `PPOCRv5` | `PPOCRv5`、`PPOCRv6` | `*OCROptions` |
+| OCR | `OCR`、`SubmitOCR`、`WaitOCRResult` | `PPOCRv6` | `PPOCRv5`、`PPOCRv6` | `*OCROptions` |
 | 文档解析 | `ParseDocument`、`SubmitDocumentParsing`、`WaitDocumentParsingResult` | `PaddleOCRVL16` | `PPStructureV3`、`PaddleOCRVL`、`PaddleOCRVL15`、`PaddleOCRVL16` | 选择 `PPStructureV3` 时传入 `*PPStructureV3Options`；选择 PaddleOCR-VL 系列模型时传入 `*PaddleOCRVLOptions`。 |
 
 ## 配置与参数

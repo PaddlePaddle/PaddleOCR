@@ -57,7 +57,7 @@ Python SDK 常用公共方法包括：
 
 | 任务 | 适用接口 | 默认模型 | 可选模型 | 参数类型 |
 | --- | --- | --- | --- | --- |
-| OCR | `ocr`、`submit_ocr`、`wait_ocr_result` | `Model.PP_OCRV5` | `Model.PP_OCRV5`、`Model.PP_OCRV6` | `OCROptions` |
+| OCR | `ocr`、`submit_ocr`、`wait_ocr_result` | `Model.PP_OCRV6` | `Model.PP_OCRV5`、`Model.PP_OCRV6` | `OCROptions` |
 | 文档解析 | `parse_document`、`submit_document_parsing`、`wait_document_parsing_result` | `Model.PADDLE_OCR_VL_16` | `Model.PP_STRUCTURE_V3`、`Model.PADDLE_OCR_VL`、`Model.PADDLE_OCR_VL_15`、`Model.PADDLE_OCR_VL_16` | 选择 `PP-StructureV3` 时传入 `PPStructureV3Options`；选择 `PaddleOCR-VL` 系列模型时传入 `PaddleOCRVLOptions`。 |
 
 ## 配置与参数

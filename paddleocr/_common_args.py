@@ -31,6 +31,7 @@ SUPPORTED_INFERENCE_ENGINE_LIST = [
     "paddle_static",
     "paddle_dynamic",
     "transformers",
+    "onnxruntime",
 ]
 
 

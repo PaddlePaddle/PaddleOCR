@@ -62,7 +62,7 @@ export class PaddleOCRClient {
   }
 
   async submitOcr(req: OCRRequest, options?: { signal?: AbortSignal }): Promise<Job> {
-    const model = req.model ?? Model.PPOCRv5;
+    const model = req.model ?? Model.PPOCRv6;
     const jobId = await this.submit(model, "ocr", req, options?.signal);
     return { jobId, model, task: "ocr", pageRanges: req.pageRanges, batchId: req.batchId };
   }
@@ -315,7 +315,7 @@ export class PaddleOCRClient {
     if (typeof job === "string") {
       return {
         jobId: job,
-        model: expectedTask === "ocr" ? Model.PPOCRv5 : Model.PaddleOCRVL16,
+        model: expectedTask === "ocr" ? Model.PPOCRv6 : Model.PaddleOCRVL16,
         task: expectedTask,
       };
     }

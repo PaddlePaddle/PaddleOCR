@@ -58,7 +58,7 @@ The model constants in the table are type-safe aliases for the official API mode
 
 | Task | Interfaces | Default model | Supported models | Option type |
 | --- | --- | --- | --- | --- |
-| OCR | `OCR`, `SubmitOCR`, `WaitOCRResult` | `PPOCRv5` | `PPOCRv5`, `PPOCRv6` | `*OCROptions` |
+| OCR | `OCR`, `SubmitOCR`, `WaitOCRResult` | `PPOCRv6` | `PPOCRv5`, `PPOCRv6` | `*OCROptions` |
 | Document parsing | `ParseDocument`, `SubmitDocumentParsing`, `WaitDocumentParsingResult` | `PaddleOCRVL16` | `PPStructureV3`, `PaddleOCRVL`, `PaddleOCRVL15`, `PaddleOCRVL16` | Use `*PPStructureV3Options` with `PPStructureV3`, and `*PaddleOCRVLOptions` with PaddleOCR-VL models. |
 
 ## Configuration

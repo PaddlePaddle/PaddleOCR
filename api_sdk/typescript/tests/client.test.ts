@@ -146,7 +146,7 @@ describe("PaddleOCRClient public contract", () => {
     });
   });
 
-  test("submitOcr propagates explicit OCR model and defaults to PP-OCRv5", async () => {
+  test("submitOcr propagates explicit OCR model and defaults to PP-OCRv6", async () => {
     const { fetch, calls } = captureFetch([
       jsonResponse({ data: { jobId: "job-explicit" } }),
       jsonResponse({ data: { jobId: "job-default" } }),
@@ -162,9 +162,9 @@ describe("PaddleOCRClient public contract", () => {
     });
 
     expect(explicit.model).toBe(Model.PPOCRv5);
-    expect(implicit.model).toBe(Model.PPOCRv5);
+    expect(implicit.model).toBe(Model.PPOCRv6);
     expect(JSON.parse(String(calls[0].init.body)).model).toBe(Model.PPOCRv5);
-    expect(JSON.parse(String(calls[1].init.body)).model).toBe(Model.PPOCRv5);
+    expect(JSON.parse(String(calls[1].init.body)).model).toBe(Model.PPOCRv6);
   });
 
   test("submitOcr accepts PP-OCRv6 model name", async () => {
