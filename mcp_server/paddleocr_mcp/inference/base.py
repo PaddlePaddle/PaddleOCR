@@ -15,10 +15,17 @@
 import abc
 from typing import Any, Dict
 
+from .shared.input_adapters import InputAdapter
 from .types import InferenceRequest, InferenceResult
 
 
 class Inference(abc.ABC):
+    @property
+    @abc.abstractmethod
+    def input_adapter(self) -> InputAdapter:
+        """Input adapter that validates and prepares user input for this source."""
+        pass
+
     @abc.abstractmethod
     async def start(self) -> None:
         """Initialize inference resources."""

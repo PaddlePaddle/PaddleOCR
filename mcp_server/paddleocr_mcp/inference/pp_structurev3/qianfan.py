@@ -15,6 +15,7 @@
 from typing import Any
 from typing_extensions import override
 
+from ...providers import InferenceProvider
 from ..shared.http_base import HTTPInferenceBase
 from ..types import InferenceResult
 from ..shared.http_result_parsers import parse_doc_parsing_result
@@ -23,7 +24,7 @@ from .params import PP_STRUCTUREV3_DEFAULT_PARAMS, PP_STRUCTUREV3_RUNTIME_PARAMS
 
 class PPStructureV3QianfanInference(HTTPInferenceBase):
     def __init__(self, base_url: str, api_key: str, timeout: int = 60):
-        super().__init__(base_url, timeout, api_key)
+        super().__init__(base_url, timeout, api_key, provider=InferenceProvider.QIANFAN)
 
     @override
     def _get_endpoint(self) -> str:

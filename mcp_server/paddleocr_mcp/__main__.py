@@ -25,6 +25,7 @@ from fastmcp import FastMCP
 
 from .inference import create_inference
 from .selection import DEFAULT_MODEL, resolve_model
+from .providers import InferenceProvider, provider_choices
 from .tasks import create_task
 
 
@@ -39,9 +40,9 @@ def _parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--ppocr_source",
-        choices=["local", "aistudio", "qianfan", "self_hosted"],
+        choices=provider_choices(),
         default=os.getenv("PADDLEOCR_MCP_PPOCR_SOURCE", "local"),
-        help="Inference backend. Env: PADDLEOCR_MCP_PPOCR_SOURCE.",
+        help="Inference provider. Env: PADDLEOCR_MCP_PPOCR_SOURCE.",
     )
 
     parser.add_argument(
@@ -125,7 +126,7 @@ def _validate_args(args: argparse.Namespace) -> None:
         )
         sys.exit(2)
 
-    if args.ppocr_source == "aistudio":
+    if args.ppocr_source == InferenceProvider.AISTUDIO.value:
         if not args.aistudio_access_token:
             print("Error: The AI Studio access token is required.", file=sys.stderr)
             print(
@@ -134,7 +135,7 @@ def _validate_args(args: argparse.Namespace) -> None:
                 file=sys.stderr,
             )
             sys.exit(2)
-    elif args.ppocr_source == "qianfan":
+    elif args.ppocr_source == InferenceProvider.QIANFAN.value:
         if not args.qianfan_api_key:
             print("Error: The Qianfan API key is required.", file=sys.stderr)
             print(
@@ -143,7 +144,7 @@ def _validate_args(args: argparse.Namespace) -> None:
                 file=sys.stderr,
             )
             sys.exit(2)
-    elif args.ppocr_source == "self_hosted":
+    elif args.ppocr_source == InferenceProvider.SELF_HOSTED.value:
         if not args.self_hosted_base_url:
             print(
                 "Error: The self-hosted service base URL is required.", file=sys.stderr
@@ -157,41 +158,41 @@ def _validate_args(args: argparse.Namespace) -> None:
 
 
 def _create_inference_from_args(args: argparse.Namespace, model: str):
-    source = args.ppocr_source
+    provider = args.ppocr_source
 
-    if source == "local":
+    if provider == InferenceProvider.LOCAL.value:
         return create_inference(
             model=model,
-            source=source,
+            provider=provider,
             config=args.pipeline_config,
             device=args.device,
         )
-    elif source == "aistudio":
+    elif provider == InferenceProvider.AISTUDIO.value:
         return create_inference(
             model=model,
-            source=source,
+            provider=provider,
             token=args.aistudio_access_token,
             base_url=args.aistudio_base_url,
             request_timeout=float(args.timeout),
             poll_timeout=float(args.timeout * 10),
         )
-    elif source == "qianfan":
+    elif provider == InferenceProvider.QIANFAN.value:
         return create_inference(
             model=model,
-            source=source,
+            provider=provider,
             base_url=args.qianfan_base_url,
             api_key=args.qianfan_api_key,
             timeout=args.timeout,
         )
-    elif source == "self_hosted":
+    elif provider == InferenceProvider.SELF_HOSTED.value:
         return create_inference(
             model=model,
-            source=source,
+            provider=provider,
             base_url=args.self_hosted_base_url,
             timeout=args.timeout,
         )
     else:
-        raise ValueError(f"Unknown source: {source}")
+        raise ValueError(f"Unknown provider: {provider}")
 
 
 async def async_main() -> None:

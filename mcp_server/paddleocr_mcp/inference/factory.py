@@ -26,40 +26,48 @@ from .pp_structurev3.local import PPStructureV3LocalInference
 from .pp_structurev3.qianfan import PPStructureV3QianfanInference
 from .pp_structurev3.self_hosted import PPStructureV3SelfHostedInference
 from ..selection import tool_for_model
+from ..providers import InferenceProvider, normalize_provider
 
 
 class InferenceFactory:
-    _registry: dict[tuple[str, str], Callable[..., Inference]] = {}
+    _registry: dict[tuple[str, InferenceProvider], Callable[..., Inference]] = {}
 
     @classmethod
     def register(
         cls,
         tool: str,
-        source: str,
+        provider: InferenceProvider | str,
         factory_fn: Callable[..., Inference],
     ) -> None:
-        cls._registry[(tool, source)] = factory_fn
+        cls._registry[(tool, normalize_provider(provider))] = factory_fn
 
     @classmethod
     def create(
         cls,
         model: str,
-        source: str,
+        provider: InferenceProvider | str,
         **kwargs,
     ) -> Inference:
         tool = tool_for_model(model)
-        key = (tool, source)
+        normalized_provider = normalize_provider(provider)
+        key = (tool, normalized_provider)
         if key not in cls._registry:
+            supported = [
+                (tool, provider.value)
+                for tool, provider in sorted(
+                    cls._registry.keys(), key=lambda item: (item[0], item[1].value)
+                )
+            ]
             raise ValueError(
                 f"Unsupported inference combination: model={model!r}, "
-                f"source={source!r}. Supported combinations: "
-                f"{sorted(cls._registry.keys())}"
+                f"provider={normalized_provider.value!r}. Supported combinations: "
+                f"{supported}"
             )
         factory_fn = cls._registry[key]
         return factory_fn(model=model, **kwargs)
 
     @classmethod
-    def list_supported(cls) -> set[tuple[str, str]]:
+    def list_supported(cls) -> set[tuple[str, InferenceProvider]]:
         return set(cls._registry.keys())
 
 
@@ -153,28 +161,40 @@ def _create_paddleocr_vl_qianfan(model: str, **kwargs: Any) -> Inference:
     )
 
 
-InferenceFactory.register("ocr", "local", _create_ocr_local)
-InferenceFactory.register("ocr", "aistudio", _create_ocr_aistudio)
-InferenceFactory.register("ocr", "self_hosted", _create_ocr_self_hosted)
+InferenceFactory.register("ocr", InferenceProvider.LOCAL, _create_ocr_local)
+InferenceFactory.register("ocr", InferenceProvider.AISTUDIO, _create_ocr_aistudio)
+InferenceFactory.register("ocr", InferenceProvider.SELF_HOSTED, _create_ocr_self_hosted)
 
-InferenceFactory.register("pp_structurev3", "local", _create_pp_structurev3_local)
-InferenceFactory.register("pp_structurev3", "aistudio", _create_pp_structurev3_aistudio)
-InferenceFactory.register("pp_structurev3", "qianfan", _create_pp_structurev3_qianfan)
 InferenceFactory.register(
-    "pp_structurev3", "self_hosted", _create_pp_structurev3_self_hosted
+    "pp_structurev3", InferenceProvider.LOCAL, _create_pp_structurev3_local
+)
+InferenceFactory.register(
+    "pp_structurev3", InferenceProvider.AISTUDIO, _create_pp_structurev3_aistudio
+)
+InferenceFactory.register(
+    "pp_structurev3", InferenceProvider.QIANFAN, _create_pp_structurev3_qianfan
+)
+InferenceFactory.register(
+    "pp_structurev3", InferenceProvider.SELF_HOSTED, _create_pp_structurev3_self_hosted
 )
 
-InferenceFactory.register("paddleocr_vl", "local", _create_paddleocr_vl_local)
-InferenceFactory.register("paddleocr_vl", "aistudio", _create_paddleocr_vl_aistudio)
-InferenceFactory.register("paddleocr_vl", "qianfan", _create_paddleocr_vl_qianfan)
 InferenceFactory.register(
-    "paddleocr_vl", "self_hosted", _create_paddleocr_vl_self_hosted
+    "paddleocr_vl", InferenceProvider.LOCAL, _create_paddleocr_vl_local
+)
+InferenceFactory.register(
+    "paddleocr_vl", InferenceProvider.AISTUDIO, _create_paddleocr_vl_aistudio
+)
+InferenceFactory.register(
+    "paddleocr_vl", InferenceProvider.QIANFAN, _create_paddleocr_vl_qianfan
+)
+InferenceFactory.register(
+    "paddleocr_vl", InferenceProvider.SELF_HOSTED, _create_paddleocr_vl_self_hosted
 )
 
 
 def create_inference(
     model: str,
-    source: str,
+    provider: InferenceProvider | str,
     **kwargs,
 ) -> Inference:
-    return InferenceFactory.create(model, source, **kwargs)
+    return InferenceFactory.create(model, provider, **kwargs)

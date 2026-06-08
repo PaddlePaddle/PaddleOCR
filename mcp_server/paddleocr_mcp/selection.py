@@ -15,6 +15,8 @@ from __future__ import annotations
 
 from typing import Optional
 
+from .providers import InferenceProvider, normalize_provider
+
 DEFAULT_MODEL = "PP-OCRv6"
 
 QIANFAN_SUPPORTED_MODELS = frozenset(
@@ -50,16 +52,20 @@ def tool_for_model(model: str) -> str:
     return _MODEL_TOOLS[model]
 
 
-def resolve_model(model: Optional[str], source: str) -> str:
+def resolve_model(model: Optional[str], provider: str) -> str:
     """Validate and normalize the user-facing model name."""
     normalized = (model or DEFAULT_MODEL).strip()
+    normalized_provider = normalize_provider(provider)
     if normalized not in SUPPORTED_MODELS:
         supported = ", ".join(sorted(SUPPORTED_MODELS))
         raise ValueError(
             f"Unsupported model: {normalized!r}. Supported models: {supported}."
         )
 
-    if source == "qianfan" and normalized not in QIANFAN_SUPPORTED_MODELS:
+    if (
+        normalized_provider is InferenceProvider.QIANFAN
+        and normalized not in QIANFAN_SUPPORTED_MODELS
+    ):
         supported = ", ".join(sorted(QIANFAN_SUPPORTED_MODELS))
         raise ValueError(
             f"Model {normalized!r} is not supported with qianfan source. "

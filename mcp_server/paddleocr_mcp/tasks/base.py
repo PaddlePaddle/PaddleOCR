@@ -21,6 +21,7 @@ from mcp.types import ImageContent, TextContent
 
 from ..inference.base import Inference
 from ..inference.types import InferenceRequest, InferenceResult
+from ..providers import is_http_provider
 
 ToolReturn = Union[str, List[Union[TextContent, ImageContent]]]
 
@@ -41,10 +42,18 @@ class Task(abc.ABC):
         pass
 
     def _tool_description(self) -> str:
+        adapter = self._inference.input_adapter
         valid_params = sorted(self._inference.get_valid_params())
         params_hint = ", ".join(valid_params)
+        file_type_hint = ""
+        if is_http_provider(adapter.provider):
+            file_type_hint = (
+                " For HTTP inference providers, set file_type to 'image' or 'pdf' "
+                "when the service cannot infer the type from input_data."
+            )
         return (
-            f"PaddleOCR {self.tool_name} tool. "
+            f"PaddleOCR {self.tool_name} tool. {adapter.description}"
+            f"{file_type_hint} "
             f"Optional runtime_params keys: {params_hint}."
         )
 
@@ -56,16 +65,30 @@ class Task(abc.ABC):
         return_images: bool = True,
         runtime_params: Optional[dict[str, Any]] = None,
     ) -> ToolReturn:
+        """Run PaddleOCR on an image or PDF.
+
+        Args:
+            input_data: File input. Format depends on the configured inference
+                provider; see the tool description for supported forms.
+            output_mode: ``simple`` for plain text, ``detailed`` for JSON.
+            file_type: ``image`` or ``pdf`` when required by the HTTP API.
+            return_images: Whether to include images in document parsing output.
+            runtime_params: Optional pipeline parameters as a JSON object.
+        """
+        adapter = self._inference.input_adapter
+        normalized_input = adapter.normalize(input_data)
+        adapter.validate(normalized_input)
+
         ctx = get_context()
         await ctx.info(
-            f"--- {self.tool_name} tool received input_data: {input_data[:50]} ---"
+            f"--- {self.tool_name} tool received input_data: {normalized_input[:50]} ---"
         )
 
         final_params = self._inference.get_final_params(runtime_params or {})
         self._inference.validate_params(final_params)
 
         request = InferenceRequest(
-            input_data=input_data,
+            input_data=normalized_input,
             file_type=file_type,
             runtime_params=final_params,
         )

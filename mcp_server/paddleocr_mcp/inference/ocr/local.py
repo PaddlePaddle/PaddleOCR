@@ -12,15 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import base64
-import io
 from typing import Any, Optional
 
 from paddleocr import PaddleOCR
 
 from ..base import Inference
+from ..shared.input_adapters import LOCAL_INPUT_ADAPTER, InputAdapter
 from ..shared.local_sync_runner import LocalSyncRunner
-from ..shared.local_input import LocalInputProcessor
 from ..types import InferenceRequest, OCRResult, TextLine
 from .params import OCR_DEFAULT_PARAMS, OCR_RUNTIME_PARAMS
 
@@ -37,6 +35,10 @@ class OCRLocalInference(Inference):
         self._model = model
         self._inference: Optional[Any] = None
         self._wrapper: Optional[LocalSyncRunner] = None
+
+    @property
+    def input_adapter(self) -> InputAdapter:
+        return LOCAL_INPUT_ADAPTER
 
     async def start(self) -> None:
         try:
@@ -60,11 +62,12 @@ class OCRLocalInference(Inference):
         if not self._wrapper:
             raise RuntimeError("Inference not started")
 
-        processed_input = LocalInputProcessor.process_for_local(request.input_data)
-
-        result = await self._wrapper.call(
-            self._wrapper.inference.predict, processed_input, **request.runtime_params
-        )
+        with self.input_adapter.prepare(request.input_data) as processed_input:
+            result = await self._wrapper.call(
+                self._wrapper.inference.predict,
+                processed_input,
+                **request.runtime_params,
+            )
 
         return self._parse_result(result)
 
