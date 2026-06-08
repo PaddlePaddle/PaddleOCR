@@ -2,7 +2,6 @@
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
@@ -15,7 +14,7 @@
 from typing import Dict
 
 from ..inference.base import Inference
-from ..selection import ResolvedModel
+from ..selection import tool_for_model
 from .base import Task
 
 
@@ -27,13 +26,14 @@ class TaskFactory:
         cls._registry[tool] = task_class
 
     @classmethod
-    def create(cls, resolved: ResolvedModel, inference: Inference) -> Task:
-        if resolved.tool not in cls._registry:
+    def create(cls, model: str, inference: Inference) -> Task:
+        tool = tool_for_model(model)
+        if tool not in cls._registry:
             raise ValueError(
-                f"Unknown tool for model {resolved.model!r}: {resolved.tool}. "
+                f"Unknown tool for model {model!r}: {tool}. "
                 f"Supported: {sorted(cls._registry.keys())}"
             )
-        task_class = cls._registry[resolved.tool]
+        task_class = cls._registry[tool]
         return task_class(inference)
 
     @classmethod
@@ -49,5 +49,5 @@ TaskFactory.register("pp_structurev3", PPStructureV3Task)
 TaskFactory.register("paddleocr_vl", PaddleOCRVLTask)
 
 
-def create_task(resolved: ResolvedModel, inference: Inference) -> Task:
-    return TaskFactory.create(resolved, inference)
+def create_task(model: str, inference: Inference) -> Task:
+    return TaskFactory.create(model, inference)

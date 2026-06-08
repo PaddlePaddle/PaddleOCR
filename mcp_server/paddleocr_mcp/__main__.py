@@ -156,19 +156,19 @@ def _validate_args(args: argparse.Namespace) -> None:
             sys.exit(2)
 
 
-def _create_inference_from_args(args: argparse.Namespace, resolved):
+def _create_inference_from_args(args: argparse.Namespace, model: str):
     source = args.ppocr_source
 
     if source == "local":
         return create_inference(
-            resolved=resolved,
+            model=model,
             source=source,
             config=args.pipeline_config,
             device=args.device,
         )
     elif source == "aistudio":
         return create_inference(
-            resolved=resolved,
+            model=model,
             source=source,
             token=args.aistudio_access_token,
             base_url=args.aistudio_base_url,
@@ -177,7 +177,7 @@ def _create_inference_from_args(args: argparse.Namespace, resolved):
         )
     elif source == "qianfan":
         return create_inference(
-            resolved=resolved,
+            model=model,
             source=source,
             base_url=args.qianfan_base_url,
             api_key=args.qianfan_api_key,
@@ -185,7 +185,7 @@ def _create_inference_from_args(args: argparse.Namespace, resolved):
         )
     elif source == "self_hosted":
         return create_inference(
-            resolved=resolved,
+            model=model,
             source=source,
             base_url=args.self_hosted_base_url,
             timeout=args.timeout,
@@ -200,19 +200,19 @@ async def async_main() -> None:
     _validate_args(args)
 
     try:
-        resolved = resolve_model(args.model, args.ppocr_source)
+        model = resolve_model(args.model, args.ppocr_source)
     except ValueError as e:
         print(f"Error: {e}", file=sys.stderr)
         sys.exit(2)
 
-    inference = _create_inference_from_args(args, resolved)
+    inference = _create_inference_from_args(args, model)
 
     try:
         await inference.start()
 
-        task = create_task(resolved, inference)
+        task = create_task(model, inference)
 
-        server_name = f"PaddleOCR {resolved.model} MCP server"
+        server_name = f"PaddleOCR {model} MCP server"
         mcp = FastMCP(
             name=server_name,
             mask_error_details=True,

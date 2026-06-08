@@ -30,11 +30,11 @@ class OCRLocalInference(Inference):
         self,
         config: Optional[str] = None,
         device: Optional[str] = None,
-        ocr_version: Optional[str] = None,
+        model: Optional[str] = None,
     ):
         self._config = config
         self._device = device
-        self._ocr_version = ocr_version
+        self._model = model
         self._inference: Optional[Any] = None
         self._wrapper: Optional[LocalSyncRunner] = None
 
@@ -44,8 +44,8 @@ class OCRLocalInference(Inference):
                 "paddlex_config": self._config,
                 "device": self._device,
             }
-            if self._config is None and self._ocr_version is not None:
-                init_kwargs["ocr_version"] = self._ocr_version
+            if self._config is None and self._model is not None:
+                init_kwargs["ocr_version"] = self._model
             self._inference = PaddleOCR(**init_kwargs)
             self._wrapper = LocalSyncRunner(self._inference)
         except Exception as e:

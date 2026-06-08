@@ -13,7 +13,6 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
 from typing import Optional
 
 DEFAULT_MODEL = "PP-OCRv5"
@@ -36,53 +35,23 @@ SUPPORTED_MODELS = frozenset(
     }
 )
 
-
-@dataclass(frozen=True)
-class ResolvedModel:
-    """Normalized model selection for MCP startup."""
-
-    model: str
-    tool: str
-    pipeline: str
-    ocr_version: Optional[str] = None
-    vl_version: Optional[str] = None
-
-
-_MODEL_SPECS: dict[str, dict[str, str]] = {
-    "PP-OCRv5": {
-        "tool": "ocr",
-        "pipeline": "OCR",
-        "ocr_version": "PP-OCRv5",
-    },
-    "PP-OCRv6": {
-        "tool": "ocr",
-        "pipeline": "OCR",
-        "ocr_version": "PP-OCRv6",
-    },
-    "PP-StructureV3": {
-        "tool": "pp_structurev3",
-        "pipeline": "PP-StructureV3",
-    },
-    "PaddleOCR-VL": {
-        "tool": "paddleocr_vl",
-        "pipeline": "PaddleOCR-VL",
-        "vl_version": "v1",
-    },
-    "PaddleOCR-VL-1.5": {
-        "tool": "paddleocr_vl",
-        "pipeline": "PaddleOCR-VL-1.5",
-        "vl_version": "v1.5",
-    },
-    "PaddleOCR-VL-1.6": {
-        "tool": "paddleocr_vl",
-        "pipeline": "PaddleOCR-VL-1.6",
-        "vl_version": "v1.6",
-    },
+_MODEL_TOOLS: dict[str, str] = {
+    "PP-OCRv5": "ocr",
+    "PP-OCRv6": "ocr",
+    "PP-StructureV3": "pp_structurev3",
+    "PaddleOCR-VL": "paddleocr_vl",
+    "PaddleOCR-VL-1.5": "paddleocr_vl",
+    "PaddleOCR-VL-1.6": "paddleocr_vl",
 }
 
 
-def resolve_model(model: Optional[str], source: str) -> ResolvedModel:
-    """Resolve user-facing model name into MCP tool and internal pipeline."""
+def tool_for_model(model: str) -> str:
+    """Return the MCP tool name for a validated model."""
+    return _MODEL_TOOLS[model]
+
+
+def resolve_model(model: Optional[str], source: str) -> str:
+    """Validate and normalize the user-facing model name."""
     normalized = (model or DEFAULT_MODEL).strip()
     if normalized not in SUPPORTED_MODELS:
         supported = ", ".join(sorted(SUPPORTED_MODELS))
@@ -97,11 +66,4 @@ def resolve_model(model: Optional[str], source: str) -> ResolvedModel:
             f"Supported models: {supported}."
         )
 
-    spec = _MODEL_SPECS[normalized]
-    return ResolvedModel(
-        model=normalized,
-        tool=spec["tool"],
-        pipeline=spec["pipeline"],
-        ocr_version=spec.get("ocr_version"),
-        vl_version=spec.get("vl_version"),
-    )
+    return normalized

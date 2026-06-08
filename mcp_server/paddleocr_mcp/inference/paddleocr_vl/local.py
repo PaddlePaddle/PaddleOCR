@@ -28,17 +28,23 @@ try:
 except ImportError:
     LOCAL_VL_AVAILABLE = False
 
+_PIPELINE_VERSION_BY_MODEL = {
+    "PaddleOCR-VL": "v1",
+    "PaddleOCR-VL-1.5": "v1.5",
+    "PaddleOCR-VL-1.6": "v1.6",
+}
+
 
 class PaddleOCRVLLocalInference(Inference):
     def __init__(
         self,
         config: Optional[str] = None,
         device: Optional[str] = None,
-        version: str = "v1",
+        model: str = "PaddleOCR-VL",
     ):
         self._config = config
         self._device = device
-        self._version = version
+        self._model = model
         self._inference: Optional[Any] = None
         self._wrapper: Optional[LocalSyncRunner] = None
 
@@ -46,8 +52,9 @@ class PaddleOCRVLLocalInference(Inference):
         if not LOCAL_VL_AVAILABLE:
             raise RuntimeError("PaddleOCRVL is not locally available")
         try:
+            pipeline_version = _PIPELINE_VERSION_BY_MODEL[self._model]
             self._inference = PaddleOCRVL(
-                pipeline_version=self._version,
+                pipeline_version=pipeline_version,
                 paddlex_config=self._config,
                 device=self._device,
             )
