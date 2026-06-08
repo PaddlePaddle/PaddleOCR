@@ -11,13 +11,13 @@ PaddleOCR 提供轻量级的 [Model Context Protocol（MCP）](https://modelcont
 
 ### 主要功能如下：
 
-- **当前支持的产线**
+- **当前支持的模型**
 
-    | 产线 | MCP 工具名称 | 说明 |
+    | 模型 | MCP 工具名称 | 说明 |
     | --- | --- | --- |
-    | `OCR` | `ocr` | 对图像和 PDF 文件进行文本检测与识别。 |
+    | `PP-OCRv5`、`PP-OCRv6` | `ocr` | 对图像和 PDF 文件进行文本检测与识别。 |
     | `PP-StructureV3` | `pp_structurev3` | 从图像或 PDF 文件中识别和提取文本块、标题、段落、图片、表格以及其他版面元素，将输入转换为 Markdown 文档。 |
-    | `PaddleOCR-VL 系列` | `paddleocr_vl` | 使用基于多模态大模型的方案进行版面解析，将输入转换为 Markdown 文档。包含版本：PaddleOCR-VL、PaddleOCR-VL-1.5、PaddleOCR-VL-1.6。 |
+    | `PaddleOCR-VL`、`PaddleOCR-VL-1.5`、`PaddleOCR-VL-1.6` | `paddleocr_vl` | 使用基于多模态大模型的方案进行版面解析，将输入转换为 Markdown 文档。 |
 
     > 每个 MCP 服务器实例对外只暴露一个 MCP 工具。
 
@@ -156,7 +156,7 @@ PaddleOCR 也支持通过 `uvx` 等方式免安装运行服务器，详情请参
           "command": "paddleocr_mcp",
           "args": [],
           "env": {
-            "PADDLEOCR_MCP_PIPELINE": "OCR",
+            "PADDLEOCR_MCP_MODEL": "PP-OCRv5",
             "PADDLEOCR_MCP_PPOCR_SOURCE": "aistudio",
             "PADDLEOCR_MCP_AISTUDIO_ACCESS_TOKEN": "<your-access-token>"
           }
@@ -217,7 +217,7 @@ PaddleOCR 也支持通过 `uvx` 等方式免安装运行服务器，详情请参
       "command": "paddleocr_mcp",
       "args": [],
       "env": {
-        "PADDLEOCR_MCP_PIPELINE": "OCR",
+        "PADDLEOCR_MCP_MODEL": "PP-OCRv5",
         "PADDLEOCR_MCP_PPOCR_SOURCE": "local"
       }
     }
@@ -227,13 +227,13 @@ PaddleOCR 也支持通过 `uvx` 等方式免安装运行服务器，详情请参
 
 **说明**：
 
-- `PADDLEOCR_MCP_PIPELINE` 需要被设置为产线名称。详见第 4 节。
+- `PADDLEOCR_MCP_MODEL` 需要被设置为模型名称。详见第 4 节。
 - `PADDLEOCR_MCP_PIPELINE_CONFIG` 为可选项，不设置时使用产线默认配置。如需调整配置，例如更换模型，请参考 [PaddleOCR 文档](../paddleocr_and_paddlex.md) 导出产线配置文件，并将 `PADDLEOCR_MCP_PIPELINE_CONFIG` 设置为配置文件的绝对路径。
 - **推理性能提示**：
 
     如果使用过程中出现推理耗时过长、内存不足等问题，可考虑参考如下建议调整产线配置：
 
-    - **OCR 产线**：建议更换 `mobile` 系列模型。例如，您可以在产线配置文件中将检测和识别模型分别修改为 `PP-OCRv5_mobile_det` 和 `PP-OCRv5_mobile_rec`。
+    - **OCR 模型**：可通过 `PADDLEOCR_MCP_MODEL=PP-OCRv6` 选择 PP-OCRv6；如需更细粒度控制，可在产线配置文件中将检测和识别模型分别修改为 `PP-OCRv5_mobile_det` 和 `PP-OCRv5_mobile_rec`。
     - **PP-StructureV3 产线**：
     
         - 关闭不需要用到的功能，例如设置 `use_formula_recognition` 为 `False` 以禁用公式识别。
@@ -268,7 +268,7 @@ PaddleOCR 也支持通过 `uvx` 等方式免安装运行服务器，详情请参
 
 请参考 [2.1 快速开始](#21)。
 
-对于文字识别以外的任务，请正确设置 `PADDLEOCR_MCP_PIPELINE`（参数说明详见第 4 节）。
+对于文字识别以外的任务，请正确设置 `PADDLEOCR_MCP_MODEL`（参数说明详见第 4 节）。
 
 #### 方式三：千帆 API
 
@@ -286,7 +286,7 @@ PaddleOCR 也支持通过 `uvx` 等方式免安装运行服务器，详情请参
       "command": "paddleocr_mcp",
       "args": [],
       "env": {
-        "PADDLEOCR_MCP_PIPELINE": "PaddleOCR-VL",
+        "PADDLEOCR_MCP_MODEL": "PaddleOCR-VL",
         "PADDLEOCR_MCP_PPOCR_SOURCE": "qianfan",
         "PADDLEOCR_MCP_QIANFAN_API_KEY": "<your-api-key>"
       }
@@ -297,7 +297,7 @@ PaddleOCR 也支持通过 `uvx` 等方式免安装运行服务器，详情请参
 
 **说明**：
 
-- `PADDLEOCR_MCP_PIPELINE` 需设置为产线名称；千帆仅支持 `PP-StructureV3` 与 `PaddleOCR-VL`。
+- `PADDLEOCR_MCP_MODEL` 需设置为模型名称；千帆仅支持 `PP-StructureV3` 与 `PaddleOCR-VL`。
 - `PADDLEOCR_MCP_QIANFAN_BASE_URL` 为千帆 API 基础 URL（可选）。
 - `PADDLEOCR_MCP_QIANFAN_API_KEY` 是您的千帆 API key，用于认证。
 
@@ -317,7 +317,7 @@ PaddleOCR 也支持通过 `uvx` 等方式免安装运行服务器，详情请参
       "command": "paddleocr_mcp",
       "args": [],
       "env": {
-        "PADDLEOCR_MCP_PIPELINE": "OCR",
+        "PADDLEOCR_MCP_MODEL": "PP-OCRv5",
         "PADDLEOCR_MCP_PPOCR_SOURCE": "self_hosted",
         "PADDLEOCR_MCP_SELF_HOSTED_BASE_URL": "<your-server-url>"
       }
@@ -328,7 +328,7 @@ PaddleOCR 也支持通过 `uvx` 等方式免安装运行服务器，详情请参
 
 **说明**：
 
-- `PADDLEOCR_MCP_PIPELINE` 需要被设置为产线名称。详见第 4 节。
+- `PADDLEOCR_MCP_MODEL` 需要被设置为模型名称。详见第 4 节。
 - 将 `<your-server-url>` 替换为底层服务的基础 URL（如：`http://127.0.0.1:8080`，**不要**包含 `/ocr`、`/layout-parsing` 等路径；MCP 会按产线自动拼接）。
 
 ### 2.4 使用 `uvx`
@@ -351,7 +351,7 @@ PaddleOCR 也支持通过 `uvx` 启动 MCP 服务器。这种方式不需要手�
         "paddleocr_mcp"
       ],
       "env": {
-        "PADDLEOCR_MCP_PIPELINE": "OCR",
+        "PADDLEOCR_MCP_MODEL": "PP-OCRv5",
         "PADDLEOCR_MCP_PPOCR_SOURCE": "self_hosted",
         "PADDLEOCR_MCP_SELF_HOSTED_BASE_URL": "<your-server-url>"
       }
@@ -373,7 +373,7 @@ PaddleOCR 也支持通过 `uvx` 启动 MCP 服务器。这种方式不需要手�
         "paddleocr_mcp"
       ],
       "env": {
-        "PADDLEOCR_MCP_PIPELINE": "OCR",
+        "PADDLEOCR_MCP_MODEL": "PP-OCRv5",
         "PADDLEOCR_MCP_PPOCR_SOURCE": "local"
       }
      }
@@ -398,14 +398,17 @@ paddleocr_mcp --help
 示例命令如下：
 
 ```bash
-# OCR + 官方 API + stdio
-PADDLEOCR_MCP_AISTUDIO_ACCESS_TOKEN=xxxxxx paddleocr_mcp --pipeline OCR --ppocr_source aistudio
+# PP-OCRv5 + 官方 API + stdio
+PADDLEOCR_MCP_AISTUDIO_ACCESS_TOKEN=xxxxxx paddleocr_mcp --model PP-OCRv5 --ppocr_source aistudio
+
+# PP-OCRv6 + 官方 API + stdio
+paddleocr_mcp --model PP-OCRv6 --ppocr_source aistudio
 
 # PP-StructureV3 + 本地推理 + stdio
-paddleocr_mcp --pipeline PP-StructureV3 --ppocr_source local
+paddleocr_mcp --model PP-StructureV3 --ppocr_source local
 
 # OCR + 自建 API + Streamable HTTP
-paddleocr_mcp --pipeline OCR --ppocr_source self_hosted --self-hosted-base-url http://127.0.0.1:8080 --http
+paddleocr_mcp --model PP-OCRv5 --ppocr_source self_hosted --self-hosted-base-url http://127.0.0.1:8080 --http
 ```
 
 在 [4. 参数说明](#4) 中可以了解 PaddleOCR MCP 服务器支持的全部参数。
@@ -416,7 +419,7 @@ paddleocr_mcp --pipeline OCR --ppocr_source self_hosted --self-hosted-base-url h
 
 | 环境变量 | 命令行参数 | 类型 | 描述 | 可选值 | 默认值 |
 |:---------|:-----------|:-----|:-----|:-------|:-------|
-| `PADDLEOCR_MCP_PIPELINE` | `--pipeline` | `str` | 要运行的产线。 | `"OCR"`，`"PP-StructureV3"`，`"PaddleOCR-VL"`，`"PaddleOCR-VL-1.5"`，`"PaddleOCR-VL-1.6"` | `"OCR"` |
+| `PADDLEOCR_MCP_MODEL` | `--model` | `str` | 要运行的模型。MCP 会根据模型自动选择对应的工具。 | `"PP-OCRv5"`，`"PP-OCRv6"`，`"PP-StructureV3"`，`"PaddleOCR-VL"`，`"PaddleOCR-VL-1.5"`，`"PaddleOCR-VL-1.6"` | `"PP-OCRv5"` |
 | `PADDLEOCR_MCP_PPOCR_SOURCE` | `--ppocr_source` | `str` | PaddleOCR能力来源。 | `"local"`（本地推理），`"aistudio"`（官方 API），`"qianfan"`（千帆 API），`"self_hosted"`（自建 API） | `"local"` |
 | `PADDLEOCR_MCP_AISTUDIO_BASE_URL` | `--aistudio-base-url` | `str` | AI Studio API 基础 URL（`aistudio` 推理方式下可选）。 | - | `None` |
 | `PADDLEOCR_MCP_QIANFAN_BASE_URL` | `--qianfan-base-url` | `str` | 千帆 API 基础 URL（`qianfan` 推理方式下可选）。 | - | `https://qianfan.baidubce.com/v2/ocr` |

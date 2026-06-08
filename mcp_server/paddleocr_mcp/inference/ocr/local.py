@@ -25,17 +25,27 @@ from .params import OCR_DEFAULT_PARAMS, OCR_RUNTIME_PARAMS
 
 
 class OCRLocalInference(Inference):
-    def __init__(self, config: Optional[str] = None, device: Optional[str] = None):
+    def __init__(
+        self,
+        config: Optional[str] = None,
+        device: Optional[str] = None,
+        ocr_version: Optional[str] = None,
+    ):
         self._config = config
         self._device = device
+        self._ocr_version = ocr_version
         self._inference: Optional[Any] = None
         self._wrapper: Optional[LocalSyncRunner] = None
 
     async def start(self) -> None:
         try:
-            self._inference = PaddleOCR(
-                paddlex_config=self._config, device=self._device
-            )
+            init_kwargs: dict[str, Any] = {
+                "paddlex_config": self._config,
+                "device": self._device,
+            }
+            if self._config is None and self._ocr_version is not None:
+                init_kwargs["ocr_version"] = self._ocr_version
+            self._inference = PaddleOCR(**init_kwargs)
             self._wrapper = LocalSyncRunner(self._inference)
         except Exception as e:
             raise RuntimeError(f"Failed to create PaddleOCR inference: {str(e)}") from e

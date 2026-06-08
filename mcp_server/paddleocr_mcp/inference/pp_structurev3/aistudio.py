@@ -24,6 +24,7 @@ from ..shared.paddleocr_api_sdk import (
     ServiceUnavailableError,
     Model,
     PPStructureV3Options,
+    resolve_document_model,
 )
 
 from ..base import Inference
@@ -45,11 +46,13 @@ class PPStructureV3AIStudioInference(Inference):
         base_url: Optional[str] = None,
         request_timeout: float = 300.0,
         poll_timeout: float = 600.0,
+        model: str = Model.PP_STRUCTURE_V3.value,
     ):
         self._token = token
         self._base_url = base_url
         self._request_timeout = request_timeout
         self._poll_timeout = poll_timeout
+        self._model = resolve_document_model(model)
         self._client = None
 
     async def start(self) -> None:
@@ -77,7 +80,7 @@ class PPStructureV3AIStudioInference(Inference):
             options = PPStructureV3Options(**request.runtime_params, visualize=False)
 
             result = await self._client.parse_document(
-                model=Model.PP_STRUCTURE_V3, **input_source, options=options
+                model=self._model, **input_source, options=options
             )
 
             return self._parse_result(result)

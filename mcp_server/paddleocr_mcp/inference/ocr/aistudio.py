@@ -24,6 +24,7 @@ from ..shared.paddleocr_api_sdk import (
     ServiceUnavailableError,
     Model,
     OCROptions,
+    resolve_ocr_model,
 )
 
 from ..base import Inference
@@ -44,11 +45,13 @@ class OCRAIStudioInference(Inference):
         base_url: Optional[str] = None,
         request_timeout: float = 300.0,
         poll_timeout: float = 600.0,
+        model: str = Model.PP_OCRV5.value,
     ):
         self._token = token
         self._base_url = base_url
         self._request_timeout = request_timeout
         self._poll_timeout = poll_timeout
+        self._model = resolve_ocr_model(model)
         self._client = None
 
     async def start(self) -> None:
@@ -76,7 +79,7 @@ class OCRAIStudioInference(Inference):
             options = OCROptions(**request.runtime_params, visualize=False)
 
             result = await self._client.ocr(
-                model=Model.PP_OCRV5, **input_source, options=options
+                model=self._model, **input_source, options=options
             )
 
             return self._parse_result(result)

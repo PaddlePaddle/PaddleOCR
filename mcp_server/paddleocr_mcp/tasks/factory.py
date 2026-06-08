@@ -1,7 +1,7 @@
 # Copyright (c) 2026 PaddlePaddle Authors. All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
-# you may obtain a copy of the License at
+# you may not use this file except in compliance with the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
@@ -14,6 +14,7 @@
 from typing import Dict
 
 from ..inference.base import Inference
+from ..selection import ResolvedModel
 from .base import Task
 
 
@@ -21,16 +22,17 @@ class TaskFactory:
     _registry: Dict[str, type[Task]] = {}
 
     @classmethod
-    def register(cls, pipeline: str, task_class: type[Task]) -> None:
-        cls._registry[pipeline] = task_class
+    def register(cls, tool: str, task_class: type[Task]) -> None:
+        cls._registry[tool] = task_class
 
     @classmethod
-    def create(cls, pipeline: str, inference: Inference) -> Task:
-        if pipeline not in cls._registry:
+    def create(cls, resolved: ResolvedModel, inference: Inference) -> Task:
+        if resolved.tool not in cls._registry:
             raise ValueError(
-                f"Unknown pipeline: {pipeline}. Supported: {sorted(cls._registry.keys())}"
+                f"Unknown tool for model {resolved.model!r}: {resolved.tool}. "
+                f"Supported: {sorted(cls._registry.keys())}"
             )
-        task_class = cls._registry[pipeline]
+        task_class = cls._registry[resolved.tool]
         return task_class(inference)
 
     @classmethod
@@ -41,12 +43,10 @@ class TaskFactory:
 from .ocr import OCRTask
 from .doc_parsing import PPStructureV3Task, PaddleOCRVLTask
 
-TaskFactory.register("OCR", OCRTask)
-TaskFactory.register("PP-StructureV3", PPStructureV3Task)
-TaskFactory.register("PaddleOCR-VL", PaddleOCRVLTask)
-TaskFactory.register("PaddleOCR-VL-1.5", PaddleOCRVLTask)
-TaskFactory.register("PaddleOCR-VL-1.6", PaddleOCRVLTask)
+TaskFactory.register("ocr", OCRTask)
+TaskFactory.register("pp_structurev3", PPStructureV3Task)
+TaskFactory.register("paddleocr_vl", PaddleOCRVLTask)
 
 
-def create_task(pipeline: str, inference: Inference) -> Task:
-    return TaskFactory.create(pipeline, inference)
+def create_task(resolved: ResolvedModel, inference: Inference) -> Task:
+    return TaskFactory.create(resolved, inference)
