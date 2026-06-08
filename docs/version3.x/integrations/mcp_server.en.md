@@ -11,13 +11,13 @@ PaddleOCR provides a lightweight [Model Context Protocol (MCP)](https://modelcon
 
 ### Key features include:
 
-- **Currently Supported Pipelines**
+- **Currently Supported Models**
 
-    | Pipeline | MCP tool name | Description |
+    | Model | MCP tool name | Description |
     | --- | --- | --- |
-    | `OCR` | `ocr` | Performs text detection and recognition on images and PDF files. |
+    | `PP-OCRv5`, `PP-OCRv6` | `ocr` | Performs text detection and recognition on images and PDF files. |
     | `PP-StructureV3` | `pp_structurev3` | Identifies and extracts text blocks, titles, paragraphs, images, tables, and other layout elements from images or PDF files, converting the input into Markdown documents. |
-    | `PaddleOCR-VL Series` | `paddleocr_vl` | Performs layout parsing with a VLM-based approach and converts the input into Markdown documents. Includes versions: PaddleOCR-VL, PaddleOCR-VL-1.5, and PaddleOCR-VL-1.6. |
+    | `PaddleOCR-VL`, `PaddleOCR-VL-1.5`, `PaddleOCR-VL-1.6` | `paddleocr_vl` | Performs layout parsing with a VLM-based approach and converts the input into Markdown documents. |
 
     > Each MCP server instance exposes exactly one MCP tool.
 
@@ -155,7 +155,7 @@ The following quick start uses **Official API** inference as an example to get y
           "command": "paddleocr_mcp",
           "args": [],
           "env": {
-            "PADDLEOCR_MCP_PIPELINE": "OCR",
+            "PADDLEOCR_MCP_MODEL": "PP-OCRv5",
             "PADDLEOCR_MCP_PPOCR_SOURCE": "aistudio",
             "PADDLEOCR_MCP_AISTUDIO_ACCESS_TOKEN": "<your-access-token>"
           }
@@ -216,7 +216,7 @@ Configuration example:
       "command": "paddleocr_mcp",
       "args": [],
       "env": {
-        "PADDLEOCR_MCP_PIPELINE": "OCR",
+        "PADDLEOCR_MCP_MODEL": "PP-OCRv5",
         "PADDLEOCR_MCP_PPOCR_SOURCE": "local"
       }
     }
@@ -226,13 +226,13 @@ Configuration example:
 
 **Notes**:
 
-- `PADDLEOCR_MCP_PIPELINE` should be set to the pipeline name. See Section 4 for details.
+- `PADDLEOCR_MCP_MODEL` should be set to the model name. See Section 4 for details.
 - `PADDLEOCR_MCP_PIPELINE_CONFIG` is optional. If not set, the default pipeline configuration is used. To adjust the configuration, such as changing models, refer to the [PaddleOCR documentation](../paddleocr_and_paddlex.md) to export the pipeline configuration file, and set `PADDLEOCR_MCP_PIPELINE_CONFIG` to the absolute path of this file.
 - **Inference Performance Tips**:
 
     If you encounter long inference time or insufficient memory, consider adjusting the pipeline configuration:
 
-    - **OCR Pipeline**: It is recommended to switch to the `mobile` series models. For example, use `PP-OCRv5_mobile_det` for detection and `PP-OCRv5_mobile_rec` for recognition.
+    - **OCR models**: Use `PADDLEOCR_MCP_MODEL=PP-OCRv6` to select PP-OCRv6. For finer-grained control, set detection and recognition models in the pipeline configuration file, for example `PP-OCRv5_mobile_det` and `PP-OCRv5_mobile_rec`.
     - **PP-StructureV3 Pipeline**:
 
         - Disable unused features, such as setting `use_formula_recognition` to `False` to disable formula recognition.
@@ -267,7 +267,7 @@ Configuration example:
 
 Refer to [2.1 Quick Start](#21-quick-start).
 
-For tasks other than text recognition, set `PADDLEOCR_MCP_PIPELINE` correctly (see Section 4 for parameter details).
+For tasks other than text recognition, set `PADDLEOCR_MCP_MODEL` correctly (see Section 4 for parameter details).
 
 #### Method 3: Qianfan API
 
@@ -285,7 +285,7 @@ Configuration example:
       "command": "paddleocr_mcp",
       "args": [],
       "env": {
-        "PADDLEOCR_MCP_PIPELINE": "PaddleOCR-VL",
+        "PADDLEOCR_MCP_MODEL": "PaddleOCR-VL",
         "PADDLEOCR_MCP_PPOCR_SOURCE": "qianfan",
         "PADDLEOCR_MCP_QIANFAN_API_KEY": "<your-api-key>"
       }
@@ -296,7 +296,7 @@ Configuration example:
 
 **Notes**:
 
-- `PADDLEOCR_MCP_PIPELINE` should be set to the pipeline name. Qianfan supports only `PP-StructureV3` and `PaddleOCR-VL`.
+- `PADDLEOCR_MCP_MODEL` should be set to the model name. Qianfan supports only `PP-StructureV3` and `PaddleOCR-VL`.
 - `PADDLEOCR_MCP_QIANFAN_BASE_URL` is the Qianfan API base URL (optional).
 - `PADDLEOCR_MCP_QIANFAN_API_KEY` is your Qianfan API key for authentication.
 
@@ -316,7 +316,7 @@ Configuration example:
       "command": "paddleocr_mcp",
       "args": [],
       "env": {
-        "PADDLEOCR_MCP_PIPELINE": "OCR",
+        "PADDLEOCR_MCP_MODEL": "PP-OCRv5",
         "PADDLEOCR_MCP_PPOCR_SOURCE": "self_hosted",
         "PADDLEOCR_MCP_SELF_HOSTED_BASE_URL": "<your-server-url>"
       }
@@ -327,7 +327,7 @@ Configuration example:
 
 **Notes**:
 
-- `PADDLEOCR_MCP_PIPELINE` should be set to the pipeline name. See Section 4 for details.
+- `PADDLEOCR_MCP_MODEL` should be set to the model name. See Section 4 for details.
 - Replace `<your-server-url>` with the underlying service base URL (e.g. `http://127.0.0.1:8080`, **without** path suffixes such as `/ocr` or `/layout-parsing`; MCP appends them by pipeline).
 
 ### 2.4 Using `uvx`
@@ -350,7 +350,7 @@ PaddleOCR also supports starting the MCP server via `uvx`. With this approach, m
         "paddleocr_mcp"
       ],
       "env": {
-        "PADDLEOCR_MCP_PIPELINE": "OCR",
+        "PADDLEOCR_MCP_MODEL": "PP-OCRv5",
         "PADDLEOCR_MCP_PPOCR_SOURCE": "self_hosted",
         "PADDLEOCR_MCP_SELF_HOSTED_BASE_URL": "<your-server-url>"
       }
@@ -372,7 +372,7 @@ PaddleOCR also supports starting the MCP server via `uvx`. With this approach, m
         "paddleocr_mcp"
       ],
       "env": {
-        "PADDLEOCR_MCP_PIPELINE": "OCR",
+        "PADDLEOCR_MCP_MODEL": "PP-OCRv5",
         "PADDLEOCR_MCP_PPOCR_SOURCE": "local"
       }
      }
@@ -397,14 +397,17 @@ paddleocr_mcp --help
 Example commands:
 
 ```bash
-# OCR + Official API + stdio
-PADDLEOCR_MCP_AISTUDIO_ACCESS_TOKEN=xxxxxx paddleocr_mcp --pipeline OCR --ppocr_source aistudio
+# PP-OCRv5 + Official API + stdio
+PADDLEOCR_MCP_AISTUDIO_ACCESS_TOKEN=xxxxxx paddleocr_mcp --model PP-OCRv5 --ppocr_source aistudio
+
+# PP-OCRv6 + Official API + stdio
+paddleocr_mcp --model PP-OCRv6 --ppocr_source aistudio
 
 # PP-StructureV3 + Local Inference + stdio
-paddleocr_mcp --pipeline PP-StructureV3 --ppocr_source local
+paddleocr_mcp --model PP-StructureV3 --ppocr_source local
 
 # OCR + Self-hosted API + Streamable HTTP
-paddleocr_mcp --pipeline OCR --ppocr_source self_hosted --self-hosted-base-url http://127.0.0.1:8080 --http
+paddleocr_mcp --model PP-OCRv5 --ppocr_source self_hosted --self-hosted-base-url http://127.0.0.1:8080 --http
 ```
 
 See [4. Parameter Reference](#4-parameter-reference) for all parameters supported by the PaddleOCR MCP server.
@@ -415,7 +418,7 @@ You can control the MCP server via environment variables or CLI arguments.
 
 | Environment Variable | CLI Argument | Type | Description | Options | Default |
 |:---------|:-----------|:-----|:-----|:-------|:-------|
-| `PADDLEOCR_MCP_PIPELINE` | `--pipeline` | `str` | Pipeline to run. | `"OCR"`, `"PP-StructureV3"`, `"PaddleOCR-VL"`, `"PaddleOCR-VL-1.5"`, `"PaddleOCR-VL-1.6"` | `"OCR"` |
+| `PADDLEOCR_MCP_MODEL` | `--model` | `str` | Model to run. MCP selects the tool automatically from the model. | `"PP-OCRv5"`, `"PP-OCRv6"`, `"PP-StructureV3"`, `"PaddleOCR-VL"`, `"PaddleOCR-VL-1.5"`, `"PaddleOCR-VL-1.6"` | `"PP-OCRv5"` |
 | `PADDLEOCR_MCP_PPOCR_SOURCE` | `--ppocr_source` | `str` | Source of PaddleOCR capabilities. | `"local"` (local inference), `"aistudio"` (Official API), `"qianfan"` (Qianfan API), `"self_hosted"` (self-hosted API) | `"local"` |
 | `PADDLEOCR_MCP_AISTUDIO_BASE_URL` | `--aistudio-base-url` | `str` | AI Studio API base URL (optional for `aistudio` source). | - | `None` |
 | `PADDLEOCR_MCP_QIANFAN_BASE_URL` | `--qianfan-base-url` | `str` | Qianfan API base URL (optional for `qianfan` source). | - | `https://qianfan.baidubce.com/v2/ocr` |

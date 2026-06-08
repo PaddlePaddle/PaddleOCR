@@ -25,6 +25,7 @@ from ..shared.paddleocr_api_sdk import (
     ServiceUnavailableError,
     Model,
     PaddleOCRVLOptions,
+    resolve_document_model,
 )
 
 from ..base import Inference
@@ -40,25 +41,19 @@ from .params import PADDLEOCR_VL_DEFAULT_PARAMS, PADDLEOCR_VL_RUNTIME_PARAMS
 
 
 class PaddleOCRVLAIStudioInference(Inference):
-    _MODEL_MAP = {
-        "v1": Model.PADDLE_OCR_VL,
-        "v1.5": Model.PADDLE_OCR_VL_15,
-        "v1.6": Model.PADDLE_OCR_VL_16,
-    }
-
     def __init__(
         self,
         token: str,
         base_url: Optional[str] = None,
         request_timeout: float = 300.0,
         poll_timeout: float = 600.0,
-        version: str = "v1",
+        model: str = Model.PADDLE_OCR_VL.value,
     ):
         self._token = token
         self._base_url = base_url
         self._request_timeout = request_timeout
         self._poll_timeout = poll_timeout
-        self._version = version
+        self._model = resolve_document_model(model)
         self._client = None
 
     async def start(self) -> None:
@@ -85,7 +80,7 @@ class PaddleOCRVLAIStudioInference(Inference):
             input_source = self._resolve_input_source(request.input_data)
             options = PaddleOCRVLOptions(**request.runtime_params)
 
-            model = self._MODEL_MAP[self._version]
+            model = self._model
             result = await self._client.parse_document(
                 model=model, **input_source, options=options
             )

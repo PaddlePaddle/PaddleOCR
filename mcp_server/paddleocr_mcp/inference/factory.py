@@ -26,6 +26,7 @@ from .pp_structurev3.aistudio import PPStructureV3AIStudioInference
 from .pp_structurev3.local import PPStructureV3LocalInference
 from .pp_structurev3.qianfan import PPStructureV3QianfanInference
 from .pp_structurev3.self_hosted import PPStructureV3SelfHostedInference
+from ..selection import ResolvedModel
 
 
 class InferenceFactory:
@@ -34,76 +35,152 @@ class InferenceFactory:
     @classmethod
     def register(
         cls,
-        pipeline: str,
+        tool: str,
         source: str,
         factory_fn: Callable[..., Inference],
     ) -> None:
-        cls._registry[(pipeline, source)] = factory_fn
+        cls._registry[(tool, source)] = factory_fn
 
     @classmethod
     def create(
         cls,
-        pipeline: str,
+        resolved: ResolvedModel,
         source: str,
         **kwargs,
     ) -> Inference:
-        key = (pipeline, source)
+        key = (resolved.tool, source)
         if key not in cls._registry:
             raise ValueError(
-                f"Unsupported inference combination: {pipeline} + {source}. "
-                f"Supported combinations: {sorted(cls._registry.keys())}"
+                f"Unsupported inference combination: model={resolved.model!r}, "
+                f"source={source!r}. Supported combinations: "
+                f"{sorted(cls._registry.keys())}"
             )
         factory_fn = cls._registry[key]
-        return factory_fn(**kwargs)
+        return factory_fn(resolved=resolved, **kwargs)
 
     @classmethod
     def list_supported(cls) -> set[tuple[str, str]]:
         return set(cls._registry.keys())
 
 
-InferenceFactory.register("OCR", "local", OCRLocalInference)
-InferenceFactory.register("OCR", "aistudio", OCRAIStudioInference)
-InferenceFactory.register("OCR", "self_hosted", OCRSelfHostedInference)
+def _create_ocr_local(resolved: ResolvedModel, **kwargs: Any) -> Inference:
+    return OCRLocalInference(
+        config=kwargs.get("config"),
+        device=kwargs.get("device"),
+        ocr_version=resolved.ocr_version,
+    )
 
-InferenceFactory.register("PP-StructureV3", "local", PPStructureV3LocalInference)
-InferenceFactory.register("PP-StructureV3", "aistudio", PPStructureV3AIStudioInference)
-InferenceFactory.register("PP-StructureV3", "qianfan", PPStructureV3QianfanInference)
+
+def _create_ocr_aistudio(resolved: ResolvedModel, **kwargs: Any) -> Inference:
+    return OCRAIStudioInference(
+        token=kwargs["token"],
+        base_url=kwargs.get("base_url"),
+        request_timeout=kwargs.get("request_timeout", 300.0),
+        poll_timeout=kwargs.get("poll_timeout", 600.0),
+        model=resolved.model,
+    )
+
+
+def _create_ocr_self_hosted(resolved: ResolvedModel, **kwargs: Any) -> Inference:
+    return OCRSelfHostedInference(
+        base_url=kwargs["base_url"],
+        timeout=kwargs.get("timeout", 60),
+    )
+
+
+def _create_pp_structurev3_local(resolved: ResolvedModel, **kwargs: Any) -> Inference:
+    return PPStructureV3LocalInference(
+        config=kwargs.get("config"),
+        device=kwargs.get("device"),
+    )
+
+
+def _create_pp_structurev3_aistudio(
+    resolved: ResolvedModel, **kwargs: Any
+) -> Inference:
+    return PPStructureV3AIStudioInference(
+        token=kwargs["token"],
+        base_url=kwargs.get("base_url"),
+        request_timeout=kwargs.get("request_timeout", 300.0),
+        poll_timeout=kwargs.get("poll_timeout", 600.0),
+        model=resolved.model,
+    )
+
+
+def _create_pp_structurev3_self_hosted(
+    resolved: ResolvedModel, **kwargs: Any
+) -> Inference:
+    return PPStructureV3SelfHostedInference(
+        base_url=kwargs["base_url"],
+        timeout=kwargs.get("timeout", 60),
+    )
+
+
+def _create_paddleocr_vl_local(resolved: ResolvedModel, **kwargs: Any) -> Inference:
+    return PaddleOCRVLLocalInference(
+        config=kwargs.get("config"),
+        device=kwargs.get("device"),
+        version=resolved.vl_version or "v1",
+    )
+
+
+def _create_paddleocr_vl_aistudio(resolved: ResolvedModel, **kwargs: Any) -> Inference:
+    return PaddleOCRVLAIStudioInference(
+        token=kwargs["token"],
+        base_url=kwargs.get("base_url"),
+        request_timeout=kwargs.get("request_timeout", 300.0),
+        poll_timeout=kwargs.get("poll_timeout", 600.0),
+        model=resolved.model,
+    )
+
+
+def _create_paddleocr_vl_self_hosted(
+    resolved: ResolvedModel, **kwargs: Any
+) -> Inference:
+    return PaddleOCRVLSelfHostedInference(
+        base_url=kwargs["base_url"],
+        timeout=kwargs.get("timeout", 60),
+    )
+
+
+def _create_pp_structurev3_qianfan(resolved: ResolvedModel, **kwargs: Any) -> Inference:
+    return PPStructureV3QianfanInference(
+        base_url=kwargs["base_url"],
+        api_key=kwargs["api_key"],
+        timeout=kwargs.get("timeout", 60),
+    )
+
+
+def _create_paddleocr_vl_qianfan(resolved: ResolvedModel, **kwargs: Any) -> Inference:
+    return PaddleOCRVLQianfanInference(
+        base_url=kwargs["base_url"],
+        api_key=kwargs["api_key"],
+        timeout=kwargs.get("timeout", 60),
+    )
+
+
+InferenceFactory.register("ocr", "local", _create_ocr_local)
+InferenceFactory.register("ocr", "aistudio", _create_ocr_aistudio)
+InferenceFactory.register("ocr", "self_hosted", _create_ocr_self_hosted)
+
+InferenceFactory.register("pp_structurev3", "local", _create_pp_structurev3_local)
+InferenceFactory.register("pp_structurev3", "aistudio", _create_pp_structurev3_aistudio)
+InferenceFactory.register("pp_structurev3", "qianfan", _create_pp_structurev3_qianfan)
 InferenceFactory.register(
-    "PP-StructureV3", "self_hosted", PPStructureV3SelfHostedInference
+    "pp_structurev3", "self_hosted", _create_pp_structurev3_self_hosted
+)
+
+InferenceFactory.register("paddleocr_vl", "local", _create_paddleocr_vl_local)
+InferenceFactory.register("paddleocr_vl", "aistudio", _create_paddleocr_vl_aistudio)
+InferenceFactory.register("paddleocr_vl", "qianfan", _create_paddleocr_vl_qianfan)
+InferenceFactory.register(
+    "paddleocr_vl", "self_hosted", _create_paddleocr_vl_self_hosted
 )
 
 
-def _create_paddleocr_vl_local(version: str) -> Callable[..., Inference]:
-    def _factory(**kwargs: Any) -> Inference:
-        return PaddleOCRVLLocalInference(**kwargs, version=version)
-
-    return _factory
-
-
-def _create_paddleocr_vl_aistudio(version: str) -> Callable[..., Inference]:
-    def _factory(**kwargs: Any) -> Inference:
-        return PaddleOCRVLAIStudioInference(**kwargs, version=version)
-
-    return _factory
-
-
-for _pipeline, _version in {
-    "PaddleOCR-VL": "v1",
-    "PaddleOCR-VL-1.5": "v1.5",
-    "PaddleOCR-VL-1.6": "v1.6",
-}.items():
-    InferenceFactory.register(_pipeline, "local", _create_paddleocr_vl_local(_version))
-    InferenceFactory.register(
-        _pipeline, "aistudio", _create_paddleocr_vl_aistudio(_version)
-    )
-    InferenceFactory.register(_pipeline, "self_hosted", PaddleOCRVLSelfHostedInference)
-
-InferenceFactory.register("PaddleOCR-VL", "qianfan", PaddleOCRVLQianfanInference)
-
-
 def create_inference(
-    pipeline: str,
+    resolved: ResolvedModel,
     source: str,
     **kwargs,
 ) -> Inference:
-    return InferenceFactory.create(pipeline, source, **kwargs)
+    return InferenceFactory.create(resolved, source, **kwargs)

@@ -24,9 +24,8 @@ import sys
 from fastmcp import FastMCP
 
 from .inference import create_inference
+from .selection import DEFAULT_MODEL, resolve_model
 from .tasks import create_task
-
-_QIANFAN_SUPPORTED_PIPELINES = frozenset({"PP-StructureV3", "PaddleOCR-VL"})
 
 
 def _parse_args() -> argparse.Namespace:
@@ -34,16 +33,9 @@ def _parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="PaddleOCR MCP server.")
 
     parser.add_argument(
-        "--pipeline",
-        choices=[
-            "OCR",
-            "PP-StructureV3",
-            "PaddleOCR-VL",
-            "PaddleOCR-VL-1.5",
-            "PaddleOCR-VL-1.6",
-        ],
-        default=os.getenv("PADDLEOCR_MCP_PIPELINE", "OCR"),
-        help="Pipeline to run. Env: PADDLEOCR_MCP_PIPELINE.",
+        "--model",
+        default=os.getenv("PADDLEOCR_MCP_MODEL", DEFAULT_MODEL),
+        help="Model to run. Env: PADDLEOCR_MCP_MODEL.",
     )
     parser.add_argument(
         "--ppocr_source",
@@ -143,14 +135,6 @@ def _validate_args(args: argparse.Namespace) -> None:
             )
             sys.exit(2)
     elif args.ppocr_source == "qianfan":
-        if args.pipeline not in _QIANFAN_SUPPORTED_PIPELINES:
-            supported = ", ".join(sorted(_QIANFAN_SUPPORTED_PIPELINES))
-            print(
-                f"Error: Pipeline {args.pipeline!r} is not supported with qianfan source. "
-                f"Supported pipelines: {supported}. ",
-                file=sys.stderr,
-            )
-            sys.exit(2)
         if not args.qianfan_api_key:
             print("Error: The Qianfan API key is required.", file=sys.stderr)
             print(
@@ -172,19 +156,19 @@ def _validate_args(args: argparse.Namespace) -> None:
             sys.exit(2)
 
 
-def _create_inference_from_args(args: argparse.Namespace):
+def _create_inference_from_args(args: argparse.Namespace, resolved):
     source = args.ppocr_source
 
     if source == "local":
         return create_inference(
-            pipeline=args.pipeline,
+            resolved=resolved,
             source=source,
             config=args.pipeline_config,
             device=args.device,
         )
     elif source == "aistudio":
         return create_inference(
-            pipeline=args.pipeline,
+            resolved=resolved,
             source=source,
             token=args.aistudio_access_token,
             base_url=args.aistudio_base_url,
@@ -193,7 +177,7 @@ def _create_inference_from_args(args: argparse.Namespace):
         )
     elif source == "qianfan":
         return create_inference(
-            pipeline=args.pipeline,
+            resolved=resolved,
             source=source,
             base_url=args.qianfan_base_url,
             api_key=args.qianfan_api_key,
@@ -201,7 +185,7 @@ def _create_inference_from_args(args: argparse.Namespace):
         )
     elif source == "self_hosted":
         return create_inference(
-            pipeline=args.pipeline,
+            resolved=resolved,
             source=source,
             base_url=args.self_hosted_base_url,
             timeout=args.timeout,
@@ -215,14 +199,20 @@ async def async_main() -> None:
     args = _parse_args()
     _validate_args(args)
 
-    inference = _create_inference_from_args(args)
+    try:
+        resolved = resolve_model(args.model, args.ppocr_source)
+    except ValueError as e:
+        print(f"Error: {e}", file=sys.stderr)
+        sys.exit(2)
+
+    inference = _create_inference_from_args(args, resolved)
 
     try:
         await inference.start()
 
-        task = create_task(args.pipeline, inference)
+        task = create_task(resolved, inference)
 
-        server_name = f"PaddleOCR {args.pipeline} MCP server"
+        server_name = f"PaddleOCR {resolved.model} MCP server"
         mcp = FastMCP(
             name=server_name,
             mask_error_details=True,
