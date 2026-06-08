@@ -304,7 +304,7 @@ class RSEFPN(nn.Layer):
         return fuse
 
 
-class UniRepLKFPN(nn.Layer):
+class RepLKFPN(nn.Layer):
     """Optimized RSEFPN: replaces 3x3 standard Conv in inp_conv with
     DilatedReparamBlock (DW, 5x5) + PWConv 1x1 + SE.
 
@@ -318,7 +318,7 @@ class UniRepLKFPN(nn.Layer):
 
     Parameter comparison (out_channels=96, 4 levels):
       RSEFPN  inp_conv: 4 × (96×24×9 + SE) = 4 × 21,054 = 84,216
-      UniRepLKFPN inp_conv: 4 × (DilReparam96 + 96×24 + SE)
+      RepLKFPN inp_conv: 4 × (DilReparam96 + 96×24 + SE)
              = 4 × (96×25 + 96×2 + 2×(96×9+96×2) + 96×24 + SE)
              = 4 × (2,400 + 192 + 2×(864+192) + 2,304 + 318)
              = 4 × 7,326 = 29,304
@@ -331,7 +331,7 @@ class UniRepLKFPN(nn.Layer):
     def __init__(
         self, in_channels, out_channels, shortcut=True, dilated_kernel_size=7, **kwargs
     ):
-        super(UniRepLKFPN, self).__init__()
+        super(RepLKFPN, self).__init__()
         self.out_channels = out_channels
         self.is_repped = False
         self.ins_conv = nn.LayerList()
@@ -792,7 +792,7 @@ class DilatedReparamConv(nn.Layer):
         self.is_repped = True
 
 
-class UniRepLKPAN(nn.Layer):
+class RepLKPAN(nn.Layer):
     """
     Optimized LKPAN using UniRepLKNet's DilatedReparamBlock.
 
@@ -836,7 +836,7 @@ class UniRepLKPAN(nn.Layer):
     """
 
     def __init__(self, in_channels, out_channels, mode="large", **kwargs):
-        super(UniRepLKPAN, self).__init__()
+        super(RepLKPAN, self).__init__()
         self.out_channels = out_channels
         self.is_repped = False
         weight_attr = paddle.nn.initializer.KaimingUniform()

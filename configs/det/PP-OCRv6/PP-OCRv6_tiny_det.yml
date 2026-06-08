@@ -32,7 +32,7 @@ Architecture:
     det: true
     model_size: tiny
   Neck:
-    name: UniRepLKFPN
+    name: RepLKFPN
     out_channels: 64
     dilated_kernel_size: 5
     shortcut: true
@@ -67,10 +67,10 @@ Optimizer:
 
 PostProcess:
   name: DBPostProcess
-  thresh: 0.3
-  box_thresh: 0.6
-  max_candidates: 1000
-  unclip_ratio: 1.5
+  thresh: 0.2
+  box_thresh: 0.4
+  max_candidates: 3000
+  unclip_ratio: 1.4
 
 Metric:
   name: DetMetric
@@ -108,15 +108,8 @@ Train:
         - type: Resize
           args:
             size:
-            - 0.1
+            - 0.3
             - 2
-    - RandomPerspective:
-        prob: 0.3
-        scale: 0.0
-        shear: 20.0
-        perspective: 0.001
-        fit_output: true
-        fill_value: [0, 0, 0]
     - EastRandomCropData:
         size:
         - 640
@@ -168,9 +161,7 @@ Eval:
         img_mode: BGR
         channel_first: false
     - DetLabelEncode: null
-    - DetResizeForTest:
-        limit_side_len: 4000
-        limit_type: max
+    - DetResizeForTest: null
     - NormalizeImage:
         scale: 1./255.
         mean:
