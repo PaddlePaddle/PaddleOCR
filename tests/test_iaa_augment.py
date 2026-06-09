@@ -134,6 +134,18 @@ def test_iaa_augment_custom(sample_image, sample_polys):
     assert polys_changed, "Polygons should have been transformed"
 
 
+def test_iaa_augment_affine_fit_output(sample_image, sample_polys):
+    data = create_data(sample_image, sample_polys)
+    augmenter_args = [
+        {"type": "Affine", "args": {"rotate": [45, 45], "fit_output": True}},
+    ]
+    augmenter = IaaAugment(augmenter_args=augmenter_args)
+    transformed_data = augmenter(data)
+
+    assert transformed_data["image"].shape[0] > sample_image.shape[0]
+    assert transformed_data["image"].shape[1] > sample_image.shape[1]
+
+
 # Test that an unknown transformation type raises an AttributeError
 def test_iaa_augment_unknown_transform():
     augmenter_args = [{"type": "UnknownTransform", "args": {}}]
