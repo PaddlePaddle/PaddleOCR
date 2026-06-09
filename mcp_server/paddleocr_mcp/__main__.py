@@ -108,10 +108,34 @@ def _parse_args() -> argparse.Namespace:
         help="Qianfan API key (qianfan). Env: PADDLEOCR_MCP_QIANFAN_API_KEY.",
     )
     parser.add_argument(
-        "--timeout",
+        "--http-timeout",
+        dest="http_timeout",
         type=int,
-        default=int(os.getenv("PADDLEOCR_MCP_TIMEOUT", "60")),
-        help="Request timeout in seconds. Env: PADDLEOCR_MCP_TIMEOUT.",
+        default=int(os.getenv("PADDLEOCR_MCP_HTTP_TIMEOUT", "600")),
+        help=(
+            "HTTP read timeout in seconds for synchronous APIs. "
+            "Env: PADDLEOCR_MCP_HTTP_TIMEOUT."
+        ),
+    )
+    parser.add_argument(
+        "--aistudio-request-timeout",
+        dest="aistudio_request_timeout",
+        type=int,
+        default=int(os.getenv("PADDLEOCR_MCP_AISTUDIO_REQUEST_TIMEOUT", "120")),
+        help=(
+            "Per-request HTTP timeout in seconds for AI Studio API calls. "
+            "Env: PADDLEOCR_MCP_AISTUDIO_REQUEST_TIMEOUT."
+        ),
+    )
+    parser.add_argument(
+        "--aistudio-poll-timeout",
+        dest="aistudio_poll_timeout",
+        type=int,
+        default=int(os.getenv("PADDLEOCR_MCP_AISTUDIO_POLL_TIMEOUT", "600")),
+        help=(
+            "Total job polling timeout in seconds for AI Studio. "
+            "Env: PADDLEOCR_MCP_AISTUDIO_POLL_TIMEOUT."
+        ),
     )
 
     return parser.parse_args()
@@ -173,8 +197,8 @@ def _create_inference_from_args(args: argparse.Namespace, model: str):
             provider=provider,
             token=args.aistudio_access_token,
             base_url=args.aistudio_base_url,
-            request_timeout=float(args.timeout),
-            poll_timeout=float(args.timeout * 10),
+            request_timeout=float(args.aistudio_request_timeout),
+            poll_timeout=float(args.aistudio_poll_timeout),
         )
     elif provider == InferenceProvider.QIANFAN.value:
         return create_inference(
@@ -182,14 +206,14 @@ def _create_inference_from_args(args: argparse.Namespace, model: str):
             provider=provider,
             base_url=args.qianfan_base_url,
             api_key=args.qianfan_api_key,
-            timeout=args.timeout,
+            http_timeout=args.http_timeout,
         )
     elif provider == InferenceProvider.SELF_HOSTED.value:
         return create_inference(
             model=model,
             provider=provider,
             base_url=args.self_hosted_base_url,
-            timeout=args.timeout,
+            http_timeout=args.http_timeout,
         )
     else:
         raise ValueError(f"Unknown provider: {provider}")

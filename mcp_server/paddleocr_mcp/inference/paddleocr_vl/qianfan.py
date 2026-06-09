@@ -23,8 +23,10 @@ from .params import PADDLEOCR_VL_DEFAULT_PARAMS, PADDLEOCR_VL_RUNTIME_PARAMS
 
 
 class PaddleOCRVLQianfanInference(HTTPInferenceBase):
-    def __init__(self, base_url: str, api_key: str, timeout: int = 60):
-        super().__init__(base_url, timeout, api_key, provider=InferenceProvider.QIANFAN)
+    def __init__(self, base_url: str, api_key: str, http_timeout: int = 600):
+        super().__init__(
+            base_url, http_timeout, api_key, provider=InferenceProvider.QIANFAN
+        )
 
     @override
     def _get_endpoint(self) -> str:

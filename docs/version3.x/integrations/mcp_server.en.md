@@ -424,7 +424,9 @@ You can control the MCP server via environment variables or CLI arguments.
 | `PADDLEOCR_MCP_SELF_HOSTED_BASE_URL` | `--self-hosted-base-url` | `str` | Self-hosted PaddleX serve base URL (required for `self_hosted` source). | - | `None` |
 | `PADDLEOCR_MCP_QIANFAN_API_KEY` | `--qianfan_api_key` | `str` | Qianfan API authentication key (required for `qianfan` source). | - | `None` |
 | `PADDLEOCR_MCP_AISTUDIO_ACCESS_TOKEN` | `--aistudio_access_token` | `str` | AI Studio access token (required for `aistudio` source). | - | `None` |
-| `PADDLEOCR_MCP_TIMEOUT` | `--timeout` | `int` | Underlying request timeout in seconds. For `aistudio`, used as the per-request timeout; polling timeout is 10× this value. For `qianfan` and `self_hosted`, used as the HTTP read timeout. | - | `60` |
+| `PADDLEOCR_MCP_HTTP_TIMEOUT` | `--http-timeout` | `int` | HTTP read timeout in seconds for synchronous APIs (`qianfan`, `self_hosted`). | - | `600` |
+| `PADDLEOCR_MCP_AISTUDIO_REQUEST_TIMEOUT` | `--aistudio-request-timeout` | `int` | Per-request HTTP timeout in seconds for AI Studio API calls (job submission, status checks, etc.). | - | `120` |
+| `PADDLEOCR_MCP_AISTUDIO_POLL_TIMEOUT` | `--aistudio-poll-timeout` | `int` | Total job polling timeout in seconds for AI Studio. | - | `600` |
 | `PADDLEOCR_MCP_DEVICE` | `--device` | `str` | Device for inference (only effective for `local` source). | - | `None` |
 | `PADDLEOCR_MCP_PIPELINE_CONFIG` | `--pipeline_config` | `str` | PaddleOCR pipeline configuration file path (only effective for `local` source). | - | `None` |
 | - | `--http` | `bool` | Use Streamable HTTP transport instead of stdio (for remote deployment and multiple clients). | - | `False` |

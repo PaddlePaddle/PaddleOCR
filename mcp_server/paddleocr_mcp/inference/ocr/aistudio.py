@@ -45,7 +45,7 @@ class OCRAIStudioInference(Inference):
         self,
         token: str,
         base_url: Optional[str] = None,
-        request_timeout: float = 300.0,
+        request_timeout: float = 120.0,
         poll_timeout: float = 600.0,
         model: str = Model.PP_OCRV5.value,
     ):

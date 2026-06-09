@@ -15,6 +15,8 @@
 from abc import abstractmethod
 from typing import Any, Optional
 
+import httpx
+
 from ..base import Inference
 from ..errors import InferenceError
 from ..types import InferenceRequest, InferenceResult
@@ -28,12 +30,12 @@ class HTTPInferenceBase(Inference):
     def __init__(
         self,
         base_url: str,
-        timeout: int = 60,
+        http_timeout: int = 600,
         api_key: Optional[str] = None,
         provider: InferenceProvider | str = InferenceProvider.SELF_HOSTED,
     ):
         self._base_url = base_url
-        self._timeout = timeout
+        self._http_timeout = http_timeout
         self._api_key = api_key
         self._input_adapter = HTTPInputAdapter(provider)
         self._client: Optional[AsyncHTTPClient] = None
@@ -46,7 +48,7 @@ class HTTPInferenceBase(Inference):
         headers = {}
         if self._api_key:
             headers["Authorization"] = f"Bearer {self._api_key}"
-        self._client = AsyncHTTPClient(self._base_url, self._timeout, headers)
+        self._client = AsyncHTTPClient(self._base_url, self._http_timeout, headers)
         await self._client.start()
 
     async def stop(self) -> None:
@@ -64,11 +66,26 @@ class HTTPInferenceBase(Inference):
             **request.runtime_params,
         )
 
+        endpoint = self._get_endpoint()
+        provider = self._input_adapter.provider.value
         try:
-            response = await self._client.post(self._get_endpoint(), payload)
+            response = await self._client.post(endpoint, payload)
             return self._parse_result(response)
+        except httpx.ReadTimeout as e:
+            raise InferenceError(
+                f"HTTP read timeout after {self._http_timeout}s "
+                f"({provider}/{endpoint}): {e}"
+            ) from e
+        except httpx.HTTPStatusError as e:
+            raise InferenceError(
+                f"HTTP {e.response.status_code} ({provider}/{endpoint}): {e}"
+            ) from e
+        except httpx.HTTPError as e:
+            raise InferenceError(f"HTTP error ({provider}/{endpoint}): {e}") from e
         except Exception as e:
-            raise InferenceError(f"HTTP request failed: {e}") from e
+            raise InferenceError(
+                f"HTTP request failed ({provider}/{endpoint}): {e}"
+            ) from e
 
     def _prepare_payload(
         self, input_data: str, file_type: Optional[str], **params

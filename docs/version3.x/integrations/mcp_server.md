@@ -425,7 +425,9 @@ paddleocr_mcp --model PP-OCRv5 --ppocr_source self_hosted --self-hosted-base-url
 | `PADDLEOCR_MCP_SELF_HOSTED_BASE_URL` | `--self-hosted-base-url` | `str` | 自建 PaddleX 服务基础 URL（`self_hosted` 推理方式下必需）。 | - | `None` |
 | `PADDLEOCR_MCP_QIANFAN_API_KEY` | `--qianfan_api_key` | `str` | 千帆 API 认证密钥（`qianfan` 推理方式下必需）。 | - | `None` |
 | `PADDLEOCR_MCP_AISTUDIO_ACCESS_TOKEN` | `--aistudio_access_token` | `str` | AI Studio 访问令牌（`aistudio` 推理方式下必需）。 | - | `None` |
-| `PADDLEOCR_MCP_TIMEOUT` | `--timeout` | `int` | 底层服务请求超时时间（秒）。在 `aistudio` 推理方式下用作单次请求超时，轮询超时为该值的 10 倍；在 `qianfan` 和 `self_hosted` 推理方式下用作 HTTP 读取超时。 | - | `60` |
+| `PADDLEOCR_MCP_HTTP_TIMEOUT` | `--http-timeout` | `int` | 同步 HTTP API（`qianfan`、`self_hosted`）的单次 POST 读取超时（秒）。 | - | `600` |
+| `PADDLEOCR_MCP_AISTUDIO_REQUEST_TIMEOUT` | `--aistudio-request-timeout` | `int` | AI Studio 单次 HTTP 请求超时（秒），用于提交任务、查询状态等。 | - | `120` |
+| `PADDLEOCR_MCP_AISTUDIO_POLL_TIMEOUT` | `--aistudio-poll-timeout` | `int` | AI Studio 任务轮询总等待上限（秒）。 | - | `600` |
 | `PADDLEOCR_MCP_DEVICE` | `--device` | `str` | 指定运行推理的设备（仅在 `local` 推理方式下生效）。 | - | `None` |
 | `PADDLEOCR_MCP_PIPELINE_CONFIG` | `--pipeline_config` | `str` | PaddleOCR 产线配置文件路径（仅在 `local` 推理方式下生效）。 | - | `None` |
 | - | `--http` | `bool` | 使用 Streamable HTTP 传输而非 stdio（适用于远程部署和多客户端）。 | - | `False` |

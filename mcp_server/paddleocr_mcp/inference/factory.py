@@ -83,7 +83,7 @@ def _create_ocr_aistudio(model: str, **kwargs: Any) -> Inference:
     return OCRAIStudioInference(
         token=kwargs["token"],
         base_url=kwargs.get("base_url"),
-        request_timeout=kwargs.get("request_timeout", 300.0),
+        request_timeout=kwargs.get("request_timeout", 120.0),
         poll_timeout=kwargs.get("poll_timeout", 600.0),
         model=model,
     )
@@ -92,7 +92,7 @@ def _create_ocr_aistudio(model: str, **kwargs: Any) -> Inference:
 def _create_ocr_self_hosted(model: str, **kwargs: Any) -> Inference:
     return OCRSelfHostedInference(
         base_url=kwargs["base_url"],
-        timeout=kwargs.get("timeout", 60),
+        http_timeout=kwargs.get("http_timeout", 600),
     )
 
 
@@ -107,7 +107,7 @@ def _create_pp_structurev3_aistudio(model: str, **kwargs: Any) -> Inference:
     return PPStructureV3AIStudioInference(
         token=kwargs["token"],
         base_url=kwargs.get("base_url"),
-        request_timeout=kwargs.get("request_timeout", 300.0),
+        request_timeout=kwargs.get("request_timeout", 120.0),
         poll_timeout=kwargs.get("poll_timeout", 600.0),
         model=model,
     )
@@ -116,7 +116,7 @@ def _create_pp_structurev3_aistudio(model: str, **kwargs: Any) -> Inference:
 def _create_pp_structurev3_self_hosted(model: str, **kwargs: Any) -> Inference:
     return PPStructureV3SelfHostedInference(
         base_url=kwargs["base_url"],
-        timeout=kwargs.get("timeout", 60),
+        http_timeout=kwargs.get("http_timeout", 600),
     )
 
 
@@ -132,7 +132,7 @@ def _create_paddleocr_vl_aistudio(model: str, **kwargs: Any) -> Inference:
     return PaddleOCRVLAIStudioInference(
         token=kwargs["token"],
         base_url=kwargs.get("base_url"),
-        request_timeout=kwargs.get("request_timeout", 300.0),
+        request_timeout=kwargs.get("request_timeout", 120.0),
         poll_timeout=kwargs.get("poll_timeout", 600.0),
         model=model,
     )
@@ -141,7 +141,7 @@ def _create_paddleocr_vl_aistudio(model: str, **kwargs: Any) -> Inference:
 def _create_paddleocr_vl_self_hosted(model: str, **kwargs: Any) -> Inference:
     return PaddleOCRVLSelfHostedInference(
         base_url=kwargs["base_url"],
-        timeout=kwargs.get("timeout", 60),
+        http_timeout=kwargs.get("http_timeout", 600),
     )
 
 
@@ -149,7 +149,7 @@ def _create_pp_structurev3_qianfan(model: str, **kwargs: Any) -> Inference:
     return PPStructureV3QianfanInference(
         base_url=kwargs["base_url"],
         api_key=kwargs["api_key"],
-        timeout=kwargs.get("timeout", 60),
+        http_timeout=kwargs.get("http_timeout", 600),
     )
 
 
@@ -157,7 +157,7 @@ def _create_paddleocr_vl_qianfan(model: str, **kwargs: Any) -> Inference:
     return PaddleOCRVLQianfanInference(
         base_url=kwargs["base_url"],
         api_key=kwargs["api_key"],
-        timeout=kwargs.get("timeout", 60),
+        http_timeout=kwargs.get("http_timeout", 600),
     )
 
 

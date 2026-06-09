@@ -23,9 +23,12 @@ from .params import PP_STRUCTUREV3_DEFAULT_PARAMS, PP_STRUCTUREV3_RUNTIME_PARAMS
 
 
 class PPStructureV3SelfHostedInference(HTTPInferenceBase):
-    def __init__(self, base_url: str, timeout: int = 60):
+    def __init__(self, base_url: str, http_timeout: int = 600):
         super().__init__(
-            base_url, timeout, api_key=None, provider=InferenceProvider.SELF_HOSTED
+            base_url,
+            http_timeout,
+            api_key=None,
+            provider=InferenceProvider.SELF_HOSTED,
         )
 
     @override

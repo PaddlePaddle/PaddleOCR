@@ -46,7 +46,7 @@ class PaddleOCRVLAIStudioInference(Inference):
         self,
         token: str,
         base_url: Optional[str] = None,
-        request_timeout: float = 300.0,
+        request_timeout: float = 120.0,
         poll_timeout: float = 600.0,
         model: str = Model.PADDLE_OCR_VL.value,
     ):
