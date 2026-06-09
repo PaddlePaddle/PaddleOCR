@@ -49,6 +49,7 @@ _DEPRECATED_PARAM_NAME_MAPPING = {
 }
 
 _SUPPORTED_OCR_VERSIONS = ["PP-OCRv3", "PP-OCRv4", "PP-OCRv5", "PP-OCRv6"]
+_PPOCRV6_LANGS = ("ch", "chinese_cht", "en", "japan")
 
 
 # Be comptable with PaddleOCR 2.x interfaces
@@ -99,16 +100,15 @@ class PaddleOCR(PaddleXPipelineWrapper):
                 ),
             )
         ):
-            if lang is not None or ocr_version is not None:
-                det_model_name, rec_model_name = self._get_ocr_model_names(
-                    lang, ocr_version
+            det_model_name, rec_model_name = self._get_ocr_model_names(
+                lang, ocr_version
+            )
+            if det_model_name is None or rec_model_name is None:
+                raise ValueError(
+                    f"No models are available for lang={repr(lang)} and ocr_version={repr(ocr_version)}."
                 )
-                if det_model_name is None or rec_model_name is None:
-                    raise ValueError(
-                        f"No models are available for the language {repr(lang)} and OCR version {repr(ocr_version)}."
-                    )
-                text_detection_model_name = det_model_name
-                text_recognition_model_name = rec_model_name
+            text_detection_model_name = det_model_name
+            text_recognition_model_name = rec_model_name
         else:
             if lang is not None or ocr_version is not None:
                 warnings.warn(
@@ -420,11 +420,14 @@ class PaddleOCR(PaddleXPipelineWrapper):
             "ta",
         ]
 
+        if lang is None and ppocr_version is None:
+            return "PP-OCRv6_medium_det", "PP-OCRv6_medium_rec"
+
         if lang is None:
             lang = "ch"
 
         if ppocr_version is None:
-            if lang in ("ch", "chinese_cht", "en", "japan"):
+            if lang in _PPOCRV6_LANGS:
                 ppocr_version = "PP-OCRv6"
             elif (
                 lang
@@ -442,7 +445,7 @@ class PaddleOCR(PaddleXPipelineWrapper):
                 + DEVANAGARI_LANGS
             ):
                 ppocr_version = "PP-OCRv5"
-            elif lang in (SPECIFIC_LANGS):
+            elif lang == "ka":
                 ppocr_version = "PP-OCRv3"
             else:
                 # Unknown language specified
@@ -477,11 +480,13 @@ class PaddleOCR(PaddleXPipelineWrapper):
 
             if rec_lang is not None:
                 rec_model_name = f"{rec_lang}_PP-OCRv5_mobile_rec"
+            if rec_model_name is None:
+                return None, None
             return "PP-OCRv5_server_det", rec_model_name
 
         elif ppocr_version == "PP-OCRv6":
-            if lang in ("ch", "chinese_cht", "en", "japan"):
-                return "PP-OCRv6_small_det", "PP-OCRv6_small_rec"
+            if lang in _PPOCRV6_LANGS:
+                return "PP-OCRv6_medium_det", "PP-OCRv6_medium_rec"
             return None, None
 
         elif ppocr_version == "PP-OCRv4":
@@ -511,6 +516,8 @@ class PaddleOCR(PaddleXPipelineWrapper):
                 rec_model_name = "PP-OCRv3_mobile_rec"
             elif rec_lang is not None:
                 rec_model_name = f"{rec_lang}_PP-OCRv3_mobile_rec"
+            if rec_model_name is None:
+                return None, None
             return "PP-OCRv3_mobile_det", rec_model_name
 
 

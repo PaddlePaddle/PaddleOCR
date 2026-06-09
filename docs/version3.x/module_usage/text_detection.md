@@ -24,6 +24,33 @@ comments: true
 </thead>
 <tbody>
 <tr>
+<td>PP-OCRv6_medium_det</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv6_medium_det_infer.tar">推理模型</a>/<a href="">训练模型</a></td>
+<td>-</td>
+<td>- / -</td>
+<td>- / -</td>
+<td>-</td>
+<td>PP-OCRv6 的中等规模文本检测模型，精度更高</td>
+</tr>
+<tr>
+<td>PP-OCRv6_small_det</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv6_small_det_infer.tar">推理模型</a>/<a href="">训练模型</a></td>
+<td>-</td>
+<td>- / -</td>
+<td>- / -</td>
+<td>-</td>
+<td>PP-OCRv6 的小型文本检测模型</td>
+</tr>
+<tr>
+<td>PP-OCRv6_tiny_det</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv6_tiny_det_infer.tar">推理模型</a>/<a href="">训练模型</a></td>
+<td>-</td>
+<td>- / -</td>
+<td>- / -</td>
+<td>-</td>
+<td>PP-OCRv6 的超轻量文本检测模型，适合对体积和速度要求更高的端侧场景</td>
+</tr>
+<tr>
 <td>PP-OCRv5_server_det</td>
 <td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv5_server_det_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_server_det_pretrained.pdparams">训练模型</a></td>
 <td>83.8</td>
@@ -720,7 +747,7 @@ python3 tools/export_model.py -c configs/det/PP-OCRv5/PP-OCRv5_server_det.yml -o
 （2）启用TensorRT加速：设置`use_tensorrt=True`，需要CUDA 11.8+和TensorRT 8.6+
 （3）使用半精度：设置`precision="fp16"`，可以显著提升速度
 （4）调整批处理大小：根据显存大小设置合适的`batch_size`
-（5）使用移动端模型：在精度要求不高时使用`PP-OCRv5_mobile`系列模型
+（5）使用移动端模型：在精度要求不高时使用`PP-OCRv5_mobile`系列等轻量级模型
 
 #### Q: GPU内存不足（CUDA out of memory）怎么办？
 
@@ -729,7 +756,7 @@ python3 tools/export_model.py -c configs/det/PP-OCRv5/PP-OCRv5_server_det.yml -o
 （2）减小图像尺寸：设置`det_limit_side_len=640`
 （3）启用内存优化：设置`enable_memory_optim=True`
 （4）限制GPU内存使用：设置`gpu_mem=200`
-（5）使用移动端模型：切换到`PP-OCRv5_mobile`系列模型
+（5）使用移动端模型：切换到`PP-OCRv5_mobile`系列等轻量级模型
 
 ### 6.2 检测精度问题
 

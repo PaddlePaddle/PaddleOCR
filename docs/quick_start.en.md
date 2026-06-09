@@ -50,7 +50,7 @@ PaddleOCR also supports installing specific features as needed. For details, ple
 
 ### Command Line Usage
 
-=== "PP-OCRv5"
+=== "PP-OCRv6"
 
     ```bash linenums="1"
     # Use PaddlePaddle for inference
@@ -70,7 +70,7 @@ PaddleOCR also supports installing specific features as needed. For details, ple
         --engine transformers
     ```
 
-=== "PP-OCRv5 Text Detection Module"
+=== "PP-OCRv6 Text Detection Module"
 
     ```bash linenums="1"
     # Use PaddlePaddle for inference
@@ -82,7 +82,7 @@ PaddleOCR also supports installing specific features as needed. For details, ple
     paddleocr text_detection -i ./general_ocr_001.png --engine transformers
     ```
 
-=== "PP-OCRv5 Text Recognition Module"
+=== "PP-OCRv6 Text Recognition Module"
 
     ```bash linenums="1"
     # Use PaddlePaddle for inference
@@ -115,7 +115,7 @@ PaddleOCR also supports installing specific features as needed. For details, ple
 
 ### Python Script Usage
 
-=== "PP-OCRv5"
+=== "PP-OCRv6"
 
     ```python linenums="1"
     # Use PaddlePaddle for inference
@@ -175,7 +175,7 @@ PaddleOCR also supports installing specific features as needed. For details, ple
        [ 99, ..., 480]], dtype=int16)}}
     ```
 
-=== "PP-OCRv5 Text Detection Module"
+=== "PP-OCRv6 Text Detection Module"
 
     ```python linenums="1"
     # Use PaddlePaddle for inference
@@ -213,7 +213,7 @@ PaddleOCR also supports installing specific features as needed. For details, ple
         [ 36, 456]]], dtype=int16), 'dt_scores': [0.8562385635646694, 0.8818259002228059, 0.8406072284043453, 0.8855339313157491]}}
     ```
 
-=== "PP-OCRv5 Text Recognition Module"
+=== "PP-OCRv6 Text Recognition Module"
 
     ```python linenums="1"
     # Use PaddlePaddle for inference
