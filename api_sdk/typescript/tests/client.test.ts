@@ -113,7 +113,7 @@ describe("PaddleOCRClient public contract", () => {
 
     expect(job).toEqual({
       jobId: "job-1",
-      model: Model.PPOCRv5,
+      model: Model.PPOCRv6,
       task: "ocr",
       pageRanges: "1-2",
       batchId: "batch-1",
@@ -126,7 +126,7 @@ describe("PaddleOCRClient public contract", () => {
     });
     expect(JSON.parse(String(calls[0].init.body))).toEqual({
       fileUrl: "https://files.example.test/invoice.pdf",
-      model: Model.PPOCRv5,
+      model: Model.PPOCRv6,
       optionalPayload: { visualize: true },
       pageRanges: "1-2",
       batchId: "batch-1",
