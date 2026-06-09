@@ -24,6 +24,7 @@ PaddleOCR 在 [`deploy/ios_demo`](https://github.com/PaddlePaddle/PaddleOCR/tree
 
 - **`PP-OCRv6_small`**（默认）
 - **`PP-OCRv6_tiny`**
+- **`PP-OCRv5_mobile`**
 
 ## 快速开始
 

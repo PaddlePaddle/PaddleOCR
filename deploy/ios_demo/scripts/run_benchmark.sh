@@ -326,8 +326,9 @@ infer_model_preset() {
   local det_name="$1" rec_name="$2" joined
   joined="$(printf "%s %s" "$det_name" "$rec_name" | tr '[:upper:]' '[:lower:]')"
   case "$joined" in
-    *tiny*) echo "PP-OCRv6_tiny" ;;
     *small*) echo "PP-OCRv6_small" ;;
+    *tiny*) echo "PP-OCRv6_tiny" ;;
+    *mobile*) echo "PP-OCRv5_mobile" ;;
     *) echo "unknown" ;;
   esac
 }

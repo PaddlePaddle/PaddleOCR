@@ -23,7 +23,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 IOS_DEMO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 
 BASE_URL="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0"
-ALLOWED_PRESETS=(PP-OCRv6_small PP-OCRv6_tiny)
+ALLOWED_PRESETS=(PP-OCRv6_small PP-OCRv6_tiny PP-OCRv5_mobile)
 DEFAULT_PRESET="PP-OCRv6_small"
 DEST_DET="${IOS_DEMO_ROOT}/PaddleOCRDemo/Models/det"
 DEST_REC="${IOS_DEMO_ROOT}/PaddleOCRDemo/Models/rec"
@@ -100,8 +100,8 @@ if ! preset_allowed "${preset}"; then
   die "unsupported model preset: ${preset} (allowed: ${ALLOWED_PRESETS[*]})"
 fi
 
-DET_TAR="${preset}_det_onnx.tar"
-REC_TAR="${preset}_rec_onnx.tar"
+DET_TAR="${preset}_det_onnx_infer.tar"
+REC_TAR="${preset}_rec_onnx_infer.tar"
 
 mkdir -p "${WORKDIR}"
 

@@ -24,6 +24,7 @@ App sources, bundled resources, and third-party **source** vendored for this dem
 
 - **`PP-OCRv6_small`** (default)
 - **`PP-OCRv6_tiny`**
+- **`PP-OCRv5_mobile`**
 
 ## Quick start
 
