@@ -21,6 +21,7 @@ from mcp.types import ImageContent, TextContent
 
 from ..inference.types import DocParsingResult, InferenceResult
 from .base import Task
+from .mcp_image import normalize_mcp_image_payload
 
 
 class DocParsingTask(Task):
@@ -82,13 +83,18 @@ class DocParsingTask(Task):
 
             img_src = match.group(1)
             if img_src in images_mapping:
-                content_list.append(
-                    ImageContent(
-                        type="image",
-                        data=images_mapping[img_src],
-                        mimeType="image/jpeg",
+                payload = normalize_mcp_image_payload(images_mapping[img_src])
+                if payload is not None:
+                    image_data, mime_type = payload
+                    content_list.append(
+                        ImageContent(
+                            type="image",
+                            data=image_data,
+                            mimeType=mime_type,
+                        )
                     )
-                )
+                else:
+                    content_list.append(TextContent(type="text", text=match.group(0)))
 
             last_pos = match.end()
 
