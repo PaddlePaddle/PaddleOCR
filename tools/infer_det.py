@@ -81,8 +81,15 @@ def main():
         os.makedirs(os.path.dirname(save_res_path))
 
     model.eval()
+    infer_img = config["Global"]["infer_img"]
+    # Support txt file containing one image path per line
+    if infer_img.endswith(".txt") and os.path.isfile(infer_img):
+        with open(infer_img, "r") as f:
+            img_file_list = [line.strip() for line in f if line.strip()]
+    else:
+        img_file_list = get_image_file_list(infer_img)
     with open(save_res_path, "wb") as fout:
-        for file in get_image_file_list(config["Global"]["infer_img"]):
+        for file in img_file_list:
             logger.info("infer_img: {}".format(file))
             with open(file, "rb") as f:
                 img = f.read()
