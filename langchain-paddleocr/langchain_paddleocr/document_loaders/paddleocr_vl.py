@@ -107,35 +107,36 @@ class PaddleOCRVLLoader(BaseLoader):
 
         from paddleocr import PaddleOCRVLOptions
 
-        options_kwargs: dict[str, Any] = {}
-        for key, val in {
-            "use_doc_orientation_classify": use_doc_orientation_classify,
-            "use_doc_unwarping": use_doc_unwarping,
-            "use_layout_detection": use_layout_detection,
-            "use_chart_recognition": use_chart_recognition,
-            "use_seal_recognition": use_seal_recognition,
-            "layout_threshold": layout_threshold,
-            "layout_nms": layout_nms,
-            "layout_unclip_ratio": layout_unclip_ratio,
-            "layout_merge_bboxes_mode": layout_merge_bboxes_mode,
-            "layout_shape_mode": layout_shape_mode,
-            "prompt_label": prompt_label,
-            "repetition_penalty": repetition_penalty,
-            "temperature": temperature,
-            "top_p": top_p,
-            "min_pixels": min_pixels,
-            "max_pixels": max_pixels,
-            "max_new_tokens": max_new_tokens,
-            "merge_layout_blocks": merge_layout_blocks,
-            "prettify_markdown": prettify_markdown,
-            "show_formula_number": show_formula_number,
-            "restructure_pages": restructure_pages,
-            "merge_tables": merge_tables,
-            "relevel_titles": relevel_titles,
-            "visualize": visualize,
-        }.items():
-            if val is not None:
-                options_kwargs[key] = val
+        options_kwargs: dict[str, Any] = {
+            key: val
+            for key, val in {
+                "use_doc_orientation_classify": use_doc_orientation_classify,
+                "use_doc_unwarping": use_doc_unwarping,
+                "use_layout_detection": use_layout_detection,
+                "use_chart_recognition": use_chart_recognition,
+                "use_seal_recognition": use_seal_recognition,
+                "layout_threshold": layout_threshold,
+                "layout_nms": layout_nms,
+                "layout_unclip_ratio": layout_unclip_ratio,
+                "layout_merge_bboxes_mode": layout_merge_bboxes_mode,
+                "layout_shape_mode": layout_shape_mode,
+                "prompt_label": prompt_label,
+                "repetition_penalty": repetition_penalty,
+                "temperature": temperature,
+                "top_p": top_p,
+                "min_pixels": min_pixels,
+                "max_pixels": max_pixels,
+                "max_new_tokens": max_new_tokens,
+                "merge_layout_blocks": merge_layout_blocks,
+                "prettify_markdown": prettify_markdown,
+                "show_formula_number": show_formula_number,
+                "restructure_pages": restructure_pages,
+                "merge_tables": merge_tables,
+                "relevel_titles": relevel_titles,
+                "visualize": visualize,
+            }.items()
+            if val is not None
+        }
 
         self._options = PaddleOCRVLOptions(**options_kwargs) if options_kwargs else None
 
@@ -168,11 +169,7 @@ class PaddleOCRVLLoader(BaseLoader):
                     options=self._options,
                 )
 
-        text_parts = [
-            page.markdown_text
-            for page in result.pages
-            if page.markdown_text
-        ]
+        text_parts = [page.markdown_text for page in result.pages if page.markdown_text]
         text = _PAGES_DELIMITER.join(text_parts)
 
         raw_response = {
