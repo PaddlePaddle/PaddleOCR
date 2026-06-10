@@ -26,7 +26,7 @@ PaddleOCR 在 [`deploy/ios_demo`](https://github.com/PaddlePaddle/PaddleOCR/tree
 - **`PP-OCRv6_tiny`**
 - **`PP-OCRv5_mobile`**
 
-## 快速开始
+## 快速开始 {#快速开始}
 
 在 **工程根目录**（`deploy/ios_demo`）执行：
 
