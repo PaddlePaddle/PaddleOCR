@@ -68,7 +68,7 @@ paddleocr layout_detection -i https://paddle-model-ecology.bj.bcebos.com/paddlex
     --engine transformers
 ```
 
-如果选择 `onnxruntime` 作为推理引擎，请确保已配置 ONNXRuntime 环境，然后执行如下命令：
+如果选择 `onnxruntime` 作为推理引擎，请确保已配置 ONNX Runtime 环境，然后执行如下命令：
 
 ```bash
 paddleocr layout_detection -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/layout.jpg --model_name PP-DocLayoutV3 \
@@ -108,7 +108,7 @@ for res in output:
     res.save_to_json(save_path="./output/res.json")
 ```
 
-如果选择 `onnxruntime` 作为推理引擎，请确保已配置 ONNXRuntime 环境，然后执行如下代码：
+如果选择 `onnxruntime` 作为推理引擎，请确保已配置 ONNX Runtime 环境，然后执行如下代码：
 
 ```python
 from paddleocr import LayoutDetection

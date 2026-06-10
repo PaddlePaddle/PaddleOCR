@@ -52,7 +52,7 @@ paddleocr chart_parsing -i "{'image': 'https://paddle-model-ecology.bj.bcebos.co
     --engine transformers
 ```
 
-If you choose `onnxruntime` as the inference engine, make sure the ONNXRuntime environment is configured, and then run the following command:
+If you choose `onnxruntime` as the inference engine, make sure the ONNX Runtime environment is configured, and then run the following command:
 
 ```bash
 # Use the onnxruntime engine for inference
@@ -97,7 +97,7 @@ for res in results:
     res.save_to_json(f"./output/res.json")
 ```
 
-If you choose `onnxruntime` as the inference engine, make sure the ONNXRuntime environment is configured, and then run the following code:
+If you choose `onnxruntime` as the inference engine, make sure the ONNX Runtime environment is configured, and then run the following code:
 
 ```python
 from paddleocr import ChartParsing

@@ -106,7 +106,7 @@ paddleocr doc_img_orientation_classification -i https://paddle-model-ecology.bj.
     --engine transformers
 ```
 
-如果选择 `onnxruntime` 作为推理引擎，请确保已配置 ONNXRuntime 环境，然后执行如下命令：
+如果选择 `onnxruntime` 作为推理引擎，请确保已配置 ONNX Runtime 环境，然后执行如下命令：
 
 ```bash
 # 使用 onnxruntime 引擎进行推理

@@ -21,13 +21,13 @@ PaddleOCR 3.5 引入了统一的推理引擎配置方式：使用 `engine` 选�
 | - | - | - |
 | 飞桨框架 | `paddle`、`paddle_static`、`paddle_dynamic` | 基于飞桨框架运行。 |
 | Transformers | `transformers` | 基于 Hugging Face Transformers 运行。 |
-| ONNXRuntime | `onnxruntime` | 基于 ONNXRuntime 运行。 |
+| ONNX Runtime | `onnxruntime` | 基于 ONNX Runtime 运行。 |
 
 - `paddle`：飞桨框架统一入口。根据模型类型和模型目录中的文件选择 `paddle_static` 或 `paddle_dynamic`，在二者都可用的情况下偏好 `paddle_static`。
 - `paddle_static`：飞桨静态图推理，适合对推理性能有一定要求或者需要进行精细化推理性能调优的场景。
 - `paddle_dynamic`：飞桨动态图推理，相比静态图更加灵活、易于调试。
 - `transformers`：Hugging Face Transformers 推理，便于与 Hugging Face 生态集成。
-- `onnxruntime`：ONNXRuntime 推理，用于加载并执行 ONNX 格式模型。
+- `onnxruntime`：ONNX Runtime 推理，用于加载并执行 ONNX 格式模型。
 
 ## 3. 各推理引擎安装方式
 
@@ -47,9 +47,9 @@ python -m pip install "transformers>=5.10.0"
 
 通常，您还需要安装底层推理框架，详情可参考 [Transformers 官方文档](https://huggingface.co/docs/transformers/installation)。
 
-### 3.3 ONNXRuntime
+### 3.3 ONNX Runtime
 
-当您使用 ONNXRuntime 作为推理引擎时，需要安装 ONNXRuntime。示例命令如下：
+当您使用 ONNX Runtime 作为推理引擎时，需要安装 ONNX Runtime。示例命令如下：
 
 ```bash
 python -m pip install onnxruntime-gpu
@@ -68,7 +68,7 @@ python -m pip install onnxruntime-gpu
 | `paddle_static` | 静态图推理 | 使用飞桨静态图推理。 |
 | `paddle_dynamic` | 飞桨动态图推理 | 使用飞桨动态图推理。 |
 | `transformers` | Transformers 推理 | 使用 Hugging Face Transformers 推理。 |
-| `onnxruntime` | ONNXRuntime 推理 | 使用 ONNXRuntime 推理。 |
+| `onnxruntime` | ONNX Runtime 推理 | 使用 ONNX Runtime 推理。 |
 
 ### 4.2 `engine_config`
 

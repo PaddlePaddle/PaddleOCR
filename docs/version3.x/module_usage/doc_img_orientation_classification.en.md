@@ -104,7 +104,7 @@ paddleocr doc_img_orientation_classification -i https://paddle-model-ecology.bj.
     --engine transformers
 ```
 
-If you choose `onnxruntime` as the inference engine, make sure the ONNXRuntime environment is configured, and then run the following command:
+If you choose `onnxruntime` as the inference engine, make sure the ONNX Runtime environment is configured, and then run the following command:
 
 ```bash
 # Use the onnxruntime engine for inference
@@ -147,7 +147,7 @@ for res in output:
     res.save_to_json("./output/res.json")
 ```
 
-If you choose `onnxruntime` as the inference engine, make sure the ONNXRuntime environment is configured, and then run the following code:
+If you choose `onnxruntime` as the inference engine, make sure the ONNX Runtime environment is configured, and then run the following code:
 
 ```python
 from paddleocr import DocImgOrientationClassification

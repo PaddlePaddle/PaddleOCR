@@ -21,13 +21,13 @@ In PaddleOCR, an inference engine refers to the underlying runtime used to execu
 | - | - | - |
 | PaddlePaddle framework | `paddle`, `paddle_static`, `paddle_dynamic` | Runs on the PaddlePaddle framework. |
 | Transformers | `transformers` | Runs on Hugging Face Transformers. |
-| ONNXRuntime | `onnxruntime` | Runs on ONNXRuntime. |
+| ONNX Runtime | `onnxruntime` | Runs on ONNX Runtime. |
 
 - `paddle`: The unified entry point for the PaddlePaddle framework. It selects `paddle_static` or `paddle_dynamic` according to the model type and files in the model directory. If both are available, `paddle_static` is preferred.
 - `paddle_static`: PaddlePaddle static-graph inference, suitable for scenarios that require better inference performance or more fine-grained performance tuning.
 - `paddle_dynamic`: PaddlePaddle dynamic-graph inference, which is more flexible and easier to debug compared to static graph.
 - `transformers`: Hugging Face Transformers inference, making it convenient to integrate with the Hugging Face ecosystem.
-- `onnxruntime`: ONNXRuntime inference, used to load and execute ONNX-format models.
+- `onnxruntime`: ONNX Runtime inference, used to load and execute ONNX-format models.
 
 ## 3. Installation by Inference Engine
 
@@ -47,9 +47,9 @@ python -m pip install "transformers>=5.10.0"
 
 In many cases, you also need to install the underlying inference framework. For details, see the [Transformers official documentation](https://huggingface.co/docs/transformers/installation).
 
-### 3.3 ONNXRuntime
+### 3.3 ONNX Runtime
 
-When using ONNXRuntime as the inference engine, install the ONNXRuntime package. Example command:
+When using ONNX Runtime as the inference engine, install the ONNX Runtime package. Example command:
 
 ```bash
 python -m pip install onnxruntime-gpu
@@ -68,7 +68,7 @@ python -m pip install onnxruntime-gpu
 | `paddle_static` | Static-graph inference | Uses Paddle static-graph inference. |
 | `paddle_dynamic` | Dynamic-graph inference | Uses Paddle dynamic-graph inference. |
 | `transformers` | Transformers inference | Uses Hugging Face Transformers inference. |
-| `onnxruntime` | ONNXRuntime inference | Uses ONNXRuntime inference. |
+| `onnxruntime` | ONNX Runtime inference | Uses ONNX Runtime inference. |
 
 ### 4.2 `engine_config`
 
