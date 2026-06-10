@@ -321,7 +321,7 @@ for res in results:
     <li><strong>软件环境：</strong>
         <ul>
             <li>Ubuntu 22.04 / CUDA 12.6 / cuDNN 9.5</li>
-            <li>paddlepaddle-gpu 3.2.1 / paddleocr 3.5 / transformers 5.4.0 / torch 2.10</li>
+            <li>paddlepaddle-gpu 3.2.1 / paddleocr 3.5 / transformers 5.4.0 / torch 2.10 / onnxruntime-gpu 1.23.2</li>
         </ul>
     </li>
 </ul>

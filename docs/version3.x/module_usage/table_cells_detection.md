@@ -441,7 +441,7 @@ for res in output:
     </thead>
     <tbody>
         <tr>
-            <td rowspan="3">RT-DETR-L_wired_table_cell_det</td>
+            <td rowspan="5">RT-DETR-L_wired_table_cell_det</td>
             <td>paddle_static</td>
             <td>3.59</td>
             <td>23.11</td>
@@ -463,7 +463,21 @@ for res in output:
             <td>42.10</td>
         </tr>
         <tr>
-            <td rowspan="3">RT-DETR-L_wireless_table_cell_det</td>
+            <td>onnxruntime</td>
+            <td>2.70</td>
+            <td>9.10</td>
+            <td>0.12</td>
+            <td>12.07</td>
+        </tr>
+        <tr>
+            <td>onnxruntime-cpu</td>
+            <td>3.71</td>
+            <td>99.56</td>
+            <td>0.20</td>
+            <td>103.75</td>
+        </tr>
+        <tr>
+            <td rowspan="5">RT-DETR-L_wireless_table_cell_det</td>
             <td>paddle_static</td>
             <td>3.77</td>
             <td>23.44</td>
@@ -484,6 +498,20 @@ for res in output:
             <td>0.71</td>
             <td>41.91</td>
         </tr>
+        <tr>
+            <td>onnxruntime</td>
+            <td>2.77</td>
+            <td>9.11</td>
+            <td>0.12</td>
+            <td>12.14</td>
+        </tr>
+        <tr>
+            <td>onnxruntime-cpu</td>
+            <td>3.75</td>
+            <td>100.45</td>
+            <td>0.20</td>
+            <td>104.70</td>
+        </tr>
     </tbody>
 </table>
 
@@ -499,7 +527,7 @@ for res in output:
     <li><strong>软件环境：</strong>
         <ul>
             <li>Ubuntu 22.04 / CUDA 12.6 / cuDNN 9.5</li>
-            <li>paddlepaddle-gpu 3.2.1 / paddleocr 3.5 / transformers 5.4.0 / torch 2.10</li>
+            <li>paddlepaddle-gpu 3.2.1 / paddleocr 3.5 / transformers 5.4.0 / torch 2.10 / onnxruntime-gpu 1.23.2</li>
         </ul>
     </li>
 </ul>

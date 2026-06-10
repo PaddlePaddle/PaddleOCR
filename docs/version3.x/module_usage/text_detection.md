@@ -642,7 +642,7 @@ python3 tools/export_model.py -c configs/det/PP-OCRv5/PP-OCRv5_server_det.yml -o
     </thead>
     <tbody>
         <tr>
-            <td rowspan="3">PP-OCRv5_mobile_det</td>
+            <td rowspan="5">PP-OCRv5_mobile_det</td>
             <td>paddle_static</td>
             <td>11.43</td>
             <td>13.80</td>
@@ -664,7 +664,21 @@ python3 tools/export_model.py -c configs/det/PP-OCRv5/PP-OCRv5_server_det.yml -o
             <td>37.54</td>
         </tr>
         <tr>
-            <td rowspan="3">PP-OCRv5_server_det</td>
+            <td>onnxruntime</td>
+            <td>9.98</td>
+            <td>5.70</td>
+            <td>2.04</td>
+            <td>17.90</td>
+        </tr>
+        <tr>
+            <td>onnxruntime-cpu</td>
+            <td>11.61</td>
+            <td>54.48</td>
+            <td>2.57</td>
+            <td>68.90</td>
+        </tr>
+        <tr>
+            <td rowspan="5">PP-OCRv5_server_det</td>
             <td>paddle_static</td>
             <td>13.24</td>
             <td>26.91</td>
@@ -685,6 +699,128 @@ python3 tools/export_model.py -c configs/det/PP-OCRv5/PP-OCRv5_server_det.yml -o
             <td>7.44</td>
             <td>36.76</td>
         </tr>
+        <tr>
+            <td>onnxruntime</td>
+            <td>10.01</td>
+            <td>13.76</td>
+            <td>1.92</td>
+            <td>25.86</td>
+        </tr>
+        <tr>
+            <td>onnxruntime-cpu</td>
+            <td>11.69</td>
+            <td>303.31</td>
+            <td>2.70</td>
+            <td>317.97</td>
+        </tr>
+        <tr>
+            <td rowspan="5">PP-OCRv6_medium_det</td>
+            <td>paddle_static</td>
+            <td>13.89</td>
+            <td>16.02</td>
+            <td>2.49</td>
+            <td>33.14</td>
+        </tr>
+        <tr>
+            <td>paddle_dynamic</td>
+            <td>11.42</td>
+            <td>26.23</td>
+            <td>2.30</td>
+            <td>40.10</td>
+        </tr>
+        <tr>
+            <td>transformers</td>
+            <td>11.40</td>
+            <td>8.57</td>
+            <td>8.35</td>
+            <td>29.57</td>
+        </tr>
+        <tr>
+            <td>onnxruntime</td>
+            <td>10.80</td>
+            <td>13.06</td>
+            <td>2.19</td>
+            <td>26.18</td>
+        </tr>
+        <tr>
+            <td>onnxruntime-cpu</td>
+            <td>17.59</td>
+            <td>1013.68</td>
+            <td>5.77</td>
+            <td>1037.32</td>
+        </tr>
+        <tr>
+            <td rowspan="5">PP-OCRv6_small_det</td>
+            <td>paddle_static</td>
+            <td>10.91</td>
+            <td>10.97</td>
+            <td>2.41</td>
+            <td>24.45</td>
+        </tr>
+        <tr>
+            <td>paddle_dynamic</td>
+            <td>11.56</td>
+            <td>22.17</td>
+            <td>2.66</td>
+            <td>36.55</td>
+        </tr>
+        <tr>
+            <td>transformers</td>
+            <td>11.70</td>
+            <td>7.34</td>
+            <td>3.87</td>
+            <td>23.89</td>
+        </tr>
+        <tr>
+            <td>onnxruntime</td>
+            <td>11.32</td>
+            <td>7.46</td>
+            <td>2.54</td>
+            <td>21.49</td>
+        </tr>
+        <tr>
+            <td>onnxruntime-cpu</td>
+            <td>16.96</td>
+            <td>183.40</td>
+            <td>5.04</td>
+            <td>205.65</td>
+        </tr>
+        <tr>
+            <td rowspan="5">PP-OCRv6_tiny_det</td>
+            <td>paddle_static</td>
+            <td>11.14</td>
+            <td>10.71</td>
+            <td>2.84</td>
+            <td>24.85</td>
+        </tr>
+        <tr>
+            <td>paddle_dynamic</td>
+            <td>11.52</td>
+            <td>21.70</td>
+            <td>2.94</td>
+            <td>36.31</td>
+        </tr>
+        <tr>
+            <td>transformers</td>
+            <td>10.90</td>
+            <td>6.99</td>
+            <td>4.13</td>
+            <td>23.00</td>
+        </tr>
+        <tr>
+            <td>onnxruntime</td>
+            <td>11.19</td>
+            <td>6.35</td>
+            <td>2.79</td>
+            <td>20.49</td>
+        </tr>
+        <tr>
+            <td>onnxruntime-cpu</td>
+            <td>17.09</td>
+            <td>83.42</td>
+            <td>5.04</td>
+            <td>105.82</td>
+        </tr>
     </tbody>
 </table>
 
@@ -700,7 +836,7 @@ python3 tools/export_model.py -c configs/det/PP-OCRv5/PP-OCRv5_server_det.yml -o
     <li><strong>软件环境：</strong>
         <ul>
             <li>Ubuntu 22.04 / CUDA 12.6 / cuDNN 9.5</li>
-            <li>paddlepaddle-gpu 3.2.1 / paddleocr 3.5 / transformers 5.4.0 / torch 2.10</li>
+            <li>paddlepaddle-gpu 3.2.1 / paddleocr 3.5 / transformers 5.4.0 / torch 2.10 / onnxruntime-gpu 1.23.2</li>
         </ul>
     </li>
 </ul>

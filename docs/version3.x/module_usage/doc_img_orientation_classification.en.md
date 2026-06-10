@@ -407,7 +407,7 @@ For detailed descriptions, values, compatibility rules, and examples of the infe
     </thead>
     <tbody>
         <tr>
-            <td rowspan="3">PP-LCNet_x1_0_doc_ori</td>
+            <td rowspan="5">PP-LCNet_x1_0_doc_ori</td>
             <td>paddle_static</td>
             <td>2.21</td>
             <td>3.36</td>
@@ -428,6 +428,20 @@ For detailed descriptions, values, compatibility rules, and examples of the infe
             <td>0.14</td>
             <td>8.36</td>
         </tr>
+        <tr>
+            <td>onnxruntime</td>
+            <td>2.02</td>
+            <td>0.87</td>
+            <td>0.05</td>
+            <td>3.03</td>
+        </tr>
+        <tr>
+            <td>onnxruntime-cpu</td>
+            <td>2.48</td>
+            <td>6.40</td>
+            <td>0.06</td>
+            <td>9.05</td>
+        </tr>
     </tbody>
 </table>
 
@@ -443,7 +457,7 @@ For detailed descriptions, values, compatibility rules, and examples of the infe
     <li><strong>Software Environment:</strong>
         <ul>
             <li>Ubuntu 22.04 / CUDA 12.6 / cuDNN 9.5</li>
-            <li>paddlepaddle-gpu 3.2.1 / paddleocr 3.5 / transformers 5.4.0 / torch 2.10</li>
+            <li>paddlepaddle-gpu 3.2.1 / paddleocr 3.5 / transformers 5.4.0 / torch 2.10 / onnxruntime-gpu 1.23.2</li>
         </ul>
     </li>
 </ul>

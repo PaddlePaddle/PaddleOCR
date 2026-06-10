@@ -513,7 +513,7 @@ For detailed descriptions, values, compatibility rules, and examples of the infe
     </thead>
     <tbody>
         <tr>
-            <td rowspan="3">PP-DocLayoutV3</td>
+            <td rowspan="5">PP-DocLayoutV3</td>
             <td>paddle_static</td>
             <td>10.95</td>
             <td>47.99</td>
@@ -535,7 +535,21 @@ For detailed descriptions, values, compatibility rules, and examples of the infe
             <td>78.97</td>
         </tr>
         <tr>
-            <td rowspan="3">PP-DocLayoutV2</td>
+            <td>onnxruntime</td>
+            <td>9.26</td>
+            <td>39.11</td>
+            <td>10.23</td>
+            <td>58.80</td>
+        </tr>
+        <tr>
+            <td>onnxruntime-cpu</td>
+            <td>10.20</td>
+            <td>285.91</td>
+            <td>13.53</td>
+            <td>309.90</td>
+        </tr>
+        <tr>
+            <td rowspan="5">PP-DocLayoutV2</td>
             <td>paddle_static</td>
             <td>10.48</td>
             <td>30.94</td>
@@ -556,6 +570,20 @@ For detailed descriptions, values, compatibility rules, and examples of the infe
             <td>2.43</td>
             <td>69.30</td>
         </tr>
+        <tr>
+            <td>onnxruntime</td>
+            <td>9.25</td>
+            <td>15.13</td>
+            <td>1.25</td>
+            <td>25.82</td>
+        </tr>
+        <tr>
+            <td>onnxruntime-cpu</td>
+            <td>10.54</td>
+            <td>178.13</td>
+            <td>1.89</td>
+            <td>190.86</td>
+        </tr>
     </tbody>
 </table>
 
@@ -571,7 +599,7 @@ For detailed descriptions, values, compatibility rules, and examples of the infe
     <li><strong>Software Environment:</strong>
         <ul>
             <li>Ubuntu 22.04 / CUDA 12.6 / cuDNN 9.5</li>
-            <li>paddlepaddle-gpu 3.2.1 / paddleocr 3.5 / transformers 5.4.0 / torch 2.10</li>
+            <li>paddlepaddle-gpu 3.2.1 / paddleocr 3.5 / transformers 5.4.0 / torch 2.10 / onnxruntime-gpu 1.23.2</li>
         </ul>
     </li>
 </ul>

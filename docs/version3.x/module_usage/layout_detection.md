@@ -737,7 +737,7 @@ for res in output:
     </thead>
     <tbody>
         <tr>
-            <td rowspan="3">PP-DocLayout_plus-L</td>
+            <td rowspan="5">PP-DocLayout_plus-L</td>
             <td>paddle_static</td>
             <td>10.92</td>
             <td>26.11</td>
@@ -759,7 +759,21 @@ for res in output:
             <td>52.24</td>
         </tr>
         <tr>
-            <td rowspan="3">PP-DocBlockLayout</td>
+            <td>onnxruntime</td>
+            <td>9.14</td>
+            <td>12.35</td>
+            <td>0.14</td>
+            <td>21.81</td>
+        </tr>
+        <tr>
+            <td>onnxruntime-cpu</td>
+            <td>10.82</td>
+            <td>135.60</td>
+            <td>0.24</td>
+            <td>146.99</td>
+        </tr>
+        <tr>
+            <td rowspan="5">PP-DocBlockLayout</td>
             <td>paddle_static</td>
             <td>9.51</td>
             <td>27.59</td>
@@ -780,6 +794,20 @@ for res in output:
             <td>0.75</td>
             <td>50.96</td>
         </tr>
+        <tr>
+            <td>onnxruntime</td>
+            <td>7.53</td>
+            <td>9.22</td>
+            <td>0.06</td>
+            <td>16.97</td>
+        </tr>
+        <tr>
+            <td>onnxruntime-cpu</td>
+            <td>8.77</td>
+            <td>101.29</td>
+            <td>0.10</td>
+            <td>110.46</td>
+        </tr>
     </tbody>
 </table>
 
@@ -795,7 +823,7 @@ for res in output:
     <li><strong>软件环境：</strong>
         <ul>
             <li>Ubuntu 22.04 / CUDA 12.6 / cuDNN 9.5</li>
-            <li>paddlepaddle-gpu 3.2.1 / paddleocr 3.5 / transformers 5.4.0 / torch 2.10</li>
+            <li>paddlepaddle-gpu 3.2.1 / paddleocr 3.5 / transformers 5.4.0 / torch 2.10 / onnxruntime-gpu 1.23.2</li>
         </ul>
     </li>
 </ul>

@@ -404,7 +404,7 @@ For detailed descriptions, values, compatibility rules, and examples of the infe
     </thead>
     <tbody>
         <tr>
-            <td rowspan="3">UVDoc</td>
+            <td rowspan="5">UVDoc</td>
             <td>paddle_static</td>
             <td>14.96</td>
             <td>18.60</td>
@@ -425,6 +425,20 @@ For detailed descriptions, values, compatibility rules, and examples of the infe
             <td>0.91</td>
             <td>33.07</td>
         </tr>
+        <tr>
+            <td>onnxruntime</td>
+            <td>10.60</td>
+            <td>8.44</td>
+            <td>1.75</td>
+            <td>21.30</td>
+        </tr>
+        <tr>
+            <td>onnxruntime-cpu</td>
+            <td>9.50</td>
+            <td>49.47</td>
+            <td>2.16</td>
+            <td>61.36</td>
+        </tr>
     </tbody>
 </table>
 
@@ -440,7 +454,7 @@ For detailed descriptions, values, compatibility rules, and examples of the infe
     <li><strong>Software Environment:</strong>
         <ul>
             <li>Ubuntu 22.04 / CUDA 12.6 / cuDNN 9.5</li>
-            <li>paddlepaddle-gpu 3.2.1 / paddleocr 3.5 / transformers 5.4.0 / torch 2.10</li>
+            <li>paddlepaddle-gpu 3.2.1 / paddleocr 3.5 / transformers 5.4.0 / torch 2.10 / onnxruntime-gpu 1.23.2</li>
         </ul>
     </li>
 </ul>

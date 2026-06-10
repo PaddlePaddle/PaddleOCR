@@ -387,7 +387,7 @@ for res in output:
     </thead>
     <tbody>
         <tr>
-            <td rowspan="3">PP-LCNet_x1_0_table_cls</td>
+            <td rowspan="5">PP-LCNet_x1_0_table_cls</td>
             <td>paddle_static</td>
             <td>3.56</td>
             <td>3.38</td>
@@ -408,6 +408,20 @@ for res in output:
             <td>0.15</td>
             <td>14.05</td>
         </tr>
+        <tr>
+            <td>onnxruntime</td>
+            <td>3.23</td>
+            <td>0.88</td>
+            <td>0.05</td>
+            <td>4.25</td>
+        </tr>
+        <tr>
+            <td>onnxruntime-cpu</td>
+            <td>3.98</td>
+            <td>6.47</td>
+            <td>0.06</td>
+            <td>10.63</td>
+        </tr>
     </tbody>
 </table>
 
@@ -423,7 +437,7 @@ for res in output:
     <li><strong>软件环境：</strong>
         <ul>
             <li>Ubuntu 22.04 / CUDA 12.6 / cuDNN 9.5</li>
-            <li>paddlepaddle-gpu 3.2.1 / paddleocr 3.5 / transformers 5.4.0 / torch 2.10</li>
+            <li>paddlepaddle-gpu 3.2.1 / paddleocr 3.5 / transformers 5.4.0 / torch 2.10 / onnxruntime-gpu 1.23.2</li>
         </ul>
     </li>
 </ul>

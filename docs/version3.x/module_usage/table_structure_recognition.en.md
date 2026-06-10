@@ -476,7 +476,37 @@ For detailed descriptions, values, compatibility rules, and examples of the infe
     </thead>
     <tbody>
         <tr>
-            <td rowspan="3">SLANeXt_wired</td>
+            <td rowspan="2">SLANet</td>
+            <td>onnxruntime</td>
+            <td>1.42</td>
+            <td>22.02</td>
+            <td>0.22</td>
+            <td>23.81</td>
+        </tr>
+        <tr>
+            <td>onnxruntime-cpu</td>
+            <td>1.63</td>
+            <td>32.88</td>
+            <td>0.33</td>
+            <td>35.07</td>
+        </tr>
+        <tr>
+            <td rowspan="2">SLANet_plus</td>
+            <td>onnxruntime</td>
+            <td>1.40</td>
+            <td>21.64</td>
+            <td>0.22</td>
+            <td>23.42</td>
+        </tr>
+        <tr>
+            <td>onnxruntime-cpu</td>
+            <td>1.66</td>
+            <td>33.08</td>
+            <td>0.34</td>
+            <td>35.30</td>
+        </tr>
+        <tr>
+            <td rowspan="5">SLANeXt_wired</td>
             <td>paddle_static</td>
             <td>1.50</td>
             <td>30.91</td>
@@ -498,7 +528,21 @@ For detailed descriptions, values, compatibility rules, and examples of the infe
             <td>51.12</td>
         </tr>
         <tr>
-            <td rowspan="3">SLANeXt_wireless</td>
+            <td>onnxruntime</td>
+            <td>1.60</td>
+            <td>30.96</td>
+            <td>0.25</td>
+            <td>32.99</td>
+        </tr>
+        <tr>
+            <td>onnxruntime-cpu</td>
+            <td>1.84</td>
+            <td>232.42</td>
+            <td>0.41</td>
+            <td>234.94</td>
+        </tr>
+        <tr>
+            <td rowspan="5">SLANeXt_wireless</td>
             <td>paddle_static</td>
             <td>1.67</td>
             <td>30.49</td>
@@ -519,6 +563,20 @@ For detailed descriptions, values, compatibility rules, and examples of the infe
             <td>0.75</td>
             <td>51.76</td>
         </tr>
+        <tr>
+            <td>onnxruntime</td>
+            <td>1.62</td>
+            <td>31.01</td>
+            <td>0.26</td>
+            <td>33.06</td>
+        </tr>
+        <tr>
+            <td>onnxruntime-cpu</td>
+            <td>1.79</td>
+            <td>232.64</td>
+            <td>0.41</td>
+            <td>235.08</td>
+        </tr>
     </tbody>
 </table>
 
@@ -534,7 +592,7 @@ For detailed descriptions, values, compatibility rules, and examples of the infe
     <li><strong>Software Environment:</strong>
         <ul>
             <li>Ubuntu 22.04 / CUDA 12.6 / cuDNN 9.5</li>
-            <li>paddlepaddle-gpu 3.2.1 / paddleocr 3.5 / transformers 5.4.0 / torch 2.10</li>
+            <li>paddlepaddle-gpu 3.2.1 / paddleocr 3.5 / transformers 5.4.0 / torch 2.10 / onnxruntime-gpu 1.23.2</li>
         </ul>
     </li>
 </ul>

@@ -454,7 +454,7 @@ For detailed descriptions, values, compatibility rules, and examples of the infe
     </thead>
     <tbody>
         <tr>
-            <td rowspan="3">PP-LCNet_x0_25_textline_ori</td>
+            <td rowspan="5">PP-LCNet_x0_25_textline_ori</td>
             <td>paddle_static</td>
             <td>0.30</td>
             <td>2.89</td>
@@ -476,7 +476,21 @@ For detailed descriptions, values, compatibility rules, and examples of the infe
             <td>5.36</td>
         </tr>
         <tr>
-            <td rowspan="3">PP-LCNet_x1_0_textline_ori</td>
+            <td>onnxruntime</td>
+            <td>0.27</td>
+            <td>0.76</td>
+            <td>0.05</td>
+            <td>1.16</td>
+        </tr>
+        <tr>
+            <td>onnxruntime-cpu</td>
+            <td>0.35</td>
+            <td>4.02</td>
+            <td>0.05</td>
+            <td>4.52</td>
+        </tr>
+        <tr>
+            <td rowspan="5">PP-LCNet_x1_0_textline_ori</td>
             <td>paddle_static</td>
             <td>0.33</td>
             <td>3.20</td>
@@ -497,6 +511,20 @@ For detailed descriptions, values, compatibility rules, and examples of the infe
             <td>0.14</td>
             <td>5.04</td>
         </tr>
+        <tr>
+            <td>onnxruntime</td>
+            <td>0.27</td>
+            <td>0.77</td>
+            <td>0.05</td>
+            <td>1.16</td>
+        </tr>
+        <tr>
+            <td>onnxruntime-cpu</td>
+            <td>0.36</td>
+            <td>6.57</td>
+            <td>0.06</td>
+            <td>7.08</td>
+        </tr>
     </tbody>
 </table>
 
@@ -512,7 +540,7 @@ For detailed descriptions, values, compatibility rules, and examples of the infe
     <li><strong>Software Environment:</strong>
         <ul>
             <li>Ubuntu 22.04 / CUDA 12.6 / cuDNN 9.5</li>
-            <li>paddlepaddle-gpu 3.2.1 / paddleocr 3.5 / transformers 5.4.0 / torch 2.10</li>
+            <li>paddlepaddle-gpu 3.2.1 / paddleocr 3.5 / transformers 5.4.0 / torch 2.10 / onnxruntime-gpu 1.23.2</li>
         </ul>
     </li>
 </ul>

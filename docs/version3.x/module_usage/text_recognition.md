@@ -929,7 +929,7 @@ Global.save_inference_dir="./PP-OCRv5_server_rec_infer/"
     </thead>
     <tbody>
         <tr>
-            <td rowspan="3">PP-OCRv5_mobile_rec</td>
+            <td rowspan="5">PP-OCRv5_mobile_rec</td>
             <td>paddle_static</td>
             <td>1.94</td>
             <td>6.69</td>
@@ -951,7 +951,21 @@ Global.save_inference_dir="./PP-OCRv5_server_rec_infer/"
             <td>21.68</td>
         </tr>
         <tr>
-            <td rowspan="3">PP-OCRv5_server_rec</td>
+            <td>onnxruntime</td>
+            <td>1.82</td>
+            <td>2.05</td>
+            <td>0.91</td>
+            <td>4.91</td>
+        </tr>
+        <tr>
+            <td>onnxruntime-cpu</td>
+            <td>2.21</td>
+            <td>10.92</td>
+            <td>0.98</td>
+            <td>14.26</td>
+        </tr>
+        <tr>
+            <td rowspan="5">PP-OCRv5_server_rec</td>
             <td>paddle_static</td>
             <td>1.98</td>
             <td>11.37</td>
@@ -972,6 +986,128 @@ Global.save_inference_dir="./PP-OCRv5_server_rec_infer/"
             <td>0.51</td>
             <td>16.36</td>
         </tr>
+        <tr>
+            <td>onnxruntime</td>
+            <td>1.80</td>
+            <td>3.15</td>
+            <td>0.90</td>
+            <td>5.98</td>
+        </tr>
+        <tr>
+            <td>onnxruntime-cpu</td>
+            <td>2.43</td>
+            <td>141.69</td>
+            <td>1.14</td>
+            <td>145.56</td>
+        </tr>
+        <tr>
+            <td rowspan="5">PP-OCRv6_medium_rec</td>
+            <td>paddle_static</td>
+            <td>1.74</td>
+            <td>5.38</td>
+            <td>0.84</td>
+            <td>8.08</td>
+        </tr>
+        <tr>
+            <td>paddle_dynamic</td>
+            <td>1.76</td>
+            <td>13.38</td>
+            <td>0.85</td>
+            <td>16.10</td>
+        </tr>
+        <tr>
+            <td>transformers</td>
+            <td>2.58</td>
+            <td>7.04</td>
+            <td>0.41</td>
+            <td>10.19</td>
+        </tr>
+        <tr>
+            <td>onnxruntime</td>
+            <td>1.74</td>
+            <td>2.28</td>
+            <td>0.84</td>
+            <td>4.97</td>
+        </tr>
+        <tr>
+            <td>onnxruntime-cpu</td>
+            <td>2.41</td>
+            <td>59.69</td>
+            <td>1.13</td>
+            <td>63.51</td>
+        </tr>
+        <tr>
+            <td rowspan="5">PP-OCRv6_small_rec</td>
+            <td>paddle_static</td>
+            <td>1.74</td>
+            <td>4.73</td>
+            <td>0.82</td>
+            <td>7.41</td>
+        </tr>
+        <tr>
+            <td>paddle_dynamic</td>
+            <td>1.76</td>
+            <td>12.43</td>
+            <td>0.87</td>
+            <td>15.18</td>
+        </tr>
+        <tr>
+            <td>transformers</td>
+            <td>2.55</td>
+            <td>6.70</td>
+            <td>0.41</td>
+            <td>9.82</td>
+        </tr>
+        <tr>
+            <td>onnxruntime</td>
+            <td>1.73</td>
+            <td>1.79</td>
+            <td>0.83</td>
+            <td>4.46</td>
+        </tr>
+        <tr>
+            <td>onnxruntime-cpu</td>
+            <td>2.20</td>
+            <td>9.39</td>
+            <td>1.01</td>
+            <td>12.75</td>
+        </tr>
+        <tr>
+            <td rowspan="5">PP-OCRv6_tiny_rec</td>
+            <td>paddle_static</td>
+            <td>1.76</td>
+            <td>2.77</td>
+            <td>0.40</td>
+            <td>5.04</td>
+        </tr>
+        <tr>
+            <td>paddle_dynamic</td>
+            <td>1.75</td>
+            <td>6.96</td>
+            <td>0.36</td>
+            <td>9.19</td>
+        </tr>
+        <tr>
+            <td>transformers</td>
+            <td>2.45</td>
+            <td>3.12</td>
+            <td>0.40</td>
+            <td>6.12</td>
+        </tr>
+        <tr>
+            <td>onnxruntime</td>
+            <td>1.73</td>
+            <td>0.92</td>
+            <td>0.36</td>
+            <td>3.12</td>
+        </tr>
+        <tr>
+            <td>onnxruntime-cpu</td>
+            <td>2.17</td>
+            <td>4.63</td>
+            <td>0.47</td>
+            <td>7.40</td>
+        </tr>
     </tbody>
 </table>
 
@@ -987,7 +1123,7 @@ Global.save_inference_dir="./PP-OCRv5_server_rec_infer/"
     <li><strong>软件环境：</strong>
         <ul>
             <li>Ubuntu 22.04 / CUDA 12.6 / cuDNN 9.5</li>
-            <li>paddlepaddle-gpu 3.2.1 / paddleocr 3.5 / transformers 5.4.0 / torch 2.10</li>
+            <li>paddlepaddle-gpu 3.2.1 / paddleocr 3.5 / transformers 5.4.0 / torch 2.10 / onnxruntime-gpu 1.23.2</li>
         </ul>
     </li>
 </ul>
