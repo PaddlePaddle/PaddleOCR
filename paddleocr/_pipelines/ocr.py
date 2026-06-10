@@ -56,7 +56,7 @@ _DEPRECATED_PARAM_NAME_MAPPING = {
 }
 
 _SUPPORTED_OCR_VERSIONS = ["PP-OCRv3", "PP-OCRv4", "PP-OCRv5", "PP-OCRv6"]
-_PPOCRV6_UNSUPPORTED_LATIN_LANGS = frozenset({"az", "ku", "pi"})
+_PPOCRV6_UNSUPPORTED_LATIN_LANGS = frozenset({"pi"})
 _PPOCRV6_LANGS = frozenset({"ch", "chinese_cht", "en", "japan"}) | (
     LATIN_LANGS - _PPOCRV6_UNSUPPORTED_LATIN_LANGS
 )
@@ -342,8 +342,6 @@ class PaddleOCR(PaddleXPipelineWrapper):
                 "el",
                 "te",
                 "ta",
-                "az",
-                "ku",
                 "pi",
             } | ESLAV_LANGS | ARABIC_LANGS | CYRILLIC_LANGS | DEVANAGARI_LANGS | (
                 LATIN_LANGS - _PPOCRV6_LANGS
