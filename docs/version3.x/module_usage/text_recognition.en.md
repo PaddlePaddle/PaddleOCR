@@ -552,6 +552,14 @@ paddleocr text_recognition -i https://paddle-model-ecology.bj.bcebos.com/paddlex
     --engine transformers
 ```
 
+If you choose `onnxruntime` as the inference engine, make sure the ONNXRuntime environment is configured, and then run the following command:
+
+```bash
+# Use the onnxruntime engine for inference
+paddleocr text_recognition -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_rec_001.png \
+    --engine onnxruntime
+```
+
 In most scenarios, the default `paddle_static` inference engine delivers better inference performance and is the recommended first choice.
 
 <b>Note:</b> The official PaddleOCR models are downloaded from HuggingFace by default. If you cannot access HuggingFace, you can change the model source to BOS by setting the environment variable `PADDLE_PDX_MODEL_SOURCE="BOS"`. More mainstream model sources will be supported in the future.
@@ -577,6 +585,21 @@ from paddleocr import TextRecognition
 model = TextRecognition(
     model_name="PP-OCRv5_server_rec",
     engine="transformers",
+)
+output = model.predict(input="general_ocr_rec_001.png", batch_size=1)
+for res in output:
+    res.print()
+    res.save_to_img(save_path="./output/")
+    res.save_to_json(save_path="./output/res.json")
+```
+
+If you choose `onnxruntime` as the inference engine, make sure the ONNXRuntime environment is configured, and then run the following code:
+
+```python
+from paddleocr import TextRecognition
+model = TextRecognition(
+    model_name="PP-OCRv5_server_rec",
+    engine="onnxruntime",
 )
 output = model.predict(input="general_ocr_rec_001.png", batch_size=1)
 for res in output:
@@ -643,7 +666,7 @@ By default, GPU 0 is used; if unavailable, CPU is used.
 </tr>
 <tr>
 <td><code>engine</code></td>
-<td><b>Meaning:</b> Inference engine.<br/><b>Description:</b> Supports <code>None</code> (the default), <code>paddle</code>, <code>paddle_static</code>, <code>paddle_dynamic</code>, and <code>transformers</code>. When left as <code>None</code>, local inference uses the <code>paddle_static</code> engine by default. For detailed descriptions, supported values, compatibility rules, and examples, see <a href="../inference_deployment/local_inference/inference_engine.en.md">Inference Engine and Configuration</a>.</td>
+<td><b>Meaning:</b> Inference engine.<br/><b>Description:</b> Supports <code>None</code> (the default), <code>paddle</code>, <code>paddle_static</code>, <code>paddle_dynamic</code>, <code>transformers</code>, and <code>onnxruntime</code>. When left as <code>None</code>, local inference uses the <code>paddle_static</code> engine by default. For detailed descriptions, supported values, compatibility rules, and examples, see <a href="../inference_deployment/local_inference/inference_engine.en.md">Inference Engine and Configuration</a>.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -906,7 +929,7 @@ For detailed descriptions, values, compatibility rules, and examples of the infe
     </thead>
     <tbody>
         <tr>
-            <td rowspan="5">PP-OCRv5_mobile_rec</td>
+            <td rowspan="4">PP-OCRv5_mobile_rec</td>
             <td>paddle_static</td>
             <td>1.94</td>
             <td>6.69</td>
@@ -935,14 +958,7 @@ For detailed descriptions, values, compatibility rules, and examples of the infe
             <td>4.91</td>
         </tr>
         <tr>
-            <td>onnxruntime-cpu</td>
-            <td>2.21</td>
-            <td>10.92</td>
-            <td>0.98</td>
-            <td>14.26</td>
-        </tr>
-        <tr>
-            <td rowspan="5">PP-OCRv5_server_rec</td>
+            <td rowspan="4">PP-OCRv5_server_rec</td>
             <td>paddle_static</td>
             <td>1.98</td>
             <td>11.37</td>
@@ -971,14 +987,7 @@ For detailed descriptions, values, compatibility rules, and examples of the infe
             <td>5.98</td>
         </tr>
         <tr>
-            <td>onnxruntime-cpu</td>
-            <td>2.43</td>
-            <td>141.69</td>
-            <td>1.14</td>
-            <td>145.56</td>
-        </tr>
-        <tr>
-            <td rowspan="5">PP-OCRv6_medium_rec</td>
+            <td rowspan="4">PP-OCRv6_medium_rec</td>
             <td>paddle_static</td>
             <td>1.74</td>
             <td>5.38</td>
@@ -1007,14 +1016,7 @@ For detailed descriptions, values, compatibility rules, and examples of the infe
             <td>4.97</td>
         </tr>
         <tr>
-            <td>onnxruntime-cpu</td>
-            <td>2.41</td>
-            <td>59.69</td>
-            <td>1.13</td>
-            <td>63.51</td>
-        </tr>
-        <tr>
-            <td rowspan="5">PP-OCRv6_small_rec</td>
+            <td rowspan="4">PP-OCRv6_small_rec</td>
             <td>paddle_static</td>
             <td>1.74</td>
             <td>4.73</td>
@@ -1043,14 +1045,7 @@ For detailed descriptions, values, compatibility rules, and examples of the infe
             <td>4.46</td>
         </tr>
         <tr>
-            <td>onnxruntime-cpu</td>
-            <td>2.20</td>
-            <td>9.39</td>
-            <td>1.01</td>
-            <td>12.75</td>
-        </tr>
-        <tr>
-            <td rowspan="5">PP-OCRv6_tiny_rec</td>
+            <td rowspan="4">PP-OCRv6_tiny_rec</td>
             <td>paddle_static</td>
             <td>1.76</td>
             <td>2.77</td>
@@ -1078,13 +1073,6 @@ For detailed descriptions, values, compatibility rules, and examples of the infe
             <td>0.36</td>
             <td>3.12</td>
         </tr>
-        <tr>
-            <td>onnxruntime-cpu</td>
-            <td>2.17</td>
-            <td>4.63</td>
-            <td>0.47</td>
-            <td>7.40</td>
-        </tr>
     </tbody>
 </table>
 
@@ -1107,6 +1095,6 @@ For detailed descriptions, values, compatibility rules, and examples of the infe
 
 ### 5.2 Weight Conversion
 
-When using the inference engine, the system will automatically download the official pre-trained model. If you need to use a self-trained model with the `paddle_dynamic` or `transformers` engine, please refer to the [PaddleX Text Image Orientation Classification Module Weight Conversion](https://paddlepaddle.github.io/PaddleX/latest/en/module_usage/tutorials/ocr_modules/text_recognition.html#442) section to convert the model from the `pdparams` format to the `safetensors` format using PaddleX. This allows seamless integration into the PaddleOCR API for inference.
+When using the inference engine, the system will automatically download the official pre-trained model. If you need to use a self-trained model with the `paddle_dynamic` or `transformers` engine, please refer to the [PaddleX Text Image Orientation Classification Module Weight Conversion](https://paddlepaddle.github.io/PaddleX/latest/en/module_usage/tutorials/ocr_modules/text_recognition.html#442) section to convert the model from the `pdparams` format to the `safetensors` format using PaddleX. This allows seamless integration into the PaddleOCR API for inference. If you need to use a self-trained model with the `onnxruntime` engine, refer to [PaddleX Obtain ONNX Models](https://paddlepaddle.github.io/PaddleX/latest/pipeline_deploy/paddle2onnx.html) to obtain the ONNX model, so it can be seamlessly integrated into the PaddleOCR API for inference.
 
 ## 6. FAQ

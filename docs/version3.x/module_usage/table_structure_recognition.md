@@ -124,6 +124,14 @@ paddleocr table_structure_recognition -i https://paddle-model-ecology.bj.bcebos.
     --engine transformers
 ```
 
+如果选择 `onnxruntime` 作为推理引擎，请确保已配置 ONNXRuntime 环境，然后执行如下命令：
+
+```bash
+# 使用 onnxruntime 引擎进行推理
+paddleocr table_structure_recognition -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/table_recognition.jpg \
+    --engine onnxruntime
+```
+
 在大多数场景下，默认的 `paddle_static` 推理引擎通常具备更好的推理性能，建议优先使用。
 
 <b>注：</b>PaddleOCR 官方模型默认从 HuggingFace 获取，如运行环境访问 HuggingFace 不便，可通过环境变量修改模型源为 BOS：`PADDLE_PDX_MODEL_SOURCE="BOS"`，未来将支持更多主流模型源；
@@ -148,6 +156,20 @@ from paddleocr import TableStructureRecognition
 model = TableStructureRecognition(
     model_name="SLANet",
     engine="transformers",
+)
+output = model.predict(input="table_recognition.jpg", batch_size=1)
+for res in output:
+    res.print(json_format=False)
+    res.save_to_json("./output/res.json")
+```
+
+如果选择 `onnxruntime` 作为推理引擎，请确保已配置 ONNXRuntime 环境，然后执行如下代码：
+
+```python
+from paddleocr import TableStructureRecognition
+model = TableStructureRecognition(
+    model_name="SLANet",
+    engine="onnxruntime",
 )
 output = model.predict(input="table_recognition.jpg", batch_size=1)
 for res in output:
@@ -213,7 +235,7 @@ for res in output:
 </tr>
 <tr>
 <td><code>engine</code></td>
-<td><b>含义：</b>推理引擎。<br><b>说明：</b>支持 <code>None</code>（默认值）、<code>paddle</code>、<code>paddle_static</code>、<code>paddle_dynamic</code>、<code>transformers</code>。保持为默认值 <code>None</code> 时，本地推理默认使用 <code>paddle_static</code> 引擎。详细说明、取值、兼容性规则与示例请参见 <a href="../inference_deployment/local_inference/inference_engine.md">推理引擎与配置说明</a>。</td>
+<td><b>含义：</b>推理引擎。<br><b>说明：</b>支持 <code>None</code>（默认值）、<code>paddle</code>、<code>paddle_static</code>、<code>paddle_dynamic</code>、<code>transformers</code>、<code>onnxruntime</code>。保持为默认值 <code>None</code> 时，本地推理默认使用 <code>paddle_static</code> 引擎。详细说明、取值、兼容性规则与示例请参见 <a href="../inference_deployment/local_inference/inference_engine.md">推理引擎与配置说明</a>。</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -480,7 +502,7 @@ python3 -m paddle.distributed.launch --gpus '0,1,2,3' tools/train.py \
     </thead>
     <tbody>
         <tr>
-            <td rowspan="2">SLANet</td>
+            <td rowspan="1">SLANet</td>
             <td>onnxruntime</td>
             <td>1.42</td>
             <td>22.02</td>
@@ -488,14 +510,7 @@ python3 -m paddle.distributed.launch --gpus '0,1,2,3' tools/train.py \
             <td>23.81</td>
         </tr>
         <tr>
-            <td>onnxruntime-cpu</td>
-            <td>1.63</td>
-            <td>32.88</td>
-            <td>0.33</td>
-            <td>35.07</td>
-        </tr>
-        <tr>
-            <td rowspan="2">SLANet_plus</td>
+            <td rowspan="1">SLANet_plus</td>
             <td>onnxruntime</td>
             <td>1.40</td>
             <td>21.64</td>
@@ -503,14 +518,7 @@ python3 -m paddle.distributed.launch --gpus '0,1,2,3' tools/train.py \
             <td>23.42</td>
         </tr>
         <tr>
-            <td>onnxruntime-cpu</td>
-            <td>1.66</td>
-            <td>33.08</td>
-            <td>0.34</td>
-            <td>35.30</td>
-        </tr>
-        <tr>
-            <td rowspan="5">SLANeXt_wired</td>
+            <td rowspan="4">SLANeXt_wired</td>
             <td>paddle_static</td>
             <td>1.50</td>
             <td>30.91</td>
@@ -539,14 +547,7 @@ python3 -m paddle.distributed.launch --gpus '0,1,2,3' tools/train.py \
             <td>32.99</td>
         </tr>
         <tr>
-            <td>onnxruntime-cpu</td>
-            <td>1.84</td>
-            <td>232.42</td>
-            <td>0.41</td>
-            <td>234.94</td>
-        </tr>
-        <tr>
-            <td rowspan="5">SLANeXt_wireless</td>
+            <td rowspan="4">SLANeXt_wireless</td>
             <td>paddle_static</td>
             <td>1.67</td>
             <td>30.49</td>
@@ -574,13 +575,6 @@ python3 -m paddle.distributed.launch --gpus '0,1,2,3' tools/train.py \
             <td>0.26</td>
             <td>33.06</td>
         </tr>
-        <tr>
-            <td>onnxruntime-cpu</td>
-            <td>1.79</td>
-            <td>232.64</td>
-            <td>0.41</td>
-            <td>235.08</td>
-        </tr>
     </tbody>
 </table>
 
@@ -603,6 +597,6 @@ python3 -m paddle.distributed.launch --gpus '0,1,2,3' tools/train.py \
 
 ### 5.2 权重转换 {#52-权重转换}
 
-使用推理引擎时，系统会自动下载官方预训练模型。若需使用自训练模型配合 `paddle_dynamic` 或 `transformers` 引擎，请参考 [PaddleX 表格结构识别模块权重转换](https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/table_structure_recognition.html#442) 部分，将 `pdparams` 格式通过 PaddleX 转换为 `safetensors` 格式，即可无缝集成到 PaddleOCR 的 API 中进行推理。
+使用推理引擎时，系统会自动下载官方预训练模型。若需使用自训练模型配合 `paddle_dynamic` 或 `transformers` 引擎，请参考 [PaddleX 表格结构识别模块权重转换](https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/table_structure_recognition.html#442) 部分，将 `pdparams` 格式通过 PaddleX 转换为 `safetensors` 格式，即可无缝集成到 PaddleOCR 的 API 中进行推理。若需使用自训练模型配合`onnxruntime`引擎，请参考[PaddleX 获取 ONNX 模型](https://paddlepaddle.github.io/PaddleX/latest/pipeline_deploy/paddle2onnx.html)获取onnx模型，即可无缝集成到 PaddleOCR 的 API 中进行推理。
 
 ## 六、FAQ

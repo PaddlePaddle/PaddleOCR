@@ -328,6 +328,14 @@ paddleocr layout_detection -i https://paddle-model-ecology.bj.bcebos.com/paddlex
     --engine transformers
 ```
 
+如果选择 `onnxruntime` 作为推理引擎，请确保已配置 ONNXRuntime 环境，然后执行如下命令：
+
+```bash
+# 使用 onnxruntime 引擎进行推理
+paddleocr layout_detection -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/layout.jpg \
+    --engine onnxruntime
+```
+
 在大多数场景下，默认的 `paddle_static` 推理引擎通常具备更好的推理性能，建议优先使用。
 
 <b>注：</b>PaddleOCR 官方模型默认从 HuggingFace 获取，如运行环境访问 HuggingFace 不便，可通过环境变量修改模型源为 BOS：`PADDLE_PDX_MODEL_SOURCE="BOS"`，未来将支持更多主流模型源；
@@ -355,6 +363,22 @@ from paddleocr import LayoutDetection
 model = LayoutDetection(
     model_name="PP-DocLayout_plus-L",
     engine="transformers",
+)
+output = model.predict("layout.jpg", batch_size=1, layout_nms=True)
+for res in output:
+    res.print()
+    res.save_to_img(save_path="./output/")
+    res.save_to_json(save_path="./output/res.json")
+```
+
+如果选择 `onnxruntime` 作为推理引擎，请确保已配置 ONNXRuntime 环境，然后执行如下代码：
+
+```python
+from paddleocr import LayoutDetection
+
+model = LayoutDetection(
+    model_name="PP-DocLayout_plus-L",
+    engine="onnxruntime",
 )
 output = model.predict("layout.jpg", batch_size=1, layout_nms=True)
 for res in output:
@@ -433,7 +457,7 @@ for res in output:
 </tr>
 <tr>
 <td><code>engine</code></td>
-<td><b>含义：</b>推理引擎。<br><b>说明：</b>支持 <code>None</code>（默认值）、<code>paddle</code>、<code>paddle_static</code>、<code>paddle_dynamic</code>、<code>transformers</code>。保持为默认值 <code>None</code> 时，本地推理默认使用 <code>paddle_static</code> 引擎。详细说明、取值、兼容性规则与示例请参见 <a href="../inference_deployment/local_inference/inference_engine.md">推理引擎与配置说明</a>。</td>
+<td><b>含义：</b>推理引擎。<br><b>说明：</b>支持 <code>None</code>（默认值）、<code>paddle</code>、<code>paddle_static</code>、<code>paddle_dynamic</code>、<code>transformers</code>、<code>onnxruntime</code>。保持为默认值 <code>None</code> 时，本地推理默认使用 <code>paddle_static</code> 引擎。详细说明、取值、兼容性规则与示例请参见 <a href="../inference_deployment/local_inference/inference_engine.md">推理引擎与配置说明</a>。</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -737,7 +761,7 @@ for res in output:
     </thead>
     <tbody>
         <tr>
-            <td rowspan="5">PP-DocLayout_plus-L</td>
+            <td rowspan="4">PP-DocLayout_plus-L</td>
             <td>paddle_static</td>
             <td>10.92</td>
             <td>26.11</td>
@@ -766,14 +790,7 @@ for res in output:
             <td>21.81</td>
         </tr>
         <tr>
-            <td>onnxruntime-cpu</td>
-            <td>10.82</td>
-            <td>135.60</td>
-            <td>0.24</td>
-            <td>146.99</td>
-        </tr>
-        <tr>
-            <td rowspan="5">PP-DocBlockLayout</td>
+            <td rowspan="4">PP-DocBlockLayout</td>
             <td>paddle_static</td>
             <td>9.51</td>
             <td>27.59</td>
@@ -801,13 +818,6 @@ for res in output:
             <td>0.06</td>
             <td>16.97</td>
         </tr>
-        <tr>
-            <td>onnxruntime-cpu</td>
-            <td>8.77</td>
-            <td>101.29</td>
-            <td>0.10</td>
-            <td>110.46</td>
-        </tr>
     </tbody>
 </table>
 
@@ -830,6 +840,6 @@ for res in output:
 
 ### 5.2 权重转换 {#52-权重转换}
 
-使用推理引擎时，系统会自动下载官方预训练模型。若需使用自训练模型配合 `paddle_dynamic` 或 `transformers` 引擎，请参考 [PaddleX 版面区域检测模块权重转换](https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/layout_detection.html#442) 部分，将 `pdparams` 格式通过 PaddleX 转换为 `safetensors` 格式，即可无缝集成到 PaddleOCR 的 API 中进行推理。
+使用推理引擎时，系统会自动下载官方预训练模型。若需使用自训练模型配合 `paddle_dynamic` 或 `transformers` 引擎，请参考 [PaddleX 版面区域检测模块权重转换](https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/layout_detection.html#442) 部分，将 `pdparams` 格式通过 PaddleX 转换为 `safetensors` 格式，即可无缝集成到 PaddleOCR 的 API 中进行推理。若需使用自训练模型配合`onnxruntime`引擎，请参考[PaddleX 获取 ONNX 模型](https://paddlepaddle.github.io/PaddleX/latest/pipeline_deploy/paddle2onnx.html)获取onnx模型，即可无缝集成到 PaddleOCR 的 API 中进行推理。
 
 ## 六、FAQ

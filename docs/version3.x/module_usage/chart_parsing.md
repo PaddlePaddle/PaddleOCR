@@ -52,6 +52,14 @@ paddleocr chart_parsing -i "{'image': 'https://paddle-model-ecology.bj.bcebos.co
     --engine transformers
 ```
 
+如果选择 `onnxruntime` 作为推理引擎，请确保已配置 ONNXRuntime 环境，然后执行如下命令：
+
+```bash
+# 使用 onnxruntime 引擎进行推理
+paddleocr chart_parsing -i "{'image': 'https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/chart_parsing_02.png'}" \
+    --engine onnxruntime
+```
+
 在大多数场景下，默认的 `paddle_dynamic` 推理引擎通常具备更好的推理性能，建议优先使用。
 
 <b>注：</b>PaddleOCR 官方模型默认从 HuggingFace 获取，如运行环境访问 HuggingFace 不便，可通过环境变量修改模型源为 BOS：`PADDLE_PDX_MODEL_SOURCE="BOS"`，未来将支持更多主流模型源；
@@ -79,6 +87,23 @@ from paddleocr import ChartParsing
 model = ChartParsing(
     model_name="PP-Chart2Table",
     engine="transformers",
+)
+results = model.predict(
+    input={"image": "chart_parsing_02.png"},
+    batch_size=1
+)
+for res in results:
+    res.print()
+    res.save_to_json(f"./output/res.json")
+```
+
+如果选择 `onnxruntime` 作为推理引擎，请确保已配置 ONNXRuntime 环境，然后执行如下代码：
+
+```python
+from paddleocr import ChartParsing
+model = ChartParsing(
+    model_name="PP-Chart2Table",
+    engine="onnxruntime",
 )
 results = model.predict(
     input={"image": "chart_parsing_02.png"},
@@ -153,7 +178,7 @@ for res in results:
 </tr>
 <tr>
 <td><code>engine</code></td>
-<td><b>含义：</b>推理引擎。<br><b>说明：</b>支持 <code>None</code>（默认值）、<code>paddle</code>、<code>paddle_dynamic</code>、<code>transformers</code>。保持为默认值 <code>None</code> 时，本地推理默认使用 <code>paddle_dynamic</code> 引擎。详细说明、取值、兼容性规则与示例请参见 <a href="../inference_deployment/local_inference/inference_engine.md">推理引擎与配置说明</a>。</td>
+<td><b>含义：</b>推理引擎。<br><b>说明：</b>支持 <code>None</code>（默认值）、<code>paddle</code>、<code>paddle_dynamic</code>、<code>transformers</code>、<code>onnxruntime</code>。保持为默认值 <code>None</code> 时，本地推理默认使用 <code>paddle_dynamic</code> 引擎。详细说明、取值、兼容性规则与示例请参见 <a href="../inference_deployment/local_inference/inference_engine.md">推理引擎与配置说明</a>。</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
