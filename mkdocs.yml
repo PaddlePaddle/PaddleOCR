@@ -140,7 +140,6 @@ plugins:
             获取ONNX模型: Obtaining ONNX Models
             Android 部署: Android Deployment
             iOS 部署: iOS Deployment
-            端侧部署: On-Device Deployment
             服务化部署: Serving
             浏览器端部署: Browser Deployment
             模块列表: Module List
@@ -196,7 +195,6 @@ plugins:
             基于C++预测引擎推理: CPP Inference
             Visual Studio 2019 Community CMake 编译指南: Visual Studio 2019 Community CMake Compilation Guide
             服务化部署: Server Deployment
-            端侧部署: On-Device Deployment
             Android部署: Android Deployment
             Paddle2ONNX模型转化与预测: Paddle2ONNX
             云上飞桨部署工具: Paddle Cloud
@@ -365,7 +363,6 @@ nav:
     - 跨端部署:
       - Android 部署: version3.x/inference_deployment/cross_platform/android_deployment.md
       - iOS 部署: version3.x/inference_deployment/cross_platform/ios_deployment.md
-      - 端侧部署: version3.x/inference_deployment/cross_platform/on_device_deployment.md
       - 浏览器端部署: version3.x/inference_deployment/cross_platform/browser.md
     - 其它:
       - 获取ONNX模型: version3.x/inference_deployment/others/obtaining_onnx_models.md
