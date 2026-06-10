@@ -43,7 +43,7 @@ import tools.naive_sync_bn as naive_sync_bn
 dist.get_world_size()
 
 
-def main(config, device, logger, vdl_writer, seed):
+def main(config, device, logger, vdl_writer):
     # init dist environment
     if config["Global"]["distributed"]:
         dist.init_parallel_env()
@@ -51,8 +51,13 @@ def main(config, device, logger, vdl_writer, seed):
     global_config = config["Global"]
 
     # build dataloader
+    # NOTE: Do NOT pass seed here. The seed parameter in build_dataloader is used
+    # as epoch number by set_epoch_as_seed (for adaptive shrink_ratio), not as
+    # random seed. First construction should use epoch=0 (i.e., seed=None).
+    # The epoch loop in program.train() handles subsequent updates via
+    # reset_data_lines(seed=epoch).
     set_signal_handlers()
-    train_dataloader = build_dataloader(config, "Train", device, logger, seed)
+    train_dataloader = build_dataloader(config, "Train", device, logger)
     if len(train_dataloader) == 0:
         logger.error(
             "No Images in train dataset, please ensure\n"
@@ -62,7 +67,7 @@ def main(config, device, logger, vdl_writer, seed):
         return
 
     if config["Eval"]:
-        valid_dataloader = build_dataloader(config, "Eval", device, logger, seed)
+        valid_dataloader = build_dataloader(config, "Eval", device, logger)
     else:
         valid_dataloader = None
     step_pre_epoch = len(train_dataloader)
@@ -154,7 +159,7 @@ def main(config, device, logger, vdl_writer, seed):
     loss_class = build_loss(config["Loss"])
 
     # build optim
-    optimizer, lr_scheduler = build_optimizer(
+    optimizer, lr_scheduler, wd_scheduler = build_optimizer(
         config["Optimizer"],
         epochs=config["Global"]["epoch_num"],
         step_each_epoch=len(train_dataloader),
@@ -211,9 +216,30 @@ def main(config, device, logger, vdl_writer, seed):
     else:
         scaler = None
 
+    # build EMA (after AMP decorate, before load_model)
+    ema = None
+    if config["Global"].get("use_ema", False):
+        from ppocr.utils.ema import ModelEMA
+
+        ema = ModelEMA(
+            model,
+            decay=config["Global"].get("ema_decay", 0.9998),
+            gamma=config["Global"].get("ema_gamma", 2000),
+            ema_decay_type=config["Global"].get("ema_decay_type", "threshold"),
+            ema_filter_no_grad=config["Global"].get("ema_filter_no_grad", False),
+        )
+        logger.info(
+            "EMA enabled: decay={}, gamma={}, type={}, filter_no_grad={}".format(
+                ema.decay,
+                ema.gamma,
+                ema.ema_decay_type,
+                config["Global"].get("ema_filter_no_grad", False),
+            )
+        )
+
     # load pretrain model
     pre_best_model_dict = load_model(
-        config, model, optimizer, config["Architecture"]["model_type"]
+        config, model, optimizer, config["Architecture"]["model_type"], ema=ema
     )
 
     if config["Global"]["distributed"]:
@@ -242,6 +268,8 @@ def main(config, device, logger, vdl_writer, seed):
         amp_custom_black_list,
         amp_custom_white_list,
         amp_dtype,
+        wd_scheduler=wd_scheduler,
+        ema=ema,
     )
 
 
@@ -269,5 +297,5 @@ if __name__ == "__main__":
     config, device, logger, vdl_writer = program.preprocess(is_train=True)
     seed = config["Global"]["seed"] if "seed" in config["Global"] else 1024
     set_seed(seed)
-    main(config, device, logger, vdl_writer, seed)
+    main(config, device, logger, vdl_writer)
     # test_reader(config, device, logger)
