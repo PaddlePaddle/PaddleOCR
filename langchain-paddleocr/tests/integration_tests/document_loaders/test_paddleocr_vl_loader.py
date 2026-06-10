@@ -20,9 +20,7 @@ def test_paddleocr_vl_loader_live_integration() -> None:
     access_token = os.getenv("PADDLEOCR_ACCESS_TOKEN")
 
     if not access_token:
-        pytest.skip(
-            "PADDLEOCR_ACCESS_TOKEN must be set for integration tests."
-        )
+        pytest.skip("PADDLEOCR_ACCESS_TOKEN must be set for integration tests.")
 
     base_url = os.getenv("PADDLEOCR_BASE_URL")
 
