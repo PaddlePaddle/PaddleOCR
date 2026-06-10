@@ -1706,11 +1706,8 @@ If you choose `transformers` as the inference engine, make sure the Transformers
 ```python
 from paddleocr import PPStructureV3
 
-# Some models are still being supported. For inference, please disable formula recognition and replace the wireless table structure recognition model using the following code:
 pipeline = PPStructureV3(
     engine="transformers",
-    use_formula_recognition=False,
-    wireless_table_structure_recognition_model_name="SLANeXt_wireless",
 )
 # pipeline = PPStructureV3(lang="en") # Set the lang parameter to use the English text recognition model. For other supported languages, see Section 5: Appendix. By default, both Chinese and English text recognition models are enabled.
 # pipeline = PPStructureV3(use_doc_orientation_classify=True) # Use use_doc_orientation_classify to enable/disable document orientation classification model
@@ -1729,11 +1726,10 @@ If you choose `onnxruntime` as the inference engine, make sure the ONNX Runtime 
 ```python
 from paddleocr import PPStructureV3
 
-# Some models are still being supported. For inference, please disable formula recognition and replace the wireless table structure recognition model using the following code:
+# Some models are still being supported. For inference, please disable formula recognition using the following code:
 pipeline = PPStructureV3(
     engine="onnxruntime",
     use_formula_recognition=False,
-    wireless_table_structure_recognition_model_name="SLANeXt_wireless",
 )
 # pipeline = PPStructureV3(lang="en") # Set the lang parameter to use the English text recognition model. For other supported languages, see Section 5: Appendix. By default, both Chinese and English text recognition models are enabled.
 # pipeline = PPStructureV3(use_doc_orientation_classify=True) # Use use_doc_orientation_classify to enable/disable document orientation classification model

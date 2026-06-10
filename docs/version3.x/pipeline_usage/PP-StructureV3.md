@@ -1678,11 +1678,8 @@ for res in output:
 ```python
 from paddleocr import PPStructureV3
 
-# 部分模型尚在支持中，推理时需关闭公式识别功能并更换无线表格结构识别模型，请使用以下代码：
 pipeline = PPStructureV3(
     engine="transformers",
-    use_formula_recognition=False,
-    wireless_table_structure_recognition_model_name="SLANeXt_wireless",
 )
 # pipeline = PPStructureV3(lang="en") # 将 lang 参数设置为使用英文文本识别模型。对于其他支持的语言，请参阅第5节：附录部分。默认配置为中英文模型。
 # pipeline = PPStructureV3(use_doc_orientation_classify=True) # 通过 use_doc_orientation_classify 指定是否使用文档方向分类模型
@@ -1701,11 +1698,10 @@ for res in output:
 ```python
 from paddleocr import PPStructureV3
 
-# 部分模型尚在支持中，推理时需关闭公式识别功能并更换无线表格结构识别模型，请使用以下代码：
+# 部分模型尚在支持中，推理时需关闭公式识别功能，请使用以下代码：
 pipeline = PPStructureV3(
     engine="onnxruntime",
     use_formula_recognition=False,
-    wireless_table_structure_recognition_model_name="SLANeXt_wireless",
 )
 # pipeline = PPStructureV3(lang="en") # 将 lang 参数设置为使用英文文本识别模型。对于其他支持的语言，请参阅第5节：附录部分。默认配置为中英文模型。
 # pipeline = PPStructureV3(use_doc_orientation_classify=True) # 通过 use_doc_orientation_classify 指定是否使用文档方向分类模型
