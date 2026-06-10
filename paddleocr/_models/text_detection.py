@@ -24,7 +24,7 @@ from ._text_detection import TextDetectionMixin, TextDetectionSubcommandExecutor
 class TextDetection(TextDetectionMixin, PaddleXPredictorWrapper):
     @property
     def default_model_name(self):
-        return "PP-OCRv5_server_det"
+        return "PP-OCRv6_medium_det"
 
     @classmethod
     def get_cli_subcommand_executor(cls):

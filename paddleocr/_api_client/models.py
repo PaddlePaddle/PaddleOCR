@@ -21,13 +21,14 @@ from .errors import InvalidRequestError
 
 class Model(str, Enum):
     PP_OCRV5 = "PP-OCRv5"
+    PP_OCRV6 = "PP-OCRv6"
     PP_STRUCTURE_V3 = "PP-StructureV3"
     PADDLE_OCR_VL = "PaddleOCR-VL"
     PADDLE_OCR_VL_15 = "PaddleOCR-VL-1.5"
     PADDLE_OCR_VL_16 = "PaddleOCR-VL-1.6"
 
 
-_OCR_MODELS = frozenset({Model.PP_OCRV5})
+_OCR_MODELS = frozenset({Model.PP_OCRV5, Model.PP_OCRV6})
 _DOCUMENT_PARSING_MODELS = frozenset(
     {
         Model.PP_STRUCTURE_V3,
