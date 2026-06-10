@@ -36,7 +36,7 @@
 ### 📄 Интеллектуальный разбор документов (готово для LLM)
 > *Преобразование сложных визуальных данных в структурированные данные для эпохи LLM.*
 
-* **SOTA Document VLM**: В основе — **PaddleOCR-VL-1.5 (0.9B)**, ведущая в отрасли лёгкая визуально-языковая модель для разбора документов. Она превосходно справляется с разбором сложных документов в 5 основных «реальных» сценариях: **деформация, сканирование, фотосъёмка экрана, неравномерное освещение и перекошенные документы**, формируя структурированный вывод в форматах **Markdown** и **JSON**.
+* **SOTA Document VLM**: Featuring **PaddleOCR-VL-1.6 (0.9B)**, the industry's leading lightweight vision-language model for document parsing. It achieves 96.3% accuracy on OmniDocBench v1.6, leads in text, formula, and table recognition, and shows significantly enhanced capabilities in ancient documents, rare characters, seals, and charts, with structured outputs in **Markdown** and **JSON** formats.
 * **Конвертация с учётом структуры**: На основе **PP-StructureV3** — бесшовное преобразование сложных PDF-файлов и изображений в **Markdown** или **JSON**. В отличие от моделей серии PaddleOCR-VL, предоставляет более детальную координатную информацию, включая координаты ячеек таблиц, координаты текста и многое другое.
 * **Эффективность промышленного уровня**: Коммерческая точность при минимальном объёме ресурсов. Превосходит многочисленные закрытые решения в публичных тестах, оставаясь ресурсоэффективным для развёртывания на периферийных устройствах и в облаке.
 
@@ -61,15 +61,27 @@
 
 ## 📣 Последние обновления
 
-### 🔥 Выпуск PaddleOCR v3.5.0: более гибкие бэкенды инференса и более богатый вывод документов
+### 🔥 2026.05.28: Выпуск PaddleOCR 3.6.0
+- Ключевые преимущества PaddleOCR-VL-1.6:
+
+    - **Новая точность SOTA**: превышает 96,3% на OmniDocBench v1.6, также устанавливает новые SOTA на OmniDocBench v1.5 и Real5-OmniDocBench, опережая решения с открытым и закрытым исходным кодом в распознавании текста, формул и таблиц.
+    - **Комплексное улучшение возможностей**: значительные улучшения в распознавании таблиц, древних документов и редких символов, с заметным усилением распознавания печатей, spotting и анализа графиков в различных сценариях.
+    - **Бесшовная миграция**: архитектура модели полностью совпадает с PaddleOCR-VL-1.5, обеспечивая адаптацию без затрат — замените и сразу используйте.
+    - **Попробуйте сейчас**: доступно на [HuggingFace](https://huggingface.co/PaddlePaddle/PaddleOCR-VL-1.6) или на [официальном сайте](https://www.paddleocr.com).
+
+<details>
+<summary><strong>2026.04.21: Выпуск PaddleOCR 3.5.0</strong></summary>
+
 * **Гибкое переключение бэкендов инференса**: поддерживается бесшовное переключение между статическим графом Paddle, динамическим графом Paddle и Transformers. PaddleOCR теперь глубоко интегрирован с экосистемой Hugging Face, а 20 ключевых моделей поддерживают Transformers в качестве бэкенда инференса.
 * **Преобразование офисных документов в Markdown**: поддерживается преобразование распространённых форматов документов, таких как Word, Excel и PowerPoint, в Markdown.
 * **Экспорт результатов разбора в DOCX**: серии `PaddleOCR-VL`, `PP-StructureV3` и `PP-DocTranslation` теперь поддерживают экспорт результатов разбора в формат DOCX для удобного просмотра и редактирования в Microsoft Word.
 * **Официальный браузерный SDK инференса**: выпущен официальный браузерный SDK инференса `PaddleOCR.js`, который поддерживает запуск `PP-OCRv5` прямо в браузере.
 
+</details>
+
 <details>
 <summary><strong>2026.01.29: Выпуск PaddleOCR 3.4.0</strong></summary>
-* **PaddleOCR-VL-1.5 (SOTA 0.9B VLM)**: Наша новейшая флагманская модель для разбора документов уже доступна!
+* PaddleOCR-VL-1.5 (SOTA 0.9B VLM): Наша новейшая флагманская модель для разбора документов уже доступна!
     * **94,5% точность на OmniDocBench**: Превосходит ведущие универсальные большие модели и специализированные парсеры документов.
     * **Устойчивость к реальным условиям**: Первая реализация алгоритма **PP-DocLayoutV3** для позиционирования нестандартных форм, освоившая 5 сложных сценариев: *перекос, деформация, сканирование, неравномерное освещение и фотосъёмка экрана*.
     * **Расширение возможностей**: Теперь поддерживается **распознавание печатей**, **обнаружение текста** и расширение до **111 языков** (включая тибетское письмо Китая и бенгальский язык).
@@ -130,8 +142,6 @@
 
 [История изменений](https://paddlepaddle.github.io/PaddleOCR/latest/en/update/update.html)
 
-</details>
-
 
 ## 🚀 Быстрый старт
 
@@ -151,10 +161,10 @@
 
 ## 🧩 Дополнительные возможности
 
-- Конвертация моделей в формат ONNX: [Получение моделей ONNX](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/obtaining_onnx_models.html).
-- Ускорение вывода с использованием движков OpenVINO, ONNX Runtime, TensorRT или выполнение вывода с использованием моделей в формате ONNX: [Высокопроизводительный вывод](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/high_performance_inference.html).
+- Конвертация моделей в формат ONNX: [Получение моделей ONNX](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/inference_deployment/others/obtaining_onnx_models.html).
+- Ускорение вывода с использованием движков OpenVINO, ONNX Runtime, TensorRT или выполнение вывода с использованием моделей в формате ONNX: [Высокопроизводительный вывод](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/inference_deployment/local_inference/high_performance_inference.html).
 - Ускорение вывода с использованием нескольких GPU и многопроцессорной обработки: [Параллельный вывод для конвейеров](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/pipeline_usage/instructions/parallel_inference.html).
-- Интеграция PaddleOCR в приложения, написанные на C++, C#, Java и др.: [Сервисное развёртывание](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/serving.html).
+- Интеграция PaddleOCR в приложения, написанные на C++, C#, Java и др.: [Сервисное развёртывание](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/inference_deployment/serving/serving.html).
 
 ## 🔄 Краткий обзор результатов выполнения
 

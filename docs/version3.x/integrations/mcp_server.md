@@ -1,0 +1,438 @@
+---
+comments: true
+---
+
+# PaddleOCR MCP 服务器
+
+[![PaddleOCR](https://img.shields.io/badge/OCR-PaddleOCR-orange)](https://github.com/PaddlePaddle/PaddleOCR)
+[![FastMCP](https://img.shields.io/badge/Built%20with-FastMCP%20v2-blue)](https://gofastmcp.com)
+
+PaddleOCR 提供轻量级的 [Model Context Protocol（MCP）](https://modelcontextprotocol.io/introduction) 服务器，旨在将 PaddleOCR 的文字识别、版面解析等能力集成到各种大模型应用中。
+
+### 主要功能如下：
+
+- **当前支持的产线**
+
+    | 产线 | MCP 工具名称 | 说明 |
+    | --- | --- | --- |
+    | `OCR` | `ocr` | 对图像和 PDF 文件进行文本检测与识别。 |
+    | `PP-StructureV3` | `pp_structurev3` | 从图像或 PDF 文件中识别和提取文本块、标题、段落、图片、表格以及其他版面元素，将输入转换为 Markdown 文档。 |
+    | `PaddleOCR-VL 系列` | `paddleocr_vl` | 使用基于多模态大模型的方案进行版面解析，将输入转换为 Markdown 文档。包含版本：PaddleOCR-VL、PaddleOCR-VL-1.5、PaddleOCR-VL-1.6。 |
+
+    > 每个 MCP 服务器实例对外只暴露一个 MCP 工具。
+
+- **支持的推理方式**
+    - **本地推理**：在本机直接运行 PaddleOCR 产线。此方式对本地环境与计算机性能有一定要求，适用于需要离线使用、对数据隐私有严格要求的场景。
+    - **官方 API**：调用 PaddleOCR 官方提供的 API。此方式适合快速体验功能、快速验证方案等，也适用于零代码开发场景。
+    - **千帆 API**：调用百度智能云千帆大模型平台提供的 API。
+    - **自建 API**：调用用户自建的 PaddleOCR 推理服务。此方式具备服务化部署优势及高度灵活性，适用于需要自定义服务配置的场景，同时也适用于对数据隐私有严格要求的场景。**目前暂时只支持基础服务化部署方案。**
+
+## 示例：
+
+以下展示了使用 PaddleOCR MCP 服务器结合其他工具搭建的创意案例：
+
+### Demo 1
+在 Claude for Desktop 中，提取图像中的手写内容，并存到笔记软件 Notion。PaddleOCR MCP 服务器从图像中提取了文字、公式等信息，并保留了文档的结构。
+<div align="center">
+  <img width="65%" src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/paddleocr/mcp_demo/note_to_notion.gif" alt="note_to_notion">
+  <img width="30%" src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/paddleocr/mcp_demo/note.jpg" alt="note">
+</div>
+
+- 注: 除 PaddleOCR MCP 服务器外，此 demo 还使用 [Notion MCP 服务器](https://developers.notion.com/docs/mcp)。
+
+---
+
+### Demo 2
+在 VSCode 中，根据手写思路或伪代码一键转换为可运行并符合项目代码风格规范的 Python 脚本，并将其上传到 GitHub 仓库中。PaddleOCR MCP 服务器从图像中准确提取手写代码供后续步骤使用。
+
+<div align="center">
+  <img width="70%" img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/paddleocr/mcp_demo/code_to_github.gif" alt="code_to_github">
+</div>
+
+- 除 PaddleOCR MCP 服务器外，此 demo 还使用 [filesystem MCP 服务器](https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem)。
+
+---
+
+### Demo 3
+
+在 Claude for Desktop 中，将含有复杂表格、公式、手写文字等内容的 PDF 文档或图片转存为本地可编辑文件。
+
+#### Demo 3.1
+
+含表格水印复杂文档PDF 转为 doc/Word 可编辑格式：
+<div align="center">
+  <img width="70%" img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/paddleocr/mcp_demo/pdf_to_file.gif" alt="pdf_to_file">
+</div>
+
+#### Demo 3.2
+
+含公式表格图片转为 csv/Excel 可编辑格式：
+<div align="center">
+  <img width="70%" img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/00136903a4d0b5f11bd978cb0ef5d3c44f3aa5e9/images/paddleocr/mcp_demo/table_to_excel1.png" alt="table_to_excel1">
+  <img width="50%" img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/00136903a4d0b5f11bd978cb0ef5d3c44f3aa5e9/images/paddleocr/mcp_demo/table_to_excel2.png" alt="table_to_excel2">
+  <img width="45%" img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/00136903a4d0b5f11bd978cb0ef5d3c44f3aa5e9/images/paddleocr/mcp_demo/table_to_excel3.png" alt="table_to_excel3">
+</div>
+
+
+- 除 PaddleOCR MCP 服务器外，此 demo 还使用 [filesystem MCP 服务器](https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem)。
+
+---
+
+### 目录
+
+- [目录](#_3)
+- [1. 安装](#1)
+- [2. 在 Claude for Desktop 中使用](#2-claude-for-desktop)
+    - [2.1 快速开始](#21)
+    - [2.2 MCP 主机配置说明](#22-mcp)
+    - [2.3 推理方式说明](#23)
+    - [2.4 使用 `uvx`](#24-uvx)
+- [3. 运行服务器](#3)
+- [4. 参数说明](#4)
+- [5. 已知局限性](#5)
+
+## 1. 安装
+
+本节将介绍如何通过 pip 安装 `paddleocr-mcp` 库。
+
+`paddleocr-mcp` 要求 Python 版本不低于 3.10。
+`paddleocr-mcp` 默认依赖 `paddleocr>=3.6.0`，因此官方 API、千帆 API 和自建 API 推理方式无需额外安装 PaddleOCR。如需使用本地推理，还需要安装本地运行产线所需的文档解析依赖和推理引擎，详情请参考 [方式一：本地推理](#方式一本地推理)。
+
+从 PyPI 安装：
+
+```bash
+pip install -U paddleocr-mcp
+```
+
+从项目源码安装：
+
+```bash
+git clone https://github.com/PaddlePaddle/PaddleOCR.git
+pip install -e mcp_server
+```
+
+如需使用本地推理，请安装 [方式一：本地推理](#方式一本地推理) 中说明的可选依赖。
+
+可通过以下命令检查是否安装成功：
+
+```bash
+paddleocr_mcp --help
+```
+
+如果执行上述命令后打印出了帮助信息，则说明安装成功。
+
+PaddleOCR 也支持通过 `uvx` 等方式免安装运行服务器，详情请参考 [2. 在 Claude for Desktop 中使用](#2-claude-for-desktop) 中的说明。
+
+## 2. 在 Claude for Desktop 中使用
+
+本节将介绍如何在 Claude for Desktop 中使用 PaddleOCR MCP 服务器。对于其他 MCP 主机，也可参照本节的步骤，并根据实际情况进行相应调整。
+
+### 2.1 快速开始
+
+接下来以 **官方 API** 推理方式为例，引导您快速上手。
+
+1. **安装 `paddleocr-mcp`**
+
+    请参考 [1. 安装](#1)。
+
+2. **获取访问令牌**
+
+    请先在 [AI Studio Access Token 页面](https://aistudio.baidu.com/account/accessToken) 获取访问令牌。
+
+3. **添加 MCP 服务器配置**
+
+    在以下位置之一找到 Claude for Desktop 配置文件：
+
+    - **macOS**：`~/Library/Application Support/Claude/claude_desktop_config.json`
+    - **Windows**：`%APPDATA%\Claude\claude_desktop_config.json`
+    - **Linux**：`~/.config/Claude/claude_desktop_config.json`
+
+    打开 `claude_desktop_config.json` 文件，参考如下示例调整配置，填充到 `claude_desktop_config.json` 中。
+
+    ```json
+    {
+      "mcpServers": {
+        "paddleocr": {
+          "command": "paddleocr_mcp",
+          "args": [],
+          "env": {
+            "PADDLEOCR_MCP_PIPELINE": "OCR",
+            "PADDLEOCR_MCP_PPOCR_SOURCE": "aistudio",
+            "PADDLEOCR_MCP_AISTUDIO_ACCESS_TOKEN": "<your-access-token>"
+          }
+        }
+      }
+    }
+    ```
+
+    **说明**：
+
+    - 将 `<your-access-token>` 替换为您的访问令牌。
+    - 如需使用自定义服务地址，可设置 `PADDLEOCR_MCP_AISTUDIO_BASE_URL` 环境变量。
+
+    **注意**：
+
+    - 请勿泄漏您的 **访问令牌**。
+    - 如果 `paddleocr_mcp` 无法在系统 `PATH` 中找到，请将 `command` 设置为可执行文件的绝对路径。
+
+4. **重启 MCP 主机**
+
+    重启 Claude for Desktop。新的 `paddleocr` 服务现在应该可以在应用中使用了。
+
+### 2.2 MCP 主机配置说明
+
+在 Claude for Desktop 的配置文件中，您需要定义 MCP 服务器的启动方式。关键字段如下：
+
+- `command`：`paddleocr_mcp`（如果可执行文件可在 `PATH` 中找到）或绝对路径。
+- `args`：可配置命令行参数，如 `["--verbose"]`。详见 [4. 参数说明](#4)。
+- `env`：可配置环境变量。详见 [4. 参数说明](#4)。
+
+### 2.3 推理方式说明
+
+您可以根据需求配置 MCP 服务器，使其使用不同的推理方式。不同推理方式需要的操作流程有所不同，下面将详细介绍。
+
+#### 方式一：本地推理 {#方式一本地推理}
+
+1. 安装 `paddleocr-mcp` 及本地推理依赖。`paddleocr-mcp` 已默认依赖 PaddleOCR；本地推理还需要文档解析依赖和推理引擎。可以参考 [PaddleOCR 安装文档](../installation.md) 手动安装，也可以使用相应的可选依赖：
+    - `paddleocr-mcp[local]`：包含 `paddleocr[doc-parser]>=3.6.0`（不包含推理引擎）。
+    - `paddleocr-mcp[local-cpu]`：在 `local` 基础上额外包含 CPU 版本的 PaddlePaddle 推理引擎（`paddlepaddle>=3.2.1`）。
+
+    ```bash
+    # 安装本地推理所需的文档解析依赖（不包含推理引擎）
+    pip install "paddleocr-mcp[local]"
+    # 在 local 基础上额外安装 CPU 版本飞桨框架
+    pip install "paddleocr-mcp[local-cpu]"
+    ```
+
+    为避免依赖冲突，**强烈建议在独立的虚拟环境中安装**。
+2. 参考下方的配置示例更改 `claude_desktop_config.json` 文件内容。
+3. 重启 MCP 主机。
+
+配置示例：
+
+```json
+{
+  "mcpServers": {
+    "paddleocr": {
+      "command": "paddleocr_mcp",
+      "args": [],
+      "env": {
+        "PADDLEOCR_MCP_PIPELINE": "OCR",
+        "PADDLEOCR_MCP_PPOCR_SOURCE": "local"
+      }
+    }
+  }
+}
+```
+
+**说明**：
+
+- `PADDLEOCR_MCP_PIPELINE` 需要被设置为产线名称。详见第 4 节。
+- `PADDLEOCR_MCP_PIPELINE_CONFIG` 为可选项，不设置时使用产线默认配置。如需调整配置，例如更换模型，请参考 [PaddleOCR 文档](../paddleocr_and_paddlex.md) 导出产线配置文件，并将 `PADDLEOCR_MCP_PIPELINE_CONFIG` 设置为配置文件的绝对路径。
+- **推理性能提示**：
+
+    如果使用过程中出现推理耗时过长、内存不足等问题，可考虑参考如下建议调整产线配置：
+
+    - **OCR 产线**：建议更换 `mobile` 系列模型。例如，您可以在产线配置文件中将检测和识别模型分别修改为 `PP-OCRv5_mobile_det` 和 `PP-OCRv5_mobile_rec`。
+    - **PP-StructureV3 产线**：
+    
+        - 关闭不需要用到的功能，例如设置 `use_formula_recognition` 为 `False` 以禁用公式识别。
+        - 使用轻量级的模型，例如将 OCR 模型替换为 `mobile` 版本、换用轻量的公式识别模型 PP-FormulaNet-S 等。
+
+        以下示例代码可用于获取产线配置文件，其中关闭了 PP-StructureV3 产线的大部分可选功能，同时将部分关键模型更换为轻量级版本。
+
+        ```python
+        from paddleocr import PPStructureV3
+
+        pipeline = PPStructureV3(
+            use_doc_orientation_classify=False, # 禁用文档图像方向分类
+            use_doc_unwarping=False,            # 禁用文本图像矫正
+            use_textline_orientation=False,     # 禁用文本行方向分类
+            use_formula_recognition=False,      # 禁用公式识别
+            use_seal_recognition=False,         # 禁用印章文本识别
+            use_table_recognition=False,        # 禁用表格识别
+            use_chart_recognition=False,        # 禁用图表解析
+            # 使用轻量级模型
+            text_detection_model_name="PP-OCRv5_mobile_det",
+            text_recognition_model_name="PP-OCRv5_mobile_rec",
+            layout_detection_model_name="PP-DocLayout-S",
+        )
+
+        # 配置文件保存到 `PP-StructureV3.yaml` 中
+        pipeline.export_paddlex_config_to_yaml("PP-StructureV3.yaml")
+        ```
+    
+    **对于 PaddleOCR-VL 系列，不建议使用 CPU 推理。**
+
+#### 方式二：官方 API
+
+请参考 [2.1 快速开始](#21)。
+
+对于文字识别以外的任务，请正确设置 `PADDLEOCR_MCP_PIPELINE`（参数说明详见第 4 节）。
+
+#### 方式三：千帆 API
+
+1. 安装 `paddleocr-mcp`。
+2. 参考 [千帆平台官方文档](https://cloud.baidu.com/doc/qianfan-api/s/ym9chdsy5) 获取 API key。
+3. 参考下方的配置示例更改 `claude_desktop_config.json` 文件内容。
+4. 重启 MCP 主机。
+
+配置示例：
+
+```json
+{
+  "mcpServers": {
+    "paddleocr": {
+      "command": "paddleocr_mcp",
+      "args": [],
+      "env": {
+        "PADDLEOCR_MCP_PIPELINE": "PaddleOCR-VL",
+        "PADDLEOCR_MCP_PPOCR_SOURCE": "qianfan",
+        "PADDLEOCR_MCP_QIANFAN_API_KEY": "<your-api-key>"
+      }
+    }
+  }
+}
+```
+
+**说明**：
+
+- `PADDLEOCR_MCP_PIPELINE` 需设置为产线名称；千帆仅支持 `PP-StructureV3` 与 `PaddleOCR-VL`。
+- `PADDLEOCR_MCP_QIANFAN_BASE_URL` 为千帆 API 基础 URL（可选）。
+- `PADDLEOCR_MCP_QIANFAN_API_KEY` 是您的千帆 API key，用于认证。
+
+#### 方式四：自建 API
+
+1. 在需要运行 PaddleOCR 推理服务器的环境中，参考 [PaddleOCR 服务化部署文档](../inference_deployment/serving/serving.md) 运行推理服务器。
+2. 在需要运行 MCP 服务器的环境中安装 `paddleocr-mcp`。
+3. 参考下方的配置示例更改 `claude_desktop_config.json` 文件内容。
+4. 重启 MCP 主机。
+
+配置示例：
+
+```json
+{
+  "mcpServers": {
+    "paddleocr": {
+      "command": "paddleocr_mcp",
+      "args": [],
+      "env": {
+        "PADDLEOCR_MCP_PIPELINE": "OCR",
+        "PADDLEOCR_MCP_PPOCR_SOURCE": "self_hosted",
+        "PADDLEOCR_MCP_SELF_HOSTED_BASE_URL": "<your-server-url>"
+      }
+    }
+  }
+}
+```
+
+**说明**：
+
+- `PADDLEOCR_MCP_PIPELINE` 需要被设置为产线名称。详见第 4 节。
+- 将 `<your-server-url>` 替换为底层服务的基础 URL（如：`http://127.0.0.1:8080`，**不要**包含 `/ocr`、`/layout-parsing` 等路径；MCP 会按产线自动拼接）。
+
+### 2.4 使用 `uvx`
+
+PaddleOCR 也支持通过 `uvx` 启动 MCP 服务器。这种方式不需要手动安装 `paddleocr-mcp`。主要步骤如下：
+
+1. 安装 [uv](https://docs.astral.sh/uv/#installation)。
+2. 修改 `claude_desktop_config.json` 文件。示例如下：
+
+  自建 API 推理示例：
+
+  ```json
+  {
+    "mcpServers": {
+     "paddleocr": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "paddleocr-mcp",
+        "paddleocr_mcp"
+      ],
+      "env": {
+        "PADDLEOCR_MCP_PIPELINE": "OCR",
+        "PADDLEOCR_MCP_PPOCR_SOURCE": "self_hosted",
+        "PADDLEOCR_MCP_SELF_HOSTED_BASE_URL": "<your-server-url>"
+      }
+     }
+    }
+  }
+  ```
+
+  本地推理（CPU 推理，使用可选依赖 `local-cpu`）示例：
+
+  ```json
+  {
+    "mcpServers": {
+     "paddleocr": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "paddleocr-mcp[local-cpu]",
+        "paddleocr_mcp"
+      ],
+      "env": {
+        "PADDLEOCR_MCP_PIPELINE": "OCR",
+        "PADDLEOCR_MCP_PPOCR_SOURCE": "local"
+      }
+     }
+    }
+  }
+  ```
+
+  如需了解本地推理的依赖、性能调优及产线配置，请参考 [方式一：本地推理](#方式一本地推理) 部分。
+
+  由于使用了不一样的启动方式，配置文件中 `command` 和 `args` 的设置都与前文介绍的方式存在不同，但 MCP 服务本身支持的命令行参数与环境变量（如 `PADDLEOCR_MCP_SELF_HOSTED_BASE_URL`）仍然可以以相同的方式设置。
+
+## 3. 运行服务器
+
+除了在 Claude for Desktop 等 MCP 主机中使用外，您也可以通过 CLI 运行 PaddleOCR MCP 服务器。
+
+执行以下命令可以打印帮助信息：
+
+```bash
+paddleocr_mcp --help
+```
+
+示例命令如下：
+
+```bash
+# OCR + 官方 API + stdio
+PADDLEOCR_MCP_AISTUDIO_ACCESS_TOKEN=xxxxxx paddleocr_mcp --pipeline OCR --ppocr_source aistudio
+
+# PP-StructureV3 + 本地推理 + stdio
+paddleocr_mcp --pipeline PP-StructureV3 --ppocr_source local
+
+# OCR + 自建 API + Streamable HTTP
+paddleocr_mcp --pipeline OCR --ppocr_source self_hosted --self-hosted-base-url http://127.0.0.1:8080 --http
+```
+
+在 [4. 参数说明](#4) 中可以了解 PaddleOCR MCP 服务器支持的全部参数。
+
+## 4. 参数说明
+
+您可以通过环境变量或命令行参数来控制 MCP 服务器的行为。
+
+| 环境变量 | 命令行参数 | 类型 | 描述 | 可选值 | 默认值 |
+|:---------|:-----------|:-----|:-----|:-------|:-------|
+| `PADDLEOCR_MCP_PIPELINE` | `--pipeline` | `str` | 要运行的产线。 | `"OCR"`，`"PP-StructureV3"`，`"PaddleOCR-VL"`，`"PaddleOCR-VL-1.5"`，`"PaddleOCR-VL-1.6"` | `"OCR"` |
+| `PADDLEOCR_MCP_PPOCR_SOURCE` | `--ppocr_source` | `str` | PaddleOCR能力来源。 | `"local"`（本地推理），`"aistudio"`（官方 API），`"qianfan"`（千帆 API），`"self_hosted"`（自建 API） | `"local"` |
+| `PADDLEOCR_MCP_AISTUDIO_BASE_URL` | `--aistudio-base-url` | `str` | AI Studio API 基础 URL（`aistudio` 推理方式下可选）。 | - | `None` |
+| `PADDLEOCR_MCP_QIANFAN_BASE_URL` | `--qianfan-base-url` | `str` | 千帆 API 基础 URL（`qianfan` 推理方式下可选）。 | - | `https://qianfan.baidubce.com/v2/ocr` |
+| `PADDLEOCR_MCP_SELF_HOSTED_BASE_URL` | `--self-hosted-base-url` | `str` | 自建 PaddleX 服务基础 URL（`self_hosted` 推理方式下必需）。 | - | `None` |
+| `PADDLEOCR_MCP_QIANFAN_API_KEY` | `--qianfan_api_key` | `str` | 千帆 API 认证密钥（`qianfan` 推理方式下必需）。 | - | `None` |
+| `PADDLEOCR_MCP_AISTUDIO_ACCESS_TOKEN` | `--aistudio_access_token` | `str` | AI Studio 访问令牌（`aistudio` 推理方式下必需）。 | - | `None` |
+| `PADDLEOCR_MCP_TIMEOUT` | `--timeout` | `int` | 底层服务请求超时时间（秒）。在 `aistudio` 推理方式下用作单次请求超时，轮询超时为该值的 10 倍；在 `qianfan` 和 `self_hosted` 推理方式下用作 HTTP 读取超时。 | - | `60` |
+| `PADDLEOCR_MCP_DEVICE` | `--device` | `str` | 指定运行推理的设备（仅在 `local` 推理方式下生效）。 | - | `None` |
+| `PADDLEOCR_MCP_PIPELINE_CONFIG` | `--pipeline_config` | `str` | PaddleOCR 产线配置文件路径（仅在 `local` 推理方式下生效）。 | - | `None` |
+| - | `--http` | `bool` | 使用 Streamable HTTP 传输而非 stdio（适用于远程部署和多客户端）。 | - | `False` |
+| - | `--host` | `str` | Streamable HTTP 模式的主机地址。 | - | `"127.0.0.1"` |
+| - | `--port` | `int` | Streamable HTTP 模式的端口。 | - | `8000` |
+| - | `--verbose` | `bool` | 启用详细日志记录，便于调试。 | - | `False` |
+
+## 5. 已知局限性
+
+- 在本地推理方式下，对外暴露的 MCP 工具无法处理 Base64 编码的 PDF 文档输入。
+- 在本地推理方式下，对外暴露的 MCP 工具不会根据模型提示的 `file_type` 推断文件类型，对于一些复杂 URL 可能处理失败。
+- 对于 PP-StructureV3 和 PaddleOCR-VL 系列，若输入文件中包含图像，返回结果可能会显著增加 token 使用量。若无需图像内容，可通过提示词明确排除，以降低资源消耗。

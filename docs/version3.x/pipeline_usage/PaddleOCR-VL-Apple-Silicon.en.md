@@ -5,7 +5,7 @@ comments: true
 # PaddleOCR-VL Apple Silicon Usage Tutorial
 
 > INFO:
-> Unless otherwise specified, the term "PaddleOCR-VL" in this tutorial refers to the PaddleOCR-VL model series (e.g., PaddleOCR-VL-1.5). References specific to the PaddleOCR-VL v1 version will be explicitly noted.
+> Unless otherwise specified, the term "PaddleOCR-VL" in this tutorial refers to the PaddleOCR-VL model series (e.g., PaddleOCR-VL-1.6). References specific to the PaddleOCR-VL v1 version will be explicitly noted.
 
 This tutorial is a guide for using PaddleOCR-VL on Apple Silicon, covering the complete workflow from environment preparation to service deployment.
 
@@ -24,21 +24,23 @@ Use this guide for the workflows below.
 
 | Goal | Support on this hardware | Read this section |
 | --- | --- | --- |
-| Local direct inference | Supported | Read Section 1. Environment Preparation and Section 2. Quick Start. |
-| Client + VLM inference service | Supported | Complete local direct inference first, then read Section 3. Improving Inference Performance with VLM Inference Services. |
-| Full API service | Supported with manual deployment only | Complete Section 1. Environment Preparation first, then read Section 4.1 Manual Deployment; after that, continue with Section 4.2 Client Invocation Methods and Section 4.3 Pipeline Configuration Adjustment Instructions. |
+| Local direct inference | Supported | Read Section 1. Local Runtime Environment Preparation and Section 2. Quick Start. |
+| Client + VLM inference service | Supported | Complete local direct inference first, then read Section 3. Using VLM Inference Services. |
+| Full API service | Supported with manual deployment only | Complete Section 1. Local Runtime Environment Preparation first, then read Section 4.1 Manual Deployment; after that, continue with Section 4.2 Client Invocation Methods and Section 4.3 Pipeline Configuration Adjustment Instructions. |
 | Model fine-tuning | Supported | Read Section 5. Model Fine-Tuning. |
 
 If you only need to confirm which inference methods are available on this hardware, refer to the [PaddleOCR-VL Inference Method and Hardware Support Matrix](./PaddleOCR-VL.en.md#inference-device-support-for-paddleocr-vl) in the main guide.
 
-## 1. Environment Preparation
+## 1. Local Runtime Environment Preparation
 
-**Environment Setup Methods Supported on This Hardware**
+**Local Runtime Environment Setup Methods Supported on This Hardware**
 
-| Environment setup method | Status | Notes |
+| Local runtime environment setup method | Status | Notes |
 | --- | --- | --- |
 | Official Docker image | Not currently supported | This hardware does not currently support this path. |
-| Manually install PaddlePaddle and PaddleOCR | Supported with steps in this guide | Continue reading this section. |
+| Manually install the inference engine and PaddleOCR | Supported with steps in this guide | Continue reading this section. |
+
+Local inference on this hardware currently supports only the PaddlePaddle inference engine.
 
 **We strongly recommend installing PaddleOCR-VL in a virtual environment to avoid dependency conflicts.** For example, use the Python venv standard library to create a virtual environment:
 
@@ -62,9 +64,9 @@ python -m pip install -U "paddleocr[doc-parser]"
 
 Please refer to [PaddleOCR-VL Usage Tutorial - 2. Quick Start](./PaddleOCR-VL.en.md#2-quick-start).
 
-## 3. Improving Inference Performance with VLM Inference Services
+## 3. Using VLM Inference Services
 
-The inference performance under default configurations is not fully optimized and may not meet actual production requirements. This section introduces how to improve PaddleOCR-VL inference performance through a VLM inference service. In this hardware-specific guide, the examples use MLX-VLM as the backend for the VLM inference service.
+This section explains how to connect PaddleOCR-VL to a dedicated VLM inference service backend. On this hardware, this is usually used to improve inference performance beyond the default configuration for production use. In this hardware-specific guide, the examples use MLX-VLM as the backend for the VLM inference service.
 
 ### 3.1 Starting the VLM Inference Service
 
@@ -101,10 +103,10 @@ You can specify the backend type (`mlx-vlm-server`) via `--vl_rec_backend`, the 
 
 ```shell
 paddleocr doc_parser \
-  --input paddleocr_vl_demo.png \
+  --input https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/paddleocr_vl_demo.png \
   --vl_rec_backend mlx-vlm-server \
   --vl_rec_server_url http://localhost:8111/ \
-  --vl_rec_api_model_name PaddlePaddle/PaddleOCR-VL-1.5
+  --vl_rec_api_model_name PaddlePaddle/PaddleOCR-VL-1.6
 ```
 
 #### 3.2.2 Python Script Integration
@@ -115,7 +117,7 @@ When creating a `PaddleOCRVL` object, specify the backend type via `vl_rec_backe
 pipeline = PaddleOCRVL(
     vl_rec_backend="mlx-vlm-server", 
     vl_rec_server_url="http://localhost:8111/",
-    vl_rec_api_model_name="PaddlePaddle/PaddleOCR-VL-1.5",
+    vl_rec_api_model_name="PaddlePaddle/PaddleOCR-VL-1.6",
 )
 ```
 
@@ -130,17 +132,17 @@ Please refer to [PaddleOCR-VL Usage Tutorial - 3.3 Performance Tuning](./PaddleO
 | Deployment method | Status | Notes |
 | --- | --- | --- |
 | Docker Compose deployment | Not currently supported | This hardware currently supports only the manual deployment path. |
-| Manual deployment | Supported; steps are in the main guide | Complete Section 1. Environment Preparation first, then continue with Section 4.1 and follow the shared manual deployment guidance in the main guide. |
+| Manual deployment | Supported | Complete Section 1. Local Runtime Environment Preparation first, then continue with Section 4.1. |
 
 ### 4.1 Manual Deployment
 
-Please complete Section 1. Environment Preparation first, then refer to [PaddleOCR-VL Usage Tutorial - 4.2 Method 2: Manual Deployment](./PaddleOCR-VL.en.md#42-method-2-manual-deployment).
+Please complete Section 1. Local Runtime Environment Preparation first, then refer to [PaddleOCR-VL Usage Tutorial - 4.2 Method 2: Manual Deployment](./PaddleOCR-VL.en.md#42-method-2-manual-deployment).
 
-### 4.2 Client Invocation Methods {#43-client-invocation-methods}
+### 4.2 Client Invocation Methods
 
 Please refer to [PaddleOCR-VL Usage Tutorial - 4.3 Client Invocation Methods](./PaddleOCR-VL.en.md#43-client-side-invocation).
 
-### 4.3 Pipeline Configuration Adjustment Instructions {#44-pipeline-configuration-adjustment-instructions}
+### 4.3 Pipeline Configuration Adjustment Instructions
 
 Please refer to [PaddleOCR-VL Usage Tutorial - 4.4 Pipeline Configuration Adjustment Instructions](./PaddleOCR-VL.en.md#44-pipeline-configuration-adjustment-instructions).
 

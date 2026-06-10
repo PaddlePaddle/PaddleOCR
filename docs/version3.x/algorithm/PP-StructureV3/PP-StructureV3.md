@@ -1503,7 +1503,7 @@ PP-StructureV3 能够将文档图像和 PDF 文件高效转换为结构化内容
 
 **Q:默认模型是什么配置，如果需要更高精度、更快速度、或者更小显存，应该调哪些参数或者更换哪些模型，对结果影响大概有多大？**
 
-**A:** 默认模型均采用了了各个模块参数量最大的模型，3.3 章节中展示了不同的模型选择对于显存和推理速度的影响。可以根据设备情况和样本难易程度选择合适的模型。另外，在 Python API 或 CLI 设置 device 为<设备类型>:<设备编号1>,<设备编号2>...（例如gpu:0,1,2,3）可实现多卡并行推理。如果内置的多卡并行推理功能提速效果仍不满足预期，可参考多进程并行推理示例代码，结合具体场景进行进一步优化：[多进程并行推理](https://www.paddleocr.ai/latest/version3.x/pipeline_usage/instructions/parallel_inference.html)。
+**A:** 默认模型均采用了了各个模块参数量最大的模型，3.3 章节中展示了不同的模型选择对于显存和推理速度的影响。可以根据设备情况和样本难易程度选择合适的模型。另外，在 Python API 或 CLI 设置 device 为<设备类型>:<设备编号1>,<设备编号2>...（例如gpu:0,1,2,3）可实现多卡并行推理。如果内置的多卡并行推理功能提速效果仍不满足预期，可参考多进程并行推理示例代码，结合具体场景进行进一步优化：[多进程并行推理](https://www.paddleocr.ai/latest/version3.x/inference_deployment/local_inference/parallel_inference.html)。
 
 ---
 
@@ -1518,7 +1518,7 @@ PP-StructureV3 能够将文档图像和 PDF 文件高效转换为结构化内容
 **A:**  
 - 对于 Python 项目，可以直接使用 PaddleOCR 的 Python API 完成集成。  
 - 对于其他编程语言，建议通过服务化部署方式集成。PaddleOCR 支持包括 C++、C#、Java、Go、PHP 等多种语言的客户端调用方式，具体集成方法可参考 [官方文档](https://www.paddleocr.ai/latest/version3.x/pipeline_usage/PP-StructureV3.html#3)。  
-- 如果需要与大模型进行交互，PaddleOCR 还提供了 MCP 服务，详细说明可参考 [MCP 服务器](https://www.paddleocr.ai/latest/version3.x/deployment/mcp_server.html)。
+- 如果需要与大模型进行交互，PaddleOCR 还提供了 MCP 服务，详细说明可参考 [MCP 服务器](https://www.paddleocr.ai/latest/version3.x/integrations/mcp_server.html)。
 
 ---
 

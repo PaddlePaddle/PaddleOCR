@@ -37,7 +37,7 @@
 ### 📄 지능형 문서 파싱 (LLM 지원)
 > *복잡한 시각 자료를 LLM 시대에 맞는 구조화된 데이터로 변환합니다.*
 
-* **최첨단 문서 VLM**: 문서 파싱을 위한 업계 최고의 경량 비전-언어 모델인 **PaddleOCR-VL-1.5 (0.9B)**를 탑재하였습니다. **왜곡, 스캔, 화면 촬영, 조명, 기울어진 문서**라는 5대 "실제 환경" 난제에서 복잡한 문서 파싱에 탁월하며, **Markdown** 및 **JSON** 형식의 구조화된 출력을 지원합니다.
+* **최첨단 문서 VLM**: 문서 파싱을 위한 업계 최고의 경량 비전-언어 모델인 **PaddleOCR-VL-1.6 (0.9B)**를 탑재하였습니다. OmniDocBench v1.6에서 96.3% 정확도를 달성했으며, 텍스트·수식·표 인식에서 업계를 선도합니다. 고문서, 희귀 문자, 인장, 차트 등 다양한 시나리오에서의 성능도 크게 향상되었으며, **Markdown** 및 **JSON** 형식의 구조화된 출력을 지원합니다.
 * **구조 인식 변환**: **PP-StructureV3**를 기반으로 복잡한 PDF와 이미지를 **Markdown** 또는 **JSON**으로 원활하게 변환합니다. PaddleOCR-VL 시리즈 모델과 달리 표 셀 좌표, 텍스트 좌표 등 더욱 세밀한 좌표 정보를 제공합니다.
 * **상용 수준의 효율성**: 초소형 모델로 상용 등급의 정확도를 달성합니다. 공개 벤치마크에서 다수의 비공개 솔루션을 능가하면서도 엣지/클라우드 배포에 적합한 자원 효율성을 유지합니다.
 
@@ -62,15 +62,27 @@
 
 ## 📣 최근 업데이트
 
-### 🔥 PaddleOCR v3.5.0 출시: 더 유연한 추론 백엔드와 더 풍부한 문서 출력
+### 🔥 2026.05.28: PaddleOCR 3.6.0 출시
+- PaddleOCR-VL-1.6 핵심 하이라이트:
+
+    - **새로운 SOTA 정확도**: OmniDocBench v1.6에서 96.3%를 돌파했으며, OmniDocBench v1.5, Real5-OmniDocBench에서도 SOTA를 경신. 텍스트, 수식, 표 인식에서 오픈소스 및 폐쇄형 솔루션 모두를 앞섭니다.
+    - **능력 전면 업그레이드**: 표, 고문서, 희귀 문자 인식이 크게 향상되었으며, 인장 인식, spotting, 차트 이해 등 다양한 시나리오에서도 현저한 강화.
+    - **원활한 마이그레이션**: 모델 구조가 PaddleOCR-VL-1.5와 완전히 동일하여, 제로 비용으로 적용 가능—교체만 하면 바로 사용.
+    - **지금 사용해 보세요**: [HuggingFace](https://huggingface.co/PaddlePaddle/PaddleOCR-VL-1.6) 또는 [공식 웹사이트](https://www.paddleocr.com)에서 이용 가능합니다.
+
+<details>
+<summary><strong>2026.04.21: PaddleOCR 3.5.0 출시</strong></summary>
+
 * **유연한 추론 백엔드 전환**: Paddle 정적 그래프, Paddle 동적 그래프, Transformers 사이를 원활하게 전환할 수 있습니다. Hugging Face 생태계에 깊이 통합되었으며, 주요 20개 모델이 Transformers를 추론 백엔드로 지원합니다.
 * **Office 문서를 Markdown으로 변환**: Word, Excel, PowerPoint 등 일반적인 문서 형식을 Markdown으로 변환할 수 있습니다.
 * **분석 결과 DOCX 내보내기**: `PaddleOCR-VL` 시리즈, `PP-StructureV3`, `PP-DocTranslation`이 이제 분석 결과를 DOCX로 내보내 Microsoft Word에서 편리하게 확인하고 편집할 수 있습니다.
 * **공식 브라우저 추론 SDK**: 공식 브라우저 추론 SDK `PaddleOCR.js`를 출시하여 브라우저에서 `PP-OCRv5`를 실행할 수 있습니다.
 
+</details>
+
 <details>
 <summary><strong>2026.01.29: PaddleOCR 3.4.0 출시</strong></summary>
-* **PaddleOCR-VL-1.5 (최첨단 0.9B VLM)**: 문서 파싱을 위한 최신 플래그십 모델이 출시되었습니다!
+* PaddleOCR-VL-1.5 (최첨단 0.9B VLM): 문서 파싱을 위한 최신 플래그십 모델이 출시되었습니다!
     * **OmniDocBench에서 94.5% 정확도**: 최상위 범용 대규모 모델 및 전문 문서 파서를 능가합니다.
     * **실제 환경 강건성**: 비정형 형태 위치 지정을 위한 **PP-DocLayoutV3** 알고리즘을 최초 도입하여 *기울기, 왜곡, 스캔, 조명, 화면 촬영*이라는 5가지 까다로운 시나리오를 정복합니다.
     * **기능 확장**: **인감 인식**, **텍스트 탐지**를 지원하며, **111개 언어**(중국 티베트 문자 및 벵골어 포함)로 확장되었습니다.
@@ -131,8 +143,6 @@
 
 [변경 이력](https://paddlepaddle.github.io/PaddleOCR/latest/en/update/update.html)
 
-</details>
-
 
 ## 🚀 빠른 시작
 
@@ -152,10 +162,10 @@ PaddleOCR 공식 웹사이트에서는 별도 설정 없이 클릭 한 번으로
 
 ## 🧩 추가 기능
 
-- 모델을 ONNX 형식으로 변환: [ONNX 모델 획득](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/obtaining_onnx_models.html).
-- OpenVINO, ONNX Runtime, TensorRT 등의 엔진을 사용한 추론 가속 또는 ONNX 형식 모델을 사용한 추론: [고성능 추론](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/high_performance_inference.html).
+- 모델을 ONNX 형식으로 변환: [ONNX 모델 획득](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/inference_deployment/others/obtaining_onnx_models.html).
+- OpenVINO, ONNX Runtime, TensorRT 등의 엔진을 사용한 추론 가속 또는 ONNX 형식 모델을 사용한 추론: [고성능 추론](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/inference_deployment/local_inference/high_performance_inference.html).
 - 다중 GPU 및 다중 프로세스를 사용한 추론 가속: [파이프라인 병렬 추론](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/pipeline_usage/instructions/parallel_inference.html).
-- PaddleOCR를 C++, C#, Java 등으로 작성된 애플리케이션에 통합: [서빙](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/serving.html).
+- PaddleOCR를 C++, C#, Java 등으로 작성된 애플리케이션에 통합: [서빙](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/inference_deployment/serving/serving.html).
 
 ## 🔄 실행 결과 빠른 미리보기
 
