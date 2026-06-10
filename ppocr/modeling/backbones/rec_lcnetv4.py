@@ -144,27 +144,29 @@ NET_CONFIG_REC = {
         ],
         "blocks6": [],
     },
-    "base": {
-        # stem: branch StemBlock (mid=64, out=128)  channels: 128 → 384 → 640
+    "medium": {
+        # stem: branch StemBlock (mid=64, out=128)  channels: 128 → 256 → 512 → 768
         "stem": (64, 128),
         "stem_type": "branch",
         "blocks2": [[3, 128, 128, 1, True]],
-        "blocks3": [[3, 128, 128, 1, False], [3, 128, 128, 1, False]],
+        "blocks3": [
+            [3, 128, 256, 1, False],
+            [3, 256, 256, 1, False],
+            [3, 256, 256, 1, True],
+        ],
         "blocks4": [
-            [3, 128, 384, (2, 1), False],
-            [3, 384, 384, 1, True],
-            [3, 384, 384, 1, False],
-            [3, 384, 384, 1, True],
-            [3, 384, 384, 1, False],
-            [3, 384, 384, 1, True],
-            [3, 384, 384, 1, False],
-            [3, 384, 384, 1, False],
+            [3, 256, 512, (2, 1), False],
+            [3, 512, 512, 1, True],
+            [3, 512, 512, 1, False],
+            [3, 512, 512, 1, True],
+            [3, 512, 512, 1, False],
+            [3, 512, 512, 1, True],
+            [3, 512, 512, 1, False],
         ],
         "blocks5": [
-            [3, 384, 640, (2, 1), False],
-            [3, 640, 640, 1, True],
-            [3, 640, 640, 1, False],
-            [3, 640, 640, 1, True],
+            [3, 512, 768, (2, 1), False],
+            [3, 768, 768, 1, True],
+            [3, 768, 768, 1, False],
         ],
         "blocks6": [],
     },
@@ -524,7 +526,7 @@ class PPLCNetV4(nn.Layer):
         Returns 4-level feature list [s1_out, s2_out, s3_out, s4_out].
 
     Recognition (det=False):
-        model_size in {'tiny', 'small', 'base'} — see NET_CONFIG_REC.
+        model_size in {'tiny', 'small', 'medium'} — see NET_CONFIG_REC.
         Returns pooled feature tensor [B, C, 1, W].
     """
 
