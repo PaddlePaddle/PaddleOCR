@@ -355,7 +355,13 @@ class PaddleOCR(PaddleXPipelineWrapper):
                 # Unknown language specified
                 return None, None
 
-        if ppocr_version == "PP-OCRv5":
+        if ppocr_version == "PP-OCRv6":
+            if lang in ("ch", "chinese_cht", "en", "japan") or lang in LATIN_LANGS:
+                return "PP-OCRv6_medium_det", "PP-OCRv6_medium_rec"
+            else:
+                return None, None
+
+        elif ppocr_version == "PP-OCRv5":
             rec_lang, rec_model_name = None, None
             if lang in ("ch", "chinese_cht", "japan"):
                 rec_model_name = "PP-OCRv5_server_rec"
