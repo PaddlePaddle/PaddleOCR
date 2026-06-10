@@ -29,6 +29,7 @@ QIANFAN_SUPPORTED_MODELS = frozenset(
 SUPPORTED_MODELS = frozenset(
     {
         "PP-OCRv5",
+        "PP-OCRv5-latin",
         "PP-OCRv6",
         "PP-StructureV3",
         "PaddleOCR-VL",
@@ -39,6 +40,7 @@ SUPPORTED_MODELS = frozenset(
 
 _MODEL_TOOLS: dict[str, str] = {
     "PP-OCRv5": "ocr",
+    "PP-OCRv5-latin": "ocr",
     "PP-OCRv6": "ocr",
     "PP-StructureV3": "pp_structurev3",
     "PaddleOCR-VL": "paddleocr_vl",

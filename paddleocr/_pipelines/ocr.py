@@ -30,6 +30,13 @@ from .._utils.deprecation import (
     deprecated,
     warn_deprecated_param,
 )
+from .._utils.langs import (
+    ARABIC_LANGS,
+    CYRILLIC_LANGS,
+    DEVANAGARI_LANGS,
+    ESLAV_LANGS,
+    LATIN_LANGS,
+)
 from .._utils.logging import logger
 from .base import PaddleXPipelineWrapper, PipelineCLISubcommandExecutor
 from .utils import create_config_from_structure
@@ -49,7 +56,10 @@ _DEPRECATED_PARAM_NAME_MAPPING = {
 }
 
 _SUPPORTED_OCR_VERSIONS = ["PP-OCRv3", "PP-OCRv4", "PP-OCRv5", "PP-OCRv6"]
-_PPOCRV6_LANGS = ("ch", "chinese_cht", "en", "japan")
+_PPOCRV6_UNSUPPORTED_LATIN_LANGS = frozenset({"az", "ku", "pi"})
+_PPOCRV6_LANGS = frozenset({"ch", "chinese_cht", "en", "japan"}) | (
+    LATIN_LANGS - _PPOCRV6_UNSUPPORTED_LATIN_LANGS
+)
 
 
 # Be comptable with PaddleOCR 2.x interfaces
@@ -306,109 +316,6 @@ class PaddleOCR(PaddleXPipelineWrapper):
         return create_config_from_structure(STRUCTURE)
 
     def _get_ocr_model_names(self, lang, ppocr_version):
-        LATIN_LANGS = [
-            "af",
-            "az",
-            "bs",
-            "cs",
-            "cy",
-            "da",
-            "de",
-            "es",
-            "et",
-            "fr",
-            "ga",
-            "hr",
-            "hu",
-            "id",
-            "is",
-            "it",
-            "ku",
-            "la",
-            "lt",
-            "lv",
-            "mi",
-            "ms",
-            "mt",
-            "nl",
-            "no",
-            "oc",
-            "pi",
-            "pl",
-            "pt",
-            "ro",
-            "rs_latin",
-            "sk",
-            "sl",
-            "sq",
-            "sv",
-            "sw",
-            "tl",
-            "tr",
-            "uz",
-            "vi",
-            "french",
-            "german",
-            "fi",
-            "eu",
-            "gl",
-            "lb",
-            "rm",
-            "ca",
-            "qu",
-        ]
-        ARABIC_LANGS = ["ar", "fa", "ug", "ur", "ps", "ku", "sd", "bal"]
-        ESLAV_LANGS = ["ru", "be", "uk"]
-        CYRILLIC_LANGS = [
-            "ru",
-            "rs_cyrillic",
-            "be",
-            "bg",
-            "uk",
-            "mn",
-            "abq",
-            "ady",
-            "kbd",
-            "ava",
-            "dar",
-            "inh",
-            "che",
-            "lbe",
-            "lez",
-            "tab",
-            "kk",
-            "ky",
-            "tg",
-            "mk",
-            "tt",
-            "cv",
-            "ba",
-            "mhr",
-            "mo",
-            "udm",
-            "kv",
-            "os",
-            "bua",
-            "xal",
-            "tyv",
-            "sah",
-            "kaa",
-        ]
-        DEVANAGARI_LANGS = [
-            "hi",
-            "mr",
-            "ne",
-            "bh",
-            "mai",
-            "ang",
-            "bho",
-            "mah",
-            "sck",
-            "new",
-            "gom",
-            "sa",
-            "bgc",
-        ]
         SPECIFIC_LANGS = [
             "ch",
             "en",
@@ -429,20 +336,17 @@ class PaddleOCR(PaddleXPipelineWrapper):
         if ppocr_version is None:
             if lang in _PPOCRV6_LANGS:
                 ppocr_version = "PP-OCRv6"
-            elif (
-                lang
-                in [
-                    "korean",
-                    "th",
-                    "el",
-                    "te",
-                    "ta",
-                ]
-                + LATIN_LANGS
-                + ESLAV_LANGS
-                + ARABIC_LANGS
-                + CYRILLIC_LANGS
-                + DEVANAGARI_LANGS
+            elif lang in {
+                "korean",
+                "th",
+                "el",
+                "te",
+                "ta",
+                "az",
+                "ku",
+                "pi",
+            } | ESLAV_LANGS | ARABIC_LANGS | CYRILLIC_LANGS | DEVANAGARI_LANGS | (
+                LATIN_LANGS - _PPOCRV6_LANGS
             ):
                 ppocr_version = "PP-OCRv5"
             elif lang == "ka":

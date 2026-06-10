@@ -69,6 +69,69 @@ const PP_OCRV6_LANG_VERSION_MODEL_SELECTION: Readonly<PipelineModelSelection> = 
   textDetectionModelName: "PP-OCRv6_small_det",
   textRecognitionModelName: "PP-OCRv6_small_rec"
 });
+const _LATIN_LANGS = new Set([
+  "af",
+  "az",
+  "bs",
+  "cs",
+  "cy",
+  "da",
+  "de",
+  "es",
+  "et",
+  "fr",
+  "ga",
+  "hr",
+  "hu",
+  "id",
+  "is",
+  "it",
+  "ku",
+  "la",
+  "lt",
+  "lv",
+  "mi",
+  "ms",
+  "mt",
+  "nl",
+  "no",
+  "oc",
+  "pi",
+  "pl",
+  "pt",
+  "ro",
+  "rs_latin",
+  "sk",
+  "sl",
+  "sq",
+  "sv",
+  "sw",
+  "tl",
+  "tr",
+  "uz",
+  "vi",
+  "french",
+  "german",
+  "fi",
+  "eu",
+  "gl",
+  "lb",
+  "rm",
+  "ca",
+  "qu"
+]);
+const _PPOCRV6_UNSUPPORTED_LATIN_LANGS = new Set(["az", "ku", "pi"]);
+const _PPOCRV6_LANGS = new Set([
+  "ch",
+  "chinese_cht",
+  "en",
+  "japan",
+  ...[..._LATIN_LANGS].filter((lang) => !_PPOCRV6_UNSUPPORTED_LATIN_LANGS.has(lang))
+]);
+
+function isPpOcrV6Lang(lang: string): boolean {
+  return _PPOCRV6_LANGS.has(lang);
+}
 const OCR_MODEL_ROLES: Readonly<ModelRole[]> = Object.freeze([
   {
     assetKey: "det",
@@ -100,11 +163,7 @@ const SUPPORTED_LANG_VERSION_MODELS = new Map<string, Readonly<PipelineModelSele
   ["ch::PP-OCRv5", DEFAULT_LANG_VERSION_MODEL_SELECTION],
   ["chinese_cht::PP-OCRv5", DEFAULT_LANG_VERSION_MODEL_SELECTION],
   ["en::PP-OCRv5", DEFAULT_LANG_VERSION_MODEL_SELECTION],
-  ["japan::PP-OCRv5", DEFAULT_LANG_VERSION_MODEL_SELECTION],
-  ["ch::PP-OCRv6", PP_OCRV6_LANG_VERSION_MODEL_SELECTION],
-  ["chinese_cht::PP-OCRv6", PP_OCRV6_LANG_VERSION_MODEL_SELECTION],
-  ["en::PP-OCRv6", PP_OCRV6_LANG_VERSION_MODEL_SELECTION],
-  ["japan::PP-OCRv6", PP_OCRV6_LANG_VERSION_MODEL_SELECTION]
+  ["japan::PP-OCRv5", DEFAULT_LANG_VERSION_MODEL_SELECTION]
 ]);
 
 function readAliasedOption(
@@ -465,6 +524,16 @@ function resolveBaseModelSelection(
 
   const lang = (options.lang as string) || "ch";
   const resolvedOcrVersion = ocrVersion || "PP-OCRv5";
+
+  if (resolvedOcrVersion === "PP-OCRv6") {
+    if (!isPpOcrV6Lang(lang)) {
+      throw new Error(
+        `Unsupported lang/ocrVersion combination: lang="${lang}", ocrVersion="${resolvedOcrVersion}".`
+      );
+    }
+    return PP_OCRV6_LANG_VERSION_MODEL_SELECTION;
+  }
+
   const modelSelection = SUPPORTED_LANG_VERSION_MODELS.get(`${lang}::${resolvedOcrVersion}`);
 
   if (!modelSelection) {

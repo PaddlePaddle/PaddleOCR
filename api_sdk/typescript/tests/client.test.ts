@@ -180,6 +180,19 @@ describe("PaddleOCRClient public contract", () => {
     expect(JSON.parse(String(calls[0].init.body)).model).toBe(Model.PPOCRv6);
   });
 
+  test("submitOcr accepts PP-OCRv5-latin model name", async () => {
+    const { fetch, calls } = captureFetch([jsonResponse({ data: { jobId: "job-latin" } })]);
+    const client = createClient(fetch);
+
+    const job = await client.submitOcr({
+      model: Model.PPOCRv5Latin,
+      fileUrl: "https://files.example.test/latin.pdf",
+    });
+
+    expect(job.model).toBe(Model.PPOCRv5Latin);
+    expect(JSON.parse(String(calls[0].init.body)).model).toBe(Model.PPOCRv5Latin);
+  });
+
   test("submitOcr and submitDocumentParsing accept official model name strings", async () => {
     const { fetch, calls } = captureFetch([
       jsonResponse({ data: { jobId: "job-ocr" } }),
@@ -206,6 +219,7 @@ describe("PaddleOCRClient public contract", () => {
     const mod = await import("../src/index.js");
 
     expect(mod.isOCRModel(Model.PPOCRv5)).toBe(true);
+    expect(mod.isOCRModel(Model.PPOCRv5Latin)).toBe(true);
     expect(mod.isOCRModel(Model.PPOCRv6)).toBe(true);
     expect(mod.isOCRModel(Model.PPStructureV3)).toBe(false);
     expect(mod.isOCRModel("future-unknown-model")).toBe(false);

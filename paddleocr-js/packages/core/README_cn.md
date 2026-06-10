@@ -46,7 +46,7 @@ await PaddleOCR.create({
 });
 ```
 
-`ocrVersion: "PP-OCRv6"` 会将 `lang`（`ch`、`chinese_cht`、`en`、`japan`）映射到内置的 **PP-OCRv6_small** 检测/识别模型对。若需更轻量的 **PP-OCRv6_tiny**，请显式指定模型名：
+`ocrVersion: "PP-OCRv6"` 会将受支持的 `lang` 映射到内置的 **PP-OCRv6_small** 检测/识别模型对。若需 **PP-OCRv6_tiny**，请显式指定模型名：
 
 ```js
 await PaddleOCR.create({

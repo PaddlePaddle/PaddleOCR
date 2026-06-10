@@ -84,7 +84,7 @@ paddleocr api \
 
 | Task | `--model_type` | Default model | Supported models |
 | --- | --- | --- | --- |
-| OCR | `ocr` | `PP-OCRv6` | `PP-OCRv5`, `PP-OCRv6` |
+| OCR | `ocr` | `PP-OCRv6` | `PP-OCRv5`, `PP-OCRv5-latin`, `PP-OCRv6` |
 | Document parsing | `doc_parsing` | `PaddleOCR-VL-1.6` | `PP-StructureV3`, `PaddleOCR-VL`, `PaddleOCR-VL-1.5`, `PaddleOCR-VL-1.6` |
 
 ## Output Behavior

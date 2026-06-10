@@ -22,6 +22,33 @@ from ..shared.local_sync_runner import LocalSyncRunner
 from ..types import InferenceRequest, OCRResult, TextLine
 from .params import OCR_DEFAULT_PARAMS, OCR_RUNTIME_PARAMS
 
+_LOCAL_OCR_INIT_BY_MODEL: dict[str, dict[str, str]] = {
+    "PP-OCRv5": {"ocr_version": "PP-OCRv5"},
+    "PP-OCRv6": {"ocr_version": "PP-OCRv6"},
+    "PP-OCRv5-latin": {
+        "text_detection_model_name": "PP-OCRv5_server_det",
+        "text_recognition_model_name": "latin_PP-OCRv5_mobile_rec",
+    },
+}
+
+
+def _build_local_ocr_init_kwargs(
+    *,
+    config: Optional[str],
+    device: Optional[str],
+    model: Optional[str],
+) -> dict[str, Any]:
+    init_kwargs: dict[str, Any] = {
+        "paddlex_config": config,
+        "device": device,
+    }
+    if config is None and model is not None:
+        model_kwargs = _LOCAL_OCR_INIT_BY_MODEL.get(model)
+        if model_kwargs is None:
+            raise ValueError(f"Unsupported local OCR model: {model!r}")
+        init_kwargs.update(model_kwargs)
+    return init_kwargs
+
 
 class OCRLocalInference(Inference):
     def __init__(
@@ -42,12 +69,11 @@ class OCRLocalInference(Inference):
 
     async def start(self) -> None:
         try:
-            init_kwargs: dict[str, Any] = {
-                "paddlex_config": self._config,
-                "device": self._device,
-            }
-            if self._config is None and self._model is not None:
-                init_kwargs["ocr_version"] = self._model
+            init_kwargs = _build_local_ocr_init_kwargs(
+                config=self._config,
+                device=self._device,
+                model=self._model,
+            )
             self._inference = PaddleOCR(**init_kwargs)
             self._wrapper = LocalSyncRunner(self._inference)
         except Exception as e:

@@ -49,10 +49,12 @@ def test_ppstructurev3_options_to_payload_uses_official_camel_case_keys():
 
 def test_core_resolves_models_and_default_payloads():
     assert resolve_ocr_model("PP-OCRv5") is Model.PP_OCRV5
+    assert resolve_ocr_model("PP-OCRv5-latin") is Model.PP_OCRV5_LATIN
     assert resolve_ocr_model("PP-OCRv6") is Model.PP_OCRV6
     assert resolve_document_model("PaddleOCR-VL-1.6") is Model.PADDLE_OCR_VL_16
 
     assert default_payload(Model.PP_OCRV5) == OCROptions().to_payload()
+    assert default_payload(Model.PP_OCRV5_LATIN) == OCROptions().to_payload()
     assert default_payload(Model.PP_OCRV6) == OCROptions().to_payload()
     assert default_payload(Model.PADDLE_OCR_VL_16) == PaddleOCRVLOptions().to_payload()
 

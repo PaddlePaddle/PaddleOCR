@@ -47,6 +47,7 @@ console.log(result.jobId, result.pages.length);
 ```
 
 Specify `model: Model.PPOCRv6` (or `"PP-OCRv6"`) to use the PP-OCRv6 hosted OCR model.
+Use `Model.PPOCRv5Latin` (or `"PP-OCRv5-latin"`) for the PP-OCRv5 Latin-script hosted OCR model.
 
 Document parsing defaults to PaddleOCR-VL-1.6:
 

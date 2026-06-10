@@ -2746,7 +2746,7 @@ pipeline = PaddleOCR(paddlex_config="PaddleOCR.yaml")
   <tbody>
     <tr>
       <td><code>PP-OCRv6</code></td>
-      <td><code>ch</code>, <code>chinese_cht</code>, <code>en</code>, <code>japan</code></td>
+      <td><code>ch</code>, <code>chinese_cht</code>, <code>en</code>, <code>japan</code>, <code>af</code>, <code>bs</code>, <code>ca</code>, <code>cs</code>, <code>cy</code>, <code>da</code>, <code>de</code>, <code>es</code>, <code>et</code>, <code>eu</code>, <code>fi</code>, <code>fr</code>, <code>ga</code>, <code>gl</code>, <code>hr</code>, <code>hu</code>, <code>id</code>, <code>is</code>, <code>it</code>, <code>la</code>, <code>lb</code>, <code>lt</code>, <code>lv</code>, <code>mi</code>, <code>ms</code>, <code>mt</code>, <code>nl</code>, <code>no</code>, <code>oc</code>, <code>pl</code>, <code>pt</code>, <code>qu</code>, <code>rm</code>, <code>ro</code>, <code>rs_latin</code>, <code>sk</code>, <code>sl</code>, <code>sq</code>, <code>sv</code>, <code>sw</code>, <code>tl</code>, <code>tr</code>, <code>uz</code>, <code>vi</code>, <code>french</code>, <code>german</code>。<code>PP-OCRv6_tiny</code> 不支持 <code>japan</code>，需显式指定 <code>PP-OCRv6_tiny_det</code>/<code>PP-OCRv6_tiny_rec</code>。</td>
     </tr>
     <tr>
       <td><code>PP-OCRv5</code></td>
@@ -2808,7 +2808,7 @@ pipeline = PaddleOCR(paddlex_config="PaddleOCR.yaml")
 - 移动端部署：使用`PP-OCRv5_mobile`系列，模型小速度快
 - 实时处理：使用`PP-OCRv5_mobile`系列，推理速度快
 - 批量处理：使用`PP-OCRv5_server`系列，精度高
-- 多语言识别：使用`PP-OCRv5_multi_languages`，支持37种语言
+- 多语言识别：拉丁语系等可使用 `PP-OCRv6`；阿拉伯文、西里尔文、天城文等语系请使用 `PP-OCRv5`
 
 ### 5.3 最佳实践
 

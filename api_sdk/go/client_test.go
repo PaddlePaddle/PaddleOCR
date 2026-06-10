@@ -83,3 +83,44 @@ func TestSubmitOCRAcceptsOfficialModelNameString(t *testing.T) {
 		t.Fatalf("Request model = %q, want PP-OCRv5", got)
 	}
 }
+
+func TestSubmitOCRAcceptsPPOCRv5LatinModelNameString(t *testing.T) {
+	var got string
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		var body struct {
+			Model string `json:"model"`
+		}
+		if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+			t.Fatalf("Decode request body error = %v", err)
+		}
+		got = body.Model
+		w.Header().Set("Content-Type", "application/json")
+		_ = json.NewEncoder(w).Encode(map[string]interface{}{
+			"code": 0,
+			"data": map[string]string{"jobId": "job-latin"},
+		})
+	}))
+	defer server.Close()
+
+	client, err := NewClient(
+		WithToken("token"),
+		WithBaseURL(server.URL),
+	)
+	if err != nil {
+		t.Fatalf("NewClient() error = %v", err)
+	}
+
+	job, err := client.SubmitOCR(context.Background(), &OCRRequest{
+		Model:   PPOCRv5Latin,
+		FileURL: "https://example.test/latin.pdf",
+	})
+	if err != nil {
+		t.Fatalf("SubmitOCR() error = %v", err)
+	}
+	if job.Model != PPOCRv5Latin {
+		t.Fatalf("Job model = %q, want %s", job.Model, PPOCRv5Latin)
+	}
+	if got != PPOCRv5Latin {
+		t.Fatalf("Request model = %q, want %s", got, PPOCRv5Latin)
+	}
+}

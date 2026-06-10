@@ -15,7 +15,7 @@ PaddleOCR 提供轻量级的 [Model Context Protocol（MCP）](https://modelcont
 
     | 模型 | MCP 工具名称 | 说明 |
     | --- | --- | --- |
-    | `PP-OCRv5`、`PP-OCRv6` | `ocr` | 对图像和 PDF 文件进行文本检测与识别。 |
+    | `PP-OCRv5`、`PP-OCRv5-latin`、`PP-OCRv6` | `ocr` | 对图像和 PDF 文件进行文本检测与识别。 |
     | `PP-StructureV3` | `pp_structurev3` | 从图像或 PDF 文件中识别和提取文本块、标题、段落、图片、表格以及其他版面元素，将输入转换为 Markdown 文档。 |
     | `PaddleOCR-VL`、`PaddleOCR-VL-1.5`、`PaddleOCR-VL-1.6` | `paddleocr_vl` | 使用基于多模态大模型的方案进行版面解析，将输入转换为 Markdown 文档。 |
 
@@ -418,7 +418,7 @@ paddleocr_mcp --model PP-OCRv5 --ppocr_source self_hosted --self-hosted-base-url
 
 | 环境变量 | 命令行参数 | 类型 | 描述 | 可选值 | 默认值 |
 |:---------|:-----------|:-----|:-----|:-------|:-------|
-| `PADDLEOCR_MCP_MODEL` | `--model` | `str` | 要运行的模型。MCP 会根据模型自动选择对应的工具。 | `"PP-OCRv5"`，`"PP-OCRv6"`，`"PP-StructureV3"`，`"PaddleOCR-VL"`，`"PaddleOCR-VL-1.5"`，`"PaddleOCR-VL-1.6"` | `"PP-OCRv6"` |
+| `PADDLEOCR_MCP_MODEL` | `--model` | `str` | 要运行的模型。MCP 会根据模型自动选择对应的工具。 | `"PP-OCRv5"`，`"PP-OCRv5-latin"`，`"PP-OCRv6"`，`"PP-StructureV3"`，`"PaddleOCR-VL"`，`"PaddleOCR-VL-1.5"`，`"PaddleOCR-VL-1.6"` | `"PP-OCRv6"` |
 | `PADDLEOCR_MCP_PPOCR_SOURCE` | `--ppocr_source` | `str` | PaddleOCR能力来源。 | `"local"`（本地推理），`"aistudio"`（官方 API），`"qianfan"`（千帆 API），`"self_hosted"`（自建 API） | `"local"` |
 | `PADDLEOCR_MCP_AISTUDIO_BASE_URL` | `--aistudio-base-url` | `str` | AI Studio API 基础 URL（`aistudio` 推理方式下可选）。 | - | `None` |
 | `PADDLEOCR_MCP_QIANFAN_BASE_URL` | `--qianfan-base-url` | `str` | 千帆 API 基础 URL（`qianfan` 推理方式下可选）。 | - | `https://qianfan.baidubce.com/v2/ocr` |

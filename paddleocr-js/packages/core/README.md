@@ -46,7 +46,7 @@ await PaddleOCR.create({
 });
 ```
 
-`ocrVersion: "PP-OCRv6"` maps `lang` (`ch`, `chinese_cht`, `en`, `japan`) to the built-in **PP-OCRv6_small** det/rec pair. For the lighter **PP-OCRv6_tiny** models, pass explicit model names:
+`ocrVersion: "PP-OCRv6"` maps supported `lang` values to the built-in **PP-OCRv6_small** det/rec pair. For **PP-OCRv6_tiny**, pass explicit model names:
 
 ```js
 await PaddleOCR.create({

@@ -15,7 +15,7 @@ PaddleOCR provides a lightweight [Model Context Protocol (MCP)](https://modelcon
 
     | Model | MCP tool name | Description |
     | --- | --- | --- |
-    | `PP-OCRv5`, `PP-OCRv6` | `ocr` | Performs text detection and recognition on images and PDF files. |
+    | `PP-OCRv5`, `PP-OCRv5-latin`, `PP-OCRv6` | `ocr` | Performs text detection and recognition on images and PDF files. |
     | `PP-StructureV3` | `pp_structurev3` | Identifies and extracts text blocks, titles, paragraphs, images, tables, and other layout elements from images or PDF files, converting the input into Markdown documents. |
     | `PaddleOCR-VL`, `PaddleOCR-VL-1.5`, `PaddleOCR-VL-1.6` | `paddleocr_vl` | Performs layout parsing with a VLM-based approach and converts the input into Markdown documents. |
 
@@ -417,7 +417,7 @@ You can control the MCP server via environment variables or CLI arguments.
 
 | Environment Variable | CLI Argument | Type | Description | Options | Default |
 |:---------|:-----------|:-----|:-----|:-------|:-------|
-| `PADDLEOCR_MCP_MODEL` | `--model` | `str` | Model to run. MCP selects the tool automatically from the model. | `"PP-OCRv5"`, `"PP-OCRv6"`, `"PP-StructureV3"`, `"PaddleOCR-VL"`, `"PaddleOCR-VL-1.5"`, `"PaddleOCR-VL-1.6"` | `"PP-OCRv6"` |
+| `PADDLEOCR_MCP_MODEL` | `--model` | `str` | Model to run. MCP selects the tool automatically from the model. | `"PP-OCRv5"`, `"PP-OCRv5-latin"`, `"PP-OCRv6"`, `"PP-StructureV3"`, `"PaddleOCR-VL"`, `"PaddleOCR-VL-1.5"`, `"PaddleOCR-VL-1.6"` | `"PP-OCRv6"` |
 | `PADDLEOCR_MCP_PPOCR_SOURCE` | `--ppocr_source` | `str` | Source of PaddleOCR capabilities. | `"local"` (local inference), `"aistudio"` (Official API), `"qianfan"` (Qianfan API), `"self_hosted"` (self-hosted API) | `"local"` |
 | `PADDLEOCR_MCP_AISTUDIO_BASE_URL` | `--aistudio-base-url` | `str` | AI Studio API base URL (optional for `aistudio` source). | - | `None` |
 | `PADDLEOCR_MCP_QIANFAN_BASE_URL` | `--qianfan-base-url` | `str` | Qianfan API base URL (optional for `qianfan` source). | - | `https://qianfan.baidubce.com/v2/ocr` |
