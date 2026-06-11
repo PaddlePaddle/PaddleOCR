@@ -55,6 +55,8 @@ python -m pip install "transformers>=5.10.0"
 python -m pip install onnxruntime-gpu
 ```
 
+以上命令适用于 CUDA 12.x 环境下的 NVIDIA GPU，其他设备或环境的安装方式请参考 [ONNX Runtime 官方文档](https://onnxruntime.ai/docs/install/)。
+
 ## 4. `engine` 和 `engine_config` 的设置与取值
 
 ### 4.1 `engine`
