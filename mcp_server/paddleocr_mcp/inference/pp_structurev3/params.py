@@ -48,12 +48,6 @@ PP_STRUCTUREV3_RUNTIME_PARAMS: dict[str, type] = {
     "use_e2e_wired_table_rec_model": bool,
     "use_e2e_wireless_table_rec_model": bool,
     "markdown_ignore_labels": list,
-    "prettify_markdown": bool,
-    "show_formula_number": bool,
-    "return_markdown_images": bool,
-    "output_formats": list,
-    "visualize": bool,
-    "extra_options": dict,
 }
 
 PP_STRUCTUREV3_DEFAULT_PARAMS: dict[str, Any] = {

@@ -38,15 +38,6 @@ PADDLEOCR_VL_RUNTIME_PARAMS: dict[str, type] = {
     "vlm_extra_args": dict,
     "merge_layout_blocks": bool,
     "markdown_ignore_labels": list,
-    "prettify_markdown": bool,
-    "show_formula_number": bool,
-    "restructure_pages": bool,
-    "merge_tables": bool,
-    "relevel_titles": bool,
-    "return_markdown_images": bool,
-    "output_formats": list,
-    "visualize": bool,
-    "extra_options": dict,
 }
 
 PADDLEOCR_VL_DEFAULT_PARAMS: dict[str, Any] = {
