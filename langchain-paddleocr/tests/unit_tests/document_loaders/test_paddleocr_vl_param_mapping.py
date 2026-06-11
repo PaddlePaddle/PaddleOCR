@@ -14,38 +14,20 @@
 
 from __future__ import annotations
 
-from typing import Any
-
-import pytest
+from paddleocr import PaddleOCRVLOptions
 
 from langchain_paddleocr import PaddleOCRVLLoader
 
 
-def test_snake_to_camel_conversion_and_additional_params(
-    monkeypatch: pytest.MonkeyPatch,
-) -> None:
-    captured_service_params: dict[str, Any] = {}
-
-    original_init = PaddleOCRVLLoader.__init__
-
-    def _wrapped_init(self: PaddleOCRVLLoader, *args: Any, **kwargs: Any) -> None:
-        original_init(self, *args, **kwargs)
-        nonlocal captured_service_params
-        captured_service_params = getattr(self, "_service_params")
-
-    monkeypatch.setattr(PaddleOCRVLLoader, "__init__", _wrapped_init)
-
-    _ = PaddleOCRVLLoader(
+def test_vl_options_are_mapped_to_paddleocr_vl_options() -> None:
+    loader = PaddleOCRVLLoader(
         file_path="dummy.pdf",
-        api_url="http://example.com",
         use_doc_orientation_classify=True,
         layout_unclip_ratio=(0.1, 0.9),
         prompt_label="ocr",
-        additional_params={"customOption": 1, "anotherFlag": True},
     )
 
-    assert captured_service_params["useDocOrientationClassify"] is True
-    assert captured_service_params["layoutUnclipRatio"] == (0.1, 0.9)
-    assert captured_service_params["promptLabel"] == "ocr"
-    assert captured_service_params["customOption"] == 1
-    assert captured_service_params["anotherFlag"] is True
+    assert isinstance(loader._options, PaddleOCRVLOptions)
+    assert loader._options.use_doc_orientation_classify is True
+    assert loader._options.layout_unclip_ratio == (0.1, 0.9)
+    assert loader._options.prompt_label == "ocr"

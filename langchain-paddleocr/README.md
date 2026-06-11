@@ -18,7 +18,7 @@ pip install langchain-paddleocr
 
 The `PaddleOCRVLLoader` enables you to:
 
-- Extract text and layout information from PDF and image files using models from Baidu's PaddleOCR-VL series (e.g., PaddleOCR-VL, PaddleOCR-VL-1.5)
+- Extract text and layout information from PDF and image files using models from Baidu's PaddleOCR-VL series (e.g., PaddleOCR-VL, PaddleOCR-VL-1.5, PaddleOCR-VL-1.6)
 - Process documents from local files or remote URLs
 
 Basic usage of `PaddleOCRVLLoader` looks as follows:
@@ -29,7 +29,8 @@ from pydantic import SecretStr
 
 loader = PaddleOCRVLLoader(
     file_path="path/to/document.pdf",
-    api_url="your-api-endpoint",
+    base_url="your-api-endpoint",
+    model="PaddleOCR-VL-1.5",
     access_token=SecretStr("your-access-token")  # Optional if using environment variable `PADDLEOCR_ACCESS_TOKEN`
 )
 

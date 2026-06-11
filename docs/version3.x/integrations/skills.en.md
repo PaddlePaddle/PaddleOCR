@@ -21,7 +21,7 @@ PaddleOCR provides official Agent Skills that package the routing rules, calling
 ## Prerequisites
 
 1. Install Python 3.9 or later on the machine that runs the skill.
-2. Install PaddleOCR 3.6.0+: `pip install "paddleocr>=3.6.0"`
+2. Install PaddleOCR 3.7.0+: `pip install "paddleocr>=3.7.0"`
 3. Get access token from [AI Studio](https://aistudio.baidu.com/account/accessToken)
 
 ## Install into AI Apps

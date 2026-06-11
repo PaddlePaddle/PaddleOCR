@@ -55,6 +55,8 @@ When using ONNX Runtime as the inference engine, install the ONNX Runtime packag
 python -m pip install onnxruntime-gpu
 ```
 
+The command above applies to NVIDIA GPUs in CUDA 12.x environments. For installation instructions for other devices or environments, please refer to the [ONNX Runtime official documentation](https://onnxruntime.ai/docs/install/).
+
 ## 4. Configuration and Supported Values of `engine` and `engine_config`
 
 ### 4.1 `engine`
