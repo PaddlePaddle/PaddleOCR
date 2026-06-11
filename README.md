@@ -44,9 +44,9 @@ English | [简体中文](./readme/README_cn.md) | [繁體中文](./readme/README
 ### 🔍 Universal Text Recognition (Scene OCR)
 > *The global gold standard for high-speed, multilingual text spotting.*
 
-* **100+ Languages Supported**: Native recognition for a vast global library. Our **PP-OCRv5** single-model solution elegantly handles multilingual mixed documents (Chinese, English, Japanese, Pinyin, etc.).
+* **100+ Languages Supported**: Native recognition for a vast global library. **PP-OCRv6** supports 50 languages with a single unified model (Chinese, English, Japanese, and 46 Latin-script languages) — no model switching needed for multilingual documents.
 * **Complex Element Mastery**: Beyond standard text recognition, we support **natural scene text spotting** across a wide range of environments, including IDs, street views, books, and industrial components
-* **Performance Leap**: PP-OCRv5 delivers a **13% accuracy boost** over previous versions, maintaining the "Extreme Efficiency" that PaddleOCR is famous for.
+* **Performance Leap**: PP-OCRv6 achieves **+4.6% detection** and **+5.1% recognition** accuracy over PP-OCRv5, surpassing mainstream Vision-Language Models. 5.2× CPU inference speedup end-to-end.
 
 <div align="center">
   <p>

@@ -43,9 +43,9 @@
 ### 🔍 Reconnaissance de texte universelle (OCR de scène)
 > *L'étalon-or mondial pour la détection de texte multilingue à haute vitesse.*
 
-* **Plus de 100 langues supportées** : Reconnaissance native pour une vaste bibliothèque mondiale. Notre solution **PP-OCRv5** à modèle unique gère élégamment les documents multilingues mixtes (chinois, anglais, japonais, pinyin, etc.).
+* **Plus de 100 langues supportées** : Reconnaissance native pour une vaste bibliothèque mondiale. **PP-OCRv6** supporte 50 langues avec un seul modèle unifié (chinois, anglais, japonais et 46 langues latines) — sans changement de modèle.
 * **Maîtrise des éléments complexes** : Au-delà de la reconnaissance de texte standard, nous prenons en charge la **détection de texte en scène naturelle** dans une large gamme d'environnements, y compris les pièces d'identité, les vues de rue, les livres et les composants industriels.
-* **Bond en performance** : PP-OCRv5 apporte une **amélioration de la précision de 13%** par rapport aux versions précédentes, tout en maintenant l'« Efficacité extrême » pour laquelle PaddleOCR est célèbre.
+* **Bond en performance** : PP-OCRv6 atteint **+4.6% en détection** et **+5.1% en reconnaissance** par rapport à PP-OCRv5, surpassant les principaux modèles de langage visuel. Accélération 5.2× en inférence CPU de bout en bout.
 
 <div align="center">
   <p>

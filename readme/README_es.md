@@ -43,9 +43,9 @@
 ### 🔍 Reconocimiento universal de texto (Scene OCR)
 > *El estándar de oro mundial para la detección de texto multilingüe de alta velocidad.*
 
-* **Compatibilidad con más de 100 idiomas**: Reconocimiento nativo de una amplia biblioteca global. Nuestra solución de modelo único **PP-OCRv5** maneja con elegancia documentos mixtos multilingües (chino, inglés, japonés, pinyin, etc.).
+* **Compatibilidad con más de 100 idiomas**: Reconocimiento nativo de una amplia biblioteca global. **PP-OCRv6** soporta 50 idiomas con un único modelo unificado (chino, inglés, japonés y 46 idiomas latinos) — sin necesidad de cambiar modelos.
 * **Dominio de elementos complejos**: Más allá del reconocimiento de texto estándar, admitimos la **detección de texto en escenas naturales** en una amplia gama de entornos, incluyendo documentos de identidad, vistas de calles, libros y componentes industriales.
-* **Salto en rendimiento**: PP-OCRv5 ofrece una **mejora de precisión del 13%** respecto a versiones anteriores, manteniendo la "eficiencia extrema" por la que PaddleOCR es famoso.
+* **Salto en rendimiento**: PP-OCRv6 logra **+4.6% en detección** y **+5.1% en reconocimiento** sobre PP-OCRv5, superando a los principales modelos de lenguaje visual. Aceleración 5.2× en inferencia CPU end-to-end.
 
 <div align="center">
   <p>
