@@ -8,7 +8,7 @@ comments: true
 
 OCR is a technology that converts text from images into editable text. It is widely used in fields such as document digitization, information extraction, and data processing. OCR can recognize printed text, handwritten text, and even certain types of fonts and symbols.
 
-The general OCR pipeline is used to solve text recognition tasks by extracting text information from images and outputting it in text form. This pipeline supports the use of PP-OCRv3, PP-OCRv4, PP-OCRv5, and PP-OCRv6 models.
+The general OCR pipeline is used to solve text recognition tasks by extracting text information from images and outputting it in text form. This pipeline supports PP-OCRv3, PP-OCRv4, PP-OCRv5, and PP-OCRv6 models, with the default model being **PP-OCRv6_medium** released with PaddleOCR 3.7. PP-OCRv6, built on the newly designed PPLCNetV4 unified backbone, offers tiny/small/medium tiers. The medium tier achieves +5.1% (recognition) and +4.6% (detection) over PP-OCRv5_server with faster inference; a single model supports 50 languages including Chinese, English, Japanese, and 46 Latin-script languages.
 
 <img src="https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/ocr/01.png"/>
 
@@ -132,29 +132,29 @@ In this pipeline, you can select models based on the benchmark test data provide
 <tr>
 <td>PP-OCRv6_medium_det</td>
 <td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv6_medium_det_infer.tar">Inference Model</a>/<a href="">Training Model</a></td>
-<td>-</td>
+<td>86.2*</td>
 <td>- / -</td>
 <td>- / -</td>
-<td>-</td>
-<td>PP-OCRv6 medium text detection model with higher accuracy</td>
+<td>59.4</td>
+<td>PP-OCRv6 medium-scale text detection model based on PPLCNetV4 + RepLKFPN, highest accuracy, suitable for server deployment</td>
 </tr>
 <tr>
 <td>PP-OCRv6_small_det</td>
 <td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv6_small_det_infer.tar">Inference Model</a>/<a href="">Training Model</a></td>
-<td>-</td>
+<td>84.1*</td>
 <td>- / -</td>
 <td>- / -</td>
-<td>-</td>
-<td>PP-OCRv6 small text detection model with higher efficiency, suitable for deployment on edge devices</td>
+<td>9.6</td>
+<td>PP-OCRv6 small text detection model, balancing accuracy and efficiency, suitable for mobile deployment</td>
 </tr>
 <tr>
 <td>PP-OCRv6_tiny_det</td>
 <td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv6_tiny_det_infer.tar">Inference Model</a>/<a href="">Training Model</a></td>
-<td>-</td>
+<td>80.6*</td>
 <td>- / -</td>
 <td>- / -</td>
-<td>-</td>
-<td>PP-OCRv6 ultra-light text detection model for size- and latency-sensitive edge deployment</td>
+<td>1.9</td>
+<td>PP-OCRv6 ultra-lightweight text detection model (0.43M params), suitable for edge/IoT scenarios</td>
 </tr>
 <tr>
 <td>PP-OCRv5_server_det</td>
@@ -209,28 +209,28 @@ In this pipeline, you can select models based on the benchmark test data provide
 </tr>
 <tr>
 <td>PP-OCRv6_medium_rec</td>
-<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv6_medium_rec_infer.tar">Inference Model</a>/<a href="">Training Model</a></td>
-<td>-</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv6_medium_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv6_medium_rec_pretrained.pdparams">Training Model</a></td>
+<td>83.2*</td>
 <td>- / -</td>
 <td>- / -</td>
-<td>-</td>
-<td rowspan="3">PP-OCRv6 text recognition models</td>
+<td>73.3</td>
+<td rowspan="3">PP-OCRv6 text recognition models based on PPLCNetV4 + LightSVTR + CTC/NRTR multi-head decoder, single model supports 50 languages (tiny: 49)</td>
 </tr>
 <tr>
 <td>PP-OCRv6_small_rec</td>
-<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv6_small_rec_infer.tar">Inference Model</a>/<a href="">Training Model</a></td>
-<td>-</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv6_small_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv6_small_rec_pretrained.pdparams">Training Model</a></td>
+<td>81.3*</td>
 <td>- / -</td>
 <td>- / -</td>
-<td>-</td>
+<td>20.4</td>
 </tr>
 <tr>
 <td>PP-OCRv6_tiny_rec</td>
-<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv6_tiny_rec_infer.tar">Inference Model</a>/<a href="">Training Model</a></td>
-<td>-</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv6_tiny_rec_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv6_tiny_rec_pretrained.pdparams">Training Model</a></td>
+<td>73.5*</td>
 <td>- / -</td>
 <td>- / -</td>
-<td>-</td>
+<td>4.4</td>
 </tr>
 <tr>
 <td>PP-OCRv5_server_rec</td>
