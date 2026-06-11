@@ -69,7 +69,6 @@
     - **Escenarios especializados**: Mejoras significativas en pantallas digitales, caracteres de matriz de puntos, impresiones de neumáticos y texto industrial.
     - **Inferencia más rápida**: Aceleración 5.2× en CPU (OpenVINO), 6.1× en Apple M4 (tiny), 0.13s en A100 GPU.
     - **Tres niveles para todos los escenarios**: tiny (1.5M) / small (7.7M) / medium (34.5M) para despliegue en edge, móvil y servidor.
-    - **Documentación**: [Documentación técnica de PP-OCRv6](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/algorithm/PP-OCRv6/PP-OCRv6.en.html)
 
 <details>
 <summary><strong>2026.05.28: Lanzamiento de PaddleOCR 3.6.0</strong></summary>
