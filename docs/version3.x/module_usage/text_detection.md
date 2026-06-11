@@ -175,7 +175,7 @@ print(f"GPU数量: {paddle.device.cuda.device_count()}")
 # 使用默认模型进行文本检测
 paddleocr text_detection -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_001.png
 
-# 指定其他档位模型（可选）
+# 指定模型
 paddleocr text_detection -i general_ocr_001.png --model_name PP-OCRv6_small_det
 ```
 
