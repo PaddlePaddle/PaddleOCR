@@ -22,6 +22,9 @@ from ..testing_utils import (
 )
 
 
+pytestmark = pytest.mark.py38_incompatible
+
+
 @pytest.fixture(scope="module")
 def text_detection_predictor():
     return TextDetection()

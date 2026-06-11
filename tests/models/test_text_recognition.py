@@ -18,6 +18,9 @@ from paddleocr import TextRecognition
 from ..testing_utils import TEST_DATA_DIR, check_simple_inference_result
 
 
+pytestmark = pytest.mark.py38_incompatible
+
+
 @pytest.fixture(scope="module")
 def text_recognition_predictor():
     return TextRecognition()
