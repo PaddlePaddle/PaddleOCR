@@ -89,7 +89,7 @@ paddleocr api \
 
 ## 输出行为
 
-命令成功时输出格式化 JSON。OCR 结果包含 `jobId` 和每页的 `prunedResult`、`ocrImageUrl`；文档解析结果包含 `jobId` 和每页的 `markdownText`、`markdownImages`、`outputImages`。CLI 输出保持精简，不包含 SDK 结果对象中的页级 `raw`、`dataInfo` 等扩展字段。如果指定 `--output`，CLI 写入该文件并打印保存位置；否则直接打印到标准输出。指定 `--save_resources` 时，CLI 会把结果对象引用的资源保存到目标目录。
+命令成功时输出格式化 JSON。OCR 结果包含 `jobId` 和每页的 `prunedResult`、`ocrImageUrl`；文档解析结果包含 `jobId` 和每页的 `markdownText`、`markdownImages`、`outputImages`。如果指定 `--output`，CLI 写入该文件并打印保存位置；否则直接打印到标准输出。指定 `--save_resources` 时，CLI 会把结果对象引用的资源保存到目标目录。
 
 错误会输出到标准错误并返回非零退出码。常见原因包括缺少 `PADDLEOCR_ACCESS_TOKEN`、模型与 `--model_type` 不匹配、请求超时、轮询超时、远端任务失败或响应格式异常。
 
