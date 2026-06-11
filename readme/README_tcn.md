@@ -68,7 +68,6 @@
     - **專業場景增強**：數碼顯示屏、點陣字符、輪胎印字、工業字符等傳統 VLM 難以覆蓋的場景識別能力大幅提升。
     - **推理速度更快**：medium 檔 CPU OpenVINO 推理加速 5.2×，tiny 檔 Apple M4 加速 6.1×，A100 上僅需 0.13s。
     - **三檔模型覆蓋全場景**：tiny（1.5M）/ small（7.7M）/ medium（34.5M）分別面向端側/移動端/服務端部署。
-    - **詳細文檔**：[PP-OCRv6 技術文檔](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/algorithm/PP-OCRv6/PP-OCRv6.html)
 
 <details>
 <summary><strong>2026.05.28: PaddleOCR 3.6.0 發布</strong></summary>

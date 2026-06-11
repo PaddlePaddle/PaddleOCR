@@ -71,7 +71,6 @@
     - **سيناريوهات متخصصة**: تحسينات كبيرة في الشاشات الرقمية وأحرف المصفوفة النقطية وبصمات الإطارات والنصوص الصناعية.
     - **استدلال أسرع**: تسريع 5.2× على CPU (OpenVINO)، 6.1× على Apple M4 (tiny)، 0.13 ثانية على A100 GPU.
     - **ثلاثة مستويات لجميع السيناريوهات**: tiny (1.5M) / small (7.7M) / medium (34.5M) للأجهزة الطرفية والمحمولة والخوادم.
-    - **التوثيق**: [وثائق PP-OCRv6 التقنية](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/algorithm/PP-OCRv6/PP-OCRv6.en.html)
 
 <details>
 <summary><strong>2026.05.28: إصدار PaddleOCR 3.6.0</strong></summary>

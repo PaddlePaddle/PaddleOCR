@@ -70,7 +70,6 @@
     - **전문 시나리오 강화**: 디지털 디스플레이, 도트 매트릭스 문자, 타이어 인쇄, 산업용 문자 인식 대폭 향상.
     - **빠른 추론**: CPU 5.2배 가속(OpenVINO), Apple M4 6.1배(tiny), A100 GPU 0.13초.
     - **전 시나리오 3단계 모델**: tiny(1.5M) / small(7.7M) / medium(34.5M)으로 엣지부터 서버까지 대응.
-    - **문서**: [PP-OCRv6 기술 문서](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/algorithm/PP-OCRv6/PP-OCRv6.en.html)
 
 <details>
 <summary><strong>2026.05.28: PaddleOCR 3.6.0 출시</strong></summary>
