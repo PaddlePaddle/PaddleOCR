@@ -101,8 +101,9 @@ plugins:
             Home: Home
             安装: Installation
             快速开始: Quick Start
-            PP-OCRv5: PP-OCRv5
+            PP-OCRv6: PP-OCRv6
             使用教程: Usage Tutorial
+            PP-OCRv6简介: PP-OCRv6 Introduction
             PP-OCRv5简介: PP-OCRv5 Introduction
             PP-OCRv5多语种文字识别: PP-OCRv5 Multilingual Text Recognition
             PP-StructureV3: PP-StructureV3
@@ -319,6 +320,9 @@ nav:
   - Home: index.md
   - 安装: version3.x/installation.md
   - 快速开始: quick_start.md
+  - PP-OCRv6:
+    - 使用教程: version3.x/pipeline_usage/OCR.md
+    - PP-OCRv6简介: version3.x/algorithm/PP-OCRv6/PP-OCRv6.md
   - PP-OCRv5:
     - 使用教程: version3.x/pipeline_usage/OCR.md
     - PP-OCRv5简介: version3.x/algorithm/PP-OCRv5/PP-OCRv5.md
