@@ -53,11 +53,6 @@ sed -i.bak \
     "${PIPELINE_CONFIG}"
 rm -f "${PIPELINE_CONFIG}.bak"
 
-# Some SDKs (e.g. PaddleOCR-VL-1.6) ship a pipeline config with
-# `backend: native`, which makes the pipeline run the VLM inside the Triton
-# container instead of calling the dedicated vLLM server, resulting in much
-# higher latency and GPU memory usage. Patch the config to use the vLLM
-# server.
 if grep -qE '^\s*backend: native\s*$' "${PIPELINE_CONFIG}"; then
     sed -i.bak \
         -e 's|^\( *\)batch_size: -1$|\1batch_size: 4096|' \
