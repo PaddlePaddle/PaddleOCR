@@ -170,11 +170,16 @@ func payloadWithExtraOptions(options interface{}) interface{} {
 }
 
 func parseOCRResult(jobID string, jsonlData []map[string]interface{}) (*OCRResult, error) {
-	result := &OCRResult{JobID: jobID}
+	result := &OCRResult{JobID: jobID, DataInfo: map[string]interface{}{}}
 	for _, lineObj := range jsonlData {
 		resultData, ok := lineObj["result"].(map[string]interface{})
 		if !ok {
 			return nil, &ResultParseError{PaddleOCRAPIError{Message: "OCR result item is missing result"}}
+		}
+		if dataInfo, ok := resultData["dataInfo"].(map[string]interface{}); ok {
+			for key, value := range dataInfo {
+				result.DataInfo[key] = value
+			}
 		}
 		ocrResults, ok := resultData["ocrResults"].([]interface{})
 		if !ok {
@@ -189,9 +194,11 @@ func parseOCRResult(jobID string, jsonlData []map[string]interface{}) (*OCRResul
 				return nil, &ResultParseError{PaddleOCRAPIError{Message: "OCR result page is missing prunedResult"}}
 			}
 			page := OCRPage{
-				PrunedResult: itemMap["prunedResult"],
-				OCRImageURL:  getString(itemMap, "ocrImage"),
-				Raw:          itemMap,
+				PrunedResult:             itemMap["prunedResult"],
+				OCRImageURL:              getString(itemMap, "ocrImage"),
+				DocPreprocessingImageURL: getString(itemMap, "docPreprocessingImage"),
+				InputImageURL:            getString(itemMap, "inputImage"),
+				Raw:                      itemMap,
 			}
 			result.Pages = append(result.Pages, page)
 		}
@@ -200,11 +207,16 @@ func parseOCRResult(jobID string, jsonlData []map[string]interface{}) (*OCRResul
 }
 
 func parseDocParsingResult(jobID string, jsonlData []map[string]interface{}) (*DocParsingResult, error) {
-	result := &DocParsingResult{JobID: jobID}
+	result := &DocParsingResult{JobID: jobID, DataInfo: map[string]interface{}{}}
 	for _, lineObj := range jsonlData {
 		resultData, ok := lineObj["result"].(map[string]interface{})
 		if !ok {
 			return nil, &ResultParseError{PaddleOCRAPIError{Message: "document parsing result item is missing result"}}
+		}
+		if dataInfo, ok := resultData["dataInfo"].(map[string]interface{}); ok {
+			for key, value := range dataInfo {
+				result.DataInfo[key] = value
+			}
 		}
 		lpResults, ok := resultData["layoutParsingResults"].([]interface{})
 		if !ok {
@@ -223,6 +235,11 @@ func parseDocParsingResult(jobID string, jsonlData []map[string]interface{}) (*D
 				MarkdownText:   getString(markdown, "text"),
 				MarkdownImages: getStringMap(markdown, "images"),
 				OutputImages:   getStringMap(itemMap, "outputImages"),
+				PrunedResult:   itemMap["prunedResult"],
+				InputImageURL:  getString(itemMap, "inputImage"),
+				Exports:        getMap(itemMap, "exports"),
+				Markdown:       markdown,
+				Raw:            itemMap,
 			}
 			result.Pages = append(result.Pages, page)
 		}
@@ -236,6 +253,14 @@ func getString(m map[string]interface{}, key string) string {
 	}
 	v, _ := m[key].(string)
 	return v
+}
+
+func getMap(m map[string]interface{}, key string) map[string]interface{} {
+	value, ok := m[key].(map[string]interface{})
+	if !ok {
+		return map[string]interface{}{}
+	}
+	return value
 }
 
 func getStringMap(m map[string]interface{}, key string) map[string]string {

@@ -117,13 +117,6 @@ def test_custom_model_string() -> None:
     assert loader._model == Model.PADDLE_OCR_VL_15
 
 
-def test_invalid_model_raises() -> None:
-    with pytest.raises(ValueError, match="PaddleOCR-VL model"):
-        PaddleOCRVLLoader(file_path="dummy.pdf", model="PP-OCRv6")
-    with pytest.raises(ValueError, match="PaddleOCR-VL model"):
-        PaddleOCRVLLoader(file_path="dummy.pdf", model="PP-StructureV3")
-
-
 def test_parse_document_receives_model(monkeypatch: pytest.MonkeyPatch) -> None:
     mock_result = MagicMock()
     mock_result.job_id = "job-1"

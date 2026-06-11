@@ -223,11 +223,17 @@ class PaddleOCRVLLoader(BaseLoader):
 
         raw_response = {
             "job_id": result.job_id,
+            "data_info": result.data_info,
             "pages": [
                 {
                     "markdown_text": page.markdown_text,
                     "markdown_images": page.markdown_images,
                     "output_images": page.output_images,
+                    "pruned_result": page.pruned_result,
+                    "input_image_url": page.input_image_url,
+                    "exports": page.exports,
+                    "markdown": page.markdown,
+                    "raw": page.raw,
                 }
                 for page in result.pages
             ],

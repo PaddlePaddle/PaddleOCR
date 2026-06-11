@@ -96,6 +96,62 @@ func TestDocumentParsingOptionsIncludeCurrentAndFutureServiceParameters(t *testi
 	}
 }
 
+func TestResultParsersPreserveRawFieldsAndDataInfo(t *testing.T) {
+	ocrLine := map[string]interface{}{
+		"result": map[string]interface{}{
+			"dataInfo": map[string]interface{}{"numPages": float64(1)},
+			"ocrResults": []interface{}{
+				map[string]interface{}{
+					"prunedResult":          map[string]interface{}{"text": "hello"},
+					"ocrImage":              "ocr.png",
+					"docPreprocessingImage": "pre.png",
+					"inputImage":            "input.png",
+				},
+			},
+		},
+	}
+	ocrResult, err := parseOCRResult("job-ocr", []map[string]interface{}{ocrLine})
+	if err != nil {
+		t.Fatalf("parseOCRResult() error = %v", err)
+	}
+	if ocrResult.DataInfo["numPages"] != float64(1) {
+		t.Fatalf("OCR metadata not preserved: %#v", ocrResult)
+	}
+	if ocrResult.Pages[0].DocPreprocessingImageURL != "pre.png" || ocrResult.Pages[0].InputImageURL != "input.png" {
+		t.Fatalf("OCR page image URLs not preserved: %#v", ocrResult.Pages[0])
+	}
+	if ocrResult.Pages[0].Raw["ocrImage"] != "ocr.png" {
+		t.Fatalf("OCR raw page not preserved: %#v", ocrResult.Pages[0].Raw)
+	}
+
+	docPage := map[string]interface{}{
+		"prunedResult": map[string]interface{}{"blocks": []interface{}{map[string]interface{}{"label": "text"}}},
+		"markdown":     map[string]interface{}{"text": "hello", "images": map[string]interface{}{"figure.png": "figure-url"}, "isStart": true},
+		"outputImages": map[string]interface{}{"page.png": "page-url"},
+		"inputImage":   "input.png",
+		"exports":      map[string]interface{}{"docx": "docx-url"},
+	}
+	docLine := map[string]interface{}{
+		"result": map[string]interface{}{
+			"dataInfo":             map[string]interface{}{"numPages": float64(1)},
+			"layoutParsingResults": []interface{}{docPage},
+		},
+	}
+	docResult, err := parseDocParsingResult("job-doc", []map[string]interface{}{docLine})
+	if err != nil {
+		t.Fatalf("parseDocParsingResult() error = %v", err)
+	}
+	if docResult.DataInfo["numPages"] != float64(1) {
+		t.Fatalf("document metadata not preserved: %#v", docResult)
+	}
+	if docResult.Pages[0].PrunedResult == nil || docResult.Pages[0].Raw["inputImage"] != "input.png" {
+		t.Fatalf("document page raw fields not preserved: %#v", docResult.Pages[0])
+	}
+	if docResult.Pages[0].Exports["docx"] != "docx-url" || docResult.Pages[0].Markdown["isStart"] != true {
+		t.Fatalf("document structured fields not preserved: %#v", docResult.Pages[0])
+	}
+}
+
 func TestSubmitOCRAcceptsOfficialModelNameString(t *testing.T) {
 	var got string
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

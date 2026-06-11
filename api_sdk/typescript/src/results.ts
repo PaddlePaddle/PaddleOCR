@@ -15,6 +15,8 @@
 export interface OCRPage {
   prunedResult: unknown;
   ocrImageUrl?: string;
+  docPreprocessingImageUrl?: string;
+  inputImageUrl?: string;
   raw?: unknown;
 }
 
@@ -22,16 +24,23 @@ export interface DocParsingPage {
   markdownText: string;
   markdownImages: Record<string, string>;
   outputImages: Record<string, string>;
+  prunedResult?: unknown;
+  inputImageUrl?: string;
+  exports?: Record<string, unknown>;
+  markdown?: Record<string, unknown>;
+  raw?: unknown;
 }
 
 export interface OCRResult {
   jobId: string;
   pages: OCRPage[];
+  dataInfo?: Record<string, unknown>;
 }
 
 export interface DocParsingResult {
   jobId: string;
   pages: DocParsingPage[];
+  dataInfo?: Record<string, unknown>;
 }
 
 export interface Progress {

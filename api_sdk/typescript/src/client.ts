@@ -274,9 +274,13 @@ export class PaddleOCRClient {
   }
 
   private parseOCRResult(jobId: string, jsonlData: unknown[]): OCRResult {
+    const dataInfo: Record<string, unknown> = {};
     const pages = jsonlData.flatMap((lineObj) => {
       if (!isRecord(lineObj) || !isRecord(lineObj.result) || !Array.isArray(lineObj.result.ocrResults)) {
         throw new ResultParseError("OCR result item is missing result.ocrResults.");
+      }
+      if (isRecord(lineObj.result.dataInfo)) {
+        Object.assign(dataInfo, lineObj.result.dataInfo);
       }
       return lineObj.result.ocrResults.map((item) => {
         if (!isRecord(item) || !("prunedResult" in item)) {
@@ -285,17 +289,23 @@ export class PaddleOCRClient {
         return {
           prunedResult: item.prunedResult,
           ocrImageUrl: typeof item.ocrImage === "string" ? item.ocrImage : undefined,
+          docPreprocessingImageUrl: typeof item.docPreprocessingImage === "string" ? item.docPreprocessingImage : undefined,
+          inputImageUrl: typeof item.inputImage === "string" ? item.inputImage : undefined,
           raw: item,
         };
       });
     });
-    return { jobId, pages };
+    return { jobId, pages, dataInfo };
   }
 
   private parseDocParsingResult(jobId: string, jsonlData: unknown[]): DocParsingResult {
+    const dataInfo: Record<string, unknown> = {};
     const pages = jsonlData.flatMap((lineObj) => {
       if (!isRecord(lineObj) || !isRecord(lineObj.result) || !Array.isArray(lineObj.result.layoutParsingResults)) {
         throw new ResultParseError("Document parsing result item is missing result.layoutParsingResults.");
+      }
+      if (isRecord(lineObj.result.dataInfo)) {
+        Object.assign(dataInfo, lineObj.result.dataInfo);
       }
       return lineObj.result.layoutParsingResults.map((item) => {
         if (!isRecord(item) || !isRecord(item.markdown) || typeof item.markdown.text !== "string") {
@@ -305,10 +315,15 @@ export class PaddleOCRClient {
           markdownText: item.markdown.text,
           markdownImages: isRecord(item.markdown.images) ? stringMap(item.markdown.images) : {},
           outputImages: isRecord(item.outputImages) ? stringMap(item.outputImages) : {},
+          prunedResult: item.prunedResult,
+          inputImageUrl: typeof item.inputImage === "string" ? item.inputImage : undefined,
+          exports: isRecord(item.exports) ? item.exports : {},
+          markdown: item.markdown,
+          raw: item,
         };
       });
     });
-    return { jobId, pages };
+    return { jobId, pages, dataInfo };
   }
 
   private resolveJob(job: Job | string, expectedTask: Job["task"]): Job {

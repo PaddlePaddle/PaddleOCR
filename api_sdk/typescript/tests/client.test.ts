@@ -326,13 +326,41 @@ describe("PaddleOCRClient public contract", () => {
   test("typed wait accepts bare jobId, fetches JSONL without Authorization, and parses OCR results", async () => {
     const { fetch, calls } = captureFetch([
       jsonResponse({ data: { state: "done", resultUrl: { jsonUrl: "https://storage.example.test/job-1.jsonl" } } }),
-      textResponse(JSON.stringify({ result: { ocrResults: [{ prunedResult: { text: "hello" }, ocrImage: "img.png" }] } })),
+      textResponse(
+        JSON.stringify({
+          result: {
+            dataInfo: { numPages: 1 },
+            ocrResults: [
+              {
+                prunedResult: { text: "hello" },
+                ocrImage: "img.png",
+                docPreprocessingImage: "pre.png",
+                inputImage: "input.png",
+              },
+            ],
+          },
+        }),
+      ),
     ]);
     const client = createClient(fetch);
 
     await expect(client.waitOcrResult("job-1")).resolves.toMatchObject({
       jobId: "job-1",
-      pages: [{ prunedResult: { text: "hello" }, ocrImageUrl: "img.png" }],
+      dataInfo: { numPages: 1 },
+      pages: [
+        {
+          prunedResult: { text: "hello" },
+          ocrImageUrl: "img.png",
+          docPreprocessingImageUrl: "pre.png",
+          inputImageUrl: "input.png",
+          raw: {
+            prunedResult: { text: "hello" },
+            ocrImage: "img.png",
+            docPreprocessingImage: "pre.png",
+            inputImage: "input.png",
+          },
+        },
+      ],
     });
     expect(calls[1].url).toBe("https://storage.example.test/job-1.jsonl");
     expect((calls[1].init.headers as Record<string, string>).Authorization).toBeUndefined();
@@ -414,6 +442,38 @@ describe("PaddleOCRClient public contract", () => {
     );
 
     await expect(client.waitOcrResult("job-1")).rejects.toThrow(ResultParseError);
+  });
+
+  test("waitDocumentParsingResult preserves raw page data and dataInfo", async () => {
+    const page = {
+      prunedResult: { blocks: [{ label: "text", content: "hello" }] },
+      markdown: { text: "hello", images: { "figure.png": "https://example.test/figure.png" }, isStart: true, isEnd: true },
+      outputImages: { "page.png": "https://example.test/page.png" },
+      inputImage: "https://example.test/input.png",
+      exports: { docx: "https://example.test/result.docx" },
+    };
+    const { fetch } = captureFetch([
+      jsonResponse({ data: { state: "done", resultUrl: { jsonUrl: "https://storage.example.test/job.jsonl" } } }),
+      textResponse(JSON.stringify({ result: { dataInfo: { numPages: 1 }, layoutParsingResults: [page] } })),
+    ]);
+    const client = createClient(fetch);
+
+    await expect(client.waitDocumentParsingResult("job-1")).resolves.toMatchObject({
+      jobId: "job-1",
+      dataInfo: { numPages: 1 },
+      pages: [
+        {
+          markdownText: "hello",
+          markdownImages: { "figure.png": "https://example.test/figure.png" },
+          outputImages: { "page.png": "https://example.test/page.png" },
+          prunedResult: { blocks: [{ label: "text", content: "hello" }] },
+          inputImageUrl: "https://example.test/input.png",
+          exports: { docx: "https://example.test/result.docx" },
+          markdown: page.markdown,
+          raw: page,
+        },
+      ],
+    });
   });
 
   test("malformed fetched document result records use ResultParseError", async () => {

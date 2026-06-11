@@ -30,6 +30,7 @@ from paddleocr._api_client.models import (
     PPStructureV3Options,
 )
 from paddleocr._utils.naming import snake_to_camel
+from paddleocr._api_client._poller import parse_doc_parsing_result, parse_ocr_result
 from paddleocr._api_client.results import Job
 
 
@@ -73,6 +74,51 @@ def test_paddleocr_vl_options_include_service_parameters_and_extra_options():
         "outputFormats": ["docx"],
         "futureOption": "enabled",
     }
+
+
+def test_result_parsers_preserve_raw_fields_and_data_info():
+    ocr_line = {
+        "result": {
+            "dataInfo": {"numPages": 1},
+            "ocrResults": [
+                {
+                    "prunedResult": {"rec_texts": ["hello"]},
+                    "ocrImage": "ocr.png",
+                    "docPreprocessingImage": "pre.png",
+                    "inputImage": "input.png",
+                }
+            ],
+        }
+    }
+    ocr_result = parse_ocr_result("job-ocr", [ocr_line])
+    assert ocr_result.data_info == {"numPages": 1}
+    assert ocr_result.pages[0].doc_preprocessing_image_url == "pre.png"
+    assert ocr_result.pages[0].input_image_url == "input.png"
+    assert ocr_result.pages[0].raw["ocrImage"] == "ocr.png"
+
+    doc_page = {
+        "prunedResult": {"blocks": [{"label": "text", "content": "hello"}]},
+        "markdown": {
+            "text": "hello",
+            "images": {"figure.png": "figure-url"},
+            "isStart": True,
+        },
+        "outputImages": {"page.png": "page-url"},
+        "inputImage": "input.png",
+        "exports": {"docx": "docx-url"},
+    }
+    doc_line = {
+        "result": {
+            "dataInfo": {"numPages": 1},
+            "layoutParsingResults": [doc_page],
+        }
+    }
+    doc_result = parse_doc_parsing_result("job-doc", [doc_line])
+    assert doc_result.data_info == {"numPages": 1}
+    assert doc_result.pages[0].pruned_result == doc_page["prunedResult"]
+    assert doc_result.pages[0].markdown == doc_page["markdown"]
+    assert doc_result.pages[0].exports == {"docx": "docx-url"}
+    assert doc_result.pages[0].raw == doc_page
 
 
 def test_core_resolves_models_and_default_payloads():
