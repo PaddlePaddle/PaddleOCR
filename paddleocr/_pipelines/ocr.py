@@ -342,7 +342,6 @@ class PaddleOCR(PaddleXPipelineWrapper):
                 "el",
                 "te",
                 "ta",
-                "pi",
             } | ESLAV_LANGS | ARABIC_LANGS | CYRILLIC_LANGS | DEVANAGARI_LANGS | (
                 LATIN_LANGS - _PPOCRV6_LANGS
             ):
@@ -354,10 +353,9 @@ class PaddleOCR(PaddleXPipelineWrapper):
                 return None, None
 
         if ppocr_version == "PP-OCRv6":
-            if lang in ("ch", "chinese_cht", "en", "japan") or lang in LATIN_LANGS:
+            if lang in _PPOCRV6_LANGS:
                 return "PP-OCRv6_medium_det", "PP-OCRv6_medium_rec"
-            else:
-                return None, None
+            return None, None
 
         elif ppocr_version == "PP-OCRv5":
             rec_lang, rec_model_name = None, None
@@ -391,11 +389,6 @@ class PaddleOCR(PaddleXPipelineWrapper):
             if rec_model_name is None:
                 return None, None
             return "PP-OCRv5_server_det", rec_model_name
-
-        elif ppocr_version == "PP-OCRv6":
-            if lang in _PPOCRV6_LANGS:
-                return "PP-OCRv6_medium_det", "PP-OCRv6_medium_rec"
-            return None, None
 
         elif ppocr_version == "PP-OCRv4":
             if lang == "ch":

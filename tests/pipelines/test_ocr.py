@@ -144,11 +144,11 @@ def test_lang_and_ocr_version():
 
 def test_pp_ocrv6_model_names():
     engine = object.__new__(PaddleOCR)
-    for lang in ("ch", "chinese_cht", "en", "japan", "fr", "de", "vi"):
+    for lang in ("ch", "chinese_cht", "en", "japan", "fr", "de", "vi", "ku", "az"):
         det, rec = engine._get_ocr_model_names(lang, "PP-OCRv6")
         assert det == "PP-OCRv6_medium_det"
         assert rec == "PP-OCRv6_medium_rec"
-    det, rec = engine._get_ocr_model_names("az", "PP-OCRv6")
+    det, rec = engine._get_ocr_model_names("pi", "PP-OCRv6")
     assert det is None
     assert rec is None
     det, rec = engine._get_ocr_model_names("ru", "PP-OCRv6")
@@ -171,12 +171,18 @@ def test_default_ocr_model_names():
     assert det == "PP-OCRv5_server_det"
     assert rec == "eslav_PP-OCRv5_mobile_rec"
     det, rec = engine._get_ocr_model_names("az", None)
+    assert det == "PP-OCRv6_medium_det"
+    assert rec == "PP-OCRv6_medium_rec"
+    det, rec = engine._get_ocr_model_names("ku", None)
+    assert det == "PP-OCRv6_medium_det"
+    assert rec == "PP-OCRv6_medium_rec"
+    det, rec = engine._get_ocr_model_names("pi", None)
     assert det == "PP-OCRv5_server_det"
     assert rec == "latin_PP-OCRv5_mobile_rec"
 
 
 def test_unsupported_lang_version_raises():
     with pytest.raises(ValueError, match="No models are available"):
-        PaddleOCR(lang="az", ocr_version="PP-OCRv6")
+        PaddleOCR(lang="pi", ocr_version="PP-OCRv6")
     with pytest.raises(ValueError, match="No models are available"):
         PaddleOCR(lang="ru", ocr_version="PP-OCRv6")

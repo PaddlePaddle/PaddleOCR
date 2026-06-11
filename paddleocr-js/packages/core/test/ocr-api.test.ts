@@ -193,13 +193,28 @@ describe("PaddleOCR high-level API", () => {
   });
 
   it("rejects PP-OCRv6 with languages outside the v6 coverage", async () => {
-    await expect(
-      PaddleOCR.create({
-        lang: "ru",
+    for (const lang of ["ru", "pi"]) {
+      await expect(
+        PaddleOCR.create({
+          lang,
+          ocrVersion: "PP-OCRv6",
+          ...CREATE_WITHOUT_INIT
+        })
+      ).rejects.toThrow(/Unsupported lang\/ocrVersion combination/);
+    }
+  });
+
+  it("maps PP-OCRv6 az and ku lang selection to the small model set", async () => {
+    for (const lang of ["az", "ku"]) {
+      const ocr = await PaddleOCR.create({
+        lang,
         ocrVersion: "PP-OCRv6",
         ...CREATE_WITHOUT_INIT
-      })
-    ).rejects.toThrow(/Unsupported lang\/ocrVersion combination/);
+      });
+
+      expect(ocr.options.pipelineConfig.assets.det?.url).toMatch(/PP-OCRv6_small_det/);
+      expect(ocr.options.pipelineConfig.assets.rec?.url).toMatch(/PP-OCRv6_small_rec/);
+    }
   });
 
   it("resolves PP-OCRv6 tiny models via explicit model names", async () => {

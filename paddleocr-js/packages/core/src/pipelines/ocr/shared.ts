@@ -120,7 +120,7 @@ const _LATIN_LANGS = new Set([
   "ca",
   "qu"
 ]);
-const _PPOCRV6_UNSUPPORTED_LATIN_LANGS = new Set(["az", "ku", "pi"]);
+const _PPOCRV6_UNSUPPORTED_LATIN_LANGS = new Set(["pi"]);
 const _PPOCRV6_LANGS = new Set([
   "ch",
   "chinese_cht",
