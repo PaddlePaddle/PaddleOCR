@@ -112,21 +112,22 @@ PP-OCRv6_medium 加权平均准确率 83.2%，相比 PP-OCRv5_server 提升 5.1%
 
 在 200 张图像（通用场景 + 文档场景）上测试端到端 OCR 产线速度，包含读图、前后处理、模型推理全流程。
 
-| 硬件 | 推理后端 | PP-OCRv6_medium | PP-OCRv6_small | PP-OCRv6_tiny | PP-OCRv5_mobile | PP-OCRv4_mobile |
-|------|---------|-----------------|----------------|---------------|-----------------|-----------------|
-| Apple M4 | PaddlePaddle | 5.36 | 3.06 | 0.34 | 5.96 | 5.56 |
-| Apple M4 | ONNX Runtime | 5.30 | 1.36 | 0.34 | 1.28 | 1.16 |
-| Intel Xeon 8350C | PaddlePaddle | 2.05 | 0.79 | 0.32 | 0.80 | 0.62 |
-| Intel Xeon 8350C | ONNX Runtime | -- | 0.77 | 0.23 | 0.79 | 0.54 |
-| Intel Xeon 8350C | OpenVINO | 1.34 | 0.55 | 0.19 | 0.79 | 0.58 |
-| NVIDIA V100 | PaddlePaddle | 1.39 | 0.62 | 0.27 | 0.62 | 0.29 |
-| NVIDIA V100 | TensorRT | 0.77 | 0.60 | 0.23 | 0.59 | 0.27 |
-| NVIDIA A100 | PaddlePaddle | 0.29 | 0.25 | 0.13 | 0.25 | 0.14 |
-| NVIDIA A100 | TensorRT | -- | 0.32 | 0.16 | 0.33 | 0.16 |
+| 硬件 | 推理后端 | PP-OCRv6_medium | PP-OCRv6_small | PP-OCRv6_tiny | PP-OCRv5_server | PP-OCRv5_mobile | PP-OCRv4_mobile |
+|------|---------|-----------------|----------------|---------------|-----------------|-----------------|-----------------|
+| NVIDIA A100 | PaddlePaddle | 0.29 | 0.25 | 0.13 | 0.32 | 0.25 | 0.14 |
+| NVIDIA A100 | TensorRT | -- | 0.32 | 0.16 | -- | 0.33 | 0.16 |
+| NVIDIA V100 | PaddlePaddle | 0.72 | 0.49 | 0.21 | 0.66 | 0.50 | 0.25 |
+| NVIDIA V100 | ONNX Runtime | 0.67 | 0.53 | 0.29 | 0.77 | 0.46 | 0.27 |
+| NVIDIA V100 | TensorRT | 0.77 | 0.60 | 0.23 | 0.73 | 0.59 | 0.27 |
+| Intel Xeon 8350C | PaddlePaddle | 2.05 | 0.79 | 0.32 | 2.04 | 0.80 | 0.62 |
+| Intel Xeon 8350C | OpenVINO | 1.40 | 0.59 | 0.20 | 7.30 | 0.78 | 0.60 |
+| Intel Xeon 8350C | ONNX Runtime | 3.31 | 0.61 | 0.22 | 6.36 | 0.61 | 0.49 |
+| Apple M4 | PaddlePaddle | 8.82 | 3.07 | 0.96 | >10 | 5.82 | 5.65 |
+| Apple M4 | ONNX Runtime | 5.55 | 1.29 | 0.35 | 7.20 | 1.10 | 1.02 |
 
-
-- 在 Intel Xeon CPU 上，PP-OCRv6_small 与 PP-OCRv5_mobile 速度持平（0.79s vs 0.80s），OpenVINO 下更快（0.55s vs 0.79s）；PP-OCRv6_tiny 是所有后端中最快的模型，OpenVINO 下仅需 0.19s。
-- 在 GPU 上，PP-OCRv6_small 在 V100/A100 上与 PP-OCRv5_mobile 速度相当，但精度更高；PP-OCRv6_tiny 在 A100 上仅需 0.13s。
+- PP-OCRv6_medium 在所有平台上均匹配或优于 PP-OCRv5_server：A100 上快 1.1×（0.29s vs 0.32s），V100 ONNX Runtime 快 1.15×（0.67s vs 0.77s），Intel Xeon OpenVINO 快 5.2×（1.40s vs 7.30s）。
+- PP-OCRv6_small 在大多数平台上与 PP-OCRv5_mobile 速度持平但精度更高；Apple M4 PaddlePaddle 快 1.9×（3.07s vs 5.82s）。
+- PP-OCRv6_tiny 是所有平台上最快的模型，Apple M4 PaddlePaddle 快 6.1×（0.96s vs 5.82s），Intel Xeon OpenVINO 快 3.9×（0.20s vs 0.78s），A100 上仅需 0.13s。
 
 # 四、语言支持
 

@@ -105,17 +105,22 @@ Text recognition accuracy (%) on our in-house multi-scenario benchmark (15 categ
 
 Tested on 200 images (general + document scenes), including image I/O, pre/post-processing, and model inference.
 
-| Hardware | Backend | PP-OCRv6_medium | PP-OCRv6_small | PP-OCRv6_tiny | PP-OCRv5_mobile | PP-OCRv4_mobile |
-|----------|---------|-----------------|----------------|---------------|-----------------|-----------------|
-| Apple M4 | PaddlePaddle | 5.36 | 3.06 | 0.34 | 5.96 | 5.56 |
-| Apple M4 | ONNX Runtime | 5.30 | 1.36 | 0.34 | 1.28 | 1.16 |
-| Intel Xeon 8350C | PaddlePaddle | 2.05 | 0.79 | 0.32 | 0.80 | 0.62 |
-| Intel Xeon 8350C | ONNX Runtime | -- | 0.77 | 0.23 | 0.79 | 0.54 |
-| Intel Xeon 8350C | OpenVINO | 1.34 | 0.55 | 0.19 | 0.79 | 0.58 |
-| NVIDIA V100 | PaddlePaddle | 1.39 | 0.62 | 0.27 | 0.62 | 0.29 |
-| NVIDIA V100 | TensorRT | 0.77 | 0.60 | 0.23 | 0.59 | 0.27 |
-| NVIDIA A100 | PaddlePaddle | 0.29 | 0.25 | 0.13 | 0.25 | 0.14 |
-| NVIDIA A100 | TensorRT | -- | 0.32 | 0.16 | 0.33 | 0.16 |
+| Hardware | Backend | PP-OCRv6_medium | PP-OCRv6_small | PP-OCRv6_tiny | PP-OCRv5_server | PP-OCRv5_mobile | PP-OCRv4_mobile |
+|----------|---------|-----------------|----------------|---------------|-----------------|-----------------|-----------------|
+| NVIDIA A100 | PaddlePaddle | 0.29 | 0.25 | 0.13 | 0.32 | 0.25 | 0.14 |
+| NVIDIA A100 | TensorRT | -- | 0.32 | 0.16 | -- | 0.33 | 0.16 |
+| NVIDIA V100 | PaddlePaddle | 0.72 | 0.49 | 0.21 | 0.66 | 0.50 | 0.25 |
+| NVIDIA V100 | ONNX Runtime | 0.67 | 0.53 | 0.29 | 0.77 | 0.46 | 0.27 |
+| NVIDIA V100 | TensorRT | 0.77 | 0.60 | 0.23 | 0.73 | 0.59 | 0.27 |
+| Intel Xeon 8350C | PaddlePaddle | 2.05 | 0.79 | 0.32 | 2.04 | 0.80 | 0.62 |
+| Intel Xeon 8350C | OpenVINO | 1.40 | 0.59 | 0.20 | 7.30 | 0.78 | 0.60 |
+| Intel Xeon 8350C | ONNX Runtime | 3.31 | 0.61 | 0.22 | 6.36 | 0.61 | 0.49 |
+| Apple M4 | PaddlePaddle | 8.82 | 3.07 | 0.96 | >10 | 5.82 | 5.65 |
+| Apple M4 | ONNX Runtime | 5.55 | 1.29 | 0.35 | 7.20 | 1.10 | 1.02 |
+
+- PP-OCRv6_medium matches or outperforms PP-OCRv5_server on all platforms: 1.1× faster on A100 (0.29s vs 0.32s), 1.15× on V100 ONNX Runtime (0.67s vs 0.77s), 5.2× on Intel Xeon OpenVINO (1.40s vs 7.30s).
+- PP-OCRv6_small matches PP-OCRv5_mobile in latency on most platforms with higher accuracy; 1.9× faster on Apple M4 PaddlePaddle (3.07s vs 5.82s).
+- PP-OCRv6_tiny is the fastest model across all platforms: 6.1× over PP-OCRv5_mobile on Apple M4 PaddlePaddle (0.96s vs 5.82s), 3.9× on Intel Xeon OpenVINO (0.20s vs 0.78s), reaching 0.13s on A100.
 
 # 4. Visualization
 
