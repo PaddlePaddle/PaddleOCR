@@ -96,7 +96,7 @@ PaddleOCR 提供轻量级的 [Model Context Protocol（MCP）](https://modelcont
 本节将介绍如何通过 pip 安装 `paddleocr-mcp` 库。
 
 `paddleocr-mcp` 要求 Python 版本不低于 3.10。
-`paddleocr-mcp` 默认依赖 `paddleocr>=3.6.0`，因此官方 API、千帆 API 和自建 API 推理方式无需额外安装 PaddleOCR。如需使用本地推理，还需要安装本地运行产线所需的文档解析依赖和推理引擎，详情请参考 [方式一：本地推理](#方式一本地推理)。
+`paddleocr-mcp` 默认依赖 `paddleocr>=3.7.0`，因此官方 API、千帆 API 和自建 API 推理方式无需额外安装 PaddleOCR。如需使用本地推理，还需要安装本地运行产线所需的文档解析依赖和推理引擎，详情请参考 [方式一：本地推理](#方式一本地推理)。
 
 从 PyPI 安装：
 
@@ -194,7 +194,7 @@ PaddleOCR 也支持通过 `uvx` 等方式免安装运行服务器，详情请参
 #### 方式一：本地推理 {#方式一本地推理}
 
 1. 安装 `paddleocr-mcp` 及本地推理依赖。`paddleocr-mcp` 已默认依赖 PaddleOCR；本地推理还需要文档解析依赖和推理引擎。可以参考 [PaddleOCR 安装文档](../installation.md) 手动安装，也可以使用相应的可选依赖：
-    - `paddleocr-mcp[local]`：包含 `paddleocr[doc-parser]>=3.6.0`（不包含推理引擎）。
+    - `paddleocr-mcp[local]`：包含 `paddleocr[doc-parser]>=3.7.0`（不包含推理引擎）。
     - `paddleocr-mcp[local-cpu]`：在 `local` 基础上额外包含 CPU 版本的 PaddlePaddle 推理引擎（`paddlepaddle>=3.2.1`）。
 
     ```bash

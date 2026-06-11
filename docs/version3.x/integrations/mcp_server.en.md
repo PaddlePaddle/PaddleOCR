@@ -95,7 +95,7 @@ Convert images containing formulas and tables to editable csv/Excel format:
 This section explains how to install the `paddleocr-mcp` library via pip.
 
 `paddleocr-mcp` requires Python 3.10 or later.
-`paddleocr-mcp` depends on `paddleocr>=3.6.0` by default, so Official API, Qianfan API, and self-hosted API modes do not require installing PaddleOCR separately. Local inference additionally requires the document-parsing dependencies and an inference engine required to run PaddleOCR pipelines locally; see [Method 1: Local Inference](#method-1-local-inference) for details.
+`paddleocr-mcp` depends on `paddleocr>=3.7.0` by default, so Official API, Qianfan API, and self-hosted API modes do not require installing PaddleOCR separately. Local inference additionally requires the document-parsing dependencies and an inference engine required to run PaddleOCR pipelines locally; see [Method 1: Local Inference](#method-1-local-inference) for details.
 
 Install from PyPI:
 
@@ -193,7 +193,7 @@ You can configure the MCP server according to your requirements to use different
 #### Method 1: Local Inference {#method-1-local-inference}
 
 1. Install `paddleocr-mcp` and the local inference dependencies. `paddleocr-mcp` already depends on PaddleOCR; local inference additionally requires the document-parsing dependencies and an inference engine. You can install them manually by referring to the [PaddleOCR installation guide](../installation.en.md), or use the corresponding optional dependencies:
-    - `paddleocr-mcp[local]`: includes `paddleocr[doc-parser]>=3.6.0` (without the inference engine).
+    - `paddleocr-mcp[local]`: includes `paddleocr[doc-parser]>=3.7.0` (without the inference engine).
     - `paddleocr-mcp[local-cpu]`: based on `local`, additionally includes the CPU PaddlePaddle inference engine (`paddlepaddle>=3.2.1`).
 
     ```bash
