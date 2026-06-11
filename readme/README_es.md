@@ -61,14 +61,27 @@
 
 ## 📣 Actualizaciones recientes
 
-### 🔥 2026.05.28: Lanzamiento de PaddleOCR 3.6.0
+### 🔥 2026.06.11: Lanzamiento de PaddleOCR 3.7.0
+- Aspectos destacados de PP-OCRv6:
+
+    - **Mejora de precisión**: El nivel medium logra +4.6% en detección y +5.1% en reconocimiento sobre PP-OCRv5_server, superando a los principales VLMs (Qwen3-VL-235B, GPT-5.5) con solo 34.5M parámetros.
+    - **50 idiomas unificados**: Un solo modelo cubre chino, inglés, japonés y 46 idiomas latinos — sin necesidad de cambiar modelos.
+    - **Escenarios especializados**: Mejoras significativas en pantallas digitales, caracteres de matriz de puntos, impresiones de neumáticos y texto industrial.
+    - **Inferencia más rápida**: Aceleración 5.2× en CPU (OpenVINO), 6.1× en Apple M4 (tiny), 0.13s en A100 GPU.
+    - **Tres niveles para todos los escenarios**: tiny (1.5M) / small (7.7M) / medium (34.5M) para despliegue en edge, móvil y servidor.
+    - **Documentación**: [Documentación técnica de PP-OCRv6](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/algorithm/PP-OCRv6/PP-OCRv6.en.html)
+
+<details>
+<summary><strong>2026.05.28: Lanzamiento de PaddleOCR 3.6.0</strong></summary>
+
 - Aspectos destacados de PaddleOCR-VL-1.6:
 
-    - **Nueva precisión SOTA**: supera el 96.3% en OmniDocBench v1.6, también establece nuevos SOTA en OmniDocBench v1.5 y Real5-OmniDocBench, liderando soluciones de código abierto y cerrado en reconocimiento de texto, fórmulas y tablas.
-    - **Capacidades ampliamente mejoradas**: mejoras significativas en tablas, documentos antiguos y caracteres raros, con refuerzos notables en reconocimiento de sellos, spotting y análisis de gráficos en múltiples escenarios.
-    - **Migración transparente**: la arquitectura del modelo es totalmente consistente con PaddleOCR-VL-1.5, permitiendo adaptación sin costo — cámbielo y úselo de inmediato.
-    - **Pruébalo ahora**: disponible en [HuggingFace](https://huggingface.co/PaddlePaddle/PaddleOCR-VL-1.6) o en nuestro [sitio web oficial](https://www.paddleocr.com).
+    - **Nueva precisión SOTA**: 96.3% en OmniDocBench v1.6, nuevo SOTA en OmniDocBench v1.5 y Real5-OmniDocBench.
+    - **Mejora integral**: mejoras significativas en tablas, documentos antiguos y caracteres raros.
+    - **Migración sin fisuras**: arquitectura totalmente compatible con PaddleOCR-VL-1.5.
+    - **Pruébalo**: [HuggingFace](https://huggingface.co/PaddlePaddle/PaddleOCR-VL-1.6) o [sitio oficial](https://www.paddleocr.com).
 
+</details>
 <details>
 <summary><strong>2026.04.21: Lanzamiento de PaddleOCR 3.5.0</strong></summary>
 

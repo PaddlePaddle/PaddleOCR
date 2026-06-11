@@ -62,14 +62,27 @@
 
 ## 📣 最新情報
 
-### 🔥 2026.05.28: PaddleOCR 3.6.0リリース
-- PaddleOCR-VL-1.6の主なハイライト：
+### 🔥 2026.06.11: PaddleOCR 3.7.0リリース
+- PP-OCRv6の主な特徴：
 
-    - **新たなSOTA精度**：OmniDocBench v1.6で96.3%を突破。OmniDocBench v1.5、Real5-OmniDocBenchでもSOTAを更新し、テキスト、数式、表の認識でオープンソース・クローズドソースの両方を凌駕。
-    - **能力の全面アップグレード**：表、古文書、稀な文字の認識が大幅に向上。印鑑認識、spotting、チャート理解など多シーンでも顕著な強化。
-    - **シームレスな移行**：モデル構造はPaddleOCR-VL-1.5と完全に一致。ゼロコストで適応でき、差し替えるだけですぐに利用可能。
-    - **今すぐ試す**：[HuggingFace](https://huggingface.co/PaddlePaddle/PaddleOCR-VL-1.6)または[公式ウェブサイト](https://www.paddleocr.com)で利用可能です。
+    - **精度向上**: mediumティアはPP-OCRv5_serverと比較して検出+4.6%、認識+5.1%を達成、34.5Mパラメータのみで主要VLM（Qwen3-VL-235B、GPT-5.5）を上回る。
+    - **50言語統一サポート**: 単一モデルで中国語、英語、日本語、46のラテン語系言語をカバー — モデル切替不要。
+    - **専門シナリオ強化**: デジタルディスプレイ、ドットマトリックス文字、タイヤ印字、工業文字の認識が大幅向上。
+    - **高速推論**: CPU 5.2×高速化（OpenVINO）、Apple M4 6.1×（tiny）、A100 GPUで0.13s。
+    - **全シナリオ対応3ティア**: tiny（1.5M）/ small（7.7M）/ medium（34.5M）でエッジからサーバーまで対応。
+    - **ドキュメント**: [PP-OCRv6技術ドキュメント](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/algorithm/PP-OCRv6/PP-OCRv6.en.html)
 
+<details>
+<summary><strong>2026.05.28: PaddleOCR 3.6.0リリース</strong></summary>
+
+- PaddleOCR-VL-1.6の主な特徴：
+
+    - **新SOTA精度**: OmniDocBench v1.6で96.3%、OmniDocBench v1.5とReal5-OmniDocBenchでも新SOTA達成。
+    - **総合的な強化**: テーブル、古文書、希少文字の認識が大幅向上。
+    - **シームレスな移行**: PaddleOCR-VL-1.5と完全互換のアーキテクチャ。
+    - **今すぐ試す**: [HuggingFace](https://huggingface.co/PaddlePaddle/PaddleOCR-VL-1.6)または[公式サイト](https://www.paddleocr.com)。
+
+</details>
 <details>
 <summary><strong>2026.04.21: PaddleOCR 3.5.0リリース</strong></summary>
 

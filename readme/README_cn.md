@@ -61,13 +61,27 @@
 
 ## 📣 最新动态
 
-### 🔥 2026.05.28: PaddleOCR 3.6.0 发布
+### 🔥 2026.06.11: PaddleOCR 3.7.0 发布
+- PP-OCRv6 核心亮点如下：
+
+    - **精度全面提升**：medium 档相比 PP-OCRv5_server 检测精度提升 4.6%、识别精度提升 5.1%，以仅 34.5M 参数超越 Qwen3-VL-235B、GPT-5.5 等主流视觉语言大模型。
+    - **50 种语言统一支持**：单一模型覆盖中文、英文、日文及 46 种拉丁语系语言，无需为不同语种切换模型。
+    - **专业场景增强**：数码显示屏、点阵字符、轮胎印字、工业字符等传统 VLM 难以覆盖的场景识别能力大幅提升。
+    - **推理速度更快**：medium 档 CPU OpenVINO 推理加速 5.2×，tiny 档 Apple M4 加速 6.1×，A100 上仅需 0.13s。
+    - **三档模型覆盖全场景**：tiny（1.5M）/ small（7.7M）/ medium（34.5M）分别面向端侧/移动端/服务端部署。
+    - **详细文档**：[PP-OCRv6 技术文档](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/algorithm/PP-OCRv6/PP-OCRv6.html)
+
+<details>
+<summary><strong>2026.05.28: PaddleOCR 3.6.0 发布</strong></summary>
+
 - PaddleOCR-VL-1.6核心亮点如下：
 
     - **全新SOTA精度**：OmniDocBench v1.6 突破96.3%，在OmniDocBench v1.5、Real5-OmniDocBench上同样刷新SOTA，文本、公式、表格识别全面领先开源与闭源方案。
     - **能力全面升级**：表格、古籍、生僻字识别大幅提升，印章、spotting、图表识别等多场景均有显著增强。
     - **无缝迁移**：模型结构与PaddleOCR-VL-1.5完全一致，零成本适配，即换即用。
     - **立即试用**：可在 [HuggingFace](https://huggingface.co/PaddlePaddle/PaddleOCR-VL-1.6) 或 [PaddleOCR 官方网站](https://www.paddleocr.com) 使用。
+
+</details>
 
 <details>
 <summary><strong>2026.04.21: PaddleOCR 3.5.0 发布</strong></summary>
