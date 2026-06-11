@@ -4,14 +4,14 @@ build-backend = "hatchling.build"
 
 [project]
 name = "langchain-paddleocr"
-version = "0.2.0"
+version = "0.2.1"
 description = "An integration package connecting PaddleOCR and LangChain"
 authors = []
 readme = "README.md"
 license = { text = "Apache License 2.0" }
 requires-python = ">=3.10"
 dependencies = [
-    "paddleocr>=3.6.0",
+    "paddleocr>=3.7.0",
     "langchain-core>=1.2.5,<2.0.0",
     "pydantic>=2.0.0,<3.0.0",
 ]

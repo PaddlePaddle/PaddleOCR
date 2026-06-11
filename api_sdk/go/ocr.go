@@ -122,16 +122,51 @@ func (c *Client) submit(ctx context.Context, model, fileURL, filePath string, op
 }
 
 func defaultPayload(model string, options interface{}) interface{} {
-	if options != nil {
-		return options
+	switch typed := options.(type) {
+	case *OCROptions:
+		if typed != nil {
+			return payloadWithExtraOptions(typed)
+		}
+	case *PPStructureV3Options:
+		if typed != nil {
+			return payloadWithExtraOptions(typed)
+		}
+	case *PaddleOCRVLOptions:
+		if typed != nil {
+			return payloadWithExtraOptions(typed)
+		}
+	default:
+		if options != nil {
+			return payloadWithExtraOptions(options)
+		}
 	}
 	if IsOCRModel(model) {
-		return &OCROptions{}
+		return payloadWithExtraOptions(&OCROptions{})
 	}
 	if IsVLModel(model) {
-		return &PaddleOCRVLOptions{}
+		return payloadWithExtraOptions(&PaddleOCRVLOptions{})
 	}
-	return &PPStructureV3Options{}
+	return payloadWithExtraOptions(&PPStructureV3Options{})
+}
+
+func payloadWithExtraOptions(options interface{}) interface{} {
+	payloadBytes, _ := json.Marshal(options)
+	payload := map[string]interface{}{}
+	_ = json.Unmarshal(payloadBytes, &payload)
+
+	var extraOptions map[string]interface{}
+	switch typed := options.(type) {
+	case *OCROptions:
+		extraOptions = typed.ExtraOptions
+	case *PPStructureV3Options:
+		extraOptions = typed.ExtraOptions
+	case *PaddleOCRVLOptions:
+		extraOptions = typed.ExtraOptions
+	}
+	for key, value := range extraOptions {
+		payload[key] = value
+	}
+	return payload
 }
 
 func parseOCRResult(jobID string, jsonlData []map[string]interface{}) (*OCRResult, error) {

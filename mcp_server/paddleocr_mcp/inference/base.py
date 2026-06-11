@@ -76,7 +76,7 @@ class Inference(abc.ABC):
         if invalid_params:
             raise ValueError(
                 f"Invalid runtime parameters: {invalid_params}. "
-                f"Valid parameters are: {sorted(valid_params)}"
+                f"Valid parameters are: {sorted(valid_params)}."
             )
 
     def get_final_params(self, runtime_params: Dict[str, Any]) -> Dict[str, Any]:

@@ -60,6 +60,7 @@ export interface OCROptions {
   textDetUnclipRatio?: number;
   textRecScoreThresh?: number;
   visualize?: boolean;
+  [key: string]: unknown;
 }
 
 export interface PPStructureV3Options {
@@ -74,7 +75,8 @@ export interface PPStructureV3Options {
   layoutThreshold?: number | Record<string, number>;
   layoutNms?: boolean;
   layoutUnclipRatio?: number | number[] | Record<string, number>;
-  layoutMergeBboxesMode?: string;
+  layoutMergeBboxesMode?: string | Record<string, string>;
+  formatBlockContent?: boolean;
   textDetLimitSideLen?: number;
   textDetLimitType?: string;
   textDetThresh?: number;
@@ -87,9 +89,13 @@ export interface PPStructureV3Options {
   useOcrResultsWithTableCells?: boolean;
   useE2eWiredTableRecModel?: boolean;
   useE2eWirelessTableRecModel?: boolean;
+  markdownIgnoreLabels?: string[];
   prettifyMarkdown?: boolean;
   showFormulaNumber?: boolean;
+  returnMarkdownImages?: boolean;
+  outputFormats?: string[];
   visualize?: boolean;
+  [key: string]: unknown;
 }
 
 export interface PaddleOCRVLOptions {
@@ -98,25 +104,32 @@ export interface PaddleOCRVLOptions {
   useLayoutDetection?: boolean;
   useChartRecognition?: boolean;
   useSealRecognition?: boolean;
+  useOcrForImageBlock?: boolean;
   layoutThreshold?: number | Record<string, number>;
   layoutNms?: boolean;
   layoutUnclipRatio?: number | number[] | Record<string, number>;
   layoutMergeBboxesMode?: string | Record<string, string>;
   layoutShapeMode?: "rect" | "quad" | "poly" | "auto";
   promptLabel?: "ocr" | "formula" | "table" | "chart" | "seal" | "spotting";
+  formatBlockContent?: boolean;
   repetitionPenalty?: number;
   temperature?: number;
   topP?: number;
   minPixels?: number;
   maxPixels?: number;
   maxNewTokens?: number;
+  vlmExtraArgs?: Record<string, unknown>;
   mergeLayoutBlocks?: boolean;
+  markdownIgnoreLabels?: string[];
   prettifyMarkdown?: boolean;
   showFormulaNumber?: boolean;
   restructurePages?: boolean;
   mergeTables?: boolean;
   relevelTitles?: boolean;
+  returnMarkdownImages?: boolean;
+  outputFormats?: string[];
   visualize?: boolean;
+  [key: string]: unknown;
 }
 
 export type DocParsingOptions = PPStructureV3Options | PaddleOCRVLOptions;

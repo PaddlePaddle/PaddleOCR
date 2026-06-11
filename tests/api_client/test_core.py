@@ -39,11 +39,39 @@ def test_ppstructurev3_options_to_payload_uses_official_camel_case_keys():
 
     options = PPStructureV3Options(
         use_e2e_wired_table_rec_model=True,
+        format_block_content=True,
+        markdown_ignore_labels=["image"],
         text_det_limit_side_len=1280,
+        extra_options={"futureOption": "enabled"},
     )
     assert options.to_payload() == {
         "useE2eWiredTableRecModel": True,
+        "formatBlockContent": True,
+        "markdownIgnoreLabels": ["image"],
         "textDetLimitSideLen": 1280,
+        "futureOption": "enabled",
+    }
+
+
+def test_paddleocr_vl_options_include_service_parameters_and_extra_options():
+    options = PaddleOCRVLOptions(
+        use_ocr_for_image_block=True,
+        format_block_content=True,
+        markdown_ignore_labels=["image"],
+        vlm_extra_args={"temperature": 0.1},
+        return_markdown_images=False,
+        output_formats=["docx"],
+        extra_options={"futureOption": "enabled"},
+    )
+
+    assert options.to_payload() == {
+        "useOcrForImageBlock": True,
+        "formatBlockContent": True,
+        "markdownIgnoreLabels": ["image"],
+        "vlmExtraArgs": {"temperature": 0.1},
+        "returnMarkdownImages": False,
+        "outputFormats": ["docx"],
+        "futureOption": "enabled",
     }
 
 

@@ -43,6 +43,59 @@ func TestClientPlatformHeader(t *testing.T) {
 	}
 }
 
+func TestDocumentParsingOptionsIncludeCurrentAndFutureServiceParameters(t *testing.T) {
+	trueValue := true
+	falseValue := false
+	var got map[string]interface{}
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		var body struct {
+			OptionalPayload map[string]interface{} `json:"optionalPayload"`
+		}
+		if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+			t.Fatalf("Decode request body error = %v", err)
+		}
+		got = body.OptionalPayload
+		w.Header().Set("Content-Type", "application/json")
+		_ = json.NewEncoder(w).Encode(map[string]interface{}{
+			"code": 0,
+			"data": map[string]string{"jobId": "job-doc"},
+		})
+	}))
+	defer server.Close()
+
+	client, err := NewClient(
+		WithToken("token"),
+		WithBaseURL(server.URL),
+	)
+	if err != nil {
+		t.Fatalf("NewClient() error = %v", err)
+	}
+
+	_, err = client.SubmitDocumentParsing(context.Background(), &DocParsingRequest{
+		Model:   PaddleOCRVL16,
+		FileURL: "https://example.test/doc.pdf",
+		Options: &PaddleOCRVLOptions{
+			UseOcrForImageBlock:  &trueValue,
+			FormatBlockContent:   &trueValue,
+			MarkdownIgnoreLabels: []string{"image"},
+			VlmExtraArgs:         map[string]interface{}{"temperature": 0.1},
+			ReturnMarkdownImages: &falseValue,
+			OutputFormats:        []string{"docx"},
+			ExtraOptions:         map[string]interface{}{"futureOption": "enabled"},
+		},
+	})
+	if err != nil {
+		t.Fatalf("SubmitDocumentParsing() error = %v", err)
+	}
+
+	if got["useOcrForImageBlock"] != true || got["formatBlockContent"] != true {
+		t.Fatalf("got boolean options %#v", got)
+	}
+	if got["returnMarkdownImages"] != false || got["futureOption"] != "enabled" {
+		t.Fatalf("got passthrough options %#v", got)
+	}
+}
+
 func TestSubmitOCRAcceptsOfficialModelNameString(t *testing.T) {
 	var got string
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

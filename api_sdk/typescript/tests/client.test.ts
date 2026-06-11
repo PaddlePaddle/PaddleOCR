@@ -228,6 +228,35 @@ describe("PaddleOCRClient public contract", () => {
     expect(mod.isDocumentParsingModel(Model.PPOCRv5)).toBe(false);
   });
 
+  test("submitDocumentParsing passes current and future document parsing options", async () => {
+    const { fetch, calls } = captureFetch([jsonResponse({ data: { jobId: "job-doc" } })]);
+    const client = createClient(fetch);
+
+    await client.submitDocumentParsing({
+      model: Model.PaddleOCRVL16,
+      fileUrl: "https://files.example.test/doc.pdf",
+      options: {
+        useOcrForImageBlock: true,
+        formatBlockContent: true,
+        markdownIgnoreLabels: ["image"],
+        vlmExtraArgs: { temperature: 0.1 },
+        returnMarkdownImages: false,
+        outputFormats: ["docx"],
+        futureOption: "enabled",
+      },
+    });
+
+    expect(JSON.parse(String(calls[0].init.body)).optionalPayload).toEqual({
+      useOcrForImageBlock: true,
+      formatBlockContent: true,
+      markdownIgnoreLabels: ["image"],
+      vlmExtraArgs: { temperature: 0.1 },
+      returnMarkdownImages: false,
+      outputFormats: ["docx"],
+      futureOption: "enabled",
+    });
+  });
+
   test("submitDocumentParsing defaults to PaddleOCR-VL-1.6", async () => {
     const { fetch, calls } = captureFetch([jsonResponse({ data: { jobId: "job-doc" } })]);
     const client = createClient(fetch);

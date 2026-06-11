@@ -81,6 +81,7 @@ class OCROptions:
     text_det_unclip_ratio: Optional[float] = None
     text_rec_score_thresh: Optional[float] = None
     visualize: Optional[bool] = None
+    extra_options: Optional[dict] = None
 
     def to_payload(self) -> dict:
         return _build_payload(self)
@@ -99,7 +100,8 @@ class PPStructureV3Options:
     layout_threshold: Optional[Union[float, dict]] = None
     layout_nms: Optional[bool] = None
     layout_unclip_ratio: Optional[Union[float, list, dict]] = None
-    layout_merge_bboxes_mode: Optional[str] = None
+    layout_merge_bboxes_mode: Optional[Union[str, dict]] = None
+    format_block_content: Optional[bool] = None
     text_det_limit_side_len: Optional[int] = None
     text_det_limit_type: Optional[str] = None
     text_det_thresh: Optional[float] = None
@@ -112,9 +114,13 @@ class PPStructureV3Options:
     use_ocr_results_with_table_cells: Optional[bool] = None
     use_e2e_wired_table_rec_model: Optional[bool] = None
     use_e2e_wireless_table_rec_model: Optional[bool] = None
+    markdown_ignore_labels: Optional[list] = None
     prettify_markdown: Optional[bool] = None
     show_formula_number: Optional[bool] = None
+    return_markdown_images: Optional[bool] = None
+    output_formats: Optional[list] = None
     visualize: Optional[bool] = None
+    extra_options: Optional[dict] = None
 
     def to_payload(self) -> dict:
         return _build_payload(self)
@@ -127,25 +133,32 @@ class PaddleOCRVLOptions:
     use_layout_detection: Optional[bool] = None
     use_chart_recognition: Optional[bool] = None
     use_seal_recognition: Optional[bool] = None
+    use_ocr_for_image_block: Optional[bool] = None
     layout_threshold: Optional[Union[float, dict]] = None
     layout_nms: Optional[bool] = None
     layout_unclip_ratio: Optional[Union[float, list, dict]] = None
     layout_merge_bboxes_mode: Optional[Union[str, dict]] = None
     layout_shape_mode: Optional[str] = None
     prompt_label: Optional[str] = None
+    format_block_content: Optional[bool] = None
     repetition_penalty: Optional[float] = None
     temperature: Optional[float] = None
     top_p: Optional[float] = None
     min_pixels: Optional[int] = None
     max_pixels: Optional[int] = None
     max_new_tokens: Optional[int] = None
+    vlm_extra_args: Optional[dict] = None
     merge_layout_blocks: Optional[bool] = None
+    markdown_ignore_labels: Optional[list] = None
     prettify_markdown: Optional[bool] = None
     show_formula_number: Optional[bool] = None
     restructure_pages: Optional[bool] = None
     merge_tables: Optional[bool] = None
     relevel_titles: Optional[bool] = None
+    return_markdown_images: Optional[bool] = None
+    output_formats: Optional[list] = None
     visualize: Optional[bool] = None
+    extra_options: Optional[dict] = None
 
     def to_payload(self) -> dict:
         _validate_vl_options(self)
@@ -159,7 +172,11 @@ def _build_payload(options) -> dict:
     payload = {}
     for field in fields(options):
         value = getattr(options, field.name)
-        if value is not None:
+        if value is None:
+            continue
+        if field.name == "extra_options":
+            payload.update(value)
+        else:
             payload[snake_to_camel(field.name)] = value
     return payload
 
