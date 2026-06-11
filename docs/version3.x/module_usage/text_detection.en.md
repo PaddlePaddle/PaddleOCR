@@ -173,7 +173,7 @@ You can also integrate the model inference into your project. Before running the
 
 ```python
 from paddleocr import TextDetection
-model = TextDetection(model_name="PP-OCRv5_server_det")
+model = TextDetection()
 output = model.predict("general_ocr_001.png", batch_size=1)
 for res in output:
     res.print()
@@ -187,10 +187,7 @@ If you choose `transformers` as the inference engine, make sure the Transformers
 
 ```python
 from paddleocr import TextDetection
-model = TextDetection(
-    model_name="PP-OCRv5_server_det",
-    engine="transformers",
-)
+model = TextDetection(engine="transformers")
 output = model.predict("general_ocr_001.png", batch_size=1)
 for res in output:
     res.print()
@@ -202,10 +199,7 @@ If you choose `onnxruntime` as the inference engine, make sure the ONNX Runtime 
 
 ```python
 from paddleocr import TextDetection
-model = TextDetection(
-    model_name="PP-OCRv5_server_det",
-    engine="onnxruntime",
-)
+model = TextDetection(engine="onnxruntime")
 output = model.predict("general_ocr_001.png", batch_size=1)
 for res in output:
     res.print()
@@ -245,7 +239,7 @@ Visualization example:
 
 Method and parameter descriptions:
 
-* Instantiate the text detection model (e.g., <code>PP-OCRv5_server_det</code>):
+* Instantiate the text detection model with <code>TextDetection</code>:
 <table>
 <thead>
 <tr>
@@ -260,7 +254,7 @@ Method and parameter descriptions:
 <td><code>model_name</code></td>
 <td><b>Meaning:</b>Model name.<br/>
 <b>Description:</b> 
-If set to <code>None</code>, <code>PP-OCRv5_server_det</code> will be used.</td>
+If set to <code>None</code>, <code>PP-OCRv6_medium_det</code> will be used.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>

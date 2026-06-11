@@ -640,7 +640,7 @@ paddleocr text_recognition -i https://paddle-model-ecology.bj.bcebos.com/paddlex
 
 ```python
 from paddleocr import TextRecognition
-model = TextRecognition(model_name="PP-OCRv5_server_rec")
+model = TextRecognition()
 output = model.predict(input="general_ocr_rec_001.png", batch_size=1)
 for res in output:
     res.print()
@@ -654,10 +654,7 @@ for res in output:
 
 ```python
 from paddleocr import TextRecognition
-model = TextRecognition(
-    model_name="PP-OCRv5_server_rec",
-    engine="transformers",
-)
+model = TextRecognition(engine="transformers")
 output = model.predict(input="general_ocr_rec_001.png", batch_size=1)
 for res in output:
     res.print()
@@ -669,10 +666,7 @@ for res in output:
 
 ```python
 from paddleocr import TextRecognition
-model = TextRecognition(
-    model_name="PP-OCRv5_server_rec",
-    engine="onnxruntime",
-)
+model = TextRecognition(engine="onnxruntime")
 output = model.predict(input="general_ocr_rec_001.png", batch_size=1)
 for res in output:
     res.print()
@@ -703,7 +697,7 @@ for res in output:
 
 相关方法、参数等说明如下：
 
-* <code>TextRecognition</code>实例化文本识别模型（此处以<code>PP-OCRv5_server_rec</code>为例），具体说明如下：
+* <code>TextRecognition</code>实例化文本识别模型，具体说明如下：
 <table>
 <thead>
 <tr>
@@ -718,7 +712,7 @@ for res in output:
 <td><code>model_name</code></td>
 <td><b>含义：</b>模型名称。<br/>
 <b>说明：</b>
-如果设置为<code>None</code>，则使用<code>PP-OCRv5_server_rec</code>。</td>
+如果设置为<code>None</code>，则使用<code>PP-OCRv6_medium_rec</code>。</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>

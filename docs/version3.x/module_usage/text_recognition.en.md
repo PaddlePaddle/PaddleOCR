@@ -631,7 +631,7 @@ You can also integrate the model inference of the text recognition module into y
 
 ```python
 from paddleocr import TextRecognition
-model = TextRecognition(model_name="PP-OCRv5_server_rec")
+model = TextRecognition()
 output = model.predict(input="general_ocr_rec_001.png", batch_size=1)
 for res in output:
     res.print()
@@ -645,10 +645,7 @@ If you choose `transformers` as the inference engine, make sure the Transformers
 
 ```python
 from paddleocr import TextRecognition
-model = TextRecognition(
-    model_name="PP-OCRv5_server_rec",
-    engine="transformers",
-)
+model = TextRecognition(engine="transformers")
 output = model.predict(input="general_ocr_rec_001.png", batch_size=1)
 for res in output:
     res.print()
@@ -660,10 +657,7 @@ If you choose `onnxruntime` as the inference engine, make sure the ONNX Runtime 
 
 ```python
 from paddleocr import TextRecognition
-model = TextRecognition(
-    model_name="PP-OCRv5_server_rec",
-    engine="onnxruntime",
-)
+model = TextRecognition(engine="onnxruntime")
 output = model.predict(input="general_ocr_rec_001.png", batch_size=1)
 for res in output:
     res.print()
@@ -693,7 +687,7 @@ The visualized image is as follows:
 
 Descriptions of related methods and parameters are as follows:
 
-* Instantiate the text recognition model using <code>TextRecognition</code> (using <code>PP-OCRv5_server_rec</code> as an example), as follows:
+* Instantiate the text recognition model using <code>TextRecognition</code>, as follows:
 <table>
 <thead>
 <tr>
@@ -706,7 +700,7 @@ Descriptions of related methods and parameters are as follows:
 <tbody>
 <tr>
 <td><code>model_name</code></td>
-<td><b>Description:</b> If set to <code>None</code>, <code>PP-OCRv5_server_rec</code> is used.</td>
+<td><b>Description:</b> If set to <code>None</code>, <code>PP-OCRv6_medium_rec</code> is used.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>

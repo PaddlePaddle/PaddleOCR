@@ -175,11 +175,8 @@ print(f"GPU数量: {paddle.device.cuda.device_count()}")
 # 使用默认模型进行文本检测
 paddleocr text_detection -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_001.png
 
-# 指定模型进行检测
-paddleocr text_detection -i general_ocr_001.png --model_name PP-OCRv5_server_det
-
-# 批量处理本地图片
-paddleocr text_detection -i ./images/ --model_name PP-OCRv5_mobile_det
+# 指定其他档位模型（可选）
+paddleocr text_detection -i general_ocr_001.png --model_name PP-OCRv6_small_det
 ```
 
 上述示例默认使用 <code>paddle_static</code> 推理引擎，请先按照[飞桨框架安装](../paddlepaddle_installation.md)完成 PaddlePaddle 安装。
@@ -210,7 +207,7 @@ paddleocr text_detection -i https://paddle-model-ecology.bj.bcebos.com/paddlex/i
 
 ```python
 from paddleocr import TextDetection
-model = TextDetection(model_name="PP-OCRv5_server_det")
+model = TextDetection()
 output = model.predict("general_ocr_001.png", batch_size=1)
 for res in output:
     res.print()
@@ -224,10 +221,7 @@ for res in output:
 
 ```python
 from paddleocr import TextDetection
-model = TextDetection(
-    model_name="PP-OCRv5_server_det",
-    engine="transformers",
-)
+model = TextDetection(engine="transformers")
 output = model.predict("general_ocr_001.png", batch_size=1)
 for res in output:
     res.print()
@@ -239,10 +233,7 @@ for res in output:
 
 ```python
 from paddleocr import TextDetection
-model = TextDetection(
-    model_name="PP-OCRv5_server_det",
-    engine="onnxruntime",
-)
+model = TextDetection(engine="onnxruntime")
 output = model.predict("general_ocr_001.png", batch_size=1)
 for res in output:
     res.print()
@@ -281,7 +272,7 @@ for res in output:
 
 相关方法、参数等说明如下：
 
-* <code>TextDetection</code>类实例化文本检测模型（此处以<code>PP-OCRv5_server_det</code>为例），具体说明如下：
+* <code>TextDetection</code>类实例化文本检测模型，具体说明如下：
 <table>
 <thead>
 <tr>
@@ -296,7 +287,7 @@ for res in output:
 <td><code>model_name</code></td>
 <td><b>含义：</b>模型名称。<br/>
 <b>说明：</b>
-如果设置为<code>None</code>，则使用<code>PP-OCRv5_server_det</code>。</td>
+如果设置为<code>None</code>，则使用<code>PP-OCRv6_medium_det</code>。</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -871,7 +862,7 @@ python3 tools/export_model.py -c configs/det/PP-OCRv5/PP-OCRv5_server_det.yml -o
 （2）启用TensorRT加速：设置`use_tensorrt=True`，需要CUDA 11.8+和TensorRT 8.6+
 （3）使用半精度：设置`precision="fp16"`，可以显著提升速度
 （4）调整批处理大小：根据显存大小设置合适的`batch_size`
-（5）使用移动端模型：在精度要求不高时使用`PP-OCRv5_mobile`系列等轻量级模型
+（5）使用轻量模型：在精度要求不高时使用 `PP-OCRv6_small`/`PP-OCRv6_tiny` 等轻量级模型
 
 #### Q: GPU内存不足（CUDA out of memory）怎么办？
 
@@ -880,7 +871,7 @@ python3 tools/export_model.py -c configs/det/PP-OCRv5/PP-OCRv5_server_det.yml -o
 （2）减小图像尺寸：设置`det_limit_side_len=640`
 （3）启用内存优化：设置`enable_memory_optim=True`
 （4）限制GPU内存使用：设置`gpu_mem=200`
-（5）使用移动端模型：切换到`PP-OCRv5_mobile`系列等轻量级模型
+（5）使用轻量模型：切换到 `PP-OCRv6_small`/`PP-OCRv6_tiny` 等轻量级模型
 
 ### 6.2 检测精度问题
 
@@ -890,7 +881,6 @@ python3 tools/export_model.py -c configs/det/PP-OCRv5/PP-OCRv5_server_det.yml -o
 （1）调整检测参数：
 ```python
 model = TextDetection(
-    model_name="PP-OCRv5_server_det",
     thresh=0.3,  # 降低像素阈值
     box_thresh=0.5,  # 降低检测框阈值
     unclip_ratio=2.0,  # 增大扩张系数
@@ -905,10 +895,10 @@ model = TextDetection(
 #### Q: 如何选择合适的模型？
 
 **A**: 根据应用场景选择：
-- 服务器高精度场景：使用`PP-OCRv5_server_det`，精度最高
-- 移动端部署：使用`PP-OCRv5_mobile_det`，模型小速度快
-- 实时处理：使用`PP-OCRv5_mobile_det`，推理速度快
-- 批量处理：使用`PP-OCRv5_server_det`，精度高
+- 服务器高精度场景：使用 `PP-OCRv6_medium_det`，精度最高
+- 移动端部署：使用 `PP-OCRv6_small_det`，兼顾精度与效率
+- 端侧/IoT：使用 `PP-OCRv6_tiny_det`，模型最小
+- 实时处理：使用 `PP-OCRv6_small_det` 或 `PP-OCRv6_tiny_det`，推理更快
 
 ### 6.4 参数调优建议
 
