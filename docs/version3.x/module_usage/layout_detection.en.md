@@ -328,6 +328,14 @@ paddleocr layout_detection -i https://paddle-model-ecology.bj.bcebos.com/paddlex
     --engine transformers
 ```
 
+If you choose `onnxruntime` as the inference engine, make sure the ONNX Runtime environment is configured, and then run the following command:
+
+```bash
+# Use the onnxruntime engine for inference
+paddleocr layout_detection -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/layout.jpg \
+    --engine onnxruntime
+```
+
 In most scenarios, the default `paddle_static` inference engine delivers better inference performance and is the recommended first choice.
 
 <b>Note: </b>The official models would be download from HuggingFace by default. If can't access to HuggingFace, please set the environment variable <code>PADDLE_PDX_MODEL_SOURCE="BOS"</code> to change the model source to BOS. In the future, more model sources will be supported.
@@ -355,6 +363,22 @@ from paddleocr import LayoutDetection
 model = LayoutDetection(
     model_name="PP-DocLayout_plus-L",
     engine="transformers",
+)
+output = model.predict("layout.jpg", batch_size=1, layout_nms=True)
+for res in output:
+    res.print()
+    res.save_to_img(save_path="./output/")
+    res.save_to_json(save_path="./output/res.json")
+```
+
+If you choose `onnxruntime` as the inference engine, make sure the ONNX Runtime environment is configured, and then run the following code:
+
+```python
+from paddleocr import LayoutDetection
+
+model = LayoutDetection(
+    model_name="PP-DocLayout_plus-L",
+    engine="onnxruntime",
 )
 output = model.predict("layout.jpg", batch_size=1, layout_nms=True)
 for res in output:
@@ -432,7 +456,7 @@ By default, GPU 0 is used if available; otherwise, CPU is used.
 </tr>
 <tr>
 <td><code>engine</code></td>
-<td><b>Meaning:</b> Inference engine.<br/><b>Description:</b> Supports <code>None</code> (the default), <code>paddle</code>, <code>paddle_static</code>, <code>paddle_dynamic</code>, and <code>transformers</code>. When left as <code>None</code>, local inference uses the <code>paddle_static</code> engine by default. For detailed descriptions, supported values, compatibility rules, and examples, see <a href="../inference_deployment/local_inference/inference_engine.en.md">Inference Engine and Configuration</a>.</td>
+<td><b>Meaning:</b> Inference engine.<br/><b>Description:</b> Supports <code>None</code> (the default), <code>paddle</code>, <code>paddle_static</code>, <code>paddle_dynamic</code>, <code>transformers</code>, and <code>onnxruntime</code>. When left as <code>None</code>, local inference uses the <code>paddle_static</code> engine by default. For detailed descriptions, supported values, compatibility rules, and examples, see <a href="../inference_deployment/local_inference/inference_engine.en.md">Inference Engine and Configuration</a>.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -744,7 +768,7 @@ For detailed descriptions, values, compatibility rules, and examples of the infe
     </thead>
     <tbody>
         <tr>
-            <td rowspan="3">PP-DocLayout_plus-L</td>
+            <td rowspan="4">PP-DocLayout_plus-L</td>
             <td>paddle_static</td>
             <td>10.92</td>
             <td>26.11</td>
@@ -766,7 +790,14 @@ For detailed descriptions, values, compatibility rules, and examples of the infe
             <td>52.24</td>
         </tr>
         <tr>
-            <td rowspan="3">PP-DocBlockLayout</td>
+            <td>onnxruntime</td>
+            <td>9.14</td>
+            <td>12.35</td>
+            <td>0.14</td>
+            <td>21.81</td>
+        </tr>
+        <tr>
+            <td rowspan="4">PP-DocBlockLayout</td>
             <td>paddle_static</td>
             <td>9.51</td>
             <td>27.59</td>
@@ -787,12 +818,19 @@ For detailed descriptions, values, compatibility rules, and examples of the infe
             <td>0.75</td>
             <td>50.96</td>
         </tr>
+        <tr>
+            <td>onnxruntime</td>
+            <td>7.53</td>
+            <td>9.22</td>
+            <td>0.06</td>
+            <td>16.97</td>
+        </tr>
     </tbody>
 </table>
 
 <strong>Test Environment Description:</strong>
 <ul>
-    <li><strong>Test Data:</strong> [Sample Image](https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/layout.jpg)</li>
+    <li><strong>Test Data:</strong> <a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/layout.jpg">Sample Image</a></li>
     <li><strong>Hardware Configuration:</strong>
         <ul>
             <li>GPU: NVIDIA A100 40G</li>
@@ -802,13 +840,13 @@ For detailed descriptions, values, compatibility rules, and examples of the infe
     <li><strong>Software Environment:</strong>
         <ul>
             <li>Ubuntu 22.04 / CUDA 12.6 / cuDNN 9.5</li>
-            <li>paddlepaddle-gpu 3.2.1 / paddleocr 3.5 / transformers 5.4.0 / torch 2.10</li>
+            <li>paddlepaddle-gpu 3.2.1 / paddleocr 3.5 / transformers 5.4.0 / torch 2.10 / onnxruntime-gpu 1.23.2</li>
         </ul>
     </li>
 </ul>
 
 ### 5.2 Weight Conversion
 
-When using the inference engine, the system will automatically download the official pre-trained model. If you need to use a self-trained model with the `paddle_dynamic` or `transformers` engine, please refer to the [PaddleX Layout Detection Module Weight Conversion](https://paddlepaddle.github.io/PaddleX/latest/en/module_usage/tutorials/ocr_modules/layout_detection.html#442) section to convert the model from the `pdparams` format to the `safetensors` format using PaddleX. This allows seamless integration into the PaddleOCR API for inference.
+When using the inference engine, the system will automatically download the official pre-trained model. If you need to use a self-trained model with the `paddle_dynamic` or `transformers` engine, please refer to the [PaddleX Layout Detection Module Weight Conversion](https://paddlepaddle.github.io/PaddleX/latest/en/module_usage/tutorials/ocr_modules/layout_detection.html#442) section to convert the model from the `pdparams` format to the `safetensors` format using PaddleX. This allows seamless integration into the PaddleOCR API for inference. If you need to use a self-trained model with the `onnxruntime` engine, refer to [PaddleX Obtain ONNX Models](https://paddlepaddle.github.io/PaddleX/latest/pipeline_deploy/paddle2onnx.html) to obtain the ONNX model, so it can be seamlessly integrated into the PaddleOCR API for inference.
 
 ## 6. FAQ

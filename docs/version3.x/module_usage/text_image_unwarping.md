@@ -105,6 +105,14 @@ paddleocr text_image_unwarping -i https://paddle-model-ecology.bj.bcebos.com/pad
     --engine transformers
 ```
 
+如果选择 `onnxruntime` 作为推理引擎，请确保已配置 ONNX Runtime 环境，然后执行如下命令：
+
+```bash
+# 使用 onnxruntime 引擎进行推理
+paddleocr text_image_unwarping -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/doc_test.jpg \
+    --engine onnxruntime
+```
+
 在大多数场景下，默认的 `paddle_static` 推理引擎通常具备更好的推理性能，建议优先使用。
 
 <b>注：</b>PaddleOCR 官方模型默认从 HuggingFace 获取，如运行环境访问 HuggingFace 不便，可通过环境变量修改模型源为 BOS：`PADDLE_PDX_MODEL_SOURCE="BOS"`，未来将支持更多主流模型源；
@@ -130,6 +138,21 @@ from paddleocr import TextImageUnwarping
 model = TextImageUnwarping(
     model_name="UVDoc",
     engine="transformers",
+)
+output = model.predict("doc_test.jpg", batch_size=1)
+for res in output:
+    res.print()
+    res.save_to_img(save_path="./output/")
+    res.save_to_json(save_path="./output/res.json")
+```
+
+如果选择 `onnxruntime` 作为推理引擎，请确保已配置 ONNX Runtime 环境，然后执行如下代码：
+
+```python
+from paddleocr import TextImageUnwarping
+model = TextImageUnwarping(
+    model_name="UVDoc",
+    engine="onnxruntime",
 )
 output = model.predict("doc_test.jpg", batch_size=1)
 for res in output:
@@ -196,7 +219,7 @@ for res in output:
 </tr>
 <tr>
 <td><code>engine</code></td>
-<td><b>含义：</b>推理引擎。<br><b>说明：</b>支持 <code>None</code>（默认值）、<code>paddle</code>、<code>paddle_static</code>、<code>paddle_dynamic</code>、<code>transformers</code>。保持为默认值 <code>None</code> 时，本地推理默认使用 <code>paddle_static</code> 引擎。详细说明、取值、兼容性规则与示例请参见 <a href="../inference_deployment/local_inference/inference_engine.md">推理引擎与配置说明</a>。</td>
+<td><b>含义：</b>推理引擎。<br><b>说明：</b>支持 <code>None</code>（默认值）、<code>paddle</code>、<code>paddle_static</code>、<code>paddle_dynamic</code>、<code>transformers</code>、<code>onnxruntime</code>。保持为默认值 <code>None</code> 时，本地推理默认使用 <code>paddle_static</code> 引擎。详细说明、取值、兼容性规则与示例请参见 <a href="../inference_deployment/local_inference/inference_engine.md">推理引擎与配置说明</a>。</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -399,7 +422,7 @@ for res in output:
     </thead>
     <tbody>
         <tr>
-            <td rowspan="3">UVDoc</td>
+            <td rowspan="4">UVDoc</td>
             <td>paddle_static</td>
             <td>14.96</td>
             <td>18.60</td>
@@ -420,12 +443,19 @@ for res in output:
             <td>0.91</td>
             <td>33.07</td>
         </tr>
+        <tr>
+            <td>onnxruntime</td>
+            <td>10.60</td>
+            <td>8.44</td>
+            <td>1.75</td>
+            <td>21.30</td>
+        </tr>
     </tbody>
 </table>
 
 <strong>测试环境说明:</strong>
 <ul>
-    <li><strong>测试数据：</strong>[示例图片](https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/doc_test.jpg)</li>
+    <li><strong>测试数据：</strong><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/doc_test.jpg">示例图片</a></li>
     <li><strong>硬件配置：</strong>
         <ul>
             <li>GPU：NVIDIA A100 40G</li>
@@ -435,7 +465,7 @@ for res in output:
     <li><strong>软件环境：</strong>
         <ul>
             <li>Ubuntu 22.04 / CUDA 12.6 / cuDNN 9.5</li>
-            <li>paddlepaddle-gpu 3.2.1 / paddleocr 3.5 / transformers 5.4.0 / torch 2.10</li>
+            <li>paddlepaddle-gpu 3.2.1 / paddleocr 3.5 / transformers 5.4.0 / torch 2.10 / onnxruntime-gpu 1.23.2</li>
         </ul>
     </li>
 </ul>

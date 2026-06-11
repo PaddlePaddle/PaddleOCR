@@ -21,11 +21,13 @@ In PaddleOCR, an inference engine refers to the underlying runtime used to execu
 | - | - | - |
 | PaddlePaddle framework | `paddle`, `paddle_static`, `paddle_dynamic` | Runs on the PaddlePaddle framework. |
 | Transformers | `transformers` | Runs on Hugging Face Transformers. |
+| ONNX Runtime | `onnxruntime` | Runs on ONNX Runtime. |
 
 - `paddle`: The unified entry point for the PaddlePaddle framework. It selects `paddle_static` or `paddle_dynamic` according to the model type and files in the model directory. If both are available, `paddle_static` is preferred.
 - `paddle_static`: PaddlePaddle static-graph inference, suitable for scenarios that require better inference performance or more fine-grained performance tuning.
 - `paddle_dynamic`: PaddlePaddle dynamic-graph inference, which is more flexible and easier to debug compared to static graph.
 - `transformers`: Hugging Face Transformers inference, making it convenient to integrate with the Hugging Face ecosystem.
+- `onnxruntime`: ONNX Runtime inference, used to load and execute ONNX-format models.
 
 ## 3. Installation by Inference Engine
 
@@ -37,13 +39,21 @@ When using the PaddlePaddle framework for inference, install PaddlePaddle first.
 
 ### 3.2 Transformers
 
-When using Transformers as the inference engine, you need to install Hugging Face Transformers (`>=5.8.0`). Example command:
+When using Transformers as the inference engine, you need to install Hugging Face Transformers (`>=5.10.0`). Example command:
 
 ```bash
-python -m pip install "transformers>=5.8.0"
+python -m pip install "transformers>=5.10.0"
 ```
 
 In many cases, you also need to install the underlying inference framework. For details, see the [Transformers official documentation](https://huggingface.co/docs/transformers/installation).
+
+### 3.3 ONNX Runtime
+
+When using ONNX Runtime as the inference engine, install the ONNX Runtime package. Example command:
+
+```bash
+python -m pip install onnxruntime-gpu
+```
 
 ## 4. Configuration and Supported Values of `engine` and `engine_config`
 
@@ -58,6 +68,7 @@ In many cases, you also need to install the underlying inference framework. For 
 | `paddle_static` | Static-graph inference | Uses Paddle static-graph inference. |
 | `paddle_dynamic` | Dynamic-graph inference | Uses Paddle dynamic-graph inference. |
 | `transformers` | Transformers inference | Uses Hugging Face Transformers inference. |
+| `onnxruntime` | ONNX Runtime inference | Uses ONNX Runtime inference. |
 
 ### 4.2 `engine_config`
 
@@ -102,12 +113,18 @@ Common fields include:
 - `processor_kwargs`: extra arguments passed to the processor / image processor loading API;
 - `tokenizer_kwargs`: a compatibility-preserved field that is merged with `processor_kwargs`.
 
+#### `onnxruntime`
+
+Common fields include:
+
+- `device_type` / `device_id`: inference device type and device index.
+
 #### 4.2.1 Flat vs. bucketed `engine_config`
 
 At the same level `engine_config` may be:
 
 - **Flat**: a dict whose keys are only those required by the **resolved** engine (for example, when using static graph only, top-level keys such as `run_mode` and `cpu_threads`).
-- **Bucketed**: top-level keys are **only** registered engine names (e.g. `paddle_static`, `paddle_dynamic`, `transformers`), each mapping to a nested dict. You **must not** mix bucket keys with flat keys at the same level (e.g. `{"paddle_static": {...}, "run_mode": "paddle"}` is invalid).
+- **Bucketed**: top-level keys are **only** registered engine names (e.g. `paddle_static`, `paddle_dynamic`, `transformers`, `onnxruntime`), each mapping to a nested dict. You **must not** mix bucket keys with flat keys at the same level (e.g. `{"paddle_static": {...}, "run_mode": "paddle"}` is invalid).
 
 When an engine is resolved, only the corresponding config is used: flat configs are validated as a whole; bucketed configs take the entry for that engine.
 
@@ -128,6 +145,7 @@ When an engine is resolved, only the corresponding config is used: flat configs 
 
 ```bash
 paddleocr text_detection -i general_ocr_001.png --engine transformers
+paddleocr text_detection -i general_ocr_001.png --engine onnxruntime
 ```
 
 ### 5.2 Individual model (Python): explicitly specify `transformers`
@@ -143,7 +161,20 @@ model = TextDetection(
 result = model.predict("general_ocr_001.png")
 ```
 
-### 5.3 Individual model (Python): specify `paddle_static` and `engine_config`
+### 5.3 Individual model (Python): explicitly specify `onnxruntime`
+
+```python
+from paddleocr import TextDetection
+
+model = TextDetection(
+    model_name="PP-OCRv5_server_det",
+    engine="onnxruntime",
+)
+
+result = model.predict("general_ocr_001.png")
+```
+
+### 5.4 Individual model (Python): specify `paddle_static` and `engine_config`
 
 ```python
 from paddleocr import TextDetection
@@ -161,13 +192,13 @@ model = TextDetection(
 result = model.predict("general_ocr_001.png")
 ```
 
-### 5.4 Pipeline (CLI): select the engine with `--engine`
+### 5.5 Pipeline (CLI): select the engine with `--engine`
 
 ```bash
 paddleocr ocr -i general_ocr_001.png --engine paddle_static
 ```
 
-### 5.5 Pipeline (Python API): configure the inference engine for a specific module
+### 5.6 Pipeline (Python API): configure the inference engine for a specific module
 
 If you want to specify `engine` and `engine_config` for a specific module inside a pipeline, you can first export the configuration file, modify the corresponding module configuration, and then load it. For how to export, edit, and load the configuration file, see [Using PaddleX Pipeline Configuration Files](../../paddleocr_and_paddlex.en.md#3-using-paddlex-pipeline-configuration-files). Example:
 

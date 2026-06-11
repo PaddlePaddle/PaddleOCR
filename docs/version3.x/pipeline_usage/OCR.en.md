@@ -705,6 +705,7 @@ Before using the general OCR pipeline locally, install the dependencies for your
 
 - If you use the local `paddle_static` inference engine, install PaddlePaddle by following [PaddlePaddle Framework Installation](../paddlepaddle_installation.en.md).
 - If you use the `transformers` inference engine, install the required dependencies by following [Inference Engine and Configuration](../inference_deployment/local_inference/inference_engine.en.md).
+- If you use the `onnxruntime` inference engine, install the required dependencies by following [Inference Engine and Configuration](../inference_deployment/local_inference/inference_engine.en.md).
 
 #### 2.0.2 Install paddleocr
 
@@ -768,6 +769,19 @@ paddleocr ocr -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_im
     --save_path ./output \
     --device gpu:0 \
     --engine transformers
+```
+
+If you choose `onnxruntime` as the inference engine, make sure the ONNX Runtime environment is configured by following [Inference Engine and Configuration](../inference_deployment/local_inference/inference_engine.en.md), and then run the following command:
+
+```bash
+# Use the onnxruntime engine for inference
+paddleocr ocr -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_002.png \
+    --use_doc_orientation_classify False \
+    --use_doc_unwarping False \
+    --use_textline_orientation False \
+    --save_path ./output \
+    --device gpu:0 \
+    --engine onnxruntime
 ```
 
 In most scenarios, the default `paddle_static` inference engine delivers better inference performance and is the recommended first choice.
@@ -2569,6 +2583,35 @@ ocr = PaddleOCR(
 #     use_doc_unwarping=False,
 #     use_textline_orientation=False,
 #     engine="transformers",
+# ) # Switch to the PP-OCRv5_server models
+result = ocr.predict("./general_ocr_002.png")
+for res in result:
+    res.print()
+    res.save_to_img("output")
+    res.save_to_json("output")
+```
+
+If you choose `onnxruntime` as the inference engine, make sure the ONNX Runtime environment is configured by following [Inference Engine and Configuration](../inference_deployment/local_inference/inference_engine.en.md), and then run the following code:
+
+```python
+from paddleocr import PaddleOCR
+
+ocr = PaddleOCR(
+    use_doc_orientation_classify=False, # Disable document orientation classification
+    use_doc_unwarping=False, # Disable document unwarping
+    use_textline_orientation=False, # Disable textline orientation classification
+    engine="onnxruntime",
+)
+# ocr = PaddleOCR(lang="en", engine="onnxruntime") # Use the English model
+# ocr = PaddleOCR(ocr_version="PP-OCRv4", engine="onnxruntime") # Use another PP-OCR version
+# ocr = PaddleOCR(device="gpu", engine="onnxruntime") # Use GPU for inference
+# ocr = PaddleOCR(
+#     text_detection_model_name="PP-OCRv5_server_det",
+#     text_recognition_model_name="PP-OCRv5_server_rec",
+#     use_doc_orientation_classify=False,
+#     use_doc_unwarping=False,
+#     use_textline_orientation=False,
+#     engine="onnxruntime",
 # ) # Switch to the PP-OCRv5_server models
 result = ocr.predict("./general_ocr_002.png")
 for res in result:
