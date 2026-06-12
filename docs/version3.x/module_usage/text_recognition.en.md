@@ -105,6 +105,8 @@ en_PP-OCRv4_mobile_rec_infer.tar">Inference Model</a>/<a href="https://paddle-mo
 </tr>
 </table>
 
+> *Note: PP-OCRv6 metrics are evaluated on an internal multi-scenario evaluation set, while PP-OCRv5/v4 metrics are based on a general evaluation set. As the evaluation sets differ, the metrics are not directly comparable.
+
 > ❗ The above lists the <b>4 core models</b> mainly supported by the text recognition module. The module supports a total of <b>20 full models</b>, including multiple multilingual text recognition models. The complete model list is as follows:
 
 <details><summary> 👉Model List Details</summary>

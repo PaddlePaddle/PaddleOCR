@@ -132,7 +132,7 @@ OCR（光学字符识别，Optical Character Recognition）是一种将图像中
 <tbody>
 <tr>
 <td>PP-OCRv6_medium_det</td>
-<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv6_medium_det_infer.tar">推理模型</a>/<a href="">训练模型</a></td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv6_medium_det_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv6_medium_det_pretrained.pdparams">训练模型</a></td>
 <td>86.2*</td>
 <td>- / -</td>
 <td>- / -</td>
@@ -141,7 +141,7 @@ OCR（光学字符识别，Optical Character Recognition）是一种将图像中
 </tr>
 <tr>
 <td>PP-OCRv6_small_det</td>
-<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv6_small_det_infer.tar">推理模型</a>/<a href="">训练模型</a></td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv6_small_det_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv6_small_det_pretrained.pdparams">训练模型</a></td>
 <td>84.1*</td>
 <td>- / -</td>
 <td>- / -</td>
@@ -150,7 +150,7 @@ OCR（光学字符识别，Optical Character Recognition）是一种将图像中
 </tr>
 <tr>
 <td>PP-OCRv6_tiny_det</td>
-<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv6_tiny_det_infer.tar">推理模型</a>/<a href="">训练模型</a></td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv6_tiny_det_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv6_tiny_det_pretrained.pdparams">训练模型</a></td>
 <td>80.6*</td>
 <td>- / -</td>
 <td>- / -</td>
@@ -195,6 +195,9 @@ OCR（光学字符识别，Optical Character Recognition）是一种将图像中
 </tr>
 </tbody>
 </table>
+
+> *注：PP-OCRv6 指标基于内部多场景评估集测得，PP-OCRv5/v4 指标基于通用评估集测得，两者评估集不同，指标不可直接对比。
+
 </details>
 
 <details>
@@ -292,6 +295,7 @@ en_PP-OCRv4_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model
 </tr>
 </table>
 
+> *注：PP-OCRv6 指标基于内部多场景评估集测得，PP-OCRv5/v4 指标基于通用评估集测得，两者评估集不同，指标不可直接对比。
 > ❗ 以上列出的是文本识别模块重点支持的<b>6个核心模型</b>，该模块总共支持<b>20个全量模型</b>，包含多个多语言文本识别模型，完整的模型列表如下：
 
 <details><summary> 👉模型列表详情</summary>
