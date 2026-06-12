@@ -119,7 +119,17 @@ Common fields include:
 
 Common fields include:
 
-- `device_type` / `device_id`: inference device type and device index.
+- `device_type` / `device_id`: inference device type and device index;
+- `providers`: list of execution providers (e.g., `CUDAExecutionProvider`, `CPUExecutionProvider`);
+- `provider_options`: provider-specific configuration;
+- `graph_optimization_level`: graph optimization level;
+- `intra_op_num_threads`: number of intra-op threads;
+- `inter_op_num_threads`: number of inter-op threads;
+- `execution_mode`: execution mode (e.g., `sequential`, `parallel`);
+- `log_severity_level`: log severity level;
+- `enable_mem_pattern`: whether to enable memory pattern;
+- `enable_cpu_mem_arena`: whether to enable CPU memory arena;
+- `session_options`: ONNX Runtime session options.
 
 #### 4.2.1 Flat vs. bucketed `engine_config`
 

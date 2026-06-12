@@ -119,7 +119,17 @@ python -m pip install onnxruntime-gpu
 
 常见字段包括：
 
-- `device_type` / `device_id`：推理设备类型和设备编号。
+- `device_type` / `device_id`：推理设备类型和设备编号；
+- `providers`：执行提供者列表（如 `CUDAExecutionProvider`、`CPUExecutionProvider`）；
+- `provider_options`：执行提供者专属配置；
+- `graph_optimization_level`：图优化级别；
+- `intra_op_num_threads`：节点内线程数；
+- `inter_op_num_threads`：节点间线程数；
+- `execution_mode`：执行模式（如 `sequential`、`parallel`）；
+- `log_severity_level`：日志严重级别；
+- `enable_mem_pattern`：是否启用内存模式；
+- `enable_cpu_mem_arena`：是否启用 CPU 内存池；
+- `session_options`：ONNX Runtime 会话选项。
 
 #### 4.2.1 扁平与分桶 `engine_config`
 
