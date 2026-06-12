@@ -69,6 +69,7 @@
     - **Scénarios spécialisés** : Améliorations majeures pour les écrans numériques, caractères matriciels, empreintes de pneus et texte industriel.
     - **Inférence plus rapide** : Accélération 5.2× CPU (OpenVINO), 6.1× sur Apple M4 (tiny), 0.13s sur A100 GPU.
     - **Trois niveaux pour tous les scénarios** : tiny (1.5M) / small (7.7M) / medium (34.5M) pour le déploiement edge, mobile et serveur.
+    - **Disponibilité des modèles** : Tous les modèles sont disponibles sur [HuggingFace](https://huggingface.co/collections/PaddlePaddle/pp-ocrv6) et [ModelScope](https://www.modelscope.cn/collections/PaddlePaddle/PP-OCRv6).
 
 <details>
 <summary><strong>2026.05.28 : Publication de PaddleOCR 3.6.0</strong></summary>
