@@ -25,7 +25,7 @@ The text detection module is a critical component of OCR (Optical Character Reco
 <tbody>
 <tr>
 <td>PP-OCRv6_medium_det</td>
-<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv6_medium_det_infer.tar">Inference Model</a>/<a href="">Training Model</a></td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv6_medium_det_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv6_medium_det_pretrained.pdparams">Training Model</a></td>
 <td>86.2*</td>
 <td>- / -</td>
 <td>- / -</td>
@@ -34,7 +34,7 @@ The text detection module is a critical component of OCR (Optical Character Reco
 </tr>
 <tr>
 <td>PP-OCRv6_small_det</td>
-<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv6_small_det_infer.tar">Inference Model</a>/<a href="">Training Model</a></td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv6_small_det_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv6_small_det_pretrained.pdparams">Training Model</a></td>
 <td>84.1*</td>
 <td>- / -</td>
 <td>- / -</td>
@@ -43,7 +43,7 @@ The text detection module is a critical component of OCR (Optical Character Reco
 </tr>
 <tr>
 <td>PP-OCRv6_tiny_det</td>
-<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv6_tiny_det_infer.tar">Inference Model</a>/<a href="">Training Model</a></td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv6_tiny_det_infer.tar">Inference Model</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv6_tiny_det_pretrained.pdparams">Training Model</a></td>
 <td>80.6*</td>
 <td>- / -</td>
 <td>- / -</td>
@@ -88,6 +88,8 @@ The text detection module is a critical component of OCR (Optical Character Reco
 </tr>
 </tbody>
 </table>
+
+> *Note: PP-OCRv6 metrics are evaluated on an internal multi-scenario evaluation set, while PP-OCRv5/v4 metrics are based on a general evaluation set. As the evaluation sets differ, the metrics are not directly comparable.
 
 <strong>Testing Environment:</strong>
 
