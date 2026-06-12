@@ -69,6 +69,7 @@
     - **Специализированные сценарии**: значительные улучшения в распознавании цифровых дисплеев, матричных символов, шинных отпечатков и промышленного текста.
     - **Быстрый инференс**: ускорение CPU 5.2× (OpenVINO), 6.1× на Apple M4 (tiny), 0.13с на A100 GPU.
     - **Три уровня для всех сценариев**: tiny (1.5M) / small (7.7M) / medium (34.5M) для периферии, мобильных устройств и серверов.
+    - **Доступность моделей**: Все модели доступны на [HuggingFace](https://huggingface.co/collections/PaddlePaddle/pp-ocrv6) и [ModelScope](https://www.modelscope.cn/collections/PaddlePaddle/PP-OCRv6).
 
 <details>
 <summary><strong>2026.05.28: Выпуск PaddleOCR 3.6.0</strong></summary>

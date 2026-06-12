@@ -69,6 +69,7 @@
     - **专业场景增强**：数码显示屏、点阵字符、轮胎印字、工业字符等传统 VLM 难以覆盖的场景识别能力大幅提升。
     - **推理速度更快**：medium 档 CPU OpenVINO 推理加速 5.2×，tiny 档 Apple M4 加速 6.1×，A100 上仅需 0.13s。
     - **三档模型覆盖全场景**：tiny（1.5M）/ small（7.7M）/ medium（34.5M）分别面向端侧/移动端/服务端部署。
+    - **模型获取**：所有模型均可通过 [HuggingFace](https://huggingface.co/collections/PaddlePaddle/pp-ocrv6) 和 [ModelScope](https://www.modelscope.cn/collections/PaddlePaddle/PP-OCRv6) 获取。
 
 <details>
 <summary><strong>2026.05.28: PaddleOCR 3.6.0 发布</strong></summary>
