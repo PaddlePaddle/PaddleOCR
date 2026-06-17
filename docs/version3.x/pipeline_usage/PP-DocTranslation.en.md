@@ -1341,6 +1341,20 @@ The execution results will be printed to the terminal.
 
 The command-line method is for quickly experiencing and viewing the results. Generally, in projects, integration via code is often required. You can download the [test file](https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/vehicle_certificate-1.png) and use the following sample code for inference:
 
+> **Choosing the LLM backend for `chat_bot_config`**: Because `api_type` in `chat_bot_config` supports `"openai"` (the OpenAI-compatible protocol), you are not limited to ERNIE / Qianfan — any OpenAI-compatible LLM service works for translation by swapping `base_url`, `api_key` and `model_name`. For example, use [Atlas Cloud](https://www.atlascloud.ai/?utm_source=github&utm_medium=link&utm_campaign=PaddleOCR) (an OpenAI-compatible AI inference platform offering DeepSeek, Qwen, GLM, Kimi, MiniMax and more) as the translation LLM:
+>
+> ```python
+> chat_bot_config = {
+>     "module_name": "chat_bot",
+>     "model_name": "deepseek-ai/deepseek-v4-pro",  # reasoning model — leave room for output tokens
+>     "base_url": "https://api.atlascloud.ai/v1",
+>     "api_type": "openai",
+>     "api_key": "your-atlascloud-api-key",  # your api key
+> }
+> ```
+>
+> See the model list at [atlascloud.ai/models](https://www.atlascloud.ai/models).
+
 ```python
 from paddleocr import PPDocTranslation
 
