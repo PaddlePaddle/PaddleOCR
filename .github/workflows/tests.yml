@@ -80,6 +80,8 @@ jobs:
           echo "Failed to determine PaddleX version requirement from pyproject.toml" >&2
           exit 1
         fi
+
+        python -m pip install "paddlex>=3.7.0,<3.8.0"
         PADDLEX_BRANCH="release/${PADDLEX_SERIES}"
         echo "Installing PaddleX from branch: ${PADDLEX_BRANCH}"
         python -m pip install -e ".${PADDLEOCR_EXTRAS}" "paddlex@git+https://github.com/PaddlePaddle/PaddleX.git@${PADDLEX_BRANCH}"
