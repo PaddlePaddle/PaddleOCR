@@ -1,8 +1,8 @@
-# PaddleOCR-VL-1.5 高性能服务化部署
+# PaddleOCR-VL 高性能服务化部署
 
 [English](README_en.md)
 
-本目录提供一套支持并发请求处理的 PaddleOCR-VL-1.5 高性能服务化部署方案。
+本目录提供一套支持并发请求处理的 **PaddleOCR-VL 系列**高性能服务化部署方案，适用于 `PaddleOCR-VL`、`PaddleOCR-VL-1.5`、`PaddleOCR-VL-1.6` 等产线版本。
 
 > 本方案目前暂时只支持 NVIDIA GPU，对其他推理设备的支持仍在完善中。
 
@@ -15,8 +15,8 @@
 | 组件　　　　　| 说明　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　 |
 | ---------------| ----------------------------------------------------------------------------------|
 | FastAPI 网关　| 统一访问入口、简化客户端调用、并发控制　　　　　　　　　　　　　　　　　　　　　 |
-| Triton 服务器 | 版面分析模型（PP-DocLayoutV3）及产线串联逻辑，负责模型管理、动态批处理、推理调度 |
-| vLLM 服务器　 | VLM（PaddleOCR-VL-1.5），连续批处理推理　　　　　　　　　　　　　　　　　　　　　|
+| Triton 服务器 | 版面分析模型（如 PP-DocLayoutV3）及产线串联逻辑，负责模型管理、动态批处理、推理调度 |
+| vLLM 服务器　 | VLM，连续批处理推理　　　　　　　　　　　　　　　　　　　　|
 
 **Triton 模型：**
 
@@ -28,7 +28,7 @@
 ## 环境要求
 
 - x64 CPU
-- NVIDIA GPU，Compute Capability >= 8.0 且 < 12.0
+- NVIDIA GPU，Compute Capability >= 8.0 且 < 10.0
 - NVIDIA 驱动支持 CUDA 12.6
 - Docker >= 19.03
 - Docker Compose >= 2.0
@@ -45,8 +45,12 @@ cd PaddleOCR/deploy/paddleocr_vl_docker/hps
 2. 准备必要文件：
 
 ```bash
+cp .env.example .env
+# 按需修改 .env 中的 HPS_PIPELINE_NAME
 bash prepare.sh
 ```
+
+`prepare.sh` 会根据 `.env` 下载对应 PaddleOCR-VL 版本的高稳定性服务化部署 SDK，并写入 Triton 产线配置。
 
 3. 启动服务：
 
@@ -59,7 +63,7 @@ docker compose up
 | 服务 | 说明 | 端口 |
 |------|------|------|
 | `paddleocr-vl-api` | FastAPI 网关（对外入口） | 8080 |
-| `paddleocr-vl-tritonserver` | Triton 推理服务器 | 8000（内部） |
+| `paddleocr-vl-pipeline` | 运行产线的 Triton 推理服务器 | 8000（内部） |
 | `paddleocr-vlm-server` | 基于 vLLM 的 VLM 推理服务 | 8080（内部） |
 
 > 首次启动会自动下载并构建镜像，耗时较长；从第二次启动起将直接使用本地镜像，启动速度更快。
@@ -80,17 +84,39 @@ cp .env.example .env
 export HPS_MAX_CONCURRENT_INFERENCE_REQUESTS=8
 ```
 
+#### 产线与 SDK 配置
+
+通过以下变量选择 PaddleOCR-VL 系列中的具体版本（修改后需重新执行 `prepare.sh` 并重建镜像）：
+
+本方案复用 PaddleX 的[高稳定性服务化部署](https://paddlepaddle.github.io/PaddleX/latest/pipeline_deploy/serving.html#2) SDK 作为 Triton 服务的基础模型仓库与客户端依赖，并在其基础上增加 PaddleOCR-VL 专用的 FastAPI 网关和 vLLM 服务编排。
+
+| 变量 | 默认值 | 说明 |
+|------|--------|------|
+| `HPS_PIPELINE_NAME` | `PaddleOCR-VL-1.6` | 产线名称 |
+| `HPS_PADDLEX_VERSION` | `3.6` | PaddleX 版本（仅填 major.minor，如 `3.6`），同时决定 Triton 基础镜像标签（`paddlex${HPS_PADDLEX_VERSION}-gpu`）和 SDK 发布目录（`v${HPS_PADDLEX_VERSION}`），二者保持一致 |
+| `HPS_SDK_DIR` | `paddlex_hps_PaddleOCR-VL-1.6_sdk` | 解压后的 SDK 目录，遵循 `paddlex_hps_${HPS_PIPELINE_NAME}_sdk` |
+
+常见配置示例：
+
+| 目标版本 | `HPS_PIPELINE_NAME` | `HPS_SDK_DIR` |
+|----------|-----------------|---------------|
+| PaddleOCR-VL-1.6 | `PaddleOCR-VL-1.6` | `paddlex_hps_PaddleOCR-VL-1.6_sdk` |
+| PaddleOCR-VL-1.5 | `PaddleOCR-VL-1.5` | `paddlex_hps_PaddleOCR-VL-1.5_sdk` |
+| PaddleOCR-VL (v1) | `PaddleOCR-VL` | `paddlex_hps_PaddleOCR-VL_sdk` |
+
+#### 网关与设备
+
 | 变量　　　　　　　　　　　　　　　　　　　　| 默认值　　　　　　　　　　　　　 | 说明　　　　　　　　　　　　　　　　　　|
 | ---------------------------------------------| ----------------------------------| -----------------------------------------|
 | `HPS_MAX_CONCURRENT_INFERENCE_REQUESTS`　　 | 16　　　　　　　　　　　　　　　 | 推理操作（版面解析）最大并发请求数　　　|
 | `HPS_MAX_CONCURRENT_NON_INFERENCE_REQUESTS` | 64　　　　　　　　　　　　　　　 | 非推理操作（多页重组）最大并发请求数　　|
 | `HPS_INFERENCE_TIMEOUT`　　　　　　　　　　 | 600　　　　　　　　　　　　　　　| 请求超时时间（秒）　　　　　　　　　　　|
 | `HPS_HEALTH_CHECK_TIMEOUT`　　　　　　　　　| 5　　　　　　　　　　　　　　　　| 健康检查超时时间（秒）　　　　　　　　　|
-| `HPS_VLM_URL`　　　　　　　　　　　　　　　 | http://paddleocr-vlm-server:8080 | VLM 服务器地址（用于健康检查）　　　　　|
+| `HPS_VLM_URL`　　　　　　　　　　　　　　　 | http://paddleocr-vlm-server:8080 | VLM 服务器地址 |
 | `HPS_LOG_LEVEL`　　　　　　　　　　　　　　 | INFO　　　　　　　　　　　　　　 | 日志级别（DEBUG, INFO, WARNING, ERROR） |
 | `HPS_FILTER_HEALTH_ACCESS_LOG`　　　　　　　| true　　　　　　　　　　　　　　 | 是否过滤健康检查的访问日志　　　　　　　|
-| `UVICORN_WORKERS`　　　　　　　　　　　　　 | 4　　　　　　　　　　　　　　　　| 网关 Worker 进程数　　　　　　　　　　　|
-| `DEVICE_ID`　　　　　　　　　　　　　　　　 | 0　　　　　　　　　　　　　　　　| 使用的推理设备 ID　　　　　　　　　　　 |
+| `HPS_UVICORN_WORKERS`　　　　　　　　　　　 | 4　　　　　　　　　　　　　　　　| 网关 Worker 进程数　　　　　　　　　　　|
+| `HPS_DEVICE_ID`　　　　　　　　　　　　　　 | 0　　　　　　　　　　　　　　　　| 使用的推理设备 ID　　　　　　　　　　　 |
 
 ### 产线配置调整
 
@@ -101,6 +127,8 @@ export HPS_MAX_CONCURRENT_INFERENCE_REQUESTS=8
 ### 文档解析
 
 请参考 [PaddleOCR-VL 使用教程](https://github.com/PaddlePaddle/PaddleOCR/blob/main/docs/version3.x/pipeline_usage/PaddleOCR-VL.md) 中的客户端调用相关章节。
+
+服务支持 PDF 或图像文件（含 TIFF，多页时按页处理）；多页 TIFF 请使用 `fileType=1`。
 
 ### 健康检查
 
@@ -133,7 +161,7 @@ curl http://localhost:8080/health/ready
 # .env
 HPS_MAX_CONCURRENT_INFERENCE_REQUESTS=32
 HPS_MAX_CONCURRENT_NON_INFERENCE_REQUESTS=128
-UVICORN_WORKERS=8
+HPS_UVICORN_WORKERS=8
 ```
 
 **低延迟配置示例：**
@@ -143,7 +171,7 @@ UVICORN_WORKERS=8
 HPS_MAX_CONCURRENT_INFERENCE_REQUESTS=8
 HPS_MAX_CONCURRENT_NON_INFERENCE_REQUESTS=32
 HPS_INFERENCE_TIMEOUT=300
-UVICORN_WORKERS=2
+HPS_UVICORN_WORKERS=2
 ```
 
 ### Worker 进程数
@@ -188,7 +216,7 @@ instance_group [
 
 ```bash
 docker compose logs paddleocr-vl-api
-docker compose logs paddleocr-vl-tritonserver
+docker compose logs paddleocr-vl-pipeline
 docker compose logs paddleocr-vlm-server
 ```
 

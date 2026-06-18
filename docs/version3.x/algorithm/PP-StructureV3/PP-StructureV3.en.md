@@ -1509,7 +1509,7 @@ The serving inference test is based on the NVIDIA A100 + Intel Xeon Platinum 835
 
 **Q: What is the default model configuration? If I need higher accuracy, faster speed, or lower GPU memory usage, which parameters should I adjust or which models should I switch to? How significant is the impact on results?**
 
-**A:** By default, the largest models for each module are used. Section 3.3 demonstrates how different model selections affect GPU memory consumption and inference speed. You can choose an appropriate model based on your device capabilities and the complexity of your samples. Additionally, in the Python API or CLI, you can set the device parameter as `<device_type>:<device_id1>,<device_id2>...` (e.g., `gpu:0,1,2,3`) to enable multi-GPU parallel inference. If the built-in multi-GPU parallel inference does not meet your speed requirements, you may refer to the example code for multi-process parallel inference and further optimize it for your specific scenario: [Multi-process Parallel Inference](https://www.paddleocr.ai/latest/en/version3.x/pipeline_usage/instructions/parallel_inference.html).
+**A:** By default, the largest models for each module are used. Section 3.3 demonstrates how different model selections affect GPU memory consumption and inference speed. You can choose an appropriate model based on your device capabilities and the complexity of your samples. Additionally, in the Python API or CLI, you can set the device parameter as `<device_type>:<device_id1>,<device_id2>...` (e.g., `gpu:0,1,2,3`) to enable multi-GPU parallel inference. If the built-in multi-GPU parallel inference does not meet your speed requirements, you may refer to the example code for multi-process parallel inference and further optimize it for your specific scenario: [Multi-process Parallel Inference](https://www.paddleocr.ai/latest/en/version3.x/inference_deployment/local_inference/parallel_inference.html).
 
 ---
 
@@ -1524,7 +1524,7 @@ The serving inference test is based on the NVIDIA A100 + Intel Xeon Platinum 835
 **A:**  
 - For Python projects, you can directly integrate using the PaddleOCR Python API.  
 - For projects in other programming languages, it is recommended to use service-based deployment. PaddleOCR supports client-side integration in multiple languages, including C++, C#, Java, Go, and PHP. Please refer to the [official documentation](https://www.paddleocr.ai/latest/en/version3.x/pipeline_usage/PP-StructureV3.html#3-development-integration-deployment) for details.  
-- If you need to interact with large language models, PaddleOCR also provides the MCP service. For more information, please refer to the [MCP Server documentation](https://www.paddleocr.ai/latest/en/version3.x/deployment/mcp_server.html).
+- If you need to interact with large language models, PaddleOCR also provides the MCP service. For more information, please refer to the [MCP Server documentation](https://www.paddleocr.ai/latest/en/version3.x/integrations/mcp_server.html).
 
 ---
 

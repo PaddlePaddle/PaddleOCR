@@ -106,6 +106,14 @@ paddleocr doc_img_orientation_classification -i https://paddle-model-ecology.bj.
     --engine transformers
 ```
 
+如果选择 `onnxruntime` 作为推理引擎，请确保已配置 ONNX Runtime 环境，然后执行如下命令：
+
+```bash
+# 使用 onnxruntime 引擎进行推理
+paddleocr doc_img_orientation_classification -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/img_rot180_demo.jpg \
+    --engine onnxruntime
+```
+
 在大多数场景下，默认的 `paddle_static` 推理引擎通常具备更好的推理性能，建议优先使用。
 
 如需了解推理引擎的介绍、速度数据及权重转换等详细信息，请参考后文 [推理引擎](#五推理引擎) 章节。
@@ -131,6 +139,17 @@ from paddleocr import DocImgOrientationClassification
 model = DocImgOrientationClassification(
     model_name="PP-LCNet_x1_0_doc_ori",
     engine="transformers",
+)
+```
+
+如果希望使用 `onnxruntime` 引擎进行推理，可以参考如下示例：
+
+```python
+from paddleocr import DocImgOrientationClassification
+
+model = DocImgOrientationClassification(
+    model_name="PP-LCNet_x1_0_doc_ori",
+    engine="onnxruntime",
 )
 ```
 
@@ -197,13 +216,13 @@ model = DocImgOrientationClassification(
 </tr>
 <tr>
 <td><code>engine</code></td>
-<td><b>含义：</b>推理引擎。<br><b>说明：</b>支持 <code>None</code>（默认值）、<code>paddle</code>、<code>paddle_static</code>、<code>paddle_dynamic</code>、<code>transformers</code>。保持为默认值 <code>None</code> 时，本地推理默认使用 <code>paddle_static</code> 引擎。详细说明、取值、兼容性规则与示例请参见 <a href="../inference_engine.md">推理引擎与配置说明</a>。</td>
+<td><b>含义：</b>推理引擎。<br><b>说明：</b>支持 <code>None</code>（默认值）、<code>paddle</code>、<code>paddle_static</code>、<code>paddle_dynamic</code>、<code>transformers</code>、<code>onnxruntime</code>。保持为默认值 <code>None</code> 时，本地推理默认使用 <code>paddle_static</code> 引擎。详细说明、取值、兼容性规则与示例请参见 <a href="../inference_deployment/local_inference/inference_engine.md">推理引擎与配置说明</a>。</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>engine_config</code></td>
-<td><b>含义：</b>推理引擎配置。<br><b>说明：</b>推荐与 <code>engine</code> 搭配使用。详细字段、兼容性规则与示例请参见 <a href="../inference_engine.md">推理引擎与配置说明</a>。</td>
+<td><b>含义：</b>推理引擎配置。<br><b>说明：</b>推荐与 <code>engine</code> 搭配使用。详细字段、兼容性规则与示例请参见 <a href="../inference_deployment/local_inference/inference_engine.md">推理引擎与配置说明</a>。</td>
 <td><code>dict|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -386,7 +405,7 @@ model = DocImgOrientationClassification(
 
 ## 五、推理引擎 {#五推理引擎}
 
-关于推理引擎的详细说明、取值、兼容性规则与示例请参见 <a href="../inference_engine.md">推理引擎与配置说明</a>。
+关于推理引擎的详细说明、取值、兼容性规则与示例请参见 <a href="../inference_deployment/local_inference/inference_engine.md">推理引擎与配置说明</a>。
 
 ### 5.1 速度数据
 
@@ -403,7 +422,7 @@ model = DocImgOrientationClassification(
     </thead>
     <tbody>
         <tr>
-            <td rowspan="3">PP-LCNet_x1_0_doc_ori</td>
+            <td rowspan="4">PP-LCNet_x1_0_doc_ori</td>
             <td>paddle_static</td>
             <td>2.21</td>
             <td>3.36</td>
@@ -424,12 +443,19 @@ model = DocImgOrientationClassification(
             <td>0.14</td>
             <td>8.36</td>
         </tr>
+        <tr>
+            <td>onnxruntime</td>
+            <td>2.02</td>
+            <td>0.87</td>
+            <td>0.05</td>
+            <td>3.03</td>
+        </tr>
     </tbody>
 </table>
 
 <strong>测试环境说明:</strong>
 <ul>
-    <li><strong>测试数据：</strong>[示例图片](https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/img_rot180_demo.jpg)</li>
+    <li><strong>测试数据：</strong><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/img_rot180_demo.jpg">示例图片</a></li>
     <li><strong>硬件配置：</strong>
         <ul>
             <li>GPU：NVIDIA A100 40G</li>
@@ -439,13 +465,13 @@ model = DocImgOrientationClassification(
     <li><strong>软件环境：</strong>
         <ul>
             <li>Ubuntu 22.04 / CUDA 12.6 / cuDNN 9.5</li>
-            <li>paddlepaddle-gpu 3.2.1 / paddleocr 3.5 / transformers 5.4.0 / torch 2.10</li>
+            <li>paddlepaddle-gpu 3.2.1 / paddleocr 3.5 / transformers 5.4.0 / torch 2.10 / onnxruntime-gpu 1.23.2</li>
         </ul>
     </li>
 </ul>
 
 ### 5.2 权重转换 {#52-权重转换}
 
-使用推理引擎时，系统会自动下载官方预训练模型。若需使用自训练模型配合 `paddle_dynamic` 或 `transformers` 引擎，请参考 [PaddleX 文本图像方向分类模块权重转换](https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/doc_img_orientation_classification.html#442) 部分，将 `pdparams` 格式通过 PaddleX 转换为 `safetensors` 格式，即可无缝集成到 PaddleOCR 的 API 中进行推理。
+使用推理引擎时，系统会自动下载官方预训练模型。若需使用自训练模型配合 `paddle_dynamic` 或 `transformers` 引擎，请参考 [PaddleX 文本图像方向分类模块权重转换](https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/doc_img_orientation_classification.html#442) 部分，将 `pdparams` 格式通过 PaddleX 转换为 `safetensors` 格式，即可无缝集成到 PaddleOCR 的 API 中进行推理。若需使用自训练模型配合`onnxruntime`引擎，请参考[PaddleX 获取 ONNX 模型](https://paddlepaddle.github.io/PaddleX/latest/pipeline_deploy/paddle2onnx.html)获取onnx模型，即可无缝集成到 PaddleOCR 的 API 中进行推理。
 
 ## 六、FAQ

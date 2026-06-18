@@ -101,16 +101,16 @@ plugins:
             Home: Home
             安装: Installation
             快速开始: Quick Start
-            PP-OCRv5: PP-OCRv5
+            PP-OCRv6: PP-OCRv6
             使用教程: Usage Tutorial
-            PP-OCRv5简介: PP-OCRv5 Introduction
-            PP-OCRv5多语种文字识别: PP-OCRv5 Multilingual Text Recognition
+            PP-OCRv6简介: PP-OCRv6 Introduction
             PP-StructureV3: PP-StructureV3
             PP-StructureV3简介: PP-StructureV3 Introduction
             PP-ChatOCRv4: PP-ChatOCRv4
             PP-ChatOCRv4简介: PP-ChatOCRv4 Introduction
             PaddleOCR-VL: PaddleOCR-VL
             PaddleOCR-VL-1.5简介: PaddleOCR-VL-1.5 Introduction
+            PaddleOCR-VL-1.6简介: PaddleOCR-VL-1.6 Introduction
             PaddleOCR-VL简介: PaddleOCR-VL Introduction
             PaddleOCR-VL NVIDIA Blackwell 架构 GPU 使用教程: PaddleOCR-VL NVIDIA Blackwell-Architecture GPUs Usage Tutorial
             PaddleOCR-VL 昆仑芯 XPU 使用教程: PaddleOCR-VL Kunlunxin XPU Usage Tutorial
@@ -121,11 +121,24 @@ plugins:
             PaddleOCR-VL Apple Silicon 使用教程: PaddleOCR-VL Apple Silicon Usage Tutorial
             PaddleOCR-VL AMD GPU 使用教程: PaddleOCR-VL AMD GPU Usage Tutorial
             PaddleOCR-VL Intel Arc GPU 使用教程: PaddleOCR-VL Intel Arc GPU Usage Tutorial
-            推理部署: Inference and Deployment
+            推理与部署: Inference and Deployment
+            总览: Overview
+            本地推理: Local Inference
+            服务化: Serving
+            自部署服务化: Self-hosted Serving
+            PaddleOCR 官方 API: PaddleOCR official API
+            Python SDK: Python SDK
+            TypeScript SDK: TypeScript SDK
+            Go SDK: Go SDK
+            CLI: CLI
+            跨端部署: Cross-Platform Deployment
+            其它: Other
+            生态集成: Ecosystem Integrations
             高性能推理: High-Performance Inference
             打包 PaddleOCR 项目: Package PaddleOCR Projects
             获取ONNX模型: Obtaining ONNX Models
-            端侧部署: On-Device Deployment
+            Android 部署: Android Deployment
+            iOS 部署: iOS Deployment
             服务化部署: Serving
             浏览器端部署: Browser Deployment
             模块列表: Module List
@@ -181,7 +194,6 @@ plugins:
             基于C++预测引擎推理: CPP Inference
             Visual Studio 2019 Community CMake 编译指南: Visual Studio 2019 Community CMake Compilation Guide
             服务化部署: Server Deployment
-            端侧部署: On-Device Deployment
             Android部署: Android Deployment
             Paddle2ONNX模型转化与预测: Paddle2ONNX
             云上飞桨部署工具: Paddle Cloud
@@ -306,10 +318,9 @@ nav:
   - Home: index.md
   - 安装: version3.x/installation.md
   - 快速开始: quick_start.md
-  - PP-OCRv5:
+  - PP-OCRv6:
     - 使用教程: version3.x/pipeline_usage/OCR.md
-    - PP-OCRv5简介: version3.x/algorithm/PP-OCRv5/PP-OCRv5.md
-    - PP-OCRv5多语种文字识别: version3.x/algorithm/PP-OCRv5/PP-OCRv5_multi_languages.md
+    - PP-OCRv6简介: version3.x/algorithm/PP-OCRv6/PP-OCRv6.md
   - PP-StructureV3:
     - 使用教程: version3.x/pipeline_usage/PP-StructureV3.md
     - PP-StructureV3简介: version3.x/algorithm/PP-StructureV3/PP-StructureV3.md
@@ -319,6 +330,7 @@ nav:
   - PaddleOCR-VL:
     - 使用教程: version3.x/pipeline_usage/PaddleOCR-VL.md
     - PaddleOCR-VL-1.5简介: version3.x/algorithm/PaddleOCR-VL/PaddleOCR-VL-1.5.md
+    - PaddleOCR-VL-1.6简介: version3.x/algorithm/PaddleOCR-VL/PaddleOCR-VL-1.6.md
     - PaddleOCR-VL简介: version3.x/algorithm/PaddleOCR-VL/PaddleOCR-VL.md
     - PaddleOCR-VL NVIDIA Blackwell 架构 GPU 使用教程: version3.x/pipeline_usage/PaddleOCR-VL-NVIDIA-Blackwell.md
     - PaddleOCR-VL 昆仑芯 XPU 使用教程: version3.x/pipeline_usage/PaddleOCR-VL-Kunlunxin-XPU.md
@@ -329,21 +341,34 @@ nav:
     - PaddleOCR-VL Apple Silicon 使用教程: version3.x/pipeline_usage/PaddleOCR-VL-Apple-Silicon.md
     - PaddleOCR-VL AMD GPU 使用教程: version3.x/pipeline_usage/PaddleOCR-VL-AMD-GPU.md
     - PaddleOCR-VL Intel Arc GPU 使用教程: version3.x/pipeline_usage/PaddleOCR-VL-Intel-Arc-GPU.md
-  - 推理部署:
-    - 高性能推理: version3.x/deployment/high_performance_inference.md
-    - 获取ONNX模型: version3.x/deployment/obtaining_onnx_models.md
-    - 端侧部署: version3.x/deployment/on_device_deployment.md
-    - 服务化部署: version3.x/deployment/serving.md
-    - 浏览器端部署: version3.x/deployment/browser.md
-    - MCP 服务器: version3.x/deployment/mcp_server.md
-    - Agent Skills: version3.x/deployment/skills.md
-    - 打包 PaddleOCR 项目: version3.x/deployment/packaging.md
-    - 产线并行推理: version3.x/pipeline_usage/instructions/parallel_inference.md
-    - C++ 本地部署:
-      - 通用 OCR 产线 C++ 本地部署 - Linux: version3.x/deployment/cpp/OCR.md
-      - 通用 OCR 产线 C++ 本地部署 - Windows: version3.x/deployment/cpp/OCR_windows.md
-    - Benchmark: version3.x/pipeline_usage/instructions/benchmark.md
-    - 推理引擎与配置说明: version3.x/inference_engine.md
+  - 推理与部署:
+    - 本地推理:
+      - 高性能推理: version3.x/inference_deployment/local_inference/high_performance_inference.md
+      - 推理引擎与配置说明: version3.x/inference_deployment/local_inference/inference_engine.md
+      - 产线并行推理: version3.x/inference_deployment/local_inference/parallel_inference.md
+      - C++ 本地部署:
+        - 概述: version3.x/inference_deployment/local_inference/cpp/cpp_local_deployment.md
+        - 通用 OCR 产线 C++ 本地部署 - Linux: version3.x/inference_deployment/local_inference/cpp/OCR.md
+        - 通用 OCR 产线 C++ 本地部署 - Windows: version3.x/inference_deployment/local_inference/cpp/OCR_windows.md
+    - 服务化:
+      - 自部署服务化: version3.x/inference_deployment/serving/serving.md
+      - PaddleOCR 官方 API:
+        - 总览: version3.x/inference_deployment/serving/paddleocr_official_api/overview.md
+        - Python SDK: version3.x/inference_deployment/serving/paddleocr_official_api/python.md
+        - TypeScript SDK: version3.x/inference_deployment/serving/paddleocr_official_api/typescript.md
+        - Go SDK: version3.x/inference_deployment/serving/paddleocr_official_api/go.md
+        - CLI: version3.x/inference_deployment/serving/paddleocr_official_api/cli.md
+    - 跨端部署:
+      - Android 部署: version3.x/inference_deployment/cross_platform/android_deployment.md
+      - iOS 部署: version3.x/inference_deployment/cross_platform/ios_deployment.md
+      - 浏览器端部署: version3.x/inference_deployment/cross_platform/browser.md
+    - 其它:
+      - 获取ONNX模型: version3.x/inference_deployment/others/obtaining_onnx_models.md
+      - 打包 PaddleOCR 项目: version3.x/inference_deployment/others/packaging.md
+      - Benchmark: version3.x/inference_deployment/others/benchmark.md
+  - 生态集成:
+    - MCP 服务器: version3.x/integrations/mcp_server.md
+    - Agent Skills: version3.x/integrations/skills.md
 
   - 模块列表:
     - 模块概述: version3.x/module_usage/module_overview.md

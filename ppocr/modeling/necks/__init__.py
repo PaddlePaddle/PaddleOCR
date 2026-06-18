@@ -16,7 +16,7 @@ __all__ = ["build_neck"]
 
 
 def build_neck(config):
-    from .db_fpn import DBFPN, RSEFPN, LKPAN
+    from .db_fpn import DBFPN, RSEFPN, RepLKFPN, LKPAN, RepLKPAN
     from .east_fpn import EASTFPN
     from .sast_fpn import SASTFPN
     from .rnn import SequenceEncoder
@@ -34,8 +34,10 @@ def build_neck(config):
         "FPN",
         "FCEFPN",
         "LKPAN",
+        "RepLKPAN",
         "DBFPN",
         "RSEFPN",
+        "RepLKFPN",
         "EASTFPN",
         "SASTFPN",
         "SequenceEncoder",

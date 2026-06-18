@@ -36,16 +36,16 @@
 ### 📄 Analyse intelligente de documents (prêt pour les LLM)
 > *Transformer des visuels désordonnés en données structurées pour l'ère des LLM.*
 
-* **VLM documentaire de pointe** : Avec **PaddleOCR-VL-1.5 (0,9 milliard de paramètres)**, le modèle vision-langage léger de pointe de l'industrie pour l'analyse de documents. Il excelle dans l'analyse de documents complexes face à 5 grands défis du « monde réel » : **Déformation, Numérisation, Photographie d'écran, Éclairage et Documents inclinés**, avec des sorties structurées aux formats **Markdown** et **JSON**.
+* **VLM documentaire de pointe** : Avec **PaddleOCR-VL-1.6 (0,9 milliard de paramètres)**, le modèle vision-langage léger de pointe de l'industrie pour l'analyse de documents. Il atteint 96,3 % de précision sur OmniDocBench v1.6, mène l'industrie en reconnaissance de texte, formules et tableaux, et améliore significativement les capacités pour les documents anciens, les caractères rares, les sceaux et les graphiques, avec des sorties structurées aux formats **Markdown** et **JSON**.
 * **Conversion avec conscience de la structure** : Propulsé par **PP-StructureV3**, convertissez sans effort des PDF et images complexes en **Markdown** ou **JSON**. Contrairement aux modèles de la série PaddleOCR-VL, il fournit des informations de coordonnées plus fines, incluant les coordonnées des cellules de tableau, les coordonnées du texte, et bien plus encore.
 * **Efficacité prête pour la production** : Atteignez une précision de niveau commercial avec une empreinte ultra-réduite. Surpasse de nombreuses solutions propriétaires sur les benchmarks publics tout en restant économe en ressources pour le déploiement en périphérie ou dans le cloud.
 
 ### 🔍 Reconnaissance de texte universelle (OCR de scène)
 > *L'étalon-or mondial pour la détection de texte multilingue à haute vitesse.*
 
-* **Plus de 100 langues supportées** : Reconnaissance native pour une vaste bibliothèque mondiale. Notre solution **PP-OCRv5** à modèle unique gère élégamment les documents multilingues mixtes (chinois, anglais, japonais, pinyin, etc.).
+* **Plus de 100 langues supportées** : Reconnaissance native pour une vaste bibliothèque mondiale. **PP-OCRv6** supporte 50 langues avec un seul modèle unifié (chinois, anglais, japonais et 46 langues latines) — sans changement de modèle.
 * **Maîtrise des éléments complexes** : Au-delà de la reconnaissance de texte standard, nous prenons en charge la **détection de texte en scène naturelle** dans une large gamme d'environnements, y compris les pièces d'identité, les vues de rue, les livres et les composants industriels.
-* **Bond en performance** : PP-OCRv5 apporte une **amélioration de la précision de 13%** par rapport aux versions précédentes, tout en maintenant l'« Efficacité extrême » pour laquelle PaddleOCR est célèbre.
+* **Bond en performance** : PP-OCRv6 atteint **+4.6% en détection** et **+5.1% en reconnaissance** par rapport à PP-OCRv5, surpassant les principaux modèles de langage visuel. Accélération 5.2× en inférence CPU de bout en bout.
 
 <div align="center">
   <p>
@@ -61,15 +61,40 @@
 
 ## 📣 Mises à jour récentes
 
-### 🔥 PaddleOCR v3.5.0 publié : des backends d'inférence plus flexibles et des sorties documentaires plus riches
+### 🔥 2026.06.11 : Publication de PaddleOCR 3.7.0
+- Points forts de PP-OCRv6 :
+
+    - **Amélioration de la précision** : Le niveau medium atteint +4.6% en détection et +5.1% en reconnaissance par rapport à PP-OCRv5_server, surpassant les principaux VLMs (Qwen3-VL-235B, GPT-5.5) avec seulement 34.5M paramètres.
+    - **50 langues unifiées** : Un seul modèle couvre le chinois, l'anglais, le japonais et 46 langues latines — sans changement de modèle.
+    - **Scénarios spécialisés** : Améliorations majeures pour les écrans numériques, caractères matriciels, empreintes de pneus et texte industriel.
+    - **Inférence plus rapide** : Accélération 5.2× CPU (OpenVINO), 6.1× sur Apple M4 (tiny), 0.13s sur A100 GPU.
+    - **Trois niveaux pour tous les scénarios** : tiny (1.5M) / small (7.7M) / medium (34.5M) pour le déploiement edge, mobile et serveur.
+    - **Disponibilité des modèles** : Tous les modèles sont disponibles sur [HuggingFace](https://huggingface.co/collections/PaddlePaddle/pp-ocrv6) et [ModelScope](https://www.modelscope.cn/collections/PaddlePaddle/PP-OCRv6).
+
+<details>
+<summary><strong>2026.05.28 : Publication de PaddleOCR 3.6.0</strong></summary>
+
+- Points forts de PaddleOCR-VL-1.6 :
+
+    - **Nouvelle précision SOTA** : 96.3% sur OmniDocBench v1.6, nouveau SOTA sur OmniDocBench v1.5 et Real5-OmniDocBench.
+    - **Amélioration complète** : améliorations significatives des tableaux, documents anciens et caractères rares.
+    - **Migration transparente** : architecture entièrement compatible avec PaddleOCR-VL-1.5.
+    - **Essayez** : [HuggingFace](https://huggingface.co/PaddlePaddle/PaddleOCR-VL-1.6) ou [site officiel](https://www.paddleocr.com).
+
+</details>
+<details>
+<summary><strong>2026.04.21 : Publication de PaddleOCR 3.5.0</strong></summary>
+
 * **Backends d'inférence plus flexibles** : basculez en toute transparence entre les graphes statiques Paddle, les graphes dynamiques Paddle et Transformers. PaddleOCR est désormais profondément intégré à l'écosystème Hugging Face, et 20 modèles majeurs prennent en charge Transformers comme backend d'inférence.
 * **Conversion des documents bureautiques en Markdown** : conversion des formats courants comme Word, Excel et PowerPoint vers Markdown.
 * **Export DOCX des résultats d'analyse** : les séries `PaddleOCR-VL`, `PP-StructureV3` et `PP-DocTranslation` prennent désormais en charge l'export des résultats d'analyse au format DOCX pour une consultation et une édition pratiques dans Microsoft Word.
 * **SDK officiel d'inférence dans le navigateur** : sortie du SDK officiel d'inférence dans le navigateur `PaddleOCR.js`, qui permet d'exécuter `PP-OCRv5` directement dans le navigateur.
 
+</details>
+
 <details>
 <summary><strong>2026.01.29 : Publication de PaddleOCR 3.4.0</strong></summary>
-* **PaddleOCR-VL-1.5 (VLM 0,9 milliard de paramètres, état de l'art)** : Notre dernier modèle phare pour l'analyse de documents est désormais disponible !
+* PaddleOCR-VL-1.5 (VLM 0,9 milliard de paramètres, état de l'art) : Notre dernier modèle phare pour l'analyse de documents est désormais disponible !
     * **94,5 % de précision sur OmniDocBench** : Surpasse les grands modèles généralistes de premier rang et les analyseurs de documents spécialisés.
     * **Robustesse dans le monde réel** : Premier à introduire l'algorithme **PP-DocLayoutV3** pour le positionnement de formes irrégulières, maîtrisant 5 scénarios difficiles : *Inclinaison, Déformation, Numérisation, Éclairage et Photographie d'écran*.
     * **Extension des capacités** : Prend désormais en charge la **Reconnaissance de sceaux**, la **Détection de texte**, et s'étend à **111 langues** (incluant le tibétain et le bengali).
@@ -130,8 +155,6 @@
 
 [Journal des modifications](https://paddlepaddle.github.io/PaddleOCR/latest/en/update/update.html)
 
-</details>
-
 
 ## 🚀 Démarrage rapide
 
@@ -151,10 +174,10 @@ Pour une utilisation locale, veuillez consulter la documentation suivante en fon
 
 ## 🧩 Plus de fonctionnalités
 
-- Convertir des modèles au format ONNX : [Obtenir des modèles ONNX](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/obtaining_onnx_models.html).
-- Accélérer l'inférence à l'aide de moteurs tels qu'OpenVINO, ONNX Runtime, TensorRT, ou effectuer une inférence à l'aide de modèles au format ONNX : [Inférence haute performance](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/high_performance_inference.html).
+- Convertir des modèles au format ONNX : [Obtenir des modèles ONNX](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/inference_deployment/others/obtaining_onnx_models.html).
+- Accélérer l'inférence à l'aide de moteurs tels qu'OpenVINO, ONNX Runtime, TensorRT, ou effectuer une inférence à l'aide de modèles au format ONNX : [Inférence haute performance](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/inference_deployment/local_inference/high_performance_inference.html).
 - Accélérer l'inférence à l'aide de plusieurs GPU et plusieurs processus : [Inférence parallèle pour les pipelines](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/pipeline_usage/instructions/parallel_inference.html).
-- Intégrer PaddleOCR dans des applications écrites en C++, C#, Java, etc. : [Services](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/serving.html).
+- Intégrer PaddleOCR dans des applications écrites en C++, C#, Java, etc. : [Services](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/inference_deployment/serving/serving.html).
 
 ## 🔄 Aperçu rapide des résultats d'exécution
 

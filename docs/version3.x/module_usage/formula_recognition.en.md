@@ -218,13 +218,13 @@ By default, GPU 0 is used if available; otherwise, CPU is used.
 </tr>
 <tr>
 <td><code>engine</code></td>
-<td><b>Meaning:</b> Inference engine.<br/><b>Description:</b> Supports <code>None</code> (the default), <code>paddle</code>, <code>paddle_static</code>, <code>paddle_dynamic</code>, and <code>transformers</code>. When left as <code>None</code>, local inference uses the <code>paddle_static</code> engine by default. For detailed descriptions, supported values, compatibility rules, and examples, see <a href="../inference_engine.en.md">Inference Engine and Configuration</a>.</td>
+<td><b>Meaning:</b> Inference engine.<br/><b>Description:</b> Supports <code>None</code> (the default), <code>paddle</code>, <code>paddle_static</code>, <code>paddle_dynamic</code>, and <code>transformers</code>. When left as <code>None</code>, local inference uses the <code>paddle_static</code> engine by default. For detailed descriptions, supported values, compatibility rules, and examples, see <a href="../inference_deployment/local_inference/inference_engine.en.md">Inference Engine and Configuration</a>.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>engine_config</code></td>
-<td><b>Meaning:</b> Inference-engine configuration.<br/><b>Description:</b> Recommended together with <code>engine</code>. For supported fields, compatibility rules, and examples, see <a href="../inference_engine.en.md">Inference Engine and Configuration</a>.</td>
+<td><b>Meaning:</b> Inference-engine configuration.<br/><b>Description:</b> Recommended together with <code>engine</code>. For supported fields, compatibility rules, and examples, see <a href="../inference_deployment/local_inference/inference_engine.en.md">Inference Engine and Configuration</a>.</td>
 <td><code>dict|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -427,7 +427,7 @@ tar -xf rec_ppformulanet_plus_m_train.tar
 ```
 
 ### 4.3 Model Training
-PaddleOCR is modularized. To train the `PP-FormulaNet_plus-M`  model, you need to use its [config file](https://github.com/PaddlePaddle/PaddleOCR/blob/main/configs/rec/PP-FormuaNet/PP-FormulaNet_plus-M.yaml).
+PaddleOCR is modularized. To train the `PP-FormulaNet_plus-M`  model, you need to use its [config file](https://github.com/PaddlePaddle/PaddleOCR/blob/{{PADDLEOCR_GITHUB_REF}}/configs/rec/PP-FormuaNet/PP-FormulaNet_plus-M.yaml).
 
 Training commands are as follows:
 ```bash

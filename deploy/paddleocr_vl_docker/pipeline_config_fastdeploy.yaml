@@ -1,5 +1,5 @@
 
-pipeline_name: PaddleOCR-VL-1.5
+pipeline_name: PaddleOCR-VL-1.6
 
 batch_size: 64
 
@@ -57,7 +57,7 @@ SubModules:
       24: "union" # vision_footnote
   VLRecognition:
     module_name: vl_recognition
-    model_name: PaddleOCR-VL-1.5-0.9B
+    model_name: PaddleOCR-VL-1.6-0.9B
     model_dir: null
     batch_size: 4096
     genai_config:

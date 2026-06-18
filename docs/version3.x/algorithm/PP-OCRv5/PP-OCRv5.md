@@ -1490,6 +1490,6 @@
 # 五、部署与二次开发
 * **多系统支持**：兼容Windows、Linux、Mac等主流操作系统。
 * **多硬件支持**：除了英伟达GPU外，还支持Intel CPU、昆仑芯、昇腾等新硬件推理和部署。
-* **高性能推理插件**：推荐结合高性能推理插件进一步提升推理速度，详见[高性能推理指南](../../deployment/high_performance_inference.md)。
-* **服务化部署**：支持高稳定性服务化部署方案，详见[服务化部署指南](../../deployment/serving.md)。
+* **高性能推理插件**：推荐结合高性能推理插件进一步提升推理速度，详见[高性能推理指南](../../inference_deployment/local_inference/high_performance_inference.md)。
+* **服务化部署**：支持高稳定性服务化部署方案，详见[服务化部署指南](../../inference_deployment/serving/serving.md)。
 * **二次开发能力**：支持自定义数据集训练、字典扩展、模型微调。举例：如需增加韩文识别，可扩展字典并微调模型，无缝集成到现有产线，详见[文本检测模块使用教程](../../module_usage/text_detection.md)及[文本识别模块使用教程](../../module_usage/text_recognition.md)

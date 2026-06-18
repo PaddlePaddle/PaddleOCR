@@ -1,6 +1,6 @@
 {
   "name": "@paddleocr/paddleocr-js",
-  "version": "0.3.2",
+  "version": "0.4.2",
   "description": "Browser-based OCR SDK powered by PaddleOCR, ONNX Runtime Web and OpenCV.js",
   "license": "Apache-2.0",
   "author": "PaddlePaddle Authors",
@@ -33,7 +33,8 @@
   },
   "files": [
     "dist",
-    "README.md"
+    "README.md",
+    "README_cn.md"
   ],
   "sideEffects": false,
   "keywords": [

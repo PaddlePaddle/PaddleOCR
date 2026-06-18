@@ -37,16 +37,16 @@ English | [简体中文](./readme/README_cn.md) | [繁體中文](./readme/README
 ### 📄 Intelligent Document Parsing (LLM-Ready)
 > *Transforming messy visuals into structured data for the LLM era.*
 
-* **SOTA Document VLM**: Featuring **PaddleOCR-VL-1.5 (0.9B)**, the industry's leading lightweight vision-language model for document parsing. It excels in parsing complex documents across 5 major "Real-World" challenges: **Warping, Scanning, Screen Photography, Illumination, and Skewed documents**, with structured outputs in **Markdown** and **JSON** formats.
+* **SOTA Document VLM**: Featuring **PaddleOCR-VL-1.6 (0.9B)**, the industry's leading lightweight vision-language model for document parsing. It achieves 96.3% accuracy on OmniDocBench v1.6, leads in text, formula, and table recognition, and shows significantly enhanced capabilities in ancient documents, rare characters, seals, and charts, with structured outputs in **Markdown** and **JSON** formats.
 * **Structure-Aware Conversion**: Powered by **PP-StructureV3**, seamlessly convert complex PDFs and images into **Markdown** or **JSON**. Unlike the PaddleOCR-VL series models, it provides more fine-grained coordinate information, including table cell coordinates, text coordinates, and more.
 * **Production-Ready Efficiency**: Achieve commercial-grade accuracy with an ultra-small footprint. Outperforms numerous closed-source solutions in public benchmarks while remaining resource-efficient for edge/cloud deployment.
 
 ### 🔍 Universal Text Recognition (Scene OCR)
 > *The global gold standard for high-speed, multilingual text spotting.*
 
-* **100+ Languages Supported**: Native recognition for a vast global library. Our **PP-OCRv5** single-model solution elegantly handles multilingual mixed documents (Chinese, English, Japanese, Pinyin, etc.).
+* **100+ Languages Supported**: Native recognition for a vast global library. **PP-OCRv6** supports 50 languages with a single unified model (Chinese, English, Japanese, and 46 Latin-script languages) — no model switching needed for multilingual documents.
 * **Complex Element Mastery**: Beyond standard text recognition, we support **natural scene text spotting** across a wide range of environments, including IDs, street views, books, and industrial components
-* **Performance Leap**: PP-OCRv5 delivers a **13% accuracy boost** over previous versions, maintaining the "Extreme Efficiency" that PaddleOCR is famous for.
+* **Performance Leap**: PP-OCRv6 achieves **+4.6% detection** and **+5.1% recognition** accuracy over PP-OCRv5, surpassing mainstream Vision-Language Models. 5.2× CPU inference speedup end-to-end.
 
 <div align="center">
   <p>
@@ -62,16 +62,42 @@ English | [简体中文](./readme/README_cn.md) | [繁體中文](./readme/README
 
 ## 📣 Recent updates
 
-### 🔥 PaddleOCR v3.5.0 Released: More Flexible Inference and Richer Document Output
+### 🔥 2026.06.11: Release of PaddleOCR 3.7.0
+- PP-OCRv6 highlights:
+
+    - **Accuracy boost**: Medium tier achieves +4.6% detection and +5.1% recognition over PP-OCRv5_server, surpassing mainstream VLMs (Qwen3-VL-235B, GPT-5.5) with only 34.5M parameters.
+    - **50 languages unified**: Single model covers Chinese, English, Japanese, and 46 Latin-script languages — no model switching needed.
+    - **Specialized scenarios**: Major improvements in digital displays, dot-matrix characters, tire prints, and industrial text recognition.
+    - **Faster inference**: 5.2× CPU speedup (OpenVINO), 6.1× on Apple M4 (tiny), 0.13s on A100 GPU.
+    - **Three tiers for all scenarios**: tiny (1.5M) / small (7.7M) / medium (34.5M) for edge, mobile, and server deployment.
+    - **Model availability**: All models are available on [HuggingFace](https://huggingface.co/collections/PaddlePaddle/pp-ocrv6) and [ModelScope](https://www.modelscope.cn/collections/PaddlePaddle/PP-OCRv6).
+
+<details>
+<summary><strong>2026.05.28: Release of PaddleOCR 3.6.0</strong></summary>
+
+- PaddleOCR-VL-1.6 highlights:
+
+    - **New SOTA Accuracy**: Achieves over 96.3% on OmniDocBench v1.6, also sets new SOTA on OmniDocBench v1.5 and Real5-OmniDocBench, leading both open-source and proprietary solutions in text, formula, and table recognition.
+    - **Comprehensive Capability Upgrade**: Significant improvements in table, ancient document, and rare character recognition, with notably enhanced seal recognition, spotting, and chart understanding across multiple scenarios.
+    - **Seamless Migration**: Model architecture is fully consistent with PaddleOCR-VL-1.5, enabling zero-cost adaptation—swap and go.
+    - **Try it now**: Available on [HuggingFace](https://huggingface.co/PaddlePaddle/PaddleOCR-VL-1.6) or our [Official Website](https://www.paddleocr.com).
+
+</details>
+
+<details>
+<summary><strong>2026.04.21: Release of PaddleOCR 3.5.0</strong></summary>
+
 * **Flexible inference backends**: Seamlessly switch between Paddle static graph, Paddle dynamic graph, or Transformers. PaddleOCR is now deeply integrated with the Hugging Face ecosystem, and 20 major models support Transformers as the inference backend.
 * **Office documents to Markdown**: Convert common document formats such as Word, Excel, and PowerPoint into Markdown.
 * **DOCX export for parsed results**: The `PaddleOCR-VL` series, `PP-StructureV3`, and `PP-DocTranslation` now support exporting parsed results to DOCX for convenient viewing and editing in Microsoft Word.
 * **Official browser inference SDK**: Released `PaddleOCR.js`, the official browser inference SDK that supports running `PP-OCRv5` directly in the browser.
 
+</details>
+
 <details>
 <summary><strong>2026.01.29: Release of PaddleOCR 3.4.0</strong></summary>
 
-* **PaddleOCR-VL-1.5 (SOTA 0.9B VLM)**: Our latest flagship model for document parsing is now live!
+* PaddleOCR-VL-1.5 (SOTA 0.9B VLM): Our latest flagship model for document parsing is now live!
     * **94.5% Accuracy on OmniDocBench**: Surpassing top-tier general large models and specialized document parsers.
     * **Real-World Robustness**: First to introduce the **PP-DocLayoutV3** algorithm for irregular shape positioning, mastering 5 tough scenarios: *Skew, Warping, Scanning, Illumination, and Screen Photography*.
     * **Capability Expansion**: Now supports **Seal Recognition**, **Text Spotting**, and expands to **111 languages** (including China’s Tibetan script and Bengali).
@@ -132,8 +158,6 @@ English | [简体中文](./readme/README_cn.md) | [繁體中文](./readme/README
 
 [History Log](https://paddlepaddle.github.io/PaddleOCR/latest/en/update/update.html)
 
-</details>
-
 
 ## 🚀 Quick Start
 
@@ -153,10 +177,10 @@ For local usage, please refer to the following documentation based on your needs
 
 ## 🧩 More Features
 
-- Convert models to ONNX format: [Obtaining ONNX Models](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/obtaining_onnx_models.html).
-- Accelerate inference using engines like OpenVINO, ONNX Runtime, TensorRT, or perform inference using ONNX format models: [High-Performance Inference](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/high_performance_inference.html).
+- Convert models to ONNX format: [Obtaining ONNX Models](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/inference_deployment/others/obtaining_onnx_models.html).
+- Accelerate inference using engines like OpenVINO, ONNX Runtime, TensorRT, or perform inference using ONNX format models: [High-Performance Inference](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/inference_deployment/local_inference/high_performance_inference.html).
 - Accelerate inference using multi-GPU and multi-process: [Parallel Inference for Pipelines](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/pipeline_usage/instructions/parallel_inference.html).
-- Integrate PaddleOCR into applications written in C++, C#, Java, etc.: [Serving](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/serving.html).
+- Integrate PaddleOCR into applications written in C++, C#, Java, etc.: [Serving](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/inference_deployment/serving/serving.html).
 
 ## 🔄 Quick Overview of Execution Results
 
@@ -278,5 +302,15 @@ This project is released under the [Apache 2.0 license](LICENSE).
       archivePrefix={arXiv},
       primaryClass={cs.CV},
       url={https://arxiv.org/abs/2601.21957}, 
+}
+
+@misc{zhang2026paddleocrvl16expandingfrontierdocument,
+      title={PaddleOCR-VL-1.6: Expanding the Frontier of Document Parsing with Under-Optimized Region Refinement and Progressive Post-Training}, 
+      author={Zelun Zhang and Hongen Liu and Suyin Liang and Yubo Zhang and Yiqing Xiang and Jiaxuan Liu and Ting Sun and Manhui Lin and Yue Zhang and Changda Zhou and Tingquan Gao and Cheng Cui and Yi Liu and Dianhai Yu and Yanjun Ma},
+      year={2026},
+      eprint={2606.03264},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV},
+      url={https://arxiv.org/abs/2606.03264}, 
 }
 ```

@@ -1,0 +1,30 @@
+PODS:
+  - onnxruntime-c (1.24.3)
+  - onnxruntime-objc (1.24.3):
+    - onnxruntime-objc/Core (= 1.24.3)
+  - onnxruntime-objc/Core (1.24.3):
+    - onnxruntime-c (= 1.24.3)
+  - OpenCV (4.3.0)
+  - Yams (5.0.6)
+
+DEPENDENCIES:
+  - onnxruntime-objc (~> 1.24)
+  - OpenCV (~> 4.3.0)
+  - Yams (~> 5.0)
+
+SPEC REPOS:
+  trunk:
+    - onnxruntime-c
+    - onnxruntime-objc
+    - OpenCV
+    - Yams
+
+SPEC CHECKSUMS:
+  onnxruntime-c: 4a1a1a81da2087869dc9b6357f182952db2df29c
+  onnxruntime-objc: f9310465f0a284682811d071b7eb8e93f10517b8
+  OpenCV: 681e0451c1e54c5930a8922277f817ed5d5ab459
+  Yams: e10dae147f517ed57ecae37c5e8681bdf8fcab65
+
+PODFILE CHECKSUM: 24111b5e94db1b6a72362b62148f587abc1a06be
+
+COCOAPODS: 1.16.2

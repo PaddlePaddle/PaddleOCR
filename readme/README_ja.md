@@ -37,16 +37,16 @@
 ### 📄 インテリジェントドキュメント解析（LLM対応）
 > *LLM時代に向けて、雑然とした視覚データを構造化データに変換*
 
-* **最先端のドキュメントVLM**: 業界をリードする軽量視覚言語モデル **PaddleOCR-VL-1.5（0.9B）** を搭載。**歪み、スキャン、画面撮影、照明、傾き**という5つの主要な「実環境」課題にわたる複雑なドキュメント解析に優れ、**Markdown**および**JSON**形式の構造化出力に対応しています。
+* **最先端のドキュメントVLM**: 業界をリードする軽量視覚言語モデル **PaddleOCR-VL-1.6（0.9B）** を搭載。OmniDocBench v1.6 で 96.3% の精度を達成し、テキスト、数式、表の認識で業界をリード。古文書、稀な文字、印鑑、チャートなど多シーンの能力も大幅に強化され、**Markdown**および**JSON**形式の構造化出力に対応しています。
 * **構造認識型変換**: **PP-StructureV3**を活用し、複雑なPDFや画像を**Markdown**または**JSON**にシームレスに変換します。PaddleOCR-VLシリーズモデルとは異なり、テーブルセル座標、テキスト座標などのより詳細な座標情報を提供します。
 * **本番環境対応の効率性**: 超小型フットプリントで商用レベルの精度を実現。公開ベンチマークで多くのクローズドソースソリューションを凌駕しつつ、エッジ/クラウドデプロイメントに対してリソース効率を維持します。
 
 ### 🔍 汎用テキスト認識（シーンOCR）
 > *高速・多言語テキスト検出のグローバルスタンダード*
 
-* **100以上の言語をサポート**: 広範なグローバル言語ライブラリのネイティブ認識。**PP-OCRv5**の単一モデルソリューションは、多言語混在ドキュメント（中国語、英語、日本語、ピンインなど）をエレガントに処理します。
+* **100以上の言語をサポート**: 広範なグローバル言語ライブラリのネイティブ認識。**PP-OCRv6**は単一モデルで50言語（中国語、英語、日本語、46のラテン語系言語）を統一サポートします。
 * **複雑な要素への対応力**: 標準的なテキスト認識を超え、身分証明書、街頭風景、書籍、産業部品など、幅広い環境での**自然シーンテキスト検出**をサポートします。
-* **性能の飛躍的向上**: PP-OCRv5は前バージョンと比較して**13%の精度向上**を達成し、PaddleOCRの代名詞である「極限の効率性」を維持しています。
+* **性能の飛躍的向上**: PP-OCRv6はPP-OCRv5と比較して検出精度**+4.6%**、認識精度**+5.1%**を達成し、主要な視覚言語モデルを上回ります。CPU推論5.2×高速化。
 
 <div align="center">
   <p>
@@ -62,15 +62,40 @@
 
 ## 📣 最新情報
 
-### 🔥 PaddleOCR v3.5.0 リリース：より柔軟な推論バックエンドと、より充実したドキュメント出力
+### 🔥 2026.06.11: PaddleOCR 3.7.0リリース
+- PP-OCRv6の主な特徴：
+
+    - **精度向上**: mediumティアはPP-OCRv5_serverと比較して検出+4.6%、認識+5.1%を達成、34.5Mパラメータのみで主要VLM（Qwen3-VL-235B、GPT-5.5）を上回る。
+    - **50言語統一サポート**: 単一モデルで中国語、英語、日本語、46のラテン語系言語をカバー — モデル切替不要。
+    - **専門シナリオ強化**: デジタルディスプレイ、ドットマトリックス文字、タイヤ印字、工業文字の認識が大幅向上。
+    - **高速推論**: CPU 5.2×高速化（OpenVINO）、Apple M4 6.1×（tiny）、A100 GPUで0.13s。
+    - **全シナリオ対応3ティア**: tiny（1.5M）/ small（7.7M）/ medium（34.5M）でエッジからサーバーまで対応。
+    - **モデル入手**: 全モデルは [HuggingFace](https://huggingface.co/collections/PaddlePaddle/pp-ocrv6) および [ModelScope](https://www.modelscope.cn/collections/PaddlePaddle/PP-OCRv6) で公開中。
+
+<details>
+<summary><strong>2026.05.28: PaddleOCR 3.6.0リリース</strong></summary>
+
+- PaddleOCR-VL-1.6の主な特徴：
+
+    - **新SOTA精度**: OmniDocBench v1.6で96.3%、OmniDocBench v1.5とReal5-OmniDocBenchでも新SOTA達成。
+    - **総合的な強化**: テーブル、古文書、希少文字の認識が大幅向上。
+    - **シームレスな移行**: PaddleOCR-VL-1.5と完全互換のアーキテクチャ。
+    - **今すぐ試す**: [HuggingFace](https://huggingface.co/PaddlePaddle/PaddleOCR-VL-1.6)または[公式サイト](https://www.paddleocr.com)。
+
+</details>
+<details>
+<summary><strong>2026.04.21: PaddleOCR 3.5.0リリース</strong></summary>
+
 * **柔軟な推論バックエンド**: Paddleの静的グラフ、動的グラフ、Transformersをシームレスに切り替え可能。Hugging Face エコシステムに深く対応し、主要20モデルがTransformersを推論バックエンドとしてサポート。
 * **Office文書をMarkdownに変換**: Word、Excel、PowerPoint などの一般的な文書形式を Markdown に変換可能。
 * **解析結果の DOCX 出力**: `PaddleOCR-VL` シリーズ、`PP-StructureV3`、`PP-DocTranslation` で、解析結果を DOCX として出力できるようになり、Microsoft Word での閲覧・編集が容易に。
 * **公式ブラウザ推論 SDK**: 公式ブラウザ推論 SDK `PaddleOCR.js` を公開し、ブラウザ上で `PP-OCRv5` を実行可能。
 
+</details>
+
 <details>
 <summary><strong>2026.01.29: PaddleOCR 3.4.0リリース</strong></summary>
-* **PaddleOCR-VL-1.5（最先端の0.9B VLM）**: ドキュメント解析のための最新フラッグシップモデルが公開されました！
+* PaddleOCR-VL-1.5（最先端の0.9B VLM）: ドキュメント解析のための最新フラッグシップモデルが公開されました！
     * **OmniDocBenchで94.5%の精度**: トップクラスの汎用大規模モデルや専門ドキュメントパーサーを凌駕。
     * **実環境でのロバスト性**: 非定型形状位置決定のための**PP-DocLayoutV3**アルゴリズムを初めて導入し、*傾き、歪み、スキャン、照明、画面撮影*の5つの困難なシナリオに対応。
     * **機能拡張**: **印鑑認識**、**テキスト検出**をサポートし、**111言語**（中国のチベット文字やベンガル文字を含む）に対応拡大。
@@ -131,8 +156,6 @@
 
 [更新履歴](https://paddlepaddle.github.io/PaddleOCR/latest/en/update/update.html)
 
-</details>
-
 
 ## 🚀 クイックスタート
 
@@ -152,10 +175,10 @@ PaddleOCR公式ウェブサイトでは、インタラクティブな**体験セ
 
 ## 🧩 その他の機能
 
-- モデルをONNX形式に変換: [ONNXモデルの取得](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/obtaining_onnx_models.html)
-- OpenVINO、ONNX Runtime、TensorRTなどのエンジンを使用した推論高速化、またはONNX形式モデルによる推論: [高性能推論](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/high_performance_inference.html)
+- モデルをONNX形式に変換: [ONNXモデルの取得](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/inference_deployment/others/obtaining_onnx_models.html)
+- OpenVINO、ONNX Runtime、TensorRTなどのエンジンを使用した推論高速化、またはONNX形式モデルによる推論: [高性能推論](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/inference_deployment/local_inference/high_performance_inference.html)
 - マルチGPUおよびマルチプロセスによる推論高速化: [パイプラインの並列推論](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/pipeline_usage/instructions/parallel_inference.html)
-- PaddleOCRをC++、C#、Javaなどで書かれたアプリケーションに統合: [サービスデプロイメント](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/serving.html)
+- PaddleOCRをC++、C#、Javaなどで書かれたアプリケーションに統合: [サービスデプロイメント](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/inference_deployment/serving/serving.html)
 
 ## 🔄 実行結果の概要
 
