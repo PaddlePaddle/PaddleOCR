@@ -2,8 +2,14 @@ name: PaddleOCR Code Style Check
 
 on:
   pull_request:
+    paths-ignore:
+      - docs/**
+      - '*.md'
   push:
     branches: ['main', 'release/*']
+    paths-ignore:
+      - docs/**
+      - '*.md'
 
 jobs:
   check-code-style:

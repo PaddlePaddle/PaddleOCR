@@ -3,8 +3,14 @@ name: PaddleOCR PR Tests GPU
 on:
   push:
     branches: ["main"]
+    paths-ignore:
+      - docs/**
+      - '*.md'
   pull_request:
     branches: ["main"]
+    paths-ignore:
+      - docs/**
+      - '*.md'
   workflow_dispatch:
 env:
   PR_ID: ${{ github.event.pull_request.number }}
