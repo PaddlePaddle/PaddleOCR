@@ -4,12 +4,12 @@ on:
   pull_request:
     paths-ignore:
       - docs/**
-      - '*.md'
+      - '**/*.md'
   push:
     branches: ['main', 'release/*']
     paths-ignore:
       - docs/**
-      - '*.md'
+      - '**/*.md'
 
 jobs:
   check-code-style:
