@@ -5,11 +5,13 @@ on:
     paths-ignore:
       - docs/**
       - '**/*.md'
+      - .github/**
   push:
     branches: ['main', 'release/*']
     paths-ignore:
       - docs/**
       - '**/*.md'
+      - .github/**
 
 jobs:
   check-code-style:
