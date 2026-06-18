@@ -112,7 +112,7 @@ Common examples:
 | `HPS_MAX_CONCURRENT_NON_INFERENCE_REQUESTS` | 64 | Max concurrent non-inference requests (page restructuring) |
 | `HPS_INFERENCE_TIMEOUT` | 600 | Request timeout in seconds |
 | `HPS_HEALTH_CHECK_TIMEOUT` | 5 | Health check timeout in seconds |
-| `HPS_VLM_URL` | http://paddleocr-vlm-server:8080 | VLM server URL (for health checks) |
+| `HPS_VLM_URL` | http://paddleocr-vlm-server:8080 | VLM server URL |
 | `HPS_LOG_LEVEL` | INFO | Log level (DEBUG, INFO, WARNING, ERROR) |
 | `HPS_FILTER_HEALTH_ACCESS_LOG` | true | Whether to filter health check access logs |
 | `HPS_UVICORN_WORKERS` | 4 | Number of gateway worker processes |

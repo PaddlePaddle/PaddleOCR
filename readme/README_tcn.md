@@ -42,9 +42,9 @@
 ### 🔍 通用文本識別（場景 OCR）
 > *快速、多語言文本檢測與識別的全球黃金標準。*
 
-* **支持 100+ 種語言**：原生支持龐大豐富的全球語種庫。我們的 **PP-OCRv5** 模型解決方案能夠優雅應對多語言混合排版文檔（中文、英文、日文、拼音等）。
+* **支持 100+ 種語言**：原生支持龐大豐富的全球語種庫。**PP-OCRv6** 單模型統一支持 50 種語言（中、英、日及 46 種拉丁語系），無需切換模型即可應對多語言混合排版文檔。
 * **複雜場景支持**：除了標準的文本識別，我們還支持在各種廣泛的環境下進行**自然場景文本檢測與識別**，涵蓋身份證件、街景、書籍以及工業零部件等。
-* **性能提升**：PP-OCRv5 相比前代版本實現了 **13% 的準確率提升**，同時延續了 PaddleOCR 的"極致高效"特性。
+* **性能提升**：PP-OCRv6 相比 PP-OCRv5 檢測精度提升 **4.6%**、識別精度提升 **5.1%**，超越主流視覺語言大模型，CPU 推理加速 5.2×。
 
 <div align="center">
   <p>
@@ -60,14 +60,27 @@
 
 ## 📣 最新動態
 
-### 🔥 2026.05.28: PaddleOCR 3.6.0 發布
-- PaddleOCR-VL-1.6核心亮點如下：
+### 🔥 2026.06.11: PaddleOCR 3.7.0 發布
+- PP-OCRv6 核心亮點如下：
 
-    - **全新SOTA精度**：OmniDocBench v1.6 突破96.3%，在OmniDocBench v1.5、Real5-OmniDocBench上同樣刷新SOTA，文本、公式、表格識別全面領先開源與閉源方案。
-    - **能力全面升級**：表格、古籍、生僻字識別大幅提升，印章、spotting、圖表識別等多場景均有顯著增強。
-    - **無縫遷移**：模型結構與PaddleOCR-VL-1.5完全一致，零成本適配，即換即用。
-    - **立即試用**：可在 [HuggingFace](https://huggingface.co/PaddlePaddle/PaddleOCR-VL-1.6) 或 [PaddleOCR 官方網站](https://www.paddleocr.com) 使用。
+    - **精度全面提升**：medium 檔相比 PP-OCRv5_server 檢測精度提升 4.6%、識別精度提升 5.1%，以僅 34.5M 參數超越 Qwen3-VL-235B、GPT-5.5 等主流視覺語言大模型。
+    - **50 種語言統一支持**：單一模型覆蓋中文、英文、日文及 46 種拉丁語系語言，無需為不同語種切換模型。
+    - **專業場景增強**：數碼顯示屏、點陣字符、輪胎印字、工業字符等傳統 VLM 難以覆蓋的場景識別能力大幅提升。
+    - **推理速度更快**：medium 檔 CPU OpenVINO 推理加速 5.2×，tiny 檔 Apple M4 加速 6.1×，A100 上僅需 0.13s。
+    - **三檔模型覆蓋全場景**：tiny（1.5M）/ small（7.7M）/ medium（34.5M）分別面向端側/移動端/服務端部署。
+    - **模型取得**：所有模型均可透過 [HuggingFace](https://huggingface.co/collections/PaddlePaddle/pp-ocrv6) 和 [ModelScope](https://www.modelscope.cn/collections/PaddlePaddle/PP-OCRv6) 取得。
 
+<details>
+<summary><strong>2026.05.28: PaddleOCR 3.6.0 發布</strong></summary>
+
+- PaddleOCR-VL-1.6 核心亮點：
+
+    - **全新 SOTA 精度**：OmniDocBench v1.6 突破 96.3%，OmniDocBench v1.5 和 Real5-OmniDocBench 同步刷新 SOTA。
+    - **能力全面升級**：表格、古籍、生僻字識別大幅提升。
+    - **無縫遷移**：模型結構與 PaddleOCR-VL-1.5 完全一致，零成本適配。
+    - **立即試用**：[HuggingFace](https://huggingface.co/PaddlePaddle/PaddleOCR-VL-1.6) 或[官方網站](https://www.paddleocr.com)。
+
+</details>
 <details>
 <summary><strong>2026.04.21: PaddleOCR 3.5.0 發布</strong></summary>
 

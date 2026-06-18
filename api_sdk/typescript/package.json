@@ -1,6 +1,6 @@
 {
   "name": "@paddleocr/api-sdk",
-  "version": "0.1.0",
+  "version": "0.2.3",
   "description": "TypeScript SDK for the PaddleOCR official API",
   "type": "module",
   "main": "./dist/index.cjs",

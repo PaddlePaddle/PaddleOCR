@@ -14,13 +14,15 @@
 
 export enum Model {
   PPOCRv5 = "PP-OCRv5",
+  PPOCRv5Latin = "PP-OCRv5-latin",
+  PPOCRv6 = "PP-OCRv6",
   PPStructureV3 = "PP-StructureV3",
   PaddleOCRVL = "PaddleOCR-VL",
   PaddleOCRVL15 = "PaddleOCR-VL-1.5",
   PaddleOCRVL16 = "PaddleOCR-VL-1.6",
 }
 
-const OCR_MODELS = new Set<string>([Model.PPOCRv5]);
+const OCR_MODELS = new Set<string>([Model.PPOCRv5, Model.PPOCRv5Latin, Model.PPOCRv6]);
 const DOCUMENT_PARSING_MODELS = new Set<string>([
   Model.PPStructureV3,
   Model.PaddleOCRVL,
@@ -33,7 +35,9 @@ const VL_MODELS = new Set<string>([
   Model.PaddleOCRVL16,
 ]);
 
-export function isOCRModel(model: string): model is Model.PPOCRv5 {
+export function isOCRModel(
+  model: string
+): model is Model.PPOCRv5 | Model.PPOCRv5Latin | Model.PPOCRv6 {
   return OCR_MODELS.has(model);
 }
 
@@ -56,6 +60,7 @@ export interface OCROptions {
   textDetUnclipRatio?: number;
   textRecScoreThresh?: number;
   visualize?: boolean;
+  [key: string]: unknown;
 }
 
 export interface PPStructureV3Options {
@@ -70,7 +75,8 @@ export interface PPStructureV3Options {
   layoutThreshold?: number | Record<string, number>;
   layoutNms?: boolean;
   layoutUnclipRatio?: number | number[] | Record<string, number>;
-  layoutMergeBboxesMode?: string;
+  layoutMergeBboxesMode?: string | Record<string, string>;
+  formatBlockContent?: boolean;
   textDetLimitSideLen?: number;
   textDetLimitType?: string;
   textDetThresh?: number;
@@ -83,9 +89,13 @@ export interface PPStructureV3Options {
   useOcrResultsWithTableCells?: boolean;
   useE2eWiredTableRecModel?: boolean;
   useE2eWirelessTableRecModel?: boolean;
+  markdownIgnoreLabels?: string[];
   prettifyMarkdown?: boolean;
   showFormulaNumber?: boolean;
+  returnMarkdownImages?: boolean;
+  outputFormats?: string[];
   visualize?: boolean;
+  [key: string]: unknown;
 }
 
 export interface PaddleOCRVLOptions {
@@ -94,25 +104,32 @@ export interface PaddleOCRVLOptions {
   useLayoutDetection?: boolean;
   useChartRecognition?: boolean;
   useSealRecognition?: boolean;
+  useOcrForImageBlock?: boolean;
   layoutThreshold?: number | Record<string, number>;
   layoutNms?: boolean;
   layoutUnclipRatio?: number | number[] | Record<string, number>;
   layoutMergeBboxesMode?: string | Record<string, string>;
   layoutShapeMode?: "rect" | "quad" | "poly" | "auto";
   promptLabel?: "ocr" | "formula" | "table" | "chart" | "seal" | "spotting";
+  formatBlockContent?: boolean;
   repetitionPenalty?: number;
   temperature?: number;
   topP?: number;
   minPixels?: number;
   maxPixels?: number;
   maxNewTokens?: number;
+  vlmExtraArgs?: Record<string, unknown>;
   mergeLayoutBlocks?: boolean;
+  markdownIgnoreLabels?: string[];
   prettifyMarkdown?: boolean;
   showFormulaNumber?: boolean;
   restructurePages?: boolean;
   mergeTables?: boolean;
   relevelTitles?: boolean;
+  returnMarkdownImages?: boolean;
+  outputFormats?: string[];
   visualize?: boolean;
+  [key: string]: unknown;
 }
 
 export type DocParsingOptions = PPStructureV3Options | PaddleOCRVLOptions;

@@ -74,6 +74,7 @@ class Head(nn.Layer):
         )
 
         self.fix_nan = fix_nan
+        self.is_repped = False
 
     def forward(self, x, return_f=False):
         x = self.conv1(x)
@@ -92,6 +93,77 @@ class Head(nn.Layer):
             return x, f
         return x
 
+    @paddle.no_grad()
+    def rep(self):
+        """Fuse Conv+BN and ConvTranspose+BN pairs for deployment."""
+        if self.is_repped:
+            return
+
+        # conv1 (Conv2D, no bias) + conv_bn1 (BatchNorm, act=relu)
+        self.conv1 = self._fuse_conv_bn(self.conv1, self.conv_bn1)
+        self.conv_bn1 = nn.ReLU()
+
+        # conv2 (Conv2DTranspose, has bias) + conv_bn2 (BatchNorm, act=relu)
+        self.conv2 = self._fuse_convtranspose_bn(self.conv2, self.conv_bn2)
+        self.conv_bn2 = nn.ReLU()
+
+        self.is_repped = True
+
+    @staticmethod
+    @paddle.no_grad()
+    def _fuse_conv_bn(conv, bn):
+        """Fuse Conv2D + BatchNorm into Conv2D with bias."""
+        gamma = bn.weight
+        std = paddle.sqrt(bn._variance + bn._epsilon)
+        scale = gamma / std
+
+        w = conv.weight * scale[:, None, None, None]
+        b = bn.bias - bn._mean * scale
+
+        fused = nn.Conv2D(
+            conv._in_channels,
+            conv._out_channels,
+            conv._kernel_size,
+            stride=conv._stride,
+            padding=conv._padding,
+            dilation=conv._dilation,
+            groups=conv._groups,
+        )
+        fused.weight.set_value(w)
+        fused.bias.set_value(b)
+        return fused
+
+    @staticmethod
+    @paddle.no_grad()
+    def _fuse_convtranspose_bn(conv, bn):
+        """Fuse Conv2DTranspose + BatchNorm into Conv2DTranspose with bias.
+
+        Conv2DTranspose weight shape: [in_ch, out_ch/groups, kH, kW]
+        BN scale applies on out_ch, i.e. axis=1.
+        """
+        gamma = bn.weight
+        std = paddle.sqrt(bn._variance + bn._epsilon)
+        scale = gamma / std
+
+        # axis=1 for ConvTranspose (output channel dimension)
+        w = conv.weight * scale[None, :, None, None]
+        b = bn.bias - bn._mean * scale
+        if conv.bias is not None:
+            b = b + conv.bias * scale
+
+        fused = nn.Conv2DTranspose(
+            conv._in_channels,
+            conv._out_channels,
+            conv._kernel_size,
+            stride=conv._stride,
+            padding=conv._padding,
+            dilation=conv._dilation,
+            groups=conv._groups,
+        )
+        fused.weight.set_value(w)
+        fused.bias.set_value(b)
+        return fused
+
 
 class DBHead(nn.Layer):
     """
@@ -101,24 +173,76 @@ class DBHead(nn.Layer):
         params(dict): super parameters for build DB network
     """
 
-    def __init__(self, in_channels, k=50, **kwargs):
+    def __init__(self, in_channels, k=50, aux_in_channels=0, **kwargs):
         super(DBHead, self).__init__()
         self.k = k
+        self.is_repped = False
         self.binarize = Head(in_channels, **kwargs)
         self.thresh = Head(in_channels, **kwargs)
+        self.aux_in_channels = aux_in_channels
+
+        if aux_in_channels > 0:
+            self._aux_upsample_scale = {
+                "aux_p4": 4,  # 1/16 -> 1/4
+                "aux_p3": 2,  # 1/8  -> 1/4
+                "aux_p2": 1,  # 1/4  -> 1/4 (no-op)
+            }
+            # Create independent binarize + thresh Head pairs for each scale
+            self.aux_binarize_p4 = Head(aux_in_channels, **kwargs)
+            self.aux_thresh_p4 = Head(aux_in_channels, **kwargs)
+            self.aux_binarize_p3 = Head(aux_in_channels, **kwargs)
+            self.aux_thresh_p3 = Head(aux_in_channels, **kwargs)
+            self.aux_binarize_p2 = Head(aux_in_channels, **kwargs)
+            self.aux_thresh_p2 = Head(aux_in_channels, **kwargs)
 
     def step_function(self, x, y):
         return paddle.reciprocal(1 + paddle.exp(-self.k * (x - y)))
 
     def forward(self, x, targets=None):
-        shrink_maps = self.binarize(x)
+        # Compatible with neck returning dict (training) or tensor (inference)
+        if isinstance(x, dict):
+            fuse = x["fuse"]
+            aux_feats = {k: x[k] for k in ("aux_p4", "aux_p3", "aux_p2") if k in x}
+        else:
+            fuse = x
+            aux_feats = {}
+
+        shrink_maps = self.binarize(fuse)
         if not self.training:
             return {"maps": shrink_maps}
 
-        threshold_maps = self.thresh(x)
+        threshold_maps = self.thresh(fuse)
         binary_maps = self.step_function(shrink_maps, threshold_maps)
         y = paddle.concat([shrink_maps, threshold_maps, binary_maps], axis=1)
-        return {"maps": y}
+        result = {"maps": y}
+
+        if self.aux_in_channels > 0 and aux_feats:
+            for key, feat in aux_feats.items():
+                scale = self._aux_upsample_scale[key]
+                if scale > 1:
+                    feat = F.interpolate(
+                        feat, scale_factor=scale, mode="bilinear", align_corners=False
+                    )
+                level = key[4:]  # 'p4', 'p3', 'p2'
+                aux_binarize = getattr(self, "aux_binarize_" + level)
+                aux_thresh_head = getattr(self, "aux_thresh_" + level)
+                aux_shrink = aux_binarize(feat)
+                aux_thresh = aux_thresh_head(feat)
+                aux_binary = self.step_function(aux_shrink, aux_thresh)
+                result["aux_maps_" + level] = paddle.concat(
+                    [aux_shrink, aux_thresh, aux_binary], axis=1
+                )
+
+        return result
+
+    def rep(self):
+        """Fuse reparam structures in all sub-modules for deployment."""
+        if self.is_repped:
+            return
+        for layer in self.sublayers():
+            if isinstance(layer, Head):
+                layer.rep()
+        self.is_repped = True
 
 
 class LocalModule(nn.Layer):

@@ -61,10 +61,8 @@ TypeScript SDK 常用公共方法包括：
 
 | 任务 | 适用接口 | 默认模型 | 可选模型 | 参数类型 |
 | --- | --- | --- | --- | --- |
-| OCR | `ocr`、`submitOcr`、`waitOcrResult` | `Model.PPOCRv5` | `Model.PPOCRv5` | `OCROptions` |
+| OCR | `ocr`、`submitOcr`、`waitOcrResult` | `Model.PPOCRv6` | `Model.PPOCRv5`、`Model.PPOCRv6` | `OCROptions` |
 | 文档解析 | `parseDocument`、`submitDocumentParsing`、`waitDocumentParsingResult` | `Model.PaddleOCRVL16` | `Model.PPStructureV3`、`Model.PaddleOCRVL`、`Model.PaddleOCRVL15`、`Model.PaddleOCRVL16` | 选择 `PPStructureV3` 时传入 `PPStructureV3Options`；选择 PaddleOCR-VL 系列模型时传入 `PaddleOCRVLOptions`。 |
-
-常用对应关系：`Model.PPOCRv5` 对应 `PP-OCRv5`，`Model.PPStructureV3` 对应 `PP-StructureV3`，`Model.PaddleOCRVL` 对应 `PaddleOCR-VL`，`Model.PaddleOCRVL15` 对应 `PaddleOCR-VL-1.5`，`Model.PaddleOCRVL16` 对应 `PaddleOCR-VL-1.6`。
 
 ## 配置与参数
 
@@ -97,7 +95,7 @@ const client = new PaddleOCRClient({
 
 ### 请求参数
 
-TypeScript SDK 的参数名使用 camelCase，与官方 API 字段名一致。未设置的字段不会发送，使用服务端默认值。完整字段定义见接口源码或「官方 API 参考」。
+TypeScript SDK 的参数名使用 camelCase，与官方 API 字段名一致。未设置的字段不会发送，使用服务端默认值。完整字段定义见接口源码或官方 API 参考。
 
 #### OCROptions（常用字段）
 

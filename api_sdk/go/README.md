@@ -43,6 +43,9 @@ if err != nil {
 fmt.Println(result.JobID, len(result.Pages))
 ```
 
+Set `Model: paddleocr.PPOCRv6` (or `"PP-OCRv6"`) to use the PP-OCRv6 hosted OCR model.
+Set `Model: paddleocr.PPOCRv5Latin` (or `"PP-OCRv5-latin"`) to use the PP-OCRv5 Latin-script hosted OCR model.
+
 Document parsing defaults to PaddleOCR-VL-1.6:
 
 ```go

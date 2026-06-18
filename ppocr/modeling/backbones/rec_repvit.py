@@ -295,6 +295,7 @@ class RepViT(nn.Layer):
             self.out_channels = [self.cfgs[ids - 1][2] for ids in out_indices]
         else:
             self.out_channels = self.cfgs[-1][2]
+        self.is_repped = False
 
     def forward(self, x):
         if self.out_indices is not None:
@@ -315,6 +316,34 @@ class RepViT(nn.Layer):
         h = x.shape[2]
         x = nn.functional.avg_pool2d(x, [h, 2])
         return x
+
+    @paddle.no_grad()
+    def rep(self):
+        """Fuse all Conv2D_BN, RepVGGDW, Residual branches for deployment."""
+        if self.is_repped:
+            return
+        # Snapshot the list first; track replaced prefixes to skip orphaned
+        # children (e.g. Conv2D_BN inside a RepVGGDW that was already fused).
+        fusable = [
+            (name, sublayer)
+            for name, sublayer in self.named_sublayers()
+            if isinstance(sublayer, (Conv2D_BN, RepVGGDW, Residual))
+        ]
+        replaced_prefixes = []
+        for name, sublayer in fusable:
+            if any(name.startswith(pfx + ".") for pfx in replaced_prefixes):
+                continue
+            parts = name.rsplit(".", 1)
+            if len(parts) == 2:
+                parent = self
+                for p in parts[0].split("."):
+                    parent = getattr(parent, p)
+                fused = sublayer.fuse()
+                setattr(parent, parts[1], fused)
+                # Only skip children when the module was truly replaced
+                if fused is not sublayer:
+                    replaced_prefixes.append(name)
+        self.is_repped = True
 
 
 def RepSVTR(in_channels=3):

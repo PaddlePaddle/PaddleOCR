@@ -60,6 +60,10 @@ The following table describes the methods and parameters related to pipeline inf
 Create a `test_infer.py` script:
 
 ```python
+import os
+
+os.environ["PADDLE_PDX_PIPELINE_BENCHMARK"] = "True"
+
 from paddleocr import PaddleOCR, benchmark
 
 pipeline = PaddleOCR()
@@ -80,7 +84,7 @@ benchmark.save_pipeline_data("./benchmark") # Save benchmark data to the benchma
 Execute the script:
 
 ```bash
-PADDLE_PDX_PIPELINE_BENCHMARK=True python test_infer.py
+python test_infer.py
 ```
 
 The benchmark results obtained from running the example program are as follows:

@@ -41,6 +41,9 @@ if err != nil {
 fmt.Println(result.JobID, len(result.Pages))
 ```
 
+将 `Model` 设为 `paddleocr.PPOCRv6`（或 `"PP-OCRv6"`）可使用 PP-OCRv6 云端 OCR 模型。
+将 `Model` 设为 `paddleocr.PPOCRv5Latin`（或 `"PP-OCRv5-latin"`）可使用 PP-OCRv5 拉丁语系云端 OCR 模型。
+
 文档解析默认使用 PaddleOCR-VL-1.6：
 
 ```go

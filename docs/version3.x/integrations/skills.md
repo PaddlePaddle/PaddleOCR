@@ -10,7 +10,7 @@ PaddleOCR 提供官方 Agent Skills，将 OCR 与文档解析任务的触发规�
 
 | 需求 | 推荐 Skill | 输出 |
 | --- | --- | --- |
-| 只想提取图片或 PDF 中的纯文本 | `paddleocr-text-recognition` | 纯文本 |
+| 只想提取图片或 PDF 中的纯文本 | `paddleocr-text-recognition` | 行级文本及对应边界框和置信度分数 |
 | 需要保留标题、段落、表格、公式等文档结构 | `paddleocr-doc-parsing` | Markdown / 结构化结果 |
 
 ## 包含的 Skills
@@ -18,16 +18,11 @@ PaddleOCR 提供官方 Agent Skills，将 OCR 与文档解析任务的触发规�
 - `paddleocr-text-recognition`：用于识别图片、扫描件与 PDF 中的文字。
 - `paddleocr-doc-parsing`：用于解析复杂文档版面，并转换为 Markdown 或结构化结果。
 
-当前各 Skill 支持的底层模型如下：
-
-- `paddleocr-text-recognition`：`PP-OCRv5`
-- `paddleocr-doc-parsing`：`PP-StructureV3`、`PaddleOCR-VL`、`PaddleOCR-VL-1.5`、`PaddleOCR-VL-1.6`
-
 ## 安装前准备
 
-1. 请确保执行 Skill 的设备已安装 Python 3.9 或以上版本，以及 [uv](https://docs.astral.sh/uv/)。
-2. 所有脚本均以 [PEP 723](https://peps.python.org/pep-0723/) 格式内联声明依赖，`uv run` 会自动解析依赖。
-3. Skills 依赖 PaddleOCR 官方 API。请前往 [PaddleOCR 官网](https://www.paddleocr.com) 点击 **API**，选择对应模型后复制 `API_URL` 和 `Token`。
+1. 请确保执行 Skill 的设备已安装 Python 3.9 或以上版本。
+2. Skills 依赖 PaddleOCR 3.7.0+。请安装：`pip install "paddleocr>=3.7.0"`
+3. 获取 access token：访问 [AI Studio Access Token 页面](https://aistudio.baidu.com/account/accessToken)
 
 ## 安装到 AI 应用
 
@@ -75,12 +70,12 @@ Skill 源码位于 `PaddleOCR/skills` 目录。请参考对应 AI 应用的安�
 
 ## 配置环境变量 {#配置环境变量}
 
-安装完成后，需要配置环境变量以便 Skill 正常工作：
+安装完成后，配置如下环境变量：
 
-| Skill | 必填 | 可选 |
-| --- | --- | --- |
-| `paddleocr-text-recognition` | `PADDLEOCR_OCR_API_URL`（完整端点 URL，须以 `/ocr` 结尾）、`PADDLEOCR_ACCESS_TOKEN`（access token） | `PADDLEOCR_OCR_TIMEOUT`（API 请求超时时间） |
-| `paddleocr-doc-parsing` | `PADDLEOCR_DOC_PARSING_API_URL`（完整端点 URL，须以 `/layout-parsing` 结尾）、`PADDLEOCR_ACCESS_TOKEN`（access token） | `PADDLEOCR_DOC_PARSING_TIMEOUT`（API 请求超时时间） |
+- 必填：`PADDLEOCR_ACCESS_TOKEN`（access token）
+- 可选：`PADDLEOCR_BASE_URL`（API base URL，默认官方服务）
+
+获取 access token：访问 [AI Studio Access Token 页面](https://aistudio.baidu.com/account/accessToken)
 
 部分 AI 应用的配置方式如下：
 
@@ -89,9 +84,7 @@ Skill 源码位于 `PaddleOCR/skills` 目录。请参考对应 AI 应用的安�
   ```json
   {
     "env": {
-      "PADDLEOCR_ACCESS_TOKEN": "<ACCESS_TOKEN>",
-      "PADDLEOCR_OCR_API_URL": "<OCR_API_URL>",
-      "PADDLEOCR_DOC_PARSING_API_URL": "<DOC_PARSING_API_URL>"
+      "PADDLEOCR_ACCESS_TOKEN": "<ACCESS_TOKEN>"
     }
   }
   ```
@@ -105,14 +98,12 @@ Skill 源码位于 `PaddleOCR/skills` 目录。请参考对应 AI 应用的安�
         "paddleocr-text-recognition": {
           "enabled": true,
           "env": {
-            "PADDLEOCR_OCR_API_URL": "<OCR_API_URL>",
             "PADDLEOCR_ACCESS_TOKEN": "<ACCESS_TOKEN>"
           }
         },
         "paddleocr-doc-parsing": {
           "enabled": true,
           "env": {
-            "PADDLEOCR_DOC_PARSING_API_URL": "<DOC_PARSING_API_URL>",
             "PADDLEOCR_ACCESS_TOKEN": "<ACCESS_TOKEN>"
           }
         }
@@ -152,28 +143,3 @@ Skill 源码位于 `PaddleOCR/skills` 目录。请参考对应 AI 应用的安�
 ```text
 解析本地文件 C:\docs\report.pdf，并返回完整结构化结果。
 ```
-
-## 本地验证
-
-本节介绍如何在本地运行冒烟测试，以验证 Skill 配置是否正常。
-
-> 以下示例覆盖两个 Skill。如果只需使用其中一个，只执行对应命令即可。
-
-执行前，请确保工作目录位于本文档所在目录。所有脚本均以内联依赖声明，`uv` 会自动解析，无需单独安装依赖。
-
-1. 配置环境变量（见上文 [配置环境变量](#配置环境变量)）。
-
-   ```shell
-   export PADDLEOCR_OCR_API_URL="<OCR_API_URL>"
-   export PADDLEOCR_ACCESS_TOKEN="<ACCESS_TOKEN>"
-   export PADDLEOCR_DOC_PARSING_API_URL="<DOC_PARSING_API_URL>"
-   ```
-
-2. 运行冒烟测试脚本。
-
-   ```shell
-   cd paddleocr-text-recognition && uv run scripts/smoke_test.py && cd ..
-   cd paddleocr-doc-parsing && uv run scripts/smoke_test.py && cd ..
-   ```
-
-   使用 `--skip-api-test` 可只做配置检查（不发网络请求）。使用 `--test-url "https://..."` 可指定自定义测试文档或图片 URL。

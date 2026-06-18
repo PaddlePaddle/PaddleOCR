@@ -43,9 +43,9 @@
 ### 🔍 通用文本识别（场景 OCR）
 > *快速、精准的多语言文本检测与识别，被全球开发者广泛采用。*
 
-* **支持 100+ 种语言**：原生支持庞大丰富的全球语种库。**PP-OCRv5** 模型解决方案能够优雅应对多语言混合排版文档（中文、英文、日文、拼音等）。
+* **支持 100+ 种语言**：原生支持庞大丰富的全球语种库。**PP-OCRv6** 单模型统一支持 50 种语言（中、英、日及 46 种拉丁语系），无需切换模型即可应对多语言混合排版文档。
 * **复杂场景支持**：除了标准的文本识别，还支持在各种广泛的环境下进行**自然场景文本检测与识别**，涵盖身份证件、街景、书籍以及工业零部件等。
-* **性能提升**：PP-OCRv5 相比前代版本实现了 **13% 的准确率提升**，同时延续了 PaddleOCR 的“极致高效”特性。
+* **性能提升**：PP-OCRv6 相比 PP-OCRv5 检测精度提升 **4.6%**、识别精度提升 **5.1%**，超越主流视觉语言大模型，CPU 推理加速 5.2×。
 
 <div align="center">
   <p>
@@ -61,13 +61,27 @@
 
 ## 📣 最新动态
 
-### 🔥 2026.05.28: PaddleOCR 3.6.0 发布
+### 🔥 2026.06.11: PaddleOCR 3.7.0 发布
+- PP-OCRv6 核心亮点如下：
+
+    - **精度全面提升**：medium 档相比 PP-OCRv5_server 检测精度提升 4.6%、识别精度提升 5.1%，以仅 34.5M 参数超越 Qwen3-VL-235B、GPT-5.5 等主流视觉语言大模型。
+    - **50 种语言统一支持**：单一模型覆盖中文、英文、日文及 46 种拉丁语系语言，无需为不同语种切换模型。
+    - **专业场景增强**：数码显示屏、点阵字符、轮胎印字、工业字符等传统 VLM 难以覆盖的场景识别能力大幅提升。
+    - **推理速度更快**：medium 档 CPU OpenVINO 推理加速 5.2×，tiny 档 Apple M4 加速 6.1×，A100 上仅需 0.13s。
+    - **三档模型覆盖全场景**：tiny（1.5M）/ small（7.7M）/ medium（34.5M）分别面向端侧/移动端/服务端部署。
+    - **模型获取**：所有模型均可通过 [HuggingFace](https://huggingface.co/collections/PaddlePaddle/pp-ocrv6) 和 [ModelScope](https://www.modelscope.cn/collections/PaddlePaddle/PP-OCRv6) 获取。
+
+<details>
+<summary><strong>2026.05.28: PaddleOCR 3.6.0 发布</strong></summary>
+
 - PaddleOCR-VL-1.6核心亮点如下：
 
     - **全新SOTA精度**：OmniDocBench v1.6 突破96.3%，在OmniDocBench v1.5、Real5-OmniDocBench上同样刷新SOTA，文本、公式、表格识别全面领先开源与闭源方案。
     - **能力全面升级**：表格、古籍、生僻字识别大幅提升，印章、spotting、图表识别等多场景均有显著增强。
     - **无缝迁移**：模型结构与PaddleOCR-VL-1.5完全一致，零成本适配，即换即用。
     - **立即试用**：可在 [HuggingFace](https://huggingface.co/PaddlePaddle/PaddleOCR-VL-1.6) 或 [PaddleOCR 官方网站](https://www.paddleocr.com) 使用。
+
+</details>
 
 <details>
 <summary><strong>2026.04.21: PaddleOCR 3.5.0 发布</strong></summary>

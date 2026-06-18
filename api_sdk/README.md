@@ -37,7 +37,7 @@ Run these from the PaddleOCR repo root directory:
 
 ```bash
 # Python
-python -m pytest tests/test_api_client_http.py tests/test_api_client_core.py tests/test_api_client_resources.py
+python -m pytest tests/api_client/
 
 # TypeScript
 cd api_sdk/typescript

@@ -8,7 +8,7 @@ comments: true
 
 本节说明如何按需安装`paddleocr` 分发包，按能力域启用的可选依赖组，以及安装推理引擎。这条路径适用于在本地调用预训练产线完成推理，或是使用文档格式转换等辅助功能。**模型训练与模型导出**见第 2 节，与上述安装路径相互独立。
 
-**Python 版本要求**：`paddleocr` 本体与 `doc2md` 依赖组支持 Python 3.8 及以上；其他可选依赖组（`doc-parser`、`ie`、`trans`、`all`）受上游依赖限制，需要 Python 3.9 及以上。
+**Python 版本要求**：`paddleocr` 本体与 `doc2md` 依赖组支持 Python 3.8 及以上；其他可选依赖组（`doc-parser`、`ie`、`trans`、`all` 等）受上游依赖限制，需要 Python 3.9 及以上。
 
 ### 1.1 安装 `paddleocr` {#install-paddleocr}
 

@@ -33,7 +33,7 @@ paddleocr api \
 ## Common Options
 
 - `--model_type`: task type, either `ocr` or `doc_parsing`.
-- `--model`: model name. OCR defaults to PP-OCRv5; document parsing defaults to PaddleOCR-VL-1.6 when omitted.
+- `--model`: model name.
 - `--file_url`: file URL to process.
 - `--file_path`: local file path to upload and process.
 - `--base_url`: base URL of the PaddleOCR API service; defaults to the official service URL (can also be set via `PADDLEOCR_BASE_URL`).
@@ -43,19 +43,19 @@ paddleocr api \
 - `--save_resources`: directory for saving resources referenced by the result object.
 - `--overwrite_resources`: overwrite existing files when saving resources.
 - `--page_ranges`: page ranges such as `2,4-6`.
-- `--use_doc_orientation_classify` / `--no-use_doc_orientation_classify`: enable or disable document orientation classification.
-- `--use_doc_unwarping` / `--no-use_doc_unwarping`: enable or disable document unwarping.
-- `--use_textline_orientation` / `--no-use_textline_orientation`: enable or disable textline orientation detection.
+- `--use_doc_orientation_classify`: document orientation classification, `True` or `False`.
+- `--use_doc_unwarping`: document unwarping, `True` or `False`.
+- `--use_textline_orientation`: textline orientation detection, `True` or `False`.
 - `--text_det_limit_side_len`: image side length limit for text detection.
 - `--text_det_limit_type`: side length limit type, `min` or `max`.
 - `--text_rec_score_thresh`: score threshold for text recognition results.
-- `--use_layout_detection` / `--no-use_layout_detection`: enable or disable layout detection.
-- `--use_seal_recognition` / `--no-use_seal_recognition`: enable or disable seal recognition.
-- `--use_table_recognition` / `--no-use_table_recognition`: enable or disable table recognition.
-- `--use_formula_recognition` / `--no-use_formula_recognition`: enable or disable formula recognition.
-- `--use_chart_recognition` / `--no-use_chart_recognition`: enable or disable chart recognition.
-- `--visualize` / `--no-visualize`: enable or disable result visualization images.
-- `--prettify_markdown` / `--no-prettify_markdown`: enable or disable markdown prettification.
+- `--use_layout_detection`: layout detection, `True` or `False`.
+- `--use_seal_recognition`: seal recognition, `True` or `False`.
+- `--use_table_recognition`: table recognition, `True` or `False`.
+- `--use_formula_recognition`: formula recognition, `True` or `False`.
+- `--use_chart_recognition`: chart recognition, `True` or `False`.
+- `--visualize`: result visualization images, `True` or `False`.
+- `--prettify_markdown`: markdown prettification, `True` or `False`.
 
 ## OCR Example
 
@@ -75,7 +75,7 @@ paddleocr api \
 paddleocr api \
   --model_type doc_parsing \
   --file_url https://example.com/report.pdf \
-  --use_chart_recognition \
+  --use_chart_recognition True \
   --save_resources ./doc-assets \
   --output doc-result.json
 ```
@@ -84,7 +84,7 @@ paddleocr api \
 
 | Task | `--model_type` | Default model | Supported models |
 | --- | --- | --- | --- |
-| OCR | `ocr` | `PP-OCRv5` | `PP-OCRv5` |
+| OCR | `ocr` | `PP-OCRv6` | `PP-OCRv5`, `PP-OCRv5-latin`, `PP-OCRv6` |
 | Document parsing | `doc_parsing` | `PaddleOCR-VL-1.6` | `PP-StructureV3`, `PaddleOCR-VL`, `PaddleOCR-VL-1.5`, `PaddleOCR-VL-1.6` |
 
 ## Output Behavior

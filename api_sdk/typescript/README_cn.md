@@ -44,6 +44,9 @@ const result = await client.ocr({
 console.log(result.jobId, result.pages.length);
 ```
 
+通过 `model: Model.PPOCRv6`（或 `"PP-OCRv6"`）可指定 PP-OCRv6 云端 OCR 模型。
+使用 `Model.PPOCRv5Latin`（或 `"PP-OCRv5-latin"`）可指定 PP-OCRv5 拉丁语系云端 OCR 模型。
+
 文档解析默认使用 PaddleOCR-VL-1.6：
 
 ```ts
