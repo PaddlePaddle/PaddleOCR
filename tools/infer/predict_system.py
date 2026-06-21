@@ -159,27 +159,48 @@ class TextSystem(object):
 
 def sorted_boxes(dt_boxes):
     """
-    Sort text boxes in order from top to bottom, left to right
+    Sort text boxes in reading order (top to bottom, left to right).
+
+    The dominant text skew is estimated from the detected boxes and the
+    boxes are clustered into lines in the deskewed frame, so the order
+    stays correct when the page is slightly rotated. On an upright page
+    this reduces to the original top-to-bottom / left-to-right ordering.
     args:
-        dt_boxes(array):detected text boxes with shape [4, 2]
+        dt_boxes(array): detected text boxes with shape [N, 4, 2]
     return:
-        sorted boxes(array) with shape [4, 2]
+        sorted boxes(list) in reading order
     """
     num_boxes = dt_boxes.shape[0]
-    sorted_boxes = sorted(dt_boxes, key=lambda x: (x[0][1], x[0][0]))
-    _boxes = list(sorted_boxes)
+    if num_boxes <= 1:
+        return list(dt_boxes)
 
-    for i in range(num_boxes - 1):
-        for j in range(i, -1, -1):
-            if abs(_boxes[j + 1][0][1] - _boxes[j][0][1]) < 10 and (
-                _boxes[j + 1][0][0] < _boxes[j][0][0]
-            ):
-                tmp = _boxes[j]
-                _boxes[j] = _boxes[j + 1]
-                _boxes[j + 1] = tmp
-            else:
-                break
-    return _boxes
+    boxes = np.asarray(dt_boxes, dtype=np.float64)
+    p0, p1, p3 = boxes[:, 0], boxes[:, 1], boxes[:, 3]
+
+    # Dominant skew: median angle of the box top edges (p1 - p0),
+    # clamped to +/-15 degrees so outliers cannot flip the page.
+    theta = float(np.median(np.arctan2(p1[:, 1] - p0[:, 1], p1[:, 0] - p0[:, 0])))
+    theta = max(-0.2618, min(0.2618, theta))
+
+    # Sort keys in the deskewed frame (rotate the top-left corner by -theta).
+    cos, sin = np.cos(-theta), np.sin(-theta)
+    ky = p0[:, 0] * sin + p0[:, 1] * cos  # row key (deskewed y)
+    kx = p0[:, 0] * cos - p0[:, 1] * sin  # column key (deskewed x)
+
+    # Row tolerance proportional to text height, not a fixed 10 px.
+    heights = np.hypot(p3[:, 0] - p0[:, 0], p3[:, 1] - p0[:, 1])
+    row_tol = max(10.0, 0.5 * float(np.median(heights)))
+
+    order = sorted(range(num_boxes), key=lambda i: ky[i])
+    _boxes, line = [], [order[0]]
+    for prev, cur in zip(order, order[1:]):
+        if ky[cur] - ky[prev] <= row_tol:
+            line.append(cur)
+        else:
+            _boxes.extend(sorted(line, key=lambda j: kx[j]))
+            line = [cur]
+    _boxes.extend(sorted(line, key=lambda j: kx[j]))
+    return [dt_boxes[i] for i in _boxes]
 
 
 def main(args):
