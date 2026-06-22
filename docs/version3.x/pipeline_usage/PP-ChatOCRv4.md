@@ -1341,6 +1341,20 @@ paddleocr pp_chatocrv4_doc -i vehicle_certificate-1.png -k 驾驶室准乘人数
 
 命令行方式是为了快速体验查看效果，一般来说，在项目中，往往需要通过代码集成，可以下载 [测试文件](https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/vehicle_certificate-1.png)，使用如下示例代码进行推理：
 
+> **关于 `chat_bot_config` 的大模型后端**：由于 `chat_bot_config` 中的 `api_type` 支持 `"openai"`（OpenAI 兼容协议），除文心一言/千帆外，你也可以接入任意 OpenAI 兼容的大模型服务，只需替换 `base_url`、`api_key` 和 `model_name`。例如使用 [Atlas Cloud](https://www.atlascloud.ai/?utm_source=github&utm_medium=link&utm_campaign=PaddleOCR)（一个 OpenAI 兼容的 AI 推理平台，提供 DeepSeek、Qwen、GLM、Kimi、MiniMax 等模型）作为信息抽取大模型：
+>
+> ```python
+> chat_bot_config = {
+>     "module_name": "chat_bot",
+>     "model_name": "deepseek-ai/deepseek-v4-pro",  # 推理模型，建议给足输出长度
+>     "base_url": "https://api.atlascloud.ai/v1",
+>     "api_type": "openai",
+>     "api_key": "your-atlascloud-api-key",  # 替换为你的 API Key
+> }
+> ```
+>
+> 模型清单见 [atlascloud.ai/models](https://www.atlascloud.ai/models)。
+
 ```python
 from paddleocr import PPChatOCRv4Doc
 

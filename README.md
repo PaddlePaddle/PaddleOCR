@@ -56,8 +56,15 @@ English | [简体中文](./readme/README_cn.md) | [繁體中文](./readme/README
 
 ### 🛠️ Developer-Centric Ecosystem
 * **Seamless Integration**: The premier choice for the AI Agent ecosystem—deeply integrated with **Dify, RAGFlow, Pathway, and Cherry Studio**.
+* **Bring Your Own LLM**: The **PP-ChatOCRv4** and **PP-DocTranslation** pipelines accept any OpenAI-compatible LLM backend via `chat_bot_config` (`api_type: "openai"`) — beyond ERNIE / Qianfan, you can plug in a managed platform such as [Atlas Cloud](https://www.atlascloud.ai/?utm_source=github&utm_medium=link&utm_campaign=PaddleOCR) (DeepSeek, Qwen, GLM, Kimi, MiniMax, …) for document key-information extraction and translation. See the [PP-ChatOCRv4](./docs/version3.x/pipeline_usage/PP-ChatOCRv4.en.md) and [PP-DocTranslation](./docs/version3.x/pipeline_usage/PP-DocTranslation.en.md) guides.
 * **LLM Data Flywheel**: A complete pipeline to build high-quality datasets, providing a sustainable "Data Engine" for fine-tuning Large Language Models.
 * **One-Click Deployment**: Supports various hardware backends (NVIDIA GPU, Intel CPU, Kunlunxin XPU, and diverse AI Accelerators).
+
+<p align="center">
+  <a href="https://www.atlascloud.ai/?utm_source=github&utm_medium=link&utm_campaign=PaddleOCR">
+    <img src="./docs/images/atlas-cloud-logo.png" alt="Atlas Cloud" width="140">
+  </a>
+</p>
 
 
 ## 📣 Recent updates
