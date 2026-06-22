@@ -307,7 +307,7 @@ extra:
   expiry_days: 365
 
 extra_javascript:
-  - javascripts/katex.min.js
+  - javascripts/katex.js
   - https://unpkg.com/katex@0/dist/katex.min.js
   - https://unpkg.com/katex@0/dist/contrib/auto-render.min.js
 

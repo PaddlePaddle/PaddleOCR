@@ -3,8 +3,16 @@ name: PaddleOCR PR Tests GPU
 on:
   push:
     branches: ["main"]
+    paths-ignore:
+      - docs/**
+      - '**/*.md'
+      - .github/**
   pull_request:
     branches: ["main"]
+    paths-ignore:
+      - docs/**
+      - '**/*.md'
+      - .github/**
   workflow_dispatch:
 env:
   PR_ID: ${{ github.event.pull_request.number }}
@@ -49,7 +57,7 @@ jobs:
               skip_gpu=false
               break
             fi
-            if [[ "$file" == paddleocr-js/* ]] || [[ "$file" == langchain-paddleocr/* ]] || [[ "$file" == skills/* ]] || [[ "$file" == mcp_server/* ]] || [[ "$file" == deploy/* ]] || [[ "$file" == *.md ]] || [[ "$file" == *.txt ]] || [[ "$file" == *.yml ]] || [[ "$file" == *.yaml ]]; then
+            if [[ "$file" == docs/* ]] || [[ "$file" == paddleocr-js/* ]] || [[ "$file" == langchain-paddleocr/* ]] || [[ "$file" == skills/* ]] || [[ "$file" == mcp_server/* ]] || [[ "$file" == deploy/* ]] || [[ "$file" == *.md ]] || [[ "$file" == *.txt ]] || [[ "$file" == *.yml ]] || [[ "$file" == *.yaml ]]; then
               continue
             fi
             skip_gpu=false

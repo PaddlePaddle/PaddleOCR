@@ -14,8 +14,6 @@ PP-OCRv6 的主要贡献如下：
 
 <p align="center">图：PP-OCRv6 与 PP-OCRv5 及视觉语言模型的性能对比。左：文本检测平均 Hmean（%）；右：文本识别加权平均准确率（%）。</p>
 
-
-
 # 二、核心技术升级
 
 ## 1. 统一骨干网络 PPLCNetV4
@@ -253,8 +251,8 @@ paddleocr ocr -i general_ocr_002.png \
 
 # 七、部署与二次开发
 
-* **多系统支持**：兼容 Windows、Linux、Mac 等主流操作系统。
-* **多硬件支持**：支持英伟达 GPU、Intel CPU、昆仑芯、昇腾等硬件推理和部署。
-* **高性能推理插件**：推荐结合高性能推理插件进一步提升推理速度，详见[高性能推理指南](../../inference_deployment/local_inference/high_performance_inference.md)。
-* **服务化部署**：支持高稳定性服务化部署方案，详见[服务化部署指南](../../inference_deployment/serving/serving.md)。
-* **二次开发能力**：支持自定义数据集训练、字典扩展、模型微调，详见[文本检测模块使用教程](../../module_usage/text_detection.md)及[文本识别模块使用教程](../../module_usage/text_recognition.md)。
+- **多系统支持**：兼容 Windows、Linux、Mac 等主流操作系统。
+- **多硬件支持**：支持英伟达 GPU、Intel CPU、昆仑芯、昇腾等硬件推理和部署。
+- **高性能推理插件**：推荐结合高性能推理插件进一步提升推理速度，详见[高性能推理指南](../../inference_deployment/local_inference/high_performance_inference.md)。
+- **服务化部署**：支持高稳定性服务化部署方案，详见[服务化部署指南](../../inference_deployment/serving/serving.md)。
+- **二次开发能力**：支持自定义数据集训练、字典扩展、模型微调，详见[文本检测模块使用教程](../../module_usage/text_detection.md)及[文本识别模块使用教程](../../module_usage/text_recognition.md)。
