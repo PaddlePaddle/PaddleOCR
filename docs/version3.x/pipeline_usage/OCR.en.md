@@ -1287,16 +1287,18 @@ If `save_path` is specified, the visualization results will be saved under `save
 
 The command-line method is for quick testing. For project integration, you can achieve OCR inference with just a few lines of code:  
 
-```python  
-from paddleocr import PaddleOCR  
+```python
+from paddleocr import PaddleOCR
 
+# Uses PP-OCRv6 models by default
 ocr = PaddleOCR(
     use_doc_orientation_classify=False, # Disables document orientation classification model via this parameter
     use_doc_unwarping=False, # Disables text image rectification model via this parameter
     use_textline_orientation=False, # Disables text line orientation classification model via this parameter
 )
 # ocr = PaddleOCR(lang="en") # Uses English model by specifying language parameter
-# ocr = PaddleOCR(ocr_version="PP-OCRv4") # Uses other PP-OCR versions via version parameter
+# ocr = PaddleOCR(ocr_version="PP-OCRv5") # Switches to PP-OCRv5 version via ocr_version parameter
+# ocr = PaddleOCR(ocr_version="PP-OCRv4") # Switches to PP-OCRv4 version via ocr_version parameter
 # ocr = PaddleOCR(device="gpu") # Enables GPU acceleration for model inference via device parameter
 # ocr = PaddleOCR(
 #     text_detection_model_name="PP-OCRv5_mobile_det",
@@ -1304,7 +1306,7 @@ ocr = PaddleOCR(
 #     use_doc_orientation_classify=False,
 #     use_doc_unwarping=False,
 #     use_textline_orientation=False,
-# ) # Switch to PP-OCRv5_mobile models
+# ) # Switch to PP-OCRv5 mobile models
 result = ocr.predict("./general_ocr_002.png")  
 for res in result:  
     res.print()  
@@ -2625,6 +2627,7 @@ If you choose `transformers` as the inference engine, make sure the Transformers
 ```python
 from paddleocr import PaddleOCR
 
+# Uses PP-OCRv6 models by default
 ocr = PaddleOCR(
     use_doc_orientation_classify=False, # Disable document orientation classification
     use_doc_unwarping=False, # Disable document unwarping
@@ -2632,7 +2635,8 @@ ocr = PaddleOCR(
     engine="transformers",
 )
 # ocr = PaddleOCR(lang="en", engine="transformers") # Use the English model
-# ocr = PaddleOCR(ocr_version="PP-OCRv4", engine="transformers") # Use another PP-OCR version
+# ocr = PaddleOCR(ocr_version="PP-OCRv5", engine="transformers") # Switch to PP-OCRv5 version
+# ocr = PaddleOCR(ocr_version="PP-OCRv4", engine="transformers") # Switch to PP-OCRv4 version
 # ocr = PaddleOCR(device="gpu", engine="transformers") # Use GPU for inference
 # ocr = PaddleOCR(
 #     text_detection_model_name="PP-OCRv5_server_det",
@@ -2641,7 +2645,7 @@ ocr = PaddleOCR(
 #     use_doc_unwarping=False,
 #     use_textline_orientation=False,
 #     engine="transformers",
-# ) # Switch to the PP-OCRv5_server models
+# ) # Switch to PP-OCRv5 server models
 result = ocr.predict("./general_ocr_002.png")
 for res in result:
     res.print()
@@ -2654,6 +2658,7 @@ If you choose `onnxruntime` as the inference engine, make sure the ONNX Runtime 
 ```python
 from paddleocr import PaddleOCR
 
+# Uses PP-OCRv6 models by default
 ocr = PaddleOCR(
     use_doc_orientation_classify=False, # Disable document orientation classification
     use_doc_unwarping=False, # Disable document unwarping
@@ -2661,7 +2666,8 @@ ocr = PaddleOCR(
     engine="onnxruntime",
 )
 # ocr = PaddleOCR(lang="en", engine="onnxruntime") # Use the English model
-# ocr = PaddleOCR(ocr_version="PP-OCRv4", engine="onnxruntime") # Use another PP-OCR version
+# ocr = PaddleOCR(ocr_version="PP-OCRv5", engine="onnxruntime") # Switch to PP-OCRv5 version
+# ocr = PaddleOCR(ocr_version="PP-OCRv4", engine="onnxruntime") # Switch to PP-OCRv4 version
 # ocr = PaddleOCR(device="gpu", engine="onnxruntime") # Use GPU for inference
 # ocr = PaddleOCR(
 #     text_detection_model_name="PP-OCRv5_server_det",
@@ -2670,7 +2676,7 @@ ocr = PaddleOCR(
 #     use_doc_unwarping=False,
 #     use_textline_orientation=False,
 #     engine="onnxruntime",
-# ) # Switch to the PP-OCRv5_server models
+# ) # Switch to PP-OCRv5 server models
 result = ocr.predict("./general_ocr_002.png")
 for res in result:
     res.print()

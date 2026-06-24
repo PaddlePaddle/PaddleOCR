@@ -1274,13 +1274,15 @@ paddleocr ocr -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_im
 ```python
 from paddleocr import PaddleOCR
 
+# 默认使用 PP-OCRv6 模型
 ocr = PaddleOCR(
     use_doc_orientation_classify=False, # 通过 use_doc_orientation_classify 参数指定不使用文档方向分类模型
     use_doc_unwarping=False, # 通过 use_doc_unwarping 参数指定不使用文本图像矫正模型
     use_textline_orientation=False, # 通过 use_textline_orientation 参数指定不使用文本行方向分类模型
 )
 # ocr = PaddleOCR(lang="en") # 通过 lang 参数来使用英文模型
-# ocr = PaddleOCR(ocr_version="PP-OCRv4") # 通过 ocr_version 参数来使用 PP-OCR 其他版本
+# ocr = PaddleOCR(ocr_version="PP-OCRv5") # 通过 ocr_version 参数切换为 PP-OCRv5 版本
+# ocr = PaddleOCR(ocr_version="PP-OCRv4") # 通过 ocr_version 参数切换为 PP-OCRv4 版本
 # ocr = PaddleOCR(device="gpu") # 通过 device 参数使得在模型推理时使用 GPU
 # ocr = PaddleOCR(
 #     text_detection_model_name="PP-OCRv5_server_det",
@@ -1288,7 +1290,7 @@ ocr = PaddleOCR(
 #     use_doc_orientation_classify=False,
 #     use_doc_unwarping=False,
 #     use_textline_orientation=False,
-# ) # 更换 PP-OCRv5_server 模型
+# ) # 使用 PP-OCRv5 的 server 模型
 result = ocr.predict("./general_ocr_002.png")
 for res in result:
     res.print()
@@ -1303,6 +1305,7 @@ for res in result:
 ```python
 from paddleocr import PaddleOCR
 
+# 默认使用 PP-OCRv6 模型
 ocr = PaddleOCR(
     use_doc_orientation_classify=False, # 通过 use_doc_orientation_classify 参数指定不使用文档方向分类模型
     use_doc_unwarping=False, # 通过 use_doc_unwarping 参数指定不使用文本图像矫正模型
@@ -1310,7 +1313,8 @@ ocr = PaddleOCR(
     engine="transformers",
 )
 # ocr = PaddleOCR(lang="en", engine="transformers") # 通过 lang 参数来使用英文模型
-# ocr = PaddleOCR(ocr_version="PP-OCRv4", engine="transformers") # 通过 ocr_version 参数来使用 PP-OCR 其他版本
+# ocr = PaddleOCR(ocr_version="PP-OCRv5", engine="transformers") # 通过 ocr_version 参数切换为 PP-OCRv5 版本
+# ocr = PaddleOCR(ocr_version="PP-OCRv4", engine="transformers") # 通过 ocr_version 参数切换为 PP-OCRv4 版本
 # ocr = PaddleOCR(device="gpu", engine="transformers") # 通过 device 参数使得在模型推理时使用 GPU
 # ocr = PaddleOCR(
 #     text_detection_model_name="PP-OCRv5_server_det",
@@ -1319,7 +1323,7 @@ ocr = PaddleOCR(
 #     use_doc_unwarping=False,
 #     use_textline_orientation=False,
 #     engine="transformers",
-# ) # 更换 PP-OCRv5_server 模型
+# ) # 使用 PP-OCRv5 的 server 模型
 result = ocr.predict("./general_ocr_002.png")
 for res in result:
     res.print()
@@ -1332,6 +1336,7 @@ for res in result:
 ```python
 from paddleocr import PaddleOCR
 
+# 默认使用 PP-OCRv6 模型
 ocr = PaddleOCR(
     use_doc_orientation_classify=False, # 通过 use_doc_orientation_classify 参数指定不使用文档方向分类模型
     use_doc_unwarping=False, # 通过 use_doc_unwarping 参数指定不使用文本图像矫正模型
@@ -1339,7 +1344,8 @@ ocr = PaddleOCR(
     engine="onnxruntime",
 )
 # ocr = PaddleOCR(lang="en", engine="onnxruntime") # 通过 lang 参数来使用英文模型
-# ocr = PaddleOCR(ocr_version="PP-OCRv4", engine="onnxruntime") # 通过 ocr_version 参数来使用 PP-OCR 其他版本
+# ocr = PaddleOCR(ocr_version="PP-OCRv5", engine="onnxruntime") # 通过 ocr_version 参数切换为 PP-OCRv5 版本
+# ocr = PaddleOCR(ocr_version="PP-OCRv4", engine="onnxruntime") # 通过 ocr_version 参数切换为 PP-OCRv4 版本
 # ocr = PaddleOCR(device="gpu", engine="onnxruntime") # 通过 device 参数使得在模型推理时使用 GPU
 # ocr = PaddleOCR(
 #     text_detection_model_name="PP-OCRv5_server_det",
@@ -1348,7 +1354,7 @@ ocr = PaddleOCR(
 #     use_doc_unwarping=False,
 #     use_textline_orientation=False,
 #     engine="onnxruntime",
-# ) # 更换 PP-OCRv5_server 模型
+# ) # 使用 PP-OCRv5 的 server 模型
 result = ocr.predict("./general_ocr_002.png")
 for res in result:
     res.print()
