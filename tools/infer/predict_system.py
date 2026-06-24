@@ -180,7 +180,7 @@ def sorted_boxes(dt_boxes):
     # Dominant skew: median angle of the box top edges (p1 - p0),
     # clamped to +/-15 degrees so outliers cannot flip the page.
     theta = float(np.median(np.arctan2(p1[:, 1] - p0[:, 1], p1[:, 0] - p0[:, 0])))
-    theta = max(-0.2618, min(0.2618, theta))
+    theta = float(np.clip(theta, -np.deg2rad(15.0), np.deg2rad(15.0)))
 
     # Sort keys in the deskewed frame (rotate the top-left corner by -theta).
     cos, sin = np.cos(-theta), np.sin(-theta)

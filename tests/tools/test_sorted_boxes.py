@@ -14,6 +14,7 @@
 
 import importlib.util
 import logging
+import os
 import sys
 import types
 from pathlib import Path
@@ -62,6 +63,14 @@ def sorted_boxes(monkeypatch):
     _stub(
         "ppocr.utils.logging",
         get_logger=lambda *a, **k: logging.getLogger("predict_system_test"),
+    )
+
+    # predict_system mutates sys.path and os.environ at import time; isolate
+    # both so this test leaves no global side effects for later tests.
+    monkeypatch.setattr(sys, "path", list(sys.path))
+    monkeypatch.setenv(
+        "FLAGS_allocator_strategy",
+        os.environ.get("FLAGS_allocator_strategy", ""),
     )
 
     spec = importlib.util.spec_from_file_location(
