@@ -28,7 +28,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         with:
-            args: --exclude 'docs/index/*.md' 'docs/update/*.md' --verbose --no-progress --max-redirects 8 'docs/**/*.md'
+            args: --exclude-path 'docs/index/*.md' 'docs/update/*.md' --accept 100..=103,200..=299,300..=399,520,521,522,524 --no-progress --max-redirects 8 'docs/**/*.md'
             format: markdown
             fail: false
             output: lychee/results.md

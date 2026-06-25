@@ -6,7 +6,9 @@ on:
   pull_request:
     branches: ["main", "release/*"]
     paths-ignore:
-
+      - docs/**
+      - '**/*.md'
+      - .github/**
 
 permissions:
   contents: read

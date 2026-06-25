@@ -5,7 +5,7 @@ hide:
   - toc
 ---
 
-> 🎉 **Welcome to PaddleOCR FAQ!**  
+> 🎉 **Welcome to PaddleOCR FAQ!**
 > This document compiles common issues and solutions from GitHub Issues and Discussions, providing reference for OCR developers.
 
 ## 1. Installation and Environment Setup
@@ -22,6 +22,7 @@ hide:
 #### Q: GPU environment configuration issues, CUDA version mismatch
 
 **A**: First check CUDA version: `nvidia-smi`, then install corresponding PaddlePaddle version:
+
 - CUDA 11.8: `pip install paddlepaddle-gpu==3.0.0 -f https://www.paddlepaddle.org.cn/whl/linux/mkl/avx/stable.html`
 - CUDA 12.0: `pip install paddlepaddle-gpu==3.0.0 -f https://www.paddlepaddle.org.cn/whl/linux/mkl/avx/stable.html`
 Verify GPU availability: `python -c "import paddle; print(paddle.is_compiled_with_cuda())"`
@@ -46,6 +47,7 @@ Verify GPU availability: `python -c "import paddle; print(paddle.is_compiled_wit
 #### Q: How to choose the right model?
 
 **A**: Choose based on application scenario:
+
 - Server high accuracy: Use `PP-OCRv5_server` series, highest accuracy
 - Mobile deployment: Use `PP-OCRv5_mobile` series, small model fast speed
 - Real-time processing: Use `PP-OCRv5_mobile` series, fast inference speed
@@ -59,6 +61,7 @@ Verify GPU availability: `python -c "import paddle; print(paddle.is_compiled_wit
 (2) Set model download source: `os.environ['PADDLE_PDX_MODEL_SOURCE'] = 'BOS'`
 (3) Manual model download: download models from official links and extract locally
 (4) Example code:
+
 ```python
 ocr = PaddleOCR(
     det_model_dir='./models/PP-OCRv5_server_det_infer/',
@@ -102,6 +105,7 @@ ocr = PaddleOCR(
 (2) Use gunicorn deployment: `gunicorn -w 4 -b 0.0.0.0:5000 app:app`
 (3) Use asynchronous processing: combine asyncio and ThreadPoolExecutor
 (4) Example code:
+
 ```python
 from flask import Flask, request, jsonify
 from paddleocr import PaddleOCR
@@ -165,10 +169,10 @@ At present, PaddleOCR has opensourced two Chinese models, namely 8.6M ultra-ligh
 |8.6M ultra-lightweight Chinese OCR model|MobileNetV3+MobileNetV3|det_mv3_db.yml|rec_chinese_lite_train.yml|
 |General Chinese OCR model|Resnet50_vd+Resnet34_vd|det_r50_vd_db.yml|rec_chinese_common_train.yml|
 
-8. **Is there a plan to opensource a model that only recognizes numbers or only English + numbers?**
+1. **Is there a plan to opensource a model that only recognizes numbers or only English + numbers?**
 It is not planned to opensource numbers only, numbers + English only, or other vertical text models. PaddleOCR has opensourced a variety of detection and recognition algorithms for customized training. The two Chinese models are also based on the training output of the open-source algorithm library. You can prepare the data according to the tutorial, choose the appropriate configuration file, train yourselves, and we believe that you can get good result. If you have any questions during the training, you are welcome to open issues or ask in the communication group. We will answer them in time.
 
-9. **What is the training data used by the open-source model? Can it be opensourced?**
+2. **What is the training data used by the open-source model? Can it be opensourced?**
 At present, the open source model, dataset and magnitude are as follows:
     - Detection:
     English dataset: ICDAR2015
@@ -179,19 +183,19 @@ At present, the open source model, dataset and magnitude are as follows:
 
     Among them, the public datasets are opensourced, users can search and download by themselves, or refer to [Chinese data set](./datasets/datasets.en.md), synthetic data is not opensourced, users can use open-source synthesis tools to synthesize data themselves. Current available synthesis tools include [text_renderer](https://github.com/Sanster/text_renderer), [SynthText](https://github.com/ankush-me/SynthText), [TextRecognitionDataGenerator](https://github.com/Belval/TextRecognitionDataGenerator), etc.
 
-10. **Error in using the model with TPS module for prediction**
+3. **Error in using the model with TPS module for prediction**
 Error message: Input(X) dims[3] and Input(Grid) dims[2] should be equal, but received X dimension[3]\(108) != Grid dimension[2]\(100)
 Solution: TPS does not support variable shape. Please set --rec_image_shape='3,32,100' and --rec_char_type='en'
 
-11. **Custom dictionary used during training, the recognition results show that words do not appear in the dictionary**
+4. **Custom dictionary used during training, the recognition results show that words do not appear in the dictionary**
 The used custom dictionary path is not set when making prediction. The solution is setting parameter `rec_char_dict_path` to the corresponding dictionary file.
 
-12. **Results of cpp_infer and python_inference are very different**
+5. **Results of cpp_infer and python_inference are very different**
 Versions of exported inference model and inference library should be same. For example, on Windows platform, version of the inference library that PaddlePaddle provides is 1.8, but version of the inference model that PaddleOCR provides is 1.7, you should export model yourself(`tools/export_model.py`) on PaddlePaddle 1.8 and then use the exported model for inference.
 
-13. **How to identify artistic fonts in signs or advertising images**
+6. **How to identify artistic fonts in signs or advertising images**
 Recognizing artistic fonts in signs or advertising images is a very challenging task because the variation in individual characters is much greater compared to standard fonts. If the artistic font to be identified is within a dictionary list, each word in the dictionary can be treated as a template for recognition using a general image retrieval system. You can try using PaddleClas image recognition system.
 
-14. **How to change the font when visualizing the OCR prediction results?**
+7. **How to change the font when visualizing the OCR prediction results?**
 
 **A**: You can specify the local font file path by using the environment variable `PADDLE_PDX_LOCAL_FONT_FILE_PATH`, such as `PADDLE_PDX_LOCAL_FONT_FILE_PATH=/root/fonts/simfang.ttf`.
