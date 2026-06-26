@@ -1,44 +1,41 @@
 name: PaddleOCR Code Style Check
 
+# NOTE: Job name `check-code-style` is the required status check context
+# configured in branch protection. Do not rename without updating settings.
+
 on:
-  pull_request:
-    paths-ignore:
-      - docs/**
-      - '**/*.md'
-      - .github/**
+  pull_request: {}
   push:
     branches: ['main', 'release/*']
-    paths-ignore:
-      - docs/**
-      - '**/*.md'
-      - .github/**
 
 jobs:
   check-code-style:
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v6
-      with:
-        ref: ${{ github.ref }}
-
-    - uses: actions/setup-python@v6
-      with:
-        python-version: '3.10'
-
-    - name: Cache Python dependencies
-      uses: actions/cache@v5
-      with:
-        path: ~/.cache/pip
-        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-        restore-keys: |
-          ${{ runner.os }}-pip-
-
-    - name: Install Dependencies for Python
-      run: |
-        python -m pip install --upgrade pip
-        pip install "clang-format==13.0.0"
-
-    - uses: pre-commit/action@2c7b3805fd2a0fd8c1884dcaebf91fc102a13ecd # v3.0.1
-      with:
-        extra_args: '--all-files'
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.ref }}
+          fetch-depth: 0
+      - id: detect
+        uses: ./.github/actions/detect-docs-only
+      - uses: actions/setup-python@v6
+        if: steps.detect.outputs.docs_only != 'true'
+        with:
+          python-version: '3.10'
+      - name: Cache Python dependencies
+        if: steps.detect.outputs.docs_only != 'true'
+        uses: actions/cache@v5
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+      - name: Install Dependencies for Python
+        if: steps.detect.outputs.docs_only != 'true'
+        run: |
+          python -m pip install --upgrade pip
+          pip install "clang-format==13.0.0"
+      - uses: pre-commit/action@2c7b3805fd2a0fd8c1884dcaebf91fc102a13ecd # v3.0.1
+        if: steps.detect.outputs.docs_only != 'true'
+        with:
+          extra_args: '--all-files'
