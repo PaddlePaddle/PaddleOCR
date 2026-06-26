@@ -20,7 +20,6 @@ import math
 
 import paddle
 from paddle import ParamAttr, nn
-from paddle import nn, ParamAttr
 from paddle.nn import functional as F
 import numpy as np
 

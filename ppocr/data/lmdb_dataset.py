@@ -218,7 +218,9 @@ class LMDBDataSetSR(LMDBDataSet):
         try:
             img_HR = self.buf2PIL(txn, img_HR_key, "RGB")
             img_lr = self.buf2PIL(txn, img_lr_key, "RGB")
-        except IOError or len(word) > self.max_len:
+        except IOError:
+            return self[index + 1]
+        if len(word) > self.max_len:
             return self[index + 1]
         label_str = self.str_filt(word, self.voc_type)
         return img_HR, img_lr, label_str

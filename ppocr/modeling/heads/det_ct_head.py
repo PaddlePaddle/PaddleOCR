@@ -22,7 +22,6 @@ from paddle import nn
 import paddle.nn.functional as F
 from paddle import ParamAttr
 
-import math
 from paddle.nn.initializer import TruncatedNormal, Constant, Normal
 
 ones_ = Constant(value=1.0)

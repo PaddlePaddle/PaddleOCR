@@ -24,7 +24,6 @@ from collections import OrderedDict
 import sys
 import numpy as np
 import warnings
-import math, copy
 import cv2
 
 warnings.filterwarnings("ignore")

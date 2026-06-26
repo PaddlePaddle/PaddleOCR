@@ -185,7 +185,7 @@ class TimeAnalyzer(object):
             fps = avg_of_records
             unit = "s/epoch"
         else:
-            ValueError("Unsupported analysis mode.")
+            raise ValueError("Unsupported analysis mode.")
 
         return fps, unit
 

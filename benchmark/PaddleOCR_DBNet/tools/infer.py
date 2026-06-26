@@ -110,23 +110,27 @@ class InferenceEngine(object):
             if args.use_tensorrt:
                 config.enable_tensorrt_engine(
                     workspace_size=1 << 30,
-                    precision_mode=precision,
+                    precision_mode=(
+                        inference.PrecisionType.Half
+                        if args.precision == "fp16"
+                        else inference.PrecisionType.Float32
+                    ),
                     max_batch_size=args.max_batch_size,
                     min_subgraph_size=args.min_subgraph_size,  # skip the minimum trt subgraph
                     use_calib_mode=False,
                 )
 
                 # collect shape
-                trt_shape_f = os.path.join(model_dir, "_trt_dynamic_shape.txt")
+                trt_shape_f = os.path.join(args.model_dir, "_trt_dynamic_shape.txt")
 
                 if not os.path.exists(trt_shape_f):
                     config.collect_shape_range_info(trt_shape_f)
-                    logger.info(f"collect dynamic shape info into : {trt_shape_f}")
+                    print(f"collect dynamic shape info into : {trt_shape_f}")
                 try:
                     config.enable_tuned_tensorrt_dynamic_shape(trt_shape_f, True)
                 except Exception as E:
-                    logger.info(E)
-                    logger.info("Please keep your paddlepaddle-gpu >= 2.3.0!")
+                    print(E)
+                    print("Please keep your paddlepaddle-gpu >= 2.3.0!")
         else:
             config.disable_gpu()
             # The thread num should not be greater than the number of cores in the CPU.
@@ -244,6 +248,8 @@ def get_args(add_help=True):
     parser.add_argument("--gpu_id", type=int, default=0)
     parser.add_argument("--enable_mkldnn", type=str2bool, default=False)
     parser.add_argument("--cpu_threads", type=int, default=10)
+    parser.add_argument("--max_batch_size", type=int, default=10)
+    parser.add_argument("--min_subgraph_size", type=int, default=15)
 
     args = parser.parse_args()
     return args

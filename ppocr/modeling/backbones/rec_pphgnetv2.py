@@ -886,7 +886,7 @@ import paddle
 import paddle.nn as nn
 import paddle.nn.functional as F
 from paddle.nn.initializer import KaimingNormal, Constant
-from paddle.nn import Conv2D, BatchNorm2D, ReLU, AdaptiveAvgPool2D, MaxPool2D
+from paddle.nn import Conv2D, BatchNorm2D, ReLU, MaxPool2D
 from paddle.regularizer import L2Decay
 from paddle import ParamAttr
 
