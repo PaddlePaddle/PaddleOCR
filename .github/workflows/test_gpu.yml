@@ -3,16 +3,8 @@ name: PaddleOCR PR Tests GPU
 on:
   push:
     branches: ["main"]
-    paths-ignore:
-      - docs/**
-      - '**/*.md'
-      - .github/**
   pull_request:
     branches: ["main"]
-    paths-ignore:
-      - docs/**
-      - '**/*.md'
-      - .github/**
   workflow_dispatch:
 env:
   PR_ID: ${{ github.event.pull_request.number }}
@@ -30,46 +22,18 @@ jobs:
   detect-changes:
     runs-on: ubuntu-latest
     outputs:
-      skip_gpu: ${{ steps.compute_skip.outputs.skip_gpu }}
+      docs_only: ${{ steps.detect.outputs.docs_only }}
     steps:
       - uses: actions/checkout@v6
-      - id: compute_skip
-        name: Compute skip_gpu (PR-only); push/workflow_dispatch always run GPU
-        shell: bash
-        run: |
-          if [ "${{ github.event_name }}" != "pull_request" ]; then
-            echo "skip_gpu=false" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-
-          git fetch origin "${{ github.base_ref }}" --depth=1
-          changed_files="$(git diff --name-only "origin/${{ github.base_ref }}"..HEAD)"
-
-          if [ -z "$changed_files" ]; then
-            echo "skip_gpu=false" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-
-          skip_gpu=true
-          while IFS= read -r file; do
-            [ -z "$file" ] && continue
-            if [[ "$file" == ".github/workflows/test_gpu.yml" ]]; then
-              skip_gpu=false
-              break
-            fi
-            if [[ "$file" == docs/* ]] || [[ "$file" == paddleocr-js/* ]] || [[ "$file" == langchain-paddleocr/* ]] || [[ "$file" == skills/* ]] || [[ "$file" == mcp_server/* ]] || [[ "$file" == deploy/* ]] || [[ "$file" == *.md ]] || [[ "$file" == *.txt ]] || [[ "$file" == *.yml ]] || [[ "$file" == *.yaml ]]; then
-              continue
-            fi
-            skip_gpu=false
-            break
-          done <<< "$changed_files"
-
-          echo "skip_gpu=$skip_gpu" >> "$GITHUB_OUTPUT"
+        with:
+          fetch-depth: 0
+      - id: detect
+        uses: ./.github/actions/detect-docs-only
 
   test-pr-gpu-impl:
     runs-on: [self-hosted, GPU-2Card-OCR]
     needs: detect-changes
-    if: needs.detect-changes.outputs.skip_gpu != 'true'
+    if: needs.detect-changes.outputs.docs_only != 'true'
     steps:
       - name: run test
         env:
@@ -142,8 +106,8 @@ jobs:
             echo "detect-changes did not succeed: ${{ needs.detect-changes.result }}"
             exit 1
           fi
-          if [ "${{ needs.detect-changes.outputs.skip_gpu }}" = "true" ]; then
-            echo "Skip flag set; treating GPU tests as not required for this change."
+          if [ "${{ needs.detect-changes.outputs.docs_only }}" = "true" ]; then
+            echo "Docs-only change; treating GPU tests as not required."
             exit 0
           fi
           if [ "${{ needs.test-pr-gpu-impl.result }}" != "success" ]; then
