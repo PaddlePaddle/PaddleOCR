@@ -8,7 +8,7 @@ comments: true
 
 This section explains how to install, as needed, the `paddleocr` distribution package, optional dependency groups by capability domain, and the inference engine. This path covers running pretrained pipelines for inference locally, as well as auxiliary features such as document format conversion. **Model training and model export** are covered in Section 2 and are independent of the installation path above.
 
-**Python version requirement**: `paddleocr` itself and the `doc2md` dependency group support Python 3.8 and later. The other optional dependency groups (`doc-parser`, `ie`, `trans`, `all`) require Python 3.9 or later due to upstream dependencies.
+**Python version requirement**: `paddleocr` itself and the `doc2md` dependency group support Python 3.8 and later. The other optional dependency groups (`doc-parser`, `ie`, `trans`, `all`, etc.) require Python 3.9 or later due to upstream dependencies.
 
 ### 1.1 Install paddleocr
 

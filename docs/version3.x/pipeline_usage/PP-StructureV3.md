@@ -1069,8 +1069,18 @@ paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --device gpu
 如果选择 `transformers` 作为推理引擎，请先参考[推理引擎文档](../inference_deployment/local_inference/inference_engine.md)完成 Transformers 环境配置，然后执行如下命令：
 
 ```bash
-# 使用 transformers 引擎进行推理
-paddleocr pp_structurev3 -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/pp_structure_v3_demo.png --engine transformers
+# 部分模型尚在支持中，推理时需关闭公式识别功能并更换无线表格结构识别模型，请使用以下命令：
+paddleocr pp_structurev3 -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/pp_structure_v3_demo.png \
+    --engine transformers
+```
+
+如果选择 `onnxruntime` 作为推理引擎，请先参考[推理引擎文档](../inference_deployment/local_inference/inference_engine.md)完成 ONNX Runtime 环境配置，然后执行如下命令：
+
+```bash
+# 使用 onnxruntime 引擎进行推理
+# 部分模型尚在支持中，推理时需关闭公式识别功能，请使用以下命令：
+paddleocr pp_structurev3 -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/pp_structure_v3_demo.png \
+    --engine onnxruntime --use_formula_recognition False
 ```
 
 <details><summary><b>命令行支持更多参数设置，点击展开以查看命令行参数的详细说明</b></summary>
@@ -1670,6 +1680,28 @@ from paddleocr import PPStructureV3
 
 pipeline = PPStructureV3(
     engine="transformers",
+)
+# pipeline = PPStructureV3(lang="en") # 将 lang 参数设置为使用英文文本识别模型。对于其他支持的语言，请参阅第5节：附录部分。默认配置为中英文模型。
+# pipeline = PPStructureV3(use_doc_orientation_classify=True) # 通过 use_doc_orientation_classify 指定是否使用文档方向分类模型
+# pipeline = PPStructureV3(use_doc_unwarping=True) # 通过 use_doc_unwarping 指定是否使用文本图像矫正模块
+# pipeline = PPStructureV3(use_textline_orientation=True) # 通过 use_textline_orientation 指定是否使用文本行方向分类模型
+# pipeline = PPStructureV3(device="gpu") # 通过 device 指定模型推理时使用 GPU
+output = pipeline.predict("./pp_structure_v3_demo.png")
+for res in output:
+    res.print() ## 打印预测的结构化输出
+    res.save_to_json(save_path="output") ## 保存当前图像的结构化json结果
+    res.save_to_markdown(save_path="output") ## 保存当前图像的markdown格式的结果
+```
+
+如果选择 `onnxruntime` 作为推理引擎，请先参考[推理引擎文档](../inference_deployment/local_inference/inference_engine.md)完成 ONNX Runtime 环境配置，然后执行如下代码：
+
+```python
+from paddleocr import PPStructureV3
+
+# 部分模型尚在支持中，推理时需关闭公式识别功能，请使用以下代码：
+pipeline = PPStructureV3(
+    engine="onnxruntime",
+    use_formula_recognition=False,
 )
 # pipeline = PPStructureV3(lang="en") # 将 lang 参数设置为使用英文文本识别模型。对于其他支持的语言，请参阅第5节：附录部分。默认配置为中英文模型。
 # pipeline = PPStructureV3(use_doc_orientation_classify=True) # 通过 use_doc_orientation_classify 指定是否使用文档方向分类模型
@@ -3173,6 +3205,12 @@ for item in markdown_images:
 <td>否</td>
 </tr>
 <tr>
+<td><code>returnMarkdownImages</code></td>
+<td><code>boolean</code></td>
+<td>是否在响应中返回 Markdown 中引用的图片。默认为 <code>true</code>；设为 <code>false</code> 时 <code>markdown.images</code> 为 <code>null</code> 或不出现，且服务端跳过图片编码 / URL 上传。</td>
+<td>否</td>
+</tr>
+<tr>
 <td><code>outputFormats</code></td>
 <td><code>array</code> | <code>null</code></td>
 <td>可选。附加导出格式列表，默认不返回。当前仅支持 <code>"docx"</code>。</td>
@@ -3221,6 +3259,7 @@ for item in markdown_images:
 </tr>
 </tbody>
 </table>
+<p>下表中涉及图像等二进制文件的字段（如 <code>outputImages</code>、<code>inputImage</code>、<code>markdown.images</code>、<code>exports</code>）默认以 Base64 字符串内联返回；当服务端开启 URL 返回模式时，相应字段的值变为预签名 URL，字段类型保持不变。配置方式参见 <a href="../inference_deployment/serving/serving.md">服务化部署</a>「以 URL 形式返回二进制内容」一节。</p>
 <p><code>layoutParsingResults</code>中的每个元素为一个<code>object</code>，具有如下属性：</p>
 <table>
 <thead>
@@ -3244,17 +3283,17 @@ for item in markdown_images:
 <tr>
 <td><code>outputImages</code></td>
 <td><code>object</code> | <code>null</code></td>
-<td>参见产线预测结果的 <code>img</code> 属性说明。图像为JPEG格式，使用Base64编码。</td>
+<td>参见产线预测结果的 <code>img</code> 属性说明。图像为 JPEG 格式，默认使用 Base64 编码；启用 URL 返回模式时为预签名 URL。</td>
 </tr>
 <tr>
 <td><code>inputImage</code></td>
 <td><code>string</code> | <code>null</code></td>
-<td>输入图像。图像为JPEG格式，使用Base64编码。</td>
+<td>输入图像。图像为 JPEG 格式，默认使用 Base64 编码；启用 URL 返回模式时为预签名 URL。</td>
 </tr>
 <tr>
 <td><code>exports</code></td>
 <td><code>object</code> | <code>null</code></td>
-<td>可选的附加导出结果。仅当请求中包含 <code>outputFormats</code> 时出现，例如 <code>{"docx": {"content": "..."}}</code>，其中 <code>content</code> 为文件内容的Base64编码。</td>
+<td>可选的附加导出结果。仅当请求中包含 <code>outputFormats</code> 时出现，例如 <code>{"docx": {"content": "..."}}</code>，其中 <code>content</code> 默认为文件内容的 Base64 编码；启用 URL 返回模式时为预签名 URL。</td>
 </tr>
 </tbody>
 </table>
@@ -3275,8 +3314,8 @@ for item in markdown_images:
 </tr>
 <tr>
 <td><code>images</code></td>
-<td><code>object</code></td>
-<td>Markdown图片相对路径和Base64编码图像的键值对。</td>
+<td><code>object</code> | <code>null</code></td>
+<td>Markdown 图片相对路径与对应图像的键值对。图像默认为 Base64 编码字符串；启用 URL 返回模式时为预签名 URL。当请求中 <code>returnMarkdownImages</code> 为 <code>false</code> 时该字段为 <code>null</code> 或不出现。</td>
 </tr>
 <tr>
 <td><code>isStart</code></td>

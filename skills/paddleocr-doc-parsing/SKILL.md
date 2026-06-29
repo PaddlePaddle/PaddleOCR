@@ -8,7 +8,6 @@ description: >-
   发票, 财报, 复杂 PDF, PDF转Markdown, 图表, 阅读顺序; reading order, formula, LaTeX,
   layout parsing, structure extraction, PP-StructureV3, PaddleOCR-VL.
 license: Apache-2.0
-compatibility: Requires paddleocr>=3.6.0
 metadata:
   openclaw:
     requires:
@@ -56,29 +55,22 @@ paddleocr api \
   --file_path "./document.pdf"
 ```
 
-### With Specific Model
-
-PP-StructureV3:
+### Common Options
 
 ```bash
+# With specific model
 paddleocr api \
   --model_type doc_parsing \
   --model PP-StructureV3 \
   --file_path "./report.pdf"
-```
 
-PaddleOCR-VL-1.6:
-
-```bash
+# Disable preprocessing (faster, for flat/well-oriented images)
 paddleocr api \
   --model_type doc_parsing \
-  --model PaddleOCR-VL-1.6 \
-  --file_url "https://..."
-```
+  --file_path "./document.pdf" \
+  --use_doc_unwarping False \
+  --use_doc_orientation_classify False
 
-### Common Options
-
-```bash
 # With page ranges
 paddleocr api \
   --model_type doc_parsing \
@@ -91,12 +83,6 @@ paddleocr api \
   --file_url "https://..." \
   --output result.json \
   --save_resources ./resources
-
-# With seal recognition
-paddleocr api \
-  --model_type doc_parsing \
-  --file_path "./document.pdf" \
-  --use_seal_recognition True
 
 # Prettify markdown output
 paddleocr api \
@@ -126,6 +112,17 @@ paddleocr api \
 ```
 
 ## Important Notes
+
+**Preprocessing options**: For flat, well-oriented images (screenshots, properly scanned documents), you can disable preprocessing for faster results:
+
+```bash
+paddleocr api --model_type doc_parsing --file_path "./document.pdf" --use_doc_unwarping False --use_doc_orientation_classify False
+```
+
+Keep preprocessing enabled when:
+- The input is a photo of a curved or folded document
+- The document has significant perspective distortion
+- Orientation is uncertain (rotated 90/180/270 degrees)
 
 **Display complete results**: Always show the full extracted content to users. Do not truncate with "..." unless content exceeds 10,000 characters. When multiple pages are processed, summarize if needed but provide complete results when explicitly requested.
 

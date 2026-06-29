@@ -44,9 +44,9 @@ English | [简体中文](./readme/README_cn.md) | [繁體中文](./readme/README
 ### 🔍 Universal Text Recognition (Scene OCR)
 > *The global gold standard for high-speed, multilingual text spotting.*
 
-* **100+ Languages Supported**: Native recognition for a vast global library. Our **PP-OCRv5** single-model solution elegantly handles multilingual mixed documents (Chinese, English, Japanese, Pinyin, etc.).
+* **100+ Languages Supported**: Native recognition for a vast global library. **PP-OCRv6** supports 50 languages with a single unified model (Chinese, English, Japanese, and 46 Latin-script languages) — no model switching needed for multilingual documents.
 * **Complex Element Mastery**: Beyond standard text recognition, we support **natural scene text spotting** across a wide range of environments, including IDs, street views, books, and industrial components
-* **Performance Leap**: PP-OCRv5 delivers a **13% accuracy boost** over previous versions, maintaining the "Extreme Efficiency" that PaddleOCR is famous for.
+* **Performance Leap**: PP-OCRv6 achieves **+4.6% detection** and **+5.1% recognition** accuracy over PP-OCRv5, surpassing mainstream Vision-Language Models. 5.2× CPU inference speedup end-to-end.
 
 <div align="center">
   <p>
@@ -62,13 +62,27 @@ English | [简体中文](./readme/README_cn.md) | [繁體中文](./readme/README
 
 ## 📣 Recent updates
 
-### 🔥 2026.05.28: Release of PaddleOCR 3.6.0
+### 🔥 2026.06.11: Release of PaddleOCR 3.7.0
+- PP-OCRv6 highlights:
+
+    - **Accuracy boost**: Medium tier achieves +4.6% detection and +5.1% recognition over PP-OCRv5_server, surpassing mainstream VLMs (Qwen3-VL-235B, GPT-5.5) with only 34.5M parameters.
+    - **50 languages unified**: Single model covers Chinese, English, Japanese, and 46 Latin-script languages — no model switching needed.
+    - **Specialized scenarios**: Major improvements in digital displays, dot-matrix characters, tire prints, and industrial text recognition.
+    - **Faster inference**: 5.2× CPU speedup (OpenVINO), 6.1× on Apple M4 (tiny), 0.13s on A100 GPU.
+    - **Three tiers for all scenarios**: tiny (1.5M) / small (7.7M) / medium (34.5M) for edge, mobile, and server deployment.
+    - **Model availability**: All models are available on [HuggingFace](https://huggingface.co/collections/PaddlePaddle/pp-ocrv6) and [ModelScope](https://www.modelscope.cn/collections/PaddlePaddle/PP-OCRv6).
+
+<details>
+<summary><strong>2026.05.28: Release of PaddleOCR 3.6.0</strong></summary>
+
 - PaddleOCR-VL-1.6 highlights:
 
     - **New SOTA Accuracy**: Achieves over 96.3% on OmniDocBench v1.6, also sets new SOTA on OmniDocBench v1.5 and Real5-OmniDocBench, leading both open-source and proprietary solutions in text, formula, and table recognition.
     - **Comprehensive Capability Upgrade**: Significant improvements in table, ancient document, and rare character recognition, with notably enhanced seal recognition, spotting, and chart understanding across multiple scenarios.
     - **Seamless Migration**: Model architecture is fully consistent with PaddleOCR-VL-1.5, enabling zero-cost adaptation—swap and go.
     - **Try it now**: Available on [HuggingFace](https://huggingface.co/PaddlePaddle/PaddleOCR-VL-1.6) or our [Official Website](https://www.paddleocr.com).
+
+</details>
 
 <details>
 <summary><strong>2026.04.21: Release of PaddleOCR 3.5.0</strong></summary>

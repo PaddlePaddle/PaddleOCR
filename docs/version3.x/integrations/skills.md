@@ -18,15 +18,10 @@ PaddleOCR 提供官方 Agent Skills，将 OCR 与文档解析任务的触发规�
 - `paddleocr-text-recognition`：用于识别图片、扫描件与 PDF 中的文字。
 - `paddleocr-doc-parsing`：用于解析复杂文档版面，并转换为 Markdown 或结构化结果。
 
-当前各 Skill 支持的底层模型如下：
-
-- `paddleocr-text-recognition`：`PP-OCRv5`
-- `paddleocr-doc-parsing`：`PP-StructureV3`、`PaddleOCR-VL`、`PaddleOCR-VL-1.5`、`PaddleOCR-VL-1.6`
-
 ## 安装前准备
 
 1. 请确保执行 Skill 的设备已安装 Python 3.9 或以上版本。
-2. Skills 依赖 PaddleOCR 3.6.0+。请安装：`pip install "paddleocr>=3.6.0"`
+2. Skills 依赖 PaddleOCR 3.7.0+。请安装：`pip install "paddleocr>=3.7.0"`
 3. 获取 access token：访问 [AI Studio Access Token 页面](https://aistudio.baidu.com/account/accessToken)
 
 ## 安装到 AI 应用
@@ -75,12 +70,10 @@ Skill 源码位于 `PaddleOCR/skills` 目录。请参考对应 AI 应用的安�
 
 ## 配置环境变量 {#配置环境变量}
 
-安装完成后，需要配置环境变量以便 Skill 正常工作：
+安装完成后，配置如下环境变量：
 
-| Skill | 必填 | 可选 |
-| --- | --- | --- |
-| `paddleocr-text-recognition` | `PADDLEOCR_ACCESS_TOKEN`（access token） | `PADDLEOCR_BASE_URL`（API base URL，默认官方服务） |
-| `paddleocr-doc-parsing` | `PADDLEOCR_ACCESS_TOKEN`（access token） | `PADDLEOCR_BASE_URL`（API base URL，默认官方服务） |
+- 必填：`PADDLEOCR_ACCESS_TOKEN`（access token）
+- 可选：`PADDLEOCR_BASE_URL`（API base URL，默认官方服务）
 
 获取 access token：访问 [AI Studio Access Token 页面](https://aistudio.baidu.com/account/accessToken)
 

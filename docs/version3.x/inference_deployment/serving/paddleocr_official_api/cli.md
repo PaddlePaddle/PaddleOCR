@@ -33,7 +33,7 @@ paddleocr api \
 ## 常用参数
 
 - `--model_type`：任务类型，`ocr` 或 `doc_parsing`。
-- `--model`：模型名称。OCR 任务默认使用 PP-OCRv5；文档解析任务未指定时默认使用 PaddleOCR-VL-1.6。
+- `--model`：模型名称。
 - `--file_url`：待处理文件 URL。
 - `--file_path`：待上传并处理的本地文件路径。
 - `--base_url`：PaddleOCR API 服务的 base URL；缺省使用官方服务地址（也可通过 `PADDLEOCR_BASE_URL` 环境变量设置）。
@@ -84,7 +84,7 @@ paddleocr api \
 
 | 任务 | `--model_type` | 默认模型 | 可选模型 |
 | --- | --- | --- | --- |
-| OCR | `ocr` | `PP-OCRv5` | `PP-OCRv5` |
+| OCR | `ocr` | `PP-OCRv6` | `PP-OCRv5`、`PP-OCRv5-latin`、`PP-OCRv6` |
 | 文档解析 | `doc_parsing` | `PaddleOCR-VL-1.6` | `PP-StructureV3`、`PaddleOCR-VL`、`PaddleOCR-VL-1.5`、`PaddleOCR-VL-1.6` |
 
 ## 输出行为

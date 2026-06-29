@@ -33,7 +33,7 @@ func (op *Operation) Wait(ctx context.Context) (interface{}, error) {
 	if err != nil {
 		return nil, err
 	}
-	if op.model == PPOCRv5 {
+	if IsOCRModel(op.model) {
 		return parseOCRResult(op.JobID, jsonlData)
 	}
 	return parseDocParsingResult(op.JobID, jsonlData)

@@ -20,6 +20,9 @@ from typing import Any, Dict, List, Literal, Optional
 class OCRPage:
     pruned_result: Any
     ocr_image_url: Optional[str] = None
+    doc_preprocessing_image_url: Optional[str] = None
+    input_image_url: Optional[str] = None
+    raw: Dict[str, Any] = field(default_factory=dict)
 
 
 @dataclass
@@ -27,18 +30,25 @@ class DocParsingPage:
     markdown_text: str
     markdown_images: Dict[str, str] = field(default_factory=dict)
     output_images: Dict[str, str] = field(default_factory=dict)
+    pruned_result: Any = None
+    input_image_url: Optional[str] = None
+    exports: Dict[str, Any] = field(default_factory=dict)
+    markdown: Dict[str, Any] = field(default_factory=dict)
+    raw: Dict[str, Any] = field(default_factory=dict)
 
 
 @dataclass
 class OCRResult:
     job_id: str
     pages: List[OCRPage] = field(default_factory=list)
+    data_info: Dict[str, Any] = field(default_factory=dict)
 
 
 @dataclass
 class DocParsingResult:
     job_id: str
     pages: List[DocParsingPage] = field(default_factory=list)
+    data_info: Dict[str, Any] = field(default_factory=dict)
 
 
 @dataclass

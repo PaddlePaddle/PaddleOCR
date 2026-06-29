@@ -112,7 +112,7 @@ export HPS_MAX_CONCURRENT_INFERENCE_REQUESTS=8
 | `HPS_MAX_CONCURRENT_NON_INFERENCE_REQUESTS` | 64　　　　　　　　　　　　　　　 | 非推理操作（多页重组）最大并发请求数　　|
 | `HPS_INFERENCE_TIMEOUT`　　　　　　　　　　 | 600　　　　　　　　　　　　　　　| 请求超时时间（秒）　　　　　　　　　　　|
 | `HPS_HEALTH_CHECK_TIMEOUT`　　　　　　　　　| 5　　　　　　　　　　　　　　　　| 健康检查超时时间（秒）　　　　　　　　　|
-| `HPS_VLM_URL`　　　　　　　　　　　　　　　 | http://paddleocr-vlm-server:8080 | VLM 服务器地址（用于健康检查）　　　　　|
+| `HPS_VLM_URL`　　　　　　　　　　　　　　　 | http://paddleocr-vlm-server:8080 | VLM 服务器地址 |
 | `HPS_LOG_LEVEL`　　　　　　　　　　　　　　 | INFO　　　　　　　　　　　　　　 | 日志级别（DEBUG, INFO, WARNING, ERROR） |
 | `HPS_FILTER_HEALTH_ACCESS_LOG`　　　　　　　| true　　　　　　　　　　　　　　 | 是否过滤健康检查的访问日志　　　　　　　|
 | `HPS_UVICORN_WORKERS`　　　　　　　　　　　 | 4　　　　　　　　　　　　　　　　| 网关 Worker 进程数　　　　　　　　　　　|

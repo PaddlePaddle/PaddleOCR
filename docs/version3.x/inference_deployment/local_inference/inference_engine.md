@@ -21,11 +21,13 @@ PaddleOCR 3.5 引入了统一的推理引擎配置方式：使用 `engine` 选�
 | - | - | - |
 | 飞桨框架 | `paddle`、`paddle_static`、`paddle_dynamic` | 基于飞桨框架运行。 |
 | Transformers | `transformers` | 基于 Hugging Face Transformers 运行。 |
+| ONNX Runtime | `onnxruntime` | 基于 ONNX Runtime 运行。 |
 
 - `paddle`：飞桨框架统一入口。根据模型类型和模型目录中的文件选择 `paddle_static` 或 `paddle_dynamic`，在二者都可用的情况下偏好 `paddle_static`。
 - `paddle_static`：飞桨静态图推理，适合对推理性能有一定要求或者需要进行精细化推理性能调优的场景。
 - `paddle_dynamic`：飞桨动态图推理，相比静态图更加灵活、易于调试。
 - `transformers`：Hugging Face Transformers 推理，便于与 Hugging Face 生态集成。
+- `onnxruntime`：ONNX Runtime 推理，用于加载并执行 ONNX 格式模型。
 
 ## 3. 各推理引擎安装方式
 
@@ -37,13 +39,23 @@ PaddleOCR 3.5 引入了统一的推理引擎配置方式：使用 `engine` 选�
 
 ### 3.2 Transformers
 
-当您使用 Transformers 作为推理引擎时，需要安装 Hugging Face Transformers（`>=5.8.0`）。示例命令如下：
+当您使用 Transformers 作为推理引擎时，需要安装 Hugging Face Transformers（`>=5.10.0`）。示例命令如下：
 
 ```bash
-python -m pip install "transformers>=5.8.0"
+python -m pip install "transformers>=5.10.0"
 ```
 
 通常，您还需要安装底层推理框架，详情可参考 [Transformers 官方文档](https://huggingface.co/docs/transformers/installation)。
+
+### 3.3 ONNX Runtime
+
+当您使用 ONNX Runtime 作为推理引擎时，需要安装 ONNX Runtime。示例命令如下：
+
+```bash
+python -m pip install onnxruntime-gpu
+```
+
+以上命令适用于 CUDA 12.x 环境下的 NVIDIA GPU，其他设备或环境的安装方式请参考 [ONNX Runtime 官方文档](https://onnxruntime.ai/docs/install/)。
 
 ## 4. `engine` 和 `engine_config` 的设置与取值
 
@@ -58,6 +70,7 @@ python -m pip install "transformers>=5.8.0"
 | `paddle_static` | 静态图推理 | 使用飞桨静态图推理。 |
 | `paddle_dynamic` | 飞桨动态图推理 | 使用飞桨动态图推理。 |
 | `transformers` | Transformers 推理 | 使用 Hugging Face Transformers 推理。 |
+| `onnxruntime` | ONNX Runtime 推理 | 使用 ONNX Runtime 推理。 |
 
 ### 4.2 `engine_config`
 
@@ -102,12 +115,28 @@ python -m pip install "transformers>=5.8.0"
 - `processor_kwargs`：传给 processor / image processor 加载接口的额外参数；
 - `tokenizer_kwargs`：兼容保留字段，会与 `processor_kwargs` 合并使用。
 
+#### `onnxruntime`
+
+常见字段包括：
+
+- `device_type` / `device_id`：推理设备类型和设备编号；
+- `providers`：执行提供者列表（如 `CUDAExecutionProvider`、`CPUExecutionProvider`）；
+- `provider_options`：执行提供者专属配置；
+- `graph_optimization_level`：图优化级别；
+- `intra_op_num_threads`：节点内线程数；
+- `inter_op_num_threads`：节点间线程数；
+- `execution_mode`：执行模式（如 `sequential`、`parallel`）；
+- `log_severity_level`：日志严重级别；
+- `enable_mem_pattern`：是否启用内存模式；
+- `enable_cpu_mem_arena`：是否启用 CPU 内存池；
+- `session_options`：ONNX Runtime 会话选项。
+
 #### 4.2.1 扁平与分桶 `engine_config`
 
 同一层级的 `engine_config` 可以是：
 
 - **扁平**：只包含**当前解析得到的引擎**所需的字段（例如仅使用静态图时，顶层直接是 `run_mode`、`cpu_threads` 等）。
-- **分桶**：顶层键**仅**为 PaddleX 已注册的引擎名（如 `paddle_static`、`paddle_dynamic`、`transformers` 等），每个键对应一个嵌套字典。**不得**在同一层级混用「分桶键」与扁平字段（例如 `{"paddle_static": {...}, "run_mode": "paddle"}` 会报错）。
+- **分桶**：顶层键**仅**为 PaddleX 已注册的引擎名（如 `paddle_static`、`paddle_dynamic`、`transformers`、`onnxruntime` 等），每个键对应一个嵌套字典。**不得**在同一层级混用「分桶键」与扁平字段（例如 `{"paddle_static": {...}, "run_mode": "paddle"}` 会报错）。
 
 解析为某一引擎时，只会使用与该引擎对应的一份配置：扁平形式直接参与校验；分桶形式则取出对应键下的字典。
 
@@ -128,6 +157,7 @@ python -m pip install "transformers>=5.8.0"
 
 ```bash
 paddleocr text_detection -i general_ocr_001.png --engine transformers
+paddleocr text_detection -i general_ocr_001.png --engine onnxruntime
 ```
 
 ### 5.2 单模型（Python）：显式指定 `transformers`
@@ -143,7 +173,20 @@ model = TextDetection(
 result = model.predict("general_ocr_001.png")
 ```
 
-### 5.3 单模型（Python）：指定 `paddle_static` 与 `engine_config`
+### 5.3 单模型（Python）：显式指定 `onnxruntime`
+
+```python
+from paddleocr import TextDetection
+
+model = TextDetection(
+    model_name="PP-OCRv5_server_det",
+    engine="onnxruntime",
+)
+
+result = model.predict("general_ocr_001.png")
+```
+
+### 5.4 单模型（Python）：指定 `paddle_static` 与 `engine_config`
 
 ```python
 from paddleocr import TextDetection
@@ -161,13 +204,13 @@ model = TextDetection(
 result = model.predict("general_ocr_001.png")
 ```
 
-### 5.4 产线（CLI）：通过 `--engine` 选择引擎
+### 5.5 产线（CLI）：通过 `--engine` 选择引擎
 
 ```bash
 paddleocr ocr -i general_ocr_001.png --engine paddle_static
 ```
 
-### 5.5 产线（Python API）：为某个模块单独配置推理引擎
+### 5.6 产线（Python API）：为某个模块单独配置推理引擎
 
 如需为产线中的某一个模块单独指定 `engine`、`engine_config`，可先导出配置文件，修改对应模块配置后，再通过加载配置文件。配置文件的导出、编辑与加载方式可参见 [使用 PaddleX 产线配置文件](../../paddleocr_and_paddlex.md#3-paddlex)。示例如下：
 

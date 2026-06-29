@@ -4,17 +4,15 @@ build-backend = "hatchling.build"
 
 [project]
 name = "langchain-paddleocr"
-version = "0.1.1"
+version = "0.2.2"
 description = "An integration package connecting PaddleOCR and LangChain"
 authors = []
 readme = "README.md"
 license = { text = "Apache License 2.0" }
 requires-python = ">=3.10"
 dependencies = [
-    "paddleocr>=3.4.0,<3.5.0",
-    "paddlex[serving]>=3.4.1,<3.5.0",
+    "paddleocr>=3.7.0",
     "langchain-core>=1.2.5,<2.0.0",
-    "requests>=2.32.5",
     "pydantic>=2.0.0,<3.0.0",
 ]
 
@@ -38,10 +36,7 @@ test = [
     "pytest-asyncio>=0.21.0,<1.0.0",
     "pytest-retry>=1.7.0,<2.0.0",
     "pytest-socket>=0.7.0,<1.0.0",
-    "numpy>=1.26.4; python_version<'3.13'",
-    "numpy>=2.1.0; python_version>='3.13'",
     "langchain-tests>=1.1.2,<2.0.0",
-    "protobuf>=4.25.0,<7.0.0",
 ]
 test_integration = [
     "pytest>=8.4.0,<9.0.0",
@@ -112,7 +107,7 @@ strict = true
 disallow_untyped_defs = true
 
 [[tool.mypy.overrides]]
-module = ["paddleocr.*", "paddlex.*"]
+module = ["paddleocr.*"]
 ignore_missing_imports = true
 
 # TODO: activate for 'strict' checking

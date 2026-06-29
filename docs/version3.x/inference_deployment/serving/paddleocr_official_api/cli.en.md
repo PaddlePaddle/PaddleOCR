@@ -33,7 +33,7 @@ paddleocr api \
 ## Common Options
 
 - `--model_type`: task type, either `ocr` or `doc_parsing`.
-- `--model`: model name. OCR defaults to PP-OCRv5; document parsing defaults to PaddleOCR-VL-1.6 when omitted.
+- `--model`: model name.
 - `--file_url`: file URL to process.
 - `--file_path`: local file path to upload and process.
 - `--base_url`: base URL of the PaddleOCR API service; defaults to the official service URL (can also be set via `PADDLEOCR_BASE_URL`).
@@ -84,7 +84,7 @@ paddleocr api \
 
 | Task | `--model_type` | Default model | Supported models |
 | --- | --- | --- | --- |
-| OCR | `ocr` | `PP-OCRv5` | `PP-OCRv5` |
+| OCR | `ocr` | `PP-OCRv6` | `PP-OCRv5`, `PP-OCRv5-latin`, `PP-OCRv6` |
 | Document parsing | `doc_parsing` | `PaddleOCR-VL-1.6` | `PP-StructureV3`, `PaddleOCR-VL`, `PaddleOCR-VL-1.5`, `PaddleOCR-VL-1.6` |
 
 ## Output Behavior

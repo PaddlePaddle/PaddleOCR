@@ -17,6 +17,22 @@ describe("model asset normalization", () => {
     expect(assets.det.url).toMatch(/\.tar$/);
   });
 
+  it("resolves PP-OCRv6 tiny and small model asset references", () => {
+    const tiny = normalizeAssets({
+      det: "PP-OCRv6_tiny_det",
+      rec: "PP-OCRv6_tiny_rec"
+    });
+    expect(tiny.det.url).toMatch(/PP-OCRv6_tiny_det_onnx_infer\.tar$/);
+    expect(tiny.rec.url).toMatch(/PP-OCRv6_tiny_rec_onnx_infer\.tar$/);
+
+    const small = normalizeAssets({
+      det: "PP-OCRv6_small_det",
+      rec: "PP-OCRv6_small_rec"
+    });
+    expect(small.det.url).toMatch(/PP-OCRv6_small_det_onnx_infer\.tar$/);
+    expect(small.rec.url).toMatch(/PP-OCRv6_small_rec_onnx_infer\.tar$/);
+  });
+
   it("normalizes a single model asset directly", () => {
     const asset = normalizeModelAsset("det", {
       url: "/det.tar"

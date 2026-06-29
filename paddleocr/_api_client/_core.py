@@ -43,7 +43,7 @@ def validate_input_source(file_url: Optional[str], file_path: Optional[str]) -> 
 
 
 def default_payload(model: Model) -> dict:
-    if model == Model.PP_OCRV5:
+    if is_ocr_model(model):
         return OCROptions().to_payload()
     return resolve_document_options(model, None).to_payload()
 

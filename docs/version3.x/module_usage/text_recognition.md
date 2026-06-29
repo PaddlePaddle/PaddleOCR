@@ -22,6 +22,31 @@ comments: true
 <th>介绍</th>
 </tr>
 <tr>
+<td>PP-OCRv6_medium_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv6_medium_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv6_medium_rec_pretrained.pdparams">训练模型</a></td>
+<td>83.2*</td>
+<td>- / -</td>
+<td>- / -</td>
+<td>73.3</td>
+<td rowspan="3">PP-OCRv6 文本识别模型，基于 PPLCNetV4 + LightSVTR + CTC/NRTR 多头解码器，单模型支持 50 种语言（tiny 档 49 种）。medium 档相比 PP-OCRv5_server 综合识别精度提升 5.1%。</td>
+</tr>
+<tr>
+<td>PP-OCRv6_small_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv6_small_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv6_small_rec_pretrained.pdparams">训练模型</a></td>
+<td>81.3*</td>
+<td>- / -</td>
+<td>- / -</td>
+<td>20.4</td>
+</tr>
+<tr>
+<td>PP-OCRv6_tiny_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv6_tiny_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv6_tiny_rec_pretrained.pdparams">训练模型</a></td>
+<td>73.5*</td>
+<td>- / -</td>
+<td>- / -</td>
+<td>4.4</td>
+</tr>
+<tr>
 <td>PP-OCRv5_server_rec</td>
 <td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\
 PP-OCRv5_server_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_server_rec_pretrained.pdparams">训练模型</a></td>
@@ -80,9 +105,24 @@ en_PP-OCRv4_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model
 </tr>
 </table>
 
+> *注：PP-OCRv6 指标基于内部多场景评估集测得，PP-OCRv5/v4 指标基于通用评估集测得，两者评估集不同，指标不可直接对比。
+
 > ❗ 以上列出的是文本识别模块重点支持的<b>4个核心模型</b>，该模块总共支持<b>20个全量模型</b>，包含多个多语言文本识别模型，完整的模型列表如下：
 
 <details><summary> 👉模型列表详情</summary>
+
+* <b>PP-OCRv6 多场景模型</b>
+
+<table>
+<tr>
+<th>模型</th><th>模型下载链接</th>
+<th>识别 Avg Accuracy(%)</th>
+<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
+<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
+<th>模型存储大小（MB）</th>
+<th>介绍</th>
+</tr>
+</table>
 
 * <b>PP-OCRv5 多场景模型</b>
 
@@ -97,6 +137,31 @@ en_PP-OCRv4_mobile_rec_infer.tar">推理模型</a>/<a href="https://paddle-model
 <th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>
 <th>模型存储大小（MB）</th>
 <th>介绍</th>
+</tr>
+<tr>
+<td>PP-OCRv6_medium_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv6_medium_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv6_medium_rec_pretrained.pdparams">训练模型</a></td>
+<td>83.2*</td>
+<td>- / -</td>
+<td>- / -</td>
+<td>73.3</td>
+<td rowspan="3">PP-OCRv6 文本识别模型，基于 PPLCNetV4 + LightSVTR + CTC/NRTR 多头解码器，单模型支持 50 种语言（tiny 档 49 种）。medium 档相比 PP-OCRv5_server 综合识别精度提升 5.1%。</td>
+</tr>
+<tr>
+<td>PP-OCRv6_small_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv6_small_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv6_small_rec_pretrained.pdparams">训练模型</a></td>
+<td>81.3*</td>
+<td>- / -</td>
+<td>- / -</td>
+<td>20.4</td>
+</tr>
+<tr>
+<td>PP-OCRv6_tiny_rec</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-OCRv6_tiny_rec_infer.tar">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv6_tiny_rec_pretrained.pdparams">训练模型</a></td>
+<td>73.5*</td>
+<td>- / -</td>
+<td>- / -</td>
+<td>4.4</td>
 </tr>
 <tr>
 <td>PP-OCRv5_server_rec</td>
@@ -561,6 +626,14 @@ paddleocr text_recognition -i https://paddle-model-ecology.bj.bcebos.com/paddlex
     --engine transformers
 ```
 
+如果选择 `onnxruntime` 作为推理引擎，请确保已配置 ONNX Runtime 环境，然后执行如下命令：
+
+```bash
+# 使用 onnxruntime 引擎进行推理
+paddleocr text_recognition -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_rec_001.png \
+    --engine onnxruntime
+```
+
 在大多数场景下，默认的 `paddle_static` 推理引擎通常具备更好的推理性能，建议优先使用。
 
 <b>注：</b>PaddleOCR 官方模型默认从 HuggingFace 获取，如运行环境访问 HuggingFace 不便，可通过环境变量修改模型源为 BOS：`PADDLE_PDX_MODEL_SOURCE="BOS"`，未来将支持更多主流模型源；
@@ -569,7 +642,7 @@ paddleocr text_recognition -i https://paddle-model-ecology.bj.bcebos.com/paddlex
 
 ```python
 from paddleocr import TextRecognition
-model = TextRecognition(model_name="PP-OCRv5_server_rec")
+model = TextRecognition()
 output = model.predict(input="general_ocr_rec_001.png", batch_size=1)
 for res in output:
     res.print()
@@ -583,10 +656,19 @@ for res in output:
 
 ```python
 from paddleocr import TextRecognition
-model = TextRecognition(
-    model_name="PP-OCRv5_server_rec",
-    engine="transformers",
-)
+model = TextRecognition(engine="transformers")
+output = model.predict(input="general_ocr_rec_001.png", batch_size=1)
+for res in output:
+    res.print()
+    res.save_to_img(save_path="./output/")
+    res.save_to_json(save_path="./output/res.json")
+```
+
+如果选择 `onnxruntime` 作为推理引擎，请确保已配置 ONNX Runtime 环境，然后执行如下代码：
+
+```python
+from paddleocr import TextRecognition
+model = TextRecognition(engine="onnxruntime")
 output = model.predict(input="general_ocr_rec_001.png", batch_size=1)
 for res in output:
     res.print()
@@ -617,7 +699,7 @@ for res in output:
 
 相关方法、参数等说明如下：
 
-* <code>TextRecognition</code>实例化文本识别模型（此处以<code>PP-OCRv5_server_rec</code>为例），具体说明如下：
+* <code>TextRecognition</code>实例化文本识别模型，具体说明如下：
 <table>
 <thead>
 <tr>
@@ -632,7 +714,7 @@ for res in output:
 <td><code>model_name</code></td>
 <td><b>含义：</b>模型名称。<br/>
 <b>说明：</b>
-如果设置为<code>None</code>，则使用<code>PP-OCRv5_server_rec</code>。</td>
+如果设置为<code>None</code>，则使用<code>PP-OCRv6_medium_rec</code>。</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -655,7 +737,7 @@ for res in output:
 </tr>
 <tr>
 <td><code>engine</code></td>
-<td><b>含义：</b>推理引擎。<br><b>说明：</b>支持 <code>None</code>（默认值）、<code>paddle</code>、<code>paddle_static</code>、<code>paddle_dynamic</code>、<code>transformers</code>。保持为默认值 <code>None</code> 时，本地推理默认使用 <code>paddle_static</code> 引擎。详细说明、取值、兼容性规则与示例请参见 <a href="../inference_deployment/local_inference/inference_engine.md">推理引擎与配置说明</a>。</td>
+<td><b>含义：</b>推理引擎。<br><b>说明：</b>支持 <code>None</code>（默认值）、<code>paddle</code>、<code>paddle_static</code>、<code>paddle_dynamic</code>、<code>transformers</code>、<code>onnxruntime</code>。保持为默认值 <code>None</code> 时，本地推理默认使用 <code>paddle_static</code> 引擎。详细说明、取值、兼容性规则与示例请参见 <a href="../inference_deployment/local_inference/inference_engine.md">推理引擎与配置说明</a>。</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -929,7 +1011,7 @@ Global.save_inference_dir="./PP-OCRv5_server_rec_infer/"
     </thead>
     <tbody>
         <tr>
-            <td rowspan="3">PP-OCRv5_mobile_rec</td>
+            <td rowspan="4">PP-OCRv5_mobile_rec</td>
             <td>paddle_static</td>
             <td>1.94</td>
             <td>6.69</td>
@@ -951,7 +1033,14 @@ Global.save_inference_dir="./PP-OCRv5_server_rec_infer/"
             <td>21.68</td>
         </tr>
         <tr>
-            <td rowspan="3">PP-OCRv5_server_rec</td>
+            <td>onnxruntime</td>
+            <td>1.82</td>
+            <td>2.05</td>
+            <td>0.91</td>
+            <td>4.91</td>
+        </tr>
+        <tr>
+            <td rowspan="4">PP-OCRv5_server_rec</td>
             <td>paddle_static</td>
             <td>1.98</td>
             <td>11.37</td>
@@ -972,12 +1061,106 @@ Global.save_inference_dir="./PP-OCRv5_server_rec_infer/"
             <td>0.51</td>
             <td>16.36</td>
         </tr>
+        <tr>
+            <td>onnxruntime</td>
+            <td>1.80</td>
+            <td>3.15</td>
+            <td>0.90</td>
+            <td>5.98</td>
+        </tr>
+        <tr>
+            <td rowspan="4">PP-OCRv6_medium_rec</td>
+            <td>paddle_static</td>
+            <td>1.74</td>
+            <td>5.38</td>
+            <td>0.84</td>
+            <td>8.08</td>
+        </tr>
+        <tr>
+            <td>paddle_dynamic</td>
+            <td>1.76</td>
+            <td>13.38</td>
+            <td>0.85</td>
+            <td>16.10</td>
+        </tr>
+        <tr>
+            <td>transformers</td>
+            <td>2.58</td>
+            <td>7.04</td>
+            <td>0.41</td>
+            <td>10.19</td>
+        </tr>
+        <tr>
+            <td>onnxruntime</td>
+            <td>1.74</td>
+            <td>2.28</td>
+            <td>0.84</td>
+            <td>4.97</td>
+        </tr>
+        <tr>
+            <td rowspan="4">PP-OCRv6_small_rec</td>
+            <td>paddle_static</td>
+            <td>1.74</td>
+            <td>4.73</td>
+            <td>0.82</td>
+            <td>7.41</td>
+        </tr>
+        <tr>
+            <td>paddle_dynamic</td>
+            <td>1.76</td>
+            <td>12.43</td>
+            <td>0.87</td>
+            <td>15.18</td>
+        </tr>
+        <tr>
+            <td>transformers</td>
+            <td>2.55</td>
+            <td>6.70</td>
+            <td>0.41</td>
+            <td>9.82</td>
+        </tr>
+        <tr>
+            <td>onnxruntime</td>
+            <td>1.73</td>
+            <td>1.79</td>
+            <td>0.83</td>
+            <td>4.46</td>
+        </tr>
+        <tr>
+            <td rowspan="4">PP-OCRv6_tiny_rec</td>
+            <td>paddle_static</td>
+            <td>1.76</td>
+            <td>2.77</td>
+            <td>0.40</td>
+            <td>5.04</td>
+        </tr>
+        <tr>
+            <td>paddle_dynamic</td>
+            <td>1.75</td>
+            <td>6.96</td>
+            <td>0.36</td>
+            <td>9.19</td>
+        </tr>
+        <tr>
+            <td>transformers</td>
+            <td>2.45</td>
+            <td>3.12</td>
+            <td>0.40</td>
+            <td>6.12</td>
+        </tr>
+        <tr>
+            <td>onnxruntime</td>
+            <td>1.73</td>
+            <td>0.92</td>
+            <td>0.36</td>
+            <td>3.12</td>
+        </tr>
     </tbody>
 </table>
 
 <strong>测试环境说明:</strong>
 <ul>
-    <li><strong>测试数据：</strong>[示例图片](https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_rec_001.jpg)</li>
+    <li><strong>测试数据：</strong><a href="https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_rec_001.jpg">示例图片</a></li>
     <li><strong>硬件配置：</strong>
         <ul>
             <li>GPU：NVIDIA A100 40G</li>
@@ -987,13 +1170,13 @@ Global.save_inference_dir="./PP-OCRv5_server_rec_infer/"
     <li><strong>软件环境：</strong>
         <ul>
             <li>Ubuntu 22.04 / CUDA 12.6 / cuDNN 9.5</li>
-            <li>paddlepaddle-gpu 3.2.1 / paddleocr 3.5 / transformers 5.4.0 / torch 2.10</li>
+            <li>paddlepaddle-gpu 3.2.1 / paddleocr 3.5 / transformers 5.4.0 / torch 2.10 / onnxruntime-gpu 1.23.2</li>
         </ul>
     </li>
 </ul>
 
 ### 5.2 权重转换 {#52-权重转换}
 
-使用推理引擎时，系统会自动下载官方预训练模型。若需使用自训练模型配合 `paddle_dynamic` 或 `transformers` 引擎，请参考 [PaddleX 文字识别模块权重转换](https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/text_recognition.html#442) 部分，将 `pdparams` 格式通过 PaddleX 转换为 `safetensors` 格式，即可无缝集成到 PaddleOCR 的 API 中进行推理。
+使用推理引擎时，系统会自动下载官方预训练模型。若需使用自训练模型配合 `paddle_dynamic` 或 `transformers` 引擎，请参考 [PaddleX 文字识别模块权重转换](https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/text_recognition.html#442) 部分，将 `pdparams` 格式通过 PaddleX 转换为 `safetensors` 格式，即可无缝集成到 PaddleOCR 的 API 中进行推理。若需使用自训练模型配合`onnxruntime`引擎，请参考[PaddleX 获取 ONNX 模型](https://paddlepaddle.github.io/PaddleX/latest/pipeline_deploy/paddle2onnx.html)获取onnx模型，即可无缝集成到 PaddleOCR 的 API 中进行推理。
 
 ## 六、FAQ

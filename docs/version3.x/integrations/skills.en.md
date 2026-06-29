@@ -18,15 +18,10 @@ PaddleOCR provides official Agent Skills that package the routing rules, calling
 - `paddleocr-text-recognition`: extracts text from images, scans, and PDF files.
 - `paddleocr-doc-parsing`: parses complex document layouts and converts them to Markdown or structured output.
 
-Each skill currently supports the following underlying models:
-
-- `paddleocr-text-recognition`: `PP-OCRv5`
-- `paddleocr-doc-parsing`: `PP-StructureV3`, `PaddleOCR-VL`, `PaddleOCR-VL-1.5`, `PaddleOCR-VL-1.6`
-
 ## Prerequisites
 
 1. Install Python 3.9 or later on the machine that runs the skill.
-2. Install PaddleOCR 3.6.0+: `pip install "paddleocr>=3.6.0"`
+2. Install PaddleOCR 3.7.0+: `pip install "paddleocr>=3.7.0"`
 3. Get access token from [AI Studio](https://aistudio.baidu.com/account/accessToken)
 
 ## Install into AI Apps
@@ -75,12 +70,10 @@ The skill source code is located under `PaddleOCR/skills`. Refer to your AI app 
 
 ## Configure Environment Variables
 
-After installation, configure the required environment variables so the skills can work correctly:
+After installation, configure the following environment variables:
 
-| Skill | Required | Optional |
-| --- | --- | --- |
-| `paddleocr-text-recognition` | `PADDLEOCR_ACCESS_TOKEN` (access token) | `PADDLEOCR_BASE_URL` (API base URL, defaults to official service) |
-| `paddleocr-doc-parsing` | `PADDLEOCR_ACCESS_TOKEN` (access token) | `PADDLEOCR_BASE_URL` (API base URL, defaults to official service) |
+- Required: `PADDLEOCR_ACCESS_TOKEN` (access token)
+- Optional: `PADDLEOCR_BASE_URL` (API base URL, defaults to official service)
 
 Get access token: visit [AI Studio Access Token](https://aistudio.baidu.com/account/accessToken)
 

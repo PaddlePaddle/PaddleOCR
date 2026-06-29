@@ -1,0 +1,25 @@
+PaddleOCR iOS demo — third-party notices
+===============================================================================
+
+This demo application is part of the PaddleOCR project (Apache License 2.0).
+It may bundle or link third-party components in addition to the PaddleOCR
+repository LICENSE. The following components are included in **source** form
+in this tree:
+
+Clipper / polyclipping (polygon clipping and offsetting)
+--------------------------------------------------------------------------------------------
+  • Upstream: polyclipping clipper 6.4.2 (Angus Johnson)  
+  • Bundled:   `PaddleOCRDemo/ThirdParty/Clipper1/` (clipper.cpp, clipper.hpp)  
+  • SPDX:      BSL-1.0 (Boost Software License 1.0)  
+  • Full text: `PaddleOCRDemo/ThirdParty/Clipper1/LICENSE`  
+
+CocoaPods dependencies (onnxruntime-objc, OpenCV, Yams, etc.)
+-------------------------------------------------------------
+  • Versions and upstream packages are recorded in `Podfile.lock` after
+    `pod install`. Each pod is subject to its own license as published by
+    the respective project; consult the Pods project and upstream repos
+    for notices required by those licenses.
+
+If you distribute binaries built from this demo, ensure your product’s
+open-source / third-party attribution (e.g. in-app “Licenses” or
+distribution packaging) satisfies your legal and policy requirements.

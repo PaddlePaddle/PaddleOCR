@@ -40,15 +40,20 @@ class MakeBorderMap(object):
         self.shrink_ratio = shrink_ratio
         self.thresh_min = thresh_min
         self.thresh_max = thresh_max
-        if "total_epoch" in kwargs and "epoch" in kwargs and kwargs["epoch"] != "None":
-            self.shrink_ratio = self.shrink_ratio + 0.2 * kwargs["epoch"] / float(
-                kwargs["total_epoch"]
-            )
+        if "total_epoch" in kwargs:
+            self._base_shrink_ratio = shrink_ratio
+            self._total_epoch = kwargs["total_epoch"]
 
     def __call__(self, data):
         img = data["image"]
         text_polys = data["polys"]
         ignore_tags = data["ignore_tags"]
+
+        shrink_ratio = self.shrink_ratio
+        if "epoch" in data and hasattr(self, "_base_shrink_ratio"):
+            shrink_ratio = self._base_shrink_ratio + 0.2 * data["epoch"] / float(
+                self._total_epoch
+            )
 
         canvas = np.zeros(img.shape[:2], dtype=np.float32)
         mask = np.zeros(img.shape[:2], dtype=np.float32)
@@ -56,31 +61,38 @@ class MakeBorderMap(object):
         for i in range(len(text_polys)):
             if ignore_tags[i]:
                 continue
-            self.draw_border_map(text_polys[i], canvas, mask=mask)
+            self.draw_border_map(
+                text_polys[i], canvas, mask=mask, shrink_ratio=shrink_ratio
+            )
         canvas = canvas * (self.thresh_max - self.thresh_min) + self.thresh_min
 
         data["threshold_map"] = canvas
         data["threshold_mask"] = mask
         return data
 
-    def draw_border_map(self, polygon, canvas, mask):
+    def draw_border_map(self, polygon, canvas, mask, shrink_ratio=None):
+        if shrink_ratio is None:
+            shrink_ratio = self.shrink_ratio
         polygon = np.array(polygon)
         assert polygon.ndim == 2
         assert polygon.shape[1] == 2
 
+        if np.isnan(polygon).any():
+            return
         polygon_shape = Polygon(polygon)
         if polygon_shape.area <= 0:
             return
         distance = (
-            polygon_shape.area
-            * (1 - np.power(self.shrink_ratio, 2))
-            / polygon_shape.length
+            polygon_shape.area * (1 - np.power(shrink_ratio, 2)) / polygon_shape.length
         )
         subject = [tuple(l) for l in polygon]
         padding = pyclipper.PyclipperOffset()
         padding.AddPath(subject, pyclipper.JT_ROUND, pyclipper.ET_CLOSEDPOLYGON)
 
-        padded_polygon = np.array(padding.Execute(distance)[0])
+        padded_polygon = padding.Execute(distance)
+        if not padded_polygon:
+            return
+        padded_polygon = np.array(padded_polygon[0])
         cv2.fillPoly(mask, [padded_polygon.astype(np.int32)], 1.0)
 
         xmin = padded_polygon[:, 0].min()

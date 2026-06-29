@@ -50,6 +50,9 @@ class TextRecognizer(object):
                 "en_PP-OCRv5_mobile_rec",
                 "th_PP-OCRv5_mobile_rec",
                 "el_PP-OCRv5_mobile_rec",
+                "PP-OCRv6_tiny_rec",
+                "PP-OCRv6_small_rec",
+                "PP-OCRv6_medium_rec",
             ]:
                 raise ValueError(
                     f"{model_name} is not supported. Please check if the model is supported by the PaddleOCR wheel."

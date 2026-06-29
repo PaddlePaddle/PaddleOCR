@@ -15,25 +15,34 @@
 package paddleocr
 
 type OCRPage struct {
-	PrunedResult interface{}            `json:"prunedResult"`
-	OCRImageURL  string                 `json:"ocrImageUrl,omitempty"`
-	Raw          map[string]interface{} `json:"raw,omitempty"`
+	PrunedResult             interface{}            `json:"prunedResult"`
+	OCRImageURL              string                 `json:"ocrImageUrl,omitempty"`
+	DocPreprocessingImageURL string                 `json:"docPreprocessingImageUrl,omitempty"`
+	InputImageURL            string                 `json:"inputImageUrl,omitempty"`
+	Raw                      map[string]interface{} `json:"raw,omitempty"`
 }
 
 type DocParsingPage struct {
-	MarkdownText   string            `json:"markdownText"`
-	MarkdownImages map[string]string `json:"markdownImages"`
-	OutputImages   map[string]string `json:"outputImages"`
+	MarkdownText   string                 `json:"markdownText"`
+	MarkdownImages map[string]string      `json:"markdownImages"`
+	OutputImages   map[string]string      `json:"outputImages"`
+	PrunedResult   interface{}            `json:"prunedResult,omitempty"`
+	InputImageURL  string                 `json:"inputImageUrl,omitempty"`
+	Exports        map[string]interface{} `json:"exports,omitempty"`
+	Markdown       map[string]interface{} `json:"markdown,omitempty"`
+	Raw            map[string]interface{} `json:"raw,omitempty"`
 }
 
 type OCRResult struct {
-	JobID string    `json:"jobId"`
-	Pages []OCRPage `json:"pages"`
+	JobID    string                 `json:"jobId"`
+	Pages    []OCRPage              `json:"pages"`
+	DataInfo map[string]interface{} `json:"dataInfo,omitempty"`
 }
 
 type DocParsingResult struct {
-	JobID string           `json:"jobId"`
-	Pages []DocParsingPage `json:"pages"`
+	JobID    string                 `json:"jobId"`
+	Pages    []DocParsingPage       `json:"pages"`
+	DataInfo map[string]interface{} `json:"dataInfo,omitempty"`
 }
 
 type Progress struct {

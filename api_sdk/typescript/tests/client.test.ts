@@ -113,7 +113,7 @@ describe("PaddleOCRClient public contract", () => {
 
     expect(job).toEqual({
       jobId: "job-1",
-      model: Model.PPOCRv5,
+      model: Model.PPOCRv6,
       task: "ocr",
       pageRanges: "1-2",
       batchId: "batch-1",
@@ -126,7 +126,7 @@ describe("PaddleOCRClient public contract", () => {
     });
     expect(JSON.parse(String(calls[0].init.body))).toEqual({
       fileUrl: "https://files.example.test/invoice.pdf",
-      model: Model.PPOCRv5,
+      model: Model.PPOCRv6,
       optionalPayload: { visualize: true },
       pageRanges: "1-2",
       batchId: "batch-1",
@@ -146,7 +146,7 @@ describe("PaddleOCRClient public contract", () => {
     });
   });
 
-  test("submitOcr propagates explicit OCR model and defaults to PP-OCRv5", async () => {
+  test("submitOcr propagates explicit OCR model and defaults to PP-OCRv6", async () => {
     const { fetch, calls } = captureFetch([
       jsonResponse({ data: { jobId: "job-explicit" } }),
       jsonResponse({ data: { jobId: "job-default" } }),
@@ -162,9 +162,35 @@ describe("PaddleOCRClient public contract", () => {
     });
 
     expect(explicit.model).toBe(Model.PPOCRv5);
-    expect(implicit.model).toBe(Model.PPOCRv5);
+    expect(implicit.model).toBe(Model.PPOCRv6);
     expect(JSON.parse(String(calls[0].init.body)).model).toBe(Model.PPOCRv5);
-    expect(JSON.parse(String(calls[1].init.body)).model).toBe(Model.PPOCRv5);
+    expect(JSON.parse(String(calls[1].init.body)).model).toBe(Model.PPOCRv6);
+  });
+
+  test("submitOcr accepts PP-OCRv6 model name", async () => {
+    const { fetch, calls } = captureFetch([jsonResponse({ data: { jobId: "job-v6" } })]);
+    const client = createClient(fetch);
+
+    const job = await client.submitOcr({
+      model: Model.PPOCRv6,
+      fileUrl: "https://files.example.test/v6.pdf",
+    });
+
+    expect(job.model).toBe(Model.PPOCRv6);
+    expect(JSON.parse(String(calls[0].init.body)).model).toBe(Model.PPOCRv6);
+  });
+
+  test("submitOcr accepts PP-OCRv5-latin model name", async () => {
+    const { fetch, calls } = captureFetch([jsonResponse({ data: { jobId: "job-latin" } })]);
+    const client = createClient(fetch);
+
+    const job = await client.submitOcr({
+      model: Model.PPOCRv5Latin,
+      fileUrl: "https://files.example.test/latin.pdf",
+    });
+
+    expect(job.model).toBe(Model.PPOCRv5Latin);
+    expect(JSON.parse(String(calls[0].init.body)).model).toBe(Model.PPOCRv5Latin);
   });
 
   test("submitOcr and submitDocumentParsing accept official model name strings", async () => {
@@ -193,11 +219,42 @@ describe("PaddleOCRClient public contract", () => {
     const mod = await import("../src/index.js");
 
     expect(mod.isOCRModel(Model.PPOCRv5)).toBe(true);
+    expect(mod.isOCRModel(Model.PPOCRv5Latin)).toBe(true);
+    expect(mod.isOCRModel(Model.PPOCRv6)).toBe(true);
     expect(mod.isOCRModel(Model.PPStructureV3)).toBe(false);
     expect(mod.isOCRModel("future-unknown-model")).toBe(false);
     expect(mod.isDocumentParsingModel(Model.PaddleOCRVL)).toBe(true);
     expect(mod.isDocumentParsingModel(Model.PaddleOCRVL16)).toBe(true);
     expect(mod.isDocumentParsingModel(Model.PPOCRv5)).toBe(false);
+  });
+
+  test("submitDocumentParsing passes current and future document parsing options", async () => {
+    const { fetch, calls } = captureFetch([jsonResponse({ data: { jobId: "job-doc" } })]);
+    const client = createClient(fetch);
+
+    await client.submitDocumentParsing({
+      model: Model.PaddleOCRVL16,
+      fileUrl: "https://files.example.test/doc.pdf",
+      options: {
+        useOcrForImageBlock: true,
+        formatBlockContent: true,
+        markdownIgnoreLabels: ["image"],
+        vlmExtraArgs: { temperature: 0.1 },
+        returnMarkdownImages: false,
+        outputFormats: ["docx"],
+        futureOption: "enabled",
+      },
+    });
+
+    expect(JSON.parse(String(calls[0].init.body)).optionalPayload).toEqual({
+      useOcrForImageBlock: true,
+      formatBlockContent: true,
+      markdownIgnoreLabels: ["image"],
+      vlmExtraArgs: { temperature: 0.1 },
+      returnMarkdownImages: false,
+      outputFormats: ["docx"],
+      futureOption: "enabled",
+    });
   });
 
   test("submitDocumentParsing defaults to PaddleOCR-VL-1.6", async () => {
@@ -269,13 +326,41 @@ describe("PaddleOCRClient public contract", () => {
   test("typed wait accepts bare jobId, fetches JSONL without Authorization, and parses OCR results", async () => {
     const { fetch, calls } = captureFetch([
       jsonResponse({ data: { state: "done", resultUrl: { jsonUrl: "https://storage.example.test/job-1.jsonl" } } }),
-      textResponse(JSON.stringify({ result: { ocrResults: [{ prunedResult: { text: "hello" }, ocrImage: "img.png" }] } })),
+      textResponse(
+        JSON.stringify({
+          result: {
+            dataInfo: { numPages: 1 },
+            ocrResults: [
+              {
+                prunedResult: { text: "hello" },
+                ocrImage: "img.png",
+                docPreprocessingImage: "pre.png",
+                inputImage: "input.png",
+              },
+            ],
+          },
+        }),
+      ),
     ]);
     const client = createClient(fetch);
 
     await expect(client.waitOcrResult("job-1")).resolves.toMatchObject({
       jobId: "job-1",
-      pages: [{ prunedResult: { text: "hello" }, ocrImageUrl: "img.png" }],
+      dataInfo: { numPages: 1 },
+      pages: [
+        {
+          prunedResult: { text: "hello" },
+          ocrImageUrl: "img.png",
+          docPreprocessingImageUrl: "pre.png",
+          inputImageUrl: "input.png",
+          raw: {
+            prunedResult: { text: "hello" },
+            ocrImage: "img.png",
+            docPreprocessingImage: "pre.png",
+            inputImage: "input.png",
+          },
+        },
+      ],
     });
     expect(calls[1].url).toBe("https://storage.example.test/job-1.jsonl");
     expect((calls[1].init.headers as Record<string, string>).Authorization).toBeUndefined();
@@ -357,6 +442,38 @@ describe("PaddleOCRClient public contract", () => {
     );
 
     await expect(client.waitOcrResult("job-1")).rejects.toThrow(ResultParseError);
+  });
+
+  test("waitDocumentParsingResult preserves raw page data and dataInfo", async () => {
+    const page = {
+      prunedResult: { blocks: [{ label: "text", content: "hello" }] },
+      markdown: { text: "hello", images: { "figure.png": "https://example.test/figure.png" }, isStart: true, isEnd: true },
+      outputImages: { "page.png": "https://example.test/page.png" },
+      inputImage: "https://example.test/input.png",
+      exports: { docx: "https://example.test/result.docx" },
+    };
+    const { fetch } = captureFetch([
+      jsonResponse({ data: { state: "done", resultUrl: { jsonUrl: "https://storage.example.test/job.jsonl" } } }),
+      textResponse(JSON.stringify({ result: { dataInfo: { numPages: 1 }, layoutParsingResults: [page] } })),
+    ]);
+    const client = createClient(fetch);
+
+    await expect(client.waitDocumentParsingResult("job-1")).resolves.toMatchObject({
+      jobId: "job-1",
+      dataInfo: { numPages: 1 },
+      pages: [
+        {
+          markdownText: "hello",
+          markdownImages: { "figure.png": "https://example.test/figure.png" },
+          outputImages: { "page.png": "https://example.test/page.png" },
+          prunedResult: { blocks: [{ label: "text", content: "hello" }] },
+          inputImageUrl: "https://example.test/input.png",
+          exports: { docx: "https://example.test/result.docx" },
+          markdown: page.markdown,
+          raw: page,
+        },
+      ],
+    });
   });
 
   test("malformed fetched document result records use ResultParseError", async () => {

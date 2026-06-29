@@ -97,16 +97,26 @@ class Poller:
 def parse_ocr_result(job_id: str, jsonl_data: list) -> OCRResult:
     try:
         pages = []
+        data_info = {}
         for line_obj in jsonl_data:
             result = line_obj["result"]
+            if isinstance(result.get("dataInfo"), dict):
+                data_info.update(result["dataInfo"])
             for item in result["ocrResults"]:
                 pages.append(
                     OCRPage(
                         pruned_result=item["prunedResult"],
                         ocr_image_url=item.get("ocrImage"),
+                        doc_preprocessing_image_url=item.get("docPreprocessingImage"),
+                        input_image_url=item.get("inputImage"),
+                        raw=item,
                     )
                 )
-        return OCRResult(job_id=job_id, pages=pages)
+        return OCRResult(
+            job_id=job_id,
+            pages=pages,
+            data_info=data_info,
+        )
     except (KeyError, TypeError) as e:
         raise ResultParseError(f"Malformed OCR result payload: {e}") from e
 
@@ -114,8 +124,11 @@ def parse_ocr_result(job_id: str, jsonl_data: list) -> OCRResult:
 def parse_doc_parsing_result(job_id: str, jsonl_data: list) -> DocParsingResult:
     try:
         pages = []
+        data_info = {}
         for line_obj in jsonl_data:
             result = line_obj["result"]
+            if isinstance(result.get("dataInfo"), dict):
+                data_info.update(result["dataInfo"])
             for item in result["layoutParsingResults"]:
                 markdown = item["markdown"]
                 pages.append(
@@ -123,8 +136,17 @@ def parse_doc_parsing_result(job_id: str, jsonl_data: list) -> DocParsingResult:
                         markdown_text=markdown["text"],
                         markdown_images=markdown.get("images", {}),
                         output_images=item.get("outputImages", {}),
+                        pruned_result=item.get("prunedResult"),
+                        input_image_url=item.get("inputImage"),
+                        exports=item.get("exports", {}),
+                        markdown=markdown,
+                        raw=item,
                     )
                 )
-        return DocParsingResult(job_id=job_id, pages=pages)
+        return DocParsingResult(
+            job_id=job_id,
+            pages=pages,
+            data_info=data_info,
+        )
     except (KeyError, TypeError) as e:
         raise ResultParseError(f"Malformed document parsing result payload: {e}") from e

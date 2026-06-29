@@ -46,6 +46,15 @@ await PaddleOCR.create({
 });
 ```
 
+`ocrVersion: "PP-OCRv6"` 会将受支持的 `lang` 映射到内置的 **PP-OCRv6_small** 检测/识别模型对。若需 **PP-OCRv6_tiny**，请显式指定模型名：
+
+```js
+await PaddleOCR.create({
+  textDetectionModelName: "PP-OCRv6_tiny_det",
+  textRecognitionModelName: "PP-OCRv6_tiny_rec"
+});
+```
+
 **模型选择 — 显式模型名：**
 
 ```js

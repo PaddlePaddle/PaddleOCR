@@ -44,9 +44,9 @@
 ### 🔍 범용 텍스트 인식 (장면 OCR)
 > *고속 다국어 텍스트 탐지의 글로벌 표준.*
 
-* **100개 이상의 언어 지원**: 방대한 글로벌 언어 라이브러리를 기본 지원합니다. **PP-OCRv5** 단일 모델 솔루션은 다국어 혼합 문서(중국어, 영어, 일본어, 병음 등)를 원활하게 처리합니다.
+* **100개 이상의 언어 지원**: 방대한 글로벌 언어 라이브러리를 기본 지원합니다. **PP-OCRv6**는 단일 모델로 50개 언어(중국어, 영어, 일본어 및 46개 라틴 언어)를 통합 지원합니다.
 * **복잡한 요소 처리**: 표준 텍스트 인식을 넘어 신분증, 거리 풍경, 도서, 산업 부품 등 다양한 환경에서의 **자연 장면 텍스트 탐지**를 지원합니다.
-* **성능 도약**: PP-OCRv5는 이전 버전 대비 **13% 정확도 향상**을 달성하면서도 PaddleOCR의 상징인 "극한 효율성"을 유지합니다.
+* **성능 도약**: PP-OCRv6는 PP-OCRv5 대비 검출 정확도 **+4.6%**, 인식 정확도 **+5.1%** 향상을 달성하며, 주류 비전 언어 모델을 능가합니다. CPU 추론 5.2배 가속.
 
 <div align="center">
   <p>
@@ -62,14 +62,27 @@
 
 ## 📣 최근 업데이트
 
-### 🔥 2026.05.28: PaddleOCR 3.6.0 출시
-- PaddleOCR-VL-1.6 핵심 하이라이트:
+### 🔥 2026.06.11: PaddleOCR 3.7.0 출시
+- PP-OCRv6 주요 특징:
 
-    - **새로운 SOTA 정확도**: OmniDocBench v1.6에서 96.3%를 돌파했으며, OmniDocBench v1.5, Real5-OmniDocBench에서도 SOTA를 경신. 텍스트, 수식, 표 인식에서 오픈소스 및 폐쇄형 솔루션 모두를 앞섭니다.
-    - **능력 전면 업그레이드**: 표, 고문서, 희귀 문자 인식이 크게 향상되었으며, 인장 인식, spotting, 차트 이해 등 다양한 시나리오에서도 현저한 강화.
-    - **원활한 마이그레이션**: 모델 구조가 PaddleOCR-VL-1.5와 완전히 동일하여, 제로 비용으로 적용 가능—교체만 하면 바로 사용.
-    - **지금 사용해 보세요**: [HuggingFace](https://huggingface.co/PaddlePaddle/PaddleOCR-VL-1.6) 또는 [공식 웹사이트](https://www.paddleocr.com)에서 이용 가능합니다.
+    - **정확도 향상**: medium 티어가 PP-OCRv5_server 대비 검출 +4.6%, 인식 +5.1% 달성, 34.5M 파라미터만으로 주류 VLM(Qwen3-VL-235B, GPT-5.5)을 능가.
+    - **50개 언어 통합 지원**: 단일 모델로 중국어, 영어, 일본어 및 46개 라틴 언어를 지원 — 모델 전환 불필요.
+    - **전문 시나리오 강화**: 디지털 디스플레이, 도트 매트릭스 문자, 타이어 인쇄, 산업용 문자 인식 대폭 향상.
+    - **빠른 추론**: CPU 5.2배 가속(OpenVINO), Apple M4 6.1배(tiny), A100 GPU 0.13초.
+    - **전 시나리오 3단계 모델**: tiny(1.5M) / small(7.7M) / medium(34.5M)으로 엣지부터 서버까지 대응.
+    - **모델 다운로드**: 모든 모델은 [HuggingFace](https://huggingface.co/collections/PaddlePaddle/pp-ocrv6) 및 [ModelScope](https://www.modelscope.cn/collections/PaddlePaddle/PP-OCRv6)에서 제공됩니다.
 
+<details>
+<summary><strong>2026.05.28: PaddleOCR 3.6.0 출시</strong></summary>
+
+- PaddleOCR-VL-1.6 주요 특징:
+
+    - **새로운 SOTA 정확도**: OmniDocBench v1.6에서 96.3%, OmniDocBench v1.5 및 Real5-OmniDocBench에서도 새로운 SOTA.
+    - **종합 강화**: 테이블, 고문서, 희귀 문자 인식 대폭 향상.
+    - **원활한 마이그레이션**: PaddleOCR-VL-1.5와 완전 호환 아키텍처.
+    - **지금 사용해보기**: [HuggingFace](https://huggingface.co/PaddlePaddle/PaddleOCR-VL-1.6) 또는 [공식 사이트](https://www.paddleocr.com).
+
+</details>
 <details>
 <summary><strong>2026.04.21: PaddleOCR 3.5.0 출시</strong></summary>
 

@@ -94,3 +94,25 @@ The <b>"Development Integration/Deployment"</b> section in the PaddleOCR pipelin
 Please refer to the [PaddleX Serving Guide](https://paddlepaddle.github.io/PaddleX/latest/en/pipeline_deploy/serving.html#2). More information about PaddleX pipeline configuration files can be found in [Using PaddleX Pipeline Configuration Files](../../paddleocr_and_paddlex.en.md#3-using-paddlex-pipeline-configuration-files).
 
 It should be noted that, due to the lack of fine-grained optimization and other reasons, the current high-stability serving deployment solution provided by PaddleOCR may not match the performance of the 2.x version based on PaddleServing. However, this new solution fully supports the PaddlePaddle 3.0 framework. We will continue to optimize it and consider introducing more performant deployment solutions in the future.
+
+## 3. Returning Binary Content as URLs
+
+By default, both basic serving and high-stability serving return images and other binary content in the response inline as Base64-encoded strings. When the response contains large images or a multi-page PDF, Base64 encoding can significantly inflate the payload; you can configure the service to return URLs instead. Enable it in the `Serving` section of the pipeline configuration file (`return_urls` is a top-level switch; object-storage settings live under `Serving.extra`) to return those fields as pre-signed URLs:
+
+```yaml
+Serving:
+  return_urls: true
+  extra:
+    file_storage:
+      type: bos
+      endpoint: <BOS endpoint, e.g. https://bj.bcebos.com>
+      ak: xxx
+      sk: xxx
+      bucket_name: <bucket name>
+    url_expires_in: 3600  # Pre-signed URL lifetime in seconds; -1 means no expiry
+```
+
+- Basic serving: write the configuration to the pipeline config file passed to `paddlex --serve --pipeline`.
+- High-stability serving: the same configuration applies — write it to `server/pipeline_config.yaml` inside the SDK and restart the container.
+
+Currently, URL return is only supported by the `bos` (Baidu Intelligent Cloud object storage) backend. URL return is controlled by the top-level `Serving.return_urls` field, which applies to every Base64-inlined file field in the response (not just images). For the full configuration reference, notes, and use cases, see [PaddleX Serving Guide - Returning Binary Content as URLs](https://paddlepaddle.github.io/PaddleX/latest/en/pipeline_deploy/serving.html#3). See the [Baidu Intelligent Cloud documentation](https://cloud.baidu.com/doc/BOS/index.html) for AK/SK retrieval.

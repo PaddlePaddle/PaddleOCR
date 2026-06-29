@@ -45,7 +45,7 @@ def register_api_command(subparsers):
         type=str,
         default=None,
         choices=[m.value for m in Model],
-        help="Model name. Defaults to PP-OCRv5 for ocr task.",
+        help="Model name.",
     )
     subparser.add_argument(
         "--file_url",
@@ -247,7 +247,7 @@ def _execute_api(args):
                 options=options,
                 page_ranges=args.page_ranges,
                 batch_id=args.batch_id,
-                model=model or Model.PP_OCRV5,
+                model=model or Model.PP_OCRV6,
             )
             output = _ocr_result_to_dict(result)
             save_resources = client.save_ocr_result_resources
