@@ -13,21 +13,23 @@
 # limitations under the License.
 import sys
 import os
-import subprocess
-
-python_path = sys.executable
+import runpy
 
 ori_path = os.getcwd()
 os.chdir("ppocr/postprocess/pse_postprocess/pse")
-if (
-    subprocess.call("{} setup.py build_ext --inplace".format(python_path), shell=True)
-    != 0
-):
-    raise RuntimeError(
-        "Cannot compile pse: {}, if your system is windows, you need to install all the default components of `desktop development using C++` in visual studio 2019+".format(
-            os.path.dirname(os.path.realpath(__file__))
+_saved_argv = sys.argv
+try:
+    sys.argv = ["setup.py", "build_ext", "--inplace"]
+    runpy.run_path("setup.py", run_name="__main__")
+except SystemExit as e:
+    if e.code != 0:
+        raise RuntimeError(
+            "Cannot compile pse: {}, if your system is windows, you need to install all the default components of `desktop development using C++` in visual studio 2019+".format(
+                os.path.dirname(os.path.realpath(__file__))
+            )
         )
-    )
-os.chdir(ori_path)
+finally:
+    sys.argv = _saved_argv
+    os.chdir(ori_path)
 
 from .pse import pse
