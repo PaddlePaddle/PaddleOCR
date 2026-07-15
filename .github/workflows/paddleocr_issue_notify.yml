@@ -23,11 +23,20 @@ jobs:
           python3 <<'PY'
           import json
           import os
+          from datetime import datetime, timedelta, timezone
           import urllib.error
           import urllib.parse
           import urllib.request
 
           event_name = os.environ["EVENT_NAME"]
+
+
+          def to_beijing_time(iso_timestamp):
+              try:
+                  dt = datetime.fromisoformat(iso_timestamp.replace("Z", "+00:00"))
+              except ValueError:
+                  return iso_timestamp
+              return dt.astimezone(timezone(timedelta(hours=8))).strftime("%Y-%m-%d %H:%M:%S")
 
           if event_name == "workflow_dispatch":
               content = (
@@ -37,13 +46,14 @@ jobs:
           else:
               issue = json.loads(os.environ["ISSUE_JSON"])
               labels = ", ".join(label["name"] for label in issue.get("labels", [])) or "无"
+              created_time_bj = to_beijing_time(issue["created_at"])
 
               content = (
                   "### PaddleOCR 新 Issue\n\n"
                   f"**#{issue['number']} {issue['title']}**\n\n"
                   f"作者: {issue['user']['login']}\n\n"
                   f"标签: {labels}\n\n"
-                  f"创建时间: {issue['created_at']}\n\n"
+                  f"创建时间: {created_time_bj}\n\n"
                   f"链接: {issue['html_url']}"
               )
 
