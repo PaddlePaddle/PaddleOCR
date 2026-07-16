@@ -44,7 +44,7 @@ ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/hpd-parsing-vllm:latest-nvidia
 
 The default entrypoint of the image starts the inference server automatically (see Section 2.1); by overriding the default entrypoint, the image can also be used as a local inference environment (see Section 3). There is no need to pull the image in advance; it will be pulled automatically on the first `docker run`.
 
-If you wish to use HPD-Parsing in an environment without internet access, use the offline image `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/hpd-parsing-vllm:latest-nvidia-gpu-offline` (image size approximately TODO GB; the online image is approximately TODO GB). The offline image has the model weights built in, so no internet connection is needed at startup. You need to pull the image on a machine with internet access and transfer it to the offline machine. For example:
+If you wish to use HPD-Parsing in an environment without internet access, use the offline image `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/hpd-parsing-vllm:latest-nvidia-gpu-offline` (image size approximately 24.5 GB; the online image is approximately 20.2 GB). The offline image has the model weights built in, so no internet connection is needed at startup. You need to pull the image on a machine with internet access and transfer it to the offline machine. For example:
 
 ```shell
 # Run on a machine with internet access

@@ -44,7 +44,7 @@ ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/hpd-parsing-vllm:latest-nvidia
 
 该镜像的默认入口为自动启动推理服务（用法见 2.1 节）；覆盖默认入口后也可以将其用作本地推理环境（见第 3 节）。无需提前拉取镜像，首次执行 `docker run` 时会自动拉取。
 
-如果您希望在无法连接互联网的环境中使用 HPD-Parsing，请使用离线版本镜像 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/hpd-parsing-vllm:latest-nvidia-gpu-offline`（镜像大小约为 TODO GB，在线版本镜像约为 TODO GB）。离线版本镜像内置模型权重，启动时无需连接互联网。您需要在可以联网的机器上拉取镜像，将镜像导入到离线机器。例如：
+如果您希望在无法连接互联网的环境中使用 HPD-Parsing，请使用离线版本镜像 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/hpd-parsing-vllm:latest-nvidia-gpu-offline`（镜像大小约为 24.5 GB，在线版本镜像约为 20.2 GB）。离线版本镜像内置模型权重，启动时无需连接互联网。您需要在可以联网的机器上拉取镜像，将镜像导入到离线机器。例如：
 
 ```shell
 # 在能够联网的机器上执行
