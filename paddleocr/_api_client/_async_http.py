@@ -153,9 +153,7 @@ class AsyncHTTPClient:
         )
 
         await self._ensure_session()
-        async with self._request(
-            self._session.post(self._jobs_url, data=form)
-        ) as resp:
+        async with self._request(self._session.post(self._jobs_url, data=form)) as resp:
             await self._raise_for_response(resp)
             data = await self._response_data(resp)
             return extract_job_id(data)
