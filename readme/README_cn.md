@@ -61,7 +61,14 @@
 
 ## 📣 最新动态
 
-### 🔥 2026.06.11: PaddleOCR 3.7.0 发布
+### 🔥 2026.07.22: HPD-Parsing 新增上线
+- **HPD-Parsing** 是面向高吞吐文档解析的轻量级视觉语言模型。它采用层级并行解码范式和渐进式多 token 预测（P-MTP），在公开基准上达到 4,752 tokens/s 的峰值吞吐，同时保持有竞争力的解析精度。
+- HPD-Parsing 基于定制版 vLLM 运行时，支持 OpenAI 兼容服务化调用和本地推理，适用于对推理效率和部署吞吐要求较高的文档解析场景。
+- 查看 [HPD-Parsing 使用教程](https://www.paddleocr.ai/latest/version3.x/pipeline_usage/HPD-Parsing.html)，了解环境准备、服务化部署与本地推理说明。
+
+<details>
+<summary><strong>2026.06.11: PaddleOCR 3.7.0 发布</strong></summary>
+
 - PP-OCRv6 核心亮点如下：
 
     - **精度全面提升**：medium 档相比 PP-OCRv5_server 检测精度提升 4.6%、识别精度提升 5.1%，以仅 34.5M 参数超越 Qwen3-VL-235B、GPT-5.5 等主流视觉语言大模型。
@@ -70,6 +77,8 @@
     - **推理速度更快**：medium 档 CPU OpenVINO 推理加速 5.2×，tiny 档 Apple M4 加速 6.1×，A100 上仅需 0.13s。
     - **三档模型覆盖全场景**：tiny（1.5M）/ small（7.7M）/ medium（34.5M）分别面向端侧/移动端/服务端部署。
     - **模型获取**：所有模型均可通过 [HuggingFace](https://huggingface.co/collections/PaddlePaddle/pp-ocrv6) 和 [ModelScope](https://www.modelscope.cn/collections/PaddlePaddle/PP-OCRv6) 获取。
+
+</details>
 
 <details>
 <summary><strong>2026.05.28: PaddleOCR 3.6.0 发布</strong></summary>
