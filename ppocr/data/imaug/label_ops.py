@@ -31,6 +31,7 @@ from collections import defaultdict
 
 from ppocr.utils.logging import get_logger
 from ppocr.data.imaug.vqa.augment import order_by_tbyx
+import sys; sys.setrecursionlimit(10000)
 
 
 class ClsLabelEncode(object):
@@ -1300,8 +1301,8 @@ class MultiLabelEncode(BaseRecLabelEncode):
             )
 
     def __call__(self, data):
-        data_ctc = copy.deepcopy(data)
-        data_gtc = copy.deepcopy(data)
+        data_ctc = {k: (v.copy() if hasattr(v, 'copy') else v) for k, v in data.items()}
+        data_gtc = {k: (v.copy() if hasattr(v, 'copy') else v) for k, v in data.items()}
         data_out = dict()
         data_out["img_path"] = data.get("img_path", None)
         data_out["image"] = data["image"]
