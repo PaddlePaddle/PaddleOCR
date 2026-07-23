@@ -157,6 +157,9 @@ class BCELoss(nn.Layer):
         self.reduction = reduction
 
     def forward(self, input, label, mask=None, weight=None, name=None):
+        if mask is not None:
+            input = input * mask
+            label = label * mask
         loss = F.binary_cross_entropy(input, label, reduction=self.reduction)
         return loss
 
