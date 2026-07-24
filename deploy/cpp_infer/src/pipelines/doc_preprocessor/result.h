@@ -27,6 +27,7 @@ public:
   void SaveToJson(const std::string &save_path) const override;
   static void DrawText(cv::Mat &img, const std::string &text, int x, int y,
                        int width);
+  DocPreprocessorPipelineResult Result() { return pipeline_result_; };
 
 private:
   DocPreprocessorPipelineResult pipeline_result_;
