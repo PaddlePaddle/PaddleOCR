@@ -1,3 +1,5 @@
+[![MCP Toplist](https://mcptoplist.com/badge/glama%2FPaddlePaddle%2FPaddleOCR.svg)](https://mcptoplist.com/server/glama%2FPaddlePaddle%2FPaddleOCR)
+
 
 <div align="center">
   <p>
