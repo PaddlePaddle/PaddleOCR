@@ -234,7 +234,7 @@ python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs
 | 语种 | 描述 | 缩写 | | 语种 | 描述 | 缩写 |
 | --- | --- | --- | ---|--- | --- | --- |
 |中文|Chinese & English|ch| |保加利亚文|Bulgarian |bg|
-|英文|English|en| |乌克兰文|Ukranian|uk|
+|英文|English|en| |乌克兰文|Ukrainian|uk|
 |法文|French|fr| |白俄罗斯文|Belarusian|be|
 |德文|German|german| |泰卢固文|Telugu |te|
 |日文|Japanese|japan| | 阿巴扎文 |Abaza | abq |

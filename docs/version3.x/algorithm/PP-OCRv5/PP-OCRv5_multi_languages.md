@@ -189,7 +189,7 @@ for res in result:
 | 克罗地亚文 | Croatian | hr | | 土耳其文 | Turkish | tr |
 | 乌兹别克文 | Uzbek | uz | | 拉丁文 | Latin | la |
 | 俄罗斯文 | Russian | ru | | 白俄罗斯文 | Belarusian | be |
-| 乌克兰文 | Ukranian | uk |  | 泰文 | Thai | th | 
+| 乌克兰文 | Ukrainian | uk |  | 泰文 | Thai | th |
 | 希腊文 | Greek | el | | 阿塞拜疆文 | Azerbaijani | az |
 | 库尔德文 | Kurdish | ku | |拉脱维亚文 | Latvian|lv |
 | 马耳他文 | Maltese | mt | |巴利文 | Pali| pi |

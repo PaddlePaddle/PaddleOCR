@@ -277,7 +277,7 @@ python3 tools/eval.py \
  Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.495
  Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = 0.818
  Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = 0.978
-[08/15 07:07:09] ppdet.engine INFO: Total sample number: 11245, averge FPS: 24.405059207157436
+[08/15 07:07:09] ppdet.engine INFO: Total sample number: 11245, average FPS: 24.405059207157436
 [08/15 07:07:09] ppdet.engine INFO: Best test bbox ap is 0.935.
 ```
 
