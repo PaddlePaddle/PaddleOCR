@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import warnings
+
 from .._utils.cli import (
     add_simple_inference_args,
     get_subcommand_args,
@@ -51,6 +53,8 @@ class SealRecognition(PaddleXPipelineWrapper):
         seal_rec_score_thresh=None,
         **kwargs,
     ):
+        # Check for known PaddleX bugs and warn users
+        self._check_paddlex_version()
 
         self._params = {
             "doc_orientation_classify_model_name": doc_orientation_classify_model_name,
@@ -80,6 +84,33 @@ class SealRecognition(PaddleXPipelineWrapper):
         }
         super().__init__(**kwargs)
 
+    def _check_paddlex_version(self):
+        """Check for known PaddleX bugs and warn users"""
+        try:
+            import paddlex
+            from packaging.version import parse
+
+            paddlex_version = parse(paddlex.__version__)
+
+            # Check for the multi-page PDF bug (fixed in commit bdcc1f7dc, not yet released)
+            if parse("3.2.0") <= paddlex_version <= parse("3.2.1"):
+                warnings.warn(
+                    f"\nDetected PaddleX version {paddlex.__version__} which contains a known bug "
+                    "that causes 'IndexError: list index out of range' when processing multi-page PDFs "
+                    "with seal recognition enabled.\n\n"
+                    "This bug has been fixed in PaddleX but not yet released. "
+                    "If you encounter this error, you have two options:\n"
+                    "1. Install the fixed version from GitHub:\n"
+                    "   pip install 'git+https://github.com/PaddlePaddle/PaddleX.git@release/3.2#egg=paddlex[ocr-core]'\n"
+                    "2. Process single-page PDFs only, or extract pages individually.\n\n"
+                    "For more details, see: https://github.com/PaddlePaddle/PaddleX/commit/bdcc1f7dc",
+                    UserWarning,
+                    stacklevel=3,
+                )
+        except (ImportError, AttributeError):
+            # PaddleX not installed yet or version not available
+            pass
+
     @property
     def _paddlex_pipeline_name(self):
         return "seal_recognition"
@@ -104,24 +135,43 @@ class SealRecognition(PaddleXPipelineWrapper):
         seal_rec_score_thresh=None,
         **kwargs,
     ):
-        return self.paddlex_pipeline.predict(
-            input,
-            use_doc_orientation_classify=use_doc_orientation_classify,
-            use_doc_unwarping=use_doc_unwarping,
-            use_layout_detection=use_layout_detection,
-            layout_det_res=layout_det_res,
-            layout_threshold=layout_threshold,
-            layout_nms=layout_nms,
-            layout_unclip_ratio=layout_unclip_ratio,
-            layout_merge_bboxes_mode=layout_merge_bboxes_mode,
-            seal_det_limit_side_len=seal_det_limit_side_len,
-            seal_det_limit_type=seal_det_limit_type,
-            seal_det_thresh=seal_det_thresh,
-            seal_det_box_thresh=seal_det_box_thresh,
-            seal_det_unclip_ratio=seal_det_unclip_ratio,
-            seal_rec_score_thresh=seal_rec_score_thresh,
-            **kwargs,
-        )
+        try:
+            yield from self.paddlex_pipeline.predict(
+                input,
+                use_doc_orientation_classify=use_doc_orientation_classify,
+                use_doc_unwarping=use_doc_unwarping,
+                use_layout_detection=use_layout_detection,
+                layout_det_res=layout_det_res,
+                layout_threshold=layout_threshold,
+                layout_nms=layout_nms,
+                layout_unclip_ratio=layout_unclip_ratio,
+                layout_merge_bboxes_mode=layout_merge_bboxes_mode,
+                seal_det_limit_side_len=seal_det_limit_side_len,
+                seal_det_limit_type=seal_det_limit_type,
+                seal_det_thresh=seal_det_thresh,
+                seal_det_box_thresh=seal_det_box_thresh,
+                seal_det_unclip_ratio=seal_det_unclip_ratio,
+                seal_rec_score_thresh=seal_rec_score_thresh,
+                **kwargs,
+            )
+        except IndexError as e:
+            # Check if this is the known multi-page PDF bug
+            if "list index out of range" in str(e):
+                import paddlex
+                from packaging.version import parse
+
+                paddlex_version = parse(paddlex.__version__)
+                if parse("3.2.0") <= paddlex_version <= parse("3.2.1"):
+                    raise RuntimeError(
+                        f"Encountered a known bug in PaddleX {paddlex.__version__} when processing multi-page PDFs "
+                        "with seal recognition.\n\n"
+                        "To fix this issue, please install the fixed version:\n"
+                        "  pip install 'git+https://github.com/PaddlePaddle/PaddleX.git@release/3.2#egg=paddlex[ocr-core]'\n\n"
+                        "Alternatively, process single-page PDFs only.\n\n"
+                        "For more details, see: https://github.com/PaddlePaddle/PaddleX/commit/bdcc1f7dc"
+                    ) from e
+            # Re-raise if it's a different error
+            raise
 
     def predict(
         self,
