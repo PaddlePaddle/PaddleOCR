@@ -29,6 +29,44 @@ _SUPPORTED_OCR_VERSIONS = ["PP-OCRv3", "PP-OCRv4", "PP-OCRv5"]
 
 
 class PPStructureV3(PaddleXPipelineWrapper):
+    """Document structure analysis pipeline (PP-StructureV3).
+
+    Parses complex documents into structured Markdown or JSON by combining
+    layout detection, OCR, table recognition, formula recognition, chart
+    recognition, and seal recognition sub-pipelines.
+
+    Args:
+        lang (str | None): Language code for OCR sub-pipelines (e.g.
+            ``"ch"``, ``"en"``).  Defaults to ``"ch"`` when ``None``.
+        ocr_version (str | None): PP-OCR version for text detection/
+            recognition models.  One of ``"PP-OCRv3"``, ``"PP-OCRv4"``,
+            ``"PP-OCRv5"``.
+        layout_detection_model_name (str | None): Name of the layout
+            detection model.
+        layout_detection_model_dir (str | None): Local directory for the
+            layout detection model.
+        use_doc_orientation_classify (bool | None): Enable document
+            orientation classification.
+        use_doc_unwarping (bool | None): Enable document unwarping.
+        use_textline_orientation (bool | None): Enable text-line orientation
+            classification.
+        use_seal_recognition (bool | None): Enable seal text recognition.
+        use_table_recognition (bool | None): Enable table structure
+            recognition.
+        use_formula_recognition (bool | None): Enable formula recognition.
+        use_chart_recognition (bool | None): Enable chart parsing.
+        use_region_detection (bool | None): Enable region detection.
+        **kwargs: Additional arguments forwarded to the base class (e.g.
+            ``device``, ``use_hpip``).
+
+    Example:
+        >>> from paddleocr import PPStructureV3
+        >>> pipeline = PPStructureV3()
+        >>> results = pipeline.predict("document.pdf")
+        >>> for res in results:
+        ...     print(res.markdown)
+    """
+
     def __init__(
         self,
         layout_detection_model_name=None,

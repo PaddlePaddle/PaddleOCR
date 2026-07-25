@@ -31,6 +31,7 @@ _DEFAULT_ENABLE_HPI = None
 
 
 def _merge_dicts(d1, d2):
+    """Recursively merge d2 into d1, with d2 values taking precedence."""
     res = d1.copy()
     for k, v in d2.items():
         if k in res and isinstance(res[k], dict) and isinstance(v, dict):
@@ -41,6 +42,7 @@ def _merge_dicts(d1, d2):
 
 
 def _to_builtin(obj):
+    """Recursively convert AttrDict and nested structures to plain Python dicts/lists."""
     if isinstance(obj, AttrDict):
         return {k: _to_builtin(v) for k, v in obj.items()}
     elif isinstance(obj, dict):
@@ -52,6 +54,25 @@ def _to_builtin(obj):
 
 
 class PaddleXPipelineWrapper(metaclass=abc.ABCMeta):
+    """Base class for PaddleOCR pipeline wrappers.
+
+    Subclasses wrap a PaddleX pipeline and expose a simplified Python API
+    with optional CLI support. Each subclass must declare
+    ``_paddlex_pipeline_name`` and ``get_cli_subcommand_executor``.
+
+    Args:
+        paddlex_config (str | dict | None): Path to a PaddleX pipeline YAML
+            config file, a pre-loaded config dict, or ``None`` to use the
+            default config for the pipeline.
+        **common_args: Common inference arguments forwarded to PaddleX (e.g.
+            ``device``, ``use_hpip``, ``use_tensorrt``).
+
+    Example:
+        >>> from paddleocr import PaddleOCR
+        >>> ocr = PaddleOCR(lang="en")
+        >>> results = ocr.predict("image.png")
+    """
+
     def __init__(
         self,
         *,
@@ -110,6 +131,12 @@ class PaddleXPipelineWrapper(metaclass=abc.ABCMeta):
 
 
 class PipelineCLISubcommandExecutor(CLISubcommandExecutor):
+    """Base class for pipeline CLI subcommand executors.
+
+    Registers a pipeline as a subcommand of the ``paddleocr`` CLI and handles
+    argument parsing and execution.
+    """
+
     @property
     @abc.abstractmethod
     def subparser_name(self):
