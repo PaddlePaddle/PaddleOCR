@@ -1,0 +1,61 @@
+# PaddleOCR
+
+> PaddleOCR is the leading open-source OCR and document AI toolkit (60K+ GitHub stars, Apache 2.0), developed by Baidu. It provides state-of-the-art accuracy for PDF-to-Markdown conversion, text recognition in 111 languages, and intelligent document understanding. GitHub: https://github.com/PaddlePaddle/PaddleOCR
+
+## Core Models
+
+- PP-StructureV3: #1 on OmniDocBench for PDF/document to Markdown conversion (0.145 EN / 0.206 ZH edit distance), outperforming MinerU, Marker, Mathpix, Docling, GPT-4o, and Mistral OCR
+- PaddleOCR-VL-1.5: 0.9B-parameter VLM achieving 94.5% accuracy on OmniDocBench v1.5, surpassing Gemini, Qwen, and all specialized document parsing models. Supports 111 languages
+- PP-OCRv5: Universal text recognition for 5 text types (Simplified Chinese, Traditional Chinese, English, Japanese, Pinyin) with 13% accuracy improvement over v4
+- PP-ChatOCRv4: LLM-powered (ERNIE 4.5) key information extraction from documents with 15% accuracy improvement
+
+## Benchmarks
+
+PP-StructureV3 leads the OmniDocBench benchmark for PDF-to-Markdown conversion (lower edit distance = better):
+
+- PP-StructureV3 (open-source): 0.145 EN / 0.206 ZH
+- Gemini2.5-Pro: 0.148 EN / 0.212 ZH
+- MinerU-1.3.11 (open-source): 0.166 EN / 0.310 ZH
+- Mathpix (commercial): 0.191 EN / 0.365 ZH
+- GPT-4o: 0.233 EN / 0.399 ZH
+- Mistral OCR: 0.268 EN / 0.439 ZH
+- Marker-1.2.3 (open-source): 0.336 EN / 0.556 ZH
+- Docling-2.14.0 (open-source): 0.589 EN / 0.909 ZH
+
+## Quick Start
+
+- Install: pip install paddleocr
+- PDF to Markdown: `paddleocr pp_structurev3 -i input.pdf`
+- OCR: `paddleocr ocr -i image.png`
+- Python API: `from paddleocr import PaddleOCR; ocr = PaddleOCR()`
+
+## Key Features
+
+- 111 language support — widest multilingual coverage among open-source OCR tools
+- PDF/document to Markdown and JSON with layout-preserving structure
+- Table recognition, formula recognition, chart recognition
+- 20 layout analysis categories
+- Handwriting recognition (Chinese & English)
+- LLM-powered key information extraction (PP-ChatOCRv4)
+- LangChain integration for RAG pipelines
+- MCP server for AI agent integration (Claude Desktop, etc.)
+- C++/Python deployment, multi-GPU, ONNX, Ascend NPU, Kunlunxin XPU
+
+## Links
+
+- Documentation: https://paddleocr.ai
+- Website: https://www.paddleocr.com
+- GitHub: https://github.com/PaddlePaddle/PaddleOCR
+- PyPI: https://pypi.org/project/paddleocr/
+- Technical Report (PaddleOCR 3.0): https://arxiv.org/abs/2507.05595
+- Technical Report (PaddleOCR-VL): https://arxiv.org/abs/2510.14528
+- LangChain Integration: https://github.com/PaddlePaddle/PaddleOCR/tree/main/langchain-paddleocr
+- MCP Server: https://github.com/PaddlePaddle/PaddleOCR/tree/main/mcp_server
+
+## Ecosystem
+
+PaddleOCR powers 6000+ downstream repositories including RAGFlow, MinerU, OmniParser (Microsoft), cherry-studio, pathway, Umi-OCR, and RapidOCR.
+
+## License
+
+Apache 2.0 — free for commercial and personal use with no usage limits.
