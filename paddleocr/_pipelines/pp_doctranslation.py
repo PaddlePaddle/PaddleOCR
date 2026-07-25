@@ -18,6 +18,7 @@ from .._utils.cli import (
 )
 from .._utils.logging import logger
 from .base import PaddleXPipelineWrapper, PipelineCLISubcommandExecutor
+from .llm_config import get_minimax_chat_bot_config
 from .utils import create_config_from_structure
 
 
@@ -906,14 +907,26 @@ class PPDocTranslationCLISubcommandExecutor(PipelineCLISubcommandExecutor):
             type=str,
             help="Configuration for the embedding model.",
         )
+        subparser.add_argument(
+            "--minimax_api_key",
+            type=str,
+            help="API key for MiniMax Cloud. When set, uses MiniMax as the "
+            "LLM provider for document translation instead of Qianfan. "
+            "Can also be set via the MINIMAX_API_KEY environment variable.",
+        )
 
     def execute_with_args(self, args):
         params = get_subcommand_args(args)
         input = params.pop("input")
         target_language = params.pop("target_language")
         save_path = params.pop("save_path")
+        minimax_api_key = params.pop("minimax_api_key")
         qianfan_api_key = params.pop("qianfan_api_key")
-        if qianfan_api_key is not None:
+        if minimax_api_key is not None:
+            params["chat_bot_config"] = get_minimax_chat_bot_config(
+                minimax_api_key
+            )
+        elif qianfan_api_key is not None:
             params["chat_bot_config"] = {
                 "module_name": "chat_bot",
                 "model_name": "ernie-3.5-8k",
