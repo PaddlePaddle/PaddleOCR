@@ -109,7 +109,7 @@ PaddleOCR提供的可下载模型包括`推理模型`、`训练模型`、`预训
 | 模型名称                      | 模型简介 | 配置文件 | 推理模型大小 | 下载地址  |
 | ---------- | ------------- | ------------- | ------------ | -- |
 | ch_ppocr_mobile_slim_v2.0_cls | slim量化版模型，对检测到的文本行文字角度分类 | [cls_mv3.yml](../../../configs/cls/cls_mv3.yml) | 2.1M         | [推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_slim_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_rec_slim_infer.tar) / [nb模型](https://paddleocr.bj.bcebos.com/PP-OCRv2/lite/ch_ppocr_mobile_v2.0_cls_infer_opt.nb) |
-| ch_ppocr_mobile_v2.0_cls      | 原始分类器模型，对检测到的文本行文字角度分类 | [cls_mv3.yml](../../../../configs/cls/cls_mv3.yml) | 1.38M        | [推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_train.tar)             |
+| ch_ppocr_mobile_v2.0_cls      | 原始分类器模型，对检测到的文本行文字角度分类 | [cls_mv3.yml](../../../configs/cls/cls_mv3.yml) | 1.38M        | [推理模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar) / [训练模型](https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_train.tar)             |
 
 ## 4. Paddle-Lite 模型
 

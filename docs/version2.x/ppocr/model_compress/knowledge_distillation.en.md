@@ -210,7 +210,7 @@ Architecture:
 
 When the model is finally trained, it contains 3 sub-networks: `Teacher`, `Student`, `Student2`.
 
-The specific implementation code of the `DistillationModel` class can refer to [distillation_model.py](../../ppocr/modeling/architectures/distillation_model.py).
+The specific implementation code of the `DistillationModel` class can refer to [distillation_model.py](../../../../ppocr/modeling/architectures/distillation_model.py).
 The final model output is a dictionary, the key is the name of all the sub-networks, for example, here are `Student` and `Teacher`, and the value is the output of the corresponding sub-network,
 which can be `Tensor` (only the last layer of the network is returned) and `dict` (also returns the characteristic information in the middle).
 In the recognition task, in order to add more loss functions and ensure the scalability of the distillation method, the output of each sub-network is saved as a `dict`, which contains the sub-module output.
