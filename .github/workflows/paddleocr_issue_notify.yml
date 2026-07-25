@@ -1,0 +1,109 @@
+name: RuLiu Notify New Issue
+
+on:
+  issues:
+    types: [opened]
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Send RuLiu notification
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          REPOSITORY: ${{ github.repository }}
+          ISSUE_JSON: ${{ toJson(github.event.issue) }}
+          RULIU_WEBHOOK: ${{ secrets.RULIU_WEBHOOK }}
+          RULIU_GROUP_ID: ${{ secrets.RULIU_GROUP_ID }}
+        run: |
+          python3 <<'PY'
+          import json
+          import os
+          from datetime import datetime, timedelta, timezone
+          import urllib.error
+          import urllib.parse
+          import urllib.request
+
+          event_name = os.environ["EVENT_NAME"]
+
+
+          def to_beijing_time(iso_timestamp):
+              try:
+                  dt = datetime.fromisoformat(iso_timestamp.replace("Z", "+00:00"))
+              except ValueError:
+                  return iso_timestamp
+              return dt.astimezone(timezone(timedelta(hours=8))).strftime("%Y-%m-%d %H:%M:%S")
+
+          if event_name == "workflow_dispatch":
+              content = (
+                  "### PaddleOCR Issue 通知测试\n\n"
+                  "GitHub Actions到如流机器人的链路测试。"
+              )
+          else:
+              issue = json.loads(os.environ["ISSUE_JSON"])
+              labels = ", ".join(label["name"] for label in issue.get("labels", [])) or "无"
+              created_time_bj = to_beijing_time(issue["created_at"])
+
+              content = (
+                  "### PaddleOCR 新 Issue\n\n"
+                  f"**#{issue['number']} {issue['title']}**\n\n"
+                  f"作者: {issue['user']['login']}\n\n"
+                  f"标签: {labels}\n\n"
+                  f"创建时间: {created_time_bj}\n\n"
+                  f"链接: {issue['html_url']}"
+              )
+
+          header = {}
+          group_id = os.getenv("RULIU_GROUP_ID", "").strip()
+          if group_id:
+              header["toid"] = [int(group_id)]
+
+          payload = {
+              "message": {
+                  "header": header,
+                  "body": [
+                      {
+                          "type": "MD",
+                          "content": content,
+                      }
+                  ],
+              }
+          }
+
+          webhook = os.environ["RULIU_WEBHOOK"].strip()
+          parsed_webhook = urllib.parse.urlparse(webhook)
+          if parsed_webhook.scheme not in {"http", "https"} or not parsed_webhook.netloc:
+              raise SystemExit(
+                  "RULIU_WEBHOOK must be a complete URL, such as "
+                  "https://example.com/path?access_token=xxx"
+              )
+
+          print(
+              "Sending RuLiu request to "
+              f"{parsed_webhook.scheme}://{parsed_webhook.netloc}{parsed_webhook.path}"
+          )
+
+          req = urllib.request.Request(
+              webhook,
+              data=json.dumps(payload, ensure_ascii=False).encode("utf-8"),
+              headers={"Content-Type": "application/json;charset=utf-8"},
+              method="POST",
+          )
+
+          try:
+              with urllib.request.urlopen(req, timeout=30) as resp:
+                  body = resp.read().decode("utf-8", errors="replace")
+                  print(f"RuLiu response: HTTP {resp.status} {body}")
+          except urllib.error.HTTPError as exc:
+              print(exc.read().decode("utf-8", errors="replace"))
+              raise
+          except urllib.error.URLError as exc:
+              raise SystemExit(
+                  "Could not connect to RULIU_WEBHOOK. Check whether the "
+                  f"domain is correct and publicly resolvable from GitHub Actions: {exc}"
+              )
+          PY
