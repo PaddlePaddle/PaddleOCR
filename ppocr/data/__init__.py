@@ -19,9 +19,6 @@ from __future__ import unicode_literals
 
 import os
 import sys
-import numpy as np
-import skimage
-import paddle
 import signal
 import random
 
