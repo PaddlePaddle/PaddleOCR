@@ -30,6 +30,11 @@ Both examples above use 4 GPUs (numbered 0, 1, 2, 3) to perform parallel inferen
 
 When specifying multiple devices, the inference interface remains consistent with that of single-device usage. Please refer to the production line usage tutorial to check whether a specific production line supports multiple inference devices.
 
+
+> **Note:** A pipeline instance is not thread-safe.
+> Do not call `predict()` or `predict_iter()` concurrently on the same instance.
+> For thread-based parallelism, create one pipeline instance per worker (each instance loads its own copy of the models), or protect calls to a shared instance with a lock.
+
 ## Example of Multi-Process Parallel Inference
 
 Beyond PaddleOCR's built-in multi-device parallel inference capability, users can also implement parallelism by wrapping PaddleOCR pipeline API calls themselves according to their specific scenario, with a view to achieving a better speedup. Below is an example of using Python multiprocessing to perform multi-GPU, multi-instance parallel processing on files in an input directory.
