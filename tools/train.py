@@ -185,7 +185,7 @@ def main(config, device, logger, vdl_writer):
             os.remove(
                 os.path.join(config["Global"]["save_model_dir"], "train_result.json")
             )
-        except:
+        except OSError:
             pass
     if use_amp:
         AMP_RELATED_FLAGS_SETTING = {}
