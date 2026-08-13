@@ -269,7 +269,7 @@ PaddleOCR 的發展離不開社區貢獻！💗衷心感謝所有開發者、合
 
 <div align="center">
   <p>
-      <img width="800" src="https://api.star-history.com/svg?repos=PaddlePaddle/PaddleOCR&type=Date" alt="Star-history">
+      <img width="800" src="https://star-history.dera.page/svg?repos=PaddlePaddle/PaddleOCR&type=Date" alt="Star-history">
   </p>
 </div>
 

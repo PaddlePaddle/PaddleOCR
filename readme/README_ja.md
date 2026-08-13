@@ -270,7 +270,7 @@ PaddleOCRが今日あるのは、素晴らしいコミュニティのおかげ�
 
 <div align="center">
   <p>
-      <img width="800" src="https://api.star-history.com/svg?repos=PaddlePaddle/PaddleOCR&type=Date" alt="Star履歴">
+      <img width="800" src="https://star-history.dera.page/svg?repos=PaddlePaddle/PaddleOCR&type=Date" alt="Star履歴">
   </p>
 </div>
 

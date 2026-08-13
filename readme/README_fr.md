@@ -269,7 +269,7 @@ PaddleOCR n'en serait pas là aujourd'hui sans son incroyable communauté ! 💗
 
 <div align="center">
   <p>
-      <img width="800" src="https://api.star-history.com/svg?repos=PaddlePaddle/PaddleOCR&type=Date" alt="Star-history">
+      <img width="800" src="https://star-history.dera.page/svg?repos=PaddlePaddle/PaddleOCR&type=Date" alt="Star-history">
   </p>
 </div>
 

@@ -270,7 +270,7 @@ PaddleOCR가 오늘날의 모습을 갖추기까지 놀라운 커뮤니티의 �
 
 <div align="center">
   <p>
-      <img width="800" src="https://api.star-history.com/svg?repos=PaddlePaddle/PaddleOCR&type=Date" alt="스타 히스토리">
+      <img width="800" src="https://star-history.dera.page/svg?repos=PaddlePaddle/PaddleOCR&type=Date" alt="스타 히스토리">
   </p>
 </div>
 
