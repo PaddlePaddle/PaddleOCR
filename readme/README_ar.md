@@ -271,7 +271,7 @@
 
 <div align="center">
   <p>
-      <img width="800" src="https://api.star-history.com/svg?repos=PaddlePaddle/PaddleOCR&type=Date" alt="تاريخ النجوم">
+      <img width="800" src="https://star-history.dera.page/svg?repos=PaddlePaddle/PaddleOCR&type=Date" alt="تاريخ النجوم">
   </p>
 </div>
 

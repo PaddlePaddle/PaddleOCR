@@ -269,7 +269,7 @@ PaddleOCR не достиг бы своего нынешнего уровня б
 
 <div align="center">
   <p>
-      <img width="800" src="https://api.star-history.com/svg?repos=PaddlePaddle/PaddleOCR&type=Date" alt="Star-history">
+      <img width="800" src="https://star-history.dera.page/svg?repos=PaddlePaddle/PaddleOCR&type=Date" alt="Star-history">
   </p>
 </div>
 
