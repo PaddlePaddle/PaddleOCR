@@ -46,6 +46,15 @@ await PaddleOCR.create({
 });
 ```
 
+`ocrVersion: "PP-OCRv6"` maps supported `lang` values to the built-in **PP-OCRv6_small** det/rec pair. For **PP-OCRv6_tiny**, pass explicit model names:
+
+```js
+await PaddleOCR.create({
+  textDetectionModelName: "PP-OCRv6_tiny_det",
+  textRecognitionModelName: "PP-OCRv6_tiny_rec"
+});
+```
+
 **Model selection** — explicit model names:
 
 ```js

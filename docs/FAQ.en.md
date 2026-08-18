@@ -36,7 +36,7 @@ Verify GPU availability: `python -c "import paddle; print(paddle.is_compiled_wit
 #### Q: How to run on Windows or Mac?
 
 **A**: PaddleOCR has completed adaptation to Windows and MAC systems. Two points should be noted during operation:
-    1. In [Quick installation](./installation_en.md), if you do not want to install docker, you can skip the first step and start with the second step.
+    1. In [Quick installation](./version3.x/installation.en.md), if you do not want to install docker, you can skip the first step and start with the second step.
     2. When downloading the inference model, if wget is not installed, you can directly click the model link or copy the link address to the browser to download, then extract and place it in the corresponding directory.
 
 ## 2. Model Usage and Configuration

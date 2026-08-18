@@ -37,16 +37,16 @@
 ### 📄 지능형 문서 파싱 (LLM 지원)
 > *복잡한 시각 자료를 LLM 시대에 맞는 구조화된 데이터로 변환합니다.*
 
-* **최첨단 문서 VLM**: 문서 파싱을 위한 업계 최고의 경량 비전-언어 모델인 **PaddleOCR-VL-1.5 (0.9B)**를 탑재하였습니다. **왜곡, 스캔, 화면 촬영, 조명, 기울어진 문서**라는 5대 "실제 환경" 난제에서 복잡한 문서 파싱에 탁월하며, **Markdown** 및 **JSON** 형식의 구조화된 출력을 지원합니다.
+* **최첨단 문서 VLM**: 문서 파싱을 위한 업계 최고의 경량 비전-언어 모델인 **PaddleOCR-VL-1.6 (0.9B)**를 탑재하였습니다. OmniDocBench v1.6에서 96.3% 정확도를 달성했으며, 텍스트·수식·표 인식에서 업계를 선도합니다. 고문서, 희귀 문자, 인장, 차트 등 다양한 시나리오에서의 성능도 크게 향상되었으며, **Markdown** 및 **JSON** 형식의 구조화된 출력을 지원합니다.
 * **구조 인식 변환**: **PP-StructureV3**를 기반으로 복잡한 PDF와 이미지를 **Markdown** 또는 **JSON**으로 원활하게 변환합니다. PaddleOCR-VL 시리즈 모델과 달리 표 셀 좌표, 텍스트 좌표 등 더욱 세밀한 좌표 정보를 제공합니다.
 * **상용 수준의 효율성**: 초소형 모델로 상용 등급의 정확도를 달성합니다. 공개 벤치마크에서 다수의 비공개 솔루션을 능가하면서도 엣지/클라우드 배포에 적합한 자원 효율성을 유지합니다.
 
 ### 🔍 범용 텍스트 인식 (장면 OCR)
 > *고속 다국어 텍스트 탐지의 글로벌 표준.*
 
-* **100개 이상의 언어 지원**: 방대한 글로벌 언어 라이브러리를 기본 지원합니다. **PP-OCRv5** 단일 모델 솔루션은 다국어 혼합 문서(중국어, 영어, 일본어, 병음 등)를 원활하게 처리합니다.
+* **100개 이상의 언어 지원**: 방대한 글로벌 언어 라이브러리를 기본 지원합니다. **PP-OCRv6**는 단일 모델로 50개 언어(중국어, 영어, 일본어 및 46개 라틴 언어)를 통합 지원합니다.
 * **복잡한 요소 처리**: 표준 텍스트 인식을 넘어 신분증, 거리 풍경, 도서, 산업 부품 등 다양한 환경에서의 **자연 장면 텍스트 탐지**를 지원합니다.
-* **성능 도약**: PP-OCRv5는 이전 버전 대비 **13% 정확도 향상**을 달성하면서도 PaddleOCR의 상징인 "극한 효율성"을 유지합니다.
+* **성능 도약**: PP-OCRv6는 PP-OCRv5 대비 검출 정확도 **+4.6%**, 인식 정확도 **+5.1%** 향상을 달성하며, 주류 비전 언어 모델을 능가합니다. CPU 추론 5.2배 가속.
 
 <div align="center">
   <p>
@@ -62,15 +62,49 @@
 
 ## 📣 최근 업데이트
 
-### 🔥 PaddleOCR v3.5.0 출시: 더 유연한 추론 백엔드와 더 풍부한 문서 출력
+### 🔥 2026.07.22: HPD-Parsing 사용 가능
+- **HPD-Parsing** 은 높은 처리량의 문서 분석을 위해 설계된 경량 비전-언어 모델입니다. 계층적 병렬 디코딩 패러다임과 Progressive Multi-Token Prediction(P-MTP)을 적용하여, 경쟁력 있는 분석 정확도를 유지하면서 공개 벤치마크에서 최대 4,752 tokens/s 처리량을 달성합니다.
+- HPD-Parsing은 맞춤형 vLLM 런타임을 통해 OpenAI 호환 서빙과 로컬 추론을 모두 지원하며, 추론 효율과 배포 처리량 요구가 높은 문서 분석 시나리오에 적합합니다.
+- 환경 설정, 서빙, 로컬 추론 방법은 [HPD-Parsing 사용 튜토리얼](https://www.paddleocr.ai/latest/en/version3.x/pipeline_usage/HPD-Parsing.html)을 참고하세요.
+
+<details>
+<summary><strong>2026.06.11: PaddleOCR 3.7.0 출시</strong></summary>
+
+- PP-OCRv6 주요 특징:
+
+    - **정확도 향상**: medium 티어가 PP-OCRv5_server 대비 검출 +4.6%, 인식 +5.1% 달성, 34.5M 파라미터만으로 주류 VLM(Qwen3-VL-235B, GPT-5.5)을 능가.
+    - **50개 언어 통합 지원**: 단일 모델로 중국어, 영어, 일본어 및 46개 라틴 언어를 지원 — 모델 전환 불필요.
+    - **전문 시나리오 강화**: 디지털 디스플레이, 도트 매트릭스 문자, 타이어 인쇄, 산업용 문자 인식 대폭 향상.
+    - **빠른 추론**: CPU 5.2배 가속(OpenVINO), Apple M4 6.1배(tiny), A100 GPU 0.13초.
+    - **전 시나리오 3단계 모델**: tiny(1.5M) / small(7.7M) / medium(34.5M)으로 엣지부터 서버까지 대응.
+    - **모델 다운로드**: 모든 모델은 [HuggingFace](https://huggingface.co/collections/PaddlePaddle/pp-ocrv6) 및 [ModelScope](https://www.modelscope.cn/collections/PaddlePaddle/PP-OCRv6)에서 제공됩니다.
+
+</details>
+
+<details>
+<summary><strong>2026.05.28: PaddleOCR 3.6.0 출시</strong></summary>
+
+- PaddleOCR-VL-1.6 주요 특징:
+
+    - **새로운 SOTA 정확도**: OmniDocBench v1.6에서 96.3%, OmniDocBench v1.5 및 Real5-OmniDocBench에서도 새로운 SOTA.
+    - **종합 강화**: 테이블, 고문서, 희귀 문자 인식 대폭 향상.
+    - **원활한 마이그레이션**: PaddleOCR-VL-1.5와 완전 호환 아키텍처.
+    - **지금 사용해보기**: [HuggingFace](https://huggingface.co/PaddlePaddle/PaddleOCR-VL-1.6) 또는 [공식 사이트](https://www.paddleocr.com).
+
+</details>
+<details>
+<summary><strong>2026.04.21: PaddleOCR 3.5.0 출시</strong></summary>
+
 * **유연한 추론 백엔드 전환**: Paddle 정적 그래프, Paddle 동적 그래프, Transformers 사이를 원활하게 전환할 수 있습니다. Hugging Face 생태계에 깊이 통합되었으며, 주요 20개 모델이 Transformers를 추론 백엔드로 지원합니다.
 * **Office 문서를 Markdown으로 변환**: Word, Excel, PowerPoint 등 일반적인 문서 형식을 Markdown으로 변환할 수 있습니다.
 * **분석 결과 DOCX 내보내기**: `PaddleOCR-VL` 시리즈, `PP-StructureV3`, `PP-DocTranslation`이 이제 분석 결과를 DOCX로 내보내 Microsoft Word에서 편리하게 확인하고 편집할 수 있습니다.
 * **공식 브라우저 추론 SDK**: 공식 브라우저 추론 SDK `PaddleOCR.js`를 출시하여 브라우저에서 `PP-OCRv5`를 실행할 수 있습니다.
 
+</details>
+
 <details>
 <summary><strong>2026.01.29: PaddleOCR 3.4.0 출시</strong></summary>
-* **PaddleOCR-VL-1.5 (최첨단 0.9B VLM)**: 문서 파싱을 위한 최신 플래그십 모델이 출시되었습니다!
+* PaddleOCR-VL-1.5 (최첨단 0.9B VLM): 문서 파싱을 위한 최신 플래그십 모델이 출시되었습니다!
     * **OmniDocBench에서 94.5% 정확도**: 최상위 범용 대규모 모델 및 전문 문서 파서를 능가합니다.
     * **실제 환경 강건성**: 비정형 형태 위치 지정을 위한 **PP-DocLayoutV3** 알고리즘을 최초 도입하여 *기울기, 왜곡, 스캔, 조명, 화면 촬영*이라는 5가지 까다로운 시나리오를 정복합니다.
     * **기능 확장**: **인감 인식**, **텍스트 탐지**를 지원하며, **111개 언어**(중국 티베트 문자 및 벵골어 포함)로 확장되었습니다.
@@ -131,8 +165,6 @@
 
 [변경 이력](https://paddlepaddle.github.io/PaddleOCR/latest/en/update/update.html)
 
-</details>
-
 
 ## 🚀 빠른 시작
 
@@ -152,10 +184,10 @@ PaddleOCR 공식 웹사이트에서는 별도 설정 없이 클릭 한 번으로
 
 ## 🧩 추가 기능
 
-- 모델을 ONNX 형식으로 변환: [ONNX 모델 획득](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/obtaining_onnx_models.html).
-- OpenVINO, ONNX Runtime, TensorRT 등의 엔진을 사용한 추론 가속 또는 ONNX 형식 모델을 사용한 추론: [고성능 추론](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/high_performance_inference.html).
+- 모델을 ONNX 형식으로 변환: [ONNX 모델 획득](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/inference_deployment/others/obtaining_onnx_models.html).
+- OpenVINO, ONNX Runtime, TensorRT 등의 엔진을 사용한 추론 가속 또는 ONNX 형식 모델을 사용한 추론: [고성능 추론](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/inference_deployment/local_inference/high_performance_inference.html).
 - 다중 GPU 및 다중 프로세스를 사용한 추론 가속: [파이프라인 병렬 추론](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/pipeline_usage/instructions/parallel_inference.html).
-- PaddleOCR를 C++, C#, Java 등으로 작성된 애플리케이션에 통합: [서빙](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/deployment/serving.html).
+- PaddleOCR를 C++, C#, Java 등으로 작성된 애플리케이션에 통합: [서빙](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/inference_deployment/serving/serving.html).
 
 ## 🔄 실행 결과 빠른 미리보기
 

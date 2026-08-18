@@ -35,6 +35,8 @@ The version correspondence between PaddleOCR, PaddleX, and the PaddlePaddle fram
 | `3.3.x` | `>= 3.3.0, < 3.4.0` | `>= 3.0.0` |
 | `3.4.x` | `>= 3.4.0, < 3.5.0` | `>= 3.0.0` |
 | `3.5.x` | `>= 3.5.0, < 3.6.0` | `>= 3.0.0` |
+| `3.6.x` | `>= 3.6.0, < 3.7.0` | `>= 3.0.0` |
+| `3.7.x` | `>= 3.7.0, < 3.8.0` | `>= 3.0.0` |
 
 ## 2. Correspondence Between PaddleOCR Pipelines and PaddleX Pipeline Registration Names
 
@@ -51,6 +53,7 @@ The version correspondence between PaddleOCR, PaddleX, and the PaddlePaddle fram
 | PP-DocTranslation | `PP-DocTranslation` |
 | PaddleOCR-VL | `PaddleOCR-VL` |
 | PaddleOCR-VL-1.5 | `PaddleOCR-VL-1.5` |
+| PaddleOCR-VL-1.6 | `PaddleOCR-VL-1.6` |
 
 ## 3. Using PaddleX Pipeline Configuration Files
 

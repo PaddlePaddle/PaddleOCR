@@ -1,8 +1,8 @@
-# PaddleOCR-VL-1.5 High-Performance Service Deployment
+# PaddleOCR-VL High-Performance Serving
 
 [简体中文](README.md)
 
-This directory provides a high-performance service deployment solution for PaddleOCR-VL-1.5 with concurrent request processing support.
+This directory provides a high-performance service deployment solution for the **PaddleOCR-VL series** with concurrent request processing support. It applies to VL pipeline releases such as `PaddleOCR-VL`, `PaddleOCR-VL-1.5`, and `PaddleOCR-VL-1.6`.
 
 > This solution currently only supports NVIDIA GPUs. Support for other inference devices is still being developed.
 
@@ -15,8 +15,8 @@ Client → FastAPI Gateway → Triton Server → vLLM Server
 | Component       | Description                                                                                                                 |
 | -----------------| -----------------------------------------------------------------------------------------------------------------------------|
 | FastAPI Gateway | Unified access point, simplified client calls, concurrency control                                                          |
-| Triton Server   | layout analysis model (PP-DocLayoutV3) and pipeline orchestration; model management, dynamic batching, inference scheduling |
-| vLLM Server     | VLM (PaddleOCR-VL-1.5), continuous batching inference                                                                       |
+| Triton Server   | Layout analysis model (such as PP-DocLayoutV3) and pipeline orchestration; model management, dynamic batching, inference scheduling |
+| vLLM Server     | VLM, continuous batching inference                                                                                            |
 
 **Triton Models:**
 
@@ -28,7 +28,7 @@ Client → FastAPI Gateway → Triton Server → vLLM Server
 ## Requirements
 
 - x64 CPU
-- NVIDIA GPU, Compute Capability >= 8.0 and < 12.0
+- NVIDIA GPU, Compute Capability >= 8.0 and < 10.0
 - NVIDIA driver supporting CUDA 12.6
 - Docker >= 19.03
 - Docker Compose >= 2.0
@@ -45,8 +45,12 @@ cd PaddleOCR/deploy/paddleocr_vl_docker/hps
 2. Prepare necessary files:
 
 ```bash
+cp .env.example .env
+# Edit HPS_PIPELINE_NAME in .env if needed
 bash prepare.sh
 ```
+
+`prepare.sh` downloads the high-stability serving SDK for the selected PaddleOCR-VL release and writes the Triton pipeline config.
 
 3. Start the services:
 
@@ -59,7 +63,7 @@ The above command will start 3 containers in sequence:
 | Service | Description | Port |
 |---------|-------------|------|
 | `paddleocr-vl-api` | FastAPI gateway (external entry point) | 8080 |
-| `paddleocr-vl-tritonserver` | Triton inference server | 8000 (internal) |
+| `paddleocr-vl-pipeline` | Triton inference server running the pipeline | 8000 (internal) |
 | `paddleocr-vlm-server` | vLLM-based VLM inference service | 8080 (internal) |
 
 > The first startup will automatically download and build images, which takes longer. Subsequent startups will use local images and start faster.
@@ -80,17 +84,39 @@ You can also set these as environment variables directly instead of using the `.
 export HPS_MAX_CONCURRENT_INFERENCE_REQUESTS=8
 ```
 
+#### Pipeline and SDK Configuration
+
+Use the following variables to choose a release from the PaddleOCR-VL series. After changing them, rerun `prepare.sh` and rebuild the images:
+
+This solution reuses the PaddleX [High-Stability Serving](https://paddlepaddle.github.io/PaddleX/latest/en/pipeline_deploy/serving.html#2-high-stability-serving) SDK as the base Triton model repository and client dependency, and adds a PaddleOCR-VL-specific FastAPI gateway and vLLM service orchestration on top.
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `HPS_PIPELINE_NAME` | `PaddleOCR-VL-1.6` | Pipeline name |
+| `HPS_PADDLEX_VERSION` | `3.6` | PaddleX version (major.minor only, e.g. `3.6`). Drives both the Triton base image tag (`paddlex${HPS_PADDLEX_VERSION}-gpu`) and the SDK release directory (`v${HPS_PADDLEX_VERSION}`), keeping them in sync |
+| `HPS_SDK_DIR` | `paddlex_hps_PaddleOCR-VL-1.6_sdk` | Extracted SDK directory, following `paddlex_hps_${HPS_PIPELINE_NAME}_sdk` |
+
+Common examples:
+
+| Target release | `HPS_PIPELINE_NAME` | `HPS_SDK_DIR` |
+|----------------|-----------------|---------------|
+| PaddleOCR-VL-1.6 | `PaddleOCR-VL-1.6` | `paddlex_hps_PaddleOCR-VL-1.6_sdk` |
+| PaddleOCR-VL-1.5 | `PaddleOCR-VL-1.5` | `paddlex_hps_PaddleOCR-VL-1.5_sdk` |
+| PaddleOCR-VL (v1) | `PaddleOCR-VL` | `paddlex_hps_PaddleOCR-VL_sdk` |
+
+#### Gateway and Device
+
 | Variable | Default | Description |
 |----------|---------|-------------|
 | `HPS_MAX_CONCURRENT_INFERENCE_REQUESTS` | 16 | Max concurrent inference requests (layout parsing) |
 | `HPS_MAX_CONCURRENT_NON_INFERENCE_REQUESTS` | 64 | Max concurrent non-inference requests (page restructuring) |
 | `HPS_INFERENCE_TIMEOUT` | 600 | Request timeout in seconds |
 | `HPS_HEALTH_CHECK_TIMEOUT` | 5 | Health check timeout in seconds |
-| `HPS_VLM_URL` | http://paddleocr-vlm-server:8080 | VLM server URL (for health checks) |
+| `HPS_VLM_URL` | http://paddleocr-vlm-server:8080 | VLM server URL |
 | `HPS_LOG_LEVEL` | INFO | Log level (DEBUG, INFO, WARNING, ERROR) |
 | `HPS_FILTER_HEALTH_ACCESS_LOG` | true | Whether to filter health check access logs |
-| `UVICORN_WORKERS` | 4 | Number of gateway worker processes |
-| `DEVICE_ID` | 0 | Inference device ID to use |
+| `HPS_UVICORN_WORKERS` | 4 | Number of gateway worker processes |
+| `HPS_DEVICE_ID` | 0 | Inference device ID to use |
 
 ### Pipeline Configuration
 
@@ -101,6 +127,8 @@ To adjust pipeline configurations (such as model path, batch size, deployment de
 ### Document Parsing
 
 Please refer to the Client-Side Invocation section in the [PaddleOCR-VL Usage Tutorial](https://github.com/PaddlePaddle/PaddleOCR/blob/main/docs/version3.x/pipeline_usage/PaddleOCR-VL.en.md).
+
+The service accepts PDF or image files (including TIFF; multi-page TIFF is processed page by page—use `fileType=1`).
 
 ### Health Checks
 
@@ -133,7 +161,7 @@ The gateway controls concurrency for inference and non-inference operations inde
 # .env
 HPS_MAX_CONCURRENT_INFERENCE_REQUESTS=32
 HPS_MAX_CONCURRENT_NON_INFERENCE_REQUESTS=128
-UVICORN_WORKERS=8
+HPS_UVICORN_WORKERS=8
 ```
 
 **Low-latency configuration example:**
@@ -143,7 +171,7 @@ UVICORN_WORKERS=8
 HPS_MAX_CONCURRENT_INFERENCE_REQUESTS=8
 HPS_MAX_CONCURRENT_NON_INFERENCE_REQUESTS=32
 HPS_INFERENCE_TIMEOUT=300
-UVICORN_WORKERS=2
+HPS_UVICORN_WORKERS=2
 ```
 
 ### Worker Processes
@@ -188,7 +216,7 @@ Check the logs for each service to identify the issue:
 
 ```bash
 docker compose logs paddleocr-vl-api
-docker compose logs paddleocr-vl-tritonserver
+docker compose logs paddleocr-vl-pipeline
 docker compose logs paddleocr-vlm-server
 ```
 

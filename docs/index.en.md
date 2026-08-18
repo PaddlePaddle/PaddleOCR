@@ -15,9 +15,11 @@ hide:
 
 Since its initial release, PaddleOCR has gained widespread acclaim across academia, industry, and research communities, thanks to its cutting-edge algorithms and proven performance in real-world applications. It’s already powering popular open-source projects like Umi-OCR, OmniParser, MinerU, and RAGFlow, making it the go-to OCR toolkit for developers worldwide.
 
-**On January 29, 2026, PaddleOCR open-sourced the advanced and efficient document parsing model PaddleOCR-VL-1.5.** PaddleOCR-VL-1.5 is a new iterative version of the PaddleOCR-VL series. Based on comprehensive optimization of the core capabilities of version 1.0, **the model achieves 94.5% accuracy on the authoritative document parsing benchmark OmniDocBench v1.5**, surpassing top global general-purpose large models and document parsing–specific models.
+On January 29, 2026, PaddleOCR open-sourced the advanced and efficient document parsing model PaddleOCR-VL-1.5. PaddleOCR-VL-1.5 is a new iterative version of the PaddleOCR-VL series. Based on comprehensive optimization of the core capabilities of version 1.0, the model achieves 94.5% accuracy on the authoritative document parsing benchmark OmniDocBench v1.5, surpassing top global general-purpose large models and document parsing–specific models. PaddleOCR-VL-1.5 innovatively supports irregular-shaped bounding box localization of document elements, enabling excellent performance in real-world application scenarios such as scanning, skew, warping, screen-photography, and complex illumination, achieving comprehensive SOTA performance. In addition, the model further integrates seal recognition and spotting tasks, with key metrics continuing to lead mainstream models.
 
-PaddleOCR-VL-1.5 innovatively supports irregular-shaped bounding box localization of document elements, enabling excellent performance in real-world application scenarios such as scanning, skew, warping, screen-photography, and complex illumination, achieving comprehensive SOTA performance. In addition, the model further integrates seal recognition and spotting tasks, with key metrics continuing to lead mainstream models.
+**On May 28, 2026, PaddleOCR open-sourced PaddleOCR-VL-1.6, the latest version in the PaddleOCR-VL series.** With an accuracy of 96.3%, PaddleOCR-VL-1.6 once again set a new benchmark on OmniDocBench v1.6, while also achieving new state-of-the-art (SOTA) results on OmniDocBench v1.5 and Real5-OmniDocBench. It delivers industry-leading performance in text, formula, and table recognition across both open-source and proprietary solutions. In addition, the model shows substantial improvements in ancient document and rare character recognition, as well as significantly enhanced capabilities in multiple scenarios such as seal recognition, spotting, and chart understanding. PaddleOCR-VL-1.6 further upgrades the VLM component (PaddleOCR-VL-1.6-0.9B) on top of PaddleOCR-VL-1.5 and continues to use PP-DocLayoutV3 for layout analysis. The model architecture remains fully consistent with PaddleOCR-VL-1.5, enabling seamless migration at zero cost.
+
+**On June 11, 2026, PaddleOCR released PP-OCRv6, the next-generation universal OCR system.** Built on the newly designed PPLCNetV4 unified backbone, PP-OCRv6 offers tiny/small/medium tiers (1.5M–34.5M parameters). In terms of accuracy, the medium tier achieves +5.1% recognition and +4.6% detection over PP-OCRv5_server, surpassing mainstream Vision-Language Models with only 34.5M parameters. For multilingual support, a single model covers 50 languages (Chinese, English, Japanese, and 46 Latin-script languages) without switching models. PP-OCRv6 significantly improves recognition in specialized scenarios such as digital displays, dot-matrix characters, tire prints, and industrial text that are traditionally underserved by VLMs. In terms of speed, PP-OCRv6_medium achieves 5.2× speedup over PP-OCRv5_server on Intel Xeon CPU with OpenVINO (1.40s vs 7.30s), the tiny tier reaches 6.1× speedup on Apple M4 (0.96s vs 5.82s), and only 0.13s on A100 GPU. See [PP-OCRv6 Technical Documentation](./version3.x/algorithm/PP-OCRv6/PP-OCRv6.en.md) for details.
 
 You can use it online on the [PaddleOCR official website](https://www.paddleocr.com) or call the model API.
 
@@ -27,8 +29,8 @@ You can use it online on the [PaddleOCR official website](https://www.paddleocr.
 - **PaddleOCR-VL - Multilingual Document Parsing via a 0.9B VLM**  
   **The SOTA and resource-efficient model tailored for document parsing**, that supports 109 languages and excels in recognizing complex elements (e.g., text, tables, formulas, and charts), while maintaining minimal resource consumption.
 
-- **PP-OCRv5 — Universal Scene Text Recognition**  
-  **Single model supports five text types** (Simplified Chinese, Traditional Chinese, English, Japanese, and Pinyin) with **13% accuracy improvement**. Solves multilingual mixed document recognition challenges.
+- **PP-OCRv6 — Universal Multi-Language Text Recognition**
+  **Single model supports 50 languages** (Chinese, English, Japanese, and 46 Latin-script languages), with **+4.6% detection** and **+5.1% recognition** accuracy over PP-OCRv5, surpassing mainstream Vision-Language Models. Medium tier achieves 5.2× CPU speedup end-to-end, covering specialized scenarios like digital displays, dot-matrix, and industrial characters. Three tiers (tiny/small/medium, 1.5M–34.5M params) for edge-to-server deployment.
 
 - **PP-StructureV3 — Complex Document Parsing**  
   Intelligently converts complex PDFs and document images into **Markdown and JSON files that preserve original structure**. **Outperforms** numerous commercial solutions in public benchmarks. **Perfectly maintains document layout and hierarchical structure**.
@@ -42,7 +44,7 @@ You can use it online on the [PaddleOCR official website](https://www.paddleocr.
 
 In addition to its strong model library, PaddleOCR 3.0 also provides easy-to-use tools covering model training, inference, and serving, helping developers bring AI applications into production more efficiently.
 
-**In addition, PaddleOCR provides official [Agent Skills](./version3.x/deployment/skills.en.md) for invoking text recognition, document parsing, and related capabilities in Skills-enabled AI apps.**
+**In addition, PaddleOCR provides official [Agent Skills](./version3.x/integrations/skills.en.md) for invoking text recognition, document parsing, and related capabilities in Skills-enabled AI apps.**
 
 <div align="center">
   <p>

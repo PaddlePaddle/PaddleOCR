@@ -41,6 +41,9 @@ class TextDetector(object):
             if model_name and model_name not in [
                 "PP-OCRv5_mobile_det",
                 "PP-OCRv5_server_det",
+                "PP-OCRv6_tiny_det",
+                "PP-OCRv6_small_det",
+                "PP-OCRv6_medium_det",
             ]:
                 raise ValueError(
                     f"{model_name} is not supported. Please check if the model is supported by the PaddleOCR wheel."

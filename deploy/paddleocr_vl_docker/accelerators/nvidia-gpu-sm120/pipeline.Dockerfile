@@ -39,16 +39,16 @@ RUN if [ "${BUILD_FOR_OFFLINE}" = 'true' ]; then \
         && wget https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/UVDoc_infer.tar \
             https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-LCNet_x1_0_doc_ori_infer.tar \
             https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayoutV3_infer.tar \
-            https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PaddleOCR-VL-1.5_infer.tar \
+            https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PaddleOCR-VL-1.6_infer.tar \
         && tar -xf UVDoc_infer.tar \
         && mv UVDoc_infer UVDoc \
         && tar -xf PP-LCNet_x1_0_doc_ori_infer.tar \
         && mv PP-LCNet_x1_0_doc_ori_infer PP-LCNet_x1_0_doc_ori \
         && tar -xf PP-DocLayoutV3_infer.tar \
         && mv PP-DocLayoutV3_infer PP-DocLayoutV3 \
-        && tar -xf PaddleOCR-VL-1.5_infer.tar \
-        && mv PaddleOCR-VL-1.5_infer PaddleOCR-VL-1.5 \
-        && rm -f UVDoc_infer.tar PP-LCNet_x1_0_doc_ori_infer.tar PP-DocLayoutV3_infer.tar PaddleOCR-VL-1.5_infer.tar \
+        && tar -xf PaddleOCR-VL-1.6_infer.tar \
+        && mv PaddleOCR-VL-1.6_infer PaddleOCR-VL-1.6 \
+        && rm -f UVDoc_infer.tar PP-LCNet_x1_0_doc_ori_infer.tar PP-DocLayoutV3_infer.tar PaddleOCR-VL-1.6_infer.tar \
         && mkdir -p "${HOME}/.paddlex/fonts" \
         && wget -P "${HOME}/.paddlex/fonts" https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/fonts/PingFang-SC-Regular.ttf; \
     fi

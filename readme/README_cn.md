@@ -36,16 +36,16 @@
 ### 📄 智能文档解析（面向大模型）
 > *为大模型时代将杂乱的文档视觉信息转化为结构化数据。*
 
-* **SOTA 级文档视觉语言模型 (VLM)**: 业界领先的轻量级文档解析视觉语言模型 **PaddleOCR-VL-1.5 (0.9B)**。它在五大"真实场景"中表现卓越：**弯曲、扫描、屏幕拍照、复杂光照及倾斜文档**，并支持以 **Markdown** 和 **JSON** 格式输出结构化结果。
+* **SOTA 级文档视觉语言模型 (VLM)**: 业界领先的轻量级文档解析视觉语言模型 **PaddleOCR-VL-1.6 (0.9B)**。该模型以 96.3% 精度刷新 OmniDocBench v1.6，文本、公式、表格识别全面领先，并在古籍、生僻字、印章、图表等多场景能力显著增强，支持以 **Markdown** 和 **JSON** 格式输出结构化结果。
 * **版面结构分析**：由 **PP-StructureV3** 驱动，无缝将复杂的 PDF文档 和图像转换为 **Markdown** 或 **JSON** 格式。与 PaddleOCR-VL 系列模型不同，它提供更细粒度的坐标信息，包括表格单元格坐标、文本坐标等。
 * **生产级高效能**：以极小的模型体积实现商业级别的准确率。在公开基准测试中超越众多闭源解决方案，同时保持极高的资源利用率，完美适配边缘计算与云端部署。
 
 ### 🔍 通用文本识别（场景 OCR）
 > *快速、精准的多语言文本检测与识别，被全球开发者广泛采用。*
 
-* **支持 100+ 种语言**：原生支持庞大丰富的全球语种库。**PP-OCRv5** 模型解决方案能够优雅应对多语言混合排版文档（中文、英文、日文、拼音等）。
+* **支持 100+ 种语言**：原生支持庞大丰富的全球语种库。**PP-OCRv6** 单模型统一支持 50 种语言（中、英、日及 46 种拉丁语系），无需切换模型即可应对多语言混合排版文档。
 * **复杂场景支持**：除了标准的文本识别，还支持在各种广泛的环境下进行**自然场景文本检测与识别**，涵盖身份证件、街景、书籍以及工业零部件等。
-* **性能提升**：PP-OCRv5 相比前代版本实现了 **13% 的准确率提升**，同时延续了 PaddleOCR 的“极致高效”特性。
+* **性能提升**：PP-OCRv6 相比 PP-OCRv5 检测精度提升 **4.6%**、识别精度提升 **5.1%**，超越主流视觉语言大模型，CPU 推理加速 5.2×。
 
 <div align="center">
   <p>
@@ -61,15 +61,50 @@
 
 ## 📣 最新动态
 
-### 🔥 PaddleOCR v3.5.0 发布：推理后端更灵活，文档输出更丰富
+### 🔥 2026.07.22: HPD-Parsing 新增上线
+- **HPD-Parsing** 是面向高吞吐文档解析的轻量级视觉语言模型。它采用层级并行解码范式和渐进式多 token 预测（P-MTP），在公开基准上达到 4,752 tokens/s 的峰值吞吐，同时保持有竞争力的解析精度。
+- HPD-Parsing 基于定制版 vLLM 运行时，支持 OpenAI 兼容服务化调用和本地推理，适用于对推理效率和部署吞吐要求较高的文档解析场景。
+- 查看 [HPD-Parsing 使用教程](https://www.paddleocr.ai/latest/version3.x/pipeline_usage/HPD-Parsing.html)，了解环境准备、服务化部署与本地推理说明。
+
+<details>
+<summary><strong>2026.06.11: PaddleOCR 3.7.0 发布</strong></summary>
+
+- PP-OCRv6 核心亮点如下：
+
+    - **精度全面提升**：medium 档相比 PP-OCRv5_server 检测精度提升 4.6%、识别精度提升 5.1%，以仅 34.5M 参数超越 Qwen3-VL-235B、GPT-5.5 等主流视觉语言大模型。
+    - **50 种语言统一支持**：单一模型覆盖中文、英文、日文及 46 种拉丁语系语言，无需为不同语种切换模型。
+    - **专业场景增强**：数码显示屏、点阵字符、轮胎印字、工业字符等传统 VLM 难以覆盖的场景识别能力大幅提升。
+    - **推理速度更快**：medium 档 CPU OpenVINO 推理加速 5.2×，tiny 档 Apple M4 加速 6.1×，A100 上仅需 0.13s。
+    - **三档模型覆盖全场景**：tiny（1.5M）/ small（7.7M）/ medium（34.5M）分别面向端侧/移动端/服务端部署。
+    - **模型获取**：所有模型均可通过 [HuggingFace](https://huggingface.co/collections/PaddlePaddle/pp-ocrv6) 和 [ModelScope](https://www.modelscope.cn/collections/PaddlePaddle/PP-OCRv6) 获取。
+
+</details>
+
+<details>
+<summary><strong>2026.05.28: PaddleOCR 3.6.0 发布</strong></summary>
+
+- PaddleOCR-VL-1.6核心亮点如下：
+
+    - **全新SOTA精度**：OmniDocBench v1.6 突破96.3%，在OmniDocBench v1.5、Real5-OmniDocBench上同样刷新SOTA，文本、公式、表格识别全面领先开源与闭源方案。
+    - **能力全面升级**：表格、古籍、生僻字识别大幅提升，印章、spotting、图表识别等多场景均有显著增强。
+    - **无缝迁移**：模型结构与PaddleOCR-VL-1.5完全一致，零成本适配，即换即用。
+    - **立即试用**：可在 [HuggingFace](https://huggingface.co/PaddlePaddle/PaddleOCR-VL-1.6) 或 [PaddleOCR 官方网站](https://www.paddleocr.com) 使用。
+
+</details>
+
+<details>
+<summary><strong>2026.04.21: PaddleOCR 3.5.0 发布</strong></summary>
+
 * **推理后端灵活切换**：支持在飞桨静态图、飞桨动态图和 Transformers 之间无缝切换。深度适配 Hugging Face 生态，20 个主要模型支持以 Transformers 作为推理后端。
 * **常见文档格式转 Markdown**：支持将 Word、Excel、Powerpoint 等常见文档格式转换为 Markdown。
 * **解析结果导出 DOCX**：`PaddleOCR-VL` 系列、`PP-StructureV3` 和 `PP-DocTranslation` 现已支持将解析结果导出为 DOCX，便于在 Microsoft Word 中查看和编辑。
 * **官方浏览器推理 SDK**：发布官方浏览器推理 SDK `PaddleOCR.js`，支持在浏览器中运行 `PP-OCRv5`。
 
+</details>
+
 <details>
 <summary><strong>2026.01.29: PaddleOCR 3.4.0 发布</strong></summary>
-* **PaddleOCR-VL-1.5 (SOTA 0.9B VLM)**：
+* PaddleOCR-VL-1.5 (SOTA 0.9B VLM)：
     * **OmniDocBench 94.5%准确率**：超越顶级通用大模型和专业文档解析模型。
     * **现实5大场景文档解析的SOTA性能**：首次引入**PP-DocLayoutV3**算法进行异形框定位，可以解决5种真实场景: 倾斜、弯曲、扫描、光线变化和屏幕拍照。
     * **能力拓展**：增加**印章识别**、**文本行检测/识别**，并扩展至**111种语言**(包括中国的藏文和孟加拉语)。
@@ -130,8 +165,6 @@
 
 [历史日志](https://paddlepaddle.github.io/PaddleOCR/latest/en/update/update.html)
 
-</details>
-
 
 ## 🚀 快速开始
 
@@ -152,10 +185,10 @@ PaddleOCR官方网站提供交互式**体验中心**和**APIs**——无需设�
 
 ## 🧩 更多功能
 
-- 将模型转换为ONNX格式: [获取ONNX模型](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/deployment/obtaining_onnx_models.html)。
-- 使用OpenVINO、ONNX Runtime、TensorRT等引擎加速推理,或使用ONNX格式模型进行推理: [高性能推理](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/deployment/high_performance_inference.html)。
+- 将模型转换为ONNX格式: [获取ONNX模型](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/inference_deployment/others/obtaining_onnx_models.html)。
+- 使用OpenVINO、ONNX Runtime、TensorRT等引擎加速推理,或使用ONNX格式模型进行推理: [高性能推理](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/inference_deployment/local_inference/high_performance_inference.html)。
 - 使用多GPU和多进程加速推理: [流水线并行推理](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/pipeline_usage/instructions/parallel_inference.html)。
-- 将PaddleOCR集成到C++、C#、Java等语言编写的应用程序中: [服务化部署](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/deployment/serving.html)。
+- 将PaddleOCR集成到C++、C#、Java等语言编写的应用程序中: [服务化部署](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/inference_deployment/serving/serving.html)。
 
 ## 🔄 执行结果快速预览
 

@@ -1,0 +1,106 @@
+# Copyright (c) 2026 PaddlePaddle Authors. All Rights Reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import abc
+from typing import Any, List, Optional, Union
+
+from fastmcp import FastMCP
+from fastmcp.server.dependencies import get_context
+from mcp.types import ImageContent, TextContent
+
+from ..inference.base import Inference
+from ..inference.types import InferenceRequest, InferenceResult
+from ..providers import is_http_provider
+
+ToolReturn = Union[str, List[Union[TextContent, ImageContent]]]
+
+
+class Task(abc.ABC):
+    def __init__(self, inference: Inference):
+        self._inference = inference
+
+    @property
+    @abc.abstractmethod
+    def tool_name(self) -> str:
+        pass
+
+    @abc.abstractmethod
+    def _format_result(
+        self, result: InferenceResult, detailed: bool, **kwargs
+    ) -> ToolReturn:
+        pass
+
+    def _tool_description(self) -> str:
+        adapter = self._inference.input_adapter
+        valid_params = sorted(self._inference.get_valid_params())
+        params_hint = ", ".join(valid_params)
+        file_type_hint = ""
+        if is_http_provider(adapter.provider):
+            file_type_hint = (
+                " For HTTP inference providers, set file_type to 'image' or 'pdf' "
+                "when the service cannot infer the type from input_data."
+            )
+        return (
+            f"PaddleOCR {self.tool_name} tool. {adapter.description}"
+            f"{file_type_hint} "
+            f"Optional runtime_params keys: {params_hint}."
+        )
+
+    async def _invoke_tool(
+        self,
+        input_data: str,
+        output_mode: str = "simple",
+        file_type: Optional[str] = None,
+        return_images: bool = True,
+        runtime_params: Optional[dict[str, Any]] = None,
+    ) -> ToolReturn:
+        """Run PaddleOCR on an image or PDF.
+
+        Args:
+            input_data: File input. Format depends on the configured inference
+                provider; see the tool description for supported forms.
+            output_mode: ``simple`` for plain text, ``detailed`` for JSON.
+            file_type: ``image`` or ``pdf`` when required by the HTTP API.
+            return_images: Whether to include images in document parsing output.
+            runtime_params: Optional pipeline parameters as a JSON object.
+        """
+        adapter = self._inference.input_adapter
+        normalized_input = adapter.normalize(input_data)
+        adapter.validate(normalized_input)
+
+        ctx = get_context()
+        await ctx.info(
+            f"--- {self.tool_name} tool received input_data: {normalized_input[:50]} ---"
+        )
+
+        final_params = self._inference.get_final_params(runtime_params or {})
+        self._inference.validate_params(final_params)
+
+        request = InferenceRequest(
+            input_data=normalized_input,
+            file_type=file_type,
+            runtime_params=final_params,
+        )
+        result = await self._inference.predict(request)
+
+        return self._format_result(
+            result,
+            detailed=(output_mode == "detailed"),
+            return_images=return_images,
+        )
+
+    def register_tools(self, mcp: FastMCP) -> None:
+        mcp.tool(self.tool_name, description=self._tool_description())(
+            self._invoke_tool
+        )

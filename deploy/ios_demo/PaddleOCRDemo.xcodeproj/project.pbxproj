@@ -1,0 +1,822 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		6F50EE661821421A98371746 /* Pods_PaddleOCRDemoTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A24555277519FE15EF10A5D /* Pods_PaddleOCRDemoTests.framework */; };
+		A1000001 /* PaddleOCRDemoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000001 /* PaddleOCRDemoApp.swift */; };
+		A1000002 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000002 /* ContentView.swift */; };
+		A1000003 /* Models in Resources */ = {isa = PBXBuildFile; fileRef = A2000006 /* Models */; };
+		A1000004 /* ModelConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000011 /* ModelConfig.swift */; };
+		A1000005 /* ORTSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000012 /* ORTSessionManager.swift */; };
+		A10000F0 /* ORTProfilingBridge.mm in Sources */ = {isa = PBXBuildFile; fileRef = A20000F1 /* ORTProfilingBridge.mm */; };
+		A1000007 /* InferenceConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000015 /* InferenceConfig.swift */; };
+		A1000008 /* Preprocessing.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000016 /* Preprocessing.swift */; };
+		A1000011 /* ORTSessionManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000014 /* ORTSessionManagerTests.swift */; };
+		A1000021 /* DBPostProcess.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000021 /* DBPostProcess.swift */; };
+		A1000022 /* OpenCVDBBridge.mm in Sources */ = {isa = PBXBuildFile; fileRef = A2000023 /* OpenCVDBBridge.mm */; };
+		A1000023 /* OpenCVImageBridge.mm in Sources */ = {isa = PBXBuildFile; fileRef = A2000025 /* OpenCVImageBridge.mm */; };
+		A10000E1 /* clipper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A20000E1 /* clipper.cpp */; };
+		A10000E2 /* PDBPolygonOffsetBridge.mm in Sources */ = {isa = PBXBuildFile; fileRef = A20000E2 /* PDBPolygonOffsetBridge.mm */; };
+		A10000C0 /* DemoSectionChrome.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000C0 /* DemoSectionChrome.swift */; };
+		A1000030 /* DetectionEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000030 /* DetectionEngine.swift */; };
+		A1000040 /* RecPreprocessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000040 /* RecPreprocessor.swift */; };
+		A1000050 /* CTCDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000050 /* CTCDecoder.swift */; };
+		A1000060 /* RecognitionEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000060 /* RecognitionEngine.swift */; };
+		A1000070 /* OCREngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000070 /* OCREngine.swift */; };
+		A1000071 /* BoxSorter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000071 /* BoxSorter.swift */; };
+		A1000072 /* QuadTextCrop.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000072 /* QuadTextCrop.swift */; };
+		A1000074 /* EncodedImageCodec.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000074 /* EncodedImageCodec.swift */; };
+		A1000080 /* OCRViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000080 /* OCRViewModel.swift */; };
+		A1000090 /* ImagePickerSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000090 /* ImagePickerSection.swift */; };
+		A1000091 /* SampleImages in Resources */ = {isa = PBXBuildFile; fileRef = A2000091 /* SampleImages */; };
+		A10000A0 /* ResultImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000A0 /* ResultImageView.swift */; };
+		A10000A1 /* TimingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000A1 /* TimingView.swift */; };
+		A10000A2 /* ResultsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000A2 /* ResultsListView.swift */; };
+		A10000A3 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000A3 /* ErrorView.swift */; };
+		A10000A4 /* OCRParametersPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000A4 /* OCRParametersPanel.swift */; };
+		A10000A5 /* OnnxRuntimeSettingsPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000A5 /* OnnxRuntimeSettingsPanel.swift */; };
+		A10000A6 /* EngineSettingsSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000A6 /* EngineSettingsSheet.swift */; };
+		A10000B3 /* OCRParameterResolverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000B3 /* OCRParameterResolverTests.swift */; };
+		A10000C5 /* OCRBenchmarkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000C5 /* OCRBenchmarkTests.swift */; };
+		A10000C6 /* BenchmarkPayloads.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000C6 /* BenchmarkPayloads.swift */; };
+		A10000D3 /* BenchmarkFixtures.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000D3 /* BenchmarkFixtures.swift */; };
+		A10000C7 /* Fixtures in Resources */ = {isa = PBXBuildFile; fileRef = A20000C7 /* Fixtures */; };
+		A10000B1 /* OCRParameterResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000B1 /* OCRParameterResolver.swift */; };
+		A10000D0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A20000D0 /* Assets.xcassets */; };
+		A10000D1 /* Bundle+BundledImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000D1 /* Bundle+BundledImage.swift */; };
+		A10000D2 /* DemoAssets.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000D2 /* DemoAssets.swift */; };
+		F9888FA77A2AF8AF45B50193 /* Pods_PaddleOCRDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D0FFA11A4E43E5BD0F80219 /* Pods_PaddleOCRDemo.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		A5000001 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A3000001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A4000001;
+			remoteInfo = PaddleOCRDemo;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		0A24555277519FE15EF10A5D /* Pods_PaddleOCRDemoTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PaddleOCRDemoTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3D0FFA11A4E43E5BD0F80219 /* Pods_PaddleOCRDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PaddleOCRDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		49C7CEE60686CC98BE2EEE45 /* Pods-PaddleOCRDemoTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PaddleOCRDemoTests.release.xcconfig"; path = "Target Support Files/Pods-PaddleOCRDemoTests/Pods-PaddleOCRDemoTests.release.xcconfig"; sourceTree = "<group>"; };
+		520BC3C496ED955BBB302DC4 /* Pods-PaddleOCRDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PaddleOCRDemo.debug.xcconfig"; path = "Target Support Files/Pods-PaddleOCRDemo/Pods-PaddleOCRDemo.debug.xcconfig"; sourceTree = "<group>"; };
+		54F64B7C830508805D832F8A /* Pods-PaddleOCRDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PaddleOCRDemo.release.xcconfig"; path = "Target Support Files/Pods-PaddleOCRDemo/Pods-PaddleOCRDemo.release.xcconfig"; sourceTree = "<group>"; };
+		72FF5C269BF861629F89D6B5 /* Pods-PaddleOCRDemoTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PaddleOCRDemoTests.debug.xcconfig"; path = "Target Support Files/Pods-PaddleOCRDemoTests/Pods-PaddleOCRDemoTests.debug.xcconfig"; sourceTree = "<group>"; };
+		A2000001 /* PaddleOCRDemoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddleOCRDemoApp.swift; sourceTree = "<group>"; };
+		A2000002 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		A2000003 /* PaddleOCRDemo-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PaddleOCRDemo-Bridging-Header.h"; sourceTree = "<group>"; };
+		A2000004 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A2000005 /* PaddleOCRDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PaddleOCRDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A2000006 /* Models */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Models; sourceTree = "<group>"; };
+		A2000009 /* PaddleOCRDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PaddleOCRDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A2000011 /* ModelConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelConfig.swift; sourceTree = "<group>"; };
+		A2000012 /* ORTSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ORTSessionManager.swift; sourceTree = "<group>"; };
+		A20000F0 /* ORTProfilingBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ORTProfilingBridge.h; sourceTree = "<group>"; };
+		A20000F1 /* ORTProfilingBridge.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ORTProfilingBridge.mm; sourceTree = "<group>"; };
+		A2000014 /* ORTSessionManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ORTSessionManagerTests.swift; sourceTree = "<group>"; };
+		A2000015 /* InferenceConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InferenceConfig.swift; sourceTree = "<group>"; };
+		A2000016 /* Preprocessing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preprocessing.swift; sourceTree = "<group>"; };
+		A2000021 /* DBPostProcess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBPostProcess.swift; sourceTree = "<group>"; };
+		A2000022 /* OpenCVDBBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OpenCVDBBridge.h; sourceTree = "<group>"; };
+		A2000023 /* OpenCVDBBridge.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = OpenCVDBBridge.mm; sourceTree = "<group>"; };
+		A2000024 /* OpenCVImageBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OpenCVImageBridge.h; sourceTree = "<group>"; };
+		A2000025 /* OpenCVImageBridge.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = OpenCVImageBridge.mm; sourceTree = "<group>"; };
+		A20000E1 /* clipper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = clipper.cpp; sourceTree = "<group>"; };
+		A20000E2 /* PDBPolygonOffsetBridge.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PDBPolygonOffsetBridge.mm; sourceTree = "<group>"; };
+		A20000E3 /* PDBPolygonOffsetBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PDBPolygonOffsetBridge.h; sourceTree = "<group>"; };
+		A2000030 /* DetectionEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetectionEngine.swift; sourceTree = "<group>"; };
+		A2000040 /* RecPreprocessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecPreprocessor.swift; sourceTree = "<group>"; };
+		A2000050 /* CTCDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CTCDecoder.swift; sourceTree = "<group>"; };
+		A2000060 /* RecognitionEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecognitionEngine.swift; sourceTree = "<group>"; };
+		A2000070 /* OCREngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCREngine.swift; sourceTree = "<group>"; };
+		A2000071 /* BoxSorter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoxSorter.swift; sourceTree = "<group>"; };
+		A2000072 /* QuadTextCrop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuadTextCrop.swift; sourceTree = "<group>"; };
+		A2000074 /* EncodedImageCodec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncodedImageCodec.swift; sourceTree = "<group>"; };
+		A2000080 /* OCRViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCRViewModel.swift; sourceTree = "<group>"; };
+		A2000090 /* ImagePickerSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerSection.swift; sourceTree = "<group>"; };
+		A2000091 /* SampleImages */ = {isa = PBXFileReference; lastKnownFileType = folder; path = SampleImages; sourceTree = "<group>"; };
+		A20000A0 /* ResultImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultImageView.swift; sourceTree = "<group>"; };
+		A20000A1 /* TimingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimingView.swift; sourceTree = "<group>"; };
+		A20000A2 /* ResultsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsListView.swift; sourceTree = "<group>"; };
+		A20000A3 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
+		A20000A4 /* OCRParametersPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCRParametersPanel.swift; sourceTree = "<group>"; };
+		A20000A5 /* OnnxRuntimeSettingsPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnnxRuntimeSettingsPanel.swift; sourceTree = "<group>"; };
+		A20000A6 /* EngineSettingsSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EngineSettingsSheet.swift; sourceTree = "<group>"; };
+		A20000B3 /* OCRParameterResolverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCRParameterResolverTests.swift; sourceTree = "<group>"; };
+		A20000C5 /* OCRBenchmarkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCRBenchmarkTests.swift; sourceTree = "<group>"; };
+		A20000C6 /* BenchmarkPayloads.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BenchmarkPayloads.swift; sourceTree = "<group>"; };
+		A20000D3 /* BenchmarkFixtures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BenchmarkFixtures.swift; sourceTree = "<group>"; };
+		A20000C7 /* Fixtures */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Fixtures; sourceTree = "<group>"; };
+		A20000B1 /* OCRParameterResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCRParameterResolver.swift; sourceTree = "<group>"; };
+		A20000C0 /* DemoSectionChrome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoSectionChrome.swift; sourceTree = "<group>"; };
+		A20000D0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A20000D1 /* Bundle+BundledImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+BundledImage.swift"; sourceTree = "<group>"; };
+		A20000D2 /* DemoAssets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoAssets.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A6000001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F9888FA77A2AF8AF45B50193 /* Pods_PaddleOCRDemo.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A6000002 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6F50EE661821421A98371746 /* Pods_PaddleOCRDemoTests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		2D2CDE3432BBDFC183DD82E7 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				3D0FFA11A4E43E5BD0F80219 /* Pods_PaddleOCRDemo.framework */,
+				0A24555277519FE15EF10A5D /* Pods_PaddleOCRDemoTests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		3E7A5973A61F2EB2D5542DE3 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				520BC3C496ED955BBB302DC4 /* Pods-PaddleOCRDemo.debug.xcconfig */,
+				54F64B7C830508805D832F8A /* Pods-PaddleOCRDemo.release.xcconfig */,
+				72FF5C269BF861629F89D6B5 /* Pods-PaddleOCRDemoTests.debug.xcconfig */,
+				49C7CEE60686CC98BE2EEE45 /* Pods-PaddleOCRDemoTests.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		A7000001 = {
+			isa = PBXGroup;
+			children = (
+				A7000002 /* PaddleOCRDemo */,
+				A7000005 /* PaddleOCRDemoTests */,
+				A7000003 /* Products */,
+				3E7A5973A61F2EB2D5542DE3 /* Pods */,
+				2D2CDE3432BBDFC183DD82E7 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		A7000002 /* PaddleOCRDemo */ = {
+			isa = PBXGroup;
+			children = (
+				A7000004 /* App */,
+				A7000007 /* Engine */,
+				A7000008 /* ViewModels */,
+				A7000009 /* Views */,
+				A7000006 /* Supporting */,
+				A7000010 /* Resources */,
+				A700000D /* ThirdParty */,
+				A2000006 /* Models */,
+			);
+			path = PaddleOCRDemo;
+			sourceTree = "<group>";
+		};
+		A7000003 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A2000005 /* PaddleOCRDemo.app */,
+				A2000009 /* PaddleOCRDemoTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A7000004 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				A20000D1 /* Bundle+BundledImage.swift */,
+				A20000D2 /* DemoAssets.swift */,
+				A2000001 /* PaddleOCRDemoApp.swift */,
+				A2000002 /* ContentView.swift */,
+				A20000C0 /* DemoSectionChrome.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		A7000005 /* PaddleOCRDemoTests */ = {
+			isa = PBXGroup;
+			children = (
+				A2000014 /* ORTSessionManagerTests.swift */,
+				A20000B3 /* OCRParameterResolverTests.swift */,
+				A20000C5 /* OCRBenchmarkTests.swift */,
+				A20000C6 /* BenchmarkPayloads.swift */,
+				A20000D3 /* BenchmarkFixtures.swift */,
+				A20000C7 /* Fixtures */,
+			);
+			path = PaddleOCRDemoTests;
+			sourceTree = "<group>";
+		};
+		A7000006 /* Supporting */ = {
+			isa = PBXGroup;
+			children = (
+				A2000003 /* PaddleOCRDemo-Bridging-Header.h */,
+				A2000004 /* Info.plist */,
+			);
+			path = Supporting;
+			sourceTree = "<group>";
+		};
+		A7000007 /* Engine */ = {
+			isa = PBXGroup;
+			children = (
+				A2000071 /* BoxSorter.swift */,
+				A2000050 /* CTCDecoder.swift */,
+				A2000021 /* DBPostProcess.swift */,
+				A2000022 /* OpenCVDBBridge.h */,
+				A2000023 /* OpenCVDBBridge.mm */,
+				A2000024 /* OpenCVImageBridge.h */,
+				A2000025 /* OpenCVImageBridge.mm */,
+				A20000E2 /* PDBPolygonOffsetBridge.mm */,
+				A20000E3 /* PDBPolygonOffsetBridge.h */,
+				A2000030 /* DetectionEngine.swift */,
+				A2000015 /* InferenceConfig.swift */,
+				A20000B1 /* OCRParameterResolver.swift */,
+				A2000011 /* ModelConfig.swift */,
+				A2000070 /* OCREngine.swift */,
+				A2000012 /* ORTSessionManager.swift */,
+				A20000F0 /* ORTProfilingBridge.h */,
+				A20000F1 /* ORTProfilingBridge.mm */,
+				A2000072 /* QuadTextCrop.swift */,
+				A2000074 /* EncodedImageCodec.swift */,
+				A2000016 /* Preprocessing.swift */,
+				A2000040 /* RecPreprocessor.swift */,
+				A2000060 /* RecognitionEngine.swift */,
+			);
+			path = Engine;
+			sourceTree = "<group>";
+		};
+		A7000008 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				A2000080 /* OCRViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		A7000009 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				A20000A3 /* ErrorView.swift */,
+				A2000090 /* ImagePickerSection.swift */,
+				A20000A5 /* OnnxRuntimeSettingsPanel.swift */,
+				A20000A4 /* OCRParametersPanel.swift */,
+				A20000A6 /* EngineSettingsSheet.swift */,
+				A20000A0 /* ResultImageView.swift */,
+				A20000A2 /* ResultsListView.swift */,
+				A20000A1 /* TimingView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		A700000D /* ThirdParty */ = {
+			isa = PBXGroup;
+			children = (
+				A700000E /* Clipper1 */,
+			);
+			path = ThirdParty;
+			sourceTree = "<group>";
+		};
+		A700000E /* Clipper1 */ = {
+			isa = PBXGroup;
+			children = (
+				A20000E1 /* clipper.cpp */,
+			);
+			path = Clipper1;
+			sourceTree = "<group>";
+		};
+		A7000010 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				A20000D0 /* Assets.xcassets */,
+				A2000091 /* SampleImages */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A4000001 /* PaddleOCRDemo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A9000003 /* Build configuration list for PBXNativeTarget "PaddleOCRDemo" */;
+			buildPhases = (
+				A9D5C3BAF4FDCBE19D45BCA7 /* [CP] Check Pods Manifest.lock */,
+				A8000001 /* Sources */,
+				A6000001 /* Frameworks */,
+				A8000003 /* Resources */,
+				6530B8008C9EFD4F162C3E86 /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PaddleOCRDemo;
+			productName = PaddleOCRDemo;
+			productReference = A2000005 /* PaddleOCRDemo.app */;
+			productType = "com.apple.product-type.application";
+		};
+		A4000002 /* PaddleOCRDemoTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A9000006 /* Build configuration list for PBXNativeTarget "PaddleOCRDemoTests" */;
+			buildPhases = (
+				9FD4B8CB3C3E1C27991BDE0B /* [CP] Check Pods Manifest.lock */,
+				A8000002 /* Sources */,
+				A6000002 /* Frameworks */,
+				A8000004 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A5000002 /* PBXTargetDependency */,
+			);
+			name = PaddleOCRDemoTests;
+			productName = PaddleOCRDemoTests;
+			productReference = A2000009 /* PaddleOCRDemoTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A3000001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1540;
+				LastUpgradeCheck = 2640;
+				TargetAttributes = {
+					A4000001 = {
+						CreatedOnToolsVersion = 15.4;
+					};
+					A4000002 = {
+						CreatedOnToolsVersion = 15.4;
+						TestTargetID = A4000001;
+					};
+				};
+			};
+			buildConfigurationList = A9000001 /* Build configuration list for PBXProject "PaddleOCRDemo" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = A7000001;
+			productRefGroup = A7000003 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A4000001 /* PaddleOCRDemo */,
+				A4000002 /* PaddleOCRDemoTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A8000003 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10000D0 /* Assets.xcassets in Resources */,
+				A1000003 /* Models in Resources */,
+				A1000091 /* SampleImages in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A8000004 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10000C7 /* Fixtures in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		6530B8008C9EFD4F162C3E86 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PaddleOCRDemo/Pods-PaddleOCRDemo-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PaddleOCRDemo/Pods-PaddleOCRDemo-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PaddleOCRDemo/Pods-PaddleOCRDemo-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9FD4B8CB3C3E1C27991BDE0B /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-PaddleOCRDemoTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A9D5C3BAF4FDCBE19D45BCA7 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-PaddleOCRDemo-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A8000001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A1000001 /* PaddleOCRDemoApp.swift in Sources */,
+				A10000D1 /* Bundle+BundledImage.swift in Sources */,
+				A10000D2 /* DemoAssets.swift in Sources */,
+				A1000002 /* ContentView.swift in Sources */,
+				A10000C0 /* DemoSectionChrome.swift in Sources */,
+				A1000021 /* DBPostProcess.swift in Sources */,
+				A1000022 /* OpenCVDBBridge.mm in Sources */,
+				A1000023 /* OpenCVImageBridge.mm in Sources */,
+				A10000E1 /* clipper.cpp in Sources */,
+				A10000E2 /* PDBPolygonOffsetBridge.mm in Sources */,
+				A1000030 /* DetectionEngine.swift in Sources */,
+				A1000004 /* ModelConfig.swift in Sources */,
+				A1000005 /* ORTSessionManager.swift in Sources */,
+				A10000F0 /* ORTProfilingBridge.mm in Sources */,
+				A1000007 /* InferenceConfig.swift in Sources */,
+				A10000B1 /* OCRParameterResolver.swift in Sources */,
+				A1000008 /* Preprocessing.swift in Sources */,
+				A1000040 /* RecPreprocessor.swift in Sources */,
+				A1000050 /* CTCDecoder.swift in Sources */,
+				A1000060 /* RecognitionEngine.swift in Sources */,
+				A1000070 /* OCREngine.swift in Sources */,
+				A1000071 /* BoxSorter.swift in Sources */,
+				A1000072 /* QuadTextCrop.swift in Sources */,
+				A1000074 /* EncodedImageCodec.swift in Sources */,
+				A1000080 /* OCRViewModel.swift in Sources */,
+				A1000090 /* ImagePickerSection.swift in Sources */,
+				A10000A0 /* ResultImageView.swift in Sources */,
+				A10000A1 /* TimingView.swift in Sources */,
+				A10000A2 /* ResultsListView.swift in Sources */,
+				A10000A3 /* ErrorView.swift in Sources */,
+				A10000A5 /* OnnxRuntimeSettingsPanel.swift in Sources */,
+				A10000A6 /* EngineSettingsSheet.swift in Sources */,
+				A10000A4 /* OCRParametersPanel.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A8000002 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A1000011 /* ORTSessionManagerTests.swift in Sources */,
+				A10000B3 /* OCRParameterResolverTests.swift in Sources */,
+				A10000C5 /* OCRBenchmarkTests.swift in Sources */,
+				A10000C6 /* BenchmarkPayloads.swift in Sources */,
+				A10000D3 /* BenchmarkFixtures.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		A5000002 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A4000001 /* PaddleOCRDemo */;
+			targetProxy = A5000001 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		AA000001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		AA000002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		AA000003 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 520BC3C496ED955BBB302DC4 /* Pods-PaddleOCRDemo.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 76MLN428C9;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = PaddleOCRDemo/Supporting/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "PaddleOCR";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-Wl,-no_warn_duplicate_libraries",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.paddleocr.demo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "PaddleOCRDemo/Supporting/PaddleOCRDemo-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				USER_HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/PaddleOCRDemo/Engine",
+					"$(SRCROOT)/PaddleOCRDemo/ThirdParty/Clipper1",
+					"$(PODS_ROOT)/onnxruntime-objc/objectivec",
+					"$(PODS_ROOT)/onnxruntime-objc/objectivec/include",
+				);
+			};
+			name = Debug;
+		};
+		AA000004 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 54F64B7C830508805D832F8A /* Pods-PaddleOCRDemo.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 76MLN428C9;
+				ENABLE_TESTABILITY = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = PaddleOCRDemo/Supporting/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "PaddleOCR";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-Wl,-no_warn_duplicate_libraries",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.paddleocr.demo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "PaddleOCRDemo/Supporting/PaddleOCRDemo-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				USER_HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/PaddleOCRDemo/Engine",
+					"$(SRCROOT)/PaddleOCRDemo/ThirdParty/Clipper1",
+					"$(PODS_ROOT)/onnxruntime-objc/objectivec",
+					"$(PODS_ROOT)/onnxruntime-objc/objectivec/include",
+				);
+			};
+			name = Release;
+		};
+		AA000005 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 72FF5C269BF861629F89D6B5 /* Pods-PaddleOCRDemoTests.debug.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 76MLN428C9;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.paddleocr.demo.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PaddleOCRDemo.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/PaddleOCRDemo";
+			};
+			name = Debug;
+		};
+		AA000006 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 49C7CEE60686CC98BE2EEE45 /* Pods-PaddleOCRDemoTests.release.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 76MLN428C9;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.paddleocr.demo.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PaddleOCRDemo.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/PaddleOCRDemo";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A9000001 /* Build configuration list for PBXProject "PaddleOCRDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AA000001 /* Debug */,
+				AA000002 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A9000003 /* Build configuration list for PBXNativeTarget "PaddleOCRDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AA000003 /* Debug */,
+				AA000004 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A9000006 /* Build configuration list for PBXNativeTarget "PaddleOCRDemoTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AA000005 /* Debug */,
+				AA000006 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A3000001 /* Project object */;
+}
