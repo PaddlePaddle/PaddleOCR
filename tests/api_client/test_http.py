@@ -214,6 +214,19 @@ def test_error_mapping_500(mock_server):
         client.submit_url("PP-OCRv5", "https://example.test/file.pdf", {})
 
 
+def test_fetch_jsonl_maps_http_errors(mock_server):
+    base_url, handler = mock_server
+    handler.response_status = 404
+    handler.response_body = {"message": "Result expired"}
+    client = HTTPClient("token", base_url, timeout=5.0)
+
+    with pytest.raises(APIError) as exc_info:
+        client.fetch_jsonl(f"{base_url}/result.jsonl")
+
+    assert exc_info.value.status_code == 404
+    assert "Result expired" in str(exc_info.value)
+
+
 def test_paddleocr_client_requires_token(monkeypatch):
     monkeypatch.delenv("PADDLEOCR_ACCESS_TOKEN", raising=False)
     with pytest.raises(AuthError):
