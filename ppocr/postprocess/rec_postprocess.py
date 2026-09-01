@@ -224,6 +224,8 @@ class CTCLabelDecode(BaseRecLabelDecode):
                 rec[2][0] = rec[2][0] * (wh_ratio / max_wh_ratio)
         if label is None:
             return text
+        if isinstance(label, paddle.Tensor):
+            label = label.numpy()
         label = self.decode(label)
         return text, label
 
@@ -538,6 +540,8 @@ class SRNLabelDecode(BaseRecLabelDecode):
         if label is None:
             text = self.decode(preds_idx, preds_prob, is_remove_duplicate=False)
             return text
+        if isinstance(label, paddle.Tensor):
+            label = label.numpy()
         label = self.decode(label)
         return text, label
 
@@ -921,6 +925,8 @@ class PRENLabelDecode(BaseRecLabelDecode):
         text = self.decode(preds_idx, preds_prob)
         if label is None:
             return text
+        if isinstance(label, paddle.Tensor):
+            label = label.numpy()
         label = self.decode(label)
         return text, label
 
@@ -1030,6 +1036,8 @@ class ABINetLabelDecode(NRTRLabelDecode):
         text = self.decode(preds_idx, preds_prob, is_remove_duplicate=False)
         if label is None:
             return text
+        if isinstance(label, paddle.Tensor):
+            label = label.numpy()
         label = self.decode(label)
         return text, label
 
@@ -1156,6 +1164,8 @@ class VLLabelDecode(BaseRecLabelDecode):
             text.append((preds_text, float(preds_prob)))
         if label is None:
             return text
+        if isinstance(label, paddle.Tensor):
+            label = label.numpy()
         label = self.decode(label)
         return text, label
 
@@ -1187,6 +1197,8 @@ class CANLabelDecode(BaseRecLabelDecode):
         text = self.decode(preds_idx)
         if label is None:
             return text
+        if isinstance(label, paddle.Tensor):
+            label = label.numpy()
         label = self.decode(label)
         return text, label
 
@@ -1212,6 +1224,8 @@ class CPPDLabelDecode(NRTRLabelDecode):
         text = self.decode(preds_idx, preds_prob, is_remove_duplicate=False)
         if label is None:
             return text
+        if isinstance(label, paddle.Tensor):
+            label = label.numpy()
         label = self.decode(label)
         return text, label
 
