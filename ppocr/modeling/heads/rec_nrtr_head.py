@@ -350,12 +350,15 @@ class Transformer(nn.Layer):
         ]
 
     def generate_square_subsequent_mask(self, sz):
-        """Generate a square mask for the sequence. The masked positions are filled with float('-inf').
-        Unmasked positions are filled with float(0.0).
+        """Generate a square mask for the sequence. The masked positions are filled
+        with a large negative value (equivalent to -inf after softmax, since
+        exp(-1e4) underflows to 0 in fp32). Unmasked positions are filled with
+        float(0.0). A finite fill value is used because -inf inputs make the
+        softmax kernel return NaN on some backends (observed on ROCm/gfx1200).
         """
         mask = paddle.zeros([sz, sz], dtype="float32")
         mask_inf = paddle.triu(
-            paddle.full(shape=[sz, sz], dtype="float32", fill_value=float("-inf")),
+            paddle.full(shape=[sz, sz], dtype="float32", fill_value=-10000.0),
             diagonal=1,
         )
         mask = mask + mask_inf
