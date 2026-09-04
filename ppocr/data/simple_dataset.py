@@ -461,8 +461,31 @@ class MultiScaleDataSet(SimpleDataSet):
 
         self.data_lines = data_line_new
         self.wh_ratio = np.array(wh_ratio)
-        self.wh_ratio_sort = np.argsort(self.wh_ratio)
+        self._refresh_wh_ratio_sort()
         self.data_idx_order_list = list(range(len(self.data_lines)))
+
+    def _refresh_wh_ratio_sort(self):
+        if self._index_map is not None:
+            sampled_indices = np.asarray(self._index_map, dtype=np.int64)
+            sampled_order = np.argsort(self.wh_ratio[sampled_indices])
+            self.wh_ratio_sort = sampled_indices[sampled_order]
+        else:
+            self.wh_ratio_sort = np.argsort(self.wh_ratio)
+
+    def _ensure_index_map(self):
+        previous_epoch = self._cached_epoch
+        super(MultiScaleDataSet, self)._ensure_index_map()
+        if (
+            self.ds_width
+            and self._index_map is not None
+            and self._cached_epoch != previous_epoch
+        ):
+            self._refresh_wh_ratio_sort()
+
+    def reset_data_lines(self, seed=None, epoch=None):
+        super(MultiScaleDataSet, self).reset_data_lines(seed=seed, epoch=epoch)
+        if self.ds_width:
+            self._refresh_wh_ratio_sort()
 
     def resize_norm_img(self, data, imgW, imgH, padding=True):
         img = data["image"]
@@ -498,6 +521,10 @@ class MultiScaleDataSet(SimpleDataSet):
         # properties is a tuple, contains (width, height, index)
         img_height = properties[1]
         idx = properties[2]
+
+        if self._index_map is not None:
+            self._ensure_index_map()
+
         if self.ds_width and properties[3] is not None:
             wh_ratio = properties[3]
             img_width = img_height * (
@@ -505,11 +532,18 @@ class MultiScaleDataSet(SimpleDataSet):
             )
             file_idx = self.wh_ratio_sort[idx]
         else:
-            file_idx = self.data_idx_order_list[idx]
             img_width = properties[0]
             wh_ratio = None
+            if self._index_map is not None:
+                file_idx = self._index_map[idx]
+            else:
+                file_idx = self.data_idx_order_list[idx]
 
-        data_line = self.data_lines[file_idx]
+        if self._index_map is not None:
+            data_line = self._all_lines[file_idx]
+        else:
+            data_line = self.data_lines[file_idx]
+
         try:
             data_line = data_line.decode("utf-8")
             substr = data_line.strip("\n").split(self.delimiter)
