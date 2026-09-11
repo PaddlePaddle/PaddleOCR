@@ -16,3 +16,12 @@ albumentations
 # to be compatible with albumentations
 albucore
 packaging
+fastapi==0.141.1
+uvicorn==0.52.4
+pydantic==2.13.4
+python-multipart==0.0.20
+PyJWT==2.10.1
+cryptography==46.0.5
+httpx==0.28.1
+pytest==9.1.1
+pytest-asyncio==1.4.0

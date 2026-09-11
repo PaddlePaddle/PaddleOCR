@@ -38,3 +38,19 @@ test_tipc/web/node_modules/
 
 .venv/
 .worktrees/
+
+# ── Added for Company-Server OCR service ──────────────────────────
+.env
+.env.*
+*.pem
+*.key
+uploads/
+validation/sweep_results.json
+validation/samples/
+venv/
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+.pytest_cache/
+task-*.log
+walkthrough.md

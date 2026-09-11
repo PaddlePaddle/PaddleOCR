@@ -31,6 +31,8 @@ English | [简体中文](./readme/README_cn.md) | [繁體中文](./readme/README
 
 **PaddleOCR converts PDF documents and images into structured, LLM-ready data (JSON/Markdown) with industry-leading accuracy. With 70k+ Stars and trusted by top-tier projects like Dify, RAGFlow, and Cherry Studio, PaddleOCR is the bedrock for building intelligent RAG and Agentic applications.**
 
+> 🚀 **New: Company-Server OCR Verification Microservice**: A production-grade FastAPI microservice supporting 13 document types, async job-queue polling/webhooks for n8n workflows, rules-based verification (Verhoeff, PAN, IFSC), QR/MICR decoding, and strict PII minimisation allowlists. See [README_COMPANY_OCR.md](file:///home/vighnesh/PaddleOCR/README_COMPANY_OCR.md) for full documentation.
+
 
 ## 🚀 Key Features
 
