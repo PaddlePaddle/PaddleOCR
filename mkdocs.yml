@@ -121,6 +121,7 @@ plugins:
             PaddleOCR-VL Apple Silicon 使用教程: PaddleOCR-VL Apple Silicon Usage Tutorial
             PaddleOCR-VL AMD GPU 使用教程: PaddleOCR-VL AMD GPU Usage Tutorial
             PaddleOCR-VL Intel Arc GPU 使用教程: PaddleOCR-VL Intel Arc GPU Usage Tutorial
+            HPD-Parsing: HPD-Parsing
             推理与部署: Inference and Deployment
             总览: Overview
             本地推理: Local Inference
@@ -341,6 +342,8 @@ nav:
     - PaddleOCR-VL Apple Silicon 使用教程: version3.x/pipeline_usage/PaddleOCR-VL-Apple-Silicon.md
     - PaddleOCR-VL AMD GPU 使用教程: version3.x/pipeline_usage/PaddleOCR-VL-AMD-GPU.md
     - PaddleOCR-VL Intel Arc GPU 使用教程: version3.x/pipeline_usage/PaddleOCR-VL-Intel-Arc-GPU.md
+  - HPD-Parsing:
+    - 使用教程: version3.x/pipeline_usage/HPD-Parsing.md
   - 推理与部署:
     - 本地推理:
       - 高性能推理: version3.x/inference_deployment/local_inference/high_performance_inference.md

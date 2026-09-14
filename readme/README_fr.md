@@ -61,7 +61,14 @@
 
 ## 📣 Mises à jour récentes
 
-### 🔥 2026.06.11 : Publication de PaddleOCR 3.7.0
+### 🔥 2026.07.22 : HPD-Parsing est disponible
+- **HPD-Parsing** est un modèle vision-langage léger conçu pour l'analyse de documents à haut débit. Il adopte un décodage parallèle hiérarchique et Progressive Multi-Token Prediction (P-MTP), atteignant un débit maximal de 4,752 tokens/s sur des benchmarks publics tout en conservant une précision d'analyse compétitive.
+- HPD-Parsing prend en charge le serving compatible OpenAI et l'inférence locale via un runtime vLLM personnalisé, ce qui le rend adapté aux scénarios d'analyse de documents exigeants en efficacité d'inférence et en débit de déploiement.
+- Consultez le [tutoriel d'utilisation de HPD-Parsing](https://www.paddleocr.ai/latest/en/version3.x/pipeline_usage/HPD-Parsing.html) pour la préparation de l'environnement, le serving et l'inférence locale.
+
+<details>
+<summary><strong>2026.06.11 : Publication de PaddleOCR 3.7.0</strong></summary>
+
 - Points forts de PP-OCRv6 :
 
     - **Amélioration de la précision** : Le niveau medium atteint +4.6% en détection et +5.1% en reconnaissance par rapport à PP-OCRv5_server, surpassant les principaux VLMs (Qwen3-VL-235B, GPT-5.5) avec seulement 34.5M paramètres.
@@ -70,6 +77,8 @@
     - **Inférence plus rapide** : Accélération 5.2× CPU (OpenVINO), 6.1× sur Apple M4 (tiny), 0.13s sur A100 GPU.
     - **Trois niveaux pour tous les scénarios** : tiny (1.5M) / small (7.7M) / medium (34.5M) pour le déploiement edge, mobile et serveur.
     - **Disponibilité des modèles** : Tous les modèles sont disponibles sur [HuggingFace](https://huggingface.co/collections/PaddlePaddle/pp-ocrv6) et [ModelScope](https://www.modelscope.cn/collections/PaddlePaddle/PP-OCRv6).
+
+</details>
 
 <details>
 <summary><strong>2026.05.28 : Publication de PaddleOCR 3.6.0</strong></summary>
