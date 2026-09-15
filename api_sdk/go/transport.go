@@ -18,6 +18,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"io"
 	"mime/multipart"
 	"net"
@@ -306,6 +307,10 @@ func raiseForResponse(resp *http.Response) error {
 func decodeAPIResponse(resp *http.Response) (*apiResponse, error) {
 	var apiResp apiResponse
 	if err := json.NewDecoder(resp.Body).Decode(&apiResp); err != nil {
+		var networkError net.Error
+		if errors.As(err, &networkError) && networkError.Timeout() {
+			return nil, &RequestTimeoutError{PaddleOCRAPIError: PaddleOCRAPIError{Message: err.Error(), Cause: err}}
+		}
 		return nil, &ResponseFormatError{PaddleOCRAPIError{Message: "expected a JSON response body", Cause: err}}
 	}
 	if apiResp.Code != 0 {
