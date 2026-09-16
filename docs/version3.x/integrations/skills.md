@@ -32,9 +32,25 @@ PaddleOCR 提供官方 Agent Skills，将 OCR 与文档解析任务的触发规�
 
 `skills` CLI 可将 Skill 全局安装到设备上，安装后各 AI 应用均可使用。需要先安装 [Node.js](https://nodejs.org/en/download)。
 
+同时安装多个 Skill：
+
+```shell
+npx skills add PaddlePaddle/PaddleOCR -g \
+  --skill paddleocr-text-recognition \
+  --skill paddleocr-doc-parsing -y
+```
+
+分别安装单个 Skill：
+
 ```shell
 npx skills add PaddlePaddle/PaddleOCR -g --skill paddleocr-text-recognition -y
 npx skills add PaddlePaddle/PaddleOCR -g --skill paddleocr-doc-parsing -y
+```
+
+安装全部 Skill，关联所有 agent：（`--all` = `--skill '*' --agent '*' -y`）：
+
+```shell
+npx skills add PaddlePaddle/PaddleOCR -g --all
 ```
 
 > 由于 PaddleOCR 仓库较大，在网络较慢的环境下 `npx skills add` 可能因超时而失败。如遇此情况，可先将仓库克隆到本地，再从本地路径安装：

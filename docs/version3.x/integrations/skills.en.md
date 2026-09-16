@@ -32,9 +32,25 @@ PaddleOCR provides official Agent Skills that package the routing rules, calling
 
 The `skills` CLI installs skills globally on the device so they can be used by supported AI apps. [Node.js](https://nodejs.org/en/download) is required.
 
+Install multiple skills at once:
+
+```shell
+npx skills add PaddlePaddle/PaddleOCR -g \
+  --skill paddleocr-text-recognition \
+  --skill paddleocr-doc-parsing -y
+```
+
+Install skills individually:
+
 ```shell
 npx skills add PaddlePaddle/PaddleOCR -g --skill paddleocr-text-recognition -y
 npx skills add PaddlePaddle/PaddleOCR -g --skill paddleocr-doc-parsing -y
+```
+
+Install all skills and link to every agent (`--all` = `--skill '*' --agent '*' -y`):
+
+```shell
+npx skills add PaddlePaddle/PaddleOCR -g --all
 ```
 
 > This repository is relatively large. On slower networks, `npx skills add` may time out. If that happens, clone the repository locally first and then install from the local path:
