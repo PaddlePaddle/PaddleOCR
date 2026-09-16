@@ -1,0 +1,105 @@
+# ============================================================
+# PaddleOCR-VL API pipeline 配置 —— DGX Spark 原生部署版
+#
+# 调用说明:
+#   由 scripts/03_start_services.sh 中的
+#   paddlex --serve --pipeline /data/paddleocr/config/pipeline_config_vllm.yaml
+#   使用。与 nvidia/docker 版的唯一区别:
+#   server_url 指向本机原生 VLM 进程 http://127.0.0.1:8081/v1
+#   (docker 版为容器网络名 http://paddleocr-vlm-server:8080/v1)。
+#
+# 脚本逻辑: paddlex --serve 的 pipeline 配置, 定义
+#   版面检测(PP-DocLayoutV3) -> VL 识别(PaddleOCR-VL-1.6-0.9B, 经 vllm-server) 的处理链。
+#   model_dir 保持 null: PaddleX 首次运行自动从百度 BOS 下载并缓存到 ~/.paddlex。
+#
+# 输入输出: 输入为待解析的 PDF/图片; 输出为每页的 Markdown/结构化结果。
+#
+# 来源: https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/pipeline_config_vllm.yaml
+# ============================================================
+
+pipeline_name: PaddleOCR-VL-1.6
+
+batch_size: 64
+
+use_queues: True
+
+use_doc_preprocessor: False      # 如需文档方向分类/扭曲矫正, 改为 True
+use_layout_detection: True
+use_chart_recognition: False     # 图表识别开关
+use_seal_recognition: False      # 印章识别开关
+format_block_content: False
+merge_layout_blocks: True
+markdown_ignore_labels:
+  - number
+  - footnote
+  - header
+  - header_image
+  - footer
+  - footer_image
+  - aside_text
+
+SubModules:
+  LayoutDetection:
+    module_name: layout_detection
+    model_name: PP-DocLayoutV3
+    model_dir: null              # 自动从 BOS 下载
+    batch_size: 8
+    threshold: 0.3               # 版面检测置信度阈值
+    layout_nms: True
+    layout_unclip_ratio: [1.0, 1.0]
+    layout_merge_bboxes_mode:
+      0: "union" # abstract
+      1: "union" # algorithm
+      2: "union" # aside_text
+      3: "large" # chart
+      4: "union" # content
+      5: "large" # display_formula
+      6: "large" # doc_title
+      7: "union" # figure_title
+      8: "union" # footer
+      9: "union" # footer
+      10: "union" # footnote
+      11: "union" # formula_number
+      12: "union" # header
+      13: "union" # header
+      14: "union" # image
+      15: "large" # inline_formula
+      16: "union" # number
+      17: "large" # paragraph_title
+      18: "union" # reference
+      19: "union" # reference_content
+      20: "union" # seal
+      21: "union" # table
+      22: "union" # text
+      23: "union" # text
+      24: "union" # vision_footnote
+  VLRecognition:
+    module_name: vl_recognition
+    model_name: PaddleOCR-VL-1.6-0.9B
+    model_dir: null              # 自动从 BOS 下载
+    batch_size: 4096
+    genai_config:
+      backend: vllm-server
+      # 原生部署: VLM 进程监听本机 8081 端口(见 scripts/03_start_services.sh)
+      server_url: http://127.0.0.1:8081/v1
+
+SubPipelines:
+  DocPreprocessor:
+    pipeline_name: doc_preprocessor
+    batch_size: 8
+    use_doc_orientation_classify: True
+    use_doc_unwarping: True
+    SubModules:
+      DocOrientationClassify:
+        module_name: doc_text_orientation
+        model_name: PP-LCNet_x1_0_doc_ori
+        model_dir: null
+        batch_size: 8
+      DocUnwarping:
+        module_name: image_unwarping
+        model_name: UVDoc
+        model_dir: null
+
+Serving:
+  extra:
+    max_num_input_imgs: null     # 单次请求最大输入页数, null 表示不限制
