@@ -12,8 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import asyncio
 import json
 import os
+from contextlib import asynccontextmanager
 from typing import Any, Dict, Optional
 
 import aiohttp
@@ -77,6 +79,22 @@ class AsyncHTTPClient:
             headers["Client-Platform"] = self._client_platform
         return headers
 
+    @asynccontextmanager
+    async def _request(self, request_cm):
+        """Enter an aiohttp request context, mapping transport-level failures to
+        the SDK's error types. This keeps the async client's contract identical
+        to the sync client (see ``_http.py``), where every network failure is a
+        ``PaddleOCRAPIError`` subclass rather than a raw ``aiohttp``/``asyncio``
+        exception.
+        """
+        try:
+            async with request_cm as resp:
+                yield resp
+        except asyncio.TimeoutError as e:
+            raise RequestTimeoutError(f"Request timed out: {e}") from e
+        except aiohttp.ClientConnectionError as e:
+            raise NetworkError(f"Connection failed: {e}") from e
+
     async def submit_url(
         self,
         model: str,
@@ -96,10 +114,12 @@ class AsyncHTTPClient:
             body["batchId"] = batch_id
 
         await self._ensure_session()
-        async with self._session.post(
-            self._jobs_url,
-            json=body,
-            headers={"Content-Type": "application/json"},
+        async with self._request(
+            self._session.post(
+                self._jobs_url,
+                json=body,
+                headers={"Content-Type": "application/json"},
+            )
         ) as resp:
             await self._raise_for_response(resp)
             data = await self._response_data(resp)
@@ -133,27 +153,31 @@ class AsyncHTTPClient:
         )
 
         await self._ensure_session()
-        async with self._session.post(self._jobs_url, data=form) as resp:
+        async with self._request(self._session.post(self._jobs_url, data=form)) as resp:
             await self._raise_for_response(resp)
             data = await self._response_data(resp)
             return extract_job_id(data)
 
     async def get_job_status(self, job_id: str) -> Dict[str, Any]:
         await self._ensure_session()
-        async with self._session.get(f"{self._jobs_url}/{job_id}") as resp:
+        async with self._request(
+            self._session.get(f"{self._jobs_url}/{job_id}")
+        ) as resp:
             await self._raise_for_response(resp)
             return await self._response_data(resp)
 
     async def get_batch_status(self, batch_id: str) -> Dict[str, Any]:
         await self._ensure_session()
-        async with self._session.get(f"{self._jobs_url}/batch/{batch_id}") as resp:
+        async with self._request(
+            self._session.get(f"{self._jobs_url}/batch/{batch_id}")
+        ) as resp:
             await self._raise_for_response(resp)
             return await self._response_data(resp)
 
     async def fetch_jsonl(self, url: str) -> list:
         timeout = aiohttp.ClientTimeout(total=self._timeout)
         async with aiohttp.ClientSession(timeout=timeout) as bare_session:
-            async with bare_session.get(url) as resp:
+            async with self._request(bare_session.get(url)) as resp:
                 await self._raise_for_response(resp)
                 text = await resp.text()
                 try:
