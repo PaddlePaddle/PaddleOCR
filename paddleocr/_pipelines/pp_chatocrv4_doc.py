@@ -17,6 +17,7 @@ from .._utils.cli import (
     str2bool,
 )
 from .base import PaddleXPipelineWrapper, PipelineCLISubcommandExecutor
+from .llm_config import get_minimax_chat_bot_config
 from .utils import create_config_from_structure
 
 
@@ -680,6 +681,13 @@ class PPChatOCRv4DocCLISubcommandExecutor(PipelineCLISubcommandExecutor):
             type=str,
             help="Configuration for the multimodal large language model.",
         )
+        subparser.add_argument(
+            "--minimax_api_key",
+            type=str,
+            help="API key for MiniMax Cloud. When set, uses MiniMax as the "
+            "LLM provider for information extraction instead of Qianfan. "
+            "Can also be set via the MINIMAX_API_KEY environment variable.",
+        )
 
     def execute_with_args(self, args):
         params = get_subcommand_args(args)
@@ -687,8 +695,13 @@ class PPChatOCRv4DocCLISubcommandExecutor(PipelineCLISubcommandExecutor):
         keys = params.pop("keys")
         save_path = params.pop("save_path")
         invoke_mllm = params.pop("invoke_mllm")
+        minimax_api_key = params.pop("minimax_api_key")
         qianfan_api_key = params.pop("qianfan_api_key")
-        if qianfan_api_key is not None:
+        if minimax_api_key is not None:
+            params["chat_bot_config"] = get_minimax_chat_bot_config(
+                minimax_api_key
+            )
+        elif qianfan_api_key is not None:
             params["retriever_config"] = {
                 "module_name": "retriever",
                 "model_name": "embedding-v1",

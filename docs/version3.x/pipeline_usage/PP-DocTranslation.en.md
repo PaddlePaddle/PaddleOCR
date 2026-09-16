@@ -694,6 +694,9 @@ You can download the [test file](https://paddle-model-ecology.bj.bcebos.com/padd
 
 ```bash
 paddleocr pp_doctranslation -i vehicle_certificate-1.png --target_language en --qianfan_api_key your_api_key
+
+# Use MiniMax Cloud as the LLM provider
+paddleocr pp_doctranslation -i vehicle_certificate-1.png --target_language en --minimax_api_key your_minimax_api_key
 ```
 
 The examples above use local Paddle inference engines by default. By default, each module selects the appropriate local Paddle inference engine according to the default model name: models that support only dynamic graph use `paddle_dynamic`, while models that support both static and dynamic graph prefer `paddle_static`. To run them, first install PaddlePaddle by following [PaddlePaddle Framework Installation](../paddlepaddle_installation.en.md).
@@ -1255,6 +1258,12 @@ If not set, the pipeline initialized value will be used, default is <code>True</
 <td></td>
 </tr>
 <tr>
+<td><code>minimax_api_key</code></td>
+<td><b>Meaning:</b>API key for <a href="https://platform.minimaxi.com/">MiniMax Cloud</a>. When set, uses MiniMax (MiniMax-M3, 512K context, 128K max output) as the LLM provider instead of Qianfan. Can also be set via the <code>MINIMAX_API_KEY</code> environment variable.</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
 <td><code>device</code></td>
 <td><b>Meaning:</b>Device used for inference.<br/>
 <b>Description:</b> 
@@ -1361,6 +1370,10 @@ chat_bot_config = {
     "api_type": "openai",
     "api_key": "api_key",  # your api_key
 }
+
+# Alternatively, use MiniMax Cloud as the LLM provider:
+# from paddleocr._pipelines.llm_config import get_minimax_chat_bot_config
+# chat_bot_config = get_minimax_chat_bot_config()  # reads MINIMAX_API_KEY env var
 
 if input_path.lower().endswith(".md"):
     # Read markdown documents, supporting passing in directories and url links with the .md suffix
