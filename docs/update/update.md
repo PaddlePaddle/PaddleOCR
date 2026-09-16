@@ -79,7 +79,7 @@ hide:
     -  为MKL-DNN缓存大小设置默认上界，防止缓存无限增长。同时，支持用户配置缓存容量。@timminator 
     - 更新高性能推理默认配置，支持Paddle MKL-DNN加速。优化高性能推理自动配置逻辑，支持更智能的配置选择。
     - 调整默认设备获取逻辑，考虑环境中安装的Paddle框架对计算设备的实际支持情况，使程序行为更符合直觉。
-    - 新增PP-OCRv5的Android端示例，[详情](https://paddlepaddle.github.io/PaddleOCR/latest/version3.x/inference_deployment/cross_platform/on_device_deployment.html)。
+    - 新增PP-OCRv5的Android端示例，[详情](https://paddlepaddle.github.io/PaddleOCR/v3.0.2/version3.x/deployment/on_device_deployment.html)。
 
 - **Bug修复：**
     - 修复PP-StructureV3部分CLI参数不生效的问题。

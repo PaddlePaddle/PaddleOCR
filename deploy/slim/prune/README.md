@@ -48,7 +48,7 @@ sen.pickle(Dict){
         }
 ```
 
-加载敏感度文件后会返回一个字典，字典中的keys为网络模型参数模型的名字，values为一个字典，里面保存了相应网络层的裁剪敏感度信息。例如在例子中，conv10_expand_weights所对应的网络层在裁掉10%的卷积核后模型性能相较原模型会下降0.65%，详细信息可见[PaddleSlim](https://github.com/PaddlePaddle/PaddleSlim/blob/develop/docs/zh_cn/algo/algo.md#2-%E5%8D%B7%E7%A7%AF%E6%A0%B8%E5%89%AA%E8%A3%81%E5%8E%9F%E7%90%86)
+加载敏感度文件后会返回一个字典，字典中的keys为网络模型参数模型的名字，values为一个字典，里面保存了相应网络层的裁剪敏感度信息。例如在例子中，conv10_expand_weights所对应的网络层在裁掉10%的卷积核后模型性能相较原模型会下降0.65%，详细信息可见[PaddleSlim敏感度剪裁原理](https://github.com/PaddlePaddle/PaddleSlim/blob/release/2.0-alpha/docs/zh_cn/algo/algo.md#23-基于敏感度剪裁卷积网络)
 
 进入PaddleOCR根目录，通过以下命令对模型进行敏感度分析训练：
 ```bash

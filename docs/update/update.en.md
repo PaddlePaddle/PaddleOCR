@@ -80,7 +80,7 @@ hide:
     - Set a default upper limit for MKL-DNN cache size to prevent unlimited growth, while also allowing users to configure cache capacity.
     - Updated default configurations for high-performance inference to support Paddle MKL-DNN acceleration and optimized the logic for automatic configuration selection for smarter choices.
     - Adjusted the logic for obtaining the default device to consider the actual support for computing devices by the installed Paddle framework, making program behavior more intuitive.
-    - Added Android example for PP-OCRv5. [Details](https://paddlepaddle.github.io/PaddleOCR/latest/en/version3.x/inference_deployment/cross_platform/on_device_deployment.html).
+    - Added Android example for PP-OCRv5. [Details](https://paddlepaddle.github.io/PaddleOCR/v3.0.2/en/version3.x/deployment/on_device_deployment.html).
 
 - **Bug Fixes:**
 
