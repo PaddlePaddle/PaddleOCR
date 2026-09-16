@@ -12,10 +12,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import os
+import sys
+
 DEFAULT_DEVICE = None
 DEFAULT_USE_TENSORRT = False
 DEFAULT_PRECISION = "fp32"
-DEFAULT_ENABLE_MKLDNN = True
+# oneDNN (mkldnn) is broken in the PaddlePaddle 3.3+ PIR executor on Windows
+# CPU: inference crashes with `ConvertPirAttribute2RuntimeAttribute` /
+# `[pir::ArrayAttribute<pir::DoubleAttribute>]` (see
+# https://github.com/PaddlePaddle/Paddle/issues/77340 and
+# https://github.com/PaddlePaddle/PaddleOCR/issues/17869). Disable it by
+# default on win32 so out-of-the-box CPU inference works; users on other
+# platforms (or with a fixed Paddle) can still opt in with
+# `PaddleOCR(enable_mkldnn=True)`.
+DEFAULT_ENABLE_MKLDNN = False if sys.platform == "win32" else True
 DEFAULT_MKLDNN_CACHE_CAPACITY = 10
 DEFAULT_CPU_THREADS = 10
 SUPPORTED_PRECISION_LIST = ["fp32", "fp16"]
