@@ -32,6 +32,7 @@ dist/
 /deploy/android_demo/app/PaddleLite/
 /deploy/android_demo/app/.cxx/
 /deploy/android_demo/app/cache/
+/deploy/cpp_infer/third_party/
 
 test_tipc/web/models/
 test_tipc/web/node_modules/

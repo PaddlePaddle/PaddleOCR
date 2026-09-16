@@ -14,8 +14,10 @@
 
 #include "image_batch_sampler.h"
 
+#ifndef _WIN32
 #include <dirent.h>
 #include <sys/stat.h>
+#endif
 
 #include <algorithm>
 #include <cctype>
