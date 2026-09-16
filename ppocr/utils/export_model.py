@@ -167,6 +167,7 @@ def dump_infer_config(config, path, logger):
 
 
 def dynamic_to_static(model, arch_config, logger, input_shape=None):
+    if input_shape is None: input_shape = [3, 48, 320] 
     if arch_config["algorithm"] == "SRN":
         max_text_length = arch_config["Head"]["max_text_length"]
         other_shape = [
