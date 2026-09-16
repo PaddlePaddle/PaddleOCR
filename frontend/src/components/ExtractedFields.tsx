@@ -89,14 +89,24 @@ export const ExtractedFields: React.FC<ExtractedFieldsProps> = ({ document, onCo
                 <div className="field-value-row">
                   <div className="field-value" style={{ flex: 1 }}>
                     {Array.isArray(value) ? (
-                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.35rem', marginTop: '0.2rem' }}>
+                      <div
+                        style={{
+                          display: 'flex',
+                          flexDirection: key === 'transactions' ? 'column' : 'row',
+                          flexWrap: key === 'transactions' ? 'nowrap' : 'wrap',
+                          gap: '0.35rem',
+                          marginTop: '0.2rem',
+                          maxHeight: key === 'transactions' ? '240px' : undefined,
+                          overflowY: key === 'transactions' ? 'auto' : undefined,
+                        }}
+                      >
                         {value.map((item, idx) => (
                           <span
                             key={idx}
                             style={{
                               display: 'inline-flex',
                               alignItems: 'center',
-                              padding: '0.15rem 0.5rem',
+                              padding: key === 'transactions' ? '0.25rem 0.5rem' : '0.15rem 0.5rem',
                               borderRadius: '4px',
                               backgroundColor: 'rgba(59, 130, 246, 0.15)',
                               border: '1px solid rgba(59, 130, 246, 0.3)',
@@ -105,7 +115,11 @@ export const ExtractedFields: React.FC<ExtractedFieldsProps> = ({ document, onCo
                               fontWeight: 500,
                             }}
                           >
-                            {String(item)}
+                            {typeof item === 'object' && item !== null
+                              ? item.date
+                                ? `${item.date} • ${item.type ? item.type + ' ' : ''}${item.amount} • Bal: ${item.balance || '-'} • ${item.description || ''}`
+                                : JSON.stringify(item)
+                              : String(item)}
                           </span>
                         ))}
                       </div>

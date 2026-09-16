@@ -256,7 +256,9 @@ DOC_TYPE_LANGUAGES: Dict[str, List[str]] = {
     "utility_bill": ["en", "hi", "mr"],
     "salary_slip": ["en", "hi", "mr"],
     "bank_passbook": ["en", "hi", "mr"],
+    "income_certificate": ["en", "hi", "mr"],
 }
+
 
 
 def get_languages_for_doc_type(doc_type: Optional[str]) -> List[str]:
@@ -462,7 +464,7 @@ def extract_text_from_pdf_pdftotext(pdf_path: str) -> List[str]:
     try:
         # Check number of pages or extract with form feed separator
         result = subprocess.run(
-            ["pdftotext", pdf_path, "-"],
+            ["pdftotext", "-layout", pdf_path, "-"],
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             text=True,
@@ -666,6 +668,7 @@ class OCREngine:
                 else:
                     lines = lines_en
 
+
                 total_conf = sum(l.confidence for l in lines)
                 avg_conf = (total_conf / len(lines)) if lines else 0.0
                 full_text = "\n".join([line.text for line in lines])
@@ -734,7 +737,7 @@ class OCREngine:
                     if rendered_imgs:
                         first_rendered_img = rendered_imgs[0]
                         ocr_p1 = self.process_image(first_rendered_img, page_num=1, languages=languages)
-                        extra_lines = [l for l in ocr_p1.lines if re.search(r"[\u0900-\u097F]", l.text)]
+                        extra_lines = [l for l in ocr_p1.lines if re.search(r"[\u0905-\u0939]{2,}", l.text)]
                 except Exception as ex:
                     logger.warning("Error running header OCR scan on digital PDF: %s", ex)
 

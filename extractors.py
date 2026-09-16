@@ -123,6 +123,7 @@ RESIDUAL_LABEL_LINES = {
     "current year business loss", "book profit", "net tax payable",
     "gstin", "trade name", "legal name", "constitution of business", "date of registration",
     "additional trade names", "additional trade name", "trade names", "trade name if any", "trade name, if any", "if any",
+    "name of deductor", "tan of deductor", "name of employer", "name of buyer", "name of collector", "name of deductee", "name of seller",
     "corporate identity number", "cin", "registrar of companies", "company name",
     "partnership deed", "firm name", "partner", "partner name", "profit sharing ratio",
     "lessor", "lessee", "landlord", "tenant", "monthly rent", "security deposit", "lease period",
@@ -289,8 +290,9 @@ def extract_aadhaar(doc_res: OCRDocumentResult) -> Tuple[Dict[str, Any], Dict[st
     confidences: Dict[str, float] = {}
 
     # Check for Aadhaar number pattern: 4 digits + 4 digits + 4 digits, or masked XXXX XXXX 1234
-    uid_match = re.search(r"\b(\d{4}\s\d{4}\s\d{4}|\d{12})\b", text)
-    masked_match = re.search(r"\b([X\d]{4}\s[X\d]{4}\s\d{4})\b", text, re.IGNORECASE)
+    norm_text = normalize_devanagari_numbers(text) or text
+    uid_match = re.search(r"\b(\d{4}\s\d{4}\s\d{4}|\d{12})\b", norm_text)
+    masked_match = re.search(r"\b([X\d]{4}\s[X\d]{4}\s\d{4})\b", norm_text, re.IGNORECASE)
 
     raw_uid = None
     if uid_match:
@@ -303,7 +305,7 @@ def extract_aadhaar(doc_res: OCRDocumentResult) -> Tuple[Dict[str, Any], Dict[st
         confidences["aadhaar_number"] = conf
         confidences["aadhaar_number_masked"] = conf
     elif masked_match:
-        masked_val = masked_match.group(1).upper()
+        masked_val = normalize_devanagari_numbers(masked_match.group(1).upper())
         fields["aadhaar_number"] = masked_val
         fields["aadhaar_number_masked"] = masked_val
         conf = find_line_confidence(r"[X\d]{4}\s[X\d]{4}\s\d{4}", all_lines)
@@ -546,7 +548,7 @@ def extract_fssai(doc_res: OCRDocumentResult) -> Tuple[Dict[str, Any], Dict[str,
 
     # Business Name
     biz_match = re.search(
-        r"(?:Business\s*Name|Name of Food Business Operator)[\s:]*([A-Za-z0-9][A-Za-z0-9 \t,\.\-&]{1,60}?)(?=[ \t]*(?:\r?\n|$|(?:\b|(?<=[a-z0-9A-Z]))(?:FSSAI|Licence|License|Kind of Business|Valid|Period)\b))",
+        r"(?:Business\s*Name|Business\s*Operator\s*(?:\(FBO\))?|Name of Food Business Operator)[\s:]+([A-Za-z0-9][A-Za-z0-9 \t,\.\-&]{1,60}?)(?=[ \t]*(?:\r?\n|$|(?:\b|(?<=[a-z0-9A-Z]))(?:FSSAI|Licence|License|Kind of Business|Valid|Period|Address|SR\s*NO)\b))",
         text,
         re.IGNORECASE,
     )
@@ -564,10 +566,10 @@ def extract_fssai(doc_res: OCRDocumentResult) -> Tuple[Dict[str, Any], Dict[str,
         fields["kind_of_business"] = clean_field_value(kind_match.group(1))
 
     # Validity
-    valid_from = re.search(r"(?:Valid From)[\s:]+(\d{2}[/\-\.]\d{2}[/\-\.]\d{4})", text, re.IGNORECASE)
+    valid_from = re.search(r"(?:Valid\s*From|Issued\s*On)[\s:/]+(\d{2}[/\-\.]\d{2}[/\-\.]\d{4})", text, re.IGNORECASE)
     if valid_from:
         fields["valid_from"] = valid_from.group(1)
-    valid_till = re.search(r"(?:Valid Till)[\s:]+(\d{2}[/\-\.]\d{2}[/\-\.]\d{4})", text, re.IGNORECASE)
+    valid_till = re.search(r"(?:Valid\s*Till|Fee\s*Paid\s*Upto)[\s:/]+.*?(\d{2}[/\-\.]\d{2}[/\-\.]\d{4})", text, re.IGNORECASE)
     if valid_till:
         fields["valid_till"] = valid_till.group(1)
 
@@ -597,9 +599,13 @@ SHOP_ESTABLISHMENT_STATE_REGISTRY: Dict[str, Dict[str, Any]] = {
             r"पुणे\s*महानगरपालिका",
             r"आपले\s*सरकार",
             r"दुकान\s*(?:आणि|व)\s*आस्थापना",
+            r"महारा\s+(?:दु\s*क\s*ाने|दुकान|दुकाने)\s*(?:आणि|व)\s*आ\s*थ?स्थापना",
+            r"नमु\s*न\s*ा\s*[\"'\u201c\u201d]?[फगFG][\"'\u201c\u201d]?",
+            r"Form\s*[-–]\s*[\"'\u2018\u2019]?[फगFG][\"'\u2018\u2019]?",
         ],
         "reg_no_patterns": [
             r"(?:नोंदणी\s*(?:क्रमांक|क्र\.?)|Registration\s*Number|Reg\s*No\.?|Certificate\s*No\.?)[\s:]*([A-Za-z0-9\-\/]{5,30})",
+            r"(?:पावती\s*(?:क्रमांक|क्र\.?|मांक)|Registration\s*Certificate\s*/\s*Intimation)[\s:]*([A-Za-z0-9\-\/]{5,30})",
             r"\b(SHOP-[A-Z0-9\-]+)\b",
             r"\b(MH[0-9A-Z\-\/]{6,25})\b",
         ],
@@ -692,27 +698,33 @@ def extract_shop_establishment(doc_res: OCRDocumentResult) -> Tuple[Dict[str, An
 
     # Establishment Name
     est_match = re.search(
-        r"(?:आस्थापनेचे\s*नाव|दुकानाचे\s*नाव|Name\s*of\s*Establishment|(?<!&\s)(?<!and\s)(?<!of\s)\bEstablishment\b)[\s:]+([^\r\n:]{2,60}?)(?=[ \t]*(?:\r?\n|$|(?:\b|(?<=[a-z0-9A-Z\u0900-\u097F]))(?:Registration|Reg|Employer|नोंदणी|मालक|Nature\s*of\s*Business|व्यवसाय|Address|पत्ता)\b))",
+        r"(?:Name\s*of\s*(?:the\s*)?establishment|आ\s*थापनेचे\s*नाव|आस्थापनेचे\s*नाव|दुकानाचे\s*नाव|(?<!&\s)(?<!and\s)(?<!of\s)\bEstablishment\b)[\s:/]+([^\r\n:]{2,70}?)(?=[ \t]*(?:\r?\n|$|(?:\b|(?<=[a-z0-9A-Z\u0900-\u097F]))(?:Registration|Reg|Employer|नोंदणी|मालक|Nature\s*of\s*Business|व्यवसाय|Address|पत्ता|Previous)\b))",
         text,
         re.IGNORECASE,
     )
     if est_match:
-        fields["establishment_name"] = clean_field_value(est_match.group(1), field_name="establishment_name", doc_type="shop_establishment")
+        est_val = est_match.group(1).strip()
+        est_val = re.sub(r"^[\s/]*(?:आ\s*(?:थापनेचे|स्थापनेचे)(?:\s*नाव)?|नाव)[\s:]*", "", est_val).strip()
+        est_val = re.split(r"(?<=[a-zA-Z])\s+(?=[\u0900-\u097F])", est_val)[0].strip()
+        fields["establishment_name"] = clean_field_value(est_val, field_name="establishment_name", doc_type="shop_establishment")
         confidences["establishment_name"] = find_line_confidence(fields["establishment_name"], all_lines)
 
     # Employer Name
     emp_match = re.search(
-        r"(?:मालकाचे\s*नाव|Employer|Name of Employer)[\s:]*([^\r\n:]{2,40}?)(?=[ \t]*(?:\r?\n|$|(?:\b|(?<=[a-z0-9A-Z\u0900-\u097F]))(?:Registration|Reg|Establishment|नोंदणी|आस्थापना|Nature of Business|व्यवसाय)\b))",
+        r"(?:Name\s*of\s*(?:the\s*)?Employer(?:[\s/]*(?:मालकाचे\s*नाव)?)?|मालकाचे\s*नाव|Employer)[\s:]*([^\r\n:]{2,50}?)(?=[ \t]{2,}|\r?\n|$|(?:\b|(?<=[a-z0-9A-Z\u0900-\u097F]))(?:Registration|Reg|Establishment|नोंदणी|आस्थापना|Nature\s*of\s*Business|व्यवसाय|Residential|Address|पत्ता)\b)",
         text,
         re.IGNORECASE,
     )
     if emp_match:
-        fields["employer_name"] = clean_field_value(emp_match.group(1), field_name="employer_name", doc_type="shop_establishment")
+        emp_val = emp_match.group(1).strip()
+        emp_val = re.sub(r"^[\s/]*(?:मालकाचे(?:\s*नाव)?|नाव)[\s:]*", "", emp_val).strip()
+        emp_val = re.split(r"(?<=[a-zA-Z])\s+(?=[\u0900-\u097F])", emp_val)[0].strip()
+        fields["employer_name"] = clean_field_value(emp_val, field_name="employer_name", doc_type="shop_establishment")
         confidences["employer_name"] = find_line_confidence(fields["employer_name"], all_lines)
 
     # Nature of Business
     nature_match = re.search(
-        r"(?:व्यवसायाचे\s*स्वरूप|Nature of Business)[\s:]*([^\r\n:]{2,50}?)(?=[ \t]*(?:\r?\n|$|(?:\b|(?<=[a-z0-9A-Z\u0900-\u097F]))(?:Registration|Reg|Employer|Date|तारीख|दिनांक)\b))",
+        r"(?:व्यवसायाचे\s*स्वरूप|Nature\s*of\s*Business|Category\s*Of\s*Establishment\s*Type(?:[\s/]*(?:आ\s*थापनेचे\s*उपवगवार)?)?)[\s:/]+([^\r\n:]{2,50}?)(?=[ \t]*(?:\r?\n|$|(?:\b|(?<=[a-z0-9A-Z\u0900-\u097F]))(?:Registration|Reg|Employer|Date|तारीख|दिनांक|Type\s*of)\b))",
         text,
         re.IGNORECASE,
     )
@@ -762,17 +774,20 @@ def extract_bank_statement(doc_res: OCRDocumentResult) -> Tuple[Dict[str, Any], 
 
     # 2. Bank Name
     bank_match = re.search(
-        r"(?:Branch\s*Office\s*:|Bank\s*Name|Bank)[\s:]*([A-Za-z][A-Za-z \t.&'-]+?BANK)\b",
+        r"(?:Statement\s+(?:of\s+)?|Account\s+Statement\s+(?:of\s+)?|Branch\s*Office\s*:|Bank\s*Name|Bank)[\s:]*([A-Za-z][A-Za-z \t.&'-]+?\b(?:BANK(?:\s+OF\s+[A-Za-z]+)?|PAYMENTS\s+BANK)|BANK\s+OF\s+[A-Za-z]+)\b|^[\s:]*([A-Za-z][A-Za-z \t.&'-]+?\b(?:BANK(?:\s+OF\s+[A-Za-z]+)?|PAYMENTS\s+BANK)|BANK\s+OF\s+[A-Za-z]+)\b",
         full_text,
-        re.IGNORECASE,
+        re.IGNORECASE | re.MULTILINE,
     )
     if bank_match:
-        fields["bank_name"] = clean_field_value(bank_match.group(1))
-        confidences["bank_name"] = find_line_confidence(bank_match.group(1), all_lines)
+        cand_bank = (bank_match.group(1) or bank_match.group(2) or "").strip()
+        cand_bank = re.sub(r"^(?:Statement\s+(?:of\s+)?|Account\s+Statement\s+(?:of\s+)?|Branch\s*Office\s*:?)\s*", "", cand_bank, flags=re.IGNORECASE).strip()
+        if cand_bank:
+            fields["bank_name"] = clean_field_value(cand_bank)
+            confidences["bank_name"] = find_line_confidence(cand_bank, all_lines)
 
-    # 3. Statement Period (supports numeric and alphanumeric month ranges e.g. '28-Mar-2026 to 27-Apr-2026')
+    # 3. Statement Period (supports numeric and alphanumeric month ranges e.g. '28-Mar-2026 to 27-Apr-2026' or '( From : 30/07/2025 To : 30/07/2026 )')
     period_match = re.search(
-        r"(?:Transaction\s*Period|Statement\s*Period|Period)[\s:]+([A-Za-z0-9\/\-\.]+)\s*(?:to|-)\s*([A-Za-z0-9\/\-\.]+)",
+        r"(?:Transaction\s*Period|Statement\s*Period|Period)[\s:]*(?:\(\s*)?(?:From\s*[:]\s*)?([A-Za-z0-9\/\-\.]+)\s*(?:to|-|To\s*[:])\s*([A-Za-z0-9\/\-\.]+)",
         full_text,
         re.IGNORECASE,
     )
@@ -796,7 +811,6 @@ def extract_bank_statement(doc_res: OCRDocumentResult) -> Tuple[Dict[str, Any], 
 
     # 5. Multi-page transactions table parsing and chronological merging
     transactions: List[Dict[str, Any]] = []
-    date_pattern = re.compile(r"^\s*(\d{2}[/\-\.]\d{2}[/\-\.]\d{2,4})\b")
     header_pattern = re.compile(
         r"\b(?:Transaction\s*Details|ACCOUNT\s*SUMMARY|END\s*OF\s*REPORT|DISCLAIMER|DATE\s+TRAN|Guidelines\s+for|Remember\s+that|Branch\s+Office|Customer\s+Address|Registered\s+Mobile|Account\s+Number|Nomination|Account\s+Type|Customer\s+ID|IFSC|MICR)\b",
         re.IGNORECASE,
@@ -813,17 +827,65 @@ def extract_bank_statement(doc_res: OCRDocumentResult) -> Tuple[Dict[str, Any], 
     if not pages_to_process and full_text.strip():
         # Fallback if no pages list provided
         from ocr_engine import OCRPageResult, parse_text_into_ocr_lines
-        pages_to_process = [OCRPageResult(page_num=1, full_text=full_text, lines=parse_text_into_ocr_lines(full_text))]
+        pages_to_process = [OCRPageResult(page_num=1, full_text=full_text, lines=parse_text_into_ocr_lines(full_text), average_confidence=1.0)]
 
     for page in pages_to_process:
-        # Prefer page.full_text splitlines to preserve layout / wrapped lines, falling back to page.lines
+        # Strategy 1: Multi-line / Grid Finacle Block Parsing (e.g. Axis Bank, PNB, Canara Bank)
+        # Transactions are grouped in blocks separated by double newlines, with S.No, Date, Particulars, and Amounts interleaved.
+        raw_blocks = re.split(r"\n\s*\n+", page.full_text.strip()) if page.full_text else []
+        page_block_txns = []
+        for blk in raw_blocks:
+            if header_pattern.search(blk) and not re.search(r"^\s*\d+\s+\d{2}[/\-\.]", blk, re.M):
+                continue
+            m_date = re.search(r"(?:^|\n)\s*(?:(\d{1,6})\s+)?(\d{2}[/\-\.]\d{2}[/\-\.]\d{2,4})\b", blk)
+            m_fin = re.search(r"([\d,]+\.\d{2})\s+(CR|DR|Cr|Dr)\s+([\d,]+\.\d{2})", blk)
+            if m_date and m_fin:
+                date_str = m_date.group(2)
+                amt_str = m_fin.group(1).replace(",", "")
+                t_type = m_fin.group(2).upper()
+                bal_str = m_fin.group(3).replace(",", "")
+
+                desc_parts = []
+                for b_line in blk.splitlines():
+                    if re.search(r"Branch Name|Debit/Credit|Balance\(INR\)|Transaction\s+Date", b_line, re.I):
+                        continue
+                    l_fin = re.search(r"([\d,]+\.\d{2})\s+(?:CR|DR|Cr|Dr)\s+([\d,]+\.\d{2})", b_line)
+                    if l_fin:
+                        prefix = b_line[:l_fin.start()].strip()
+                        if prefix:
+                            desc_parts.append(prefix)
+                    else:
+                        part_slice = b_line[35:110].strip() if len(b_line) > 35 else b_line.strip()
+                        if part_slice and not re.match(r"^(?:\d{1,6}\s+)?\d{2}[/\-\.]\d{2}[/\-\.]\d{2,4}", part_slice):
+                            desc_parts.append(part_slice)
+                desc = " ".join(desc_parts)
+                desc = re.sub(r"\s+", " ", desc).strip()
+                if bal_str:
+                    try:
+                        prev_balance = float(bal_str)
+                    except ValueError:
+                        pass
+                page_block_txns.append({
+                    "date": date_str,
+                    "description": desc,
+                    "amount": amt_str,
+                    "type": t_type,
+                    "balance": bal_str,
+                })
+
+        if page_block_txns:
+            transactions.extend(page_block_txns)
+            continue
+
+        # Strategy 2: Line-by-Line Parsing (e.g. India Post Payments Bank, HDFC, SBI standard format)
         lines = [l.strip() for l in page.full_text.splitlines() if l.strip()] if page.full_text else [l.text.strip() for l in page.lines if l.text.strip()]
+        date_pattern = re.compile(r"^\s*(?:(\d{1,6})\s+)?(\d{2}[/\-\.]\d{2}[/\-\.]\d{2,4})\b")
         i = 0
         while i < len(lines):
             line = lines[i]
             m_date = date_pattern.match(line)
             if m_date and not header_pattern.search(line):
-                date_str = m_date.group(1)
+                date_str = m_date.group(2)
                 rest = line[m_date.end():]
 
                 # Lookahead for wrapped multiline description lines
@@ -1366,6 +1428,38 @@ def extract_driving_licence(doc_res: OCRDocumentResult) -> Tuple[Dict[str, Any],
 # 13. ITR (Income Tax Return) Extractor
 # ==============================================================================
 
+INVALID_ITR_NAME_LABELS = {
+    "of deductor", "of employer", "of collector", "of buyer", "of seller",
+    "of deductee", "of bank", "of premises", "of assessee", "of taxpayer",
+    "deductor", "employer", "collector", "buyer", "seller", "deductee",
+    "assessee", "taxpayer", "bank", "address", "status", "pan", "pan number",
+    "acknowledgement", "acknowledgement number", "form", "form number",
+    "total income", "taxes paid", "assessment year", "financial year",
+}
+
+
+def is_valid_itr_name(val: Optional[str]) -> bool:
+    """Validate extracted ITR assessee name against third-party field labels and fragments."""
+    if not val or not isinstance(val, str):
+        return False
+    clean = re.sub(r"^\d+[\.\)]\s*", "", val.strip()).strip(" :,-")
+    if len(clean) < 2:
+        return False
+    norm = re.sub(r"[\s\W_]+", " ", clean).strip().lower()
+    if not norm:
+        return False
+    if norm in INVALID_ITR_NAME_LABELS:
+        return False
+    if norm.startswith("of "):
+        return False
+    if any(norm.startswith(hdr) for hdr in [
+        "name of", "tan of", "pan of", "total amount", "sr no", "date of",
+        "form no", "assessment year", "financial year", "details of", "part "
+    ]):
+        return False
+    return True
+
+
 def extract_itr(doc_res: OCRDocumentResult) -> Tuple[Dict[str, Any], Dict[str, float]]:
     all_lines = [line for page in doc_res.pages for line in page.lines]
     text = doc_res.full_text
@@ -1389,14 +1483,83 @@ def extract_itr(doc_res: OCRDocumentResult) -> Tuple[Dict[str, Any], Dict[str, f
         fields["pan_number"] = pan_match.group(1)
         confidences["pan_number"] = find_line_confidence(pan_match.group(1), all_lines)
 
-    # Name
-    name_match = re.search(
-        r"(?:Name)[\s:]*([A-Za-z][A-Za-z \t.'-]{1,40}?)(?=[ \t]*(?:\r?\n|$|(?:\b|(?<=[a-z0-9A-Z]))(?:PAN|Address|Status|Form|Acknowledgement|Ack|Date|Father)\b))",
-        text,
-        re.IGNORECASE,
-    )
-    if name_match:
-        fields["name"] = clean_field_value(name_match.group(1))
+    # Name (Assessee Name)
+    name_val: Optional[str] = None
+
+    # Determine cover/acknowledgement page text slices if multi-page
+    search_slices: List[str] = []
+    if doc_res.pages:
+        for p in doc_res.pages[:3]:
+            if any(k in p.full_text.lower() for k in ["acknowledgement", "itr-v", "income tax return", "pan", "assessee"]):
+                search_slices.append(p.full_text)
+    if not search_slices:
+        search_slices.append(text)
+
+    for stext in search_slices:
+        # Strategy 1: Explicit "Name of Assessee" or "Assessee Name"
+        m_assessee = re.search(
+            r"(?:Name\s*of\s*Assessee|Assessee\s*Name)[\s:]*([A-Za-z0-9][A-Za-z0-9 \t.,'\-&_]{1,60}?)(?=[ \t]*(?:\r?\n|$|(?:\b|(?<=[a-z0-9A-Z]))(?:PAN|Address|Status|Ward|Assessment|Financial|D\.O\.I|DOI|Return|Date)\b))",
+            stext,
+            re.IGNORECASE,
+        )
+        if m_assessee:
+            cand = clean_field_value(m_assessee.group(1))
+            if is_valid_itr_name(cand):
+                name_val = cand
+                break
+
+        # Strategy 2: CA cover title block: "Income Tax Return ... Of \n <Assessee> \n Pan"
+        m_cover_of = re.search(
+            r"(?:Assessment\s*Year[^\n]*\n\s*Of|\bReturn\b[^\n]*\n[^\n]*\bOf)[\s:\r\n]+([A-Za-z0-9][A-Za-z0-9 \t.,'\-&_]{1,60}?)(?=[ \t]*(?:\r?\n|$|(?:\b|(?<=[a-z0-9A-Z]))(?:PAN|Address|Prepared)\b))",
+            stext,
+            re.IGNORECASE,
+        )
+        if m_cover_of:
+            cand = clean_field_value(m_cover_of.group(1))
+            if is_valid_itr_name(cand):
+                name_val = cand
+                break
+
+        # Strategy 3: Standard ITR-V "Name" label (negative lookahead strictly blocks "Name of Deductor/Employer/...")
+        m_name = re.search(
+            r"\bName\b(?!\s*of\s*(?:Deductor|Employer|Bank|Buyer|Collector|Seller|Deductee|Premises|Branch))[\s:]*([A-Za-z0-9][A-Za-z0-9 \t.,'\-&_]{1,60}?)(?=[ \t]*(?:\r?\n|$|(?:\b|(?<=[a-z0-9A-Z]))(?:PAN|Address|Status|Form|Acknowledgement|Ack|Date|Father|Total|Taxes|Current)\b))",
+            stext,
+            re.IGNORECASE,
+        )
+        if m_name:
+            cand = clean_field_value(m_name.group(1))
+            if is_valid_itr_name(cand):
+                name_val = cand
+                break
+
+        # Strategy 4: Multiline "Name \n <Assessee> \n Address"
+        lines = [l.strip() for l in stext.splitlines() if l.strip()]
+        for idx, line in enumerate(lines):
+            if re.match(r"^Name\s*[:\-]?$", line, re.IGNORECASE):
+                if idx + 1 < len(lines):
+                    next_l = lines[idx + 1].strip()
+                    if not re.search(r"^(?:PAN|Address|Status|Form|Acknowledgement|Ack|Date|Father|Total|Taxes)\b", next_l, re.IGNORECASE):
+                        cand = clean_field_value(next_l)
+                        if is_valid_itr_name(cand):
+                            name_val = cand
+                            break
+        if name_val:
+            break
+
+    # Fallback to full text if slices did not yield a valid name
+    if not name_val:
+        m_name = re.search(
+            r"\bName\b(?!\s*of\s*(?:Deductor|Employer|Bank|Buyer|Collector|Seller|Deductee|Premises|Branch))[\s:]*([A-Za-z0-9][A-Za-z0-9 \t.,'\-&_]{1,60}?)(?=[ \t]*(?:\r?\n|$|(?:\b|(?<=[a-z0-9A-Z]))(?:PAN|Address|Status|Form|Acknowledgement|Ack|Date|Father|Total|Taxes|Current)\b))",
+            text,
+            re.IGNORECASE,
+        )
+        if m_name:
+            cand = clean_field_value(m_name.group(1))
+            if is_valid_itr_name(cand):
+                name_val = cand
+
+    if name_val:
+        fields["name"] = name_val
         confidences["name"] = find_line_confidence(fields["name"], all_lines)
 
     # Total Income
@@ -1468,7 +1631,7 @@ def extract_gst_certificate(doc_res: OCRDocumentResult) -> Tuple[Dict[str, Any],
 
     # Legal Name
     legal_match = re.search(
-        r"(?:Legal\s*Name(?:[\s/]*(?:of\s+Taxpayer)?)?)[\s:]*([A-Za-z0-9][A-Za-z0-9 \t,\.\-&]{1,70}?)(?=[ \t]*(?:\r?\n|$|(?:\b|(?<=[a-z0-9A-Z]))(?:Trade\s*Name|GSTIN|Constitution|Date|Address|Period)\b))",
+        r"(?:Legal\s*Name(?:[\s/]*(?:of\s+Taxpayer)?)?)[\s:]*([A-Za-z0-9][A-Za-z0-9 \t,\.\-&_]{1,70}?)(?=[ \t]*(?:\r?\n|$|(?:\b|(?<=[a-z0-9A-Z]))(?:Trade\s*Name|GSTIN|Constitution|Date|Address|Period)\b))",
         text,
         re.IGNORECASE,
     )
@@ -1517,7 +1680,7 @@ def extract_gst_certificate(doc_res: OCRDocumentResult) -> Tuple[Dict[str, Any],
 
     # Registration Date
     reg_date = re.search(
-        r"(?:Date\s*of\s*(?:liability|Registration|Validity))[\s:]+(\d{2}[/\-\.]\d{2}[/\-\.]\d{4})",
+        r"(?:Date\s*of\s*(?:liability|Registration|Validity|issue\s*of\s*Certificate)|From)[\s:]+(\d{2}[/\-\.]\d{2}[/\-\.]\d{4})",
         text,
         re.IGNORECASE,
     )

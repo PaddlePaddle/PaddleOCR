@@ -544,5 +544,42 @@ def test_cross_check_list_valued_field():
     assert res7["name"]["score"] >= 0.95
 
 
+def test_income_certificate_mismatch_detection():
+    """Verify bidirectional mismatch detection for income_certificate against other doc types."""
+    income_cert_text = """
+    महाराष्ट्र शासन
+    तहसीलदार कार्यालय जुन्नर
+    ३ वर्षासाठी उत्पन्नाचे प्रमाणपत्र
+    प्रमाणित करण्यात येते की श्री. संदीप सावळाराम पोटे
+    रा. डिंगोरे ता. जुन्नर जि. पुणे
+    वार्षिक उत्पन्न रुपये ५०,०००
+    """
+    pan_text = """
+    INCOME TAX DEPARTMENT
+    GOVT OF INDIA
+    PERMANENT ACCOUNT NUMBER
+    ABCDE1234F
+    NAME: RAJESH KUMAR
+    FATHER'S NAME: SURESH KUMAR
+    DATE OF BIRTH: 01/01/1990
+    """
+
+    # Submitting income cert as PAN must report mismatch
+    is_mis, detected = check_doc_type_mismatch("pan", income_cert_text)
+    assert is_mis is True
+    assert detected == "income_certificate"
+
+    # Submitting PAN as income cert must report mismatch
+    is_mis, detected = check_doc_type_mismatch("income_certificate", pan_text)
+    assert is_mis is True
+    assert detected == "pan"
+
+    # Submitting income cert as income cert must pass
+    is_mis, detected = check_doc_type_mismatch("income_certificate", income_cert_text)
+    assert is_mis is False
+    assert detected is None
+
+
+
 
 

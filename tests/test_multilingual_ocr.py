@@ -914,4 +914,159 @@ def test_bank_passbook_language_coverage_guardrail_true_negative():
     assert "all core fields extracted successfully" in fields["language_coverage_notes"]
 
 
+# ==============================================================================
+# 9. Income Certificate Tests (Marathi & English)
+# ==============================================================================
+
+def test_doc_type_languages_includes_income_certificate():
+    """Verify DOC_TYPE_LANGUAGES and get_languages_for_doc_type configure income_certificate for Marathi/Hindi/English."""
+    assert "income_certificate" in DOC_TYPE_LANGUAGES
+    assert DOC_TYPE_LANGUAGES["income_certificate"] == ["en", "hi", "mr"]
+    assert get_languages_for_doc_type("income_certificate") == ["en", "hi", "mr"]
+
+
+def test_detect_document_type_income_certificate_marathi():
+    """Verify detect_document_type classifies Marathi income certificate correctly."""
+    marathi_text = """
+    महाराष्ट्र शासन
+    तहसीलदार कार्यालय जुन्नर
+    परिशिष्ट - क
+    ३ वर्षासाठी उत्पन्नाचे प्रमाणपत्र
+    प्रमाणित करण्यात येते की श्री. संदीप सावळाराम पोटे
+    रा. डिंगोरे ता. जुन्नर जि. पुणे
+    """
+    detected = detect_document_type(marathi_text)
+    assert detected == "income_certificate"
+
+
+def test_detect_document_type_income_certificate_english():
+    """Verify detect_document_type classifies English income certificate correctly."""
+    english_text = """
+    GOVERNMENT OF MAHARASHTRA
+    OFFICE OF THE TAHSILDAR JUNNAR
+    ANNEXURE - C
+    INCOME CERTIFICATE
+    This is to certify that the annual family income of Shri Sandip Sawalaram Pote
+    Resident of Dingore Taluka Junnar District Pune is Rs. 50,000/-
+    """
+    detected = detect_document_type(english_text)
+    assert detected == "income_certificate"
+
+
+def test_extract_income_certificate_marathi_clean():
+    """Verify complete field extraction from synthetic clean Marathi income certificate."""
+    marathi_cert = """
+    महाराष्ट्र शासन
+    तहसीलदार कार्यालय जुन्नर
+    ३ वर्षासाठी उत्पन्नाचे प्रमाणपत्र
+    बारकोड: 12512506265009960905
+    प्रमाणित करण्यात येते की श्री. संदीप सावळाराम पोटे
+    रा. डिंगोरे ता. जुन्नर जि. पुणे
+    यांच्या कुटुंबाचे मागील ३ वर्षाचे सर्व मार्गांनी मिळून वार्षिक उत्पन्न खालीलप्रमाणे आहे.
+    आर्थिक वर्ष २०२४-२०२५ वार्षिक उत्पन्न रुपये ५०,००० (अक्षरी पन्नास हजार फक्त)
+    सदर दाखला अर्जदार यांचे विनंतीवरून कुमार विघ्नेश संदीप पोटे यांच्या शिक्षणासाठी देण्यात येत आहे.
+    दिनांक: 15/06/2025
+    तहसीलदार जुन्नर
+    """
+    doc_res = _make_doc_res(marathi_cert)
+    fields, _ = extract_document_fields("income_certificate", doc_res)
+
+    assert fields.get("certificate_number") == "12512506265009960905"
+    assert fields.get("applicant_name") == "कुमार विघ्नेश संदीप पोटे"
+    assert fields.get("applicant_name_marathi") == "कुमार विघ्नेश संदीप पोटे"
+    assert fields.get("annual_income") == "50000"
+    assert fields.get("financial_year") == "2024-2025"
+    assert "पन्नास हजार" in fields.get("income_amount_words", "")
+    assert "डिंगोरे" in fields.get("address", "")
+    assert fields.get("taluka") == "जुन्नर"
+    assert fields.get("district") == "पुणे"
+    assert "तहसीलदार" in fields.get("issuing_authority", "")
+    assert fields.get("issue_date") == "15/06/2025"
+    assert fields.get("partial_language_coverage") is False
+    assert fields.get("language_review_required") is False
+
+
+def test_extract_income_certificate_english_clean():
+    """Verify complete field extraction from English income certificate."""
+    english_cert = """
+    GOVERNMENT OF MAHARASHTRA
+    OFFICE OF THE TAHSILDAR
+    INCOME CERTIFICATE
+    Certificate No: 12512506265009960905
+    This is to certify that Shri Sandip Sawalaram Pote
+    Resident of Village Dingore Taluka Junnar District Pune
+    Annual income from all sources for Financial Year 2024-2025 is Rs. 50,000/- (Fifty Thousand Only)
+    Issued for Master Vighnesh Sandip Pote for Education Purpose.
+    Date of Issue: 15/06/2025
+    Tahsildar Junnar
+    """
+    doc_res = _make_doc_res(english_cert)
+    fields, _ = extract_document_fields("income_certificate", doc_res)
+
+    assert fields.get("certificate_number") == "12512506265009960905"
+    assert "Pote" in fields.get("applicant_name", "")
+    assert fields.get("annual_income") == "50000"
+    assert fields.get("financial_year") == "2024-2025"
+    assert "Fifty Thousand" in fields.get("income_amount_words", "")
+    assert "Dingore" in fields.get("address", "")
+    assert fields.get("taluka") == "Junnar"
+    assert fields.get("district") == "Pune"
+    assert "tahsildar" in fields.get("issuing_authority", "").lower()
+    assert fields.get("issue_date") == "15/06/2025"
+
+
+def test_income_certificate_language_coverage_guardrail_true_positive():
+    """Verify language review is required when Devanagari income cert text lacks core fields."""
+    sparse_marathi = """
+    महाराष्ट्र शासन
+    तहसीलदार कार्यालय
+    उत्पन्नाचे प्रमाणपत्र संबंधी सूचना
+    नागरिकांनी वेळेत कागदपत्रे जमा करावीत.
+    """
+    doc_res = _make_doc_res(sparse_marathi)
+    fields, _ = extract_document_fields("income_certificate", doc_res)
+
+    assert "devanagari" in fields["detected_languages"]
+    assert fields["partial_language_coverage"] is True
+    assert fields["language_review_required"] is True
+    assert fields["needs_manual_review"] is True
+
+
+def test_income_certificate_real_whatsapp_image():
+    """End-to-end OCR and extraction test on the real WhatsApp Marathi Income Certificate image."""
+    import os
+    candidate_paths = [
+        "/home/vighnesh/company-ocr-service/uploads/original/2e7f5d94-ed4e-4340-bb60-2dd8ae8d02c7_WhatsApp Image 2026-09-10 at 16.53.272.jpeg",
+        "/home/vighnesh/PaddleOCR/uploads/original/2e7f5d94-ed4e-4340-bb60-2dd8ae8d02c7_WhatsApp Image 2026-09-10 at 16.53.272.jpeg",
+    ]
+    img_path = next((p for p in candidate_paths if os.path.exists(p)), None)
+    if not img_path:
+        pytest.skip("Real WhatsApp Marathi image not found on disk")
+
+    engine = OCREngine()
+    doc_res = engine.process_file(img_path, languages=["en", "hi", "mr"])
+
+    # 1. Classification
+    detected = detect_document_type(doc_res.full_text)
+    assert detected == "income_certificate"
+
+    # 2. Field Extraction
+    fields, confs = extract_document_fields("income_certificate", doc_res)
+
+    assert fields.get("document_type") == "Income Certificate"
+    assert fields.get("financial_year") == "2024-2025"
+    assert fields.get("annual_income") == "40000"
+    assert fields.get("taluka") == "जुन्नर"
+    assert fields.get("district") == "पुणे"
+    assert fields.get("issuing_authority") == "तहसीलदार जुन्नर"
+    assert fields.get("issue_date") == "2025-06-26"
+    assert fields.get("applicant_name") == "कुमारिवनेशिसंदीपपोटे"
+    assert "तह्सील" not in fields.get("address", "")
+    assert "जुनर" not in fields.get("address", "")
+    assert fields.get("certificate_number") == "12512506265009960905"
+    assert fields.get("needs_manual_review") is False
+    assert "devanagari" in fields.get("detected_languages", [])
+
+
+
 

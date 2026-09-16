@@ -452,6 +452,89 @@ Field\n\nDemo Value\n\nName\n\nDEMO CUSTOMER\n\nPermanent Account Number\n\nABCD
     assert itr_fields["taxes_paid"] == "0"
 
 
+def test_itr_name_multi_section_anchoring():
+    """
+    Regression test for ITR multi-section documents:
+    1. Assessee name on cover/ITR-V page must not be overridden by later 'Name of Deductor'.
+    2. Names with leading digits/underscores (e.g. '3_EXTENT') must be captured properly.
+    3. 'Name of Employer', 'Name of Deductor', etc. must never be extracted as assessee name.
+    4. Genuinely ambiguous cases without an assessee name must return None (honest standard).
+    """
+    # 1. Multi-section ITR SET: cover page followed by TDS schedule containing "Name of Deductor"
+    multi_section_text = """
+    INDIAN INCOME TAX RETURN ACKNOWLEDGEMENT
+    ITR-5
+    Assessment Year: 2025-26
+    PAN: AADFZ9861F
+    Name: 3_EXTENT
+    Address: Shop No 312, Pune
+    Acknowledgement Number: 752131981061225
+    Total Income: Rs. 24,850
+    Taxes Paid: Rs. 9,060
+
+    --- SCHEDULE TDS (FORM 26AS) ---
+    Details of Tax Deducted at Source
+    Sr. No.     Name of Deductor        TAN of Deductor      Total Tax Deducted
+    1           ABC TECH SOLUTIONS      PNE012345            1000
+    2           XYZ CONSULTING          MUM098765            2000
+    """
+    fields, _ = extract_document_fields("itr", create_mock_doc(multi_section_text))
+    assert fields.get("name") == "3_EXTENT"
+    assert "Deductor" not in fields.get("name", "")
+    assert fields.get("pan_number") == "AADFZ9861F"
+    assert fields.get("acknowledgement_number") == "752131981061225"
+    assert fields.get("total_income") == "24850"
+    assert fields.get("taxes_paid") == "9060"
+
+    # 2. Multi-section ITR with salary schedule containing "Name of Employer"
+    salary_itr_text = """
+    INDIAN INCOME TAX RETURN ACKNOWLEDGEMENT
+    ITR-1 SAHAJ
+    Assessment Year: 2025-26
+    PAN: ABCDE1234F
+    Name: PRIYA NAIR
+    Acknowledgement Number: 123456789012345
+    Total Income: Rs. 15,00,000
+    Taxes Paid: Rs. 2,00,000
+
+    --- SCHEDULE SALARY ---
+    Details of Income from Salary
+    Name of Employer: GLOBAL SYSTEMS PVT LTD
+    PAN of Employer: EMPLP1234K
+    """
+    s_fields, _ = extract_document_fields("itr", create_mock_doc(salary_itr_text))
+    assert s_fields.get("name") == "PRIYA NAIR"
+    assert "Employer" not in s_fields.get("name", "")
+
+    # 3. CA title-block cover format
+    ca_cover_text = """
+    Income Tax Return
+    Financial Year 2024-25
+    Assessment Year 2025-26
+    Of
+    3_EXTENT
+    Pan :- AADFZ9861F
+    Address :- Shop No.312 Pune
+    """
+    c_fields, _ = extract_document_fields("itr", create_mock_doc(ca_cover_text))
+    assert c_fields.get("name") == "3_EXTENT"
+    assert c_fields.get("pan_number") == "AADFZ9861F"
+    assert c_fields.get("assessment_year") == "2025-26"
+
+    # 4. Ambiguous third-party only text (no assessee name, only deductor/employer labels)
+    ambiguous_text = """
+    Assessment Year: 2025-26
+    PAN: ABCDE1234F
+    Details of Tax Deducted at Source
+    Name of Deductor: XYZ CORP
+    TAN of Deductor: DEL012345
+    """
+    amb_fields, _ = extract_document_fields("itr", create_mock_doc(ambiguous_text))
+    assert amb_fields.get("name") is None
+    assert amb_fields.get("pan_number") == "ABCDE1234F"
+
+
+
 # ==============================================================================
 # Part A1: MICR Line Reading & Cross-Checking Tests
 # ==============================================================================
@@ -1434,6 +1517,130 @@ def test_bank_statement_real_ippb_pdf_extraction():
     assert txns[-1]["balance"] == "130.43"
 
 
+def test_bank_statement_axis_grid_block_multi_page_extraction():
+    """Multi-page test with Axis Bank / Finacle grid-block layout across multiple pages."""
+    p1 = OCRPageResult(
+        page_num=1,
+        full_text="""
+Statement of Axis Bank Account No : 925020052380170 for the period ( From : 30/07/2025 To : 30/07/2026 )
+
+ Opening Balance: INR 0.00
+
+S.NO    Transaction    Value Date     Particulars                           Amount(INR)      Debit/Credit        Balance(INR)                 Cheque            Branch Name(SOL)
+        Date           (dd/mm/yyyy)                                                                                                           Number
+        (dd/mm/yyyy)
+
+                                                                               5,00,000.00                  CR                  5,00,000.00            100003                  AJMERA
+1       21/11/2025     21/11/2025     CLG/100003/071125/Kalpavruks/                                                                                               COMPLEX,PIMPRI,PUNE
+                                                                                                                                                                             [MH (2568)
+
+                                                                                      1.00                  DR                  4,99,999.00                                    AJMERA
+                                      NEFT/DH/AXODH32706269231/3EXTEN
+2       23/11/2025     23/11/2025                                                                                                                                 COMPLEX,PIMPRI,PUNE
+                                      T/HDFC BANK//////                                                                                                                      [MH (1435)
+""",
+        lines=[],
+        average_confidence=0.98,
+    )
+    p2 = OCRPageResult(
+        page_num=2,
+        full_text="""
+                                                                                      3.95                  DR                  4,99,995.05                                    AJMERA
+                                      IMPS/P2A/532777664229/3EXTENT/X00
+3       23/11/2025     23/11/2025                                                                                                                                 COMPLEX,PIMPRI,PUNE
+                                      1042/SharadSahakariBankLt                                                                                                              [MH (1435)
+
+                                                                                1,00,005.90                  DR                  3,99,989.15                                    AJMERA
+                                      IMPS/P2A/532880626898/3EXTENT/X00
+4       24/11/2025     24/11/2025                                                                                                                                 COMPLEX,PIMPRI,PUNE
+                                      1042/SharadSahakariBankLt                                                                                                              [MH (1435)
+""",
+        lines=[],
+        average_confidence=0.98,
+    )
+    doc_res = OCRDocumentResult(
+        pages=[p1, p2],
+        full_text=p1.full_text + "\n" + p2.full_text,
+        average_confidence=0.98,
+    )
+    fields, _ = extract_document_fields("bank_statement", doc_res)
+    assert fields.get("bank_name") == "Axis Bank"
+    assert fields.get("account_number_masked") == "XXXXXXXXXXX0170"
+    assert fields.get("statement_period") == {"from_date": "30/07/2025", "to_date": "30/07/2026"}
+    assert fields.get("opening_balance") == "0.00"
+    assert fields.get("closing_balance") == "399989.15"
+    assert fields.get("closing_balance") != fields.get("opening_balance")
+
+    txns = fields.get("transactions", [])
+    assert len(txns) == 4
+    assert txns[0]["date"] == "21/11/2025"
+    assert txns[0]["amount"] == "500000.00"
+    assert txns[0]["type"] == "CR"
+    assert txns[0]["balance"] == "500000.00"
+    assert txns[0]["description"] == "CLG/100003/071125/Kalpavruks/"
+
+    assert txns[1]["date"] == "23/11/2025"
+    assert txns[1]["amount"] == "1.00"
+    assert txns[1]["type"] == "DR"
+    assert txns[1]["balance"] == "499999.00"
+
+    assert txns[2]["date"] == "23/11/2025"
+    assert txns[2]["amount"] == "3.95"
+    assert txns[2]["type"] == "DR"
+
+    assert txns[3]["date"] == "24/11/2025"
+    assert txns[3]["amount"] == "100005.90"
+    assert txns[3]["type"] == "DR"
+    assert txns[3]["balance"] == "399989.15"
+
+
+def test_bank_statement_real_axis_pdf_extraction():
+    """Real Document Test: Parse the real 24-page Axis Bank statement PDF end-to-end."""
+    candidate_paths = [
+        "/home/vighnesh/PaddleOCR/uploads/original/c92f031e-3076-49ed-b36e-7bb61008cf79_Account_Statement_Report_30-07-2026_1246hrs.PDF",
+        "/home/vighnesh/company-ocr-service/uploads/original/c92f031e-3076-49ed-b36e-7bb61008cf79_Account_Statement_Report_30-07-2026_1246hrs.PDF",
+        "/home/vighnesh/Downloads/Account_Statement_Report_30-07-2026_1246hrs.PDF",
+    ]
+    pdf_path = next((p for p in candidate_paths if os.path.exists(p)), None)
+    if not pdf_path:
+        pytest.skip("Real Axis Bank PDF sample not found on disk")
+
+    from ocr_engine import OCREngine
+    engine = OCREngine()
+    doc_res = engine.process_file(pdf_path)
+
+    assert doc_res.text_source == "pdf_text_layer"
+    assert doc_res.ocr_required is False
+    assert len(doc_res.pages) == 24
+
+    fields, _ = extract_document_fields("bank_statement", doc_res)
+
+    # 1. Assert Bank Name & Account Number Masked
+    assert fields.get("bank_name") == "Axis Bank"
+    assert fields.get("account_number_masked") == "XXXXXXXXXXX0170"
+
+    # 2. Assert Statement Period
+    assert fields.get("statement_period") == {"from_date": "30/07/2025", "to_date": "30/07/2026"}
+
+    # 3. Assert Balances
+    assert fields.get("opening_balance") == "0.00"
+    assert fields.get("closing_balance") == "100180.15"
+    assert fields.get("closing_balance") != fields.get("opening_balance")
+
+    # 4. Assert Transactions (all 638 rows parsed across all pages)
+    txns = fields.get("transactions", [])
+    assert len(txns) == 638
+    assert txns[0]["date"] == "21/11/2025"
+    assert txns[0]["amount"] == "500000.00"
+    assert txns[0]["type"] == "CR"
+    assert txns[0]["balance"] == "500000.00"
+
+    assert txns[-1]["date"] == "30/07/2026"
+    assert txns[-1]["amount"] == "500011.80"
+    assert txns[-1]["type"] == "DR"
+    assert txns[-1]["balance"] == "100180.15"
+
+
 def test_income_certificate_barcode_number_extraction():
     """Verify various barcode and certificate number formats for income certificates."""
     text1 = """
@@ -1648,3 +1855,96 @@ def test_income_certificate_invalid_ocr_candidate():
     """
     fields, _ = extract_document_fields("income_certificate", create_mock_doc(text))
     assert fields.get("financial_year") != "Q028-2034"
+
+
+def test_fssai_real_registration_certificate_extraction():
+    """Real Document Test: FSSAI registration certificate with FBO label, C/O trade name and Issued On/Fee Paid Upto validity."""
+    text = """
+    Registration Certificate
+    Government of Maharashtra
+    Food And Drug Administration
+    Food Safety and Standards Authority of India
+    Registration Certificate under FSS Act, 2006
+    / Registration Number: 21526038002367
+
+    1. Name and permanent address of Food RUSHIKESH SHIVAJI CHIKHALE C/O
+       Business Operator (FBO) KATRAJ DAIRY AND CAKE SHOP
+       SR NO.275/2, SHOP NO.6, CLASSIC PRIDE BUILDING
+    2. Address of location where food business is to be conducted / premises SR NO.275/2
+    4. Kind of Business Retailer
+    5. Photo Identity Card Aadhaar
+
+    Place / Pune Rural
+    Issued On / 08-06-2026 (New Registration)
+    Fee Paid Upto: / भुगतान फीस ितिथ की वैधता: 07-06-2031 (For details, refer Annexure)
+    """
+    fields, _ = extract_document_fields("fssai", create_mock_doc(text))
+    assert fields.get("fssai_licence_number") == "21526038002367"
+    assert fields.get("business_name") == "KATRAJ DAIRY AND CAKE SHOP"
+    assert fields.get("kind_of_business") == "Retailer"
+    assert fields.get("valid_from") == "08-06-2026"
+    assert fields.get("valid_till") == "07-06-2031"
+
+
+def test_gst_certificate_real_legal_name_underscore_and_validity_date():
+    """Real Document Test: GST Certificate with underscore in legal_name (3_EXTENT) and Period of Validity From date."""
+    text = """
+    Government of India
+    Form GST REG-06
+    Registration Certificate
+    Registration Number : 27AADFZ9861F1ZN
+    1. Legal Name 3_EXTENT
+    2. Trade Name, if any
+    3. Additional trade names, if any
+    4. Constitution of Business Partnership
+    7. Period of Validity From 04/07/2025 To Not Applicable
+    Date of issue of Certificate 04/07/2025
+    """
+    fields, _ = extract_document_fields("gst_certificate", create_mock_doc(text))
+    assert fields.get("gstin") == "27AADFZ9861F1ZN"
+    assert fields.get("legal_name") == "3_EXTENT"
+    assert fields.get("trade_name") is None
+    assert fields.get("constitution_of_business") == "Partnership"
+    assert fields.get("registration_date") == "04/07/2025"
+
+
+def test_shop_establishment_maharashtra_form_f_and_form_g():
+    """Real Document Test: Maharashtra Shop & Establishment Form F and Form G extractions."""
+    # Form F (Application for intimation)
+    form_f_text = """
+    महारा दुकाने व आ थापना (नोकर चे व सेवाशत चे व नयमन) नयम, २०१८
+    Form – ‘F’
+    APPLICATION FOR INTIMATION
+    Application ID 112889582203
+    Registration Certificate / Intimation 2231000317186866
+    Receipt No. न दणी मांक / पावती मांक
+    Name of the establishment / आ थापनेचे ROYAL CAKE HOUSE
+    नाव रॉयल केक हाऊस
+    Name of the Employer / मालकाचे नाव RUSHIKESH SHIVAJI CHIKHALE ऋ षकेश शवाजी चखले
+    Category Of Establishment Type / आ थापनेचे उपवगवार CAKE SHOP
+    """
+    fields_f, _ = extract_document_fields("shop_establishment", create_mock_doc(form_f_text))
+    assert fields_f.get("state") == "MH"
+    assert fields_f.get("state_name") == "Maharashtra"
+    assert fields_f.get("registration_number") == "2231000317186866"
+    assert fields_f.get("establishment_name") == "ROYAL CAKE HOUSE"
+    assert fields_f.get("employer_name") == "RUSHIKESH SHIVAJI CHIKHALE"
+    assert fields_f.get("nature_of_business") == "CAKE SHOP"
+
+    # Form G (Receipt of intimation)
+    form_g_text = """
+    महारा दु क ाने व आ थापना (नोकरीचे व से व ाशत चे िविनयमन) िनयम, २ ० १ ८
+    नमु न ा "ग"
+    सू च ना िद याबाबत पावती
+    1. पावती मांक : 2231000317186866
+    2. अज चा आयडी मांक : 112889582203
+    3. आ थापनेचे नाव : रॉयल केक हाऊस
+    5. अ) मालकाचे नाव : ऋिषकेश िशवाजी िचखले
+    """
+    fields_g, _ = extract_document_fields("shop_establishment", create_mock_doc(form_g_text))
+    assert fields_g.get("state") == "MH"
+    assert fields_g.get("state_name") == "Maharashtra"
+    assert fields_g.get("registration_number") == "2231000317186866"
+    assert fields_g.get("establishment_name") == "रॉयल केक हाऊस"
+    assert fields_g.get("employer_name") == "ऋिषकेश िशवाजी िचखले"
+

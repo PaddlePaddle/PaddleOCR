@@ -648,6 +648,7 @@ SUPPORTED_DOC_TYPES = [
     {"id": "bank_passbook", "name": "Bank Passbook", "category": "Financial"},
     {"id": "property_tax_receipt", "name": "Property Tax Receipt", "category": "Tax"},
     {"id": "iec_certificate", "name": "IEC Certificate", "category": "Business"},
+    {"id": "income_certificate", "name": "Income Certificate", "category": "Certificate"},
 ]
 
 
@@ -880,6 +881,21 @@ async def upload_document_endpoint(
                             doc_res = ocr_engine.process_file(temp_path, languages=auto_langs)
                     except Exception as ex:
                         logger.warning("Secondary Devanagari pass in /api/upload failed: %s", ex)
+            elif resolved_type == "unknown" and doc_res.ocr_required:
+                try:
+                    fallback_langs = ["en", "hi", "mr"]
+                    if ext == ".pdf":
+                        retry_res = ocr_engine.process_pdf(temp_path, languages=fallback_langs)
+                    else:
+                        retry_res = ocr_engine.process_file(temp_path, languages=fallback_langs)
+                    retry_detected = detect_document_type(retry_res.full_text)
+                    if retry_detected:
+                        doc_res = retry_res
+                        resolved_type = retry_detected
+                    elif len(re.findall(r"[\u0900-\u097F]", retry_res.full_text)) > len(re.findall(r"[\u0900-\u097F]", doc_res.full_text)):
+                        doc_res = retry_res
+                except Exception as ex:
+                    logger.warning("Regional fallback pass in /api/upload failed: %s", ex)
         else:
             resolved_type = requested_type
 

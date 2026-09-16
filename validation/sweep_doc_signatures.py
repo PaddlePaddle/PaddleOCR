@@ -40,7 +40,9 @@ SAMPLE_FILES = {
     "bank_passbook": os.path.join(SAMPLES_DIR, "bank_passbook.txt"),
     "property_tax_receipt": os.path.join(SAMPLES_DIR, "property_tax_receipt.txt"),
     "iec_certificate": os.path.join(SAMPLES_DIR, "iec_certificate.txt"),
+    "income_certificate": os.path.join(SAMPLES_DIR, "income_certificate.txt"),
 }
+
 
 ALL_DOC_TYPES = list(DOC_SIGNATURES.keys())
 
