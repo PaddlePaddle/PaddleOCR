@@ -1859,7 +1859,11 @@ After launching the VLM inference service, the client can call the service throu
 
 #### 3.2.1 CLI Invocation
 
-Specify the backend type (`vllm-server`, `sglang-server`, `fastdeploy-server`, `mlx-vlm-server` or `llama-cpp-server`) using `--vl_rec_backend` and the service address using `--vl_rec_server_url`, for example:
+Specify the backend type (`vllm-server`, `sglang-server`, `fastdeploy-server`, `mlx-vlm-server` or `llama-cpp-server`) using `--vl_rec_backend` and the service address using `--vl_rec_server_url`.
+
+> **Note:** The `llama-cpp-server` backend requires installing the latest PaddleOCR from source (`pip install git+https://github.com/PaddlePaddle/PaddleOCR.git`). The PyPI release (3.4.0) does not yet support this backend.
+
+For example:
 
 ```shell
 paddleocr doc_parser --input https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/paddleocr_vl_demo.png --vl_rec_backend vllm-server --vl_rec_server_url http://localhost:8118/v1
@@ -1903,7 +1907,11 @@ paddleocr doc_parser \
 
 #### 3.2.2 Python API Invocation
 
-When creating a `PaddleOCRVL` object, specify the backend type (`vllm-server`, `sglang-server`, `fastdeploy-server`, `mlx-vlm-server` or `llama-cpp-server`) using `vl_rec_backend` and the service address using `vl_rec_server_url`, for example:
+When creating a `PaddleOCRVL` object, specify the backend type (`vllm-server`, `sglang-server`, `fastdeploy-server`, `mlx-vlm-server` or `llama-cpp-server`) using `vl_rec_backend` and the service address using `vl_rec_server_url`.
+
+> **Note:** The `llama-cpp-server` backend requires installing the latest PaddleOCR from source (`pip install git+https://github.com/PaddlePaddle/PaddleOCR.git`). The PyPI release (3.4.0) does not yet support this backend.
+
+For example:
 
 ```python
 pipeline = PaddleOCRVL(vl_rec_backend="vllm-server", vl_rec_server_url="http://localhost:8118/v1")
