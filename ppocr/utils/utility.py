@@ -122,8 +122,10 @@ def check_and_read(img_path):
         ret, frame = gif.read()
         if not ret:
             logger = logging.getLogger("ppocr")
-            logger.info("Cannot read {}. This gif image maybe corrupted.")
-            return None, False
+            logger.info(
+                "Cannot read {}. This gif image maybe corrupted.".format(img_path)
+            )
+            return None, False, False
         if len(frame.shape) == 2 or frame.shape[-1] == 1:
             frame = cv2.cvtColor(frame, cv2.COLOR_GRAY2RGB)
         imgvalue = frame[:, :, ::-1]
