@@ -194,7 +194,7 @@ If necessary, you can read related documents:
 |Spanish |es| |Nepali|ne|
 | Portuguese|pt| |Serbian(cyrillic)|rs_cyrillic|
 |Russian|ru||Bulgarian |bg|
-|Ukranian|uk| |Estonian |et|
+|Ukrainian|uk| |Estonian |et|
 |Belarusian|be| |Irish |ga|
 |Telugu |te| |Croatian |hr|
 |Sanskrit|sa| |Hungarian |hu|
