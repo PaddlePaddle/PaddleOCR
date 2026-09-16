@@ -12,6 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import logging as _logging
+
+# Save root logger level before imports that may modify it
+_restore_root_level = _logging.getLogger().level
+_restore_root_handlers = list(_logging.getLogger().handlers)
+
 from paddlex.inference.utils.benchmark import benchmark
 
 from ._models import (
@@ -65,6 +71,16 @@ from ._api_client.models import (
 )
 from ._utils.logging import logger
 from ._version import version as __version__
+
+# Restore root logger state in case dependencies modified it
+_cur_handlers = list(_logging.getLogger().handlers)
+if len(_cur_handlers) != len(_restore_root_handlers) or any(
+    a is not b for a, b in zip(_cur_handlers, _restore_root_handlers)
+):
+    _logging.getLogger().handlers[:] = _restore_root_handlers
+_logging.getLogger().setLevel(_restore_root_level)
+
+del _logging, _restore_root_level, _restore_root_handlers, _cur_handlers
 
 
 def doc2md_convert(source, **kwargs):
