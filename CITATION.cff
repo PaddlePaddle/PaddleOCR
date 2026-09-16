@@ -1,0 +1,111 @@
+cff-version: 1.2.0
+title: "PaddleOCR: Industry-Leading Open-Source OCR and Document AI Toolkit"
+message: "If you use PaddleOCR in your research or applications, please cite it as below."
+type: software
+authors:
+  - name: "PaddlePaddle Authors"
+    affiliation: "Baidu Inc."
+license: Apache-2.0
+repository-code: "https://github.com/PaddlePaddle/PaddleOCR"
+url: "https://paddleocr.ai"
+keywords:
+  - ocr
+  - document-parsing
+  - pdf-to-markdown
+  - text-recognition
+  - document-ai
+  - vision-language-model
+  - layout-analysis
+  - table-recognition
+  - formula-recognition
+  - handwriting-recognition
+  - multilingual-ocr
+  - paddlepaddle
+preferred-citation:
+  type: article
+  title: "PaddleOCR 3.0 Technical Report"
+  authors:
+    - family-names: Cui
+      given-names: Cheng
+    - family-names: Sun
+      given-names: Ting
+    - family-names: Lin
+      given-names: Manhui
+    - family-names: Gao
+      given-names: Tingquan
+    - family-names: Zhang
+      given-names: Yubo
+    - family-names: Liu
+      given-names: Jiaxuan
+    - family-names: Wang
+      given-names: Xueqing
+    - family-names: Zhang
+      given-names: Zelun
+    - family-names: Zhou
+      given-names: Changda
+    - family-names: Liu
+      given-names: Hongen
+    - family-names: Zhang
+      given-names: Yue
+    - family-names: Lv
+      given-names: Wenyu
+    - family-names: Huang
+      given-names: Kui
+    - family-names: Zhang
+      given-names: Yichao
+    - family-names: Zhang
+      given-names: Jing
+    - family-names: Zhang
+      given-names: Jun
+    - family-names: Liu
+      given-names: Yi
+    - family-names: Yu
+      given-names: Dianhai
+    - family-names: Ma
+      given-names: Yanjun
+  year: 2025
+  url: "https://arxiv.org/abs/2507.05595"
+  journal: "arXiv preprint arXiv:2507.05595"
+references:
+  - type: article
+    title: "PaddleOCR-VL: Boosting Multilingual Document Parsing via a 0.9B Ultra-Compact Vision-Language Model"
+    authors:
+      - family-names: Cui
+        given-names: Cheng
+      - family-names: Sun
+        given-names: Ting
+      - family-names: Liang
+        given-names: Suyin
+      - family-names: Gao
+        given-names: Tingquan
+      - family-names: Zhang
+        given-names: Zelun
+      - family-names: Liu
+        given-names: Jiaxuan
+      - family-names: Wang
+        given-names: Xueqing
+      - family-names: Zhou
+        given-names: Changda
+      - family-names: Liu
+        given-names: Hongen
+      - family-names: Lin
+        given-names: Manhui
+      - family-names: Zhang
+        given-names: Yue
+      - family-names: Zhang
+        given-names: Yubo
+      - family-names: Zheng
+        given-names: Handong
+      - family-names: Zhang
+        given-names: Jing
+      - family-names: Zhang
+        given-names: Jun
+      - family-names: Liu
+        given-names: Yi
+      - family-names: Yu
+        given-names: Dianhai
+      - family-names: Ma
+        given-names: Yanjun
+    year: 2025
+    url: "https://arxiv.org/abs/2510.14528"
+    journal: "arXiv preprint arXiv:2510.14528"
