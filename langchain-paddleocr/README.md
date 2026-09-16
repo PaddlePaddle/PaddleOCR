@@ -44,4 +44,4 @@ for doc in docs[:2]:
 
 ## 📖 Documentation
 
-For full documentation, see the [LangChain Docs](https://docs.langchain.com/oss/python/integrations/providers/baidu).
+For authentication, supported models, client configuration, and request options, see the [PaddleOCR official API Python SDK documentation](https://www.paddleocr.ai/latest/en/version3.x/inference_deployment/serving/paddleocr_official_api/python.html). For local deployment and inference, see the [PaddleOCR-VL usage tutorial](https://www.paddleocr.ai/latest/en/version3.x/pipeline_usage/PaddleOCR-VL.html).
