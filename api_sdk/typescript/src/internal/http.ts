@@ -17,6 +17,7 @@ import {
   AuthError,
   InvalidRequestError,
   NetworkError,
+  PaddleOCRAPIError,
   RateLimitError,
   RequestTimeoutError,
   ResponseFormatError,
@@ -134,22 +135,22 @@ export class HttpClient {
   }
 
   async fetchJsonl(url: string, signal?: AbortSignal, timeoutMs?: number): Promise<unknown[]> {
-    const resp = await this.fetch(url, { method: "GET" }, signal, false, timeoutMs);
-    const text = await resp.text();
-    try {
-      return text
-        .trim()
-        .split("\n")
-        .filter((line) => line.trim())
-        .map((line) => JSON.parse(line) as unknown);
-    } catch (error) {
-      throw new ResultParseError("Failed to parse JSONL result payload.", { cause: error });
-    }
+    return this.fetch(url, { method: "GET" }, async (resp) => {
+      const text = await resp.text();
+      try {
+        return text
+          .trim()
+          .split("\n")
+          .filter((line) => line.trim())
+          .map((line) => JSON.parse(line) as unknown);
+      } catch (error) {
+        throw new ResultParseError("Failed to parse JSONL result payload.", { cause: error });
+      }
+    }, signal, false, timeoutMs);
   }
 
   async fetchResource(url: string, signal?: AbortSignal, timeoutMs?: number): Promise<ArrayBuffer> {
-    const resp = await this.fetch(url, { method: "GET" }, signal, false, timeoutMs);
-    return resp.arrayBuffer();
+    return this.fetch(url, { method: "GET" }, (resp) => resp.arrayBuffer(), signal, false, timeoutMs);
   }
 
   private async fetchJson<T>(
@@ -159,29 +160,31 @@ export class HttpClient {
     withAuth: boolean = true,
     timeoutMs?: number,
   ): Promise<T> {
-    const resp = await this.fetch(url, init, signal, withAuth, timeoutMs);
-    let payload: APIResponse<T>;
-    try {
-      payload = await resp.json() as APIResponse<T>;
-    } catch (error) {
-      throw new ResponseFormatError("Expected a JSON response body.", { cause: error });
-    }
-    if (payload.code !== undefined && payload.code !== 0) {
-      throw new APIError(resp.status, payload.msg || "PaddleOCR official API request failed.");
-    }
-    if (!payload || typeof payload !== "object" || !("data" in payload)) {
-      throw new ResponseFormatError("Response body is missing data.");
-    }
-    return payload.data;
+    return this.fetch(url, init, async (resp) => {
+      let payload: APIResponse<T>;
+      try {
+        payload = await resp.json() as APIResponse<T>;
+      } catch (error) {
+        throw new ResponseFormatError("Expected a JSON response body.", { cause: error });
+      }
+      if (payload.code !== undefined && payload.code !== 0) {
+        throw new APIError(resp.status, payload.msg || "PaddleOCR official API request failed.");
+      }
+      if (!payload || typeof payload !== "object" || !("data" in payload)) {
+        throw new ResponseFormatError("Response body is missing data.");
+      }
+      return payload.data;
+    }, signal, withAuth, timeoutMs);
   }
 
-  private async fetch(
+  private async fetch<T>(
     url: string,
     init: RequestInit,
+    readBody: (response: Response) => Promise<T>,
     signal?: AbortSignal,
     withAuth: boolean = true,
     timeoutMs?: number,
-  ): Promise<Response> {
+  ): Promise<T> {
     const headers: Record<string, string> = {
       ...(init.headers as Record<string, string> || {}),
     };
@@ -210,6 +213,10 @@ export class HttpClient {
         headers,
         signal: abortController.signal,
       });
+      if (!resp.ok) {
+        await this.raiseForResponse(resp);
+      }
+      return await readBody(resp);
     } catch (e: unknown) {
       if (signal?.aborted) {
         throw userAbortReason(signal);
@@ -217,15 +224,18 @@ export class HttpClient {
       if (timeoutController.signal.aborted) {
         throw new RequestTimeoutError(effectiveTimeout, { cause: e });
       }
+      if (e instanceof PaddleOCRAPIError) {
+        throw e;
+      }
       const message = e instanceof Error ? e.message : String(e);
       throw new NetworkError(`Connection failed: ${message}`);
     } finally {
       clearTimeout(timeoutID);
       signal?.removeEventListener("abort", abort);
     }
+  }
 
-    if (resp.ok) return resp;
-
+  private async raiseForResponse(resp: Response): Promise<never> {
     let text = await resp.text();
     try {
       const payload = JSON.parse(text) as { msg?: string; message?: string; errorMsg?: string };
