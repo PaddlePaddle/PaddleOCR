@@ -201,7 +201,7 @@ Architecture:
 
 最终该模型训练时，包含3个子网络：`Teacher`, `Student`, `Student2`。
 
-蒸馏模型`DistillationModel`类的具体实现代码可以参考[distillation_model.py](../../ppocr/modeling/architectures/distillation_model.py)。
+蒸馏模型`DistillationModel`类的具体实现代码可以参考[distillation_model.py](../../../../ppocr/modeling/architectures/distillation_model.py)。
 
 最终模型`forward`输出为一个字典，key为所有的子网络名称，例如这里为`Student`与`Teacher`，value为对应子网络的输出，可以为`Tensor`（只返回该网络的最后一层）和`dict`（也返回了中间的特征信息）。
 
