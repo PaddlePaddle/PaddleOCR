@@ -90,6 +90,8 @@ def load_model(config, model, optimizer=None, model_type="det", ema=None):
                 best_model_dict = states_dict.get("best_model_dict", {})
                 if "epoch" in states_dict:
                     best_model_dict["start_epoch"] = states_dict["epoch"] + 1
+                if "global_step" in states_dict:
+                    best_model_dict["global_step"] = states_dict["global_step"]
             logger.info("resume from {}".format(checkpoints))
 
             if optimizer is not None:
@@ -160,6 +162,8 @@ def load_model(config, model, optimizer=None, model_type="det", ema=None):
             best_model_dict["acc"] = 0.0
             if "epoch" in states_dict:
                 best_model_dict["start_epoch"] = states_dict["epoch"] + 1
+            if "global_step" in states_dict:
+                best_model_dict["global_step"] = states_dict["global_step"]
         logger.info("resume from {}".format(checkpoints))
 
         # Restore EMA state if available
