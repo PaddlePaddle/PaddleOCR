@@ -64,6 +64,54 @@ _PPOCRV6_LANGS = frozenset({"ch", "chinese_cht", "en", "japan"}) | (
 
 # Be comptable with PaddleOCR 2.x interfaces
 class PaddleOCR(PaddleXPipelineWrapper):
+    """OCR pipeline that combines text detection and text recognition.
+
+    Runs the full OCR pipeline: optional document preprocessing (orientation
+    classification and unwarping), text detection, optional text-line
+    orientation classification, and text recognition.
+
+    Args:
+        lang (str | None): Language code for the input image (e.g. ``"ch"``,
+            ``"en"``, ``"fr"``).  Used to select default detection and
+            recognition models when no explicit model name/dir is provided.
+            Defaults to ``"ch"`` when ``None``.
+        ocr_version (str | None): PP-OCR version to use when ``lang`` is set.
+            One of ``"PP-OCRv3"``, ``"PP-OCRv4"``, ``"PP-OCRv5"``.  Defaults
+            to the latest available for the chosen language.
+        text_detection_model_name (str | None): Name of the text detection
+            model.  Overrides ``lang``/``ocr_version`` selection.
+        text_detection_model_dir (str | None): Local directory for the text
+            detection model.
+        text_recognition_model_name (str | None): Name of the text recognition
+            model.  Overrides ``lang``/``ocr_version`` selection.
+        text_recognition_model_dir (str | None): Local directory for the text
+            recognition model.
+        use_doc_orientation_classify (bool | None): Enable document orientation
+            classification preprocessing.
+        use_doc_unwarping (bool | None): Enable document unwarping
+            preprocessing.
+        use_textline_orientation (bool | None): Enable text-line orientation
+            classification.
+        text_det_thresh (float | None): Pixel-level detection threshold.
+        text_det_box_thresh (float | None): Box-level detection threshold.
+        text_det_unclip_ratio (float | None): Expansion ratio for detected
+            text bounding boxes.
+        text_rec_score_thresh (float | None): Minimum recognition confidence
+            to retain a result.
+        return_word_box (bool | None): Return per-word bounding boxes in
+            addition to line-level boxes.
+        **kwargs: Additional arguments forwarded to the base class (e.g.
+            ``device``, ``use_hpip``) or deprecated PaddleOCR 2.x parameter
+            names.
+
+    Example:
+        >>> from paddleocr import PaddleOCR
+        >>> ocr = PaddleOCR(lang="en")
+        >>> results = ocr.predict("image.png")
+        >>> for res in results:
+        ...     res.print()
+    """
+
     def __init__(
         self,
         doc_orientation_classify_model_name=None,
@@ -191,6 +239,33 @@ class PaddleOCR(PaddleXPipelineWrapper):
         text_rec_score_thresh=None,
         return_word_box=None,
     ):
+        """Run OCR on ``input`` and yield one result object per image.
+
+        Args:
+            input: Image path (str), URL, numpy array, PIL Image, or an
+                iterable of any of the above.
+            use_doc_orientation_classify (bool | None): Override the
+                constructor setting for this call.
+            use_doc_unwarping (bool | None): Override the constructor setting
+                for this call.
+            use_textline_orientation (bool | None): Override the constructor
+                setting for this call.
+            text_det_limit_side_len (int | None): Maximum side length for
+                text detection input resizing.
+            text_det_limit_type (str | None): How to apply the side-length
+                limit (``"max"`` or ``"min"``).
+            text_det_thresh (float | None): Override detection pixel threshold.
+            text_det_box_thresh (float | None): Override detection box
+                threshold.
+            text_det_unclip_ratio (float | None): Override box expansion ratio.
+            text_rec_score_thresh (float | None): Override recognition
+                confidence threshold.
+            return_word_box (bool | None): Override per-word box setting.
+
+        Yields:
+            PaddleX OCR result objects with ``.print()``, ``.save_to_img()``,
+            and ``.save_to_json()`` methods.
+        """
         return self.paddlex_pipeline.predict(
             input,
             use_doc_orientation_classify=use_doc_orientation_classify,
@@ -220,6 +295,15 @@ class PaddleOCR(PaddleXPipelineWrapper):
         text_rec_score_thresh=None,
         return_word_box=None,
     ):
+        """Run OCR on ``input`` and return a list of result objects.
+
+        Convenience wrapper around :meth:`predict_iter` that collects all
+        results into a list.  See :meth:`predict_iter` for the full parameter
+        documentation.
+
+        Returns:
+            list: One result object per input image.
+        """
         return list(
             self.predict_iter(
                 input,

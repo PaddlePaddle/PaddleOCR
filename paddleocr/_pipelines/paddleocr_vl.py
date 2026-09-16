@@ -35,6 +35,49 @@ _SUPPORTED_VL_BACKENDS = [
 
 
 class PaddleOCRVL(PaddleXPipelineWrapper):
+    """Vision-Language document understanding pipeline (PaddleOCR-VL).
+
+    Uses a compact Vision-Language Model (VLM) — PaddleOCR-VL-1.5 (0.9 B
+    parameters by default) — to parse document images into structured
+    Markdown.  Supports 109+ languages and handles challenging real-world
+    conditions such as skew, warping, scanning artifacts, and uneven
+    illumination.
+
+    Args:
+        pipeline_version (str): VL pipeline version.  ``"v1.5"`` (default)
+            uses PaddleOCR-VL-1.5; ``"v1"`` uses the earlier PaddleOCR-VL.
+        vl_rec_model_name (str | None): Name of the VL recognition model.
+        vl_rec_model_dir (str | None): Local directory for the VL model.
+        vl_rec_backend (str | None): Inference backend for the VL model.
+            One of ``"native"`` (default), ``"vllm-server"``,
+            ``"sglang-server"``, ``"fastdeploy-server"``,
+            ``"mlx-vlm-server"``, ``"llama-cpp-server"``.
+        vl_rec_server_url (str | None): Server URL when using a server
+            backend.
+        vl_rec_api_key (str | None): API key for API-based backends.
+        layout_detection_model_name (str | None): Name of the layout
+            detection model.
+        layout_detection_model_dir (str | None): Local directory for the
+            layout detection model.
+        use_doc_orientation_classify (bool | None): Enable document
+            orientation classification preprocessing.
+        use_doc_unwarping (bool | None): Enable document unwarping
+            preprocessing.
+        use_layout_detection (bool | None): Enable layout detection.
+        use_chart_recognition (bool | None): Enable chart parsing.
+        use_seal_recognition (bool | None): Enable seal text recognition.
+        use_ocr_for_image_block (bool | None): Run OCR on image blocks.
+        **kwargs: Additional arguments forwarded to the base class (e.g.
+            ``device``, ``use_hpip``).
+
+    Example:
+        >>> from paddleocr import PaddleOCRVL
+        >>> pipeline = PaddleOCRVL()
+        >>> results = pipeline.predict("document.png")
+        >>> for res in results:
+        ...     print(res.markdown)
+    """
+
     def __init__(
         self,
         pipeline_version=_DEFAULT_PIPELINE_VERSION,

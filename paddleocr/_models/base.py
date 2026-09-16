@@ -28,6 +28,27 @@ _DEFAULT_ENABLE_HPI = False
 
 
 class PaddleXPredictorWrapper(metaclass=abc.ABCMeta):
+    """Base class for single-model PaddleOCR wrappers.
+
+    Subclasses wrap a PaddleX predictor for a specific model (e.g. text
+    detection, text recognition) and expose ``predict`` / ``predict_iter``
+    methods along with optional CLI support.  Each subclass must declare
+    ``default_model_name`` and ``get_cli_subcommand_executor``.
+
+    Args:
+        model_name (str | None): Name of the model to load. Defaults to
+            ``default_model_name`` when ``None``.
+        model_dir (str | None): Local directory containing model files.
+            Downloads from the model hub when ``None``.
+        **common_args: Common inference arguments forwarded to PaddleX (e.g.
+            ``device``, ``use_hpip``, ``use_tensorrt``).
+
+    Example:
+        >>> from paddleocr import TextDetection
+        >>> detector = TextDetection()
+        >>> results = detector.predict("image.png")
+    """
+
     def __init__(
         self,
         *,
@@ -83,6 +104,12 @@ class PaddleXPredictorWrapper(metaclass=abc.ABCMeta):
 
 
 class PredictorCLISubcommandExecutor(CLISubcommandExecutor):
+    """Base class for single-model CLI subcommand executors.
+
+    Registers a model predictor as a subcommand of the ``paddleocr`` CLI and
+    handles argument parsing and execution.
+    """
+
     @property
     @abc.abstractmethod
     def subparser_name(self):
