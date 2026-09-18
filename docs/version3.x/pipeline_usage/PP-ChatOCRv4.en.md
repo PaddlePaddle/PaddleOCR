@@ -974,6 +974,8 @@ Please note: If you encounter issues such as the program becoming unresponsive, 
 
 Before performing model inference, you first need to prepare the API key for the large language model. PP-ChatOCRv4 supports large model services on the [Baidu Cloud Qianfan Platform](https://console.bce.baidu.com/qianfan/ais/console/onlineService) or the locally deployed standard OpenAI interface. If using the Baidu Cloud Qianfan Platform, refer to [Authentication and Authorization](https://cloud.baidu.com/doc/qianfan-api/s/ym9chdsy5) to obtain the API key. If using a locally deployed large model service, refer to the [PaddleNLP Large Model Deployment Documentation](https://github.com/PaddlePaddle/PaddleNLP/tree/develop/llm) for deployment of the dialogue interface and vectorization interface for large models, and fill in the corresponding `base_url` and `api_key`. If you need to use a multimodal large model for data fusion, refer to the OpenAI service deployment in the [PaddleMIX Model Documentation](https://github.com/PaddlePaddle/PaddleMIX/tree/develop/paddlemix/examples/ppdocbee2) for multimodal large model deployment, and fill in the corresponding `base_url` and `api_key`.
 
+Alternatively, you can call the LLM through [OrcaRouter](https://www.orcarouter.ai), an OpenAI-compatible gateway. After obtaining an API key from [OrcaRouter](https://www.orcarouter.ai), pass it via the `--orcarouter_api_key` argument and the pipeline routes both the chat and vectorization requests to OrcaRouter.
+
 **Note**: If local deployment of a multimodal large model is restricted due to the local environment, you can comment out the lines containing the `mllm` variable in the code and only use the large language model for information extraction.
 
 ### 2.1 Command Line Experience
@@ -986,6 +988,9 @@ paddleocr pp_chatocrv4_doc -i vehicle_certificate-1.png -k 驾驶室准乘人数
 
 # 通过 --invoke_mllm 和 --pp_docbee_base_url 使用多模态大模型
 paddleocr pp_chatocrv4_doc -i vehicle_certificate-1.png -k 驾驶室准乘人数 --qianfan_api_key your_api_key --invoke_mllm True --pp_docbee_base_url http://127.0.0.1:8080/
+
+# Use the OrcaRouter OpenAI-compatible gateway via --orcarouter_api_key
+paddleocr pp_chatocrv4_doc -i vehicle_certificate-1.png -k 驾驶室准乘人数 --orcarouter_api_key your_api_key
 ```
 
 The examples above use local Paddle inference engines by default. By default, each module selects the appropriate local Paddle inference engine according to the default model name: models that support only dynamic graph use `paddle_dynamic`, while models that support both static and dynamic graph prefer `paddle_static`. To run them, first install PaddlePaddle by following [PaddlePaddle Framework Installation](../paddlepaddle_installation.en.md).
@@ -1383,6 +1388,12 @@ Any float > <code>0</code></li>
 </tr>
 <td><code>qianfan_api_key</code></td>
 <td><b>Meaning:</b>API key for the Qianfan Platform.</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>orcarouter_api_key</code></td>
+<td><b>Meaning:</b>API key for the [OrcaRouter](https://www.orcarouter.ai) gateway.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>

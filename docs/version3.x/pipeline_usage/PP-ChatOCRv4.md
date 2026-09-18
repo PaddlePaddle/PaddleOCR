@@ -864,6 +864,8 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://padd
 
 在进行模型推理之前，首先需要准备大语言模型的 api_key，PP-ChatOCRv4 支持在[百度云千帆平台](https://console.bce.baidu.com/qianfan/ais/console/onlineService)或者本地部署的标准 OpenAI 接口大模型服务。如果使用百度云千帆平台，可以参考[认证鉴权](https://cloud.baidu.com/doc/qianfan-api/s/ym9chdsy5) 获取 api_key。如果使用本地部署的大模型服务，可以参考[PaddleNLP大模型部署文档](https://github.com/PaddlePaddle/PaddleNLP/tree/develop/llm)进行大模型部署对话接口部署和向量化接口部署，并填写对应的 base_url 和 api_key 即可。如果需要使用多模态大模型进行数据融合，可以参考[PaddleMIX模型文档](https://github.com/PaddlePaddle/PaddleMIX/tree/develop/paddlemix/examples/ppdocbee2)中的OpenAI服务部署进行多模态大模型部署，并填写对应的 base_url 和 api_key 即可。
 
+此外，也可以使用 [OrcaRouter](https://www.orcarouter.ai) 这一 OpenAI 兼容网关来调用大模型：在[OrcaRouter](https://www.orcarouter.ai) 获取 API key 后，使用 `--orcarouter_api_key` 参数即可，产线会将对话与向量化请求统一路由到 OrcaRouter。
+
 **注:** 如果因本地环境限制无法在本地部署多模态大模型，可以将代码中的含有“mllm”变量的行注释掉，仅使用大语言模型完成信息抽取。
 
 ### 2.1 命令行方式体验
@@ -875,6 +877,9 @@ paddleocr pp_chatocrv4_doc -i vehicle_certificate-1.png -k 驾驶室准乘人数
 
 # 通过 --invoke_mllm 和 --pp_docbee_base_url 使用多模态大模型
 paddleocr pp_chatocrv4_doc -i vehicle_certificate-1.png -k 驾驶室准乘人数 --qianfan_api_key your_api_key --invoke_mllm True --pp_docbee_base_url http://127.0.0.1:8080/
+
+# 通过 --orcarouter_api_key 使用 OrcaRouter OpenAI 兼容网关
+paddleocr pp_chatocrv4_doc -i vehicle_certificate-1.png -k 驾驶室准乘人数 --orcarouter_api_key your_api_key
 ```
 
 上述命令默认使用本地飞桨推理引擎。默认情况下，各模块会根据默认模型名称选择合适的本地飞桨推理引擎：仅支持动态图的模型使用 `paddle_dynamic`；同时支持静态图和动态图的模型优先使用 `paddle_static`。如需运行，请先参考[飞桨框架安装说明](../paddlepaddle_installation.md)安装 PaddlePaddle。
@@ -1241,6 +1246,12 @@ paddleocr pp_chatocrv4_doc -i vehicle_certificate-1.png -k 驾驶室准乘人数
 <tr>
 <td><code>qianfan_api_key</code></td>
 <td><b>含义：</b>千帆平台的API key。</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>orcarouter_api_key</code></td>
+<td><b>含义：</b>[OrcaRouter](https://www.orcarouter.ai) 网关的API key。</td>
 <td><code>str</code></td>
 <td></td>
 </tr>

@@ -676,6 +676,11 @@ class PPChatOCRv4DocCLISubcommandExecutor(PipelineCLISubcommandExecutor):
             help="Configuration for the embedding model.",
         )
         subparser.add_argument(
+            "--orcarouter_api_key",
+            type=str,
+            help="API key for the OrcaRouter OpenAI-compatible gateway.",
+        )
+        subparser.add_argument(
             "--pp_docbee_base_url",
             type=str,
             help="Configuration for the multimodal large language model.",
@@ -702,6 +707,22 @@ class PPChatOCRv4DocCLISubcommandExecutor(PipelineCLISubcommandExecutor):
                 "base_url": "https://qianfan.baidubce.com/v2",
                 "api_type": "openai",
                 "api_key": qianfan_api_key,
+            }
+        orcarouter_api_key = params.pop("orcarouter_api_key")
+        if orcarouter_api_key is not None:
+            params["retriever_config"] = {
+                "module_name": "retriever",
+                "model_name": "openai/text-embedding-3-small",
+                "base_url": "https://api.orcarouter.ai/v1",
+                "api_type": "openai",
+                "api_key": orcarouter_api_key,
+            }
+            params["chat_bot_config"] = {
+                "module_name": "chat_bot",
+                "model_name": "deepseek/deepseek-v4-flash-0731",
+                "base_url": "https://api.orcarouter.ai/v1",
+                "api_type": "openai",
+                "api_key": orcarouter_api_key,
             }
         pp_docbee_base_url = params.pop("pp_docbee_base_url")
         if pp_docbee_base_url is not None:

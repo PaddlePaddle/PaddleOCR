@@ -683,7 +683,7 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://padd
 
 **请注意，如果在执行过程中遇到程序失去响应、程序异常退出、内存资源耗尽、推理速度极慢等问题，请尝试参考文档调整配置，例如关闭不需要使用的功能或使用更轻量的模型。**
 
-使用前需准备大语言模型的API密钥，支持[百度云千帆平台](https://console.bce.baidu.com/qianfan/ais/console/onlineService)或符合OpenAI接口标准的本地大模型服务。
+使用前需准备大语言模型的API密钥，支持[百度云千帆平台](https://console.bce.baidu.com/qianfan/ais/console/onlineService)或符合OpenAI接口标准的本地大模型服务。此外，也可以使用 [OrcaRouter](https://www.orcarouter.ai) 这一 OpenAI 兼容网关：在[OrcaRouter](https://www.orcarouter.ai) 获取 API key 后，使用 `--orcarouter_api_key` 参数即可。
 
 ### 2.1 命令行方式体验
 
@@ -691,6 +691,9 @@ devanagari_PP-OCRv3_mobile_rec_infer.tar">推理模型</a>/<a href="https://padd
 
 ```bash
 paddleocr pp_doctranslation -i vehicle_certificate-1.png --target_language en --qianfan_api_key your_api_key
+
+# 通过 --orcarouter_api_key 使用 OrcaRouter OpenAI 兼容网关
+paddleocr pp_doctranslation -i vehicle_certificate-1.png --target_language en --orcarouter_api_key your_api_key
 ```
 
 上述命令默认使用本地飞桨推理引擎。默认情况下，各模块会根据默认模型名称选择合适的本地飞桨推理引擎：仅支持动态图的模型使用 `paddle_dynamic`；同时支持静态图和动态图的模型优先使用 `paddle_static`。如需运行，请先参考[飞桨框架安装说明](../paddlepaddle_installation.md)安装 PaddlePaddle。
@@ -1272,6 +1275,12 @@ paddleocr pp_doctranslation -i vehicle_certificate-1.png --target_language en --
 <tr>
 <td><code>qianfan_api_key</code></td>
 <td><b>含义：</b>千帆平台的API key。</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>orcarouter_api_key</code></td>
+<td><b>含义：</b>[OrcaRouter](https://www.orcarouter.ai) 网关的API key。</td>
 <td><code>str</code></td>
 <td></td>
 </tr>

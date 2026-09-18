@@ -686,7 +686,7 @@ Before using the PP-DocTranslation pipeline locally, please ensure that you have
 
 Please note: If you encounter issues such as the program becoming unresponsive, unexpected program termination, running out of memory resources, or extremely slow inference during execution, please try adjusting the configuration according to the documentation, such as disabling unnecessary features or using lighter-weight models.
 
-Before use, you need to prepare the API key for a large language model, which supports the [Baidu Cloud Qianfan Platform](https://console.bce.baidu.com/qianfan/ais/console/onlineService) or local large model services that comply with the OpenAI interface standards.
+Before use, you need to prepare the API key for a large language model, which supports the [Baidu Cloud Qianfan Platform](https://console.bce.baidu.com/qianfan/ais/console/onlineService) or local large model services that comply with the OpenAI interface standards. Alternatively, you can use [OrcaRouter](https://www.orcarouter.ai), an OpenAI-compatible gateway: after obtaining an API key from [OrcaRouter](https://www.orcarouter.ai), pass it via the `--orcarouter_api_key` argument.
 
 ### 2.1 Experience via Command Line
 
@@ -694,6 +694,9 @@ You can download the [test file](https://paddle-model-ecology.bj.bcebos.com/padd
 
 ```bash
 paddleocr pp_doctranslation -i vehicle_certificate-1.png --target_language en --qianfan_api_key your_api_key
+
+# Use the OrcaRouter OpenAI-compatible gateway via --orcarouter_api_key
+paddleocr pp_doctranslation -i vehicle_certificate-1.png --target_language en --orcarouter_api_key your_api_key
 ```
 
 The examples above use local Paddle inference engines by default. By default, each module selects the appropriate local Paddle inference engine according to the default model name: models that support only dynamic graph use `paddle_dynamic`, while models that support both static and dynamic graph prefer `paddle_static`. To run them, first install PaddlePaddle by following [PaddlePaddle Framework Installation](../paddlepaddle_installation.en.md).
@@ -1251,6 +1254,12 @@ If not set, the pipeline initialized value will be used, default is <code>True</
 <tr>
 <td><code>qianfan_api_key</code></td>
 <td><b>Meaning:</b>API key for the Qianfan platform.</td>
+<td><code>str</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>orcarouter_api_key</code></td>
+<td><b>Meaning:</b>API key for the [OrcaRouter](https://www.orcarouter.ai) gateway.</td>
 <td><code>str</code></td>
 <td></td>
 </tr>
