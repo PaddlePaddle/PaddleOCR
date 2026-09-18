@@ -371,11 +371,8 @@ class ParseQHead(nn.Layer):
             for i in range(self.refine_iters):
                 tgt_in = paddle.concat(x=[bos, logits[:, :-1].argmax(axis=-1)], axis=1)
                 tgt_padding_mask = (tgt_in == self.eos_id).astype(dtype="int32")
-                tgt_padding_mask = tgt_padding_mask.cpu()
                 tgt_padding_mask = tgt_padding_mask.cumsum(axis=-1) > 0
-                tgt_padding_mask = (
-                    tgt_padding_mask.cuda().astype(dtype="float32") == 1.0
-                )
+                tgt_padding_mask = tgt_padding_mask.astype(dtype="float32") == 1.0
                 tgt_out = self.decode(
                     tgt_in,
                     memory,
