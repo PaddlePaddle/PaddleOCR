@@ -65,6 +65,25 @@ paddlex --pipeline OCR \
         --save_path ./output \
         --device gpu:0
 ```
+
+### CPU inference tuning
+
+For CPU deployments, set the thread count and stage batch sizes explicitly, then benchmark them with production-like inputs. `cpu_threads` controls the parallelism of an individual operator; for multi-request services, also cap request concurrency to avoid thread contention:
+
+```python
+from paddleocr import PaddleOCR
+
+ocr = PaddleOCR(
+    device="cpu",
+    cpu_threads=3,
+    enable_mkldnn=True,
+    text_detection_batch_size=2,
+    textline_orientation_batch_size=8,
+    text_recognition_batch_size=16,
+)
+```
+
+Larger batches are not always faster, especially for short text or memory-constrained instances. Measure detection, orientation-classification, and recognition latency separately, together with CPU utilization. For `PP-OCRv6_tiny` versus `PP-OCRv6_small`, also verify accuracy on narrow columns and small text from your target documents.
   <summary><b>👉 Click to view the running result</b></summary>
 
 ```bash
