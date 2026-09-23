@@ -1763,7 +1763,8 @@ for res in output:
     markdown_list.append(md_info)
     markdown_images.append(md_info.get("markdown_images", {}))
 
-markdown_texts = pipeline.concatenate_markdown_pages(markdown_list)
+markdown_result = pipeline.concatenate_markdown_pages(markdown_list)
+markdown_texts = markdown_result["markdown_texts"]
 
 mkd_file_path = output_path / f"{Path(input_file).stem}.md"
 mkd_file_path.parent.mkdir(parents=True, exist_ok=True)
@@ -2853,7 +2854,7 @@ If enabled, the cell detection model will not be used, and only the table struct
 <td><code>markdown_list</code></td>
 <td><code>list</code></td>
 <td>List of markdown data for each page.</td>
-<td>Returns the merged markdown text and image list.</td>
+<td>Returns a <code>MarkdownResult</code> object. Access <code>result["markdown_texts"]</code> to get the merged Markdown text. Save images separately from each page's <code>markdown_images</code>.</td>
 </tr>
 </table>
 
@@ -2954,7 +2955,7 @@ If enabled, the cell detection model will not be used, and only the table struct
 <li>Calling <code>save_to_json()</code> saves the above content to the specified <code>save_path</code>. If it’s a directory, the saved path will be <code>save_path/{your_img_basename}_res.json</code>. If it’s a file, it saves directly. Numpy arrays are converted to lists since JSON doesn't support them.</li>
 <li>Calling <code>save_to_img()</code> saves visual results to the specified <code>save_path</code>. If a directory, various visualizations such as layout detection, OCR, and reading order are saved. If a file, only the last image is saved and others are overwritten.</li>
 <li>Calling <code>save_to_markdown()</code> saves converted markdown files to <code>save_path/{your_img_basename}.md</code>. For PDF input, it's recommended to specify a directory to avoid file overwriting.</li>
-<li>Calling <code>concatenate_markdown_pages()</code> merges multi-page markdown results from the <code>PP-StructureV3 pipeline</code>  into a single document and returns the merged content.</li>
+<li>Calling <code>concatenate_markdown_pages()</code> merges multi-page markdown results from the <code>PP-StructureV3 pipeline</code> into a single document and returns a <code>MarkdownResult</code> object. Use <code>result["markdown_texts"]</code> to get the merged Markdown text.</li>
 
 Additionally, you can access the prediction results and visual images through the following attributes:
 
