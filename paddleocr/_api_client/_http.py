@@ -191,7 +191,7 @@ class HTTPClient:
         except requests.ConnectionError as e:
             raise NetworkError(f"Connection failed: {e}") from e
         try:
-            resp.raise_for_status()
+            _raise_for_response(resp)
             lines = resp.text.strip().split("\n")
             results = []
             for line in lines:
