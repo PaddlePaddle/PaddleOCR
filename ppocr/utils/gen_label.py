@@ -42,7 +42,10 @@ def gen_det_label(root_path, input_dir, out_label):
                         b = points[i : i + 2]
                         b = [int(t) for t in b]
                         s.append(b)
-                    result = {"transcription": tmp[8], "points": s}
+                    transcription = tmp[8]
+                    if len(tmp) > 9:
+                        transcription = ",".join(tmp[8:])
+                    result = {"transcription": transcription, "points": s}
                     label.append(result)
 
             out_file.write(
