@@ -66,6 +66,31 @@ class BaseRecLabelDecode(object):
 
         return "".join(pred_re[::-1])
 
+    def reverse_selection(self, pred, selection):
+        """Reorder the selected columns to match pred_reverse's token reversal.
+
+        pred_reverse keeps runs of LTR characters together and reverses the
+        unit sequence. Returns the reordered columns as an index array, since a
+        boolean mask cannot express out-of-order columns.
+        """
+        units = []
+        c_current = []
+        for i, c in enumerate(pred):
+            if not bool(re.search("[a-zA-Z0-9 :*./%+-]", c)):
+                if c_current:
+                    units.append(c_current)
+                    c_current = []
+                units.append([i])
+            else:
+                c_current.append(i)
+        if c_current:
+            units.append(c_current)
+
+        valid_col = np.where(selection == True)[0]
+        return np.array(
+            [valid_col[i] for unit in units[::-1] for i in unit], dtype="int64"
+        )
+
     def add_special_char(self, dict_character):
         return dict_character
 
@@ -75,7 +100,7 @@ class BaseRecLabelDecode(object):
 
         Args:
             text: the decoded text
-            selection: the bool array that identifies which columns of features are decoded as non-separated characters
+            selection: the bool array that identifies which columns of features are decoded as non-separated characters, or an int array of the explicit columns in text order (used by the reversed path)
         Returns:
             word_list: list of the grouped words
             word_col_list: list of decoding positions corresponding to each character in the grouped word
@@ -90,7 +115,11 @@ class BaseRecLabelDecode(object):
         word_list = []
         word_col_list = []
         state_list = []
-        valid_col = np.where(selection == True)[0]
+        valid_col = (
+            np.where(selection == True)[0]
+            if selection.dtype == bool
+            else np.asarray(selection)
+        )
 
         for c_i, char in enumerate(text):
             if "\u4e00" <= char <= "\u9fff":
@@ -172,6 +201,9 @@ class BaseRecLabelDecode(object):
             text = "".join(char_list)
 
             if self.reverse:  # for arabic rec
+                if return_word_box:
+                    # keep the reported columns aligned with the reversed text
+                    selection = self.reverse_selection(text, selection)
                 text = self.pred_reverse(text)
 
             if return_word_box:
