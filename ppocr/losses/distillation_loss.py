@@ -1105,7 +1105,8 @@ class KLCTCLogits(nn.Layer):
     def _kldiv(self, x, target):
         eps = 1.0e-10
         loss = target * (paddle.log(target + eps) - x)
-        loss = paddle.sum(paddle.mean(loss, axis=1)) / loss.shape[0]
+        # batch mean loss
+        loss = paddle.sum(loss) / loss.shape[0]
         return loss
 
     def forward(self, stu_out, tea_out, targets=None):
