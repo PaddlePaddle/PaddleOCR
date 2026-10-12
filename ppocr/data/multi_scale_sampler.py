@@ -167,5 +167,14 @@ class MultiScaleSampler(Sampler):
     def set_epoch(self, epoch: int):
         self.epoch = epoch
 
+        if self.ds_width:
+            self.wh_ratio = self.data_source.wh_ratio
+            self.wh_ratio_sort = self.data_source.wh_ratio_sort
+            # Refresh cached batches after ratio_list resampling.
+            self.batchs_in_one_epoch = self.iter()
+            self.batchs_in_one_epoch_id = [
+                i for i in range(len(self.batchs_in_one_epoch))
+            ]
+
     def __len__(self):
         return self.length
