@@ -52,7 +52,7 @@ python3 tools/infer/predict_det.py --det_algorithm="SAST" --image_dir="./doc/img
 
 可视化文本检测结果默认保存到`./inference_results`文件夹里面，结果文件的名称前缀为'det_res'。结果示例如下：
 
-![img](./images/det_res_img_10_sast.jpg)
+![img](../../legacy/images/det_res_img_10_sast.jpg)
 
 #### (2). 弯曲文本检测模型（Total-Text）
 
@@ -70,7 +70,7 @@ python3 tools/infer/predict_det.py --det_algorithm="SAST" --image_dir="./doc/img
 
 可视化文本检测结果默认保存到`./inference_results`文件夹里面，结果文件的名称前缀为'det_res'。结果示例如下：
 
-![img](./images/det_res_img623_sast.jpg)
+![img](../../legacy/images/det_res_img623_sast.jpg)
 
 **注意**：本代码库中，SAST后处理Locality-Aware NMS有python和c++两种版本，c++版速度明显快于python版。由于c++版本nms编译版本问题，只有python3.5环境下会调用c++版nms，其他情况将调用python版nms。
 

@@ -157,24 +157,24 @@ paddleocr --image_dir /your/test/image.jpg --lang=hi
 <details open>
 <summary>PP-OCRv3 बहुभाषी मॉडल</summary>
 <div align="center">
-    <img src="../version2.x/ppocr/images/PP-OCRv3/multi_lang/japan_2.jpg" width="800">
-    <img src="../version2.x/ppocr/images/PP-OCRv3/multi_lang/korean_1.jpg" width="800">
+    <img src="../images/japan_2.jpg" width="800">
+    <img src="../images/korean_1.jpg" width="800">
 </div>
 </details>
 
 <details open>
 <summary>PP-OCRv3 अंग्रेजी मॉडल</summary>
 <div align="center">
-    <img src="../version2.x/ppocr/images/PP-OCRv3/en/en_1.png" width="800">
-    <img src="../version2.x/ppocr/images/PP-OCRv3/en/en_2.png" width="800">
+    <img src="../images/en_1.png" width="800">
+    <img src="../images/en_2.png" width="800">
 </div>
 </details>
 <details open>
 <summary>PP-OCRv3 चीनी मॉडल</summary>
 <div align="center">
-    <img src="../version2.x/ppocr/images/PP-OCRv3/ch/PP-OCRv3-pic001.jpg" width="800">
-    <img src="../version2.x/ppocr/images/PP-OCRv3/ch/PP-OCRv3-pic002.jpg" width="800">
-    <img src="../version2.x/ppocr/images/PP-OCRv3/ch/PP-OCRv3-pic003.jpg" width="800">
+    <img src="../images/PP-OCRv3-pic001.jpg" width="800">
+    <img src="../images/PP-OCRv3-pic002.jpg" width="800">
+    <img src="../images/PP-OCRv3-pic003.jpg" width="800">
 </div>
 </details>
 
@@ -182,7 +182,7 @@ paddleocr --image_dir /your/test/image.jpg --lang=hi
 <summary>PP-Structurev2</summary>
 1. लेआउट एनालाइस + टेबल रिकोगनाइजेशन
 <div align="center">
-    <img src="../version2.x/ppstructure/images/ppstructure.gif" width="800">
+    <img src="../images/ppstructure-20240708082235651.gif" width="800">
 </div>
 2. SER (सिमेंटिक एंटिटी रिकोगनाइजेशन)
 <div align="center">

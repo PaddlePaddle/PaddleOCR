@@ -67,7 +67,7 @@ python3 tools/infer/predict_rec.py --image_dir="doc/imgs_words/en/word_1.png" --
 
 推理结果如下所示：
 
-![img](./images/word_1-20240704184113913.png)
+![img](../../legacy/images/word_1.png)
 
 ```bash linenums="1"
 Predicts of doc/imgs_words/en/word_1.png:('joint', 0.9999982714653015)

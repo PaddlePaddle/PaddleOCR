@@ -279,6 +279,8 @@ PaddleOCR 的發展離不開社區貢獻！💗衷心感謝所有開發者、合
 
 ## 🎓 引用
 
+如果本專案對您的研究有幫助，歡迎引用 **PaddleOCR 3.0** 和 **PaddleOCR-VL**。更多歷年論文、研究介紹及 BibTeX，請參閱 [PaddleOCR 論文展示（簡體中文）](../docs/papers.md)。
+
 ```bibtex
 @misc{cui2025paddleocr30technicalreport,
       title={PaddleOCR 3.0 Technical Report},
@@ -298,15 +300,5 @@ PaddleOCR 的發展離不開社區貢獻！💗衷心感謝所有開發者、合
       archivePrefix={arXiv},
       primaryClass={cs.CV},
       url={https://arxiv.org/abs/2510.14528},
-}
-
-@misc{cui2026paddleocrvl15multitask09bvlm,
-      title={PaddleOCR-VL-1.5: Towards a Multi-Task 0.9B VLM for Robust In-the-Wild Document Parsing},
-      author={Cheng Cui and Ting Sun and Suyin Liang and Tingquan Gao and Zelun Zhang and Jiaxuan Liu and Xueqing Wang and Changda Zhou and Hongen Liu and Manhui Lin and Yue Zhang and Yubo Zhang and Yi Liu and Dianhai Yu and Yanjun Ma},
-      year={2026},
-      eprint={2601.21957},
-      archivePrefix={arXiv},
-      primaryClass={cs.CV},
-      url={https://arxiv.org/abs/2601.21957},
 }
 ```
