@@ -79,10 +79,7 @@ class Task(abc.ABC):
         normalized_input = adapter.normalize(input_data)
         adapter.validate(normalized_input)
 
-        ctx = get_context()
-        await ctx.info(
-            f"--- {self.tool_name} tool received input_data: {normalized_input[:50]} ---"
-        )
+        await self._log_received_input(normalized_input)
 
         final_params = self._inference.get_final_params(runtime_params or {})
         self._inference.validate_params(final_params)
@@ -99,6 +96,25 @@ class Task(abc.ABC):
             detailed=(output_mode == "detailed"),
             return_images=return_images,
         )
+
+    async def _log_received_input(self, normalized_input: str) -> None:
+        """Best-effort tool-call log; must never fail the tool call.
+
+        ``get_context()`` raises when there is no active MCP request context,
+        and ``ctx.info()`` raises while the MCP session has not been established
+        (``request_context is None``). Either failure used to reach the client
+        as a generic, undiagnosable "Error calling tool" instead of running the
+        tool (issue #18391).
+        """
+        try:
+            ctx = get_context()
+            if getattr(ctx, "request_context", None) is None:
+                return
+            await ctx.info(
+                f"--- {self.tool_name} tool received input_data: {normalized_input[:50]} ---"
+            )
+        except Exception:  # noqa: BLE001 - logging is best-effort, never fatal
+            return
 
     def register_tools(self, mcp: FastMCP) -> None:
         mcp.tool(self.tool_name, description=self._tool_description())(
