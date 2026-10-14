@@ -505,11 +505,15 @@ class MultiScaleDataSet(SimpleDataSet):
             )
             file_idx = self.wh_ratio_sort[idx]
         else:
-            file_idx = self.data_idx_order_list[idx]
+            if self._index_map is not None:
+                self._ensure_index_map()
+                file_idx = self._index_map[idx]
+            else:
+                file_idx = self.data_idx_order_list[idx]
             img_width = properties[0]
             wh_ratio = None
 
-        data_line = self.data_lines[file_idx]
+        data_line = self._all_lines[file_idx] if self._index_map is not None else self.data_lines[file_idx]
         try:
             data_line = data_line.decode("utf-8")
             substr = data_line.strip("\n").split(self.delimiter)
