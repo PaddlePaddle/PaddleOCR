@@ -61,21 +61,21 @@ PP-OCRv3系统pipeline如下：
 
 ### PP-OCRv3 中文模型
 
-![](./images/PP-OCRv3/ch/PP-OCRv3-pic001.jpg)
+![](../../images/PP-OCRv3-pic001.jpg)
 
-![](./images/PP-OCRv3/ch/PP-OCRv3-pic002.jpg)
+![](../../images/PP-OCRv3-pic002.jpg)
 
-![](./images/PP-OCRv3/ch/PP-OCRv3-pic003.jpg)
+![](../../images/PP-OCRv3-pic003.jpg)
 
 ### PP-OCRv3 英文模型
 
-![](./images/PP-OCRv3/en/en_1.png)
-![](./images/PP-OCRv3/en/en_2.png)
+![](../../images/en_1.png)
+![](../../images/en_2.png)
 
 ### PP-OCRv3 多语言模型
 
-![](./images/PP-OCRv3/multi_lang/japan_2.jpg)
-![](./images/PP-OCRv3/multi_lang/korean_1.jpg)
+![](../../images/japan_2.jpg)
+![](../../images/korean_1.jpg)
 
 ## 5. 使用教程
 

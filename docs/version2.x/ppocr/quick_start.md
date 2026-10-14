@@ -119,7 +119,7 @@ paddleocr --image_dir ./imgs_en/254.jpg --lang=en
 
 ![](./images/254.jpg)
 
-![](./images/multi_lang/img_02.jpg)
+![](blog/images/img_02.jpg)
 
 结果是一个list，每个item包含了文本框，文字和识别置信度
 

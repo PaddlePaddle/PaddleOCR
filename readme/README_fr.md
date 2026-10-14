@@ -279,33 +279,26 @@ Ce projet est publié sous la [licence Apache 2.0](LICENSE).
 
 ## 🎓 Citation
 
+Si PaddleOCR vous est utile dans vos recherches, veuillez citer **PaddleOCR 3.0** et **PaddleOCR-VL**. Pour découvrir les autres publications, leurs résumés et les références BibTeX, consultez la [page des publications de PaddleOCR (en anglais)](../docs/papers.en.md).
+
 ```bibtex
 @misc{cui2025paddleocr30technicalreport,
-      title={PaddleOCR 3.0 Technical Report}, 
+      title={PaddleOCR 3.0 Technical Report},
       author={Cheng Cui and Ting Sun and Manhui Lin and Tingquan Gao and Yubo Zhang and Jiaxuan Liu and Xueqing Wang and Zelun Zhang and Changda Zhou and Hongen Liu and Yue Zhang and Wenyu Lv and Kui Huang and Yichao Zhang and Jing Zhang and Jun Zhang and Yi Liu and Dianhai Yu and Yanjun Ma},
       year={2025},
       eprint={2507.05595},
       archivePrefix={arXiv},
       primaryClass={cs.CV},
-      url={https://arxiv.org/abs/2507.05595}, 
+      url={https://arxiv.org/abs/2507.05595},
 }
 
 @misc{cui2025paddleocrvlboostingmultilingualdocument,
-      title={PaddleOCR-VL: Boosting Multilingual Document Parsing via a 0.9B Ultra-Compact Vision-Language Model}, 
+      title={PaddleOCR-VL: Boosting Multilingual Document Parsing via a 0.9B Ultra-Compact Vision-Language Model},
       author={Cheng Cui and Ting Sun and Suyin Liang and Tingquan Gao and Zelun Zhang and Jiaxuan Liu and Xueqing Wang and Changda Zhou and Hongen Liu and Manhui Lin and Yue Zhang and Yubo Zhang and Handong Zheng and Jing Zhang and Jun Zhang and Yi Liu and Dianhai Yu and Yanjun Ma},
       year={2025},
       eprint={2510.14528},
       archivePrefix={arXiv},
       primaryClass={cs.CV},
-      url={https://arxiv.org/abs/2510.14528}, 
+      url={https://arxiv.org/abs/2510.14528},
 }
-
-@misc{cui2026paddleocrvl15multitask09bvlm,
-      title={PaddleOCR-VL-1.5: Towards a Multi-Task 0.9B VLM for Robust In-the-Wild Document Parsing}, 
-      author={Cheng Cui and Ting Sun and Suyin Liang and Tingquan Gao and Zelun Zhang and Jiaxuan Liu and Xueqing Wang and Changda Zhou and Hongen Liu and Manhui Lin and Yue Zhang and Yubo Zhang and Yi Liu and Dianhai Yu and Yanjun Ma},
-      year={2026},
-      eprint={2601.21957},
-      archivePrefix={arXiv},
-      primaryClass={cs.CV},
-      url={https://arxiv.org/abs/2601.21957}, 
-}
+```
