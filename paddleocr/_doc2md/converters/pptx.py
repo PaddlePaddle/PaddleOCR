@@ -23,7 +23,6 @@ from ..registry import default_registry
 # pptx XML namespace for DrawingML run properties
 _A_NS = "http://schemas.openxmlformats.org/drawingml/2006/main"
 _A = "{" + _A_NS + "}"
-_A_STRIKE = f"{_A}strike"
 _A_RPR = f"{_A}rPr"
 _A_P = f"{_A}p"
 
@@ -57,11 +56,15 @@ _CHART_TYPE_NAMES = {
 
 
 def _pptx_run_strike(run) -> bool:
-    """Return True if the run has strikethrough (sngStrike or dblStrike) set in XML."""
+    """Return True if the run has strikethrough (sngStrike or dblStrike) set in XML.
+
+    python-pptx's Font does not expose strikethrough, so the strike attribute
+    is read from <a:rPr> directly. Like baseline, it has no namespace prefix.
+    """
     try:
         rPr = run._r.find(_A_RPR)
         if rPr is not None:
-            val = rPr.get(_A_STRIKE)
+            val = rPr.get("strike")
             return val in ("sngStrike", "dblStrike")
     except Exception:
         pass
@@ -530,7 +533,7 @@ class PptxConverter(BaseConverter):
                         bold = bool(run.font.bold)
                         italic = bool(run.font.italic)
                         underline = bool(run.font.underline) and not url
-                        strikethrough = bool(run.font.strike)
+                        strikethrough = _pptx_run_strike(run)
                         script = _pptx_run_script(run)
 
                         if bold:
