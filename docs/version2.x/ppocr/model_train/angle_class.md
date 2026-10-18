@@ -141,7 +141,7 @@ python3 tools/infer_cls.py -c configs/cls/cls_mv3.yml -o Global.pretrained_model
 
 预测图片：
 
-![img](./images/word_1-20240704092713071.jpg)
+![img](../../legacy/images/word_1.jpg)
 
 得到输入图像的预测结果：
 

@@ -143,7 +143,7 @@ More details, please refer to [Multilingual OCR Development Plan](https://github
 
 ![](../images/en_2.png)
 
-![](../images/en_3-0398013.png)
+![](../images/en_3.png)
 
 ### PP-OCRv3 Multilingual model
 

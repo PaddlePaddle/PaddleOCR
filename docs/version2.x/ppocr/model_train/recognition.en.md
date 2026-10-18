@@ -106,7 +106,7 @@ python gen_label.py --mode="rec" --input_path="{path/of/origin/label}" --output_
 
 The data format is as follows, (a) is the original picture, (b) is the Ground Truth text file corresponding to each picture:
 
-![img](./images/icdar_rec.png)
+![img](../../../datasets/images/icdar_rec.png)
 
 - Multilingual Datasets
 
@@ -469,7 +469,7 @@ python3 tools/infer_rec.py -c configs/rec/PP-OCRv3/en_PP-OCRv3_mobile_rec.yml -o
 
 Input image:
 
-![img](./images/word_1-20240704092705543.png)
+![img](../../legacy/images/word_1.png)
 
 Get the prediction result of the input image:
 
@@ -487,7 +487,7 @@ python3 tools/infer_rec.py -c configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v
 
 Input image:
 
-![img](./images/word_1-20240704092713071.jpg)
+![img](../../legacy/images/word_1.jpg)
 
 Get the prediction result of the input image:
 

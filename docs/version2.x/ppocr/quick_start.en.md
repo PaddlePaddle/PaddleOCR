@@ -122,7 +122,7 @@ paddleocr --image_dir ./doc/imgs_en/254.jpg --lang=en
 
 ![](./images/254.jpg)
 
-![](./images/multi_lang/img_02.jpg)
+![](blog/images/img_02.jpg)
 
 The result is a list, each item contains a text box, text and recognition confidence
 

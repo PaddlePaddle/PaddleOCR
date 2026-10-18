@@ -280,6 +280,8 @@ PaddleOCRが今日あるのは、素晴らしいコミュニティのおかげ�
 
 ## 🎓 引用
 
+PaddleOCR が研究に役立った場合は、**PaddleOCR 3.0** と **PaddleOCR-VL** を引用してください。その他の論文、研究内容の紹介、BibTeX は、[PaddleOCR 論文一覧（英語）](../docs/papers.en.md)をご覧ください。
+
 ```bibtex
 @misc{cui2025paddleocr30technicalreport,
       title={PaddleOCR 3.0 Technical Report},
@@ -299,15 +301,5 @@ PaddleOCRが今日あるのは、素晴らしいコミュニティのおかげ�
       archivePrefix={arXiv},
       primaryClass={cs.CV},
       url={https://arxiv.org/abs/2510.14528},
-}
-
-@misc{cui2026paddleocrvl15multitask09bvlm,
-      title={PaddleOCR-VL-1.5: Towards a Multi-Task 0.9B VLM for Robust In-the-Wild Document Parsing},
-      author={Cheng Cui and Ting Sun and Suyin Liang and Tingquan Gao and Zelun Zhang and Jiaxuan Liu and Xueqing Wang and Changda Zhou and Hongen Liu and Manhui Lin and Yue Zhang and Yubo Zhang and Yi Liu and Dianhai Yu and Yanjun Ma},
-      year={2026},
-      eprint={2601.21957},
-      archivePrefix={arXiv},
-      primaryClass={cs.CV},
-      url={https://arxiv.org/abs/2601.21957},
 }
 ```
