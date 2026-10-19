@@ -444,8 +444,9 @@ class PaddleOCRVLCLISubcommandExecutor(PipelineCLISubcommandExecutor):
         subparser.add_argument(
             "--markdown_ignore_labels",
             type=str,
-            nargs="+",
-            help="List of layout labels to ignore in Markdown output.",
+            nargs="*",
+            default=None,
+            help="List of layout labels to ignore in Markdown output. Pass without values to disable filtering.",
         )
 
         subparser.add_argument(
