@@ -57,17 +57,20 @@ PaddleOCR 3.5 采用统一推理引擎配置，底层可对接飞桨、Transform
 将本仓库克隆到本地后安装其余依赖：
 
 ```bash
-# 推荐方式
-git clone https://github.com/PaddlePaddle/PaddleOCR
-
-# （可选）切换到指定分支
-git checkout release/3.5
-
-# 如果因为网络问题无法克隆成功，也可选择使用码云上的仓库：
-git clone https://gitee.com/paddlepaddle/PaddleOCR
-
-# 注：码云托管代码可能无法实时同步本 GitHub 项目更新，存在3~5天延时，请优先使用推荐方式。
+git clone --depth 1 https://github.com/PaddlePaddle/PaddleOCR.git
+cd PaddleOCR
 ```
+
+默认只下载当前分支的最新版本，适合训练和导出。需要完整提交历史时，在仓库目录执行 `git fetch --unshallow`。
+
+若需要指定版本，请在克隆时选择分支，例如：
+
+```bash
+git clone --depth 1 --branch release/3.5 https://github.com/PaddlePaddle/PaddleOCR.git PaddleOCR-3.5
+cd PaddleOCR-3.5
+```
+
+以上两种方式二选一。如果 GitHub 网络不可用，可将克隆地址替换为 `https://gitee.com/paddlepaddle/PaddleOCR.git`；镜像可能延迟 3–5 天。
 
 执行如下命令安装其余训练依赖：
 

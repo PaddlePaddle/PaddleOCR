@@ -22,7 +22,7 @@ letters and common punctuation, and the recognition of space characters is optim
 
 The multilingual models cover Latin, Arabic, Traditional Chinese, Korean, Japanese, etc.:
 
-![img](./images/japan_2-20240709081138234.jpg)
+![img](../images/multi_lang/japan_2.jpg)
 
 ![img](./images/french_0.jpg)
 
@@ -76,7 +76,7 @@ The supported languages are listed in the [table](#5-support-languages-and-abbre
 paddleocr --image_dir doc/imgs_en/254.jpg --lang=en
 ```
 
-![](./images/254-20240709081442260.jpg)
+![](../images/254.jpg)
 
 ![img](./images/img_02.jpg)
 

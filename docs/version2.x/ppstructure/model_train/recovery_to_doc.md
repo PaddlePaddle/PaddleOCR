@@ -27,7 +27,7 @@ comments: true
 
 下图分别展示了通过OCR技术，英文文档和中文文档版面恢复的效果：
 
-![img](./images/recovery-20240708091126891.jpg)
+![img](../images/recovery.jpg)
 
 ![img](./images/recovery_ch.jpg)
 

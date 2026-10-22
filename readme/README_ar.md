@@ -281,6 +281,8 @@
 
 ## 🎓 الاستشهاد
 
+إذا ساعدك PaddleOCR في أبحاثك، يُرجى الاستشهاد بورقتَي **PaddleOCR 3.0** و**PaddleOCR-VL**. للاطلاع على المزيد من الأوراق البحثية وملخصاتها ومراجع BibTeX، راجع [صفحة أبحاث PaddleOCR (بالإنجليزية)](../docs/papers.en.md).
+
 ```bibtex
 @misc{cui2025paddleocr30technicalreport,
       title={PaddleOCR 3.0 Technical Report},
@@ -300,15 +302,5 @@
       archivePrefix={arXiv},
       primaryClass={cs.CV},
       url={https://arxiv.org/abs/2510.14528},
-}
-
-@misc{cui2026paddleocrvl15multitask09bvlm,
-      title={PaddleOCR-VL-1.5: Towards a Multi-Task 0.9B VLM for Robust In-the-Wild Document Parsing},
-      author={Cheng Cui and Ting Sun and Suyin Liang and Tingquan Gao and Zelun Zhang and Jiaxuan Liu and Xueqing Wang and Changda Zhou and Hongen Liu and Manhui Lin and Yue Zhang and Yubo Zhang and Yi Liu and Dianhai Yu and Yanjun Ma},
-      year={2026},
-      eprint={2601.21957},
-      archivePrefix={arXiv},
-      primaryClass={cs.CV},
-      url={https://arxiv.org/abs/2601.21957},
 }
 ```

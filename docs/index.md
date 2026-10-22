@@ -12,6 +12,8 @@ hide:
   </p>
 </div>
 
+探索 PaddleOCR 六年来的论文、技术进展与引用信息：[论文展示](papers.md)。
+
 
 PaddleOCR自发布以来凭借学术前沿算法和产业落地实践，受到了产学研各方的喜爱，并被广泛应用于众多知名开源项目，例如：Umi-OCR、OmniParser、MinerU、RAGFlow等，已成为广大开发者心中的开源OCR领域的首选工具。2025年5月20日，飞桨团队发布**PaddleOCR 3.0**，全面适配[飞桨框架3.0](https://github.com/PaddlePaddle/Paddle)正式版，进一步**提升文字识别精度**，支持**多文字类型识别**和**手写体识别**，满足大模型应用对**复杂文档高精度解析**的旺盛需求，结合**文心大模型4.5**显著提升关键信息抽取精度，并新增**对昆仑芯、昇腾等国产硬件**的支持。
 
@@ -115,3 +117,30 @@ PaddleOCR OCEAN生态联盟面向全球OCR及文档智能上下游伙伴开放�
 如果您符合以上理念，欢迎通过以下方式与我们联系：
 
   * 发送邮件至 [paddleocr@baidu.com](mailto:paddleocr@baidu.com)，简要介绍您与PaddleOCR的合作情况或共建计划
+
+
+## 引用
+
+更多论文介绍与对应引用，请参阅[论文展示](papers.md)。
+
+```bibtex
+@misc{cui2025paddleocr30technicalreport,
+      title={PaddleOCR 3.0 Technical Report},
+      author={Cheng Cui and Ting Sun and Manhui Lin and Tingquan Gao and Yubo Zhang and Jiaxuan Liu and Xueqing Wang and Zelun Zhang and Changda Zhou and Hongen Liu and Yue Zhang and Wenyu Lv and Kui Huang and Yichao Zhang and Jing Zhang and Jun Zhang and Yi Liu and Dianhai Yu and Yanjun Ma},
+      year={2025},
+      eprint={2507.05595},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV},
+      url={https://arxiv.org/abs/2507.05595},
+}
+
+@misc{cui2025paddleocrvlboostingmultilingualdocument,
+      title={PaddleOCR-VL: Boosting Multilingual Document Parsing via a 0.9B Ultra-Compact Vision-Language Model},
+      author={Cheng Cui and Ting Sun and Suyin Liang and Tingquan Gao and Zelun Zhang and Jiaxuan Liu and Xueqing Wang and Changda Zhou and Hongen Liu and Manhui Lin and Yue Zhang and Yubo Zhang and Handong Zheng and Jing Zhang and Jun Zhang and Yi Liu and Dianhai Yu and Yanjun Ma},
+      year={2025},
+      eprint={2510.14528},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV},
+      url={https://arxiv.org/abs/2510.14528},
+}
+```

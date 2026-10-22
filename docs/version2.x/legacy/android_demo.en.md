@@ -80,7 +80,7 @@ The expected output for each mode is as follows:
 
 | **Detection + Classification + Recognition**                                   | **Detection + Recognition**                            | **Classification + Recognition**                        |
 |----------------------------------------------------------------------------------|--------------------------------------------------------|--------------------------------------------------------|
-| <img src="./images/run_det_cls_rec-20240806100407184.jpg" width="400">            | <img src="./images/run_det_rec.jpg" width="400">        | <img src="./images/run_cls_rec.jpg" width="400">        |
+| <img src="images/run_det_cls_rec.jpg" width="400">            | <img src="./images/run_det_rec.jpg" width="400">        | <img src="./images/run_cls_rec.jpg" width="400">        |
 
 | **Detection**                                                                  | **Recognition**                                        | **Classification**                                     |
 |--------------------------------------------------------------------------------|--------------------------------------------------------|--------------------------------------------------------|

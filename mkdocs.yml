@@ -99,6 +99,7 @@ plugins:
           link: /en/
           nav_translations:
             Home: Home
+            论文展示: Research Papers
             安装: Installation
             快速开始: Quick Start
             PP-OCRv6: PP-OCRv6
@@ -317,6 +318,7 @@ extra_css:
 
 nav:
   - Home: index.md
+  - 论文展示: papers.md
   - 安装: version3.x/installation.md
   - 快速开始: quick_start.md
   - PP-OCRv6:

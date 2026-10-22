@@ -13,6 +13,8 @@ hide:
   </p>
 </div>
 
+Explore six years of PaddleOCR papers, technical developments, and citations in [Research Papers](papers.en.md).
+
 Since its initial release, PaddleOCR has gained widespread acclaim across academia, industry, and research communities, thanks to its cutting-edge algorithms and proven performance in real-world applications. It’s already powering popular open-source projects like Umi-OCR, OmniParser, MinerU, and RAGFlow, making it the go-to OCR toolkit for developers worldwide.
 
 On January 29, 2026, PaddleOCR open-sourced the advanced and efficient document parsing model PaddleOCR-VL-1.5. PaddleOCR-VL-1.5 is a new iterative version of the PaddleOCR-VL series. Based on comprehensive optimization of the core capabilities of version 1.0, the model achieves 94.5% accuracy on the authoritative document parsing benchmark OmniDocBench v1.5, surpassing top global general-purpose large models and document parsing–specific models. PaddleOCR-VL-1.5 innovatively supports irregular-shaped bounding box localization of document elements, enabling excellent performance in real-world application scenarios such as scanning, skew, warping, screen-photography, and complex illumination, achieving comprehensive SOTA performance. In addition, the model further integrates seal recognition and spotting tasks, with key metrics continuing to lead mainstream models.
@@ -117,3 +119,30 @@ We will carefully evaluate every application, giving priority to partners who ha
 If you resonate with the above vision, we welcome you to reach out through the following channel:
 
 * Send an email to paddleocr@baidu.com with a brief introduction of your collaboration with PaddleOCR or your co-building plan.
+
+
+## Citation
+
+For additional papers and their citations, see [Research Papers](papers.en.md).
+
+```bibtex
+@misc{cui2025paddleocr30technicalreport,
+      title={PaddleOCR 3.0 Technical Report},
+      author={Cheng Cui and Ting Sun and Manhui Lin and Tingquan Gao and Yubo Zhang and Jiaxuan Liu and Xueqing Wang and Zelun Zhang and Changda Zhou and Hongen Liu and Yue Zhang and Wenyu Lv and Kui Huang and Yichao Zhang and Jing Zhang and Jun Zhang and Yi Liu and Dianhai Yu and Yanjun Ma},
+      year={2025},
+      eprint={2507.05595},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV},
+      url={https://arxiv.org/abs/2507.05595},
+}
+
+@misc{cui2025paddleocrvlboostingmultilingualdocument,
+      title={PaddleOCR-VL: Boosting Multilingual Document Parsing via a 0.9B Ultra-Compact Vision-Language Model},
+      author={Cheng Cui and Ting Sun and Suyin Liang and Tingquan Gao and Zelun Zhang and Jiaxuan Liu and Xueqing Wang and Changda Zhou and Hongen Liu and Manhui Lin and Yue Zhang and Yubo Zhang and Handong Zheng and Jing Zhang and Jun Zhang and Yi Liu and Dianhai Yu and Yanjun Ma},
+      year={2025},
+      eprint={2510.14528},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV},
+      url={https://arxiv.org/abs/2510.14528},
+}
+```
