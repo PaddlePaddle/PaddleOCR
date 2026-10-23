@@ -23,6 +23,8 @@ src = os.path.dirname(hits[0])
 
 if not os.path.isdir(WORK):
     sh(f"git clone --depth 1 -b {BRANCH} {REPO} {WORK}")
+else:
+    sh("git pull", cwd=WORK)
 
 sh("pip install -q paddlepaddle-gpu==3.0.0 -i https://www.paddlepaddle.org.cn/packages/stable/cu126/")
 sh("pip install -q -r requirements.txt", cwd=WORK)
