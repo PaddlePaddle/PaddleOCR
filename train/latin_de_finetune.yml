@@ -127,7 +127,6 @@ Eval:
         max_text_length: 1000
         gtc_encode: NRTRLabelEncode
     - RecResizeImg:
-        eval_mode: True
         image_shape: [3, 48, 320]
     - KeepKeys:
         keep_keys:
