@@ -88,7 +88,7 @@ PaddleOCR 由 [PMC](https://github.com/PaddlePaddle/PaddleOCR/issues/12122) 监�
 
 <img src="../images/en_2.png" width="600" />
 
-<img src="../images/en_3-0398013.png" width="600" />
+<img src="../images/en_3.png" width="600" />
 
 #### PP-OCRv3多语言模型
 

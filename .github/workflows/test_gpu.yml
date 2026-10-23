@@ -30,13 +30,46 @@ jobs:
       - id: detect
         uses: ./.github/actions/detect-docs-only
 
-  test-pr-gpu-impl:
-    runs-on: [self-hosted, GPU-2Card-OCR]
+  prepare-paddlex:
+    runs-on: ubuntu-latest
     needs: detect-changes
     if: needs.detect-changes.outputs.docs_only != 'true'
     steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ env.COMMIT_ID }}
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.10"
+      - name: Build PaddleX wheel
+        run: |
+          PADDLEX_SERIES=$(grep -oE 'paddlex\[[^]]+\]>=[0-9]+\.[0-9]+' pyproject.toml | head -1 | grep -oE '[0-9]+\.[0-9]+') || PADDLEX_SERIES=""
+          if [ -z "$PADDLEX_SERIES" ]; then
+            echo "Failed to determine PaddleX version requirement from pyproject.toml" >&2
+            exit 1
+          fi
+          PADDLEX_BRANCH="release/${PADDLEX_SERIES}"
+          echo "Building PaddleX from branch: ${PADDLEX_BRANCH}"
+          python -m pip wheel --no-deps --wheel-dir paddlex-wheel "paddlex@git+https://github.com/PaddlePaddle/PaddleX.git@${PADDLEX_BRANCH}"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: paddlex-wheel
+          path: paddlex-wheel/*.whl
+          if-no-files-found: error
+          overwrite: true
+
+  test-pr-gpu-impl:
+    runs-on: [self-hosted, GPU-2Card-OCR]
+    needs: [detect-changes, prepare-paddlex]
+    if: needs.detect-changes.outputs.docs_only != 'true'
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: paddlex-wheel
+          path: ${{ runner.temp }}/paddlex-wheel-${{ github.run_id }}-${{ github.run_attempt }}
       - name: run test
         env:
+          PADDLEX_WHEEL_DIR: ${{ runner.temp }}/paddlex-wheel-${{ github.run_id }}-${{ github.run_attempt }}
           py_version: "3.10"
           paddle_whl: https://paddle-qa.bj.bcebos.com/paddle-pipeline/Develop-GpuSome-LinuxCentos-Gcc82-Cuda118-Cudnn86-Trt85-Py310-CINN-Compile/latest/paddlepaddle_gpu-0.0.0-cp310-cp310-linux_x86_64.whl
           docker_image: ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddle:latest-dev-cuda11.8-cudnn8.6-trt8.5-gcc82
@@ -56,9 +89,11 @@ jobs:
           docker run --gpus all --rm -i --name PaddleOCR_CI_$RANDOM \
             --shm-size=128g --net=host \
             -v $PWD:/workspace -w /workspace  \
+            -v "${PADDLEX_WHEEL_DIR}:/paddlex-wheel:ro" \
             -e "py_version=${py_version}" \
             -e "paddle_whl=${paddle_whl}" \
             ${docker_image} /bin/bash -c '
+            set -e
             ldconfig;
             nvidia-smi
             df -hl
@@ -78,14 +113,20 @@ jobs:
             python -m pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
             python -m pip install pytest
             if [ -f requirements.txt ]; then python -m pip install -r requirements.txt; fi
-            PADDLEX_SERIES=$(grep -oE "paddlex\[[^]]+\]>=[0-9]+\.[0-9]+" pyproject.toml | head -1 | grep -oE "[0-9]+\.[0-9]+")
-            if [ -z "$PADDLEX_SERIES" ]; then
-              echo "Failed to determine PaddleX version requirement from pyproject.toml" >&2
-              exit 1
-            fi
-            PADDLEX_BRANCH="release/${PADDLEX_SERIES}"
-            echo "Installing PaddleX from branch: ${PADDLEX_BRANCH}"
-            python -m pip install -e ".[all]" "paddlex@git+https://github.com/PaddlePaddle/PaddleX.git@${PADDLEX_BRANCH}"
+            echo "Installing PaddleX from the prepared wheel"
+            for attempt in 1 2 3; do
+              if python -m pip install -e ".[all]" /paddlex-wheel/*.whl; then
+                break
+              else
+                install_status=$?
+              fi
+              if [ "$attempt" -eq 3 ]; then
+                echo "PaddleX installation failed after ${attempt} attempts." >&2
+                exit "$install_status"
+              fi
+              echo "PaddleX installation attempt ${attempt} failed; retrying in $((attempt * 10)) seconds." >&2
+              sleep "$((attempt * 10))"
+            done
             python -c "import paddlex; print(f\"Installed paddlex version: {paddlex.__version__}\")"
             python -m pytest --verbose tests/
             '

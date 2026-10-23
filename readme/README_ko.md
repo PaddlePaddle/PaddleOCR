@@ -280,6 +280,8 @@ PaddleOCR가 오늘날의 모습을 갖추기까지 놀라운 커뮤니티의 �
 
 ## 🎓 인용
 
+PaddleOCR가 연구에 도움이 되었다면 **PaddleOCR 3.0**과 **PaddleOCR-VL**을 인용해 주세요. 다른 논문, 연구 소개 및 BibTeX는 [PaddleOCR 논문 목록(영문)](../docs/papers.en.md)에서 확인할 수 있습니다.
+
 ```bibtex
 @misc{cui2025paddleocr30technicalreport,
       title={PaddleOCR 3.0 Technical Report},
@@ -299,15 +301,5 @@ PaddleOCR가 오늘날의 모습을 갖추기까지 놀라운 커뮤니티의 �
       archivePrefix={arXiv},
       primaryClass={cs.CV},
       url={https://arxiv.org/abs/2510.14528},
-}
-
-@misc{cui2026paddleocrvl15multitask09bvlm,
-      title={PaddleOCR-VL-1.5: Towards a Multi-Task 0.9B VLM for Robust In-the-Wild Document Parsing},
-      author={Cheng Cui and Ting Sun and Suyin Liang and Tingquan Gao and Zelun Zhang and Jiaxuan Liu and Xueqing Wang and Changda Zhou and Hongen Liu and Manhui Lin and Yue Zhang and Yubo Zhang and Yi Liu and Dianhai Yu and Yanjun Ma},
-      year={2026},
-      eprint={2601.21957},
-      archivePrefix={arXiv},
-      primaryClass={cs.CV},
-      url={https://arxiv.org/abs/2601.21957},
 }
 ```

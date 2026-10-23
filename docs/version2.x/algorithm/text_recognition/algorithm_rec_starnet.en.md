@@ -66,7 +66,7 @@ STAR-Net text recognition model inference, you can execute the following command
 python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words_en/word_336.png" --rec_model_dir="./inference/rec_starnet/" --rec_image_shape="3, 32, 100" --rec_char_dict_path="./ppocr/utils/ic15_dict.txt"
 ```
 
-![img](./images/word_336.png)
+![img](../../legacy/images/word_336.png)
 
 The inference results are as follows:
 

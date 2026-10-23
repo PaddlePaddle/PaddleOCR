@@ -104,7 +104,7 @@ python gen_label.py --mode="rec" --input_path="{path/of/origin/label}" --output_
 ```
 
 数据样式格式如下，(a)为原始图片,(b)为每张图片对应的 Ground Truth 文本文件：
-![img](./images/icdar_rec.png)
+![img](../../../datasets/images/icdar_rec.png)
 
 - 多语言数据集
 
@@ -495,7 +495,7 @@ python3 tools/infer_rec.py -c configs/rec/PP-OCRv3/en_PP-OCRv3_mobile_rec.yml -o
 
 预测图片：
 
-![img](./images/word_1-20240704092705543.png)
+![img](../../legacy/images/word_1.png)
 
 得到输入图像的预测结果：
 
@@ -514,7 +514,7 @@ python3 tools/infer_rec.py -c configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v
 
 预测图片：
 
-![img](./images/word_1-20240704092713071.jpg)
+![img](../../legacy/images/word_1.jpg)
 
 得到输入图像的预测结果：
 

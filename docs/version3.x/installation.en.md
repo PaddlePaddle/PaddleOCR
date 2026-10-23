@@ -59,18 +59,20 @@ To train models or export models, install the training-related dependencies sepa
 Clone this repository locally, then install the remaining dependencies:
 
 ```bash
-# Recommended method
-git clone https://github.com/PaddlePaddle/PaddleOCR
-
-# (Optional) Switch to a specific branch
-git checkout release/3.5
-
-# If cloning fails because of network issues, you can also use the Gitee repository:
-git clone https://gitee.com/paddlepaddle/PaddleOCR
-
-# Note: The code hosted on Gitee may lag behind the GitHub repository by 3 to 5 days.
-# Please prioritize the recommended method.
+git clone --depth 1 https://github.com/PaddlePaddle/PaddleOCR.git
+cd PaddleOCR
 ```
+
+Download only the latest revision of the default branch for training and export. To retrieve its full commit history later, run `git fetch --unshallow` inside the repository.
+
+To use a specific version, select the branch when cloning, for example:
+
+```bash
+git clone --depth 1 --branch release/3.5 https://github.com/PaddlePaddle/PaddleOCR.git PaddleOCR-3.5
+cd PaddleOCR-3.5
+```
+
+Choose one of these two alternatives. If GitHub is unavailable, replace the clone URL with `https://gitee.com/paddlepaddle/PaddleOCR.git`; the mirror may lag by 3–5 days.
 
 Run the following command to install the remaining training dependencies:
 

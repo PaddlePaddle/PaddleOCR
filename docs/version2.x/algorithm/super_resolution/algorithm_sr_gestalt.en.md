@@ -76,7 +76,7 @@ python3 tools/infer/predict_sr.py --sr_model_dir=./inference/sr_out --image_dir=
 
 After executing the command, the super-resolution result of the above image is as follows:
 
-![img](./images/sr_word_52-20240704093810101.png)
+![img](images/sr_word_52.png)
 
 ### 4.2 C++ Inference
 
