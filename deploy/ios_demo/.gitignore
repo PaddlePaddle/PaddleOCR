@@ -1,0 +1,21 @@
+# CocoaPods
+Pods/
+
+# Xcode
+PaddleOCRDemo.xcworkspace/xcuserdata/
+PaddleOCRDemo.xcodeproj/xcuserdata/
+PaddleOCRDemo.xcodeproj/project.xcworkspace/xcuserdata/
+*.xcuserstate
+DerivedData/
+build/
+
+# fetch_ios_demo_models.sh download cache
+.fetch_ios_demo_models_work/
+
+# Models — ignore all files under Models/; track only `.gitkeep` so det/, rec/, … stay in the tree
+PaddleOCRDemo/Models/**
+!PaddleOCRDemo/Models/*/
+!PaddleOCRDemo/Models/*/.gitkeep
+
+# Local validation reports
+out/

@@ -20,7 +20,7 @@ PaddleOCR 旨在打造一套丰富、领先、且实用的OCR工具库，不仅�
 
 小语种模型覆盖了拉丁语系、阿拉伯语系、中文繁体、韩语、日语等等：
 
-![img](./images/japan_2-20240709081138234.jpg)
+![img](../images/multi_lang/japan_2.jpg)
 
 ![img](./images/french_0.jpg)
 
@@ -75,7 +75,7 @@ Paddleocr目前支持80个语种，可以通过修改--lang参数进行切换，
 paddleocr --image_dir doc/imgs_en/254.jpg --lang=en
 ```
 
-![](./images/254-20240709081442260.jpg)
+![](../images/254.jpg)
 
 ![img](./images/img_02.jpg)
 

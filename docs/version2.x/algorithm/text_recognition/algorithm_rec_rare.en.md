@@ -15,8 +15,8 @@ Using MJSynth and SynthText two text recognition datasets for training, and eval
 
 |Models|Backbone Networks|Configuration Files|Avg Accuracy|Download Links|
 | --- | --- | --- | --- | --- |
-|RARE|Resnet34_vd|[configs/rec/rec_r34_vd_tps_bilstm_att.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/rec_r34_vd_tps_bilstm_att.yml)|83.60%|[training model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/rec_r34_vd_tps_bilstm_att_v2.0_train.tar)|
-|RARE|MobileNetV3|[configs/rec/rec_mv3_tps_bilstm_att.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/rec_mv3_tps_bilstm_att.yml)|82.50%|[trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/rec_mv3_tps_bilstm_att_v2.0_train.tar)|
+|RARE|Resnet34_vd|[configs/rec/rec_r34_vd_tps_bilstm_att.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/{{PADDLEOCR_GITHUB_REF}}/configs/rec/rec_r34_vd_tps_bilstm_att.yml)|83.60%|[training model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/rec_r34_vd_tps_bilstm_att_v2.0_train.tar)|
+|RARE|MobileNetV3|[configs/rec/rec_mv3_tps_bilstm_att.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/{{PADDLEOCR_GITHUB_REF}}/configs/rec/rec_mv3_tps_bilstm_att.yml)|82.50%|[trained model](https://paddleocr.bj.bcebos.com/dygraph_v2.0/en/rec_mv3_tps_bilstm_att_v2.0_train.tar)|
 
 ## 2. Environment
 
@@ -66,7 +66,7 @@ python3 tools/infer/predict_rec.py --image_dir="doc/imgs_words/en/word_1.png" --
 
 The inference results are as follows:
 
-![img](./images/word_1-20240704184113913.png)
+![img](../../legacy/images/word_1.png)
 
 ````text linenums="1"
 Predicts of doc/imgs_words/en/word_1.png:('joint ', 0.9999969601631165)

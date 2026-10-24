@@ -104,7 +104,7 @@ Predicts of ./doc/imgs_words_en/word_10.png:('pain', 0.9999998807907104)
 
 ### 4.2 C++推理部署
 
-准备好推理模型后，参考[cpp infer](https://github.com/PaddlePaddle/PaddleOCR/tree/main/deploy/cpp_infer)教程进行操作即可。
+准备好推理模型后，参考[cpp infer](https://github.com/PaddlePaddle/PaddleOCR/tree/{{PADDLEOCR_GITHUB_REF}}/deploy/cpp_infer)教程进行操作即可。
 
 ### 4.3 Serving服务化部署
 
@@ -112,7 +112,7 @@ Predicts of ./doc/imgs_words_en/word_10.png:('pain', 0.9999998807907104)
 
 ### 4.4 更多推理部署
 
-- Paddle2ONNX推理：准备好推理模型后，参考[paddle2onnx](https://github.com/PaddlePaddle/PaddleOCR/tree/main/deploy/paddle2onnx)教程操作。
+- Paddle2ONNX推理：准备好推理模型后，参考[paddle2onnx](https://github.com/PaddlePaddle/PaddleOCR/tree/{{PADDLEOCR_GITHUB_REF}}/deploy/paddle2onnx)教程操作。
 
 ## 5. FAQ
 

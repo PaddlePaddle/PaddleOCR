@@ -9,7 +9,7 @@ hide:
  <img src="https://github.com/PaddlePaddle/PaddleOCR/releases/download/v2.9.1/PaddleOCR_log.png" align="middle" width = "600"/>
   <p align="center">
       <a href="https://discord.gg/z9xaRVjdbD"><img src="https://img.shields.io/badge/Chat-on%20discord-7289da.svg?sanitize=true" alt="Chat"></a>
-      <a href="https://github.com/PaddlePaddle/PaddleOCR/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-Apache%202-dfd.svg"></a>
+      <a href="https://github.com/PaddlePaddle/PaddleOCR/blob/{{PADDLEOCR_GITHUB_REF}}/LICENSE"><img src="https://img.shields.io/badge/license-Apache%202-dfd.svg"></a>
       <a href="https://github.com/PaddlePaddle/PaddleOCR/releases"><img src="https://img.shields.io/github/v/release/PaddlePaddle/PaddleOCR?color=ffa"></a>
       <a href=""><img src="https://img.shields.io/badge/python-3.7+-aff.svg"></a>
       <a href=""><img src="https://img.shields.io/badge/os-linux%2C%20win%2C%20mac-pink.svg"></a>
@@ -157,24 +157,24 @@ paddleocr --image_dir /your/test/image.jpg --lang=hi
 <details open>
 <summary>PP-OCRv3 बहुभाषी मॉडल</summary>
 <div align="center">
-    <img src="../version2.x/ppocr/images/PP-OCRv3/multi_lang/japan_2.jpg" width="800">
-    <img src="../version2.x/ppocr/images/PP-OCRv3/multi_lang/korean_1.jpg" width="800">
+    <img src="../images/japan_2.jpg" width="800">
+    <img src="../images/korean_1.jpg" width="800">
 </div>
 </details>
 
 <details open>
 <summary>PP-OCRv3 अंग्रेजी मॉडल</summary>
 <div align="center">
-    <img src="../version2.x/ppocr/images/PP-OCRv3/en/en_1.png" width="800">
-    <img src="../version2.x/ppocr/images/PP-OCRv3/en/en_2.png" width="800">
+    <img src="../images/en_1.png" width="800">
+    <img src="../images/en_2.png" width="800">
 </div>
 </details>
 <details open>
 <summary>PP-OCRv3 चीनी मॉडल</summary>
 <div align="center">
-    <img src="../version2.x/ppocr/images/PP-OCRv3/ch/PP-OCRv3-pic001.jpg" width="800">
-    <img src="../version2.x/ppocr/images/PP-OCRv3/ch/PP-OCRv3-pic002.jpg" width="800">
-    <img src="../version2.x/ppocr/images/PP-OCRv3/ch/PP-OCRv3-pic003.jpg" width="800">
+    <img src="../images/PP-OCRv3-pic001.jpg" width="800">
+    <img src="../images/PP-OCRv3-pic002.jpg" width="800">
+    <img src="../images/PP-OCRv3-pic003.jpg" width="800">
 </div>
 </details>
 
@@ -182,7 +182,7 @@ paddleocr --image_dir /your/test/image.jpg --lang=hi
 <summary>PP-Structurev2</summary>
 1. लेआउट एनालाइस + टेबल रिकोगनाइजेशन
 <div align="center">
-    <img src="../version2.x/ppstructure/images/ppstructure.gif" width="800">
+    <img src="../images/ppstructure-20240708082235651.gif" width="800">
 </div>
 2. SER (सिमेंटिक एंटिटी रिकोगनाइजेशन)
 <div align="center">
@@ -208,4 +208,4 @@ paddleocr --image_dir /your/test/image.jpg --lang=hi
 
 ## 📄 लाइसेंस
 
-इस प्रोजेक्ट को इन परियोजना के तहत जारी किया गया है <a href="https://github.com/PaddlePaddle/PaddleOCR/blob/master/LICENSE">Apache 2.0 license</a>
+इस प्रोजेक्ट को इन परियोजना के तहत जारी किया गया है <a href="https://github.com/PaddlePaddle/PaddleOCR/blob/{{PADDLEOCR_GITHUB_REF}}/LICENSE">Apache 2.0 license</a>

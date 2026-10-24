@@ -6,21 +6,35 @@ hide:
 
 ### 安装
 
-#### 1. 安装PaddlePaddle
+#### 1. 安装推理引擎
 
-CPU端安装：
+PaddleOCR 支持通过统一的推理引擎配置选择底层运行时，目前可使用 PaddlePaddle 或 Transformers。
 
-```bash
-python -m pip install paddlepaddle==3.2.0 -i https://www.paddlepaddle.org.cn/packages/stable/cpu/
-```
+=== "PaddlePaddle"
 
-GPU端安装，由于GPU端需要根据具体CUDA版本来对应安装使用，以下仅以Linux平台，pip安装英伟达GPU， CUDA 11.8为例，其他平台，请参考[飞桨官网安装文档](https://www.paddlepaddle.org.cn/install/quick)中的说明进行操作。
+    CPU端安装：
 
-```bash
-python -m pip install paddlepaddle-gpu==3.2.0 -i https://www.paddlepaddle.org.cn/packages/stable/cu118/
-```
+    ```bash
+    python -m pip install paddlepaddle==3.2.0 -i https://www.paddlepaddle.org.cn/packages/stable/cpu/
+    ```
 
-**请注意，PaddleOCR 3.x版本 依赖于 `3.0` 及以上版本的飞桨框架。**
+    GPU端安装，由于GPU端需要根据具体CUDA版本来对应安装使用，以下仅以Linux平台，pip安装英伟达GPU， CUDA 11.8为例，其他平台，请参考[飞桨官网安装文档](https://www.paddlepaddle.org.cn/install/quick)中的说明进行操作。
+
+    ```bash
+    python -m pip install paddlepaddle-gpu==3.2.0 -i https://www.paddlepaddle.org.cn/packages/stable/cu118/
+    ```
+
+    **请注意，使用 PaddlePaddle 推理时，PaddleOCR 3.x 版本依赖于 `3.0` 及以上版本的 PaddlePaddle。**
+
+=== "Transformers"
+
+    使用 Transformers 推理时，需要安装 Hugging Face Transformers：
+
+    ```bash
+    python -m pip install "transformers>=5.8.0"
+    ```
+
+    通常还需要安装 Transformers 所使用的底层推理框架，详情可参考 [Transformers 官方安装文档](https://huggingface.co/docs/transformers/installation)。
 
 #### 2. 安装`paddleocr`
 
@@ -34,49 +48,100 @@ PaddleOCR 也支持根据需要安装部分功能，详情请参考 [PaddleOCR �
 
 ### 命令行使用
 
-=== "PP-OCRv5"
+=== "PP-OCRv6"
 
     ```bash linenums="1"
-    paddleocr ocr -i ./general_ocr_002.png --use_doc_orientation_classify False --use_doc_unwarping False --use_textline_orientation False
+    # 使用 PaddlePaddle 进行推理
+    paddleocr ocr -i ./general_ocr_002.png \
+        --use_doc_orientation_classify False \
+        --use_doc_unwarping False \
+        --use_textline_orientation False \
+        --engine paddle
     ```
 
-=== "PP-OCRv5文本检测模块"
-
     ```bash linenums="1"
-    paddleocr text_detection -i ./general_ocr_001.png 
+    # 使用 Transformers 进行推理
+    paddleocr ocr -i ./general_ocr_002.png \
+        --use_doc_orientation_classify False \
+        --use_doc_unwarping False \
+        --use_textline_orientation False \
+        --engine transformers
     ```
 
-=== "PP-OCRv5文本识别模块"
+=== "PP-OCRv6文本检测模块"
 
     ```bash linenums="1"
-    paddleocr text_recognition -i ./general_ocr_rec_001.png
+    # 使用 PaddlePaddle 进行推理
+    paddleocr text_detection -i ./general_ocr_001.png --engine paddle
+    ```
+
+    ```bash linenums="1"
+    # 使用 Transformers 进行推理
+    paddleocr text_detection -i ./general_ocr_001.png --engine transformers
+    ```
+
+=== "PP-OCRv6文本识别模块"
+
+    ```bash linenums="1"
+    # 使用 PaddlePaddle 进行推理
+    paddleocr text_recognition -i ./general_ocr_rec_001.png --engine paddle
+    ```
+
+    ```bash linenums="1"
+    # 使用 Transformers 进行推理
+    paddleocr text_recognition -i ./general_ocr_rec_001.png --engine transformers
     ```
 
 === "PP-StructureV3"
 
     ```bash linenums="1"
-    paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --use_doc_orientation_classify False --use_doc_unwarping False
+    # 使用 PaddlePaddle 进行推理
+    paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png \
+        --use_doc_orientation_classify False \
+        --use_doc_unwarping False \
+        --engine paddle
+    ```
+
+    ```bash linenums="1"
+    # 使用 Transformers 进行推理
+    # 目前部分模型尚在支持中，需关闭公式识别功能并更换无线表格结构识别模型
+    paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png \
+        --engine transformers \
+        --use_formula_recognition False \
+        --wireless_table_structure_recognition_model_name SLANeXt_wireless
     ```
 
 ### Python脚本使用
 
-=== "PP-OCRv5"
+=== "PP-OCRv6"
 
     ```python linenums="1"
+    # 使用 PaddlePaddle 进行推理
     from paddleocr import PaddleOCR
 
     ocr = PaddleOCR(
-        use_doc_orientation_classify=False, 
-        use_doc_unwarping=False, 
-        use_textline_orientation=False) # 文本检测+文本识别
-    # ocr = PaddleOCR(use_doc_orientation_classify=True, use_doc_unwarping=True) # 文本图像预处理+文本检测+方向分类+文本识别
-    # ocr = PaddleOCR(use_doc_orientation_classify=False, use_doc_unwarping=False) # 文本检测+文本行方向分类+文本识别
-    # ocr = PaddleOCR(
-    #     text_detection_model_name="PP-OCRv5_mobile_det",
-    #     text_recognition_model_name="PP-OCRv5_mobile_rec",
-    #     use_doc_orientation_classify=False,
-    #     use_doc_unwarping=False,
-    #     use_textline_orientation=False) # 更换 PP-OCRv5_mobile 模型
+        use_doc_orientation_classify=False,
+        use_doc_unwarping=False,
+        use_textline_orientation=False,
+        engine="paddle",
+    )
+    result = ocr.predict("./general_ocr_002.png")
+    for res in result:
+        res.print()
+        res.save_to_img("output")
+        res.save_to_json("output")
+    ```
+
+    ```python linenums="1"
+    # 使用 Transformers 进行推理
+    from paddleocr import PaddleOCR
+
+    ocr = PaddleOCR(
+        use_doc_orientation_classify=False,
+        use_doc_unwarping=False,
+        use_textline_orientation=False,
+        engine="transformers",
+    )
     result = ocr.predict("./general_ocr_002.png")
     for res in result:
         res.print()
@@ -108,12 +173,25 @@ PaddleOCR 也支持根据需要安装部分功能，详情请参考 [PaddleOCR �
         [ 99, ..., 479]], dtype=int16)}}
     ```
 
-=== "PP-OCRv5文本检测模块"
+=== "PP-OCRv6文本检测模块"
 
     ```python linenums="1"
+    # 使用 PaddlePaddle 进行推理
     from paddleocr import TextDetection
 
-    model = TextDetection()
+    model = TextDetection(engine="paddle")
+    output = model.predict("general_ocr_001.png")
+    for res in output:
+        res.print()
+        res.save_to_img(save_path="./output/")
+        res.save_to_json(save_path="./output/res.json")
+    ```
+
+    ```python linenums="1"
+    # 使用 Transformers 进行推理
+    from paddleocr import TextDetection
+
+    model = TextDetection(engine="transformers")
     output = model.predict("general_ocr_001.png")
     for res in output:
         res.print()
@@ -133,12 +211,25 @@ PaddleOCR 也支持根据需要安装部分功能，详情请参考 [PaddleOCR �
         [ 36, 456]]], dtype=int16), 'dt_scores': [0.8562385635646694, 0.8818259002228059, 0.8406072284043453, 0.8855339313157491]}}
     ```
 
-=== "PP-OCRv5文本识别模块"
+=== "PP-OCRv6文本识别模块"
 
     ```python linenums="1"
+    # 使用 PaddlePaddle 进行推理
     from paddleocr import TextRecognition
 
-    model = TextRecognition()
+    model = TextRecognition(engine="paddle")
+    output = model.predict(input="general_ocr_rec_001.png")
+    for res in output:
+        res.print()
+        res.save_to_img(save_path="./output/")
+        res.save_to_json(save_path="./output/res.json")
+    ```
+
+    ```python linenums="1"
+    # 使用 Transformers 进行推理
+    from paddleocr import TextRecognition
+
+    model = TextRecognition(engine="transformers")
     output = model.predict(input="general_ocr_rec_001.png")
     for res in output:
         res.print()
@@ -155,13 +246,16 @@ PaddleOCR 也支持根据需要安装部分功能，详情请参考 [PaddleOCR �
 === "PP-StructureV3"
 
     ```python linenums="1"
+    # 使用 PaddlePaddle 进行推理
     from paddleocr import PPStructureV3
 
     pipeline = PPStructureV3(
         use_doc_orientation_classify=False,
-        use_doc_unwarping=False)
+        use_doc_unwarping=False,
+        engine="paddle",
+    )
     output = pipeline.predict(
-        input="./pp_structure_v3_demo.png",          
+        input="./pp_structure_v3_demo.png",
     )
     for res in output:
         res.print()
@@ -169,7 +263,26 @@ PaddleOCR 也支持根据需要安装部分功能，详情请参考 [PaddleOCR �
         res.save_to_markdown(save_path="output")
     ```
 
-    输出示例：
+    ```python linenums="1"
+    # 使用 Transformers 进行推理
+    # 目前部分模型尚在支持中，需关闭公式识别功能并更换无线表格结构识别模型
+    from paddleocr import PPStructureV3
+
+    pipeline = PPStructureV3(
+        use_doc_orientation_classify=False,
+        use_doc_unwarping=False,
+        use_formula_recognition=False,
+        wireless_table_structure_recognition_model_name="SLANeXt_wireless",
+        engine="transformers",
+    )
+    output = pipeline.predict(input="./pp_structure_v3_demo.png")
+    for res in output:
+        res.print()
+        res.save_to_json(save_path="output")
+        res.save_to_markdown(save_path="output")
+    ```
+
+    PaddlePaddle 推理输出示例：
 
     ```bash
     {'res': {'input_path': './pp_structure_v3_demo.png', 'page_index': None, 'model_settings': {'use_doc_preprocessor': False, 'use_seal_recognition': True, 'use_table_recognition': True, 'use_formula_recognition': True, 'use_chart_recognition': False, 'use_region_detection': True}, 'layout_det_res': {'input_path': None, 'page_index': None, 'boxes': [{'cls_id': 1, 'label': 'image', 'score': 0.9864752888679504, 'coordinate': [774.821, 201.05177, 1502.1008, 685.7733]}, {'cls_id': 2, 'label': 'text', 'score': 0.9859225749969482, 'coordinate': [769.8655, 776.2446, 1121.5986, 1058.417]}, {'cls_id': 2, 'label': 'text', 'score': 0.9857110381126404, 'coordinate': [1151.98, 1112.5356, 1502.7852, 1346.3569]}, {'cls_id': 2, 'label': 'text', 'score': 0.9847239255905151, 'coordinate': [389.0322, 1136.3547, 740.2322, 1345.928]}, {'cls_id': 2, 'label': 'text', 'score': 0.9842492938041687, 'coordinate': [1152.1504, 800.1625, 1502.1265, 986.1522]}, {'cls_id': 2, 'label': 'text', 'score': 0.9840831160545349, 'coordinate': [9.158066, 848.8696, 358.5725, 1057.832]}, {'cls_id': 2, 'label': 'text', 'score': 0.9802583456039429, 'coordinate': [9.335953, 201.10046, 358.31543, 338.78876]}, {'cls_id': 2, 'label': 'text', 'score': 0.9801402688026428, 'coordinate': [389.1556, 297.4113, 740.07556, 435.41647]}, {'cls_id': 2, 'label': 'text', 'score': 0.9793564081192017, 'coordinate': [389.18976, 752.0959, 740.0832, 889.88043]}, {'cls_id': 2, 'label': 'text', 'score': 0.9793409109115601, 'coordinate': [389.02496, 896.34143, 740.7431, 1033.9465]}, {'cls_id': 2, 'label': 'text', 'score': 0.9776486754417419, 'coordinate': [8.950775, 1184.7842, 358.75067, 1297.8755]}, {'cls_id': 2, 'label': 'text', 'score': 0.9773538708686829, 'coordinate': [770.7178, 1064.5714, 1121.2249, 1177.9928]}, {'cls_id': 2, 'label': 'text', 'score': 0.9773064255714417, 'coordinate': [389.38086, 609.7071, 740.0553, 745.3206]}, {'cls_id': 2, 'label': 'text', 'score': 0.9765821099281311, 'coordinate': [1152.0112, 992.296, 1502.4927, 1106.1166]}, {'cls_id': 2, 'label': 'text', 'score': 0.9761461019515991, 'coordinate': [9.46727, 536.993, 358.2047, 651.32025]}, {'cls_id': 2, 'label': 'text', 'score': 0.975399911403656, 'coordinate': [9.353531, 1064.3059, 358.45312, 1177.8347]}, {'cls_id': 2, 'label': 'text', 'score': 0.9730532169342041, 'coordinate': [9.932312, 345.36237, 358.03476, 435.1646]}, {'cls_id': 2, 'label': 'text', 'score': 0.9722575545310974, 'coordinate': [388.91736, 200.93637, 740.00793, 290.80692]}, {'cls_id': 2, 'label': 'text', 'score': 0.9710633158683777, 'coordinate': [389.39496, 1040.3186, 740.0091, 1129.7168]}, {'cls_id': 2, 'label': 'text', 'score': 0.9696939587593079, 'coordinate': [9.6145935, 658.1123, 359.06088, 770.0288]}, {'cls_id': 2, 'label': 'text', 'score': 0.9664146900177002, 'coordinate': [770.235, 1280.4562, 1122.0927, 1346.4742]}, {'cls_id': 2, 'label': 'text', 'score': 0.9597565531730652, 'coordinate': [389.66678, 537.5609, 740.06274, 603.17725]}, {'cls_id': 2, 'label': 'text', 'score': 0.9594324827194214, 'coordinate': [10.162949, 776.86414, 359.08307, 842.1771]}, {'cls_id': 2, 'label': 'text', 'score': 0.9484634399414062, 'coordinate': [10.402863, 1304.7743, 358.9441, 1346.3749]}, {'cls_id': 0, 'label': 'paragraph_title', 'score': 0.9476125240325928, 'coordinate': [28.159409, 456.7627, 339.5631, 514.9665]}, {'cls_id': 0, 'label': 'paragraph_title', 'score': 0.9427680969238281, 'coordinate': [790.6992, 1200.3663, 1102.3799, 1259.1647]}, {'cls_id': 0, 'label': 'paragraph_title', 'score': 0.9424256682395935, 'coordinate': [409.02832, 456.6831, 718.8154, 515.5757]}, {'cls_id': 10, 'label': 'doc_title', 'score': 0.9376171827316284, 'coordinate': [133.77905, 36.8844, 1379.6667, 123.46869]}, {'cls_id': 2, 'label': 'text', 'score': 0.9020252823829651, 'coordinate': [584.9165, 159.1416, 927.22876, 179.01605]}, {'cls_id': 2, 'label': 'text', 'score': 0.895164430141449, 'coordinate': [1154.3364, 776.74646, 1331.8564, 794.2301]}, {'cls_id': 6, 'label': 'figure_title', 'score': 0.7892374396324158, 'coordinate': [808.9641, 704.2555, 1484.0623, 747.2296]}]}, 'overall_ocr_res': {'input_path': None, 'page_index': None, 'model_settings': {'use_doc_preprocessor': False, 'use_textline_orientation': False}, 'dt_polys': array([[[ 129,   42],

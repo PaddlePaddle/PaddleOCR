@@ -1,0 +1,55 @@
+name: Detect Docs-Only Change
+description: >
+  Output docs_only=true if every changed file in the current pull_request
+  matches docs/**, **/*.md, or .github/**. On push or workflow_dispatch,
+  always output docs_only=false.
+outputs:
+  docs_only:
+    description: "true if change is docs-only, otherwise false"
+    value: ${{ steps.compute.outputs.docs_only }}
+runs:
+  using: composite
+  steps:
+    - id: compute
+      shell: bash
+      env:
+        GITHUB_EVENT_NAME: ${{ github.event_name }}
+        GITHUB_BASE_REF: ${{ github.base_ref }}
+      run: |
+        set -euo pipefail
+        if [ "${GITHUB_EVENT_NAME}" != "pull_request" ]; then
+          echo "docs_only=false" >> "$GITHUB_OUTPUT"
+          exit 0
+        fi
+        git fetch origin "${GITHUB_BASE_REF}" --depth=1 >/dev/null 2>&1 || true
+        CHANGED_FILES="$(git diff --name-only "origin/${GITHUB_BASE_REF}...HEAD")"
+        # >>> matcher-begin
+        shopt -s globstar extglob nullglob
+        is_docs_only() {
+          local files="$1"
+          if [ -z "$files" ]; then
+            echo "false"; return 0
+          fi
+          while IFS= read -r f; do
+            [ -z "$f" ] && continue
+            case "$f" in
+              docs/*) ;;
+              .github/*) ;;
+              *.md) ;;
+              *)
+                # also accept nested */**/*.md via case glob
+                case "$f" in
+                  */*.md) ;;
+                  *) echo "false"; return 0 ;;
+                esac
+                ;;
+            esac
+          done <<< "$files"
+          echo "true"
+        }
+        result="$(is_docs_only "${CHANGED_FILES}")"
+        if [ -n "${GITHUB_OUTPUT:-}" ] && [ "${GITHUB_OUTPUT}" != "/dev/null" ]; then
+          echo "docs_only=${result}" >> "$GITHUB_OUTPUT"
+        fi
+        echo "${result}"
+        # <<< matcher-end

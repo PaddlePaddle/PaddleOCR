@@ -281,7 +281,7 @@ class Config(object):
         assert ext in [".yml", ".yaml"], "only support yaml files for now"
 
         with open(file_path) as f:
-            file_cfg = yaml.load(f, Loader=yaml.Loader)
+            file_cfg = yaml.load(f, Loader=yaml.SafeLoader)
 
         # NOTE: cfgs outside have higher priority than cfgs in _BASE_
         if self.BASE_KEY in file_cfg:
@@ -344,7 +344,7 @@ class ArgsParser(ArgumentParser):
             s = s.strip()
             k, v = s.split("=", 1)
             if "." not in k:
-                config[k] = yaml.load(v, Loader=yaml.Loader)
+                config[k] = yaml.load(v, Loader=yaml.SafeLoader)
             else:
                 keys = k.split(".")
                 if keys[0] not in config:
@@ -352,7 +352,7 @@ class ArgsParser(ArgumentParser):
                 cur = config[keys[0]]
                 for idx, key in enumerate(keys[1:]):
                     if idx == len(keys) - 2:
-                        cur[key] = yaml.load(v, Loader=yaml.Loader)
+                        cur[key] = yaml.load(v, Loader=yaml.SafeLoader)
                     else:
                         cur[key] = {}
                         cur = cur[key]

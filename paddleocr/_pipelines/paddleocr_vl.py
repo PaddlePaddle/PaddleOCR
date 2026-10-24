@@ -22,8 +22,8 @@ from .base import PaddleXPipelineWrapper, PipelineCLISubcommandExecutor
 from .utils import create_config_from_structure
 
 
-_AVAILABLE_PIPELINE_VERSIONS = ["v1", "v1.5"]
-_DEFAULT_PIPELINE_VERSION = "v1.5"
+_AVAILABLE_PIPELINE_VERSIONS = ["v1", "v1.5", "v1.6"]
+_DEFAULT_PIPELINE_VERSION = "v1.6"
 _SUPPORTED_VL_BACKENDS = [
     "native",
     "vllm-server",
@@ -92,6 +92,8 @@ class PaddleOCRVL(PaddleXPipelineWrapper):
             return "PaddleOCR-VL"
         elif self.pipeline_version == "v1.5":
             return "PaddleOCR-VL-1.5"
+        elif self.pipeline_version == "v1.6":
+            return "PaddleOCR-VL-1.6"
         else:
             raise AssertionError(f"Unknown pipeline version: {self.pipeline_version}")
 
@@ -313,27 +315,27 @@ class PaddleOCRVLCLISubcommandExecutor(PipelineCLISubcommandExecutor):
         subparser.add_argument(
             "--layout_detection_model_name",
             type=str,
-            help="Name of the layout detection model.",
+            help="Name of the layout analysis model.",
         )
         subparser.add_argument(
             "--layout_detection_model_dir",
             type=str,
-            help="Path to the layout detection model directory.",
+            help="Path to the layout analysis model directory.",
         )
         subparser.add_argument(
             "--layout_threshold",
             type=float,
-            help="Score threshold for the layout detection model.",
+            help="Score threshold for the layout analysis model.",
         )
         subparser.add_argument(
             "--layout_nms",
             type=str2bool,
-            help="Whether to use NMS in layout detection.",
+            help="Whether to use NMS in layout analysis.",
         )
         subparser.add_argument(
             "--layout_unclip_ratio",
             type=float,
-            help="Expansion coefficient for layout detection.",
+            help="Expansion coefficient for layout analysis.",
         )
         subparser.add_argument(
             "--layout_merge_bboxes_mode",
@@ -412,7 +414,7 @@ class PaddleOCRVLCLISubcommandExecutor(PipelineCLISubcommandExecutor):
         subparser.add_argument(
             "--use_layout_detection",
             type=str2bool,
-            help="Whether to use layout detection.",
+            help="Whether to use layout analysis.",
         )
         subparser.add_argument(
             "--use_chart_recognition",

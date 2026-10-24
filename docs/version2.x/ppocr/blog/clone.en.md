@@ -8,14 +8,16 @@ comments: true
 
 ```bash linenums="1"
 # Recommend
-git clone https://github.com/PaddlePaddle/PaddleOCR
+git clone --depth 1 https://github.com/PaddlePaddle/PaddleOCR
 
 # If you cannot pull successfully due to network problems, you can switch to the mirror hosted on Gitee:
 
-git clone https://gitee.com/paddlepaddle/PaddleOCR
+git clone --depth 1 https://gitee.com/paddlepaddle/PaddleOCR
 
 # Note: The mirror on Gitee may not keep in synchronization with the latest project on GitHub. There might be a delay of 3-5 days. Please try GitHub at first.
 ```
+
+A shallow clone downloads only the latest revision of the default branch. Add `--branch <branch-name>` when cloning to select another branch. To retrieve the full commit history later, run `git fetch --unshallow` inside the repository.
 
 ## 2. Install third-party libraries
 

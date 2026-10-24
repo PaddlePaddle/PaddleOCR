@@ -5,22 +5,39 @@ comments: true
 # PaddleOCR-VL Intel Arc GPU Usage Tutorial
 
 > INFO:
-> Unless otherwise specified, the term "PaddleOCR-VL" in this tutorial refers to the PaddleOCR-VL model series (e.g., PaddleOCR-VL-1.5). References specific to the PaddleOCR-VL v1 version will be explicitly noted.
+> Unless otherwise specified, the term "PaddleOCR-VL" in this tutorial refers to the PaddleOCR-VL model series (e.g., PaddleOCR-VL-1.6). References specific to the PaddleOCR-VL v1 version will be explicitly noted.
 
 This tutorial is a guide for using PaddleOCR-VL on Intel Arc GPU, covering the complete workflow from environment preparation to service deployment.
 
 PaddleOCR-VL has been verified for accuracy and speed on the Intel Arc B60 Pro. However, due to hardware diversity, compatibility with other Intel Arc GPUs has not yet been confirmed. We welcome the community to test on different hardware setups and share your results.
 
-> TIP:
-> Before reading this hardware-specific tutorial, we recommend first reading the [Process Guide](./PaddleOCR-VL.en.md#process-guide) in the main [PaddleOCR-VL Usage Tutorial](./PaddleOCR-VL.en.md) to determine which chapters apply to your goal, and then returning here to read the corresponding sections.
+## Workflow Guide for This Hardware
 
-## 1. Environment Preparation
+Use this guide for the workflows below.
 
-This step mainly introduces how to set up the runtime environment for PaddleOCR-VL. There are two methods available; choose either one:
+| Goal | Support on this hardware | Read this section |
+| --- | --- | --- |
+| Local direct inference | This hardware does not currently support the local direct inference path | Use the “Client + VLM inference service” path instead: start with Section 1. Local Runtime Environment Preparation, then read Section 3. |
+| Client + VLM inference service | Supported | Start with Section 1. Local Runtime Environment Preparation, then read Section 3. Using VLM Inference Services. |
+| Full API service | Supported with Docker Compose deployment | Read Section 4.1 first, then continue with the Section 4.2 client invocation section and the Section 4.3 pipeline configuration section. |
+| Model fine-tuning | Supported | Read Section 5. Model Fine-Tuning. |
+
+If you only need to confirm which inference methods are available on this hardware, refer to the [PaddleOCR-VL Inference Method and Hardware Support Matrix](./PaddleOCR-VL.en.md#inference-device-support-for-paddleocr-vl) in the main guide.
+
+## 1. Local Runtime Environment Preparation
+
+**Local Runtime Environment Setup Methods Supported on This Hardware**
+
+| Local runtime environment setup method | Status | Notes |
+| --- | --- | --- |
+| Official Docker image | Supported with steps in this guide | Continue with Section 1.1. |
+| Manually install the inference engine and PaddleOCR | Supported with steps in this guide | Continue with Section 1.2. |
+
+This step mainly introduces how to set up the local runtime environment for PaddleOCR-VL. There are two methods available; choose either one:
 
 - Method 1: Use the official Docker image.
 
-- Method 2: Manually install PaddlePaddle and PaddleOCR.
+- Method 2: Manually install the inference engine and PaddleOCR.
 
 **We strongly recommend using the Docker image to minimize potential environment-related issues.**
 
@@ -42,13 +59,18 @@ docker run -it \
 If you wish to start the service in an environment without internet access, replace `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-intel-gpu` (image size approximately 31 GB) in the above command with the offline version image `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-intel-gpu-offline` (image size approximately 33 GB).
 
 > TIP:
-> Images with the `latest-xxx` tag correspond to the latest version of PaddleOCR. If you want to use a specific version of the PaddleOCR image, you can replace `latest` in the tag with the desired version number: `paddleocr<major>.<minor>`.
+> Images with the `latest-xxx` tag correspond to the latest version.
+> If the corresponding `latest` image already exists locally and you want the newest features or fixes, we recommend running `docker pull` again before using it.
+> If you want to use an image corresponding to a specific PaddleOCR version, you can replace `latest` in the tag with the desired version number: `paddleocr<major>.<minor>`.
 > For example:
 > `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:paddleocr3.4-intel-gpu-offline`
 
-### 1.2 Method 2: Manually Install PaddlePaddle and PaddleOCR
 
-If you cannot use Docker, you can also manually install PaddlePaddle and PaddleOCR. This guide documents Python 3.9–3.13 as the verified range.
+### 1.2 Method 2: Manually Install the Inference Engine and PaddleOCR
+
+If you cannot use Docker, you can also manually install the inference engine and PaddleOCR. This guide documents Python 3.9–3.13 as the verified range.
+
+Local inference on this hardware currently provides PaddlePaddle installation steps only; support for other inference engines is still being validated.
 
 **We strongly recommend installing PaddleOCR-VL in a virtual environment to avoid dependency conflicts.** For example, use the Python venv standard library to create a virtual environment:
 
@@ -70,13 +92,24 @@ python -m pip install -U "paddleocr[doc-parser]"
 
 ## 2. Quick Start
 
-The Intel Arc GPU currently does not support inference using the `PaddlePaddle` inference method. Please refer to the next section on using the `vLLM` inference acceleration framework for inference.
+This hardware does not currently support the local direct inference path. To use the supported accelerated path on this hardware, continue to the next section and use the vLLM inference service path.
 
-## 3. Improving Inference Performance with VLM Inference Services
+## 3. Using VLM Inference Services
 
-The inference performance under default configurations is not fully optimized and may not meet actual production requirements. This section introduces how to improve PaddleOCR-VL inference performance through a VLM inference service. In this hardware-specific guide, the examples use vLLM as the backend for the VLM inference service.
+This section explains how to complete the client + VLM inference service path through a VLM inference service. In this hardware-specific guide, the examples use vLLM as the backend for the VLM inference service.
 
 ### 3.1 Starting the VLM Inference Service
+
+> IMPORTANT:
+> The service started according to this section is responsible only for the VLM inference stage in the PaddleOCR-VL workflow. It does not provide a complete end-to-end document parsing API. We strongly recommend that you do not call this service directly via HTTP requests or OpenAI clients to process document images. If you need to deploy a service with the full PaddleOCR-VL capabilities, refer to the service deployment section later in this document.
+
+**Launch Methods Supported on This Hardware**
+
+| Launch method | Status | Notes |
+| --- | --- | --- |
+| Official Docker image | Supported with steps in this guide | This section provides the vLLM service launch steps. |
+| Install dependencies with the PaddleOCR CLI and launch the service | Not currently supported | This hardware does not currently support this path. |
+| Launch the service directly with the acceleration framework | Not verified | This hardware can start the VLM inference service through the vLLM backend, but launching directly with native vLLM has not been verified. |
 
 PaddleOCR provides a Docker image for quickly starting the vLLM inference service. Use the following command to start the service (requires Docker version >= 19.03):
 
@@ -88,7 +121,7 @@ docker run -it \
   --shm-size 64g \
   --network host \
   ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-intel-gpu \
-  paddleocr genai_server --model_name PaddleOCR-VL-1.5-0.9B --host 0.0.0.0 --port 8118 --backend vllm
+  paddleocr genai_server --model_name PaddleOCR-VL-1.6-0.9B --host 0.0.0.0 --port 8118 --backend vllm
 ```
 
 If you wish to start the service in an environment without internet access, replace `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-intel-gpu` (image size approximately 30 GB) in the above command with the offline version image `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-intel-gpu-offline` (image size approximately 32 GB).
@@ -102,14 +135,18 @@ docker run -it \
   --device /dev:/dev \
   --shm-size 64g \
   --network host \
+  -v ./vllm_config.yml:/tmp/vllm_config.yml \
   ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-intel-gpu \
-  paddleocr genai_server --model_name PaddleOCR-VL-1.5-0.9B --host 0.0.0.0 --port 8118 --backend vllm --backend_config /tmp/vllm_config.yml
+  paddleocr genai_server --model_name PaddleOCR-VL-1.6-0.9B --host 0.0.0.0 --port 8118 --backend vllm --backend_config /tmp/vllm_config.yml
 ```
 
 > TIP:
-> Images with the `latest-xxx` tag correspond to the latest version of PaddleOCR. If you want to use a specific version of the PaddleOCR image, you can replace `latest` in the tag with the desired version number: `paddleocr<major>.<minor>`.
+> Images with the `latest-xxx` tag correspond to the latest version.
+> If the corresponding `latest` image already exists locally and you want the newest features or fixes, we recommend running `docker pull` again before using it.
+> If you want to use an image corresponding to a specific PaddleOCR version, you can replace `latest` in the tag with the desired version number: `paddleocr<major>.<minor>`.
 > For example:
 > `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:paddleocr3.4-intel-gpu-offline`
+
 
 ### 3.2 Client Usage Method
 
@@ -121,13 +158,21 @@ Please refer to [PaddleOCR-VL Usage Tutorial - 3.3 Performance Tuning](./PaddleO
 
 ## 4. Service Deployment
 
->Please note that the PaddleOCR-VL service introduced in this section is different from the VLM inference service in the previous section: the latter is only responsible for one part of the complete process (i.e., VLM inference) and is called as an underlying service by the former.
+**Deployment Methods Supported on This Hardware**
+
+| Deployment method | Status | Notes |
+| --- | --- | --- |
+| Docker Compose deployment | Supported with steps in this guide | Continue with Section 4.1. |
+| Manual deployment | Not currently supported | This hardware does not currently support this path. |
+
+> IMPORTANT:
+> The PaddleOCR-VL service introduced in this section differs from the VLM inference service in the previous section: the latter is responsible for only one part of the complete process (i.e., VLM inference) and is called as an underlying service by the former.
 
 ### 4.1 Deploy Using Docker Compose
 
 This step mainly introduces how to use Docker Compose to deploy PaddleOCR-VL as a service and call it. The specific process is as follows:
 
-1. Download the Compose file and the environment variable configuration file separately from [here](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/accelerators/intel-gpu/compose.yaml) and [here](https://github.com/PaddlePaddle/PaddleOCR/blob/main/deploy/paddleocr_vl_docker/accelerators/intel-gpu/.env) to your local machine.
+1. Download the Compose file and the environment variable configuration file separately from [here](https://github.com/PaddlePaddle/PaddleOCR/blob/{{PADDLEOCR_GITHUB_REF}}/deploy/paddleocr_vl_docker/accelerators/intel-gpu/compose.yaml) and [here](https://github.com/PaddlePaddle/PaddleOCR/blob/{{PADDLEOCR_GITHUB_REF}}/deploy/paddleocr_vl_docker/accelerators/intel-gpu/.env) to your local machine.
     
 2. Execute the following command in the directory where the `compose.yaml` and `.env` files are located to start the server, which listens on port **8080** by default:
 
@@ -135,6 +180,10 @@ This step mainly introduces how to use Docker Compose to deploy PaddleOCR-VL as 
     # Must be executed in the directory where compose.yaml and .env files are located
     docker compose up
     ```
+
+    > TIP:
+    > The image tags used by `compose.yaml` are usually controlled by `API_IMAGE_TAG_SUFFIX` and `VLM_IMAGE_TAG_SUFFIX` in `.env`, and default to tags such as `latest-intel-gpu-offline`. To make sure you pull the newest `latest` images, run `docker compose pull` in the current directory before `docker compose up`.
+    > To use an image corresponding to a specific PaddleOCR version, replace `latest` in these variables with `paddleocr<major>.<minor>`, for example `paddleocr3.3-intel-gpu-offline`.
 
     After startup, you will see output similar to the following:
 
@@ -209,7 +258,7 @@ After generating the configuration file, add the following <code>paddleocr-vlm-s
   paddleocr-vlm-server:
     ...
     volumes: /path/to/your_config.yaml:/home/paddleocr/vlm_server_config.yaml
-    command: paddleocr genai_server --model_name PaddleOCR-VL-1.5-0.9B --host 0.0.0.0 --port 8118 --backend vllm --backend_config /home/paddleocr/vlm_server_config.yaml
+    command: paddleocr genai_server --model_name PaddleOCR-VL-1.6-0.9B --host 0.0.0.0 --port 8118 --backend vllm --backend_config /home/paddleocr/vlm_server_config.yaml
     ...
 ```
 

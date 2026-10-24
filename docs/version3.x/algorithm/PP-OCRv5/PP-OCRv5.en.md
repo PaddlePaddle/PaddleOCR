@@ -1489,6 +1489,6 @@ Unless otherwise specified:
 # Deployment and Secondary Development
 * **Multiple System Support**: Compatible with mainstream operating systems including Windows, Linux, and Mac.
 * **Multiple Hardware Support**: Besides NVIDIA GPUs, it also supports inference and deployment on Intel CPU, Kunlun chips, Ascend, and other new hardware.
-* **High-Performance Inference Plugin**: Recommended to combine with high-performance inference plugins to further improve inference speed. See [High-Performance Inference Guide](../../deployment/high_performance_inference.md) for details.
-* **Service Deployment**: Supports highly stable service deployment solutions. See [Service Deployment Guide](../../deployment/serving.md) for details.
+* **High-Performance Inference Plugin**: Recommended to combine with high-performance inference plugins to further improve inference speed. See [High-Performance Inference Guide](../../inference_deployment/local_inference/high_performance_inference.md) for details.
+* **Service Deployment**: Supports highly stable service deployment solutions. See [Service Deployment Guide](../../inference_deployment/serving/serving.md) for details.
 * **Secondary Development Capability**: Supports custom dataset training, dictionary extension, and model fine-tuning. Example: To add Korean recognition, you can extend the dictionary and fine-tune the model, seamlessly integrating into existing pipelines. See [Text Detection Module Usage Tutorial](../../module_usage/text_detection.en.md) and [Text Recognition Module Usage Tutorial](../../module_usage/text_recognition.en.md) for details.

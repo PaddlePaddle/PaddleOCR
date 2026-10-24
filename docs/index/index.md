@@ -9,7 +9,7 @@ hide:
  <img src="https://github.com/PaddlePaddle/PaddleOCR/releases/download/v2.9.1/PaddleOCR_log.png" align="middle" width = "600"/>
   <p align="center">
       <a href="https://discord.gg/z9xaRVjdbD"><img src="https://img.shields.io/badge/Chat-on%20discord-7289da.svg?sanitize=true" alt="Chat"></a>
-      <a href="https://github.com/PaddlePaddle/PaddleOCR/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-Apache%202-dfd.svg"></a>
+      <a href="https://github.com/PaddlePaddle/PaddleOCR/blob/{{PADDLEOCR_GITHUB_REF}}/LICENSE"><img src="https://img.shields.io/badge/license-Apache%202-dfd.svg"></a>
       <a href="https://github.com/PaddlePaddle/PaddleOCR/releases"><img src="https://img.shields.io/github/v/release/PaddlePaddle/PaddleOCR?color=ffa"></a>
       <a href=""><img src="https://img.shields.io/badge/python-3.7+-aff.svg"></a>
       <a href=""><img src="https://img.shields.io/badge/os-linux%2C%20win%2C%20mac-pink.svg"></a>
@@ -88,7 +88,7 @@ PaddleOCR 由 [PMC](https://github.com/PaddlePaddle/PaddleOCR/issues/12122) 监�
 
 <img src="../images/en_2.png" width="600" />
 
-<img src="../images/en_3-0398013.png" width="600" />
+<img src="../images/en_3.png" width="600" />
 
 #### PP-OCRv3多语言模型
 
@@ -120,4 +120,4 @@ PaddleOCR 由 [PMC](https://github.com/PaddlePaddle/PaddleOCR/issues/12122) 监�
 
 ## 许可证书
 
-本项目的发布受<a href="https://github.com/PaddlePaddle/PaddleOCR/blob/master/LICENSE">Apache 2.0 license</a>许可认证。
+本项目的发布受<a href="https://github.com/PaddlePaddle/PaddleOCR/blob/{{PADDLEOCR_GITHUB_REF}}/LICENSE">Apache 2.0 license</a>许可认证。

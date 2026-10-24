@@ -10,7 +10,7 @@ Using LaTeX-OCR printed mathematical expression recognition datasets for trainin
 
 | Model       | Backbone |config| BLEU score  | normed edit distance  |  ExpRate  |Download link|
 |-----------|----------| ---- |:-----------:|:---------------------:|:---------:| ----- |
-| LaTeX-OCR | Hybrid ViT |[LaTeX_OCR_rec.yaml](https://github.com/PaddlePaddle/PaddleOCR/blob/main/configs/rec/LaTeX_OCR_rec.yaml)|   0.8821    |        0.0823         |  40.01%   |[trained model](https://paddleocr.bj.bcebos.com/contribution/rec_latex_ocr_train.tar)|
+| LaTeX-OCR | Hybrid ViT |[LaTeX_OCR_rec.yaml](https://github.com/PaddlePaddle/PaddleOCR/blob/{{PADDLEOCR_GITHUB_REF}}/configs/rec/LaTeX_OCR_rec.yaml)|   0.8821    |        0.0823         |  40.01%   |[trained model](https://paddleocr.bj.bcebos.com/contribution/rec_latex_ocr_train.tar)|
 
 ## 2. Environment
 Please refer to ["Environment Preparation"](../../ppocr/environment.en.md) to configure the PaddleOCR environment, and refer to ["Project Clone"](../../ppocr/blog/clone.en.md) to clone the project code.

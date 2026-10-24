@@ -40,9 +40,32 @@ class CTCHead(nn.Layer):
         fc_decay=0.0004,
         mid_channels=None,
         return_feats=False,
+        use_guide=False,
         **kwargs,
     ):
         super(CTCHead, self).__init__()
+        self.use_guide = use_guide
+        if use_guide:
+            self.guide_layer = nn.Sequential(
+                nn.Conv1D(
+                    in_channels,
+                    in_channels,
+                    kernel_size=5,
+                    padding=2,
+                    groups=in_channels,
+                    bias_attr=False,
+                ),
+                nn.BatchNorm1D(in_channels),
+                nn.Hardswish(),
+                nn.Conv1D(
+                    in_channels,
+                    in_channels,
+                    kernel_size=1,
+                    bias_attr=False,
+                ),
+                nn.BatchNorm1D(in_channels),
+                nn.Hardswish(),
+            )
         if mid_channels is None:
             weight_attr, bias_attr = get_para_bias_attr(
                 l2_decay=fc_decay, k=in_channels
@@ -75,6 +98,11 @@ class CTCHead(nn.Layer):
         self.return_feats = return_feats
 
     def forward(self, x, targets=None):
+        if self.use_guide:
+            x = x.transpose([0, 2, 1])
+            x = self.guide_layer(x)
+            x = x.transpose([0, 2, 1])
+
         if self.mid_channels is None:
             predicts = self.fc(x)
         else:

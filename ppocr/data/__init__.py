@@ -148,6 +148,7 @@ def build_dataloader(config, mode, device, logger, seed=None):
         return_list=True,
         use_shared_memory=use_shared_memory,
         collate_fn=collate_fn,
+        persistent_workers=True if num_workers > 0 and mode == "Train" else False,
     )
 
     return data_loader

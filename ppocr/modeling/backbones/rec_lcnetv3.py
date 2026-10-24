@@ -233,6 +233,7 @@ class LearnableRepLayer(nn.Layer):
             out = self.act(out)
         return out
 
+    @paddle.no_grad()
     def rep(self):
         if self.is_repped:
             return
@@ -247,6 +248,14 @@ class LearnableRepLayer(nn.Layer):
         )
         self.reparam_conv.weight.set_value(kernel)
         self.reparam_conv.bias.set_value(bias)
+        # Remove training branches to avoid duplicate parameter counting
+        del self.conv_kxk
+        if self.conv_1x1 is not None:
+            del self.conv_1x1
+        if self.identity is not None:
+            del self.identity
+        if hasattr(self, "id_tensor"):
+            del self.id_tensor
         self.is_repped = True
 
     def _pad_kernel_1x1_to_kxk(self, kernel1x1, pad):

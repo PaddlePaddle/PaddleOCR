@@ -16,7 +16,7 @@ comments: true
 
 |模型|骨干网络|PSNR_Avg|SSIM_Avg|配置文件|下载链接|
 |---|---|---|---|---|---|
-|Text Telescope|tbsrn|21.56|0.7411| [configs/sr/sr_telescope.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/sr/sr_telescope.yml)|[训练模型](https://paddleocr.bj.bcebos.com/contribution/sr_telescope_train.tar)|
+|Text Telescope|tbsrn|21.56|0.7411| [configs/sr/sr_telescope.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/{{PADDLEOCR_GITHUB_REF}}/configs/sr/sr_telescope.yml)|[训练模型](https://paddleocr.bj.bcebos.com/contribution/sr_telescope_train.tar)|
 
 [TextZoom数据集](https://paddleocr.bj.bcebos.com/dataset/TextZoom.tar) 来自两个超分数据集RealSR和SR-RAW，两个数据集都包含LR-HR对，TextZoom有17367对训数据和4373对测试数据。
 
@@ -54,11 +54,11 @@ python3 -m paddle.distributed.launch --gpus '0' tools/eval.py -c configs/sr/sr_t
 python3 tools/infer_sr.py -c configs/sr/sr_telescope.yml -o Global.pretrained_model={path/to/weights}/best_accuracy Global.infer_img=doc/imgs_words_en/word_52.png
 ```
 
-![img](./images/word_52-20240704094304807.png)
+![img](images/word_52.png)
 
 执行命令后，上面图像的超分结果如下：
 
-![img](./images/sr_word_52-20240704094309205.png)
+![img](images/sr_word_52.png)
 
 ## 4. 推理部署
 
@@ -78,7 +78,7 @@ python3 tools/infer/predict_sr.py --sr_model_dir=./inference/sr_out --image_dir=
 
 执行命令后，图像的超分结果如下：
 
-![img](./images/sr_word_52-20240704094309205.png)
+![img](images/sr_word_52.png)
 
 ### 4.2 C++推理
 

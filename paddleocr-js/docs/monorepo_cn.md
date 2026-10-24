@@ -31,5 +31,5 @@ npm run dev --workspace apps/demo
 
 - `packages/**/src/**/*.ts` 使用 `strictTypeChecked` TypeScript 规则，并启用面向浏览器的全局变量
 - `packages/**/test/**/*.ts` 使用较轻的 `recommendedTypeChecked` 规则集（浏览器 + Node 全局），并放宽部分规则，例如 `no-unsafe-*` 和 `no-explicit-any`
-- `apps/**/src/**/*.ts` 同样使用 `strictTypeChecked` TypeScript 规则与浏览器向全局
+- `apps/**/src/**/*.ts` 同样使用 `strictTypeChecked` TypeScript 规则与浏览器全局变量
 - `apps/**/*.js`、仓库根目录配置文件（`*.config.{js,ts}`）以及包内配置文件（`packages/**/*.config.*`）使用基础 ESLint 规则，同时启用 Node 与浏览器全局

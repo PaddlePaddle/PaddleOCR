@@ -1,0 +1,30 @@
+platform :ios, '16.0'
+
+target 'PaddleOCRDemo' do
+  use_frameworks!
+
+  # ONNX Runtime with ObjC API — includes Core ML EP + XNNPACK EP pre-built
+  pod 'onnxruntime-objc', '~> 1.24'
+
+  # YAML parsing for model config files
+  pod 'Yams', '~> 5.0'
+
+  # OpenCV (imgproc): preprocessing resize/pad, recognition resize, quad crop, DB contours — see OpenCV*Bridge.
+  pod 'OpenCV', '~> 4.3.0'
+
+  # Unit tests `@testable import PaddleOCRDemo` need the same Swift / header search paths
+  # as the app without duplicating pod linkage.
+  target 'PaddleOCRDemoTests' do
+    inherit! :search_paths
+  end
+end
+
+# onnxruntime-objc ships headers that use #include "..." inside framework headers; newer Xcode
+# treats that as an error (CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER). Allow Pods to build.
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      config.build_settings['CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER'] = 'NO'
+    end
+  end
+end

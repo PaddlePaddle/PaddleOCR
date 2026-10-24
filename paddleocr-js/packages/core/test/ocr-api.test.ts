@@ -164,6 +164,70 @@ describe("PaddleOCR high-level API", () => {
     expectDefaultModelAssets(ocr);
   });
 
+  it("maps PP-OCRv6 lang selection to the small model set", async () => {
+    const ocr = await PaddleOCR.create({
+      lang: "ch",
+      ocrVersion: "PP-OCRv6",
+      ...CREATE_WITHOUT_INIT
+    });
+
+    expect(ocr.options.pipelineConfig.assets.det?.url).toMatch(/PP-OCRv6_small_det/);
+    expect(ocr.options.pipelineConfig.assets.rec?.url).toMatch(/PP-OCRv6_small_rec/);
+    expect(ocr.options.pipelineConfig.modelSelection.textDetectionModelName).toBe(
+      "PP-OCRv6_small_det"
+    );
+    expect(ocr.options.pipelineConfig.modelSelection.textRecognitionModelName).toBe(
+      "PP-OCRv6_small_rec"
+    );
+  });
+
+  it("maps PP-OCRv6 Latin languages to the small model set", async () => {
+    const ocr = await PaddleOCR.create({
+      lang: "fr",
+      ocrVersion: "PP-OCRv6",
+      ...CREATE_WITHOUT_INIT
+    });
+
+    expect(ocr.options.pipelineConfig.assets.det?.url).toMatch(/PP-OCRv6_small_det/);
+    expect(ocr.options.pipelineConfig.assets.rec?.url).toMatch(/PP-OCRv6_small_rec/);
+  });
+
+  it("rejects PP-OCRv6 with languages outside the v6 coverage", async () => {
+    for (const lang of ["ru", "pi"]) {
+      await expect(
+        PaddleOCR.create({
+          lang,
+          ocrVersion: "PP-OCRv6",
+          ...CREATE_WITHOUT_INIT
+        })
+      ).rejects.toThrow(/Unsupported lang\/ocrVersion combination/);
+    }
+  });
+
+  it("maps PP-OCRv6 az and ku lang selection to the small model set", async () => {
+    for (const lang of ["az", "ku"]) {
+      const ocr = await PaddleOCR.create({
+        lang,
+        ocrVersion: "PP-OCRv6",
+        ...CREATE_WITHOUT_INIT
+      });
+
+      expect(ocr.options.pipelineConfig.assets.det?.url).toMatch(/PP-OCRv6_small_det/);
+      expect(ocr.options.pipelineConfig.assets.rec?.url).toMatch(/PP-OCRv6_small_rec/);
+    }
+  });
+
+  it("resolves PP-OCRv6 tiny models via explicit model names", async () => {
+    const ocr = await PaddleOCR.create({
+      text_detection_model_name: "PP-OCRv6_tiny_det",
+      text_recognition_model_name: "PP-OCRv6_tiny_rec",
+      ...CREATE_WITHOUT_INIT
+    });
+
+    expect(ocr.options.pipelineConfig.assets.det?.url).toMatch(/PP-OCRv6_tiny_det_onnx_infer\.tar$/);
+    expect(ocr.options.pipelineConfig.assets.rec?.url).toMatch(/PP-OCRv6_tiny_rec_onnx_infer\.tar$/);
+  });
+
   it("allows overriding model selection via model_name options", async () => {
     const ocr = await PaddleOCR.create({
       text_detection_model_name: "PP-OCRv5_mobile_det",

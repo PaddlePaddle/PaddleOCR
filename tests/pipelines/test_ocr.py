@@ -1,3 +1,17 @@
+# Copyright (c) 2026 PaddlePaddle Authors. All Rights Reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 import pytest
 
 from paddleocr import PaddleOCR
@@ -10,7 +24,10 @@ from ..testing_utils import (
 
 @pytest.fixture(scope="module")
 def ocr_engine() -> PaddleOCR:
-    return PaddleOCR()
+    return PaddleOCR(
+        text_detection_model_name="PP-OCRv5_server_det",
+        text_recognition_model_name="PP-OCRv5_server_rec",
+    )
 
 
 # TODO: Should we separate unit tests and integration tests?
@@ -123,3 +140,49 @@ def test_lang_and_ocr_version():
     assert (
         ocr_engine._params["text_recognition_model_name"] == "japan_PP-OCRv3_mobile_rec"
     )
+
+
+def test_pp_ocrv6_model_names():
+    engine = object.__new__(PaddleOCR)
+    for lang in ("ch", "chinese_cht", "en", "japan", "fr", "de", "vi", "ku", "az"):
+        det, rec = engine._get_ocr_model_names(lang, "PP-OCRv6")
+        assert det == "PP-OCRv6_medium_det"
+        assert rec == "PP-OCRv6_medium_rec"
+    det, rec = engine._get_ocr_model_names("pi", "PP-OCRv6")
+    assert det is None
+    assert rec is None
+    det, rec = engine._get_ocr_model_names("ru", "PP-OCRv6")
+    assert det is None
+    assert rec is None
+
+
+def test_default_ocr_model_names():
+    engine = object.__new__(PaddleOCR)
+    det, rec = engine._get_ocr_model_names(None, None)
+    assert det == "PP-OCRv6_medium_det"
+    assert rec == "PP-OCRv6_medium_rec"
+    det, rec = engine._get_ocr_model_names("ch", None)
+    assert det == "PP-OCRv6_medium_det"
+    assert rec == "PP-OCRv6_medium_rec"
+    det, rec = engine._get_ocr_model_names("fr", None)
+    assert det == "PP-OCRv6_medium_det"
+    assert rec == "PP-OCRv6_medium_rec"
+    det, rec = engine._get_ocr_model_names("ru", None)
+    assert det == "PP-OCRv5_server_det"
+    assert rec == "eslav_PP-OCRv5_mobile_rec"
+    det, rec = engine._get_ocr_model_names("az", None)
+    assert det == "PP-OCRv6_medium_det"
+    assert rec == "PP-OCRv6_medium_rec"
+    det, rec = engine._get_ocr_model_names("ku", None)
+    assert det == "PP-OCRv6_medium_det"
+    assert rec == "PP-OCRv6_medium_rec"
+    det, rec = engine._get_ocr_model_names("pi", None)
+    assert det == "PP-OCRv5_server_det"
+    assert rec == "latin_PP-OCRv5_mobile_rec"
+
+
+def test_unsupported_lang_version_raises():
+    with pytest.raises(ValueError, match="No models are available"):
+        PaddleOCR(lang="pi", ocr_version="PP-OCRv6")
+    with pytest.raises(ValueError, match="No models are available"):
+        PaddleOCR(lang="ru", ocr_version="PP-OCRv6")

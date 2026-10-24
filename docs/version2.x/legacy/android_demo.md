@@ -9,7 +9,7 @@ hide:
 
 ## 1. 简介
 
-此为PaddleOCR的[Android Demo](https://github.com/PaddlePaddle/PaddleOCR/tree/main/deploy/android_demo)，目前支持文本检测，文本方向分类器和文本识别模型的使用。使用 [PaddleLite v2.10](https://github.com/PaddlePaddle/Paddle-Lite/tree/release/v2.10) 进行开发。
+此为PaddleOCR的[Android Demo](https://github.com/PaddlePaddle/PaddleOCR/tree/{{PADDLEOCR_GITHUB_REF}}/deploy/android_demo)，目前支持文本检测，文本方向分类器和文本识别模型的使用。使用 [PaddleLite v2.10](https://github.com/PaddlePaddle/Paddle-Lite/tree/release/v2.10) 进行开发。
 
 ## 2. 近期更新
 
@@ -81,7 +81,7 @@ PaddleOCR demo共提供了6种运行模式，如下图
 
 | 检测+分类+识别                                               | 检测+识别                                        | 分类+识别                                        |
 | ------------------------------------------------------------ | ------------------------------------------------ | ------------------------------------------------ |
-| <img src="./images/run_det_cls_rec-20240806100407184.jpg" width="400"> | <img src="./images/run_det_rec.jpg" width="400"> | <img src="./images/run_cls_rec.jpg" width="400"> |
+| <img src="images/run_det_cls_rec.jpg" width="400"> | <img src="./images/run_det_rec.jpg" width="400"> | <img src="./images/run_cls_rec.jpg" width="400"> |
 
 | 检测                                         | 识别                                         | 分类                                         |
 | -------------------------------------------- | -------------------------------------------- | -------------------------------------------- |

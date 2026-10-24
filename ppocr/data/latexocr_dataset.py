@@ -31,6 +31,34 @@ from .imaug.label_ops import LatexOCRLabelEncode
 from .imaug import transform, create_operators
 
 
+_ALLOWED_PICKLE_GLOBALS = {
+    ("builtins", "dict"): dict,
+    ("builtins", "list"): list,
+    ("builtins", "tuple"): tuple,
+    ("builtins", "set"): set,
+    ("builtins", "frozenset"): frozenset,
+    ("builtins", "str"): str,
+    ("builtins", "int"): int,
+    ("builtins", "float"): float,
+    ("builtins", "bool"): bool,
+    ("builtins", "bytes"): bytes,
+}
+
+
+class _RestrictedDatasetUnpickler(pickle.Unpickler):
+    def find_class(self, module, name):
+        allowed = _ALLOWED_PICKLE_GLOBALS.get((module, name))
+        if allowed is None:
+            raise pickle.UnpicklingError(
+                "Unsupported pickle global in LaTeXOCR dataset payload"
+            )
+        return allowed
+
+
+def _restricted_pickle_load(file_obj):
+    return _RestrictedDatasetUnpickler(file_obj).load()
+
+
 class LaTeXOCRDataSet(Dataset):
     def __init__(self, config, mode, logger, seed=None):
         super(LaTeXOCRDataSet, self).__init__()
@@ -51,8 +79,12 @@ class LaTeXOCRDataSet(Dataset):
         self.rec_char_dict_path = global_config.pop("rec_char_dict_path")
         self.tokenizer = LatexOCRLabelEncode(self.rec_char_dict_path)
 
-        file = open(pkl_path, "rb")
-        data = pickle.load(file)
+        with open(pkl_path, "rb") as file:
+            data = _restricted_pickle_load(file)
+        if not isinstance(data, dict):
+            raise pickle.UnpicklingError(
+                "LaTeXOCR dataset payload must deserialize to a dict"
+            )
         temp = {}
         for k in data:
             if (

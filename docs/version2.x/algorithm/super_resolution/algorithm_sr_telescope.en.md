@@ -15,7 +15,7 @@ Referring to the [FudanOCR](https://github.com/FudanVI/FudanOCR/tree/main/scene-
 
 |Model|Backbone|config|Acc|Download link|
 |---|---|---|---|---|
-|Text Gestalt|tsrn|21.56|0.7411| [configs/sr/sr_telescope.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/sr/sr_telescope.yml)|[train model](https://paddleocr.bj.bcebos.com/contribution/sr_telescope_train.tar)|
+|Text Gestalt|tsrn|21.56|0.7411| [configs/sr/sr_telescope.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/{{PADDLEOCR_GITHUB_REF}}/configs/sr/sr_telescope.yml)|[train model](https://paddleocr.bj.bcebos.com/contribution/sr_telescope_train.tar)|
 
 The [TextZoom dataset](https://paddleocr.bj.bcebos.com/dataset/TextZoom.tar) comes from two superfraction data sets, RealSR and SR-RAW, both of which contain LR-HR pairs. TextZoom has 17367 pairs of training data and 4373 pairs of test data.
 
@@ -54,11 +54,11 @@ python3 -m paddle.distributed.launch --gpus '0' tools/eval.py -c configs/sr/sr_t
 python3 tools/infer_sr.py -c configs/sr/sr_telescope.yml -o Global.pretrained_model={path/to/weights}/best_accuracy Global.infer_img=doc/imgs_words_en/word_52.png
 ```
 
-![img](./images/word_52-20240704094304807.png)
+![img](images/word_52.png)
 
 After executing the command, the super-resolution result of the above image is as follows:
 
-![img](./images/sr_word_52-20240704094309205.png)
+![img](images/sr_word_52.png)
 
 ## 4. Inference and Deployment
 
@@ -79,7 +79,7 @@ python3 tools/infer/predict_sr.py --sr_model_dir=./inference/sr_out --image_dir=
 
 After executing the command, the super-resolution result of the above image is as follows:
 
-![img](./images/sr_word_52-20240704094309205.png)
+![img](images/sr_word_52.png)
 
 ### 4.2 C++ Inference
 

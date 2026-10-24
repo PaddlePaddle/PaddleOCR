@@ -49,3 +49,30 @@ class L2Decay(object):
 
     def __call__(self):
         return self.coeff
+
+
+class CosineL2Decay(object):
+    """
+    L2 Weight Decay with cosine annealing schedule.
+
+    Anneals the weight decay coefficient from `factor` to `end_factor`
+    following a cosine curve over total training steps, with optional
+    linear warmup. Avoids over-regularizing small-capacity models.
+
+    Reference: EfficientNetV2 (Tan & Le, 2021) - "annealing the loss
+    incurred by weight decay regularization over the course of training".
+
+    Args:
+        factor(float): initial weight decay coefficient.
+        end_factor(float): final weight decay coefficient. Default: 0.0.
+        warmup_epoch(int|float): warmup epochs (same as lr warmup). Default: 0.
+    """
+
+    def __init__(self, factor=5e-5, end_factor=0.0, warmup_epoch=0):
+        super(CosineL2Decay, self).__init__()
+        self.start_factor = float(factor)
+        self.end_factor = float(end_factor)
+        self.warmup_epoch = warmup_epoch
+
+    def __call__(self):
+        return self.start_factor

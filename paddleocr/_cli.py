@@ -272,18 +272,25 @@ def _register_doc2md_command(subparsers):
     subparser.set_defaults(executor=_execute_doc2md)
 
 
+def _register_api_command(subparsers):
+    from ._api_client.cli import register_api_command
+
+    register_api_command(subparsers)
+
+
 def _get_parser():
     parser = argparse.ArgumentParser(prog="paddleocr")
     parser.add_argument(
         "-v", "--version", action="version", version=f"%(prog)s {version}"
     )
-    subparsers = parser.add_subparsers(dest="subcommand")
+    subparsers = parser.add_subparsers(dest="subcommand", metavar="COMMAND")
     _register_pipelines(subparsers)
     _register_models(subparsers)
     _register_install_hpi_deps_command(subparsers)
     _register_install_genai_server_deps_command(subparsers)
     _register_genai_server_command(subparsers)
     _register_doc2md_command(subparsers)
+    _register_api_command(subparsers)
     return parser
 
 

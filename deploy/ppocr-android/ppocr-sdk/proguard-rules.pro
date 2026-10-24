@@ -1,0 +1,2 @@
+-keep class com.paddle.ocr.** { *; }
+-keep class ai.onnxruntime.** { *; }

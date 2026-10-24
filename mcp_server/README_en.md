@@ -2,4 +2,4 @@
 
 [中文](./README.md)| English 
 
-Please refer to the [documentation](../docs/version3.x/deployment/mcp_server.en.md)。
+Please refer to the [documentation](../docs/version3.x/integrations/mcp_server.en.md)。

@@ -15,7 +15,7 @@ Referring to the [FudanOCR](https://github.com/FudanVI/FudanOCR/tree/main/text-g
 
 |Model | Backbone|config|Acc|Download link|
 |---|---|---|---|---|
-|Text Gestalt|tsrn|19.28|0.6560| [configs/sr/sr_tsrn_transformer_strock.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/sr/sr_tsrn_transformer_strock.yml)|[train model](https://paddleocr.bj.bcebos.com/sr_tsrn_transformer_strock_train.tar)|
+|Text Gestalt|tsrn|19.28|0.6560| [configs/sr/sr_tsrn_transformer_strock.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/{{PADDLEOCR_GITHUB_REF}}/configs/sr/sr_tsrn_transformer_strock.yml)|[train model](https://paddleocr.bj.bcebos.com/sr_tsrn_transformer_strock_train.tar)|
 
 ## 2. Environment
 
@@ -76,7 +76,7 @@ python3 tools/infer/predict_sr.py --sr_model_dir=./inference/sr_out --image_dir=
 
 After executing the command, the super-resolution result of the above image is as follows:
 
-![img](./images/sr_word_52-20240704093810101.png)
+![img](images/sr_word_52.png)
 
 ### 4.2 C++ Inference
 

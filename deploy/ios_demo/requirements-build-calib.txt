@@ -1,0 +1,4 @@
+numpy
+paddlex>=3.5,<3.6
+onnxruntime>=1.18
+opencv-contrib-python>=4.5

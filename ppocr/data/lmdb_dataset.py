@@ -23,6 +23,35 @@ from PIL import Image
 
 from .imaug import transform, create_operators
 
+_ALLOWED_PICKLE_GLOBALS = {
+    ("builtins", "bytes"),
+    ("builtins", "bytearray"),
+    ("builtins", "str"),
+    ("builtins", "tuple"),
+    ("builtins", "list"),
+    ("builtins", "dict"),
+    ("builtins", "set"),
+    ("builtins", "frozenset"),
+    ("builtins", "int"),
+    ("builtins", "float"),
+    ("builtins", "bool"),
+}
+
+
+class _RestrictedDatasetUnpickler(pickle.Unpickler):
+    def find_class(self, module, name):
+        if (module, name) in _ALLOWED_PICKLE_GLOBALS:
+            return super().find_class(module, name)
+        raise pickle.UnpicklingError(
+            "Unsupported pickle payload in LMDBDataSetTableMaster dataset"
+        )
+
+
+def _restricted_pickle_loads(data):
+    if data is None:
+        raise ValueError("Missing LMDB dataset value")
+    return _RestrictedDatasetUnpickler(io.BytesIO(data)).load()
+
 
 class LMDBDataSet(Dataset):
     def __init__(self, config, mode, logger, seed=None):
@@ -224,7 +253,9 @@ class LMDBDataSetTableMaster(LMDBDataSet):
             meminit=False,
         )
         txn = env.begin(write=False)
-        num_samples = int(pickle.loads(txn.get(b"__len__")))
+        num_samples = _restricted_pickle_loads(txn.get(b"__len__"))
+        if not isinstance(num_samples, int):
+            raise ValueError("Invalid LMDB dataset length metadata")
         lmdb_sets[dataset_idx] = {
             "dirpath": data_dir,
             "env": env,
@@ -253,8 +284,10 @@ class LMDBDataSetTableMaster(LMDBDataSet):
             return bbox_list
 
         try:
-            data = pickle.loads(txn.get(str(index).encode("utf8")))
-        except:
+            data = _restricted_pickle_loads(txn.get(str(index).encode("utf8")))
+        except (pickle.UnpicklingError, ValueError, TypeError, EOFError):
+            return None
+        if not isinstance(data, (list, tuple)) or len(data) < 3:
             return None
 
         # img_name, img, info_lines

@@ -70,6 +70,10 @@ class DetLabelEncode(object):
         boxes = np.array(boxes, dtype=np.float32)
         txt_tags = np.array(txt_tags, dtype=np.bool_)
 
+        # Mark polygons with NaN coordinates as ignore to avoid downstream errors
+        nan_mask = np.isnan(boxes).any(axis=(1, 2))
+        txt_tags[nan_mask] = True
+
         data["polys"] = boxes
         data["texts"] = txts
         data["ignore_tags"] = txt_tags

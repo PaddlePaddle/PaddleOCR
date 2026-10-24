@@ -698,7 +698,7 @@ paddleocr pp_doctranslation -i vehicle_certificate-1.png --target_language en --
 
 The examples above use local Paddle inference engines by default. By default, each module selects the appropriate local Paddle inference engine according to the default model name: models that support only dynamic graph use `paddle_dynamic`, while models that support both static and dynamic graph prefer `paddle_static`. To run them, first install PaddlePaddle by following [PaddlePaddle Framework Installation](../paddlepaddle_installation.en.md).
 
-If you choose `transformers` as the inference engine, make sure the Transformers environment is configured by following [Inference Engine and Configuration](../inference_engine.en.md), and then run the following command:
+If you choose `transformers` as the inference engine, make sure the Transformers environment is configured by following [Inference Engine and Configuration](../inference_deployment/local_inference/inference_engine.en.md), and then run the following command:
 
 ```bash
 # Use the transformers engine for inference
@@ -1275,7 +1275,7 @@ Supports specifying exact card number:
 </tr>
 <tr>
 <td><code>engine</code></td>
-<td><b>Meaning:</b> Inference engine.<br/><b>Description:</b> Supports <code>None</code> (the default), <code>paddle</code>, <code>paddle_static</code>, <code>paddle_dynamic</code>, and <code>transformers</code>. When left as <code>None</code>, PaddleOCR preserves the behavior of earlier versions, which in most configurations is equivalent to <code>paddle</code>. For detailed descriptions, supported values, compatibility rules, and examples, see <a href="../inference_engine.en.md">Inference Engine and Configuration</a>.</td>
+<td><b>Meaning:</b> Inference engine.<br/><b>Description:</b> Supports <code>None</code> (the default), <code>paddle</code>, <code>paddle_static</code>, <code>paddle_dynamic</code>, and <code>transformers</code>. When left as <code>None</code>, PaddleOCR preserves the behavior of earlier versions, which in most configurations is equivalent to <code>paddle</code>. For detailed descriptions, supported values, compatibility rules, and examples, see <a href="../inference_deployment/local_inference/inference_engine.en.md">Inference Engine and Configuration</a>.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -1402,7 +1402,7 @@ for tgt_md_info in tgt_md_info_list:
 
 The example above uses local Paddle inference engines by default. By default, each module selects the appropriate local Paddle inference engine according to the default model name: models that support only dynamic graph use `paddle_dynamic`, while models that support both static and dynamic graph prefer `paddle_static`. To run it, first install PaddlePaddle by following [PaddlePaddle Framework Installation](../paddlepaddle_installation.en.md).
 
-If you choose `transformers` as the inference engine, make sure the Transformers environment is configured by following [Inference Engine and Configuration](../inference_engine.en.md), and then run the following code:
+If you choose `transformers` as the inference engine, make sure the Transformers environment is configured by following [Inference Engine and Configuration](../inference_deployment/local_inference/inference_engine.en.md), and then run the following code:
 
 ```python
 from paddleocr import PPDocTranslation
@@ -2086,13 +2086,13 @@ Supports specifying a specific card number:
 </tr>
 <tr>
 <td><code>engine</code></td>
-<td><b>Meaning:</b> Inference engine.<br/><b>Description:</b> Supports <code>None</code> (the default), <code>paddle</code>, <code>paddle_static</code>, <code>paddle_dynamic</code>, and <code>transformers</code>. When left as <code>None</code>, PaddleOCR preserves the behavior of earlier versions, which in most configurations is equivalent to <code>paddle</code>. For detailed descriptions, supported values, compatibility rules, and examples, see <a href="../inference_engine.en.md">Inference Engine and Configuration</a>.</td>
+<td><b>Meaning:</b> Inference engine.<br/><b>Description:</b> Supports <code>None</code> (the default), <code>paddle</code>, <code>paddle_static</code>, <code>paddle_dynamic</code>, and <code>transformers</code>. When left as <code>None</code>, PaddleOCR preserves the behavior of earlier versions, which in most configurations is equivalent to <code>paddle</code>. For detailed descriptions, supported values, compatibility rules, and examples, see <a href="../inference_deployment/local_inference/inference_engine.en.md">Inference Engine and Configuration</a>.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>engine_config</code></td>
-<td><b>Meaning:</b> Inference-engine configuration.<br/><b>Description:</b> Recommended together with <code>engine</code>. For supported fields, compatibility rules, and examples, see <a href="../inference_engine.en.md">Inference Engine and Configuration</a>.</td>
+<td><b>Meaning:</b> Inference-engine configuration.<br/><b>Description:</b> Recommended together with <code>engine</code>. For supported fields, compatibility rules, and examples, see <a href="../inference_deployment/local_inference/inference_engine.en.md">Inference Engine and Configuration</a>.</td>
 <td><code>dict|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -2704,9 +2704,9 @@ If you need to directly apply the pipeline in your Python project, you can refer
 
 In addition, PaddleOCR also offers two other deployment methods, detailed as follows:
 
-🚀 High-Performance Inference: In real-world production environments, many applications have stringent performance criteria (especially response speed) for deployment strategies to ensure efficient system operation and a smooth user experience. To this end, PaddleOCR provides high-performance inference capabilities, aiming to deeply optimize model inference and pre/post-processing, achieving significant acceleration in the end-to-end process. For detailed information on the high-performance inference process, please refer to [High-Performance Inference](../deployment/high_performance_inference.en.md).
+🚀 High-Performance Inference: In real-world production environments, many applications have stringent performance criteria (especially response speed) for deployment strategies to ensure efficient system operation and a smooth user experience. To this end, PaddleOCR provides high-performance inference capabilities, aiming to deeply optimize model inference and pre/post-processing, achieving significant acceleration in the end-to-end process. For detailed information on the high-performance inference process, please refer to [High-Performance Inference](../inference_deployment/local_inference/high_performance_inference.en.md).
 
-☁️ Serving: Serving is a common deployment form in real-world production environments. By encapsulating inference functions as services, clients can access these services through network requests to obtain inference results. For detailed information on the pipeline serving process, please refer to [Serving](../deployment/serving.en.md).
+☁️ Serving: Serving is a common deployment form in real-world production environments. By encapsulating inference functions as services, clients can access these services through network requests to obtain inference results. For detailed information on the pipeline serving process, please refer to [Serving](../inference_deployment/serving/serving.en.md).
 
 Below are the API references for basic serving and examples of multi-language service invocation:
 
@@ -3042,6 +3042,7 @@ By default, images will not be returned; the <code>visualize</code> parameter in
 </tr>
 </tbody>
 </table>
+<p>Image and other binary file fields in the element schema below (e.g. <code>outputImages</code>, <code>inputImage</code>, <code>markdown.images</code>, <code>exports</code>) are returned inline as Base64 strings by default; when the server is configured to return URLs, those values become pre-signed URLs while the field types remain unchanged. See the "Returning Binary Content as URLs" section of the <a href="../inference_deployment/serving/serving.en.md">Serving Deployment Guide</a> for configuration.</p>
 <p>Each element in <code>layoutParsingResults</code> is an <code>object</code> with the following properties:</p>
 <table>
 <thead>
@@ -3065,17 +3066,17 @@ By default, images will not be returned; the <code>visualize</code> parameter in
 <tr>
 <td><code>outputImages</code></td>
 <td><code>object</code> | <code>null</code></td>
-<td>See the <code>img</code> property description in the pipeline prediction results. Images are in JPEG format and Base64 encoded.</td>
+<td>See the <code>img</code> property description in the pipeline prediction results. Images are in JPEG format and Base64 encoded by default; returned as pre-signed URLs when URL-return mode is enabled.</td>
 </tr>
 <tr>
 <td><code>inputImage</code></td>
 <td><code>string</code> | <code>null</code></td>
-<td>Input image. JPEG format, Base64 encoded.</td>
+<td>Input image. JPEG format, Base64 encoded by default; returned as a pre-signed URL when URL-return mode is enabled.</td>
 </tr>
 <tr>
 <td><code>exports</code></td>
 <td><code>object</code> | <code>null</code></td>
-<td>Optional additional exports such as <code>docx</code>, present only when <code>outputFormats</code> is requested. The <code>content</code> field is Base64-encoded file bytes.</td>
+<td>Optional additional exports such as <code>docx</code>, present only when <code>outputFormats</code> is requested. The <code>content</code> field is Base64-encoded file bytes by default; returned as a pre-signed URL when URL-return mode is enabled.</td>
 </tr>
 </tbody>
 </table>
@@ -3097,7 +3098,7 @@ By default, images will not be returned; the <code>visualize</code> parameter in
 <tr>
 <td><code>images</code></td>
 <td><code>object</code></td>
-<td>Mapping from relative Markdown image paths to Base64-encoded image data.</td>
+<td>Mapping from relative Markdown image paths to Base64-encoded image data by default; returned as pre-signed URLs when URL-return mode is enabled.</td>
 </tr>
 <tr>
 <td><code>isStart</code></td>

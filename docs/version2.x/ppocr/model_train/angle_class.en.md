@@ -139,7 +139,7 @@ python3 tools/infer_cls.py -c configs/cls/cls_mv3.yml -o Global.pretrained_model
 
 Input image:
 
-![](./images/word_1-20240704092713071.jpg)
+![](../../legacy/images/word_1.jpg)
 
 Get the prediction result of the input image:
 

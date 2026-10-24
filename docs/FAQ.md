@@ -738,7 +738,7 @@ python3 tools/infer/predict_rec.py --image_dir="./doc/imgs_words/ch/word_4.jpg" 
 
 #### Q：PaddleOCR中，对于模型预测加速，CPU加速的途径有哪些？基于TenorRT加速GPU对输入有什么要求？
 
-**A**：（1）CPU可以使用mkldnn进行加速；对于python inference的话，可以把`enable_mkldnn`改为`true`，[参考代码](https://github.com/PaddlePaddle/PaddleOCR/blob/ee9d22b4524eab44170568c98e73d742ce997ff2/tools/infer/utility.py#L132)，对于cpp inference的话，可参考[文档](./version3.x/deployment/cpp/cpp_local_deployment.md)
+**A**：（1）CPU可以使用mkldnn进行加速；对于python inference的话，可以把`enable_mkldnn`改为`true`，[参考代码](https://github.com/PaddlePaddle/PaddleOCR/blob/ee9d22b4524eab44170568c98e73d742ce997ff2/tools/infer/utility.py#L132)，对于cpp inference的话，可参考[文档](./version3.x/inference_deployment/local_inference/cpp/cpp_local_deployment.md)
 
 （2）GPU需要注意变长输入问题等，TRT6 之后才支持变长输入
 

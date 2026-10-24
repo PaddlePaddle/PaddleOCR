@@ -23,7 +23,7 @@ from __future__ import print_function
 import paddle
 from paddle import nn
 
-from .det_basic_loss import BalanceLoss, MaskL1Loss, DiceLoss
+from .det_basic_loss import BalanceLoss, MaskL1Loss, DiceLoss, DiceFocalLoss
 
 
 class DBLoss(nn.Layer):
@@ -41,18 +41,40 @@ class DBLoss(nn.Layer):
         beta=10,
         ohem_ratio=3,
         eps=1e-6,
+        aux_weight_p4=0.0,
+        aux_weight_p3=0.0,
+        aux_weight_p2=0.0,
+        focal_alpha=0.25,
+        focal_gamma=2.0,
+        dice_weight=1.0,
+        focal_weight=1.0,
         **kwargs,
     ):
         super(DBLoss, self).__init__()
         self.alpha = alpha
         self.beta = beta
-        self.dice_loss = DiceLoss(eps=eps)
         self.l1_loss = MaskL1Loss(eps=eps)
-        self.bce_loss = BalanceLoss(
-            balance_loss=balance_loss,
-            main_loss_type=main_loss_type,
-            negative_ratio=ohem_ratio,
-        )
+        if main_loss_type == "DiceFocalLoss":
+            self.bce_loss = DiceFocalLoss(
+                dice_weight=dice_weight,
+                focal_weight=focal_weight,
+                focal_alpha=focal_alpha,
+                focal_gamma=focal_gamma,
+                eps=eps,
+            )
+            self.dice_loss = self.bce_loss
+        elif main_loss_type == "DiceLoss":
+            self.bce_loss = BalanceLoss(
+                balance_loss=balance_loss,
+                main_loss_type=main_loss_type,
+                negative_ratio=ohem_ratio,
+            )
+            self.dice_loss = DiceLoss(eps=eps)
+        else:
+            raise Exception("[DBLoss]: Unrecognized main loss type!")
+        self.aux_weight_p4 = aux_weight_p4
+        self.aux_weight_p3 = aux_weight_p3
+        self.aux_weight_p2 = aux_weight_p2
 
     def forward(self, predicts, labels):
         predict_maps = predicts["maps"]
@@ -96,4 +118,29 @@ class DBLoss(nn.Layer):
             "loss_binary_maps": loss_binary_maps,
             "loss_cbn": cbn_loss,
         }
+
+        # Auxiliary loss
+        for aux_key, aux_w in [
+            ("aux_maps_p4", self.aux_weight_p4),
+            ("aux_maps_p3", self.aux_weight_p3),
+            ("aux_maps_p2", self.aux_weight_p2),
+        ]:
+            if aux_w > 0 and aux_key in predicts:
+                aux_maps = predicts[aux_key]
+                aux_shrink = aux_maps[:, 0, :, :]
+                aux_threshold = aux_maps[:, 1, :, :]
+                aux_binary = aux_maps[:, 2, :, :]
+                l_shrink = self.alpha * self.bce_loss(
+                    aux_shrink, label_shrink_map, label_shrink_mask
+                )
+                l_threshold = self.beta * self.l1_loss(
+                    aux_threshold, label_threshold_map, label_threshold_mask
+                )
+                l_binary = self.dice_loss(
+                    aux_binary, label_shrink_map, label_shrink_mask
+                )
+                aux_loss = l_shrink + l_threshold + l_binary
+                losses["loss_{}".format(aux_key)] = aux_loss
+                losses["loss"] = losses["loss"] + aux_w * aux_loss
+
         return losses

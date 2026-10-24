@@ -316,7 +316,7 @@ Metric:
 
 对蒸馏得到的识别蒸馏进行微调有2种方式。
 
-（1）基于知识蒸馏的微调：这种情况比较简单，下载预训练模型，在[PP-OCRv3_mobile_rec_distillation.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/main/configs/rec/PP-OCRv3/PP-OCRv3_mobile_rec_distillation.yml)中配置好预训练模型路径以及自己的数据路径，即可进行模型微调训练。
+（1）基于知识蒸馏的微调：这种情况比较简单，下载预训练模型，在[PP-OCRv3_mobile_rec_distillation.yml](https://github.com/PaddlePaddle/PaddleOCR/tree/{{PADDLEOCR_GITHUB_REF}}/configs/rec/PP-OCRv3/PP-OCRv3_mobile_rec_distillation.yml)中配置好预训练模型路径以及自己的数据路径，即可进行模型微调训练。
 
 （2）微调时不使用知识蒸馏：这种情况，需要首先将预训练模型中的学生模型参数提取出来，具体步骤如下：
 

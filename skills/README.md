@@ -11,7 +11,7 @@ This directory contains the official PaddleOCR Agent Skills.
 
 ## Documentation
 
-For installation, configuration, usage examples, and local verification, see the [documentation](../docs/version3.x/deployment/skills.en.md).
+For installation, configuration, usage examples, and local verification, see the [documentation](../docs/version3.x/integrations/skills.en.md).
 
 ## Directory Layout
 

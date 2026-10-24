@@ -31,7 +31,7 @@ from paddlex.inference.serving.infra.utils import generate_log_id
 from paddlex_hps_client import triton_request_async
 from tritonclient.grpc import aio as triton_grpc_aio
 
-TRITON_URL = os.getenv("HPS_TRITON_URL", "paddleocr-vl-tritonserver:8001")
+TRITON_URL = os.getenv("HPS_TRITON_URL", "paddleocr-vl-pipeline:8001")
 MAX_CONCURRENT_INFERENCE_REQUESTS = int(
     os.getenv("HPS_MAX_CONCURRENT_INFERENCE_REQUESTS", "16")
 )
@@ -129,8 +129,8 @@ async def _lifespan(app: fastapi.FastAPI):
 
 
 app = fastapi.FastAPI(
-    title="PaddleOCR-VL-1.5 HPS Gateway",
-    description="High Performance Server Gateway for PaddleOCR-VL-1.5",
+    title="PaddleOCR-VL HPS Gateway",
+    description="High Performance Server Gateway for PaddleOCR-VL",
     version="1.0.0",
     lifespan=_lifespan,
 )

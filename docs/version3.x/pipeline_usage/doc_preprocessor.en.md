@@ -155,7 +155,7 @@ paddleocr doc_preprocessor -i ./doc_test_rotated.jpg --device gpu
 
 The examples above use the local `paddle_static` inference engine by default. To run them, first install PaddlePaddle by following [PaddlePaddle Framework Installation](../paddlepaddle_installation.en.md).
 
-If you choose `transformers` as the inference engine, make sure the Transformers environment is configured by following [Inference Engine and Configuration](../inference_engine.en.md), and then run the following command:
+If you choose `transformers` as the inference engine, make sure the Transformers environment is configured by following [Inference Engine and Configuration](../inference_deployment/local_inference/inference_engine.en.md), and then run the following command:
 
 ```bash
 # Use the transformers engine for inference
@@ -263,7 +263,7 @@ If not set, the pipeline initialized value for this parameter will be used. Duri
 </tr>
 <tr>
 <td><code>engine</code></td>
-<td><b>Meaning:</b> Inference engine.<br/><b>Description:</b> Supports <code>None</code> (the default), <code>paddle</code>, <code>paddle_static</code>, <code>paddle_dynamic</code>, and <code>transformers</code>. When left as <code>None</code>, PaddleOCR preserves the behavior of earlier versions, which in most configurations is equivalent to <code>paddle</code>. For detailed descriptions, supported values, compatibility rules, and examples, see <a href="../inference_engine.en.md">Inference Engine and Configuration</a>.</td>
+<td><b>Meaning:</b> Inference engine.<br/><b>Description:</b> Supports <code>None</code> (the default), <code>paddle</code>, <code>paddle_static</code>, <code>paddle_dynamic</code>, and <code>transformers</code>. When left as <code>None</code>, PaddleOCR preserves the behavior of earlier versions, which in most configurations is equivalent to <code>paddle</code>. For detailed descriptions, supported values, compatibility rules, and examples, see <a href="../inference_deployment/local_inference/inference_engine.en.md">Inference Engine and Configuration</a>.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -354,7 +354,7 @@ for res in output:
 
 The example above uses the local `paddle_static` inference engine by default. To run it, first install PaddlePaddle by following [PaddlePaddle Framework Installation](../paddlepaddle_installation.en.md).
 
-If you choose `transformers` as the inference engine, make sure the Transformers environment is configured by following [Inference Engine and Configuration](../inference_engine.en.md), and then run the following code:
+If you choose `transformers` as the inference engine, make sure the Transformers environment is configured by following [Inference Engine and Configuration](../inference_deployment/local_inference/inference_engine.en.md), and then run the following code:
 
 ```python
 from paddleocr import DocPreprocessor
@@ -458,13 +458,13 @@ Support for specifying specific card numbers:
 </tr>
 <tr>
 <td><code>engine</code></td>
-<td><b>Meaning:</b> Inference engine.<br/><b>Description:</b> Supports <code>None</code> (the default), <code>paddle</code>, <code>paddle_static</code>, <code>paddle_dynamic</code>, and <code>transformers</code>. When left as <code>None</code>, PaddleOCR preserves the behavior of earlier versions, which in most configurations is equivalent to <code>paddle</code>. For detailed descriptions, supported values, compatibility rules, and examples, see <a href="../inference_engine.en.md">Inference Engine and Configuration</a>.</td>
+<td><b>Meaning:</b> Inference engine.<br/><b>Description:</b> Supports <code>None</code> (the default), <code>paddle</code>, <code>paddle_static</code>, <code>paddle_dynamic</code>, and <code>transformers</code>. When left as <code>None</code>, PaddleOCR preserves the behavior of earlier versions, which in most configurations is equivalent to <code>paddle</code>. For detailed descriptions, supported values, compatibility rules, and examples, see <a href="../inference_deployment/local_inference/inference_engine.en.md">Inference Engine and Configuration</a>.</td>
 <td><code>str|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>engine_config</code></td>
-<td><b>Meaning:</b> Inference-engine configuration.<br/><b>Description:</b> Recommended together with <code>engine</code>. For supported fields, compatibility rules, and examples, see <a href="../inference_engine.en.md">Inference Engine and Configuration</a>.</td>
+<td><b>Meaning:</b> Inference-engine configuration.<br/><b>Description:</b> Recommended together with <code>engine</code>. For supported fields, compatibility rules, and examples, see <a href="../inference_deployment/local_inference/inference_engine.en.md">Inference Engine and Configuration</a>.</td>
 <td><code>dict|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -680,9 +680,9 @@ If you need to apply the pipeline directly to your Python project, you can refer
 
 In addition, PaddleOCR also provides two other deployment methods, which are detailed as follows:
 
-🚀 High-performance inference: In actual production environments, many applications have strict performance requirements (especially response speed) to ensure efficient system operation and smooth user experience. To this end, PaddleOCR provides high-performance inference functionality, aiming to deeply optimize model inference and pre/post-processing to achieve significant end-to-end process acceleration. For detailed high-performance inference procedures, please refer to the [High-Performance Inference Guide](../deployment/high_performance_inference.md).
+🚀 High-performance inference: In actual production environments, many applications have strict performance requirements (especially response speed) to ensure efficient system operation and smooth user experience. To this end, PaddleOCR provides high-performance inference functionality, aiming to deeply optimize model inference and pre/post-processing to achieve significant end-to-end process acceleration. For detailed high-performance inference procedures, please refer to the [High-Performance Inference Guide](../inference_deployment/local_inference/high_performance_inference.md).
 
-☁️ Service-oriented deployment: Service-oriented deployment is a common form of deployment in actual production environments. By encapsulating inference functions as services, clients can access these services through network requests to obtain inference results. For detailed pipeline service-oriented deployment procedures, please refer to the [Service-Oriented Deployment Guide](../deployment/serving.md).
+☁️ Service-oriented deployment: Service-oriented deployment is a common form of deployment in actual production environments. By encapsulating inference functions as services, clients can access these services through network requests to obtain inference results. For detailed pipeline service-oriented deployment procedures, please refer to the [Service-Oriented Deployment Guide](../inference_deployment/serving/serving.md).
 
 Below are the API references for basic service-oriented deployment and examples of multi-language service calls:
 
@@ -775,7 +775,7 @@ Below are the API references for basic service-oriented deployment and examples 
 <tr>
 <td><code>file</code></td>
 <td><code>string</code></td>
-<td>The URL of an image file or PDF file accessible to the server, or the Base64 encoding result of the content of the above types of files. By default, for PDF files with more than 10 pages, only the first 10 pages will be processed.<br /> To remove the page limit, please add the following configuration to the pipeline configuration file:
+<td>The URL of image files (including TIFF; multi-page TIFF is processed page by page) or PDF file accessible to the server, or the Base64 encoding result of the content of the above types of files. By default, for PDF or multi-page TIFF files with more than 10 pages, only the first 10 pages will be processed.<br /> To remove the page limit, please add the following configuration to the pipeline configuration file:
 <pre><code>Serving:
   extra:
     max_num_input_imgs: null

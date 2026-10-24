@@ -17,6 +17,8 @@ ENV LD_LIBRARY_PATH=${ASCEND_TOOLKIT_HOME}/lib64:${ASCEND_TOOLKIT_HOME}/lib64/pl
 
 FROM base-${TARGETARCH} AS base
 
+ARG TARGETARCH
+
 ENV DEBIAN_FRONTEND=noninteractive
 
 ENV PYTHONUNBUFFERED=1
@@ -33,16 +35,16 @@ RUN apt-get update \
     && fc-cache -fv \
     && rm -rf /var/lib/apt/lists/*
 
-RUN --mount=type=cache,target=/root/.cache/pip \
+RUN --mount=type=cache,id=pip-${TARGETARCH},target=/root/.cache/pip \
     python -m pip install paddlepaddle==3.2.0 -i https://www.paddlepaddle.org.cn/packages/stable/cpu/ \
     && python -m pip install paddle-custom-npu==3.2.0 -i https://www.paddlepaddle.org.cn/packages/stable/npu/
 
 ARG PADDLEOCR_VERSION=">=3.4.0,<3.5"
 ARG PADDLEX_VERSION=">=3.4.0,<3.5"
-RUN --mount=type=cache,target=/root/.cache/pip \
+RUN --mount=type=cache,id=pip-${TARGETARCH},target=/root/.cache/pip \
     python -m pip install "paddleocr[doc-parser]${PADDLEOCR_VERSION}" "paddlex[serving]${PADDLEX_VERSION}"
 
-RUN --mount=type=cache,target=/root/.cache/pip \
+RUN --mount=type=cache,id=pip-${TARGETARCH},target=/root/.cache/pip \
     python -m pip install numpy==1.26.4 opencv-contrib-python==4.11.0.86
 
 RUN groupadd -g 1001 paddleocr \
@@ -53,7 +55,7 @@ WORKDIR /home/paddleocr
 USER paddleocr
 
 ENV LD_LIBRARY_PATH=${ASCEND_TOOLKIT_HOME}/tools/aml/lib64:${ASCEND_TOOLKIT_HOME}/tools/aml/lib64/plugin:$LD_LIBRARY_PATH
-ENV PYTHONPATH=${ASCEND_TOOLKIT_HOME}/python/site-packages:${ASCEND_TOOLKIT_HOME}/opp/built-in/op_impl/ai_core/tbe:$PYTHONPATH
+ENV PYTHONPATH=${ASCEND_TOOLKIT_HOME}/python/site-packages:${ASCEND_TOOLKIT_HOME}/opp/built-in/op_impl/ai_core/tbe
 ENV PATH=${ASCEND_TOOLKIT_HOME}/bin:${ASCEND_TOOLKIT_HOME}/compiler/ccec_compiler/bin:${ASCEND_TOOLKIT_HOME}/tools/ccec_compiler/bin:$PATH
 ENV ASCEND_AICPU_PATH=${ASCEND_TOOLKIT_HOME}
 ENV ASCEND_OPP_PATH=${ASCEND_TOOLKIT_HOME}/opp
@@ -100,16 +102,16 @@ RUN if [ "${BUILD_FOR_OFFLINE}" = 'true' ]; then \
         && wget https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/UVDoc_infer.tar \
             https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-LCNet_x1_0_doc_ori_infer.tar \
             https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-DocLayoutV3_infer.tar \
-            https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PaddleOCR-VL-1.5_infer.tar \
+            https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PaddleOCR-VL-1.6_infer.tar \
         && tar -xf UVDoc_infer.tar \
         && mv UVDoc_infer UVDoc \
         && tar -xf PP-LCNet_x1_0_doc_ori_infer.tar \
         && mv PP-LCNet_x1_0_doc_ori_infer PP-LCNet_x1_0_doc_ori \
         && tar -xf PP-DocLayoutV3_infer.tar \
         && mv PP-DocLayoutV3_infer PP-DocLayoutV3 \
-        && tar -xf PaddleOCR-VL-1.5_infer.tar \
-        && mv PaddleOCR-VL-1.5_infer PaddleOCR-VL-1.5 \
-        && rm -f UVDoc_infer.tar PP-LCNet_x1_0_doc_ori_infer.tar PP-DocLayoutV3_infer.tar PaddleOCR-VL-1.5_infer.tar \
+        && tar -xf PaddleOCR-VL-1.6_infer.tar \
+        && mv PaddleOCR-VL-1.6_infer PaddleOCR-VL-1.6 \
+        && rm -f UVDoc_infer.tar PP-LCNet_x1_0_doc_ori_infer.tar PP-DocLayoutV3_infer.tar PaddleOCR-VL-1.6_infer.tar \
         && mkdir -p "${HOME}/.paddlex/fonts" \
         && wget -P "${HOME}/.paddlex/fonts" https://paddle-model-ecology.bj.bcebos.com/paddlex/PaddleX3.0/fonts/PingFang-SC-Regular.ttf; \
     fi

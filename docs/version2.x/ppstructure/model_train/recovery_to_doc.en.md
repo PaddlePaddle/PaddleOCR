@@ -29,7 +29,7 @@ The following figure shows the effect of restoring the layout of documents by us
 
 The following figures show the effect of restoring the layout of English and Chinese documents by using OCR technique:
 
-![img](./images/recovery-20240708091126891.jpg)
+![img](../images/recovery.jpg)
 
 ![img](./images/recovery_ch.jpg)
 
