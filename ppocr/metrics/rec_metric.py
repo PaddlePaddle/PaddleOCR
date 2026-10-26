@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from bisect import bisect_left
+
 from rapidfuzz.distance import Levenshtein
 from difflib import SequenceMatcher
 
@@ -20,13 +22,45 @@ import string
 from .bleu import compute_bleu_score, compute_edit_distance
 
 
+def length_bucket_names(length_buckets):
+    """[15, 40, 60] -> ['0_15', '16_40', '41_60', '61_inf']."""
+    bounds = list(length_buckets)
+    assert len(bounds) > 0 and all(
+        a < b for a, b in zip(bounds, bounds[1:])
+    ), "length_buckets must be a non-empty increasing list, got {}".format(bounds)
+    lows = [0] + [b + 1 for b in bounds]
+    highs = [str(b) for b in bounds] + ["inf"]
+    return ["{}_{}".format(lo, hi) for lo, hi in zip(lows, highs)]
+
+
+def length_bucket_index(length, length_buckets):
+    """Index of the bucket for a label of `length` chars (upper bounds inclusive)."""
+    return bisect_left(length_buckets, length)
+
+
 class RecMetric(object):
+    """Recognition accuracy and normalized edit distance.
+
+    length_buckets: optional increasing upper bounds of label length, e.g.
+        [15, 40, 60]. Adds acc_len_*, ned_len_* and n_len_* per bucket
+        (0-15, 16-40, 41-60, 61+); empty buckets are not reported.
+    """
+
     def __init__(
-        self, main_indicator="acc", is_filter=False, ignore_space=True, **kwargs
+        self,
+        main_indicator="acc",
+        is_filter=False,
+        ignore_space=True,
+        length_buckets=None,
+        **kwargs,
     ):
         self.main_indicator = main_indicator
         self.is_filter = is_filter
         self.ignore_space = ignore_space
+        self.length_buckets = list(length_buckets) if length_buckets else None
+        self.bucket_names = (
+            length_bucket_names(self.length_buckets) if self.length_buckets else []
+        )
         self.eps = 1e-5
         self.reset()
 
@@ -48,10 +82,16 @@ class RecMetric(object):
             if self.is_filter:
                 pred = self._normalize_text(pred)
                 target = self._normalize_text(target)
-            norm_edit_dis += Levenshtein.normalized_distance(pred, target)
+            dist = Levenshtein.normalized_distance(pred, target)
+            norm_edit_dis += dist
             if pred == target:
                 correct_num += 1
             all_num += 1
+            if self.length_buckets:
+                b = length_bucket_index(len(target), self.length_buckets)
+                self.bucket_correct[b] += int(pred == target)
+                self.bucket_all[b] += 1
+                self.bucket_edit_dis[b] += dist
         self.correct_num += correct_num
         self.all_num += all_num
         self.norm_edit_dis += norm_edit_dis
@@ -69,13 +109,25 @@ class RecMetric(object):
         """
         acc = 1.0 * self.correct_num / (self.all_num + self.eps)
         norm_edit_dis = 1 - self.norm_edit_dis / (self.all_num + self.eps)
+        metric = {"acc": acc, "norm_edit_dis": norm_edit_dis}
+        for b, name in enumerate(self.bucket_names):
+            n = self.bucket_all[b]
+            if n == 0:
+                continue
+            metric["acc_len_" + name] = 1.0 * self.bucket_correct[b] / n
+            metric["ned_len_" + name] = 1.0 - self.bucket_edit_dis[b] / n
+            metric["n_len_" + name] = float(n)
         self.reset()
-        return {"acc": acc, "norm_edit_dis": norm_edit_dis}
+        return metric
 
     def reset(self):
         self.correct_num = 0
         self.all_num = 0
         self.norm_edit_dis = 0
+        n_buckets = len(self.bucket_names)
+        self.bucket_correct = [0] * n_buckets
+        self.bucket_all = [0] * n_buckets
+        self.bucket_edit_dis = [0.0] * n_buckets
 
 
 class CNTMetric(object):
