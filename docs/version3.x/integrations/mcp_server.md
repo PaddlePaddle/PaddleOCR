@@ -5,7 +5,7 @@ comments: true
 # PaddleOCR MCP 服务器
 
 [![PaddleOCR](https://img.shields.io/badge/OCR-PaddleOCR-orange)](https://github.com/PaddlePaddle/PaddleOCR)
-[![FastMCP](https://img.shields.io/badge/Built%20with-FastMCP%20v2-blue)](https://gofastmcp.com)
+[![FastMCP](https://img.shields.io/badge/Built%20with-FastMCP%20v4-blue)](https://gofastmcp.com)
 
 PaddleOCR 提供轻量级的 [Model Context Protocol（MCP）](https://modelcontextprotocol.io/introduction) 服务器，旨在将 PaddleOCR 的文字识别、版面解析等能力集成到各种大模型应用中。
 

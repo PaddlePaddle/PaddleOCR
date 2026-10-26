@@ -26,6 +26,21 @@ from ..providers import is_http_provider
 ToolReturn = Union[str, List[Union[TextContent, ImageContent]]]
 
 
+async def _notify_client(message: str) -> None:
+    """Send an info notification to the MCP client, if a session is available.
+
+    Notifications are best-effort: without an active request context or an
+    established session (e.g. when the tool is called outside an MCP request),
+    the message is dropped instead of failing the tool call.
+    """
+    try:
+        ctx = get_context()
+        ctx.session  # Raises RuntimeError if the session is not established
+    except RuntimeError:
+        return
+    await ctx.info(message)
+
+
 class Task(abc.ABC):
     def __init__(self, inference: Inference):
         self._inference = inference
@@ -79,8 +94,7 @@ class Task(abc.ABC):
         normalized_input = adapter.normalize(input_data)
         adapter.validate(normalized_input)
 
-        ctx = get_context()
-        await ctx.info(
+        await _notify_client(
             f"--- {self.tool_name} tool received input_data: {normalized_input[:50]} ---"
         )
 
