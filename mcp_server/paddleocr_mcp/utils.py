@@ -17,6 +17,7 @@
 from __future__ import annotations
 
 import base64
+import binascii
 import re
 from typing import Optional
 from urllib.parse import urlparse
@@ -32,7 +33,13 @@ def is_url(value: str) -> bool:
 
 def is_base64(value: str) -> bool:
     pattern = r"^[A-Za-z0-9+/]+={0,2}$"
-    return bool(re.fullmatch(pattern, value))
+    if len(value) % 4 != 0 or not re.fullmatch(pattern, value):
+        return False
+    try:
+        base64.b64decode(value, validate=True)
+    except (binascii.Error, ValueError):
+        return False
+    return True
 
 
 def extract_base64_payload(input_data: str) -> str:
@@ -56,7 +63,10 @@ def decode_base64_payload(payload: str) -> bytes:
 def infer_file_type_from_bytes(data: bytes) -> Optional[str]:
     import puremagic
 
-    mime = puremagic.from_string(data, mime=True)
+    try:
+        mime = puremagic.from_string(data, mime=True)
+    except puremagic.PureError:
+        return None
     if mime.startswith("image/"):
         return "image"
     if mime == "application/pdf":

@@ -16,6 +16,7 @@
 
 from __future__ import annotations
 
+import os
 import tempfile
 from contextlib import contextmanager
 from enum import Enum
@@ -75,6 +76,11 @@ def looks_like_file_path(value: str) -> bool:
     return Path(value).suffix.lower() in _INPUT_EXTENSIONS
 
 
+def _is_existing_absolute_path(value: str) -> bool:
+    path = os.path.expanduser(value)
+    return os.path.isabs(path) and os.path.exists(path)
+
+
 def classify_input(value: str) -> InputKind:
     if is_url(value):
         return InputKind.URL
@@ -83,6 +89,10 @@ def classify_input(value: str) -> InputKind:
         if not is_base64(payload):
             raise ValueError("Invalid data URL: payload is not valid Base64.")
         return InputKind.DATA_URL
+    # Base64 and POSIX paths share the "/" character, so an existing absolute
+    # path such as "/etc/passwd" may also pass the Base64 check.
+    if _is_existing_absolute_path(value):
+        return InputKind.ABSOLUTE_PATH
     if is_base64(value):
         return InputKind.BASE64
     if looks_like_file_path(value):
@@ -121,9 +131,12 @@ def validate_external_contract(input_data: str) -> InputKind:
         data = decode_base64_payload(payload)
         file_type = infer_file_type_from_bytes(data)
         if file_type not in ("image", "pdf"):
+            hint = ""
+            if kind is InputKind.BASE64 and value.startswith("/"):
+                hint = f" If {value!r} is a file path, the file does not exist."
             raise ValueError(
                 "Unsupported Base64 content type. Only image and PDF inputs are "
-                "supported."
+                f"supported.{hint}"
             )
 
     return kind
