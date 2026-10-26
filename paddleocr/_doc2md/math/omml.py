@@ -141,7 +141,7 @@ class Tag2Method:
 class Pr(Tag2Method):
     text = ""
 
-    __val_tags = ("chr", "pos", "begChr", "endChr", "type")
+    __val_tags = ("chr", "pos", "begChr", "endChr", "sepChr", "type")
 
     __innerdict = None  # can't use the __dict__
 
@@ -174,6 +174,7 @@ class Pr(Tag2Method):
         "pos": do_common,
         "begChr": do_common,
         "endChr": do_common,
+        "sepChr": do_common,
         "type": do_common,
     }
 
@@ -227,33 +228,51 @@ class oMath2Latex(Tag2Method):
         the accent function
         """
         c_dict = self.process_children_dict(elm)
+        pr = c_dict.get("accPr")
         latex_s = get_val(
-            c_dict["accPr"].chr, default=CHR_DEFAULT.get("ACC_VAL"), store=CHR
+            pr.chr if pr is not None else None,
+            default=CHR_DEFAULT.get("ACC_VAL"),
+            store=CHR,
         )
-        return latex_s.format(c_dict["e"])
+        return (pr.text if pr is not None else "") + latex_s.format(c_dict["e"])
 
     def do_bar(self, elm):
         """
         the bar function
         """
         c_dict = self.process_children_dict(elm)
-        pr = c_dict["barPr"]
-        latex_s = get_val(pr.pos, default=POS_DEFAULT.get("BAR_VAL"), store=POS)
-        return pr.text + latex_s.format(c_dict["e"])
+        pr = c_dict.get("barPr")
+        latex_s = get_val(
+            pr.pos if pr is not None else None,
+            default=POS_DEFAULT.get("BAR_VAL"),
+            store=POS,
+        )
+        return (pr.text if pr is not None else "") + latex_s.format(c_dict["e"])
 
     def do_d(self, elm):
         """
         the delimiter object
         """
-        c_dict = self.process_children_dict(elm)
-        pr = c_dict["dPr"]
+        children = list(self.process_children_list(elm))
+        pr = next((text for stag, text, _ in children if stag == "dPr"), None)
         null = D_DEFAULT.get("null")
+        expressions = [text for stag, text, _ in children if stag == "e"]
+        separator = get_val(pr.sepChr if pr is not None else None, default=",")
+        separator = r"\middle|" if separator == "|" else escape_latex(separator)
 
-        s_val = get_val(pr.begChr, default=D_DEFAULT.get("left"), store=T)
-        e_val = get_val(pr.endChr, default=D_DEFAULT.get("right"), store=T)
-        delim = pr.text + D.format(
+        s_val = get_val(
+            pr.begChr if pr is not None else None,
+            default=D_DEFAULT.get("left"),
+            store=T,
+        )
+        e_val = get_val(
+            pr.endChr if pr is not None else None,
+            default=D_DEFAULT.get("right"),
+            store=T,
+        )
+        delim = (pr.text if pr is not None else "") + D.format(
             left=null if not s_val else escape_latex(s_val),
-            text=c_dict["e"],
+            text=separator.join(expressions),
             right=null if not e_val else escape_latex(e_val),
         )
         return delim
@@ -288,6 +307,8 @@ class oMath2Latex(Tag2Method):
         """
         c_dict = self.process_children_dict(elm)
         func_name = c_dict.get("fName")
+        if func_name is None:
+            return c_dict.get("e", "")
         return func_name.replace(FUNC_PLACE, c_dict.get("e"))
 
     def do_fname(self, elm):
@@ -315,9 +336,12 @@ class oMath2Latex(Tag2Method):
         the Group-Character object
         """
         c_dict = self.process_children_dict(elm)
-        pr = c_dict["groupChrPr"]
-        latex_s = get_val(pr.chr)
-        return pr.text + latex_s.format(c_dict["e"])
+        pr = c_dict.get("groupChrPr")
+        latex_s = get_val(
+            pr.chr if pr is not None else None,
+            default=CHR["\u23df"],
+        )
+        return (pr.text if pr is not None else "") + latex_s.format(c_dict["e"])
 
     def do_rad(self, elm):
         """
@@ -355,9 +379,10 @@ class oMath2Latex(Tag2Method):
         t_dict = self.process_children_dict(elm, include=("e", "lim"))
         latex_s = LIM_FUNC.get(t_dict["e"])
         if not latex_s:
-            raise RuntimeError("Not support lim {}".format(t_dict["e"]))
-        else:
-            return latex_s.format(lim=t_dict.get("lim"))
+            return r"\underset{{{lim}}}{{{text}}}".format(
+                lim=t_dict.get("lim"), text=t_dict["e"]
+            )
+        return latex_s.format(lim=t_dict.get("lim"))
 
     def do_limupp(self, elm):
         """

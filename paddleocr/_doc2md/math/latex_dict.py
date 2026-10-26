@@ -320,6 +320,9 @@ LIM_FUNC = {
     "lim": "\\lim_{{{lim}}}",
     "max": "\\max_{{{lim}}}",
     "min": "\\min_{{{lim}}}",
+    "inf": "\\inf_{{{lim}}}",
+    "sup": "\\sup_{{{lim}}}",
+    "gcd": "\\gcd_{{{lim}}}",
 }
 
 LIM_TO = ("\\rightarrow", "\\to")
