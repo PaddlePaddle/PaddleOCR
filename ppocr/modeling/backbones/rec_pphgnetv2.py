@@ -30,6 +30,7 @@ from paddle.regularizer import L2Decay
 
 from typing import Tuple, List, Dict, Union, Callable, Any
 from ppocr.modeling.backbones.rec_donut_swin import DonutSwinModelOutput
+from ppocr.modeling.backbones.rec_seq_pool import check_train_seq_len, rec_seq_pool
 
 
 class IdentityBasedConv1x1(nn.Conv2D):
@@ -1308,9 +1309,12 @@ class PPHGNetV2(TheseusLayer):
         det=False,
         text_rec=False,
         out_indices=None,
+        train_seq_len=40,
         **kwargs,
     ):
         super().__init__()
+        check_train_seq_len(train_seq_len)
+        self.train_seq_len = train_seq_len
         self.det = det
         self.text_rec = text_rec
         self.use_lab = use_lab
@@ -1410,10 +1414,7 @@ class PPHGNetV2(TheseusLayer):
             return out
 
         if self.text_rec:
-            if self.training:
-                x = F.adaptive_avg_pool2d(x, [1, 40])
-            else:
-                x = F.avg_pool2d(x, [3, 2])
+            x = rec_seq_pool(x, self.train_seq_len, self.training)
         return x
 
 

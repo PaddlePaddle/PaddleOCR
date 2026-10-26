@@ -34,6 +34,7 @@ from paddle.nn import (
 )
 from paddle.regularizer import L2Decay
 from ppocr.modeling.backbones.rec_hgnet import MeanPool2D
+from ppocr.modeling.backbones.rec_seq_pool import check_train_seq_len, rec_seq_pool
 
 NET_CONFIG_det = {
     "blocks2":
@@ -408,9 +409,12 @@ class PPLCNetV3(nn.Layer):
         lr_mult_list=[1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
         lab_lr=0.1,
         det=False,
+        train_seq_len=40,
         **kwargs,
     ):
         super().__init__()
+        check_train_seq_len(train_seq_len)
+        self.train_seq_len = train_seq_len
         self.scale = scale
         self.lr_mult_list = lr_mult_list
         self.det = det
@@ -560,8 +564,5 @@ class PPLCNetV3(nn.Layer):
             out_list[3] = self.layer_list[3](out_list[3])
             return out_list
 
-        if self.training:
-            x = F.adaptive_avg_pool2d(x, [1, 40])
-        else:
-            x = F.avg_pool2d(x, [3, 2])
+        x = rec_seq_pool(x, self.train_seq_len, self.training)
         return x

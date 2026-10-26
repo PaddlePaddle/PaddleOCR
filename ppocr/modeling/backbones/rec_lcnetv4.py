@@ -31,6 +31,8 @@ from paddle.nn import (
 )
 from paddle.regularizer import L2Decay
 
+from .rec_seq_pool import check_train_seq_len, rec_seq_pool
+
 
 NET_CONFIG_DET = {
     "tiny": {
@@ -536,11 +538,14 @@ class PPLCNetV4(nn.Layer):
         model_size="small",
         in_channels=3,
         lr_mult_list=[1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
+        train_seq_len=40,
         **kwargs,
     ):
         super().__init__()
         self.det = det
         self.is_repped = False
+        check_train_seq_len(train_seq_len)
+        self.train_seq_len = train_seq_len
 
         if det:
             assert (
@@ -634,11 +639,7 @@ class PPLCNetV4(nn.Layer):
             x = self.blocks4(x)
             x = self.blocks5(x)
             x = self.blocks6(x)
-            if self.training:
-                x = F.adaptive_avg_pool2d(x, [1, 40])
-            else:
-                assert x.shape[2] >= 3, f"Feature height {x.shape[2]} < pool kernel 3."
-                x = F.avg_pool2d(x, [3, 2])
+            x = rec_seq_pool(x, self.train_seq_len, self.training, check_height=True)
             return x
 
     def rep(self, fuse_lab=None):

@@ -14,11 +14,12 @@
 
 import paddle
 import paddle.nn as nn
-import paddle.nn.functional as F
 from paddle.nn.initializer import KaimingNormal, Constant
 from paddle.nn import Conv2D, BatchNorm2D, ReLU, AdaptiveAvgPool2D, MaxPool2D
 from paddle.regularizer import L2Decay
 from paddle import ParamAttr
+
+from ppocr.modeling.backbones.rec_seq_pool import check_train_seq_len, rec_seq_pool
 
 kaiming_normal_ = KaimingNormal()
 zeros_ = Constant(value=0.0)
@@ -203,6 +204,8 @@ class PPHGNet(nn.Layer):
         class_expand: int=2048. Number of channels for the last 1x1 convolutional layer.
         dropout_prob: float. Parameters of dropout, 0.0 means dropout is not used.
         class_num: int=1000. The number of classes.
+        train_seq_len: int=40. Rec: CTC sequence length in training; -1 makes it
+            proportional to the width, as in inference (see rec_seq_pool).
     Returns:
         model: nn.Layer. Specific PPHGNet model depends on args.
     """
@@ -215,8 +218,11 @@ class PPHGNet(nn.Layer):
         in_channels=3,
         det=False,
         out_indices=None,
+        train_seq_len=40,
     ):
         super().__init__()
+        check_train_seq_len(train_seq_len)
+        self.train_seq_len = train_seq_len
         self.det = det
         self.out_indices = out_indices if out_indices is not None else [0, 1, 2, 3]
 
@@ -290,10 +296,7 @@ class PPHGNet(nn.Layer):
         if self.det:
             return out
 
-        if self.training:
-            x = F.adaptive_avg_pool2d(x, [1, 40])
-        else:
-            x = F.avg_pool2d(x, [3, 2])
+        x = rec_seq_pool(x, self.train_seq_len, self.training)
         return x
 
 
