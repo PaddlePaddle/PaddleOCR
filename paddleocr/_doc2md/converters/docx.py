@@ -263,7 +263,8 @@ def _detect_heading_level(para, body_font_size: float) -> int:
     style_name = para.style.name if para.style else ""
     if style_name.startswith("Heading"):
         try:
-            return int(style_name.split()[-1])
+            # Word has Heading 1-9, but Markdown ATX headings stop at level 6
+            return min(int(style_name.split()[-1]), 6)
         except ValueError:
             return 1
     if style_name == "Title":
