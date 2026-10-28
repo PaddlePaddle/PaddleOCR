@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+from html import escape
 from io import BytesIO
 from pathlib import Path
 from typing import Optional
@@ -252,7 +253,7 @@ class XlsxConverter(BaseConverter):
 
                         # Cell text
                         value = cell.value
-                        text = str(value) if value is not None else ""
+                        text = escape(str(value)) if value is not None else ""
                         # Cell-level font formatting (bold/italic/underline/strikethrough)
                         if text:
                             try:
