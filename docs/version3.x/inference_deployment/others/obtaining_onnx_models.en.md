@@ -53,3 +53,35 @@ The parameters are described as follows:
         </tr>
     </tbody>
 </table>
+
+## Running the ONNX Model Directly
+
+The recommended way to run an ONNX model is through the PaddleOCR API with `engine="onnxruntime"` (see [Inference Engine and Configuration](../local_inference/inference_engine.en.md)), which handles preprocessing and postprocessing for you. If you call the model directly, for example with `onnxruntime` or from another language, the input tensor must be prepared exactly as PaddleOCR does it. Each model directory contains an `inference.yml` file whose `PreProcess` and `PostProcess` sections list the steps and parameters for that model.
+
+For text detection models (for example, `PP-OCRv6_tiny_det`), the input is a `float32` tensor of shape `[1, 3, H, W]` (NCHW):
+
+- The image keeps the BGR channel order returned by `cv2.imread`, and `NormalizeImage` is applied to it as is: scale by `1/255`, then subtract `mean` and divide by `std`.
+- The image is transposed from HWC to CHW (`ToCHWImage`). Images from OpenCV, PIL, or NumPy are HWC by default.
+- Both `H` and `W` must be multiples of 32 (`DetResizeForTest`).
+
+The output is a text probability map of shape `[1, 1, H, W]` with the same size as the input. Pixels above `PostProcess.thresh` are text; `DBPostProcess` then turns these regions into boxes.
+
+```python
+import cv2
+import numpy as np
+import onnxruntime as ort
+
+sess = ort.InferenceSession("inference.onnx")
+
+img = cv2.imread("input.png")  # BGR, HWC, uint8
+h, w = img.shape[:2]
+# DetResizeForTest: both sides must be multiples of 32
+img = cv2.resize(img, (max(32, round(w / 32) * 32), max(32, round(h / 32) * 32)))
+x = (img.astype(np.float32) / 255.0 - [0.485, 0.456, 0.406]) / [0.229, 0.224, 0.225]
+x = x.transpose(2, 0, 1)[None].astype(np.float32)  # HWC -> NCHW
+
+prob = sess.run(None, {sess.get_inputs()[0].name: x})[0][0, 0]  # (H, W) text probability
+mask = (prob > 0.2).astype(np.uint8)  # PostProcess.thresh in inference.yml
+```
+
+If the detected regions look correct in shape but shifted and stretched, the HWC image was most likely passed without the transpose: each of the three "channels" then holds one third of the image rows, and text appears at roughly three times its coordinates within each third.

@@ -53,3 +53,35 @@ paddlex \
         </tr>
     </tbody>
 </table>
+
+## 直接运行 ONNX 模型
+
+推荐通过 PaddleOCR API 并设置 `engine="onnxruntime"` 来运行 ONNX 模型（参考 [推理引擎与配置](../local_inference/inference_engine.md)），前处理和后处理会自动完成。如果直接调用模型（例如使用 `onnxruntime`，或在其他语言中调用），输入张量必须按照 PaddleOCR 的方式准备。每个模型目录中都有 `inference.yml` 文件，其中的 `PreProcess` 和 `PostProcess` 部分列出了该模型的处理步骤和参数。
+
+对于文本检测模型（例如 `PP-OCRv6_tiny_det`），输入为形状为 `[1, 3, H, W]`（NCHW）的 `float32` 张量：
+
+- 图像保持 `cv2.imread` 返回的 BGR 通道顺序，并直接对其执行 `NormalizeImage`：先乘以 `1/255`，再减去 `mean` 并除以 `std`。
+- 图像需要从 HWC 转置为 CHW（`ToCHWImage`）。OpenCV、PIL 和 NumPy 读取的图像默认均为 HWC。
+- `H` 和 `W` 都必须是 32 的倍数（`DetResizeForTest`）。
+
+输出为形状为 `[1, 1, H, W]` 的文本概率图，尺寸与输入相同。大于 `PostProcess.thresh` 的像素为文本，`DBPostProcess` 再将这些区域转换为文本框。
+
+```python
+import cv2
+import numpy as np
+import onnxruntime as ort
+
+sess = ort.InferenceSession("inference.onnx")
+
+img = cv2.imread("input.png")  # BGR, HWC, uint8
+h, w = img.shape[:2]
+# DetResizeForTest: 宽和高都必须是 32 的倍数
+img = cv2.resize(img, (max(32, round(w / 32) * 32), max(32, round(h / 32) * 32)))
+x = (img.astype(np.float32) / 255.0 - [0.485, 0.456, 0.406]) / [0.229, 0.224, 0.225]
+x = x.transpose(2, 0, 1)[None].astype(np.float32)  # HWC -> NCHW
+
+prob = sess.run(None, {sess.get_inputs()[0].name: x})[0][0, 0]  # (H, W) 文本概率
+mask = (prob > 0.2).astype(np.uint8)  # inference.yml 中的 PostProcess.thresh
+```
+
+如果检测区域的形状看起来正确，但位置发生了偏移和拉伸，很可能是 HWC 图像未经转置就直接输入了模型：此时三个"通道"各自包含图像三分之一的行，文本在每一部分中出现在约三倍于原坐标的位置。
