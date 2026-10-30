@@ -961,6 +961,16 @@ python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs
         -o Global.pretrained_model=./PP-OCRv5_server_rec_pretrained.pdparams
 ```
 
+如果是在 `ppocrv5_dict.txt` 基础上增加字符，可以先用 [`tools/expand_rec_dict.py`](https://github.com/PaddlePaddle/PaddleOCR/blob/{{PADDLEOCR_GITHUB_REF}}/tools/expand_rec_dict.py) 转换预训练模型，保留原有字符的输出层参数，再用转换后的文件训练：
+
+```bash
+python3 tools/expand_rec_dict.py -c configs/rec/PP-OCRv5/PP-OCRv5_server_rec.yml \
+    -o Global.pretrained_model=./PP-OCRv5_server_rec_pretrained.pdparams \
+       Global.character_dict_path=./my_dict.txt \
+    --old_dict_path ./ppocr/utils/dict/ppocrv5_dict.txt \
+    --save_path ./output/PP-OCRv5_server_rec_my_dict
+```
+
 
 ### 4.3 模型评估
 

@@ -86,7 +86,7 @@ PaddleOCR提供的配置文件是在8卡训练（相当于总的batch size是`8*
 
 ### 3.1 数据选择
 
-* 数据量：不更换字典的情况下，建议至少准备5000张的文本识别数据集用于模型微调；如果更换了字典（不建议），需要的数量更多。
+* 数据量：不更换字典的情况下，建议至少准备5000张的文本识别数据集用于模型微调；如果更换了字典，需要的数量更多。如果只是在原字典基础上增加字符，可以先用 `tools/expand_rec_dict.py` 转换预训练模型，见 3.4 节。
 
 * 数据分布：建议分布与实测场景尽量一致。如果实测场景包含大量短文本，则训练数据中建议也包含较多短文本，如果实测场景对于空格识别效果要求较高，则训练数据中建议也包含较多带空格的文本内容。
 
@@ -224,4 +224,16 @@ Train:
 
 训练过程并非一蹴而就的，完成一个阶段的训练评估后，建议收集分析当前模型在真实场景中的 badcase，有针对性的调整训练数据比例，或者进一步新增合成数据。通过多次迭代训练，不断优化模型效果。
 
-如果在训练时修改了自定义字典，由于无法加载最后一层FC的参数，在迭代初期acc=0是正常的情况，不必担心，加载预训练模型依然可以加快模型收敛。
+如果在训练时修改了字典，与字典大小相关的输出层（CTC 的最后一层 FC，MultiHead 中 NRTR 的 embedding 和输出投影）无法加载，会随机初始化，迭代初期 acc 接近 0。
+
+如果只是在原字典基础上增加字符，可以在训练前用 `tools/expand_rec_dict.py` 转换预训练模型，原有字符保留原来的参数，新增字符用原有参数的平均值初始化：
+
+```bash linenums="1"
+python3 tools/expand_rec_dict.py -c configs/rec/PP-OCRv5/PP-OCRv5_server_rec.yml \
+    -o Global.pretrained_model=./PP-OCRv5_server_rec_pretrained.pdparams \
+       Global.character_dict_path=./my_dict.txt \
+    --old_dict_path ./ppocr/utils/dict/ppocrv5_dict.txt \
+    --save_path ./output/PP-OCRv5_server_rec_my_dict
+```
+
+`--old_dict_path` 为预训练模型使用的字典。训练时将 `Global.pretrained_model` 设为 `./output/PP-OCRv5_server_rec_my_dict.pdparams`。
