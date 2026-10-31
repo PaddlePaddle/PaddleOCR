@@ -11,6 +11,7 @@ Here we have sorted out the commonly used vertical multi-language OCR dataset da
 - [Bank credit card dataset](#bank-credit-card-dataset)
 - [Captcha dataset-Captcha](#captcha-dataset-captcha)
 - [multi-language dataset](#multi-language-datasetmulti-lingual-scene-text-detection-and-recognition)
+- [Guangdong place-name rare character dataset-GD-RareName](#guangdong-place-name-rare-character-dataset-gd-rarename)
 
 ## Chinese urban license plate dataset
 
@@ -70,3 +71,20 @@ Here we have sorted out the commonly used vertical multi-language OCR dataset da
     - In the recognition task, the training set contains 111998 samples.
 - **Download address**: The training set is large and can be downloaded in two parts. It can only be downloaded after registering on the website:
 [source](https://rrc.cvc.uab.es/?ch=15&com=downloads)
+
+## Guangdong place-name rare character dataset-GD-RareName
+
+- **Data source**: [Hugging Face](https://huggingface.co/datasets/Sandman4058/GD-RareName)
+- **Data introduction**: Village-name text line images cropped from the table-of-contents pages of *Quan Yue Cun Qing*, a survey of Guangdong's natural villages. It targets rare characters in Guangdong place names and was compiled by Eric Tseng.
+    - 122,420 real line images, split by volume into 60,501 train, 29,351 val and 32,568 test lines; lines from one volume appear in only one split. 3,849 lines were checked by hand. The other labels come from matching against a place-name database, agreement between two recognizers, or rules, and were not checked by hand.
+    - 72,739 synthetic line images of Guangdong place names containing the target characters, rendered with open-source fonts, for training only.
+    - 261 target characters: 184 are not in the PP-OCRv5/PP-OCRv6 recognition dictionaries (e.g. 𡌶, 𪢼, 𱗚, 㘵), and 77 are in the dictionaries but are often recognized as a similar-looking character (e.g. 埇→埔, 坣→坐, 塱→望, 榃→替). `charlist.csv` gives the code point, Unicode block and dictionary coverage of each character.
+    - A benchmark of 5,317 lines whose labels contain target characters (2,399 of them checked by hand), plus 2,000 random ordinary lines each from val and test for comparison, with an evaluation script. 3,021 of the 5,317 lines come from training volumes; to evaluate a model trained on this dataset, use only the 1,226 lines from val volumes and the 1,070 lines from test volumes, which is what the evaluation script does by default.
+    - On the 1,070 benchmark lines from test volumes, the PP-OCRv6 medium recognition model reads 34.2% of lines exactly right; after extending its dictionary and fine-tuning on the training part of this dataset, 98.9%.
+    - Images and labels are stored as parquet, with the image, text label, label source, volume and page of each line. The included `to_paddleocr.py` exports them as image files and label files for PaddleOCR training.
+
+    The image below shows hand-checked lines from the test and val splits, with their labels underneath:
+
+    ![](./images/gd_rarename_demo.png)
+
+- **Download address**: [Hugging Face](https://huggingface.co/datasets/Sandman4058/GD-RareName) (license: CC BY-NC 4.0)
