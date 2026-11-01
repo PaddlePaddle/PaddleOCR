@@ -86,7 +86,7 @@ For more information on inference methods, please refer to [Paddle Inference doc
 
 ### 3.1 Dataset
 
-* Dataset：If the dictionary is not changed, it is recommended to prepare at least 5,000 text recognition datasets for model fine-tuning; if the dictionary is changed (not recommended), more quantities are required.
+* Dataset：If the dictionary is not changed, it is recommended to prepare at least 5,000 text recognition datasets for model fine-tuning; if the dictionary is changed, more quantities are required. If you only add characters to the original dictionary, you can convert the pretrained model with `tools/expand_rec_dict.py` first, see section 3.4.
 
 * Data distribution: It is recommended that the distribution be as consistent as possible with the actual measurement scenario. If the actual scene contains a lot of short text, it is recommended to include more short text in the training data. If the actual scene has high requirements for the recognition effect of spaces, it is recommended to include more text content with spaces in the training data.
 
@@ -224,4 +224,16 @@ Train:
 
 The training process does not happen overnight. After completing a stage of training evaluation, it is recommended to collect and analyze the badcase of the current model in the real scene, adjust the proportion of training data in a targeted manner, or further add synthetic data. Through multiple iterations of training, the model effect is continuously optimized.
 
-If you modify the custom dictionary during training, since the parameters of the last layer of FC cannot be loaded, it is normal for acc=0 at the beginning of the iteration. Don't worry, loading the pre-trained model can still speed up the model convergence.
+If you change the dictionary, the output layers whose size depends on it (the last FC of CTC, and the NRTR embedding and output projection in MultiHead) cannot be loaded and are randomly initialized, so acc is close to 0 at the beginning of training.
+
+If you only add characters to the original dictionary, you can convert the pretrained model with `tools/expand_rec_dict.py` before training. Existing characters keep their parameters and new ones are initialized with the mean of the existing ones:
+
+```bash linenums="1"
+python3 tools/expand_rec_dict.py -c configs/rec/PP-OCRv5/PP-OCRv5_server_rec.yml \
+    -o Global.pretrained_model=./PP-OCRv5_server_rec_pretrained.pdparams \
+       Global.character_dict_path=./my_dict.txt \
+    --old_dict_path ./ppocr/utils/dict/ppocrv5_dict.txt \
+    --save_path ./output/PP-OCRv5_server_rec_my_dict
+```
+
+`--old_dict_path` is the dictionary the pretrained model was trained with. Then train with `Global.pretrained_model=./output/PP-OCRv5_server_rec_my_dict.pdparams`.

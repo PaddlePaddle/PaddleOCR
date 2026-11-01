@@ -939,6 +939,16 @@ python3 -m paddle.distributed.launch --gpus '0,1,2,3'  tools/train.py -c configs
         -o Global.pretrained_model=./PP-OCRv5_server_rec_pretrained.pdparams
 ```
 
+If you add characters to `ppocrv5_dict.txt`, you can convert the pretrained model with [`tools/expand_rec_dict.py`](https://github.com/PaddlePaddle/PaddleOCR/blob/{{PADDLEOCR_GITHUB_REF}}/tools/expand_rec_dict.py) first so the output layers keep the parameters of the existing characters, then train from the converted file:
+
+```bash
+python3 tools/expand_rec_dict.py -c configs/rec/PP-OCRv5/PP-OCRv5_server_rec.yml \
+    -o Global.pretrained_model=./PP-OCRv5_server_rec_pretrained.pdparams \
+       Global.character_dict_path=./my_dict.txt \
+    --old_dict_path ./ppocr/utils/dict/ppocrv5_dict.txt \
+    --save_path ./output/PP-OCRv5_server_rec_my_dict
+```
+
 ### 4.3 Model Evaluation
 
 You can evaluate the trained weights, such as `output/xxx/xxx.pdparams`, using the following command:
