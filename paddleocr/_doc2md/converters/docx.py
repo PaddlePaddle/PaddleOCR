@@ -832,7 +832,21 @@ def _get_content_width(doc) -> int:
 def _table_to_html(
     table, doc, image_counter: list, images: dict, content_width: int = 0
 ) -> str:
-    """Convert a python-docx Table to an HTML table, handling merged cells and inline images."""
+    """Convert a table, including nested tables, merged cells and inline images.
+
+    Args:
+        table: The python-docx Table to convert.
+        doc: The document containing the table and its image relationships.
+        image_counter: Mutable image counter shared with the document conversion.
+        images: Dictionary in which to store extracted image bytes.
+        content_width: Document content width in EMU, for image sizing.
+
+    Returns:
+        The table as HTML, or an empty string for a table without rows.
+    """
+    from docx.table import Table
+    from docx.text.paragraph import Paragraph
+
     grid = [[cell for cell in row.cells] for row in table.rows]
     nrows = len(grid)
     if nrows == 0:
@@ -862,7 +876,17 @@ def _table_to_html(
 
             cell = grid[i][j]
             content_parts = []
-            for para in cell.paragraphs:
+            for child in _flatten_body(cell._tc):
+                if child.tag == f"{_W}tbl":
+                    nested_html = _table_to_html(
+                        Table(child, cell), doc, image_counter, images, content_width
+                    )
+                    if nested_html:
+                        content_parts.append(nested_html)
+                    continue
+                if child.tag != f"{_W}p":
+                    continue
+                para = Paragraph(child, cell)
                 img_list = _extract_images_from_paragraph(para, doc, image_counter)
                 for filename, img_bytes, cx_emu in img_list:
                     rel_path = f"images/{filename}"
