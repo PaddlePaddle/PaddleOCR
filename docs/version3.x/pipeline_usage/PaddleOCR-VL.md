@@ -193,9 +193,9 @@ PaddleOCR-VL 支持 CLI 命令行方式和 Python API 两种使用方式，其�
 > IMPORTANT:
 > 本节所介绍的方法主要用于快速验证，其推理速度、显存占用及稳定性表现未必能满足生产环境的要求。**若需部署至生产环境，我们强烈建议使用专门的 VLM 推理服务**，具体方法请参考下一节。
 
-**选择 1.8 和启用几何矫正**
+**启用几何矫正**
 
-显式指定 `v1.8` 可使用搭配 PP-DocLayoutV4 的产线，省略版本时仍使用 `v1.6`。形变矫正默认关闭，只有版面模型输出 `warp_params` 时才会生效。
+默认使用搭配 PP-DocLayoutV4 的 `v1.8` 产线。需要使用旧版时可显式选择 `v1.6`。形变矫正默认关闭，只有版面模型输出 `warp_params` 时才会生效。
 
 ```bash
 paddleocr doc_parser -i page.png --pipeline_version v1.8 --use_layout_deform True
@@ -294,7 +294,7 @@ paddleocr doc_parser -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/
 <td><b>含义：</b>指定产线版本。<br/>
 <b>说明：</b>当前可选值为<code>"v1"</code>、<code>"v1.5"</code>、<code>"v1.6"</code> 和 <code>"v1.8"</code>。</td>
 <td><code>str</code></td>
-<td>"v1.6"</td>
+<td>"v1.8"</td>
 </tr>
 <tr>
 <td><code>layout_detection_model_name</code></td>
@@ -625,7 +625,7 @@ paddleocr doc_parser -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/
 </table>
 </details>
 
-运行结果会被打印到终端上，默认配置的 PaddleOCR-VL 的运行结果如下：
+运行结果会被打印到终端上。下面的示例展示输出结构。
 
 <details><summary> 👉点击展开</summary>
 <pre>
@@ -758,7 +758,7 @@ output = pipeline.predict(["imgs/file1.png", "imgs/file2.png", "imgs/file3.png"]
 <td><b>含义：</b>指定产线版本。<br/>
 <b>说明：</b>当前可选值为<code>"v1"</code>、<code>"v1.5"</code>、<code>"v1.6"</code> 和 <code>"v1.8"</code>。</td>
 <td><code>str</code></td>
-<td>"v1.6"</td>
+<td>"v1.8"</td>
 </tr>
 <tr>
 <td><code>layout_detection_model_name</code></td>
@@ -1676,7 +1676,7 @@ paddleocr genai_server --model_name PaddleOCR-VL-1.6-0.9B --backend vllm --port 
 可通过 `--vl_rec_backend` 指定后端类型（`vllm-server`、`sglang-server`、`fastdeploy-server`、`mlx-vlm-server` 或 `llama-cpp-server`），通过 `--vl_rec_server_url` 指定服务地址，例如：
 
 ```shell
-paddleocr doc_parser --input https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/paddleocr_vl_demo.png --vl_rec_backend vllm-server --vl_rec_server_url http://localhost:8118/v1
+paddleocr doc_parser --input https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/paddleocr_vl_demo.png --pipeline_version v1.6 --vl_rec_backend vllm-server --vl_rec_server_url http://localhost:8118/v1
 ```
 
 此外，可通过 `--vl_rec_api_model_name` 指定服务使用的模型名称，`--vl_rec_api_key` 指定鉴权使用的 API key。示例如下：
@@ -1686,6 +1686,7 @@ paddleocr doc_parser --input https://paddle-model-ecology.bj.bcebos.com/paddlex/
 ```shell
 paddleocr doc_parser \
     --input https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/paddleocr_vl_demo.png \
+    --pipeline_version v1.6 \
     --vl_rec_backend vllm-server \
     --vl_rec_server_url http://localhost:8000/v1 \
     --vl_rec_api_model_name 'PaddlePaddle/PaddleOCR-VL-1.6'
@@ -1720,7 +1721,11 @@ paddleocr doc_parser \
 创建 `PaddleOCRVL` 对象时传入 `vl_rec_backend` 指定后端类型（`vllm-server`、`sglang-server`、`fastdeploy-server`、`mlx-vlm-server` 或 `llama-cpp-server`）， `vl_rec_server_url` 指定服务地址，例如：
 
 ```python
-pipeline = PaddleOCRVL(vl_rec_backend="vllm-server", vl_rec_server_url="http://localhost:8118/v1")
+pipeline = PaddleOCRVL(
+    pipeline_version="v1.6",
+    vl_rec_backend="vllm-server",
+    vl_rec_server_url="http://localhost:8118/v1",
+)
 ```
 
 此外，可通过 `vl_rec_api_model_name` 指定服务使用的模型名称，`vl_rec_api_key` 指定鉴权使用的 API key。
@@ -1729,6 +1734,7 @@ pipeline = PaddleOCRVL(vl_rec_backend="vllm-server", vl_rec_server_url="http://l
 
 ```python
 pipeline = PaddleOCRVL(
+    pipeline_version="v1.6",
     vl_rec_backend="vllm-server",
     vl_rec_server_url="http://localhost:8000/v1",
     vl_rec_api_model_name="PaddlePaddle/PaddleOCR-VL-1.6",

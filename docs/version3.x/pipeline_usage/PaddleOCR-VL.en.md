@@ -353,9 +353,9 @@ PaddleOCR-VL supports both CLI and Python API usage. The CLI method is simpler a
 > IMPORTANT:
 > The methods introduced in this section are primarily for rapid validation. Their inference speed, memory usage, and stability may not meet the requirements of a production environment. **If deployment to a production environment is needed, we strongly recommend using a dedicated VLM inference service**. For specific methods, please refer to the next section.
 
-**Select 1.8 and enable layout deformation correction**
+**Enable layout deformation correction**
 
-Select `v1.8` explicitly to use the pipeline with PP-DocLayoutV4. The default pipeline version is `v1.6`. Correction is off by default and takes effect when the layout model returns `warp_params`.
+The default pipeline version is `v1.8`, which uses PP-DocLayoutV4. Select `v1.6` explicitly to use the previous pipeline. Correction is off by default and takes effect when the layout model returns `warp_params`.
 
 ```bash
 paddleocr doc_parser -i page.png --pipeline_version v1.8 --use_layout_deform True
@@ -455,7 +455,7 @@ If not set, the inference results will not be saved locally.</td>
     <b>Description:</b> The currently available values are <code>"v1"</code>, <code>"v1.5"</code>, <code>"v1.6"</code>, and <code>"v1.8"</code>.
   </td>
   <td><code>str</code></td>
-  <td>"v1.6"</td>
+  <td>"v1.8"</td>
 </tr>
 <tr>
 <td><code>layout_detection_model_name</code></td>
@@ -946,7 +946,7 @@ The above Python script performs the following steps:
     <b>Description:</b> The currently available values are <code>"v1"</code>, <code>"v1.5"</code>, <code>"v1.6"</code>, and <code>"v1.8"</code>.
   </td>
   <td><code>str</code></td>
-  <td>"v1.6"</td>
+  <td>"v1.8"</td>
 </tr>
 <tr>
 <td><code>layout_detection_model_name</code></td>
@@ -1887,7 +1887,7 @@ After launching the VLM inference service, the client can call the service throu
 Specify the backend type (`vllm-server`, `sglang-server`, `fastdeploy-server`, `mlx-vlm-server` or `llama-cpp-server`) using `--vl_rec_backend` and the service address using `--vl_rec_server_url`, for example:
 
 ```shell
-paddleocr doc_parser --input https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/paddleocr_vl_demo.png --vl_rec_backend vllm-server --vl_rec_server_url http://localhost:8118/v1
+paddleocr doc_parser --input https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/paddleocr_vl_demo.png --pipeline_version v1.6 --vl_rec_backend vllm-server --vl_rec_server_url http://localhost:8118/v1
 ```
 
 In addition, you can specify the model name used by the service via `--vl_rec_api_model_name`, and specify the API key used for authentication via `--vl_rec_api_key`. Examples are as follows:
@@ -1897,6 +1897,7 @@ Using a service started with the default parameters of `vllm serve`:
 ```shell
 paddleocr doc_parser \
     --input https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/paddleocr_vl_demo.png \
+    --pipeline_version v1.6 \
     --vl_rec_backend vllm-server \
     --vl_rec_server_url http://localhost:8000/v1 \
     --vl_rec_api_model_name 'PaddlePaddle/PaddleOCR-VL-1.6'
@@ -1931,7 +1932,11 @@ paddleocr doc_parser \
 When creating a `PaddleOCRVL` object, specify the backend type (`vllm-server`, `sglang-server`, `fastdeploy-server`, `mlx-vlm-server` or `llama-cpp-server`) using `vl_rec_backend` and the service address using `vl_rec_server_url`, for example:
 
 ```python
-pipeline = PaddleOCRVL(vl_rec_backend="vllm-server", vl_rec_server_url="http://localhost:8118/v1")
+pipeline = PaddleOCRVL(
+    pipeline_version="v1.6",
+    vl_rec_backend="vllm-server",
+    vl_rec_server_url="http://localhost:8118/v1",
+)
 ```
 
 In addition, you can specify the model name used by the service via `vl_rec_api_model_name`, and specify the API key used for authentication via `vl_rec_api_key`.
@@ -1940,7 +1945,8 @@ Using a service started with the default parameters of `vllm serve`:
 
 ```python
 pipeline = PaddleOCRVL(
-    vl_rec_backend="vllm-server", 
+    pipeline_version="v1.6",
+    vl_rec_backend="vllm-server",
     vl_rec_server_url="http://localhost:8000/v1",
     vl_rec_api_model_name="PaddlePaddle/PaddleOCR-VL-1.6",
 )
