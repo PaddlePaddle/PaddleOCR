@@ -342,7 +342,14 @@ class PptxConverter(BaseConverter):
                 slide_parts.append(f"{indent}- {text}")
 
     def _chart_to_html(self, chart) -> str:
-        """Extract chart data as an HTML table."""
+        """Extract chart data as an HTML table.
+
+        Args:
+            chart: The python-pptx Chart to convert.
+
+        Returns:
+            An HTML table when data is available, or a bracketed chart type.
+        """
         try:
             chart_type_val = chart.chart_type.value if chart.chart_type else 0
             chart_type_name = _CHART_TYPE_NAMES.get(chart_type_val, "Chart")
@@ -404,11 +411,7 @@ class PptxConverter(BaseConverter):
             series_values = []
             for idx, series in enumerate(series_list):
                 try:
-                    name = (
-                        (series.tx.text if series.tx else "")
-                        or val_ax_title
-                        or f"Series{idx+1}"
-                    )
+                    name = series.name or val_ax_title or f"Series{idx+1}"
                 except Exception:
                     name = val_ax_title or f"Series{idx+1}"
                 series_names.append(name)
