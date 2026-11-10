@@ -193,6 +193,31 @@ PaddleOCR-VL 支持 CLI 命令行方式和 Python API 两种使用方式，其�
 > IMPORTANT:
 > 本节所介绍的方法主要用于快速验证，其推理速度、显存占用及稳定性表现未必能满足生产环境的要求。**若需部署至生产环境，我们强烈建议使用专门的 VLM 推理服务**，具体方法请参考下一节。
 
+**选择 1.8 和启用几何矫正**
+
+显式指定 `v1.8` 可使用搭配 PP-DocLayoutV4 的产线，省略版本时仍使用 `v1.6`。形变矫正默认关闭，只有版面模型输出 `warp_params` 时才会生效。
+
+```bash
+paddleocr doc_parser -i page.png --pipeline_version v1.8 --use_layout_deform True
+```
+
+```python
+from paddleocr import PaddleOCRVL
+
+pipeline = PaddleOCRVL(pipeline_version="v1.8")
+results = pipeline.predict("page.png", use_layout_deform=True)
+```
+
+以下参数可通过 CLI 或构造函数设置，也可以在 `predict` 或 `predict_iter` 中为单次调用覆盖。Python 参数传入 `None` 时沿用产线配置。
+
+| 参数 | 作用 | 1.8 配置默认值 |
+|---|---|---|
+| `use_layout_deform` | 矫正送入 VL 识别的裁图 | `False` |
+| `layout_deform_conf_thresh` | 页面方向预测的最低置信度 | `0.9` |
+| `layout_deform_min_roll` | 完整矫正的最小残余旋转角，单位为度 | `2.0` |
+| `layout_deform_min_shear` | 完整矫正的最小剪切角，单位为度 | `2.0` |
+| `layout_deform_min_keystone` | 完整矫正的最小梯形畸变角，单位为度 | `2.0` |
+
 ### 2.1 命令行方式体验
 
 首次运行时，PaddleOCR-VL 会自动下载官方模型，请确保当前环境可以联网，并预留一定的下载和初始化时间。
@@ -267,7 +292,7 @@ paddleocr doc_parser -i https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/
 <tr>
 <td><code>pipeline_version</code></td>
 <td><b>含义：</b>指定产线版本。<br/>
-<b>说明：</b>当前可选值为<code>"v1"</code>、<code>"v1.5"</code>和<code>"v1.6"</code>。</td>
+<b>说明：</b>当前可选值为<code>"v1"</code>、<code>"v1.5"</code>、<code>"v1.6"</code> 和 <code>"v1.8"</code>。</td>
 <td><code>str</code></td>
 <td>"v1.6"</td>
 </tr>
@@ -731,7 +756,7 @@ output = pipeline.predict(["imgs/file1.png", "imgs/file2.png", "imgs/file3.png"]
 <tr>
 <td><code>pipeline_version</code></td>
 <td><b>含义：</b>指定产线版本。<br/>
-<b>说明：</b>当前可选值为<code>"v1"</code>、<code>"v1.5"</code>和<code>"v1.6"</code>。</td>
+<b>说明：</b>当前可选值为<code>"v1"</code>、<code>"v1.5"</code>、<code>"v1.6"</code> 和 <code>"v1.8"</code>。</td>
 <td><code>str</code></td>
 <td>"v1.6"</td>
 </tr>

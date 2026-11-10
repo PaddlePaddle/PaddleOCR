@@ -353,6 +353,31 @@ PaddleOCR-VL supports both CLI and Python API usage. The CLI method is simpler a
 > IMPORTANT:
 > The methods introduced in this section are primarily for rapid validation. Their inference speed, memory usage, and stability may not meet the requirements of a production environment. **If deployment to a production environment is needed, we strongly recommend using a dedicated VLM inference service**. For specific methods, please refer to the next section.
 
+**Select 1.8 and enable layout deformation correction**
+
+Select `v1.8` explicitly to use the pipeline with PP-DocLayoutV4. The default pipeline version is `v1.6`. Correction is off by default and takes effect when the layout model returns `warp_params`.
+
+```bash
+paddleocr doc_parser -i page.png --pipeline_version v1.8 --use_layout_deform True
+```
+
+```python
+from paddleocr import PaddleOCRVL
+
+pipeline = PaddleOCRVL(pipeline_version="v1.8")
+results = pipeline.predict("page.png", use_layout_deform=True)
+```
+
+Set these options through the CLI or constructor, or override them for a single call to `predict` or `predict_iter`. In Python, passing `None` uses the pipeline configuration.
+
+| Parameter | Effect | Default in the 1.8 config |
+|---|---|---|
+| `use_layout_deform` | Rectifies crops before VL recognition | `False` |
+| `layout_deform_conf_thresh` | Minimum page orientation confidence | `0.9` |
+| `layout_deform_min_roll` | Minimum residual roll for full correction, in degrees | `2.0` |
+| `layout_deform_min_shear` | Minimum shear for full correction, in degrees | `2.0` |
+| `layout_deform_min_keystone` | Minimum keystone distortion angle for full correction, in degrees | `2.0` |
+
 ### 2.1 Command Line Usage
 
 When you run PaddleOCR-VL for the first time, it will automatically download the official model files. Please make sure the current environment has internet access and allow some extra time for downloading and initialization.
@@ -427,7 +452,7 @@ If not set, the inference results will not be saved locally.</td>
   <td><code>pipeline_version</code></td>
   <td>
     <b>Meaning:</b> Specifies the pipeline version.<br/>
-    <b>Description:</b> The currently available values are <code>"v1"</code>, <code>"v1.5"</code>, and <code>"v1.6"</code>.
+    <b>Description:</b> The currently available values are <code>"v1"</code>, <code>"v1.5"</code>, <code>"v1.6"</code>, and <code>"v1.8"</code>.
   </td>
   <td><code>str</code></td>
   <td>"v1.6"</td>
@@ -918,7 +943,7 @@ The above Python script performs the following steps:
   <td><code>pipeline_version</code></td>
   <td>
     <b>Meaning:</b> Specifies the pipeline version.<br/>
-    <b>Description:</b> The currently available values are <code>"v1"</code>, <code>"v1.5"</code>, and <code>"v1.6"</code>.
+    <b>Description:</b> The currently available values are <code>"v1"</code>, <code>"v1.5"</code>, <code>"v1.6"</code>, and <code>"v1.8"</code>.
   </td>
   <td><code>str</code></td>
   <td>"v1.6"</td>
