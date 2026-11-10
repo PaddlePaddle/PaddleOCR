@@ -35,8 +35,11 @@ SUPPORTED_MODELS = frozenset(
         "PaddleOCR-VL",
         "PaddleOCR-VL-1.5",
         "PaddleOCR-VL-1.6",
+        "PaddleOCR-VL-1.8",
     }
 )
+
+_LOCAL_ONLY_MODELS = frozenset({"PaddleOCR-VL-1.8"})
 
 _MODEL_TOOLS: dict[str, str] = {
     "PP-OCRv5": "ocr",
@@ -46,6 +49,7 @@ _MODEL_TOOLS: dict[str, str] = {
     "PaddleOCR-VL": "paddleocr_vl",
     "PaddleOCR-VL-1.5": "paddleocr_vl",
     "PaddleOCR-VL-1.6": "paddleocr_vl",
+    "PaddleOCR-VL-1.8": "paddleocr_vl",
 }
 
 
@@ -58,8 +62,11 @@ def resolve_model(model: Optional[str], provider: str) -> str:
     """Validate and normalize the user-facing model name."""
     normalized = (model or DEFAULT_MODEL).strip()
     normalized_provider = normalize_provider(provider)
-    if normalized not in SUPPORTED_MODELS:
-        supported = ", ".join(sorted(SUPPORTED_MODELS))
+    supported_models = SUPPORTED_MODELS
+    if normalized_provider is not InferenceProvider.LOCAL:
+        supported_models = supported_models - _LOCAL_ONLY_MODELS
+    if normalized not in supported_models:
+        supported = ", ".join(sorted(supported_models))
         raise ValueError(
             f"Unsupported model: {normalized!r}. Supported models: {supported}."
         )
