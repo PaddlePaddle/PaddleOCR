@@ -41,16 +41,20 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: "3.10"
-      - name: Build PaddleX wheel
+      - name: Prepare PaddleX wheel
+        env:
+          PADDLEX_TEST_WHEEL: ${{ vars.PADDLEX_TEST_WHEEL }}
         run: |
-          PADDLEX_SERIES=$(grep -oE 'paddlex\[[^]]+\]>=[0-9]+\.[0-9]+' pyproject.toml | head -1 | grep -oE '[0-9]+\.[0-9]+') || PADDLEX_SERIES=""
-          if [ -z "$PADDLEX_SERIES" ]; then
-            echo "Failed to determine PaddleX version requirement from pyproject.toml" >&2
-            exit 1
+          PADDLEX_SOURCE="${PADDLEX_TEST_WHEEL}"
+          if [ -z "$PADDLEX_SOURCE" ]; then
+            PADDLEX_SERIES=$(grep -oE 'paddlex\[[^]]+\]>=[0-9]+\.[0-9]+' pyproject.toml | head -1 | grep -oE '[0-9]+\.[0-9]+') || PADDLEX_SERIES=""
+            if [ -z "$PADDLEX_SERIES" ]; then
+              echo "Failed to determine PaddleX version requirement from pyproject.toml" >&2
+              exit 1
+            fi
+            PADDLEX_SOURCE="paddlex@git+https://github.com/PaddlePaddle/PaddleX.git@release/${PADDLEX_SERIES}"
           fi
-          PADDLEX_BRANCH="release/${PADDLEX_SERIES}"
-          echo "Building PaddleX from branch: ${PADDLEX_BRANCH}"
-          python -m pip wheel --no-deps --wheel-dir paddlex-wheel "paddlex@git+https://github.com/PaddlePaddle/PaddleX.git@${PADDLEX_BRANCH}"
+          python -m pip wheel --no-deps --wheel-dir paddlex-wheel "$PADDLEX_SOURCE"
       - uses: actions/upload-artifact@v4
         with:
           name: paddlex-wheel
