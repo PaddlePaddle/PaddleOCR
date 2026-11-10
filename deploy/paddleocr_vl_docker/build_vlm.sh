@@ -6,10 +6,10 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "${SCRIPT_DIR}/pip_version_arg.sh"
 
 device_type='nvidia-gpu'
-backend='vllm'
+backend=''
 build_for_offline='false'
-paddleocr_version='3.4.0'
-paddlex_version='3.4.0'
+paddleocr_version='3.8.0'
+paddlex_version='3.8.0'
 platform='linux/amd64'
 action='load'
 registry='ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle'
@@ -21,7 +21,7 @@ Usage: $(basename "$0") [OPTIONS]
 
 Options:
   --device-type <type>      Device type (nvidia-gpu|nvidia-gpu-sm120|hygon-dcu|kunlunxin-xpu|metax-gpu|iluvatar-gpu|huawei-npu|intel-gpu|amd-gpu) [default: ${device_type}]
-  --backend <backend>       Backend type (vllm|fastdeploy) [default: ${backend}]
+  --backend <backend>       Backend type (vllm|fastdeploy) [default: device Dockerfile]
   --offline                 Build offline version
   --ppocr-version <spec>    PaddleOCR version or URL [default: ${paddleocr_version}]
   --pdx-version <spec>      PaddleX version or URL [default: ${paddlex_version}]
@@ -178,6 +178,10 @@ if [ ! -f "${dockerfile}" ]; then
     echo "Error: Dockerfile not found: ${dockerfile}" >&2
     exit 1
 fi
+if [ -z "${backend}" ]; then
+    backend="$(sed -n 's/^ARG BACKEND=//p' "${dockerfile}")"
+fi
+
 
 revision="$(git rev-parse --short HEAD)"
 image_version="${revision}-ppocr$(version_tag_label "${paddleocr_version}")-pdx$(version_tag_label "${paddlex_version}")"

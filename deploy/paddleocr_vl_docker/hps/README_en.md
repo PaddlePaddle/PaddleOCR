@@ -2,7 +2,7 @@
 
 [简体中文](README.md)
 
-This directory provides a high-performance service deployment solution for the **PaddleOCR-VL series** with concurrent request processing support. It applies to VL pipeline releases such as `PaddleOCR-VL`, `PaddleOCR-VL-1.5`, and `PaddleOCR-VL-1.6`.
+This directory provides a high-performance service deployment solution for the **PaddleOCR-VL series** with concurrent request processing support. It applies to VL pipeline releases such as `PaddleOCR-VL`, `PaddleOCR-VL-1.5`, `PaddleOCR-VL-1.6`, and `PaddleOCR-VL-1.8`.
 
 > This solution currently only supports NVIDIA GPUs. Support for other inference devices is still being developed.
 
@@ -92,14 +92,16 @@ This solution reuses the PaddleX [High-Stability Serving](https://paddlepaddle.g
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `HPS_PIPELINE_NAME` | `PaddleOCR-VL-1.6` | Pipeline name |
-| `HPS_PADDLEX_VERSION` | `3.6` | PaddleX version (major.minor only, e.g. `3.6`). Drives both the Triton base image tag (`paddlex${HPS_PADDLEX_VERSION}-gpu`) and the SDK release directory (`v${HPS_PADDLEX_VERSION}`), keeping them in sync |
-| `HPS_SDK_DIR` | `paddlex_hps_PaddleOCR-VL-1.6_sdk` | Extracted SDK directory, following `paddlex_hps_${HPS_PIPELINE_NAME}_sdk` |
+| `HPS_PIPELINE_NAME` | `PaddleOCR-VL-1.8` | Pipeline name |
+| `HPS_PADDLEX_VERSION` | `3.8` | PaddleX version (major.minor only, e.g. `3.8`). Drives both the Triton base image tag (`paddlex${HPS_PADDLEX_VERSION}-gpu`) and the SDK release directory (`v${HPS_PADDLEX_VERSION}`), keeping them in sync |
+| `HPS_SDK_DIR` | `paddlex_hps_PaddleOCR-VL-1.8_sdk` | Extracted SDK directory, following `paddlex_hps_${HPS_PIPELINE_NAME}_sdk` |
+| `HPS_VLM_IMAGE` | `paddleocr-genai-vllm-server:paddleocr3.8-nvidia-gpu` | VLM server image. Set this to use a candidate image. |
 
 Common examples:
 
 | Target release | `HPS_PIPELINE_NAME` | `HPS_SDK_DIR` |
 |----------------|-----------------|---------------|
+| PaddleOCR-VL-1.8 | `PaddleOCR-VL-1.8` | `paddlex_hps_PaddleOCR-VL-1.8_sdk` |
 | PaddleOCR-VL-1.6 | `PaddleOCR-VL-1.6` | `paddlex_hps_PaddleOCR-VL-1.6_sdk` |
 | PaddleOCR-VL-1.5 | `PaddleOCR-VL-1.5` | `paddlex_hps_PaddleOCR-VL-1.5_sdk` |
 | PaddleOCR-VL (v1) | `PaddleOCR-VL` | `paddlex_hps_PaddleOCR-VL_sdk` |

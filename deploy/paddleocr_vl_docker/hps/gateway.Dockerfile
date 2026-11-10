@@ -10,7 +10,7 @@ WORKDIR /app
 # Copy gateway application
 COPY gateway .
 
-ARG HPS_SDK_DIR=paddlex_hps_PaddleOCR-VL-1.6_sdk
+ARG HPS_SDK_DIR=paddlex_hps_PaddleOCR-VL-1.8_sdk
 
 # Install Python dependencies
 RUN --mount=type=bind,source=${HPS_SDK_DIR}/client,target=/tmp/sdk \
