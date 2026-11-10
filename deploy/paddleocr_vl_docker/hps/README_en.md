@@ -15,7 +15,7 @@ Client → FastAPI Gateway → Triton Server → vLLM Server
 | Component       | Description                                                                                                                 |
 | -----------------| -----------------------------------------------------------------------------------------------------------------------------|
 | FastAPI Gateway | Unified access point, simplified client calls, concurrency control                                                          |
-| Triton Server   | Layout analysis model (such as PP-DocLayoutV3) and pipeline orchestration; model management, dynamic batching, inference scheduling |
+| Triton Server   | Layout analysis model (such as PP-DocLayoutV4) and pipeline orchestration; model management, dynamic batching, inference scheduling |
 | vLLM Server     | VLM, continuous batching inference                                                                                            |
 
 **Triton Models:**

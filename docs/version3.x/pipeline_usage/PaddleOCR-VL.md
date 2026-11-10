@@ -1928,7 +1928,7 @@ Docker Compose 通过读取 `.env` 和 `compose.yaml` 文件中配置，先后�
     ...
     volumes:
       - /path/to/your_config.yaml:/home/paddleocr/vlm_server_config.yaml
-    command: paddleocr genai_server --model_name PaddleOCR-VL-1.6-0.9B --host 0.0.0.0 --port 8118 --backend vllm --backend_config /home/paddleocr/vlm_server_config.yaml
+    command: paddleocr genai_server --model_name PaddleOCR-VL-1.8-0.9B --host 0.0.0.0 --port 8118 --backend vllm --backend_config /home/paddleocr/vlm_server_config.yaml
     ...
 ```
 
