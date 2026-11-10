@@ -39,7 +39,7 @@ SUPPORTED_MODELS = frozenset(
     }
 )
 
-_LOCAL_ONLY_MODELS = frozenset({"PaddleOCR-VL-1.8"})
+_AISTUDIO_UNSUPPORTED_MODELS = frozenset({"PaddleOCR-VL-1.8"})
 
 _MODEL_TOOLS: dict[str, str] = {
     "PP-OCRv5": "ocr",
@@ -63,8 +63,8 @@ def resolve_model(model: Optional[str], provider: str) -> str:
     normalized = (model or DEFAULT_MODEL).strip()
     normalized_provider = normalize_provider(provider)
     supported_models = SUPPORTED_MODELS
-    if normalized_provider is not InferenceProvider.LOCAL:
-        supported_models = supported_models - _LOCAL_ONLY_MODELS
+    if normalized_provider is InferenceProvider.AISTUDIO:
+        supported_models = supported_models - _AISTUDIO_UNSUPPORTED_MODELS
     if normalized not in supported_models:
         supported = ", ".join(sorted(supported_models))
         raise ValueError(

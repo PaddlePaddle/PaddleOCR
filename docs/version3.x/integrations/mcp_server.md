@@ -17,13 +17,13 @@ PaddleOCR 提供轻量级的 [Model Context Protocol（MCP）](https://modelcont
     | --- | --- | --- |
     | `PP-OCRv5`、`PP-OCRv5-latin`、`PP-OCRv6` | `ocr` | 对图像和 PDF 文件进行文本检测与识别。 |
     | `PP-StructureV3` | `pp_structurev3` | 从图像或 PDF 文件中识别和提取文本块、标题、段落、图片、表格以及其他版面元素，将输入转换为 Markdown 文档。 |
-    | `PaddleOCR-VL`、`PaddleOCR-VL-1.5`、`PaddleOCR-VL-1.6`、`PaddleOCR-VL-1.8`（仅本地） | `paddleocr_vl` | 使用基于多模态大模型的方案进行版面解析，将输入转换为 Markdown 文档。 |
+    | `PaddleOCR-VL`、`PaddleOCR-VL-1.5`、`PaddleOCR-VL-1.6`、`PaddleOCR-VL-1.8`（本地及自建 API） | `paddleocr_vl` | 使用基于多模态大模型的方案进行版面解析，将输入转换为 Markdown 文档。 |
 
 - **支持的推理方式**
     - **本地推理**：在本机直接运行 PaddleOCR 产线。此方式对本地环境与计算机性能有一定要求，适用于需要离线使用、对数据隐私有严格要求的场景。
     - **官方 API**：调用 PaddleOCR 官方提供的 API。此方式适合快速体验功能、快速验证方案等，也适用于零代码开发场景。
     - **千帆 API**：调用百度智能云千帆大模型平台提供的 API。
-    - **自建 API**：调用用户自建的 PaddleOCR 推理服务。此方式具备服务化部署优势及高度灵活性，适用于需要自定义服务配置的场景，同时也适用于对数据隐私有严格要求的场景。**目前暂时只支持基础服务化部署方案。**
+    - **自建 API**：调用用户自建的 PaddleOCR 推理服务。实际使用的产线版本由服务端配置决定。此方式具备服务化部署优势及高度灵活性，适用于需要自定义服务配置的场景，同时也适用于对数据隐私有严格要求的场景。**目前暂时只支持基础服务化部署方案。**
 
 ## 示例：
 
@@ -416,7 +416,7 @@ paddleocr_mcp --model PP-OCRv5 --ppocr_source self_hosted --self-hosted-base-url
 
 | 环境变量 | 命令行参数 | 类型 | 描述 | 可选值 | 默认值 |
 |:---------|:-----------|:-----|:-----|:-------|:-------|
-| `PADDLEOCR_MCP_MODEL` | `--model` | `str` | 要运行的模型。MCP 会根据模型自动选择对应的工具。 | `"PP-OCRv5"`，`"PP-OCRv5-latin"`，`"PP-OCRv6"`，`"PP-StructureV3"`，`"PaddleOCR-VL"`，`"PaddleOCR-VL-1.5"`，`"PaddleOCR-VL-1.6"`，`"PaddleOCR-VL-1.8"`（仅本地） | `"PP-OCRv6"` |
+| `PADDLEOCR_MCP_MODEL` | `--model` | `str` | 要运行的模型。MCP 会根据模型自动选择对应的工具。 | `"PP-OCRv5"`，`"PP-OCRv5-latin"`，`"PP-OCRv6"`，`"PP-StructureV3"`，`"PaddleOCR-VL"`，`"PaddleOCR-VL-1.5"`，`"PaddleOCR-VL-1.6"`，`"PaddleOCR-VL-1.8"`（本地及自建 API） | `"PP-OCRv6"` |
 | `PADDLEOCR_MCP_PPOCR_SOURCE` | `--ppocr_source` | `str` | PaddleOCR能力来源。 | `"local"`（本地推理），`"aistudio"`（官方 API），`"qianfan"`（千帆 API），`"self_hosted"`（自建 API） | `"local"` |
 | `PADDLEOCR_MCP_AISTUDIO_BASE_URL` | `--aistudio-base-url` | `str` | AI Studio API 基础 URL（`aistudio` 推理方式下可选）。 | - | `None` |
 | `PADDLEOCR_MCP_QIANFAN_BASE_URL` | `--qianfan-base-url` | `str` | 千帆 API 基础 URL（`qianfan` 推理方式下可选）。 | - | `https://qianfan.baidubce.com/v2/ocr` |
