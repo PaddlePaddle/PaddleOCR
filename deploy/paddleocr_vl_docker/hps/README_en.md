@@ -28,10 +28,11 @@ Client → FastAPI Gateway → Triton Server → vLLM Server
 ## Requirements
 
 - x64 CPU
-- NVIDIA GPU, Compute Capability >= 8.0 and < 10.0
-- NVIDIA driver supporting CUDA 12.6
+- An NVIDIA GPU and a driver compatible with both inference containers. The Triton pipeline base image uses CUDA 11.8, and the shared vLLM image uses CUDA 12.9.
 - Docker >= 19.03
 - Docker Compose >= 2.0
+
+The default Compose setup runs the Triton pipeline and vLLM on the same GPU. Compatibility depends on both containers. Existing HPS deployments use GPUs with compute capability 8.0 through 9.x. PaddleOCR-VL 1.8 passed a single-GPU `/layout-parsing` test on a 32 GB V100 (CC 7.0, driver 550.54.14) using the `paddlex3.7-gpu` base image, PaddleX 3.8.0 wheel, 1.8 SDK, and vLLM 0.18.1 in FP16. Validate other GPU models end to end with the Triton and VLM images you plan to deploy.
 
 ## Quick Start
 
@@ -95,7 +96,7 @@ This solution reuses the PaddleX [High-Stability Serving](https://paddlepaddle.g
 | `HPS_PIPELINE_NAME` | `PaddleOCR-VL-1.8` | Pipeline name |
 | `HPS_PADDLEX_VERSION` | `3.8` | PaddleX version (major.minor only, e.g. `3.8`). Drives both the Triton base image tag (`paddlex${HPS_PADDLEX_VERSION}-gpu`) and the SDK release directory (`v${HPS_PADDLEX_VERSION}`), keeping them in sync |
 | `HPS_SDK_DIR` | `paddlex_hps_PaddleOCR-VL-1.8_sdk` | Extracted SDK directory, following `paddlex_hps_${HPS_PIPELINE_NAME}_sdk` |
-| `HPS_VLM_IMAGE` | `paddleocr-genai-vllm-server:paddleocr3.8-nvidia-gpu` | VLM server image. Set this to use a candidate image. |
+| `HPS_VLM_IMAGE` | `paddleocr-genai-vllm-server:paddleocr3.8-nvidia-gpu` | Shared NVIDIA vLLM server image. Set this to use a candidate image. |
 
 Common examples:
 

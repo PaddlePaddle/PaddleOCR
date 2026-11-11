@@ -25,7 +25,7 @@ services:
       test: ["CMD-SHELL", "curl -f http://localhost:8080/health || exit 1"]
 
   paddleocr-vlm-server:
-    image: ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-${VLM_BACKEND:-vllm}-server:${VLM_IMAGE_TAG_SUFFIX:-paddleocr3.8-nvidia-gpu-sm120}
+    image: ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-${VLM_BACKEND:-vllm}-server:${VLM_IMAGE_TAG_SUFFIX:-paddleocr3.8-nvidia-gpu}
     container_name: paddleocr-vlm-server
     deploy:
       resources:

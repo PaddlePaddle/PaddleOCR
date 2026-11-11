@@ -1,7 +1,8 @@
 ARG BACKEND=vllm
+ARG VLLM_BASE_IMAGE=ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddlex-genai-vllm-server:latest
 
 
-FROM ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddlex-genai-vllm-server:latest AS base-vllm
+FROM ${VLLM_BASE_IMAGE} AS base-vllm
 
 
 FROM ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/fastdeploy-cuda-12.6:2.3.0 AS base-fastdeploy
@@ -11,6 +12,8 @@ FROM base-${BACKEND}
 
 ARG PADDLEOCR_VERSION=">=3.8.0,<3.9.0"
 ARG PADDLEX_VERSION=">=3.8.0,<3.9.0"
+ARG PIP_INDEX_URL
+ARG PIP_TRUSTED_HOST
 RUN --mount=type=cache,target=/root/.cache/pip \
     python -m pip install "paddleocr${PADDLEOCR_VERSION}" "paddlex${PADDLEX_VERSION}"
 

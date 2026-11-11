@@ -20,7 +20,7 @@ show_usage() {
 Usage: $(basename "$0") [OPTIONS]
 
 Options:
-  --device-type <type>      Device type (nvidia-gpu|nvidia-gpu-sm120|hygon-dcu|kunlunxin-xpu|metax-gpu|iluvatar-gpu|huawei-npu|intel-gpu|amd-gpu) [default: ${device_type}]
+  --device-type <type>      Device type (nvidia-gpu|hygon-dcu|kunlunxin-xpu|metax-gpu|iluvatar-gpu|huawei-npu|intel-gpu|amd-gpu) [default: ${device_type}]
   --backend <backend>       Backend type (vllm|fastdeploy) [default: device Dockerfile]
   --offline                 Build offline version
   --ppocr-version <spec>    PaddleOCR version or URL [default: ${paddleocr_version}]
@@ -34,6 +34,11 @@ Options:
   --registry <registry>     Custom image registry [default: ${registry}]
   --builder <name>          Buildx builder name (override default)
   -h, --help               Show this help message
+
+Environment:
+  VLLM_BASE_IMAGE           Override the NVIDIA vLLM base image
+  PIP_INDEX_URL, PIP_TRUSTED_HOST
+                            Override the pip index settings for NVIDIA images
 
 Examples:
   $0 --device-type nvidia-gpu --backend vllm --action push
@@ -54,7 +59,7 @@ while [[ $# -gt 0 ]]; do
             shift
             shift
             case "${device_type}" in
-                nvidia-gpu|nvidia-gpu-sm120|hygon-dcu|kunlunxin-xpu|metax-gpu|iluvatar-gpu|huawei-npu|intel-gpu|amd-gpu)
+                nvidia-gpu|hygon-dcu|kunlunxin-xpu|metax-gpu|iluvatar-gpu|huawei-npu|intel-gpu|amd-gpu)
                     ;;
                 *)
                     echo "Error: Unknown device type: ${device_type}" >&2
@@ -205,6 +210,9 @@ build_args=(
     '--build-arg' "PADDLEOCR_VERSION=${paddleocr_pip_suffix}"
     '--build-arg' "PADDLEX_VERSION=${paddlex_pip_suffix}"
     '--build-arg' "BACKEND=${backend}"
+    '--build-arg' VLLM_BASE_IMAGE
+    '--build-arg' PIP_INDEX_URL
+    '--build-arg' PIP_TRUSTED_HOST
     '--build-arg' "http_proxy=${http_proxy:-}"
     '--build-arg' "https_proxy=${https_proxy:-}"
     '--build-arg' "no_proxy=${no_proxy:-}"

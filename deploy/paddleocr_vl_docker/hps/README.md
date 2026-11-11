@@ -28,10 +28,11 @@
 ## 环境要求
 
 - x64 CPU
-- NVIDIA GPU，Compute Capability >= 8.0 且 < 10.0
-- NVIDIA 驱动支持 CUDA 12.6
+- NVIDIA GPU 及与两个推理容器兼容的驱动。Triton 产线的 GPU 基础镜像使用 CUDA 11.8，统一的 vLLM 镜像使用 CUDA 12.9。
 - Docker >= 19.03
 - Docker Compose >= 2.0
+
+默认 Compose 将 Triton 产线和 vLLM 部署在同一张 GPU 上，硬件支持范围取决于两者的组合。既有 HPS 部署使用 CC 8.0 至 9.x 的 GPU。PaddleOCR-VL 1.8 已在 32 GB V100（CC 7.0、驱动 550.54.14）上通过单卡 `/layout-parsing` 验证，测试使用 `paddlex3.7-gpu` 基础镜像、PaddleX 3.8.0 wheel、1.8 SDK 和 vLLM 0.18.1 FP16。其他 GPU 型号以所用 Triton 和 VLM 镜像的端到端验证结果为准。
 
 ## 快速开始
 
@@ -95,7 +96,7 @@ export HPS_MAX_CONCURRENT_INFERENCE_REQUESTS=8
 | `HPS_PIPELINE_NAME` | `PaddleOCR-VL-1.8` | 产线名称 |
 | `HPS_PADDLEX_VERSION` | `3.8` | PaddleX 版本（仅填 major.minor，如 `3.8`），同时决定 Triton 基础镜像标签（`paddlex${HPS_PADDLEX_VERSION}-gpu`）和 SDK 发布目录（`v${HPS_PADDLEX_VERSION}`），二者保持一致 |
 | `HPS_SDK_DIR` | `paddlex_hps_PaddleOCR-VL-1.8_sdk` | 解压后的 SDK 目录，遵循 `paddlex_hps_${HPS_PIPELINE_NAME}_sdk` |
-| `HPS_VLM_IMAGE` | `paddleocr-genai-vllm-server:paddleocr3.8-nvidia-gpu` | VLM 服务镜像，可用候选镜像覆盖。 |
+| `HPS_VLM_IMAGE` | `paddleocr-genai-vllm-server:paddleocr3.8-nvidia-gpu` | 统一的 NVIDIA vLLM 服务镜像，可用候选镜像覆盖。 |
 
 常见配置示例：
 
