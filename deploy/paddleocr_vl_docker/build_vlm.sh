@@ -41,8 +41,7 @@ Environment:
                             Override the pip index settings for NVIDIA images
 
 Examples:
-  $0 --device-type nvidia-gpu --backend vllm --action push
-  $0 --platform linux/amd64,linux/arm64 --action push
+  $0 --device-type nvidia-gpu --backend vllm --platform linux/amd64 --action push
   $0 --action tar --platform linux/amd64
   $0 --ppocr-version https://github.com/PaddlePaddle/PaddleOCR/archive/main.zip
 EOF
