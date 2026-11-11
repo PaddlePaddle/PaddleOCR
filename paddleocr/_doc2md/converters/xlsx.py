@@ -194,28 +194,38 @@ class XlsxConverter(BaseConverter):
                 # Total sheet width in EMU, used for image percentage calculation
                 sheet_width_emu = _get_sheet_width_emu(ws, openpyxl)
 
-                # Floating image map: (0-based row, 0-based col) -> [Image, ...]
-                image_map: dict = {}
-                for img in getattr(ws, "_images", []):
-                    anchor = img.anchor
-                    if isinstance(anchor, (OneCellAnchor, TwoCellAnchor)):
-                        r, c = anchor._from.row, anchor._from.col
-                        image_map.setdefault((r, c), []).append(img)
-                    elif isinstance(anchor, str):
-                        try:
-                            from openpyxl.utils import coordinate_to_tuple
-
-                            r, c = coordinate_to_tuple(anchor)
-                            image_map.setdefault((r - 1, c - 1), []).append(img)
-                        except Exception:
-                            pass
-
                 # Merged cell map: (row, col) -> MergedCellRange
                 merge_map = {}
                 for mr in ws.merged_cells.ranges:
                     for r in range(mr.min_row, mr.max_row + 1):
                         for c in range(mr.min_col, mr.max_col + 1):
                             merge_map[(r, c)] = mr
+
+                # Floating image map: (0-based row, 0-based col) -> [Image, ...]
+                image_map: dict = {}
+                for img in getattr(ws, "_images", []):
+                    anchor = img.anchor
+                    if isinstance(anchor, (OneCellAnchor, TwoCellAnchor)):
+                        r, c = anchor._from.row, anchor._from.col
+                    elif isinstance(anchor, str):
+                        try:
+                            from openpyxl.utils import coordinate_to_tuple
+
+                            r, c = coordinate_to_tuple(anchor)
+                            r, c = r - 1, c - 1
+                        except Exception:
+                            continue
+                    else:
+                        continue
+
+                    # Apply the row limit to the original image anchor.
+                    if max_rows is not None and r + 1 > max_rows:
+                        continue
+                    mr = merge_map.get((r + 1, c + 1))
+                    if mr is not None:
+                        # Only the top-left cell of a merged range is rendered.
+                        r, c = mr.min_row - 1, mr.min_col - 1
+                    image_map.setdefault((r, c), []).append(img)
 
                 # Trim surrounding empty rows/columns
                 bounds = _find_data_bounds(ws, image_map, max_rows)
