@@ -12,6 +12,4 @@ Pillow
 pyyaml
 requests
 albumentations
-# to be compatible with albumentations
-albucore
 packaging
