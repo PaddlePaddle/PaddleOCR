@@ -19,7 +19,6 @@ from __future__ import print_function
 import os
 import gc
 import sys
-import platform
 import yaml
 import time
 import datetime
@@ -310,21 +309,13 @@ def train(
     reader_start = time.time()
     eta_meter = AverageMeter()
 
-    max_iter = (
-        len(train_dataloader) - 1
-        if platform.system() == "Windows"
-        else len(train_dataloader)
-    )
+    max_iter = len(train_dataloader)
 
     for epoch in range(start_epoch, epoch_num + 1):
         if train_dataloader.dataset.need_reset:
             # Update index mapping + shared epoch (no disk I/O, no worker restart)
             train_dataloader.dataset.reset_data_lines(seed=epoch, epoch=epoch)
-            max_iter = (
-                len(train_dataloader) - 1
-                if platform.system() == "Windows"
-                else len(train_dataloader)
-            )
+            max_iter = len(train_dataloader)
             # Match original behavior: fresh DistributedBatchSampler always
             # starts with self.epoch=0 for its internal np shuffle seed
             if hasattr(train_dataloader.batch_sampler, "set_epoch"):
@@ -726,11 +717,7 @@ def eval(
         pbar = tqdm(
             total=len(valid_dataloader), desc="eval model:", position=0, leave=True
         )
-        max_iter = (
-            len(valid_dataloader) - 1
-            if platform.system() == "Windows"
-            else len(valid_dataloader)
-        )
+        max_iter = len(valid_dataloader)
         sum_images = 0
         for idx, batch in enumerate(valid_dataloader):
             if idx >= max_iter:
@@ -843,11 +830,7 @@ def update_center(char_center, post_result, preds):
 
 def get_center(model, eval_dataloader, post_process_class):
     pbar = tqdm(total=len(eval_dataloader), desc="get center:")
-    max_iter = (
-        len(eval_dataloader) - 1
-        if platform.system() == "Windows"
-        else len(eval_dataloader)
-    )
+    max_iter = len(eval_dataloader)
     char_center = dict()
     for idx, batch in enumerate(eval_dataloader):
         if idx >= max_iter:
