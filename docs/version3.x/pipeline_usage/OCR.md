@@ -804,7 +804,7 @@ print(f"Transformers版本: {transformers.__version__}")
 **问题1：依赖冲突**
 ```bash
 # 解决方案：创建新的虚拟环境
-conda create -n paddleocr python=3.8
+conda create -n paddleocr python=3.9
 conda activate paddleocr
 pip install paddleocr
 ```

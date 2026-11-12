@@ -14,7 +14,7 @@ maintainers = [
     {name = "PaddlePaddle", email = "paddleocr@baidu.com"},
 ]
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.9"
 keywords = [
     "ocr",
     "textdetection",
@@ -38,7 +38,6 @@ classifiers = [
     "Operating System :: OS Independent",
     "Natural Language :: Chinese (Simplified)",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
@@ -82,6 +81,5 @@ git_describe_command = ["git", "describe", "--dirty", "--tags", "--long", "--mat
 [tool.pytest.ini_options]
 markers = [
     "resource_intensive: mark a test as resource intensive",
-    "py38_incompatible: test requires extras or deps that need Python 3.9+"
 ]
 addopts = "-m 'not resource_intensive'"
