@@ -16,7 +16,7 @@ hide:
 
 ## 🛠️ Installation
 
-> ❗Before installing PaddleX, please make sure you have a basic **Python runtime environment** (Note: Currently, Python 3.8 to Python 3.13 are supported). PaddleX version 3.2 requires PaddlePaddle version 3.0.0 or higher as a dependency.
+> ❗PaddleX 3.8 supports Python 3.9 through 3.13. Install PaddlePaddle by following the instructions below.
 
 * **Installing PaddlePaddle**
 
