@@ -6,22 +6,23 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "${SCRIPT_DIR}/pip_version_arg.sh"
 
 device_type='nvidia-gpu'
-backend='vllm'
+backend=''
 build_for_offline='false'
-paddleocr_version='3.4.0'
-paddlex_version='3.4.0'
+paddleocr_version='3.8.0'
+paddlex_version='3.8.0'
 platform='linux/amd64'
 action='load'
 registry='ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle'
 builder=''
+explicit_tag=''
 
 show_usage() {
     cat << EOF
 Usage: $(basename "$0") [OPTIONS]
 
 Options:
-  --device-type <type>      Device type (nvidia-gpu|nvidia-gpu-sm120|hygon-dcu|kunlunxin-xpu|metax-gpu|iluvatar-gpu|huawei-npu|intel-gpu|amd-gpu) [default: ${device_type}]
-  --backend <backend>       Backend type (vllm|fastdeploy) [default: ${backend}]
+  --device-type <type>      Device type (nvidia-gpu|hygon-dcu|kunlunxin-xpu|metax-gpu|iluvatar-gpu|huawei-npu|intel-gpu|amd-gpu) [default: ${device_type}]
+  --backend <backend>       Backend type (vllm|fastdeploy) [default: device Dockerfile]
   --offline                 Build offline version
   --ppocr-version <spec>    PaddleOCR version or URL [default: ${paddleocr_version}]
   --pdx-version <spec>      PaddleX version or URL [default: ${paddlex_version}]
@@ -33,11 +34,16 @@ Options:
                             none: Build only, no output
   --registry <registry>     Custom image registry [default: ${registry}]
   --builder <name>          Buildx builder name (override default)
+  --tag-suffix <tag>        Use only this image tag; include -offline for an offline tag
   -h, --help               Show this help message
 
+Environment:
+  VLLM_BASE_IMAGE           Override the NVIDIA vLLM base image
+  PIP_INDEX_URL, PIP_TRUSTED_HOST
+                            Override the pip index settings for NVIDIA images
+
 Examples:
-  $0 --device-type nvidia-gpu --backend vllm --action push
-  $0 --platform linux/amd64,linux/arm64 --action push
+  $0 --device-type nvidia-gpu --backend vllm --platform linux/amd64 --action push
   $0 --action tar --platform linux/amd64
   $0 --ppocr-version https://github.com/PaddlePaddle/PaddleOCR/archive/main.zip
 EOF
@@ -54,7 +60,7 @@ while [[ $# -gt 0 ]]; do
             shift
             shift
             case "${device_type}" in
-                nvidia-gpu|nvidia-gpu-sm120|hygon-dcu|kunlunxin-xpu|metax-gpu|iluvatar-gpu|huawei-npu|intel-gpu|amd-gpu)
+                nvidia-gpu|hygon-dcu|kunlunxin-xpu|metax-gpu|iluvatar-gpu|huawei-npu|intel-gpu|amd-gpu)
                     ;;
                 *)
                     echo "Error: Unknown device type: ${device_type}" >&2
@@ -143,6 +149,14 @@ while [[ $# -gt 0 ]]; do
             builder="$2"
             shift 2
             ;;
+        --tag-suffix)
+            if [[ ! "${2-}" =~ ^[a-zA-Z0-9_][a-zA-Z0-9_.-]{0,127}$ ]]; then
+                echo "Error: '--tag-suffix' requires a valid image tag" >&2
+                exit 2
+            fi
+            explicit_tag="$2"
+            shift 2
+            ;;
         -h|--help)
             show_usage
             exit 0
@@ -178,6 +192,10 @@ if [ ! -f "${dockerfile}" ]; then
     echo "Error: Dockerfile not found: ${dockerfile}" >&2
     exit 1
 fi
+if [ -z "${backend}" ]; then
+    backend="$(sed -n 's/^ARG BACKEND=//p' "${dockerfile}")"
+fi
+
 
 revision="$(git rev-parse --short HEAD)"
 image_version="${revision}-ppocr$(version_tag_label "${paddleocr_version}")-pdx$(version_tag_label "${paddlex_version}")"
@@ -189,18 +207,26 @@ base_image_name="paddleocr-genai-${backend}-server"
 main_tag="${registry}/${base_image_name}:${tag_suffix}"
 version_tag="${registry}/${base_image_name}:${tag_suffix/latest/${image_version}}"
 paddleocr_version_tag="${registry}/${base_image_name}:${tag_suffix/latest/paddleocr$(version_tag_label "${paddleocr_version}")}"
+if [[ -n "${explicit_tag}" ]]; then
+    tag_suffix="${explicit_tag}"
+    main_tag="${registry}/${base_image_name}:${explicit_tag}"
+    tags=('-t' "${main_tag}")
+else
+    tags=('-t' "${main_tag}" '-t' "${version_tag}" '-t' "${paddleocr_version_tag}")
+fi
 
 # Build arguments array
 build_args=(
     '--platform' "${platform}"
     '-f' "${dockerfile}"
-    '-t' "${main_tag}"
-    '-t' "${version_tag}"
-    '-t' "${paddleocr_version_tag}"
+    "${tags[@]}"
     '--build-arg' "BUILD_FOR_OFFLINE=${build_for_offline}"
     '--build-arg' "PADDLEOCR_VERSION=${paddleocr_pip_suffix}"
     '--build-arg' "PADDLEX_VERSION=${paddlex_pip_suffix}"
     '--build-arg' "BACKEND=${backend}"
+    '--build-arg' VLLM_BASE_IMAGE
+    '--build-arg' PIP_INDEX_URL
+    '--build-arg' PIP_TRUSTED_HOST
     '--build-arg' "http_proxy=${http_proxy:-}"
     '--build-arg' "https_proxy=${https_proxy:-}"
     '--build-arg' "no_proxy=${no_proxy:-}"
@@ -226,8 +252,9 @@ echo "  Registry:        ${registry}"
 echo "  Builder:         ${builder:-<default>}"
 echo "  Dockerfile:      ${dockerfile}"
 echo "  Tags:"
-echo "    - ${main_tag}"
-echo "    - ${version_tag}"
+for ((i=1; i<${#tags[@]}; i+=2)); do
+    echo "    - ${tags[i]}"
+done
 echo "========================================="
 
 # Add action-specific build options

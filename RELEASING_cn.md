@@ -69,6 +69,14 @@
 - 必要的测试、构建、打包和回归通过
 - 发布说明已经准备好
 
+如果对应的 PaddleX 发布分支还无法产出满足 `pyproject.toml` 依赖的 wheel，从本次发版指定的 PaddleX 提交构建测试 wheel。用未打标签的提交构建时，显式指定目标正式版本。例如，发 3.8.0 时在 PaddleX 检出目录运行以下命令。
+
+```bash
+SETUPTOOLS_SCM_PRETEND_VERSION_FOR_PADDLEX=3.8.0 python -m pip wheel --no-deps --wheel-dir dist .
+```
+
+将 Actions 仓库变量 `PADDLEX_TEST_WHEEL` 设置为 CPU 和 GPU CI 均可访问的 wheel 下载地址。`3.8.0.devN` 和 `3.8.0rc0` 都不满足 `paddlex>=3.8.0`。对应的 PaddleX 发布分支能构建兼容版本后，清除该变量。
+
 ### 5. 打正式标签
 
 确认版本 ready 后，在 `release/X.Y` 分支上打正式标签：

@@ -9,8 +9,8 @@ if [ -f .env ]; then
     set +a
 fi
 
-HPS_PIPELINE_NAME="${HPS_PIPELINE_NAME:-PaddleOCR-VL-1.6}"
-HPS_PADDLEX_VERSION="${HPS_PADDLEX_VERSION:-3.6}"
+HPS_PIPELINE_NAME="${HPS_PIPELINE_NAME:-PaddleOCR-VL-1.8}"
+HPS_PADDLEX_VERSION="${HPS_PADDLEX_VERSION:-3.8}"
 HPS_SDK_VERSION="${HPS_SDK_VERSION:-v${HPS_PADDLEX_VERSION}}"
 HPS_SDK_DIR="${HPS_SDK_DIR:-paddlex_hps_${HPS_PIPELINE_NAME}_sdk}"
 HPS_VLM_URL="${HPS_VLM_URL:-http://paddleocr-vlm-server:8080}"
@@ -45,7 +45,10 @@ _set_env_value() {
 echo "Preparing high-stability serving SDK for ${HPS_PIPELINE_NAME}"
 echo "  SDK archive: ${SDK_ARCHIVE}"
 
-wget "${SDK_URL}"
+SDK_DOWNLOAD="$(mktemp "./${SDK_ARCHIVE}.XXXXXX")"
+trap 'rm -f "${SDK_DOWNLOAD}"' EXIT
+wget -O "${SDK_DOWNLOAD}" "${SDK_URL}"
+mv -f "${SDK_DOWNLOAD}" "${SDK_ARCHIVE}"
 tar -xf "${SDK_ARCHIVE}"
 
 if grep -qE '^\s*backend: native\s*$' "${PIPELINE_CONFIG}"; then

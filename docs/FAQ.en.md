@@ -15,7 +15,7 @@ hide:
 #### Q: PaddleOCR installation failed with dependency conflicts
 
 **A**: This is a common issue that can be resolved by:
-(1) Create a new virtual environment: `conda create -n paddleocr python=3.8`, then activate and install
+(1) Create a new virtual environment: `conda create -n paddleocr python=3.9`, then activate and install
 (2) Install with specific versions: `pip install paddleocr==3.2.0 --no-deps`, then install dependencies separately
 (3) If using conda, try: `conda install -c conda-forge paddleocr`
 

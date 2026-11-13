@@ -14,8 +14,6 @@
 
 import pytest
 
-pytestmark = pytest.mark.py38_incompatible
-
 from paddleocr import SealTextDetection
 from ..testing_utils import (
     TEST_DATA_DIR,

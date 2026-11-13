@@ -1,6 +1,6 @@
 services:
   paddleocr-vl-api:
-    image: ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:${API_IMAGE_TAG_SUFFIX}
+    image: ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:${API_IMAGE_TAG_SUFFIX:-paddleocr3.8-metax-gpu}
     container_name: paddleocr-vl-api
     ports:
       - 8080:8080
@@ -20,13 +20,13 @@ services:
     user: root
     restart: unless-stopped
     environment:
-      - VLM_BACKEND=${VLM_BACKEND:-vllm}
-    command: /bin/bash -c "paddlex --serve --pipeline /home/paddleocr/pipeline_config_${VLM_BACKEND}.yaml --device metax_gpu"
+      - VLM_BACKEND=${VLM_BACKEND:-fastdeploy}
+    command: /bin/bash -c "paddlex --serve --pipeline /home/paddleocr/pipeline_config_${VLM_BACKEND:-fastdeploy}.yaml --device metax_gpu"
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:8080/health || exit 1"]
 
   paddleocr-vlm-server:
-    image: ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-${VLM_BACKEND}-server:${VLM_IMAGE_TAG_SUFFIX}
+    image: ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-${VLM_BACKEND:-fastdeploy}-server:${VLM_IMAGE_TAG_SUFFIX:-paddleocr3.8-metax-gpu}
     container_name: paddleocr-vlm-server
     privileged: true
     devices:

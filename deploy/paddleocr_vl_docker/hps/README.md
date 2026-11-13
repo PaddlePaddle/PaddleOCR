@@ -2,7 +2,7 @@
 
 [English](README_en.md)
 
-本目录提供一套支持并发请求处理的 **PaddleOCR-VL 系列**高性能服务化部署方案，适用于 `PaddleOCR-VL`、`PaddleOCR-VL-1.5`、`PaddleOCR-VL-1.6` 等产线版本。
+本目录提供一套支持并发请求处理的 **PaddleOCR-VL 系列**高性能服务化部署方案，适用于 `PaddleOCR-VL`、`PaddleOCR-VL-1.5`、`PaddleOCR-VL-1.6`、`PaddleOCR-VL-1.8` 等产线版本。
 
 > 本方案目前暂时只支持 NVIDIA GPU，对其他推理设备的支持仍在完善中。
 
@@ -15,7 +15,7 @@
 | 组件　　　　　| 说明　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　 |
 | ---------------| ----------------------------------------------------------------------------------|
 | FastAPI 网关　| 统一访问入口、简化客户端调用、并发控制　　　　　　　　　　　　　　　　　　　　　 |
-| Triton 服务器 | 版面分析模型（如 PP-DocLayoutV3）及产线串联逻辑，负责模型管理、动态批处理、推理调度 |
+| Triton 服务器 | 版面分析模型（如 PP-DocLayoutV4）及产线串联逻辑，负责模型管理、动态批处理、推理调度 |
 | vLLM 服务器　 | VLM，连续批处理推理　　　　　　　　　　　　　　　　　　　　|
 
 **Triton 模型：**
@@ -28,10 +28,11 @@
 ## 环境要求
 
 - x64 CPU
-- NVIDIA GPU，Compute Capability >= 8.0 且 < 10.0
-- NVIDIA 驱动支持 CUDA 12.6
+- NVIDIA GPU 及与两个推理容器兼容的驱动。Triton 产线的 GPU 基础镜像使用 CUDA 11.8，统一的 vLLM 镜像使用 CUDA 12.9。
 - Docker >= 19.03
 - Docker Compose >= 2.0
+
+默认 Compose 将 Triton 产线和 vLLM 部署在同一张 GPU 上，硬件支持范围取决于两者的组合。既有 HPS 部署使用 CC 8.0 至 9.x 的 GPU。PaddleOCR-VL 1.8 已在 32 GB V100（CC 7.0、驱动 550.54.14）上通过单卡 `/layout-parsing` 验证，测试使用 `paddlex3.7-gpu` 基础镜像、PaddleX 3.8.0 wheel、1.8 SDK 和 vLLM 0.18.1 FP16。其他 GPU 型号以所用 Triton 和 VLM 镜像的端到端验证结果为准。
 
 ## 快速开始
 
@@ -92,14 +93,16 @@ export HPS_MAX_CONCURRENT_INFERENCE_REQUESTS=8
 
 | 变量 | 默认值 | 说明 |
 |------|--------|------|
-| `HPS_PIPELINE_NAME` | `PaddleOCR-VL-1.6` | 产线名称 |
-| `HPS_PADDLEX_VERSION` | `3.6` | PaddleX 版本（仅填 major.minor，如 `3.6`），同时决定 Triton 基础镜像标签（`paddlex${HPS_PADDLEX_VERSION}-gpu`）和 SDK 发布目录（`v${HPS_PADDLEX_VERSION}`），二者保持一致 |
-| `HPS_SDK_DIR` | `paddlex_hps_PaddleOCR-VL-1.6_sdk` | 解压后的 SDK 目录，遵循 `paddlex_hps_${HPS_PIPELINE_NAME}_sdk` |
+| `HPS_PIPELINE_NAME` | `PaddleOCR-VL-1.8` | 产线名称 |
+| `HPS_PADDLEX_VERSION` | `3.8` | PaddleX 版本（仅填 major.minor，如 `3.8`），同时决定 Triton 基础镜像标签（`paddlex${HPS_PADDLEX_VERSION}-gpu`）和 SDK 发布目录（`v${HPS_PADDLEX_VERSION}`），二者保持一致 |
+| `HPS_SDK_DIR` | `paddlex_hps_PaddleOCR-VL-1.8_sdk` | 解压后的 SDK 目录，遵循 `paddlex_hps_${HPS_PIPELINE_NAME}_sdk` |
+| `HPS_VLM_IMAGE` | `paddleocr-genai-vllm-server:paddleocr3.8-nvidia-gpu-vllm0.19.0` | 统一的 NVIDIA vLLM 服务镜像，可用候选镜像覆盖。 |
 
 常见配置示例：
 
 | 目标版本 | `HPS_PIPELINE_NAME` | `HPS_SDK_DIR` |
 |----------|-----------------|---------------|
+| PaddleOCR-VL-1.8 | `PaddleOCR-VL-1.8` | `paddlex_hps_PaddleOCR-VL-1.8_sdk` |
 | PaddleOCR-VL-1.6 | `PaddleOCR-VL-1.6` | `paddlex_hps_PaddleOCR-VL-1.6_sdk` |
 | PaddleOCR-VL-1.5 | `PaddleOCR-VL-1.5` | `paddlex_hps_PaddleOCR-VL-1.5_sdk` |
 | PaddleOCR-VL (v1) | `PaddleOCR-VL` | `paddlex_hps_PaddleOCR-VL_sdk` |

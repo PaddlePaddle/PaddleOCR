@@ -278,7 +278,7 @@ export FLAGS_initial_cpu_memory_in_mb=2000  # 设置初始化内存约2G左右
 #### Q：PaddleOCR安装失败，提示依赖冲突怎么办？
 
 **A**：这是常见问题，可以通过以下方式解决：
-（1）创建新的虚拟环境：`conda create -n paddleocr python=3.8`，然后激活环境安装
+（1）创建新的虚拟环境：`conda create -n paddleocr python=3.9`，然后激活环境安装
 （2）使用指定版本安装：`pip install paddleocr==3.2.0 --no-deps`，然后单独安装依赖
 （3）如果使用conda，可以尝试：`conda install -c conda-forge paddleocr`
 

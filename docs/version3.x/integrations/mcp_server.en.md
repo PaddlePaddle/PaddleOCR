@@ -17,13 +17,13 @@ PaddleOCR provides a lightweight [Model Context Protocol (MCP)](https://modelcon
     | --- | --- | --- |
     | `PP-OCRv5`, `PP-OCRv5-latin`, `PP-OCRv6` | `ocr` | Performs text detection and recognition on images and PDF files. |
     | `PP-StructureV3` | `pp_structurev3` | Identifies and extracts text blocks, titles, paragraphs, images, tables, and other layout elements from images or PDF files, converting the input into Markdown documents. |
-    | `PaddleOCR-VL`, `PaddleOCR-VL-1.5`, `PaddleOCR-VL-1.6` | `paddleocr_vl` | Performs layout parsing with a VLM-based approach and converts the input into Markdown documents. |
+    | `PaddleOCR-VL`, `PaddleOCR-VL-1.5`, `PaddleOCR-VL-1.6`, `PaddleOCR-VL-1.8` (local and self-hosted API) | `paddleocr_vl` | Performs layout parsing with a VLM-based approach and converts the input into Markdown documents. |
 
 - **Supported Inference Methods**
     - **Local Inference**: Runs PaddleOCR pipelines directly on the local machine. This method has certain requirements for the local environment and hardware performance, and is suitable for offline use and scenarios with strict data privacy requirements.
     - **Official API**: Invokes the PaddleOCR Official API. This method is suitable for quickly trying out features, validating solutions, and other no-code development scenarios.
     - **Qianfan API**: Calls the API provided by Baidu AI Cloud's Qianfan platform.
-    - **Self-hosted API**: Invokes the user's self-hosted PaddleOCR inference service. This method offers serving advantages and high flexibility, suitable for scenarios requiring customized service configurations, as well as those with strict data privacy requirements. **Currently, only the basic serving solution is supported.**
+    - **Self-hosted API**: Invokes the user's self-hosted PaddleOCR inference service. The server configuration determines the pipeline version. This method offers serving advantages and high flexibility, suitable for scenarios requiring customized service configurations, as well as those with strict data privacy requirements. **Currently, only the basic serving solution is supported.**
 
 ## Examples:
 
@@ -415,7 +415,7 @@ You can control the MCP server via environment variables or CLI arguments.
 
 | Environment Variable | CLI Argument | Type | Description | Options | Default |
 |:---------|:-----------|:-----|:-----|:-------|:-------|
-| `PADDLEOCR_MCP_MODEL` | `--model` | `str` | Model to run. MCP selects the tool automatically from the model. | `"PP-OCRv5"`, `"PP-OCRv5-latin"`, `"PP-OCRv6"`, `"PP-StructureV3"`, `"PaddleOCR-VL"`, `"PaddleOCR-VL-1.5"`, `"PaddleOCR-VL-1.6"` | `"PP-OCRv6"` |
+| `PADDLEOCR_MCP_MODEL` | `--model` | `str` | Model to run. MCP selects the tool automatically from the model. | `"PP-OCRv5"`, `"PP-OCRv5-latin"`, `"PP-OCRv6"`, `"PP-StructureV3"`, `"PaddleOCR-VL"`, `"PaddleOCR-VL-1.5"`, `"PaddleOCR-VL-1.6"`, `"PaddleOCR-VL-1.8"` (local and self-hosted API) | `"PP-OCRv6"` |
 | `PADDLEOCR_MCP_PPOCR_SOURCE` | `--ppocr_source` | `str` | Source of PaddleOCR capabilities. | `"local"` (local inference), `"aistudio"` (Official API), `"qianfan"` (Qianfan API), `"self_hosted"` (self-hosted API) | `"local"` |
 | `PADDLEOCR_MCP_AISTUDIO_BASE_URL` | `--aistudio-base-url` | `str` | AI Studio API base URL (optional for `aistudio` source). | - | `None` |
 | `PADDLEOCR_MCP_QIANFAN_BASE_URL` | `--qianfan-base-url` | `str` | Qianfan API base URL (optional for `qianfan` source). | - | `https://qianfan.baidubce.com/v2/ocr` |
