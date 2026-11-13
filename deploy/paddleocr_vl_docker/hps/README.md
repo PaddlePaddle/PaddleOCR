@@ -96,7 +96,7 @@ export HPS_MAX_CONCURRENT_INFERENCE_REQUESTS=8
 | `HPS_PIPELINE_NAME` | `PaddleOCR-VL-1.8` | 产线名称 |
 | `HPS_PADDLEX_VERSION` | `3.8` | PaddleX 版本（仅填 major.minor，如 `3.8`），同时决定 Triton 基础镜像标签（`paddlex${HPS_PADDLEX_VERSION}-gpu`）和 SDK 发布目录（`v${HPS_PADDLEX_VERSION}`），二者保持一致 |
 | `HPS_SDK_DIR` | `paddlex_hps_PaddleOCR-VL-1.8_sdk` | 解压后的 SDK 目录，遵循 `paddlex_hps_${HPS_PIPELINE_NAME}_sdk` |
-| `HPS_VLM_IMAGE` | `paddleocr-genai-vllm-server:paddleocr3.8-nvidia-gpu` | 统一的 NVIDIA vLLM 服务镜像，可用候选镜像覆盖。 |
+| `HPS_VLM_IMAGE` | `paddleocr-genai-vllm-server:paddleocr3.8-nvidia-gpu-vllm0.19.0` | 统一的 NVIDIA vLLM 服务镜像，可用候选镜像覆盖。 |
 
 常见配置示例：
 

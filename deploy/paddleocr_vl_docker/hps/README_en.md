@@ -96,7 +96,7 @@ This solution reuses the PaddleX [High-Stability Serving](https://paddlepaddle.g
 | `HPS_PIPELINE_NAME` | `PaddleOCR-VL-1.8` | Pipeline name |
 | `HPS_PADDLEX_VERSION` | `3.8` | PaddleX version (major.minor only, e.g. `3.8`). Drives both the Triton base image tag (`paddlex${HPS_PADDLEX_VERSION}-gpu`) and the SDK release directory (`v${HPS_PADDLEX_VERSION}`), keeping them in sync |
 | `HPS_SDK_DIR` | `paddlex_hps_PaddleOCR-VL-1.8_sdk` | Extracted SDK directory, following `paddlex_hps_${HPS_PIPELINE_NAME}_sdk` |
-| `HPS_VLM_IMAGE` | `paddleocr-genai-vllm-server:paddleocr3.8-nvidia-gpu` | Shared NVIDIA vLLM server image. Set this to use a candidate image. |
+| `HPS_VLM_IMAGE` | `paddleocr-genai-vllm-server:paddleocr3.8-nvidia-gpu-vllm0.19.0` | Shared NVIDIA vLLM server image. Set this to use a candidate image. |
 
 Common examples:
 

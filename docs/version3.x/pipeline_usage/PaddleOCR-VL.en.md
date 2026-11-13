@@ -239,7 +239,7 @@ If you just want to first confirm which hardware PaddleOCR-VL can be deployed on
 - When using NVIDIA GPUs for inference, ensure that the Compute Capability (CC) and CUDA version meet the requirements:
   - PaddlePaddle: CC ≥ 7.0, CUDA ≥ 11.8
   - Transformers: CC ≥ 7.0, CUDA ≥ 11.8
-  - The CUDA 12.9 build of vLLM 0.18.1 requires CC ≥ 7.0. vLLM uses FP16 on CC 7.x GPUs. Single-GPU inference was verified on a 32 GB V100 (CC 7.0). See the [vLLM 0.18.1 requirements](https://docs.vllm.ai/en/v0.18.1/getting_started/installation/gpu/#requirements).
+  - The CUDA 12.9 build of vLLM 0.19.0 requires CC ≥ 7.0. vLLM uses FP16 on CC 7.x GPUs. Single-GPU inference was verified on a 32 GB V100 (CC 7.0). See the [vLLM 0.19.0 requirements](https://docs.vllm.ai/en/v0.19.0/getting_started/installation/gpu/#requirements).
   - SGLang: 8.0 ≤ CC < 12.0, CUDA ≥ 12.6
   - FastDeploy: 8.0 ≤ CC < 12.0, CUDA ≥ 12.6
   - Common GPUs with CC ≥ 8 include the RTX 30/40/50 series and A10/A100. See [CUDA GPU Compute Capability](https://developer.nvidia.com/cuda-gpus) for more models.
@@ -1760,11 +1760,11 @@ PaddleOCR provides Docker images for vLLM and FastDeploy. Use Docker 19.03 or la
         --rm \
         --gpus all \
         --network host \
-        ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:paddleocr3.8-nvidia-gpu \
+        ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:paddleocr3.8-nvidia-gpu-vllm0.19.0 \
         paddleocr genai_server --model_name PaddleOCR-VL-1.8-0.9B --host 0.0.0.0 --port 8118 --backend vllm
     ```
 
-    If you wish to start the service in an environment without internet access, replace `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:paddleocr3.8-nvidia-gpu` in the above command with the offline version image `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:paddleocr3.8-nvidia-gpu-offline`.
+    If you wish to start the service in an environment without internet access, replace `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:paddleocr3.8-nvidia-gpu-vllm0.19.0` in the above command with the offline version image `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:paddleocr3.8-nvidia-gpu-vllm0.19.0-offline`.
 
 === "Launch FastDeploy Service"
 
@@ -1789,7 +1789,7 @@ docker run \
     --gpus all \
     --network host \
     -v ./vllm_config.yml:/tmp/vllm_config.yml \
-    ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:paddleocr3.8-nvidia-gpu \
+    ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:paddleocr3.8-nvidia-gpu-vllm0.19.0 \
     paddleocr genai_server --model_name PaddleOCR-VL-1.8-0.9B --host 0.0.0.0 --port 8118 --backend vllm --backend_config /tmp/vllm_config.yml
 ```
 
@@ -1800,7 +1800,7 @@ Here, `./vllm_config.yml` refers to a local configuration file in the current wo
 > If the corresponding `latest` image already exists locally and you want the newest features or fixes, we recommend running `docker pull` again before using it.
 > If you want to use an image corresponding to a specific PaddleOCR version, you can replace `latest` in the tag with the desired version number: `paddleocr<major>.<minor>`.
 > For example:
-> `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:paddleocr3.8-nvidia-gpu-offline`
+> `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:paddleocr3.8-nvidia-gpu-vllm0.19.0-offline`
 
 
 #### 3.1.2 Method 2: Installation and Usage via PaddleOCR CLI
@@ -2059,7 +2059,7 @@ docker compose up
 ```
 
 > TIP:
-> This Compose configuration pulls the 3.8 online images by default. To use the offline images, set both `API_IMAGE_TAG_SUFFIX` and `VLM_IMAGE_TAG_SUFFIX` to `paddleocr3.8-nvidia-gpu-offline`.
+> This Compose configuration pulls the 3.8 online images by default. To use the offline images, set `API_IMAGE_TAG_SUFFIX` to `paddleocr3.8-nvidia-gpu-offline` and `VLM_IMAGE_TAG_SUFFIX` to `paddleocr3.8-nvidia-gpu-vllm0.19.0-offline`.
 
 After startup, you will see output similar to the following:
 
@@ -2078,7 +2078,7 @@ The meanings of each environment variable contained in the `.env` file are as fo
 
 - `API_IMAGE_TAG_SUFFIX`: Image tag suffix for the pipeline service. The default is `paddleocr3.8-nvidia-gpu`. Append `-offline` to use the offline image.
 - `VLM_BACKEND`: The VLM inference backend, currently supporting `vllm` and `fastdeploy`. The default is `vllm`.
-- `VLM_IMAGE_TAG_SUFFIX`: Image tag suffix for the VLM server. The default is `paddleocr3.8-nvidia-gpu`. Append `-offline` to use the offline image.
+- `VLM_IMAGE_TAG_SUFFIX`: Image tag suffix for the VLM server. The default is `paddleocr3.8-nvidia-gpu-vllm0.19.0`. Append `-offline` to use the offline image.
 
 You can meet custom requirements by modifying `.env` and `compose.yaml`, for example:
 

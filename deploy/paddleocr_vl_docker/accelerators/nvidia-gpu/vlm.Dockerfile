@@ -1,5 +1,5 @@
 ARG BACKEND=vllm
-ARG VLLM_BASE_IMAGE=ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddlex-genai-vllm-server:latest
+ARG VLLM_BASE_IMAGE=ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddlex-genai-vllm-server:paddlex3.8-vllm0.19.0
 
 
 FROM ${VLLM_BASE_IMAGE} AS base-vllm

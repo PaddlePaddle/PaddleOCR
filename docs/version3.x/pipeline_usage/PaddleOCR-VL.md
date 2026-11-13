@@ -78,7 +78,7 @@ PaddleOCR-VL 整体由版面分析与 VLM 识别两个核心阶段组成。下�
 
 - PaddlePaddle：CC ≥ 7.0，CUDA ≥ 11.8
 - Transformers：CC ≥ 7.0，CUDA ≥ 11.8
-- vLLM 0.18.1 的 CUDA 12.9 发行版要求 CC ≥ 7.0。CC 7.x GPU 使用 FP16，已在 32 GB V100（CC 7.0）上完成单卡推理验证。见 [vLLM 0.18.1 环境要求](https://docs.vllm.ai/en/v0.18.1/getting_started/installation/gpu/#requirements)。
+- vLLM 0.19.0 的 CUDA 12.9 发行版要求 CC ≥ 7.0。CC 7.x GPU 使用 FP16，已在 32 GB V100（CC 7.0）上完成单卡推理验证。见 [vLLM 0.19.0 环境要求](https://docs.vllm.ai/en/v0.19.0/getting_started/installation/gpu/#requirements)。
 - SGLang：8.0 ≤ CC < 12.0，CUDA ≥ 12.6
 - FastDeploy：8.0 ≤ CC < 12.0，CUDA ≥ 12.6
 - CC ≥ 8 的常见显卡包括 RTX 30/40/50 系列及 A10/A100 等，更多型号可查看 [CUDA GPU 计算能力](https://developer.nvidia.cn/cuda-gpus)。
@@ -1550,11 +1550,11 @@ PaddleOCR 提供 vLLM 和 FastDeploy Docker 镜像。使用 Docker 19.03 或以�
         --rm \
         --gpus all \
         --network host \
-        ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:paddleocr3.8-nvidia-gpu \
+        ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:paddleocr3.8-nvidia-gpu-vllm0.19.0 \
         paddleocr genai_server --model_name PaddleOCR-VL-1.8-0.9B --host 0.0.0.0 --port 8118 --backend vllm
     ```
 
-    如果您希望在无法连接互联网的环境中启动服务，请将上述命令中的 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:paddleocr3.8-nvidia-gpu`更换为离线版本镜像 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:paddleocr3.8-nvidia-gpu-offline`。
+    如果您希望在无法连接互联网的环境中启动服务，请将上述命令中的 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:paddleocr3.8-nvidia-gpu-vllm0.19.0`更换为离线版本镜像 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:paddleocr3.8-nvidia-gpu-vllm0.19.0-offline`。
 
 === "启动 FastDeploy 服务"
 
@@ -1579,7 +1579,7 @@ docker run \
     --gpus all \
     --network host \
     -v ./vllm_config.yml:/tmp/vllm_config.yml \
-    ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:paddleocr3.8-nvidia-gpu \
+    ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:paddleocr3.8-nvidia-gpu-vllm0.19.0 \
     paddleocr genai_server --model_name PaddleOCR-VL-1.8-0.9B --host 0.0.0.0 --port 8118 --backend vllm --backend_config /tmp/vllm_config.yml
 ```
 
@@ -1589,7 +1589,7 @@ docker run \
 > 标签后缀为 `latest-xxx` 的镜像对应最新版本。
 > 如果本地已经存在对应的 `latest` 镜像，但希望使用最新功能或修复，建议在继续使用前重新执行一次 `docker pull` 更新镜像。
 > 例如：
-> `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:paddleocr3.8-nvidia-gpu-offline`
+> `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:paddleocr3.8-nvidia-gpu-vllm0.19.0-offline`
 
 #### 3.1.2 方法二：通过 PaddleOCR CLI 安装和使用
 
@@ -1849,7 +1849,7 @@ docker compose up
 ```
 
 > 提示：
-> 此 Compose 配置默认拉取 3.8 在线镜像。使用离线镜像时，将 `API_IMAGE_TAG_SUFFIX` 和 `VLM_IMAGE_TAG_SUFFIX` 都设为 `paddleocr3.8-nvidia-gpu-offline`。
+> 此 Compose 配置默认拉取 3.8 在线镜像。使用离线镜像时，将 `API_IMAGE_TAG_SUFFIX` 设为 `paddleocr3.8-nvidia-gpu-offline`，将 `VLM_IMAGE_TAG_SUFFIX` 设为 `paddleocr3.8-nvidia-gpu-vllm0.19.0-offline`。
 
 启动后将看到类似如下输出：
 
@@ -1868,7 +1868,7 @@ Docker Compose 通过读取 `.env` 和 `compose.yaml` 文件中配置，先后�
 
 - `API_IMAGE_TAG_SUFFIX`：产线服务的镜像标签后缀，默认为 `paddleocr3.8-nvidia-gpu`。使用离线镜像时，在标签后加 `-offline`。
 - `VLM_BACKEND`：VLM 推理后端，目前支持 `vllm` 和 `fastdeploy`。默认为 `vllm`。
-- `VLM_IMAGE_TAG_SUFFIX`：VLM 推理服务的镜像标签后缀，默认为 `paddleocr3.8-nvidia-gpu`。使用离线镜像时，在标签后加 `-offline`。
+- `VLM_IMAGE_TAG_SUFFIX`：VLM 推理服务的镜像标签后缀，默认为 `paddleocr3.8-nvidia-gpu-vllm0.19.0`。使用离线镜像时，在标签后加 `-offline`。
 
 您可以通过修改 `.env` 和 `compose.yaml` 来满足自定义需求，例如：
 

@@ -14,6 +14,7 @@ platform='linux/amd64'
 action='load'
 registry='ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle'
 builder=''
+explicit_tag=''
 
 show_usage() {
     cat << EOF
@@ -33,6 +34,7 @@ Options:
                             none: Build only, no output
   --registry <registry>     Custom image registry [default: ${registry}]
   --builder <name>          Buildx builder name (override default)
+  --tag-suffix <tag>        Use only this image tag; include -offline for an offline tag
   -h, --help               Show this help message
 
 Environment:
@@ -147,6 +149,14 @@ while [[ $# -gt 0 ]]; do
             builder="$2"
             shift 2
             ;;
+        --tag-suffix)
+            if [[ ! "${2-}" =~ ^[a-zA-Z0-9_][a-zA-Z0-9_.-]{0,127}$ ]]; then
+                echo "Error: '--tag-suffix' requires a valid image tag" >&2
+                exit 2
+            fi
+            explicit_tag="$2"
+            shift 2
+            ;;
         -h|--help)
             show_usage
             exit 0
@@ -197,14 +207,19 @@ base_image_name="paddleocr-genai-${backend}-server"
 main_tag="${registry}/${base_image_name}:${tag_suffix}"
 version_tag="${registry}/${base_image_name}:${tag_suffix/latest/${image_version}}"
 paddleocr_version_tag="${registry}/${base_image_name}:${tag_suffix/latest/paddleocr$(version_tag_label "${paddleocr_version}")}"
+if [[ -n "${explicit_tag}" ]]; then
+    tag_suffix="${explicit_tag}"
+    main_tag="${registry}/${base_image_name}:${explicit_tag}"
+    tags=('-t' "${main_tag}")
+else
+    tags=('-t' "${main_tag}" '-t' "${version_tag}" '-t' "${paddleocr_version_tag}")
+fi
 
 # Build arguments array
 build_args=(
     '--platform' "${platform}"
     '-f' "${dockerfile}"
-    '-t' "${main_tag}"
-    '-t' "${version_tag}"
-    '-t' "${paddleocr_version_tag}"
+    "${tags[@]}"
     '--build-arg' "BUILD_FOR_OFFLINE=${build_for_offline}"
     '--build-arg' "PADDLEOCR_VERSION=${paddleocr_pip_suffix}"
     '--build-arg' "PADDLEX_VERSION=${paddlex_pip_suffix}"
@@ -237,8 +252,9 @@ echo "  Registry:        ${registry}"
 echo "  Builder:         ${builder:-<default>}"
 echo "  Dockerfile:      ${dockerfile}"
 echo "  Tags:"
-echo "    - ${main_tag}"
-echo "    - ${version_tag}"
+for ((i=1; i<${#tags[@]}; i+=2)); do
+    echo "    - ${tags[i]}"
+done
 echo "========================================="
 
 # Add action-specific build options

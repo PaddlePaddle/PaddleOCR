@@ -57,7 +57,7 @@ services:
       start_period: 60s
 
   paddleocr-vlm-server:
-    image: ${HPS_VLM_IMAGE:-ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:paddleocr3.8-nvidia-gpu}
+    image: ${HPS_VLM_IMAGE:-ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:paddleocr3.8-nvidia-gpu-vllm0.19.0}
     container_name: paddleocr-vlm-server
     environment:
       - PADDLE_PDX_MODEL_SOURCE=${PADDLE_PDX_MODEL_SOURCE:-bos}
