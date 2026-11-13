@@ -1860,7 +1860,7 @@ paddleocr-vl-api             | INFO:     Application startup complete.
 paddleocr-vl-api             | INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
 ```
 
-此外，使用此方式启动服务器后，除拉取镜像外，无需连接互联网。如需在离线环境中部署，可先在联网机器上拉取 Compose 文件中涉及的镜像，导出并传输至离线机器中导入，即可在离线环境下启动服务。
+在线镜像首次启动时需要联网下载模型。如需在离线环境中部署，请将两个镜像标签都改为离线版本，在联网机器上拉取并导出镜像，再将它们传输到离线机器上导入。
 
 Docker Compose 通过读取 `.env` 和 `compose.yaml` 文件中配置，先后启动 2 个容器，分别运行底层 VLM 推理服务，以及 PaddleOCR-VL 服务（产线服务）。
 
@@ -1932,7 +1932,7 @@ Docker Compose 通过读取 `.env` 和 `compose.yaml` 文件中配置，先后�
     ...
     volumes:
       - /path/to/your_config.yaml:/home/paddleocr/vlm_server_config.yaml
-    command: paddleocr genai_server --model_name PaddleOCR-VL-1.8-0.9B --host 0.0.0.0 --port 8118 --backend vllm --backend_config /home/paddleocr/vlm_server_config.yaml
+    command: paddleocr genai_server --model_name PaddleOCR-VL-1.8-0.9B --host 0.0.0.0 --port 8080 --backend vllm --backend_config /home/paddleocr/vlm_server_config.yaml
     ...
 ```
 
@@ -1941,14 +1941,7 @@ Docker Compose 通过读取 `.env` 和 `compose.yaml` 文件中配置，先后�
 <details>
 <summary>4. 更改 VLM 推理后端</summary>
 
-修改 <code>.env</code> 文件中的 <code>VLM_BACKEND</code>，例如将 VLM 推理后端修改为 <code>fastdeploy</code>：
-
-```diff
-  API_IMAGE_TAG_SUFFIX=paddleocr3.8-nvidia-gpu
-- VLM_BACKEND=vllm
-+ VLM_BACKEND=fastdeploy
-  VLM_IMAGE_TAG_SUFFIX=paddleocr3.8-nvidia-gpu
-```
+切换后端时，需要在 <code>.env</code> 中同时设置 <code>VLM_BACKEND</code> 和 <code>VLM_IMAGE_TAG_SUFFIX</code>。默认的 3.8 标签对应 vLLM 镜像。使用 FastDeploy 时，请提供支持 PaddleOCR-VL-1.8 的 FastDeploy 镜像及其标签。
 
 </details>
 

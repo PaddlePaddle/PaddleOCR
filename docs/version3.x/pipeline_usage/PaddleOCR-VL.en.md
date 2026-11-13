@@ -2070,7 +2070,7 @@ paddleocr-vl-api             | INFO:     Application startup complete.
 paddleocr-vl-api             | INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
 ```
 
-Additionally, after starting the server using this method, no internet connection is required except for pulling the image. For offline environment deployment, you can first pull the images involved in the Compose file on an online machine, export and transfer them to the offline machine for import, and then start the service in the offline environment.
+The online images need internet access to download the models on first startup. For offline deployment, switch both image tags to the offline variants, then pull and export the images on an online machine and import them on the offline machine.
 
 Docker Compose starts two containers in sequence by reading the configurations in the `.env` and `compose.yaml` files, running the underlying VLM inference service and the PaddleOCR-VL service (Pipeline) respectively.
 
@@ -2142,7 +2142,7 @@ After generating the configuration file, add the following <code>paddleocr-vlm-s
     ...
     volumes:
       - /path/to/your_config.yaml:/home/paddleocr/vlm_server_config.yaml
-    command: paddleocr genai_server --model_name PaddleOCR-VL-1.8-0.9B --host 0.0.0.0 --port 8118 --backend vllm --backend_config /home/paddleocr/vlm_server_config.yaml
+    command: paddleocr genai_server --model_name PaddleOCR-VL-1.8-0.9B --host 0.0.0.0 --port 8080 --backend vllm --backend_config /home/paddleocr/vlm_server_config.yaml
     ...
 ```
 
@@ -2151,14 +2151,7 @@ After generating the configuration file, add the following <code>paddleocr-vlm-s
 <details>
 <summary>4. Change the VLM inference backend</summary>
 
-Modify <code>VLM_BACKEND</code> in the <code>.env</code> file, for example, to change the VLM inference backend to <code>fastdeploy</code>:
-
-```diff
-  API_IMAGE_TAG_SUFFIX=paddleocr3.8-nvidia-gpu
-- VLM_BACKEND=vllm
-+ VLM_BACKEND=fastdeploy
-  VLM_IMAGE_TAG_SUFFIX=paddleocr3.8-nvidia-gpu
-```
+To switch backends, set both <code>VLM_BACKEND</code> and <code>VLM_IMAGE_TAG_SUFFIX</code> in <code>.env</code>. The default 3.8 tag is for vLLM. To use FastDeploy, provide a FastDeploy image that supports PaddleOCR-VL-1.8 and set its tag.
 
 </details>
 
