@@ -1,8 +1,8 @@
-FROM python:3.10-slim
+FROM python:3.10-slim-bookworm
 
 # Install system dependencies
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends curl libgl1 libglib2.0-0 \
+    && apt-get install -y --no-install-recommends libgl1 libglib2.0-0 \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
@@ -14,9 +14,7 @@ ARG HPS_SDK_DIR=paddlex_hps_PaddleOCR-VL-1.8_sdk
 
 # Install Python dependencies
 RUN --mount=type=bind,source=${HPS_SDK_DIR}/client,target=/tmp/sdk \
-    python -m pip install --no-cache-dir -r requirements.txt \
-    && python -m pip install --no-cache-dir -r /tmp/sdk/requirements.txt \
-    && python -m pip install --no-cache-dir /tmp/sdk/paddlex_hps_client-*.whl
+    python -m pip install --no-cache-dir -r requirements.txt /tmp/sdk/paddlex_hps_client-*.whl
 
 # Configuration via environment variables
 ENV HPS_TRITON_URL=paddleocr-vl-pipeline:8001

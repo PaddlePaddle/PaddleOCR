@@ -277,23 +277,23 @@ docker run \
     --gpus all \
     --network host \
     --user root \
-    ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-nvidia-gpu \
+    ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:paddleocr3.8-nvidia-gpu \
     /bin/bash
 # Invoke PaddleOCR CLI or Python API within the container
 ```
 
-If you need to use PaddleOCR-VL in an offline environment, replace `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-nvidia-gpu` (image size approximately 8 GB) in the above command with the offline version image `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-nvidia-gpu-offline` (image size is approximately 10 GB). You will need to pull the image on an internet-connected machine, import it into the offline machine, and then start the container using this image on the offline machine. For example:
+If you need to use PaddleOCR-VL in an offline environment, replace `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:paddleocr3.8-nvidia-gpu` (image size approximately 8 GB) in the above command with the offline version image `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:paddleocr3.8-nvidia-gpu-offline` (image size is approximately 10 GB). You will need to pull the image on an internet-connected machine, import it into the offline machine, and then start the container using this image on the offline machine. For example:
 
 ```shell
 # Execute on an internet-connected machine
-docker pull ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-nvidia-gpu-offline
+docker pull ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:paddleocr3.8-nvidia-gpu-offline
 # Save the image to a file
-docker save ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-nvidia-gpu-offline -o paddleocr-vl-latest-nvidia-gpu-offline.tar
+docker save ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:paddleocr3.8-nvidia-gpu-offline -o paddleocr-vl-paddleocr3.8-nvidia-gpu-offline.tar
 
 # Transfer the image file to the offline machine
 
 # Execute on the offline machine
-docker load -i paddleocr-vl-latest-nvidia-gpu-offline.tar
+docker load -i paddleocr-vl-paddleocr3.8-nvidia-gpu-offline.tar
 # After that, you can use `docker run` to start the container on the offline machine
 ```
 
@@ -320,6 +320,13 @@ python -m venv .venv_paddleocr
 source .venv_paddleocr/bin/activate
 ```
 
+On minimal Debian or Ubuntu installations, install the system libraries required by OpenCV and PaddlePaddle first.
+
+```shell
+sudo apt-get update
+sudo apt-get install -y libgl1 libgomp1
+```
+
 Please first install the dependencies corresponding to your chosen inference engine:
 
 - If you use PaddlePaddle for inference, install PaddlePaddle 3.2.1 or later (**do not install both the CPU and GPU versions of PaddlePaddle at the same time**). Common installation commands are as follows:
@@ -339,7 +346,7 @@ python -m pip install paddlepaddle==3.2.1 -i https://www.paddlepaddle.org.cn/pac
 After installing the inference engine, run the following command to install the base package required by PaddleOCR-VL:
 
 ```shell
-python -m pip install -U "paddleocr[doc-parser]"
+python -m pip install -U "paddleocr[doc-parser]>=3.8.0,<3.9.0"
 ```
 
 ## 2. Quick Start
@@ -1753,11 +1760,11 @@ PaddleOCR provides Docker images for vLLM and FastDeploy. Use Docker 19.03 or la
         --rm \
         --gpus all \
         --network host \
-        ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-nvidia-gpu \
+        ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:paddleocr3.8-nvidia-gpu \
         paddleocr genai_server --model_name PaddleOCR-VL-1.8-0.9B --host 0.0.0.0 --port 8118 --backend vllm
     ```
 
-    If you wish to start the service in an environment without internet access, replace `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-nvidia-gpu` in the above command with the offline version image `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-nvidia-gpu-offline`.
+    If you wish to start the service in an environment without internet access, replace `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:paddleocr3.8-nvidia-gpu` in the above command with the offline version image `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:paddleocr3.8-nvidia-gpu-offline`.
 
 === "Launch FastDeploy Service"
 
@@ -1782,7 +1789,7 @@ docker run \
     --gpus all \
     --network host \
     -v ./vllm_config.yml:/tmp/vllm_config.yml \
-    ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-nvidia-gpu \
+    ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:paddleocr3.8-nvidia-gpu \
     paddleocr genai_server --model_name PaddleOCR-VL-1.8-0.9B --host 0.0.0.0 --port 8118 --backend vllm --backend_config /tmp/vllm_config.yml
 ```
 
@@ -2052,8 +2059,7 @@ docker compose up
 ```
 
 > TIP:
-> The image tags used by `compose.yaml` are usually controlled by `API_IMAGE_TAG_SUFFIX` and `VLM_IMAGE_TAG_SUFFIX` in `.env`, and default to tags such as `latest-nvidia-gpu-offline`. To make sure you pull the newest `latest` images, run `docker compose pull` in the current directory before `docker compose up`.
-> To use an image corresponding to a specific PaddleOCR version, replace `latest` in these variables with `paddleocr<major>.<minor>`, for example `paddleocr3.3-nvidia-gpu-offline`.
+> This Compose configuration pulls the 3.8 online images by default. To use the offline images, set both `API_IMAGE_TAG_SUFFIX` and `VLM_IMAGE_TAG_SUFFIX` to `paddleocr3.8-nvidia-gpu-offline`.
 
 After startup, you will see output similar to the following:
 
@@ -2070,9 +2076,9 @@ Docker Compose starts two containers in sequence by reading the configurations i
 
 The meanings of each environment variable contained in the `.env` file are as follows:
 
-- `API_IMAGE_TAG_SUFFIX`: The tag suffix of the image used to start the pipeline service. The default is `latest-nvidia-gpu-offline`, indicating the use of the latest offline GPU image. To use an image corresponding to a specific version of PaddleOCR, replace `latest` with the desired version `paddleocr<major>.<minor>`, for example `paddleocr3.3-nvidia-gpu-offline`.
+- `API_IMAGE_TAG_SUFFIX`: Image tag suffix for the pipeline service. The default is `paddleocr3.8-nvidia-gpu`. Append `-offline` to use the offline image.
 - `VLM_BACKEND`: The VLM inference backend, currently supporting `vllm` and `fastdeploy`. The default is `vllm`.
-- `VLM_IMAGE_TAG_SUFFIX`: The tag suffix of the image used to start the VLM inference service. The default is `latest-nvidia-gpu-offline`, indicating the use of the latest offline GPU image. If you want to use a non-offline version of the image, you can remove the `-offline` suffix. To use an image corresponding to a specific version of PaddleOCR, replace `latest` with the desired version `paddleocr<major>.<minor>`, for example `paddleocr3.3-nvidia-gpu-offline`.
+- `VLM_IMAGE_TAG_SUFFIX`: Image tag suffix for the VLM server. The default is `paddleocr3.8-nvidia-gpu`. Append `-offline` to use the offline image.
 
 You can meet custom requirements by modifying `.env` and `compose.yaml`, for example:
 
@@ -2148,10 +2154,10 @@ After generating the configuration file, add the following <code>paddleocr-vlm-s
 Modify <code>VLM_BACKEND</code> in the <code>.env</code> file, for example, to change the VLM inference backend to <code>fastdeploy</code>:
 
 ```diff
-  API_IMAGE_TAG_SUFFIX=latest-nvidia-gpu-offline
+  API_IMAGE_TAG_SUFFIX=paddleocr3.8-nvidia-gpu
 - VLM_BACKEND=vllm
 + VLM_BACKEND=fastdeploy
-  VLM_IMAGE_TAG_SUFFIX=latest-nvidia-gpu-offline
+  VLM_IMAGE_TAG_SUFFIX=paddleocr3.8-nvidia-gpu
 ```
 
 </details>
@@ -2179,13 +2185,13 @@ paddlex --install serving
 Then, start the server using the PaddleX CLI:
 
 ```shell
-paddlex --serve --pipeline PaddleOCR-VL
+paddlex --serve --pipeline PaddleOCR-VL-1.8
 ```
 
 To switch to the `transformers` engine for service deployment, use:
 
 ```shell
-paddlex --serve --pipeline PaddleOCR-VL --engine transformers
+paddlex --serve --pipeline PaddleOCR-VL-1.8 --engine transformers
 ```
 
 After startup, you will see output similar to the following, with the server listening on port **8080** by default:

@@ -20,6 +20,7 @@ services:
     restart: unless-stopped
     environment:
       - VLM_BACKEND=${VLM_BACKEND:-vllm}
+      - PADDLE_PDX_MODEL_SOURCE=${PADDLE_PDX_MODEL_SOURCE:-bos}
     command: /bin/bash -c "paddlex --serve --pipeline /home/paddleocr/pipeline_config_${VLM_BACKEND:-vllm}.yaml"
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:8080/health || exit 1"]
@@ -38,6 +39,8 @@ services:
     # TODO: Allow using a regular user
     user: root
     restart: unless-stopped
+    environment:
+      - PADDLE_PDX_MODEL_SOURCE=${PADDLE_PDX_MODEL_SOURCE:-bos}
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:8080/health || exit 1"]
       start_period: 300s

@@ -1,4 +1,4 @@
-FROM python:3.10
+FROM python:3.10-bookworm
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -6,7 +6,7 @@ ENV PYTHONUNBUFFERED=1
 ENV PYTHONDONTWRITEBYTECODE=1
 
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends libgl1 \
+    && apt-get install -y --no-install-recommends libgl1 libgomp1 \
     && apt-get install -y --no-install-recommends \
         fontconfig \
         fonts-dejavu-core \

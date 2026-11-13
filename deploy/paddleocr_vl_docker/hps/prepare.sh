@@ -45,7 +45,10 @@ _set_env_value() {
 echo "Preparing high-stability serving SDK for ${HPS_PIPELINE_NAME}"
 echo "  SDK archive: ${SDK_ARCHIVE}"
 
-wget "${SDK_URL}"
+SDK_DOWNLOAD="$(mktemp "./${SDK_ARCHIVE}.XXXXXX")"
+trap 'rm -f "${SDK_DOWNLOAD}"' EXIT
+wget -O "${SDK_DOWNLOAD}" "${SDK_URL}"
+mv -f "${SDK_DOWNLOAD}" "${SDK_ARCHIVE}"
 tar -xf "${SDK_ARCHIVE}"
 
 if grep -qE '^\s*backend: native\s*$' "${PIPELINE_CONFIG}"; then
