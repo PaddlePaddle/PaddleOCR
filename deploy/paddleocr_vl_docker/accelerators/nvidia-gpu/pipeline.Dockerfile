@@ -23,7 +23,9 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 ARG PADDLEOCR_VERSION=">=3.8.0,<3.9.0"
 ARG PADDLEX_VERSION=">=3.8.0,<3.9.0"
 RUN --mount=type=cache,target=/root/.cache/pip \
-    python -m pip install "paddleocr[doc-parser]${PADDLEOCR_VERSION}" "paddlex[serving]${PADDLEX_VERSION}"
+    python -m pip install --upgrade pip \
+    && python -m pip install "paddleocr[doc-parser]${PADDLEOCR_VERSION}" "paddlex[ocr-core,ocr,genai-client,serving]${PADDLEX_VERSION}" \
+    && python -m pip check
 
 RUN groupadd -g 1000 paddleocr \
     && useradd -m -s /bin/bash -u 1000 -g 1000 paddleocr
