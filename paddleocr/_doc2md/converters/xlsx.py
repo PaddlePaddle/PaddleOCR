@@ -30,41 +30,23 @@ _MC = "{http://schemas.openxmlformats.org/markup-compatibility/2006}"
 _REL_DRAWING = (
     "http://schemas.openxmlformats.org/officeDocument/2006/relationships/drawing"
 )
-_REL_NS = "http://schemas.openxmlformats.org/package/2006/relationships"
 
 
-def _extract_drawing_math(zf, sheet_index: int) -> list:
-    """Extract LaTeX formulas from drawing layer of an xlsx sheet.
+def _extract_drawing_math(zf, worksheet) -> list:
+    """Extract LaTeX formulas from drawing layer of an xlsx worksheet.
 
     Args:
         zf: An already-opened zipfile.ZipFile object.
-        sheet_index: Zero-based sheet index.
+        worksheet: The openpyxl worksheet with its loaded relationships.
     """
     from lxml import etree
 
     results = []
-    rels_path = f"xl/worksheets/_rels/sheet{sheet_index + 1}.xml.rels"
-
-    # Read rels (file may not exist if sheet has no drawing)
-    try:
-        rels_data = zf.read(rels_path)
-    except KeyError:
-        return results
-
-    # Find drawing relationship targets
-    rels_root = etree.fromstring(rels_data)
-    drawing_targets = []
-    for rel in rels_root.findall(f"{{{_REL_NS}}}Relationship"):
-        if rel.get("Type") == _REL_DRAWING:
-            target = rel.get("Target", "")
-            # "../drawings/drawingX.xml" → "xl/drawings/drawingX.xml"
-            if target.startswith("../"):
-                target = "xl/" + target[3:]
-            elif not target.startswith("xl/"):
-                target = "xl/worksheets/" + target
-            drawing_targets.append(target)
-
-    for drawing_path in drawing_targets:
+    # openpyxl resolves drawing targets relative to the actual worksheet part.
+    for relationship in worksheet._rels.find(_REL_DRAWING):
+        if relationship.TargetMode == "External":
+            continue
+        drawing_path = relationship.target
         try:
             drawing_data = zf.read(drawing_path)
             drawing_root = etree.fromstring(drawing_data)
@@ -183,13 +165,10 @@ class XlsxConverter(BaseConverter):
         images: dict = {}
         image_counter = 0
 
-        target_sheets = [sheet_name] if sheet_name else wb.sheetnames
-
         with zipfile.ZipFile(str(file_path), "r") as _zf:
-            for sname in target_sheets:
-                if sname not in wb.sheetnames:
+            for ws in wb.worksheets:
+                if sheet_name and ws.title != sheet_name:
                     continue
-                ws = wb[sname]
 
                 # Total sheet width in EMU, used for image percentage calculation
                 sheet_width_emu = _get_sheet_width_emu(ws, openpyxl)
@@ -316,10 +295,9 @@ class XlsxConverter(BaseConverter):
 
                 table_html = "\n".join(html_parts)
 
-                sheet_parts = [f"## {sname}\n\n{table_html}"]
+                sheet_parts = [f"## {ws.title}\n\n{table_html}"]
                 if extract_drawings:
-                    sheet_idx = list(wb.sheetnames).index(sname)
-                    for latex in _extract_drawing_math(_zf, sheet_idx):
+                    for latex in _extract_drawing_math(_zf, ws):
                         sheet_parts.append(f"\n$$\n{latex}\n$$")
                 sheets_md.append("\n".join(sheet_parts))
 
