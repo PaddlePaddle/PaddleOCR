@@ -26,8 +26,8 @@ paddleocr install_hpi_deps {device_type}
 
 The supported device types are:
 
-- `cpu`: For CPU-only inference. Currently supports Linux systems, x86-64 architecture processors, and Python 3.8-3.12.
-- `gpu`: For inference using either CPU or NVIDIA GPU. Currently supports Linux systems, x86-64 architecture processors, and Python 3.8-3.12. If you want to use the full high-performance inference capabilities, you also need to ensure that a compatible version of TensorRT is installed in your environment. Refer to the next subsection for detailed instructions.
+- `cpu`: For CPU-only inference. Currently supports Linux systems, x86-64 architecture processors, and Python 3.9-3.12.
+- `gpu`: For inference using either CPU or NVIDIA GPU. Currently supports Linux systems, x86-64 architecture processors, and Python 3.9-3.12. If you want to use the full high-performance inference capabilities, you also need to ensure that a compatible version of TensorRT is installed in your environment. Refer to the next subsection for detailed instructions.
 
 Only one type of device dependency should exist in the same environment. For Windows systems, it is currently recommended to install within a Docker container or [WSL](https://learn.microsoft.com/en-us/windows/wsl/install) environment.
 

@@ -14,8 +14,6 @@
 
 import pytest
 
-pytestmark = pytest.mark.py38_incompatible
-
 from paddleocr import SealRecognition
 from ..testing_utils import (
     TEST_DATA_DIR,

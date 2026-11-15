@@ -2,22 +2,14 @@
 comments: true
 ---
 
-# PaddleOCR-VL NVIDIA Blackwell-Architecture GPUs Usage Tutorial
+# PaddleOCR-VL NVIDIA SM120 GPU Usage Tutorial
 
 > INFO:
 > Unless otherwise specified, the term "PaddleOCR-VL" in this tutorial refers to the PaddleOCR-VL model series (e.g., PaddleOCR-VL-1.6). References specific to the PaddleOCR-VL v1 version will be explicitly noted.
 
-This tutorial provides guidance on using PaddleOCR-VL on NVIDIA Blackwell-architecture GPUs, covering the complete workflow from environment preparation to service deployment.
+Use this guide to set up local PaddlePaddle inference and the CUDA 12.9 API image on GPUs with compute capability 12.0 (SM120). These include GeForce RTX 50-series and RTX PRO Blackwell models. Other Blackwell GPUs have different compute capabilities, including B200 (10.0), B300 (10.3), and GB10 (12.1). See the [NVIDIA GPU compute capability table](https://developer.nvidia.com/cuda/gpus).
 
-NVIDIA Blackwell-architecture GPUs include, but are not limited to:
-
-- RTX 5090
-- RTX 5080
-- RTX 5070、RTX 5070 Ti
-- RTX 5060、RTX 5060 Ti
-- RTX 5050
-
-PaddleOCR-VL has been verified for accuracy and speed on the RTX 5070. However, due to hardware diversity, compatibility with other NVIDIA Blackwell-architecture GPUs has not yet been confirmed. We welcome the community to test on different hardware setups and share your results.
+The earlier PaddleOCR-VL accuracy and speed validation used an RTX 5070. The vLLM service uses the shared NVIDIA VLM image.
 
 Before starting the tutorial, **please ensure that your NVIDIA driver supports CUDA 12.9 or higher**.
 
@@ -61,20 +53,15 @@ docker run \
     --gpus all \
     --network host \
     --user root \
-    ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-nvidia-gpu-sm120 \
+    ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:paddleocr3.8-nvidia-gpu-sm120 \
     /bin/bash
 # Call PaddleOCR CLI or Python API in the container
 ```
 
-If you wish to use PaddleOCR-VL in an offline environment, replace `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-nvidia-gpu-sm120` (image size approximately 10 GB) in the above command with the offline version image `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-nvidia-gpu-sm120-offline` (image size approximately 12 GB).
+If you wish to use PaddleOCR-VL in an offline environment, replace `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:paddleocr3.8-nvidia-gpu-sm120` (image size approximately 10 GB) in the above command with the offline version image `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:paddleocr3.8-nvidia-gpu-sm120-offline` (image size approximately 12 GB).
 
-> TIP:
-> Images with the `latest-xxx` tag correspond to the latest version.
-> If the corresponding `latest` image already exists locally and you want the newest features or fixes, we recommend running `docker pull` again before using it.
-> If you want to use an image corresponding to a specific PaddleOCR version, you can replace `latest` in the tag with the desired version number: `paddleocr<major>.<minor>`.
-> For example:
-> `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:paddleocr3.3-nvidia-gpu-sm120-offline`
-
+> NOTE:
+> If the registry does not yet have the 3.8 SM120 API image, load the matching local 3.8 API image and tag it with the image reference above. Do not substitute the unversioned `latest` image when testing VL-1.8.
 
 ### 1.2 Method 2: Manually Install the Inference Engine and PaddleOCR
 
@@ -96,7 +83,7 @@ Run the following commands to complete the installation:
 ```shell
 # Note that PaddlePaddle for cu129 is being installed here
 python -m pip install paddlepaddle-gpu==3.2.1 -i https://www.paddlepaddle.org.cn/packages/stable/cu129/
-python -m pip install -U "paddleocr[doc-parser]"
+python -m pip install -U "paddleocr[doc-parser]>=3.8.0,<3.9.0"
 ```
 
 > **Please ensure that PaddlePaddle framework version 3.2.1 or higher is installed.**
@@ -107,7 +94,7 @@ Please refer to [PaddleOCR-VL Usage Tutorial - 2. Quick Start](./PaddleOCR-VL.en
 
 ## 3. Using VLM Inference Services
 
-This section explains how to connect PaddleOCR-VL to a dedicated VLM inference service backend. On this hardware, this is usually used to improve inference performance beyond the default configuration for production use. In this hardware-specific guide, the examples use vLLM and SGLang as the backends for the VLM inference service.
+This section shows how to start the vLLM inference service on an SM120 GPU.
 
 ### 3.1 Starting the VLM Inference Service
 
@@ -120,7 +107,7 @@ This section explains how to connect PaddleOCR-VL to a dedicated VLM inference s
 | --- | --- | --- |
 | Official Docker image | Supported with steps in this guide | Continue with Section 3.1.1. |
 | Install dependencies with the PaddleOCR CLI and launch the service | Supported with steps in this guide | Continue with Section 3.1.2. |
-| Launch the service directly with the acceleration framework | Not verified | This hardware can start the VLM inference service through the vLLM or SGLang backend, but launching directly with the native framework has not been verified. |
+| Launch the service directly with the acceleration framework | Not verified | See the [main guide](./PaddleOCR-VL.en.md#3-vlm) for native vLLM startup. |
 
 There are two methods to start the VLM inference service; choose one:
 
@@ -139,11 +126,11 @@ docker run \
     -it \
     --gpus all \
     --network host \
-    ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-nvidia-gpu-sm120 \
-    paddleocr genai_server --model_name PaddleOCR-VL-1.6-0.9B --host 0.0.0.0 --port 8118 --backend vllm
+    ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:paddleocr3.8-nvidia-gpu-vllm0.19.0 \
+    paddleocr genai_server --model_name PaddleOCR-VL-1.8-0.9B --host 0.0.0.0 --port 8118 --backend vllm
 ```
 
-If you wish to start the service in an offline environment, replace `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-nvidia-gpu-sm120` (image size approximately 13 GB) in the above command with the offline version image `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-nvidia-gpu-sm120-offline` (image size approximately 15 GB).
+If you wish to start the service in an offline environment, replace `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:paddleocr3.8-nvidia-gpu-vllm0.19.0` in the above command with the offline version image `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:paddleocr3.8-nvidia-gpu-vllm0.19.0-offline`.
 
 When launching the vLLM inference service, we provide a set of default parameter settings. If you need to adjust parameters such as GPU memory usage, you can configure additional parameters yourself. Please refer to [3.3.1 Server-side Parameter Adjustment](./PaddleOCR-VL.en.md#331-server-side-parameter-adjustment) to create a configuration file, then mount the file into the container and specify the configuration file using `backend_config` in the command to start the service, for example:
 
@@ -154,8 +141,8 @@ docker run \
     --gpus all \
     --network host \
     -v ./vllm_config.yml:/tmp/vllm_config.yml \
-    ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-nvidia-gpu-sm120 \
-    paddleocr genai_server --model_name PaddleOCR-VL-1.6-0.9B --host 0.0.0.0 --port 8118 --backend vllm --backend_config /tmp/vllm_config.yml
+    ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:paddleocr3.8-nvidia-gpu-vllm0.19.0 \
+    paddleocr genai_server --model_name PaddleOCR-VL-1.8-0.9B --host 0.0.0.0 --port 8118 --backend vllm --backend_config /tmp/vllm_config.yml
 ```
 
 > TIP:
@@ -163,7 +150,7 @@ docker run \
 > If the corresponding `latest` image already exists locally and you want the newest features or fixes, we recommend running `docker pull` again before using it.
 > If you want to use an image corresponding to a specific PaddleOCR version, you can replace `latest` in the tag with the desired version number: `paddleocr<major>.<minor>`.
 > For example:
-> `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:paddleocr3.3-nvidia-gpu-sm120-offline`
+> `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:paddleocr3.8-nvidia-gpu-vllm0.19.0-offline`
 
 
 #### 3.1.2 Method 2: Installation and Usage via PaddleOCR CLI
@@ -178,15 +165,15 @@ python -m venv .venv_vlm
 source .venv_vlm/bin/activate
 ```
 
-vLLM and SGLang depend on FlashAttention, and installing FlashAttention may require CUDA compilation tools such as `nvcc`. If these tools are not available in your environment (for example, when using the `paddleocr-vl` image), you can obtain a prebuilt FlashAttention package (version 2.8.3 required) from [this repository](https://github.com/mjun0812/flash-attention-prebuild-wheels), install it first, and then proceed with subsequent commands. For example, in the `paddleocr-vl` image, run `python -m pip install https://github.com/mjun0812/flash-attention-prebuild-wheels/releases/download/v0.3.14/flash_attn-2.8.3+cu128torch2.8-cp310-cp310-linux_x86_64.whl`. This step is not required for FastDeploy.
+The shared vLLM setup below uses Python 3.10–3.13 and CUDA 12.9.
 
 Install PaddleOCR and the dependencies of inference acceleration services, using vLLM as an example:
 
 ```shell
 # Install PaddleOCR
-python -m pip install "paddleocr[doc-parser]"
+python -m pip install paddleocr
 # Install inference acceleration service dependencies
-paddleocr install_genai_server_deps vllm
+PIP_EXTRA_INDEX_URL=https://download.pytorch.org/whl/cu129 paddleocr install_genai_server_deps vllm
 ```
 
 Usage of the `paddleocr install_genai_server_deps` command:
@@ -195,15 +182,15 @@ Usage of the `paddleocr install_genai_server_deps` command:
 paddleocr install_genai_server_deps <inference acceleration framework name>
 ```
 
-Currently supported framework names are `vllm` and `sglang`, corresponding to vLLM and SGLang, respectively.
+This guide uses the `vllm` backend.
 
 > WARNING:
-> The transformers library versions required by vLLM, SGLang and Transformers engine are currently incompatible, so Transformers engine cannot be installed together with vLLM or SGLang in the same environment. If using Transformers + vLLM or Transformers + SGLang inference, please deploy the layout analysis model and VLM service in different environments.
+> If you use Transformers for layout analysis, use separate Python environments for layout analysis and the vLLM service.
 
 After installation, you can start the service using the `paddleocr genai_server` command:
 
 ```shell
-paddleocr genai_server --model_name PaddleOCR-VL-1.6-0.9B --backend vllm --port 8118
+paddleocr genai_server --model_name PaddleOCR-VL-1.8-0.9B --backend vllm --port 8118
 ```
 
 The parameters supported by this command are as follows:
@@ -214,7 +201,7 @@ The parameters supported by this command are as follows:
 | `--model_dir`    | Directory containing the model                                               |
 | `--host`         | Server hostname                                                             |
 | `--port`         | Server port number                                                           |
-| `--backend`      | Backend name, i.e., the name of the inference acceleration framework being used; options are `vllm` or `sglang` |
+| `--backend`      | Use the `vllm` backend |
 | `--backend_config`| YAML file specifying backend configuration                                   |
 
 ### 3.2 Client Usage
@@ -243,43 +230,39 @@ This section mainly introduces how to deploy PaddleOCR-VL as a service and invok
 > IMPORTANT:
 > The PaddleOCR-VL service introduced in this section differs from the VLM inference service in the previous section: the latter is responsible for only one part of the complete process (i.e., VLM inference) and is called as an underlying service by the former.
 
+<a id="sm120-compose"></a>
 ### 4.1 Method 1: Deploy Using Docker Compose
 
-1. Download the Compose file and the environment variable configuration file separately from [here](https://github.com/PaddlePaddle/PaddleOCR/blob/{{PADDLEOCR_GITHUB_REF}}/deploy/paddleocr_vl_docker/accelerators/nvidia-gpu-sm120/compose.yaml) and [here](https://github.com/PaddlePaddle/PaddleOCR/blob/{{PADDLEOCR_GITHUB_REF}}/deploy/paddleocr_vl_docker/accelerators/nvidia-gpu-sm120/.env) to your local machine.
+Use [`compose.yaml`](https://github.com/PaddlePaddle/PaddleOCR/blob/{{PADDLEOCR_GITHUB_REF}}/deploy/paddleocr_vl_docker/accelerators/nvidia-gpu-sm120/compose.yaml) with [`.env`](https://github.com/PaddlePaddle/PaddleOCR/blob/{{PADDLEOCR_GITHUB_REF}}/deploy/paddleocr_vl_docker/accelerators/nvidia-gpu-sm120/.env) for online use or [`.env.offline`](https://github.com/PaddlePaddle/PaddleOCR/blob/{{PADDLEOCR_GITHUB_REF}}/deploy/paddleocr_vl_docker/accelerators/nvidia-gpu-sm120/.env.offline) for offline use. If you have checked out this branch, you can find all three files under `deploy/paddleocr_vl_docker/accelerators/nvidia-gpu-sm120/`.
 
-2. Execute the following command in the directory containing the `compose.yaml` and `.env` files to start the server, which will listen on port **8080** by default:
+Both configurations use a dedicated CUDA 12.9 SM120 API image and the same vLLM 0.19.0 VLM images as regular NVIDIA GPUs:
 
-    ```shell
-    # Must be executed in the directory containing compose.yaml and .env files
-    docker compose up
-    ```
+| Mode | SM120 API image tag | Shared NVIDIA VLM image tag |
+| --- | --- | --- |
+| Online (`.env`) | `paddleocr3.8-nvidia-gpu-sm120` | `paddleocr3.8-nvidia-gpu-vllm0.19.0` |
+| Offline (`.env.offline`) | `paddleocr3.8-nvidia-gpu-sm120-offline` | `paddleocr3.8-nvidia-gpu-vllm0.19.0-offline` |
 
-    > TIP:
-    > The image tags used by `compose.yaml` are usually controlled by `API_IMAGE_TAG_SUFFIX` and `VLM_IMAGE_TAG_SUFFIX` in `.env`, and default to tags such as `latest-nvidia-gpu-offline`. To make sure you pull the newest `latest` images, run `docker compose pull` in the current directory before `docker compose up`.
-    > To use an image corresponding to a specific PaddleOCR version, replace `latest` in these variables with `paddleocr<major>.<minor>`, for example `paddleocr3.3-nvidia-gpu-offline`.
+Both VLM images can be pulled directly. If the matching SM120 API tag is not yet available in the registry, load the corresponding local API image and tag it as `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:paddleocr3.8-nvidia-gpu-sm120` (online) or `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:paddleocr3.8-nvidia-gpu-sm120-offline` (offline). Pulling the VLM service alone does not require the API image.
 
-    After startup, you will see output similar to the following:
+Run the following commands in the directory containing `compose.yaml`. The API listens on port **8080** by default.
 
-    ```text
-    paddleocr-vl-api             | INFO:     Started server process [1]
-    paddleocr-vl-api             | INFO:     Waiting for application startup.
-    paddleocr-vl-api             | INFO:     Application startup complete.
-    paddleocr-vl-api             | INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
-    ```
-
-This method accelerates VLM inference using the vLLM framework and is more suitable for production environment deployment.
-
-Additionally, after starting the server in this manner, no internet connection is required except for image pulling. For deployment in an offline environment, you can first pull the images involved in the Compose file on a connected machine, export them, and transfer them to the offline machine for import to start the service in an offline environment.
-
-Docker Compose starts two containers sequentially by reading configurations from the `.env` and `compose.yaml` files, running the underlying VLM inference service and the PaddleOCR-VL service (pipeline service) respectively.
-
-The meanings of each environment variable contained in the `.env` file are as follows:
-
+```shell
+# Online: pull the shared VLM, then start both services.
+docker compose pull paddleocr-vlm-server
+docker compose up --pull missing
 ```
-- `API_IMAGE_TAG_SUFFIX`: The tag suffix of the image used to launch the pipeline service.
-- `VLM_BACKEND`: The VLM inference backend.
-- `VLM_IMAGE_TAG_SUFFIX`: The tag suffix of the image used to launch the VLM inference service.
+
+For an offline deployment, use a connected machine to pull the offline VLM image. Export both offline images and import them on the target machine before starting the services.
+
+```shell
+# On a connected machine:
+docker compose --env-file .env.offline pull paddleocr-vlm-server
+
+# On the target machine, after importing both offline images:
+docker compose --env-file .env.offline up --pull never
 ```
+
+`API_IMAGE_TAG_SUFFIX` selects the API image, `VLM_BACKEND` selects the inference backend, and `VLM_IMAGE_TAG_SUFFIX` selects the VLM image.
 
 You can modify `compose.yaml` to meet custom requirements, for example:
 
@@ -342,7 +325,7 @@ After generating the configuration file, add the following <code>paddleocr-vlm-s
   paddleocr-vlm-server:
     ...
     volumes: /path/to/your_config.yaml:/home/paddleocr/vlm_server_config.yaml
-    command: paddleocr genai_server --model_name PaddleOCR-VL-1.6-0.9B --host 0.0.0.0 --port 8118 --backend vllm --backend_config /home/paddleocr/vlm_server_config.yaml
+    command: paddleocr genai_server --model_name PaddleOCR-VL-1.8-0.9B --host 0.0.0.0 --port 8080 --backend vllm --backend_config /home/paddleocr/vlm_server_config.yaml
     ...
 ```
 

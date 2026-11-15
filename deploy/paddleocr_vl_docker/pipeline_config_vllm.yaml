@@ -1,5 +1,5 @@
 
-pipeline_name: PaddleOCR-VL-1.6
+pipeline_name: PaddleOCR-VL-1.8
 
 batch_size: 64
 
@@ -7,6 +7,12 @@ use_queues: True
 
 use_doc_preprocessor: False
 use_layout_detection: True
+# Requires PP-DocLayoutV4 weights with the page deformation head.
+use_layout_deform: False
+layout_deform_conf_thresh: 0.9
+layout_deform_min_roll: 2.0
+layout_deform_min_shear: 2.0
+layout_deform_min_keystone: 2.0
 use_chart_recognition: False
 use_seal_recognition: False
 format_block_content: False
@@ -23,13 +29,13 @@ markdown_ignore_labels:
 SubModules:
   LayoutDetection:
     module_name: layout_detection
-    model_name: PP-DocLayoutV3
+    model_name: PP-DocLayoutV4
     model_dir: null
     batch_size: 8
     threshold: 0.3
     layout_nms: True
-    layout_unclip_ratio: [1.0, 1.0] 
-    layout_merge_bboxes_mode: 
+    layout_unclip_ratio: [1.0, 1.0]
+    layout_merge_bboxes_mode:
       0: "union" # abstract
       1: "union" # algorithm
       2: "union" # aside_text
@@ -57,7 +63,7 @@ SubModules:
       24: "union" # vision_footnote
   VLRecognition:
     module_name: vl_recognition
-    model_name: PaddleOCR-VL-1.6-0.9B
+    model_name: PaddleOCR-VL-1.8-0.9B
     model_dir: null
     batch_size: 4096
     genai_config:

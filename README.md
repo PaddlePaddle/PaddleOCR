@@ -14,7 +14,7 @@ English | [简体中文](./readme/README_cn.md) | [繁體中文](./readme/README
 
 [![PyPI Downloads](https://static.pepy.tech/badge/paddleocr)](https://pepy.tech/projects/paddleocr)
 [![Used by](https://img.shields.io/badge/Used%20by-6k%2B%20repositories-blue)](https://github.com/PaddlePaddle/PaddleOCR/network/dependents)
-![python](https://img.shields.io/badge/python-3.8~3.12-aff.svg)
+![python](https://img.shields.io/badge/python-3.9~3.13-aff.svg)
 ![os](https://img.shields.io/badge/os-linux%2C%20win%2C%20mac-pink.svg)
 ![hardware](https://img.shields.io/badge/hardware-cpu%2C%20gpu%2C%20xpu%2C%20npu-yellow.svg)
 

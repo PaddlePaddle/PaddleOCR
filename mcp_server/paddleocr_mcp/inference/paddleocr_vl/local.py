@@ -32,6 +32,7 @@ _PIPELINE_VERSION_BY_MODEL = {
     "PaddleOCR-VL": "v1",
     "PaddleOCR-VL-1.5": "v1.5",
     "PaddleOCR-VL-1.6": "v1.6",
+    "PaddleOCR-VL-1.8": "v1.8",
 }
 
 

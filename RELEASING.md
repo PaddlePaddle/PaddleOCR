@@ -69,6 +69,14 @@ At minimum, this should include:
 - Required tests, builds, packaging, and regression checks have passed
 - Release notes are ready
 
+If the matching PaddleX release branch cannot yet provide a wheel that satisfies the dependency in `pyproject.toml`, build a test wheel from the intended PaddleX commit. Use the stable target version when building from an untagged commit. For example, for 3.8.0, run this in the PaddleX checkout:
+
+```bash
+SETUPTOOLS_SCM_PRETEND_VERSION_FOR_PADDLEX=3.8.0 python -m pip wheel --no-deps --wheel-dir dist .
+```
+
+Set the `PADDLEX_TEST_WHEEL` Actions repository variable to a URL where both CPU and GPU CI can download the wheel. Development and release candidate versions such as `3.8.0.devN` and `3.8.0rc0` do not satisfy `paddlex>=3.8.0`. Clear the override once the matching PaddleX release branch builds a compatible version.
+
 ### 5. Create the official tag
 
 Once the release is ready, create the official tag on `release/X.Y`:

@@ -4,7 +4,7 @@ services:
       context: .
       dockerfile: gateway.Dockerfile
       args:
-        HPS_SDK_DIR: ${HPS_SDK_DIR:-paddlex_hps_PaddleOCR-VL-1.6_sdk}
+        HPS_SDK_DIR: ${HPS_SDK_DIR:-paddlex_hps_PaddleOCR-VL-1.8_sdk}
     container_name: paddleocr-vl-api
     ports:
       - 8080:8080
@@ -21,7 +21,7 @@ services:
       - HPS_UVICORN_WORKERS=${HPS_UVICORN_WORKERS:-4}
     restart: unless-stopped
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:8080/health || exit 1"]
+      test: ["CMD", "python", "-c", "from urllib.request import urlopen; urlopen('http://localhost:8080/health', timeout=4).close()"]
       interval: 10s
       timeout: 5s
       retries: 3
@@ -31,10 +31,12 @@ services:
       context: .
       dockerfile: pipeline.Dockerfile
       args:
-        BASE_IMAGE: ${HPS_TRITON_BASE_IMAGE:-ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlex/hps:paddlex${HPS_PADDLEX_VERSION:-3.6}-gpu}
+        BASE_IMAGE: ${HPS_TRITON_BASE_IMAGE:-ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlex/hps:paddlex${HPS_PADDLEX_VERSION:-3.8}-gpu}
         DEVICE_TYPE: ${HPS_DEVICE_TYPE:-gpu}
-        HPS_SDK_DIR: ${HPS_SDK_DIR:-paddlex_hps_PaddleOCR-VL-1.6_sdk}
+        HPS_SDK_DIR: ${HPS_SDK_DIR:-paddlex_hps_PaddleOCR-VL-1.8_sdk}
     container_name: paddleocr-vl-pipeline
+    environment:
+      - PADDLE_PDX_MODEL_SOURCE=${PADDLE_PDX_MODEL_SOURCE:-bos}
     depends_on:
       paddleocr-vlm-server:
         condition: service_healthy
@@ -48,17 +50,19 @@ services:
     shm_size: 4gb
     restart: unless-stopped
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:8000/v2/health/ready || exit 1"]
+      test: ["CMD", "python", "-c", "from urllib.request import urlopen; urlopen('http://localhost:8000/v2/health/ready', timeout=4).close()"]
       interval: 10s
       timeout: 5s
       retries: 3
       start_period: 60s
 
   paddleocr-vlm-server:
-    image: ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-nvidia-gpu
+    image: ${HPS_VLM_IMAGE:-ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:paddleocr3.8-nvidia-gpu-vllm0.19.0}
     container_name: paddleocr-vlm-server
+    environment:
+      - PADDLE_PDX_MODEL_SOURCE=${PADDLE_PDX_MODEL_SOURCE:-bos}
     volumes:
-      - ./${HPS_SDK_DIR:-paddlex_hps_PaddleOCR-VL-1.6_sdk}/server/pipeline_config.yaml:/config/pipeline_config.yaml:ro
+      - ./${HPS_SDK_DIR:-paddlex_hps_PaddleOCR-VL-1.8_sdk}/server/pipeline_config.yaml:/config/pipeline_config.yaml:ro
       - ./genai_server_entrypoint.sh:/entrypoint.sh:ro
     command: ["/bin/sh", "/entrypoint.sh"]
     deploy:

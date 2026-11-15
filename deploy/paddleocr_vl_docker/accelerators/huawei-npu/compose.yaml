@@ -1,6 +1,6 @@
 services:
   paddleocr-vl-api:
-    image: ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:${API_IMAGE_TAG_SUFFIX}
+    image: ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:${API_IMAGE_TAG_SUFFIX:-paddleocr3.8-huawei-npu}
     container_name: paddleocr-vl-api
     ports:
       - 8080:8080
@@ -11,7 +11,7 @@ services:
     restart: unless-stopped
     environment:
       - VLM_BACKEND=${VLM_BACKEND:-vllm}
-    command: /bin/bash -c "paddlex --serve --pipeline /home/paddleocr/pipeline_config_${VLM_BACKEND}.yaml --device npu"
+    command: /bin/bash -c "paddlex --serve --pipeline /home/paddleocr/pipeline_config_${VLM_BACKEND:-vllm}.yaml --device npu"
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:8080/health || exit 1"]
     volumes:
@@ -22,7 +22,7 @@ services:
     shm_size: 64g
 
   paddleocr-vlm-server:
-    image: ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-${VLM_BACKEND}-server:${VLM_IMAGE_TAG_SUFFIX}
+    image: ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-${VLM_BACKEND:-vllm}-server:${VLM_IMAGE_TAG_SUFFIX:-paddleocr3.8-huawei-npu}
     container_name: paddleocr-vlm-server
     user: root
     restart: unless-stopped

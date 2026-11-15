@@ -21,8 +21,8 @@ PaddleOCR provides official Agent Skills that package the routing rules, calling
 ## Prerequisites
 
 1. Install Python 3.9 or later on the machine that runs the skill.
-2. Install PaddleOCR 3.7.0+: `pip install "paddleocr>=3.7.0"`
-3. Get access token from [AI Studio](https://aistudio.baidu.com/account/accessToken)
+2. For the cloud API, install `paddleocr>=3.7.0` and get an access token from [AI Studio](https://aistudio.baidu.com/account/accessToken).
+3. For local PaddleOCR-VL 1.8, install `paddleocr[doc-parser]>=3.8.0` and a [supported inference engine](../pipeline_usage/PaddleOCR-VL.en.md). Local inference requires no access token.
 
 ## Install into AI Apps
 
@@ -70,7 +70,7 @@ The skill source code is located under `PaddleOCR/skills`. Refer to your AI app 
 
 ## Configure Environment Variables
 
-After installation, configure the following environment variables:
+Configure these environment variables when using the cloud API.
 
 - Required: `PADDLEOCR_ACCESS_TOKEN` (access token)
 - Optional: `PADDLEOCR_BASE_URL` (API base URL, defaults to official service)
@@ -138,8 +138,16 @@ URL example:
 Parse this PDF and return the main body plus all tables: https://example.com/report.pdf
 ```
 
-Local file example:
+Cloud API example with a local file:
 
 ```text
-Parse local file C:\docs\report.pdf and return complete structured output.
+Use the PaddleOCR cloud API to parse C:\docs\report.pdf and return complete structured output.
 ```
+
+Local PaddleOCR-VL 1.8 example:
+
+```text
+Use local PaddleOCR-VL 1.8 to parse ./report.pdf, preserving tables and reading order.
+```
+
+The skill runs `paddleocr doc_parser` and reads Markdown or JSON from the output directory. Prepare the model files before running offline.

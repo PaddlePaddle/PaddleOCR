@@ -22,8 +22,8 @@ from .base import PaddleXPipelineWrapper, PipelineCLISubcommandExecutor
 from .utils import create_config_from_structure
 
 
-_AVAILABLE_PIPELINE_VERSIONS = ["v1", "v1.5", "v1.6"]
-_DEFAULT_PIPELINE_VERSION = "v1.6"
+_AVAILABLE_PIPELINE_VERSIONS = ["v1", "v1.5", "v1.6", "v1.8"]
+_DEFAULT_PIPELINE_VERSION = "v1.8"
 _SUPPORTED_VL_BACKENDS = [
     "native",
     "vllm-server",
@@ -65,6 +65,12 @@ class PaddleOCRVL(PaddleXPipelineWrapper):
         merge_layout_blocks=None,
         markdown_ignore_labels=None,
         use_queues=None,
+        *,
+        use_layout_deform=None,
+        layout_deform_conf_thresh=None,
+        layout_deform_min_roll=None,
+        layout_deform_min_shear=None,
+        layout_deform_min_keystone=None,
         **kwargs,
     ):
         if pipeline_version not in _AVAILABLE_PIPELINE_VERSIONS:
@@ -94,6 +100,8 @@ class PaddleOCRVL(PaddleXPipelineWrapper):
             return "PaddleOCR-VL-1.5"
         elif self.pipeline_version == "v1.6":
             return "PaddleOCR-VL-1.6"
+        elif self.pipeline_version == "v1.8":
+            return "PaddleOCR-VL-1.8"
         else:
             raise AssertionError(f"Unknown pipeline version: {self.pipeline_version}")
 
@@ -104,6 +112,11 @@ class PaddleOCRVL(PaddleXPipelineWrapper):
         use_doc_orientation_classify=None,
         use_doc_unwarping=None,
         use_layout_detection=None,
+        use_layout_deform=None,
+        layout_deform_conf_thresh=None,
+        layout_deform_min_roll=None,
+        layout_deform_min_shear=None,
+        layout_deform_min_keystone=None,
         use_chart_recognition=None,
         use_seal_recognition=None,
         use_ocr_for_image_block=None,
@@ -131,6 +144,11 @@ class PaddleOCRVL(PaddleXPipelineWrapper):
             use_doc_orientation_classify=use_doc_orientation_classify,
             use_doc_unwarping=use_doc_unwarping,
             use_layout_detection=use_layout_detection,
+            use_layout_deform=use_layout_deform,
+            layout_deform_conf_thresh=layout_deform_conf_thresh,
+            layout_deform_min_roll=layout_deform_min_roll,
+            layout_deform_min_shear=layout_deform_min_shear,
+            layout_deform_min_keystone=layout_deform_min_keystone,
             use_chart_recognition=use_chart_recognition,
             use_seal_recognition=use_seal_recognition,
             use_ocr_for_image_block=use_ocr_for_image_block,
@@ -161,6 +179,11 @@ class PaddleOCRVL(PaddleXPipelineWrapper):
         use_doc_orientation_classify=None,
         use_doc_unwarping=None,
         use_layout_detection=None,
+        use_layout_deform=None,
+        layout_deform_conf_thresh=None,
+        layout_deform_min_roll=None,
+        layout_deform_min_shear=None,
+        layout_deform_min_keystone=None,
         use_chart_recognition=None,
         use_seal_recognition=None,
         use_ocr_for_image_block=None,
@@ -189,6 +212,11 @@ class PaddleOCRVL(PaddleXPipelineWrapper):
                 use_doc_orientation_classify=use_doc_orientation_classify,
                 use_doc_unwarping=use_doc_unwarping,
                 use_layout_detection=use_layout_detection,
+                use_layout_deform=use_layout_deform,
+                layout_deform_conf_thresh=layout_deform_conf_thresh,
+                layout_deform_min_roll=layout_deform_min_roll,
+                layout_deform_min_shear=layout_deform_min_shear,
+                layout_deform_min_keystone=layout_deform_min_keystone,
                 use_chart_recognition=use_chart_recognition,
                 use_seal_recognition=use_seal_recognition,
                 use_ocr_for_image_block=use_ocr_for_image_block,
@@ -243,6 +271,11 @@ class PaddleOCRVL(PaddleXPipelineWrapper):
             "use_doc_preprocessor": self._params["use_doc_orientation_classify"]
             or self._params["use_doc_unwarping"],
             "use_layout_detection": self._params["use_layout_detection"],
+            "use_layout_deform": self._params["use_layout_deform"],
+            "layout_deform_conf_thresh": self._params["layout_deform_conf_thresh"],
+            "layout_deform_min_roll": self._params["layout_deform_min_roll"],
+            "layout_deform_min_shear": self._params["layout_deform_min_shear"],
+            "layout_deform_min_keystone": self._params["layout_deform_min_keystone"],
             "use_chart_recognition": self._params["use_chart_recognition"],
             "format_block_content": self._params["format_block_content"],
             "merge_layout_blocks": self._params["merge_layout_blocks"],
@@ -415,6 +448,31 @@ class PaddleOCRVLCLISubcommandExecutor(PipelineCLISubcommandExecutor):
             "--use_layout_detection",
             type=str2bool,
             help="Whether to use layout analysis.",
+        )
+        subparser.add_argument(
+            "--use_layout_deform",
+            type=str2bool,
+            help="Whether to rectify recognition crops using layout deformation.",
+        )
+        subparser.add_argument(
+            "--layout_deform_conf_thresh",
+            type=float,
+            help="Minimum orientation confidence for layout deformation.",
+        )
+        subparser.add_argument(
+            "--layout_deform_min_roll",
+            type=float,
+            help="Minimum residual roll in degrees for full layout deformation.",
+        )
+        subparser.add_argument(
+            "--layout_deform_min_shear",
+            type=float,
+            help="Minimum shear in degrees for full layout deformation.",
+        )
+        subparser.add_argument(
+            "--layout_deform_min_keystone",
+            type=float,
+            help="Minimum keystone angle in degrees for full layout deformation.",
         )
         subparser.add_argument(
             "--use_chart_recognition",

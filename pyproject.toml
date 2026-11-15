@@ -14,7 +14,7 @@ maintainers = [
     {name = "PaddlePaddle", email = "paddleocr@baidu.com"},
 ]
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.9"
 keywords = [
     "ocr",
     "textdetection",
@@ -38,7 +38,6 @@ classifiers = [
     "Operating System :: OS Independent",
     "Natural Language :: Chinese (Simplified)",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
@@ -47,7 +46,7 @@ classifiers = [
     "Topic :: Utilities",
 ]
 dependencies = [
-    "paddlex[ocr-core]>=3.7.0,<3.8.0",
+    "paddlex[ocr-core]>=3.8.0,<3.9.0",
     "PyYAML>=6",
     "requests",
     "aiohttp>=3.8.0",
@@ -64,11 +63,11 @@ issues = "https://github.com/PaddlePaddle/PaddleOCR/issues"
 paddleocr = "paddleocr.__main__:console_entry"
 
 [project.optional-dependencies]
-doc-parser = ["paddlex[ocr,genai-client]>=3.7.0,<3.8.0"]
-ie = ["paddlex[ie]>=3.7.0,<3.8.0"]
-trans = ["paddlex[trans]>=3.7.0,<3.8.0"]
+doc-parser = ["paddlex[ocr,genai-client]>=3.8.0,<3.9.0"]
+ie = ["paddlex[ie]>=3.8.0,<3.9.0"]
+trans = ["paddlex[trans]>=3.8.0,<3.9.0"]
 doc2md = ["python-docx>=0.8.11", "python-pptx>=0.6.21", "openpyxl>=3.0.0", "pylatexenc>=2.10,<3"]
-all = ["paddlex[ocr,genai-client,ie,trans]>=3.7.0,<3.8.0", "python-docx>=0.8.11", "python-pptx>=0.6.21", "openpyxl>=3.0.0"]
+all = ["paddlex[ocr,genai-client,ie,trans]>=3.8.0,<3.9.0", "python-docx>=0.8.11", "python-pptx>=0.6.21", "openpyxl>=3.0.0"]
 
 [tool.setuptools.packages.find]
 where = ["."]
@@ -82,6 +81,5 @@ git_describe_command = ["git", "describe", "--dirty", "--tags", "--long", "--mat
 [tool.pytest.ini_options]
 markers = [
     "resource_intensive: mark a test as resource intensive",
-    "py38_incompatible: test requires extras or deps that need Python 3.9+"
 ]
 addopts = "-m 'not resource_intensive'"

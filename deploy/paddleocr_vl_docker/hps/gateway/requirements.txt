@@ -1,3 +1,4 @@
 fastapi == 0.123.6
-paddlex[serving] >= 3.4.0
+paddlex[serving] >= 3.8.0, < 3.9.0
+tritonclient[grpc] == 2.57.0
 uvicorn == 0.35.0

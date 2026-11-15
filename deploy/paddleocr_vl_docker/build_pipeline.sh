@@ -7,8 +7,8 @@ source "${SCRIPT_DIR}/pip_version_arg.sh"
 
 device_type='nvidia-gpu'
 build_for_offline='false'
-paddleocr_version='3.4.0'
-paddlex_version='3.4.0'
+paddleocr_version='3.8.0'
+paddlex_version='3.8.0'
 platform='linux/amd64'
 action='load'
 registry='ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle'

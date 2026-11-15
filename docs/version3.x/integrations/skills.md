@@ -21,8 +21,8 @@ PaddleOCR 提供官方 Agent Skills，将 OCR 与文档解析任务的触发规�
 ## 安装前准备
 
 1. 请确保执行 Skill 的设备已安装 Python 3.9 或以上版本。
-2. Skills 依赖 PaddleOCR 3.7.0+。请安装：`pip install "paddleocr>=3.7.0"`
-3. 获取 access token：访问 [AI Studio Access Token 页面](https://aistudio.baidu.com/account/accessToken)
+2. 使用云 API 时，安装 `paddleocr>=3.7.0`，并在 [AI Studio](https://aistudio.baidu.com/account/accessToken) 获取 access token。
+3. 使用本地 PaddleOCR-VL 1.8 时，安装 `paddleocr[doc-parser]>=3.8.0` 和[受支持的推理引擎](../pipeline_usage/PaddleOCR-VL.md)。本地推理无需 access token。
 
 ## 安装到 AI 应用
 
@@ -70,7 +70,7 @@ Skill 源码位于 `PaddleOCR/skills` 目录。请参考对应 AI 应用的安�
 
 ## 配置环境变量 {#配置环境变量}
 
-安装完成后，配置如下环境变量：
+使用云 API 时，配置以下环境变量。
 
 - 必填：`PADDLEOCR_ACCESS_TOKEN`（access token）
 - 可选：`PADDLEOCR_BASE_URL`（API base URL，默认官方服务）
@@ -138,8 +138,16 @@ Skill 源码位于 `PaddleOCR/skills` 目录。请参考对应 AI 应用的安�
 解析这个 PDF，并返回主体内容和全部表格：https://example.com/report.pdf
 ```
 
-解析本地文件示例：
+将本地文件交给云 API 解析：
 
 ```text
-解析本地文件 C:\docs\report.pdf，并返回完整结构化结果。
+用 PaddleOCR 云 API 解析 C:\docs\report.pdf，并返回完整结构化结果。
 ```
+
+在本地运行 PaddleOCR-VL 1.8：
+
+```text
+用本地 PaddleOCR-VL 1.8 解析 ./report.pdf，保留表格和阅读顺序。
+```
+
+Skill 会调用 `paddleocr doc_parser`，并从输出目录读取 Markdown 或 JSON。离线使用前请准备好模型文件。

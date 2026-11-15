@@ -1,8 +1,7 @@
 shapely
 scikit-image
 pyclipper
-lmdb; python_version >= "3.9"
-lmdb<1.5; python_version < "3.9"
+lmdb
 tqdm
 numpy
 rapidfuzz
@@ -13,6 +12,4 @@ Pillow
 pyyaml
 requests
 albumentations
-# to be compatible with albumentations
-albucore
 packaging
