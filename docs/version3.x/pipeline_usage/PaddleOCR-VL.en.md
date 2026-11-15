@@ -40,6 +40,27 @@ Choose the guide that matches your hardware first.
 
 If you just want to first confirm which hardware PaddleOCR-VL can be deployed on, or which inference methods are supported by specific hardware, read the [PaddleOCR-VL Inference Method and Hardware Support Matrix](#inference-device-support-for-paddleocr-vl) before continuing.
 
+### 3.8 Docker images for branch testing
+
+Use the versioned tags below to test VL-1.8. Run the commands for the components you need; you do not need to pull all of the images.
+
+```shell
+registry=ccr-2vdh3abv-pub.cnc.bj.baidubce.com
+
+# PaddleOCR Compose: API pipeline and shared vLLM
+docker pull "$registry/paddlepaddle/paddleocr-vl:paddleocr3.8-nvidia-gpu"
+docker pull "$registry/paddlepaddle/paddleocr-vl:paddleocr3.8-nvidia-gpu-offline"
+docker pull "$registry/paddlepaddle/paddleocr-genai-vllm-server:paddleocr3.8-nvidia-gpu-vllm0.19.0"
+docker pull "$registry/paddlepaddle/paddleocr-genai-vllm-server:paddleocr3.8-nvidia-gpu-vllm0.19.0-offline"
+
+# PaddleX HPS and standalone vLLM
+docker pull "$registry/paddlex/hps:paddlex3.8-cpu"
+docker pull "$registry/paddlex/hps:paddlex3.8-gpu"
+docker pull "$registry/paddlepaddle/paddlex-genai-vllm-server:paddlex3.8-vllm0.19.0"
+```
+
+SM120 uses the two shared vLLM images above with a [dedicated API image](./PaddleOCR-VL-NVIDIA-Blackwell.en.md#sm120-compose). For hardware-specific guides that still use `latest` tags, those tags do not select the 3.8 candidates.
+
 ## PaddleOCR-VL Inference Method and Hardware Support Matrix {#inference-device-support-for-paddleocr-vl}
 
 

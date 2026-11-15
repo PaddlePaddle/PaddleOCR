@@ -53,20 +53,15 @@ docker run \
     --gpus all \
     --network host \
     --user root \
-    ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-nvidia-gpu-sm120 \
+    ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:paddleocr3.8-nvidia-gpu-sm120 \
     /bin/bash
 # Call PaddleOCR CLI or Python API in the container
 ```
 
-If you wish to use PaddleOCR-VL in an offline environment, replace `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-nvidia-gpu-sm120` (image size approximately 10 GB) in the above command with the offline version image `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-nvidia-gpu-sm120-offline` (image size approximately 12 GB).
+If you wish to use PaddleOCR-VL in an offline environment, replace `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:paddleocr3.8-nvidia-gpu-sm120` (image size approximately 10 GB) in the above command with the offline version image `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:paddleocr3.8-nvidia-gpu-sm120-offline` (image size approximately 12 GB).
 
-> TIP:
-> Images with the `latest-xxx` tag correspond to the latest version.
-> If the corresponding `latest` image already exists locally and you want the newest features or fixes, we recommend running `docker pull` again before using it.
-> If you want to use an image corresponding to a specific PaddleOCR version, you can replace `latest` in the tag with the desired version number: `paddleocr<major>.<minor>`.
-> For example:
-> `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:paddleocr3.3-nvidia-gpu-sm120-offline`
-
+> NOTE:
+> If the registry does not yet have the 3.8 SM120 API image, load the matching local 3.8 API image and tag it with the image reference above. Do not substitute the unversioned `latest` image when testing VL-1.8.
 
 ### 1.2 Method 2: Manually Install the Inference Engine and PaddleOCR
 
@@ -88,7 +83,7 @@ Run the following commands to complete the installation:
 ```shell
 # Note that PaddlePaddle for cu129 is being installed here
 python -m pip install paddlepaddle-gpu==3.2.1 -i https://www.paddlepaddle.org.cn/packages/stable/cu129/
-python -m pip install -U "paddleocr[doc-parser]"
+python -m pip install -U "paddleocr[doc-parser]>=3.8.0,<3.9.0"
 ```
 
 > **Please ensure that PaddlePaddle framework version 3.2.1 or higher is installed.**
@@ -238,41 +233,36 @@ This section mainly introduces how to deploy PaddleOCR-VL as a service and invok
 <a id="sm120-compose"></a>
 ### 4.1 Method 1: Deploy Using Docker Compose
 
-1. Download the Compose file and the environment variable configuration file separately from [here](https://github.com/PaddlePaddle/PaddleOCR/blob/{{PADDLEOCR_GITHUB_REF}}/deploy/paddleocr_vl_docker/accelerators/nvidia-gpu-sm120/compose.yaml) and [here](https://github.com/PaddlePaddle/PaddleOCR/blob/{{PADDLEOCR_GITHUB_REF}}/deploy/paddleocr_vl_docker/accelerators/nvidia-gpu-sm120/.env) to your local machine.
+Use [`compose.yaml`](https://github.com/PaddlePaddle/PaddleOCR/blob/{{PADDLEOCR_GITHUB_REF}}/deploy/paddleocr_vl_docker/accelerators/nvidia-gpu-sm120/compose.yaml) with [`.env`](https://github.com/PaddlePaddle/PaddleOCR/blob/{{PADDLEOCR_GITHUB_REF}}/deploy/paddleocr_vl_docker/accelerators/nvidia-gpu-sm120/.env) for online use or [`.env.offline`](https://github.com/PaddlePaddle/PaddleOCR/blob/{{PADDLEOCR_GITHUB_REF}}/deploy/paddleocr_vl_docker/accelerators/nvidia-gpu-sm120/.env.offline) for offline use. If you have checked out this branch, you can find all three files under `deploy/paddleocr_vl_docker/accelerators/nvidia-gpu-sm120/`.
 
-2. Execute the following command in the directory containing the `compose.yaml` and `.env` files to start the server, which will listen on port **8080** by default:
+Both configurations use a dedicated CUDA 12.9 SM120 API image and the same vLLM 0.19.0 VLM images as regular NVIDIA GPUs:
 
-    ```shell
-    # Must be executed in the directory containing compose.yaml and .env files
-    docker compose up
-    ```
+| Mode | SM120 API image tag | Shared NVIDIA VLM image tag |
+| --- | --- | --- |
+| Online (`.env`) | `paddleocr3.8-nvidia-gpu-sm120` | `paddleocr3.8-nvidia-gpu-vllm0.19.0` |
+| Offline (`.env.offline`) | `paddleocr3.8-nvidia-gpu-sm120-offline` | `paddleocr3.8-nvidia-gpu-vllm0.19.0-offline` |
 
-    > TIP:
-    > In the supplied `.env`, `API_IMAGE_TAG_SUFFIX` selects the SM120 API image (`latest-nvidia-gpu-sm120-offline`). `VLM_IMAGE_TAG_SUFFIX` selects the shared VLM image (`latest-nvidia-gpu-offline`).
-    > Once the matching 3.8 SM120 pipeline image is available, set `VLM_IMAGE_TAG_SUFFIX=paddleocr3.8-nvidia-gpu-vllm0.19.0-offline` to use vLLM 0.19.0.
+Both VLM images can be pulled directly. If the matching SM120 API tag is not yet available in the registry, load the corresponding local API image and tag it as `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:paddleocr3.8-nvidia-gpu-sm120` (online) or `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:paddleocr3.8-nvidia-gpu-sm120-offline` (offline). Pulling the VLM service alone does not require the API image.
 
-    After startup, you will see output similar to the following:
+Run the following commands in the directory containing `compose.yaml`. The API listens on port **8080** by default.
 
-    ```text
-    paddleocr-vl-api             | INFO:     Started server process [1]
-    paddleocr-vl-api             | INFO:     Waiting for application startup.
-    paddleocr-vl-api             | INFO:     Application startup complete.
-    paddleocr-vl-api             | INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
-    ```
-
-This method accelerates VLM inference using the vLLM framework and is more suitable for production environment deployment.
-
-Additionally, after starting the server in this manner, no internet connection is required except for image pulling. For deployment in an offline environment, you can first pull the images involved in the Compose file on a connected machine, export them, and transfer them to the offline machine for import to start the service in an offline environment.
-
-Docker Compose starts two containers sequentially by reading configurations from the `.env` and `compose.yaml` files, running the underlying VLM inference service and the PaddleOCR-VL service (pipeline service) respectively.
-
-The meanings of each environment variable contained in the `.env` file are as follows:
-
+```shell
+# Online: pull the shared VLM, then start both services.
+docker compose pull paddleocr-vlm-server
+docker compose up --pull missing
 ```
-- `API_IMAGE_TAG_SUFFIX`: The tag suffix of the image used to launch the pipeline service.
-- `VLM_BACKEND`: The VLM inference backend.
-- `VLM_IMAGE_TAG_SUFFIX`: The tag suffix of the image used to launch the VLM inference service.
+
+For an offline deployment, use a connected machine to pull the offline VLM image. Export both offline images and import them on the target machine before starting the services.
+
+```shell
+# On a connected machine:
+docker compose --env-file .env.offline pull paddleocr-vlm-server
+
+# On the target machine, after importing both offline images:
+docker compose --env-file .env.offline up --pull never
 ```
+
+`API_IMAGE_TAG_SUFFIX` selects the API image, `VLM_BACKEND` selects the inference backend, and `VLM_IMAGE_TAG_SUFFIX` selects the VLM image.
 
 You can modify `compose.yaml` to meet custom requirements, for example:
 

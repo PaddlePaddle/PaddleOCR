@@ -53,19 +53,15 @@ docker run \
     --gpus all \
     --network host \
     --user root \
-    ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-nvidia-gpu-sm120 \
+    ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:paddleocr3.8-nvidia-gpu-sm120 \
     /bin/bash
 # 在容器中调用 PaddleOCR CLI 或 Python API
 ```
 
-如果您希望在无法连接互联网的环境中使用 PaddleOCR-VL，请将上述命令中的 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-nvidia-gpu-sm120`（镜像的大小约为 10 GB）更换为离线版本镜像 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:latest-nvidia-gpu-sm120-offline`（镜像的大小约为 12 GB）。
+如果您希望在无法连接互联网的环境中使用 PaddleOCR-VL，请将上述命令中的 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:paddleocr3.8-nvidia-gpu-sm120`（镜像的大小约为 10 GB）更换为离线版本镜像 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:paddleocr3.8-nvidia-gpu-sm120-offline`（镜像的大小约为 12 GB）。
 
-> TIP:
-> 标签后缀为 `latest-xxx` 的镜像对应最新版本。
-> 如果本地已经存在对应的 `latest` 镜像，但希望使用最新功能或修复，建议在继续使用前重新执行一次 `docker pull` 更新镜像。
-> 如果希望使用特定版本的 PaddleOCR 镜像，可以将标签中的 `latest` 替换为对应版本号：`paddleocr<major>.<minor>`。
-> 例如：
-> `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:paddleocr3.3-nvidia-gpu-sm120-offline`
+> NOTE:
+> 如果仓库尚未提供 3.8 的 SM120 产线镜像，请导入对应的本地 3.8 产线镜像并打上上述标签。测试 VL-1.8 时，请勿用 `latest` 镜像替代。
 
 ### 1.2 方法二：手动安装推理引擎和 PaddleOCR
 
@@ -87,7 +83,7 @@ source .venv_paddleocr/bin/activate
 ```shell
 # 注意这里安装的是 cu129 的 PaddlePaddle
 python -m pip install paddlepaddle-gpu==3.2.1 -i https://www.paddlepaddle.org.cn/packages/stable/cu129/
-python -m pip install -U "paddleocr[doc-parser]"
+python -m pip install -U "paddleocr[doc-parser]>=3.8.0,<3.9.0"
 ```
 
 > **请注意安装 3.2.1 及以上版本的飞桨框架。**
@@ -236,39 +232,36 @@ paddleocr genai_server --model_name PaddleOCR-VL-1.8-0.9B --backend vllm --port 
 <a id="sm120-compose"></a>
 ### 4.1 方法一：使用 Docker Compose 部署
 
-1. 分别从 [此处](https://github.com/PaddlePaddle/PaddleOCR/blob/{{PADDLEOCR_GITHUB_REF}}/deploy/paddleocr_vl_docker/accelerators/nvidia-gpu-sm120/compose.yaml) 和 [此处](https://github.com/PaddlePaddle/PaddleOCR/blob/{{PADDLEOCR_GITHUB_REF}}/deploy/paddleocr_vl_docker/accelerators/nvidia-gpu-sm120/.env) 获取 Compose 文件与环境变量配置文件并下载到本地。
+使用 [`compose.yaml`](https://github.com/PaddlePaddle/PaddleOCR/blob/{{PADDLEOCR_GITHUB_REF}}/deploy/paddleocr_vl_docker/accelerators/nvidia-gpu-sm120/compose.yaml) 配合在线的 [`.env`](https://github.com/PaddlePaddle/PaddleOCR/blob/{{PADDLEOCR_GITHUB_REF}}/deploy/paddleocr_vl_docker/accelerators/nvidia-gpu-sm120/.env) 或离线的 [`.env.offline`](https://github.com/PaddlePaddle/PaddleOCR/blob/{{PADDLEOCR_GITHUB_REF}}/deploy/paddleocr_vl_docker/accelerators/nvidia-gpu-sm120/.env.offline)。如果已检出本分支，这三个文件都在 `deploy/paddleocr_vl_docker/accelerators/nvidia-gpu-sm120/` 下。
 
-2. 在 `compose.yaml` 和 `.env` 文件所在目录下执行以下命令启动服务器，默认监听 **8080** 端口：
+两种配置都使用 SM120 专用的 CUDA 12.9 产线镜像，VLM 则与普通 NVIDIA GPU 共用 vLLM 0.19.0 镜像：
 
-    ```shell
-    # 必须在 compose.yaml 和 .env 文件所在的目录中执行
-    docker compose up
-    ```
+| 模式 | SM120 产线镜像标签 | 通用 NVIDIA VLM 镜像标签 |
+| --- | --- | --- |
+| 在线（`.env`） | `paddleocr3.8-nvidia-gpu-sm120` | `paddleocr3.8-nvidia-gpu-vllm0.19.0` |
+| 离线（`.env.offline`） | `paddleocr3.8-nvidia-gpu-sm120-offline` | `paddleocr3.8-nvidia-gpu-vllm0.19.0-offline` |
 
-    > 提示：
-    > 配套 `.env` 中，`API_IMAGE_TAG_SUFFIX` 选择 SM120 产线镜像（`latest-nvidia-gpu-sm120-offline`），`VLM_IMAGE_TAG_SUFFIX` 选择统一的 VLM 镜像（`latest-nvidia-gpu-offline`）。
-    > SM120 产线镜像发布后，可通过 `VLM_IMAGE_TAG_SUFFIX=paddleocr3.8-nvidia-gpu-vllm0.19.0-offline` 选用 vLLM 0.19.0。
+两个 VLM 镜像都可以直接拉取。如果仓库尚未提供对应的 SM120 产线标签，请导入匹配的本地产线镜像，并打上 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:paddleocr3.8-nvidia-gpu-sm120`（在线）或 `ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-vl:paddleocr3.8-nvidia-gpu-sm120-offline`（离线）标签。可以单独拉取 VLM，不依赖产线镜像。
 
-    启动后将看到类似如下输出：
+在 `compose.yaml` 所在目录执行下列命令，产线 API 默认监听 **8080** 端口。
 
-    ```text
-    paddleocr-vl-api             | INFO:     Started server process [1]
-    paddleocr-vl-api             | INFO:     Waiting for application startup.
-    paddleocr-vl-api             | INFO:     Application startup complete.
-    paddleocr-vl-api             | INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
-    ```
+```shell
+# 在线：先拉取通用 VLM，再启动两个服务。
+docker compose pull paddleocr-vlm-server
+docker compose up --pull missing
+```
 
-此方式基于 vLLM 框架对 VLM 推理进行加速，更适合生产环境部署。
+离线部署时，先在联网机器上拉取离线 VLM，将两份离线镜像导出并传到目标机器，导入后再启动服务。
 
-此外，使用此方式启动服务器后，除拉取镜像外，无需连接互联网。如需在离线环境中部署，可先在联网机器上拉取 Compose 文件中涉及的镜像，导出并传输至离线机器中导入，即可在离线环境下启动服务。
+```shell
+# 在联网机器上执行：
+docker compose --env-file .env.offline pull paddleocr-vlm-server
 
-Docker Compose 通过读取 `.env` 和 `compose.yaml` 文件中配置，先后启动 2 个容器，分别运行底层 VLM 推理服务，以及 PaddleOCR-VL 服务（产线服务）。
+# 在目标机器导入两个离线镜像后执行：
+docker compose --env-file .env.offline up --pull never
+```
 
-`.env` 文件中包含的各环境变量含义如下：
-
-- `API_IMAGE_TAG_SUFFIX`：启动产线服务使用的镜像的标签后缀。
-- `VLM_BACKEND`：VLM 推理后端。
-- `VLM_IMAGE_TAG_SUFFIX`：启动 VLM 推理服务使用的镜像的标签后缀。
+`API_IMAGE_TAG_SUFFIX` 选择产线镜像，`VLM_BACKEND` 选择推理后端，`VLM_IMAGE_TAG_SUFFIX` 选择 VLM 镜像。
 
 您可以通过修改 `compose.yaml` 来满足自定义需求，例如：
 

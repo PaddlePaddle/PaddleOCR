@@ -40,6 +40,27 @@ PaddleOCR-VL 整体由版面分析与 VLM 识别两个核心阶段组成。下�
 
 如果你只是想先确认 PaddleOCR-VL 支持在哪些硬件上部署，或是特定硬件支持哪些推理方式，请先阅读下方的 [PaddleOCR-VL 推理方式与硬件支持矩阵](#paddleocr-vl-对推理设备的支持情况)。
 
+### 分支测试用的 3.8 Docker 镜像
+
+测试 VL-1.8 时，请按需拉取下面带版本号的镜像，无需下载所有条目。
+
+```shell
+registry=ccr-2vdh3abv-pub.cnc.bj.baidubce.com
+
+# PaddleOCR Compose：API 产线和通用 vLLM
+docker pull "$registry/paddlepaddle/paddleocr-vl:paddleocr3.8-nvidia-gpu"
+docker pull "$registry/paddlepaddle/paddleocr-vl:paddleocr3.8-nvidia-gpu-offline"
+docker pull "$registry/paddlepaddle/paddleocr-genai-vllm-server:paddleocr3.8-nvidia-gpu-vllm0.19.0"
+docker pull "$registry/paddlepaddle/paddleocr-genai-vllm-server:paddleocr3.8-nvidia-gpu-vllm0.19.0-offline"
+
+# PaddleX 高稳定性服务化部署（HPS）和独立 vLLM 服务
+docker pull "$registry/paddlex/hps:paddlex3.8-cpu"
+docker pull "$registry/paddlex/hps:paddlex3.8-gpu"
+docker pull "$registry/paddlepaddle/paddlex-genai-vllm-server:paddlex3.8-vllm0.19.0"
+```
+
+SM120 共用上面两份 vLLM 镜像，产线使用 [SM120 专用 API 镜像](./PaddleOCR-VL-NVIDIA-Blackwell.md#sm120-compose)。其他硬件教程中仍使用 `latest` 的命令不会选中对应的 3.8 候选镜像。
+
 ## PaddleOCR-VL 推理方式与硬件支持矩阵 {#paddleocr-vl-对推理设备的支持情况}
 
 | 推理方式                      | NVIDIA GPU | 昆仑芯 XPU | 海光 DCU | 沐曦 GPU | 天数 GPU | 华为昇腾 NPU | x64 CPU | Apple Silicon | AMD GPU | Intel Arc GPU |
