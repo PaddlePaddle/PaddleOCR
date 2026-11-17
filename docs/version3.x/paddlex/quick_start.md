@@ -98,6 +98,30 @@ paddlex --pipeline OCR \
 | 通用版面解析v3       | `paddlex --pipeline PP-StructureV3 --input https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/pp_structure_v3_demo.png --use_doc_orientation_classify False --use_doc_unwarping False --use_textline_orientation False --save_path ./output --device gpu:0`                                      |
 
 
+### CPU 推理调优
+
+以下示例使用 PaddleOCR Python API，需在 PaddleX 之外安装 PaddleOCR：
+
+```bash
+pip install paddleocr
+```
+
+在 CPU 上部署 OCR 时，建议根据实际输入压测 `cpu_threads`、文本行方向分类和识别阶段的 batch size。在多请求服务中应同时限制服务并发，避免线程过量竞争。以下数值仅作为压测起点：
+
+```python
+from paddleocr import PaddleOCR
+
+ocr = PaddleOCR(
+    device="cpu",
+    cpu_threads=3,
+    enable_mkldnn=True,
+    textline_orientation_batch_size=8,
+    text_recognition_batch_size=16,
+)
+```
+
+`PaddleOCR` 构造函数不提供 `text_detection_batch_size` 参数。batch size 越大不一定越快，尤其是短文本或内存受限的实例；请分别记录检测、方向分类和识别阶段的延迟与 CPU 利用率。对比 Tiny 与 Small 模型时，还应在目标票据的窄列、小字号场景上单独核对识别准确率。
+
 ### 📝 Python 脚本使用
 
 几行代码即可完成产线的快速推理，统一的 Python 脚本格式如下：
