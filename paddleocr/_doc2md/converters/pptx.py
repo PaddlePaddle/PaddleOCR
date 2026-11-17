@@ -26,6 +26,8 @@ _A = "{" + _A_NS + "}"
 _A_STRIKE = f"{_A}strike"
 _A_RPR = f"{_A}rPr"
 _A_P = f"{_A}p"
+_A_R = f"{_A}r"
+_A_BR = f"{_A}br"
 
 # Markup Compatibility namespace
 _MC_NS = "http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -294,7 +296,15 @@ class PptxConverter(BaseConverter):
                     continue
 
                 parts = []
-                for run in paragraph.runs:
+                # Soft breaks are siblings of text runs in DrawingML.
+                runs = iter(paragraph.runs)
+                for element in para_xml:
+                    if element.tag == _A_BR:
+                        parts.append(None)
+                        continue
+                    if element.tag != _A_R:
+                        continue
+                    run = next(runs)
                     t = run.text
                     if not t:
                         continue
@@ -332,9 +342,11 @@ class PptxConverter(BaseConverter):
                                 t, bold, italic, underline, strikethrough, script, url
                             )
                         )
-                text = "".join(parts).strip()
-                if not text:
+                if not any(part and part.strip() for part in parts):
                     continue
+                text = "".join(
+                    "<br>" if part is None else part for part in parts
+                ).strip()
                 level = paragraph.level
                 indent = "  " * level
                 # List item continuation lines need indentation; revert <br>\n → <br>
