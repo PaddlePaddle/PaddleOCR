@@ -65,25 +65,6 @@ paddlex --pipeline OCR \
         --device gpu:0
 ```
 
-### CPU 推理调优
-
-在 CPU 上部署 OCR 时，建议显式设置线程数和各阶段的 batch size，再根据实际输入压测。线程数只控制单个算子的并行度；在多请求服务中应同时限制服务并发，避免线程过量竞争：
-
-```python
-from paddleocr import PaddleOCR
-
-ocr = PaddleOCR(
-    device="cpu",
-    cpu_threads=3,
-    enable_mkldnn=True,
-    text_detection_batch_size=2,
-    textline_orientation_batch_size=8,
-    text_recognition_batch_size=16,
-)
-```
-
-batch size 越大不一定越快，尤其是短文本或内存受限的实例；请分别记录检测、方向分类和识别阶段的延迟与 CPU 利用率。`PP-OCRv6_tiny` 与 `PP-OCRv6_small` 还应在目标票据的窄列、小字号场景上单独核对识别准确率。
-
 <b>👉 点击查看运行结果 </b><
 
 ```bash
@@ -116,6 +97,30 @@ batch size 越大不一定越快，尤其是短文本或内存受限的实例；
 | 通用版面解析       | `paddlex --pipeline layout_parsing --input https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/demo_paper.png --use_doc_orientation_classify False --use_doc_unwarping False --use_textline_orientation False --save_path ./output --device gpu:0`                                      |
 | 通用版面解析v3       | `paddlex --pipeline PP-StructureV3 --input https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/pp_structure_v3_demo.png --use_doc_orientation_classify False --use_doc_unwarping False --use_textline_orientation False --save_path ./output --device gpu:0`                                      |
 
+
+### CPU 推理调优
+
+以下示例使用 PaddleOCR Python API，需在 PaddleX 之外安装 PaddleOCR：
+
+```bash
+pip install paddleocr
+```
+
+在 CPU 上部署 OCR 时，建议根据实际输入压测 `cpu_threads`、文本行方向分类和识别阶段的 batch size。在多请求服务中应同时限制服务并发，避免线程过量竞争。以下数值仅作为压测起点：
+
+```python
+from paddleocr import PaddleOCR
+
+ocr = PaddleOCR(
+    device="cpu",
+    cpu_threads=3,
+    enable_mkldnn=True,
+    textline_orientation_batch_size=8,
+    text_recognition_batch_size=16,
+)
+```
+
+`PaddleOCR` 构造函数不提供 `text_detection_batch_size` 参数。batch size 越大不一定越快，尤其是短文本或内存受限的实例；请分别记录检测、方向分类和识别阶段的延迟与 CPU 利用率。对比 Tiny 与 Small 模型时，还应在目标票据的窄列、小字号场景上单独核对识别准确率。
 
 ### 📝 Python 脚本使用
 
