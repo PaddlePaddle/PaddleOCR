@@ -143,7 +143,6 @@ def _iter_math_paragraph_parts(para) -> list:
     - ("inline_math", latex_str) — an inline math expression ($...$)
     """
     from docx.text.run import Run
-    from docx.text.hyperlink import Hyperlink
 
     text_items = []
     parts = []
@@ -188,6 +187,8 @@ def _iter_math_paragraph_parts(para) -> list:
                 pass
         elif local == "hyperlink":
             try:
+                from docx.text.hyperlink import Hyperlink
+
                 hl = Hyperlink(child, para)
                 try:
                     url = hl.url or ""
