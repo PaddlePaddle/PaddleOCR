@@ -144,7 +144,7 @@
     - La solution de déploiement orientée services à haute stabilité prend également en charge l'invocation via des requêtes HTTP construites manuellement, permettant le développement de code client dans n'importe quel langage de programmation.
 
 - **Support des benchmarks :**
-    - **Toutes les lignes de production prennent désormais en charge des benchmarks granulaires, permettant la mesure du temps d'inférence de bout en bout ainsi que les données de latence par couche et par module pour faciliter l'analyse des performances. [Voici](docs/version3.x/pipeline_usage/instructions/benchmark.en.md) comment configurer et utiliser la fonctionnalité de benchmark.**
+    - **Toutes les lignes de production prennent désormais en charge des benchmarks granulaires, permettant la mesure du temps d'inférence de bout en bout ainsi que les données de latence par couche et par module pour faciliter l'analyse des performances. [Voici](../docs/version3.x/inference_deployment/others/benchmark.en.md) comment configurer et utiliser la fonctionnalité de benchmark.**
     - **La documentation a été mise à jour pour inclure les métriques clés pour les configurations couramment utilisées sur le matériel grand public, telles que la latence d'inférence et l'utilisation de la mémoire, fournissant des références de déploiement pour les utilisateurs.**
 
 - **Corrections de bugs :**

@@ -144,7 +144,7 @@
     - La solución de despliegue orientado a servicios de alta estabilidad también admite la invocación mediante solicitudes HTTP construidas manualmente, lo que permite el desarrollo de código del lado del cliente en cualquier lenguaje de programación.
 
 - **Soporte de benchmarks:**
-    - **Todas las líneas de producción ahora admiten benchmarking detallado, permitiendo medir el tiempo de inferencia de extremo a extremo, así como datos de latencia por capa y por módulo para ayudar en el análisis de rendimiento. [Aquí](docs/version3.x/pipeline_usage/instructions/benchmark.en.md) se explica cómo configurar y usar la función de benchmark.**
+    - **Todas las líneas de producción ahora admiten benchmarking detallado, permitiendo medir el tiempo de inferencia de extremo a extremo, así como datos de latencia por capa y por módulo para ayudar en el análisis de rendimiento. [Aquí](../docs/version3.x/inference_deployment/others/benchmark.en.md) se explica cómo configurar y usar la función de benchmark.**
     - **La documentación se ha actualizado para incluir métricas clave para configuraciones de uso común en hardware convencional, como la latencia de inferencia y el uso de memoria, proporcionando referencias de despliegue para los usuarios.**
 
 - **Corrección de errores:**
