@@ -13,6 +13,7 @@
 # limitations under the License.
 import re
 from collections import Counter
+from html import escape
 from pathlib import Path
 
 from ..base import BaseConverter, ConvertResult
@@ -369,7 +370,7 @@ def _iter_paragraph_items(para, field_state=None) -> list:
         field_state = _FieldState()
 
     def _split_breaks(items):
-        """Expand items containing \\n (from <w:br/> soft line breaks) into per-line items with <br> separators."""
+        """Expand items containing \\n (from <w:br/> soft line breaks) into per-line items with newline separators."""
         expanded = []
         for (
             bold,
@@ -412,7 +413,7 @@ def _iter_paragraph_items(para, field_state=None) -> list:
                     )
                 if j < len(segments) - 1:
                     expanded.append(
-                        (False, False, False, False, False, False, "<br>\n", "")
+                        (False, False, False, False, False, False, "\n", "")
                     )
         return expanded
 
@@ -628,6 +629,7 @@ def _runs_to_markdown(items) -> str:
         text,
         url,
     ) in _merge_runs(items):
+        text = text.replace("\n", "<br>\n")
         if bold or italic or underline or strikethrough or superscript or subscript:
             # CommonMark: marker characters must not be surrounded by spaces
             leading = len(text) - len(text.lstrip())
@@ -687,6 +689,7 @@ def _runs_to_html(items) -> str:
         text,
         url,
     ) in _merge_runs(items):
+        text = escape(text, quote=False).replace("\n", "<br>\n")
         if bold:
             text = f"<b>{text}</b>"
         if italic:
