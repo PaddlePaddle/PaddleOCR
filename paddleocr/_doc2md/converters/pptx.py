@@ -203,7 +203,8 @@ class PptxConverter(BaseConverter):
 
             # Speaker notes
             if slide.has_notes_slide:
-                notes_text = slide.notes_slide.notes_text_frame.text.strip()
+                notes_frame = slide.notes_slide.notes_text_frame
+                notes_text = notes_frame.text.strip() if notes_frame is not None else ""
                 if notes_text:
                     slide_parts.append(f"\n> **Notes**: {notes_text}")
 
