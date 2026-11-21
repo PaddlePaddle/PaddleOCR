@@ -830,7 +830,13 @@ def _get_content_width(doc) -> int:
 
 
 def _table_to_html(
-    table, doc, image_counter: list, images: dict, content_width: int = 0
+    table,
+    doc,
+    image_counter: list,
+    images: dict,
+    content_width: int = 0,
+    *,
+    extract_drawings: bool = True,
 ) -> str:
     """Convert a python-docx Table to an HTML table, handling merged cells and inline images."""
     grid = [[cell for cell in row.cells] for row in table.rows]
@@ -882,6 +888,8 @@ def _table_to_html(
                 )
                 if para_html:
                     content_parts.append(para_html)
+                if not extract_drawings:
+                    continue
                 # Extract text box content from table cell paragraph
                 try:
                     tb_groups = _extract_textbox_paragraphs(para._element)
@@ -1488,7 +1496,14 @@ def _convert_body(doc, *, extract_drawings=True) -> tuple:
             if lines and lines[-1] != "":
                 lines.append("")
             lines.append(
-                _table_to_html(table, doc, image_counter, images, content_width)
+                _table_to_html(
+                    table,
+                    doc,
+                    image_counter,
+                    images,
+                    content_width,
+                    extract_drawings=extract_drawings,
+                )
             )
             lines.append("")
 
