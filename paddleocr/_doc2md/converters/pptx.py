@@ -390,10 +390,15 @@ class PptxConverter(BaseConverter):
             if has_date_ax and categories:
                 from datetime import datetime, timedelta
 
+                epoch = (
+                    datetime(1904, 1, 1)
+                    if chart_root.date_1904
+                    else datetime(1899, 12, 30)
+                )
                 converted = []
                 for c in categories:
                     try:
-                        dt = datetime(1899, 12, 30) + timedelta(days=float(c))
+                        dt = epoch + timedelta(days=float(c))
                         converted.append(dt.strftime("%Y-%m-%d"))
                     except (ValueError, TypeError):
                         converted.append(str(c) if c is not None else "")
