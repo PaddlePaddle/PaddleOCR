@@ -1227,7 +1227,7 @@ def _textbox_paragraphs_to_markdown(
 
 
 def _build_numbering_map(doc) -> dict:
-    """Parse numbering.xml and return {numId: {ilvl: numFmt}} mapping."""
+    """Map numIds to their formats by level and levels by paragraph style."""
     numbering_map = {}
     try:
         numbering_part = doc.part.numbering_part
@@ -1240,6 +1240,7 @@ def _build_numbering_map(doc) -> dict:
     for abs_num in numbering_elem.findall(f"{_W}abstractNum"):
         abs_id = abs_num.get(f"{_W}abstractNumId")
         levels = {}
+        style_levels = {}
         for lvl in abs_num.findall(f"{_W}lvl"):
             ilvl = int(lvl.get(f"{_W}ilvl", "0"))
             fmt_elem = lvl.find(f"{_W}numFmt")
@@ -1247,7 +1248,10 @@ def _build_numbering_map(doc) -> dict:
                 fmt_elem.get(f"{_W}val", "bullet") if fmt_elem is not None else "bullet"
             )
             levels[ilvl] = fmt
-        abstract[abs_id] = levels
+            p_style = lvl.find(f"{_W}pStyle")
+            if p_style is not None:
+                style_levels[p_style.get(f"{_W}val")] = ilvl
+        abstract[abs_id] = (levels, style_levels)
 
     # Map numId -> abstractNumId
     for num in numbering_elem.findall(f"{_W}num"):
@@ -1262,21 +1266,33 @@ def _build_numbering_map(doc) -> dict:
 
 def _get_list_info(para, numbering_map) -> tuple | None:
     """Return (list_type, ilvl, num_id) or None. list_type: 'bullet' | 'ordered'"""
-    pPr = para._element.find(f"{_W}pPr")
-    if pPr is None:
+    num_pr = para._element.find(f"{_W}pPr/{_W}numPr")
+    num_id_elem = num_pr.find(f"{_W}numId") if num_pr is not None else None
+    ilvl_elem = num_pr.find(f"{_W}ilvl") if num_pr is not None else None
+
+    style_ids = []
+    if num_id_elem is None:
+        style = para.style
+        while style is not None and style.style_id not in style_ids:
+            style_ids.append(style.style_id)
+            num_id_elem = style.element.find(f"{_W}pPr/{_W}numPr/{_W}numId")
+            if num_id_elem is not None:
+                break
+            style = style.base_style
+        else:
+            return None
+
+    num_id = num_id_elem.get(f"{_W}val")
+    # A direct numId of zero suppresses any numbering inherited from the style.
+    if num_id == "0" or num_id not in numbering_map:
         return None
-    numPr = pPr.find(f"{_W}numPr")
-    if numPr is None:
-        return None
-    numId_elem = numPr.find(f"{_W}numId")
-    ilvl_elem = numPr.find(f"{_W}ilvl")
-    if numId_elem is None:
-        return None
-    num_id = numId_elem.get(f"{_W}val")
-    ilvl = int(ilvl_elem.get(f"{_W}val", "0")) if ilvl_elem is not None else 0
-    if num_id not in numbering_map:
-        return None
-    fmt = numbering_map[num_id].get(ilvl, "bullet")
+    levels, style_levels = numbering_map[num_id]
+    if ilvl_elem is not None:
+        ilvl = int(ilvl_elem.get(f"{_W}val", "0"))
+    else:
+        # Style-based numbering selects a level via the abstract definition's pStyle.
+        ilvl = next((style_levels[s] for s in style_ids if s in style_levels), 0)
+    fmt = levels.get(ilvl, "bullet")
     list_type = (
         "ordered"
         if fmt in ("decimal", "lowerLetter", "upperLetter", "lowerRoman", "upperRoman")
