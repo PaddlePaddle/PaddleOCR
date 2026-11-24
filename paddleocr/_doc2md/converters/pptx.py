@@ -342,7 +342,7 @@ class PptxConverter(BaseConverter):
                 slide_parts.append(f"{indent}- {text}")
 
     def _chart_to_html(self, chart) -> str:
-        """Extract chart data as an HTML table."""
+        """Extract each chart plot as its own HTML table."""
         try:
             chart_type_val = chart.chart_type.value if chart.chart_type else 0
             chart_type_name = _CHART_TYPE_NAMES.get(chart_type_val, "Chart")
@@ -356,35 +356,53 @@ class PptxConverter(BaseConverter):
             except Exception:
                 pass
 
-            # Extract axis info from OOXML
-            chart_root = chart._element
+            plots = chart.plots
+            multiple_plots = len(plots) > 1
+            tables = []
+            for plot in plots:
+                caption = "" if tables else title_text
+                table = self._chart_plot_to_html(plot, caption, multiple_plots)
+                if table:
+                    tables.append(table)
+            return "\n\n".join(tables) or f"[{chart_type_name}]"
+        except Exception:
+            return f"[{chart_type_name}]"
 
-            cat_ax_title = ""
-            for ax_tag in (f"{_C}catAx", f"{_C}dateAx"):
-                ax_el = chart_root.find(f".//{ax_tag}")
-                if ax_el is not None:
-                    t_el = ax_el.find(f"{_C}title")
-                    if t_el is not None:
-                        texts = t_el.findall(f".//{_A}t")
-                        cat_ax_title = "".join(el.text or "" for el in texts).strip()
-                    break
+    @staticmethod
+    def _chart_plot_to_html(plot, title_text, multiple_plots) -> str:
+        def axis_title(axis):
+            title = axis.find(f"{_C}title") if axis is not None else None
+            if title is None:
+                return ""
+            return "".join(el.text or "" for el in title.findall(f".//{_A}t")).strip()
 
-            has_date_ax = chart_root.find(f".//{_C}dateAx") is not None
+        try:
+            chart_root = plot.chart._element
+            plot_area = chart_root.chart.plotArea
+            axis_tags = (f"{_C}catAx", f"{_C}dateAx", f"{_C}valAx")
+            axis_ids = None
+            if multiple_plots:
+                axis_ids = {
+                    node.get("val") for node in plot._element.findall(f"{_C}axId")
+                }
+            axes = {}
+            for axis in plot_area:
+                if axis.tag not in axis_tags:
+                    continue
+                if axis_ids is not None:
+                    axis_id = axis.find(f"{_C}axId")
+                    if axis_id is None or axis_id.get("val") not in axis_ids:
+                        continue
+                axes.setdefault(axis.tag, axis)
 
-            val_ax_title = ""
-            val_ax_el = chart_root.find(f".//{_C}valAx")
-            if val_ax_el is not None:
-                t_el = val_ax_el.find(f"{_C}title")
-                if t_el is not None:
-                    texts = t_el.findall(f".//{_A}t")
-                    val_ax_title = "".join(el.text or "" for el in texts).strip()
-
-            plot = chart.plots[0]
-            categories = list(plot.categories) if plot.categories else []
+            cat_axis = axes.get(f"{_C}catAx", axes.get(f"{_C}dateAx"))
+            cat_ax_title = axis_title(cat_axis)
+            val_ax_title = axis_title(axes.get(f"{_C}valAx"))
+            has_date_ax = f"{_C}dateAx" in axes
+            categories = list(plot.categories)
             series_list = list(plot.series)
-
             if not series_list:
-                return f"[{chart_type_name}]"
+                return ""
 
             # Convert Excel date serials to YYYY-MM-DD for date axes
             if has_date_ax and categories:
@@ -453,7 +471,7 @@ class PptxConverter(BaseConverter):
 
             return "\n".join(html_parts)
         except Exception:
-            return f"[{chart_type_name}]"
+            return ""
 
     @staticmethod
     def _table_to_html(
