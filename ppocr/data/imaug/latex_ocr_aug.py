@@ -30,6 +30,7 @@ import math
 import cv2
 import numpy as np
 import albumentations as A
+from ppocr.utils.utility import seed_albumentations
 from PIL import Image
 
 
@@ -72,6 +73,7 @@ class LatexTrainTransform:
         img = data["image"]
         if np.random.random() < self.bitmap_prob:
             img[img != 255] = 0
+        seed_albumentations(self.train_transform)
         img = self.train_transform(image=img)["image"]
         data["image"] = img
         return data

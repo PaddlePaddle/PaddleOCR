@@ -260,12 +260,12 @@ class SimpleDataSet(Dataset):
             file_size = end - start
             count = round(file_size * self.ratio_list[i])
             if self.mode == "train" or self.ratio_list[i] < 1.0:
-                random.seed(seed)
+                random.seed(seed or 0)
                 sampled.extend(random.sample(range(start, end), count))
             else:
                 sampled.extend(range(start, end))
         if self.mode == "train" and self.do_shuffle:
-            random.seed(seed)
+            random.seed(seed or 0)
             random.shuffle(sampled)
         return sampled
 
@@ -295,13 +295,13 @@ class SimpleDataSet(Dataset):
             with open(file, "rb") as f:
                 lines = f.readlines()
                 if self.mode == "train" or ratio_list[idx] < 1.0:
-                    random.seed(self.seed)
+                    random.seed(self.seed or 0)
                     lines = random.sample(lines, round(len(lines) * ratio_list[idx]))
                 data_lines.extend(lines)
         return data_lines
 
     def shuffle_data_random(self):
-        random.seed(self.seed)
+        random.seed(self.seed or 0)
         random.shuffle(self.data_lines)
         return
 

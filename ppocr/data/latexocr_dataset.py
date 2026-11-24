@@ -97,7 +97,7 @@ class LaTeXOCRDataSet(Dataset):
         self.seed = seed
 
         if self.mode == "train" and self.do_shuffle:
-            random.seed(self.seed)
+            random.seed(self.seed or 0)
         self.pairs = []
         for k in self.data:
             info = np.array(self.data[k], dtype=object)
@@ -149,7 +149,7 @@ class LaTeXOCRDataSet(Dataset):
                 return
 
     def shuffle_data_random(self):
-        random.seed(self.seed)
+        random.seed(self.seed or 0)
         random.shuffle(self.data_lines)
         return
 
