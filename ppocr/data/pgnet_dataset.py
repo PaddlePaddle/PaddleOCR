@@ -53,7 +53,7 @@ class PGDataSet(Dataset):
 
     def shuffle_data_random(self):
         if self.do_shuffle:
-            random.seed(self.seed)
+            random.seed(self.seed or 0)
             random.shuffle(self.data_lines)
         return
 
@@ -65,7 +65,7 @@ class PGDataSet(Dataset):
             with open(file, "rb") as f:
                 lines = f.readlines()
                 if self.mode == "train" or ratio_list[idx] < 1.0:
-                    random.seed(self.seed)
+                    random.seed(self.seed or 0)
                     lines = random.sample(lines, round(len(lines) * ratio_list[idx]))
                 data_lines.extend(lines)
         return data_lines

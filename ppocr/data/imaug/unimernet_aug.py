@@ -26,6 +26,7 @@ import math
 import numpy as np
 from io import BytesIO
 import albumentations as A
+from ppocr.utils.utility import seed_albumentations
 from PIL import Image, ImageOps, ImageDraw
 from scipy.ndimage import zoom as scizoom
 
@@ -459,6 +460,7 @@ class UniMERNetTrainTransform:
         img = data["image"]
         if np.random.random() < self.bitmap_prob:
             img[img != 255] = 0
+        seed_albumentations(self.train_transform)
         img = self.train_transform(image=img)["image"]
         data["image"] = img
         return data
