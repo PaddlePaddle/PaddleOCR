@@ -185,7 +185,13 @@ class PptxConverter(BaseConverter):
             # Process all shapes
             for shape in slide.shapes:
                 self._process_shape(
-                    shape, slide_parts, images, image_counter, slide_width, slide.part
+                    shape,
+                    slide_parts,
+                    images,
+                    image_counter,
+                    slide_width,
+                    slide.part,
+                    1.0,
                 )
 
             # Handle math formulas inside mc:AlternateContent elements
@@ -231,7 +237,14 @@ class PptxConverter(BaseConverter):
         )
 
     def _process_shape(
-        self, shape, slide_parts, images, image_counter, slide_width, slide_part
+        self,
+        shape,
+        slide_parts,
+        images,
+        image_counter,
+        slide_width,
+        slide_part,
+        width_scale,
     ):
         """Recursively process a shape: Picture, GroupShape, Chart, Table, or TextFrame."""
         Picture = self._Picture
@@ -246,7 +259,7 @@ class PptxConverter(BaseConverter):
                 rel_path = f"images/{filename}"
                 images[rel_path] = img.blob
                 if shape.width and slide_width:
-                    pct = min(round(shape.width / slide_width * 100), 100)
+                    pct = min(round(shape.width * width_scale / slide_width * 100), 100)
                     slide_parts.append(f'<img src="images/{filename}" width="{pct}%">')
                 else:
                     slide_parts.append(f'<img src="images/{filename}">')
@@ -257,6 +270,15 @@ class PptxConverter(BaseConverter):
         # 2. GroupShape - recurse into child shapes
         if MSO_SHAPE_TYPE and shape.shape_type == MSO_SHAPE_TYPE.GROUP:
             try:
+                transform = shape._element.grpSpPr.xfrm
+                # The group's extent scales its child coordinate space.
+                if (
+                    transform is not None
+                    and transform.ext is not None
+                    and transform.chExt is not None
+                    and transform.chExt.cx
+                ):
+                    width_scale *= transform.ext.cx / transform.chExt.cx
                 for child in shape.shapes:
                     self._process_shape(
                         child,
@@ -265,6 +287,7 @@ class PptxConverter(BaseConverter):
                         image_counter,
                         slide_width,
                         slide_part,
+                        width_scale,
                     )
             except AttributeError:
                 pass
