@@ -205,7 +205,11 @@ class PptxConverter(BaseConverter):
             if slide.has_notes_slide:
                 notes_text = slide.notes_slide.notes_text_frame.text.strip()
                 if notes_text:
-                    slide_parts.append(f"\n> **Notes**: {notes_text}")
+                    notes_lines = f"**Notes**: {notes_text}".splitlines()
+                    quoted_notes = "\n".join(
+                        f"> {line}" if line else ">" for line in notes_lines
+                    )
+                    slide_parts.append(f"\n{quoted_notes}")
 
             # Group parts by content type and separate groups with blank lines
             # to prevent HTML blocks from consuming adjacent list items
