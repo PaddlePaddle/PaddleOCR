@@ -245,9 +245,8 @@ class SimpleDataSet(Dataset):
     def _generate_index_map(self, seed):
         """Generate virtual-index -> global-index mapping.
 
-        Replicates the EXACT sampling logic of original get_image_info_list +
-        shuffle_data_random: for each file, random.seed(seed) then
-        random.sample to pick indices, then random.seed(seed) + shuffle.
+        Restart a local RNG with the epoch seed for each file and for the
+        final shuffle to preserve the existing sampling order.
 
         Since random.sample(population, k) with the same seed selects the
         same POSITIONS regardless of population type, sampling from
@@ -260,13 +259,13 @@ class SimpleDataSet(Dataset):
             file_size = end - start
             count = round(file_size * self.ratio_list[i])
             if self.mode == "train" or self.ratio_list[i] < 1.0:
-                random.seed(seed)
-                sampled.extend(random.sample(range(start, end), count))
+                sampled.extend(
+                    random.Random(seed or 0).sample(range(start, end), count)
+                )
             else:
                 sampled.extend(range(start, end))
         if self.mode == "train" and self.do_shuffle:
-            random.seed(seed)
-            random.shuffle(sampled)
+            random.Random(seed or 0).shuffle(sampled)
         return sampled
 
     def _ensure_index_map(self):
@@ -295,14 +294,14 @@ class SimpleDataSet(Dataset):
             with open(file, "rb") as f:
                 lines = f.readlines()
                 if self.mode == "train" or ratio_list[idx] < 1.0:
-                    random.seed(self.seed)
-                    lines = random.sample(lines, round(len(lines) * ratio_list[idx]))
+                    lines = random.Random(self.seed or 0).sample(
+                        lines, round(len(lines) * ratio_list[idx])
+                    )
                 data_lines.extend(lines)
         return data_lines
 
     def shuffle_data_random(self):
-        random.seed(self.seed)
-        random.shuffle(self.data_lines)
+        random.Random(self.seed or 0).shuffle(self.data_lines)
         return
 
     # ------------------------------------------------------------------ #

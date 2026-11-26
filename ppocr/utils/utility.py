@@ -177,6 +177,30 @@ def set_seed(seed=1024):
     paddle.seed(seed)
 
 
+def seed_albumentations(transform):
+    """Seed an albumentations transform from numpy, once per process.
+
+    albumentations keeps its own RNG and ignores np.random.seed, so augmentation
+    would differ on every run. numpy is seeded from Global.seed in the main
+    process and per worker by paddle.io.DataLoader. Include the trainer rank
+    because DataLoaders on different ranks can start from the same NumPy seed.
+    """
+    pid = os.getpid()
+    if getattr(transform, "_seeded_pid", None) != pid:
+        set_random_state = getattr(transform, "set_random_state", None)
+        if set_random_state is None:
+            return
+        seed_sequence = np.random.SeedSequence(
+            (np.random.randint(2**31), paddle.distributed.get_rank())
+        )
+        # Share the generators so each child draws the next value in the sequence.
+        set_random_state(
+            np.random.default_rng(seed_sequence),
+            random.Random(int(seed_sequence.generate_state(1, dtype=np.uint64)[0])),
+        )
+        transform._seeded_pid = pid
+
+
 def check_install(module_name, install_name):
     spec = importlib.util.find_spec(module_name)
     if spec is None:

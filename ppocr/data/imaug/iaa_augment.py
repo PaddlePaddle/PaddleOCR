@@ -22,6 +22,7 @@ os.environ["NO_ALBUMENTATIONS_UPDATE"] = "1"
 
 import numpy as np
 import albumentations as A
+from ppocr.utils.utility import seed_albumentations
 from albumentations.core.transforms_interface import DualTransform
 from albumentations.augmentations.geometric import functional as fgeometric
 from packaging import version
@@ -195,6 +196,8 @@ class IaaAugment:
         image = data["image"]
 
         if self.augmenter:
+            seed_albumentations(self.augmenter)
+
             # Flatten polygons to individual keypoints for transformation
             keypoints = []
             keypoints_lengths = []

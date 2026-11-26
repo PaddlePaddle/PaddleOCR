@@ -299,6 +299,8 @@ def train(
         model_type = None
 
     algorithm = config["Architecture"]["algorithm"]
+    if algorithm == "LaTeXOCR":
+        model_type = "latexocr"
 
     start_epoch = (
         best_model_dict["start_epoch"] if "start_epoch" in best_model_dict else 1
@@ -318,17 +320,24 @@ def train(
 
     for epoch in range(start_epoch, epoch_num + 1):
         if train_dataloader.dataset.need_reset:
-            # Update index mapping + shared epoch (no disk I/O, no worker restart)
-            train_dataloader.dataset.reset_data_lines(seed=epoch, epoch=epoch)
+            reset_data_lines = getattr(
+                train_dataloader.dataset, "reset_data_lines", None
+            )
+            if reset_data_lines is None:
+                # Datasets without an in-place reset rebuild their samples and workers.
+                train_dataloader = build_dataloader(
+                    config, "Train", device, logger, seed=epoch
+                )
+            else:
+                reset_data_lines(seed=epoch, epoch=epoch)
+                if hasattr(train_dataloader.batch_sampler, "set_epoch"):
+                    # A rebuilt DistributedBatchSampler starts at epoch zero.
+                    train_dataloader.batch_sampler.set_epoch(0)
             max_iter = (
                 len(train_dataloader) - 1
                 if platform.system() == "Windows"
                 else len(train_dataloader)
             )
-            # Match original behavior: fresh DistributedBatchSampler always
-            # starts with self.epoch=0 for its internal np shuffle seed
-            if hasattr(train_dataloader.batch_sampler, "set_epoch"):
-                train_dataloader.batch_sampler.set_epoch(0)
 
         for idx, batch in enumerate(train_dataloader):
             model.train()
@@ -414,7 +423,6 @@ def train(
                     model_type = "can"
                     eval_class(preds[0], batch[2:], epoch_reset=(idx == 0))
                 elif algorithm in ["LaTeXOCR"]:
-                    model_type = "latexocr"
                     post_result = post_process_class(preds, batch[1], mode="train")
                     eval_class(post_result[0], post_result[1], epoch_reset=(idx == 0))
                 elif algorithm in ["UniMERNet"]:

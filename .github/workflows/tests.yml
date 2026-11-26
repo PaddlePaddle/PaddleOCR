@@ -22,11 +22,12 @@ jobs:
         uses: ./.github/actions/detect-docs-only
 
   test-pr-python:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.runner }}
     needs: detect-changes
     if: needs.detect-changes.outputs.docs_only != 'true'
     strategy:
       matrix:
+        runner: [ubuntu-24.04]
         python-version: ["3.8", "3.9", "3.13"]
 
     steps:
@@ -43,9 +44,9 @@ jobs:
           ~/.cache/pip
           ~/.local/lib/python${{ matrix.python-version }}/site-packages
           ~/.paddleocr/
-        key: ${{ runner.os }}-dependencies-${{ matrix.python-version }}-${{ hashFiles('**/requirements.txt', 'pyproject.toml') }}
+        key: ${{ matrix.runner }}-dependencies-${{ matrix.python-version }}-${{ hashFiles('**/requirements.txt', 'pyproject.toml') }}
         restore-keys: |
-          ${{ runner.os }}-dependencies-
+          ${{ matrix.runner }}-dependencies-${{ matrix.python-version }}-
 
     - name: Install dependencies
       run: |
