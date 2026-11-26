@@ -26,6 +26,7 @@ if sys.version_info < (3, 9):
 from ppocr.data.imaug.unimernet_aug import Fog, Frost, Rain, Shadow
 from ppocr.utils.utility import seed_albumentations
 import albumentations as A
+import paddle
 
 
 @pytest.fixture
@@ -64,3 +65,21 @@ def test_sibling_augmentations_can_apply_separately(fixed_seed):
 
     assert image[:, ::-1].tobytes() in outcomes
     assert image[::-1, :].tobytes() in outcomes
+
+
+def test_augmentation_seed_distinguishes_trainer_ranks(monkeypatch, fixed_seed):
+    def sample_stream(rank):
+        monkeypatch.setattr(paddle.distributed, "get_rank", lambda: rank)
+        pipeline = A.Compose([A.HorizontalFlip(p=0.5)])
+        seed_albumentations(pipeline)
+        return (
+            pipeline.py_random.random(),
+            pipeline.random_generator.random(),
+        )
+
+    rank_zero = sample_stream(0)
+    rank_one = sample_stream(1)
+    assert rank_zero == sample_stream(0)
+    assert rank_one == sample_stream(1)
+    assert rank_zero[0] != rank_one[0]
+    assert rank_zero[1] != rank_one[1]
