@@ -19,14 +19,19 @@ import pytest
 
 pytestmark = pytest.mark.py38_incompatible
 if sys.version_info < (3, 9):
-    pytest.skip(
-        "Requires Albumentations with set_random_state", allow_module_level=True
-    )
+    pytest.skip("These tests require Python 3.9 or newer", allow_module_level=True)
 
-from ppocr.data.imaug.unimernet_aug import Fog, Frost, Rain, Shadow
-from ppocr.utils.utility import seed_albumentations
 import albumentations as A
 import paddle
+from ppocr.data.imaug.latex_ocr_aug import LatexTestTransform, LatexTrainTransform
+from ppocr.data.imaug.unimernet_aug import Fog, Frost, Rain, Shadow
+from ppocr.utils.utility import seed_albumentations
+
+
+requires_random_state = pytest.mark.skipif(
+    not hasattr(A.Compose, "set_random_state"),
+    reason="Albumentations Compose does not support per-operator random state",
+)
 
 
 @pytest.fixture
@@ -34,6 +39,7 @@ def fixed_seed(monkeypatch):
     monkeypatch.setattr(np.random, "randint", lambda high: 123)
 
 
+@requires_random_state
 @pytest.mark.parametrize("transform", [Fog, Frost, Rain, Shadow])
 def test_weather_augmentation_reproducible(transform, fixed_seed):
     image = np.full((64, 64, 3), 235, dtype=np.uint8)
@@ -52,6 +58,7 @@ def test_weather_augmentation_reproducible(transform, fixed_seed):
     assert not np.array_equal(first_run[0], first_run[1])
 
 
+@requires_random_state
 def test_sibling_augmentations_can_apply_separately(fixed_seed):
     image = np.arange(9, dtype=np.uint8).reshape(3, 3)
     pipeline = A.Compose(
@@ -67,6 +74,7 @@ def test_sibling_augmentations_can_apply_separately(fixed_seed):
     assert image[::-1, :].tobytes() in outcomes
 
 
+@requires_random_state
 def test_augmentation_seed_distinguishes_trainer_ranks(monkeypatch, fixed_seed):
     def sample_stream(rank):
         monkeypatch.setattr(paddle.distributed, "get_rank", lambda: rank)
@@ -83,3 +91,23 @@ def test_augmentation_seed_distinguishes_trainer_ranks(monkeypatch, fixed_seed):
     assert rank_one == sample_stream(1)
     assert rank_zero[0] != rank_one[0]
     assert rank_zero[1] != rank_one[1]
+
+
+def test_legacy_pipeline_seeding_preserves_numpy_state(monkeypatch):
+    def unexpected_draw(*args, **kwargs):
+        pytest.fail("Seeding a legacy Compose must not consume the NumPy RNG")
+
+    monkeypatch.setattr(np.random, "randint", unexpected_draw)
+    seed_albumentations(object())
+
+
+@pytest.mark.parametrize("transform", [LatexTrainTransform, LatexTestTransform])
+def test_latex_augmentation_produces_grayscale(transform):
+    image = np.full((64, 64, 3), [221, 193, 187], dtype=np.uint8)
+    image[15:31, 9:21] = [10, 18, 5]
+
+    result = transform()({"image": image})["image"]
+
+    assert result.shape == image.shape
+    np.testing.assert_array_equal(result[..., 0], result[..., 1])
+    np.testing.assert_array_equal(result[..., 1], result[..., 2])
