@@ -30,14 +30,23 @@ import math
 import cv2
 import numpy as np
 import albumentations as A
+from packaging import version
 from ppocr.utils.utility import seed_albumentations
 from PIL import Image
 
 
 class LatexTrainTransform:
     def __init__(self, bitmap_prob=0.04, **kwargs):
-        # your init code
         self.bitmap_prob = bitmap_prob
+        if version.parse(A.__version__) >= version.parse("2.0"):
+            white_border = {"fill": (255, 255, 255)}
+            # Albumentations 2 takes standard deviation relative to pixel range.
+            noise = A.GaussNoise(std_range=(0, math.sqrt(10) / 255), p=0.2)
+            compression = A.ImageCompression(quality_range=(95, 100), p=0.3)
+        else:
+            white_border = {"value": (255, 255, 255)}
+            noise = A.GaussNoise(var_limit=10, p=0.2)
+            compression = A.ImageCompression(quality_lower=95, p=0.3)
         self.train_transform = A.Compose(
             [
                 A.Compose(
@@ -48,24 +57,24 @@ class LatexTrainTransform:
                             rotate_limit=1,
                             border_mode=0,
                             interpolation=3,
-                            value=[255, 255, 255],
                             p=1,
+                            **white_border,
                         ),
                         A.GridDistortion(
                             distort_limit=0.1,
                             border_mode=0,
                             interpolation=3,
-                            value=[255, 255, 255],
                             p=0.5,
+                            **white_border,
                         ),
                     ],
                     p=0.15,
                 ),
                 A.RGBShift(r_shift_limit=15, g_shift_limit=15, b_shift_limit=15, p=0.3),
-                A.GaussNoise(10, p=0.2),
+                noise,
                 A.RandomBrightnessContrast(0.05, (-0.2, 0), True, p=0.2),
-                A.ImageCompression(95, p=0.3),
-                A.ToGray(always_apply=True),
+                compression,
+                A.ToGray(p=1),
             ]
         )
 
@@ -84,7 +93,7 @@ class LatexTestTransform:
         # your init code
         self.test_transform = A.Compose(
             [
-                A.ToGray(always_apply=True),
+                A.ToGray(p=1),
             ]
         )
 
