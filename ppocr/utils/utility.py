@@ -187,7 +187,9 @@ def seed_albumentations(transform):
     """
     pid = os.getpid()
     if getattr(transform, "_seeded_pid", None) != pid:
-        transform.set_random_seed(np.random.randint(2**31))
+        seed = np.random.randint(2**31)
+        # Share the generators so each child draws the next value in the sequence.
+        transform.set_random_state(np.random.default_rng(seed), random.Random(seed))
         transform._seeded_pid = pid
 
 
