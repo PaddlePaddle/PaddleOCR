@@ -1,3 +1,4 @@
+ppocr/data/imaug/unimernet_aug.py
 # copyright (c) 2024 PaddlePaddle Authors. All Rights Reserve.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -160,11 +161,15 @@ def plasma_fractal(mapsize=256, wibbledecay=3, rng=None):
     return maparray / maparray.max()
 
 
-class Fog(A.ImageOnlyTransform):
+class _WeatherTransform(A.ImageOnlyTransform):
     def __init__(self, mag=-1, always_apply=False, p=1.0):
         super().__init__(always_apply=always_apply, p=p)
         self.mag = mag
+        if not hasattr(self, "random_generator"):
+            self.random_generator = np.random.default_rng()
 
+
+class Fog(_WeatherTransform):
     def apply(self, img, **params):
         rng = self.random_generator
         img = Image.fromarray(img.astype(np.uint8))
@@ -198,11 +203,7 @@ class Fog(A.ImageOnlyTransform):
         return img.astype(np.uint8)
 
 
-class Frost(A.ImageOnlyTransform):
-    def __init__(self, mag=-1, always_apply=False, p=1.0):
-        super().__init__(always_apply=always_apply, p=p)
-        self.mag = mag
-
+class Frost(_WeatherTransform):
     def apply(self, img, **params):
         rng = self.random_generator
         img = Image.fromarray(img.astype(np.uint8))
@@ -256,11 +257,7 @@ class Frost(A.ImageOnlyTransform):
         return img
 
 
-class Snow(A.ImageOnlyTransform):
-    def __init__(self, mag=-1, always_apply=False, p=1.0):
-        super().__init__(always_apply=always_apply, p=p)
-        self.mag = mag
-
+class Snow(_WeatherTransform):
     def apply(self, img, **params):
         from wand.image import Image as WandImage
 
@@ -320,11 +317,7 @@ class Snow(A.ImageOnlyTransform):
         return img
 
 
-class Rain(A.ImageOnlyTransform):
-    def __init__(self, mag=-1, always_apply=False, p=1.0):
-        super().__init__(always_apply=always_apply, p=p)
-        self.mag = mag
-
+class Rain(_WeatherTransform):
     def apply(self, img, **params):
         rng = self.random_generator
         img = Image.fromarray(img.astype(np.uint8))
@@ -360,11 +353,7 @@ class Rain(A.ImageOnlyTransform):
         return img
 
 
-class Shadow(A.ImageOnlyTransform):
-    def __init__(self, mag=-1, always_apply=False, p=1.0):
-        super().__init__(always_apply=always_apply, p=p)
-        self.mag = mag
-
+class Shadow(_WeatherTransform):
     def apply(self, img, **params):
         rng = self.random_generator
         img = Image.fromarray(img.astype(np.uint8))
@@ -830,3 +819,4 @@ class UniMERNetImageFormat:
         img_expanded = img[:, :, np.newaxis].transpose(2, 0, 1)
         data["image"] = img_expanded
         return data
+
