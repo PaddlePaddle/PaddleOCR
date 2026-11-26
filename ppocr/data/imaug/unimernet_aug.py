@@ -1,4 +1,3 @@
-ppocr/data/imaug/unimernet_aug.py
 # copyright (c) 2024 PaddlePaddle Authors. All Rights Reserve.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -819,4 +818,3 @@ class UniMERNetImageFormat:
         img_expanded = img[:, :, np.newaxis].transpose(2, 0, 1)
         data["image"] = img_expanded
         return data
-
