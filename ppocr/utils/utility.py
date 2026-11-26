@@ -182,14 +182,19 @@ def seed_albumentations(transform):
 
     albumentations keeps its own RNG and ignores np.random.seed, so augmentation
     would differ on every run. numpy is seeded from Global.seed in the main
-    process and per worker by paddle.io.DataLoader, so seeding from it on first
-    use in each process gives workers different but reproducible streams.
+    process and per worker by paddle.io.DataLoader. Include the trainer rank
+    because DataLoaders on different ranks can start from the same NumPy seed.
     """
     pid = os.getpid()
     if getattr(transform, "_seeded_pid", None) != pid:
-        seed = np.random.randint(2**31)
+        seed_sequence = np.random.SeedSequence(
+            (np.random.randint(2**31), paddle.distributed.get_rank())
+        )
         # Share the generators so each child draws the next value in the sequence.
-        transform.set_random_state(np.random.default_rng(seed), random.Random(seed))
+        transform.set_random_state(
+            np.random.default_rng(seed_sequence),
+            random.Random(int(seed_sequence.generate_state(1, dtype=np.uint64)[0])),
+        )
         transform._seeded_pid = pid
 
 
