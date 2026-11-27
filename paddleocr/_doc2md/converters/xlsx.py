@@ -84,17 +84,19 @@ def _extract_drawing_math(zf, sheet_index: int) -> list:
 
 
 def _get_sheet_width_emu(ws, openpyxl_mod) -> int:
-    """Return the total column width of the worksheet in EMU. 1 char width ~ 7px, 1px = 9525 EMU."""
+    """Approximate the width of the used worksheet columns in EMU."""
     CHAR_TO_EMU = 7 * 9525
-    total = 0
-    for col_idx in range(1, (ws.max_column or 1) + 1):
-        col_letter = openpyxl_mod.utils.get_column_letter(col_idx)
-        col_dim = ws.column_dimensions.get(col_letter)
-        if col_dim and col_dim.width is not None:
-            total += col_dim.width * CHAR_TO_EMU
-        else:
-            total += 8.43 * CHAR_TO_EMU  # default column width
-    return int(total)
+    used_columns = ws.max_column or 1
+    widths = [8.43] * used_columns
+    for column, dimension in ws.column_dimensions.items():
+        if dimension.width is None:
+            continue
+        # Excel can store one width for an inclusive range of columns.
+        first = dimension.min or openpyxl_mod.utils.column_index_from_string(column)
+        last = min(dimension.max or first, used_columns)
+        if first <= last:
+            widths[first - 1 : last] = [dimension.width] * (last - first + 1)
+    return int(sum(width * CHAR_TO_EMU for width in widths))
 
 
 def _get_image_cx(anchor) -> Optional[int]:
