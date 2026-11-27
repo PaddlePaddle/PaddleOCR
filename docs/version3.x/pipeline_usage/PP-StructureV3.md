@@ -1057,7 +1057,7 @@ paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --use_doc_orientation_cla
 # 通过 --use_doc_unwarping 指定是否使用文本图像矫正模块
 paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --use_doc_unwarping True
 
-# 通过 --use_textline_orientation 指定是否使用文本行方向分类模型
+# 通过 --use_textline_orientation False 关闭文本行方向分类模块
 paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --use_textline_orientation False
 
 # 通过 --device 指定模型推理时使用 GPU
@@ -1480,21 +1480,21 @@ paddleocr pp_structurev3 -i https://paddle-model-ecology.bj.bcebos.com/paddlex/i
 </tr>
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
-<td><b>含义：</b>是否加载并使用文档方向分类模块。<br><b>说明：</b>如果不设置，将使用产线初始化的该参数值，默认初始化为<code>False</code>。</br></td>
+<td><b>含义：</b>是否加载并使用文档方向分类模块。<br><b>说明：</b>如果不设置，将使用产线配置中的参数值。</br></td>
 <td><code>bool</code></td>
-<td><code>False</code></td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
-<td><b>含义：</b>是否加载并使用文本图像矫正模块。<br><b>说明：</b>如果不设置，将使用产线初始化的该参数值，默认初始化为<code>False</code>。</br></td>
+<td><b>含义：</b>是否加载并使用文本图像矫正模块。<br><b>说明：</b>如果不设置，将使用产线配置中的参数值。</br></td>
 <td><code>bool</code></td>
-<td><code>False</code></td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_textline_orientation</code></td>
-<td><b>含义：</b>是否加载并使用文本行方向分类模块。<br><b>说明：</b>如果不设置，将使用产线初始化的该参数值，默认初始化为<code>False</code>。</br></td>
+<td><b>含义：</b>是否加载并使用文本行方向分类模块。<br><b>说明：</b>如果不设置，将使用产线配置中的参数值。</br></td>
 <td><code>bool</code></td>
-<td><code>False</code></td>
+<td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_seal_recognition</code></td>
@@ -1755,7 +1755,7 @@ for item in markdown_images:
 
 - PP-StructureV3 产线使用的默认文本识别模型为 **中英文识别模型**，对于纯英文的识别能力有限，对于全英文场景，您可以设置`text_recognition_model_name`参数为 `en_PP-OCRv4_mobile_rec` 等英文识别模型以取得更好的识别效果。对应其他语言场景，也可以参考前文的模型列表，选择对应的语言识别模型进行替换。
 
-- 在示例代码中，`use_doc_orientation_classify`、`use_doc_unwarping`、`use_textline_orientation` 参数默认均设置为 `False`，分别表示关闭文档方向分类、文本图像矫正、文本行方向分类功能，如果需要使用这些功能，可以手动设置为 `True`。
+- 省略 `use_doc_orientation_classify`、`use_doc_unwarping` 和 `use_textline_orientation` 时，PP-StructureV3 使用产线配置。PaddleX 3.7.2 随附的配置启用了这三个模块。需要关闭某个模块时，请显式将对应参数设为 `False`。文档图像矫正可能改变输出结果所用的坐标空间。
 <!-- Luxorion-12 修改：表格参数描述-->
 在上述 Python 脚本中，执行了如下几个步骤：
 
@@ -2244,21 +2244,21 @@ for item in markdown_images:
 <tr>
 <td><code>use_doc_orientation_classify</code></td>
 <td><b>含义：</b>是否加载并使用文档方向分类模块。
-<br><b>说明：</b>如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>False</code>。</br></td>
+<br><b>说明：</b>如果设置为<code>None</code>，将使用产线配置中的参数值。</br></td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_doc_unwarping</code></td>
 <td><b>含义：</b>是否加载并使用文本图像矫正模块。
-<br><b>说明：</b>如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>False</code>。</br></td>
+<br><b>说明：</b>如果设置为<code>None</code>，将使用产线配置中的参数值。</br></td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
 <tr>
 <td><code>use_textline_orientation</code></td>
 <td><b>含义：</b>是否加载并使用文本行方向分类模块。
-<br><b>说明：</b>如果设置为<code>None</code>，将使用产线初始化的该参数值，默认初始化为<code>False</code>。</br></td>
+<br><b>说明：</b>如果设置为<code>None</code>，将使用产线配置中的参数值。</br></td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
