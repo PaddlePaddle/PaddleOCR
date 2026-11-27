@@ -977,7 +977,7 @@ paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --use_doc_orientation_cla
 # Use --use_doc_unwarping to enable document unwarping module
 paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --use_doc_unwarping True
 
-# Use --use_textline_orientation to enable text line orientation classification
+# Use --use_textline_orientation False to disable text line orientation classification
 paddleocr pp_structurev3 -i ./pp_structure_v3_demo.png --use_textline_orientation False
 
 # Use --device to specify GPU for inference
@@ -1493,7 +1493,7 @@ If not set, the default is <code>1</code>.</td>
 <td><code>use_doc_orientation_classify</code></td>
 <td><b>Meaning:</b>Whether to load and use the document orientation classification module. <br/>
 <b>Description:</b> 
-If not set, the default is <code>False</code>.</td>
+If omitted, the value comes from the pipeline configuration.</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
@@ -1501,7 +1501,7 @@ If not set, the default is <code>False</code>.</td>
 <td><code>use_doc_unwarping</code></td>
 <td><b>Meaning:</b>Whether to load and use the document unwarping module. <br/>
 <b>Description:</b> 
-If not set, the default is <code>False</code>.</td>
+If omitted, the value comes from the pipeline configuration.</td>
 <td><code>bool</code></td>
 <td><code>None</code></td>
 </tr>
@@ -1509,7 +1509,7 @@ If not set, the default is <code>False</code>.</td>
 <td><code>use_textline_orientation</code></td>
 <td><b>Meaning:</b>Whether to load and use the text line orientation classification module. <br/>
 <b>Description:</b> 
-If not set, the default is <code>False</code>.</td>
+If omitted, the value comes from the pipeline configuration.</td>
 <td><code>bool</code></td>
 <td></td>
 </tr>
@@ -1784,7 +1784,7 @@ for item in markdown_images:
 
 - The default text recognition model used by PP-StructureV3 is a **Chinese-English recognition model**, which has limited accuracy for purely English texts. For English-only scenarios, you can set the `text_recognition_model_name` parameter to an English model such as `en_PP-OCRv4_mobile_rec` to achieve better recognition performance. For other languages, refer to the model list above and select the appropriate language recognition model for replacement.
 
-- In the example code, the parameters `use_doc_orientation_classify`, `use_doc_unwarping`, and `use_textline_orientation` are all set to `False` by default. These indicate that document orientation classification, document image unwarping, and textline orientation classification are disabled. You can manually set them to `True` if needed.
+- When `use_doc_orientation_classify`, `use_doc_unwarping`, and `use_textline_orientation` are omitted, PP-StructureV3 uses the pipeline configuration. The bundled configuration in PaddleX 3.7.2 enables all three. Pass `False` explicitly for any of these modules you want to disable. Document unwarping can change the coordinate space of the output.
 
 The above Python script performs the following steps:
 
@@ -2310,7 +2310,7 @@ If set to <code>None</code>, the default value is <code>1</code>.</td>
 <td><code>use_doc_orientation_classify</code></td>
 <td><b>Meaning:</b>Whether to enable the document orientation classification module. <br/>
 <b>Description:</b> 
-If set to <code>None</code>, the default value is <code>False</code>.</td>
+If set to <code>None</code>, the value comes from the pipeline configuration.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -2318,7 +2318,7 @@ If set to <code>None</code>, the default value is <code>False</code>.</td>
 <td><code>use_doc_unwarping</code></td>
 <td><b>Meaning:</b>Whether to enable the document image unwarping module. <br/>
 <b>Description:</b> 
-If set to <code>None</code>, the default value is <code>False</code>.</td>
+If set to <code>None</code>, the value comes from the pipeline configuration.</td>
 <td><code>bool|None</code></td>
 <td><code>None</code></td>
 </tr>
@@ -2326,7 +2326,7 @@ If set to <code>None</code>, the default value is <code>False</code>.</td>
 <td><code>use_textline_orientation</code></td>
 <td><b>Meaning:</b>Whether to use the text line orientation classification. <br/>
 <b>Description:</b> 
-If set to <code>None</code>, the default value is <code>False</code>.</td>
+If set to <code>None</code>, the value comes from the pipeline configuration.</td>
 <td><code>bool|None</code></td>
 <td>None</td>
 </tr>
