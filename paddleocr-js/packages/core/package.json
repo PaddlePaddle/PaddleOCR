@@ -61,7 +61,7 @@
   "dependencies": {
     "@techstark/opencv-js": "^4.10.0-release.1",
     "clipper-lib": "^6.4.2",
-    "js-yaml": "^4.1.0",
+    "js-yaml": "^4.3.2",
     "onnxruntime-web": "^1.22.0"
   },
   "devDependencies": {
