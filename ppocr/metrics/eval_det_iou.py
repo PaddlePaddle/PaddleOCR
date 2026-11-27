@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from collections import namedtuple
 import numpy as np
 from shapely.geometry import Polygon
 
@@ -16,185 +15,65 @@ class DetectionIoUEvaluator(object):
         self.area_precision_constraint = area_precision_constraint
 
     def evaluate_image(self, gt, pred):
-        def get_union(pD, pG):
-            return Polygon(pD).union(Polygon(pG)).area
-
-        def get_intersection_over_union(pD, pG):
-            return get_intersection(pD, pG) / get_union(pD, pG)
-
-        def get_intersection(pD, pG):
-            return Polygon(pD).intersection(Polygon(pG)).area
-
-        def compute_ap(confList, matchList, numGtCare):
-            correct = 0
-            AP = 0
-            if len(confList) > 0:
-                confList = np.array(confList)
-                matchList = np.array(matchList)
-                sorted_ind = np.argsort(-confList)
-                confList = confList[sorted_ind]
-                matchList = matchList[sorted_ind]
-                for n in range(len(confList)):
-                    match = matchList[n]
-                    if match:
-                        correct += 1
-                        AP += float(correct) / (n + 1)
-
-                if numGtCare > 0:
-                    AP /= numGtCare
-
-            return AP
-
-        perSampleMetrics = {}
-
-        matchedSum = 0
-
-        Rectangle = namedtuple("Rectangle", "xmin ymin xmax ymax")
-
-        numGlobalCareGt = 0
-        numGlobalCareDet = 0
-
-        arrGlobalConfidences = []
-        arrGlobalMatches = []
-
-        recall = 0
-        precision = 0
-        hmean = 0
-
-        detMatched = 0
-
-        iouMat = np.empty([1, 1])
-
-        gtPols = []
-        detPols = []
-
-        gtPolPoints = []
-        detPolPoints = []
-
-        # Array of Ground Truth Polygons' keys marked as don't Care
-        gtDontCarePolsNum = []
-        # Array of Detected Polygons' matched with a don't Care GT
-        detDontCarePolsNum = []
-
-        pairs = []
-        detMatchedNums = []
-
-        arrSampleConfidences = []
-        arrSampleMatch = []
-
-        evaluationLog = ""
-
-        for n in range(len(gt)):
-            points = gt[n]["points"]
-            dontCare = gt[n]["ignore"]
-            if not Polygon(points).is_valid:
+        care_gt, ignored_gt = [], []
+        for item in gt:
+            polygon = Polygon(item["points"])
+            if not polygon.is_valid:
                 continue
+            if item["ignore"]:
+                ignored_gt.append(polygon)
+            else:
+                care_gt.append(polygon)
 
-            gtPol = points
-            gtPols.append(gtPol)
-            gtPolPoints.append(points)
-            if dontCare:
-                gtDontCarePolsNum.append(len(gtPols) - 1)
+        detections = []
+        for item in pred:
+            polygon = Polygon(item["points"])
+            if polygon.is_valid:
+                detections.append(polygon)
 
-        evaluationLog += (
-            "GT polygons: "
-            + str(len(gtPols))
-            + (
-                " (" + str(len(gtDontCarePolsNum)) + " don't care)\n"
-                if len(gtDontCarePolsNum) > 0
-                else "\n"
+        # A positive intersection requires overlapping bounds on both axes.
+        # Keep candidates in input order for the evaluator's greedy matching.
+        bounds = np.asarray(
+            [polygon.bounds or (np.nan,) * 4 for polygon in detections]
+        ).reshape(-1, 4)
+        available = np.ones(len(detections), dtype=bool)
+
+        def candidates(polygon, threshold):
+            if threshold < 0:
+                # Disjoint pairs also pass a negative threshold.
+                return np.flatnonzero(available)
+            if polygon.is_empty:
+                return ()
+            xmin, ymin, xmax, ymax = polygon.bounds
+            return np.flatnonzero(
+                available
+                & (bounds[:, 0] < xmax)
+                & (bounds[:, 2] > xmin)
+                & (bounds[:, 1] < ymax)
+                & (bounds[:, 3] > ymin)
             )
-        )
 
-        for n in range(len(pred)):
-            points = pred[n]["points"]
-            if not Polygon(points).is_valid:
-                continue
+        for polygon in ignored_gt:
+            for idx in candidates(polygon, self.area_precision_constraint):
+                detection = detections[idx]
+                area = detection.area
+                coverage = polygon.intersection(detection).area / area if area else 0
+                if coverage > self.area_precision_constraint:
+                    available[idx] = False
 
-            detPol = points
-            detPols.append(detPol)
-            detPolPoints.append(points)
-            if len(gtDontCarePolsNum) > 0:
-                for dontCarePol in gtDontCarePolsNum:
-                    dontCarePol = gtPols[dontCarePol]
-                    intersected_area = get_intersection(dontCarePol, detPol)
-                    pdDimensions = Polygon(detPol).area
-                    precision = (
-                        0 if pdDimensions == 0 else intersected_area / pdDimensions
-                    )
-                    if precision > self.area_precision_constraint:
-                        detDontCarePolsNum.append(len(detPols) - 1)
-                        break
+        det_care = int(available.sum())
+        matched = 0
+        for polygon in care_gt:
+            for idx in candidates(polygon, self.iou_constraint):
+                detection = detections[idx]
+                intersection = detection.intersection(polygon).area
+                iou = intersection / detection.union(polygon).area
+                if iou > self.iou_constraint:
+                    available[idx] = False
+                    matched += 1
+                    break
 
-        evaluationLog += (
-            "DET polygons: "
-            + str(len(detPols))
-            + (
-                " (" + str(len(detDontCarePolsNum)) + " don't care)\n"
-                if len(detDontCarePolsNum) > 0
-                else "\n"
-            )
-        )
-
-        if len(gtPols) > 0 and len(detPols) > 0:
-            # Calculate IoU and precision matrixs
-            outputShape = [len(gtPols), len(detPols)]
-            iouMat = np.empty(outputShape)
-            gtRectMat = np.zeros(len(gtPols), np.int8)
-            detRectMat = np.zeros(len(detPols), np.int8)
-            for gtNum in range(len(gtPols)):
-                for detNum in range(len(detPols)):
-                    pG = gtPols[gtNum]
-                    pD = detPols[detNum]
-                    iouMat[gtNum, detNum] = get_intersection_over_union(pD, pG)
-
-            for gtNum in range(len(gtPols)):
-                for detNum in range(len(detPols)):
-                    if (
-                        gtRectMat[gtNum] == 0
-                        and detRectMat[detNum] == 0
-                        and gtNum not in gtDontCarePolsNum
-                        and detNum not in detDontCarePolsNum
-                    ):
-                        if iouMat[gtNum, detNum] > self.iou_constraint:
-                            gtRectMat[gtNum] = 1
-                            detRectMat[detNum] = 1
-                            detMatched += 1
-                            pairs.append({"gt": gtNum, "det": detNum})
-                            detMatchedNums.append(detNum)
-                            evaluationLog += (
-                                "Match GT #"
-                                + str(gtNum)
-                                + " with Det #"
-                                + str(detNum)
-                                + "\n"
-                            )
-
-        numGtCare = len(gtPols) - len(gtDontCarePolsNum)
-        numDetCare = len(detPols) - len(detDontCarePolsNum)
-        if numGtCare == 0:
-            recall = float(1)
-            precision = float(0) if numDetCare > 0 else float(1)
-        else:
-            recall = float(detMatched) / numGtCare
-            precision = 0 if numDetCare == 0 else float(detMatched) / numDetCare
-
-        hmean = (
-            0
-            if (precision + recall) == 0
-            else 2.0 * precision * recall / (precision + recall)
-        )
-
-        matchedSum += detMatched
-        numGlobalCareGt += numGtCare
-        numGlobalCareDet += numDetCare
-
-        perSampleMetrics = {
-            "gtCare": numGtCare,
-            "detCare": numDetCare,
-            "detMatched": detMatched,
-        }
-        return perSampleMetrics
+        return {"gtCare": len(care_gt), "detCare": det_care, "detMatched": matched}
 
     def combine_results(self, results):
         numGlobalCareGt = 0
